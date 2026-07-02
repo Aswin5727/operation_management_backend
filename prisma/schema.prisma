@@ -1,0 +1,82 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserRole {
+  BUSINESS_OWNER
+  OPERATION_MANAGER
+  HR
+  FACULTY
+  STUDENT
+}
+
+enum LoginEventType {
+  LOGIN_SUCCESS
+  LOGIN_FAILURE
+  REFRESH
+  LOGOUT
+  FORGOT_PASSWORD
+  RESET_PASSWORD_REQUESTED
+  RESET_PASSWORD_COMPLETED
+}
+
+model User {
+  id                       String              @id @default(cuid())
+  userCode                 String              @unique
+  fullName                 String
+  email                    String              @unique
+  phone                    String?             @unique
+  role                     UserRole
+  active                   Boolean             @default(true)
+  passwordHash             String
+  passwordChangedAt        DateTime?
+  refreshTokenVersion      Int                 @default(0)
+  failedLoginCount         Int                 @default(0)
+  failedLoginWindowExpiresAt DateTime?
+  lockedUntil              DateTime?
+  lastLoginAt              DateTime?
+  lastLogoutAt             DateTime?
+  lastLoginIp              String?
+  lastLoginUserAgent       String?
+  createdBy                String?
+  updatedBy                String?
+  createdAt                DateTime            @default(now())
+  updatedAt                DateTime            @updatedAt
+  loginEvents              LoginEvent[]
+  passwordResetTokens      PasswordResetToken[]
+
+  @@index([role])
+  @@index([active])
+}
+
+model LoginEvent {
+  id        String          @id @default(cuid())
+  userId    String?
+  user      User?           @relation(fields: [userId], references: [id], onDelete: SetNull)
+  eventType LoginEventType
+  success   Boolean         @default(true)
+  ipAddress String?
+  userAgent String?
+  reason    String?
+  meta      Json?
+  createdAt DateTime        @default(now())
+
+  @@index([userId, eventType])
+}
+
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash String   @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdBy String?
+  createdAt DateTime @default(now())
+
+  @@index([userId, expiresAt])
+}
