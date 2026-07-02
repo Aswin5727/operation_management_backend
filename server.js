@@ -1,5 +1,7 @@
-const app = require("./app");
-const config = require("./src/config/env");
+import { fileURLToPath } from "node:url";
+
+import app from "./app.js";
+import config from "./src/config/env.js";
 
 function startServer() {
   return app.listen(config.port, () => {
@@ -7,8 +9,8 @@ function startServer() {
   });
 }
 
-if (require.main === module) {
+if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
   startServer();
 }
 
-module.exports = { app, startServer };
+export { app, startServer };

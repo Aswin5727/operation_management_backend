@@ -1,14 +1,14 @@
-const express = require("express");
-const {
+import express from "express";
+import {
   loginHandler,
   refreshHandler,
   logoutHandler,
   forgotPasswordHandler,
   resetPasswordHandler,
   meHandler,
-} = require("./auth.controller");
-const { authenticate } = require("../../common/middlewares/authenticate");
-const { authLimiter } = require("../../common/middlewares/rateLimiters");
+} from "./auth.controller.js";
+import { authenticate } from "../../common/middlewares/authenticate.js";
+import { authLimiter } from "../../common/middlewares/rateLimiters.js";
 
 const router = express.Router();
 
@@ -19,4 +19,4 @@ router.post("/forgot-password", authLimiter, forgotPasswordHandler);
 router.post("/reset-password", authLimiter, resetPasswordHandler);
 router.get("/me", authenticate, meHandler);
 
-module.exports = router;
+export default router;

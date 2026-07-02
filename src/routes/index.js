@@ -1,5 +1,6 @@
-const express = require("express");
-const authRoutes = require("../modules/auth/auth.routes");
+import express from "express";
+
+import authRoutes from "../modules/auth/auth.routes.js";
 
 const router = express.Router();
 
@@ -12,4 +13,4 @@ router.get("/health", (_req, res) => {
 
 router.use("/auth", authRoutes);
 
-module.exports = router;
+export default router;

@@ -1,6 +1,6 @@
-const prisma = require("../../config/prisma");
-const AppError = require("../errors/AppError");
-const { verifyAccessToken } = require("../utils/tokens");
+import prisma from "../../config/prisma.js";
+import AppError from "../errors/AppError.js";
+import { verifyAccessToken } from "../utils/tokens.js";
 
 function getBearerToken(req) {
   const header = req.headers.authorization || "";
@@ -43,6 +43,4 @@ async function authenticate(req, _res, next) {
   }
 }
 
-module.exports = {
-  authenticate,
-};
+export { authenticate };

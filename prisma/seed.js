@@ -1,7 +1,7 @@
-const prisma = require("../src/config/prisma");
-const { hashPassword } = require("../src/common/utils/password");
-const { USER_ROLES } = require("../src/common/constants/roles");
-const config = require("../src/config/env");
+import prisma from "../src/config/prisma.js";
+import { hashPassword } from "../src/common/utils/password.js";
+import { USER_ROLES } from "../src/common/constants/roles.js";
+import config from "../src/config/env.js";
 
 const seedUsers = [
   {

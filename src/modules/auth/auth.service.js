@@ -1,15 +1,16 @@
-const crypto = require("crypto");
-const prisma = require("../../config/prisma");
-const config = require("../../config/env");
-const AppError = require("../../common/errors/AppError");
-const { comparePassword, hashPassword } = require("../../common/utils/password");
-const {
+import crypto from "node:crypto";
+
+import prisma from "../../config/prisma.js";
+import config from "../../config/env.js";
+import AppError from "../../common/errors/AppError.js";
+import { comparePassword, hashPassword } from "../../common/utils/password.js";
+import {
   createAccessToken,
   createRefreshToken,
   verifyRefreshToken,
-} = require("../../common/utils/tokens");
-const { toSafeUser } = require("../../common/utils/user");
-const { LOGIN_EVENT_TYPES } = require("../../common/constants/auth");
+} from "../../common/utils/tokens.js";
+import { toSafeUser } from "../../common/utils/user.js";
+import { LOGIN_EVENT_TYPES } from "../../common/constants/auth.js";
 
 function normalizeIdentifier(identifier) {
   return String(identifier || "").trim().toLowerCase();
@@ -313,7 +314,7 @@ async function getCurrentUser(userId) {
   return toSafeUser(user);
 }
 
-module.exports = {
+export {
   login,
   refreshSession,
   logout,

@@ -1,13 +1,13 @@
-const test = require("node:test");
-const assert = require("node:assert/strict");
-const http = require("node:http");
+import test from "node:test";
+import assert from "node:assert/strict";
+import http from "node:http";
 
-const app = require("../app");
-const { hashPassword, comparePassword } = require("../src/common/utils/password");
-const {
+import app from "../app.js";
+import { hashPassword, comparePassword } from "../src/common/utils/password.js";
+import {
   createAccessToken,
   verifyAccessToken,
-} = require("../src/common/utils/tokens");
+} from "../src/common/utils/tokens.js";
 
 test("password hashing and comparison works", async () => {
   const hash = await hashPassword("Secret123!");

@@ -1,4 +1,4 @@
-module.exports = {
+const authConstants = {
   REFRESH_COOKIE_NAME: "refreshToken",
   ACCESS_TOKEN_HEADER: "authorization",
   LOGIN_EVENT_TYPES: {
@@ -11,3 +11,6 @@ module.exports = {
     RESET_PASSWORD_COMPLETED: "RESET_PASSWORD_COMPLETED",
   },
 };
+
+export const { REFRESH_COOKIE_NAME, ACCESS_TOKEN_HEADER, LOGIN_EVENT_TYPES } = authConstants;
+export default authConstants;

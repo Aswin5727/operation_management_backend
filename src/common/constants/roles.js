@@ -1,4 +1,4 @@
-module.exports = {
+const roles = {
   USER_ROLES: {
     BUSINESS_OWNER: "BUSINESS_OWNER",
     OPERATION_MANAGER: "OPERATION_MANAGER",
@@ -14,3 +14,6 @@ module.exports = {
     "STUDENT",
   ],
 };
+
+export const { USER_ROLES, ALL_USER_ROLES } = roles;
+export default roles;

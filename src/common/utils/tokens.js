@@ -1,5 +1,6 @@
-const jwt = require("jsonwebtoken");
-const config = require("../../config/env");
+import jwt from "jsonwebtoken";
+
+import config from "../../config/env.js";
 
 function createAccessToken(user) {
   return jwt.sign(
@@ -37,7 +38,7 @@ function verifyRefreshToken(token) {
   return jwt.verify(token, config.jwtRefreshSecret);
 }
 
-module.exports = {
+export {
   createAccessToken,
   createRefreshToken,
   verifyAccessToken,

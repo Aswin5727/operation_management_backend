@@ -18,6 +18,4 @@ function toSafeUser(user) {
   };
 }
 
-module.exports = {
-  toSafeUser,
-};
+export { toSafeUser };

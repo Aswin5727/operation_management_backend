@@ -1,13 +1,13 @@
-const express = require("express");
-const cors = require("cors");
-const helmet = require("helmet");
-const morgan = require("morgan");
-const cookieParser = require("cookie-parser");
+import express from "express";
+import cors from "cors";
+import helmet from "helmet";
+import morgan from "morgan";
+import cookieParser from "cookie-parser";
 
-const config = require("./src/config/env");
-const apiRoutes = require("./src/routes");
-const { notFound } = require("./src/common/middlewares/notFound");
-const { errorHandler } = require("./src/common/middlewares/errorHandler");
+import config from "./src/config/env.js";
+import apiRoutes from "./src/routes/index.js";
+import { notFound } from "./src/common/middlewares/notFound.js";
+import { errorHandler } from "./src/common/middlewares/errorHandler.js";
 
 const app = express();
 
@@ -34,4 +34,4 @@ app.use("/api/v1", apiRoutes);
 app.use(notFound);
 app.use(errorHandler);
 
-module.exports = app;
+export default app;

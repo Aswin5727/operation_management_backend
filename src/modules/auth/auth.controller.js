@@ -1,14 +1,14 @@
-const asyncHandler = require("../../common/utils/asyncHandler");
-const AppError = require("../../common/errors/AppError");
-const { REFRESH_COOKIE_NAME } = require("../../common/constants/auth");
-const {
+import asyncHandler from "../../common/utils/asyncHandler.js";
+import AppError from "../../common/errors/AppError.js";
+import { REFRESH_COOKIE_NAME } from "../../common/constants/auth.js";
+import {
   login,
   refreshSession,
   logout,
   forgotPassword,
   resetPassword,
   getCurrentUser,
-} = require("./auth.service");
+} from "./auth.service.js";
 
 function setRefreshCookie(res, refreshToken, cookieOptions) {
   res.cookie(REFRESH_COOKIE_NAME, refreshToken, {
@@ -149,7 +149,7 @@ const meHandler = asyncHandler(async (req, res) => {
   });
 });
 
-module.exports = {
+export {
   loginHandler,
   refreshHandler,
   logoutHandler,

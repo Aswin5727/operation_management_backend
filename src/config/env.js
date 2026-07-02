@@ -1,4 +1,4 @@
-const dotenv = require("dotenv");
+import dotenv from "dotenv";
 
 dotenv.config();
 
@@ -27,7 +27,7 @@ const buildDatabaseUrl = () => {
   return `postgresql://${encodedUser}:${encodedPassword}@${host}:${port}/${name}?schema=public`;
 };
 
-module.exports = {
+const config = {
   nodeEnv: process.env.NODE_ENV || "development",
   port: toNumber(process.env.PORT, 4000),
   databaseUrl: buildDatabaseUrl(),
@@ -49,3 +49,5 @@ module.exports = {
   cookieSameSite: process.env.COOKIE_SAME_SITE || "lax",
   seedDefaultPassword: process.env.SEED_DEFAULT_PASSWORD || "ChangeMe123!",
 };
+
+export default config;
