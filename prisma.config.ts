@@ -13,12 +13,17 @@ const databaseUrl =
     ? `postgresql://${encodeURIComponent(dbUser)}:${encodeURIComponent(dbPassword)}@${dbHost}:${dbPort}/${dbName}?schema=public`
     : "");
 
+const prismaDatabaseUrl =
+  process.env.PRISMA_DATABASE_URL ||
+  process.env.DIRECT_URL ||
+  databaseUrl;
+
 export default defineConfig({
   schema: "prisma/schema.prisma",
   migrations: {
     path: "prisma/migrations",
   },
   datasource: {
-    url: databaseUrl,
+    url: prismaDatabaseUrl,
   },
 });
