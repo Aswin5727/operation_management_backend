@@ -126,6 +126,7 @@ model Course {
   updatedAt         DateTime            @updatedAt
   modules           CourseModule[]
   batches           Batch[]
+  students          StudentProfile[]
   statusHistory     CourseStatusHistory[]
 
   @@index([status])
@@ -229,4 +230,52 @@ model BatchStatusHistory {
   changedAt     DateTime     @default(now())
 
   @@index([batchId, changedAt])
+}
+
+model StudentProfile {
+  id                     String       @id @default(cuid())
+  studentCode            String       @unique
+  studentName            String
+  mobileNumber           String       @unique
+  emailAddress           String       @unique
+  parentSpouseNumber     String?
+  location               String?
+  courseId               String?
+  course                  Course?      @relation(fields: [courseId], references: [id], onDelete: SetNull)
+  courseInterested       String
+  facultyName            String?
+  batchName              String?
+  qualification          String?
+  passedOutYear          Int?
+  currentStatus          String?
+  designation            String?
+  source                 String?
+  actualFees             Int?
+  registrationFees       Int?
+  discount               Int?
+  afterDiscount          Int?
+  installment1           Int?
+  installment2           Int?
+  installment3           Int?
+  totalAmount            Int?
+  admissionDate          String
+  firstInstallmentAmount  Int?
+  firstInstallmentDate    String?
+  firstInstallmentStatus  String       @default("Paid")
+  firstInstallmentPaidAt  String?
+  secondInstallmentAmount Int?
+  secondDueDate          String?
+  secondInstallmentStatus String       @default("Pending")
+  secondInstallmentPaidAt String?
+  remarks                String?
+  recordStatus           RecordStatus  @default(ACTIVE)
+  createdBy              String?
+  updatedBy              String?
+  createdAt              DateTime      @default(now())
+  updatedAt              DateTime      @updatedAt
+
+  @@index([recordStatus])
+  @@index([courseId])
+  @@index([currentStatus])
+  @@index([admissionDate])
 }
