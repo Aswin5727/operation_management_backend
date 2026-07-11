@@ -266,6 +266,48 @@ exports.Prisma.BatchStatusHistoryScalarFieldEnum = {
   changedAt: 'changedAt'
 };
 
+exports.Prisma.StudentProfileScalarFieldEnum = {
+  id: 'id',
+  studentCode: 'studentCode',
+  studentName: 'studentName',
+  mobileNumber: 'mobileNumber',
+  emailAddress: 'emailAddress',
+  parentSpouseNumber: 'parentSpouseNumber',
+  location: 'location',
+  courseId: 'courseId',
+  courseInterested: 'courseInterested',
+  facultyName: 'facultyName',
+  batchName: 'batchName',
+  qualification: 'qualification',
+  passedOutYear: 'passedOutYear',
+  currentStatus: 'currentStatus',
+  designation: 'designation',
+  source: 'source',
+  actualFees: 'actualFees',
+  registrationFees: 'registrationFees',
+  discount: 'discount',
+  afterDiscount: 'afterDiscount',
+  installment1: 'installment1',
+  installment2: 'installment2',
+  installment3: 'installment3',
+  totalAmount: 'totalAmount',
+  admissionDate: 'admissionDate',
+  firstInstallmentAmount: 'firstInstallmentAmount',
+  firstInstallmentDate: 'firstInstallmentDate',
+  firstInstallmentStatus: 'firstInstallmentStatus',
+  firstInstallmentPaidAt: 'firstInstallmentPaidAt',
+  secondInstallmentAmount: 'secondInstallmentAmount',
+  secondDueDate: 'secondDueDate',
+  secondInstallmentStatus: 'secondInstallmentStatus',
+  secondInstallmentPaidAt: 'secondInstallmentPaidAt',
+  remarks: 'remarks',
+  recordStatus: 'recordStatus',
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -335,7 +377,8 @@ exports.Prisma.ModelName = {
   Batch: 'Batch',
   BatchFacultyAssignment: 'BatchFacultyAssignment',
   CourseStatusHistory: 'CourseStatusHistory',
-  BatchStatusHistory: 'BatchStatusHistory'
+  BatchStatusHistory: 'BatchStatusHistory',
+  StudentProfile: 'StudentProfile'
 };
 
 /**

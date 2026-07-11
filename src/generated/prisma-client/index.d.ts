@@ -58,6 +58,11 @@ export type CourseStatusHistory = $Result.DefaultSelection<Prisma.$CourseStatusH
  * 
  */
 export type BatchStatusHistory = $Result.DefaultSelection<Prisma.$BatchStatusHistoryPayload>
+/**
+ * Model StudentProfile
+ * 
+ */
+export type StudentProfile = $Result.DefaultSelection<Prisma.$StudentProfilePayload>
 
 /**
  * Enums
@@ -344,6 +349,16 @@ export class PrismaClient<
     * ```
     */
   get batchStatusHistory(): Prisma.BatchStatusHistoryDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.studentProfile`: Exposes CRUD operations for the **StudentProfile** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more StudentProfiles
+    * const studentProfiles = await prisma.studentProfile.findMany()
+    * ```
+    */
+  get studentProfile(): Prisma.StudentProfileDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -786,7 +801,8 @@ export namespace Prisma {
     Batch: 'Batch',
     BatchFacultyAssignment: 'BatchFacultyAssignment',
     CourseStatusHistory: 'CourseStatusHistory',
-    BatchStatusHistory: 'BatchStatusHistory'
+    BatchStatusHistory: 'BatchStatusHistory',
+    StudentProfile: 'StudentProfile'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -802,7 +818,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "loginEvent" | "passwordResetToken" | "course" | "courseModule" | "batch" | "batchFacultyAssignment" | "courseStatusHistory" | "batchStatusHistory"
+      modelProps: "user" | "loginEvent" | "passwordResetToken" | "course" | "courseModule" | "batch" | "batchFacultyAssignment" | "courseStatusHistory" | "batchStatusHistory" | "studentProfile"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1472,6 +1488,80 @@ export namespace Prisma {
           }
         }
       }
+      StudentProfile: {
+        payload: Prisma.$StudentProfilePayload<ExtArgs>
+        fields: Prisma.StudentProfileFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.StudentProfileFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StudentProfilePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.StudentProfileFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StudentProfilePayload>
+          }
+          findFirst: {
+            args: Prisma.StudentProfileFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StudentProfilePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.StudentProfileFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StudentProfilePayload>
+          }
+          findMany: {
+            args: Prisma.StudentProfileFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StudentProfilePayload>[]
+          }
+          create: {
+            args: Prisma.StudentProfileCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StudentProfilePayload>
+          }
+          createMany: {
+            args: Prisma.StudentProfileCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.StudentProfileCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StudentProfilePayload>[]
+          }
+          delete: {
+            args: Prisma.StudentProfileDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StudentProfilePayload>
+          }
+          update: {
+            args: Prisma.StudentProfileUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StudentProfilePayload>
+          }
+          deleteMany: {
+            args: Prisma.StudentProfileDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.StudentProfileUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.StudentProfileUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StudentProfilePayload>[]
+          }
+          upsert: {
+            args: Prisma.StudentProfileUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StudentProfilePayload>
+          }
+          aggregate: {
+            args: Prisma.StudentProfileAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateStudentProfile>
+          }
+          groupBy: {
+            args: Prisma.StudentProfileGroupByArgs<ExtArgs>
+            result: $Utils.Optional<StudentProfileGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.StudentProfileCountArgs<ExtArgs>
+            result: $Utils.Optional<StudentProfileCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1589,6 +1679,7 @@ export namespace Prisma {
     batchFacultyAssignment?: BatchFacultyAssignmentOmit
     courseStatusHistory?: CourseStatusHistoryOmit
     batchStatusHistory?: BatchStatusHistoryOmit
+    studentProfile?: StudentProfileOmit
   }
 
   /* Types for Logging */
@@ -1720,12 +1811,14 @@ export namespace Prisma {
   export type CourseCountOutputType = {
     modules: number
     batches: number
+    students: number
     statusHistory: number
   }
 
   export type CourseCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     modules?: boolean | CourseCountOutputTypeCountModulesArgs
     batches?: boolean | CourseCountOutputTypeCountBatchesArgs
+    students?: boolean | CourseCountOutputTypeCountStudentsArgs
     statusHistory?: boolean | CourseCountOutputTypeCountStatusHistoryArgs
   }
 
@@ -1752,6 +1845,13 @@ export namespace Prisma {
    */
   export type CourseCountOutputTypeCountBatchesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: BatchWhereInput
+  }
+
+  /**
+   * CourseCountOutputType without action
+   */
+  export type CourseCountOutputTypeCountStudentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: StudentProfileWhereInput
   }
 
   /**
@@ -5782,6 +5882,7 @@ export namespace Prisma {
     updatedAt?: boolean
     modules?: boolean | Course$modulesArgs<ExtArgs>
     batches?: boolean | Course$batchesArgs<ExtArgs>
+    students?: boolean | Course$studentsArgs<ExtArgs>
     statusHistory?: boolean | Course$statusHistoryArgs<ExtArgs>
     _count?: boolean | CourseCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["course"]>
@@ -5868,6 +5969,7 @@ export namespace Prisma {
   export type CourseInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     modules?: boolean | Course$modulesArgs<ExtArgs>
     batches?: boolean | Course$batchesArgs<ExtArgs>
+    students?: boolean | Course$studentsArgs<ExtArgs>
     statusHistory?: boolean | Course$statusHistoryArgs<ExtArgs>
     _count?: boolean | CourseCountOutputTypeDefaultArgs<ExtArgs>
   }
@@ -5879,6 +5981,7 @@ export namespace Prisma {
     objects: {
       modules: Prisma.$CourseModulePayload<ExtArgs>[]
       batches: Prisma.$BatchPayload<ExtArgs>[]
+      students: Prisma.$StudentProfilePayload<ExtArgs>[]
       statusHistory: Prisma.$CourseStatusHistoryPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -6301,6 +6404,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     modules<T extends Course$modulesArgs<ExtArgs> = {}>(args?: Subset<T, Course$modulesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CourseModulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     batches<T extends Course$batchesArgs<ExtArgs> = {}>(args?: Subset<T, Course$batchesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BatchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    students<T extends Course$studentsArgs<ExtArgs> = {}>(args?: Subset<T, Course$studentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StudentProfilePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     statusHistory<T extends Course$statusHistoryArgs<ExtArgs> = {}>(args?: Subset<T, Course$statusHistoryArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CourseStatusHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -6792,6 +6896,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: BatchScalarFieldEnum | BatchScalarFieldEnum[]
+  }
+
+  /**
+   * Course.students
+   */
+  export type Course$studentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentProfile
+     */
+    select?: StudentProfileSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StudentProfile
+     */
+    omit?: StudentProfileOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentProfileInclude<ExtArgs> | null
+    where?: StudentProfileWhereInput
+    orderBy?: StudentProfileOrderByWithRelationInput | StudentProfileOrderByWithRelationInput[]
+    cursor?: StudentProfileWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: StudentProfileScalarFieldEnum | StudentProfileScalarFieldEnum[]
   }
 
   /**
@@ -12733,6 +12861,1604 @@ export namespace Prisma {
 
 
   /**
+   * Model StudentProfile
+   */
+
+  export type AggregateStudentProfile = {
+    _count: StudentProfileCountAggregateOutputType | null
+    _avg: StudentProfileAvgAggregateOutputType | null
+    _sum: StudentProfileSumAggregateOutputType | null
+    _min: StudentProfileMinAggregateOutputType | null
+    _max: StudentProfileMaxAggregateOutputType | null
+  }
+
+  export type StudentProfileAvgAggregateOutputType = {
+    passedOutYear: number | null
+    actualFees: number | null
+    registrationFees: number | null
+    discount: number | null
+    afterDiscount: number | null
+    installment1: number | null
+    installment2: number | null
+    installment3: number | null
+    totalAmount: number | null
+    firstInstallmentAmount: number | null
+    secondInstallmentAmount: number | null
+  }
+
+  export type StudentProfileSumAggregateOutputType = {
+    passedOutYear: number | null
+    actualFees: number | null
+    registrationFees: number | null
+    discount: number | null
+    afterDiscount: number | null
+    installment1: number | null
+    installment2: number | null
+    installment3: number | null
+    totalAmount: number | null
+    firstInstallmentAmount: number | null
+    secondInstallmentAmount: number | null
+  }
+
+  export type StudentProfileMinAggregateOutputType = {
+    id: string | null
+    studentCode: string | null
+    studentName: string | null
+    mobileNumber: string | null
+    emailAddress: string | null
+    parentSpouseNumber: string | null
+    location: string | null
+    courseId: string | null
+    courseInterested: string | null
+    facultyName: string | null
+    batchName: string | null
+    qualification: string | null
+    passedOutYear: number | null
+    currentStatus: string | null
+    designation: string | null
+    source: string | null
+    actualFees: number | null
+    registrationFees: number | null
+    discount: number | null
+    afterDiscount: number | null
+    installment1: number | null
+    installment2: number | null
+    installment3: number | null
+    totalAmount: number | null
+    admissionDate: string | null
+    firstInstallmentAmount: number | null
+    firstInstallmentDate: string | null
+    firstInstallmentStatus: string | null
+    firstInstallmentPaidAt: string | null
+    secondInstallmentAmount: number | null
+    secondDueDate: string | null
+    secondInstallmentStatus: string | null
+    secondInstallmentPaidAt: string | null
+    remarks: string | null
+    recordStatus: $Enums.RecordStatus | null
+    createdBy: string | null
+    updatedBy: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type StudentProfileMaxAggregateOutputType = {
+    id: string | null
+    studentCode: string | null
+    studentName: string | null
+    mobileNumber: string | null
+    emailAddress: string | null
+    parentSpouseNumber: string | null
+    location: string | null
+    courseId: string | null
+    courseInterested: string | null
+    facultyName: string | null
+    batchName: string | null
+    qualification: string | null
+    passedOutYear: number | null
+    currentStatus: string | null
+    designation: string | null
+    source: string | null
+    actualFees: number | null
+    registrationFees: number | null
+    discount: number | null
+    afterDiscount: number | null
+    installment1: number | null
+    installment2: number | null
+    installment3: number | null
+    totalAmount: number | null
+    admissionDate: string | null
+    firstInstallmentAmount: number | null
+    firstInstallmentDate: string | null
+    firstInstallmentStatus: string | null
+    firstInstallmentPaidAt: string | null
+    secondInstallmentAmount: number | null
+    secondDueDate: string | null
+    secondInstallmentStatus: string | null
+    secondInstallmentPaidAt: string | null
+    remarks: string | null
+    recordStatus: $Enums.RecordStatus | null
+    createdBy: string | null
+    updatedBy: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type StudentProfileCountAggregateOutputType = {
+    id: number
+    studentCode: number
+    studentName: number
+    mobileNumber: number
+    emailAddress: number
+    parentSpouseNumber: number
+    location: number
+    courseId: number
+    courseInterested: number
+    facultyName: number
+    batchName: number
+    qualification: number
+    passedOutYear: number
+    currentStatus: number
+    designation: number
+    source: number
+    actualFees: number
+    registrationFees: number
+    discount: number
+    afterDiscount: number
+    installment1: number
+    installment2: number
+    installment3: number
+    totalAmount: number
+    admissionDate: number
+    firstInstallmentAmount: number
+    firstInstallmentDate: number
+    firstInstallmentStatus: number
+    firstInstallmentPaidAt: number
+    secondInstallmentAmount: number
+    secondDueDate: number
+    secondInstallmentStatus: number
+    secondInstallmentPaidAt: number
+    remarks: number
+    recordStatus: number
+    createdBy: number
+    updatedBy: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type StudentProfileAvgAggregateInputType = {
+    passedOutYear?: true
+    actualFees?: true
+    registrationFees?: true
+    discount?: true
+    afterDiscount?: true
+    installment1?: true
+    installment2?: true
+    installment3?: true
+    totalAmount?: true
+    firstInstallmentAmount?: true
+    secondInstallmentAmount?: true
+  }
+
+  export type StudentProfileSumAggregateInputType = {
+    passedOutYear?: true
+    actualFees?: true
+    registrationFees?: true
+    discount?: true
+    afterDiscount?: true
+    installment1?: true
+    installment2?: true
+    installment3?: true
+    totalAmount?: true
+    firstInstallmentAmount?: true
+    secondInstallmentAmount?: true
+  }
+
+  export type StudentProfileMinAggregateInputType = {
+    id?: true
+    studentCode?: true
+    studentName?: true
+    mobileNumber?: true
+    emailAddress?: true
+    parentSpouseNumber?: true
+    location?: true
+    courseId?: true
+    courseInterested?: true
+    facultyName?: true
+    batchName?: true
+    qualification?: true
+    passedOutYear?: true
+    currentStatus?: true
+    designation?: true
+    source?: true
+    actualFees?: true
+    registrationFees?: true
+    discount?: true
+    afterDiscount?: true
+    installment1?: true
+    installment2?: true
+    installment3?: true
+    totalAmount?: true
+    admissionDate?: true
+    firstInstallmentAmount?: true
+    firstInstallmentDate?: true
+    firstInstallmentStatus?: true
+    firstInstallmentPaidAt?: true
+    secondInstallmentAmount?: true
+    secondDueDate?: true
+    secondInstallmentStatus?: true
+    secondInstallmentPaidAt?: true
+    remarks?: true
+    recordStatus?: true
+    createdBy?: true
+    updatedBy?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type StudentProfileMaxAggregateInputType = {
+    id?: true
+    studentCode?: true
+    studentName?: true
+    mobileNumber?: true
+    emailAddress?: true
+    parentSpouseNumber?: true
+    location?: true
+    courseId?: true
+    courseInterested?: true
+    facultyName?: true
+    batchName?: true
+    qualification?: true
+    passedOutYear?: true
+    currentStatus?: true
+    designation?: true
+    source?: true
+    actualFees?: true
+    registrationFees?: true
+    discount?: true
+    afterDiscount?: true
+    installment1?: true
+    installment2?: true
+    installment3?: true
+    totalAmount?: true
+    admissionDate?: true
+    firstInstallmentAmount?: true
+    firstInstallmentDate?: true
+    firstInstallmentStatus?: true
+    firstInstallmentPaidAt?: true
+    secondInstallmentAmount?: true
+    secondDueDate?: true
+    secondInstallmentStatus?: true
+    secondInstallmentPaidAt?: true
+    remarks?: true
+    recordStatus?: true
+    createdBy?: true
+    updatedBy?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type StudentProfileCountAggregateInputType = {
+    id?: true
+    studentCode?: true
+    studentName?: true
+    mobileNumber?: true
+    emailAddress?: true
+    parentSpouseNumber?: true
+    location?: true
+    courseId?: true
+    courseInterested?: true
+    facultyName?: true
+    batchName?: true
+    qualification?: true
+    passedOutYear?: true
+    currentStatus?: true
+    designation?: true
+    source?: true
+    actualFees?: true
+    registrationFees?: true
+    discount?: true
+    afterDiscount?: true
+    installment1?: true
+    installment2?: true
+    installment3?: true
+    totalAmount?: true
+    admissionDate?: true
+    firstInstallmentAmount?: true
+    firstInstallmentDate?: true
+    firstInstallmentStatus?: true
+    firstInstallmentPaidAt?: true
+    secondInstallmentAmount?: true
+    secondDueDate?: true
+    secondInstallmentStatus?: true
+    secondInstallmentPaidAt?: true
+    remarks?: true
+    recordStatus?: true
+    createdBy?: true
+    updatedBy?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type StudentProfileAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which StudentProfile to aggregate.
+     */
+    where?: StudentProfileWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of StudentProfiles to fetch.
+     */
+    orderBy?: StudentProfileOrderByWithRelationInput | StudentProfileOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: StudentProfileWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` StudentProfiles from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` StudentProfiles.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned StudentProfiles
+    **/
+    _count?: true | StudentProfileCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: StudentProfileAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: StudentProfileSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: StudentProfileMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: StudentProfileMaxAggregateInputType
+  }
+
+  export type GetStudentProfileAggregateType<T extends StudentProfileAggregateArgs> = {
+        [P in keyof T & keyof AggregateStudentProfile]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateStudentProfile[P]>
+      : GetScalarType<T[P], AggregateStudentProfile[P]>
+  }
+
+
+
+
+  export type StudentProfileGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: StudentProfileWhereInput
+    orderBy?: StudentProfileOrderByWithAggregationInput | StudentProfileOrderByWithAggregationInput[]
+    by: StudentProfileScalarFieldEnum[] | StudentProfileScalarFieldEnum
+    having?: StudentProfileScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: StudentProfileCountAggregateInputType | true
+    _avg?: StudentProfileAvgAggregateInputType
+    _sum?: StudentProfileSumAggregateInputType
+    _min?: StudentProfileMinAggregateInputType
+    _max?: StudentProfileMaxAggregateInputType
+  }
+
+  export type StudentProfileGroupByOutputType = {
+    id: string
+    studentCode: string
+    studentName: string
+    mobileNumber: string
+    emailAddress: string
+    parentSpouseNumber: string | null
+    location: string | null
+    courseId: string | null
+    courseInterested: string
+    facultyName: string | null
+    batchName: string | null
+    qualification: string | null
+    passedOutYear: number | null
+    currentStatus: string | null
+    designation: string | null
+    source: string | null
+    actualFees: number | null
+    registrationFees: number | null
+    discount: number | null
+    afterDiscount: number | null
+    installment1: number | null
+    installment2: number | null
+    installment3: number | null
+    totalAmount: number | null
+    admissionDate: string
+    firstInstallmentAmount: number | null
+    firstInstallmentDate: string | null
+    firstInstallmentStatus: string
+    firstInstallmentPaidAt: string | null
+    secondInstallmentAmount: number | null
+    secondDueDate: string | null
+    secondInstallmentStatus: string
+    secondInstallmentPaidAt: string | null
+    remarks: string | null
+    recordStatus: $Enums.RecordStatus
+    createdBy: string | null
+    updatedBy: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: StudentProfileCountAggregateOutputType | null
+    _avg: StudentProfileAvgAggregateOutputType | null
+    _sum: StudentProfileSumAggregateOutputType | null
+    _min: StudentProfileMinAggregateOutputType | null
+    _max: StudentProfileMaxAggregateOutputType | null
+  }
+
+  type GetStudentProfileGroupByPayload<T extends StudentProfileGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<StudentProfileGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof StudentProfileGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], StudentProfileGroupByOutputType[P]>
+            : GetScalarType<T[P], StudentProfileGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type StudentProfileSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    studentCode?: boolean
+    studentName?: boolean
+    mobileNumber?: boolean
+    emailAddress?: boolean
+    parentSpouseNumber?: boolean
+    location?: boolean
+    courseId?: boolean
+    courseInterested?: boolean
+    facultyName?: boolean
+    batchName?: boolean
+    qualification?: boolean
+    passedOutYear?: boolean
+    currentStatus?: boolean
+    designation?: boolean
+    source?: boolean
+    actualFees?: boolean
+    registrationFees?: boolean
+    discount?: boolean
+    afterDiscount?: boolean
+    installment1?: boolean
+    installment2?: boolean
+    installment3?: boolean
+    totalAmount?: boolean
+    admissionDate?: boolean
+    firstInstallmentAmount?: boolean
+    firstInstallmentDate?: boolean
+    firstInstallmentStatus?: boolean
+    firstInstallmentPaidAt?: boolean
+    secondInstallmentAmount?: boolean
+    secondDueDate?: boolean
+    secondInstallmentStatus?: boolean
+    secondInstallmentPaidAt?: boolean
+    remarks?: boolean
+    recordStatus?: boolean
+    createdBy?: boolean
+    updatedBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    course?: boolean | StudentProfile$courseArgs<ExtArgs>
+  }, ExtArgs["result"]["studentProfile"]>
+
+  export type StudentProfileSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    studentCode?: boolean
+    studentName?: boolean
+    mobileNumber?: boolean
+    emailAddress?: boolean
+    parentSpouseNumber?: boolean
+    location?: boolean
+    courseId?: boolean
+    courseInterested?: boolean
+    facultyName?: boolean
+    batchName?: boolean
+    qualification?: boolean
+    passedOutYear?: boolean
+    currentStatus?: boolean
+    designation?: boolean
+    source?: boolean
+    actualFees?: boolean
+    registrationFees?: boolean
+    discount?: boolean
+    afterDiscount?: boolean
+    installment1?: boolean
+    installment2?: boolean
+    installment3?: boolean
+    totalAmount?: boolean
+    admissionDate?: boolean
+    firstInstallmentAmount?: boolean
+    firstInstallmentDate?: boolean
+    firstInstallmentStatus?: boolean
+    firstInstallmentPaidAt?: boolean
+    secondInstallmentAmount?: boolean
+    secondDueDate?: boolean
+    secondInstallmentStatus?: boolean
+    secondInstallmentPaidAt?: boolean
+    remarks?: boolean
+    recordStatus?: boolean
+    createdBy?: boolean
+    updatedBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    course?: boolean | StudentProfile$courseArgs<ExtArgs>
+  }, ExtArgs["result"]["studentProfile"]>
+
+  export type StudentProfileSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    studentCode?: boolean
+    studentName?: boolean
+    mobileNumber?: boolean
+    emailAddress?: boolean
+    parentSpouseNumber?: boolean
+    location?: boolean
+    courseId?: boolean
+    courseInterested?: boolean
+    facultyName?: boolean
+    batchName?: boolean
+    qualification?: boolean
+    passedOutYear?: boolean
+    currentStatus?: boolean
+    designation?: boolean
+    source?: boolean
+    actualFees?: boolean
+    registrationFees?: boolean
+    discount?: boolean
+    afterDiscount?: boolean
+    installment1?: boolean
+    installment2?: boolean
+    installment3?: boolean
+    totalAmount?: boolean
+    admissionDate?: boolean
+    firstInstallmentAmount?: boolean
+    firstInstallmentDate?: boolean
+    firstInstallmentStatus?: boolean
+    firstInstallmentPaidAt?: boolean
+    secondInstallmentAmount?: boolean
+    secondDueDate?: boolean
+    secondInstallmentStatus?: boolean
+    secondInstallmentPaidAt?: boolean
+    remarks?: boolean
+    recordStatus?: boolean
+    createdBy?: boolean
+    updatedBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    course?: boolean | StudentProfile$courseArgs<ExtArgs>
+  }, ExtArgs["result"]["studentProfile"]>
+
+  export type StudentProfileSelectScalar = {
+    id?: boolean
+    studentCode?: boolean
+    studentName?: boolean
+    mobileNumber?: boolean
+    emailAddress?: boolean
+    parentSpouseNumber?: boolean
+    location?: boolean
+    courseId?: boolean
+    courseInterested?: boolean
+    facultyName?: boolean
+    batchName?: boolean
+    qualification?: boolean
+    passedOutYear?: boolean
+    currentStatus?: boolean
+    designation?: boolean
+    source?: boolean
+    actualFees?: boolean
+    registrationFees?: boolean
+    discount?: boolean
+    afterDiscount?: boolean
+    installment1?: boolean
+    installment2?: boolean
+    installment3?: boolean
+    totalAmount?: boolean
+    admissionDate?: boolean
+    firstInstallmentAmount?: boolean
+    firstInstallmentDate?: boolean
+    firstInstallmentStatus?: boolean
+    firstInstallmentPaidAt?: boolean
+    secondInstallmentAmount?: boolean
+    secondDueDate?: boolean
+    secondInstallmentStatus?: boolean
+    secondInstallmentPaidAt?: boolean
+    remarks?: boolean
+    recordStatus?: boolean
+    createdBy?: boolean
+    updatedBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type StudentProfileOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "studentCode" | "studentName" | "mobileNumber" | "emailAddress" | "parentSpouseNumber" | "location" | "courseId" | "courseInterested" | "facultyName" | "batchName" | "qualification" | "passedOutYear" | "currentStatus" | "designation" | "source" | "actualFees" | "registrationFees" | "discount" | "afterDiscount" | "installment1" | "installment2" | "installment3" | "totalAmount" | "admissionDate" | "firstInstallmentAmount" | "firstInstallmentDate" | "firstInstallmentStatus" | "firstInstallmentPaidAt" | "secondInstallmentAmount" | "secondDueDate" | "secondInstallmentStatus" | "secondInstallmentPaidAt" | "remarks" | "recordStatus" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["studentProfile"]>
+  export type StudentProfileInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    course?: boolean | StudentProfile$courseArgs<ExtArgs>
+  }
+  export type StudentProfileIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    course?: boolean | StudentProfile$courseArgs<ExtArgs>
+  }
+  export type StudentProfileIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    course?: boolean | StudentProfile$courseArgs<ExtArgs>
+  }
+
+  export type $StudentProfilePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "StudentProfile"
+    objects: {
+      course: Prisma.$CoursePayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      studentCode: string
+      studentName: string
+      mobileNumber: string
+      emailAddress: string
+      parentSpouseNumber: string | null
+      location: string | null
+      courseId: string | null
+      courseInterested: string
+      facultyName: string | null
+      batchName: string | null
+      qualification: string | null
+      passedOutYear: number | null
+      currentStatus: string | null
+      designation: string | null
+      source: string | null
+      actualFees: number | null
+      registrationFees: number | null
+      discount: number | null
+      afterDiscount: number | null
+      installment1: number | null
+      installment2: number | null
+      installment3: number | null
+      totalAmount: number | null
+      admissionDate: string
+      firstInstallmentAmount: number | null
+      firstInstallmentDate: string | null
+      firstInstallmentStatus: string
+      firstInstallmentPaidAt: string | null
+      secondInstallmentAmount: number | null
+      secondDueDate: string | null
+      secondInstallmentStatus: string
+      secondInstallmentPaidAt: string | null
+      remarks: string | null
+      recordStatus: $Enums.RecordStatus
+      createdBy: string | null
+      updatedBy: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["studentProfile"]>
+    composites: {}
+  }
+
+  type StudentProfileGetPayload<S extends boolean | null | undefined | StudentProfileDefaultArgs> = $Result.GetResult<Prisma.$StudentProfilePayload, S>
+
+  type StudentProfileCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<StudentProfileFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: StudentProfileCountAggregateInputType | true
+    }
+
+  export interface StudentProfileDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['StudentProfile'], meta: { name: 'StudentProfile' } }
+    /**
+     * Find zero or one StudentProfile that matches the filter.
+     * @param {StudentProfileFindUniqueArgs} args - Arguments to find a StudentProfile
+     * @example
+     * // Get one StudentProfile
+     * const studentProfile = await prisma.studentProfile.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends StudentProfileFindUniqueArgs>(args: SelectSubset<T, StudentProfileFindUniqueArgs<ExtArgs>>): Prisma__StudentProfileClient<$Result.GetResult<Prisma.$StudentProfilePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one StudentProfile that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {StudentProfileFindUniqueOrThrowArgs} args - Arguments to find a StudentProfile
+     * @example
+     * // Get one StudentProfile
+     * const studentProfile = await prisma.studentProfile.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends StudentProfileFindUniqueOrThrowArgs>(args: SelectSubset<T, StudentProfileFindUniqueOrThrowArgs<ExtArgs>>): Prisma__StudentProfileClient<$Result.GetResult<Prisma.$StudentProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first StudentProfile that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StudentProfileFindFirstArgs} args - Arguments to find a StudentProfile
+     * @example
+     * // Get one StudentProfile
+     * const studentProfile = await prisma.studentProfile.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends StudentProfileFindFirstArgs>(args?: SelectSubset<T, StudentProfileFindFirstArgs<ExtArgs>>): Prisma__StudentProfileClient<$Result.GetResult<Prisma.$StudentProfilePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first StudentProfile that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StudentProfileFindFirstOrThrowArgs} args - Arguments to find a StudentProfile
+     * @example
+     * // Get one StudentProfile
+     * const studentProfile = await prisma.studentProfile.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends StudentProfileFindFirstOrThrowArgs>(args?: SelectSubset<T, StudentProfileFindFirstOrThrowArgs<ExtArgs>>): Prisma__StudentProfileClient<$Result.GetResult<Prisma.$StudentProfilePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more StudentProfiles that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StudentProfileFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all StudentProfiles
+     * const studentProfiles = await prisma.studentProfile.findMany()
+     * 
+     * // Get first 10 StudentProfiles
+     * const studentProfiles = await prisma.studentProfile.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const studentProfileWithIdOnly = await prisma.studentProfile.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends StudentProfileFindManyArgs>(args?: SelectSubset<T, StudentProfileFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StudentProfilePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a StudentProfile.
+     * @param {StudentProfileCreateArgs} args - Arguments to create a StudentProfile.
+     * @example
+     * // Create one StudentProfile
+     * const StudentProfile = await prisma.studentProfile.create({
+     *   data: {
+     *     // ... data to create a StudentProfile
+     *   }
+     * })
+     * 
+     */
+    create<T extends StudentProfileCreateArgs>(args: SelectSubset<T, StudentProfileCreateArgs<ExtArgs>>): Prisma__StudentProfileClient<$Result.GetResult<Prisma.$StudentProfilePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many StudentProfiles.
+     * @param {StudentProfileCreateManyArgs} args - Arguments to create many StudentProfiles.
+     * @example
+     * // Create many StudentProfiles
+     * const studentProfile = await prisma.studentProfile.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends StudentProfileCreateManyArgs>(args?: SelectSubset<T, StudentProfileCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many StudentProfiles and returns the data saved in the database.
+     * @param {StudentProfileCreateManyAndReturnArgs} args - Arguments to create many StudentProfiles.
+     * @example
+     * // Create many StudentProfiles
+     * const studentProfile = await prisma.studentProfile.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many StudentProfiles and only return the `id`
+     * const studentProfileWithIdOnly = await prisma.studentProfile.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends StudentProfileCreateManyAndReturnArgs>(args?: SelectSubset<T, StudentProfileCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StudentProfilePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a StudentProfile.
+     * @param {StudentProfileDeleteArgs} args - Arguments to delete one StudentProfile.
+     * @example
+     * // Delete one StudentProfile
+     * const StudentProfile = await prisma.studentProfile.delete({
+     *   where: {
+     *     // ... filter to delete one StudentProfile
+     *   }
+     * })
+     * 
+     */
+    delete<T extends StudentProfileDeleteArgs>(args: SelectSubset<T, StudentProfileDeleteArgs<ExtArgs>>): Prisma__StudentProfileClient<$Result.GetResult<Prisma.$StudentProfilePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one StudentProfile.
+     * @param {StudentProfileUpdateArgs} args - Arguments to update one StudentProfile.
+     * @example
+     * // Update one StudentProfile
+     * const studentProfile = await prisma.studentProfile.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends StudentProfileUpdateArgs>(args: SelectSubset<T, StudentProfileUpdateArgs<ExtArgs>>): Prisma__StudentProfileClient<$Result.GetResult<Prisma.$StudentProfilePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more StudentProfiles.
+     * @param {StudentProfileDeleteManyArgs} args - Arguments to filter StudentProfiles to delete.
+     * @example
+     * // Delete a few StudentProfiles
+     * const { count } = await prisma.studentProfile.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends StudentProfileDeleteManyArgs>(args?: SelectSubset<T, StudentProfileDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more StudentProfiles.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StudentProfileUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many StudentProfiles
+     * const studentProfile = await prisma.studentProfile.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends StudentProfileUpdateManyArgs>(args: SelectSubset<T, StudentProfileUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more StudentProfiles and returns the data updated in the database.
+     * @param {StudentProfileUpdateManyAndReturnArgs} args - Arguments to update many StudentProfiles.
+     * @example
+     * // Update many StudentProfiles
+     * const studentProfile = await prisma.studentProfile.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more StudentProfiles and only return the `id`
+     * const studentProfileWithIdOnly = await prisma.studentProfile.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends StudentProfileUpdateManyAndReturnArgs>(args: SelectSubset<T, StudentProfileUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StudentProfilePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one StudentProfile.
+     * @param {StudentProfileUpsertArgs} args - Arguments to update or create a StudentProfile.
+     * @example
+     * // Update or create a StudentProfile
+     * const studentProfile = await prisma.studentProfile.upsert({
+     *   create: {
+     *     // ... data to create a StudentProfile
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the StudentProfile we want to update
+     *   }
+     * })
+     */
+    upsert<T extends StudentProfileUpsertArgs>(args: SelectSubset<T, StudentProfileUpsertArgs<ExtArgs>>): Prisma__StudentProfileClient<$Result.GetResult<Prisma.$StudentProfilePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of StudentProfiles.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StudentProfileCountArgs} args - Arguments to filter StudentProfiles to count.
+     * @example
+     * // Count the number of StudentProfiles
+     * const count = await prisma.studentProfile.count({
+     *   where: {
+     *     // ... the filter for the StudentProfiles we want to count
+     *   }
+     * })
+    **/
+    count<T extends StudentProfileCountArgs>(
+      args?: Subset<T, StudentProfileCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], StudentProfileCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a StudentProfile.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StudentProfileAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends StudentProfileAggregateArgs>(args: Subset<T, StudentProfileAggregateArgs>): Prisma.PrismaPromise<GetStudentProfileAggregateType<T>>
+
+    /**
+     * Group by StudentProfile.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StudentProfileGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends StudentProfileGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: StudentProfileGroupByArgs['orderBy'] }
+        : { orderBy?: StudentProfileGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, StudentProfileGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetStudentProfileGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the StudentProfile model
+   */
+  readonly fields: StudentProfileFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for StudentProfile.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__StudentProfileClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    course<T extends StudentProfile$courseArgs<ExtArgs> = {}>(args?: Subset<T, StudentProfile$courseArgs<ExtArgs>>): Prisma__CourseClient<$Result.GetResult<Prisma.$CoursePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the StudentProfile model
+   */
+  interface StudentProfileFieldRefs {
+    readonly id: FieldRef<"StudentProfile", 'String'>
+    readonly studentCode: FieldRef<"StudentProfile", 'String'>
+    readonly studentName: FieldRef<"StudentProfile", 'String'>
+    readonly mobileNumber: FieldRef<"StudentProfile", 'String'>
+    readonly emailAddress: FieldRef<"StudentProfile", 'String'>
+    readonly parentSpouseNumber: FieldRef<"StudentProfile", 'String'>
+    readonly location: FieldRef<"StudentProfile", 'String'>
+    readonly courseId: FieldRef<"StudentProfile", 'String'>
+    readonly courseInterested: FieldRef<"StudentProfile", 'String'>
+    readonly facultyName: FieldRef<"StudentProfile", 'String'>
+    readonly batchName: FieldRef<"StudentProfile", 'String'>
+    readonly qualification: FieldRef<"StudentProfile", 'String'>
+    readonly passedOutYear: FieldRef<"StudentProfile", 'Int'>
+    readonly currentStatus: FieldRef<"StudentProfile", 'String'>
+    readonly designation: FieldRef<"StudentProfile", 'String'>
+    readonly source: FieldRef<"StudentProfile", 'String'>
+    readonly actualFees: FieldRef<"StudentProfile", 'Int'>
+    readonly registrationFees: FieldRef<"StudentProfile", 'Int'>
+    readonly discount: FieldRef<"StudentProfile", 'Int'>
+    readonly afterDiscount: FieldRef<"StudentProfile", 'Int'>
+    readonly installment1: FieldRef<"StudentProfile", 'Int'>
+    readonly installment2: FieldRef<"StudentProfile", 'Int'>
+    readonly installment3: FieldRef<"StudentProfile", 'Int'>
+    readonly totalAmount: FieldRef<"StudentProfile", 'Int'>
+    readonly admissionDate: FieldRef<"StudentProfile", 'String'>
+    readonly firstInstallmentAmount: FieldRef<"StudentProfile", 'Int'>
+    readonly firstInstallmentDate: FieldRef<"StudentProfile", 'String'>
+    readonly firstInstallmentStatus: FieldRef<"StudentProfile", 'String'>
+    readonly firstInstallmentPaidAt: FieldRef<"StudentProfile", 'String'>
+    readonly secondInstallmentAmount: FieldRef<"StudentProfile", 'Int'>
+    readonly secondDueDate: FieldRef<"StudentProfile", 'String'>
+    readonly secondInstallmentStatus: FieldRef<"StudentProfile", 'String'>
+    readonly secondInstallmentPaidAt: FieldRef<"StudentProfile", 'String'>
+    readonly remarks: FieldRef<"StudentProfile", 'String'>
+    readonly recordStatus: FieldRef<"StudentProfile", 'RecordStatus'>
+    readonly createdBy: FieldRef<"StudentProfile", 'String'>
+    readonly updatedBy: FieldRef<"StudentProfile", 'String'>
+    readonly createdAt: FieldRef<"StudentProfile", 'DateTime'>
+    readonly updatedAt: FieldRef<"StudentProfile", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * StudentProfile findUnique
+   */
+  export type StudentProfileFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentProfile
+     */
+    select?: StudentProfileSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StudentProfile
+     */
+    omit?: StudentProfileOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentProfileInclude<ExtArgs> | null
+    /**
+     * Filter, which StudentProfile to fetch.
+     */
+    where: StudentProfileWhereUniqueInput
+  }
+
+  /**
+   * StudentProfile findUniqueOrThrow
+   */
+  export type StudentProfileFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentProfile
+     */
+    select?: StudentProfileSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StudentProfile
+     */
+    omit?: StudentProfileOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentProfileInclude<ExtArgs> | null
+    /**
+     * Filter, which StudentProfile to fetch.
+     */
+    where: StudentProfileWhereUniqueInput
+  }
+
+  /**
+   * StudentProfile findFirst
+   */
+  export type StudentProfileFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentProfile
+     */
+    select?: StudentProfileSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StudentProfile
+     */
+    omit?: StudentProfileOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentProfileInclude<ExtArgs> | null
+    /**
+     * Filter, which StudentProfile to fetch.
+     */
+    where?: StudentProfileWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of StudentProfiles to fetch.
+     */
+    orderBy?: StudentProfileOrderByWithRelationInput | StudentProfileOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for StudentProfiles.
+     */
+    cursor?: StudentProfileWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` StudentProfiles from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` StudentProfiles.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of StudentProfiles.
+     */
+    distinct?: StudentProfileScalarFieldEnum | StudentProfileScalarFieldEnum[]
+  }
+
+  /**
+   * StudentProfile findFirstOrThrow
+   */
+  export type StudentProfileFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentProfile
+     */
+    select?: StudentProfileSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StudentProfile
+     */
+    omit?: StudentProfileOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentProfileInclude<ExtArgs> | null
+    /**
+     * Filter, which StudentProfile to fetch.
+     */
+    where?: StudentProfileWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of StudentProfiles to fetch.
+     */
+    orderBy?: StudentProfileOrderByWithRelationInput | StudentProfileOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for StudentProfiles.
+     */
+    cursor?: StudentProfileWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` StudentProfiles from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` StudentProfiles.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of StudentProfiles.
+     */
+    distinct?: StudentProfileScalarFieldEnum | StudentProfileScalarFieldEnum[]
+  }
+
+  /**
+   * StudentProfile findMany
+   */
+  export type StudentProfileFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentProfile
+     */
+    select?: StudentProfileSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StudentProfile
+     */
+    omit?: StudentProfileOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentProfileInclude<ExtArgs> | null
+    /**
+     * Filter, which StudentProfiles to fetch.
+     */
+    where?: StudentProfileWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of StudentProfiles to fetch.
+     */
+    orderBy?: StudentProfileOrderByWithRelationInput | StudentProfileOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing StudentProfiles.
+     */
+    cursor?: StudentProfileWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` StudentProfiles from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` StudentProfiles.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of StudentProfiles.
+     */
+    distinct?: StudentProfileScalarFieldEnum | StudentProfileScalarFieldEnum[]
+  }
+
+  /**
+   * StudentProfile create
+   */
+  export type StudentProfileCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentProfile
+     */
+    select?: StudentProfileSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StudentProfile
+     */
+    omit?: StudentProfileOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentProfileInclude<ExtArgs> | null
+    /**
+     * The data needed to create a StudentProfile.
+     */
+    data: XOR<StudentProfileCreateInput, StudentProfileUncheckedCreateInput>
+  }
+
+  /**
+   * StudentProfile createMany
+   */
+  export type StudentProfileCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many StudentProfiles.
+     */
+    data: StudentProfileCreateManyInput | StudentProfileCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * StudentProfile createManyAndReturn
+   */
+  export type StudentProfileCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentProfile
+     */
+    select?: StudentProfileSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the StudentProfile
+     */
+    omit?: StudentProfileOmit<ExtArgs> | null
+    /**
+     * The data used to create many StudentProfiles.
+     */
+    data: StudentProfileCreateManyInput | StudentProfileCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentProfileIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * StudentProfile update
+   */
+  export type StudentProfileUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentProfile
+     */
+    select?: StudentProfileSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StudentProfile
+     */
+    omit?: StudentProfileOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentProfileInclude<ExtArgs> | null
+    /**
+     * The data needed to update a StudentProfile.
+     */
+    data: XOR<StudentProfileUpdateInput, StudentProfileUncheckedUpdateInput>
+    /**
+     * Choose, which StudentProfile to update.
+     */
+    where: StudentProfileWhereUniqueInput
+  }
+
+  /**
+   * StudentProfile updateMany
+   */
+  export type StudentProfileUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update StudentProfiles.
+     */
+    data: XOR<StudentProfileUpdateManyMutationInput, StudentProfileUncheckedUpdateManyInput>
+    /**
+     * Filter which StudentProfiles to update
+     */
+    where?: StudentProfileWhereInput
+    /**
+     * Limit how many StudentProfiles to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * StudentProfile updateManyAndReturn
+   */
+  export type StudentProfileUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentProfile
+     */
+    select?: StudentProfileSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the StudentProfile
+     */
+    omit?: StudentProfileOmit<ExtArgs> | null
+    /**
+     * The data used to update StudentProfiles.
+     */
+    data: XOR<StudentProfileUpdateManyMutationInput, StudentProfileUncheckedUpdateManyInput>
+    /**
+     * Filter which StudentProfiles to update
+     */
+    where?: StudentProfileWhereInput
+    /**
+     * Limit how many StudentProfiles to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentProfileIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * StudentProfile upsert
+   */
+  export type StudentProfileUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentProfile
+     */
+    select?: StudentProfileSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StudentProfile
+     */
+    omit?: StudentProfileOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentProfileInclude<ExtArgs> | null
+    /**
+     * The filter to search for the StudentProfile to update in case it exists.
+     */
+    where: StudentProfileWhereUniqueInput
+    /**
+     * In case the StudentProfile found by the `where` argument doesn't exist, create a new StudentProfile with this data.
+     */
+    create: XOR<StudentProfileCreateInput, StudentProfileUncheckedCreateInput>
+    /**
+     * In case the StudentProfile was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<StudentProfileUpdateInput, StudentProfileUncheckedUpdateInput>
+  }
+
+  /**
+   * StudentProfile delete
+   */
+  export type StudentProfileDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentProfile
+     */
+    select?: StudentProfileSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StudentProfile
+     */
+    omit?: StudentProfileOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentProfileInclude<ExtArgs> | null
+    /**
+     * Filter which StudentProfile to delete.
+     */
+    where: StudentProfileWhereUniqueInput
+  }
+
+  /**
+   * StudentProfile deleteMany
+   */
+  export type StudentProfileDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which StudentProfiles to delete
+     */
+    where?: StudentProfileWhereInput
+    /**
+     * Limit how many StudentProfiles to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * StudentProfile.course
+   */
+  export type StudentProfile$courseArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Course
+     */
+    select?: CourseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Course
+     */
+    omit?: CourseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CourseInclude<ExtArgs> | null
+    where?: CourseWhereInput
+  }
+
+  /**
+   * StudentProfile without action
+   */
+  export type StudentProfileDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentProfile
+     */
+    select?: StudentProfileSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StudentProfile
+     */
+    omit?: StudentProfileOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentProfileInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -12917,6 +14643,51 @@ export namespace Prisma {
   };
 
   export type BatchStatusHistoryScalarFieldEnum = (typeof BatchStatusHistoryScalarFieldEnum)[keyof typeof BatchStatusHistoryScalarFieldEnum]
+
+
+  export const StudentProfileScalarFieldEnum: {
+    id: 'id',
+    studentCode: 'studentCode',
+    studentName: 'studentName',
+    mobileNumber: 'mobileNumber',
+    emailAddress: 'emailAddress',
+    parentSpouseNumber: 'parentSpouseNumber',
+    location: 'location',
+    courseId: 'courseId',
+    courseInterested: 'courseInterested',
+    facultyName: 'facultyName',
+    batchName: 'batchName',
+    qualification: 'qualification',
+    passedOutYear: 'passedOutYear',
+    currentStatus: 'currentStatus',
+    designation: 'designation',
+    source: 'source',
+    actualFees: 'actualFees',
+    registrationFees: 'registrationFees',
+    discount: 'discount',
+    afterDiscount: 'afterDiscount',
+    installment1: 'installment1',
+    installment2: 'installment2',
+    installment3: 'installment3',
+    totalAmount: 'totalAmount',
+    admissionDate: 'admissionDate',
+    firstInstallmentAmount: 'firstInstallmentAmount',
+    firstInstallmentDate: 'firstInstallmentDate',
+    firstInstallmentStatus: 'firstInstallmentStatus',
+    firstInstallmentPaidAt: 'firstInstallmentPaidAt',
+    secondInstallmentAmount: 'secondInstallmentAmount',
+    secondDueDate: 'secondDueDate',
+    secondInstallmentStatus: 'secondInstallmentStatus',
+    secondInstallmentPaidAt: 'secondInstallmentPaidAt',
+    remarks: 'remarks',
+    recordStatus: 'recordStatus',
+    createdBy: 'createdBy',
+    updatedBy: 'updatedBy',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type StudentProfileScalarFieldEnum = (typeof StudentProfileScalarFieldEnum)[keyof typeof StudentProfileScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -13427,6 +15198,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Course"> | Date | string
     modules?: CourseModuleListRelationFilter
     batches?: BatchListRelationFilter
+    students?: StudentProfileListRelationFilter
     statusHistory?: CourseStatusHistoryListRelationFilter
   }
 
@@ -13456,6 +15228,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     modules?: CourseModuleOrderByRelationAggregateInput
     batches?: BatchOrderByRelationAggregateInput
+    students?: StudentProfileOrderByRelationAggregateInput
     statusHistory?: CourseStatusHistoryOrderByRelationAggregateInput
   }
 
@@ -13488,6 +15261,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Course"> | Date | string
     modules?: CourseModuleListRelationFilter
     batches?: BatchListRelationFilter
+    students?: StudentProfileListRelationFilter
     statusHistory?: CourseStatusHistoryListRelationFilter
   }, "id" | "nameKey">
 
@@ -14011,6 +15785,233 @@ export namespace Prisma {
     changedAt?: DateTimeWithAggregatesFilter<"BatchStatusHistory"> | Date | string
   }
 
+  export type StudentProfileWhereInput = {
+    AND?: StudentProfileWhereInput | StudentProfileWhereInput[]
+    OR?: StudentProfileWhereInput[]
+    NOT?: StudentProfileWhereInput | StudentProfileWhereInput[]
+    id?: StringFilter<"StudentProfile"> | string
+    studentCode?: StringFilter<"StudentProfile"> | string
+    studentName?: StringFilter<"StudentProfile"> | string
+    mobileNumber?: StringFilter<"StudentProfile"> | string
+    emailAddress?: StringFilter<"StudentProfile"> | string
+    parentSpouseNumber?: StringNullableFilter<"StudentProfile"> | string | null
+    location?: StringNullableFilter<"StudentProfile"> | string | null
+    courseId?: StringNullableFilter<"StudentProfile"> | string | null
+    courseInterested?: StringFilter<"StudentProfile"> | string
+    facultyName?: StringNullableFilter<"StudentProfile"> | string | null
+    batchName?: StringNullableFilter<"StudentProfile"> | string | null
+    qualification?: StringNullableFilter<"StudentProfile"> | string | null
+    passedOutYear?: IntNullableFilter<"StudentProfile"> | number | null
+    currentStatus?: StringNullableFilter<"StudentProfile"> | string | null
+    designation?: StringNullableFilter<"StudentProfile"> | string | null
+    source?: StringNullableFilter<"StudentProfile"> | string | null
+    actualFees?: IntNullableFilter<"StudentProfile"> | number | null
+    registrationFees?: IntNullableFilter<"StudentProfile"> | number | null
+    discount?: IntNullableFilter<"StudentProfile"> | number | null
+    afterDiscount?: IntNullableFilter<"StudentProfile"> | number | null
+    installment1?: IntNullableFilter<"StudentProfile"> | number | null
+    installment2?: IntNullableFilter<"StudentProfile"> | number | null
+    installment3?: IntNullableFilter<"StudentProfile"> | number | null
+    totalAmount?: IntNullableFilter<"StudentProfile"> | number | null
+    admissionDate?: StringFilter<"StudentProfile"> | string
+    firstInstallmentAmount?: IntNullableFilter<"StudentProfile"> | number | null
+    firstInstallmentDate?: StringNullableFilter<"StudentProfile"> | string | null
+    firstInstallmentStatus?: StringFilter<"StudentProfile"> | string
+    firstInstallmentPaidAt?: StringNullableFilter<"StudentProfile"> | string | null
+    secondInstallmentAmount?: IntNullableFilter<"StudentProfile"> | number | null
+    secondDueDate?: StringNullableFilter<"StudentProfile"> | string | null
+    secondInstallmentStatus?: StringFilter<"StudentProfile"> | string
+    secondInstallmentPaidAt?: StringNullableFilter<"StudentProfile"> | string | null
+    remarks?: StringNullableFilter<"StudentProfile"> | string | null
+    recordStatus?: EnumRecordStatusFilter<"StudentProfile"> | $Enums.RecordStatus
+    createdBy?: StringNullableFilter<"StudentProfile"> | string | null
+    updatedBy?: StringNullableFilter<"StudentProfile"> | string | null
+    createdAt?: DateTimeFilter<"StudentProfile"> | Date | string
+    updatedAt?: DateTimeFilter<"StudentProfile"> | Date | string
+    course?: XOR<CourseNullableScalarRelationFilter, CourseWhereInput> | null
+  }
+
+  export type StudentProfileOrderByWithRelationInput = {
+    id?: SortOrder
+    studentCode?: SortOrder
+    studentName?: SortOrder
+    mobileNumber?: SortOrder
+    emailAddress?: SortOrder
+    parentSpouseNumber?: SortOrderInput | SortOrder
+    location?: SortOrderInput | SortOrder
+    courseId?: SortOrderInput | SortOrder
+    courseInterested?: SortOrder
+    facultyName?: SortOrderInput | SortOrder
+    batchName?: SortOrderInput | SortOrder
+    qualification?: SortOrderInput | SortOrder
+    passedOutYear?: SortOrderInput | SortOrder
+    currentStatus?: SortOrderInput | SortOrder
+    designation?: SortOrderInput | SortOrder
+    source?: SortOrderInput | SortOrder
+    actualFees?: SortOrderInput | SortOrder
+    registrationFees?: SortOrderInput | SortOrder
+    discount?: SortOrderInput | SortOrder
+    afterDiscount?: SortOrderInput | SortOrder
+    installment1?: SortOrderInput | SortOrder
+    installment2?: SortOrderInput | SortOrder
+    installment3?: SortOrderInput | SortOrder
+    totalAmount?: SortOrderInput | SortOrder
+    admissionDate?: SortOrder
+    firstInstallmentAmount?: SortOrderInput | SortOrder
+    firstInstallmentDate?: SortOrderInput | SortOrder
+    firstInstallmentStatus?: SortOrder
+    firstInstallmentPaidAt?: SortOrderInput | SortOrder
+    secondInstallmentAmount?: SortOrderInput | SortOrder
+    secondDueDate?: SortOrderInput | SortOrder
+    secondInstallmentStatus?: SortOrder
+    secondInstallmentPaidAt?: SortOrderInput | SortOrder
+    remarks?: SortOrderInput | SortOrder
+    recordStatus?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    updatedBy?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    course?: CourseOrderByWithRelationInput
+  }
+
+  export type StudentProfileWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    studentCode?: string
+    mobileNumber?: string
+    emailAddress?: string
+    AND?: StudentProfileWhereInput | StudentProfileWhereInput[]
+    OR?: StudentProfileWhereInput[]
+    NOT?: StudentProfileWhereInput | StudentProfileWhereInput[]
+    studentName?: StringFilter<"StudentProfile"> | string
+    parentSpouseNumber?: StringNullableFilter<"StudentProfile"> | string | null
+    location?: StringNullableFilter<"StudentProfile"> | string | null
+    courseId?: StringNullableFilter<"StudentProfile"> | string | null
+    courseInterested?: StringFilter<"StudentProfile"> | string
+    facultyName?: StringNullableFilter<"StudentProfile"> | string | null
+    batchName?: StringNullableFilter<"StudentProfile"> | string | null
+    qualification?: StringNullableFilter<"StudentProfile"> | string | null
+    passedOutYear?: IntNullableFilter<"StudentProfile"> | number | null
+    currentStatus?: StringNullableFilter<"StudentProfile"> | string | null
+    designation?: StringNullableFilter<"StudentProfile"> | string | null
+    source?: StringNullableFilter<"StudentProfile"> | string | null
+    actualFees?: IntNullableFilter<"StudentProfile"> | number | null
+    registrationFees?: IntNullableFilter<"StudentProfile"> | number | null
+    discount?: IntNullableFilter<"StudentProfile"> | number | null
+    afterDiscount?: IntNullableFilter<"StudentProfile"> | number | null
+    installment1?: IntNullableFilter<"StudentProfile"> | number | null
+    installment2?: IntNullableFilter<"StudentProfile"> | number | null
+    installment3?: IntNullableFilter<"StudentProfile"> | number | null
+    totalAmount?: IntNullableFilter<"StudentProfile"> | number | null
+    admissionDate?: StringFilter<"StudentProfile"> | string
+    firstInstallmentAmount?: IntNullableFilter<"StudentProfile"> | number | null
+    firstInstallmentDate?: StringNullableFilter<"StudentProfile"> | string | null
+    firstInstallmentStatus?: StringFilter<"StudentProfile"> | string
+    firstInstallmentPaidAt?: StringNullableFilter<"StudentProfile"> | string | null
+    secondInstallmentAmount?: IntNullableFilter<"StudentProfile"> | number | null
+    secondDueDate?: StringNullableFilter<"StudentProfile"> | string | null
+    secondInstallmentStatus?: StringFilter<"StudentProfile"> | string
+    secondInstallmentPaidAt?: StringNullableFilter<"StudentProfile"> | string | null
+    remarks?: StringNullableFilter<"StudentProfile"> | string | null
+    recordStatus?: EnumRecordStatusFilter<"StudentProfile"> | $Enums.RecordStatus
+    createdBy?: StringNullableFilter<"StudentProfile"> | string | null
+    updatedBy?: StringNullableFilter<"StudentProfile"> | string | null
+    createdAt?: DateTimeFilter<"StudentProfile"> | Date | string
+    updatedAt?: DateTimeFilter<"StudentProfile"> | Date | string
+    course?: XOR<CourseNullableScalarRelationFilter, CourseWhereInput> | null
+  }, "id" | "studentCode" | "mobileNumber" | "emailAddress">
+
+  export type StudentProfileOrderByWithAggregationInput = {
+    id?: SortOrder
+    studentCode?: SortOrder
+    studentName?: SortOrder
+    mobileNumber?: SortOrder
+    emailAddress?: SortOrder
+    parentSpouseNumber?: SortOrderInput | SortOrder
+    location?: SortOrderInput | SortOrder
+    courseId?: SortOrderInput | SortOrder
+    courseInterested?: SortOrder
+    facultyName?: SortOrderInput | SortOrder
+    batchName?: SortOrderInput | SortOrder
+    qualification?: SortOrderInput | SortOrder
+    passedOutYear?: SortOrderInput | SortOrder
+    currentStatus?: SortOrderInput | SortOrder
+    designation?: SortOrderInput | SortOrder
+    source?: SortOrderInput | SortOrder
+    actualFees?: SortOrderInput | SortOrder
+    registrationFees?: SortOrderInput | SortOrder
+    discount?: SortOrderInput | SortOrder
+    afterDiscount?: SortOrderInput | SortOrder
+    installment1?: SortOrderInput | SortOrder
+    installment2?: SortOrderInput | SortOrder
+    installment3?: SortOrderInput | SortOrder
+    totalAmount?: SortOrderInput | SortOrder
+    admissionDate?: SortOrder
+    firstInstallmentAmount?: SortOrderInput | SortOrder
+    firstInstallmentDate?: SortOrderInput | SortOrder
+    firstInstallmentStatus?: SortOrder
+    firstInstallmentPaidAt?: SortOrderInput | SortOrder
+    secondInstallmentAmount?: SortOrderInput | SortOrder
+    secondDueDate?: SortOrderInput | SortOrder
+    secondInstallmentStatus?: SortOrder
+    secondInstallmentPaidAt?: SortOrderInput | SortOrder
+    remarks?: SortOrderInput | SortOrder
+    recordStatus?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    updatedBy?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: StudentProfileCountOrderByAggregateInput
+    _avg?: StudentProfileAvgOrderByAggregateInput
+    _max?: StudentProfileMaxOrderByAggregateInput
+    _min?: StudentProfileMinOrderByAggregateInput
+    _sum?: StudentProfileSumOrderByAggregateInput
+  }
+
+  export type StudentProfileScalarWhereWithAggregatesInput = {
+    AND?: StudentProfileScalarWhereWithAggregatesInput | StudentProfileScalarWhereWithAggregatesInput[]
+    OR?: StudentProfileScalarWhereWithAggregatesInput[]
+    NOT?: StudentProfileScalarWhereWithAggregatesInput | StudentProfileScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"StudentProfile"> | string
+    studentCode?: StringWithAggregatesFilter<"StudentProfile"> | string
+    studentName?: StringWithAggregatesFilter<"StudentProfile"> | string
+    mobileNumber?: StringWithAggregatesFilter<"StudentProfile"> | string
+    emailAddress?: StringWithAggregatesFilter<"StudentProfile"> | string
+    parentSpouseNumber?: StringNullableWithAggregatesFilter<"StudentProfile"> | string | null
+    location?: StringNullableWithAggregatesFilter<"StudentProfile"> | string | null
+    courseId?: StringNullableWithAggregatesFilter<"StudentProfile"> | string | null
+    courseInterested?: StringWithAggregatesFilter<"StudentProfile"> | string
+    facultyName?: StringNullableWithAggregatesFilter<"StudentProfile"> | string | null
+    batchName?: StringNullableWithAggregatesFilter<"StudentProfile"> | string | null
+    qualification?: StringNullableWithAggregatesFilter<"StudentProfile"> | string | null
+    passedOutYear?: IntNullableWithAggregatesFilter<"StudentProfile"> | number | null
+    currentStatus?: StringNullableWithAggregatesFilter<"StudentProfile"> | string | null
+    designation?: StringNullableWithAggregatesFilter<"StudentProfile"> | string | null
+    source?: StringNullableWithAggregatesFilter<"StudentProfile"> | string | null
+    actualFees?: IntNullableWithAggregatesFilter<"StudentProfile"> | number | null
+    registrationFees?: IntNullableWithAggregatesFilter<"StudentProfile"> | number | null
+    discount?: IntNullableWithAggregatesFilter<"StudentProfile"> | number | null
+    afterDiscount?: IntNullableWithAggregatesFilter<"StudentProfile"> | number | null
+    installment1?: IntNullableWithAggregatesFilter<"StudentProfile"> | number | null
+    installment2?: IntNullableWithAggregatesFilter<"StudentProfile"> | number | null
+    installment3?: IntNullableWithAggregatesFilter<"StudentProfile"> | number | null
+    totalAmount?: IntNullableWithAggregatesFilter<"StudentProfile"> | number | null
+    admissionDate?: StringWithAggregatesFilter<"StudentProfile"> | string
+    firstInstallmentAmount?: IntNullableWithAggregatesFilter<"StudentProfile"> | number | null
+    firstInstallmentDate?: StringNullableWithAggregatesFilter<"StudentProfile"> | string | null
+    firstInstallmentStatus?: StringWithAggregatesFilter<"StudentProfile"> | string
+    firstInstallmentPaidAt?: StringNullableWithAggregatesFilter<"StudentProfile"> | string | null
+    secondInstallmentAmount?: IntNullableWithAggregatesFilter<"StudentProfile"> | number | null
+    secondDueDate?: StringNullableWithAggregatesFilter<"StudentProfile"> | string | null
+    secondInstallmentStatus?: StringWithAggregatesFilter<"StudentProfile"> | string
+    secondInstallmentPaidAt?: StringNullableWithAggregatesFilter<"StudentProfile"> | string | null
+    remarks?: StringNullableWithAggregatesFilter<"StudentProfile"> | string | null
+    recordStatus?: EnumRecordStatusWithAggregatesFilter<"StudentProfile"> | $Enums.RecordStatus
+    createdBy?: StringNullableWithAggregatesFilter<"StudentProfile"> | string | null
+    updatedBy?: StringNullableWithAggregatesFilter<"StudentProfile"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"StudentProfile"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"StudentProfile"> | Date | string
+  }
+
   export type UserCreateInput = {
     id?: string
     userCode: string
@@ -14369,6 +16370,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     modules?: CourseModuleCreateNestedManyWithoutCourseInput
     batches?: BatchCreateNestedManyWithoutCourseInput
+    students?: StudentProfileCreateNestedManyWithoutCourseInput
     statusHistory?: CourseStatusHistoryCreateNestedManyWithoutCourseInput
   }
 
@@ -14398,6 +16400,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     modules?: CourseModuleUncheckedCreateNestedManyWithoutCourseInput
     batches?: BatchUncheckedCreateNestedManyWithoutCourseInput
+    students?: StudentProfileUncheckedCreateNestedManyWithoutCourseInput
     statusHistory?: CourseStatusHistoryUncheckedCreateNestedManyWithoutCourseInput
   }
 
@@ -14427,6 +16430,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     modules?: CourseModuleUpdateManyWithoutCourseNestedInput
     batches?: BatchUpdateManyWithoutCourseNestedInput
+    students?: StudentProfileUpdateManyWithoutCourseNestedInput
     statusHistory?: CourseStatusHistoryUpdateManyWithoutCourseNestedInput
   }
 
@@ -14456,6 +16460,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     modules?: CourseModuleUncheckedUpdateManyWithoutCourseNestedInput
     batches?: BatchUncheckedUpdateManyWithoutCourseNestedInput
+    students?: StudentProfileUncheckedUpdateManyWithoutCourseNestedInput
     statusHistory?: CourseStatusHistoryUncheckedUpdateManyWithoutCourseNestedInput
   }
 
@@ -15057,6 +17062,299 @@ export namespace Prisma {
     changedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type StudentProfileCreateInput = {
+    id?: string
+    studentCode: string
+    studentName: string
+    mobileNumber: string
+    emailAddress: string
+    parentSpouseNumber?: string | null
+    location?: string | null
+    courseInterested: string
+    facultyName?: string | null
+    batchName?: string | null
+    qualification?: string | null
+    passedOutYear?: number | null
+    currentStatus?: string | null
+    designation?: string | null
+    source?: string | null
+    actualFees?: number | null
+    registrationFees?: number | null
+    discount?: number | null
+    afterDiscount?: number | null
+    installment1?: number | null
+    installment2?: number | null
+    installment3?: number | null
+    totalAmount?: number | null
+    admissionDate: string
+    firstInstallmentAmount?: number | null
+    firstInstallmentDate?: string | null
+    firstInstallmentStatus?: string
+    firstInstallmentPaidAt?: string | null
+    secondInstallmentAmount?: number | null
+    secondDueDate?: string | null
+    secondInstallmentStatus?: string
+    secondInstallmentPaidAt?: string | null
+    remarks?: string | null
+    recordStatus?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    course?: CourseCreateNestedOneWithoutStudentsInput
+  }
+
+  export type StudentProfileUncheckedCreateInput = {
+    id?: string
+    studentCode: string
+    studentName: string
+    mobileNumber: string
+    emailAddress: string
+    parentSpouseNumber?: string | null
+    location?: string | null
+    courseId?: string | null
+    courseInterested: string
+    facultyName?: string | null
+    batchName?: string | null
+    qualification?: string | null
+    passedOutYear?: number | null
+    currentStatus?: string | null
+    designation?: string | null
+    source?: string | null
+    actualFees?: number | null
+    registrationFees?: number | null
+    discount?: number | null
+    afterDiscount?: number | null
+    installment1?: number | null
+    installment2?: number | null
+    installment3?: number | null
+    totalAmount?: number | null
+    admissionDate: string
+    firstInstallmentAmount?: number | null
+    firstInstallmentDate?: string | null
+    firstInstallmentStatus?: string
+    firstInstallmentPaidAt?: string | null
+    secondInstallmentAmount?: number | null
+    secondDueDate?: string | null
+    secondInstallmentStatus?: string
+    secondInstallmentPaidAt?: string | null
+    remarks?: string | null
+    recordStatus?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type StudentProfileUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    studentCode?: StringFieldUpdateOperationsInput | string
+    studentName?: StringFieldUpdateOperationsInput | string
+    mobileNumber?: StringFieldUpdateOperationsInput | string
+    emailAddress?: StringFieldUpdateOperationsInput | string
+    parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    courseInterested?: StringFieldUpdateOperationsInput | string
+    facultyName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchName?: NullableStringFieldUpdateOperationsInput | string | null
+    qualification?: NullableStringFieldUpdateOperationsInput | string | null
+    passedOutYear?: NullableIntFieldUpdateOperationsInput | number | null
+    currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    designation?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: NullableStringFieldUpdateOperationsInput | string | null
+    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
+    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
+    discount?: NullableIntFieldUpdateOperationsInput | number | null
+    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
+    installment1?: NullableIntFieldUpdateOperationsInput | number | null
+    installment2?: NullableIntFieldUpdateOperationsInput | number | null
+    installment3?: NullableIntFieldUpdateOperationsInput | number | null
+    totalAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    admissionDate?: StringFieldUpdateOperationsInput | string
+    firstInstallmentAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    firstInstallmentDate?: NullableStringFieldUpdateOperationsInput | string | null
+    firstInstallmentStatus?: StringFieldUpdateOperationsInput | string
+    firstInstallmentPaidAt?: NullableStringFieldUpdateOperationsInput | string | null
+    secondInstallmentAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    secondDueDate?: NullableStringFieldUpdateOperationsInput | string | null
+    secondInstallmentStatus?: StringFieldUpdateOperationsInput | string
+    secondInstallmentPaidAt?: NullableStringFieldUpdateOperationsInput | string | null
+    remarks?: NullableStringFieldUpdateOperationsInput | string | null
+    recordStatus?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    course?: CourseUpdateOneWithoutStudentsNestedInput
+  }
+
+  export type StudentProfileUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    studentCode?: StringFieldUpdateOperationsInput | string
+    studentName?: StringFieldUpdateOperationsInput | string
+    mobileNumber?: StringFieldUpdateOperationsInput | string
+    emailAddress?: StringFieldUpdateOperationsInput | string
+    parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    courseId?: NullableStringFieldUpdateOperationsInput | string | null
+    courseInterested?: StringFieldUpdateOperationsInput | string
+    facultyName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchName?: NullableStringFieldUpdateOperationsInput | string | null
+    qualification?: NullableStringFieldUpdateOperationsInput | string | null
+    passedOutYear?: NullableIntFieldUpdateOperationsInput | number | null
+    currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    designation?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: NullableStringFieldUpdateOperationsInput | string | null
+    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
+    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
+    discount?: NullableIntFieldUpdateOperationsInput | number | null
+    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
+    installment1?: NullableIntFieldUpdateOperationsInput | number | null
+    installment2?: NullableIntFieldUpdateOperationsInput | number | null
+    installment3?: NullableIntFieldUpdateOperationsInput | number | null
+    totalAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    admissionDate?: StringFieldUpdateOperationsInput | string
+    firstInstallmentAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    firstInstallmentDate?: NullableStringFieldUpdateOperationsInput | string | null
+    firstInstallmentStatus?: StringFieldUpdateOperationsInput | string
+    firstInstallmentPaidAt?: NullableStringFieldUpdateOperationsInput | string | null
+    secondInstallmentAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    secondDueDate?: NullableStringFieldUpdateOperationsInput | string | null
+    secondInstallmentStatus?: StringFieldUpdateOperationsInput | string
+    secondInstallmentPaidAt?: NullableStringFieldUpdateOperationsInput | string | null
+    remarks?: NullableStringFieldUpdateOperationsInput | string | null
+    recordStatus?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type StudentProfileCreateManyInput = {
+    id?: string
+    studentCode: string
+    studentName: string
+    mobileNumber: string
+    emailAddress: string
+    parentSpouseNumber?: string | null
+    location?: string | null
+    courseId?: string | null
+    courseInterested: string
+    facultyName?: string | null
+    batchName?: string | null
+    qualification?: string | null
+    passedOutYear?: number | null
+    currentStatus?: string | null
+    designation?: string | null
+    source?: string | null
+    actualFees?: number | null
+    registrationFees?: number | null
+    discount?: number | null
+    afterDiscount?: number | null
+    installment1?: number | null
+    installment2?: number | null
+    installment3?: number | null
+    totalAmount?: number | null
+    admissionDate: string
+    firstInstallmentAmount?: number | null
+    firstInstallmentDate?: string | null
+    firstInstallmentStatus?: string
+    firstInstallmentPaidAt?: string | null
+    secondInstallmentAmount?: number | null
+    secondDueDate?: string | null
+    secondInstallmentStatus?: string
+    secondInstallmentPaidAt?: string | null
+    remarks?: string | null
+    recordStatus?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type StudentProfileUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    studentCode?: StringFieldUpdateOperationsInput | string
+    studentName?: StringFieldUpdateOperationsInput | string
+    mobileNumber?: StringFieldUpdateOperationsInput | string
+    emailAddress?: StringFieldUpdateOperationsInput | string
+    parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    courseInterested?: StringFieldUpdateOperationsInput | string
+    facultyName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchName?: NullableStringFieldUpdateOperationsInput | string | null
+    qualification?: NullableStringFieldUpdateOperationsInput | string | null
+    passedOutYear?: NullableIntFieldUpdateOperationsInput | number | null
+    currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    designation?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: NullableStringFieldUpdateOperationsInput | string | null
+    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
+    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
+    discount?: NullableIntFieldUpdateOperationsInput | number | null
+    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
+    installment1?: NullableIntFieldUpdateOperationsInput | number | null
+    installment2?: NullableIntFieldUpdateOperationsInput | number | null
+    installment3?: NullableIntFieldUpdateOperationsInput | number | null
+    totalAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    admissionDate?: StringFieldUpdateOperationsInput | string
+    firstInstallmentAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    firstInstallmentDate?: NullableStringFieldUpdateOperationsInput | string | null
+    firstInstallmentStatus?: StringFieldUpdateOperationsInput | string
+    firstInstallmentPaidAt?: NullableStringFieldUpdateOperationsInput | string | null
+    secondInstallmentAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    secondDueDate?: NullableStringFieldUpdateOperationsInput | string | null
+    secondInstallmentStatus?: StringFieldUpdateOperationsInput | string
+    secondInstallmentPaidAt?: NullableStringFieldUpdateOperationsInput | string | null
+    remarks?: NullableStringFieldUpdateOperationsInput | string | null
+    recordStatus?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type StudentProfileUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    studentCode?: StringFieldUpdateOperationsInput | string
+    studentName?: StringFieldUpdateOperationsInput | string
+    mobileNumber?: StringFieldUpdateOperationsInput | string
+    emailAddress?: StringFieldUpdateOperationsInput | string
+    parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    courseId?: NullableStringFieldUpdateOperationsInput | string | null
+    courseInterested?: StringFieldUpdateOperationsInput | string
+    facultyName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchName?: NullableStringFieldUpdateOperationsInput | string | null
+    qualification?: NullableStringFieldUpdateOperationsInput | string | null
+    passedOutYear?: NullableIntFieldUpdateOperationsInput | number | null
+    currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    designation?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: NullableStringFieldUpdateOperationsInput | string | null
+    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
+    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
+    discount?: NullableIntFieldUpdateOperationsInput | number | null
+    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
+    installment1?: NullableIntFieldUpdateOperationsInput | number | null
+    installment2?: NullableIntFieldUpdateOperationsInput | number | null
+    installment3?: NullableIntFieldUpdateOperationsInput | number | null
+    totalAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    admissionDate?: StringFieldUpdateOperationsInput | string
+    firstInstallmentAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    firstInstallmentDate?: NullableStringFieldUpdateOperationsInput | string | null
+    firstInstallmentStatus?: StringFieldUpdateOperationsInput | string
+    firstInstallmentPaidAt?: NullableStringFieldUpdateOperationsInput | string | null
+    secondInstallmentAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    secondDueDate?: NullableStringFieldUpdateOperationsInput | string | null
+    secondInstallmentStatus?: StringFieldUpdateOperationsInput | string
+    secondInstallmentPaidAt?: NullableStringFieldUpdateOperationsInput | string | null
+    remarks?: NullableStringFieldUpdateOperationsInput | string | null
+    recordStatus?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -15517,6 +17815,12 @@ export namespace Prisma {
     none?: BatchWhereInput
   }
 
+  export type StudentProfileListRelationFilter = {
+    every?: StudentProfileWhereInput
+    some?: StudentProfileWhereInput
+    none?: StudentProfileWhereInput
+  }
+
   export type CourseStatusHistoryListRelationFilter = {
     every?: CourseStatusHistoryWhereInput
     some?: CourseStatusHistoryWhereInput
@@ -15528,6 +17832,10 @@ export namespace Prisma {
   }
 
   export type BatchOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type StudentProfileOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -16003,6 +18311,165 @@ export namespace Prisma {
     _max?: NestedEnumBatchStatusNullableFilter<$PrismaModel>
   }
 
+  export type CourseNullableScalarRelationFilter = {
+    is?: CourseWhereInput | null
+    isNot?: CourseWhereInput | null
+  }
+
+  export type StudentProfileCountOrderByAggregateInput = {
+    id?: SortOrder
+    studentCode?: SortOrder
+    studentName?: SortOrder
+    mobileNumber?: SortOrder
+    emailAddress?: SortOrder
+    parentSpouseNumber?: SortOrder
+    location?: SortOrder
+    courseId?: SortOrder
+    courseInterested?: SortOrder
+    facultyName?: SortOrder
+    batchName?: SortOrder
+    qualification?: SortOrder
+    passedOutYear?: SortOrder
+    currentStatus?: SortOrder
+    designation?: SortOrder
+    source?: SortOrder
+    actualFees?: SortOrder
+    registrationFees?: SortOrder
+    discount?: SortOrder
+    afterDiscount?: SortOrder
+    installment1?: SortOrder
+    installment2?: SortOrder
+    installment3?: SortOrder
+    totalAmount?: SortOrder
+    admissionDate?: SortOrder
+    firstInstallmentAmount?: SortOrder
+    firstInstallmentDate?: SortOrder
+    firstInstallmentStatus?: SortOrder
+    firstInstallmentPaidAt?: SortOrder
+    secondInstallmentAmount?: SortOrder
+    secondDueDate?: SortOrder
+    secondInstallmentStatus?: SortOrder
+    secondInstallmentPaidAt?: SortOrder
+    remarks?: SortOrder
+    recordStatus?: SortOrder
+    createdBy?: SortOrder
+    updatedBy?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type StudentProfileAvgOrderByAggregateInput = {
+    passedOutYear?: SortOrder
+    actualFees?: SortOrder
+    registrationFees?: SortOrder
+    discount?: SortOrder
+    afterDiscount?: SortOrder
+    installment1?: SortOrder
+    installment2?: SortOrder
+    installment3?: SortOrder
+    totalAmount?: SortOrder
+    firstInstallmentAmount?: SortOrder
+    secondInstallmentAmount?: SortOrder
+  }
+
+  export type StudentProfileMaxOrderByAggregateInput = {
+    id?: SortOrder
+    studentCode?: SortOrder
+    studentName?: SortOrder
+    mobileNumber?: SortOrder
+    emailAddress?: SortOrder
+    parentSpouseNumber?: SortOrder
+    location?: SortOrder
+    courseId?: SortOrder
+    courseInterested?: SortOrder
+    facultyName?: SortOrder
+    batchName?: SortOrder
+    qualification?: SortOrder
+    passedOutYear?: SortOrder
+    currentStatus?: SortOrder
+    designation?: SortOrder
+    source?: SortOrder
+    actualFees?: SortOrder
+    registrationFees?: SortOrder
+    discount?: SortOrder
+    afterDiscount?: SortOrder
+    installment1?: SortOrder
+    installment2?: SortOrder
+    installment3?: SortOrder
+    totalAmount?: SortOrder
+    admissionDate?: SortOrder
+    firstInstallmentAmount?: SortOrder
+    firstInstallmentDate?: SortOrder
+    firstInstallmentStatus?: SortOrder
+    firstInstallmentPaidAt?: SortOrder
+    secondInstallmentAmount?: SortOrder
+    secondDueDate?: SortOrder
+    secondInstallmentStatus?: SortOrder
+    secondInstallmentPaidAt?: SortOrder
+    remarks?: SortOrder
+    recordStatus?: SortOrder
+    createdBy?: SortOrder
+    updatedBy?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type StudentProfileMinOrderByAggregateInput = {
+    id?: SortOrder
+    studentCode?: SortOrder
+    studentName?: SortOrder
+    mobileNumber?: SortOrder
+    emailAddress?: SortOrder
+    parentSpouseNumber?: SortOrder
+    location?: SortOrder
+    courseId?: SortOrder
+    courseInterested?: SortOrder
+    facultyName?: SortOrder
+    batchName?: SortOrder
+    qualification?: SortOrder
+    passedOutYear?: SortOrder
+    currentStatus?: SortOrder
+    designation?: SortOrder
+    source?: SortOrder
+    actualFees?: SortOrder
+    registrationFees?: SortOrder
+    discount?: SortOrder
+    afterDiscount?: SortOrder
+    installment1?: SortOrder
+    installment2?: SortOrder
+    installment3?: SortOrder
+    totalAmount?: SortOrder
+    admissionDate?: SortOrder
+    firstInstallmentAmount?: SortOrder
+    firstInstallmentDate?: SortOrder
+    firstInstallmentStatus?: SortOrder
+    firstInstallmentPaidAt?: SortOrder
+    secondInstallmentAmount?: SortOrder
+    secondDueDate?: SortOrder
+    secondInstallmentStatus?: SortOrder
+    secondInstallmentPaidAt?: SortOrder
+    remarks?: SortOrder
+    recordStatus?: SortOrder
+    createdBy?: SortOrder
+    updatedBy?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type StudentProfileSumOrderByAggregateInput = {
+    passedOutYear?: SortOrder
+    actualFees?: SortOrder
+    registrationFees?: SortOrder
+    discount?: SortOrder
+    afterDiscount?: SortOrder
+    installment1?: SortOrder
+    installment2?: SortOrder
+    installment3?: SortOrder
+    totalAmount?: SortOrder
+    firstInstallmentAmount?: SortOrder
+    secondInstallmentAmount?: SortOrder
+  }
+
   export type LoginEventCreateNestedManyWithoutUserInput = {
     create?: XOR<LoginEventCreateWithoutUserInput, LoginEventUncheckedCreateWithoutUserInput> | LoginEventCreateWithoutUserInput[] | LoginEventUncheckedCreateWithoutUserInput[]
     connectOrCreate?: LoginEventCreateOrConnectWithoutUserInput | LoginEventCreateOrConnectWithoutUserInput[]
@@ -16209,6 +18676,13 @@ export namespace Prisma {
     connect?: BatchWhereUniqueInput | BatchWhereUniqueInput[]
   }
 
+  export type StudentProfileCreateNestedManyWithoutCourseInput = {
+    create?: XOR<StudentProfileCreateWithoutCourseInput, StudentProfileUncheckedCreateWithoutCourseInput> | StudentProfileCreateWithoutCourseInput[] | StudentProfileUncheckedCreateWithoutCourseInput[]
+    connectOrCreate?: StudentProfileCreateOrConnectWithoutCourseInput | StudentProfileCreateOrConnectWithoutCourseInput[]
+    createMany?: StudentProfileCreateManyCourseInputEnvelope
+    connect?: StudentProfileWhereUniqueInput | StudentProfileWhereUniqueInput[]
+  }
+
   export type CourseStatusHistoryCreateNestedManyWithoutCourseInput = {
     create?: XOR<CourseStatusHistoryCreateWithoutCourseInput, CourseStatusHistoryUncheckedCreateWithoutCourseInput> | CourseStatusHistoryCreateWithoutCourseInput[] | CourseStatusHistoryUncheckedCreateWithoutCourseInput[]
     connectOrCreate?: CourseStatusHistoryCreateOrConnectWithoutCourseInput | CourseStatusHistoryCreateOrConnectWithoutCourseInput[]
@@ -16228,6 +18702,13 @@ export namespace Prisma {
     connectOrCreate?: BatchCreateOrConnectWithoutCourseInput | BatchCreateOrConnectWithoutCourseInput[]
     createMany?: BatchCreateManyCourseInputEnvelope
     connect?: BatchWhereUniqueInput | BatchWhereUniqueInput[]
+  }
+
+  export type StudentProfileUncheckedCreateNestedManyWithoutCourseInput = {
+    create?: XOR<StudentProfileCreateWithoutCourseInput, StudentProfileUncheckedCreateWithoutCourseInput> | StudentProfileCreateWithoutCourseInput[] | StudentProfileUncheckedCreateWithoutCourseInput[]
+    connectOrCreate?: StudentProfileCreateOrConnectWithoutCourseInput | StudentProfileCreateOrConnectWithoutCourseInput[]
+    createMany?: StudentProfileCreateManyCourseInputEnvelope
+    connect?: StudentProfileWhereUniqueInput | StudentProfileWhereUniqueInput[]
   }
 
   export type CourseStatusHistoryUncheckedCreateNestedManyWithoutCourseInput = {
@@ -16277,6 +18758,20 @@ export namespace Prisma {
     deleteMany?: BatchScalarWhereInput | BatchScalarWhereInput[]
   }
 
+  export type StudentProfileUpdateManyWithoutCourseNestedInput = {
+    create?: XOR<StudentProfileCreateWithoutCourseInput, StudentProfileUncheckedCreateWithoutCourseInput> | StudentProfileCreateWithoutCourseInput[] | StudentProfileUncheckedCreateWithoutCourseInput[]
+    connectOrCreate?: StudentProfileCreateOrConnectWithoutCourseInput | StudentProfileCreateOrConnectWithoutCourseInput[]
+    upsert?: StudentProfileUpsertWithWhereUniqueWithoutCourseInput | StudentProfileUpsertWithWhereUniqueWithoutCourseInput[]
+    createMany?: StudentProfileCreateManyCourseInputEnvelope
+    set?: StudentProfileWhereUniqueInput | StudentProfileWhereUniqueInput[]
+    disconnect?: StudentProfileWhereUniqueInput | StudentProfileWhereUniqueInput[]
+    delete?: StudentProfileWhereUniqueInput | StudentProfileWhereUniqueInput[]
+    connect?: StudentProfileWhereUniqueInput | StudentProfileWhereUniqueInput[]
+    update?: StudentProfileUpdateWithWhereUniqueWithoutCourseInput | StudentProfileUpdateWithWhereUniqueWithoutCourseInput[]
+    updateMany?: StudentProfileUpdateManyWithWhereWithoutCourseInput | StudentProfileUpdateManyWithWhereWithoutCourseInput[]
+    deleteMany?: StudentProfileScalarWhereInput | StudentProfileScalarWhereInput[]
+  }
+
   export type CourseStatusHistoryUpdateManyWithoutCourseNestedInput = {
     create?: XOR<CourseStatusHistoryCreateWithoutCourseInput, CourseStatusHistoryUncheckedCreateWithoutCourseInput> | CourseStatusHistoryCreateWithoutCourseInput[] | CourseStatusHistoryUncheckedCreateWithoutCourseInput[]
     connectOrCreate?: CourseStatusHistoryCreateOrConnectWithoutCourseInput | CourseStatusHistoryCreateOrConnectWithoutCourseInput[]
@@ -16317,6 +18812,20 @@ export namespace Prisma {
     update?: BatchUpdateWithWhereUniqueWithoutCourseInput | BatchUpdateWithWhereUniqueWithoutCourseInput[]
     updateMany?: BatchUpdateManyWithWhereWithoutCourseInput | BatchUpdateManyWithWhereWithoutCourseInput[]
     deleteMany?: BatchScalarWhereInput | BatchScalarWhereInput[]
+  }
+
+  export type StudentProfileUncheckedUpdateManyWithoutCourseNestedInput = {
+    create?: XOR<StudentProfileCreateWithoutCourseInput, StudentProfileUncheckedCreateWithoutCourseInput> | StudentProfileCreateWithoutCourseInput[] | StudentProfileUncheckedCreateWithoutCourseInput[]
+    connectOrCreate?: StudentProfileCreateOrConnectWithoutCourseInput | StudentProfileCreateOrConnectWithoutCourseInput[]
+    upsert?: StudentProfileUpsertWithWhereUniqueWithoutCourseInput | StudentProfileUpsertWithWhereUniqueWithoutCourseInput[]
+    createMany?: StudentProfileCreateManyCourseInputEnvelope
+    set?: StudentProfileWhereUniqueInput | StudentProfileWhereUniqueInput[]
+    disconnect?: StudentProfileWhereUniqueInput | StudentProfileWhereUniqueInput[]
+    delete?: StudentProfileWhereUniqueInput | StudentProfileWhereUniqueInput[]
+    connect?: StudentProfileWhereUniqueInput | StudentProfileWhereUniqueInput[]
+    update?: StudentProfileUpdateWithWhereUniqueWithoutCourseInput | StudentProfileUpdateWithWhereUniqueWithoutCourseInput[]
+    updateMany?: StudentProfileUpdateManyWithWhereWithoutCourseInput | StudentProfileUpdateManyWithWhereWithoutCourseInput[]
+    deleteMany?: StudentProfileScalarWhereInput | StudentProfileScalarWhereInput[]
   }
 
   export type CourseStatusHistoryUncheckedUpdateManyWithoutCourseNestedInput = {
@@ -16515,6 +19024,22 @@ export namespace Prisma {
     upsert?: BatchUpsertWithoutStatusHistoryInput
     connect?: BatchWhereUniqueInput
     update?: XOR<XOR<BatchUpdateToOneWithWhereWithoutStatusHistoryInput, BatchUpdateWithoutStatusHistoryInput>, BatchUncheckedUpdateWithoutStatusHistoryInput>
+  }
+
+  export type CourseCreateNestedOneWithoutStudentsInput = {
+    create?: XOR<CourseCreateWithoutStudentsInput, CourseUncheckedCreateWithoutStudentsInput>
+    connectOrCreate?: CourseCreateOrConnectWithoutStudentsInput
+    connect?: CourseWhereUniqueInput
+  }
+
+  export type CourseUpdateOneWithoutStudentsNestedInput = {
+    create?: XOR<CourseCreateWithoutStudentsInput, CourseUncheckedCreateWithoutStudentsInput>
+    connectOrCreate?: CourseCreateOrConnectWithoutStudentsInput
+    upsert?: CourseUpsertWithoutStudentsInput
+    disconnect?: CourseWhereInput | boolean
+    delete?: CourseWhereInput | boolean
+    connect?: CourseWhereUniqueInput
+    update?: XOR<XOR<CourseUpdateToOneWithWhereWithoutStudentsInput, CourseUpdateWithoutStudentsInput>, CourseUncheckedUpdateWithoutStudentsInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -17392,6 +19917,98 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type StudentProfileCreateWithoutCourseInput = {
+    id?: string
+    studentCode: string
+    studentName: string
+    mobileNumber: string
+    emailAddress: string
+    parentSpouseNumber?: string | null
+    location?: string | null
+    courseInterested: string
+    facultyName?: string | null
+    batchName?: string | null
+    qualification?: string | null
+    passedOutYear?: number | null
+    currentStatus?: string | null
+    designation?: string | null
+    source?: string | null
+    actualFees?: number | null
+    registrationFees?: number | null
+    discount?: number | null
+    afterDiscount?: number | null
+    installment1?: number | null
+    installment2?: number | null
+    installment3?: number | null
+    totalAmount?: number | null
+    admissionDate: string
+    firstInstallmentAmount?: number | null
+    firstInstallmentDate?: string | null
+    firstInstallmentStatus?: string
+    firstInstallmentPaidAt?: string | null
+    secondInstallmentAmount?: number | null
+    secondDueDate?: string | null
+    secondInstallmentStatus?: string
+    secondInstallmentPaidAt?: string | null
+    remarks?: string | null
+    recordStatus?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type StudentProfileUncheckedCreateWithoutCourseInput = {
+    id?: string
+    studentCode: string
+    studentName: string
+    mobileNumber: string
+    emailAddress: string
+    parentSpouseNumber?: string | null
+    location?: string | null
+    courseInterested: string
+    facultyName?: string | null
+    batchName?: string | null
+    qualification?: string | null
+    passedOutYear?: number | null
+    currentStatus?: string | null
+    designation?: string | null
+    source?: string | null
+    actualFees?: number | null
+    registrationFees?: number | null
+    discount?: number | null
+    afterDiscount?: number | null
+    installment1?: number | null
+    installment2?: number | null
+    installment3?: number | null
+    totalAmount?: number | null
+    admissionDate: string
+    firstInstallmentAmount?: number | null
+    firstInstallmentDate?: string | null
+    firstInstallmentStatus?: string
+    firstInstallmentPaidAt?: string | null
+    secondInstallmentAmount?: number | null
+    secondDueDate?: string | null
+    secondInstallmentStatus?: string
+    secondInstallmentPaidAt?: string | null
+    remarks?: string | null
+    recordStatus?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type StudentProfileCreateOrConnectWithoutCourseInput = {
+    where: StudentProfileWhereUniqueInput
+    create: XOR<StudentProfileCreateWithoutCourseInput, StudentProfileUncheckedCreateWithoutCourseInput>
+  }
+
+  export type StudentProfileCreateManyCourseInputEnvelope = {
+    data: StudentProfileCreateManyCourseInput | StudentProfileCreateManyCourseInput[]
+    skipDuplicates?: boolean
+  }
+
   export type CourseStatusHistoryCreateWithoutCourseInput = {
     id?: string
     fromStatus?: $Enums.RecordStatus | null
@@ -17495,6 +20112,67 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Batch"> | Date | string
   }
 
+  export type StudentProfileUpsertWithWhereUniqueWithoutCourseInput = {
+    where: StudentProfileWhereUniqueInput
+    update: XOR<StudentProfileUpdateWithoutCourseInput, StudentProfileUncheckedUpdateWithoutCourseInput>
+    create: XOR<StudentProfileCreateWithoutCourseInput, StudentProfileUncheckedCreateWithoutCourseInput>
+  }
+
+  export type StudentProfileUpdateWithWhereUniqueWithoutCourseInput = {
+    where: StudentProfileWhereUniqueInput
+    data: XOR<StudentProfileUpdateWithoutCourseInput, StudentProfileUncheckedUpdateWithoutCourseInput>
+  }
+
+  export type StudentProfileUpdateManyWithWhereWithoutCourseInput = {
+    where: StudentProfileScalarWhereInput
+    data: XOR<StudentProfileUpdateManyMutationInput, StudentProfileUncheckedUpdateManyWithoutCourseInput>
+  }
+
+  export type StudentProfileScalarWhereInput = {
+    AND?: StudentProfileScalarWhereInput | StudentProfileScalarWhereInput[]
+    OR?: StudentProfileScalarWhereInput[]
+    NOT?: StudentProfileScalarWhereInput | StudentProfileScalarWhereInput[]
+    id?: StringFilter<"StudentProfile"> | string
+    studentCode?: StringFilter<"StudentProfile"> | string
+    studentName?: StringFilter<"StudentProfile"> | string
+    mobileNumber?: StringFilter<"StudentProfile"> | string
+    emailAddress?: StringFilter<"StudentProfile"> | string
+    parentSpouseNumber?: StringNullableFilter<"StudentProfile"> | string | null
+    location?: StringNullableFilter<"StudentProfile"> | string | null
+    courseId?: StringNullableFilter<"StudentProfile"> | string | null
+    courseInterested?: StringFilter<"StudentProfile"> | string
+    facultyName?: StringNullableFilter<"StudentProfile"> | string | null
+    batchName?: StringNullableFilter<"StudentProfile"> | string | null
+    qualification?: StringNullableFilter<"StudentProfile"> | string | null
+    passedOutYear?: IntNullableFilter<"StudentProfile"> | number | null
+    currentStatus?: StringNullableFilter<"StudentProfile"> | string | null
+    designation?: StringNullableFilter<"StudentProfile"> | string | null
+    source?: StringNullableFilter<"StudentProfile"> | string | null
+    actualFees?: IntNullableFilter<"StudentProfile"> | number | null
+    registrationFees?: IntNullableFilter<"StudentProfile"> | number | null
+    discount?: IntNullableFilter<"StudentProfile"> | number | null
+    afterDiscount?: IntNullableFilter<"StudentProfile"> | number | null
+    installment1?: IntNullableFilter<"StudentProfile"> | number | null
+    installment2?: IntNullableFilter<"StudentProfile"> | number | null
+    installment3?: IntNullableFilter<"StudentProfile"> | number | null
+    totalAmount?: IntNullableFilter<"StudentProfile"> | number | null
+    admissionDate?: StringFilter<"StudentProfile"> | string
+    firstInstallmentAmount?: IntNullableFilter<"StudentProfile"> | number | null
+    firstInstallmentDate?: StringNullableFilter<"StudentProfile"> | string | null
+    firstInstallmentStatus?: StringFilter<"StudentProfile"> | string
+    firstInstallmentPaidAt?: StringNullableFilter<"StudentProfile"> | string | null
+    secondInstallmentAmount?: IntNullableFilter<"StudentProfile"> | number | null
+    secondDueDate?: StringNullableFilter<"StudentProfile"> | string | null
+    secondInstallmentStatus?: StringFilter<"StudentProfile"> | string
+    secondInstallmentPaidAt?: StringNullableFilter<"StudentProfile"> | string | null
+    remarks?: StringNullableFilter<"StudentProfile"> | string | null
+    recordStatus?: EnumRecordStatusFilter<"StudentProfile"> | $Enums.RecordStatus
+    createdBy?: StringNullableFilter<"StudentProfile"> | string | null
+    updatedBy?: StringNullableFilter<"StudentProfile"> | string | null
+    createdAt?: DateTimeFilter<"StudentProfile"> | Date | string
+    updatedAt?: DateTimeFilter<"StudentProfile"> | Date | string
+  }
+
   export type CourseStatusHistoryUpsertWithWhereUniqueWithoutCourseInput = {
     where: CourseStatusHistoryWhereUniqueInput
     update: XOR<CourseStatusHistoryUpdateWithoutCourseInput, CourseStatusHistoryUncheckedUpdateWithoutCourseInput>
@@ -17549,6 +20227,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     batches?: BatchCreateNestedManyWithoutCourseInput
+    students?: StudentProfileCreateNestedManyWithoutCourseInput
     statusHistory?: CourseStatusHistoryCreateNestedManyWithoutCourseInput
   }
 
@@ -17577,6 +20256,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     batches?: BatchUncheckedCreateNestedManyWithoutCourseInput
+    students?: StudentProfileUncheckedCreateNestedManyWithoutCourseInput
     statusHistory?: CourseStatusHistoryUncheckedCreateNestedManyWithoutCourseInput
   }
 
@@ -17621,6 +20301,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     batches?: BatchUpdateManyWithoutCourseNestedInput
+    students?: StudentProfileUpdateManyWithoutCourseNestedInput
     statusHistory?: CourseStatusHistoryUpdateManyWithoutCourseNestedInput
   }
 
@@ -17649,6 +20330,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     batches?: BatchUncheckedUpdateManyWithoutCourseNestedInput
+    students?: StudentProfileUncheckedUpdateManyWithoutCourseNestedInput
     statusHistory?: CourseStatusHistoryUncheckedUpdateManyWithoutCourseNestedInput
   }
 
@@ -17677,6 +20359,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     modules?: CourseModuleCreateNestedManyWithoutCourseInput
+    students?: StudentProfileCreateNestedManyWithoutCourseInput
     statusHistory?: CourseStatusHistoryCreateNestedManyWithoutCourseInput
   }
 
@@ -17705,6 +20388,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     modules?: CourseModuleUncheckedCreateNestedManyWithoutCourseInput
+    students?: StudentProfileUncheckedCreateNestedManyWithoutCourseInput
     statusHistory?: CourseStatusHistoryUncheckedCreateNestedManyWithoutCourseInput
   }
 
@@ -17819,6 +20503,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     modules?: CourseModuleUpdateManyWithoutCourseNestedInput
+    students?: StudentProfileUpdateManyWithoutCourseNestedInput
     statusHistory?: CourseStatusHistoryUpdateManyWithoutCourseNestedInput
   }
 
@@ -17847,6 +20532,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     modules?: CourseModuleUncheckedUpdateManyWithoutCourseNestedInput
+    students?: StudentProfileUncheckedUpdateManyWithoutCourseNestedInput
     statusHistory?: CourseStatusHistoryUncheckedUpdateManyWithoutCourseNestedInput
   }
 
@@ -18145,6 +20831,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     modules?: CourseModuleCreateNestedManyWithoutCourseInput
     batches?: BatchCreateNestedManyWithoutCourseInput
+    students?: StudentProfileCreateNestedManyWithoutCourseInput
   }
 
   export type CourseUncheckedCreateWithoutStatusHistoryInput = {
@@ -18173,6 +20860,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     modules?: CourseModuleUncheckedCreateNestedManyWithoutCourseInput
     batches?: BatchUncheckedCreateNestedManyWithoutCourseInput
+    students?: StudentProfileUncheckedCreateNestedManyWithoutCourseInput
   }
 
   export type CourseCreateOrConnectWithoutStatusHistoryInput = {
@@ -18217,6 +20905,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     modules?: CourseModuleUpdateManyWithoutCourseNestedInput
     batches?: BatchUpdateManyWithoutCourseNestedInput
+    students?: StudentProfileUpdateManyWithoutCourseNestedInput
   }
 
   export type CourseUncheckedUpdateWithoutStatusHistoryInput = {
@@ -18245,6 +20934,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     modules?: CourseModuleUncheckedUpdateManyWithoutCourseNestedInput
     batches?: BatchUncheckedUpdateManyWithoutCourseNestedInput
+    students?: StudentProfileUncheckedUpdateManyWithoutCourseNestedInput
   }
 
   export type BatchCreateWithoutStatusHistoryInput = {
@@ -18349,6 +21039,138 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     facultyAssignments?: BatchFacultyAssignmentUncheckedUpdateManyWithoutBatchNestedInput
+  }
+
+  export type CourseCreateWithoutStudentsInput = {
+    id?: string
+    name: string
+    nameKey: string
+    description?: string | null
+    feeReference?: string | null
+    mode: string
+    duration?: number | null
+    hours?: number | null
+    actualFees?: number | null
+    registrationFees?: number | null
+    discount?: number | null
+    afterDiscount?: number | null
+    installmentCount?: number
+    installment1?: number | null
+    installment2?: number | null
+    installment3?: number | null
+    status?: $Enums.RecordStatus
+    statusChangedAt?: Date | string | null
+    statusChangedBy?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    modules?: CourseModuleCreateNestedManyWithoutCourseInput
+    batches?: BatchCreateNestedManyWithoutCourseInput
+    statusHistory?: CourseStatusHistoryCreateNestedManyWithoutCourseInput
+  }
+
+  export type CourseUncheckedCreateWithoutStudentsInput = {
+    id?: string
+    name: string
+    nameKey: string
+    description?: string | null
+    feeReference?: string | null
+    mode: string
+    duration?: number | null
+    hours?: number | null
+    actualFees?: number | null
+    registrationFees?: number | null
+    discount?: number | null
+    afterDiscount?: number | null
+    installmentCount?: number
+    installment1?: number | null
+    installment2?: number | null
+    installment3?: number | null
+    status?: $Enums.RecordStatus
+    statusChangedAt?: Date | string | null
+    statusChangedBy?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    modules?: CourseModuleUncheckedCreateNestedManyWithoutCourseInput
+    batches?: BatchUncheckedCreateNestedManyWithoutCourseInput
+    statusHistory?: CourseStatusHistoryUncheckedCreateNestedManyWithoutCourseInput
+  }
+
+  export type CourseCreateOrConnectWithoutStudentsInput = {
+    where: CourseWhereUniqueInput
+    create: XOR<CourseCreateWithoutStudentsInput, CourseUncheckedCreateWithoutStudentsInput>
+  }
+
+  export type CourseUpsertWithoutStudentsInput = {
+    update: XOR<CourseUpdateWithoutStudentsInput, CourseUncheckedUpdateWithoutStudentsInput>
+    create: XOR<CourseCreateWithoutStudentsInput, CourseUncheckedCreateWithoutStudentsInput>
+    where?: CourseWhereInput
+  }
+
+  export type CourseUpdateToOneWithWhereWithoutStudentsInput = {
+    where?: CourseWhereInput
+    data: XOR<CourseUpdateWithoutStudentsInput, CourseUncheckedUpdateWithoutStudentsInput>
+  }
+
+  export type CourseUpdateWithoutStudentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameKey?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    feeReference?: NullableStringFieldUpdateOperationsInput | string | null
+    mode?: StringFieldUpdateOperationsInput | string
+    duration?: NullableIntFieldUpdateOperationsInput | number | null
+    hours?: NullableIntFieldUpdateOperationsInput | number | null
+    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
+    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
+    discount?: NullableIntFieldUpdateOperationsInput | number | null
+    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
+    installmentCount?: IntFieldUpdateOperationsInput | number
+    installment1?: NullableIntFieldUpdateOperationsInput | number | null
+    installment2?: NullableIntFieldUpdateOperationsInput | number | null
+    installment3?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    statusChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    statusChangedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    modules?: CourseModuleUpdateManyWithoutCourseNestedInput
+    batches?: BatchUpdateManyWithoutCourseNestedInput
+    statusHistory?: CourseStatusHistoryUpdateManyWithoutCourseNestedInput
+  }
+
+  export type CourseUncheckedUpdateWithoutStudentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameKey?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    feeReference?: NullableStringFieldUpdateOperationsInput | string | null
+    mode?: StringFieldUpdateOperationsInput | string
+    duration?: NullableIntFieldUpdateOperationsInput | number | null
+    hours?: NullableIntFieldUpdateOperationsInput | number | null
+    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
+    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
+    discount?: NullableIntFieldUpdateOperationsInput | number | null
+    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
+    installmentCount?: IntFieldUpdateOperationsInput | number
+    installment1?: NullableIntFieldUpdateOperationsInput | number | null
+    installment2?: NullableIntFieldUpdateOperationsInput | number | null
+    installment3?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    statusChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    statusChangedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    modules?: CourseModuleUncheckedUpdateManyWithoutCourseNestedInput
+    batches?: BatchUncheckedUpdateManyWithoutCourseNestedInput
+    statusHistory?: CourseStatusHistoryUncheckedUpdateManyWithoutCourseNestedInput
   }
 
   export type LoginEventCreateManyUserInput = {
@@ -18530,6 +21352,47 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type StudentProfileCreateManyCourseInput = {
+    id?: string
+    studentCode: string
+    studentName: string
+    mobileNumber: string
+    emailAddress: string
+    parentSpouseNumber?: string | null
+    location?: string | null
+    courseInterested: string
+    facultyName?: string | null
+    batchName?: string | null
+    qualification?: string | null
+    passedOutYear?: number | null
+    currentStatus?: string | null
+    designation?: string | null
+    source?: string | null
+    actualFees?: number | null
+    registrationFees?: number | null
+    discount?: number | null
+    afterDiscount?: number | null
+    installment1?: number | null
+    installment2?: number | null
+    installment3?: number | null
+    totalAmount?: number | null
+    admissionDate: string
+    firstInstallmentAmount?: number | null
+    firstInstallmentDate?: string | null
+    firstInstallmentStatus?: string
+    firstInstallmentPaidAt?: string | null
+    secondInstallmentAmount?: number | null
+    secondDueDate?: string | null
+    secondInstallmentStatus?: string
+    secondInstallmentPaidAt?: string | null
+    remarks?: string | null
+    recordStatus?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type CourseStatusHistoryCreateManyCourseInput = {
     id?: string
     fromStatus?: $Enums.RecordStatus | null
@@ -18642,6 +21505,129 @@ export namespace Prisma {
     status?: EnumBatchStatusFieldUpdateOperationsInput | $Enums.BatchStatus
     statusChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     statusChangedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type StudentProfileUpdateWithoutCourseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    studentCode?: StringFieldUpdateOperationsInput | string
+    studentName?: StringFieldUpdateOperationsInput | string
+    mobileNumber?: StringFieldUpdateOperationsInput | string
+    emailAddress?: StringFieldUpdateOperationsInput | string
+    parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    courseInterested?: StringFieldUpdateOperationsInput | string
+    facultyName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchName?: NullableStringFieldUpdateOperationsInput | string | null
+    qualification?: NullableStringFieldUpdateOperationsInput | string | null
+    passedOutYear?: NullableIntFieldUpdateOperationsInput | number | null
+    currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    designation?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: NullableStringFieldUpdateOperationsInput | string | null
+    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
+    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
+    discount?: NullableIntFieldUpdateOperationsInput | number | null
+    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
+    installment1?: NullableIntFieldUpdateOperationsInput | number | null
+    installment2?: NullableIntFieldUpdateOperationsInput | number | null
+    installment3?: NullableIntFieldUpdateOperationsInput | number | null
+    totalAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    admissionDate?: StringFieldUpdateOperationsInput | string
+    firstInstallmentAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    firstInstallmentDate?: NullableStringFieldUpdateOperationsInput | string | null
+    firstInstallmentStatus?: StringFieldUpdateOperationsInput | string
+    firstInstallmentPaidAt?: NullableStringFieldUpdateOperationsInput | string | null
+    secondInstallmentAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    secondDueDate?: NullableStringFieldUpdateOperationsInput | string | null
+    secondInstallmentStatus?: StringFieldUpdateOperationsInput | string
+    secondInstallmentPaidAt?: NullableStringFieldUpdateOperationsInput | string | null
+    remarks?: NullableStringFieldUpdateOperationsInput | string | null
+    recordStatus?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type StudentProfileUncheckedUpdateWithoutCourseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    studentCode?: StringFieldUpdateOperationsInput | string
+    studentName?: StringFieldUpdateOperationsInput | string
+    mobileNumber?: StringFieldUpdateOperationsInput | string
+    emailAddress?: StringFieldUpdateOperationsInput | string
+    parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    courseInterested?: StringFieldUpdateOperationsInput | string
+    facultyName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchName?: NullableStringFieldUpdateOperationsInput | string | null
+    qualification?: NullableStringFieldUpdateOperationsInput | string | null
+    passedOutYear?: NullableIntFieldUpdateOperationsInput | number | null
+    currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    designation?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: NullableStringFieldUpdateOperationsInput | string | null
+    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
+    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
+    discount?: NullableIntFieldUpdateOperationsInput | number | null
+    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
+    installment1?: NullableIntFieldUpdateOperationsInput | number | null
+    installment2?: NullableIntFieldUpdateOperationsInput | number | null
+    installment3?: NullableIntFieldUpdateOperationsInput | number | null
+    totalAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    admissionDate?: StringFieldUpdateOperationsInput | string
+    firstInstallmentAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    firstInstallmentDate?: NullableStringFieldUpdateOperationsInput | string | null
+    firstInstallmentStatus?: StringFieldUpdateOperationsInput | string
+    firstInstallmentPaidAt?: NullableStringFieldUpdateOperationsInput | string | null
+    secondInstallmentAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    secondDueDate?: NullableStringFieldUpdateOperationsInput | string | null
+    secondInstallmentStatus?: StringFieldUpdateOperationsInput | string
+    secondInstallmentPaidAt?: NullableStringFieldUpdateOperationsInput | string | null
+    remarks?: NullableStringFieldUpdateOperationsInput | string | null
+    recordStatus?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type StudentProfileUncheckedUpdateManyWithoutCourseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    studentCode?: StringFieldUpdateOperationsInput | string
+    studentName?: StringFieldUpdateOperationsInput | string
+    mobileNumber?: StringFieldUpdateOperationsInput | string
+    emailAddress?: StringFieldUpdateOperationsInput | string
+    parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    courseInterested?: StringFieldUpdateOperationsInput | string
+    facultyName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchName?: NullableStringFieldUpdateOperationsInput | string | null
+    qualification?: NullableStringFieldUpdateOperationsInput | string | null
+    passedOutYear?: NullableIntFieldUpdateOperationsInput | number | null
+    currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    designation?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: NullableStringFieldUpdateOperationsInput | string | null
+    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
+    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
+    discount?: NullableIntFieldUpdateOperationsInput | number | null
+    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
+    installment1?: NullableIntFieldUpdateOperationsInput | number | null
+    installment2?: NullableIntFieldUpdateOperationsInput | number | null
+    installment3?: NullableIntFieldUpdateOperationsInput | number | null
+    totalAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    admissionDate?: StringFieldUpdateOperationsInput | string
+    firstInstallmentAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    firstInstallmentDate?: NullableStringFieldUpdateOperationsInput | string | null
+    firstInstallmentStatus?: StringFieldUpdateOperationsInput | string
+    firstInstallmentPaidAt?: NullableStringFieldUpdateOperationsInput | string | null
+    secondInstallmentAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    secondDueDate?: NullableStringFieldUpdateOperationsInput | string | null
+    secondInstallmentStatus?: StringFieldUpdateOperationsInput | string
+    secondInstallmentPaidAt?: NullableStringFieldUpdateOperationsInput | string | null
+    remarks?: NullableStringFieldUpdateOperationsInput | string | null
+    recordStatus?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string

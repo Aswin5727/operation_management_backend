@@ -1,4 +1,5 @@
 const authConstants = {
+  ACCESS_COOKIE_NAME: "accessToken",
   REFRESH_COOKIE_NAME: "refreshToken",
   ACCESS_TOKEN_HEADER: "authorization",
   LOGIN_EVENT_TYPES: {
@@ -12,5 +13,5 @@ const authConstants = {
   },
 };
 
-export const { REFRESH_COOKIE_NAME, ACCESS_TOKEN_HEADER, LOGIN_EVENT_TYPES } = authConstants;
+export const { ACCESS_COOKIE_NAME, REFRESH_COOKIE_NAME, ACCESS_TOKEN_HEADER, LOGIN_EVENT_TYPES } = authConstants;
 export default authConstants;

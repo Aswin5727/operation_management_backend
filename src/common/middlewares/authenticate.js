@@ -1,6 +1,7 @@
 import prisma from "../../config/prisma.js";
 import AppError from "../errors/AppError.js";
 import { verifyAccessToken } from "../utils/tokens.js";
+import { ACCESS_COOKIE_NAME } from "../constants/auth.js";
 
 function getBearerToken(req) {
   const header = req.headers.authorization || "";
@@ -10,7 +11,7 @@ function getBearerToken(req) {
     return token;
   }
 
-  return req.cookies?.accessToken || null;
+  return req.cookies?.[ACCESS_COOKIE_NAME] || null;
 }
 
 async function authenticate(req, _res, next) {

@@ -1,6 +1,6 @@
 import asyncHandler from "../../common/utils/asyncHandler.js";
 import AppError from "../../common/errors/AppError.js";
-import { REFRESH_COOKIE_NAME } from "../../common/constants/auth.js";
+import { ACCESS_COOKIE_NAME, REFRESH_COOKIE_NAME } from "../../common/constants/auth.js";
 import {
   login,
   refreshSession,
@@ -17,8 +17,23 @@ function setRefreshCookie(res, refreshToken, cookieOptions) {
   });
 }
 
+function setAccessCookie(res, accessToken, cookieOptions) {
+  res.cookie(ACCESS_COOKIE_NAME, accessToken, {
+    ...cookieOptions,
+    maxAge: 15 * 60 * 1000,
+    path: "/api/v1",
+  });
+}
+
 function clearRefreshCookie(res, cookieOptions) {
   res.clearCookie(REFRESH_COOKIE_NAME, cookieOptions);
+}
+
+function clearAccessCookie(res, cookieOptions) {
+  res.clearCookie(ACCESS_COOKIE_NAME, {
+    ...cookieOptions,
+    path: "/api/v1",
+  });
 }
 
 const loginHandler = asyncHandler(async (req, res) => {
@@ -38,6 +53,7 @@ const loginHandler = asyncHandler(async (req, res) => {
   });
 
   setRefreshCookie(res, result.refreshToken, result.cookieOptions);
+  setAccessCookie(res, result.accessToken, result.cookieOptions);
 
   res.status(200).json({
     message: "Login successful",
@@ -64,6 +80,7 @@ const refreshHandler = asyncHandler(async (req, res) => {
   });
 
   setRefreshCookie(res, result.refreshToken, result.cookieOptions);
+  setAccessCookie(res, result.accessToken, result.cookieOptions);
 
   res.status(200).json({
     message: "Session refreshed",
@@ -90,6 +107,7 @@ const logoutHandler = asyncHandler(async (req, res) => {
   });
 
   clearRefreshCookie(res, result.cookieOptions);
+  clearAccessCookie(res, result.cookieOptions);
 
   res.status(200).json({
     message: "Logged out successfully",
