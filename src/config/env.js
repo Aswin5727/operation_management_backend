@@ -12,6 +12,10 @@ const buildDatabaseUrl = () => {
     return process.env.DATABASE_URL;
   }
 
+  if (process.env.PRISMA_DATABASE_URL) {
+    return process.env.PRISMA_DATABASE_URL;
+  }
+
   const host = process.env.DB_HOST || "";
   const port = process.env.DB_PORT || "";
   const name = process.env.DB_NAME || "";
