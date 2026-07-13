@@ -631,14 +631,8 @@ export async function deleteStudent(studentId, actor) {
     throw new AppError("Student not found", 404);
   }
 
-  const actorId = actor?.id ?? null;
-
-  const updated = await prisma.studentProfile.update({
+  const deleted = await prisma.studentProfile.delete({
     where: { id: studentId },
-    data: {
-      recordStatus: "INACTIVE",
-      updatedBy: actorId,
-    },
     include: {
       course: {
         select: {
@@ -651,5 +645,5 @@ export async function deleteStudent(studentId, actor) {
     },
   });
 
-  return toStudentDetail(updated);
+  return toStudentDetail(deleted);
 }
