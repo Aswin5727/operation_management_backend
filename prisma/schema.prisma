@@ -127,6 +127,7 @@ model Course {
   modules           CourseModule[]
   batches           Batch[]
   students          StudentProfile[]
+  facultyProfiles   FacultyProfile[]
   statusHistory     CourseStatusHistory[]
 
   @@index([status])
@@ -278,4 +279,37 @@ model StudentProfile {
   @@index([courseId])
   @@index([currentStatus])
   @@index([admissionDate])
+}
+
+model FacultyProfile {
+  id           String            @id @default(cuid())
+  facultyName  String
+  facultyEmail String
+  facultyPhone String
+  courseId     String?
+  course       Course?           @relation(fields: [courseId], references: [id], onDelete: SetNull)
+  status       RecordStatus      @default(ACTIVE)
+  batchEntries FacultyBatchEntry[]
+  createdBy    String?
+  updatedBy    String?
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+
+  @@index([status])
+  @@index([courseId])
+  @@index([facultyName])
+  @@index([facultyEmail])
+}
+
+model FacultyBatchEntry {
+  id          String         @id @default(cuid())
+  facultyId   String
+  faculty     FacultyProfile @relation(fields: [facultyId], references: [id], onDelete: Cascade)
+  batchName   String
+  batchTiming String
+  sequenceNo  Int            @default(1)
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  @@index([facultyId, sequenceNo])
 }
