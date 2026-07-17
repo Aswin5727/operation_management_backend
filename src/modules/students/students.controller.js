@@ -2,6 +2,7 @@ import asyncHandler from "../../common/utils/asyncHandler.js";
 import {
   createStudent,
   deleteStudent,
+  getCurrentStudentProfile,
   getStudent,
   listStudents,
   updateStudent,
@@ -24,6 +25,11 @@ function sendSuccess(res, message, data, meta = undefined, statusCode = 200) {
 export const listStudentsHandler = asyncHandler(async (req, res) => {
   const result = await listStudents(req.query);
   return sendSuccess(res, "Students fetched successfully", result.data, result.meta);
+});
+
+export const getCurrentStudentProfileHandler = asyncHandler(async (req, res) => {
+  const student = await getCurrentStudentProfile(req.user);
+  return sendSuccess(res, "Student profile fetched successfully", student);
 });
 
 export const createStudentHandler = asyncHandler(async (req, res) => {

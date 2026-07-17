@@ -1,5 +1,12 @@
+import crypto from "node:crypto";
+
 import prisma from "../../config/prisma.js";
+import config from "../../config/env.js";
 import AppError from "../../common/errors/AppError.js";
+import { hashPassword } from "../../common/utils/password.js";
+import {
+  sendFacultyCredentialsEmail,
+} from "../../common/services/resendEmail.js";
 
 const RECORD_STATUSES = new Set(["ACTIVE", "INACTIVE"]);
 
@@ -80,6 +87,51 @@ function parsePhone(value) {
     throw new AppError("Enter a valid 10-digit faculty phone number", 400);
   }
   return phone;
+}
+
+function normalizeFacultyCode() {
+  return `FAC-${crypto.randomUUID().slice(0, 8).toUpperCase()}`;
+}
+
+function generateTemporaryPassword() {
+  return crypto.randomBytes(9).toString("base64url");
+}
+
+async function ensureUniqueFacultyLogin({ facultyEmail, facultyPhone, facultyCode = null }, excludeUserId = null) {
+  const existing = await prisma.user.findFirst({
+    where: {
+      OR: [
+        { email: facultyEmail },
+        { phone: facultyPhone },
+        ...(facultyCode ? [{ userCode: facultyCode }] : []),
+      ],
+      ...(excludeUserId ? { id: { not: excludeUserId } } : {}),
+    },
+    select: {
+      id: true,
+      email: true,
+      phone: true,
+      userCode: true,
+    },
+  });
+
+  if (!existing) {
+    return;
+  }
+
+  if (existing.email === facultyEmail) {
+    throw new AppError("Faculty email already exists", 409);
+  }
+
+  if (existing.phone === facultyPhone) {
+    throw new AppError("Faculty phone number already exists", 409);
+  }
+
+  if (facultyCode && existing.userCode === facultyCode) {
+    throw new AppError("Faculty code collision, please retry", 409);
+  }
+
+  throw new AppError("Duplicate faculty login account", 409);
 }
 
 function resolveBatchTimingFromEntry(entry = {}) {
@@ -308,6 +360,74 @@ async function loadFacultyRecord(facultyId) {
   });
 }
 
+async function findFacultyLoginUser(existingFaculty) {
+  return prisma.user.findFirst({
+    where: {
+      OR: [
+        { email: existingFaculty.facultyEmail },
+        { phone: existingFaculty.facultyPhone },
+      ],
+    },
+  });
+}
+
+async function getFacultyProfileForUser(user) {
+  const normalizedEmail = normalizeString(user?.email).toLowerCase();
+
+  if (!normalizedEmail) {
+    throw new AppError("Faculty profile not found", 404);
+  }
+
+  const record = await prisma.facultyProfile.findFirst({
+    where: {
+      OR: [
+        ...(normalizedEmail ? [{ facultyEmail: normalizedEmail }] : []),
+      ],
+    },
+    include: {
+      course: {
+        select: {
+          id: true,
+          name: true,
+          mode: true,
+          status: true,
+        },
+      },
+      batchEntries: {
+        orderBy: { sequenceNo: "asc" },
+      },
+    },
+  });
+
+  if (!record) {
+    throw new AppError("Faculty profile not found", 404);
+  }
+
+  return toFacultyRecord(record);
+}
+
+function handleKnownPrismaError(error) {
+  if (error?.code === "P2002") {
+    const target = Array.isArray(error.meta?.target) ? error.meta.target.join(", ") : "unique field";
+
+    if (target.includes("facultyEmail") || target.includes("email")) {
+      throw new AppError("Faculty email already exists", 409);
+    }
+
+    if (target.includes("facultyPhone") || target.includes("phone")) {
+      throw new AppError("Faculty phone number already exists", 409);
+    }
+
+    if (target.includes("userCode")) {
+      throw new AppError("Faculty code collision, please retry", 409);
+    }
+
+    throw new AppError("Duplicate faculty record", 409);
+  }
+
+  throw error;
+}
+
 export async function listFacultyRecords(query) {
   const { page, limit, skip, take } = buildPagination(query);
   const where = buildFacultyWhere(query);
@@ -352,6 +472,14 @@ export async function getFacultyRecord(facultyId) {
   return toFacultyRecord(record);
 }
 
+export async function getCurrentFacultyProfile(user) {
+  if (String(user?.role || "").toUpperCase() !== "FACULTY") {
+    throw new AppError("Faculty profile not found", 404);
+  }
+
+  return getFacultyProfileForUser(user);
+}
+
 export async function createFacultyRecord(payload, actor) {
   const facultyName = parseRequiredText(payload.facultyName, "Faculty name");
   const facultyEmail = parseEmail(payload.facultyEmail);
@@ -359,54 +487,131 @@ export async function createFacultyRecord(payload, actor) {
   const courseId = parseRequiredText(payload.courseId, "Course");
   const status = parseStatus(payload.status ?? "ACTIVE");
   const batchEntries = parseBatchEntries(normalizeBatchEntriesPayload(payload));
+  const facultyCode = normalizeFacultyCode();
+  const temporaryPassword = generateTemporaryPassword();
+  const passwordHash = await hashPassword(temporaryPassword);
+  const resetToken = crypto.randomBytes(32).toString("hex");
+  const tokenHash = crypto.createHash("sha256").update(resetToken).digest("hex");
+  const expiresAt = new Date(Date.now() + config.passwordResetTokenExpiresMinutes * 60 * 1000);
 
   await ensureActiveCourse(courseId);
   await ensureUniqueIdentity({ facultyEmail, facultyPhone });
+  await ensureUniqueFacultyLogin({ facultyEmail, facultyPhone, facultyCode });
 
   const actorId = actor?.id ?? null;
 
-  const record = await prisma.$transaction(async (tx) => {
-    const created = await tx.facultyProfile.create({
-      data: {
-        facultyName,
-        facultyEmail,
-        facultyPhone,
-        courseId,
-        status,
-        createdBy: actorId,
-        updatedBy: actorId,
-      },
-    });
+  let record = null;
 
-    await tx.facultyBatchEntry.createMany({
-      data: batchEntries.map((entry) => ({
-        facultyId: created.id,
-        batchName: entry.batchName,
-        batchTiming: entry.batchTiming,
-        sequenceNo: entry.sequenceNo,
-      })),
-    });
+  try {
+    record = await prisma.$transaction(async (tx) => {
+      const created = await tx.facultyProfile.create({
+        data: {
+          facultyName,
+          facultyEmail,
+          facultyPhone,
+          courseId,
+          status,
+          createdBy: actorId,
+          updatedBy: actorId,
+        },
+      });
 
-    return tx.facultyProfile.findUnique({
-      where: { id: created.id },
-      include: {
-        course: {
-          select: {
-            id: true,
-            name: true,
-            mode: true,
-            status: true,
+      const user = await tx.user.create({
+        data: {
+          userCode: facultyCode,
+          fullName: facultyName,
+          email: facultyEmail,
+          phone: facultyPhone,
+          role: "FACULTY",
+          active: status === "ACTIVE",
+          passwordHash,
+          createdBy: actorId,
+          updatedBy: actorId,
+        },
+      });
+
+      await tx.passwordResetToken.create({
+        data: {
+          userId: user.id,
+          tokenHash,
+          expiresAt,
+          createdBy: actorId,
+        },
+      });
+
+      await tx.facultyBatchEntry.createMany({
+        data: batchEntries.map((entry) => ({
+          facultyId: created.id,
+          batchName: entry.batchName,
+          batchTiming: entry.batchTiming,
+          sequenceNo: entry.sequenceNo,
+        })),
+      });
+
+      return tx.facultyProfile.findUnique({
+        where: { id: created.id },
+        include: {
+          course: {
+            select: {
+              id: true,
+              name: true,
+              mode: true,
+              status: true,
+            },
+          },
+          batchEntries: {
+            orderBy: { sequenceNo: "asc" },
           },
         },
-        batchEntries: {
-          orderBy: { sequenceNo: "asc" },
-        },
-      },
+      });
     });
-  });
+  } catch (error) {
+    handleKnownPrismaError(error);
+  }
 
   if (!record) {
     throw new AppError("Faculty record could not be created", 500);
+  }
+
+  try {
+    await sendFacultyCredentialsEmail({
+      to: facultyEmail,
+      fullName: facultyName,
+      facultyCode,
+      temporaryPassword,
+      resetToken,
+      courseName: record.course?.name || "",
+      batchNames: batchEntries.map((entry) => entry.batchName),
+    });
+  } catch (error) {
+    await prisma.$transaction(async (tx) => {
+      const user = await tx.user.findFirst({
+        where: {
+          OR: [{ email: facultyEmail }, { phone: facultyPhone }, { userCode: facultyCode }],
+        },
+        select: { id: true },
+      });
+
+      if (user) {
+        await tx.passwordResetToken.deleteMany({
+          where: { userId: user.id },
+        });
+
+        await tx.user.delete({
+          where: { id: user.id },
+        });
+      }
+
+      await tx.facultyBatchEntry.deleteMany({
+        where: { facultyId: record.id },
+      });
+
+      await tx.facultyProfile.delete({
+        where: { id: record.id },
+      });
+    });
+
+    throw error;
   }
 
   return toFacultyRecord(record);
@@ -440,52 +645,77 @@ export async function updateFacultyRecord(facultyId, payload, actor) {
 
   await ensureActiveCourse(nextCourseId);
   await ensureUniqueIdentity({ facultyEmail, facultyPhone }, facultyId);
+  const existingLoginUser = await findFacultyLoginUser(existing);
+
+  if (existingLoginUser) {
+    await ensureUniqueFacultyLogin({ facultyEmail, facultyPhone }, existingLoginUser.id);
+  }
 
   const actorId = actor?.id ?? null;
 
-  const record = await prisma.$transaction(async (tx) => {
-    await tx.facultyProfile.update({
-      where: { id: facultyId },
-      data: {
-        facultyName,
-        facultyEmail,
-        facultyPhone,
-        courseId: nextCourseId,
-        status,
-        updatedBy: actorId,
-      },
-    });
+  let record = null;
 
-    await tx.facultyBatchEntry.deleteMany({
-      where: { facultyId },
-    });
+  try {
+    record = await prisma.$transaction(async (tx) => {
+      await tx.facultyProfile.update({
+        where: { id: facultyId },
+        data: {
+          facultyName,
+          facultyEmail,
+          facultyPhone,
+          courseId: nextCourseId,
+          status,
+          updatedBy: actorId,
+        },
+      });
 
-    await tx.facultyBatchEntry.createMany({
-      data: batchEntries.map((entry) => ({
-        facultyId,
-        batchName: entry.batchName,
-        batchTiming: entry.batchTiming,
-        sequenceNo: entry.sequenceNo,
-      })),
-    });
+      await tx.facultyBatchEntry.deleteMany({
+        where: { facultyId },
+      });
 
-    return tx.facultyProfile.findUnique({
-      where: { id: facultyId },
-      include: {
-        course: {
-          select: {
-            id: true,
-            name: true,
-            mode: true,
-            status: true,
+      await tx.facultyBatchEntry.createMany({
+        data: batchEntries.map((entry) => ({
+          facultyId,
+          batchName: entry.batchName,
+          batchTiming: entry.batchTiming,
+          sequenceNo: entry.sequenceNo,
+        })),
+      });
+
+      if (existingLoginUser) {
+        await tx.user.update({
+          where: { id: existingLoginUser.id },
+          data: {
+            fullName: facultyName,
+            email: facultyEmail,
+            phone: facultyPhone,
+            role: "FACULTY",
+            active: status === "ACTIVE",
+            updatedBy: actorId,
+          },
+        });
+      }
+
+      return tx.facultyProfile.findUnique({
+        where: { id: facultyId },
+        include: {
+          course: {
+            select: {
+              id: true,
+              name: true,
+              mode: true,
+              status: true,
+            },
+          },
+          batchEntries: {
+            orderBy: { sequenceNo: "asc" },
           },
         },
-        batchEntries: {
-          orderBy: { sequenceNo: "asc" },
-        },
-      },
+      });
     });
-  });
+  } catch (error) {
+    handleKnownPrismaError(error);
+  }
 
   if (!record) {
     throw new AppError("Faculty record could not be updated", 500);
@@ -508,10 +738,22 @@ export async function deleteFacultyRecord(facultyId, actor) {
     throw new AppError("Faculty record not found", 404);
   }
 
+  const existingLoginUser = await findFacultyLoginUser(existing);
+
   const record = await prisma.$transaction(async (tx) => {
     await tx.facultyBatchEntry.deleteMany({
       where: { facultyId },
     });
+
+    if (existingLoginUser) {
+      await tx.passwordResetToken.deleteMany({
+        where: { userId: existingLoginUser.id },
+      });
+
+      await tx.user.delete({
+        where: { id: existingLoginUser.id },
+      });
+    }
 
     await tx.facultyProfile.delete({
       where: { id: facultyId },

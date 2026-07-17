@@ -5,12 +5,15 @@ import { authorize } from "../../common/middlewares/authorize.js";
 import {
   createFacultyRecordHandler,
   deleteFacultyRecordHandler,
+  getCurrentFacultyProfileHandler,
   getFacultyRecordHandler,
   listFacultyRecordsHandler,
   updateFacultyRecordHandler,
 } from "./facultyManagement.controller.js";
 
 const router = express.Router();
+
+router.get("/me", authenticate, getCurrentFacultyProfileHandler);
 
 router.use(authenticate, authorize("OPERATION_MANAGER", "BUSINESS_OWNER"));
 

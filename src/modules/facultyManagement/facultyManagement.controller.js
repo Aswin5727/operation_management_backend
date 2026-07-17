@@ -2,6 +2,7 @@ import asyncHandler from "../../common/utils/asyncHandler.js";
 import {
   createFacultyRecord,
   deleteFacultyRecord,
+  getCurrentFacultyProfile,
   getFacultyRecord,
   listFacultyRecords,
   updateFacultyRecord,
@@ -24,6 +25,11 @@ function sendSuccess(res, message, data, meta = undefined, statusCode = 200) {
 export const listFacultyRecordsHandler = asyncHandler(async (req, res) => {
   const result = await listFacultyRecords(req.query);
   return sendSuccess(res, "Faculty records fetched successfully", result.data, result.meta);
+});
+
+export const getCurrentFacultyProfileHandler = asyncHandler(async (req, res) => {
+  const record = await getCurrentFacultyProfile(req.user);
+  return sendSuccess(res, "Faculty profile fetched successfully", record);
 });
 
 export const getFacultyRecordHandler = asyncHandler(async (req, res) => {

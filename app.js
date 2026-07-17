@@ -12,7 +12,10 @@ import { errorHandler } from "./src/common/middlewares/errorHandler.js";
 const app = express();
 
 const corsOptions = {
-  origin: config.corsOrigin ? config.corsOrigin.split(",").map((item) => item.trim()) : true,
+  origin:
+    config.nodeEnv === "production" && config.corsOrigin
+      ? config.corsOrigin.split(",").map((item) => item.trim())
+      : true,
   credentials: true,
 };
 
