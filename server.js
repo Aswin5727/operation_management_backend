@@ -4,7 +4,7 @@ import app from "./app.js";
 import config from "./src/config/env.js";
 
 function startServer() {
-  return app.listen(config.port, () => {
+  return app.listen(config.port, "0.0.0.0", () => {
     console.log(`Backend server running on port ${config.port}`);
   });
 }

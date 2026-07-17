@@ -11,6 +11,11 @@ import {
 } from "../../common/utils/tokens.js";
 import { toSafeUser } from "../../common/utils/user.js";
 import { LOGIN_EVENT_TYPES } from "../../common/constants/auth.js";
+import {
+  sendFacultyWelcomeEmail,
+  sendPasswordResetEmail,
+  sendStudentWelcomeEmail,
+} from "../../common/services/resendEmail.js";
 
 function normalizeIdentifier(identifier) {
   return String(identifier || "").trim().toLowerCase();
@@ -121,9 +126,84 @@ async function login({ identifier, password, ipAddress, userAgent }) {
     throw new AppError("Invalid credentials", 401);
   }
 
+  const role = String(user.role || "").toUpperCase();
+  const isFirstLogin = !user.lastLoginAt;
+  let studentCourseName = "";
+  let facultyWelcomeCourseName = "";
+  let facultyWelcomeBatchNames = [];
+
+  if (isFirstLogin && role === "STUDENT") {
+    const studentProfile = await prisma.studentProfile.findFirst({
+      where: {
+        OR: [{ emailAddress: user.email }, { studentCode: user.userCode }],
+      },
+      select: {
+        courseInterested: true,
+        course: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
+
+    studentCourseName = studentProfile?.course?.name || studentProfile?.courseInterested || "";
+  }
+
+  if (isFirstLogin && role === "FACULTY") {
+    const facultyProfile = await prisma.facultyProfile.findFirst({
+      where: {
+        facultyEmail: user.email,
+      },
+      select: {
+        course: {
+          select: {
+            name: true,
+          },
+        },
+        batchEntries: {
+          orderBy: { sequenceNo: "asc" },
+          select: {
+            batchName: true,
+          },
+        },
+      },
+    });
+
+    facultyWelcomeCourseName = facultyProfile?.course?.name || "";
+    facultyWelcomeBatchNames = Array.isArray(facultyProfile?.batchEntries)
+      ? facultyProfile.batchEntries.map((entry) => entry.batchName).filter(Boolean)
+      : [];
+  }
+
   const refreshedUser = await resetLoginState(user.id, { ipAddress, userAgent });
   const accessToken = createAccessToken(refreshedUser);
   const refreshToken = createRefreshToken(refreshedUser);
+
+  if (isFirstLogin && role === "STUDENT") {
+    try {
+      await sendStudentWelcomeEmail({
+        to: refreshedUser.email,
+        fullName: refreshedUser.fullName,
+        courseName: studentCourseName,
+      });
+    } catch (error) {
+      console.error("Failed to send student welcome email:", error);
+    }
+  }
+
+  if (isFirstLogin && role === "FACULTY") {
+    try {
+      await sendFacultyWelcomeEmail({
+        to: refreshedUser.email,
+        fullName: refreshedUser.fullName,
+        courseName: facultyWelcomeCourseName,
+        batchNames: facultyWelcomeBatchNames,
+      });
+    } catch (error) {
+      console.error("Failed to send faculty welcome email:", error);
+    }
+  }
 
   return {
     user: toSafeUser(refreshedUser),
@@ -247,6 +327,21 @@ async function forgotPassword({ identifier, ipAddress, userAgent }) {
       },
     }),
   ]);
+
+  try {
+    await sendPasswordResetEmail({
+      to: user.email,
+      resetToken,
+    });
+  } catch (error) {
+    await prisma.passwordResetToken.deleteMany({
+      where: {
+        userId: user.id,
+        tokenHash,
+      },
+    });
+    throw error;
+  }
 
   return {
     message: "If the account exists, a reset token has been generated.",

@@ -3,7 +3,12 @@ import crypto from "node:crypto";
 import { Prisma } from "@prisma/client";
 
 import prisma from "../../config/prisma.js";
+import config from "../../config/env.js";
 import AppError from "../../common/errors/AppError.js";
+import { hashPassword } from "../../common/utils/password.js";
+import {
+  sendStudentCredentialsEmail,
+} from "../../common/services/resendEmail.js";
 
 const RECORD_STATUSES = new Set(["ACTIVE", "INACTIVE"]);
 const CURRENT_STATUSES = new Set(["Student", "Employee", "Other"]);
@@ -306,6 +311,50 @@ async function ensureUniqueStudentIdentity({ emailAddress, mobileNumber }, exclu
   }
 }
 
+async function ensureUniqueStudentLogin({ emailAddress, mobileNumber, studentCode = null }) {
+  const user = await prisma.user.findFirst({
+    where: {
+      OR: [{ email: emailAddress }, { phone: mobileNumber }, ...(studentCode ? [{ userCode: studentCode }] : [])],
+      ...(studentCode ? { userCode: { not: studentCode } } : {}),
+    },
+    select: {
+      id: true,
+      email: true,
+      phone: true,
+      userCode: true,
+    },
+  });
+
+  if (!user) {
+    return;
+  }
+
+  if (user.email === emailAddress) {
+    throw new AppError("Student email already exists", 409);
+  }
+
+  if (user.phone === mobileNumber) {
+    throw new AppError("Student mobile number already exists", 409);
+  }
+
+  throw new AppError("Duplicate student login account", 409);
+}
+
+function generateTemporaryPassword() {
+  return crypto.randomBytes(9).toString("base64url");
+}
+
+async function findStudentLoginUser(existingStudent) {
+  return prisma.user.findFirst({
+    where: {
+      OR: [
+        { userCode: existingStudent.studentCode },
+        { email: existingStudent.emailAddress },
+      ],
+    },
+  });
+}
+
 async function ensureCourse(courseId, { requireActive = true } = {}) {
   const course = await prisma.course.findUnique({
     where: { id: courseId },
@@ -442,15 +491,15 @@ async function handleKnownPrismaError(error) {
   if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2002") {
     const target = Array.isArray(error.meta?.target) ? error.meta.target.join(", ") : "unique field";
 
-    if (target.includes("emailAddress")) {
+    if (target.includes("emailAddress") || target.includes("email")) {
       throw new AppError("Student email already exists", 409);
     }
 
-    if (target.includes("mobileNumber")) {
+    if (target.includes("mobileNumber") || target.includes("phone")) {
       throw new AppError("Student mobile number already exists", 409);
     }
 
-    if (target.includes("studentCode")) {
+    if (target.includes("studentCode") || target.includes("userCode")) {
       throw new AppError("Student code collision, please retry", 409);
     }
 
@@ -517,39 +566,151 @@ export async function listStudents(query) {
   };
 }
 
+export async function getCurrentStudentProfile(user) {
+  const normalizedEmail = normalizeString(user?.email).toLowerCase();
+  const normalizedUserCode = normalizeString(user?.userCode);
+
+  if (!normalizedEmail && !normalizedUserCode) {
+    throw new AppError("Student profile not found", 404);
+  }
+
+  const student = await prisma.studentProfile.findFirst({
+    where: {
+      OR: [
+        ...(normalizedEmail ? [{ emailAddress: normalizedEmail }] : []),
+        ...(normalizedUserCode ? [{ studentCode: normalizedUserCode }] : []),
+      ],
+    },
+    include: {
+      course: {
+        select: {
+          id: true,
+          name: true,
+          status: true,
+          mode: true,
+        },
+      },
+    },
+  });
+
+  if (!student) {
+    throw new AppError("Student profile not found", 404);
+  }
+
+  return toStudentDetail(student);
+}
+
 export async function createStudent(payload, actor) {
   const resolvedCourseId = normalizeString(payload.courseId);
   const course = await ensureCourse(resolvedCourseId, { requireActive: true });
   const parsed = buildStudentPayload(payload, null, course);
-  await ensureUniqueStudentIdentity(parsed);
-
   const actorId = actor?.id ?? null;
   const studentCode = normalizeStudentCode();
+  const temporaryPassword = generateTemporaryPassword();
+  const passwordHash = await hashPassword(temporaryPassword);
+  const resetToken = crypto.randomBytes(32).toString("hex");
+  const tokenHash = crypto.createHash("sha256").update(resetToken).digest("hex");
+  const expiresAt = new Date(Date.now() + config.passwordResetTokenExpiresMinutes * 60 * 1000);
+
+  await ensureUniqueStudentIdentity(parsed);
+  await ensureUniqueStudentLogin({
+    emailAddress: parsed.emailAddress,
+    mobileNumber: parsed.mobileNumber,
+    studentCode,
+  });
+
+  let createdRecord;
 
   try {
-    const created = await prisma.studentProfile.create({
-      data: {
-        ...parsed,
-        studentCode,
-        createdBy: actorId,
-        updatedBy: actorId,
-      },
-      include: {
-        course: {
-          select: {
-            id: true,
-            name: true,
-            status: true,
-            mode: true,
+    const created = await prisma.$transaction(async (tx) => {
+      const student = await tx.studentProfile.create({
+        data: {
+          ...parsed,
+          studentCode,
+          createdBy: actorId,
+          updatedBy: actorId,
+        },
+        include: {
+          course: {
+            select: {
+              id: true,
+              name: true,
+              status: true,
+              mode: true,
+            },
           },
         },
-      },
+      });
+
+      const user = await tx.user.create({
+        data: {
+          userCode: studentCode,
+          fullName: parsed.studentName,
+          email: parsed.emailAddress,
+          phone: parsed.mobileNumber,
+          role: "STUDENT",
+          active: true,
+          passwordHash,
+          createdBy: actorId,
+          updatedBy: actorId,
+        },
+      });
+
+      const resetTokenRecord = await tx.passwordResetToken.create({
+        data: {
+          userId: user.id,
+          tokenHash,
+          expiresAt,
+          createdBy: actorId,
+        },
+      });
+
+      return {
+        student,
+        userId: user.id,
+        resetTokenId: resetTokenRecord.id,
+      };
     });
 
-    return toStudentDetail(created);
+    createdRecord = created.student;
   } catch (error) {
     await handleKnownPrismaError(error);
   }
+
+  if (!createdRecord) {
+    return null;
+  }
+
+  try {
+    await sendStudentCredentialsEmail({
+      to: parsed.emailAddress,
+      fullName: parsed.studentName,
+      studentCode,
+      temporaryPassword,
+      resetToken,
+    });
+  } catch (error) {
+    await prisma.$transaction(async (tx) => {
+      await tx.passwordResetToken.deleteMany({
+        where: {
+          tokenHash,
+        },
+      });
+      await tx.user.deleteMany({
+        where: {
+          userCode: studentCode,
+        },
+      });
+      await tx.studentProfile.deleteMany({
+        where: {
+          studentCode,
+        },
+      });
+    });
+    throw error;
+  }
+
+  return toStudentDetail(createdRecord);
 }
 
 export async function getStudent(studentId) {
@@ -590,9 +751,15 @@ export async function updateStudent(studentId, payload, actor) {
   const shouldRequireActiveCourse = !existingStudent.courseId || normalizeString(payload.courseId || "") !== existingStudent.courseId;
   const course = nextCourseId ? await ensureCourse(nextCourseId, { requireActive: shouldRequireActiveCourse }) : null;
   const parsed = buildStudentPayload(payload, existingStudent, course);
+  const existingLoginUser = await findStudentLoginUser(existingStudent);
 
   if (parsed.emailAddress !== existingStudent.emailAddress || parsed.mobileNumber !== existingStudent.mobileNumber) {
     await ensureUniqueStudentIdentity(parsed, studentId);
+    await ensureUniqueStudentLogin({
+      emailAddress: parsed.emailAddress,
+      mobileNumber: parsed.mobileNumber,
+      studentCode: existingStudent.studentCode,
+    });
   }
 
   const actorId = actor?.id ?? null;
@@ -616,6 +783,18 @@ export async function updateStudent(studentId, payload, actor) {
       },
     });
 
+    if (existingLoginUser) {
+      await prisma.user.update({
+        where: { id: existingLoginUser.id },
+        data: {
+          fullName: parsed.studentName,
+          email: parsed.emailAddress,
+          phone: parsed.mobileNumber,
+          updatedBy: actorId,
+        },
+      });
+    }
+
     return toStudentDetail(updated);
   } catch (error) {
     await handleKnownPrismaError(error);
@@ -624,14 +803,6 @@ export async function updateStudent(studentId, payload, actor) {
 
 export async function deleteStudent(studentId, actor) {
   const existingStudent = await prisma.studentProfile.findUnique({
-    where: { id: studentId },
-  });
-
-  if (!existingStudent) {
-    throw new AppError("Student not found", 404);
-  }
-
-  const deleted = await prisma.studentProfile.delete({
     where: { id: studentId },
     include: {
       course: {
@@ -643,6 +814,26 @@ export async function deleteStudent(studentId, actor) {
         },
       },
     },
+  });
+
+  if (!existingStudent) {
+    throw new AppError("Student not found", 404);
+  }
+
+  const existingLoginUser = await findStudentLoginUser(existingStudent);
+
+  const deleted = await prisma.$transaction(async (tx) => {
+    await tx.studentProfile.delete({
+      where: { id: studentId },
+    });
+
+    if (existingLoginUser) {
+      await tx.user.deleteMany({
+        where: { id: existingLoginUser.id },
+      });
+    }
+
+    return existingStudent;
   });
 
   return toStudentDetail(deleted);
