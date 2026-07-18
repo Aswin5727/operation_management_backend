@@ -128,6 +128,8 @@ model Course {
   batches           Batch[]
   students          StudentProfile[]
   facultyProfiles   FacultyProfile[]
+  facultyCourseAssignments FacultyCourseAssignment[]
+  facultyBatchEntries FacultyBatchEntry[]
   statusHistory     CourseStatusHistory[]
 
   @@index([status])
@@ -289,6 +291,7 @@ model FacultyProfile {
   courseId     String?
   course       Course?           @relation(fields: [courseId], references: [id], onDelete: SetNull)
   status       RecordStatus      @default(ACTIVE)
+  courseAssignments FacultyCourseAssignment[]
   batchEntries FacultyBatchEntry[]
   createdBy    String?
   updatedBy    String?
@@ -301,10 +304,27 @@ model FacultyProfile {
   @@index([facultyEmail])
 }
 
+model FacultyCourseAssignment {
+  id         String         @id @default(cuid())
+  facultyId  String
+  faculty    FacultyProfile @relation(fields: [facultyId], references: [id], onDelete: Cascade)
+  courseId   String
+  course     Course         @relation(fields: [courseId], references: [id], onDelete: Restrict)
+  createdBy  String?
+  updatedBy  String?
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @updatedAt
+
+  @@unique([facultyId, courseId])
+  @@index([courseId])
+}
+
 model FacultyBatchEntry {
   id          String         @id @default(cuid())
   facultyId   String
   faculty     FacultyProfile @relation(fields: [facultyId], references: [id], onDelete: Cascade)
+  courseId    String?
+  course      Course?        @relation(fields: [courseId], references: [id], onDelete: SetNull)
   batchName   String
   batchTiming String
   sequenceNo  Int            @default(1)
@@ -312,4 +332,5 @@ model FacultyBatchEntry {
   updatedAt   DateTime       @updatedAt
 
   @@index([facultyId, sequenceNo])
+  @@index([courseId])
 }

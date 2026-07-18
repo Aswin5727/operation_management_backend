@@ -89,6 +89,22 @@ function parsePhone(value) {
   return phone;
 }
 
+function normalizeCourseIds(value, fallback = "") {
+  const courseIds = Array.isArray(value)
+    ? value
+    : String(fallback || "").trim()
+      ? [fallback]
+      : [];
+
+  return Array.from(
+    new Set(
+      courseIds
+        .map((courseId) => normalizeString(courseId))
+        .filter(Boolean),
+    ),
+  );
+}
+
 function normalizeFacultyCode() {
   return `FAC-${crypto.randomUUID().slice(0, 8).toUpperCase()}`;
 }
@@ -162,21 +178,26 @@ function parseBatchEntries(value) {
     throw new AppError("Add at least one batch", 400);
   }
 
-  const seenBatchNames = new Set();
+  const seenBatchNamesByCourse = new Map();
 
   return value.map((entry, index) => {
     const batchName = parseRequiredText(entry?.batchName, `Batch ${index + 1} name`);
     const batchTiming = parseRequiredText(resolveBatchTimingFromEntry(entry), `Batch ${index + 1} timing`);
+    const courseId = parseRequiredText(entry?.courseId, `Batch ${index + 1} course`);
+    const normalizedCourseId = normalizeSearchKey(courseId);
     const normalizedName = normalizeSearchKey(batchName);
+    const existingNames = seenBatchNamesByCourse.get(normalizedCourseId) || new Set();
 
-    if (seenBatchNames.has(normalizedName)) {
-      throw new AppError("Batch names must be unique within the same faculty", 400);
+    if (existingNames.has(normalizedName)) {
+      throw new AppError("Batch names must be unique within the same course", 400);
     }
 
-    seenBatchNames.add(normalizedName);
+    existingNames.add(normalizedName);
+    seenBatchNamesByCourse.set(normalizedCourseId, existingNames);
 
     return {
       sequenceNo: index + 1,
+      courseId,
       batchName,
       batchTiming,
     };
@@ -190,12 +211,14 @@ function normalizeBatchEntriesPayload(payload) {
 
   const batchName = normalizeString(payload?.batchName);
   const batchTiming = resolveBatchTimingFromEntry(payload);
+  const courseId = normalizeString(payload?.courseId || payload?.batchCourseId);
 
-  if (batchName && batchTiming) {
+  if (batchName && batchTiming && courseId) {
     return [
       {
         batchName,
         batchTiming,
+        courseId,
       },
     ];
   }
@@ -214,10 +237,23 @@ function toCourseSummary(course) {
   };
 }
 
+function toCourseAssignmentSummary(assignment) {
+  return {
+    id: assignment.id,
+    facultyId: assignment.facultyId,
+    courseId: assignment.courseId || "",
+    courseName: assignment.course?.name || "",
+    createdAt: assignment.createdAt,
+    updatedAt: assignment.updatedAt,
+  };
+}
+
 function toBatchEntry(entry) {
   return {
     id: entry.id,
     facultyId: entry.facultyId,
+    courseId: entry.courseId || "",
+    courseName: entry.course?.name || "",
     batchName: entry.batchName,
     batchTiming: entry.batchTiming,
     sequenceNo: entry.sequenceNo,
@@ -227,17 +263,33 @@ function toBatchEntry(entry) {
 }
 
 function toFacultyRecord(record) {
+  const batchEntries = Array.isArray(record.batchEntries) ? record.batchEntries.map(toBatchEntry) : [];
+  const courseAssignments = Array.isArray(record.courseAssignments) ? record.courseAssignments.map(toCourseAssignmentSummary) : [];
+  const courseIds = Array.from(
+    new Set(
+      [
+        record.courseId,
+        ...courseAssignments.map((assignment) => assignment.courseId),
+        ...batchEntries.map((entry) => entry.courseId),
+      ]
+        .map((courseId) => normalizeString(courseId))
+        .filter(Boolean),
+    ),
+  );
+
   return {
     id: record.id,
     facultyName: record.facultyName,
     facultyEmail: record.facultyEmail,
     facultyPhone: record.facultyPhone,
     courseId: record.courseId,
+    courseIds,
     courseName: record.course?.name || "",
     course: toCourseSummary(record.course),
+    courseAssignments,
     status: record.status === "ACTIVE" ? "Active" : "Inactive",
-    batchEntries: Array.isArray(record.batchEntries) ? record.batchEntries.map(toBatchEntry) : [],
-    batchCount: Array.isArray(record.batchEntries) ? record.batchEntries.length : 0,
+    batchEntries,
+    batchCount: batchEntries.length,
     createdBy: record.createdBy,
     updatedBy: record.updatedBy,
     createdAt: record.createdAt,
@@ -355,6 +407,27 @@ async function loadFacultyRecord(facultyId) {
       },
       batchEntries: {
         orderBy: { sequenceNo: "asc" },
+        include: {
+          course: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+        },
+      },
+      courseAssignments: {
+        orderBy: { createdAt: "asc" },
+        include: {
+          course: {
+            select: {
+              id: true,
+              name: true,
+              mode: true,
+              status: true,
+            },
+          },
+        },
       },
     },
   });
@@ -395,6 +468,27 @@ async function getFacultyProfileForUser(user) {
       },
       batchEntries: {
         orderBy: { sequenceNo: "asc" },
+        include: {
+          course: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+        },
+      },
+      courseAssignments: {
+        orderBy: { createdAt: "asc" },
+        include: {
+          course: {
+            select: {
+              id: true,
+              name: true,
+              mode: true,
+              status: true,
+            },
+          },
+        },
       },
     },
   });
@@ -452,6 +546,27 @@ export async function listFacultyRecords(query) {
         },
         batchEntries: {
           orderBy: { sequenceNo: "asc" },
+          include: {
+            course: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+          },
+        },
+        courseAssignments: {
+          orderBy: { createdAt: "asc" },
+          include: {
+            course: {
+              select: {
+                id: true,
+                name: true,
+                mode: true,
+                status: true,
+              },
+            },
+          },
         },
       },
     }),
@@ -484,8 +599,8 @@ export async function createFacultyRecord(payload, actor) {
   const facultyName = parseRequiredText(payload.facultyName, "Faculty name");
   const facultyEmail = parseEmail(payload.facultyEmail);
   const facultyPhone = parsePhone(payload.facultyPhone);
-  const courseId = parseRequiredText(payload.courseId, "Course");
   const status = parseStatus(payload.status ?? "ACTIVE");
+  const selectedCourseIds = normalizeCourseIds(payload.courseIds, payload.courseId);
   const batchEntries = parseBatchEntries(normalizeBatchEntriesPayload(payload));
   const facultyCode = normalizeFacultyCode();
   const temporaryPassword = generateTemporaryPassword();
@@ -494,11 +609,27 @@ export async function createFacultyRecord(payload, actor) {
   const tokenHash = crypto.createHash("sha256").update(resetToken).digest("hex");
   const expiresAt = new Date(Date.now() + config.passwordResetTokenExpiresMinutes * 60 * 1000);
 
-  await ensureActiveCourse(courseId);
+  const batchCourseIds = Array.from(new Set(batchEntries.map((entry) => normalizeString(entry.courseId)).filter(Boolean)));
+  const effectiveCourseIds = selectedCourseIds.length ? selectedCourseIds : batchCourseIds;
+
+  if (!effectiveCourseIds.length) {
+    throw new AppError("Course is required", 400);
+  }
+
+  if (selectedCourseIds.length && batchCourseIds.some((courseId) => !selectedCourseIds.includes(courseId))) {
+    throw new AppError("Batch course selection is invalid", 400);
+  }
+
+  if (effectiveCourseIds.some((courseId) => !batchCourseIds.includes(courseId))) {
+    throw new AppError("Add at least one batch for each selected course", 400);
+  }
+
+  await Promise.all(effectiveCourseIds.map((courseId) => ensureActiveCourse(courseId)));
   await ensureUniqueIdentity({ facultyEmail, facultyPhone });
   await ensureUniqueFacultyLogin({ facultyEmail, facultyPhone, facultyCode });
 
   const actorId = actor?.id ?? null;
+  const primaryCourseId = effectiveCourseIds[0] || null;
 
   let record = null;
 
@@ -509,7 +640,7 @@ export async function createFacultyRecord(payload, actor) {
           facultyName,
           facultyEmail,
           facultyPhone,
-          courseId,
+          courseId: primaryCourseId,
           status,
           createdBy: actorId,
           updatedBy: actorId,
@@ -542,9 +673,19 @@ export async function createFacultyRecord(payload, actor) {
       await tx.facultyBatchEntry.createMany({
         data: batchEntries.map((entry) => ({
           facultyId: created.id,
+          courseId: normalizeString(entry.courseId) || primaryCourseId,
           batchName: entry.batchName,
           batchTiming: entry.batchTiming,
           sequenceNo: entry.sequenceNo,
+        })),
+      });
+
+      await tx.facultyCourseAssignment.createMany({
+        data: effectiveCourseIds.map((courseId) => ({
+          facultyId: created.id,
+          courseId,
+          createdBy: actorId,
+          updatedBy: actorId,
         })),
       });
 
@@ -561,6 +702,27 @@ export async function createFacultyRecord(payload, actor) {
           },
           batchEntries: {
             orderBy: { sequenceNo: "asc" },
+            include: {
+              course: {
+                select: {
+                  id: true,
+                  name: true,
+                },
+              },
+            },
+          },
+          courseAssignments: {
+            orderBy: { createdAt: "asc" },
+            include: {
+              course: {
+                select: {
+                  id: true,
+                  name: true,
+                  mode: true,
+                  status: true,
+                },
+              },
+            },
           },
         },
       });
@@ -624,6 +786,9 @@ export async function updateFacultyRecord(facultyId, payload, actor) {
       batchEntries: {
         orderBy: { sequenceNo: "asc" },
       },
+      courseAssignments: {
+        orderBy: { createdAt: "asc" },
+      },
     },
   });
 
@@ -635,15 +800,36 @@ export async function updateFacultyRecord(facultyId, payload, actor) {
     payload.facultyName !== undefined ? parseRequiredText(payload.facultyName, "Faculty name") : existing.facultyName;
   const facultyEmail = payload.facultyEmail !== undefined ? parseEmail(payload.facultyEmail) : existing.facultyEmail;
   const facultyPhone = payload.facultyPhone !== undefined ? parsePhone(payload.facultyPhone) : existing.facultyPhone;
-  const nextCourseId = payload.courseId !== undefined ? parseRequiredText(payload.courseId, "Course") : existing.courseId;
   const status = payload.status !== undefined ? parseStatus(payload.status) : existing.status;
+  const existingCourseIds = Array.isArray(existing.courseAssignments)
+    ? existing.courseAssignments.map((assignment) => normalizeString(assignment.courseId)).filter(Boolean)
+    : [];
+  const selectedCourseIds = normalizeCourseIds(
+    payload.courseIds,
+    payload.courseId || existing.courseId || existingCourseIds[0] || "",
+  );
   const normalizedBatchEntriesPayload = normalizeBatchEntriesPayload(payload);
   const batchEntries =
     Array.isArray(payload.batchEntries) || normalizedBatchEntriesPayload.length
       ? parseBatchEntries(normalizedBatchEntriesPayload)
       : existing.batchEntries;
 
-  await ensureActiveCourse(nextCourseId);
+  const batchCourseIds = Array.from(new Set(batchEntries.map((entry) => normalizeString(entry.courseId)).filter(Boolean)));
+  const effectiveCourseIds = selectedCourseIds.length ? selectedCourseIds : batchCourseIds;
+
+  if (!effectiveCourseIds.length) {
+    throw new AppError("Course is required", 400);
+  }
+
+  if (selectedCourseIds.length && batchCourseIds.some((courseId) => !selectedCourseIds.includes(courseId))) {
+    throw new AppError("Batch course selection is invalid", 400);
+  }
+
+  if (effectiveCourseIds.some((courseId) => !batchCourseIds.includes(courseId))) {
+    throw new AppError("Add at least one batch for each selected course", 400);
+  }
+
+  await Promise.all(effectiveCourseIds.map((courseId) => ensureActiveCourse(courseId)));
   await ensureUniqueIdentity({ facultyEmail, facultyPhone }, facultyId);
   const existingLoginUser = await findFacultyLoginUser(existing);
 
@@ -663,10 +849,23 @@ export async function updateFacultyRecord(facultyId, payload, actor) {
           facultyName,
           facultyEmail,
           facultyPhone,
-          courseId: nextCourseId,
+          courseId: effectiveCourseIds[0] || null,
           status,
           updatedBy: actorId,
         },
+      });
+
+      await tx.facultyCourseAssignment.deleteMany({
+        where: { facultyId },
+      });
+
+      await tx.facultyCourseAssignment.createMany({
+        data: effectiveCourseIds.map((courseId) => ({
+          facultyId,
+          courseId,
+          createdBy: actorId,
+          updatedBy: actorId,
+        })),
       });
 
       await tx.facultyBatchEntry.deleteMany({
@@ -676,6 +875,7 @@ export async function updateFacultyRecord(facultyId, payload, actor) {
       await tx.facultyBatchEntry.createMany({
         data: batchEntries.map((entry) => ({
           facultyId,
+          courseId: normalizeString(entry.courseId) || effectiveCourseIds[0] || null,
           batchName: entry.batchName,
           batchTiming: entry.batchTiming,
           sequenceNo: entry.sequenceNo,
@@ -709,6 +909,27 @@ export async function updateFacultyRecord(facultyId, payload, actor) {
           },
           batchEntries: {
             orderBy: { sequenceNo: "asc" },
+            include: {
+              course: {
+                select: {
+                  id: true,
+                  name: true,
+                },
+              },
+            },
+          },
+          courseAssignments: {
+            orderBy: { createdAt: "asc" },
+            include: {
+              course: {
+                select: {
+                  id: true,
+                  name: true,
+                  mode: true,
+                  status: true,
+                },
+              },
+            },
           },
         },
       });
