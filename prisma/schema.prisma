@@ -116,6 +116,7 @@ model Course {
   installment1      Int?
   installment2      Int?
   installment3      Int?
+  installments      Json?
   status            RecordStatus        @default(ACTIVE)
   statusChangedAt   DateTime?
   statusChangedBy   String?
@@ -259,6 +260,7 @@ model StudentProfile {
   installment1           Int?
   installment2           Int?
   installment3           Int?
+  installment4           Int?
   totalAmount            Int?
   admissionDate          String
   firstInstallmentAmount  Int?

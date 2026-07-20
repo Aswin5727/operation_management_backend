@@ -64,6 +64,14 @@ function parsePositiveInt(value, fieldName, { allowZero = false } = {}) {
   return parsed;
 }
 
+function parseOptionalInstallment(value, fieldName) {
+  if (value === undefined || value === null || value === "") {
+    return null;
+  }
+
+  return parsePositiveInt(value, fieldName, { allowZero: true });
+}
+
 function parseRequiredText(value, fieldName) {
   const text = normalizeString(value);
 
@@ -193,6 +201,7 @@ function toStudentSummary(student) {
     installment1: student.installment1,
     installment2: student.installment2,
     installment3: student.installment3,
+    installment4: student.installment4,
     totalAmount: student.totalAmount,
     admissionDate: student.admissionDate,
     firstInstallmentAmount: student.firstInstallmentAmount,
@@ -422,18 +431,13 @@ function buildStudentPayload(payload, existingStudent = null, course = null) {
   const afterDiscount = Number.isInteger(Number(resolvedCourse?.afterDiscount))
     ? Number(resolvedCourse.afterDiscount)
     : parsePositiveInt(candidate.afterDiscount, "After discount", { allowZero: true });
-  const installment1 = Number.isInteger(Number(resolvedCourse?.installment1))
-    ? Number(resolvedCourse.installment1)
-    : parsePositiveInt(candidate.installment1, "Installment 1", { allowZero: true });
-  const installment2 = Number.isInteger(Number(resolvedCourse?.installment2))
-    ? Number(resolvedCourse.installment2)
-    : parsePositiveInt(candidate.installment2, "Installment 2", { allowZero: true });
-  const installment3 =
-    resolvedCourse?.installmentCount === 3 || candidate.installment3 !== undefined || candidate.installment3 !== null
-      ? Number.isInteger(Number(resolvedCourse?.installment3))
-        ? Number(resolvedCourse.installment3)
-        : parsePositiveInt(candidate.installment3, "Installment 3", { allowZero: true })
-      : null;
+  const resolvedInstallments = Array.isArray(resolvedCourse?.installments) && resolvedCourse.installments.length
+    ? resolvedCourse.installments.map((value, index) =>
+        parsePositiveInt(value, `Installment ${index + 1}`, { allowZero: true }),
+      )
+    : [candidate.installment1, candidate.installment2, candidate.installment3, candidate.installment4]
+        .map((value, index) => parseOptionalInstallment(value, `Installment ${index + 1}`))
+        .filter((value) => value !== null);
 
   const resolvedAfterDiscount = Number.isInteger(afterDiscount) ? afterDiscount : actualFees - discount;
 
@@ -441,7 +445,11 @@ function buildStudentPayload(payload, existingStudent = null, course = null) {
     throw new AppError("Discount cannot be greater than actual fees", 400);
   }
 
-  if (installment1 + installment2 + (installment3 ?? 0) !== resolvedAfterDiscount) {
+  if (!resolvedInstallments.length) {
+    throw new AppError("At least one installment is required", 400);
+  }
+
+  if (resolvedInstallments.reduce((total, amount) => total + amount, 0) !== resolvedAfterDiscount) {
     throw new AppError("Installment totals must match the discounted fee", 400);
   }
 
@@ -470,16 +478,17 @@ function buildStudentPayload(payload, existingStudent = null, course = null) {
     registrationFees,
     discount,
     afterDiscount: resolvedAfterDiscount,
-    installment1,
-    installment2,
-    installment3,
+    installment1: resolvedInstallments[0] ?? null,
+    installment2: resolvedInstallments[1] ?? null,
+    installment3: resolvedInstallments[2] ?? null,
+    installment4: resolvedInstallments[3] ?? null,
     totalAmount: resolvedAfterDiscount,
     admissionDate,
-    firstInstallmentAmount: installment1,
+    firstInstallmentAmount: resolvedInstallments[0] ?? null,
     firstInstallmentDate: admissionDate,
     firstInstallmentStatus,
     firstInstallmentPaidAt: firstInstallmentStatus === "Paid" ? candidate.firstInstallmentPaidAt || admissionDate : null,
-    secondInstallmentAmount: installment2,
+    secondInstallmentAmount: resolvedInstallments[1] ?? null,
     secondDueDate: candidate.secondDueDate || addOneMonth(admissionDate),
     secondInstallmentStatus,
     secondInstallmentPaidAt: secondInstallmentStatus === "Paid" ? candidate.secondInstallmentPaidAt || getTodayValue() : null,

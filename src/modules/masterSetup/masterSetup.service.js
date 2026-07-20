@@ -115,6 +115,27 @@ function parseOptionalInt(value, fieldName, { allowZero = true } = {}) {
   return parsed;
 }
 
+function parseInstallments(candidate = {}) {
+  if (Array.isArray(candidate.installments) && candidate.installments.length) {
+    return candidate.installments.map((value, index) =>
+      parsePositiveInt(value, `Installment ${index + 1}`, { allowZero: true }),
+    );
+  }
+
+  return Object.entries(candidate)
+    .map(([key, value]) => {
+      const match = key.match(/^installment(\d+)$/i);
+      if (!match) return null;
+      return {
+        index: Number(match[1]),
+        value,
+      };
+    })
+    .filter(Boolean)
+    .sort((left, right) => left.index - right.index)
+    .map(({ index, value }) => parsePositiveInt(value, `Installment ${index}`, { allowZero: true }));
+}
+
 function parseOptionalText(value) {
   const text = normalizeString(value);
   return text ? text : null;
@@ -200,6 +221,8 @@ function buildPaginationMeta(total, page, limit) {
 }
 
 function toCourseSummary(course) {
+  const installments = Array.isArray(course.installments) ? course.installments : [];
+
   return {
     id: course.id,
     name: course.name,
@@ -216,6 +239,7 @@ function toCourseSummary(course) {
     installment1: course.installment1,
     installment2: course.installment2,
     installment3: course.installment3,
+    installments,
     status: displayStatus(course.status),
     statusChangedAt: course.statusChangedAt,
     statusChangedBy: course.statusChangedBy,
@@ -553,12 +577,8 @@ function buildCoursePayload(payload, existingCourse = null) {
   const discount = parsePositiveInt(candidate.discount, "Discount", { allowZero: true });
   const duration = parsePositiveInt(candidate.duration, "Duration");
   const hours = parsePositiveInt(candidate.hours, "Hours");
-  const installmentCount = parsePositiveInt(candidate.installmentCount ?? 2, "Installment count");
-  const installment1 = parsePositiveInt(candidate.installment1, "Installment 1", { allowZero: true });
-  const installment2 = parsePositiveInt(candidate.installment2, "Installment 2", { allowZero: true });
-  const installment3 = installmentCount === 3
-    ? parsePositiveInt(candidate.installment3, "Installment 3", { allowZero: true })
-    : null;
+  const installments = parseInstallments(candidate);
+  const installmentCount = parsePositiveInt(candidate.installmentCount ?? installments.length ?? 2, "Installment count");
   const name = parseRequiredText(candidate.name, "Course name");
   const mode = normalizeCourseMode(candidate.mode);
   const status = normalizeRecordStatus(candidate.status ?? "ACTIVE");
@@ -569,11 +589,16 @@ function buildCoursePayload(payload, existingCourse = null) {
     throw new AppError("Discount cannot be greater than actual fees", 400);
   }
 
-  if (![2, 3].includes(installmentCount)) {
-    throw new AppError("Installment count must be either 2 or 3", 400);
+  if (!installments.length) {
+    throw new AppError("At least one installment is required", 400);
   }
 
-  if (installment1 + installment2 + (installment3 ?? 0) !== actualFees - discount) {
+  if (installments.length !== installmentCount) {
+    throw new AppError("Installment count must match installment values", 400);
+  }
+
+  const installmentTotal = installments.reduce((total, amount) => total + amount, 0);
+  if (installmentTotal !== actualFees - discount) {
     throw new AppError("Installment totals must match the discounted fee", 400);
   }
 
@@ -590,9 +615,10 @@ function buildCoursePayload(payload, existingCourse = null) {
     discount,
     afterDiscount: actualFees - discount,
     installmentCount,
-    installment1,
-    installment2,
-    installment3,
+    installment1: installments[0] ?? null,
+    installment2: installments[1] ?? null,
+    installment3: installments[2] ?? null,
+    installments,
     status,
   };
 }
