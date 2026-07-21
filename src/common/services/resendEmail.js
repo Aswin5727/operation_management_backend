@@ -311,7 +311,7 @@ export async function sendStudentCredentialsEmail({ to, fullName, studentCode, t
 
   const html = `
     <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #111;">
-      <h2>Welcome to CISPRO</h2>
+      <h2>CISPRO Student Login Details</h2>
       <p>Hello ${safeName},</p>
       <p>Your student account has been created successfully.</p>
       <p><strong>Login email:</strong> ${escapeHtml(to)}</p>
@@ -324,7 +324,7 @@ export async function sendStudentCredentialsEmail({ to, fullName, studentCode, t
   `;
 
   const textParts = [
-    `Welcome to CISPRO, ${fullName || "Student"}.`,
+    `CISPRO Student Login Details for ${fullName || "Student"}.`,
     `Login email: ${to}`,
     safeCode ? `Student code: ${studentCode}` : null,
     `Temporary password: ${temporaryPassword}`,
@@ -396,7 +396,7 @@ export async function sendFacultyCredentialsEmail({
 
   const html = `
     <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #111;">
-      <h2>Welcome to CISPRO Faculty Portal</h2>
+      <h2>CISPRO Faculty Login Details</h2>
       <p>Hello ${safeName},</p>
       <p>Your faculty account has been created successfully.</p>
       <p><strong>Login email:</strong> ${escapeHtml(to)}</p>
@@ -415,7 +415,7 @@ export async function sendFacultyCredentialsEmail({
   `;
 
   const textParts = [
-    `Welcome to CISPRO Faculty Portal, ${fullName || "Faculty"}.`,
+    `CISPRO Faculty Login Details for ${fullName || "Faculty"}.`,
     `Login email: ${to}`,
     safeCode ? `Faculty code: ${facultyCode}` : null,
     courseName ? `Course: ${courseName}` : null,
