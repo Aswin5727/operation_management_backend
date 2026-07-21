@@ -15,7 +15,7 @@ function escapeHtml(value) {
 }
 
 function getBaseUrl() {
-  return String(config.frontendUrl || config.corsOrigin || "").trim();
+  return String(config.frontendUrl || "").trim();
 }
 
 function buildAppUrl(pathname, searchParams = {}) {
