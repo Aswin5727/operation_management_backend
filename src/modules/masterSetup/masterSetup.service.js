@@ -1241,29 +1241,21 @@ export async function updateCourseStatus(courseId, status, actor, reason = null)
 export async function deleteCourse(courseId, actor) {
   const existingCourse = await prisma.course.findUnique({
     where: { id: courseId },
-    include: {
-      _count: {
-        select: {
-          batches: true,
-        },
-      },
-    },
   });
 
   if (!existingCourse) {
     throw new AppError("Course not found", 404);
   }
 
-  if ((existingCourse._count?.batches ?? 0) > 0) {
-    throw new AppError("Course cannot be deleted because batches already exist", 409);
+  if (existingCourse.status === "INACTIVE") {
+    const course = await prisma.course.findUnique({
+      where: { id: courseId },
+      include: getCourseInclude(),
+    });
+    return toCourseDetail(course);
   }
 
-  const deleted = await prisma.course.delete({
-    where: { id: courseId },
-    include: getCourseInclude(),
-  });
-
-  return toCourseDetail(deleted);
+  return updateCourseStatus(courseId, "INACTIVE", actor, "Deleted from course management");
 }
 
 export async function listCourseStatusHistory(courseId) {
