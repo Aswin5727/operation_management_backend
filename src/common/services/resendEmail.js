@@ -37,7 +37,9 @@ function buildAppUrl(pathname, searchParams = {}) {
       }
     }
 
-    url.hash = `${normalizedPathname}${query.toString() ? `?${query.toString()}` : ""}`;
+    url.pathname = normalizedPathname;
+    url.search = query.toString() ? `?${query.toString()}` : "";
+    url.hash = "";
     return url.toString();
   } catch {
     return "";
