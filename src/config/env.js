@@ -43,6 +43,13 @@ const config = {
   emailUser: process.env.EMAIL_USER || "",
   emailPass: String(process.env.EMAIL_PASS || "").replaceAll(/\s+/g, ""),
   emailFrom: process.env.EMAIL_FROM || process.env.EMAIL_USER || "",
+  sendgridApiKey: process.env.SENDGRID_API_KEY || "",
+  sendgridFrom:
+    process.env.SENDGRID_FROM ||
+    process.env.SENDGRID_FROM_EMAIL ||
+    process.env.EMAIL_FROM ||
+    process.env.EMAIL_USER ||
+    "",
   resendApiKey: process.env.RESEND_API_KEY || "",
   jwtAccessSecret: process.env.JWT_ACCESS_SECRET || "dev-access-secret",
   jwtRefreshSecret: process.env.JWT_REFRESH_SECRET || "dev-refresh-secret",

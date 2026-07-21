@@ -48,17 +48,21 @@ function hasGmailConfig() {
   return Boolean(config.emailUser && config.emailPass && config.emailFrom);
 }
 
+function hasSendGridConfig() {
+  return Boolean(config.sendgridApiKey && config.sendgridFrom);
+}
+
 function hasResendConfig() {
   return Boolean(config.resendApiKey && config.emailFrom);
 }
 
 function ensureMailerReady() {
-  if (hasResendConfig() || hasGmailConfig()) {
+  if (hasSendGridConfig() || hasResendConfig() || hasGmailConfig()) {
     return;
   }
 
   throw new AppError(
-    "Email service is not configured. Set RESEND_API_KEY with EMAIL_FROM or set EMAIL_USER, EMAIL_PASS and EMAIL_FROM.",
+    "Email service is not configured. Set SENDGRID_API_KEY with SENDGRID_FROM, or set RESEND_API_KEY with EMAIL_FROM, or set EMAIL_USER, EMAIL_PASS and EMAIL_FROM.",
     500,
   );
 }
@@ -153,17 +157,89 @@ async function sendWithNodemailer({ to, subject, html, text, replyTo }) {
   });
 }
 
+async function sendWithSendGrid({ to, subject, html, text, replyTo }) {
+  if (!hasSendGridConfig()) {
+    throw new AppError("SENDGRID_API_KEY or SENDGRID_FROM is not configured", 500);
+  }
+
+  const content = [];
+
+  if (text) {
+    content.push({
+      type: "text/plain",
+      value: text,
+    });
+  }
+
+  if (html) {
+    content.push({
+      type: "text/html",
+      value: html,
+    });
+  }
+
+  if (!content.length) {
+    throw new AppError("Email content is empty", 500);
+  }
+
+  const response = await fetch("https://api.sendgrid.com/v3/mail/send", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${config.sendgridApiKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      personalizations: [
+        {
+          to: [{ email: to }],
+          ...(replyTo ? { reply_to: { email: replyTo } } : {}),
+        },
+      ],
+      from: { email: config.sendgridFrom },
+      subject,
+      content,
+    }),
+  });
+
+  if (!response.ok) {
+    const responseText = await response.text().catch(() => "");
+    throw new AppError(
+      `SendGrid failed with status ${response.status}${responseText ? `: ${responseText}` : ""}`,
+      502,
+    );
+  }
+
+  return {
+    provider: "sendgrid",
+    accepted: [to],
+    messageId: `sendgrid-${Date.now()}`,
+  };
+}
+
 async function sendEmail({ to, subject, html, text, replyTo }) {
   const recipient = String(to || "").trim();
   if (!recipient) {
     throw new AppError("Recipient email is required", 400);
   }
 
+  const sendGridEnabled = hasSendGridConfig();
   const resendEnabled = hasResendConfig();
   const gmailEnabled = hasGmailConfig();
 
-  if (!resendEnabled && !gmailEnabled) {
+  if (!sendGridEnabled && !resendEnabled && !gmailEnabled) {
     ensureMailerReady();
+  }
+
+  if (sendGridEnabled) {
+    try {
+      return await sendWithSendGrid({ to: recipient, subject, html, text, replyTo });
+    } catch (error) {
+      if (!resendEnabled && !gmailEnabled) {
+        throw error;
+      }
+
+      console.warn("SendGrid mail failed, falling back to other providers:", error);
+    }
   }
 
   if (resendEnabled) {
