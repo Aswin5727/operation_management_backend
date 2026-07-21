@@ -1,9 +1,11 @@
 import nodemailer from "nodemailer";
+import { Resend } from "resend";
 
 import config from "../../config/env.js";
 import AppError from "../errors/AppError.js";
 
 let cachedTransporter = null;
+let cachedResendClient = null;
 
 function escapeHtml(value) {
   return String(value ?? "")
@@ -42,18 +44,36 @@ function buildAppUrl(pathname, searchParams = {}) {
   }
 }
 
+function hasGmailConfig() {
+  return Boolean(config.emailUser && config.emailPass && config.emailFrom);
+}
+
+function hasResendConfig() {
+  return Boolean(config.resendApiKey && config.emailFrom);
+}
+
 function ensureMailerReady() {
-  if (!config.emailUser) {
-    throw new AppError("EMAIL_USER is not configured", 500);
+  if (hasResendConfig() || hasGmailConfig()) {
+    return;
   }
 
-  if (!config.emailPass) {
-    throw new AppError("EMAIL_PASS is not configured", 500);
+  throw new AppError(
+    "Email service is not configured. Set RESEND_API_KEY with EMAIL_FROM or set EMAIL_USER, EMAIL_PASS and EMAIL_FROM.",
+    500,
+  );
+}
+
+function getResendClient() {
+  if (cachedResendClient) {
+    return cachedResendClient;
   }
 
-  if (!config.emailFrom) {
-    throw new AppError("EMAIL_FROM is not configured", 500);
+  if (!config.resendApiKey) {
+    return null;
   }
+
+  cachedResendClient = new Resend(config.resendApiKey);
+  return cachedResendClient;
 }
 
 function getTransporter() {
@@ -96,22 +116,69 @@ function getTransporter() {
   return cachedTransporter;
 }
 
-async function sendEmail({ to, subject, html, text, replyTo }) {
-  const recipient = String(to || "").trim();
-  if (!recipient) {
-    throw new AppError("Recipient email is required", 400);
+async function sendWithResend({ to, subject, html, text, replyTo }) {
+  const resend = getResendClient();
+  if (!resend) {
+    throw new AppError("RESEND_API_KEY is not configured", 500);
+  }
+
+  const result = await resend.emails.send({
+    from: config.emailFrom,
+    to: [to],
+    subject,
+    html,
+    text,
+    replyTo: replyTo || undefined,
+  });
+
+  return result;
+}
+
+async function sendWithNodemailer({ to, subject, html, text, replyTo }) {
+  ensureMailerReady();
+
+  if (!hasGmailConfig()) {
+    throw new AppError("EMAIL_USER, EMAIL_PASS and EMAIL_FROM are required for SMTP mail", 500);
   }
 
   const transporter = getTransporter();
 
   return transporter.sendMail({
     from: config.emailFrom,
-    to: recipient,
+    to,
     subject,
     html,
     text,
     replyTo: replyTo || undefined,
   });
+}
+
+async function sendEmail({ to, subject, html, text, replyTo }) {
+  const recipient = String(to || "").trim();
+  if (!recipient) {
+    throw new AppError("Recipient email is required", 400);
+  }
+
+  const resendEnabled = hasResendConfig();
+  const gmailEnabled = hasGmailConfig();
+
+  if (!resendEnabled && !gmailEnabled) {
+    ensureMailerReady();
+  }
+
+  if (resendEnabled) {
+    try {
+      return await sendWithResend({ to: recipient, subject, html, text, replyTo });
+    } catch (error) {
+      if (!gmailEnabled) {
+        throw error;
+      }
+
+      console.warn("Resend mail failed, falling back to Gmail SMTP:", error);
+    }
+  }
+
+  return sendWithNodemailer({ to: recipient, subject, html, text, replyTo });
 }
 
 function buildResetLink(resetToken, temporaryPassword = "") {
