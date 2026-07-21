@@ -23,12 +23,19 @@ function buildAppUrl(pathname, searchParams = {}) {
   if (!baseUrl) return "";
 
   try {
-    const url = new URL(pathname, baseUrl);
+    const url = new URL(baseUrl);
+    const normalizedPathname = String(pathname || "").startsWith("/")
+      ? String(pathname || "").trim()
+      : `/${String(pathname || "").trim()}`;
+    const query = new URLSearchParams();
+
     for (const [key, value] of Object.entries(searchParams)) {
       if (value !== undefined && value !== null && String(value).trim()) {
-        url.searchParams.set(key, String(value).trim());
+        query.set(key, String(value).trim());
       }
     }
+
+    url.hash = `${normalizedPathname}${query.toString() ? `?${query.toString()}` : ""}`;
     return url.toString();
   } catch {
     return "";
