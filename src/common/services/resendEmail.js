@@ -63,15 +63,35 @@ function getTransporter() {
 
   ensureMailerReady();
 
-  cachedTransporter = nodemailer.createTransport({
-    host: config.emailHost,
-    port: config.emailPort,
-    secure: config.emailSecure,
+  const baseTransportConfig = {
     auth: {
       user: config.emailUser,
       pass: config.emailPass,
     },
-  });
+    authMethod: "LOGIN",
+    connectionTimeout: 15000,
+    greetingTimeout: 15000,
+    socketTimeout: 20000,
+    family: 4,
+    tls: {
+      minVersion: "TLSv1.2",
+    },
+  };
+
+  cachedTransporter = config.emailHost === "smtp.gmail.com"
+    ? nodemailer.createTransport({
+        service: "gmail",
+        secure: false,
+        requireTLS: true,
+        ...baseTransportConfig,
+      })
+    : nodemailer.createTransport({
+        host: config.emailHost,
+        port: config.emailPort,
+        secure: config.emailSecure,
+        requireTLS: !config.emailSecure,
+        ...baseTransportConfig,
+      });
 
   return cachedTransporter;
 }
