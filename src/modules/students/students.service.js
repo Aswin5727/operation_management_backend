@@ -690,34 +690,15 @@ export async function createStudent(payload, actor) {
     return null;
   }
 
-  try {
-    await sendStudentCredentialsEmail({
-      to: parsed.emailAddress,
-      fullName: parsed.studentName,
-      studentCode,
-      temporaryPassword,
-      resetToken,
-    });
-  } catch (error) {
-    await prisma.$transaction(async (tx) => {
-      await tx.passwordResetToken.deleteMany({
-        where: {
-          tokenHash,
-        },
-      });
-      await tx.user.deleteMany({
-        where: {
-          userCode: studentCode,
-        },
-      });
-      await tx.studentProfile.deleteMany({
-        where: {
-          studentCode,
-        },
-      });
-    });
-    throw error;
-  }
+  void sendStudentCredentialsEmail({
+    to: parsed.emailAddress,
+    fullName: parsed.studentName,
+    studentCode,
+    temporaryPassword,
+    resetToken,
+  }).catch((error) => {
+    console.warn("Student credentials email failed to send", error);
+  });
 
   return toStudentDetail(createdRecord);
 }

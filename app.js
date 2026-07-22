@@ -11,16 +11,21 @@ import { errorHandler } from "./src/common/middlewares/errorHandler.js";
 
 const app = express();
 
+const splitOrigins = (value) =>
+  String(value || "")
+    .split(",")
+    .map((item) => item.trim())
+    .filter(Boolean);
+const allowedOrigins = splitOrigins(config.frontendUrl);
+
 const corsOptions = {
-  origin:
-    config.nodeEnv === "production" && config.corsOrigin
-      ? config.corsOrigin.split(",").map((item) => item.trim())
-      : true,
+  origin: allowedOrigins.length ? allowedOrigins : true,
   credentials: true,
 };
 
 app.use(helmet());
 app.use(cors(corsOptions));
+app.options(/.*/, cors(corsOptions));
 app.use(morgan(config.nodeEnv === "production" ? "combined" : "dev"));
 app.use(express.json({ limit: "1mb" }));
 app.use(express.urlencoded({ extended: true }));

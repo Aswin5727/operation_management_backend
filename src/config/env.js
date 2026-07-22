@@ -35,14 +35,21 @@ const config = {
   nodeEnv: process.env.NODE_ENV || "development",
   port: toNumber(process.env.PORT, 4000),
   databaseUrl: buildDatabaseUrl(),
-  corsOrigin: process.env.CORS_ORIGIN || "",
   frontendUrl: process.env.FRONTEND_URL || process.env.CORS_ORIGIN || "",
+  corsOrigin: process.env.FRONTEND_URL || process.env.CORS_ORIGIN || "",
   emailHost: process.env.EMAIL_HOST || "smtp.gmail.com",
   emailPort: toNumber(process.env.EMAIL_PORT, 587),
   emailSecure: process.env.EMAIL_SECURE === "true",
   emailUser: process.env.EMAIL_USER || "",
   emailPass: String(process.env.EMAIL_PASS || "").replaceAll(/\s+/g, ""),
   emailFrom: process.env.EMAIL_FROM || process.env.EMAIL_USER || "",
+  sendgridApiKey: process.env.SENDGRID_API_KEY || "",
+  sendgridFrom:
+    process.env.SENDGRID_FROM ||
+    process.env.SENDGRID_FROM_EMAIL ||
+    process.env.EMAIL_FROM ||
+    process.env.EMAIL_USER ||
+    "",
   resendApiKey: process.env.RESEND_API_KEY || "",
   jwtAccessSecret: process.env.JWT_ACCESS_SECRET || "dev-access-secret",
   jwtRefreshSecret: process.env.JWT_REFRESH_SECRET || "dev-refresh-secret",

@@ -92,7 +92,11 @@ async function resetLoginState(userId, meta) {
     },
   });
 
-  await createLoginEvent(userId, LOGIN_EVENT_TYPES.LOGIN_SUCCESS, meta);
+  setImmediate(() => {
+    void createLoginEvent(userId, LOGIN_EVENT_TYPES.LOGIN_SUCCESS, meta).catch((error) => {
+      console.error("Failed to record login success event:", error);
+    });
+  });
   return updatedUser;
 }
 
@@ -181,28 +185,28 @@ async function login({ identifier, password, ipAddress, userAgent }) {
   const refreshToken = createRefreshToken(refreshedUser);
 
   if (isFirstLogin && role === "STUDENT") {
-    try {
-      await sendStudentWelcomeEmail({
+    setImmediate(() => {
+      void sendStudentWelcomeEmail({
         to: refreshedUser.email,
         fullName: refreshedUser.fullName,
         courseName: studentCourseName,
+      }).catch((error) => {
+        console.error("Failed to send student welcome email:", error);
       });
-    } catch (error) {
-      console.error("Failed to send student welcome email:", error);
-    }
+    });
   }
 
   if (isFirstLogin && role === "FACULTY") {
-    try {
-      await sendFacultyWelcomeEmail({
+    setImmediate(() => {
+      void sendFacultyWelcomeEmail({
         to: refreshedUser.email,
         fullName: refreshedUser.fullName,
         courseName: facultyWelcomeCourseName,
         batchNames: facultyWelcomeBatchNames,
+      }).catch((error) => {
+        console.error("Failed to send faculty welcome email:", error);
       });
-    } catch (error) {
-      console.error("Failed to send faculty welcome email:", error);
-    }
+    });
   }
 
   return {

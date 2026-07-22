@@ -735,46 +735,17 @@ export async function createFacultyRecord(payload, actor) {
     throw new AppError("Faculty record could not be created", 500);
   }
 
-  try {
-    await sendFacultyCredentialsEmail({
-      to: facultyEmail,
-      fullName: facultyName,
-      facultyCode,
-      temporaryPassword,
-      resetToken,
-      courseName: record.course?.name || "",
-      batchNames: batchEntries.map((entry) => entry.batchName),
-    });
-  } catch (error) {
-    await prisma.$transaction(async (tx) => {
-      const user = await tx.user.findFirst({
-        where: {
-          OR: [{ email: facultyEmail }, { phone: facultyPhone }, { userCode: facultyCode }],
-        },
-        select: { id: true },
-      });
-
-      if (user) {
-        await tx.passwordResetToken.deleteMany({
-          where: { userId: user.id },
-        });
-
-        await tx.user.delete({
-          where: { id: user.id },
-        });
-      }
-
-      await tx.facultyBatchEntry.deleteMany({
-        where: { facultyId: record.id },
-      });
-
-      await tx.facultyProfile.delete({
-        where: { id: record.id },
-      });
-    });
-
-    throw error;
-  }
+  void sendFacultyCredentialsEmail({
+    to: facultyEmail,
+    fullName: facultyName,
+    facultyCode,
+    temporaryPassword,
+    resetToken,
+    courseName: record.course?.name || "",
+    batchNames: batchEntries.map((entry) => entry.batchName),
+  }).catch((error) => {
+    console.warn("Faculty credentials email failed to send", error);
+  });
 
   return toFacultyRecord(record);
 }

@@ -1,9 +1,11 @@
 import nodemailer from "nodemailer";
+import { Resend } from "resend";
 
 import config from "../../config/env.js";
 import AppError from "../errors/AppError.js";
 
 let cachedTransporter = null;
+let cachedResendClient = null;
 
 function escapeHtml(value) {
   return String(value ?? "")
@@ -15,7 +17,7 @@ function escapeHtml(value) {
 }
 
 function getBaseUrl() {
-  return String(config.frontendUrl || config.corsOrigin || "").trim();
+  return String(config.frontendUrl || "").trim();
 }
 
 function buildAppUrl(pathname, searchParams = {}) {
@@ -23,30 +25,61 @@ function buildAppUrl(pathname, searchParams = {}) {
   if (!baseUrl) return "";
 
   try {
-    const url = new URL(pathname, baseUrl);
+    const url = new URL(baseUrl);
+    const normalizedPathname = String(pathname || "").startsWith("/")
+      ? String(pathname || "").trim()
+      : `/${String(pathname || "").trim()}`;
+    const query = new URLSearchParams();
+
     for (const [key, value] of Object.entries(searchParams)) {
       if (value !== undefined && value !== null && String(value).trim()) {
-        url.searchParams.set(key, String(value).trim());
+        query.set(key, String(value).trim());
       }
     }
+
+    url.pathname = normalizedPathname;
+    url.search = query.toString() ? `?${query.toString()}` : "";
+    url.hash = "";
     return url.toString();
   } catch {
     return "";
   }
 }
 
+function hasGmailConfig() {
+  return Boolean(config.emailUser && config.emailPass && config.emailFrom);
+}
+
+function hasSendGridConfig() {
+  return Boolean(config.sendgridApiKey && config.sendgridFrom);
+}
+
+function hasResendConfig() {
+  return Boolean(config.resendApiKey && config.emailFrom);
+}
+
 function ensureMailerReady() {
-  if (!config.emailUser) {
-    throw new AppError("EMAIL_USER is not configured", 500);
+  if (hasSendGridConfig() || hasResendConfig() || hasGmailConfig()) {
+    return;
   }
 
-  if (!config.emailPass) {
-    throw new AppError("EMAIL_PASS is not configured", 500);
+  throw new AppError(
+    "Email service is not configured. Set SENDGRID_API_KEY with SENDGRID_FROM, or set RESEND_API_KEY with EMAIL_FROM, or set EMAIL_USER, EMAIL_PASS and EMAIL_FROM.",
+    500,
+  );
+}
+
+function getResendClient() {
+  if (cachedResendClient) {
+    return cachedResendClient;
   }
 
-  if (!config.emailFrom) {
-    throw new AppError("EMAIL_FROM is not configured", 500);
+  if (!config.resendApiKey) {
+    return null;
   }
+
+  cachedResendClient = new Resend(config.resendApiKey);
+  return cachedResendClient;
 }
 
 function getTransporter() {
@@ -56,17 +89,133 @@ function getTransporter() {
 
   ensureMailerReady();
 
-  cachedTransporter = nodemailer.createTransport({
-    host: config.emailHost,
-    port: config.emailPort,
-    secure: config.emailSecure,
+  const baseTransportConfig = {
     auth: {
       user: config.emailUser,
       pass: config.emailPass,
     },
-  });
+    authMethod: "LOGIN",
+    connectionTimeout: 15000,
+    greetingTimeout: 15000,
+    socketTimeout: 20000,
+    family: 4,
+    tls: {
+      minVersion: "TLSv1.2",
+    },
+  };
+
+  cachedTransporter = config.emailHost === "smtp.gmail.com"
+    ? nodemailer.createTransport({
+        service: "gmail",
+        secure: false,
+        requireTLS: true,
+        ...baseTransportConfig,
+      })
+    : nodemailer.createTransport({
+        host: config.emailHost,
+        port: config.emailPort,
+        secure: config.emailSecure,
+        requireTLS: !config.emailSecure,
+        ...baseTransportConfig,
+      });
 
   return cachedTransporter;
+}
+
+async function sendWithResend({ to, subject, html, text, replyTo }) {
+  const resend = getResendClient();
+  if (!resend) {
+    throw new AppError("RESEND_API_KEY is not configured", 500);
+  }
+
+  const result = await resend.emails.send({
+    from: config.emailFrom,
+    to: [to],
+    subject,
+    html,
+    text,
+    replyTo: replyTo || undefined,
+  });
+
+  return result;
+}
+
+async function sendWithNodemailer({ to, subject, html, text, replyTo }) {
+  ensureMailerReady();
+
+  if (!hasGmailConfig()) {
+    throw new AppError("EMAIL_USER, EMAIL_PASS and EMAIL_FROM are required for SMTP mail", 500);
+  }
+
+  const transporter = getTransporter();
+
+  return transporter.sendMail({
+    from: config.emailFrom,
+    to,
+    subject,
+    html,
+    text,
+    replyTo: replyTo || undefined,
+  });
+}
+
+async function sendWithSendGrid({ to, subject, html, text, replyTo }) {
+  if (!hasSendGridConfig()) {
+    throw new AppError("SENDGRID_API_KEY or SENDGRID_FROM is not configured", 500);
+  }
+
+  const content = [];
+
+  if (text) {
+    content.push({
+      type: "text/plain",
+      value: text,
+    });
+  }
+
+  if (html) {
+    content.push({
+      type: "text/html",
+      value: html,
+    });
+  }
+
+  if (!content.length) {
+    throw new AppError("Email content is empty", 500);
+  }
+
+  const response = await fetch("https://api.sendgrid.com/v3/mail/send", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${config.sendgridApiKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      personalizations: [
+        {
+          to: [{ email: to }],
+          ...(replyTo ? { reply_to: { email: replyTo } } : {}),
+        },
+      ],
+      from: { email: config.sendgridFrom },
+      subject,
+      content,
+    }),
+  });
+
+  if (!response.ok) {
+    const responseText = await response.text().catch(() => "");
+    throw new AppError(
+      `SendGrid failed with status ${response.status}${responseText ? `: ${responseText}` : ""}`,
+      502,
+    );
+  }
+
+  return {
+    provider: "sendgrid",
+    accepted: [to],
+    messageId: `sendgrid-${Date.now()}`,
+  };
 }
 
 async function sendEmail({ to, subject, html, text, replyTo }) {
@@ -75,16 +224,39 @@ async function sendEmail({ to, subject, html, text, replyTo }) {
     throw new AppError("Recipient email is required", 400);
   }
 
-  const transporter = getTransporter();
+  const sendGridEnabled = hasSendGridConfig();
+  const resendEnabled = hasResendConfig();
+  const gmailEnabled = hasGmailConfig();
 
-  return transporter.sendMail({
-    from: config.emailFrom,
-    to: recipient,
-    subject,
-    html,
-    text,
-    replyTo: replyTo || undefined,
-  });
+  if (!sendGridEnabled && !resendEnabled && !gmailEnabled) {
+    ensureMailerReady();
+  }
+
+  if (sendGridEnabled) {
+    try {
+      return await sendWithSendGrid({ to: recipient, subject, html, text, replyTo });
+    } catch (error) {
+      if (!resendEnabled && !gmailEnabled) {
+        throw error;
+      }
+
+      console.warn("SendGrid mail failed, falling back to other providers:", error);
+    }
+  }
+
+  if (resendEnabled) {
+    try {
+      return await sendWithResend({ to: recipient, subject, html, text, replyTo });
+    } catch (error) {
+      if (!gmailEnabled) {
+        throw error;
+      }
+
+      console.warn("Resend mail failed, falling back to Gmail SMTP:", error);
+    }
+  }
+
+  return sendWithNodemailer({ to: recipient, subject, html, text, replyTo });
 }
 
 function buildResetLink(resetToken, temporaryPassword = "") {
@@ -139,7 +311,7 @@ export async function sendStudentCredentialsEmail({ to, fullName, studentCode, t
 
   const html = `
     <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #111;">
-      <h2>Welcome to CISPRO</h2>
+      <h2>CISPRO Student Login Details</h2>
       <p>Hello ${safeName},</p>
       <p>Your student account has been created successfully.</p>
       <p><strong>Login email:</strong> ${escapeHtml(to)}</p>
@@ -152,7 +324,7 @@ export async function sendStudentCredentialsEmail({ to, fullName, studentCode, t
   `;
 
   const textParts = [
-    `Welcome to CISPRO, ${fullName || "Student"}.`,
+    `CISPRO Student Login Details for ${fullName || "Student"}.`,
     `Login email: ${to}`,
     safeCode ? `Student code: ${studentCode}` : null,
     `Temporary password: ${temporaryPassword}`,
@@ -224,7 +396,7 @@ export async function sendFacultyCredentialsEmail({
 
   const html = `
     <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #111;">
-      <h2>Welcome to CISPRO Faculty Portal</h2>
+      <h2>CISPRO Faculty Login Details</h2>
       <p>Hello ${safeName},</p>
       <p>Your faculty account has been created successfully.</p>
       <p><strong>Login email:</strong> ${escapeHtml(to)}</p>
@@ -243,7 +415,7 @@ export async function sendFacultyCredentialsEmail({
   `;
 
   const textParts = [
-    `Welcome to CISPRO Faculty Portal, ${fullName || "Faculty"}.`,
+    `CISPRO Faculty Login Details for ${fullName || "Faculty"}.`,
     `Login email: ${to}`,
     safeCode ? `Faculty code: ${facultyCode}` : null,
     courseName ? `Course: ${courseName}` : null,
