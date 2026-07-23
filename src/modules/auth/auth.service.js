@@ -132,6 +132,7 @@ async function login({ identifier, password, ipAddress, userAgent }) {
 
   const role = String(user.role || "").toUpperCase();
   const isFirstLogin = !user.lastLoginAt;
+  const isDashboardHeavyRole = role === "BUSINESS_OWNER" || role === "OPERATION_MANAGER";
   let studentCourseName = "";
   let facultyWelcomeCourseName = "";
   let facultyWelcomeBatchNames = [];
@@ -180,7 +181,15 @@ async function login({ identifier, password, ipAddress, userAgent }) {
       : [];
   }
 
-  const refreshedUser = await resetLoginState(user.id, { ipAddress, userAgent });
+  const refreshedUserPromise = isDashboardHeavyRole
+    ? (setImmediate(() => {
+        void resetLoginState(user.id, { ipAddress, userAgent }).catch((error) => {
+          console.error("Failed to update login state:", error);
+        });
+      }), Promise.resolve(user))
+    : resetLoginState(user.id, { ipAddress, userAgent });
+
+  const refreshedUser = await refreshedUserPromise;
   const accessToken = createAccessToken(refreshedUser);
   const refreshToken = createRefreshToken(refreshedUser);
 
