@@ -373,6 +373,12 @@ async function resetPassword({ token, password, ipAddress, userAgent }) {
     throw new AppError("Reset token is invalid or expired", 400);
   }
 
+  const newPasswordMatchesOld = await comparePassword(password, resetToken.user.passwordHash);
+
+  if (newPasswordMatchesOld) {
+    throw new AppError("This password already exists. Please choose a different strong password.", 400);
+  }
+
   const passwordHash = await hashPassword(password);
 
   await prisma.$transaction([
