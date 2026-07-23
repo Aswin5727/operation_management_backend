@@ -281,11 +281,7 @@ export async function sendPasswordResetEmail({ to, resetToken }) {
       <p>Hello,</p>
       <p>We received a request to reset your CISPRO account password.</p>
       ${resetLink ? `<p><a href="${escapeHtml(resetLink)}">Reset your password</a></p>` : ""}
-      ${
-        resetLink
-          ? `<p>If the link does not open, copy this URL:<br /><code>${escapeHtml(resetLink)}</code></p>`
-          : `<p>Your reset token is <strong>${escapeHtml(token)}</strong>.</p>`
-      }
+      ${resetLink ? "" : `<p>Your reset token is <strong>${escapeHtml(token)}</strong>.</p>`}
       <p>This reset link will expire soon. If you did not request this, you can ignore this email.</p>
     </div>
   `;

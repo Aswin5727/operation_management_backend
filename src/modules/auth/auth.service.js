@@ -245,9 +245,13 @@ async function refreshSession({ refreshToken, ipAddress, userAgent }) {
   const accessToken = createAccessToken(user);
   const newRefreshToken = createRefreshToken(user);
 
-  await createLoginEvent(user.id, LOGIN_EVENT_TYPES.REFRESH, {
-    ipAddress,
-    userAgent,
+  setImmediate(() => {
+    void createLoginEvent(user.id, LOGIN_EVENT_TYPES.REFRESH, {
+      ipAddress,
+      userAgent,
+    }).catch((error) => {
+      console.error("Failed to record refresh event:", error);
+    });
   });
 
   return {
@@ -282,9 +286,13 @@ async function logout({ refreshToken, ipAddress, userAgent }) {
       },
     });
 
-    await createLoginEvent(user.id, LOGIN_EVENT_TYPES.LOGOUT, {
-      ipAddress,
-      userAgent,
+    setImmediate(() => {
+      void createLoginEvent(user.id, LOGIN_EVENT_TYPES.LOGOUT, {
+        ipAddress,
+        userAgent,
+      }).catch((error) => {
+        console.error("Failed to record logout event:", error);
+      });
     });
   }
 
