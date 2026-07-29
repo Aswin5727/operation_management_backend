@@ -183,6 +183,7 @@ exports.Prisma.CourseScalarFieldEnum = {
   installment1: 'installment1',
   installment2: 'installment2',
   installment3: 'installment3',
+  installments: 'installments',
   status: 'status',
   statusChangedAt: 'statusChangedAt',
   statusChangedBy: 'statusChangedBy',
@@ -276,7 +277,9 @@ exports.Prisma.StudentProfileScalarFieldEnum = {
   location: 'location',
   courseId: 'courseId',
   courseInterested: 'courseInterested',
+  facultyId: 'facultyId',
   facultyName: 'facultyName',
+  batchId: 'batchId',
   batchName: 'batchName',
   qualification: 'qualification',
   passedOutYear: 'passedOutYear',
@@ -290,6 +293,7 @@ exports.Prisma.StudentProfileScalarFieldEnum = {
   installment1: 'installment1',
   installment2: 'installment2',
   installment3: 'installment3',
+  installment4: 'installment4',
   totalAmount: 'totalAmount',
   admissionDate: 'admissionDate',
   firstInstallmentAmount: 'firstInstallmentAmount',
@@ -304,6 +308,40 @@ exports.Prisma.StudentProfileScalarFieldEnum = {
   recordStatus: 'recordStatus',
   createdBy: 'createdBy',
   updatedBy: 'updatedBy',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.FacultyProfileScalarFieldEnum = {
+  id: 'id',
+  facultyName: 'facultyName',
+  facultyEmail: 'facultyEmail',
+  facultyPhone: 'facultyPhone',
+  courseId: 'courseId',
+  status: 'status',
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.FacultyCourseAssignmentScalarFieldEnum = {
+  id: 'id',
+  facultyId: 'facultyId',
+  courseId: 'courseId',
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.FacultyBatchEntryScalarFieldEnum = {
+  id: 'id',
+  facultyId: 'facultyId',
+  courseId: 'courseId',
+  batchName: 'batchName',
+  batchTiming: 'batchTiming',
+  sequenceNo: 'sequenceNo',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -378,7 +416,10 @@ exports.Prisma.ModelName = {
   BatchFacultyAssignment: 'BatchFacultyAssignment',
   CourseStatusHistory: 'CourseStatusHistory',
   BatchStatusHistory: 'BatchStatusHistory',
-  StudentProfile: 'StudentProfile'
+  StudentProfile: 'StudentProfile',
+  FacultyProfile: 'FacultyProfile',
+  FacultyCourseAssignment: 'FacultyCourseAssignment',
+  FacultyBatchEntry: 'FacultyBatchEntry'
 };
 
 /**

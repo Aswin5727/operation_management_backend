@@ -82,6 +82,230 @@ function countStudents(record) {
   return Number(record?._count?.id || 0);
 }
 
+function normalizeFacultyText(value) {
+  return String(value ?? "").trim();
+}
+
+function normalizeFacultyKey(value) {
+  return normalizeFacultyText(value).toLowerCase();
+}
+
+function batchMatchesStudent(student, faculty, entry) {
+  const studentFacultyId = normalizeFacultyText(student?.facultyId);
+  const studentFacultyName = normalizeFacultyKey(student?.facultyName);
+  const studentBatchId = normalizeFacultyText(student?.batchId || student?.batchEntryId);
+  const studentBatchName = normalizeFacultyKey(student?.batchName || student?.batch);
+  const studentCourseId = normalizeFacultyText(student?.courseId);
+
+  const facultyId = normalizeFacultyText(faculty?.id);
+  const facultyName = normalizeFacultyKey(faculty?.facultyName);
+  const batchId = normalizeFacultyText(entry?.id);
+  const batchName = normalizeFacultyKey(entry?.batchName);
+  const courseId = normalizeFacultyText(entry?.courseId || faculty?.courseId);
+
+  if (batchId && studentBatchId && studentBatchId === batchId) {
+    return true;
+  }
+
+  const courseMatches = !courseId || !studentCourseId || studentCourseId === courseId;
+  const batchNameMatches = batchName && studentBatchName && studentBatchName === batchName;
+
+  if (facultyId && studentFacultyId && studentFacultyId === facultyId && batchNameMatches && courseMatches) {
+    return true;
+  }
+
+  if (facultyName && studentFacultyName && studentFacultyName === facultyName && batchNameMatches && courseMatches) {
+    return true;
+  }
+
+  return false;
+}
+
+async function getFacultyMyBatchesSummary(user) {
+  const normalizedEmail = normalizeFacultyText(user?.email).toLowerCase();
+  if (!normalizedEmail) {
+    throw new AppError("Faculty profile not found", 404);
+  }
+
+  const faculty = await prisma.facultyProfile.findFirst({
+    where: {
+      facultyEmail: {
+        equals: normalizedEmail,
+        mode: "insensitive",
+      },
+    },
+    include: {
+      course: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+      batchEntries: {
+        orderBy: { sequenceNo: "asc" },
+        select: {
+          id: true,
+          batchName: true,
+          batchTiming: true,
+          courseId: true,
+          course: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+        },
+      },
+      courseAssignments: {
+        select: {
+          courseId: true,
+          course: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+        },
+      },
+    },
+  });
+
+  if (!faculty) {
+    throw new AppError("Faculty profile not found", 404);
+  }
+
+  const batchEntries = Array.isArray(faculty.batchEntries) ? faculty.batchEntries : [];
+  if (!batchEntries.length) {
+    return {
+      faculty: {
+        id: faculty.id,
+        facultyName: faculty.facultyName,
+        facultyEmail: faculty.facultyEmail,
+        courseId: faculty.courseId || "",
+      },
+      totalBatches: 0,
+      totalStudents: 0,
+      batchCounts: [],
+    };
+  }
+
+  const candidateStudents = await prisma.studentProfile.findMany({
+    where: {
+      recordStatus: "ACTIVE",
+      OR: batchEntries.flatMap((entry) => {
+        const conditions = [];
+        const batchName = normalizeFacultyText(entry?.batchName);
+        const courseId = normalizeFacultyText(entry?.courseId || faculty.courseId);
+
+        if (entry?.id) {
+          conditions.push({ batchId: entry.id });
+        }
+
+        if (faculty.id && batchName) {
+          conditions.push({
+            AND: [
+              { facultyId: faculty.id },
+              { batchName: { equals: batchName, mode: "insensitive" } },
+              ...(courseId ? [{ courseId }] : []),
+            ],
+          });
+        }
+
+        if (faculty.facultyName && batchName) {
+          conditions.push({
+            AND: [
+              { facultyName: { equals: faculty.facultyName, mode: "insensitive" } },
+              { batchName: { equals: batchName, mode: "insensitive" } },
+              ...(courseId ? [{ courseId }] : []),
+            ],
+          });
+        }
+
+        return conditions;
+      }),
+    },
+    select: {
+      id: true,
+      studentName: true,
+      emailAddress: true,
+      mobileNumber: true,
+      parentSpouseNumber: true,
+      location: true,
+      courseInterested: true,
+      facultyId: true,
+      facultyName: true,
+      batchId: true,
+      batchName: true,
+      courseId: true,
+      qualification: true,
+      passedOutYear: true,
+      currentStatus: true,
+      designation: true,
+      source: true,
+      actualFees: true,
+      registrationFees: true,
+      discount: true,
+      afterDiscount: true,
+      admissionDate: true,
+      remarks: true,
+      recordStatus: true,
+    },
+  });
+
+  const uniqueStudentIds = new Set();
+  const batchCounts = batchEntries.map((entry) => {
+    const matchingStudents = candidateStudents.filter((student) => batchMatchesStudent(student, faculty, entry));
+    matchingStudents.forEach((student) => {
+      if (student?.id) {
+        uniqueStudentIds.add(student.id);
+      }
+    });
+
+    return {
+      batchId: entry.id,
+      studentCount: matchingStudents.length,
+      studentRecords: matchingStudents.map((student) => ({
+        id: student.id,
+        studentName: student.studentName || "",
+        emailAddress: student.emailAddress || "",
+        mobileNumber: student.mobileNumber || "",
+        parentSpouseNumber: student.parentSpouseNumber || "",
+        location: student.location || "",
+        courseInterested: student.courseInterested || "",
+        facultyId: student.facultyId || "",
+        facultyName: student.facultyName || "",
+        batchId: student.batchId || "",
+        batchName: student.batchName || "",
+        courseId: student.courseId || "",
+        qualification: student.qualification || "",
+        passedOutYear: student.passedOutYear ?? "",
+        currentStatus: student.currentStatus || "",
+        designation: student.designation || "",
+        source: student.source || "",
+        actualFees: student.actualFees ?? "",
+        registrationFees: student.registrationFees ?? "",
+        discount: student.discount ?? "",
+        afterDiscount: student.afterDiscount ?? "",
+        admissionDate: student.admissionDate || "",
+        remarks: student.remarks || "",
+        status: student.recordStatus === "ACTIVE" ? "Active" : "Inactive",
+      })),
+    };
+  });
+
+  return {
+    faculty: {
+      id: faculty.id,
+      facultyName: faculty.facultyName,
+      facultyEmail: faculty.facultyEmail,
+      courseId: faculty.courseId || "",
+    },
+    totalBatches: batchEntries.length,
+    totalStudents: uniqueStudentIds.size,
+    batchCounts,
+  };
+}
+
 async function getRevenueSummary() {
   const today = getIstToday();
   const monthStart = getIstMonthStart();
@@ -145,3 +369,4 @@ async function getRevenueSummary() {
 }
 
 export { getRevenueSummary };
+export { getFacultyMyBatchesSummary };

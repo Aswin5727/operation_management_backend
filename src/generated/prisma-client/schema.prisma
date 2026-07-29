@@ -101,33 +101,37 @@ model PasswordResetToken {
 }
 
 model Course {
-  id               String                @id @default(cuid())
-  name             String
-  nameKey          String                @unique
-  description      String?
-  feeReference     String?
-  mode             String
-  duration         Int?
-  hours            Int?
-  actualFees       Int?
-  registrationFees Int?
-  discount         Int?
-  afterDiscount    Int?
-  installmentCount Int                   @default(2)
-  installment1     Int?
-  installment2     Int?
-  installment3     Int?
-  status           RecordStatus          @default(ACTIVE)
-  statusChangedAt  DateTime?
-  statusChangedBy  String?
-  createdBy        String?
-  updatedBy        String?
-  createdAt        DateTime              @default(now())
-  updatedAt        DateTime              @updatedAt
-  modules          CourseModule[]
-  batches          Batch[]
-  students         StudentProfile[]
-  statusHistory    CourseStatusHistory[]
+  id                       String                    @id @default(cuid())
+  name                     String
+  nameKey                  String                    @unique
+  description              String?
+  feeReference             String?
+  mode                     String
+  duration                 Int?
+  hours                    Int?
+  actualFees               Int?
+  registrationFees         Int?
+  discount                 Int?
+  afterDiscount            Int?
+  installmentCount         Int                       @default(2)
+  installment1             Int?
+  installment2             Int?
+  installment3             Int?
+  installments             Json?
+  status                   RecordStatus              @default(ACTIVE)
+  statusChangedAt          DateTime?
+  statusChangedBy          String?
+  createdBy                String?
+  updatedBy                String?
+  createdAt                DateTime                  @default(now())
+  updatedAt                DateTime                  @updatedAt
+  modules                  CourseModule[]
+  batches                  Batch[]
+  students                 StudentProfile[]
+  facultyProfiles          FacultyProfile[]
+  facultyCourseAssignments FacultyCourseAssignment[]
+  facultyBatchEntries      FacultyBatchEntry[]
+  statusHistory            CourseStatusHistory[]
 
   @@index([status])
   @@index([mode])
@@ -243,7 +247,9 @@ model StudentProfile {
   courseId                String?
   course                  Course?      @relation(fields: [courseId], references: [id], onDelete: SetNull)
   courseInterested        String
+  facultyId               String?
   facultyName             String?
+  batchId                 String?
   batchName               String?
   qualification           String?
   passedOutYear           Int?
@@ -257,6 +263,7 @@ model StudentProfile {
   installment1            Int?
   installment2            Int?
   installment3            Int?
+  installment4            Int?
   totalAmount             Int?
   admissionDate           String
   firstInstallmentAmount  Int?
@@ -278,4 +285,56 @@ model StudentProfile {
   @@index([courseId])
   @@index([currentStatus])
   @@index([admissionDate])
+}
+
+model FacultyProfile {
+  id                String                    @id @default(cuid())
+  facultyName       String
+  facultyEmail      String
+  facultyPhone      String
+  courseId          String?
+  course            Course?                   @relation(fields: [courseId], references: [id], onDelete: SetNull)
+  status            RecordStatus              @default(ACTIVE)
+  courseAssignments FacultyCourseAssignment[]
+  batchEntries      FacultyBatchEntry[]
+  createdBy         String?
+  updatedBy         String?
+  createdAt         DateTime                  @default(now())
+  updatedAt         DateTime                  @updatedAt
+
+  @@index([status])
+  @@index([courseId])
+  @@index([facultyName])
+  @@index([facultyEmail])
+}
+
+model FacultyCourseAssignment {
+  id        String         @id @default(cuid())
+  facultyId String
+  faculty   FacultyProfile @relation(fields: [facultyId], references: [id], onDelete: Cascade)
+  courseId  String
+  course    Course         @relation(fields: [courseId], references: [id], onDelete: Restrict)
+  createdBy String?
+  updatedBy String?
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+
+  @@unique([facultyId, courseId])
+  @@index([courseId])
+}
+
+model FacultyBatchEntry {
+  id          String         @id @default(cuid())
+  facultyId   String
+  faculty     FacultyProfile @relation(fields: [facultyId], references: [id], onDelete: Cascade)
+  courseId    String?
+  course      Course?        @relation(fields: [courseId], references: [id], onDelete: SetNull)
+  batchName   String
+  batchTiming String
+  sequenceNo  Int            @default(1)
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  @@index([facultyId, sequenceNo])
+  @@index([courseId])
 }

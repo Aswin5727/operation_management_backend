@@ -63,6 +63,21 @@ export type BatchStatusHistory = $Result.DefaultSelection<Prisma.$BatchStatusHis
  * 
  */
 export type StudentProfile = $Result.DefaultSelection<Prisma.$StudentProfilePayload>
+/**
+ * Model FacultyProfile
+ * 
+ */
+export type FacultyProfile = $Result.DefaultSelection<Prisma.$FacultyProfilePayload>
+/**
+ * Model FacultyCourseAssignment
+ * 
+ */
+export type FacultyCourseAssignment = $Result.DefaultSelection<Prisma.$FacultyCourseAssignmentPayload>
+/**
+ * Model FacultyBatchEntry
+ * 
+ */
+export type FacultyBatchEntry = $Result.DefaultSelection<Prisma.$FacultyBatchEntryPayload>
 
 /**
  * Enums
@@ -359,6 +374,36 @@ export class PrismaClient<
     * ```
     */
   get studentProfile(): Prisma.StudentProfileDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.facultyProfile`: Exposes CRUD operations for the **FacultyProfile** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more FacultyProfiles
+    * const facultyProfiles = await prisma.facultyProfile.findMany()
+    * ```
+    */
+  get facultyProfile(): Prisma.FacultyProfileDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.facultyCourseAssignment`: Exposes CRUD operations for the **FacultyCourseAssignment** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more FacultyCourseAssignments
+    * const facultyCourseAssignments = await prisma.facultyCourseAssignment.findMany()
+    * ```
+    */
+  get facultyCourseAssignment(): Prisma.FacultyCourseAssignmentDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.facultyBatchEntry`: Exposes CRUD operations for the **FacultyBatchEntry** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more FacultyBatchEntries
+    * const facultyBatchEntries = await prisma.facultyBatchEntry.findMany()
+    * ```
+    */
+  get facultyBatchEntry(): Prisma.FacultyBatchEntryDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -802,7 +847,10 @@ export namespace Prisma {
     BatchFacultyAssignment: 'BatchFacultyAssignment',
     CourseStatusHistory: 'CourseStatusHistory',
     BatchStatusHistory: 'BatchStatusHistory',
-    StudentProfile: 'StudentProfile'
+    StudentProfile: 'StudentProfile',
+    FacultyProfile: 'FacultyProfile',
+    FacultyCourseAssignment: 'FacultyCourseAssignment',
+    FacultyBatchEntry: 'FacultyBatchEntry'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -818,7 +866,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "loginEvent" | "passwordResetToken" | "course" | "courseModule" | "batch" | "batchFacultyAssignment" | "courseStatusHistory" | "batchStatusHistory" | "studentProfile"
+      modelProps: "user" | "loginEvent" | "passwordResetToken" | "course" | "courseModule" | "batch" | "batchFacultyAssignment" | "courseStatusHistory" | "batchStatusHistory" | "studentProfile" | "facultyProfile" | "facultyCourseAssignment" | "facultyBatchEntry"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1562,6 +1610,228 @@ export namespace Prisma {
           }
         }
       }
+      FacultyProfile: {
+        payload: Prisma.$FacultyProfilePayload<ExtArgs>
+        fields: Prisma.FacultyProfileFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.FacultyProfileFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyProfilePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.FacultyProfileFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyProfilePayload>
+          }
+          findFirst: {
+            args: Prisma.FacultyProfileFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyProfilePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.FacultyProfileFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyProfilePayload>
+          }
+          findMany: {
+            args: Prisma.FacultyProfileFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyProfilePayload>[]
+          }
+          create: {
+            args: Prisma.FacultyProfileCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyProfilePayload>
+          }
+          createMany: {
+            args: Prisma.FacultyProfileCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.FacultyProfileCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyProfilePayload>[]
+          }
+          delete: {
+            args: Prisma.FacultyProfileDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyProfilePayload>
+          }
+          update: {
+            args: Prisma.FacultyProfileUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyProfilePayload>
+          }
+          deleteMany: {
+            args: Prisma.FacultyProfileDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.FacultyProfileUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.FacultyProfileUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyProfilePayload>[]
+          }
+          upsert: {
+            args: Prisma.FacultyProfileUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyProfilePayload>
+          }
+          aggregate: {
+            args: Prisma.FacultyProfileAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateFacultyProfile>
+          }
+          groupBy: {
+            args: Prisma.FacultyProfileGroupByArgs<ExtArgs>
+            result: $Utils.Optional<FacultyProfileGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.FacultyProfileCountArgs<ExtArgs>
+            result: $Utils.Optional<FacultyProfileCountAggregateOutputType> | number
+          }
+        }
+      }
+      FacultyCourseAssignment: {
+        payload: Prisma.$FacultyCourseAssignmentPayload<ExtArgs>
+        fields: Prisma.FacultyCourseAssignmentFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.FacultyCourseAssignmentFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyCourseAssignmentPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.FacultyCourseAssignmentFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyCourseAssignmentPayload>
+          }
+          findFirst: {
+            args: Prisma.FacultyCourseAssignmentFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyCourseAssignmentPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.FacultyCourseAssignmentFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyCourseAssignmentPayload>
+          }
+          findMany: {
+            args: Prisma.FacultyCourseAssignmentFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyCourseAssignmentPayload>[]
+          }
+          create: {
+            args: Prisma.FacultyCourseAssignmentCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyCourseAssignmentPayload>
+          }
+          createMany: {
+            args: Prisma.FacultyCourseAssignmentCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.FacultyCourseAssignmentCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyCourseAssignmentPayload>[]
+          }
+          delete: {
+            args: Prisma.FacultyCourseAssignmentDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyCourseAssignmentPayload>
+          }
+          update: {
+            args: Prisma.FacultyCourseAssignmentUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyCourseAssignmentPayload>
+          }
+          deleteMany: {
+            args: Prisma.FacultyCourseAssignmentDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.FacultyCourseAssignmentUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.FacultyCourseAssignmentUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyCourseAssignmentPayload>[]
+          }
+          upsert: {
+            args: Prisma.FacultyCourseAssignmentUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyCourseAssignmentPayload>
+          }
+          aggregate: {
+            args: Prisma.FacultyCourseAssignmentAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateFacultyCourseAssignment>
+          }
+          groupBy: {
+            args: Prisma.FacultyCourseAssignmentGroupByArgs<ExtArgs>
+            result: $Utils.Optional<FacultyCourseAssignmentGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.FacultyCourseAssignmentCountArgs<ExtArgs>
+            result: $Utils.Optional<FacultyCourseAssignmentCountAggregateOutputType> | number
+          }
+        }
+      }
+      FacultyBatchEntry: {
+        payload: Prisma.$FacultyBatchEntryPayload<ExtArgs>
+        fields: Prisma.FacultyBatchEntryFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.FacultyBatchEntryFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyBatchEntryPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.FacultyBatchEntryFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyBatchEntryPayload>
+          }
+          findFirst: {
+            args: Prisma.FacultyBatchEntryFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyBatchEntryPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.FacultyBatchEntryFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyBatchEntryPayload>
+          }
+          findMany: {
+            args: Prisma.FacultyBatchEntryFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyBatchEntryPayload>[]
+          }
+          create: {
+            args: Prisma.FacultyBatchEntryCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyBatchEntryPayload>
+          }
+          createMany: {
+            args: Prisma.FacultyBatchEntryCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.FacultyBatchEntryCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyBatchEntryPayload>[]
+          }
+          delete: {
+            args: Prisma.FacultyBatchEntryDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyBatchEntryPayload>
+          }
+          update: {
+            args: Prisma.FacultyBatchEntryUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyBatchEntryPayload>
+          }
+          deleteMany: {
+            args: Prisma.FacultyBatchEntryDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.FacultyBatchEntryUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.FacultyBatchEntryUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyBatchEntryPayload>[]
+          }
+          upsert: {
+            args: Prisma.FacultyBatchEntryUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyBatchEntryPayload>
+          }
+          aggregate: {
+            args: Prisma.FacultyBatchEntryAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateFacultyBatchEntry>
+          }
+          groupBy: {
+            args: Prisma.FacultyBatchEntryGroupByArgs<ExtArgs>
+            result: $Utils.Optional<FacultyBatchEntryGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.FacultyBatchEntryCountArgs<ExtArgs>
+            result: $Utils.Optional<FacultyBatchEntryCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1680,6 +1950,9 @@ export namespace Prisma {
     courseStatusHistory?: CourseStatusHistoryOmit
     batchStatusHistory?: BatchStatusHistoryOmit
     studentProfile?: StudentProfileOmit
+    facultyProfile?: FacultyProfileOmit
+    facultyCourseAssignment?: FacultyCourseAssignmentOmit
+    facultyBatchEntry?: FacultyBatchEntryOmit
   }
 
   /* Types for Logging */
@@ -1812,6 +2085,9 @@ export namespace Prisma {
     modules: number
     batches: number
     students: number
+    facultyProfiles: number
+    facultyCourseAssignments: number
+    facultyBatchEntries: number
     statusHistory: number
   }
 
@@ -1819,6 +2095,9 @@ export namespace Prisma {
     modules?: boolean | CourseCountOutputTypeCountModulesArgs
     batches?: boolean | CourseCountOutputTypeCountBatchesArgs
     students?: boolean | CourseCountOutputTypeCountStudentsArgs
+    facultyProfiles?: boolean | CourseCountOutputTypeCountFacultyProfilesArgs
+    facultyCourseAssignments?: boolean | CourseCountOutputTypeCountFacultyCourseAssignmentsArgs
+    facultyBatchEntries?: boolean | CourseCountOutputTypeCountFacultyBatchEntriesArgs
     statusHistory?: boolean | CourseCountOutputTypeCountStatusHistoryArgs
   }
 
@@ -1852,6 +2131,27 @@ export namespace Prisma {
    */
   export type CourseCountOutputTypeCountStudentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: StudentProfileWhereInput
+  }
+
+  /**
+   * CourseCountOutputType without action
+   */
+  export type CourseCountOutputTypeCountFacultyProfilesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FacultyProfileWhereInput
+  }
+
+  /**
+   * CourseCountOutputType without action
+   */
+  export type CourseCountOutputTypeCountFacultyCourseAssignmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FacultyCourseAssignmentWhereInput
+  }
+
+  /**
+   * CourseCountOutputType without action
+   */
+  export type CourseCountOutputTypeCountFacultyBatchEntriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FacultyBatchEntryWhereInput
   }
 
   /**
@@ -1899,6 +2199,46 @@ export namespace Prisma {
    */
   export type BatchCountOutputTypeCountStatusHistoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: BatchStatusHistoryWhereInput
+  }
+
+
+  /**
+   * Count Type FacultyProfileCountOutputType
+   */
+
+  export type FacultyProfileCountOutputType = {
+    courseAssignments: number
+    batchEntries: number
+  }
+
+  export type FacultyProfileCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    courseAssignments?: boolean | FacultyProfileCountOutputTypeCountCourseAssignmentsArgs
+    batchEntries?: boolean | FacultyProfileCountOutputTypeCountBatchEntriesArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * FacultyProfileCountOutputType without action
+   */
+  export type FacultyProfileCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyProfileCountOutputType
+     */
+    select?: FacultyProfileCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * FacultyProfileCountOutputType without action
+   */
+  export type FacultyProfileCountOutputTypeCountCourseAssignmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FacultyCourseAssignmentWhereInput
+  }
+
+  /**
+   * FacultyProfileCountOutputType without action
+   */
+  export type FacultyProfileCountOutputTypeCountBatchEntriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FacultyBatchEntryWhereInput
   }
 
 
@@ -5609,6 +5949,7 @@ export namespace Prisma {
     installment1: number
     installment2: number
     installment3: number
+    installments: number
     status: number
     statusChangedAt: number
     statusChangedBy: number
@@ -5715,6 +6056,7 @@ export namespace Prisma {
     installment1?: true
     installment2?: true
     installment3?: true
+    installments?: true
     status?: true
     statusChangedAt?: true
     statusChangedBy?: true
@@ -5828,6 +6170,7 @@ export namespace Prisma {
     installment1: number | null
     installment2: number | null
     installment3: number | null
+    installments: JsonValue | null
     status: $Enums.RecordStatus
     statusChangedAt: Date | null
     statusChangedBy: string | null
@@ -5873,6 +6216,7 @@ export namespace Prisma {
     installment1?: boolean
     installment2?: boolean
     installment3?: boolean
+    installments?: boolean
     status?: boolean
     statusChangedAt?: boolean
     statusChangedBy?: boolean
@@ -5883,6 +6227,9 @@ export namespace Prisma {
     modules?: boolean | Course$modulesArgs<ExtArgs>
     batches?: boolean | Course$batchesArgs<ExtArgs>
     students?: boolean | Course$studentsArgs<ExtArgs>
+    facultyProfiles?: boolean | Course$facultyProfilesArgs<ExtArgs>
+    facultyCourseAssignments?: boolean | Course$facultyCourseAssignmentsArgs<ExtArgs>
+    facultyBatchEntries?: boolean | Course$facultyBatchEntriesArgs<ExtArgs>
     statusHistory?: boolean | Course$statusHistoryArgs<ExtArgs>
     _count?: boolean | CourseCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["course"]>
@@ -5904,6 +6251,7 @@ export namespace Prisma {
     installment1?: boolean
     installment2?: boolean
     installment3?: boolean
+    installments?: boolean
     status?: boolean
     statusChangedAt?: boolean
     statusChangedBy?: boolean
@@ -5930,6 +6278,7 @@ export namespace Prisma {
     installment1?: boolean
     installment2?: boolean
     installment3?: boolean
+    installments?: boolean
     status?: boolean
     statusChangedAt?: boolean
     statusChangedBy?: boolean
@@ -5956,6 +6305,7 @@ export namespace Prisma {
     installment1?: boolean
     installment2?: boolean
     installment3?: boolean
+    installments?: boolean
     status?: boolean
     statusChangedAt?: boolean
     statusChangedBy?: boolean
@@ -5965,11 +6315,14 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type CourseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "nameKey" | "description" | "feeReference" | "mode" | "duration" | "hours" | "actualFees" | "registrationFees" | "discount" | "afterDiscount" | "installmentCount" | "installment1" | "installment2" | "installment3" | "status" | "statusChangedAt" | "statusChangedBy" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["course"]>
+  export type CourseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "nameKey" | "description" | "feeReference" | "mode" | "duration" | "hours" | "actualFees" | "registrationFees" | "discount" | "afterDiscount" | "installmentCount" | "installment1" | "installment2" | "installment3" | "installments" | "status" | "statusChangedAt" | "statusChangedBy" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["course"]>
   export type CourseInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     modules?: boolean | Course$modulesArgs<ExtArgs>
     batches?: boolean | Course$batchesArgs<ExtArgs>
     students?: boolean | Course$studentsArgs<ExtArgs>
+    facultyProfiles?: boolean | Course$facultyProfilesArgs<ExtArgs>
+    facultyCourseAssignments?: boolean | Course$facultyCourseAssignmentsArgs<ExtArgs>
+    facultyBatchEntries?: boolean | Course$facultyBatchEntriesArgs<ExtArgs>
     statusHistory?: boolean | Course$statusHistoryArgs<ExtArgs>
     _count?: boolean | CourseCountOutputTypeDefaultArgs<ExtArgs>
   }
@@ -5982,6 +6335,9 @@ export namespace Prisma {
       modules: Prisma.$CourseModulePayload<ExtArgs>[]
       batches: Prisma.$BatchPayload<ExtArgs>[]
       students: Prisma.$StudentProfilePayload<ExtArgs>[]
+      facultyProfiles: Prisma.$FacultyProfilePayload<ExtArgs>[]
+      facultyCourseAssignments: Prisma.$FacultyCourseAssignmentPayload<ExtArgs>[]
+      facultyBatchEntries: Prisma.$FacultyBatchEntryPayload<ExtArgs>[]
       statusHistory: Prisma.$CourseStatusHistoryPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -6001,6 +6357,7 @@ export namespace Prisma {
       installment1: number | null
       installment2: number | null
       installment3: number | null
+      installments: Prisma.JsonValue | null
       status: $Enums.RecordStatus
       statusChangedAt: Date | null
       statusChangedBy: string | null
@@ -6405,6 +6762,9 @@ export namespace Prisma {
     modules<T extends Course$modulesArgs<ExtArgs> = {}>(args?: Subset<T, Course$modulesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CourseModulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     batches<T extends Course$batchesArgs<ExtArgs> = {}>(args?: Subset<T, Course$batchesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BatchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     students<T extends Course$studentsArgs<ExtArgs> = {}>(args?: Subset<T, Course$studentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StudentProfilePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    facultyProfiles<T extends Course$facultyProfilesArgs<ExtArgs> = {}>(args?: Subset<T, Course$facultyProfilesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FacultyProfilePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    facultyCourseAssignments<T extends Course$facultyCourseAssignmentsArgs<ExtArgs> = {}>(args?: Subset<T, Course$facultyCourseAssignmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FacultyCourseAssignmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    facultyBatchEntries<T extends Course$facultyBatchEntriesArgs<ExtArgs> = {}>(args?: Subset<T, Course$facultyBatchEntriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FacultyBatchEntryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     statusHistory<T extends Course$statusHistoryArgs<ExtArgs> = {}>(args?: Subset<T, Course$statusHistoryArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CourseStatusHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -6451,6 +6811,7 @@ export namespace Prisma {
     readonly installment1: FieldRef<"Course", 'Int'>
     readonly installment2: FieldRef<"Course", 'Int'>
     readonly installment3: FieldRef<"Course", 'Int'>
+    readonly installments: FieldRef<"Course", 'Json'>
     readonly status: FieldRef<"Course", 'RecordStatus'>
     readonly statusChangedAt: FieldRef<"Course", 'DateTime'>
     readonly statusChangedBy: FieldRef<"Course", 'String'>
@@ -6920,6 +7281,78 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: StudentProfileScalarFieldEnum | StudentProfileScalarFieldEnum[]
+  }
+
+  /**
+   * Course.facultyProfiles
+   */
+  export type Course$facultyProfilesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyProfile
+     */
+    select?: FacultyProfileSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyProfile
+     */
+    omit?: FacultyProfileOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyProfileInclude<ExtArgs> | null
+    where?: FacultyProfileWhereInput
+    orderBy?: FacultyProfileOrderByWithRelationInput | FacultyProfileOrderByWithRelationInput[]
+    cursor?: FacultyProfileWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: FacultyProfileScalarFieldEnum | FacultyProfileScalarFieldEnum[]
+  }
+
+  /**
+   * Course.facultyCourseAssignments
+   */
+  export type Course$facultyCourseAssignmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyCourseAssignment
+     */
+    select?: FacultyCourseAssignmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyCourseAssignment
+     */
+    omit?: FacultyCourseAssignmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyCourseAssignmentInclude<ExtArgs> | null
+    where?: FacultyCourseAssignmentWhereInput
+    orderBy?: FacultyCourseAssignmentOrderByWithRelationInput | FacultyCourseAssignmentOrderByWithRelationInput[]
+    cursor?: FacultyCourseAssignmentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: FacultyCourseAssignmentScalarFieldEnum | FacultyCourseAssignmentScalarFieldEnum[]
+  }
+
+  /**
+   * Course.facultyBatchEntries
+   */
+  export type Course$facultyBatchEntriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyBatchEntry
+     */
+    select?: FacultyBatchEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyBatchEntry
+     */
+    omit?: FacultyBatchEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyBatchEntryInclude<ExtArgs> | null
+    where?: FacultyBatchEntryWhereInput
+    orderBy?: FacultyBatchEntryOrderByWithRelationInput | FacultyBatchEntryOrderByWithRelationInput[]
+    cursor?: FacultyBatchEntryWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: FacultyBatchEntryScalarFieldEnum | FacultyBatchEntryScalarFieldEnum[]
   }
 
   /**
@@ -12881,6 +13314,7 @@ export namespace Prisma {
     installment1: number | null
     installment2: number | null
     installment3: number | null
+    installment4: number | null
     totalAmount: number | null
     firstInstallmentAmount: number | null
     secondInstallmentAmount: number | null
@@ -12895,6 +13329,7 @@ export namespace Prisma {
     installment1: number | null
     installment2: number | null
     installment3: number | null
+    installment4: number | null
     totalAmount: number | null
     firstInstallmentAmount: number | null
     secondInstallmentAmount: number | null
@@ -12910,7 +13345,9 @@ export namespace Prisma {
     location: string | null
     courseId: string | null
     courseInterested: string | null
+    facultyId: string | null
     facultyName: string | null
+    batchId: string | null
     batchName: string | null
     qualification: string | null
     passedOutYear: number | null
@@ -12924,6 +13361,7 @@ export namespace Prisma {
     installment1: number | null
     installment2: number | null
     installment3: number | null
+    installment4: number | null
     totalAmount: number | null
     admissionDate: string | null
     firstInstallmentAmount: number | null
@@ -12952,7 +13390,9 @@ export namespace Prisma {
     location: string | null
     courseId: string | null
     courseInterested: string | null
+    facultyId: string | null
     facultyName: string | null
+    batchId: string | null
     batchName: string | null
     qualification: string | null
     passedOutYear: number | null
@@ -12966,6 +13406,7 @@ export namespace Prisma {
     installment1: number | null
     installment2: number | null
     installment3: number | null
+    installment4: number | null
     totalAmount: number | null
     admissionDate: string | null
     firstInstallmentAmount: number | null
@@ -12994,7 +13435,9 @@ export namespace Prisma {
     location: number
     courseId: number
     courseInterested: number
+    facultyId: number
     facultyName: number
+    batchId: number
     batchName: number
     qualification: number
     passedOutYear: number
@@ -13008,6 +13451,7 @@ export namespace Prisma {
     installment1: number
     installment2: number
     installment3: number
+    installment4: number
     totalAmount: number
     admissionDate: number
     firstInstallmentAmount: number
@@ -13037,6 +13481,7 @@ export namespace Prisma {
     installment1?: true
     installment2?: true
     installment3?: true
+    installment4?: true
     totalAmount?: true
     firstInstallmentAmount?: true
     secondInstallmentAmount?: true
@@ -13051,6 +13496,7 @@ export namespace Prisma {
     installment1?: true
     installment2?: true
     installment3?: true
+    installment4?: true
     totalAmount?: true
     firstInstallmentAmount?: true
     secondInstallmentAmount?: true
@@ -13066,7 +13512,9 @@ export namespace Prisma {
     location?: true
     courseId?: true
     courseInterested?: true
+    facultyId?: true
     facultyName?: true
+    batchId?: true
     batchName?: true
     qualification?: true
     passedOutYear?: true
@@ -13080,6 +13528,7 @@ export namespace Prisma {
     installment1?: true
     installment2?: true
     installment3?: true
+    installment4?: true
     totalAmount?: true
     admissionDate?: true
     firstInstallmentAmount?: true
@@ -13108,7 +13557,9 @@ export namespace Prisma {
     location?: true
     courseId?: true
     courseInterested?: true
+    facultyId?: true
     facultyName?: true
+    batchId?: true
     batchName?: true
     qualification?: true
     passedOutYear?: true
@@ -13122,6 +13573,7 @@ export namespace Prisma {
     installment1?: true
     installment2?: true
     installment3?: true
+    installment4?: true
     totalAmount?: true
     admissionDate?: true
     firstInstallmentAmount?: true
@@ -13150,7 +13602,9 @@ export namespace Prisma {
     location?: true
     courseId?: true
     courseInterested?: true
+    facultyId?: true
     facultyName?: true
+    batchId?: true
     batchName?: true
     qualification?: true
     passedOutYear?: true
@@ -13164,6 +13618,7 @@ export namespace Prisma {
     installment1?: true
     installment2?: true
     installment3?: true
+    installment4?: true
     totalAmount?: true
     admissionDate?: true
     firstInstallmentAmount?: true
@@ -13279,7 +13734,9 @@ export namespace Prisma {
     location: string | null
     courseId: string | null
     courseInterested: string
+    facultyId: string | null
     facultyName: string | null
+    batchId: string | null
     batchName: string | null
     qualification: string | null
     passedOutYear: number | null
@@ -13293,6 +13750,7 @@ export namespace Prisma {
     installment1: number | null
     installment2: number | null
     installment3: number | null
+    installment4: number | null
     totalAmount: number | null
     admissionDate: string
     firstInstallmentAmount: number | null
@@ -13340,7 +13798,9 @@ export namespace Prisma {
     location?: boolean
     courseId?: boolean
     courseInterested?: boolean
+    facultyId?: boolean
     facultyName?: boolean
+    batchId?: boolean
     batchName?: boolean
     qualification?: boolean
     passedOutYear?: boolean
@@ -13354,6 +13814,7 @@ export namespace Prisma {
     installment1?: boolean
     installment2?: boolean
     installment3?: boolean
+    installment4?: boolean
     totalAmount?: boolean
     admissionDate?: boolean
     firstInstallmentAmount?: boolean
@@ -13383,7 +13844,9 @@ export namespace Prisma {
     location?: boolean
     courseId?: boolean
     courseInterested?: boolean
+    facultyId?: boolean
     facultyName?: boolean
+    batchId?: boolean
     batchName?: boolean
     qualification?: boolean
     passedOutYear?: boolean
@@ -13397,6 +13860,7 @@ export namespace Prisma {
     installment1?: boolean
     installment2?: boolean
     installment3?: boolean
+    installment4?: boolean
     totalAmount?: boolean
     admissionDate?: boolean
     firstInstallmentAmount?: boolean
@@ -13426,7 +13890,9 @@ export namespace Prisma {
     location?: boolean
     courseId?: boolean
     courseInterested?: boolean
+    facultyId?: boolean
     facultyName?: boolean
+    batchId?: boolean
     batchName?: boolean
     qualification?: boolean
     passedOutYear?: boolean
@@ -13440,6 +13906,7 @@ export namespace Prisma {
     installment1?: boolean
     installment2?: boolean
     installment3?: boolean
+    installment4?: boolean
     totalAmount?: boolean
     admissionDate?: boolean
     firstInstallmentAmount?: boolean
@@ -13469,7 +13936,9 @@ export namespace Prisma {
     location?: boolean
     courseId?: boolean
     courseInterested?: boolean
+    facultyId?: boolean
     facultyName?: boolean
+    batchId?: boolean
     batchName?: boolean
     qualification?: boolean
     passedOutYear?: boolean
@@ -13483,6 +13952,7 @@ export namespace Prisma {
     installment1?: boolean
     installment2?: boolean
     installment3?: boolean
+    installment4?: boolean
     totalAmount?: boolean
     admissionDate?: boolean
     firstInstallmentAmount?: boolean
@@ -13501,7 +13971,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type StudentProfileOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "studentCode" | "studentName" | "mobileNumber" | "emailAddress" | "parentSpouseNumber" | "location" | "courseId" | "courseInterested" | "facultyName" | "batchName" | "qualification" | "passedOutYear" | "currentStatus" | "designation" | "source" | "actualFees" | "registrationFees" | "discount" | "afterDiscount" | "installment1" | "installment2" | "installment3" | "totalAmount" | "admissionDate" | "firstInstallmentAmount" | "firstInstallmentDate" | "firstInstallmentStatus" | "firstInstallmentPaidAt" | "secondInstallmentAmount" | "secondDueDate" | "secondInstallmentStatus" | "secondInstallmentPaidAt" | "remarks" | "recordStatus" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["studentProfile"]>
+  export type StudentProfileOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "studentCode" | "studentName" | "mobileNumber" | "emailAddress" | "parentSpouseNumber" | "location" | "courseId" | "courseInterested" | "facultyId" | "facultyName" | "batchId" | "batchName" | "qualification" | "passedOutYear" | "currentStatus" | "designation" | "source" | "actualFees" | "registrationFees" | "discount" | "afterDiscount" | "installment1" | "installment2" | "installment3" | "installment4" | "totalAmount" | "admissionDate" | "firstInstallmentAmount" | "firstInstallmentDate" | "firstInstallmentStatus" | "firstInstallmentPaidAt" | "secondInstallmentAmount" | "secondDueDate" | "secondInstallmentStatus" | "secondInstallmentPaidAt" | "remarks" | "recordStatus" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["studentProfile"]>
   export type StudentProfileInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     course?: boolean | StudentProfile$courseArgs<ExtArgs>
   }
@@ -13527,7 +13997,9 @@ export namespace Prisma {
       location: string | null
       courseId: string | null
       courseInterested: string
+      facultyId: string | null
       facultyName: string | null
+      batchId: string | null
       batchName: string | null
       qualification: string | null
       passedOutYear: number | null
@@ -13541,6 +14013,7 @@ export namespace Prisma {
       installment1: number | null
       installment2: number | null
       installment3: number | null
+      installment4: number | null
       totalAmount: number | null
       admissionDate: string
       firstInstallmentAmount: number | null
@@ -13990,7 +14463,9 @@ export namespace Prisma {
     readonly location: FieldRef<"StudentProfile", 'String'>
     readonly courseId: FieldRef<"StudentProfile", 'String'>
     readonly courseInterested: FieldRef<"StudentProfile", 'String'>
+    readonly facultyId: FieldRef<"StudentProfile", 'String'>
     readonly facultyName: FieldRef<"StudentProfile", 'String'>
+    readonly batchId: FieldRef<"StudentProfile", 'String'>
     readonly batchName: FieldRef<"StudentProfile", 'String'>
     readonly qualification: FieldRef<"StudentProfile", 'String'>
     readonly passedOutYear: FieldRef<"StudentProfile", 'Int'>
@@ -14004,6 +14479,7 @@ export namespace Prisma {
     readonly installment1: FieldRef<"StudentProfile", 'Int'>
     readonly installment2: FieldRef<"StudentProfile", 'Int'>
     readonly installment3: FieldRef<"StudentProfile", 'Int'>
+    readonly installment4: FieldRef<"StudentProfile", 'Int'>
     readonly totalAmount: FieldRef<"StudentProfile", 'Int'>
     readonly admissionDate: FieldRef<"StudentProfile", 'String'>
     readonly firstInstallmentAmount: FieldRef<"StudentProfile", 'Int'>
@@ -14459,6 +14935,3471 @@ export namespace Prisma {
 
 
   /**
+   * Model FacultyProfile
+   */
+
+  export type AggregateFacultyProfile = {
+    _count: FacultyProfileCountAggregateOutputType | null
+    _min: FacultyProfileMinAggregateOutputType | null
+    _max: FacultyProfileMaxAggregateOutputType | null
+  }
+
+  export type FacultyProfileMinAggregateOutputType = {
+    id: string | null
+    facultyName: string | null
+    facultyEmail: string | null
+    facultyPhone: string | null
+    courseId: string | null
+    status: $Enums.RecordStatus | null
+    createdBy: string | null
+    updatedBy: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type FacultyProfileMaxAggregateOutputType = {
+    id: string | null
+    facultyName: string | null
+    facultyEmail: string | null
+    facultyPhone: string | null
+    courseId: string | null
+    status: $Enums.RecordStatus | null
+    createdBy: string | null
+    updatedBy: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type FacultyProfileCountAggregateOutputType = {
+    id: number
+    facultyName: number
+    facultyEmail: number
+    facultyPhone: number
+    courseId: number
+    status: number
+    createdBy: number
+    updatedBy: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type FacultyProfileMinAggregateInputType = {
+    id?: true
+    facultyName?: true
+    facultyEmail?: true
+    facultyPhone?: true
+    courseId?: true
+    status?: true
+    createdBy?: true
+    updatedBy?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type FacultyProfileMaxAggregateInputType = {
+    id?: true
+    facultyName?: true
+    facultyEmail?: true
+    facultyPhone?: true
+    courseId?: true
+    status?: true
+    createdBy?: true
+    updatedBy?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type FacultyProfileCountAggregateInputType = {
+    id?: true
+    facultyName?: true
+    facultyEmail?: true
+    facultyPhone?: true
+    courseId?: true
+    status?: true
+    createdBy?: true
+    updatedBy?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type FacultyProfileAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FacultyProfile to aggregate.
+     */
+    where?: FacultyProfileWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FacultyProfiles to fetch.
+     */
+    orderBy?: FacultyProfileOrderByWithRelationInput | FacultyProfileOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: FacultyProfileWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FacultyProfiles from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FacultyProfiles.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned FacultyProfiles
+    **/
+    _count?: true | FacultyProfileCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: FacultyProfileMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: FacultyProfileMaxAggregateInputType
+  }
+
+  export type GetFacultyProfileAggregateType<T extends FacultyProfileAggregateArgs> = {
+        [P in keyof T & keyof AggregateFacultyProfile]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateFacultyProfile[P]>
+      : GetScalarType<T[P], AggregateFacultyProfile[P]>
+  }
+
+
+
+
+  export type FacultyProfileGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FacultyProfileWhereInput
+    orderBy?: FacultyProfileOrderByWithAggregationInput | FacultyProfileOrderByWithAggregationInput[]
+    by: FacultyProfileScalarFieldEnum[] | FacultyProfileScalarFieldEnum
+    having?: FacultyProfileScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: FacultyProfileCountAggregateInputType | true
+    _min?: FacultyProfileMinAggregateInputType
+    _max?: FacultyProfileMaxAggregateInputType
+  }
+
+  export type FacultyProfileGroupByOutputType = {
+    id: string
+    facultyName: string
+    facultyEmail: string
+    facultyPhone: string
+    courseId: string | null
+    status: $Enums.RecordStatus
+    createdBy: string | null
+    updatedBy: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: FacultyProfileCountAggregateOutputType | null
+    _min: FacultyProfileMinAggregateOutputType | null
+    _max: FacultyProfileMaxAggregateOutputType | null
+  }
+
+  type GetFacultyProfileGroupByPayload<T extends FacultyProfileGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<FacultyProfileGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof FacultyProfileGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], FacultyProfileGroupByOutputType[P]>
+            : GetScalarType<T[P], FacultyProfileGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type FacultyProfileSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    facultyName?: boolean
+    facultyEmail?: boolean
+    facultyPhone?: boolean
+    courseId?: boolean
+    status?: boolean
+    createdBy?: boolean
+    updatedBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    course?: boolean | FacultyProfile$courseArgs<ExtArgs>
+    courseAssignments?: boolean | FacultyProfile$courseAssignmentsArgs<ExtArgs>
+    batchEntries?: boolean | FacultyProfile$batchEntriesArgs<ExtArgs>
+    _count?: boolean | FacultyProfileCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["facultyProfile"]>
+
+  export type FacultyProfileSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    facultyName?: boolean
+    facultyEmail?: boolean
+    facultyPhone?: boolean
+    courseId?: boolean
+    status?: boolean
+    createdBy?: boolean
+    updatedBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    course?: boolean | FacultyProfile$courseArgs<ExtArgs>
+  }, ExtArgs["result"]["facultyProfile"]>
+
+  export type FacultyProfileSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    facultyName?: boolean
+    facultyEmail?: boolean
+    facultyPhone?: boolean
+    courseId?: boolean
+    status?: boolean
+    createdBy?: boolean
+    updatedBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    course?: boolean | FacultyProfile$courseArgs<ExtArgs>
+  }, ExtArgs["result"]["facultyProfile"]>
+
+  export type FacultyProfileSelectScalar = {
+    id?: boolean
+    facultyName?: boolean
+    facultyEmail?: boolean
+    facultyPhone?: boolean
+    courseId?: boolean
+    status?: boolean
+    createdBy?: boolean
+    updatedBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type FacultyProfileOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "facultyName" | "facultyEmail" | "facultyPhone" | "courseId" | "status" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["facultyProfile"]>
+  export type FacultyProfileInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    course?: boolean | FacultyProfile$courseArgs<ExtArgs>
+    courseAssignments?: boolean | FacultyProfile$courseAssignmentsArgs<ExtArgs>
+    batchEntries?: boolean | FacultyProfile$batchEntriesArgs<ExtArgs>
+    _count?: boolean | FacultyProfileCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type FacultyProfileIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    course?: boolean | FacultyProfile$courseArgs<ExtArgs>
+  }
+  export type FacultyProfileIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    course?: boolean | FacultyProfile$courseArgs<ExtArgs>
+  }
+
+  export type $FacultyProfilePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "FacultyProfile"
+    objects: {
+      course: Prisma.$CoursePayload<ExtArgs> | null
+      courseAssignments: Prisma.$FacultyCourseAssignmentPayload<ExtArgs>[]
+      batchEntries: Prisma.$FacultyBatchEntryPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      facultyName: string
+      facultyEmail: string
+      facultyPhone: string
+      courseId: string | null
+      status: $Enums.RecordStatus
+      createdBy: string | null
+      updatedBy: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["facultyProfile"]>
+    composites: {}
+  }
+
+  type FacultyProfileGetPayload<S extends boolean | null | undefined | FacultyProfileDefaultArgs> = $Result.GetResult<Prisma.$FacultyProfilePayload, S>
+
+  type FacultyProfileCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<FacultyProfileFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: FacultyProfileCountAggregateInputType | true
+    }
+
+  export interface FacultyProfileDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['FacultyProfile'], meta: { name: 'FacultyProfile' } }
+    /**
+     * Find zero or one FacultyProfile that matches the filter.
+     * @param {FacultyProfileFindUniqueArgs} args - Arguments to find a FacultyProfile
+     * @example
+     * // Get one FacultyProfile
+     * const facultyProfile = await prisma.facultyProfile.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends FacultyProfileFindUniqueArgs>(args: SelectSubset<T, FacultyProfileFindUniqueArgs<ExtArgs>>): Prisma__FacultyProfileClient<$Result.GetResult<Prisma.$FacultyProfilePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one FacultyProfile that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {FacultyProfileFindUniqueOrThrowArgs} args - Arguments to find a FacultyProfile
+     * @example
+     * // Get one FacultyProfile
+     * const facultyProfile = await prisma.facultyProfile.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends FacultyProfileFindUniqueOrThrowArgs>(args: SelectSubset<T, FacultyProfileFindUniqueOrThrowArgs<ExtArgs>>): Prisma__FacultyProfileClient<$Result.GetResult<Prisma.$FacultyProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first FacultyProfile that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FacultyProfileFindFirstArgs} args - Arguments to find a FacultyProfile
+     * @example
+     * // Get one FacultyProfile
+     * const facultyProfile = await prisma.facultyProfile.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends FacultyProfileFindFirstArgs>(args?: SelectSubset<T, FacultyProfileFindFirstArgs<ExtArgs>>): Prisma__FacultyProfileClient<$Result.GetResult<Prisma.$FacultyProfilePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first FacultyProfile that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FacultyProfileFindFirstOrThrowArgs} args - Arguments to find a FacultyProfile
+     * @example
+     * // Get one FacultyProfile
+     * const facultyProfile = await prisma.facultyProfile.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends FacultyProfileFindFirstOrThrowArgs>(args?: SelectSubset<T, FacultyProfileFindFirstOrThrowArgs<ExtArgs>>): Prisma__FacultyProfileClient<$Result.GetResult<Prisma.$FacultyProfilePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more FacultyProfiles that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FacultyProfileFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all FacultyProfiles
+     * const facultyProfiles = await prisma.facultyProfile.findMany()
+     * 
+     * // Get first 10 FacultyProfiles
+     * const facultyProfiles = await prisma.facultyProfile.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const facultyProfileWithIdOnly = await prisma.facultyProfile.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends FacultyProfileFindManyArgs>(args?: SelectSubset<T, FacultyProfileFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FacultyProfilePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a FacultyProfile.
+     * @param {FacultyProfileCreateArgs} args - Arguments to create a FacultyProfile.
+     * @example
+     * // Create one FacultyProfile
+     * const FacultyProfile = await prisma.facultyProfile.create({
+     *   data: {
+     *     // ... data to create a FacultyProfile
+     *   }
+     * })
+     * 
+     */
+    create<T extends FacultyProfileCreateArgs>(args: SelectSubset<T, FacultyProfileCreateArgs<ExtArgs>>): Prisma__FacultyProfileClient<$Result.GetResult<Prisma.$FacultyProfilePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many FacultyProfiles.
+     * @param {FacultyProfileCreateManyArgs} args - Arguments to create many FacultyProfiles.
+     * @example
+     * // Create many FacultyProfiles
+     * const facultyProfile = await prisma.facultyProfile.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends FacultyProfileCreateManyArgs>(args?: SelectSubset<T, FacultyProfileCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many FacultyProfiles and returns the data saved in the database.
+     * @param {FacultyProfileCreateManyAndReturnArgs} args - Arguments to create many FacultyProfiles.
+     * @example
+     * // Create many FacultyProfiles
+     * const facultyProfile = await prisma.facultyProfile.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many FacultyProfiles and only return the `id`
+     * const facultyProfileWithIdOnly = await prisma.facultyProfile.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends FacultyProfileCreateManyAndReturnArgs>(args?: SelectSubset<T, FacultyProfileCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FacultyProfilePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a FacultyProfile.
+     * @param {FacultyProfileDeleteArgs} args - Arguments to delete one FacultyProfile.
+     * @example
+     * // Delete one FacultyProfile
+     * const FacultyProfile = await prisma.facultyProfile.delete({
+     *   where: {
+     *     // ... filter to delete one FacultyProfile
+     *   }
+     * })
+     * 
+     */
+    delete<T extends FacultyProfileDeleteArgs>(args: SelectSubset<T, FacultyProfileDeleteArgs<ExtArgs>>): Prisma__FacultyProfileClient<$Result.GetResult<Prisma.$FacultyProfilePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one FacultyProfile.
+     * @param {FacultyProfileUpdateArgs} args - Arguments to update one FacultyProfile.
+     * @example
+     * // Update one FacultyProfile
+     * const facultyProfile = await prisma.facultyProfile.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends FacultyProfileUpdateArgs>(args: SelectSubset<T, FacultyProfileUpdateArgs<ExtArgs>>): Prisma__FacultyProfileClient<$Result.GetResult<Prisma.$FacultyProfilePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more FacultyProfiles.
+     * @param {FacultyProfileDeleteManyArgs} args - Arguments to filter FacultyProfiles to delete.
+     * @example
+     * // Delete a few FacultyProfiles
+     * const { count } = await prisma.facultyProfile.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends FacultyProfileDeleteManyArgs>(args?: SelectSubset<T, FacultyProfileDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more FacultyProfiles.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FacultyProfileUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many FacultyProfiles
+     * const facultyProfile = await prisma.facultyProfile.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends FacultyProfileUpdateManyArgs>(args: SelectSubset<T, FacultyProfileUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more FacultyProfiles and returns the data updated in the database.
+     * @param {FacultyProfileUpdateManyAndReturnArgs} args - Arguments to update many FacultyProfiles.
+     * @example
+     * // Update many FacultyProfiles
+     * const facultyProfile = await prisma.facultyProfile.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more FacultyProfiles and only return the `id`
+     * const facultyProfileWithIdOnly = await prisma.facultyProfile.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends FacultyProfileUpdateManyAndReturnArgs>(args: SelectSubset<T, FacultyProfileUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FacultyProfilePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one FacultyProfile.
+     * @param {FacultyProfileUpsertArgs} args - Arguments to update or create a FacultyProfile.
+     * @example
+     * // Update or create a FacultyProfile
+     * const facultyProfile = await prisma.facultyProfile.upsert({
+     *   create: {
+     *     // ... data to create a FacultyProfile
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the FacultyProfile we want to update
+     *   }
+     * })
+     */
+    upsert<T extends FacultyProfileUpsertArgs>(args: SelectSubset<T, FacultyProfileUpsertArgs<ExtArgs>>): Prisma__FacultyProfileClient<$Result.GetResult<Prisma.$FacultyProfilePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of FacultyProfiles.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FacultyProfileCountArgs} args - Arguments to filter FacultyProfiles to count.
+     * @example
+     * // Count the number of FacultyProfiles
+     * const count = await prisma.facultyProfile.count({
+     *   where: {
+     *     // ... the filter for the FacultyProfiles we want to count
+     *   }
+     * })
+    **/
+    count<T extends FacultyProfileCountArgs>(
+      args?: Subset<T, FacultyProfileCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], FacultyProfileCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a FacultyProfile.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FacultyProfileAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends FacultyProfileAggregateArgs>(args: Subset<T, FacultyProfileAggregateArgs>): Prisma.PrismaPromise<GetFacultyProfileAggregateType<T>>
+
+    /**
+     * Group by FacultyProfile.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FacultyProfileGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends FacultyProfileGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: FacultyProfileGroupByArgs['orderBy'] }
+        : { orderBy?: FacultyProfileGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, FacultyProfileGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetFacultyProfileGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the FacultyProfile model
+   */
+  readonly fields: FacultyProfileFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for FacultyProfile.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__FacultyProfileClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    course<T extends FacultyProfile$courseArgs<ExtArgs> = {}>(args?: Subset<T, FacultyProfile$courseArgs<ExtArgs>>): Prisma__CourseClient<$Result.GetResult<Prisma.$CoursePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    courseAssignments<T extends FacultyProfile$courseAssignmentsArgs<ExtArgs> = {}>(args?: Subset<T, FacultyProfile$courseAssignmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FacultyCourseAssignmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    batchEntries<T extends FacultyProfile$batchEntriesArgs<ExtArgs> = {}>(args?: Subset<T, FacultyProfile$batchEntriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FacultyBatchEntryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the FacultyProfile model
+   */
+  interface FacultyProfileFieldRefs {
+    readonly id: FieldRef<"FacultyProfile", 'String'>
+    readonly facultyName: FieldRef<"FacultyProfile", 'String'>
+    readonly facultyEmail: FieldRef<"FacultyProfile", 'String'>
+    readonly facultyPhone: FieldRef<"FacultyProfile", 'String'>
+    readonly courseId: FieldRef<"FacultyProfile", 'String'>
+    readonly status: FieldRef<"FacultyProfile", 'RecordStatus'>
+    readonly createdBy: FieldRef<"FacultyProfile", 'String'>
+    readonly updatedBy: FieldRef<"FacultyProfile", 'String'>
+    readonly createdAt: FieldRef<"FacultyProfile", 'DateTime'>
+    readonly updatedAt: FieldRef<"FacultyProfile", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * FacultyProfile findUnique
+   */
+  export type FacultyProfileFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyProfile
+     */
+    select?: FacultyProfileSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyProfile
+     */
+    omit?: FacultyProfileOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyProfileInclude<ExtArgs> | null
+    /**
+     * Filter, which FacultyProfile to fetch.
+     */
+    where: FacultyProfileWhereUniqueInput
+  }
+
+  /**
+   * FacultyProfile findUniqueOrThrow
+   */
+  export type FacultyProfileFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyProfile
+     */
+    select?: FacultyProfileSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyProfile
+     */
+    omit?: FacultyProfileOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyProfileInclude<ExtArgs> | null
+    /**
+     * Filter, which FacultyProfile to fetch.
+     */
+    where: FacultyProfileWhereUniqueInput
+  }
+
+  /**
+   * FacultyProfile findFirst
+   */
+  export type FacultyProfileFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyProfile
+     */
+    select?: FacultyProfileSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyProfile
+     */
+    omit?: FacultyProfileOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyProfileInclude<ExtArgs> | null
+    /**
+     * Filter, which FacultyProfile to fetch.
+     */
+    where?: FacultyProfileWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FacultyProfiles to fetch.
+     */
+    orderBy?: FacultyProfileOrderByWithRelationInput | FacultyProfileOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FacultyProfiles.
+     */
+    cursor?: FacultyProfileWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FacultyProfiles from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FacultyProfiles.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FacultyProfiles.
+     */
+    distinct?: FacultyProfileScalarFieldEnum | FacultyProfileScalarFieldEnum[]
+  }
+
+  /**
+   * FacultyProfile findFirstOrThrow
+   */
+  export type FacultyProfileFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyProfile
+     */
+    select?: FacultyProfileSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyProfile
+     */
+    omit?: FacultyProfileOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyProfileInclude<ExtArgs> | null
+    /**
+     * Filter, which FacultyProfile to fetch.
+     */
+    where?: FacultyProfileWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FacultyProfiles to fetch.
+     */
+    orderBy?: FacultyProfileOrderByWithRelationInput | FacultyProfileOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FacultyProfiles.
+     */
+    cursor?: FacultyProfileWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FacultyProfiles from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FacultyProfiles.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FacultyProfiles.
+     */
+    distinct?: FacultyProfileScalarFieldEnum | FacultyProfileScalarFieldEnum[]
+  }
+
+  /**
+   * FacultyProfile findMany
+   */
+  export type FacultyProfileFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyProfile
+     */
+    select?: FacultyProfileSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyProfile
+     */
+    omit?: FacultyProfileOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyProfileInclude<ExtArgs> | null
+    /**
+     * Filter, which FacultyProfiles to fetch.
+     */
+    where?: FacultyProfileWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FacultyProfiles to fetch.
+     */
+    orderBy?: FacultyProfileOrderByWithRelationInput | FacultyProfileOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing FacultyProfiles.
+     */
+    cursor?: FacultyProfileWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FacultyProfiles from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FacultyProfiles.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FacultyProfiles.
+     */
+    distinct?: FacultyProfileScalarFieldEnum | FacultyProfileScalarFieldEnum[]
+  }
+
+  /**
+   * FacultyProfile create
+   */
+  export type FacultyProfileCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyProfile
+     */
+    select?: FacultyProfileSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyProfile
+     */
+    omit?: FacultyProfileOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyProfileInclude<ExtArgs> | null
+    /**
+     * The data needed to create a FacultyProfile.
+     */
+    data: XOR<FacultyProfileCreateInput, FacultyProfileUncheckedCreateInput>
+  }
+
+  /**
+   * FacultyProfile createMany
+   */
+  export type FacultyProfileCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many FacultyProfiles.
+     */
+    data: FacultyProfileCreateManyInput | FacultyProfileCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * FacultyProfile createManyAndReturn
+   */
+  export type FacultyProfileCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyProfile
+     */
+    select?: FacultyProfileSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyProfile
+     */
+    omit?: FacultyProfileOmit<ExtArgs> | null
+    /**
+     * The data used to create many FacultyProfiles.
+     */
+    data: FacultyProfileCreateManyInput | FacultyProfileCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyProfileIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * FacultyProfile update
+   */
+  export type FacultyProfileUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyProfile
+     */
+    select?: FacultyProfileSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyProfile
+     */
+    omit?: FacultyProfileOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyProfileInclude<ExtArgs> | null
+    /**
+     * The data needed to update a FacultyProfile.
+     */
+    data: XOR<FacultyProfileUpdateInput, FacultyProfileUncheckedUpdateInput>
+    /**
+     * Choose, which FacultyProfile to update.
+     */
+    where: FacultyProfileWhereUniqueInput
+  }
+
+  /**
+   * FacultyProfile updateMany
+   */
+  export type FacultyProfileUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update FacultyProfiles.
+     */
+    data: XOR<FacultyProfileUpdateManyMutationInput, FacultyProfileUncheckedUpdateManyInput>
+    /**
+     * Filter which FacultyProfiles to update
+     */
+    where?: FacultyProfileWhereInput
+    /**
+     * Limit how many FacultyProfiles to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * FacultyProfile updateManyAndReturn
+   */
+  export type FacultyProfileUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyProfile
+     */
+    select?: FacultyProfileSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyProfile
+     */
+    omit?: FacultyProfileOmit<ExtArgs> | null
+    /**
+     * The data used to update FacultyProfiles.
+     */
+    data: XOR<FacultyProfileUpdateManyMutationInput, FacultyProfileUncheckedUpdateManyInput>
+    /**
+     * Filter which FacultyProfiles to update
+     */
+    where?: FacultyProfileWhereInput
+    /**
+     * Limit how many FacultyProfiles to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyProfileIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * FacultyProfile upsert
+   */
+  export type FacultyProfileUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyProfile
+     */
+    select?: FacultyProfileSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyProfile
+     */
+    omit?: FacultyProfileOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyProfileInclude<ExtArgs> | null
+    /**
+     * The filter to search for the FacultyProfile to update in case it exists.
+     */
+    where: FacultyProfileWhereUniqueInput
+    /**
+     * In case the FacultyProfile found by the `where` argument doesn't exist, create a new FacultyProfile with this data.
+     */
+    create: XOR<FacultyProfileCreateInput, FacultyProfileUncheckedCreateInput>
+    /**
+     * In case the FacultyProfile was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<FacultyProfileUpdateInput, FacultyProfileUncheckedUpdateInput>
+  }
+
+  /**
+   * FacultyProfile delete
+   */
+  export type FacultyProfileDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyProfile
+     */
+    select?: FacultyProfileSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyProfile
+     */
+    omit?: FacultyProfileOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyProfileInclude<ExtArgs> | null
+    /**
+     * Filter which FacultyProfile to delete.
+     */
+    where: FacultyProfileWhereUniqueInput
+  }
+
+  /**
+   * FacultyProfile deleteMany
+   */
+  export type FacultyProfileDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FacultyProfiles to delete
+     */
+    where?: FacultyProfileWhereInput
+    /**
+     * Limit how many FacultyProfiles to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * FacultyProfile.course
+   */
+  export type FacultyProfile$courseArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Course
+     */
+    select?: CourseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Course
+     */
+    omit?: CourseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CourseInclude<ExtArgs> | null
+    where?: CourseWhereInput
+  }
+
+  /**
+   * FacultyProfile.courseAssignments
+   */
+  export type FacultyProfile$courseAssignmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyCourseAssignment
+     */
+    select?: FacultyCourseAssignmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyCourseAssignment
+     */
+    omit?: FacultyCourseAssignmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyCourseAssignmentInclude<ExtArgs> | null
+    where?: FacultyCourseAssignmentWhereInput
+    orderBy?: FacultyCourseAssignmentOrderByWithRelationInput | FacultyCourseAssignmentOrderByWithRelationInput[]
+    cursor?: FacultyCourseAssignmentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: FacultyCourseAssignmentScalarFieldEnum | FacultyCourseAssignmentScalarFieldEnum[]
+  }
+
+  /**
+   * FacultyProfile.batchEntries
+   */
+  export type FacultyProfile$batchEntriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyBatchEntry
+     */
+    select?: FacultyBatchEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyBatchEntry
+     */
+    omit?: FacultyBatchEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyBatchEntryInclude<ExtArgs> | null
+    where?: FacultyBatchEntryWhereInput
+    orderBy?: FacultyBatchEntryOrderByWithRelationInput | FacultyBatchEntryOrderByWithRelationInput[]
+    cursor?: FacultyBatchEntryWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: FacultyBatchEntryScalarFieldEnum | FacultyBatchEntryScalarFieldEnum[]
+  }
+
+  /**
+   * FacultyProfile without action
+   */
+  export type FacultyProfileDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyProfile
+     */
+    select?: FacultyProfileSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyProfile
+     */
+    omit?: FacultyProfileOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyProfileInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model FacultyCourseAssignment
+   */
+
+  export type AggregateFacultyCourseAssignment = {
+    _count: FacultyCourseAssignmentCountAggregateOutputType | null
+    _min: FacultyCourseAssignmentMinAggregateOutputType | null
+    _max: FacultyCourseAssignmentMaxAggregateOutputType | null
+  }
+
+  export type FacultyCourseAssignmentMinAggregateOutputType = {
+    id: string | null
+    facultyId: string | null
+    courseId: string | null
+    createdBy: string | null
+    updatedBy: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type FacultyCourseAssignmentMaxAggregateOutputType = {
+    id: string | null
+    facultyId: string | null
+    courseId: string | null
+    createdBy: string | null
+    updatedBy: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type FacultyCourseAssignmentCountAggregateOutputType = {
+    id: number
+    facultyId: number
+    courseId: number
+    createdBy: number
+    updatedBy: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type FacultyCourseAssignmentMinAggregateInputType = {
+    id?: true
+    facultyId?: true
+    courseId?: true
+    createdBy?: true
+    updatedBy?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type FacultyCourseAssignmentMaxAggregateInputType = {
+    id?: true
+    facultyId?: true
+    courseId?: true
+    createdBy?: true
+    updatedBy?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type FacultyCourseAssignmentCountAggregateInputType = {
+    id?: true
+    facultyId?: true
+    courseId?: true
+    createdBy?: true
+    updatedBy?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type FacultyCourseAssignmentAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FacultyCourseAssignment to aggregate.
+     */
+    where?: FacultyCourseAssignmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FacultyCourseAssignments to fetch.
+     */
+    orderBy?: FacultyCourseAssignmentOrderByWithRelationInput | FacultyCourseAssignmentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: FacultyCourseAssignmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FacultyCourseAssignments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FacultyCourseAssignments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned FacultyCourseAssignments
+    **/
+    _count?: true | FacultyCourseAssignmentCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: FacultyCourseAssignmentMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: FacultyCourseAssignmentMaxAggregateInputType
+  }
+
+  export type GetFacultyCourseAssignmentAggregateType<T extends FacultyCourseAssignmentAggregateArgs> = {
+        [P in keyof T & keyof AggregateFacultyCourseAssignment]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateFacultyCourseAssignment[P]>
+      : GetScalarType<T[P], AggregateFacultyCourseAssignment[P]>
+  }
+
+
+
+
+  export type FacultyCourseAssignmentGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FacultyCourseAssignmentWhereInput
+    orderBy?: FacultyCourseAssignmentOrderByWithAggregationInput | FacultyCourseAssignmentOrderByWithAggregationInput[]
+    by: FacultyCourseAssignmentScalarFieldEnum[] | FacultyCourseAssignmentScalarFieldEnum
+    having?: FacultyCourseAssignmentScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: FacultyCourseAssignmentCountAggregateInputType | true
+    _min?: FacultyCourseAssignmentMinAggregateInputType
+    _max?: FacultyCourseAssignmentMaxAggregateInputType
+  }
+
+  export type FacultyCourseAssignmentGroupByOutputType = {
+    id: string
+    facultyId: string
+    courseId: string
+    createdBy: string | null
+    updatedBy: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: FacultyCourseAssignmentCountAggregateOutputType | null
+    _min: FacultyCourseAssignmentMinAggregateOutputType | null
+    _max: FacultyCourseAssignmentMaxAggregateOutputType | null
+  }
+
+  type GetFacultyCourseAssignmentGroupByPayload<T extends FacultyCourseAssignmentGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<FacultyCourseAssignmentGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof FacultyCourseAssignmentGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], FacultyCourseAssignmentGroupByOutputType[P]>
+            : GetScalarType<T[P], FacultyCourseAssignmentGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type FacultyCourseAssignmentSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    facultyId?: boolean
+    courseId?: boolean
+    createdBy?: boolean
+    updatedBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    faculty?: boolean | FacultyProfileDefaultArgs<ExtArgs>
+    course?: boolean | CourseDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["facultyCourseAssignment"]>
+
+  export type FacultyCourseAssignmentSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    facultyId?: boolean
+    courseId?: boolean
+    createdBy?: boolean
+    updatedBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    faculty?: boolean | FacultyProfileDefaultArgs<ExtArgs>
+    course?: boolean | CourseDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["facultyCourseAssignment"]>
+
+  export type FacultyCourseAssignmentSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    facultyId?: boolean
+    courseId?: boolean
+    createdBy?: boolean
+    updatedBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    faculty?: boolean | FacultyProfileDefaultArgs<ExtArgs>
+    course?: boolean | CourseDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["facultyCourseAssignment"]>
+
+  export type FacultyCourseAssignmentSelectScalar = {
+    id?: boolean
+    facultyId?: boolean
+    courseId?: boolean
+    createdBy?: boolean
+    updatedBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type FacultyCourseAssignmentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "facultyId" | "courseId" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["facultyCourseAssignment"]>
+  export type FacultyCourseAssignmentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    faculty?: boolean | FacultyProfileDefaultArgs<ExtArgs>
+    course?: boolean | CourseDefaultArgs<ExtArgs>
+  }
+  export type FacultyCourseAssignmentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    faculty?: boolean | FacultyProfileDefaultArgs<ExtArgs>
+    course?: boolean | CourseDefaultArgs<ExtArgs>
+  }
+  export type FacultyCourseAssignmentIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    faculty?: boolean | FacultyProfileDefaultArgs<ExtArgs>
+    course?: boolean | CourseDefaultArgs<ExtArgs>
+  }
+
+  export type $FacultyCourseAssignmentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "FacultyCourseAssignment"
+    objects: {
+      faculty: Prisma.$FacultyProfilePayload<ExtArgs>
+      course: Prisma.$CoursePayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      facultyId: string
+      courseId: string
+      createdBy: string | null
+      updatedBy: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["facultyCourseAssignment"]>
+    composites: {}
+  }
+
+  type FacultyCourseAssignmentGetPayload<S extends boolean | null | undefined | FacultyCourseAssignmentDefaultArgs> = $Result.GetResult<Prisma.$FacultyCourseAssignmentPayload, S>
+
+  type FacultyCourseAssignmentCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<FacultyCourseAssignmentFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: FacultyCourseAssignmentCountAggregateInputType | true
+    }
+
+  export interface FacultyCourseAssignmentDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['FacultyCourseAssignment'], meta: { name: 'FacultyCourseAssignment' } }
+    /**
+     * Find zero or one FacultyCourseAssignment that matches the filter.
+     * @param {FacultyCourseAssignmentFindUniqueArgs} args - Arguments to find a FacultyCourseAssignment
+     * @example
+     * // Get one FacultyCourseAssignment
+     * const facultyCourseAssignment = await prisma.facultyCourseAssignment.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends FacultyCourseAssignmentFindUniqueArgs>(args: SelectSubset<T, FacultyCourseAssignmentFindUniqueArgs<ExtArgs>>): Prisma__FacultyCourseAssignmentClient<$Result.GetResult<Prisma.$FacultyCourseAssignmentPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one FacultyCourseAssignment that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {FacultyCourseAssignmentFindUniqueOrThrowArgs} args - Arguments to find a FacultyCourseAssignment
+     * @example
+     * // Get one FacultyCourseAssignment
+     * const facultyCourseAssignment = await prisma.facultyCourseAssignment.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends FacultyCourseAssignmentFindUniqueOrThrowArgs>(args: SelectSubset<T, FacultyCourseAssignmentFindUniqueOrThrowArgs<ExtArgs>>): Prisma__FacultyCourseAssignmentClient<$Result.GetResult<Prisma.$FacultyCourseAssignmentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first FacultyCourseAssignment that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FacultyCourseAssignmentFindFirstArgs} args - Arguments to find a FacultyCourseAssignment
+     * @example
+     * // Get one FacultyCourseAssignment
+     * const facultyCourseAssignment = await prisma.facultyCourseAssignment.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends FacultyCourseAssignmentFindFirstArgs>(args?: SelectSubset<T, FacultyCourseAssignmentFindFirstArgs<ExtArgs>>): Prisma__FacultyCourseAssignmentClient<$Result.GetResult<Prisma.$FacultyCourseAssignmentPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first FacultyCourseAssignment that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FacultyCourseAssignmentFindFirstOrThrowArgs} args - Arguments to find a FacultyCourseAssignment
+     * @example
+     * // Get one FacultyCourseAssignment
+     * const facultyCourseAssignment = await prisma.facultyCourseAssignment.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends FacultyCourseAssignmentFindFirstOrThrowArgs>(args?: SelectSubset<T, FacultyCourseAssignmentFindFirstOrThrowArgs<ExtArgs>>): Prisma__FacultyCourseAssignmentClient<$Result.GetResult<Prisma.$FacultyCourseAssignmentPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more FacultyCourseAssignments that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FacultyCourseAssignmentFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all FacultyCourseAssignments
+     * const facultyCourseAssignments = await prisma.facultyCourseAssignment.findMany()
+     * 
+     * // Get first 10 FacultyCourseAssignments
+     * const facultyCourseAssignments = await prisma.facultyCourseAssignment.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const facultyCourseAssignmentWithIdOnly = await prisma.facultyCourseAssignment.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends FacultyCourseAssignmentFindManyArgs>(args?: SelectSubset<T, FacultyCourseAssignmentFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FacultyCourseAssignmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a FacultyCourseAssignment.
+     * @param {FacultyCourseAssignmentCreateArgs} args - Arguments to create a FacultyCourseAssignment.
+     * @example
+     * // Create one FacultyCourseAssignment
+     * const FacultyCourseAssignment = await prisma.facultyCourseAssignment.create({
+     *   data: {
+     *     // ... data to create a FacultyCourseAssignment
+     *   }
+     * })
+     * 
+     */
+    create<T extends FacultyCourseAssignmentCreateArgs>(args: SelectSubset<T, FacultyCourseAssignmentCreateArgs<ExtArgs>>): Prisma__FacultyCourseAssignmentClient<$Result.GetResult<Prisma.$FacultyCourseAssignmentPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many FacultyCourseAssignments.
+     * @param {FacultyCourseAssignmentCreateManyArgs} args - Arguments to create many FacultyCourseAssignments.
+     * @example
+     * // Create many FacultyCourseAssignments
+     * const facultyCourseAssignment = await prisma.facultyCourseAssignment.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends FacultyCourseAssignmentCreateManyArgs>(args?: SelectSubset<T, FacultyCourseAssignmentCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many FacultyCourseAssignments and returns the data saved in the database.
+     * @param {FacultyCourseAssignmentCreateManyAndReturnArgs} args - Arguments to create many FacultyCourseAssignments.
+     * @example
+     * // Create many FacultyCourseAssignments
+     * const facultyCourseAssignment = await prisma.facultyCourseAssignment.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many FacultyCourseAssignments and only return the `id`
+     * const facultyCourseAssignmentWithIdOnly = await prisma.facultyCourseAssignment.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends FacultyCourseAssignmentCreateManyAndReturnArgs>(args?: SelectSubset<T, FacultyCourseAssignmentCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FacultyCourseAssignmentPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a FacultyCourseAssignment.
+     * @param {FacultyCourseAssignmentDeleteArgs} args - Arguments to delete one FacultyCourseAssignment.
+     * @example
+     * // Delete one FacultyCourseAssignment
+     * const FacultyCourseAssignment = await prisma.facultyCourseAssignment.delete({
+     *   where: {
+     *     // ... filter to delete one FacultyCourseAssignment
+     *   }
+     * })
+     * 
+     */
+    delete<T extends FacultyCourseAssignmentDeleteArgs>(args: SelectSubset<T, FacultyCourseAssignmentDeleteArgs<ExtArgs>>): Prisma__FacultyCourseAssignmentClient<$Result.GetResult<Prisma.$FacultyCourseAssignmentPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one FacultyCourseAssignment.
+     * @param {FacultyCourseAssignmentUpdateArgs} args - Arguments to update one FacultyCourseAssignment.
+     * @example
+     * // Update one FacultyCourseAssignment
+     * const facultyCourseAssignment = await prisma.facultyCourseAssignment.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends FacultyCourseAssignmentUpdateArgs>(args: SelectSubset<T, FacultyCourseAssignmentUpdateArgs<ExtArgs>>): Prisma__FacultyCourseAssignmentClient<$Result.GetResult<Prisma.$FacultyCourseAssignmentPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more FacultyCourseAssignments.
+     * @param {FacultyCourseAssignmentDeleteManyArgs} args - Arguments to filter FacultyCourseAssignments to delete.
+     * @example
+     * // Delete a few FacultyCourseAssignments
+     * const { count } = await prisma.facultyCourseAssignment.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends FacultyCourseAssignmentDeleteManyArgs>(args?: SelectSubset<T, FacultyCourseAssignmentDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more FacultyCourseAssignments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FacultyCourseAssignmentUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many FacultyCourseAssignments
+     * const facultyCourseAssignment = await prisma.facultyCourseAssignment.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends FacultyCourseAssignmentUpdateManyArgs>(args: SelectSubset<T, FacultyCourseAssignmentUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more FacultyCourseAssignments and returns the data updated in the database.
+     * @param {FacultyCourseAssignmentUpdateManyAndReturnArgs} args - Arguments to update many FacultyCourseAssignments.
+     * @example
+     * // Update many FacultyCourseAssignments
+     * const facultyCourseAssignment = await prisma.facultyCourseAssignment.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more FacultyCourseAssignments and only return the `id`
+     * const facultyCourseAssignmentWithIdOnly = await prisma.facultyCourseAssignment.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends FacultyCourseAssignmentUpdateManyAndReturnArgs>(args: SelectSubset<T, FacultyCourseAssignmentUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FacultyCourseAssignmentPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one FacultyCourseAssignment.
+     * @param {FacultyCourseAssignmentUpsertArgs} args - Arguments to update or create a FacultyCourseAssignment.
+     * @example
+     * // Update or create a FacultyCourseAssignment
+     * const facultyCourseAssignment = await prisma.facultyCourseAssignment.upsert({
+     *   create: {
+     *     // ... data to create a FacultyCourseAssignment
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the FacultyCourseAssignment we want to update
+     *   }
+     * })
+     */
+    upsert<T extends FacultyCourseAssignmentUpsertArgs>(args: SelectSubset<T, FacultyCourseAssignmentUpsertArgs<ExtArgs>>): Prisma__FacultyCourseAssignmentClient<$Result.GetResult<Prisma.$FacultyCourseAssignmentPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of FacultyCourseAssignments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FacultyCourseAssignmentCountArgs} args - Arguments to filter FacultyCourseAssignments to count.
+     * @example
+     * // Count the number of FacultyCourseAssignments
+     * const count = await prisma.facultyCourseAssignment.count({
+     *   where: {
+     *     // ... the filter for the FacultyCourseAssignments we want to count
+     *   }
+     * })
+    **/
+    count<T extends FacultyCourseAssignmentCountArgs>(
+      args?: Subset<T, FacultyCourseAssignmentCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], FacultyCourseAssignmentCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a FacultyCourseAssignment.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FacultyCourseAssignmentAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends FacultyCourseAssignmentAggregateArgs>(args: Subset<T, FacultyCourseAssignmentAggregateArgs>): Prisma.PrismaPromise<GetFacultyCourseAssignmentAggregateType<T>>
+
+    /**
+     * Group by FacultyCourseAssignment.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FacultyCourseAssignmentGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends FacultyCourseAssignmentGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: FacultyCourseAssignmentGroupByArgs['orderBy'] }
+        : { orderBy?: FacultyCourseAssignmentGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, FacultyCourseAssignmentGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetFacultyCourseAssignmentGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the FacultyCourseAssignment model
+   */
+  readonly fields: FacultyCourseAssignmentFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for FacultyCourseAssignment.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__FacultyCourseAssignmentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    faculty<T extends FacultyProfileDefaultArgs<ExtArgs> = {}>(args?: Subset<T, FacultyProfileDefaultArgs<ExtArgs>>): Prisma__FacultyProfileClient<$Result.GetResult<Prisma.$FacultyProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    course<T extends CourseDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CourseDefaultArgs<ExtArgs>>): Prisma__CourseClient<$Result.GetResult<Prisma.$CoursePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the FacultyCourseAssignment model
+   */
+  interface FacultyCourseAssignmentFieldRefs {
+    readonly id: FieldRef<"FacultyCourseAssignment", 'String'>
+    readonly facultyId: FieldRef<"FacultyCourseAssignment", 'String'>
+    readonly courseId: FieldRef<"FacultyCourseAssignment", 'String'>
+    readonly createdBy: FieldRef<"FacultyCourseAssignment", 'String'>
+    readonly updatedBy: FieldRef<"FacultyCourseAssignment", 'String'>
+    readonly createdAt: FieldRef<"FacultyCourseAssignment", 'DateTime'>
+    readonly updatedAt: FieldRef<"FacultyCourseAssignment", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * FacultyCourseAssignment findUnique
+   */
+  export type FacultyCourseAssignmentFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyCourseAssignment
+     */
+    select?: FacultyCourseAssignmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyCourseAssignment
+     */
+    omit?: FacultyCourseAssignmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyCourseAssignmentInclude<ExtArgs> | null
+    /**
+     * Filter, which FacultyCourseAssignment to fetch.
+     */
+    where: FacultyCourseAssignmentWhereUniqueInput
+  }
+
+  /**
+   * FacultyCourseAssignment findUniqueOrThrow
+   */
+  export type FacultyCourseAssignmentFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyCourseAssignment
+     */
+    select?: FacultyCourseAssignmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyCourseAssignment
+     */
+    omit?: FacultyCourseAssignmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyCourseAssignmentInclude<ExtArgs> | null
+    /**
+     * Filter, which FacultyCourseAssignment to fetch.
+     */
+    where: FacultyCourseAssignmentWhereUniqueInput
+  }
+
+  /**
+   * FacultyCourseAssignment findFirst
+   */
+  export type FacultyCourseAssignmentFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyCourseAssignment
+     */
+    select?: FacultyCourseAssignmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyCourseAssignment
+     */
+    omit?: FacultyCourseAssignmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyCourseAssignmentInclude<ExtArgs> | null
+    /**
+     * Filter, which FacultyCourseAssignment to fetch.
+     */
+    where?: FacultyCourseAssignmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FacultyCourseAssignments to fetch.
+     */
+    orderBy?: FacultyCourseAssignmentOrderByWithRelationInput | FacultyCourseAssignmentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FacultyCourseAssignments.
+     */
+    cursor?: FacultyCourseAssignmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FacultyCourseAssignments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FacultyCourseAssignments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FacultyCourseAssignments.
+     */
+    distinct?: FacultyCourseAssignmentScalarFieldEnum | FacultyCourseAssignmentScalarFieldEnum[]
+  }
+
+  /**
+   * FacultyCourseAssignment findFirstOrThrow
+   */
+  export type FacultyCourseAssignmentFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyCourseAssignment
+     */
+    select?: FacultyCourseAssignmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyCourseAssignment
+     */
+    omit?: FacultyCourseAssignmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyCourseAssignmentInclude<ExtArgs> | null
+    /**
+     * Filter, which FacultyCourseAssignment to fetch.
+     */
+    where?: FacultyCourseAssignmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FacultyCourseAssignments to fetch.
+     */
+    orderBy?: FacultyCourseAssignmentOrderByWithRelationInput | FacultyCourseAssignmentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FacultyCourseAssignments.
+     */
+    cursor?: FacultyCourseAssignmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FacultyCourseAssignments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FacultyCourseAssignments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FacultyCourseAssignments.
+     */
+    distinct?: FacultyCourseAssignmentScalarFieldEnum | FacultyCourseAssignmentScalarFieldEnum[]
+  }
+
+  /**
+   * FacultyCourseAssignment findMany
+   */
+  export type FacultyCourseAssignmentFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyCourseAssignment
+     */
+    select?: FacultyCourseAssignmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyCourseAssignment
+     */
+    omit?: FacultyCourseAssignmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyCourseAssignmentInclude<ExtArgs> | null
+    /**
+     * Filter, which FacultyCourseAssignments to fetch.
+     */
+    where?: FacultyCourseAssignmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FacultyCourseAssignments to fetch.
+     */
+    orderBy?: FacultyCourseAssignmentOrderByWithRelationInput | FacultyCourseAssignmentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing FacultyCourseAssignments.
+     */
+    cursor?: FacultyCourseAssignmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FacultyCourseAssignments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FacultyCourseAssignments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FacultyCourseAssignments.
+     */
+    distinct?: FacultyCourseAssignmentScalarFieldEnum | FacultyCourseAssignmentScalarFieldEnum[]
+  }
+
+  /**
+   * FacultyCourseAssignment create
+   */
+  export type FacultyCourseAssignmentCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyCourseAssignment
+     */
+    select?: FacultyCourseAssignmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyCourseAssignment
+     */
+    omit?: FacultyCourseAssignmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyCourseAssignmentInclude<ExtArgs> | null
+    /**
+     * The data needed to create a FacultyCourseAssignment.
+     */
+    data: XOR<FacultyCourseAssignmentCreateInput, FacultyCourseAssignmentUncheckedCreateInput>
+  }
+
+  /**
+   * FacultyCourseAssignment createMany
+   */
+  export type FacultyCourseAssignmentCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many FacultyCourseAssignments.
+     */
+    data: FacultyCourseAssignmentCreateManyInput | FacultyCourseAssignmentCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * FacultyCourseAssignment createManyAndReturn
+   */
+  export type FacultyCourseAssignmentCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyCourseAssignment
+     */
+    select?: FacultyCourseAssignmentSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyCourseAssignment
+     */
+    omit?: FacultyCourseAssignmentOmit<ExtArgs> | null
+    /**
+     * The data used to create many FacultyCourseAssignments.
+     */
+    data: FacultyCourseAssignmentCreateManyInput | FacultyCourseAssignmentCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyCourseAssignmentIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * FacultyCourseAssignment update
+   */
+  export type FacultyCourseAssignmentUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyCourseAssignment
+     */
+    select?: FacultyCourseAssignmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyCourseAssignment
+     */
+    omit?: FacultyCourseAssignmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyCourseAssignmentInclude<ExtArgs> | null
+    /**
+     * The data needed to update a FacultyCourseAssignment.
+     */
+    data: XOR<FacultyCourseAssignmentUpdateInput, FacultyCourseAssignmentUncheckedUpdateInput>
+    /**
+     * Choose, which FacultyCourseAssignment to update.
+     */
+    where: FacultyCourseAssignmentWhereUniqueInput
+  }
+
+  /**
+   * FacultyCourseAssignment updateMany
+   */
+  export type FacultyCourseAssignmentUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update FacultyCourseAssignments.
+     */
+    data: XOR<FacultyCourseAssignmentUpdateManyMutationInput, FacultyCourseAssignmentUncheckedUpdateManyInput>
+    /**
+     * Filter which FacultyCourseAssignments to update
+     */
+    where?: FacultyCourseAssignmentWhereInput
+    /**
+     * Limit how many FacultyCourseAssignments to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * FacultyCourseAssignment updateManyAndReturn
+   */
+  export type FacultyCourseAssignmentUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyCourseAssignment
+     */
+    select?: FacultyCourseAssignmentSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyCourseAssignment
+     */
+    omit?: FacultyCourseAssignmentOmit<ExtArgs> | null
+    /**
+     * The data used to update FacultyCourseAssignments.
+     */
+    data: XOR<FacultyCourseAssignmentUpdateManyMutationInput, FacultyCourseAssignmentUncheckedUpdateManyInput>
+    /**
+     * Filter which FacultyCourseAssignments to update
+     */
+    where?: FacultyCourseAssignmentWhereInput
+    /**
+     * Limit how many FacultyCourseAssignments to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyCourseAssignmentIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * FacultyCourseAssignment upsert
+   */
+  export type FacultyCourseAssignmentUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyCourseAssignment
+     */
+    select?: FacultyCourseAssignmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyCourseAssignment
+     */
+    omit?: FacultyCourseAssignmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyCourseAssignmentInclude<ExtArgs> | null
+    /**
+     * The filter to search for the FacultyCourseAssignment to update in case it exists.
+     */
+    where: FacultyCourseAssignmentWhereUniqueInput
+    /**
+     * In case the FacultyCourseAssignment found by the `where` argument doesn't exist, create a new FacultyCourseAssignment with this data.
+     */
+    create: XOR<FacultyCourseAssignmentCreateInput, FacultyCourseAssignmentUncheckedCreateInput>
+    /**
+     * In case the FacultyCourseAssignment was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<FacultyCourseAssignmentUpdateInput, FacultyCourseAssignmentUncheckedUpdateInput>
+  }
+
+  /**
+   * FacultyCourseAssignment delete
+   */
+  export type FacultyCourseAssignmentDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyCourseAssignment
+     */
+    select?: FacultyCourseAssignmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyCourseAssignment
+     */
+    omit?: FacultyCourseAssignmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyCourseAssignmentInclude<ExtArgs> | null
+    /**
+     * Filter which FacultyCourseAssignment to delete.
+     */
+    where: FacultyCourseAssignmentWhereUniqueInput
+  }
+
+  /**
+   * FacultyCourseAssignment deleteMany
+   */
+  export type FacultyCourseAssignmentDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FacultyCourseAssignments to delete
+     */
+    where?: FacultyCourseAssignmentWhereInput
+    /**
+     * Limit how many FacultyCourseAssignments to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * FacultyCourseAssignment without action
+   */
+  export type FacultyCourseAssignmentDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyCourseAssignment
+     */
+    select?: FacultyCourseAssignmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyCourseAssignment
+     */
+    omit?: FacultyCourseAssignmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyCourseAssignmentInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model FacultyBatchEntry
+   */
+
+  export type AggregateFacultyBatchEntry = {
+    _count: FacultyBatchEntryCountAggregateOutputType | null
+    _avg: FacultyBatchEntryAvgAggregateOutputType | null
+    _sum: FacultyBatchEntrySumAggregateOutputType | null
+    _min: FacultyBatchEntryMinAggregateOutputType | null
+    _max: FacultyBatchEntryMaxAggregateOutputType | null
+  }
+
+  export type FacultyBatchEntryAvgAggregateOutputType = {
+    sequenceNo: number | null
+  }
+
+  export type FacultyBatchEntrySumAggregateOutputType = {
+    sequenceNo: number | null
+  }
+
+  export type FacultyBatchEntryMinAggregateOutputType = {
+    id: string | null
+    facultyId: string | null
+    courseId: string | null
+    batchName: string | null
+    batchTiming: string | null
+    sequenceNo: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type FacultyBatchEntryMaxAggregateOutputType = {
+    id: string | null
+    facultyId: string | null
+    courseId: string | null
+    batchName: string | null
+    batchTiming: string | null
+    sequenceNo: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type FacultyBatchEntryCountAggregateOutputType = {
+    id: number
+    facultyId: number
+    courseId: number
+    batchName: number
+    batchTiming: number
+    sequenceNo: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type FacultyBatchEntryAvgAggregateInputType = {
+    sequenceNo?: true
+  }
+
+  export type FacultyBatchEntrySumAggregateInputType = {
+    sequenceNo?: true
+  }
+
+  export type FacultyBatchEntryMinAggregateInputType = {
+    id?: true
+    facultyId?: true
+    courseId?: true
+    batchName?: true
+    batchTiming?: true
+    sequenceNo?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type FacultyBatchEntryMaxAggregateInputType = {
+    id?: true
+    facultyId?: true
+    courseId?: true
+    batchName?: true
+    batchTiming?: true
+    sequenceNo?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type FacultyBatchEntryCountAggregateInputType = {
+    id?: true
+    facultyId?: true
+    courseId?: true
+    batchName?: true
+    batchTiming?: true
+    sequenceNo?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type FacultyBatchEntryAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FacultyBatchEntry to aggregate.
+     */
+    where?: FacultyBatchEntryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FacultyBatchEntries to fetch.
+     */
+    orderBy?: FacultyBatchEntryOrderByWithRelationInput | FacultyBatchEntryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: FacultyBatchEntryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FacultyBatchEntries from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FacultyBatchEntries.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned FacultyBatchEntries
+    **/
+    _count?: true | FacultyBatchEntryCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: FacultyBatchEntryAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: FacultyBatchEntrySumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: FacultyBatchEntryMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: FacultyBatchEntryMaxAggregateInputType
+  }
+
+  export type GetFacultyBatchEntryAggregateType<T extends FacultyBatchEntryAggregateArgs> = {
+        [P in keyof T & keyof AggregateFacultyBatchEntry]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateFacultyBatchEntry[P]>
+      : GetScalarType<T[P], AggregateFacultyBatchEntry[P]>
+  }
+
+
+
+
+  export type FacultyBatchEntryGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FacultyBatchEntryWhereInput
+    orderBy?: FacultyBatchEntryOrderByWithAggregationInput | FacultyBatchEntryOrderByWithAggregationInput[]
+    by: FacultyBatchEntryScalarFieldEnum[] | FacultyBatchEntryScalarFieldEnum
+    having?: FacultyBatchEntryScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: FacultyBatchEntryCountAggregateInputType | true
+    _avg?: FacultyBatchEntryAvgAggregateInputType
+    _sum?: FacultyBatchEntrySumAggregateInputType
+    _min?: FacultyBatchEntryMinAggregateInputType
+    _max?: FacultyBatchEntryMaxAggregateInputType
+  }
+
+  export type FacultyBatchEntryGroupByOutputType = {
+    id: string
+    facultyId: string
+    courseId: string | null
+    batchName: string
+    batchTiming: string
+    sequenceNo: number
+    createdAt: Date
+    updatedAt: Date
+    _count: FacultyBatchEntryCountAggregateOutputType | null
+    _avg: FacultyBatchEntryAvgAggregateOutputType | null
+    _sum: FacultyBatchEntrySumAggregateOutputType | null
+    _min: FacultyBatchEntryMinAggregateOutputType | null
+    _max: FacultyBatchEntryMaxAggregateOutputType | null
+  }
+
+  type GetFacultyBatchEntryGroupByPayload<T extends FacultyBatchEntryGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<FacultyBatchEntryGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof FacultyBatchEntryGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], FacultyBatchEntryGroupByOutputType[P]>
+            : GetScalarType<T[P], FacultyBatchEntryGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type FacultyBatchEntrySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    facultyId?: boolean
+    courseId?: boolean
+    batchName?: boolean
+    batchTiming?: boolean
+    sequenceNo?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    faculty?: boolean | FacultyProfileDefaultArgs<ExtArgs>
+    course?: boolean | FacultyBatchEntry$courseArgs<ExtArgs>
+  }, ExtArgs["result"]["facultyBatchEntry"]>
+
+  export type FacultyBatchEntrySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    facultyId?: boolean
+    courseId?: boolean
+    batchName?: boolean
+    batchTiming?: boolean
+    sequenceNo?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    faculty?: boolean | FacultyProfileDefaultArgs<ExtArgs>
+    course?: boolean | FacultyBatchEntry$courseArgs<ExtArgs>
+  }, ExtArgs["result"]["facultyBatchEntry"]>
+
+  export type FacultyBatchEntrySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    facultyId?: boolean
+    courseId?: boolean
+    batchName?: boolean
+    batchTiming?: boolean
+    sequenceNo?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    faculty?: boolean | FacultyProfileDefaultArgs<ExtArgs>
+    course?: boolean | FacultyBatchEntry$courseArgs<ExtArgs>
+  }, ExtArgs["result"]["facultyBatchEntry"]>
+
+  export type FacultyBatchEntrySelectScalar = {
+    id?: boolean
+    facultyId?: boolean
+    courseId?: boolean
+    batchName?: boolean
+    batchTiming?: boolean
+    sequenceNo?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type FacultyBatchEntryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "facultyId" | "courseId" | "batchName" | "batchTiming" | "sequenceNo" | "createdAt" | "updatedAt", ExtArgs["result"]["facultyBatchEntry"]>
+  export type FacultyBatchEntryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    faculty?: boolean | FacultyProfileDefaultArgs<ExtArgs>
+    course?: boolean | FacultyBatchEntry$courseArgs<ExtArgs>
+  }
+  export type FacultyBatchEntryIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    faculty?: boolean | FacultyProfileDefaultArgs<ExtArgs>
+    course?: boolean | FacultyBatchEntry$courseArgs<ExtArgs>
+  }
+  export type FacultyBatchEntryIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    faculty?: boolean | FacultyProfileDefaultArgs<ExtArgs>
+    course?: boolean | FacultyBatchEntry$courseArgs<ExtArgs>
+  }
+
+  export type $FacultyBatchEntryPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "FacultyBatchEntry"
+    objects: {
+      faculty: Prisma.$FacultyProfilePayload<ExtArgs>
+      course: Prisma.$CoursePayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      facultyId: string
+      courseId: string | null
+      batchName: string
+      batchTiming: string
+      sequenceNo: number
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["facultyBatchEntry"]>
+    composites: {}
+  }
+
+  type FacultyBatchEntryGetPayload<S extends boolean | null | undefined | FacultyBatchEntryDefaultArgs> = $Result.GetResult<Prisma.$FacultyBatchEntryPayload, S>
+
+  type FacultyBatchEntryCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<FacultyBatchEntryFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: FacultyBatchEntryCountAggregateInputType | true
+    }
+
+  export interface FacultyBatchEntryDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['FacultyBatchEntry'], meta: { name: 'FacultyBatchEntry' } }
+    /**
+     * Find zero or one FacultyBatchEntry that matches the filter.
+     * @param {FacultyBatchEntryFindUniqueArgs} args - Arguments to find a FacultyBatchEntry
+     * @example
+     * // Get one FacultyBatchEntry
+     * const facultyBatchEntry = await prisma.facultyBatchEntry.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends FacultyBatchEntryFindUniqueArgs>(args: SelectSubset<T, FacultyBatchEntryFindUniqueArgs<ExtArgs>>): Prisma__FacultyBatchEntryClient<$Result.GetResult<Prisma.$FacultyBatchEntryPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one FacultyBatchEntry that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {FacultyBatchEntryFindUniqueOrThrowArgs} args - Arguments to find a FacultyBatchEntry
+     * @example
+     * // Get one FacultyBatchEntry
+     * const facultyBatchEntry = await prisma.facultyBatchEntry.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends FacultyBatchEntryFindUniqueOrThrowArgs>(args: SelectSubset<T, FacultyBatchEntryFindUniqueOrThrowArgs<ExtArgs>>): Prisma__FacultyBatchEntryClient<$Result.GetResult<Prisma.$FacultyBatchEntryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first FacultyBatchEntry that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FacultyBatchEntryFindFirstArgs} args - Arguments to find a FacultyBatchEntry
+     * @example
+     * // Get one FacultyBatchEntry
+     * const facultyBatchEntry = await prisma.facultyBatchEntry.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends FacultyBatchEntryFindFirstArgs>(args?: SelectSubset<T, FacultyBatchEntryFindFirstArgs<ExtArgs>>): Prisma__FacultyBatchEntryClient<$Result.GetResult<Prisma.$FacultyBatchEntryPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first FacultyBatchEntry that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FacultyBatchEntryFindFirstOrThrowArgs} args - Arguments to find a FacultyBatchEntry
+     * @example
+     * // Get one FacultyBatchEntry
+     * const facultyBatchEntry = await prisma.facultyBatchEntry.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends FacultyBatchEntryFindFirstOrThrowArgs>(args?: SelectSubset<T, FacultyBatchEntryFindFirstOrThrowArgs<ExtArgs>>): Prisma__FacultyBatchEntryClient<$Result.GetResult<Prisma.$FacultyBatchEntryPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more FacultyBatchEntries that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FacultyBatchEntryFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all FacultyBatchEntries
+     * const facultyBatchEntries = await prisma.facultyBatchEntry.findMany()
+     * 
+     * // Get first 10 FacultyBatchEntries
+     * const facultyBatchEntries = await prisma.facultyBatchEntry.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const facultyBatchEntryWithIdOnly = await prisma.facultyBatchEntry.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends FacultyBatchEntryFindManyArgs>(args?: SelectSubset<T, FacultyBatchEntryFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FacultyBatchEntryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a FacultyBatchEntry.
+     * @param {FacultyBatchEntryCreateArgs} args - Arguments to create a FacultyBatchEntry.
+     * @example
+     * // Create one FacultyBatchEntry
+     * const FacultyBatchEntry = await prisma.facultyBatchEntry.create({
+     *   data: {
+     *     // ... data to create a FacultyBatchEntry
+     *   }
+     * })
+     * 
+     */
+    create<T extends FacultyBatchEntryCreateArgs>(args: SelectSubset<T, FacultyBatchEntryCreateArgs<ExtArgs>>): Prisma__FacultyBatchEntryClient<$Result.GetResult<Prisma.$FacultyBatchEntryPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many FacultyBatchEntries.
+     * @param {FacultyBatchEntryCreateManyArgs} args - Arguments to create many FacultyBatchEntries.
+     * @example
+     * // Create many FacultyBatchEntries
+     * const facultyBatchEntry = await prisma.facultyBatchEntry.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends FacultyBatchEntryCreateManyArgs>(args?: SelectSubset<T, FacultyBatchEntryCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many FacultyBatchEntries and returns the data saved in the database.
+     * @param {FacultyBatchEntryCreateManyAndReturnArgs} args - Arguments to create many FacultyBatchEntries.
+     * @example
+     * // Create many FacultyBatchEntries
+     * const facultyBatchEntry = await prisma.facultyBatchEntry.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many FacultyBatchEntries and only return the `id`
+     * const facultyBatchEntryWithIdOnly = await prisma.facultyBatchEntry.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends FacultyBatchEntryCreateManyAndReturnArgs>(args?: SelectSubset<T, FacultyBatchEntryCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FacultyBatchEntryPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a FacultyBatchEntry.
+     * @param {FacultyBatchEntryDeleteArgs} args - Arguments to delete one FacultyBatchEntry.
+     * @example
+     * // Delete one FacultyBatchEntry
+     * const FacultyBatchEntry = await prisma.facultyBatchEntry.delete({
+     *   where: {
+     *     // ... filter to delete one FacultyBatchEntry
+     *   }
+     * })
+     * 
+     */
+    delete<T extends FacultyBatchEntryDeleteArgs>(args: SelectSubset<T, FacultyBatchEntryDeleteArgs<ExtArgs>>): Prisma__FacultyBatchEntryClient<$Result.GetResult<Prisma.$FacultyBatchEntryPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one FacultyBatchEntry.
+     * @param {FacultyBatchEntryUpdateArgs} args - Arguments to update one FacultyBatchEntry.
+     * @example
+     * // Update one FacultyBatchEntry
+     * const facultyBatchEntry = await prisma.facultyBatchEntry.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends FacultyBatchEntryUpdateArgs>(args: SelectSubset<T, FacultyBatchEntryUpdateArgs<ExtArgs>>): Prisma__FacultyBatchEntryClient<$Result.GetResult<Prisma.$FacultyBatchEntryPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more FacultyBatchEntries.
+     * @param {FacultyBatchEntryDeleteManyArgs} args - Arguments to filter FacultyBatchEntries to delete.
+     * @example
+     * // Delete a few FacultyBatchEntries
+     * const { count } = await prisma.facultyBatchEntry.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends FacultyBatchEntryDeleteManyArgs>(args?: SelectSubset<T, FacultyBatchEntryDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more FacultyBatchEntries.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FacultyBatchEntryUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many FacultyBatchEntries
+     * const facultyBatchEntry = await prisma.facultyBatchEntry.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends FacultyBatchEntryUpdateManyArgs>(args: SelectSubset<T, FacultyBatchEntryUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more FacultyBatchEntries and returns the data updated in the database.
+     * @param {FacultyBatchEntryUpdateManyAndReturnArgs} args - Arguments to update many FacultyBatchEntries.
+     * @example
+     * // Update many FacultyBatchEntries
+     * const facultyBatchEntry = await prisma.facultyBatchEntry.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more FacultyBatchEntries and only return the `id`
+     * const facultyBatchEntryWithIdOnly = await prisma.facultyBatchEntry.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends FacultyBatchEntryUpdateManyAndReturnArgs>(args: SelectSubset<T, FacultyBatchEntryUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FacultyBatchEntryPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one FacultyBatchEntry.
+     * @param {FacultyBatchEntryUpsertArgs} args - Arguments to update or create a FacultyBatchEntry.
+     * @example
+     * // Update or create a FacultyBatchEntry
+     * const facultyBatchEntry = await prisma.facultyBatchEntry.upsert({
+     *   create: {
+     *     // ... data to create a FacultyBatchEntry
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the FacultyBatchEntry we want to update
+     *   }
+     * })
+     */
+    upsert<T extends FacultyBatchEntryUpsertArgs>(args: SelectSubset<T, FacultyBatchEntryUpsertArgs<ExtArgs>>): Prisma__FacultyBatchEntryClient<$Result.GetResult<Prisma.$FacultyBatchEntryPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of FacultyBatchEntries.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FacultyBatchEntryCountArgs} args - Arguments to filter FacultyBatchEntries to count.
+     * @example
+     * // Count the number of FacultyBatchEntries
+     * const count = await prisma.facultyBatchEntry.count({
+     *   where: {
+     *     // ... the filter for the FacultyBatchEntries we want to count
+     *   }
+     * })
+    **/
+    count<T extends FacultyBatchEntryCountArgs>(
+      args?: Subset<T, FacultyBatchEntryCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], FacultyBatchEntryCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a FacultyBatchEntry.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FacultyBatchEntryAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends FacultyBatchEntryAggregateArgs>(args: Subset<T, FacultyBatchEntryAggregateArgs>): Prisma.PrismaPromise<GetFacultyBatchEntryAggregateType<T>>
+
+    /**
+     * Group by FacultyBatchEntry.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FacultyBatchEntryGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends FacultyBatchEntryGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: FacultyBatchEntryGroupByArgs['orderBy'] }
+        : { orderBy?: FacultyBatchEntryGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, FacultyBatchEntryGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetFacultyBatchEntryGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the FacultyBatchEntry model
+   */
+  readonly fields: FacultyBatchEntryFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for FacultyBatchEntry.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__FacultyBatchEntryClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    faculty<T extends FacultyProfileDefaultArgs<ExtArgs> = {}>(args?: Subset<T, FacultyProfileDefaultArgs<ExtArgs>>): Prisma__FacultyProfileClient<$Result.GetResult<Prisma.$FacultyProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    course<T extends FacultyBatchEntry$courseArgs<ExtArgs> = {}>(args?: Subset<T, FacultyBatchEntry$courseArgs<ExtArgs>>): Prisma__CourseClient<$Result.GetResult<Prisma.$CoursePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the FacultyBatchEntry model
+   */
+  interface FacultyBatchEntryFieldRefs {
+    readonly id: FieldRef<"FacultyBatchEntry", 'String'>
+    readonly facultyId: FieldRef<"FacultyBatchEntry", 'String'>
+    readonly courseId: FieldRef<"FacultyBatchEntry", 'String'>
+    readonly batchName: FieldRef<"FacultyBatchEntry", 'String'>
+    readonly batchTiming: FieldRef<"FacultyBatchEntry", 'String'>
+    readonly sequenceNo: FieldRef<"FacultyBatchEntry", 'Int'>
+    readonly createdAt: FieldRef<"FacultyBatchEntry", 'DateTime'>
+    readonly updatedAt: FieldRef<"FacultyBatchEntry", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * FacultyBatchEntry findUnique
+   */
+  export type FacultyBatchEntryFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyBatchEntry
+     */
+    select?: FacultyBatchEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyBatchEntry
+     */
+    omit?: FacultyBatchEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyBatchEntryInclude<ExtArgs> | null
+    /**
+     * Filter, which FacultyBatchEntry to fetch.
+     */
+    where: FacultyBatchEntryWhereUniqueInput
+  }
+
+  /**
+   * FacultyBatchEntry findUniqueOrThrow
+   */
+  export type FacultyBatchEntryFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyBatchEntry
+     */
+    select?: FacultyBatchEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyBatchEntry
+     */
+    omit?: FacultyBatchEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyBatchEntryInclude<ExtArgs> | null
+    /**
+     * Filter, which FacultyBatchEntry to fetch.
+     */
+    where: FacultyBatchEntryWhereUniqueInput
+  }
+
+  /**
+   * FacultyBatchEntry findFirst
+   */
+  export type FacultyBatchEntryFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyBatchEntry
+     */
+    select?: FacultyBatchEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyBatchEntry
+     */
+    omit?: FacultyBatchEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyBatchEntryInclude<ExtArgs> | null
+    /**
+     * Filter, which FacultyBatchEntry to fetch.
+     */
+    where?: FacultyBatchEntryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FacultyBatchEntries to fetch.
+     */
+    orderBy?: FacultyBatchEntryOrderByWithRelationInput | FacultyBatchEntryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FacultyBatchEntries.
+     */
+    cursor?: FacultyBatchEntryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FacultyBatchEntries from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FacultyBatchEntries.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FacultyBatchEntries.
+     */
+    distinct?: FacultyBatchEntryScalarFieldEnum | FacultyBatchEntryScalarFieldEnum[]
+  }
+
+  /**
+   * FacultyBatchEntry findFirstOrThrow
+   */
+  export type FacultyBatchEntryFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyBatchEntry
+     */
+    select?: FacultyBatchEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyBatchEntry
+     */
+    omit?: FacultyBatchEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyBatchEntryInclude<ExtArgs> | null
+    /**
+     * Filter, which FacultyBatchEntry to fetch.
+     */
+    where?: FacultyBatchEntryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FacultyBatchEntries to fetch.
+     */
+    orderBy?: FacultyBatchEntryOrderByWithRelationInput | FacultyBatchEntryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FacultyBatchEntries.
+     */
+    cursor?: FacultyBatchEntryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FacultyBatchEntries from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FacultyBatchEntries.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FacultyBatchEntries.
+     */
+    distinct?: FacultyBatchEntryScalarFieldEnum | FacultyBatchEntryScalarFieldEnum[]
+  }
+
+  /**
+   * FacultyBatchEntry findMany
+   */
+  export type FacultyBatchEntryFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyBatchEntry
+     */
+    select?: FacultyBatchEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyBatchEntry
+     */
+    omit?: FacultyBatchEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyBatchEntryInclude<ExtArgs> | null
+    /**
+     * Filter, which FacultyBatchEntries to fetch.
+     */
+    where?: FacultyBatchEntryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FacultyBatchEntries to fetch.
+     */
+    orderBy?: FacultyBatchEntryOrderByWithRelationInput | FacultyBatchEntryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing FacultyBatchEntries.
+     */
+    cursor?: FacultyBatchEntryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FacultyBatchEntries from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FacultyBatchEntries.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FacultyBatchEntries.
+     */
+    distinct?: FacultyBatchEntryScalarFieldEnum | FacultyBatchEntryScalarFieldEnum[]
+  }
+
+  /**
+   * FacultyBatchEntry create
+   */
+  export type FacultyBatchEntryCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyBatchEntry
+     */
+    select?: FacultyBatchEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyBatchEntry
+     */
+    omit?: FacultyBatchEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyBatchEntryInclude<ExtArgs> | null
+    /**
+     * The data needed to create a FacultyBatchEntry.
+     */
+    data: XOR<FacultyBatchEntryCreateInput, FacultyBatchEntryUncheckedCreateInput>
+  }
+
+  /**
+   * FacultyBatchEntry createMany
+   */
+  export type FacultyBatchEntryCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many FacultyBatchEntries.
+     */
+    data: FacultyBatchEntryCreateManyInput | FacultyBatchEntryCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * FacultyBatchEntry createManyAndReturn
+   */
+  export type FacultyBatchEntryCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyBatchEntry
+     */
+    select?: FacultyBatchEntrySelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyBatchEntry
+     */
+    omit?: FacultyBatchEntryOmit<ExtArgs> | null
+    /**
+     * The data used to create many FacultyBatchEntries.
+     */
+    data: FacultyBatchEntryCreateManyInput | FacultyBatchEntryCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyBatchEntryIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * FacultyBatchEntry update
+   */
+  export type FacultyBatchEntryUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyBatchEntry
+     */
+    select?: FacultyBatchEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyBatchEntry
+     */
+    omit?: FacultyBatchEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyBatchEntryInclude<ExtArgs> | null
+    /**
+     * The data needed to update a FacultyBatchEntry.
+     */
+    data: XOR<FacultyBatchEntryUpdateInput, FacultyBatchEntryUncheckedUpdateInput>
+    /**
+     * Choose, which FacultyBatchEntry to update.
+     */
+    where: FacultyBatchEntryWhereUniqueInput
+  }
+
+  /**
+   * FacultyBatchEntry updateMany
+   */
+  export type FacultyBatchEntryUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update FacultyBatchEntries.
+     */
+    data: XOR<FacultyBatchEntryUpdateManyMutationInput, FacultyBatchEntryUncheckedUpdateManyInput>
+    /**
+     * Filter which FacultyBatchEntries to update
+     */
+    where?: FacultyBatchEntryWhereInput
+    /**
+     * Limit how many FacultyBatchEntries to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * FacultyBatchEntry updateManyAndReturn
+   */
+  export type FacultyBatchEntryUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyBatchEntry
+     */
+    select?: FacultyBatchEntrySelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyBatchEntry
+     */
+    omit?: FacultyBatchEntryOmit<ExtArgs> | null
+    /**
+     * The data used to update FacultyBatchEntries.
+     */
+    data: XOR<FacultyBatchEntryUpdateManyMutationInput, FacultyBatchEntryUncheckedUpdateManyInput>
+    /**
+     * Filter which FacultyBatchEntries to update
+     */
+    where?: FacultyBatchEntryWhereInput
+    /**
+     * Limit how many FacultyBatchEntries to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyBatchEntryIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * FacultyBatchEntry upsert
+   */
+  export type FacultyBatchEntryUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyBatchEntry
+     */
+    select?: FacultyBatchEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyBatchEntry
+     */
+    omit?: FacultyBatchEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyBatchEntryInclude<ExtArgs> | null
+    /**
+     * The filter to search for the FacultyBatchEntry to update in case it exists.
+     */
+    where: FacultyBatchEntryWhereUniqueInput
+    /**
+     * In case the FacultyBatchEntry found by the `where` argument doesn't exist, create a new FacultyBatchEntry with this data.
+     */
+    create: XOR<FacultyBatchEntryCreateInput, FacultyBatchEntryUncheckedCreateInput>
+    /**
+     * In case the FacultyBatchEntry was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<FacultyBatchEntryUpdateInput, FacultyBatchEntryUncheckedUpdateInput>
+  }
+
+  /**
+   * FacultyBatchEntry delete
+   */
+  export type FacultyBatchEntryDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyBatchEntry
+     */
+    select?: FacultyBatchEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyBatchEntry
+     */
+    omit?: FacultyBatchEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyBatchEntryInclude<ExtArgs> | null
+    /**
+     * Filter which FacultyBatchEntry to delete.
+     */
+    where: FacultyBatchEntryWhereUniqueInput
+  }
+
+  /**
+   * FacultyBatchEntry deleteMany
+   */
+  export type FacultyBatchEntryDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FacultyBatchEntries to delete
+     */
+    where?: FacultyBatchEntryWhereInput
+    /**
+     * Limit how many FacultyBatchEntries to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * FacultyBatchEntry.course
+   */
+  export type FacultyBatchEntry$courseArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Course
+     */
+    select?: CourseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Course
+     */
+    omit?: CourseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CourseInclude<ExtArgs> | null
+    where?: CourseWhereInput
+  }
+
+  /**
+   * FacultyBatchEntry without action
+   */
+  export type FacultyBatchEntryDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyBatchEntry
+     */
+    select?: FacultyBatchEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyBatchEntry
+     */
+    omit?: FacultyBatchEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyBatchEntryInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -14544,6 +18485,7 @@ export namespace Prisma {
     installment1: 'installment1',
     installment2: 'installment2',
     installment3: 'installment3',
+    installments: 'installments',
     status: 'status',
     statusChangedAt: 'statusChangedAt',
     statusChangedBy: 'statusChangedBy',
@@ -14655,7 +18597,9 @@ export namespace Prisma {
     location: 'location',
     courseId: 'courseId',
     courseInterested: 'courseInterested',
+    facultyId: 'facultyId',
     facultyName: 'facultyName',
+    batchId: 'batchId',
     batchName: 'batchName',
     qualification: 'qualification',
     passedOutYear: 'passedOutYear',
@@ -14669,6 +18613,7 @@ export namespace Prisma {
     installment1: 'installment1',
     installment2: 'installment2',
     installment3: 'installment3',
+    installment4: 'installment4',
     totalAmount: 'totalAmount',
     admissionDate: 'admissionDate',
     firstInstallmentAmount: 'firstInstallmentAmount',
@@ -14688,6 +18633,49 @@ export namespace Prisma {
   };
 
   export type StudentProfileScalarFieldEnum = (typeof StudentProfileScalarFieldEnum)[keyof typeof StudentProfileScalarFieldEnum]
+
+
+  export const FacultyProfileScalarFieldEnum: {
+    id: 'id',
+    facultyName: 'facultyName',
+    facultyEmail: 'facultyEmail',
+    facultyPhone: 'facultyPhone',
+    courseId: 'courseId',
+    status: 'status',
+    createdBy: 'createdBy',
+    updatedBy: 'updatedBy',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type FacultyProfileScalarFieldEnum = (typeof FacultyProfileScalarFieldEnum)[keyof typeof FacultyProfileScalarFieldEnum]
+
+
+  export const FacultyCourseAssignmentScalarFieldEnum: {
+    id: 'id',
+    facultyId: 'facultyId',
+    courseId: 'courseId',
+    createdBy: 'createdBy',
+    updatedBy: 'updatedBy',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type FacultyCourseAssignmentScalarFieldEnum = (typeof FacultyCourseAssignmentScalarFieldEnum)[keyof typeof FacultyCourseAssignmentScalarFieldEnum]
+
+
+  export const FacultyBatchEntryScalarFieldEnum: {
+    id: 'id',
+    facultyId: 'facultyId',
+    courseId: 'courseId',
+    batchName: 'batchName',
+    batchTiming: 'batchTiming',
+    sequenceNo: 'sequenceNo',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type FacultyBatchEntryScalarFieldEnum = (typeof FacultyBatchEntryScalarFieldEnum)[keyof typeof FacultyBatchEntryScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -15189,6 +19177,7 @@ export namespace Prisma {
     installment1?: IntNullableFilter<"Course"> | number | null
     installment2?: IntNullableFilter<"Course"> | number | null
     installment3?: IntNullableFilter<"Course"> | number | null
+    installments?: JsonNullableFilter<"Course">
     status?: EnumRecordStatusFilter<"Course"> | $Enums.RecordStatus
     statusChangedAt?: DateTimeNullableFilter<"Course"> | Date | string | null
     statusChangedBy?: StringNullableFilter<"Course"> | string | null
@@ -15199,6 +19188,9 @@ export namespace Prisma {
     modules?: CourseModuleListRelationFilter
     batches?: BatchListRelationFilter
     students?: StudentProfileListRelationFilter
+    facultyProfiles?: FacultyProfileListRelationFilter
+    facultyCourseAssignments?: FacultyCourseAssignmentListRelationFilter
+    facultyBatchEntries?: FacultyBatchEntryListRelationFilter
     statusHistory?: CourseStatusHistoryListRelationFilter
   }
 
@@ -15219,6 +19211,7 @@ export namespace Prisma {
     installment1?: SortOrderInput | SortOrder
     installment2?: SortOrderInput | SortOrder
     installment3?: SortOrderInput | SortOrder
+    installments?: SortOrderInput | SortOrder
     status?: SortOrder
     statusChangedAt?: SortOrderInput | SortOrder
     statusChangedBy?: SortOrderInput | SortOrder
@@ -15229,6 +19222,9 @@ export namespace Prisma {
     modules?: CourseModuleOrderByRelationAggregateInput
     batches?: BatchOrderByRelationAggregateInput
     students?: StudentProfileOrderByRelationAggregateInput
+    facultyProfiles?: FacultyProfileOrderByRelationAggregateInput
+    facultyCourseAssignments?: FacultyCourseAssignmentOrderByRelationAggregateInput
+    facultyBatchEntries?: FacultyBatchEntryOrderByRelationAggregateInput
     statusHistory?: CourseStatusHistoryOrderByRelationAggregateInput
   }
 
@@ -15252,6 +19248,7 @@ export namespace Prisma {
     installment1?: IntNullableFilter<"Course"> | number | null
     installment2?: IntNullableFilter<"Course"> | number | null
     installment3?: IntNullableFilter<"Course"> | number | null
+    installments?: JsonNullableFilter<"Course">
     status?: EnumRecordStatusFilter<"Course"> | $Enums.RecordStatus
     statusChangedAt?: DateTimeNullableFilter<"Course"> | Date | string | null
     statusChangedBy?: StringNullableFilter<"Course"> | string | null
@@ -15262,6 +19259,9 @@ export namespace Prisma {
     modules?: CourseModuleListRelationFilter
     batches?: BatchListRelationFilter
     students?: StudentProfileListRelationFilter
+    facultyProfiles?: FacultyProfileListRelationFilter
+    facultyCourseAssignments?: FacultyCourseAssignmentListRelationFilter
+    facultyBatchEntries?: FacultyBatchEntryListRelationFilter
     statusHistory?: CourseStatusHistoryListRelationFilter
   }, "id" | "nameKey">
 
@@ -15282,6 +19282,7 @@ export namespace Prisma {
     installment1?: SortOrderInput | SortOrder
     installment2?: SortOrderInput | SortOrder
     installment3?: SortOrderInput | SortOrder
+    installments?: SortOrderInput | SortOrder
     status?: SortOrder
     statusChangedAt?: SortOrderInput | SortOrder
     statusChangedBy?: SortOrderInput | SortOrder
@@ -15316,6 +19317,7 @@ export namespace Prisma {
     installment1?: IntNullableWithAggregatesFilter<"Course"> | number | null
     installment2?: IntNullableWithAggregatesFilter<"Course"> | number | null
     installment3?: IntNullableWithAggregatesFilter<"Course"> | number | null
+    installments?: JsonNullableWithAggregatesFilter<"Course">
     status?: EnumRecordStatusWithAggregatesFilter<"Course"> | $Enums.RecordStatus
     statusChangedAt?: DateTimeNullableWithAggregatesFilter<"Course"> | Date | string | null
     statusChangedBy?: StringNullableWithAggregatesFilter<"Course"> | string | null
@@ -15798,7 +19800,9 @@ export namespace Prisma {
     location?: StringNullableFilter<"StudentProfile"> | string | null
     courseId?: StringNullableFilter<"StudentProfile"> | string | null
     courseInterested?: StringFilter<"StudentProfile"> | string
+    facultyId?: StringNullableFilter<"StudentProfile"> | string | null
     facultyName?: StringNullableFilter<"StudentProfile"> | string | null
+    batchId?: StringNullableFilter<"StudentProfile"> | string | null
     batchName?: StringNullableFilter<"StudentProfile"> | string | null
     qualification?: StringNullableFilter<"StudentProfile"> | string | null
     passedOutYear?: IntNullableFilter<"StudentProfile"> | number | null
@@ -15812,6 +19816,7 @@ export namespace Prisma {
     installment1?: IntNullableFilter<"StudentProfile"> | number | null
     installment2?: IntNullableFilter<"StudentProfile"> | number | null
     installment3?: IntNullableFilter<"StudentProfile"> | number | null
+    installment4?: IntNullableFilter<"StudentProfile"> | number | null
     totalAmount?: IntNullableFilter<"StudentProfile"> | number | null
     admissionDate?: StringFilter<"StudentProfile"> | string
     firstInstallmentAmount?: IntNullableFilter<"StudentProfile"> | number | null
@@ -15841,7 +19846,9 @@ export namespace Prisma {
     location?: SortOrderInput | SortOrder
     courseId?: SortOrderInput | SortOrder
     courseInterested?: SortOrder
+    facultyId?: SortOrderInput | SortOrder
     facultyName?: SortOrderInput | SortOrder
+    batchId?: SortOrderInput | SortOrder
     batchName?: SortOrderInput | SortOrder
     qualification?: SortOrderInput | SortOrder
     passedOutYear?: SortOrderInput | SortOrder
@@ -15855,6 +19862,7 @@ export namespace Prisma {
     installment1?: SortOrderInput | SortOrder
     installment2?: SortOrderInput | SortOrder
     installment3?: SortOrderInput | SortOrder
+    installment4?: SortOrderInput | SortOrder
     totalAmount?: SortOrderInput | SortOrder
     admissionDate?: SortOrder
     firstInstallmentAmount?: SortOrderInput | SortOrder
@@ -15887,7 +19895,9 @@ export namespace Prisma {
     location?: StringNullableFilter<"StudentProfile"> | string | null
     courseId?: StringNullableFilter<"StudentProfile"> | string | null
     courseInterested?: StringFilter<"StudentProfile"> | string
+    facultyId?: StringNullableFilter<"StudentProfile"> | string | null
     facultyName?: StringNullableFilter<"StudentProfile"> | string | null
+    batchId?: StringNullableFilter<"StudentProfile"> | string | null
     batchName?: StringNullableFilter<"StudentProfile"> | string | null
     qualification?: StringNullableFilter<"StudentProfile"> | string | null
     passedOutYear?: IntNullableFilter<"StudentProfile"> | number | null
@@ -15901,6 +19911,7 @@ export namespace Prisma {
     installment1?: IntNullableFilter<"StudentProfile"> | number | null
     installment2?: IntNullableFilter<"StudentProfile"> | number | null
     installment3?: IntNullableFilter<"StudentProfile"> | number | null
+    installment4?: IntNullableFilter<"StudentProfile"> | number | null
     totalAmount?: IntNullableFilter<"StudentProfile"> | number | null
     admissionDate?: StringFilter<"StudentProfile"> | string
     firstInstallmentAmount?: IntNullableFilter<"StudentProfile"> | number | null
@@ -15930,7 +19941,9 @@ export namespace Prisma {
     location?: SortOrderInput | SortOrder
     courseId?: SortOrderInput | SortOrder
     courseInterested?: SortOrder
+    facultyId?: SortOrderInput | SortOrder
     facultyName?: SortOrderInput | SortOrder
+    batchId?: SortOrderInput | SortOrder
     batchName?: SortOrderInput | SortOrder
     qualification?: SortOrderInput | SortOrder
     passedOutYear?: SortOrderInput | SortOrder
@@ -15944,6 +19957,7 @@ export namespace Prisma {
     installment1?: SortOrderInput | SortOrder
     installment2?: SortOrderInput | SortOrder
     installment3?: SortOrderInput | SortOrder
+    installment4?: SortOrderInput | SortOrder
     totalAmount?: SortOrderInput | SortOrder
     admissionDate?: SortOrder
     firstInstallmentAmount?: SortOrderInput | SortOrder
@@ -15980,7 +19994,9 @@ export namespace Prisma {
     location?: StringNullableWithAggregatesFilter<"StudentProfile"> | string | null
     courseId?: StringNullableWithAggregatesFilter<"StudentProfile"> | string | null
     courseInterested?: StringWithAggregatesFilter<"StudentProfile"> | string
+    facultyId?: StringNullableWithAggregatesFilter<"StudentProfile"> | string | null
     facultyName?: StringNullableWithAggregatesFilter<"StudentProfile"> | string | null
+    batchId?: StringNullableWithAggregatesFilter<"StudentProfile"> | string | null
     batchName?: StringNullableWithAggregatesFilter<"StudentProfile"> | string | null
     qualification?: StringNullableWithAggregatesFilter<"StudentProfile"> | string | null
     passedOutYear?: IntNullableWithAggregatesFilter<"StudentProfile"> | number | null
@@ -15994,6 +20010,7 @@ export namespace Prisma {
     installment1?: IntNullableWithAggregatesFilter<"StudentProfile"> | number | null
     installment2?: IntNullableWithAggregatesFilter<"StudentProfile"> | number | null
     installment3?: IntNullableWithAggregatesFilter<"StudentProfile"> | number | null
+    installment4?: IntNullableWithAggregatesFilter<"StudentProfile"> | number | null
     totalAmount?: IntNullableWithAggregatesFilter<"StudentProfile"> | number | null
     admissionDate?: StringWithAggregatesFilter<"StudentProfile"> | string
     firstInstallmentAmount?: IntNullableWithAggregatesFilter<"StudentProfile"> | number | null
@@ -16010,6 +20027,236 @@ export namespace Prisma {
     updatedBy?: StringNullableWithAggregatesFilter<"StudentProfile"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"StudentProfile"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"StudentProfile"> | Date | string
+  }
+
+  export type FacultyProfileWhereInput = {
+    AND?: FacultyProfileWhereInput | FacultyProfileWhereInput[]
+    OR?: FacultyProfileWhereInput[]
+    NOT?: FacultyProfileWhereInput | FacultyProfileWhereInput[]
+    id?: StringFilter<"FacultyProfile"> | string
+    facultyName?: StringFilter<"FacultyProfile"> | string
+    facultyEmail?: StringFilter<"FacultyProfile"> | string
+    facultyPhone?: StringFilter<"FacultyProfile"> | string
+    courseId?: StringNullableFilter<"FacultyProfile"> | string | null
+    status?: EnumRecordStatusFilter<"FacultyProfile"> | $Enums.RecordStatus
+    createdBy?: StringNullableFilter<"FacultyProfile"> | string | null
+    updatedBy?: StringNullableFilter<"FacultyProfile"> | string | null
+    createdAt?: DateTimeFilter<"FacultyProfile"> | Date | string
+    updatedAt?: DateTimeFilter<"FacultyProfile"> | Date | string
+    course?: XOR<CourseNullableScalarRelationFilter, CourseWhereInput> | null
+    courseAssignments?: FacultyCourseAssignmentListRelationFilter
+    batchEntries?: FacultyBatchEntryListRelationFilter
+  }
+
+  export type FacultyProfileOrderByWithRelationInput = {
+    id?: SortOrder
+    facultyName?: SortOrder
+    facultyEmail?: SortOrder
+    facultyPhone?: SortOrder
+    courseId?: SortOrderInput | SortOrder
+    status?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    updatedBy?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    course?: CourseOrderByWithRelationInput
+    courseAssignments?: FacultyCourseAssignmentOrderByRelationAggregateInput
+    batchEntries?: FacultyBatchEntryOrderByRelationAggregateInput
+  }
+
+  export type FacultyProfileWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: FacultyProfileWhereInput | FacultyProfileWhereInput[]
+    OR?: FacultyProfileWhereInput[]
+    NOT?: FacultyProfileWhereInput | FacultyProfileWhereInput[]
+    facultyName?: StringFilter<"FacultyProfile"> | string
+    facultyEmail?: StringFilter<"FacultyProfile"> | string
+    facultyPhone?: StringFilter<"FacultyProfile"> | string
+    courseId?: StringNullableFilter<"FacultyProfile"> | string | null
+    status?: EnumRecordStatusFilter<"FacultyProfile"> | $Enums.RecordStatus
+    createdBy?: StringNullableFilter<"FacultyProfile"> | string | null
+    updatedBy?: StringNullableFilter<"FacultyProfile"> | string | null
+    createdAt?: DateTimeFilter<"FacultyProfile"> | Date | string
+    updatedAt?: DateTimeFilter<"FacultyProfile"> | Date | string
+    course?: XOR<CourseNullableScalarRelationFilter, CourseWhereInput> | null
+    courseAssignments?: FacultyCourseAssignmentListRelationFilter
+    batchEntries?: FacultyBatchEntryListRelationFilter
+  }, "id">
+
+  export type FacultyProfileOrderByWithAggregationInput = {
+    id?: SortOrder
+    facultyName?: SortOrder
+    facultyEmail?: SortOrder
+    facultyPhone?: SortOrder
+    courseId?: SortOrderInput | SortOrder
+    status?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    updatedBy?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: FacultyProfileCountOrderByAggregateInput
+    _max?: FacultyProfileMaxOrderByAggregateInput
+    _min?: FacultyProfileMinOrderByAggregateInput
+  }
+
+  export type FacultyProfileScalarWhereWithAggregatesInput = {
+    AND?: FacultyProfileScalarWhereWithAggregatesInput | FacultyProfileScalarWhereWithAggregatesInput[]
+    OR?: FacultyProfileScalarWhereWithAggregatesInput[]
+    NOT?: FacultyProfileScalarWhereWithAggregatesInput | FacultyProfileScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"FacultyProfile"> | string
+    facultyName?: StringWithAggregatesFilter<"FacultyProfile"> | string
+    facultyEmail?: StringWithAggregatesFilter<"FacultyProfile"> | string
+    facultyPhone?: StringWithAggregatesFilter<"FacultyProfile"> | string
+    courseId?: StringNullableWithAggregatesFilter<"FacultyProfile"> | string | null
+    status?: EnumRecordStatusWithAggregatesFilter<"FacultyProfile"> | $Enums.RecordStatus
+    createdBy?: StringNullableWithAggregatesFilter<"FacultyProfile"> | string | null
+    updatedBy?: StringNullableWithAggregatesFilter<"FacultyProfile"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"FacultyProfile"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"FacultyProfile"> | Date | string
+  }
+
+  export type FacultyCourseAssignmentWhereInput = {
+    AND?: FacultyCourseAssignmentWhereInput | FacultyCourseAssignmentWhereInput[]
+    OR?: FacultyCourseAssignmentWhereInput[]
+    NOT?: FacultyCourseAssignmentWhereInput | FacultyCourseAssignmentWhereInput[]
+    id?: StringFilter<"FacultyCourseAssignment"> | string
+    facultyId?: StringFilter<"FacultyCourseAssignment"> | string
+    courseId?: StringFilter<"FacultyCourseAssignment"> | string
+    createdBy?: StringNullableFilter<"FacultyCourseAssignment"> | string | null
+    updatedBy?: StringNullableFilter<"FacultyCourseAssignment"> | string | null
+    createdAt?: DateTimeFilter<"FacultyCourseAssignment"> | Date | string
+    updatedAt?: DateTimeFilter<"FacultyCourseAssignment"> | Date | string
+    faculty?: XOR<FacultyProfileScalarRelationFilter, FacultyProfileWhereInput>
+    course?: XOR<CourseScalarRelationFilter, CourseWhereInput>
+  }
+
+  export type FacultyCourseAssignmentOrderByWithRelationInput = {
+    id?: SortOrder
+    facultyId?: SortOrder
+    courseId?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    updatedBy?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    faculty?: FacultyProfileOrderByWithRelationInput
+    course?: CourseOrderByWithRelationInput
+  }
+
+  export type FacultyCourseAssignmentWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    facultyId_courseId?: FacultyCourseAssignmentFacultyIdCourseIdCompoundUniqueInput
+    AND?: FacultyCourseAssignmentWhereInput | FacultyCourseAssignmentWhereInput[]
+    OR?: FacultyCourseAssignmentWhereInput[]
+    NOT?: FacultyCourseAssignmentWhereInput | FacultyCourseAssignmentWhereInput[]
+    facultyId?: StringFilter<"FacultyCourseAssignment"> | string
+    courseId?: StringFilter<"FacultyCourseAssignment"> | string
+    createdBy?: StringNullableFilter<"FacultyCourseAssignment"> | string | null
+    updatedBy?: StringNullableFilter<"FacultyCourseAssignment"> | string | null
+    createdAt?: DateTimeFilter<"FacultyCourseAssignment"> | Date | string
+    updatedAt?: DateTimeFilter<"FacultyCourseAssignment"> | Date | string
+    faculty?: XOR<FacultyProfileScalarRelationFilter, FacultyProfileWhereInput>
+    course?: XOR<CourseScalarRelationFilter, CourseWhereInput>
+  }, "id" | "facultyId_courseId">
+
+  export type FacultyCourseAssignmentOrderByWithAggregationInput = {
+    id?: SortOrder
+    facultyId?: SortOrder
+    courseId?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    updatedBy?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: FacultyCourseAssignmentCountOrderByAggregateInput
+    _max?: FacultyCourseAssignmentMaxOrderByAggregateInput
+    _min?: FacultyCourseAssignmentMinOrderByAggregateInput
+  }
+
+  export type FacultyCourseAssignmentScalarWhereWithAggregatesInput = {
+    AND?: FacultyCourseAssignmentScalarWhereWithAggregatesInput | FacultyCourseAssignmentScalarWhereWithAggregatesInput[]
+    OR?: FacultyCourseAssignmentScalarWhereWithAggregatesInput[]
+    NOT?: FacultyCourseAssignmentScalarWhereWithAggregatesInput | FacultyCourseAssignmentScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"FacultyCourseAssignment"> | string
+    facultyId?: StringWithAggregatesFilter<"FacultyCourseAssignment"> | string
+    courseId?: StringWithAggregatesFilter<"FacultyCourseAssignment"> | string
+    createdBy?: StringNullableWithAggregatesFilter<"FacultyCourseAssignment"> | string | null
+    updatedBy?: StringNullableWithAggregatesFilter<"FacultyCourseAssignment"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"FacultyCourseAssignment"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"FacultyCourseAssignment"> | Date | string
+  }
+
+  export type FacultyBatchEntryWhereInput = {
+    AND?: FacultyBatchEntryWhereInput | FacultyBatchEntryWhereInput[]
+    OR?: FacultyBatchEntryWhereInput[]
+    NOT?: FacultyBatchEntryWhereInput | FacultyBatchEntryWhereInput[]
+    id?: StringFilter<"FacultyBatchEntry"> | string
+    facultyId?: StringFilter<"FacultyBatchEntry"> | string
+    courseId?: StringNullableFilter<"FacultyBatchEntry"> | string | null
+    batchName?: StringFilter<"FacultyBatchEntry"> | string
+    batchTiming?: StringFilter<"FacultyBatchEntry"> | string
+    sequenceNo?: IntFilter<"FacultyBatchEntry"> | number
+    createdAt?: DateTimeFilter<"FacultyBatchEntry"> | Date | string
+    updatedAt?: DateTimeFilter<"FacultyBatchEntry"> | Date | string
+    faculty?: XOR<FacultyProfileScalarRelationFilter, FacultyProfileWhereInput>
+    course?: XOR<CourseNullableScalarRelationFilter, CourseWhereInput> | null
+  }
+
+  export type FacultyBatchEntryOrderByWithRelationInput = {
+    id?: SortOrder
+    facultyId?: SortOrder
+    courseId?: SortOrderInput | SortOrder
+    batchName?: SortOrder
+    batchTiming?: SortOrder
+    sequenceNo?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    faculty?: FacultyProfileOrderByWithRelationInput
+    course?: CourseOrderByWithRelationInput
+  }
+
+  export type FacultyBatchEntryWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: FacultyBatchEntryWhereInput | FacultyBatchEntryWhereInput[]
+    OR?: FacultyBatchEntryWhereInput[]
+    NOT?: FacultyBatchEntryWhereInput | FacultyBatchEntryWhereInput[]
+    facultyId?: StringFilter<"FacultyBatchEntry"> | string
+    courseId?: StringNullableFilter<"FacultyBatchEntry"> | string | null
+    batchName?: StringFilter<"FacultyBatchEntry"> | string
+    batchTiming?: StringFilter<"FacultyBatchEntry"> | string
+    sequenceNo?: IntFilter<"FacultyBatchEntry"> | number
+    createdAt?: DateTimeFilter<"FacultyBatchEntry"> | Date | string
+    updatedAt?: DateTimeFilter<"FacultyBatchEntry"> | Date | string
+    faculty?: XOR<FacultyProfileScalarRelationFilter, FacultyProfileWhereInput>
+    course?: XOR<CourseNullableScalarRelationFilter, CourseWhereInput> | null
+  }, "id">
+
+  export type FacultyBatchEntryOrderByWithAggregationInput = {
+    id?: SortOrder
+    facultyId?: SortOrder
+    courseId?: SortOrderInput | SortOrder
+    batchName?: SortOrder
+    batchTiming?: SortOrder
+    sequenceNo?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: FacultyBatchEntryCountOrderByAggregateInput
+    _avg?: FacultyBatchEntryAvgOrderByAggregateInput
+    _max?: FacultyBatchEntryMaxOrderByAggregateInput
+    _min?: FacultyBatchEntryMinOrderByAggregateInput
+    _sum?: FacultyBatchEntrySumOrderByAggregateInput
+  }
+
+  export type FacultyBatchEntryScalarWhereWithAggregatesInput = {
+    AND?: FacultyBatchEntryScalarWhereWithAggregatesInput | FacultyBatchEntryScalarWhereWithAggregatesInput[]
+    OR?: FacultyBatchEntryScalarWhereWithAggregatesInput[]
+    NOT?: FacultyBatchEntryScalarWhereWithAggregatesInput | FacultyBatchEntryScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"FacultyBatchEntry"> | string
+    facultyId?: StringWithAggregatesFilter<"FacultyBatchEntry"> | string
+    courseId?: StringNullableWithAggregatesFilter<"FacultyBatchEntry"> | string | null
+    batchName?: StringWithAggregatesFilter<"FacultyBatchEntry"> | string
+    batchTiming?: StringWithAggregatesFilter<"FacultyBatchEntry"> | string
+    sequenceNo?: IntWithAggregatesFilter<"FacultyBatchEntry"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"FacultyBatchEntry"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"FacultyBatchEntry"> | Date | string
   }
 
   export type UserCreateInput = {
@@ -16361,6 +20608,7 @@ export namespace Prisma {
     installment1?: number | null
     installment2?: number | null
     installment3?: number | null
+    installments?: NullableJsonNullValueInput | InputJsonValue
     status?: $Enums.RecordStatus
     statusChangedAt?: Date | string | null
     statusChangedBy?: string | null
@@ -16371,6 +20619,9 @@ export namespace Prisma {
     modules?: CourseModuleCreateNestedManyWithoutCourseInput
     batches?: BatchCreateNestedManyWithoutCourseInput
     students?: StudentProfileCreateNestedManyWithoutCourseInput
+    facultyProfiles?: FacultyProfileCreateNestedManyWithoutCourseInput
+    facultyCourseAssignments?: FacultyCourseAssignmentCreateNestedManyWithoutCourseInput
+    facultyBatchEntries?: FacultyBatchEntryCreateNestedManyWithoutCourseInput
     statusHistory?: CourseStatusHistoryCreateNestedManyWithoutCourseInput
   }
 
@@ -16391,6 +20642,7 @@ export namespace Prisma {
     installment1?: number | null
     installment2?: number | null
     installment3?: number | null
+    installments?: NullableJsonNullValueInput | InputJsonValue
     status?: $Enums.RecordStatus
     statusChangedAt?: Date | string | null
     statusChangedBy?: string | null
@@ -16401,6 +20653,9 @@ export namespace Prisma {
     modules?: CourseModuleUncheckedCreateNestedManyWithoutCourseInput
     batches?: BatchUncheckedCreateNestedManyWithoutCourseInput
     students?: StudentProfileUncheckedCreateNestedManyWithoutCourseInput
+    facultyProfiles?: FacultyProfileUncheckedCreateNestedManyWithoutCourseInput
+    facultyCourseAssignments?: FacultyCourseAssignmentUncheckedCreateNestedManyWithoutCourseInput
+    facultyBatchEntries?: FacultyBatchEntryUncheckedCreateNestedManyWithoutCourseInput
     statusHistory?: CourseStatusHistoryUncheckedCreateNestedManyWithoutCourseInput
   }
 
@@ -16421,6 +20676,7 @@ export namespace Prisma {
     installment1?: NullableIntFieldUpdateOperationsInput | number | null
     installment2?: NullableIntFieldUpdateOperationsInput | number | null
     installment3?: NullableIntFieldUpdateOperationsInput | number | null
+    installments?: NullableJsonNullValueInput | InputJsonValue
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     statusChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     statusChangedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -16431,6 +20687,9 @@ export namespace Prisma {
     modules?: CourseModuleUpdateManyWithoutCourseNestedInput
     batches?: BatchUpdateManyWithoutCourseNestedInput
     students?: StudentProfileUpdateManyWithoutCourseNestedInput
+    facultyProfiles?: FacultyProfileUpdateManyWithoutCourseNestedInput
+    facultyCourseAssignments?: FacultyCourseAssignmentUpdateManyWithoutCourseNestedInput
+    facultyBatchEntries?: FacultyBatchEntryUpdateManyWithoutCourseNestedInput
     statusHistory?: CourseStatusHistoryUpdateManyWithoutCourseNestedInput
   }
 
@@ -16451,6 +20710,7 @@ export namespace Prisma {
     installment1?: NullableIntFieldUpdateOperationsInput | number | null
     installment2?: NullableIntFieldUpdateOperationsInput | number | null
     installment3?: NullableIntFieldUpdateOperationsInput | number | null
+    installments?: NullableJsonNullValueInput | InputJsonValue
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     statusChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     statusChangedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -16461,6 +20721,9 @@ export namespace Prisma {
     modules?: CourseModuleUncheckedUpdateManyWithoutCourseNestedInput
     batches?: BatchUncheckedUpdateManyWithoutCourseNestedInput
     students?: StudentProfileUncheckedUpdateManyWithoutCourseNestedInput
+    facultyProfiles?: FacultyProfileUncheckedUpdateManyWithoutCourseNestedInput
+    facultyCourseAssignments?: FacultyCourseAssignmentUncheckedUpdateManyWithoutCourseNestedInput
+    facultyBatchEntries?: FacultyBatchEntryUncheckedUpdateManyWithoutCourseNestedInput
     statusHistory?: CourseStatusHistoryUncheckedUpdateManyWithoutCourseNestedInput
   }
 
@@ -16481,6 +20744,7 @@ export namespace Prisma {
     installment1?: number | null
     installment2?: number | null
     installment3?: number | null
+    installments?: NullableJsonNullValueInput | InputJsonValue
     status?: $Enums.RecordStatus
     statusChangedAt?: Date | string | null
     statusChangedBy?: string | null
@@ -16507,6 +20771,7 @@ export namespace Prisma {
     installment1?: NullableIntFieldUpdateOperationsInput | number | null
     installment2?: NullableIntFieldUpdateOperationsInput | number | null
     installment3?: NullableIntFieldUpdateOperationsInput | number | null
+    installments?: NullableJsonNullValueInput | InputJsonValue
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     statusChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     statusChangedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -16533,6 +20798,7 @@ export namespace Prisma {
     installment1?: NullableIntFieldUpdateOperationsInput | number | null
     installment2?: NullableIntFieldUpdateOperationsInput | number | null
     installment3?: NullableIntFieldUpdateOperationsInput | number | null
+    installments?: NullableJsonNullValueInput | InputJsonValue
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     statusChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     statusChangedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -17071,7 +21337,9 @@ export namespace Prisma {
     parentSpouseNumber?: string | null
     location?: string | null
     courseInterested: string
+    facultyId?: string | null
     facultyName?: string | null
+    batchId?: string | null
     batchName?: string | null
     qualification?: string | null
     passedOutYear?: number | null
@@ -17085,6 +21353,7 @@ export namespace Prisma {
     installment1?: number | null
     installment2?: number | null
     installment3?: number | null
+    installment4?: number | null
     totalAmount?: number | null
     admissionDate: string
     firstInstallmentAmount?: number | null
@@ -17114,7 +21383,9 @@ export namespace Prisma {
     location?: string | null
     courseId?: string | null
     courseInterested: string
+    facultyId?: string | null
     facultyName?: string | null
+    batchId?: string | null
     batchName?: string | null
     qualification?: string | null
     passedOutYear?: number | null
@@ -17128,6 +21399,7 @@ export namespace Prisma {
     installment1?: number | null
     installment2?: number | null
     installment3?: number | null
+    installment4?: number | null
     totalAmount?: number | null
     admissionDate: string
     firstInstallmentAmount?: number | null
@@ -17155,7 +21427,9 @@ export namespace Prisma {
     parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
     courseInterested?: StringFieldUpdateOperationsInput | string
+    facultyId?: NullableStringFieldUpdateOperationsInput | string | null
     facultyName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
     batchName?: NullableStringFieldUpdateOperationsInput | string | null
     qualification?: NullableStringFieldUpdateOperationsInput | string | null
     passedOutYear?: NullableIntFieldUpdateOperationsInput | number | null
@@ -17169,6 +21443,7 @@ export namespace Prisma {
     installment1?: NullableIntFieldUpdateOperationsInput | number | null
     installment2?: NullableIntFieldUpdateOperationsInput | number | null
     installment3?: NullableIntFieldUpdateOperationsInput | number | null
+    installment4?: NullableIntFieldUpdateOperationsInput | number | null
     totalAmount?: NullableIntFieldUpdateOperationsInput | number | null
     admissionDate?: StringFieldUpdateOperationsInput | string
     firstInstallmentAmount?: NullableIntFieldUpdateOperationsInput | number | null
@@ -17198,7 +21473,9 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     courseId?: NullableStringFieldUpdateOperationsInput | string | null
     courseInterested?: StringFieldUpdateOperationsInput | string
+    facultyId?: NullableStringFieldUpdateOperationsInput | string | null
     facultyName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
     batchName?: NullableStringFieldUpdateOperationsInput | string | null
     qualification?: NullableStringFieldUpdateOperationsInput | string | null
     passedOutYear?: NullableIntFieldUpdateOperationsInput | number | null
@@ -17212,6 +21489,7 @@ export namespace Prisma {
     installment1?: NullableIntFieldUpdateOperationsInput | number | null
     installment2?: NullableIntFieldUpdateOperationsInput | number | null
     installment3?: NullableIntFieldUpdateOperationsInput | number | null
+    installment4?: NullableIntFieldUpdateOperationsInput | number | null
     totalAmount?: NullableIntFieldUpdateOperationsInput | number | null
     admissionDate?: StringFieldUpdateOperationsInput | string
     firstInstallmentAmount?: NullableIntFieldUpdateOperationsInput | number | null
@@ -17240,7 +21518,9 @@ export namespace Prisma {
     location?: string | null
     courseId?: string | null
     courseInterested: string
+    facultyId?: string | null
     facultyName?: string | null
+    batchId?: string | null
     batchName?: string | null
     qualification?: string | null
     passedOutYear?: number | null
@@ -17254,6 +21534,7 @@ export namespace Prisma {
     installment1?: number | null
     installment2?: number | null
     installment3?: number | null
+    installment4?: number | null
     totalAmount?: number | null
     admissionDate: string
     firstInstallmentAmount?: number | null
@@ -17281,7 +21562,9 @@ export namespace Prisma {
     parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
     courseInterested?: StringFieldUpdateOperationsInput | string
+    facultyId?: NullableStringFieldUpdateOperationsInput | string | null
     facultyName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
     batchName?: NullableStringFieldUpdateOperationsInput | string | null
     qualification?: NullableStringFieldUpdateOperationsInput | string | null
     passedOutYear?: NullableIntFieldUpdateOperationsInput | number | null
@@ -17295,6 +21578,7 @@ export namespace Prisma {
     installment1?: NullableIntFieldUpdateOperationsInput | number | null
     installment2?: NullableIntFieldUpdateOperationsInput | number | null
     installment3?: NullableIntFieldUpdateOperationsInput | number | null
+    installment4?: NullableIntFieldUpdateOperationsInput | number | null
     totalAmount?: NullableIntFieldUpdateOperationsInput | number | null
     admissionDate?: StringFieldUpdateOperationsInput | string
     firstInstallmentAmount?: NullableIntFieldUpdateOperationsInput | number | null
@@ -17323,7 +21607,9 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     courseId?: NullableStringFieldUpdateOperationsInput | string | null
     courseInterested?: StringFieldUpdateOperationsInput | string
+    facultyId?: NullableStringFieldUpdateOperationsInput | string | null
     facultyName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
     batchName?: NullableStringFieldUpdateOperationsInput | string | null
     qualification?: NullableStringFieldUpdateOperationsInput | string | null
     passedOutYear?: NullableIntFieldUpdateOperationsInput | number | null
@@ -17337,6 +21623,7 @@ export namespace Prisma {
     installment1?: NullableIntFieldUpdateOperationsInput | number | null
     installment2?: NullableIntFieldUpdateOperationsInput | number | null
     installment3?: NullableIntFieldUpdateOperationsInput | number | null
+    installment4?: NullableIntFieldUpdateOperationsInput | number | null
     totalAmount?: NullableIntFieldUpdateOperationsInput | number | null
     admissionDate?: StringFieldUpdateOperationsInput | string
     firstInstallmentAmount?: NullableIntFieldUpdateOperationsInput | number | null
@@ -17351,6 +21638,247 @@ export namespace Prisma {
     recordStatus?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FacultyProfileCreateInput = {
+    id?: string
+    facultyName: string
+    facultyEmail: string
+    facultyPhone: string
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    course?: CourseCreateNestedOneWithoutFacultyProfilesInput
+    courseAssignments?: FacultyCourseAssignmentCreateNestedManyWithoutFacultyInput
+    batchEntries?: FacultyBatchEntryCreateNestedManyWithoutFacultyInput
+  }
+
+  export type FacultyProfileUncheckedCreateInput = {
+    id?: string
+    facultyName: string
+    facultyEmail: string
+    facultyPhone: string
+    courseId?: string | null
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    courseAssignments?: FacultyCourseAssignmentUncheckedCreateNestedManyWithoutFacultyInput
+    batchEntries?: FacultyBatchEntryUncheckedCreateNestedManyWithoutFacultyInput
+  }
+
+  export type FacultyProfileUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    facultyName?: StringFieldUpdateOperationsInput | string
+    facultyEmail?: StringFieldUpdateOperationsInput | string
+    facultyPhone?: StringFieldUpdateOperationsInput | string
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    course?: CourseUpdateOneWithoutFacultyProfilesNestedInput
+    courseAssignments?: FacultyCourseAssignmentUpdateManyWithoutFacultyNestedInput
+    batchEntries?: FacultyBatchEntryUpdateManyWithoutFacultyNestedInput
+  }
+
+  export type FacultyProfileUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    facultyName?: StringFieldUpdateOperationsInput | string
+    facultyEmail?: StringFieldUpdateOperationsInput | string
+    facultyPhone?: StringFieldUpdateOperationsInput | string
+    courseId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    courseAssignments?: FacultyCourseAssignmentUncheckedUpdateManyWithoutFacultyNestedInput
+    batchEntries?: FacultyBatchEntryUncheckedUpdateManyWithoutFacultyNestedInput
+  }
+
+  export type FacultyProfileCreateManyInput = {
+    id?: string
+    facultyName: string
+    facultyEmail: string
+    facultyPhone: string
+    courseId?: string | null
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FacultyProfileUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    facultyName?: StringFieldUpdateOperationsInput | string
+    facultyEmail?: StringFieldUpdateOperationsInput | string
+    facultyPhone?: StringFieldUpdateOperationsInput | string
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FacultyProfileUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    facultyName?: StringFieldUpdateOperationsInput | string
+    facultyEmail?: StringFieldUpdateOperationsInput | string
+    facultyPhone?: StringFieldUpdateOperationsInput | string
+    courseId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FacultyCourseAssignmentCreateInput = {
+    id?: string
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    faculty: FacultyProfileCreateNestedOneWithoutCourseAssignmentsInput
+    course: CourseCreateNestedOneWithoutFacultyCourseAssignmentsInput
+  }
+
+  export type FacultyCourseAssignmentUncheckedCreateInput = {
+    id?: string
+    facultyId: string
+    courseId: string
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FacultyCourseAssignmentUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    faculty?: FacultyProfileUpdateOneRequiredWithoutCourseAssignmentsNestedInput
+    course?: CourseUpdateOneRequiredWithoutFacultyCourseAssignmentsNestedInput
+  }
+
+  export type FacultyCourseAssignmentUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    facultyId?: StringFieldUpdateOperationsInput | string
+    courseId?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FacultyCourseAssignmentCreateManyInput = {
+    id?: string
+    facultyId: string
+    courseId: string
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FacultyCourseAssignmentUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FacultyCourseAssignmentUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    facultyId?: StringFieldUpdateOperationsInput | string
+    courseId?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FacultyBatchEntryCreateInput = {
+    id?: string
+    batchName: string
+    batchTiming: string
+    sequenceNo?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    faculty: FacultyProfileCreateNestedOneWithoutBatchEntriesInput
+    course?: CourseCreateNestedOneWithoutFacultyBatchEntriesInput
+  }
+
+  export type FacultyBatchEntryUncheckedCreateInput = {
+    id?: string
+    facultyId: string
+    courseId?: string | null
+    batchName: string
+    batchTiming: string
+    sequenceNo?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FacultyBatchEntryUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    batchName?: StringFieldUpdateOperationsInput | string
+    batchTiming?: StringFieldUpdateOperationsInput | string
+    sequenceNo?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    faculty?: FacultyProfileUpdateOneRequiredWithoutBatchEntriesNestedInput
+    course?: CourseUpdateOneWithoutFacultyBatchEntriesNestedInput
+  }
+
+  export type FacultyBatchEntryUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    facultyId?: StringFieldUpdateOperationsInput | string
+    courseId?: NullableStringFieldUpdateOperationsInput | string | null
+    batchName?: StringFieldUpdateOperationsInput | string
+    batchTiming?: StringFieldUpdateOperationsInput | string
+    sequenceNo?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FacultyBatchEntryCreateManyInput = {
+    id?: string
+    facultyId: string
+    courseId?: string | null
+    batchName: string
+    batchTiming: string
+    sequenceNo?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FacultyBatchEntryUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    batchName?: StringFieldUpdateOperationsInput | string
+    batchTiming?: StringFieldUpdateOperationsInput | string
+    sequenceNo?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FacultyBatchEntryUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    facultyId?: StringFieldUpdateOperationsInput | string
+    courseId?: NullableStringFieldUpdateOperationsInput | string | null
+    batchName?: StringFieldUpdateOperationsInput | string
+    batchTiming?: StringFieldUpdateOperationsInput | string
+    sequenceNo?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -17821,6 +22349,24 @@ export namespace Prisma {
     none?: StudentProfileWhereInput
   }
 
+  export type FacultyProfileListRelationFilter = {
+    every?: FacultyProfileWhereInput
+    some?: FacultyProfileWhereInput
+    none?: FacultyProfileWhereInput
+  }
+
+  export type FacultyCourseAssignmentListRelationFilter = {
+    every?: FacultyCourseAssignmentWhereInput
+    some?: FacultyCourseAssignmentWhereInput
+    none?: FacultyCourseAssignmentWhereInput
+  }
+
+  export type FacultyBatchEntryListRelationFilter = {
+    every?: FacultyBatchEntryWhereInput
+    some?: FacultyBatchEntryWhereInput
+    none?: FacultyBatchEntryWhereInput
+  }
+
   export type CourseStatusHistoryListRelationFilter = {
     every?: CourseStatusHistoryWhereInput
     some?: CourseStatusHistoryWhereInput
@@ -17836,6 +22382,18 @@ export namespace Prisma {
   }
 
   export type StudentProfileOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type FacultyProfileOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type FacultyCourseAssignmentOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type FacultyBatchEntryOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -17860,6 +22418,7 @@ export namespace Prisma {
     installment1?: SortOrder
     installment2?: SortOrder
     installment3?: SortOrder
+    installments?: SortOrder
     status?: SortOrder
     statusChangedAt?: SortOrder
     statusChangedBy?: SortOrder
@@ -18326,7 +22885,9 @@ export namespace Prisma {
     location?: SortOrder
     courseId?: SortOrder
     courseInterested?: SortOrder
+    facultyId?: SortOrder
     facultyName?: SortOrder
+    batchId?: SortOrder
     batchName?: SortOrder
     qualification?: SortOrder
     passedOutYear?: SortOrder
@@ -18340,6 +22901,7 @@ export namespace Prisma {
     installment1?: SortOrder
     installment2?: SortOrder
     installment3?: SortOrder
+    installment4?: SortOrder
     totalAmount?: SortOrder
     admissionDate?: SortOrder
     firstInstallmentAmount?: SortOrder
@@ -18367,6 +22929,7 @@ export namespace Prisma {
     installment1?: SortOrder
     installment2?: SortOrder
     installment3?: SortOrder
+    installment4?: SortOrder
     totalAmount?: SortOrder
     firstInstallmentAmount?: SortOrder
     secondInstallmentAmount?: SortOrder
@@ -18382,7 +22945,9 @@ export namespace Prisma {
     location?: SortOrder
     courseId?: SortOrder
     courseInterested?: SortOrder
+    facultyId?: SortOrder
     facultyName?: SortOrder
+    batchId?: SortOrder
     batchName?: SortOrder
     qualification?: SortOrder
     passedOutYear?: SortOrder
@@ -18396,6 +22961,7 @@ export namespace Prisma {
     installment1?: SortOrder
     installment2?: SortOrder
     installment3?: SortOrder
+    installment4?: SortOrder
     totalAmount?: SortOrder
     admissionDate?: SortOrder
     firstInstallmentAmount?: SortOrder
@@ -18424,7 +22990,9 @@ export namespace Prisma {
     location?: SortOrder
     courseId?: SortOrder
     courseInterested?: SortOrder
+    facultyId?: SortOrder
     facultyName?: SortOrder
+    batchId?: SortOrder
     batchName?: SortOrder
     qualification?: SortOrder
     passedOutYear?: SortOrder
@@ -18438,6 +23006,7 @@ export namespace Prisma {
     installment1?: SortOrder
     installment2?: SortOrder
     installment3?: SortOrder
+    installment4?: SortOrder
     totalAmount?: SortOrder
     admissionDate?: SortOrder
     firstInstallmentAmount?: SortOrder
@@ -18465,9 +23034,130 @@ export namespace Prisma {
     installment1?: SortOrder
     installment2?: SortOrder
     installment3?: SortOrder
+    installment4?: SortOrder
     totalAmount?: SortOrder
     firstInstallmentAmount?: SortOrder
     secondInstallmentAmount?: SortOrder
+  }
+
+  export type FacultyProfileCountOrderByAggregateInput = {
+    id?: SortOrder
+    facultyName?: SortOrder
+    facultyEmail?: SortOrder
+    facultyPhone?: SortOrder
+    courseId?: SortOrder
+    status?: SortOrder
+    createdBy?: SortOrder
+    updatedBy?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type FacultyProfileMaxOrderByAggregateInput = {
+    id?: SortOrder
+    facultyName?: SortOrder
+    facultyEmail?: SortOrder
+    facultyPhone?: SortOrder
+    courseId?: SortOrder
+    status?: SortOrder
+    createdBy?: SortOrder
+    updatedBy?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type FacultyProfileMinOrderByAggregateInput = {
+    id?: SortOrder
+    facultyName?: SortOrder
+    facultyEmail?: SortOrder
+    facultyPhone?: SortOrder
+    courseId?: SortOrder
+    status?: SortOrder
+    createdBy?: SortOrder
+    updatedBy?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type FacultyProfileScalarRelationFilter = {
+    is?: FacultyProfileWhereInput
+    isNot?: FacultyProfileWhereInput
+  }
+
+  export type FacultyCourseAssignmentFacultyIdCourseIdCompoundUniqueInput = {
+    facultyId: string
+    courseId: string
+  }
+
+  export type FacultyCourseAssignmentCountOrderByAggregateInput = {
+    id?: SortOrder
+    facultyId?: SortOrder
+    courseId?: SortOrder
+    createdBy?: SortOrder
+    updatedBy?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type FacultyCourseAssignmentMaxOrderByAggregateInput = {
+    id?: SortOrder
+    facultyId?: SortOrder
+    courseId?: SortOrder
+    createdBy?: SortOrder
+    updatedBy?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type FacultyCourseAssignmentMinOrderByAggregateInput = {
+    id?: SortOrder
+    facultyId?: SortOrder
+    courseId?: SortOrder
+    createdBy?: SortOrder
+    updatedBy?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type FacultyBatchEntryCountOrderByAggregateInput = {
+    id?: SortOrder
+    facultyId?: SortOrder
+    courseId?: SortOrder
+    batchName?: SortOrder
+    batchTiming?: SortOrder
+    sequenceNo?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type FacultyBatchEntryAvgOrderByAggregateInput = {
+    sequenceNo?: SortOrder
+  }
+
+  export type FacultyBatchEntryMaxOrderByAggregateInput = {
+    id?: SortOrder
+    facultyId?: SortOrder
+    courseId?: SortOrder
+    batchName?: SortOrder
+    batchTiming?: SortOrder
+    sequenceNo?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type FacultyBatchEntryMinOrderByAggregateInput = {
+    id?: SortOrder
+    facultyId?: SortOrder
+    courseId?: SortOrder
+    batchName?: SortOrder
+    batchTiming?: SortOrder
+    sequenceNo?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type FacultyBatchEntrySumOrderByAggregateInput = {
+    sequenceNo?: SortOrder
   }
 
   export type LoginEventCreateNestedManyWithoutUserInput = {
@@ -18683,6 +23373,27 @@ export namespace Prisma {
     connect?: StudentProfileWhereUniqueInput | StudentProfileWhereUniqueInput[]
   }
 
+  export type FacultyProfileCreateNestedManyWithoutCourseInput = {
+    create?: XOR<FacultyProfileCreateWithoutCourseInput, FacultyProfileUncheckedCreateWithoutCourseInput> | FacultyProfileCreateWithoutCourseInput[] | FacultyProfileUncheckedCreateWithoutCourseInput[]
+    connectOrCreate?: FacultyProfileCreateOrConnectWithoutCourseInput | FacultyProfileCreateOrConnectWithoutCourseInput[]
+    createMany?: FacultyProfileCreateManyCourseInputEnvelope
+    connect?: FacultyProfileWhereUniqueInput | FacultyProfileWhereUniqueInput[]
+  }
+
+  export type FacultyCourseAssignmentCreateNestedManyWithoutCourseInput = {
+    create?: XOR<FacultyCourseAssignmentCreateWithoutCourseInput, FacultyCourseAssignmentUncheckedCreateWithoutCourseInput> | FacultyCourseAssignmentCreateWithoutCourseInput[] | FacultyCourseAssignmentUncheckedCreateWithoutCourseInput[]
+    connectOrCreate?: FacultyCourseAssignmentCreateOrConnectWithoutCourseInput | FacultyCourseAssignmentCreateOrConnectWithoutCourseInput[]
+    createMany?: FacultyCourseAssignmentCreateManyCourseInputEnvelope
+    connect?: FacultyCourseAssignmentWhereUniqueInput | FacultyCourseAssignmentWhereUniqueInput[]
+  }
+
+  export type FacultyBatchEntryCreateNestedManyWithoutCourseInput = {
+    create?: XOR<FacultyBatchEntryCreateWithoutCourseInput, FacultyBatchEntryUncheckedCreateWithoutCourseInput> | FacultyBatchEntryCreateWithoutCourseInput[] | FacultyBatchEntryUncheckedCreateWithoutCourseInput[]
+    connectOrCreate?: FacultyBatchEntryCreateOrConnectWithoutCourseInput | FacultyBatchEntryCreateOrConnectWithoutCourseInput[]
+    createMany?: FacultyBatchEntryCreateManyCourseInputEnvelope
+    connect?: FacultyBatchEntryWhereUniqueInput | FacultyBatchEntryWhereUniqueInput[]
+  }
+
   export type CourseStatusHistoryCreateNestedManyWithoutCourseInput = {
     create?: XOR<CourseStatusHistoryCreateWithoutCourseInput, CourseStatusHistoryUncheckedCreateWithoutCourseInput> | CourseStatusHistoryCreateWithoutCourseInput[] | CourseStatusHistoryUncheckedCreateWithoutCourseInput[]
     connectOrCreate?: CourseStatusHistoryCreateOrConnectWithoutCourseInput | CourseStatusHistoryCreateOrConnectWithoutCourseInput[]
@@ -18709,6 +23420,27 @@ export namespace Prisma {
     connectOrCreate?: StudentProfileCreateOrConnectWithoutCourseInput | StudentProfileCreateOrConnectWithoutCourseInput[]
     createMany?: StudentProfileCreateManyCourseInputEnvelope
     connect?: StudentProfileWhereUniqueInput | StudentProfileWhereUniqueInput[]
+  }
+
+  export type FacultyProfileUncheckedCreateNestedManyWithoutCourseInput = {
+    create?: XOR<FacultyProfileCreateWithoutCourseInput, FacultyProfileUncheckedCreateWithoutCourseInput> | FacultyProfileCreateWithoutCourseInput[] | FacultyProfileUncheckedCreateWithoutCourseInput[]
+    connectOrCreate?: FacultyProfileCreateOrConnectWithoutCourseInput | FacultyProfileCreateOrConnectWithoutCourseInput[]
+    createMany?: FacultyProfileCreateManyCourseInputEnvelope
+    connect?: FacultyProfileWhereUniqueInput | FacultyProfileWhereUniqueInput[]
+  }
+
+  export type FacultyCourseAssignmentUncheckedCreateNestedManyWithoutCourseInput = {
+    create?: XOR<FacultyCourseAssignmentCreateWithoutCourseInput, FacultyCourseAssignmentUncheckedCreateWithoutCourseInput> | FacultyCourseAssignmentCreateWithoutCourseInput[] | FacultyCourseAssignmentUncheckedCreateWithoutCourseInput[]
+    connectOrCreate?: FacultyCourseAssignmentCreateOrConnectWithoutCourseInput | FacultyCourseAssignmentCreateOrConnectWithoutCourseInput[]
+    createMany?: FacultyCourseAssignmentCreateManyCourseInputEnvelope
+    connect?: FacultyCourseAssignmentWhereUniqueInput | FacultyCourseAssignmentWhereUniqueInput[]
+  }
+
+  export type FacultyBatchEntryUncheckedCreateNestedManyWithoutCourseInput = {
+    create?: XOR<FacultyBatchEntryCreateWithoutCourseInput, FacultyBatchEntryUncheckedCreateWithoutCourseInput> | FacultyBatchEntryCreateWithoutCourseInput[] | FacultyBatchEntryUncheckedCreateWithoutCourseInput[]
+    connectOrCreate?: FacultyBatchEntryCreateOrConnectWithoutCourseInput | FacultyBatchEntryCreateOrConnectWithoutCourseInput[]
+    createMany?: FacultyBatchEntryCreateManyCourseInputEnvelope
+    connect?: FacultyBatchEntryWhereUniqueInput | FacultyBatchEntryWhereUniqueInput[]
   }
 
   export type CourseStatusHistoryUncheckedCreateNestedManyWithoutCourseInput = {
@@ -18772,6 +23504,48 @@ export namespace Prisma {
     deleteMany?: StudentProfileScalarWhereInput | StudentProfileScalarWhereInput[]
   }
 
+  export type FacultyProfileUpdateManyWithoutCourseNestedInput = {
+    create?: XOR<FacultyProfileCreateWithoutCourseInput, FacultyProfileUncheckedCreateWithoutCourseInput> | FacultyProfileCreateWithoutCourseInput[] | FacultyProfileUncheckedCreateWithoutCourseInput[]
+    connectOrCreate?: FacultyProfileCreateOrConnectWithoutCourseInput | FacultyProfileCreateOrConnectWithoutCourseInput[]
+    upsert?: FacultyProfileUpsertWithWhereUniqueWithoutCourseInput | FacultyProfileUpsertWithWhereUniqueWithoutCourseInput[]
+    createMany?: FacultyProfileCreateManyCourseInputEnvelope
+    set?: FacultyProfileWhereUniqueInput | FacultyProfileWhereUniqueInput[]
+    disconnect?: FacultyProfileWhereUniqueInput | FacultyProfileWhereUniqueInput[]
+    delete?: FacultyProfileWhereUniqueInput | FacultyProfileWhereUniqueInput[]
+    connect?: FacultyProfileWhereUniqueInput | FacultyProfileWhereUniqueInput[]
+    update?: FacultyProfileUpdateWithWhereUniqueWithoutCourseInput | FacultyProfileUpdateWithWhereUniqueWithoutCourseInput[]
+    updateMany?: FacultyProfileUpdateManyWithWhereWithoutCourseInput | FacultyProfileUpdateManyWithWhereWithoutCourseInput[]
+    deleteMany?: FacultyProfileScalarWhereInput | FacultyProfileScalarWhereInput[]
+  }
+
+  export type FacultyCourseAssignmentUpdateManyWithoutCourseNestedInput = {
+    create?: XOR<FacultyCourseAssignmentCreateWithoutCourseInput, FacultyCourseAssignmentUncheckedCreateWithoutCourseInput> | FacultyCourseAssignmentCreateWithoutCourseInput[] | FacultyCourseAssignmentUncheckedCreateWithoutCourseInput[]
+    connectOrCreate?: FacultyCourseAssignmentCreateOrConnectWithoutCourseInput | FacultyCourseAssignmentCreateOrConnectWithoutCourseInput[]
+    upsert?: FacultyCourseAssignmentUpsertWithWhereUniqueWithoutCourseInput | FacultyCourseAssignmentUpsertWithWhereUniqueWithoutCourseInput[]
+    createMany?: FacultyCourseAssignmentCreateManyCourseInputEnvelope
+    set?: FacultyCourseAssignmentWhereUniqueInput | FacultyCourseAssignmentWhereUniqueInput[]
+    disconnect?: FacultyCourseAssignmentWhereUniqueInput | FacultyCourseAssignmentWhereUniqueInput[]
+    delete?: FacultyCourseAssignmentWhereUniqueInput | FacultyCourseAssignmentWhereUniqueInput[]
+    connect?: FacultyCourseAssignmentWhereUniqueInput | FacultyCourseAssignmentWhereUniqueInput[]
+    update?: FacultyCourseAssignmentUpdateWithWhereUniqueWithoutCourseInput | FacultyCourseAssignmentUpdateWithWhereUniqueWithoutCourseInput[]
+    updateMany?: FacultyCourseAssignmentUpdateManyWithWhereWithoutCourseInput | FacultyCourseAssignmentUpdateManyWithWhereWithoutCourseInput[]
+    deleteMany?: FacultyCourseAssignmentScalarWhereInput | FacultyCourseAssignmentScalarWhereInput[]
+  }
+
+  export type FacultyBatchEntryUpdateManyWithoutCourseNestedInput = {
+    create?: XOR<FacultyBatchEntryCreateWithoutCourseInput, FacultyBatchEntryUncheckedCreateWithoutCourseInput> | FacultyBatchEntryCreateWithoutCourseInput[] | FacultyBatchEntryUncheckedCreateWithoutCourseInput[]
+    connectOrCreate?: FacultyBatchEntryCreateOrConnectWithoutCourseInput | FacultyBatchEntryCreateOrConnectWithoutCourseInput[]
+    upsert?: FacultyBatchEntryUpsertWithWhereUniqueWithoutCourseInput | FacultyBatchEntryUpsertWithWhereUniqueWithoutCourseInput[]
+    createMany?: FacultyBatchEntryCreateManyCourseInputEnvelope
+    set?: FacultyBatchEntryWhereUniqueInput | FacultyBatchEntryWhereUniqueInput[]
+    disconnect?: FacultyBatchEntryWhereUniqueInput | FacultyBatchEntryWhereUniqueInput[]
+    delete?: FacultyBatchEntryWhereUniqueInput | FacultyBatchEntryWhereUniqueInput[]
+    connect?: FacultyBatchEntryWhereUniqueInput | FacultyBatchEntryWhereUniqueInput[]
+    update?: FacultyBatchEntryUpdateWithWhereUniqueWithoutCourseInput | FacultyBatchEntryUpdateWithWhereUniqueWithoutCourseInput[]
+    updateMany?: FacultyBatchEntryUpdateManyWithWhereWithoutCourseInput | FacultyBatchEntryUpdateManyWithWhereWithoutCourseInput[]
+    deleteMany?: FacultyBatchEntryScalarWhereInput | FacultyBatchEntryScalarWhereInput[]
+  }
+
   export type CourseStatusHistoryUpdateManyWithoutCourseNestedInput = {
     create?: XOR<CourseStatusHistoryCreateWithoutCourseInput, CourseStatusHistoryUncheckedCreateWithoutCourseInput> | CourseStatusHistoryCreateWithoutCourseInput[] | CourseStatusHistoryUncheckedCreateWithoutCourseInput[]
     connectOrCreate?: CourseStatusHistoryCreateOrConnectWithoutCourseInput | CourseStatusHistoryCreateOrConnectWithoutCourseInput[]
@@ -18826,6 +23600,48 @@ export namespace Prisma {
     update?: StudentProfileUpdateWithWhereUniqueWithoutCourseInput | StudentProfileUpdateWithWhereUniqueWithoutCourseInput[]
     updateMany?: StudentProfileUpdateManyWithWhereWithoutCourseInput | StudentProfileUpdateManyWithWhereWithoutCourseInput[]
     deleteMany?: StudentProfileScalarWhereInput | StudentProfileScalarWhereInput[]
+  }
+
+  export type FacultyProfileUncheckedUpdateManyWithoutCourseNestedInput = {
+    create?: XOR<FacultyProfileCreateWithoutCourseInput, FacultyProfileUncheckedCreateWithoutCourseInput> | FacultyProfileCreateWithoutCourseInput[] | FacultyProfileUncheckedCreateWithoutCourseInput[]
+    connectOrCreate?: FacultyProfileCreateOrConnectWithoutCourseInput | FacultyProfileCreateOrConnectWithoutCourseInput[]
+    upsert?: FacultyProfileUpsertWithWhereUniqueWithoutCourseInput | FacultyProfileUpsertWithWhereUniqueWithoutCourseInput[]
+    createMany?: FacultyProfileCreateManyCourseInputEnvelope
+    set?: FacultyProfileWhereUniqueInput | FacultyProfileWhereUniqueInput[]
+    disconnect?: FacultyProfileWhereUniqueInput | FacultyProfileWhereUniqueInput[]
+    delete?: FacultyProfileWhereUniqueInput | FacultyProfileWhereUniqueInput[]
+    connect?: FacultyProfileWhereUniqueInput | FacultyProfileWhereUniqueInput[]
+    update?: FacultyProfileUpdateWithWhereUniqueWithoutCourseInput | FacultyProfileUpdateWithWhereUniqueWithoutCourseInput[]
+    updateMany?: FacultyProfileUpdateManyWithWhereWithoutCourseInput | FacultyProfileUpdateManyWithWhereWithoutCourseInput[]
+    deleteMany?: FacultyProfileScalarWhereInput | FacultyProfileScalarWhereInput[]
+  }
+
+  export type FacultyCourseAssignmentUncheckedUpdateManyWithoutCourseNestedInput = {
+    create?: XOR<FacultyCourseAssignmentCreateWithoutCourseInput, FacultyCourseAssignmentUncheckedCreateWithoutCourseInput> | FacultyCourseAssignmentCreateWithoutCourseInput[] | FacultyCourseAssignmentUncheckedCreateWithoutCourseInput[]
+    connectOrCreate?: FacultyCourseAssignmentCreateOrConnectWithoutCourseInput | FacultyCourseAssignmentCreateOrConnectWithoutCourseInput[]
+    upsert?: FacultyCourseAssignmentUpsertWithWhereUniqueWithoutCourseInput | FacultyCourseAssignmentUpsertWithWhereUniqueWithoutCourseInput[]
+    createMany?: FacultyCourseAssignmentCreateManyCourseInputEnvelope
+    set?: FacultyCourseAssignmentWhereUniqueInput | FacultyCourseAssignmentWhereUniqueInput[]
+    disconnect?: FacultyCourseAssignmentWhereUniqueInput | FacultyCourseAssignmentWhereUniqueInput[]
+    delete?: FacultyCourseAssignmentWhereUniqueInput | FacultyCourseAssignmentWhereUniqueInput[]
+    connect?: FacultyCourseAssignmentWhereUniqueInput | FacultyCourseAssignmentWhereUniqueInput[]
+    update?: FacultyCourseAssignmentUpdateWithWhereUniqueWithoutCourseInput | FacultyCourseAssignmentUpdateWithWhereUniqueWithoutCourseInput[]
+    updateMany?: FacultyCourseAssignmentUpdateManyWithWhereWithoutCourseInput | FacultyCourseAssignmentUpdateManyWithWhereWithoutCourseInput[]
+    deleteMany?: FacultyCourseAssignmentScalarWhereInput | FacultyCourseAssignmentScalarWhereInput[]
+  }
+
+  export type FacultyBatchEntryUncheckedUpdateManyWithoutCourseNestedInput = {
+    create?: XOR<FacultyBatchEntryCreateWithoutCourseInput, FacultyBatchEntryUncheckedCreateWithoutCourseInput> | FacultyBatchEntryCreateWithoutCourseInput[] | FacultyBatchEntryUncheckedCreateWithoutCourseInput[]
+    connectOrCreate?: FacultyBatchEntryCreateOrConnectWithoutCourseInput | FacultyBatchEntryCreateOrConnectWithoutCourseInput[]
+    upsert?: FacultyBatchEntryUpsertWithWhereUniqueWithoutCourseInput | FacultyBatchEntryUpsertWithWhereUniqueWithoutCourseInput[]
+    createMany?: FacultyBatchEntryCreateManyCourseInputEnvelope
+    set?: FacultyBatchEntryWhereUniqueInput | FacultyBatchEntryWhereUniqueInput[]
+    disconnect?: FacultyBatchEntryWhereUniqueInput | FacultyBatchEntryWhereUniqueInput[]
+    delete?: FacultyBatchEntryWhereUniqueInput | FacultyBatchEntryWhereUniqueInput[]
+    connect?: FacultyBatchEntryWhereUniqueInput | FacultyBatchEntryWhereUniqueInput[]
+    update?: FacultyBatchEntryUpdateWithWhereUniqueWithoutCourseInput | FacultyBatchEntryUpdateWithWhereUniqueWithoutCourseInput[]
+    updateMany?: FacultyBatchEntryUpdateManyWithWhereWithoutCourseInput | FacultyBatchEntryUpdateManyWithWhereWithoutCourseInput[]
+    deleteMany?: FacultyBatchEntryScalarWhereInput | FacultyBatchEntryScalarWhereInput[]
   }
 
   export type CourseStatusHistoryUncheckedUpdateManyWithoutCourseNestedInput = {
@@ -19040,6 +23856,164 @@ export namespace Prisma {
     delete?: CourseWhereInput | boolean
     connect?: CourseWhereUniqueInput
     update?: XOR<XOR<CourseUpdateToOneWithWhereWithoutStudentsInput, CourseUpdateWithoutStudentsInput>, CourseUncheckedUpdateWithoutStudentsInput>
+  }
+
+  export type CourseCreateNestedOneWithoutFacultyProfilesInput = {
+    create?: XOR<CourseCreateWithoutFacultyProfilesInput, CourseUncheckedCreateWithoutFacultyProfilesInput>
+    connectOrCreate?: CourseCreateOrConnectWithoutFacultyProfilesInput
+    connect?: CourseWhereUniqueInput
+  }
+
+  export type FacultyCourseAssignmentCreateNestedManyWithoutFacultyInput = {
+    create?: XOR<FacultyCourseAssignmentCreateWithoutFacultyInput, FacultyCourseAssignmentUncheckedCreateWithoutFacultyInput> | FacultyCourseAssignmentCreateWithoutFacultyInput[] | FacultyCourseAssignmentUncheckedCreateWithoutFacultyInput[]
+    connectOrCreate?: FacultyCourseAssignmentCreateOrConnectWithoutFacultyInput | FacultyCourseAssignmentCreateOrConnectWithoutFacultyInput[]
+    createMany?: FacultyCourseAssignmentCreateManyFacultyInputEnvelope
+    connect?: FacultyCourseAssignmentWhereUniqueInput | FacultyCourseAssignmentWhereUniqueInput[]
+  }
+
+  export type FacultyBatchEntryCreateNestedManyWithoutFacultyInput = {
+    create?: XOR<FacultyBatchEntryCreateWithoutFacultyInput, FacultyBatchEntryUncheckedCreateWithoutFacultyInput> | FacultyBatchEntryCreateWithoutFacultyInput[] | FacultyBatchEntryUncheckedCreateWithoutFacultyInput[]
+    connectOrCreate?: FacultyBatchEntryCreateOrConnectWithoutFacultyInput | FacultyBatchEntryCreateOrConnectWithoutFacultyInput[]
+    createMany?: FacultyBatchEntryCreateManyFacultyInputEnvelope
+    connect?: FacultyBatchEntryWhereUniqueInput | FacultyBatchEntryWhereUniqueInput[]
+  }
+
+  export type FacultyCourseAssignmentUncheckedCreateNestedManyWithoutFacultyInput = {
+    create?: XOR<FacultyCourseAssignmentCreateWithoutFacultyInput, FacultyCourseAssignmentUncheckedCreateWithoutFacultyInput> | FacultyCourseAssignmentCreateWithoutFacultyInput[] | FacultyCourseAssignmentUncheckedCreateWithoutFacultyInput[]
+    connectOrCreate?: FacultyCourseAssignmentCreateOrConnectWithoutFacultyInput | FacultyCourseAssignmentCreateOrConnectWithoutFacultyInput[]
+    createMany?: FacultyCourseAssignmentCreateManyFacultyInputEnvelope
+    connect?: FacultyCourseAssignmentWhereUniqueInput | FacultyCourseAssignmentWhereUniqueInput[]
+  }
+
+  export type FacultyBatchEntryUncheckedCreateNestedManyWithoutFacultyInput = {
+    create?: XOR<FacultyBatchEntryCreateWithoutFacultyInput, FacultyBatchEntryUncheckedCreateWithoutFacultyInput> | FacultyBatchEntryCreateWithoutFacultyInput[] | FacultyBatchEntryUncheckedCreateWithoutFacultyInput[]
+    connectOrCreate?: FacultyBatchEntryCreateOrConnectWithoutFacultyInput | FacultyBatchEntryCreateOrConnectWithoutFacultyInput[]
+    createMany?: FacultyBatchEntryCreateManyFacultyInputEnvelope
+    connect?: FacultyBatchEntryWhereUniqueInput | FacultyBatchEntryWhereUniqueInput[]
+  }
+
+  export type CourseUpdateOneWithoutFacultyProfilesNestedInput = {
+    create?: XOR<CourseCreateWithoutFacultyProfilesInput, CourseUncheckedCreateWithoutFacultyProfilesInput>
+    connectOrCreate?: CourseCreateOrConnectWithoutFacultyProfilesInput
+    upsert?: CourseUpsertWithoutFacultyProfilesInput
+    disconnect?: CourseWhereInput | boolean
+    delete?: CourseWhereInput | boolean
+    connect?: CourseWhereUniqueInput
+    update?: XOR<XOR<CourseUpdateToOneWithWhereWithoutFacultyProfilesInput, CourseUpdateWithoutFacultyProfilesInput>, CourseUncheckedUpdateWithoutFacultyProfilesInput>
+  }
+
+  export type FacultyCourseAssignmentUpdateManyWithoutFacultyNestedInput = {
+    create?: XOR<FacultyCourseAssignmentCreateWithoutFacultyInput, FacultyCourseAssignmentUncheckedCreateWithoutFacultyInput> | FacultyCourseAssignmentCreateWithoutFacultyInput[] | FacultyCourseAssignmentUncheckedCreateWithoutFacultyInput[]
+    connectOrCreate?: FacultyCourseAssignmentCreateOrConnectWithoutFacultyInput | FacultyCourseAssignmentCreateOrConnectWithoutFacultyInput[]
+    upsert?: FacultyCourseAssignmentUpsertWithWhereUniqueWithoutFacultyInput | FacultyCourseAssignmentUpsertWithWhereUniqueWithoutFacultyInput[]
+    createMany?: FacultyCourseAssignmentCreateManyFacultyInputEnvelope
+    set?: FacultyCourseAssignmentWhereUniqueInput | FacultyCourseAssignmentWhereUniqueInput[]
+    disconnect?: FacultyCourseAssignmentWhereUniqueInput | FacultyCourseAssignmentWhereUniqueInput[]
+    delete?: FacultyCourseAssignmentWhereUniqueInput | FacultyCourseAssignmentWhereUniqueInput[]
+    connect?: FacultyCourseAssignmentWhereUniqueInput | FacultyCourseAssignmentWhereUniqueInput[]
+    update?: FacultyCourseAssignmentUpdateWithWhereUniqueWithoutFacultyInput | FacultyCourseAssignmentUpdateWithWhereUniqueWithoutFacultyInput[]
+    updateMany?: FacultyCourseAssignmentUpdateManyWithWhereWithoutFacultyInput | FacultyCourseAssignmentUpdateManyWithWhereWithoutFacultyInput[]
+    deleteMany?: FacultyCourseAssignmentScalarWhereInput | FacultyCourseAssignmentScalarWhereInput[]
+  }
+
+  export type FacultyBatchEntryUpdateManyWithoutFacultyNestedInput = {
+    create?: XOR<FacultyBatchEntryCreateWithoutFacultyInput, FacultyBatchEntryUncheckedCreateWithoutFacultyInput> | FacultyBatchEntryCreateWithoutFacultyInput[] | FacultyBatchEntryUncheckedCreateWithoutFacultyInput[]
+    connectOrCreate?: FacultyBatchEntryCreateOrConnectWithoutFacultyInput | FacultyBatchEntryCreateOrConnectWithoutFacultyInput[]
+    upsert?: FacultyBatchEntryUpsertWithWhereUniqueWithoutFacultyInput | FacultyBatchEntryUpsertWithWhereUniqueWithoutFacultyInput[]
+    createMany?: FacultyBatchEntryCreateManyFacultyInputEnvelope
+    set?: FacultyBatchEntryWhereUniqueInput | FacultyBatchEntryWhereUniqueInput[]
+    disconnect?: FacultyBatchEntryWhereUniqueInput | FacultyBatchEntryWhereUniqueInput[]
+    delete?: FacultyBatchEntryWhereUniqueInput | FacultyBatchEntryWhereUniqueInput[]
+    connect?: FacultyBatchEntryWhereUniqueInput | FacultyBatchEntryWhereUniqueInput[]
+    update?: FacultyBatchEntryUpdateWithWhereUniqueWithoutFacultyInput | FacultyBatchEntryUpdateWithWhereUniqueWithoutFacultyInput[]
+    updateMany?: FacultyBatchEntryUpdateManyWithWhereWithoutFacultyInput | FacultyBatchEntryUpdateManyWithWhereWithoutFacultyInput[]
+    deleteMany?: FacultyBatchEntryScalarWhereInput | FacultyBatchEntryScalarWhereInput[]
+  }
+
+  export type FacultyCourseAssignmentUncheckedUpdateManyWithoutFacultyNestedInput = {
+    create?: XOR<FacultyCourseAssignmentCreateWithoutFacultyInput, FacultyCourseAssignmentUncheckedCreateWithoutFacultyInput> | FacultyCourseAssignmentCreateWithoutFacultyInput[] | FacultyCourseAssignmentUncheckedCreateWithoutFacultyInput[]
+    connectOrCreate?: FacultyCourseAssignmentCreateOrConnectWithoutFacultyInput | FacultyCourseAssignmentCreateOrConnectWithoutFacultyInput[]
+    upsert?: FacultyCourseAssignmentUpsertWithWhereUniqueWithoutFacultyInput | FacultyCourseAssignmentUpsertWithWhereUniqueWithoutFacultyInput[]
+    createMany?: FacultyCourseAssignmentCreateManyFacultyInputEnvelope
+    set?: FacultyCourseAssignmentWhereUniqueInput | FacultyCourseAssignmentWhereUniqueInput[]
+    disconnect?: FacultyCourseAssignmentWhereUniqueInput | FacultyCourseAssignmentWhereUniqueInput[]
+    delete?: FacultyCourseAssignmentWhereUniqueInput | FacultyCourseAssignmentWhereUniqueInput[]
+    connect?: FacultyCourseAssignmentWhereUniqueInput | FacultyCourseAssignmentWhereUniqueInput[]
+    update?: FacultyCourseAssignmentUpdateWithWhereUniqueWithoutFacultyInput | FacultyCourseAssignmentUpdateWithWhereUniqueWithoutFacultyInput[]
+    updateMany?: FacultyCourseAssignmentUpdateManyWithWhereWithoutFacultyInput | FacultyCourseAssignmentUpdateManyWithWhereWithoutFacultyInput[]
+    deleteMany?: FacultyCourseAssignmentScalarWhereInput | FacultyCourseAssignmentScalarWhereInput[]
+  }
+
+  export type FacultyBatchEntryUncheckedUpdateManyWithoutFacultyNestedInput = {
+    create?: XOR<FacultyBatchEntryCreateWithoutFacultyInput, FacultyBatchEntryUncheckedCreateWithoutFacultyInput> | FacultyBatchEntryCreateWithoutFacultyInput[] | FacultyBatchEntryUncheckedCreateWithoutFacultyInput[]
+    connectOrCreate?: FacultyBatchEntryCreateOrConnectWithoutFacultyInput | FacultyBatchEntryCreateOrConnectWithoutFacultyInput[]
+    upsert?: FacultyBatchEntryUpsertWithWhereUniqueWithoutFacultyInput | FacultyBatchEntryUpsertWithWhereUniqueWithoutFacultyInput[]
+    createMany?: FacultyBatchEntryCreateManyFacultyInputEnvelope
+    set?: FacultyBatchEntryWhereUniqueInput | FacultyBatchEntryWhereUniqueInput[]
+    disconnect?: FacultyBatchEntryWhereUniqueInput | FacultyBatchEntryWhereUniqueInput[]
+    delete?: FacultyBatchEntryWhereUniqueInput | FacultyBatchEntryWhereUniqueInput[]
+    connect?: FacultyBatchEntryWhereUniqueInput | FacultyBatchEntryWhereUniqueInput[]
+    update?: FacultyBatchEntryUpdateWithWhereUniqueWithoutFacultyInput | FacultyBatchEntryUpdateWithWhereUniqueWithoutFacultyInput[]
+    updateMany?: FacultyBatchEntryUpdateManyWithWhereWithoutFacultyInput | FacultyBatchEntryUpdateManyWithWhereWithoutFacultyInput[]
+    deleteMany?: FacultyBatchEntryScalarWhereInput | FacultyBatchEntryScalarWhereInput[]
+  }
+
+  export type FacultyProfileCreateNestedOneWithoutCourseAssignmentsInput = {
+    create?: XOR<FacultyProfileCreateWithoutCourseAssignmentsInput, FacultyProfileUncheckedCreateWithoutCourseAssignmentsInput>
+    connectOrCreate?: FacultyProfileCreateOrConnectWithoutCourseAssignmentsInput
+    connect?: FacultyProfileWhereUniqueInput
+  }
+
+  export type CourseCreateNestedOneWithoutFacultyCourseAssignmentsInput = {
+    create?: XOR<CourseCreateWithoutFacultyCourseAssignmentsInput, CourseUncheckedCreateWithoutFacultyCourseAssignmentsInput>
+    connectOrCreate?: CourseCreateOrConnectWithoutFacultyCourseAssignmentsInput
+    connect?: CourseWhereUniqueInput
+  }
+
+  export type FacultyProfileUpdateOneRequiredWithoutCourseAssignmentsNestedInput = {
+    create?: XOR<FacultyProfileCreateWithoutCourseAssignmentsInput, FacultyProfileUncheckedCreateWithoutCourseAssignmentsInput>
+    connectOrCreate?: FacultyProfileCreateOrConnectWithoutCourseAssignmentsInput
+    upsert?: FacultyProfileUpsertWithoutCourseAssignmentsInput
+    connect?: FacultyProfileWhereUniqueInput
+    update?: XOR<XOR<FacultyProfileUpdateToOneWithWhereWithoutCourseAssignmentsInput, FacultyProfileUpdateWithoutCourseAssignmentsInput>, FacultyProfileUncheckedUpdateWithoutCourseAssignmentsInput>
+  }
+
+  export type CourseUpdateOneRequiredWithoutFacultyCourseAssignmentsNestedInput = {
+    create?: XOR<CourseCreateWithoutFacultyCourseAssignmentsInput, CourseUncheckedCreateWithoutFacultyCourseAssignmentsInput>
+    connectOrCreate?: CourseCreateOrConnectWithoutFacultyCourseAssignmentsInput
+    upsert?: CourseUpsertWithoutFacultyCourseAssignmentsInput
+    connect?: CourseWhereUniqueInput
+    update?: XOR<XOR<CourseUpdateToOneWithWhereWithoutFacultyCourseAssignmentsInput, CourseUpdateWithoutFacultyCourseAssignmentsInput>, CourseUncheckedUpdateWithoutFacultyCourseAssignmentsInput>
+  }
+
+  export type FacultyProfileCreateNestedOneWithoutBatchEntriesInput = {
+    create?: XOR<FacultyProfileCreateWithoutBatchEntriesInput, FacultyProfileUncheckedCreateWithoutBatchEntriesInput>
+    connectOrCreate?: FacultyProfileCreateOrConnectWithoutBatchEntriesInput
+    connect?: FacultyProfileWhereUniqueInput
+  }
+
+  export type CourseCreateNestedOneWithoutFacultyBatchEntriesInput = {
+    create?: XOR<CourseCreateWithoutFacultyBatchEntriesInput, CourseUncheckedCreateWithoutFacultyBatchEntriesInput>
+    connectOrCreate?: CourseCreateOrConnectWithoutFacultyBatchEntriesInput
+    connect?: CourseWhereUniqueInput
+  }
+
+  export type FacultyProfileUpdateOneRequiredWithoutBatchEntriesNestedInput = {
+    create?: XOR<FacultyProfileCreateWithoutBatchEntriesInput, FacultyProfileUncheckedCreateWithoutBatchEntriesInput>
+    connectOrCreate?: FacultyProfileCreateOrConnectWithoutBatchEntriesInput
+    upsert?: FacultyProfileUpsertWithoutBatchEntriesInput
+    connect?: FacultyProfileWhereUniqueInput
+    update?: XOR<XOR<FacultyProfileUpdateToOneWithWhereWithoutBatchEntriesInput, FacultyProfileUpdateWithoutBatchEntriesInput>, FacultyProfileUncheckedUpdateWithoutBatchEntriesInput>
+  }
+
+  export type CourseUpdateOneWithoutFacultyBatchEntriesNestedInput = {
+    create?: XOR<CourseCreateWithoutFacultyBatchEntriesInput, CourseUncheckedCreateWithoutFacultyBatchEntriesInput>
+    connectOrCreate?: CourseCreateOrConnectWithoutFacultyBatchEntriesInput
+    upsert?: CourseUpsertWithoutFacultyBatchEntriesInput
+    disconnect?: CourseWhereInput | boolean
+    delete?: CourseWhereInput | boolean
+    connect?: CourseWhereUniqueInput
+    update?: XOR<XOR<CourseUpdateToOneWithWhereWithoutFacultyBatchEntriesInput, CourseUpdateWithoutFacultyBatchEntriesInput>, CourseUncheckedUpdateWithoutFacultyBatchEntriesInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -19926,7 +24900,9 @@ export namespace Prisma {
     parentSpouseNumber?: string | null
     location?: string | null
     courseInterested: string
+    facultyId?: string | null
     facultyName?: string | null
+    batchId?: string | null
     batchName?: string | null
     qualification?: string | null
     passedOutYear?: number | null
@@ -19940,6 +24916,7 @@ export namespace Prisma {
     installment1?: number | null
     installment2?: number | null
     installment3?: number | null
+    installment4?: number | null
     totalAmount?: number | null
     admissionDate: string
     firstInstallmentAmount?: number | null
@@ -19967,7 +24944,9 @@ export namespace Prisma {
     parentSpouseNumber?: string | null
     location?: string | null
     courseInterested: string
+    facultyId?: string | null
     facultyName?: string | null
+    batchId?: string | null
     batchName?: string | null
     qualification?: string | null
     passedOutYear?: number | null
@@ -19981,6 +24960,7 @@ export namespace Prisma {
     installment1?: number | null
     installment2?: number | null
     installment3?: number | null
+    installment4?: number | null
     totalAmount?: number | null
     admissionDate: string
     firstInstallmentAmount?: number | null
@@ -20006,6 +24986,102 @@ export namespace Prisma {
 
   export type StudentProfileCreateManyCourseInputEnvelope = {
     data: StudentProfileCreateManyCourseInput | StudentProfileCreateManyCourseInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type FacultyProfileCreateWithoutCourseInput = {
+    id?: string
+    facultyName: string
+    facultyEmail: string
+    facultyPhone: string
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    courseAssignments?: FacultyCourseAssignmentCreateNestedManyWithoutFacultyInput
+    batchEntries?: FacultyBatchEntryCreateNestedManyWithoutFacultyInput
+  }
+
+  export type FacultyProfileUncheckedCreateWithoutCourseInput = {
+    id?: string
+    facultyName: string
+    facultyEmail: string
+    facultyPhone: string
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    courseAssignments?: FacultyCourseAssignmentUncheckedCreateNestedManyWithoutFacultyInput
+    batchEntries?: FacultyBatchEntryUncheckedCreateNestedManyWithoutFacultyInput
+  }
+
+  export type FacultyProfileCreateOrConnectWithoutCourseInput = {
+    where: FacultyProfileWhereUniqueInput
+    create: XOR<FacultyProfileCreateWithoutCourseInput, FacultyProfileUncheckedCreateWithoutCourseInput>
+  }
+
+  export type FacultyProfileCreateManyCourseInputEnvelope = {
+    data: FacultyProfileCreateManyCourseInput | FacultyProfileCreateManyCourseInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type FacultyCourseAssignmentCreateWithoutCourseInput = {
+    id?: string
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    faculty: FacultyProfileCreateNestedOneWithoutCourseAssignmentsInput
+  }
+
+  export type FacultyCourseAssignmentUncheckedCreateWithoutCourseInput = {
+    id?: string
+    facultyId: string
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FacultyCourseAssignmentCreateOrConnectWithoutCourseInput = {
+    where: FacultyCourseAssignmentWhereUniqueInput
+    create: XOR<FacultyCourseAssignmentCreateWithoutCourseInput, FacultyCourseAssignmentUncheckedCreateWithoutCourseInput>
+  }
+
+  export type FacultyCourseAssignmentCreateManyCourseInputEnvelope = {
+    data: FacultyCourseAssignmentCreateManyCourseInput | FacultyCourseAssignmentCreateManyCourseInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type FacultyBatchEntryCreateWithoutCourseInput = {
+    id?: string
+    batchName: string
+    batchTiming: string
+    sequenceNo?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    faculty: FacultyProfileCreateNestedOneWithoutBatchEntriesInput
+  }
+
+  export type FacultyBatchEntryUncheckedCreateWithoutCourseInput = {
+    id?: string
+    facultyId: string
+    batchName: string
+    batchTiming: string
+    sequenceNo?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FacultyBatchEntryCreateOrConnectWithoutCourseInput = {
+    where: FacultyBatchEntryWhereUniqueInput
+    create: XOR<FacultyBatchEntryCreateWithoutCourseInput, FacultyBatchEntryUncheckedCreateWithoutCourseInput>
+  }
+
+  export type FacultyBatchEntryCreateManyCourseInputEnvelope = {
+    data: FacultyBatchEntryCreateManyCourseInput | FacultyBatchEntryCreateManyCourseInput[]
     skipDuplicates?: boolean
   }
 
@@ -20141,7 +25217,9 @@ export namespace Prisma {
     location?: StringNullableFilter<"StudentProfile"> | string | null
     courseId?: StringNullableFilter<"StudentProfile"> | string | null
     courseInterested?: StringFilter<"StudentProfile"> | string
+    facultyId?: StringNullableFilter<"StudentProfile"> | string | null
     facultyName?: StringNullableFilter<"StudentProfile"> | string | null
+    batchId?: StringNullableFilter<"StudentProfile"> | string | null
     batchName?: StringNullableFilter<"StudentProfile"> | string | null
     qualification?: StringNullableFilter<"StudentProfile"> | string | null
     passedOutYear?: IntNullableFilter<"StudentProfile"> | number | null
@@ -20155,6 +25233,7 @@ export namespace Prisma {
     installment1?: IntNullableFilter<"StudentProfile"> | number | null
     installment2?: IntNullableFilter<"StudentProfile"> | number | null
     installment3?: IntNullableFilter<"StudentProfile"> | number | null
+    installment4?: IntNullableFilter<"StudentProfile"> | number | null
     totalAmount?: IntNullableFilter<"StudentProfile"> | number | null
     admissionDate?: StringFilter<"StudentProfile"> | string
     firstInstallmentAmount?: IntNullableFilter<"StudentProfile"> | number | null
@@ -20171,6 +25250,97 @@ export namespace Prisma {
     updatedBy?: StringNullableFilter<"StudentProfile"> | string | null
     createdAt?: DateTimeFilter<"StudentProfile"> | Date | string
     updatedAt?: DateTimeFilter<"StudentProfile"> | Date | string
+  }
+
+  export type FacultyProfileUpsertWithWhereUniqueWithoutCourseInput = {
+    where: FacultyProfileWhereUniqueInput
+    update: XOR<FacultyProfileUpdateWithoutCourseInput, FacultyProfileUncheckedUpdateWithoutCourseInput>
+    create: XOR<FacultyProfileCreateWithoutCourseInput, FacultyProfileUncheckedCreateWithoutCourseInput>
+  }
+
+  export type FacultyProfileUpdateWithWhereUniqueWithoutCourseInput = {
+    where: FacultyProfileWhereUniqueInput
+    data: XOR<FacultyProfileUpdateWithoutCourseInput, FacultyProfileUncheckedUpdateWithoutCourseInput>
+  }
+
+  export type FacultyProfileUpdateManyWithWhereWithoutCourseInput = {
+    where: FacultyProfileScalarWhereInput
+    data: XOR<FacultyProfileUpdateManyMutationInput, FacultyProfileUncheckedUpdateManyWithoutCourseInput>
+  }
+
+  export type FacultyProfileScalarWhereInput = {
+    AND?: FacultyProfileScalarWhereInput | FacultyProfileScalarWhereInput[]
+    OR?: FacultyProfileScalarWhereInput[]
+    NOT?: FacultyProfileScalarWhereInput | FacultyProfileScalarWhereInput[]
+    id?: StringFilter<"FacultyProfile"> | string
+    facultyName?: StringFilter<"FacultyProfile"> | string
+    facultyEmail?: StringFilter<"FacultyProfile"> | string
+    facultyPhone?: StringFilter<"FacultyProfile"> | string
+    courseId?: StringNullableFilter<"FacultyProfile"> | string | null
+    status?: EnumRecordStatusFilter<"FacultyProfile"> | $Enums.RecordStatus
+    createdBy?: StringNullableFilter<"FacultyProfile"> | string | null
+    updatedBy?: StringNullableFilter<"FacultyProfile"> | string | null
+    createdAt?: DateTimeFilter<"FacultyProfile"> | Date | string
+    updatedAt?: DateTimeFilter<"FacultyProfile"> | Date | string
+  }
+
+  export type FacultyCourseAssignmentUpsertWithWhereUniqueWithoutCourseInput = {
+    where: FacultyCourseAssignmentWhereUniqueInput
+    update: XOR<FacultyCourseAssignmentUpdateWithoutCourseInput, FacultyCourseAssignmentUncheckedUpdateWithoutCourseInput>
+    create: XOR<FacultyCourseAssignmentCreateWithoutCourseInput, FacultyCourseAssignmentUncheckedCreateWithoutCourseInput>
+  }
+
+  export type FacultyCourseAssignmentUpdateWithWhereUniqueWithoutCourseInput = {
+    where: FacultyCourseAssignmentWhereUniqueInput
+    data: XOR<FacultyCourseAssignmentUpdateWithoutCourseInput, FacultyCourseAssignmentUncheckedUpdateWithoutCourseInput>
+  }
+
+  export type FacultyCourseAssignmentUpdateManyWithWhereWithoutCourseInput = {
+    where: FacultyCourseAssignmentScalarWhereInput
+    data: XOR<FacultyCourseAssignmentUpdateManyMutationInput, FacultyCourseAssignmentUncheckedUpdateManyWithoutCourseInput>
+  }
+
+  export type FacultyCourseAssignmentScalarWhereInput = {
+    AND?: FacultyCourseAssignmentScalarWhereInput | FacultyCourseAssignmentScalarWhereInput[]
+    OR?: FacultyCourseAssignmentScalarWhereInput[]
+    NOT?: FacultyCourseAssignmentScalarWhereInput | FacultyCourseAssignmentScalarWhereInput[]
+    id?: StringFilter<"FacultyCourseAssignment"> | string
+    facultyId?: StringFilter<"FacultyCourseAssignment"> | string
+    courseId?: StringFilter<"FacultyCourseAssignment"> | string
+    createdBy?: StringNullableFilter<"FacultyCourseAssignment"> | string | null
+    updatedBy?: StringNullableFilter<"FacultyCourseAssignment"> | string | null
+    createdAt?: DateTimeFilter<"FacultyCourseAssignment"> | Date | string
+    updatedAt?: DateTimeFilter<"FacultyCourseAssignment"> | Date | string
+  }
+
+  export type FacultyBatchEntryUpsertWithWhereUniqueWithoutCourseInput = {
+    where: FacultyBatchEntryWhereUniqueInput
+    update: XOR<FacultyBatchEntryUpdateWithoutCourseInput, FacultyBatchEntryUncheckedUpdateWithoutCourseInput>
+    create: XOR<FacultyBatchEntryCreateWithoutCourseInput, FacultyBatchEntryUncheckedCreateWithoutCourseInput>
+  }
+
+  export type FacultyBatchEntryUpdateWithWhereUniqueWithoutCourseInput = {
+    where: FacultyBatchEntryWhereUniqueInput
+    data: XOR<FacultyBatchEntryUpdateWithoutCourseInput, FacultyBatchEntryUncheckedUpdateWithoutCourseInput>
+  }
+
+  export type FacultyBatchEntryUpdateManyWithWhereWithoutCourseInput = {
+    where: FacultyBatchEntryScalarWhereInput
+    data: XOR<FacultyBatchEntryUpdateManyMutationInput, FacultyBatchEntryUncheckedUpdateManyWithoutCourseInput>
+  }
+
+  export type FacultyBatchEntryScalarWhereInput = {
+    AND?: FacultyBatchEntryScalarWhereInput | FacultyBatchEntryScalarWhereInput[]
+    OR?: FacultyBatchEntryScalarWhereInput[]
+    NOT?: FacultyBatchEntryScalarWhereInput | FacultyBatchEntryScalarWhereInput[]
+    id?: StringFilter<"FacultyBatchEntry"> | string
+    facultyId?: StringFilter<"FacultyBatchEntry"> | string
+    courseId?: StringNullableFilter<"FacultyBatchEntry"> | string | null
+    batchName?: StringFilter<"FacultyBatchEntry"> | string
+    batchTiming?: StringFilter<"FacultyBatchEntry"> | string
+    sequenceNo?: IntFilter<"FacultyBatchEntry"> | number
+    createdAt?: DateTimeFilter<"FacultyBatchEntry"> | Date | string
+    updatedAt?: DateTimeFilter<"FacultyBatchEntry"> | Date | string
   }
 
   export type CourseStatusHistoryUpsertWithWhereUniqueWithoutCourseInput = {
@@ -20219,6 +25389,7 @@ export namespace Prisma {
     installment1?: number | null
     installment2?: number | null
     installment3?: number | null
+    installments?: NullableJsonNullValueInput | InputJsonValue
     status?: $Enums.RecordStatus
     statusChangedAt?: Date | string | null
     statusChangedBy?: string | null
@@ -20228,6 +25399,9 @@ export namespace Prisma {
     updatedAt?: Date | string
     batches?: BatchCreateNestedManyWithoutCourseInput
     students?: StudentProfileCreateNestedManyWithoutCourseInput
+    facultyProfiles?: FacultyProfileCreateNestedManyWithoutCourseInput
+    facultyCourseAssignments?: FacultyCourseAssignmentCreateNestedManyWithoutCourseInput
+    facultyBatchEntries?: FacultyBatchEntryCreateNestedManyWithoutCourseInput
     statusHistory?: CourseStatusHistoryCreateNestedManyWithoutCourseInput
   }
 
@@ -20248,6 +25422,7 @@ export namespace Prisma {
     installment1?: number | null
     installment2?: number | null
     installment3?: number | null
+    installments?: NullableJsonNullValueInput | InputJsonValue
     status?: $Enums.RecordStatus
     statusChangedAt?: Date | string | null
     statusChangedBy?: string | null
@@ -20257,6 +25432,9 @@ export namespace Prisma {
     updatedAt?: Date | string
     batches?: BatchUncheckedCreateNestedManyWithoutCourseInput
     students?: StudentProfileUncheckedCreateNestedManyWithoutCourseInput
+    facultyProfiles?: FacultyProfileUncheckedCreateNestedManyWithoutCourseInput
+    facultyCourseAssignments?: FacultyCourseAssignmentUncheckedCreateNestedManyWithoutCourseInput
+    facultyBatchEntries?: FacultyBatchEntryUncheckedCreateNestedManyWithoutCourseInput
     statusHistory?: CourseStatusHistoryUncheckedCreateNestedManyWithoutCourseInput
   }
 
@@ -20293,6 +25471,7 @@ export namespace Prisma {
     installment1?: NullableIntFieldUpdateOperationsInput | number | null
     installment2?: NullableIntFieldUpdateOperationsInput | number | null
     installment3?: NullableIntFieldUpdateOperationsInput | number | null
+    installments?: NullableJsonNullValueInput | InputJsonValue
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     statusChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     statusChangedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -20302,6 +25481,9 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     batches?: BatchUpdateManyWithoutCourseNestedInput
     students?: StudentProfileUpdateManyWithoutCourseNestedInput
+    facultyProfiles?: FacultyProfileUpdateManyWithoutCourseNestedInput
+    facultyCourseAssignments?: FacultyCourseAssignmentUpdateManyWithoutCourseNestedInput
+    facultyBatchEntries?: FacultyBatchEntryUpdateManyWithoutCourseNestedInput
     statusHistory?: CourseStatusHistoryUpdateManyWithoutCourseNestedInput
   }
 
@@ -20322,6 +25504,7 @@ export namespace Prisma {
     installment1?: NullableIntFieldUpdateOperationsInput | number | null
     installment2?: NullableIntFieldUpdateOperationsInput | number | null
     installment3?: NullableIntFieldUpdateOperationsInput | number | null
+    installments?: NullableJsonNullValueInput | InputJsonValue
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     statusChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     statusChangedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -20331,6 +25514,9 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     batches?: BatchUncheckedUpdateManyWithoutCourseNestedInput
     students?: StudentProfileUncheckedUpdateManyWithoutCourseNestedInput
+    facultyProfiles?: FacultyProfileUncheckedUpdateManyWithoutCourseNestedInput
+    facultyCourseAssignments?: FacultyCourseAssignmentUncheckedUpdateManyWithoutCourseNestedInput
+    facultyBatchEntries?: FacultyBatchEntryUncheckedUpdateManyWithoutCourseNestedInput
     statusHistory?: CourseStatusHistoryUncheckedUpdateManyWithoutCourseNestedInput
   }
 
@@ -20351,6 +25537,7 @@ export namespace Prisma {
     installment1?: number | null
     installment2?: number | null
     installment3?: number | null
+    installments?: NullableJsonNullValueInput | InputJsonValue
     status?: $Enums.RecordStatus
     statusChangedAt?: Date | string | null
     statusChangedBy?: string | null
@@ -20360,6 +25547,9 @@ export namespace Prisma {
     updatedAt?: Date | string
     modules?: CourseModuleCreateNestedManyWithoutCourseInput
     students?: StudentProfileCreateNestedManyWithoutCourseInput
+    facultyProfiles?: FacultyProfileCreateNestedManyWithoutCourseInput
+    facultyCourseAssignments?: FacultyCourseAssignmentCreateNestedManyWithoutCourseInput
+    facultyBatchEntries?: FacultyBatchEntryCreateNestedManyWithoutCourseInput
     statusHistory?: CourseStatusHistoryCreateNestedManyWithoutCourseInput
   }
 
@@ -20380,6 +25570,7 @@ export namespace Prisma {
     installment1?: number | null
     installment2?: number | null
     installment3?: number | null
+    installments?: NullableJsonNullValueInput | InputJsonValue
     status?: $Enums.RecordStatus
     statusChangedAt?: Date | string | null
     statusChangedBy?: string | null
@@ -20389,6 +25580,9 @@ export namespace Prisma {
     updatedAt?: Date | string
     modules?: CourseModuleUncheckedCreateNestedManyWithoutCourseInput
     students?: StudentProfileUncheckedCreateNestedManyWithoutCourseInput
+    facultyProfiles?: FacultyProfileUncheckedCreateNestedManyWithoutCourseInput
+    facultyCourseAssignments?: FacultyCourseAssignmentUncheckedCreateNestedManyWithoutCourseInput
+    facultyBatchEntries?: FacultyBatchEntryUncheckedCreateNestedManyWithoutCourseInput
     statusHistory?: CourseStatusHistoryUncheckedCreateNestedManyWithoutCourseInput
   }
 
@@ -20495,6 +25689,7 @@ export namespace Prisma {
     installment1?: NullableIntFieldUpdateOperationsInput | number | null
     installment2?: NullableIntFieldUpdateOperationsInput | number | null
     installment3?: NullableIntFieldUpdateOperationsInput | number | null
+    installments?: NullableJsonNullValueInput | InputJsonValue
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     statusChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     statusChangedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -20504,6 +25699,9 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     modules?: CourseModuleUpdateManyWithoutCourseNestedInput
     students?: StudentProfileUpdateManyWithoutCourseNestedInput
+    facultyProfiles?: FacultyProfileUpdateManyWithoutCourseNestedInput
+    facultyCourseAssignments?: FacultyCourseAssignmentUpdateManyWithoutCourseNestedInput
+    facultyBatchEntries?: FacultyBatchEntryUpdateManyWithoutCourseNestedInput
     statusHistory?: CourseStatusHistoryUpdateManyWithoutCourseNestedInput
   }
 
@@ -20524,6 +25722,7 @@ export namespace Prisma {
     installment1?: NullableIntFieldUpdateOperationsInput | number | null
     installment2?: NullableIntFieldUpdateOperationsInput | number | null
     installment3?: NullableIntFieldUpdateOperationsInput | number | null
+    installments?: NullableJsonNullValueInput | InputJsonValue
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     statusChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     statusChangedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -20533,6 +25732,9 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     modules?: CourseModuleUncheckedUpdateManyWithoutCourseNestedInput
     students?: StudentProfileUncheckedUpdateManyWithoutCourseNestedInput
+    facultyProfiles?: FacultyProfileUncheckedUpdateManyWithoutCourseNestedInput
+    facultyCourseAssignments?: FacultyCourseAssignmentUncheckedUpdateManyWithoutCourseNestedInput
+    facultyBatchEntries?: FacultyBatchEntryUncheckedUpdateManyWithoutCourseNestedInput
     statusHistory?: CourseStatusHistoryUncheckedUpdateManyWithoutCourseNestedInput
   }
 
@@ -20822,6 +26024,7 @@ export namespace Prisma {
     installment1?: number | null
     installment2?: number | null
     installment3?: number | null
+    installments?: NullableJsonNullValueInput | InputJsonValue
     status?: $Enums.RecordStatus
     statusChangedAt?: Date | string | null
     statusChangedBy?: string | null
@@ -20832,6 +26035,9 @@ export namespace Prisma {
     modules?: CourseModuleCreateNestedManyWithoutCourseInput
     batches?: BatchCreateNestedManyWithoutCourseInput
     students?: StudentProfileCreateNestedManyWithoutCourseInput
+    facultyProfiles?: FacultyProfileCreateNestedManyWithoutCourseInput
+    facultyCourseAssignments?: FacultyCourseAssignmentCreateNestedManyWithoutCourseInput
+    facultyBatchEntries?: FacultyBatchEntryCreateNestedManyWithoutCourseInput
   }
 
   export type CourseUncheckedCreateWithoutStatusHistoryInput = {
@@ -20851,6 +26057,7 @@ export namespace Prisma {
     installment1?: number | null
     installment2?: number | null
     installment3?: number | null
+    installments?: NullableJsonNullValueInput | InputJsonValue
     status?: $Enums.RecordStatus
     statusChangedAt?: Date | string | null
     statusChangedBy?: string | null
@@ -20861,6 +26068,9 @@ export namespace Prisma {
     modules?: CourseModuleUncheckedCreateNestedManyWithoutCourseInput
     batches?: BatchUncheckedCreateNestedManyWithoutCourseInput
     students?: StudentProfileUncheckedCreateNestedManyWithoutCourseInput
+    facultyProfiles?: FacultyProfileUncheckedCreateNestedManyWithoutCourseInput
+    facultyCourseAssignments?: FacultyCourseAssignmentUncheckedCreateNestedManyWithoutCourseInput
+    facultyBatchEntries?: FacultyBatchEntryUncheckedCreateNestedManyWithoutCourseInput
   }
 
   export type CourseCreateOrConnectWithoutStatusHistoryInput = {
@@ -20896,6 +26106,7 @@ export namespace Prisma {
     installment1?: NullableIntFieldUpdateOperationsInput | number | null
     installment2?: NullableIntFieldUpdateOperationsInput | number | null
     installment3?: NullableIntFieldUpdateOperationsInput | number | null
+    installments?: NullableJsonNullValueInput | InputJsonValue
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     statusChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     statusChangedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -20906,6 +26117,9 @@ export namespace Prisma {
     modules?: CourseModuleUpdateManyWithoutCourseNestedInput
     batches?: BatchUpdateManyWithoutCourseNestedInput
     students?: StudentProfileUpdateManyWithoutCourseNestedInput
+    facultyProfiles?: FacultyProfileUpdateManyWithoutCourseNestedInput
+    facultyCourseAssignments?: FacultyCourseAssignmentUpdateManyWithoutCourseNestedInput
+    facultyBatchEntries?: FacultyBatchEntryUpdateManyWithoutCourseNestedInput
   }
 
   export type CourseUncheckedUpdateWithoutStatusHistoryInput = {
@@ -20925,6 +26139,7 @@ export namespace Prisma {
     installment1?: NullableIntFieldUpdateOperationsInput | number | null
     installment2?: NullableIntFieldUpdateOperationsInput | number | null
     installment3?: NullableIntFieldUpdateOperationsInput | number | null
+    installments?: NullableJsonNullValueInput | InputJsonValue
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     statusChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     statusChangedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -20935,6 +26150,9 @@ export namespace Prisma {
     modules?: CourseModuleUncheckedUpdateManyWithoutCourseNestedInput
     batches?: BatchUncheckedUpdateManyWithoutCourseNestedInput
     students?: StudentProfileUncheckedUpdateManyWithoutCourseNestedInput
+    facultyProfiles?: FacultyProfileUncheckedUpdateManyWithoutCourseNestedInput
+    facultyCourseAssignments?: FacultyCourseAssignmentUncheckedUpdateManyWithoutCourseNestedInput
+    facultyBatchEntries?: FacultyBatchEntryUncheckedUpdateManyWithoutCourseNestedInput
   }
 
   export type BatchCreateWithoutStatusHistoryInput = {
@@ -21058,6 +26276,7 @@ export namespace Prisma {
     installment1?: number | null
     installment2?: number | null
     installment3?: number | null
+    installments?: NullableJsonNullValueInput | InputJsonValue
     status?: $Enums.RecordStatus
     statusChangedAt?: Date | string | null
     statusChangedBy?: string | null
@@ -21067,6 +26286,9 @@ export namespace Prisma {
     updatedAt?: Date | string
     modules?: CourseModuleCreateNestedManyWithoutCourseInput
     batches?: BatchCreateNestedManyWithoutCourseInput
+    facultyProfiles?: FacultyProfileCreateNestedManyWithoutCourseInput
+    facultyCourseAssignments?: FacultyCourseAssignmentCreateNestedManyWithoutCourseInput
+    facultyBatchEntries?: FacultyBatchEntryCreateNestedManyWithoutCourseInput
     statusHistory?: CourseStatusHistoryCreateNestedManyWithoutCourseInput
   }
 
@@ -21087,6 +26309,7 @@ export namespace Prisma {
     installment1?: number | null
     installment2?: number | null
     installment3?: number | null
+    installments?: NullableJsonNullValueInput | InputJsonValue
     status?: $Enums.RecordStatus
     statusChangedAt?: Date | string | null
     statusChangedBy?: string | null
@@ -21096,6 +26319,9 @@ export namespace Prisma {
     updatedAt?: Date | string
     modules?: CourseModuleUncheckedCreateNestedManyWithoutCourseInput
     batches?: BatchUncheckedCreateNestedManyWithoutCourseInput
+    facultyProfiles?: FacultyProfileUncheckedCreateNestedManyWithoutCourseInput
+    facultyCourseAssignments?: FacultyCourseAssignmentUncheckedCreateNestedManyWithoutCourseInput
+    facultyBatchEntries?: FacultyBatchEntryUncheckedCreateNestedManyWithoutCourseInput
     statusHistory?: CourseStatusHistoryUncheckedCreateNestedManyWithoutCourseInput
   }
 
@@ -21132,6 +26358,7 @@ export namespace Prisma {
     installment1?: NullableIntFieldUpdateOperationsInput | number | null
     installment2?: NullableIntFieldUpdateOperationsInput | number | null
     installment3?: NullableIntFieldUpdateOperationsInput | number | null
+    installments?: NullableJsonNullValueInput | InputJsonValue
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     statusChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     statusChangedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -21141,6 +26368,9 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     modules?: CourseModuleUpdateManyWithoutCourseNestedInput
     batches?: BatchUpdateManyWithoutCourseNestedInput
+    facultyProfiles?: FacultyProfileUpdateManyWithoutCourseNestedInput
+    facultyCourseAssignments?: FacultyCourseAssignmentUpdateManyWithoutCourseNestedInput
+    facultyBatchEntries?: FacultyBatchEntryUpdateManyWithoutCourseNestedInput
     statusHistory?: CourseStatusHistoryUpdateManyWithoutCourseNestedInput
   }
 
@@ -21161,6 +26391,7 @@ export namespace Prisma {
     installment1?: NullableIntFieldUpdateOperationsInput | number | null
     installment2?: NullableIntFieldUpdateOperationsInput | number | null
     installment3?: NullableIntFieldUpdateOperationsInput | number | null
+    installments?: NullableJsonNullValueInput | InputJsonValue
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     statusChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     statusChangedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -21170,6 +26401,687 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     modules?: CourseModuleUncheckedUpdateManyWithoutCourseNestedInput
     batches?: BatchUncheckedUpdateManyWithoutCourseNestedInput
+    facultyProfiles?: FacultyProfileUncheckedUpdateManyWithoutCourseNestedInput
+    facultyCourseAssignments?: FacultyCourseAssignmentUncheckedUpdateManyWithoutCourseNestedInput
+    facultyBatchEntries?: FacultyBatchEntryUncheckedUpdateManyWithoutCourseNestedInput
+    statusHistory?: CourseStatusHistoryUncheckedUpdateManyWithoutCourseNestedInput
+  }
+
+  export type CourseCreateWithoutFacultyProfilesInput = {
+    id?: string
+    name: string
+    nameKey: string
+    description?: string | null
+    feeReference?: string | null
+    mode: string
+    duration?: number | null
+    hours?: number | null
+    actualFees?: number | null
+    registrationFees?: number | null
+    discount?: number | null
+    afterDiscount?: number | null
+    installmentCount?: number
+    installment1?: number | null
+    installment2?: number | null
+    installment3?: number | null
+    installments?: NullableJsonNullValueInput | InputJsonValue
+    status?: $Enums.RecordStatus
+    statusChangedAt?: Date | string | null
+    statusChangedBy?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    modules?: CourseModuleCreateNestedManyWithoutCourseInput
+    batches?: BatchCreateNestedManyWithoutCourseInput
+    students?: StudentProfileCreateNestedManyWithoutCourseInput
+    facultyCourseAssignments?: FacultyCourseAssignmentCreateNestedManyWithoutCourseInput
+    facultyBatchEntries?: FacultyBatchEntryCreateNestedManyWithoutCourseInput
+    statusHistory?: CourseStatusHistoryCreateNestedManyWithoutCourseInput
+  }
+
+  export type CourseUncheckedCreateWithoutFacultyProfilesInput = {
+    id?: string
+    name: string
+    nameKey: string
+    description?: string | null
+    feeReference?: string | null
+    mode: string
+    duration?: number | null
+    hours?: number | null
+    actualFees?: number | null
+    registrationFees?: number | null
+    discount?: number | null
+    afterDiscount?: number | null
+    installmentCount?: number
+    installment1?: number | null
+    installment2?: number | null
+    installment3?: number | null
+    installments?: NullableJsonNullValueInput | InputJsonValue
+    status?: $Enums.RecordStatus
+    statusChangedAt?: Date | string | null
+    statusChangedBy?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    modules?: CourseModuleUncheckedCreateNestedManyWithoutCourseInput
+    batches?: BatchUncheckedCreateNestedManyWithoutCourseInput
+    students?: StudentProfileUncheckedCreateNestedManyWithoutCourseInput
+    facultyCourseAssignments?: FacultyCourseAssignmentUncheckedCreateNestedManyWithoutCourseInput
+    facultyBatchEntries?: FacultyBatchEntryUncheckedCreateNestedManyWithoutCourseInput
+    statusHistory?: CourseStatusHistoryUncheckedCreateNestedManyWithoutCourseInput
+  }
+
+  export type CourseCreateOrConnectWithoutFacultyProfilesInput = {
+    where: CourseWhereUniqueInput
+    create: XOR<CourseCreateWithoutFacultyProfilesInput, CourseUncheckedCreateWithoutFacultyProfilesInput>
+  }
+
+  export type FacultyCourseAssignmentCreateWithoutFacultyInput = {
+    id?: string
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    course: CourseCreateNestedOneWithoutFacultyCourseAssignmentsInput
+  }
+
+  export type FacultyCourseAssignmentUncheckedCreateWithoutFacultyInput = {
+    id?: string
+    courseId: string
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FacultyCourseAssignmentCreateOrConnectWithoutFacultyInput = {
+    where: FacultyCourseAssignmentWhereUniqueInput
+    create: XOR<FacultyCourseAssignmentCreateWithoutFacultyInput, FacultyCourseAssignmentUncheckedCreateWithoutFacultyInput>
+  }
+
+  export type FacultyCourseAssignmentCreateManyFacultyInputEnvelope = {
+    data: FacultyCourseAssignmentCreateManyFacultyInput | FacultyCourseAssignmentCreateManyFacultyInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type FacultyBatchEntryCreateWithoutFacultyInput = {
+    id?: string
+    batchName: string
+    batchTiming: string
+    sequenceNo?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    course?: CourseCreateNestedOneWithoutFacultyBatchEntriesInput
+  }
+
+  export type FacultyBatchEntryUncheckedCreateWithoutFacultyInput = {
+    id?: string
+    courseId?: string | null
+    batchName: string
+    batchTiming: string
+    sequenceNo?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FacultyBatchEntryCreateOrConnectWithoutFacultyInput = {
+    where: FacultyBatchEntryWhereUniqueInput
+    create: XOR<FacultyBatchEntryCreateWithoutFacultyInput, FacultyBatchEntryUncheckedCreateWithoutFacultyInput>
+  }
+
+  export type FacultyBatchEntryCreateManyFacultyInputEnvelope = {
+    data: FacultyBatchEntryCreateManyFacultyInput | FacultyBatchEntryCreateManyFacultyInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type CourseUpsertWithoutFacultyProfilesInput = {
+    update: XOR<CourseUpdateWithoutFacultyProfilesInput, CourseUncheckedUpdateWithoutFacultyProfilesInput>
+    create: XOR<CourseCreateWithoutFacultyProfilesInput, CourseUncheckedCreateWithoutFacultyProfilesInput>
+    where?: CourseWhereInput
+  }
+
+  export type CourseUpdateToOneWithWhereWithoutFacultyProfilesInput = {
+    where?: CourseWhereInput
+    data: XOR<CourseUpdateWithoutFacultyProfilesInput, CourseUncheckedUpdateWithoutFacultyProfilesInput>
+  }
+
+  export type CourseUpdateWithoutFacultyProfilesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameKey?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    feeReference?: NullableStringFieldUpdateOperationsInput | string | null
+    mode?: StringFieldUpdateOperationsInput | string
+    duration?: NullableIntFieldUpdateOperationsInput | number | null
+    hours?: NullableIntFieldUpdateOperationsInput | number | null
+    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
+    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
+    discount?: NullableIntFieldUpdateOperationsInput | number | null
+    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
+    installmentCount?: IntFieldUpdateOperationsInput | number
+    installment1?: NullableIntFieldUpdateOperationsInput | number | null
+    installment2?: NullableIntFieldUpdateOperationsInput | number | null
+    installment3?: NullableIntFieldUpdateOperationsInput | number | null
+    installments?: NullableJsonNullValueInput | InputJsonValue
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    statusChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    statusChangedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    modules?: CourseModuleUpdateManyWithoutCourseNestedInput
+    batches?: BatchUpdateManyWithoutCourseNestedInput
+    students?: StudentProfileUpdateManyWithoutCourseNestedInput
+    facultyCourseAssignments?: FacultyCourseAssignmentUpdateManyWithoutCourseNestedInput
+    facultyBatchEntries?: FacultyBatchEntryUpdateManyWithoutCourseNestedInput
+    statusHistory?: CourseStatusHistoryUpdateManyWithoutCourseNestedInput
+  }
+
+  export type CourseUncheckedUpdateWithoutFacultyProfilesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameKey?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    feeReference?: NullableStringFieldUpdateOperationsInput | string | null
+    mode?: StringFieldUpdateOperationsInput | string
+    duration?: NullableIntFieldUpdateOperationsInput | number | null
+    hours?: NullableIntFieldUpdateOperationsInput | number | null
+    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
+    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
+    discount?: NullableIntFieldUpdateOperationsInput | number | null
+    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
+    installmentCount?: IntFieldUpdateOperationsInput | number
+    installment1?: NullableIntFieldUpdateOperationsInput | number | null
+    installment2?: NullableIntFieldUpdateOperationsInput | number | null
+    installment3?: NullableIntFieldUpdateOperationsInput | number | null
+    installments?: NullableJsonNullValueInput | InputJsonValue
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    statusChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    statusChangedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    modules?: CourseModuleUncheckedUpdateManyWithoutCourseNestedInput
+    batches?: BatchUncheckedUpdateManyWithoutCourseNestedInput
+    students?: StudentProfileUncheckedUpdateManyWithoutCourseNestedInput
+    facultyCourseAssignments?: FacultyCourseAssignmentUncheckedUpdateManyWithoutCourseNestedInput
+    facultyBatchEntries?: FacultyBatchEntryUncheckedUpdateManyWithoutCourseNestedInput
+    statusHistory?: CourseStatusHistoryUncheckedUpdateManyWithoutCourseNestedInput
+  }
+
+  export type FacultyCourseAssignmentUpsertWithWhereUniqueWithoutFacultyInput = {
+    where: FacultyCourseAssignmentWhereUniqueInput
+    update: XOR<FacultyCourseAssignmentUpdateWithoutFacultyInput, FacultyCourseAssignmentUncheckedUpdateWithoutFacultyInput>
+    create: XOR<FacultyCourseAssignmentCreateWithoutFacultyInput, FacultyCourseAssignmentUncheckedCreateWithoutFacultyInput>
+  }
+
+  export type FacultyCourseAssignmentUpdateWithWhereUniqueWithoutFacultyInput = {
+    where: FacultyCourseAssignmentWhereUniqueInput
+    data: XOR<FacultyCourseAssignmentUpdateWithoutFacultyInput, FacultyCourseAssignmentUncheckedUpdateWithoutFacultyInput>
+  }
+
+  export type FacultyCourseAssignmentUpdateManyWithWhereWithoutFacultyInput = {
+    where: FacultyCourseAssignmentScalarWhereInput
+    data: XOR<FacultyCourseAssignmentUpdateManyMutationInput, FacultyCourseAssignmentUncheckedUpdateManyWithoutFacultyInput>
+  }
+
+  export type FacultyBatchEntryUpsertWithWhereUniqueWithoutFacultyInput = {
+    where: FacultyBatchEntryWhereUniqueInput
+    update: XOR<FacultyBatchEntryUpdateWithoutFacultyInput, FacultyBatchEntryUncheckedUpdateWithoutFacultyInput>
+    create: XOR<FacultyBatchEntryCreateWithoutFacultyInput, FacultyBatchEntryUncheckedCreateWithoutFacultyInput>
+  }
+
+  export type FacultyBatchEntryUpdateWithWhereUniqueWithoutFacultyInput = {
+    where: FacultyBatchEntryWhereUniqueInput
+    data: XOR<FacultyBatchEntryUpdateWithoutFacultyInput, FacultyBatchEntryUncheckedUpdateWithoutFacultyInput>
+  }
+
+  export type FacultyBatchEntryUpdateManyWithWhereWithoutFacultyInput = {
+    where: FacultyBatchEntryScalarWhereInput
+    data: XOR<FacultyBatchEntryUpdateManyMutationInput, FacultyBatchEntryUncheckedUpdateManyWithoutFacultyInput>
+  }
+
+  export type FacultyProfileCreateWithoutCourseAssignmentsInput = {
+    id?: string
+    facultyName: string
+    facultyEmail: string
+    facultyPhone: string
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    course?: CourseCreateNestedOneWithoutFacultyProfilesInput
+    batchEntries?: FacultyBatchEntryCreateNestedManyWithoutFacultyInput
+  }
+
+  export type FacultyProfileUncheckedCreateWithoutCourseAssignmentsInput = {
+    id?: string
+    facultyName: string
+    facultyEmail: string
+    facultyPhone: string
+    courseId?: string | null
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    batchEntries?: FacultyBatchEntryUncheckedCreateNestedManyWithoutFacultyInput
+  }
+
+  export type FacultyProfileCreateOrConnectWithoutCourseAssignmentsInput = {
+    where: FacultyProfileWhereUniqueInput
+    create: XOR<FacultyProfileCreateWithoutCourseAssignmentsInput, FacultyProfileUncheckedCreateWithoutCourseAssignmentsInput>
+  }
+
+  export type CourseCreateWithoutFacultyCourseAssignmentsInput = {
+    id?: string
+    name: string
+    nameKey: string
+    description?: string | null
+    feeReference?: string | null
+    mode: string
+    duration?: number | null
+    hours?: number | null
+    actualFees?: number | null
+    registrationFees?: number | null
+    discount?: number | null
+    afterDiscount?: number | null
+    installmentCount?: number
+    installment1?: number | null
+    installment2?: number | null
+    installment3?: number | null
+    installments?: NullableJsonNullValueInput | InputJsonValue
+    status?: $Enums.RecordStatus
+    statusChangedAt?: Date | string | null
+    statusChangedBy?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    modules?: CourseModuleCreateNestedManyWithoutCourseInput
+    batches?: BatchCreateNestedManyWithoutCourseInput
+    students?: StudentProfileCreateNestedManyWithoutCourseInput
+    facultyProfiles?: FacultyProfileCreateNestedManyWithoutCourseInput
+    facultyBatchEntries?: FacultyBatchEntryCreateNestedManyWithoutCourseInput
+    statusHistory?: CourseStatusHistoryCreateNestedManyWithoutCourseInput
+  }
+
+  export type CourseUncheckedCreateWithoutFacultyCourseAssignmentsInput = {
+    id?: string
+    name: string
+    nameKey: string
+    description?: string | null
+    feeReference?: string | null
+    mode: string
+    duration?: number | null
+    hours?: number | null
+    actualFees?: number | null
+    registrationFees?: number | null
+    discount?: number | null
+    afterDiscount?: number | null
+    installmentCount?: number
+    installment1?: number | null
+    installment2?: number | null
+    installment3?: number | null
+    installments?: NullableJsonNullValueInput | InputJsonValue
+    status?: $Enums.RecordStatus
+    statusChangedAt?: Date | string | null
+    statusChangedBy?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    modules?: CourseModuleUncheckedCreateNestedManyWithoutCourseInput
+    batches?: BatchUncheckedCreateNestedManyWithoutCourseInput
+    students?: StudentProfileUncheckedCreateNestedManyWithoutCourseInput
+    facultyProfiles?: FacultyProfileUncheckedCreateNestedManyWithoutCourseInput
+    facultyBatchEntries?: FacultyBatchEntryUncheckedCreateNestedManyWithoutCourseInput
+    statusHistory?: CourseStatusHistoryUncheckedCreateNestedManyWithoutCourseInput
+  }
+
+  export type CourseCreateOrConnectWithoutFacultyCourseAssignmentsInput = {
+    where: CourseWhereUniqueInput
+    create: XOR<CourseCreateWithoutFacultyCourseAssignmentsInput, CourseUncheckedCreateWithoutFacultyCourseAssignmentsInput>
+  }
+
+  export type FacultyProfileUpsertWithoutCourseAssignmentsInput = {
+    update: XOR<FacultyProfileUpdateWithoutCourseAssignmentsInput, FacultyProfileUncheckedUpdateWithoutCourseAssignmentsInput>
+    create: XOR<FacultyProfileCreateWithoutCourseAssignmentsInput, FacultyProfileUncheckedCreateWithoutCourseAssignmentsInput>
+    where?: FacultyProfileWhereInput
+  }
+
+  export type FacultyProfileUpdateToOneWithWhereWithoutCourseAssignmentsInput = {
+    where?: FacultyProfileWhereInput
+    data: XOR<FacultyProfileUpdateWithoutCourseAssignmentsInput, FacultyProfileUncheckedUpdateWithoutCourseAssignmentsInput>
+  }
+
+  export type FacultyProfileUpdateWithoutCourseAssignmentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    facultyName?: StringFieldUpdateOperationsInput | string
+    facultyEmail?: StringFieldUpdateOperationsInput | string
+    facultyPhone?: StringFieldUpdateOperationsInput | string
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    course?: CourseUpdateOneWithoutFacultyProfilesNestedInput
+    batchEntries?: FacultyBatchEntryUpdateManyWithoutFacultyNestedInput
+  }
+
+  export type FacultyProfileUncheckedUpdateWithoutCourseAssignmentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    facultyName?: StringFieldUpdateOperationsInput | string
+    facultyEmail?: StringFieldUpdateOperationsInput | string
+    facultyPhone?: StringFieldUpdateOperationsInput | string
+    courseId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    batchEntries?: FacultyBatchEntryUncheckedUpdateManyWithoutFacultyNestedInput
+  }
+
+  export type CourseUpsertWithoutFacultyCourseAssignmentsInput = {
+    update: XOR<CourseUpdateWithoutFacultyCourseAssignmentsInput, CourseUncheckedUpdateWithoutFacultyCourseAssignmentsInput>
+    create: XOR<CourseCreateWithoutFacultyCourseAssignmentsInput, CourseUncheckedCreateWithoutFacultyCourseAssignmentsInput>
+    where?: CourseWhereInput
+  }
+
+  export type CourseUpdateToOneWithWhereWithoutFacultyCourseAssignmentsInput = {
+    where?: CourseWhereInput
+    data: XOR<CourseUpdateWithoutFacultyCourseAssignmentsInput, CourseUncheckedUpdateWithoutFacultyCourseAssignmentsInput>
+  }
+
+  export type CourseUpdateWithoutFacultyCourseAssignmentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameKey?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    feeReference?: NullableStringFieldUpdateOperationsInput | string | null
+    mode?: StringFieldUpdateOperationsInput | string
+    duration?: NullableIntFieldUpdateOperationsInput | number | null
+    hours?: NullableIntFieldUpdateOperationsInput | number | null
+    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
+    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
+    discount?: NullableIntFieldUpdateOperationsInput | number | null
+    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
+    installmentCount?: IntFieldUpdateOperationsInput | number
+    installment1?: NullableIntFieldUpdateOperationsInput | number | null
+    installment2?: NullableIntFieldUpdateOperationsInput | number | null
+    installment3?: NullableIntFieldUpdateOperationsInput | number | null
+    installments?: NullableJsonNullValueInput | InputJsonValue
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    statusChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    statusChangedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    modules?: CourseModuleUpdateManyWithoutCourseNestedInput
+    batches?: BatchUpdateManyWithoutCourseNestedInput
+    students?: StudentProfileUpdateManyWithoutCourseNestedInput
+    facultyProfiles?: FacultyProfileUpdateManyWithoutCourseNestedInput
+    facultyBatchEntries?: FacultyBatchEntryUpdateManyWithoutCourseNestedInput
+    statusHistory?: CourseStatusHistoryUpdateManyWithoutCourseNestedInput
+  }
+
+  export type CourseUncheckedUpdateWithoutFacultyCourseAssignmentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameKey?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    feeReference?: NullableStringFieldUpdateOperationsInput | string | null
+    mode?: StringFieldUpdateOperationsInput | string
+    duration?: NullableIntFieldUpdateOperationsInput | number | null
+    hours?: NullableIntFieldUpdateOperationsInput | number | null
+    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
+    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
+    discount?: NullableIntFieldUpdateOperationsInput | number | null
+    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
+    installmentCount?: IntFieldUpdateOperationsInput | number
+    installment1?: NullableIntFieldUpdateOperationsInput | number | null
+    installment2?: NullableIntFieldUpdateOperationsInput | number | null
+    installment3?: NullableIntFieldUpdateOperationsInput | number | null
+    installments?: NullableJsonNullValueInput | InputJsonValue
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    statusChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    statusChangedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    modules?: CourseModuleUncheckedUpdateManyWithoutCourseNestedInput
+    batches?: BatchUncheckedUpdateManyWithoutCourseNestedInput
+    students?: StudentProfileUncheckedUpdateManyWithoutCourseNestedInput
+    facultyProfiles?: FacultyProfileUncheckedUpdateManyWithoutCourseNestedInput
+    facultyBatchEntries?: FacultyBatchEntryUncheckedUpdateManyWithoutCourseNestedInput
+    statusHistory?: CourseStatusHistoryUncheckedUpdateManyWithoutCourseNestedInput
+  }
+
+  export type FacultyProfileCreateWithoutBatchEntriesInput = {
+    id?: string
+    facultyName: string
+    facultyEmail: string
+    facultyPhone: string
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    course?: CourseCreateNestedOneWithoutFacultyProfilesInput
+    courseAssignments?: FacultyCourseAssignmentCreateNestedManyWithoutFacultyInput
+  }
+
+  export type FacultyProfileUncheckedCreateWithoutBatchEntriesInput = {
+    id?: string
+    facultyName: string
+    facultyEmail: string
+    facultyPhone: string
+    courseId?: string | null
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    courseAssignments?: FacultyCourseAssignmentUncheckedCreateNestedManyWithoutFacultyInput
+  }
+
+  export type FacultyProfileCreateOrConnectWithoutBatchEntriesInput = {
+    where: FacultyProfileWhereUniqueInput
+    create: XOR<FacultyProfileCreateWithoutBatchEntriesInput, FacultyProfileUncheckedCreateWithoutBatchEntriesInput>
+  }
+
+  export type CourseCreateWithoutFacultyBatchEntriesInput = {
+    id?: string
+    name: string
+    nameKey: string
+    description?: string | null
+    feeReference?: string | null
+    mode: string
+    duration?: number | null
+    hours?: number | null
+    actualFees?: number | null
+    registrationFees?: number | null
+    discount?: number | null
+    afterDiscount?: number | null
+    installmentCount?: number
+    installment1?: number | null
+    installment2?: number | null
+    installment3?: number | null
+    installments?: NullableJsonNullValueInput | InputJsonValue
+    status?: $Enums.RecordStatus
+    statusChangedAt?: Date | string | null
+    statusChangedBy?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    modules?: CourseModuleCreateNestedManyWithoutCourseInput
+    batches?: BatchCreateNestedManyWithoutCourseInput
+    students?: StudentProfileCreateNestedManyWithoutCourseInput
+    facultyProfiles?: FacultyProfileCreateNestedManyWithoutCourseInput
+    facultyCourseAssignments?: FacultyCourseAssignmentCreateNestedManyWithoutCourseInput
+    statusHistory?: CourseStatusHistoryCreateNestedManyWithoutCourseInput
+  }
+
+  export type CourseUncheckedCreateWithoutFacultyBatchEntriesInput = {
+    id?: string
+    name: string
+    nameKey: string
+    description?: string | null
+    feeReference?: string | null
+    mode: string
+    duration?: number | null
+    hours?: number | null
+    actualFees?: number | null
+    registrationFees?: number | null
+    discount?: number | null
+    afterDiscount?: number | null
+    installmentCount?: number
+    installment1?: number | null
+    installment2?: number | null
+    installment3?: number | null
+    installments?: NullableJsonNullValueInput | InputJsonValue
+    status?: $Enums.RecordStatus
+    statusChangedAt?: Date | string | null
+    statusChangedBy?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    modules?: CourseModuleUncheckedCreateNestedManyWithoutCourseInput
+    batches?: BatchUncheckedCreateNestedManyWithoutCourseInput
+    students?: StudentProfileUncheckedCreateNestedManyWithoutCourseInput
+    facultyProfiles?: FacultyProfileUncheckedCreateNestedManyWithoutCourseInput
+    facultyCourseAssignments?: FacultyCourseAssignmentUncheckedCreateNestedManyWithoutCourseInput
+    statusHistory?: CourseStatusHistoryUncheckedCreateNestedManyWithoutCourseInput
+  }
+
+  export type CourseCreateOrConnectWithoutFacultyBatchEntriesInput = {
+    where: CourseWhereUniqueInput
+    create: XOR<CourseCreateWithoutFacultyBatchEntriesInput, CourseUncheckedCreateWithoutFacultyBatchEntriesInput>
+  }
+
+  export type FacultyProfileUpsertWithoutBatchEntriesInput = {
+    update: XOR<FacultyProfileUpdateWithoutBatchEntriesInput, FacultyProfileUncheckedUpdateWithoutBatchEntriesInput>
+    create: XOR<FacultyProfileCreateWithoutBatchEntriesInput, FacultyProfileUncheckedCreateWithoutBatchEntriesInput>
+    where?: FacultyProfileWhereInput
+  }
+
+  export type FacultyProfileUpdateToOneWithWhereWithoutBatchEntriesInput = {
+    where?: FacultyProfileWhereInput
+    data: XOR<FacultyProfileUpdateWithoutBatchEntriesInput, FacultyProfileUncheckedUpdateWithoutBatchEntriesInput>
+  }
+
+  export type FacultyProfileUpdateWithoutBatchEntriesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    facultyName?: StringFieldUpdateOperationsInput | string
+    facultyEmail?: StringFieldUpdateOperationsInput | string
+    facultyPhone?: StringFieldUpdateOperationsInput | string
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    course?: CourseUpdateOneWithoutFacultyProfilesNestedInput
+    courseAssignments?: FacultyCourseAssignmentUpdateManyWithoutFacultyNestedInput
+  }
+
+  export type FacultyProfileUncheckedUpdateWithoutBatchEntriesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    facultyName?: StringFieldUpdateOperationsInput | string
+    facultyEmail?: StringFieldUpdateOperationsInput | string
+    facultyPhone?: StringFieldUpdateOperationsInput | string
+    courseId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    courseAssignments?: FacultyCourseAssignmentUncheckedUpdateManyWithoutFacultyNestedInput
+  }
+
+  export type CourseUpsertWithoutFacultyBatchEntriesInput = {
+    update: XOR<CourseUpdateWithoutFacultyBatchEntriesInput, CourseUncheckedUpdateWithoutFacultyBatchEntriesInput>
+    create: XOR<CourseCreateWithoutFacultyBatchEntriesInput, CourseUncheckedCreateWithoutFacultyBatchEntriesInput>
+    where?: CourseWhereInput
+  }
+
+  export type CourseUpdateToOneWithWhereWithoutFacultyBatchEntriesInput = {
+    where?: CourseWhereInput
+    data: XOR<CourseUpdateWithoutFacultyBatchEntriesInput, CourseUncheckedUpdateWithoutFacultyBatchEntriesInput>
+  }
+
+  export type CourseUpdateWithoutFacultyBatchEntriesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameKey?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    feeReference?: NullableStringFieldUpdateOperationsInput | string | null
+    mode?: StringFieldUpdateOperationsInput | string
+    duration?: NullableIntFieldUpdateOperationsInput | number | null
+    hours?: NullableIntFieldUpdateOperationsInput | number | null
+    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
+    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
+    discount?: NullableIntFieldUpdateOperationsInput | number | null
+    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
+    installmentCount?: IntFieldUpdateOperationsInput | number
+    installment1?: NullableIntFieldUpdateOperationsInput | number | null
+    installment2?: NullableIntFieldUpdateOperationsInput | number | null
+    installment3?: NullableIntFieldUpdateOperationsInput | number | null
+    installments?: NullableJsonNullValueInput | InputJsonValue
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    statusChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    statusChangedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    modules?: CourseModuleUpdateManyWithoutCourseNestedInput
+    batches?: BatchUpdateManyWithoutCourseNestedInput
+    students?: StudentProfileUpdateManyWithoutCourseNestedInput
+    facultyProfiles?: FacultyProfileUpdateManyWithoutCourseNestedInput
+    facultyCourseAssignments?: FacultyCourseAssignmentUpdateManyWithoutCourseNestedInput
+    statusHistory?: CourseStatusHistoryUpdateManyWithoutCourseNestedInput
+  }
+
+  export type CourseUncheckedUpdateWithoutFacultyBatchEntriesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameKey?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    feeReference?: NullableStringFieldUpdateOperationsInput | string | null
+    mode?: StringFieldUpdateOperationsInput | string
+    duration?: NullableIntFieldUpdateOperationsInput | number | null
+    hours?: NullableIntFieldUpdateOperationsInput | number | null
+    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
+    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
+    discount?: NullableIntFieldUpdateOperationsInput | number | null
+    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
+    installmentCount?: IntFieldUpdateOperationsInput | number
+    installment1?: NullableIntFieldUpdateOperationsInput | number | null
+    installment2?: NullableIntFieldUpdateOperationsInput | number | null
+    installment3?: NullableIntFieldUpdateOperationsInput | number | null
+    installments?: NullableJsonNullValueInput | InputJsonValue
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    statusChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    statusChangedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    modules?: CourseModuleUncheckedUpdateManyWithoutCourseNestedInput
+    batches?: BatchUncheckedUpdateManyWithoutCourseNestedInput
+    students?: StudentProfileUncheckedUpdateManyWithoutCourseNestedInput
+    facultyProfiles?: FacultyProfileUncheckedUpdateManyWithoutCourseNestedInput
+    facultyCourseAssignments?: FacultyCourseAssignmentUncheckedUpdateManyWithoutCourseNestedInput
     statusHistory?: CourseStatusHistoryUncheckedUpdateManyWithoutCourseNestedInput
   }
 
@@ -21361,7 +27273,9 @@ export namespace Prisma {
     parentSpouseNumber?: string | null
     location?: string | null
     courseInterested: string
+    facultyId?: string | null
     facultyName?: string | null
+    batchId?: string | null
     batchName?: string | null
     qualification?: string | null
     passedOutYear?: number | null
@@ -21375,6 +27289,7 @@ export namespace Prisma {
     installment1?: number | null
     installment2?: number | null
     installment3?: number | null
+    installment4?: number | null
     totalAmount?: number | null
     admissionDate: string
     firstInstallmentAmount?: number | null
@@ -21389,6 +27304,37 @@ export namespace Prisma {
     recordStatus?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FacultyProfileCreateManyCourseInput = {
+    id?: string
+    facultyName: string
+    facultyEmail: string
+    facultyPhone: string
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FacultyCourseAssignmentCreateManyCourseInput = {
+    id?: string
+    facultyId: string
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FacultyBatchEntryCreateManyCourseInput = {
+    id?: string
+    facultyId: string
+    batchName: string
+    batchTiming: string
+    sequenceNo?: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -21520,7 +27466,9 @@ export namespace Prisma {
     parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
     courseInterested?: StringFieldUpdateOperationsInput | string
+    facultyId?: NullableStringFieldUpdateOperationsInput | string | null
     facultyName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
     batchName?: NullableStringFieldUpdateOperationsInput | string | null
     qualification?: NullableStringFieldUpdateOperationsInput | string | null
     passedOutYear?: NullableIntFieldUpdateOperationsInput | number | null
@@ -21534,6 +27482,7 @@ export namespace Prisma {
     installment1?: NullableIntFieldUpdateOperationsInput | number | null
     installment2?: NullableIntFieldUpdateOperationsInput | number | null
     installment3?: NullableIntFieldUpdateOperationsInput | number | null
+    installment4?: NullableIntFieldUpdateOperationsInput | number | null
     totalAmount?: NullableIntFieldUpdateOperationsInput | number | null
     admissionDate?: StringFieldUpdateOperationsInput | string
     firstInstallmentAmount?: NullableIntFieldUpdateOperationsInput | number | null
@@ -21561,7 +27510,9 @@ export namespace Prisma {
     parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
     courseInterested?: StringFieldUpdateOperationsInput | string
+    facultyId?: NullableStringFieldUpdateOperationsInput | string | null
     facultyName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
     batchName?: NullableStringFieldUpdateOperationsInput | string | null
     qualification?: NullableStringFieldUpdateOperationsInput | string | null
     passedOutYear?: NullableIntFieldUpdateOperationsInput | number | null
@@ -21575,6 +27526,7 @@ export namespace Prisma {
     installment1?: NullableIntFieldUpdateOperationsInput | number | null
     installment2?: NullableIntFieldUpdateOperationsInput | number | null
     installment3?: NullableIntFieldUpdateOperationsInput | number | null
+    installment4?: NullableIntFieldUpdateOperationsInput | number | null
     totalAmount?: NullableIntFieldUpdateOperationsInput | number | null
     admissionDate?: StringFieldUpdateOperationsInput | string
     firstInstallmentAmount?: NullableIntFieldUpdateOperationsInput | number | null
@@ -21602,7 +27554,9 @@ export namespace Prisma {
     parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
     courseInterested?: StringFieldUpdateOperationsInput | string
+    facultyId?: NullableStringFieldUpdateOperationsInput | string | null
     facultyName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
     batchName?: NullableStringFieldUpdateOperationsInput | string | null
     qualification?: NullableStringFieldUpdateOperationsInput | string | null
     passedOutYear?: NullableIntFieldUpdateOperationsInput | number | null
@@ -21616,6 +27570,7 @@ export namespace Prisma {
     installment1?: NullableIntFieldUpdateOperationsInput | number | null
     installment2?: NullableIntFieldUpdateOperationsInput | number | null
     installment3?: NullableIntFieldUpdateOperationsInput | number | null
+    installment4?: NullableIntFieldUpdateOperationsInput | number | null
     totalAmount?: NullableIntFieldUpdateOperationsInput | number | null
     admissionDate?: StringFieldUpdateOperationsInput | string
     firstInstallmentAmount?: NullableIntFieldUpdateOperationsInput | number | null
@@ -21630,6 +27585,103 @@ export namespace Prisma {
     recordStatus?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FacultyProfileUpdateWithoutCourseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    facultyName?: StringFieldUpdateOperationsInput | string
+    facultyEmail?: StringFieldUpdateOperationsInput | string
+    facultyPhone?: StringFieldUpdateOperationsInput | string
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    courseAssignments?: FacultyCourseAssignmentUpdateManyWithoutFacultyNestedInput
+    batchEntries?: FacultyBatchEntryUpdateManyWithoutFacultyNestedInput
+  }
+
+  export type FacultyProfileUncheckedUpdateWithoutCourseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    facultyName?: StringFieldUpdateOperationsInput | string
+    facultyEmail?: StringFieldUpdateOperationsInput | string
+    facultyPhone?: StringFieldUpdateOperationsInput | string
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    courseAssignments?: FacultyCourseAssignmentUncheckedUpdateManyWithoutFacultyNestedInput
+    batchEntries?: FacultyBatchEntryUncheckedUpdateManyWithoutFacultyNestedInput
+  }
+
+  export type FacultyProfileUncheckedUpdateManyWithoutCourseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    facultyName?: StringFieldUpdateOperationsInput | string
+    facultyEmail?: StringFieldUpdateOperationsInput | string
+    facultyPhone?: StringFieldUpdateOperationsInput | string
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FacultyCourseAssignmentUpdateWithoutCourseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    faculty?: FacultyProfileUpdateOneRequiredWithoutCourseAssignmentsNestedInput
+  }
+
+  export type FacultyCourseAssignmentUncheckedUpdateWithoutCourseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    facultyId?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FacultyCourseAssignmentUncheckedUpdateManyWithoutCourseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    facultyId?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FacultyBatchEntryUpdateWithoutCourseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    batchName?: StringFieldUpdateOperationsInput | string
+    batchTiming?: StringFieldUpdateOperationsInput | string
+    sequenceNo?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    faculty?: FacultyProfileUpdateOneRequiredWithoutBatchEntriesNestedInput
+  }
+
+  export type FacultyBatchEntryUncheckedUpdateWithoutCourseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    facultyId?: StringFieldUpdateOperationsInput | string
+    batchName?: StringFieldUpdateOperationsInput | string
+    batchTiming?: StringFieldUpdateOperationsInput | string
+    sequenceNo?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FacultyBatchEntryUncheckedUpdateManyWithoutCourseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    facultyId?: StringFieldUpdateOperationsInput | string
+    batchName?: StringFieldUpdateOperationsInput | string
+    batchTiming?: StringFieldUpdateOperationsInput | string
+    sequenceNo?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -21759,6 +27811,82 @@ export namespace Prisma {
     changedBy?: NullableStringFieldUpdateOperationsInput | string | null
     reason?: NullableStringFieldUpdateOperationsInput | string | null
     changedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FacultyCourseAssignmentCreateManyFacultyInput = {
+    id?: string
+    courseId: string
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FacultyBatchEntryCreateManyFacultyInput = {
+    id?: string
+    courseId?: string | null
+    batchName: string
+    batchTiming: string
+    sequenceNo?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FacultyCourseAssignmentUpdateWithoutFacultyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    course?: CourseUpdateOneRequiredWithoutFacultyCourseAssignmentsNestedInput
+  }
+
+  export type FacultyCourseAssignmentUncheckedUpdateWithoutFacultyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    courseId?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FacultyCourseAssignmentUncheckedUpdateManyWithoutFacultyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    courseId?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FacultyBatchEntryUpdateWithoutFacultyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    batchName?: StringFieldUpdateOperationsInput | string
+    batchTiming?: StringFieldUpdateOperationsInput | string
+    sequenceNo?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    course?: CourseUpdateOneWithoutFacultyBatchEntriesNestedInput
+  }
+
+  export type FacultyBatchEntryUncheckedUpdateWithoutFacultyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    courseId?: NullableStringFieldUpdateOperationsInput | string | null
+    batchName?: StringFieldUpdateOperationsInput | string
+    batchTiming?: StringFieldUpdateOperationsInput | string
+    sequenceNo?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FacultyBatchEntryUncheckedUpdateManyWithoutFacultyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    courseId?: NullableStringFieldUpdateOperationsInput | string | null
+    batchName?: StringFieldUpdateOperationsInput | string
+    batchTiming?: StringFieldUpdateOperationsInput | string
+    sequenceNo?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

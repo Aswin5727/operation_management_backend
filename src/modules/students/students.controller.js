@@ -23,7 +23,7 @@ function sendSuccess(res, message, data, meta = undefined, statusCode = 200) {
 }
 
 export const listStudentsHandler = asyncHandler(async (req, res) => {
-  const result = await listStudents(req.query);
+  const result = await listStudents(req.query, req.user);
   return sendSuccess(res, "Students fetched successfully", result.data, result.meta);
 });
 

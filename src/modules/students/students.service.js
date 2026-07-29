@@ -187,7 +187,10 @@ function toStudentSummary(student) {
     location: student.location,
     courseId: student.courseId,
     courseInterested: student.courseInterested,
+    facultyId: student.facultyId,
     facultyName: student.facultyName,
+    batchId: student.batchId,
+    batchEntryId: student.batchId,
     batchName: student.batchName,
     qualification: student.qualification,
     passedOutYear: student.passedOutYear,
@@ -233,6 +236,156 @@ function toStudentDetail(student) {
   return toStudentSummary(student);
 }
 
+function buildFacultyReferenceIndex(facultyRecords = []) {
+  const facultyById = new Map()
+  const facultyByName = new Map()
+  const batchById = new Map()
+
+  facultyRecords.forEach((faculty) => {
+    if (!faculty) return
+
+    const facultyId = normalizeString(faculty.id)
+    const facultyName = normalizeKey(faculty.facultyName)
+
+    const batchEntries = Array.isArray(faculty.batchEntries) ? faculty.batchEntries : []
+    const normalizedFaculty = {
+      id: facultyId,
+      facultyName: normalizeString(faculty.facultyName),
+      courseId: normalizeString(faculty.courseId),
+      batchEntries: batchEntries.map((entry) => ({
+        id: normalizeString(entry.id),
+        facultyId: normalizeString(entry.facultyId || facultyId),
+        courseId: normalizeString(entry.courseId || faculty.courseId),
+        batchName: normalizeString(entry.batchName),
+        batchTiming: normalizeString(entry.batchTiming),
+        sequenceNo: Number(entry.sequenceNo || 0) || 0,
+      })),
+    }
+
+    if (facultyId) {
+      facultyById.set(facultyId, normalizedFaculty)
+    }
+
+    if (facultyName) {
+      facultyByName.set(facultyName, normalizedFaculty)
+    }
+
+    normalizedFaculty.batchEntries.forEach((entry) => {
+      if (!entry.id) return
+      batchById.set(entry.id, {
+        ...entry,
+        facultyId: entry.facultyId || facultyId,
+        facultyName: normalizedFaculty.facultyName,
+      })
+    })
+  })
+
+  return {
+    facultyById,
+    facultyByName,
+    batchById,
+  }
+}
+
+function enrichStudentWithFacultyReferences(student, facultyIndex = null) {
+  if (!student || !facultyIndex) return student
+
+  const nextStudent = { ...student }
+  const normalizedFacultyId = normalizeString(nextStudent.facultyId)
+  const normalizedFacultyName = normalizeKey(nextStudent.facultyName)
+  const normalizedBatchId = normalizeString(nextStudent.batchId || nextStudent.batchEntryId)
+  const normalizedBatchName = normalizeString(nextStudent.batchName || nextStudent.batch)
+  const normalizedCourseId = normalizeString(nextStudent.courseId)
+
+  let facultyRecord = null
+
+  if (normalizedFacultyId) {
+    facultyRecord = facultyIndex.facultyById.get(normalizedFacultyId) || null
+  }
+
+  if (!facultyRecord && normalizedFacultyName) {
+    facultyRecord = facultyIndex.facultyByName.get(normalizedFacultyName) || null
+  }
+
+  if (!facultyRecord && normalizedBatchId) {
+    const batchRecord = facultyIndex.batchById.get(normalizedBatchId) || null
+    if (batchRecord?.facultyId) {
+      facultyRecord = facultyIndex.facultyById.get(batchRecord.facultyId) || facultyRecord
+    }
+  }
+
+  if (!facultyRecord && normalizedBatchName && normalizedCourseId) {
+    facultyRecord = Array.from(facultyIndex.facultyById.values()).find((faculty) =>
+      faculty.batchEntries.some((entry) =>
+        normalizeKey(entry.batchName) === normalizeKey(normalizedBatchName) &&
+        normalizeString(entry.courseId) === normalizedCourseId,
+      ),
+    ) || null
+  }
+
+  if (!facultyRecord) return student
+
+  if (!nextStudent.facultyId) {
+    nextStudent.facultyId = facultyRecord.id
+  }
+
+  if (!nextStudent.facultyName) {
+    nextStudent.facultyName = facultyRecord.facultyName
+  }
+
+  const batchRecord =
+    (normalizedBatchId && facultyIndex.batchById.get(normalizedBatchId)) ||
+    facultyRecord.batchEntries.find((entry) => entry.id === normalizedBatchId) ||
+    facultyRecord.batchEntries.find(
+      (entry) =>
+        normalizeKey(entry.batchName) === normalizeKey(normalizedBatchName) &&
+        (!normalizedCourseId || normalizeString(entry.courseId) === normalizedCourseId),
+    ) ||
+    null
+
+  if (batchRecord) {
+    if (!nextStudent.batchId) {
+      nextStudent.batchId = batchRecord.id
+    }
+
+    if (!nextStudent.batchEntryId) {
+      nextStudent.batchEntryId = batchRecord.id
+    }
+
+    if (!nextStudent.batchName) {
+      nextStudent.batchName = batchRecord.batchName
+    }
+
+    if (!nextStudent.batch) {
+      nextStudent.batch = batchRecord.batchName
+    }
+  }
+
+  return nextStudent
+}
+
+async function loadFacultyReferenceIndex() {
+  const facultyRecords = await prisma.facultyProfile.findMany({
+    select: {
+      id: true,
+      facultyName: true,
+      courseId: true,
+      batchEntries: {
+        select: {
+          id: true,
+          facultyId: true,
+          courseId: true,
+          batchName: true,
+          batchTiming: true,
+          sequenceNo: true,
+        },
+      },
+    },
+  })
+
+  return buildFacultyReferenceIndex(facultyRecords)
+}
+
 function buildStudentWhere(query) {
   const where = {};
   const search = normalizeString(query.search);
@@ -249,6 +402,14 @@ function buildStudentWhere(query) {
 
   if (query.courseId) {
     where.courseId = normalizeString(query.courseId);
+  }
+
+  if (query.facultyId) {
+    where.facultyId = normalizeString(query.facultyId);
+  }
+
+  if (query.batchId) {
+    where.batchId = normalizeString(query.batchId);
   }
 
   if (query.currentStatus) {
@@ -292,6 +453,106 @@ function buildStudentWhere(query) {
   }
 
   return where;
+}
+
+async function buildFacultyScopeWhere(actor) {
+  if (!actor || String(actor.role || "").trim().toUpperCase() !== "FACULTY") {
+    return null;
+  }
+
+  const normalizedEmail = normalizeString(actor.email).toLowerCase();
+  const normalizedName = normalizeString(actor.fullName).toLowerCase();
+
+  if (!normalizedEmail && !normalizedName) {
+    return { id: { in: [] } };
+  }
+
+  const facultyRecord = await prisma.facultyProfile.findFirst({
+    where: {
+      OR: [
+        ...(normalizedEmail ? [{ facultyEmail: { equals: normalizedEmail, mode: "insensitive" } }] : []),
+        ...(normalizedName ? [{ facultyName: { equals: actor.fullName, mode: "insensitive" } }] : []),
+      ],
+    },
+    select: {
+      id: true,
+      facultyName: true,
+      courseId: true,
+      courseAssignments: {
+        select: {
+          courseId: true,
+        },
+      },
+      batchEntries: {
+        select: {
+          id: true,
+          courseId: true,
+          batchName: true,
+        },
+      },
+    },
+  });
+
+  if (!facultyRecord) {
+    return { id: { in: [] } };
+  }
+
+  const courseIds = Array.from(
+    new Set(
+      [
+        facultyRecord.courseId,
+        ...(Array.isArray(facultyRecord.courseAssignments) ? facultyRecord.courseAssignments.map((entry) => entry.courseId) : []),
+        ...(Array.isArray(facultyRecord.batchEntries) ? facultyRecord.batchEntries.map((entry) => entry.courseId) : []),
+      ]
+        .map((value) => normalizeString(value))
+        .filter(Boolean),
+    ),
+  );
+
+  const batchIds = Array.from(
+    new Set(
+      (Array.isArray(facultyRecord.batchEntries) ? facultyRecord.batchEntries : [])
+        .map((entry) => normalizeString(entry.id))
+        .filter(Boolean),
+    ),
+  );
+
+  const batchNames = Array.from(
+    new Set(
+      (Array.isArray(facultyRecord.batchEntries) ? facultyRecord.batchEntries : [])
+        .map((entry) => normalizeString(entry.batchName))
+        .filter(Boolean),
+    ),
+  );
+
+  const facultyName = normalizeString(facultyRecord.facultyName);
+  const orConditions = [];
+
+  if (facultyRecord.id) {
+    orConditions.push({ facultyId: facultyRecord.id });
+  }
+
+  if (facultyName) {
+    orConditions.push({ facultyName });
+  }
+
+  if (courseIds.length) {
+    orConditions.push({ courseId: { in: courseIds } });
+  }
+
+  if (batchIds.length) {
+    orConditions.push({ batchId: { in: batchIds } });
+  }
+
+  if (batchNames.length) {
+    orConditions.push({ batchName: { in: batchNames } });
+  }
+
+  if (!orConditions.length) {
+    return { id: { in: [] } };
+  }
+
+  return { OR: orConditions };
 }
 
 function normalizeStudentCode() {
@@ -388,7 +649,9 @@ function buildStudentPayload(payload, existingStudent = null, course = null) {
   const parentSpouseNumber = parseOptionalText(candidate.parentSpouseNumber);
   const location = parseOptionalText(candidate.location);
   const facultyName = parseRequiredText(candidate.facultyName, "Faculty name");
+  const facultyId = parseOptionalText(candidate.facultyId);
   const batchName = parseRequiredText(candidate.batchName || candidate.batch, "Batch");
+  const batchId = parseOptionalText(candidate.batchId || candidate.batchEntryId);
   const qualification = parseRequiredText(candidate.qualification, "Qualification");
   const passedOutYear = parsePositiveInt(candidate.passedOutYear, "Passed out year");
   const currentStatus = parseCurrentStatus(candidate.currentStatus);
@@ -467,7 +730,9 @@ function buildStudentPayload(payload, existingStudent = null, course = null) {
     location,
     courseId: resolvedCourseId,
     courseInterested: resolvedCourse?.name || candidate.courseInterested || "",
+    facultyId,
     facultyName,
+    batchId,
     batchName,
     qualification,
     passedOutYear,
@@ -518,11 +783,13 @@ async function handleKnownPrismaError(error) {
   throw error;
 }
 
-export async function listStudents(query) {
+export async function listStudents(query, actor = null) {
   const { page, limit, skip, take } = buildPagination(query);
   const where = buildStudentWhere(query);
   const sortBy = normalizeString(query.sortBy).toLowerCase() || "createdat";
   const sortOrder = parseSortOrder(query.sortOrder);
+  const facultyScopeWhere = await buildFacultyScopeWhere(actor);
+  const finalWhere = facultyScopeWhere ? { AND: [where, facultyScopeWhere] } : where;
 
   const orderBy = (() => {
     switch (sortBy) {
@@ -550,9 +817,9 @@ export async function listStudents(query) {
   })();
 
   const [total, rows] = await prisma.$transaction([
-    prisma.studentProfile.count({ where }),
+    prisma.studentProfile.count({ where: finalWhere }),
     prisma.studentProfile.findMany({
-      where,
+      where: finalWhere,
       orderBy,
       skip,
       take,
@@ -568,9 +835,10 @@ export async function listStudents(query) {
       },
     }),
   ]);
+  const facultyIndex = await loadFacultyReferenceIndex();
 
   return {
-    data: rows.map(toStudentSummary),
+    data: rows.map((row) => toStudentSummary(enrichStudentWithFacultyReferences(row, facultyIndex))),
     meta: buildPaginationMeta(total, page, limit),
   };
 }
@@ -601,12 +869,13 @@ export async function getCurrentStudentProfile(user) {
       },
     },
   });
+  const facultyIndex = await loadFacultyReferenceIndex();
 
   if (!student) {
     throw new AppError("Student profile not found", 404);
   }
 
-  return toStudentDetail(student);
+  return toStudentDetail(enrichStudentWithFacultyReferences(student, facultyIndex));
 }
 
 export async function createStudent(payload, actor) {
@@ -631,6 +900,7 @@ export async function createStudent(payload, actor) {
   let createdRecord;
 
   try {
+    const facultyIndex = await loadFacultyReferenceIndex();
     const created = await prisma.$transaction(async (tx) => {
       const student = await tx.studentProfile.create({
         data: {
@@ -682,6 +952,10 @@ export async function createStudent(payload, actor) {
     });
 
     createdRecord = created.student;
+
+    if (createdRecord) {
+      createdRecord = enrichStudentWithFacultyReferences(createdRecord, facultyIndex)
+    }
   } catch (error) {
     await handleKnownPrismaError(error);
   }
@@ -717,12 +991,13 @@ export async function getStudent(studentId) {
       },
     },
   });
+  const facultyIndex = await loadFacultyReferenceIndex();
 
   if (!student) {
     throw new AppError("Student not found", 404);
   }
 
-  return toStudentDetail(student);
+  return toStudentDetail(enrichStudentWithFacultyReferences(student, facultyIndex));
 }
 
 export async function updateStudent(studentId, payload, actor) {
@@ -742,6 +1017,7 @@ export async function updateStudent(studentId, payload, actor) {
   const course = nextCourseId ? await ensureCourse(nextCourseId, { requireActive: shouldRequireActiveCourse }) : null;
   const parsed = buildStudentPayload(payload, existingStudent, course);
   const existingLoginUser = await findStudentLoginUser(existingStudent);
+  const facultyIndex = await loadFacultyReferenceIndex();
 
   if (parsed.emailAddress !== existingStudent.emailAddress || parsed.mobileNumber !== existingStudent.mobileNumber) {
     await ensureUniqueStudentIdentity(parsed, studentId);
@@ -785,7 +1061,7 @@ export async function updateStudent(studentId, payload, actor) {
       });
     }
 
-    return toStudentDetail(updated);
+    return toStudentDetail(enrichStudentWithFacultyReferences(updated, facultyIndex));
   } catch (error) {
     await handleKnownPrismaError(error);
   }
@@ -825,6 +1101,7 @@ export async function deleteStudent(studentId, actor) {
 
     return existingStudent;
   });
+  const facultyIndex = await loadFacultyReferenceIndex();
 
-  return toStudentDetail(deleted);
+  return toStudentDetail(enrichStudentWithFacultyReferences(deleted, facultyIndex));
 }

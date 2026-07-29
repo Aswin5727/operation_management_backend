@@ -247,7 +247,9 @@ model StudentProfile {
   courseId               String?
   course                  Course?      @relation(fields: [courseId], references: [id], onDelete: SetNull)
   courseInterested       String
+  facultyId              String?
   facultyName            String?
+  batchId                String?
   batchName              String?
   qualification          String?
   passedOutYear          Int?
