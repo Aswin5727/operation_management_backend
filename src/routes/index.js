@@ -1,5 +1,6 @@
 import express from "express";
 
+import attendanceRoutes from "../modules/attendance/attendance.routes.js";
 import authRoutes from "../modules/auth/auth.routes.js";
 import facultyManagementRoutes from "../modules/facultyManagement/facultyManagement.routes.js";
 import dashboardRoutes from "../modules/dashboard/dashboard.routes.js";
@@ -16,6 +17,7 @@ router.get("/health", (_req, res) => {
 });
 
 router.use("/auth", authRoutes);
+router.use("/attendance", attendanceRoutes);
 router.use("/dashboard", dashboardRoutes);
 router.use("/faculty-management", facultyManagementRoutes);
 router.use("/master-setup", masterSetupRoutes);

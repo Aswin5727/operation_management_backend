@@ -16,6 +16,10 @@ import {
   sendPasswordResetEmail,
   sendStudentWelcomeEmail,
 } from "../../common/services/resendEmail.js";
+import {
+  recordFacultyLoginSession,
+  recordFacultyLogoutSession,
+} from "../attendance/attendance.service.js";
 
 function normalizeIdentifier(identifier) {
   return String(identifier || "").trim().toLowerCase();
@@ -218,6 +222,14 @@ async function login({ identifier, password, ipAddress, userAgent }) {
     });
   }
 
+  if (role === "FACULTY") {
+    setImmediate(() => {
+      void recordFacultyLoginSession(refreshedUser.id).catch((error) => {
+        console.error("Failed to record faculty login attendance:", error);
+      });
+    });
+  }
+
   return {
     user: toSafeUser(refreshedUser),
     accessToken,
@@ -294,6 +306,14 @@ async function logout({ refreshToken, ipAddress, userAgent }) {
         console.error("Failed to record logout event:", error);
       });
     });
+
+    if (String(user.role || "").toUpperCase() === "FACULTY") {
+      setImmediate(() => {
+        void recordFacultyLogoutSession(user.id).catch((error) => {
+          console.error("Failed to record faculty logout attendance:", error);
+        });
+      });
+    }
   }
 
   return {
