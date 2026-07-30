@@ -9,6 +9,7 @@ import { hashPassword } from "../../common/utils/password.js";
 import {
   sendStudentCredentialsEmail,
 } from "../../common/services/resendEmail.js";
+import { invalidateRevenueSummaryCache } from "../dashboard/dashboard.service.js";
 
 const RECORD_STATUSES = new Set(["ACTIVE", "INACTIVE"]);
 const CURRENT_STATUSES = new Set(["Student", "Employee", "Other"]);
@@ -974,6 +975,8 @@ export async function createStudent(payload, actor) {
     console.warn("Student credentials email failed to send", error);
   });
 
+  invalidateRevenueSummaryCache();
+
   return toStudentDetail(createdRecord);
 }
 
@@ -1061,6 +1064,8 @@ export async function updateStudent(studentId, payload, actor) {
       });
     }
 
+    invalidateRevenueSummaryCache();
+
     return toStudentDetail(enrichStudentWithFacultyReferences(updated, facultyIndex));
   } catch (error) {
     await handleKnownPrismaError(error);
@@ -1102,6 +1107,8 @@ export async function deleteStudent(studentId, actor) {
     return existingStudent;
   });
   const facultyIndex = await loadFacultyReferenceIndex();
+
+  invalidateRevenueSummaryCache();
 
   return toStudentDetail(enrichStudentWithFacultyReferences(deleted, facultyIndex));
 }

@@ -2,6 +2,11 @@ import prisma from "../../config/prisma.js";
 import AppError from "../../common/errors/AppError.js";
 
 const IST_OFFSET_MINUTES = 330;
+const REVENUE_SUMMARY_CACHE_TTL_MS = 15000;
+
+let cachedRevenueSummary = null;
+let cachedRevenueSummaryExpiresAt = 0;
+let cachedRevenueSummaryPromise = null;
 
 function normalizeString(value) {
   return String(value ?? "").trim();
@@ -307,6 +312,17 @@ async function getFacultyMyBatchesSummary(user) {
 }
 
 async function getRevenueSummary() {
+  const now = Date.now();
+
+  if (cachedRevenueSummary && now < cachedRevenueSummaryExpiresAt) {
+    return cachedRevenueSummary;
+  }
+
+  if (cachedRevenueSummaryPromise) {
+    return cachedRevenueSummaryPromise;
+  }
+
+  cachedRevenueSummaryPromise = (async () => {
   const today = getIstToday();
   const monthStart = getIstMonthStart();
   const nextMonthStart = getIstMonthStart(1);
@@ -366,7 +382,22 @@ async function getRevenueSummary() {
     thisWeekStudents: countStudents(thisWeekStudents),
     expectedNextWeekRevenue,
   };
+  })()
+    .then((summary) => {
+      cachedRevenueSummary = summary;
+      cachedRevenueSummaryExpiresAt = Date.now() + REVENUE_SUMMARY_CACHE_TTL_MS;
+      return summary;
+    })
+    .finally(() => {
+      cachedRevenueSummaryPromise = null;
+    });
+
+  return cachedRevenueSummaryPromise;
 }
 
-export { getRevenueSummary };
-export { getFacultyMyBatchesSummary };
+function invalidateRevenueSummaryCache() {
+  cachedRevenueSummary = null;
+  cachedRevenueSummaryExpiresAt = 0;
+}
+
+export { getRevenueSummary, getFacultyMyBatchesSummary, invalidateRevenueSummaryCache };

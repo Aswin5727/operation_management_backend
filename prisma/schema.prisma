@@ -42,6 +42,11 @@ enum AssignmentStatus {
   INACTIVE
 }
 
+enum AttendanceStatus {
+  PRESENT
+  ABSENT
+}
+
 model User {
   id                       String              @id @default(cuid())
   userCode                 String              @unique
@@ -67,6 +72,8 @@ model User {
   loginEvents              LoginEvent[]
   passwordResetTokens      PasswordResetToken[]
   batchFacultyAssignments  BatchFacultyAssignment[]
+  facultyAttendanceSessions FacultyAttendanceSession[]
+  markedStudentAttendances StudentAttendance[]
 
   @@index([role])
   @@index([active])
@@ -280,6 +287,7 @@ model StudentProfile {
   updatedBy              String?
   createdAt              DateTime      @default(now())
   updatedAt              DateTime      @updatedAt
+  attendanceRecords      StudentAttendance[]
 
   @@index([recordStatus])
   @@index([courseId])
@@ -337,4 +345,46 @@ model FacultyBatchEntry {
 
   @@index([facultyId, sequenceNo])
   @@index([courseId])
+}
+
+model FacultyAttendanceSession {
+  id             String   @id @default(cuid())
+  facultyUserId  String
+  facultyUser    User     @relation(fields: [facultyUserId], references: [id], onDelete: Cascade)
+  attendanceDate String
+  sessionSource  String   @default("ATTENDANCE")
+  loginAt        DateTime
+  logoutAt       DateTime?
+  logoutType     String?
+  logoutReason   String?
+  workReport     String?
+  workCompleted  String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([facultyUserId, attendanceDate])
+  @@index([facultyUserId, attendanceDate, sessionSource])
+  @@index([attendanceDate])
+}
+
+model StudentAttendance {
+  id             String           @id @default(cuid())
+  studentId      String
+  student        StudentProfile   @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  facultyUserId  String?
+  facultyUser    User?            @relation(fields: [facultyUserId], references: [id], onDelete: SetNull)
+  courseId       String?
+  batchName      String?
+  attendanceDate String
+  status         AttendanceStatus
+  markedAt       DateTime         @default(now())
+  notes          String?
+  createdBy      String?
+  updatedBy      String?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  @@unique([studentId, attendanceDate])
+  @@index([facultyUserId, attendanceDate])
+  @@index([courseId, batchName, attendanceDate])
 }
