@@ -25,6 +25,54 @@ function normalizeIdentifier(identifier) {
   return String(identifier || "").trim().toLowerCase();
 }
 
+const AUTH_USER_SELECT = {
+  id: true,
+  userCode: true,
+  fullName: true,
+  email: true,
+  phone: true,
+  role: true,
+  active: true,
+  passwordHash: true,
+  refreshTokenVersion: true,
+  failedLoginCount: true,
+  failedLoginWindowExpiresAt: true,
+  lockedUntil: true,
+  lastLoginAt: true,
+  lastLogoutAt: true,
+  lastLoginIp: true,
+  lastLoginUserAgent: true,
+  createdBy: true,
+  updatedBy: true,
+  createdAt: true,
+  updatedAt: true,
+};
+
+async function findUserByIdentifier(identifier) {
+  const rawIdentifier = String(identifier || "").trim();
+  const normalizedIdentifier = normalizeIdentifier(identifier);
+
+  if (!rawIdentifier) {
+    return null;
+  }
+
+  const byEmail = normalizedIdentifier.includes("@")
+    ? await prisma.user.findUnique({
+        where: { email: normalizedIdentifier },
+        select: AUTH_USER_SELECT,
+      })
+    : null;
+
+  if (byEmail) {
+    return byEmail;
+  }
+
+  return prisma.user.findUnique({
+    where: { userCode: rawIdentifier },
+    select: AUTH_USER_SELECT,
+  });
+}
+
 function getCookieOptions() {
   return {
     httpOnly: true,
@@ -105,15 +153,7 @@ async function resetLoginState(userId, meta) {
 }
 
 async function login({ identifier, password, ipAddress, userAgent }) {
-  const normalizedIdentifier = normalizeIdentifier(identifier);
-  const user = await prisma.user.findFirst({
-    where: {
-      OR: [
-        { email: normalizedIdentifier },
-        { userCode: String(identifier || "").trim() },
-      ],
-    },
-  });
+  const user = await findUserByIdentifier(identifier);
 
   if (!user) {
     throw new AppError("Invalid credentials", 401);
@@ -322,15 +362,7 @@ async function logout({ refreshToken, ipAddress, userAgent }) {
 }
 
 async function forgotPassword({ identifier, ipAddress, userAgent }) {
-  const normalizedIdentifier = normalizeIdentifier(identifier);
-  const user = await prisma.user.findFirst({
-    where: {
-      OR: [
-        { email: normalizedIdentifier },
-        { userCode: String(identifier || "").trim() },
-      ],
-    },
-  });
+  const user = await findUserByIdentifier(identifier);
 
   if (!user || !user.active) {
     return {
