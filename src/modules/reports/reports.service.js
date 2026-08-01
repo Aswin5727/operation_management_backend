@@ -19,11 +19,39 @@ function countByStatus(records = [], status) {
   return records.filter((record) => String(record?.status || "").toUpperCase() === status).length;
 }
 
+function assignSerialByDate(rows = [], dateKey = "attendanceDate") {
+  const counters = new Map();
+
+  return rows.map((row) => {
+    const groupValue = String(row?.[dateKey] || "");
+    const nextSerialNo = (counters.get(groupValue) || 0) + 1;
+    counters.set(groupValue, nextSerialNo);
+
+    return {
+      ...row,
+      serialNo: nextSerialNo,
+    };
+  });
+}
+
+function getFacultyCourseNames(profile = null) {
+  if (!profile) return "";
+
+  const values = [
+    profile?.course?.name || "",
+    ...(Array.isArray(profile?.courseAssignments)
+      ? profile.courseAssignments.map((assignment) => assignment?.course?.name || assignment?.courseName || "")
+      : []),
+  ]
+    .map((value) => String(value || "").trim())
+    .filter(Boolean);
+
+  return Array.from(new Set(values)).join(", ");
+}
+
 function buildStudentAttendanceRows(records = [], student) {
-  return records.map((record, index) => ({
-    serialNo: index + 1,
+  return assignSerialByDate(records.map((record) => ({
     attendanceDate: record.attendanceDate,
-    studentCode: student.studentCode,
     studentName: student.studentName,
     courseName: student.course?.name || student.courseInterested || "",
     batchName: student.batchName || "",
@@ -31,14 +59,12 @@ function buildStudentAttendanceRows(records = [], student) {
     markedAt: formatDateTime(record.markedAt),
     markedBy: record.facultyUser?.fullName || "",
     notes: record.notes || "",
-  }));
+  })));
 }
 
 function buildBatchAttendanceRows(records = []) {
-  return records.map((record, index) => ({
-    serialNo: index + 1,
+  return assignSerialByDate(records.map((record) => ({
     attendanceDate: record.attendanceDate,
-    studentCode: record.student?.studentCode || "",
     studentName: record.student?.studentName || "",
     courseName: record.student?.course?.name || record.student?.courseInterested || "",
     batchName: record.student?.batchName || record.batchName || "",
@@ -46,44 +72,17 @@ function buildBatchAttendanceRows(records = []) {
     markedAt: formatDateTime(record.markedAt),
     markedBy: record.facultyUser?.fullName || "",
     notes: record.notes || "",
-  }));
-}
-
-function buildBatchStudentSummaryRows(students = [], records = []) {
-  const grouped = new Map();
-
-  records.forEach((record) => {
-    const key = record.studentId;
-    const current = grouped.get(key) || { present: 0, absent: 0, total: 0 };
-    current.total += 1;
-    if (String(record.status || "").toUpperCase() === "PRESENT") current.present += 1;
-    if (String(record.status || "").toUpperCase() === "ABSENT") current.absent += 1;
-    grouped.set(key, current);
-  });
-
-  return students.map((student, index) => {
-    const stats = grouped.get(student.id) || { present: 0, absent: 0, total: 0 };
-
-    return {
-      serialNo: index + 1,
-      studentCode: student.studentCode,
-      studentName: student.studentName,
-      emailAddress: student.emailAddress,
-      batchName: student.batchName || "",
-      presentCount: stats.present,
-      absentCount: stats.absent,
-      totalMarkedDays: stats.total,
-    };
-  });
+  })));
 }
 
 function buildFacultySessionRows(sessions = [], facultyProfile, facultyUser) {
-  return sessions.map((session, index) => ({
-    serialNo: index + 1,
+  const courseNames = getFacultyCourseNames(facultyProfile);
+
+  return assignSerialByDate(sessions.map((session) => ({
     attendanceDate: session.attendanceDate,
-    facultyCode: facultyUser?.userCode || "",
     facultyName: facultyProfile?.facultyName || facultyUser?.fullName || "",
     facultyEmail: facultyProfile?.facultyEmail || facultyUser?.email || "",
+    courseName: courseNames,
     loginAt: formatDateTime(session.loginAt),
     logoutAt: formatDateTime(session.logoutAt),
     duration: formatDuration(session.loginAt, session.logoutAt),
@@ -91,48 +90,7 @@ function buildFacultySessionRows(sessions = [], facultyProfile, facultyUser) {
     logoutReason: session.logoutReason || "",
     workReport: session.workReport || "",
     workCompleted: session.workCompleted || "",
-  }));
-}
-
-function buildAllFacultySummaryRows(sessions = [], facultyProfiles = []) {
-  const profileByEmail = new Map(
-    facultyProfiles.map((profile) => [String(profile.facultyEmail || "").toLowerCase(), profile]),
-  );
-  const grouped = new Map();
-
-  sessions.forEach((session) => {
-    const email = String(session.facultyUser?.email || "").toLowerCase();
-    const current =
-      grouped.get(email) ||
-      {
-        facultyCode: session.facultyUser?.userCode || "",
-        facultyName:
-          profileByEmail.get(email)?.facultyName || session.facultyUser?.fullName || "",
-        facultyEmail: session.facultyUser?.email || profileByEmail.get(email)?.facultyEmail || "",
-        totalSessions: 0,
-        completedSessions: 0,
-        openSessions: 0,
-      };
-
-    current.totalSessions += 1;
-    if (session.logoutAt) {
-      current.completedSessions += 1;
-    } else {
-      current.openSessions += 1;
-    }
-
-    grouped.set(email, current);
-  });
-
-  return Array.from(grouped.values()).map((item, index) => ({
-    serialNo: index + 1,
-    facultyCode: item.facultyCode,
-    facultyName: item.facultyName,
-    facultyEmail: item.facultyEmail,
-    totalSessions: item.totalSessions,
-    completedSessions: item.completedSessions,
-    openSessions: item.openSessions,
-  }));
+  })));
 }
 
 function buildAllFacultySessionRows(sessions = [], facultyProfiles = []) {
@@ -140,16 +98,15 @@ function buildAllFacultySessionRows(sessions = [], facultyProfiles = []) {
     facultyProfiles.map((profile) => [String(profile.facultyEmail || "").toLowerCase(), profile]),
   );
 
-  return sessions.map((session, index) => {
+  return assignSerialByDate(sessions.map((session) => {
     const email = String(session.facultyUser?.email || "").toLowerCase();
     const facultyProfile = profileByEmail.get(email);
 
     return {
-      serialNo: index + 1,
       attendanceDate: session.attendanceDate,
-      facultyCode: session.facultyUser?.userCode || "",
       facultyName: facultyProfile?.facultyName || session.facultyUser?.fullName || "",
       facultyEmail: session.facultyUser?.email || facultyProfile?.facultyEmail || "",
+      courseName: getFacultyCourseNames(facultyProfile),
       loginAt: formatDateTime(session.loginAt),
       logoutAt: formatDateTime(session.logoutAt),
       duration: formatDuration(session.loginAt, session.logoutAt),
@@ -158,7 +115,7 @@ function buildAllFacultySessionRows(sessions = [], facultyProfiles = []) {
       workReport: session.workReport || "",
       workCompleted: session.workCompleted || "",
     };
-  });
+  }));
 }
 
 async function generateStudentAttendanceReport(query = {}) {
@@ -196,7 +153,6 @@ async function generateStudentAttendanceReport(query = {}) {
         columns: [
           { header: "S.No", key: "serialNo", width: 10 },
           { header: "Attendance Date", key: "attendanceDate", width: 16 },
-          { header: "Student Code", key: "studentCode", width: 16 },
           { header: "Student Name", key: "studentName", width: 24 },
           { header: "Course", key: "courseName", width: 24 },
           { header: "Batch", key: "batchName", width: 20 },
@@ -206,6 +162,8 @@ async function generateStudentAttendanceReport(query = {}) {
           { header: "Notes", key: "notes", width: 32 },
         ],
         rows: dataRows,
+        groupByKey: "attendanceDate",
+        spacerRowsBetweenGroups: 1,
       },
     ],
   });
@@ -216,12 +174,12 @@ async function generateBatchAttendanceReport(query = {}) {
   const batchName = String(query.batchName || "").trim();
   const courseId = String(query.courseId || "").trim();
 
-  if (!batchId && !batchName) {
-    throw new AppError("batchId or batchName is required", 400);
+  if (!batchId && !batchName && !courseId) {
+    throw new AppError("batchId, batchName, or courseId is required", 400);
   }
 
   const { fromDate, toDate } = parseDateRange(query);
-  const { batch, students, records } = await findBatchAttendanceReportData({
+  const { scope, students, records } = await findBatchAttendanceReportData({
     batchId,
     batchName,
     courseId,
@@ -229,18 +187,29 @@ async function generateBatchAttendanceReport(query = {}) {
     toDate,
   });
 
+  const isCourseScope = scope.kind === "course";
+  const courseLabel = scope.course?.name || "";
+  const batchLabel = scope.batchName || "";
+
   return buildExcelReport({
     fileName: buildReportFileName([
-      "batch-attendance",
-      batch.batchName,
+      isCourseScope ? "course-attendance" : "batch-attendance",
+      isCourseScope ? courseLabel || scope.courseId : batchLabel,
       fromDate,
       toDate,
     ]),
-    title: "Batch Attendance Report",
+    title: isCourseScope ? "Course Attendance Report" : "Batch Attendance Report",
     filters: [
-      { label: "Batch ID", value: batch.id },
-      { label: "Batch Name", value: batch.batchName },
-      { label: "Course", value: batch.course?.name || "-" },
+      ...(isCourseScope
+        ? [
+            { label: "Course ID", value: scope.courseId },
+            { label: "Course", value: courseLabel || "-" },
+          ]
+        : [
+            { label: "Batch ID", value: scope.id },
+            { label: "Batch Name", value: batchLabel },
+            { label: "Course", value: courseLabel || "-" },
+          ]),
       { label: "From Date", value: fromDate },
       { label: "To Date", value: toDate },
     ],
@@ -252,27 +221,11 @@ async function generateBatchAttendanceReport(query = {}) {
     ],
     sheets: [
       {
-        name: "Student Summary",
-        title: "Batch Student Attendance Summary",
-        columns: [
-          { header: "S.No", key: "serialNo", width: 10 },
-          { header: "Student Code", key: "studentCode", width: 16 },
-          { header: "Student Name", key: "studentName", width: 24 },
-          { header: "Email", key: "emailAddress", width: 28 },
-          { header: "Batch", key: "batchName", width: 20 },
-          { header: "Present Count", key: "presentCount", width: 16 },
-          { header: "Absent Count", key: "absentCount", width: 16 },
-          { header: "Total Marked Days", key: "totalMarkedDays", width: 18 },
-        ],
-        rows: buildBatchStudentSummaryRows(students, records),
-      },
-      {
         name: "Attendance",
-        title: "Batch Attendance Details",
+        title: isCourseScope ? "Course Attendance Details" : "Batch Attendance Details",
         columns: [
           { header: "S.No", key: "serialNo", width: 10 },
           { header: "Attendance Date", key: "attendanceDate", width: 16 },
-          { header: "Student Code", key: "studentCode", width: 16 },
           { header: "Student Name", key: "studentName", width: 24 },
           { header: "Course", key: "courseName", width: 24 },
           { header: "Batch", key: "batchName", width: 20 },
@@ -282,6 +235,8 @@ async function generateBatchAttendanceReport(query = {}) {
           { header: "Notes", key: "notes", width: 32 },
         ],
         rows: buildBatchAttendanceRows(records),
+        groupByKey: "attendanceDate",
+        spacerRowsBetweenGroups: 1,
       },
     ],
   });
@@ -324,9 +279,9 @@ async function generateFacultyAttendanceReport(query = {}) {
         columns: [
           { header: "S.No", key: "serialNo", width: 10 },
           { header: "Attendance Date", key: "attendanceDate", width: 16 },
-          { header: "Faculty Code", key: "facultyCode", width: 16 },
           { header: "Faculty Name", key: "facultyName", width: 24 },
           { header: "Faculty Email", key: "facultyEmail", width: 28 },
+          { header: "Course", key: "courseName", width: 28 },
           { header: "Login At", key: "loginAt", width: 24 },
           { header: "Logout At", key: "logoutAt", width: 24 },
           { header: "Duration", key: "duration", width: 16 },
@@ -336,6 +291,8 @@ async function generateFacultyAttendanceReport(query = {}) {
           { header: "Work Completed", key: "workCompleted", width: 34 },
         ],
         rows: buildFacultySessionRows(sessions, facultyProfile, facultyUser),
+        groupByKey: "attendanceDate",
+        spacerRowsBetweenGroups: 1,
       },
     ],
   });
@@ -344,7 +301,6 @@ async function generateFacultyAttendanceReport(query = {}) {
 async function generateAllFacultyAttendanceReport(query = {}) {
   const { fromDate, toDate } = parseDateRange(query);
   const { sessions, facultyProfiles } = await findAllFacultyAttendanceReportData({ fromDate, toDate });
-  const summaryRows = buildAllFacultySummaryRows(sessions, facultyProfiles);
 
   return buildExcelReport({
     fileName: buildReportFileName(["all-faculty-attendance", fromDate, toDate]),
@@ -354,35 +310,21 @@ async function generateAllFacultyAttendanceReport(query = {}) {
       { label: "To Date", value: toDate },
     ],
     summary: [
-      { label: "Total Faculty", value: summaryRows.length },
+      { label: "Total Faculty", value: facultyProfiles.length },
       { label: "Total Sessions", value: sessions.length },
       { label: "Completed Sessions", value: sessions.filter((session) => session.logoutAt).length },
       { label: "Open Sessions", value: sessions.filter((session) => !session.logoutAt).length },
     ],
     sheets: [
       {
-        name: "Faculty Summary",
-        title: "All Faculty Attendance Summary",
-        columns: [
-          { header: "S.No", key: "serialNo", width: 10 },
-          { header: "Faculty Code", key: "facultyCode", width: 16 },
-          { header: "Faculty Name", key: "facultyName", width: 24 },
-          { header: "Faculty Email", key: "facultyEmail", width: 28 },
-          { header: "Total Sessions", key: "totalSessions", width: 16 },
-          { header: "Completed Sessions", key: "completedSessions", width: 18 },
-          { header: "Open Sessions", key: "openSessions", width: 14 },
-        ],
-        rows: summaryRows,
-      },
-      {
         name: "Sessions",
         title: "All Faculty Attendance Details",
         columns: [
           { header: "S.No", key: "serialNo", width: 10 },
           { header: "Attendance Date", key: "attendanceDate", width: 16 },
-          { header: "Faculty Code", key: "facultyCode", width: 16 },
           { header: "Faculty Name", key: "facultyName", width: 24 },
           { header: "Faculty Email", key: "facultyEmail", width: 28 },
+          { header: "Course", key: "courseName", width: 28 },
           { header: "Login At", key: "loginAt", width: 24 },
           { header: "Logout At", key: "logoutAt", width: 24 },
           { header: "Duration", key: "duration", width: 16 },
@@ -392,6 +334,8 @@ async function generateAllFacultyAttendanceReport(query = {}) {
           { header: "Work Completed", key: "workCompleted", width: 34 },
         ],
         rows: buildAllFacultySessionRows(sessions, facultyProfiles),
+        groupByKey: "attendanceDate",
+        spacerRowsBetweenGroups: 1,
       },
     ],
   });
