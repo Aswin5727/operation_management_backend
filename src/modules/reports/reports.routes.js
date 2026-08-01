@@ -11,11 +11,27 @@ import {
 
 const router = express.Router();
 
-router.use(authenticate, authorize("BUSINESS_OWNER", "OPERATION_MANAGER", "HR"));
+router.use(authenticate);
 
-router.get("/student-attendance", getStudentAttendanceReportHandler);
-router.get("/batch-attendance", getBatchAttendanceReportHandler);
-router.get("/faculty-attendance", getFacultyAttendanceReportHandler);
-router.get("/all-faculty-attendance", getAllFacultyAttendanceReportHandler);
+router.get(
+  "/student-attendance",
+  authorize("BUSINESS_OWNER", "OPERATION_MANAGER", "HR"),
+  getStudentAttendanceReportHandler,
+);
+router.get(
+  "/batch-attendance",
+  authorize("BUSINESS_OWNER", "OPERATION_MANAGER", "HR", "FACULTY"),
+  getBatchAttendanceReportHandler,
+);
+router.get(
+  "/faculty-attendance",
+  authorize("BUSINESS_OWNER", "OPERATION_MANAGER", "HR"),
+  getFacultyAttendanceReportHandler,
+);
+router.get(
+  "/all-faculty-attendance",
+  authorize("BUSINESS_OWNER", "OPERATION_MANAGER", "HR"),
+  getAllFacultyAttendanceReportHandler,
+);
 
 export default router;

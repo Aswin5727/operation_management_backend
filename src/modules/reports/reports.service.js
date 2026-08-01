@@ -169,7 +169,7 @@ async function generateStudentAttendanceReport(query = {}) {
   });
 }
 
-async function generateBatchAttendanceReport(query = {}) {
+async function generateBatchAttendanceReport(query = {}, actorUser = null) {
   const batchId = String(query.batchId || "").trim();
   const batchName = String(query.batchName || "").trim();
   const courseId = String(query.courseId || "").trim();
@@ -185,6 +185,7 @@ async function generateBatchAttendanceReport(query = {}) {
     courseId,
     fromDate,
     toDate,
+    actorUser,
   });
 
   const isCourseScope = scope.kind === "course";
