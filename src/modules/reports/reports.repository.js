@@ -25,6 +25,13 @@ const studentReportSelect = {
   },
 };
 
+const courseReportSelect = {
+  id: true,
+  name: true,
+  mode: true,
+  status: true,
+};
+
 const facultyUserSelect = {
   id: true,
   userCode: true,
@@ -107,6 +114,19 @@ async function getBatchOrThrow(batchId) {
   }
 
   return batch;
+}
+
+async function getCourseOrThrow(courseId) {
+  const course = await prisma.course.findUnique({
+    where: { id: courseId },
+    select: courseReportSelect,
+  });
+
+  if (!course) {
+    throw new AppError("Invalid courseId", 404);
+  }
+
+  return course;
 }
 
 async function resolveBatchForReport({ batchId = "", batchName = "", courseId = "" } = {}) {
@@ -297,19 +317,65 @@ async function findStudentAttendanceReportData({ studentId, fromDate, toDate }) 
 }
 
 async function findBatchAttendanceReportData({ batchId, batchName, courseId, fromDate, toDate }) {
-  const batch = await resolveBatchForReport({ batchId, batchName, courseId });
+  const normalizedBatchId = normalizeString(batchId);
+  const normalizedBatchName = normalizeString(batchName);
+  const normalizedCourseId = normalizeString(courseId);
+  const usesAllBatches =
+    !normalizedBatchId &&
+    Boolean(normalizedCourseId) &&
+    ["all batches", "all", "*"].includes(normalizedBatchName.toLowerCase());
 
-  const students = await prisma.studentProfile.findMany({
-    where: {
+  let scope = null;
+  let studentWhere = {};
+
+  if (!usesAllBatches && (normalizedBatchId || normalizedBatchName)) {
+    const batch = await resolveBatchForReport({
+      batchId: normalizedBatchId,
+      batchName: normalizedBatchName,
+      courseId: normalizedCourseId,
+    });
+
+    scope = {
+      kind: "batch",
+      id: batch.id,
+      batchName: batch.batchName,
+      courseId: batch.courseId || "",
+      course: batch.course || null,
+    };
+
+    studentWhere = {
       ...(batch.courseId ? { courseId: batch.courseId } : {}),
       batchName: batch.batchName,
-    },
+    };
+  } else {
+    const course = await getCourseOrThrow(normalizedCourseId);
+
+    scope = {
+      kind: "course",
+      id: course.id,
+      courseId: course.id,
+      course,
+      batchName: "",
+    };
+
+    studentWhere = {
+      courseId: course.id,
+    };
+  }
+
+  const students = await prisma.studentProfile.findMany({
+    where: studentWhere,
     orderBy: [{ studentName: "asc" }, { createdAt: "asc" }],
     select: studentReportSelect,
   });
 
   if (!students.length) {
-    throw new AppError("No records found for the selected batch", 404);
+    throw new AppError(
+      scope.kind === "course"
+        ? "No records found for the selected course"
+        : "No records found for the selected batch",
+      404,
+    );
   }
 
   const studentIds = students.map((student) => student.id);
@@ -339,11 +405,16 @@ async function findBatchAttendanceReportData({ batchId, batchName, courseId, fro
   });
 
   if (!records.length) {
-    throw new AppError("No records found for the selected batch and date range", 404);
+    throw new AppError(
+      scope.kind === "course"
+        ? "No records found for the selected course and date range"
+        : "No records found for the selected batch and date range",
+      404,
+    );
   }
 
   return {
-    batch,
+    scope,
     students,
     records,
   };

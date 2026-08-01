@@ -3,6 +3,13 @@ import ExcelJS from "exceljs";
 const EXCEL_CONTENT_TYPE =
   "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 
+function isBlankRow(row = {}, columns = []) {
+  return columns.every((column) => {
+    const value = row?.[column.key];
+    return value === null || value === undefined || String(value).trim() === "";
+  });
+}
+
 function sanitizeWorksheetName(name, fallback = "Sheet") {
   const cleaned = String(name || fallback)
     .replace(/[\\/*?:[\]]/g, " ")
@@ -31,6 +38,19 @@ function styleHeaderRow(row) {
 function styleDataRows(worksheet, startRowNumber, endRowNumber) {
   for (let rowNumber = startRowNumber; rowNumber <= endRowNumber; rowNumber += 1) {
     const row = worksheet.getRow(rowNumber);
+    const hasValue = row.values
+      .slice(1)
+      .some((value) => value !== null && value !== undefined && String(value).trim() !== "");
+
+    if (!hasValue) {
+      row.height = 8;
+      row.eachCell((cell) => {
+        cell.border = {};
+        cell.fill = { type: "pattern", pattern: "none" };
+      });
+      continue;
+    }
+
     row.alignment = { vertical: "top", horizontal: "left", wrapText: true };
 
     row.eachCell((cell) => {
@@ -57,57 +77,38 @@ function fitColumns(worksheet, columns = [], rows = []) {
   });
 }
 
-function addOverviewSheet(workbook, { title, generatedAt, filters = [], summary = [] }) {
-  const worksheet = workbook.addWorksheet("Overview");
-
-  worksheet.mergeCells("A1:D1");
-  worksheet.getCell("A1").value = title;
-  worksheet.getCell("A1").font = { size: 16, bold: true };
-  worksheet.getCell("A1").alignment = { vertical: "middle", horizontal: "left" };
-
-  worksheet.getCell("A3").value = "Generated At";
-  worksheet.getCell("B3").value = generatedAt;
-  worksheet.getCell("A3").font = { bold: true };
-
-  let currentRow = 5;
-
-  if (filters.length) {
-    worksheet.getCell(`A${currentRow}`).value = "Filters";
-    worksheet.getCell(`A${currentRow}`).font = { bold: true, size: 12 };
-    currentRow += 1;
-
-    filters.forEach((item) => {
-      worksheet.getCell(`A${currentRow}`).value = item.label;
-      worksheet.getCell(`A${currentRow}`).font = { bold: true };
-      worksheet.getCell(`B${currentRow}`).value = item.value;
-      currentRow += 1;
-    });
-
-    currentRow += 1;
+function addGroupedBlankRows(rows = [], columns = [], groupByKey = "", spacerRowsBetweenGroups = 0) {
+  if (!groupByKey || spacerRowsBetweenGroups <= 0 || !rows.length) {
+    return rows;
   }
 
-  if (summary.length) {
-    worksheet.getCell(`A${currentRow}`).value = "Summary";
-    worksheet.getCell(`A${currentRow}`).font = { bold: true, size: 12 };
-    currentRow += 1;
+  const normalizedRows = [];
 
-    summary.forEach((item) => {
-      worksheet.getCell(`A${currentRow}`).value = item.label;
-      worksheet.getCell(`A${currentRow}`).font = { bold: true };
-      worksheet.getCell(`B${currentRow}`).value = item.value;
-      currentRow += 1;
-    });
-  }
+  rows.forEach((row, index) => {
+    normalizedRows.push(row);
 
-  worksheet.columns = [
-    { width: 28 },
-    { width: 40 },
-    { width: 20 },
-    { width: 20 },
-  ];
+    const currentGroupValue = String(row?.[groupByKey] ?? "");
+    const nextGroupValue = String(rows[index + 1]?.[groupByKey] ?? "");
+    if (!rows[index + 1] || currentGroupValue === nextGroupValue) {
+      return;
+    }
+
+    for (let spacerIndex = 0; spacerIndex < spacerRowsBetweenGroups; spacerIndex += 1) {
+      const emptyRow = {};
+      columns.forEach((column) => {
+        emptyRow[column.key] = "";
+      });
+      normalizedRows.push(emptyRow);
+    }
+  });
+
+  return normalizedRows;
 }
 
-function addTableSheet(workbook, { name, title, columns, rows }) {
+function addTableSheet(
+  workbook,
+  { name, title, columns, rows, groupByKey = "", spacerRowsBetweenGroups = 0 },
+) {
   const worksheet = workbook.addWorksheet(sanitizeWorksheetName(name));
   worksheet.views = [{ state: "frozen", ySplit: 2 }];
 
@@ -121,7 +122,9 @@ function addTableSheet(workbook, { name, title, columns, rows }) {
   headerRow.values = columns.map((column) => column.header);
   styleHeaderRow(headerRow);
 
-  rows.forEach((row) => {
+  const preparedRows = addGroupedBlankRows(rows, columns, groupByKey, spacerRowsBetweenGroups);
+
+  preparedRows.forEach((row) => {
     worksheet.addRow(row);
   });
 
@@ -133,22 +136,75 @@ function addTableSheet(workbook, { name, title, columns, rows }) {
     to: { row: 2, column: columns.length },
   };
 
-  fitColumns(worksheet, columns, rows);
+  fitColumns(
+    worksheet,
+    columns,
+    preparedRows.filter((row) => !isBlankRow(row, columns)),
+  );
 }
 
-async function buildExcelReport({ fileName, title, filters = [], summary = [], sheets = [] }) {
+async function buildExcelReport({
+  fileName,
+  title,
+  filters = [],
+  summary = [],
+  sheets = [],
+  includeOverviewSheet = false,
+}) {
   const workbook = new ExcelJS.Workbook();
   workbook.creator = "CISPRO Backend";
   workbook.created = new Date();
   workbook.modified = new Date();
   workbook.properties.date1904 = false;
 
-  addOverviewSheet(workbook, {
-    title,
-    generatedAt: new Date().toLocaleString("en-GB", { timeZone: "Asia/Calcutta" }),
-    filters,
-    summary,
-  });
+  if (includeOverviewSheet) {
+    const overviewWorksheet = workbook.addWorksheet("Overview");
+    overviewWorksheet.mergeCells("A1:D1");
+    overviewWorksheet.getCell("A1").value = title;
+    overviewWorksheet.getCell("A1").font = { size: 16, bold: true };
+    overviewWorksheet.getCell("A1").alignment = { vertical: "middle", horizontal: "left" };
+    overviewWorksheet.getCell("A3").value = "Generated At";
+    overviewWorksheet.getCell("B3").value = new Date().toLocaleString("en-GB", {
+      timeZone: "Asia/Calcutta",
+    });
+    overviewWorksheet.getCell("A3").font = { bold: true };
+
+    let currentRow = 5;
+    if (filters.length) {
+      overviewWorksheet.getCell(`A${currentRow}`).value = "Filters";
+      overviewWorksheet.getCell(`A${currentRow}`).font = { bold: true, size: 12 };
+      currentRow += 1;
+
+      filters.forEach((item) => {
+        overviewWorksheet.getCell(`A${currentRow}`).value = item.label;
+        overviewWorksheet.getCell(`A${currentRow}`).font = { bold: true };
+        overviewWorksheet.getCell(`B${currentRow}`).value = item.value;
+        currentRow += 1;
+      });
+
+      currentRow += 1;
+    }
+
+    if (summary.length) {
+      overviewWorksheet.getCell(`A${currentRow}`).value = "Summary";
+      overviewWorksheet.getCell(`A${currentRow}`).font = { bold: true, size: 12 };
+      currentRow += 1;
+
+      summary.forEach((item) => {
+        overviewWorksheet.getCell(`A${currentRow}`).value = item.label;
+        overviewWorksheet.getCell(`A${currentRow}`).font = { bold: true };
+        overviewWorksheet.getCell(`B${currentRow}`).value = item.value;
+        currentRow += 1;
+      });
+    }
+
+    overviewWorksheet.columns = [
+      { width: 28 },
+      { width: 40 },
+      { width: 20 },
+      { width: 20 },
+    ];
+  }
 
   sheets.forEach((sheet) => {
     addTableSheet(workbook, sheet);
