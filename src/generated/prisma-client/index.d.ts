@@ -78,6 +78,16 @@ export type FacultyCourseAssignment = $Result.DefaultSelection<Prisma.$FacultyCo
  * 
  */
 export type FacultyBatchEntry = $Result.DefaultSelection<Prisma.$FacultyBatchEntryPayload>
+/**
+ * Model FacultyAttendanceSession
+ * 
+ */
+export type FacultyAttendanceSession = $Result.DefaultSelection<Prisma.$FacultyAttendanceSessionPayload>
+/**
+ * Model StudentAttendance
+ * 
+ */
+export type StudentAttendance = $Result.DefaultSelection<Prisma.$StudentAttendancePayload>
 
 /**
  * Enums
@@ -132,6 +142,14 @@ export const AssignmentStatus: {
 
 export type AssignmentStatus = (typeof AssignmentStatus)[keyof typeof AssignmentStatus]
 
+
+export const AttendanceStatus: {
+  PRESENT: 'PRESENT',
+  ABSENT: 'ABSENT'
+};
+
+export type AttendanceStatus = (typeof AttendanceStatus)[keyof typeof AttendanceStatus]
+
 }
 
 export type UserRole = $Enums.UserRole
@@ -153,6 +171,10 @@ export const BatchStatus: typeof $Enums.BatchStatus
 export type AssignmentStatus = $Enums.AssignmentStatus
 
 export const AssignmentStatus: typeof $Enums.AssignmentStatus
+
+export type AttendanceStatus = $Enums.AttendanceStatus
+
+export const AttendanceStatus: typeof $Enums.AttendanceStatus
 
 /**
  * ##  Prisma Client ʲˢ
@@ -404,6 +426,26 @@ export class PrismaClient<
     * ```
     */
   get facultyBatchEntry(): Prisma.FacultyBatchEntryDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.facultyAttendanceSession`: Exposes CRUD operations for the **FacultyAttendanceSession** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more FacultyAttendanceSessions
+    * const facultyAttendanceSessions = await prisma.facultyAttendanceSession.findMany()
+    * ```
+    */
+  get facultyAttendanceSession(): Prisma.FacultyAttendanceSessionDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.studentAttendance`: Exposes CRUD operations for the **StudentAttendance** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more StudentAttendances
+    * const studentAttendances = await prisma.studentAttendance.findMany()
+    * ```
+    */
+  get studentAttendance(): Prisma.StudentAttendanceDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -850,7 +892,9 @@ export namespace Prisma {
     StudentProfile: 'StudentProfile',
     FacultyProfile: 'FacultyProfile',
     FacultyCourseAssignment: 'FacultyCourseAssignment',
-    FacultyBatchEntry: 'FacultyBatchEntry'
+    FacultyBatchEntry: 'FacultyBatchEntry',
+    FacultyAttendanceSession: 'FacultyAttendanceSession',
+    StudentAttendance: 'StudentAttendance'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -866,7 +910,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "loginEvent" | "passwordResetToken" | "course" | "courseModule" | "batch" | "batchFacultyAssignment" | "courseStatusHistory" | "batchStatusHistory" | "studentProfile" | "facultyProfile" | "facultyCourseAssignment" | "facultyBatchEntry"
+      modelProps: "user" | "loginEvent" | "passwordResetToken" | "course" | "courseModule" | "batch" | "batchFacultyAssignment" | "courseStatusHistory" | "batchStatusHistory" | "studentProfile" | "facultyProfile" | "facultyCourseAssignment" | "facultyBatchEntry" | "facultyAttendanceSession" | "studentAttendance"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1832,6 +1876,154 @@ export namespace Prisma {
           }
         }
       }
+      FacultyAttendanceSession: {
+        payload: Prisma.$FacultyAttendanceSessionPayload<ExtArgs>
+        fields: Prisma.FacultyAttendanceSessionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.FacultyAttendanceSessionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyAttendanceSessionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.FacultyAttendanceSessionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyAttendanceSessionPayload>
+          }
+          findFirst: {
+            args: Prisma.FacultyAttendanceSessionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyAttendanceSessionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.FacultyAttendanceSessionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyAttendanceSessionPayload>
+          }
+          findMany: {
+            args: Prisma.FacultyAttendanceSessionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyAttendanceSessionPayload>[]
+          }
+          create: {
+            args: Prisma.FacultyAttendanceSessionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyAttendanceSessionPayload>
+          }
+          createMany: {
+            args: Prisma.FacultyAttendanceSessionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.FacultyAttendanceSessionCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyAttendanceSessionPayload>[]
+          }
+          delete: {
+            args: Prisma.FacultyAttendanceSessionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyAttendanceSessionPayload>
+          }
+          update: {
+            args: Prisma.FacultyAttendanceSessionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyAttendanceSessionPayload>
+          }
+          deleteMany: {
+            args: Prisma.FacultyAttendanceSessionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.FacultyAttendanceSessionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.FacultyAttendanceSessionUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyAttendanceSessionPayload>[]
+          }
+          upsert: {
+            args: Prisma.FacultyAttendanceSessionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyAttendanceSessionPayload>
+          }
+          aggregate: {
+            args: Prisma.FacultyAttendanceSessionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateFacultyAttendanceSession>
+          }
+          groupBy: {
+            args: Prisma.FacultyAttendanceSessionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<FacultyAttendanceSessionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.FacultyAttendanceSessionCountArgs<ExtArgs>
+            result: $Utils.Optional<FacultyAttendanceSessionCountAggregateOutputType> | number
+          }
+        }
+      }
+      StudentAttendance: {
+        payload: Prisma.$StudentAttendancePayload<ExtArgs>
+        fields: Prisma.StudentAttendanceFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.StudentAttendanceFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StudentAttendancePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.StudentAttendanceFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StudentAttendancePayload>
+          }
+          findFirst: {
+            args: Prisma.StudentAttendanceFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StudentAttendancePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.StudentAttendanceFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StudentAttendancePayload>
+          }
+          findMany: {
+            args: Prisma.StudentAttendanceFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StudentAttendancePayload>[]
+          }
+          create: {
+            args: Prisma.StudentAttendanceCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StudentAttendancePayload>
+          }
+          createMany: {
+            args: Prisma.StudentAttendanceCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.StudentAttendanceCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StudentAttendancePayload>[]
+          }
+          delete: {
+            args: Prisma.StudentAttendanceDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StudentAttendancePayload>
+          }
+          update: {
+            args: Prisma.StudentAttendanceUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StudentAttendancePayload>
+          }
+          deleteMany: {
+            args: Prisma.StudentAttendanceDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.StudentAttendanceUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.StudentAttendanceUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StudentAttendancePayload>[]
+          }
+          upsert: {
+            args: Prisma.StudentAttendanceUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StudentAttendancePayload>
+          }
+          aggregate: {
+            args: Prisma.StudentAttendanceAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateStudentAttendance>
+          }
+          groupBy: {
+            args: Prisma.StudentAttendanceGroupByArgs<ExtArgs>
+            result: $Utils.Optional<StudentAttendanceGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.StudentAttendanceCountArgs<ExtArgs>
+            result: $Utils.Optional<StudentAttendanceCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1953,6 +2145,8 @@ export namespace Prisma {
     facultyProfile?: FacultyProfileOmit
     facultyCourseAssignment?: FacultyCourseAssignmentOmit
     facultyBatchEntry?: FacultyBatchEntryOmit
+    facultyAttendanceSession?: FacultyAttendanceSessionOmit
+    studentAttendance?: StudentAttendanceOmit
   }
 
   /* Types for Logging */
@@ -2036,12 +2230,16 @@ export namespace Prisma {
     loginEvents: number
     passwordResetTokens: number
     batchFacultyAssignments: number
+    facultyAttendanceSessions: number
+    markedStudentAttendances: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     loginEvents?: boolean | UserCountOutputTypeCountLoginEventsArgs
     passwordResetTokens?: boolean | UserCountOutputTypeCountPasswordResetTokensArgs
     batchFacultyAssignments?: boolean | UserCountOutputTypeCountBatchFacultyAssignmentsArgs
+    facultyAttendanceSessions?: boolean | UserCountOutputTypeCountFacultyAttendanceSessionsArgs
+    markedStudentAttendances?: boolean | UserCountOutputTypeCountMarkedStudentAttendancesArgs
   }
 
   // Custom InputTypes
@@ -2074,6 +2272,20 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountBatchFacultyAssignmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: BatchFacultyAssignmentWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountFacultyAttendanceSessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FacultyAttendanceSessionWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountMarkedStudentAttendancesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: StudentAttendanceWhereInput
   }
 
 
@@ -2199,6 +2411,37 @@ export namespace Prisma {
    */
   export type BatchCountOutputTypeCountStatusHistoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: BatchStatusHistoryWhereInput
+  }
+
+
+  /**
+   * Count Type StudentProfileCountOutputType
+   */
+
+  export type StudentProfileCountOutputType = {
+    attendanceRecords: number
+  }
+
+  export type StudentProfileCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    attendanceRecords?: boolean | StudentProfileCountOutputTypeCountAttendanceRecordsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * StudentProfileCountOutputType without action
+   */
+  export type StudentProfileCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentProfileCountOutputType
+     */
+    select?: StudentProfileCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * StudentProfileCountOutputType without action
+   */
+  export type StudentProfileCountOutputTypeCountAttendanceRecordsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: StudentAttendanceWhereInput
   }
 
 
@@ -2579,6 +2822,8 @@ export namespace Prisma {
     loginEvents?: boolean | User$loginEventsArgs<ExtArgs>
     passwordResetTokens?: boolean | User$passwordResetTokensArgs<ExtArgs>
     batchFacultyAssignments?: boolean | User$batchFacultyAssignmentsArgs<ExtArgs>
+    facultyAttendanceSessions?: boolean | User$facultyAttendanceSessionsArgs<ExtArgs>
+    markedStudentAttendances?: boolean | User$markedStudentAttendancesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -2659,6 +2904,8 @@ export namespace Prisma {
     loginEvents?: boolean | User$loginEventsArgs<ExtArgs>
     passwordResetTokens?: boolean | User$passwordResetTokensArgs<ExtArgs>
     batchFacultyAssignments?: boolean | User$batchFacultyAssignmentsArgs<ExtArgs>
+    facultyAttendanceSessions?: boolean | User$facultyAttendanceSessionsArgs<ExtArgs>
+    markedStudentAttendances?: boolean | User$markedStudentAttendancesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -2670,6 +2917,8 @@ export namespace Prisma {
       loginEvents: Prisma.$LoginEventPayload<ExtArgs>[]
       passwordResetTokens: Prisma.$PasswordResetTokenPayload<ExtArgs>[]
       batchFacultyAssignments: Prisma.$BatchFacultyAssignmentPayload<ExtArgs>[]
+      facultyAttendanceSessions: Prisma.$FacultyAttendanceSessionPayload<ExtArgs>[]
+      markedStudentAttendances: Prisma.$StudentAttendancePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -3090,6 +3339,8 @@ export namespace Prisma {
     loginEvents<T extends User$loginEventsArgs<ExtArgs> = {}>(args?: Subset<T, User$loginEventsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LoginEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     passwordResetTokens<T extends User$passwordResetTokensArgs<ExtArgs> = {}>(args?: Subset<T, User$passwordResetTokensArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PasswordResetTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     batchFacultyAssignments<T extends User$batchFacultyAssignmentsArgs<ExtArgs> = {}>(args?: Subset<T, User$batchFacultyAssignmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BatchFacultyAssignmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    facultyAttendanceSessions<T extends User$facultyAttendanceSessionsArgs<ExtArgs> = {}>(args?: Subset<T, User$facultyAttendanceSessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FacultyAttendanceSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    markedStudentAttendances<T extends User$markedStudentAttendancesArgs<ExtArgs> = {}>(args?: Subset<T, User$markedStudentAttendancesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StudentAttendancePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3602,6 +3853,54 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: BatchFacultyAssignmentScalarFieldEnum | BatchFacultyAssignmentScalarFieldEnum[]
+  }
+
+  /**
+   * User.facultyAttendanceSessions
+   */
+  export type User$facultyAttendanceSessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyAttendanceSession
+     */
+    select?: FacultyAttendanceSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyAttendanceSession
+     */
+    omit?: FacultyAttendanceSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyAttendanceSessionInclude<ExtArgs> | null
+    where?: FacultyAttendanceSessionWhereInput
+    orderBy?: FacultyAttendanceSessionOrderByWithRelationInput | FacultyAttendanceSessionOrderByWithRelationInput[]
+    cursor?: FacultyAttendanceSessionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: FacultyAttendanceSessionScalarFieldEnum | FacultyAttendanceSessionScalarFieldEnum[]
+  }
+
+  /**
+   * User.markedStudentAttendances
+   */
+  export type User$markedStudentAttendancesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentAttendance
+     */
+    select?: StudentAttendanceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StudentAttendance
+     */
+    omit?: StudentAttendanceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentAttendanceInclude<ExtArgs> | null
+    where?: StudentAttendanceWhereInput
+    orderBy?: StudentAttendanceOrderByWithRelationInput | StudentAttendanceOrderByWithRelationInput[]
+    cursor?: StudentAttendanceWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: StudentAttendanceScalarFieldEnum | StudentAttendanceScalarFieldEnum[]
   }
 
   /**
@@ -13832,6 +14131,8 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     course?: boolean | StudentProfile$courseArgs<ExtArgs>
+    attendanceRecords?: boolean | StudentProfile$attendanceRecordsArgs<ExtArgs>
+    _count?: boolean | StudentProfileCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["studentProfile"]>
 
   export type StudentProfileSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -13974,6 +14275,8 @@ export namespace Prisma {
   export type StudentProfileOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "studentCode" | "studentName" | "mobileNumber" | "emailAddress" | "parentSpouseNumber" | "location" | "courseId" | "courseInterested" | "facultyId" | "facultyName" | "batchId" | "batchName" | "qualification" | "passedOutYear" | "currentStatus" | "designation" | "source" | "actualFees" | "registrationFees" | "discount" | "afterDiscount" | "installment1" | "installment2" | "installment3" | "installment4" | "totalAmount" | "admissionDate" | "firstInstallmentAmount" | "firstInstallmentDate" | "firstInstallmentStatus" | "firstInstallmentPaidAt" | "secondInstallmentAmount" | "secondDueDate" | "secondInstallmentStatus" | "secondInstallmentPaidAt" | "remarks" | "recordStatus" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["studentProfile"]>
   export type StudentProfileInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     course?: boolean | StudentProfile$courseArgs<ExtArgs>
+    attendanceRecords?: boolean | StudentProfile$attendanceRecordsArgs<ExtArgs>
+    _count?: boolean | StudentProfileCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type StudentProfileIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     course?: boolean | StudentProfile$courseArgs<ExtArgs>
@@ -13986,6 +14289,7 @@ export namespace Prisma {
     name: "StudentProfile"
     objects: {
       course: Prisma.$CoursePayload<ExtArgs> | null
+      attendanceRecords: Prisma.$StudentAttendancePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -14425,6 +14729,7 @@ export namespace Prisma {
   export interface Prisma__StudentProfileClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     course<T extends StudentProfile$courseArgs<ExtArgs> = {}>(args?: Subset<T, StudentProfile$courseArgs<ExtArgs>>): Prisma__CourseClient<$Result.GetResult<Prisma.$CoursePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    attendanceRecords<T extends StudentProfile$attendanceRecordsArgs<ExtArgs> = {}>(args?: Subset<T, StudentProfile$attendanceRecordsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StudentAttendancePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -14913,6 +15218,30 @@ export namespace Prisma {
      */
     include?: CourseInclude<ExtArgs> | null
     where?: CourseWhereInput
+  }
+
+  /**
+   * StudentProfile.attendanceRecords
+   */
+  export type StudentProfile$attendanceRecordsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentAttendance
+     */
+    select?: StudentAttendanceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StudentAttendance
+     */
+    omit?: StudentAttendanceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentAttendanceInclude<ExtArgs> | null
+    where?: StudentAttendanceWhereInput
+    orderBy?: StudentAttendanceOrderByWithRelationInput | StudentAttendanceOrderByWithRelationInput[]
+    cursor?: StudentAttendanceWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: StudentAttendanceScalarFieldEnum | StudentAttendanceScalarFieldEnum[]
   }
 
   /**
@@ -18400,6 +18729,2354 @@ export namespace Prisma {
 
 
   /**
+   * Model FacultyAttendanceSession
+   */
+
+  export type AggregateFacultyAttendanceSession = {
+    _count: FacultyAttendanceSessionCountAggregateOutputType | null
+    _min: FacultyAttendanceSessionMinAggregateOutputType | null
+    _max: FacultyAttendanceSessionMaxAggregateOutputType | null
+  }
+
+  export type FacultyAttendanceSessionMinAggregateOutputType = {
+    id: string | null
+    facultyUserId: string | null
+    attendanceDate: string | null
+    sessionSource: string | null
+    loginAt: Date | null
+    logoutAt: Date | null
+    logoutType: string | null
+    logoutReason: string | null
+    workReport: string | null
+    workCompleted: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type FacultyAttendanceSessionMaxAggregateOutputType = {
+    id: string | null
+    facultyUserId: string | null
+    attendanceDate: string | null
+    sessionSource: string | null
+    loginAt: Date | null
+    logoutAt: Date | null
+    logoutType: string | null
+    logoutReason: string | null
+    workReport: string | null
+    workCompleted: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type FacultyAttendanceSessionCountAggregateOutputType = {
+    id: number
+    facultyUserId: number
+    attendanceDate: number
+    sessionSource: number
+    loginAt: number
+    logoutAt: number
+    logoutType: number
+    logoutReason: number
+    workReport: number
+    workCompleted: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type FacultyAttendanceSessionMinAggregateInputType = {
+    id?: true
+    facultyUserId?: true
+    attendanceDate?: true
+    sessionSource?: true
+    loginAt?: true
+    logoutAt?: true
+    logoutType?: true
+    logoutReason?: true
+    workReport?: true
+    workCompleted?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type FacultyAttendanceSessionMaxAggregateInputType = {
+    id?: true
+    facultyUserId?: true
+    attendanceDate?: true
+    sessionSource?: true
+    loginAt?: true
+    logoutAt?: true
+    logoutType?: true
+    logoutReason?: true
+    workReport?: true
+    workCompleted?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type FacultyAttendanceSessionCountAggregateInputType = {
+    id?: true
+    facultyUserId?: true
+    attendanceDate?: true
+    sessionSource?: true
+    loginAt?: true
+    logoutAt?: true
+    logoutType?: true
+    logoutReason?: true
+    workReport?: true
+    workCompleted?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type FacultyAttendanceSessionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FacultyAttendanceSession to aggregate.
+     */
+    where?: FacultyAttendanceSessionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FacultyAttendanceSessions to fetch.
+     */
+    orderBy?: FacultyAttendanceSessionOrderByWithRelationInput | FacultyAttendanceSessionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: FacultyAttendanceSessionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FacultyAttendanceSessions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FacultyAttendanceSessions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned FacultyAttendanceSessions
+    **/
+    _count?: true | FacultyAttendanceSessionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: FacultyAttendanceSessionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: FacultyAttendanceSessionMaxAggregateInputType
+  }
+
+  export type GetFacultyAttendanceSessionAggregateType<T extends FacultyAttendanceSessionAggregateArgs> = {
+        [P in keyof T & keyof AggregateFacultyAttendanceSession]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateFacultyAttendanceSession[P]>
+      : GetScalarType<T[P], AggregateFacultyAttendanceSession[P]>
+  }
+
+
+
+
+  export type FacultyAttendanceSessionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FacultyAttendanceSessionWhereInput
+    orderBy?: FacultyAttendanceSessionOrderByWithAggregationInput | FacultyAttendanceSessionOrderByWithAggregationInput[]
+    by: FacultyAttendanceSessionScalarFieldEnum[] | FacultyAttendanceSessionScalarFieldEnum
+    having?: FacultyAttendanceSessionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: FacultyAttendanceSessionCountAggregateInputType | true
+    _min?: FacultyAttendanceSessionMinAggregateInputType
+    _max?: FacultyAttendanceSessionMaxAggregateInputType
+  }
+
+  export type FacultyAttendanceSessionGroupByOutputType = {
+    id: string
+    facultyUserId: string
+    attendanceDate: string
+    sessionSource: string
+    loginAt: Date
+    logoutAt: Date | null
+    logoutType: string | null
+    logoutReason: string | null
+    workReport: string | null
+    workCompleted: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: FacultyAttendanceSessionCountAggregateOutputType | null
+    _min: FacultyAttendanceSessionMinAggregateOutputType | null
+    _max: FacultyAttendanceSessionMaxAggregateOutputType | null
+  }
+
+  type GetFacultyAttendanceSessionGroupByPayload<T extends FacultyAttendanceSessionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<FacultyAttendanceSessionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof FacultyAttendanceSessionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], FacultyAttendanceSessionGroupByOutputType[P]>
+            : GetScalarType<T[P], FacultyAttendanceSessionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type FacultyAttendanceSessionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    facultyUserId?: boolean
+    attendanceDate?: boolean
+    sessionSource?: boolean
+    loginAt?: boolean
+    logoutAt?: boolean
+    logoutType?: boolean
+    logoutReason?: boolean
+    workReport?: boolean
+    workCompleted?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    facultyUser?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["facultyAttendanceSession"]>
+
+  export type FacultyAttendanceSessionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    facultyUserId?: boolean
+    attendanceDate?: boolean
+    sessionSource?: boolean
+    loginAt?: boolean
+    logoutAt?: boolean
+    logoutType?: boolean
+    logoutReason?: boolean
+    workReport?: boolean
+    workCompleted?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    facultyUser?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["facultyAttendanceSession"]>
+
+  export type FacultyAttendanceSessionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    facultyUserId?: boolean
+    attendanceDate?: boolean
+    sessionSource?: boolean
+    loginAt?: boolean
+    logoutAt?: boolean
+    logoutType?: boolean
+    logoutReason?: boolean
+    workReport?: boolean
+    workCompleted?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    facultyUser?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["facultyAttendanceSession"]>
+
+  export type FacultyAttendanceSessionSelectScalar = {
+    id?: boolean
+    facultyUserId?: boolean
+    attendanceDate?: boolean
+    sessionSource?: boolean
+    loginAt?: boolean
+    logoutAt?: boolean
+    logoutType?: boolean
+    logoutReason?: boolean
+    workReport?: boolean
+    workCompleted?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type FacultyAttendanceSessionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "facultyUserId" | "attendanceDate" | "sessionSource" | "loginAt" | "logoutAt" | "logoutType" | "logoutReason" | "workReport" | "workCompleted" | "createdAt" | "updatedAt", ExtArgs["result"]["facultyAttendanceSession"]>
+  export type FacultyAttendanceSessionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    facultyUser?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type FacultyAttendanceSessionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    facultyUser?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type FacultyAttendanceSessionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    facultyUser?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $FacultyAttendanceSessionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "FacultyAttendanceSession"
+    objects: {
+      facultyUser: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      facultyUserId: string
+      attendanceDate: string
+      sessionSource: string
+      loginAt: Date
+      logoutAt: Date | null
+      logoutType: string | null
+      logoutReason: string | null
+      workReport: string | null
+      workCompleted: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["facultyAttendanceSession"]>
+    composites: {}
+  }
+
+  type FacultyAttendanceSessionGetPayload<S extends boolean | null | undefined | FacultyAttendanceSessionDefaultArgs> = $Result.GetResult<Prisma.$FacultyAttendanceSessionPayload, S>
+
+  type FacultyAttendanceSessionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<FacultyAttendanceSessionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: FacultyAttendanceSessionCountAggregateInputType | true
+    }
+
+  export interface FacultyAttendanceSessionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['FacultyAttendanceSession'], meta: { name: 'FacultyAttendanceSession' } }
+    /**
+     * Find zero or one FacultyAttendanceSession that matches the filter.
+     * @param {FacultyAttendanceSessionFindUniqueArgs} args - Arguments to find a FacultyAttendanceSession
+     * @example
+     * // Get one FacultyAttendanceSession
+     * const facultyAttendanceSession = await prisma.facultyAttendanceSession.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends FacultyAttendanceSessionFindUniqueArgs>(args: SelectSubset<T, FacultyAttendanceSessionFindUniqueArgs<ExtArgs>>): Prisma__FacultyAttendanceSessionClient<$Result.GetResult<Prisma.$FacultyAttendanceSessionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one FacultyAttendanceSession that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {FacultyAttendanceSessionFindUniqueOrThrowArgs} args - Arguments to find a FacultyAttendanceSession
+     * @example
+     * // Get one FacultyAttendanceSession
+     * const facultyAttendanceSession = await prisma.facultyAttendanceSession.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends FacultyAttendanceSessionFindUniqueOrThrowArgs>(args: SelectSubset<T, FacultyAttendanceSessionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__FacultyAttendanceSessionClient<$Result.GetResult<Prisma.$FacultyAttendanceSessionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first FacultyAttendanceSession that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FacultyAttendanceSessionFindFirstArgs} args - Arguments to find a FacultyAttendanceSession
+     * @example
+     * // Get one FacultyAttendanceSession
+     * const facultyAttendanceSession = await prisma.facultyAttendanceSession.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends FacultyAttendanceSessionFindFirstArgs>(args?: SelectSubset<T, FacultyAttendanceSessionFindFirstArgs<ExtArgs>>): Prisma__FacultyAttendanceSessionClient<$Result.GetResult<Prisma.$FacultyAttendanceSessionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first FacultyAttendanceSession that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FacultyAttendanceSessionFindFirstOrThrowArgs} args - Arguments to find a FacultyAttendanceSession
+     * @example
+     * // Get one FacultyAttendanceSession
+     * const facultyAttendanceSession = await prisma.facultyAttendanceSession.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends FacultyAttendanceSessionFindFirstOrThrowArgs>(args?: SelectSubset<T, FacultyAttendanceSessionFindFirstOrThrowArgs<ExtArgs>>): Prisma__FacultyAttendanceSessionClient<$Result.GetResult<Prisma.$FacultyAttendanceSessionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more FacultyAttendanceSessions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FacultyAttendanceSessionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all FacultyAttendanceSessions
+     * const facultyAttendanceSessions = await prisma.facultyAttendanceSession.findMany()
+     * 
+     * // Get first 10 FacultyAttendanceSessions
+     * const facultyAttendanceSessions = await prisma.facultyAttendanceSession.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const facultyAttendanceSessionWithIdOnly = await prisma.facultyAttendanceSession.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends FacultyAttendanceSessionFindManyArgs>(args?: SelectSubset<T, FacultyAttendanceSessionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FacultyAttendanceSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a FacultyAttendanceSession.
+     * @param {FacultyAttendanceSessionCreateArgs} args - Arguments to create a FacultyAttendanceSession.
+     * @example
+     * // Create one FacultyAttendanceSession
+     * const FacultyAttendanceSession = await prisma.facultyAttendanceSession.create({
+     *   data: {
+     *     // ... data to create a FacultyAttendanceSession
+     *   }
+     * })
+     * 
+     */
+    create<T extends FacultyAttendanceSessionCreateArgs>(args: SelectSubset<T, FacultyAttendanceSessionCreateArgs<ExtArgs>>): Prisma__FacultyAttendanceSessionClient<$Result.GetResult<Prisma.$FacultyAttendanceSessionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many FacultyAttendanceSessions.
+     * @param {FacultyAttendanceSessionCreateManyArgs} args - Arguments to create many FacultyAttendanceSessions.
+     * @example
+     * // Create many FacultyAttendanceSessions
+     * const facultyAttendanceSession = await prisma.facultyAttendanceSession.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends FacultyAttendanceSessionCreateManyArgs>(args?: SelectSubset<T, FacultyAttendanceSessionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many FacultyAttendanceSessions and returns the data saved in the database.
+     * @param {FacultyAttendanceSessionCreateManyAndReturnArgs} args - Arguments to create many FacultyAttendanceSessions.
+     * @example
+     * // Create many FacultyAttendanceSessions
+     * const facultyAttendanceSession = await prisma.facultyAttendanceSession.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many FacultyAttendanceSessions and only return the `id`
+     * const facultyAttendanceSessionWithIdOnly = await prisma.facultyAttendanceSession.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends FacultyAttendanceSessionCreateManyAndReturnArgs>(args?: SelectSubset<T, FacultyAttendanceSessionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FacultyAttendanceSessionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a FacultyAttendanceSession.
+     * @param {FacultyAttendanceSessionDeleteArgs} args - Arguments to delete one FacultyAttendanceSession.
+     * @example
+     * // Delete one FacultyAttendanceSession
+     * const FacultyAttendanceSession = await prisma.facultyAttendanceSession.delete({
+     *   where: {
+     *     // ... filter to delete one FacultyAttendanceSession
+     *   }
+     * })
+     * 
+     */
+    delete<T extends FacultyAttendanceSessionDeleteArgs>(args: SelectSubset<T, FacultyAttendanceSessionDeleteArgs<ExtArgs>>): Prisma__FacultyAttendanceSessionClient<$Result.GetResult<Prisma.$FacultyAttendanceSessionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one FacultyAttendanceSession.
+     * @param {FacultyAttendanceSessionUpdateArgs} args - Arguments to update one FacultyAttendanceSession.
+     * @example
+     * // Update one FacultyAttendanceSession
+     * const facultyAttendanceSession = await prisma.facultyAttendanceSession.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends FacultyAttendanceSessionUpdateArgs>(args: SelectSubset<T, FacultyAttendanceSessionUpdateArgs<ExtArgs>>): Prisma__FacultyAttendanceSessionClient<$Result.GetResult<Prisma.$FacultyAttendanceSessionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more FacultyAttendanceSessions.
+     * @param {FacultyAttendanceSessionDeleteManyArgs} args - Arguments to filter FacultyAttendanceSessions to delete.
+     * @example
+     * // Delete a few FacultyAttendanceSessions
+     * const { count } = await prisma.facultyAttendanceSession.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends FacultyAttendanceSessionDeleteManyArgs>(args?: SelectSubset<T, FacultyAttendanceSessionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more FacultyAttendanceSessions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FacultyAttendanceSessionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many FacultyAttendanceSessions
+     * const facultyAttendanceSession = await prisma.facultyAttendanceSession.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends FacultyAttendanceSessionUpdateManyArgs>(args: SelectSubset<T, FacultyAttendanceSessionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more FacultyAttendanceSessions and returns the data updated in the database.
+     * @param {FacultyAttendanceSessionUpdateManyAndReturnArgs} args - Arguments to update many FacultyAttendanceSessions.
+     * @example
+     * // Update many FacultyAttendanceSessions
+     * const facultyAttendanceSession = await prisma.facultyAttendanceSession.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more FacultyAttendanceSessions and only return the `id`
+     * const facultyAttendanceSessionWithIdOnly = await prisma.facultyAttendanceSession.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends FacultyAttendanceSessionUpdateManyAndReturnArgs>(args: SelectSubset<T, FacultyAttendanceSessionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FacultyAttendanceSessionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one FacultyAttendanceSession.
+     * @param {FacultyAttendanceSessionUpsertArgs} args - Arguments to update or create a FacultyAttendanceSession.
+     * @example
+     * // Update or create a FacultyAttendanceSession
+     * const facultyAttendanceSession = await prisma.facultyAttendanceSession.upsert({
+     *   create: {
+     *     // ... data to create a FacultyAttendanceSession
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the FacultyAttendanceSession we want to update
+     *   }
+     * })
+     */
+    upsert<T extends FacultyAttendanceSessionUpsertArgs>(args: SelectSubset<T, FacultyAttendanceSessionUpsertArgs<ExtArgs>>): Prisma__FacultyAttendanceSessionClient<$Result.GetResult<Prisma.$FacultyAttendanceSessionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of FacultyAttendanceSessions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FacultyAttendanceSessionCountArgs} args - Arguments to filter FacultyAttendanceSessions to count.
+     * @example
+     * // Count the number of FacultyAttendanceSessions
+     * const count = await prisma.facultyAttendanceSession.count({
+     *   where: {
+     *     // ... the filter for the FacultyAttendanceSessions we want to count
+     *   }
+     * })
+    **/
+    count<T extends FacultyAttendanceSessionCountArgs>(
+      args?: Subset<T, FacultyAttendanceSessionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], FacultyAttendanceSessionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a FacultyAttendanceSession.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FacultyAttendanceSessionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends FacultyAttendanceSessionAggregateArgs>(args: Subset<T, FacultyAttendanceSessionAggregateArgs>): Prisma.PrismaPromise<GetFacultyAttendanceSessionAggregateType<T>>
+
+    /**
+     * Group by FacultyAttendanceSession.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FacultyAttendanceSessionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends FacultyAttendanceSessionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: FacultyAttendanceSessionGroupByArgs['orderBy'] }
+        : { orderBy?: FacultyAttendanceSessionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, FacultyAttendanceSessionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetFacultyAttendanceSessionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the FacultyAttendanceSession model
+   */
+  readonly fields: FacultyAttendanceSessionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for FacultyAttendanceSession.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__FacultyAttendanceSessionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    facultyUser<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the FacultyAttendanceSession model
+   */
+  interface FacultyAttendanceSessionFieldRefs {
+    readonly id: FieldRef<"FacultyAttendanceSession", 'String'>
+    readonly facultyUserId: FieldRef<"FacultyAttendanceSession", 'String'>
+    readonly attendanceDate: FieldRef<"FacultyAttendanceSession", 'String'>
+    readonly sessionSource: FieldRef<"FacultyAttendanceSession", 'String'>
+    readonly loginAt: FieldRef<"FacultyAttendanceSession", 'DateTime'>
+    readonly logoutAt: FieldRef<"FacultyAttendanceSession", 'DateTime'>
+    readonly logoutType: FieldRef<"FacultyAttendanceSession", 'String'>
+    readonly logoutReason: FieldRef<"FacultyAttendanceSession", 'String'>
+    readonly workReport: FieldRef<"FacultyAttendanceSession", 'String'>
+    readonly workCompleted: FieldRef<"FacultyAttendanceSession", 'String'>
+    readonly createdAt: FieldRef<"FacultyAttendanceSession", 'DateTime'>
+    readonly updatedAt: FieldRef<"FacultyAttendanceSession", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * FacultyAttendanceSession findUnique
+   */
+  export type FacultyAttendanceSessionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyAttendanceSession
+     */
+    select?: FacultyAttendanceSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyAttendanceSession
+     */
+    omit?: FacultyAttendanceSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyAttendanceSessionInclude<ExtArgs> | null
+    /**
+     * Filter, which FacultyAttendanceSession to fetch.
+     */
+    where: FacultyAttendanceSessionWhereUniqueInput
+  }
+
+  /**
+   * FacultyAttendanceSession findUniqueOrThrow
+   */
+  export type FacultyAttendanceSessionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyAttendanceSession
+     */
+    select?: FacultyAttendanceSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyAttendanceSession
+     */
+    omit?: FacultyAttendanceSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyAttendanceSessionInclude<ExtArgs> | null
+    /**
+     * Filter, which FacultyAttendanceSession to fetch.
+     */
+    where: FacultyAttendanceSessionWhereUniqueInput
+  }
+
+  /**
+   * FacultyAttendanceSession findFirst
+   */
+  export type FacultyAttendanceSessionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyAttendanceSession
+     */
+    select?: FacultyAttendanceSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyAttendanceSession
+     */
+    omit?: FacultyAttendanceSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyAttendanceSessionInclude<ExtArgs> | null
+    /**
+     * Filter, which FacultyAttendanceSession to fetch.
+     */
+    where?: FacultyAttendanceSessionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FacultyAttendanceSessions to fetch.
+     */
+    orderBy?: FacultyAttendanceSessionOrderByWithRelationInput | FacultyAttendanceSessionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FacultyAttendanceSessions.
+     */
+    cursor?: FacultyAttendanceSessionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FacultyAttendanceSessions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FacultyAttendanceSessions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FacultyAttendanceSessions.
+     */
+    distinct?: FacultyAttendanceSessionScalarFieldEnum | FacultyAttendanceSessionScalarFieldEnum[]
+  }
+
+  /**
+   * FacultyAttendanceSession findFirstOrThrow
+   */
+  export type FacultyAttendanceSessionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyAttendanceSession
+     */
+    select?: FacultyAttendanceSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyAttendanceSession
+     */
+    omit?: FacultyAttendanceSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyAttendanceSessionInclude<ExtArgs> | null
+    /**
+     * Filter, which FacultyAttendanceSession to fetch.
+     */
+    where?: FacultyAttendanceSessionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FacultyAttendanceSessions to fetch.
+     */
+    orderBy?: FacultyAttendanceSessionOrderByWithRelationInput | FacultyAttendanceSessionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FacultyAttendanceSessions.
+     */
+    cursor?: FacultyAttendanceSessionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FacultyAttendanceSessions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FacultyAttendanceSessions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FacultyAttendanceSessions.
+     */
+    distinct?: FacultyAttendanceSessionScalarFieldEnum | FacultyAttendanceSessionScalarFieldEnum[]
+  }
+
+  /**
+   * FacultyAttendanceSession findMany
+   */
+  export type FacultyAttendanceSessionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyAttendanceSession
+     */
+    select?: FacultyAttendanceSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyAttendanceSession
+     */
+    omit?: FacultyAttendanceSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyAttendanceSessionInclude<ExtArgs> | null
+    /**
+     * Filter, which FacultyAttendanceSessions to fetch.
+     */
+    where?: FacultyAttendanceSessionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FacultyAttendanceSessions to fetch.
+     */
+    orderBy?: FacultyAttendanceSessionOrderByWithRelationInput | FacultyAttendanceSessionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing FacultyAttendanceSessions.
+     */
+    cursor?: FacultyAttendanceSessionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FacultyAttendanceSessions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FacultyAttendanceSessions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FacultyAttendanceSessions.
+     */
+    distinct?: FacultyAttendanceSessionScalarFieldEnum | FacultyAttendanceSessionScalarFieldEnum[]
+  }
+
+  /**
+   * FacultyAttendanceSession create
+   */
+  export type FacultyAttendanceSessionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyAttendanceSession
+     */
+    select?: FacultyAttendanceSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyAttendanceSession
+     */
+    omit?: FacultyAttendanceSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyAttendanceSessionInclude<ExtArgs> | null
+    /**
+     * The data needed to create a FacultyAttendanceSession.
+     */
+    data: XOR<FacultyAttendanceSessionCreateInput, FacultyAttendanceSessionUncheckedCreateInput>
+  }
+
+  /**
+   * FacultyAttendanceSession createMany
+   */
+  export type FacultyAttendanceSessionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many FacultyAttendanceSessions.
+     */
+    data: FacultyAttendanceSessionCreateManyInput | FacultyAttendanceSessionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * FacultyAttendanceSession createManyAndReturn
+   */
+  export type FacultyAttendanceSessionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyAttendanceSession
+     */
+    select?: FacultyAttendanceSessionSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyAttendanceSession
+     */
+    omit?: FacultyAttendanceSessionOmit<ExtArgs> | null
+    /**
+     * The data used to create many FacultyAttendanceSessions.
+     */
+    data: FacultyAttendanceSessionCreateManyInput | FacultyAttendanceSessionCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyAttendanceSessionIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * FacultyAttendanceSession update
+   */
+  export type FacultyAttendanceSessionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyAttendanceSession
+     */
+    select?: FacultyAttendanceSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyAttendanceSession
+     */
+    omit?: FacultyAttendanceSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyAttendanceSessionInclude<ExtArgs> | null
+    /**
+     * The data needed to update a FacultyAttendanceSession.
+     */
+    data: XOR<FacultyAttendanceSessionUpdateInput, FacultyAttendanceSessionUncheckedUpdateInput>
+    /**
+     * Choose, which FacultyAttendanceSession to update.
+     */
+    where: FacultyAttendanceSessionWhereUniqueInput
+  }
+
+  /**
+   * FacultyAttendanceSession updateMany
+   */
+  export type FacultyAttendanceSessionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update FacultyAttendanceSessions.
+     */
+    data: XOR<FacultyAttendanceSessionUpdateManyMutationInput, FacultyAttendanceSessionUncheckedUpdateManyInput>
+    /**
+     * Filter which FacultyAttendanceSessions to update
+     */
+    where?: FacultyAttendanceSessionWhereInput
+    /**
+     * Limit how many FacultyAttendanceSessions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * FacultyAttendanceSession updateManyAndReturn
+   */
+  export type FacultyAttendanceSessionUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyAttendanceSession
+     */
+    select?: FacultyAttendanceSessionSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyAttendanceSession
+     */
+    omit?: FacultyAttendanceSessionOmit<ExtArgs> | null
+    /**
+     * The data used to update FacultyAttendanceSessions.
+     */
+    data: XOR<FacultyAttendanceSessionUpdateManyMutationInput, FacultyAttendanceSessionUncheckedUpdateManyInput>
+    /**
+     * Filter which FacultyAttendanceSessions to update
+     */
+    where?: FacultyAttendanceSessionWhereInput
+    /**
+     * Limit how many FacultyAttendanceSessions to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyAttendanceSessionIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * FacultyAttendanceSession upsert
+   */
+  export type FacultyAttendanceSessionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyAttendanceSession
+     */
+    select?: FacultyAttendanceSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyAttendanceSession
+     */
+    omit?: FacultyAttendanceSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyAttendanceSessionInclude<ExtArgs> | null
+    /**
+     * The filter to search for the FacultyAttendanceSession to update in case it exists.
+     */
+    where: FacultyAttendanceSessionWhereUniqueInput
+    /**
+     * In case the FacultyAttendanceSession found by the `where` argument doesn't exist, create a new FacultyAttendanceSession with this data.
+     */
+    create: XOR<FacultyAttendanceSessionCreateInput, FacultyAttendanceSessionUncheckedCreateInput>
+    /**
+     * In case the FacultyAttendanceSession was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<FacultyAttendanceSessionUpdateInput, FacultyAttendanceSessionUncheckedUpdateInput>
+  }
+
+  /**
+   * FacultyAttendanceSession delete
+   */
+  export type FacultyAttendanceSessionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyAttendanceSession
+     */
+    select?: FacultyAttendanceSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyAttendanceSession
+     */
+    omit?: FacultyAttendanceSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyAttendanceSessionInclude<ExtArgs> | null
+    /**
+     * Filter which FacultyAttendanceSession to delete.
+     */
+    where: FacultyAttendanceSessionWhereUniqueInput
+  }
+
+  /**
+   * FacultyAttendanceSession deleteMany
+   */
+  export type FacultyAttendanceSessionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FacultyAttendanceSessions to delete
+     */
+    where?: FacultyAttendanceSessionWhereInput
+    /**
+     * Limit how many FacultyAttendanceSessions to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * FacultyAttendanceSession without action
+   */
+  export type FacultyAttendanceSessionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyAttendanceSession
+     */
+    select?: FacultyAttendanceSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyAttendanceSession
+     */
+    omit?: FacultyAttendanceSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyAttendanceSessionInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model StudentAttendance
+   */
+
+  export type AggregateStudentAttendance = {
+    _count: StudentAttendanceCountAggregateOutputType | null
+    _min: StudentAttendanceMinAggregateOutputType | null
+    _max: StudentAttendanceMaxAggregateOutputType | null
+  }
+
+  export type StudentAttendanceMinAggregateOutputType = {
+    id: string | null
+    studentId: string | null
+    facultyUserId: string | null
+    courseId: string | null
+    batchName: string | null
+    attendanceDate: string | null
+    status: $Enums.AttendanceStatus | null
+    markedAt: Date | null
+    notes: string | null
+    createdBy: string | null
+    updatedBy: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type StudentAttendanceMaxAggregateOutputType = {
+    id: string | null
+    studentId: string | null
+    facultyUserId: string | null
+    courseId: string | null
+    batchName: string | null
+    attendanceDate: string | null
+    status: $Enums.AttendanceStatus | null
+    markedAt: Date | null
+    notes: string | null
+    createdBy: string | null
+    updatedBy: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type StudentAttendanceCountAggregateOutputType = {
+    id: number
+    studentId: number
+    facultyUserId: number
+    courseId: number
+    batchName: number
+    attendanceDate: number
+    status: number
+    markedAt: number
+    notes: number
+    createdBy: number
+    updatedBy: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type StudentAttendanceMinAggregateInputType = {
+    id?: true
+    studentId?: true
+    facultyUserId?: true
+    courseId?: true
+    batchName?: true
+    attendanceDate?: true
+    status?: true
+    markedAt?: true
+    notes?: true
+    createdBy?: true
+    updatedBy?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type StudentAttendanceMaxAggregateInputType = {
+    id?: true
+    studentId?: true
+    facultyUserId?: true
+    courseId?: true
+    batchName?: true
+    attendanceDate?: true
+    status?: true
+    markedAt?: true
+    notes?: true
+    createdBy?: true
+    updatedBy?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type StudentAttendanceCountAggregateInputType = {
+    id?: true
+    studentId?: true
+    facultyUserId?: true
+    courseId?: true
+    batchName?: true
+    attendanceDate?: true
+    status?: true
+    markedAt?: true
+    notes?: true
+    createdBy?: true
+    updatedBy?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type StudentAttendanceAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which StudentAttendance to aggregate.
+     */
+    where?: StudentAttendanceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of StudentAttendances to fetch.
+     */
+    orderBy?: StudentAttendanceOrderByWithRelationInput | StudentAttendanceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: StudentAttendanceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` StudentAttendances from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` StudentAttendances.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned StudentAttendances
+    **/
+    _count?: true | StudentAttendanceCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: StudentAttendanceMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: StudentAttendanceMaxAggregateInputType
+  }
+
+  export type GetStudentAttendanceAggregateType<T extends StudentAttendanceAggregateArgs> = {
+        [P in keyof T & keyof AggregateStudentAttendance]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateStudentAttendance[P]>
+      : GetScalarType<T[P], AggregateStudentAttendance[P]>
+  }
+
+
+
+
+  export type StudentAttendanceGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: StudentAttendanceWhereInput
+    orderBy?: StudentAttendanceOrderByWithAggregationInput | StudentAttendanceOrderByWithAggregationInput[]
+    by: StudentAttendanceScalarFieldEnum[] | StudentAttendanceScalarFieldEnum
+    having?: StudentAttendanceScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: StudentAttendanceCountAggregateInputType | true
+    _min?: StudentAttendanceMinAggregateInputType
+    _max?: StudentAttendanceMaxAggregateInputType
+  }
+
+  export type StudentAttendanceGroupByOutputType = {
+    id: string
+    studentId: string
+    facultyUserId: string | null
+    courseId: string | null
+    batchName: string | null
+    attendanceDate: string
+    status: $Enums.AttendanceStatus
+    markedAt: Date
+    notes: string | null
+    createdBy: string | null
+    updatedBy: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: StudentAttendanceCountAggregateOutputType | null
+    _min: StudentAttendanceMinAggregateOutputType | null
+    _max: StudentAttendanceMaxAggregateOutputType | null
+  }
+
+  type GetStudentAttendanceGroupByPayload<T extends StudentAttendanceGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<StudentAttendanceGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof StudentAttendanceGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], StudentAttendanceGroupByOutputType[P]>
+            : GetScalarType<T[P], StudentAttendanceGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type StudentAttendanceSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    studentId?: boolean
+    facultyUserId?: boolean
+    courseId?: boolean
+    batchName?: boolean
+    attendanceDate?: boolean
+    status?: boolean
+    markedAt?: boolean
+    notes?: boolean
+    createdBy?: boolean
+    updatedBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    student?: boolean | StudentProfileDefaultArgs<ExtArgs>
+    facultyUser?: boolean | StudentAttendance$facultyUserArgs<ExtArgs>
+  }, ExtArgs["result"]["studentAttendance"]>
+
+  export type StudentAttendanceSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    studentId?: boolean
+    facultyUserId?: boolean
+    courseId?: boolean
+    batchName?: boolean
+    attendanceDate?: boolean
+    status?: boolean
+    markedAt?: boolean
+    notes?: boolean
+    createdBy?: boolean
+    updatedBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    student?: boolean | StudentProfileDefaultArgs<ExtArgs>
+    facultyUser?: boolean | StudentAttendance$facultyUserArgs<ExtArgs>
+  }, ExtArgs["result"]["studentAttendance"]>
+
+  export type StudentAttendanceSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    studentId?: boolean
+    facultyUserId?: boolean
+    courseId?: boolean
+    batchName?: boolean
+    attendanceDate?: boolean
+    status?: boolean
+    markedAt?: boolean
+    notes?: boolean
+    createdBy?: boolean
+    updatedBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    student?: boolean | StudentProfileDefaultArgs<ExtArgs>
+    facultyUser?: boolean | StudentAttendance$facultyUserArgs<ExtArgs>
+  }, ExtArgs["result"]["studentAttendance"]>
+
+  export type StudentAttendanceSelectScalar = {
+    id?: boolean
+    studentId?: boolean
+    facultyUserId?: boolean
+    courseId?: boolean
+    batchName?: boolean
+    attendanceDate?: boolean
+    status?: boolean
+    markedAt?: boolean
+    notes?: boolean
+    createdBy?: boolean
+    updatedBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type StudentAttendanceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "studentId" | "facultyUserId" | "courseId" | "batchName" | "attendanceDate" | "status" | "markedAt" | "notes" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["studentAttendance"]>
+  export type StudentAttendanceInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    student?: boolean | StudentProfileDefaultArgs<ExtArgs>
+    facultyUser?: boolean | StudentAttendance$facultyUserArgs<ExtArgs>
+  }
+  export type StudentAttendanceIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    student?: boolean | StudentProfileDefaultArgs<ExtArgs>
+    facultyUser?: boolean | StudentAttendance$facultyUserArgs<ExtArgs>
+  }
+  export type StudentAttendanceIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    student?: boolean | StudentProfileDefaultArgs<ExtArgs>
+    facultyUser?: boolean | StudentAttendance$facultyUserArgs<ExtArgs>
+  }
+
+  export type $StudentAttendancePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "StudentAttendance"
+    objects: {
+      student: Prisma.$StudentProfilePayload<ExtArgs>
+      facultyUser: Prisma.$UserPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      studentId: string
+      facultyUserId: string | null
+      courseId: string | null
+      batchName: string | null
+      attendanceDate: string
+      status: $Enums.AttendanceStatus
+      markedAt: Date
+      notes: string | null
+      createdBy: string | null
+      updatedBy: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["studentAttendance"]>
+    composites: {}
+  }
+
+  type StudentAttendanceGetPayload<S extends boolean | null | undefined | StudentAttendanceDefaultArgs> = $Result.GetResult<Prisma.$StudentAttendancePayload, S>
+
+  type StudentAttendanceCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<StudentAttendanceFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: StudentAttendanceCountAggregateInputType | true
+    }
+
+  export interface StudentAttendanceDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['StudentAttendance'], meta: { name: 'StudentAttendance' } }
+    /**
+     * Find zero or one StudentAttendance that matches the filter.
+     * @param {StudentAttendanceFindUniqueArgs} args - Arguments to find a StudentAttendance
+     * @example
+     * // Get one StudentAttendance
+     * const studentAttendance = await prisma.studentAttendance.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends StudentAttendanceFindUniqueArgs>(args: SelectSubset<T, StudentAttendanceFindUniqueArgs<ExtArgs>>): Prisma__StudentAttendanceClient<$Result.GetResult<Prisma.$StudentAttendancePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one StudentAttendance that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {StudentAttendanceFindUniqueOrThrowArgs} args - Arguments to find a StudentAttendance
+     * @example
+     * // Get one StudentAttendance
+     * const studentAttendance = await prisma.studentAttendance.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends StudentAttendanceFindUniqueOrThrowArgs>(args: SelectSubset<T, StudentAttendanceFindUniqueOrThrowArgs<ExtArgs>>): Prisma__StudentAttendanceClient<$Result.GetResult<Prisma.$StudentAttendancePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first StudentAttendance that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StudentAttendanceFindFirstArgs} args - Arguments to find a StudentAttendance
+     * @example
+     * // Get one StudentAttendance
+     * const studentAttendance = await prisma.studentAttendance.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends StudentAttendanceFindFirstArgs>(args?: SelectSubset<T, StudentAttendanceFindFirstArgs<ExtArgs>>): Prisma__StudentAttendanceClient<$Result.GetResult<Prisma.$StudentAttendancePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first StudentAttendance that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StudentAttendanceFindFirstOrThrowArgs} args - Arguments to find a StudentAttendance
+     * @example
+     * // Get one StudentAttendance
+     * const studentAttendance = await prisma.studentAttendance.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends StudentAttendanceFindFirstOrThrowArgs>(args?: SelectSubset<T, StudentAttendanceFindFirstOrThrowArgs<ExtArgs>>): Prisma__StudentAttendanceClient<$Result.GetResult<Prisma.$StudentAttendancePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more StudentAttendances that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StudentAttendanceFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all StudentAttendances
+     * const studentAttendances = await prisma.studentAttendance.findMany()
+     * 
+     * // Get first 10 StudentAttendances
+     * const studentAttendances = await prisma.studentAttendance.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const studentAttendanceWithIdOnly = await prisma.studentAttendance.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends StudentAttendanceFindManyArgs>(args?: SelectSubset<T, StudentAttendanceFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StudentAttendancePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a StudentAttendance.
+     * @param {StudentAttendanceCreateArgs} args - Arguments to create a StudentAttendance.
+     * @example
+     * // Create one StudentAttendance
+     * const StudentAttendance = await prisma.studentAttendance.create({
+     *   data: {
+     *     // ... data to create a StudentAttendance
+     *   }
+     * })
+     * 
+     */
+    create<T extends StudentAttendanceCreateArgs>(args: SelectSubset<T, StudentAttendanceCreateArgs<ExtArgs>>): Prisma__StudentAttendanceClient<$Result.GetResult<Prisma.$StudentAttendancePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many StudentAttendances.
+     * @param {StudentAttendanceCreateManyArgs} args - Arguments to create many StudentAttendances.
+     * @example
+     * // Create many StudentAttendances
+     * const studentAttendance = await prisma.studentAttendance.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends StudentAttendanceCreateManyArgs>(args?: SelectSubset<T, StudentAttendanceCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many StudentAttendances and returns the data saved in the database.
+     * @param {StudentAttendanceCreateManyAndReturnArgs} args - Arguments to create many StudentAttendances.
+     * @example
+     * // Create many StudentAttendances
+     * const studentAttendance = await prisma.studentAttendance.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many StudentAttendances and only return the `id`
+     * const studentAttendanceWithIdOnly = await prisma.studentAttendance.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends StudentAttendanceCreateManyAndReturnArgs>(args?: SelectSubset<T, StudentAttendanceCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StudentAttendancePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a StudentAttendance.
+     * @param {StudentAttendanceDeleteArgs} args - Arguments to delete one StudentAttendance.
+     * @example
+     * // Delete one StudentAttendance
+     * const StudentAttendance = await prisma.studentAttendance.delete({
+     *   where: {
+     *     // ... filter to delete one StudentAttendance
+     *   }
+     * })
+     * 
+     */
+    delete<T extends StudentAttendanceDeleteArgs>(args: SelectSubset<T, StudentAttendanceDeleteArgs<ExtArgs>>): Prisma__StudentAttendanceClient<$Result.GetResult<Prisma.$StudentAttendancePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one StudentAttendance.
+     * @param {StudentAttendanceUpdateArgs} args - Arguments to update one StudentAttendance.
+     * @example
+     * // Update one StudentAttendance
+     * const studentAttendance = await prisma.studentAttendance.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends StudentAttendanceUpdateArgs>(args: SelectSubset<T, StudentAttendanceUpdateArgs<ExtArgs>>): Prisma__StudentAttendanceClient<$Result.GetResult<Prisma.$StudentAttendancePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more StudentAttendances.
+     * @param {StudentAttendanceDeleteManyArgs} args - Arguments to filter StudentAttendances to delete.
+     * @example
+     * // Delete a few StudentAttendances
+     * const { count } = await prisma.studentAttendance.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends StudentAttendanceDeleteManyArgs>(args?: SelectSubset<T, StudentAttendanceDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more StudentAttendances.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StudentAttendanceUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many StudentAttendances
+     * const studentAttendance = await prisma.studentAttendance.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends StudentAttendanceUpdateManyArgs>(args: SelectSubset<T, StudentAttendanceUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more StudentAttendances and returns the data updated in the database.
+     * @param {StudentAttendanceUpdateManyAndReturnArgs} args - Arguments to update many StudentAttendances.
+     * @example
+     * // Update many StudentAttendances
+     * const studentAttendance = await prisma.studentAttendance.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more StudentAttendances and only return the `id`
+     * const studentAttendanceWithIdOnly = await prisma.studentAttendance.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends StudentAttendanceUpdateManyAndReturnArgs>(args: SelectSubset<T, StudentAttendanceUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StudentAttendancePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one StudentAttendance.
+     * @param {StudentAttendanceUpsertArgs} args - Arguments to update or create a StudentAttendance.
+     * @example
+     * // Update or create a StudentAttendance
+     * const studentAttendance = await prisma.studentAttendance.upsert({
+     *   create: {
+     *     // ... data to create a StudentAttendance
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the StudentAttendance we want to update
+     *   }
+     * })
+     */
+    upsert<T extends StudentAttendanceUpsertArgs>(args: SelectSubset<T, StudentAttendanceUpsertArgs<ExtArgs>>): Prisma__StudentAttendanceClient<$Result.GetResult<Prisma.$StudentAttendancePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of StudentAttendances.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StudentAttendanceCountArgs} args - Arguments to filter StudentAttendances to count.
+     * @example
+     * // Count the number of StudentAttendances
+     * const count = await prisma.studentAttendance.count({
+     *   where: {
+     *     // ... the filter for the StudentAttendances we want to count
+     *   }
+     * })
+    **/
+    count<T extends StudentAttendanceCountArgs>(
+      args?: Subset<T, StudentAttendanceCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], StudentAttendanceCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a StudentAttendance.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StudentAttendanceAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends StudentAttendanceAggregateArgs>(args: Subset<T, StudentAttendanceAggregateArgs>): Prisma.PrismaPromise<GetStudentAttendanceAggregateType<T>>
+
+    /**
+     * Group by StudentAttendance.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StudentAttendanceGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends StudentAttendanceGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: StudentAttendanceGroupByArgs['orderBy'] }
+        : { orderBy?: StudentAttendanceGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, StudentAttendanceGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetStudentAttendanceGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the StudentAttendance model
+   */
+  readonly fields: StudentAttendanceFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for StudentAttendance.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__StudentAttendanceClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    student<T extends StudentProfileDefaultArgs<ExtArgs> = {}>(args?: Subset<T, StudentProfileDefaultArgs<ExtArgs>>): Prisma__StudentProfileClient<$Result.GetResult<Prisma.$StudentProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    facultyUser<T extends StudentAttendance$facultyUserArgs<ExtArgs> = {}>(args?: Subset<T, StudentAttendance$facultyUserArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the StudentAttendance model
+   */
+  interface StudentAttendanceFieldRefs {
+    readonly id: FieldRef<"StudentAttendance", 'String'>
+    readonly studentId: FieldRef<"StudentAttendance", 'String'>
+    readonly facultyUserId: FieldRef<"StudentAttendance", 'String'>
+    readonly courseId: FieldRef<"StudentAttendance", 'String'>
+    readonly batchName: FieldRef<"StudentAttendance", 'String'>
+    readonly attendanceDate: FieldRef<"StudentAttendance", 'String'>
+    readonly status: FieldRef<"StudentAttendance", 'AttendanceStatus'>
+    readonly markedAt: FieldRef<"StudentAttendance", 'DateTime'>
+    readonly notes: FieldRef<"StudentAttendance", 'String'>
+    readonly createdBy: FieldRef<"StudentAttendance", 'String'>
+    readonly updatedBy: FieldRef<"StudentAttendance", 'String'>
+    readonly createdAt: FieldRef<"StudentAttendance", 'DateTime'>
+    readonly updatedAt: FieldRef<"StudentAttendance", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * StudentAttendance findUnique
+   */
+  export type StudentAttendanceFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentAttendance
+     */
+    select?: StudentAttendanceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StudentAttendance
+     */
+    omit?: StudentAttendanceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentAttendanceInclude<ExtArgs> | null
+    /**
+     * Filter, which StudentAttendance to fetch.
+     */
+    where: StudentAttendanceWhereUniqueInput
+  }
+
+  /**
+   * StudentAttendance findUniqueOrThrow
+   */
+  export type StudentAttendanceFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentAttendance
+     */
+    select?: StudentAttendanceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StudentAttendance
+     */
+    omit?: StudentAttendanceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentAttendanceInclude<ExtArgs> | null
+    /**
+     * Filter, which StudentAttendance to fetch.
+     */
+    where: StudentAttendanceWhereUniqueInput
+  }
+
+  /**
+   * StudentAttendance findFirst
+   */
+  export type StudentAttendanceFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentAttendance
+     */
+    select?: StudentAttendanceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StudentAttendance
+     */
+    omit?: StudentAttendanceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentAttendanceInclude<ExtArgs> | null
+    /**
+     * Filter, which StudentAttendance to fetch.
+     */
+    where?: StudentAttendanceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of StudentAttendances to fetch.
+     */
+    orderBy?: StudentAttendanceOrderByWithRelationInput | StudentAttendanceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for StudentAttendances.
+     */
+    cursor?: StudentAttendanceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` StudentAttendances from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` StudentAttendances.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of StudentAttendances.
+     */
+    distinct?: StudentAttendanceScalarFieldEnum | StudentAttendanceScalarFieldEnum[]
+  }
+
+  /**
+   * StudentAttendance findFirstOrThrow
+   */
+  export type StudentAttendanceFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentAttendance
+     */
+    select?: StudentAttendanceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StudentAttendance
+     */
+    omit?: StudentAttendanceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentAttendanceInclude<ExtArgs> | null
+    /**
+     * Filter, which StudentAttendance to fetch.
+     */
+    where?: StudentAttendanceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of StudentAttendances to fetch.
+     */
+    orderBy?: StudentAttendanceOrderByWithRelationInput | StudentAttendanceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for StudentAttendances.
+     */
+    cursor?: StudentAttendanceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` StudentAttendances from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` StudentAttendances.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of StudentAttendances.
+     */
+    distinct?: StudentAttendanceScalarFieldEnum | StudentAttendanceScalarFieldEnum[]
+  }
+
+  /**
+   * StudentAttendance findMany
+   */
+  export type StudentAttendanceFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentAttendance
+     */
+    select?: StudentAttendanceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StudentAttendance
+     */
+    omit?: StudentAttendanceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentAttendanceInclude<ExtArgs> | null
+    /**
+     * Filter, which StudentAttendances to fetch.
+     */
+    where?: StudentAttendanceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of StudentAttendances to fetch.
+     */
+    orderBy?: StudentAttendanceOrderByWithRelationInput | StudentAttendanceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing StudentAttendances.
+     */
+    cursor?: StudentAttendanceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` StudentAttendances from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` StudentAttendances.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of StudentAttendances.
+     */
+    distinct?: StudentAttendanceScalarFieldEnum | StudentAttendanceScalarFieldEnum[]
+  }
+
+  /**
+   * StudentAttendance create
+   */
+  export type StudentAttendanceCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentAttendance
+     */
+    select?: StudentAttendanceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StudentAttendance
+     */
+    omit?: StudentAttendanceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentAttendanceInclude<ExtArgs> | null
+    /**
+     * The data needed to create a StudentAttendance.
+     */
+    data: XOR<StudentAttendanceCreateInput, StudentAttendanceUncheckedCreateInput>
+  }
+
+  /**
+   * StudentAttendance createMany
+   */
+  export type StudentAttendanceCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many StudentAttendances.
+     */
+    data: StudentAttendanceCreateManyInput | StudentAttendanceCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * StudentAttendance createManyAndReturn
+   */
+  export type StudentAttendanceCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentAttendance
+     */
+    select?: StudentAttendanceSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the StudentAttendance
+     */
+    omit?: StudentAttendanceOmit<ExtArgs> | null
+    /**
+     * The data used to create many StudentAttendances.
+     */
+    data: StudentAttendanceCreateManyInput | StudentAttendanceCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentAttendanceIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * StudentAttendance update
+   */
+  export type StudentAttendanceUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentAttendance
+     */
+    select?: StudentAttendanceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StudentAttendance
+     */
+    omit?: StudentAttendanceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentAttendanceInclude<ExtArgs> | null
+    /**
+     * The data needed to update a StudentAttendance.
+     */
+    data: XOR<StudentAttendanceUpdateInput, StudentAttendanceUncheckedUpdateInput>
+    /**
+     * Choose, which StudentAttendance to update.
+     */
+    where: StudentAttendanceWhereUniqueInput
+  }
+
+  /**
+   * StudentAttendance updateMany
+   */
+  export type StudentAttendanceUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update StudentAttendances.
+     */
+    data: XOR<StudentAttendanceUpdateManyMutationInput, StudentAttendanceUncheckedUpdateManyInput>
+    /**
+     * Filter which StudentAttendances to update
+     */
+    where?: StudentAttendanceWhereInput
+    /**
+     * Limit how many StudentAttendances to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * StudentAttendance updateManyAndReturn
+   */
+  export type StudentAttendanceUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentAttendance
+     */
+    select?: StudentAttendanceSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the StudentAttendance
+     */
+    omit?: StudentAttendanceOmit<ExtArgs> | null
+    /**
+     * The data used to update StudentAttendances.
+     */
+    data: XOR<StudentAttendanceUpdateManyMutationInput, StudentAttendanceUncheckedUpdateManyInput>
+    /**
+     * Filter which StudentAttendances to update
+     */
+    where?: StudentAttendanceWhereInput
+    /**
+     * Limit how many StudentAttendances to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentAttendanceIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * StudentAttendance upsert
+   */
+  export type StudentAttendanceUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentAttendance
+     */
+    select?: StudentAttendanceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StudentAttendance
+     */
+    omit?: StudentAttendanceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentAttendanceInclude<ExtArgs> | null
+    /**
+     * The filter to search for the StudentAttendance to update in case it exists.
+     */
+    where: StudentAttendanceWhereUniqueInput
+    /**
+     * In case the StudentAttendance found by the `where` argument doesn't exist, create a new StudentAttendance with this data.
+     */
+    create: XOR<StudentAttendanceCreateInput, StudentAttendanceUncheckedCreateInput>
+    /**
+     * In case the StudentAttendance was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<StudentAttendanceUpdateInput, StudentAttendanceUncheckedUpdateInput>
+  }
+
+  /**
+   * StudentAttendance delete
+   */
+  export type StudentAttendanceDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentAttendance
+     */
+    select?: StudentAttendanceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StudentAttendance
+     */
+    omit?: StudentAttendanceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentAttendanceInclude<ExtArgs> | null
+    /**
+     * Filter which StudentAttendance to delete.
+     */
+    where: StudentAttendanceWhereUniqueInput
+  }
+
+  /**
+   * StudentAttendance deleteMany
+   */
+  export type StudentAttendanceDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which StudentAttendances to delete
+     */
+    where?: StudentAttendanceWhereInput
+    /**
+     * Limit how many StudentAttendances to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * StudentAttendance.facultyUser
+   */
+  export type StudentAttendance$facultyUserArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * StudentAttendance without action
+   */
+  export type StudentAttendanceDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentAttendance
+     */
+    select?: StudentAttendanceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StudentAttendance
+     */
+    omit?: StudentAttendanceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentAttendanceInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -18678,6 +21355,43 @@ export namespace Prisma {
   export type FacultyBatchEntryScalarFieldEnum = (typeof FacultyBatchEntryScalarFieldEnum)[keyof typeof FacultyBatchEntryScalarFieldEnum]
 
 
+  export const FacultyAttendanceSessionScalarFieldEnum: {
+    id: 'id',
+    facultyUserId: 'facultyUserId',
+    attendanceDate: 'attendanceDate',
+    sessionSource: 'sessionSource',
+    loginAt: 'loginAt',
+    logoutAt: 'logoutAt',
+    logoutType: 'logoutType',
+    logoutReason: 'logoutReason',
+    workReport: 'workReport',
+    workCompleted: 'workCompleted',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type FacultyAttendanceSessionScalarFieldEnum = (typeof FacultyAttendanceSessionScalarFieldEnum)[keyof typeof FacultyAttendanceSessionScalarFieldEnum]
+
+
+  export const StudentAttendanceScalarFieldEnum: {
+    id: 'id',
+    studentId: 'studentId',
+    facultyUserId: 'facultyUserId',
+    courseId: 'courseId',
+    batchName: 'batchName',
+    attendanceDate: 'attendanceDate',
+    status: 'status',
+    markedAt: 'markedAt',
+    notes: 'notes',
+    createdBy: 'createdBy',
+    updatedBy: 'updatedBy',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type StudentAttendanceScalarFieldEnum = (typeof StudentAttendanceScalarFieldEnum)[keyof typeof StudentAttendanceScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -18858,6 +21572,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'AttendanceStatus'
+   */
+  export type EnumAttendanceStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AttendanceStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'AttendanceStatus[]'
+   */
+  export type ListEnumAttendanceStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AttendanceStatus[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -18902,6 +21630,8 @@ export namespace Prisma {
     loginEvents?: LoginEventListRelationFilter
     passwordResetTokens?: PasswordResetTokenListRelationFilter
     batchFacultyAssignments?: BatchFacultyAssignmentListRelationFilter
+    facultyAttendanceSessions?: FacultyAttendanceSessionListRelationFilter
+    markedStudentAttendances?: StudentAttendanceListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -18929,6 +21659,8 @@ export namespace Prisma {
     loginEvents?: LoginEventOrderByRelationAggregateInput
     passwordResetTokens?: PasswordResetTokenOrderByRelationAggregateInput
     batchFacultyAssignments?: BatchFacultyAssignmentOrderByRelationAggregateInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionOrderByRelationAggregateInput
+    markedStudentAttendances?: StudentAttendanceOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -18959,6 +21691,8 @@ export namespace Prisma {
     loginEvents?: LoginEventListRelationFilter
     passwordResetTokens?: PasswordResetTokenListRelationFilter
     batchFacultyAssignments?: BatchFacultyAssignmentListRelationFilter
+    facultyAttendanceSessions?: FacultyAttendanceSessionListRelationFilter
+    markedStudentAttendances?: StudentAttendanceListRelationFilter
   }, "id" | "userCode" | "email" | "phone">
 
   export type UserOrderByWithAggregationInput = {
@@ -19834,6 +22568,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"StudentProfile"> | Date | string
     updatedAt?: DateTimeFilter<"StudentProfile"> | Date | string
     course?: XOR<CourseNullableScalarRelationFilter, CourseWhereInput> | null
+    attendanceRecords?: StudentAttendanceListRelationFilter
   }
 
   export type StudentProfileOrderByWithRelationInput = {
@@ -19880,6 +22615,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     course?: CourseOrderByWithRelationInput
+    attendanceRecords?: StudentAttendanceOrderByRelationAggregateInput
   }
 
   export type StudentProfileWhereUniqueInput = Prisma.AtLeast<{
@@ -19929,6 +22665,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"StudentProfile"> | Date | string
     updatedAt?: DateTimeFilter<"StudentProfile"> | Date | string
     course?: XOR<CourseNullableScalarRelationFilter, CourseWhereInput> | null
+    attendanceRecords?: StudentAttendanceListRelationFilter
   }, "id" | "studentCode" | "mobileNumber" | "emailAddress">
 
   export type StudentProfileOrderByWithAggregationInput = {
@@ -20259,6 +22996,195 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"FacultyBatchEntry"> | Date | string
   }
 
+  export type FacultyAttendanceSessionWhereInput = {
+    AND?: FacultyAttendanceSessionWhereInput | FacultyAttendanceSessionWhereInput[]
+    OR?: FacultyAttendanceSessionWhereInput[]
+    NOT?: FacultyAttendanceSessionWhereInput | FacultyAttendanceSessionWhereInput[]
+    id?: StringFilter<"FacultyAttendanceSession"> | string
+    facultyUserId?: StringFilter<"FacultyAttendanceSession"> | string
+    attendanceDate?: StringFilter<"FacultyAttendanceSession"> | string
+    sessionSource?: StringFilter<"FacultyAttendanceSession"> | string
+    loginAt?: DateTimeFilter<"FacultyAttendanceSession"> | Date | string
+    logoutAt?: DateTimeNullableFilter<"FacultyAttendanceSession"> | Date | string | null
+    logoutType?: StringNullableFilter<"FacultyAttendanceSession"> | string | null
+    logoutReason?: StringNullableFilter<"FacultyAttendanceSession"> | string | null
+    workReport?: StringNullableFilter<"FacultyAttendanceSession"> | string | null
+    workCompleted?: StringNullableFilter<"FacultyAttendanceSession"> | string | null
+    createdAt?: DateTimeFilter<"FacultyAttendanceSession"> | Date | string
+    updatedAt?: DateTimeFilter<"FacultyAttendanceSession"> | Date | string
+    facultyUser?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type FacultyAttendanceSessionOrderByWithRelationInput = {
+    id?: SortOrder
+    facultyUserId?: SortOrder
+    attendanceDate?: SortOrder
+    sessionSource?: SortOrder
+    loginAt?: SortOrder
+    logoutAt?: SortOrderInput | SortOrder
+    logoutType?: SortOrderInput | SortOrder
+    logoutReason?: SortOrderInput | SortOrder
+    workReport?: SortOrderInput | SortOrder
+    workCompleted?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    facultyUser?: UserOrderByWithRelationInput
+  }
+
+  export type FacultyAttendanceSessionWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: FacultyAttendanceSessionWhereInput | FacultyAttendanceSessionWhereInput[]
+    OR?: FacultyAttendanceSessionWhereInput[]
+    NOT?: FacultyAttendanceSessionWhereInput | FacultyAttendanceSessionWhereInput[]
+    facultyUserId?: StringFilter<"FacultyAttendanceSession"> | string
+    attendanceDate?: StringFilter<"FacultyAttendanceSession"> | string
+    sessionSource?: StringFilter<"FacultyAttendanceSession"> | string
+    loginAt?: DateTimeFilter<"FacultyAttendanceSession"> | Date | string
+    logoutAt?: DateTimeNullableFilter<"FacultyAttendanceSession"> | Date | string | null
+    logoutType?: StringNullableFilter<"FacultyAttendanceSession"> | string | null
+    logoutReason?: StringNullableFilter<"FacultyAttendanceSession"> | string | null
+    workReport?: StringNullableFilter<"FacultyAttendanceSession"> | string | null
+    workCompleted?: StringNullableFilter<"FacultyAttendanceSession"> | string | null
+    createdAt?: DateTimeFilter<"FacultyAttendanceSession"> | Date | string
+    updatedAt?: DateTimeFilter<"FacultyAttendanceSession"> | Date | string
+    facultyUser?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type FacultyAttendanceSessionOrderByWithAggregationInput = {
+    id?: SortOrder
+    facultyUserId?: SortOrder
+    attendanceDate?: SortOrder
+    sessionSource?: SortOrder
+    loginAt?: SortOrder
+    logoutAt?: SortOrderInput | SortOrder
+    logoutType?: SortOrderInput | SortOrder
+    logoutReason?: SortOrderInput | SortOrder
+    workReport?: SortOrderInput | SortOrder
+    workCompleted?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: FacultyAttendanceSessionCountOrderByAggregateInput
+    _max?: FacultyAttendanceSessionMaxOrderByAggregateInput
+    _min?: FacultyAttendanceSessionMinOrderByAggregateInput
+  }
+
+  export type FacultyAttendanceSessionScalarWhereWithAggregatesInput = {
+    AND?: FacultyAttendanceSessionScalarWhereWithAggregatesInput | FacultyAttendanceSessionScalarWhereWithAggregatesInput[]
+    OR?: FacultyAttendanceSessionScalarWhereWithAggregatesInput[]
+    NOT?: FacultyAttendanceSessionScalarWhereWithAggregatesInput | FacultyAttendanceSessionScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"FacultyAttendanceSession"> | string
+    facultyUserId?: StringWithAggregatesFilter<"FacultyAttendanceSession"> | string
+    attendanceDate?: StringWithAggregatesFilter<"FacultyAttendanceSession"> | string
+    sessionSource?: StringWithAggregatesFilter<"FacultyAttendanceSession"> | string
+    loginAt?: DateTimeWithAggregatesFilter<"FacultyAttendanceSession"> | Date | string
+    logoutAt?: DateTimeNullableWithAggregatesFilter<"FacultyAttendanceSession"> | Date | string | null
+    logoutType?: StringNullableWithAggregatesFilter<"FacultyAttendanceSession"> | string | null
+    logoutReason?: StringNullableWithAggregatesFilter<"FacultyAttendanceSession"> | string | null
+    workReport?: StringNullableWithAggregatesFilter<"FacultyAttendanceSession"> | string | null
+    workCompleted?: StringNullableWithAggregatesFilter<"FacultyAttendanceSession"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"FacultyAttendanceSession"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"FacultyAttendanceSession"> | Date | string
+  }
+
+  export type StudentAttendanceWhereInput = {
+    AND?: StudentAttendanceWhereInput | StudentAttendanceWhereInput[]
+    OR?: StudentAttendanceWhereInput[]
+    NOT?: StudentAttendanceWhereInput | StudentAttendanceWhereInput[]
+    id?: StringFilter<"StudentAttendance"> | string
+    studentId?: StringFilter<"StudentAttendance"> | string
+    facultyUserId?: StringNullableFilter<"StudentAttendance"> | string | null
+    courseId?: StringNullableFilter<"StudentAttendance"> | string | null
+    batchName?: StringNullableFilter<"StudentAttendance"> | string | null
+    attendanceDate?: StringFilter<"StudentAttendance"> | string
+    status?: EnumAttendanceStatusFilter<"StudentAttendance"> | $Enums.AttendanceStatus
+    markedAt?: DateTimeFilter<"StudentAttendance"> | Date | string
+    notes?: StringNullableFilter<"StudentAttendance"> | string | null
+    createdBy?: StringNullableFilter<"StudentAttendance"> | string | null
+    updatedBy?: StringNullableFilter<"StudentAttendance"> | string | null
+    createdAt?: DateTimeFilter<"StudentAttendance"> | Date | string
+    updatedAt?: DateTimeFilter<"StudentAttendance"> | Date | string
+    student?: XOR<StudentProfileScalarRelationFilter, StudentProfileWhereInput>
+    facultyUser?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+  }
+
+  export type StudentAttendanceOrderByWithRelationInput = {
+    id?: SortOrder
+    studentId?: SortOrder
+    facultyUserId?: SortOrderInput | SortOrder
+    courseId?: SortOrderInput | SortOrder
+    batchName?: SortOrderInput | SortOrder
+    attendanceDate?: SortOrder
+    status?: SortOrder
+    markedAt?: SortOrder
+    notes?: SortOrderInput | SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    updatedBy?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    student?: StudentProfileOrderByWithRelationInput
+    facultyUser?: UserOrderByWithRelationInput
+  }
+
+  export type StudentAttendanceWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    studentId_attendanceDate?: StudentAttendanceStudentIdAttendanceDateCompoundUniqueInput
+    AND?: StudentAttendanceWhereInput | StudentAttendanceWhereInput[]
+    OR?: StudentAttendanceWhereInput[]
+    NOT?: StudentAttendanceWhereInput | StudentAttendanceWhereInput[]
+    studentId?: StringFilter<"StudentAttendance"> | string
+    facultyUserId?: StringNullableFilter<"StudentAttendance"> | string | null
+    courseId?: StringNullableFilter<"StudentAttendance"> | string | null
+    batchName?: StringNullableFilter<"StudentAttendance"> | string | null
+    attendanceDate?: StringFilter<"StudentAttendance"> | string
+    status?: EnumAttendanceStatusFilter<"StudentAttendance"> | $Enums.AttendanceStatus
+    markedAt?: DateTimeFilter<"StudentAttendance"> | Date | string
+    notes?: StringNullableFilter<"StudentAttendance"> | string | null
+    createdBy?: StringNullableFilter<"StudentAttendance"> | string | null
+    updatedBy?: StringNullableFilter<"StudentAttendance"> | string | null
+    createdAt?: DateTimeFilter<"StudentAttendance"> | Date | string
+    updatedAt?: DateTimeFilter<"StudentAttendance"> | Date | string
+    student?: XOR<StudentProfileScalarRelationFilter, StudentProfileWhereInput>
+    facultyUser?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+  }, "id" | "studentId_attendanceDate">
+
+  export type StudentAttendanceOrderByWithAggregationInput = {
+    id?: SortOrder
+    studentId?: SortOrder
+    facultyUserId?: SortOrderInput | SortOrder
+    courseId?: SortOrderInput | SortOrder
+    batchName?: SortOrderInput | SortOrder
+    attendanceDate?: SortOrder
+    status?: SortOrder
+    markedAt?: SortOrder
+    notes?: SortOrderInput | SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    updatedBy?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: StudentAttendanceCountOrderByAggregateInput
+    _max?: StudentAttendanceMaxOrderByAggregateInput
+    _min?: StudentAttendanceMinOrderByAggregateInput
+  }
+
+  export type StudentAttendanceScalarWhereWithAggregatesInput = {
+    AND?: StudentAttendanceScalarWhereWithAggregatesInput | StudentAttendanceScalarWhereWithAggregatesInput[]
+    OR?: StudentAttendanceScalarWhereWithAggregatesInput[]
+    NOT?: StudentAttendanceScalarWhereWithAggregatesInput | StudentAttendanceScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"StudentAttendance"> | string
+    studentId?: StringWithAggregatesFilter<"StudentAttendance"> | string
+    facultyUserId?: StringNullableWithAggregatesFilter<"StudentAttendance"> | string | null
+    courseId?: StringNullableWithAggregatesFilter<"StudentAttendance"> | string | null
+    batchName?: StringNullableWithAggregatesFilter<"StudentAttendance"> | string | null
+    attendanceDate?: StringWithAggregatesFilter<"StudentAttendance"> | string
+    status?: EnumAttendanceStatusWithAggregatesFilter<"StudentAttendance"> | $Enums.AttendanceStatus
+    markedAt?: DateTimeWithAggregatesFilter<"StudentAttendance"> | Date | string
+    notes?: StringNullableWithAggregatesFilter<"StudentAttendance"> | string | null
+    createdBy?: StringNullableWithAggregatesFilter<"StudentAttendance"> | string | null
+    updatedBy?: StringNullableWithAggregatesFilter<"StudentAttendance"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"StudentAttendance"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"StudentAttendance"> | Date | string
+  }
+
   export type UserCreateInput = {
     id?: string
     userCode: string
@@ -20284,6 +23210,8 @@ export namespace Prisma {
     loginEvents?: LoginEventCreateNestedManyWithoutUserInput
     passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
     batchFacultyAssignments?: BatchFacultyAssignmentCreateNestedManyWithoutFacultyInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionCreateNestedManyWithoutFacultyUserInput
+    markedStudentAttendances?: StudentAttendanceCreateNestedManyWithoutFacultyUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -20311,6 +23239,8 @@ export namespace Prisma {
     loginEvents?: LoginEventUncheckedCreateNestedManyWithoutUserInput
     passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
     batchFacultyAssignments?: BatchFacultyAssignmentUncheckedCreateNestedManyWithoutFacultyInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedCreateNestedManyWithoutFacultyUserInput
+    markedStudentAttendances?: StudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
   }
 
   export type UserUpdateInput = {
@@ -20338,6 +23268,8 @@ export namespace Prisma {
     loginEvents?: LoginEventUpdateManyWithoutUserNestedInput
     passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
     batchFacultyAssignments?: BatchFacultyAssignmentUpdateManyWithoutFacultyNestedInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUpdateManyWithoutFacultyUserNestedInput
+    markedStudentAttendances?: StudentAttendanceUpdateManyWithoutFacultyUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -20365,6 +23297,8 @@ export namespace Prisma {
     loginEvents?: LoginEventUncheckedUpdateManyWithoutUserNestedInput
     passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
     batchFacultyAssignments?: BatchFacultyAssignmentUncheckedUpdateManyWithoutFacultyNestedInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserNestedInput
+    markedStudentAttendances?: StudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -21371,6 +24305,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     course?: CourseCreateNestedOneWithoutStudentsInput
+    attendanceRecords?: StudentAttendanceCreateNestedManyWithoutStudentInput
   }
 
   export type StudentProfileUncheckedCreateInput = {
@@ -21416,6 +24351,7 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    attendanceRecords?: StudentAttendanceUncheckedCreateNestedManyWithoutStudentInput
   }
 
   export type StudentProfileUpdateInput = {
@@ -21461,6 +24397,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     course?: CourseUpdateOneWithoutStudentsNestedInput
+    attendanceRecords?: StudentAttendanceUpdateManyWithoutStudentNestedInput
   }
 
   export type StudentProfileUncheckedUpdateInput = {
@@ -21506,6 +24443,7 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    attendanceRecords?: StudentAttendanceUncheckedUpdateManyWithoutStudentNestedInput
   }
 
   export type StudentProfileCreateManyInput = {
@@ -21883,6 +24821,220 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type FacultyAttendanceSessionCreateInput = {
+    id?: string
+    attendanceDate: string
+    sessionSource?: string
+    loginAt: Date | string
+    logoutAt?: Date | string | null
+    logoutType?: string | null
+    logoutReason?: string | null
+    workReport?: string | null
+    workCompleted?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    facultyUser: UserCreateNestedOneWithoutFacultyAttendanceSessionsInput
+  }
+
+  export type FacultyAttendanceSessionUncheckedCreateInput = {
+    id?: string
+    facultyUserId: string
+    attendanceDate: string
+    sessionSource?: string
+    loginAt: Date | string
+    logoutAt?: Date | string | null
+    logoutType?: string | null
+    logoutReason?: string | null
+    workReport?: string | null
+    workCompleted?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FacultyAttendanceSessionUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    attendanceDate?: StringFieldUpdateOperationsInput | string
+    sessionSource?: StringFieldUpdateOperationsInput | string
+    loginAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    logoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    logoutType?: NullableStringFieldUpdateOperationsInput | string | null
+    logoutReason?: NullableStringFieldUpdateOperationsInput | string | null
+    workReport?: NullableStringFieldUpdateOperationsInput | string | null
+    workCompleted?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    facultyUser?: UserUpdateOneRequiredWithoutFacultyAttendanceSessionsNestedInput
+  }
+
+  export type FacultyAttendanceSessionUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    facultyUserId?: StringFieldUpdateOperationsInput | string
+    attendanceDate?: StringFieldUpdateOperationsInput | string
+    sessionSource?: StringFieldUpdateOperationsInput | string
+    loginAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    logoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    logoutType?: NullableStringFieldUpdateOperationsInput | string | null
+    logoutReason?: NullableStringFieldUpdateOperationsInput | string | null
+    workReport?: NullableStringFieldUpdateOperationsInput | string | null
+    workCompleted?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FacultyAttendanceSessionCreateManyInput = {
+    id?: string
+    facultyUserId: string
+    attendanceDate: string
+    sessionSource?: string
+    loginAt: Date | string
+    logoutAt?: Date | string | null
+    logoutType?: string | null
+    logoutReason?: string | null
+    workReport?: string | null
+    workCompleted?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FacultyAttendanceSessionUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    attendanceDate?: StringFieldUpdateOperationsInput | string
+    sessionSource?: StringFieldUpdateOperationsInput | string
+    loginAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    logoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    logoutType?: NullableStringFieldUpdateOperationsInput | string | null
+    logoutReason?: NullableStringFieldUpdateOperationsInput | string | null
+    workReport?: NullableStringFieldUpdateOperationsInput | string | null
+    workCompleted?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FacultyAttendanceSessionUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    facultyUserId?: StringFieldUpdateOperationsInput | string
+    attendanceDate?: StringFieldUpdateOperationsInput | string
+    sessionSource?: StringFieldUpdateOperationsInput | string
+    loginAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    logoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    logoutType?: NullableStringFieldUpdateOperationsInput | string | null
+    logoutReason?: NullableStringFieldUpdateOperationsInput | string | null
+    workReport?: NullableStringFieldUpdateOperationsInput | string | null
+    workCompleted?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type StudentAttendanceCreateInput = {
+    id?: string
+    courseId?: string | null
+    batchName?: string | null
+    attendanceDate: string
+    status: $Enums.AttendanceStatus
+    markedAt?: Date | string
+    notes?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    student: StudentProfileCreateNestedOneWithoutAttendanceRecordsInput
+    facultyUser?: UserCreateNestedOneWithoutMarkedStudentAttendancesInput
+  }
+
+  export type StudentAttendanceUncheckedCreateInput = {
+    id?: string
+    studentId: string
+    facultyUserId?: string | null
+    courseId?: string | null
+    batchName?: string | null
+    attendanceDate: string
+    status: $Enums.AttendanceStatus
+    markedAt?: Date | string
+    notes?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type StudentAttendanceUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    courseId?: NullableStringFieldUpdateOperationsInput | string | null
+    batchName?: NullableStringFieldUpdateOperationsInput | string | null
+    attendanceDate?: StringFieldUpdateOperationsInput | string
+    status?: EnumAttendanceStatusFieldUpdateOperationsInput | $Enums.AttendanceStatus
+    markedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    student?: StudentProfileUpdateOneRequiredWithoutAttendanceRecordsNestedInput
+    facultyUser?: UserUpdateOneWithoutMarkedStudentAttendancesNestedInput
+  }
+
+  export type StudentAttendanceUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    studentId?: StringFieldUpdateOperationsInput | string
+    facultyUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    courseId?: NullableStringFieldUpdateOperationsInput | string | null
+    batchName?: NullableStringFieldUpdateOperationsInput | string | null
+    attendanceDate?: StringFieldUpdateOperationsInput | string
+    status?: EnumAttendanceStatusFieldUpdateOperationsInput | $Enums.AttendanceStatus
+    markedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type StudentAttendanceCreateManyInput = {
+    id?: string
+    studentId: string
+    facultyUserId?: string | null
+    courseId?: string | null
+    batchName?: string | null
+    attendanceDate: string
+    status: $Enums.AttendanceStatus
+    markedAt?: Date | string
+    notes?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type StudentAttendanceUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    courseId?: NullableStringFieldUpdateOperationsInput | string | null
+    batchName?: NullableStringFieldUpdateOperationsInput | string | null
+    attendanceDate?: StringFieldUpdateOperationsInput | string
+    status?: EnumAttendanceStatusFieldUpdateOperationsInput | $Enums.AttendanceStatus
+    markedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type StudentAttendanceUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    studentId?: StringFieldUpdateOperationsInput | string
+    facultyUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    courseId?: NullableStringFieldUpdateOperationsInput | string | null
+    batchName?: NullableStringFieldUpdateOperationsInput | string | null
+    attendanceDate?: StringFieldUpdateOperationsInput | string
+    status?: EnumAttendanceStatusFieldUpdateOperationsInput | $Enums.AttendanceStatus
+    markedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -21976,6 +25128,18 @@ export namespace Prisma {
     none?: BatchFacultyAssignmentWhereInput
   }
 
+  export type FacultyAttendanceSessionListRelationFilter = {
+    every?: FacultyAttendanceSessionWhereInput
+    some?: FacultyAttendanceSessionWhereInput
+    none?: FacultyAttendanceSessionWhereInput
+  }
+
+  export type StudentAttendanceListRelationFilter = {
+    every?: StudentAttendanceWhereInput
+    some?: StudentAttendanceWhereInput
+    none?: StudentAttendanceWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -21990,6 +25154,14 @@ export namespace Prisma {
   }
 
   export type BatchFacultyAssignmentOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type FacultyAttendanceSessionOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type StudentAttendanceOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -23160,6 +26332,126 @@ export namespace Prisma {
     sequenceNo?: SortOrder
   }
 
+  export type FacultyAttendanceSessionCountOrderByAggregateInput = {
+    id?: SortOrder
+    facultyUserId?: SortOrder
+    attendanceDate?: SortOrder
+    sessionSource?: SortOrder
+    loginAt?: SortOrder
+    logoutAt?: SortOrder
+    logoutType?: SortOrder
+    logoutReason?: SortOrder
+    workReport?: SortOrder
+    workCompleted?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type FacultyAttendanceSessionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    facultyUserId?: SortOrder
+    attendanceDate?: SortOrder
+    sessionSource?: SortOrder
+    loginAt?: SortOrder
+    logoutAt?: SortOrder
+    logoutType?: SortOrder
+    logoutReason?: SortOrder
+    workReport?: SortOrder
+    workCompleted?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type FacultyAttendanceSessionMinOrderByAggregateInput = {
+    id?: SortOrder
+    facultyUserId?: SortOrder
+    attendanceDate?: SortOrder
+    sessionSource?: SortOrder
+    loginAt?: SortOrder
+    logoutAt?: SortOrder
+    logoutType?: SortOrder
+    logoutReason?: SortOrder
+    workReport?: SortOrder
+    workCompleted?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EnumAttendanceStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.AttendanceStatus | EnumAttendanceStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.AttendanceStatus[] | ListEnumAttendanceStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AttendanceStatus[] | ListEnumAttendanceStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumAttendanceStatusFilter<$PrismaModel> | $Enums.AttendanceStatus
+  }
+
+  export type StudentProfileScalarRelationFilter = {
+    is?: StudentProfileWhereInput
+    isNot?: StudentProfileWhereInput
+  }
+
+  export type StudentAttendanceStudentIdAttendanceDateCompoundUniqueInput = {
+    studentId: string
+    attendanceDate: string
+  }
+
+  export type StudentAttendanceCountOrderByAggregateInput = {
+    id?: SortOrder
+    studentId?: SortOrder
+    facultyUserId?: SortOrder
+    courseId?: SortOrder
+    batchName?: SortOrder
+    attendanceDate?: SortOrder
+    status?: SortOrder
+    markedAt?: SortOrder
+    notes?: SortOrder
+    createdBy?: SortOrder
+    updatedBy?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type StudentAttendanceMaxOrderByAggregateInput = {
+    id?: SortOrder
+    studentId?: SortOrder
+    facultyUserId?: SortOrder
+    courseId?: SortOrder
+    batchName?: SortOrder
+    attendanceDate?: SortOrder
+    status?: SortOrder
+    markedAt?: SortOrder
+    notes?: SortOrder
+    createdBy?: SortOrder
+    updatedBy?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type StudentAttendanceMinOrderByAggregateInput = {
+    id?: SortOrder
+    studentId?: SortOrder
+    facultyUserId?: SortOrder
+    courseId?: SortOrder
+    batchName?: SortOrder
+    attendanceDate?: SortOrder
+    status?: SortOrder
+    markedAt?: SortOrder
+    notes?: SortOrder
+    createdBy?: SortOrder
+    updatedBy?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EnumAttendanceStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.AttendanceStatus | EnumAttendanceStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.AttendanceStatus[] | ListEnumAttendanceStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AttendanceStatus[] | ListEnumAttendanceStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumAttendanceStatusWithAggregatesFilter<$PrismaModel> | $Enums.AttendanceStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAttendanceStatusFilter<$PrismaModel>
+    _max?: NestedEnumAttendanceStatusFilter<$PrismaModel>
+  }
+
   export type LoginEventCreateNestedManyWithoutUserInput = {
     create?: XOR<LoginEventCreateWithoutUserInput, LoginEventUncheckedCreateWithoutUserInput> | LoginEventCreateWithoutUserInput[] | LoginEventUncheckedCreateWithoutUserInput[]
     connectOrCreate?: LoginEventCreateOrConnectWithoutUserInput | LoginEventCreateOrConnectWithoutUserInput[]
@@ -23181,6 +26473,20 @@ export namespace Prisma {
     connect?: BatchFacultyAssignmentWhereUniqueInput | BatchFacultyAssignmentWhereUniqueInput[]
   }
 
+  export type FacultyAttendanceSessionCreateNestedManyWithoutFacultyUserInput = {
+    create?: XOR<FacultyAttendanceSessionCreateWithoutFacultyUserInput, FacultyAttendanceSessionUncheckedCreateWithoutFacultyUserInput> | FacultyAttendanceSessionCreateWithoutFacultyUserInput[] | FacultyAttendanceSessionUncheckedCreateWithoutFacultyUserInput[]
+    connectOrCreate?: FacultyAttendanceSessionCreateOrConnectWithoutFacultyUserInput | FacultyAttendanceSessionCreateOrConnectWithoutFacultyUserInput[]
+    createMany?: FacultyAttendanceSessionCreateManyFacultyUserInputEnvelope
+    connect?: FacultyAttendanceSessionWhereUniqueInput | FacultyAttendanceSessionWhereUniqueInput[]
+  }
+
+  export type StudentAttendanceCreateNestedManyWithoutFacultyUserInput = {
+    create?: XOR<StudentAttendanceCreateWithoutFacultyUserInput, StudentAttendanceUncheckedCreateWithoutFacultyUserInput> | StudentAttendanceCreateWithoutFacultyUserInput[] | StudentAttendanceUncheckedCreateWithoutFacultyUserInput[]
+    connectOrCreate?: StudentAttendanceCreateOrConnectWithoutFacultyUserInput | StudentAttendanceCreateOrConnectWithoutFacultyUserInput[]
+    createMany?: StudentAttendanceCreateManyFacultyUserInputEnvelope
+    connect?: StudentAttendanceWhereUniqueInput | StudentAttendanceWhereUniqueInput[]
+  }
+
   export type LoginEventUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<LoginEventCreateWithoutUserInput, LoginEventUncheckedCreateWithoutUserInput> | LoginEventCreateWithoutUserInput[] | LoginEventUncheckedCreateWithoutUserInput[]
     connectOrCreate?: LoginEventCreateOrConnectWithoutUserInput | LoginEventCreateOrConnectWithoutUserInput[]
@@ -23200,6 +26506,20 @@ export namespace Prisma {
     connectOrCreate?: BatchFacultyAssignmentCreateOrConnectWithoutFacultyInput | BatchFacultyAssignmentCreateOrConnectWithoutFacultyInput[]
     createMany?: BatchFacultyAssignmentCreateManyFacultyInputEnvelope
     connect?: BatchFacultyAssignmentWhereUniqueInput | BatchFacultyAssignmentWhereUniqueInput[]
+  }
+
+  export type FacultyAttendanceSessionUncheckedCreateNestedManyWithoutFacultyUserInput = {
+    create?: XOR<FacultyAttendanceSessionCreateWithoutFacultyUserInput, FacultyAttendanceSessionUncheckedCreateWithoutFacultyUserInput> | FacultyAttendanceSessionCreateWithoutFacultyUserInput[] | FacultyAttendanceSessionUncheckedCreateWithoutFacultyUserInput[]
+    connectOrCreate?: FacultyAttendanceSessionCreateOrConnectWithoutFacultyUserInput | FacultyAttendanceSessionCreateOrConnectWithoutFacultyUserInput[]
+    createMany?: FacultyAttendanceSessionCreateManyFacultyUserInputEnvelope
+    connect?: FacultyAttendanceSessionWhereUniqueInput | FacultyAttendanceSessionWhereUniqueInput[]
+  }
+
+  export type StudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput = {
+    create?: XOR<StudentAttendanceCreateWithoutFacultyUserInput, StudentAttendanceUncheckedCreateWithoutFacultyUserInput> | StudentAttendanceCreateWithoutFacultyUserInput[] | StudentAttendanceUncheckedCreateWithoutFacultyUserInput[]
+    connectOrCreate?: StudentAttendanceCreateOrConnectWithoutFacultyUserInput | StudentAttendanceCreateOrConnectWithoutFacultyUserInput[]
+    createMany?: StudentAttendanceCreateManyFacultyUserInputEnvelope
+    connect?: StudentAttendanceWhereUniqueInput | StudentAttendanceWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -23276,6 +26596,34 @@ export namespace Prisma {
     deleteMany?: BatchFacultyAssignmentScalarWhereInput | BatchFacultyAssignmentScalarWhereInput[]
   }
 
+  export type FacultyAttendanceSessionUpdateManyWithoutFacultyUserNestedInput = {
+    create?: XOR<FacultyAttendanceSessionCreateWithoutFacultyUserInput, FacultyAttendanceSessionUncheckedCreateWithoutFacultyUserInput> | FacultyAttendanceSessionCreateWithoutFacultyUserInput[] | FacultyAttendanceSessionUncheckedCreateWithoutFacultyUserInput[]
+    connectOrCreate?: FacultyAttendanceSessionCreateOrConnectWithoutFacultyUserInput | FacultyAttendanceSessionCreateOrConnectWithoutFacultyUserInput[]
+    upsert?: FacultyAttendanceSessionUpsertWithWhereUniqueWithoutFacultyUserInput | FacultyAttendanceSessionUpsertWithWhereUniqueWithoutFacultyUserInput[]
+    createMany?: FacultyAttendanceSessionCreateManyFacultyUserInputEnvelope
+    set?: FacultyAttendanceSessionWhereUniqueInput | FacultyAttendanceSessionWhereUniqueInput[]
+    disconnect?: FacultyAttendanceSessionWhereUniqueInput | FacultyAttendanceSessionWhereUniqueInput[]
+    delete?: FacultyAttendanceSessionWhereUniqueInput | FacultyAttendanceSessionWhereUniqueInput[]
+    connect?: FacultyAttendanceSessionWhereUniqueInput | FacultyAttendanceSessionWhereUniqueInput[]
+    update?: FacultyAttendanceSessionUpdateWithWhereUniqueWithoutFacultyUserInput | FacultyAttendanceSessionUpdateWithWhereUniqueWithoutFacultyUserInput[]
+    updateMany?: FacultyAttendanceSessionUpdateManyWithWhereWithoutFacultyUserInput | FacultyAttendanceSessionUpdateManyWithWhereWithoutFacultyUserInput[]
+    deleteMany?: FacultyAttendanceSessionScalarWhereInput | FacultyAttendanceSessionScalarWhereInput[]
+  }
+
+  export type StudentAttendanceUpdateManyWithoutFacultyUserNestedInput = {
+    create?: XOR<StudentAttendanceCreateWithoutFacultyUserInput, StudentAttendanceUncheckedCreateWithoutFacultyUserInput> | StudentAttendanceCreateWithoutFacultyUserInput[] | StudentAttendanceUncheckedCreateWithoutFacultyUserInput[]
+    connectOrCreate?: StudentAttendanceCreateOrConnectWithoutFacultyUserInput | StudentAttendanceCreateOrConnectWithoutFacultyUserInput[]
+    upsert?: StudentAttendanceUpsertWithWhereUniqueWithoutFacultyUserInput | StudentAttendanceUpsertWithWhereUniqueWithoutFacultyUserInput[]
+    createMany?: StudentAttendanceCreateManyFacultyUserInputEnvelope
+    set?: StudentAttendanceWhereUniqueInput | StudentAttendanceWhereUniqueInput[]
+    disconnect?: StudentAttendanceWhereUniqueInput | StudentAttendanceWhereUniqueInput[]
+    delete?: StudentAttendanceWhereUniqueInput | StudentAttendanceWhereUniqueInput[]
+    connect?: StudentAttendanceWhereUniqueInput | StudentAttendanceWhereUniqueInput[]
+    update?: StudentAttendanceUpdateWithWhereUniqueWithoutFacultyUserInput | StudentAttendanceUpdateWithWhereUniqueWithoutFacultyUserInput[]
+    updateMany?: StudentAttendanceUpdateManyWithWhereWithoutFacultyUserInput | StudentAttendanceUpdateManyWithWhereWithoutFacultyUserInput[]
+    deleteMany?: StudentAttendanceScalarWhereInput | StudentAttendanceScalarWhereInput[]
+  }
+
   export type LoginEventUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<LoginEventCreateWithoutUserInput, LoginEventUncheckedCreateWithoutUserInput> | LoginEventCreateWithoutUserInput[] | LoginEventUncheckedCreateWithoutUserInput[]
     connectOrCreate?: LoginEventCreateOrConnectWithoutUserInput | LoginEventCreateOrConnectWithoutUserInput[]
@@ -23316,6 +26664,34 @@ export namespace Prisma {
     update?: BatchFacultyAssignmentUpdateWithWhereUniqueWithoutFacultyInput | BatchFacultyAssignmentUpdateWithWhereUniqueWithoutFacultyInput[]
     updateMany?: BatchFacultyAssignmentUpdateManyWithWhereWithoutFacultyInput | BatchFacultyAssignmentUpdateManyWithWhereWithoutFacultyInput[]
     deleteMany?: BatchFacultyAssignmentScalarWhereInput | BatchFacultyAssignmentScalarWhereInput[]
+  }
+
+  export type FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserNestedInput = {
+    create?: XOR<FacultyAttendanceSessionCreateWithoutFacultyUserInput, FacultyAttendanceSessionUncheckedCreateWithoutFacultyUserInput> | FacultyAttendanceSessionCreateWithoutFacultyUserInput[] | FacultyAttendanceSessionUncheckedCreateWithoutFacultyUserInput[]
+    connectOrCreate?: FacultyAttendanceSessionCreateOrConnectWithoutFacultyUserInput | FacultyAttendanceSessionCreateOrConnectWithoutFacultyUserInput[]
+    upsert?: FacultyAttendanceSessionUpsertWithWhereUniqueWithoutFacultyUserInput | FacultyAttendanceSessionUpsertWithWhereUniqueWithoutFacultyUserInput[]
+    createMany?: FacultyAttendanceSessionCreateManyFacultyUserInputEnvelope
+    set?: FacultyAttendanceSessionWhereUniqueInput | FacultyAttendanceSessionWhereUniqueInput[]
+    disconnect?: FacultyAttendanceSessionWhereUniqueInput | FacultyAttendanceSessionWhereUniqueInput[]
+    delete?: FacultyAttendanceSessionWhereUniqueInput | FacultyAttendanceSessionWhereUniqueInput[]
+    connect?: FacultyAttendanceSessionWhereUniqueInput | FacultyAttendanceSessionWhereUniqueInput[]
+    update?: FacultyAttendanceSessionUpdateWithWhereUniqueWithoutFacultyUserInput | FacultyAttendanceSessionUpdateWithWhereUniqueWithoutFacultyUserInput[]
+    updateMany?: FacultyAttendanceSessionUpdateManyWithWhereWithoutFacultyUserInput | FacultyAttendanceSessionUpdateManyWithWhereWithoutFacultyUserInput[]
+    deleteMany?: FacultyAttendanceSessionScalarWhereInput | FacultyAttendanceSessionScalarWhereInput[]
+  }
+
+  export type StudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput = {
+    create?: XOR<StudentAttendanceCreateWithoutFacultyUserInput, StudentAttendanceUncheckedCreateWithoutFacultyUserInput> | StudentAttendanceCreateWithoutFacultyUserInput[] | StudentAttendanceUncheckedCreateWithoutFacultyUserInput[]
+    connectOrCreate?: StudentAttendanceCreateOrConnectWithoutFacultyUserInput | StudentAttendanceCreateOrConnectWithoutFacultyUserInput[]
+    upsert?: StudentAttendanceUpsertWithWhereUniqueWithoutFacultyUserInput | StudentAttendanceUpsertWithWhereUniqueWithoutFacultyUserInput[]
+    createMany?: StudentAttendanceCreateManyFacultyUserInputEnvelope
+    set?: StudentAttendanceWhereUniqueInput | StudentAttendanceWhereUniqueInput[]
+    disconnect?: StudentAttendanceWhereUniqueInput | StudentAttendanceWhereUniqueInput[]
+    delete?: StudentAttendanceWhereUniqueInput | StudentAttendanceWhereUniqueInput[]
+    connect?: StudentAttendanceWhereUniqueInput | StudentAttendanceWhereUniqueInput[]
+    update?: StudentAttendanceUpdateWithWhereUniqueWithoutFacultyUserInput | StudentAttendanceUpdateWithWhereUniqueWithoutFacultyUserInput[]
+    updateMany?: StudentAttendanceUpdateManyWithWhereWithoutFacultyUserInput | StudentAttendanceUpdateManyWithWhereWithoutFacultyUserInput[]
+    deleteMany?: StudentAttendanceScalarWhereInput | StudentAttendanceScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutLoginEventsInput = {
@@ -23848,6 +27224,20 @@ export namespace Prisma {
     connect?: CourseWhereUniqueInput
   }
 
+  export type StudentAttendanceCreateNestedManyWithoutStudentInput = {
+    create?: XOR<StudentAttendanceCreateWithoutStudentInput, StudentAttendanceUncheckedCreateWithoutStudentInput> | StudentAttendanceCreateWithoutStudentInput[] | StudentAttendanceUncheckedCreateWithoutStudentInput[]
+    connectOrCreate?: StudentAttendanceCreateOrConnectWithoutStudentInput | StudentAttendanceCreateOrConnectWithoutStudentInput[]
+    createMany?: StudentAttendanceCreateManyStudentInputEnvelope
+    connect?: StudentAttendanceWhereUniqueInput | StudentAttendanceWhereUniqueInput[]
+  }
+
+  export type StudentAttendanceUncheckedCreateNestedManyWithoutStudentInput = {
+    create?: XOR<StudentAttendanceCreateWithoutStudentInput, StudentAttendanceUncheckedCreateWithoutStudentInput> | StudentAttendanceCreateWithoutStudentInput[] | StudentAttendanceUncheckedCreateWithoutStudentInput[]
+    connectOrCreate?: StudentAttendanceCreateOrConnectWithoutStudentInput | StudentAttendanceCreateOrConnectWithoutStudentInput[]
+    createMany?: StudentAttendanceCreateManyStudentInputEnvelope
+    connect?: StudentAttendanceWhereUniqueInput | StudentAttendanceWhereUniqueInput[]
+  }
+
   export type CourseUpdateOneWithoutStudentsNestedInput = {
     create?: XOR<CourseCreateWithoutStudentsInput, CourseUncheckedCreateWithoutStudentsInput>
     connectOrCreate?: CourseCreateOrConnectWithoutStudentsInput
@@ -23856,6 +27246,34 @@ export namespace Prisma {
     delete?: CourseWhereInput | boolean
     connect?: CourseWhereUniqueInput
     update?: XOR<XOR<CourseUpdateToOneWithWhereWithoutStudentsInput, CourseUpdateWithoutStudentsInput>, CourseUncheckedUpdateWithoutStudentsInput>
+  }
+
+  export type StudentAttendanceUpdateManyWithoutStudentNestedInput = {
+    create?: XOR<StudentAttendanceCreateWithoutStudentInput, StudentAttendanceUncheckedCreateWithoutStudentInput> | StudentAttendanceCreateWithoutStudentInput[] | StudentAttendanceUncheckedCreateWithoutStudentInput[]
+    connectOrCreate?: StudentAttendanceCreateOrConnectWithoutStudentInput | StudentAttendanceCreateOrConnectWithoutStudentInput[]
+    upsert?: StudentAttendanceUpsertWithWhereUniqueWithoutStudentInput | StudentAttendanceUpsertWithWhereUniqueWithoutStudentInput[]
+    createMany?: StudentAttendanceCreateManyStudentInputEnvelope
+    set?: StudentAttendanceWhereUniqueInput | StudentAttendanceWhereUniqueInput[]
+    disconnect?: StudentAttendanceWhereUniqueInput | StudentAttendanceWhereUniqueInput[]
+    delete?: StudentAttendanceWhereUniqueInput | StudentAttendanceWhereUniqueInput[]
+    connect?: StudentAttendanceWhereUniqueInput | StudentAttendanceWhereUniqueInput[]
+    update?: StudentAttendanceUpdateWithWhereUniqueWithoutStudentInput | StudentAttendanceUpdateWithWhereUniqueWithoutStudentInput[]
+    updateMany?: StudentAttendanceUpdateManyWithWhereWithoutStudentInput | StudentAttendanceUpdateManyWithWhereWithoutStudentInput[]
+    deleteMany?: StudentAttendanceScalarWhereInput | StudentAttendanceScalarWhereInput[]
+  }
+
+  export type StudentAttendanceUncheckedUpdateManyWithoutStudentNestedInput = {
+    create?: XOR<StudentAttendanceCreateWithoutStudentInput, StudentAttendanceUncheckedCreateWithoutStudentInput> | StudentAttendanceCreateWithoutStudentInput[] | StudentAttendanceUncheckedCreateWithoutStudentInput[]
+    connectOrCreate?: StudentAttendanceCreateOrConnectWithoutStudentInput | StudentAttendanceCreateOrConnectWithoutStudentInput[]
+    upsert?: StudentAttendanceUpsertWithWhereUniqueWithoutStudentInput | StudentAttendanceUpsertWithWhereUniqueWithoutStudentInput[]
+    createMany?: StudentAttendanceCreateManyStudentInputEnvelope
+    set?: StudentAttendanceWhereUniqueInput | StudentAttendanceWhereUniqueInput[]
+    disconnect?: StudentAttendanceWhereUniqueInput | StudentAttendanceWhereUniqueInput[]
+    delete?: StudentAttendanceWhereUniqueInput | StudentAttendanceWhereUniqueInput[]
+    connect?: StudentAttendanceWhereUniqueInput | StudentAttendanceWhereUniqueInput[]
+    update?: StudentAttendanceUpdateWithWhereUniqueWithoutStudentInput | StudentAttendanceUpdateWithWhereUniqueWithoutStudentInput[]
+    updateMany?: StudentAttendanceUpdateManyWithWhereWithoutStudentInput | StudentAttendanceUpdateManyWithWhereWithoutStudentInput[]
+    deleteMany?: StudentAttendanceScalarWhereInput | StudentAttendanceScalarWhereInput[]
   }
 
   export type CourseCreateNestedOneWithoutFacultyProfilesInput = {
@@ -24014,6 +27432,54 @@ export namespace Prisma {
     delete?: CourseWhereInput | boolean
     connect?: CourseWhereUniqueInput
     update?: XOR<XOR<CourseUpdateToOneWithWhereWithoutFacultyBatchEntriesInput, CourseUpdateWithoutFacultyBatchEntriesInput>, CourseUncheckedUpdateWithoutFacultyBatchEntriesInput>
+  }
+
+  export type UserCreateNestedOneWithoutFacultyAttendanceSessionsInput = {
+    create?: XOR<UserCreateWithoutFacultyAttendanceSessionsInput, UserUncheckedCreateWithoutFacultyAttendanceSessionsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutFacultyAttendanceSessionsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutFacultyAttendanceSessionsNestedInput = {
+    create?: XOR<UserCreateWithoutFacultyAttendanceSessionsInput, UserUncheckedCreateWithoutFacultyAttendanceSessionsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutFacultyAttendanceSessionsInput
+    upsert?: UserUpsertWithoutFacultyAttendanceSessionsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutFacultyAttendanceSessionsInput, UserUpdateWithoutFacultyAttendanceSessionsInput>, UserUncheckedUpdateWithoutFacultyAttendanceSessionsInput>
+  }
+
+  export type StudentProfileCreateNestedOneWithoutAttendanceRecordsInput = {
+    create?: XOR<StudentProfileCreateWithoutAttendanceRecordsInput, StudentProfileUncheckedCreateWithoutAttendanceRecordsInput>
+    connectOrCreate?: StudentProfileCreateOrConnectWithoutAttendanceRecordsInput
+    connect?: StudentProfileWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutMarkedStudentAttendancesInput = {
+    create?: XOR<UserCreateWithoutMarkedStudentAttendancesInput, UserUncheckedCreateWithoutMarkedStudentAttendancesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutMarkedStudentAttendancesInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type EnumAttendanceStatusFieldUpdateOperationsInput = {
+    set?: $Enums.AttendanceStatus
+  }
+
+  export type StudentProfileUpdateOneRequiredWithoutAttendanceRecordsNestedInput = {
+    create?: XOR<StudentProfileCreateWithoutAttendanceRecordsInput, StudentProfileUncheckedCreateWithoutAttendanceRecordsInput>
+    connectOrCreate?: StudentProfileCreateOrConnectWithoutAttendanceRecordsInput
+    upsert?: StudentProfileUpsertWithoutAttendanceRecordsInput
+    connect?: StudentProfileWhereUniqueInput
+    update?: XOR<XOR<StudentProfileUpdateToOneWithWhereWithoutAttendanceRecordsInput, StudentProfileUpdateWithoutAttendanceRecordsInput>, StudentProfileUncheckedUpdateWithoutAttendanceRecordsInput>
+  }
+
+  export type UserUpdateOneWithoutMarkedStudentAttendancesNestedInput = {
+    create?: XOR<UserCreateWithoutMarkedStudentAttendancesInput, UserUncheckedCreateWithoutMarkedStudentAttendancesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutMarkedStudentAttendancesInput
+    upsert?: UserUpsertWithoutMarkedStudentAttendancesInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutMarkedStudentAttendancesInput, UserUpdateWithoutMarkedStudentAttendancesInput>, UserUncheckedUpdateWithoutMarkedStudentAttendancesInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -24359,6 +27825,23 @@ export namespace Prisma {
     _max?: NestedEnumBatchStatusNullableFilter<$PrismaModel>
   }
 
+  export type NestedEnumAttendanceStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.AttendanceStatus | EnumAttendanceStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.AttendanceStatus[] | ListEnumAttendanceStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AttendanceStatus[] | ListEnumAttendanceStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumAttendanceStatusFilter<$PrismaModel> | $Enums.AttendanceStatus
+  }
+
+  export type NestedEnumAttendanceStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.AttendanceStatus | EnumAttendanceStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.AttendanceStatus[] | ListEnumAttendanceStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AttendanceStatus[] | ListEnumAttendanceStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumAttendanceStatusWithAggregatesFilter<$PrismaModel> | $Enums.AttendanceStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAttendanceStatusFilter<$PrismaModel>
+    _max?: NestedEnumAttendanceStatusFilter<$PrismaModel>
+  }
+
   export type LoginEventCreateWithoutUserInput = {
     id?: string
     eventType: $Enums.LoginEventType
@@ -24461,6 +27944,84 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type FacultyAttendanceSessionCreateWithoutFacultyUserInput = {
+    id?: string
+    attendanceDate: string
+    sessionSource?: string
+    loginAt: Date | string
+    logoutAt?: Date | string | null
+    logoutType?: string | null
+    logoutReason?: string | null
+    workReport?: string | null
+    workCompleted?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FacultyAttendanceSessionUncheckedCreateWithoutFacultyUserInput = {
+    id?: string
+    attendanceDate: string
+    sessionSource?: string
+    loginAt: Date | string
+    logoutAt?: Date | string | null
+    logoutType?: string | null
+    logoutReason?: string | null
+    workReport?: string | null
+    workCompleted?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FacultyAttendanceSessionCreateOrConnectWithoutFacultyUserInput = {
+    where: FacultyAttendanceSessionWhereUniqueInput
+    create: XOR<FacultyAttendanceSessionCreateWithoutFacultyUserInput, FacultyAttendanceSessionUncheckedCreateWithoutFacultyUserInput>
+  }
+
+  export type FacultyAttendanceSessionCreateManyFacultyUserInputEnvelope = {
+    data: FacultyAttendanceSessionCreateManyFacultyUserInput | FacultyAttendanceSessionCreateManyFacultyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type StudentAttendanceCreateWithoutFacultyUserInput = {
+    id?: string
+    courseId?: string | null
+    batchName?: string | null
+    attendanceDate: string
+    status: $Enums.AttendanceStatus
+    markedAt?: Date | string
+    notes?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    student: StudentProfileCreateNestedOneWithoutAttendanceRecordsInput
+  }
+
+  export type StudentAttendanceUncheckedCreateWithoutFacultyUserInput = {
+    id?: string
+    studentId: string
+    courseId?: string | null
+    batchName?: string | null
+    attendanceDate: string
+    status: $Enums.AttendanceStatus
+    markedAt?: Date | string
+    notes?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type StudentAttendanceCreateOrConnectWithoutFacultyUserInput = {
+    where: StudentAttendanceWhereUniqueInput
+    create: XOR<StudentAttendanceCreateWithoutFacultyUserInput, StudentAttendanceUncheckedCreateWithoutFacultyUserInput>
+  }
+
+  export type StudentAttendanceCreateManyFacultyUserInputEnvelope = {
+    data: StudentAttendanceCreateManyFacultyUserInput | StudentAttendanceCreateManyFacultyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type LoginEventUpsertWithWhereUniqueWithoutUserInput = {
     where: LoginEventWhereUniqueInput
     update: XOR<LoginEventUpdateWithoutUserInput, LoginEventUncheckedUpdateWithoutUserInput>
@@ -24557,6 +28118,75 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"BatchFacultyAssignment"> | Date | string
   }
 
+  export type FacultyAttendanceSessionUpsertWithWhereUniqueWithoutFacultyUserInput = {
+    where: FacultyAttendanceSessionWhereUniqueInput
+    update: XOR<FacultyAttendanceSessionUpdateWithoutFacultyUserInput, FacultyAttendanceSessionUncheckedUpdateWithoutFacultyUserInput>
+    create: XOR<FacultyAttendanceSessionCreateWithoutFacultyUserInput, FacultyAttendanceSessionUncheckedCreateWithoutFacultyUserInput>
+  }
+
+  export type FacultyAttendanceSessionUpdateWithWhereUniqueWithoutFacultyUserInput = {
+    where: FacultyAttendanceSessionWhereUniqueInput
+    data: XOR<FacultyAttendanceSessionUpdateWithoutFacultyUserInput, FacultyAttendanceSessionUncheckedUpdateWithoutFacultyUserInput>
+  }
+
+  export type FacultyAttendanceSessionUpdateManyWithWhereWithoutFacultyUserInput = {
+    where: FacultyAttendanceSessionScalarWhereInput
+    data: XOR<FacultyAttendanceSessionUpdateManyMutationInput, FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserInput>
+  }
+
+  export type FacultyAttendanceSessionScalarWhereInput = {
+    AND?: FacultyAttendanceSessionScalarWhereInput | FacultyAttendanceSessionScalarWhereInput[]
+    OR?: FacultyAttendanceSessionScalarWhereInput[]
+    NOT?: FacultyAttendanceSessionScalarWhereInput | FacultyAttendanceSessionScalarWhereInput[]
+    id?: StringFilter<"FacultyAttendanceSession"> | string
+    facultyUserId?: StringFilter<"FacultyAttendanceSession"> | string
+    attendanceDate?: StringFilter<"FacultyAttendanceSession"> | string
+    sessionSource?: StringFilter<"FacultyAttendanceSession"> | string
+    loginAt?: DateTimeFilter<"FacultyAttendanceSession"> | Date | string
+    logoutAt?: DateTimeNullableFilter<"FacultyAttendanceSession"> | Date | string | null
+    logoutType?: StringNullableFilter<"FacultyAttendanceSession"> | string | null
+    logoutReason?: StringNullableFilter<"FacultyAttendanceSession"> | string | null
+    workReport?: StringNullableFilter<"FacultyAttendanceSession"> | string | null
+    workCompleted?: StringNullableFilter<"FacultyAttendanceSession"> | string | null
+    createdAt?: DateTimeFilter<"FacultyAttendanceSession"> | Date | string
+    updatedAt?: DateTimeFilter<"FacultyAttendanceSession"> | Date | string
+  }
+
+  export type StudentAttendanceUpsertWithWhereUniqueWithoutFacultyUserInput = {
+    where: StudentAttendanceWhereUniqueInput
+    update: XOR<StudentAttendanceUpdateWithoutFacultyUserInput, StudentAttendanceUncheckedUpdateWithoutFacultyUserInput>
+    create: XOR<StudentAttendanceCreateWithoutFacultyUserInput, StudentAttendanceUncheckedCreateWithoutFacultyUserInput>
+  }
+
+  export type StudentAttendanceUpdateWithWhereUniqueWithoutFacultyUserInput = {
+    where: StudentAttendanceWhereUniqueInput
+    data: XOR<StudentAttendanceUpdateWithoutFacultyUserInput, StudentAttendanceUncheckedUpdateWithoutFacultyUserInput>
+  }
+
+  export type StudentAttendanceUpdateManyWithWhereWithoutFacultyUserInput = {
+    where: StudentAttendanceScalarWhereInput
+    data: XOR<StudentAttendanceUpdateManyMutationInput, StudentAttendanceUncheckedUpdateManyWithoutFacultyUserInput>
+  }
+
+  export type StudentAttendanceScalarWhereInput = {
+    AND?: StudentAttendanceScalarWhereInput | StudentAttendanceScalarWhereInput[]
+    OR?: StudentAttendanceScalarWhereInput[]
+    NOT?: StudentAttendanceScalarWhereInput | StudentAttendanceScalarWhereInput[]
+    id?: StringFilter<"StudentAttendance"> | string
+    studentId?: StringFilter<"StudentAttendance"> | string
+    facultyUserId?: StringNullableFilter<"StudentAttendance"> | string | null
+    courseId?: StringNullableFilter<"StudentAttendance"> | string | null
+    batchName?: StringNullableFilter<"StudentAttendance"> | string | null
+    attendanceDate?: StringFilter<"StudentAttendance"> | string
+    status?: EnumAttendanceStatusFilter<"StudentAttendance"> | $Enums.AttendanceStatus
+    markedAt?: DateTimeFilter<"StudentAttendance"> | Date | string
+    notes?: StringNullableFilter<"StudentAttendance"> | string | null
+    createdBy?: StringNullableFilter<"StudentAttendance"> | string | null
+    updatedBy?: StringNullableFilter<"StudentAttendance"> | string | null
+    createdAt?: DateTimeFilter<"StudentAttendance"> | Date | string
+    updatedAt?: DateTimeFilter<"StudentAttendance"> | Date | string
+  }
+
   export type UserCreateWithoutLoginEventsInput = {
     id?: string
     userCode: string
@@ -24581,6 +28211,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
     batchFacultyAssignments?: BatchFacultyAssignmentCreateNestedManyWithoutFacultyInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionCreateNestedManyWithoutFacultyUserInput
+    markedStudentAttendances?: StudentAttendanceCreateNestedManyWithoutFacultyUserInput
   }
 
   export type UserUncheckedCreateWithoutLoginEventsInput = {
@@ -24607,6 +28239,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
     batchFacultyAssignments?: BatchFacultyAssignmentUncheckedCreateNestedManyWithoutFacultyInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedCreateNestedManyWithoutFacultyUserInput
+    markedStudentAttendances?: StudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
   }
 
   export type UserCreateOrConnectWithoutLoginEventsInput = {
@@ -24649,6 +28283,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
     batchFacultyAssignments?: BatchFacultyAssignmentUpdateManyWithoutFacultyNestedInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUpdateManyWithoutFacultyUserNestedInput
+    markedStudentAttendances?: StudentAttendanceUpdateManyWithoutFacultyUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLoginEventsInput = {
@@ -24675,6 +28311,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
     batchFacultyAssignments?: BatchFacultyAssignmentUncheckedUpdateManyWithoutFacultyNestedInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserNestedInput
+    markedStudentAttendances?: StudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
   }
 
   export type UserCreateWithoutPasswordResetTokensInput = {
@@ -24701,6 +28339,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     loginEvents?: LoginEventCreateNestedManyWithoutUserInput
     batchFacultyAssignments?: BatchFacultyAssignmentCreateNestedManyWithoutFacultyInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionCreateNestedManyWithoutFacultyUserInput
+    markedStudentAttendances?: StudentAttendanceCreateNestedManyWithoutFacultyUserInput
   }
 
   export type UserUncheckedCreateWithoutPasswordResetTokensInput = {
@@ -24727,6 +28367,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     loginEvents?: LoginEventUncheckedCreateNestedManyWithoutUserInput
     batchFacultyAssignments?: BatchFacultyAssignmentUncheckedCreateNestedManyWithoutFacultyInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedCreateNestedManyWithoutFacultyUserInput
+    markedStudentAttendances?: StudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
   }
 
   export type UserCreateOrConnectWithoutPasswordResetTokensInput = {
@@ -24769,6 +28411,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     loginEvents?: LoginEventUpdateManyWithoutUserNestedInput
     batchFacultyAssignments?: BatchFacultyAssignmentUpdateManyWithoutFacultyNestedInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUpdateManyWithoutFacultyUserNestedInput
+    markedStudentAttendances?: StudentAttendanceUpdateManyWithoutFacultyUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPasswordResetTokensInput = {
@@ -24795,6 +28439,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     loginEvents?: LoginEventUncheckedUpdateManyWithoutUserNestedInput
     batchFacultyAssignments?: BatchFacultyAssignmentUncheckedUpdateManyWithoutFacultyNestedInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserNestedInput
+    markedStudentAttendances?: StudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
   }
 
   export type CourseModuleCreateWithoutCourseInput = {
@@ -24933,6 +28579,7 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    attendanceRecords?: StudentAttendanceCreateNestedManyWithoutStudentInput
   }
 
   export type StudentProfileUncheckedCreateWithoutCourseInput = {
@@ -24977,6 +28624,7 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    attendanceRecords?: StudentAttendanceUncheckedCreateNestedManyWithoutStudentInput
   }
 
   export type StudentProfileCreateOrConnectWithoutCourseInput = {
@@ -25856,6 +29504,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     loginEvents?: LoginEventCreateNestedManyWithoutUserInput
     passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionCreateNestedManyWithoutFacultyUserInput
+    markedStudentAttendances?: StudentAttendanceCreateNestedManyWithoutFacultyUserInput
   }
 
   export type UserUncheckedCreateWithoutBatchFacultyAssignmentsInput = {
@@ -25882,6 +29532,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     loginEvents?: LoginEventUncheckedCreateNestedManyWithoutUserInput
     passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedCreateNestedManyWithoutFacultyUserInput
+    markedStudentAttendances?: StudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
   }
 
   export type UserCreateOrConnectWithoutBatchFacultyAssignmentsInput = {
@@ -25979,6 +29631,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     loginEvents?: LoginEventUpdateManyWithoutUserNestedInput
     passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUpdateManyWithoutFacultyUserNestedInput
+    markedStudentAttendances?: StudentAttendanceUpdateManyWithoutFacultyUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutBatchFacultyAssignmentsInput = {
@@ -26005,6 +29659,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     loginEvents?: LoginEventUncheckedUpdateManyWithoutUserNestedInput
     passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserNestedInput
+    markedStudentAttendances?: StudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
   }
 
   export type CourseCreateWithoutStatusHistoryInput = {
@@ -26330,6 +29986,46 @@ export namespace Prisma {
     create: XOR<CourseCreateWithoutStudentsInput, CourseUncheckedCreateWithoutStudentsInput>
   }
 
+  export type StudentAttendanceCreateWithoutStudentInput = {
+    id?: string
+    courseId?: string | null
+    batchName?: string | null
+    attendanceDate: string
+    status: $Enums.AttendanceStatus
+    markedAt?: Date | string
+    notes?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    facultyUser?: UserCreateNestedOneWithoutMarkedStudentAttendancesInput
+  }
+
+  export type StudentAttendanceUncheckedCreateWithoutStudentInput = {
+    id?: string
+    facultyUserId?: string | null
+    courseId?: string | null
+    batchName?: string | null
+    attendanceDate: string
+    status: $Enums.AttendanceStatus
+    markedAt?: Date | string
+    notes?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type StudentAttendanceCreateOrConnectWithoutStudentInput = {
+    where: StudentAttendanceWhereUniqueInput
+    create: XOR<StudentAttendanceCreateWithoutStudentInput, StudentAttendanceUncheckedCreateWithoutStudentInput>
+  }
+
+  export type StudentAttendanceCreateManyStudentInputEnvelope = {
+    data: StudentAttendanceCreateManyStudentInput | StudentAttendanceCreateManyStudentInput[]
+    skipDuplicates?: boolean
+  }
+
   export type CourseUpsertWithoutStudentsInput = {
     update: XOR<CourseUpdateWithoutStudentsInput, CourseUncheckedUpdateWithoutStudentsInput>
     create: XOR<CourseCreateWithoutStudentsInput, CourseUncheckedCreateWithoutStudentsInput>
@@ -26405,6 +30101,22 @@ export namespace Prisma {
     facultyCourseAssignments?: FacultyCourseAssignmentUncheckedUpdateManyWithoutCourseNestedInput
     facultyBatchEntries?: FacultyBatchEntryUncheckedUpdateManyWithoutCourseNestedInput
     statusHistory?: CourseStatusHistoryUncheckedUpdateManyWithoutCourseNestedInput
+  }
+
+  export type StudentAttendanceUpsertWithWhereUniqueWithoutStudentInput = {
+    where: StudentAttendanceWhereUniqueInput
+    update: XOR<StudentAttendanceUpdateWithoutStudentInput, StudentAttendanceUncheckedUpdateWithoutStudentInput>
+    create: XOR<StudentAttendanceCreateWithoutStudentInput, StudentAttendanceUncheckedCreateWithoutStudentInput>
+  }
+
+  export type StudentAttendanceUpdateWithWhereUniqueWithoutStudentInput = {
+    where: StudentAttendanceWhereUniqueInput
+    data: XOR<StudentAttendanceUpdateWithoutStudentInput, StudentAttendanceUncheckedUpdateWithoutStudentInput>
+  }
+
+  export type StudentAttendanceUpdateManyWithWhereWithoutStudentInput = {
+    where: StudentAttendanceScalarWhereInput
+    data: XOR<StudentAttendanceUpdateManyMutationInput, StudentAttendanceUncheckedUpdateManyWithoutStudentInput>
   }
 
   export type CourseCreateWithoutFacultyProfilesInput = {
@@ -27085,6 +30797,458 @@ export namespace Prisma {
     statusHistory?: CourseStatusHistoryUncheckedUpdateManyWithoutCourseNestedInput
   }
 
+  export type UserCreateWithoutFacultyAttendanceSessionsInput = {
+    id?: string
+    userCode: string
+    fullName: string
+    email: string
+    phone?: string | null
+    role: $Enums.UserRole
+    active?: boolean
+    passwordHash: string
+    passwordChangedAt?: Date | string | null
+    refreshTokenVersion?: number
+    failedLoginCount?: number
+    failedLoginWindowExpiresAt?: Date | string | null
+    lockedUntil?: Date | string | null
+    lastLoginAt?: Date | string | null
+    lastLogoutAt?: Date | string | null
+    lastLoginIp?: string | null
+    lastLoginUserAgent?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    loginEvents?: LoginEventCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    batchFacultyAssignments?: BatchFacultyAssignmentCreateNestedManyWithoutFacultyInput
+    markedStudentAttendances?: StudentAttendanceCreateNestedManyWithoutFacultyUserInput
+  }
+
+  export type UserUncheckedCreateWithoutFacultyAttendanceSessionsInput = {
+    id?: string
+    userCode: string
+    fullName: string
+    email: string
+    phone?: string | null
+    role: $Enums.UserRole
+    active?: boolean
+    passwordHash: string
+    passwordChangedAt?: Date | string | null
+    refreshTokenVersion?: number
+    failedLoginCount?: number
+    failedLoginWindowExpiresAt?: Date | string | null
+    lockedUntil?: Date | string | null
+    lastLoginAt?: Date | string | null
+    lastLogoutAt?: Date | string | null
+    lastLoginIp?: string | null
+    lastLoginUserAgent?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    loginEvents?: LoginEventUncheckedCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    batchFacultyAssignments?: BatchFacultyAssignmentUncheckedCreateNestedManyWithoutFacultyInput
+    markedStudentAttendances?: StudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
+  }
+
+  export type UserCreateOrConnectWithoutFacultyAttendanceSessionsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutFacultyAttendanceSessionsInput, UserUncheckedCreateWithoutFacultyAttendanceSessionsInput>
+  }
+
+  export type UserUpsertWithoutFacultyAttendanceSessionsInput = {
+    update: XOR<UserUpdateWithoutFacultyAttendanceSessionsInput, UserUncheckedUpdateWithoutFacultyAttendanceSessionsInput>
+    create: XOR<UserCreateWithoutFacultyAttendanceSessionsInput, UserUncheckedCreateWithoutFacultyAttendanceSessionsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutFacultyAttendanceSessionsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutFacultyAttendanceSessionsInput, UserUncheckedUpdateWithoutFacultyAttendanceSessionsInput>
+  }
+
+  export type UserUpdateWithoutFacultyAttendanceSessionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userCode?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refreshTokenVersion?: IntFieldUpdateOperationsInput | number
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    failedLoginWindowExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLogoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginUserAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    loginEvents?: LoginEventUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    batchFacultyAssignments?: BatchFacultyAssignmentUpdateManyWithoutFacultyNestedInput
+    markedStudentAttendances?: StudentAttendanceUpdateManyWithoutFacultyUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutFacultyAttendanceSessionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userCode?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refreshTokenVersion?: IntFieldUpdateOperationsInput | number
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    failedLoginWindowExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLogoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginUserAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    loginEvents?: LoginEventUncheckedUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    batchFacultyAssignments?: BatchFacultyAssignmentUncheckedUpdateManyWithoutFacultyNestedInput
+    markedStudentAttendances?: StudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
+  }
+
+  export type StudentProfileCreateWithoutAttendanceRecordsInput = {
+    id?: string
+    studentCode: string
+    studentName: string
+    mobileNumber: string
+    emailAddress: string
+    parentSpouseNumber?: string | null
+    location?: string | null
+    courseInterested: string
+    facultyId?: string | null
+    facultyName?: string | null
+    batchId?: string | null
+    batchName?: string | null
+    qualification?: string | null
+    passedOutYear?: number | null
+    currentStatus?: string | null
+    designation?: string | null
+    source?: string | null
+    actualFees?: number | null
+    registrationFees?: number | null
+    discount?: number | null
+    afterDiscount?: number | null
+    installment1?: number | null
+    installment2?: number | null
+    installment3?: number | null
+    installment4?: number | null
+    totalAmount?: number | null
+    admissionDate: string
+    firstInstallmentAmount?: number | null
+    firstInstallmentDate?: string | null
+    firstInstallmentStatus?: string
+    firstInstallmentPaidAt?: string | null
+    secondInstallmentAmount?: number | null
+    secondDueDate?: string | null
+    secondInstallmentStatus?: string
+    secondInstallmentPaidAt?: string | null
+    remarks?: string | null
+    recordStatus?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    course?: CourseCreateNestedOneWithoutStudentsInput
+  }
+
+  export type StudentProfileUncheckedCreateWithoutAttendanceRecordsInput = {
+    id?: string
+    studentCode: string
+    studentName: string
+    mobileNumber: string
+    emailAddress: string
+    parentSpouseNumber?: string | null
+    location?: string | null
+    courseId?: string | null
+    courseInterested: string
+    facultyId?: string | null
+    facultyName?: string | null
+    batchId?: string | null
+    batchName?: string | null
+    qualification?: string | null
+    passedOutYear?: number | null
+    currentStatus?: string | null
+    designation?: string | null
+    source?: string | null
+    actualFees?: number | null
+    registrationFees?: number | null
+    discount?: number | null
+    afterDiscount?: number | null
+    installment1?: number | null
+    installment2?: number | null
+    installment3?: number | null
+    installment4?: number | null
+    totalAmount?: number | null
+    admissionDate: string
+    firstInstallmentAmount?: number | null
+    firstInstallmentDate?: string | null
+    firstInstallmentStatus?: string
+    firstInstallmentPaidAt?: string | null
+    secondInstallmentAmount?: number | null
+    secondDueDate?: string | null
+    secondInstallmentStatus?: string
+    secondInstallmentPaidAt?: string | null
+    remarks?: string | null
+    recordStatus?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type StudentProfileCreateOrConnectWithoutAttendanceRecordsInput = {
+    where: StudentProfileWhereUniqueInput
+    create: XOR<StudentProfileCreateWithoutAttendanceRecordsInput, StudentProfileUncheckedCreateWithoutAttendanceRecordsInput>
+  }
+
+  export type UserCreateWithoutMarkedStudentAttendancesInput = {
+    id?: string
+    userCode: string
+    fullName: string
+    email: string
+    phone?: string | null
+    role: $Enums.UserRole
+    active?: boolean
+    passwordHash: string
+    passwordChangedAt?: Date | string | null
+    refreshTokenVersion?: number
+    failedLoginCount?: number
+    failedLoginWindowExpiresAt?: Date | string | null
+    lockedUntil?: Date | string | null
+    lastLoginAt?: Date | string | null
+    lastLogoutAt?: Date | string | null
+    lastLoginIp?: string | null
+    lastLoginUserAgent?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    loginEvents?: LoginEventCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    batchFacultyAssignments?: BatchFacultyAssignmentCreateNestedManyWithoutFacultyInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionCreateNestedManyWithoutFacultyUserInput
+  }
+
+  export type UserUncheckedCreateWithoutMarkedStudentAttendancesInput = {
+    id?: string
+    userCode: string
+    fullName: string
+    email: string
+    phone?: string | null
+    role: $Enums.UserRole
+    active?: boolean
+    passwordHash: string
+    passwordChangedAt?: Date | string | null
+    refreshTokenVersion?: number
+    failedLoginCount?: number
+    failedLoginWindowExpiresAt?: Date | string | null
+    lockedUntil?: Date | string | null
+    lastLoginAt?: Date | string | null
+    lastLogoutAt?: Date | string | null
+    lastLoginIp?: string | null
+    lastLoginUserAgent?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    loginEvents?: LoginEventUncheckedCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    batchFacultyAssignments?: BatchFacultyAssignmentUncheckedCreateNestedManyWithoutFacultyInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedCreateNestedManyWithoutFacultyUserInput
+  }
+
+  export type UserCreateOrConnectWithoutMarkedStudentAttendancesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutMarkedStudentAttendancesInput, UserUncheckedCreateWithoutMarkedStudentAttendancesInput>
+  }
+
+  export type StudentProfileUpsertWithoutAttendanceRecordsInput = {
+    update: XOR<StudentProfileUpdateWithoutAttendanceRecordsInput, StudentProfileUncheckedUpdateWithoutAttendanceRecordsInput>
+    create: XOR<StudentProfileCreateWithoutAttendanceRecordsInput, StudentProfileUncheckedCreateWithoutAttendanceRecordsInput>
+    where?: StudentProfileWhereInput
+  }
+
+  export type StudentProfileUpdateToOneWithWhereWithoutAttendanceRecordsInput = {
+    where?: StudentProfileWhereInput
+    data: XOR<StudentProfileUpdateWithoutAttendanceRecordsInput, StudentProfileUncheckedUpdateWithoutAttendanceRecordsInput>
+  }
+
+  export type StudentProfileUpdateWithoutAttendanceRecordsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    studentCode?: StringFieldUpdateOperationsInput | string
+    studentName?: StringFieldUpdateOperationsInput | string
+    mobileNumber?: StringFieldUpdateOperationsInput | string
+    emailAddress?: StringFieldUpdateOperationsInput | string
+    parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    courseInterested?: StringFieldUpdateOperationsInput | string
+    facultyId?: NullableStringFieldUpdateOperationsInput | string | null
+    facultyName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
+    batchName?: NullableStringFieldUpdateOperationsInput | string | null
+    qualification?: NullableStringFieldUpdateOperationsInput | string | null
+    passedOutYear?: NullableIntFieldUpdateOperationsInput | number | null
+    currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    designation?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: NullableStringFieldUpdateOperationsInput | string | null
+    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
+    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
+    discount?: NullableIntFieldUpdateOperationsInput | number | null
+    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
+    installment1?: NullableIntFieldUpdateOperationsInput | number | null
+    installment2?: NullableIntFieldUpdateOperationsInput | number | null
+    installment3?: NullableIntFieldUpdateOperationsInput | number | null
+    installment4?: NullableIntFieldUpdateOperationsInput | number | null
+    totalAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    admissionDate?: StringFieldUpdateOperationsInput | string
+    firstInstallmentAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    firstInstallmentDate?: NullableStringFieldUpdateOperationsInput | string | null
+    firstInstallmentStatus?: StringFieldUpdateOperationsInput | string
+    firstInstallmentPaidAt?: NullableStringFieldUpdateOperationsInput | string | null
+    secondInstallmentAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    secondDueDate?: NullableStringFieldUpdateOperationsInput | string | null
+    secondInstallmentStatus?: StringFieldUpdateOperationsInput | string
+    secondInstallmentPaidAt?: NullableStringFieldUpdateOperationsInput | string | null
+    remarks?: NullableStringFieldUpdateOperationsInput | string | null
+    recordStatus?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    course?: CourseUpdateOneWithoutStudentsNestedInput
+  }
+
+  export type StudentProfileUncheckedUpdateWithoutAttendanceRecordsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    studentCode?: StringFieldUpdateOperationsInput | string
+    studentName?: StringFieldUpdateOperationsInput | string
+    mobileNumber?: StringFieldUpdateOperationsInput | string
+    emailAddress?: StringFieldUpdateOperationsInput | string
+    parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    courseId?: NullableStringFieldUpdateOperationsInput | string | null
+    courseInterested?: StringFieldUpdateOperationsInput | string
+    facultyId?: NullableStringFieldUpdateOperationsInput | string | null
+    facultyName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
+    batchName?: NullableStringFieldUpdateOperationsInput | string | null
+    qualification?: NullableStringFieldUpdateOperationsInput | string | null
+    passedOutYear?: NullableIntFieldUpdateOperationsInput | number | null
+    currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    designation?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: NullableStringFieldUpdateOperationsInput | string | null
+    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
+    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
+    discount?: NullableIntFieldUpdateOperationsInput | number | null
+    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
+    installment1?: NullableIntFieldUpdateOperationsInput | number | null
+    installment2?: NullableIntFieldUpdateOperationsInput | number | null
+    installment3?: NullableIntFieldUpdateOperationsInput | number | null
+    installment4?: NullableIntFieldUpdateOperationsInput | number | null
+    totalAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    admissionDate?: StringFieldUpdateOperationsInput | string
+    firstInstallmentAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    firstInstallmentDate?: NullableStringFieldUpdateOperationsInput | string | null
+    firstInstallmentStatus?: StringFieldUpdateOperationsInput | string
+    firstInstallmentPaidAt?: NullableStringFieldUpdateOperationsInput | string | null
+    secondInstallmentAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    secondDueDate?: NullableStringFieldUpdateOperationsInput | string | null
+    secondInstallmentStatus?: StringFieldUpdateOperationsInput | string
+    secondInstallmentPaidAt?: NullableStringFieldUpdateOperationsInput | string | null
+    remarks?: NullableStringFieldUpdateOperationsInput | string | null
+    recordStatus?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserUpsertWithoutMarkedStudentAttendancesInput = {
+    update: XOR<UserUpdateWithoutMarkedStudentAttendancesInput, UserUncheckedUpdateWithoutMarkedStudentAttendancesInput>
+    create: XOR<UserCreateWithoutMarkedStudentAttendancesInput, UserUncheckedCreateWithoutMarkedStudentAttendancesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutMarkedStudentAttendancesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutMarkedStudentAttendancesInput, UserUncheckedUpdateWithoutMarkedStudentAttendancesInput>
+  }
+
+  export type UserUpdateWithoutMarkedStudentAttendancesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userCode?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refreshTokenVersion?: IntFieldUpdateOperationsInput | number
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    failedLoginWindowExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLogoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginUserAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    loginEvents?: LoginEventUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    batchFacultyAssignments?: BatchFacultyAssignmentUpdateManyWithoutFacultyNestedInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUpdateManyWithoutFacultyUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutMarkedStudentAttendancesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userCode?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refreshTokenVersion?: IntFieldUpdateOperationsInput | number
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    failedLoginWindowExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLogoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginUserAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    loginEvents?: LoginEventUncheckedUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    batchFacultyAssignments?: BatchFacultyAssignmentUncheckedUpdateManyWithoutFacultyNestedInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserNestedInput
+  }
+
   export type LoginEventCreateManyUserInput = {
     id?: string
     eventType: $Enums.LoginEventType
@@ -27115,6 +31279,35 @@ export namespace Prisma {
     notes?: string | null
     assignedBy?: string | null
     releasedBy?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FacultyAttendanceSessionCreateManyFacultyUserInput = {
+    id?: string
+    attendanceDate: string
+    sessionSource?: string
+    loginAt: Date | string
+    logoutAt?: Date | string | null
+    logoutType?: string | null
+    logoutReason?: string | null
+    workReport?: string | null
+    workCompleted?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type StudentAttendanceCreateManyFacultyUserInput = {
+    id?: string
+    studentId: string
+    courseId?: string | null
+    batchName?: string | null
+    attendanceDate: string
+    status: $Enums.AttendanceStatus
+    markedAt?: Date | string
+    notes?: string | null
     createdBy?: string | null
     updatedBy?: string | null
     createdAt?: Date | string
@@ -27223,6 +31416,93 @@ export namespace Prisma {
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     assignedBy?: NullableStringFieldUpdateOperationsInput | string | null
     releasedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FacultyAttendanceSessionUpdateWithoutFacultyUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    attendanceDate?: StringFieldUpdateOperationsInput | string
+    sessionSource?: StringFieldUpdateOperationsInput | string
+    loginAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    logoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    logoutType?: NullableStringFieldUpdateOperationsInput | string | null
+    logoutReason?: NullableStringFieldUpdateOperationsInput | string | null
+    workReport?: NullableStringFieldUpdateOperationsInput | string | null
+    workCompleted?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FacultyAttendanceSessionUncheckedUpdateWithoutFacultyUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    attendanceDate?: StringFieldUpdateOperationsInput | string
+    sessionSource?: StringFieldUpdateOperationsInput | string
+    loginAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    logoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    logoutType?: NullableStringFieldUpdateOperationsInput | string | null
+    logoutReason?: NullableStringFieldUpdateOperationsInput | string | null
+    workReport?: NullableStringFieldUpdateOperationsInput | string | null
+    workCompleted?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    attendanceDate?: StringFieldUpdateOperationsInput | string
+    sessionSource?: StringFieldUpdateOperationsInput | string
+    loginAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    logoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    logoutType?: NullableStringFieldUpdateOperationsInput | string | null
+    logoutReason?: NullableStringFieldUpdateOperationsInput | string | null
+    workReport?: NullableStringFieldUpdateOperationsInput | string | null
+    workCompleted?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type StudentAttendanceUpdateWithoutFacultyUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    courseId?: NullableStringFieldUpdateOperationsInput | string | null
+    batchName?: NullableStringFieldUpdateOperationsInput | string | null
+    attendanceDate?: StringFieldUpdateOperationsInput | string
+    status?: EnumAttendanceStatusFieldUpdateOperationsInput | $Enums.AttendanceStatus
+    markedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    student?: StudentProfileUpdateOneRequiredWithoutAttendanceRecordsNestedInput
+  }
+
+  export type StudentAttendanceUncheckedUpdateWithoutFacultyUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    studentId?: StringFieldUpdateOperationsInput | string
+    courseId?: NullableStringFieldUpdateOperationsInput | string | null
+    batchName?: NullableStringFieldUpdateOperationsInput | string | null
+    attendanceDate?: StringFieldUpdateOperationsInput | string
+    status?: EnumAttendanceStatusFieldUpdateOperationsInput | $Enums.AttendanceStatus
+    markedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type StudentAttendanceUncheckedUpdateManyWithoutFacultyUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    studentId?: StringFieldUpdateOperationsInput | string
+    courseId?: NullableStringFieldUpdateOperationsInput | string | null
+    batchName?: NullableStringFieldUpdateOperationsInput | string | null
+    attendanceDate?: StringFieldUpdateOperationsInput | string
+    status?: EnumAttendanceStatusFieldUpdateOperationsInput | $Enums.AttendanceStatus
+    markedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -27499,6 +31779,7 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    attendanceRecords?: StudentAttendanceUpdateManyWithoutStudentNestedInput
   }
 
   export type StudentProfileUncheckedUpdateWithoutCourseInput = {
@@ -27543,6 +31824,7 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    attendanceRecords?: StudentAttendanceUncheckedUpdateManyWithoutStudentNestedInput
   }
 
   export type StudentProfileUncheckedUpdateManyWithoutCourseInput = {
@@ -27811,6 +32093,66 @@ export namespace Prisma {
     changedBy?: NullableStringFieldUpdateOperationsInput | string | null
     reason?: NullableStringFieldUpdateOperationsInput | string | null
     changedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type StudentAttendanceCreateManyStudentInput = {
+    id?: string
+    facultyUserId?: string | null
+    courseId?: string | null
+    batchName?: string | null
+    attendanceDate: string
+    status: $Enums.AttendanceStatus
+    markedAt?: Date | string
+    notes?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type StudentAttendanceUpdateWithoutStudentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    courseId?: NullableStringFieldUpdateOperationsInput | string | null
+    batchName?: NullableStringFieldUpdateOperationsInput | string | null
+    attendanceDate?: StringFieldUpdateOperationsInput | string
+    status?: EnumAttendanceStatusFieldUpdateOperationsInput | $Enums.AttendanceStatus
+    markedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    facultyUser?: UserUpdateOneWithoutMarkedStudentAttendancesNestedInput
+  }
+
+  export type StudentAttendanceUncheckedUpdateWithoutStudentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    facultyUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    courseId?: NullableStringFieldUpdateOperationsInput | string | null
+    batchName?: NullableStringFieldUpdateOperationsInput | string | null
+    attendanceDate?: StringFieldUpdateOperationsInput | string
+    status?: EnumAttendanceStatusFieldUpdateOperationsInput | $Enums.AttendanceStatus
+    markedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type StudentAttendanceUncheckedUpdateManyWithoutStudentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    facultyUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    courseId?: NullableStringFieldUpdateOperationsInput | string | null
+    batchName?: NullableStringFieldUpdateOperationsInput | string | null
+    attendanceDate?: StringFieldUpdateOperationsInput | string
+    status?: EnumAttendanceStatusFieldUpdateOperationsInput | $Enums.AttendanceStatus
+    markedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type FacultyCourseAssignmentCreateManyFacultyInput = {

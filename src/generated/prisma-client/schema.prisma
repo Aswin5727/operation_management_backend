@@ -42,18 +42,23 @@ enum AssignmentStatus {
   INACTIVE
 }
 
+enum AttendanceStatus {
+  PRESENT
+  ABSENT
+}
+
 model User {
-  id                         String                   @id @default(cuid())
-  userCode                   String                   @unique
+  id                         String                     @id @default(cuid())
+  userCode                   String                     @unique
   fullName                   String
-  email                      String                   @unique
-  phone                      String?                  @unique
+  email                      String                     @unique
+  phone                      String?                    @unique
   role                       UserRole
-  active                     Boolean                  @default(true)
+  active                     Boolean                    @default(true)
   passwordHash               String
   passwordChangedAt          DateTime?
-  refreshTokenVersion        Int                      @default(0)
-  failedLoginCount           Int                      @default(0)
+  refreshTokenVersion        Int                        @default(0)
+  failedLoginCount           Int                        @default(0)
   failedLoginWindowExpiresAt DateTime?
   lockedUntil                DateTime?
   lastLoginAt                DateTime?
@@ -62,11 +67,13 @@ model User {
   lastLoginUserAgent         String?
   createdBy                  String?
   updatedBy                  String?
-  createdAt                  DateTime                 @default(now())
-  updatedAt                  DateTime                 @updatedAt
+  createdAt                  DateTime                   @default(now())
+  updatedAt                  DateTime                   @updatedAt
   loginEvents                LoginEvent[]
   passwordResetTokens        PasswordResetToken[]
   batchFacultyAssignments    BatchFacultyAssignment[]
+  facultyAttendanceSessions  FacultyAttendanceSession[]
+  markedStudentAttendances   StudentAttendance[]
 
   @@index([role])
   @@index([active])
@@ -237,15 +244,15 @@ model BatchStatusHistory {
 }
 
 model StudentProfile {
-  id                      String       @id @default(cuid())
-  studentCode             String       @unique
+  id                      String              @id @default(cuid())
+  studentCode             String              @unique
   studentName             String
-  mobileNumber            String       @unique
-  emailAddress            String       @unique
+  mobileNumber            String              @unique
+  emailAddress            String              @unique
   parentSpouseNumber      String?
   location                String?
   courseId                String?
-  course                  Course?      @relation(fields: [courseId], references: [id], onDelete: SetNull)
+  course                  Course?             @relation(fields: [courseId], references: [id], onDelete: SetNull)
   courseInterested        String
   facultyId               String?
   facultyName             String?
@@ -268,18 +275,19 @@ model StudentProfile {
   admissionDate           String
   firstInstallmentAmount  Int?
   firstInstallmentDate    String?
-  firstInstallmentStatus  String       @default("Paid")
+  firstInstallmentStatus  String              @default("Paid")
   firstInstallmentPaidAt  String?
   secondInstallmentAmount Int?
   secondDueDate           String?
-  secondInstallmentStatus String       @default("Pending")
+  secondInstallmentStatus String              @default("Pending")
   secondInstallmentPaidAt String?
   remarks                 String?
-  recordStatus            RecordStatus @default(ACTIVE)
+  recordStatus            RecordStatus        @default(ACTIVE)
   createdBy               String?
   updatedBy               String?
-  createdAt               DateTime     @default(now())
-  updatedAt               DateTime     @updatedAt
+  createdAt               DateTime            @default(now())
+  updatedAt               DateTime            @updatedAt
+  attendanceRecords       StudentAttendance[]
 
   @@index([recordStatus])
   @@index([courseId])
@@ -337,4 +345,46 @@ model FacultyBatchEntry {
 
   @@index([facultyId, sequenceNo])
   @@index([courseId])
+}
+
+model FacultyAttendanceSession {
+  id             String    @id @default(cuid())
+  facultyUserId  String
+  facultyUser    User      @relation(fields: [facultyUserId], references: [id], onDelete: Cascade)
+  attendanceDate String
+  sessionSource  String    @default("ATTENDANCE")
+  loginAt        DateTime
+  logoutAt       DateTime?
+  logoutType     String?
+  logoutReason   String?
+  workReport     String?
+  workCompleted  String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  @@index([facultyUserId, attendanceDate])
+  @@index([facultyUserId, attendanceDate, sessionSource])
+  @@index([attendanceDate])
+}
+
+model StudentAttendance {
+  id             String           @id @default(cuid())
+  studentId      String
+  student        StudentProfile   @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  facultyUserId  String?
+  facultyUser    User?            @relation(fields: [facultyUserId], references: [id], onDelete: SetNull)
+  courseId       String?
+  batchName      String?
+  attendanceDate String
+  status         AttendanceStatus
+  markedAt       DateTime         @default(now())
+  notes          String?
+  createdBy      String?
+  updatedBy      String?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  @@unique([studentId, attendanceDate])
+  @@index([facultyUserId, attendanceDate])
+  @@index([courseId, batchName, attendanceDate])
 }

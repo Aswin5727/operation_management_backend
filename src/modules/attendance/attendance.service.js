@@ -223,6 +223,23 @@ async function getFacultyProfileForUser(user) {
   return profile;
 }
 
+function buildFallbackFacultyProfile(user) {
+  const normalizedName = normalizeString(user?.fullName || user?.userCode || "Faculty");
+  const normalizedEmail = normalizeString(user?.email).toLowerCase();
+
+  return {
+    id: normalizeString(user?.id),
+    facultyName: normalizedName || "Faculty",
+    facultyEmail: normalizedEmail,
+    facultyPhone: "",
+    courseId: null,
+    course: null,
+    status: "ACTIVE",
+    courseAssignments: [],
+    batchEntries: [],
+  };
+}
+
 async function getFacultyProfileById(facultyId) {
   const normalizedFacultyId = normalizeString(facultyId);
 
@@ -269,7 +286,17 @@ async function resolveFacultyAttendanceContext(user, facultyId = "") {
   const currentRole = normalizeString(user?.role).toUpperCase();
 
   if (currentRole === "FACULTY") {
-    const profile = await getFacultyProfileForUser(user);
+    let profile;
+    try {
+      profile = await getFacultyProfileForUser(user);
+    } catch (error) {
+      if (error instanceof AppError && error.statusCode === 404) {
+        profile = buildFallbackFacultyProfile(user);
+      } else {
+        throw error;
+      }
+    }
+
     return {
       profile,
       facultyUserId: user.id,

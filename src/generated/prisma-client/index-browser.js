@@ -346,6 +346,37 @@ exports.Prisma.FacultyBatchEntryScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.FacultyAttendanceSessionScalarFieldEnum = {
+  id: 'id',
+  facultyUserId: 'facultyUserId',
+  attendanceDate: 'attendanceDate',
+  sessionSource: 'sessionSource',
+  loginAt: 'loginAt',
+  logoutAt: 'logoutAt',
+  logoutType: 'logoutType',
+  logoutReason: 'logoutReason',
+  workReport: 'workReport',
+  workCompleted: 'workCompleted',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.StudentAttendanceScalarFieldEnum = {
+  id: 'id',
+  studentId: 'studentId',
+  facultyUserId: 'facultyUserId',
+  courseId: 'courseId',
+  batchName: 'batchName',
+  attendanceDate: 'attendanceDate',
+  status: 'status',
+  markedAt: 'markedAt',
+  notes: 'notes',
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -406,6 +437,11 @@ exports.AssignmentStatus = exports.$Enums.AssignmentStatus = {
   INACTIVE: 'INACTIVE'
 };
 
+exports.AttendanceStatus = exports.$Enums.AttendanceStatus = {
+  PRESENT: 'PRESENT',
+  ABSENT: 'ABSENT'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   LoginEvent: 'LoginEvent',
@@ -419,7 +455,9 @@ exports.Prisma.ModelName = {
   StudentProfile: 'StudentProfile',
   FacultyProfile: 'FacultyProfile',
   FacultyCourseAssignment: 'FacultyCourseAssignment',
-  FacultyBatchEntry: 'FacultyBatchEntry'
+  FacultyBatchEntry: 'FacultyBatchEntry',
+  FacultyAttendanceSession: 'FacultyAttendanceSession',
+  StudentAttendance: 'StudentAttendance'
 };
 
 /**
