@@ -34,6 +34,13 @@ function assignSerialByDate(rows = [], dateKey = "attendanceDate") {
   });
 }
 
+function assignSerial(rows = []) {
+  return rows.map((row, index) => ({
+    ...row,
+    serialNo: index + 1,
+  }));
+}
+
 function getFacultyCourseNames(profile = null) {
   if (!profile) return "";
 
@@ -50,7 +57,7 @@ function getFacultyCourseNames(profile = null) {
 }
 
 function buildStudentAttendanceRows(records = [], student) {
-  return assignSerialByDate(records.map((record) => ({
+  return assignSerial(records.map((record) => ({
     attendanceDate: record.attendanceDate,
     studentName: student.studentName,
     courseName: student.course?.name || student.courseInterested || "",
@@ -78,7 +85,7 @@ function buildBatchAttendanceRows(records = []) {
 function buildFacultySessionRows(sessions = [], facultyProfile, facultyUser) {
   const courseNames = getFacultyCourseNames(facultyProfile);
 
-  return assignSerialByDate(sessions.map((session) => ({
+  return assignSerial(sessions.map((session) => ({
     attendanceDate: session.attendanceDate,
     facultyName: facultyProfile?.facultyName || facultyUser?.fullName || "",
     facultyEmail: facultyProfile?.facultyEmail || facultyUser?.email || "",
@@ -203,14 +210,14 @@ async function generateBatchAttendanceReport(query = {}, actorUser = null) {
     filters: [
       ...(isCourseScope
         ? [
-            { label: "Course ID", value: scope.courseId },
-            { label: "Course", value: courseLabel || "-" },
-          ]
+          { label: "Course ID", value: scope.courseId },
+          { label: "Course", value: courseLabel || "-" },
+        ]
         : [
-            { label: "Batch ID", value: scope.id },
-            { label: "Batch Name", value: batchLabel },
-            { label: "Course", value: courseLabel || "-" },
-          ]),
+          { label: "Batch ID", value: scope.id },
+          { label: "Batch Name", value: batchLabel },
+          { label: "Course", value: courseLabel || "-" },
+        ]),
       { label: "From Date", value: fromDate },
       { label: "To Date", value: toDate },
     ],

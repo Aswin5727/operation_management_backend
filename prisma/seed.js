@@ -7,13 +7,13 @@ const seedUsers = [
   {
     userCode: "BO-001",
     fullName: "Business Owner",
-    email: "business.owner@cispro.local",
+    email: "business.owner@cispro.com",
     role: USER_ROLES.BUSINESS_OWNER,
   },
   {
     userCode: "OM-001",
     fullName: "Operation Manager",
-    email: "operation.manager@cispro.local",
+    email: "operation.manager@cispro.com",
     role: USER_ROLES.OPERATION_MANAGER,
   },
   {
