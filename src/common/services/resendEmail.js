@@ -148,6 +148,9 @@ async function sendWithNodemailer({ to, subject, html, text, replyTo }) {
   }
 
   const transporter = getTransporter();
+  console.log("HTML Exists:", !!html);
+  console.log("HTML Length:", html?.length);
+  console.log(html?.substring(0, 300));
 
   return transporter.sendMail({
     from: config.emailFrom,
@@ -312,25 +315,340 @@ export async function sendPasswordResetEmail({ to, resetToken }) {
 }
 
 export async function sendStudentCredentialsEmail({ to, fullName, studentCode, temporaryPassword, resetToken }) {
+  console.log("✅ sendStudentCredentialsEmail called");
   const loginLink = buildLoginLink();
   const resetLink = buildResetLink(resetToken, temporaryPassword);
   const safeName = escapeHtml(fullName || "Student");
   const safeCode = escapeHtml(studentCode || "");
   const safePassword = escapeHtml(temporaryPassword || "");
 
+
   const html = `
-    <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #111;">
-      <h2>CISPRO Student Login Details</h2>
-      <p>Hello ${safeName},</p>
-      <p>Your student account has been created successfully.</p>
-      <p><strong>Login email:</strong> ${escapeHtml(to)}</p>
-      ${safeCode ? `<p><strong>Student code:</strong> ${safeCode}</p>` : ""}
-      <p><strong>Temporary password:</strong> ${safePassword}</p>
-      ${loginLink ? `<p><a href="${escapeHtml(loginLink)}">Login to CISPRO</a></p>` : ""}
-      ${resetLink ? `<p><a href="${escapeHtml(resetLink)}">Reset your password</a></p>` : ""}
-      <p>Use the temporary password to sign in, then change it using the reset link.</p>
-    </div>
-  `;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>CISPRO Student Account</title>
+</head>
+
+<body style="margin:0;padding:0;background:#f4f7fb;font-family:Arial,Helvetica,sans-serif;">
+
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#f4f7fb;padding:40px 0;">
+
+<tr>
+
+<td align="center">
+
+<table width="650" cellpadding="0" cellspacing="0"
+style="
+background:#ffffff;
+border-radius:14px;
+overflow:hidden;
+box-shadow:0 10px 30px rgba(0,0,0,.08);
+">
+
+
+
+<tr>
+
+<td
+style="
+background:linear-gradient(135deg,#132B4F,#233B6E);
+padding:45px;
+text-align:center;
+">
+
+<h2
+style="
+margin:0;
+color:#ffffff;
+font-size:28px;
+letter-spacing:1px;
+">
+
+CISPRO OPERATION MANAGEMENT
+
+</h2>
+
+<div
+style="
+width:80px;
+height:4px;
+background:#FFB400;
+margin:18px auto 0;
+border-radius:20px;
+"></div>
+
+</td>
+
+</tr>
+
+
+
+<tr>
+
+<td style="padding:45px;">
+
+<h1
+style="
+margin-top:0;
+font-size:34px;
+color:#1A2340;
+">
+
+Welcome, ${safeName} 
+
+</h1>
+
+<p
+style="
+font-size:17px;
+line-height:30px;
+color:#666;
+">
+
+Your student account has been created successfully.
+Please use the details below to login.
+
+</p>
+
+
+<table
+width="100%"
+cellpadding="18"
+style="
+background:#F7F9FF;
+border:1px solid #E3E8FF;
+border-radius:10px;
+margin-top:25px;
+">
+
+<tr>
+
+<td colspan="2">
+
+<h3
+style="
+margin:0;
+color:#28457A;
+">
+
+STUDENT DETAILS
+
+</h3>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td width="180">
+
+<b>Student Code</b>
+
+</td>
+
+<td>
+
+${safeCode}
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+<b>Email</b>
+
+</td>
+
+<td>
+
+${to}
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+<b>Temporary Password</b>
+
+</td>
+
+<td>
+
+${safePassword}
+
+</td>
+
+</tr>
+
+</table>
+
+
+
+<div
+style="
+text-align:center;
+margin-top:35px;
+">
+
+<a
+href="${loginLink}"
+style="
+display:inline-block;
+padding:16px 42px;
+background:linear-gradient(90deg,#4F46E5,#9333EA);
+color:#fff;
+text-decoration:none;
+font-size:18px;
+font-weight:bold;
+border-radius:8px;
+">
+
+Login to Portal →
+
+</a>
+
+</div>
+
+
+
+<div
+style="
+text-align:center;
+margin-top:18px;
+">
+
+<a
+href="${resetLink}"
+style="
+display:inline-block;
+padding:16px 42px;
+background:linear-gradient(90deg,#F97316,#EF4444);
+color:#fff;
+text-decoration:none;
+font-size:18px;
+font-weight:bold;
+border-radius:8px;
+">
+
+Reset Password →
+
+</a>
+
+</div>
+
+<p
+style="
+margin-top:30px;
+color:#666;
+line-height:28px;
+">
+
+If the buttons above don't work, copy and paste the link below into your browser.
+
+</p>
+
+<p
+style="
+word-break:break-all;
+">
+
+<a href="${resetLink}">
+
+${resetLink}
+
+</a>
+
+</p>
+
+
+
+<table
+width="100%"
+style="
+margin-top:30px;
+background:#FFF7E6;
+border-left:5px solid #F59E0B;
+border-radius:6px;
+">
+
+<tr>
+
+<td style="padding:18px;">
+
+<b>Important:</b>
+
+Please login using the temporary password and change it immediately using the Reset Password button.
+
+</td>
+
+</tr>
+
+</table>
+
+<p
+style="
+margin-top:35px;
+line-height:28px;
+color:#666;
+">
+
+If you experience any issues logging in, please contact your administrator.
+
+</p>
+
+</td>
+
+</tr>
+
+
+
+<tr>
+
+<td
+style="
+background:#F8F9FB;
+padding:25px;
+text-align:center;
+color:#888;
+font-size:13px;
+">
+
+© 2026 CISPRO Operation Management
+
+<br><br>
+
+<a href="#" style="color:#4F46E5;text-decoration:none;">Privacy Policy</a>
+
+&nbsp; | &nbsp;
+
+<a href="#" style="color:#4F46E5;text-decoration:none;">Terms of Service</a>
+
+</td>
+
+</tr>
+
+</table>
+
+</td>
+
+</tr>
+
+</table>
+
+</body>
+</html>
+`;
+
 
   const textParts = [
     `CISPRO Student Login Details for ${fullName || "Student"}.`,
@@ -342,9 +660,12 @@ export async function sendStudentCredentialsEmail({ to, fullName, studentCode, t
     "Use the temporary password to sign in, then change it using the reset link.",
   ].filter(Boolean);
 
+  console.log("HTML =>");
+  console.log(html);
+
   return sendEmail({
     to,
-    subject: "Your CISPRO student login details",
+    subject: "🔥 NEW TEMPLATE TEST 🔥",
     html,
     text: textParts.join("\n"),
   });
