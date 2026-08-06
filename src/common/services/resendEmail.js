@@ -106,18 +106,18 @@ function getTransporter() {
 
   cachedTransporter = config.emailHost === "smtp.gmail.com"
     ? nodemailer.createTransport({
-        service: "gmail",
-        secure: false,
-        requireTLS: true,
-        ...baseTransportConfig,
-      })
+      service: "gmail",
+      secure: false,
+      requireTLS: true,
+      ...baseTransportConfig,
+    })
     : nodemailer.createTransport({
-        host: config.emailHost,
-        port: config.emailPort,
-        secure: config.emailSecure,
-        requireTLS: !config.emailSecure,
-        ...baseTransportConfig,
-      });
+      host: config.emailHost,
+      port: config.emailPort,
+      secure: config.emailSecure,
+      requireTLS: !config.emailSecure,
+      ...baseTransportConfig,
+    });
 
   return cachedTransporter;
 }
@@ -231,32 +231,45 @@ async function sendEmail({ to, subject, html, text, replyTo }) {
   if (!sendGridEnabled && !resendEnabled && !gmailEnabled) {
     ensureMailerReady();
   }
-
-  if (sendGridEnabled) {
+  if (gmailEnabled) {
     try {
-      return await sendWithSendGrid({ to: recipient, subject, html, text, replyTo });
+      return await sendWithNodemailer({
+        to: recipient,
+        subject,
+        html,
+        text,
+        replyTo,
+      });
     } catch (error) {
-      if (!resendEnabled && !gmailEnabled) {
-        throw error;
-      }
-
-      console.warn("SendGrid mail failed, falling back to other providers:", error);
+      console.warn("Gmail failed:", error);
     }
   }
 
   if (resendEnabled) {
     try {
-      return await sendWithResend({ to: recipient, subject, html, text, replyTo });
+      return await sendWithResend({
+        to: recipient,
+        subject,
+        html,
+        text,
+        replyTo,
+      });
     } catch (error) {
-      if (!gmailEnabled) {
-        throw error;
-      }
-
-      console.warn("Resend mail failed, falling back to Gmail SMTP:", error);
+      console.warn("Resend failed:", error);
     }
   }
 
-  return sendWithNodemailer({ to: recipient, subject, html, text, replyTo });
+  if (sendGridEnabled) {
+    return await sendWithSendGrid({
+      to: recipient,
+      subject,
+      html,
+      text,
+      replyTo,
+    });
+  }
+
+  throw new AppError("No email provider configured", 500);
 }
 
 function buildResetLink(resetToken, temporaryPassword = "") {
@@ -398,11 +411,10 @@ export async function sendFacultyCredentialsEmail({
       <p><strong>Login email:</strong> ${escapeHtml(to)}</p>
       ${safeCode ? `<p><strong>Faculty code:</strong> ${safeCode}</p>` : ""}
       ${courseName ? `<p><strong>Course:</strong> ${escapeHtml(courseName)}</p>` : ""}
-      ${
-        normalizedBatchNames.length
-          ? `<p><strong>Batches:</strong> ${escapeHtml(normalizedBatchNames.join(", "))}</p>`
-          : ""
-      }
+      ${normalizedBatchNames.length
+      ? `<p><strong>Batches:</strong> ${escapeHtml(normalizedBatchNames.join(", "))}</p>`
+      : ""
+    }
       <p><strong>Temporary password:</strong> ${safePassword}</p>
       ${loginLink ? `<p><a href="${escapeHtml(loginLink)}">Login to CISPRO</a></p>` : ""}
       ${resetLink ? `<p><a href="${escapeHtml(resetLink)}">Reset your password</a></p>` : ""}
@@ -443,11 +455,10 @@ export async function sendFacultyWelcomeEmail({ to, fullName, courseName, batchN
       <p>Hello ${safeName},</p>
       <p>You have successfully logged in to your faculty dashboard for the first time.</p>
       ${courseName ? `<p>Your assigned course: <strong>${escapeHtml(courseName)}</strong></p>` : ""}
-      ${
-        normalizedBatchNames.length
-          ? `<p>Your batches: <strong>${escapeHtml(normalizedBatchNames.join(", "))}</strong></p>`
-          : ""
-      }
+      ${normalizedBatchNames.length
+      ? `<p>Your batches: <strong>${escapeHtml(normalizedBatchNames.join(", "))}</strong></p>`
+      : ""
+    }
       ${loginLink ? `<p><a href="${escapeHtml(loginLink)}">Open CISPRO dashboard</a></p>` : ""}
     </div>
   `;
