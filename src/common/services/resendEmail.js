@@ -4,6 +4,11 @@ import { Resend } from "resend";
 import config from "../../config/env.js";
 import AppError from "../errors/AppError.js";
 
+import { studentTemplate } from "./emailTemplates/studentTemplate.js";
+import { welcomeTemplate } from "./emailTemplates/welcomeTemplate.js";
+import { resetPasswordTemplate } from "./emailTemplates/resetPasswordTemplate.js";
+import { facultyTemplate } from "./emailTemplates/facultyTemplate.js";
+
 let cachedTransporter = null;
 let cachedResendClient = null;
 
@@ -291,16 +296,10 @@ export async function sendPasswordResetEmail({ to, resetToken }) {
   const resetLink = buildResetLink(token);
   const fallbackText = token ? `Reset token: ${token}` : "Reset token unavailable";
 
-  const html = `
-    <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #111;">
-      <h2>Password Reset Request</h2>
-      <p>Hello,</p>
-      <p>We received a request to reset your CISPRO account password.</p>
-      ${resetLink ? `<p><a href="${escapeHtml(resetLink)}">Reset your password</a></p>` : ""}
-      ${resetLink ? "" : `<p>Your reset token is <strong>${escapeHtml(token)}</strong>.</p>`}
-      <p>This reset link will expire soon. If you did not request this, you can ignore this email.</p>
-    </div>
-  `;
+  const html = resetPasswordTemplate({
+    fullName: "User",
+    resetLink,
+  });
 
   const text = resetLink
     ? `Reset your CISPRO password: ${resetLink}\n\nIf you did not request this, ignore this email.`
@@ -315,7 +314,8 @@ export async function sendPasswordResetEmail({ to, resetToken }) {
 }
 
 export async function sendStudentCredentialsEmail({ to, fullName, studentCode, temporaryPassword, resetToken }) {
-  console.log("✅ sendStudentCredentialsEmail called");
+  console.log(" sendStudentCredentialsEmail called");
+
   const loginLink = buildLoginLink();
   const resetLink = buildResetLink(resetToken, temporaryPassword);
   const safeName = escapeHtml(fullName || "Student");
@@ -323,331 +323,13 @@ export async function sendStudentCredentialsEmail({ to, fullName, studentCode, t
   const safePassword = escapeHtml(temporaryPassword || "");
 
 
-  const html = `
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>CISPRO Student Account</title>
-</head>
-
-<body style="margin:0;padding:0;background:#f4f7fb;font-family:Arial,Helvetica,sans-serif;">
-
-<table width="100%" cellpadding="0" cellspacing="0" style="background:#f4f7fb;padding:40px 0;">
-
-<tr>
-
-<td align="center">
-
-<table width="650" cellpadding="0" cellspacing="0"
-style="
-background:#ffffff;
-border-radius:14px;
-overflow:hidden;
-box-shadow:0 10px 30px rgba(0,0,0,.08);
-">
-
-
-
-<tr>
-
-<td
-style="
-background:linear-gradient(135deg,#132B4F,#233B6E);
-padding:45px;
-text-align:center;
-">
-
-<h2
-style="
-margin:0;
-color:#ffffff;
-font-size:28px;
-letter-spacing:1px;
-">
-
-CISPRO OPERATION MANAGEMENT
-
-</h2>
-
-<div
-style="
-width:80px;
-height:4px;
-background:#FFB400;
-margin:18px auto 0;
-border-radius:20px;
-"></div>
-
-</td>
-
-</tr>
-
-
-
-<tr>
-
-<td style="padding:45px;">
-
-<h1
-style="
-margin-top:0;
-font-size:34px;
-color:#1A2340;
-">
-
-Welcome, ${safeName} 
-
-</h1>
-
-<p
-style="
-font-size:17px;
-line-height:30px;
-color:#666;
-">
-
-Your student account has been created successfully.
-Please use the details below to login.
-
-</p>
-
-
-<table
-width="100%"
-cellpadding="18"
-style="
-background:#F7F9FF;
-border:1px solid #E3E8FF;
-border-radius:10px;
-margin-top:25px;
-">
-
-<tr>
-
-<td colspan="2">
-
-<h3
-style="
-margin:0;
-color:#28457A;
-">
-
-STUDENT DETAILS
-
-</h3>
-
-</td>
-
-</tr>
-
-<tr>
-
-<td width="180">
-
-<b>Student Code</b>
-
-</td>
-
-<td>
-
-${safeCode}
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-
-<b>Email</b>
-
-</td>
-
-<td>
-
-${to}
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-
-<b>Temporary Password</b>
-
-</td>
-
-<td>
-
-${safePassword}
-
-</td>
-
-</tr>
-
-</table>
-
-
-
-<div
-style="
-text-align:center;
-margin-top:35px;
-">
-
-<a
-href="${loginLink}"
-style="
-display:inline-block;
-padding:16px 42px;
-background:linear-gradient(90deg,#4F46E5,#9333EA);
-color:#fff;
-text-decoration:none;
-font-size:18px;
-font-weight:bold;
-border-radius:8px;
-">
-
-Login to Portal →
-
-</a>
-
-</div>
-
-
-
-<div
-style="
-text-align:center;
-margin-top:18px;
-">
-
-<a
-href="${resetLink}"
-style="
-display:inline-block;
-padding:16px 42px;
-background:linear-gradient(90deg,#F97316,#EF4444);
-color:#fff;
-text-decoration:none;
-font-size:18px;
-font-weight:bold;
-border-radius:8px;
-">
-
-Reset Password →
-
-</a>
-
-</div>
-
-<p
-style="
-margin-top:30px;
-color:#666;
-line-height:28px;
-">
-
-If the buttons above don't work, copy and paste the link below into your browser.
-
-</p>
-
-<p
-style="
-word-break:break-all;
-">
-
-<a href="${resetLink}">
-
-${resetLink}
-
-</a>
-
-</p>
-
-
-
-<table
-width="100%"
-style="
-margin-top:30px;
-background:#FFF7E6;
-border-left:5px solid #F59E0B;
-border-radius:6px;
-">
-
-<tr>
-
-<td style="padding:18px;">
-
-<b>Important:</b>
-
-Please login using the temporary password and change it immediately using the Reset Password button.
-
-</td>
-
-</tr>
-
-</table>
-
-<p
-style="
-margin-top:35px;
-line-height:28px;
-color:#666;
-">
-
-If you experience any issues logging in, please contact your administrator.
-
-</p>
-
-</td>
-
-</tr>
-
-
-
-<tr>
-
-<td
-style="
-background:#F8F9FB;
-padding:25px;
-text-align:center;
-color:#888;
-font-size:13px;
-">
-
-© 2026 CISPRO Operation Management
-
-<br><br>
-
-<a href="#" style="color:#4F46E5;text-decoration:none;">Privacy Policy</a>
-
-&nbsp; | &nbsp;
-
-<a href="#" style="color:#4F46E5;text-decoration:none;">Terms of Service</a>
-
-</td>
-
-</tr>
-
-</table>
-
-</td>
-
-</tr>
-
-</table>
-
-</body>
-</html>
-`;
+  const html = studentTemplate({
+    fullName: safeName,
+    email: to,
+    temporaryPassword: safePassword,
+    loginLink,
+    resetLink,
+  });
 
 
   const textParts = [
@@ -665,7 +347,7 @@ font-size:13px;
 
   return sendEmail({
     to,
-    subject: "🔥 NEW TEMPLATE TEST 🔥",
+    subject: "Your CISPRO Student Login Details",
     html,
     text: textParts.join("\n"),
   });
@@ -679,15 +361,11 @@ export async function sendStudentWelcomeEmail({ to, fullName, courseName }) {
     ? `<p>Your enrolled course: <strong>${safeCourseName}</strong></p>`
     : "";
 
-  const html = `
-    <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #111;">
-      <h2>Welcome to CISPRO Student Portal</h2>
-      <p>Hello ${safeName},</p>
-      <p>You have successfully logged in to your student dashboard for the first time.</p>
-      ${courseLine}
-      ${loginLink ? `<p><a href="${escapeHtml(loginLink)}">Open CISPRO dashboard</a></p>` : ""}
-    </div>
-  `;
+  const html = welcomeTemplate({
+    fullName: safeName,
+    courseName: safeCourseName,
+    loginLink,
+  });
 
   const text = [
     `Welcome to CISPRO Student Portal, ${fullName || "Student"}.`,
@@ -709,7 +387,6 @@ export async function sendStudentWelcomeEmail({ to, fullName, courseName }) {
 export async function sendFacultyCredentialsEmail({
   to,
   fullName,
-  facultyCode,
   temporaryPassword,
   resetToken,
   courseName,
@@ -718,35 +395,23 @@ export async function sendFacultyCredentialsEmail({
   const loginLink = buildLoginLink();
   const resetLink = buildResetLink(resetToken, temporaryPassword);
   const safeName = escapeHtml(fullName || "Faculty");
-  const safeCode = escapeHtml(facultyCode || "");
   const safePassword = escapeHtml(temporaryPassword || "");
   const normalizedBatchNames = Array.isArray(batchNames)
     ? batchNames.map((item) => String(item || "").trim()).filter(Boolean)
     : [];
 
-  const html = `
-    <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #111;">
-      <h2>CISPRO Faculty Login Details</h2>
-      <p>Hello ${safeName},</p>
-      <p>Your faculty account has been created successfully.</p>
-      <p><strong>Login email:</strong> ${escapeHtml(to)}</p>
-      ${safeCode ? `<p><strong>Faculty code:</strong> ${safeCode}</p>` : ""}
-      ${courseName ? `<p><strong>Course:</strong> ${escapeHtml(courseName)}</p>` : ""}
-      ${normalizedBatchNames.length
-      ? `<p><strong>Batches:</strong> ${escapeHtml(normalizedBatchNames.join(", "))}</p>`
-      : ""
-    }
-      <p><strong>Temporary password:</strong> ${safePassword}</p>
-      ${loginLink ? `<p><a href="${escapeHtml(loginLink)}">Login to CISPRO</a></p>` : ""}
-      ${resetLink ? `<p><a href="${escapeHtml(resetLink)}">Reset your password</a></p>` : ""}
-      <p>Use the temporary password to sign in, then change it using the reset link.</p>
-    </div>
-  `;
-
+  const html = facultyTemplate({
+    fullName: safeName,
+    email: to,
+    temporaryPassword: safePassword,
+    courseName,
+    batchNames: normalizedBatchNames,
+    loginLink,
+    resetLink,
+  });
   const textParts = [
     `CISPRO Faculty Login Details for ${fullName || "Faculty"}.`,
     `Login email: ${to}`,
-    safeCode ? `Faculty code: ${facultyCode}` : null,
     courseName ? `Course: ${courseName}` : null,
     normalizedBatchNames.length ? `Batches: ${normalizedBatchNames.join(", ")}` : null,
     `Temporary password: ${temporaryPassword}`,
@@ -766,28 +431,22 @@ export async function sendFacultyCredentialsEmail({
 export async function sendFacultyWelcomeEmail({ to, fullName, courseName, batchNames = [] }) {
   const loginLink = buildLoginLink();
   const safeName = escapeHtml(fullName || "Faculty");
+  const safeCourseName = escapeHtml(courseName || "");
   const normalizedBatchNames = Array.isArray(batchNames)
     ? batchNames.map((item) => String(item || "").trim()).filter(Boolean)
     : [];
 
-  const html = `
-    <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #111;">
-      <h2>Welcome to CISPRO Faculty Portal</h2>
-      <p>Hello ${safeName},</p>
-      <p>You have successfully logged in to your faculty dashboard for the first time.</p>
-      ${courseName ? `<p>Your assigned course: <strong>${escapeHtml(courseName)}</strong></p>` : ""}
-      ${normalizedBatchNames.length
-      ? `<p>Your batches: <strong>${escapeHtml(normalizedBatchNames.join(", "))}</strong></p>`
-      : ""
-    }
-      ${loginLink ? `<p><a href="${escapeHtml(loginLink)}">Open CISPRO dashboard</a></p>` : ""}
-    </div>
-  `;
+  const html = welcomeTemplate({
+    fullName: safeName,
+    courseName: safeCourseName,
+    loginLink,
+  });
 
   const text = [
     `Welcome to CISPRO Faculty Portal, ${fullName || "Faculty"}.`,
     "You have successfully logged in to your faculty dashboard for the first time.",
     courseName ? `Assigned course: ${courseName}` : null,
+    courseName ? `Your enrolled course: ${courseName}` : null,
     normalizedBatchNames.length ? `Your batches: ${normalizedBatchNames.join(", ")}` : null,
     loginLink ? `Dashboard/login link: ${loginLink}` : null,
   ]
