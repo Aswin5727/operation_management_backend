@@ -1,6 +1,20 @@
 import "dotenv/config";
 import { defineConfig } from "prisma/config";
 
+declare const process: {
+  env: {
+    DB_HOST?: string;
+    DB_PORT?: string;
+    DB_NAME?: string;
+    DB_USER?: string;
+    DB_PASSWORD?: string;
+    DATABASE_URL?: string;
+    PRISMA_DATABASE_URL?: string;
+    DIRECT_URL?: string;
+    [key: string]: string | undefined;
+  };
+};
+
 const dbHost = process.env.DB_HOST || "";
 const dbPort = process.env.DB_PORT || "";
 const dbName = process.env.DB_NAME || "";

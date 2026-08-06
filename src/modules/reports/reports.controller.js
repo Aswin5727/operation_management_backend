@@ -20,7 +20,7 @@ export const getStudentAttendanceReportHandler = asyncHandler(async (req, res) =
 });
 
 export const getBatchAttendanceReportHandler = asyncHandler(async (req, res) => {
-  const report = await generateBatchAttendanceReport(req.query);
+  const report = await generateBatchAttendanceReport(req.query, req.user);
   return sendExcelResponse(res, report);
 });
 

@@ -81,6 +81,25 @@ const facultyProfileReportSelect = {
   },
 };
 
+const facultyReportAccessSelect = {
+  id: true,
+  facultyName: true,
+  facultyEmail: true,
+  courseId: true,
+  courseAssignments: {
+    select: {
+      courseId: true,
+    },
+  },
+  batchEntries: {
+    select: {
+      id: true,
+      courseId: true,
+      batchName: true,
+    },
+  },
+};
+
 async function getStudentOrThrow(studentId) {
   const student = await prisma.studentProfile.findUnique({
     where: { id: studentId },
@@ -266,6 +285,49 @@ async function getFacultyProfileOrThrow(facultyId) {
   return facultyProfile;
 }
 
+async function getFacultyReportAccessProfile(actorUser) {
+  const normalizedRole = normalizeString(actorUser?.role).toUpperCase();
+
+  if (normalizedRole !== "FACULTY") {
+    return null;
+  }
+
+  const email = normalizeString(actorUser?.email).toLowerCase();
+
+  if (!email) {
+    throw new AppError("You do not have permission for this action", 403);
+  }
+
+  const facultyProfile = await prisma.facultyProfile.findFirst({
+    where: {
+      facultyEmail: {
+        equals: email,
+        mode: "insensitive",
+      },
+    },
+    select: facultyReportAccessSelect,
+  });
+
+  if (!facultyProfile) {
+    throw new AppError("You do not have permission for this action", 403);
+  }
+
+  return facultyProfile;
+}
+
+function getFacultyAllowedBatchEntries(facultyProfile, courseId = "") {
+  const normalizedCourseId = normalizeString(courseId);
+
+  return (Array.isArray(facultyProfile?.batchEntries) ? facultyProfile.batchEntries : []).filter((entry) => {
+    const entryBatchName = normalizeString(entry?.batchName);
+    if (!entryBatchName) return false;
+
+    if (!normalizedCourseId) return true;
+
+    return normalizeString(entry?.courseId) === normalizedCourseId;
+  });
+}
+
 async function getFacultyUserByProfileOrThrow(facultyProfile) {
   const email = normalizeString(facultyProfile?.facultyEmail).toLowerCase();
 
@@ -316,7 +378,7 @@ async function findStudentAttendanceReportData({ studentId, fromDate, toDate }) 
   };
 }
 
-async function findBatchAttendanceReportData({ batchId, batchName, courseId, fromDate, toDate }) {
+async function findBatchAttendanceReportData({ batchId, batchName, courseId, fromDate, toDate, actorUser = null }) {
   const normalizedBatchId = normalizeString(batchId);
   const normalizedBatchName = normalizeString(batchName);
   const normalizedCourseId = normalizeString(courseId);
@@ -324,6 +386,7 @@ async function findBatchAttendanceReportData({ batchId, batchName, courseId, fro
     !normalizedBatchId &&
     Boolean(normalizedCourseId) &&
     ["all batches", "all", "*"].includes(normalizedBatchName.toLowerCase());
+  const facultyProfile = await getFacultyReportAccessProfile(actorUser);
 
   let scope = null;
   let studentWhere = {};
@@ -361,6 +424,50 @@ async function findBatchAttendanceReportData({ batchId, batchName, courseId, fro
     studentWhere = {
       courseId: course.id,
     };
+  }
+
+  if (facultyProfile) {
+    const allowedBatchEntries = getFacultyAllowedBatchEntries(
+      facultyProfile,
+      scope.kind === "course" ? scope.courseId : scope.courseId || normalizedCourseId,
+    );
+
+    if (!allowedBatchEntries.length) {
+      throw new AppError("You do not have permission to download this attendance report", 403);
+    }
+
+    if (scope.kind === "batch") {
+      const hasBatchAccess = allowedBatchEntries.some(
+        (entry) =>
+          normalizeString(entry?.batchName) === normalizeString(scope.batchName) &&
+          normalizeString(entry?.courseId || "") === normalizeString(scope.courseId || ""),
+      );
+
+      if (!hasBatchAccess) {
+        throw new AppError("You do not have permission to download this attendance report", 403);
+      }
+    }
+
+    if (scope.kind === "course") {
+      const allowedBatchNames = Array.from(
+        new Set(
+          allowedBatchEntries
+            .map((entry) => normalizeString(entry?.batchName))
+            .filter(Boolean),
+        ),
+      );
+
+      if (!allowedBatchNames.length) {
+        throw new AppError("You do not have permission to download this attendance report", 403);
+      }
+
+      studentWhere = {
+        ...studentWhere,
+        batchName: {
+          in: allowedBatchNames,
+        },
+      };
+    }
   }
 
   const students = await prisma.studentProfile.findMany({

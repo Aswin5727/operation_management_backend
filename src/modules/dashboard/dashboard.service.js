@@ -1,16 +1,29 @@
 import prisma from "../../config/prisma.js";
-import AppError from "../../common/errors/AppError.js";
 
 const IST_OFFSET_MINUTES = 330;
-const REVENUE_SUMMARY_CACHE_TTL_MS = 15000;
+const REVENUE_INSIGHTS_CACHE_TTL_MS = 30000;
+const MONTH_LABELS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-let cachedRevenueSummary = null;
-let cachedRevenueSummaryExpiresAt = 0;
-let cachedRevenueSummaryPromise = null;
+let cachedRevenueInsights = null;
+let cachedRevenueInsightsExpiresAt = 0;
+let cachedRevenueInsightsPromise = null;
 
-function normalizeString(value) {
-  return String(value ?? "").trim();
-}
+const revenueStudentSelect = {
+  admissionDate: true,
+  afterDiscount: true,
+  totalAmount: true,
+  installment1: true,
+  installment2: true,
+  installment3: true,
+  firstInstallmentAmount: true,
+  firstInstallmentDate: true,
+  firstInstallmentStatus: true,
+  firstInstallmentPaidAt: true,
+  secondInstallmentAmount: true,
+  secondDueDate: true,
+  secondInstallmentStatus: true,
+  secondInstallmentPaidAt: true,
+};
 
 function toIstDateParts(date = new Date()) {
   const shifted = new Date(date.getTime() + IST_OFFSET_MINUTES * 60 * 1000);
@@ -33,6 +46,17 @@ function addDays(dateString, days) {
   return date.toISOString().slice(0, 10);
 }
 
+function addOneMonth(dateString) {
+  const date = new Date(`${dateString}T00:00:00Z`);
+
+  if (Number.isNaN(date.getTime())) {
+    return "";
+  }
+
+  date.setUTCMonth(date.getUTCMonth() + 1);
+  return date.toISOString().slice(0, 10);
+}
+
 function getIstToday() {
   const parts = toIstDateParts();
   return toDateStringFromParts(parts.year, parts.month, parts.day);
@@ -44,10 +68,10 @@ function getIstMonthStart(offsetMonths = 0) {
   return date.toISOString().slice(0, 10);
 }
 
-function getIstWeekStart() {
-  const today = getIstToday();
+function getIstWeekStart(referenceDate = null) {
+  const today = referenceDate || getIstToday();
   const date = new Date(`${today}T00:00:00Z`);
-  const { dayOfWeek } = toIstDateParts();
+  const { dayOfWeek } = toIstDateParts(referenceDate ? new Date(`${referenceDate}T00:00:00Z`) : new Date());
   const offset = (dayOfWeek + 6) % 7;
   date.setUTCDate(date.getUTCDate() - offset);
   return date.toISOString().slice(0, 10);
@@ -325,79 +349,217 @@ async function getRevenueSummary() {
   cachedRevenueSummaryPromise = (async () => {
   const today = getIstToday();
   const monthStart = getIstMonthStart();
-  const nextMonthStart = getIstMonthStart(1);
-  const weekStart = getIstWeekStart();
-  const weekEnd = getIstWeekEnd();
+  const weekStart = getIstWeekStart(today);
 
-  const previousMonthStart = getIstMonthStart(-1);
-  const previousMonthEnd = addDays(monthStart, -1);
+  const lastWeekStart = addDays(weekStart, -7);
+  const lastWeekEnd = addDays(weekStart, -1);
+  const lastMonthStart = getIstMonthStart(-1);
+  const lastMonthEnd = addDays(monthStart, -1);
 
-  const [totalRevenue, totalStudents, thisMonthRevenue, thisMonthStudents, thisWeekRevenue, thisWeekStudents, previousMonthRevenue] =
-    await prisma.$transaction([
-      prisma.studentProfile.aggregate({
-        where: buildRevenueWhere(),
-        _sum: { totalAmount: true },
-      }),
-      prisma.studentProfile.aggregate({
-        where: buildRevenueWhere(),
-        _count: { id: true },
-      }),
-      prisma.studentProfile.aggregate({
-        where: buildRevenueWhere({ from: monthStart, to: nextMonthStart }),
-        _sum: { totalAmount: true },
-      }),
-      prisma.studentProfile.aggregate({
-        where: buildRevenueWhere({ from: monthStart, to: nextMonthStart }),
-        _count: { id: true },
-      }),
-      prisma.studentProfile.aggregate({
-        where: buildRevenueWhere({ from: weekStart, to: weekEnd }),
-        _sum: { totalAmount: true },
-      }),
-      prisma.studentProfile.aggregate({
-        where: buildRevenueWhere({ from: weekStart, to: weekEnd }),
-        _count: { id: true },
-      }),
-      prisma.studentProfile.aggregate({
-        where: buildRevenueWhere({ from: previousMonthStart, to: previousMonthEnd }),
-        _sum: { totalAmount: true },
-      }),
-    ]);
+  return students.reduce(
+    (summary, student) => {
+      const admissionDate = normalizeDateValue(student?.admissionDate || student?.firstInstallmentDate);
+      const entries = getInstallmentEntries(student);
+      const plannedTotal =
+        toNumber(student?.totalAmount || student?.afterDiscount) ||
+        entries.reduce((total, entry) => total + entry.amount, 0);
 
-  const expectedNextWeekRevenue = Math.round(
-    Math.max(
-      sumRevenue(thisWeekRevenue),
-      sumRevenue(thisMonthRevenue) / 4,
-      sumRevenue(previousMonthRevenue) / 4,
-    ),
+      summary.totalStudents += 1;
+
+      if (isWithinRange(admissionDate, monthStart, today)) {
+        summary.thisMonthStudents += 1;
+      }
+
+      if (isWithinRange(admissionDate, weekStart, today)) {
+        summary.thisWeekStudents += 1;
+      }
+
+      let paidTotalForStudent = 0;
+      let paidTotalBeforeWeekStart = 0;
+
+      for (const entry of entries) {
+        if (String(entry.status).toLowerCase() !== "paid") {
+          continue;
+        }
+
+        paidTotalForStudent += entry.amount;
+        summary.totalRevenue += entry.amount;
+
+        const paymentDate = entry.paidAt || admissionDate || entry.dueDate;
+
+        if (paymentDate && paymentDate < weekStart) {
+          paidTotalBeforeWeekStart += entry.amount;
+          summary.lastWeekCumulativeRevenue += entry.amount;
+        }
+
+        if (isWithinRange(paymentDate, lastMonthStart, lastMonthEnd)) {
+          summary.lastMonthRevenue += entry.amount;
+        }
+
+        if (isWithinRange(paymentDate, lastWeekStart, lastWeekEnd)) {
+          summary.lastWeekRevenue += entry.amount;
+        }
+
+        if (isWithinRange(paymentDate, monthStart, today)) {
+          summary.thisMonthRevenue += entry.amount;
+        }
+
+        if (isWithinRange(paymentDate, weekStart, today)) {
+          summary.thisWeekRevenue += entry.amount;
+        }
+      }
+
+      summary.pendingPayments += Math.max(plannedTotal - paidTotalForStudent, 0);
+      summary.lastWeekPendingPayments += Math.max(plannedTotal - paidTotalBeforeWeekStart, 0);
+
+      return summary;
+    },
+    {
+      totalRevenue: 0,
+      thisMonthRevenue: 0,
+      thisWeekRevenue: 0,
+      pendingPayments: 0,
+      totalStudents: 0,
+      thisMonthStudents: 0,
+      thisWeekStudents: 0,
+      lastWeekCumulativeRevenue: 0,
+      lastMonthRevenue: 0,
+      lastWeekRevenue: 0,
+      lastWeekPendingPayments: 0,
+    },
   );
+}
+
+function buildMonthlyRevenueComparison(students, referenceDate = new Date()) {
+  const year = toIstDateParts(referenceDate).year;
+  const buckets = MONTH_LABELS.map((month, monthIndex) => ({
+    month,
+    monthIndex,
+    actual: 0,
+    expected: 0,
+  }));
+
+  for (const student of students) {
+    for (const entry of getInstallmentEntries(student)) {
+      const amount = toNumber(entry.amount);
+      if (!amount) continue;
+
+      const paidAt = getDateObject(entry.paidAt);
+      if (String(entry.status).toLowerCase() === "paid" && paidAt && paidAt.getUTCFullYear() === year) {
+        buckets[paidAt.getUTCMonth()].actual += amount;
+        continue;
+      }
+
+      const dueDate = getDateObject(entry.dueDate);
+      if (!dueDate || dueDate.getUTCFullYear() !== year) {
+        continue;
+      }
+
+      buckets[dueDate.getUTCMonth()].expected += amount;
+    }
+  }
+
+  return buckets.map(({ month, actual, expected }) => ({ month, actual, expected }));
+}
+
+function buildWeeklyRevenueComparison(students, referenceDate = new Date()) {
+  const parts = toIstDateParts(referenceDate);
+  const year = parts.year;
+  const monthIndex = parts.month - 1;
+  const currentWeekIndex = getCurrentWeekIndex(referenceDate);
+  const buckets = getWeekBuckets(referenceDate).map((bucket, index) => ({
+    week: index === currentWeekIndex ? `${bucket.label} (Current)` : bucket.label,
+    actual: 0,
+    expected: 0,
+    start: bucket.start,
+    end: bucket.end,
+    isCurrent: index === currentWeekIndex,
+  }));
+
+  for (const student of students) {
+    for (const entry of getInstallmentEntries(student)) {
+      const amount = toNumber(entry.amount);
+      if (!amount) continue;
+
+      const paidAt = getDateObject(entry.paidAt);
+      if (
+        String(entry.status).toLowerCase() === "paid" &&
+        paidAt &&
+        paidAt.getUTCFullYear() === year &&
+        paidAt.getUTCMonth() === monthIndex
+      ) {
+        const paidDay = paidAt.getUTCDate();
+        const paidIndex = buckets.findIndex((bucket) => paidDay >= bucket.start && paidDay <= bucket.end);
+        if (paidIndex >= 0) {
+          buckets[paidIndex].actual += amount;
+        }
+        continue;
+      }
+
+      const dueDate = getDateObject(entry.dueDate);
+      if (!dueDate || dueDate.getUTCFullYear() !== year || dueDate.getUTCMonth() !== monthIndex) {
+        continue;
+      }
+
+      const dueDay = dueDate.getUTCDate();
+      const dueIndex = buckets.findIndex((bucket) => dueDay >= bucket.start && dueDay <= bucket.end);
+      if (dueIndex >= 0 && dueIndex >= currentWeekIndex) {
+        buckets[dueIndex].expected += amount;
+      }
+    }
+  }
+
+  return buckets.map(({ week, actual, expected, isCurrent }) => ({ week, actual, expected, isCurrent }));
+}
+
+async function loadRevenueInsights() {
+  const students = await prisma.studentProfile.findMany({
+    where: {
+      recordStatus: "ACTIVE",
+    },
+    select: revenueStudentSelect,
+  });
 
   return {
-    generatedAt: today,
-    totalRevenue: sumRevenue(totalRevenue),
-    totalStudents: countStudents(totalStudents),
-    thisMonthRevenue: sumRevenue(thisMonthRevenue),
-    thisMonthStudents: countStudents(thisMonthStudents),
-    thisWeekRevenue: sumRevenue(thisWeekRevenue),
-    thisWeekStudents: countStudents(thisWeekStudents),
-    expectedNextWeekRevenue,
+    generatedAt: getIstToday(),
+    summary: calculateRevenueSummary(students),
+    monthlyRevenue: buildMonthlyRevenueComparison(students),
+    weeklyRevenue: buildWeeklyRevenueComparison(students),
   };
-  })()
-    .then((summary) => {
-      cachedRevenueSummary = summary;
-      cachedRevenueSummaryExpiresAt = Date.now() + REVENUE_SUMMARY_CACHE_TTL_MS;
-      return summary;
+}
+
+async function getRevenueInsights() {
+  const now = Date.now();
+
+  if (cachedRevenueInsights && now < cachedRevenueInsightsExpiresAt) {
+    return cachedRevenueInsights;
+  }
+
+  if (cachedRevenueInsightsPromise) {
+    return cachedRevenueInsightsPromise;
+  }
+
+  cachedRevenueInsightsPromise = loadRevenueInsights()
+    .then((insights) => {
+      cachedRevenueInsights = insights;
+      cachedRevenueInsightsExpiresAt = Date.now() + REVENUE_INSIGHTS_CACHE_TTL_MS;
+      return insights;
     })
     .finally(() => {
-      cachedRevenueSummaryPromise = null;
+      cachedRevenueInsightsPromise = null;
     });
 
-  return cachedRevenueSummaryPromise;
+  return cachedRevenueInsightsPromise;
+}
+
+async function getRevenueSummary() {
+  const insights = await getRevenueInsights();
+  return insights.summary;
 }
 
 function invalidateRevenueSummaryCache() {
-  cachedRevenueSummary = null;
-  cachedRevenueSummaryExpiresAt = 0;
+  cachedRevenueInsights = null;
+  cachedRevenueInsightsExpiresAt = 0;
 }
 
 export { getRevenueSummary, getFacultyMyBatchesSummary, invalidateRevenueSummaryCache };
