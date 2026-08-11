@@ -2,6 +2,14 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
+export const splitCsvValues = (value) =>
+  String(value || "")
+    .split(",")
+    .map((item) => item.trim())
+    .filter(Boolean);
+
+export const pickPrimaryUrl = (value) => splitCsvValues(value)[0] || "";
+
 const toNumber = (value, fallback) => {
   const parsed = Number(value);
   return Number.isFinite(parsed) ? parsed : fallback;
@@ -35,8 +43,19 @@ const config = {
   nodeEnv: process.env.NODE_ENV || "development",
   port: toNumber(process.env.PORT, 4000),
   databaseUrl: buildDatabaseUrl(),
-  frontendUrl: process.env.FRONTEND_URL || process.env.CORS_ORIGIN || "",
-  corsOrigin: process.env.FRONTEND_URL || process.env.CORS_ORIGIN || "",
+  frontendUrl: pickPrimaryUrl(
+    process.env.FRONTEND_URL || process.env.CORS_ORIGIN || process.env.CORS_ORIGINS || "",
+  ),
+  corsOrigins:
+    process.env.CORS_ORIGINS ||
+    process.env.CORS_ORIGIN ||
+    process.env.FRONTEND_URL ||
+    "",
+  corsOrigin:
+    process.env.CORS_ORIGINS ||
+    process.env.CORS_ORIGIN ||
+    process.env.FRONTEND_URL ||
+    "",
   emailHost: process.env.EMAIL_HOST || "smtp.gmail.com",
   emailPort: toNumber(process.env.EMAIL_PORT, 587),
   emailSecure: process.env.EMAIL_SECURE === "true",
