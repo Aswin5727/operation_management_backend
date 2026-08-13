@@ -5,6 +5,7 @@ import {
   logoutHandler,
   forgotPasswordHandler,
   resetPasswordHandler,
+  changePasswordHandler,
   meHandler,
 } from "./auth.controller.js";
 import { authenticate } from "../../common/middlewares/authenticate.js";
@@ -17,6 +18,7 @@ router.post("/refresh", authLimiter, refreshHandler);
 router.post("/logout", authLimiter, logoutHandler);
 router.post("/forgot-password", authLimiter, forgotPasswordHandler);
 router.post("/reset-password", authLimiter, resetPasswordHandler);
+router.post("/change-password", authLimiter, authenticate, changePasswordHandler);
 router.get("/me", authenticate, meHandler);
 
 export default router;

@@ -1,3 +1,8 @@
+function requiresPasswordReset(user) {
+  const role = String(user?.role || "").trim().toUpperCase();
+  return role === "BRANCH_ADMIN" && !user?.passwordChangedAt;
+}
+
 function toSafeUser(user) {
   if (!user) {
     return null;
@@ -11,6 +16,7 @@ function toSafeUser(user) {
     phone: user.phone,
     role: user.role,
     active: user.active,
+    mustResetPassword: requiresPasswordReset(user),
     lastLoginAt: user.lastLoginAt,
     lastLogoutAt: user.lastLogoutAt,
     createdAt: user.createdAt,
@@ -18,4 +24,4 @@ function toSafeUser(user) {
   };
 }
 
-export { toSafeUser };
+export { toSafeUser, requiresPasswordReset };

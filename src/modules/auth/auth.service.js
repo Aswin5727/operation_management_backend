@@ -21,6 +21,7 @@ import {
   recordFacultyLoginSession,
   recordFacultyLogoutSession,
 } from "../attendance/attendance.service.js";
+import { requiresPasswordReset } from "../../common/utils/user.js";
 
 function normalizeIdentifier(identifier) {
   return String(identifier || "").trim().toLowerCase();
@@ -35,6 +36,7 @@ const AUTH_USER_SELECT = {
   role: true,
   active: true,
   passwordHash: true,
+  passwordChangedAt: true,
   refreshTokenVersion: true,
   failedLoginCount: true,
   failedLoginWindowExpiresAt: true,
@@ -518,6 +520,70 @@ async function resetPassword({ token, password, ipAddress, userAgent }) {
   };
 }
 
+async function changePassword({ userId, password, ipAddress, userAgent }) {
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+  });
+
+  if (!user || !user.active) {
+    throw new AppError("Session expired", 401);
+  }
+
+  if (!password) {
+    throw new AppError("Password is required", 400);
+  }
+
+  const newPasswordMatchesOld = await comparePassword(password, user.passwordHash);
+
+  if (newPasswordMatchesOld) {
+    throw new AppError("This password already exists. Please choose a different strong password.", 400);
+  }
+
+  if (!requiresPasswordReset(user)) {
+    throw new AppError("Password reset is not required for this account.", 400);
+  }
+
+  const passwordHash = await hashPassword(password);
+
+  await prisma.$transaction([
+    prisma.user.update({
+      where: { id: user.id },
+      data: {
+        passwordHash,
+        passwordChangedAt: new Date(),
+        refreshTokenVersion: { increment: 1 },
+        failedLoginCount: 0,
+        failedLoginWindowExpiresAt: null,
+        lockedUntil: null,
+        updatedBy: user.id,
+      },
+    }),
+    prisma.passwordResetToken.updateMany({
+      where: {
+        userId: user.id,
+        usedAt: null,
+      },
+      data: {
+        usedAt: new Date(),
+      },
+    }),
+    prisma.loginEvent.create({
+      data: {
+        userId: user.id,
+        eventType: LOGIN_EVENT_TYPES.RESET_PASSWORD_COMPLETED,
+        success: true,
+        ipAddress: ipAddress || null,
+        userAgent: userAgent || null,
+        reason: "Password changed after temporary-password login",
+      },
+    }),
+  ]);
+
+  return {
+    message: "Password updated successfully. Please sign in again with your new password.",
+  };
+}
+
 async function getCurrentUser(userId) {
   const user = await prisma.user.findUnique({
     where: { id: userId },
@@ -536,6 +602,7 @@ export {
   logout,
   forgotPassword,
   resetPassword,
+  changePassword,
   getCurrentUser,
   createLoginEvent,
 };

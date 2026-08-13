@@ -112,6 +112,14 @@ function toDisplayStatus(value) {
   return String(value || "").toUpperCase() === "INACTIVE" ? "Inactive" : "Active";
 }
 
+function getBranchMustResetPassword(record, explicitValue) {
+  if (typeof explicitValue === "boolean") {
+    return explicitValue;
+  }
+
+  return Boolean(record?.adminUser && !record.adminUser.passwordChangedAt);
+}
+
 function toBranchSummary(record, options = {}) {
   if (!record) return null;
 
@@ -124,6 +132,7 @@ function toBranchSummary(record, options = {}) {
     branchPhone: record.branchPhone,
     branchAddress: record.branchAddress,
     status: toDisplayStatus(record.status),
+    mustResetPassword: getBranchMustResetPassword(record, options.mustResetPassword),
     createdAt: record.createdAt,
     updatedAt: record.updatedAt,
     ...(options.tempPassword ? { tempPassword: options.tempPassword } : {}),
@@ -233,6 +242,7 @@ async function loadBranch(branchId) {
           email: true,
           phone: true,
           active: true,
+          passwordChangedAt: true,
         },
       },
     },
@@ -495,18 +505,32 @@ export async function getCurrentBranchProfile(user) {
 
   const branch = userId
     ? await prisma.branch.findFirst({
-      where: {
-        adminUserId: userId,
-      },
-    })
-    : await prisma.branch.findFirst({
-      where: {
-        branchEmail: {
-          equals: normalizedEmail,
-          mode: "insensitive",
+        where: {
+          adminUserId: userId,
         },
-      },
-    });
+        include: {
+          adminUser: {
+            select: {
+              passwordChangedAt: true,
+            },
+          },
+        },
+      })
+    : await prisma.branch.findFirst({
+        where: {
+          branchEmail: {
+            equals: normalizedEmail,
+            mode: "insensitive",
+          },
+        },
+        include: {
+          adminUser: {
+            select: {
+              passwordChangedAt: true,
+            },
+          },
+        },
+      });
 
   if (!branch) {
     throw new AppError("Branch profile not found", 404);

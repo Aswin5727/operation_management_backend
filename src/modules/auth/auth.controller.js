@@ -7,6 +7,7 @@ import {
   logout,
   forgotPassword,
   resetPassword,
+  changePassword,
   getCurrentUser,
 } from "./auth.service.js";
 
@@ -157,6 +158,26 @@ const resetPasswordHandler = asyncHandler(async (req, res) => {
   });
 });
 
+const changePasswordHandler = asyncHandler(async (req, res) => {
+  const body = req.body || {};
+  const password = body.password || "";
+
+  if (!password) {
+    throw new AppError("Password is required", 400);
+  }
+
+  const result = await changePassword({
+    userId: req.auth.userId,
+    password,
+    ipAddress: req.ip,
+    userAgent: req.get("user-agent"),
+  });
+
+  res.status(200).json({
+    message: result.message,
+  });
+});
+
 const meHandler = asyncHandler(async (req, res) => {
   const user = await getCurrentUser(req.auth.userId);
 
@@ -173,5 +194,6 @@ export {
   logoutHandler,
   forgotPasswordHandler,
   resetPasswordHandler,
+  changePasswordHandler,
   meHandler,
 };
