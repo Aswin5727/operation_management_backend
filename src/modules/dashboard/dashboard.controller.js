@@ -17,8 +17,4 @@ export const getRevenueSummaryHandler = asyncHandler(async (_req, res) => {
 export const getFacultyMyBatchesSummaryHandler = asyncHandler(async (req, res) => {
   const summary = await getFacultyMyBatchesSummary(req.user);
   return sendSuccess(res, "Faculty batches summary fetched successfully", summary);
-<<<<<<< HEAD
 });
-=======
-});
->>>>>>> tamil_dev

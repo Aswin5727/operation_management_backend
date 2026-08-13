@@ -82,7 +82,6 @@ function buildRevenueWhere({ from, to, monthPrefix } = {}) {
 function sumRevenue(record) {
   return Number(record?._sum?.totalAmount || 0);
 }
-<<<<<<< HEAD
 
 function countStudents(record) {
   return Number(record?._count?.id || 0);
@@ -324,311 +323,65 @@ async function getRevenueSummary() {
   }
 
   cachedRevenueSummaryPromise = (async () => {
-  const today = getIstToday();
-  const monthStart = getIstMonthStart();
-  const weekStart = getIstWeekStart(today);
-=======
->>>>>>> tamil_dev
+    const today = getIstToday();
+    const monthStart = getIstMonthStart();
+    const nextMonthStart = getIstMonthStart(1);
+    const weekStart = getIstWeekStart();
+    const weekEnd = getIstWeekEnd();
 
-function countStudents(record) {
-  return Number(record?._count?.id || 0);
-}
+    const previousMonthStart = getIstMonthStart(-1);
+    const previousMonthEnd = addDays(monthStart, -1);
 
-function normalizeFacultyText(value) {
-  return String(value ?? "").trim();
-}
+    const [totalRevenue, totalStudents, thisMonthRevenue, thisMonthStudents, thisWeekRevenue, thisWeekStudents, previousMonthRevenue] =
+      await prisma.$transaction([
+        prisma.studentProfile.aggregate({
+          where: buildRevenueWhere(),
+          _sum: { totalAmount: true },
+        }),
+        prisma.studentProfile.aggregate({
+          where: buildRevenueWhere(),
+          _count: { id: true },
+        }),
+        prisma.studentProfile.aggregate({
+          where: buildRevenueWhere({ from: monthStart, to: nextMonthStart }),
+          _sum: { totalAmount: true },
+        }),
+        prisma.studentProfile.aggregate({
+          where: buildRevenueWhere({ from: monthStart, to: nextMonthStart }),
+          _count: { id: true },
+        }),
+        prisma.studentProfile.aggregate({
+          where: buildRevenueWhere({ from: weekStart, to: weekEnd }),
+          _sum: { totalAmount: true },
+        }),
+        prisma.studentProfile.aggregate({
+          where: buildRevenueWhere({ from: weekStart, to: weekEnd }),
+          _count: { id: true },
+        }),
+        prisma.studentProfile.aggregate({
+          where: buildRevenueWhere({ from: previousMonthStart, to: previousMonthEnd }),
+          _sum: { totalAmount: true },
+        }),
+      ]);
 
-function normalizeFacultyKey(value) {
-  return normalizeFacultyText(value).toLowerCase();
-}
-
-function batchMatchesStudent(student, faculty, entry) {
-  const studentFacultyId = normalizeFacultyText(student?.facultyId);
-  const studentFacultyName = normalizeFacultyKey(student?.facultyName);
-  const studentBatchId = normalizeFacultyText(student?.batchId || student?.batchEntryId);
-  const studentBatchName = normalizeFacultyKey(student?.batchName || student?.batch);
-  const studentCourseId = normalizeFacultyText(student?.courseId);
-
-  const facultyId = normalizeFacultyText(faculty?.id);
-  const facultyName = normalizeFacultyKey(faculty?.facultyName);
-  const batchId = normalizeFacultyText(entry?.id);
-  const batchName = normalizeFacultyKey(entry?.batchName);
-  const courseId = normalizeFacultyText(entry?.courseId || faculty?.courseId);
-
-  if (batchId && studentBatchId && studentBatchId === batchId) {
-    return true;
-  }
-
-  const courseMatches = !courseId || !studentCourseId || studentCourseId === courseId;
-  const batchNameMatches = batchName && studentBatchName && studentBatchName === batchName;
-
-  if (facultyId && studentFacultyId && studentFacultyId === facultyId && batchNameMatches && courseMatches) {
-    return true;
-  }
-
-  if (facultyName && studentFacultyName && studentFacultyName === facultyName && batchNameMatches && courseMatches) {
-    return true;
-  }
-
-  return false;
-}
-
-async function getFacultyMyBatchesSummary(user) {
-  const normalizedEmail = normalizeFacultyText(user?.email).toLowerCase();
-  if (!normalizedEmail) {
-    throw new AppError("Faculty profile not found", 404);
-  }
-
-  const faculty = await prisma.facultyProfile.findFirst({
-    where: {
-      facultyEmail: {
-        equals: normalizedEmail,
-        mode: "insensitive",
-      },
-    },
-    include: {
-      course: {
-        select: {
-          id: true,
-          name: true,
-        },
-      },
-      batchEntries: {
-        orderBy: { sequenceNo: "asc" },
-        select: {
-          id: true,
-          batchName: true,
-          batchTiming: true,
-          courseId: true,
-          course: {
-            select: {
-              id: true,
-              name: true,
-            },
-          },
-        },
-      },
-      courseAssignments: {
-        select: {
-          courseId: true,
-          course: {
-            select: {
-              id: true,
-              name: true,
-            },
-          },
-        },
-      },
-    },
-  });
-
-  if (!faculty) {
-    throw new AppError("Faculty profile not found", 404);
-  }
-
-  const batchEntries = Array.isArray(faculty.batchEntries) ? faculty.batchEntries : [];
-  if (!batchEntries.length) {
-    return {
-      faculty: {
-        id: faculty.id,
-        facultyName: faculty.facultyName,
-        facultyEmail: faculty.facultyEmail,
-        courseId: faculty.courseId || "",
-      },
-      totalBatches: 0,
-      totalStudents: 0,
-      batchCounts: [],
-    };
-  }
-
-  const candidateStudents = await prisma.studentProfile.findMany({
-    where: {
-      recordStatus: "ACTIVE",
-      OR: batchEntries.flatMap((entry) => {
-        const conditions = [];
-        const batchName = normalizeFacultyText(entry?.batchName);
-        const courseId = normalizeFacultyText(entry?.courseId || faculty.courseId);
-
-        if (entry?.id) {
-          conditions.push({ batchId: entry.id });
-        }
-
-        if (faculty.id && batchName) {
-          conditions.push({
-            AND: [
-              { facultyId: faculty.id },
-              { batchName: { equals: batchName, mode: "insensitive" } },
-              ...(courseId ? [{ courseId }] : []),
-            ],
-          });
-        }
-
-        if (faculty.facultyName && batchName) {
-          conditions.push({
-            AND: [
-              { facultyName: { equals: faculty.facultyName, mode: "insensitive" } },
-              { batchName: { equals: batchName, mode: "insensitive" } },
-              ...(courseId ? [{ courseId }] : []),
-            ],
-          });
-        }
-
-        return conditions;
-      }),
-    },
-    select: {
-      id: true,
-      studentName: true,
-      emailAddress: true,
-      mobileNumber: true,
-      parentSpouseNumber: true,
-      location: true,
-      courseInterested: true,
-      facultyId: true,
-      facultyName: true,
-      batchId: true,
-      batchName: true,
-      courseId: true,
-      qualification: true,
-      passedOutYear: true,
-      currentStatus: true,
-      designation: true,
-      source: true,
-      actualFees: true,
-      registrationFees: true,
-      discount: true,
-      afterDiscount: true,
-      admissionDate: true,
-      remarks: true,
-      recordStatus: true,
-    },
-  });
-
-  const uniqueStudentIds = new Set();
-  const batchCounts = batchEntries.map((entry) => {
-    const matchingStudents = candidateStudents.filter((student) => batchMatchesStudent(student, faculty, entry));
-    matchingStudents.forEach((student) => {
-      if (student?.id) {
-        uniqueStudentIds.add(student.id);
-      }
-    });
+    const expectedNextWeekRevenue = Math.round(
+      Math.max(
+        sumRevenue(thisWeekRevenue),
+        sumRevenue(thisMonthRevenue) / 4,
+        sumRevenue(previousMonthRevenue) / 4,
+      ),
+    );
 
     return {
-      batchId: entry.id,
-      studentCount: matchingStudents.length,
-      studentRecords: matchingStudents.map((student) => ({
-        id: student.id,
-        studentName: student.studentName || "",
-        emailAddress: student.emailAddress || "",
-        mobileNumber: student.mobileNumber || "",
-        parentSpouseNumber: student.parentSpouseNumber || "",
-        location: student.location || "",
-        courseInterested: student.courseInterested || "",
-        facultyId: student.facultyId || "",
-        facultyName: student.facultyName || "",
-        batchId: student.batchId || "",
-        batchName: student.batchName || "",
-        courseId: student.courseId || "",
-        qualification: student.qualification || "",
-        passedOutYear: student.passedOutYear ?? "",
-        currentStatus: student.currentStatus || "",
-        designation: student.designation || "",
-        source: student.source || "",
-        actualFees: student.actualFees ?? "",
-        registrationFees: student.registrationFees ?? "",
-        discount: student.discount ?? "",
-        afterDiscount: student.afterDiscount ?? "",
-        admissionDate: student.admissionDate || "",
-        remarks: student.remarks || "",
-        status: student.recordStatus === "ACTIVE" ? "Active" : "Inactive",
-      })),
+      generatedAt: today,
+      totalRevenue: sumRevenue(totalRevenue),
+      totalStudents: countStudents(totalStudents),
+      thisMonthRevenue: sumRevenue(thisMonthRevenue),
+      thisMonthStudents: countStudents(thisMonthStudents),
+      thisWeekRevenue: sumRevenue(thisWeekRevenue),
+      thisWeekStudents: countStudents(thisWeekStudents),
+      expectedNextWeekRevenue,
     };
-  });
-
-  return {
-    faculty: {
-      id: faculty.id,
-      facultyName: faculty.facultyName,
-      facultyEmail: faculty.facultyEmail,
-      courseId: faculty.courseId || "",
-    },
-    totalBatches: batchEntries.length,
-    totalStudents: uniqueStudentIds.size,
-    batchCounts,
-  };
-}
-
-async function getRevenueSummary() {
-  const now = Date.now();
-
-  if (cachedRevenueSummary && now < cachedRevenueSummaryExpiresAt) {
-    return cachedRevenueSummary;
-  }
-
-  if (cachedRevenueSummaryPromise) {
-    return cachedRevenueSummaryPromise;
-  }
-
-  cachedRevenueSummaryPromise = (async () => {
-  const today = getIstToday();
-  const monthStart = getIstMonthStart();
-  const nextMonthStart = getIstMonthStart(1);
-  const weekStart = getIstWeekStart();
-  const weekEnd = getIstWeekEnd();
-
-  const previousMonthStart = getIstMonthStart(-1);
-  const previousMonthEnd = addDays(monthStart, -1);
-
-  const [totalRevenue, totalStudents, thisMonthRevenue, thisMonthStudents, thisWeekRevenue, thisWeekStudents, previousMonthRevenue] =
-    await prisma.$transaction([
-      prisma.studentProfile.aggregate({
-        where: buildRevenueWhere(),
-        _sum: { totalAmount: true },
-      }),
-      prisma.studentProfile.aggregate({
-        where: buildRevenueWhere(),
-        _count: { id: true },
-      }),
-      prisma.studentProfile.aggregate({
-        where: buildRevenueWhere({ from: monthStart, to: nextMonthStart }),
-        _sum: { totalAmount: true },
-      }),
-      prisma.studentProfile.aggregate({
-        where: buildRevenueWhere({ from: monthStart, to: nextMonthStart }),
-        _count: { id: true },
-      }),
-      prisma.studentProfile.aggregate({
-        where: buildRevenueWhere({ from: weekStart, to: weekEnd }),
-        _sum: { totalAmount: true },
-      }),
-      prisma.studentProfile.aggregate({
-        where: buildRevenueWhere({ from: weekStart, to: weekEnd }),
-        _count: { id: true },
-      }),
-      prisma.studentProfile.aggregate({
-        where: buildRevenueWhere({ from: previousMonthStart, to: previousMonthEnd }),
-        _sum: { totalAmount: true },
-      }),
-    ]);
-
-  const expectedNextWeekRevenue = Math.round(
-    Math.max(
-      sumRevenue(thisWeekRevenue),
-      sumRevenue(thisMonthRevenue) / 4,
-      sumRevenue(previousMonthRevenue) / 4,
-    ),
-  );
-
-  return {
-    generatedAt: today,
-    totalRevenue: sumRevenue(totalRevenue),
-    totalStudents: countStudents(totalStudents),
-    thisMonthRevenue: sumRevenue(thisMonthRevenue),
-    thisMonthStudents: countStudents(thisMonthStudents),
-    thisWeekRevenue: sumRevenue(thisWeekRevenue),
-    thisWeekStudents: countStudents(thisWeekStudents),
-    expectedNextWeekRevenue,
-  };
   })()
     .then((summary) => {
       cachedRevenueSummary = summary;
@@ -647,8 +400,4 @@ function invalidateRevenueSummaryCache() {
   cachedRevenueSummaryExpiresAt = 0;
 }
 
-<<<<<<< HEAD
 export { getRevenueSummary, getFacultyMyBatchesSummary, invalidateRevenueSummaryCache };
-=======
-export { getRevenueSummary, getFacultyMyBatchesSummary, invalidateRevenueSummaryCache };
->>>>>>> tamil_dev

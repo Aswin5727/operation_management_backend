@@ -1,4 +1,4 @@
-import { PrismaClient } from "../generated/prisma-client/index.js";
+import { PrismaClient } from "../../prisma-client-v2/index.js";
 import { PrismaPg } from "@prisma/adapter-pg";
 
 import config from "./env.js";
@@ -6,18 +6,22 @@ import config from "./env.js";
 let prismaClient = null;
 let prismaAdapter = null;
 let warmupPromise = null;
+const runtimeDatabaseUrl =
+  process.env.PRISMA_DATABASE_URL ||
+  process.env.DIRECT_URL ||
+  config.databaseUrl;
 
 function createPrismaClient() {
   if (prismaClient) {
     return prismaClient;
   }
 
-  if (!config.databaseUrl) {
+  if (!runtimeDatabaseUrl) {
     throw new Error("DATABASE_URL is not set");
   }
 
   if (!prismaAdapter) {
-    prismaAdapter = new PrismaPg({ connectionString: config.databaseUrl });
+    prismaAdapter = new PrismaPg({ connectionString: runtimeDatabaseUrl });
   }
 
   prismaClient = new PrismaClient({ adapter: prismaAdapter });
@@ -34,7 +38,6 @@ async function warmPrismaConnection() {
     warmupPromise = (async () => {
       const client = createPrismaClient();
       await client.$connect();
-      await client.$queryRawUnsafe("SELECT 1");
       return client;
     })().finally(() => {
       warmupPromise = null;
