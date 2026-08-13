@@ -175,6 +175,21 @@ Reset Password →
 
 </div>
 
+<div
+style="
+margin-top:24px;
+padding:16px 18px;
+background:#FFF8E6;
+border-left:4px solid #F59E0B;
+border-radius:8px;
+font-size:14px;
+line-height:24px;
+color:#7C2D12;
+">
+<b>Important:</b><br>
+This reset password link is valid for 1 hour only.
+</div>
+
 
 
 `;

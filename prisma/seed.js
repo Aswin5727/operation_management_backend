@@ -5,6 +5,13 @@ import config from "../src/config/env.js";
 
 const seedUsers = [
   {
+    userCode: "SA-001",
+    fullName: "Super Admin",
+    email: "superadmin.manager@cispro.com",
+    role: USER_ROLES.SUPER_ADMIN,
+    password: "superAdmin@cispro123",
+  },
+  {
     userCode: "BO-001",
     fullName: "Business Owner",
     email: "business.owner@cispro.com",
@@ -37,9 +44,9 @@ const seedUsers = [
 ];
 
 async function main() {
-  const passwordHash = await hashPassword(config.seedDefaultPassword);
-
   for (const user of seedUsers) {
+    const passwordHash = await hashPassword(user.password || config.seedDefaultPassword);
+
     await prisma.user.upsert({
       where: { email: user.email },
       update: {

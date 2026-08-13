@@ -620,7 +620,7 @@ export async function createStudent(payload, actor) {
   const passwordHash = await hashPassword(temporaryPassword);
   const resetToken = crypto.randomBytes(32).toString("hex");
   const tokenHash = crypto.createHash("sha256").update(resetToken).digest("hex");
-  const expiresAt = new Date(Date.now() + config.passwordResetTokenExpiresMinutes * 60 * 1000);
+  const expiresAt = new Date(Date.now() + config.credentialResetTokenExpiresMinutes * 60 * 1000);
 
   await ensureUniqueStudentIdentity(parsed);
   await ensureUniqueStudentLogin({

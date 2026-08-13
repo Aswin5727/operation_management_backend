@@ -8,6 +8,8 @@ import { studentTemplate } from "./emailTemplates/studentTemplate.js";
 import { welcomeTemplate } from "./emailTemplates/welcomeTemplate.js";
 import { resetPasswordTemplate } from "./emailTemplates/resetPasswordTemplate.js";
 import { facultyTemplate } from "./emailTemplates/facultyTemplate.js";
+import { branchTemplate } from "./emailTemplates/branchTemplate.js";
+import { branchWelcomeTemplate } from "./emailTemplates/branchWelcomeTemplate.js";
 
 let cachedTransporter = null;
 let cachedResendClient = null;
@@ -280,10 +282,11 @@ async function sendEmail({ to, subject, html, text, replyTo }) {
   throw new AppError("No email provider configured", 500);
 }
 
-function buildResetLink(resetToken, temporaryPassword = "") {
+function buildResetLink(resetToken, temporaryPassword = "", extraSearchParams = {}) {
   return buildAppUrl("/reset-password", {
     token: resetToken,
     temporaryPassword,
+    ...extraSearchParams,
   });
 }
 
@@ -291,7 +294,7 @@ function buildLoginLink() {
   return buildAppUrl("/login");
 }
 
-export async function sendPasswordResetEmail({ to, resetToken }) {
+export async function sendPasswordResetEmail({ to, resetToken, expiryMinutes = 2 }) {
   const token = String(resetToken || "").trim();
   const resetLink = buildResetLink(token);
   const fallbackText = token ? `Reset token: ${token}` : "Reset token unavailable";
@@ -299,11 +302,12 @@ export async function sendPasswordResetEmail({ to, resetToken }) {
   const html = resetPasswordTemplate({
     fullName: "User",
     resetLink,
+    expiryMinutes,
   });
 
   const text = resetLink
-    ? `Reset your CISPRO password: ${resetLink}\n\nIf you did not request this, ignore this email.`
-    : `${fallbackText}\n\nIf you did not request this, ignore this email.`;
+    ? `Reset your CISPRO password: ${resetLink}\n\nThis reset link is valid for ${expiryMinutes} ${expiryMinutes === 1 ? "minute" : "minutes"} only.\n\nIf you did not request this, ignore this email.`
+    : `${fallbackText}\n\nThis reset link is valid for ${expiryMinutes} ${expiryMinutes === 1 ? "minute" : "minutes"} only.\n\nIf you did not request this, ignore this email.`;
 
   return sendEmail({
     to,
@@ -339,6 +343,7 @@ export async function sendStudentCredentialsEmail({ to, fullName, studentCode, t
     `Temporary password: ${temporaryPassword}`,
     loginLink ? `Login link: ${loginLink}` : null,
     resetLink ? `Reset link: ${resetLink}` : null,
+    "This reset password link is valid for 1 hour only.",
     "Use the temporary password to sign in, then change it using the reset link.",
   ].filter(Boolean);
 
@@ -417,6 +422,7 @@ export async function sendFacultyCredentialsEmail({
     `Temporary password: ${temporaryPassword}`,
     loginLink ? `Login link: ${loginLink}` : null,
     resetLink ? `Reset link: ${resetLink}` : null,
+    "This reset password link is valid for 1 hour only.",
     "Use the temporary password to sign in, then change it using the reset link.",
   ].filter(Boolean);
 
@@ -456,6 +462,92 @@ export async function sendFacultyWelcomeEmail({ to, fullName, courseName, batchN
   return sendEmail({
     to,
     subject: "Welcome to CISPRO Faculty Portal",
+    html,
+    text,
+  });
+}
+
+export async function sendBranchCredentialsEmail({
+  to,
+  fullName,
+  temporaryPassword,
+  resetToken,
+  branchId,
+  branchName,
+}) {
+  const resetLink = buildResetLink(resetToken, temporaryPassword, {
+    redirect: "/login",
+  });
+  const safeName = escapeHtml(fullName || "Branch Admin");
+  const safePassword = escapeHtml(temporaryPassword || "");
+  const safeBranchId = escapeHtml(branchId || "");
+  const safeBranchName = escapeHtml(branchName || "");
+
+  const html = branchTemplate({
+    fullName: safeName,
+    email: to,
+    temporaryPassword: safePassword,
+    branchId: safeBranchId,
+    branchName: safeBranchName,
+    resetLink,
+  });
+
+  const text = [
+    `CISPRO Branch Login Details for ${fullName || "Branch Admin"}.`,
+    branchName ? `Branch Name: ${branchName}` : null,
+    `Login email: ${to}`,
+    `Temporary password: ${temporaryPassword}`,
+    branchId ? `Branch ID: ${branchId}` : null,
+    resetLink ? `Reset link: ${resetLink}` : null,
+    "This reset password link is valid for 1 hour only.",
+    "Reset your password first, then use the common CISPRO login page to sign in.",
+  ]
+    .filter(Boolean)
+    .join("\n");
+
+  return sendEmail({
+    to,
+    subject: "Your CISPRO branch login details",
+    html,
+    text,
+  });
+}
+
+export async function sendBranchWelcomeEmail({
+  to,
+  fullName,
+  branchId,
+  branchName,
+  branchAddress,
+}) {
+  const loginLink = buildLoginLink();
+  const safeName = escapeHtml(fullName || "Branch Admin");
+  const safeBranchId = escapeHtml(branchId || "");
+  const safeBranchName = escapeHtml(branchName || "");
+  const safeBranchAddress = escapeHtml(branchAddress || "");
+
+  const html = branchWelcomeTemplate({
+    fullName: safeName,
+    branchId: safeBranchId,
+    branchName: safeBranchName,
+    branchAddress: safeBranchAddress,
+    loginLink,
+  });
+
+  const text = [
+    `Welcome to CISPRO Branch Portal, ${fullName || "Branch Admin"}.`,
+    "You have successfully logged in to your branch dashboard for the first time.",
+    branchId ? `Branch ID: ${branchId}` : null,
+    branchName ? `Branch name: ${branchName}` : null,
+    branchAddress ? `Location: ${branchAddress}` : null,
+    loginLink ? `Branch dashboard link: ${loginLink}` : null,
+  ]
+    .filter(Boolean)
+    .join("\n");
+
+  return sendEmail({
+    to,
+    subject: "Welcome to CISPRO Branch Portal",
     html,
     text,
   });

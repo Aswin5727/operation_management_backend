@@ -79,6 +79,14 @@ const config = {
     process.env.PASSWORD_RESET_TOKEN_EXPIRES_MINUTES,
     15
   ),
+  credentialResetTokenExpiresMinutes: toNumber(
+    process.env.CREDENTIAL_RESET_TOKEN_EXPIRES_MINUTES,
+    60
+  ),
+  forgotPasswordResetTokenExpiresMinutes: toNumber(
+    process.env.FORGOT_PASSWORD_RESET_TOKEN_EXPIRES_MINUTES,
+    2
+  ),
   rateLimitWindowMs: toNumber(process.env.RATE_LIMIT_WINDOW_MS, 15 * 60 * 1000),
   rateLimitMax: toNumber(process.env.RATE_LIMIT_MAX, 100),
   loginAttemptMax: toNumber(process.env.LOGIN_ATTEMPT_MAX, 5),

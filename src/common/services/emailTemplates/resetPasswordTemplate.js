@@ -1,6 +1,7 @@
 export function resetPasswordTemplate({
   fullName,
   resetLink,
+  expiryMinutes = 2,
 }) {
   return `
 <!DOCTYPE html>
@@ -16,14 +17,10 @@ export function resetPasswordTemplate({
 <tr>
 <td align="center">
 
-<table width="600" cellpadding="0" cellspacing="0"
-style="background:#fff;border-radius:12px;overflow:hidden;">
+<table width="600" cellpadding="0" cellspacing="0" style="background:#fff;border-radius:12px;overflow:hidden;">
 
-<!-- Header -->
 <tr>
-<td align="center"
-style="background:linear-gradient(135deg,#0F172A,#1E3A8A);
-padding:35px;">
+<td align="center" style="background:linear-gradient(135deg,#0F172A,#1E3A8A);padding:35px;">
 
 <h2 style="margin:0;color:#fff;font-size:26px;">
 CISPRO OPERATION MANAGEMENT
@@ -36,7 +33,6 @@ Password Reset Request
 </td>
 </tr>
 
-<!-- Body -->
 <tr>
 <td style="padding:40px;">
 
@@ -47,6 +43,10 @@ Hello ${fullName},
 <p style="font-size:15px;color:#555;line-height:26px;">
 We received a request to reset your account password.
 Click the button below to create a new password.
+</p>
+
+<p style="font-size:14px;color:#B45309;line-height:24px;font-weight:600;">
+This reset link is valid for ${expiryMinutes} ${expiryMinutes === 1 ? "minute" : "minutes"} only.
 </p>
 
 <div style="text-align:center;margin:35px 0;">
@@ -70,7 +70,6 @@ Reset Password
 
 </div>
 
-
 <div
 style="
 margin-top:25px;
@@ -82,16 +81,14 @@ border-radius:6px;
 
 <strong>Security Notice</strong><br><br>
 
-• This link expires automatically.<br>
-• Use it only once.<br>
-• Ignore this email if you didn't request a password reset.
+- This link expires automatically in ${expiryMinutes} ${expiryMinutes === 1 ? "minute" : "minutes"}.<br>
+- Use it only once.<br>
+- Ignore this email if you didn't request a password reset.
 
 </div>
 
 </td>
 </tr>
-
-<!-- Footer -->
 
 <tr>
 <td

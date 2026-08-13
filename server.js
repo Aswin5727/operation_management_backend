@@ -3,6 +3,7 @@ import { fileURLToPath } from "node:url";
 import app from "./app.js";
 import config from "./src/config/env.js";
 import prisma, { warmPrismaConnection } from "./src/config/prisma.js";
+import { ensureSystemUsers } from "./src/bootstrap/ensureSystemUsers.js";
 
 const DATABASE_WARMUP_MAX_ATTEMPTS = 3;
 const DATABASE_WARMUP_RETRY_MS = 1500;
@@ -57,6 +58,12 @@ async function startServer() {
 
   if (!warmed) {
     console.warn("Starting server without confirmed database warmup.");
+  }
+
+  try {
+    await ensureSystemUsers();
+  } catch (error) {
+    console.warn(`System user bootstrap failed: ${error?.message || error}`);
   }
 
   const keepAliveTimer = startDatabaseKeepAlive();
