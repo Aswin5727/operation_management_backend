@@ -8,11 +8,13 @@ datasource db {
 }
 
 enum UserRole {
+  SUPER_ADMIN
   BUSINESS_OWNER
   OPERATION_MANAGER
   HR
   FACULTY
   STUDENT
+  BRANCH_ADMIN
 }
 
 enum LoginEventType {
@@ -74,9 +76,31 @@ model User {
   batchFacultyAssignments  BatchFacultyAssignment[]
   facultyAttendanceSessions FacultyAttendanceSession[]
   markedStudentAttendances StudentAttendance[]
+  managedBranch            Branch?             @relation("BranchAdminUser")
 
   @@index([role])
   @@index([active])
+}
+
+model Branch {
+  id              String       @id @default(cuid())
+  branchId        String       @unique
+  branchName      String
+  branchAdminName String
+  branchEmail     String       @unique
+  branchPhone     String       @unique
+  branchAddress   String
+  status          RecordStatus @default(ACTIVE)
+  adminUserId     String?      @unique
+  adminUser       User?        @relation("BranchAdminUser", fields: [adminUserId], references: [id], onDelete: SetNull)
+  createdBy       String?
+  updatedBy       String?
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  @@index([status])
+  @@index([branchName])
+  @@index([branchAdminName])
 }
 
 model LoginEvent {

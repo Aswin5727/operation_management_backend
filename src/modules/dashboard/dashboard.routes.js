@@ -11,6 +11,5 @@ router.get("/faculty/my-batches-summary", authenticate, authorize("FACULTY"), ge
 router.use(authenticate, authorize("OPERATION_MANAGER", "BUSINESS_OWNER"));
 
 router.get("/revenue-summary", getRevenueSummaryHandler);
-router.get("/revenue-insights", getRevenueInsightsHandler);
 
 export default router;

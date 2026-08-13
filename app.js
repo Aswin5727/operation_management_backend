@@ -4,19 +4,14 @@ import helmet from "helmet";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
 
-import config from "./src/config/env.js";
+import config, { splitCsvValues } from "./src/config/env.js";
 import apiRoutes from "./src/routes/index.js";
 import { notFound } from "./src/common/middlewares/notFound.js";
 import { errorHandler } from "./src/common/middlewares/errorHandler.js";
 
 const app = express();
 
-const splitOrigins = (value) =>
-  String(value || "")
-    .split(",")
-    .map((item) => item.trim())
-    .filter(Boolean);
-const allowedOrigins = splitOrigins(config.frontendUrl);
+const allowedOrigins = splitCsvValues(config.corsOrigins);
 
 const corsOptions = {
   origin: allowedOrigins.length ? allowedOrigins : true,

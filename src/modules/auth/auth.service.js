@@ -12,6 +12,7 @@ import {
 import { toSafeUser } from "../../common/utils/user.js";
 import { LOGIN_EVENT_TYPES } from "../../common/constants/auth.js";
 import {
+  sendBranchWelcomeEmail,
   sendFacultyWelcomeEmail,
   sendPasswordResetEmail,
   sendStudentWelcomeEmail,
@@ -176,10 +177,12 @@ async function login({ identifier, password, ipAddress, userAgent }) {
 
   const role = String(user.role || "").toUpperCase();
   const isFirstLogin = !user.lastLoginAt;
-  const isDashboardHeavyRole = role === "BUSINESS_OWNER" || role === "OPERATION_MANAGER";
+  const isDashboardHeavyRole =
+    role === "SUPER_ADMIN" || role === "BUSINESS_OWNER" || role === "OPERATION_MANAGER";
   let studentCourseName = "";
   let facultyWelcomeCourseName = "";
   let facultyWelcomeBatchNames = [];
+  let branchWelcomeMeta = null;
 
   if (isFirstLogin && role === "STUDENT") {
     const studentProfile = await prisma.studentProfile.findFirst({
@@ -225,6 +228,30 @@ async function login({ identifier, password, ipAddress, userAgent }) {
       : [];
   }
 
+  if (isFirstLogin && role === "BRANCH_ADMIN") {
+    const branchRecord = await prisma.branch.findFirst({
+      where: {
+        branchEmail: {
+          equals: user.email,
+          mode: "insensitive",
+        },
+      },
+      select: {
+        branchId: true,
+        branchName: true,
+        branchAddress: true,
+      },
+    });
+
+    branchWelcomeMeta = branchRecord
+      ? {
+          branchId: branchRecord.branchId,
+          branchName: branchRecord.branchName,
+          branchAddress: branchRecord.branchAddress,
+        }
+      : null;
+  }
+
   const refreshedUserPromise = isDashboardHeavyRole
     ? (setImmediate(() => {
         void resetLoginState(user.id, { ipAddress, userAgent }).catch((error) => {
@@ -258,6 +285,20 @@ async function login({ identifier, password, ipAddress, userAgent }) {
         batchNames: facultyWelcomeBatchNames,
       }).catch((error) => {
         console.error("Failed to send faculty welcome email:", error);
+      });
+    });
+  }
+
+  if (isFirstLogin && role === "BRANCH_ADMIN") {
+    setImmediate(() => {
+      void sendBranchWelcomeEmail({
+        to: refreshedUser.email,
+        fullName: refreshedUser.fullName,
+        branchId: branchWelcomeMeta?.branchId || "",
+        branchName: branchWelcomeMeta?.branchName || "",
+        branchAddress: branchWelcomeMeta?.branchAddress || "",
+      }).catch((error) => {
+        console.error("Failed to send branch welcome email:", error);
       });
     });
   }
@@ -373,7 +414,7 @@ async function forgotPassword({ identifier, ipAddress, userAgent }) {
 
   const resetToken = crypto.randomBytes(32).toString("hex");
   const tokenHash = crypto.createHash("sha256").update(resetToken).digest("hex");
-  const expiresAt = new Date(Date.now() + config.passwordResetTokenExpiresMinutes * 60 * 1000);
+  const expiresAt = new Date(Date.now() + config.forgotPasswordResetTokenExpiresMinutes * 60 * 1000);
 
   await prisma.$transaction([
     prisma.passwordResetToken.deleteMany({
@@ -405,6 +446,7 @@ async function forgotPassword({ identifier, ipAddress, userAgent }) {
     await sendPasswordResetEmail({
       to: user.email,
       resetToken,
+      expiryMinutes: config.forgotPasswordResetTokenExpiresMinutes,
     });
   } catch (error) {
     await prisma.passwordResetToken.deleteMany({

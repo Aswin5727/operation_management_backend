@@ -607,7 +607,7 @@ export async function createFacultyRecord(payload, actor) {
   const passwordHash = await hashPassword(temporaryPassword);
   const resetToken = crypto.randomBytes(32).toString("hex");
   const tokenHash = crypto.createHash("sha256").update(resetToken).digest("hex");
-  const expiresAt = new Date(Date.now() + config.passwordResetTokenExpiresMinutes * 60 * 1000);
+  const expiresAt = new Date(Date.now() + config.credentialResetTokenExpiresMinutes * 60 * 1000);
 
   const batchCourseIds = Array.from(new Set(batchEntries.map((entry) => normalizeString(entry.courseId)).filter(Boolean)));
   const effectiveCourseIds = selectedCourseIds.length ? selectedCourseIds : batchCourseIds;
