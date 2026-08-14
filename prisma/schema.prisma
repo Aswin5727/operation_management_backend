@@ -89,6 +89,11 @@ model Branch {
   branchAdminName String
   branchEmail     String       @unique
   branchPhone     String       @unique
+  branchCountryCode String     @default("")
+  branchCountry   String       @default("")
+  branchStateCode String       @default("")
+  branchState     String       @default("")
+  branchCity      String       @default("")
   branchAddress   String
   status          RecordStatus @default(ACTIVE)
   adminUserId     String?      @unique

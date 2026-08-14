@@ -90,10 +90,25 @@ function parseStatus(value) {
 
 function parseBranchId(value) {
   const branchId = parseRequiredText(value, "Branch ID").toUpperCase();
-  if (!/^[A-Z0-9-]+$/.test(branchId)) {
-    throw new AppError("Branch ID can contain uppercase letters, numbers, and hyphens only", 400);
+  if (!/^BR-\d{3}$/.test(branchId)) {
+    throw new AppError("Branch ID must follow BR-001 format", 400);
   }
   return branchId;
+}
+
+function parseLocationCode(value, fieldName) {
+  return parseRequiredText(value, fieldName).toUpperCase();
+}
+
+function formatBranchLocation(record) {
+  const addressParts = [
+    normalizeString(record?.branchAddress),
+    normalizeString(record?.branchCity || record?.branchDistrict),
+    normalizeString(record?.branchState),
+    normalizeString(record?.branchCountry),
+  ].filter(Boolean);
+
+  return addressParts.join(", ");
 }
 
 function parsePersonName(value, fieldName) {
@@ -142,7 +157,14 @@ function toBranchSummary(record, options = {}) {
     branchAdminName: record.branchAdminName,
     branchEmail: record.branchEmail,
     branchPhone: record.branchPhone,
+    branchCountryCode: record.branchCountryCode || "",
+    branchCountry: record.branchCountry || "",
+    branchStateCode: record.branchStateCode || "",
+    branchState: record.branchState || "",
+    branchCity: record.branchCity || "",
+    branchDistrict: record.branchCity || "",
     branchAddress: record.branchAddress,
+    branchLocation: formatBranchLocation(record),
     status: toDisplayStatus(record),
     resendMailStatus: toResendMailStatus(record),
     welcomeMailSent: hasBranchActivated(record),
@@ -169,6 +191,9 @@ function buildBranchWhere(query) {
       { branchAdminName: { contains: search, mode: "insensitive" } },
       { branchEmail: { contains: search, mode: "insensitive" } },
       { branchPhone: { contains: search, mode: "insensitive" } },
+      { branchCountry: { contains: search, mode: "insensitive" } },
+      { branchState: { contains: search, mode: "insensitive" } },
+      { branchCity: { contains: search, mode: "insensitive" } },
       { branchAddress: { contains: search, mode: "insensitive" } },
     ];
   }
@@ -278,9 +303,31 @@ function buildBranchPayload(payload, existing = null) {
         : existing?.branchAdminName,
     branchEmail: payload.branchEmail !== undefined ? parseEmail(payload.branchEmail) : existing?.branchEmail,
     branchPhone: payload.branchPhone !== undefined ? parsePhone(payload.branchPhone) : existing?.branchPhone,
+    branchCountryCode:
+      payload.branchCountryCode !== undefined
+        ? parseLocationCode(payload.branchCountryCode, "Branch country code")
+        : existing?.branchCountryCode || "",
+    branchCountry:
+      payload.branchCountry !== undefined
+        ? parseRequiredText(payload.branchCountry, "Branch country")
+        : existing?.branchCountry || "",
+    branchStateCode:
+      payload.branchStateCode !== undefined
+        ? parseLocationCode(payload.branchStateCode, "Branch state code")
+        : existing?.branchStateCode || "",
+    branchState:
+      payload.branchState !== undefined
+        ? parseRequiredText(payload.branchState, "Branch state")
+        : existing?.branchState || "",
+    branchCity:
+      payload.branchCity !== undefined
+        ? parseRequiredText(payload.branchCity, "Branch city")
+        : payload.branchDistrict !== undefined
+          ? parseRequiredText(payload.branchDistrict, "Branch city")
+          : existing?.branchCity || "",
     branchAddress:
       payload.branchAddress !== undefined
-        ? parseRequiredText(payload.branchAddress, "Branch location")
+        ? parseRequiredText(payload.branchAddress, "Branch address")
         : existing?.branchAddress,
     status: payload.status !== undefined ? parseStatus(payload.status) : existing?.status || "ACTIVE",
   };
@@ -376,7 +423,7 @@ export async function createBranch(payload, actor) {
     resetToken,
     branchId: parsed.branchId,
     branchName: parsed.branchName,
-    branchAddress: parsed.branchAddress,
+    branchAddress: formatBranchLocation(parsed),
   }).catch((error) => {
     console.warn("Branch credentials email failed to send", error);
   });
@@ -515,7 +562,7 @@ export async function resendBranchInvitation(branchRecordId, actor) {
     resetToken,
     branchId: existing.branchId,
     branchName: existing.branchName,
-    branchAddress: existing.branchAddress,
+    branchAddress: formatBranchLocation(existing),
   }).catch((error) => {
     console.warn("Branch invitation email failed to send", error);
   });

@@ -27,6 +27,17 @@ function normalizeIdentifier(identifier) {
   return String(identifier || "").trim().toLowerCase();
 }
 
+function formatBranchLocation(record) {
+  return [
+    String(record?.branchAddress || "").trim(),
+    String(record?.branchCity || "").trim(),
+    String(record?.branchState || "").trim(),
+    String(record?.branchCountry || "").trim(),
+  ]
+    .filter(Boolean)
+    .join(", ");
+}
+
 const AUTH_USER_SELECT = {
   id: true,
   userCode: true,
@@ -241,6 +252,9 @@ async function login({ identifier, password, ipAddress, userAgent }) {
       select: {
         branchId: true,
         branchName: true,
+        branchCountry: true,
+        branchState: true,
+        branchCity: true,
         branchAddress: true,
       },
     });
@@ -249,7 +263,7 @@ async function login({ identifier, password, ipAddress, userAgent }) {
       ? {
           branchId: branchRecord.branchId,
           branchName: branchRecord.branchName,
-          branchAddress: branchRecord.branchAddress,
+          branchAddress: formatBranchLocation(branchRecord),
         }
       : null;
   }
