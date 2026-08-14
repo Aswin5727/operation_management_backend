@@ -177,6 +177,23 @@ exports.Prisma.LoginEventScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.NotificationScalarFieldEnum = {
+  id: 'id',
+  kind: 'kind',
+  tone: 'tone',
+  title: 'title',
+  message: 'message',
+  actionLabel: 'actionLabel',
+  targetBranchId: 'targetBranchId',
+  targetBranchEmail: 'targetBranchEmail',
+  targetBranchName: 'targetBranchName',
+  read: 'read',
+  readAt: 'readAt',
+  createdBy: 'createdBy',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.PasswordResetTokenScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
@@ -448,6 +465,12 @@ exports.LoginEventType = exports.$Enums.LoginEventType = {
   RESET_PASSWORD_COMPLETED: 'RESET_PASSWORD_COMPLETED'
 };
 
+exports.NotificationKind = exports.$Enums.NotificationKind = {
+  BRANCH_CREATED: 'BRANCH_CREATED',
+  BRANCH_INVITATION_RESENT: 'BRANCH_INVITATION_RESENT',
+  BRANCH_LOGIN: 'BRANCH_LOGIN'
+};
+
 exports.BatchStatus = exports.$Enums.BatchStatus = {
   PLANNED: 'PLANNED',
   ACTIVE: 'ACTIVE',
@@ -469,6 +492,7 @@ exports.Prisma.ModelName = {
   User: 'User',
   Branch: 'Branch',
   LoginEvent: 'LoginEvent',
+  Notification: 'Notification',
   PasswordResetToken: 'PasswordResetToken',
   Course: 'Course',
   CourseModule: 'CourseModule',

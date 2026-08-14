@@ -27,6 +27,12 @@ enum LoginEventType {
   RESET_PASSWORD_COMPLETED
 }
 
+enum NotificationKind {
+  BRANCH_CREATED
+  BRANCH_INVITATION_RESENT
+  BRANCH_LOGIN
+}
+
 enum RecordStatus {
   ACTIVE
   INACTIVE
@@ -121,6 +127,28 @@ model LoginEvent {
   createdAt DateTime       @default(now())
 
   @@index([userId, eventType])
+}
+
+model Notification {
+  id                String           @id @default(cuid())
+  kind              NotificationKind
+  tone              String           @default("blue")
+  title             String
+  message           String
+  actionLabel       String?
+  targetBranchId    String?
+  targetBranchEmail String?
+  targetBranchName  String?
+  read              Boolean          @default(false)
+  readAt            DateTime?
+  createdBy         String?
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+
+  @@index([kind, createdAt])
+  @@index([read, createdAt])
+  @@index([targetBranchId])
+  @@index([targetBranchEmail])
 }
 
 model PasswordResetToken {

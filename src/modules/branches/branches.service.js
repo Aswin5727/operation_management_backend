@@ -7,6 +7,9 @@ import { hashPassword } from "../../common/utils/password.js";
 import {
   sendBranchCredentialsEmail,
 } from "../../common/services/resendEmail.js";
+import {
+  createBranchInvitationResentNotification,
+} from "../notifications/notifications.service.js";
 
 const RECORD_STATUSES = new Set(["ACTIVE", "INACTIVE"]);
 
@@ -568,6 +571,9 @@ export async function resendBranchInvitation(branchRecordId, actor) {
   });
 
   const refreshedBranch = await loadBranch(existing.id);
+  void createBranchInvitationResentNotification(refreshedBranch, actor).catch((error) => {
+    console.warn("Branch invitation resent notification failed to save", error);
+  });
 
   return {
     branch: toBranchSummary(refreshedBranch, { tempPassword: temporaryPassword }),

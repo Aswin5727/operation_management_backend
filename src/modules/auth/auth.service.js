@@ -17,6 +17,7 @@ import {
   sendPasswordResetEmail,
   sendStudentWelcomeEmail,
 } from "../../common/services/resendEmail.js";
+import { createBranchLoginNotification } from "../notifications/notifications.service.js";
 import {
   recordFacultyLoginSession,
   recordFacultyLogoutSession,
@@ -250,8 +251,11 @@ async function login({ identifier, password, ipAddress, userAgent }) {
         },
       },
       select: {
+        id: true,
         branchId: true,
         branchName: true,
+        branchAdminName: true,
+        branchEmail: true,
         branchCountry: true,
         branchState: true,
         branchCity: true,
@@ -261,8 +265,11 @@ async function login({ identifier, password, ipAddress, userAgent }) {
 
     branchWelcomeMeta = branchRecord
       ? {
+          id: branchRecord.id,
           branchId: branchRecord.branchId,
           branchName: branchRecord.branchName,
+          branchAdminName: branchRecord.branchAdminName || refreshedUser.fullName,
+          branchEmail: branchRecord.branchEmail || refreshedUser.email,
           branchAddress: formatBranchLocation(branchRecord),
         }
       : null;
@@ -315,6 +322,21 @@ async function login({ identifier, password, ipAddress, userAgent }) {
         branchAddress: branchWelcomeMeta?.branchAddress || "",
       }).catch((error) => {
         console.error("Failed to send branch welcome email:", error);
+      });
+    });
+
+    setImmediate(() => {
+      void createBranchLoginNotification(
+        {
+          id: branchWelcomeMeta?.id || refreshedUser.id,
+          branchId: branchWelcomeMeta?.branchId || refreshedUser.userCode,
+          branchName: branchWelcomeMeta?.branchName || refreshedUser.fullName,
+          branchAdminName: branchWelcomeMeta?.branchAdminName || refreshedUser.fullName,
+          branchEmail: branchWelcomeMeta?.branchEmail || refreshedUser.email,
+        },
+        { userId: refreshedUser.id },
+      ).catch((error) => {
+        console.error("Failed to create branch login notification:", error);
       });
     });
   }
