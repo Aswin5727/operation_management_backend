@@ -108,8 +108,20 @@ function generateTemporaryPassword() {
   return crypto.randomBytes(9).toString("base64url");
 }
 
-function toDisplayStatus(value) {
-  return String(value || "").toUpperCase() === "INACTIVE" ? "Inactive" : "Active";
+function hasBranchActivated(record) {
+  return Boolean(record?.adminUser?.lastLoginAt);
+}
+
+function toDisplayStatus(record) {
+  if (String(record?.status || "").toUpperCase() === "INACTIVE") {
+    return "Inactive";
+  }
+
+  return hasBranchActivated(record) ? "Active" : "Inactive";
+}
+
+function toResendMailStatus(record) {
+  return hasBranchActivated(record) ? "Active" : "Inactive";
 }
 
 function getBranchMustResetPassword(record, explicitValue) {
@@ -131,7 +143,10 @@ function toBranchSummary(record, options = {}) {
     branchEmail: record.branchEmail,
     branchPhone: record.branchPhone,
     branchAddress: record.branchAddress,
-    status: toDisplayStatus(record.status),
+    status: toDisplayStatus(record),
+    resendMailStatus: toResendMailStatus(record),
+    welcomeMailSent: hasBranchActivated(record),
+    lastLoginAt: record?.adminUser?.lastLoginAt || null,
     mustResetPassword: getBranchMustResetPassword(record, options.mustResetPassword),
     createdAt: record.createdAt,
     updatedAt: record.updatedAt,
@@ -243,6 +258,7 @@ async function loadBranch(branchId) {
           phone: true,
           active: true,
           passwordChangedAt: true,
+          lastLoginAt: true,
         },
       },
     },
@@ -291,6 +307,15 @@ export async function listBranches(query = {}) {
       orderBy: buildBranchOrderBy(sortBy, sortOrder),
       skip,
       take,
+      include: {
+        adminUser: {
+          select: {
+            active: true,
+            passwordChangedAt: true,
+            lastLoginAt: true,
+          },
+        },
+      },
     }),
   ]);
 
@@ -356,7 +381,8 @@ export async function createBranch(payload, actor) {
     console.warn("Branch credentials email failed to send", error);
   });
 
-  return toBranchSummary(created, { tempPassword: temporaryPassword });
+  const createdBranch = await loadBranch(created.id);
+  return toBranchSummary(createdBranch, { tempPassword: temporaryPassword });
 }
 
 export async function updateBranch(branchRecordId, payload, actor) {
@@ -401,7 +427,8 @@ export async function updateBranch(branchRecordId, payload, actor) {
     return branch;
   });
 
-  return toBranchSummary(updated);
+  const updatedBranch = await loadBranch(updated.id);
+  return toBranchSummary(updatedBranch);
 }
 
 export async function deleteBranch(branchRecordId) {
@@ -493,8 +520,10 @@ export async function resendBranchInvitation(branchRecordId, actor) {
     console.warn("Branch invitation email failed to send", error);
   });
 
+  const refreshedBranch = await loadBranch(existing.id);
+
   return {
-    branch: toBranchSummary(existing, { tempPassword: temporaryPassword }),
+    branch: toBranchSummary(refreshedBranch, { tempPassword: temporaryPassword }),
     message: "Invitation email sent successfully",
   };
 }
@@ -512,6 +541,7 @@ export async function getCurrentBranchProfile(user) {
           adminUser: {
             select: {
               passwordChangedAt: true,
+              lastLoginAt: true,
             },
           },
         },
@@ -527,6 +557,7 @@ export async function getCurrentBranchProfile(user) {
           adminUser: {
             select: {
               passwordChangedAt: true,
+              lastLoginAt: true,
             },
           },
         },

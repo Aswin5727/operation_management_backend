@@ -478,6 +478,7 @@ export async function sendBranchCredentialsEmail({
   const resetLink = buildResetLink(resetToken, temporaryPassword, {
     redirect: "/login",
   });
+  const loginLink = buildLoginLink();
   const safeName = escapeHtml(fullName || "Branch Admin");
   const safePassword = escapeHtml(temporaryPassword || "");
   const safeBranchId = escapeHtml(branchId || "");
@@ -490,6 +491,7 @@ export async function sendBranchCredentialsEmail({
     branchId: safeBranchId,
     branchName: safeBranchName,
     resetLink,
+    loginLink,
   });
 
   const text = [
@@ -498,6 +500,7 @@ export async function sendBranchCredentialsEmail({
     `Login email: ${to}`,
     `Temporary password: ${temporaryPassword}`,
     branchId ? `Branch ID: ${branchId}` : null,
+    loginLink ? `Login link: ${loginLink}` : null,
     resetLink ? `Reset link: ${resetLink}` : null,
     "This reset password link is valid for 1 hour only.",
     "Reset your password first, then use the common CISPRO login page to sign in.",

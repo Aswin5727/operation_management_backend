@@ -7,6 +7,7 @@ export function branchTemplate({
   branchId,
   branchName,
   resetLink,
+  loginLink,
 }) {
   return baseTemplate({
     title: "Branch Admin Account Created",
@@ -103,6 +104,25 @@ export function branchTemplate({
             box-shadow:0 12px 24px rgba(249,115,22,.25);">
           Reset Password
         </a>
+        ${
+          loginLink
+            ? `
+        <a href="${loginLink}"
+          style="
+            margin-left:12px;
+            background:linear-gradient(90deg,#1d4ed8 0%,#2563eb 100%);
+            color:#fff;
+            text-decoration:none;
+            padding:15px 34px;
+            border-radius:999px;
+            display:inline-block;
+            font-weight:700;
+            font-size:15px;
+            box-shadow:0 12px 24px rgba(37,99,235,.22);">
+          Login
+        </a>`
+            : ""
+        }
       </div>
 
       <div style="
