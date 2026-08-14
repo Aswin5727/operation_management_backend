@@ -83,20 +83,25 @@ model User {
 }
 
 model Branch {
-  id              String       @id @default(cuid())
-  branchId        String       @unique
-  branchName      String
-  branchAdminName String
-  branchEmail     String       @unique
-  branchPhone     String       @unique
-  branchAddress   String
-  status          RecordStatus @default(ACTIVE)
-  adminUserId     String?      @unique
-  adminUser       User?        @relation("BranchAdminUser", fields: [adminUserId], references: [id], onDelete: SetNull)
-  createdBy       String?
-  updatedBy       String?
-  createdAt       DateTime     @default(now())
-  updatedAt       DateTime     @updatedAt
+  id                String       @id @default(cuid())
+  branchId          String       @unique
+  branchName        String
+  branchAdminName   String
+  branchEmail       String       @unique
+  branchPhone       String       @unique
+  branchCountryCode String       @default("")
+  branchCountry     String       @default("")
+  branchStateCode   String       @default("")
+  branchState       String       @default("")
+  branchCity        String       @default("")
+  branchAddress     String
+  status            RecordStatus @default(ACTIVE)
+  adminUserId       String?      @unique
+  adminUser         User?        @relation("BranchAdminUser", fields: [adminUserId], references: [id], onDelete: SetNull)
+  createdBy         String?
+  updatedBy         String?
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
 
   @@index([status])
   @@index([branchName])

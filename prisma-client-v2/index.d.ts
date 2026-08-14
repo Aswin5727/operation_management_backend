@@ -4055,6 +4055,11 @@ export namespace Prisma {
     branchAdminName: string | null
     branchEmail: string | null
     branchPhone: string | null
+    branchCountryCode: string | null
+    branchCountry: string | null
+    branchStateCode: string | null
+    branchState: string | null
+    branchCity: string | null
     branchAddress: string | null
     status: $Enums.RecordStatus | null
     adminUserId: string | null
@@ -4071,6 +4076,11 @@ export namespace Prisma {
     branchAdminName: string | null
     branchEmail: string | null
     branchPhone: string | null
+    branchCountryCode: string | null
+    branchCountry: string | null
+    branchStateCode: string | null
+    branchState: string | null
+    branchCity: string | null
     branchAddress: string | null
     status: $Enums.RecordStatus | null
     adminUserId: string | null
@@ -4087,6 +4097,11 @@ export namespace Prisma {
     branchAdminName: number
     branchEmail: number
     branchPhone: number
+    branchCountryCode: number
+    branchCountry: number
+    branchStateCode: number
+    branchState: number
+    branchCity: number
     branchAddress: number
     status: number
     adminUserId: number
@@ -4105,6 +4120,11 @@ export namespace Prisma {
     branchAdminName?: true
     branchEmail?: true
     branchPhone?: true
+    branchCountryCode?: true
+    branchCountry?: true
+    branchStateCode?: true
+    branchState?: true
+    branchCity?: true
     branchAddress?: true
     status?: true
     adminUserId?: true
@@ -4121,6 +4141,11 @@ export namespace Prisma {
     branchAdminName?: true
     branchEmail?: true
     branchPhone?: true
+    branchCountryCode?: true
+    branchCountry?: true
+    branchStateCode?: true
+    branchState?: true
+    branchCity?: true
     branchAddress?: true
     status?: true
     adminUserId?: true
@@ -4137,6 +4162,11 @@ export namespace Prisma {
     branchAdminName?: true
     branchEmail?: true
     branchPhone?: true
+    branchCountryCode?: true
+    branchCountry?: true
+    branchStateCode?: true
+    branchState?: true
+    branchCity?: true
     branchAddress?: true
     status?: true
     adminUserId?: true
@@ -4226,6 +4256,11 @@ export namespace Prisma {
     branchAdminName: string
     branchEmail: string
     branchPhone: string
+    branchCountryCode: string
+    branchCountry: string
+    branchStateCode: string
+    branchState: string
+    branchCity: string
     branchAddress: string
     status: $Enums.RecordStatus
     adminUserId: string | null
@@ -4259,6 +4294,11 @@ export namespace Prisma {
     branchAdminName?: boolean
     branchEmail?: boolean
     branchPhone?: boolean
+    branchCountryCode?: boolean
+    branchCountry?: boolean
+    branchStateCode?: boolean
+    branchState?: boolean
+    branchCity?: boolean
     branchAddress?: boolean
     status?: boolean
     adminUserId?: boolean
@@ -4276,6 +4316,11 @@ export namespace Prisma {
     branchAdminName?: boolean
     branchEmail?: boolean
     branchPhone?: boolean
+    branchCountryCode?: boolean
+    branchCountry?: boolean
+    branchStateCode?: boolean
+    branchState?: boolean
+    branchCity?: boolean
     branchAddress?: boolean
     status?: boolean
     adminUserId?: boolean
@@ -4293,6 +4338,11 @@ export namespace Prisma {
     branchAdminName?: boolean
     branchEmail?: boolean
     branchPhone?: boolean
+    branchCountryCode?: boolean
+    branchCountry?: boolean
+    branchStateCode?: boolean
+    branchState?: boolean
+    branchCity?: boolean
     branchAddress?: boolean
     status?: boolean
     adminUserId?: boolean
@@ -4310,6 +4360,11 @@ export namespace Prisma {
     branchAdminName?: boolean
     branchEmail?: boolean
     branchPhone?: boolean
+    branchCountryCode?: boolean
+    branchCountry?: boolean
+    branchStateCode?: boolean
+    branchState?: boolean
+    branchCity?: boolean
     branchAddress?: boolean
     status?: boolean
     adminUserId?: boolean
@@ -4319,7 +4374,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type BranchOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "branchId" | "branchName" | "branchAdminName" | "branchEmail" | "branchPhone" | "branchAddress" | "status" | "adminUserId" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["branch"]>
+  export type BranchOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "branchId" | "branchName" | "branchAdminName" | "branchEmail" | "branchPhone" | "branchCountryCode" | "branchCountry" | "branchStateCode" | "branchState" | "branchCity" | "branchAddress" | "status" | "adminUserId" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["branch"]>
   export type BranchInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     adminUser?: boolean | Branch$adminUserArgs<ExtArgs>
   }
@@ -4342,6 +4397,11 @@ export namespace Prisma {
       branchAdminName: string
       branchEmail: string
       branchPhone: string
+      branchCountryCode: string
+      branchCountry: string
+      branchStateCode: string
+      branchState: string
+      branchCity: string
       branchAddress: string
       status: $Enums.RecordStatus
       adminUserId: string | null
@@ -4779,6 +4839,11 @@ export namespace Prisma {
     readonly branchAdminName: FieldRef<"Branch", 'String'>
     readonly branchEmail: FieldRef<"Branch", 'String'>
     readonly branchPhone: FieldRef<"Branch", 'String'>
+    readonly branchCountryCode: FieldRef<"Branch", 'String'>
+    readonly branchCountry: FieldRef<"Branch", 'String'>
+    readonly branchStateCode: FieldRef<"Branch", 'String'>
+    readonly branchState: FieldRef<"Branch", 'String'>
+    readonly branchCity: FieldRef<"Branch", 'String'>
     readonly branchAddress: FieldRef<"Branch", 'String'>
     readonly status: FieldRef<"Branch", 'RecordStatus'>
     readonly adminUserId: FieldRef<"Branch", 'String'>
@@ -22426,6 +22491,11 @@ export namespace Prisma {
     branchAdminName: 'branchAdminName',
     branchEmail: 'branchEmail',
     branchPhone: 'branchPhone',
+    branchCountryCode: 'branchCountryCode',
+    branchCountry: 'branchCountry',
+    branchStateCode: 'branchStateCode',
+    branchState: 'branchState',
+    branchCity: 'branchCity',
     branchAddress: 'branchAddress',
     status: 'status',
     adminUserId: 'adminUserId',
@@ -23085,6 +23155,11 @@ export namespace Prisma {
     branchAdminName?: StringFilter<"Branch"> | string
     branchEmail?: StringFilter<"Branch"> | string
     branchPhone?: StringFilter<"Branch"> | string
+    branchCountryCode?: StringFilter<"Branch"> | string
+    branchCountry?: StringFilter<"Branch"> | string
+    branchStateCode?: StringFilter<"Branch"> | string
+    branchState?: StringFilter<"Branch"> | string
+    branchCity?: StringFilter<"Branch"> | string
     branchAddress?: StringFilter<"Branch"> | string
     status?: EnumRecordStatusFilter<"Branch"> | $Enums.RecordStatus
     adminUserId?: StringNullableFilter<"Branch"> | string | null
@@ -23102,6 +23177,11 @@ export namespace Prisma {
     branchAdminName?: SortOrder
     branchEmail?: SortOrder
     branchPhone?: SortOrder
+    branchCountryCode?: SortOrder
+    branchCountry?: SortOrder
+    branchStateCode?: SortOrder
+    branchState?: SortOrder
+    branchCity?: SortOrder
     branchAddress?: SortOrder
     status?: SortOrder
     adminUserId?: SortOrderInput | SortOrder
@@ -23123,6 +23203,11 @@ export namespace Prisma {
     NOT?: BranchWhereInput | BranchWhereInput[]
     branchName?: StringFilter<"Branch"> | string
     branchAdminName?: StringFilter<"Branch"> | string
+    branchCountryCode?: StringFilter<"Branch"> | string
+    branchCountry?: StringFilter<"Branch"> | string
+    branchStateCode?: StringFilter<"Branch"> | string
+    branchState?: StringFilter<"Branch"> | string
+    branchCity?: StringFilter<"Branch"> | string
     branchAddress?: StringFilter<"Branch"> | string
     status?: EnumRecordStatusFilter<"Branch"> | $Enums.RecordStatus
     createdBy?: StringNullableFilter<"Branch"> | string | null
@@ -23139,6 +23224,11 @@ export namespace Prisma {
     branchAdminName?: SortOrder
     branchEmail?: SortOrder
     branchPhone?: SortOrder
+    branchCountryCode?: SortOrder
+    branchCountry?: SortOrder
+    branchStateCode?: SortOrder
+    branchState?: SortOrder
+    branchCity?: SortOrder
     branchAddress?: SortOrder
     status?: SortOrder
     adminUserId?: SortOrderInput | SortOrder
@@ -23161,6 +23251,11 @@ export namespace Prisma {
     branchAdminName?: StringWithAggregatesFilter<"Branch"> | string
     branchEmail?: StringWithAggregatesFilter<"Branch"> | string
     branchPhone?: StringWithAggregatesFilter<"Branch"> | string
+    branchCountryCode?: StringWithAggregatesFilter<"Branch"> | string
+    branchCountry?: StringWithAggregatesFilter<"Branch"> | string
+    branchStateCode?: StringWithAggregatesFilter<"Branch"> | string
+    branchState?: StringWithAggregatesFilter<"Branch"> | string
+    branchCity?: StringWithAggregatesFilter<"Branch"> | string
     branchAddress?: StringWithAggregatesFilter<"Branch"> | string
     status?: EnumRecordStatusWithAggregatesFilter<"Branch"> | $Enums.RecordStatus
     adminUserId?: StringNullableWithAggregatesFilter<"Branch"> | string | null
@@ -24803,6 +24898,11 @@ export namespace Prisma {
     branchAdminName: string
     branchEmail: string
     branchPhone: string
+    branchCountryCode?: string
+    branchCountry?: string
+    branchStateCode?: string
+    branchState?: string
+    branchCity?: string
     branchAddress: string
     status?: $Enums.RecordStatus
     createdBy?: string | null
@@ -24819,6 +24919,11 @@ export namespace Prisma {
     branchAdminName: string
     branchEmail: string
     branchPhone: string
+    branchCountryCode?: string
+    branchCountry?: string
+    branchStateCode?: string
+    branchState?: string
+    branchCity?: string
     branchAddress: string
     status?: $Enums.RecordStatus
     adminUserId?: string | null
@@ -24835,6 +24940,11 @@ export namespace Prisma {
     branchAdminName?: StringFieldUpdateOperationsInput | string
     branchEmail?: StringFieldUpdateOperationsInput | string
     branchPhone?: StringFieldUpdateOperationsInput | string
+    branchCountryCode?: StringFieldUpdateOperationsInput | string
+    branchCountry?: StringFieldUpdateOperationsInput | string
+    branchStateCode?: StringFieldUpdateOperationsInput | string
+    branchState?: StringFieldUpdateOperationsInput | string
+    branchCity?: StringFieldUpdateOperationsInput | string
     branchAddress?: StringFieldUpdateOperationsInput | string
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -24851,6 +24961,11 @@ export namespace Prisma {
     branchAdminName?: StringFieldUpdateOperationsInput | string
     branchEmail?: StringFieldUpdateOperationsInput | string
     branchPhone?: StringFieldUpdateOperationsInput | string
+    branchCountryCode?: StringFieldUpdateOperationsInput | string
+    branchCountry?: StringFieldUpdateOperationsInput | string
+    branchStateCode?: StringFieldUpdateOperationsInput | string
+    branchState?: StringFieldUpdateOperationsInput | string
+    branchCity?: StringFieldUpdateOperationsInput | string
     branchAddress?: StringFieldUpdateOperationsInput | string
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     adminUserId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -24867,6 +24982,11 @@ export namespace Prisma {
     branchAdminName: string
     branchEmail: string
     branchPhone: string
+    branchCountryCode?: string
+    branchCountry?: string
+    branchStateCode?: string
+    branchState?: string
+    branchCity?: string
     branchAddress: string
     status?: $Enums.RecordStatus
     adminUserId?: string | null
@@ -24883,6 +25003,11 @@ export namespace Prisma {
     branchAdminName?: StringFieldUpdateOperationsInput | string
     branchEmail?: StringFieldUpdateOperationsInput | string
     branchPhone?: StringFieldUpdateOperationsInput | string
+    branchCountryCode?: StringFieldUpdateOperationsInput | string
+    branchCountry?: StringFieldUpdateOperationsInput | string
+    branchStateCode?: StringFieldUpdateOperationsInput | string
+    branchState?: StringFieldUpdateOperationsInput | string
+    branchCity?: StringFieldUpdateOperationsInput | string
     branchAddress?: StringFieldUpdateOperationsInput | string
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -24898,6 +25023,11 @@ export namespace Prisma {
     branchAdminName?: StringFieldUpdateOperationsInput | string
     branchEmail?: StringFieldUpdateOperationsInput | string
     branchPhone?: StringFieldUpdateOperationsInput | string
+    branchCountryCode?: StringFieldUpdateOperationsInput | string
+    branchCountry?: StringFieldUpdateOperationsInput | string
+    branchStateCode?: StringFieldUpdateOperationsInput | string
+    branchState?: StringFieldUpdateOperationsInput | string
+    branchCity?: StringFieldUpdateOperationsInput | string
     branchAddress?: StringFieldUpdateOperationsInput | string
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     adminUserId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -26903,6 +27033,11 @@ export namespace Prisma {
     branchAdminName?: SortOrder
     branchEmail?: SortOrder
     branchPhone?: SortOrder
+    branchCountryCode?: SortOrder
+    branchCountry?: SortOrder
+    branchStateCode?: SortOrder
+    branchState?: SortOrder
+    branchCity?: SortOrder
     branchAddress?: SortOrder
     status?: SortOrder
     adminUserId?: SortOrder
@@ -26919,6 +27054,11 @@ export namespace Prisma {
     branchAdminName?: SortOrder
     branchEmail?: SortOrder
     branchPhone?: SortOrder
+    branchCountryCode?: SortOrder
+    branchCountry?: SortOrder
+    branchStateCode?: SortOrder
+    branchState?: SortOrder
+    branchCity?: SortOrder
     branchAddress?: SortOrder
     status?: SortOrder
     adminUserId?: SortOrder
@@ -26935,6 +27075,11 @@ export namespace Prisma {
     branchAdminName?: SortOrder
     branchEmail?: SortOrder
     branchPhone?: SortOrder
+    branchCountryCode?: SortOrder
+    branchCountry?: SortOrder
+    branchStateCode?: SortOrder
+    branchState?: SortOrder
+    branchCity?: SortOrder
     branchAddress?: SortOrder
     status?: SortOrder
     adminUserId?: SortOrder
@@ -29664,6 +29809,11 @@ export namespace Prisma {
     branchAdminName: string
     branchEmail: string
     branchPhone: string
+    branchCountryCode?: string
+    branchCountry?: string
+    branchStateCode?: string
+    branchState?: string
+    branchCity?: string
     branchAddress: string
     status?: $Enums.RecordStatus
     createdBy?: string | null
@@ -29679,6 +29829,11 @@ export namespace Prisma {
     branchAdminName: string
     branchEmail: string
     branchPhone: string
+    branchCountryCode?: string
+    branchCountry?: string
+    branchStateCode?: string
+    branchState?: string
+    branchCity?: string
     branchAddress: string
     status?: $Enums.RecordStatus
     createdBy?: string | null
@@ -29875,6 +30030,11 @@ export namespace Prisma {
     branchAdminName?: StringFieldUpdateOperationsInput | string
     branchEmail?: StringFieldUpdateOperationsInput | string
     branchPhone?: StringFieldUpdateOperationsInput | string
+    branchCountryCode?: StringFieldUpdateOperationsInput | string
+    branchCountry?: StringFieldUpdateOperationsInput | string
+    branchStateCode?: StringFieldUpdateOperationsInput | string
+    branchState?: StringFieldUpdateOperationsInput | string
+    branchCity?: StringFieldUpdateOperationsInput | string
     branchAddress?: StringFieldUpdateOperationsInput | string
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -29890,6 +30050,11 @@ export namespace Prisma {
     branchAdminName?: StringFieldUpdateOperationsInput | string
     branchEmail?: StringFieldUpdateOperationsInput | string
     branchPhone?: StringFieldUpdateOperationsInput | string
+    branchCountryCode?: StringFieldUpdateOperationsInput | string
+    branchCountry?: StringFieldUpdateOperationsInput | string
+    branchStateCode?: StringFieldUpdateOperationsInput | string
+    branchState?: StringFieldUpdateOperationsInput | string
+    branchCity?: StringFieldUpdateOperationsInput | string
     branchAddress?: StringFieldUpdateOperationsInput | string
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
