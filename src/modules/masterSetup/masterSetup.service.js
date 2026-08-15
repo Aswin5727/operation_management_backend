@@ -423,6 +423,8 @@ async function buildCourseWhere(query, actor = null) {
 
   if (branchProfile?.id) {
     where.branchId = branchProfile.id;
+  } else {
+    where.branchId = null;
   }
 
   if (query.status) {

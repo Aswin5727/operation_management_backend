@@ -31,7 +31,7 @@ import {
 const router = express.Router();
 
 const masterRoles = ["OPERATION_MANAGER", "BUSINESS_OWNER"];
-const courseRoles = [...masterRoles, "BRANCH_ADMIN"];
+const courseRoles = masterRoles;
 
 router.use(authenticate);
 

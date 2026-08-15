@@ -89,26 +89,27 @@ model User {
 }
 
 model Branch {
-  id                String       @id @default(cuid())
-  branchId          String       @unique
+  id                String         @id @default(cuid())
+  branchId          String         @unique
   branchName        String
   branchAdminName   String
-  branchEmail       String       @unique
-  branchPhone       String       @unique
-  branchCountryCode String       @default("")
-  branchCountry     String       @default("")
-  branchStateCode   String       @default("")
-  branchState       String       @default("")
-  branchCity        String       @default("")
+  branchEmail       String         @unique
+  branchPhone       String         @unique
+  branchCountryCode String         @default("")
+  branchCountry     String         @default("")
+  branchStateCode   String         @default("")
+  branchState       String         @default("")
+  branchCity        String         @default("")
   branchAddress     String
-  status            RecordStatus @default(ACTIVE)
-  adminUserId       String?      @unique
-  adminUser         User?        @relation("BranchAdminUser", fields: [adminUserId], references: [id], onDelete: SetNull)
+  status            RecordStatus   @default(ACTIVE)
+  adminUserId       String?        @unique
+  adminUser         User?          @relation("BranchAdminUser", fields: [adminUserId], references: [id], onDelete: SetNull)
   createdBy         String?
   updatedBy         String?
-  createdAt         DateTime     @default(now())
-  updatedAt         DateTime     @updatedAt
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
   courses           Course[]
+  branchCourses     BranchCourse[]
 
   @@index([status])
   @@index([branchName])
@@ -168,7 +169,7 @@ model PasswordResetToken {
 model Course {
   id                       String                    @id @default(cuid())
   name                     String
-  nameKey                  String                    @unique
+  nameKey                  String
   courseCode               String?
   branchId                 String?
   branch                   Branch?                   @relation(fields: [branchId], references: [id], onDelete: SetNull)
@@ -202,8 +203,37 @@ model Course {
   statusHistory            CourseStatusHistory[]
 
   @@index([branchId])
+  @@index([nameKey])
   @@index([status])
   @@index([mode])
+  @@index([createdAt])
+}
+
+model BranchCourse {
+  id               String       @id @default(cuid())
+  branchId         String
+  branch           Branch       @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  courseCode       String
+  name             String
+  nameKey          String
+  description      String?
+  mode             String
+  duration         Int?
+  hours            Int?
+  actualFees       Int?
+  registrationFees Int?
+  discount         Int?
+  afterDiscount    Int?
+  status           RecordStatus @default(ACTIVE)
+  createdBy        String?
+  updatedBy        String?
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+
+  @@unique([branchId, nameKey])
+  @@unique([branchId, courseCode])
+  @@index([branchId])
+  @@index([status])
   @@index([createdAt])
 }
 

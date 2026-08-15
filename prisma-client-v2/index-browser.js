@@ -233,6 +233,27 @@ exports.Prisma.CourseScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.BranchCourseScalarFieldEnum = {
+  id: 'id',
+  branchId: 'branchId',
+  courseCode: 'courseCode',
+  name: 'name',
+  nameKey: 'nameKey',
+  description: 'description',
+  mode: 'mode',
+  duration: 'duration',
+  hours: 'hours',
+  actualFees: 'actualFees',
+  registrationFees: 'registrationFees',
+  discount: 'discount',
+  afterDiscount: 'afterDiscount',
+  status: 'status',
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.CourseModuleScalarFieldEnum = {
   id: 'id',
   courseId: 'courseId',
@@ -497,6 +518,7 @@ exports.Prisma.ModelName = {
   Notification: 'Notification',
   PasswordResetToken: 'PasswordResetToken',
   Course: 'Course',
+  BranchCourse: 'BranchCourse',
   CourseModule: 'CourseModule',
   Batch: 'Batch',
   BatchFacultyAssignment: 'BatchFacultyAssignment',

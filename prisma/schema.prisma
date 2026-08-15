@@ -109,6 +109,7 @@ model Branch {
   createdAt       DateTime     @default(now())
   updatedAt       DateTime     @updatedAt
   courses         Course[]
+  branchCourses   BranchCourse[]
 
   @@index([status])
   @@index([branchName])
@@ -205,6 +206,34 @@ model Course {
   @@index([nameKey])
   @@index([status])
   @@index([mode])
+  @@index([createdAt])
+}
+
+model BranchCourse {
+  id               String        @id @default(cuid())
+  branchId         String
+  branch           Branch        @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  courseCode       String
+  name             String
+  nameKey          String
+  description      String?
+  mode             String
+  duration         Int?
+  hours            Int?
+  actualFees       Int?
+  registrationFees Int?
+  discount         Int?
+  afterDiscount    Int?
+  status           RecordStatus  @default(ACTIVE)
+  createdBy        String?
+  updatedBy        String?
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+
+  @@unique([branchId, nameKey])
+  @@unique([branchId, courseCode])
+  @@index([branchId])
+  @@index([status])
   @@index([createdAt])
 }
 

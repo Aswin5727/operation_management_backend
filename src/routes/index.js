@@ -3,6 +3,7 @@ import express from "express";
 import attendanceRoutes from "../modules/attendance/attendance.routes.js";
 import authRoutes from "../modules/auth/auth.routes.js";
 import branchesRoutes from "../modules/branches/branches.routes.js";
+import branchCoursesRoutes from "../modules/branchCourses/branchCourses.routes.js";
 import facultyManagementRoutes from "../modules/facultyManagement/facultyManagement.routes.js";
 import dashboardRoutes from "../modules/dashboard/dashboard.routes.js";
 import notificationsRoutes from "../modules/notifications/notifications.routes.js";
@@ -22,6 +23,7 @@ router.get("/health", (_req, res) => {
 router.use("/auth", authRoutes);
 router.use("/attendance", attendanceRoutes);
 router.use("/branches", branchesRoutes);
+router.use("/branch-courses", branchCoursesRoutes);
 router.use("/dashboard", dashboardRoutes);
 router.use("/faculty-management", facultyManagementRoutes);
 router.use("/notifications", notificationsRoutes);
