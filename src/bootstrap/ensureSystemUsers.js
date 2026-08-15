@@ -51,26 +51,32 @@ const SYSTEM_USERS = [
 export async function ensureSystemUsers() {
   for (const user of SYSTEM_USERS) {
     const passwordHash = await hashPassword(user.password);
-
-    await prisma.user.upsert({
+    const existingUser = await prisma.user.findFirst({
       where: { email: user.email },
-      update: {
-        userCode: user.userCode,
-        fullName: user.fullName,
-        role: user.role,
-        active: true,
-        passwordHash,
-        updatedBy: "system-bootstrap",
-      },
-      create: {
-        userCode: user.userCode,
-        fullName: user.fullName,
-        email: user.email,
-        role: user.role,
-        active: true,
-        passwordHash,
+    });
+
+    const data = {
+      userCode: user.userCode,
+      fullName: user.fullName,
+      email: user.email,
+      role: user.role,
+      active: true,
+      passwordHash,
+      updatedBy: "system-bootstrap",
+    };
+
+    if (existingUser) {
+      await prisma.user.update({
+        where: { id: existingUser.id },
+        data,
+      });
+      continue;
+    }
+
+    await prisma.user.create({
+      data: {
+        ...data,
         createdBy: "system-bootstrap",
-        updatedBy: "system-bootstrap",
       },
     });
   }

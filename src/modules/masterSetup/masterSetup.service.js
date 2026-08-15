@@ -1,11 +1,22 @@
 import prisma from "../../config/prisma.js";
 import AppError from "../../common/errors/AppError.js";
+import { getCurrentBranchProfile } from "../branches/branches.service.js";
 
 const COURSE_MODES = new Set(["ONLINE", "OFFLINE", "HYBRID"]);
 const COURSE_STATUSES = new Set(["ACTIVE", "INACTIVE"]);
 const BATCH_STATUSES = new Set(["PLANNED", "ACTIVE", "COMPLETED", "INACTIVE"]);
 const ASSIGNMENT_STATUSES = new Set(["ACTIVE", "INACTIVE"]);
 const LOCAL_TIME_ZONE = "Asia/Calcutta";
+
+async function resolveBranchAdminProfile(actor) {
+  const role = normalizeString(actor?.role).toUpperCase();
+
+  if (role !== "BRANCH_ADMIN") {
+    return null;
+  }
+
+  return getCurrentBranchProfile(actor);
+}
 
 function normalizeString(value) {
   return String(value ?? "").trim();
@@ -136,6 +147,21 @@ function parseInstallments(candidate = {}) {
     .map(({ index, value }) => parsePositiveInt(value, `Installment ${index}`, { allowZero: true }));
 }
 
+function buildBalancedInstallments(totalAmount, installmentCount) {
+  const count = Math.max(1, Number(installmentCount) || 1);
+  const safeTotal = Math.max(0, Number(totalAmount) || 0);
+  const baseAmount = Math.floor(safeTotal / count);
+  let remainder = safeTotal - baseAmount * count;
+
+  return Array.from({ length: count }, () => {
+    const nextAmount = baseAmount + (remainder > 0 ? 1 : 0);
+    if (remainder > 0) {
+      remainder -= 1;
+    }
+    return nextAmount;
+  });
+}
+
 function parseOptionalText(value) {
   const text = normalizeString(value);
   return text ? text : null;
@@ -226,6 +252,8 @@ function toCourseSummary(course) {
   return {
     id: course.id,
     name: course.name,
+    courseCode: course.courseCode,
+    branchId: course.branchId,
     description: course.description,
     feeReference: course.feeReference,
     mode: course.mode,
@@ -388,9 +416,14 @@ async function createStatusHistory(tx, { kind, recordId, fromStatus, toStatus, c
   });
 }
 
-function buildCourseWhere(query) {
+async function buildCourseWhere(query, actor = null) {
   const where = {};
   const search = normalizeString(query.search);
+  const branchProfile = await resolveBranchAdminProfile(actor);
+
+  if (branchProfile?.id) {
+    where.branchId = branchProfile.id;
+  }
 
   if (query.status) {
     where.status = normalizeRecordStatus(query.status);
@@ -403,6 +436,7 @@ function buildCourseWhere(query) {
   if (search) {
     const conditions = [
       { name: { contains: search, mode: "insensitive" } },
+      { courseCode: { contains: search, mode: "insensitive" } },
       { description: { contains: search, mode: "insensitive" } },
       { feeReference: { contains: search, mode: "insensitive" } },
       { mode: { contains: search, mode: "insensitive" } },
@@ -570,6 +604,8 @@ function buildAssignmentWhere(batchId, query) {
 
 function buildCoursePayload(payload, existingCourse = null) {
   const candidate = existingCourse ? { ...existingCourse, ...payload } : payload;
+  const courseCode = parseOptionalText(candidate.courseCode ?? candidate.code);
+  const branchId = parseOptionalText(candidate.branchId ?? existingCourse?.branchId);
   const actualFees = parsePositiveInt(candidate.actualFees, "Actual fees", { allowZero: true });
   const registrationFees = parsePositiveInt(candidate.registrationFees, "Registration fees", {
     allowZero: true,
@@ -577,34 +613,48 @@ function buildCoursePayload(payload, existingCourse = null) {
   const discount = parsePositiveInt(candidate.discount, "Discount", { allowZero: true });
   const duration = parsePositiveInt(candidate.duration, "Duration");
   const hours = parsePositiveInt(candidate.hours, "Hours");
-  const installments = parseInstallments(candidate);
-  const installmentCount = parsePositiveInt(candidate.installmentCount ?? installments.length ?? 2, "Installment count");
+  const requestedInstallments = parseInstallments(candidate);
+  const rawInstallmentCount = candidate.installmentCount;
+  const installmentCount = requestedInstallments.length > 0
+    ? requestedInstallments.length
+    : rawInstallmentCount === undefined || rawInstallmentCount === null || rawInstallmentCount === ""
+      ? 1
+      : parsePositiveInt(rawInstallmentCount, "Installment count");
   const name = parseRequiredText(candidate.name, "Course name");
   const mode = normalizeCourseMode(candidate.mode);
   const status = normalizeRecordStatus(candidate.status ?? "ACTIVE");
   const description = parseOptionalText(candidate.description);
   const feeReference = parseOptionalText(candidate.feeReference);
+  const totalFees = actualFees + registrationFees;
+  const discountedFee = totalFees - discount;
 
-  if (discount > actualFees) {
-    throw new AppError("Discount cannot be greater than actual fees", 400);
+  if (!courseCode && !existingCourse?.courseCode) {
+    throw new AppError("Course code is required", 400);
   }
 
-  if (!installments.length) {
-    throw new AppError("At least one installment is required", 400);
+  if (discount > totalFees) {
+    throw new AppError("Discount cannot be greater than total fees", 400);
   }
+
+  const installments =
+    requestedInstallments.length > 0
+      ? requestedInstallments
+      : buildBalancedInstallments(discountedFee, installmentCount);
 
   if (installments.length !== installmentCount) {
     throw new AppError("Installment count must match installment values", 400);
   }
 
   const installmentTotal = installments.reduce((total, amount) => total + amount, 0);
-  if (installmentTotal !== actualFees - discount) {
+  if (installmentTotal !== discountedFee) {
     throw new AppError("Installment totals must match the discounted fee", 400);
   }
 
   return {
     name,
     nameKey: normalizeKey(name),
+    courseCode,
+    branchId,
     description,
     feeReference,
     mode,
@@ -613,7 +663,7 @@ function buildCoursePayload(payload, existingCourse = null) {
     actualFees,
     registrationFees,
     discount,
-    afterDiscount: actualFees - discount,
+    afterDiscount: discountedFee,
     installmentCount,
     installment1: installments[0] ?? null,
     installment2: installments[1] ?? null,
@@ -681,17 +731,49 @@ function buildBatchPayload(payload, existingBatch = null) {
   };
 }
 
-async function assertUniqueCourseName(nameKey, excludeId = null) {
+async function assertUniqueCourseName(nameKey, excludeId = null, branchId = null) {
+  const where = {
+    nameKey,
+    ...(excludeId ? { id: { not: excludeId } } : {}),
+  };
+
+  if (branchId) {
+    where.branchId = branchId;
+  }
+
   const existing = await prisma.course.findFirst({
-    where: {
-      nameKey,
-      ...(excludeId ? { id: { not: excludeId } } : {}),
-    },
+    where,
     select: { id: true },
   });
 
   if (existing) {
     throw new AppError("Course name already exists", 409);
+  }
+}
+
+async function assertUniqueCourseCode(courseCode, excludeId = null, branchId = null) {
+  const normalizedCourseCode = normalizeString(courseCode);
+
+  if (!normalizedCourseCode) {
+    return;
+  }
+
+  const where = {
+    courseCode: normalizedCourseCode,
+    ...(excludeId ? { id: { not: excludeId } } : {}),
+  };
+
+  if (branchId) {
+    where.branchId = branchId;
+  }
+
+  const existing = await prisma.course.findFirst({
+    where,
+    select: { id: true },
+  });
+
+  if (existing) {
+    throw new AppError("Course code already exists", 409);
   }
 }
 
@@ -724,9 +806,13 @@ async function assertUniqueModuleTitle(courseId, titleKey, excludeId = null) {
   }
 }
 
-async function ensureCourseExists(courseId, { requireActive = false } = {}) {
-  const course = await prisma.course.findUnique({
-    where: { id: courseId },
+async function ensureCourseExists(courseId, actor = null, { requireActive = false } = {}) {
+  const branchProfile = await resolveBranchAdminProfile(actor);
+  const course = await prisma.course.findFirst({
+    where: {
+      id: courseId,
+      ...(branchProfile?.id ? { branchId: branchProfile.id } : {}),
+    },
   });
 
   if (!course) {
@@ -1045,9 +1131,9 @@ async function updateBatchStatusHistory(batchId, previousStatus, nextStatus, act
   });
 }
 
-export async function listCourses(query) {
+export async function listCourses(query, actor = null) {
   const { page, limit, skip, take } = buildPagination(query);
-  const where = buildCourseWhere(query);
+  const where = await buildCourseWhere(query, actor);
   const sortBy = normalizeString(query.sortBy).toLowerCase() || "createdat";
   const sortOrder = parseSortOrder(query.sortOrder);
 
@@ -1102,13 +1188,18 @@ export async function listCourses(query) {
 
 export async function createCourse(payload, actor) {
   const parsed = buildCoursePayload(payload);
-  await assertUniqueCourseName(parsed.nameKey);
+  const branchProfile = await resolveBranchAdminProfile(actor);
   const actorId = actor?.id ?? null;
+  const branchId = branchProfile?.id ?? parsed.branchId ?? null;
+
+  await assertUniqueCourseName(parsed.nameKey, null, branchId);
+  await assertUniqueCourseCode(parsed.courseCode, null, branchId);
 
   const created = await prisma.$transaction(async (tx) => {
     const course = await tx.course.create({
       data: {
         ...parsed,
+        branchId,
         statusChangedAt: new Date(),
         statusChangedBy: actorId,
         createdBy: actorId,
@@ -1133,9 +1224,13 @@ export async function createCourse(payload, actor) {
   return toCourseDetail(created);
 }
 
-export async function getCourse(courseId) {
-  const course = await prisma.course.findUnique({
-    where: { id: courseId },
+export async function getCourse(courseId, actor = null) {
+  const branchProfile = await resolveBranchAdminProfile(actor);
+  const course = await prisma.course.findFirst({
+    where: {
+      id: courseId,
+      ...(branchProfile?.id ? { branchId: branchProfile.id } : {}),
+    },
     include: getCourseInclude(),
   });
 
@@ -1147,8 +1242,12 @@ export async function getCourse(courseId) {
 }
 
 export async function updateCourse(courseId, payload, actor) {
-  const existingCourse = await prisma.course.findUnique({
-    where: { id: courseId },
+  const branchProfile = await resolveBranchAdminProfile(actor);
+  const existingCourse = await prisma.course.findFirst({
+    where: {
+      id: courseId,
+      ...(branchProfile?.id ? { branchId: branchProfile.id } : {}),
+    },
   });
 
   if (!existingCourse) {
@@ -1156,8 +1255,11 @@ export async function updateCourse(courseId, payload, actor) {
   }
 
   const parsed = buildCoursePayload(payload, existingCourse);
-  await assertUniqueCourseName(parsed.nameKey, courseId);
   const actorId = actor?.id ?? null;
+  const branchId = branchProfile?.id ?? existingCourse.branchId ?? parsed.branchId ?? null;
+
+  await assertUniqueCourseName(parsed.nameKey, courseId, branchId);
+  await assertUniqueCourseCode(parsed.courseCode, courseId, branchId);
   const statusChanged = existingCourse.status !== parsed.status;
 
   const updated = await prisma.$transaction(async (tx) => {
@@ -1165,6 +1267,7 @@ export async function updateCourse(courseId, payload, actor) {
       where: { id: courseId },
       data: {
         ...parsed,
+        branchId,
         statusChangedAt: statusChanged ? new Date() : existingCourse.statusChangedAt,
         statusChangedBy: statusChanged ? actorId : existingCourse.statusChangedBy,
         updatedBy: actorId,
@@ -1191,8 +1294,12 @@ export async function updateCourse(courseId, payload, actor) {
 }
 
 export async function updateCourseStatus(courseId, status, actor, reason = null) {
-  const existingCourse = await prisma.course.findUnique({
-    where: { id: courseId },
+  const branchProfile = await resolveBranchAdminProfile(actor);
+  const existingCourse = await prisma.course.findFirst({
+    where: {
+      id: courseId,
+      ...(branchProfile?.id ? { branchId: branchProfile.id } : {}),
+    },
   });
 
   if (!existingCourse) {
@@ -1203,8 +1310,11 @@ export async function updateCourseStatus(courseId, status, actor, reason = null)
   const actorId = actor?.id ?? null;
 
   if (existingCourse.status === nextStatus) {
-    const course = await prisma.course.findUnique({
-      where: { id: courseId },
+    const course = await prisma.course.findFirst({
+      where: {
+        id: courseId,
+        ...(branchProfile?.id ? { branchId: branchProfile.id } : {}),
+      },
       include: getCourseInclude(),
     });
     return toCourseDetail(course);
@@ -1239,8 +1349,12 @@ export async function updateCourseStatus(courseId, status, actor, reason = null)
 }
 
 export async function deleteCourse(courseId, actor) {
-  const existingCourse = await prisma.course.findUnique({
-    where: { id: courseId },
+  const branchProfile = await resolveBranchAdminProfile(actor);
+  const existingCourse = await prisma.course.findFirst({
+    where: {
+      id: courseId,
+      ...(branchProfile?.id ? { branchId: branchProfile.id } : {}),
+    },
     include: getCourseInclude(),
   });
 
@@ -1270,8 +1384,8 @@ export async function deleteCourse(courseId, actor) {
   };
 }
 
-export async function listCourseStatusHistory(courseId) {
-  await ensureCourseExists(courseId);
+export async function listCourseStatusHistory(courseId, actor = null) {
+  await ensureCourseExists(courseId, actor);
 
   const history = await prisma.courseStatusHistory.findMany({
     where: { courseId },
@@ -1283,8 +1397,8 @@ export async function listCourseStatusHistory(courseId) {
   };
 }
 
-export async function listCourseModules(courseId, query) {
-  await ensureCourseExists(courseId);
+export async function listCourseModules(courseId, query, actor = null) {
+  await ensureCourseExists(courseId, actor);
   const { page, limit, skip, take } = buildPagination(query);
   const where = buildModuleWhere(courseId, query);
   const sortBy = normalizeString(query.sortBy).toLowerCase() || "sequenceno";
@@ -1322,7 +1436,7 @@ export async function listCourseModules(courseId, query) {
 }
 
 export async function createCourseModule(courseId, payload, actor) {
-  await ensureCourseExists(courseId, { requireActive: true });
+  await ensureCourseExists(courseId, actor, { requireActive: true });
   const parsed = buildModulePayload(payload);
   await assertUniqueModuleTitle(courseId, parsed.titleKey);
   const actorId = actor?.id ?? null;
@@ -1351,7 +1465,7 @@ export async function createCourseModule(courseId, payload, actor) {
 }
 
 export async function updateCourseModule(courseId, moduleId, payload, actor) {
-  const course = await ensureCourseExists(courseId, { requireActive: true });
+  const course = await ensureCourseExists(courseId, actor, { requireActive: true });
   const existingModule = await ensureModuleExists(courseId, moduleId);
   const parsed = buildModulePayload(payload, existingModule);
   await assertUniqueModuleTitle(courseId, parsed.titleKey, moduleId);
@@ -1385,7 +1499,7 @@ export async function updateCourseModule(courseId, moduleId, payload, actor) {
 }
 
 export async function deleteCourseModule(courseId, moduleId, actor) {
-  await ensureCourseExists(courseId, { requireActive: true });
+  await ensureCourseExists(courseId, actor, { requireActive: true });
   const existingModule = await ensureModuleExists(courseId, moduleId);
   const actorId = actor?.id ?? null;
 
@@ -1429,7 +1543,7 @@ export async function deleteCourseModule(courseId, moduleId, actor) {
 }
 
 export async function reorderCourseModules(courseId, orderedModuleIds, actor) {
-  await ensureCourseExists(courseId, { requireActive: true });
+  await ensureCourseExists(courseId, actor, { requireActive: true });
 
   if (!Array.isArray(orderedModuleIds) || !orderedModuleIds.length) {
     throw new AppError("orderedModuleIds is required", 400);
@@ -1533,7 +1647,7 @@ export async function listBatches(query) {
 
 export async function createBatch(payload, actor) {
   const parsed = buildBatchPayload(payload);
-  await ensureCourseExists(parsed.courseId, { requireActive: true });
+  await ensureCourseExists(parsed.courseId, actor, { requireActive: true });
   await assertUniqueBatchName(parsed.batchNameKey);
   const actorId = actor?.id ?? null;
 
@@ -1587,7 +1701,7 @@ export async function updateBatch(batchId, payload, actor) {
   };
 
   const parsed = buildBatchPayload(mergedPayload, existingBatch);
-  await ensureCourseExists(parsed.courseId, { requireActive: true });
+  await ensureCourseExists(parsed.courseId, actor, { requireActive: true });
   await assertUniqueBatchName(parsed.batchNameKey, batchId);
   const actorId = actor?.id ?? null;
   const statusChanged = existingBatch.status !== parsed.status;

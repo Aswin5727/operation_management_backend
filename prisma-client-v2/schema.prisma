@@ -108,6 +108,7 @@ model Branch {
   updatedBy         String?
   createdAt         DateTime     @default(now())
   updatedAt         DateTime     @updatedAt
+  courses           Course[]
 
   @@index([status])
   @@index([branchName])
@@ -168,6 +169,9 @@ model Course {
   id                       String                    @id @default(cuid())
   name                     String
   nameKey                  String                    @unique
+  courseCode               String?
+  branchId                 String?
+  branch                   Branch?                   @relation(fields: [branchId], references: [id], onDelete: SetNull)
   description              String?
   feeReference             String?
   mode                     String
@@ -197,6 +201,7 @@ model Course {
   facultyBatchEntries      FacultyBatchEntry[]
   statusHistory            CourseStatusHistory[]
 
+  @@index([branchId])
   @@index([status])
   @@index([mode])
   @@index([createdAt])

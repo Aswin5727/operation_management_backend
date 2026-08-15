@@ -2487,6 +2487,37 @@ export namespace Prisma {
 
 
   /**
+   * Count Type BranchCountOutputType
+   */
+
+  export type BranchCountOutputType = {
+    courses: number
+  }
+
+  export type BranchCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    courses?: boolean | BranchCountOutputTypeCountCoursesArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * BranchCountOutputType without action
+   */
+  export type BranchCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchCountOutputType
+     */
+    select?: BranchCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * BranchCountOutputType without action
+   */
+  export type BranchCountOutputTypeCountCoursesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CourseWhereInput
+  }
+
+
+  /**
    * Count Type CourseCountOutputType
    */
 
@@ -4411,6 +4442,8 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     adminUser?: boolean | Branch$adminUserArgs<ExtArgs>
+    courses?: boolean | Branch$coursesArgs<ExtArgs>
+    _count?: boolean | BranchCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["branch"]>
 
   export type BranchSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -4481,6 +4514,8 @@ export namespace Prisma {
   export type BranchOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "branchId" | "branchName" | "branchAdminName" | "branchEmail" | "branchPhone" | "branchCountryCode" | "branchCountry" | "branchStateCode" | "branchState" | "branchCity" | "branchAddress" | "status" | "adminUserId" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["branch"]>
   export type BranchInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     adminUser?: boolean | Branch$adminUserArgs<ExtArgs>
+    courses?: boolean | Branch$coursesArgs<ExtArgs>
+    _count?: boolean | BranchCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type BranchIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     adminUser?: boolean | Branch$adminUserArgs<ExtArgs>
@@ -4493,6 +4528,7 @@ export namespace Prisma {
     name: "Branch"
     objects: {
       adminUser: Prisma.$UserPayload<ExtArgs> | null
+      courses: Prisma.$CoursePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -4908,6 +4944,7 @@ export namespace Prisma {
   export interface Prisma__BranchClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     adminUser<T extends Branch$adminUserArgs<ExtArgs> = {}>(args?: Subset<T, Branch$adminUserArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    courses<T extends Branch$coursesArgs<ExtArgs> = {}>(args?: Subset<T, Branch$coursesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CoursePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5372,6 +5409,30 @@ export namespace Prisma {
      */
     include?: UserInclude<ExtArgs> | null
     where?: UserWhereInput
+  }
+
+  /**
+   * Branch.courses
+   */
+  export type Branch$coursesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Course
+     */
+    select?: CourseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Course
+     */
+    omit?: CourseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CourseInclude<ExtArgs> | null
+    where?: CourseWhereInput
+    orderBy?: CourseOrderByWithRelationInput | CourseOrderByWithRelationInput[]
+    cursor?: CourseWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CourseScalarFieldEnum | CourseScalarFieldEnum[]
   }
 
   /**
@@ -8771,6 +8832,8 @@ export namespace Prisma {
     id: string | null
     name: string | null
     nameKey: string | null
+    courseCode: string | null
+    branchId: string | null
     description: string | null
     feeReference: string | null
     mode: string | null
@@ -8797,6 +8860,8 @@ export namespace Prisma {
     id: string | null
     name: string | null
     nameKey: string | null
+    courseCode: string | null
+    branchId: string | null
     description: string | null
     feeReference: string | null
     mode: string | null
@@ -8823,6 +8888,8 @@ export namespace Prisma {
     id: number
     name: number
     nameKey: number
+    courseCode: number
+    branchId: number
     description: number
     feeReference: number
     mode: number
@@ -8878,6 +8945,8 @@ export namespace Prisma {
     id?: true
     name?: true
     nameKey?: true
+    courseCode?: true
+    branchId?: true
     description?: true
     feeReference?: true
     mode?: true
@@ -8904,6 +8973,8 @@ export namespace Prisma {
     id?: true
     name?: true
     nameKey?: true
+    courseCode?: true
+    branchId?: true
     description?: true
     feeReference?: true
     mode?: true
@@ -8930,6 +9001,8 @@ export namespace Prisma {
     id?: true
     name?: true
     nameKey?: true
+    courseCode?: true
+    branchId?: true
     description?: true
     feeReference?: true
     mode?: true
@@ -9044,6 +9117,8 @@ export namespace Prisma {
     id: string
     name: string
     nameKey: string
+    courseCode: string | null
+    branchId: string | null
     description: string | null
     feeReference: string | null
     mode: string
@@ -9090,6 +9165,8 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     nameKey?: boolean
+    courseCode?: boolean
+    branchId?: boolean
     description?: boolean
     feeReference?: boolean
     mode?: boolean
@@ -9111,6 +9188,7 @@ export namespace Prisma {
     updatedBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    branch?: boolean | Course$branchArgs<ExtArgs>
     modules?: boolean | Course$modulesArgs<ExtArgs>
     batches?: boolean | Course$batchesArgs<ExtArgs>
     students?: boolean | Course$studentsArgs<ExtArgs>
@@ -9125,6 +9203,8 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     nameKey?: boolean
+    courseCode?: boolean
+    branchId?: boolean
     description?: boolean
     feeReference?: boolean
     mode?: boolean
@@ -9146,12 +9226,15 @@ export namespace Prisma {
     updatedBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    branch?: boolean | Course$branchArgs<ExtArgs>
   }, ExtArgs["result"]["course"]>
 
   export type CourseSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
     nameKey?: boolean
+    courseCode?: boolean
+    branchId?: boolean
     description?: boolean
     feeReference?: boolean
     mode?: boolean
@@ -9173,12 +9256,15 @@ export namespace Prisma {
     updatedBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    branch?: boolean | Course$branchArgs<ExtArgs>
   }, ExtArgs["result"]["course"]>
 
   export type CourseSelectScalar = {
     id?: boolean
     name?: boolean
     nameKey?: boolean
+    courseCode?: boolean
+    branchId?: boolean
     description?: boolean
     feeReference?: boolean
     mode?: boolean
@@ -9202,8 +9288,9 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type CourseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "nameKey" | "description" | "feeReference" | "mode" | "duration" | "hours" | "actualFees" | "registrationFees" | "discount" | "afterDiscount" | "installmentCount" | "installment1" | "installment2" | "installment3" | "installments" | "status" | "statusChangedAt" | "statusChangedBy" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["course"]>
+  export type CourseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "nameKey" | "courseCode" | "branchId" | "description" | "feeReference" | "mode" | "duration" | "hours" | "actualFees" | "registrationFees" | "discount" | "afterDiscount" | "installmentCount" | "installment1" | "installment2" | "installment3" | "installments" | "status" | "statusChangedAt" | "statusChangedBy" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["course"]>
   export type CourseInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    branch?: boolean | Course$branchArgs<ExtArgs>
     modules?: boolean | Course$modulesArgs<ExtArgs>
     batches?: boolean | Course$batchesArgs<ExtArgs>
     students?: boolean | Course$studentsArgs<ExtArgs>
@@ -9213,12 +9300,17 @@ export namespace Prisma {
     statusHistory?: boolean | Course$statusHistoryArgs<ExtArgs>
     _count?: boolean | CourseCountOutputTypeDefaultArgs<ExtArgs>
   }
-  export type CourseIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
-  export type CourseIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type CourseIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    branch?: boolean | Course$branchArgs<ExtArgs>
+  }
+  export type CourseIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    branch?: boolean | Course$branchArgs<ExtArgs>
+  }
 
   export type $CoursePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Course"
     objects: {
+      branch: Prisma.$BranchPayload<ExtArgs> | null
       modules: Prisma.$CourseModulePayload<ExtArgs>[]
       batches: Prisma.$BatchPayload<ExtArgs>[]
       students: Prisma.$StudentProfilePayload<ExtArgs>[]
@@ -9231,6 +9323,8 @@ export namespace Prisma {
       id: string
       name: string
       nameKey: string
+      courseCode: string | null
+      branchId: string | null
       description: string | null
       feeReference: string | null
       mode: string
@@ -9646,6 +9740,7 @@ export namespace Prisma {
    */
   export interface Prisma__CourseClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    branch<T extends Course$branchArgs<ExtArgs> = {}>(args?: Subset<T, Course$branchArgs<ExtArgs>>): Prisma__BranchClient<$Result.GetResult<Prisma.$BranchPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     modules<T extends Course$modulesArgs<ExtArgs> = {}>(args?: Subset<T, Course$modulesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CourseModulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     batches<T extends Course$batchesArgs<ExtArgs> = {}>(args?: Subset<T, Course$batchesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BatchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     students<T extends Course$studentsArgs<ExtArgs> = {}>(args?: Subset<T, Course$studentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StudentProfilePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -9685,6 +9780,8 @@ export namespace Prisma {
     readonly id: FieldRef<"Course", 'String'>
     readonly name: FieldRef<"Course", 'String'>
     readonly nameKey: FieldRef<"Course", 'String'>
+    readonly courseCode: FieldRef<"Course", 'String'>
+    readonly branchId: FieldRef<"Course", 'String'>
     readonly description: FieldRef<"Course", 'String'>
     readonly feeReference: FieldRef<"Course", 'String'>
     readonly mode: FieldRef<"Course", 'String'>
@@ -9960,6 +10057,10 @@ export namespace Prisma {
      */
     data: CourseCreateManyInput | CourseCreateManyInput[]
     skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CourseIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -10030,6 +10131,10 @@ export namespace Prisma {
      * Limit how many Courses to update.
      */
     limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CourseIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -10096,6 +10201,25 @@ export namespace Prisma {
      * Limit how many Courses to delete.
      */
     limit?: number
+  }
+
+  /**
+   * Course.branch
+   */
+  export type Course$branchArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Branch
+     */
+    select?: BranchSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Branch
+     */
+    omit?: BranchOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchInclude<ExtArgs> | null
+    where?: BranchWhereInput
   }
 
   /**
@@ -23781,6 +23905,8 @@ export namespace Prisma {
     id: 'id',
     name: 'name',
     nameKey: 'nameKey',
+    courseCode: 'courseCode',
+    branchId: 'branchId',
     description: 'description',
     feeReference: 'feeReference',
     mode: 'mode',
@@ -24423,6 +24549,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Branch"> | Date | string
     updatedAt?: DateTimeFilter<"Branch"> | Date | string
     adminUser?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    courses?: CourseListRelationFilter
   }
 
   export type BranchOrderByWithRelationInput = {
@@ -24445,6 +24572,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     adminUser?: UserOrderByWithRelationInput
+    courses?: CourseOrderByRelationAggregateInput
   }
 
   export type BranchWhereUniqueInput = Prisma.AtLeast<{
@@ -24470,6 +24598,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Branch"> | Date | string
     updatedAt?: DateTimeFilter<"Branch"> | Date | string
     adminUser?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    courses?: CourseListRelationFilter
   }, "id" | "branchId" | "branchEmail" | "branchPhone" | "adminUserId">
 
   export type BranchOrderByWithAggregationInput = {
@@ -24764,6 +24893,8 @@ export namespace Prisma {
     id?: StringFilter<"Course"> | string
     name?: StringFilter<"Course"> | string
     nameKey?: StringFilter<"Course"> | string
+    courseCode?: StringNullableFilter<"Course"> | string | null
+    branchId?: StringNullableFilter<"Course"> | string | null
     description?: StringNullableFilter<"Course"> | string | null
     feeReference?: StringNullableFilter<"Course"> | string | null
     mode?: StringFilter<"Course"> | string
@@ -24785,6 +24916,7 @@ export namespace Prisma {
     updatedBy?: StringNullableFilter<"Course"> | string | null
     createdAt?: DateTimeFilter<"Course"> | Date | string
     updatedAt?: DateTimeFilter<"Course"> | Date | string
+    branch?: XOR<BranchNullableScalarRelationFilter, BranchWhereInput> | null
     modules?: CourseModuleListRelationFilter
     batches?: BatchListRelationFilter
     students?: StudentProfileListRelationFilter
@@ -24798,6 +24930,8 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     nameKey?: SortOrder
+    courseCode?: SortOrderInput | SortOrder
+    branchId?: SortOrderInput | SortOrder
     description?: SortOrderInput | SortOrder
     feeReference?: SortOrderInput | SortOrder
     mode?: SortOrder
@@ -24819,6 +24953,7 @@ export namespace Prisma {
     updatedBy?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    branch?: BranchOrderByWithRelationInput
     modules?: CourseModuleOrderByRelationAggregateInput
     batches?: BatchOrderByRelationAggregateInput
     students?: StudentProfileOrderByRelationAggregateInput
@@ -24835,6 +24970,8 @@ export namespace Prisma {
     OR?: CourseWhereInput[]
     NOT?: CourseWhereInput | CourseWhereInput[]
     name?: StringFilter<"Course"> | string
+    courseCode?: StringNullableFilter<"Course"> | string | null
+    branchId?: StringNullableFilter<"Course"> | string | null
     description?: StringNullableFilter<"Course"> | string | null
     feeReference?: StringNullableFilter<"Course"> | string | null
     mode?: StringFilter<"Course"> | string
@@ -24856,6 +24993,7 @@ export namespace Prisma {
     updatedBy?: StringNullableFilter<"Course"> | string | null
     createdAt?: DateTimeFilter<"Course"> | Date | string
     updatedAt?: DateTimeFilter<"Course"> | Date | string
+    branch?: XOR<BranchNullableScalarRelationFilter, BranchWhereInput> | null
     modules?: CourseModuleListRelationFilter
     batches?: BatchListRelationFilter
     students?: StudentProfileListRelationFilter
@@ -24869,6 +25007,8 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     nameKey?: SortOrder
+    courseCode?: SortOrderInput | SortOrder
+    branchId?: SortOrderInput | SortOrder
     description?: SortOrderInput | SortOrder
     feeReference?: SortOrderInput | SortOrder
     mode?: SortOrder
@@ -24904,6 +25044,8 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Course"> | string
     name?: StringWithAggregatesFilter<"Course"> | string
     nameKey?: StringWithAggregatesFilter<"Course"> | string
+    courseCode?: StringNullableWithAggregatesFilter<"Course"> | string | null
+    branchId?: StringNullableWithAggregatesFilter<"Course"> | string | null
     description?: StringNullableWithAggregatesFilter<"Course"> | string | null
     feeReference?: StringNullableWithAggregatesFilter<"Course"> | string | null
     mode?: StringWithAggregatesFilter<"Course"> | string
@@ -26262,6 +26404,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     adminUser?: UserCreateNestedOneWithoutManagedBranchInput
+    courses?: CourseCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateInput = {
@@ -26283,6 +26426,7 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    courses?: CourseUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUpdateInput = {
@@ -26304,6 +26448,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     adminUser?: UserUpdateOneWithoutManagedBranchNestedInput
+    courses?: CourseUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateInput = {
@@ -26325,6 +26470,7 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    courses?: CourseUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchCreateManyInput = {
@@ -26664,6 +26810,7 @@ export namespace Prisma {
     id?: string
     name: string
     nameKey: string
+    courseCode?: string | null
     description?: string | null
     feeReference?: string | null
     mode: string
@@ -26685,6 +26832,7 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    branch?: BranchCreateNestedOneWithoutCoursesInput
     modules?: CourseModuleCreateNestedManyWithoutCourseInput
     batches?: BatchCreateNestedManyWithoutCourseInput
     students?: StudentProfileCreateNestedManyWithoutCourseInput
@@ -26698,6 +26846,8 @@ export namespace Prisma {
     id?: string
     name: string
     nameKey: string
+    courseCode?: string | null
+    branchId?: string | null
     description?: string | null
     feeReference?: string | null
     mode: string
@@ -26732,6 +26882,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     nameKey?: StringFieldUpdateOperationsInput | string
+    courseCode?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     feeReference?: NullableStringFieldUpdateOperationsInput | string | null
     mode?: StringFieldUpdateOperationsInput | string
@@ -26753,6 +26904,7 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branch?: BranchUpdateOneWithoutCoursesNestedInput
     modules?: CourseModuleUpdateManyWithoutCourseNestedInput
     batches?: BatchUpdateManyWithoutCourseNestedInput
     students?: StudentProfileUpdateManyWithoutCourseNestedInput
@@ -26766,6 +26918,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     nameKey?: StringFieldUpdateOperationsInput | string
+    courseCode?: NullableStringFieldUpdateOperationsInput | string | null
+    branchId?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     feeReference?: NullableStringFieldUpdateOperationsInput | string | null
     mode?: StringFieldUpdateOperationsInput | string
@@ -26800,6 +26954,8 @@ export namespace Prisma {
     id?: string
     name: string
     nameKey: string
+    courseCode?: string | null
+    branchId?: string | null
     description?: string | null
     feeReference?: string | null
     mode: string
@@ -26827,6 +26983,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     nameKey?: StringFieldUpdateOperationsInput | string
+    courseCode?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     feeReference?: NullableStringFieldUpdateOperationsInput | string | null
     mode?: StringFieldUpdateOperationsInput | string
@@ -26854,6 +27011,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     nameKey?: StringFieldUpdateOperationsInput | string
+    courseCode?: NullableStringFieldUpdateOperationsInput | string | null
+    branchId?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     feeReference?: NullableStringFieldUpdateOperationsInput | string | null
     mode?: StringFieldUpdateOperationsInput | string
@@ -28497,6 +28656,16 @@ export namespace Prisma {
     isNot?: UserWhereInput | null
   }
 
+  export type CourseListRelationFilter = {
+    every?: CourseWhereInput
+    some?: CourseWhereInput
+    none?: CourseWhereInput
+  }
+
+  export type CourseOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type BranchCountOrderByAggregateInput = {
     id?: SortOrder
     branchId?: SortOrder
@@ -28858,6 +29027,8 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     nameKey?: SortOrder
+    courseCode?: SortOrder
+    branchId?: SortOrder
     description?: SortOrder
     feeReference?: SortOrder
     mode?: SortOrder
@@ -28898,6 +29069,8 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     nameKey?: SortOrder
+    courseCode?: SortOrder
+    branchId?: SortOrder
     description?: SortOrder
     feeReference?: SortOrder
     mode?: SortOrder
@@ -28924,6 +29097,8 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     nameKey?: SortOrder
+    courseCode?: SortOrder
+    branchId?: SortOrder
     description?: SortOrder
     feeReference?: SortOrder
     mode?: SortOrder
@@ -30003,6 +30178,20 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
+  export type CourseCreateNestedManyWithoutBranchInput = {
+    create?: XOR<CourseCreateWithoutBranchInput, CourseUncheckedCreateWithoutBranchInput> | CourseCreateWithoutBranchInput[] | CourseUncheckedCreateWithoutBranchInput[]
+    connectOrCreate?: CourseCreateOrConnectWithoutBranchInput | CourseCreateOrConnectWithoutBranchInput[]
+    createMany?: CourseCreateManyBranchInputEnvelope
+    connect?: CourseWhereUniqueInput | CourseWhereUniqueInput[]
+  }
+
+  export type CourseUncheckedCreateNestedManyWithoutBranchInput = {
+    create?: XOR<CourseCreateWithoutBranchInput, CourseUncheckedCreateWithoutBranchInput> | CourseCreateWithoutBranchInput[] | CourseUncheckedCreateWithoutBranchInput[]
+    connectOrCreate?: CourseCreateOrConnectWithoutBranchInput | CourseCreateOrConnectWithoutBranchInput[]
+    createMany?: CourseCreateManyBranchInputEnvelope
+    connect?: CourseWhereUniqueInput | CourseWhereUniqueInput[]
+  }
+
   export type EnumRecordStatusFieldUpdateOperationsInput = {
     set?: $Enums.RecordStatus
   }
@@ -30015,6 +30204,34 @@ export namespace Prisma {
     delete?: UserWhereInput | boolean
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutManagedBranchInput, UserUpdateWithoutManagedBranchInput>, UserUncheckedUpdateWithoutManagedBranchInput>
+  }
+
+  export type CourseUpdateManyWithoutBranchNestedInput = {
+    create?: XOR<CourseCreateWithoutBranchInput, CourseUncheckedCreateWithoutBranchInput> | CourseCreateWithoutBranchInput[] | CourseUncheckedCreateWithoutBranchInput[]
+    connectOrCreate?: CourseCreateOrConnectWithoutBranchInput | CourseCreateOrConnectWithoutBranchInput[]
+    upsert?: CourseUpsertWithWhereUniqueWithoutBranchInput | CourseUpsertWithWhereUniqueWithoutBranchInput[]
+    createMany?: CourseCreateManyBranchInputEnvelope
+    set?: CourseWhereUniqueInput | CourseWhereUniqueInput[]
+    disconnect?: CourseWhereUniqueInput | CourseWhereUniqueInput[]
+    delete?: CourseWhereUniqueInput | CourseWhereUniqueInput[]
+    connect?: CourseWhereUniqueInput | CourseWhereUniqueInput[]
+    update?: CourseUpdateWithWhereUniqueWithoutBranchInput | CourseUpdateWithWhereUniqueWithoutBranchInput[]
+    updateMany?: CourseUpdateManyWithWhereWithoutBranchInput | CourseUpdateManyWithWhereWithoutBranchInput[]
+    deleteMany?: CourseScalarWhereInput | CourseScalarWhereInput[]
+  }
+
+  export type CourseUncheckedUpdateManyWithoutBranchNestedInput = {
+    create?: XOR<CourseCreateWithoutBranchInput, CourseUncheckedCreateWithoutBranchInput> | CourseCreateWithoutBranchInput[] | CourseUncheckedCreateWithoutBranchInput[]
+    connectOrCreate?: CourseCreateOrConnectWithoutBranchInput | CourseCreateOrConnectWithoutBranchInput[]
+    upsert?: CourseUpsertWithWhereUniqueWithoutBranchInput | CourseUpsertWithWhereUniqueWithoutBranchInput[]
+    createMany?: CourseCreateManyBranchInputEnvelope
+    set?: CourseWhereUniqueInput | CourseWhereUniqueInput[]
+    disconnect?: CourseWhereUniqueInput | CourseWhereUniqueInput[]
+    delete?: CourseWhereUniqueInput | CourseWhereUniqueInput[]
+    connect?: CourseWhereUniqueInput | CourseWhereUniqueInput[]
+    update?: CourseUpdateWithWhereUniqueWithoutBranchInput | CourseUpdateWithWhereUniqueWithoutBranchInput[]
+    updateMany?: CourseUpdateManyWithWhereWithoutBranchInput | CourseUpdateManyWithWhereWithoutBranchInput[]
+    deleteMany?: CourseScalarWhereInput | CourseScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutLoginEventsInput = {
@@ -30053,6 +30270,12 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutPasswordResetTokensInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutPasswordResetTokensInput, UserUpdateWithoutPasswordResetTokensInput>, UserUncheckedUpdateWithoutPasswordResetTokensInput>
+  }
+
+  export type BranchCreateNestedOneWithoutCoursesInput = {
+    create?: XOR<BranchCreateWithoutCoursesInput, BranchUncheckedCreateWithoutCoursesInput>
+    connectOrCreate?: BranchCreateOrConnectWithoutCoursesInput
+    connect?: BranchWhereUniqueInput
   }
 
   export type CourseModuleCreateNestedManyWithoutCourseInput = {
@@ -30159,6 +30382,16 @@ export namespace Prisma {
     decrement?: number
     multiply?: number
     divide?: number
+  }
+
+  export type BranchUpdateOneWithoutCoursesNestedInput = {
+    create?: XOR<BranchCreateWithoutCoursesInput, BranchUncheckedCreateWithoutCoursesInput>
+    connectOrCreate?: BranchCreateOrConnectWithoutCoursesInput
+    upsert?: BranchUpsertWithoutCoursesInput
+    disconnect?: BranchWhereInput | boolean
+    delete?: BranchWhereInput | boolean
+    connect?: BranchWhereUniqueInput
+    update?: XOR<XOR<BranchUpdateToOneWithWhereWithoutCoursesInput, BranchUpdateWithoutCoursesInput>, BranchUncheckedUpdateWithoutCoursesInput>
   }
 
   export type CourseModuleUpdateManyWithoutCourseNestedInput = {
@@ -31380,6 +31613,7 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    courses?: CourseCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutAdminUserInput = {
@@ -31400,6 +31634,7 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    courses?: CourseUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutAdminUserInput = {
@@ -31601,6 +31836,7 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    courses?: CourseUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutAdminUserInput = {
@@ -31621,6 +31857,7 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    courses?: CourseUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type UserCreateWithoutManagedBranchInput = {
@@ -31684,6 +31921,86 @@ export namespace Prisma {
   export type UserCreateOrConnectWithoutManagedBranchInput = {
     where: UserWhereUniqueInput
     create: XOR<UserCreateWithoutManagedBranchInput, UserUncheckedCreateWithoutManagedBranchInput>
+  }
+
+  export type CourseCreateWithoutBranchInput = {
+    id?: string
+    name: string
+    nameKey: string
+    courseCode?: string | null
+    description?: string | null
+    feeReference?: string | null
+    mode: string
+    duration?: number | null
+    hours?: number | null
+    actualFees?: number | null
+    registrationFees?: number | null
+    discount?: number | null
+    afterDiscount?: number | null
+    installmentCount?: number
+    installment1?: number | null
+    installment2?: number | null
+    installment3?: number | null
+    installments?: NullableJsonNullValueInput | InputJsonValue
+    status?: $Enums.RecordStatus
+    statusChangedAt?: Date | string | null
+    statusChangedBy?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    modules?: CourseModuleCreateNestedManyWithoutCourseInput
+    batches?: BatchCreateNestedManyWithoutCourseInput
+    students?: StudentProfileCreateNestedManyWithoutCourseInput
+    facultyProfiles?: FacultyProfileCreateNestedManyWithoutCourseInput
+    facultyCourseAssignments?: FacultyCourseAssignmentCreateNestedManyWithoutCourseInput
+    facultyBatchEntries?: FacultyBatchEntryCreateNestedManyWithoutCourseInput
+    statusHistory?: CourseStatusHistoryCreateNestedManyWithoutCourseInput
+  }
+
+  export type CourseUncheckedCreateWithoutBranchInput = {
+    id?: string
+    name: string
+    nameKey: string
+    courseCode?: string | null
+    description?: string | null
+    feeReference?: string | null
+    mode: string
+    duration?: number | null
+    hours?: number | null
+    actualFees?: number | null
+    registrationFees?: number | null
+    discount?: number | null
+    afterDiscount?: number | null
+    installmentCount?: number
+    installment1?: number | null
+    installment2?: number | null
+    installment3?: number | null
+    installments?: NullableJsonNullValueInput | InputJsonValue
+    status?: $Enums.RecordStatus
+    statusChangedAt?: Date | string | null
+    statusChangedBy?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    modules?: CourseModuleUncheckedCreateNestedManyWithoutCourseInput
+    batches?: BatchUncheckedCreateNestedManyWithoutCourseInput
+    students?: StudentProfileUncheckedCreateNestedManyWithoutCourseInput
+    facultyProfiles?: FacultyProfileUncheckedCreateNestedManyWithoutCourseInput
+    facultyCourseAssignments?: FacultyCourseAssignmentUncheckedCreateNestedManyWithoutCourseInput
+    facultyBatchEntries?: FacultyBatchEntryUncheckedCreateNestedManyWithoutCourseInput
+    statusHistory?: CourseStatusHistoryUncheckedCreateNestedManyWithoutCourseInput
+  }
+
+  export type CourseCreateOrConnectWithoutBranchInput = {
+    where: CourseWhereUniqueInput
+    create: XOR<CourseCreateWithoutBranchInput, CourseUncheckedCreateWithoutBranchInput>
+  }
+
+  export type CourseCreateManyBranchInputEnvelope = {
+    data: CourseCreateManyBranchInput | CourseCreateManyBranchInput[]
+    skipDuplicates?: boolean
   }
 
   export type UserUpsertWithoutManagedBranchInput = {
@@ -31753,6 +32070,54 @@ export namespace Prisma {
     batchFacultyAssignments?: BatchFacultyAssignmentUncheckedUpdateManyWithoutFacultyNestedInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserNestedInput
     markedStudentAttendances?: StudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
+  }
+
+  export type CourseUpsertWithWhereUniqueWithoutBranchInput = {
+    where: CourseWhereUniqueInput
+    update: XOR<CourseUpdateWithoutBranchInput, CourseUncheckedUpdateWithoutBranchInput>
+    create: XOR<CourseCreateWithoutBranchInput, CourseUncheckedCreateWithoutBranchInput>
+  }
+
+  export type CourseUpdateWithWhereUniqueWithoutBranchInput = {
+    where: CourseWhereUniqueInput
+    data: XOR<CourseUpdateWithoutBranchInput, CourseUncheckedUpdateWithoutBranchInput>
+  }
+
+  export type CourseUpdateManyWithWhereWithoutBranchInput = {
+    where: CourseScalarWhereInput
+    data: XOR<CourseUpdateManyMutationInput, CourseUncheckedUpdateManyWithoutBranchInput>
+  }
+
+  export type CourseScalarWhereInput = {
+    AND?: CourseScalarWhereInput | CourseScalarWhereInput[]
+    OR?: CourseScalarWhereInput[]
+    NOT?: CourseScalarWhereInput | CourseScalarWhereInput[]
+    id?: StringFilter<"Course"> | string
+    name?: StringFilter<"Course"> | string
+    nameKey?: StringFilter<"Course"> | string
+    courseCode?: StringNullableFilter<"Course"> | string | null
+    branchId?: StringNullableFilter<"Course"> | string | null
+    description?: StringNullableFilter<"Course"> | string | null
+    feeReference?: StringNullableFilter<"Course"> | string | null
+    mode?: StringFilter<"Course"> | string
+    duration?: IntNullableFilter<"Course"> | number | null
+    hours?: IntNullableFilter<"Course"> | number | null
+    actualFees?: IntNullableFilter<"Course"> | number | null
+    registrationFees?: IntNullableFilter<"Course"> | number | null
+    discount?: IntNullableFilter<"Course"> | number | null
+    afterDiscount?: IntNullableFilter<"Course"> | number | null
+    installmentCount?: IntFilter<"Course"> | number
+    installment1?: IntNullableFilter<"Course"> | number | null
+    installment2?: IntNullableFilter<"Course"> | number | null
+    installment3?: IntNullableFilter<"Course"> | number | null
+    installments?: JsonNullableFilter<"Course">
+    status?: EnumRecordStatusFilter<"Course"> | $Enums.RecordStatus
+    statusChangedAt?: DateTimeNullableFilter<"Course"> | Date | string | null
+    statusChangedBy?: StringNullableFilter<"Course"> | string | null
+    createdBy?: StringNullableFilter<"Course"> | string | null
+    updatedBy?: StringNullableFilter<"Course"> | string | null
+    createdAt?: DateTimeFilter<"Course"> | Date | string
+    updatedAt?: DateTimeFilter<"Course"> | Date | string
   }
 
   export type UserCreateWithoutLoginEventsInput = {
@@ -32017,6 +32382,53 @@ export namespace Prisma {
     facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserNestedInput
     markedStudentAttendances?: StudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
     managedBranch?: BranchUncheckedUpdateOneWithoutAdminUserNestedInput
+  }
+
+  export type BranchCreateWithoutCoursesInput = {
+    id?: string
+    branchId: string
+    branchName: string
+    branchAdminName: string
+    branchEmail: string
+    branchPhone: string
+    branchCountryCode?: string
+    branchCountry?: string
+    branchStateCode?: string
+    branchState?: string
+    branchCity?: string
+    branchAddress: string
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    adminUser?: UserCreateNestedOneWithoutManagedBranchInput
+  }
+
+  export type BranchUncheckedCreateWithoutCoursesInput = {
+    id?: string
+    branchId: string
+    branchName: string
+    branchAdminName: string
+    branchEmail: string
+    branchPhone: string
+    branchCountryCode?: string
+    branchCountry?: string
+    branchStateCode?: string
+    branchState?: string
+    branchCity?: string
+    branchAddress: string
+    status?: $Enums.RecordStatus
+    adminUserId?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type BranchCreateOrConnectWithoutCoursesInput = {
+    where: BranchWhereUniqueInput
+    create: XOR<BranchCreateWithoutCoursesInput, BranchUncheckedCreateWithoutCoursesInput>
   }
 
   export type CourseModuleCreateWithoutCourseInput = {
@@ -32337,6 +32749,59 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type BranchUpsertWithoutCoursesInput = {
+    update: XOR<BranchUpdateWithoutCoursesInput, BranchUncheckedUpdateWithoutCoursesInput>
+    create: XOR<BranchCreateWithoutCoursesInput, BranchUncheckedCreateWithoutCoursesInput>
+    where?: BranchWhereInput
+  }
+
+  export type BranchUpdateToOneWithWhereWithoutCoursesInput = {
+    where?: BranchWhereInput
+    data: XOR<BranchUpdateWithoutCoursesInput, BranchUncheckedUpdateWithoutCoursesInput>
+  }
+
+  export type BranchUpdateWithoutCoursesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    branchName?: StringFieldUpdateOperationsInput | string
+    branchAdminName?: StringFieldUpdateOperationsInput | string
+    branchEmail?: StringFieldUpdateOperationsInput | string
+    branchPhone?: StringFieldUpdateOperationsInput | string
+    branchCountryCode?: StringFieldUpdateOperationsInput | string
+    branchCountry?: StringFieldUpdateOperationsInput | string
+    branchStateCode?: StringFieldUpdateOperationsInput | string
+    branchState?: StringFieldUpdateOperationsInput | string
+    branchCity?: StringFieldUpdateOperationsInput | string
+    branchAddress?: StringFieldUpdateOperationsInput | string
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    adminUser?: UserUpdateOneWithoutManagedBranchNestedInput
+  }
+
+  export type BranchUncheckedUpdateWithoutCoursesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    branchName?: StringFieldUpdateOperationsInput | string
+    branchAdminName?: StringFieldUpdateOperationsInput | string
+    branchEmail?: StringFieldUpdateOperationsInput | string
+    branchPhone?: StringFieldUpdateOperationsInput | string
+    branchCountryCode?: StringFieldUpdateOperationsInput | string
+    branchCountry?: StringFieldUpdateOperationsInput | string
+    branchStateCode?: StringFieldUpdateOperationsInput | string
+    branchState?: StringFieldUpdateOperationsInput | string
+    branchCity?: StringFieldUpdateOperationsInput | string
+    branchAddress?: StringFieldUpdateOperationsInput | string
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    adminUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type CourseModuleUpsertWithWhereUniqueWithoutCourseInput = {
     where: CourseModuleWhereUniqueInput
     update: XOR<CourseModuleUpdateWithoutCourseInput, CourseModuleUncheckedUpdateWithoutCourseInput>
@@ -32600,6 +33065,7 @@ export namespace Prisma {
     id?: string
     name: string
     nameKey: string
+    courseCode?: string | null
     description?: string | null
     feeReference?: string | null
     mode: string
@@ -32621,6 +33087,7 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    branch?: BranchCreateNestedOneWithoutCoursesInput
     batches?: BatchCreateNestedManyWithoutCourseInput
     students?: StudentProfileCreateNestedManyWithoutCourseInput
     facultyProfiles?: FacultyProfileCreateNestedManyWithoutCourseInput
@@ -32633,6 +33100,8 @@ export namespace Prisma {
     id?: string
     name: string
     nameKey: string
+    courseCode?: string | null
+    branchId?: string | null
     description?: string | null
     feeReference?: string | null
     mode: string
@@ -32682,6 +33151,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     nameKey?: StringFieldUpdateOperationsInput | string
+    courseCode?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     feeReference?: NullableStringFieldUpdateOperationsInput | string | null
     mode?: StringFieldUpdateOperationsInput | string
@@ -32703,6 +33173,7 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branch?: BranchUpdateOneWithoutCoursesNestedInput
     batches?: BatchUpdateManyWithoutCourseNestedInput
     students?: StudentProfileUpdateManyWithoutCourseNestedInput
     facultyProfiles?: FacultyProfileUpdateManyWithoutCourseNestedInput
@@ -32715,6 +33186,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     nameKey?: StringFieldUpdateOperationsInput | string
+    courseCode?: NullableStringFieldUpdateOperationsInput | string | null
+    branchId?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     feeReference?: NullableStringFieldUpdateOperationsInput | string | null
     mode?: StringFieldUpdateOperationsInput | string
@@ -32748,6 +33221,7 @@ export namespace Prisma {
     id?: string
     name: string
     nameKey: string
+    courseCode?: string | null
     description?: string | null
     feeReference?: string | null
     mode: string
@@ -32769,6 +33243,7 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    branch?: BranchCreateNestedOneWithoutCoursesInput
     modules?: CourseModuleCreateNestedManyWithoutCourseInput
     students?: StudentProfileCreateNestedManyWithoutCourseInput
     facultyProfiles?: FacultyProfileCreateNestedManyWithoutCourseInput
@@ -32781,6 +33256,8 @@ export namespace Prisma {
     id?: string
     name: string
     nameKey: string
+    courseCode?: string | null
+    branchId?: string | null
     description?: string | null
     feeReference?: string | null
     mode: string
@@ -32900,6 +33377,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     nameKey?: StringFieldUpdateOperationsInput | string
+    courseCode?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     feeReference?: NullableStringFieldUpdateOperationsInput | string | null
     mode?: StringFieldUpdateOperationsInput | string
@@ -32921,6 +33399,7 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branch?: BranchUpdateOneWithoutCoursesNestedInput
     modules?: CourseModuleUpdateManyWithoutCourseNestedInput
     students?: StudentProfileUpdateManyWithoutCourseNestedInput
     facultyProfiles?: FacultyProfileUpdateManyWithoutCourseNestedInput
@@ -32933,6 +33412,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     nameKey?: StringFieldUpdateOperationsInput | string
+    courseCode?: NullableStringFieldUpdateOperationsInput | string | null
+    branchId?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     feeReference?: NullableStringFieldUpdateOperationsInput | string | null
     mode?: StringFieldUpdateOperationsInput | string
@@ -33247,6 +33728,7 @@ export namespace Prisma {
     id?: string
     name: string
     nameKey: string
+    courseCode?: string | null
     description?: string | null
     feeReference?: string | null
     mode: string
@@ -33268,6 +33750,7 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    branch?: BranchCreateNestedOneWithoutCoursesInput
     modules?: CourseModuleCreateNestedManyWithoutCourseInput
     batches?: BatchCreateNestedManyWithoutCourseInput
     students?: StudentProfileCreateNestedManyWithoutCourseInput
@@ -33280,6 +33763,8 @@ export namespace Prisma {
     id?: string
     name: string
     nameKey: string
+    courseCode?: string | null
+    branchId?: string | null
     description?: string | null
     feeReference?: string | null
     mode: string
@@ -33329,6 +33814,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     nameKey?: StringFieldUpdateOperationsInput | string
+    courseCode?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     feeReference?: NullableStringFieldUpdateOperationsInput | string | null
     mode?: StringFieldUpdateOperationsInput | string
@@ -33350,6 +33836,7 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branch?: BranchUpdateOneWithoutCoursesNestedInput
     modules?: CourseModuleUpdateManyWithoutCourseNestedInput
     batches?: BatchUpdateManyWithoutCourseNestedInput
     students?: StudentProfileUpdateManyWithoutCourseNestedInput
@@ -33362,6 +33849,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     nameKey?: StringFieldUpdateOperationsInput | string
+    courseCode?: NullableStringFieldUpdateOperationsInput | string | null
+    branchId?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     feeReference?: NullableStringFieldUpdateOperationsInput | string | null
     mode?: StringFieldUpdateOperationsInput | string
@@ -33499,6 +33988,7 @@ export namespace Prisma {
     id?: string
     name: string
     nameKey: string
+    courseCode?: string | null
     description?: string | null
     feeReference?: string | null
     mode: string
@@ -33520,6 +34010,7 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    branch?: BranchCreateNestedOneWithoutCoursesInput
     modules?: CourseModuleCreateNestedManyWithoutCourseInput
     batches?: BatchCreateNestedManyWithoutCourseInput
     facultyProfiles?: FacultyProfileCreateNestedManyWithoutCourseInput
@@ -33532,6 +34023,8 @@ export namespace Prisma {
     id?: string
     name: string
     nameKey: string
+    courseCode?: string | null
+    branchId?: string | null
     description?: string | null
     feeReference?: string | null
     mode: string
@@ -33621,6 +34114,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     nameKey?: StringFieldUpdateOperationsInput | string
+    courseCode?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     feeReference?: NullableStringFieldUpdateOperationsInput | string | null
     mode?: StringFieldUpdateOperationsInput | string
@@ -33642,6 +34136,7 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branch?: BranchUpdateOneWithoutCoursesNestedInput
     modules?: CourseModuleUpdateManyWithoutCourseNestedInput
     batches?: BatchUpdateManyWithoutCourseNestedInput
     facultyProfiles?: FacultyProfileUpdateManyWithoutCourseNestedInput
@@ -33654,6 +34149,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     nameKey?: StringFieldUpdateOperationsInput | string
+    courseCode?: NullableStringFieldUpdateOperationsInput | string | null
+    branchId?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     feeReference?: NullableStringFieldUpdateOperationsInput | string | null
     mode?: StringFieldUpdateOperationsInput | string
@@ -33703,6 +34200,7 @@ export namespace Prisma {
     id?: string
     name: string
     nameKey: string
+    courseCode?: string | null
     description?: string | null
     feeReference?: string | null
     mode: string
@@ -33724,6 +34222,7 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    branch?: BranchCreateNestedOneWithoutCoursesInput
     modules?: CourseModuleCreateNestedManyWithoutCourseInput
     batches?: BatchCreateNestedManyWithoutCourseInput
     students?: StudentProfileCreateNestedManyWithoutCourseInput
@@ -33736,6 +34235,8 @@ export namespace Prisma {
     id?: string
     name: string
     nameKey: string
+    courseCode?: string | null
+    branchId?: string | null
     description?: string | null
     feeReference?: string | null
     mode: string
@@ -33843,6 +34344,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     nameKey?: StringFieldUpdateOperationsInput | string
+    courseCode?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     feeReference?: NullableStringFieldUpdateOperationsInput | string | null
     mode?: StringFieldUpdateOperationsInput | string
@@ -33864,6 +34366,7 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branch?: BranchUpdateOneWithoutCoursesNestedInput
     modules?: CourseModuleUpdateManyWithoutCourseNestedInput
     batches?: BatchUpdateManyWithoutCourseNestedInput
     students?: StudentProfileUpdateManyWithoutCourseNestedInput
@@ -33876,6 +34379,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     nameKey?: StringFieldUpdateOperationsInput | string
+    courseCode?: NullableStringFieldUpdateOperationsInput | string | null
+    branchId?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     feeReference?: NullableStringFieldUpdateOperationsInput | string | null
     mode?: StringFieldUpdateOperationsInput | string
@@ -33974,6 +34479,7 @@ export namespace Prisma {
     id?: string
     name: string
     nameKey: string
+    courseCode?: string | null
     description?: string | null
     feeReference?: string | null
     mode: string
@@ -33995,6 +34501,7 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    branch?: BranchCreateNestedOneWithoutCoursesInput
     modules?: CourseModuleCreateNestedManyWithoutCourseInput
     batches?: BatchCreateNestedManyWithoutCourseInput
     students?: StudentProfileCreateNestedManyWithoutCourseInput
@@ -34007,6 +34514,8 @@ export namespace Prisma {
     id?: string
     name: string
     nameKey: string
+    courseCode?: string | null
+    branchId?: string | null
     description?: string | null
     feeReference?: string | null
     mode: string
@@ -34095,6 +34604,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     nameKey?: StringFieldUpdateOperationsInput | string
+    courseCode?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     feeReference?: NullableStringFieldUpdateOperationsInput | string | null
     mode?: StringFieldUpdateOperationsInput | string
@@ -34116,6 +34626,7 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branch?: BranchUpdateOneWithoutCoursesNestedInput
     modules?: CourseModuleUpdateManyWithoutCourseNestedInput
     batches?: BatchUpdateManyWithoutCourseNestedInput
     students?: StudentProfileUpdateManyWithoutCourseNestedInput
@@ -34128,6 +34639,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     nameKey?: StringFieldUpdateOperationsInput | string
+    courseCode?: NullableStringFieldUpdateOperationsInput | string | null
+    branchId?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     feeReference?: NullableStringFieldUpdateOperationsInput | string | null
     mode?: StringFieldUpdateOperationsInput | string
@@ -34194,6 +34707,7 @@ export namespace Prisma {
     id?: string
     name: string
     nameKey: string
+    courseCode?: string | null
     description?: string | null
     feeReference?: string | null
     mode: string
@@ -34215,6 +34729,7 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    branch?: BranchCreateNestedOneWithoutCoursesInput
     modules?: CourseModuleCreateNestedManyWithoutCourseInput
     batches?: BatchCreateNestedManyWithoutCourseInput
     students?: StudentProfileCreateNestedManyWithoutCourseInput
@@ -34227,6 +34742,8 @@ export namespace Prisma {
     id?: string
     name: string
     nameKey: string
+    courseCode?: string | null
+    branchId?: string | null
     description?: string | null
     feeReference?: string | null
     mode: string
@@ -34315,6 +34832,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     nameKey?: StringFieldUpdateOperationsInput | string
+    courseCode?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     feeReference?: NullableStringFieldUpdateOperationsInput | string | null
     mode?: StringFieldUpdateOperationsInput | string
@@ -34336,6 +34854,7 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branch?: BranchUpdateOneWithoutCoursesNestedInput
     modules?: CourseModuleUpdateManyWithoutCourseNestedInput
     batches?: BatchUpdateManyWithoutCourseNestedInput
     students?: StudentProfileUpdateManyWithoutCourseNestedInput
@@ -34348,6 +34867,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     nameKey?: StringFieldUpdateOperationsInput | string
+    courseCode?: NullableStringFieldUpdateOperationsInput | string | null
+    branchId?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     feeReference?: NullableStringFieldUpdateOperationsInput | string | null
     mode?: StringFieldUpdateOperationsInput | string
@@ -35091,6 +35612,132 @@ export namespace Prisma {
     status?: EnumAttendanceStatusFieldUpdateOperationsInput | $Enums.AttendanceStatus
     markedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CourseCreateManyBranchInput = {
+    id?: string
+    name: string
+    nameKey: string
+    courseCode?: string | null
+    description?: string | null
+    feeReference?: string | null
+    mode: string
+    duration?: number | null
+    hours?: number | null
+    actualFees?: number | null
+    registrationFees?: number | null
+    discount?: number | null
+    afterDiscount?: number | null
+    installmentCount?: number
+    installment1?: number | null
+    installment2?: number | null
+    installment3?: number | null
+    installments?: NullableJsonNullValueInput | InputJsonValue
+    status?: $Enums.RecordStatus
+    statusChangedAt?: Date | string | null
+    statusChangedBy?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CourseUpdateWithoutBranchInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameKey?: StringFieldUpdateOperationsInput | string
+    courseCode?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    feeReference?: NullableStringFieldUpdateOperationsInput | string | null
+    mode?: StringFieldUpdateOperationsInput | string
+    duration?: NullableIntFieldUpdateOperationsInput | number | null
+    hours?: NullableIntFieldUpdateOperationsInput | number | null
+    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
+    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
+    discount?: NullableIntFieldUpdateOperationsInput | number | null
+    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
+    installmentCount?: IntFieldUpdateOperationsInput | number
+    installment1?: NullableIntFieldUpdateOperationsInput | number | null
+    installment2?: NullableIntFieldUpdateOperationsInput | number | null
+    installment3?: NullableIntFieldUpdateOperationsInput | number | null
+    installments?: NullableJsonNullValueInput | InputJsonValue
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    statusChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    statusChangedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    modules?: CourseModuleUpdateManyWithoutCourseNestedInput
+    batches?: BatchUpdateManyWithoutCourseNestedInput
+    students?: StudentProfileUpdateManyWithoutCourseNestedInput
+    facultyProfiles?: FacultyProfileUpdateManyWithoutCourseNestedInput
+    facultyCourseAssignments?: FacultyCourseAssignmentUpdateManyWithoutCourseNestedInput
+    facultyBatchEntries?: FacultyBatchEntryUpdateManyWithoutCourseNestedInput
+    statusHistory?: CourseStatusHistoryUpdateManyWithoutCourseNestedInput
+  }
+
+  export type CourseUncheckedUpdateWithoutBranchInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameKey?: StringFieldUpdateOperationsInput | string
+    courseCode?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    feeReference?: NullableStringFieldUpdateOperationsInput | string | null
+    mode?: StringFieldUpdateOperationsInput | string
+    duration?: NullableIntFieldUpdateOperationsInput | number | null
+    hours?: NullableIntFieldUpdateOperationsInput | number | null
+    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
+    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
+    discount?: NullableIntFieldUpdateOperationsInput | number | null
+    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
+    installmentCount?: IntFieldUpdateOperationsInput | number
+    installment1?: NullableIntFieldUpdateOperationsInput | number | null
+    installment2?: NullableIntFieldUpdateOperationsInput | number | null
+    installment3?: NullableIntFieldUpdateOperationsInput | number | null
+    installments?: NullableJsonNullValueInput | InputJsonValue
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    statusChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    statusChangedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    modules?: CourseModuleUncheckedUpdateManyWithoutCourseNestedInput
+    batches?: BatchUncheckedUpdateManyWithoutCourseNestedInput
+    students?: StudentProfileUncheckedUpdateManyWithoutCourseNestedInput
+    facultyProfiles?: FacultyProfileUncheckedUpdateManyWithoutCourseNestedInput
+    facultyCourseAssignments?: FacultyCourseAssignmentUncheckedUpdateManyWithoutCourseNestedInput
+    facultyBatchEntries?: FacultyBatchEntryUncheckedUpdateManyWithoutCourseNestedInput
+    statusHistory?: CourseStatusHistoryUncheckedUpdateManyWithoutCourseNestedInput
+  }
+
+  export type CourseUncheckedUpdateManyWithoutBranchInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameKey?: StringFieldUpdateOperationsInput | string
+    courseCode?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    feeReference?: NullableStringFieldUpdateOperationsInput | string | null
+    mode?: StringFieldUpdateOperationsInput | string
+    duration?: NullableIntFieldUpdateOperationsInput | number | null
+    hours?: NullableIntFieldUpdateOperationsInput | number | null
+    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
+    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
+    discount?: NullableIntFieldUpdateOperationsInput | number | null
+    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
+    installmentCount?: IntFieldUpdateOperationsInput | number
+    installment1?: NullableIntFieldUpdateOperationsInput | number | null
+    installment2?: NullableIntFieldUpdateOperationsInput | number | null
+    installment3?: NullableIntFieldUpdateOperationsInput | number | null
+    installments?: NullableJsonNullValueInput | InputJsonValue
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    statusChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    statusChangedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string

@@ -28,9 +28,10 @@ const databaseUrl =
     : "");
 
 const prismaDatabaseUrl =
-  process.env.PRISMA_DATABASE_URL ||
+  databaseUrl ||
   process.env.DIRECT_URL ||
-  databaseUrl;
+  process.env.PRISMA_DATABASE_URL ||
+  "";
 
 export default defineConfig({
   schema: "prisma/schema.prisma",

@@ -208,6 +208,8 @@ exports.Prisma.CourseScalarFieldEnum = {
   id: 'id',
   name: 'name',
   nameKey: 'nameKey',
+  courseCode: 'courseCode',
+  branchId: 'branchId',
   description: 'description',
   feeReference: 'feeReference',
   mode: 'mode',

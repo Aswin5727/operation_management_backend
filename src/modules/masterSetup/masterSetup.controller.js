@@ -49,7 +49,7 @@ function parseBodyArray(value, fieldName) {
 }
 
 export const listCoursesHandler = asyncHandler(async (req, res) => {
-  const result = await listCourses(req.query);
+  const result = await listCourses(req.query, req.user);
   return sendSuccess(res, "Courses fetched successfully", result.data, result.meta);
 });
 
@@ -59,7 +59,7 @@ export const createCourseHandler = asyncHandler(async (req, res) => {
 });
 
 export const getCourseHandler = asyncHandler(async (req, res) => {
-  const course = await getCourse(req.params.courseId);
+  const course = await getCourse(req.params.courseId, req.user);
   return sendSuccess(res, "Course fetched successfully", course);
 });
 
@@ -79,12 +79,12 @@ export const updateCourseStatusHandler = asyncHandler(async (req, res) => {
 });
 
 export const listCourseStatusHistoryHandler = asyncHandler(async (req, res) => {
-  const result = await listCourseStatusHistory(req.params.courseId);
+  const result = await listCourseStatusHistory(req.params.courseId, req.user);
   return sendSuccess(res, "Course status history fetched successfully", result.data);
 });
 
 export const listCourseModulesHandler = asyncHandler(async (req, res) => {
-  const result = await listCourseModules(req.params.courseId, req.query);
+  const result = await listCourseModules(req.params.courseId, req.query, req.user);
   return sendSuccess(res, "Course modules fetched successfully", result.data, result.meta);
 });
 
