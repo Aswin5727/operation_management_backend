@@ -304,7 +304,9 @@ async function login({ identifier, password, ipAddress, userAgent }) {
       void sendFacultyWelcomeEmail({
         to: refreshedUser.email,
         fullName: refreshedUser.fullName,
-        facultyId: refreshedUser.userCode,
+        facultyId: refreshedUser.userCode?.includes("-FC-") 
+          ? "FC-" + refreshedUser.userCode.split("-FC-")[1] 
+          : refreshedUser.userCode,
         courseName: facultyWelcomeCourseName,
         batchNames: facultyWelcomeBatchNames,
       }).catch((error) => {
