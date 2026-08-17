@@ -2,6 +2,7 @@ export function welcomeTemplate({
   fullName,
   courseName,
   loginLink,
+  facultyId,
 }) {
   return `
 <!DOCTYPE html>
@@ -129,6 +130,17 @@ ACCOUNT INFORMATION
 <strong>Name :</strong>
 ${fullName}
 </p>
+
+${
+facultyId
+? `
+<p style="margin:10px 0;">
+<strong>Faculty ID :</strong>
+${facultyId}
+</p>
+`
+: ""
+}
 
 ${
 courseName

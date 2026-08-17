@@ -3,6 +3,7 @@ import { baseTemplate } from "./baseTemplate.js";
 export function facultyTemplate({
   fullName,
   email,
+  facultyId,
   temporaryPassword,
   courseName,
   batchNames = [],
@@ -21,6 +22,15 @@ export function facultyTemplate({
           <td style="padding:12px;border:1px solid #e5e7eb;">${fullName}</td>
         </tr>
 
+        ${
+          facultyId
+            ? `
+        <tr>
+          <td style="padding:12px;border:1px solid #e5e7eb;"><b>Faculty ID</b></td>
+          <td style="padding:12px;border:1px solid #e5e7eb;">${facultyId}</td>
+        </tr>`
+            : ""
+        }
 
         <tr>
           <td style="padding:12px;border:1px solid #e5e7eb;"><b>Email</b></td>

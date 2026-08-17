@@ -304,6 +304,7 @@ async function login({ identifier, password, ipAddress, userAgent }) {
       void sendFacultyWelcomeEmail({
         to: refreshedUser.email,
         fullName: refreshedUser.fullName,
+        facultyId: refreshedUser.userCode,
         courseName: facultyWelcomeCourseName,
         batchNames: facultyWelcomeBatchNames,
       }).catch((error) => {

@@ -1,6 +1,6 @@
 function requiresPasswordReset(user) {
   const role = String(user?.role || "").trim().toUpperCase();
-  return role === "BRANCH_ADMIN" && !user?.passwordChangedAt;
+  return (role === "BRANCH_ADMIN" || role === "FACULTY") && !user?.passwordChangedAt;
 }
 
 function toSafeUser(user) {

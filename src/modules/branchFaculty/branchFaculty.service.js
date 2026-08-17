@@ -1,6 +1,21 @@
+import crypto from "node:crypto";
 import prisma from "../../config/prisma.js";
 import AppError from "../../common/errors/AppError.js";
 import { getCurrentBranchProfile } from "../branches/branches.service.js";
+import config from "../../config/env.js";
+import { hashPassword } from "../../common/utils/password.js";
+import { sendFacultyCredentialsEmail } from "../../common/services/resendEmail.js";
+
+function generateTemporaryPassword() {
+  return crypto.randomBytes(9).toString("base64url");
+}
+
+function createResetTokenArtifacts() {
+  const resetToken = crypto.randomBytes(32).toString("hex");
+  const tokenHash = crypto.createHash("sha256").update(resetToken).digest("hex");
+  const expiresAt = new Date(Date.now() + config.credentialResetTokenExpiresMinutes * 60 * 1000);
+  return { resetToken, tokenHash, expiresAt };
+}
 
 export async function listBranchFaculty(actorUser, query) {
   const branchProfile = await getCurrentBranchProfile(actorUser);
@@ -78,25 +93,74 @@ export async function createBranchFaculty(actorUser, payload) {
     throw new AppError("Email already exists in this branch.", 400);
   }
 
-  const branchFaculty = await prisma.branchFaculty.create({
-    data: {
-      branchId: branchProfile.id,
-      facultyId: payload.facultyId,
-      name: payload.name,
-      email: payload.email,
-      phone: payload.phone,
-      country: payload.country || "",
-      countryCode: payload.countryCode || "",
-      state: payload.state || "",
-      stateCode: payload.stateCode || "",
-      city: payload.city || "",
-      address: payload.address || "",
-      status: payload.status ? payload.status.toUpperCase() : "ACTIVE",
-      createdBy: actorUser.id,
-    },
+  const existingUser = await prisma.user.findUnique({
+    where: { email: payload.email }
   });
 
-  return branchFaculty;
+  if (existingUser) {
+    throw new AppError("This email address is already registered to another account in the system.", 400);
+  }
+
+  const temporaryPassword = generateTemporaryPassword();
+  const passwordHash = await hashPassword(temporaryPassword);
+  const { resetToken, tokenHash, expiresAt } = createResetTokenArtifacts();
+
+  const created = await prisma.$transaction(async (tx) => {
+    const user = await tx.user.create({
+      data: {
+        userCode: `${branchProfile.branchId}-${payload.facultyId}`,
+        fullName: payload.name,
+        email: payload.email,
+        phone: payload.phone,
+        role: "FACULTY",
+        active: (!payload.status || payload.status.toUpperCase() === "ACTIVE"),
+        passwordHash,
+        createdBy: actorUser.id,
+        updatedBy: actorUser.id,
+      },
+    });
+
+    await tx.passwordResetToken.create({
+      data: {
+        userId: user.id,
+        tokenHash,
+        expiresAt,
+        createdBy: actorUser.id,
+      },
+    });
+
+    return tx.branchFaculty.create({
+      data: {
+        branchId: branchProfile.id,
+        facultyId: payload.facultyId,
+        name: payload.name,
+        email: payload.email,
+        phone: payload.phone,
+        country: payload.country || "",
+        countryCode: payload.countryCode || "",
+        state: payload.state || "",
+        stateCode: payload.stateCode || "",
+        city: payload.city || "",
+        address: payload.address || "",
+        status: payload.status ? payload.status.toUpperCase() : "ACTIVE",
+        createdBy: actorUser.id,
+      },
+    });
+  });
+
+  void sendFacultyCredentialsEmail({
+    to: payload.email,
+    fullName: payload.name,
+    facultyId: payload.facultyId,
+    temporaryPassword,
+    resetToken,
+    courseName: "", // Optional context
+    batchNames: [], // Optional context
+  }).catch((error) => {
+    console.warn("Faculty credentials email failed to send", error);
+  });
+
+  return created;
 }
 
 export async function updateBranchFaculty(actorUser, branchFacultyId, payload) {

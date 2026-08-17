@@ -392,6 +392,7 @@ export async function sendStudentWelcomeEmail({ to, fullName, courseName }) {
 export async function sendFacultyCredentialsEmail({
   to,
   fullName,
+  facultyId,
   temporaryPassword,
   resetToken,
   courseName,
@@ -400,6 +401,7 @@ export async function sendFacultyCredentialsEmail({
   const loginLink = buildLoginLink();
   const resetLink = buildResetLink(resetToken, temporaryPassword);
   const safeName = escapeHtml(fullName || "Faculty");
+  const safeFacultyId = escapeHtml(facultyId || "");
   const safePassword = escapeHtml(temporaryPassword || "");
   const normalizedBatchNames = Array.isArray(batchNames)
     ? batchNames.map((item) => String(item || "").trim()).filter(Boolean)
@@ -408,6 +410,7 @@ export async function sendFacultyCredentialsEmail({
   const html = facultyTemplate({
     fullName: safeName,
     email: to,
+    facultyId: safeFacultyId,
     temporaryPassword: safePassword,
     courseName,
     batchNames: normalizedBatchNames,
@@ -417,6 +420,7 @@ export async function sendFacultyCredentialsEmail({
   const textParts = [
     `CISPRO Faculty Login Details for ${fullName || "Faculty"}.`,
     `Login email: ${to}`,
+    facultyId ? `Faculty ID: ${facultyId}` : null,
     courseName ? `Course: ${courseName}` : null,
     normalizedBatchNames.length ? `Batches: ${normalizedBatchNames.join(", ")}` : null,
     `Temporary password: ${temporaryPassword}`,
@@ -426,6 +430,10 @@ export async function sendFacultyCredentialsEmail({
     "Use the temporary password to sign in, then change it using the reset link.",
   ].filter(Boolean);
 
+  console.log(" sendFacultyCredentialsEmail called");
+  console.log("HTML =>");
+  console.log(html);
+
   return sendEmail({
     to,
     subject: "Your CISPRO faculty login details",
@@ -434,9 +442,10 @@ export async function sendFacultyCredentialsEmail({
   });
 }
 
-export async function sendFacultyWelcomeEmail({ to, fullName, courseName, batchNames = [] }) {
+export async function sendFacultyWelcomeEmail({ to, fullName, facultyId, courseName, batchNames = [] }) {
   const loginLink = buildLoginLink();
   const safeName = escapeHtml(fullName || "Faculty");
+  const safeFacultyId = escapeHtml(facultyId || "");
   const safeCourseName = escapeHtml(courseName || "");
   const normalizedBatchNames = Array.isArray(batchNames)
     ? batchNames.map((item) => String(item || "").trim()).filter(Boolean)
@@ -444,6 +453,7 @@ export async function sendFacultyWelcomeEmail({ to, fullName, courseName, batchN
 
   const html = welcomeTemplate({
     fullName: safeName,
+    facultyId: safeFacultyId,
     courseName: safeCourseName,
     loginLink,
   });
@@ -451,6 +461,7 @@ export async function sendFacultyWelcomeEmail({ to, fullName, courseName, batchN
   const text = [
     `Welcome to CISPRO Faculty Portal, ${fullName || "Faculty"}.`,
     "You have successfully logged in to your faculty dashboard for the first time.",
+    facultyId ? `Faculty ID: ${facultyId}` : null,
     courseName ? `Assigned course: ${courseName}` : null,
     courseName ? `Your enrolled course: ${courseName}` : null,
     normalizedBatchNames.length ? `Your batches: ${normalizedBatchNames.join(", ")}` : null,
