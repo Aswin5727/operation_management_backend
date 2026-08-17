@@ -89,27 +89,28 @@ model User {
 }
 
 model Branch {
-  id                String         @id @default(cuid())
-  branchId          String         @unique
+  id                String          @id @default(cuid())
+  branchId          String          @unique
   branchName        String
   branchAdminName   String
-  branchEmail       String         @unique
-  branchPhone       String         @unique
-  branchCountryCode String         @default("")
-  branchCountry     String         @default("")
-  branchStateCode   String         @default("")
-  branchState       String         @default("")
-  branchCity        String         @default("")
+  branchEmail       String          @unique
+  branchPhone       String          @unique
+  branchCountryCode String          @default("")
+  branchCountry     String          @default("")
+  branchStateCode   String          @default("")
+  branchState       String          @default("")
+  branchCity        String          @default("")
   branchAddress     String
-  status            RecordStatus   @default(ACTIVE)
-  adminUserId       String?        @unique
-  adminUser         User?          @relation("BranchAdminUser", fields: [adminUserId], references: [id], onDelete: SetNull)
+  status            RecordStatus    @default(ACTIVE)
+  adminUserId       String?         @unique
+  adminUser         User?           @relation("BranchAdminUser", fields: [adminUserId], references: [id], onDelete: SetNull)
   createdBy         String?
   updatedBy         String?
-  createdAt         DateTime       @default(now())
-  updatedAt         DateTime       @updatedAt
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
   courses           Course[]
   branchCourses     BranchCourse[]
+  branchFaculties   BranchFaculty[]
 
   @@index([status])
   @@index([branchName])
@@ -479,4 +480,30 @@ model StudentAttendance {
   @@unique([studentId, attendanceDate])
   @@index([facultyUserId, attendanceDate])
   @@index([courseId, batchName, attendanceDate])
+}
+
+model BranchFaculty {
+  id          String       @id @default(cuid())
+  facultyId   String
+  branchId    String
+  branch      Branch       @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  name        String
+  email       String
+  phone       String
+  country     String?      @default("")
+  countryCode String?      @default("")
+  state       String?      @default("")
+  stateCode   String?      @default("")
+  city        String?      @default("")
+  address     String?
+  status      RecordStatus @default(ACTIVE)
+  createdBy   String?
+  updatedBy   String?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  @@unique([branchId, facultyId])
+  @@unique([branchId, email])
+  @@index([branchId])
+  @@index([status])
 }

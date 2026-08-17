@@ -438,6 +438,26 @@ exports.Prisma.StudentAttendanceScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.BranchFacultyScalarFieldEnum = {
+  id: 'id',
+  facultyId: 'facultyId',
+  branchId: 'branchId',
+  name: 'name',
+  email: 'email',
+  phone: 'phone',
+  country: 'country',
+  countryCode: 'countryCode',
+  state: 'state',
+  stateCode: 'stateCode',
+  city: 'city',
+  address: 'address',
+  status: 'status',
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -529,7 +549,8 @@ exports.Prisma.ModelName = {
   FacultyCourseAssignment: 'FacultyCourseAssignment',
   FacultyBatchEntry: 'FacultyBatchEntry',
   FacultyAttendanceSession: 'FacultyAttendanceSession',
-  StudentAttendance: 'StudentAttendance'
+  StudentAttendance: 'StudentAttendance',
+  BranchFaculty: 'BranchFaculty'
 };
 
 /**
