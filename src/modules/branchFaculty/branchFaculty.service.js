@@ -248,8 +248,39 @@ export async function deleteBranchFaculty(actorUser, branchFacultyId) {
     throw new AppError("Branch faculty not found.", 404);
   }
 
-  await prisma.branchFaculty.delete({
-    where: { id: branchFacultyId },
+  // Run everything inside a transaction so partial failures don't leave orphaned records
+  await prisma.$transaction(async (tx) => {
+    // 1. Delete the BranchFaculty row first
+    await tx.branchFaculty.delete({
+      where: { id: branchFacultyId },
+    });
+
+    // 2. Find the linked User account by email
+    const associatedUser = await tx.user.findUnique({
+      where: { email: existing.email },
+    });
+
+    if (associatedUser) {
+      // 3. Remove BatchFacultyAssignments — these use onDelete: Restrict so they MUST be
+      //    deleted before we can delete the User, otherwise Prisma/Postgres throws a
+      //    foreign-key violation and the User record is never removed (causing the
+      //    "email already registered" error on the next create attempt).
+      await tx.batchFacultyAssignment.deleteMany({
+        where: { facultyId: associatedUser.id },
+      });
+
+      // 4. Remove PasswordResetTokens (onDelete: Cascade would handle this, but being
+      //    explicit keeps the intent clear)
+      await tx.passwordResetToken.deleteMany({
+        where: { userId: associatedUser.id },
+      });
+
+      // 5. Finally delete the User — FacultyAttendanceSessions cascade automatically,
+      //    StudentAttendance rows are set to null automatically by the schema.
+      await tx.user.delete({
+        where: { id: associatedUser.id },
+      });
+    }
   });
 
   return true;
