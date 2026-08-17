@@ -38,6 +38,15 @@ async function authenticate(req, _res, next) {
       tokenVersion: user.refreshTokenVersion,
     };
     req.user = user;
+
+    const userRole = String(user.role || '').trim().toUpperCase();
+    if (userRole === 'SUPER_ADMIN') {
+      const impersonatedBranchId = req.headers['x-impersonate-branch-id'];
+      if (impersonatedBranchId && impersonatedBranchId.trim()) {
+        req.user.impersonatedBranchId = impersonatedBranchId.trim();
+      }
+    }
+
     next();
   } catch (error) {
     next(new AppError(error.message || "Authentication required", 401));

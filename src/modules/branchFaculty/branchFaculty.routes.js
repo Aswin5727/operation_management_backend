@@ -7,7 +7,7 @@ import * as branchFacultyController from "./branchFaculty.controller.js";
 const router = express.Router();
 
 router.use(authenticate);
-router.use(authorize(USER_ROLES.BRANCH_ADMIN));
+router.use(authorize(USER_ROLES.BRANCH_ADMIN, USER_ROLES.SUPER_ADMIN));
 
 router.get("/", branchFacultyController.listBranchFacultyHandler);
 router.post("/", branchFacultyController.createBranchFacultyHandler);

@@ -582,6 +582,24 @@ export async function resendBranchInvitation(branchRecordId, actor) {
 }
 
 export async function getCurrentBranchProfile(user) {
+  if (user?.impersonatedBranchId) {
+    const branch = await prisma.branch.findUnique({
+      where: { id: user.impersonatedBranchId },
+      include: {
+        adminUser: {
+          select: {
+            passwordChangedAt: true,
+            lastLoginAt: true,
+          },
+        },
+      },
+    });
+    
+    if (branch) {
+      return toBranchSummary(branch);
+    }
+  }
+
   const userId = normalizeString(user?.userId || user?.id);
   const normalizedEmail = normalizeString(user?.email).toLowerCase();
 
