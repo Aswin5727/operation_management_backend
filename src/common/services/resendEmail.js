@@ -330,6 +330,7 @@ export async function sendStudentCredentialsEmail({ to, fullName, studentCode, t
   const html = studentTemplate({
     fullName: safeName,
     email: to,
+    studentCode: safeCode,
     temporaryPassword: safePassword,
     loginLink,
     resetLink,
@@ -339,7 +340,7 @@ export async function sendStudentCredentialsEmail({ to, fullName, studentCode, t
   const textParts = [
     `CISPRO Student Login Details for ${fullName || "Student"}.`,
     `Login email: ${to}`,
-    safeCode ? `Student code: ${studentCode}` : null,
+    safeCode ? `Student ID: ${studentCode}` : null,
     `Temporary password: ${temporaryPassword}`,
     loginLink ? `Login link: ${loginLink}` : null,
     resetLink ? `Reset link: ${resetLink}` : null,

@@ -113,6 +113,7 @@ model Branch {
   courses           Course[]
   branchCourses     BranchCourse[]
   branchFaculties   BranchFaculty[]
+  branchStudents    BranchStudent[]
 
   @@index([status])
   @@index([branchName])
@@ -397,6 +398,42 @@ model StudentProfile {
   @@index([recordStatus])
   @@index([courseId])
   @@index([currentStatus])
+  @@index([admissionDate])
+}
+
+model BranchStudent {
+  id                 String       @id @default(cuid())
+  branchId           String
+  branch             Branch       @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  studentId          String
+  studentName        String
+  mobileNumber       String       @unique
+  emailAddress       String       @unique
+  parentSpouseNumber String?
+  countryCode        String?
+  country            String?
+  stateCode          String?
+  state              String?
+  city               String?
+  address            String?
+  qualification      String?
+  passedOutYear      String?
+  currentStatus      String?
+  designation        String?
+  source             String?
+  sourceOther        String?
+  admissionDate      String
+  recordStatus       RecordStatus @default(ACTIVE)
+  createdBy          String?
+  updatedBy          String?
+  createdAt          DateTime     @default(now())
+  updatedAt          DateTime     @updatedAt
+
+  @@unique([branchId, studentId])
+  @@index([branchId])
+  @@index([recordStatus])
+  @@index([studentName])
+  @@index([emailAddress])
   @@index([admissionDate])
 }
 

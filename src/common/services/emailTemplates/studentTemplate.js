@@ -3,10 +3,12 @@ import { baseTemplate } from "./baseTemplate.js";
 export function studentTemplate({
   fullName,
   email,
+  studentCode,
   temporaryPassword,
   loginLink,
   resetLink,
 }) {
+  const safeStudentCode = String(studentCode || "").trim();
   const body = `
 
 <!-- Welcome -->
@@ -69,6 +71,27 @@ color:#233B6E;
 </tr>
 
 
+
+<tr>
+
+<td
+style="
+padding:15px 20px;
+font-weight:bold;
+color:#444;
+">
+
+Student ID
+
+</td>
+
+<td style="padding:15px 20px;">
+
+${safeStudentCode || "-"}
+
+</td>
+
+</tr>
 
 <tr>
 

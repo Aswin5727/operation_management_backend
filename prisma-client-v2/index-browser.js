@@ -374,6 +374,34 @@ exports.Prisma.StudentProfileScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.BranchStudentScalarFieldEnum = {
+  id: 'id',
+  branchId: 'branchId',
+  studentId: 'studentId',
+  studentName: 'studentName',
+  mobileNumber: 'mobileNumber',
+  emailAddress: 'emailAddress',
+  parentSpouseNumber: 'parentSpouseNumber',
+  countryCode: 'countryCode',
+  country: 'country',
+  stateCode: 'stateCode',
+  state: 'state',
+  city: 'city',
+  address: 'address',
+  qualification: 'qualification',
+  passedOutYear: 'passedOutYear',
+  currentStatus: 'currentStatus',
+  designation: 'designation',
+  source: 'source',
+  sourceOther: 'sourceOther',
+  admissionDate: 'admissionDate',
+  recordStatus: 'recordStatus',
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.FacultyProfileScalarFieldEnum = {
   id: 'id',
   facultyName: 'facultyName',
@@ -549,6 +577,7 @@ exports.Prisma.ModelName = {
   CourseStatusHistory: 'CourseStatusHistory',
   BatchStatusHistory: 'BatchStatusHistory',
   StudentProfile: 'StudentProfile',
+  BranchStudent: 'BranchStudent',
   FacultyProfile: 'FacultyProfile',
   FacultyCourseAssignment: 'FacultyCourseAssignment',
   FacultyBatchEntry: 'FacultyBatchEntry',
