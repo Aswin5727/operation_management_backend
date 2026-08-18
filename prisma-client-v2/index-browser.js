@@ -451,6 +451,7 @@ exports.Prisma.BranchFacultyScalarFieldEnum = {
   stateCode: 'stateCode',
   city: 'city',
   address: 'address',
+  courseId: 'courseId',
   status: 'status',
   createdBy: 'createdBy',
   updatedBy: 'updatedBy',

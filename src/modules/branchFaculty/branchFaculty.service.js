@@ -46,6 +46,11 @@ export async function listBranchFaculty(actorUser, query) {
       skip,
       take,
       orderBy: { [sortBy]: sortOrder },
+      include: {
+        course: {
+          select: { name: true }
+        }
+      }
     }),
     prisma.branchFaculty.count({ where }),
   ]);
@@ -142,11 +147,21 @@ export async function createBranchFaculty(actorUser, payload) {
         stateCode: payload.stateCode || "",
         city: payload.city || "",
         address: payload.address || "",
+        courseId: payload.courseId || null,
         status: payload.status ? payload.status.toUpperCase() : "ACTIVE",
         createdBy: actorUser.id,
       },
     });
   });
+
+  let courseNameContext = "";
+  if (payload.courseId) {
+    const course = await prisma.course.findUnique({
+      where: { id: payload.courseId },
+      select: { name: true }
+    });
+    if (course) courseNameContext = course.name;
+  }
 
   void sendFacultyCredentialsEmail({
     to: payload.email,
@@ -154,7 +169,7 @@ export async function createBranchFaculty(actorUser, payload) {
     facultyId: payload.facultyId,
     temporaryPassword,
     resetToken,
-    courseName: "", // Optional context
+    courseName: courseNameContext,
     batchNames: [], // Optional context
   }).catch((error) => {
     console.warn("Faculty credentials email failed to send", error);
@@ -223,6 +238,7 @@ export async function updateBranchFaculty(actorUser, branchFacultyId, payload) {
       stateCode: payload.stateCode,
       city: payload.city,
       address: payload.address,
+      courseId: payload.courseId !== undefined ? payload.courseId : existing.courseId,
       status: payload.status ? payload.status.toUpperCase() : undefined,
       updatedBy: actorUser.id,
     },

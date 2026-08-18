@@ -132,7 +132,7 @@ async function getFacultyMyBatchesSummary(user) {
     throw new AppError("Faculty profile not found", 404);
   }
 
-  const faculty = await prisma.facultyProfile.findFirst({
+  let faculty = await prisma.facultyProfile.findFirst({
     where: {
       facultyEmail: {
         equals: normalizedEmail,
@@ -176,6 +176,25 @@ async function getFacultyMyBatchesSummary(user) {
   });
 
   if (!faculty) {
+    const branchFaculty = await prisma.branchFaculty.findFirst({
+      where: { email: { equals: normalizedEmail, mode: "insensitive" } },
+      include: { course: { select: { id: true, name: true } } }
+    });
+
+    if (branchFaculty) {
+      return {
+        faculty: {
+          id: branchFaculty.facultyId,
+          facultyName: branchFaculty.name,
+          facultyEmail: branchFaculty.email,
+          courseId: branchFaculty.courseId || "",
+          courseName: branchFaculty.course?.name || "",
+        },
+        totalBatches: 0,
+        totalStudents: 0,
+        batchCounts: [],
+      };
+    }
     throw new AppError("Faculty profile not found", 404);
   }
 
@@ -187,6 +206,7 @@ async function getFacultyMyBatchesSummary(user) {
         facultyName: faculty.facultyName,
         facultyEmail: faculty.facultyEmail,
         courseId: faculty.courseId || "",
+        courseName: faculty.course?.name || "",
       },
       totalBatches: 0,
       totalStudents: 0,
@@ -304,6 +324,7 @@ async function getFacultyMyBatchesSummary(user) {
       facultyName: faculty.facultyName,
       facultyEmail: faculty.facultyEmail,
       courseId: faculty.courseId || "",
+      courseName: faculty.course?.name || "",
     },
     totalBatches: batchEntries.length,
     totalStudents: uniqueStudentIds.size,

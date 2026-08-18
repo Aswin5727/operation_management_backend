@@ -202,6 +202,7 @@ model Course {
   facultyCourseAssignments FacultyCourseAssignment[]
   facultyBatchEntries      FacultyBatchEntry[]
   statusHistory            CourseStatusHistory[]
+  branchFaculties          BranchFaculty[]
 
   @@index([branchId])
   @@index([nameKey])
@@ -496,6 +497,8 @@ model BranchFaculty {
   stateCode   String?      @default("")
   city        String?      @default("")
   address     String?
+  courseId    String?
+  course      Course?      @relation(fields: [courseId], references: [id], onDelete: SetNull)
   status      RecordStatus @default(ACTIVE)
   createdBy   String?
   updatedBy   String?
@@ -505,5 +508,6 @@ model BranchFaculty {
   @@unique([branchId, facultyId])
   @@unique([branchId, email])
   @@index([branchId])
+  @@index([courseId])
   @@index([status])
 }
