@@ -1,6 +1,9 @@
 import prisma from "../../config/prisma.js";
 import AppError from "../../common/errors/AppError.js";
 import { getCurrentBranchProfile } from "../branches/branches.service.js";
+import {
+  sendFacultyCourseAssignmentEmail,
+} from "../../common/services/resendEmail.js";
 
 const RECORD_STATUSES = new Set(["ACTIVE", "INACTIVE"]);
 
@@ -119,13 +122,23 @@ function toBranchCourseSummary(course) {
     discount: course.discount,
     afterDiscount: course.afterDiscount,
     status: course.status,
+
+    assignedFaculty: Array.isArray(course.branchFaculties)
+      ? course.branchFaculties.map((faculty) => ({
+        id: faculty.facultyId,
+        dbId: faculty.id,
+        name: faculty.name,
+        email: faculty.email,
+        status: faculty.status,
+      }))
+      : [],
+
     batches: 0,
     students: 0,
     createdAt: course.createdAt,
     updatedAt: course.updatedAt,
   };
 }
-
 function toBranchCourseDetail(course) {
   return toBranchCourseSummary(course);
 }
@@ -316,7 +329,21 @@ export async function listBranchCourses(query, actor) {
       orderBy,
       skip,
       take,
-    }),
+      include: {
+        branchFaculties: {
+          select: {
+            id: true,
+            facultyId: true,
+            name: true,
+            email: true,
+            status: true,
+          },
+          orderBy: {
+            name: "asc",
+          },
+        },
+      },
+    })
   ]);
 
   return {
@@ -410,5 +437,160 @@ export async function deleteBranchCourse(courseId, actor) {
     where: { id: courseId },
   });
 
+
   return toBranchCourseDetail(existingCourse);
+}
+
+
+  export async function assignFacultyToBranchCourse(
+  courseId,
+  facultyIds = [],
+  actor,
+) {
+  const branchProfile = await resolveBranchProfile(actor);
+
+  const course = await prisma.branchCourse.findFirst({
+    where: {
+      id: courseId,
+      branchId: branchProfile.id,
+    },
+  });
+
+  if (!course) {
+    throw new AppError("Course not found", 404);
+  }
+
+  if (!Array.isArray(facultyIds)) {
+    throw new AppError("facultyIds must be an array", 400);
+  }
+
+  const normalizedFacultyIds = [
+    ...new Set(
+      facultyIds
+        .map((id) => normalizeString(id))
+        .filter(Boolean),
+    ),
+  ];
+
+  const facultyRows = await prisma.branchFaculty.findMany({
+    where: {
+      branchId: branchProfile.id,
+      facultyId: {
+        in: normalizedFacultyIds,
+      },
+    },
+    select: {
+      id: true,
+      facultyId: true,
+      name: true,
+      email: true,
+      status: true,
+    },
+  });
+
+  if (facultyRows.length !== normalizedFacultyIds.length) {
+    throw new AppError(
+      "One or more selected faculty members were not found in this branch.",
+      400,
+    );
+  }
+
+  const actorId = actor?.id ?? null;
+
+  const result = await prisma.$transaction(async (tx) => {
+    // Remove the current faculty assignment for this course.
+    await tx.branchFaculty.updateMany({
+      where: {
+        branchId: branchProfile.id,
+        branchCourseId: course.id,
+      },
+      data: {
+        branchCourseId: null,
+        updatedBy: actorId,
+      },
+    });
+
+    // Assign selected faculty to this course.
+    if (normalizedFacultyIds.length) {
+      await tx.branchFaculty.updateMany({
+        where: {
+          branchId: branchProfile.id,
+          facultyId: {
+            in: normalizedFacultyIds,
+          },
+        },
+        data: {
+          branchCourseId: course.id,
+          updatedBy: actorId,
+        },
+      });
+    }
+
+    // Create faculty notifications.
+    for (const faculty of facultyRows) {
+      const facultyUser = await tx.user.findUnique({
+        where: {
+          email: faculty.email,
+        },
+        select: {
+          id: true,
+          role: true,
+        },
+      });
+
+      if (
+        facultyUser &&
+        facultyUser.role === "FACULTY"
+      ) {
+        await tx.notification.create({
+          data: {
+            kind: "FACULTY_COURSE_ASSIGNED",
+            tone: "green",
+            title: "Course Assigned",
+            message: `${course.name} has been assigned to you.`,
+            actionLabel: "View Course",
+            targetUserId: facultyUser.id,
+            createdBy: actorId,
+          },
+        });
+      }
+    }
+
+    return tx.branchCourse.findUnique({
+      where: {
+        id: course.id,
+      },
+      include: {
+        branchFaculties: {
+          select: {
+            id: true,
+            facultyId: true,
+            name: true,
+            email: true,
+            status: true,
+          },
+          orderBy: {
+            name: "asc",
+          },
+        },
+      },
+    });
+  });
+
+  // Email after DB transaction succeeds.
+  for (const faculty of facultyRows) {
+    void sendFacultyCourseAssignmentEmail({
+      to: faculty.email,
+      fullName: faculty.name,
+      facultyId: faculty.facultyId,
+      courseName: course.name,
+    }).catch((error) => {
+      console.warn(
+        "Faculty course assignment email failed",
+        error,
+      );
+    });
+  }
+
+  return toBranchCourseSummary(result);
 }

@@ -4,6 +4,7 @@ const NOTIFICATION_KIND_MAP = {
   BRANCH_CREATED: "branch-created",
   BRANCH_INVITATION_RESENT: "branch-mail",
   BRANCH_LOGIN: "branch-login",
+  FACULTY_COURSE_ASSIGNED: "faculty-course-assigned",
 };
 
 const VISIBLE_NOTIFICATION_KINDS = new Set(["BRANCH_INVITATION_RESENT", "BRANCH_LOGIN"]);
@@ -29,6 +30,9 @@ function normalizeNotificationRow(row) {
     targetBranchId: normalizeString(row.targetBranchId),
     targetBranchEmail: normalizeEmail(row.targetBranchEmail),
     targetBranchName: normalizeString(row.targetBranchName),
+    targetUserId: normalizeString(
+      row.targetUserId,
+    ),
     read: Boolean(row.read),
     readAt: row.readAt || null,
     createdAt: row.createdAt,
@@ -99,22 +103,30 @@ export async function createBranchLoginNotification(branch = {}, actor = {}) {
   );
 }
 
-export async function listNotifications(query = {}) {
+export async function listNotifications(query = {}, user = {}) {
   const page = Math.max(1, Number(query.page || 1));
   const limit = Math.min(100, Math.max(1, Number(query.limit || 10)));
   const unreadOnly = String(query.unreadOnly || "").trim().toLowerCase() === "true";
   const kind = normalizeString(query.kind).toUpperCase();
 
-  const where = {
-    ...(unreadOnly ? { read: false } : {}),
-    ...(kind
-      ? { kind }
-      : {
-          kind: {
-            in: Array.from(VISIBLE_NOTIFICATION_KINDS),
-          },
-        }),
-  }
+  const isFaculty = String(user?.role || "").toUpperCase() === "FACULTY";
+
+  const where = isFaculty
+    ? {
+        targetUserId: user.id,
+        kind: "FACULTY_COURSE_ASSIGNED",
+        ...(unreadOnly ? { read: false } : {}),
+      }
+    : {
+        ...(unreadOnly ? { read: false } : {}),
+        ...(kind
+          ? { kind }
+          : {
+              kind: {
+                in: Array.from(VISIBLE_NOTIFICATION_KINDS),
+              },
+            }),
+      };
 
   const [total, rows, unreadCount] = await prisma.$transaction([
     prisma.notification.count({ where }),
@@ -125,16 +137,22 @@ export async function listNotifications(query = {}) {
       take: limit,
     }),
     prisma.notification.count({
-      where: {
-        read: false,
-        ...(kind
-          ? { kind }
-          : {
-              kind: {
-                in: Array.from(VISIBLE_NOTIFICATION_KINDS),
-              },
-            }),
-      },
+      where: isFaculty
+        ? {
+            read: false,
+            targetUserId: user.id,
+            kind: "FACULTY_COURSE_ASSIGNED",
+          }
+        : {
+            read: false,
+            ...(kind
+              ? { kind }
+              : {
+                  kind: {
+                    in: Array.from(VISIBLE_NOTIFICATION_KINDS),
+                  },
+                }),
+          },
     }),
   ]);
 
@@ -150,19 +168,35 @@ export async function listNotifications(query = {}) {
   };
 }
 
-export async function markNotificationsAsRead(notificationIds = null) {
+export async function markNotificationsAsRead(
+  notificationIds = null,
+  user = {},
+) {
   const hasIds = Array.isArray(notificationIds) && notificationIds.length > 0;
   const now = new Date();
 
+  const facultyScope =
+    user?.role === "FACULTY"
+      ? {
+        targetUserId: user.id,
+        kind: "FACULTY_COURSE_ASSIGNED",
+      }
+      : {};
+
   const where = hasIds
     ? {
-        id: {
-          in: notificationIds.map((id) => String(id)).filter(Boolean),
-        },
-      }
+      id: {
+        in: notificationIds
+          .map((id) => String(id))
+          .filter(Boolean),
+      },
+
+      ...facultyScope,
+    }
     : {
-        read: false,
-      };
+      read: false,
+      ...facultyScope,
+    };
 
   const result = await prisma.notification.updateMany({
     where,
@@ -175,13 +209,42 @@ export async function markNotificationsAsRead(notificationIds = null) {
   return result;
 }
 
-export async function getUnreadNotificationCount() {
+export async function getUnreadNotificationCount(
+  user = {},
+) {
+  const where =
+    user?.role === "FACULTY"
+      ? {
+          read: false,
+          targetUserId: user.id,
+          kind: "FACULTY_COURSE_ASSIGNED",
+        }
+      : {
+          read: false,
+          kind: {
+            in: Array.from(
+              VISIBLE_NOTIFICATION_KINDS,
+            ),
+          },
+        };
+
   return prisma.notification.count({
-    where: {
-      read: false,
-      kind: {
-        in: Array.from(VISIBLE_NOTIFICATION_KINDS),
-      },
-    },
+    where,
+  });
+}
+export async function createFacultyCourseAssignedNotification({
+  facultyUserId,
+  facultyName,
+  courseName,
+  actorId = null,
+}) {
+  return createNotification({
+    kind: "FACULTY_COURSE_ASSIGNED",
+    tone: "green",
+    title: "Course Assigned",
+    message: `${courseName} has been assigned to you.`,
+    actionLabel: "View Course",
+    targetUserId: facultyUserId,
+    createdBy: actorId,
   });
 }

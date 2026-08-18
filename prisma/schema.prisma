@@ -31,8 +31,8 @@ enum NotificationKind {
   BRANCH_CREATED
   BRANCH_INVITATION_RESENT
   BRANCH_LOGIN
+  FACULTY_COURSE_ASSIGNED
 }
-
 enum RecordStatus {
   ACTIVE
   INACTIVE
@@ -80,6 +80,7 @@ model User {
   loginEvents              LoginEvent[]
   passwordResetTokens      PasswordResetToken[]
   batchFacultyAssignments  BatchFacultyAssignment[]
+  targetedNotifications Notification[] @relation("NotificationTargetUser")
   facultyAttendanceSessions FacultyAttendanceSession[]
   markedStudentAttendances StudentAttendance[]
   managedBranch            Branch?             @relation("BranchAdminUser")
@@ -133,25 +134,32 @@ model LoginEvent {
 }
 
 model Notification {
-  id               String            @id @default(cuid())
-  kind             NotificationKind
-  tone             String            @default("blue")
-  title            String
-  message          String
-  actionLabel      String?
-  targetBranchId   String?
+  id                String            @id @default(cuid())
+  kind              NotificationKind
+  tone              String            @default("blue")
+  title             String
+  message           String
+  actionLabel       String?
+
+  targetUserId      String?
+  targetUser        User?             @relation("NotificationTargetUser", fields: [targetUserId], references: [id], onDelete: SetNull)
+
+  targetBranchId    String?
   targetBranchEmail String?
   targetBranchName  String?
-  read             Boolean           @default(false)
-  readAt           DateTime?
-  createdBy        String?
-  createdAt        DateTime          @default(now())
-  updatedAt        DateTime          @updatedAt
+
+  read              Boolean           @default(false)
+  readAt            DateTime?
+  createdBy         String?
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
 
   @@index([kind, createdAt])
   @@index([read, createdAt])
+  @@index([targetUserId, read])
   @@index([targetBranchId])
   @@index([targetBranchEmail])
+  @@index([targetBranchName])
 }
 
 model PasswordResetToken {
@@ -231,6 +239,8 @@ model BranchCourse {
   updatedBy        String?
   createdAt        DateTime      @default(now())
   updatedAt        DateTime      @updatedAt
+
+  branchFaculties BranchFaculty[]
 
   @@unique([branchId, nameKey])
   @@unique([branchId, courseCode])
@@ -499,6 +509,10 @@ model BranchFaculty {
   address         String?
   courseId        String?
   course          Course?       @relation(fields: [courseId], references: [id], onDelete: SetNull)
+
+  branchCourseId String?
+  branchCourse   BranchCourse? @relation(fields: [branchCourseId], references: [id], onDelete: SetNull)
+
   status          RecordStatus  @default(ACTIVE)
   createdBy       String?
   updatedBy       String?
@@ -509,5 +523,6 @@ model BranchFaculty {
   @@unique([branchId, email])
   @@index([branchId])
   @@index([courseId])
+  @@index([branchCourseId])
   @@index([status])
 }

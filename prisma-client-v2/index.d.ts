@@ -142,7 +142,8 @@ export type LoginEventType = (typeof LoginEventType)[keyof typeof LoginEventType
 export const NotificationKind: {
   BRANCH_CREATED: 'BRANCH_CREATED',
   BRANCH_INVITATION_RESENT: 'BRANCH_INVITATION_RESENT',
-  BRANCH_LOGIN: 'BRANCH_LOGIN'
+  BRANCH_LOGIN: 'BRANCH_LOGIN',
+  FACULTY_COURSE_ASSIGNED: 'FACULTY_COURSE_ASSIGNED'
 };
 
 export type NotificationKind = (typeof NotificationKind)[keyof typeof NotificationKind]
@@ -2609,6 +2610,7 @@ export namespace Prisma {
     loginEvents: number
     passwordResetTokens: number
     batchFacultyAssignments: number
+    targetedNotifications: number
     facultyAttendanceSessions: number
     markedStudentAttendances: number
   }
@@ -2617,6 +2619,7 @@ export namespace Prisma {
     loginEvents?: boolean | UserCountOutputTypeCountLoginEventsArgs
     passwordResetTokens?: boolean | UserCountOutputTypeCountPasswordResetTokensArgs
     batchFacultyAssignments?: boolean | UserCountOutputTypeCountBatchFacultyAssignmentsArgs
+    targetedNotifications?: boolean | UserCountOutputTypeCountTargetedNotificationsArgs
     facultyAttendanceSessions?: boolean | UserCountOutputTypeCountFacultyAttendanceSessionsArgs
     markedStudentAttendances?: boolean | UserCountOutputTypeCountMarkedStudentAttendancesArgs
   }
@@ -2651,6 +2654,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountBatchFacultyAssignmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: BatchFacultyAssignmentWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountTargetedNotificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: NotificationWhereInput
   }
 
   /**
@@ -2807,6 +2817,37 @@ export namespace Prisma {
    * CourseCountOutputType without action
    */
   export type CourseCountOutputTypeCountBranchFacultiesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BranchFacultyWhereInput
+  }
+
+
+  /**
+   * Count Type BranchCourseCountOutputType
+   */
+
+  export type BranchCourseCountOutputType = {
+    branchFaculties: number
+  }
+
+  export type BranchCourseCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    branchFaculties?: boolean | BranchCourseCountOutputTypeCountBranchFacultiesArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * BranchCourseCountOutputType without action
+   */
+  export type BranchCourseCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchCourseCountOutputType
+     */
+    select?: BranchCourseCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * BranchCourseCountOutputType without action
+   */
+  export type BranchCourseCountOutputTypeCountBranchFacultiesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: BranchFacultyWhereInput
   }
 
@@ -3259,6 +3300,7 @@ export namespace Prisma {
     loginEvents?: boolean | User$loginEventsArgs<ExtArgs>
     passwordResetTokens?: boolean | User$passwordResetTokensArgs<ExtArgs>
     batchFacultyAssignments?: boolean | User$batchFacultyAssignmentsArgs<ExtArgs>
+    targetedNotifications?: boolean | User$targetedNotificationsArgs<ExtArgs>
     facultyAttendanceSessions?: boolean | User$facultyAttendanceSessionsArgs<ExtArgs>
     markedStudentAttendances?: boolean | User$markedStudentAttendancesArgs<ExtArgs>
     managedBranch?: boolean | User$managedBranchArgs<ExtArgs>
@@ -3342,6 +3384,7 @@ export namespace Prisma {
     loginEvents?: boolean | User$loginEventsArgs<ExtArgs>
     passwordResetTokens?: boolean | User$passwordResetTokensArgs<ExtArgs>
     batchFacultyAssignments?: boolean | User$batchFacultyAssignmentsArgs<ExtArgs>
+    targetedNotifications?: boolean | User$targetedNotificationsArgs<ExtArgs>
     facultyAttendanceSessions?: boolean | User$facultyAttendanceSessionsArgs<ExtArgs>
     markedStudentAttendances?: boolean | User$markedStudentAttendancesArgs<ExtArgs>
     managedBranch?: boolean | User$managedBranchArgs<ExtArgs>
@@ -3356,6 +3399,7 @@ export namespace Prisma {
       loginEvents: Prisma.$LoginEventPayload<ExtArgs>[]
       passwordResetTokens: Prisma.$PasswordResetTokenPayload<ExtArgs>[]
       batchFacultyAssignments: Prisma.$BatchFacultyAssignmentPayload<ExtArgs>[]
+      targetedNotifications: Prisma.$NotificationPayload<ExtArgs>[]
       facultyAttendanceSessions: Prisma.$FacultyAttendanceSessionPayload<ExtArgs>[]
       markedStudentAttendances: Prisma.$StudentAttendancePayload<ExtArgs>[]
       managedBranch: Prisma.$BranchPayload<ExtArgs> | null
@@ -3779,6 +3823,7 @@ export namespace Prisma {
     loginEvents<T extends User$loginEventsArgs<ExtArgs> = {}>(args?: Subset<T, User$loginEventsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LoginEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     passwordResetTokens<T extends User$passwordResetTokensArgs<ExtArgs> = {}>(args?: Subset<T, User$passwordResetTokensArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PasswordResetTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     batchFacultyAssignments<T extends User$batchFacultyAssignmentsArgs<ExtArgs> = {}>(args?: Subset<T, User$batchFacultyAssignmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BatchFacultyAssignmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    targetedNotifications<T extends User$targetedNotificationsArgs<ExtArgs> = {}>(args?: Subset<T, User$targetedNotificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     facultyAttendanceSessions<T extends User$facultyAttendanceSessionsArgs<ExtArgs> = {}>(args?: Subset<T, User$facultyAttendanceSessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FacultyAttendanceSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     markedStudentAttendances<T extends User$markedStudentAttendancesArgs<ExtArgs> = {}>(args?: Subset<T, User$markedStudentAttendancesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StudentAttendancePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     managedBranch<T extends User$managedBranchArgs<ExtArgs> = {}>(args?: Subset<T, User$managedBranchArgs<ExtArgs>>): Prisma__BranchClient<$Result.GetResult<Prisma.$BranchPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
@@ -4294,6 +4339,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: BatchFacultyAssignmentScalarFieldEnum | BatchFacultyAssignmentScalarFieldEnum[]
+  }
+
+  /**
+   * User.targetedNotifications
+   */
+  export type User$targetedNotificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+    where?: NotificationWhereInput
+    orderBy?: NotificationOrderByWithRelationInput | NotificationOrderByWithRelationInput[]
+    cursor?: NotificationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: NotificationScalarFieldEnum | NotificationScalarFieldEnum[]
   }
 
   /**
@@ -6866,6 +6935,7 @@ export namespace Prisma {
     title: string | null
     message: string | null
     actionLabel: string | null
+    targetUserId: string | null
     targetBranchId: string | null
     targetBranchEmail: string | null
     targetBranchName: string | null
@@ -6883,6 +6953,7 @@ export namespace Prisma {
     title: string | null
     message: string | null
     actionLabel: string | null
+    targetUserId: string | null
     targetBranchId: string | null
     targetBranchEmail: string | null
     targetBranchName: string | null
@@ -6900,6 +6971,7 @@ export namespace Prisma {
     title: number
     message: number
     actionLabel: number
+    targetUserId: number
     targetBranchId: number
     targetBranchEmail: number
     targetBranchName: number
@@ -6919,6 +6991,7 @@ export namespace Prisma {
     title?: true
     message?: true
     actionLabel?: true
+    targetUserId?: true
     targetBranchId?: true
     targetBranchEmail?: true
     targetBranchName?: true
@@ -6936,6 +7009,7 @@ export namespace Prisma {
     title?: true
     message?: true
     actionLabel?: true
+    targetUserId?: true
     targetBranchId?: true
     targetBranchEmail?: true
     targetBranchName?: true
@@ -6953,6 +7027,7 @@ export namespace Prisma {
     title?: true
     message?: true
     actionLabel?: true
+    targetUserId?: true
     targetBranchId?: true
     targetBranchEmail?: true
     targetBranchName?: true
@@ -7043,6 +7118,7 @@ export namespace Prisma {
     title: string
     message: string
     actionLabel: string | null
+    targetUserId: string | null
     targetBranchId: string | null
     targetBranchEmail: string | null
     targetBranchName: string | null
@@ -7077,6 +7153,7 @@ export namespace Prisma {
     title?: boolean
     message?: boolean
     actionLabel?: boolean
+    targetUserId?: boolean
     targetBranchId?: boolean
     targetBranchEmail?: boolean
     targetBranchName?: boolean
@@ -7085,6 +7162,7 @@ export namespace Prisma {
     createdBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    targetUser?: boolean | Notification$targetUserArgs<ExtArgs>
   }, ExtArgs["result"]["notification"]>
 
   export type NotificationSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -7094,6 +7172,7 @@ export namespace Prisma {
     title?: boolean
     message?: boolean
     actionLabel?: boolean
+    targetUserId?: boolean
     targetBranchId?: boolean
     targetBranchEmail?: boolean
     targetBranchName?: boolean
@@ -7102,6 +7181,7 @@ export namespace Prisma {
     createdBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    targetUser?: boolean | Notification$targetUserArgs<ExtArgs>
   }, ExtArgs["result"]["notification"]>
 
   export type NotificationSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -7111,6 +7191,7 @@ export namespace Prisma {
     title?: boolean
     message?: boolean
     actionLabel?: boolean
+    targetUserId?: boolean
     targetBranchId?: boolean
     targetBranchEmail?: boolean
     targetBranchName?: boolean
@@ -7119,6 +7200,7 @@ export namespace Prisma {
     createdBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    targetUser?: boolean | Notification$targetUserArgs<ExtArgs>
   }, ExtArgs["result"]["notification"]>
 
   export type NotificationSelectScalar = {
@@ -7128,6 +7210,7 @@ export namespace Prisma {
     title?: boolean
     message?: boolean
     actionLabel?: boolean
+    targetUserId?: boolean
     targetBranchId?: boolean
     targetBranchEmail?: boolean
     targetBranchName?: boolean
@@ -7138,11 +7221,22 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type NotificationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "kind" | "tone" | "title" | "message" | "actionLabel" | "targetBranchId" | "targetBranchEmail" | "targetBranchName" | "read" | "readAt" | "createdBy" | "createdAt" | "updatedAt", ExtArgs["result"]["notification"]>
+  export type NotificationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "kind" | "tone" | "title" | "message" | "actionLabel" | "targetUserId" | "targetBranchId" | "targetBranchEmail" | "targetBranchName" | "read" | "readAt" | "createdBy" | "createdAt" | "updatedAt", ExtArgs["result"]["notification"]>
+  export type NotificationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    targetUser?: boolean | Notification$targetUserArgs<ExtArgs>
+  }
+  export type NotificationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    targetUser?: boolean | Notification$targetUserArgs<ExtArgs>
+  }
+  export type NotificationIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    targetUser?: boolean | Notification$targetUserArgs<ExtArgs>
+  }
 
   export type $NotificationPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Notification"
-    objects: {}
+    objects: {
+      targetUser: Prisma.$UserPayload<ExtArgs> | null
+    }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       kind: $Enums.NotificationKind
@@ -7150,6 +7244,7 @@ export namespace Prisma {
       title: string
       message: string
       actionLabel: string | null
+      targetUserId: string | null
       targetBranchId: string | null
       targetBranchEmail: string | null
       targetBranchName: string | null
@@ -7552,6 +7647,7 @@ export namespace Prisma {
    */
   export interface Prisma__NotificationClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    targetUser<T extends Notification$targetUserArgs<ExtArgs> = {}>(args?: Subset<T, Notification$targetUserArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7587,6 +7683,7 @@ export namespace Prisma {
     readonly title: FieldRef<"Notification", 'String'>
     readonly message: FieldRef<"Notification", 'String'>
     readonly actionLabel: FieldRef<"Notification", 'String'>
+    readonly targetUserId: FieldRef<"Notification", 'String'>
     readonly targetBranchId: FieldRef<"Notification", 'String'>
     readonly targetBranchEmail: FieldRef<"Notification", 'String'>
     readonly targetBranchName: FieldRef<"Notification", 'String'>
@@ -7612,6 +7709,10 @@ export namespace Prisma {
      */
     omit?: NotificationOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+    /**
      * Filter, which Notification to fetch.
      */
     where: NotificationWhereUniqueInput
@@ -7630,6 +7731,10 @@ export namespace Prisma {
      */
     omit?: NotificationOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+    /**
      * Filter, which Notification to fetch.
      */
     where: NotificationWhereUniqueInput
@@ -7647,6 +7752,10 @@ export namespace Prisma {
      * Omit specific fields from the Notification
      */
     omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
     /**
      * Filter, which Notification to fetch.
      */
@@ -7696,6 +7805,10 @@ export namespace Prisma {
      */
     omit?: NotificationOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+    /**
      * Filter, which Notification to fetch.
      */
     where?: NotificationWhereInput
@@ -7743,6 +7856,10 @@ export namespace Prisma {
      * Omit specific fields from the Notification
      */
     omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
     /**
      * Filter, which Notifications to fetch.
      */
@@ -7792,6 +7909,10 @@ export namespace Prisma {
      */
     omit?: NotificationOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+    /**
      * The data needed to create a Notification.
      */
     data: XOR<NotificationCreateInput, NotificationUncheckedCreateInput>
@@ -7825,6 +7946,10 @@ export namespace Prisma {
      */
     data: NotificationCreateManyInput | NotificationCreateManyInput[]
     skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -7839,6 +7964,10 @@ export namespace Prisma {
      * Omit specific fields from the Notification
      */
     omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
     /**
      * The data needed to update a Notification.
      */
@@ -7891,6 +8020,10 @@ export namespace Prisma {
      * Limit how many Notifications to update.
      */
     limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -7905,6 +8038,10 @@ export namespace Prisma {
      * Omit specific fields from the Notification
      */
     omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
     /**
      * The filter to search for the Notification to update in case it exists.
      */
@@ -7932,6 +8069,10 @@ export namespace Prisma {
      */
     omit?: NotificationOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+    /**
      * Filter which Notification to delete.
      */
     where: NotificationWhereUniqueInput
@@ -7952,6 +8093,25 @@ export namespace Prisma {
   }
 
   /**
+   * Notification.targetUser
+   */
+  export type Notification$targetUserArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
    * Notification without action
    */
   export type NotificationDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -7963,6 +8123,10 @@ export namespace Prisma {
      * Omit specific fields from the Notification
      */
     omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
   }
 
 
@@ -11025,6 +11189,8 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     branch?: boolean | BranchDefaultArgs<ExtArgs>
+    branchFaculties?: boolean | BranchCourse$branchFacultiesArgs<ExtArgs>
+    _count?: boolean | BranchCourseCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["branchCourse"]>
 
   export type BranchCourseSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -11095,6 +11261,8 @@ export namespace Prisma {
   export type BranchCourseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "branchId" | "courseCode" | "name" | "nameKey" | "description" | "mode" | "duration" | "hours" | "actualFees" | "registrationFees" | "discount" | "afterDiscount" | "status" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["branchCourse"]>
   export type BranchCourseInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     branch?: boolean | BranchDefaultArgs<ExtArgs>
+    branchFaculties?: boolean | BranchCourse$branchFacultiesArgs<ExtArgs>
+    _count?: boolean | BranchCourseCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type BranchCourseIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     branch?: boolean | BranchDefaultArgs<ExtArgs>
@@ -11107,6 +11275,7 @@ export namespace Prisma {
     name: "BranchCourse"
     objects: {
       branch: Prisma.$BranchPayload<ExtArgs>
+      branchFaculties: Prisma.$BranchFacultyPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -11522,6 +11691,7 @@ export namespace Prisma {
   export interface Prisma__BranchCourseClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     branch<T extends BranchDefaultArgs<ExtArgs> = {}>(args?: Subset<T, BranchDefaultArgs<ExtArgs>>): Prisma__BranchClient<$Result.GetResult<Prisma.$BranchPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    branchFaculties<T extends BranchCourse$branchFacultiesArgs<ExtArgs> = {}>(args?: Subset<T, BranchCourse$branchFacultiesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchFacultyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -11967,6 +12137,30 @@ export namespace Prisma {
      * Limit how many BranchCourses to delete.
      */
     limit?: number
+  }
+
+  /**
+   * BranchCourse.branchFaculties
+   */
+  export type BranchCourse$branchFacultiesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchFaculty
+     */
+    select?: BranchFacultySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchFaculty
+     */
+    omit?: BranchFacultyOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchFacultyInclude<ExtArgs> | null
+    where?: BranchFacultyWhereInput
+    orderBy?: BranchFacultyOrderByWithRelationInput | BranchFacultyOrderByWithRelationInput[]
+    cursor?: BranchFacultyWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: BranchFacultyScalarFieldEnum | BranchFacultyScalarFieldEnum[]
   }
 
   /**
@@ -25391,6 +25585,7 @@ export namespace Prisma {
     city: string | null
     address: string | null
     courseId: string | null
+    branchCourseId: string | null
     status: $Enums.RecordStatus | null
     createdBy: string | null
     updatedBy: string | null
@@ -25412,6 +25607,7 @@ export namespace Prisma {
     city: string | null
     address: string | null
     courseId: string | null
+    branchCourseId: string | null
     status: $Enums.RecordStatus | null
     createdBy: string | null
     updatedBy: string | null
@@ -25433,6 +25629,7 @@ export namespace Prisma {
     city: number
     address: number
     courseId: number
+    branchCourseId: number
     status: number
     createdBy: number
     updatedBy: number
@@ -25456,6 +25653,7 @@ export namespace Prisma {
     city?: true
     address?: true
     courseId?: true
+    branchCourseId?: true
     status?: true
     createdBy?: true
     updatedBy?: true
@@ -25477,6 +25675,7 @@ export namespace Prisma {
     city?: true
     address?: true
     courseId?: true
+    branchCourseId?: true
     status?: true
     createdBy?: true
     updatedBy?: true
@@ -25498,6 +25697,7 @@ export namespace Prisma {
     city?: true
     address?: true
     courseId?: true
+    branchCourseId?: true
     status?: true
     createdBy?: true
     updatedBy?: true
@@ -25592,6 +25792,7 @@ export namespace Prisma {
     city: string | null
     address: string | null
     courseId: string | null
+    branchCourseId: string | null
     status: $Enums.RecordStatus
     createdBy: string | null
     updatedBy: string | null
@@ -25630,6 +25831,7 @@ export namespace Prisma {
     city?: boolean
     address?: boolean
     courseId?: boolean
+    branchCourseId?: boolean
     status?: boolean
     createdBy?: boolean
     updatedBy?: boolean
@@ -25637,6 +25839,7 @@ export namespace Prisma {
     updatedAt?: boolean
     branch?: boolean | BranchDefaultArgs<ExtArgs>
     course?: boolean | BranchFaculty$courseArgs<ExtArgs>
+    branchCourse?: boolean | BranchFaculty$branchCourseArgs<ExtArgs>
   }, ExtArgs["result"]["branchFaculty"]>
 
   export type BranchFacultySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -25653,6 +25856,7 @@ export namespace Prisma {
     city?: boolean
     address?: boolean
     courseId?: boolean
+    branchCourseId?: boolean
     status?: boolean
     createdBy?: boolean
     updatedBy?: boolean
@@ -25660,6 +25864,7 @@ export namespace Prisma {
     updatedAt?: boolean
     branch?: boolean | BranchDefaultArgs<ExtArgs>
     course?: boolean | BranchFaculty$courseArgs<ExtArgs>
+    branchCourse?: boolean | BranchFaculty$branchCourseArgs<ExtArgs>
   }, ExtArgs["result"]["branchFaculty"]>
 
   export type BranchFacultySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -25676,6 +25881,7 @@ export namespace Prisma {
     city?: boolean
     address?: boolean
     courseId?: boolean
+    branchCourseId?: boolean
     status?: boolean
     createdBy?: boolean
     updatedBy?: boolean
@@ -25683,6 +25889,7 @@ export namespace Prisma {
     updatedAt?: boolean
     branch?: boolean | BranchDefaultArgs<ExtArgs>
     course?: boolean | BranchFaculty$courseArgs<ExtArgs>
+    branchCourse?: boolean | BranchFaculty$branchCourseArgs<ExtArgs>
   }, ExtArgs["result"]["branchFaculty"]>
 
   export type BranchFacultySelectScalar = {
@@ -25699,6 +25906,7 @@ export namespace Prisma {
     city?: boolean
     address?: boolean
     courseId?: boolean
+    branchCourseId?: boolean
     status?: boolean
     createdBy?: boolean
     updatedBy?: boolean
@@ -25706,18 +25914,21 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type BranchFacultyOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "facultyId" | "branchId" | "name" | "email" | "phone" | "country" | "countryCode" | "state" | "stateCode" | "city" | "address" | "courseId" | "status" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["branchFaculty"]>
+  export type BranchFacultyOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "facultyId" | "branchId" | "name" | "email" | "phone" | "country" | "countryCode" | "state" | "stateCode" | "city" | "address" | "courseId" | "branchCourseId" | "status" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["branchFaculty"]>
   export type BranchFacultyInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     branch?: boolean | BranchDefaultArgs<ExtArgs>
     course?: boolean | BranchFaculty$courseArgs<ExtArgs>
+    branchCourse?: boolean | BranchFaculty$branchCourseArgs<ExtArgs>
   }
   export type BranchFacultyIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     branch?: boolean | BranchDefaultArgs<ExtArgs>
     course?: boolean | BranchFaculty$courseArgs<ExtArgs>
+    branchCourse?: boolean | BranchFaculty$branchCourseArgs<ExtArgs>
   }
   export type BranchFacultyIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     branch?: boolean | BranchDefaultArgs<ExtArgs>
     course?: boolean | BranchFaculty$courseArgs<ExtArgs>
+    branchCourse?: boolean | BranchFaculty$branchCourseArgs<ExtArgs>
   }
 
   export type $BranchFacultyPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -25725,6 +25936,7 @@ export namespace Prisma {
     objects: {
       branch: Prisma.$BranchPayload<ExtArgs>
       course: Prisma.$CoursePayload<ExtArgs> | null
+      branchCourse: Prisma.$BranchCoursePayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -25740,6 +25952,7 @@ export namespace Prisma {
       city: string | null
       address: string | null
       courseId: string | null
+      branchCourseId: string | null
       status: $Enums.RecordStatus
       createdBy: string | null
       updatedBy: string | null
@@ -26141,6 +26354,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     branch<T extends BranchDefaultArgs<ExtArgs> = {}>(args?: Subset<T, BranchDefaultArgs<ExtArgs>>): Prisma__BranchClient<$Result.GetResult<Prisma.$BranchPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     course<T extends BranchFaculty$courseArgs<ExtArgs> = {}>(args?: Subset<T, BranchFaculty$courseArgs<ExtArgs>>): Prisma__CourseClient<$Result.GetResult<Prisma.$CoursePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    branchCourse<T extends BranchFaculty$branchCourseArgs<ExtArgs> = {}>(args?: Subset<T, BranchFaculty$branchCourseArgs<ExtArgs>>): Prisma__BranchCourseClient<$Result.GetResult<Prisma.$BranchCoursePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -26183,6 +26397,7 @@ export namespace Prisma {
     readonly city: FieldRef<"BranchFaculty", 'String'>
     readonly address: FieldRef<"BranchFaculty", 'String'>
     readonly courseId: FieldRef<"BranchFaculty", 'String'>
+    readonly branchCourseId: FieldRef<"BranchFaculty", 'String'>
     readonly status: FieldRef<"BranchFaculty", 'RecordStatus'>
     readonly createdBy: FieldRef<"BranchFaculty", 'String'>
     readonly updatedBy: FieldRef<"BranchFaculty", 'String'>
@@ -26608,6 +26823,25 @@ export namespace Prisma {
   }
 
   /**
+   * BranchFaculty.branchCourse
+   */
+  export type BranchFaculty$branchCourseArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchCourse
+     */
+    select?: BranchCourseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchCourse
+     */
+    omit?: BranchCourseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchCourseInclude<ExtArgs> | null
+    where?: BranchCourseWhereInput
+  }
+
+  /**
    * BranchFaculty without action
    */
   export type BranchFacultyDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -26713,6 +26947,7 @@ export namespace Prisma {
     title: 'title',
     message: 'message',
     actionLabel: 'actionLabel',
+    targetUserId: 'targetUserId',
     targetBranchId: 'targetBranchId',
     targetBranchEmail: 'targetBranchEmail',
     targetBranchName: 'targetBranchName',
@@ -27026,6 +27261,7 @@ export namespace Prisma {
     city: 'city',
     address: 'address',
     courseId: 'courseId',
+    branchCourseId: 'branchCourseId',
     status: 'status',
     createdBy: 'createdBy',
     updatedBy: 'updatedBy',
@@ -27288,6 +27524,7 @@ export namespace Prisma {
     loginEvents?: LoginEventListRelationFilter
     passwordResetTokens?: PasswordResetTokenListRelationFilter
     batchFacultyAssignments?: BatchFacultyAssignmentListRelationFilter
+    targetedNotifications?: NotificationListRelationFilter
     facultyAttendanceSessions?: FacultyAttendanceSessionListRelationFilter
     markedStudentAttendances?: StudentAttendanceListRelationFilter
     managedBranch?: XOR<BranchNullableScalarRelationFilter, BranchWhereInput> | null
@@ -27318,6 +27555,7 @@ export namespace Prisma {
     loginEvents?: LoginEventOrderByRelationAggregateInput
     passwordResetTokens?: PasswordResetTokenOrderByRelationAggregateInput
     batchFacultyAssignments?: BatchFacultyAssignmentOrderByRelationAggregateInput
+    targetedNotifications?: NotificationOrderByRelationAggregateInput
     facultyAttendanceSessions?: FacultyAttendanceSessionOrderByRelationAggregateInput
     markedStudentAttendances?: StudentAttendanceOrderByRelationAggregateInput
     managedBranch?: BranchOrderByWithRelationInput
@@ -27351,6 +27589,7 @@ export namespace Prisma {
     loginEvents?: LoginEventListRelationFilter
     passwordResetTokens?: PasswordResetTokenListRelationFilter
     batchFacultyAssignments?: BatchFacultyAssignmentListRelationFilter
+    targetedNotifications?: NotificationListRelationFilter
     facultyAttendanceSessions?: FacultyAttendanceSessionListRelationFilter
     markedStudentAttendances?: StudentAttendanceListRelationFilter
     managedBranch?: XOR<BranchNullableScalarRelationFilter, BranchWhereInput> | null
@@ -27626,6 +27865,7 @@ export namespace Prisma {
     title?: StringFilter<"Notification"> | string
     message?: StringFilter<"Notification"> | string
     actionLabel?: StringNullableFilter<"Notification"> | string | null
+    targetUserId?: StringNullableFilter<"Notification"> | string | null
     targetBranchId?: StringNullableFilter<"Notification"> | string | null
     targetBranchEmail?: StringNullableFilter<"Notification"> | string | null
     targetBranchName?: StringNullableFilter<"Notification"> | string | null
@@ -27634,6 +27874,7 @@ export namespace Prisma {
     createdBy?: StringNullableFilter<"Notification"> | string | null
     createdAt?: DateTimeFilter<"Notification"> | Date | string
     updatedAt?: DateTimeFilter<"Notification"> | Date | string
+    targetUser?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
   }
 
   export type NotificationOrderByWithRelationInput = {
@@ -27643,6 +27884,7 @@ export namespace Prisma {
     title?: SortOrder
     message?: SortOrder
     actionLabel?: SortOrderInput | SortOrder
+    targetUserId?: SortOrderInput | SortOrder
     targetBranchId?: SortOrderInput | SortOrder
     targetBranchEmail?: SortOrderInput | SortOrder
     targetBranchName?: SortOrderInput | SortOrder
@@ -27651,6 +27893,7 @@ export namespace Prisma {
     createdBy?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    targetUser?: UserOrderByWithRelationInput
   }
 
   export type NotificationWhereUniqueInput = Prisma.AtLeast<{
@@ -27663,6 +27906,7 @@ export namespace Prisma {
     title?: StringFilter<"Notification"> | string
     message?: StringFilter<"Notification"> | string
     actionLabel?: StringNullableFilter<"Notification"> | string | null
+    targetUserId?: StringNullableFilter<"Notification"> | string | null
     targetBranchId?: StringNullableFilter<"Notification"> | string | null
     targetBranchEmail?: StringNullableFilter<"Notification"> | string | null
     targetBranchName?: StringNullableFilter<"Notification"> | string | null
@@ -27671,6 +27915,7 @@ export namespace Prisma {
     createdBy?: StringNullableFilter<"Notification"> | string | null
     createdAt?: DateTimeFilter<"Notification"> | Date | string
     updatedAt?: DateTimeFilter<"Notification"> | Date | string
+    targetUser?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
   }, "id">
 
   export type NotificationOrderByWithAggregationInput = {
@@ -27680,6 +27925,7 @@ export namespace Prisma {
     title?: SortOrder
     message?: SortOrder
     actionLabel?: SortOrderInput | SortOrder
+    targetUserId?: SortOrderInput | SortOrder
     targetBranchId?: SortOrderInput | SortOrder
     targetBranchEmail?: SortOrderInput | SortOrder
     targetBranchName?: SortOrderInput | SortOrder
@@ -27703,6 +27949,7 @@ export namespace Prisma {
     title?: StringWithAggregatesFilter<"Notification"> | string
     message?: StringWithAggregatesFilter<"Notification"> | string
     actionLabel?: StringNullableWithAggregatesFilter<"Notification"> | string | null
+    targetUserId?: StringNullableWithAggregatesFilter<"Notification"> | string | null
     targetBranchId?: StringNullableWithAggregatesFilter<"Notification"> | string | null
     targetBranchEmail?: StringNullableWithAggregatesFilter<"Notification"> | string | null
     targetBranchName?: StringNullableWithAggregatesFilter<"Notification"> | string | null
@@ -27987,6 +28234,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"BranchCourse"> | Date | string
     updatedAt?: DateTimeFilter<"BranchCourse"> | Date | string
     branch?: XOR<BranchScalarRelationFilter, BranchWhereInput>
+    branchFaculties?: BranchFacultyListRelationFilter
   }
 
   export type BranchCourseOrderByWithRelationInput = {
@@ -28009,6 +28257,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     branch?: BranchOrderByWithRelationInput
+    branchFaculties?: BranchFacultyOrderByRelationAggregateInput
   }
 
   export type BranchCourseWhereUniqueInput = Prisma.AtLeast<{
@@ -28036,6 +28285,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"BranchCourse"> | Date | string
     updatedAt?: DateTimeFilter<"BranchCourse"> | Date | string
     branch?: XOR<BranchScalarRelationFilter, BranchWhereInput>
+    branchFaculties?: BranchFacultyListRelationFilter
   }, "id" | "branchId_nameKey" | "branchId_courseCode">
 
   export type BranchCourseOrderByWithAggregationInput = {
@@ -29229,6 +29479,7 @@ export namespace Prisma {
     city?: StringNullableFilter<"BranchFaculty"> | string | null
     address?: StringNullableFilter<"BranchFaculty"> | string | null
     courseId?: StringNullableFilter<"BranchFaculty"> | string | null
+    branchCourseId?: StringNullableFilter<"BranchFaculty"> | string | null
     status?: EnumRecordStatusFilter<"BranchFaculty"> | $Enums.RecordStatus
     createdBy?: StringNullableFilter<"BranchFaculty"> | string | null
     updatedBy?: StringNullableFilter<"BranchFaculty"> | string | null
@@ -29236,6 +29487,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"BranchFaculty"> | Date | string
     branch?: XOR<BranchScalarRelationFilter, BranchWhereInput>
     course?: XOR<CourseNullableScalarRelationFilter, CourseWhereInput> | null
+    branchCourse?: XOR<BranchCourseNullableScalarRelationFilter, BranchCourseWhereInput> | null
   }
 
   export type BranchFacultyOrderByWithRelationInput = {
@@ -29252,6 +29504,7 @@ export namespace Prisma {
     city?: SortOrderInput | SortOrder
     address?: SortOrderInput | SortOrder
     courseId?: SortOrderInput | SortOrder
+    branchCourseId?: SortOrderInput | SortOrder
     status?: SortOrder
     createdBy?: SortOrderInput | SortOrder
     updatedBy?: SortOrderInput | SortOrder
@@ -29259,6 +29512,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     branch?: BranchOrderByWithRelationInput
     course?: CourseOrderByWithRelationInput
+    branchCourse?: BranchCourseOrderByWithRelationInput
   }
 
   export type BranchFacultyWhereUniqueInput = Prisma.AtLeast<{
@@ -29280,6 +29534,7 @@ export namespace Prisma {
     city?: StringNullableFilter<"BranchFaculty"> | string | null
     address?: StringNullableFilter<"BranchFaculty"> | string | null
     courseId?: StringNullableFilter<"BranchFaculty"> | string | null
+    branchCourseId?: StringNullableFilter<"BranchFaculty"> | string | null
     status?: EnumRecordStatusFilter<"BranchFaculty"> | $Enums.RecordStatus
     createdBy?: StringNullableFilter<"BranchFaculty"> | string | null
     updatedBy?: StringNullableFilter<"BranchFaculty"> | string | null
@@ -29287,6 +29542,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"BranchFaculty"> | Date | string
     branch?: XOR<BranchScalarRelationFilter, BranchWhereInput>
     course?: XOR<CourseNullableScalarRelationFilter, CourseWhereInput> | null
+    branchCourse?: XOR<BranchCourseNullableScalarRelationFilter, BranchCourseWhereInput> | null
   }, "id" | "branchId_facultyId" | "branchId_email">
 
   export type BranchFacultyOrderByWithAggregationInput = {
@@ -29303,6 +29559,7 @@ export namespace Prisma {
     city?: SortOrderInput | SortOrder
     address?: SortOrderInput | SortOrder
     courseId?: SortOrderInput | SortOrder
+    branchCourseId?: SortOrderInput | SortOrder
     status?: SortOrder
     createdBy?: SortOrderInput | SortOrder
     updatedBy?: SortOrderInput | SortOrder
@@ -29330,6 +29587,7 @@ export namespace Prisma {
     city?: StringNullableWithAggregatesFilter<"BranchFaculty"> | string | null
     address?: StringNullableWithAggregatesFilter<"BranchFaculty"> | string | null
     courseId?: StringNullableWithAggregatesFilter<"BranchFaculty"> | string | null
+    branchCourseId?: StringNullableWithAggregatesFilter<"BranchFaculty"> | string | null
     status?: EnumRecordStatusWithAggregatesFilter<"BranchFaculty"> | $Enums.RecordStatus
     createdBy?: StringNullableWithAggregatesFilter<"BranchFaculty"> | string | null
     updatedBy?: StringNullableWithAggregatesFilter<"BranchFaculty"> | string | null
@@ -29362,6 +29620,7 @@ export namespace Prisma {
     loginEvents?: LoginEventCreateNestedManyWithoutUserInput
     passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
     batchFacultyAssignments?: BatchFacultyAssignmentCreateNestedManyWithoutFacultyInput
+    targetedNotifications?: NotificationCreateNestedManyWithoutTargetUserInput
     facultyAttendanceSessions?: FacultyAttendanceSessionCreateNestedManyWithoutFacultyUserInput
     markedStudentAttendances?: StudentAttendanceCreateNestedManyWithoutFacultyUserInput
     managedBranch?: BranchCreateNestedOneWithoutAdminUserInput
@@ -29392,6 +29651,7 @@ export namespace Prisma {
     loginEvents?: LoginEventUncheckedCreateNestedManyWithoutUserInput
     passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
     batchFacultyAssignments?: BatchFacultyAssignmentUncheckedCreateNestedManyWithoutFacultyInput
+    targetedNotifications?: NotificationUncheckedCreateNestedManyWithoutTargetUserInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedCreateNestedManyWithoutFacultyUserInput
     markedStudentAttendances?: StudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
     managedBranch?: BranchUncheckedCreateNestedOneWithoutAdminUserInput
@@ -29422,6 +29682,7 @@ export namespace Prisma {
     loginEvents?: LoginEventUpdateManyWithoutUserNestedInput
     passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
     batchFacultyAssignments?: BatchFacultyAssignmentUpdateManyWithoutFacultyNestedInput
+    targetedNotifications?: NotificationUpdateManyWithoutTargetUserNestedInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUpdateManyWithoutFacultyUserNestedInput
     markedStudentAttendances?: StudentAttendanceUpdateManyWithoutFacultyUserNestedInput
     managedBranch?: BranchUpdateOneWithoutAdminUserNestedInput
@@ -29452,6 +29713,7 @@ export namespace Prisma {
     loginEvents?: LoginEventUncheckedUpdateManyWithoutUserNestedInput
     passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
     batchFacultyAssignments?: BatchFacultyAssignmentUncheckedUpdateManyWithoutFacultyNestedInput
+    targetedNotifications?: NotificationUncheckedUpdateManyWithoutTargetUserNestedInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserNestedInput
     markedStudentAttendances?: StudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
     managedBranch?: BranchUncheckedUpdateOneWithoutAdminUserNestedInput
@@ -29785,6 +30047,7 @@ export namespace Prisma {
     createdBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    targetUser?: UserCreateNestedOneWithoutTargetedNotificationsInput
   }
 
   export type NotificationUncheckedCreateInput = {
@@ -29794,6 +30057,7 @@ export namespace Prisma {
     title: string
     message: string
     actionLabel?: string | null
+    targetUserId?: string | null
     targetBranchId?: string | null
     targetBranchEmail?: string | null
     targetBranchName?: string | null
@@ -29819,6 +30083,7 @@ export namespace Prisma {
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    targetUser?: UserUpdateOneWithoutTargetedNotificationsNestedInput
   }
 
   export type NotificationUncheckedUpdateInput = {
@@ -29828,6 +30093,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     message?: StringFieldUpdateOperationsInput | string
     actionLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    targetUserId?: NullableStringFieldUpdateOperationsInput | string | null
     targetBranchId?: NullableStringFieldUpdateOperationsInput | string | null
     targetBranchEmail?: NullableStringFieldUpdateOperationsInput | string | null
     targetBranchName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -29845,6 +30111,7 @@ export namespace Prisma {
     title: string
     message: string
     actionLabel?: string | null
+    targetUserId?: string | null
     targetBranchId?: string | null
     targetBranchEmail?: string | null
     targetBranchName?: string | null
@@ -29879,6 +30146,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     message?: StringFieldUpdateOperationsInput | string
     actionLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    targetUserId?: NullableStringFieldUpdateOperationsInput | string | null
     targetBranchId?: NullableStringFieldUpdateOperationsInput | string | null
     targetBranchEmail?: NullableStringFieldUpdateOperationsInput | string | null
     targetBranchName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -30211,6 +30479,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     branch: BranchCreateNestedOneWithoutBranchCoursesInput
+    branchFaculties?: BranchFacultyCreateNestedManyWithoutBranchCourseInput
   }
 
   export type BranchCourseUncheckedCreateInput = {
@@ -30232,6 +30501,7 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutBranchCourseInput
   }
 
   export type BranchCourseUpdateInput = {
@@ -30253,6 +30523,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     branch?: BranchUpdateOneRequiredWithoutBranchCoursesNestedInput
+    branchFaculties?: BranchFacultyUpdateManyWithoutBranchCourseNestedInput
   }
 
   export type BranchCourseUncheckedUpdateInput = {
@@ -30274,6 +30545,7 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutBranchCourseNestedInput
   }
 
   export type BranchCourseCreateManyInput = {
@@ -31650,6 +31922,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     branch: BranchCreateNestedOneWithoutBranchFacultiesInput
     course?: CourseCreateNestedOneWithoutBranchFacultiesInput
+    branchCourse?: BranchCourseCreateNestedOneWithoutBranchFacultiesInput
   }
 
   export type BranchFacultyUncheckedCreateInput = {
@@ -31666,6 +31939,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     courseId?: string | null
+    branchCourseId?: string | null
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -31692,6 +31966,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     branch?: BranchUpdateOneRequiredWithoutBranchFacultiesNestedInput
     course?: CourseUpdateOneWithoutBranchFacultiesNestedInput
+    branchCourse?: BranchCourseUpdateOneWithoutBranchFacultiesNestedInput
   }
 
   export type BranchFacultyUncheckedUpdateInput = {
@@ -31708,6 +31983,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     courseId?: NullableStringFieldUpdateOperationsInput | string | null
+    branchCourseId?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -31729,6 +32005,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     courseId?: string | null
+    branchCourseId?: string | null
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -31769,6 +32046,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     courseId?: NullableStringFieldUpdateOperationsInput | string | null
+    branchCourseId?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -31869,6 +32147,12 @@ export namespace Prisma {
     none?: BatchFacultyAssignmentWhereInput
   }
 
+  export type NotificationListRelationFilter = {
+    every?: NotificationWhereInput
+    some?: NotificationWhereInput
+    none?: NotificationWhereInput
+  }
+
   export type FacultyAttendanceSessionListRelationFilter = {
     every?: FacultyAttendanceSessionWhereInput
     some?: FacultyAttendanceSessionWhereInput
@@ -31900,6 +32184,10 @@ export namespace Prisma {
   }
 
   export type BatchFacultyAssignmentOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type NotificationOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -32320,6 +32608,7 @@ export namespace Prisma {
     title?: SortOrder
     message?: SortOrder
     actionLabel?: SortOrder
+    targetUserId?: SortOrder
     targetBranchId?: SortOrder
     targetBranchEmail?: SortOrder
     targetBranchName?: SortOrder
@@ -32337,6 +32626,7 @@ export namespace Prisma {
     title?: SortOrder
     message?: SortOrder
     actionLabel?: SortOrder
+    targetUserId?: SortOrder
     targetBranchId?: SortOrder
     targetBranchEmail?: SortOrder
     targetBranchName?: SortOrder
@@ -32354,6 +32644,7 @@ export namespace Prisma {
     title?: SortOrder
     message?: SortOrder
     actionLabel?: SortOrder
+    targetUserId?: SortOrder
     targetBranchId?: SortOrder
     targetBranchEmail?: SortOrder
     targetBranchName?: SortOrder
@@ -33461,6 +33752,11 @@ export namespace Prisma {
     _max?: NestedEnumAttendanceStatusFilter<$PrismaModel>
   }
 
+  export type BranchCourseNullableScalarRelationFilter = {
+    is?: BranchCourseWhereInput | null
+    isNot?: BranchCourseWhereInput | null
+  }
+
   export type BranchFacultyBranchIdFacultyIdCompoundUniqueInput = {
     branchId: string
     facultyId: string
@@ -33485,6 +33781,7 @@ export namespace Prisma {
     city?: SortOrder
     address?: SortOrder
     courseId?: SortOrder
+    branchCourseId?: SortOrder
     status?: SortOrder
     createdBy?: SortOrder
     updatedBy?: SortOrder
@@ -33506,6 +33803,7 @@ export namespace Prisma {
     city?: SortOrder
     address?: SortOrder
     courseId?: SortOrder
+    branchCourseId?: SortOrder
     status?: SortOrder
     createdBy?: SortOrder
     updatedBy?: SortOrder
@@ -33527,6 +33825,7 @@ export namespace Prisma {
     city?: SortOrder
     address?: SortOrder
     courseId?: SortOrder
+    branchCourseId?: SortOrder
     status?: SortOrder
     createdBy?: SortOrder
     updatedBy?: SortOrder
@@ -33553,6 +33852,13 @@ export namespace Prisma {
     connectOrCreate?: BatchFacultyAssignmentCreateOrConnectWithoutFacultyInput | BatchFacultyAssignmentCreateOrConnectWithoutFacultyInput[]
     createMany?: BatchFacultyAssignmentCreateManyFacultyInputEnvelope
     connect?: BatchFacultyAssignmentWhereUniqueInput | BatchFacultyAssignmentWhereUniqueInput[]
+  }
+
+  export type NotificationCreateNestedManyWithoutTargetUserInput = {
+    create?: XOR<NotificationCreateWithoutTargetUserInput, NotificationUncheckedCreateWithoutTargetUserInput> | NotificationCreateWithoutTargetUserInput[] | NotificationUncheckedCreateWithoutTargetUserInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutTargetUserInput | NotificationCreateOrConnectWithoutTargetUserInput[]
+    createMany?: NotificationCreateManyTargetUserInputEnvelope
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
   }
 
   export type FacultyAttendanceSessionCreateNestedManyWithoutFacultyUserInput = {
@@ -33594,6 +33900,13 @@ export namespace Prisma {
     connectOrCreate?: BatchFacultyAssignmentCreateOrConnectWithoutFacultyInput | BatchFacultyAssignmentCreateOrConnectWithoutFacultyInput[]
     createMany?: BatchFacultyAssignmentCreateManyFacultyInputEnvelope
     connect?: BatchFacultyAssignmentWhereUniqueInput | BatchFacultyAssignmentWhereUniqueInput[]
+  }
+
+  export type NotificationUncheckedCreateNestedManyWithoutTargetUserInput = {
+    create?: XOR<NotificationCreateWithoutTargetUserInput, NotificationUncheckedCreateWithoutTargetUserInput> | NotificationCreateWithoutTargetUserInput[] | NotificationUncheckedCreateWithoutTargetUserInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutTargetUserInput | NotificationCreateOrConnectWithoutTargetUserInput[]
+    createMany?: NotificationCreateManyTargetUserInputEnvelope
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
   }
 
   export type FacultyAttendanceSessionUncheckedCreateNestedManyWithoutFacultyUserInput = {
@@ -33690,6 +34003,20 @@ export namespace Prisma {
     deleteMany?: BatchFacultyAssignmentScalarWhereInput | BatchFacultyAssignmentScalarWhereInput[]
   }
 
+  export type NotificationUpdateManyWithoutTargetUserNestedInput = {
+    create?: XOR<NotificationCreateWithoutTargetUserInput, NotificationUncheckedCreateWithoutTargetUserInput> | NotificationCreateWithoutTargetUserInput[] | NotificationUncheckedCreateWithoutTargetUserInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutTargetUserInput | NotificationCreateOrConnectWithoutTargetUserInput[]
+    upsert?: NotificationUpsertWithWhereUniqueWithoutTargetUserInput | NotificationUpsertWithWhereUniqueWithoutTargetUserInput[]
+    createMany?: NotificationCreateManyTargetUserInputEnvelope
+    set?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    disconnect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    delete?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    update?: NotificationUpdateWithWhereUniqueWithoutTargetUserInput | NotificationUpdateWithWhereUniqueWithoutTargetUserInput[]
+    updateMany?: NotificationUpdateManyWithWhereWithoutTargetUserInput | NotificationUpdateManyWithWhereWithoutTargetUserInput[]
+    deleteMany?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
+  }
+
   export type FacultyAttendanceSessionUpdateManyWithoutFacultyUserNestedInput = {
     create?: XOR<FacultyAttendanceSessionCreateWithoutFacultyUserInput, FacultyAttendanceSessionUncheckedCreateWithoutFacultyUserInput> | FacultyAttendanceSessionCreateWithoutFacultyUserInput[] | FacultyAttendanceSessionUncheckedCreateWithoutFacultyUserInput[]
     connectOrCreate?: FacultyAttendanceSessionCreateOrConnectWithoutFacultyUserInput | FacultyAttendanceSessionCreateOrConnectWithoutFacultyUserInput[]
@@ -33768,6 +34095,20 @@ export namespace Prisma {
     update?: BatchFacultyAssignmentUpdateWithWhereUniqueWithoutFacultyInput | BatchFacultyAssignmentUpdateWithWhereUniqueWithoutFacultyInput[]
     updateMany?: BatchFacultyAssignmentUpdateManyWithWhereWithoutFacultyInput | BatchFacultyAssignmentUpdateManyWithWhereWithoutFacultyInput[]
     deleteMany?: BatchFacultyAssignmentScalarWhereInput | BatchFacultyAssignmentScalarWhereInput[]
+  }
+
+  export type NotificationUncheckedUpdateManyWithoutTargetUserNestedInput = {
+    create?: XOR<NotificationCreateWithoutTargetUserInput, NotificationUncheckedCreateWithoutTargetUserInput> | NotificationCreateWithoutTargetUserInput[] | NotificationUncheckedCreateWithoutTargetUserInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutTargetUserInput | NotificationCreateOrConnectWithoutTargetUserInput[]
+    upsert?: NotificationUpsertWithWhereUniqueWithoutTargetUserInput | NotificationUpsertWithWhereUniqueWithoutTargetUserInput[]
+    createMany?: NotificationCreateManyTargetUserInputEnvelope
+    set?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    disconnect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    delete?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    update?: NotificationUpdateWithWhereUniqueWithoutTargetUserInput | NotificationUpdateWithWhereUniqueWithoutTargetUserInput[]
+    updateMany?: NotificationUpdateManyWithWhereWithoutTargetUserInput | NotificationUpdateManyWithWhereWithoutTargetUserInput[]
+    deleteMany?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
   }
 
   export type FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserNestedInput = {
@@ -33974,8 +34315,24 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutLoginEventsInput, UserUpdateWithoutLoginEventsInput>, UserUncheckedUpdateWithoutLoginEventsInput>
   }
 
+  export type UserCreateNestedOneWithoutTargetedNotificationsInput = {
+    create?: XOR<UserCreateWithoutTargetedNotificationsInput, UserUncheckedCreateWithoutTargetedNotificationsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTargetedNotificationsInput
+    connect?: UserWhereUniqueInput
+  }
+
   export type EnumNotificationKindFieldUpdateOperationsInput = {
     set?: $Enums.NotificationKind
+  }
+
+  export type UserUpdateOneWithoutTargetedNotificationsNestedInput = {
+    create?: XOR<UserCreateWithoutTargetedNotificationsInput, UserUncheckedCreateWithoutTargetedNotificationsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTargetedNotificationsInput
+    upsert?: UserUpsertWithoutTargetedNotificationsInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutTargetedNotificationsInput, UserUpdateWithoutTargetedNotificationsInput>, UserUncheckedUpdateWithoutTargetedNotificationsInput>
   }
 
   export type UserCreateNestedOneWithoutPasswordResetTokensInput = {
@@ -34358,12 +34715,54 @@ export namespace Prisma {
     connect?: BranchWhereUniqueInput
   }
 
+  export type BranchFacultyCreateNestedManyWithoutBranchCourseInput = {
+    create?: XOR<BranchFacultyCreateWithoutBranchCourseInput, BranchFacultyUncheckedCreateWithoutBranchCourseInput> | BranchFacultyCreateWithoutBranchCourseInput[] | BranchFacultyUncheckedCreateWithoutBranchCourseInput[]
+    connectOrCreate?: BranchFacultyCreateOrConnectWithoutBranchCourseInput | BranchFacultyCreateOrConnectWithoutBranchCourseInput[]
+    createMany?: BranchFacultyCreateManyBranchCourseInputEnvelope
+    connect?: BranchFacultyWhereUniqueInput | BranchFacultyWhereUniqueInput[]
+  }
+
+  export type BranchFacultyUncheckedCreateNestedManyWithoutBranchCourseInput = {
+    create?: XOR<BranchFacultyCreateWithoutBranchCourseInput, BranchFacultyUncheckedCreateWithoutBranchCourseInput> | BranchFacultyCreateWithoutBranchCourseInput[] | BranchFacultyUncheckedCreateWithoutBranchCourseInput[]
+    connectOrCreate?: BranchFacultyCreateOrConnectWithoutBranchCourseInput | BranchFacultyCreateOrConnectWithoutBranchCourseInput[]
+    createMany?: BranchFacultyCreateManyBranchCourseInputEnvelope
+    connect?: BranchFacultyWhereUniqueInput | BranchFacultyWhereUniqueInput[]
+  }
+
   export type BranchUpdateOneRequiredWithoutBranchCoursesNestedInput = {
     create?: XOR<BranchCreateWithoutBranchCoursesInput, BranchUncheckedCreateWithoutBranchCoursesInput>
     connectOrCreate?: BranchCreateOrConnectWithoutBranchCoursesInput
     upsert?: BranchUpsertWithoutBranchCoursesInput
     connect?: BranchWhereUniqueInput
     update?: XOR<XOR<BranchUpdateToOneWithWhereWithoutBranchCoursesInput, BranchUpdateWithoutBranchCoursesInput>, BranchUncheckedUpdateWithoutBranchCoursesInput>
+  }
+
+  export type BranchFacultyUpdateManyWithoutBranchCourseNestedInput = {
+    create?: XOR<BranchFacultyCreateWithoutBranchCourseInput, BranchFacultyUncheckedCreateWithoutBranchCourseInput> | BranchFacultyCreateWithoutBranchCourseInput[] | BranchFacultyUncheckedCreateWithoutBranchCourseInput[]
+    connectOrCreate?: BranchFacultyCreateOrConnectWithoutBranchCourseInput | BranchFacultyCreateOrConnectWithoutBranchCourseInput[]
+    upsert?: BranchFacultyUpsertWithWhereUniqueWithoutBranchCourseInput | BranchFacultyUpsertWithWhereUniqueWithoutBranchCourseInput[]
+    createMany?: BranchFacultyCreateManyBranchCourseInputEnvelope
+    set?: BranchFacultyWhereUniqueInput | BranchFacultyWhereUniqueInput[]
+    disconnect?: BranchFacultyWhereUniqueInput | BranchFacultyWhereUniqueInput[]
+    delete?: BranchFacultyWhereUniqueInput | BranchFacultyWhereUniqueInput[]
+    connect?: BranchFacultyWhereUniqueInput | BranchFacultyWhereUniqueInput[]
+    update?: BranchFacultyUpdateWithWhereUniqueWithoutBranchCourseInput | BranchFacultyUpdateWithWhereUniqueWithoutBranchCourseInput[]
+    updateMany?: BranchFacultyUpdateManyWithWhereWithoutBranchCourseInput | BranchFacultyUpdateManyWithWhereWithoutBranchCourseInput[]
+    deleteMany?: BranchFacultyScalarWhereInput | BranchFacultyScalarWhereInput[]
+  }
+
+  export type BranchFacultyUncheckedUpdateManyWithoutBranchCourseNestedInput = {
+    create?: XOR<BranchFacultyCreateWithoutBranchCourseInput, BranchFacultyUncheckedCreateWithoutBranchCourseInput> | BranchFacultyCreateWithoutBranchCourseInput[] | BranchFacultyUncheckedCreateWithoutBranchCourseInput[]
+    connectOrCreate?: BranchFacultyCreateOrConnectWithoutBranchCourseInput | BranchFacultyCreateOrConnectWithoutBranchCourseInput[]
+    upsert?: BranchFacultyUpsertWithWhereUniqueWithoutBranchCourseInput | BranchFacultyUpsertWithWhereUniqueWithoutBranchCourseInput[]
+    createMany?: BranchFacultyCreateManyBranchCourseInputEnvelope
+    set?: BranchFacultyWhereUniqueInput | BranchFacultyWhereUniqueInput[]
+    disconnect?: BranchFacultyWhereUniqueInput | BranchFacultyWhereUniqueInput[]
+    delete?: BranchFacultyWhereUniqueInput | BranchFacultyWhereUniqueInput[]
+    connect?: BranchFacultyWhereUniqueInput | BranchFacultyWhereUniqueInput[]
+    update?: BranchFacultyUpdateWithWhereUniqueWithoutBranchCourseInput | BranchFacultyUpdateWithWhereUniqueWithoutBranchCourseInput[]
+    updateMany?: BranchFacultyUpdateManyWithWhereWithoutBranchCourseInput | BranchFacultyUpdateManyWithWhereWithoutBranchCourseInput[]
+    deleteMany?: BranchFacultyScalarWhereInput | BranchFacultyScalarWhereInput[]
   }
 
   export type CourseCreateNestedOneWithoutModulesInput = {
@@ -34826,6 +35225,12 @@ export namespace Prisma {
     connect?: CourseWhereUniqueInput
   }
 
+  export type BranchCourseCreateNestedOneWithoutBranchFacultiesInput = {
+    create?: XOR<BranchCourseCreateWithoutBranchFacultiesInput, BranchCourseUncheckedCreateWithoutBranchFacultiesInput>
+    connectOrCreate?: BranchCourseCreateOrConnectWithoutBranchFacultiesInput
+    connect?: BranchCourseWhereUniqueInput
+  }
+
   export type BranchUpdateOneRequiredWithoutBranchFacultiesNestedInput = {
     create?: XOR<BranchCreateWithoutBranchFacultiesInput, BranchUncheckedCreateWithoutBranchFacultiesInput>
     connectOrCreate?: BranchCreateOrConnectWithoutBranchFacultiesInput
@@ -34842,6 +35247,16 @@ export namespace Prisma {
     delete?: CourseWhereInput | boolean
     connect?: CourseWhereUniqueInput
     update?: XOR<XOR<CourseUpdateToOneWithWhereWithoutBranchFacultiesInput, CourseUpdateWithoutBranchFacultiesInput>, CourseUncheckedUpdateWithoutBranchFacultiesInput>
+  }
+
+  export type BranchCourseUpdateOneWithoutBranchFacultiesNestedInput = {
+    create?: XOR<BranchCourseCreateWithoutBranchFacultiesInput, BranchCourseUncheckedCreateWithoutBranchFacultiesInput>
+    connectOrCreate?: BranchCourseCreateOrConnectWithoutBranchFacultiesInput
+    upsert?: BranchCourseUpsertWithoutBranchFacultiesInput
+    disconnect?: BranchCourseWhereInput | boolean
+    delete?: BranchCourseWhereInput | boolean
+    connect?: BranchCourseWhereUniqueInput
+    update?: XOR<XOR<BranchCourseUpdateToOneWithWhereWithoutBranchFacultiesInput, BranchCourseUpdateWithoutBranchFacultiesInput>, BranchCourseUncheckedUpdateWithoutBranchFacultiesInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -35323,6 +35738,50 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type NotificationCreateWithoutTargetUserInput = {
+    id?: string
+    kind: $Enums.NotificationKind
+    tone?: string
+    title: string
+    message: string
+    actionLabel?: string | null
+    targetBranchId?: string | null
+    targetBranchEmail?: string | null
+    targetBranchName?: string | null
+    read?: boolean
+    readAt?: Date | string | null
+    createdBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type NotificationUncheckedCreateWithoutTargetUserInput = {
+    id?: string
+    kind: $Enums.NotificationKind
+    tone?: string
+    title: string
+    message: string
+    actionLabel?: string | null
+    targetBranchId?: string | null
+    targetBranchEmail?: string | null
+    targetBranchName?: string | null
+    read?: boolean
+    readAt?: Date | string | null
+    createdBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type NotificationCreateOrConnectWithoutTargetUserInput = {
+    where: NotificationWhereUniqueInput
+    create: XOR<NotificationCreateWithoutTargetUserInput, NotificationUncheckedCreateWithoutTargetUserInput>
+  }
+
+  export type NotificationCreateManyTargetUserInputEnvelope = {
+    data: NotificationCreateManyTargetUserInput | NotificationCreateManyTargetUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type FacultyAttendanceSessionCreateWithoutFacultyUserInput = {
     id?: string
     attendanceDate: string
@@ -35548,6 +36007,43 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"BatchFacultyAssignment"> | Date | string
   }
 
+  export type NotificationUpsertWithWhereUniqueWithoutTargetUserInput = {
+    where: NotificationWhereUniqueInput
+    update: XOR<NotificationUpdateWithoutTargetUserInput, NotificationUncheckedUpdateWithoutTargetUserInput>
+    create: XOR<NotificationCreateWithoutTargetUserInput, NotificationUncheckedCreateWithoutTargetUserInput>
+  }
+
+  export type NotificationUpdateWithWhereUniqueWithoutTargetUserInput = {
+    where: NotificationWhereUniqueInput
+    data: XOR<NotificationUpdateWithoutTargetUserInput, NotificationUncheckedUpdateWithoutTargetUserInput>
+  }
+
+  export type NotificationUpdateManyWithWhereWithoutTargetUserInput = {
+    where: NotificationScalarWhereInput
+    data: XOR<NotificationUpdateManyMutationInput, NotificationUncheckedUpdateManyWithoutTargetUserInput>
+  }
+
+  export type NotificationScalarWhereInput = {
+    AND?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
+    OR?: NotificationScalarWhereInput[]
+    NOT?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
+    id?: StringFilter<"Notification"> | string
+    kind?: EnumNotificationKindFilter<"Notification"> | $Enums.NotificationKind
+    tone?: StringFilter<"Notification"> | string
+    title?: StringFilter<"Notification"> | string
+    message?: StringFilter<"Notification"> | string
+    actionLabel?: StringNullableFilter<"Notification"> | string | null
+    targetUserId?: StringNullableFilter<"Notification"> | string | null
+    targetBranchId?: StringNullableFilter<"Notification"> | string | null
+    targetBranchEmail?: StringNullableFilter<"Notification"> | string | null
+    targetBranchName?: StringNullableFilter<"Notification"> | string | null
+    read?: BoolFilter<"Notification"> | boolean
+    readAt?: DateTimeNullableFilter<"Notification"> | Date | string | null
+    createdBy?: StringNullableFilter<"Notification"> | string | null
+    createdAt?: DateTimeFilter<"Notification"> | Date | string
+    updatedAt?: DateTimeFilter<"Notification"> | Date | string
+  }
+
   export type FacultyAttendanceSessionUpsertWithWhereUniqueWithoutFacultyUserInput = {
     where: FacultyAttendanceSessionWhereUniqueInput
     update: XOR<FacultyAttendanceSessionUpdateWithoutFacultyUserInput, FacultyAttendanceSessionUncheckedUpdateWithoutFacultyUserInput>
@@ -35699,6 +36195,7 @@ export namespace Prisma {
     loginEvents?: LoginEventCreateNestedManyWithoutUserInput
     passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
     batchFacultyAssignments?: BatchFacultyAssignmentCreateNestedManyWithoutFacultyInput
+    targetedNotifications?: NotificationCreateNestedManyWithoutTargetUserInput
     facultyAttendanceSessions?: FacultyAttendanceSessionCreateNestedManyWithoutFacultyUserInput
     markedStudentAttendances?: StudentAttendanceCreateNestedManyWithoutFacultyUserInput
   }
@@ -35728,6 +36225,7 @@ export namespace Prisma {
     loginEvents?: LoginEventUncheckedCreateNestedManyWithoutUserInput
     passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
     batchFacultyAssignments?: BatchFacultyAssignmentUncheckedCreateNestedManyWithoutFacultyInput
+    targetedNotifications?: NotificationUncheckedCreateNestedManyWithoutTargetUserInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedCreateNestedManyWithoutFacultyUserInput
     markedStudentAttendances?: StudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
   }
@@ -35837,6 +36335,7 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    branchFaculties?: BranchFacultyCreateNestedManyWithoutBranchCourseInput
   }
 
   export type BranchCourseUncheckedCreateWithoutBranchInput = {
@@ -35857,6 +36356,7 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutBranchCourseInput
   }
 
   export type BranchCourseCreateOrConnectWithoutBranchInput = {
@@ -35887,6 +36387,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     course?: CourseCreateNestedOneWithoutBranchFacultiesInput
+    branchCourse?: BranchCourseCreateNestedOneWithoutBranchFacultiesInput
   }
 
   export type BranchFacultyUncheckedCreateWithoutBranchInput = {
@@ -35902,6 +36403,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     courseId?: string | null
+    branchCourseId?: string | null
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -35955,6 +36457,7 @@ export namespace Prisma {
     loginEvents?: LoginEventUpdateManyWithoutUserNestedInput
     passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
     batchFacultyAssignments?: BatchFacultyAssignmentUpdateManyWithoutFacultyNestedInput
+    targetedNotifications?: NotificationUpdateManyWithoutTargetUserNestedInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUpdateManyWithoutFacultyUserNestedInput
     markedStudentAttendances?: StudentAttendanceUpdateManyWithoutFacultyUserNestedInput
   }
@@ -35984,6 +36487,7 @@ export namespace Prisma {
     loginEvents?: LoginEventUncheckedUpdateManyWithoutUserNestedInput
     passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
     batchFacultyAssignments?: BatchFacultyAssignmentUncheckedUpdateManyWithoutFacultyNestedInput
+    targetedNotifications?: NotificationUncheckedUpdateManyWithoutTargetUserNestedInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserNestedInput
     markedStudentAttendances?: StudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
   }
@@ -36109,6 +36613,7 @@ export namespace Prisma {
     city?: StringNullableFilter<"BranchFaculty"> | string | null
     address?: StringNullableFilter<"BranchFaculty"> | string | null
     courseId?: StringNullableFilter<"BranchFaculty"> | string | null
+    branchCourseId?: StringNullableFilter<"BranchFaculty"> | string | null
     status?: EnumRecordStatusFilter<"BranchFaculty"> | $Enums.RecordStatus
     createdBy?: StringNullableFilter<"BranchFaculty"> | string | null
     updatedBy?: StringNullableFilter<"BranchFaculty"> | string | null
@@ -36140,6 +36645,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
     batchFacultyAssignments?: BatchFacultyAssignmentCreateNestedManyWithoutFacultyInput
+    targetedNotifications?: NotificationCreateNestedManyWithoutTargetUserInput
     facultyAttendanceSessions?: FacultyAttendanceSessionCreateNestedManyWithoutFacultyUserInput
     markedStudentAttendances?: StudentAttendanceCreateNestedManyWithoutFacultyUserInput
     managedBranch?: BranchCreateNestedOneWithoutAdminUserInput
@@ -36169,6 +36675,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
     batchFacultyAssignments?: BatchFacultyAssignmentUncheckedCreateNestedManyWithoutFacultyInput
+    targetedNotifications?: NotificationUncheckedCreateNestedManyWithoutTargetUserInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedCreateNestedManyWithoutFacultyUserInput
     markedStudentAttendances?: StudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
     managedBranch?: BranchUncheckedCreateNestedOneWithoutAdminUserInput
@@ -36214,6 +36721,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
     batchFacultyAssignments?: BatchFacultyAssignmentUpdateManyWithoutFacultyNestedInput
+    targetedNotifications?: NotificationUpdateManyWithoutTargetUserNestedInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUpdateManyWithoutFacultyUserNestedInput
     markedStudentAttendances?: StudentAttendanceUpdateManyWithoutFacultyUserNestedInput
     managedBranch?: BranchUpdateOneWithoutAdminUserNestedInput
@@ -36241,6 +36749,143 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    batchFacultyAssignments?: BatchFacultyAssignmentUncheckedUpdateManyWithoutFacultyNestedInput
+    targetedNotifications?: NotificationUncheckedUpdateManyWithoutTargetUserNestedInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserNestedInput
+    markedStudentAttendances?: StudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
+    managedBranch?: BranchUncheckedUpdateOneWithoutAdminUserNestedInput
+  }
+
+  export type UserCreateWithoutTargetedNotificationsInput = {
+    id?: string
+    userCode: string
+    fullName: string
+    email: string
+    phone?: string | null
+    role: $Enums.UserRole
+    active?: boolean
+    passwordHash: string
+    passwordChangedAt?: Date | string | null
+    refreshTokenVersion?: number
+    failedLoginCount?: number
+    failedLoginWindowExpiresAt?: Date | string | null
+    lockedUntil?: Date | string | null
+    lastLoginAt?: Date | string | null
+    lastLogoutAt?: Date | string | null
+    lastLoginIp?: string | null
+    lastLoginUserAgent?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    loginEvents?: LoginEventCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    batchFacultyAssignments?: BatchFacultyAssignmentCreateNestedManyWithoutFacultyInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionCreateNestedManyWithoutFacultyUserInput
+    markedStudentAttendances?: StudentAttendanceCreateNestedManyWithoutFacultyUserInput
+    managedBranch?: BranchCreateNestedOneWithoutAdminUserInput
+  }
+
+  export type UserUncheckedCreateWithoutTargetedNotificationsInput = {
+    id?: string
+    userCode: string
+    fullName: string
+    email: string
+    phone?: string | null
+    role: $Enums.UserRole
+    active?: boolean
+    passwordHash: string
+    passwordChangedAt?: Date | string | null
+    refreshTokenVersion?: number
+    failedLoginCount?: number
+    failedLoginWindowExpiresAt?: Date | string | null
+    lockedUntil?: Date | string | null
+    lastLoginAt?: Date | string | null
+    lastLogoutAt?: Date | string | null
+    lastLoginIp?: string | null
+    lastLoginUserAgent?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    loginEvents?: LoginEventUncheckedCreateNestedManyWithoutUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    batchFacultyAssignments?: BatchFacultyAssignmentUncheckedCreateNestedManyWithoutFacultyInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedCreateNestedManyWithoutFacultyUserInput
+    markedStudentAttendances?: StudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
+    managedBranch?: BranchUncheckedCreateNestedOneWithoutAdminUserInput
+  }
+
+  export type UserCreateOrConnectWithoutTargetedNotificationsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutTargetedNotificationsInput, UserUncheckedCreateWithoutTargetedNotificationsInput>
+  }
+
+  export type UserUpsertWithoutTargetedNotificationsInput = {
+    update: XOR<UserUpdateWithoutTargetedNotificationsInput, UserUncheckedUpdateWithoutTargetedNotificationsInput>
+    create: XOR<UserCreateWithoutTargetedNotificationsInput, UserUncheckedCreateWithoutTargetedNotificationsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutTargetedNotificationsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutTargetedNotificationsInput, UserUncheckedUpdateWithoutTargetedNotificationsInput>
+  }
+
+  export type UserUpdateWithoutTargetedNotificationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userCode?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refreshTokenVersion?: IntFieldUpdateOperationsInput | number
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    failedLoginWindowExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLogoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginUserAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    loginEvents?: LoginEventUpdateManyWithoutUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    batchFacultyAssignments?: BatchFacultyAssignmentUpdateManyWithoutFacultyNestedInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUpdateManyWithoutFacultyUserNestedInput
+    markedStudentAttendances?: StudentAttendanceUpdateManyWithoutFacultyUserNestedInput
+    managedBranch?: BranchUpdateOneWithoutAdminUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutTargetedNotificationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userCode?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refreshTokenVersion?: IntFieldUpdateOperationsInput | number
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    failedLoginWindowExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLogoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginUserAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    loginEvents?: LoginEventUncheckedUpdateManyWithoutUserNestedInput
     passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
     batchFacultyAssignments?: BatchFacultyAssignmentUncheckedUpdateManyWithoutFacultyNestedInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserNestedInput
@@ -36272,6 +36917,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     loginEvents?: LoginEventCreateNestedManyWithoutUserInput
     batchFacultyAssignments?: BatchFacultyAssignmentCreateNestedManyWithoutFacultyInput
+    targetedNotifications?: NotificationCreateNestedManyWithoutTargetUserInput
     facultyAttendanceSessions?: FacultyAttendanceSessionCreateNestedManyWithoutFacultyUserInput
     markedStudentAttendances?: StudentAttendanceCreateNestedManyWithoutFacultyUserInput
     managedBranch?: BranchCreateNestedOneWithoutAdminUserInput
@@ -36301,6 +36947,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     loginEvents?: LoginEventUncheckedCreateNestedManyWithoutUserInput
     batchFacultyAssignments?: BatchFacultyAssignmentUncheckedCreateNestedManyWithoutFacultyInput
+    targetedNotifications?: NotificationUncheckedCreateNestedManyWithoutTargetUserInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedCreateNestedManyWithoutFacultyUserInput
     markedStudentAttendances?: StudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
     managedBranch?: BranchUncheckedCreateNestedOneWithoutAdminUserInput
@@ -36346,6 +36993,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     loginEvents?: LoginEventUpdateManyWithoutUserNestedInput
     batchFacultyAssignments?: BatchFacultyAssignmentUpdateManyWithoutFacultyNestedInput
+    targetedNotifications?: NotificationUpdateManyWithoutTargetUserNestedInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUpdateManyWithoutFacultyUserNestedInput
     markedStudentAttendances?: StudentAttendanceUpdateManyWithoutFacultyUserNestedInput
     managedBranch?: BranchUpdateOneWithoutAdminUserNestedInput
@@ -36375,6 +37023,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     loginEvents?: LoginEventUncheckedUpdateManyWithoutUserNestedInput
     batchFacultyAssignments?: BatchFacultyAssignmentUncheckedUpdateManyWithoutFacultyNestedInput
+    targetedNotifications?: NotificationUncheckedUpdateManyWithoutTargetUserNestedInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserNestedInput
     markedStudentAttendances?: StudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
     managedBranch?: BranchUncheckedUpdateOneWithoutAdminUserNestedInput
@@ -36767,6 +37416,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     branch: BranchCreateNestedOneWithoutBranchFacultiesInput
+    branchCourse?: BranchCourseCreateNestedOneWithoutBranchFacultiesInput
   }
 
   export type BranchFacultyUncheckedCreateWithoutCourseInput = {
@@ -36782,6 +37432,7 @@ export namespace Prisma {
     stateCode?: string | null
     city?: string | null
     address?: string | null
+    branchCourseId?: string | null
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -37182,6 +37833,58 @@ export namespace Prisma {
     create: XOR<BranchCreateWithoutBranchCoursesInput, BranchUncheckedCreateWithoutBranchCoursesInput>
   }
 
+  export type BranchFacultyCreateWithoutBranchCourseInput = {
+    id?: string
+    facultyId: string
+    name: string
+    email: string
+    phone: string
+    country?: string | null
+    countryCode?: string | null
+    state?: string | null
+    stateCode?: string | null
+    city?: string | null
+    address?: string | null
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branch: BranchCreateNestedOneWithoutBranchFacultiesInput
+    course?: CourseCreateNestedOneWithoutBranchFacultiesInput
+  }
+
+  export type BranchFacultyUncheckedCreateWithoutBranchCourseInput = {
+    id?: string
+    facultyId: string
+    branchId: string
+    name: string
+    email: string
+    phone: string
+    country?: string | null
+    countryCode?: string | null
+    state?: string | null
+    stateCode?: string | null
+    city?: string | null
+    address?: string | null
+    courseId?: string | null
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type BranchFacultyCreateOrConnectWithoutBranchCourseInput = {
+    where: BranchFacultyWhereUniqueInput
+    create: XOR<BranchFacultyCreateWithoutBranchCourseInput, BranchFacultyUncheckedCreateWithoutBranchCourseInput>
+  }
+
+  export type BranchFacultyCreateManyBranchCourseInputEnvelope = {
+    data: BranchFacultyCreateManyBranchCourseInput | BranchFacultyCreateManyBranchCourseInput[]
+    skipDuplicates?: boolean
+  }
+
   export type BranchUpsertWithoutBranchCoursesInput = {
     update: XOR<BranchUpdateWithoutBranchCoursesInput, BranchUncheckedUpdateWithoutBranchCoursesInput>
     create: XOR<BranchCreateWithoutBranchCoursesInput, BranchUncheckedCreateWithoutBranchCoursesInput>
@@ -37237,6 +37940,22 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     courses?: CourseUncheckedUpdateManyWithoutBranchNestedInput
     branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutBranchNestedInput
+  }
+
+  export type BranchFacultyUpsertWithWhereUniqueWithoutBranchCourseInput = {
+    where: BranchFacultyWhereUniqueInput
+    update: XOR<BranchFacultyUpdateWithoutBranchCourseInput, BranchFacultyUncheckedUpdateWithoutBranchCourseInput>
+    create: XOR<BranchFacultyCreateWithoutBranchCourseInput, BranchFacultyUncheckedCreateWithoutBranchCourseInput>
+  }
+
+  export type BranchFacultyUpdateWithWhereUniqueWithoutBranchCourseInput = {
+    where: BranchFacultyWhereUniqueInput
+    data: XOR<BranchFacultyUpdateWithoutBranchCourseInput, BranchFacultyUncheckedUpdateWithoutBranchCourseInput>
+  }
+
+  export type BranchFacultyUpdateManyWithWhereWithoutBranchCourseInput = {
+    where: BranchFacultyScalarWhereInput
+    data: XOR<BranchFacultyUpdateManyMutationInput, BranchFacultyUncheckedUpdateManyWithoutBranchCourseInput>
   }
 
   export type CourseCreateWithoutModulesInput = {
@@ -37747,6 +38466,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     loginEvents?: LoginEventCreateNestedManyWithoutUserInput
     passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    targetedNotifications?: NotificationCreateNestedManyWithoutTargetUserInput
     facultyAttendanceSessions?: FacultyAttendanceSessionCreateNestedManyWithoutFacultyUserInput
     markedStudentAttendances?: StudentAttendanceCreateNestedManyWithoutFacultyUserInput
     managedBranch?: BranchCreateNestedOneWithoutAdminUserInput
@@ -37776,6 +38496,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     loginEvents?: LoginEventUncheckedCreateNestedManyWithoutUserInput
     passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    targetedNotifications?: NotificationUncheckedCreateNestedManyWithoutTargetUserInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedCreateNestedManyWithoutFacultyUserInput
     markedStudentAttendances?: StudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
     managedBranch?: BranchUncheckedCreateNestedOneWithoutAdminUserInput
@@ -37876,6 +38597,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     loginEvents?: LoginEventUpdateManyWithoutUserNestedInput
     passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    targetedNotifications?: NotificationUpdateManyWithoutTargetUserNestedInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUpdateManyWithoutFacultyUserNestedInput
     markedStudentAttendances?: StudentAttendanceUpdateManyWithoutFacultyUserNestedInput
     managedBranch?: BranchUpdateOneWithoutAdminUserNestedInput
@@ -37905,6 +38627,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     loginEvents?: LoginEventUncheckedUpdateManyWithoutUserNestedInput
     passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    targetedNotifications?: NotificationUncheckedUpdateManyWithoutTargetUserNestedInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserNestedInput
     markedStudentAttendances?: StudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
     managedBranch?: BranchUncheckedUpdateOneWithoutAdminUserNestedInput
@@ -39129,6 +39852,7 @@ export namespace Prisma {
     loginEvents?: LoginEventCreateNestedManyWithoutUserInput
     passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
     batchFacultyAssignments?: BatchFacultyAssignmentCreateNestedManyWithoutFacultyInput
+    targetedNotifications?: NotificationCreateNestedManyWithoutTargetUserInput
     markedStudentAttendances?: StudentAttendanceCreateNestedManyWithoutFacultyUserInput
     managedBranch?: BranchCreateNestedOneWithoutAdminUserInput
   }
@@ -39158,6 +39882,7 @@ export namespace Prisma {
     loginEvents?: LoginEventUncheckedCreateNestedManyWithoutUserInput
     passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
     batchFacultyAssignments?: BatchFacultyAssignmentUncheckedCreateNestedManyWithoutFacultyInput
+    targetedNotifications?: NotificationUncheckedCreateNestedManyWithoutTargetUserInput
     markedStudentAttendances?: StudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
     managedBranch?: BranchUncheckedCreateNestedOneWithoutAdminUserInput
   }
@@ -39203,6 +39928,7 @@ export namespace Prisma {
     loginEvents?: LoginEventUpdateManyWithoutUserNestedInput
     passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
     batchFacultyAssignments?: BatchFacultyAssignmentUpdateManyWithoutFacultyNestedInput
+    targetedNotifications?: NotificationUpdateManyWithoutTargetUserNestedInput
     markedStudentAttendances?: StudentAttendanceUpdateManyWithoutFacultyUserNestedInput
     managedBranch?: BranchUpdateOneWithoutAdminUserNestedInput
   }
@@ -39232,6 +39958,7 @@ export namespace Prisma {
     loginEvents?: LoginEventUncheckedUpdateManyWithoutUserNestedInput
     passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
     batchFacultyAssignments?: BatchFacultyAssignmentUncheckedUpdateManyWithoutFacultyNestedInput
+    targetedNotifications?: NotificationUncheckedUpdateManyWithoutTargetUserNestedInput
     markedStudentAttendances?: StudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
     managedBranch?: BranchUncheckedUpdateOneWithoutAdminUserNestedInput
   }
@@ -39356,6 +40083,7 @@ export namespace Prisma {
     loginEvents?: LoginEventCreateNestedManyWithoutUserInput
     passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
     batchFacultyAssignments?: BatchFacultyAssignmentCreateNestedManyWithoutFacultyInput
+    targetedNotifications?: NotificationCreateNestedManyWithoutTargetUserInput
     facultyAttendanceSessions?: FacultyAttendanceSessionCreateNestedManyWithoutFacultyUserInput
     managedBranch?: BranchCreateNestedOneWithoutAdminUserInput
   }
@@ -39385,6 +40113,7 @@ export namespace Prisma {
     loginEvents?: LoginEventUncheckedCreateNestedManyWithoutUserInput
     passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
     batchFacultyAssignments?: BatchFacultyAssignmentUncheckedCreateNestedManyWithoutFacultyInput
+    targetedNotifications?: NotificationUncheckedCreateNestedManyWithoutTargetUserInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedCreateNestedManyWithoutFacultyUserInput
     managedBranch?: BranchUncheckedCreateNestedOneWithoutAdminUserInput
   }
@@ -39531,6 +40260,7 @@ export namespace Prisma {
     loginEvents?: LoginEventUpdateManyWithoutUserNestedInput
     passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
     batchFacultyAssignments?: BatchFacultyAssignmentUpdateManyWithoutFacultyNestedInput
+    targetedNotifications?: NotificationUpdateManyWithoutTargetUserNestedInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUpdateManyWithoutFacultyUserNestedInput
     managedBranch?: BranchUpdateOneWithoutAdminUserNestedInput
   }
@@ -39560,6 +40290,7 @@ export namespace Prisma {
     loginEvents?: LoginEventUncheckedUpdateManyWithoutUserNestedInput
     passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
     batchFacultyAssignments?: BatchFacultyAssignmentUncheckedUpdateManyWithoutFacultyNestedInput
+    targetedNotifications?: NotificationUncheckedUpdateManyWithoutTargetUserNestedInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserNestedInput
     managedBranch?: BranchUncheckedUpdateOneWithoutAdminUserNestedInput
   }
@@ -39690,6 +40421,53 @@ export namespace Prisma {
   export type CourseCreateOrConnectWithoutBranchFacultiesInput = {
     where: CourseWhereUniqueInput
     create: XOR<CourseCreateWithoutBranchFacultiesInput, CourseUncheckedCreateWithoutBranchFacultiesInput>
+  }
+
+  export type BranchCourseCreateWithoutBranchFacultiesInput = {
+    id?: string
+    courseCode: string
+    name: string
+    nameKey: string
+    description?: string | null
+    mode: string
+    duration?: number | null
+    hours?: number | null
+    actualFees?: number | null
+    registrationFees?: number | null
+    discount?: number | null
+    afterDiscount?: number | null
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branch: BranchCreateNestedOneWithoutBranchCoursesInput
+  }
+
+  export type BranchCourseUncheckedCreateWithoutBranchFacultiesInput = {
+    id?: string
+    branchId: string
+    courseCode: string
+    name: string
+    nameKey: string
+    description?: string | null
+    mode: string
+    duration?: number | null
+    hours?: number | null
+    actualFees?: number | null
+    registrationFees?: number | null
+    discount?: number | null
+    afterDiscount?: number | null
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type BranchCourseCreateOrConnectWithoutBranchFacultiesInput = {
+    where: BranchCourseWhereUniqueInput
+    create: XOR<BranchCourseCreateWithoutBranchFacultiesInput, BranchCourseUncheckedCreateWithoutBranchFacultiesInput>
   }
 
   export type BranchUpsertWithoutBranchFacultiesInput = {
@@ -39832,6 +40610,59 @@ export namespace Prisma {
     statusHistory?: CourseStatusHistoryUncheckedUpdateManyWithoutCourseNestedInput
   }
 
+  export type BranchCourseUpsertWithoutBranchFacultiesInput = {
+    update: XOR<BranchCourseUpdateWithoutBranchFacultiesInput, BranchCourseUncheckedUpdateWithoutBranchFacultiesInput>
+    create: XOR<BranchCourseCreateWithoutBranchFacultiesInput, BranchCourseUncheckedCreateWithoutBranchFacultiesInput>
+    where?: BranchCourseWhereInput
+  }
+
+  export type BranchCourseUpdateToOneWithWhereWithoutBranchFacultiesInput = {
+    where?: BranchCourseWhereInput
+    data: XOR<BranchCourseUpdateWithoutBranchFacultiesInput, BranchCourseUncheckedUpdateWithoutBranchFacultiesInput>
+  }
+
+  export type BranchCourseUpdateWithoutBranchFacultiesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    courseCode?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameKey?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    mode?: StringFieldUpdateOperationsInput | string
+    duration?: NullableIntFieldUpdateOperationsInput | number | null
+    hours?: NullableIntFieldUpdateOperationsInput | number | null
+    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
+    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
+    discount?: NullableIntFieldUpdateOperationsInput | number | null
+    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branch?: BranchUpdateOneRequiredWithoutBranchCoursesNestedInput
+  }
+
+  export type BranchCourseUncheckedUpdateWithoutBranchFacultiesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    courseCode?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameKey?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    mode?: StringFieldUpdateOperationsInput | string
+    duration?: NullableIntFieldUpdateOperationsInput | number | null
+    hours?: NullableIntFieldUpdateOperationsInput | number | null
+    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
+    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
+    discount?: NullableIntFieldUpdateOperationsInput | number | null
+    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type LoginEventCreateManyUserInput = {
     id?: string
     eventType: $Enums.LoginEventType
@@ -39864,6 +40695,23 @@ export namespace Prisma {
     releasedBy?: string | null
     createdBy?: string | null
     updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type NotificationCreateManyTargetUserInput = {
+    id?: string
+    kind: $Enums.NotificationKind
+    tone?: string
+    title: string
+    message: string
+    actionLabel?: string | null
+    targetBranchId?: string | null
+    targetBranchEmail?: string | null
+    targetBranchName?: string | null
+    read?: boolean
+    readAt?: Date | string | null
+    createdBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -40001,6 +40849,57 @@ export namespace Prisma {
     releasedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NotificationUpdateWithoutTargetUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    kind?: EnumNotificationKindFieldUpdateOperationsInput | $Enums.NotificationKind
+    tone?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    actionLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    targetBranchId?: NullableStringFieldUpdateOperationsInput | string | null
+    targetBranchEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    targetBranchName?: NullableStringFieldUpdateOperationsInput | string | null
+    read?: BoolFieldUpdateOperationsInput | boolean
+    readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NotificationUncheckedUpdateWithoutTargetUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    kind?: EnumNotificationKindFieldUpdateOperationsInput | $Enums.NotificationKind
+    tone?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    actionLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    targetBranchId?: NullableStringFieldUpdateOperationsInput | string | null
+    targetBranchEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    targetBranchName?: NullableStringFieldUpdateOperationsInput | string | null
+    read?: BoolFieldUpdateOperationsInput | boolean
+    readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NotificationUncheckedUpdateManyWithoutTargetUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    kind?: EnumNotificationKindFieldUpdateOperationsInput | $Enums.NotificationKind
+    tone?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    actionLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    targetBranchId?: NullableStringFieldUpdateOperationsInput | string | null
+    targetBranchEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    targetBranchName?: NullableStringFieldUpdateOperationsInput | string | null
+    read?: BoolFieldUpdateOperationsInput | boolean
+    readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -40153,6 +41052,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     courseId?: string | null
+    branchCourseId?: string | null
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -40278,6 +41178,7 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branchFaculties?: BranchFacultyUpdateManyWithoutBranchCourseNestedInput
   }
 
   export type BranchCourseUncheckedUpdateWithoutBranchInput = {
@@ -40298,6 +41199,7 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutBranchCourseNestedInput
   }
 
   export type BranchCourseUncheckedUpdateManyWithoutBranchInput = {
@@ -40338,6 +41240,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     course?: CourseUpdateOneWithoutBranchFacultiesNestedInput
+    branchCourse?: BranchCourseUpdateOneWithoutBranchFacultiesNestedInput
   }
 
   export type BranchFacultyUncheckedUpdateWithoutBranchInput = {
@@ -40353,6 +41256,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     courseId?: NullableStringFieldUpdateOperationsInput | string | null
+    branchCourseId?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -40373,6 +41277,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     courseId?: NullableStringFieldUpdateOperationsInput | string | null
+    branchCourseId?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -40512,6 +41417,7 @@ export namespace Prisma {
     stateCode?: string | null
     city?: string | null
     address?: string | null
+    branchCourseId?: string | null
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -40904,6 +41810,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     branch?: BranchUpdateOneRequiredWithoutBranchFacultiesNestedInput
+    branchCourse?: BranchCourseUpdateOneWithoutBranchFacultiesNestedInput
   }
 
   export type BranchFacultyUncheckedUpdateWithoutCourseInput = {
@@ -40919,6 +41826,7 @@ export namespace Prisma {
     stateCode?: NullableStringFieldUpdateOperationsInput | string | null
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
+    branchCourseId?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -40939,6 +41847,91 @@ export namespace Prisma {
     stateCode?: NullableStringFieldUpdateOperationsInput | string | null
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
+    branchCourseId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BranchFacultyCreateManyBranchCourseInput = {
+    id?: string
+    facultyId: string
+    branchId: string
+    name: string
+    email: string
+    phone: string
+    country?: string | null
+    countryCode?: string | null
+    state?: string | null
+    stateCode?: string | null
+    city?: string | null
+    address?: string | null
+    courseId?: string | null
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type BranchFacultyUpdateWithoutBranchCourseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    facultyId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    countryCode?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    stateCode?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branch?: BranchUpdateOneRequiredWithoutBranchFacultiesNestedInput
+    course?: CourseUpdateOneWithoutBranchFacultiesNestedInput
+  }
+
+  export type BranchFacultyUncheckedUpdateWithoutBranchCourseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    facultyId?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    countryCode?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    stateCode?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    courseId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BranchFacultyUncheckedUpdateManyWithoutBranchCourseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    facultyId?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    countryCode?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    stateCode?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    courseId?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null

@@ -9,8 +9,13 @@ import {
 
 const router = express.Router();
 
-router.use(authenticate, authorize("SUPER_ADMIN"));
-
+router.use(
+  authenticate,
+  authorize(
+    "SUPER_ADMIN",
+    "FACULTY",
+  ),
+);
 router.get("/", listNotificationsHandler);
 router.patch("/mark-read", markNotificationsAsReadHandler);
 

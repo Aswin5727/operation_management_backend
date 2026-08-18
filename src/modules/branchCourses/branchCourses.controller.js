@@ -1,5 +1,6 @@
 import asyncHandler from "../../common/utils/asyncHandler.js";
 import {
+  assignFacultyToBranchCourse,
   createBranchCourse,
   deleteBranchCourse,
   getBranchCourse,
@@ -45,3 +46,23 @@ export const deleteBranchCourseHandler = asyncHandler(async (req, res) => {
   const course = await deleteBranchCourse(req.params.courseId, req.user);
   return sendSuccess(res, "Branch course deleted successfully", course);
 });
+
+export const assignFacultyToBranchCourseHandler = asyncHandler(
+  async (req, res) => {
+    const facultyIds = Array.isArray(req.body?.facultyIds)
+      ? req.body.facultyIds
+      : [];
+
+    const course = await assignFacultyToBranchCourse(
+      req.params.courseId,
+      facultyIds,
+      req.user,
+    );
+
+    return sendSuccess(
+      res,
+      "Faculty assigned to course successfully",
+      course,
+    );
+  },
+);

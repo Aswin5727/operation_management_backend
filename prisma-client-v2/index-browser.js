@@ -184,6 +184,7 @@ exports.Prisma.NotificationScalarFieldEnum = {
   title: 'title',
   message: 'message',
   actionLabel: 'actionLabel',
+  targetUserId: 'targetUserId',
   targetBranchId: 'targetBranchId',
   targetBranchEmail: 'targetBranchEmail',
   targetBranchName: 'targetBranchName',
@@ -452,6 +453,7 @@ exports.Prisma.BranchFacultyScalarFieldEnum = {
   city: 'city',
   address: 'address',
   courseId: 'courseId',
+  branchCourseId: 'branchCourseId',
   status: 'status',
   createdBy: 'createdBy',
   updatedBy: 'updatedBy',
@@ -512,7 +514,8 @@ exports.LoginEventType = exports.$Enums.LoginEventType = {
 exports.NotificationKind = exports.$Enums.NotificationKind = {
   BRANCH_CREATED: 'BRANCH_CREATED',
   BRANCH_INVITATION_RESENT: 'BRANCH_INVITATION_RESENT',
-  BRANCH_LOGIN: 'BRANCH_LOGIN'
+  BRANCH_LOGIN: 'BRANCH_LOGIN',
+  FACULTY_COURSE_ASSIGNED: 'FACULTY_COURSE_ASSIGNED'
 };
 
 exports.BatchStatus = exports.$Enums.BatchStatus = {

@@ -6,11 +6,15 @@ import {
 } from "./notifications.service.js";
 
 const listNotificationsHandler = asyncHandler(async (req, res) => {
-  const result = await listNotifications(req.query || {});
+  const result = await listNotifications(req.query || {}, req.user || {});
+  const unreadCount = await getUnreadNotificationCount(req.user || {});
 
   res.status(200).json({
     data: result.data,
-    meta: result.meta,
+    meta: {
+      ...result.meta,
+      unreadCount,
+    },
   });
 });
 
@@ -18,8 +22,8 @@ const markNotificationsAsReadHandler = asyncHandler(async (req, res) => {
   const body = req.body || {};
   const notificationIds = Array.isArray(body.notificationIds) ? body.notificationIds : null;
 
-  const result = await markNotificationsAsRead(notificationIds);
-  const unreadCount = await getUnreadNotificationCount();
+  const result = await markNotificationsAsRead(notificationIds, req.user || {});
+  const unreadCount = await getUnreadNotificationCount(req.user || {});
 
   res.status(200).json({
     message: "Notifications updated successfully",

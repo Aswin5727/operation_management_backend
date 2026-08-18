@@ -19,11 +19,19 @@ function createResetTokenArtifacts() {
 
 export async function listBranchFaculty(actorUser, query) {
   const branchProfile = await getCurrentBranchProfile(actorUser);
+
   if (!branchProfile) {
     throw new AppError("Branch profile not found.", 404);
   }
 
-  const { page = 1, limit = 100, sortBy = "createdAt", sortOrder = "desc", search } = query;
+  const {
+    page = 1,
+    limit = 100,
+    sortBy = "createdAt",
+    sortOrder = "desc",
+    search,
+  } = query;
+
   const skip = (Number(page) - 1) * Number(limit);
   const take = Number(limit);
 
@@ -45,18 +53,46 @@ export async function listBranchFaculty(actorUser, query) {
       where,
       skip,
       take,
-      orderBy: { [sortBy]: sortOrder },
+      orderBy: {
+        [sortBy]: sortOrder,
+      },
+
       include: {
         course: {
-          select: { name: true }
-        }
-      }
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+
+        branchCourse: {
+          select: {
+            id: true,
+            courseCode: true,
+            name: true,
+          },
+        },
+      },
     }),
-    prisma.branchFaculty.count({ where }),
+
+    prisma.branchFaculty.count({
+      where,
+    }),
   ]);
 
+  const normalizedData = data.map((faculty) => ({
+    ...faculty,
+
+    // Branch Admin assign panna BranchCourse first priority
+    course:
+      faculty.branchCourse ||
+      faculty.course ||
+      null,
+  }));
+
   return {
-    data,
+    data: normalizedData,
+
     meta: {
       total,
       page: Number(page),
@@ -65,7 +101,6 @@ export async function listBranchFaculty(actorUser, query) {
     },
   };
 }
-
 export async function createBranchFaculty(actorUser, payload) {
   const branchProfile = await getCurrentBranchProfile(actorUser);
   if (!branchProfile) {

@@ -566,3 +566,73 @@ export async function sendBranchWelcomeEmail({
     text,
   });
 }
+
+export async function sendFacultyCourseAssignmentEmail({
+  to,
+  fullName,
+  facultyId,
+  courseName,
+}) {
+  const loginLink = buildLoginLink();
+
+  const safeName = escapeHtml(fullName || "Faculty");
+  const safeFacultyId = escapeHtml(facultyId || "");
+  const safeCourseName = escapeHtml(courseName || "");
+
+  const html = `
+    <div style="font-family: Arial, sans-serif; max-width: 640px; margin: 0 auto; padding: 24px;">
+      <h2>Course Assigned</h2>
+
+      <p>Hello ${safeName},</p>
+
+      <p>
+        A course has been assigned to you in the CISPRO Faculty Portal.
+      </p>
+
+      <p>
+        <strong>Faculty ID:</strong> ${safeFacultyId}
+      </p>
+
+      <p>
+        <strong>Assigned Course:</strong> ${safeCourseName}
+      </p>
+
+      ${
+        loginLink
+          ? `
+            <p>
+              <a href="${loginLink}">
+                Open Faculty Dashboard
+              </a>
+            </p>
+          `
+          : ""
+      }
+
+      <p>
+        Regards,<br />
+        CISPRO Team
+      </p>
+    </div>
+  `;
+
+  const text = [
+    `Hello ${fullName || "Faculty"},`,
+    "",
+    "A course has been assigned to you.",
+    `Faculty ID: ${facultyId || ""}`,
+    `Assigned Course: ${courseName || ""}`,
+    loginLink
+      ? `Faculty Dashboard: ${loginLink}`
+      : null,
+  ]
+    .filter(Boolean)
+    .join("\n");
+
+  return sendEmail({
+    to,
+    subject: `Course Assigned - ${courseName}`,
+    html,
+    text,
+  });
+}
