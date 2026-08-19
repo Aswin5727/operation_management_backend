@@ -17,6 +17,83 @@ function createResetTokenArtifacts() {
   return { resetToken, tokenHash, expiresAt };
 }
 
+function normalizeRelationId(value) {
+  const text = String(value ?? "").trim();
+  return text || null;
+}
+
+async function resolveFacultyCourseLinks(branchId, payload = {}, existing = null) {
+  const hasCourseId = Object.prototype.hasOwnProperty.call(payload, "courseId");
+  const hasBranchCourseId = Object.prototype.hasOwnProperty.call(payload, "branchCourseId");
+
+  const currentCourseId = normalizeRelationId(existing?.courseId);
+  const currentBranchCourseId = normalizeRelationId(existing?.branchCourseId);
+
+  const providedCourseId = normalizeRelationId(payload.courseId);
+  const providedBranchCourseId = normalizeRelationId(payload.branchCourseId);
+
+  let courseId = currentCourseId;
+  let branchCourseId = currentBranchCourseId;
+
+  if (hasCourseId) {
+    if (!providedCourseId) {
+      courseId = currentCourseId;
+      branchCourseId = currentBranchCourseId;
+    } else {
+      const course = await prisma.course.findUnique({
+        where: { id: providedCourseId },
+        select: { id: true },
+      });
+
+      if (course) {
+        courseId = course.id;
+        branchCourseId = null;
+      } else {
+        const branchCourse = await prisma.branchCourse.findFirst({
+          where: {
+            id: providedCourseId,
+            branchId,
+          },
+          select: { id: true },
+        });
+
+        if (branchCourse) {
+          courseId = null;
+          branchCourseId = branchCourse.id;
+        } else {
+          throw new AppError("Selected course not found in this branch.", 404);
+        }
+      }
+    }
+  }
+
+  if (hasBranchCourseId) {
+    if (!providedBranchCourseId) {
+      branchCourseId = currentBranchCourseId;
+    } else {
+      const branchCourse = await prisma.branchCourse.findFirst({
+        where: {
+          id: providedBranchCourseId,
+          branchId,
+        },
+        select: { id: true },
+      });
+
+      if (!branchCourse) {
+        throw new AppError("Selected branch course not found in this branch.", 404);
+      }
+
+      branchCourseId = branchCourse.id;
+      courseId = null;
+    }
+  }
+
+  return {
+    courseId,
+    branchCourseId,
+  };
+}
+
 export async function listBranchFaculty(actorUser, query) {
   const branchProfile = await getCurrentBranchProfile(actorUser);
 
@@ -106,6 +183,7 @@ export async function createBranchFaculty(actorUser, payload) {
   if (!branchProfile) {
     throw new AppError("Branch profile not found.", 404);
   }
+  const courseLinks = await resolveFacultyCourseLinks(branchProfile.id, payload);
 
   const existingId = await prisma.branchFaculty.findUnique({
     where: {
@@ -182,7 +260,8 @@ export async function createBranchFaculty(actorUser, payload) {
         stateCode: payload.stateCode || "",
         city: payload.city || "",
         address: payload.address || "",
-        courseId: payload.courseId || null,
+        courseId: courseLinks.courseId,
+        branchCourseId: courseLinks.branchCourseId,
         status: payload.status ? payload.status.toUpperCase() : "ACTIVE",
         createdBy: actorUser.id,
       },
@@ -229,6 +308,7 @@ export async function updateBranchFaculty(actorUser, branchFacultyId, payload) {
   if (!existing) {
     throw new AppError("Branch faculty not found.", 404);
   }
+  const courseLinks = await resolveFacultyCourseLinks(branchProfile.id, payload, existing);
 
   if (payload.facultyId && payload.facultyId !== existing.facultyId) {
     const existingId = await prisma.branchFaculty.findUnique({
@@ -273,7 +353,8 @@ export async function updateBranchFaculty(actorUser, branchFacultyId, payload) {
       stateCode: payload.stateCode,
       city: payload.city,
       address: payload.address,
-      courseId: payload.courseId !== undefined ? payload.courseId : existing.courseId,
+      courseId: courseLinks.courseId,
+      branchCourseId: courseLinks.branchCourseId,
       status: payload.status ? payload.status.toUpperCase() : undefined,
       updatedBy: actorUser.id,
     },

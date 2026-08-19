@@ -274,6 +274,60 @@ async function ensureUniqueBranchLogin({ branchEmail, branchPhone }, excludeUser
   throw new AppError("Duplicate branch login account", 409);
 }
 
+async function cleanupOrphanBranchAdminLogin(branchEmail) {
+  const normalizedEmail = normalizeString(branchEmail).toLowerCase();
+  if (!normalizedEmail) {
+    return;
+  }
+
+  const orphanUser = await prisma.user.findFirst({
+    where: {
+      email: {
+        equals: normalizedEmail,
+        mode: "insensitive",
+      },
+      role: "BRANCH_ADMIN",
+    },
+    select: {
+      id: true,
+      email: true,
+    },
+  });
+
+  if (!orphanUser) {
+    return;
+  }
+
+  const linkedBranch = await prisma.branch.findFirst({
+    where: {
+      OR: [
+        { adminUserId: orphanUser.id },
+        {
+          branchEmail: {
+            equals: normalizedEmail,
+            mode: "insensitive",
+          },
+        },
+      ],
+    },
+    select: { id: true },
+  });
+
+  if (linkedBranch) {
+    return;
+  }
+
+  await prisma.$transaction(async (tx) => {
+    await tx.passwordResetToken.deleteMany({
+      where: { userId: orphanUser.id },
+    });
+
+    await tx.user.delete({
+      where: { id: orphanUser.id },
+    });
+  });
+}
+
 async function loadBranch(branchId) {
   return prisma.branch.findUnique({
     where: { id: branchId },
@@ -377,6 +431,7 @@ export async function listBranches(query = {}) {
 
 export async function createBranch(payload, actor) {
   const parsed = buildBranchPayload(payload);
+  await cleanupOrphanBranchAdminLogin(parsed.branchEmail);
   await ensureUniqueBranchProfile(parsed);
   await ensureUniqueBranchLogin(parsed);
 
@@ -488,13 +543,29 @@ export async function deleteBranch(branchRecordId) {
   }
 
   await prisma.$transaction(async (tx) => {
-    if (existing.adminUserId) {
+    const adminUser = existing.adminUserId
+      ? await tx.user.findUnique({
+          where: { id: existing.adminUserId },
+          select: { id: true },
+        })
+      : await tx.user.findFirst({
+          where: {
+            email: {
+              equals: existing.branchEmail,
+              mode: "insensitive",
+            },
+            role: "BRANCH_ADMIN",
+          },
+          select: { id: true },
+        });
+
+    if (adminUser) {
       await tx.passwordResetToken.deleteMany({
-        where: { userId: existing.adminUserId },
+        where: { userId: adminUser.id },
       });
 
       await tx.user.delete({
-        where: { id: existing.adminUserId },
+        where: { id: adminUser.id },
       });
     }
 
