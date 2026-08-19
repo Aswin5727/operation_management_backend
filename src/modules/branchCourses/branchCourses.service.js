@@ -442,7 +442,7 @@ export async function deleteBranchCourse(courseId, actor) {
 }
 
 
-  export async function assignFacultyToBranchCourse(
+export async function assignFacultyToBranchCourse(
   courseId,
   facultyIds = [],
   actor,
@@ -475,9 +475,18 @@ export async function deleteBranchCourse(courseId, actor) {
   const facultyRows = await prisma.branchFaculty.findMany({
     where: {
       branchId: branchProfile.id,
-      facultyId: {
-        in: normalizedFacultyIds,
-      },
+      OR: [
+        {
+          id: {
+            in: normalizedFacultyIds,
+          },
+        },
+        {
+          facultyId: {
+            in: normalizedFacultyIds,
+          },
+        },
+      ],
     },
     select: {
       id: true,
@@ -488,7 +497,23 @@ export async function deleteBranchCourse(courseId, actor) {
     },
   });
 
-  if (facultyRows.length !== normalizedFacultyIds.length) {
+  const resolvedFacultyRows = [];
+  const unresolvedFacultyIds = [];
+
+  for (const facultyId of normalizedFacultyIds) {
+    const matchedFaculty = facultyRows.find((faculty) => faculty.id === facultyId || faculty.facultyId === facultyId);
+
+    if (!matchedFaculty) {
+      unresolvedFacultyIds.push(facultyId);
+      continue;
+    }
+
+    if (!resolvedFacultyRows.some((faculty) => faculty.id === matchedFaculty.id)) {
+      resolvedFacultyRows.push(matchedFaculty);
+    }
+  }
+
+  if (unresolvedFacultyIds.length) {
     throw new AppError(
       "One or more selected faculty members were not found in this branch.",
       400,
@@ -511,12 +536,12 @@ export async function deleteBranchCourse(courseId, actor) {
     });
 
     // Assign selected faculty to this course.
-    if (normalizedFacultyIds.length) {
+    if (resolvedFacultyRows.length) {
       await tx.branchFaculty.updateMany({
         where: {
           branchId: branchProfile.id,
-          facultyId: {
-            in: normalizedFacultyIds,
+          id: {
+            in: resolvedFacultyRows.map((faculty) => faculty.id),
           },
         },
         data: {
@@ -527,7 +552,7 @@ export async function deleteBranchCourse(courseId, actor) {
     }
 
     // Create faculty notifications.
-    for (const faculty of facultyRows) {
+    for (const faculty of resolvedFacultyRows) {
       const facultyUser = await tx.user.findUnique({
         where: {
           email: faculty.email,
