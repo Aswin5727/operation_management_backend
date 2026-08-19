@@ -20,10 +20,7 @@ router.use(authorize(USER_ROLES.BRANCH_ADMIN, USER_ROLES.SUPER_ADMIN));
 router.get("/", listBranchCoursesHandler);
 router.post("/", createBranchCourseHandler);
 router.get("/:courseId", getBranchCourseHandler);
-router.patch(
-  "/:courseId/assign-faculty",
-  assignFacultyToBranchCourseHandler,
-);
+router.patch("/:courseId",updateBranchCourseHandler);
 router.delete("/:courseId", deleteBranchCourseHandler);
 
 export default router;

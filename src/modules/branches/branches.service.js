@@ -603,36 +603,42 @@ export async function getCurrentBranchProfile(user) {
   const userId = normalizeString(user?.userId || user?.id);
   const normalizedEmail = normalizeString(user?.email).toLowerCase();
 
-  const branch = userId
-    ? await prisma.branch.findFirst({
-        where: {
-          adminUserId: userId,
-        },
-        include: {
-          adminUser: {
-            select: {
-              passwordChangedAt: true,
-              lastLoginAt: true,
-            },
+  let branch = null;
+
+  if (userId) {
+    branch = await prisma.branch.findFirst({
+      where: {
+        adminUserId: userId,
+      },
+      include: {
+        adminUser: {
+          select: {
+            passwordChangedAt: true,
+            lastLoginAt: true,
           },
         },
-      })
-    : await prisma.branch.findFirst({
-        where: {
-          branchEmail: {
-            equals: normalizedEmail,
-            mode: "insensitive",
+      },
+    });
+  }
+
+  if (!branch && normalizedEmail) {
+    branch = await prisma.branch.findFirst({
+      where: {
+        branchEmail: {
+          equals: normalizedEmail,
+          mode: "insensitive",
+        },
+      },
+      include: {
+        adminUser: {
+          select: {
+            passwordChangedAt: true,
+            lastLoginAt: true,
           },
         },
-        include: {
-          adminUser: {
-            select: {
-              passwordChangedAt: true,
-              lastLoginAt: true,
-            },
-          },
-        },
-      });
+      },
+    });
+  }
 
   if (!branch) {
     throw new AppError("Branch profile not found", 404);
