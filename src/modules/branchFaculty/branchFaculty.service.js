@@ -10,6 +10,62 @@ function generateTemporaryPassword() {
   return crypto.randomBytes(9).toString("base64url");
 }
 
+function normalizeString(value) {
+  return String(value ?? "").trim();
+}
+
+export function parseBranchFacultyPayload(rawPayload = {}, defaults = {}) {
+  const source = { ...defaults, ...(rawPayload || {}) };
+
+  const facultyId = normalizeString(source.facultyId);
+  const name = normalizeString(source.name);
+  const email = normalizeString(source.email).toLowerCase();
+  const phone = normalizeString(source.phone);
+  const status = normalizeString(source.status || "ACTIVE").toUpperCase();
+
+  if (!facultyId) {
+    throw new AppError("Faculty ID is required", 400);
+  }
+
+  if (!name) {
+    throw new AppError("Faculty name is required", 400);
+  }
+
+  if (!email) {
+    throw new AppError("Faculty email is required", 400);
+  }
+
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    throw new AppError("Enter a valid faculty email address", 400);
+  }
+
+  if (!phone) {
+    throw new AppError("Faculty phone is required", 400);
+  }
+
+  if (!/^\d{10}$/.test(phone)) {
+    throw new AppError("Enter a valid 10-digit faculty phone number", 400);
+  }
+
+  if (!['ACTIVE', 'INACTIVE'].includes(status)) {
+    throw new AppError("Invalid faculty status", 400);
+  }
+
+  return {
+    facultyId,
+    name,
+    email,
+    phone,
+    country: normalizeString(source.country),
+    countryCode: normalizeString(source.countryCode),
+    state: normalizeString(source.state),
+    stateCode: normalizeString(source.stateCode),
+    city: normalizeString(source.city),
+    address: normalizeString(source.address),
+    status,
+  };
+}
+
 function createResetTokenArtifacts() {
   const resetToken = crypto.randomBytes(32).toString("hex");
   const tokenHash = crypto.createHash("sha256").update(resetToken).digest("hex");
@@ -185,11 +241,14 @@ export async function createBranchFaculty(actorUser, payload) {
   }
   const courseLinks = await resolveFacultyCourseLinks(branchProfile.id, payload);
 
+  const parsed = parseBranchFacultyPayload(payload, { status: "ACTIVE" });
+  const userCode = `${branchProfile.branchId}-${parsed.facultyId}`;
+
   const existingId = await prisma.branchFaculty.findUnique({
     where: {
       branchId_facultyId: {
         branchId: branchProfile.id,
-        facultyId: payload.facultyId,
+        facultyId: parsed.facultyId,
       },
     },
   });
@@ -202,7 +261,7 @@ export async function createBranchFaculty(actorUser, payload) {
     where: {
       branchId_email: {
         branchId: branchProfile.id,
-        email: payload.email,
+        email: parsed.email,
       },
     },
   });
@@ -211,12 +270,17 @@ export async function createBranchFaculty(actorUser, payload) {
     throw new AppError("Email already exists in this branch.", 400);
   }
 
-  const existingUser = await prisma.user.findUnique({
-    where: { email: payload.email }
+  await ensureUniqueBranchFacultyUserIdentity(prisma, {
+    email: parsed.email,
+    phone: parsed.phone,
   });
 
-  if (existingUser) {
-    throw new AppError("This email address is already registered to another account in the system.", 400);
+  const existingUserCode = await prisma.user.findUnique({
+    where: { userCode },
+  });
+
+  if (existingUserCode) {
+    throw new AppError("Faculty ID already exists in the system.", 400);
   }
 
   const temporaryPassword = generateTemporaryPassword();
@@ -226,12 +290,12 @@ export async function createBranchFaculty(actorUser, payload) {
   const created = await prisma.$transaction(async (tx) => {
     const user = await tx.user.create({
       data: {
-        userCode: `${branchProfile.branchId}-${payload.facultyId}`,
-        fullName: payload.name,
-        email: payload.email,
-        phone: payload.phone,
+        userCode,
+        fullName: parsed.name,
+        email: parsed.email,
+        phone: parsed.phone,
         role: "FACULTY",
-        active: (!payload.status || payload.status.toUpperCase() === "ACTIVE"),
+        active: parsed.status === "ACTIVE",
         passwordHash,
         createdBy: actorUser.id,
         updatedBy: actorUser.id,
@@ -278,13 +342,13 @@ export async function createBranchFaculty(actorUser, payload) {
   }
 
   void sendFacultyCredentialsEmail({
-    to: payload.email,
-    fullName: payload.name,
-    facultyId: payload.facultyId,
+    to: parsed.email,
+    fullName: parsed.name,
+    facultyId: parsed.facultyId,
     temporaryPassword,
     resetToken,
     courseName: courseNameContext,
-    batchNames: [], // Optional context
+    batchNames: [],
   }).catch((error) => {
     console.warn("Faculty credentials email failed to send", error);
   });

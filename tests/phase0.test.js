@@ -8,6 +8,10 @@ import {
   createAccessToken,
   verifyAccessToken,
 } from "../src/common/utils/tokens.js";
+import {
+  parseBranchFacultyPayload,
+  ensureUniqueBranchFacultyUserIdentity,
+} from "../src/modules/branchFaculty/branchFaculty.service.js";
 
 test("password hashing and comparison works", async () => {
   const hash = await hashPassword("Secret123!");
@@ -65,4 +69,45 @@ test("login endpoint validates required fields", async () => {
   } finally {
     await new Promise((resolve) => server.close(resolve));
   }
+});
+
+test("branch faculty payload validation rejects missing or malformed fields", () => {
+  assert.throws(() => parseBranchFacultyPayload({}), /Faculty ID is required/i);
+  assert.throws(
+    () => parseBranchFacultyPayload({ facultyId: "FAC-001", name: "Jane", email: "bad-email", phone: "123" }),
+    /valid faculty email address|valid 10-digit faculty phone number/i,
+  );
+});
+
+test("branch faculty payload normalization trims and uppercases values", () => {
+  const payload = parseBranchFacultyPayload({
+    facultyId: " FAC-001 ",
+    name: "  Jane Doe  ",
+    email: " JANE@EXAMPLE.COM ",
+    phone: "9876543210",
+    status: "inactive",
+  });
+
+  assert.equal(payload.facultyId, "FAC-001");
+  assert.equal(payload.name, "Jane Doe");
+  assert.equal(payload.email, "jane@example.com");
+  assert.equal(payload.phone, "9876543210");
+  assert.equal(payload.status, "INACTIVE");
+});
+
+test("branch faculty duplicate phone is rejected before creating user", async () => {
+  const prismaMock = {
+    user: {
+      findFirst: async () => ({
+        id: "user_2",
+        email: "other@example.com",
+        phone: "9876543210",
+      }),
+    },
+  };
+
+  await assert.rejects(
+    () => ensureUniqueBranchFacultyUserIdentity(prismaMock, { email: "jane@example.com", phone: "9876543210" }),
+    /phone number is already registered/i,
+  );
 });
