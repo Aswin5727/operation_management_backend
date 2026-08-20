@@ -318,38 +318,21 @@ export async function sendPasswordResetEmail({ to, resetToken, expiryMinutes = 2
 }
 
 export async function sendStudentCredentialsEmail({ to, fullName, studentCode, temporaryPassword, resetToken }) {
-  console.log(" sendStudentCredentialsEmail called");
-
-  const loginLink = buildLoginLink();
-  const resetLink = buildResetLink(resetToken, temporaryPassword);
   const safeName = escapeHtml(fullName || "Student");
-  const safeCode = escapeHtml(studentCode || "");
-  const safePassword = escapeHtml(temporaryPassword || "");
-
+  const safeCode = escapeHtml(studentCode || "-");
 
   const html = studentTemplate({
     fullName: safeName,
     email: to,
     studentCode: safeCode,
-    temporaryPassword: safePassword,
-    loginLink,
-    resetLink,
   });
 
 
   const textParts = [
-    `CISPRO Student Login Details for ${fullName || "Student"}.`,
-    `Login email: ${to}`,
-    safeCode ? `Student ID: ${studentCode}` : null,
-    `Temporary password: ${temporaryPassword}`,
-    loginLink ? `Login link: ${loginLink}` : null,
-    resetLink ? `Reset link: ${resetLink}` : null,
-    "This reset password link is valid for 1 hour only.",
-    "Use the temporary password to sign in, then change it using the reset link.",
+    `CISPRO Training registration completed for ${safeName}.`,
+    safeCode ? `Student ID: ${safeCode}` : null,
+    `Email: ${to}`,
   ].filter(Boolean);
-
-  console.log("HTML =>");
-  console.log(html);
 
   return sendEmail({
     to,

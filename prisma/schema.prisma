@@ -354,6 +354,7 @@ model StudentProfile {
   studentName            String
   mobileNumber           String       @unique
   emailAddress           String       @unique
+  linkedInUrl            String?
   parentSpouseNumber     String?
   location               String?
   courseId               String?
@@ -408,6 +409,7 @@ model BranchStudent {
   studentName            String
   mobileNumber           String       @unique
   emailAddress           String       @unique
+  linkedInUrl            String?
   parentSpouseNumber     String?
   countryCode            String?
   country                String?
@@ -421,6 +423,7 @@ model BranchStudent {
   designation            String?
   source                 String?
   sourceOther            String?
+  remarks                String?
   admissionDate          String
   recordStatus           RecordStatus @default(ACTIVE)
   createdBy              String?

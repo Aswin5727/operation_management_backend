@@ -33,6 +33,23 @@ function parseOptionalText(value) {
   return text ? text : null;
 }
 
+function parseOptionalUrl(value) {
+  const text = normalizeString(value);
+  if (!text) {
+    return null;
+  }
+
+  try {
+    const url = new URL(text);
+    if (!["http:", "https:"].includes(url.protocol)) {
+      throw new Error("Invalid URL protocol");
+    }
+    return url.toString();
+  } catch {
+    throw new AppError("LinkedIn URL must be a valid http or https URL", 400);
+  }
+}
+
 function parseEmail(value) {
   const email = parseRequiredText(value, "Email address").toLowerCase();
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
@@ -131,14 +148,14 @@ function generateStudentIdFromSequence(sequenceNumber) {
 }
 
 async function generateNextStudentId(branchId) {
-  const existing = await prisma.branchStudent.findMany({
+  const branchStudents = await prisma.branchStudent.findMany({
     where: { branchId },
     select: { studentId: true },
   });
 
   let highest = 0;
 
-  existing.forEach((record) => {
+  branchStudents.forEach((record) => {
     const match = normalizeStudentId(record.studentId).match(/^STU-(\d+)$/i);
     if (!match) return;
 
@@ -149,6 +166,100 @@ async function generateNextStudentId(branchId) {
   });
 
   return generateStudentIdFromSequence(highest + 1);
+}
+
+async function isStudentIdTaken(branchId, studentId) {
+  const normalizedStudentId = normalizeStudentId(studentId);
+
+  if (!normalizedStudentId) {
+    return false;
+  }
+
+  const branchStudent = await prisma.branchStudent.findFirst({
+    where: {
+      branchId,
+      studentId: normalizedStudentId,
+    },
+    select: { id: true },
+  });
+
+  return Boolean(branchStudent);
+}
+
+async function generateUniqueStudentId(branchId) {
+  for (let attempt = 0; attempt < 20; attempt += 1) {
+    const candidate = await generateNextStudentId(branchId);
+    // eslint-disable-next-line no-await-in-loop
+    if (!(await isStudentIdTaken(branchId, candidate))) {
+      return candidate;
+    }
+  }
+
+  throw new AppError("Unable to generate unique student ID", 500);
+}
+
+async function normalizeBranchStudentIdentifiers(branchProfile, actorId = null) {
+  if (!branchProfile?.id) {
+    return [];
+  }
+
+  const branchCode = normalizeString(branchProfile.branchId || branchProfile.branchCode || branchProfile.id).toUpperCase();
+  const rows = await prisma.branchStudent.findMany({
+    where: { branchId: branchProfile.id },
+    orderBy: [{ createdAt: "asc" }, { id: "asc" }],
+  });
+
+  const planned = rows.map((row, index) => ({
+    row,
+    nextStudentId: generateStudentIdFromSequence(index + 1),
+  }));
+
+  const needsMigration = planned.some(({ row, nextStudentId }) => row.studentId !== nextStudentId);
+  if (!needsMigration) {
+    return rows;
+  }
+
+  return prisma.$transaction(async (tx) => {
+    for (const { row, nextStudentId } of planned) {
+      if (row.studentId === nextStudentId) {
+        continue;
+      }
+
+      const loginUser = await tx.user.findFirst({
+        where: {
+          OR: [
+            { email: row.emailAddress },
+            { userCode: row.studentId },
+            { userCode: buildBranchStudentUserCode(branchCode, row.studentId) },
+          ],
+        },
+        select: { id: true },
+      });
+
+      await tx.branchStudent.update({
+        where: { id: row.id },
+        data: {
+          studentId: nextStudentId,
+          updatedBy: actorId,
+        },
+      });
+
+      if (loginUser) {
+        await tx.user.update({
+          where: { id: loginUser.id },
+          data: {
+            userCode: buildBranchStudentUserCode(branchCode, nextStudentId),
+            updatedBy: actorId,
+          },
+        });
+      }
+    }
+
+    return tx.branchStudent.findMany({
+      where: { branchId: branchProfile.id },
+      orderBy: [{ createdAt: "asc" }, { id: "asc" }],
+    });
+  });
 }
 
 function buildBranchStudentPayload(payload = {}, existing = null) {
@@ -163,12 +274,14 @@ function buildBranchStudentPayload(payload = {}, existing = null) {
   const state = parseRequiredText(candidate.state, "State");
   const city = parseRequiredText(candidate.city, "City");
   const address = parseRequiredText(candidate.address, "Address");
+  const linkedInUrl = parseOptionalUrl(candidate.linkedInUrl);
   const qualification = parseRequiredText(candidate.qualification, "Qualification");
   const passedOutYear = parseRequiredText(candidate.passedOutYear, "Passed out year");
   const currentStatus = parseCurrentStatus(candidate.currentStatus);
   const designation = currentStatus === "Employee" ? parseRequiredText(candidate.designation, "Designation") : parseOptionalText(candidate.designation);
   const source = parseRequiredText(candidate.source, "Source");
   const sourceOther = source === "Others" ? parseRequiredText(candidate.sourceOther, "Source details") : parseOptionalText(candidate.sourceOther);
+  const remarks = parseOptionalText(candidate.remarks);
   const admissionDate = parseDateString(candidate.admissionDate, "Admission date");
   const recordStatus = parseStatus(candidate.recordStatus || candidate.status || "ACTIVE");
 
@@ -191,12 +304,14 @@ function buildBranchStudentPayload(payload = {}, existing = null) {
     state,
     city,
     address,
+    linkedInUrl,
     qualification,
     passedOutYear,
     currentStatus,
     designation,
     source,
     sourceOther,
+    remarks,
     admissionDate,
     recordStatus,
   };
@@ -288,12 +403,14 @@ function toBranchStudentSummary(record) {
     state: record.state,
     city: record.city,
     address: record.address,
+    linkedInUrl: record.linkedInUrl,
     qualification: record.qualification,
     passedOutYear: record.passedOutYear,
     currentStatus: record.currentStatus,
     designation: record.designation,
     source: record.source,
     sourceOther: record.sourceOther,
+    remarks: record.remarks,
     admissionDate: record.admissionDate,
     status: displayStatus(record.recordStatus),
     recordStatus: record.recordStatus,
@@ -358,11 +475,18 @@ function createResetTokenArtifacts() {
   return { resetToken, tokenHash, expiresAt };
 }
 
+function buildBranchStudentUserCode(branchCode, studentId) {
+  const safeBranchCode = normalizeString(branchCode).toUpperCase() || "BRANCH";
+  const safeStudentId = normalizeStudentId(studentId);
+  return `${safeBranchCode}-${safeStudentId}`;
+}
+
 async function findBranchStudentLoginUser(student) {
   return prisma.user.findFirst({
     where: {
       OR: [
         { userCode: student.studentId },
+        { userCode: buildBranchStudentUserCode(student.branchId, student.studentId) },
         { email: student.emailAddress },
       ],
     },
@@ -373,14 +497,14 @@ async function ensureBranchStudentAccess(actor, studentId) {
   const branchProfile = await getBranchContext(actor);
 
   if (!branchProfile?.id) {
-    return { branchProfile: null, where: { id: studentId } };
+    return { branchProfile: null, where: { OR: [{ id: studentId }, { studentId }] } };
   }
 
   return {
     branchProfile,
     where: {
-      id: studentId,
       branchId: branchProfile.id,
+      OR: [{ id: studentId }, { studentId }],
     },
   };
 }
@@ -390,6 +514,12 @@ export async function listBranchStudents(query = {}, actor = null) {
   const sortBy = normalizeString(query.sortBy).toLowerCase() || "createdat";
   const sortOrder = parseSortOrder(query.sortOrder);
   const branchProfile = await getBranchContext(actor);
+  const actorId = actor?.id ?? null;
+
+  if (branchProfile?.id) {
+    await normalizeBranchStudentIdentifiers(branchProfile, actorId);
+  }
+
   const where = buildBranchStudentWhere(query, branchProfile);
 
   const [total, rows] = await prisma.$transaction([
@@ -417,7 +547,6 @@ export async function createBranchStudent(payload, actor) {
   }
 
   const parsed = buildBranchStudentPayload(payload);
-  const studentId = normalizeStudentId(payload.studentId) || await generateNextStudentId(branchId);
   const actorId = actor?.id ?? null;
   const temporaryPassword = createTemporaryPassword();
   const passwordHash = await hashPassword(temporaryPassword);
@@ -425,42 +554,68 @@ export async function createBranchStudent(payload, actor) {
 
   await ensureUniqueBranchStudentIdentity(parsed, branchId);
 
-  const created = await prisma.$transaction(async (tx) => {
-    const student = await tx.branchStudent.create({
-      data: {
-        branchId,
-        studentId,
-        ...parsed,
-        createdBy: actorId,
-        updatedBy: actorId,
-      },
-    });
+  const requestedStudentId = normalizeStudentId(payload.studentId);
+  let studentId = requestedStudentId;
+  if (!/^STU-\d+$/i.test(studentId) || await isStudentIdTaken(branchId, studentId)) {
+    studentId = await generateUniqueStudentId(branchId);
+  }
 
-    const user = await tx.user.create({
-      data: {
-        userCode: studentId,
-        fullName: parsed.studentName,
-        email: parsed.emailAddress,
-        phone: parsed.mobileNumber,
-        role: "STUDENT",
-        active: true,
-        passwordHash,
-        createdBy: actorId,
-        updatedBy: actorId,
-      },
-    });
+  let created = null;
 
-    await tx.passwordResetToken.create({
-      data: {
-        userId: user.id,
-        tokenHash,
-        expiresAt,
-        createdBy: actorId,
-      },
-    });
+  for (let attempt = 0; attempt < 2; attempt += 1) {
+    try {
+      // eslint-disable-next-line no-await-in-loop
+      created = await prisma.$transaction(async (tx) => {
+        const student = await tx.branchStudent.create({
+          data: {
+            branchId,
+            studentId,
+            ...parsed,
+            createdBy: actorId,
+            updatedBy: actorId,
+          },
+        });
 
-    return student;
-  });
+        const user = await tx.user.create({
+          data: {
+            userCode: buildBranchStudentUserCode(branchProfile?.branchId || branchId, studentId),
+            fullName: parsed.studentName,
+            email: parsed.emailAddress,
+            phone: parsed.mobileNumber,
+            role: "STUDENT",
+            active: true,
+            passwordHash,
+            createdBy: actorId,
+            updatedBy: actorId,
+          },
+        });
+
+        await tx.passwordResetToken.create({
+          data: {
+            userId: user.id,
+            tokenHash,
+            expiresAt,
+            createdBy: actorId,
+          },
+        });
+
+        return student;
+      });
+      break;
+    } catch (error) {
+      const isStudentCodeConflict =
+        error instanceof Prisma.PrismaClientKnownRequestError &&
+        error.code === "P2002" &&
+        Array.isArray(error.meta?.target) &&
+        error.meta.target.some((field) => field === "studentId" || field === "userCode");
+
+      if (!isStudentCodeConflict || attempt === 1) {
+        throw error;
+      }
+
+      studentId = await generateUniqueStudentId(branchId);
+    }
+  }
 
   void sendStudentCredentialsEmail({
     to: parsed.emailAddress,

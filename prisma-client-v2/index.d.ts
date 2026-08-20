@@ -18253,6 +18253,7 @@ export namespace Prisma {
     studentName: string | null
     mobileNumber: string | null
     emailAddress: string | null
+    linkedInUrl: string | null
     parentSpouseNumber: string | null
     location: string | null
     courseId: string | null
@@ -18298,6 +18299,7 @@ export namespace Prisma {
     studentName: string | null
     mobileNumber: string | null
     emailAddress: string | null
+    linkedInUrl: string | null
     parentSpouseNumber: string | null
     location: string | null
     courseId: string | null
@@ -18343,6 +18345,7 @@ export namespace Prisma {
     studentName: number
     mobileNumber: number
     emailAddress: number
+    linkedInUrl: number
     parentSpouseNumber: number
     location: number
     courseId: number
@@ -18420,6 +18423,7 @@ export namespace Prisma {
     studentName?: true
     mobileNumber?: true
     emailAddress?: true
+    linkedInUrl?: true
     parentSpouseNumber?: true
     location?: true
     courseId?: true
@@ -18465,6 +18469,7 @@ export namespace Prisma {
     studentName?: true
     mobileNumber?: true
     emailAddress?: true
+    linkedInUrl?: true
     parentSpouseNumber?: true
     location?: true
     courseId?: true
@@ -18510,6 +18515,7 @@ export namespace Prisma {
     studentName?: true
     mobileNumber?: true
     emailAddress?: true
+    linkedInUrl?: true
     parentSpouseNumber?: true
     location?: true
     courseId?: true
@@ -18642,6 +18648,7 @@ export namespace Prisma {
     studentName: string
     mobileNumber: string
     emailAddress: string
+    linkedInUrl: string | null
     parentSpouseNumber: string | null
     location: string | null
     courseId: string | null
@@ -18706,6 +18713,7 @@ export namespace Prisma {
     studentName?: boolean
     mobileNumber?: boolean
     emailAddress?: boolean
+    linkedInUrl?: boolean
     parentSpouseNumber?: boolean
     location?: boolean
     courseId?: boolean
@@ -18754,6 +18762,7 @@ export namespace Prisma {
     studentName?: boolean
     mobileNumber?: boolean
     emailAddress?: boolean
+    linkedInUrl?: boolean
     parentSpouseNumber?: boolean
     location?: boolean
     courseId?: boolean
@@ -18800,6 +18809,7 @@ export namespace Prisma {
     studentName?: boolean
     mobileNumber?: boolean
     emailAddress?: boolean
+    linkedInUrl?: boolean
     parentSpouseNumber?: boolean
     location?: boolean
     courseId?: boolean
@@ -18846,6 +18856,7 @@ export namespace Prisma {
     studentName?: boolean
     mobileNumber?: boolean
     emailAddress?: boolean
+    linkedInUrl?: boolean
     parentSpouseNumber?: boolean
     location?: boolean
     courseId?: boolean
@@ -18885,7 +18896,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type StudentProfileOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "studentCode" | "studentName" | "mobileNumber" | "emailAddress" | "parentSpouseNumber" | "location" | "courseId" | "courseInterested" | "facultyId" | "facultyName" | "batchId" | "batchName" | "qualification" | "passedOutYear" | "currentStatus" | "designation" | "source" | "actualFees" | "registrationFees" | "discount" | "afterDiscount" | "installment1" | "installment2" | "installment3" | "installment4" | "totalAmount" | "admissionDate" | "firstInstallmentAmount" | "firstInstallmentDate" | "firstInstallmentStatus" | "firstInstallmentPaidAt" | "secondInstallmentAmount" | "secondDueDate" | "secondInstallmentStatus" | "secondInstallmentPaidAt" | "remarks" | "recordStatus" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["studentProfile"]>
+  export type StudentProfileOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "studentCode" | "studentName" | "mobileNumber" | "emailAddress" | "linkedInUrl" | "parentSpouseNumber" | "location" | "courseId" | "courseInterested" | "facultyId" | "facultyName" | "batchId" | "batchName" | "qualification" | "passedOutYear" | "currentStatus" | "designation" | "source" | "actualFees" | "registrationFees" | "discount" | "afterDiscount" | "installment1" | "installment2" | "installment3" | "installment4" | "totalAmount" | "admissionDate" | "firstInstallmentAmount" | "firstInstallmentDate" | "firstInstallmentStatus" | "firstInstallmentPaidAt" | "secondInstallmentAmount" | "secondDueDate" | "secondInstallmentStatus" | "secondInstallmentPaidAt" | "remarks" | "recordStatus" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["studentProfile"]>
   export type StudentProfileInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     course?: boolean | StudentProfile$courseArgs<ExtArgs>
     attendanceRecords?: boolean | StudentProfile$attendanceRecordsArgs<ExtArgs>
@@ -18910,6 +18921,7 @@ export namespace Prisma {
       studentName: string
       mobileNumber: string
       emailAddress: string
+      linkedInUrl: string | null
       parentSpouseNumber: string | null
       location: string | null
       courseId: string | null
@@ -19377,6 +19389,7 @@ export namespace Prisma {
     readonly studentName: FieldRef<"StudentProfile", 'String'>
     readonly mobileNumber: FieldRef<"StudentProfile", 'String'>
     readonly emailAddress: FieldRef<"StudentProfile", 'String'>
+    readonly linkedInUrl: FieldRef<"StudentProfile", 'String'>
     readonly parentSpouseNumber: FieldRef<"StudentProfile", 'String'>
     readonly location: FieldRef<"StudentProfile", 'String'>
     readonly courseId: FieldRef<"StudentProfile", 'String'>
@@ -19893,6 +19906,7 @@ export namespace Prisma {
     studentName: string | null
     mobileNumber: string | null
     emailAddress: string | null
+    linkedInUrl: string | null
     parentSpouseNumber: string | null
     countryCode: string | null
     country: string | null
@@ -19906,6 +19920,7 @@ export namespace Prisma {
     designation: string | null
     source: string | null
     sourceOther: string | null
+    remarks: string | null
     admissionDate: string | null
     recordStatus: $Enums.RecordStatus | null
     createdBy: string | null
@@ -19921,6 +19936,7 @@ export namespace Prisma {
     studentName: string | null
     mobileNumber: string | null
     emailAddress: string | null
+    linkedInUrl: string | null
     parentSpouseNumber: string | null
     countryCode: string | null
     country: string | null
@@ -19934,6 +19950,7 @@ export namespace Prisma {
     designation: string | null
     source: string | null
     sourceOther: string | null
+    remarks: string | null
     admissionDate: string | null
     recordStatus: $Enums.RecordStatus | null
     createdBy: string | null
@@ -19949,6 +19966,7 @@ export namespace Prisma {
     studentName: number
     mobileNumber: number
     emailAddress: number
+    linkedInUrl: number
     parentSpouseNumber: number
     countryCode: number
     country: number
@@ -19962,6 +19980,7 @@ export namespace Prisma {
     designation: number
     source: number
     sourceOther: number
+    remarks: number
     admissionDate: number
     recordStatus: number
     createdBy: number
@@ -19979,6 +19998,7 @@ export namespace Prisma {
     studentName?: true
     mobileNumber?: true
     emailAddress?: true
+    linkedInUrl?: true
     parentSpouseNumber?: true
     countryCode?: true
     country?: true
@@ -19992,6 +20012,7 @@ export namespace Prisma {
     designation?: true
     source?: true
     sourceOther?: true
+    remarks?: true
     admissionDate?: true
     recordStatus?: true
     createdBy?: true
@@ -20007,6 +20028,7 @@ export namespace Prisma {
     studentName?: true
     mobileNumber?: true
     emailAddress?: true
+    linkedInUrl?: true
     parentSpouseNumber?: true
     countryCode?: true
     country?: true
@@ -20020,6 +20042,7 @@ export namespace Prisma {
     designation?: true
     source?: true
     sourceOther?: true
+    remarks?: true
     admissionDate?: true
     recordStatus?: true
     createdBy?: true
@@ -20035,6 +20058,7 @@ export namespace Prisma {
     studentName?: true
     mobileNumber?: true
     emailAddress?: true
+    linkedInUrl?: true
     parentSpouseNumber?: true
     countryCode?: true
     country?: true
@@ -20048,6 +20072,7 @@ export namespace Prisma {
     designation?: true
     source?: true
     sourceOther?: true
+    remarks?: true
     admissionDate?: true
     recordStatus?: true
     createdBy?: true
@@ -20136,6 +20161,7 @@ export namespace Prisma {
     studentName: string
     mobileNumber: string
     emailAddress: string
+    linkedInUrl: string | null
     parentSpouseNumber: string | null
     countryCode: string | null
     country: string | null
@@ -20149,6 +20175,7 @@ export namespace Prisma {
     designation: string | null
     source: string | null
     sourceOther: string | null
+    remarks: string | null
     admissionDate: string
     recordStatus: $Enums.RecordStatus
     createdBy: string | null
@@ -20181,6 +20208,7 @@ export namespace Prisma {
     studentName?: boolean
     mobileNumber?: boolean
     emailAddress?: boolean
+    linkedInUrl?: boolean
     parentSpouseNumber?: boolean
     countryCode?: boolean
     country?: boolean
@@ -20194,6 +20222,7 @@ export namespace Prisma {
     designation?: boolean
     source?: boolean
     sourceOther?: boolean
+    remarks?: boolean
     admissionDate?: boolean
     recordStatus?: boolean
     createdBy?: boolean
@@ -20210,6 +20239,7 @@ export namespace Prisma {
     studentName?: boolean
     mobileNumber?: boolean
     emailAddress?: boolean
+    linkedInUrl?: boolean
     parentSpouseNumber?: boolean
     countryCode?: boolean
     country?: boolean
@@ -20223,6 +20253,7 @@ export namespace Prisma {
     designation?: boolean
     source?: boolean
     sourceOther?: boolean
+    remarks?: boolean
     admissionDate?: boolean
     recordStatus?: boolean
     createdBy?: boolean
@@ -20239,6 +20270,7 @@ export namespace Prisma {
     studentName?: boolean
     mobileNumber?: boolean
     emailAddress?: boolean
+    linkedInUrl?: boolean
     parentSpouseNumber?: boolean
     countryCode?: boolean
     country?: boolean
@@ -20252,6 +20284,7 @@ export namespace Prisma {
     designation?: boolean
     source?: boolean
     sourceOther?: boolean
+    remarks?: boolean
     admissionDate?: boolean
     recordStatus?: boolean
     createdBy?: boolean
@@ -20268,6 +20301,7 @@ export namespace Prisma {
     studentName?: boolean
     mobileNumber?: boolean
     emailAddress?: boolean
+    linkedInUrl?: boolean
     parentSpouseNumber?: boolean
     countryCode?: boolean
     country?: boolean
@@ -20281,6 +20315,7 @@ export namespace Prisma {
     designation?: boolean
     source?: boolean
     sourceOther?: boolean
+    remarks?: boolean
     admissionDate?: boolean
     recordStatus?: boolean
     createdBy?: boolean
@@ -20289,7 +20324,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type BranchStudentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "branchId" | "studentId" | "studentName" | "mobileNumber" | "emailAddress" | "parentSpouseNumber" | "countryCode" | "country" | "stateCode" | "state" | "city" | "address" | "qualification" | "passedOutYear" | "currentStatus" | "designation" | "source" | "sourceOther" | "admissionDate" | "recordStatus" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["branchStudent"]>
+  export type BranchStudentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "branchId" | "studentId" | "studentName" | "mobileNumber" | "emailAddress" | "linkedInUrl" | "parentSpouseNumber" | "countryCode" | "country" | "stateCode" | "state" | "city" | "address" | "qualification" | "passedOutYear" | "currentStatus" | "designation" | "source" | "sourceOther" | "remarks" | "admissionDate" | "recordStatus" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["branchStudent"]>
   export type BranchStudentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     branch?: boolean | BranchDefaultArgs<ExtArgs>
   }
@@ -20312,6 +20347,7 @@ export namespace Prisma {
       studentName: string
       mobileNumber: string
       emailAddress: string
+      linkedInUrl: string | null
       parentSpouseNumber: string | null
       countryCode: string | null
       country: string | null
@@ -20325,6 +20361,7 @@ export namespace Prisma {
       designation: string | null
       source: string | null
       sourceOther: string | null
+      remarks: string | null
       admissionDate: string
       recordStatus: $Enums.RecordStatus
       createdBy: string | null
@@ -20761,6 +20798,7 @@ export namespace Prisma {
     readonly studentName: FieldRef<"BranchStudent", 'String'>
     readonly mobileNumber: FieldRef<"BranchStudent", 'String'>
     readonly emailAddress: FieldRef<"BranchStudent", 'String'>
+    readonly linkedInUrl: FieldRef<"BranchStudent", 'String'>
     readonly parentSpouseNumber: FieldRef<"BranchStudent", 'String'>
     readonly countryCode: FieldRef<"BranchStudent", 'String'>
     readonly country: FieldRef<"BranchStudent", 'String'>
@@ -20774,6 +20812,7 @@ export namespace Prisma {
     readonly designation: FieldRef<"BranchStudent", 'String'>
     readonly source: FieldRef<"BranchStudent", 'String'>
     readonly sourceOther: FieldRef<"BranchStudent", 'String'>
+    readonly remarks: FieldRef<"BranchStudent", 'String'>
     readonly admissionDate: FieldRef<"BranchStudent", 'String'>
     readonly recordStatus: FieldRef<"BranchStudent", 'RecordStatus'>
     readonly createdBy: FieldRef<"BranchStudent", 'String'>
@@ -28576,6 +28615,7 @@ export namespace Prisma {
     studentName: 'studentName',
     mobileNumber: 'mobileNumber',
     emailAddress: 'emailAddress',
+    linkedInUrl: 'linkedInUrl',
     parentSpouseNumber: 'parentSpouseNumber',
     location: 'location',
     courseId: 'courseId',
@@ -28625,6 +28665,7 @@ export namespace Prisma {
     studentName: 'studentName',
     mobileNumber: 'mobileNumber',
     emailAddress: 'emailAddress',
+    linkedInUrl: 'linkedInUrl',
     parentSpouseNumber: 'parentSpouseNumber',
     countryCode: 'countryCode',
     country: 'country',
@@ -28638,6 +28679,7 @@ export namespace Prisma {
     designation: 'designation',
     source: 'source',
     sourceOther: 'sourceOther',
+    remarks: 'remarks',
     admissionDate: 'admissionDate',
     recordStatus: 'recordStatus',
     createdBy: 'createdBy',
@@ -30292,6 +30334,7 @@ export namespace Prisma {
     studentName?: StringFilter<"StudentProfile"> | string
     mobileNumber?: StringFilter<"StudentProfile"> | string
     emailAddress?: StringFilter<"StudentProfile"> | string
+    linkedInUrl?: StringNullableFilter<"StudentProfile"> | string | null
     parentSpouseNumber?: StringNullableFilter<"StudentProfile"> | string | null
     location?: StringNullableFilter<"StudentProfile"> | string | null
     courseId?: StringNullableFilter<"StudentProfile"> | string | null
@@ -30339,6 +30382,7 @@ export namespace Prisma {
     studentName?: SortOrder
     mobileNumber?: SortOrder
     emailAddress?: SortOrder
+    linkedInUrl?: SortOrderInput | SortOrder
     parentSpouseNumber?: SortOrderInput | SortOrder
     location?: SortOrderInput | SortOrder
     courseId?: SortOrderInput | SortOrder
@@ -30389,6 +30433,7 @@ export namespace Prisma {
     OR?: StudentProfileWhereInput[]
     NOT?: StudentProfileWhereInput | StudentProfileWhereInput[]
     studentName?: StringFilter<"StudentProfile"> | string
+    linkedInUrl?: StringNullableFilter<"StudentProfile"> | string | null
     parentSpouseNumber?: StringNullableFilter<"StudentProfile"> | string | null
     location?: StringNullableFilter<"StudentProfile"> | string | null
     courseId?: StringNullableFilter<"StudentProfile"> | string | null
@@ -30436,6 +30481,7 @@ export namespace Prisma {
     studentName?: SortOrder
     mobileNumber?: SortOrder
     emailAddress?: SortOrder
+    linkedInUrl?: SortOrderInput | SortOrder
     parentSpouseNumber?: SortOrderInput | SortOrder
     location?: SortOrderInput | SortOrder
     courseId?: SortOrderInput | SortOrder
@@ -30489,6 +30535,7 @@ export namespace Prisma {
     studentName?: StringWithAggregatesFilter<"StudentProfile"> | string
     mobileNumber?: StringWithAggregatesFilter<"StudentProfile"> | string
     emailAddress?: StringWithAggregatesFilter<"StudentProfile"> | string
+    linkedInUrl?: StringNullableWithAggregatesFilter<"StudentProfile"> | string | null
     parentSpouseNumber?: StringNullableWithAggregatesFilter<"StudentProfile"> | string | null
     location?: StringNullableWithAggregatesFilter<"StudentProfile"> | string | null
     courseId?: StringNullableWithAggregatesFilter<"StudentProfile"> | string | null
@@ -30538,6 +30585,7 @@ export namespace Prisma {
     studentName?: StringFilter<"BranchStudent"> | string
     mobileNumber?: StringFilter<"BranchStudent"> | string
     emailAddress?: StringFilter<"BranchStudent"> | string
+    linkedInUrl?: StringNullableFilter<"BranchStudent"> | string | null
     parentSpouseNumber?: StringNullableFilter<"BranchStudent"> | string | null
     countryCode?: StringNullableFilter<"BranchStudent"> | string | null
     country?: StringNullableFilter<"BranchStudent"> | string | null
@@ -30551,6 +30599,7 @@ export namespace Prisma {
     designation?: StringNullableFilter<"BranchStudent"> | string | null
     source?: StringNullableFilter<"BranchStudent"> | string | null
     sourceOther?: StringNullableFilter<"BranchStudent"> | string | null
+    remarks?: StringNullableFilter<"BranchStudent"> | string | null
     admissionDate?: StringFilter<"BranchStudent"> | string
     recordStatus?: EnumRecordStatusFilter<"BranchStudent"> | $Enums.RecordStatus
     createdBy?: StringNullableFilter<"BranchStudent"> | string | null
@@ -30567,6 +30616,7 @@ export namespace Prisma {
     studentName?: SortOrder
     mobileNumber?: SortOrder
     emailAddress?: SortOrder
+    linkedInUrl?: SortOrderInput | SortOrder
     parentSpouseNumber?: SortOrderInput | SortOrder
     countryCode?: SortOrderInput | SortOrder
     country?: SortOrderInput | SortOrder
@@ -30580,6 +30630,7 @@ export namespace Prisma {
     designation?: SortOrderInput | SortOrder
     source?: SortOrderInput | SortOrder
     sourceOther?: SortOrderInput | SortOrder
+    remarks?: SortOrderInput | SortOrder
     admissionDate?: SortOrder
     recordStatus?: SortOrder
     createdBy?: SortOrderInput | SortOrder
@@ -30600,6 +30651,7 @@ export namespace Prisma {
     branchId?: StringFilter<"BranchStudent"> | string
     studentId?: StringFilter<"BranchStudent"> | string
     studentName?: StringFilter<"BranchStudent"> | string
+    linkedInUrl?: StringNullableFilter<"BranchStudent"> | string | null
     parentSpouseNumber?: StringNullableFilter<"BranchStudent"> | string | null
     countryCode?: StringNullableFilter<"BranchStudent"> | string | null
     country?: StringNullableFilter<"BranchStudent"> | string | null
@@ -30613,6 +30665,7 @@ export namespace Prisma {
     designation?: StringNullableFilter<"BranchStudent"> | string | null
     source?: StringNullableFilter<"BranchStudent"> | string | null
     sourceOther?: StringNullableFilter<"BranchStudent"> | string | null
+    remarks?: StringNullableFilter<"BranchStudent"> | string | null
     admissionDate?: StringFilter<"BranchStudent"> | string
     recordStatus?: EnumRecordStatusFilter<"BranchStudent"> | $Enums.RecordStatus
     createdBy?: StringNullableFilter<"BranchStudent"> | string | null
@@ -30629,6 +30682,7 @@ export namespace Prisma {
     studentName?: SortOrder
     mobileNumber?: SortOrder
     emailAddress?: SortOrder
+    linkedInUrl?: SortOrderInput | SortOrder
     parentSpouseNumber?: SortOrderInput | SortOrder
     countryCode?: SortOrderInput | SortOrder
     country?: SortOrderInput | SortOrder
@@ -30642,6 +30696,7 @@ export namespace Prisma {
     designation?: SortOrderInput | SortOrder
     source?: SortOrderInput | SortOrder
     sourceOther?: SortOrderInput | SortOrder
+    remarks?: SortOrderInput | SortOrder
     admissionDate?: SortOrder
     recordStatus?: SortOrder
     createdBy?: SortOrderInput | SortOrder
@@ -30663,6 +30718,7 @@ export namespace Prisma {
     studentName?: StringWithAggregatesFilter<"BranchStudent"> | string
     mobileNumber?: StringWithAggregatesFilter<"BranchStudent"> | string
     emailAddress?: StringWithAggregatesFilter<"BranchStudent"> | string
+    linkedInUrl?: StringNullableWithAggregatesFilter<"BranchStudent"> | string | null
     parentSpouseNumber?: StringNullableWithAggregatesFilter<"BranchStudent"> | string | null
     countryCode?: StringNullableWithAggregatesFilter<"BranchStudent"> | string | null
     country?: StringNullableWithAggregatesFilter<"BranchStudent"> | string | null
@@ -30676,6 +30732,7 @@ export namespace Prisma {
     designation?: StringNullableWithAggregatesFilter<"BranchStudent"> | string | null
     source?: StringNullableWithAggregatesFilter<"BranchStudent"> | string | null
     sourceOther?: StringNullableWithAggregatesFilter<"BranchStudent"> | string | null
+    remarks?: StringNullableWithAggregatesFilter<"BranchStudent"> | string | null
     admissionDate?: StringWithAggregatesFilter<"BranchStudent"> | string
     recordStatus?: EnumRecordStatusWithAggregatesFilter<"BranchStudent"> | $Enums.RecordStatus
     createdBy?: StringNullableWithAggregatesFilter<"BranchStudent"> | string | null
@@ -32781,6 +32838,7 @@ export namespace Prisma {
     studentName: string
     mobileNumber: string
     emailAddress: string
+    linkedInUrl?: string | null
     parentSpouseNumber?: string | null
     location?: string | null
     courseInterested: string
@@ -32827,6 +32885,7 @@ export namespace Prisma {
     studentName: string
     mobileNumber: string
     emailAddress: string
+    linkedInUrl?: string | null
     parentSpouseNumber?: string | null
     location?: string | null
     courseId?: string | null
@@ -32873,6 +32932,7 @@ export namespace Prisma {
     studentName?: StringFieldUpdateOperationsInput | string
     mobileNumber?: StringFieldUpdateOperationsInput | string
     emailAddress?: StringFieldUpdateOperationsInput | string
+    linkedInUrl?: NullableStringFieldUpdateOperationsInput | string | null
     parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
     courseInterested?: StringFieldUpdateOperationsInput | string
@@ -32919,6 +32979,7 @@ export namespace Prisma {
     studentName?: StringFieldUpdateOperationsInput | string
     mobileNumber?: StringFieldUpdateOperationsInput | string
     emailAddress?: StringFieldUpdateOperationsInput | string
+    linkedInUrl?: NullableStringFieldUpdateOperationsInput | string | null
     parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
     courseId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -32965,6 +33026,7 @@ export namespace Prisma {
     studentName: string
     mobileNumber: string
     emailAddress: string
+    linkedInUrl?: string | null
     parentSpouseNumber?: string | null
     location?: string | null
     courseId?: string | null
@@ -33010,6 +33072,7 @@ export namespace Prisma {
     studentName?: StringFieldUpdateOperationsInput | string
     mobileNumber?: StringFieldUpdateOperationsInput | string
     emailAddress?: StringFieldUpdateOperationsInput | string
+    linkedInUrl?: NullableStringFieldUpdateOperationsInput | string | null
     parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
     courseInterested?: StringFieldUpdateOperationsInput | string
@@ -33054,6 +33117,7 @@ export namespace Prisma {
     studentName?: StringFieldUpdateOperationsInput | string
     mobileNumber?: StringFieldUpdateOperationsInput | string
     emailAddress?: StringFieldUpdateOperationsInput | string
+    linkedInUrl?: NullableStringFieldUpdateOperationsInput | string | null
     parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
     courseId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -33099,6 +33163,7 @@ export namespace Prisma {
     studentName: string
     mobileNumber: string
     emailAddress: string
+    linkedInUrl?: string | null
     parentSpouseNumber?: string | null
     countryCode?: string | null
     country?: string | null
@@ -33112,6 +33177,7 @@ export namespace Prisma {
     designation?: string | null
     source?: string | null
     sourceOther?: string | null
+    remarks?: string | null
     admissionDate: string
     recordStatus?: $Enums.RecordStatus
     createdBy?: string | null
@@ -33128,6 +33194,7 @@ export namespace Prisma {
     studentName: string
     mobileNumber: string
     emailAddress: string
+    linkedInUrl?: string | null
     parentSpouseNumber?: string | null
     countryCode?: string | null
     country?: string | null
@@ -33141,6 +33208,7 @@ export namespace Prisma {
     designation?: string | null
     source?: string | null
     sourceOther?: string | null
+    remarks?: string | null
     admissionDate: string
     recordStatus?: $Enums.RecordStatus
     createdBy?: string | null
@@ -33155,6 +33223,7 @@ export namespace Prisma {
     studentName?: StringFieldUpdateOperationsInput | string
     mobileNumber?: StringFieldUpdateOperationsInput | string
     emailAddress?: StringFieldUpdateOperationsInput | string
+    linkedInUrl?: NullableStringFieldUpdateOperationsInput | string | null
     parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
     countryCode?: NullableStringFieldUpdateOperationsInput | string | null
     country?: NullableStringFieldUpdateOperationsInput | string | null
@@ -33168,6 +33237,7 @@ export namespace Prisma {
     designation?: NullableStringFieldUpdateOperationsInput | string | null
     source?: NullableStringFieldUpdateOperationsInput | string | null
     sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
+    remarks?: NullableStringFieldUpdateOperationsInput | string | null
     admissionDate?: StringFieldUpdateOperationsInput | string
     recordStatus?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -33184,6 +33254,7 @@ export namespace Prisma {
     studentName?: StringFieldUpdateOperationsInput | string
     mobileNumber?: StringFieldUpdateOperationsInput | string
     emailAddress?: StringFieldUpdateOperationsInput | string
+    linkedInUrl?: NullableStringFieldUpdateOperationsInput | string | null
     parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
     countryCode?: NullableStringFieldUpdateOperationsInput | string | null
     country?: NullableStringFieldUpdateOperationsInput | string | null
@@ -33197,6 +33268,7 @@ export namespace Prisma {
     designation?: NullableStringFieldUpdateOperationsInput | string | null
     source?: NullableStringFieldUpdateOperationsInput | string | null
     sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
+    remarks?: NullableStringFieldUpdateOperationsInput | string | null
     admissionDate?: StringFieldUpdateOperationsInput | string
     recordStatus?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -33212,6 +33284,7 @@ export namespace Prisma {
     studentName: string
     mobileNumber: string
     emailAddress: string
+    linkedInUrl?: string | null
     parentSpouseNumber?: string | null
     countryCode?: string | null
     country?: string | null
@@ -33225,6 +33298,7 @@ export namespace Prisma {
     designation?: string | null
     source?: string | null
     sourceOther?: string | null
+    remarks?: string | null
     admissionDate: string
     recordStatus?: $Enums.RecordStatus
     createdBy?: string | null
@@ -33239,6 +33313,7 @@ export namespace Prisma {
     studentName?: StringFieldUpdateOperationsInput | string
     mobileNumber?: StringFieldUpdateOperationsInput | string
     emailAddress?: StringFieldUpdateOperationsInput | string
+    linkedInUrl?: NullableStringFieldUpdateOperationsInput | string | null
     parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
     countryCode?: NullableStringFieldUpdateOperationsInput | string | null
     country?: NullableStringFieldUpdateOperationsInput | string | null
@@ -33252,6 +33327,7 @@ export namespace Prisma {
     designation?: NullableStringFieldUpdateOperationsInput | string | null
     source?: NullableStringFieldUpdateOperationsInput | string | null
     sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
+    remarks?: NullableStringFieldUpdateOperationsInput | string | null
     admissionDate?: StringFieldUpdateOperationsInput | string
     recordStatus?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -33267,6 +33343,7 @@ export namespace Prisma {
     studentName?: StringFieldUpdateOperationsInput | string
     mobileNumber?: StringFieldUpdateOperationsInput | string
     emailAddress?: StringFieldUpdateOperationsInput | string
+    linkedInUrl?: NullableStringFieldUpdateOperationsInput | string | null
     parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
     countryCode?: NullableStringFieldUpdateOperationsInput | string | null
     country?: NullableStringFieldUpdateOperationsInput | string | null
@@ -33280,6 +33357,7 @@ export namespace Prisma {
     designation?: NullableStringFieldUpdateOperationsInput | string | null
     source?: NullableStringFieldUpdateOperationsInput | string | null
     sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
+    remarks?: NullableStringFieldUpdateOperationsInput | string | null
     admissionDate?: StringFieldUpdateOperationsInput | string
     recordStatus?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -35203,6 +35281,7 @@ export namespace Prisma {
     studentName?: SortOrder
     mobileNumber?: SortOrder
     emailAddress?: SortOrder
+    linkedInUrl?: SortOrder
     parentSpouseNumber?: SortOrder
     location?: SortOrder
     courseId?: SortOrder
@@ -35263,6 +35342,7 @@ export namespace Prisma {
     studentName?: SortOrder
     mobileNumber?: SortOrder
     emailAddress?: SortOrder
+    linkedInUrl?: SortOrder
     parentSpouseNumber?: SortOrder
     location?: SortOrder
     courseId?: SortOrder
@@ -35308,6 +35388,7 @@ export namespace Prisma {
     studentName?: SortOrder
     mobileNumber?: SortOrder
     emailAddress?: SortOrder
+    linkedInUrl?: SortOrder
     parentSpouseNumber?: SortOrder
     location?: SortOrder
     courseId?: SortOrder
@@ -35374,6 +35455,7 @@ export namespace Prisma {
     studentName?: SortOrder
     mobileNumber?: SortOrder
     emailAddress?: SortOrder
+    linkedInUrl?: SortOrder
     parentSpouseNumber?: SortOrder
     countryCode?: SortOrder
     country?: SortOrder
@@ -35387,6 +35469,7 @@ export namespace Prisma {
     designation?: SortOrder
     source?: SortOrder
     sourceOther?: SortOrder
+    remarks?: SortOrder
     admissionDate?: SortOrder
     recordStatus?: SortOrder
     createdBy?: SortOrder
@@ -35402,6 +35485,7 @@ export namespace Prisma {
     studentName?: SortOrder
     mobileNumber?: SortOrder
     emailAddress?: SortOrder
+    linkedInUrl?: SortOrder
     parentSpouseNumber?: SortOrder
     countryCode?: SortOrder
     country?: SortOrder
@@ -35415,6 +35499,7 @@ export namespace Prisma {
     designation?: SortOrder
     source?: SortOrder
     sourceOther?: SortOrder
+    remarks?: SortOrder
     admissionDate?: SortOrder
     recordStatus?: SortOrder
     createdBy?: SortOrder
@@ -35430,6 +35515,7 @@ export namespace Prisma {
     studentName?: SortOrder
     mobileNumber?: SortOrder
     emailAddress?: SortOrder
+    linkedInUrl?: SortOrder
     parentSpouseNumber?: SortOrder
     countryCode?: SortOrder
     country?: SortOrder
@@ -35443,6 +35529,7 @@ export namespace Prisma {
     designation?: SortOrder
     source?: SortOrder
     sourceOther?: SortOrder
+    remarks?: SortOrder
     admissionDate?: SortOrder
     recordStatus?: SortOrder
     createdBy?: SortOrder
@@ -38426,6 +38513,7 @@ export namespace Prisma {
     studentName: string
     mobileNumber: string
     emailAddress: string
+    linkedInUrl?: string | null
     parentSpouseNumber?: string | null
     countryCode?: string | null
     country?: string | null
@@ -38439,6 +38527,7 @@ export namespace Prisma {
     designation?: string | null
     source?: string | null
     sourceOther?: string | null
+    remarks?: string | null
     admissionDate: string
     recordStatus?: $Enums.RecordStatus
     createdBy?: string | null
@@ -38453,6 +38542,7 @@ export namespace Prisma {
     studentName: string
     mobileNumber: string
     emailAddress: string
+    linkedInUrl?: string | null
     parentSpouseNumber?: string | null
     countryCode?: string | null
     country?: string | null
@@ -38466,6 +38556,7 @@ export namespace Prisma {
     designation?: string | null
     source?: string | null
     sourceOther?: string | null
+    remarks?: string | null
     admissionDate: string
     recordStatus?: $Enums.RecordStatus
     createdBy?: string | null
@@ -38710,6 +38801,7 @@ export namespace Prisma {
     studentName?: StringFilter<"BranchStudent"> | string
     mobileNumber?: StringFilter<"BranchStudent"> | string
     emailAddress?: StringFilter<"BranchStudent"> | string
+    linkedInUrl?: StringNullableFilter<"BranchStudent"> | string | null
     parentSpouseNumber?: StringNullableFilter<"BranchStudent"> | string | null
     countryCode?: StringNullableFilter<"BranchStudent"> | string | null
     country?: StringNullableFilter<"BranchStudent"> | string | null
@@ -38723,6 +38815,7 @@ export namespace Prisma {
     designation?: StringNullableFilter<"BranchStudent"> | string | null
     source?: StringNullableFilter<"BranchStudent"> | string | null
     sourceOther?: StringNullableFilter<"BranchStudent"> | string | null
+    remarks?: StringNullableFilter<"BranchStudent"> | string | null
     admissionDate?: StringFilter<"BranchStudent"> | string
     recordStatus?: EnumRecordStatusFilter<"BranchStudent"> | $Enums.RecordStatus
     createdBy?: StringNullableFilter<"BranchStudent"> | string | null
@@ -39292,6 +39385,7 @@ export namespace Prisma {
     studentName: string
     mobileNumber: string
     emailAddress: string
+    linkedInUrl?: string | null
     parentSpouseNumber?: string | null
     location?: string | null
     courseInterested: string
@@ -39337,6 +39431,7 @@ export namespace Prisma {
     studentName: string
     mobileNumber: string
     emailAddress: string
+    linkedInUrl?: string | null
     parentSpouseNumber?: string | null
     location?: string | null
     courseInterested: string
@@ -39721,6 +39816,7 @@ export namespace Prisma {
     studentName?: StringFilter<"StudentProfile"> | string
     mobileNumber?: StringFilter<"StudentProfile"> | string
     emailAddress?: StringFilter<"StudentProfile"> | string
+    linkedInUrl?: StringNullableFilter<"StudentProfile"> | string | null
     parentSpouseNumber?: StringNullableFilter<"StudentProfile"> | string | null
     location?: StringNullableFilter<"StudentProfile"> | string | null
     courseId?: StringNullableFilter<"StudentProfile"> | string | null
@@ -42199,6 +42295,7 @@ export namespace Prisma {
     studentName: string
     mobileNumber: string
     emailAddress: string
+    linkedInUrl?: string | null
     parentSpouseNumber?: string | null
     location?: string | null
     courseInterested: string
@@ -42244,6 +42341,7 @@ export namespace Prisma {
     studentName: string
     mobileNumber: string
     emailAddress: string
+    linkedInUrl?: string | null
     parentSpouseNumber?: string | null
     location?: string | null
     courseId?: string | null
@@ -42370,6 +42468,7 @@ export namespace Prisma {
     studentName?: StringFieldUpdateOperationsInput | string
     mobileNumber?: StringFieldUpdateOperationsInput | string
     emailAddress?: StringFieldUpdateOperationsInput | string
+    linkedInUrl?: NullableStringFieldUpdateOperationsInput | string | null
     parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
     courseInterested?: StringFieldUpdateOperationsInput | string
@@ -42415,6 +42514,7 @@ export namespace Prisma {
     studentName?: StringFieldUpdateOperationsInput | string
     mobileNumber?: StringFieldUpdateOperationsInput | string
     emailAddress?: StringFieldUpdateOperationsInput | string
+    linkedInUrl?: NullableStringFieldUpdateOperationsInput | string | null
     parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
     courseId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -43300,6 +43400,7 @@ export namespace Prisma {
     studentName: string
     mobileNumber: string
     emailAddress: string
+    linkedInUrl?: string | null
     parentSpouseNumber?: string | null
     countryCode?: string | null
     country?: string | null
@@ -43313,6 +43414,7 @@ export namespace Prisma {
     designation?: string | null
     source?: string | null
     sourceOther?: string | null
+    remarks?: string | null
     admissionDate: string
     recordStatus?: $Enums.RecordStatus
     createdBy?: string | null
@@ -43552,6 +43654,7 @@ export namespace Prisma {
     studentName?: StringFieldUpdateOperationsInput | string
     mobileNumber?: StringFieldUpdateOperationsInput | string
     emailAddress?: StringFieldUpdateOperationsInput | string
+    linkedInUrl?: NullableStringFieldUpdateOperationsInput | string | null
     parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
     countryCode?: NullableStringFieldUpdateOperationsInput | string | null
     country?: NullableStringFieldUpdateOperationsInput | string | null
@@ -43565,6 +43668,7 @@ export namespace Prisma {
     designation?: NullableStringFieldUpdateOperationsInput | string | null
     source?: NullableStringFieldUpdateOperationsInput | string | null
     sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
+    remarks?: NullableStringFieldUpdateOperationsInput | string | null
     admissionDate?: StringFieldUpdateOperationsInput | string
     recordStatus?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -43579,6 +43683,7 @@ export namespace Prisma {
     studentName?: StringFieldUpdateOperationsInput | string
     mobileNumber?: StringFieldUpdateOperationsInput | string
     emailAddress?: StringFieldUpdateOperationsInput | string
+    linkedInUrl?: NullableStringFieldUpdateOperationsInput | string | null
     parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
     countryCode?: NullableStringFieldUpdateOperationsInput | string | null
     country?: NullableStringFieldUpdateOperationsInput | string | null
@@ -43592,6 +43697,7 @@ export namespace Prisma {
     designation?: NullableStringFieldUpdateOperationsInput | string | null
     source?: NullableStringFieldUpdateOperationsInput | string | null
     sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
+    remarks?: NullableStringFieldUpdateOperationsInput | string | null
     admissionDate?: StringFieldUpdateOperationsInput | string
     recordStatus?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -43606,6 +43712,7 @@ export namespace Prisma {
     studentName?: StringFieldUpdateOperationsInput | string
     mobileNumber?: StringFieldUpdateOperationsInput | string
     emailAddress?: StringFieldUpdateOperationsInput | string
+    linkedInUrl?: NullableStringFieldUpdateOperationsInput | string | null
     parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
     countryCode?: NullableStringFieldUpdateOperationsInput | string | null
     country?: NullableStringFieldUpdateOperationsInput | string | null
@@ -43619,6 +43726,7 @@ export namespace Prisma {
     designation?: NullableStringFieldUpdateOperationsInput | string | null
     source?: NullableStringFieldUpdateOperationsInput | string | null
     sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
+    remarks?: NullableStringFieldUpdateOperationsInput | string | null
     admissionDate?: StringFieldUpdateOperationsInput | string
     recordStatus?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -43668,6 +43776,7 @@ export namespace Prisma {
     studentName: string
     mobileNumber: string
     emailAddress: string
+    linkedInUrl?: string | null
     parentSpouseNumber?: string | null
     location?: string | null
     courseInterested: string
@@ -43882,6 +43991,7 @@ export namespace Prisma {
     studentName?: StringFieldUpdateOperationsInput | string
     mobileNumber?: StringFieldUpdateOperationsInput | string
     emailAddress?: StringFieldUpdateOperationsInput | string
+    linkedInUrl?: NullableStringFieldUpdateOperationsInput | string | null
     parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
     courseInterested?: StringFieldUpdateOperationsInput | string
@@ -43927,6 +44037,7 @@ export namespace Prisma {
     studentName?: StringFieldUpdateOperationsInput | string
     mobileNumber?: StringFieldUpdateOperationsInput | string
     emailAddress?: StringFieldUpdateOperationsInput | string
+    linkedInUrl?: NullableStringFieldUpdateOperationsInput | string | null
     parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
     courseInterested?: StringFieldUpdateOperationsInput | string
@@ -43972,6 +44083,7 @@ export namespace Prisma {
     studentName?: StringFieldUpdateOperationsInput | string
     mobileNumber?: StringFieldUpdateOperationsInput | string
     emailAddress?: StringFieldUpdateOperationsInput | string
+    linkedInUrl?: NullableStringFieldUpdateOperationsInput | string | null
     parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
     courseInterested?: StringFieldUpdateOperationsInput | string
