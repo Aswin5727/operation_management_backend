@@ -17,7 +17,10 @@ import {
   sendPasswordResetEmail,
   sendStudentWelcomeEmail,
 } from "../../common/services/resendEmail.js";
-import { createBranchLoginNotification } from "../notifications/notifications.service.js";
+import {
+  createBranchFacultyLoginNotification,
+  createBranchLoginNotification,
+} from "../notifications/notifications.service.js";
 import {
   recordFacultyLoginSession,
   recordFacultyLogoutSession,
@@ -193,87 +196,73 @@ async function login({ identifier, password, ipAddress, userAgent }) {
   const isFirstLogin = !user.lastLoginAt;
   const isDashboardHeavyRole =
     role === "SUPER_ADMIN" || role === "BUSINESS_OWNER" || role === "OPERATION_MANAGER";
+
+  const studentProfilePromise =
+    isFirstLogin && role === "STUDENT"
+      ? prisma.studentProfile.findFirst({
+          where: {
+            OR: [{ emailAddress: user.email }, { studentCode: user.userCode }],
+          },
+          select: {
+            courseInterested: true,
+            course: {
+              select: {
+                name: true,
+              },
+            },
+          },
+        })
+      : Promise.resolve(null);
+
+  const facultyProfilePromise =
+    isFirstLogin && role === "FACULTY"
+      ? prisma.facultyProfile.findFirst({
+          where: {
+            facultyEmail: user.email,
+          },
+          select: {
+            course: {
+              select: {
+                name: true,
+              },
+            },
+            batchEntries: {
+              orderBy: { sequenceNo: "asc" },
+              select: {
+                batchName: true,
+              },
+            },
+          },
+        })
+      : Promise.resolve(null);
+
+  const branchRecordPromise =
+    isFirstLogin && role === "BRANCH_ADMIN"
+      ? prisma.branch.findFirst({
+          where: {
+            branchEmail: {
+              equals: user.email,
+              mode: "insensitive",
+            },
+          },
+          select: {
+            id: true,
+            branchId: true,
+            branchName: true,
+            branchAdminName: true,
+            branchEmail: true,
+            branchCountry: true,
+            branchState: true,
+            branchCity: true,
+            branchAddress: true,
+          },
+        })
+      : Promise.resolve(null);
+
   let studentCourseName = "";
   let facultyWelcomeCourseName = "";
   let facultyWelcomeBatchNames = [];
   let branchWelcomeMeta = null;
-
-  if (isFirstLogin && role === "STUDENT") {
-    const studentProfile = await prisma.studentProfile.findFirst({
-      where: {
-        OR: [{ emailAddress: user.email }, { studentCode: user.userCode }],
-      },
-      select: {
-        courseInterested: true,
-        course: {
-          select: {
-            name: true,
-          },
-        },
-      },
-    });
-
-    studentCourseName = studentProfile?.course?.name || studentProfile?.courseInterested || "";
-  }
-
-  if (isFirstLogin && role === "FACULTY") {
-    const facultyProfile = await prisma.facultyProfile.findFirst({
-      where: {
-        facultyEmail: user.email,
-      },
-      select: {
-        course: {
-          select: {
-            name: true,
-          },
-        },
-        batchEntries: {
-          orderBy: { sequenceNo: "asc" },
-          select: {
-            batchName: true,
-          },
-        },
-      },
-    });
-
-    facultyWelcomeCourseName = facultyProfile?.course?.name || "";
-    facultyWelcomeBatchNames = Array.isArray(facultyProfile?.batchEntries)
-      ? facultyProfile.batchEntries.map((entry) => entry.batchName).filter(Boolean)
-      : [];
-  }
-
-  if (isFirstLogin && role === "BRANCH_ADMIN") {
-    const branchRecord = await prisma.branch.findFirst({
-      where: {
-        branchEmail: {
-          equals: user.email,
-          mode: "insensitive",
-        },
-      },
-      select: {
-        id: true,
-        branchId: true,
-        branchName: true,
-        branchAdminName: true,
-        branchEmail: true,
-        branchCountry: true,
-        branchState: true,
-        branchCity: true,
-        branchAddress: true,
-      },
-    });
-
-    branchWelcomeMeta = branchRecord
-      ? {
-          id: branchRecord.id,
-          branchId: branchRecord.branchId,
-          branchName: branchRecord.branchName,
-          branchAdminName: branchRecord.branchAdminName || refreshedUser.fullName,
-          branchEmail: branchRecord.branchEmail || refreshedUser.email,
-          branchAddress: formatBranchLocation(branchRecord),
-        }
-      : null;
-  }
 
   const refreshedUserPromise = isDashboardHeavyRole
     ? (setImmediate(() => {
@@ -283,7 +272,29 @@ async function login({ identifier, password, ipAddress, userAgent }) {
       }), Promise.resolve(user))
     : resetLoginState(user.id, { ipAddress, userAgent });
 
-  const refreshedUser = await refreshedUserPromise;
+  const [refreshedUser, studentProfile, facultyProfile, branchRecord] = await Promise.all([
+    refreshedUserPromise,
+    studentProfilePromise,
+    facultyProfilePromise,
+    branchRecordPromise,
+  ]);
+
+  studentCourseName = studentProfile?.course?.name || studentProfile?.courseInterested || "";
+  facultyWelcomeCourseName = facultyProfile?.course?.name || "";
+  facultyWelcomeBatchNames = Array.isArray(facultyProfile?.batchEntries)
+    ? facultyProfile.batchEntries.map((entry) => entry.batchName).filter(Boolean)
+    : [];
+  branchWelcomeMeta = branchRecord
+    ? {
+        id: branchRecord.id,
+        branchId: branchRecord.branchId,
+        branchName: branchRecord.branchName,
+        branchAdminName: branchRecord.branchAdminName || user.fullName,
+        branchEmail: branchRecord.branchEmail || user.email,
+        branchAddress: formatBranchLocation(branchRecord),
+      }
+    : null;
+
   const accessToken = createAccessToken(refreshedUser);
   const refreshToken = createRefreshToken(refreshedUser);
 
@@ -317,38 +328,94 @@ async function login({ identifier, password, ipAddress, userAgent }) {
 
   if (isFirstLogin && role === "BRANCH_ADMIN") {
     setImmediate(() => {
-      void sendBranchWelcomeEmail({
-        to: refreshedUser.email,
-        fullName: refreshedUser.fullName,
-        branchId: branchWelcomeMeta?.branchId || "",
-        branchName: branchWelcomeMeta?.branchName || "",
-        branchAddress: branchWelcomeMeta?.branchAddress || "",
-      }).catch((error) => {
-        console.error("Failed to send branch welcome email:", error);
-      });
-    });
+      void Promise.allSettled([
+        sendBranchWelcomeEmail({
+          to: refreshedUser.email,
+          fullName: refreshedUser.fullName,
+          branchId: branchWelcomeMeta?.branchId || "",
+          branchName: branchWelcomeMeta?.branchName || "",
+          branchAddress: branchWelcomeMeta?.branchAddress || "",
+        }),
+        createBranchLoginNotification(
+          {
+            id: branchWelcomeMeta?.id || refreshedUser.id,
+            branchId: branchWelcomeMeta?.branchId || refreshedUser.userCode,
+            branchName: branchWelcomeMeta?.branchName || refreshedUser.fullName,
+            branchAdminName: branchWelcomeMeta?.branchAdminName || refreshedUser.fullName,
+            branchEmail: branchWelcomeMeta?.branchEmail || refreshedUser.email,
+          },
+          { userId: refreshedUser.id },
+        ),
+      ]).then((results) => {
+        const [emailResult, notificationResult] = results;
 
-    setImmediate(() => {
-      void createBranchLoginNotification(
-        {
-          id: branchWelcomeMeta?.id || refreshedUser.id,
-          branchId: branchWelcomeMeta?.branchId || refreshedUser.userCode,
-          branchName: branchWelcomeMeta?.branchName || refreshedUser.fullName,
-          branchAdminName: branchWelcomeMeta?.branchAdminName || refreshedUser.fullName,
-          branchEmail: branchWelcomeMeta?.branchEmail || refreshedUser.email,
-        },
-        { userId: refreshedUser.id },
-      ).catch((error) => {
-        console.error("Failed to create branch login notification:", error);
+        if (emailResult.status === "rejected") {
+          console.error("Failed to send branch welcome email:", emailResult.reason);
+        }
+
+        if (notificationResult.status === "rejected") {
+          console.error("Failed to create branch login notification:", notificationResult.reason);
+        }
       });
     });
   }
 
   if (role === "FACULTY") {
     setImmediate(() => {
-      void recordFacultyLoginSession(refreshedUser.id).catch((error) => {
-        console.error("Failed to record faculty login attendance:", error);
-      });
+      void (async () => {
+        try {
+          const [branchFacultyResult, attendanceResult] = await Promise.allSettled([
+            prisma.branchFaculty.findFirst({
+              where: {
+                email: {
+                  equals: refreshedUser.email,
+                  mode: "insensitive",
+                },
+              },
+              select: {
+                name: true,
+                email: true,
+                facultyId: true,
+                branch: {
+                  select: {
+                    id: true,
+                    branchId: true,
+                    branchName: true,
+                    branchAdminName: true,
+                    branchEmail: true,
+                  },
+                },
+              },
+            }),
+            recordFacultyLoginSession(refreshedUser.id),
+          ]);
+
+          const branchFaculty = branchFacultyResult.status === "fulfilled" ? branchFacultyResult.value : null;
+
+          if (branchFaculty?.branch) {
+            await createBranchFacultyLoginNotification(
+              branchFaculty.branch,
+              {
+                name: branchFaculty.name || refreshedUser.fullName,
+                fullName: refreshedUser.fullName,
+                email: branchFaculty.email || refreshedUser.email,
+                facultyId: branchFaculty.facultyId || refreshedUser.userCode,
+              },
+              { userId: refreshedUser.id },
+            );
+          }
+
+          if (branchFacultyResult.status === "rejected") {
+            console.error("Failed to create branch faculty login notification:", branchFacultyResult.reason);
+          }
+
+          if (attendanceResult.status === "rejected") {
+            console.error("Failed to record faculty login attendance:", attendanceResult.reason);
+          }
+        } catch (error) {
+          console.error("Failed to create branch faculty login notification:", error);
+        }
+      })();
     });
   }
 

@@ -4,10 +4,13 @@ const NOTIFICATION_KIND_MAP = {
   BRANCH_CREATED: "branch-created",
   BRANCH_INVITATION_RESENT: "branch-mail",
   BRANCH_LOGIN: "branch-login",
+  BRANCH_FACULTY_LOGIN: "branch-faculty-login",
   FACULTY_COURSE_ASSIGNED: "faculty-course-assigned",
 };
 
-const VISIBLE_NOTIFICATION_KINDS = new Set(["BRANCH_INVITATION_RESENT", "BRANCH_LOGIN"]);
+const VISIBLE_NOTIFICATION_KINDS = new Set(["BRANCH_INVITATION_RESENT", "BRANCH_LOGIN", "BRANCH_FACULTY_LOGIN"]);
+const BRANCH_ADMIN_SCOPE_CACHE = new Map();
+const BRANCH_ADMIN_SCOPE_CACHE_TTL_MS = 60 * 1000;
 
 function normalizeString(value) {
   return String(value ?? "").trim();
@@ -51,6 +54,71 @@ function buildNotificationData({ kind, tone, title, message, actionLabel, branch
     targetBranchName: normalizeString(branch.branchName),
     createdBy: createdBy || null,
   };
+}
+
+async function buildBranchAdminScope(user = {}) {
+  const role = normalizeString(user?.role).toUpperCase();
+  if (role !== "BRANCH_ADMIN") {
+    return {};
+  }
+
+  const normalizedEmail = normalizeEmail(user?.email);
+  const normalizedUserId = normalizeString(user?.id);
+  const cacheKey = `${normalizedUserId}:${normalizedEmail}`;
+  const cachedScope = BRANCH_ADMIN_SCOPE_CACHE.get(cacheKey);
+  if (cachedScope && cachedScope.expiresAt > Date.now()) {
+    return cachedScope.scope;
+  }
+
+  const branch = await prisma.branch.findFirst({
+    where: {
+      OR: [
+        ...(normalizedUserId ? [{ adminUserId: normalizedUserId }] : []),
+        ...(normalizedEmail
+          ? [
+              {
+                branchEmail: {
+                  equals: normalizedEmail,
+                  mode: "insensitive",
+                },
+              },
+            ]
+          : []),
+      ],
+    },
+    select: {
+      id: true,
+      branchId: true,
+      branchEmail: true,
+      branchName: true,
+    },
+  });
+
+  if (!branch) {
+    const fallbackScope = normalizedEmail
+      ? { targetBranchEmail: normalizedEmail }
+      : {};
+
+    BRANCH_ADMIN_SCOPE_CACHE.set(cacheKey, {
+      scope: fallbackScope,
+      expiresAt: Date.now() + BRANCH_ADMIN_SCOPE_CACHE_TTL_MS,
+    });
+
+    return fallbackScope;
+  }
+
+  const scope = {
+    targetBranchId: normalizeString(branch.id || branch.branchId),
+    targetBranchEmail: normalizeEmail(branch.branchEmail),
+    targetBranchName: normalizeString(branch.branchName),
+  };
+
+  BRANCH_ADMIN_SCOPE_CACHE.set(cacheKey, {
+    scope,
+    expiresAt: Date.now() + BRANCH_ADMIN_SCOPE_CACHE_TTL_MS,
+  });
+
+  return scope;
 }
 
 async function createNotification(data) {
@@ -103,6 +171,20 @@ export async function createBranchLoginNotification(branch = {}, actor = {}) {
   );
 }
 
+export async function createBranchFacultyLoginNotification(branch = {}, faculty = {}, actor = {}) {
+  return createNotification(
+    buildNotificationData({
+      kind: "BRANCH_FACULTY_LOGIN",
+      tone: "blue",
+      title: `${faculty?.name || faculty?.fullName || "Faculty"} logged in`,
+      message: `${faculty?.name || faculty?.fullName || "Faculty"} logged in to ${branch?.branchName || branch?.branchId || "your branch"}.`,
+      actionLabel: "Faculty login",
+      branch,
+      createdBy: actor?.userId || actor?.id || null,
+    }),
+  );
+}
+
 export async function listNotifications(query = {}, user = {}) {
   const page = Math.max(1, Number(query.page || 1));
   const limit = Math.min(100, Math.max(1, Number(query.limit || 10)));
@@ -110,6 +192,7 @@ export async function listNotifications(query = {}, user = {}) {
   const kind = normalizeString(query.kind).toUpperCase();
 
   const isFaculty = String(user?.role || "").toUpperCase() === "FACULTY";
+  const branchScope = await buildBranchAdminScope(user);
 
   const where = isFaculty
     ? {
@@ -117,6 +200,18 @@ export async function listNotifications(query = {}, user = {}) {
         kind: "FACULTY_COURSE_ASSIGNED",
         ...(unreadOnly ? { read: false } : {}),
       }
+    : Object.keys(branchScope).length > 0
+      ? {
+          ...branchScope,
+          ...(unreadOnly ? { read: false } : {}),
+          ...(kind
+            ? { kind }
+            : {
+                kind: {
+                  in: Array.from(VISIBLE_NOTIFICATION_KINDS),
+                },
+              }),
+        }
     : {
         ...(unreadOnly ? { read: false } : {}),
         ...(kind
@@ -143,6 +238,18 @@ export async function listNotifications(query = {}, user = {}) {
             targetUserId: user.id,
             kind: "FACULTY_COURSE_ASSIGNED",
           }
+        : Object.keys(branchScope).length > 0
+          ? {
+              read: false,
+              ...branchScope,
+              ...(kind
+                ? { kind }
+                : {
+                    kind: {
+                      in: Array.from(VISIBLE_NOTIFICATION_KINDS),
+                    },
+                  }),
+            }
         : {
             read: false,
             ...(kind
@@ -174,6 +281,7 @@ export async function markNotificationsAsRead(
 ) {
   const hasIds = Array.isArray(notificationIds) && notificationIds.length > 0;
   const now = new Date();
+  const branchScope = await buildBranchAdminScope(user);
 
   const facultyScope =
     user?.role === "FACULTY"
@@ -181,7 +289,9 @@ export async function markNotificationsAsRead(
         targetUserId: user.id,
         kind: "FACULTY_COURSE_ASSIGNED",
       }
-      : {};
+      : Object.keys(branchScope).length > 0
+        ? branchScope
+        : {}
 
   const where = hasIds
     ? {
@@ -212,6 +322,7 @@ export async function markNotificationsAsRead(
 export async function getUnreadNotificationCount(
   user = {},
 ) {
+  const branchScope = await buildBranchAdminScope(user);
   const where =
     user?.role === "FACULTY"
       ? {
@@ -219,6 +330,16 @@ export async function getUnreadNotificationCount(
           targetUserId: user.id,
           kind: "FACULTY_COURSE_ASSIGNED",
         }
+      : Object.keys(branchScope).length > 0
+        ? {
+            read: false,
+            ...branchScope,
+            kind: {
+              in: Array.from(
+                VISIBLE_NOTIFICATION_KINDS,
+              ),
+            },
+          }
       : {
           read: false,
           kind: {

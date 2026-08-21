@@ -13,6 +13,7 @@ router.use(
   authenticate,
   authorize(
     "SUPER_ADMIN",
+    "BRANCH_ADMIN",
     "FACULTY",
   ),
 );
