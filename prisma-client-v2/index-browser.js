@@ -255,6 +255,34 @@ exports.Prisma.BranchCourseScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.BranchCourseModuleScalarFieldEnum = {
+  id: 'id',
+  branchCourseId: 'branchCourseId',
+  title: 'title',
+  titleKey: 'titleKey',
+  description: 'description',
+  sequenceNo: 'sequenceNo',
+  status: 'status',
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.BranchCourseSubmoduleScalarFieldEnum = {
+  id: 'id',
+  branchCourseModuleId: 'branchCourseModuleId',
+  title: 'title',
+  titleKey: 'titleKey',
+  description: 'description',
+  sequenceNo: 'sequenceNo',
+  status: 'status',
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.CourseModuleScalarFieldEnum = {
   id: 'id',
   courseId: 'courseId',
@@ -575,6 +603,8 @@ exports.Prisma.ModelName = {
   PasswordResetToken: 'PasswordResetToken',
   Course: 'Course',
   BranchCourse: 'BranchCourse',
+  BranchCourseModule: 'BranchCourseModule',
+  BranchCourseSubmodule: 'BranchCourseSubmodule',
   CourseModule: 'CourseModule',
   Batch: 'Batch',
   BatchFacultyAssignment: 'BatchFacultyAssignment',

@@ -6,6 +6,7 @@ import {
 } from "../../common/services/resendEmail.js";
 
 const RECORD_STATUSES = new Set(["ACTIVE", "INACTIVE"]);
+const BRANCH_COURSE_HIERARCHY_KEYS = ["models", "modules", "courseModels"];
 
 function normalizeString(value) {
   return String(value ?? "").trim();
@@ -98,6 +99,29 @@ function parseStatus(value) {
   return status;
 }
 
+function distributePercentages(totalItems = 0) {
+  const count = Math.max(0, Number(totalItems) || 0);
+  if (!count) return [];
+  if (count === 1) return [100];
+
+  const precision = 2;
+  const scale = 10 ** precision;
+  const base = Math.floor((100 / count) * scale) / scale;
+  const percentages = [];
+  let remaining = 100;
+
+  for (let index = 0; index < count; index += 1) {
+    if (index === count - 1) {
+      percentages.push(Number(remaining.toFixed(precision)));
+    } else {
+      percentages.push(Number(base.toFixed(precision)));
+      remaining -= base;
+    }
+  }
+
+  return percentages;
+}
+
 async function resolveBranchProfile(actor) {
   const profile = await getCurrentBranchProfile(actor);
   if (!profile?.id) {
@@ -106,7 +130,136 @@ async function resolveBranchProfile(actor) {
   return profile;
 }
 
+function normalizeBranchCourseSubmodules(submodules = []) {
+  return Array.isArray(submodules)
+    ? submodules.map((submodule, submoduleIndex) => {
+        const title = parseRequiredText(
+          submodule?.title ?? submodule?.name ?? submodule?.submoduleName,
+          `Submodule ${submoduleIndex + 1} title`,
+        );
+
+        return {
+          title,
+          titleKey: normalizeKey(title),
+          description: parseOptionalText(submodule?.description),
+          sequenceNo: parseOptionalInt(submodule?.sequenceNo ?? submoduleIndex + 1, `Submodule ${submoduleIndex + 1} sequence number`, { allowZero: false }),
+          status: parseStatus(submodule?.status ?? "ACTIVE"),
+        };
+      })
+    : [];
+}
+
+function normalizeBranchCourseModules(modules = []) {
+  return Array.isArray(modules)
+    ? modules.map((module, moduleIndex) => {
+        const title = parseRequiredText(
+          module?.title ?? module?.name ?? module?.moduleName,
+          `Module ${moduleIndex + 1} title`,
+        );
+
+        const submodules = normalizeBranchCourseSubmodules(module?.submodules ?? module?.submodels ?? []);
+        const seenSubmoduleKeys = new Set();
+
+        for (const submodule of submodules) {
+          if (seenSubmoduleKeys.has(submodule.titleKey)) {
+            throw new AppError(`Submodule title already exists in module ${moduleIndex + 1}`, 409);
+          }
+          seenSubmoduleKeys.add(submodule.titleKey);
+        }
+
+        return {
+          title,
+          titleKey: normalizeKey(title),
+          description: parseOptionalText(module?.description),
+          sequenceNo: parseOptionalInt(module?.sequenceNo ?? moduleIndex + 1, `Module ${moduleIndex + 1} sequence number`, { allowZero: false }),
+          status: parseStatus(module?.status ?? "ACTIVE"),
+          submodules,
+        };
+      })
+    : [];
+}
+
+function extractBranchCourseHierarchy(payload = {}) {
+  const hasHierarchy = BRANCH_COURSE_HIERARCHY_KEYS.some((key) =>
+    Object.prototype.hasOwnProperty.call(payload, key),
+  );
+
+  if (!hasHierarchy) {
+    return {
+      hasHierarchy: false,
+      modules: [],
+    };
+  }
+
+  const rawModules =
+    payload.models ??
+    payload.modules ??
+    payload.courseModels ??
+    [];
+
+  const modules = normalizeBranchCourseModules(rawModules);
+  const seenModuleKeys = new Set();
+
+  for (const module of modules) {
+    if (seenModuleKeys.has(module.titleKey)) {
+      throw new AppError("Module title already exists in this course payload", 409);
+    }
+    seenModuleKeys.add(module.titleKey);
+  }
+
+  if (!modules.length) {
+    throw new AppError("At least one module is required", 400);
+  }
+
+  return {
+    hasHierarchy: true,
+    modules,
+  };
+}
+
+function toBranchCourseSubmodule(submodule = {}, percentage = 0) {
+  return {
+    id: submodule.id,
+    title: submodule.title,
+    description: submodule.description,
+    sequenceNo: submodule.sequenceNo,
+    status: submodule.status,
+    percentage,
+    createdAt: submodule.createdAt,
+    updatedAt: submodule.updatedAt,
+  };
+}
+
+function toBranchCourseModule(module = {}, percentage = 0) {
+  const submodules = Array.isArray(module.submodules) ? module.submodules : [];
+  const submodulePercentages = distributePercentages(submodules.length);
+
+  return {
+    id: module.id,
+    title: module.title,
+    description: module.description,
+    sequenceNo: module.sequenceNo,
+    status: module.status,
+    percentage,
+    submodules: submodules.map((submodule, submoduleIndex) =>
+      toBranchCourseSubmodule(submodule, submodulePercentages[submoduleIndex] ?? 0),
+    ),
+    createdAt: module.createdAt,
+    updatedAt: module.updatedAt,
+  };
+}
+
+function buildBranchCourseHierarchyResponse(modules = []) {
+  const normalizedModules = Array.isArray(modules) ? modules : [];
+  const modulePercentages = distributePercentages(normalizedModules.length);
+
+  return normalizedModules.map((module, moduleIndex) =>
+    toBranchCourseModule(module, modulePercentages[moduleIndex] ?? 0),
+  );
+}
+
 function toBranchCourseSummary(course) {
+  const modules = buildBranchCourseHierarchyResponse(course.modules || []);
   return {
     id: course.id,
     branchId: course.branchId,
@@ -133,6 +286,9 @@ function toBranchCourseSummary(course) {
       }))
       : [],
 
+    modules,
+    moduleCount: course._count?.modules ?? course.moduleCount ?? modules.length ?? 0,
+    assignedFacultyCount: course._count?.branchFaculties ?? course.assignedFacultyCount ?? course.branchFaculties?.length ?? 0,
     batches: 0,
     students: 0,
     createdAt: course.createdAt,
@@ -274,6 +430,112 @@ function buildBranchCoursePayload(payload = {}, existingCourse = null) {
   };
 }
 
+function buildBranchCourseHierarchyPayload(payload = {}) {
+  const { hasHierarchy, modules } = extractBranchCourseHierarchy(payload);
+
+  if (!hasHierarchy) {
+    return null;
+  }
+
+  return modules.map((module, moduleIndex) => ({
+    title: module.title,
+    titleKey: module.titleKey,
+    description: module.description,
+    sequenceNo: module.sequenceNo ?? moduleIndex + 1,
+    status: module.status,
+    submodules: module.submodules.map((submodule, subIndex) => ({
+      title: submodule.title,
+      titleKey: submodule.titleKey,
+      description: submodule.description,
+      sequenceNo: submodule.sequenceNo ?? subIndex + 1,
+      status: submodule.status,
+    })),
+  }));
+}
+
+async function replaceBranchCourseHierarchy(tx, branchCourseId, modules = [], actorId = null) {
+  await tx.branchCourseModule.deleteMany({
+    where: { branchCourseId },
+  });
+
+  if (!Array.isArray(modules) || !modules.length) {
+    return [];
+  }
+
+  const createdModules = [];
+
+  for (const [moduleIndex, module] of modules.entries()) {
+    const createdModule = await tx.branchCourseModule.create({
+      data: {
+        branchCourseId,
+        title: module.title,
+        titleKey: module.titleKey,
+        description: module.description,
+        sequenceNo: module.sequenceNo ?? moduleIndex + 1,
+        status: module.status ?? "ACTIVE",
+        createdBy: actorId,
+        updatedBy: actorId,
+      },
+    });
+
+    if (Array.isArray(module.submodules) && module.submodules.length) {
+      for (const [submoduleIndex, submodule] of module.submodules.entries()) {
+        await tx.branchCourseSubmodule.create({
+          data: {
+            branchCourseModuleId: createdModule.id,
+            title: submodule.title,
+            titleKey: submodule.titleKey,
+            description: submodule.description,
+            sequenceNo: submodule.sequenceNo ?? submoduleIndex + 1,
+            status: submodule.status ?? "ACTIVE",
+            createdBy: actorId,
+            updatedBy: actorId,
+          },
+        });
+      }
+    }
+
+    createdModules.push(createdModule);
+  }
+
+  return createdModules;
+}
+
+function getBranchCourseInclude() {
+  return {
+    branchFaculties: {
+      select: {
+        id: true,
+        facultyId: true,
+        name: true,
+        email: true,
+        status: true,
+      },
+      orderBy: {
+        name: "asc",
+      },
+    },
+    modules: {
+      orderBy: {
+        sequenceNo: "asc",
+      },
+      include: {
+        submodules: {
+          orderBy: {
+            sequenceNo: "asc",
+          },
+        },
+      },
+    },
+    _count: {
+      select: {
+        branchFaculties: true,
+        modules: true,
+      },
+    },
+  };
+}
+
 function buildBranchCourseListQuery(query = {}, branchId) {
   const pagination = buildPagination(query);
   const sortOrder = parseSortOrder(query.sortOrder, "desc");
@@ -329,20 +591,7 @@ export async function listBranchCourses(query, actor) {
       orderBy,
       skip,
       take,
-      include: {
-        branchFaculties: {
-          select: {
-            id: true,
-            facultyId: true,
-            name: true,
-            email: true,
-            status: true,
-          },
-          orderBy: {
-            name: "asc",
-          },
-        },
-      },
+      include: getBranchCourseInclude(),
     })
   ]);
 
@@ -356,18 +605,33 @@ export async function createBranchCourse(payload, actor) {
   const branchProfile = await resolveBranchProfile(actor);
   const branchId = branchProfile.id;
   const parsed = buildBranchCoursePayload(payload);
+  const hierarchy = buildBranchCourseHierarchyPayload(payload);
   const actorId = actor?.id ?? null;
 
   await ensureUniqueCourseName(parsed.nameKey, branchId);
   await ensureUniqueCourseCode(parsed.courseCode, branchId);
 
-  const created = await prisma.branchCourse.create({
-    data: {
-      ...parsed,
-      branchId,
-      createdBy: actorId,
-      updatedBy: actorId,
-    },
+  const created = await prisma.$transaction(async (tx) => {
+    const course = await tx.branchCourse.create({
+      data: {
+        ...parsed,
+        branchId,
+        createdBy: actorId,
+        updatedBy: actorId,
+      },
+    });
+
+    if (hierarchy) {
+      await replaceBranchCourseHierarchy(tx, course.id, hierarchy, actorId);
+    }
+
+    return tx.branchCourse.findFirst({
+      where: {
+        id: course.id,
+        branchId,
+      },
+      include: getBranchCourseInclude(),
+    });
   });
 
   return toBranchCourseDetail(created);
@@ -380,6 +644,7 @@ export async function getBranchCourse(courseId, actor) {
       id: courseId,
       branchId: branchProfile.id,
     },
+    include: getBranchCourseInclude(),
   });
 
   if (!course) {
@@ -403,18 +668,33 @@ export async function updateBranchCourse(courseId, payload, actor) {
   }
 
   const parsed = buildBranchCoursePayload(payload, existingCourse);
+  const hierarchy = buildBranchCourseHierarchyPayload(payload);
   const actorId = actor?.id ?? null;
 
   await ensureUniqueCourseName(parsed.nameKey, branchProfile.id, courseId);
   await ensureUniqueCourseCode(parsed.courseCode, branchProfile.id, courseId);
 
-  const updated = await prisma.branchCourse.update({
-    where: { id: courseId },
-    data: {
-      ...parsed,
-      branchId: branchProfile.id,
-      updatedBy: actorId,
-    },
+  const updated = await prisma.$transaction(async (tx) => {
+    const course = await tx.branchCourse.update({
+      where: { id: courseId },
+      data: {
+        ...parsed,
+        branchId: branchProfile.id,
+        updatedBy: actorId,
+      },
+    });
+
+    if (hierarchy) {
+      await replaceBranchCourseHierarchy(tx, course.id, hierarchy, actorId);
+    }
+
+    return tx.branchCourse.findFirst({
+      where: {
+        id: courseId,
+        branchId: branchProfile.id,
+      },
+      include: getBranchCourseInclude(),
+    });
   });
 
   return toBranchCourseDetail(updated);
@@ -427,6 +707,7 @@ export async function deleteBranchCourse(courseId, actor) {
       id: courseId,
       branchId: branchProfile.id,
     },
+    include: getBranchCourseInclude(),
   });
 
   if (!existingCourse) {

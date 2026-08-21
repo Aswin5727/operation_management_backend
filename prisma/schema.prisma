@@ -241,7 +241,8 @@ model BranchCourse {
   updatedBy        String?
   createdAt        DateTime      @default(now())
   updatedAt        DateTime      @updatedAt
-
+ 
+  modules         BranchCourseModule[]
   branchFaculties BranchFaculty[]
 
   @@unique([branchId, nameKey])
@@ -249,6 +250,47 @@ model BranchCourse {
   @@index([branchId])
   @@index([status])
   @@index([createdAt])
+}
+
+model BranchCourseModule {
+  id               String                @id @default(cuid())
+  branchCourseId    String
+  branchCourse      BranchCourse          @relation(fields: [branchCourseId], references: [id], onDelete: Cascade)
+  title             String
+  titleKey          String
+  description       String?
+  sequenceNo        Int
+  status            RecordStatus          @default(ACTIVE)
+  createdBy         String?
+  updatedBy         String?
+  createdAt         DateTime              @default(now())
+  updatedAt         DateTime              @updatedAt
+  submodules        BranchCourseSubmodule[]
+
+  @@unique([branchCourseId, sequenceNo])
+  @@unique([branchCourseId, titleKey])
+  @@index([branchCourseId, status])
+  @@index([branchCourseId, createdAt])
+}
+
+model BranchCourseSubmodule {
+  id                    String              @id @default(cuid())
+  branchCourseModuleId   String
+  branchCourseModule     BranchCourseModule  @relation(fields: [branchCourseModuleId], references: [id], onDelete: Cascade)
+  title                 String
+  titleKey              String
+  description           String?
+  sequenceNo            Int
+  status                RecordStatus        @default(ACTIVE)
+  createdBy             String?
+  updatedBy             String?
+  createdAt             DateTime            @default(now())
+  updatedAt             DateTime            @updatedAt
+
+  @@unique([branchCourseModuleId, sequenceNo])
+  @@unique([branchCourseModuleId, titleKey])
+  @@index([branchCourseModuleId, status])
+  @@index([branchCourseModuleId, createdAt])
 }
 
 model CourseModule {
