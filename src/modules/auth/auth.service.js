@@ -392,7 +392,7 @@ async function login({ identifier, password, ipAddress, userAgent }) {
 
           const branchFaculty = branchFacultyResult.status === "fulfilled" ? branchFacultyResult.value : null;
 
-          if (branchFaculty?.branch) {
+          if (isFirstLogin && branchFaculty?.branch) {
             await createBranchFacultyLoginNotification(
               branchFaculty.branch,
               {
