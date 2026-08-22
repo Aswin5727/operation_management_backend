@@ -15,12 +15,22 @@ import {
 const router = express.Router();
 
 router.use(authenticate);
+
+router.get(
+  "/",
+  authorize(USER_ROLES.BRANCH_ADMIN, USER_ROLES.SUPER_ADMIN, USER_ROLES.FACULTY),
+  listBranchCoursesHandler,
+);
+router.get(
+  "/:courseId",
+  authorize(USER_ROLES.BRANCH_ADMIN, USER_ROLES.SUPER_ADMIN, USER_ROLES.FACULTY),
+  getBranchCourseHandler,
+);
+
 router.use(authorize(USER_ROLES.BRANCH_ADMIN, USER_ROLES.SUPER_ADMIN));
 
-router.get("/", listBranchCoursesHandler);
 router.post("/", createBranchCourseHandler);
-router.get("/:courseId", getBranchCourseHandler);
-router.patch("/:courseId",updateBranchCourseHandler);
+router.patch("/:courseId", updateBranchCourseHandler);
 router.patch("/:courseId/assign-faculty", assignFacultyToBranchCourseHandler);
 router.delete("/:courseId", deleteBranchCourseHandler);
 

@@ -673,6 +673,8 @@ export async function getCurrentBranchProfile(user) {
 
   const userId = normalizeString(user?.userId || user?.id);
   const normalizedEmail = normalizeString(user?.email).toLowerCase();
+  const normalizedUserCode = normalizeString(user?.userCode);
+  const normalizedRole = normalizeString(user?.role).toUpperCase();
 
   let branch = null;
 
@@ -709,6 +711,56 @@ export async function getCurrentBranchProfile(user) {
         },
       },
     });
+  }
+
+  if (!branch && normalizedEmail && normalizedRole === "FACULTY") {
+    const facultyBranchLink = await prisma.branchFaculty.findFirst({
+      where: {
+        email: {
+          equals: normalizedEmail,
+          mode: "insensitive",
+        },
+      },
+      select: {
+        branch: {
+          include: {
+            adminUser: {
+              select: {
+                passwordChangedAt: true,
+                lastLoginAt: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    branch = facultyBranchLink?.branch ?? null;
+  }
+
+  if (!branch && normalizedRole === "FACULTY" && normalizedUserCode) {
+    const facultyBranchLink = await prisma.branchFaculty.findFirst({
+      where: {
+        facultyId: {
+          equals: normalizedUserCode,
+          mode: "insensitive",
+        },
+      },
+      select: {
+        branch: {
+          include: {
+            adminUser: {
+              select: {
+                passwordChangedAt: true,
+                lastLoginAt: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    branch = facultyBranchLink?.branch ?? null;
   }
 
   if (!branch) {
