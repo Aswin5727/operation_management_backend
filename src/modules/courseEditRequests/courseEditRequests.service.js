@@ -817,7 +817,10 @@ export async function saveCourseEditRequestModules(requestId, payload = {}, acto
   const actorId = normalizeString(actor?.id) || null;
   const now = new Date();
 
-  const updatedCourse = await updateBranchCourseModulesOnly(
+  let updatedCourse;
+
+try {
+  updatedCourse = await updateBranchCourseModulesOnly(
     request.branchCourseId,
     payload,
     actor,
@@ -825,6 +828,16 @@ export async function saveCourseEditRequestModules(requestId, payload = {}, acto
       branchId: request.branchId || course.branchId || null,
     },
   );
+} catch (error) {
+  console.error("========== COURSE EDIT MODULE ERROR ==========");
+  console.error("Message:", error?.message);
+  console.error("Code:", error?.code);
+  console.error("Meta:", error?.meta);
+  console.error("Stack:", error?.stack);
+  console.error("===============================================");
+
+  throw error;
+}
 
   const updatedRequest = await prisma.$transaction(async (tx) => {
     const record = await tx.courseEditRequest.update({

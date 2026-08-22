@@ -7,71 +7,6 @@ datasource db {
   provider = "postgresql"
 }
 
-enum UserRole {
-  SUPER_ADMIN
-  BUSINESS_OWNER
-  OPERATION_MANAGER
-  HR
-  FACULTY
-  STUDENT
-  BRANCH_ADMIN
-}
-
-enum LoginEventType {
-  LOGIN_SUCCESS
-  LOGIN_FAILURE
-  REFRESH
-  LOGOUT
-  FORGOT_PASSWORD
-  RESET_PASSWORD_REQUESTED
-  RESET_PASSWORD_COMPLETED
-}
-
-enum NotificationKind {
-  BRANCH_CREATED
-  BRANCH_INVITATION_RESENT
-  BRANCH_LOGIN
-  BRANCH_FACULTY_LOGIN
-  FACULTY_COURSE_ASSIGNED
-  COURSE_EDIT_REQUEST
-  COURSE_EDIT_REQUEST_ACCEPTED
-  COURSE_EDIT_REQUEST_REJECTED
-  COURSE_EDIT_MODULE_UPDATED
-<<<<<<< HEAD
-=======
-}
-
-enum CourseEditRequestStatus {
-  PENDING
-  ACCEPTED
-  EDITING
-  COMPLETED
-  REJECTED
->>>>>>> fcadcbe (Add course edit request and update course faculty notifications)
-}
-
-enum RecordStatus {
-  ACTIVE
-  INACTIVE
-}
-
-enum BatchStatus {
-  PLANNED
-  ACTIVE
-  COMPLETED
-  INACTIVE
-}
-
-enum AssignmentStatus {
-  ACTIVE
-  INACTIVE
-}
-
-enum AttendanceStatus {
-  PRESENT
-  ABSENT
-}
-
 model User {
   id                         String                     @id @default(cuid())
   userCode                   String                     @unique
@@ -94,43 +29,42 @@ model User {
   updatedBy                  String?
   createdAt                  DateTime                   @default(now())
   updatedAt                  DateTime                   @updatedAt
-  loginEvents                LoginEvent[]
-  passwordResetTokens        PasswordResetToken[]
   batchFacultyAssignments    BatchFacultyAssignment[]
-  targetedNotifications      Notification[]             @relation("NotificationTargetUser")
-  facultyAttendanceSessions  FacultyAttendanceSession[]
-  markedStudentAttendances   StudentAttendance[]
   managedBranch              Branch?                    @relation("BranchAdminUser")
+  facultyAttendanceSessions  FacultyAttendanceSession[]
+  loginEvents                LoginEvent[]
+  targetedNotifications      Notification[]             @relation("NotificationTargetUser")
+  passwordResetTokens        PasswordResetToken[]
+  markedStudentAttendances   StudentAttendance[]
 
   @@index([role])
   @@index([active])
 }
 
 model Branch {
-  id                         String                      @id @default(cuid())
-  branchId                   String                      @unique
-  branchName                 String
-  branchAdminName            String
-  branchEmail                String                      @unique
-  branchPhone                String                      @unique
-  branchCountryCode          String                      @default("")
-  branchCountry              String                      @default("")
-  branchStateCode            String                      @default("")
-  branchState                String                      @default("")
-  branchCity                 String                      @default("")
-  branchAddress              String
-  status                     RecordStatus                @default(ACTIVE)
-  adminUserId                String?                     @unique
-  adminUser                  User?                       @relation("BranchAdminUser", fields: [adminUserId], references: [id], onDelete: SetNull)
-  createdBy                  String?
-  updatedBy                  String?
-  createdAt                  DateTime                    @default(now())
-  updatedAt                  DateTime                    @updatedAt
-  courses                    Course[]
-  branchCourses              BranchCourse[]
-  branchFaculties            BranchFaculty[]
-  branchStudents             BranchStudent[]
-  branchInstallmentTemplates BranchInstallmentTemplate[]
+  id                String          @id @default(cuid())
+  branchId          String          @unique
+  branchName        String
+  branchAdminName   String
+  branchEmail       String          @unique
+  branchPhone       String          @unique
+  branchAddress     String
+  status            RecordStatus    @default(ACTIVE)
+  adminUserId       String?         @unique
+  createdBy         String?
+  updatedBy         String?
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  branchCity        String          @default("")
+  branchCountry     String          @default("")
+  branchCountryCode String          @default("")
+  branchState       String          @default("")
+  branchStateCode   String          @default("")
+  adminUser         User?           @relation("BranchAdminUser", fields: [adminUserId], references: [id])
+  branchCourses     BranchCourse[]
+  branchFaculties   BranchFaculty[]
+  branchStudents    BranchStudent[]
+  courses           Course[]
 
   @@index([status])
   @@index([branchName])
@@ -140,7 +74,6 @@ model Branch {
 model LoginEvent {
   id        String         @id @default(cuid())
   userId    String?
-  user      User?          @relation(fields: [userId], references: [id], onDelete: SetNull)
   eventType LoginEventType
   success   Boolean        @default(true)
   ipAddress String?
@@ -148,6 +81,7 @@ model LoginEvent {
   reason    String?
   meta      Json?
   createdAt DateTime       @default(now())
+  user      User?          @relation(fields: [userId], references: [id])
 
   @@index([userId, eventType])
 }
@@ -159,33 +93,30 @@ model Notification {
   title              String
   message            String
   actionLabel        String?
-  requestId          String?
-  request            CourseEditRequest? @relation("CourseEditRequestNotifications", fields: [requestId], references: [id], onDelete: SetNull)
-  requestStatus      String?
-  requestTitle       String?
-  requestReason      String?
-  requestDescription String?
+  targetBranchId     String?
+  targetBranchEmail  String?
+  targetBranchName   String?
+  read               Boolean            @default(false)
+  readAt             DateTime?
+  createdBy          String?
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+  targetUserId       String?
   branchCourseId     String?
   branchCourseName   String?
-  moduleId           String?
-  moduleName         String?
-  subModuleId        String?
-  subModuleName      String?
   facultyId          String?
   facultyName        String?
-
-  targetUserId String?
-  targetUser   User?   @relation("NotificationTargetUser", fields: [targetUserId], references: [id], onDelete: SetNull)
-
-  targetBranchId    String?
-  targetBranchEmail String?
-  targetBranchName  String?
-
-  read      Boolean   @default(false)
-  readAt    DateTime?
-  createdBy String?
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  moduleId           String?
+  moduleName         String?
+  requestDescription String?
+  requestId          String?
+  requestReason      String?
+  requestStatus      String?
+  requestTitle       String?
+  subModuleId        String?
+  subModuleName      String?
+  request            CourseEditRequest? @relation("CourseEditRequestNotifications", fields: [requestId], references: [id])
+  targetUser         User?              @relation("NotificationTargetUser", fields: [targetUserId], references: [id])
 
   @@index([kind, createdAt])
   @@index([read, createdAt])
@@ -232,12 +163,12 @@ model CourseEditRequest {
 model PasswordResetToken {
   id        String    @id @default(cuid())
   userId    String
-  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   tokenHash String    @unique
   expiresAt DateTime
   usedAt    DateTime?
   createdBy String?
   createdAt DateTime  @default(now())
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId, expiresAt])
 }
@@ -246,9 +177,6 @@ model Course {
   id                       String                    @id @default(cuid())
   name                     String
   nameKey                  String
-  courseCode               String?
-  branchId                 String?
-  branch                   Branch?                   @relation(fields: [branchId], references: [id], onDelete: SetNull)
   description              String?
   feeReference             String?
   mode                     String
@@ -262,7 +190,6 @@ model Course {
   installment1             Int?
   installment2             Int?
   installment3             Int?
-  installments             Json?
   status                   RecordStatus              @default(ACTIVE)
   statusChangedAt          DateTime?
   statusChangedBy          String?
@@ -270,14 +197,18 @@ model Course {
   updatedBy                String?
   createdAt                DateTime                  @default(now())
   updatedAt                DateTime                  @updatedAt
-  modules                  CourseModule[]
+  installments             Json?
+  branchId                 String?
+  courseCode               String?
   batches                  Batch[]
-  students                 StudentProfile[]
-  facultyProfiles          FacultyProfile[]
-  facultyCourseAssignments FacultyCourseAssignment[]
-  facultyBatchEntries      FacultyBatchEntry[]
-  statusHistory            CourseStatusHistory[]
   branchFaculties          BranchFaculty[]
+  branch                   Branch?                   @relation(fields: [branchId], references: [id])
+  modules                  CourseModule[]
+  statusHistory            CourseStatusHistory[]
+  facultyBatchEntries      FacultyBatchEntry[]
+  facultyCourseAssignments FacultyCourseAssignment[]
+  facultyProfiles          FacultyProfile[]
+  students                 StudentProfile[]
 
   @@index([branchId])
   @@index([nameKey])
@@ -287,9 +218,8 @@ model Course {
 }
 
 model BranchCourse {
-  id               String       @id @default(cuid())
+  id               String               @id @default(cuid())
   branchId         String
-  branch           Branch       @relation(fields: [branchId], references: [id], onDelete: Cascade)
   courseCode       String
   name             String
   nameKey          String
@@ -301,15 +231,14 @@ model BranchCourse {
   registrationFees Int?
   discount         Int?
   afterDiscount    Int?
-  status           RecordStatus @default(ACTIVE)
+  status           RecordStatus         @default(ACTIVE)
   createdBy        String?
   updatedBy        String?
-  createdAt        DateTime     @default(now())
-  updatedAt        DateTime     @updatedAt
-
-  modules             BranchCourseModule[]
-  branchFaculties     BranchFaculty[]
-  installmentTemplate BranchInstallmentTemplate?
+  createdAt        DateTime             @default(now())
+  updatedAt        DateTime             @updatedAt
+  branch           Branch               @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  modules          BranchCourseModule[]
+  branchFaculties  BranchFaculty[]
 
   @@unique([branchId, nameKey])
   @@unique([branchId, courseCode])
@@ -318,33 +247,9 @@ model BranchCourse {
   @@index([createdAt])
 }
 
-model BranchInstallmentTemplate {
-  id                 String        @id @default(cuid())
-  branchId           String
-  branch             Branch        @relation(fields: [branchId], references: [id], onDelete: Cascade)
-  branchCourseId     String?       @unique
-  branchCourse       BranchCourse? @relation(fields: [branchCourseId], references: [id], onDelete: Cascade)
-  templateName       String
-  planType           String        @default("CUSTOM")
-  installmentCount   Int
-  installments       Json
-  dueRule            String?
-  allowCustomization Boolean       @default(true)
-  status             RecordStatus  @default(ACTIVE)
-  createdBy          String?
-  updatedBy          String?
-  createdAt          DateTime      @default(now())
-  updatedAt          DateTime      @updatedAt
-
-  @@index([branchId, status])
-  @@index([branchCourseId, status])
-  @@index([createdAt])
-}
-
 model BranchCourseModule {
   id             String                  @id @default(cuid())
   branchCourseId String
-  branchCourse   BranchCourse            @relation(fields: [branchCourseId], references: [id], onDelete: Cascade)
   title          String
   titleKey       String
   description    String?
@@ -354,6 +259,7 @@ model BranchCourseModule {
   updatedBy      String?
   createdAt      DateTime                @default(now())
   updatedAt      DateTime                @updatedAt
+  branchCourse   BranchCourse            @relation(fields: [branchCourseId], references: [id], onDelete: Cascade)
   submodules     BranchCourseSubmodule[]
 
   @@unique([branchCourseId, sequenceNo])
@@ -365,7 +271,6 @@ model BranchCourseModule {
 model BranchCourseSubmodule {
   id                   String             @id @default(cuid())
   branchCourseModuleId String
-  branchCourseModule   BranchCourseModule @relation(fields: [branchCourseModuleId], references: [id], onDelete: Cascade)
   title                String
   titleKey             String
   description          String?
@@ -375,6 +280,7 @@ model BranchCourseSubmodule {
   updatedBy            String?
   createdAt            DateTime           @default(now())
   updatedAt            DateTime           @updatedAt
+  branchCourseModule   BranchCourseModule @relation(fields: [branchCourseModuleId], references: [id], onDelete: Cascade)
 
   @@unique([branchCourseModuleId, sequenceNo])
   @@unique([branchCourseModuleId, titleKey])
@@ -385,7 +291,6 @@ model BranchCourseSubmodule {
 model CourseModule {
   id              String       @id @default(cuid())
   courseId        String
-  course          Course       @relation(fields: [courseId], references: [id], onDelete: Cascade)
   title           String
   titleKey        String
   description     String?
@@ -397,6 +302,7 @@ model CourseModule {
   updatedBy       String?
   createdAt       DateTime     @default(now())
   updatedAt       DateTime     @updatedAt
+  course          Course       @relation(fields: [courseId], references: [id], onDelete: Cascade)
 
   @@unique([courseId, sequenceNo])
   @@unique([courseId, titleKey])
@@ -406,7 +312,6 @@ model CourseModule {
 model Batch {
   id                 String                   @id @default(cuid())
   courseId           String
-  course             Course                   @relation(fields: [courseId], references: [id], onDelete: Restrict)
   batchName          String
   batchNameKey       String                   @unique
   description        String?
@@ -423,6 +328,7 @@ model Batch {
   updatedBy          String?
   createdAt          DateTime                 @default(now())
   updatedAt          DateTime                 @updatedAt
+  course             Course                   @relation(fields: [courseId], references: [id])
   facultyAssignments BatchFacultyAssignment[]
   statusHistory      BatchStatusHistory[]
 
@@ -434,9 +340,7 @@ model Batch {
 model BatchFacultyAssignment {
   id           String           @id @default(cuid())
   batchId      String
-  batch        Batch            @relation(fields: [batchId], references: [id], onDelete: Cascade)
   facultyId    String
-  faculty      User             @relation(fields: [facultyId], references: [id], onDelete: Restrict)
   assignedDate String
   assignedAt   DateTime         @default(now())
   releasedAt   DateTime?
@@ -448,6 +352,8 @@ model BatchFacultyAssignment {
   updatedBy    String?
   createdAt    DateTime         @default(now())
   updatedAt    DateTime         @updatedAt
+  batch        Batch            @relation(fields: [batchId], references: [id], onDelete: Cascade)
+  faculty      User             @relation(fields: [facultyId], references: [id])
 
   @@index([batchId, status])
   @@index([facultyId, status])
@@ -457,12 +363,12 @@ model BatchFacultyAssignment {
 model CourseStatusHistory {
   id         String        @id @default(cuid())
   courseId   String
-  course     Course        @relation(fields: [courseId], references: [id], onDelete: Cascade)
   fromStatus RecordStatus?
   toStatus   RecordStatus
   changedBy  String?
   reason     String?
   changedAt  DateTime      @default(now())
+  course     Course        @relation(fields: [courseId], references: [id], onDelete: Cascade)
 
   @@index([courseId, changedAt])
 }
@@ -470,12 +376,12 @@ model CourseStatusHistory {
 model BatchStatusHistory {
   id         String       @id @default(cuid())
   batchId    String
-  batch      Batch        @relation(fields: [batchId], references: [id], onDelete: Cascade)
   fromStatus BatchStatus?
   toStatus   BatchStatus
   changedBy  String?
   reason     String?
   changedAt  DateTime     @default(now())
+  batch      Batch        @relation(fields: [batchId], references: [id], onDelete: Cascade)
 
   @@index([batchId, changedAt])
 }
@@ -486,15 +392,11 @@ model StudentProfile {
   studentName             String
   mobileNumber            String              @unique
   emailAddress            String              @unique
-  linkedInUrl             String?
   parentSpouseNumber      String?
   location                String?
   courseId                String?
-  course                  Course?             @relation(fields: [courseId], references: [id], onDelete: SetNull)
   courseInterested        String
-  facultyId               String?
   facultyName             String?
-  batchId                 String?
   batchName               String?
   qualification           String?
   passedOutYear           Int?
@@ -508,7 +410,6 @@ model StudentProfile {
   installment1            Int?
   installment2            Int?
   installment3            Int?
-  installment4            Int?
   totalAmount             Int?
   admissionDate           String
   firstInstallmentAmount  Int?
@@ -525,7 +426,12 @@ model StudentProfile {
   updatedBy               String?
   createdAt               DateTime            @default(now())
   updatedAt               DateTime            @updatedAt
+  installment4            Int?
+  batchId                 String?
+  facultyId               String?
+  linkedInUrl             String?
   attendanceRecords       StudentAttendance[]
+  course                  Course?             @relation(fields: [courseId], references: [id])
 
   @@index([recordStatus])
   @@index([courseId])
@@ -536,12 +442,10 @@ model StudentProfile {
 model BranchStudent {
   id                 String       @id @default(cuid())
   branchId           String
-  branch             Branch       @relation(fields: [branchId], references: [id], onDelete: Cascade)
   studentId          String
   studentName        String
   mobileNumber       String       @unique
   emailAddress       String       @unique
-  linkedInUrl        String?
   parentSpouseNumber String?
   countryCode        String?
   country            String?
@@ -555,13 +459,15 @@ model BranchStudent {
   designation        String?
   source             String?
   sourceOther        String?
-  remarks            String?
   admissionDate      String
   recordStatus       RecordStatus @default(ACTIVE)
   createdBy          String?
   updatedBy          String?
   createdAt          DateTime     @default(now())
   updatedAt          DateTime     @updatedAt
+  linkedInUrl        String?
+  remarks            String?
+  branch             Branch       @relation(fields: [branchId], references: [id], onDelete: Cascade)
 
   @@unique([branchId, studentId])
   @@index([branchId])
@@ -577,14 +483,14 @@ model FacultyProfile {
   facultyEmail      String
   facultyPhone      String
   courseId          String?
-  course            Course?                   @relation(fields: [courseId], references: [id], onDelete: SetNull)
   status            RecordStatus              @default(ACTIVE)
-  courseAssignments FacultyCourseAssignment[]
-  batchEntries      FacultyBatchEntry[]
   createdBy         String?
   updatedBy         String?
   createdAt         DateTime                  @default(now())
   updatedAt         DateTime                  @updatedAt
+  batchEntries      FacultyBatchEntry[]
+  courseAssignments FacultyCourseAssignment[]
+  course            Course?                   @relation(fields: [courseId], references: [id])
 
   @@index([status])
   @@index([courseId])
@@ -595,13 +501,13 @@ model FacultyProfile {
 model FacultyCourseAssignment {
   id        String         @id @default(cuid())
   facultyId String
-  faculty   FacultyProfile @relation(fields: [facultyId], references: [id], onDelete: Cascade)
   courseId  String
-  course    Course         @relation(fields: [courseId], references: [id], onDelete: Restrict)
   createdBy String?
   updatedBy String?
   createdAt DateTime       @default(now())
   updatedAt DateTime       @updatedAt
+  course    Course         @relation(fields: [courseId], references: [id])
+  faculty   FacultyProfile @relation(fields: [facultyId], references: [id], onDelete: Cascade)
 
   @@unique([facultyId, courseId])
   @@index([courseId])
@@ -610,14 +516,14 @@ model FacultyCourseAssignment {
 model FacultyBatchEntry {
   id          String         @id @default(cuid())
   facultyId   String
-  faculty     FacultyProfile @relation(fields: [facultyId], references: [id], onDelete: Cascade)
-  courseId    String?
-  course      Course?        @relation(fields: [courseId], references: [id], onDelete: SetNull)
   batchName   String
   batchTiming String
   sequenceNo  Int            @default(1)
   createdAt   DateTime       @default(now())
   updatedAt   DateTime       @updatedAt
+  courseId    String?
+  course      Course?        @relation(fields: [courseId], references: [id])
+  faculty     FacultyProfile @relation(fields: [facultyId], references: [id], onDelete: Cascade)
 
   @@index([facultyId, sequenceNo])
   @@index([courseId])
@@ -626,17 +532,17 @@ model FacultyBatchEntry {
 model FacultyAttendanceSession {
   id             String    @id @default(cuid())
   facultyUserId  String
-  facultyUser    User      @relation(fields: [facultyUserId], references: [id], onDelete: Cascade)
   attendanceDate String
-  sessionSource  String    @default("ATTENDANCE")
   loginAt        DateTime
   logoutAt       DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  sessionSource  String    @default("ATTENDANCE")
   logoutType     String?
   logoutReason   String?
   workReport     String?
   workCompleted  String?
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
+  facultyUser    User      @relation(fields: [facultyUserId], references: [id], onDelete: Cascade)
 
   @@index([facultyUserId, attendanceDate])
   @@index([facultyUserId, attendanceDate, sessionSource])
@@ -646,9 +552,7 @@ model FacultyAttendanceSession {
 model StudentAttendance {
   id             String           @id @default(cuid())
   studentId      String
-  student        StudentProfile   @relation(fields: [studentId], references: [id], onDelete: Cascade)
   facultyUserId  String?
-  facultyUser    User?            @relation(fields: [facultyUserId], references: [id], onDelete: SetNull)
   courseId       String?
   batchName      String?
   attendanceDate String
@@ -659,6 +563,8 @@ model StudentAttendance {
   updatedBy      String?
   createdAt      DateTime         @default(now())
   updatedAt      DateTime         @updatedAt
+  facultyUser    User?            @relation(fields: [facultyUserId], references: [id])
+  student        StudentProfile   @relation(fields: [studentId], references: [id], onDelete: Cascade)
 
   @@unique([studentId, attendanceDate])
   @@index([facultyUserId, attendanceDate])
@@ -666,30 +572,28 @@ model StudentAttendance {
 }
 
 model BranchFaculty {
-  id          String  @id @default(cuid())
-  facultyId   String
-  branchId    String
-  branch      Branch  @relation(fields: [branchId], references: [id], onDelete: Cascade)
-  name        String
-  email       String
-  phone       String
-  country     String? @default("")
-  countryCode String? @default("")
-  state       String? @default("")
-  stateCode   String? @default("")
-  city        String? @default("")
-  address     String?
-  courseId    String?
-  course      Course? @relation(fields: [courseId], references: [id], onDelete: SetNull)
-
+  id             String        @id @default(cuid())
+  facultyId      String
+  branchId       String
+  name           String
+  email          String
+  phone          String
+  country        String?       @default("")
+  countryCode    String?       @default("")
+  state          String?       @default("")
+  stateCode      String?       @default("")
+  city           String?       @default("")
+  address        String?
+  status         RecordStatus  @default(ACTIVE)
+  createdBy      String?
+  updatedBy      String?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  courseId       String?
   branchCourseId String?
-  branchCourse   BranchCourse? @relation(fields: [branchCourseId], references: [id], onDelete: SetNull)
-
-  status    RecordStatus @default(ACTIVE)
-  createdBy String?
-  updatedBy String?
-  createdAt DateTime     @default(now())
-  updatedAt DateTime     @updatedAt
+  branchCourse   BranchCourse? @relation(fields: [branchCourseId], references: [id])
+  branch         Branch        @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  course         Course?       @relation(fields: [courseId], references: [id])
 
   @@unique([branchId, facultyId])
   @@unique([branchId, email])
@@ -697,4 +601,66 @@ model BranchFaculty {
   @@index([courseId])
   @@index([branchCourseId])
   @@index([status])
+}
+
+enum UserRole {
+  BUSINESS_OWNER
+  OPERATION_MANAGER
+  HR
+  FACULTY
+  STUDENT
+  SUPER_ADMIN
+  BRANCH_ADMIN
+}
+
+enum LoginEventType {
+  LOGIN_SUCCESS
+  LOGIN_FAILURE
+  REFRESH
+  LOGOUT
+  FORGOT_PASSWORD
+  RESET_PASSWORD_REQUESTED
+  RESET_PASSWORD_COMPLETED
+}
+
+enum NotificationKind {
+  BRANCH_CREATED
+  BRANCH_INVITATION_RESENT
+  BRANCH_LOGIN
+  BRANCH_FACULTY_LOGIN
+  FACULTY_COURSE_ASSIGNED
+  COURSE_EDIT_REQUEST
+  COURSE_EDIT_REQUEST_ACCEPTED
+  COURSE_EDIT_REQUEST_REJECTED
+  COURSE_EDIT_MODULE_UPDATED
+}
+
+enum RecordStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum BatchStatus {
+  PLANNED
+  ACTIVE
+  COMPLETED
+  INACTIVE
+}
+
+enum AssignmentStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum AttendanceStatus {
+  PRESENT
+  ABSENT
+}
+
+enum CourseEditRequestStatus {
+  PENDING
+  ACCEPTED
+  EDITING
+  COMPLETED
+  REJECTED
 }

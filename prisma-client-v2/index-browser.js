@@ -151,18 +151,18 @@ exports.Prisma.BranchScalarFieldEnum = {
   branchAdminName: 'branchAdminName',
   branchEmail: 'branchEmail',
   branchPhone: 'branchPhone',
-  branchCountryCode: 'branchCountryCode',
-  branchCountry: 'branchCountry',
-  branchStateCode: 'branchStateCode',
-  branchState: 'branchState',
-  branchCity: 'branchCity',
   branchAddress: 'branchAddress',
   status: 'status',
   adminUserId: 'adminUserId',
   createdBy: 'createdBy',
   updatedBy: 'updatedBy',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  branchCity: 'branchCity',
+  branchCountry: 'branchCountry',
+  branchCountryCode: 'branchCountryCode',
+  branchState: 'branchState',
+  branchStateCode: 'branchStateCode'
 };
 
 exports.Prisma.LoginEventScalarFieldEnum = {
@@ -184,20 +184,6 @@ exports.Prisma.NotificationScalarFieldEnum = {
   title: 'title',
   message: 'message',
   actionLabel: 'actionLabel',
-  requestId: 'requestId',
-  requestStatus: 'requestStatus',
-  requestTitle: 'requestTitle',
-  requestReason: 'requestReason',
-  requestDescription: 'requestDescription',
-  branchCourseId: 'branchCourseId',
-  branchCourseName: 'branchCourseName',
-  moduleId: 'moduleId',
-  moduleName: 'moduleName',
-  subModuleId: 'subModuleId',
-  subModuleName: 'subModuleName',
-  facultyId: 'facultyId',
-  facultyName: 'facultyName',
-  targetUserId: 'targetUserId',
   targetBranchId: 'targetBranchId',
   targetBranchEmail: 'targetBranchEmail',
   targetBranchName: 'targetBranchName',
@@ -205,7 +191,21 @@ exports.Prisma.NotificationScalarFieldEnum = {
   readAt: 'readAt',
   createdBy: 'createdBy',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  targetUserId: 'targetUserId',
+  branchCourseId: 'branchCourseId',
+  branchCourseName: 'branchCourseName',
+  facultyId: 'facultyId',
+  facultyName: 'facultyName',
+  moduleId: 'moduleId',
+  moduleName: 'moduleName',
+  requestDescription: 'requestDescription',
+  requestId: 'requestId',
+  requestReason: 'requestReason',
+  requestStatus: 'requestStatus',
+  requestTitle: 'requestTitle',
+  subModuleId: 'subModuleId',
+  subModuleName: 'subModuleName'
 };
 
 exports.Prisma.CourseEditRequestScalarFieldEnum = {
@@ -249,8 +249,6 @@ exports.Prisma.CourseScalarFieldEnum = {
   id: 'id',
   name: 'name',
   nameKey: 'nameKey',
-  courseCode: 'courseCode',
-  branchId: 'branchId',
   description: 'description',
   feeReference: 'feeReference',
   mode: 'mode',
@@ -264,14 +262,16 @@ exports.Prisma.CourseScalarFieldEnum = {
   installment1: 'installment1',
   installment2: 'installment2',
   installment3: 'installment3',
-  installments: 'installments',
   status: 'status',
   statusChangedAt: 'statusChangedAt',
   statusChangedBy: 'statusChangedBy',
   createdBy: 'createdBy',
   updatedBy: 'updatedBy',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  installments: 'installments',
+  branchId: 'branchId',
+  courseCode: 'courseCode'
 };
 
 exports.Prisma.BranchCourseScalarFieldEnum = {
@@ -288,23 +288,6 @@ exports.Prisma.BranchCourseScalarFieldEnum = {
   registrationFees: 'registrationFees',
   discount: 'discount',
   afterDiscount: 'afterDiscount',
-  status: 'status',
-  createdBy: 'createdBy',
-  updatedBy: 'updatedBy',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-};
-
-exports.Prisma.BranchInstallmentTemplateScalarFieldEnum = {
-  id: 'id',
-  branchId: 'branchId',
-  branchCourseId: 'branchCourseId',
-  templateName: 'templateName',
-  planType: 'planType',
-  installmentCount: 'installmentCount',
-  installments: 'installments',
-  dueRule: 'dueRule',
-  allowCustomization: 'allowCustomization',
   status: 'status',
   createdBy: 'createdBy',
   updatedBy: 'updatedBy',
@@ -420,14 +403,11 @@ exports.Prisma.StudentProfileScalarFieldEnum = {
   studentName: 'studentName',
   mobileNumber: 'mobileNumber',
   emailAddress: 'emailAddress',
-  linkedInUrl: 'linkedInUrl',
   parentSpouseNumber: 'parentSpouseNumber',
   location: 'location',
   courseId: 'courseId',
   courseInterested: 'courseInterested',
-  facultyId: 'facultyId',
   facultyName: 'facultyName',
-  batchId: 'batchId',
   batchName: 'batchName',
   qualification: 'qualification',
   passedOutYear: 'passedOutYear',
@@ -441,7 +421,6 @@ exports.Prisma.StudentProfileScalarFieldEnum = {
   installment1: 'installment1',
   installment2: 'installment2',
   installment3: 'installment3',
-  installment4: 'installment4',
   totalAmount: 'totalAmount',
   admissionDate: 'admissionDate',
   firstInstallmentAmount: 'firstInstallmentAmount',
@@ -457,7 +436,11 @@ exports.Prisma.StudentProfileScalarFieldEnum = {
   createdBy: 'createdBy',
   updatedBy: 'updatedBy',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  installment4: 'installment4',
+  batchId: 'batchId',
+  facultyId: 'facultyId',
+  linkedInUrl: 'linkedInUrl'
 };
 
 exports.Prisma.BranchStudentScalarFieldEnum = {
@@ -467,7 +450,6 @@ exports.Prisma.BranchStudentScalarFieldEnum = {
   studentName: 'studentName',
   mobileNumber: 'mobileNumber',
   emailAddress: 'emailAddress',
-  linkedInUrl: 'linkedInUrl',
   parentSpouseNumber: 'parentSpouseNumber',
   countryCode: 'countryCode',
   country: 'country',
@@ -481,13 +463,14 @@ exports.Prisma.BranchStudentScalarFieldEnum = {
   designation: 'designation',
   source: 'source',
   sourceOther: 'sourceOther',
-  remarks: 'remarks',
   admissionDate: 'admissionDate',
   recordStatus: 'recordStatus',
   createdBy: 'createdBy',
   updatedBy: 'updatedBy',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  linkedInUrl: 'linkedInUrl',
+  remarks: 'remarks'
 };
 
 exports.Prisma.FacultyProfileScalarFieldEnum = {
@@ -516,27 +499,27 @@ exports.Prisma.FacultyCourseAssignmentScalarFieldEnum = {
 exports.Prisma.FacultyBatchEntryScalarFieldEnum = {
   id: 'id',
   facultyId: 'facultyId',
-  courseId: 'courseId',
   batchName: 'batchName',
   batchTiming: 'batchTiming',
   sequenceNo: 'sequenceNo',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  courseId: 'courseId'
 };
 
 exports.Prisma.FacultyAttendanceSessionScalarFieldEnum = {
   id: 'id',
   facultyUserId: 'facultyUserId',
   attendanceDate: 'attendanceDate',
-  sessionSource: 'sessionSource',
   loginAt: 'loginAt',
   logoutAt: 'logoutAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  sessionSource: 'sessionSource',
   logoutType: 'logoutType',
   logoutReason: 'logoutReason',
   workReport: 'workReport',
-  workCompleted: 'workCompleted',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  workCompleted: 'workCompleted'
 };
 
 exports.Prisma.StudentAttendanceScalarFieldEnum = {
@@ -568,13 +551,13 @@ exports.Prisma.BranchFacultyScalarFieldEnum = {
   stateCode: 'stateCode',
   city: 'city',
   address: 'address',
-  courseId: 'courseId',
-  branchCourseId: 'branchCourseId',
   status: 'status',
   createdBy: 'createdBy',
   updatedBy: 'updatedBy',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  courseId: 'courseId',
+  branchCourseId: 'branchCourseId'
 };
 
 exports.Prisma.SortOrder = {
@@ -584,10 +567,6 @@ exports.Prisma.SortOrder = {
 
 exports.Prisma.NullableJsonNullValueInput = {
   DbNull: Prisma.DbNull,
-  JsonNull: Prisma.JsonNull
-};
-
-exports.Prisma.JsonNullValueInput = {
   JsonNull: Prisma.JsonNull
 };
 
@@ -607,12 +586,12 @@ exports.Prisma.JsonNullValueFilter = {
   AnyNull: Prisma.AnyNull
 };
 exports.UserRole = exports.$Enums.UserRole = {
-  SUPER_ADMIN: 'SUPER_ADMIN',
   BUSINESS_OWNER: 'BUSINESS_OWNER',
   OPERATION_MANAGER: 'OPERATION_MANAGER',
   HR: 'HR',
   FACULTY: 'FACULTY',
   STUDENT: 'STUDENT',
+  SUPER_ADMIN: 'SUPER_ADMIN',
   BRANCH_ADMIN: 'BRANCH_ADMIN'
 };
 
@@ -643,6 +622,14 @@ exports.NotificationKind = exports.$Enums.NotificationKind = {
   COURSE_EDIT_MODULE_UPDATED: 'COURSE_EDIT_MODULE_UPDATED'
 };
 
+exports.CourseEditRequestStatus = exports.$Enums.CourseEditRequestStatus = {
+  PENDING: 'PENDING',
+  ACCEPTED: 'ACCEPTED',
+  EDITING: 'EDITING',
+  COMPLETED: 'COMPLETED',
+  REJECTED: 'REJECTED'
+};
+
 exports.BatchStatus = exports.$Enums.BatchStatus = {
   PLANNED: 'PLANNED',
   ACTIVE: 'ACTIVE',
@@ -669,7 +656,6 @@ exports.Prisma.ModelName = {
   PasswordResetToken: 'PasswordResetToken',
   Course: 'Course',
   BranchCourse: 'BranchCourse',
-  BranchInstallmentTemplate: 'BranchInstallmentTemplate',
   BranchCourseModule: 'BranchCourseModule',
   BranchCourseSubmodule: 'BranchCourseSubmodule',
   CourseModule: 'CourseModule',

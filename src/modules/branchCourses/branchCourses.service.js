@@ -646,21 +646,21 @@ async function replaceBranchCourseHierarchy(tx, branchCourseId, modules = [], ac
 
 function getBranchCourseInclude() {
   return {
-    installmentTemplate: {
-      select: {
-        id: true,
-        branchId: true,
-        branchCourseId: true,
-        templateName: true,
-        installmentCount: true,
-        installments: true,
-        dueRule: true,
-        allowCustomization: true,
-        status: true,
-        createdAt: true,
-        updatedAt: true,
-      },
-    },
+    // installmentTemplate: {
+    //   select: {
+    //     id: true,
+    //     branchId: true,
+    //     branchCourseId: true,
+    //     templateName: true,
+    //     installmentCount: true,
+    //     installments: true,
+    //     dueRule: true,
+    //     allowCustomization: true,
+    //     status: true,
+    //     createdAt: true,
+    //     updatedAt: true,
+    //   },
+    // },
     branchFaculties: {
       select: {
         id: true,

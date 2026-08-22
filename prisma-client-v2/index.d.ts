@@ -54,11 +54,6 @@ export type Course = $Result.DefaultSelection<Prisma.$CoursePayload>
  */
 export type BranchCourse = $Result.DefaultSelection<Prisma.$BranchCoursePayload>
 /**
- * Model BranchInstallmentTemplate
- * 
- */
-export type BranchInstallmentTemplate = $Result.DefaultSelection<Prisma.$BranchInstallmentTemplatePayload>
-/**
  * Model BranchCourseModule
  * 
  */
@@ -139,12 +134,12 @@ export type BranchFaculty = $Result.DefaultSelection<Prisma.$BranchFacultyPayloa
  */
 export namespace $Enums {
   export const UserRole: {
-  SUPER_ADMIN: 'SUPER_ADMIN',
   BUSINESS_OWNER: 'BUSINESS_OWNER',
   OPERATION_MANAGER: 'OPERATION_MANAGER',
   HR: 'HR',
   FACULTY: 'FACULTY',
   STUDENT: 'STUDENT',
+  SUPER_ADMIN: 'SUPER_ADMIN',
   BRANCH_ADMIN: 'BRANCH_ADMIN'
 };
 
@@ -177,17 +172,6 @@ export const NotificationKind: {
 };
 
 export type NotificationKind = (typeof NotificationKind)[keyof typeof NotificationKind]
-
-
-export const CourseEditRequestStatus: {
-  PENDING: 'PENDING',
-  ACCEPTED: 'ACCEPTED',
-  EDITING: 'EDITING',
-  COMPLETED: 'COMPLETED',
-  REJECTED: 'REJECTED'
-};
-
-export type CourseEditRequestStatus = (typeof CourseEditRequestStatus)[keyof typeof CourseEditRequestStatus]
 
 
 export const RecordStatus: {
@@ -223,6 +207,17 @@ export const AttendanceStatus: {
 
 export type AttendanceStatus = (typeof AttendanceStatus)[keyof typeof AttendanceStatus]
 
+
+export const CourseEditRequestStatus: {
+  PENDING: 'PENDING',
+  ACCEPTED: 'ACCEPTED',
+  EDITING: 'EDITING',
+  COMPLETED: 'COMPLETED',
+  REJECTED: 'REJECTED'
+};
+
+export type CourseEditRequestStatus = (typeof CourseEditRequestStatus)[keyof typeof CourseEditRequestStatus]
+
 }
 
 export type UserRole = $Enums.UserRole
@@ -236,10 +231,6 @@ export const LoginEventType: typeof $Enums.LoginEventType
 export type NotificationKind = $Enums.NotificationKind
 
 export const NotificationKind: typeof $Enums.NotificationKind
-
-export type CourseEditRequestStatus = $Enums.CourseEditRequestStatus
-
-export const CourseEditRequestStatus: typeof $Enums.CourseEditRequestStatus
 
 export type RecordStatus = $Enums.RecordStatus
 
@@ -256,6 +247,10 @@ export const AssignmentStatus: typeof $Enums.AssignmentStatus
 export type AttendanceStatus = $Enums.AttendanceStatus
 
 export const AttendanceStatus: typeof $Enums.AttendanceStatus
+
+export type CourseEditRequestStatus = $Enums.CourseEditRequestStatus
+
+export const CourseEditRequestStatus: typeof $Enums.CourseEditRequestStatus
 
 /**
  * ##  Prisma Client ʲˢ
@@ -457,16 +452,6 @@ export class PrismaClient<
     * ```
     */
   get branchCourse(): Prisma.BranchCourseDelegate<ExtArgs, ClientOptions>;
-
-  /**
-   * `prisma.branchInstallmentTemplate`: Exposes CRUD operations for the **BranchInstallmentTemplate** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more BranchInstallmentTemplates
-    * const branchInstallmentTemplates = await prisma.branchInstallmentTemplate.findMany()
-    * ```
-    */
-  get branchInstallmentTemplate(): Prisma.BranchInstallmentTemplateDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.branchCourseModule`: Exposes CRUD operations for the **BranchCourseModule** model.
@@ -1059,7 +1044,6 @@ export namespace Prisma {
     PasswordResetToken: 'PasswordResetToken',
     Course: 'Course',
     BranchCourse: 'BranchCourse',
-    BranchInstallmentTemplate: 'BranchInstallmentTemplate',
     BranchCourseModule: 'BranchCourseModule',
     BranchCourseSubmodule: 'BranchCourseSubmodule',
     CourseModule: 'CourseModule',
@@ -1090,11 +1074,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-<<<<<<< HEAD
-      modelProps: "user" | "branch" | "loginEvent" | "notification" | "passwordResetToken" | "course" | "branchCourse" | "branchInstallmentTemplate" | "branchCourseModule" | "branchCourseSubmodule" | "courseModule" | "batch" | "batchFacultyAssignment" | "courseStatusHistory" | "batchStatusHistory" | "studentProfile" | "branchStudent" | "facultyProfile" | "facultyCourseAssignment" | "facultyBatchEntry" | "facultyAttendanceSession" | "studentAttendance" | "branchFaculty"
-=======
       modelProps: "user" | "branch" | "loginEvent" | "notification" | "courseEditRequest" | "passwordResetToken" | "course" | "branchCourse" | "branchCourseModule" | "branchCourseSubmodule" | "courseModule" | "batch" | "batchFacultyAssignment" | "courseStatusHistory" | "batchStatusHistory" | "studentProfile" | "branchStudent" | "facultyProfile" | "facultyCourseAssignment" | "facultyBatchEntry" | "facultyAttendanceSession" | "studentAttendance" | "branchFaculty"
->>>>>>> fcadcbe (Add course edit request and update course faculty notifications)
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1687,80 +1667,6 @@ export namespace Prisma {
           count: {
             args: Prisma.BranchCourseCountArgs<ExtArgs>
             result: $Utils.Optional<BranchCourseCountAggregateOutputType> | number
-          }
-        }
-      }
-      BranchInstallmentTemplate: {
-        payload: Prisma.$BranchInstallmentTemplatePayload<ExtArgs>
-        fields: Prisma.BranchInstallmentTemplateFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.BranchInstallmentTemplateFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$BranchInstallmentTemplatePayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.BranchInstallmentTemplateFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$BranchInstallmentTemplatePayload>
-          }
-          findFirst: {
-            args: Prisma.BranchInstallmentTemplateFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$BranchInstallmentTemplatePayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.BranchInstallmentTemplateFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$BranchInstallmentTemplatePayload>
-          }
-          findMany: {
-            args: Prisma.BranchInstallmentTemplateFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$BranchInstallmentTemplatePayload>[]
-          }
-          create: {
-            args: Prisma.BranchInstallmentTemplateCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$BranchInstallmentTemplatePayload>
-          }
-          createMany: {
-            args: Prisma.BranchInstallmentTemplateCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          createManyAndReturn: {
-            args: Prisma.BranchInstallmentTemplateCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$BranchInstallmentTemplatePayload>[]
-          }
-          delete: {
-            args: Prisma.BranchInstallmentTemplateDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$BranchInstallmentTemplatePayload>
-          }
-          update: {
-            args: Prisma.BranchInstallmentTemplateUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$BranchInstallmentTemplatePayload>
-          }
-          deleteMany: {
-            args: Prisma.BranchInstallmentTemplateDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.BranchInstallmentTemplateUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateManyAndReturn: {
-            args: Prisma.BranchInstallmentTemplateUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$BranchInstallmentTemplatePayload>[]
-          }
-          upsert: {
-            args: Prisma.BranchInstallmentTemplateUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$BranchInstallmentTemplatePayload>
-          }
-          aggregate: {
-            args: Prisma.BranchInstallmentTemplateAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateBranchInstallmentTemplate>
-          }
-          groupBy: {
-            args: Prisma.BranchInstallmentTemplateGroupByArgs<ExtArgs>
-            result: $Utils.Optional<BranchInstallmentTemplateGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.BranchInstallmentTemplateCountArgs<ExtArgs>
-            result: $Utils.Optional<BranchInstallmentTemplateCountAggregateOutputType> | number
           }
         }
       }
@@ -2990,7 +2896,6 @@ export namespace Prisma {
     passwordResetToken?: PasswordResetTokenOmit
     course?: CourseOmit
     branchCourse?: BranchCourseOmit
-    branchInstallmentTemplate?: BranchInstallmentTemplateOmit
     branchCourseModule?: BranchCourseModuleOmit
     branchCourseSubmodule?: BranchCourseSubmoduleOmit
     courseModule?: CourseModuleOmit
@@ -3086,20 +2991,20 @@ export namespace Prisma {
    */
 
   export type UserCountOutputType = {
-    loginEvents: number
-    passwordResetTokens: number
     batchFacultyAssignments: number
-    targetedNotifications: number
     facultyAttendanceSessions: number
+    loginEvents: number
+    targetedNotifications: number
+    passwordResetTokens: number
     markedStudentAttendances: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    loginEvents?: boolean | UserCountOutputTypeCountLoginEventsArgs
-    passwordResetTokens?: boolean | UserCountOutputTypeCountPasswordResetTokensArgs
     batchFacultyAssignments?: boolean | UserCountOutputTypeCountBatchFacultyAssignmentsArgs
-    targetedNotifications?: boolean | UserCountOutputTypeCountTargetedNotificationsArgs
     facultyAttendanceSessions?: boolean | UserCountOutputTypeCountFacultyAttendanceSessionsArgs
+    loginEvents?: boolean | UserCountOutputTypeCountLoginEventsArgs
+    targetedNotifications?: boolean | UserCountOutputTypeCountTargetedNotificationsArgs
+    passwordResetTokens?: boolean | UserCountOutputTypeCountPasswordResetTokensArgs
     markedStudentAttendances?: boolean | UserCountOutputTypeCountMarkedStudentAttendancesArgs
   }
 
@@ -3117,22 +3022,22 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountLoginEventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: LoginEventWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountPasswordResetTokensArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: PasswordResetTokenWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
   export type UserCountOutputTypeCountBatchFacultyAssignmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: BatchFacultyAssignmentWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountFacultyAttendanceSessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FacultyAttendanceSessionWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountLoginEventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LoginEventWhereInput
   }
 
   /**
@@ -3145,8 +3050,8 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountFacultyAttendanceSessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: FacultyAttendanceSessionWhereInput
+  export type UserCountOutputTypeCountPasswordResetTokensArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PasswordResetTokenWhereInput
   }
 
   /**
@@ -3162,19 +3067,17 @@ export namespace Prisma {
    */
 
   export type BranchCountOutputType = {
-    courses: number
     branchCourses: number
     branchFaculties: number
     branchStudents: number
-    branchInstallmentTemplates: number
+    courses: number
   }
 
   export type BranchCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    courses?: boolean | BranchCountOutputTypeCountCoursesArgs
     branchCourses?: boolean | BranchCountOutputTypeCountBranchCoursesArgs
     branchFaculties?: boolean | BranchCountOutputTypeCountBranchFacultiesArgs
     branchStudents?: boolean | BranchCountOutputTypeCountBranchStudentsArgs
-    branchInstallmentTemplates?: boolean | BranchCountOutputTypeCountBranchInstallmentTemplatesArgs
+    courses?: boolean | BranchCountOutputTypeCountCoursesArgs
   }
 
   // Custom InputTypes
@@ -3186,13 +3089,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the BranchCountOutputType
      */
     select?: BranchCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * BranchCountOutputType without action
-   */
-  export type BranchCountOutputTypeCountCoursesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: CourseWhereInput
   }
 
   /**
@@ -3219,8 +3115,8 @@ export namespace Prisma {
   /**
    * BranchCountOutputType without action
    */
-  export type BranchCountOutputTypeCountBranchInstallmentTemplatesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: BranchInstallmentTemplateWhereInput
+  export type BranchCountOutputTypeCountCoursesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CourseWhereInput
   }
 
 
@@ -3260,25 +3156,25 @@ export namespace Prisma {
    */
 
   export type CourseCountOutputType = {
-    modules: number
     batches: number
-    students: number
-    facultyProfiles: number
-    facultyCourseAssignments: number
-    facultyBatchEntries: number
-    statusHistory: number
     branchFaculties: number
+    modules: number
+    statusHistory: number
+    facultyBatchEntries: number
+    facultyCourseAssignments: number
+    facultyProfiles: number
+    students: number
   }
 
   export type CourseCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    modules?: boolean | CourseCountOutputTypeCountModulesArgs
     batches?: boolean | CourseCountOutputTypeCountBatchesArgs
-    students?: boolean | CourseCountOutputTypeCountStudentsArgs
-    facultyProfiles?: boolean | CourseCountOutputTypeCountFacultyProfilesArgs
-    facultyCourseAssignments?: boolean | CourseCountOutputTypeCountFacultyCourseAssignmentsArgs
-    facultyBatchEntries?: boolean | CourseCountOutputTypeCountFacultyBatchEntriesArgs
-    statusHistory?: boolean | CourseCountOutputTypeCountStatusHistoryArgs
     branchFaculties?: boolean | CourseCountOutputTypeCountBranchFacultiesArgs
+    modules?: boolean | CourseCountOutputTypeCountModulesArgs
+    statusHistory?: boolean | CourseCountOutputTypeCountStatusHistoryArgs
+    facultyBatchEntries?: boolean | CourseCountOutputTypeCountFacultyBatchEntriesArgs
+    facultyCourseAssignments?: boolean | CourseCountOutputTypeCountFacultyCourseAssignmentsArgs
+    facultyProfiles?: boolean | CourseCountOutputTypeCountFacultyProfilesArgs
+    students?: boolean | CourseCountOutputTypeCountStudentsArgs
   }
 
   // Custom InputTypes
@@ -3295,13 +3191,6 @@ export namespace Prisma {
   /**
    * CourseCountOutputType without action
    */
-  export type CourseCountOutputTypeCountModulesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: CourseModuleWhereInput
-  }
-
-  /**
-   * CourseCountOutputType without action
-   */
   export type CourseCountOutputTypeCountBatchesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: BatchWhereInput
   }
@@ -3309,29 +3198,15 @@ export namespace Prisma {
   /**
    * CourseCountOutputType without action
    */
-  export type CourseCountOutputTypeCountStudentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: StudentProfileWhereInput
+  export type CourseCountOutputTypeCountBranchFacultiesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BranchFacultyWhereInput
   }
 
   /**
    * CourseCountOutputType without action
    */
-  export type CourseCountOutputTypeCountFacultyProfilesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: FacultyProfileWhereInput
-  }
-
-  /**
-   * CourseCountOutputType without action
-   */
-  export type CourseCountOutputTypeCountFacultyCourseAssignmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: FacultyCourseAssignmentWhereInput
-  }
-
-  /**
-   * CourseCountOutputType without action
-   */
-  export type CourseCountOutputTypeCountFacultyBatchEntriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: FacultyBatchEntryWhereInput
+  export type CourseCountOutputTypeCountModulesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CourseModuleWhereInput
   }
 
   /**
@@ -3344,8 +3219,29 @@ export namespace Prisma {
   /**
    * CourseCountOutputType without action
    */
-  export type CourseCountOutputTypeCountBranchFacultiesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: BranchFacultyWhereInput
+  export type CourseCountOutputTypeCountFacultyBatchEntriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FacultyBatchEntryWhereInput
+  }
+
+  /**
+   * CourseCountOutputType without action
+   */
+  export type CourseCountOutputTypeCountFacultyCourseAssignmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FacultyCourseAssignmentWhereInput
+  }
+
+  /**
+   * CourseCountOutputType without action
+   */
+  export type CourseCountOutputTypeCountFacultyProfilesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FacultyProfileWhereInput
+  }
+
+  /**
+   * CourseCountOutputType without action
+   */
+  export type CourseCountOutputTypeCountStudentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: StudentProfileWhereInput
   }
 
 
@@ -3496,13 +3392,13 @@ export namespace Prisma {
    */
 
   export type FacultyProfileCountOutputType = {
-    courseAssignments: number
     batchEntries: number
+    courseAssignments: number
   }
 
   export type FacultyProfileCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    courseAssignments?: boolean | FacultyProfileCountOutputTypeCountCourseAssignmentsArgs
     batchEntries?: boolean | FacultyProfileCountOutputTypeCountBatchEntriesArgs
+    courseAssignments?: boolean | FacultyProfileCountOutputTypeCountCourseAssignmentsArgs
   }
 
   // Custom InputTypes
@@ -3519,15 +3415,15 @@ export namespace Prisma {
   /**
    * FacultyProfileCountOutputType without action
    */
-  export type FacultyProfileCountOutputTypeCountCourseAssignmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: FacultyCourseAssignmentWhereInput
+  export type FacultyProfileCountOutputTypeCountBatchEntriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FacultyBatchEntryWhereInput
   }
 
   /**
    * FacultyProfileCountOutputType without action
    */
-  export type FacultyProfileCountOutputTypeCountBatchEntriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: FacultyBatchEntryWhereInput
+  export type FacultyProfileCountOutputTypeCountCourseAssignmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FacultyCourseAssignmentWhereInput
   }
 
 
@@ -3865,13 +3761,13 @@ export namespace Prisma {
     updatedBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    loginEvents?: boolean | User$loginEventsArgs<ExtArgs>
-    passwordResetTokens?: boolean | User$passwordResetTokensArgs<ExtArgs>
     batchFacultyAssignments?: boolean | User$batchFacultyAssignmentsArgs<ExtArgs>
-    targetedNotifications?: boolean | User$targetedNotificationsArgs<ExtArgs>
-    facultyAttendanceSessions?: boolean | User$facultyAttendanceSessionsArgs<ExtArgs>
-    markedStudentAttendances?: boolean | User$markedStudentAttendancesArgs<ExtArgs>
     managedBranch?: boolean | User$managedBranchArgs<ExtArgs>
+    facultyAttendanceSessions?: boolean | User$facultyAttendanceSessionsArgs<ExtArgs>
+    loginEvents?: boolean | User$loginEventsArgs<ExtArgs>
+    targetedNotifications?: boolean | User$targetedNotificationsArgs<ExtArgs>
+    passwordResetTokens?: boolean | User$passwordResetTokensArgs<ExtArgs>
+    markedStudentAttendances?: boolean | User$markedStudentAttendancesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -3949,13 +3845,13 @@ export namespace Prisma {
 
   export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userCode" | "fullName" | "email" | "phone" | "role" | "active" | "passwordHash" | "passwordChangedAt" | "refreshTokenVersion" | "failedLoginCount" | "failedLoginWindowExpiresAt" | "lockedUntil" | "lastLoginAt" | "lastLogoutAt" | "lastLoginIp" | "lastLoginUserAgent" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    loginEvents?: boolean | User$loginEventsArgs<ExtArgs>
-    passwordResetTokens?: boolean | User$passwordResetTokensArgs<ExtArgs>
     batchFacultyAssignments?: boolean | User$batchFacultyAssignmentsArgs<ExtArgs>
-    targetedNotifications?: boolean | User$targetedNotificationsArgs<ExtArgs>
-    facultyAttendanceSessions?: boolean | User$facultyAttendanceSessionsArgs<ExtArgs>
-    markedStudentAttendances?: boolean | User$markedStudentAttendancesArgs<ExtArgs>
     managedBranch?: boolean | User$managedBranchArgs<ExtArgs>
+    facultyAttendanceSessions?: boolean | User$facultyAttendanceSessionsArgs<ExtArgs>
+    loginEvents?: boolean | User$loginEventsArgs<ExtArgs>
+    targetedNotifications?: boolean | User$targetedNotificationsArgs<ExtArgs>
+    passwordResetTokens?: boolean | User$passwordResetTokensArgs<ExtArgs>
+    markedStudentAttendances?: boolean | User$markedStudentAttendancesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -3964,13 +3860,13 @@ export namespace Prisma {
   export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "User"
     objects: {
-      loginEvents: Prisma.$LoginEventPayload<ExtArgs>[]
-      passwordResetTokens: Prisma.$PasswordResetTokenPayload<ExtArgs>[]
       batchFacultyAssignments: Prisma.$BatchFacultyAssignmentPayload<ExtArgs>[]
-      targetedNotifications: Prisma.$NotificationPayload<ExtArgs>[]
-      facultyAttendanceSessions: Prisma.$FacultyAttendanceSessionPayload<ExtArgs>[]
-      markedStudentAttendances: Prisma.$StudentAttendancePayload<ExtArgs>[]
       managedBranch: Prisma.$BranchPayload<ExtArgs> | null
+      facultyAttendanceSessions: Prisma.$FacultyAttendanceSessionPayload<ExtArgs>[]
+      loginEvents: Prisma.$LoginEventPayload<ExtArgs>[]
+      targetedNotifications: Prisma.$NotificationPayload<ExtArgs>[]
+      passwordResetTokens: Prisma.$PasswordResetTokenPayload<ExtArgs>[]
+      markedStudentAttendances: Prisma.$StudentAttendancePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -4388,13 +4284,13 @@ export namespace Prisma {
    */
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    loginEvents<T extends User$loginEventsArgs<ExtArgs> = {}>(args?: Subset<T, User$loginEventsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LoginEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    passwordResetTokens<T extends User$passwordResetTokensArgs<ExtArgs> = {}>(args?: Subset<T, User$passwordResetTokensArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PasswordResetTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     batchFacultyAssignments<T extends User$batchFacultyAssignmentsArgs<ExtArgs> = {}>(args?: Subset<T, User$batchFacultyAssignmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BatchFacultyAssignmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    targetedNotifications<T extends User$targetedNotificationsArgs<ExtArgs> = {}>(args?: Subset<T, User$targetedNotificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    facultyAttendanceSessions<T extends User$facultyAttendanceSessionsArgs<ExtArgs> = {}>(args?: Subset<T, User$facultyAttendanceSessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FacultyAttendanceSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    markedStudentAttendances<T extends User$markedStudentAttendancesArgs<ExtArgs> = {}>(args?: Subset<T, User$markedStudentAttendancesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StudentAttendancePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     managedBranch<T extends User$managedBranchArgs<ExtArgs> = {}>(args?: Subset<T, User$managedBranchArgs<ExtArgs>>): Prisma__BranchClient<$Result.GetResult<Prisma.$BranchPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    facultyAttendanceSessions<T extends User$facultyAttendanceSessionsArgs<ExtArgs> = {}>(args?: Subset<T, User$facultyAttendanceSessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FacultyAttendanceSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    loginEvents<T extends User$loginEventsArgs<ExtArgs> = {}>(args?: Subset<T, User$loginEventsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LoginEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    targetedNotifications<T extends User$targetedNotificationsArgs<ExtArgs> = {}>(args?: Subset<T, User$targetedNotificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    passwordResetTokens<T extends User$passwordResetTokensArgs<ExtArgs> = {}>(args?: Subset<T, User$passwordResetTokensArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PasswordResetTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    markedStudentAttendances<T extends User$markedStudentAttendancesArgs<ExtArgs> = {}>(args?: Subset<T, User$markedStudentAttendancesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StudentAttendancePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4838,54 +4734,6 @@ export namespace Prisma {
   }
 
   /**
-   * User.loginEvents
-   */
-  export type User$loginEventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the LoginEvent
-     */
-    select?: LoginEventSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the LoginEvent
-     */
-    omit?: LoginEventOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: LoginEventInclude<ExtArgs> | null
-    where?: LoginEventWhereInput
-    orderBy?: LoginEventOrderByWithRelationInput | LoginEventOrderByWithRelationInput[]
-    cursor?: LoginEventWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: LoginEventScalarFieldEnum | LoginEventScalarFieldEnum[]
-  }
-
-  /**
-   * User.passwordResetTokens
-   */
-  export type User$passwordResetTokensArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the PasswordResetToken
-     */
-    select?: PasswordResetTokenSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the PasswordResetToken
-     */
-    omit?: PasswordResetTokenOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: PasswordResetTokenInclude<ExtArgs> | null
-    where?: PasswordResetTokenWhereInput
-    orderBy?: PasswordResetTokenOrderByWithRelationInput | PasswordResetTokenOrderByWithRelationInput[]
-    cursor?: PasswordResetTokenWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: PasswordResetTokenScalarFieldEnum | PasswordResetTokenScalarFieldEnum[]
-  }
-
-  /**
    * User.batchFacultyAssignments
    */
   export type User$batchFacultyAssignmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4910,27 +4758,22 @@ export namespace Prisma {
   }
 
   /**
-   * User.targetedNotifications
+   * User.managedBranch
    */
-  export type User$targetedNotificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type User$managedBranchArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Notification
+     * Select specific fields to fetch from the Branch
      */
-    select?: NotificationSelect<ExtArgs> | null
+    select?: BranchSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Notification
+     * Omit specific fields from the Branch
      */
-    omit?: NotificationOmit<ExtArgs> | null
+    omit?: BranchOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: NotificationInclude<ExtArgs> | null
-    where?: NotificationWhereInput
-    orderBy?: NotificationOrderByWithRelationInput | NotificationOrderByWithRelationInput[]
-    cursor?: NotificationWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: NotificationScalarFieldEnum | NotificationScalarFieldEnum[]
+    include?: BranchInclude<ExtArgs> | null
+    where?: BranchWhereInput
   }
 
   /**
@@ -4958,6 +4801,78 @@ export namespace Prisma {
   }
 
   /**
+   * User.loginEvents
+   */
+  export type User$loginEventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LoginEvent
+     */
+    select?: LoginEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LoginEvent
+     */
+    omit?: LoginEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LoginEventInclude<ExtArgs> | null
+    where?: LoginEventWhereInput
+    orderBy?: LoginEventOrderByWithRelationInput | LoginEventOrderByWithRelationInput[]
+    cursor?: LoginEventWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: LoginEventScalarFieldEnum | LoginEventScalarFieldEnum[]
+  }
+
+  /**
+   * User.targetedNotifications
+   */
+  export type User$targetedNotificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+    where?: NotificationWhereInput
+    orderBy?: NotificationOrderByWithRelationInput | NotificationOrderByWithRelationInput[]
+    cursor?: NotificationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: NotificationScalarFieldEnum | NotificationScalarFieldEnum[]
+  }
+
+  /**
+   * User.passwordResetTokens
+   */
+  export type User$passwordResetTokensArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PasswordResetToken
+     */
+    select?: PasswordResetTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PasswordResetToken
+     */
+    omit?: PasswordResetTokenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PasswordResetTokenInclude<ExtArgs> | null
+    where?: PasswordResetTokenWhereInput
+    orderBy?: PasswordResetTokenOrderByWithRelationInput | PasswordResetTokenOrderByWithRelationInput[]
+    cursor?: PasswordResetTokenWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PasswordResetTokenScalarFieldEnum | PasswordResetTokenScalarFieldEnum[]
+  }
+
+  /**
    * User.markedStudentAttendances
    */
   export type User$markedStudentAttendancesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4979,25 +4894,6 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: StudentAttendanceScalarFieldEnum | StudentAttendanceScalarFieldEnum[]
-  }
-
-  /**
-   * User.managedBranch
-   */
-  export type User$managedBranchArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Branch
-     */
-    select?: BranchSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Branch
-     */
-    omit?: BranchOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: BranchInclude<ExtArgs> | null
-    where?: BranchWhereInput
   }
 
   /**
@@ -5036,11 +4932,6 @@ export namespace Prisma {
     branchAdminName: string | null
     branchEmail: string | null
     branchPhone: string | null
-    branchCountryCode: string | null
-    branchCountry: string | null
-    branchStateCode: string | null
-    branchState: string | null
-    branchCity: string | null
     branchAddress: string | null
     status: $Enums.RecordStatus | null
     adminUserId: string | null
@@ -5048,6 +4939,11 @@ export namespace Prisma {
     updatedBy: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    branchCity: string | null
+    branchCountry: string | null
+    branchCountryCode: string | null
+    branchState: string | null
+    branchStateCode: string | null
   }
 
   export type BranchMaxAggregateOutputType = {
@@ -5057,11 +4953,6 @@ export namespace Prisma {
     branchAdminName: string | null
     branchEmail: string | null
     branchPhone: string | null
-    branchCountryCode: string | null
-    branchCountry: string | null
-    branchStateCode: string | null
-    branchState: string | null
-    branchCity: string | null
     branchAddress: string | null
     status: $Enums.RecordStatus | null
     adminUserId: string | null
@@ -5069,6 +4960,11 @@ export namespace Prisma {
     updatedBy: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    branchCity: string | null
+    branchCountry: string | null
+    branchCountryCode: string | null
+    branchState: string | null
+    branchStateCode: string | null
   }
 
   export type BranchCountAggregateOutputType = {
@@ -5078,11 +4974,6 @@ export namespace Prisma {
     branchAdminName: number
     branchEmail: number
     branchPhone: number
-    branchCountryCode: number
-    branchCountry: number
-    branchStateCode: number
-    branchState: number
-    branchCity: number
     branchAddress: number
     status: number
     adminUserId: number
@@ -5090,6 +4981,11 @@ export namespace Prisma {
     updatedBy: number
     createdAt: number
     updatedAt: number
+    branchCity: number
+    branchCountry: number
+    branchCountryCode: number
+    branchState: number
+    branchStateCode: number
     _all: number
   }
 
@@ -5101,11 +4997,6 @@ export namespace Prisma {
     branchAdminName?: true
     branchEmail?: true
     branchPhone?: true
-    branchCountryCode?: true
-    branchCountry?: true
-    branchStateCode?: true
-    branchState?: true
-    branchCity?: true
     branchAddress?: true
     status?: true
     adminUserId?: true
@@ -5113,6 +5004,11 @@ export namespace Prisma {
     updatedBy?: true
     createdAt?: true
     updatedAt?: true
+    branchCity?: true
+    branchCountry?: true
+    branchCountryCode?: true
+    branchState?: true
+    branchStateCode?: true
   }
 
   export type BranchMaxAggregateInputType = {
@@ -5122,11 +5018,6 @@ export namespace Prisma {
     branchAdminName?: true
     branchEmail?: true
     branchPhone?: true
-    branchCountryCode?: true
-    branchCountry?: true
-    branchStateCode?: true
-    branchState?: true
-    branchCity?: true
     branchAddress?: true
     status?: true
     adminUserId?: true
@@ -5134,6 +5025,11 @@ export namespace Prisma {
     updatedBy?: true
     createdAt?: true
     updatedAt?: true
+    branchCity?: true
+    branchCountry?: true
+    branchCountryCode?: true
+    branchState?: true
+    branchStateCode?: true
   }
 
   export type BranchCountAggregateInputType = {
@@ -5143,11 +5039,6 @@ export namespace Prisma {
     branchAdminName?: true
     branchEmail?: true
     branchPhone?: true
-    branchCountryCode?: true
-    branchCountry?: true
-    branchStateCode?: true
-    branchState?: true
-    branchCity?: true
     branchAddress?: true
     status?: true
     adminUserId?: true
@@ -5155,6 +5046,11 @@ export namespace Prisma {
     updatedBy?: true
     createdAt?: true
     updatedAt?: true
+    branchCity?: true
+    branchCountry?: true
+    branchCountryCode?: true
+    branchState?: true
+    branchStateCode?: true
     _all?: true
   }
 
@@ -5237,11 +5133,6 @@ export namespace Prisma {
     branchAdminName: string
     branchEmail: string
     branchPhone: string
-    branchCountryCode: string
-    branchCountry: string
-    branchStateCode: string
-    branchState: string
-    branchCity: string
     branchAddress: string
     status: $Enums.RecordStatus
     adminUserId: string | null
@@ -5249,6 +5140,11 @@ export namespace Prisma {
     updatedBy: string | null
     createdAt: Date
     updatedAt: Date
+    branchCity: string
+    branchCountry: string
+    branchCountryCode: string
+    branchState: string
+    branchStateCode: string
     _count: BranchCountAggregateOutputType | null
     _min: BranchMinAggregateOutputType | null
     _max: BranchMaxAggregateOutputType | null
@@ -5275,11 +5171,6 @@ export namespace Prisma {
     branchAdminName?: boolean
     branchEmail?: boolean
     branchPhone?: boolean
-    branchCountryCode?: boolean
-    branchCountry?: boolean
-    branchStateCode?: boolean
-    branchState?: boolean
-    branchCity?: boolean
     branchAddress?: boolean
     status?: boolean
     adminUserId?: boolean
@@ -5287,12 +5178,16 @@ export namespace Prisma {
     updatedBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    branchCity?: boolean
+    branchCountry?: boolean
+    branchCountryCode?: boolean
+    branchState?: boolean
+    branchStateCode?: boolean
     adminUser?: boolean | Branch$adminUserArgs<ExtArgs>
-    courses?: boolean | Branch$coursesArgs<ExtArgs>
     branchCourses?: boolean | Branch$branchCoursesArgs<ExtArgs>
     branchFaculties?: boolean | Branch$branchFacultiesArgs<ExtArgs>
     branchStudents?: boolean | Branch$branchStudentsArgs<ExtArgs>
-    branchInstallmentTemplates?: boolean | Branch$branchInstallmentTemplatesArgs<ExtArgs>
+    courses?: boolean | Branch$coursesArgs<ExtArgs>
     _count?: boolean | BranchCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["branch"]>
 
@@ -5303,11 +5198,6 @@ export namespace Prisma {
     branchAdminName?: boolean
     branchEmail?: boolean
     branchPhone?: boolean
-    branchCountryCode?: boolean
-    branchCountry?: boolean
-    branchStateCode?: boolean
-    branchState?: boolean
-    branchCity?: boolean
     branchAddress?: boolean
     status?: boolean
     adminUserId?: boolean
@@ -5315,6 +5205,11 @@ export namespace Prisma {
     updatedBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    branchCity?: boolean
+    branchCountry?: boolean
+    branchCountryCode?: boolean
+    branchState?: boolean
+    branchStateCode?: boolean
     adminUser?: boolean | Branch$adminUserArgs<ExtArgs>
   }, ExtArgs["result"]["branch"]>
 
@@ -5325,11 +5220,6 @@ export namespace Prisma {
     branchAdminName?: boolean
     branchEmail?: boolean
     branchPhone?: boolean
-    branchCountryCode?: boolean
-    branchCountry?: boolean
-    branchStateCode?: boolean
-    branchState?: boolean
-    branchCity?: boolean
     branchAddress?: boolean
     status?: boolean
     adminUserId?: boolean
@@ -5337,6 +5227,11 @@ export namespace Prisma {
     updatedBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    branchCity?: boolean
+    branchCountry?: boolean
+    branchCountryCode?: boolean
+    branchState?: boolean
+    branchStateCode?: boolean
     adminUser?: boolean | Branch$adminUserArgs<ExtArgs>
   }, ExtArgs["result"]["branch"]>
 
@@ -5347,11 +5242,6 @@ export namespace Prisma {
     branchAdminName?: boolean
     branchEmail?: boolean
     branchPhone?: boolean
-    branchCountryCode?: boolean
-    branchCountry?: boolean
-    branchStateCode?: boolean
-    branchState?: boolean
-    branchCity?: boolean
     branchAddress?: boolean
     status?: boolean
     adminUserId?: boolean
@@ -5359,16 +5249,20 @@ export namespace Prisma {
     updatedBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    branchCity?: boolean
+    branchCountry?: boolean
+    branchCountryCode?: boolean
+    branchState?: boolean
+    branchStateCode?: boolean
   }
 
-  export type BranchOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "branchId" | "branchName" | "branchAdminName" | "branchEmail" | "branchPhone" | "branchCountryCode" | "branchCountry" | "branchStateCode" | "branchState" | "branchCity" | "branchAddress" | "status" | "adminUserId" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["branch"]>
+  export type BranchOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "branchId" | "branchName" | "branchAdminName" | "branchEmail" | "branchPhone" | "branchAddress" | "status" | "adminUserId" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt" | "branchCity" | "branchCountry" | "branchCountryCode" | "branchState" | "branchStateCode", ExtArgs["result"]["branch"]>
   export type BranchInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     adminUser?: boolean | Branch$adminUserArgs<ExtArgs>
-    courses?: boolean | Branch$coursesArgs<ExtArgs>
     branchCourses?: boolean | Branch$branchCoursesArgs<ExtArgs>
     branchFaculties?: boolean | Branch$branchFacultiesArgs<ExtArgs>
     branchStudents?: boolean | Branch$branchStudentsArgs<ExtArgs>
-    branchInstallmentTemplates?: boolean | Branch$branchInstallmentTemplatesArgs<ExtArgs>
+    courses?: boolean | Branch$coursesArgs<ExtArgs>
     _count?: boolean | BranchCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type BranchIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -5382,11 +5276,10 @@ export namespace Prisma {
     name: "Branch"
     objects: {
       adminUser: Prisma.$UserPayload<ExtArgs> | null
-      courses: Prisma.$CoursePayload<ExtArgs>[]
       branchCourses: Prisma.$BranchCoursePayload<ExtArgs>[]
       branchFaculties: Prisma.$BranchFacultyPayload<ExtArgs>[]
       branchStudents: Prisma.$BranchStudentPayload<ExtArgs>[]
-      branchInstallmentTemplates: Prisma.$BranchInstallmentTemplatePayload<ExtArgs>[]
+      courses: Prisma.$CoursePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -5395,11 +5288,6 @@ export namespace Prisma {
       branchAdminName: string
       branchEmail: string
       branchPhone: string
-      branchCountryCode: string
-      branchCountry: string
-      branchStateCode: string
-      branchState: string
-      branchCity: string
       branchAddress: string
       status: $Enums.RecordStatus
       adminUserId: string | null
@@ -5407,6 +5295,11 @@ export namespace Prisma {
       updatedBy: string | null
       createdAt: Date
       updatedAt: Date
+      branchCity: string
+      branchCountry: string
+      branchCountryCode: string
+      branchState: string
+      branchStateCode: string
     }, ExtArgs["result"]["branch"]>
     composites: {}
   }
@@ -5802,11 +5695,10 @@ export namespace Prisma {
   export interface Prisma__BranchClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     adminUser<T extends Branch$adminUserArgs<ExtArgs> = {}>(args?: Subset<T, Branch$adminUserArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    courses<T extends Branch$coursesArgs<ExtArgs> = {}>(args?: Subset<T, Branch$coursesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CoursePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     branchCourses<T extends Branch$branchCoursesArgs<ExtArgs> = {}>(args?: Subset<T, Branch$branchCoursesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchCoursePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     branchFaculties<T extends Branch$branchFacultiesArgs<ExtArgs> = {}>(args?: Subset<T, Branch$branchFacultiesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchFacultyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     branchStudents<T extends Branch$branchStudentsArgs<ExtArgs> = {}>(args?: Subset<T, Branch$branchStudentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchStudentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    branchInstallmentTemplates<T extends Branch$branchInstallmentTemplatesArgs<ExtArgs> = {}>(args?: Subset<T, Branch$branchInstallmentTemplatesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchInstallmentTemplatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    courses<T extends Branch$coursesArgs<ExtArgs> = {}>(args?: Subset<T, Branch$coursesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CoursePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5842,11 +5734,6 @@ export namespace Prisma {
     readonly branchAdminName: FieldRef<"Branch", 'String'>
     readonly branchEmail: FieldRef<"Branch", 'String'>
     readonly branchPhone: FieldRef<"Branch", 'String'>
-    readonly branchCountryCode: FieldRef<"Branch", 'String'>
-    readonly branchCountry: FieldRef<"Branch", 'String'>
-    readonly branchStateCode: FieldRef<"Branch", 'String'>
-    readonly branchState: FieldRef<"Branch", 'String'>
-    readonly branchCity: FieldRef<"Branch", 'String'>
     readonly branchAddress: FieldRef<"Branch", 'String'>
     readonly status: FieldRef<"Branch", 'RecordStatus'>
     readonly adminUserId: FieldRef<"Branch", 'String'>
@@ -5854,6 +5741,11 @@ export namespace Prisma {
     readonly updatedBy: FieldRef<"Branch", 'String'>
     readonly createdAt: FieldRef<"Branch", 'DateTime'>
     readonly updatedAt: FieldRef<"Branch", 'DateTime'>
+    readonly branchCity: FieldRef<"Branch", 'String'>
+    readonly branchCountry: FieldRef<"Branch", 'String'>
+    readonly branchCountryCode: FieldRef<"Branch", 'String'>
+    readonly branchState: FieldRef<"Branch", 'String'>
+    readonly branchStateCode: FieldRef<"Branch", 'String'>
   }
     
 
@@ -6274,30 +6166,6 @@ export namespace Prisma {
   }
 
   /**
-   * Branch.courses
-   */
-  export type Branch$coursesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Course
-     */
-    select?: CourseSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Course
-     */
-    omit?: CourseOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CourseInclude<ExtArgs> | null
-    where?: CourseWhereInput
-    orderBy?: CourseOrderByWithRelationInput | CourseOrderByWithRelationInput[]
-    cursor?: CourseWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: CourseScalarFieldEnum | CourseScalarFieldEnum[]
-  }
-
-  /**
    * Branch.branchCourses
    */
   export type Branch$branchCoursesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -6370,27 +6238,27 @@ export namespace Prisma {
   }
 
   /**
-   * Branch.branchInstallmentTemplates
+   * Branch.courses
    */
-  export type Branch$branchInstallmentTemplatesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Branch$coursesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the BranchInstallmentTemplate
+     * Select specific fields to fetch from the Course
      */
-    select?: BranchInstallmentTemplateSelect<ExtArgs> | null
+    select?: CourseSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the BranchInstallmentTemplate
+     * Omit specific fields from the Course
      */
-    omit?: BranchInstallmentTemplateOmit<ExtArgs> | null
+    omit?: CourseOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: BranchInstallmentTemplateInclude<ExtArgs> | null
-    where?: BranchInstallmentTemplateWhereInput
-    orderBy?: BranchInstallmentTemplateOrderByWithRelationInput | BranchInstallmentTemplateOrderByWithRelationInput[]
-    cursor?: BranchInstallmentTemplateWhereUniqueInput
+    include?: CourseInclude<ExtArgs> | null
+    where?: CourseWhereInput
+    orderBy?: CourseOrderByWithRelationInput | CourseOrderByWithRelationInput[]
+    cursor?: CourseWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: BranchInstallmentTemplateScalarFieldEnum | BranchInstallmentTemplateScalarFieldEnum[]
+    distinct?: CourseScalarFieldEnum | CourseScalarFieldEnum[]
   }
 
   /**
@@ -7559,20 +7427,6 @@ export namespace Prisma {
     title: string | null
     message: string | null
     actionLabel: string | null
-    requestId: string | null
-    requestStatus: string | null
-    requestTitle: string | null
-    requestReason: string | null
-    requestDescription: string | null
-    branchCourseId: string | null
-    branchCourseName: string | null
-    moduleId: string | null
-    moduleName: string | null
-    subModuleId: string | null
-    subModuleName: string | null
-    facultyId: string | null
-    facultyName: string | null
-    targetUserId: string | null
     targetBranchId: string | null
     targetBranchEmail: string | null
     targetBranchName: string | null
@@ -7581,6 +7435,20 @@ export namespace Prisma {
     createdBy: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    targetUserId: string | null
+    branchCourseId: string | null
+    branchCourseName: string | null
+    facultyId: string | null
+    facultyName: string | null
+    moduleId: string | null
+    moduleName: string | null
+    requestDescription: string | null
+    requestId: string | null
+    requestReason: string | null
+    requestStatus: string | null
+    requestTitle: string | null
+    subModuleId: string | null
+    subModuleName: string | null
   }
 
   export type NotificationMaxAggregateOutputType = {
@@ -7590,20 +7458,6 @@ export namespace Prisma {
     title: string | null
     message: string | null
     actionLabel: string | null
-    requestId: string | null
-    requestStatus: string | null
-    requestTitle: string | null
-    requestReason: string | null
-    requestDescription: string | null
-    branchCourseId: string | null
-    branchCourseName: string | null
-    moduleId: string | null
-    moduleName: string | null
-    subModuleId: string | null
-    subModuleName: string | null
-    facultyId: string | null
-    facultyName: string | null
-    targetUserId: string | null
     targetBranchId: string | null
     targetBranchEmail: string | null
     targetBranchName: string | null
@@ -7612,6 +7466,20 @@ export namespace Prisma {
     createdBy: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    targetUserId: string | null
+    branchCourseId: string | null
+    branchCourseName: string | null
+    facultyId: string | null
+    facultyName: string | null
+    moduleId: string | null
+    moduleName: string | null
+    requestDescription: string | null
+    requestId: string | null
+    requestReason: string | null
+    requestStatus: string | null
+    requestTitle: string | null
+    subModuleId: string | null
+    subModuleName: string | null
   }
 
   export type NotificationCountAggregateOutputType = {
@@ -7621,20 +7489,6 @@ export namespace Prisma {
     title: number
     message: number
     actionLabel: number
-    requestId: number
-    requestStatus: number
-    requestTitle: number
-    requestReason: number
-    requestDescription: number
-    branchCourseId: number
-    branchCourseName: number
-    moduleId: number
-    moduleName: number
-    subModuleId: number
-    subModuleName: number
-    facultyId: number
-    facultyName: number
-    targetUserId: number
     targetBranchId: number
     targetBranchEmail: number
     targetBranchName: number
@@ -7643,6 +7497,20 @@ export namespace Prisma {
     createdBy: number
     createdAt: number
     updatedAt: number
+    targetUserId: number
+    branchCourseId: number
+    branchCourseName: number
+    facultyId: number
+    facultyName: number
+    moduleId: number
+    moduleName: number
+    requestDescription: number
+    requestId: number
+    requestReason: number
+    requestStatus: number
+    requestTitle: number
+    subModuleId: number
+    subModuleName: number
     _all: number
   }
 
@@ -7654,20 +7522,6 @@ export namespace Prisma {
     title?: true
     message?: true
     actionLabel?: true
-    requestId?: true
-    requestStatus?: true
-    requestTitle?: true
-    requestReason?: true
-    requestDescription?: true
-    branchCourseId?: true
-    branchCourseName?: true
-    moduleId?: true
-    moduleName?: true
-    subModuleId?: true
-    subModuleName?: true
-    facultyId?: true
-    facultyName?: true
-    targetUserId?: true
     targetBranchId?: true
     targetBranchEmail?: true
     targetBranchName?: true
@@ -7676,6 +7530,20 @@ export namespace Prisma {
     createdBy?: true
     createdAt?: true
     updatedAt?: true
+    targetUserId?: true
+    branchCourseId?: true
+    branchCourseName?: true
+    facultyId?: true
+    facultyName?: true
+    moduleId?: true
+    moduleName?: true
+    requestDescription?: true
+    requestId?: true
+    requestReason?: true
+    requestStatus?: true
+    requestTitle?: true
+    subModuleId?: true
+    subModuleName?: true
   }
 
   export type NotificationMaxAggregateInputType = {
@@ -7685,20 +7553,6 @@ export namespace Prisma {
     title?: true
     message?: true
     actionLabel?: true
-    requestId?: true
-    requestStatus?: true
-    requestTitle?: true
-    requestReason?: true
-    requestDescription?: true
-    branchCourseId?: true
-    branchCourseName?: true
-    moduleId?: true
-    moduleName?: true
-    subModuleId?: true
-    subModuleName?: true
-    facultyId?: true
-    facultyName?: true
-    targetUserId?: true
     targetBranchId?: true
     targetBranchEmail?: true
     targetBranchName?: true
@@ -7707,6 +7561,20 @@ export namespace Prisma {
     createdBy?: true
     createdAt?: true
     updatedAt?: true
+    targetUserId?: true
+    branchCourseId?: true
+    branchCourseName?: true
+    facultyId?: true
+    facultyName?: true
+    moduleId?: true
+    moduleName?: true
+    requestDescription?: true
+    requestId?: true
+    requestReason?: true
+    requestStatus?: true
+    requestTitle?: true
+    subModuleId?: true
+    subModuleName?: true
   }
 
   export type NotificationCountAggregateInputType = {
@@ -7716,20 +7584,6 @@ export namespace Prisma {
     title?: true
     message?: true
     actionLabel?: true
-    requestId?: true
-    requestStatus?: true
-    requestTitle?: true
-    requestReason?: true
-    requestDescription?: true
-    branchCourseId?: true
-    branchCourseName?: true
-    moduleId?: true
-    moduleName?: true
-    subModuleId?: true
-    subModuleName?: true
-    facultyId?: true
-    facultyName?: true
-    targetUserId?: true
     targetBranchId?: true
     targetBranchEmail?: true
     targetBranchName?: true
@@ -7738,6 +7592,20 @@ export namespace Prisma {
     createdBy?: true
     createdAt?: true
     updatedAt?: true
+    targetUserId?: true
+    branchCourseId?: true
+    branchCourseName?: true
+    facultyId?: true
+    facultyName?: true
+    moduleId?: true
+    moduleName?: true
+    requestDescription?: true
+    requestId?: true
+    requestReason?: true
+    requestStatus?: true
+    requestTitle?: true
+    subModuleId?: true
+    subModuleName?: true
     _all?: true
   }
 
@@ -7820,20 +7688,6 @@ export namespace Prisma {
     title: string
     message: string
     actionLabel: string | null
-    requestId: string | null
-    requestStatus: string | null
-    requestTitle: string | null
-    requestReason: string | null
-    requestDescription: string | null
-    branchCourseId: string | null
-    branchCourseName: string | null
-    moduleId: string | null
-    moduleName: string | null
-    subModuleId: string | null
-    subModuleName: string | null
-    facultyId: string | null
-    facultyName: string | null
-    targetUserId: string | null
     targetBranchId: string | null
     targetBranchEmail: string | null
     targetBranchName: string | null
@@ -7842,6 +7696,20 @@ export namespace Prisma {
     createdBy: string | null
     createdAt: Date
     updatedAt: Date
+    targetUserId: string | null
+    branchCourseId: string | null
+    branchCourseName: string | null
+    facultyId: string | null
+    facultyName: string | null
+    moduleId: string | null
+    moduleName: string | null
+    requestDescription: string | null
+    requestId: string | null
+    requestReason: string | null
+    requestStatus: string | null
+    requestTitle: string | null
+    subModuleId: string | null
+    subModuleName: string | null
     _count: NotificationCountAggregateOutputType | null
     _min: NotificationMinAggregateOutputType | null
     _max: NotificationMaxAggregateOutputType | null
@@ -7868,20 +7736,6 @@ export namespace Prisma {
     title?: boolean
     message?: boolean
     actionLabel?: boolean
-    requestId?: boolean
-    requestStatus?: boolean
-    requestTitle?: boolean
-    requestReason?: boolean
-    requestDescription?: boolean
-    branchCourseId?: boolean
-    branchCourseName?: boolean
-    moduleId?: boolean
-    moduleName?: boolean
-    subModuleId?: boolean
-    subModuleName?: boolean
-    facultyId?: boolean
-    facultyName?: boolean
-    targetUserId?: boolean
     targetBranchId?: boolean
     targetBranchEmail?: boolean
     targetBranchName?: boolean
@@ -7890,6 +7744,20 @@ export namespace Prisma {
     createdBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    targetUserId?: boolean
+    branchCourseId?: boolean
+    branchCourseName?: boolean
+    facultyId?: boolean
+    facultyName?: boolean
+    moduleId?: boolean
+    moduleName?: boolean
+    requestDescription?: boolean
+    requestId?: boolean
+    requestReason?: boolean
+    requestStatus?: boolean
+    requestTitle?: boolean
+    subModuleId?: boolean
+    subModuleName?: boolean
     request?: boolean | Notification$requestArgs<ExtArgs>
     targetUser?: boolean | Notification$targetUserArgs<ExtArgs>
   }, ExtArgs["result"]["notification"]>
@@ -7901,20 +7769,6 @@ export namespace Prisma {
     title?: boolean
     message?: boolean
     actionLabel?: boolean
-    requestId?: boolean
-    requestStatus?: boolean
-    requestTitle?: boolean
-    requestReason?: boolean
-    requestDescription?: boolean
-    branchCourseId?: boolean
-    branchCourseName?: boolean
-    moduleId?: boolean
-    moduleName?: boolean
-    subModuleId?: boolean
-    subModuleName?: boolean
-    facultyId?: boolean
-    facultyName?: boolean
-    targetUserId?: boolean
     targetBranchId?: boolean
     targetBranchEmail?: boolean
     targetBranchName?: boolean
@@ -7923,6 +7777,20 @@ export namespace Prisma {
     createdBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    targetUserId?: boolean
+    branchCourseId?: boolean
+    branchCourseName?: boolean
+    facultyId?: boolean
+    facultyName?: boolean
+    moduleId?: boolean
+    moduleName?: boolean
+    requestDescription?: boolean
+    requestId?: boolean
+    requestReason?: boolean
+    requestStatus?: boolean
+    requestTitle?: boolean
+    subModuleId?: boolean
+    subModuleName?: boolean
     request?: boolean | Notification$requestArgs<ExtArgs>
     targetUser?: boolean | Notification$targetUserArgs<ExtArgs>
   }, ExtArgs["result"]["notification"]>
@@ -7934,20 +7802,6 @@ export namespace Prisma {
     title?: boolean
     message?: boolean
     actionLabel?: boolean
-    requestId?: boolean
-    requestStatus?: boolean
-    requestTitle?: boolean
-    requestReason?: boolean
-    requestDescription?: boolean
-    branchCourseId?: boolean
-    branchCourseName?: boolean
-    moduleId?: boolean
-    moduleName?: boolean
-    subModuleId?: boolean
-    subModuleName?: boolean
-    facultyId?: boolean
-    facultyName?: boolean
-    targetUserId?: boolean
     targetBranchId?: boolean
     targetBranchEmail?: boolean
     targetBranchName?: boolean
@@ -7956,6 +7810,20 @@ export namespace Prisma {
     createdBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    targetUserId?: boolean
+    branchCourseId?: boolean
+    branchCourseName?: boolean
+    facultyId?: boolean
+    facultyName?: boolean
+    moduleId?: boolean
+    moduleName?: boolean
+    requestDescription?: boolean
+    requestId?: boolean
+    requestReason?: boolean
+    requestStatus?: boolean
+    requestTitle?: boolean
+    subModuleId?: boolean
+    subModuleName?: boolean
     request?: boolean | Notification$requestArgs<ExtArgs>
     targetUser?: boolean | Notification$targetUserArgs<ExtArgs>
   }, ExtArgs["result"]["notification"]>
@@ -7967,20 +7835,6 @@ export namespace Prisma {
     title?: boolean
     message?: boolean
     actionLabel?: boolean
-    requestId?: boolean
-    requestStatus?: boolean
-    requestTitle?: boolean
-    requestReason?: boolean
-    requestDescription?: boolean
-    branchCourseId?: boolean
-    branchCourseName?: boolean
-    moduleId?: boolean
-    moduleName?: boolean
-    subModuleId?: boolean
-    subModuleName?: boolean
-    facultyId?: boolean
-    facultyName?: boolean
-    targetUserId?: boolean
     targetBranchId?: boolean
     targetBranchEmail?: boolean
     targetBranchName?: boolean
@@ -7989,9 +7843,23 @@ export namespace Prisma {
     createdBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    targetUserId?: boolean
+    branchCourseId?: boolean
+    branchCourseName?: boolean
+    facultyId?: boolean
+    facultyName?: boolean
+    moduleId?: boolean
+    moduleName?: boolean
+    requestDescription?: boolean
+    requestId?: boolean
+    requestReason?: boolean
+    requestStatus?: boolean
+    requestTitle?: boolean
+    subModuleId?: boolean
+    subModuleName?: boolean
   }
 
-  export type NotificationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "kind" | "tone" | "title" | "message" | "actionLabel" | "requestId" | "requestStatus" | "requestTitle" | "requestReason" | "requestDescription" | "branchCourseId" | "branchCourseName" | "moduleId" | "moduleName" | "subModuleId" | "subModuleName" | "facultyId" | "facultyName" | "targetUserId" | "targetBranchId" | "targetBranchEmail" | "targetBranchName" | "read" | "readAt" | "createdBy" | "createdAt" | "updatedAt", ExtArgs["result"]["notification"]>
+  export type NotificationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "kind" | "tone" | "title" | "message" | "actionLabel" | "targetBranchId" | "targetBranchEmail" | "targetBranchName" | "read" | "readAt" | "createdBy" | "createdAt" | "updatedAt" | "targetUserId" | "branchCourseId" | "branchCourseName" | "facultyId" | "facultyName" | "moduleId" | "moduleName" | "requestDescription" | "requestId" | "requestReason" | "requestStatus" | "requestTitle" | "subModuleId" | "subModuleName", ExtArgs["result"]["notification"]>
   export type NotificationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     request?: boolean | Notification$requestArgs<ExtArgs>
     targetUser?: boolean | Notification$targetUserArgs<ExtArgs>
@@ -8018,20 +7886,6 @@ export namespace Prisma {
       title: string
       message: string
       actionLabel: string | null
-      requestId: string | null
-      requestStatus: string | null
-      requestTitle: string | null
-      requestReason: string | null
-      requestDescription: string | null
-      branchCourseId: string | null
-      branchCourseName: string | null
-      moduleId: string | null
-      moduleName: string | null
-      subModuleId: string | null
-      subModuleName: string | null
-      facultyId: string | null
-      facultyName: string | null
-      targetUserId: string | null
       targetBranchId: string | null
       targetBranchEmail: string | null
       targetBranchName: string | null
@@ -8040,6 +7894,20 @@ export namespace Prisma {
       createdBy: string | null
       createdAt: Date
       updatedAt: Date
+      targetUserId: string | null
+      branchCourseId: string | null
+      branchCourseName: string | null
+      facultyId: string | null
+      facultyName: string | null
+      moduleId: string | null
+      moduleName: string | null
+      requestDescription: string | null
+      requestId: string | null
+      requestReason: string | null
+      requestStatus: string | null
+      requestTitle: string | null
+      subModuleId: string | null
+      subModuleName: string | null
     }, ExtArgs["result"]["notification"]>
     composites: {}
   }
@@ -8471,20 +8339,6 @@ export namespace Prisma {
     readonly title: FieldRef<"Notification", 'String'>
     readonly message: FieldRef<"Notification", 'String'>
     readonly actionLabel: FieldRef<"Notification", 'String'>
-    readonly requestId: FieldRef<"Notification", 'String'>
-    readonly requestStatus: FieldRef<"Notification", 'String'>
-    readonly requestTitle: FieldRef<"Notification", 'String'>
-    readonly requestReason: FieldRef<"Notification", 'String'>
-    readonly requestDescription: FieldRef<"Notification", 'String'>
-    readonly branchCourseId: FieldRef<"Notification", 'String'>
-    readonly branchCourseName: FieldRef<"Notification", 'String'>
-    readonly moduleId: FieldRef<"Notification", 'String'>
-    readonly moduleName: FieldRef<"Notification", 'String'>
-    readonly subModuleId: FieldRef<"Notification", 'String'>
-    readonly subModuleName: FieldRef<"Notification", 'String'>
-    readonly facultyId: FieldRef<"Notification", 'String'>
-    readonly facultyName: FieldRef<"Notification", 'String'>
-    readonly targetUserId: FieldRef<"Notification", 'String'>
     readonly targetBranchId: FieldRef<"Notification", 'String'>
     readonly targetBranchEmail: FieldRef<"Notification", 'String'>
     readonly targetBranchName: FieldRef<"Notification", 'String'>
@@ -8493,6 +8347,20 @@ export namespace Prisma {
     readonly createdBy: FieldRef<"Notification", 'String'>
     readonly createdAt: FieldRef<"Notification", 'DateTime'>
     readonly updatedAt: FieldRef<"Notification", 'DateTime'>
+    readonly targetUserId: FieldRef<"Notification", 'String'>
+    readonly branchCourseId: FieldRef<"Notification", 'String'>
+    readonly branchCourseName: FieldRef<"Notification", 'String'>
+    readonly facultyId: FieldRef<"Notification", 'String'>
+    readonly facultyName: FieldRef<"Notification", 'String'>
+    readonly moduleId: FieldRef<"Notification", 'String'>
+    readonly moduleName: FieldRef<"Notification", 'String'>
+    readonly requestDescription: FieldRef<"Notification", 'String'>
+    readonly requestId: FieldRef<"Notification", 'String'>
+    readonly requestReason: FieldRef<"Notification", 'String'>
+    readonly requestStatus: FieldRef<"Notification", 'String'>
+    readonly requestTitle: FieldRef<"Notification", 'String'>
+    readonly subModuleId: FieldRef<"Notification", 'String'>
+    readonly subModuleName: FieldRef<"Notification", 'String'>
   }
     
 
@@ -11395,8 +11263,6 @@ export namespace Prisma {
     id: string | null
     name: string | null
     nameKey: string | null
-    courseCode: string | null
-    branchId: string | null
     description: string | null
     feeReference: string | null
     mode: string | null
@@ -11417,14 +11283,14 @@ export namespace Prisma {
     updatedBy: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    branchId: string | null
+    courseCode: string | null
   }
 
   export type CourseMaxAggregateOutputType = {
     id: string | null
     name: string | null
     nameKey: string | null
-    courseCode: string | null
-    branchId: string | null
     description: string | null
     feeReference: string | null
     mode: string | null
@@ -11445,14 +11311,14 @@ export namespace Prisma {
     updatedBy: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    branchId: string | null
+    courseCode: string | null
   }
 
   export type CourseCountAggregateOutputType = {
     id: number
     name: number
     nameKey: number
-    courseCode: number
-    branchId: number
     description: number
     feeReference: number
     mode: number
@@ -11466,7 +11332,6 @@ export namespace Prisma {
     installment1: number
     installment2: number
     installment3: number
-    installments: number
     status: number
     statusChangedAt: number
     statusChangedBy: number
@@ -11474,6 +11339,9 @@ export namespace Prisma {
     updatedBy: number
     createdAt: number
     updatedAt: number
+    installments: number
+    branchId: number
+    courseCode: number
     _all: number
   }
 
@@ -11508,8 +11376,6 @@ export namespace Prisma {
     id?: true
     name?: true
     nameKey?: true
-    courseCode?: true
-    branchId?: true
     description?: true
     feeReference?: true
     mode?: true
@@ -11530,14 +11396,14 @@ export namespace Prisma {
     updatedBy?: true
     createdAt?: true
     updatedAt?: true
+    branchId?: true
+    courseCode?: true
   }
 
   export type CourseMaxAggregateInputType = {
     id?: true
     name?: true
     nameKey?: true
-    courseCode?: true
-    branchId?: true
     description?: true
     feeReference?: true
     mode?: true
@@ -11558,14 +11424,14 @@ export namespace Prisma {
     updatedBy?: true
     createdAt?: true
     updatedAt?: true
+    branchId?: true
+    courseCode?: true
   }
 
   export type CourseCountAggregateInputType = {
     id?: true
     name?: true
     nameKey?: true
-    courseCode?: true
-    branchId?: true
     description?: true
     feeReference?: true
     mode?: true
@@ -11579,7 +11445,6 @@ export namespace Prisma {
     installment1?: true
     installment2?: true
     installment3?: true
-    installments?: true
     status?: true
     statusChangedAt?: true
     statusChangedBy?: true
@@ -11587,6 +11452,9 @@ export namespace Prisma {
     updatedBy?: true
     createdAt?: true
     updatedAt?: true
+    installments?: true
+    branchId?: true
+    courseCode?: true
     _all?: true
   }
 
@@ -11680,8 +11548,6 @@ export namespace Prisma {
     id: string
     name: string
     nameKey: string
-    courseCode: string | null
-    branchId: string | null
     description: string | null
     feeReference: string | null
     mode: string
@@ -11695,7 +11561,6 @@ export namespace Prisma {
     installment1: number | null
     installment2: number | null
     installment3: number | null
-    installments: JsonValue | null
     status: $Enums.RecordStatus
     statusChangedAt: Date | null
     statusChangedBy: string | null
@@ -11703,6 +11568,9 @@ export namespace Prisma {
     updatedBy: string | null
     createdAt: Date
     updatedAt: Date
+    installments: JsonValue | null
+    branchId: string | null
+    courseCode: string | null
     _count: CourseCountAggregateOutputType | null
     _avg: CourseAvgAggregateOutputType | null
     _sum: CourseSumAggregateOutputType | null
@@ -11728,8 +11596,6 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     nameKey?: boolean
-    courseCode?: boolean
-    branchId?: boolean
     description?: boolean
     feeReference?: boolean
     mode?: boolean
@@ -11743,7 +11609,6 @@ export namespace Prisma {
     installment1?: boolean
     installment2?: boolean
     installment3?: boolean
-    installments?: boolean
     status?: boolean
     statusChangedAt?: boolean
     statusChangedBy?: boolean
@@ -11751,15 +11616,18 @@ export namespace Prisma {
     updatedBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    installments?: boolean
+    branchId?: boolean
+    courseCode?: boolean
+    batches?: boolean | Course$batchesArgs<ExtArgs>
+    branchFaculties?: boolean | Course$branchFacultiesArgs<ExtArgs>
     branch?: boolean | Course$branchArgs<ExtArgs>
     modules?: boolean | Course$modulesArgs<ExtArgs>
-    batches?: boolean | Course$batchesArgs<ExtArgs>
-    students?: boolean | Course$studentsArgs<ExtArgs>
-    facultyProfiles?: boolean | Course$facultyProfilesArgs<ExtArgs>
-    facultyCourseAssignments?: boolean | Course$facultyCourseAssignmentsArgs<ExtArgs>
-    facultyBatchEntries?: boolean | Course$facultyBatchEntriesArgs<ExtArgs>
     statusHistory?: boolean | Course$statusHistoryArgs<ExtArgs>
-    branchFaculties?: boolean | Course$branchFacultiesArgs<ExtArgs>
+    facultyBatchEntries?: boolean | Course$facultyBatchEntriesArgs<ExtArgs>
+    facultyCourseAssignments?: boolean | Course$facultyCourseAssignmentsArgs<ExtArgs>
+    facultyProfiles?: boolean | Course$facultyProfilesArgs<ExtArgs>
+    students?: boolean | Course$studentsArgs<ExtArgs>
     _count?: boolean | CourseCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["course"]>
 
@@ -11767,8 +11635,6 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     nameKey?: boolean
-    courseCode?: boolean
-    branchId?: boolean
     description?: boolean
     feeReference?: boolean
     mode?: boolean
@@ -11782,7 +11648,6 @@ export namespace Prisma {
     installment1?: boolean
     installment2?: boolean
     installment3?: boolean
-    installments?: boolean
     status?: boolean
     statusChangedAt?: boolean
     statusChangedBy?: boolean
@@ -11790,6 +11655,9 @@ export namespace Prisma {
     updatedBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    installments?: boolean
+    branchId?: boolean
+    courseCode?: boolean
     branch?: boolean | Course$branchArgs<ExtArgs>
   }, ExtArgs["result"]["course"]>
 
@@ -11797,8 +11665,6 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     nameKey?: boolean
-    courseCode?: boolean
-    branchId?: boolean
     description?: boolean
     feeReference?: boolean
     mode?: boolean
@@ -11812,7 +11678,6 @@ export namespace Prisma {
     installment1?: boolean
     installment2?: boolean
     installment3?: boolean
-    installments?: boolean
     status?: boolean
     statusChangedAt?: boolean
     statusChangedBy?: boolean
@@ -11820,6 +11685,9 @@ export namespace Prisma {
     updatedBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    installments?: boolean
+    branchId?: boolean
+    courseCode?: boolean
     branch?: boolean | Course$branchArgs<ExtArgs>
   }, ExtArgs["result"]["course"]>
 
@@ -11827,8 +11695,6 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     nameKey?: boolean
-    courseCode?: boolean
-    branchId?: boolean
     description?: boolean
     feeReference?: boolean
     mode?: boolean
@@ -11842,7 +11708,6 @@ export namespace Prisma {
     installment1?: boolean
     installment2?: boolean
     installment3?: boolean
-    installments?: boolean
     status?: boolean
     statusChangedAt?: boolean
     statusChangedBy?: boolean
@@ -11850,19 +11715,22 @@ export namespace Prisma {
     updatedBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    installments?: boolean
+    branchId?: boolean
+    courseCode?: boolean
   }
 
-  export type CourseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "nameKey" | "courseCode" | "branchId" | "description" | "feeReference" | "mode" | "duration" | "hours" | "actualFees" | "registrationFees" | "discount" | "afterDiscount" | "installmentCount" | "installment1" | "installment2" | "installment3" | "installments" | "status" | "statusChangedAt" | "statusChangedBy" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["course"]>
+  export type CourseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "nameKey" | "description" | "feeReference" | "mode" | "duration" | "hours" | "actualFees" | "registrationFees" | "discount" | "afterDiscount" | "installmentCount" | "installment1" | "installment2" | "installment3" | "status" | "statusChangedAt" | "statusChangedBy" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt" | "installments" | "branchId" | "courseCode", ExtArgs["result"]["course"]>
   export type CourseInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    batches?: boolean | Course$batchesArgs<ExtArgs>
+    branchFaculties?: boolean | Course$branchFacultiesArgs<ExtArgs>
     branch?: boolean | Course$branchArgs<ExtArgs>
     modules?: boolean | Course$modulesArgs<ExtArgs>
-    batches?: boolean | Course$batchesArgs<ExtArgs>
-    students?: boolean | Course$studentsArgs<ExtArgs>
-    facultyProfiles?: boolean | Course$facultyProfilesArgs<ExtArgs>
-    facultyCourseAssignments?: boolean | Course$facultyCourseAssignmentsArgs<ExtArgs>
-    facultyBatchEntries?: boolean | Course$facultyBatchEntriesArgs<ExtArgs>
     statusHistory?: boolean | Course$statusHistoryArgs<ExtArgs>
-    branchFaculties?: boolean | Course$branchFacultiesArgs<ExtArgs>
+    facultyBatchEntries?: boolean | Course$facultyBatchEntriesArgs<ExtArgs>
+    facultyCourseAssignments?: boolean | Course$facultyCourseAssignmentsArgs<ExtArgs>
+    facultyProfiles?: boolean | Course$facultyProfilesArgs<ExtArgs>
+    students?: boolean | Course$studentsArgs<ExtArgs>
     _count?: boolean | CourseCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type CourseIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -11875,22 +11743,20 @@ export namespace Prisma {
   export type $CoursePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Course"
     objects: {
+      batches: Prisma.$BatchPayload<ExtArgs>[]
+      branchFaculties: Prisma.$BranchFacultyPayload<ExtArgs>[]
       branch: Prisma.$BranchPayload<ExtArgs> | null
       modules: Prisma.$CourseModulePayload<ExtArgs>[]
-      batches: Prisma.$BatchPayload<ExtArgs>[]
-      students: Prisma.$StudentProfilePayload<ExtArgs>[]
-      facultyProfiles: Prisma.$FacultyProfilePayload<ExtArgs>[]
-      facultyCourseAssignments: Prisma.$FacultyCourseAssignmentPayload<ExtArgs>[]
-      facultyBatchEntries: Prisma.$FacultyBatchEntryPayload<ExtArgs>[]
       statusHistory: Prisma.$CourseStatusHistoryPayload<ExtArgs>[]
-      branchFaculties: Prisma.$BranchFacultyPayload<ExtArgs>[]
+      facultyBatchEntries: Prisma.$FacultyBatchEntryPayload<ExtArgs>[]
+      facultyCourseAssignments: Prisma.$FacultyCourseAssignmentPayload<ExtArgs>[]
+      facultyProfiles: Prisma.$FacultyProfilePayload<ExtArgs>[]
+      students: Prisma.$StudentProfilePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       name: string
       nameKey: string
-      courseCode: string | null
-      branchId: string | null
       description: string | null
       feeReference: string | null
       mode: string
@@ -11904,7 +11770,6 @@ export namespace Prisma {
       installment1: number | null
       installment2: number | null
       installment3: number | null
-      installments: Prisma.JsonValue | null
       status: $Enums.RecordStatus
       statusChangedAt: Date | null
       statusChangedBy: string | null
@@ -11912,6 +11777,9 @@ export namespace Prisma {
       updatedBy: string | null
       createdAt: Date
       updatedAt: Date
+      installments: Prisma.JsonValue | null
+      branchId: string | null
+      courseCode: string | null
     }, ExtArgs["result"]["course"]>
     composites: {}
   }
@@ -12306,15 +12174,15 @@ export namespace Prisma {
    */
   export interface Prisma__CourseClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    batches<T extends Course$batchesArgs<ExtArgs> = {}>(args?: Subset<T, Course$batchesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BatchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    branchFaculties<T extends Course$branchFacultiesArgs<ExtArgs> = {}>(args?: Subset<T, Course$branchFacultiesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchFacultyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     branch<T extends Course$branchArgs<ExtArgs> = {}>(args?: Subset<T, Course$branchArgs<ExtArgs>>): Prisma__BranchClient<$Result.GetResult<Prisma.$BranchPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     modules<T extends Course$modulesArgs<ExtArgs> = {}>(args?: Subset<T, Course$modulesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CourseModulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    batches<T extends Course$batchesArgs<ExtArgs> = {}>(args?: Subset<T, Course$batchesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BatchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    students<T extends Course$studentsArgs<ExtArgs> = {}>(args?: Subset<T, Course$studentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StudentProfilePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    facultyProfiles<T extends Course$facultyProfilesArgs<ExtArgs> = {}>(args?: Subset<T, Course$facultyProfilesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FacultyProfilePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    facultyCourseAssignments<T extends Course$facultyCourseAssignmentsArgs<ExtArgs> = {}>(args?: Subset<T, Course$facultyCourseAssignmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FacultyCourseAssignmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    facultyBatchEntries<T extends Course$facultyBatchEntriesArgs<ExtArgs> = {}>(args?: Subset<T, Course$facultyBatchEntriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FacultyBatchEntryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     statusHistory<T extends Course$statusHistoryArgs<ExtArgs> = {}>(args?: Subset<T, Course$statusHistoryArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CourseStatusHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    branchFaculties<T extends Course$branchFacultiesArgs<ExtArgs> = {}>(args?: Subset<T, Course$branchFacultiesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchFacultyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    facultyBatchEntries<T extends Course$facultyBatchEntriesArgs<ExtArgs> = {}>(args?: Subset<T, Course$facultyBatchEntriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FacultyBatchEntryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    facultyCourseAssignments<T extends Course$facultyCourseAssignmentsArgs<ExtArgs> = {}>(args?: Subset<T, Course$facultyCourseAssignmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FacultyCourseAssignmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    facultyProfiles<T extends Course$facultyProfilesArgs<ExtArgs> = {}>(args?: Subset<T, Course$facultyProfilesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FacultyProfilePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    students<T extends Course$studentsArgs<ExtArgs> = {}>(args?: Subset<T, Course$studentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StudentProfilePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -12347,8 +12215,6 @@ export namespace Prisma {
     readonly id: FieldRef<"Course", 'String'>
     readonly name: FieldRef<"Course", 'String'>
     readonly nameKey: FieldRef<"Course", 'String'>
-    readonly courseCode: FieldRef<"Course", 'String'>
-    readonly branchId: FieldRef<"Course", 'String'>
     readonly description: FieldRef<"Course", 'String'>
     readonly feeReference: FieldRef<"Course", 'String'>
     readonly mode: FieldRef<"Course", 'String'>
@@ -12362,7 +12228,6 @@ export namespace Prisma {
     readonly installment1: FieldRef<"Course", 'Int'>
     readonly installment2: FieldRef<"Course", 'Int'>
     readonly installment3: FieldRef<"Course", 'Int'>
-    readonly installments: FieldRef<"Course", 'Json'>
     readonly status: FieldRef<"Course", 'RecordStatus'>
     readonly statusChangedAt: FieldRef<"Course", 'DateTime'>
     readonly statusChangedBy: FieldRef<"Course", 'String'>
@@ -12370,6 +12235,9 @@ export namespace Prisma {
     readonly updatedBy: FieldRef<"Course", 'String'>
     readonly createdAt: FieldRef<"Course", 'DateTime'>
     readonly updatedAt: FieldRef<"Course", 'DateTime'>
+    readonly installments: FieldRef<"Course", 'Json'>
+    readonly branchId: FieldRef<"Course", 'String'>
+    readonly courseCode: FieldRef<"Course", 'String'>
   }
     
 
@@ -12771,6 +12639,54 @@ export namespace Prisma {
   }
 
   /**
+   * Course.batches
+   */
+  export type Course$batchesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Batch
+     */
+    select?: BatchSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Batch
+     */
+    omit?: BatchOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BatchInclude<ExtArgs> | null
+    where?: BatchWhereInput
+    orderBy?: BatchOrderByWithRelationInput | BatchOrderByWithRelationInput[]
+    cursor?: BatchWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: BatchScalarFieldEnum | BatchScalarFieldEnum[]
+  }
+
+  /**
+   * Course.branchFaculties
+   */
+  export type Course$branchFacultiesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchFaculty
+     */
+    select?: BranchFacultySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchFaculty
+     */
+    omit?: BranchFacultyOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchFacultyInclude<ExtArgs> | null
+    where?: BranchFacultyWhereInput
+    orderBy?: BranchFacultyOrderByWithRelationInput | BranchFacultyOrderByWithRelationInput[]
+    cursor?: BranchFacultyWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: BranchFacultyScalarFieldEnum | BranchFacultyScalarFieldEnum[]
+  }
+
+  /**
    * Course.branch
    */
   export type Course$branchArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -12814,99 +12730,27 @@ export namespace Prisma {
   }
 
   /**
-   * Course.batches
+   * Course.statusHistory
    */
-  export type Course$batchesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Course$statusHistoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Batch
+     * Select specific fields to fetch from the CourseStatusHistory
      */
-    select?: BatchSelect<ExtArgs> | null
+    select?: CourseStatusHistorySelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Batch
+     * Omit specific fields from the CourseStatusHistory
      */
-    omit?: BatchOmit<ExtArgs> | null
+    omit?: CourseStatusHistoryOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: BatchInclude<ExtArgs> | null
-    where?: BatchWhereInput
-    orderBy?: BatchOrderByWithRelationInput | BatchOrderByWithRelationInput[]
-    cursor?: BatchWhereUniqueInput
+    include?: CourseStatusHistoryInclude<ExtArgs> | null
+    where?: CourseStatusHistoryWhereInput
+    orderBy?: CourseStatusHistoryOrderByWithRelationInput | CourseStatusHistoryOrderByWithRelationInput[]
+    cursor?: CourseStatusHistoryWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: BatchScalarFieldEnum | BatchScalarFieldEnum[]
-  }
-
-  /**
-   * Course.students
-   */
-  export type Course$studentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the StudentProfile
-     */
-    select?: StudentProfileSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the StudentProfile
-     */
-    omit?: StudentProfileOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: StudentProfileInclude<ExtArgs> | null
-    where?: StudentProfileWhereInput
-    orderBy?: StudentProfileOrderByWithRelationInput | StudentProfileOrderByWithRelationInput[]
-    cursor?: StudentProfileWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: StudentProfileScalarFieldEnum | StudentProfileScalarFieldEnum[]
-  }
-
-  /**
-   * Course.facultyProfiles
-   */
-  export type Course$facultyProfilesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the FacultyProfile
-     */
-    select?: FacultyProfileSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the FacultyProfile
-     */
-    omit?: FacultyProfileOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: FacultyProfileInclude<ExtArgs> | null
-    where?: FacultyProfileWhereInput
-    orderBy?: FacultyProfileOrderByWithRelationInput | FacultyProfileOrderByWithRelationInput[]
-    cursor?: FacultyProfileWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: FacultyProfileScalarFieldEnum | FacultyProfileScalarFieldEnum[]
-  }
-
-  /**
-   * Course.facultyCourseAssignments
-   */
-  export type Course$facultyCourseAssignmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the FacultyCourseAssignment
-     */
-    select?: FacultyCourseAssignmentSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the FacultyCourseAssignment
-     */
-    omit?: FacultyCourseAssignmentOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: FacultyCourseAssignmentInclude<ExtArgs> | null
-    where?: FacultyCourseAssignmentWhereInput
-    orderBy?: FacultyCourseAssignmentOrderByWithRelationInput | FacultyCourseAssignmentOrderByWithRelationInput[]
-    cursor?: FacultyCourseAssignmentWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: FacultyCourseAssignmentScalarFieldEnum | FacultyCourseAssignmentScalarFieldEnum[]
+    distinct?: CourseStatusHistoryScalarFieldEnum | CourseStatusHistoryScalarFieldEnum[]
   }
 
   /**
@@ -12934,51 +12778,75 @@ export namespace Prisma {
   }
 
   /**
-   * Course.statusHistory
+   * Course.facultyCourseAssignments
    */
-  export type Course$statusHistoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Course$facultyCourseAssignmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the CourseStatusHistory
+     * Select specific fields to fetch from the FacultyCourseAssignment
      */
-    select?: CourseStatusHistorySelect<ExtArgs> | null
+    select?: FacultyCourseAssignmentSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the CourseStatusHistory
+     * Omit specific fields from the FacultyCourseAssignment
      */
-    omit?: CourseStatusHistoryOmit<ExtArgs> | null
+    omit?: FacultyCourseAssignmentOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: CourseStatusHistoryInclude<ExtArgs> | null
-    where?: CourseStatusHistoryWhereInput
-    orderBy?: CourseStatusHistoryOrderByWithRelationInput | CourseStatusHistoryOrderByWithRelationInput[]
-    cursor?: CourseStatusHistoryWhereUniqueInput
+    include?: FacultyCourseAssignmentInclude<ExtArgs> | null
+    where?: FacultyCourseAssignmentWhereInput
+    orderBy?: FacultyCourseAssignmentOrderByWithRelationInput | FacultyCourseAssignmentOrderByWithRelationInput[]
+    cursor?: FacultyCourseAssignmentWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: CourseStatusHistoryScalarFieldEnum | CourseStatusHistoryScalarFieldEnum[]
+    distinct?: FacultyCourseAssignmentScalarFieldEnum | FacultyCourseAssignmentScalarFieldEnum[]
   }
 
   /**
-   * Course.branchFaculties
+   * Course.facultyProfiles
    */
-  export type Course$branchFacultiesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Course$facultyProfilesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the BranchFaculty
+     * Select specific fields to fetch from the FacultyProfile
      */
-    select?: BranchFacultySelect<ExtArgs> | null
+    select?: FacultyProfileSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the BranchFaculty
+     * Omit specific fields from the FacultyProfile
      */
-    omit?: BranchFacultyOmit<ExtArgs> | null
+    omit?: FacultyProfileOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: BranchFacultyInclude<ExtArgs> | null
-    where?: BranchFacultyWhereInput
-    orderBy?: BranchFacultyOrderByWithRelationInput | BranchFacultyOrderByWithRelationInput[]
-    cursor?: BranchFacultyWhereUniqueInput
+    include?: FacultyProfileInclude<ExtArgs> | null
+    where?: FacultyProfileWhereInput
+    orderBy?: FacultyProfileOrderByWithRelationInput | FacultyProfileOrderByWithRelationInput[]
+    cursor?: FacultyProfileWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: BranchFacultyScalarFieldEnum | BranchFacultyScalarFieldEnum[]
+    distinct?: FacultyProfileScalarFieldEnum | FacultyProfileScalarFieldEnum[]
+  }
+
+  /**
+   * Course.students
+   */
+  export type Course$studentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentProfile
+     */
+    select?: StudentProfileSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StudentProfile
+     */
+    omit?: StudentProfileOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentProfileInclude<ExtArgs> | null
+    where?: StudentProfileWhereInput
+    orderBy?: StudentProfileOrderByWithRelationInput | StudentProfileOrderByWithRelationInput[]
+    cursor?: StudentProfileWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: StudentProfileScalarFieldEnum | StudentProfileScalarFieldEnum[]
   }
 
   /**
@@ -13325,7 +13193,6 @@ export namespace Prisma {
     branch?: boolean | BranchDefaultArgs<ExtArgs>
     modules?: boolean | BranchCourse$modulesArgs<ExtArgs>
     branchFaculties?: boolean | BranchCourse$branchFacultiesArgs<ExtArgs>
-    installmentTemplate?: boolean | BranchCourse$installmentTemplateArgs<ExtArgs>
     _count?: boolean | BranchCourseCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["branchCourse"]>
 
@@ -13399,7 +13266,6 @@ export namespace Prisma {
     branch?: boolean | BranchDefaultArgs<ExtArgs>
     modules?: boolean | BranchCourse$modulesArgs<ExtArgs>
     branchFaculties?: boolean | BranchCourse$branchFacultiesArgs<ExtArgs>
-    installmentTemplate?: boolean | BranchCourse$installmentTemplateArgs<ExtArgs>
     _count?: boolean | BranchCourseCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type BranchCourseIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -13415,7 +13281,6 @@ export namespace Prisma {
       branch: Prisma.$BranchPayload<ExtArgs>
       modules: Prisma.$BranchCourseModulePayload<ExtArgs>[]
       branchFaculties: Prisma.$BranchFacultyPayload<ExtArgs>[]
-      installmentTemplate: Prisma.$BranchInstallmentTemplatePayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -13833,7 +13698,6 @@ export namespace Prisma {
     branch<T extends BranchDefaultArgs<ExtArgs> = {}>(args?: Subset<T, BranchDefaultArgs<ExtArgs>>): Prisma__BranchClient<$Result.GetResult<Prisma.$BranchPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     modules<T extends BranchCourse$modulesArgs<ExtArgs> = {}>(args?: Subset<T, BranchCourse$modulesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchCourseModulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     branchFaculties<T extends BranchCourse$branchFacultiesArgs<ExtArgs> = {}>(args?: Subset<T, BranchCourse$branchFacultiesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchFacultyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    installmentTemplate<T extends BranchCourse$installmentTemplateArgs<ExtArgs> = {}>(args?: Subset<T, BranchCourse$installmentTemplateArgs<ExtArgs>>): Prisma__BranchInstallmentTemplateClient<$Result.GetResult<Prisma.$BranchInstallmentTemplatePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -14330,25 +14194,6 @@ export namespace Prisma {
   }
 
   /**
-   * BranchCourse.installmentTemplate
-   */
-  export type BranchCourse$installmentTemplateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the BranchInstallmentTemplate
-     */
-    select?: BranchInstallmentTemplateSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the BranchInstallmentTemplate
-     */
-    omit?: BranchInstallmentTemplateOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: BranchInstallmentTemplateInclude<ExtArgs> | null
-    where?: BranchInstallmentTemplateWhereInput
-  }
-
-  /**
    * BranchCourse without action
    */
   export type BranchCourseDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -14364,1243 +14209,6 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: BranchCourseInclude<ExtArgs> | null
-  }
-
-
-  /**
-   * Model BranchInstallmentTemplate
-   */
-
-  export type AggregateBranchInstallmentTemplate = {
-    _count: BranchInstallmentTemplateCountAggregateOutputType | null
-    _avg: BranchInstallmentTemplateAvgAggregateOutputType | null
-    _sum: BranchInstallmentTemplateSumAggregateOutputType | null
-    _min: BranchInstallmentTemplateMinAggregateOutputType | null
-    _max: BranchInstallmentTemplateMaxAggregateOutputType | null
-  }
-
-  export type BranchInstallmentTemplateAvgAggregateOutputType = {
-    installmentCount: number | null
-  }
-
-  export type BranchInstallmentTemplateSumAggregateOutputType = {
-    installmentCount: number | null
-  }
-
-  export type BranchInstallmentTemplateMinAggregateOutputType = {
-    id: string | null
-    branchId: string | null
-    branchCourseId: string | null
-    templateName: string | null
-    planType: string | null
-    installmentCount: number | null
-    dueRule: string | null
-    allowCustomization: boolean | null
-    status: $Enums.RecordStatus | null
-    createdBy: string | null
-    updatedBy: string | null
-    createdAt: Date | null
-    updatedAt: Date | null
-  }
-
-  export type BranchInstallmentTemplateMaxAggregateOutputType = {
-    id: string | null
-    branchId: string | null
-    branchCourseId: string | null
-    templateName: string | null
-    planType: string | null
-    installmentCount: number | null
-    dueRule: string | null
-    allowCustomization: boolean | null
-    status: $Enums.RecordStatus | null
-    createdBy: string | null
-    updatedBy: string | null
-    createdAt: Date | null
-    updatedAt: Date | null
-  }
-
-  export type BranchInstallmentTemplateCountAggregateOutputType = {
-    id: number
-    branchId: number
-    branchCourseId: number
-    templateName: number
-    planType: number
-    installmentCount: number
-    installments: number
-    dueRule: number
-    allowCustomization: number
-    status: number
-    createdBy: number
-    updatedBy: number
-    createdAt: number
-    updatedAt: number
-    _all: number
-  }
-
-
-  export type BranchInstallmentTemplateAvgAggregateInputType = {
-    installmentCount?: true
-  }
-
-  export type BranchInstallmentTemplateSumAggregateInputType = {
-    installmentCount?: true
-  }
-
-  export type BranchInstallmentTemplateMinAggregateInputType = {
-    id?: true
-    branchId?: true
-    branchCourseId?: true
-    templateName?: true
-    planType?: true
-    installmentCount?: true
-    dueRule?: true
-    allowCustomization?: true
-    status?: true
-    createdBy?: true
-    updatedBy?: true
-    createdAt?: true
-    updatedAt?: true
-  }
-
-  export type BranchInstallmentTemplateMaxAggregateInputType = {
-    id?: true
-    branchId?: true
-    branchCourseId?: true
-    templateName?: true
-    planType?: true
-    installmentCount?: true
-    dueRule?: true
-    allowCustomization?: true
-    status?: true
-    createdBy?: true
-    updatedBy?: true
-    createdAt?: true
-    updatedAt?: true
-  }
-
-  export type BranchInstallmentTemplateCountAggregateInputType = {
-    id?: true
-    branchId?: true
-    branchCourseId?: true
-    templateName?: true
-    planType?: true
-    installmentCount?: true
-    installments?: true
-    dueRule?: true
-    allowCustomization?: true
-    status?: true
-    createdBy?: true
-    updatedBy?: true
-    createdAt?: true
-    updatedAt?: true
-    _all?: true
-  }
-
-  export type BranchInstallmentTemplateAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which BranchInstallmentTemplate to aggregate.
-     */
-    where?: BranchInstallmentTemplateWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of BranchInstallmentTemplates to fetch.
-     */
-    orderBy?: BranchInstallmentTemplateOrderByWithRelationInput | BranchInstallmentTemplateOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: BranchInstallmentTemplateWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` BranchInstallmentTemplates from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` BranchInstallmentTemplates.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned BranchInstallmentTemplates
-    **/
-    _count?: true | BranchInstallmentTemplateCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to average
-    **/
-    _avg?: BranchInstallmentTemplateAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: BranchInstallmentTemplateSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: BranchInstallmentTemplateMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: BranchInstallmentTemplateMaxAggregateInputType
-  }
-
-  export type GetBranchInstallmentTemplateAggregateType<T extends BranchInstallmentTemplateAggregateArgs> = {
-        [P in keyof T & keyof AggregateBranchInstallmentTemplate]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateBranchInstallmentTemplate[P]>
-      : GetScalarType<T[P], AggregateBranchInstallmentTemplate[P]>
-  }
-
-
-
-
-  export type BranchInstallmentTemplateGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: BranchInstallmentTemplateWhereInput
-    orderBy?: BranchInstallmentTemplateOrderByWithAggregationInput | BranchInstallmentTemplateOrderByWithAggregationInput[]
-    by: BranchInstallmentTemplateScalarFieldEnum[] | BranchInstallmentTemplateScalarFieldEnum
-    having?: BranchInstallmentTemplateScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: BranchInstallmentTemplateCountAggregateInputType | true
-    _avg?: BranchInstallmentTemplateAvgAggregateInputType
-    _sum?: BranchInstallmentTemplateSumAggregateInputType
-    _min?: BranchInstallmentTemplateMinAggregateInputType
-    _max?: BranchInstallmentTemplateMaxAggregateInputType
-  }
-
-  export type BranchInstallmentTemplateGroupByOutputType = {
-    id: string
-    branchId: string
-    branchCourseId: string | null
-    templateName: string
-    planType: string
-    installmentCount: number
-    installments: JsonValue
-    dueRule: string | null
-    allowCustomization: boolean
-    status: $Enums.RecordStatus
-    createdBy: string | null
-    updatedBy: string | null
-    createdAt: Date
-    updatedAt: Date
-    _count: BranchInstallmentTemplateCountAggregateOutputType | null
-    _avg: BranchInstallmentTemplateAvgAggregateOutputType | null
-    _sum: BranchInstallmentTemplateSumAggregateOutputType | null
-    _min: BranchInstallmentTemplateMinAggregateOutputType | null
-    _max: BranchInstallmentTemplateMaxAggregateOutputType | null
-  }
-
-  type GetBranchInstallmentTemplateGroupByPayload<T extends BranchInstallmentTemplateGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<BranchInstallmentTemplateGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof BranchInstallmentTemplateGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], BranchInstallmentTemplateGroupByOutputType[P]>
-            : GetScalarType<T[P], BranchInstallmentTemplateGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type BranchInstallmentTemplateSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    branchId?: boolean
-    branchCourseId?: boolean
-    templateName?: boolean
-    planType?: boolean
-    installmentCount?: boolean
-    installments?: boolean
-    dueRule?: boolean
-    allowCustomization?: boolean
-    status?: boolean
-    createdBy?: boolean
-    updatedBy?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    branch?: boolean | BranchDefaultArgs<ExtArgs>
-    branchCourse?: boolean | BranchInstallmentTemplate$branchCourseArgs<ExtArgs>
-  }, ExtArgs["result"]["branchInstallmentTemplate"]>
-
-  export type BranchInstallmentTemplateSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    branchId?: boolean
-    branchCourseId?: boolean
-    templateName?: boolean
-    planType?: boolean
-    installmentCount?: boolean
-    installments?: boolean
-    dueRule?: boolean
-    allowCustomization?: boolean
-    status?: boolean
-    createdBy?: boolean
-    updatedBy?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    branch?: boolean | BranchDefaultArgs<ExtArgs>
-    branchCourse?: boolean | BranchInstallmentTemplate$branchCourseArgs<ExtArgs>
-  }, ExtArgs["result"]["branchInstallmentTemplate"]>
-
-  export type BranchInstallmentTemplateSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    branchId?: boolean
-    branchCourseId?: boolean
-    templateName?: boolean
-    planType?: boolean
-    installmentCount?: boolean
-    installments?: boolean
-    dueRule?: boolean
-    allowCustomization?: boolean
-    status?: boolean
-    createdBy?: boolean
-    updatedBy?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    branch?: boolean | BranchDefaultArgs<ExtArgs>
-    branchCourse?: boolean | BranchInstallmentTemplate$branchCourseArgs<ExtArgs>
-  }, ExtArgs["result"]["branchInstallmentTemplate"]>
-
-  export type BranchInstallmentTemplateSelectScalar = {
-    id?: boolean
-    branchId?: boolean
-    branchCourseId?: boolean
-    templateName?: boolean
-    planType?: boolean
-    installmentCount?: boolean
-    installments?: boolean
-    dueRule?: boolean
-    allowCustomization?: boolean
-    status?: boolean
-    createdBy?: boolean
-    updatedBy?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-  }
-
-  export type BranchInstallmentTemplateOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "branchId" | "branchCourseId" | "templateName" | "planType" | "installmentCount" | "installments" | "dueRule" | "allowCustomization" | "status" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["branchInstallmentTemplate"]>
-  export type BranchInstallmentTemplateInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    branch?: boolean | BranchDefaultArgs<ExtArgs>
-    branchCourse?: boolean | BranchInstallmentTemplate$branchCourseArgs<ExtArgs>
-  }
-  export type BranchInstallmentTemplateIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    branch?: boolean | BranchDefaultArgs<ExtArgs>
-    branchCourse?: boolean | BranchInstallmentTemplate$branchCourseArgs<ExtArgs>
-  }
-  export type BranchInstallmentTemplateIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    branch?: boolean | BranchDefaultArgs<ExtArgs>
-    branchCourse?: boolean | BranchInstallmentTemplate$branchCourseArgs<ExtArgs>
-  }
-
-  export type $BranchInstallmentTemplatePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "BranchInstallmentTemplate"
-    objects: {
-      branch: Prisma.$BranchPayload<ExtArgs>
-      branchCourse: Prisma.$BranchCoursePayload<ExtArgs> | null
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: string
-      branchId: string
-      branchCourseId: string | null
-      templateName: string
-      planType: string
-      installmentCount: number
-      installments: Prisma.JsonValue
-      dueRule: string | null
-      allowCustomization: boolean
-      status: $Enums.RecordStatus
-      createdBy: string | null
-      updatedBy: string | null
-      createdAt: Date
-      updatedAt: Date
-    }, ExtArgs["result"]["branchInstallmentTemplate"]>
-    composites: {}
-  }
-
-  type BranchInstallmentTemplateGetPayload<S extends boolean | null | undefined | BranchInstallmentTemplateDefaultArgs> = $Result.GetResult<Prisma.$BranchInstallmentTemplatePayload, S>
-
-  type BranchInstallmentTemplateCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<BranchInstallmentTemplateFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: BranchInstallmentTemplateCountAggregateInputType | true
-    }
-
-  export interface BranchInstallmentTemplateDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['BranchInstallmentTemplate'], meta: { name: 'BranchInstallmentTemplate' } }
-    /**
-     * Find zero or one BranchInstallmentTemplate that matches the filter.
-     * @param {BranchInstallmentTemplateFindUniqueArgs} args - Arguments to find a BranchInstallmentTemplate
-     * @example
-     * // Get one BranchInstallmentTemplate
-     * const branchInstallmentTemplate = await prisma.branchInstallmentTemplate.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends BranchInstallmentTemplateFindUniqueArgs>(args: SelectSubset<T, BranchInstallmentTemplateFindUniqueArgs<ExtArgs>>): Prisma__BranchInstallmentTemplateClient<$Result.GetResult<Prisma.$BranchInstallmentTemplatePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one BranchInstallmentTemplate that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {BranchInstallmentTemplateFindUniqueOrThrowArgs} args - Arguments to find a BranchInstallmentTemplate
-     * @example
-     * // Get one BranchInstallmentTemplate
-     * const branchInstallmentTemplate = await prisma.branchInstallmentTemplate.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends BranchInstallmentTemplateFindUniqueOrThrowArgs>(args: SelectSubset<T, BranchInstallmentTemplateFindUniqueOrThrowArgs<ExtArgs>>): Prisma__BranchInstallmentTemplateClient<$Result.GetResult<Prisma.$BranchInstallmentTemplatePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first BranchInstallmentTemplate that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {BranchInstallmentTemplateFindFirstArgs} args - Arguments to find a BranchInstallmentTemplate
-     * @example
-     * // Get one BranchInstallmentTemplate
-     * const branchInstallmentTemplate = await prisma.branchInstallmentTemplate.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends BranchInstallmentTemplateFindFirstArgs>(args?: SelectSubset<T, BranchInstallmentTemplateFindFirstArgs<ExtArgs>>): Prisma__BranchInstallmentTemplateClient<$Result.GetResult<Prisma.$BranchInstallmentTemplatePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first BranchInstallmentTemplate that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {BranchInstallmentTemplateFindFirstOrThrowArgs} args - Arguments to find a BranchInstallmentTemplate
-     * @example
-     * // Get one BranchInstallmentTemplate
-     * const branchInstallmentTemplate = await prisma.branchInstallmentTemplate.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends BranchInstallmentTemplateFindFirstOrThrowArgs>(args?: SelectSubset<T, BranchInstallmentTemplateFindFirstOrThrowArgs<ExtArgs>>): Prisma__BranchInstallmentTemplateClient<$Result.GetResult<Prisma.$BranchInstallmentTemplatePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more BranchInstallmentTemplates that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {BranchInstallmentTemplateFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all BranchInstallmentTemplates
-     * const branchInstallmentTemplates = await prisma.branchInstallmentTemplate.findMany()
-     * 
-     * // Get first 10 BranchInstallmentTemplates
-     * const branchInstallmentTemplates = await prisma.branchInstallmentTemplate.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const branchInstallmentTemplateWithIdOnly = await prisma.branchInstallmentTemplate.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends BranchInstallmentTemplateFindManyArgs>(args?: SelectSubset<T, BranchInstallmentTemplateFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchInstallmentTemplatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a BranchInstallmentTemplate.
-     * @param {BranchInstallmentTemplateCreateArgs} args - Arguments to create a BranchInstallmentTemplate.
-     * @example
-     * // Create one BranchInstallmentTemplate
-     * const BranchInstallmentTemplate = await prisma.branchInstallmentTemplate.create({
-     *   data: {
-     *     // ... data to create a BranchInstallmentTemplate
-     *   }
-     * })
-     * 
-     */
-    create<T extends BranchInstallmentTemplateCreateArgs>(args: SelectSubset<T, BranchInstallmentTemplateCreateArgs<ExtArgs>>): Prisma__BranchInstallmentTemplateClient<$Result.GetResult<Prisma.$BranchInstallmentTemplatePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many BranchInstallmentTemplates.
-     * @param {BranchInstallmentTemplateCreateManyArgs} args - Arguments to create many BranchInstallmentTemplates.
-     * @example
-     * // Create many BranchInstallmentTemplates
-     * const branchInstallmentTemplate = await prisma.branchInstallmentTemplate.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends BranchInstallmentTemplateCreateManyArgs>(args?: SelectSubset<T, BranchInstallmentTemplateCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create many BranchInstallmentTemplates and returns the data saved in the database.
-     * @param {BranchInstallmentTemplateCreateManyAndReturnArgs} args - Arguments to create many BranchInstallmentTemplates.
-     * @example
-     * // Create many BranchInstallmentTemplates
-     * const branchInstallmentTemplate = await prisma.branchInstallmentTemplate.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Create many BranchInstallmentTemplates and only return the `id`
-     * const branchInstallmentTemplateWithIdOnly = await prisma.branchInstallmentTemplate.createManyAndReturn({
-     *   select: { id: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    createManyAndReturn<T extends BranchInstallmentTemplateCreateManyAndReturnArgs>(args?: SelectSubset<T, BranchInstallmentTemplateCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchInstallmentTemplatePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Delete a BranchInstallmentTemplate.
-     * @param {BranchInstallmentTemplateDeleteArgs} args - Arguments to delete one BranchInstallmentTemplate.
-     * @example
-     * // Delete one BranchInstallmentTemplate
-     * const BranchInstallmentTemplate = await prisma.branchInstallmentTemplate.delete({
-     *   where: {
-     *     // ... filter to delete one BranchInstallmentTemplate
-     *   }
-     * })
-     * 
-     */
-    delete<T extends BranchInstallmentTemplateDeleteArgs>(args: SelectSubset<T, BranchInstallmentTemplateDeleteArgs<ExtArgs>>): Prisma__BranchInstallmentTemplateClient<$Result.GetResult<Prisma.$BranchInstallmentTemplatePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one BranchInstallmentTemplate.
-     * @param {BranchInstallmentTemplateUpdateArgs} args - Arguments to update one BranchInstallmentTemplate.
-     * @example
-     * // Update one BranchInstallmentTemplate
-     * const branchInstallmentTemplate = await prisma.branchInstallmentTemplate.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends BranchInstallmentTemplateUpdateArgs>(args: SelectSubset<T, BranchInstallmentTemplateUpdateArgs<ExtArgs>>): Prisma__BranchInstallmentTemplateClient<$Result.GetResult<Prisma.$BranchInstallmentTemplatePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more BranchInstallmentTemplates.
-     * @param {BranchInstallmentTemplateDeleteManyArgs} args - Arguments to filter BranchInstallmentTemplates to delete.
-     * @example
-     * // Delete a few BranchInstallmentTemplates
-     * const { count } = await prisma.branchInstallmentTemplate.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends BranchInstallmentTemplateDeleteManyArgs>(args?: SelectSubset<T, BranchInstallmentTemplateDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more BranchInstallmentTemplates.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {BranchInstallmentTemplateUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many BranchInstallmentTemplates
-     * const branchInstallmentTemplate = await prisma.branchInstallmentTemplate.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends BranchInstallmentTemplateUpdateManyArgs>(args: SelectSubset<T, BranchInstallmentTemplateUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more BranchInstallmentTemplates and returns the data updated in the database.
-     * @param {BranchInstallmentTemplateUpdateManyAndReturnArgs} args - Arguments to update many BranchInstallmentTemplates.
-     * @example
-     * // Update many BranchInstallmentTemplates
-     * const branchInstallmentTemplate = await prisma.branchInstallmentTemplate.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more BranchInstallmentTemplates and only return the `id`
-     * const branchInstallmentTemplateWithIdOnly = await prisma.branchInstallmentTemplate.updateManyAndReturn({
-     *   select: { id: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends BranchInstallmentTemplateUpdateManyAndReturnArgs>(args: SelectSubset<T, BranchInstallmentTemplateUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchInstallmentTemplatePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Create or update one BranchInstallmentTemplate.
-     * @param {BranchInstallmentTemplateUpsertArgs} args - Arguments to update or create a BranchInstallmentTemplate.
-     * @example
-     * // Update or create a BranchInstallmentTemplate
-     * const branchInstallmentTemplate = await prisma.branchInstallmentTemplate.upsert({
-     *   create: {
-     *     // ... data to create a BranchInstallmentTemplate
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the BranchInstallmentTemplate we want to update
-     *   }
-     * })
-     */
-    upsert<T extends BranchInstallmentTemplateUpsertArgs>(args: SelectSubset<T, BranchInstallmentTemplateUpsertArgs<ExtArgs>>): Prisma__BranchInstallmentTemplateClient<$Result.GetResult<Prisma.$BranchInstallmentTemplatePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of BranchInstallmentTemplates.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {BranchInstallmentTemplateCountArgs} args - Arguments to filter BranchInstallmentTemplates to count.
-     * @example
-     * // Count the number of BranchInstallmentTemplates
-     * const count = await prisma.branchInstallmentTemplate.count({
-     *   where: {
-     *     // ... the filter for the BranchInstallmentTemplates we want to count
-     *   }
-     * })
-    **/
-    count<T extends BranchInstallmentTemplateCountArgs>(
-      args?: Subset<T, BranchInstallmentTemplateCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], BranchInstallmentTemplateCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a BranchInstallmentTemplate.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {BranchInstallmentTemplateAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends BranchInstallmentTemplateAggregateArgs>(args: Subset<T, BranchInstallmentTemplateAggregateArgs>): Prisma.PrismaPromise<GetBranchInstallmentTemplateAggregateType<T>>
-
-    /**
-     * Group by BranchInstallmentTemplate.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {BranchInstallmentTemplateGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends BranchInstallmentTemplateGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: BranchInstallmentTemplateGroupByArgs['orderBy'] }
-        : { orderBy?: BranchInstallmentTemplateGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, BranchInstallmentTemplateGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetBranchInstallmentTemplateGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the BranchInstallmentTemplate model
-   */
-  readonly fields: BranchInstallmentTemplateFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for BranchInstallmentTemplate.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__BranchInstallmentTemplateClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    branch<T extends BranchDefaultArgs<ExtArgs> = {}>(args?: Subset<T, BranchDefaultArgs<ExtArgs>>): Prisma__BranchClient<$Result.GetResult<Prisma.$BranchPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    branchCourse<T extends BranchInstallmentTemplate$branchCourseArgs<ExtArgs> = {}>(args?: Subset<T, BranchInstallmentTemplate$branchCourseArgs<ExtArgs>>): Prisma__BranchCourseClient<$Result.GetResult<Prisma.$BranchCoursePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the BranchInstallmentTemplate model
-   */
-  interface BranchInstallmentTemplateFieldRefs {
-    readonly id: FieldRef<"BranchInstallmentTemplate", 'String'>
-    readonly branchId: FieldRef<"BranchInstallmentTemplate", 'String'>
-    readonly branchCourseId: FieldRef<"BranchInstallmentTemplate", 'String'>
-    readonly templateName: FieldRef<"BranchInstallmentTemplate", 'String'>
-    readonly planType: FieldRef<"BranchInstallmentTemplate", 'String'>
-    readonly installmentCount: FieldRef<"BranchInstallmentTemplate", 'Int'>
-    readonly installments: FieldRef<"BranchInstallmentTemplate", 'Json'>
-    readonly dueRule: FieldRef<"BranchInstallmentTemplate", 'String'>
-    readonly allowCustomization: FieldRef<"BranchInstallmentTemplate", 'Boolean'>
-    readonly status: FieldRef<"BranchInstallmentTemplate", 'RecordStatus'>
-    readonly createdBy: FieldRef<"BranchInstallmentTemplate", 'String'>
-    readonly updatedBy: FieldRef<"BranchInstallmentTemplate", 'String'>
-    readonly createdAt: FieldRef<"BranchInstallmentTemplate", 'DateTime'>
-    readonly updatedAt: FieldRef<"BranchInstallmentTemplate", 'DateTime'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * BranchInstallmentTemplate findUnique
-   */
-  export type BranchInstallmentTemplateFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the BranchInstallmentTemplate
-     */
-    select?: BranchInstallmentTemplateSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the BranchInstallmentTemplate
-     */
-    omit?: BranchInstallmentTemplateOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: BranchInstallmentTemplateInclude<ExtArgs> | null
-    /**
-     * Filter, which BranchInstallmentTemplate to fetch.
-     */
-    where: BranchInstallmentTemplateWhereUniqueInput
-  }
-
-  /**
-   * BranchInstallmentTemplate findUniqueOrThrow
-   */
-  export type BranchInstallmentTemplateFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the BranchInstallmentTemplate
-     */
-    select?: BranchInstallmentTemplateSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the BranchInstallmentTemplate
-     */
-    omit?: BranchInstallmentTemplateOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: BranchInstallmentTemplateInclude<ExtArgs> | null
-    /**
-     * Filter, which BranchInstallmentTemplate to fetch.
-     */
-    where: BranchInstallmentTemplateWhereUniqueInput
-  }
-
-  /**
-   * BranchInstallmentTemplate findFirst
-   */
-  export type BranchInstallmentTemplateFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the BranchInstallmentTemplate
-     */
-    select?: BranchInstallmentTemplateSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the BranchInstallmentTemplate
-     */
-    omit?: BranchInstallmentTemplateOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: BranchInstallmentTemplateInclude<ExtArgs> | null
-    /**
-     * Filter, which BranchInstallmentTemplate to fetch.
-     */
-    where?: BranchInstallmentTemplateWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of BranchInstallmentTemplates to fetch.
-     */
-    orderBy?: BranchInstallmentTemplateOrderByWithRelationInput | BranchInstallmentTemplateOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for BranchInstallmentTemplates.
-     */
-    cursor?: BranchInstallmentTemplateWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` BranchInstallmentTemplates from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` BranchInstallmentTemplates.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of BranchInstallmentTemplates.
-     */
-    distinct?: BranchInstallmentTemplateScalarFieldEnum | BranchInstallmentTemplateScalarFieldEnum[]
-  }
-
-  /**
-   * BranchInstallmentTemplate findFirstOrThrow
-   */
-  export type BranchInstallmentTemplateFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the BranchInstallmentTemplate
-     */
-    select?: BranchInstallmentTemplateSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the BranchInstallmentTemplate
-     */
-    omit?: BranchInstallmentTemplateOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: BranchInstallmentTemplateInclude<ExtArgs> | null
-    /**
-     * Filter, which BranchInstallmentTemplate to fetch.
-     */
-    where?: BranchInstallmentTemplateWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of BranchInstallmentTemplates to fetch.
-     */
-    orderBy?: BranchInstallmentTemplateOrderByWithRelationInput | BranchInstallmentTemplateOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for BranchInstallmentTemplates.
-     */
-    cursor?: BranchInstallmentTemplateWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` BranchInstallmentTemplates from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` BranchInstallmentTemplates.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of BranchInstallmentTemplates.
-     */
-    distinct?: BranchInstallmentTemplateScalarFieldEnum | BranchInstallmentTemplateScalarFieldEnum[]
-  }
-
-  /**
-   * BranchInstallmentTemplate findMany
-   */
-  export type BranchInstallmentTemplateFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the BranchInstallmentTemplate
-     */
-    select?: BranchInstallmentTemplateSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the BranchInstallmentTemplate
-     */
-    omit?: BranchInstallmentTemplateOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: BranchInstallmentTemplateInclude<ExtArgs> | null
-    /**
-     * Filter, which BranchInstallmentTemplates to fetch.
-     */
-    where?: BranchInstallmentTemplateWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of BranchInstallmentTemplates to fetch.
-     */
-    orderBy?: BranchInstallmentTemplateOrderByWithRelationInput | BranchInstallmentTemplateOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing BranchInstallmentTemplates.
-     */
-    cursor?: BranchInstallmentTemplateWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` BranchInstallmentTemplates from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` BranchInstallmentTemplates.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of BranchInstallmentTemplates.
-     */
-    distinct?: BranchInstallmentTemplateScalarFieldEnum | BranchInstallmentTemplateScalarFieldEnum[]
-  }
-
-  /**
-   * BranchInstallmentTemplate create
-   */
-  export type BranchInstallmentTemplateCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the BranchInstallmentTemplate
-     */
-    select?: BranchInstallmentTemplateSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the BranchInstallmentTemplate
-     */
-    omit?: BranchInstallmentTemplateOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: BranchInstallmentTemplateInclude<ExtArgs> | null
-    /**
-     * The data needed to create a BranchInstallmentTemplate.
-     */
-    data: XOR<BranchInstallmentTemplateCreateInput, BranchInstallmentTemplateUncheckedCreateInput>
-  }
-
-  /**
-   * BranchInstallmentTemplate createMany
-   */
-  export type BranchInstallmentTemplateCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many BranchInstallmentTemplates.
-     */
-    data: BranchInstallmentTemplateCreateManyInput | BranchInstallmentTemplateCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * BranchInstallmentTemplate createManyAndReturn
-   */
-  export type BranchInstallmentTemplateCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the BranchInstallmentTemplate
-     */
-    select?: BranchInstallmentTemplateSelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the BranchInstallmentTemplate
-     */
-    omit?: BranchInstallmentTemplateOmit<ExtArgs> | null
-    /**
-     * The data used to create many BranchInstallmentTemplates.
-     */
-    data: BranchInstallmentTemplateCreateManyInput | BranchInstallmentTemplateCreateManyInput[]
-    skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: BranchInstallmentTemplateIncludeCreateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * BranchInstallmentTemplate update
-   */
-  export type BranchInstallmentTemplateUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the BranchInstallmentTemplate
-     */
-    select?: BranchInstallmentTemplateSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the BranchInstallmentTemplate
-     */
-    omit?: BranchInstallmentTemplateOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: BranchInstallmentTemplateInclude<ExtArgs> | null
-    /**
-     * The data needed to update a BranchInstallmentTemplate.
-     */
-    data: XOR<BranchInstallmentTemplateUpdateInput, BranchInstallmentTemplateUncheckedUpdateInput>
-    /**
-     * Choose, which BranchInstallmentTemplate to update.
-     */
-    where: BranchInstallmentTemplateWhereUniqueInput
-  }
-
-  /**
-   * BranchInstallmentTemplate updateMany
-   */
-  export type BranchInstallmentTemplateUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update BranchInstallmentTemplates.
-     */
-    data: XOR<BranchInstallmentTemplateUpdateManyMutationInput, BranchInstallmentTemplateUncheckedUpdateManyInput>
-    /**
-     * Filter which BranchInstallmentTemplates to update
-     */
-    where?: BranchInstallmentTemplateWhereInput
-    /**
-     * Limit how many BranchInstallmentTemplates to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * BranchInstallmentTemplate updateManyAndReturn
-   */
-  export type BranchInstallmentTemplateUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the BranchInstallmentTemplate
-     */
-    select?: BranchInstallmentTemplateSelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the BranchInstallmentTemplate
-     */
-    omit?: BranchInstallmentTemplateOmit<ExtArgs> | null
-    /**
-     * The data used to update BranchInstallmentTemplates.
-     */
-    data: XOR<BranchInstallmentTemplateUpdateManyMutationInput, BranchInstallmentTemplateUncheckedUpdateManyInput>
-    /**
-     * Filter which BranchInstallmentTemplates to update
-     */
-    where?: BranchInstallmentTemplateWhereInput
-    /**
-     * Limit how many BranchInstallmentTemplates to update.
-     */
-    limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: BranchInstallmentTemplateIncludeUpdateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * BranchInstallmentTemplate upsert
-   */
-  export type BranchInstallmentTemplateUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the BranchInstallmentTemplate
-     */
-    select?: BranchInstallmentTemplateSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the BranchInstallmentTemplate
-     */
-    omit?: BranchInstallmentTemplateOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: BranchInstallmentTemplateInclude<ExtArgs> | null
-    /**
-     * The filter to search for the BranchInstallmentTemplate to update in case it exists.
-     */
-    where: BranchInstallmentTemplateWhereUniqueInput
-    /**
-     * In case the BranchInstallmentTemplate found by the `where` argument doesn't exist, create a new BranchInstallmentTemplate with this data.
-     */
-    create: XOR<BranchInstallmentTemplateCreateInput, BranchInstallmentTemplateUncheckedCreateInput>
-    /**
-     * In case the BranchInstallmentTemplate was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<BranchInstallmentTemplateUpdateInput, BranchInstallmentTemplateUncheckedUpdateInput>
-  }
-
-  /**
-   * BranchInstallmentTemplate delete
-   */
-  export type BranchInstallmentTemplateDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the BranchInstallmentTemplate
-     */
-    select?: BranchInstallmentTemplateSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the BranchInstallmentTemplate
-     */
-    omit?: BranchInstallmentTemplateOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: BranchInstallmentTemplateInclude<ExtArgs> | null
-    /**
-     * Filter which BranchInstallmentTemplate to delete.
-     */
-    where: BranchInstallmentTemplateWhereUniqueInput
-  }
-
-  /**
-   * BranchInstallmentTemplate deleteMany
-   */
-  export type BranchInstallmentTemplateDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which BranchInstallmentTemplates to delete
-     */
-    where?: BranchInstallmentTemplateWhereInput
-    /**
-     * Limit how many BranchInstallmentTemplates to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * BranchInstallmentTemplate.branchCourse
-   */
-  export type BranchInstallmentTemplate$branchCourseArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the BranchCourse
-     */
-    select?: BranchCourseSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the BranchCourse
-     */
-    omit?: BranchCourseOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: BranchCourseInclude<ExtArgs> | null
-    where?: BranchCourseWhereInput
-  }
-
-  /**
-   * BranchInstallmentTemplate without action
-   */
-  export type BranchInstallmentTemplateDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the BranchInstallmentTemplate
-     */
-    select?: BranchInstallmentTemplateSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the BranchInstallmentTemplate
-     */
-    omit?: BranchInstallmentTemplateOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: BranchInstallmentTemplateInclude<ExtArgs> | null
   }
 
 
@@ -23900,10 +22508,10 @@ export namespace Prisma {
     installment1: number | null
     installment2: number | null
     installment3: number | null
-    installment4: number | null
     totalAmount: number | null
     firstInstallmentAmount: number | null
     secondInstallmentAmount: number | null
+    installment4: number | null
   }
 
   export type StudentProfileSumAggregateOutputType = {
@@ -23915,10 +22523,10 @@ export namespace Prisma {
     installment1: number | null
     installment2: number | null
     installment3: number | null
-    installment4: number | null
     totalAmount: number | null
     firstInstallmentAmount: number | null
     secondInstallmentAmount: number | null
+    installment4: number | null
   }
 
   export type StudentProfileMinAggregateOutputType = {
@@ -23927,14 +22535,11 @@ export namespace Prisma {
     studentName: string | null
     mobileNumber: string | null
     emailAddress: string | null
-    linkedInUrl: string | null
     parentSpouseNumber: string | null
     location: string | null
     courseId: string | null
     courseInterested: string | null
-    facultyId: string | null
     facultyName: string | null
-    batchId: string | null
     batchName: string | null
     qualification: string | null
     passedOutYear: number | null
@@ -23948,7 +22553,6 @@ export namespace Prisma {
     installment1: number | null
     installment2: number | null
     installment3: number | null
-    installment4: number | null
     totalAmount: number | null
     admissionDate: string | null
     firstInstallmentAmount: number | null
@@ -23965,6 +22569,10 @@ export namespace Prisma {
     updatedBy: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    installment4: number | null
+    batchId: string | null
+    facultyId: string | null
+    linkedInUrl: string | null
   }
 
   export type StudentProfileMaxAggregateOutputType = {
@@ -23973,14 +22581,11 @@ export namespace Prisma {
     studentName: string | null
     mobileNumber: string | null
     emailAddress: string | null
-    linkedInUrl: string | null
     parentSpouseNumber: string | null
     location: string | null
     courseId: string | null
     courseInterested: string | null
-    facultyId: string | null
     facultyName: string | null
-    batchId: string | null
     batchName: string | null
     qualification: string | null
     passedOutYear: number | null
@@ -23994,7 +22599,6 @@ export namespace Prisma {
     installment1: number | null
     installment2: number | null
     installment3: number | null
-    installment4: number | null
     totalAmount: number | null
     admissionDate: string | null
     firstInstallmentAmount: number | null
@@ -24011,6 +22615,10 @@ export namespace Prisma {
     updatedBy: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    installment4: number | null
+    batchId: string | null
+    facultyId: string | null
+    linkedInUrl: string | null
   }
 
   export type StudentProfileCountAggregateOutputType = {
@@ -24019,14 +22627,11 @@ export namespace Prisma {
     studentName: number
     mobileNumber: number
     emailAddress: number
-    linkedInUrl: number
     parentSpouseNumber: number
     location: number
     courseId: number
     courseInterested: number
-    facultyId: number
     facultyName: number
-    batchId: number
     batchName: number
     qualification: number
     passedOutYear: number
@@ -24040,7 +22645,6 @@ export namespace Prisma {
     installment1: number
     installment2: number
     installment3: number
-    installment4: number
     totalAmount: number
     admissionDate: number
     firstInstallmentAmount: number
@@ -24057,6 +22661,10 @@ export namespace Prisma {
     updatedBy: number
     createdAt: number
     updatedAt: number
+    installment4: number
+    batchId: number
+    facultyId: number
+    linkedInUrl: number
     _all: number
   }
 
@@ -24070,10 +22678,10 @@ export namespace Prisma {
     installment1?: true
     installment2?: true
     installment3?: true
-    installment4?: true
     totalAmount?: true
     firstInstallmentAmount?: true
     secondInstallmentAmount?: true
+    installment4?: true
   }
 
   export type StudentProfileSumAggregateInputType = {
@@ -24085,10 +22693,10 @@ export namespace Prisma {
     installment1?: true
     installment2?: true
     installment3?: true
-    installment4?: true
     totalAmount?: true
     firstInstallmentAmount?: true
     secondInstallmentAmount?: true
+    installment4?: true
   }
 
   export type StudentProfileMinAggregateInputType = {
@@ -24097,14 +22705,11 @@ export namespace Prisma {
     studentName?: true
     mobileNumber?: true
     emailAddress?: true
-    linkedInUrl?: true
     parentSpouseNumber?: true
     location?: true
     courseId?: true
     courseInterested?: true
-    facultyId?: true
     facultyName?: true
-    batchId?: true
     batchName?: true
     qualification?: true
     passedOutYear?: true
@@ -24118,7 +22723,6 @@ export namespace Prisma {
     installment1?: true
     installment2?: true
     installment3?: true
-    installment4?: true
     totalAmount?: true
     admissionDate?: true
     firstInstallmentAmount?: true
@@ -24135,6 +22739,10 @@ export namespace Prisma {
     updatedBy?: true
     createdAt?: true
     updatedAt?: true
+    installment4?: true
+    batchId?: true
+    facultyId?: true
+    linkedInUrl?: true
   }
 
   export type StudentProfileMaxAggregateInputType = {
@@ -24143,14 +22751,11 @@ export namespace Prisma {
     studentName?: true
     mobileNumber?: true
     emailAddress?: true
-    linkedInUrl?: true
     parentSpouseNumber?: true
     location?: true
     courseId?: true
     courseInterested?: true
-    facultyId?: true
     facultyName?: true
-    batchId?: true
     batchName?: true
     qualification?: true
     passedOutYear?: true
@@ -24164,7 +22769,6 @@ export namespace Prisma {
     installment1?: true
     installment2?: true
     installment3?: true
-    installment4?: true
     totalAmount?: true
     admissionDate?: true
     firstInstallmentAmount?: true
@@ -24181,6 +22785,10 @@ export namespace Prisma {
     updatedBy?: true
     createdAt?: true
     updatedAt?: true
+    installment4?: true
+    batchId?: true
+    facultyId?: true
+    linkedInUrl?: true
   }
 
   export type StudentProfileCountAggregateInputType = {
@@ -24189,14 +22797,11 @@ export namespace Prisma {
     studentName?: true
     mobileNumber?: true
     emailAddress?: true
-    linkedInUrl?: true
     parentSpouseNumber?: true
     location?: true
     courseId?: true
     courseInterested?: true
-    facultyId?: true
     facultyName?: true
-    batchId?: true
     batchName?: true
     qualification?: true
     passedOutYear?: true
@@ -24210,7 +22815,6 @@ export namespace Prisma {
     installment1?: true
     installment2?: true
     installment3?: true
-    installment4?: true
     totalAmount?: true
     admissionDate?: true
     firstInstallmentAmount?: true
@@ -24227,6 +22831,10 @@ export namespace Prisma {
     updatedBy?: true
     createdAt?: true
     updatedAt?: true
+    installment4?: true
+    batchId?: true
+    facultyId?: true
+    linkedInUrl?: true
     _all?: true
   }
 
@@ -24322,14 +22930,11 @@ export namespace Prisma {
     studentName: string
     mobileNumber: string
     emailAddress: string
-    linkedInUrl: string | null
     parentSpouseNumber: string | null
     location: string | null
     courseId: string | null
     courseInterested: string
-    facultyId: string | null
     facultyName: string | null
-    batchId: string | null
     batchName: string | null
     qualification: string | null
     passedOutYear: number | null
@@ -24343,7 +22948,6 @@ export namespace Prisma {
     installment1: number | null
     installment2: number | null
     installment3: number | null
-    installment4: number | null
     totalAmount: number | null
     admissionDate: string
     firstInstallmentAmount: number | null
@@ -24360,6 +22964,10 @@ export namespace Prisma {
     updatedBy: string | null
     createdAt: Date
     updatedAt: Date
+    installment4: number | null
+    batchId: string | null
+    facultyId: string | null
+    linkedInUrl: string | null
     _count: StudentProfileCountAggregateOutputType | null
     _avg: StudentProfileAvgAggregateOutputType | null
     _sum: StudentProfileSumAggregateOutputType | null
@@ -24387,14 +22995,11 @@ export namespace Prisma {
     studentName?: boolean
     mobileNumber?: boolean
     emailAddress?: boolean
-    linkedInUrl?: boolean
     parentSpouseNumber?: boolean
     location?: boolean
     courseId?: boolean
     courseInterested?: boolean
-    facultyId?: boolean
     facultyName?: boolean
-    batchId?: boolean
     batchName?: boolean
     qualification?: boolean
     passedOutYear?: boolean
@@ -24408,7 +23013,6 @@ export namespace Prisma {
     installment1?: boolean
     installment2?: boolean
     installment3?: boolean
-    installment4?: boolean
     totalAmount?: boolean
     admissionDate?: boolean
     firstInstallmentAmount?: boolean
@@ -24425,8 +23029,12 @@ export namespace Prisma {
     updatedBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    course?: boolean | StudentProfile$courseArgs<ExtArgs>
+    installment4?: boolean
+    batchId?: boolean
+    facultyId?: boolean
+    linkedInUrl?: boolean
     attendanceRecords?: boolean | StudentProfile$attendanceRecordsArgs<ExtArgs>
+    course?: boolean | StudentProfile$courseArgs<ExtArgs>
     _count?: boolean | StudentProfileCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["studentProfile"]>
 
@@ -24436,14 +23044,11 @@ export namespace Prisma {
     studentName?: boolean
     mobileNumber?: boolean
     emailAddress?: boolean
-    linkedInUrl?: boolean
     parentSpouseNumber?: boolean
     location?: boolean
     courseId?: boolean
     courseInterested?: boolean
-    facultyId?: boolean
     facultyName?: boolean
-    batchId?: boolean
     batchName?: boolean
     qualification?: boolean
     passedOutYear?: boolean
@@ -24457,7 +23062,6 @@ export namespace Prisma {
     installment1?: boolean
     installment2?: boolean
     installment3?: boolean
-    installment4?: boolean
     totalAmount?: boolean
     admissionDate?: boolean
     firstInstallmentAmount?: boolean
@@ -24474,6 +23078,10 @@ export namespace Prisma {
     updatedBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    installment4?: boolean
+    batchId?: boolean
+    facultyId?: boolean
+    linkedInUrl?: boolean
     course?: boolean | StudentProfile$courseArgs<ExtArgs>
   }, ExtArgs["result"]["studentProfile"]>
 
@@ -24483,14 +23091,11 @@ export namespace Prisma {
     studentName?: boolean
     mobileNumber?: boolean
     emailAddress?: boolean
-    linkedInUrl?: boolean
     parentSpouseNumber?: boolean
     location?: boolean
     courseId?: boolean
     courseInterested?: boolean
-    facultyId?: boolean
     facultyName?: boolean
-    batchId?: boolean
     batchName?: boolean
     qualification?: boolean
     passedOutYear?: boolean
@@ -24504,7 +23109,6 @@ export namespace Prisma {
     installment1?: boolean
     installment2?: boolean
     installment3?: boolean
-    installment4?: boolean
     totalAmount?: boolean
     admissionDate?: boolean
     firstInstallmentAmount?: boolean
@@ -24521,6 +23125,10 @@ export namespace Prisma {
     updatedBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    installment4?: boolean
+    batchId?: boolean
+    facultyId?: boolean
+    linkedInUrl?: boolean
     course?: boolean | StudentProfile$courseArgs<ExtArgs>
   }, ExtArgs["result"]["studentProfile"]>
 
@@ -24530,14 +23138,11 @@ export namespace Prisma {
     studentName?: boolean
     mobileNumber?: boolean
     emailAddress?: boolean
-    linkedInUrl?: boolean
     parentSpouseNumber?: boolean
     location?: boolean
     courseId?: boolean
     courseInterested?: boolean
-    facultyId?: boolean
     facultyName?: boolean
-    batchId?: boolean
     batchName?: boolean
     qualification?: boolean
     passedOutYear?: boolean
@@ -24551,7 +23156,6 @@ export namespace Prisma {
     installment1?: boolean
     installment2?: boolean
     installment3?: boolean
-    installment4?: boolean
     totalAmount?: boolean
     admissionDate?: boolean
     firstInstallmentAmount?: boolean
@@ -24568,12 +23172,16 @@ export namespace Prisma {
     updatedBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    installment4?: boolean
+    batchId?: boolean
+    facultyId?: boolean
+    linkedInUrl?: boolean
   }
 
-  export type StudentProfileOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "studentCode" | "studentName" | "mobileNumber" | "emailAddress" | "linkedInUrl" | "parentSpouseNumber" | "location" | "courseId" | "courseInterested" | "facultyId" | "facultyName" | "batchId" | "batchName" | "qualification" | "passedOutYear" | "currentStatus" | "designation" | "source" | "actualFees" | "registrationFees" | "discount" | "afterDiscount" | "installment1" | "installment2" | "installment3" | "installment4" | "totalAmount" | "admissionDate" | "firstInstallmentAmount" | "firstInstallmentDate" | "firstInstallmentStatus" | "firstInstallmentPaidAt" | "secondInstallmentAmount" | "secondDueDate" | "secondInstallmentStatus" | "secondInstallmentPaidAt" | "remarks" | "recordStatus" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["studentProfile"]>
+  export type StudentProfileOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "studentCode" | "studentName" | "mobileNumber" | "emailAddress" | "parentSpouseNumber" | "location" | "courseId" | "courseInterested" | "facultyName" | "batchName" | "qualification" | "passedOutYear" | "currentStatus" | "designation" | "source" | "actualFees" | "registrationFees" | "discount" | "afterDiscount" | "installment1" | "installment2" | "installment3" | "totalAmount" | "admissionDate" | "firstInstallmentAmount" | "firstInstallmentDate" | "firstInstallmentStatus" | "firstInstallmentPaidAt" | "secondInstallmentAmount" | "secondDueDate" | "secondInstallmentStatus" | "secondInstallmentPaidAt" | "remarks" | "recordStatus" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt" | "installment4" | "batchId" | "facultyId" | "linkedInUrl", ExtArgs["result"]["studentProfile"]>
   export type StudentProfileInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    course?: boolean | StudentProfile$courseArgs<ExtArgs>
     attendanceRecords?: boolean | StudentProfile$attendanceRecordsArgs<ExtArgs>
+    course?: boolean | StudentProfile$courseArgs<ExtArgs>
     _count?: boolean | StudentProfileCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type StudentProfileIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -24586,8 +23194,8 @@ export namespace Prisma {
   export type $StudentProfilePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "StudentProfile"
     objects: {
-      course: Prisma.$CoursePayload<ExtArgs> | null
       attendanceRecords: Prisma.$StudentAttendancePayload<ExtArgs>[]
+      course: Prisma.$CoursePayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -24595,14 +23203,11 @@ export namespace Prisma {
       studentName: string
       mobileNumber: string
       emailAddress: string
-      linkedInUrl: string | null
       parentSpouseNumber: string | null
       location: string | null
       courseId: string | null
       courseInterested: string
-      facultyId: string | null
       facultyName: string | null
-      batchId: string | null
       batchName: string | null
       qualification: string | null
       passedOutYear: number | null
@@ -24616,7 +23221,6 @@ export namespace Prisma {
       installment1: number | null
       installment2: number | null
       installment3: number | null
-      installment4: number | null
       totalAmount: number | null
       admissionDate: string
       firstInstallmentAmount: number | null
@@ -24633,6 +23237,10 @@ export namespace Prisma {
       updatedBy: string | null
       createdAt: Date
       updatedAt: Date
+      installment4: number | null
+      batchId: string | null
+      facultyId: string | null
+      linkedInUrl: string | null
     }, ExtArgs["result"]["studentProfile"]>
     composites: {}
   }
@@ -25027,8 +23635,8 @@ export namespace Prisma {
    */
   export interface Prisma__StudentProfileClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    course<T extends StudentProfile$courseArgs<ExtArgs> = {}>(args?: Subset<T, StudentProfile$courseArgs<ExtArgs>>): Prisma__CourseClient<$Result.GetResult<Prisma.$CoursePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     attendanceRecords<T extends StudentProfile$attendanceRecordsArgs<ExtArgs> = {}>(args?: Subset<T, StudentProfile$attendanceRecordsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StudentAttendancePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    course<T extends StudentProfile$courseArgs<ExtArgs> = {}>(args?: Subset<T, StudentProfile$courseArgs<ExtArgs>>): Prisma__CourseClient<$Result.GetResult<Prisma.$CoursePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -25063,14 +23671,11 @@ export namespace Prisma {
     readonly studentName: FieldRef<"StudentProfile", 'String'>
     readonly mobileNumber: FieldRef<"StudentProfile", 'String'>
     readonly emailAddress: FieldRef<"StudentProfile", 'String'>
-    readonly linkedInUrl: FieldRef<"StudentProfile", 'String'>
     readonly parentSpouseNumber: FieldRef<"StudentProfile", 'String'>
     readonly location: FieldRef<"StudentProfile", 'String'>
     readonly courseId: FieldRef<"StudentProfile", 'String'>
     readonly courseInterested: FieldRef<"StudentProfile", 'String'>
-    readonly facultyId: FieldRef<"StudentProfile", 'String'>
     readonly facultyName: FieldRef<"StudentProfile", 'String'>
-    readonly batchId: FieldRef<"StudentProfile", 'String'>
     readonly batchName: FieldRef<"StudentProfile", 'String'>
     readonly qualification: FieldRef<"StudentProfile", 'String'>
     readonly passedOutYear: FieldRef<"StudentProfile", 'Int'>
@@ -25084,7 +23689,6 @@ export namespace Prisma {
     readonly installment1: FieldRef<"StudentProfile", 'Int'>
     readonly installment2: FieldRef<"StudentProfile", 'Int'>
     readonly installment3: FieldRef<"StudentProfile", 'Int'>
-    readonly installment4: FieldRef<"StudentProfile", 'Int'>
     readonly totalAmount: FieldRef<"StudentProfile", 'Int'>
     readonly admissionDate: FieldRef<"StudentProfile", 'String'>
     readonly firstInstallmentAmount: FieldRef<"StudentProfile", 'Int'>
@@ -25101,6 +23705,10 @@ export namespace Prisma {
     readonly updatedBy: FieldRef<"StudentProfile", 'String'>
     readonly createdAt: FieldRef<"StudentProfile", 'DateTime'>
     readonly updatedAt: FieldRef<"StudentProfile", 'DateTime'>
+    readonly installment4: FieldRef<"StudentProfile", 'Int'>
+    readonly batchId: FieldRef<"StudentProfile", 'String'>
+    readonly facultyId: FieldRef<"StudentProfile", 'String'>
+    readonly linkedInUrl: FieldRef<"StudentProfile", 'String'>
   }
     
 
@@ -25502,25 +24110,6 @@ export namespace Prisma {
   }
 
   /**
-   * StudentProfile.course
-   */
-  export type StudentProfile$courseArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Course
-     */
-    select?: CourseSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Course
-     */
-    omit?: CourseOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CourseInclude<ExtArgs> | null
-    where?: CourseWhereInput
-  }
-
-  /**
    * StudentProfile.attendanceRecords
    */
   export type StudentProfile$attendanceRecordsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -25542,6 +24131,25 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: StudentAttendanceScalarFieldEnum | StudentAttendanceScalarFieldEnum[]
+  }
+
+  /**
+   * StudentProfile.course
+   */
+  export type StudentProfile$courseArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Course
+     */
+    select?: CourseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Course
+     */
+    omit?: CourseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CourseInclude<ExtArgs> | null
+    where?: CourseWhereInput
   }
 
   /**
@@ -25580,7 +24188,6 @@ export namespace Prisma {
     studentName: string | null
     mobileNumber: string | null
     emailAddress: string | null
-    linkedInUrl: string | null
     parentSpouseNumber: string | null
     countryCode: string | null
     country: string | null
@@ -25594,13 +24201,14 @@ export namespace Prisma {
     designation: string | null
     source: string | null
     sourceOther: string | null
-    remarks: string | null
     admissionDate: string | null
     recordStatus: $Enums.RecordStatus | null
     createdBy: string | null
     updatedBy: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    linkedInUrl: string | null
+    remarks: string | null
   }
 
   export type BranchStudentMaxAggregateOutputType = {
@@ -25610,7 +24218,6 @@ export namespace Prisma {
     studentName: string | null
     mobileNumber: string | null
     emailAddress: string | null
-    linkedInUrl: string | null
     parentSpouseNumber: string | null
     countryCode: string | null
     country: string | null
@@ -25624,13 +24231,14 @@ export namespace Prisma {
     designation: string | null
     source: string | null
     sourceOther: string | null
-    remarks: string | null
     admissionDate: string | null
     recordStatus: $Enums.RecordStatus | null
     createdBy: string | null
     updatedBy: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    linkedInUrl: string | null
+    remarks: string | null
   }
 
   export type BranchStudentCountAggregateOutputType = {
@@ -25640,7 +24248,6 @@ export namespace Prisma {
     studentName: number
     mobileNumber: number
     emailAddress: number
-    linkedInUrl: number
     parentSpouseNumber: number
     countryCode: number
     country: number
@@ -25654,13 +24261,14 @@ export namespace Prisma {
     designation: number
     source: number
     sourceOther: number
-    remarks: number
     admissionDate: number
     recordStatus: number
     createdBy: number
     updatedBy: number
     createdAt: number
     updatedAt: number
+    linkedInUrl: number
+    remarks: number
     _all: number
   }
 
@@ -25672,7 +24280,6 @@ export namespace Prisma {
     studentName?: true
     mobileNumber?: true
     emailAddress?: true
-    linkedInUrl?: true
     parentSpouseNumber?: true
     countryCode?: true
     country?: true
@@ -25686,13 +24293,14 @@ export namespace Prisma {
     designation?: true
     source?: true
     sourceOther?: true
-    remarks?: true
     admissionDate?: true
     recordStatus?: true
     createdBy?: true
     updatedBy?: true
     createdAt?: true
     updatedAt?: true
+    linkedInUrl?: true
+    remarks?: true
   }
 
   export type BranchStudentMaxAggregateInputType = {
@@ -25702,7 +24310,6 @@ export namespace Prisma {
     studentName?: true
     mobileNumber?: true
     emailAddress?: true
-    linkedInUrl?: true
     parentSpouseNumber?: true
     countryCode?: true
     country?: true
@@ -25716,13 +24323,14 @@ export namespace Prisma {
     designation?: true
     source?: true
     sourceOther?: true
-    remarks?: true
     admissionDate?: true
     recordStatus?: true
     createdBy?: true
     updatedBy?: true
     createdAt?: true
     updatedAt?: true
+    linkedInUrl?: true
+    remarks?: true
   }
 
   export type BranchStudentCountAggregateInputType = {
@@ -25732,7 +24340,6 @@ export namespace Prisma {
     studentName?: true
     mobileNumber?: true
     emailAddress?: true
-    linkedInUrl?: true
     parentSpouseNumber?: true
     countryCode?: true
     country?: true
@@ -25746,13 +24353,14 @@ export namespace Prisma {
     designation?: true
     source?: true
     sourceOther?: true
-    remarks?: true
     admissionDate?: true
     recordStatus?: true
     createdBy?: true
     updatedBy?: true
     createdAt?: true
     updatedAt?: true
+    linkedInUrl?: true
+    remarks?: true
     _all?: true
   }
 
@@ -25835,7 +24443,6 @@ export namespace Prisma {
     studentName: string
     mobileNumber: string
     emailAddress: string
-    linkedInUrl: string | null
     parentSpouseNumber: string | null
     countryCode: string | null
     country: string | null
@@ -25849,13 +24456,14 @@ export namespace Prisma {
     designation: string | null
     source: string | null
     sourceOther: string | null
-    remarks: string | null
     admissionDate: string
     recordStatus: $Enums.RecordStatus
     createdBy: string | null
     updatedBy: string | null
     createdAt: Date
     updatedAt: Date
+    linkedInUrl: string | null
+    remarks: string | null
     _count: BranchStudentCountAggregateOutputType | null
     _min: BranchStudentMinAggregateOutputType | null
     _max: BranchStudentMaxAggregateOutputType | null
@@ -25882,7 +24490,6 @@ export namespace Prisma {
     studentName?: boolean
     mobileNumber?: boolean
     emailAddress?: boolean
-    linkedInUrl?: boolean
     parentSpouseNumber?: boolean
     countryCode?: boolean
     country?: boolean
@@ -25896,13 +24503,14 @@ export namespace Prisma {
     designation?: boolean
     source?: boolean
     sourceOther?: boolean
-    remarks?: boolean
     admissionDate?: boolean
     recordStatus?: boolean
     createdBy?: boolean
     updatedBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    linkedInUrl?: boolean
+    remarks?: boolean
     branch?: boolean | BranchDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["branchStudent"]>
 
@@ -25913,7 +24521,6 @@ export namespace Prisma {
     studentName?: boolean
     mobileNumber?: boolean
     emailAddress?: boolean
-    linkedInUrl?: boolean
     parentSpouseNumber?: boolean
     countryCode?: boolean
     country?: boolean
@@ -25927,13 +24534,14 @@ export namespace Prisma {
     designation?: boolean
     source?: boolean
     sourceOther?: boolean
-    remarks?: boolean
     admissionDate?: boolean
     recordStatus?: boolean
     createdBy?: boolean
     updatedBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    linkedInUrl?: boolean
+    remarks?: boolean
     branch?: boolean | BranchDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["branchStudent"]>
 
@@ -25944,7 +24552,6 @@ export namespace Prisma {
     studentName?: boolean
     mobileNumber?: boolean
     emailAddress?: boolean
-    linkedInUrl?: boolean
     parentSpouseNumber?: boolean
     countryCode?: boolean
     country?: boolean
@@ -25958,13 +24565,14 @@ export namespace Prisma {
     designation?: boolean
     source?: boolean
     sourceOther?: boolean
-    remarks?: boolean
     admissionDate?: boolean
     recordStatus?: boolean
     createdBy?: boolean
     updatedBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    linkedInUrl?: boolean
+    remarks?: boolean
     branch?: boolean | BranchDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["branchStudent"]>
 
@@ -25975,7 +24583,6 @@ export namespace Prisma {
     studentName?: boolean
     mobileNumber?: boolean
     emailAddress?: boolean
-    linkedInUrl?: boolean
     parentSpouseNumber?: boolean
     countryCode?: boolean
     country?: boolean
@@ -25989,16 +24596,17 @@ export namespace Prisma {
     designation?: boolean
     source?: boolean
     sourceOther?: boolean
-    remarks?: boolean
     admissionDate?: boolean
     recordStatus?: boolean
     createdBy?: boolean
     updatedBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    linkedInUrl?: boolean
+    remarks?: boolean
   }
 
-  export type BranchStudentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "branchId" | "studentId" | "studentName" | "mobileNumber" | "emailAddress" | "linkedInUrl" | "parentSpouseNumber" | "countryCode" | "country" | "stateCode" | "state" | "city" | "address" | "qualification" | "passedOutYear" | "currentStatus" | "designation" | "source" | "sourceOther" | "remarks" | "admissionDate" | "recordStatus" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["branchStudent"]>
+  export type BranchStudentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "branchId" | "studentId" | "studentName" | "mobileNumber" | "emailAddress" | "parentSpouseNumber" | "countryCode" | "country" | "stateCode" | "state" | "city" | "address" | "qualification" | "passedOutYear" | "currentStatus" | "designation" | "source" | "sourceOther" | "admissionDate" | "recordStatus" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt" | "linkedInUrl" | "remarks", ExtArgs["result"]["branchStudent"]>
   export type BranchStudentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     branch?: boolean | BranchDefaultArgs<ExtArgs>
   }
@@ -26021,7 +24629,6 @@ export namespace Prisma {
       studentName: string
       mobileNumber: string
       emailAddress: string
-      linkedInUrl: string | null
       parentSpouseNumber: string | null
       countryCode: string | null
       country: string | null
@@ -26035,13 +24642,14 @@ export namespace Prisma {
       designation: string | null
       source: string | null
       sourceOther: string | null
-      remarks: string | null
       admissionDate: string
       recordStatus: $Enums.RecordStatus
       createdBy: string | null
       updatedBy: string | null
       createdAt: Date
       updatedAt: Date
+      linkedInUrl: string | null
+      remarks: string | null
     }, ExtArgs["result"]["branchStudent"]>
     composites: {}
   }
@@ -26472,7 +25080,6 @@ export namespace Prisma {
     readonly studentName: FieldRef<"BranchStudent", 'String'>
     readonly mobileNumber: FieldRef<"BranchStudent", 'String'>
     readonly emailAddress: FieldRef<"BranchStudent", 'String'>
-    readonly linkedInUrl: FieldRef<"BranchStudent", 'String'>
     readonly parentSpouseNumber: FieldRef<"BranchStudent", 'String'>
     readonly countryCode: FieldRef<"BranchStudent", 'String'>
     readonly country: FieldRef<"BranchStudent", 'String'>
@@ -26486,13 +25093,14 @@ export namespace Prisma {
     readonly designation: FieldRef<"BranchStudent", 'String'>
     readonly source: FieldRef<"BranchStudent", 'String'>
     readonly sourceOther: FieldRef<"BranchStudent", 'String'>
-    readonly remarks: FieldRef<"BranchStudent", 'String'>
     readonly admissionDate: FieldRef<"BranchStudent", 'String'>
     readonly recordStatus: FieldRef<"BranchStudent", 'RecordStatus'>
     readonly createdBy: FieldRef<"BranchStudent", 'String'>
     readonly updatedBy: FieldRef<"BranchStudent", 'String'>
     readonly createdAt: FieldRef<"BranchStudent", 'DateTime'>
     readonly updatedAt: FieldRef<"BranchStudent", 'DateTime'>
+    readonly linkedInUrl: FieldRef<"BranchStudent", 'String'>
+    readonly remarks: FieldRef<"BranchStudent", 'String'>
   }
     
 
@@ -27116,9 +25724,9 @@ export namespace Prisma {
     updatedBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    course?: boolean | FacultyProfile$courseArgs<ExtArgs>
-    courseAssignments?: boolean | FacultyProfile$courseAssignmentsArgs<ExtArgs>
     batchEntries?: boolean | FacultyProfile$batchEntriesArgs<ExtArgs>
+    courseAssignments?: boolean | FacultyProfile$courseAssignmentsArgs<ExtArgs>
+    course?: boolean | FacultyProfile$courseArgs<ExtArgs>
     _count?: boolean | FacultyProfileCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["facultyProfile"]>
 
@@ -27165,9 +25773,9 @@ export namespace Prisma {
 
   export type FacultyProfileOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "facultyName" | "facultyEmail" | "facultyPhone" | "courseId" | "status" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["facultyProfile"]>
   export type FacultyProfileInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    course?: boolean | FacultyProfile$courseArgs<ExtArgs>
-    courseAssignments?: boolean | FacultyProfile$courseAssignmentsArgs<ExtArgs>
     batchEntries?: boolean | FacultyProfile$batchEntriesArgs<ExtArgs>
+    courseAssignments?: boolean | FacultyProfile$courseAssignmentsArgs<ExtArgs>
+    course?: boolean | FacultyProfile$courseArgs<ExtArgs>
     _count?: boolean | FacultyProfileCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type FacultyProfileIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -27180,9 +25788,9 @@ export namespace Prisma {
   export type $FacultyProfilePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "FacultyProfile"
     objects: {
-      course: Prisma.$CoursePayload<ExtArgs> | null
-      courseAssignments: Prisma.$FacultyCourseAssignmentPayload<ExtArgs>[]
       batchEntries: Prisma.$FacultyBatchEntryPayload<ExtArgs>[]
+      courseAssignments: Prisma.$FacultyCourseAssignmentPayload<ExtArgs>[]
+      course: Prisma.$CoursePayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -27589,9 +26197,9 @@ export namespace Prisma {
    */
   export interface Prisma__FacultyProfileClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    course<T extends FacultyProfile$courseArgs<ExtArgs> = {}>(args?: Subset<T, FacultyProfile$courseArgs<ExtArgs>>): Prisma__CourseClient<$Result.GetResult<Prisma.$CoursePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    courseAssignments<T extends FacultyProfile$courseAssignmentsArgs<ExtArgs> = {}>(args?: Subset<T, FacultyProfile$courseAssignmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FacultyCourseAssignmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     batchEntries<T extends FacultyProfile$batchEntriesArgs<ExtArgs> = {}>(args?: Subset<T, FacultyProfile$batchEntriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FacultyBatchEntryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    courseAssignments<T extends FacultyProfile$courseAssignmentsArgs<ExtArgs> = {}>(args?: Subset<T, FacultyProfile$courseAssignmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FacultyCourseAssignmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    course<T extends FacultyProfile$courseArgs<ExtArgs> = {}>(args?: Subset<T, FacultyProfile$courseArgs<ExtArgs>>): Prisma__CourseClient<$Result.GetResult<Prisma.$CoursePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -28032,22 +26640,27 @@ export namespace Prisma {
   }
 
   /**
-   * FacultyProfile.course
+   * FacultyProfile.batchEntries
    */
-  export type FacultyProfile$courseArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type FacultyProfile$batchEntriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Course
+     * Select specific fields to fetch from the FacultyBatchEntry
      */
-    select?: CourseSelect<ExtArgs> | null
+    select?: FacultyBatchEntrySelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Course
+     * Omit specific fields from the FacultyBatchEntry
      */
-    omit?: CourseOmit<ExtArgs> | null
+    omit?: FacultyBatchEntryOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: CourseInclude<ExtArgs> | null
-    where?: CourseWhereInput
+    include?: FacultyBatchEntryInclude<ExtArgs> | null
+    where?: FacultyBatchEntryWhereInput
+    orderBy?: FacultyBatchEntryOrderByWithRelationInput | FacultyBatchEntryOrderByWithRelationInput[]
+    cursor?: FacultyBatchEntryWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: FacultyBatchEntryScalarFieldEnum | FacultyBatchEntryScalarFieldEnum[]
   }
 
   /**
@@ -28075,27 +26688,22 @@ export namespace Prisma {
   }
 
   /**
-   * FacultyProfile.batchEntries
+   * FacultyProfile.course
    */
-  export type FacultyProfile$batchEntriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type FacultyProfile$courseArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the FacultyBatchEntry
+     * Select specific fields to fetch from the Course
      */
-    select?: FacultyBatchEntrySelect<ExtArgs> | null
+    select?: CourseSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the FacultyBatchEntry
+     * Omit specific fields from the Course
      */
-    omit?: FacultyBatchEntryOmit<ExtArgs> | null
+    omit?: CourseOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: FacultyBatchEntryInclude<ExtArgs> | null
-    where?: FacultyBatchEntryWhereInput
-    orderBy?: FacultyBatchEntryOrderByWithRelationInput | FacultyBatchEntryOrderByWithRelationInput[]
-    cursor?: FacultyBatchEntryWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: FacultyBatchEntryScalarFieldEnum | FacultyBatchEntryScalarFieldEnum[]
+    include?: CourseInclude<ExtArgs> | null
+    where?: CourseWhereInput
   }
 
   /**
@@ -28297,8 +26905,8 @@ export namespace Prisma {
     updatedBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    faculty?: boolean | FacultyProfileDefaultArgs<ExtArgs>
     course?: boolean | CourseDefaultArgs<ExtArgs>
+    faculty?: boolean | FacultyProfileDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["facultyCourseAssignment"]>
 
   export type FacultyCourseAssignmentSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -28309,8 +26917,8 @@ export namespace Prisma {
     updatedBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    faculty?: boolean | FacultyProfileDefaultArgs<ExtArgs>
     course?: boolean | CourseDefaultArgs<ExtArgs>
+    faculty?: boolean | FacultyProfileDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["facultyCourseAssignment"]>
 
   export type FacultyCourseAssignmentSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -28321,8 +26929,8 @@ export namespace Prisma {
     updatedBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    faculty?: boolean | FacultyProfileDefaultArgs<ExtArgs>
     course?: boolean | CourseDefaultArgs<ExtArgs>
+    faculty?: boolean | FacultyProfileDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["facultyCourseAssignment"]>
 
   export type FacultyCourseAssignmentSelectScalar = {
@@ -28337,23 +26945,23 @@ export namespace Prisma {
 
   export type FacultyCourseAssignmentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "facultyId" | "courseId" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["facultyCourseAssignment"]>
   export type FacultyCourseAssignmentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    faculty?: boolean | FacultyProfileDefaultArgs<ExtArgs>
     course?: boolean | CourseDefaultArgs<ExtArgs>
+    faculty?: boolean | FacultyProfileDefaultArgs<ExtArgs>
   }
   export type FacultyCourseAssignmentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    faculty?: boolean | FacultyProfileDefaultArgs<ExtArgs>
     course?: boolean | CourseDefaultArgs<ExtArgs>
+    faculty?: boolean | FacultyProfileDefaultArgs<ExtArgs>
   }
   export type FacultyCourseAssignmentIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    faculty?: boolean | FacultyProfileDefaultArgs<ExtArgs>
     course?: boolean | CourseDefaultArgs<ExtArgs>
+    faculty?: boolean | FacultyProfileDefaultArgs<ExtArgs>
   }
 
   export type $FacultyCourseAssignmentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "FacultyCourseAssignment"
     objects: {
-      faculty: Prisma.$FacultyProfilePayload<ExtArgs>
       course: Prisma.$CoursePayload<ExtArgs>
+      faculty: Prisma.$FacultyProfilePayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -28757,8 +27365,8 @@ export namespace Prisma {
    */
   export interface Prisma__FacultyCourseAssignmentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    faculty<T extends FacultyProfileDefaultArgs<ExtArgs> = {}>(args?: Subset<T, FacultyProfileDefaultArgs<ExtArgs>>): Prisma__FacultyProfileClient<$Result.GetResult<Prisma.$FacultyProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     course<T extends CourseDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CourseDefaultArgs<ExtArgs>>): Prisma__CourseClient<$Result.GetResult<Prisma.$CoursePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    faculty<T extends FacultyProfileDefaultArgs<ExtArgs> = {}>(args?: Subset<T, FacultyProfileDefaultArgs<ExtArgs>>): Prisma__FacultyProfileClient<$Result.GetResult<Prisma.$FacultyProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -29237,34 +27845,34 @@ export namespace Prisma {
   export type FacultyBatchEntryMinAggregateOutputType = {
     id: string | null
     facultyId: string | null
-    courseId: string | null
     batchName: string | null
     batchTiming: string | null
     sequenceNo: number | null
     createdAt: Date | null
     updatedAt: Date | null
+    courseId: string | null
   }
 
   export type FacultyBatchEntryMaxAggregateOutputType = {
     id: string | null
     facultyId: string | null
-    courseId: string | null
     batchName: string | null
     batchTiming: string | null
     sequenceNo: number | null
     createdAt: Date | null
     updatedAt: Date | null
+    courseId: string | null
   }
 
   export type FacultyBatchEntryCountAggregateOutputType = {
     id: number
     facultyId: number
-    courseId: number
     batchName: number
     batchTiming: number
     sequenceNo: number
     createdAt: number
     updatedAt: number
+    courseId: number
     _all: number
   }
 
@@ -29280,34 +27888,34 @@ export namespace Prisma {
   export type FacultyBatchEntryMinAggregateInputType = {
     id?: true
     facultyId?: true
-    courseId?: true
     batchName?: true
     batchTiming?: true
     sequenceNo?: true
     createdAt?: true
     updatedAt?: true
+    courseId?: true
   }
 
   export type FacultyBatchEntryMaxAggregateInputType = {
     id?: true
     facultyId?: true
-    courseId?: true
     batchName?: true
     batchTiming?: true
     sequenceNo?: true
     createdAt?: true
     updatedAt?: true
+    courseId?: true
   }
 
   export type FacultyBatchEntryCountAggregateInputType = {
     id?: true
     facultyId?: true
-    courseId?: true
     batchName?: true
     batchTiming?: true
     sequenceNo?: true
     createdAt?: true
     updatedAt?: true
+    courseId?: true
     _all?: true
   }
 
@@ -29400,12 +28008,12 @@ export namespace Prisma {
   export type FacultyBatchEntryGroupByOutputType = {
     id: string
     facultyId: string
-    courseId: string | null
     batchName: string
     batchTiming: string
     sequenceNo: number
     createdAt: Date
     updatedAt: Date
+    courseId: string | null
     _count: FacultyBatchEntryCountAggregateOutputType | null
     _avg: FacultyBatchEntryAvgAggregateOutputType | null
     _sum: FacultyBatchEntrySumAggregateOutputType | null
@@ -29430,82 +28038,82 @@ export namespace Prisma {
   export type FacultyBatchEntrySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     facultyId?: boolean
-    courseId?: boolean
     batchName?: boolean
     batchTiming?: boolean
     sequenceNo?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    faculty?: boolean | FacultyProfileDefaultArgs<ExtArgs>
+    courseId?: boolean
     course?: boolean | FacultyBatchEntry$courseArgs<ExtArgs>
+    faculty?: boolean | FacultyProfileDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["facultyBatchEntry"]>
 
   export type FacultyBatchEntrySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     facultyId?: boolean
-    courseId?: boolean
     batchName?: boolean
     batchTiming?: boolean
     sequenceNo?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    faculty?: boolean | FacultyProfileDefaultArgs<ExtArgs>
+    courseId?: boolean
     course?: boolean | FacultyBatchEntry$courseArgs<ExtArgs>
+    faculty?: boolean | FacultyProfileDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["facultyBatchEntry"]>
 
   export type FacultyBatchEntrySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     facultyId?: boolean
-    courseId?: boolean
     batchName?: boolean
     batchTiming?: boolean
     sequenceNo?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    faculty?: boolean | FacultyProfileDefaultArgs<ExtArgs>
+    courseId?: boolean
     course?: boolean | FacultyBatchEntry$courseArgs<ExtArgs>
+    faculty?: boolean | FacultyProfileDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["facultyBatchEntry"]>
 
   export type FacultyBatchEntrySelectScalar = {
     id?: boolean
     facultyId?: boolean
-    courseId?: boolean
     batchName?: boolean
     batchTiming?: boolean
     sequenceNo?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    courseId?: boolean
   }
 
-  export type FacultyBatchEntryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "facultyId" | "courseId" | "batchName" | "batchTiming" | "sequenceNo" | "createdAt" | "updatedAt", ExtArgs["result"]["facultyBatchEntry"]>
+  export type FacultyBatchEntryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "facultyId" | "batchName" | "batchTiming" | "sequenceNo" | "createdAt" | "updatedAt" | "courseId", ExtArgs["result"]["facultyBatchEntry"]>
   export type FacultyBatchEntryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    faculty?: boolean | FacultyProfileDefaultArgs<ExtArgs>
     course?: boolean | FacultyBatchEntry$courseArgs<ExtArgs>
+    faculty?: boolean | FacultyProfileDefaultArgs<ExtArgs>
   }
   export type FacultyBatchEntryIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    faculty?: boolean | FacultyProfileDefaultArgs<ExtArgs>
     course?: boolean | FacultyBatchEntry$courseArgs<ExtArgs>
+    faculty?: boolean | FacultyProfileDefaultArgs<ExtArgs>
   }
   export type FacultyBatchEntryIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    faculty?: boolean | FacultyProfileDefaultArgs<ExtArgs>
     course?: boolean | FacultyBatchEntry$courseArgs<ExtArgs>
+    faculty?: boolean | FacultyProfileDefaultArgs<ExtArgs>
   }
 
   export type $FacultyBatchEntryPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "FacultyBatchEntry"
     objects: {
-      faculty: Prisma.$FacultyProfilePayload<ExtArgs>
       course: Prisma.$CoursePayload<ExtArgs> | null
+      faculty: Prisma.$FacultyProfilePayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       facultyId: string
-      courseId: string | null
       batchName: string
       batchTiming: string
       sequenceNo: number
       createdAt: Date
       updatedAt: Date
+      courseId: string | null
     }, ExtArgs["result"]["facultyBatchEntry"]>
     composites: {}
   }
@@ -29900,8 +28508,8 @@ export namespace Prisma {
    */
   export interface Prisma__FacultyBatchEntryClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    faculty<T extends FacultyProfileDefaultArgs<ExtArgs> = {}>(args?: Subset<T, FacultyProfileDefaultArgs<ExtArgs>>): Prisma__FacultyProfileClient<$Result.GetResult<Prisma.$FacultyProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     course<T extends FacultyBatchEntry$courseArgs<ExtArgs> = {}>(args?: Subset<T, FacultyBatchEntry$courseArgs<ExtArgs>>): Prisma__CourseClient<$Result.GetResult<Prisma.$CoursePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    faculty<T extends FacultyProfileDefaultArgs<ExtArgs> = {}>(args?: Subset<T, FacultyProfileDefaultArgs<ExtArgs>>): Prisma__FacultyProfileClient<$Result.GetResult<Prisma.$FacultyProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -29933,12 +28541,12 @@ export namespace Prisma {
   interface FacultyBatchEntryFieldRefs {
     readonly id: FieldRef<"FacultyBatchEntry", 'String'>
     readonly facultyId: FieldRef<"FacultyBatchEntry", 'String'>
-    readonly courseId: FieldRef<"FacultyBatchEntry", 'String'>
     readonly batchName: FieldRef<"FacultyBatchEntry", 'String'>
     readonly batchTiming: FieldRef<"FacultyBatchEntry", 'String'>
     readonly sequenceNo: FieldRef<"FacultyBatchEntry", 'Int'>
     readonly createdAt: FieldRef<"FacultyBatchEntry", 'DateTime'>
     readonly updatedAt: FieldRef<"FacultyBatchEntry", 'DateTime'>
+    readonly courseId: FieldRef<"FacultyBatchEntry", 'String'>
   }
     
 
@@ -30391,45 +28999,45 @@ export namespace Prisma {
     id: string | null
     facultyUserId: string | null
     attendanceDate: string | null
-    sessionSource: string | null
     loginAt: Date | null
     logoutAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    sessionSource: string | null
     logoutType: string | null
     logoutReason: string | null
     workReport: string | null
     workCompleted: string | null
-    createdAt: Date | null
-    updatedAt: Date | null
   }
 
   export type FacultyAttendanceSessionMaxAggregateOutputType = {
     id: string | null
     facultyUserId: string | null
     attendanceDate: string | null
-    sessionSource: string | null
     loginAt: Date | null
     logoutAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    sessionSource: string | null
     logoutType: string | null
     logoutReason: string | null
     workReport: string | null
     workCompleted: string | null
-    createdAt: Date | null
-    updatedAt: Date | null
   }
 
   export type FacultyAttendanceSessionCountAggregateOutputType = {
     id: number
     facultyUserId: number
     attendanceDate: number
-    sessionSource: number
     loginAt: number
     logoutAt: number
+    createdAt: number
+    updatedAt: number
+    sessionSource: number
     logoutType: number
     logoutReason: number
     workReport: number
     workCompleted: number
-    createdAt: number
-    updatedAt: number
     _all: number
   }
 
@@ -30438,45 +29046,45 @@ export namespace Prisma {
     id?: true
     facultyUserId?: true
     attendanceDate?: true
-    sessionSource?: true
     loginAt?: true
     logoutAt?: true
+    createdAt?: true
+    updatedAt?: true
+    sessionSource?: true
     logoutType?: true
     logoutReason?: true
     workReport?: true
     workCompleted?: true
-    createdAt?: true
-    updatedAt?: true
   }
 
   export type FacultyAttendanceSessionMaxAggregateInputType = {
     id?: true
     facultyUserId?: true
     attendanceDate?: true
-    sessionSource?: true
     loginAt?: true
     logoutAt?: true
+    createdAt?: true
+    updatedAt?: true
+    sessionSource?: true
     logoutType?: true
     logoutReason?: true
     workReport?: true
     workCompleted?: true
-    createdAt?: true
-    updatedAt?: true
   }
 
   export type FacultyAttendanceSessionCountAggregateInputType = {
     id?: true
     facultyUserId?: true
     attendanceDate?: true
-    sessionSource?: true
     loginAt?: true
     logoutAt?: true
+    createdAt?: true
+    updatedAt?: true
+    sessionSource?: true
     logoutType?: true
     logoutReason?: true
     workReport?: true
     workCompleted?: true
-    createdAt?: true
-    updatedAt?: true
     _all?: true
   }
 
@@ -30556,15 +29164,15 @@ export namespace Prisma {
     id: string
     facultyUserId: string
     attendanceDate: string
-    sessionSource: string
     loginAt: Date
     logoutAt: Date | null
+    createdAt: Date
+    updatedAt: Date
+    sessionSource: string
     logoutType: string | null
     logoutReason: string | null
     workReport: string | null
     workCompleted: string | null
-    createdAt: Date
-    updatedAt: Date
     _count: FacultyAttendanceSessionCountAggregateOutputType | null
     _min: FacultyAttendanceSessionMinAggregateOutputType | null
     _max: FacultyAttendanceSessionMaxAggregateOutputType | null
@@ -30588,15 +29196,15 @@ export namespace Prisma {
     id?: boolean
     facultyUserId?: boolean
     attendanceDate?: boolean
-    sessionSource?: boolean
     loginAt?: boolean
     logoutAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    sessionSource?: boolean
     logoutType?: boolean
     logoutReason?: boolean
     workReport?: boolean
     workCompleted?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
     facultyUser?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["facultyAttendanceSession"]>
 
@@ -30604,15 +29212,15 @@ export namespace Prisma {
     id?: boolean
     facultyUserId?: boolean
     attendanceDate?: boolean
-    sessionSource?: boolean
     loginAt?: boolean
     logoutAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    sessionSource?: boolean
     logoutType?: boolean
     logoutReason?: boolean
     workReport?: boolean
     workCompleted?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
     facultyUser?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["facultyAttendanceSession"]>
 
@@ -30620,15 +29228,15 @@ export namespace Prisma {
     id?: boolean
     facultyUserId?: boolean
     attendanceDate?: boolean
-    sessionSource?: boolean
     loginAt?: boolean
     logoutAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    sessionSource?: boolean
     logoutType?: boolean
     logoutReason?: boolean
     workReport?: boolean
     workCompleted?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
     facultyUser?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["facultyAttendanceSession"]>
 
@@ -30636,18 +29244,18 @@ export namespace Prisma {
     id?: boolean
     facultyUserId?: boolean
     attendanceDate?: boolean
-    sessionSource?: boolean
     loginAt?: boolean
     logoutAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    sessionSource?: boolean
     logoutType?: boolean
     logoutReason?: boolean
     workReport?: boolean
     workCompleted?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
   }
 
-  export type FacultyAttendanceSessionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "facultyUserId" | "attendanceDate" | "sessionSource" | "loginAt" | "logoutAt" | "logoutType" | "logoutReason" | "workReport" | "workCompleted" | "createdAt" | "updatedAt", ExtArgs["result"]["facultyAttendanceSession"]>
+  export type FacultyAttendanceSessionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "facultyUserId" | "attendanceDate" | "loginAt" | "logoutAt" | "createdAt" | "updatedAt" | "sessionSource" | "logoutType" | "logoutReason" | "workReport" | "workCompleted", ExtArgs["result"]["facultyAttendanceSession"]>
   export type FacultyAttendanceSessionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     facultyUser?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -30667,15 +29275,15 @@ export namespace Prisma {
       id: string
       facultyUserId: string
       attendanceDate: string
-      sessionSource: string
       loginAt: Date
       logoutAt: Date | null
+      createdAt: Date
+      updatedAt: Date
+      sessionSource: string
       logoutType: string | null
       logoutReason: string | null
       workReport: string | null
       workCompleted: string | null
-      createdAt: Date
-      updatedAt: Date
     }, ExtArgs["result"]["facultyAttendanceSession"]>
     composites: {}
   }
@@ -31103,15 +29711,15 @@ export namespace Prisma {
     readonly id: FieldRef<"FacultyAttendanceSession", 'String'>
     readonly facultyUserId: FieldRef<"FacultyAttendanceSession", 'String'>
     readonly attendanceDate: FieldRef<"FacultyAttendanceSession", 'String'>
-    readonly sessionSource: FieldRef<"FacultyAttendanceSession", 'String'>
     readonly loginAt: FieldRef<"FacultyAttendanceSession", 'DateTime'>
     readonly logoutAt: FieldRef<"FacultyAttendanceSession", 'DateTime'>
+    readonly createdAt: FieldRef<"FacultyAttendanceSession", 'DateTime'>
+    readonly updatedAt: FieldRef<"FacultyAttendanceSession", 'DateTime'>
+    readonly sessionSource: FieldRef<"FacultyAttendanceSession", 'String'>
     readonly logoutType: FieldRef<"FacultyAttendanceSession", 'String'>
     readonly logoutReason: FieldRef<"FacultyAttendanceSession", 'String'>
     readonly workReport: FieldRef<"FacultyAttendanceSession", 'String'>
     readonly workCompleted: FieldRef<"FacultyAttendanceSession", 'String'>
-    readonly createdAt: FieldRef<"FacultyAttendanceSession", 'DateTime'>
-    readonly updatedAt: FieldRef<"FacultyAttendanceSession", 'DateTime'>
   }
     
 
@@ -31759,8 +30367,8 @@ export namespace Prisma {
     updatedBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    student?: boolean | StudentProfileDefaultArgs<ExtArgs>
     facultyUser?: boolean | StudentAttendance$facultyUserArgs<ExtArgs>
+    student?: boolean | StudentProfileDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["studentAttendance"]>
 
   export type StudentAttendanceSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -31777,8 +30385,8 @@ export namespace Prisma {
     updatedBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    student?: boolean | StudentProfileDefaultArgs<ExtArgs>
     facultyUser?: boolean | StudentAttendance$facultyUserArgs<ExtArgs>
+    student?: boolean | StudentProfileDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["studentAttendance"]>
 
   export type StudentAttendanceSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -31795,8 +30403,8 @@ export namespace Prisma {
     updatedBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    student?: boolean | StudentProfileDefaultArgs<ExtArgs>
     facultyUser?: boolean | StudentAttendance$facultyUserArgs<ExtArgs>
+    student?: boolean | StudentProfileDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["studentAttendance"]>
 
   export type StudentAttendanceSelectScalar = {
@@ -31817,23 +30425,23 @@ export namespace Prisma {
 
   export type StudentAttendanceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "studentId" | "facultyUserId" | "courseId" | "batchName" | "attendanceDate" | "status" | "markedAt" | "notes" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["studentAttendance"]>
   export type StudentAttendanceInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    student?: boolean | StudentProfileDefaultArgs<ExtArgs>
     facultyUser?: boolean | StudentAttendance$facultyUserArgs<ExtArgs>
+    student?: boolean | StudentProfileDefaultArgs<ExtArgs>
   }
   export type StudentAttendanceIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    student?: boolean | StudentProfileDefaultArgs<ExtArgs>
     facultyUser?: boolean | StudentAttendance$facultyUserArgs<ExtArgs>
+    student?: boolean | StudentProfileDefaultArgs<ExtArgs>
   }
   export type StudentAttendanceIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    student?: boolean | StudentProfileDefaultArgs<ExtArgs>
     facultyUser?: boolean | StudentAttendance$facultyUserArgs<ExtArgs>
+    student?: boolean | StudentProfileDefaultArgs<ExtArgs>
   }
 
   export type $StudentAttendancePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "StudentAttendance"
     objects: {
-      student: Prisma.$StudentProfilePayload<ExtArgs>
       facultyUser: Prisma.$UserPayload<ExtArgs> | null
+      student: Prisma.$StudentProfilePayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -32243,8 +30851,8 @@ export namespace Prisma {
    */
   export interface Prisma__StudentAttendanceClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    student<T extends StudentProfileDefaultArgs<ExtArgs> = {}>(args?: Subset<T, StudentProfileDefaultArgs<ExtArgs>>): Prisma__StudentProfileClient<$Result.GetResult<Prisma.$StudentProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     facultyUser<T extends StudentAttendance$facultyUserArgs<ExtArgs> = {}>(args?: Subset<T, StudentAttendance$facultyUserArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    student<T extends StudentProfileDefaultArgs<ExtArgs> = {}>(args?: Subset<T, StudentProfileDefaultArgs<ExtArgs>>): Prisma__StudentProfileClient<$Result.GetResult<Prisma.$StudentProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -32748,13 +31356,13 @@ export namespace Prisma {
     stateCode: string | null
     city: string | null
     address: string | null
-    courseId: string | null
-    branchCourseId: string | null
     status: $Enums.RecordStatus | null
     createdBy: string | null
     updatedBy: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    courseId: string | null
+    branchCourseId: string | null
   }
 
   export type BranchFacultyMaxAggregateOutputType = {
@@ -32770,13 +31378,13 @@ export namespace Prisma {
     stateCode: string | null
     city: string | null
     address: string | null
-    courseId: string | null
-    branchCourseId: string | null
     status: $Enums.RecordStatus | null
     createdBy: string | null
     updatedBy: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    courseId: string | null
+    branchCourseId: string | null
   }
 
   export type BranchFacultyCountAggregateOutputType = {
@@ -32792,13 +31400,13 @@ export namespace Prisma {
     stateCode: number
     city: number
     address: number
-    courseId: number
-    branchCourseId: number
     status: number
     createdBy: number
     updatedBy: number
     createdAt: number
     updatedAt: number
+    courseId: number
+    branchCourseId: number
     _all: number
   }
 
@@ -32816,13 +31424,13 @@ export namespace Prisma {
     stateCode?: true
     city?: true
     address?: true
-    courseId?: true
-    branchCourseId?: true
     status?: true
     createdBy?: true
     updatedBy?: true
     createdAt?: true
     updatedAt?: true
+    courseId?: true
+    branchCourseId?: true
   }
 
   export type BranchFacultyMaxAggregateInputType = {
@@ -32838,13 +31446,13 @@ export namespace Prisma {
     stateCode?: true
     city?: true
     address?: true
-    courseId?: true
-    branchCourseId?: true
     status?: true
     createdBy?: true
     updatedBy?: true
     createdAt?: true
     updatedAt?: true
+    courseId?: true
+    branchCourseId?: true
   }
 
   export type BranchFacultyCountAggregateInputType = {
@@ -32860,13 +31468,13 @@ export namespace Prisma {
     stateCode?: true
     city?: true
     address?: true
-    courseId?: true
-    branchCourseId?: true
     status?: true
     createdBy?: true
     updatedBy?: true
     createdAt?: true
     updatedAt?: true
+    courseId?: true
+    branchCourseId?: true
     _all?: true
   }
 
@@ -32955,13 +31563,13 @@ export namespace Prisma {
     stateCode: string | null
     city: string | null
     address: string | null
-    courseId: string | null
-    branchCourseId: string | null
     status: $Enums.RecordStatus
     createdBy: string | null
     updatedBy: string | null
     createdAt: Date
     updatedAt: Date
+    courseId: string | null
+    branchCourseId: string | null
     _count: BranchFacultyCountAggregateOutputType | null
     _min: BranchFacultyMinAggregateOutputType | null
     _max: BranchFacultyMaxAggregateOutputType | null
@@ -32994,16 +31602,16 @@ export namespace Prisma {
     stateCode?: boolean
     city?: boolean
     address?: boolean
-    courseId?: boolean
-    branchCourseId?: boolean
     status?: boolean
     createdBy?: boolean
     updatedBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    courseId?: boolean
+    branchCourseId?: boolean
+    branchCourse?: boolean | BranchFaculty$branchCourseArgs<ExtArgs>
     branch?: boolean | BranchDefaultArgs<ExtArgs>
     course?: boolean | BranchFaculty$courseArgs<ExtArgs>
-    branchCourse?: boolean | BranchFaculty$branchCourseArgs<ExtArgs>
   }, ExtArgs["result"]["branchFaculty"]>
 
   export type BranchFacultySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -33019,16 +31627,16 @@ export namespace Prisma {
     stateCode?: boolean
     city?: boolean
     address?: boolean
-    courseId?: boolean
-    branchCourseId?: boolean
     status?: boolean
     createdBy?: boolean
     updatedBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    courseId?: boolean
+    branchCourseId?: boolean
+    branchCourse?: boolean | BranchFaculty$branchCourseArgs<ExtArgs>
     branch?: boolean | BranchDefaultArgs<ExtArgs>
     course?: boolean | BranchFaculty$courseArgs<ExtArgs>
-    branchCourse?: boolean | BranchFaculty$branchCourseArgs<ExtArgs>
   }, ExtArgs["result"]["branchFaculty"]>
 
   export type BranchFacultySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -33044,16 +31652,16 @@ export namespace Prisma {
     stateCode?: boolean
     city?: boolean
     address?: boolean
-    courseId?: boolean
-    branchCourseId?: boolean
     status?: boolean
     createdBy?: boolean
     updatedBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    courseId?: boolean
+    branchCourseId?: boolean
+    branchCourse?: boolean | BranchFaculty$branchCourseArgs<ExtArgs>
     branch?: boolean | BranchDefaultArgs<ExtArgs>
     course?: boolean | BranchFaculty$courseArgs<ExtArgs>
-    branchCourse?: boolean | BranchFaculty$branchCourseArgs<ExtArgs>
   }, ExtArgs["result"]["branchFaculty"]>
 
   export type BranchFacultySelectScalar = {
@@ -33069,38 +31677,38 @@ export namespace Prisma {
     stateCode?: boolean
     city?: boolean
     address?: boolean
-    courseId?: boolean
-    branchCourseId?: boolean
     status?: boolean
     createdBy?: boolean
     updatedBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    courseId?: boolean
+    branchCourseId?: boolean
   }
 
-  export type BranchFacultyOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "facultyId" | "branchId" | "name" | "email" | "phone" | "country" | "countryCode" | "state" | "stateCode" | "city" | "address" | "courseId" | "branchCourseId" | "status" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["branchFaculty"]>
+  export type BranchFacultyOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "facultyId" | "branchId" | "name" | "email" | "phone" | "country" | "countryCode" | "state" | "stateCode" | "city" | "address" | "status" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt" | "courseId" | "branchCourseId", ExtArgs["result"]["branchFaculty"]>
   export type BranchFacultyInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    branchCourse?: boolean | BranchFaculty$branchCourseArgs<ExtArgs>
     branch?: boolean | BranchDefaultArgs<ExtArgs>
     course?: boolean | BranchFaculty$courseArgs<ExtArgs>
-    branchCourse?: boolean | BranchFaculty$branchCourseArgs<ExtArgs>
   }
   export type BranchFacultyIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    branchCourse?: boolean | BranchFaculty$branchCourseArgs<ExtArgs>
     branch?: boolean | BranchDefaultArgs<ExtArgs>
     course?: boolean | BranchFaculty$courseArgs<ExtArgs>
-    branchCourse?: boolean | BranchFaculty$branchCourseArgs<ExtArgs>
   }
   export type BranchFacultyIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    branchCourse?: boolean | BranchFaculty$branchCourseArgs<ExtArgs>
     branch?: boolean | BranchDefaultArgs<ExtArgs>
     course?: boolean | BranchFaculty$courseArgs<ExtArgs>
-    branchCourse?: boolean | BranchFaculty$branchCourseArgs<ExtArgs>
   }
 
   export type $BranchFacultyPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "BranchFaculty"
     objects: {
+      branchCourse: Prisma.$BranchCoursePayload<ExtArgs> | null
       branch: Prisma.$BranchPayload<ExtArgs>
       course: Prisma.$CoursePayload<ExtArgs> | null
-      branchCourse: Prisma.$BranchCoursePayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -33115,13 +31723,13 @@ export namespace Prisma {
       stateCode: string | null
       city: string | null
       address: string | null
-      courseId: string | null
-      branchCourseId: string | null
       status: $Enums.RecordStatus
       createdBy: string | null
       updatedBy: string | null
       createdAt: Date
       updatedAt: Date
+      courseId: string | null
+      branchCourseId: string | null
     }, ExtArgs["result"]["branchFaculty"]>
     composites: {}
   }
@@ -33516,9 +32124,9 @@ export namespace Prisma {
    */
   export interface Prisma__BranchFacultyClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    branchCourse<T extends BranchFaculty$branchCourseArgs<ExtArgs> = {}>(args?: Subset<T, BranchFaculty$branchCourseArgs<ExtArgs>>): Prisma__BranchCourseClient<$Result.GetResult<Prisma.$BranchCoursePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     branch<T extends BranchDefaultArgs<ExtArgs> = {}>(args?: Subset<T, BranchDefaultArgs<ExtArgs>>): Prisma__BranchClient<$Result.GetResult<Prisma.$BranchPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     course<T extends BranchFaculty$courseArgs<ExtArgs> = {}>(args?: Subset<T, BranchFaculty$courseArgs<ExtArgs>>): Prisma__CourseClient<$Result.GetResult<Prisma.$CoursePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    branchCourse<T extends BranchFaculty$branchCourseArgs<ExtArgs> = {}>(args?: Subset<T, BranchFaculty$branchCourseArgs<ExtArgs>>): Prisma__BranchCourseClient<$Result.GetResult<Prisma.$BranchCoursePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -33560,13 +32168,13 @@ export namespace Prisma {
     readonly stateCode: FieldRef<"BranchFaculty", 'String'>
     readonly city: FieldRef<"BranchFaculty", 'String'>
     readonly address: FieldRef<"BranchFaculty", 'String'>
-    readonly courseId: FieldRef<"BranchFaculty", 'String'>
-    readonly branchCourseId: FieldRef<"BranchFaculty", 'String'>
     readonly status: FieldRef<"BranchFaculty", 'RecordStatus'>
     readonly createdBy: FieldRef<"BranchFaculty", 'String'>
     readonly updatedBy: FieldRef<"BranchFaculty", 'String'>
     readonly createdAt: FieldRef<"BranchFaculty", 'DateTime'>
     readonly updatedAt: FieldRef<"BranchFaculty", 'DateTime'>
+    readonly courseId: FieldRef<"BranchFaculty", 'String'>
+    readonly branchCourseId: FieldRef<"BranchFaculty", 'String'>
   }
     
 
@@ -33968,25 +32576,6 @@ export namespace Prisma {
   }
 
   /**
-   * BranchFaculty.course
-   */
-  export type BranchFaculty$courseArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Course
-     */
-    select?: CourseSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Course
-     */
-    omit?: CourseOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CourseInclude<ExtArgs> | null
-    where?: CourseWhereInput
-  }
-
-  /**
    * BranchFaculty.branchCourse
    */
   export type BranchFaculty$branchCourseArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -34003,6 +32592,25 @@ export namespace Prisma {
      */
     include?: BranchCourseInclude<ExtArgs> | null
     where?: BranchCourseWhereInput
+  }
+
+  /**
+   * BranchFaculty.course
+   */
+  export type BranchFaculty$courseArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Course
+     */
+    select?: CourseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Course
+     */
+    omit?: CourseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CourseInclude<ExtArgs> | null
+    where?: CourseWhereInput
   }
 
   /**
@@ -34072,18 +32680,18 @@ export namespace Prisma {
     branchAdminName: 'branchAdminName',
     branchEmail: 'branchEmail',
     branchPhone: 'branchPhone',
-    branchCountryCode: 'branchCountryCode',
-    branchCountry: 'branchCountry',
-    branchStateCode: 'branchStateCode',
-    branchState: 'branchState',
-    branchCity: 'branchCity',
     branchAddress: 'branchAddress',
     status: 'status',
     adminUserId: 'adminUserId',
     createdBy: 'createdBy',
     updatedBy: 'updatedBy',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    branchCity: 'branchCity',
+    branchCountry: 'branchCountry',
+    branchCountryCode: 'branchCountryCode',
+    branchState: 'branchState',
+    branchStateCode: 'branchStateCode'
   };
 
   export type BranchScalarFieldEnum = (typeof BranchScalarFieldEnum)[keyof typeof BranchScalarFieldEnum]
@@ -34111,20 +32719,6 @@ export namespace Prisma {
     title: 'title',
     message: 'message',
     actionLabel: 'actionLabel',
-    requestId: 'requestId',
-    requestStatus: 'requestStatus',
-    requestTitle: 'requestTitle',
-    requestReason: 'requestReason',
-    requestDescription: 'requestDescription',
-    branchCourseId: 'branchCourseId',
-    branchCourseName: 'branchCourseName',
-    moduleId: 'moduleId',
-    moduleName: 'moduleName',
-    subModuleId: 'subModuleId',
-    subModuleName: 'subModuleName',
-    facultyId: 'facultyId',
-    facultyName: 'facultyName',
-    targetUserId: 'targetUserId',
     targetBranchId: 'targetBranchId',
     targetBranchEmail: 'targetBranchEmail',
     targetBranchName: 'targetBranchName',
@@ -34132,7 +32726,21 @@ export namespace Prisma {
     readAt: 'readAt',
     createdBy: 'createdBy',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    targetUserId: 'targetUserId',
+    branchCourseId: 'branchCourseId',
+    branchCourseName: 'branchCourseName',
+    facultyId: 'facultyId',
+    facultyName: 'facultyName',
+    moduleId: 'moduleId',
+    moduleName: 'moduleName',
+    requestDescription: 'requestDescription',
+    requestId: 'requestId',
+    requestReason: 'requestReason',
+    requestStatus: 'requestStatus',
+    requestTitle: 'requestTitle',
+    subModuleId: 'subModuleId',
+    subModuleName: 'subModuleName'
   };
 
   export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum]
@@ -34185,8 +32793,6 @@ export namespace Prisma {
     id: 'id',
     name: 'name',
     nameKey: 'nameKey',
-    courseCode: 'courseCode',
-    branchId: 'branchId',
     description: 'description',
     feeReference: 'feeReference',
     mode: 'mode',
@@ -34200,14 +32806,16 @@ export namespace Prisma {
     installment1: 'installment1',
     installment2: 'installment2',
     installment3: 'installment3',
-    installments: 'installments',
     status: 'status',
     statusChangedAt: 'statusChangedAt',
     statusChangedBy: 'statusChangedBy',
     createdBy: 'createdBy',
     updatedBy: 'updatedBy',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    installments: 'installments',
+    branchId: 'branchId',
+    courseCode: 'courseCode'
   };
 
   export type CourseScalarFieldEnum = (typeof CourseScalarFieldEnum)[keyof typeof CourseScalarFieldEnum]
@@ -34235,26 +32843,6 @@ export namespace Prisma {
   };
 
   export type BranchCourseScalarFieldEnum = (typeof BranchCourseScalarFieldEnum)[keyof typeof BranchCourseScalarFieldEnum]
-
-
-  export const BranchInstallmentTemplateScalarFieldEnum: {
-    id: 'id',
-    branchId: 'branchId',
-    branchCourseId: 'branchCourseId',
-    templateName: 'templateName',
-    planType: 'planType',
-    installmentCount: 'installmentCount',
-    installments: 'installments',
-    dueRule: 'dueRule',
-    allowCustomization: 'allowCustomization',
-    status: 'status',
-    createdBy: 'createdBy',
-    updatedBy: 'updatedBy',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
-  };
-
-  export type BranchInstallmentTemplateScalarFieldEnum = (typeof BranchInstallmentTemplateScalarFieldEnum)[keyof typeof BranchInstallmentTemplateScalarFieldEnum]
 
 
   export const BranchCourseModuleScalarFieldEnum: {
@@ -34386,14 +32974,11 @@ export namespace Prisma {
     studentName: 'studentName',
     mobileNumber: 'mobileNumber',
     emailAddress: 'emailAddress',
-    linkedInUrl: 'linkedInUrl',
     parentSpouseNumber: 'parentSpouseNumber',
     location: 'location',
     courseId: 'courseId',
     courseInterested: 'courseInterested',
-    facultyId: 'facultyId',
     facultyName: 'facultyName',
-    batchId: 'batchId',
     batchName: 'batchName',
     qualification: 'qualification',
     passedOutYear: 'passedOutYear',
@@ -34407,7 +32992,6 @@ export namespace Prisma {
     installment1: 'installment1',
     installment2: 'installment2',
     installment3: 'installment3',
-    installment4: 'installment4',
     totalAmount: 'totalAmount',
     admissionDate: 'admissionDate',
     firstInstallmentAmount: 'firstInstallmentAmount',
@@ -34423,7 +33007,11 @@ export namespace Prisma {
     createdBy: 'createdBy',
     updatedBy: 'updatedBy',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    installment4: 'installment4',
+    batchId: 'batchId',
+    facultyId: 'facultyId',
+    linkedInUrl: 'linkedInUrl'
   };
 
   export type StudentProfileScalarFieldEnum = (typeof StudentProfileScalarFieldEnum)[keyof typeof StudentProfileScalarFieldEnum]
@@ -34436,7 +33024,6 @@ export namespace Prisma {
     studentName: 'studentName',
     mobileNumber: 'mobileNumber',
     emailAddress: 'emailAddress',
-    linkedInUrl: 'linkedInUrl',
     parentSpouseNumber: 'parentSpouseNumber',
     countryCode: 'countryCode',
     country: 'country',
@@ -34450,13 +33037,14 @@ export namespace Prisma {
     designation: 'designation',
     source: 'source',
     sourceOther: 'sourceOther',
-    remarks: 'remarks',
     admissionDate: 'admissionDate',
     recordStatus: 'recordStatus',
     createdBy: 'createdBy',
     updatedBy: 'updatedBy',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    linkedInUrl: 'linkedInUrl',
+    remarks: 'remarks'
   };
 
   export type BranchStudentScalarFieldEnum = (typeof BranchStudentScalarFieldEnum)[keyof typeof BranchStudentScalarFieldEnum]
@@ -34494,12 +33082,12 @@ export namespace Prisma {
   export const FacultyBatchEntryScalarFieldEnum: {
     id: 'id',
     facultyId: 'facultyId',
-    courseId: 'courseId',
     batchName: 'batchName',
     batchTiming: 'batchTiming',
     sequenceNo: 'sequenceNo',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    courseId: 'courseId'
   };
 
   export type FacultyBatchEntryScalarFieldEnum = (typeof FacultyBatchEntryScalarFieldEnum)[keyof typeof FacultyBatchEntryScalarFieldEnum]
@@ -34509,15 +33097,15 @@ export namespace Prisma {
     id: 'id',
     facultyUserId: 'facultyUserId',
     attendanceDate: 'attendanceDate',
-    sessionSource: 'sessionSource',
     loginAt: 'loginAt',
     logoutAt: 'logoutAt',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    sessionSource: 'sessionSource',
     logoutType: 'logoutType',
     logoutReason: 'logoutReason',
     workReport: 'workReport',
-    workCompleted: 'workCompleted',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    workCompleted: 'workCompleted'
   };
 
   export type FacultyAttendanceSessionScalarFieldEnum = (typeof FacultyAttendanceSessionScalarFieldEnum)[keyof typeof FacultyAttendanceSessionScalarFieldEnum]
@@ -34555,13 +33143,13 @@ export namespace Prisma {
     stateCode: 'stateCode',
     city: 'city',
     address: 'address',
-    courseId: 'courseId',
-    branchCourseId: 'branchCourseId',
     status: 'status',
     createdBy: 'createdBy',
     updatedBy: 'updatedBy',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    courseId: 'courseId',
+    branchCourseId: 'branchCourseId'
   };
 
   export type BranchFacultyScalarFieldEnum = (typeof BranchFacultyScalarFieldEnum)[keyof typeof BranchFacultyScalarFieldEnum]
@@ -34581,13 +33169,6 @@ export namespace Prisma {
   };
 
   export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
-
-
-  export const JsonNullValueInput: {
-    JsonNull: typeof JsonNull
-  };
-
-  export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
   export const QueryMode: {
@@ -34837,13 +33418,13 @@ export namespace Prisma {
     updatedBy?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
-    loginEvents?: LoginEventListRelationFilter
-    passwordResetTokens?: PasswordResetTokenListRelationFilter
     batchFacultyAssignments?: BatchFacultyAssignmentListRelationFilter
-    targetedNotifications?: NotificationListRelationFilter
-    facultyAttendanceSessions?: FacultyAttendanceSessionListRelationFilter
-    markedStudentAttendances?: StudentAttendanceListRelationFilter
     managedBranch?: XOR<BranchNullableScalarRelationFilter, BranchWhereInput> | null
+    facultyAttendanceSessions?: FacultyAttendanceSessionListRelationFilter
+    loginEvents?: LoginEventListRelationFilter
+    targetedNotifications?: NotificationListRelationFilter
+    passwordResetTokens?: PasswordResetTokenListRelationFilter
+    markedStudentAttendances?: StudentAttendanceListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -34868,13 +33449,13 @@ export namespace Prisma {
     updatedBy?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    loginEvents?: LoginEventOrderByRelationAggregateInput
-    passwordResetTokens?: PasswordResetTokenOrderByRelationAggregateInput
     batchFacultyAssignments?: BatchFacultyAssignmentOrderByRelationAggregateInput
-    targetedNotifications?: NotificationOrderByRelationAggregateInput
-    facultyAttendanceSessions?: FacultyAttendanceSessionOrderByRelationAggregateInput
-    markedStudentAttendances?: StudentAttendanceOrderByRelationAggregateInput
     managedBranch?: BranchOrderByWithRelationInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionOrderByRelationAggregateInput
+    loginEvents?: LoginEventOrderByRelationAggregateInput
+    targetedNotifications?: NotificationOrderByRelationAggregateInput
+    passwordResetTokens?: PasswordResetTokenOrderByRelationAggregateInput
+    markedStudentAttendances?: StudentAttendanceOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -34902,13 +33483,13 @@ export namespace Prisma {
     updatedBy?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
-    loginEvents?: LoginEventListRelationFilter
-    passwordResetTokens?: PasswordResetTokenListRelationFilter
     batchFacultyAssignments?: BatchFacultyAssignmentListRelationFilter
-    targetedNotifications?: NotificationListRelationFilter
-    facultyAttendanceSessions?: FacultyAttendanceSessionListRelationFilter
-    markedStudentAttendances?: StudentAttendanceListRelationFilter
     managedBranch?: XOR<BranchNullableScalarRelationFilter, BranchWhereInput> | null
+    facultyAttendanceSessions?: FacultyAttendanceSessionListRelationFilter
+    loginEvents?: LoginEventListRelationFilter
+    targetedNotifications?: NotificationListRelationFilter
+    passwordResetTokens?: PasswordResetTokenListRelationFilter
+    markedStudentAttendances?: StudentAttendanceListRelationFilter
   }, "id" | "userCode" | "email" | "phone">
 
   export type UserOrderByWithAggregationInput = {
@@ -34977,11 +33558,6 @@ export namespace Prisma {
     branchAdminName?: StringFilter<"Branch"> | string
     branchEmail?: StringFilter<"Branch"> | string
     branchPhone?: StringFilter<"Branch"> | string
-    branchCountryCode?: StringFilter<"Branch"> | string
-    branchCountry?: StringFilter<"Branch"> | string
-    branchStateCode?: StringFilter<"Branch"> | string
-    branchState?: StringFilter<"Branch"> | string
-    branchCity?: StringFilter<"Branch"> | string
     branchAddress?: StringFilter<"Branch"> | string
     status?: EnumRecordStatusFilter<"Branch"> | $Enums.RecordStatus
     adminUserId?: StringNullableFilter<"Branch"> | string | null
@@ -34989,12 +33565,16 @@ export namespace Prisma {
     updatedBy?: StringNullableFilter<"Branch"> | string | null
     createdAt?: DateTimeFilter<"Branch"> | Date | string
     updatedAt?: DateTimeFilter<"Branch"> | Date | string
+    branchCity?: StringFilter<"Branch"> | string
+    branchCountry?: StringFilter<"Branch"> | string
+    branchCountryCode?: StringFilter<"Branch"> | string
+    branchState?: StringFilter<"Branch"> | string
+    branchStateCode?: StringFilter<"Branch"> | string
     adminUser?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
-    courses?: CourseListRelationFilter
     branchCourses?: BranchCourseListRelationFilter
     branchFaculties?: BranchFacultyListRelationFilter
     branchStudents?: BranchStudentListRelationFilter
-    branchInstallmentTemplates?: BranchInstallmentTemplateListRelationFilter
+    courses?: CourseListRelationFilter
   }
 
   export type BranchOrderByWithRelationInput = {
@@ -35004,11 +33584,6 @@ export namespace Prisma {
     branchAdminName?: SortOrder
     branchEmail?: SortOrder
     branchPhone?: SortOrder
-    branchCountryCode?: SortOrder
-    branchCountry?: SortOrder
-    branchStateCode?: SortOrder
-    branchState?: SortOrder
-    branchCity?: SortOrder
     branchAddress?: SortOrder
     status?: SortOrder
     adminUserId?: SortOrderInput | SortOrder
@@ -35016,12 +33591,16 @@ export namespace Prisma {
     updatedBy?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    branchCity?: SortOrder
+    branchCountry?: SortOrder
+    branchCountryCode?: SortOrder
+    branchState?: SortOrder
+    branchStateCode?: SortOrder
     adminUser?: UserOrderByWithRelationInput
-    courses?: CourseOrderByRelationAggregateInput
     branchCourses?: BranchCourseOrderByRelationAggregateInput
     branchFaculties?: BranchFacultyOrderByRelationAggregateInput
     branchStudents?: BranchStudentOrderByRelationAggregateInput
-    branchInstallmentTemplates?: BranchInstallmentTemplateOrderByRelationAggregateInput
+    courses?: CourseOrderByRelationAggregateInput
   }
 
   export type BranchWhereUniqueInput = Prisma.AtLeast<{
@@ -35035,23 +33614,22 @@ export namespace Prisma {
     NOT?: BranchWhereInput | BranchWhereInput[]
     branchName?: StringFilter<"Branch"> | string
     branchAdminName?: StringFilter<"Branch"> | string
-    branchCountryCode?: StringFilter<"Branch"> | string
-    branchCountry?: StringFilter<"Branch"> | string
-    branchStateCode?: StringFilter<"Branch"> | string
-    branchState?: StringFilter<"Branch"> | string
-    branchCity?: StringFilter<"Branch"> | string
     branchAddress?: StringFilter<"Branch"> | string
     status?: EnumRecordStatusFilter<"Branch"> | $Enums.RecordStatus
     createdBy?: StringNullableFilter<"Branch"> | string | null
     updatedBy?: StringNullableFilter<"Branch"> | string | null
     createdAt?: DateTimeFilter<"Branch"> | Date | string
     updatedAt?: DateTimeFilter<"Branch"> | Date | string
+    branchCity?: StringFilter<"Branch"> | string
+    branchCountry?: StringFilter<"Branch"> | string
+    branchCountryCode?: StringFilter<"Branch"> | string
+    branchState?: StringFilter<"Branch"> | string
+    branchStateCode?: StringFilter<"Branch"> | string
     adminUser?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
-    courses?: CourseListRelationFilter
     branchCourses?: BranchCourseListRelationFilter
     branchFaculties?: BranchFacultyListRelationFilter
     branchStudents?: BranchStudentListRelationFilter
-    branchInstallmentTemplates?: BranchInstallmentTemplateListRelationFilter
+    courses?: CourseListRelationFilter
   }, "id" | "branchId" | "branchEmail" | "branchPhone" | "adminUserId">
 
   export type BranchOrderByWithAggregationInput = {
@@ -35061,11 +33639,6 @@ export namespace Prisma {
     branchAdminName?: SortOrder
     branchEmail?: SortOrder
     branchPhone?: SortOrder
-    branchCountryCode?: SortOrder
-    branchCountry?: SortOrder
-    branchStateCode?: SortOrder
-    branchState?: SortOrder
-    branchCity?: SortOrder
     branchAddress?: SortOrder
     status?: SortOrder
     adminUserId?: SortOrderInput | SortOrder
@@ -35073,6 +33646,11 @@ export namespace Prisma {
     updatedBy?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    branchCity?: SortOrder
+    branchCountry?: SortOrder
+    branchCountryCode?: SortOrder
+    branchState?: SortOrder
+    branchStateCode?: SortOrder
     _count?: BranchCountOrderByAggregateInput
     _max?: BranchMaxOrderByAggregateInput
     _min?: BranchMinOrderByAggregateInput
@@ -35088,11 +33666,6 @@ export namespace Prisma {
     branchAdminName?: StringWithAggregatesFilter<"Branch"> | string
     branchEmail?: StringWithAggregatesFilter<"Branch"> | string
     branchPhone?: StringWithAggregatesFilter<"Branch"> | string
-    branchCountryCode?: StringWithAggregatesFilter<"Branch"> | string
-    branchCountry?: StringWithAggregatesFilter<"Branch"> | string
-    branchStateCode?: StringWithAggregatesFilter<"Branch"> | string
-    branchState?: StringWithAggregatesFilter<"Branch"> | string
-    branchCity?: StringWithAggregatesFilter<"Branch"> | string
     branchAddress?: StringWithAggregatesFilter<"Branch"> | string
     status?: EnumRecordStatusWithAggregatesFilter<"Branch"> | $Enums.RecordStatus
     adminUserId?: StringNullableWithAggregatesFilter<"Branch"> | string | null
@@ -35100,6 +33673,11 @@ export namespace Prisma {
     updatedBy?: StringNullableWithAggregatesFilter<"Branch"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Branch"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Branch"> | Date | string
+    branchCity?: StringWithAggregatesFilter<"Branch"> | string
+    branchCountry?: StringWithAggregatesFilter<"Branch"> | string
+    branchCountryCode?: StringWithAggregatesFilter<"Branch"> | string
+    branchState?: StringWithAggregatesFilter<"Branch"> | string
+    branchStateCode?: StringWithAggregatesFilter<"Branch"> | string
   }
 
   export type LoginEventWhereInput = {
@@ -35187,20 +33765,6 @@ export namespace Prisma {
     title?: StringFilter<"Notification"> | string
     message?: StringFilter<"Notification"> | string
     actionLabel?: StringNullableFilter<"Notification"> | string | null
-    requestId?: StringNullableFilter<"Notification"> | string | null
-    requestStatus?: StringNullableFilter<"Notification"> | string | null
-    requestTitle?: StringNullableFilter<"Notification"> | string | null
-    requestReason?: StringNullableFilter<"Notification"> | string | null
-    requestDescription?: StringNullableFilter<"Notification"> | string | null
-    branchCourseId?: StringNullableFilter<"Notification"> | string | null
-    branchCourseName?: StringNullableFilter<"Notification"> | string | null
-    moduleId?: StringNullableFilter<"Notification"> | string | null
-    moduleName?: StringNullableFilter<"Notification"> | string | null
-    subModuleId?: StringNullableFilter<"Notification"> | string | null
-    subModuleName?: StringNullableFilter<"Notification"> | string | null
-    facultyId?: StringNullableFilter<"Notification"> | string | null
-    facultyName?: StringNullableFilter<"Notification"> | string | null
-    targetUserId?: StringNullableFilter<"Notification"> | string | null
     targetBranchId?: StringNullableFilter<"Notification"> | string | null
     targetBranchEmail?: StringNullableFilter<"Notification"> | string | null
     targetBranchName?: StringNullableFilter<"Notification"> | string | null
@@ -35209,6 +33773,20 @@ export namespace Prisma {
     createdBy?: StringNullableFilter<"Notification"> | string | null
     createdAt?: DateTimeFilter<"Notification"> | Date | string
     updatedAt?: DateTimeFilter<"Notification"> | Date | string
+    targetUserId?: StringNullableFilter<"Notification"> | string | null
+    branchCourseId?: StringNullableFilter<"Notification"> | string | null
+    branchCourseName?: StringNullableFilter<"Notification"> | string | null
+    facultyId?: StringNullableFilter<"Notification"> | string | null
+    facultyName?: StringNullableFilter<"Notification"> | string | null
+    moduleId?: StringNullableFilter<"Notification"> | string | null
+    moduleName?: StringNullableFilter<"Notification"> | string | null
+    requestDescription?: StringNullableFilter<"Notification"> | string | null
+    requestId?: StringNullableFilter<"Notification"> | string | null
+    requestReason?: StringNullableFilter<"Notification"> | string | null
+    requestStatus?: StringNullableFilter<"Notification"> | string | null
+    requestTitle?: StringNullableFilter<"Notification"> | string | null
+    subModuleId?: StringNullableFilter<"Notification"> | string | null
+    subModuleName?: StringNullableFilter<"Notification"> | string | null
     request?: XOR<CourseEditRequestNullableScalarRelationFilter, CourseEditRequestWhereInput> | null
     targetUser?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
   }
@@ -35220,20 +33798,6 @@ export namespace Prisma {
     title?: SortOrder
     message?: SortOrder
     actionLabel?: SortOrderInput | SortOrder
-    requestId?: SortOrderInput | SortOrder
-    requestStatus?: SortOrderInput | SortOrder
-    requestTitle?: SortOrderInput | SortOrder
-    requestReason?: SortOrderInput | SortOrder
-    requestDescription?: SortOrderInput | SortOrder
-    branchCourseId?: SortOrderInput | SortOrder
-    branchCourseName?: SortOrderInput | SortOrder
-    moduleId?: SortOrderInput | SortOrder
-    moduleName?: SortOrderInput | SortOrder
-    subModuleId?: SortOrderInput | SortOrder
-    subModuleName?: SortOrderInput | SortOrder
-    facultyId?: SortOrderInput | SortOrder
-    facultyName?: SortOrderInput | SortOrder
-    targetUserId?: SortOrderInput | SortOrder
     targetBranchId?: SortOrderInput | SortOrder
     targetBranchEmail?: SortOrderInput | SortOrder
     targetBranchName?: SortOrderInput | SortOrder
@@ -35242,6 +33806,20 @@ export namespace Prisma {
     createdBy?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    targetUserId?: SortOrderInput | SortOrder
+    branchCourseId?: SortOrderInput | SortOrder
+    branchCourseName?: SortOrderInput | SortOrder
+    facultyId?: SortOrderInput | SortOrder
+    facultyName?: SortOrderInput | SortOrder
+    moduleId?: SortOrderInput | SortOrder
+    moduleName?: SortOrderInput | SortOrder
+    requestDescription?: SortOrderInput | SortOrder
+    requestId?: SortOrderInput | SortOrder
+    requestReason?: SortOrderInput | SortOrder
+    requestStatus?: SortOrderInput | SortOrder
+    requestTitle?: SortOrderInput | SortOrder
+    subModuleId?: SortOrderInput | SortOrder
+    subModuleName?: SortOrderInput | SortOrder
     request?: CourseEditRequestOrderByWithRelationInput
     targetUser?: UserOrderByWithRelationInput
   }
@@ -35256,20 +33834,6 @@ export namespace Prisma {
     title?: StringFilter<"Notification"> | string
     message?: StringFilter<"Notification"> | string
     actionLabel?: StringNullableFilter<"Notification"> | string | null
-    requestId?: StringNullableFilter<"Notification"> | string | null
-    requestStatus?: StringNullableFilter<"Notification"> | string | null
-    requestTitle?: StringNullableFilter<"Notification"> | string | null
-    requestReason?: StringNullableFilter<"Notification"> | string | null
-    requestDescription?: StringNullableFilter<"Notification"> | string | null
-    branchCourseId?: StringNullableFilter<"Notification"> | string | null
-    branchCourseName?: StringNullableFilter<"Notification"> | string | null
-    moduleId?: StringNullableFilter<"Notification"> | string | null
-    moduleName?: StringNullableFilter<"Notification"> | string | null
-    subModuleId?: StringNullableFilter<"Notification"> | string | null
-    subModuleName?: StringNullableFilter<"Notification"> | string | null
-    facultyId?: StringNullableFilter<"Notification"> | string | null
-    facultyName?: StringNullableFilter<"Notification"> | string | null
-    targetUserId?: StringNullableFilter<"Notification"> | string | null
     targetBranchId?: StringNullableFilter<"Notification"> | string | null
     targetBranchEmail?: StringNullableFilter<"Notification"> | string | null
     targetBranchName?: StringNullableFilter<"Notification"> | string | null
@@ -35278,6 +33842,20 @@ export namespace Prisma {
     createdBy?: StringNullableFilter<"Notification"> | string | null
     createdAt?: DateTimeFilter<"Notification"> | Date | string
     updatedAt?: DateTimeFilter<"Notification"> | Date | string
+    targetUserId?: StringNullableFilter<"Notification"> | string | null
+    branchCourseId?: StringNullableFilter<"Notification"> | string | null
+    branchCourseName?: StringNullableFilter<"Notification"> | string | null
+    facultyId?: StringNullableFilter<"Notification"> | string | null
+    facultyName?: StringNullableFilter<"Notification"> | string | null
+    moduleId?: StringNullableFilter<"Notification"> | string | null
+    moduleName?: StringNullableFilter<"Notification"> | string | null
+    requestDescription?: StringNullableFilter<"Notification"> | string | null
+    requestId?: StringNullableFilter<"Notification"> | string | null
+    requestReason?: StringNullableFilter<"Notification"> | string | null
+    requestStatus?: StringNullableFilter<"Notification"> | string | null
+    requestTitle?: StringNullableFilter<"Notification"> | string | null
+    subModuleId?: StringNullableFilter<"Notification"> | string | null
+    subModuleName?: StringNullableFilter<"Notification"> | string | null
     request?: XOR<CourseEditRequestNullableScalarRelationFilter, CourseEditRequestWhereInput> | null
     targetUser?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
   }, "id">
@@ -35289,20 +33867,6 @@ export namespace Prisma {
     title?: SortOrder
     message?: SortOrder
     actionLabel?: SortOrderInput | SortOrder
-    requestId?: SortOrderInput | SortOrder
-    requestStatus?: SortOrderInput | SortOrder
-    requestTitle?: SortOrderInput | SortOrder
-    requestReason?: SortOrderInput | SortOrder
-    requestDescription?: SortOrderInput | SortOrder
-    branchCourseId?: SortOrderInput | SortOrder
-    branchCourseName?: SortOrderInput | SortOrder
-    moduleId?: SortOrderInput | SortOrder
-    moduleName?: SortOrderInput | SortOrder
-    subModuleId?: SortOrderInput | SortOrder
-    subModuleName?: SortOrderInput | SortOrder
-    facultyId?: SortOrderInput | SortOrder
-    facultyName?: SortOrderInput | SortOrder
-    targetUserId?: SortOrderInput | SortOrder
     targetBranchId?: SortOrderInput | SortOrder
     targetBranchEmail?: SortOrderInput | SortOrder
     targetBranchName?: SortOrderInput | SortOrder
@@ -35311,6 +33875,20 @@ export namespace Prisma {
     createdBy?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    targetUserId?: SortOrderInput | SortOrder
+    branchCourseId?: SortOrderInput | SortOrder
+    branchCourseName?: SortOrderInput | SortOrder
+    facultyId?: SortOrderInput | SortOrder
+    facultyName?: SortOrderInput | SortOrder
+    moduleId?: SortOrderInput | SortOrder
+    moduleName?: SortOrderInput | SortOrder
+    requestDescription?: SortOrderInput | SortOrder
+    requestId?: SortOrderInput | SortOrder
+    requestReason?: SortOrderInput | SortOrder
+    requestStatus?: SortOrderInput | SortOrder
+    requestTitle?: SortOrderInput | SortOrder
+    subModuleId?: SortOrderInput | SortOrder
+    subModuleName?: SortOrderInput | SortOrder
     _count?: NotificationCountOrderByAggregateInput
     _max?: NotificationMaxOrderByAggregateInput
     _min?: NotificationMinOrderByAggregateInput
@@ -35326,20 +33904,6 @@ export namespace Prisma {
     title?: StringWithAggregatesFilter<"Notification"> | string
     message?: StringWithAggregatesFilter<"Notification"> | string
     actionLabel?: StringNullableWithAggregatesFilter<"Notification"> | string | null
-    requestId?: StringNullableWithAggregatesFilter<"Notification"> | string | null
-    requestStatus?: StringNullableWithAggregatesFilter<"Notification"> | string | null
-    requestTitle?: StringNullableWithAggregatesFilter<"Notification"> | string | null
-    requestReason?: StringNullableWithAggregatesFilter<"Notification"> | string | null
-    requestDescription?: StringNullableWithAggregatesFilter<"Notification"> | string | null
-    branchCourseId?: StringNullableWithAggregatesFilter<"Notification"> | string | null
-    branchCourseName?: StringNullableWithAggregatesFilter<"Notification"> | string | null
-    moduleId?: StringNullableWithAggregatesFilter<"Notification"> | string | null
-    moduleName?: StringNullableWithAggregatesFilter<"Notification"> | string | null
-    subModuleId?: StringNullableWithAggregatesFilter<"Notification"> | string | null
-    subModuleName?: StringNullableWithAggregatesFilter<"Notification"> | string | null
-    facultyId?: StringNullableWithAggregatesFilter<"Notification"> | string | null
-    facultyName?: StringNullableWithAggregatesFilter<"Notification"> | string | null
-    targetUserId?: StringNullableWithAggregatesFilter<"Notification"> | string | null
     targetBranchId?: StringNullableWithAggregatesFilter<"Notification"> | string | null
     targetBranchEmail?: StringNullableWithAggregatesFilter<"Notification"> | string | null
     targetBranchName?: StringNullableWithAggregatesFilter<"Notification"> | string | null
@@ -35348,6 +33912,20 @@ export namespace Prisma {
     createdBy?: StringNullableWithAggregatesFilter<"Notification"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Notification"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Notification"> | Date | string
+    targetUserId?: StringNullableWithAggregatesFilter<"Notification"> | string | null
+    branchCourseId?: StringNullableWithAggregatesFilter<"Notification"> | string | null
+    branchCourseName?: StringNullableWithAggregatesFilter<"Notification"> | string | null
+    facultyId?: StringNullableWithAggregatesFilter<"Notification"> | string | null
+    facultyName?: StringNullableWithAggregatesFilter<"Notification"> | string | null
+    moduleId?: StringNullableWithAggregatesFilter<"Notification"> | string | null
+    moduleName?: StringNullableWithAggregatesFilter<"Notification"> | string | null
+    requestDescription?: StringNullableWithAggregatesFilter<"Notification"> | string | null
+    requestId?: StringNullableWithAggregatesFilter<"Notification"> | string | null
+    requestReason?: StringNullableWithAggregatesFilter<"Notification"> | string | null
+    requestStatus?: StringNullableWithAggregatesFilter<"Notification"> | string | null
+    requestTitle?: StringNullableWithAggregatesFilter<"Notification"> | string | null
+    subModuleId?: StringNullableWithAggregatesFilter<"Notification"> | string | null
+    subModuleName?: StringNullableWithAggregatesFilter<"Notification"> | string | null
   }
 
   export type CourseEditRequestWhereInput = {
@@ -35572,8 +34150,6 @@ export namespace Prisma {
     id?: StringFilter<"Course"> | string
     name?: StringFilter<"Course"> | string
     nameKey?: StringFilter<"Course"> | string
-    courseCode?: StringNullableFilter<"Course"> | string | null
-    branchId?: StringNullableFilter<"Course"> | string | null
     description?: StringNullableFilter<"Course"> | string | null
     feeReference?: StringNullableFilter<"Course"> | string | null
     mode?: StringFilter<"Course"> | string
@@ -35587,7 +34163,6 @@ export namespace Prisma {
     installment1?: IntNullableFilter<"Course"> | number | null
     installment2?: IntNullableFilter<"Course"> | number | null
     installment3?: IntNullableFilter<"Course"> | number | null
-    installments?: JsonNullableFilter<"Course">
     status?: EnumRecordStatusFilter<"Course"> | $Enums.RecordStatus
     statusChangedAt?: DateTimeNullableFilter<"Course"> | Date | string | null
     statusChangedBy?: StringNullableFilter<"Course"> | string | null
@@ -35595,23 +34170,24 @@ export namespace Prisma {
     updatedBy?: StringNullableFilter<"Course"> | string | null
     createdAt?: DateTimeFilter<"Course"> | Date | string
     updatedAt?: DateTimeFilter<"Course"> | Date | string
+    installments?: JsonNullableFilter<"Course">
+    branchId?: StringNullableFilter<"Course"> | string | null
+    courseCode?: StringNullableFilter<"Course"> | string | null
+    batches?: BatchListRelationFilter
+    branchFaculties?: BranchFacultyListRelationFilter
     branch?: XOR<BranchNullableScalarRelationFilter, BranchWhereInput> | null
     modules?: CourseModuleListRelationFilter
-    batches?: BatchListRelationFilter
-    students?: StudentProfileListRelationFilter
-    facultyProfiles?: FacultyProfileListRelationFilter
-    facultyCourseAssignments?: FacultyCourseAssignmentListRelationFilter
-    facultyBatchEntries?: FacultyBatchEntryListRelationFilter
     statusHistory?: CourseStatusHistoryListRelationFilter
-    branchFaculties?: BranchFacultyListRelationFilter
+    facultyBatchEntries?: FacultyBatchEntryListRelationFilter
+    facultyCourseAssignments?: FacultyCourseAssignmentListRelationFilter
+    facultyProfiles?: FacultyProfileListRelationFilter
+    students?: StudentProfileListRelationFilter
   }
 
   export type CourseOrderByWithRelationInput = {
     id?: SortOrder
     name?: SortOrder
     nameKey?: SortOrder
-    courseCode?: SortOrderInput | SortOrder
-    branchId?: SortOrderInput | SortOrder
     description?: SortOrderInput | SortOrder
     feeReference?: SortOrderInput | SortOrder
     mode?: SortOrder
@@ -35625,7 +34201,6 @@ export namespace Prisma {
     installment1?: SortOrderInput | SortOrder
     installment2?: SortOrderInput | SortOrder
     installment3?: SortOrderInput | SortOrder
-    installments?: SortOrderInput | SortOrder
     status?: SortOrder
     statusChangedAt?: SortOrderInput | SortOrder
     statusChangedBy?: SortOrderInput | SortOrder
@@ -35633,15 +34208,18 @@ export namespace Prisma {
     updatedBy?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    installments?: SortOrderInput | SortOrder
+    branchId?: SortOrderInput | SortOrder
+    courseCode?: SortOrderInput | SortOrder
+    batches?: BatchOrderByRelationAggregateInput
+    branchFaculties?: BranchFacultyOrderByRelationAggregateInput
     branch?: BranchOrderByWithRelationInput
     modules?: CourseModuleOrderByRelationAggregateInput
-    batches?: BatchOrderByRelationAggregateInput
-    students?: StudentProfileOrderByRelationAggregateInput
-    facultyProfiles?: FacultyProfileOrderByRelationAggregateInput
-    facultyCourseAssignments?: FacultyCourseAssignmentOrderByRelationAggregateInput
-    facultyBatchEntries?: FacultyBatchEntryOrderByRelationAggregateInput
     statusHistory?: CourseStatusHistoryOrderByRelationAggregateInput
-    branchFaculties?: BranchFacultyOrderByRelationAggregateInput
+    facultyBatchEntries?: FacultyBatchEntryOrderByRelationAggregateInput
+    facultyCourseAssignments?: FacultyCourseAssignmentOrderByRelationAggregateInput
+    facultyProfiles?: FacultyProfileOrderByRelationAggregateInput
+    students?: StudentProfileOrderByRelationAggregateInput
   }
 
   export type CourseWhereUniqueInput = Prisma.AtLeast<{
@@ -35651,8 +34229,6 @@ export namespace Prisma {
     NOT?: CourseWhereInput | CourseWhereInput[]
     name?: StringFilter<"Course"> | string
     nameKey?: StringFilter<"Course"> | string
-    courseCode?: StringNullableFilter<"Course"> | string | null
-    branchId?: StringNullableFilter<"Course"> | string | null
     description?: StringNullableFilter<"Course"> | string | null
     feeReference?: StringNullableFilter<"Course"> | string | null
     mode?: StringFilter<"Course"> | string
@@ -35666,7 +34242,6 @@ export namespace Prisma {
     installment1?: IntNullableFilter<"Course"> | number | null
     installment2?: IntNullableFilter<"Course"> | number | null
     installment3?: IntNullableFilter<"Course"> | number | null
-    installments?: JsonNullableFilter<"Course">
     status?: EnumRecordStatusFilter<"Course"> | $Enums.RecordStatus
     statusChangedAt?: DateTimeNullableFilter<"Course"> | Date | string | null
     statusChangedBy?: StringNullableFilter<"Course"> | string | null
@@ -35674,23 +34249,24 @@ export namespace Prisma {
     updatedBy?: StringNullableFilter<"Course"> | string | null
     createdAt?: DateTimeFilter<"Course"> | Date | string
     updatedAt?: DateTimeFilter<"Course"> | Date | string
+    installments?: JsonNullableFilter<"Course">
+    branchId?: StringNullableFilter<"Course"> | string | null
+    courseCode?: StringNullableFilter<"Course"> | string | null
+    batches?: BatchListRelationFilter
+    branchFaculties?: BranchFacultyListRelationFilter
     branch?: XOR<BranchNullableScalarRelationFilter, BranchWhereInput> | null
     modules?: CourseModuleListRelationFilter
-    batches?: BatchListRelationFilter
-    students?: StudentProfileListRelationFilter
-    facultyProfiles?: FacultyProfileListRelationFilter
-    facultyCourseAssignments?: FacultyCourseAssignmentListRelationFilter
-    facultyBatchEntries?: FacultyBatchEntryListRelationFilter
     statusHistory?: CourseStatusHistoryListRelationFilter
-    branchFaculties?: BranchFacultyListRelationFilter
+    facultyBatchEntries?: FacultyBatchEntryListRelationFilter
+    facultyCourseAssignments?: FacultyCourseAssignmentListRelationFilter
+    facultyProfiles?: FacultyProfileListRelationFilter
+    students?: StudentProfileListRelationFilter
   }, "id">
 
   export type CourseOrderByWithAggregationInput = {
     id?: SortOrder
     name?: SortOrder
     nameKey?: SortOrder
-    courseCode?: SortOrderInput | SortOrder
-    branchId?: SortOrderInput | SortOrder
     description?: SortOrderInput | SortOrder
     feeReference?: SortOrderInput | SortOrder
     mode?: SortOrder
@@ -35704,7 +34280,6 @@ export namespace Prisma {
     installment1?: SortOrderInput | SortOrder
     installment2?: SortOrderInput | SortOrder
     installment3?: SortOrderInput | SortOrder
-    installments?: SortOrderInput | SortOrder
     status?: SortOrder
     statusChangedAt?: SortOrderInput | SortOrder
     statusChangedBy?: SortOrderInput | SortOrder
@@ -35712,6 +34287,9 @@ export namespace Prisma {
     updatedBy?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    installments?: SortOrderInput | SortOrder
+    branchId?: SortOrderInput | SortOrder
+    courseCode?: SortOrderInput | SortOrder
     _count?: CourseCountOrderByAggregateInput
     _avg?: CourseAvgOrderByAggregateInput
     _max?: CourseMaxOrderByAggregateInput
@@ -35726,8 +34304,6 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Course"> | string
     name?: StringWithAggregatesFilter<"Course"> | string
     nameKey?: StringWithAggregatesFilter<"Course"> | string
-    courseCode?: StringNullableWithAggregatesFilter<"Course"> | string | null
-    branchId?: StringNullableWithAggregatesFilter<"Course"> | string | null
     description?: StringNullableWithAggregatesFilter<"Course"> | string | null
     feeReference?: StringNullableWithAggregatesFilter<"Course"> | string | null
     mode?: StringWithAggregatesFilter<"Course"> | string
@@ -35741,7 +34317,6 @@ export namespace Prisma {
     installment1?: IntNullableWithAggregatesFilter<"Course"> | number | null
     installment2?: IntNullableWithAggregatesFilter<"Course"> | number | null
     installment3?: IntNullableWithAggregatesFilter<"Course"> | number | null
-    installments?: JsonNullableWithAggregatesFilter<"Course">
     status?: EnumRecordStatusWithAggregatesFilter<"Course"> | $Enums.RecordStatus
     statusChangedAt?: DateTimeNullableWithAggregatesFilter<"Course"> | Date | string | null
     statusChangedBy?: StringNullableWithAggregatesFilter<"Course"> | string | null
@@ -35749,6 +34324,9 @@ export namespace Prisma {
     updatedBy?: StringNullableWithAggregatesFilter<"Course"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Course"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Course"> | Date | string
+    installments?: JsonNullableWithAggregatesFilter<"Course">
+    branchId?: StringNullableWithAggregatesFilter<"Course"> | string | null
+    courseCode?: StringNullableWithAggregatesFilter<"Course"> | string | null
   }
 
   export type BranchCourseWhereInput = {
@@ -35776,7 +34354,6 @@ export namespace Prisma {
     branch?: XOR<BranchScalarRelationFilter, BranchWhereInput>
     modules?: BranchCourseModuleListRelationFilter
     branchFaculties?: BranchFacultyListRelationFilter
-    installmentTemplate?: XOR<BranchInstallmentTemplateNullableScalarRelationFilter, BranchInstallmentTemplateWhereInput> | null
   }
 
   export type BranchCourseOrderByWithRelationInput = {
@@ -35801,7 +34378,6 @@ export namespace Prisma {
     branch?: BranchOrderByWithRelationInput
     modules?: BranchCourseModuleOrderByRelationAggregateInput
     branchFaculties?: BranchFacultyOrderByRelationAggregateInput
-    installmentTemplate?: BranchInstallmentTemplateOrderByWithRelationInput
   }
 
   export type BranchCourseWhereUniqueInput = Prisma.AtLeast<{
@@ -35831,7 +34407,6 @@ export namespace Prisma {
     branch?: XOR<BranchScalarRelationFilter, BranchWhereInput>
     modules?: BranchCourseModuleListRelationFilter
     branchFaculties?: BranchFacultyListRelationFilter
-    installmentTemplate?: XOR<BranchInstallmentTemplateNullableScalarRelationFilter, BranchInstallmentTemplateWhereInput> | null
   }, "id" | "branchId_nameKey" | "branchId_courseCode">
 
   export type BranchCourseOrderByWithAggregationInput = {
@@ -35882,111 +34457,6 @@ export namespace Prisma {
     updatedBy?: StringNullableWithAggregatesFilter<"BranchCourse"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"BranchCourse"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"BranchCourse"> | Date | string
-  }
-
-  export type BranchInstallmentTemplateWhereInput = {
-    AND?: BranchInstallmentTemplateWhereInput | BranchInstallmentTemplateWhereInput[]
-    OR?: BranchInstallmentTemplateWhereInput[]
-    NOT?: BranchInstallmentTemplateWhereInput | BranchInstallmentTemplateWhereInput[]
-    id?: StringFilter<"BranchInstallmentTemplate"> | string
-    branchId?: StringFilter<"BranchInstallmentTemplate"> | string
-    branchCourseId?: StringNullableFilter<"BranchInstallmentTemplate"> | string | null
-    templateName?: StringFilter<"BranchInstallmentTemplate"> | string
-    planType?: StringFilter<"BranchInstallmentTemplate"> | string
-    installmentCount?: IntFilter<"BranchInstallmentTemplate"> | number
-    installments?: JsonFilter<"BranchInstallmentTemplate">
-    dueRule?: StringNullableFilter<"BranchInstallmentTemplate"> | string | null
-    allowCustomization?: BoolFilter<"BranchInstallmentTemplate"> | boolean
-    status?: EnumRecordStatusFilter<"BranchInstallmentTemplate"> | $Enums.RecordStatus
-    createdBy?: StringNullableFilter<"BranchInstallmentTemplate"> | string | null
-    updatedBy?: StringNullableFilter<"BranchInstallmentTemplate"> | string | null
-    createdAt?: DateTimeFilter<"BranchInstallmentTemplate"> | Date | string
-    updatedAt?: DateTimeFilter<"BranchInstallmentTemplate"> | Date | string
-    branch?: XOR<BranchScalarRelationFilter, BranchWhereInput>
-    branchCourse?: XOR<BranchCourseNullableScalarRelationFilter, BranchCourseWhereInput> | null
-  }
-
-  export type BranchInstallmentTemplateOrderByWithRelationInput = {
-    id?: SortOrder
-    branchId?: SortOrder
-    branchCourseId?: SortOrderInput | SortOrder
-    templateName?: SortOrder
-    planType?: SortOrder
-    installmentCount?: SortOrder
-    installments?: SortOrder
-    dueRule?: SortOrderInput | SortOrder
-    allowCustomization?: SortOrder
-    status?: SortOrder
-    createdBy?: SortOrderInput | SortOrder
-    updatedBy?: SortOrderInput | SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    branch?: BranchOrderByWithRelationInput
-    branchCourse?: BranchCourseOrderByWithRelationInput
-  }
-
-  export type BranchInstallmentTemplateWhereUniqueInput = Prisma.AtLeast<{
-    id?: string
-    branchCourseId?: string
-    AND?: BranchInstallmentTemplateWhereInput | BranchInstallmentTemplateWhereInput[]
-    OR?: BranchInstallmentTemplateWhereInput[]
-    NOT?: BranchInstallmentTemplateWhereInput | BranchInstallmentTemplateWhereInput[]
-    branchId?: StringFilter<"BranchInstallmentTemplate"> | string
-    templateName?: StringFilter<"BranchInstallmentTemplate"> | string
-    planType?: StringFilter<"BranchInstallmentTemplate"> | string
-    installmentCount?: IntFilter<"BranchInstallmentTemplate"> | number
-    installments?: JsonFilter<"BranchInstallmentTemplate">
-    dueRule?: StringNullableFilter<"BranchInstallmentTemplate"> | string | null
-    allowCustomization?: BoolFilter<"BranchInstallmentTemplate"> | boolean
-    status?: EnumRecordStatusFilter<"BranchInstallmentTemplate"> | $Enums.RecordStatus
-    createdBy?: StringNullableFilter<"BranchInstallmentTemplate"> | string | null
-    updatedBy?: StringNullableFilter<"BranchInstallmentTemplate"> | string | null
-    createdAt?: DateTimeFilter<"BranchInstallmentTemplate"> | Date | string
-    updatedAt?: DateTimeFilter<"BranchInstallmentTemplate"> | Date | string
-    branch?: XOR<BranchScalarRelationFilter, BranchWhereInput>
-    branchCourse?: XOR<BranchCourseNullableScalarRelationFilter, BranchCourseWhereInput> | null
-  }, "id" | "branchCourseId">
-
-  export type BranchInstallmentTemplateOrderByWithAggregationInput = {
-    id?: SortOrder
-    branchId?: SortOrder
-    branchCourseId?: SortOrderInput | SortOrder
-    templateName?: SortOrder
-    planType?: SortOrder
-    installmentCount?: SortOrder
-    installments?: SortOrder
-    dueRule?: SortOrderInput | SortOrder
-    allowCustomization?: SortOrder
-    status?: SortOrder
-    createdBy?: SortOrderInput | SortOrder
-    updatedBy?: SortOrderInput | SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    _count?: BranchInstallmentTemplateCountOrderByAggregateInput
-    _avg?: BranchInstallmentTemplateAvgOrderByAggregateInput
-    _max?: BranchInstallmentTemplateMaxOrderByAggregateInput
-    _min?: BranchInstallmentTemplateMinOrderByAggregateInput
-    _sum?: BranchInstallmentTemplateSumOrderByAggregateInput
-  }
-
-  export type BranchInstallmentTemplateScalarWhereWithAggregatesInput = {
-    AND?: BranchInstallmentTemplateScalarWhereWithAggregatesInput | BranchInstallmentTemplateScalarWhereWithAggregatesInput[]
-    OR?: BranchInstallmentTemplateScalarWhereWithAggregatesInput[]
-    NOT?: BranchInstallmentTemplateScalarWhereWithAggregatesInput | BranchInstallmentTemplateScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"BranchInstallmentTemplate"> | string
-    branchId?: StringWithAggregatesFilter<"BranchInstallmentTemplate"> | string
-    branchCourseId?: StringNullableWithAggregatesFilter<"BranchInstallmentTemplate"> | string | null
-    templateName?: StringWithAggregatesFilter<"BranchInstallmentTemplate"> | string
-    planType?: StringWithAggregatesFilter<"BranchInstallmentTemplate"> | string
-    installmentCount?: IntWithAggregatesFilter<"BranchInstallmentTemplate"> | number
-    installments?: JsonWithAggregatesFilter<"BranchInstallmentTemplate">
-    dueRule?: StringNullableWithAggregatesFilter<"BranchInstallmentTemplate"> | string | null
-    allowCustomization?: BoolWithAggregatesFilter<"BranchInstallmentTemplate"> | boolean
-    status?: EnumRecordStatusWithAggregatesFilter<"BranchInstallmentTemplate"> | $Enums.RecordStatus
-    createdBy?: StringNullableWithAggregatesFilter<"BranchInstallmentTemplate"> | string | null
-    updatedBy?: StringNullableWithAggregatesFilter<"BranchInstallmentTemplate"> | string | null
-    createdAt?: DateTimeWithAggregatesFilter<"BranchInstallmentTemplate"> | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter<"BranchInstallmentTemplate"> | Date | string
   }
 
   export type BranchCourseModuleWhereInput = {
@@ -36639,14 +35109,11 @@ export namespace Prisma {
     studentName?: StringFilter<"StudentProfile"> | string
     mobileNumber?: StringFilter<"StudentProfile"> | string
     emailAddress?: StringFilter<"StudentProfile"> | string
-    linkedInUrl?: StringNullableFilter<"StudentProfile"> | string | null
     parentSpouseNumber?: StringNullableFilter<"StudentProfile"> | string | null
     location?: StringNullableFilter<"StudentProfile"> | string | null
     courseId?: StringNullableFilter<"StudentProfile"> | string | null
     courseInterested?: StringFilter<"StudentProfile"> | string
-    facultyId?: StringNullableFilter<"StudentProfile"> | string | null
     facultyName?: StringNullableFilter<"StudentProfile"> | string | null
-    batchId?: StringNullableFilter<"StudentProfile"> | string | null
     batchName?: StringNullableFilter<"StudentProfile"> | string | null
     qualification?: StringNullableFilter<"StudentProfile"> | string | null
     passedOutYear?: IntNullableFilter<"StudentProfile"> | number | null
@@ -36660,7 +35127,6 @@ export namespace Prisma {
     installment1?: IntNullableFilter<"StudentProfile"> | number | null
     installment2?: IntNullableFilter<"StudentProfile"> | number | null
     installment3?: IntNullableFilter<"StudentProfile"> | number | null
-    installment4?: IntNullableFilter<"StudentProfile"> | number | null
     totalAmount?: IntNullableFilter<"StudentProfile"> | number | null
     admissionDate?: StringFilter<"StudentProfile"> | string
     firstInstallmentAmount?: IntNullableFilter<"StudentProfile"> | number | null
@@ -36677,8 +35143,12 @@ export namespace Prisma {
     updatedBy?: StringNullableFilter<"StudentProfile"> | string | null
     createdAt?: DateTimeFilter<"StudentProfile"> | Date | string
     updatedAt?: DateTimeFilter<"StudentProfile"> | Date | string
-    course?: XOR<CourseNullableScalarRelationFilter, CourseWhereInput> | null
+    installment4?: IntNullableFilter<"StudentProfile"> | number | null
+    batchId?: StringNullableFilter<"StudentProfile"> | string | null
+    facultyId?: StringNullableFilter<"StudentProfile"> | string | null
+    linkedInUrl?: StringNullableFilter<"StudentProfile"> | string | null
     attendanceRecords?: StudentAttendanceListRelationFilter
+    course?: XOR<CourseNullableScalarRelationFilter, CourseWhereInput> | null
   }
 
   export type StudentProfileOrderByWithRelationInput = {
@@ -36687,14 +35157,11 @@ export namespace Prisma {
     studentName?: SortOrder
     mobileNumber?: SortOrder
     emailAddress?: SortOrder
-    linkedInUrl?: SortOrderInput | SortOrder
     parentSpouseNumber?: SortOrderInput | SortOrder
     location?: SortOrderInput | SortOrder
     courseId?: SortOrderInput | SortOrder
     courseInterested?: SortOrder
-    facultyId?: SortOrderInput | SortOrder
     facultyName?: SortOrderInput | SortOrder
-    batchId?: SortOrderInput | SortOrder
     batchName?: SortOrderInput | SortOrder
     qualification?: SortOrderInput | SortOrder
     passedOutYear?: SortOrderInput | SortOrder
@@ -36708,7 +35175,6 @@ export namespace Prisma {
     installment1?: SortOrderInput | SortOrder
     installment2?: SortOrderInput | SortOrder
     installment3?: SortOrderInput | SortOrder
-    installment4?: SortOrderInput | SortOrder
     totalAmount?: SortOrderInput | SortOrder
     admissionDate?: SortOrder
     firstInstallmentAmount?: SortOrderInput | SortOrder
@@ -36725,8 +35191,12 @@ export namespace Prisma {
     updatedBy?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    course?: CourseOrderByWithRelationInput
+    installment4?: SortOrderInput | SortOrder
+    batchId?: SortOrderInput | SortOrder
+    facultyId?: SortOrderInput | SortOrder
+    linkedInUrl?: SortOrderInput | SortOrder
     attendanceRecords?: StudentAttendanceOrderByRelationAggregateInput
+    course?: CourseOrderByWithRelationInput
   }
 
   export type StudentProfileWhereUniqueInput = Prisma.AtLeast<{
@@ -36738,14 +35208,11 @@ export namespace Prisma {
     OR?: StudentProfileWhereInput[]
     NOT?: StudentProfileWhereInput | StudentProfileWhereInput[]
     studentName?: StringFilter<"StudentProfile"> | string
-    linkedInUrl?: StringNullableFilter<"StudentProfile"> | string | null
     parentSpouseNumber?: StringNullableFilter<"StudentProfile"> | string | null
     location?: StringNullableFilter<"StudentProfile"> | string | null
     courseId?: StringNullableFilter<"StudentProfile"> | string | null
     courseInterested?: StringFilter<"StudentProfile"> | string
-    facultyId?: StringNullableFilter<"StudentProfile"> | string | null
     facultyName?: StringNullableFilter<"StudentProfile"> | string | null
-    batchId?: StringNullableFilter<"StudentProfile"> | string | null
     batchName?: StringNullableFilter<"StudentProfile"> | string | null
     qualification?: StringNullableFilter<"StudentProfile"> | string | null
     passedOutYear?: IntNullableFilter<"StudentProfile"> | number | null
@@ -36759,7 +35226,6 @@ export namespace Prisma {
     installment1?: IntNullableFilter<"StudentProfile"> | number | null
     installment2?: IntNullableFilter<"StudentProfile"> | number | null
     installment3?: IntNullableFilter<"StudentProfile"> | number | null
-    installment4?: IntNullableFilter<"StudentProfile"> | number | null
     totalAmount?: IntNullableFilter<"StudentProfile"> | number | null
     admissionDate?: StringFilter<"StudentProfile"> | string
     firstInstallmentAmount?: IntNullableFilter<"StudentProfile"> | number | null
@@ -36776,8 +35242,12 @@ export namespace Prisma {
     updatedBy?: StringNullableFilter<"StudentProfile"> | string | null
     createdAt?: DateTimeFilter<"StudentProfile"> | Date | string
     updatedAt?: DateTimeFilter<"StudentProfile"> | Date | string
-    course?: XOR<CourseNullableScalarRelationFilter, CourseWhereInput> | null
+    installment4?: IntNullableFilter<"StudentProfile"> | number | null
+    batchId?: StringNullableFilter<"StudentProfile"> | string | null
+    facultyId?: StringNullableFilter<"StudentProfile"> | string | null
+    linkedInUrl?: StringNullableFilter<"StudentProfile"> | string | null
     attendanceRecords?: StudentAttendanceListRelationFilter
+    course?: XOR<CourseNullableScalarRelationFilter, CourseWhereInput> | null
   }, "id" | "studentCode" | "mobileNumber" | "emailAddress">
 
   export type StudentProfileOrderByWithAggregationInput = {
@@ -36786,14 +35256,11 @@ export namespace Prisma {
     studentName?: SortOrder
     mobileNumber?: SortOrder
     emailAddress?: SortOrder
-    linkedInUrl?: SortOrderInput | SortOrder
     parentSpouseNumber?: SortOrderInput | SortOrder
     location?: SortOrderInput | SortOrder
     courseId?: SortOrderInput | SortOrder
     courseInterested?: SortOrder
-    facultyId?: SortOrderInput | SortOrder
     facultyName?: SortOrderInput | SortOrder
-    batchId?: SortOrderInput | SortOrder
     batchName?: SortOrderInput | SortOrder
     qualification?: SortOrderInput | SortOrder
     passedOutYear?: SortOrderInput | SortOrder
@@ -36807,7 +35274,6 @@ export namespace Prisma {
     installment1?: SortOrderInput | SortOrder
     installment2?: SortOrderInput | SortOrder
     installment3?: SortOrderInput | SortOrder
-    installment4?: SortOrderInput | SortOrder
     totalAmount?: SortOrderInput | SortOrder
     admissionDate?: SortOrder
     firstInstallmentAmount?: SortOrderInput | SortOrder
@@ -36824,6 +35290,10 @@ export namespace Prisma {
     updatedBy?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    installment4?: SortOrderInput | SortOrder
+    batchId?: SortOrderInput | SortOrder
+    facultyId?: SortOrderInput | SortOrder
+    linkedInUrl?: SortOrderInput | SortOrder
     _count?: StudentProfileCountOrderByAggregateInput
     _avg?: StudentProfileAvgOrderByAggregateInput
     _max?: StudentProfileMaxOrderByAggregateInput
@@ -36840,14 +35310,11 @@ export namespace Prisma {
     studentName?: StringWithAggregatesFilter<"StudentProfile"> | string
     mobileNumber?: StringWithAggregatesFilter<"StudentProfile"> | string
     emailAddress?: StringWithAggregatesFilter<"StudentProfile"> | string
-    linkedInUrl?: StringNullableWithAggregatesFilter<"StudentProfile"> | string | null
     parentSpouseNumber?: StringNullableWithAggregatesFilter<"StudentProfile"> | string | null
     location?: StringNullableWithAggregatesFilter<"StudentProfile"> | string | null
     courseId?: StringNullableWithAggregatesFilter<"StudentProfile"> | string | null
     courseInterested?: StringWithAggregatesFilter<"StudentProfile"> | string
-    facultyId?: StringNullableWithAggregatesFilter<"StudentProfile"> | string | null
     facultyName?: StringNullableWithAggregatesFilter<"StudentProfile"> | string | null
-    batchId?: StringNullableWithAggregatesFilter<"StudentProfile"> | string | null
     batchName?: StringNullableWithAggregatesFilter<"StudentProfile"> | string | null
     qualification?: StringNullableWithAggregatesFilter<"StudentProfile"> | string | null
     passedOutYear?: IntNullableWithAggregatesFilter<"StudentProfile"> | number | null
@@ -36861,7 +35328,6 @@ export namespace Prisma {
     installment1?: IntNullableWithAggregatesFilter<"StudentProfile"> | number | null
     installment2?: IntNullableWithAggregatesFilter<"StudentProfile"> | number | null
     installment3?: IntNullableWithAggregatesFilter<"StudentProfile"> | number | null
-    installment4?: IntNullableWithAggregatesFilter<"StudentProfile"> | number | null
     totalAmount?: IntNullableWithAggregatesFilter<"StudentProfile"> | number | null
     admissionDate?: StringWithAggregatesFilter<"StudentProfile"> | string
     firstInstallmentAmount?: IntNullableWithAggregatesFilter<"StudentProfile"> | number | null
@@ -36878,6 +35344,10 @@ export namespace Prisma {
     updatedBy?: StringNullableWithAggregatesFilter<"StudentProfile"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"StudentProfile"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"StudentProfile"> | Date | string
+    installment4?: IntNullableWithAggregatesFilter<"StudentProfile"> | number | null
+    batchId?: StringNullableWithAggregatesFilter<"StudentProfile"> | string | null
+    facultyId?: StringNullableWithAggregatesFilter<"StudentProfile"> | string | null
+    linkedInUrl?: StringNullableWithAggregatesFilter<"StudentProfile"> | string | null
   }
 
   export type BranchStudentWhereInput = {
@@ -36890,7 +35360,6 @@ export namespace Prisma {
     studentName?: StringFilter<"BranchStudent"> | string
     mobileNumber?: StringFilter<"BranchStudent"> | string
     emailAddress?: StringFilter<"BranchStudent"> | string
-    linkedInUrl?: StringNullableFilter<"BranchStudent"> | string | null
     parentSpouseNumber?: StringNullableFilter<"BranchStudent"> | string | null
     countryCode?: StringNullableFilter<"BranchStudent"> | string | null
     country?: StringNullableFilter<"BranchStudent"> | string | null
@@ -36904,13 +35373,14 @@ export namespace Prisma {
     designation?: StringNullableFilter<"BranchStudent"> | string | null
     source?: StringNullableFilter<"BranchStudent"> | string | null
     sourceOther?: StringNullableFilter<"BranchStudent"> | string | null
-    remarks?: StringNullableFilter<"BranchStudent"> | string | null
     admissionDate?: StringFilter<"BranchStudent"> | string
     recordStatus?: EnumRecordStatusFilter<"BranchStudent"> | $Enums.RecordStatus
     createdBy?: StringNullableFilter<"BranchStudent"> | string | null
     updatedBy?: StringNullableFilter<"BranchStudent"> | string | null
     createdAt?: DateTimeFilter<"BranchStudent"> | Date | string
     updatedAt?: DateTimeFilter<"BranchStudent"> | Date | string
+    linkedInUrl?: StringNullableFilter<"BranchStudent"> | string | null
+    remarks?: StringNullableFilter<"BranchStudent"> | string | null
     branch?: XOR<BranchScalarRelationFilter, BranchWhereInput>
   }
 
@@ -36921,7 +35391,6 @@ export namespace Prisma {
     studentName?: SortOrder
     mobileNumber?: SortOrder
     emailAddress?: SortOrder
-    linkedInUrl?: SortOrderInput | SortOrder
     parentSpouseNumber?: SortOrderInput | SortOrder
     countryCode?: SortOrderInput | SortOrder
     country?: SortOrderInput | SortOrder
@@ -36935,13 +35404,14 @@ export namespace Prisma {
     designation?: SortOrderInput | SortOrder
     source?: SortOrderInput | SortOrder
     sourceOther?: SortOrderInput | SortOrder
-    remarks?: SortOrderInput | SortOrder
     admissionDate?: SortOrder
     recordStatus?: SortOrder
     createdBy?: SortOrderInput | SortOrder
     updatedBy?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    linkedInUrl?: SortOrderInput | SortOrder
+    remarks?: SortOrderInput | SortOrder
     branch?: BranchOrderByWithRelationInput
   }
 
@@ -36956,7 +35426,6 @@ export namespace Prisma {
     branchId?: StringFilter<"BranchStudent"> | string
     studentId?: StringFilter<"BranchStudent"> | string
     studentName?: StringFilter<"BranchStudent"> | string
-    linkedInUrl?: StringNullableFilter<"BranchStudent"> | string | null
     parentSpouseNumber?: StringNullableFilter<"BranchStudent"> | string | null
     countryCode?: StringNullableFilter<"BranchStudent"> | string | null
     country?: StringNullableFilter<"BranchStudent"> | string | null
@@ -36970,13 +35439,14 @@ export namespace Prisma {
     designation?: StringNullableFilter<"BranchStudent"> | string | null
     source?: StringNullableFilter<"BranchStudent"> | string | null
     sourceOther?: StringNullableFilter<"BranchStudent"> | string | null
-    remarks?: StringNullableFilter<"BranchStudent"> | string | null
     admissionDate?: StringFilter<"BranchStudent"> | string
     recordStatus?: EnumRecordStatusFilter<"BranchStudent"> | $Enums.RecordStatus
     createdBy?: StringNullableFilter<"BranchStudent"> | string | null
     updatedBy?: StringNullableFilter<"BranchStudent"> | string | null
     createdAt?: DateTimeFilter<"BranchStudent"> | Date | string
     updatedAt?: DateTimeFilter<"BranchStudent"> | Date | string
+    linkedInUrl?: StringNullableFilter<"BranchStudent"> | string | null
+    remarks?: StringNullableFilter<"BranchStudent"> | string | null
     branch?: XOR<BranchScalarRelationFilter, BranchWhereInput>
   }, "id" | "mobileNumber" | "emailAddress" | "branchId_studentId">
 
@@ -36987,7 +35457,6 @@ export namespace Prisma {
     studentName?: SortOrder
     mobileNumber?: SortOrder
     emailAddress?: SortOrder
-    linkedInUrl?: SortOrderInput | SortOrder
     parentSpouseNumber?: SortOrderInput | SortOrder
     countryCode?: SortOrderInput | SortOrder
     country?: SortOrderInput | SortOrder
@@ -37001,13 +35470,14 @@ export namespace Prisma {
     designation?: SortOrderInput | SortOrder
     source?: SortOrderInput | SortOrder
     sourceOther?: SortOrderInput | SortOrder
-    remarks?: SortOrderInput | SortOrder
     admissionDate?: SortOrder
     recordStatus?: SortOrder
     createdBy?: SortOrderInput | SortOrder
     updatedBy?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    linkedInUrl?: SortOrderInput | SortOrder
+    remarks?: SortOrderInput | SortOrder
     _count?: BranchStudentCountOrderByAggregateInput
     _max?: BranchStudentMaxOrderByAggregateInput
     _min?: BranchStudentMinOrderByAggregateInput
@@ -37023,7 +35493,6 @@ export namespace Prisma {
     studentName?: StringWithAggregatesFilter<"BranchStudent"> | string
     mobileNumber?: StringWithAggregatesFilter<"BranchStudent"> | string
     emailAddress?: StringWithAggregatesFilter<"BranchStudent"> | string
-    linkedInUrl?: StringNullableWithAggregatesFilter<"BranchStudent"> | string | null
     parentSpouseNumber?: StringNullableWithAggregatesFilter<"BranchStudent"> | string | null
     countryCode?: StringNullableWithAggregatesFilter<"BranchStudent"> | string | null
     country?: StringNullableWithAggregatesFilter<"BranchStudent"> | string | null
@@ -37037,13 +35506,14 @@ export namespace Prisma {
     designation?: StringNullableWithAggregatesFilter<"BranchStudent"> | string | null
     source?: StringNullableWithAggregatesFilter<"BranchStudent"> | string | null
     sourceOther?: StringNullableWithAggregatesFilter<"BranchStudent"> | string | null
-    remarks?: StringNullableWithAggregatesFilter<"BranchStudent"> | string | null
     admissionDate?: StringWithAggregatesFilter<"BranchStudent"> | string
     recordStatus?: EnumRecordStatusWithAggregatesFilter<"BranchStudent"> | $Enums.RecordStatus
     createdBy?: StringNullableWithAggregatesFilter<"BranchStudent"> | string | null
     updatedBy?: StringNullableWithAggregatesFilter<"BranchStudent"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"BranchStudent"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"BranchStudent"> | Date | string
+    linkedInUrl?: StringNullableWithAggregatesFilter<"BranchStudent"> | string | null
+    remarks?: StringNullableWithAggregatesFilter<"BranchStudent"> | string | null
   }
 
   export type FacultyProfileWhereInput = {
@@ -37060,9 +35530,9 @@ export namespace Prisma {
     updatedBy?: StringNullableFilter<"FacultyProfile"> | string | null
     createdAt?: DateTimeFilter<"FacultyProfile"> | Date | string
     updatedAt?: DateTimeFilter<"FacultyProfile"> | Date | string
-    course?: XOR<CourseNullableScalarRelationFilter, CourseWhereInput> | null
-    courseAssignments?: FacultyCourseAssignmentListRelationFilter
     batchEntries?: FacultyBatchEntryListRelationFilter
+    courseAssignments?: FacultyCourseAssignmentListRelationFilter
+    course?: XOR<CourseNullableScalarRelationFilter, CourseWhereInput> | null
   }
 
   export type FacultyProfileOrderByWithRelationInput = {
@@ -37076,9 +35546,9 @@ export namespace Prisma {
     updatedBy?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    course?: CourseOrderByWithRelationInput
-    courseAssignments?: FacultyCourseAssignmentOrderByRelationAggregateInput
     batchEntries?: FacultyBatchEntryOrderByRelationAggregateInput
+    courseAssignments?: FacultyCourseAssignmentOrderByRelationAggregateInput
+    course?: CourseOrderByWithRelationInput
   }
 
   export type FacultyProfileWhereUniqueInput = Prisma.AtLeast<{
@@ -37095,9 +35565,9 @@ export namespace Prisma {
     updatedBy?: StringNullableFilter<"FacultyProfile"> | string | null
     createdAt?: DateTimeFilter<"FacultyProfile"> | Date | string
     updatedAt?: DateTimeFilter<"FacultyProfile"> | Date | string
-    course?: XOR<CourseNullableScalarRelationFilter, CourseWhereInput> | null
-    courseAssignments?: FacultyCourseAssignmentListRelationFilter
     batchEntries?: FacultyBatchEntryListRelationFilter
+    courseAssignments?: FacultyCourseAssignmentListRelationFilter
+    course?: XOR<CourseNullableScalarRelationFilter, CourseWhereInput> | null
   }, "id">
 
   export type FacultyProfileOrderByWithAggregationInput = {
@@ -37143,8 +35613,8 @@ export namespace Prisma {
     updatedBy?: StringNullableFilter<"FacultyCourseAssignment"> | string | null
     createdAt?: DateTimeFilter<"FacultyCourseAssignment"> | Date | string
     updatedAt?: DateTimeFilter<"FacultyCourseAssignment"> | Date | string
-    faculty?: XOR<FacultyProfileScalarRelationFilter, FacultyProfileWhereInput>
     course?: XOR<CourseScalarRelationFilter, CourseWhereInput>
+    faculty?: XOR<FacultyProfileScalarRelationFilter, FacultyProfileWhereInput>
   }
 
   export type FacultyCourseAssignmentOrderByWithRelationInput = {
@@ -37155,8 +35625,8 @@ export namespace Prisma {
     updatedBy?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    faculty?: FacultyProfileOrderByWithRelationInput
     course?: CourseOrderByWithRelationInput
+    faculty?: FacultyProfileOrderByWithRelationInput
   }
 
   export type FacultyCourseAssignmentWhereUniqueInput = Prisma.AtLeast<{
@@ -37171,8 +35641,8 @@ export namespace Prisma {
     updatedBy?: StringNullableFilter<"FacultyCourseAssignment"> | string | null
     createdAt?: DateTimeFilter<"FacultyCourseAssignment"> | Date | string
     updatedAt?: DateTimeFilter<"FacultyCourseAssignment"> | Date | string
-    faculty?: XOR<FacultyProfileScalarRelationFilter, FacultyProfileWhereInput>
     course?: XOR<CourseScalarRelationFilter, CourseWhereInput>
+    faculty?: XOR<FacultyProfileScalarRelationFilter, FacultyProfileWhereInput>
   }, "id" | "facultyId_courseId">
 
   export type FacultyCourseAssignmentOrderByWithAggregationInput = {
@@ -37207,27 +35677,27 @@ export namespace Prisma {
     NOT?: FacultyBatchEntryWhereInput | FacultyBatchEntryWhereInput[]
     id?: StringFilter<"FacultyBatchEntry"> | string
     facultyId?: StringFilter<"FacultyBatchEntry"> | string
-    courseId?: StringNullableFilter<"FacultyBatchEntry"> | string | null
     batchName?: StringFilter<"FacultyBatchEntry"> | string
     batchTiming?: StringFilter<"FacultyBatchEntry"> | string
     sequenceNo?: IntFilter<"FacultyBatchEntry"> | number
     createdAt?: DateTimeFilter<"FacultyBatchEntry"> | Date | string
     updatedAt?: DateTimeFilter<"FacultyBatchEntry"> | Date | string
-    faculty?: XOR<FacultyProfileScalarRelationFilter, FacultyProfileWhereInput>
+    courseId?: StringNullableFilter<"FacultyBatchEntry"> | string | null
     course?: XOR<CourseNullableScalarRelationFilter, CourseWhereInput> | null
+    faculty?: XOR<FacultyProfileScalarRelationFilter, FacultyProfileWhereInput>
   }
 
   export type FacultyBatchEntryOrderByWithRelationInput = {
     id?: SortOrder
     facultyId?: SortOrder
-    courseId?: SortOrderInput | SortOrder
     batchName?: SortOrder
     batchTiming?: SortOrder
     sequenceNo?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    faculty?: FacultyProfileOrderByWithRelationInput
+    courseId?: SortOrderInput | SortOrder
     course?: CourseOrderByWithRelationInput
+    faculty?: FacultyProfileOrderByWithRelationInput
   }
 
   export type FacultyBatchEntryWhereUniqueInput = Prisma.AtLeast<{
@@ -37236,25 +35706,25 @@ export namespace Prisma {
     OR?: FacultyBatchEntryWhereInput[]
     NOT?: FacultyBatchEntryWhereInput | FacultyBatchEntryWhereInput[]
     facultyId?: StringFilter<"FacultyBatchEntry"> | string
-    courseId?: StringNullableFilter<"FacultyBatchEntry"> | string | null
     batchName?: StringFilter<"FacultyBatchEntry"> | string
     batchTiming?: StringFilter<"FacultyBatchEntry"> | string
     sequenceNo?: IntFilter<"FacultyBatchEntry"> | number
     createdAt?: DateTimeFilter<"FacultyBatchEntry"> | Date | string
     updatedAt?: DateTimeFilter<"FacultyBatchEntry"> | Date | string
-    faculty?: XOR<FacultyProfileScalarRelationFilter, FacultyProfileWhereInput>
+    courseId?: StringNullableFilter<"FacultyBatchEntry"> | string | null
     course?: XOR<CourseNullableScalarRelationFilter, CourseWhereInput> | null
+    faculty?: XOR<FacultyProfileScalarRelationFilter, FacultyProfileWhereInput>
   }, "id">
 
   export type FacultyBatchEntryOrderByWithAggregationInput = {
     id?: SortOrder
     facultyId?: SortOrder
-    courseId?: SortOrderInput | SortOrder
     batchName?: SortOrder
     batchTiming?: SortOrder
     sequenceNo?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    courseId?: SortOrderInput | SortOrder
     _count?: FacultyBatchEntryCountOrderByAggregateInput
     _avg?: FacultyBatchEntryAvgOrderByAggregateInput
     _max?: FacultyBatchEntryMaxOrderByAggregateInput
@@ -37268,12 +35738,12 @@ export namespace Prisma {
     NOT?: FacultyBatchEntryScalarWhereWithAggregatesInput | FacultyBatchEntryScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"FacultyBatchEntry"> | string
     facultyId?: StringWithAggregatesFilter<"FacultyBatchEntry"> | string
-    courseId?: StringNullableWithAggregatesFilter<"FacultyBatchEntry"> | string | null
     batchName?: StringWithAggregatesFilter<"FacultyBatchEntry"> | string
     batchTiming?: StringWithAggregatesFilter<"FacultyBatchEntry"> | string
     sequenceNo?: IntWithAggregatesFilter<"FacultyBatchEntry"> | number
     createdAt?: DateTimeWithAggregatesFilter<"FacultyBatchEntry"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"FacultyBatchEntry"> | Date | string
+    courseId?: StringNullableWithAggregatesFilter<"FacultyBatchEntry"> | string | null
   }
 
   export type FacultyAttendanceSessionWhereInput = {
@@ -37283,15 +35753,15 @@ export namespace Prisma {
     id?: StringFilter<"FacultyAttendanceSession"> | string
     facultyUserId?: StringFilter<"FacultyAttendanceSession"> | string
     attendanceDate?: StringFilter<"FacultyAttendanceSession"> | string
-    sessionSource?: StringFilter<"FacultyAttendanceSession"> | string
     loginAt?: DateTimeFilter<"FacultyAttendanceSession"> | Date | string
     logoutAt?: DateTimeNullableFilter<"FacultyAttendanceSession"> | Date | string | null
+    createdAt?: DateTimeFilter<"FacultyAttendanceSession"> | Date | string
+    updatedAt?: DateTimeFilter<"FacultyAttendanceSession"> | Date | string
+    sessionSource?: StringFilter<"FacultyAttendanceSession"> | string
     logoutType?: StringNullableFilter<"FacultyAttendanceSession"> | string | null
     logoutReason?: StringNullableFilter<"FacultyAttendanceSession"> | string | null
     workReport?: StringNullableFilter<"FacultyAttendanceSession"> | string | null
     workCompleted?: StringNullableFilter<"FacultyAttendanceSession"> | string | null
-    createdAt?: DateTimeFilter<"FacultyAttendanceSession"> | Date | string
-    updatedAt?: DateTimeFilter<"FacultyAttendanceSession"> | Date | string
     facultyUser?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
@@ -37299,15 +35769,15 @@ export namespace Prisma {
     id?: SortOrder
     facultyUserId?: SortOrder
     attendanceDate?: SortOrder
-    sessionSource?: SortOrder
     loginAt?: SortOrder
     logoutAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    sessionSource?: SortOrder
     logoutType?: SortOrderInput | SortOrder
     logoutReason?: SortOrderInput | SortOrder
     workReport?: SortOrderInput | SortOrder
     workCompleted?: SortOrderInput | SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
     facultyUser?: UserOrderByWithRelationInput
   }
 
@@ -37318,15 +35788,15 @@ export namespace Prisma {
     NOT?: FacultyAttendanceSessionWhereInput | FacultyAttendanceSessionWhereInput[]
     facultyUserId?: StringFilter<"FacultyAttendanceSession"> | string
     attendanceDate?: StringFilter<"FacultyAttendanceSession"> | string
-    sessionSource?: StringFilter<"FacultyAttendanceSession"> | string
     loginAt?: DateTimeFilter<"FacultyAttendanceSession"> | Date | string
     logoutAt?: DateTimeNullableFilter<"FacultyAttendanceSession"> | Date | string | null
+    createdAt?: DateTimeFilter<"FacultyAttendanceSession"> | Date | string
+    updatedAt?: DateTimeFilter<"FacultyAttendanceSession"> | Date | string
+    sessionSource?: StringFilter<"FacultyAttendanceSession"> | string
     logoutType?: StringNullableFilter<"FacultyAttendanceSession"> | string | null
     logoutReason?: StringNullableFilter<"FacultyAttendanceSession"> | string | null
     workReport?: StringNullableFilter<"FacultyAttendanceSession"> | string | null
     workCompleted?: StringNullableFilter<"FacultyAttendanceSession"> | string | null
-    createdAt?: DateTimeFilter<"FacultyAttendanceSession"> | Date | string
-    updatedAt?: DateTimeFilter<"FacultyAttendanceSession"> | Date | string
     facultyUser?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id">
 
@@ -37334,15 +35804,15 @@ export namespace Prisma {
     id?: SortOrder
     facultyUserId?: SortOrder
     attendanceDate?: SortOrder
-    sessionSource?: SortOrder
     loginAt?: SortOrder
     logoutAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    sessionSource?: SortOrder
     logoutType?: SortOrderInput | SortOrder
     logoutReason?: SortOrderInput | SortOrder
     workReport?: SortOrderInput | SortOrder
     workCompleted?: SortOrderInput | SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
     _count?: FacultyAttendanceSessionCountOrderByAggregateInput
     _max?: FacultyAttendanceSessionMaxOrderByAggregateInput
     _min?: FacultyAttendanceSessionMinOrderByAggregateInput
@@ -37355,15 +35825,15 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"FacultyAttendanceSession"> | string
     facultyUserId?: StringWithAggregatesFilter<"FacultyAttendanceSession"> | string
     attendanceDate?: StringWithAggregatesFilter<"FacultyAttendanceSession"> | string
-    sessionSource?: StringWithAggregatesFilter<"FacultyAttendanceSession"> | string
     loginAt?: DateTimeWithAggregatesFilter<"FacultyAttendanceSession"> | Date | string
     logoutAt?: DateTimeNullableWithAggregatesFilter<"FacultyAttendanceSession"> | Date | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"FacultyAttendanceSession"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"FacultyAttendanceSession"> | Date | string
+    sessionSource?: StringWithAggregatesFilter<"FacultyAttendanceSession"> | string
     logoutType?: StringNullableWithAggregatesFilter<"FacultyAttendanceSession"> | string | null
     logoutReason?: StringNullableWithAggregatesFilter<"FacultyAttendanceSession"> | string | null
     workReport?: StringNullableWithAggregatesFilter<"FacultyAttendanceSession"> | string | null
     workCompleted?: StringNullableWithAggregatesFilter<"FacultyAttendanceSession"> | string | null
-    createdAt?: DateTimeWithAggregatesFilter<"FacultyAttendanceSession"> | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter<"FacultyAttendanceSession"> | Date | string
   }
 
   export type StudentAttendanceWhereInput = {
@@ -37383,8 +35853,8 @@ export namespace Prisma {
     updatedBy?: StringNullableFilter<"StudentAttendance"> | string | null
     createdAt?: DateTimeFilter<"StudentAttendance"> | Date | string
     updatedAt?: DateTimeFilter<"StudentAttendance"> | Date | string
-    student?: XOR<StudentProfileScalarRelationFilter, StudentProfileWhereInput>
     facultyUser?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    student?: XOR<StudentProfileScalarRelationFilter, StudentProfileWhereInput>
   }
 
   export type StudentAttendanceOrderByWithRelationInput = {
@@ -37401,8 +35871,8 @@ export namespace Prisma {
     updatedBy?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    student?: StudentProfileOrderByWithRelationInput
     facultyUser?: UserOrderByWithRelationInput
+    student?: StudentProfileOrderByWithRelationInput
   }
 
   export type StudentAttendanceWhereUniqueInput = Prisma.AtLeast<{
@@ -37423,8 +35893,8 @@ export namespace Prisma {
     updatedBy?: StringNullableFilter<"StudentAttendance"> | string | null
     createdAt?: DateTimeFilter<"StudentAttendance"> | Date | string
     updatedAt?: DateTimeFilter<"StudentAttendance"> | Date | string
-    student?: XOR<StudentProfileScalarRelationFilter, StudentProfileWhereInput>
     facultyUser?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    student?: XOR<StudentProfileScalarRelationFilter, StudentProfileWhereInput>
   }, "id" | "studentId_attendanceDate">
 
   export type StudentAttendanceOrderByWithAggregationInput = {
@@ -37481,16 +35951,16 @@ export namespace Prisma {
     stateCode?: StringNullableFilter<"BranchFaculty"> | string | null
     city?: StringNullableFilter<"BranchFaculty"> | string | null
     address?: StringNullableFilter<"BranchFaculty"> | string | null
-    courseId?: StringNullableFilter<"BranchFaculty"> | string | null
-    branchCourseId?: StringNullableFilter<"BranchFaculty"> | string | null
     status?: EnumRecordStatusFilter<"BranchFaculty"> | $Enums.RecordStatus
     createdBy?: StringNullableFilter<"BranchFaculty"> | string | null
     updatedBy?: StringNullableFilter<"BranchFaculty"> | string | null
     createdAt?: DateTimeFilter<"BranchFaculty"> | Date | string
     updatedAt?: DateTimeFilter<"BranchFaculty"> | Date | string
+    courseId?: StringNullableFilter<"BranchFaculty"> | string | null
+    branchCourseId?: StringNullableFilter<"BranchFaculty"> | string | null
+    branchCourse?: XOR<BranchCourseNullableScalarRelationFilter, BranchCourseWhereInput> | null
     branch?: XOR<BranchScalarRelationFilter, BranchWhereInput>
     course?: XOR<CourseNullableScalarRelationFilter, CourseWhereInput> | null
-    branchCourse?: XOR<BranchCourseNullableScalarRelationFilter, BranchCourseWhereInput> | null
   }
 
   export type BranchFacultyOrderByWithRelationInput = {
@@ -37506,16 +35976,16 @@ export namespace Prisma {
     stateCode?: SortOrderInput | SortOrder
     city?: SortOrderInput | SortOrder
     address?: SortOrderInput | SortOrder
-    courseId?: SortOrderInput | SortOrder
-    branchCourseId?: SortOrderInput | SortOrder
     status?: SortOrder
     createdBy?: SortOrderInput | SortOrder
     updatedBy?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    courseId?: SortOrderInput | SortOrder
+    branchCourseId?: SortOrderInput | SortOrder
+    branchCourse?: BranchCourseOrderByWithRelationInput
     branch?: BranchOrderByWithRelationInput
     course?: CourseOrderByWithRelationInput
-    branchCourse?: BranchCourseOrderByWithRelationInput
   }
 
   export type BranchFacultyWhereUniqueInput = Prisma.AtLeast<{
@@ -37536,16 +36006,16 @@ export namespace Prisma {
     stateCode?: StringNullableFilter<"BranchFaculty"> | string | null
     city?: StringNullableFilter<"BranchFaculty"> | string | null
     address?: StringNullableFilter<"BranchFaculty"> | string | null
-    courseId?: StringNullableFilter<"BranchFaculty"> | string | null
-    branchCourseId?: StringNullableFilter<"BranchFaculty"> | string | null
     status?: EnumRecordStatusFilter<"BranchFaculty"> | $Enums.RecordStatus
     createdBy?: StringNullableFilter<"BranchFaculty"> | string | null
     updatedBy?: StringNullableFilter<"BranchFaculty"> | string | null
     createdAt?: DateTimeFilter<"BranchFaculty"> | Date | string
     updatedAt?: DateTimeFilter<"BranchFaculty"> | Date | string
+    courseId?: StringNullableFilter<"BranchFaculty"> | string | null
+    branchCourseId?: StringNullableFilter<"BranchFaculty"> | string | null
+    branchCourse?: XOR<BranchCourseNullableScalarRelationFilter, BranchCourseWhereInput> | null
     branch?: XOR<BranchScalarRelationFilter, BranchWhereInput>
     course?: XOR<CourseNullableScalarRelationFilter, CourseWhereInput> | null
-    branchCourse?: XOR<BranchCourseNullableScalarRelationFilter, BranchCourseWhereInput> | null
   }, "id" | "branchId_facultyId" | "branchId_email">
 
   export type BranchFacultyOrderByWithAggregationInput = {
@@ -37561,13 +36031,13 @@ export namespace Prisma {
     stateCode?: SortOrderInput | SortOrder
     city?: SortOrderInput | SortOrder
     address?: SortOrderInput | SortOrder
-    courseId?: SortOrderInput | SortOrder
-    branchCourseId?: SortOrderInput | SortOrder
     status?: SortOrder
     createdBy?: SortOrderInput | SortOrder
     updatedBy?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    courseId?: SortOrderInput | SortOrder
+    branchCourseId?: SortOrderInput | SortOrder
     _count?: BranchFacultyCountOrderByAggregateInput
     _max?: BranchFacultyMaxOrderByAggregateInput
     _min?: BranchFacultyMinOrderByAggregateInput
@@ -37589,13 +36059,13 @@ export namespace Prisma {
     stateCode?: StringNullableWithAggregatesFilter<"BranchFaculty"> | string | null
     city?: StringNullableWithAggregatesFilter<"BranchFaculty"> | string | null
     address?: StringNullableWithAggregatesFilter<"BranchFaculty"> | string | null
-    courseId?: StringNullableWithAggregatesFilter<"BranchFaculty"> | string | null
-    branchCourseId?: StringNullableWithAggregatesFilter<"BranchFaculty"> | string | null
     status?: EnumRecordStatusWithAggregatesFilter<"BranchFaculty"> | $Enums.RecordStatus
     createdBy?: StringNullableWithAggregatesFilter<"BranchFaculty"> | string | null
     updatedBy?: StringNullableWithAggregatesFilter<"BranchFaculty"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"BranchFaculty"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"BranchFaculty"> | Date | string
+    courseId?: StringNullableWithAggregatesFilter<"BranchFaculty"> | string | null
+    branchCourseId?: StringNullableWithAggregatesFilter<"BranchFaculty"> | string | null
   }
 
   export type UserCreateInput = {
@@ -37620,13 +36090,13 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    loginEvents?: LoginEventCreateNestedManyWithoutUserInput
-    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
     batchFacultyAssignments?: BatchFacultyAssignmentCreateNestedManyWithoutFacultyInput
-    targetedNotifications?: NotificationCreateNestedManyWithoutTargetUserInput
-    facultyAttendanceSessions?: FacultyAttendanceSessionCreateNestedManyWithoutFacultyUserInput
-    markedStudentAttendances?: StudentAttendanceCreateNestedManyWithoutFacultyUserInput
     managedBranch?: BranchCreateNestedOneWithoutAdminUserInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionCreateNestedManyWithoutFacultyUserInput
+    loginEvents?: LoginEventCreateNestedManyWithoutUserInput
+    targetedNotifications?: NotificationCreateNestedManyWithoutTargetUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    markedStudentAttendances?: StudentAttendanceCreateNestedManyWithoutFacultyUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -37651,13 +36121,13 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    loginEvents?: LoginEventUncheckedCreateNestedManyWithoutUserInput
-    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
     batchFacultyAssignments?: BatchFacultyAssignmentUncheckedCreateNestedManyWithoutFacultyInput
-    targetedNotifications?: NotificationUncheckedCreateNestedManyWithoutTargetUserInput
-    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedCreateNestedManyWithoutFacultyUserInput
-    markedStudentAttendances?: StudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
     managedBranch?: BranchUncheckedCreateNestedOneWithoutAdminUserInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedCreateNestedManyWithoutFacultyUserInput
+    loginEvents?: LoginEventUncheckedCreateNestedManyWithoutUserInput
+    targetedNotifications?: NotificationUncheckedCreateNestedManyWithoutTargetUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    markedStudentAttendances?: StudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
   }
 
   export type UserUpdateInput = {
@@ -37682,13 +36152,13 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    loginEvents?: LoginEventUpdateManyWithoutUserNestedInput
-    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
     batchFacultyAssignments?: BatchFacultyAssignmentUpdateManyWithoutFacultyNestedInput
-    targetedNotifications?: NotificationUpdateManyWithoutTargetUserNestedInput
-    facultyAttendanceSessions?: FacultyAttendanceSessionUpdateManyWithoutFacultyUserNestedInput
-    markedStudentAttendances?: StudentAttendanceUpdateManyWithoutFacultyUserNestedInput
     managedBranch?: BranchUpdateOneWithoutAdminUserNestedInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUpdateManyWithoutFacultyUserNestedInput
+    loginEvents?: LoginEventUpdateManyWithoutUserNestedInput
+    targetedNotifications?: NotificationUpdateManyWithoutTargetUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    markedStudentAttendances?: StudentAttendanceUpdateManyWithoutFacultyUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -37713,13 +36183,13 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    loginEvents?: LoginEventUncheckedUpdateManyWithoutUserNestedInput
-    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
     batchFacultyAssignments?: BatchFacultyAssignmentUncheckedUpdateManyWithoutFacultyNestedInput
-    targetedNotifications?: NotificationUncheckedUpdateManyWithoutTargetUserNestedInput
-    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserNestedInput
-    markedStudentAttendances?: StudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
     managedBranch?: BranchUncheckedUpdateOneWithoutAdminUserNestedInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserNestedInput
+    loginEvents?: LoginEventUncheckedUpdateManyWithoutUserNestedInput
+    targetedNotifications?: NotificationUncheckedUpdateManyWithoutTargetUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    markedStudentAttendances?: StudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -37801,23 +36271,22 @@ export namespace Prisma {
     branchAdminName: string
     branchEmail: string
     branchPhone: string
-    branchCountryCode?: string
-    branchCountry?: string
-    branchStateCode?: string
-    branchState?: string
-    branchCity?: string
     branchAddress: string
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    branchCity?: string
+    branchCountry?: string
+    branchCountryCode?: string
+    branchState?: string
+    branchStateCode?: string
     adminUser?: UserCreateNestedOneWithoutManagedBranchInput
-    courses?: CourseCreateNestedManyWithoutBranchInput
     branchCourses?: BranchCourseCreateNestedManyWithoutBranchInput
     branchFaculties?: BranchFacultyCreateNestedManyWithoutBranchInput
     branchStudents?: BranchStudentCreateNestedManyWithoutBranchInput
-    branchInstallmentTemplates?: BranchInstallmentTemplateCreateNestedManyWithoutBranchInput
+    courses?: CourseCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateInput = {
@@ -37827,11 +36296,6 @@ export namespace Prisma {
     branchAdminName: string
     branchEmail: string
     branchPhone: string
-    branchCountryCode?: string
-    branchCountry?: string
-    branchStateCode?: string
-    branchState?: string
-    branchCity?: string
     branchAddress: string
     status?: $Enums.RecordStatus
     adminUserId?: string | null
@@ -37839,11 +36303,15 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    courses?: CourseUncheckedCreateNestedManyWithoutBranchInput
+    branchCity?: string
+    branchCountry?: string
+    branchCountryCode?: string
+    branchState?: string
+    branchStateCode?: string
     branchCourses?: BranchCourseUncheckedCreateNestedManyWithoutBranchInput
     branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutBranchInput
     branchStudents?: BranchStudentUncheckedCreateNestedManyWithoutBranchInput
-    branchInstallmentTemplates?: BranchInstallmentTemplateUncheckedCreateNestedManyWithoutBranchInput
+    courses?: CourseUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUpdateInput = {
@@ -37853,23 +36321,22 @@ export namespace Prisma {
     branchAdminName?: StringFieldUpdateOperationsInput | string
     branchEmail?: StringFieldUpdateOperationsInput | string
     branchPhone?: StringFieldUpdateOperationsInput | string
-    branchCountryCode?: StringFieldUpdateOperationsInput | string
-    branchCountry?: StringFieldUpdateOperationsInput | string
-    branchStateCode?: StringFieldUpdateOperationsInput | string
-    branchState?: StringFieldUpdateOperationsInput | string
-    branchCity?: StringFieldUpdateOperationsInput | string
     branchAddress?: StringFieldUpdateOperationsInput | string
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branchCity?: StringFieldUpdateOperationsInput | string
+    branchCountry?: StringFieldUpdateOperationsInput | string
+    branchCountryCode?: StringFieldUpdateOperationsInput | string
+    branchState?: StringFieldUpdateOperationsInput | string
+    branchStateCode?: StringFieldUpdateOperationsInput | string
     adminUser?: UserUpdateOneWithoutManagedBranchNestedInput
-    courses?: CourseUpdateManyWithoutBranchNestedInput
     branchCourses?: BranchCourseUpdateManyWithoutBranchNestedInput
     branchFaculties?: BranchFacultyUpdateManyWithoutBranchNestedInput
     branchStudents?: BranchStudentUpdateManyWithoutBranchNestedInput
-    branchInstallmentTemplates?: BranchInstallmentTemplateUpdateManyWithoutBranchNestedInput
+    courses?: CourseUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateInput = {
@@ -37879,11 +36346,6 @@ export namespace Prisma {
     branchAdminName?: StringFieldUpdateOperationsInput | string
     branchEmail?: StringFieldUpdateOperationsInput | string
     branchPhone?: StringFieldUpdateOperationsInput | string
-    branchCountryCode?: StringFieldUpdateOperationsInput | string
-    branchCountry?: StringFieldUpdateOperationsInput | string
-    branchStateCode?: StringFieldUpdateOperationsInput | string
-    branchState?: StringFieldUpdateOperationsInput | string
-    branchCity?: StringFieldUpdateOperationsInput | string
     branchAddress?: StringFieldUpdateOperationsInput | string
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     adminUserId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -37891,11 +36353,15 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    courses?: CourseUncheckedUpdateManyWithoutBranchNestedInput
+    branchCity?: StringFieldUpdateOperationsInput | string
+    branchCountry?: StringFieldUpdateOperationsInput | string
+    branchCountryCode?: StringFieldUpdateOperationsInput | string
+    branchState?: StringFieldUpdateOperationsInput | string
+    branchStateCode?: StringFieldUpdateOperationsInput | string
     branchCourses?: BranchCourseUncheckedUpdateManyWithoutBranchNestedInput
     branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutBranchNestedInput
     branchStudents?: BranchStudentUncheckedUpdateManyWithoutBranchNestedInput
-    branchInstallmentTemplates?: BranchInstallmentTemplateUncheckedUpdateManyWithoutBranchNestedInput
+    courses?: CourseUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchCreateManyInput = {
@@ -37905,11 +36371,6 @@ export namespace Prisma {
     branchAdminName: string
     branchEmail: string
     branchPhone: string
-    branchCountryCode?: string
-    branchCountry?: string
-    branchStateCode?: string
-    branchState?: string
-    branchCity?: string
     branchAddress: string
     status?: $Enums.RecordStatus
     adminUserId?: string | null
@@ -37917,6 +36378,11 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    branchCity?: string
+    branchCountry?: string
+    branchCountryCode?: string
+    branchState?: string
+    branchStateCode?: string
   }
 
   export type BranchUpdateManyMutationInput = {
@@ -37926,17 +36392,17 @@ export namespace Prisma {
     branchAdminName?: StringFieldUpdateOperationsInput | string
     branchEmail?: StringFieldUpdateOperationsInput | string
     branchPhone?: StringFieldUpdateOperationsInput | string
-    branchCountryCode?: StringFieldUpdateOperationsInput | string
-    branchCountry?: StringFieldUpdateOperationsInput | string
-    branchStateCode?: StringFieldUpdateOperationsInput | string
-    branchState?: StringFieldUpdateOperationsInput | string
-    branchCity?: StringFieldUpdateOperationsInput | string
     branchAddress?: StringFieldUpdateOperationsInput | string
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branchCity?: StringFieldUpdateOperationsInput | string
+    branchCountry?: StringFieldUpdateOperationsInput | string
+    branchCountryCode?: StringFieldUpdateOperationsInput | string
+    branchState?: StringFieldUpdateOperationsInput | string
+    branchStateCode?: StringFieldUpdateOperationsInput | string
   }
 
   export type BranchUncheckedUpdateManyInput = {
@@ -37946,11 +36412,6 @@ export namespace Prisma {
     branchAdminName?: StringFieldUpdateOperationsInput | string
     branchEmail?: StringFieldUpdateOperationsInput | string
     branchPhone?: StringFieldUpdateOperationsInput | string
-    branchCountryCode?: StringFieldUpdateOperationsInput | string
-    branchCountry?: StringFieldUpdateOperationsInput | string
-    branchStateCode?: StringFieldUpdateOperationsInput | string
-    branchState?: StringFieldUpdateOperationsInput | string
-    branchCity?: StringFieldUpdateOperationsInput | string
     branchAddress?: StringFieldUpdateOperationsInput | string
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     adminUserId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -37958,6 +36419,11 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branchCity?: StringFieldUpdateOperationsInput | string
+    branchCountry?: StringFieldUpdateOperationsInput | string
+    branchCountryCode?: StringFieldUpdateOperationsInput | string
+    branchState?: StringFieldUpdateOperationsInput | string
+    branchStateCode?: StringFieldUpdateOperationsInput | string
   }
 
   export type LoginEventCreateInput = {
@@ -38050,18 +36516,6 @@ export namespace Prisma {
     title: string
     message: string
     actionLabel?: string | null
-    requestStatus?: string | null
-    requestTitle?: string | null
-    requestReason?: string | null
-    requestDescription?: string | null
-    branchCourseId?: string | null
-    branchCourseName?: string | null
-    moduleId?: string | null
-    moduleName?: string | null
-    subModuleId?: string | null
-    subModuleName?: string | null
-    facultyId?: string | null
-    facultyName?: string | null
     targetBranchId?: string | null
     targetBranchEmail?: string | null
     targetBranchName?: string | null
@@ -38070,6 +36524,18 @@ export namespace Prisma {
     createdBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    branchCourseId?: string | null
+    branchCourseName?: string | null
+    facultyId?: string | null
+    facultyName?: string | null
+    moduleId?: string | null
+    moduleName?: string | null
+    requestDescription?: string | null
+    requestReason?: string | null
+    requestStatus?: string | null
+    requestTitle?: string | null
+    subModuleId?: string | null
+    subModuleName?: string | null
     request?: CourseEditRequestCreateNestedOneWithoutNotificationsInput
     targetUser?: UserCreateNestedOneWithoutTargetedNotificationsInput
   }
@@ -38081,20 +36547,6 @@ export namespace Prisma {
     title: string
     message: string
     actionLabel?: string | null
-    requestId?: string | null
-    requestStatus?: string | null
-    requestTitle?: string | null
-    requestReason?: string | null
-    requestDescription?: string | null
-    branchCourseId?: string | null
-    branchCourseName?: string | null
-    moduleId?: string | null
-    moduleName?: string | null
-    subModuleId?: string | null
-    subModuleName?: string | null
-    facultyId?: string | null
-    facultyName?: string | null
-    targetUserId?: string | null
     targetBranchId?: string | null
     targetBranchEmail?: string | null
     targetBranchName?: string | null
@@ -38103,6 +36555,20 @@ export namespace Prisma {
     createdBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    targetUserId?: string | null
+    branchCourseId?: string | null
+    branchCourseName?: string | null
+    facultyId?: string | null
+    facultyName?: string | null
+    moduleId?: string | null
+    moduleName?: string | null
+    requestDescription?: string | null
+    requestId?: string | null
+    requestReason?: string | null
+    requestStatus?: string | null
+    requestTitle?: string | null
+    subModuleId?: string | null
+    subModuleName?: string | null
   }
 
   export type NotificationUpdateInput = {
@@ -38112,18 +36578,6 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     message?: StringFieldUpdateOperationsInput | string
     actionLabel?: NullableStringFieldUpdateOperationsInput | string | null
-    requestStatus?: NullableStringFieldUpdateOperationsInput | string | null
-    requestTitle?: NullableStringFieldUpdateOperationsInput | string | null
-    requestReason?: NullableStringFieldUpdateOperationsInput | string | null
-    requestDescription?: NullableStringFieldUpdateOperationsInput | string | null
-    branchCourseId?: NullableStringFieldUpdateOperationsInput | string | null
-    branchCourseName?: NullableStringFieldUpdateOperationsInput | string | null
-    moduleId?: NullableStringFieldUpdateOperationsInput | string | null
-    moduleName?: NullableStringFieldUpdateOperationsInput | string | null
-    subModuleId?: NullableStringFieldUpdateOperationsInput | string | null
-    subModuleName?: NullableStringFieldUpdateOperationsInput | string | null
-    facultyId?: NullableStringFieldUpdateOperationsInput | string | null
-    facultyName?: NullableStringFieldUpdateOperationsInput | string | null
     targetBranchId?: NullableStringFieldUpdateOperationsInput | string | null
     targetBranchEmail?: NullableStringFieldUpdateOperationsInput | string | null
     targetBranchName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -38132,6 +36586,18 @@ export namespace Prisma {
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branchCourseId?: NullableStringFieldUpdateOperationsInput | string | null
+    branchCourseName?: NullableStringFieldUpdateOperationsInput | string | null
+    facultyId?: NullableStringFieldUpdateOperationsInput | string | null
+    facultyName?: NullableStringFieldUpdateOperationsInput | string | null
+    moduleId?: NullableStringFieldUpdateOperationsInput | string | null
+    moduleName?: NullableStringFieldUpdateOperationsInput | string | null
+    requestDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    requestReason?: NullableStringFieldUpdateOperationsInput | string | null
+    requestStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    requestTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    subModuleId?: NullableStringFieldUpdateOperationsInput | string | null
+    subModuleName?: NullableStringFieldUpdateOperationsInput | string | null
     request?: CourseEditRequestUpdateOneWithoutNotificationsNestedInput
     targetUser?: UserUpdateOneWithoutTargetedNotificationsNestedInput
   }
@@ -38143,20 +36609,6 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     message?: StringFieldUpdateOperationsInput | string
     actionLabel?: NullableStringFieldUpdateOperationsInput | string | null
-    requestId?: NullableStringFieldUpdateOperationsInput | string | null
-    requestStatus?: NullableStringFieldUpdateOperationsInput | string | null
-    requestTitle?: NullableStringFieldUpdateOperationsInput | string | null
-    requestReason?: NullableStringFieldUpdateOperationsInput | string | null
-    requestDescription?: NullableStringFieldUpdateOperationsInput | string | null
-    branchCourseId?: NullableStringFieldUpdateOperationsInput | string | null
-    branchCourseName?: NullableStringFieldUpdateOperationsInput | string | null
-    moduleId?: NullableStringFieldUpdateOperationsInput | string | null
-    moduleName?: NullableStringFieldUpdateOperationsInput | string | null
-    subModuleId?: NullableStringFieldUpdateOperationsInput | string | null
-    subModuleName?: NullableStringFieldUpdateOperationsInput | string | null
-    facultyId?: NullableStringFieldUpdateOperationsInput | string | null
-    facultyName?: NullableStringFieldUpdateOperationsInput | string | null
-    targetUserId?: NullableStringFieldUpdateOperationsInput | string | null
     targetBranchId?: NullableStringFieldUpdateOperationsInput | string | null
     targetBranchEmail?: NullableStringFieldUpdateOperationsInput | string | null
     targetBranchName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -38165,6 +36617,20 @@ export namespace Prisma {
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    targetUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    branchCourseId?: NullableStringFieldUpdateOperationsInput | string | null
+    branchCourseName?: NullableStringFieldUpdateOperationsInput | string | null
+    facultyId?: NullableStringFieldUpdateOperationsInput | string | null
+    facultyName?: NullableStringFieldUpdateOperationsInput | string | null
+    moduleId?: NullableStringFieldUpdateOperationsInput | string | null
+    moduleName?: NullableStringFieldUpdateOperationsInput | string | null
+    requestDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    requestId?: NullableStringFieldUpdateOperationsInput | string | null
+    requestReason?: NullableStringFieldUpdateOperationsInput | string | null
+    requestStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    requestTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    subModuleId?: NullableStringFieldUpdateOperationsInput | string | null
+    subModuleName?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type NotificationCreateManyInput = {
@@ -38174,20 +36640,6 @@ export namespace Prisma {
     title: string
     message: string
     actionLabel?: string | null
-    requestId?: string | null
-    requestStatus?: string | null
-    requestTitle?: string | null
-    requestReason?: string | null
-    requestDescription?: string | null
-    branchCourseId?: string | null
-    branchCourseName?: string | null
-    moduleId?: string | null
-    moduleName?: string | null
-    subModuleId?: string | null
-    subModuleName?: string | null
-    facultyId?: string | null
-    facultyName?: string | null
-    targetUserId?: string | null
     targetBranchId?: string | null
     targetBranchEmail?: string | null
     targetBranchName?: string | null
@@ -38196,6 +36648,20 @@ export namespace Prisma {
     createdBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    targetUserId?: string | null
+    branchCourseId?: string | null
+    branchCourseName?: string | null
+    facultyId?: string | null
+    facultyName?: string | null
+    moduleId?: string | null
+    moduleName?: string | null
+    requestDescription?: string | null
+    requestId?: string | null
+    requestReason?: string | null
+    requestStatus?: string | null
+    requestTitle?: string | null
+    subModuleId?: string | null
+    subModuleName?: string | null
   }
 
   export type NotificationUpdateManyMutationInput = {
@@ -38205,18 +36671,6 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     message?: StringFieldUpdateOperationsInput | string
     actionLabel?: NullableStringFieldUpdateOperationsInput | string | null
-    requestStatus?: NullableStringFieldUpdateOperationsInput | string | null
-    requestTitle?: NullableStringFieldUpdateOperationsInput | string | null
-    requestReason?: NullableStringFieldUpdateOperationsInput | string | null
-    requestDescription?: NullableStringFieldUpdateOperationsInput | string | null
-    branchCourseId?: NullableStringFieldUpdateOperationsInput | string | null
-    branchCourseName?: NullableStringFieldUpdateOperationsInput | string | null
-    moduleId?: NullableStringFieldUpdateOperationsInput | string | null
-    moduleName?: NullableStringFieldUpdateOperationsInput | string | null
-    subModuleId?: NullableStringFieldUpdateOperationsInput | string | null
-    subModuleName?: NullableStringFieldUpdateOperationsInput | string | null
-    facultyId?: NullableStringFieldUpdateOperationsInput | string | null
-    facultyName?: NullableStringFieldUpdateOperationsInput | string | null
     targetBranchId?: NullableStringFieldUpdateOperationsInput | string | null
     targetBranchEmail?: NullableStringFieldUpdateOperationsInput | string | null
     targetBranchName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -38225,6 +36679,18 @@ export namespace Prisma {
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branchCourseId?: NullableStringFieldUpdateOperationsInput | string | null
+    branchCourseName?: NullableStringFieldUpdateOperationsInput | string | null
+    facultyId?: NullableStringFieldUpdateOperationsInput | string | null
+    facultyName?: NullableStringFieldUpdateOperationsInput | string | null
+    moduleId?: NullableStringFieldUpdateOperationsInput | string | null
+    moduleName?: NullableStringFieldUpdateOperationsInput | string | null
+    requestDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    requestReason?: NullableStringFieldUpdateOperationsInput | string | null
+    requestStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    requestTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    subModuleId?: NullableStringFieldUpdateOperationsInput | string | null
+    subModuleName?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type NotificationUncheckedUpdateManyInput = {
@@ -38234,20 +36700,6 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     message?: StringFieldUpdateOperationsInput | string
     actionLabel?: NullableStringFieldUpdateOperationsInput | string | null
-    requestId?: NullableStringFieldUpdateOperationsInput | string | null
-    requestStatus?: NullableStringFieldUpdateOperationsInput | string | null
-    requestTitle?: NullableStringFieldUpdateOperationsInput | string | null
-    requestReason?: NullableStringFieldUpdateOperationsInput | string | null
-    requestDescription?: NullableStringFieldUpdateOperationsInput | string | null
-    branchCourseId?: NullableStringFieldUpdateOperationsInput | string | null
-    branchCourseName?: NullableStringFieldUpdateOperationsInput | string | null
-    moduleId?: NullableStringFieldUpdateOperationsInput | string | null
-    moduleName?: NullableStringFieldUpdateOperationsInput | string | null
-    subModuleId?: NullableStringFieldUpdateOperationsInput | string | null
-    subModuleName?: NullableStringFieldUpdateOperationsInput | string | null
-    facultyId?: NullableStringFieldUpdateOperationsInput | string | null
-    facultyName?: NullableStringFieldUpdateOperationsInput | string | null
-    targetUserId?: NullableStringFieldUpdateOperationsInput | string | null
     targetBranchId?: NullableStringFieldUpdateOperationsInput | string | null
     targetBranchEmail?: NullableStringFieldUpdateOperationsInput | string | null
     targetBranchName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -38256,6 +36708,20 @@ export namespace Prisma {
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    targetUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    branchCourseId?: NullableStringFieldUpdateOperationsInput | string | null
+    branchCourseName?: NullableStringFieldUpdateOperationsInput | string | null
+    facultyId?: NullableStringFieldUpdateOperationsInput | string | null
+    facultyName?: NullableStringFieldUpdateOperationsInput | string | null
+    moduleId?: NullableStringFieldUpdateOperationsInput | string | null
+    moduleName?: NullableStringFieldUpdateOperationsInput | string | null
+    requestDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    requestId?: NullableStringFieldUpdateOperationsInput | string | null
+    requestReason?: NullableStringFieldUpdateOperationsInput | string | null
+    requestStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    requestTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    subModuleId?: NullableStringFieldUpdateOperationsInput | string | null
+    subModuleName?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type CourseEditRequestCreateInput = {
@@ -38524,7 +36990,6 @@ export namespace Prisma {
     id?: string
     name: string
     nameKey: string
-    courseCode?: string | null
     description?: string | null
     feeReference?: string | null
     mode: string
@@ -38538,7 +37003,6 @@ export namespace Prisma {
     installment1?: number | null
     installment2?: number | null
     installment3?: number | null
-    installments?: NullableJsonNullValueInput | InputJsonValue
     status?: $Enums.RecordStatus
     statusChangedAt?: Date | string | null
     statusChangedBy?: string | null
@@ -38546,23 +37010,23 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    installments?: NullableJsonNullValueInput | InputJsonValue
+    courseCode?: string | null
+    batches?: BatchCreateNestedManyWithoutCourseInput
+    branchFaculties?: BranchFacultyCreateNestedManyWithoutCourseInput
     branch?: BranchCreateNestedOneWithoutCoursesInput
     modules?: CourseModuleCreateNestedManyWithoutCourseInput
-    batches?: BatchCreateNestedManyWithoutCourseInput
-    students?: StudentProfileCreateNestedManyWithoutCourseInput
-    facultyProfiles?: FacultyProfileCreateNestedManyWithoutCourseInput
-    facultyCourseAssignments?: FacultyCourseAssignmentCreateNestedManyWithoutCourseInput
-    facultyBatchEntries?: FacultyBatchEntryCreateNestedManyWithoutCourseInput
     statusHistory?: CourseStatusHistoryCreateNestedManyWithoutCourseInput
-    branchFaculties?: BranchFacultyCreateNestedManyWithoutCourseInput
+    facultyBatchEntries?: FacultyBatchEntryCreateNestedManyWithoutCourseInput
+    facultyCourseAssignments?: FacultyCourseAssignmentCreateNestedManyWithoutCourseInput
+    facultyProfiles?: FacultyProfileCreateNestedManyWithoutCourseInput
+    students?: StudentProfileCreateNestedManyWithoutCourseInput
   }
 
   export type CourseUncheckedCreateInput = {
     id?: string
     name: string
     nameKey: string
-    courseCode?: string | null
-    branchId?: string | null
     description?: string | null
     feeReference?: string | null
     mode: string
@@ -38576,7 +37040,6 @@ export namespace Prisma {
     installment1?: number | null
     installment2?: number | null
     installment3?: number | null
-    installments?: NullableJsonNullValueInput | InputJsonValue
     status?: $Enums.RecordStatus
     statusChangedAt?: Date | string | null
     statusChangedBy?: string | null
@@ -38584,21 +37047,23 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    modules?: CourseModuleUncheckedCreateNestedManyWithoutCourseInput
+    installments?: NullableJsonNullValueInput | InputJsonValue
+    branchId?: string | null
+    courseCode?: string | null
     batches?: BatchUncheckedCreateNestedManyWithoutCourseInput
-    students?: StudentProfileUncheckedCreateNestedManyWithoutCourseInput
-    facultyProfiles?: FacultyProfileUncheckedCreateNestedManyWithoutCourseInput
-    facultyCourseAssignments?: FacultyCourseAssignmentUncheckedCreateNestedManyWithoutCourseInput
-    facultyBatchEntries?: FacultyBatchEntryUncheckedCreateNestedManyWithoutCourseInput
-    statusHistory?: CourseStatusHistoryUncheckedCreateNestedManyWithoutCourseInput
     branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutCourseInput
+    modules?: CourseModuleUncheckedCreateNestedManyWithoutCourseInput
+    statusHistory?: CourseStatusHistoryUncheckedCreateNestedManyWithoutCourseInput
+    facultyBatchEntries?: FacultyBatchEntryUncheckedCreateNestedManyWithoutCourseInput
+    facultyCourseAssignments?: FacultyCourseAssignmentUncheckedCreateNestedManyWithoutCourseInput
+    facultyProfiles?: FacultyProfileUncheckedCreateNestedManyWithoutCourseInput
+    students?: StudentProfileUncheckedCreateNestedManyWithoutCourseInput
   }
 
   export type CourseUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     nameKey?: StringFieldUpdateOperationsInput | string
-    courseCode?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     feeReference?: NullableStringFieldUpdateOperationsInput | string | null
     mode?: StringFieldUpdateOperationsInput | string
@@ -38612,7 +37077,6 @@ export namespace Prisma {
     installment1?: NullableIntFieldUpdateOperationsInput | number | null
     installment2?: NullableIntFieldUpdateOperationsInput | number | null
     installment3?: NullableIntFieldUpdateOperationsInput | number | null
-    installments?: NullableJsonNullValueInput | InputJsonValue
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     statusChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     statusChangedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -38620,23 +37084,23 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    installments?: NullableJsonNullValueInput | InputJsonValue
+    courseCode?: NullableStringFieldUpdateOperationsInput | string | null
+    batches?: BatchUpdateManyWithoutCourseNestedInput
+    branchFaculties?: BranchFacultyUpdateManyWithoutCourseNestedInput
     branch?: BranchUpdateOneWithoutCoursesNestedInput
     modules?: CourseModuleUpdateManyWithoutCourseNestedInput
-    batches?: BatchUpdateManyWithoutCourseNestedInput
-    students?: StudentProfileUpdateManyWithoutCourseNestedInput
-    facultyProfiles?: FacultyProfileUpdateManyWithoutCourseNestedInput
-    facultyCourseAssignments?: FacultyCourseAssignmentUpdateManyWithoutCourseNestedInput
-    facultyBatchEntries?: FacultyBatchEntryUpdateManyWithoutCourseNestedInput
     statusHistory?: CourseStatusHistoryUpdateManyWithoutCourseNestedInput
-    branchFaculties?: BranchFacultyUpdateManyWithoutCourseNestedInput
+    facultyBatchEntries?: FacultyBatchEntryUpdateManyWithoutCourseNestedInput
+    facultyCourseAssignments?: FacultyCourseAssignmentUpdateManyWithoutCourseNestedInput
+    facultyProfiles?: FacultyProfileUpdateManyWithoutCourseNestedInput
+    students?: StudentProfileUpdateManyWithoutCourseNestedInput
   }
 
   export type CourseUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     nameKey?: StringFieldUpdateOperationsInput | string
-    courseCode?: NullableStringFieldUpdateOperationsInput | string | null
-    branchId?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     feeReference?: NullableStringFieldUpdateOperationsInput | string | null
     mode?: StringFieldUpdateOperationsInput | string
@@ -38650,7 +37114,6 @@ export namespace Prisma {
     installment1?: NullableIntFieldUpdateOperationsInput | number | null
     installment2?: NullableIntFieldUpdateOperationsInput | number | null
     installment3?: NullableIntFieldUpdateOperationsInput | number | null
-    installments?: NullableJsonNullValueInput | InputJsonValue
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     statusChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     statusChangedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -38658,22 +37121,23 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    modules?: CourseModuleUncheckedUpdateManyWithoutCourseNestedInput
+    installments?: NullableJsonNullValueInput | InputJsonValue
+    branchId?: NullableStringFieldUpdateOperationsInput | string | null
+    courseCode?: NullableStringFieldUpdateOperationsInput | string | null
     batches?: BatchUncheckedUpdateManyWithoutCourseNestedInput
-    students?: StudentProfileUncheckedUpdateManyWithoutCourseNestedInput
-    facultyProfiles?: FacultyProfileUncheckedUpdateManyWithoutCourseNestedInput
-    facultyCourseAssignments?: FacultyCourseAssignmentUncheckedUpdateManyWithoutCourseNestedInput
-    facultyBatchEntries?: FacultyBatchEntryUncheckedUpdateManyWithoutCourseNestedInput
-    statusHistory?: CourseStatusHistoryUncheckedUpdateManyWithoutCourseNestedInput
     branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutCourseNestedInput
+    modules?: CourseModuleUncheckedUpdateManyWithoutCourseNestedInput
+    statusHistory?: CourseStatusHistoryUncheckedUpdateManyWithoutCourseNestedInput
+    facultyBatchEntries?: FacultyBatchEntryUncheckedUpdateManyWithoutCourseNestedInput
+    facultyCourseAssignments?: FacultyCourseAssignmentUncheckedUpdateManyWithoutCourseNestedInput
+    facultyProfiles?: FacultyProfileUncheckedUpdateManyWithoutCourseNestedInput
+    students?: StudentProfileUncheckedUpdateManyWithoutCourseNestedInput
   }
 
   export type CourseCreateManyInput = {
     id?: string
     name: string
     nameKey: string
-    courseCode?: string | null
-    branchId?: string | null
     description?: string | null
     feeReference?: string | null
     mode: string
@@ -38687,7 +37151,6 @@ export namespace Prisma {
     installment1?: number | null
     installment2?: number | null
     installment3?: number | null
-    installments?: NullableJsonNullValueInput | InputJsonValue
     status?: $Enums.RecordStatus
     statusChangedAt?: Date | string | null
     statusChangedBy?: string | null
@@ -38695,13 +37158,15 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    installments?: NullableJsonNullValueInput | InputJsonValue
+    branchId?: string | null
+    courseCode?: string | null
   }
 
   export type CourseUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     nameKey?: StringFieldUpdateOperationsInput | string
-    courseCode?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     feeReference?: NullableStringFieldUpdateOperationsInput | string | null
     mode?: StringFieldUpdateOperationsInput | string
@@ -38715,7 +37180,6 @@ export namespace Prisma {
     installment1?: NullableIntFieldUpdateOperationsInput | number | null
     installment2?: NullableIntFieldUpdateOperationsInput | number | null
     installment3?: NullableIntFieldUpdateOperationsInput | number | null
-    installments?: NullableJsonNullValueInput | InputJsonValue
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     statusChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     statusChangedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -38723,14 +37187,14 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    installments?: NullableJsonNullValueInput | InputJsonValue
+    courseCode?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type CourseUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     nameKey?: StringFieldUpdateOperationsInput | string
-    courseCode?: NullableStringFieldUpdateOperationsInput | string | null
-    branchId?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     feeReference?: NullableStringFieldUpdateOperationsInput | string | null
     mode?: StringFieldUpdateOperationsInput | string
@@ -38744,7 +37208,6 @@ export namespace Prisma {
     installment1?: NullableIntFieldUpdateOperationsInput | number | null
     installment2?: NullableIntFieldUpdateOperationsInput | number | null
     installment3?: NullableIntFieldUpdateOperationsInput | number | null
-    installments?: NullableJsonNullValueInput | InputJsonValue
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     statusChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     statusChangedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -38752,6 +37215,9 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    installments?: NullableJsonNullValueInput | InputJsonValue
+    branchId?: NullableStringFieldUpdateOperationsInput | string | null
+    courseCode?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type BranchCourseCreateInput = {
@@ -38775,7 +37241,6 @@ export namespace Prisma {
     branch: BranchCreateNestedOneWithoutBranchCoursesInput
     modules?: BranchCourseModuleCreateNestedManyWithoutBranchCourseInput
     branchFaculties?: BranchFacultyCreateNestedManyWithoutBranchCourseInput
-    installmentTemplate?: BranchInstallmentTemplateCreateNestedOneWithoutBranchCourseInput
   }
 
   export type BranchCourseUncheckedCreateInput = {
@@ -38799,7 +37264,6 @@ export namespace Prisma {
     updatedAt?: Date | string
     modules?: BranchCourseModuleUncheckedCreateNestedManyWithoutBranchCourseInput
     branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutBranchCourseInput
-    installmentTemplate?: BranchInstallmentTemplateUncheckedCreateNestedOneWithoutBranchCourseInput
   }
 
   export type BranchCourseUpdateInput = {
@@ -38823,7 +37287,6 @@ export namespace Prisma {
     branch?: BranchUpdateOneRequiredWithoutBranchCoursesNestedInput
     modules?: BranchCourseModuleUpdateManyWithoutBranchCourseNestedInput
     branchFaculties?: BranchFacultyUpdateManyWithoutBranchCourseNestedInput
-    installmentTemplate?: BranchInstallmentTemplateUpdateOneWithoutBranchCourseNestedInput
   }
 
   export type BranchCourseUncheckedUpdateInput = {
@@ -38847,7 +37310,6 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     modules?: BranchCourseModuleUncheckedUpdateManyWithoutBranchCourseNestedInput
     branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutBranchCourseNestedInput
-    installmentTemplate?: BranchInstallmentTemplateUncheckedUpdateOneWithoutBranchCourseNestedInput
   }
 
   export type BranchCourseCreateManyInput = {
@@ -38905,123 +37367,6 @@ export namespace Prisma {
     registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
     discount?: NullableIntFieldUpdateOperationsInput | number | null
     afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
-    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type BranchInstallmentTemplateCreateInput = {
-    id?: string
-    templateName: string
-    planType?: string
-    installmentCount: number
-    installments: JsonNullValueInput | InputJsonValue
-    dueRule?: string | null
-    allowCustomization?: boolean
-    status?: $Enums.RecordStatus
-    createdBy?: string | null
-    updatedBy?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    branch: BranchCreateNestedOneWithoutBranchInstallmentTemplatesInput
-    branchCourse?: BranchCourseCreateNestedOneWithoutInstallmentTemplateInput
-  }
-
-  export type BranchInstallmentTemplateUncheckedCreateInput = {
-    id?: string
-    branchId: string
-    branchCourseId?: string | null
-    templateName: string
-    planType?: string
-    installmentCount: number
-    installments: JsonNullValueInput | InputJsonValue
-    dueRule?: string | null
-    allowCustomization?: boolean
-    status?: $Enums.RecordStatus
-    createdBy?: string | null
-    updatedBy?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type BranchInstallmentTemplateUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    templateName?: StringFieldUpdateOperationsInput | string
-    planType?: StringFieldUpdateOperationsInput | string
-    installmentCount?: IntFieldUpdateOperationsInput | number
-    installments?: JsonNullValueInput | InputJsonValue
-    dueRule?: NullableStringFieldUpdateOperationsInput | string | null
-    allowCustomization?: BoolFieldUpdateOperationsInput | boolean
-    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    branch?: BranchUpdateOneRequiredWithoutBranchInstallmentTemplatesNestedInput
-    branchCourse?: BranchCourseUpdateOneWithoutInstallmentTemplateNestedInput
-  }
-
-  export type BranchInstallmentTemplateUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    branchId?: StringFieldUpdateOperationsInput | string
-    branchCourseId?: NullableStringFieldUpdateOperationsInput | string | null
-    templateName?: StringFieldUpdateOperationsInput | string
-    planType?: StringFieldUpdateOperationsInput | string
-    installmentCount?: IntFieldUpdateOperationsInput | number
-    installments?: JsonNullValueInput | InputJsonValue
-    dueRule?: NullableStringFieldUpdateOperationsInput | string | null
-    allowCustomization?: BoolFieldUpdateOperationsInput | boolean
-    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type BranchInstallmentTemplateCreateManyInput = {
-    id?: string
-    branchId: string
-    branchCourseId?: string | null
-    templateName: string
-    planType?: string
-    installmentCount: number
-    installments: JsonNullValueInput | InputJsonValue
-    dueRule?: string | null
-    allowCustomization?: boolean
-    status?: $Enums.RecordStatus
-    createdBy?: string | null
-    updatedBy?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type BranchInstallmentTemplateUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    templateName?: StringFieldUpdateOperationsInput | string
-    planType?: StringFieldUpdateOperationsInput | string
-    installmentCount?: IntFieldUpdateOperationsInput | number
-    installments?: JsonNullValueInput | InputJsonValue
-    dueRule?: NullableStringFieldUpdateOperationsInput | string | null
-    allowCustomization?: BoolFieldUpdateOperationsInput | boolean
-    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type BranchInstallmentTemplateUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    branchId?: StringFieldUpdateOperationsInput | string
-    branchCourseId?: NullableStringFieldUpdateOperationsInput | string | null
-    templateName?: StringFieldUpdateOperationsInput | string
-    planType?: StringFieldUpdateOperationsInput | string
-    installmentCount?: IntFieldUpdateOperationsInput | number
-    installments?: JsonNullValueInput | InputJsonValue
-    dueRule?: NullableStringFieldUpdateOperationsInput | string | null
-    allowCustomization?: BoolFieldUpdateOperationsInput | boolean
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -39753,13 +38098,10 @@ export namespace Prisma {
     studentName: string
     mobileNumber: string
     emailAddress: string
-    linkedInUrl?: string | null
     parentSpouseNumber?: string | null
     location?: string | null
     courseInterested: string
-    facultyId?: string | null
     facultyName?: string | null
-    batchId?: string | null
     batchName?: string | null
     qualification?: string | null
     passedOutYear?: number | null
@@ -39773,7 +38115,6 @@ export namespace Prisma {
     installment1?: number | null
     installment2?: number | null
     installment3?: number | null
-    installment4?: number | null
     totalAmount?: number | null
     admissionDate: string
     firstInstallmentAmount?: number | null
@@ -39790,8 +38131,12 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    course?: CourseCreateNestedOneWithoutStudentsInput
+    installment4?: number | null
+    batchId?: string | null
+    facultyId?: string | null
+    linkedInUrl?: string | null
     attendanceRecords?: StudentAttendanceCreateNestedManyWithoutStudentInput
+    course?: CourseCreateNestedOneWithoutStudentsInput
   }
 
   export type StudentProfileUncheckedCreateInput = {
@@ -39800,14 +38145,11 @@ export namespace Prisma {
     studentName: string
     mobileNumber: string
     emailAddress: string
-    linkedInUrl?: string | null
     parentSpouseNumber?: string | null
     location?: string | null
     courseId?: string | null
     courseInterested: string
-    facultyId?: string | null
     facultyName?: string | null
-    batchId?: string | null
     batchName?: string | null
     qualification?: string | null
     passedOutYear?: number | null
@@ -39821,7 +38163,6 @@ export namespace Prisma {
     installment1?: number | null
     installment2?: number | null
     installment3?: number | null
-    installment4?: number | null
     totalAmount?: number | null
     admissionDate: string
     firstInstallmentAmount?: number | null
@@ -39838,6 +38179,10 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    installment4?: number | null
+    batchId?: string | null
+    facultyId?: string | null
+    linkedInUrl?: string | null
     attendanceRecords?: StudentAttendanceUncheckedCreateNestedManyWithoutStudentInput
   }
 
@@ -39847,13 +38192,10 @@ export namespace Prisma {
     studentName?: StringFieldUpdateOperationsInput | string
     mobileNumber?: StringFieldUpdateOperationsInput | string
     emailAddress?: StringFieldUpdateOperationsInput | string
-    linkedInUrl?: NullableStringFieldUpdateOperationsInput | string | null
     parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
     courseInterested?: StringFieldUpdateOperationsInput | string
-    facultyId?: NullableStringFieldUpdateOperationsInput | string | null
     facultyName?: NullableStringFieldUpdateOperationsInput | string | null
-    batchId?: NullableStringFieldUpdateOperationsInput | string | null
     batchName?: NullableStringFieldUpdateOperationsInput | string | null
     qualification?: NullableStringFieldUpdateOperationsInput | string | null
     passedOutYear?: NullableIntFieldUpdateOperationsInput | number | null
@@ -39867,7 +38209,6 @@ export namespace Prisma {
     installment1?: NullableIntFieldUpdateOperationsInput | number | null
     installment2?: NullableIntFieldUpdateOperationsInput | number | null
     installment3?: NullableIntFieldUpdateOperationsInput | number | null
-    installment4?: NullableIntFieldUpdateOperationsInput | number | null
     totalAmount?: NullableIntFieldUpdateOperationsInput | number | null
     admissionDate?: StringFieldUpdateOperationsInput | string
     firstInstallmentAmount?: NullableIntFieldUpdateOperationsInput | number | null
@@ -39884,8 +38225,12 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    course?: CourseUpdateOneWithoutStudentsNestedInput
+    installment4?: NullableIntFieldUpdateOperationsInput | number | null
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
+    facultyId?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedInUrl?: NullableStringFieldUpdateOperationsInput | string | null
     attendanceRecords?: StudentAttendanceUpdateManyWithoutStudentNestedInput
+    course?: CourseUpdateOneWithoutStudentsNestedInput
   }
 
   export type StudentProfileUncheckedUpdateInput = {
@@ -39894,14 +38239,11 @@ export namespace Prisma {
     studentName?: StringFieldUpdateOperationsInput | string
     mobileNumber?: StringFieldUpdateOperationsInput | string
     emailAddress?: StringFieldUpdateOperationsInput | string
-    linkedInUrl?: NullableStringFieldUpdateOperationsInput | string | null
     parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
     courseId?: NullableStringFieldUpdateOperationsInput | string | null
     courseInterested?: StringFieldUpdateOperationsInput | string
-    facultyId?: NullableStringFieldUpdateOperationsInput | string | null
     facultyName?: NullableStringFieldUpdateOperationsInput | string | null
-    batchId?: NullableStringFieldUpdateOperationsInput | string | null
     batchName?: NullableStringFieldUpdateOperationsInput | string | null
     qualification?: NullableStringFieldUpdateOperationsInput | string | null
     passedOutYear?: NullableIntFieldUpdateOperationsInput | number | null
@@ -39915,7 +38257,6 @@ export namespace Prisma {
     installment1?: NullableIntFieldUpdateOperationsInput | number | null
     installment2?: NullableIntFieldUpdateOperationsInput | number | null
     installment3?: NullableIntFieldUpdateOperationsInput | number | null
-    installment4?: NullableIntFieldUpdateOperationsInput | number | null
     totalAmount?: NullableIntFieldUpdateOperationsInput | number | null
     admissionDate?: StringFieldUpdateOperationsInput | string
     firstInstallmentAmount?: NullableIntFieldUpdateOperationsInput | number | null
@@ -39932,6 +38273,10 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    installment4?: NullableIntFieldUpdateOperationsInput | number | null
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
+    facultyId?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedInUrl?: NullableStringFieldUpdateOperationsInput | string | null
     attendanceRecords?: StudentAttendanceUncheckedUpdateManyWithoutStudentNestedInput
   }
 
@@ -39941,14 +38286,11 @@ export namespace Prisma {
     studentName: string
     mobileNumber: string
     emailAddress: string
-    linkedInUrl?: string | null
     parentSpouseNumber?: string | null
     location?: string | null
     courseId?: string | null
     courseInterested: string
-    facultyId?: string | null
     facultyName?: string | null
-    batchId?: string | null
     batchName?: string | null
     qualification?: string | null
     passedOutYear?: number | null
@@ -39962,7 +38304,6 @@ export namespace Prisma {
     installment1?: number | null
     installment2?: number | null
     installment3?: number | null
-    installment4?: number | null
     totalAmount?: number | null
     admissionDate: string
     firstInstallmentAmount?: number | null
@@ -39979,6 +38320,10 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    installment4?: number | null
+    batchId?: string | null
+    facultyId?: string | null
+    linkedInUrl?: string | null
   }
 
   export type StudentProfileUpdateManyMutationInput = {
@@ -39987,13 +38332,10 @@ export namespace Prisma {
     studentName?: StringFieldUpdateOperationsInput | string
     mobileNumber?: StringFieldUpdateOperationsInput | string
     emailAddress?: StringFieldUpdateOperationsInput | string
-    linkedInUrl?: NullableStringFieldUpdateOperationsInput | string | null
     parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
     courseInterested?: StringFieldUpdateOperationsInput | string
-    facultyId?: NullableStringFieldUpdateOperationsInput | string | null
     facultyName?: NullableStringFieldUpdateOperationsInput | string | null
-    batchId?: NullableStringFieldUpdateOperationsInput | string | null
     batchName?: NullableStringFieldUpdateOperationsInput | string | null
     qualification?: NullableStringFieldUpdateOperationsInput | string | null
     passedOutYear?: NullableIntFieldUpdateOperationsInput | number | null
@@ -40007,7 +38349,6 @@ export namespace Prisma {
     installment1?: NullableIntFieldUpdateOperationsInput | number | null
     installment2?: NullableIntFieldUpdateOperationsInput | number | null
     installment3?: NullableIntFieldUpdateOperationsInput | number | null
-    installment4?: NullableIntFieldUpdateOperationsInput | number | null
     totalAmount?: NullableIntFieldUpdateOperationsInput | number | null
     admissionDate?: StringFieldUpdateOperationsInput | string
     firstInstallmentAmount?: NullableIntFieldUpdateOperationsInput | number | null
@@ -40024,6 +38365,10 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    installment4?: NullableIntFieldUpdateOperationsInput | number | null
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
+    facultyId?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedInUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type StudentProfileUncheckedUpdateManyInput = {
@@ -40032,14 +38377,11 @@ export namespace Prisma {
     studentName?: StringFieldUpdateOperationsInput | string
     mobileNumber?: StringFieldUpdateOperationsInput | string
     emailAddress?: StringFieldUpdateOperationsInput | string
-    linkedInUrl?: NullableStringFieldUpdateOperationsInput | string | null
     parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
     courseId?: NullableStringFieldUpdateOperationsInput | string | null
     courseInterested?: StringFieldUpdateOperationsInput | string
-    facultyId?: NullableStringFieldUpdateOperationsInput | string | null
     facultyName?: NullableStringFieldUpdateOperationsInput | string | null
-    batchId?: NullableStringFieldUpdateOperationsInput | string | null
     batchName?: NullableStringFieldUpdateOperationsInput | string | null
     qualification?: NullableStringFieldUpdateOperationsInput | string | null
     passedOutYear?: NullableIntFieldUpdateOperationsInput | number | null
@@ -40053,7 +38395,6 @@ export namespace Prisma {
     installment1?: NullableIntFieldUpdateOperationsInput | number | null
     installment2?: NullableIntFieldUpdateOperationsInput | number | null
     installment3?: NullableIntFieldUpdateOperationsInput | number | null
-    installment4?: NullableIntFieldUpdateOperationsInput | number | null
     totalAmount?: NullableIntFieldUpdateOperationsInput | number | null
     admissionDate?: StringFieldUpdateOperationsInput | string
     firstInstallmentAmount?: NullableIntFieldUpdateOperationsInput | number | null
@@ -40070,6 +38411,10 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    installment4?: NullableIntFieldUpdateOperationsInput | number | null
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
+    facultyId?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedInUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type BranchStudentCreateInput = {
@@ -40078,7 +38423,6 @@ export namespace Prisma {
     studentName: string
     mobileNumber: string
     emailAddress: string
-    linkedInUrl?: string | null
     parentSpouseNumber?: string | null
     countryCode?: string | null
     country?: string | null
@@ -40092,13 +38436,14 @@ export namespace Prisma {
     designation?: string | null
     source?: string | null
     sourceOther?: string | null
-    remarks?: string | null
     admissionDate: string
     recordStatus?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    linkedInUrl?: string | null
+    remarks?: string | null
     branch: BranchCreateNestedOneWithoutBranchStudentsInput
   }
 
@@ -40109,7 +38454,6 @@ export namespace Prisma {
     studentName: string
     mobileNumber: string
     emailAddress: string
-    linkedInUrl?: string | null
     parentSpouseNumber?: string | null
     countryCode?: string | null
     country?: string | null
@@ -40123,13 +38467,14 @@ export namespace Prisma {
     designation?: string | null
     source?: string | null
     sourceOther?: string | null
-    remarks?: string | null
     admissionDate: string
     recordStatus?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    linkedInUrl?: string | null
+    remarks?: string | null
   }
 
   export type BranchStudentUpdateInput = {
@@ -40138,7 +38483,6 @@ export namespace Prisma {
     studentName?: StringFieldUpdateOperationsInput | string
     mobileNumber?: StringFieldUpdateOperationsInput | string
     emailAddress?: StringFieldUpdateOperationsInput | string
-    linkedInUrl?: NullableStringFieldUpdateOperationsInput | string | null
     parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
     countryCode?: NullableStringFieldUpdateOperationsInput | string | null
     country?: NullableStringFieldUpdateOperationsInput | string | null
@@ -40152,13 +38496,14 @@ export namespace Prisma {
     designation?: NullableStringFieldUpdateOperationsInput | string | null
     source?: NullableStringFieldUpdateOperationsInput | string | null
     sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
-    remarks?: NullableStringFieldUpdateOperationsInput | string | null
     admissionDate?: StringFieldUpdateOperationsInput | string
     recordStatus?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    linkedInUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    remarks?: NullableStringFieldUpdateOperationsInput | string | null
     branch?: BranchUpdateOneRequiredWithoutBranchStudentsNestedInput
   }
 
@@ -40169,7 +38514,6 @@ export namespace Prisma {
     studentName?: StringFieldUpdateOperationsInput | string
     mobileNumber?: StringFieldUpdateOperationsInput | string
     emailAddress?: StringFieldUpdateOperationsInput | string
-    linkedInUrl?: NullableStringFieldUpdateOperationsInput | string | null
     parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
     countryCode?: NullableStringFieldUpdateOperationsInput | string | null
     country?: NullableStringFieldUpdateOperationsInput | string | null
@@ -40183,13 +38527,14 @@ export namespace Prisma {
     designation?: NullableStringFieldUpdateOperationsInput | string | null
     source?: NullableStringFieldUpdateOperationsInput | string | null
     sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
-    remarks?: NullableStringFieldUpdateOperationsInput | string | null
     admissionDate?: StringFieldUpdateOperationsInput | string
     recordStatus?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    linkedInUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    remarks?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type BranchStudentCreateManyInput = {
@@ -40199,7 +38544,6 @@ export namespace Prisma {
     studentName: string
     mobileNumber: string
     emailAddress: string
-    linkedInUrl?: string | null
     parentSpouseNumber?: string | null
     countryCode?: string | null
     country?: string | null
@@ -40213,13 +38557,14 @@ export namespace Prisma {
     designation?: string | null
     source?: string | null
     sourceOther?: string | null
-    remarks?: string | null
     admissionDate: string
     recordStatus?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    linkedInUrl?: string | null
+    remarks?: string | null
   }
 
   export type BranchStudentUpdateManyMutationInput = {
@@ -40228,7 +38573,6 @@ export namespace Prisma {
     studentName?: StringFieldUpdateOperationsInput | string
     mobileNumber?: StringFieldUpdateOperationsInput | string
     emailAddress?: StringFieldUpdateOperationsInput | string
-    linkedInUrl?: NullableStringFieldUpdateOperationsInput | string | null
     parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
     countryCode?: NullableStringFieldUpdateOperationsInput | string | null
     country?: NullableStringFieldUpdateOperationsInput | string | null
@@ -40242,13 +38586,14 @@ export namespace Prisma {
     designation?: NullableStringFieldUpdateOperationsInput | string | null
     source?: NullableStringFieldUpdateOperationsInput | string | null
     sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
-    remarks?: NullableStringFieldUpdateOperationsInput | string | null
     admissionDate?: StringFieldUpdateOperationsInput | string
     recordStatus?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    linkedInUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    remarks?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type BranchStudentUncheckedUpdateManyInput = {
@@ -40258,7 +38603,6 @@ export namespace Prisma {
     studentName?: StringFieldUpdateOperationsInput | string
     mobileNumber?: StringFieldUpdateOperationsInput | string
     emailAddress?: StringFieldUpdateOperationsInput | string
-    linkedInUrl?: NullableStringFieldUpdateOperationsInput | string | null
     parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
     countryCode?: NullableStringFieldUpdateOperationsInput | string | null
     country?: NullableStringFieldUpdateOperationsInput | string | null
@@ -40272,13 +38616,14 @@ export namespace Prisma {
     designation?: NullableStringFieldUpdateOperationsInput | string | null
     source?: NullableStringFieldUpdateOperationsInput | string | null
     sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
-    remarks?: NullableStringFieldUpdateOperationsInput | string | null
     admissionDate?: StringFieldUpdateOperationsInput | string
     recordStatus?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    linkedInUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    remarks?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type FacultyProfileCreateInput = {
@@ -40291,9 +38636,9 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    course?: CourseCreateNestedOneWithoutFacultyProfilesInput
-    courseAssignments?: FacultyCourseAssignmentCreateNestedManyWithoutFacultyInput
     batchEntries?: FacultyBatchEntryCreateNestedManyWithoutFacultyInput
+    courseAssignments?: FacultyCourseAssignmentCreateNestedManyWithoutFacultyInput
+    course?: CourseCreateNestedOneWithoutFacultyProfilesInput
   }
 
   export type FacultyProfileUncheckedCreateInput = {
@@ -40307,8 +38652,8 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    courseAssignments?: FacultyCourseAssignmentUncheckedCreateNestedManyWithoutFacultyInput
     batchEntries?: FacultyBatchEntryUncheckedCreateNestedManyWithoutFacultyInput
+    courseAssignments?: FacultyCourseAssignmentUncheckedCreateNestedManyWithoutFacultyInput
   }
 
   export type FacultyProfileUpdateInput = {
@@ -40321,9 +38666,9 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    course?: CourseUpdateOneWithoutFacultyProfilesNestedInput
-    courseAssignments?: FacultyCourseAssignmentUpdateManyWithoutFacultyNestedInput
     batchEntries?: FacultyBatchEntryUpdateManyWithoutFacultyNestedInput
+    courseAssignments?: FacultyCourseAssignmentUpdateManyWithoutFacultyNestedInput
+    course?: CourseUpdateOneWithoutFacultyProfilesNestedInput
   }
 
   export type FacultyProfileUncheckedUpdateInput = {
@@ -40337,8 +38682,8 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    courseAssignments?: FacultyCourseAssignmentUncheckedUpdateManyWithoutFacultyNestedInput
     batchEntries?: FacultyBatchEntryUncheckedUpdateManyWithoutFacultyNestedInput
+    courseAssignments?: FacultyCourseAssignmentUncheckedUpdateManyWithoutFacultyNestedInput
   }
 
   export type FacultyProfileCreateManyInput = {
@@ -40385,8 +38730,8 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    faculty: FacultyProfileCreateNestedOneWithoutCourseAssignmentsInput
     course: CourseCreateNestedOneWithoutFacultyCourseAssignmentsInput
+    faculty: FacultyProfileCreateNestedOneWithoutCourseAssignmentsInput
   }
 
   export type FacultyCourseAssignmentUncheckedCreateInput = {
@@ -40405,8 +38750,8 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    faculty?: FacultyProfileUpdateOneRequiredWithoutCourseAssignmentsNestedInput
     course?: CourseUpdateOneRequiredWithoutFacultyCourseAssignmentsNestedInput
+    faculty?: FacultyProfileUpdateOneRequiredWithoutCourseAssignmentsNestedInput
   }
 
   export type FacultyCourseAssignmentUncheckedUpdateInput = {
@@ -40454,19 +38799,19 @@ export namespace Prisma {
     sequenceNo?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    faculty: FacultyProfileCreateNestedOneWithoutBatchEntriesInput
     course?: CourseCreateNestedOneWithoutFacultyBatchEntriesInput
+    faculty: FacultyProfileCreateNestedOneWithoutBatchEntriesInput
   }
 
   export type FacultyBatchEntryUncheckedCreateInput = {
     id?: string
     facultyId: string
-    courseId?: string | null
     batchName: string
     batchTiming: string
     sequenceNo?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    courseId?: string | null
   }
 
   export type FacultyBatchEntryUpdateInput = {
@@ -40476,30 +38821,30 @@ export namespace Prisma {
     sequenceNo?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    faculty?: FacultyProfileUpdateOneRequiredWithoutBatchEntriesNestedInput
     course?: CourseUpdateOneWithoutFacultyBatchEntriesNestedInput
+    faculty?: FacultyProfileUpdateOneRequiredWithoutBatchEntriesNestedInput
   }
 
   export type FacultyBatchEntryUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     facultyId?: StringFieldUpdateOperationsInput | string
-    courseId?: NullableStringFieldUpdateOperationsInput | string | null
     batchName?: StringFieldUpdateOperationsInput | string
     batchTiming?: StringFieldUpdateOperationsInput | string
     sequenceNo?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    courseId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type FacultyBatchEntryCreateManyInput = {
     id?: string
     facultyId: string
-    courseId?: string | null
     batchName: string
     batchTiming: string
     sequenceNo?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    courseId?: string | null
   }
 
   export type FacultyBatchEntryUpdateManyMutationInput = {
@@ -40514,26 +38859,26 @@ export namespace Prisma {
   export type FacultyBatchEntryUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     facultyId?: StringFieldUpdateOperationsInput | string
-    courseId?: NullableStringFieldUpdateOperationsInput | string | null
     batchName?: StringFieldUpdateOperationsInput | string
     batchTiming?: StringFieldUpdateOperationsInput | string
     sequenceNo?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    courseId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type FacultyAttendanceSessionCreateInput = {
     id?: string
     attendanceDate: string
-    sessionSource?: string
     loginAt: Date | string
     logoutAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sessionSource?: string
     logoutType?: string | null
     logoutReason?: string | null
     workReport?: string | null
     workCompleted?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
     facultyUser: UserCreateNestedOneWithoutFacultyAttendanceSessionsInput
   }
 
@@ -40541,29 +38886,29 @@ export namespace Prisma {
     id?: string
     facultyUserId: string
     attendanceDate: string
-    sessionSource?: string
     loginAt: Date | string
     logoutAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sessionSource?: string
     logoutType?: string | null
     logoutReason?: string | null
     workReport?: string | null
     workCompleted?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
   }
 
   export type FacultyAttendanceSessionUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     attendanceDate?: StringFieldUpdateOperationsInput | string
-    sessionSource?: StringFieldUpdateOperationsInput | string
     loginAt?: DateTimeFieldUpdateOperationsInput | Date | string
     logoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sessionSource?: StringFieldUpdateOperationsInput | string
     logoutType?: NullableStringFieldUpdateOperationsInput | string | null
     logoutReason?: NullableStringFieldUpdateOperationsInput | string | null
     workReport?: NullableStringFieldUpdateOperationsInput | string | null
     workCompleted?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     facultyUser?: UserUpdateOneRequiredWithoutFacultyAttendanceSessionsNestedInput
   }
 
@@ -40571,59 +38916,59 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     facultyUserId?: StringFieldUpdateOperationsInput | string
     attendanceDate?: StringFieldUpdateOperationsInput | string
-    sessionSource?: StringFieldUpdateOperationsInput | string
     loginAt?: DateTimeFieldUpdateOperationsInput | Date | string
     logoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sessionSource?: StringFieldUpdateOperationsInput | string
     logoutType?: NullableStringFieldUpdateOperationsInput | string | null
     logoutReason?: NullableStringFieldUpdateOperationsInput | string | null
     workReport?: NullableStringFieldUpdateOperationsInput | string | null
     workCompleted?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type FacultyAttendanceSessionCreateManyInput = {
     id?: string
     facultyUserId: string
     attendanceDate: string
-    sessionSource?: string
     loginAt: Date | string
     logoutAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sessionSource?: string
     logoutType?: string | null
     logoutReason?: string | null
     workReport?: string | null
     workCompleted?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
   }
 
   export type FacultyAttendanceSessionUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     attendanceDate?: StringFieldUpdateOperationsInput | string
-    sessionSource?: StringFieldUpdateOperationsInput | string
     loginAt?: DateTimeFieldUpdateOperationsInput | Date | string
     logoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sessionSource?: StringFieldUpdateOperationsInput | string
     logoutType?: NullableStringFieldUpdateOperationsInput | string | null
     logoutReason?: NullableStringFieldUpdateOperationsInput | string | null
     workReport?: NullableStringFieldUpdateOperationsInput | string | null
     workCompleted?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type FacultyAttendanceSessionUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     facultyUserId?: StringFieldUpdateOperationsInput | string
     attendanceDate?: StringFieldUpdateOperationsInput | string
-    sessionSource?: StringFieldUpdateOperationsInput | string
     loginAt?: DateTimeFieldUpdateOperationsInput | Date | string
     logoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sessionSource?: StringFieldUpdateOperationsInput | string
     logoutType?: NullableStringFieldUpdateOperationsInput | string | null
     logoutReason?: NullableStringFieldUpdateOperationsInput | string | null
     workReport?: NullableStringFieldUpdateOperationsInput | string | null
     workCompleted?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type StudentAttendanceCreateInput = {
@@ -40638,8 +38983,8 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    student: StudentProfileCreateNestedOneWithoutAttendanceRecordsInput
     facultyUser?: UserCreateNestedOneWithoutMarkedStudentAttendancesInput
+    student: StudentProfileCreateNestedOneWithoutAttendanceRecordsInput
   }
 
   export type StudentAttendanceUncheckedCreateInput = {
@@ -40670,8 +39015,8 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    student?: StudentProfileUpdateOneRequiredWithoutAttendanceRecordsNestedInput
     facultyUser?: UserUpdateOneWithoutMarkedStudentAttendancesNestedInput
+    student?: StudentProfileUpdateOneRequiredWithoutAttendanceRecordsNestedInput
   }
 
   export type StudentAttendanceUncheckedUpdateInput = {
@@ -40753,9 +39098,9 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    branchCourse?: BranchCourseCreateNestedOneWithoutBranchFacultiesInput
     branch: BranchCreateNestedOneWithoutBranchFacultiesInput
     course?: CourseCreateNestedOneWithoutBranchFacultiesInput
-    branchCourse?: BranchCourseCreateNestedOneWithoutBranchFacultiesInput
   }
 
   export type BranchFacultyUncheckedCreateInput = {
@@ -40771,13 +39116,13 @@ export namespace Prisma {
     stateCode?: string | null
     city?: string | null
     address?: string | null
-    courseId?: string | null
-    branchCourseId?: string | null
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    courseId?: string | null
+    branchCourseId?: string | null
   }
 
   export type BranchFacultyUpdateInput = {
@@ -40797,9 +39142,9 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branchCourse?: BranchCourseUpdateOneWithoutBranchFacultiesNestedInput
     branch?: BranchUpdateOneRequiredWithoutBranchFacultiesNestedInput
     course?: CourseUpdateOneWithoutBranchFacultiesNestedInput
-    branchCourse?: BranchCourseUpdateOneWithoutBranchFacultiesNestedInput
   }
 
   export type BranchFacultyUncheckedUpdateInput = {
@@ -40815,13 +39160,13 @@ export namespace Prisma {
     stateCode?: NullableStringFieldUpdateOperationsInput | string | null
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
-    courseId?: NullableStringFieldUpdateOperationsInput | string | null
-    branchCourseId?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    courseId?: NullableStringFieldUpdateOperationsInput | string | null
+    branchCourseId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type BranchFacultyCreateManyInput = {
@@ -40837,13 +39182,13 @@ export namespace Prisma {
     stateCode?: string | null
     city?: string | null
     address?: string | null
-    courseId?: string | null
-    branchCourseId?: string | null
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    courseId?: string | null
+    branchCourseId?: string | null
   }
 
   export type BranchFacultyUpdateManyMutationInput = {
@@ -40878,13 +39223,13 @@ export namespace Prisma {
     stateCode?: NullableStringFieldUpdateOperationsInput | string | null
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
-    courseId?: NullableStringFieldUpdateOperationsInput | string | null
-    branchCourseId?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    courseId?: NullableStringFieldUpdateOperationsInput | string | null
+    branchCourseId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -40962,28 +39307,15 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
-  export type LoginEventListRelationFilter = {
-    every?: LoginEventWhereInput
-    some?: LoginEventWhereInput
-    none?: LoginEventWhereInput
-  }
-
-  export type PasswordResetTokenListRelationFilter = {
-    every?: PasswordResetTokenWhereInput
-    some?: PasswordResetTokenWhereInput
-    none?: PasswordResetTokenWhereInput
-  }
-
   export type BatchFacultyAssignmentListRelationFilter = {
     every?: BatchFacultyAssignmentWhereInput
     some?: BatchFacultyAssignmentWhereInput
     none?: BatchFacultyAssignmentWhereInput
   }
 
-  export type NotificationListRelationFilter = {
-    every?: NotificationWhereInput
-    some?: NotificationWhereInput
-    none?: NotificationWhereInput
+  export type BranchNullableScalarRelationFilter = {
+    is?: BranchWhereInput | null
+    isNot?: BranchWhereInput | null
   }
 
   export type FacultyAttendanceSessionListRelationFilter = {
@@ -40992,15 +39324,28 @@ export namespace Prisma {
     none?: FacultyAttendanceSessionWhereInput
   }
 
+  export type LoginEventListRelationFilter = {
+    every?: LoginEventWhereInput
+    some?: LoginEventWhereInput
+    none?: LoginEventWhereInput
+  }
+
+  export type NotificationListRelationFilter = {
+    every?: NotificationWhereInput
+    some?: NotificationWhereInput
+    none?: NotificationWhereInput
+  }
+
+  export type PasswordResetTokenListRelationFilter = {
+    every?: PasswordResetTokenWhereInput
+    some?: PasswordResetTokenWhereInput
+    none?: PasswordResetTokenWhereInput
+  }
+
   export type StudentAttendanceListRelationFilter = {
     every?: StudentAttendanceWhereInput
     some?: StudentAttendanceWhereInput
     none?: StudentAttendanceWhereInput
-  }
-
-  export type BranchNullableScalarRelationFilter = {
-    is?: BranchWhereInput | null
-    isNot?: BranchWhereInput | null
   }
 
   export type SortOrderInput = {
@@ -41008,15 +39353,15 @@ export namespace Prisma {
     nulls?: NullsOrder
   }
 
-  export type LoginEventOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type PasswordResetTokenOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
   export type BatchFacultyAssignmentOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type FacultyAttendanceSessionOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type LoginEventOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -41024,7 +39369,7 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
-  export type FacultyAttendanceSessionOrderByRelationAggregateInput = {
+  export type PasswordResetTokenOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -41224,12 +39569,6 @@ export namespace Prisma {
     isNot?: UserWhereInput | null
   }
 
-  export type CourseListRelationFilter = {
-    every?: CourseWhereInput
-    some?: CourseWhereInput
-    none?: CourseWhereInput
-  }
-
   export type BranchCourseListRelationFilter = {
     every?: BranchCourseWhereInput
     some?: BranchCourseWhereInput
@@ -41248,14 +39587,10 @@ export namespace Prisma {
     none?: BranchStudentWhereInput
   }
 
-  export type BranchInstallmentTemplateListRelationFilter = {
-    every?: BranchInstallmentTemplateWhereInput
-    some?: BranchInstallmentTemplateWhereInput
-    none?: BranchInstallmentTemplateWhereInput
-  }
-
-  export type CourseOrderByRelationAggregateInput = {
-    _count?: SortOrder
+  export type CourseListRelationFilter = {
+    every?: CourseWhereInput
+    some?: CourseWhereInput
+    none?: CourseWhereInput
   }
 
   export type BranchCourseOrderByRelationAggregateInput = {
@@ -41270,7 +39605,7 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
-  export type BranchInstallmentTemplateOrderByRelationAggregateInput = {
+  export type CourseOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -41281,11 +39616,6 @@ export namespace Prisma {
     branchAdminName?: SortOrder
     branchEmail?: SortOrder
     branchPhone?: SortOrder
-    branchCountryCode?: SortOrder
-    branchCountry?: SortOrder
-    branchStateCode?: SortOrder
-    branchState?: SortOrder
-    branchCity?: SortOrder
     branchAddress?: SortOrder
     status?: SortOrder
     adminUserId?: SortOrder
@@ -41293,6 +39623,11 @@ export namespace Prisma {
     updatedBy?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    branchCity?: SortOrder
+    branchCountry?: SortOrder
+    branchCountryCode?: SortOrder
+    branchState?: SortOrder
+    branchStateCode?: SortOrder
   }
 
   export type BranchMaxOrderByAggregateInput = {
@@ -41302,11 +39637,6 @@ export namespace Prisma {
     branchAdminName?: SortOrder
     branchEmail?: SortOrder
     branchPhone?: SortOrder
-    branchCountryCode?: SortOrder
-    branchCountry?: SortOrder
-    branchStateCode?: SortOrder
-    branchState?: SortOrder
-    branchCity?: SortOrder
     branchAddress?: SortOrder
     status?: SortOrder
     adminUserId?: SortOrder
@@ -41314,6 +39644,11 @@ export namespace Prisma {
     updatedBy?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    branchCity?: SortOrder
+    branchCountry?: SortOrder
+    branchCountryCode?: SortOrder
+    branchState?: SortOrder
+    branchStateCode?: SortOrder
   }
 
   export type BranchMinOrderByAggregateInput = {
@@ -41323,11 +39658,6 @@ export namespace Prisma {
     branchAdminName?: SortOrder
     branchEmail?: SortOrder
     branchPhone?: SortOrder
-    branchCountryCode?: SortOrder
-    branchCountry?: SortOrder
-    branchStateCode?: SortOrder
-    branchState?: SortOrder
-    branchCity?: SortOrder
     branchAddress?: SortOrder
     status?: SortOrder
     adminUserId?: SortOrder
@@ -41335,6 +39665,11 @@ export namespace Prisma {
     updatedBy?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    branchCity?: SortOrder
+    branchCountry?: SortOrder
+    branchCountryCode?: SortOrder
+    branchState?: SortOrder
+    branchStateCode?: SortOrder
   }
 
   export type EnumRecordStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -41466,20 +39801,6 @@ export namespace Prisma {
     title?: SortOrder
     message?: SortOrder
     actionLabel?: SortOrder
-    requestId?: SortOrder
-    requestStatus?: SortOrder
-    requestTitle?: SortOrder
-    requestReason?: SortOrder
-    requestDescription?: SortOrder
-    branchCourseId?: SortOrder
-    branchCourseName?: SortOrder
-    moduleId?: SortOrder
-    moduleName?: SortOrder
-    subModuleId?: SortOrder
-    subModuleName?: SortOrder
-    facultyId?: SortOrder
-    facultyName?: SortOrder
-    targetUserId?: SortOrder
     targetBranchId?: SortOrder
     targetBranchEmail?: SortOrder
     targetBranchName?: SortOrder
@@ -41488,6 +39809,20 @@ export namespace Prisma {
     createdBy?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    targetUserId?: SortOrder
+    branchCourseId?: SortOrder
+    branchCourseName?: SortOrder
+    facultyId?: SortOrder
+    facultyName?: SortOrder
+    moduleId?: SortOrder
+    moduleName?: SortOrder
+    requestDescription?: SortOrder
+    requestId?: SortOrder
+    requestReason?: SortOrder
+    requestStatus?: SortOrder
+    requestTitle?: SortOrder
+    subModuleId?: SortOrder
+    subModuleName?: SortOrder
   }
 
   export type NotificationMaxOrderByAggregateInput = {
@@ -41497,20 +39832,6 @@ export namespace Prisma {
     title?: SortOrder
     message?: SortOrder
     actionLabel?: SortOrder
-    requestId?: SortOrder
-    requestStatus?: SortOrder
-    requestTitle?: SortOrder
-    requestReason?: SortOrder
-    requestDescription?: SortOrder
-    branchCourseId?: SortOrder
-    branchCourseName?: SortOrder
-    moduleId?: SortOrder
-    moduleName?: SortOrder
-    subModuleId?: SortOrder
-    subModuleName?: SortOrder
-    facultyId?: SortOrder
-    facultyName?: SortOrder
-    targetUserId?: SortOrder
     targetBranchId?: SortOrder
     targetBranchEmail?: SortOrder
     targetBranchName?: SortOrder
@@ -41519,6 +39840,20 @@ export namespace Prisma {
     createdBy?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    targetUserId?: SortOrder
+    branchCourseId?: SortOrder
+    branchCourseName?: SortOrder
+    facultyId?: SortOrder
+    facultyName?: SortOrder
+    moduleId?: SortOrder
+    moduleName?: SortOrder
+    requestDescription?: SortOrder
+    requestId?: SortOrder
+    requestReason?: SortOrder
+    requestStatus?: SortOrder
+    requestTitle?: SortOrder
+    subModuleId?: SortOrder
+    subModuleName?: SortOrder
   }
 
   export type NotificationMinOrderByAggregateInput = {
@@ -41528,20 +39863,6 @@ export namespace Prisma {
     title?: SortOrder
     message?: SortOrder
     actionLabel?: SortOrder
-    requestId?: SortOrder
-    requestStatus?: SortOrder
-    requestTitle?: SortOrder
-    requestReason?: SortOrder
-    requestDescription?: SortOrder
-    branchCourseId?: SortOrder
-    branchCourseName?: SortOrder
-    moduleId?: SortOrder
-    moduleName?: SortOrder
-    subModuleId?: SortOrder
-    subModuleName?: SortOrder
-    facultyId?: SortOrder
-    facultyName?: SortOrder
-    targetUserId?: SortOrder
     targetBranchId?: SortOrder
     targetBranchEmail?: SortOrder
     targetBranchName?: SortOrder
@@ -41550,6 +39871,20 @@ export namespace Prisma {
     createdBy?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    targetUserId?: SortOrder
+    branchCourseId?: SortOrder
+    branchCourseName?: SortOrder
+    facultyId?: SortOrder
+    facultyName?: SortOrder
+    moduleId?: SortOrder
+    moduleName?: SortOrder
+    requestDescription?: SortOrder
+    requestId?: SortOrder
+    requestReason?: SortOrder
+    requestStatus?: SortOrder
+    requestTitle?: SortOrder
+    subModuleId?: SortOrder
+    subModuleName?: SortOrder
   }
 
   export type EnumNotificationKindWithAggregatesFilter<$PrismaModel = never> = {
@@ -41702,40 +40037,16 @@ export namespace Prisma {
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
-  export type CourseModuleListRelationFilter = {
-    every?: CourseModuleWhereInput
-    some?: CourseModuleWhereInput
-    none?: CourseModuleWhereInput
-  }
-
   export type BatchListRelationFilter = {
     every?: BatchWhereInput
     some?: BatchWhereInput
     none?: BatchWhereInput
   }
 
-  export type StudentProfileListRelationFilter = {
-    every?: StudentProfileWhereInput
-    some?: StudentProfileWhereInput
-    none?: StudentProfileWhereInput
-  }
-
-  export type FacultyProfileListRelationFilter = {
-    every?: FacultyProfileWhereInput
-    some?: FacultyProfileWhereInput
-    none?: FacultyProfileWhereInput
-  }
-
-  export type FacultyCourseAssignmentListRelationFilter = {
-    every?: FacultyCourseAssignmentWhereInput
-    some?: FacultyCourseAssignmentWhereInput
-    none?: FacultyCourseAssignmentWhereInput
-  }
-
-  export type FacultyBatchEntryListRelationFilter = {
-    every?: FacultyBatchEntryWhereInput
-    some?: FacultyBatchEntryWhereInput
-    none?: FacultyBatchEntryWhereInput
+  export type CourseModuleListRelationFilter = {
+    every?: CourseModuleWhereInput
+    some?: CourseModuleWhereInput
+    none?: CourseModuleWhereInput
   }
 
   export type CourseStatusHistoryListRelationFilter = {
@@ -41744,27 +40055,35 @@ export namespace Prisma {
     none?: CourseStatusHistoryWhereInput
   }
 
-  export type CourseModuleOrderByRelationAggregateInput = {
-    _count?: SortOrder
+  export type FacultyBatchEntryListRelationFilter = {
+    every?: FacultyBatchEntryWhereInput
+    some?: FacultyBatchEntryWhereInput
+    none?: FacultyBatchEntryWhereInput
+  }
+
+  export type FacultyCourseAssignmentListRelationFilter = {
+    every?: FacultyCourseAssignmentWhereInput
+    some?: FacultyCourseAssignmentWhereInput
+    none?: FacultyCourseAssignmentWhereInput
+  }
+
+  export type FacultyProfileListRelationFilter = {
+    every?: FacultyProfileWhereInput
+    some?: FacultyProfileWhereInput
+    none?: FacultyProfileWhereInput
+  }
+
+  export type StudentProfileListRelationFilter = {
+    every?: StudentProfileWhereInput
+    some?: StudentProfileWhereInput
+    none?: StudentProfileWhereInput
   }
 
   export type BatchOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
-  export type StudentProfileOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type FacultyProfileOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type FacultyCourseAssignmentOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type FacultyBatchEntryOrderByRelationAggregateInput = {
+  export type CourseModuleOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -41772,12 +40091,26 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
+  export type FacultyBatchEntryOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type FacultyCourseAssignmentOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type FacultyProfileOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type StudentProfileOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type CourseCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
     nameKey?: SortOrder
-    courseCode?: SortOrder
-    branchId?: SortOrder
     description?: SortOrder
     feeReference?: SortOrder
     mode?: SortOrder
@@ -41791,7 +40124,6 @@ export namespace Prisma {
     installment1?: SortOrder
     installment2?: SortOrder
     installment3?: SortOrder
-    installments?: SortOrder
     status?: SortOrder
     statusChangedAt?: SortOrder
     statusChangedBy?: SortOrder
@@ -41799,6 +40131,9 @@ export namespace Prisma {
     updatedBy?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    installments?: SortOrder
+    branchId?: SortOrder
+    courseCode?: SortOrder
   }
 
   export type CourseAvgOrderByAggregateInput = {
@@ -41818,8 +40153,6 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     nameKey?: SortOrder
-    courseCode?: SortOrder
-    branchId?: SortOrder
     description?: SortOrder
     feeReference?: SortOrder
     mode?: SortOrder
@@ -41840,14 +40173,14 @@ export namespace Prisma {
     updatedBy?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    branchId?: SortOrder
+    courseCode?: SortOrder
   }
 
   export type CourseMinOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
     nameKey?: SortOrder
-    courseCode?: SortOrder
-    branchId?: SortOrder
     description?: SortOrder
     feeReference?: SortOrder
     mode?: SortOrder
@@ -41868,6 +40201,8 @@ export namespace Prisma {
     updatedBy?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    branchId?: SortOrder
+    courseCode?: SortOrder
   }
 
   export type CourseSumOrderByAggregateInput = {
@@ -41908,11 +40243,6 @@ export namespace Prisma {
     every?: BranchCourseModuleWhereInput
     some?: BranchCourseModuleWhereInput
     none?: BranchCourseModuleWhereInput
-  }
-
-  export type BranchInstallmentTemplateNullableScalarRelationFilter = {
-    is?: BranchInstallmentTemplateWhereInput | null
-    isNot?: BranchInstallmentTemplateWhereInput | null
   }
 
   export type BranchCourseModuleOrderByRelationAggregateInput = {
@@ -42008,117 +40338,6 @@ export namespace Prisma {
     registrationFees?: SortOrder
     discount?: SortOrder
     afterDiscount?: SortOrder
-  }
-  export type JsonFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<JsonFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonFilterBase<$PrismaModel>>, 'path'>>,
-        Required<JsonFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<JsonFilterBase<$PrismaModel>>, 'path'>>
-
-  export type JsonFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-  }
-
-  export type BranchCourseNullableScalarRelationFilter = {
-    is?: BranchCourseWhereInput | null
-    isNot?: BranchCourseWhereInput | null
-  }
-
-  export type BranchInstallmentTemplateCountOrderByAggregateInput = {
-    id?: SortOrder
-    branchId?: SortOrder
-    branchCourseId?: SortOrder
-    templateName?: SortOrder
-    planType?: SortOrder
-    installmentCount?: SortOrder
-    installments?: SortOrder
-    dueRule?: SortOrder
-    allowCustomization?: SortOrder
-    status?: SortOrder
-    createdBy?: SortOrder
-    updatedBy?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type BranchInstallmentTemplateAvgOrderByAggregateInput = {
-    installmentCount?: SortOrder
-  }
-
-  export type BranchInstallmentTemplateMaxOrderByAggregateInput = {
-    id?: SortOrder
-    branchId?: SortOrder
-    branchCourseId?: SortOrder
-    templateName?: SortOrder
-    planType?: SortOrder
-    installmentCount?: SortOrder
-    dueRule?: SortOrder
-    allowCustomization?: SortOrder
-    status?: SortOrder
-    createdBy?: SortOrder
-    updatedBy?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type BranchInstallmentTemplateMinOrderByAggregateInput = {
-    id?: SortOrder
-    branchId?: SortOrder
-    branchCourseId?: SortOrder
-    templateName?: SortOrder
-    planType?: SortOrder
-    installmentCount?: SortOrder
-    dueRule?: SortOrder
-    allowCustomization?: SortOrder
-    status?: SortOrder
-    createdBy?: SortOrder
-    updatedBy?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type BranchInstallmentTemplateSumOrderByAggregateInput = {
-    installmentCount?: SortOrder
-  }
-  export type JsonWithAggregatesFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
-        Required<JsonWithAggregatesFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
-
-  export type JsonWithAggregatesFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedJsonFilter<$PrismaModel>
-    _max?: NestedJsonFilter<$PrismaModel>
   }
 
   export type BranchCourseScalarRelationFilter = {
@@ -42610,14 +40829,11 @@ export namespace Prisma {
     studentName?: SortOrder
     mobileNumber?: SortOrder
     emailAddress?: SortOrder
-    linkedInUrl?: SortOrder
     parentSpouseNumber?: SortOrder
     location?: SortOrder
     courseId?: SortOrder
     courseInterested?: SortOrder
-    facultyId?: SortOrder
     facultyName?: SortOrder
-    batchId?: SortOrder
     batchName?: SortOrder
     qualification?: SortOrder
     passedOutYear?: SortOrder
@@ -42631,7 +40847,6 @@ export namespace Prisma {
     installment1?: SortOrder
     installment2?: SortOrder
     installment3?: SortOrder
-    installment4?: SortOrder
     totalAmount?: SortOrder
     admissionDate?: SortOrder
     firstInstallmentAmount?: SortOrder
@@ -42648,6 +40863,10 @@ export namespace Prisma {
     updatedBy?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    installment4?: SortOrder
+    batchId?: SortOrder
+    facultyId?: SortOrder
+    linkedInUrl?: SortOrder
   }
 
   export type StudentProfileAvgOrderByAggregateInput = {
@@ -42659,10 +40878,10 @@ export namespace Prisma {
     installment1?: SortOrder
     installment2?: SortOrder
     installment3?: SortOrder
-    installment4?: SortOrder
     totalAmount?: SortOrder
     firstInstallmentAmount?: SortOrder
     secondInstallmentAmount?: SortOrder
+    installment4?: SortOrder
   }
 
   export type StudentProfileMaxOrderByAggregateInput = {
@@ -42671,14 +40890,11 @@ export namespace Prisma {
     studentName?: SortOrder
     mobileNumber?: SortOrder
     emailAddress?: SortOrder
-    linkedInUrl?: SortOrder
     parentSpouseNumber?: SortOrder
     location?: SortOrder
     courseId?: SortOrder
     courseInterested?: SortOrder
-    facultyId?: SortOrder
     facultyName?: SortOrder
-    batchId?: SortOrder
     batchName?: SortOrder
     qualification?: SortOrder
     passedOutYear?: SortOrder
@@ -42692,7 +40908,6 @@ export namespace Prisma {
     installment1?: SortOrder
     installment2?: SortOrder
     installment3?: SortOrder
-    installment4?: SortOrder
     totalAmount?: SortOrder
     admissionDate?: SortOrder
     firstInstallmentAmount?: SortOrder
@@ -42709,6 +40924,10 @@ export namespace Prisma {
     updatedBy?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    installment4?: SortOrder
+    batchId?: SortOrder
+    facultyId?: SortOrder
+    linkedInUrl?: SortOrder
   }
 
   export type StudentProfileMinOrderByAggregateInput = {
@@ -42717,14 +40936,11 @@ export namespace Prisma {
     studentName?: SortOrder
     mobileNumber?: SortOrder
     emailAddress?: SortOrder
-    linkedInUrl?: SortOrder
     parentSpouseNumber?: SortOrder
     location?: SortOrder
     courseId?: SortOrder
     courseInterested?: SortOrder
-    facultyId?: SortOrder
     facultyName?: SortOrder
-    batchId?: SortOrder
     batchName?: SortOrder
     qualification?: SortOrder
     passedOutYear?: SortOrder
@@ -42738,7 +40954,6 @@ export namespace Prisma {
     installment1?: SortOrder
     installment2?: SortOrder
     installment3?: SortOrder
-    installment4?: SortOrder
     totalAmount?: SortOrder
     admissionDate?: SortOrder
     firstInstallmentAmount?: SortOrder
@@ -42755,6 +40970,10 @@ export namespace Prisma {
     updatedBy?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    installment4?: SortOrder
+    batchId?: SortOrder
+    facultyId?: SortOrder
+    linkedInUrl?: SortOrder
   }
 
   export type StudentProfileSumOrderByAggregateInput = {
@@ -42766,10 +40985,10 @@ export namespace Prisma {
     installment1?: SortOrder
     installment2?: SortOrder
     installment3?: SortOrder
-    installment4?: SortOrder
     totalAmount?: SortOrder
     firstInstallmentAmount?: SortOrder
     secondInstallmentAmount?: SortOrder
+    installment4?: SortOrder
   }
 
   export type BranchStudentBranchIdStudentIdCompoundUniqueInput = {
@@ -42784,7 +41003,6 @@ export namespace Prisma {
     studentName?: SortOrder
     mobileNumber?: SortOrder
     emailAddress?: SortOrder
-    linkedInUrl?: SortOrder
     parentSpouseNumber?: SortOrder
     countryCode?: SortOrder
     country?: SortOrder
@@ -42798,13 +41016,14 @@ export namespace Prisma {
     designation?: SortOrder
     source?: SortOrder
     sourceOther?: SortOrder
-    remarks?: SortOrder
     admissionDate?: SortOrder
     recordStatus?: SortOrder
     createdBy?: SortOrder
     updatedBy?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    linkedInUrl?: SortOrder
+    remarks?: SortOrder
   }
 
   export type BranchStudentMaxOrderByAggregateInput = {
@@ -42814,7 +41033,6 @@ export namespace Prisma {
     studentName?: SortOrder
     mobileNumber?: SortOrder
     emailAddress?: SortOrder
-    linkedInUrl?: SortOrder
     parentSpouseNumber?: SortOrder
     countryCode?: SortOrder
     country?: SortOrder
@@ -42828,13 +41046,14 @@ export namespace Prisma {
     designation?: SortOrder
     source?: SortOrder
     sourceOther?: SortOrder
-    remarks?: SortOrder
     admissionDate?: SortOrder
     recordStatus?: SortOrder
     createdBy?: SortOrder
     updatedBy?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    linkedInUrl?: SortOrder
+    remarks?: SortOrder
   }
 
   export type BranchStudentMinOrderByAggregateInput = {
@@ -42844,7 +41063,6 @@ export namespace Prisma {
     studentName?: SortOrder
     mobileNumber?: SortOrder
     emailAddress?: SortOrder
-    linkedInUrl?: SortOrder
     parentSpouseNumber?: SortOrder
     countryCode?: SortOrder
     country?: SortOrder
@@ -42858,13 +41076,14 @@ export namespace Prisma {
     designation?: SortOrder
     source?: SortOrder
     sourceOther?: SortOrder
-    remarks?: SortOrder
     admissionDate?: SortOrder
     recordStatus?: SortOrder
     createdBy?: SortOrder
     updatedBy?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    linkedInUrl?: SortOrder
+    remarks?: SortOrder
   }
 
   export type FacultyProfileCountOrderByAggregateInput = {
@@ -42949,12 +41168,12 @@ export namespace Prisma {
   export type FacultyBatchEntryCountOrderByAggregateInput = {
     id?: SortOrder
     facultyId?: SortOrder
-    courseId?: SortOrder
     batchName?: SortOrder
     batchTiming?: SortOrder
     sequenceNo?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    courseId?: SortOrder
   }
 
   export type FacultyBatchEntryAvgOrderByAggregateInput = {
@@ -42964,23 +41183,23 @@ export namespace Prisma {
   export type FacultyBatchEntryMaxOrderByAggregateInput = {
     id?: SortOrder
     facultyId?: SortOrder
-    courseId?: SortOrder
     batchName?: SortOrder
     batchTiming?: SortOrder
     sequenceNo?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    courseId?: SortOrder
   }
 
   export type FacultyBatchEntryMinOrderByAggregateInput = {
     id?: SortOrder
     facultyId?: SortOrder
-    courseId?: SortOrder
     batchName?: SortOrder
     batchTiming?: SortOrder
     sequenceNo?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    courseId?: SortOrder
   }
 
   export type FacultyBatchEntrySumOrderByAggregateInput = {
@@ -42991,45 +41210,45 @@ export namespace Prisma {
     id?: SortOrder
     facultyUserId?: SortOrder
     attendanceDate?: SortOrder
-    sessionSource?: SortOrder
     loginAt?: SortOrder
     logoutAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    sessionSource?: SortOrder
     logoutType?: SortOrder
     logoutReason?: SortOrder
     workReport?: SortOrder
     workCompleted?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
   }
 
   export type FacultyAttendanceSessionMaxOrderByAggregateInput = {
     id?: SortOrder
     facultyUserId?: SortOrder
     attendanceDate?: SortOrder
-    sessionSource?: SortOrder
     loginAt?: SortOrder
     logoutAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    sessionSource?: SortOrder
     logoutType?: SortOrder
     logoutReason?: SortOrder
     workReport?: SortOrder
     workCompleted?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
   }
 
   export type FacultyAttendanceSessionMinOrderByAggregateInput = {
     id?: SortOrder
     facultyUserId?: SortOrder
     attendanceDate?: SortOrder
-    sessionSource?: SortOrder
     loginAt?: SortOrder
     logoutAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    sessionSource?: SortOrder
     logoutType?: SortOrder
     logoutReason?: SortOrder
     workReport?: SortOrder
     workCompleted?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
   }
 
   export type EnumAttendanceStatusFilter<$PrismaModel = never> = {
@@ -43107,6 +41326,11 @@ export namespace Prisma {
     _max?: NestedEnumAttendanceStatusFilter<$PrismaModel>
   }
 
+  export type BranchCourseNullableScalarRelationFilter = {
+    is?: BranchCourseWhereInput | null
+    isNot?: BranchCourseWhereInput | null
+  }
+
   export type BranchFacultyBranchIdFacultyIdCompoundUniqueInput = {
     branchId: string
     facultyId: string
@@ -43130,13 +41354,13 @@ export namespace Prisma {
     stateCode?: SortOrder
     city?: SortOrder
     address?: SortOrder
-    courseId?: SortOrder
-    branchCourseId?: SortOrder
     status?: SortOrder
     createdBy?: SortOrder
     updatedBy?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    courseId?: SortOrder
+    branchCourseId?: SortOrder
   }
 
   export type BranchFacultyMaxOrderByAggregateInput = {
@@ -43152,13 +41376,13 @@ export namespace Prisma {
     stateCode?: SortOrder
     city?: SortOrder
     address?: SortOrder
-    courseId?: SortOrder
-    branchCourseId?: SortOrder
     status?: SortOrder
     createdBy?: SortOrder
     updatedBy?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    courseId?: SortOrder
+    branchCourseId?: SortOrder
   }
 
   export type BranchFacultyMinOrderByAggregateInput = {
@@ -43174,27 +41398,13 @@ export namespace Prisma {
     stateCode?: SortOrder
     city?: SortOrder
     address?: SortOrder
-    courseId?: SortOrder
-    branchCourseId?: SortOrder
     status?: SortOrder
     createdBy?: SortOrder
     updatedBy?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-  }
-
-  export type LoginEventCreateNestedManyWithoutUserInput = {
-    create?: XOR<LoginEventCreateWithoutUserInput, LoginEventUncheckedCreateWithoutUserInput> | LoginEventCreateWithoutUserInput[] | LoginEventUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: LoginEventCreateOrConnectWithoutUserInput | LoginEventCreateOrConnectWithoutUserInput[]
-    createMany?: LoginEventCreateManyUserInputEnvelope
-    connect?: LoginEventWhereUniqueInput | LoginEventWhereUniqueInput[]
-  }
-
-  export type PasswordResetTokenCreateNestedManyWithoutUserInput = {
-    create?: XOR<PasswordResetTokenCreateWithoutUserInput, PasswordResetTokenUncheckedCreateWithoutUserInput> | PasswordResetTokenCreateWithoutUserInput[] | PasswordResetTokenUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: PasswordResetTokenCreateOrConnectWithoutUserInput | PasswordResetTokenCreateOrConnectWithoutUserInput[]
-    createMany?: PasswordResetTokenCreateManyUserInputEnvelope
-    connect?: PasswordResetTokenWhereUniqueInput | PasswordResetTokenWhereUniqueInput[]
+    courseId?: SortOrder
+    branchCourseId?: SortOrder
   }
 
   export type BatchFacultyAssignmentCreateNestedManyWithoutFacultyInput = {
@@ -43204,11 +41414,10 @@ export namespace Prisma {
     connect?: BatchFacultyAssignmentWhereUniqueInput | BatchFacultyAssignmentWhereUniqueInput[]
   }
 
-  export type NotificationCreateNestedManyWithoutTargetUserInput = {
-    create?: XOR<NotificationCreateWithoutTargetUserInput, NotificationUncheckedCreateWithoutTargetUserInput> | NotificationCreateWithoutTargetUserInput[] | NotificationUncheckedCreateWithoutTargetUserInput[]
-    connectOrCreate?: NotificationCreateOrConnectWithoutTargetUserInput | NotificationCreateOrConnectWithoutTargetUserInput[]
-    createMany?: NotificationCreateManyTargetUserInputEnvelope
-    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+  export type BranchCreateNestedOneWithoutAdminUserInput = {
+    create?: XOR<BranchCreateWithoutAdminUserInput, BranchUncheckedCreateWithoutAdminUserInput>
+    connectOrCreate?: BranchCreateOrConnectWithoutAdminUserInput
+    connect?: BranchWhereUniqueInput
   }
 
   export type FacultyAttendanceSessionCreateNestedManyWithoutFacultyUserInput = {
@@ -43218,31 +41427,32 @@ export namespace Prisma {
     connect?: FacultyAttendanceSessionWhereUniqueInput | FacultyAttendanceSessionWhereUniqueInput[]
   }
 
-  export type StudentAttendanceCreateNestedManyWithoutFacultyUserInput = {
-    create?: XOR<StudentAttendanceCreateWithoutFacultyUserInput, StudentAttendanceUncheckedCreateWithoutFacultyUserInput> | StudentAttendanceCreateWithoutFacultyUserInput[] | StudentAttendanceUncheckedCreateWithoutFacultyUserInput[]
-    connectOrCreate?: StudentAttendanceCreateOrConnectWithoutFacultyUserInput | StudentAttendanceCreateOrConnectWithoutFacultyUserInput[]
-    createMany?: StudentAttendanceCreateManyFacultyUserInputEnvelope
-    connect?: StudentAttendanceWhereUniqueInput | StudentAttendanceWhereUniqueInput[]
-  }
-
-  export type BranchCreateNestedOneWithoutAdminUserInput = {
-    create?: XOR<BranchCreateWithoutAdminUserInput, BranchUncheckedCreateWithoutAdminUserInput>
-    connectOrCreate?: BranchCreateOrConnectWithoutAdminUserInput
-    connect?: BranchWhereUniqueInput
-  }
-
-  export type LoginEventUncheckedCreateNestedManyWithoutUserInput = {
+  export type LoginEventCreateNestedManyWithoutUserInput = {
     create?: XOR<LoginEventCreateWithoutUserInput, LoginEventUncheckedCreateWithoutUserInput> | LoginEventCreateWithoutUserInput[] | LoginEventUncheckedCreateWithoutUserInput[]
     connectOrCreate?: LoginEventCreateOrConnectWithoutUserInput | LoginEventCreateOrConnectWithoutUserInput[]
     createMany?: LoginEventCreateManyUserInputEnvelope
     connect?: LoginEventWhereUniqueInput | LoginEventWhereUniqueInput[]
   }
 
-  export type PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput = {
+  export type NotificationCreateNestedManyWithoutTargetUserInput = {
+    create?: XOR<NotificationCreateWithoutTargetUserInput, NotificationUncheckedCreateWithoutTargetUserInput> | NotificationCreateWithoutTargetUserInput[] | NotificationUncheckedCreateWithoutTargetUserInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutTargetUserInput | NotificationCreateOrConnectWithoutTargetUserInput[]
+    createMany?: NotificationCreateManyTargetUserInputEnvelope
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+  }
+
+  export type PasswordResetTokenCreateNestedManyWithoutUserInput = {
     create?: XOR<PasswordResetTokenCreateWithoutUserInput, PasswordResetTokenUncheckedCreateWithoutUserInput> | PasswordResetTokenCreateWithoutUserInput[] | PasswordResetTokenUncheckedCreateWithoutUserInput[]
     connectOrCreate?: PasswordResetTokenCreateOrConnectWithoutUserInput | PasswordResetTokenCreateOrConnectWithoutUserInput[]
     createMany?: PasswordResetTokenCreateManyUserInputEnvelope
     connect?: PasswordResetTokenWhereUniqueInput | PasswordResetTokenWhereUniqueInput[]
+  }
+
+  export type StudentAttendanceCreateNestedManyWithoutFacultyUserInput = {
+    create?: XOR<StudentAttendanceCreateWithoutFacultyUserInput, StudentAttendanceUncheckedCreateWithoutFacultyUserInput> | StudentAttendanceCreateWithoutFacultyUserInput[] | StudentAttendanceUncheckedCreateWithoutFacultyUserInput[]
+    connectOrCreate?: StudentAttendanceCreateOrConnectWithoutFacultyUserInput | StudentAttendanceCreateOrConnectWithoutFacultyUserInput[]
+    createMany?: StudentAttendanceCreateManyFacultyUserInputEnvelope
+    connect?: StudentAttendanceWhereUniqueInput | StudentAttendanceWhereUniqueInput[]
   }
 
   export type BatchFacultyAssignmentUncheckedCreateNestedManyWithoutFacultyInput = {
@@ -43252,11 +41462,10 @@ export namespace Prisma {
     connect?: BatchFacultyAssignmentWhereUniqueInput | BatchFacultyAssignmentWhereUniqueInput[]
   }
 
-  export type NotificationUncheckedCreateNestedManyWithoutTargetUserInput = {
-    create?: XOR<NotificationCreateWithoutTargetUserInput, NotificationUncheckedCreateWithoutTargetUserInput> | NotificationCreateWithoutTargetUserInput[] | NotificationUncheckedCreateWithoutTargetUserInput[]
-    connectOrCreate?: NotificationCreateOrConnectWithoutTargetUserInput | NotificationCreateOrConnectWithoutTargetUserInput[]
-    createMany?: NotificationCreateManyTargetUserInputEnvelope
-    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+  export type BranchUncheckedCreateNestedOneWithoutAdminUserInput = {
+    create?: XOR<BranchCreateWithoutAdminUserInput, BranchUncheckedCreateWithoutAdminUserInput>
+    connectOrCreate?: BranchCreateOrConnectWithoutAdminUserInput
+    connect?: BranchWhereUniqueInput
   }
 
   export type FacultyAttendanceSessionUncheckedCreateNestedManyWithoutFacultyUserInput = {
@@ -43266,17 +41475,32 @@ export namespace Prisma {
     connect?: FacultyAttendanceSessionWhereUniqueInput | FacultyAttendanceSessionWhereUniqueInput[]
   }
 
+  export type LoginEventUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<LoginEventCreateWithoutUserInput, LoginEventUncheckedCreateWithoutUserInput> | LoginEventCreateWithoutUserInput[] | LoginEventUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: LoginEventCreateOrConnectWithoutUserInput | LoginEventCreateOrConnectWithoutUserInput[]
+    createMany?: LoginEventCreateManyUserInputEnvelope
+    connect?: LoginEventWhereUniqueInput | LoginEventWhereUniqueInput[]
+  }
+
+  export type NotificationUncheckedCreateNestedManyWithoutTargetUserInput = {
+    create?: XOR<NotificationCreateWithoutTargetUserInput, NotificationUncheckedCreateWithoutTargetUserInput> | NotificationCreateWithoutTargetUserInput[] | NotificationUncheckedCreateWithoutTargetUserInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutTargetUserInput | NotificationCreateOrConnectWithoutTargetUserInput[]
+    createMany?: NotificationCreateManyTargetUserInputEnvelope
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+  }
+
+  export type PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<PasswordResetTokenCreateWithoutUserInput, PasswordResetTokenUncheckedCreateWithoutUserInput> | PasswordResetTokenCreateWithoutUserInput[] | PasswordResetTokenUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PasswordResetTokenCreateOrConnectWithoutUserInput | PasswordResetTokenCreateOrConnectWithoutUserInput[]
+    createMany?: PasswordResetTokenCreateManyUserInputEnvelope
+    connect?: PasswordResetTokenWhereUniqueInput | PasswordResetTokenWhereUniqueInput[]
+  }
+
   export type StudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput = {
     create?: XOR<StudentAttendanceCreateWithoutFacultyUserInput, StudentAttendanceUncheckedCreateWithoutFacultyUserInput> | StudentAttendanceCreateWithoutFacultyUserInput[] | StudentAttendanceUncheckedCreateWithoutFacultyUserInput[]
     connectOrCreate?: StudentAttendanceCreateOrConnectWithoutFacultyUserInput | StudentAttendanceCreateOrConnectWithoutFacultyUserInput[]
     createMany?: StudentAttendanceCreateManyFacultyUserInputEnvelope
     connect?: StudentAttendanceWhereUniqueInput | StudentAttendanceWhereUniqueInput[]
-  }
-
-  export type BranchUncheckedCreateNestedOneWithoutAdminUserInput = {
-    create?: XOR<BranchCreateWithoutAdminUserInput, BranchUncheckedCreateWithoutAdminUserInput>
-    connectOrCreate?: BranchCreateOrConnectWithoutAdminUserInput
-    connect?: BranchWhereUniqueInput
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -43311,34 +41535,6 @@ export namespace Prisma {
     set?: Date | string
   }
 
-  export type LoginEventUpdateManyWithoutUserNestedInput = {
-    create?: XOR<LoginEventCreateWithoutUserInput, LoginEventUncheckedCreateWithoutUserInput> | LoginEventCreateWithoutUserInput[] | LoginEventUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: LoginEventCreateOrConnectWithoutUserInput | LoginEventCreateOrConnectWithoutUserInput[]
-    upsert?: LoginEventUpsertWithWhereUniqueWithoutUserInput | LoginEventUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: LoginEventCreateManyUserInputEnvelope
-    set?: LoginEventWhereUniqueInput | LoginEventWhereUniqueInput[]
-    disconnect?: LoginEventWhereUniqueInput | LoginEventWhereUniqueInput[]
-    delete?: LoginEventWhereUniqueInput | LoginEventWhereUniqueInput[]
-    connect?: LoginEventWhereUniqueInput | LoginEventWhereUniqueInput[]
-    update?: LoginEventUpdateWithWhereUniqueWithoutUserInput | LoginEventUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: LoginEventUpdateManyWithWhereWithoutUserInput | LoginEventUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: LoginEventScalarWhereInput | LoginEventScalarWhereInput[]
-  }
-
-  export type PasswordResetTokenUpdateManyWithoutUserNestedInput = {
-    create?: XOR<PasswordResetTokenCreateWithoutUserInput, PasswordResetTokenUncheckedCreateWithoutUserInput> | PasswordResetTokenCreateWithoutUserInput[] | PasswordResetTokenUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: PasswordResetTokenCreateOrConnectWithoutUserInput | PasswordResetTokenCreateOrConnectWithoutUserInput[]
-    upsert?: PasswordResetTokenUpsertWithWhereUniqueWithoutUserInput | PasswordResetTokenUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: PasswordResetTokenCreateManyUserInputEnvelope
-    set?: PasswordResetTokenWhereUniqueInput | PasswordResetTokenWhereUniqueInput[]
-    disconnect?: PasswordResetTokenWhereUniqueInput | PasswordResetTokenWhereUniqueInput[]
-    delete?: PasswordResetTokenWhereUniqueInput | PasswordResetTokenWhereUniqueInput[]
-    connect?: PasswordResetTokenWhereUniqueInput | PasswordResetTokenWhereUniqueInput[]
-    update?: PasswordResetTokenUpdateWithWhereUniqueWithoutUserInput | PasswordResetTokenUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: PasswordResetTokenUpdateManyWithWhereWithoutUserInput | PasswordResetTokenUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: PasswordResetTokenScalarWhereInput | PasswordResetTokenScalarWhereInput[]
-  }
-
   export type BatchFacultyAssignmentUpdateManyWithoutFacultyNestedInput = {
     create?: XOR<BatchFacultyAssignmentCreateWithoutFacultyInput, BatchFacultyAssignmentUncheckedCreateWithoutFacultyInput> | BatchFacultyAssignmentCreateWithoutFacultyInput[] | BatchFacultyAssignmentUncheckedCreateWithoutFacultyInput[]
     connectOrCreate?: BatchFacultyAssignmentCreateOrConnectWithoutFacultyInput | BatchFacultyAssignmentCreateOrConnectWithoutFacultyInput[]
@@ -43353,18 +41549,14 @@ export namespace Prisma {
     deleteMany?: BatchFacultyAssignmentScalarWhereInput | BatchFacultyAssignmentScalarWhereInput[]
   }
 
-  export type NotificationUpdateManyWithoutTargetUserNestedInput = {
-    create?: XOR<NotificationCreateWithoutTargetUserInput, NotificationUncheckedCreateWithoutTargetUserInput> | NotificationCreateWithoutTargetUserInput[] | NotificationUncheckedCreateWithoutTargetUserInput[]
-    connectOrCreate?: NotificationCreateOrConnectWithoutTargetUserInput | NotificationCreateOrConnectWithoutTargetUserInput[]
-    upsert?: NotificationUpsertWithWhereUniqueWithoutTargetUserInput | NotificationUpsertWithWhereUniqueWithoutTargetUserInput[]
-    createMany?: NotificationCreateManyTargetUserInputEnvelope
-    set?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
-    disconnect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
-    delete?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
-    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
-    update?: NotificationUpdateWithWhereUniqueWithoutTargetUserInput | NotificationUpdateWithWhereUniqueWithoutTargetUserInput[]
-    updateMany?: NotificationUpdateManyWithWhereWithoutTargetUserInput | NotificationUpdateManyWithWhereWithoutTargetUserInput[]
-    deleteMany?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
+  export type BranchUpdateOneWithoutAdminUserNestedInput = {
+    create?: XOR<BranchCreateWithoutAdminUserInput, BranchUncheckedCreateWithoutAdminUserInput>
+    connectOrCreate?: BranchCreateOrConnectWithoutAdminUserInput
+    upsert?: BranchUpsertWithoutAdminUserInput
+    disconnect?: BranchWhereInput | boolean
+    delete?: BranchWhereInput | boolean
+    connect?: BranchWhereUniqueInput
+    update?: XOR<XOR<BranchUpdateToOneWithWhereWithoutAdminUserInput, BranchUpdateWithoutAdminUserInput>, BranchUncheckedUpdateWithoutAdminUserInput>
   }
 
   export type FacultyAttendanceSessionUpdateManyWithoutFacultyUserNestedInput = {
@@ -43381,31 +41573,7 @@ export namespace Prisma {
     deleteMany?: FacultyAttendanceSessionScalarWhereInput | FacultyAttendanceSessionScalarWhereInput[]
   }
 
-  export type StudentAttendanceUpdateManyWithoutFacultyUserNestedInput = {
-    create?: XOR<StudentAttendanceCreateWithoutFacultyUserInput, StudentAttendanceUncheckedCreateWithoutFacultyUserInput> | StudentAttendanceCreateWithoutFacultyUserInput[] | StudentAttendanceUncheckedCreateWithoutFacultyUserInput[]
-    connectOrCreate?: StudentAttendanceCreateOrConnectWithoutFacultyUserInput | StudentAttendanceCreateOrConnectWithoutFacultyUserInput[]
-    upsert?: StudentAttendanceUpsertWithWhereUniqueWithoutFacultyUserInput | StudentAttendanceUpsertWithWhereUniqueWithoutFacultyUserInput[]
-    createMany?: StudentAttendanceCreateManyFacultyUserInputEnvelope
-    set?: StudentAttendanceWhereUniqueInput | StudentAttendanceWhereUniqueInput[]
-    disconnect?: StudentAttendanceWhereUniqueInput | StudentAttendanceWhereUniqueInput[]
-    delete?: StudentAttendanceWhereUniqueInput | StudentAttendanceWhereUniqueInput[]
-    connect?: StudentAttendanceWhereUniqueInput | StudentAttendanceWhereUniqueInput[]
-    update?: StudentAttendanceUpdateWithWhereUniqueWithoutFacultyUserInput | StudentAttendanceUpdateWithWhereUniqueWithoutFacultyUserInput[]
-    updateMany?: StudentAttendanceUpdateManyWithWhereWithoutFacultyUserInput | StudentAttendanceUpdateManyWithWhereWithoutFacultyUserInput[]
-    deleteMany?: StudentAttendanceScalarWhereInput | StudentAttendanceScalarWhereInput[]
-  }
-
-  export type BranchUpdateOneWithoutAdminUserNestedInput = {
-    create?: XOR<BranchCreateWithoutAdminUserInput, BranchUncheckedCreateWithoutAdminUserInput>
-    connectOrCreate?: BranchCreateOrConnectWithoutAdminUserInput
-    upsert?: BranchUpsertWithoutAdminUserInput
-    disconnect?: BranchWhereInput | boolean
-    delete?: BranchWhereInput | boolean
-    connect?: BranchWhereUniqueInput
-    update?: XOR<XOR<BranchUpdateToOneWithWhereWithoutAdminUserInput, BranchUpdateWithoutAdminUserInput>, BranchUncheckedUpdateWithoutAdminUserInput>
-  }
-
-  export type LoginEventUncheckedUpdateManyWithoutUserNestedInput = {
+  export type LoginEventUpdateManyWithoutUserNestedInput = {
     create?: XOR<LoginEventCreateWithoutUserInput, LoginEventUncheckedCreateWithoutUserInput> | LoginEventCreateWithoutUserInput[] | LoginEventUncheckedCreateWithoutUserInput[]
     connectOrCreate?: LoginEventCreateOrConnectWithoutUserInput | LoginEventCreateOrConnectWithoutUserInput[]
     upsert?: LoginEventUpsertWithWhereUniqueWithoutUserInput | LoginEventUpsertWithWhereUniqueWithoutUserInput[]
@@ -43419,7 +41587,21 @@ export namespace Prisma {
     deleteMany?: LoginEventScalarWhereInput | LoginEventScalarWhereInput[]
   }
 
-  export type PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput = {
+  export type NotificationUpdateManyWithoutTargetUserNestedInput = {
+    create?: XOR<NotificationCreateWithoutTargetUserInput, NotificationUncheckedCreateWithoutTargetUserInput> | NotificationCreateWithoutTargetUserInput[] | NotificationUncheckedCreateWithoutTargetUserInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutTargetUserInput | NotificationCreateOrConnectWithoutTargetUserInput[]
+    upsert?: NotificationUpsertWithWhereUniqueWithoutTargetUserInput | NotificationUpsertWithWhereUniqueWithoutTargetUserInput[]
+    createMany?: NotificationCreateManyTargetUserInputEnvelope
+    set?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    disconnect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    delete?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    update?: NotificationUpdateWithWhereUniqueWithoutTargetUserInput | NotificationUpdateWithWhereUniqueWithoutTargetUserInput[]
+    updateMany?: NotificationUpdateManyWithWhereWithoutTargetUserInput | NotificationUpdateManyWithWhereWithoutTargetUserInput[]
+    deleteMany?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
+  }
+
+  export type PasswordResetTokenUpdateManyWithoutUserNestedInput = {
     create?: XOR<PasswordResetTokenCreateWithoutUserInput, PasswordResetTokenUncheckedCreateWithoutUserInput> | PasswordResetTokenCreateWithoutUserInput[] | PasswordResetTokenUncheckedCreateWithoutUserInput[]
     connectOrCreate?: PasswordResetTokenCreateOrConnectWithoutUserInput | PasswordResetTokenCreateOrConnectWithoutUserInput[]
     upsert?: PasswordResetTokenUpsertWithWhereUniqueWithoutUserInput | PasswordResetTokenUpsertWithWhereUniqueWithoutUserInput[]
@@ -43431,6 +41613,20 @@ export namespace Prisma {
     update?: PasswordResetTokenUpdateWithWhereUniqueWithoutUserInput | PasswordResetTokenUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: PasswordResetTokenUpdateManyWithWhereWithoutUserInput | PasswordResetTokenUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: PasswordResetTokenScalarWhereInput | PasswordResetTokenScalarWhereInput[]
+  }
+
+  export type StudentAttendanceUpdateManyWithoutFacultyUserNestedInput = {
+    create?: XOR<StudentAttendanceCreateWithoutFacultyUserInput, StudentAttendanceUncheckedCreateWithoutFacultyUserInput> | StudentAttendanceCreateWithoutFacultyUserInput[] | StudentAttendanceUncheckedCreateWithoutFacultyUserInput[]
+    connectOrCreate?: StudentAttendanceCreateOrConnectWithoutFacultyUserInput | StudentAttendanceCreateOrConnectWithoutFacultyUserInput[]
+    upsert?: StudentAttendanceUpsertWithWhereUniqueWithoutFacultyUserInput | StudentAttendanceUpsertWithWhereUniqueWithoutFacultyUserInput[]
+    createMany?: StudentAttendanceCreateManyFacultyUserInputEnvelope
+    set?: StudentAttendanceWhereUniqueInput | StudentAttendanceWhereUniqueInput[]
+    disconnect?: StudentAttendanceWhereUniqueInput | StudentAttendanceWhereUniqueInput[]
+    delete?: StudentAttendanceWhereUniqueInput | StudentAttendanceWhereUniqueInput[]
+    connect?: StudentAttendanceWhereUniqueInput | StudentAttendanceWhereUniqueInput[]
+    update?: StudentAttendanceUpdateWithWhereUniqueWithoutFacultyUserInput | StudentAttendanceUpdateWithWhereUniqueWithoutFacultyUserInput[]
+    updateMany?: StudentAttendanceUpdateManyWithWhereWithoutFacultyUserInput | StudentAttendanceUpdateManyWithWhereWithoutFacultyUserInput[]
+    deleteMany?: StudentAttendanceScalarWhereInput | StudentAttendanceScalarWhereInput[]
   }
 
   export type BatchFacultyAssignmentUncheckedUpdateManyWithoutFacultyNestedInput = {
@@ -43447,18 +41643,14 @@ export namespace Prisma {
     deleteMany?: BatchFacultyAssignmentScalarWhereInput | BatchFacultyAssignmentScalarWhereInput[]
   }
 
-  export type NotificationUncheckedUpdateManyWithoutTargetUserNestedInput = {
-    create?: XOR<NotificationCreateWithoutTargetUserInput, NotificationUncheckedCreateWithoutTargetUserInput> | NotificationCreateWithoutTargetUserInput[] | NotificationUncheckedCreateWithoutTargetUserInput[]
-    connectOrCreate?: NotificationCreateOrConnectWithoutTargetUserInput | NotificationCreateOrConnectWithoutTargetUserInput[]
-    upsert?: NotificationUpsertWithWhereUniqueWithoutTargetUserInput | NotificationUpsertWithWhereUniqueWithoutTargetUserInput[]
-    createMany?: NotificationCreateManyTargetUserInputEnvelope
-    set?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
-    disconnect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
-    delete?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
-    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
-    update?: NotificationUpdateWithWhereUniqueWithoutTargetUserInput | NotificationUpdateWithWhereUniqueWithoutTargetUserInput[]
-    updateMany?: NotificationUpdateManyWithWhereWithoutTargetUserInput | NotificationUpdateManyWithWhereWithoutTargetUserInput[]
-    deleteMany?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
+  export type BranchUncheckedUpdateOneWithoutAdminUserNestedInput = {
+    create?: XOR<BranchCreateWithoutAdminUserInput, BranchUncheckedCreateWithoutAdminUserInput>
+    connectOrCreate?: BranchCreateOrConnectWithoutAdminUserInput
+    upsert?: BranchUpsertWithoutAdminUserInput
+    disconnect?: BranchWhereInput | boolean
+    delete?: BranchWhereInput | boolean
+    connect?: BranchWhereUniqueInput
+    update?: XOR<XOR<BranchUpdateToOneWithWhereWithoutAdminUserInput, BranchUpdateWithoutAdminUserInput>, BranchUncheckedUpdateWithoutAdminUserInput>
   }
 
   export type FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserNestedInput = {
@@ -43475,6 +41667,48 @@ export namespace Prisma {
     deleteMany?: FacultyAttendanceSessionScalarWhereInput | FacultyAttendanceSessionScalarWhereInput[]
   }
 
+  export type LoginEventUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<LoginEventCreateWithoutUserInput, LoginEventUncheckedCreateWithoutUserInput> | LoginEventCreateWithoutUserInput[] | LoginEventUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: LoginEventCreateOrConnectWithoutUserInput | LoginEventCreateOrConnectWithoutUserInput[]
+    upsert?: LoginEventUpsertWithWhereUniqueWithoutUserInput | LoginEventUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: LoginEventCreateManyUserInputEnvelope
+    set?: LoginEventWhereUniqueInput | LoginEventWhereUniqueInput[]
+    disconnect?: LoginEventWhereUniqueInput | LoginEventWhereUniqueInput[]
+    delete?: LoginEventWhereUniqueInput | LoginEventWhereUniqueInput[]
+    connect?: LoginEventWhereUniqueInput | LoginEventWhereUniqueInput[]
+    update?: LoginEventUpdateWithWhereUniqueWithoutUserInput | LoginEventUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: LoginEventUpdateManyWithWhereWithoutUserInput | LoginEventUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: LoginEventScalarWhereInput | LoginEventScalarWhereInput[]
+  }
+
+  export type NotificationUncheckedUpdateManyWithoutTargetUserNestedInput = {
+    create?: XOR<NotificationCreateWithoutTargetUserInput, NotificationUncheckedCreateWithoutTargetUserInput> | NotificationCreateWithoutTargetUserInput[] | NotificationUncheckedCreateWithoutTargetUserInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutTargetUserInput | NotificationCreateOrConnectWithoutTargetUserInput[]
+    upsert?: NotificationUpsertWithWhereUniqueWithoutTargetUserInput | NotificationUpsertWithWhereUniqueWithoutTargetUserInput[]
+    createMany?: NotificationCreateManyTargetUserInputEnvelope
+    set?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    disconnect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    delete?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    update?: NotificationUpdateWithWhereUniqueWithoutTargetUserInput | NotificationUpdateWithWhereUniqueWithoutTargetUserInput[]
+    updateMany?: NotificationUpdateManyWithWhereWithoutTargetUserInput | NotificationUpdateManyWithWhereWithoutTargetUserInput[]
+    deleteMany?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
+  }
+
+  export type PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<PasswordResetTokenCreateWithoutUserInput, PasswordResetTokenUncheckedCreateWithoutUserInput> | PasswordResetTokenCreateWithoutUserInput[] | PasswordResetTokenUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PasswordResetTokenCreateOrConnectWithoutUserInput | PasswordResetTokenCreateOrConnectWithoutUserInput[]
+    upsert?: PasswordResetTokenUpsertWithWhereUniqueWithoutUserInput | PasswordResetTokenUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: PasswordResetTokenCreateManyUserInputEnvelope
+    set?: PasswordResetTokenWhereUniqueInput | PasswordResetTokenWhereUniqueInput[]
+    disconnect?: PasswordResetTokenWhereUniqueInput | PasswordResetTokenWhereUniqueInput[]
+    delete?: PasswordResetTokenWhereUniqueInput | PasswordResetTokenWhereUniqueInput[]
+    connect?: PasswordResetTokenWhereUniqueInput | PasswordResetTokenWhereUniqueInput[]
+    update?: PasswordResetTokenUpdateWithWhereUniqueWithoutUserInput | PasswordResetTokenUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: PasswordResetTokenUpdateManyWithWhereWithoutUserInput | PasswordResetTokenUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: PasswordResetTokenScalarWhereInput | PasswordResetTokenScalarWhereInput[]
+  }
+
   export type StudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput = {
     create?: XOR<StudentAttendanceCreateWithoutFacultyUserInput, StudentAttendanceUncheckedCreateWithoutFacultyUserInput> | StudentAttendanceCreateWithoutFacultyUserInput[] | StudentAttendanceUncheckedCreateWithoutFacultyUserInput[]
     connectOrCreate?: StudentAttendanceCreateOrConnectWithoutFacultyUserInput | StudentAttendanceCreateOrConnectWithoutFacultyUserInput[]
@@ -43489,27 +41723,10 @@ export namespace Prisma {
     deleteMany?: StudentAttendanceScalarWhereInput | StudentAttendanceScalarWhereInput[]
   }
 
-  export type BranchUncheckedUpdateOneWithoutAdminUserNestedInput = {
-    create?: XOR<BranchCreateWithoutAdminUserInput, BranchUncheckedCreateWithoutAdminUserInput>
-    connectOrCreate?: BranchCreateOrConnectWithoutAdminUserInput
-    upsert?: BranchUpsertWithoutAdminUserInput
-    disconnect?: BranchWhereInput | boolean
-    delete?: BranchWhereInput | boolean
-    connect?: BranchWhereUniqueInput
-    update?: XOR<XOR<BranchUpdateToOneWithWhereWithoutAdminUserInput, BranchUpdateWithoutAdminUserInput>, BranchUncheckedUpdateWithoutAdminUserInput>
-  }
-
   export type UserCreateNestedOneWithoutManagedBranchInput = {
     create?: XOR<UserCreateWithoutManagedBranchInput, UserUncheckedCreateWithoutManagedBranchInput>
     connectOrCreate?: UserCreateOrConnectWithoutManagedBranchInput
     connect?: UserWhereUniqueInput
-  }
-
-  export type CourseCreateNestedManyWithoutBranchInput = {
-    create?: XOR<CourseCreateWithoutBranchInput, CourseUncheckedCreateWithoutBranchInput> | CourseCreateWithoutBranchInput[] | CourseUncheckedCreateWithoutBranchInput[]
-    connectOrCreate?: CourseCreateOrConnectWithoutBranchInput | CourseCreateOrConnectWithoutBranchInput[]
-    createMany?: CourseCreateManyBranchInputEnvelope
-    connect?: CourseWhereUniqueInput | CourseWhereUniqueInput[]
   }
 
   export type BranchCourseCreateNestedManyWithoutBranchInput = {
@@ -43533,14 +41750,7 @@ export namespace Prisma {
     connect?: BranchStudentWhereUniqueInput | BranchStudentWhereUniqueInput[]
   }
 
-  export type BranchInstallmentTemplateCreateNestedManyWithoutBranchInput = {
-    create?: XOR<BranchInstallmentTemplateCreateWithoutBranchInput, BranchInstallmentTemplateUncheckedCreateWithoutBranchInput> | BranchInstallmentTemplateCreateWithoutBranchInput[] | BranchInstallmentTemplateUncheckedCreateWithoutBranchInput[]
-    connectOrCreate?: BranchInstallmentTemplateCreateOrConnectWithoutBranchInput | BranchInstallmentTemplateCreateOrConnectWithoutBranchInput[]
-    createMany?: BranchInstallmentTemplateCreateManyBranchInputEnvelope
-    connect?: BranchInstallmentTemplateWhereUniqueInput | BranchInstallmentTemplateWhereUniqueInput[]
-  }
-
-  export type CourseUncheckedCreateNestedManyWithoutBranchInput = {
+  export type CourseCreateNestedManyWithoutBranchInput = {
     create?: XOR<CourseCreateWithoutBranchInput, CourseUncheckedCreateWithoutBranchInput> | CourseCreateWithoutBranchInput[] | CourseUncheckedCreateWithoutBranchInput[]
     connectOrCreate?: CourseCreateOrConnectWithoutBranchInput | CourseCreateOrConnectWithoutBranchInput[]
     createMany?: CourseCreateManyBranchInputEnvelope
@@ -43568,11 +41778,11 @@ export namespace Prisma {
     connect?: BranchStudentWhereUniqueInput | BranchStudentWhereUniqueInput[]
   }
 
-  export type BranchInstallmentTemplateUncheckedCreateNestedManyWithoutBranchInput = {
-    create?: XOR<BranchInstallmentTemplateCreateWithoutBranchInput, BranchInstallmentTemplateUncheckedCreateWithoutBranchInput> | BranchInstallmentTemplateCreateWithoutBranchInput[] | BranchInstallmentTemplateUncheckedCreateWithoutBranchInput[]
-    connectOrCreate?: BranchInstallmentTemplateCreateOrConnectWithoutBranchInput | BranchInstallmentTemplateCreateOrConnectWithoutBranchInput[]
-    createMany?: BranchInstallmentTemplateCreateManyBranchInputEnvelope
-    connect?: BranchInstallmentTemplateWhereUniqueInput | BranchInstallmentTemplateWhereUniqueInput[]
+  export type CourseUncheckedCreateNestedManyWithoutBranchInput = {
+    create?: XOR<CourseCreateWithoutBranchInput, CourseUncheckedCreateWithoutBranchInput> | CourseCreateWithoutBranchInput[] | CourseUncheckedCreateWithoutBranchInput[]
+    connectOrCreate?: CourseCreateOrConnectWithoutBranchInput | CourseCreateOrConnectWithoutBranchInput[]
+    createMany?: CourseCreateManyBranchInputEnvelope
+    connect?: CourseWhereUniqueInput | CourseWhereUniqueInput[]
   }
 
   export type EnumRecordStatusFieldUpdateOperationsInput = {
@@ -43587,20 +41797,6 @@ export namespace Prisma {
     delete?: UserWhereInput | boolean
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutManagedBranchInput, UserUpdateWithoutManagedBranchInput>, UserUncheckedUpdateWithoutManagedBranchInput>
-  }
-
-  export type CourseUpdateManyWithoutBranchNestedInput = {
-    create?: XOR<CourseCreateWithoutBranchInput, CourseUncheckedCreateWithoutBranchInput> | CourseCreateWithoutBranchInput[] | CourseUncheckedCreateWithoutBranchInput[]
-    connectOrCreate?: CourseCreateOrConnectWithoutBranchInput | CourseCreateOrConnectWithoutBranchInput[]
-    upsert?: CourseUpsertWithWhereUniqueWithoutBranchInput | CourseUpsertWithWhereUniqueWithoutBranchInput[]
-    createMany?: CourseCreateManyBranchInputEnvelope
-    set?: CourseWhereUniqueInput | CourseWhereUniqueInput[]
-    disconnect?: CourseWhereUniqueInput | CourseWhereUniqueInput[]
-    delete?: CourseWhereUniqueInput | CourseWhereUniqueInput[]
-    connect?: CourseWhereUniqueInput | CourseWhereUniqueInput[]
-    update?: CourseUpdateWithWhereUniqueWithoutBranchInput | CourseUpdateWithWhereUniqueWithoutBranchInput[]
-    updateMany?: CourseUpdateManyWithWhereWithoutBranchInput | CourseUpdateManyWithWhereWithoutBranchInput[]
-    deleteMany?: CourseScalarWhereInput | CourseScalarWhereInput[]
   }
 
   export type BranchCourseUpdateManyWithoutBranchNestedInput = {
@@ -43645,21 +41841,7 @@ export namespace Prisma {
     deleteMany?: BranchStudentScalarWhereInput | BranchStudentScalarWhereInput[]
   }
 
-  export type BranchInstallmentTemplateUpdateManyWithoutBranchNestedInput = {
-    create?: XOR<BranchInstallmentTemplateCreateWithoutBranchInput, BranchInstallmentTemplateUncheckedCreateWithoutBranchInput> | BranchInstallmentTemplateCreateWithoutBranchInput[] | BranchInstallmentTemplateUncheckedCreateWithoutBranchInput[]
-    connectOrCreate?: BranchInstallmentTemplateCreateOrConnectWithoutBranchInput | BranchInstallmentTemplateCreateOrConnectWithoutBranchInput[]
-    upsert?: BranchInstallmentTemplateUpsertWithWhereUniqueWithoutBranchInput | BranchInstallmentTemplateUpsertWithWhereUniqueWithoutBranchInput[]
-    createMany?: BranchInstallmentTemplateCreateManyBranchInputEnvelope
-    set?: BranchInstallmentTemplateWhereUniqueInput | BranchInstallmentTemplateWhereUniqueInput[]
-    disconnect?: BranchInstallmentTemplateWhereUniqueInput | BranchInstallmentTemplateWhereUniqueInput[]
-    delete?: BranchInstallmentTemplateWhereUniqueInput | BranchInstallmentTemplateWhereUniqueInput[]
-    connect?: BranchInstallmentTemplateWhereUniqueInput | BranchInstallmentTemplateWhereUniqueInput[]
-    update?: BranchInstallmentTemplateUpdateWithWhereUniqueWithoutBranchInput | BranchInstallmentTemplateUpdateWithWhereUniqueWithoutBranchInput[]
-    updateMany?: BranchInstallmentTemplateUpdateManyWithWhereWithoutBranchInput | BranchInstallmentTemplateUpdateManyWithWhereWithoutBranchInput[]
-    deleteMany?: BranchInstallmentTemplateScalarWhereInput | BranchInstallmentTemplateScalarWhereInput[]
-  }
-
-  export type CourseUncheckedUpdateManyWithoutBranchNestedInput = {
+  export type CourseUpdateManyWithoutBranchNestedInput = {
     create?: XOR<CourseCreateWithoutBranchInput, CourseUncheckedCreateWithoutBranchInput> | CourseCreateWithoutBranchInput[] | CourseUncheckedCreateWithoutBranchInput[]
     connectOrCreate?: CourseCreateOrConnectWithoutBranchInput | CourseCreateOrConnectWithoutBranchInput[]
     upsert?: CourseUpsertWithWhereUniqueWithoutBranchInput | CourseUpsertWithWhereUniqueWithoutBranchInput[]
@@ -43715,18 +41897,18 @@ export namespace Prisma {
     deleteMany?: BranchStudentScalarWhereInput | BranchStudentScalarWhereInput[]
   }
 
-  export type BranchInstallmentTemplateUncheckedUpdateManyWithoutBranchNestedInput = {
-    create?: XOR<BranchInstallmentTemplateCreateWithoutBranchInput, BranchInstallmentTemplateUncheckedCreateWithoutBranchInput> | BranchInstallmentTemplateCreateWithoutBranchInput[] | BranchInstallmentTemplateUncheckedCreateWithoutBranchInput[]
-    connectOrCreate?: BranchInstallmentTemplateCreateOrConnectWithoutBranchInput | BranchInstallmentTemplateCreateOrConnectWithoutBranchInput[]
-    upsert?: BranchInstallmentTemplateUpsertWithWhereUniqueWithoutBranchInput | BranchInstallmentTemplateUpsertWithWhereUniqueWithoutBranchInput[]
-    createMany?: BranchInstallmentTemplateCreateManyBranchInputEnvelope
-    set?: BranchInstallmentTemplateWhereUniqueInput | BranchInstallmentTemplateWhereUniqueInput[]
-    disconnect?: BranchInstallmentTemplateWhereUniqueInput | BranchInstallmentTemplateWhereUniqueInput[]
-    delete?: BranchInstallmentTemplateWhereUniqueInput | BranchInstallmentTemplateWhereUniqueInput[]
-    connect?: BranchInstallmentTemplateWhereUniqueInput | BranchInstallmentTemplateWhereUniqueInput[]
-    update?: BranchInstallmentTemplateUpdateWithWhereUniqueWithoutBranchInput | BranchInstallmentTemplateUpdateWithWhereUniqueWithoutBranchInput[]
-    updateMany?: BranchInstallmentTemplateUpdateManyWithWhereWithoutBranchInput | BranchInstallmentTemplateUpdateManyWithWhereWithoutBranchInput[]
-    deleteMany?: BranchInstallmentTemplateScalarWhereInput | BranchInstallmentTemplateScalarWhereInput[]
+  export type CourseUncheckedUpdateManyWithoutBranchNestedInput = {
+    create?: XOR<CourseCreateWithoutBranchInput, CourseUncheckedCreateWithoutBranchInput> | CourseCreateWithoutBranchInput[] | CourseUncheckedCreateWithoutBranchInput[]
+    connectOrCreate?: CourseCreateOrConnectWithoutBranchInput | CourseCreateOrConnectWithoutBranchInput[]
+    upsert?: CourseUpsertWithWhereUniqueWithoutBranchInput | CourseUpsertWithWhereUniqueWithoutBranchInput[]
+    createMany?: CourseCreateManyBranchInputEnvelope
+    set?: CourseWhereUniqueInput | CourseWhereUniqueInput[]
+    disconnect?: CourseWhereUniqueInput | CourseWhereUniqueInput[]
+    delete?: CourseWhereUniqueInput | CourseWhereUniqueInput[]
+    connect?: CourseWhereUniqueInput | CourseWhereUniqueInput[]
+    update?: CourseUpdateWithWhereUniqueWithoutBranchInput | CourseUpdateWithWhereUniqueWithoutBranchInput[]
+    updateMany?: CourseUpdateManyWithWhereWithoutBranchInput | CourseUpdateManyWithWhereWithoutBranchInput[]
+    deleteMany?: CourseScalarWhereInput | CourseScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutLoginEventsInput = {
@@ -43845,6 +42027,20 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutPasswordResetTokensInput, UserUpdateWithoutPasswordResetTokensInput>, UserUncheckedUpdateWithoutPasswordResetTokensInput>
   }
 
+  export type BatchCreateNestedManyWithoutCourseInput = {
+    create?: XOR<BatchCreateWithoutCourseInput, BatchUncheckedCreateWithoutCourseInput> | BatchCreateWithoutCourseInput[] | BatchUncheckedCreateWithoutCourseInput[]
+    connectOrCreate?: BatchCreateOrConnectWithoutCourseInput | BatchCreateOrConnectWithoutCourseInput[]
+    createMany?: BatchCreateManyCourseInputEnvelope
+    connect?: BatchWhereUniqueInput | BatchWhereUniqueInput[]
+  }
+
+  export type BranchFacultyCreateNestedManyWithoutCourseInput = {
+    create?: XOR<BranchFacultyCreateWithoutCourseInput, BranchFacultyUncheckedCreateWithoutCourseInput> | BranchFacultyCreateWithoutCourseInput[] | BranchFacultyUncheckedCreateWithoutCourseInput[]
+    connectOrCreate?: BranchFacultyCreateOrConnectWithoutCourseInput | BranchFacultyCreateOrConnectWithoutCourseInput[]
+    createMany?: BranchFacultyCreateManyCourseInputEnvelope
+    connect?: BranchFacultyWhereUniqueInput | BranchFacultyWhereUniqueInput[]
+  }
+
   export type BranchCreateNestedOneWithoutCoursesInput = {
     create?: XOR<BranchCreateWithoutCoursesInput, BranchUncheckedCreateWithoutCoursesInput>
     connectOrCreate?: BranchCreateOrConnectWithoutCoursesInput
@@ -43858,32 +42054,11 @@ export namespace Prisma {
     connect?: CourseModuleWhereUniqueInput | CourseModuleWhereUniqueInput[]
   }
 
-  export type BatchCreateNestedManyWithoutCourseInput = {
-    create?: XOR<BatchCreateWithoutCourseInput, BatchUncheckedCreateWithoutCourseInput> | BatchCreateWithoutCourseInput[] | BatchUncheckedCreateWithoutCourseInput[]
-    connectOrCreate?: BatchCreateOrConnectWithoutCourseInput | BatchCreateOrConnectWithoutCourseInput[]
-    createMany?: BatchCreateManyCourseInputEnvelope
-    connect?: BatchWhereUniqueInput | BatchWhereUniqueInput[]
-  }
-
-  export type StudentProfileCreateNestedManyWithoutCourseInput = {
-    create?: XOR<StudentProfileCreateWithoutCourseInput, StudentProfileUncheckedCreateWithoutCourseInput> | StudentProfileCreateWithoutCourseInput[] | StudentProfileUncheckedCreateWithoutCourseInput[]
-    connectOrCreate?: StudentProfileCreateOrConnectWithoutCourseInput | StudentProfileCreateOrConnectWithoutCourseInput[]
-    createMany?: StudentProfileCreateManyCourseInputEnvelope
-    connect?: StudentProfileWhereUniqueInput | StudentProfileWhereUniqueInput[]
-  }
-
-  export type FacultyProfileCreateNestedManyWithoutCourseInput = {
-    create?: XOR<FacultyProfileCreateWithoutCourseInput, FacultyProfileUncheckedCreateWithoutCourseInput> | FacultyProfileCreateWithoutCourseInput[] | FacultyProfileUncheckedCreateWithoutCourseInput[]
-    connectOrCreate?: FacultyProfileCreateOrConnectWithoutCourseInput | FacultyProfileCreateOrConnectWithoutCourseInput[]
-    createMany?: FacultyProfileCreateManyCourseInputEnvelope
-    connect?: FacultyProfileWhereUniqueInput | FacultyProfileWhereUniqueInput[]
-  }
-
-  export type FacultyCourseAssignmentCreateNestedManyWithoutCourseInput = {
-    create?: XOR<FacultyCourseAssignmentCreateWithoutCourseInput, FacultyCourseAssignmentUncheckedCreateWithoutCourseInput> | FacultyCourseAssignmentCreateWithoutCourseInput[] | FacultyCourseAssignmentUncheckedCreateWithoutCourseInput[]
-    connectOrCreate?: FacultyCourseAssignmentCreateOrConnectWithoutCourseInput | FacultyCourseAssignmentCreateOrConnectWithoutCourseInput[]
-    createMany?: FacultyCourseAssignmentCreateManyCourseInputEnvelope
-    connect?: FacultyCourseAssignmentWhereUniqueInput | FacultyCourseAssignmentWhereUniqueInput[]
+  export type CourseStatusHistoryCreateNestedManyWithoutCourseInput = {
+    create?: XOR<CourseStatusHistoryCreateWithoutCourseInput, CourseStatusHistoryUncheckedCreateWithoutCourseInput> | CourseStatusHistoryCreateWithoutCourseInput[] | CourseStatusHistoryUncheckedCreateWithoutCourseInput[]
+    connectOrCreate?: CourseStatusHistoryCreateOrConnectWithoutCourseInput | CourseStatusHistoryCreateOrConnectWithoutCourseInput[]
+    createMany?: CourseStatusHistoryCreateManyCourseInputEnvelope
+    connect?: CourseStatusHistoryWhereUniqueInput | CourseStatusHistoryWhereUniqueInput[]
   }
 
   export type FacultyBatchEntryCreateNestedManyWithoutCourseInput = {
@@ -43893,14 +42068,35 @@ export namespace Prisma {
     connect?: FacultyBatchEntryWhereUniqueInput | FacultyBatchEntryWhereUniqueInput[]
   }
 
-  export type CourseStatusHistoryCreateNestedManyWithoutCourseInput = {
-    create?: XOR<CourseStatusHistoryCreateWithoutCourseInput, CourseStatusHistoryUncheckedCreateWithoutCourseInput> | CourseStatusHistoryCreateWithoutCourseInput[] | CourseStatusHistoryUncheckedCreateWithoutCourseInput[]
-    connectOrCreate?: CourseStatusHistoryCreateOrConnectWithoutCourseInput | CourseStatusHistoryCreateOrConnectWithoutCourseInput[]
-    createMany?: CourseStatusHistoryCreateManyCourseInputEnvelope
-    connect?: CourseStatusHistoryWhereUniqueInput | CourseStatusHistoryWhereUniqueInput[]
+  export type FacultyCourseAssignmentCreateNestedManyWithoutCourseInput = {
+    create?: XOR<FacultyCourseAssignmentCreateWithoutCourseInput, FacultyCourseAssignmentUncheckedCreateWithoutCourseInput> | FacultyCourseAssignmentCreateWithoutCourseInput[] | FacultyCourseAssignmentUncheckedCreateWithoutCourseInput[]
+    connectOrCreate?: FacultyCourseAssignmentCreateOrConnectWithoutCourseInput | FacultyCourseAssignmentCreateOrConnectWithoutCourseInput[]
+    createMany?: FacultyCourseAssignmentCreateManyCourseInputEnvelope
+    connect?: FacultyCourseAssignmentWhereUniqueInput | FacultyCourseAssignmentWhereUniqueInput[]
   }
 
-  export type BranchFacultyCreateNestedManyWithoutCourseInput = {
+  export type FacultyProfileCreateNestedManyWithoutCourseInput = {
+    create?: XOR<FacultyProfileCreateWithoutCourseInput, FacultyProfileUncheckedCreateWithoutCourseInput> | FacultyProfileCreateWithoutCourseInput[] | FacultyProfileUncheckedCreateWithoutCourseInput[]
+    connectOrCreate?: FacultyProfileCreateOrConnectWithoutCourseInput | FacultyProfileCreateOrConnectWithoutCourseInput[]
+    createMany?: FacultyProfileCreateManyCourseInputEnvelope
+    connect?: FacultyProfileWhereUniqueInput | FacultyProfileWhereUniqueInput[]
+  }
+
+  export type StudentProfileCreateNestedManyWithoutCourseInput = {
+    create?: XOR<StudentProfileCreateWithoutCourseInput, StudentProfileUncheckedCreateWithoutCourseInput> | StudentProfileCreateWithoutCourseInput[] | StudentProfileUncheckedCreateWithoutCourseInput[]
+    connectOrCreate?: StudentProfileCreateOrConnectWithoutCourseInput | StudentProfileCreateOrConnectWithoutCourseInput[]
+    createMany?: StudentProfileCreateManyCourseInputEnvelope
+    connect?: StudentProfileWhereUniqueInput | StudentProfileWhereUniqueInput[]
+  }
+
+  export type BatchUncheckedCreateNestedManyWithoutCourseInput = {
+    create?: XOR<BatchCreateWithoutCourseInput, BatchUncheckedCreateWithoutCourseInput> | BatchCreateWithoutCourseInput[] | BatchUncheckedCreateWithoutCourseInput[]
+    connectOrCreate?: BatchCreateOrConnectWithoutCourseInput | BatchCreateOrConnectWithoutCourseInput[]
+    createMany?: BatchCreateManyCourseInputEnvelope
+    connect?: BatchWhereUniqueInput | BatchWhereUniqueInput[]
+  }
+
+  export type BranchFacultyUncheckedCreateNestedManyWithoutCourseInput = {
     create?: XOR<BranchFacultyCreateWithoutCourseInput, BranchFacultyUncheckedCreateWithoutCourseInput> | BranchFacultyCreateWithoutCourseInput[] | BranchFacultyUncheckedCreateWithoutCourseInput[]
     connectOrCreate?: BranchFacultyCreateOrConnectWithoutCourseInput | BranchFacultyCreateOrConnectWithoutCourseInput[]
     createMany?: BranchFacultyCreateManyCourseInputEnvelope
@@ -43914,32 +42110,11 @@ export namespace Prisma {
     connect?: CourseModuleWhereUniqueInput | CourseModuleWhereUniqueInput[]
   }
 
-  export type BatchUncheckedCreateNestedManyWithoutCourseInput = {
-    create?: XOR<BatchCreateWithoutCourseInput, BatchUncheckedCreateWithoutCourseInput> | BatchCreateWithoutCourseInput[] | BatchUncheckedCreateWithoutCourseInput[]
-    connectOrCreate?: BatchCreateOrConnectWithoutCourseInput | BatchCreateOrConnectWithoutCourseInput[]
-    createMany?: BatchCreateManyCourseInputEnvelope
-    connect?: BatchWhereUniqueInput | BatchWhereUniqueInput[]
-  }
-
-  export type StudentProfileUncheckedCreateNestedManyWithoutCourseInput = {
-    create?: XOR<StudentProfileCreateWithoutCourseInput, StudentProfileUncheckedCreateWithoutCourseInput> | StudentProfileCreateWithoutCourseInput[] | StudentProfileUncheckedCreateWithoutCourseInput[]
-    connectOrCreate?: StudentProfileCreateOrConnectWithoutCourseInput | StudentProfileCreateOrConnectWithoutCourseInput[]
-    createMany?: StudentProfileCreateManyCourseInputEnvelope
-    connect?: StudentProfileWhereUniqueInput | StudentProfileWhereUniqueInput[]
-  }
-
-  export type FacultyProfileUncheckedCreateNestedManyWithoutCourseInput = {
-    create?: XOR<FacultyProfileCreateWithoutCourseInput, FacultyProfileUncheckedCreateWithoutCourseInput> | FacultyProfileCreateWithoutCourseInput[] | FacultyProfileUncheckedCreateWithoutCourseInput[]
-    connectOrCreate?: FacultyProfileCreateOrConnectWithoutCourseInput | FacultyProfileCreateOrConnectWithoutCourseInput[]
-    createMany?: FacultyProfileCreateManyCourseInputEnvelope
-    connect?: FacultyProfileWhereUniqueInput | FacultyProfileWhereUniqueInput[]
-  }
-
-  export type FacultyCourseAssignmentUncheckedCreateNestedManyWithoutCourseInput = {
-    create?: XOR<FacultyCourseAssignmentCreateWithoutCourseInput, FacultyCourseAssignmentUncheckedCreateWithoutCourseInput> | FacultyCourseAssignmentCreateWithoutCourseInput[] | FacultyCourseAssignmentUncheckedCreateWithoutCourseInput[]
-    connectOrCreate?: FacultyCourseAssignmentCreateOrConnectWithoutCourseInput | FacultyCourseAssignmentCreateOrConnectWithoutCourseInput[]
-    createMany?: FacultyCourseAssignmentCreateManyCourseInputEnvelope
-    connect?: FacultyCourseAssignmentWhereUniqueInput | FacultyCourseAssignmentWhereUniqueInput[]
+  export type CourseStatusHistoryUncheckedCreateNestedManyWithoutCourseInput = {
+    create?: XOR<CourseStatusHistoryCreateWithoutCourseInput, CourseStatusHistoryUncheckedCreateWithoutCourseInput> | CourseStatusHistoryCreateWithoutCourseInput[] | CourseStatusHistoryUncheckedCreateWithoutCourseInput[]
+    connectOrCreate?: CourseStatusHistoryCreateOrConnectWithoutCourseInput | CourseStatusHistoryCreateOrConnectWithoutCourseInput[]
+    createMany?: CourseStatusHistoryCreateManyCourseInputEnvelope
+    connect?: CourseStatusHistoryWhereUniqueInput | CourseStatusHistoryWhereUniqueInput[]
   }
 
   export type FacultyBatchEntryUncheckedCreateNestedManyWithoutCourseInput = {
@@ -43949,18 +42124,25 @@ export namespace Prisma {
     connect?: FacultyBatchEntryWhereUniqueInput | FacultyBatchEntryWhereUniqueInput[]
   }
 
-  export type CourseStatusHistoryUncheckedCreateNestedManyWithoutCourseInput = {
-    create?: XOR<CourseStatusHistoryCreateWithoutCourseInput, CourseStatusHistoryUncheckedCreateWithoutCourseInput> | CourseStatusHistoryCreateWithoutCourseInput[] | CourseStatusHistoryUncheckedCreateWithoutCourseInput[]
-    connectOrCreate?: CourseStatusHistoryCreateOrConnectWithoutCourseInput | CourseStatusHistoryCreateOrConnectWithoutCourseInput[]
-    createMany?: CourseStatusHistoryCreateManyCourseInputEnvelope
-    connect?: CourseStatusHistoryWhereUniqueInput | CourseStatusHistoryWhereUniqueInput[]
+  export type FacultyCourseAssignmentUncheckedCreateNestedManyWithoutCourseInput = {
+    create?: XOR<FacultyCourseAssignmentCreateWithoutCourseInput, FacultyCourseAssignmentUncheckedCreateWithoutCourseInput> | FacultyCourseAssignmentCreateWithoutCourseInput[] | FacultyCourseAssignmentUncheckedCreateWithoutCourseInput[]
+    connectOrCreate?: FacultyCourseAssignmentCreateOrConnectWithoutCourseInput | FacultyCourseAssignmentCreateOrConnectWithoutCourseInput[]
+    createMany?: FacultyCourseAssignmentCreateManyCourseInputEnvelope
+    connect?: FacultyCourseAssignmentWhereUniqueInput | FacultyCourseAssignmentWhereUniqueInput[]
   }
 
-  export type BranchFacultyUncheckedCreateNestedManyWithoutCourseInput = {
-    create?: XOR<BranchFacultyCreateWithoutCourseInput, BranchFacultyUncheckedCreateWithoutCourseInput> | BranchFacultyCreateWithoutCourseInput[] | BranchFacultyUncheckedCreateWithoutCourseInput[]
-    connectOrCreate?: BranchFacultyCreateOrConnectWithoutCourseInput | BranchFacultyCreateOrConnectWithoutCourseInput[]
-    createMany?: BranchFacultyCreateManyCourseInputEnvelope
-    connect?: BranchFacultyWhereUniqueInput | BranchFacultyWhereUniqueInput[]
+  export type FacultyProfileUncheckedCreateNestedManyWithoutCourseInput = {
+    create?: XOR<FacultyProfileCreateWithoutCourseInput, FacultyProfileUncheckedCreateWithoutCourseInput> | FacultyProfileCreateWithoutCourseInput[] | FacultyProfileUncheckedCreateWithoutCourseInput[]
+    connectOrCreate?: FacultyProfileCreateOrConnectWithoutCourseInput | FacultyProfileCreateOrConnectWithoutCourseInput[]
+    createMany?: FacultyProfileCreateManyCourseInputEnvelope
+    connect?: FacultyProfileWhereUniqueInput | FacultyProfileWhereUniqueInput[]
+  }
+
+  export type StudentProfileUncheckedCreateNestedManyWithoutCourseInput = {
+    create?: XOR<StudentProfileCreateWithoutCourseInput, StudentProfileUncheckedCreateWithoutCourseInput> | StudentProfileCreateWithoutCourseInput[] | StudentProfileUncheckedCreateWithoutCourseInput[]
+    connectOrCreate?: StudentProfileCreateOrConnectWithoutCourseInput | StudentProfileCreateOrConnectWithoutCourseInput[]
+    createMany?: StudentProfileCreateManyCourseInputEnvelope
+    connect?: StudentProfileWhereUniqueInput | StudentProfileWhereUniqueInput[]
   }
 
   export type NullableIntFieldUpdateOperationsInput = {
@@ -43969,6 +42151,34 @@ export namespace Prisma {
     decrement?: number
     multiply?: number
     divide?: number
+  }
+
+  export type BatchUpdateManyWithoutCourseNestedInput = {
+    create?: XOR<BatchCreateWithoutCourseInput, BatchUncheckedCreateWithoutCourseInput> | BatchCreateWithoutCourseInput[] | BatchUncheckedCreateWithoutCourseInput[]
+    connectOrCreate?: BatchCreateOrConnectWithoutCourseInput | BatchCreateOrConnectWithoutCourseInput[]
+    upsert?: BatchUpsertWithWhereUniqueWithoutCourseInput | BatchUpsertWithWhereUniqueWithoutCourseInput[]
+    createMany?: BatchCreateManyCourseInputEnvelope
+    set?: BatchWhereUniqueInput | BatchWhereUniqueInput[]
+    disconnect?: BatchWhereUniqueInput | BatchWhereUniqueInput[]
+    delete?: BatchWhereUniqueInput | BatchWhereUniqueInput[]
+    connect?: BatchWhereUniqueInput | BatchWhereUniqueInput[]
+    update?: BatchUpdateWithWhereUniqueWithoutCourseInput | BatchUpdateWithWhereUniqueWithoutCourseInput[]
+    updateMany?: BatchUpdateManyWithWhereWithoutCourseInput | BatchUpdateManyWithWhereWithoutCourseInput[]
+    deleteMany?: BatchScalarWhereInput | BatchScalarWhereInput[]
+  }
+
+  export type BranchFacultyUpdateManyWithoutCourseNestedInput = {
+    create?: XOR<BranchFacultyCreateWithoutCourseInput, BranchFacultyUncheckedCreateWithoutCourseInput> | BranchFacultyCreateWithoutCourseInput[] | BranchFacultyUncheckedCreateWithoutCourseInput[]
+    connectOrCreate?: BranchFacultyCreateOrConnectWithoutCourseInput | BranchFacultyCreateOrConnectWithoutCourseInput[]
+    upsert?: BranchFacultyUpsertWithWhereUniqueWithoutCourseInput | BranchFacultyUpsertWithWhereUniqueWithoutCourseInput[]
+    createMany?: BranchFacultyCreateManyCourseInputEnvelope
+    set?: BranchFacultyWhereUniqueInput | BranchFacultyWhereUniqueInput[]
+    disconnect?: BranchFacultyWhereUniqueInput | BranchFacultyWhereUniqueInput[]
+    delete?: BranchFacultyWhereUniqueInput | BranchFacultyWhereUniqueInput[]
+    connect?: BranchFacultyWhereUniqueInput | BranchFacultyWhereUniqueInput[]
+    update?: BranchFacultyUpdateWithWhereUniqueWithoutCourseInput | BranchFacultyUpdateWithWhereUniqueWithoutCourseInput[]
+    updateMany?: BranchFacultyUpdateManyWithWhereWithoutCourseInput | BranchFacultyUpdateManyWithWhereWithoutCourseInput[]
+    deleteMany?: BranchFacultyScalarWhereInput | BranchFacultyScalarWhereInput[]
   }
 
   export type BranchUpdateOneWithoutCoursesNestedInput = {
@@ -43995,60 +42205,18 @@ export namespace Prisma {
     deleteMany?: CourseModuleScalarWhereInput | CourseModuleScalarWhereInput[]
   }
 
-  export type BatchUpdateManyWithoutCourseNestedInput = {
-    create?: XOR<BatchCreateWithoutCourseInput, BatchUncheckedCreateWithoutCourseInput> | BatchCreateWithoutCourseInput[] | BatchUncheckedCreateWithoutCourseInput[]
-    connectOrCreate?: BatchCreateOrConnectWithoutCourseInput | BatchCreateOrConnectWithoutCourseInput[]
-    upsert?: BatchUpsertWithWhereUniqueWithoutCourseInput | BatchUpsertWithWhereUniqueWithoutCourseInput[]
-    createMany?: BatchCreateManyCourseInputEnvelope
-    set?: BatchWhereUniqueInput | BatchWhereUniqueInput[]
-    disconnect?: BatchWhereUniqueInput | BatchWhereUniqueInput[]
-    delete?: BatchWhereUniqueInput | BatchWhereUniqueInput[]
-    connect?: BatchWhereUniqueInput | BatchWhereUniqueInput[]
-    update?: BatchUpdateWithWhereUniqueWithoutCourseInput | BatchUpdateWithWhereUniqueWithoutCourseInput[]
-    updateMany?: BatchUpdateManyWithWhereWithoutCourseInput | BatchUpdateManyWithWhereWithoutCourseInput[]
-    deleteMany?: BatchScalarWhereInput | BatchScalarWhereInput[]
-  }
-
-  export type StudentProfileUpdateManyWithoutCourseNestedInput = {
-    create?: XOR<StudentProfileCreateWithoutCourseInput, StudentProfileUncheckedCreateWithoutCourseInput> | StudentProfileCreateWithoutCourseInput[] | StudentProfileUncheckedCreateWithoutCourseInput[]
-    connectOrCreate?: StudentProfileCreateOrConnectWithoutCourseInput | StudentProfileCreateOrConnectWithoutCourseInput[]
-    upsert?: StudentProfileUpsertWithWhereUniqueWithoutCourseInput | StudentProfileUpsertWithWhereUniqueWithoutCourseInput[]
-    createMany?: StudentProfileCreateManyCourseInputEnvelope
-    set?: StudentProfileWhereUniqueInput | StudentProfileWhereUniqueInput[]
-    disconnect?: StudentProfileWhereUniqueInput | StudentProfileWhereUniqueInput[]
-    delete?: StudentProfileWhereUniqueInput | StudentProfileWhereUniqueInput[]
-    connect?: StudentProfileWhereUniqueInput | StudentProfileWhereUniqueInput[]
-    update?: StudentProfileUpdateWithWhereUniqueWithoutCourseInput | StudentProfileUpdateWithWhereUniqueWithoutCourseInput[]
-    updateMany?: StudentProfileUpdateManyWithWhereWithoutCourseInput | StudentProfileUpdateManyWithWhereWithoutCourseInput[]
-    deleteMany?: StudentProfileScalarWhereInput | StudentProfileScalarWhereInput[]
-  }
-
-  export type FacultyProfileUpdateManyWithoutCourseNestedInput = {
-    create?: XOR<FacultyProfileCreateWithoutCourseInput, FacultyProfileUncheckedCreateWithoutCourseInput> | FacultyProfileCreateWithoutCourseInput[] | FacultyProfileUncheckedCreateWithoutCourseInput[]
-    connectOrCreate?: FacultyProfileCreateOrConnectWithoutCourseInput | FacultyProfileCreateOrConnectWithoutCourseInput[]
-    upsert?: FacultyProfileUpsertWithWhereUniqueWithoutCourseInput | FacultyProfileUpsertWithWhereUniqueWithoutCourseInput[]
-    createMany?: FacultyProfileCreateManyCourseInputEnvelope
-    set?: FacultyProfileWhereUniqueInput | FacultyProfileWhereUniqueInput[]
-    disconnect?: FacultyProfileWhereUniqueInput | FacultyProfileWhereUniqueInput[]
-    delete?: FacultyProfileWhereUniqueInput | FacultyProfileWhereUniqueInput[]
-    connect?: FacultyProfileWhereUniqueInput | FacultyProfileWhereUniqueInput[]
-    update?: FacultyProfileUpdateWithWhereUniqueWithoutCourseInput | FacultyProfileUpdateWithWhereUniqueWithoutCourseInput[]
-    updateMany?: FacultyProfileUpdateManyWithWhereWithoutCourseInput | FacultyProfileUpdateManyWithWhereWithoutCourseInput[]
-    deleteMany?: FacultyProfileScalarWhereInput | FacultyProfileScalarWhereInput[]
-  }
-
-  export type FacultyCourseAssignmentUpdateManyWithoutCourseNestedInput = {
-    create?: XOR<FacultyCourseAssignmentCreateWithoutCourseInput, FacultyCourseAssignmentUncheckedCreateWithoutCourseInput> | FacultyCourseAssignmentCreateWithoutCourseInput[] | FacultyCourseAssignmentUncheckedCreateWithoutCourseInput[]
-    connectOrCreate?: FacultyCourseAssignmentCreateOrConnectWithoutCourseInput | FacultyCourseAssignmentCreateOrConnectWithoutCourseInput[]
-    upsert?: FacultyCourseAssignmentUpsertWithWhereUniqueWithoutCourseInput | FacultyCourseAssignmentUpsertWithWhereUniqueWithoutCourseInput[]
-    createMany?: FacultyCourseAssignmentCreateManyCourseInputEnvelope
-    set?: FacultyCourseAssignmentWhereUniqueInput | FacultyCourseAssignmentWhereUniqueInput[]
-    disconnect?: FacultyCourseAssignmentWhereUniqueInput | FacultyCourseAssignmentWhereUniqueInput[]
-    delete?: FacultyCourseAssignmentWhereUniqueInput | FacultyCourseAssignmentWhereUniqueInput[]
-    connect?: FacultyCourseAssignmentWhereUniqueInput | FacultyCourseAssignmentWhereUniqueInput[]
-    update?: FacultyCourseAssignmentUpdateWithWhereUniqueWithoutCourseInput | FacultyCourseAssignmentUpdateWithWhereUniqueWithoutCourseInput[]
-    updateMany?: FacultyCourseAssignmentUpdateManyWithWhereWithoutCourseInput | FacultyCourseAssignmentUpdateManyWithWhereWithoutCourseInput[]
-    deleteMany?: FacultyCourseAssignmentScalarWhereInput | FacultyCourseAssignmentScalarWhereInput[]
+  export type CourseStatusHistoryUpdateManyWithoutCourseNestedInput = {
+    create?: XOR<CourseStatusHistoryCreateWithoutCourseInput, CourseStatusHistoryUncheckedCreateWithoutCourseInput> | CourseStatusHistoryCreateWithoutCourseInput[] | CourseStatusHistoryUncheckedCreateWithoutCourseInput[]
+    connectOrCreate?: CourseStatusHistoryCreateOrConnectWithoutCourseInput | CourseStatusHistoryCreateOrConnectWithoutCourseInput[]
+    upsert?: CourseStatusHistoryUpsertWithWhereUniqueWithoutCourseInput | CourseStatusHistoryUpsertWithWhereUniqueWithoutCourseInput[]
+    createMany?: CourseStatusHistoryCreateManyCourseInputEnvelope
+    set?: CourseStatusHistoryWhereUniqueInput | CourseStatusHistoryWhereUniqueInput[]
+    disconnect?: CourseStatusHistoryWhereUniqueInput | CourseStatusHistoryWhereUniqueInput[]
+    delete?: CourseStatusHistoryWhereUniqueInput | CourseStatusHistoryWhereUniqueInput[]
+    connect?: CourseStatusHistoryWhereUniqueInput | CourseStatusHistoryWhereUniqueInput[]
+    update?: CourseStatusHistoryUpdateWithWhereUniqueWithoutCourseInput | CourseStatusHistoryUpdateWithWhereUniqueWithoutCourseInput[]
+    updateMany?: CourseStatusHistoryUpdateManyWithWhereWithoutCourseInput | CourseStatusHistoryUpdateManyWithWhereWithoutCourseInput[]
+    deleteMany?: CourseStatusHistoryScalarWhereInput | CourseStatusHistoryScalarWhereInput[]
   }
 
   export type FacultyBatchEntryUpdateManyWithoutCourseNestedInput = {
@@ -44065,21 +42233,63 @@ export namespace Prisma {
     deleteMany?: FacultyBatchEntryScalarWhereInput | FacultyBatchEntryScalarWhereInput[]
   }
 
-  export type CourseStatusHistoryUpdateManyWithoutCourseNestedInput = {
-    create?: XOR<CourseStatusHistoryCreateWithoutCourseInput, CourseStatusHistoryUncheckedCreateWithoutCourseInput> | CourseStatusHistoryCreateWithoutCourseInput[] | CourseStatusHistoryUncheckedCreateWithoutCourseInput[]
-    connectOrCreate?: CourseStatusHistoryCreateOrConnectWithoutCourseInput | CourseStatusHistoryCreateOrConnectWithoutCourseInput[]
-    upsert?: CourseStatusHistoryUpsertWithWhereUniqueWithoutCourseInput | CourseStatusHistoryUpsertWithWhereUniqueWithoutCourseInput[]
-    createMany?: CourseStatusHistoryCreateManyCourseInputEnvelope
-    set?: CourseStatusHistoryWhereUniqueInput | CourseStatusHistoryWhereUniqueInput[]
-    disconnect?: CourseStatusHistoryWhereUniqueInput | CourseStatusHistoryWhereUniqueInput[]
-    delete?: CourseStatusHistoryWhereUniqueInput | CourseStatusHistoryWhereUniqueInput[]
-    connect?: CourseStatusHistoryWhereUniqueInput | CourseStatusHistoryWhereUniqueInput[]
-    update?: CourseStatusHistoryUpdateWithWhereUniqueWithoutCourseInput | CourseStatusHistoryUpdateWithWhereUniqueWithoutCourseInput[]
-    updateMany?: CourseStatusHistoryUpdateManyWithWhereWithoutCourseInput | CourseStatusHistoryUpdateManyWithWhereWithoutCourseInput[]
-    deleteMany?: CourseStatusHistoryScalarWhereInput | CourseStatusHistoryScalarWhereInput[]
+  export type FacultyCourseAssignmentUpdateManyWithoutCourseNestedInput = {
+    create?: XOR<FacultyCourseAssignmentCreateWithoutCourseInput, FacultyCourseAssignmentUncheckedCreateWithoutCourseInput> | FacultyCourseAssignmentCreateWithoutCourseInput[] | FacultyCourseAssignmentUncheckedCreateWithoutCourseInput[]
+    connectOrCreate?: FacultyCourseAssignmentCreateOrConnectWithoutCourseInput | FacultyCourseAssignmentCreateOrConnectWithoutCourseInput[]
+    upsert?: FacultyCourseAssignmentUpsertWithWhereUniqueWithoutCourseInput | FacultyCourseAssignmentUpsertWithWhereUniqueWithoutCourseInput[]
+    createMany?: FacultyCourseAssignmentCreateManyCourseInputEnvelope
+    set?: FacultyCourseAssignmentWhereUniqueInput | FacultyCourseAssignmentWhereUniqueInput[]
+    disconnect?: FacultyCourseAssignmentWhereUniqueInput | FacultyCourseAssignmentWhereUniqueInput[]
+    delete?: FacultyCourseAssignmentWhereUniqueInput | FacultyCourseAssignmentWhereUniqueInput[]
+    connect?: FacultyCourseAssignmentWhereUniqueInput | FacultyCourseAssignmentWhereUniqueInput[]
+    update?: FacultyCourseAssignmentUpdateWithWhereUniqueWithoutCourseInput | FacultyCourseAssignmentUpdateWithWhereUniqueWithoutCourseInput[]
+    updateMany?: FacultyCourseAssignmentUpdateManyWithWhereWithoutCourseInput | FacultyCourseAssignmentUpdateManyWithWhereWithoutCourseInput[]
+    deleteMany?: FacultyCourseAssignmentScalarWhereInput | FacultyCourseAssignmentScalarWhereInput[]
   }
 
-  export type BranchFacultyUpdateManyWithoutCourseNestedInput = {
+  export type FacultyProfileUpdateManyWithoutCourseNestedInput = {
+    create?: XOR<FacultyProfileCreateWithoutCourseInput, FacultyProfileUncheckedCreateWithoutCourseInput> | FacultyProfileCreateWithoutCourseInput[] | FacultyProfileUncheckedCreateWithoutCourseInput[]
+    connectOrCreate?: FacultyProfileCreateOrConnectWithoutCourseInput | FacultyProfileCreateOrConnectWithoutCourseInput[]
+    upsert?: FacultyProfileUpsertWithWhereUniqueWithoutCourseInput | FacultyProfileUpsertWithWhereUniqueWithoutCourseInput[]
+    createMany?: FacultyProfileCreateManyCourseInputEnvelope
+    set?: FacultyProfileWhereUniqueInput | FacultyProfileWhereUniqueInput[]
+    disconnect?: FacultyProfileWhereUniqueInput | FacultyProfileWhereUniqueInput[]
+    delete?: FacultyProfileWhereUniqueInput | FacultyProfileWhereUniqueInput[]
+    connect?: FacultyProfileWhereUniqueInput | FacultyProfileWhereUniqueInput[]
+    update?: FacultyProfileUpdateWithWhereUniqueWithoutCourseInput | FacultyProfileUpdateWithWhereUniqueWithoutCourseInput[]
+    updateMany?: FacultyProfileUpdateManyWithWhereWithoutCourseInput | FacultyProfileUpdateManyWithWhereWithoutCourseInput[]
+    deleteMany?: FacultyProfileScalarWhereInput | FacultyProfileScalarWhereInput[]
+  }
+
+  export type StudentProfileUpdateManyWithoutCourseNestedInput = {
+    create?: XOR<StudentProfileCreateWithoutCourseInput, StudentProfileUncheckedCreateWithoutCourseInput> | StudentProfileCreateWithoutCourseInput[] | StudentProfileUncheckedCreateWithoutCourseInput[]
+    connectOrCreate?: StudentProfileCreateOrConnectWithoutCourseInput | StudentProfileCreateOrConnectWithoutCourseInput[]
+    upsert?: StudentProfileUpsertWithWhereUniqueWithoutCourseInput | StudentProfileUpsertWithWhereUniqueWithoutCourseInput[]
+    createMany?: StudentProfileCreateManyCourseInputEnvelope
+    set?: StudentProfileWhereUniqueInput | StudentProfileWhereUniqueInput[]
+    disconnect?: StudentProfileWhereUniqueInput | StudentProfileWhereUniqueInput[]
+    delete?: StudentProfileWhereUniqueInput | StudentProfileWhereUniqueInput[]
+    connect?: StudentProfileWhereUniqueInput | StudentProfileWhereUniqueInput[]
+    update?: StudentProfileUpdateWithWhereUniqueWithoutCourseInput | StudentProfileUpdateWithWhereUniqueWithoutCourseInput[]
+    updateMany?: StudentProfileUpdateManyWithWhereWithoutCourseInput | StudentProfileUpdateManyWithWhereWithoutCourseInput[]
+    deleteMany?: StudentProfileScalarWhereInput | StudentProfileScalarWhereInput[]
+  }
+
+  export type BatchUncheckedUpdateManyWithoutCourseNestedInput = {
+    create?: XOR<BatchCreateWithoutCourseInput, BatchUncheckedCreateWithoutCourseInput> | BatchCreateWithoutCourseInput[] | BatchUncheckedCreateWithoutCourseInput[]
+    connectOrCreate?: BatchCreateOrConnectWithoutCourseInput | BatchCreateOrConnectWithoutCourseInput[]
+    upsert?: BatchUpsertWithWhereUniqueWithoutCourseInput | BatchUpsertWithWhereUniqueWithoutCourseInput[]
+    createMany?: BatchCreateManyCourseInputEnvelope
+    set?: BatchWhereUniqueInput | BatchWhereUniqueInput[]
+    disconnect?: BatchWhereUniqueInput | BatchWhereUniqueInput[]
+    delete?: BatchWhereUniqueInput | BatchWhereUniqueInput[]
+    connect?: BatchWhereUniqueInput | BatchWhereUniqueInput[]
+    update?: BatchUpdateWithWhereUniqueWithoutCourseInput | BatchUpdateWithWhereUniqueWithoutCourseInput[]
+    updateMany?: BatchUpdateManyWithWhereWithoutCourseInput | BatchUpdateManyWithWhereWithoutCourseInput[]
+    deleteMany?: BatchScalarWhereInput | BatchScalarWhereInput[]
+  }
+
+  export type BranchFacultyUncheckedUpdateManyWithoutCourseNestedInput = {
     create?: XOR<BranchFacultyCreateWithoutCourseInput, BranchFacultyUncheckedCreateWithoutCourseInput> | BranchFacultyCreateWithoutCourseInput[] | BranchFacultyUncheckedCreateWithoutCourseInput[]
     connectOrCreate?: BranchFacultyCreateOrConnectWithoutCourseInput | BranchFacultyCreateOrConnectWithoutCourseInput[]
     upsert?: BranchFacultyUpsertWithWhereUniqueWithoutCourseInput | BranchFacultyUpsertWithWhereUniqueWithoutCourseInput[]
@@ -44107,60 +42317,18 @@ export namespace Prisma {
     deleteMany?: CourseModuleScalarWhereInput | CourseModuleScalarWhereInput[]
   }
 
-  export type BatchUncheckedUpdateManyWithoutCourseNestedInput = {
-    create?: XOR<BatchCreateWithoutCourseInput, BatchUncheckedCreateWithoutCourseInput> | BatchCreateWithoutCourseInput[] | BatchUncheckedCreateWithoutCourseInput[]
-    connectOrCreate?: BatchCreateOrConnectWithoutCourseInput | BatchCreateOrConnectWithoutCourseInput[]
-    upsert?: BatchUpsertWithWhereUniqueWithoutCourseInput | BatchUpsertWithWhereUniqueWithoutCourseInput[]
-    createMany?: BatchCreateManyCourseInputEnvelope
-    set?: BatchWhereUniqueInput | BatchWhereUniqueInput[]
-    disconnect?: BatchWhereUniqueInput | BatchWhereUniqueInput[]
-    delete?: BatchWhereUniqueInput | BatchWhereUniqueInput[]
-    connect?: BatchWhereUniqueInput | BatchWhereUniqueInput[]
-    update?: BatchUpdateWithWhereUniqueWithoutCourseInput | BatchUpdateWithWhereUniqueWithoutCourseInput[]
-    updateMany?: BatchUpdateManyWithWhereWithoutCourseInput | BatchUpdateManyWithWhereWithoutCourseInput[]
-    deleteMany?: BatchScalarWhereInput | BatchScalarWhereInput[]
-  }
-
-  export type StudentProfileUncheckedUpdateManyWithoutCourseNestedInput = {
-    create?: XOR<StudentProfileCreateWithoutCourseInput, StudentProfileUncheckedCreateWithoutCourseInput> | StudentProfileCreateWithoutCourseInput[] | StudentProfileUncheckedCreateWithoutCourseInput[]
-    connectOrCreate?: StudentProfileCreateOrConnectWithoutCourseInput | StudentProfileCreateOrConnectWithoutCourseInput[]
-    upsert?: StudentProfileUpsertWithWhereUniqueWithoutCourseInput | StudentProfileUpsertWithWhereUniqueWithoutCourseInput[]
-    createMany?: StudentProfileCreateManyCourseInputEnvelope
-    set?: StudentProfileWhereUniqueInput | StudentProfileWhereUniqueInput[]
-    disconnect?: StudentProfileWhereUniqueInput | StudentProfileWhereUniqueInput[]
-    delete?: StudentProfileWhereUniqueInput | StudentProfileWhereUniqueInput[]
-    connect?: StudentProfileWhereUniqueInput | StudentProfileWhereUniqueInput[]
-    update?: StudentProfileUpdateWithWhereUniqueWithoutCourseInput | StudentProfileUpdateWithWhereUniqueWithoutCourseInput[]
-    updateMany?: StudentProfileUpdateManyWithWhereWithoutCourseInput | StudentProfileUpdateManyWithWhereWithoutCourseInput[]
-    deleteMany?: StudentProfileScalarWhereInput | StudentProfileScalarWhereInput[]
-  }
-
-  export type FacultyProfileUncheckedUpdateManyWithoutCourseNestedInput = {
-    create?: XOR<FacultyProfileCreateWithoutCourseInput, FacultyProfileUncheckedCreateWithoutCourseInput> | FacultyProfileCreateWithoutCourseInput[] | FacultyProfileUncheckedCreateWithoutCourseInput[]
-    connectOrCreate?: FacultyProfileCreateOrConnectWithoutCourseInput | FacultyProfileCreateOrConnectWithoutCourseInput[]
-    upsert?: FacultyProfileUpsertWithWhereUniqueWithoutCourseInput | FacultyProfileUpsertWithWhereUniqueWithoutCourseInput[]
-    createMany?: FacultyProfileCreateManyCourseInputEnvelope
-    set?: FacultyProfileWhereUniqueInput | FacultyProfileWhereUniqueInput[]
-    disconnect?: FacultyProfileWhereUniqueInput | FacultyProfileWhereUniqueInput[]
-    delete?: FacultyProfileWhereUniqueInput | FacultyProfileWhereUniqueInput[]
-    connect?: FacultyProfileWhereUniqueInput | FacultyProfileWhereUniqueInput[]
-    update?: FacultyProfileUpdateWithWhereUniqueWithoutCourseInput | FacultyProfileUpdateWithWhereUniqueWithoutCourseInput[]
-    updateMany?: FacultyProfileUpdateManyWithWhereWithoutCourseInput | FacultyProfileUpdateManyWithWhereWithoutCourseInput[]
-    deleteMany?: FacultyProfileScalarWhereInput | FacultyProfileScalarWhereInput[]
-  }
-
-  export type FacultyCourseAssignmentUncheckedUpdateManyWithoutCourseNestedInput = {
-    create?: XOR<FacultyCourseAssignmentCreateWithoutCourseInput, FacultyCourseAssignmentUncheckedCreateWithoutCourseInput> | FacultyCourseAssignmentCreateWithoutCourseInput[] | FacultyCourseAssignmentUncheckedCreateWithoutCourseInput[]
-    connectOrCreate?: FacultyCourseAssignmentCreateOrConnectWithoutCourseInput | FacultyCourseAssignmentCreateOrConnectWithoutCourseInput[]
-    upsert?: FacultyCourseAssignmentUpsertWithWhereUniqueWithoutCourseInput | FacultyCourseAssignmentUpsertWithWhereUniqueWithoutCourseInput[]
-    createMany?: FacultyCourseAssignmentCreateManyCourseInputEnvelope
-    set?: FacultyCourseAssignmentWhereUniqueInput | FacultyCourseAssignmentWhereUniqueInput[]
-    disconnect?: FacultyCourseAssignmentWhereUniqueInput | FacultyCourseAssignmentWhereUniqueInput[]
-    delete?: FacultyCourseAssignmentWhereUniqueInput | FacultyCourseAssignmentWhereUniqueInput[]
-    connect?: FacultyCourseAssignmentWhereUniqueInput | FacultyCourseAssignmentWhereUniqueInput[]
-    update?: FacultyCourseAssignmentUpdateWithWhereUniqueWithoutCourseInput | FacultyCourseAssignmentUpdateWithWhereUniqueWithoutCourseInput[]
-    updateMany?: FacultyCourseAssignmentUpdateManyWithWhereWithoutCourseInput | FacultyCourseAssignmentUpdateManyWithWhereWithoutCourseInput[]
-    deleteMany?: FacultyCourseAssignmentScalarWhereInput | FacultyCourseAssignmentScalarWhereInput[]
+  export type CourseStatusHistoryUncheckedUpdateManyWithoutCourseNestedInput = {
+    create?: XOR<CourseStatusHistoryCreateWithoutCourseInput, CourseStatusHistoryUncheckedCreateWithoutCourseInput> | CourseStatusHistoryCreateWithoutCourseInput[] | CourseStatusHistoryUncheckedCreateWithoutCourseInput[]
+    connectOrCreate?: CourseStatusHistoryCreateOrConnectWithoutCourseInput | CourseStatusHistoryCreateOrConnectWithoutCourseInput[]
+    upsert?: CourseStatusHistoryUpsertWithWhereUniqueWithoutCourseInput | CourseStatusHistoryUpsertWithWhereUniqueWithoutCourseInput[]
+    createMany?: CourseStatusHistoryCreateManyCourseInputEnvelope
+    set?: CourseStatusHistoryWhereUniqueInput | CourseStatusHistoryWhereUniqueInput[]
+    disconnect?: CourseStatusHistoryWhereUniqueInput | CourseStatusHistoryWhereUniqueInput[]
+    delete?: CourseStatusHistoryWhereUniqueInput | CourseStatusHistoryWhereUniqueInput[]
+    connect?: CourseStatusHistoryWhereUniqueInput | CourseStatusHistoryWhereUniqueInput[]
+    update?: CourseStatusHistoryUpdateWithWhereUniqueWithoutCourseInput | CourseStatusHistoryUpdateWithWhereUniqueWithoutCourseInput[]
+    updateMany?: CourseStatusHistoryUpdateManyWithWhereWithoutCourseInput | CourseStatusHistoryUpdateManyWithWhereWithoutCourseInput[]
+    deleteMany?: CourseStatusHistoryScalarWhereInput | CourseStatusHistoryScalarWhereInput[]
   }
 
   export type FacultyBatchEntryUncheckedUpdateManyWithoutCourseNestedInput = {
@@ -44177,32 +42345,46 @@ export namespace Prisma {
     deleteMany?: FacultyBatchEntryScalarWhereInput | FacultyBatchEntryScalarWhereInput[]
   }
 
-  export type CourseStatusHistoryUncheckedUpdateManyWithoutCourseNestedInput = {
-    create?: XOR<CourseStatusHistoryCreateWithoutCourseInput, CourseStatusHistoryUncheckedCreateWithoutCourseInput> | CourseStatusHistoryCreateWithoutCourseInput[] | CourseStatusHistoryUncheckedCreateWithoutCourseInput[]
-    connectOrCreate?: CourseStatusHistoryCreateOrConnectWithoutCourseInput | CourseStatusHistoryCreateOrConnectWithoutCourseInput[]
-    upsert?: CourseStatusHistoryUpsertWithWhereUniqueWithoutCourseInput | CourseStatusHistoryUpsertWithWhereUniqueWithoutCourseInput[]
-    createMany?: CourseStatusHistoryCreateManyCourseInputEnvelope
-    set?: CourseStatusHistoryWhereUniqueInput | CourseStatusHistoryWhereUniqueInput[]
-    disconnect?: CourseStatusHistoryWhereUniqueInput | CourseStatusHistoryWhereUniqueInput[]
-    delete?: CourseStatusHistoryWhereUniqueInput | CourseStatusHistoryWhereUniqueInput[]
-    connect?: CourseStatusHistoryWhereUniqueInput | CourseStatusHistoryWhereUniqueInput[]
-    update?: CourseStatusHistoryUpdateWithWhereUniqueWithoutCourseInput | CourseStatusHistoryUpdateWithWhereUniqueWithoutCourseInput[]
-    updateMany?: CourseStatusHistoryUpdateManyWithWhereWithoutCourseInput | CourseStatusHistoryUpdateManyWithWhereWithoutCourseInput[]
-    deleteMany?: CourseStatusHistoryScalarWhereInput | CourseStatusHistoryScalarWhereInput[]
+  export type FacultyCourseAssignmentUncheckedUpdateManyWithoutCourseNestedInput = {
+    create?: XOR<FacultyCourseAssignmentCreateWithoutCourseInput, FacultyCourseAssignmentUncheckedCreateWithoutCourseInput> | FacultyCourseAssignmentCreateWithoutCourseInput[] | FacultyCourseAssignmentUncheckedCreateWithoutCourseInput[]
+    connectOrCreate?: FacultyCourseAssignmentCreateOrConnectWithoutCourseInput | FacultyCourseAssignmentCreateOrConnectWithoutCourseInput[]
+    upsert?: FacultyCourseAssignmentUpsertWithWhereUniqueWithoutCourseInput | FacultyCourseAssignmentUpsertWithWhereUniqueWithoutCourseInput[]
+    createMany?: FacultyCourseAssignmentCreateManyCourseInputEnvelope
+    set?: FacultyCourseAssignmentWhereUniqueInput | FacultyCourseAssignmentWhereUniqueInput[]
+    disconnect?: FacultyCourseAssignmentWhereUniqueInput | FacultyCourseAssignmentWhereUniqueInput[]
+    delete?: FacultyCourseAssignmentWhereUniqueInput | FacultyCourseAssignmentWhereUniqueInput[]
+    connect?: FacultyCourseAssignmentWhereUniqueInput | FacultyCourseAssignmentWhereUniqueInput[]
+    update?: FacultyCourseAssignmentUpdateWithWhereUniqueWithoutCourseInput | FacultyCourseAssignmentUpdateWithWhereUniqueWithoutCourseInput[]
+    updateMany?: FacultyCourseAssignmentUpdateManyWithWhereWithoutCourseInput | FacultyCourseAssignmentUpdateManyWithWhereWithoutCourseInput[]
+    deleteMany?: FacultyCourseAssignmentScalarWhereInput | FacultyCourseAssignmentScalarWhereInput[]
   }
 
-  export type BranchFacultyUncheckedUpdateManyWithoutCourseNestedInput = {
-    create?: XOR<BranchFacultyCreateWithoutCourseInput, BranchFacultyUncheckedCreateWithoutCourseInput> | BranchFacultyCreateWithoutCourseInput[] | BranchFacultyUncheckedCreateWithoutCourseInput[]
-    connectOrCreate?: BranchFacultyCreateOrConnectWithoutCourseInput | BranchFacultyCreateOrConnectWithoutCourseInput[]
-    upsert?: BranchFacultyUpsertWithWhereUniqueWithoutCourseInput | BranchFacultyUpsertWithWhereUniqueWithoutCourseInput[]
-    createMany?: BranchFacultyCreateManyCourseInputEnvelope
-    set?: BranchFacultyWhereUniqueInput | BranchFacultyWhereUniqueInput[]
-    disconnect?: BranchFacultyWhereUniqueInput | BranchFacultyWhereUniqueInput[]
-    delete?: BranchFacultyWhereUniqueInput | BranchFacultyWhereUniqueInput[]
-    connect?: BranchFacultyWhereUniqueInput | BranchFacultyWhereUniqueInput[]
-    update?: BranchFacultyUpdateWithWhereUniqueWithoutCourseInput | BranchFacultyUpdateWithWhereUniqueWithoutCourseInput[]
-    updateMany?: BranchFacultyUpdateManyWithWhereWithoutCourseInput | BranchFacultyUpdateManyWithWhereWithoutCourseInput[]
-    deleteMany?: BranchFacultyScalarWhereInput | BranchFacultyScalarWhereInput[]
+  export type FacultyProfileUncheckedUpdateManyWithoutCourseNestedInput = {
+    create?: XOR<FacultyProfileCreateWithoutCourseInput, FacultyProfileUncheckedCreateWithoutCourseInput> | FacultyProfileCreateWithoutCourseInput[] | FacultyProfileUncheckedCreateWithoutCourseInput[]
+    connectOrCreate?: FacultyProfileCreateOrConnectWithoutCourseInput | FacultyProfileCreateOrConnectWithoutCourseInput[]
+    upsert?: FacultyProfileUpsertWithWhereUniqueWithoutCourseInput | FacultyProfileUpsertWithWhereUniqueWithoutCourseInput[]
+    createMany?: FacultyProfileCreateManyCourseInputEnvelope
+    set?: FacultyProfileWhereUniqueInput | FacultyProfileWhereUniqueInput[]
+    disconnect?: FacultyProfileWhereUniqueInput | FacultyProfileWhereUniqueInput[]
+    delete?: FacultyProfileWhereUniqueInput | FacultyProfileWhereUniqueInput[]
+    connect?: FacultyProfileWhereUniqueInput | FacultyProfileWhereUniqueInput[]
+    update?: FacultyProfileUpdateWithWhereUniqueWithoutCourseInput | FacultyProfileUpdateWithWhereUniqueWithoutCourseInput[]
+    updateMany?: FacultyProfileUpdateManyWithWhereWithoutCourseInput | FacultyProfileUpdateManyWithWhereWithoutCourseInput[]
+    deleteMany?: FacultyProfileScalarWhereInput | FacultyProfileScalarWhereInput[]
+  }
+
+  export type StudentProfileUncheckedUpdateManyWithoutCourseNestedInput = {
+    create?: XOR<StudentProfileCreateWithoutCourseInput, StudentProfileUncheckedCreateWithoutCourseInput> | StudentProfileCreateWithoutCourseInput[] | StudentProfileUncheckedCreateWithoutCourseInput[]
+    connectOrCreate?: StudentProfileCreateOrConnectWithoutCourseInput | StudentProfileCreateOrConnectWithoutCourseInput[]
+    upsert?: StudentProfileUpsertWithWhereUniqueWithoutCourseInput | StudentProfileUpsertWithWhereUniqueWithoutCourseInput[]
+    createMany?: StudentProfileCreateManyCourseInputEnvelope
+    set?: StudentProfileWhereUniqueInput | StudentProfileWhereUniqueInput[]
+    disconnect?: StudentProfileWhereUniqueInput | StudentProfileWhereUniqueInput[]
+    delete?: StudentProfileWhereUniqueInput | StudentProfileWhereUniqueInput[]
+    connect?: StudentProfileWhereUniqueInput | StudentProfileWhereUniqueInput[]
+    update?: StudentProfileUpdateWithWhereUniqueWithoutCourseInput | StudentProfileUpdateWithWhereUniqueWithoutCourseInput[]
+    updateMany?: StudentProfileUpdateManyWithWhereWithoutCourseInput | StudentProfileUpdateManyWithWhereWithoutCourseInput[]
+    deleteMany?: StudentProfileScalarWhereInput | StudentProfileScalarWhereInput[]
   }
 
   export type BranchCreateNestedOneWithoutBranchCoursesInput = {
@@ -44225,12 +42407,6 @@ export namespace Prisma {
     connect?: BranchFacultyWhereUniqueInput | BranchFacultyWhereUniqueInput[]
   }
 
-  export type BranchInstallmentTemplateCreateNestedOneWithoutBranchCourseInput = {
-    create?: XOR<BranchInstallmentTemplateCreateWithoutBranchCourseInput, BranchInstallmentTemplateUncheckedCreateWithoutBranchCourseInput>
-    connectOrCreate?: BranchInstallmentTemplateCreateOrConnectWithoutBranchCourseInput
-    connect?: BranchInstallmentTemplateWhereUniqueInput
-  }
-
   export type BranchCourseModuleUncheckedCreateNestedManyWithoutBranchCourseInput = {
     create?: XOR<BranchCourseModuleCreateWithoutBranchCourseInput, BranchCourseModuleUncheckedCreateWithoutBranchCourseInput> | BranchCourseModuleCreateWithoutBranchCourseInput[] | BranchCourseModuleUncheckedCreateWithoutBranchCourseInput[]
     connectOrCreate?: BranchCourseModuleCreateOrConnectWithoutBranchCourseInput | BranchCourseModuleCreateOrConnectWithoutBranchCourseInput[]
@@ -44243,12 +42419,6 @@ export namespace Prisma {
     connectOrCreate?: BranchFacultyCreateOrConnectWithoutBranchCourseInput | BranchFacultyCreateOrConnectWithoutBranchCourseInput[]
     createMany?: BranchFacultyCreateManyBranchCourseInputEnvelope
     connect?: BranchFacultyWhereUniqueInput | BranchFacultyWhereUniqueInput[]
-  }
-
-  export type BranchInstallmentTemplateUncheckedCreateNestedOneWithoutBranchCourseInput = {
-    create?: XOR<BranchInstallmentTemplateCreateWithoutBranchCourseInput, BranchInstallmentTemplateUncheckedCreateWithoutBranchCourseInput>
-    connectOrCreate?: BranchInstallmentTemplateCreateOrConnectWithoutBranchCourseInput
-    connect?: BranchInstallmentTemplateWhereUniqueInput
   }
 
   export type BranchUpdateOneRequiredWithoutBranchCoursesNestedInput = {
@@ -44287,16 +42457,6 @@ export namespace Prisma {
     deleteMany?: BranchFacultyScalarWhereInput | BranchFacultyScalarWhereInput[]
   }
 
-  export type BranchInstallmentTemplateUpdateOneWithoutBranchCourseNestedInput = {
-    create?: XOR<BranchInstallmentTemplateCreateWithoutBranchCourseInput, BranchInstallmentTemplateUncheckedCreateWithoutBranchCourseInput>
-    connectOrCreate?: BranchInstallmentTemplateCreateOrConnectWithoutBranchCourseInput
-    upsert?: BranchInstallmentTemplateUpsertWithoutBranchCourseInput
-    disconnect?: BranchInstallmentTemplateWhereInput | boolean
-    delete?: BranchInstallmentTemplateWhereInput | boolean
-    connect?: BranchInstallmentTemplateWhereUniqueInput
-    update?: XOR<XOR<BranchInstallmentTemplateUpdateToOneWithWhereWithoutBranchCourseInput, BranchInstallmentTemplateUpdateWithoutBranchCourseInput>, BranchInstallmentTemplateUncheckedUpdateWithoutBranchCourseInput>
-  }
-
   export type BranchCourseModuleUncheckedUpdateManyWithoutBranchCourseNestedInput = {
     create?: XOR<BranchCourseModuleCreateWithoutBranchCourseInput, BranchCourseModuleUncheckedCreateWithoutBranchCourseInput> | BranchCourseModuleCreateWithoutBranchCourseInput[] | BranchCourseModuleUncheckedCreateWithoutBranchCourseInput[]
     connectOrCreate?: BranchCourseModuleCreateOrConnectWithoutBranchCourseInput | BranchCourseModuleCreateOrConnectWithoutBranchCourseInput[]
@@ -44323,46 +42483,6 @@ export namespace Prisma {
     update?: BranchFacultyUpdateWithWhereUniqueWithoutBranchCourseInput | BranchFacultyUpdateWithWhereUniqueWithoutBranchCourseInput[]
     updateMany?: BranchFacultyUpdateManyWithWhereWithoutBranchCourseInput | BranchFacultyUpdateManyWithWhereWithoutBranchCourseInput[]
     deleteMany?: BranchFacultyScalarWhereInput | BranchFacultyScalarWhereInput[]
-  }
-
-  export type BranchInstallmentTemplateUncheckedUpdateOneWithoutBranchCourseNestedInput = {
-    create?: XOR<BranchInstallmentTemplateCreateWithoutBranchCourseInput, BranchInstallmentTemplateUncheckedCreateWithoutBranchCourseInput>
-    connectOrCreate?: BranchInstallmentTemplateCreateOrConnectWithoutBranchCourseInput
-    upsert?: BranchInstallmentTemplateUpsertWithoutBranchCourseInput
-    disconnect?: BranchInstallmentTemplateWhereInput | boolean
-    delete?: BranchInstallmentTemplateWhereInput | boolean
-    connect?: BranchInstallmentTemplateWhereUniqueInput
-    update?: XOR<XOR<BranchInstallmentTemplateUpdateToOneWithWhereWithoutBranchCourseInput, BranchInstallmentTemplateUpdateWithoutBranchCourseInput>, BranchInstallmentTemplateUncheckedUpdateWithoutBranchCourseInput>
-  }
-
-  export type BranchCreateNestedOneWithoutBranchInstallmentTemplatesInput = {
-    create?: XOR<BranchCreateWithoutBranchInstallmentTemplatesInput, BranchUncheckedCreateWithoutBranchInstallmentTemplatesInput>
-    connectOrCreate?: BranchCreateOrConnectWithoutBranchInstallmentTemplatesInput
-    connect?: BranchWhereUniqueInput
-  }
-
-  export type BranchCourseCreateNestedOneWithoutInstallmentTemplateInput = {
-    create?: XOR<BranchCourseCreateWithoutInstallmentTemplateInput, BranchCourseUncheckedCreateWithoutInstallmentTemplateInput>
-    connectOrCreate?: BranchCourseCreateOrConnectWithoutInstallmentTemplateInput
-    connect?: BranchCourseWhereUniqueInput
-  }
-
-  export type BranchUpdateOneRequiredWithoutBranchInstallmentTemplatesNestedInput = {
-    create?: XOR<BranchCreateWithoutBranchInstallmentTemplatesInput, BranchUncheckedCreateWithoutBranchInstallmentTemplatesInput>
-    connectOrCreate?: BranchCreateOrConnectWithoutBranchInstallmentTemplatesInput
-    upsert?: BranchUpsertWithoutBranchInstallmentTemplatesInput
-    connect?: BranchWhereUniqueInput
-    update?: XOR<XOR<BranchUpdateToOneWithWhereWithoutBranchInstallmentTemplatesInput, BranchUpdateWithoutBranchInstallmentTemplatesInput>, BranchUncheckedUpdateWithoutBranchInstallmentTemplatesInput>
-  }
-
-  export type BranchCourseUpdateOneWithoutInstallmentTemplateNestedInput = {
-    create?: XOR<BranchCourseCreateWithoutInstallmentTemplateInput, BranchCourseUncheckedCreateWithoutInstallmentTemplateInput>
-    connectOrCreate?: BranchCourseCreateOrConnectWithoutInstallmentTemplateInput
-    upsert?: BranchCourseUpsertWithoutInstallmentTemplateInput
-    disconnect?: BranchCourseWhereInput | boolean
-    delete?: BranchCourseWhereInput | boolean
-    connect?: BranchCourseWhereUniqueInput
-    update?: XOR<XOR<BranchCourseUpdateToOneWithWhereWithoutInstallmentTemplateInput, BranchCourseUpdateWithoutInstallmentTemplateInput>, BranchCourseUncheckedUpdateWithoutInstallmentTemplateInput>
   }
 
   export type BranchCourseCreateNestedOneWithoutModulesInput = {
@@ -44619,12 +42739,6 @@ export namespace Prisma {
     update?: XOR<XOR<BatchUpdateToOneWithWhereWithoutStatusHistoryInput, BatchUpdateWithoutStatusHistoryInput>, BatchUncheckedUpdateWithoutStatusHistoryInput>
   }
 
-  export type CourseCreateNestedOneWithoutStudentsInput = {
-    create?: XOR<CourseCreateWithoutStudentsInput, CourseUncheckedCreateWithoutStudentsInput>
-    connectOrCreate?: CourseCreateOrConnectWithoutStudentsInput
-    connect?: CourseWhereUniqueInput
-  }
-
   export type StudentAttendanceCreateNestedManyWithoutStudentInput = {
     create?: XOR<StudentAttendanceCreateWithoutStudentInput, StudentAttendanceUncheckedCreateWithoutStudentInput> | StudentAttendanceCreateWithoutStudentInput[] | StudentAttendanceUncheckedCreateWithoutStudentInput[]
     connectOrCreate?: StudentAttendanceCreateOrConnectWithoutStudentInput | StudentAttendanceCreateOrConnectWithoutStudentInput[]
@@ -44632,21 +42746,17 @@ export namespace Prisma {
     connect?: StudentAttendanceWhereUniqueInput | StudentAttendanceWhereUniqueInput[]
   }
 
+  export type CourseCreateNestedOneWithoutStudentsInput = {
+    create?: XOR<CourseCreateWithoutStudentsInput, CourseUncheckedCreateWithoutStudentsInput>
+    connectOrCreate?: CourseCreateOrConnectWithoutStudentsInput
+    connect?: CourseWhereUniqueInput
+  }
+
   export type StudentAttendanceUncheckedCreateNestedManyWithoutStudentInput = {
     create?: XOR<StudentAttendanceCreateWithoutStudentInput, StudentAttendanceUncheckedCreateWithoutStudentInput> | StudentAttendanceCreateWithoutStudentInput[] | StudentAttendanceUncheckedCreateWithoutStudentInput[]
     connectOrCreate?: StudentAttendanceCreateOrConnectWithoutStudentInput | StudentAttendanceCreateOrConnectWithoutStudentInput[]
     createMany?: StudentAttendanceCreateManyStudentInputEnvelope
     connect?: StudentAttendanceWhereUniqueInput | StudentAttendanceWhereUniqueInput[]
-  }
-
-  export type CourseUpdateOneWithoutStudentsNestedInput = {
-    create?: XOR<CourseCreateWithoutStudentsInput, CourseUncheckedCreateWithoutStudentsInput>
-    connectOrCreate?: CourseCreateOrConnectWithoutStudentsInput
-    upsert?: CourseUpsertWithoutStudentsInput
-    disconnect?: CourseWhereInput | boolean
-    delete?: CourseWhereInput | boolean
-    connect?: CourseWhereUniqueInput
-    update?: XOR<XOR<CourseUpdateToOneWithWhereWithoutStudentsInput, CourseUpdateWithoutStudentsInput>, CourseUncheckedUpdateWithoutStudentsInput>
   }
 
   export type StudentAttendanceUpdateManyWithoutStudentNestedInput = {
@@ -44661,6 +42771,16 @@ export namespace Prisma {
     update?: StudentAttendanceUpdateWithWhereUniqueWithoutStudentInput | StudentAttendanceUpdateWithWhereUniqueWithoutStudentInput[]
     updateMany?: StudentAttendanceUpdateManyWithWhereWithoutStudentInput | StudentAttendanceUpdateManyWithWhereWithoutStudentInput[]
     deleteMany?: StudentAttendanceScalarWhereInput | StudentAttendanceScalarWhereInput[]
+  }
+
+  export type CourseUpdateOneWithoutStudentsNestedInput = {
+    create?: XOR<CourseCreateWithoutStudentsInput, CourseUncheckedCreateWithoutStudentsInput>
+    connectOrCreate?: CourseCreateOrConnectWithoutStudentsInput
+    upsert?: CourseUpsertWithoutStudentsInput
+    disconnect?: CourseWhereInput | boolean
+    delete?: CourseWhereInput | boolean
+    connect?: CourseWhereUniqueInput
+    update?: XOR<XOR<CourseUpdateToOneWithWhereWithoutStudentsInput, CourseUpdateWithoutStudentsInput>, CourseUncheckedUpdateWithoutStudentsInput>
   }
 
   export type StudentAttendanceUncheckedUpdateManyWithoutStudentNestedInput = {
@@ -44691,10 +42811,11 @@ export namespace Prisma {
     update?: XOR<XOR<BranchUpdateToOneWithWhereWithoutBranchStudentsInput, BranchUpdateWithoutBranchStudentsInput>, BranchUncheckedUpdateWithoutBranchStudentsInput>
   }
 
-  export type CourseCreateNestedOneWithoutFacultyProfilesInput = {
-    create?: XOR<CourseCreateWithoutFacultyProfilesInput, CourseUncheckedCreateWithoutFacultyProfilesInput>
-    connectOrCreate?: CourseCreateOrConnectWithoutFacultyProfilesInput
-    connect?: CourseWhereUniqueInput
+  export type FacultyBatchEntryCreateNestedManyWithoutFacultyInput = {
+    create?: XOR<FacultyBatchEntryCreateWithoutFacultyInput, FacultyBatchEntryUncheckedCreateWithoutFacultyInput> | FacultyBatchEntryCreateWithoutFacultyInput[] | FacultyBatchEntryUncheckedCreateWithoutFacultyInput[]
+    connectOrCreate?: FacultyBatchEntryCreateOrConnectWithoutFacultyInput | FacultyBatchEntryCreateOrConnectWithoutFacultyInput[]
+    createMany?: FacultyBatchEntryCreateManyFacultyInputEnvelope
+    connect?: FacultyBatchEntryWhereUniqueInput | FacultyBatchEntryWhereUniqueInput[]
   }
 
   export type FacultyCourseAssignmentCreateNestedManyWithoutFacultyInput = {
@@ -44704,7 +42825,13 @@ export namespace Prisma {
     connect?: FacultyCourseAssignmentWhereUniqueInput | FacultyCourseAssignmentWhereUniqueInput[]
   }
 
-  export type FacultyBatchEntryCreateNestedManyWithoutFacultyInput = {
+  export type CourseCreateNestedOneWithoutFacultyProfilesInput = {
+    create?: XOR<CourseCreateWithoutFacultyProfilesInput, CourseUncheckedCreateWithoutFacultyProfilesInput>
+    connectOrCreate?: CourseCreateOrConnectWithoutFacultyProfilesInput
+    connect?: CourseWhereUniqueInput
+  }
+
+  export type FacultyBatchEntryUncheckedCreateNestedManyWithoutFacultyInput = {
     create?: XOR<FacultyBatchEntryCreateWithoutFacultyInput, FacultyBatchEntryUncheckedCreateWithoutFacultyInput> | FacultyBatchEntryCreateWithoutFacultyInput[] | FacultyBatchEntryUncheckedCreateWithoutFacultyInput[]
     connectOrCreate?: FacultyBatchEntryCreateOrConnectWithoutFacultyInput | FacultyBatchEntryCreateOrConnectWithoutFacultyInput[]
     createMany?: FacultyBatchEntryCreateManyFacultyInputEnvelope
@@ -44718,21 +42845,18 @@ export namespace Prisma {
     connect?: FacultyCourseAssignmentWhereUniqueInput | FacultyCourseAssignmentWhereUniqueInput[]
   }
 
-  export type FacultyBatchEntryUncheckedCreateNestedManyWithoutFacultyInput = {
+  export type FacultyBatchEntryUpdateManyWithoutFacultyNestedInput = {
     create?: XOR<FacultyBatchEntryCreateWithoutFacultyInput, FacultyBatchEntryUncheckedCreateWithoutFacultyInput> | FacultyBatchEntryCreateWithoutFacultyInput[] | FacultyBatchEntryUncheckedCreateWithoutFacultyInput[]
     connectOrCreate?: FacultyBatchEntryCreateOrConnectWithoutFacultyInput | FacultyBatchEntryCreateOrConnectWithoutFacultyInput[]
+    upsert?: FacultyBatchEntryUpsertWithWhereUniqueWithoutFacultyInput | FacultyBatchEntryUpsertWithWhereUniqueWithoutFacultyInput[]
     createMany?: FacultyBatchEntryCreateManyFacultyInputEnvelope
+    set?: FacultyBatchEntryWhereUniqueInput | FacultyBatchEntryWhereUniqueInput[]
+    disconnect?: FacultyBatchEntryWhereUniqueInput | FacultyBatchEntryWhereUniqueInput[]
+    delete?: FacultyBatchEntryWhereUniqueInput | FacultyBatchEntryWhereUniqueInput[]
     connect?: FacultyBatchEntryWhereUniqueInput | FacultyBatchEntryWhereUniqueInput[]
-  }
-
-  export type CourseUpdateOneWithoutFacultyProfilesNestedInput = {
-    create?: XOR<CourseCreateWithoutFacultyProfilesInput, CourseUncheckedCreateWithoutFacultyProfilesInput>
-    connectOrCreate?: CourseCreateOrConnectWithoutFacultyProfilesInput
-    upsert?: CourseUpsertWithoutFacultyProfilesInput
-    disconnect?: CourseWhereInput | boolean
-    delete?: CourseWhereInput | boolean
-    connect?: CourseWhereUniqueInput
-    update?: XOR<XOR<CourseUpdateToOneWithWhereWithoutFacultyProfilesInput, CourseUpdateWithoutFacultyProfilesInput>, CourseUncheckedUpdateWithoutFacultyProfilesInput>
+    update?: FacultyBatchEntryUpdateWithWhereUniqueWithoutFacultyInput | FacultyBatchEntryUpdateWithWhereUniqueWithoutFacultyInput[]
+    updateMany?: FacultyBatchEntryUpdateManyWithWhereWithoutFacultyInput | FacultyBatchEntryUpdateManyWithWhereWithoutFacultyInput[]
+    deleteMany?: FacultyBatchEntryScalarWhereInput | FacultyBatchEntryScalarWhereInput[]
   }
 
   export type FacultyCourseAssignmentUpdateManyWithoutFacultyNestedInput = {
@@ -44749,7 +42873,17 @@ export namespace Prisma {
     deleteMany?: FacultyCourseAssignmentScalarWhereInput | FacultyCourseAssignmentScalarWhereInput[]
   }
 
-  export type FacultyBatchEntryUpdateManyWithoutFacultyNestedInput = {
+  export type CourseUpdateOneWithoutFacultyProfilesNestedInput = {
+    create?: XOR<CourseCreateWithoutFacultyProfilesInput, CourseUncheckedCreateWithoutFacultyProfilesInput>
+    connectOrCreate?: CourseCreateOrConnectWithoutFacultyProfilesInput
+    upsert?: CourseUpsertWithoutFacultyProfilesInput
+    disconnect?: CourseWhereInput | boolean
+    delete?: CourseWhereInput | boolean
+    connect?: CourseWhereUniqueInput
+    update?: XOR<XOR<CourseUpdateToOneWithWhereWithoutFacultyProfilesInput, CourseUpdateWithoutFacultyProfilesInput>, CourseUncheckedUpdateWithoutFacultyProfilesInput>
+  }
+
+  export type FacultyBatchEntryUncheckedUpdateManyWithoutFacultyNestedInput = {
     create?: XOR<FacultyBatchEntryCreateWithoutFacultyInput, FacultyBatchEntryUncheckedCreateWithoutFacultyInput> | FacultyBatchEntryCreateWithoutFacultyInput[] | FacultyBatchEntryUncheckedCreateWithoutFacultyInput[]
     connectOrCreate?: FacultyBatchEntryCreateOrConnectWithoutFacultyInput | FacultyBatchEntryCreateOrConnectWithoutFacultyInput[]
     upsert?: FacultyBatchEntryUpsertWithWhereUniqueWithoutFacultyInput | FacultyBatchEntryUpsertWithWhereUniqueWithoutFacultyInput[]
@@ -44777,38 +42911,16 @@ export namespace Prisma {
     deleteMany?: FacultyCourseAssignmentScalarWhereInput | FacultyCourseAssignmentScalarWhereInput[]
   }
 
-  export type FacultyBatchEntryUncheckedUpdateManyWithoutFacultyNestedInput = {
-    create?: XOR<FacultyBatchEntryCreateWithoutFacultyInput, FacultyBatchEntryUncheckedCreateWithoutFacultyInput> | FacultyBatchEntryCreateWithoutFacultyInput[] | FacultyBatchEntryUncheckedCreateWithoutFacultyInput[]
-    connectOrCreate?: FacultyBatchEntryCreateOrConnectWithoutFacultyInput | FacultyBatchEntryCreateOrConnectWithoutFacultyInput[]
-    upsert?: FacultyBatchEntryUpsertWithWhereUniqueWithoutFacultyInput | FacultyBatchEntryUpsertWithWhereUniqueWithoutFacultyInput[]
-    createMany?: FacultyBatchEntryCreateManyFacultyInputEnvelope
-    set?: FacultyBatchEntryWhereUniqueInput | FacultyBatchEntryWhereUniqueInput[]
-    disconnect?: FacultyBatchEntryWhereUniqueInput | FacultyBatchEntryWhereUniqueInput[]
-    delete?: FacultyBatchEntryWhereUniqueInput | FacultyBatchEntryWhereUniqueInput[]
-    connect?: FacultyBatchEntryWhereUniqueInput | FacultyBatchEntryWhereUniqueInput[]
-    update?: FacultyBatchEntryUpdateWithWhereUniqueWithoutFacultyInput | FacultyBatchEntryUpdateWithWhereUniqueWithoutFacultyInput[]
-    updateMany?: FacultyBatchEntryUpdateManyWithWhereWithoutFacultyInput | FacultyBatchEntryUpdateManyWithWhereWithoutFacultyInput[]
-    deleteMany?: FacultyBatchEntryScalarWhereInput | FacultyBatchEntryScalarWhereInput[]
-  }
-
-  export type FacultyProfileCreateNestedOneWithoutCourseAssignmentsInput = {
-    create?: XOR<FacultyProfileCreateWithoutCourseAssignmentsInput, FacultyProfileUncheckedCreateWithoutCourseAssignmentsInput>
-    connectOrCreate?: FacultyProfileCreateOrConnectWithoutCourseAssignmentsInput
-    connect?: FacultyProfileWhereUniqueInput
-  }
-
   export type CourseCreateNestedOneWithoutFacultyCourseAssignmentsInput = {
     create?: XOR<CourseCreateWithoutFacultyCourseAssignmentsInput, CourseUncheckedCreateWithoutFacultyCourseAssignmentsInput>
     connectOrCreate?: CourseCreateOrConnectWithoutFacultyCourseAssignmentsInput
     connect?: CourseWhereUniqueInput
   }
 
-  export type FacultyProfileUpdateOneRequiredWithoutCourseAssignmentsNestedInput = {
+  export type FacultyProfileCreateNestedOneWithoutCourseAssignmentsInput = {
     create?: XOR<FacultyProfileCreateWithoutCourseAssignmentsInput, FacultyProfileUncheckedCreateWithoutCourseAssignmentsInput>
     connectOrCreate?: FacultyProfileCreateOrConnectWithoutCourseAssignmentsInput
-    upsert?: FacultyProfileUpsertWithoutCourseAssignmentsInput
     connect?: FacultyProfileWhereUniqueInput
-    update?: XOR<XOR<FacultyProfileUpdateToOneWithWhereWithoutCourseAssignmentsInput, FacultyProfileUpdateWithoutCourseAssignmentsInput>, FacultyProfileUncheckedUpdateWithoutCourseAssignmentsInput>
   }
 
   export type CourseUpdateOneRequiredWithoutFacultyCourseAssignmentsNestedInput = {
@@ -44819,10 +42931,12 @@ export namespace Prisma {
     update?: XOR<XOR<CourseUpdateToOneWithWhereWithoutFacultyCourseAssignmentsInput, CourseUpdateWithoutFacultyCourseAssignmentsInput>, CourseUncheckedUpdateWithoutFacultyCourseAssignmentsInput>
   }
 
-  export type FacultyProfileCreateNestedOneWithoutBatchEntriesInput = {
-    create?: XOR<FacultyProfileCreateWithoutBatchEntriesInput, FacultyProfileUncheckedCreateWithoutBatchEntriesInput>
-    connectOrCreate?: FacultyProfileCreateOrConnectWithoutBatchEntriesInput
+  export type FacultyProfileUpdateOneRequiredWithoutCourseAssignmentsNestedInput = {
+    create?: XOR<FacultyProfileCreateWithoutCourseAssignmentsInput, FacultyProfileUncheckedCreateWithoutCourseAssignmentsInput>
+    connectOrCreate?: FacultyProfileCreateOrConnectWithoutCourseAssignmentsInput
+    upsert?: FacultyProfileUpsertWithoutCourseAssignmentsInput
     connect?: FacultyProfileWhereUniqueInput
+    update?: XOR<XOR<FacultyProfileUpdateToOneWithWhereWithoutCourseAssignmentsInput, FacultyProfileUpdateWithoutCourseAssignmentsInput>, FacultyProfileUncheckedUpdateWithoutCourseAssignmentsInput>
   }
 
   export type CourseCreateNestedOneWithoutFacultyBatchEntriesInput = {
@@ -44831,12 +42945,10 @@ export namespace Prisma {
     connect?: CourseWhereUniqueInput
   }
 
-  export type FacultyProfileUpdateOneRequiredWithoutBatchEntriesNestedInput = {
+  export type FacultyProfileCreateNestedOneWithoutBatchEntriesInput = {
     create?: XOR<FacultyProfileCreateWithoutBatchEntriesInput, FacultyProfileUncheckedCreateWithoutBatchEntriesInput>
     connectOrCreate?: FacultyProfileCreateOrConnectWithoutBatchEntriesInput
-    upsert?: FacultyProfileUpsertWithoutBatchEntriesInput
     connect?: FacultyProfileWhereUniqueInput
-    update?: XOR<XOR<FacultyProfileUpdateToOneWithWhereWithoutBatchEntriesInput, FacultyProfileUpdateWithoutBatchEntriesInput>, FacultyProfileUncheckedUpdateWithoutBatchEntriesInput>
   }
 
   export type CourseUpdateOneWithoutFacultyBatchEntriesNestedInput = {
@@ -44847,6 +42959,14 @@ export namespace Prisma {
     delete?: CourseWhereInput | boolean
     connect?: CourseWhereUniqueInput
     update?: XOR<XOR<CourseUpdateToOneWithWhereWithoutFacultyBatchEntriesInput, CourseUpdateWithoutFacultyBatchEntriesInput>, CourseUncheckedUpdateWithoutFacultyBatchEntriesInput>
+  }
+
+  export type FacultyProfileUpdateOneRequiredWithoutBatchEntriesNestedInput = {
+    create?: XOR<FacultyProfileCreateWithoutBatchEntriesInput, FacultyProfileUncheckedCreateWithoutBatchEntriesInput>
+    connectOrCreate?: FacultyProfileCreateOrConnectWithoutBatchEntriesInput
+    upsert?: FacultyProfileUpsertWithoutBatchEntriesInput
+    connect?: FacultyProfileWhereUniqueInput
+    update?: XOR<XOR<FacultyProfileUpdateToOneWithWhereWithoutBatchEntriesInput, FacultyProfileUpdateWithoutBatchEntriesInput>, FacultyProfileUncheckedUpdateWithoutBatchEntriesInput>
   }
 
   export type UserCreateNestedOneWithoutFacultyAttendanceSessionsInput = {
@@ -44863,28 +42983,20 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutFacultyAttendanceSessionsInput, UserUpdateWithoutFacultyAttendanceSessionsInput>, UserUncheckedUpdateWithoutFacultyAttendanceSessionsInput>
   }
 
-  export type StudentProfileCreateNestedOneWithoutAttendanceRecordsInput = {
-    create?: XOR<StudentProfileCreateWithoutAttendanceRecordsInput, StudentProfileUncheckedCreateWithoutAttendanceRecordsInput>
-    connectOrCreate?: StudentProfileCreateOrConnectWithoutAttendanceRecordsInput
-    connect?: StudentProfileWhereUniqueInput
-  }
-
   export type UserCreateNestedOneWithoutMarkedStudentAttendancesInput = {
     create?: XOR<UserCreateWithoutMarkedStudentAttendancesInput, UserUncheckedCreateWithoutMarkedStudentAttendancesInput>
     connectOrCreate?: UserCreateOrConnectWithoutMarkedStudentAttendancesInput
     connect?: UserWhereUniqueInput
   }
 
-  export type EnumAttendanceStatusFieldUpdateOperationsInput = {
-    set?: $Enums.AttendanceStatus
-  }
-
-  export type StudentProfileUpdateOneRequiredWithoutAttendanceRecordsNestedInput = {
+  export type StudentProfileCreateNestedOneWithoutAttendanceRecordsInput = {
     create?: XOR<StudentProfileCreateWithoutAttendanceRecordsInput, StudentProfileUncheckedCreateWithoutAttendanceRecordsInput>
     connectOrCreate?: StudentProfileCreateOrConnectWithoutAttendanceRecordsInput
-    upsert?: StudentProfileUpsertWithoutAttendanceRecordsInput
     connect?: StudentProfileWhereUniqueInput
-    update?: XOR<XOR<StudentProfileUpdateToOneWithWhereWithoutAttendanceRecordsInput, StudentProfileUpdateWithoutAttendanceRecordsInput>, StudentProfileUncheckedUpdateWithoutAttendanceRecordsInput>
+  }
+
+  export type EnumAttendanceStatusFieldUpdateOperationsInput = {
+    set?: $Enums.AttendanceStatus
   }
 
   export type UserUpdateOneWithoutMarkedStudentAttendancesNestedInput = {
@@ -44895,6 +43007,20 @@ export namespace Prisma {
     delete?: UserWhereInput | boolean
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutMarkedStudentAttendancesInput, UserUpdateWithoutMarkedStudentAttendancesInput>, UserUncheckedUpdateWithoutMarkedStudentAttendancesInput>
+  }
+
+  export type StudentProfileUpdateOneRequiredWithoutAttendanceRecordsNestedInput = {
+    create?: XOR<StudentProfileCreateWithoutAttendanceRecordsInput, StudentProfileUncheckedCreateWithoutAttendanceRecordsInput>
+    connectOrCreate?: StudentProfileCreateOrConnectWithoutAttendanceRecordsInput
+    upsert?: StudentProfileUpsertWithoutAttendanceRecordsInput
+    connect?: StudentProfileWhereUniqueInput
+    update?: XOR<XOR<StudentProfileUpdateToOneWithWhereWithoutAttendanceRecordsInput, StudentProfileUpdateWithoutAttendanceRecordsInput>, StudentProfileUncheckedUpdateWithoutAttendanceRecordsInput>
+  }
+
+  export type BranchCourseCreateNestedOneWithoutBranchFacultiesInput = {
+    create?: XOR<BranchCourseCreateWithoutBranchFacultiesInput, BranchCourseUncheckedCreateWithoutBranchFacultiesInput>
+    connectOrCreate?: BranchCourseCreateOrConnectWithoutBranchFacultiesInput
+    connect?: BranchCourseWhereUniqueInput
   }
 
   export type BranchCreateNestedOneWithoutBranchFacultiesInput = {
@@ -44909,10 +43035,14 @@ export namespace Prisma {
     connect?: CourseWhereUniqueInput
   }
 
-  export type BranchCourseCreateNestedOneWithoutBranchFacultiesInput = {
+  export type BranchCourseUpdateOneWithoutBranchFacultiesNestedInput = {
     create?: XOR<BranchCourseCreateWithoutBranchFacultiesInput, BranchCourseUncheckedCreateWithoutBranchFacultiesInput>
     connectOrCreate?: BranchCourseCreateOrConnectWithoutBranchFacultiesInput
+    upsert?: BranchCourseUpsertWithoutBranchFacultiesInput
+    disconnect?: BranchCourseWhereInput | boolean
+    delete?: BranchCourseWhereInput | boolean
     connect?: BranchCourseWhereUniqueInput
+    update?: XOR<XOR<BranchCourseUpdateToOneWithWhereWithoutBranchFacultiesInput, BranchCourseUpdateWithoutBranchFacultiesInput>, BranchCourseUncheckedUpdateWithoutBranchFacultiesInput>
   }
 
   export type BranchUpdateOneRequiredWithoutBranchFacultiesNestedInput = {
@@ -44931,16 +43061,6 @@ export namespace Prisma {
     delete?: CourseWhereInput | boolean
     connect?: CourseWhereUniqueInput
     update?: XOR<XOR<CourseUpdateToOneWithWhereWithoutBranchFacultiesInput, CourseUpdateWithoutBranchFacultiesInput>, CourseUncheckedUpdateWithoutBranchFacultiesInput>
-  }
-
-  export type BranchCourseUpdateOneWithoutBranchFacultiesNestedInput = {
-    create?: XOR<BranchCourseCreateWithoutBranchFacultiesInput, BranchCourseUncheckedCreateWithoutBranchFacultiesInput>
-    connectOrCreate?: BranchCourseCreateOrConnectWithoutBranchFacultiesInput
-    upsert?: BranchCourseUpsertWithoutBranchFacultiesInput
-    disconnect?: BranchCourseWhereInput | boolean
-    delete?: BranchCourseWhereInput | boolean
-    connect?: BranchCourseWhereUniqueInput
-    update?: XOR<XOR<BranchCourseUpdateToOneWithWhereWithoutBranchFacultiesInput, BranchCourseUpdateWithoutBranchFacultiesInput>, BranchCourseUncheckedUpdateWithoutBranchFacultiesInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -45251,29 +43371,6 @@ export namespace Prisma {
     gte?: number | FloatFieldRefInput<$PrismaModel>
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
-  export type NestedJsonFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<NestedJsonFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonFilterBase<$PrismaModel>>, 'path'>>,
-        Required<NestedJsonFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<NestedJsonFilterBase<$PrismaModel>>, 'path'>>
-
-  export type NestedJsonFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-  }
 
   export type NestedEnumBatchStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.BatchStatus | EnumBatchStatusFieldRefInput<$PrismaModel>
@@ -45360,66 +43457,6 @@ export namespace Prisma {
     _max?: NestedEnumAttendanceStatusFilter<$PrismaModel>
   }
 
-  export type LoginEventCreateWithoutUserInput = {
-    id?: string
-    eventType: $Enums.LoginEventType
-    success?: boolean
-    ipAddress?: string | null
-    userAgent?: string | null
-    reason?: string | null
-    meta?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-  }
-
-  export type LoginEventUncheckedCreateWithoutUserInput = {
-    id?: string
-    eventType: $Enums.LoginEventType
-    success?: boolean
-    ipAddress?: string | null
-    userAgent?: string | null
-    reason?: string | null
-    meta?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-  }
-
-  export type LoginEventCreateOrConnectWithoutUserInput = {
-    where: LoginEventWhereUniqueInput
-    create: XOR<LoginEventCreateWithoutUserInput, LoginEventUncheckedCreateWithoutUserInput>
-  }
-
-  export type LoginEventCreateManyUserInputEnvelope = {
-    data: LoginEventCreateManyUserInput | LoginEventCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type PasswordResetTokenCreateWithoutUserInput = {
-    id?: string
-    tokenHash: string
-    expiresAt: Date | string
-    usedAt?: Date | string | null
-    createdBy?: string | null
-    createdAt?: Date | string
-  }
-
-  export type PasswordResetTokenUncheckedCreateWithoutUserInput = {
-    id?: string
-    tokenHash: string
-    expiresAt: Date | string
-    usedAt?: Date | string | null
-    createdBy?: string | null
-    createdAt?: Date | string
-  }
-
-  export type PasswordResetTokenCreateOrConnectWithoutUserInput = {
-    where: PasswordResetTokenWhereUniqueInput
-    create: XOR<PasswordResetTokenCreateWithoutUserInput, PasswordResetTokenUncheckedCreateWithoutUserInput>
-  }
-
-  export type PasswordResetTokenCreateManyUserInputEnvelope = {
-    data: PasswordResetTokenCreateManyUserInput | PasswordResetTokenCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
   export type BatchFacultyAssignmentCreateWithoutFacultyInput = {
     id?: string
     assignedDate: string
@@ -45462,6 +43499,129 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type BranchCreateWithoutAdminUserInput = {
+    id?: string
+    branchId: string
+    branchName: string
+    branchAdminName: string
+    branchEmail: string
+    branchPhone: string
+    branchAddress: string
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branchCity?: string
+    branchCountry?: string
+    branchCountryCode?: string
+    branchState?: string
+    branchStateCode?: string
+    branchCourses?: BranchCourseCreateNestedManyWithoutBranchInput
+    branchFaculties?: BranchFacultyCreateNestedManyWithoutBranchInput
+    branchStudents?: BranchStudentCreateNestedManyWithoutBranchInput
+    courses?: CourseCreateNestedManyWithoutBranchInput
+  }
+
+  export type BranchUncheckedCreateWithoutAdminUserInput = {
+    id?: string
+    branchId: string
+    branchName: string
+    branchAdminName: string
+    branchEmail: string
+    branchPhone: string
+    branchAddress: string
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branchCity?: string
+    branchCountry?: string
+    branchCountryCode?: string
+    branchState?: string
+    branchStateCode?: string
+    branchCourses?: BranchCourseUncheckedCreateNestedManyWithoutBranchInput
+    branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutBranchInput
+    branchStudents?: BranchStudentUncheckedCreateNestedManyWithoutBranchInput
+    courses?: CourseUncheckedCreateNestedManyWithoutBranchInput
+  }
+
+  export type BranchCreateOrConnectWithoutAdminUserInput = {
+    where: BranchWhereUniqueInput
+    create: XOR<BranchCreateWithoutAdminUserInput, BranchUncheckedCreateWithoutAdminUserInput>
+  }
+
+  export type FacultyAttendanceSessionCreateWithoutFacultyUserInput = {
+    id?: string
+    attendanceDate: string
+    loginAt: Date | string
+    logoutAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sessionSource?: string
+    logoutType?: string | null
+    logoutReason?: string | null
+    workReport?: string | null
+    workCompleted?: string | null
+  }
+
+  export type FacultyAttendanceSessionUncheckedCreateWithoutFacultyUserInput = {
+    id?: string
+    attendanceDate: string
+    loginAt: Date | string
+    logoutAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sessionSource?: string
+    logoutType?: string | null
+    logoutReason?: string | null
+    workReport?: string | null
+    workCompleted?: string | null
+  }
+
+  export type FacultyAttendanceSessionCreateOrConnectWithoutFacultyUserInput = {
+    where: FacultyAttendanceSessionWhereUniqueInput
+    create: XOR<FacultyAttendanceSessionCreateWithoutFacultyUserInput, FacultyAttendanceSessionUncheckedCreateWithoutFacultyUserInput>
+  }
+
+  export type FacultyAttendanceSessionCreateManyFacultyUserInputEnvelope = {
+    data: FacultyAttendanceSessionCreateManyFacultyUserInput | FacultyAttendanceSessionCreateManyFacultyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type LoginEventCreateWithoutUserInput = {
+    id?: string
+    eventType: $Enums.LoginEventType
+    success?: boolean
+    ipAddress?: string | null
+    userAgent?: string | null
+    reason?: string | null
+    meta?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+  }
+
+  export type LoginEventUncheckedCreateWithoutUserInput = {
+    id?: string
+    eventType: $Enums.LoginEventType
+    success?: boolean
+    ipAddress?: string | null
+    userAgent?: string | null
+    reason?: string | null
+    meta?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+  }
+
+  export type LoginEventCreateOrConnectWithoutUserInput = {
+    where: LoginEventWhereUniqueInput
+    create: XOR<LoginEventCreateWithoutUserInput, LoginEventUncheckedCreateWithoutUserInput>
+  }
+
+  export type LoginEventCreateManyUserInputEnvelope = {
+    data: LoginEventCreateManyUserInput | LoginEventCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type NotificationCreateWithoutTargetUserInput = {
     id?: string
     kind: $Enums.NotificationKind
@@ -45469,18 +43629,6 @@ export namespace Prisma {
     title: string
     message: string
     actionLabel?: string | null
-    requestStatus?: string | null
-    requestTitle?: string | null
-    requestReason?: string | null
-    requestDescription?: string | null
-    branchCourseId?: string | null
-    branchCourseName?: string | null
-    moduleId?: string | null
-    moduleName?: string | null
-    subModuleId?: string | null
-    subModuleName?: string | null
-    facultyId?: string | null
-    facultyName?: string | null
     targetBranchId?: string | null
     targetBranchEmail?: string | null
     targetBranchName?: string | null
@@ -45489,6 +43637,18 @@ export namespace Prisma {
     createdBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    branchCourseId?: string | null
+    branchCourseName?: string | null
+    facultyId?: string | null
+    facultyName?: string | null
+    moduleId?: string | null
+    moduleName?: string | null
+    requestDescription?: string | null
+    requestReason?: string | null
+    requestStatus?: string | null
+    requestTitle?: string | null
+    subModuleId?: string | null
+    subModuleName?: string | null
     request?: CourseEditRequestCreateNestedOneWithoutNotificationsInput
   }
 
@@ -45499,19 +43659,6 @@ export namespace Prisma {
     title: string
     message: string
     actionLabel?: string | null
-    requestId?: string | null
-    requestStatus?: string | null
-    requestTitle?: string | null
-    requestReason?: string | null
-    requestDescription?: string | null
-    branchCourseId?: string | null
-    branchCourseName?: string | null
-    moduleId?: string | null
-    moduleName?: string | null
-    subModuleId?: string | null
-    subModuleName?: string | null
-    facultyId?: string | null
-    facultyName?: string | null
     targetBranchId?: string | null
     targetBranchEmail?: string | null
     targetBranchName?: string | null
@@ -45520,6 +43667,19 @@ export namespace Prisma {
     createdBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    branchCourseId?: string | null
+    branchCourseName?: string | null
+    facultyId?: string | null
+    facultyName?: string | null
+    moduleId?: string | null
+    moduleName?: string | null
+    requestDescription?: string | null
+    requestId?: string | null
+    requestReason?: string | null
+    requestStatus?: string | null
+    requestTitle?: string | null
+    subModuleId?: string | null
+    subModuleName?: string | null
   }
 
   export type NotificationCreateOrConnectWithoutTargetUserInput = {
@@ -45532,41 +43692,31 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type FacultyAttendanceSessionCreateWithoutFacultyUserInput = {
+  export type PasswordResetTokenCreateWithoutUserInput = {
     id?: string
-    attendanceDate: string
-    sessionSource?: string
-    loginAt: Date | string
-    logoutAt?: Date | string | null
-    logoutType?: string | null
-    logoutReason?: string | null
-    workReport?: string | null
-    workCompleted?: string | null
+    tokenHash: string
+    expiresAt: Date | string
+    usedAt?: Date | string | null
+    createdBy?: string | null
     createdAt?: Date | string
-    updatedAt?: Date | string
   }
 
-  export type FacultyAttendanceSessionUncheckedCreateWithoutFacultyUserInput = {
+  export type PasswordResetTokenUncheckedCreateWithoutUserInput = {
     id?: string
-    attendanceDate: string
-    sessionSource?: string
-    loginAt: Date | string
-    logoutAt?: Date | string | null
-    logoutType?: string | null
-    logoutReason?: string | null
-    workReport?: string | null
-    workCompleted?: string | null
+    tokenHash: string
+    expiresAt: Date | string
+    usedAt?: Date | string | null
+    createdBy?: string | null
     createdAt?: Date | string
-    updatedAt?: Date | string
   }
 
-  export type FacultyAttendanceSessionCreateOrConnectWithoutFacultyUserInput = {
-    where: FacultyAttendanceSessionWhereUniqueInput
-    create: XOR<FacultyAttendanceSessionCreateWithoutFacultyUserInput, FacultyAttendanceSessionUncheckedCreateWithoutFacultyUserInput>
+  export type PasswordResetTokenCreateOrConnectWithoutUserInput = {
+    where: PasswordResetTokenWhereUniqueInput
+    create: XOR<PasswordResetTokenCreateWithoutUserInput, PasswordResetTokenUncheckedCreateWithoutUserInput>
   }
 
-  export type FacultyAttendanceSessionCreateManyFacultyUserInputEnvelope = {
-    data: FacultyAttendanceSessionCreateManyFacultyUserInput | FacultyAttendanceSessionCreateManyFacultyUserInput[]
+  export type PasswordResetTokenCreateManyUserInputEnvelope = {
+    data: PasswordResetTokenCreateManyUserInput | PasswordResetTokenCreateManyUserInput[]
     skipDuplicates?: boolean
   }
 
@@ -45610,121 +43760,6 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type BranchCreateWithoutAdminUserInput = {
-    id?: string
-    branchId: string
-    branchName: string
-    branchAdminName: string
-    branchEmail: string
-    branchPhone: string
-    branchCountryCode?: string
-    branchCountry?: string
-    branchStateCode?: string
-    branchState?: string
-    branchCity?: string
-    branchAddress: string
-    status?: $Enums.RecordStatus
-    createdBy?: string | null
-    updatedBy?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    courses?: CourseCreateNestedManyWithoutBranchInput
-    branchCourses?: BranchCourseCreateNestedManyWithoutBranchInput
-    branchFaculties?: BranchFacultyCreateNestedManyWithoutBranchInput
-    branchStudents?: BranchStudentCreateNestedManyWithoutBranchInput
-    branchInstallmentTemplates?: BranchInstallmentTemplateCreateNestedManyWithoutBranchInput
-  }
-
-  export type BranchUncheckedCreateWithoutAdminUserInput = {
-    id?: string
-    branchId: string
-    branchName: string
-    branchAdminName: string
-    branchEmail: string
-    branchPhone: string
-    branchCountryCode?: string
-    branchCountry?: string
-    branchStateCode?: string
-    branchState?: string
-    branchCity?: string
-    branchAddress: string
-    status?: $Enums.RecordStatus
-    createdBy?: string | null
-    updatedBy?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    courses?: CourseUncheckedCreateNestedManyWithoutBranchInput
-    branchCourses?: BranchCourseUncheckedCreateNestedManyWithoutBranchInput
-    branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutBranchInput
-    branchStudents?: BranchStudentUncheckedCreateNestedManyWithoutBranchInput
-    branchInstallmentTemplates?: BranchInstallmentTemplateUncheckedCreateNestedManyWithoutBranchInput
-  }
-
-  export type BranchCreateOrConnectWithoutAdminUserInput = {
-    where: BranchWhereUniqueInput
-    create: XOR<BranchCreateWithoutAdminUserInput, BranchUncheckedCreateWithoutAdminUserInput>
-  }
-
-  export type LoginEventUpsertWithWhereUniqueWithoutUserInput = {
-    where: LoginEventWhereUniqueInput
-    update: XOR<LoginEventUpdateWithoutUserInput, LoginEventUncheckedUpdateWithoutUserInput>
-    create: XOR<LoginEventCreateWithoutUserInput, LoginEventUncheckedCreateWithoutUserInput>
-  }
-
-  export type LoginEventUpdateWithWhereUniqueWithoutUserInput = {
-    where: LoginEventWhereUniqueInput
-    data: XOR<LoginEventUpdateWithoutUserInput, LoginEventUncheckedUpdateWithoutUserInput>
-  }
-
-  export type LoginEventUpdateManyWithWhereWithoutUserInput = {
-    where: LoginEventScalarWhereInput
-    data: XOR<LoginEventUpdateManyMutationInput, LoginEventUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type LoginEventScalarWhereInput = {
-    AND?: LoginEventScalarWhereInput | LoginEventScalarWhereInput[]
-    OR?: LoginEventScalarWhereInput[]
-    NOT?: LoginEventScalarWhereInput | LoginEventScalarWhereInput[]
-    id?: StringFilter<"LoginEvent"> | string
-    userId?: StringNullableFilter<"LoginEvent"> | string | null
-    eventType?: EnumLoginEventTypeFilter<"LoginEvent"> | $Enums.LoginEventType
-    success?: BoolFilter<"LoginEvent"> | boolean
-    ipAddress?: StringNullableFilter<"LoginEvent"> | string | null
-    userAgent?: StringNullableFilter<"LoginEvent"> | string | null
-    reason?: StringNullableFilter<"LoginEvent"> | string | null
-    meta?: JsonNullableFilter<"LoginEvent">
-    createdAt?: DateTimeFilter<"LoginEvent"> | Date | string
-  }
-
-  export type PasswordResetTokenUpsertWithWhereUniqueWithoutUserInput = {
-    where: PasswordResetTokenWhereUniqueInput
-    update: XOR<PasswordResetTokenUpdateWithoutUserInput, PasswordResetTokenUncheckedUpdateWithoutUserInput>
-    create: XOR<PasswordResetTokenCreateWithoutUserInput, PasswordResetTokenUncheckedCreateWithoutUserInput>
-  }
-
-  export type PasswordResetTokenUpdateWithWhereUniqueWithoutUserInput = {
-    where: PasswordResetTokenWhereUniqueInput
-    data: XOR<PasswordResetTokenUpdateWithoutUserInput, PasswordResetTokenUncheckedUpdateWithoutUserInput>
-  }
-
-  export type PasswordResetTokenUpdateManyWithWhereWithoutUserInput = {
-    where: PasswordResetTokenScalarWhereInput
-    data: XOR<PasswordResetTokenUpdateManyMutationInput, PasswordResetTokenUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type PasswordResetTokenScalarWhereInput = {
-    AND?: PasswordResetTokenScalarWhereInput | PasswordResetTokenScalarWhereInput[]
-    OR?: PasswordResetTokenScalarWhereInput[]
-    NOT?: PasswordResetTokenScalarWhereInput | PasswordResetTokenScalarWhereInput[]
-    id?: StringFilter<"PasswordResetToken"> | string
-    userId?: StringFilter<"PasswordResetToken"> | string
-    tokenHash?: StringFilter<"PasswordResetToken"> | string
-    expiresAt?: DateTimeFilter<"PasswordResetToken"> | Date | string
-    usedAt?: DateTimeNullableFilter<"PasswordResetToken"> | Date | string | null
-    createdBy?: StringNullableFilter<"PasswordResetToken"> | string | null
-    createdAt?: DateTimeFilter<"PasswordResetToken"> | Date | string
-  }
-
   export type BatchFacultyAssignmentUpsertWithWhereUniqueWithoutFacultyInput = {
     where: BatchFacultyAssignmentWhereUniqueInput
     update: XOR<BatchFacultyAssignmentUpdateWithoutFacultyInput, BatchFacultyAssignmentUncheckedUpdateWithoutFacultyInput>
@@ -45761,6 +43796,130 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"BatchFacultyAssignment"> | Date | string
   }
 
+  export type BranchUpsertWithoutAdminUserInput = {
+    update: XOR<BranchUpdateWithoutAdminUserInput, BranchUncheckedUpdateWithoutAdminUserInput>
+    create: XOR<BranchCreateWithoutAdminUserInput, BranchUncheckedCreateWithoutAdminUserInput>
+    where?: BranchWhereInput
+  }
+
+  export type BranchUpdateToOneWithWhereWithoutAdminUserInput = {
+    where?: BranchWhereInput
+    data: XOR<BranchUpdateWithoutAdminUserInput, BranchUncheckedUpdateWithoutAdminUserInput>
+  }
+
+  export type BranchUpdateWithoutAdminUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    branchName?: StringFieldUpdateOperationsInput | string
+    branchAdminName?: StringFieldUpdateOperationsInput | string
+    branchEmail?: StringFieldUpdateOperationsInput | string
+    branchPhone?: StringFieldUpdateOperationsInput | string
+    branchAddress?: StringFieldUpdateOperationsInput | string
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branchCity?: StringFieldUpdateOperationsInput | string
+    branchCountry?: StringFieldUpdateOperationsInput | string
+    branchCountryCode?: StringFieldUpdateOperationsInput | string
+    branchState?: StringFieldUpdateOperationsInput | string
+    branchStateCode?: StringFieldUpdateOperationsInput | string
+    branchCourses?: BranchCourseUpdateManyWithoutBranchNestedInput
+    branchFaculties?: BranchFacultyUpdateManyWithoutBranchNestedInput
+    branchStudents?: BranchStudentUpdateManyWithoutBranchNestedInput
+    courses?: CourseUpdateManyWithoutBranchNestedInput
+  }
+
+  export type BranchUncheckedUpdateWithoutAdminUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    branchName?: StringFieldUpdateOperationsInput | string
+    branchAdminName?: StringFieldUpdateOperationsInput | string
+    branchEmail?: StringFieldUpdateOperationsInput | string
+    branchPhone?: StringFieldUpdateOperationsInput | string
+    branchAddress?: StringFieldUpdateOperationsInput | string
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branchCity?: StringFieldUpdateOperationsInput | string
+    branchCountry?: StringFieldUpdateOperationsInput | string
+    branchCountryCode?: StringFieldUpdateOperationsInput | string
+    branchState?: StringFieldUpdateOperationsInput | string
+    branchStateCode?: StringFieldUpdateOperationsInput | string
+    branchCourses?: BranchCourseUncheckedUpdateManyWithoutBranchNestedInput
+    branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutBranchNestedInput
+    branchStudents?: BranchStudentUncheckedUpdateManyWithoutBranchNestedInput
+    courses?: CourseUncheckedUpdateManyWithoutBranchNestedInput
+  }
+
+  export type FacultyAttendanceSessionUpsertWithWhereUniqueWithoutFacultyUserInput = {
+    where: FacultyAttendanceSessionWhereUniqueInput
+    update: XOR<FacultyAttendanceSessionUpdateWithoutFacultyUserInput, FacultyAttendanceSessionUncheckedUpdateWithoutFacultyUserInput>
+    create: XOR<FacultyAttendanceSessionCreateWithoutFacultyUserInput, FacultyAttendanceSessionUncheckedCreateWithoutFacultyUserInput>
+  }
+
+  export type FacultyAttendanceSessionUpdateWithWhereUniqueWithoutFacultyUserInput = {
+    where: FacultyAttendanceSessionWhereUniqueInput
+    data: XOR<FacultyAttendanceSessionUpdateWithoutFacultyUserInput, FacultyAttendanceSessionUncheckedUpdateWithoutFacultyUserInput>
+  }
+
+  export type FacultyAttendanceSessionUpdateManyWithWhereWithoutFacultyUserInput = {
+    where: FacultyAttendanceSessionScalarWhereInput
+    data: XOR<FacultyAttendanceSessionUpdateManyMutationInput, FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserInput>
+  }
+
+  export type FacultyAttendanceSessionScalarWhereInput = {
+    AND?: FacultyAttendanceSessionScalarWhereInput | FacultyAttendanceSessionScalarWhereInput[]
+    OR?: FacultyAttendanceSessionScalarWhereInput[]
+    NOT?: FacultyAttendanceSessionScalarWhereInput | FacultyAttendanceSessionScalarWhereInput[]
+    id?: StringFilter<"FacultyAttendanceSession"> | string
+    facultyUserId?: StringFilter<"FacultyAttendanceSession"> | string
+    attendanceDate?: StringFilter<"FacultyAttendanceSession"> | string
+    loginAt?: DateTimeFilter<"FacultyAttendanceSession"> | Date | string
+    logoutAt?: DateTimeNullableFilter<"FacultyAttendanceSession"> | Date | string | null
+    createdAt?: DateTimeFilter<"FacultyAttendanceSession"> | Date | string
+    updatedAt?: DateTimeFilter<"FacultyAttendanceSession"> | Date | string
+    sessionSource?: StringFilter<"FacultyAttendanceSession"> | string
+    logoutType?: StringNullableFilter<"FacultyAttendanceSession"> | string | null
+    logoutReason?: StringNullableFilter<"FacultyAttendanceSession"> | string | null
+    workReport?: StringNullableFilter<"FacultyAttendanceSession"> | string | null
+    workCompleted?: StringNullableFilter<"FacultyAttendanceSession"> | string | null
+  }
+
+  export type LoginEventUpsertWithWhereUniqueWithoutUserInput = {
+    where: LoginEventWhereUniqueInput
+    update: XOR<LoginEventUpdateWithoutUserInput, LoginEventUncheckedUpdateWithoutUserInput>
+    create: XOR<LoginEventCreateWithoutUserInput, LoginEventUncheckedCreateWithoutUserInput>
+  }
+
+  export type LoginEventUpdateWithWhereUniqueWithoutUserInput = {
+    where: LoginEventWhereUniqueInput
+    data: XOR<LoginEventUpdateWithoutUserInput, LoginEventUncheckedUpdateWithoutUserInput>
+  }
+
+  export type LoginEventUpdateManyWithWhereWithoutUserInput = {
+    where: LoginEventScalarWhereInput
+    data: XOR<LoginEventUpdateManyMutationInput, LoginEventUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type LoginEventScalarWhereInput = {
+    AND?: LoginEventScalarWhereInput | LoginEventScalarWhereInput[]
+    OR?: LoginEventScalarWhereInput[]
+    NOT?: LoginEventScalarWhereInput | LoginEventScalarWhereInput[]
+    id?: StringFilter<"LoginEvent"> | string
+    userId?: StringNullableFilter<"LoginEvent"> | string | null
+    eventType?: EnumLoginEventTypeFilter<"LoginEvent"> | $Enums.LoginEventType
+    success?: BoolFilter<"LoginEvent"> | boolean
+    ipAddress?: StringNullableFilter<"LoginEvent"> | string | null
+    userAgent?: StringNullableFilter<"LoginEvent"> | string | null
+    reason?: StringNullableFilter<"LoginEvent"> | string | null
+    meta?: JsonNullableFilter<"LoginEvent">
+    createdAt?: DateTimeFilter<"LoginEvent"> | Date | string
+  }
+
   export type NotificationUpsertWithWhereUniqueWithoutTargetUserInput = {
     where: NotificationWhereUniqueInput
     update: XOR<NotificationUpdateWithoutTargetUserInput, NotificationUncheckedUpdateWithoutTargetUserInput>
@@ -45787,20 +43946,6 @@ export namespace Prisma {
     title?: StringFilter<"Notification"> | string
     message?: StringFilter<"Notification"> | string
     actionLabel?: StringNullableFilter<"Notification"> | string | null
-    requestId?: StringNullableFilter<"Notification"> | string | null
-    requestStatus?: StringNullableFilter<"Notification"> | string | null
-    requestTitle?: StringNullableFilter<"Notification"> | string | null
-    requestReason?: StringNullableFilter<"Notification"> | string | null
-    requestDescription?: StringNullableFilter<"Notification"> | string | null
-    branchCourseId?: StringNullableFilter<"Notification"> | string | null
-    branchCourseName?: StringNullableFilter<"Notification"> | string | null
-    moduleId?: StringNullableFilter<"Notification"> | string | null
-    moduleName?: StringNullableFilter<"Notification"> | string | null
-    subModuleId?: StringNullableFilter<"Notification"> | string | null
-    subModuleName?: StringNullableFilter<"Notification"> | string | null
-    facultyId?: StringNullableFilter<"Notification"> | string | null
-    facultyName?: StringNullableFilter<"Notification"> | string | null
-    targetUserId?: StringNullableFilter<"Notification"> | string | null
     targetBranchId?: StringNullableFilter<"Notification"> | string | null
     targetBranchEmail?: StringNullableFilter<"Notification"> | string | null
     targetBranchName?: StringNullableFilter<"Notification"> | string | null
@@ -45809,40 +43954,49 @@ export namespace Prisma {
     createdBy?: StringNullableFilter<"Notification"> | string | null
     createdAt?: DateTimeFilter<"Notification"> | Date | string
     updatedAt?: DateTimeFilter<"Notification"> | Date | string
+    targetUserId?: StringNullableFilter<"Notification"> | string | null
+    branchCourseId?: StringNullableFilter<"Notification"> | string | null
+    branchCourseName?: StringNullableFilter<"Notification"> | string | null
+    facultyId?: StringNullableFilter<"Notification"> | string | null
+    facultyName?: StringNullableFilter<"Notification"> | string | null
+    moduleId?: StringNullableFilter<"Notification"> | string | null
+    moduleName?: StringNullableFilter<"Notification"> | string | null
+    requestDescription?: StringNullableFilter<"Notification"> | string | null
+    requestId?: StringNullableFilter<"Notification"> | string | null
+    requestReason?: StringNullableFilter<"Notification"> | string | null
+    requestStatus?: StringNullableFilter<"Notification"> | string | null
+    requestTitle?: StringNullableFilter<"Notification"> | string | null
+    subModuleId?: StringNullableFilter<"Notification"> | string | null
+    subModuleName?: StringNullableFilter<"Notification"> | string | null
   }
 
-  export type FacultyAttendanceSessionUpsertWithWhereUniqueWithoutFacultyUserInput = {
-    where: FacultyAttendanceSessionWhereUniqueInput
-    update: XOR<FacultyAttendanceSessionUpdateWithoutFacultyUserInput, FacultyAttendanceSessionUncheckedUpdateWithoutFacultyUserInput>
-    create: XOR<FacultyAttendanceSessionCreateWithoutFacultyUserInput, FacultyAttendanceSessionUncheckedCreateWithoutFacultyUserInput>
+  export type PasswordResetTokenUpsertWithWhereUniqueWithoutUserInput = {
+    where: PasswordResetTokenWhereUniqueInput
+    update: XOR<PasswordResetTokenUpdateWithoutUserInput, PasswordResetTokenUncheckedUpdateWithoutUserInput>
+    create: XOR<PasswordResetTokenCreateWithoutUserInput, PasswordResetTokenUncheckedCreateWithoutUserInput>
   }
 
-  export type FacultyAttendanceSessionUpdateWithWhereUniqueWithoutFacultyUserInput = {
-    where: FacultyAttendanceSessionWhereUniqueInput
-    data: XOR<FacultyAttendanceSessionUpdateWithoutFacultyUserInput, FacultyAttendanceSessionUncheckedUpdateWithoutFacultyUserInput>
+  export type PasswordResetTokenUpdateWithWhereUniqueWithoutUserInput = {
+    where: PasswordResetTokenWhereUniqueInput
+    data: XOR<PasswordResetTokenUpdateWithoutUserInput, PasswordResetTokenUncheckedUpdateWithoutUserInput>
   }
 
-  export type FacultyAttendanceSessionUpdateManyWithWhereWithoutFacultyUserInput = {
-    where: FacultyAttendanceSessionScalarWhereInput
-    data: XOR<FacultyAttendanceSessionUpdateManyMutationInput, FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserInput>
+  export type PasswordResetTokenUpdateManyWithWhereWithoutUserInput = {
+    where: PasswordResetTokenScalarWhereInput
+    data: XOR<PasswordResetTokenUpdateManyMutationInput, PasswordResetTokenUncheckedUpdateManyWithoutUserInput>
   }
 
-  export type FacultyAttendanceSessionScalarWhereInput = {
-    AND?: FacultyAttendanceSessionScalarWhereInput | FacultyAttendanceSessionScalarWhereInput[]
-    OR?: FacultyAttendanceSessionScalarWhereInput[]
-    NOT?: FacultyAttendanceSessionScalarWhereInput | FacultyAttendanceSessionScalarWhereInput[]
-    id?: StringFilter<"FacultyAttendanceSession"> | string
-    facultyUserId?: StringFilter<"FacultyAttendanceSession"> | string
-    attendanceDate?: StringFilter<"FacultyAttendanceSession"> | string
-    sessionSource?: StringFilter<"FacultyAttendanceSession"> | string
-    loginAt?: DateTimeFilter<"FacultyAttendanceSession"> | Date | string
-    logoutAt?: DateTimeNullableFilter<"FacultyAttendanceSession"> | Date | string | null
-    logoutType?: StringNullableFilter<"FacultyAttendanceSession"> | string | null
-    logoutReason?: StringNullableFilter<"FacultyAttendanceSession"> | string | null
-    workReport?: StringNullableFilter<"FacultyAttendanceSession"> | string | null
-    workCompleted?: StringNullableFilter<"FacultyAttendanceSession"> | string | null
-    createdAt?: DateTimeFilter<"FacultyAttendanceSession"> | Date | string
-    updatedAt?: DateTimeFilter<"FacultyAttendanceSession"> | Date | string
+  export type PasswordResetTokenScalarWhereInput = {
+    AND?: PasswordResetTokenScalarWhereInput | PasswordResetTokenScalarWhereInput[]
+    OR?: PasswordResetTokenScalarWhereInput[]
+    NOT?: PasswordResetTokenScalarWhereInput | PasswordResetTokenScalarWhereInput[]
+    id?: StringFilter<"PasswordResetToken"> | string
+    userId?: StringFilter<"PasswordResetToken"> | string
+    tokenHash?: StringFilter<"PasswordResetToken"> | string
+    expiresAt?: DateTimeFilter<"PasswordResetToken"> | Date | string
+    usedAt?: DateTimeNullableFilter<"PasswordResetToken"> | Date | string | null
+    createdBy?: StringNullableFilter<"PasswordResetToken"> | string | null
+    createdAt?: DateTimeFilter<"PasswordResetToken"> | Date | string
   }
 
   export type StudentAttendanceUpsertWithWhereUniqueWithoutFacultyUserInput = {
@@ -45880,67 +44034,6 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"StudentAttendance"> | Date | string
   }
 
-  export type BranchUpsertWithoutAdminUserInput = {
-    update: XOR<BranchUpdateWithoutAdminUserInput, BranchUncheckedUpdateWithoutAdminUserInput>
-    create: XOR<BranchCreateWithoutAdminUserInput, BranchUncheckedCreateWithoutAdminUserInput>
-    where?: BranchWhereInput
-  }
-
-  export type BranchUpdateToOneWithWhereWithoutAdminUserInput = {
-    where?: BranchWhereInput
-    data: XOR<BranchUpdateWithoutAdminUserInput, BranchUncheckedUpdateWithoutAdminUserInput>
-  }
-
-  export type BranchUpdateWithoutAdminUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    branchId?: StringFieldUpdateOperationsInput | string
-    branchName?: StringFieldUpdateOperationsInput | string
-    branchAdminName?: StringFieldUpdateOperationsInput | string
-    branchEmail?: StringFieldUpdateOperationsInput | string
-    branchPhone?: StringFieldUpdateOperationsInput | string
-    branchCountryCode?: StringFieldUpdateOperationsInput | string
-    branchCountry?: StringFieldUpdateOperationsInput | string
-    branchStateCode?: StringFieldUpdateOperationsInput | string
-    branchState?: StringFieldUpdateOperationsInput | string
-    branchCity?: StringFieldUpdateOperationsInput | string
-    branchAddress?: StringFieldUpdateOperationsInput | string
-    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    courses?: CourseUpdateManyWithoutBranchNestedInput
-    branchCourses?: BranchCourseUpdateManyWithoutBranchNestedInput
-    branchFaculties?: BranchFacultyUpdateManyWithoutBranchNestedInput
-    branchStudents?: BranchStudentUpdateManyWithoutBranchNestedInput
-    branchInstallmentTemplates?: BranchInstallmentTemplateUpdateManyWithoutBranchNestedInput
-  }
-
-  export type BranchUncheckedUpdateWithoutAdminUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    branchId?: StringFieldUpdateOperationsInput | string
-    branchName?: StringFieldUpdateOperationsInput | string
-    branchAdminName?: StringFieldUpdateOperationsInput | string
-    branchEmail?: StringFieldUpdateOperationsInput | string
-    branchPhone?: StringFieldUpdateOperationsInput | string
-    branchCountryCode?: StringFieldUpdateOperationsInput | string
-    branchCountry?: StringFieldUpdateOperationsInput | string
-    branchStateCode?: StringFieldUpdateOperationsInput | string
-    branchState?: StringFieldUpdateOperationsInput | string
-    branchCity?: StringFieldUpdateOperationsInput | string
-    branchAddress?: StringFieldUpdateOperationsInput | string
-    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    courses?: CourseUncheckedUpdateManyWithoutBranchNestedInput
-    branchCourses?: BranchCourseUncheckedUpdateManyWithoutBranchNestedInput
-    branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutBranchNestedInput
-    branchStudents?: BranchStudentUncheckedUpdateManyWithoutBranchNestedInput
-    branchInstallmentTemplates?: BranchInstallmentTemplateUncheckedUpdateManyWithoutBranchNestedInput
-  }
-
   export type UserCreateWithoutManagedBranchInput = {
     id?: string
     userCode: string
@@ -45963,11 +44056,11 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    loginEvents?: LoginEventCreateNestedManyWithoutUserInput
-    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
     batchFacultyAssignments?: BatchFacultyAssignmentCreateNestedManyWithoutFacultyInput
-    targetedNotifications?: NotificationCreateNestedManyWithoutTargetUserInput
     facultyAttendanceSessions?: FacultyAttendanceSessionCreateNestedManyWithoutFacultyUserInput
+    loginEvents?: LoginEventCreateNestedManyWithoutUserInput
+    targetedNotifications?: NotificationCreateNestedManyWithoutTargetUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
     markedStudentAttendances?: StudentAttendanceCreateNestedManyWithoutFacultyUserInput
   }
 
@@ -45993,99 +44086,17 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    loginEvents?: LoginEventUncheckedCreateNestedManyWithoutUserInput
-    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
     batchFacultyAssignments?: BatchFacultyAssignmentUncheckedCreateNestedManyWithoutFacultyInput
-    targetedNotifications?: NotificationUncheckedCreateNestedManyWithoutTargetUserInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedCreateNestedManyWithoutFacultyUserInput
+    loginEvents?: LoginEventUncheckedCreateNestedManyWithoutUserInput
+    targetedNotifications?: NotificationUncheckedCreateNestedManyWithoutTargetUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
     markedStudentAttendances?: StudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
   }
 
   export type UserCreateOrConnectWithoutManagedBranchInput = {
     where: UserWhereUniqueInput
     create: XOR<UserCreateWithoutManagedBranchInput, UserUncheckedCreateWithoutManagedBranchInput>
-  }
-
-  export type CourseCreateWithoutBranchInput = {
-    id?: string
-    name: string
-    nameKey: string
-    courseCode?: string | null
-    description?: string | null
-    feeReference?: string | null
-    mode: string
-    duration?: number | null
-    hours?: number | null
-    actualFees?: number | null
-    registrationFees?: number | null
-    discount?: number | null
-    afterDiscount?: number | null
-    installmentCount?: number
-    installment1?: number | null
-    installment2?: number | null
-    installment3?: number | null
-    installments?: NullableJsonNullValueInput | InputJsonValue
-    status?: $Enums.RecordStatus
-    statusChangedAt?: Date | string | null
-    statusChangedBy?: string | null
-    createdBy?: string | null
-    updatedBy?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    modules?: CourseModuleCreateNestedManyWithoutCourseInput
-    batches?: BatchCreateNestedManyWithoutCourseInput
-    students?: StudentProfileCreateNestedManyWithoutCourseInput
-    facultyProfiles?: FacultyProfileCreateNestedManyWithoutCourseInput
-    facultyCourseAssignments?: FacultyCourseAssignmentCreateNestedManyWithoutCourseInput
-    facultyBatchEntries?: FacultyBatchEntryCreateNestedManyWithoutCourseInput
-    statusHistory?: CourseStatusHistoryCreateNestedManyWithoutCourseInput
-    branchFaculties?: BranchFacultyCreateNestedManyWithoutCourseInput
-  }
-
-  export type CourseUncheckedCreateWithoutBranchInput = {
-    id?: string
-    name: string
-    nameKey: string
-    courseCode?: string | null
-    description?: string | null
-    feeReference?: string | null
-    mode: string
-    duration?: number | null
-    hours?: number | null
-    actualFees?: number | null
-    registrationFees?: number | null
-    discount?: number | null
-    afterDiscount?: number | null
-    installmentCount?: number
-    installment1?: number | null
-    installment2?: number | null
-    installment3?: number | null
-    installments?: NullableJsonNullValueInput | InputJsonValue
-    status?: $Enums.RecordStatus
-    statusChangedAt?: Date | string | null
-    statusChangedBy?: string | null
-    createdBy?: string | null
-    updatedBy?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    modules?: CourseModuleUncheckedCreateNestedManyWithoutCourseInput
-    batches?: BatchUncheckedCreateNestedManyWithoutCourseInput
-    students?: StudentProfileUncheckedCreateNestedManyWithoutCourseInput
-    facultyProfiles?: FacultyProfileUncheckedCreateNestedManyWithoutCourseInput
-    facultyCourseAssignments?: FacultyCourseAssignmentUncheckedCreateNestedManyWithoutCourseInput
-    facultyBatchEntries?: FacultyBatchEntryUncheckedCreateNestedManyWithoutCourseInput
-    statusHistory?: CourseStatusHistoryUncheckedCreateNestedManyWithoutCourseInput
-    branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutCourseInput
-  }
-
-  export type CourseCreateOrConnectWithoutBranchInput = {
-    where: CourseWhereUniqueInput
-    create: XOR<CourseCreateWithoutBranchInput, CourseUncheckedCreateWithoutBranchInput>
-  }
-
-  export type CourseCreateManyBranchInputEnvelope = {
-    data: CourseCreateManyBranchInput | CourseCreateManyBranchInput[]
-    skipDuplicates?: boolean
   }
 
   export type BranchCourseCreateWithoutBranchInput = {
@@ -46108,7 +44119,6 @@ export namespace Prisma {
     updatedAt?: Date | string
     modules?: BranchCourseModuleCreateNestedManyWithoutBranchCourseInput
     branchFaculties?: BranchFacultyCreateNestedManyWithoutBranchCourseInput
-    installmentTemplate?: BranchInstallmentTemplateCreateNestedOneWithoutBranchCourseInput
   }
 
   export type BranchCourseUncheckedCreateWithoutBranchInput = {
@@ -46131,7 +44141,6 @@ export namespace Prisma {
     updatedAt?: Date | string
     modules?: BranchCourseModuleUncheckedCreateNestedManyWithoutBranchCourseInput
     branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutBranchCourseInput
-    installmentTemplate?: BranchInstallmentTemplateUncheckedCreateNestedOneWithoutBranchCourseInput
   }
 
   export type BranchCourseCreateOrConnectWithoutBranchInput = {
@@ -46161,8 +44170,8 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    course?: CourseCreateNestedOneWithoutBranchFacultiesInput
     branchCourse?: BranchCourseCreateNestedOneWithoutBranchFacultiesInput
+    course?: CourseCreateNestedOneWithoutBranchFacultiesInput
   }
 
   export type BranchFacultyUncheckedCreateWithoutBranchInput = {
@@ -46177,13 +44186,13 @@ export namespace Prisma {
     stateCode?: string | null
     city?: string | null
     address?: string | null
-    courseId?: string | null
-    branchCourseId?: string | null
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    courseId?: string | null
+    branchCourseId?: string | null
   }
 
   export type BranchFacultyCreateOrConnectWithoutBranchInput = {
@@ -46202,7 +44211,6 @@ export namespace Prisma {
     studentName: string
     mobileNumber: string
     emailAddress: string
-    linkedInUrl?: string | null
     parentSpouseNumber?: string | null
     countryCode?: string | null
     country?: string | null
@@ -46216,13 +44224,14 @@ export namespace Prisma {
     designation?: string | null
     source?: string | null
     sourceOther?: string | null
-    remarks?: string | null
     admissionDate: string
     recordStatus?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    linkedInUrl?: string | null
+    remarks?: string | null
   }
 
   export type BranchStudentUncheckedCreateWithoutBranchInput = {
@@ -46231,7 +44240,6 @@ export namespace Prisma {
     studentName: string
     mobileNumber: string
     emailAddress: string
-    linkedInUrl?: string | null
     parentSpouseNumber?: string | null
     countryCode?: string | null
     country?: string | null
@@ -46245,13 +44253,14 @@ export namespace Prisma {
     designation?: string | null
     source?: string | null
     sourceOther?: string | null
-    remarks?: string | null
     admissionDate: string
     recordStatus?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    linkedInUrl?: string | null
+    remarks?: string | null
   }
 
   export type BranchStudentCreateOrConnectWithoutBranchInput = {
@@ -46264,45 +44273,85 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type BranchInstallmentTemplateCreateWithoutBranchInput = {
+  export type CourseCreateWithoutBranchInput = {
     id?: string
-    templateName: string
-    planType?: string
-    installmentCount: number
-    installments: JsonNullValueInput | InputJsonValue
-    dueRule?: string | null
-    allowCustomization?: boolean
+    name: string
+    nameKey: string
+    description?: string | null
+    feeReference?: string | null
+    mode: string
+    duration?: number | null
+    hours?: number | null
+    actualFees?: number | null
+    registrationFees?: number | null
+    discount?: number | null
+    afterDiscount?: number | null
+    installmentCount?: number
+    installment1?: number | null
+    installment2?: number | null
+    installment3?: number | null
     status?: $Enums.RecordStatus
+    statusChangedAt?: Date | string | null
+    statusChangedBy?: string | null
     createdBy?: string | null
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    branchCourse?: BranchCourseCreateNestedOneWithoutInstallmentTemplateInput
+    installments?: NullableJsonNullValueInput | InputJsonValue
+    courseCode?: string | null
+    batches?: BatchCreateNestedManyWithoutCourseInput
+    branchFaculties?: BranchFacultyCreateNestedManyWithoutCourseInput
+    modules?: CourseModuleCreateNestedManyWithoutCourseInput
+    statusHistory?: CourseStatusHistoryCreateNestedManyWithoutCourseInput
+    facultyBatchEntries?: FacultyBatchEntryCreateNestedManyWithoutCourseInput
+    facultyCourseAssignments?: FacultyCourseAssignmentCreateNestedManyWithoutCourseInput
+    facultyProfiles?: FacultyProfileCreateNestedManyWithoutCourseInput
+    students?: StudentProfileCreateNestedManyWithoutCourseInput
   }
 
-  export type BranchInstallmentTemplateUncheckedCreateWithoutBranchInput = {
+  export type CourseUncheckedCreateWithoutBranchInput = {
     id?: string
-    branchCourseId?: string | null
-    templateName: string
-    planType?: string
-    installmentCount: number
-    installments: JsonNullValueInput | InputJsonValue
-    dueRule?: string | null
-    allowCustomization?: boolean
+    name: string
+    nameKey: string
+    description?: string | null
+    feeReference?: string | null
+    mode: string
+    duration?: number | null
+    hours?: number | null
+    actualFees?: number | null
+    registrationFees?: number | null
+    discount?: number | null
+    afterDiscount?: number | null
+    installmentCount?: number
+    installment1?: number | null
+    installment2?: number | null
+    installment3?: number | null
     status?: $Enums.RecordStatus
+    statusChangedAt?: Date | string | null
+    statusChangedBy?: string | null
     createdBy?: string | null
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    installments?: NullableJsonNullValueInput | InputJsonValue
+    courseCode?: string | null
+    batches?: BatchUncheckedCreateNestedManyWithoutCourseInput
+    branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutCourseInput
+    modules?: CourseModuleUncheckedCreateNestedManyWithoutCourseInput
+    statusHistory?: CourseStatusHistoryUncheckedCreateNestedManyWithoutCourseInput
+    facultyBatchEntries?: FacultyBatchEntryUncheckedCreateNestedManyWithoutCourseInput
+    facultyCourseAssignments?: FacultyCourseAssignmentUncheckedCreateNestedManyWithoutCourseInput
+    facultyProfiles?: FacultyProfileUncheckedCreateNestedManyWithoutCourseInput
+    students?: StudentProfileUncheckedCreateNestedManyWithoutCourseInput
   }
 
-  export type BranchInstallmentTemplateCreateOrConnectWithoutBranchInput = {
-    where: BranchInstallmentTemplateWhereUniqueInput
-    create: XOR<BranchInstallmentTemplateCreateWithoutBranchInput, BranchInstallmentTemplateUncheckedCreateWithoutBranchInput>
+  export type CourseCreateOrConnectWithoutBranchInput = {
+    where: CourseWhereUniqueInput
+    create: XOR<CourseCreateWithoutBranchInput, CourseUncheckedCreateWithoutBranchInput>
   }
 
-  export type BranchInstallmentTemplateCreateManyBranchInputEnvelope = {
-    data: BranchInstallmentTemplateCreateManyBranchInput | BranchInstallmentTemplateCreateManyBranchInput[]
+  export type CourseCreateManyBranchInputEnvelope = {
+    data: CourseCreateManyBranchInput | CourseCreateManyBranchInput[]
     skipDuplicates?: boolean
   }
 
@@ -46339,11 +44388,11 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    loginEvents?: LoginEventUpdateManyWithoutUserNestedInput
-    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
     batchFacultyAssignments?: BatchFacultyAssignmentUpdateManyWithoutFacultyNestedInput
-    targetedNotifications?: NotificationUpdateManyWithoutTargetUserNestedInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUpdateManyWithoutFacultyUserNestedInput
+    loginEvents?: LoginEventUpdateManyWithoutUserNestedInput
+    targetedNotifications?: NotificationUpdateManyWithoutTargetUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
     markedStudentAttendances?: StudentAttendanceUpdateManyWithoutFacultyUserNestedInput
   }
 
@@ -46369,60 +44418,12 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    loginEvents?: LoginEventUncheckedUpdateManyWithoutUserNestedInput
-    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
     batchFacultyAssignments?: BatchFacultyAssignmentUncheckedUpdateManyWithoutFacultyNestedInput
-    targetedNotifications?: NotificationUncheckedUpdateManyWithoutTargetUserNestedInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserNestedInput
+    loginEvents?: LoginEventUncheckedUpdateManyWithoutUserNestedInput
+    targetedNotifications?: NotificationUncheckedUpdateManyWithoutTargetUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
     markedStudentAttendances?: StudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
-  }
-
-  export type CourseUpsertWithWhereUniqueWithoutBranchInput = {
-    where: CourseWhereUniqueInput
-    update: XOR<CourseUpdateWithoutBranchInput, CourseUncheckedUpdateWithoutBranchInput>
-    create: XOR<CourseCreateWithoutBranchInput, CourseUncheckedCreateWithoutBranchInput>
-  }
-
-  export type CourseUpdateWithWhereUniqueWithoutBranchInput = {
-    where: CourseWhereUniqueInput
-    data: XOR<CourseUpdateWithoutBranchInput, CourseUncheckedUpdateWithoutBranchInput>
-  }
-
-  export type CourseUpdateManyWithWhereWithoutBranchInput = {
-    where: CourseScalarWhereInput
-    data: XOR<CourseUpdateManyMutationInput, CourseUncheckedUpdateManyWithoutBranchInput>
-  }
-
-  export type CourseScalarWhereInput = {
-    AND?: CourseScalarWhereInput | CourseScalarWhereInput[]
-    OR?: CourseScalarWhereInput[]
-    NOT?: CourseScalarWhereInput | CourseScalarWhereInput[]
-    id?: StringFilter<"Course"> | string
-    name?: StringFilter<"Course"> | string
-    nameKey?: StringFilter<"Course"> | string
-    courseCode?: StringNullableFilter<"Course"> | string | null
-    branchId?: StringNullableFilter<"Course"> | string | null
-    description?: StringNullableFilter<"Course"> | string | null
-    feeReference?: StringNullableFilter<"Course"> | string | null
-    mode?: StringFilter<"Course"> | string
-    duration?: IntNullableFilter<"Course"> | number | null
-    hours?: IntNullableFilter<"Course"> | number | null
-    actualFees?: IntNullableFilter<"Course"> | number | null
-    registrationFees?: IntNullableFilter<"Course"> | number | null
-    discount?: IntNullableFilter<"Course"> | number | null
-    afterDiscount?: IntNullableFilter<"Course"> | number | null
-    installmentCount?: IntFilter<"Course"> | number
-    installment1?: IntNullableFilter<"Course"> | number | null
-    installment2?: IntNullableFilter<"Course"> | number | null
-    installment3?: IntNullableFilter<"Course"> | number | null
-    installments?: JsonNullableFilter<"Course">
-    status?: EnumRecordStatusFilter<"Course"> | $Enums.RecordStatus
-    statusChangedAt?: DateTimeNullableFilter<"Course"> | Date | string | null
-    statusChangedBy?: StringNullableFilter<"Course"> | string | null
-    createdBy?: StringNullableFilter<"Course"> | string | null
-    updatedBy?: StringNullableFilter<"Course"> | string | null
-    createdAt?: DateTimeFilter<"Course"> | Date | string
-    updatedAt?: DateTimeFilter<"Course"> | Date | string
   }
 
   export type BranchCourseUpsertWithWhereUniqueWithoutBranchInput = {
@@ -46497,13 +44498,13 @@ export namespace Prisma {
     stateCode?: StringNullableFilter<"BranchFaculty"> | string | null
     city?: StringNullableFilter<"BranchFaculty"> | string | null
     address?: StringNullableFilter<"BranchFaculty"> | string | null
-    courseId?: StringNullableFilter<"BranchFaculty"> | string | null
-    branchCourseId?: StringNullableFilter<"BranchFaculty"> | string | null
     status?: EnumRecordStatusFilter<"BranchFaculty"> | $Enums.RecordStatus
     createdBy?: StringNullableFilter<"BranchFaculty"> | string | null
     updatedBy?: StringNullableFilter<"BranchFaculty"> | string | null
     createdAt?: DateTimeFilter<"BranchFaculty"> | Date | string
     updatedAt?: DateTimeFilter<"BranchFaculty"> | Date | string
+    courseId?: StringNullableFilter<"BranchFaculty"> | string | null
+    branchCourseId?: StringNullableFilter<"BranchFaculty"> | string | null
   }
 
   export type BranchStudentUpsertWithWhereUniqueWithoutBranchInput = {
@@ -46532,7 +44533,6 @@ export namespace Prisma {
     studentName?: StringFilter<"BranchStudent"> | string
     mobileNumber?: StringFilter<"BranchStudent"> | string
     emailAddress?: StringFilter<"BranchStudent"> | string
-    linkedInUrl?: StringNullableFilter<"BranchStudent"> | string | null
     parentSpouseNumber?: StringNullableFilter<"BranchStudent"> | string | null
     countryCode?: StringNullableFilter<"BranchStudent"> | string | null
     country?: StringNullableFilter<"BranchStudent"> | string | null
@@ -46546,49 +44546,62 @@ export namespace Prisma {
     designation?: StringNullableFilter<"BranchStudent"> | string | null
     source?: StringNullableFilter<"BranchStudent"> | string | null
     sourceOther?: StringNullableFilter<"BranchStudent"> | string | null
-    remarks?: StringNullableFilter<"BranchStudent"> | string | null
     admissionDate?: StringFilter<"BranchStudent"> | string
     recordStatus?: EnumRecordStatusFilter<"BranchStudent"> | $Enums.RecordStatus
     createdBy?: StringNullableFilter<"BranchStudent"> | string | null
     updatedBy?: StringNullableFilter<"BranchStudent"> | string | null
     createdAt?: DateTimeFilter<"BranchStudent"> | Date | string
     updatedAt?: DateTimeFilter<"BranchStudent"> | Date | string
+    linkedInUrl?: StringNullableFilter<"BranchStudent"> | string | null
+    remarks?: StringNullableFilter<"BranchStudent"> | string | null
   }
 
-  export type BranchInstallmentTemplateUpsertWithWhereUniqueWithoutBranchInput = {
-    where: BranchInstallmentTemplateWhereUniqueInput
-    update: XOR<BranchInstallmentTemplateUpdateWithoutBranchInput, BranchInstallmentTemplateUncheckedUpdateWithoutBranchInput>
-    create: XOR<BranchInstallmentTemplateCreateWithoutBranchInput, BranchInstallmentTemplateUncheckedCreateWithoutBranchInput>
+  export type CourseUpsertWithWhereUniqueWithoutBranchInput = {
+    where: CourseWhereUniqueInput
+    update: XOR<CourseUpdateWithoutBranchInput, CourseUncheckedUpdateWithoutBranchInput>
+    create: XOR<CourseCreateWithoutBranchInput, CourseUncheckedCreateWithoutBranchInput>
   }
 
-  export type BranchInstallmentTemplateUpdateWithWhereUniqueWithoutBranchInput = {
-    where: BranchInstallmentTemplateWhereUniqueInput
-    data: XOR<BranchInstallmentTemplateUpdateWithoutBranchInput, BranchInstallmentTemplateUncheckedUpdateWithoutBranchInput>
+  export type CourseUpdateWithWhereUniqueWithoutBranchInput = {
+    where: CourseWhereUniqueInput
+    data: XOR<CourseUpdateWithoutBranchInput, CourseUncheckedUpdateWithoutBranchInput>
   }
 
-  export type BranchInstallmentTemplateUpdateManyWithWhereWithoutBranchInput = {
-    where: BranchInstallmentTemplateScalarWhereInput
-    data: XOR<BranchInstallmentTemplateUpdateManyMutationInput, BranchInstallmentTemplateUncheckedUpdateManyWithoutBranchInput>
+  export type CourseUpdateManyWithWhereWithoutBranchInput = {
+    where: CourseScalarWhereInput
+    data: XOR<CourseUpdateManyMutationInput, CourseUncheckedUpdateManyWithoutBranchInput>
   }
 
-  export type BranchInstallmentTemplateScalarWhereInput = {
-    AND?: BranchInstallmentTemplateScalarWhereInput | BranchInstallmentTemplateScalarWhereInput[]
-    OR?: BranchInstallmentTemplateScalarWhereInput[]
-    NOT?: BranchInstallmentTemplateScalarWhereInput | BranchInstallmentTemplateScalarWhereInput[]
-    id?: StringFilter<"BranchInstallmentTemplate"> | string
-    branchId?: StringFilter<"BranchInstallmentTemplate"> | string
-    branchCourseId?: StringNullableFilter<"BranchInstallmentTemplate"> | string | null
-    templateName?: StringFilter<"BranchInstallmentTemplate"> | string
-    planType?: StringFilter<"BranchInstallmentTemplate"> | string
-    installmentCount?: IntFilter<"BranchInstallmentTemplate"> | number
-    installments?: JsonFilter<"BranchInstallmentTemplate">
-    dueRule?: StringNullableFilter<"BranchInstallmentTemplate"> | string | null
-    allowCustomization?: BoolFilter<"BranchInstallmentTemplate"> | boolean
-    status?: EnumRecordStatusFilter<"BranchInstallmentTemplate"> | $Enums.RecordStatus
-    createdBy?: StringNullableFilter<"BranchInstallmentTemplate"> | string | null
-    updatedBy?: StringNullableFilter<"BranchInstallmentTemplate"> | string | null
-    createdAt?: DateTimeFilter<"BranchInstallmentTemplate"> | Date | string
-    updatedAt?: DateTimeFilter<"BranchInstallmentTemplate"> | Date | string
+  export type CourseScalarWhereInput = {
+    AND?: CourseScalarWhereInput | CourseScalarWhereInput[]
+    OR?: CourseScalarWhereInput[]
+    NOT?: CourseScalarWhereInput | CourseScalarWhereInput[]
+    id?: StringFilter<"Course"> | string
+    name?: StringFilter<"Course"> | string
+    nameKey?: StringFilter<"Course"> | string
+    description?: StringNullableFilter<"Course"> | string | null
+    feeReference?: StringNullableFilter<"Course"> | string | null
+    mode?: StringFilter<"Course"> | string
+    duration?: IntNullableFilter<"Course"> | number | null
+    hours?: IntNullableFilter<"Course"> | number | null
+    actualFees?: IntNullableFilter<"Course"> | number | null
+    registrationFees?: IntNullableFilter<"Course"> | number | null
+    discount?: IntNullableFilter<"Course"> | number | null
+    afterDiscount?: IntNullableFilter<"Course"> | number | null
+    installmentCount?: IntFilter<"Course"> | number
+    installment1?: IntNullableFilter<"Course"> | number | null
+    installment2?: IntNullableFilter<"Course"> | number | null
+    installment3?: IntNullableFilter<"Course"> | number | null
+    status?: EnumRecordStatusFilter<"Course"> | $Enums.RecordStatus
+    statusChangedAt?: DateTimeNullableFilter<"Course"> | Date | string | null
+    statusChangedBy?: StringNullableFilter<"Course"> | string | null
+    createdBy?: StringNullableFilter<"Course"> | string | null
+    updatedBy?: StringNullableFilter<"Course"> | string | null
+    createdAt?: DateTimeFilter<"Course"> | Date | string
+    updatedAt?: DateTimeFilter<"Course"> | Date | string
+    installments?: JsonNullableFilter<"Course">
+    branchId?: StringNullableFilter<"Course"> | string | null
+    courseCode?: StringNullableFilter<"Course"> | string | null
   }
 
   export type UserCreateWithoutLoginEventsInput = {
@@ -46613,12 +44626,12 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
     batchFacultyAssignments?: BatchFacultyAssignmentCreateNestedManyWithoutFacultyInput
-    targetedNotifications?: NotificationCreateNestedManyWithoutTargetUserInput
-    facultyAttendanceSessions?: FacultyAttendanceSessionCreateNestedManyWithoutFacultyUserInput
-    markedStudentAttendances?: StudentAttendanceCreateNestedManyWithoutFacultyUserInput
     managedBranch?: BranchCreateNestedOneWithoutAdminUserInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionCreateNestedManyWithoutFacultyUserInput
+    targetedNotifications?: NotificationCreateNestedManyWithoutTargetUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    markedStudentAttendances?: StudentAttendanceCreateNestedManyWithoutFacultyUserInput
   }
 
   export type UserUncheckedCreateWithoutLoginEventsInput = {
@@ -46643,12 +44656,12 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
     batchFacultyAssignments?: BatchFacultyAssignmentUncheckedCreateNestedManyWithoutFacultyInput
-    targetedNotifications?: NotificationUncheckedCreateNestedManyWithoutTargetUserInput
-    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedCreateNestedManyWithoutFacultyUserInput
-    markedStudentAttendances?: StudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
     managedBranch?: BranchUncheckedCreateNestedOneWithoutAdminUserInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedCreateNestedManyWithoutFacultyUserInput
+    targetedNotifications?: NotificationUncheckedCreateNestedManyWithoutTargetUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    markedStudentAttendances?: StudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
   }
 
   export type UserCreateOrConnectWithoutLoginEventsInput = {
@@ -46689,12 +44702,12 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
     batchFacultyAssignments?: BatchFacultyAssignmentUpdateManyWithoutFacultyNestedInput
-    targetedNotifications?: NotificationUpdateManyWithoutTargetUserNestedInput
-    facultyAttendanceSessions?: FacultyAttendanceSessionUpdateManyWithoutFacultyUserNestedInput
-    markedStudentAttendances?: StudentAttendanceUpdateManyWithoutFacultyUserNestedInput
     managedBranch?: BranchUpdateOneWithoutAdminUserNestedInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUpdateManyWithoutFacultyUserNestedInput
+    targetedNotifications?: NotificationUpdateManyWithoutTargetUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    markedStudentAttendances?: StudentAttendanceUpdateManyWithoutFacultyUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLoginEventsInput = {
@@ -46719,12 +44732,12 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
     batchFacultyAssignments?: BatchFacultyAssignmentUncheckedUpdateManyWithoutFacultyNestedInput
-    targetedNotifications?: NotificationUncheckedUpdateManyWithoutTargetUserNestedInput
-    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserNestedInput
-    markedStudentAttendances?: StudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
     managedBranch?: BranchUncheckedUpdateOneWithoutAdminUserNestedInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserNestedInput
+    targetedNotifications?: NotificationUncheckedUpdateManyWithoutTargetUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    markedStudentAttendances?: StudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
   }
 
   export type CourseEditRequestCreateWithoutNotificationsInput = {
@@ -46808,12 +44821,12 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentCreateNestedManyWithoutFacultyInput
+    managedBranch?: BranchCreateNestedOneWithoutAdminUserInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionCreateNestedManyWithoutFacultyUserInput
     loginEvents?: LoginEventCreateNestedManyWithoutUserInput
     passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
-    batchFacultyAssignments?: BatchFacultyAssignmentCreateNestedManyWithoutFacultyInput
-    facultyAttendanceSessions?: FacultyAttendanceSessionCreateNestedManyWithoutFacultyUserInput
     markedStudentAttendances?: StudentAttendanceCreateNestedManyWithoutFacultyUserInput
-    managedBranch?: BranchCreateNestedOneWithoutAdminUserInput
   }
 
   export type UserUncheckedCreateWithoutTargetedNotificationsInput = {
@@ -46838,12 +44851,12 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentUncheckedCreateNestedManyWithoutFacultyInput
+    managedBranch?: BranchUncheckedCreateNestedOneWithoutAdminUserInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedCreateNestedManyWithoutFacultyUserInput
     loginEvents?: LoginEventUncheckedCreateNestedManyWithoutUserInput
     passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
-    batchFacultyAssignments?: BatchFacultyAssignmentUncheckedCreateNestedManyWithoutFacultyInput
-    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedCreateNestedManyWithoutFacultyUserInput
     markedStudentAttendances?: StudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
-    managedBranch?: BranchUncheckedCreateNestedOneWithoutAdminUserInput
   }
 
   export type UserCreateOrConnectWithoutTargetedNotificationsInput = {
@@ -46949,12 +44962,12 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentUpdateManyWithoutFacultyNestedInput
+    managedBranch?: BranchUpdateOneWithoutAdminUserNestedInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUpdateManyWithoutFacultyUserNestedInput
     loginEvents?: LoginEventUpdateManyWithoutUserNestedInput
     passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
-    batchFacultyAssignments?: BatchFacultyAssignmentUpdateManyWithoutFacultyNestedInput
-    facultyAttendanceSessions?: FacultyAttendanceSessionUpdateManyWithoutFacultyUserNestedInput
     markedStudentAttendances?: StudentAttendanceUpdateManyWithoutFacultyUserNestedInput
-    managedBranch?: BranchUpdateOneWithoutAdminUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTargetedNotificationsInput = {
@@ -46979,12 +44992,12 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentUncheckedUpdateManyWithoutFacultyNestedInput
+    managedBranch?: BranchUncheckedUpdateOneWithoutAdminUserNestedInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserNestedInput
     loginEvents?: LoginEventUncheckedUpdateManyWithoutUserNestedInput
     passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
-    batchFacultyAssignments?: BatchFacultyAssignmentUncheckedUpdateManyWithoutFacultyNestedInput
-    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserNestedInput
     markedStudentAttendances?: StudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
-    managedBranch?: BranchUncheckedUpdateOneWithoutAdminUserNestedInput
   }
 
   export type NotificationCreateWithoutRequestInput = {
@@ -46994,18 +45007,6 @@ export namespace Prisma {
     title: string
     message: string
     actionLabel?: string | null
-    requestStatus?: string | null
-    requestTitle?: string | null
-    requestReason?: string | null
-    requestDescription?: string | null
-    branchCourseId?: string | null
-    branchCourseName?: string | null
-    moduleId?: string | null
-    moduleName?: string | null
-    subModuleId?: string | null
-    subModuleName?: string | null
-    facultyId?: string | null
-    facultyName?: string | null
     targetBranchId?: string | null
     targetBranchEmail?: string | null
     targetBranchName?: string | null
@@ -47014,6 +45015,18 @@ export namespace Prisma {
     createdBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    branchCourseId?: string | null
+    branchCourseName?: string | null
+    facultyId?: string | null
+    facultyName?: string | null
+    moduleId?: string | null
+    moduleName?: string | null
+    requestDescription?: string | null
+    requestReason?: string | null
+    requestStatus?: string | null
+    requestTitle?: string | null
+    subModuleId?: string | null
+    subModuleName?: string | null
     targetUser?: UserCreateNestedOneWithoutTargetedNotificationsInput
   }
 
@@ -47024,19 +45037,6 @@ export namespace Prisma {
     title: string
     message: string
     actionLabel?: string | null
-    requestStatus?: string | null
-    requestTitle?: string | null
-    requestReason?: string | null
-    requestDescription?: string | null
-    branchCourseId?: string | null
-    branchCourseName?: string | null
-    moduleId?: string | null
-    moduleName?: string | null
-    subModuleId?: string | null
-    subModuleName?: string | null
-    facultyId?: string | null
-    facultyName?: string | null
-    targetUserId?: string | null
     targetBranchId?: string | null
     targetBranchEmail?: string | null
     targetBranchName?: string | null
@@ -47045,6 +45045,19 @@ export namespace Prisma {
     createdBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    targetUserId?: string | null
+    branchCourseId?: string | null
+    branchCourseName?: string | null
+    facultyId?: string | null
+    facultyName?: string | null
+    moduleId?: string | null
+    moduleName?: string | null
+    requestDescription?: string | null
+    requestReason?: string | null
+    requestStatus?: string | null
+    requestTitle?: string | null
+    subModuleId?: string | null
+    subModuleName?: string | null
   }
 
   export type NotificationCreateOrConnectWithoutRequestInput = {
@@ -47095,12 +45108,12 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    loginEvents?: LoginEventCreateNestedManyWithoutUserInput
     batchFacultyAssignments?: BatchFacultyAssignmentCreateNestedManyWithoutFacultyInput
-    targetedNotifications?: NotificationCreateNestedManyWithoutTargetUserInput
-    facultyAttendanceSessions?: FacultyAttendanceSessionCreateNestedManyWithoutFacultyUserInput
-    markedStudentAttendances?: StudentAttendanceCreateNestedManyWithoutFacultyUserInput
     managedBranch?: BranchCreateNestedOneWithoutAdminUserInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionCreateNestedManyWithoutFacultyUserInput
+    loginEvents?: LoginEventCreateNestedManyWithoutUserInput
+    targetedNotifications?: NotificationCreateNestedManyWithoutTargetUserInput
+    markedStudentAttendances?: StudentAttendanceCreateNestedManyWithoutFacultyUserInput
   }
 
   export type UserUncheckedCreateWithoutPasswordResetTokensInput = {
@@ -47125,12 +45138,12 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    loginEvents?: LoginEventUncheckedCreateNestedManyWithoutUserInput
     batchFacultyAssignments?: BatchFacultyAssignmentUncheckedCreateNestedManyWithoutFacultyInput
-    targetedNotifications?: NotificationUncheckedCreateNestedManyWithoutTargetUserInput
-    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedCreateNestedManyWithoutFacultyUserInput
-    markedStudentAttendances?: StudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
     managedBranch?: BranchUncheckedCreateNestedOneWithoutAdminUserInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedCreateNestedManyWithoutFacultyUserInput
+    loginEvents?: LoginEventUncheckedCreateNestedManyWithoutUserInput
+    targetedNotifications?: NotificationUncheckedCreateNestedManyWithoutTargetUserInput
+    markedStudentAttendances?: StudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
   }
 
   export type UserCreateOrConnectWithoutPasswordResetTokensInput = {
@@ -47171,12 +45184,12 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    loginEvents?: LoginEventUpdateManyWithoutUserNestedInput
     batchFacultyAssignments?: BatchFacultyAssignmentUpdateManyWithoutFacultyNestedInput
-    targetedNotifications?: NotificationUpdateManyWithoutTargetUserNestedInput
-    facultyAttendanceSessions?: FacultyAttendanceSessionUpdateManyWithoutFacultyUserNestedInput
-    markedStudentAttendances?: StudentAttendanceUpdateManyWithoutFacultyUserNestedInput
     managedBranch?: BranchUpdateOneWithoutAdminUserNestedInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUpdateManyWithoutFacultyUserNestedInput
+    loginEvents?: LoginEventUpdateManyWithoutUserNestedInput
+    targetedNotifications?: NotificationUpdateManyWithoutTargetUserNestedInput
+    markedStudentAttendances?: StudentAttendanceUpdateManyWithoutFacultyUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPasswordResetTokensInput = {
@@ -47201,107 +45214,12 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    loginEvents?: LoginEventUncheckedUpdateManyWithoutUserNestedInput
     batchFacultyAssignments?: BatchFacultyAssignmentUncheckedUpdateManyWithoutFacultyNestedInput
-    targetedNotifications?: NotificationUncheckedUpdateManyWithoutTargetUserNestedInput
-    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserNestedInput
-    markedStudentAttendances?: StudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
     managedBranch?: BranchUncheckedUpdateOneWithoutAdminUserNestedInput
-  }
-
-  export type BranchCreateWithoutCoursesInput = {
-    id?: string
-    branchId: string
-    branchName: string
-    branchAdminName: string
-    branchEmail: string
-    branchPhone: string
-    branchCountryCode?: string
-    branchCountry?: string
-    branchStateCode?: string
-    branchState?: string
-    branchCity?: string
-    branchAddress: string
-    status?: $Enums.RecordStatus
-    createdBy?: string | null
-    updatedBy?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    adminUser?: UserCreateNestedOneWithoutManagedBranchInput
-    branchCourses?: BranchCourseCreateNestedManyWithoutBranchInput
-    branchFaculties?: BranchFacultyCreateNestedManyWithoutBranchInput
-    branchStudents?: BranchStudentCreateNestedManyWithoutBranchInput
-    branchInstallmentTemplates?: BranchInstallmentTemplateCreateNestedManyWithoutBranchInput
-  }
-
-  export type BranchUncheckedCreateWithoutCoursesInput = {
-    id?: string
-    branchId: string
-    branchName: string
-    branchAdminName: string
-    branchEmail: string
-    branchPhone: string
-    branchCountryCode?: string
-    branchCountry?: string
-    branchStateCode?: string
-    branchState?: string
-    branchCity?: string
-    branchAddress: string
-    status?: $Enums.RecordStatus
-    adminUserId?: string | null
-    createdBy?: string | null
-    updatedBy?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    branchCourses?: BranchCourseUncheckedCreateNestedManyWithoutBranchInput
-    branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutBranchInput
-    branchStudents?: BranchStudentUncheckedCreateNestedManyWithoutBranchInput
-    branchInstallmentTemplates?: BranchInstallmentTemplateUncheckedCreateNestedManyWithoutBranchInput
-  }
-
-  export type BranchCreateOrConnectWithoutCoursesInput = {
-    where: BranchWhereUniqueInput
-    create: XOR<BranchCreateWithoutCoursesInput, BranchUncheckedCreateWithoutCoursesInput>
-  }
-
-  export type CourseModuleCreateWithoutCourseInput = {
-    id?: string
-    title: string
-    titleKey: string
-    description?: string | null
-    sequenceNo: number
-    status?: $Enums.RecordStatus
-    statusChangedAt?: Date | string | null
-    statusChangedBy?: string | null
-    createdBy?: string | null
-    updatedBy?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type CourseModuleUncheckedCreateWithoutCourseInput = {
-    id?: string
-    title: string
-    titleKey: string
-    description?: string | null
-    sequenceNo: number
-    status?: $Enums.RecordStatus
-    statusChangedAt?: Date | string | null
-    statusChangedBy?: string | null
-    createdBy?: string | null
-    updatedBy?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type CourseModuleCreateOrConnectWithoutCourseInput = {
-    where: CourseModuleWhereUniqueInput
-    create: XOR<CourseModuleCreateWithoutCourseInput, CourseModuleUncheckedCreateWithoutCourseInput>
-  }
-
-  export type CourseModuleCreateManyCourseInputEnvelope = {
-    data: CourseModuleCreateManyCourseInput | CourseModuleCreateManyCourseInput[]
-    skipDuplicates?: boolean
+    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserNestedInput
+    loginEvents?: LoginEventUncheckedUpdateManyWithoutUserNestedInput
+    targetedNotifications?: NotificationUncheckedUpdateManyWithoutTargetUserNestedInput
+    markedStudentAttendances?: StudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
   }
 
   export type BatchCreateWithoutCourseInput = {
@@ -47358,171 +45276,176 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type StudentProfileCreateWithoutCourseInput = {
-    id?: string
-    studentCode: string
-    studentName: string
-    mobileNumber: string
-    emailAddress: string
-    linkedInUrl?: string | null
-    parentSpouseNumber?: string | null
-    location?: string | null
-    courseInterested: string
-    facultyId?: string | null
-    facultyName?: string | null
-    batchId?: string | null
-    batchName?: string | null
-    qualification?: string | null
-    passedOutYear?: number | null
-    currentStatus?: string | null
-    designation?: string | null
-    source?: string | null
-    actualFees?: number | null
-    registrationFees?: number | null
-    discount?: number | null
-    afterDiscount?: number | null
-    installment1?: number | null
-    installment2?: number | null
-    installment3?: number | null
-    installment4?: number | null
-    totalAmount?: number | null
-    admissionDate: string
-    firstInstallmentAmount?: number | null
-    firstInstallmentDate?: string | null
-    firstInstallmentStatus?: string
-    firstInstallmentPaidAt?: string | null
-    secondInstallmentAmount?: number | null
-    secondDueDate?: string | null
-    secondInstallmentStatus?: string
-    secondInstallmentPaidAt?: string | null
-    remarks?: string | null
-    recordStatus?: $Enums.RecordStatus
-    createdBy?: string | null
-    updatedBy?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    attendanceRecords?: StudentAttendanceCreateNestedManyWithoutStudentInput
-  }
-
-  export type StudentProfileUncheckedCreateWithoutCourseInput = {
-    id?: string
-    studentCode: string
-    studentName: string
-    mobileNumber: string
-    emailAddress: string
-    linkedInUrl?: string | null
-    parentSpouseNumber?: string | null
-    location?: string | null
-    courseInterested: string
-    facultyId?: string | null
-    facultyName?: string | null
-    batchId?: string | null
-    batchName?: string | null
-    qualification?: string | null
-    passedOutYear?: number | null
-    currentStatus?: string | null
-    designation?: string | null
-    source?: string | null
-    actualFees?: number | null
-    registrationFees?: number | null
-    discount?: number | null
-    afterDiscount?: number | null
-    installment1?: number | null
-    installment2?: number | null
-    installment3?: number | null
-    installment4?: number | null
-    totalAmount?: number | null
-    admissionDate: string
-    firstInstallmentAmount?: number | null
-    firstInstallmentDate?: string | null
-    firstInstallmentStatus?: string
-    firstInstallmentPaidAt?: string | null
-    secondInstallmentAmount?: number | null
-    secondDueDate?: string | null
-    secondInstallmentStatus?: string
-    secondInstallmentPaidAt?: string | null
-    remarks?: string | null
-    recordStatus?: $Enums.RecordStatus
-    createdBy?: string | null
-    updatedBy?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    attendanceRecords?: StudentAttendanceUncheckedCreateNestedManyWithoutStudentInput
-  }
-
-  export type StudentProfileCreateOrConnectWithoutCourseInput = {
-    where: StudentProfileWhereUniqueInput
-    create: XOR<StudentProfileCreateWithoutCourseInput, StudentProfileUncheckedCreateWithoutCourseInput>
-  }
-
-  export type StudentProfileCreateManyCourseInputEnvelope = {
-    data: StudentProfileCreateManyCourseInput | StudentProfileCreateManyCourseInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type FacultyProfileCreateWithoutCourseInput = {
-    id?: string
-    facultyName: string
-    facultyEmail: string
-    facultyPhone: string
-    status?: $Enums.RecordStatus
-    createdBy?: string | null
-    updatedBy?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    courseAssignments?: FacultyCourseAssignmentCreateNestedManyWithoutFacultyInput
-    batchEntries?: FacultyBatchEntryCreateNestedManyWithoutFacultyInput
-  }
-
-  export type FacultyProfileUncheckedCreateWithoutCourseInput = {
-    id?: string
-    facultyName: string
-    facultyEmail: string
-    facultyPhone: string
-    status?: $Enums.RecordStatus
-    createdBy?: string | null
-    updatedBy?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    courseAssignments?: FacultyCourseAssignmentUncheckedCreateNestedManyWithoutFacultyInput
-    batchEntries?: FacultyBatchEntryUncheckedCreateNestedManyWithoutFacultyInput
-  }
-
-  export type FacultyProfileCreateOrConnectWithoutCourseInput = {
-    where: FacultyProfileWhereUniqueInput
-    create: XOR<FacultyProfileCreateWithoutCourseInput, FacultyProfileUncheckedCreateWithoutCourseInput>
-  }
-
-  export type FacultyProfileCreateManyCourseInputEnvelope = {
-    data: FacultyProfileCreateManyCourseInput | FacultyProfileCreateManyCourseInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type FacultyCourseAssignmentCreateWithoutCourseInput = {
-    id?: string
-    createdBy?: string | null
-    updatedBy?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    faculty: FacultyProfileCreateNestedOneWithoutCourseAssignmentsInput
-  }
-
-  export type FacultyCourseAssignmentUncheckedCreateWithoutCourseInput = {
+  export type BranchFacultyCreateWithoutCourseInput = {
     id?: string
     facultyId: string
+    name: string
+    email: string
+    phone: string
+    country?: string | null
+    countryCode?: string | null
+    state?: string | null
+    stateCode?: string | null
+    city?: string | null
+    address?: string | null
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branchCourse?: BranchCourseCreateNestedOneWithoutBranchFacultiesInput
+    branch: BranchCreateNestedOneWithoutBranchFacultiesInput
+  }
+
+  export type BranchFacultyUncheckedCreateWithoutCourseInput = {
+    id?: string
+    facultyId: string
+    branchId: string
+    name: string
+    email: string
+    phone: string
+    country?: string | null
+    countryCode?: string | null
+    state?: string | null
+    stateCode?: string | null
+    city?: string | null
+    address?: string | null
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branchCourseId?: string | null
+  }
+
+  export type BranchFacultyCreateOrConnectWithoutCourseInput = {
+    where: BranchFacultyWhereUniqueInput
+    create: XOR<BranchFacultyCreateWithoutCourseInput, BranchFacultyUncheckedCreateWithoutCourseInput>
+  }
+
+  export type BranchFacultyCreateManyCourseInputEnvelope = {
+    data: BranchFacultyCreateManyCourseInput | BranchFacultyCreateManyCourseInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type BranchCreateWithoutCoursesInput = {
+    id?: string
+    branchId: string
+    branchName: string
+    branchAdminName: string
+    branchEmail: string
+    branchPhone: string
+    branchAddress: string
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branchCity?: string
+    branchCountry?: string
+    branchCountryCode?: string
+    branchState?: string
+    branchStateCode?: string
+    adminUser?: UserCreateNestedOneWithoutManagedBranchInput
+    branchCourses?: BranchCourseCreateNestedManyWithoutBranchInput
+    branchFaculties?: BranchFacultyCreateNestedManyWithoutBranchInput
+    branchStudents?: BranchStudentCreateNestedManyWithoutBranchInput
+  }
+
+  export type BranchUncheckedCreateWithoutCoursesInput = {
+    id?: string
+    branchId: string
+    branchName: string
+    branchAdminName: string
+    branchEmail: string
+    branchPhone: string
+    branchAddress: string
+    status?: $Enums.RecordStatus
+    adminUserId?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branchCity?: string
+    branchCountry?: string
+    branchCountryCode?: string
+    branchState?: string
+    branchStateCode?: string
+    branchCourses?: BranchCourseUncheckedCreateNestedManyWithoutBranchInput
+    branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutBranchInput
+    branchStudents?: BranchStudentUncheckedCreateNestedManyWithoutBranchInput
+  }
+
+  export type BranchCreateOrConnectWithoutCoursesInput = {
+    where: BranchWhereUniqueInput
+    create: XOR<BranchCreateWithoutCoursesInput, BranchUncheckedCreateWithoutCoursesInput>
+  }
+
+  export type CourseModuleCreateWithoutCourseInput = {
+    id?: string
+    title: string
+    titleKey: string
+    description?: string | null
+    sequenceNo: number
+    status?: $Enums.RecordStatus
+    statusChangedAt?: Date | string | null
+    statusChangedBy?: string | null
     createdBy?: string | null
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
-  export type FacultyCourseAssignmentCreateOrConnectWithoutCourseInput = {
-    where: FacultyCourseAssignmentWhereUniqueInput
-    create: XOR<FacultyCourseAssignmentCreateWithoutCourseInput, FacultyCourseAssignmentUncheckedCreateWithoutCourseInput>
+  export type CourseModuleUncheckedCreateWithoutCourseInput = {
+    id?: string
+    title: string
+    titleKey: string
+    description?: string | null
+    sequenceNo: number
+    status?: $Enums.RecordStatus
+    statusChangedAt?: Date | string | null
+    statusChangedBy?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
-  export type FacultyCourseAssignmentCreateManyCourseInputEnvelope = {
-    data: FacultyCourseAssignmentCreateManyCourseInput | FacultyCourseAssignmentCreateManyCourseInput[]
+  export type CourseModuleCreateOrConnectWithoutCourseInput = {
+    where: CourseModuleWhereUniqueInput
+    create: XOR<CourseModuleCreateWithoutCourseInput, CourseModuleUncheckedCreateWithoutCourseInput>
+  }
+
+  export type CourseModuleCreateManyCourseInputEnvelope = {
+    data: CourseModuleCreateManyCourseInput | CourseModuleCreateManyCourseInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type CourseStatusHistoryCreateWithoutCourseInput = {
+    id?: string
+    fromStatus?: $Enums.RecordStatus | null
+    toStatus: $Enums.RecordStatus
+    changedBy?: string | null
+    reason?: string | null
+    changedAt?: Date | string
+  }
+
+  export type CourseStatusHistoryUncheckedCreateWithoutCourseInput = {
+    id?: string
+    fromStatus?: $Enums.RecordStatus | null
+    toStatus: $Enums.RecordStatus
+    changedBy?: string | null
+    reason?: string | null
+    changedAt?: Date | string
+  }
+
+  export type CourseStatusHistoryCreateOrConnectWithoutCourseInput = {
+    where: CourseStatusHistoryWhereUniqueInput
+    create: XOR<CourseStatusHistoryCreateWithoutCourseInput, CourseStatusHistoryUncheckedCreateWithoutCourseInput>
+  }
+
+  export type CourseStatusHistoryCreateManyCourseInputEnvelope = {
+    data: CourseStatusHistoryCreateManyCourseInput | CourseStatusHistoryCreateManyCourseInput[]
     skipDuplicates?: boolean
   }
 
@@ -47556,180 +45479,172 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type CourseStatusHistoryCreateWithoutCourseInput = {
+  export type FacultyCourseAssignmentCreateWithoutCourseInput = {
     id?: string
-    fromStatus?: $Enums.RecordStatus | null
-    toStatus: $Enums.RecordStatus
-    changedBy?: string | null
-    reason?: string | null
-    changedAt?: Date | string
-  }
-
-  export type CourseStatusHistoryUncheckedCreateWithoutCourseInput = {
-    id?: string
-    fromStatus?: $Enums.RecordStatus | null
-    toStatus: $Enums.RecordStatus
-    changedBy?: string | null
-    reason?: string | null
-    changedAt?: Date | string
-  }
-
-  export type CourseStatusHistoryCreateOrConnectWithoutCourseInput = {
-    where: CourseStatusHistoryWhereUniqueInput
-    create: XOR<CourseStatusHistoryCreateWithoutCourseInput, CourseStatusHistoryUncheckedCreateWithoutCourseInput>
-  }
-
-  export type CourseStatusHistoryCreateManyCourseInputEnvelope = {
-    data: CourseStatusHistoryCreateManyCourseInput | CourseStatusHistoryCreateManyCourseInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type BranchFacultyCreateWithoutCourseInput = {
-    id?: string
-    facultyId: string
-    name: string
-    email: string
-    phone: string
-    country?: string | null
-    countryCode?: string | null
-    state?: string | null
-    stateCode?: string | null
-    city?: string | null
-    address?: string | null
-    status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    branch: BranchCreateNestedOneWithoutBranchFacultiesInput
-    branchCourse?: BranchCourseCreateNestedOneWithoutBranchFacultiesInput
+    faculty: FacultyProfileCreateNestedOneWithoutCourseAssignmentsInput
   }
 
-  export type BranchFacultyUncheckedCreateWithoutCourseInput = {
+  export type FacultyCourseAssignmentUncheckedCreateWithoutCourseInput = {
     id?: string
     facultyId: string
-    branchId: string
-    name: string
-    email: string
-    phone: string
-    country?: string | null
-    countryCode?: string | null
-    state?: string | null
-    stateCode?: string | null
-    city?: string | null
-    address?: string | null
-    branchCourseId?: string | null
-    status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
-  export type BranchFacultyCreateOrConnectWithoutCourseInput = {
-    where: BranchFacultyWhereUniqueInput
-    create: XOR<BranchFacultyCreateWithoutCourseInput, BranchFacultyUncheckedCreateWithoutCourseInput>
+  export type FacultyCourseAssignmentCreateOrConnectWithoutCourseInput = {
+    where: FacultyCourseAssignmentWhereUniqueInput
+    create: XOR<FacultyCourseAssignmentCreateWithoutCourseInput, FacultyCourseAssignmentUncheckedCreateWithoutCourseInput>
   }
 
-  export type BranchFacultyCreateManyCourseInputEnvelope = {
-    data: BranchFacultyCreateManyCourseInput | BranchFacultyCreateManyCourseInput[]
+  export type FacultyCourseAssignmentCreateManyCourseInputEnvelope = {
+    data: FacultyCourseAssignmentCreateManyCourseInput | FacultyCourseAssignmentCreateManyCourseInput[]
     skipDuplicates?: boolean
   }
 
-  export type BranchUpsertWithoutCoursesInput = {
-    update: XOR<BranchUpdateWithoutCoursesInput, BranchUncheckedUpdateWithoutCoursesInput>
-    create: XOR<BranchCreateWithoutCoursesInput, BranchUncheckedCreateWithoutCoursesInput>
-    where?: BranchWhereInput
+  export type FacultyProfileCreateWithoutCourseInput = {
+    id?: string
+    facultyName: string
+    facultyEmail: string
+    facultyPhone: string
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    batchEntries?: FacultyBatchEntryCreateNestedManyWithoutFacultyInput
+    courseAssignments?: FacultyCourseAssignmentCreateNestedManyWithoutFacultyInput
   }
 
-  export type BranchUpdateToOneWithWhereWithoutCoursesInput = {
-    where?: BranchWhereInput
-    data: XOR<BranchUpdateWithoutCoursesInput, BranchUncheckedUpdateWithoutCoursesInput>
+  export type FacultyProfileUncheckedCreateWithoutCourseInput = {
+    id?: string
+    facultyName: string
+    facultyEmail: string
+    facultyPhone: string
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    batchEntries?: FacultyBatchEntryUncheckedCreateNestedManyWithoutFacultyInput
+    courseAssignments?: FacultyCourseAssignmentUncheckedCreateNestedManyWithoutFacultyInput
   }
 
-  export type BranchUpdateWithoutCoursesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    branchId?: StringFieldUpdateOperationsInput | string
-    branchName?: StringFieldUpdateOperationsInput | string
-    branchAdminName?: StringFieldUpdateOperationsInput | string
-    branchEmail?: StringFieldUpdateOperationsInput | string
-    branchPhone?: StringFieldUpdateOperationsInput | string
-    branchCountryCode?: StringFieldUpdateOperationsInput | string
-    branchCountry?: StringFieldUpdateOperationsInput | string
-    branchStateCode?: StringFieldUpdateOperationsInput | string
-    branchState?: StringFieldUpdateOperationsInput | string
-    branchCity?: StringFieldUpdateOperationsInput | string
-    branchAddress?: StringFieldUpdateOperationsInput | string
-    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    adminUser?: UserUpdateOneWithoutManagedBranchNestedInput
-    branchCourses?: BranchCourseUpdateManyWithoutBranchNestedInput
-    branchFaculties?: BranchFacultyUpdateManyWithoutBranchNestedInput
-    branchStudents?: BranchStudentUpdateManyWithoutBranchNestedInput
-    branchInstallmentTemplates?: BranchInstallmentTemplateUpdateManyWithoutBranchNestedInput
+  export type FacultyProfileCreateOrConnectWithoutCourseInput = {
+    where: FacultyProfileWhereUniqueInput
+    create: XOR<FacultyProfileCreateWithoutCourseInput, FacultyProfileUncheckedCreateWithoutCourseInput>
   }
 
-  export type BranchUncheckedUpdateWithoutCoursesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    branchId?: StringFieldUpdateOperationsInput | string
-    branchName?: StringFieldUpdateOperationsInput | string
-    branchAdminName?: StringFieldUpdateOperationsInput | string
-    branchEmail?: StringFieldUpdateOperationsInput | string
-    branchPhone?: StringFieldUpdateOperationsInput | string
-    branchCountryCode?: StringFieldUpdateOperationsInput | string
-    branchCountry?: StringFieldUpdateOperationsInput | string
-    branchStateCode?: StringFieldUpdateOperationsInput | string
-    branchState?: StringFieldUpdateOperationsInput | string
-    branchCity?: StringFieldUpdateOperationsInput | string
-    branchAddress?: StringFieldUpdateOperationsInput | string
-    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
-    adminUserId?: NullableStringFieldUpdateOperationsInput | string | null
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    branchCourses?: BranchCourseUncheckedUpdateManyWithoutBranchNestedInput
-    branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutBranchNestedInput
-    branchStudents?: BranchStudentUncheckedUpdateManyWithoutBranchNestedInput
-    branchInstallmentTemplates?: BranchInstallmentTemplateUncheckedUpdateManyWithoutBranchNestedInput
+  export type FacultyProfileCreateManyCourseInputEnvelope = {
+    data: FacultyProfileCreateManyCourseInput | FacultyProfileCreateManyCourseInput[]
+    skipDuplicates?: boolean
   }
 
-  export type CourseModuleUpsertWithWhereUniqueWithoutCourseInput = {
-    where: CourseModuleWhereUniqueInput
-    update: XOR<CourseModuleUpdateWithoutCourseInput, CourseModuleUncheckedUpdateWithoutCourseInput>
-    create: XOR<CourseModuleCreateWithoutCourseInput, CourseModuleUncheckedCreateWithoutCourseInput>
+  export type StudentProfileCreateWithoutCourseInput = {
+    id?: string
+    studentCode: string
+    studentName: string
+    mobileNumber: string
+    emailAddress: string
+    parentSpouseNumber?: string | null
+    location?: string | null
+    courseInterested: string
+    facultyName?: string | null
+    batchName?: string | null
+    qualification?: string | null
+    passedOutYear?: number | null
+    currentStatus?: string | null
+    designation?: string | null
+    source?: string | null
+    actualFees?: number | null
+    registrationFees?: number | null
+    discount?: number | null
+    afterDiscount?: number | null
+    installment1?: number | null
+    installment2?: number | null
+    installment3?: number | null
+    totalAmount?: number | null
+    admissionDate: string
+    firstInstallmentAmount?: number | null
+    firstInstallmentDate?: string | null
+    firstInstallmentStatus?: string
+    firstInstallmentPaidAt?: string | null
+    secondInstallmentAmount?: number | null
+    secondDueDate?: string | null
+    secondInstallmentStatus?: string
+    secondInstallmentPaidAt?: string | null
+    remarks?: string | null
+    recordStatus?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    installment4?: number | null
+    batchId?: string | null
+    facultyId?: string | null
+    linkedInUrl?: string | null
+    attendanceRecords?: StudentAttendanceCreateNestedManyWithoutStudentInput
   }
 
-  export type CourseModuleUpdateWithWhereUniqueWithoutCourseInput = {
-    where: CourseModuleWhereUniqueInput
-    data: XOR<CourseModuleUpdateWithoutCourseInput, CourseModuleUncheckedUpdateWithoutCourseInput>
+  export type StudentProfileUncheckedCreateWithoutCourseInput = {
+    id?: string
+    studentCode: string
+    studentName: string
+    mobileNumber: string
+    emailAddress: string
+    parentSpouseNumber?: string | null
+    location?: string | null
+    courseInterested: string
+    facultyName?: string | null
+    batchName?: string | null
+    qualification?: string | null
+    passedOutYear?: number | null
+    currentStatus?: string | null
+    designation?: string | null
+    source?: string | null
+    actualFees?: number | null
+    registrationFees?: number | null
+    discount?: number | null
+    afterDiscount?: number | null
+    installment1?: number | null
+    installment2?: number | null
+    installment3?: number | null
+    totalAmount?: number | null
+    admissionDate: string
+    firstInstallmentAmount?: number | null
+    firstInstallmentDate?: string | null
+    firstInstallmentStatus?: string
+    firstInstallmentPaidAt?: string | null
+    secondInstallmentAmount?: number | null
+    secondDueDate?: string | null
+    secondInstallmentStatus?: string
+    secondInstallmentPaidAt?: string | null
+    remarks?: string | null
+    recordStatus?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    installment4?: number | null
+    batchId?: string | null
+    facultyId?: string | null
+    linkedInUrl?: string | null
+    attendanceRecords?: StudentAttendanceUncheckedCreateNestedManyWithoutStudentInput
   }
 
-  export type CourseModuleUpdateManyWithWhereWithoutCourseInput = {
-    where: CourseModuleScalarWhereInput
-    data: XOR<CourseModuleUpdateManyMutationInput, CourseModuleUncheckedUpdateManyWithoutCourseInput>
+  export type StudentProfileCreateOrConnectWithoutCourseInput = {
+    where: StudentProfileWhereUniqueInput
+    create: XOR<StudentProfileCreateWithoutCourseInput, StudentProfileUncheckedCreateWithoutCourseInput>
   }
 
-  export type CourseModuleScalarWhereInput = {
-    AND?: CourseModuleScalarWhereInput | CourseModuleScalarWhereInput[]
-    OR?: CourseModuleScalarWhereInput[]
-    NOT?: CourseModuleScalarWhereInput | CourseModuleScalarWhereInput[]
-    id?: StringFilter<"CourseModule"> | string
-    courseId?: StringFilter<"CourseModule"> | string
-    title?: StringFilter<"CourseModule"> | string
-    titleKey?: StringFilter<"CourseModule"> | string
-    description?: StringNullableFilter<"CourseModule"> | string | null
-    sequenceNo?: IntFilter<"CourseModule"> | number
-    status?: EnumRecordStatusFilter<"CourseModule"> | $Enums.RecordStatus
-    statusChangedAt?: DateTimeNullableFilter<"CourseModule"> | Date | string | null
-    statusChangedBy?: StringNullableFilter<"CourseModule"> | string | null
-    createdBy?: StringNullableFilter<"CourseModule"> | string | null
-    updatedBy?: StringNullableFilter<"CourseModule"> | string | null
-    createdAt?: DateTimeFilter<"CourseModule"> | Date | string
-    updatedAt?: DateTimeFilter<"CourseModule"> | Date | string
+  export type StudentProfileCreateManyCourseInputEnvelope = {
+    data: StudentProfileCreateManyCourseInput | StudentProfileCreateManyCourseInput[]
+    skipDuplicates?: boolean
   }
 
   export type BatchUpsertWithWhereUniqueWithoutCourseInput = {
@@ -47772,69 +45687,202 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Batch"> | Date | string
   }
 
-  export type StudentProfileUpsertWithWhereUniqueWithoutCourseInput = {
-    where: StudentProfileWhereUniqueInput
-    update: XOR<StudentProfileUpdateWithoutCourseInput, StudentProfileUncheckedUpdateWithoutCourseInput>
-    create: XOR<StudentProfileCreateWithoutCourseInput, StudentProfileUncheckedCreateWithoutCourseInput>
+  export type BranchFacultyUpsertWithWhereUniqueWithoutCourseInput = {
+    where: BranchFacultyWhereUniqueInput
+    update: XOR<BranchFacultyUpdateWithoutCourseInput, BranchFacultyUncheckedUpdateWithoutCourseInput>
+    create: XOR<BranchFacultyCreateWithoutCourseInput, BranchFacultyUncheckedCreateWithoutCourseInput>
   }
 
-  export type StudentProfileUpdateWithWhereUniqueWithoutCourseInput = {
-    where: StudentProfileWhereUniqueInput
-    data: XOR<StudentProfileUpdateWithoutCourseInput, StudentProfileUncheckedUpdateWithoutCourseInput>
+  export type BranchFacultyUpdateWithWhereUniqueWithoutCourseInput = {
+    where: BranchFacultyWhereUniqueInput
+    data: XOR<BranchFacultyUpdateWithoutCourseInput, BranchFacultyUncheckedUpdateWithoutCourseInput>
   }
 
-  export type StudentProfileUpdateManyWithWhereWithoutCourseInput = {
-    where: StudentProfileScalarWhereInput
-    data: XOR<StudentProfileUpdateManyMutationInput, StudentProfileUncheckedUpdateManyWithoutCourseInput>
+  export type BranchFacultyUpdateManyWithWhereWithoutCourseInput = {
+    where: BranchFacultyScalarWhereInput
+    data: XOR<BranchFacultyUpdateManyMutationInput, BranchFacultyUncheckedUpdateManyWithoutCourseInput>
   }
 
-  export type StudentProfileScalarWhereInput = {
-    AND?: StudentProfileScalarWhereInput | StudentProfileScalarWhereInput[]
-    OR?: StudentProfileScalarWhereInput[]
-    NOT?: StudentProfileScalarWhereInput | StudentProfileScalarWhereInput[]
-    id?: StringFilter<"StudentProfile"> | string
-    studentCode?: StringFilter<"StudentProfile"> | string
-    studentName?: StringFilter<"StudentProfile"> | string
-    mobileNumber?: StringFilter<"StudentProfile"> | string
-    emailAddress?: StringFilter<"StudentProfile"> | string
-    linkedInUrl?: StringNullableFilter<"StudentProfile"> | string | null
-    parentSpouseNumber?: StringNullableFilter<"StudentProfile"> | string | null
-    location?: StringNullableFilter<"StudentProfile"> | string | null
-    courseId?: StringNullableFilter<"StudentProfile"> | string | null
-    courseInterested?: StringFilter<"StudentProfile"> | string
-    facultyId?: StringNullableFilter<"StudentProfile"> | string | null
-    facultyName?: StringNullableFilter<"StudentProfile"> | string | null
-    batchId?: StringNullableFilter<"StudentProfile"> | string | null
-    batchName?: StringNullableFilter<"StudentProfile"> | string | null
-    qualification?: StringNullableFilter<"StudentProfile"> | string | null
-    passedOutYear?: IntNullableFilter<"StudentProfile"> | number | null
-    currentStatus?: StringNullableFilter<"StudentProfile"> | string | null
-    designation?: StringNullableFilter<"StudentProfile"> | string | null
-    source?: StringNullableFilter<"StudentProfile"> | string | null
-    actualFees?: IntNullableFilter<"StudentProfile"> | number | null
-    registrationFees?: IntNullableFilter<"StudentProfile"> | number | null
-    discount?: IntNullableFilter<"StudentProfile"> | number | null
-    afterDiscount?: IntNullableFilter<"StudentProfile"> | number | null
-    installment1?: IntNullableFilter<"StudentProfile"> | number | null
-    installment2?: IntNullableFilter<"StudentProfile"> | number | null
-    installment3?: IntNullableFilter<"StudentProfile"> | number | null
-    installment4?: IntNullableFilter<"StudentProfile"> | number | null
-    totalAmount?: IntNullableFilter<"StudentProfile"> | number | null
-    admissionDate?: StringFilter<"StudentProfile"> | string
-    firstInstallmentAmount?: IntNullableFilter<"StudentProfile"> | number | null
-    firstInstallmentDate?: StringNullableFilter<"StudentProfile"> | string | null
-    firstInstallmentStatus?: StringFilter<"StudentProfile"> | string
-    firstInstallmentPaidAt?: StringNullableFilter<"StudentProfile"> | string | null
-    secondInstallmentAmount?: IntNullableFilter<"StudentProfile"> | number | null
-    secondDueDate?: StringNullableFilter<"StudentProfile"> | string | null
-    secondInstallmentStatus?: StringFilter<"StudentProfile"> | string
-    secondInstallmentPaidAt?: StringNullableFilter<"StudentProfile"> | string | null
-    remarks?: StringNullableFilter<"StudentProfile"> | string | null
-    recordStatus?: EnumRecordStatusFilter<"StudentProfile"> | $Enums.RecordStatus
-    createdBy?: StringNullableFilter<"StudentProfile"> | string | null
-    updatedBy?: StringNullableFilter<"StudentProfile"> | string | null
-    createdAt?: DateTimeFilter<"StudentProfile"> | Date | string
-    updatedAt?: DateTimeFilter<"StudentProfile"> | Date | string
+  export type BranchUpsertWithoutCoursesInput = {
+    update: XOR<BranchUpdateWithoutCoursesInput, BranchUncheckedUpdateWithoutCoursesInput>
+    create: XOR<BranchCreateWithoutCoursesInput, BranchUncheckedCreateWithoutCoursesInput>
+    where?: BranchWhereInput
+  }
+
+  export type BranchUpdateToOneWithWhereWithoutCoursesInput = {
+    where?: BranchWhereInput
+    data: XOR<BranchUpdateWithoutCoursesInput, BranchUncheckedUpdateWithoutCoursesInput>
+  }
+
+  export type BranchUpdateWithoutCoursesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    branchName?: StringFieldUpdateOperationsInput | string
+    branchAdminName?: StringFieldUpdateOperationsInput | string
+    branchEmail?: StringFieldUpdateOperationsInput | string
+    branchPhone?: StringFieldUpdateOperationsInput | string
+    branchAddress?: StringFieldUpdateOperationsInput | string
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branchCity?: StringFieldUpdateOperationsInput | string
+    branchCountry?: StringFieldUpdateOperationsInput | string
+    branchCountryCode?: StringFieldUpdateOperationsInput | string
+    branchState?: StringFieldUpdateOperationsInput | string
+    branchStateCode?: StringFieldUpdateOperationsInput | string
+    adminUser?: UserUpdateOneWithoutManagedBranchNestedInput
+    branchCourses?: BranchCourseUpdateManyWithoutBranchNestedInput
+    branchFaculties?: BranchFacultyUpdateManyWithoutBranchNestedInput
+    branchStudents?: BranchStudentUpdateManyWithoutBranchNestedInput
+  }
+
+  export type BranchUncheckedUpdateWithoutCoursesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    branchName?: StringFieldUpdateOperationsInput | string
+    branchAdminName?: StringFieldUpdateOperationsInput | string
+    branchEmail?: StringFieldUpdateOperationsInput | string
+    branchPhone?: StringFieldUpdateOperationsInput | string
+    branchAddress?: StringFieldUpdateOperationsInput | string
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    adminUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branchCity?: StringFieldUpdateOperationsInput | string
+    branchCountry?: StringFieldUpdateOperationsInput | string
+    branchCountryCode?: StringFieldUpdateOperationsInput | string
+    branchState?: StringFieldUpdateOperationsInput | string
+    branchStateCode?: StringFieldUpdateOperationsInput | string
+    branchCourses?: BranchCourseUncheckedUpdateManyWithoutBranchNestedInput
+    branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutBranchNestedInput
+    branchStudents?: BranchStudentUncheckedUpdateManyWithoutBranchNestedInput
+  }
+
+  export type CourseModuleUpsertWithWhereUniqueWithoutCourseInput = {
+    where: CourseModuleWhereUniqueInput
+    update: XOR<CourseModuleUpdateWithoutCourseInput, CourseModuleUncheckedUpdateWithoutCourseInput>
+    create: XOR<CourseModuleCreateWithoutCourseInput, CourseModuleUncheckedCreateWithoutCourseInput>
+  }
+
+  export type CourseModuleUpdateWithWhereUniqueWithoutCourseInput = {
+    where: CourseModuleWhereUniqueInput
+    data: XOR<CourseModuleUpdateWithoutCourseInput, CourseModuleUncheckedUpdateWithoutCourseInput>
+  }
+
+  export type CourseModuleUpdateManyWithWhereWithoutCourseInput = {
+    where: CourseModuleScalarWhereInput
+    data: XOR<CourseModuleUpdateManyMutationInput, CourseModuleUncheckedUpdateManyWithoutCourseInput>
+  }
+
+  export type CourseModuleScalarWhereInput = {
+    AND?: CourseModuleScalarWhereInput | CourseModuleScalarWhereInput[]
+    OR?: CourseModuleScalarWhereInput[]
+    NOT?: CourseModuleScalarWhereInput | CourseModuleScalarWhereInput[]
+    id?: StringFilter<"CourseModule"> | string
+    courseId?: StringFilter<"CourseModule"> | string
+    title?: StringFilter<"CourseModule"> | string
+    titleKey?: StringFilter<"CourseModule"> | string
+    description?: StringNullableFilter<"CourseModule"> | string | null
+    sequenceNo?: IntFilter<"CourseModule"> | number
+    status?: EnumRecordStatusFilter<"CourseModule"> | $Enums.RecordStatus
+    statusChangedAt?: DateTimeNullableFilter<"CourseModule"> | Date | string | null
+    statusChangedBy?: StringNullableFilter<"CourseModule"> | string | null
+    createdBy?: StringNullableFilter<"CourseModule"> | string | null
+    updatedBy?: StringNullableFilter<"CourseModule"> | string | null
+    createdAt?: DateTimeFilter<"CourseModule"> | Date | string
+    updatedAt?: DateTimeFilter<"CourseModule"> | Date | string
+  }
+
+  export type CourseStatusHistoryUpsertWithWhereUniqueWithoutCourseInput = {
+    where: CourseStatusHistoryWhereUniqueInput
+    update: XOR<CourseStatusHistoryUpdateWithoutCourseInput, CourseStatusHistoryUncheckedUpdateWithoutCourseInput>
+    create: XOR<CourseStatusHistoryCreateWithoutCourseInput, CourseStatusHistoryUncheckedCreateWithoutCourseInput>
+  }
+
+  export type CourseStatusHistoryUpdateWithWhereUniqueWithoutCourseInput = {
+    where: CourseStatusHistoryWhereUniqueInput
+    data: XOR<CourseStatusHistoryUpdateWithoutCourseInput, CourseStatusHistoryUncheckedUpdateWithoutCourseInput>
+  }
+
+  export type CourseStatusHistoryUpdateManyWithWhereWithoutCourseInput = {
+    where: CourseStatusHistoryScalarWhereInput
+    data: XOR<CourseStatusHistoryUpdateManyMutationInput, CourseStatusHistoryUncheckedUpdateManyWithoutCourseInput>
+  }
+
+  export type CourseStatusHistoryScalarWhereInput = {
+    AND?: CourseStatusHistoryScalarWhereInput | CourseStatusHistoryScalarWhereInput[]
+    OR?: CourseStatusHistoryScalarWhereInput[]
+    NOT?: CourseStatusHistoryScalarWhereInput | CourseStatusHistoryScalarWhereInput[]
+    id?: StringFilter<"CourseStatusHistory"> | string
+    courseId?: StringFilter<"CourseStatusHistory"> | string
+    fromStatus?: EnumRecordStatusNullableFilter<"CourseStatusHistory"> | $Enums.RecordStatus | null
+    toStatus?: EnumRecordStatusFilter<"CourseStatusHistory"> | $Enums.RecordStatus
+    changedBy?: StringNullableFilter<"CourseStatusHistory"> | string | null
+    reason?: StringNullableFilter<"CourseStatusHistory"> | string | null
+    changedAt?: DateTimeFilter<"CourseStatusHistory"> | Date | string
+  }
+
+  export type FacultyBatchEntryUpsertWithWhereUniqueWithoutCourseInput = {
+    where: FacultyBatchEntryWhereUniqueInput
+    update: XOR<FacultyBatchEntryUpdateWithoutCourseInput, FacultyBatchEntryUncheckedUpdateWithoutCourseInput>
+    create: XOR<FacultyBatchEntryCreateWithoutCourseInput, FacultyBatchEntryUncheckedCreateWithoutCourseInput>
+  }
+
+  export type FacultyBatchEntryUpdateWithWhereUniqueWithoutCourseInput = {
+    where: FacultyBatchEntryWhereUniqueInput
+    data: XOR<FacultyBatchEntryUpdateWithoutCourseInput, FacultyBatchEntryUncheckedUpdateWithoutCourseInput>
+  }
+
+  export type FacultyBatchEntryUpdateManyWithWhereWithoutCourseInput = {
+    where: FacultyBatchEntryScalarWhereInput
+    data: XOR<FacultyBatchEntryUpdateManyMutationInput, FacultyBatchEntryUncheckedUpdateManyWithoutCourseInput>
+  }
+
+  export type FacultyBatchEntryScalarWhereInput = {
+    AND?: FacultyBatchEntryScalarWhereInput | FacultyBatchEntryScalarWhereInput[]
+    OR?: FacultyBatchEntryScalarWhereInput[]
+    NOT?: FacultyBatchEntryScalarWhereInput | FacultyBatchEntryScalarWhereInput[]
+    id?: StringFilter<"FacultyBatchEntry"> | string
+    facultyId?: StringFilter<"FacultyBatchEntry"> | string
+    batchName?: StringFilter<"FacultyBatchEntry"> | string
+    batchTiming?: StringFilter<"FacultyBatchEntry"> | string
+    sequenceNo?: IntFilter<"FacultyBatchEntry"> | number
+    createdAt?: DateTimeFilter<"FacultyBatchEntry"> | Date | string
+    updatedAt?: DateTimeFilter<"FacultyBatchEntry"> | Date | string
+    courseId?: StringNullableFilter<"FacultyBatchEntry"> | string | null
+  }
+
+  export type FacultyCourseAssignmentUpsertWithWhereUniqueWithoutCourseInput = {
+    where: FacultyCourseAssignmentWhereUniqueInput
+    update: XOR<FacultyCourseAssignmentUpdateWithoutCourseInput, FacultyCourseAssignmentUncheckedUpdateWithoutCourseInput>
+    create: XOR<FacultyCourseAssignmentCreateWithoutCourseInput, FacultyCourseAssignmentUncheckedCreateWithoutCourseInput>
+  }
+
+  export type FacultyCourseAssignmentUpdateWithWhereUniqueWithoutCourseInput = {
+    where: FacultyCourseAssignmentWhereUniqueInput
+    data: XOR<FacultyCourseAssignmentUpdateWithoutCourseInput, FacultyCourseAssignmentUncheckedUpdateWithoutCourseInput>
+  }
+
+  export type FacultyCourseAssignmentUpdateManyWithWhereWithoutCourseInput = {
+    where: FacultyCourseAssignmentScalarWhereInput
+    data: XOR<FacultyCourseAssignmentUpdateManyMutationInput, FacultyCourseAssignmentUncheckedUpdateManyWithoutCourseInput>
+  }
+
+  export type FacultyCourseAssignmentScalarWhereInput = {
+    AND?: FacultyCourseAssignmentScalarWhereInput | FacultyCourseAssignmentScalarWhereInput[]
+    OR?: FacultyCourseAssignmentScalarWhereInput[]
+    NOT?: FacultyCourseAssignmentScalarWhereInput | FacultyCourseAssignmentScalarWhereInput[]
+    id?: StringFilter<"FacultyCourseAssignment"> | string
+    facultyId?: StringFilter<"FacultyCourseAssignment"> | string
+    courseId?: StringFilter<"FacultyCourseAssignment"> | string
+    createdBy?: StringNullableFilter<"FacultyCourseAssignment"> | string | null
+    updatedBy?: StringNullableFilter<"FacultyCourseAssignment"> | string | null
+    createdAt?: DateTimeFilter<"FacultyCourseAssignment"> | Date | string
+    updatedAt?: DateTimeFilter<"FacultyCourseAssignment"> | Date | string
   }
 
   export type FacultyProfileUpsertWithWhereUniqueWithoutCourseInput = {
@@ -47869,108 +45917,69 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"FacultyProfile"> | Date | string
   }
 
-  export type FacultyCourseAssignmentUpsertWithWhereUniqueWithoutCourseInput = {
-    where: FacultyCourseAssignmentWhereUniqueInput
-    update: XOR<FacultyCourseAssignmentUpdateWithoutCourseInput, FacultyCourseAssignmentUncheckedUpdateWithoutCourseInput>
-    create: XOR<FacultyCourseAssignmentCreateWithoutCourseInput, FacultyCourseAssignmentUncheckedCreateWithoutCourseInput>
+  export type StudentProfileUpsertWithWhereUniqueWithoutCourseInput = {
+    where: StudentProfileWhereUniqueInput
+    update: XOR<StudentProfileUpdateWithoutCourseInput, StudentProfileUncheckedUpdateWithoutCourseInput>
+    create: XOR<StudentProfileCreateWithoutCourseInput, StudentProfileUncheckedCreateWithoutCourseInput>
   }
 
-  export type FacultyCourseAssignmentUpdateWithWhereUniqueWithoutCourseInput = {
-    where: FacultyCourseAssignmentWhereUniqueInput
-    data: XOR<FacultyCourseAssignmentUpdateWithoutCourseInput, FacultyCourseAssignmentUncheckedUpdateWithoutCourseInput>
+  export type StudentProfileUpdateWithWhereUniqueWithoutCourseInput = {
+    where: StudentProfileWhereUniqueInput
+    data: XOR<StudentProfileUpdateWithoutCourseInput, StudentProfileUncheckedUpdateWithoutCourseInput>
   }
 
-  export type FacultyCourseAssignmentUpdateManyWithWhereWithoutCourseInput = {
-    where: FacultyCourseAssignmentScalarWhereInput
-    data: XOR<FacultyCourseAssignmentUpdateManyMutationInput, FacultyCourseAssignmentUncheckedUpdateManyWithoutCourseInput>
+  export type StudentProfileUpdateManyWithWhereWithoutCourseInput = {
+    where: StudentProfileScalarWhereInput
+    data: XOR<StudentProfileUpdateManyMutationInput, StudentProfileUncheckedUpdateManyWithoutCourseInput>
   }
 
-  export type FacultyCourseAssignmentScalarWhereInput = {
-    AND?: FacultyCourseAssignmentScalarWhereInput | FacultyCourseAssignmentScalarWhereInput[]
-    OR?: FacultyCourseAssignmentScalarWhereInput[]
-    NOT?: FacultyCourseAssignmentScalarWhereInput | FacultyCourseAssignmentScalarWhereInput[]
-    id?: StringFilter<"FacultyCourseAssignment"> | string
-    facultyId?: StringFilter<"FacultyCourseAssignment"> | string
-    courseId?: StringFilter<"FacultyCourseAssignment"> | string
-    createdBy?: StringNullableFilter<"FacultyCourseAssignment"> | string | null
-    updatedBy?: StringNullableFilter<"FacultyCourseAssignment"> | string | null
-    createdAt?: DateTimeFilter<"FacultyCourseAssignment"> | Date | string
-    updatedAt?: DateTimeFilter<"FacultyCourseAssignment"> | Date | string
-  }
-
-  export type FacultyBatchEntryUpsertWithWhereUniqueWithoutCourseInput = {
-    where: FacultyBatchEntryWhereUniqueInput
-    update: XOR<FacultyBatchEntryUpdateWithoutCourseInput, FacultyBatchEntryUncheckedUpdateWithoutCourseInput>
-    create: XOR<FacultyBatchEntryCreateWithoutCourseInput, FacultyBatchEntryUncheckedCreateWithoutCourseInput>
-  }
-
-  export type FacultyBatchEntryUpdateWithWhereUniqueWithoutCourseInput = {
-    where: FacultyBatchEntryWhereUniqueInput
-    data: XOR<FacultyBatchEntryUpdateWithoutCourseInput, FacultyBatchEntryUncheckedUpdateWithoutCourseInput>
-  }
-
-  export type FacultyBatchEntryUpdateManyWithWhereWithoutCourseInput = {
-    where: FacultyBatchEntryScalarWhereInput
-    data: XOR<FacultyBatchEntryUpdateManyMutationInput, FacultyBatchEntryUncheckedUpdateManyWithoutCourseInput>
-  }
-
-  export type FacultyBatchEntryScalarWhereInput = {
-    AND?: FacultyBatchEntryScalarWhereInput | FacultyBatchEntryScalarWhereInput[]
-    OR?: FacultyBatchEntryScalarWhereInput[]
-    NOT?: FacultyBatchEntryScalarWhereInput | FacultyBatchEntryScalarWhereInput[]
-    id?: StringFilter<"FacultyBatchEntry"> | string
-    facultyId?: StringFilter<"FacultyBatchEntry"> | string
-    courseId?: StringNullableFilter<"FacultyBatchEntry"> | string | null
-    batchName?: StringFilter<"FacultyBatchEntry"> | string
-    batchTiming?: StringFilter<"FacultyBatchEntry"> | string
-    sequenceNo?: IntFilter<"FacultyBatchEntry"> | number
-    createdAt?: DateTimeFilter<"FacultyBatchEntry"> | Date | string
-    updatedAt?: DateTimeFilter<"FacultyBatchEntry"> | Date | string
-  }
-
-  export type CourseStatusHistoryUpsertWithWhereUniqueWithoutCourseInput = {
-    where: CourseStatusHistoryWhereUniqueInput
-    update: XOR<CourseStatusHistoryUpdateWithoutCourseInput, CourseStatusHistoryUncheckedUpdateWithoutCourseInput>
-    create: XOR<CourseStatusHistoryCreateWithoutCourseInput, CourseStatusHistoryUncheckedCreateWithoutCourseInput>
-  }
-
-  export type CourseStatusHistoryUpdateWithWhereUniqueWithoutCourseInput = {
-    where: CourseStatusHistoryWhereUniqueInput
-    data: XOR<CourseStatusHistoryUpdateWithoutCourseInput, CourseStatusHistoryUncheckedUpdateWithoutCourseInput>
-  }
-
-  export type CourseStatusHistoryUpdateManyWithWhereWithoutCourseInput = {
-    where: CourseStatusHistoryScalarWhereInput
-    data: XOR<CourseStatusHistoryUpdateManyMutationInput, CourseStatusHistoryUncheckedUpdateManyWithoutCourseInput>
-  }
-
-  export type CourseStatusHistoryScalarWhereInput = {
-    AND?: CourseStatusHistoryScalarWhereInput | CourseStatusHistoryScalarWhereInput[]
-    OR?: CourseStatusHistoryScalarWhereInput[]
-    NOT?: CourseStatusHistoryScalarWhereInput | CourseStatusHistoryScalarWhereInput[]
-    id?: StringFilter<"CourseStatusHistory"> | string
-    courseId?: StringFilter<"CourseStatusHistory"> | string
-    fromStatus?: EnumRecordStatusNullableFilter<"CourseStatusHistory"> | $Enums.RecordStatus | null
-    toStatus?: EnumRecordStatusFilter<"CourseStatusHistory"> | $Enums.RecordStatus
-    changedBy?: StringNullableFilter<"CourseStatusHistory"> | string | null
-    reason?: StringNullableFilter<"CourseStatusHistory"> | string | null
-    changedAt?: DateTimeFilter<"CourseStatusHistory"> | Date | string
-  }
-
-  export type BranchFacultyUpsertWithWhereUniqueWithoutCourseInput = {
-    where: BranchFacultyWhereUniqueInput
-    update: XOR<BranchFacultyUpdateWithoutCourseInput, BranchFacultyUncheckedUpdateWithoutCourseInput>
-    create: XOR<BranchFacultyCreateWithoutCourseInput, BranchFacultyUncheckedCreateWithoutCourseInput>
-  }
-
-  export type BranchFacultyUpdateWithWhereUniqueWithoutCourseInput = {
-    where: BranchFacultyWhereUniqueInput
-    data: XOR<BranchFacultyUpdateWithoutCourseInput, BranchFacultyUncheckedUpdateWithoutCourseInput>
-  }
-
-  export type BranchFacultyUpdateManyWithWhereWithoutCourseInput = {
-    where: BranchFacultyScalarWhereInput
-    data: XOR<BranchFacultyUpdateManyMutationInput, BranchFacultyUncheckedUpdateManyWithoutCourseInput>
+  export type StudentProfileScalarWhereInput = {
+    AND?: StudentProfileScalarWhereInput | StudentProfileScalarWhereInput[]
+    OR?: StudentProfileScalarWhereInput[]
+    NOT?: StudentProfileScalarWhereInput | StudentProfileScalarWhereInput[]
+    id?: StringFilter<"StudentProfile"> | string
+    studentCode?: StringFilter<"StudentProfile"> | string
+    studentName?: StringFilter<"StudentProfile"> | string
+    mobileNumber?: StringFilter<"StudentProfile"> | string
+    emailAddress?: StringFilter<"StudentProfile"> | string
+    parentSpouseNumber?: StringNullableFilter<"StudentProfile"> | string | null
+    location?: StringNullableFilter<"StudentProfile"> | string | null
+    courseId?: StringNullableFilter<"StudentProfile"> | string | null
+    courseInterested?: StringFilter<"StudentProfile"> | string
+    facultyName?: StringNullableFilter<"StudentProfile"> | string | null
+    batchName?: StringNullableFilter<"StudentProfile"> | string | null
+    qualification?: StringNullableFilter<"StudentProfile"> | string | null
+    passedOutYear?: IntNullableFilter<"StudentProfile"> | number | null
+    currentStatus?: StringNullableFilter<"StudentProfile"> | string | null
+    designation?: StringNullableFilter<"StudentProfile"> | string | null
+    source?: StringNullableFilter<"StudentProfile"> | string | null
+    actualFees?: IntNullableFilter<"StudentProfile"> | number | null
+    registrationFees?: IntNullableFilter<"StudentProfile"> | number | null
+    discount?: IntNullableFilter<"StudentProfile"> | number | null
+    afterDiscount?: IntNullableFilter<"StudentProfile"> | number | null
+    installment1?: IntNullableFilter<"StudentProfile"> | number | null
+    installment2?: IntNullableFilter<"StudentProfile"> | number | null
+    installment3?: IntNullableFilter<"StudentProfile"> | number | null
+    totalAmount?: IntNullableFilter<"StudentProfile"> | number | null
+    admissionDate?: StringFilter<"StudentProfile"> | string
+    firstInstallmentAmount?: IntNullableFilter<"StudentProfile"> | number | null
+    firstInstallmentDate?: StringNullableFilter<"StudentProfile"> | string | null
+    firstInstallmentStatus?: StringFilter<"StudentProfile"> | string
+    firstInstallmentPaidAt?: StringNullableFilter<"StudentProfile"> | string | null
+    secondInstallmentAmount?: IntNullableFilter<"StudentProfile"> | number | null
+    secondDueDate?: StringNullableFilter<"StudentProfile"> | string | null
+    secondInstallmentStatus?: StringFilter<"StudentProfile"> | string
+    secondInstallmentPaidAt?: StringNullableFilter<"StudentProfile"> | string | null
+    remarks?: StringNullableFilter<"StudentProfile"> | string | null
+    recordStatus?: EnumRecordStatusFilter<"StudentProfile"> | $Enums.RecordStatus
+    createdBy?: StringNullableFilter<"StudentProfile"> | string | null
+    updatedBy?: StringNullableFilter<"StudentProfile"> | string | null
+    createdAt?: DateTimeFilter<"StudentProfile"> | Date | string
+    updatedAt?: DateTimeFilter<"StudentProfile"> | Date | string
+    installment4?: IntNullableFilter<"StudentProfile"> | number | null
+    batchId?: StringNullableFilter<"StudentProfile"> | string | null
+    facultyId?: StringNullableFilter<"StudentProfile"> | string | null
+    linkedInUrl?: StringNullableFilter<"StudentProfile"> | string | null
   }
 
   export type BranchCreateWithoutBranchCoursesInput = {
@@ -47980,22 +45989,21 @@ export namespace Prisma {
     branchAdminName: string
     branchEmail: string
     branchPhone: string
-    branchCountryCode?: string
-    branchCountry?: string
-    branchStateCode?: string
-    branchState?: string
-    branchCity?: string
     branchAddress: string
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    branchCity?: string
+    branchCountry?: string
+    branchCountryCode?: string
+    branchState?: string
+    branchStateCode?: string
     adminUser?: UserCreateNestedOneWithoutManagedBranchInput
-    courses?: CourseCreateNestedManyWithoutBranchInput
     branchFaculties?: BranchFacultyCreateNestedManyWithoutBranchInput
     branchStudents?: BranchStudentCreateNestedManyWithoutBranchInput
-    branchInstallmentTemplates?: BranchInstallmentTemplateCreateNestedManyWithoutBranchInput
+    courses?: CourseCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutBranchCoursesInput = {
@@ -48005,11 +46013,6 @@ export namespace Prisma {
     branchAdminName: string
     branchEmail: string
     branchPhone: string
-    branchCountryCode?: string
-    branchCountry?: string
-    branchStateCode?: string
-    branchState?: string
-    branchCity?: string
     branchAddress: string
     status?: $Enums.RecordStatus
     adminUserId?: string | null
@@ -48017,10 +46020,14 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    courses?: CourseUncheckedCreateNestedManyWithoutBranchInput
+    branchCity?: string
+    branchCountry?: string
+    branchCountryCode?: string
+    branchState?: string
+    branchStateCode?: string
     branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutBranchInput
     branchStudents?: BranchStudentUncheckedCreateNestedManyWithoutBranchInput
-    branchInstallmentTemplates?: BranchInstallmentTemplateUncheckedCreateNestedManyWithoutBranchInput
+    courses?: CourseUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutBranchCoursesInput = {
@@ -48100,12 +46107,12 @@ export namespace Prisma {
     stateCode?: string | null
     city?: string | null
     address?: string | null
-    courseId?: string | null
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    courseId?: string | null
   }
 
   export type BranchFacultyCreateOrConnectWithoutBranchCourseInput = {
@@ -48116,43 +46123,6 @@ export namespace Prisma {
   export type BranchFacultyCreateManyBranchCourseInputEnvelope = {
     data: BranchFacultyCreateManyBranchCourseInput | BranchFacultyCreateManyBranchCourseInput[]
     skipDuplicates?: boolean
-  }
-
-  export type BranchInstallmentTemplateCreateWithoutBranchCourseInput = {
-    id?: string
-    templateName: string
-    planType?: string
-    installmentCount: number
-    installments: JsonNullValueInput | InputJsonValue
-    dueRule?: string | null
-    allowCustomization?: boolean
-    status?: $Enums.RecordStatus
-    createdBy?: string | null
-    updatedBy?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    branch: BranchCreateNestedOneWithoutBranchInstallmentTemplatesInput
-  }
-
-  export type BranchInstallmentTemplateUncheckedCreateWithoutBranchCourseInput = {
-    id?: string
-    branchId: string
-    templateName: string
-    planType?: string
-    installmentCount: number
-    installments: JsonNullValueInput | InputJsonValue
-    dueRule?: string | null
-    allowCustomization?: boolean
-    status?: $Enums.RecordStatus
-    createdBy?: string | null
-    updatedBy?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type BranchInstallmentTemplateCreateOrConnectWithoutBranchCourseInput = {
-    where: BranchInstallmentTemplateWhereUniqueInput
-    create: XOR<BranchInstallmentTemplateCreateWithoutBranchCourseInput, BranchInstallmentTemplateUncheckedCreateWithoutBranchCourseInput>
   }
 
   export type BranchUpsertWithoutBranchCoursesInput = {
@@ -48173,22 +46143,21 @@ export namespace Prisma {
     branchAdminName?: StringFieldUpdateOperationsInput | string
     branchEmail?: StringFieldUpdateOperationsInput | string
     branchPhone?: StringFieldUpdateOperationsInput | string
-    branchCountryCode?: StringFieldUpdateOperationsInput | string
-    branchCountry?: StringFieldUpdateOperationsInput | string
-    branchStateCode?: StringFieldUpdateOperationsInput | string
-    branchState?: StringFieldUpdateOperationsInput | string
-    branchCity?: StringFieldUpdateOperationsInput | string
     branchAddress?: StringFieldUpdateOperationsInput | string
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branchCity?: StringFieldUpdateOperationsInput | string
+    branchCountry?: StringFieldUpdateOperationsInput | string
+    branchCountryCode?: StringFieldUpdateOperationsInput | string
+    branchState?: StringFieldUpdateOperationsInput | string
+    branchStateCode?: StringFieldUpdateOperationsInput | string
     adminUser?: UserUpdateOneWithoutManagedBranchNestedInput
-    courses?: CourseUpdateManyWithoutBranchNestedInput
     branchFaculties?: BranchFacultyUpdateManyWithoutBranchNestedInput
     branchStudents?: BranchStudentUpdateManyWithoutBranchNestedInput
-    branchInstallmentTemplates?: BranchInstallmentTemplateUpdateManyWithoutBranchNestedInput
+    courses?: CourseUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutBranchCoursesInput = {
@@ -48198,11 +46167,6 @@ export namespace Prisma {
     branchAdminName?: StringFieldUpdateOperationsInput | string
     branchEmail?: StringFieldUpdateOperationsInput | string
     branchPhone?: StringFieldUpdateOperationsInput | string
-    branchCountryCode?: StringFieldUpdateOperationsInput | string
-    branchCountry?: StringFieldUpdateOperationsInput | string
-    branchStateCode?: StringFieldUpdateOperationsInput | string
-    branchState?: StringFieldUpdateOperationsInput | string
-    branchCity?: StringFieldUpdateOperationsInput | string
     branchAddress?: StringFieldUpdateOperationsInput | string
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     adminUserId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -48210,10 +46174,14 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    courses?: CourseUncheckedUpdateManyWithoutBranchNestedInput
+    branchCity?: StringFieldUpdateOperationsInput | string
+    branchCountry?: StringFieldUpdateOperationsInput | string
+    branchCountryCode?: StringFieldUpdateOperationsInput | string
+    branchState?: StringFieldUpdateOperationsInput | string
+    branchStateCode?: StringFieldUpdateOperationsInput | string
     branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutBranchNestedInput
     branchStudents?: BranchStudentUncheckedUpdateManyWithoutBranchNestedInput
-    branchInstallmentTemplates?: BranchInstallmentTemplateUncheckedUpdateManyWithoutBranchNestedInput
+    courses?: CourseUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchCourseModuleUpsertWithWhereUniqueWithoutBranchCourseInput = {
@@ -48265,273 +46233,6 @@ export namespace Prisma {
     data: XOR<BranchFacultyUpdateManyMutationInput, BranchFacultyUncheckedUpdateManyWithoutBranchCourseInput>
   }
 
-  export type BranchInstallmentTemplateUpsertWithoutBranchCourseInput = {
-    update: XOR<BranchInstallmentTemplateUpdateWithoutBranchCourseInput, BranchInstallmentTemplateUncheckedUpdateWithoutBranchCourseInput>
-    create: XOR<BranchInstallmentTemplateCreateWithoutBranchCourseInput, BranchInstallmentTemplateUncheckedCreateWithoutBranchCourseInput>
-    where?: BranchInstallmentTemplateWhereInput
-  }
-
-  export type BranchInstallmentTemplateUpdateToOneWithWhereWithoutBranchCourseInput = {
-    where?: BranchInstallmentTemplateWhereInput
-    data: XOR<BranchInstallmentTemplateUpdateWithoutBranchCourseInput, BranchInstallmentTemplateUncheckedUpdateWithoutBranchCourseInput>
-  }
-
-  export type BranchInstallmentTemplateUpdateWithoutBranchCourseInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    templateName?: StringFieldUpdateOperationsInput | string
-    planType?: StringFieldUpdateOperationsInput | string
-    installmentCount?: IntFieldUpdateOperationsInput | number
-    installments?: JsonNullValueInput | InputJsonValue
-    dueRule?: NullableStringFieldUpdateOperationsInput | string | null
-    allowCustomization?: BoolFieldUpdateOperationsInput | boolean
-    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    branch?: BranchUpdateOneRequiredWithoutBranchInstallmentTemplatesNestedInput
-  }
-
-  export type BranchInstallmentTemplateUncheckedUpdateWithoutBranchCourseInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    branchId?: StringFieldUpdateOperationsInput | string
-    templateName?: StringFieldUpdateOperationsInput | string
-    planType?: StringFieldUpdateOperationsInput | string
-    installmentCount?: IntFieldUpdateOperationsInput | number
-    installments?: JsonNullValueInput | InputJsonValue
-    dueRule?: NullableStringFieldUpdateOperationsInput | string | null
-    allowCustomization?: BoolFieldUpdateOperationsInput | boolean
-    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type BranchCreateWithoutBranchInstallmentTemplatesInput = {
-    id?: string
-    branchId: string
-    branchName: string
-    branchAdminName: string
-    branchEmail: string
-    branchPhone: string
-    branchCountryCode?: string
-    branchCountry?: string
-    branchStateCode?: string
-    branchState?: string
-    branchCity?: string
-    branchAddress: string
-    status?: $Enums.RecordStatus
-    createdBy?: string | null
-    updatedBy?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    adminUser?: UserCreateNestedOneWithoutManagedBranchInput
-    courses?: CourseCreateNestedManyWithoutBranchInput
-    branchCourses?: BranchCourseCreateNestedManyWithoutBranchInput
-    branchFaculties?: BranchFacultyCreateNestedManyWithoutBranchInput
-    branchStudents?: BranchStudentCreateNestedManyWithoutBranchInput
-  }
-
-  export type BranchUncheckedCreateWithoutBranchInstallmentTemplatesInput = {
-    id?: string
-    branchId: string
-    branchName: string
-    branchAdminName: string
-    branchEmail: string
-    branchPhone: string
-    branchCountryCode?: string
-    branchCountry?: string
-    branchStateCode?: string
-    branchState?: string
-    branchCity?: string
-    branchAddress: string
-    status?: $Enums.RecordStatus
-    adminUserId?: string | null
-    createdBy?: string | null
-    updatedBy?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    courses?: CourseUncheckedCreateNestedManyWithoutBranchInput
-    branchCourses?: BranchCourseUncheckedCreateNestedManyWithoutBranchInput
-    branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutBranchInput
-    branchStudents?: BranchStudentUncheckedCreateNestedManyWithoutBranchInput
-  }
-
-  export type BranchCreateOrConnectWithoutBranchInstallmentTemplatesInput = {
-    where: BranchWhereUniqueInput
-    create: XOR<BranchCreateWithoutBranchInstallmentTemplatesInput, BranchUncheckedCreateWithoutBranchInstallmentTemplatesInput>
-  }
-
-  export type BranchCourseCreateWithoutInstallmentTemplateInput = {
-    id?: string
-    courseCode: string
-    name: string
-    nameKey: string
-    description?: string | null
-    mode: string
-    duration?: number | null
-    hours?: number | null
-    actualFees?: number | null
-    registrationFees?: number | null
-    discount?: number | null
-    afterDiscount?: number | null
-    status?: $Enums.RecordStatus
-    createdBy?: string | null
-    updatedBy?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    branch: BranchCreateNestedOneWithoutBranchCoursesInput
-    modules?: BranchCourseModuleCreateNestedManyWithoutBranchCourseInput
-    branchFaculties?: BranchFacultyCreateNestedManyWithoutBranchCourseInput
-  }
-
-  export type BranchCourseUncheckedCreateWithoutInstallmentTemplateInput = {
-    id?: string
-    branchId: string
-    courseCode: string
-    name: string
-    nameKey: string
-    description?: string | null
-    mode: string
-    duration?: number | null
-    hours?: number | null
-    actualFees?: number | null
-    registrationFees?: number | null
-    discount?: number | null
-    afterDiscount?: number | null
-    status?: $Enums.RecordStatus
-    createdBy?: string | null
-    updatedBy?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    modules?: BranchCourseModuleUncheckedCreateNestedManyWithoutBranchCourseInput
-    branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutBranchCourseInput
-  }
-
-  export type BranchCourseCreateOrConnectWithoutInstallmentTemplateInput = {
-    where: BranchCourseWhereUniqueInput
-    create: XOR<BranchCourseCreateWithoutInstallmentTemplateInput, BranchCourseUncheckedCreateWithoutInstallmentTemplateInput>
-  }
-
-  export type BranchUpsertWithoutBranchInstallmentTemplatesInput = {
-    update: XOR<BranchUpdateWithoutBranchInstallmentTemplatesInput, BranchUncheckedUpdateWithoutBranchInstallmentTemplatesInput>
-    create: XOR<BranchCreateWithoutBranchInstallmentTemplatesInput, BranchUncheckedCreateWithoutBranchInstallmentTemplatesInput>
-    where?: BranchWhereInput
-  }
-
-  export type BranchUpdateToOneWithWhereWithoutBranchInstallmentTemplatesInput = {
-    where?: BranchWhereInput
-    data: XOR<BranchUpdateWithoutBranchInstallmentTemplatesInput, BranchUncheckedUpdateWithoutBranchInstallmentTemplatesInput>
-  }
-
-  export type BranchUpdateWithoutBranchInstallmentTemplatesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    branchId?: StringFieldUpdateOperationsInput | string
-    branchName?: StringFieldUpdateOperationsInput | string
-    branchAdminName?: StringFieldUpdateOperationsInput | string
-    branchEmail?: StringFieldUpdateOperationsInput | string
-    branchPhone?: StringFieldUpdateOperationsInput | string
-    branchCountryCode?: StringFieldUpdateOperationsInput | string
-    branchCountry?: StringFieldUpdateOperationsInput | string
-    branchStateCode?: StringFieldUpdateOperationsInput | string
-    branchState?: StringFieldUpdateOperationsInput | string
-    branchCity?: StringFieldUpdateOperationsInput | string
-    branchAddress?: StringFieldUpdateOperationsInput | string
-    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    adminUser?: UserUpdateOneWithoutManagedBranchNestedInput
-    courses?: CourseUpdateManyWithoutBranchNestedInput
-    branchCourses?: BranchCourseUpdateManyWithoutBranchNestedInput
-    branchFaculties?: BranchFacultyUpdateManyWithoutBranchNestedInput
-    branchStudents?: BranchStudentUpdateManyWithoutBranchNestedInput
-  }
-
-  export type BranchUncheckedUpdateWithoutBranchInstallmentTemplatesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    branchId?: StringFieldUpdateOperationsInput | string
-    branchName?: StringFieldUpdateOperationsInput | string
-    branchAdminName?: StringFieldUpdateOperationsInput | string
-    branchEmail?: StringFieldUpdateOperationsInput | string
-    branchPhone?: StringFieldUpdateOperationsInput | string
-    branchCountryCode?: StringFieldUpdateOperationsInput | string
-    branchCountry?: StringFieldUpdateOperationsInput | string
-    branchStateCode?: StringFieldUpdateOperationsInput | string
-    branchState?: StringFieldUpdateOperationsInput | string
-    branchCity?: StringFieldUpdateOperationsInput | string
-    branchAddress?: StringFieldUpdateOperationsInput | string
-    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
-    adminUserId?: NullableStringFieldUpdateOperationsInput | string | null
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    courses?: CourseUncheckedUpdateManyWithoutBranchNestedInput
-    branchCourses?: BranchCourseUncheckedUpdateManyWithoutBranchNestedInput
-    branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutBranchNestedInput
-    branchStudents?: BranchStudentUncheckedUpdateManyWithoutBranchNestedInput
-  }
-
-  export type BranchCourseUpsertWithoutInstallmentTemplateInput = {
-    update: XOR<BranchCourseUpdateWithoutInstallmentTemplateInput, BranchCourseUncheckedUpdateWithoutInstallmentTemplateInput>
-    create: XOR<BranchCourseCreateWithoutInstallmentTemplateInput, BranchCourseUncheckedCreateWithoutInstallmentTemplateInput>
-    where?: BranchCourseWhereInput
-  }
-
-  export type BranchCourseUpdateToOneWithWhereWithoutInstallmentTemplateInput = {
-    where?: BranchCourseWhereInput
-    data: XOR<BranchCourseUpdateWithoutInstallmentTemplateInput, BranchCourseUncheckedUpdateWithoutInstallmentTemplateInput>
-  }
-
-  export type BranchCourseUpdateWithoutInstallmentTemplateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    courseCode?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    nameKey?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    mode?: StringFieldUpdateOperationsInput | string
-    duration?: NullableIntFieldUpdateOperationsInput | number | null
-    hours?: NullableIntFieldUpdateOperationsInput | number | null
-    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
-    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
-    discount?: NullableIntFieldUpdateOperationsInput | number | null
-    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
-    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    branch?: BranchUpdateOneRequiredWithoutBranchCoursesNestedInput
-    modules?: BranchCourseModuleUpdateManyWithoutBranchCourseNestedInput
-    branchFaculties?: BranchFacultyUpdateManyWithoutBranchCourseNestedInput
-  }
-
-  export type BranchCourseUncheckedUpdateWithoutInstallmentTemplateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    branchId?: StringFieldUpdateOperationsInput | string
-    courseCode?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    nameKey?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    mode?: StringFieldUpdateOperationsInput | string
-    duration?: NullableIntFieldUpdateOperationsInput | number | null
-    hours?: NullableIntFieldUpdateOperationsInput | number | null
-    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
-    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
-    discount?: NullableIntFieldUpdateOperationsInput | number | null
-    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
-    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    modules?: BranchCourseModuleUncheckedUpdateManyWithoutBranchCourseNestedInput
-    branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutBranchCourseNestedInput
-  }
-
   export type BranchCourseCreateWithoutModulesInput = {
     id?: string
     courseCode: string
@@ -48552,7 +46253,6 @@ export namespace Prisma {
     updatedAt?: Date | string
     branch: BranchCreateNestedOneWithoutBranchCoursesInput
     branchFaculties?: BranchFacultyCreateNestedManyWithoutBranchCourseInput
-    installmentTemplate?: BranchInstallmentTemplateCreateNestedOneWithoutBranchCourseInput
   }
 
   export type BranchCourseUncheckedCreateWithoutModulesInput = {
@@ -48575,7 +46275,6 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutBranchCourseInput
-    installmentTemplate?: BranchInstallmentTemplateUncheckedCreateNestedOneWithoutBranchCourseInput
   }
 
   export type BranchCourseCreateOrConnectWithoutModulesInput = {
@@ -48650,7 +46349,6 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     branch?: BranchUpdateOneRequiredWithoutBranchCoursesNestedInput
     branchFaculties?: BranchFacultyUpdateManyWithoutBranchCourseNestedInput
-    installmentTemplate?: BranchInstallmentTemplateUpdateOneWithoutBranchCourseNestedInput
   }
 
   export type BranchCourseUncheckedUpdateWithoutModulesInput = {
@@ -48673,7 +46371,6 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutBranchCourseNestedInput
-    installmentTemplate?: BranchInstallmentTemplateUncheckedUpdateOneWithoutBranchCourseNestedInput
   }
 
   export type BranchCourseSubmoduleUpsertWithWhereUniqueWithoutBranchCourseModuleInput = {
@@ -48785,7 +46482,6 @@ export namespace Prisma {
     id?: string
     name: string
     nameKey: string
-    courseCode?: string | null
     description?: string | null
     feeReference?: string | null
     mode: string
@@ -48799,7 +46495,6 @@ export namespace Prisma {
     installment1?: number | null
     installment2?: number | null
     installment3?: number | null
-    installments?: NullableJsonNullValueInput | InputJsonValue
     status?: $Enums.RecordStatus
     statusChangedAt?: Date | string | null
     statusChangedBy?: string | null
@@ -48807,22 +46502,22 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    branch?: BranchCreateNestedOneWithoutCoursesInput
+    installments?: NullableJsonNullValueInput | InputJsonValue
+    courseCode?: string | null
     batches?: BatchCreateNestedManyWithoutCourseInput
-    students?: StudentProfileCreateNestedManyWithoutCourseInput
-    facultyProfiles?: FacultyProfileCreateNestedManyWithoutCourseInput
-    facultyCourseAssignments?: FacultyCourseAssignmentCreateNestedManyWithoutCourseInput
-    facultyBatchEntries?: FacultyBatchEntryCreateNestedManyWithoutCourseInput
-    statusHistory?: CourseStatusHistoryCreateNestedManyWithoutCourseInput
     branchFaculties?: BranchFacultyCreateNestedManyWithoutCourseInput
+    branch?: BranchCreateNestedOneWithoutCoursesInput
+    statusHistory?: CourseStatusHistoryCreateNestedManyWithoutCourseInput
+    facultyBatchEntries?: FacultyBatchEntryCreateNestedManyWithoutCourseInput
+    facultyCourseAssignments?: FacultyCourseAssignmentCreateNestedManyWithoutCourseInput
+    facultyProfiles?: FacultyProfileCreateNestedManyWithoutCourseInput
+    students?: StudentProfileCreateNestedManyWithoutCourseInput
   }
 
   export type CourseUncheckedCreateWithoutModulesInput = {
     id?: string
     name: string
     nameKey: string
-    courseCode?: string | null
-    branchId?: string | null
     description?: string | null
     feeReference?: string | null
     mode: string
@@ -48836,7 +46531,6 @@ export namespace Prisma {
     installment1?: number | null
     installment2?: number | null
     installment3?: number | null
-    installments?: NullableJsonNullValueInput | InputJsonValue
     status?: $Enums.RecordStatus
     statusChangedAt?: Date | string | null
     statusChangedBy?: string | null
@@ -48844,13 +46538,16 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    installments?: NullableJsonNullValueInput | InputJsonValue
+    branchId?: string | null
+    courseCode?: string | null
     batches?: BatchUncheckedCreateNestedManyWithoutCourseInput
-    students?: StudentProfileUncheckedCreateNestedManyWithoutCourseInput
-    facultyProfiles?: FacultyProfileUncheckedCreateNestedManyWithoutCourseInput
-    facultyCourseAssignments?: FacultyCourseAssignmentUncheckedCreateNestedManyWithoutCourseInput
-    facultyBatchEntries?: FacultyBatchEntryUncheckedCreateNestedManyWithoutCourseInput
-    statusHistory?: CourseStatusHistoryUncheckedCreateNestedManyWithoutCourseInput
     branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutCourseInput
+    statusHistory?: CourseStatusHistoryUncheckedCreateNestedManyWithoutCourseInput
+    facultyBatchEntries?: FacultyBatchEntryUncheckedCreateNestedManyWithoutCourseInput
+    facultyCourseAssignments?: FacultyCourseAssignmentUncheckedCreateNestedManyWithoutCourseInput
+    facultyProfiles?: FacultyProfileUncheckedCreateNestedManyWithoutCourseInput
+    students?: StudentProfileUncheckedCreateNestedManyWithoutCourseInput
   }
 
   export type CourseCreateOrConnectWithoutModulesInput = {
@@ -48873,7 +46570,6 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     nameKey?: StringFieldUpdateOperationsInput | string
-    courseCode?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     feeReference?: NullableStringFieldUpdateOperationsInput | string | null
     mode?: StringFieldUpdateOperationsInput | string
@@ -48887,7 +46583,6 @@ export namespace Prisma {
     installment1?: NullableIntFieldUpdateOperationsInput | number | null
     installment2?: NullableIntFieldUpdateOperationsInput | number | null
     installment3?: NullableIntFieldUpdateOperationsInput | number | null
-    installments?: NullableJsonNullValueInput | InputJsonValue
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     statusChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     statusChangedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -48895,22 +46590,22 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    branch?: BranchUpdateOneWithoutCoursesNestedInput
+    installments?: NullableJsonNullValueInput | InputJsonValue
+    courseCode?: NullableStringFieldUpdateOperationsInput | string | null
     batches?: BatchUpdateManyWithoutCourseNestedInput
-    students?: StudentProfileUpdateManyWithoutCourseNestedInput
-    facultyProfiles?: FacultyProfileUpdateManyWithoutCourseNestedInput
-    facultyCourseAssignments?: FacultyCourseAssignmentUpdateManyWithoutCourseNestedInput
-    facultyBatchEntries?: FacultyBatchEntryUpdateManyWithoutCourseNestedInput
-    statusHistory?: CourseStatusHistoryUpdateManyWithoutCourseNestedInput
     branchFaculties?: BranchFacultyUpdateManyWithoutCourseNestedInput
+    branch?: BranchUpdateOneWithoutCoursesNestedInput
+    statusHistory?: CourseStatusHistoryUpdateManyWithoutCourseNestedInput
+    facultyBatchEntries?: FacultyBatchEntryUpdateManyWithoutCourseNestedInput
+    facultyCourseAssignments?: FacultyCourseAssignmentUpdateManyWithoutCourseNestedInput
+    facultyProfiles?: FacultyProfileUpdateManyWithoutCourseNestedInput
+    students?: StudentProfileUpdateManyWithoutCourseNestedInput
   }
 
   export type CourseUncheckedUpdateWithoutModulesInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     nameKey?: StringFieldUpdateOperationsInput | string
-    courseCode?: NullableStringFieldUpdateOperationsInput | string | null
-    branchId?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     feeReference?: NullableStringFieldUpdateOperationsInput | string | null
     mode?: StringFieldUpdateOperationsInput | string
@@ -48924,7 +46619,6 @@ export namespace Prisma {
     installment1?: NullableIntFieldUpdateOperationsInput | number | null
     installment2?: NullableIntFieldUpdateOperationsInput | number | null
     installment3?: NullableIntFieldUpdateOperationsInput | number | null
-    installments?: NullableJsonNullValueInput | InputJsonValue
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     statusChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     statusChangedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -48932,20 +46626,22 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    installments?: NullableJsonNullValueInput | InputJsonValue
+    branchId?: NullableStringFieldUpdateOperationsInput | string | null
+    courseCode?: NullableStringFieldUpdateOperationsInput | string | null
     batches?: BatchUncheckedUpdateManyWithoutCourseNestedInput
-    students?: StudentProfileUncheckedUpdateManyWithoutCourseNestedInput
-    facultyProfiles?: FacultyProfileUncheckedUpdateManyWithoutCourseNestedInput
-    facultyCourseAssignments?: FacultyCourseAssignmentUncheckedUpdateManyWithoutCourseNestedInput
-    facultyBatchEntries?: FacultyBatchEntryUncheckedUpdateManyWithoutCourseNestedInput
-    statusHistory?: CourseStatusHistoryUncheckedUpdateManyWithoutCourseNestedInput
     branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutCourseNestedInput
+    statusHistory?: CourseStatusHistoryUncheckedUpdateManyWithoutCourseNestedInput
+    facultyBatchEntries?: FacultyBatchEntryUncheckedUpdateManyWithoutCourseNestedInput
+    facultyCourseAssignments?: FacultyCourseAssignmentUncheckedUpdateManyWithoutCourseNestedInput
+    facultyProfiles?: FacultyProfileUncheckedUpdateManyWithoutCourseNestedInput
+    students?: StudentProfileUncheckedUpdateManyWithoutCourseNestedInput
   }
 
   export type CourseCreateWithoutBatchesInput = {
     id?: string
     name: string
     nameKey: string
-    courseCode?: string | null
     description?: string | null
     feeReference?: string | null
     mode: string
@@ -48959,7 +46655,6 @@ export namespace Prisma {
     installment1?: number | null
     installment2?: number | null
     installment3?: number | null
-    installments?: NullableJsonNullValueInput | InputJsonValue
     status?: $Enums.RecordStatus
     statusChangedAt?: Date | string | null
     statusChangedBy?: string | null
@@ -48967,22 +46662,22 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    installments?: NullableJsonNullValueInput | InputJsonValue
+    courseCode?: string | null
+    branchFaculties?: BranchFacultyCreateNestedManyWithoutCourseInput
     branch?: BranchCreateNestedOneWithoutCoursesInput
     modules?: CourseModuleCreateNestedManyWithoutCourseInput
-    students?: StudentProfileCreateNestedManyWithoutCourseInput
-    facultyProfiles?: FacultyProfileCreateNestedManyWithoutCourseInput
-    facultyCourseAssignments?: FacultyCourseAssignmentCreateNestedManyWithoutCourseInput
-    facultyBatchEntries?: FacultyBatchEntryCreateNestedManyWithoutCourseInput
     statusHistory?: CourseStatusHistoryCreateNestedManyWithoutCourseInput
-    branchFaculties?: BranchFacultyCreateNestedManyWithoutCourseInput
+    facultyBatchEntries?: FacultyBatchEntryCreateNestedManyWithoutCourseInput
+    facultyCourseAssignments?: FacultyCourseAssignmentCreateNestedManyWithoutCourseInput
+    facultyProfiles?: FacultyProfileCreateNestedManyWithoutCourseInput
+    students?: StudentProfileCreateNestedManyWithoutCourseInput
   }
 
   export type CourseUncheckedCreateWithoutBatchesInput = {
     id?: string
     name: string
     nameKey: string
-    courseCode?: string | null
-    branchId?: string | null
     description?: string | null
     feeReference?: string | null
     mode: string
@@ -48996,7 +46691,6 @@ export namespace Prisma {
     installment1?: number | null
     installment2?: number | null
     installment3?: number | null
-    installments?: NullableJsonNullValueInput | InputJsonValue
     status?: $Enums.RecordStatus
     statusChangedAt?: Date | string | null
     statusChangedBy?: string | null
@@ -49004,13 +46698,16 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    modules?: CourseModuleUncheckedCreateNestedManyWithoutCourseInput
-    students?: StudentProfileUncheckedCreateNestedManyWithoutCourseInput
-    facultyProfiles?: FacultyProfileUncheckedCreateNestedManyWithoutCourseInput
-    facultyCourseAssignments?: FacultyCourseAssignmentUncheckedCreateNestedManyWithoutCourseInput
-    facultyBatchEntries?: FacultyBatchEntryUncheckedCreateNestedManyWithoutCourseInput
-    statusHistory?: CourseStatusHistoryUncheckedCreateNestedManyWithoutCourseInput
+    installments?: NullableJsonNullValueInput | InputJsonValue
+    branchId?: string | null
+    courseCode?: string | null
     branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutCourseInput
+    modules?: CourseModuleUncheckedCreateNestedManyWithoutCourseInput
+    statusHistory?: CourseStatusHistoryUncheckedCreateNestedManyWithoutCourseInput
+    facultyBatchEntries?: FacultyBatchEntryUncheckedCreateNestedManyWithoutCourseInput
+    facultyCourseAssignments?: FacultyCourseAssignmentUncheckedCreateNestedManyWithoutCourseInput
+    facultyProfiles?: FacultyProfileUncheckedCreateNestedManyWithoutCourseInput
+    students?: StudentProfileUncheckedCreateNestedManyWithoutCourseInput
   }
 
   export type CourseCreateOrConnectWithoutBatchesInput = {
@@ -49103,7 +46800,6 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     nameKey?: StringFieldUpdateOperationsInput | string
-    courseCode?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     feeReference?: NullableStringFieldUpdateOperationsInput | string | null
     mode?: StringFieldUpdateOperationsInput | string
@@ -49117,7 +46813,6 @@ export namespace Prisma {
     installment1?: NullableIntFieldUpdateOperationsInput | number | null
     installment2?: NullableIntFieldUpdateOperationsInput | number | null
     installment3?: NullableIntFieldUpdateOperationsInput | number | null
-    installments?: NullableJsonNullValueInput | InputJsonValue
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     statusChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     statusChangedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -49125,22 +46820,22 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    installments?: NullableJsonNullValueInput | InputJsonValue
+    courseCode?: NullableStringFieldUpdateOperationsInput | string | null
+    branchFaculties?: BranchFacultyUpdateManyWithoutCourseNestedInput
     branch?: BranchUpdateOneWithoutCoursesNestedInput
     modules?: CourseModuleUpdateManyWithoutCourseNestedInput
-    students?: StudentProfileUpdateManyWithoutCourseNestedInput
-    facultyProfiles?: FacultyProfileUpdateManyWithoutCourseNestedInput
-    facultyCourseAssignments?: FacultyCourseAssignmentUpdateManyWithoutCourseNestedInput
-    facultyBatchEntries?: FacultyBatchEntryUpdateManyWithoutCourseNestedInput
     statusHistory?: CourseStatusHistoryUpdateManyWithoutCourseNestedInput
-    branchFaculties?: BranchFacultyUpdateManyWithoutCourseNestedInput
+    facultyBatchEntries?: FacultyBatchEntryUpdateManyWithoutCourseNestedInput
+    facultyCourseAssignments?: FacultyCourseAssignmentUpdateManyWithoutCourseNestedInput
+    facultyProfiles?: FacultyProfileUpdateManyWithoutCourseNestedInput
+    students?: StudentProfileUpdateManyWithoutCourseNestedInput
   }
 
   export type CourseUncheckedUpdateWithoutBatchesInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     nameKey?: StringFieldUpdateOperationsInput | string
-    courseCode?: NullableStringFieldUpdateOperationsInput | string | null
-    branchId?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     feeReference?: NullableStringFieldUpdateOperationsInput | string | null
     mode?: StringFieldUpdateOperationsInput | string
@@ -49154,7 +46849,6 @@ export namespace Prisma {
     installment1?: NullableIntFieldUpdateOperationsInput | number | null
     installment2?: NullableIntFieldUpdateOperationsInput | number | null
     installment3?: NullableIntFieldUpdateOperationsInput | number | null
-    installments?: NullableJsonNullValueInput | InputJsonValue
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     statusChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     statusChangedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -49162,13 +46856,16 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    modules?: CourseModuleUncheckedUpdateManyWithoutCourseNestedInput
-    students?: StudentProfileUncheckedUpdateManyWithoutCourseNestedInput
-    facultyProfiles?: FacultyProfileUncheckedUpdateManyWithoutCourseNestedInput
-    facultyCourseAssignments?: FacultyCourseAssignmentUncheckedUpdateManyWithoutCourseNestedInput
-    facultyBatchEntries?: FacultyBatchEntryUncheckedUpdateManyWithoutCourseNestedInput
-    statusHistory?: CourseStatusHistoryUncheckedUpdateManyWithoutCourseNestedInput
+    installments?: NullableJsonNullValueInput | InputJsonValue
+    branchId?: NullableStringFieldUpdateOperationsInput | string | null
+    courseCode?: NullableStringFieldUpdateOperationsInput | string | null
     branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutCourseNestedInput
+    modules?: CourseModuleUncheckedUpdateManyWithoutCourseNestedInput
+    statusHistory?: CourseStatusHistoryUncheckedUpdateManyWithoutCourseNestedInput
+    facultyBatchEntries?: FacultyBatchEntryUncheckedUpdateManyWithoutCourseNestedInput
+    facultyCourseAssignments?: FacultyCourseAssignmentUncheckedUpdateManyWithoutCourseNestedInput
+    facultyProfiles?: FacultyProfileUncheckedUpdateManyWithoutCourseNestedInput
+    students?: StudentProfileUncheckedUpdateManyWithoutCourseNestedInput
   }
 
   export type BatchFacultyAssignmentUpsertWithWhereUniqueWithoutBatchInput = {
@@ -49287,12 +46984,12 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    loginEvents?: LoginEventCreateNestedManyWithoutUserInput
-    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
-    targetedNotifications?: NotificationCreateNestedManyWithoutTargetUserInput
-    facultyAttendanceSessions?: FacultyAttendanceSessionCreateNestedManyWithoutFacultyUserInput
-    markedStudentAttendances?: StudentAttendanceCreateNestedManyWithoutFacultyUserInput
     managedBranch?: BranchCreateNestedOneWithoutAdminUserInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionCreateNestedManyWithoutFacultyUserInput
+    loginEvents?: LoginEventCreateNestedManyWithoutUserInput
+    targetedNotifications?: NotificationCreateNestedManyWithoutTargetUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    markedStudentAttendances?: StudentAttendanceCreateNestedManyWithoutFacultyUserInput
   }
 
   export type UserUncheckedCreateWithoutBatchFacultyAssignmentsInput = {
@@ -49317,12 +47014,12 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    loginEvents?: LoginEventUncheckedCreateNestedManyWithoutUserInput
-    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
-    targetedNotifications?: NotificationUncheckedCreateNestedManyWithoutTargetUserInput
-    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedCreateNestedManyWithoutFacultyUserInput
-    markedStudentAttendances?: StudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
     managedBranch?: BranchUncheckedCreateNestedOneWithoutAdminUserInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedCreateNestedManyWithoutFacultyUserInput
+    loginEvents?: LoginEventUncheckedCreateNestedManyWithoutUserInput
+    targetedNotifications?: NotificationUncheckedCreateNestedManyWithoutTargetUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    markedStudentAttendances?: StudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
   }
 
   export type UserCreateOrConnectWithoutBatchFacultyAssignmentsInput = {
@@ -49418,12 +47115,12 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    loginEvents?: LoginEventUpdateManyWithoutUserNestedInput
-    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
-    targetedNotifications?: NotificationUpdateManyWithoutTargetUserNestedInput
-    facultyAttendanceSessions?: FacultyAttendanceSessionUpdateManyWithoutFacultyUserNestedInput
-    markedStudentAttendances?: StudentAttendanceUpdateManyWithoutFacultyUserNestedInput
     managedBranch?: BranchUpdateOneWithoutAdminUserNestedInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUpdateManyWithoutFacultyUserNestedInput
+    loginEvents?: LoginEventUpdateManyWithoutUserNestedInput
+    targetedNotifications?: NotificationUpdateManyWithoutTargetUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    markedStudentAttendances?: StudentAttendanceUpdateManyWithoutFacultyUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutBatchFacultyAssignmentsInput = {
@@ -49448,19 +47145,18 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    loginEvents?: LoginEventUncheckedUpdateManyWithoutUserNestedInput
-    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
-    targetedNotifications?: NotificationUncheckedUpdateManyWithoutTargetUserNestedInput
-    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserNestedInput
-    markedStudentAttendances?: StudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
     managedBranch?: BranchUncheckedUpdateOneWithoutAdminUserNestedInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserNestedInput
+    loginEvents?: LoginEventUncheckedUpdateManyWithoutUserNestedInput
+    targetedNotifications?: NotificationUncheckedUpdateManyWithoutTargetUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    markedStudentAttendances?: StudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
   }
 
   export type CourseCreateWithoutStatusHistoryInput = {
     id?: string
     name: string
     nameKey: string
-    courseCode?: string | null
     description?: string | null
     feeReference?: string | null
     mode: string
@@ -49474,7 +47170,6 @@ export namespace Prisma {
     installment1?: number | null
     installment2?: number | null
     installment3?: number | null
-    installments?: NullableJsonNullValueInput | InputJsonValue
     status?: $Enums.RecordStatus
     statusChangedAt?: Date | string | null
     statusChangedBy?: string | null
@@ -49482,22 +47177,22 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    installments?: NullableJsonNullValueInput | InputJsonValue
+    courseCode?: string | null
+    batches?: BatchCreateNestedManyWithoutCourseInput
+    branchFaculties?: BranchFacultyCreateNestedManyWithoutCourseInput
     branch?: BranchCreateNestedOneWithoutCoursesInput
     modules?: CourseModuleCreateNestedManyWithoutCourseInput
-    batches?: BatchCreateNestedManyWithoutCourseInput
-    students?: StudentProfileCreateNestedManyWithoutCourseInput
-    facultyProfiles?: FacultyProfileCreateNestedManyWithoutCourseInput
-    facultyCourseAssignments?: FacultyCourseAssignmentCreateNestedManyWithoutCourseInput
     facultyBatchEntries?: FacultyBatchEntryCreateNestedManyWithoutCourseInput
-    branchFaculties?: BranchFacultyCreateNestedManyWithoutCourseInput
+    facultyCourseAssignments?: FacultyCourseAssignmentCreateNestedManyWithoutCourseInput
+    facultyProfiles?: FacultyProfileCreateNestedManyWithoutCourseInput
+    students?: StudentProfileCreateNestedManyWithoutCourseInput
   }
 
   export type CourseUncheckedCreateWithoutStatusHistoryInput = {
     id?: string
     name: string
     nameKey: string
-    courseCode?: string | null
-    branchId?: string | null
     description?: string | null
     feeReference?: string | null
     mode: string
@@ -49511,7 +47206,6 @@ export namespace Prisma {
     installment1?: number | null
     installment2?: number | null
     installment3?: number | null
-    installments?: NullableJsonNullValueInput | InputJsonValue
     status?: $Enums.RecordStatus
     statusChangedAt?: Date | string | null
     statusChangedBy?: string | null
@@ -49519,13 +47213,16 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    modules?: CourseModuleUncheckedCreateNestedManyWithoutCourseInput
+    installments?: NullableJsonNullValueInput | InputJsonValue
+    branchId?: string | null
+    courseCode?: string | null
     batches?: BatchUncheckedCreateNestedManyWithoutCourseInput
-    students?: StudentProfileUncheckedCreateNestedManyWithoutCourseInput
-    facultyProfiles?: FacultyProfileUncheckedCreateNestedManyWithoutCourseInput
-    facultyCourseAssignments?: FacultyCourseAssignmentUncheckedCreateNestedManyWithoutCourseInput
-    facultyBatchEntries?: FacultyBatchEntryUncheckedCreateNestedManyWithoutCourseInput
     branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutCourseInput
+    modules?: CourseModuleUncheckedCreateNestedManyWithoutCourseInput
+    facultyBatchEntries?: FacultyBatchEntryUncheckedCreateNestedManyWithoutCourseInput
+    facultyCourseAssignments?: FacultyCourseAssignmentUncheckedCreateNestedManyWithoutCourseInput
+    facultyProfiles?: FacultyProfileUncheckedCreateNestedManyWithoutCourseInput
+    students?: StudentProfileUncheckedCreateNestedManyWithoutCourseInput
   }
 
   export type CourseCreateOrConnectWithoutStatusHistoryInput = {
@@ -49548,7 +47245,6 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     nameKey?: StringFieldUpdateOperationsInput | string
-    courseCode?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     feeReference?: NullableStringFieldUpdateOperationsInput | string | null
     mode?: StringFieldUpdateOperationsInput | string
@@ -49562,7 +47258,6 @@ export namespace Prisma {
     installment1?: NullableIntFieldUpdateOperationsInput | number | null
     installment2?: NullableIntFieldUpdateOperationsInput | number | null
     installment3?: NullableIntFieldUpdateOperationsInput | number | null
-    installments?: NullableJsonNullValueInput | InputJsonValue
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     statusChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     statusChangedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -49570,22 +47265,22 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    installments?: NullableJsonNullValueInput | InputJsonValue
+    courseCode?: NullableStringFieldUpdateOperationsInput | string | null
+    batches?: BatchUpdateManyWithoutCourseNestedInput
+    branchFaculties?: BranchFacultyUpdateManyWithoutCourseNestedInput
     branch?: BranchUpdateOneWithoutCoursesNestedInput
     modules?: CourseModuleUpdateManyWithoutCourseNestedInput
-    batches?: BatchUpdateManyWithoutCourseNestedInput
-    students?: StudentProfileUpdateManyWithoutCourseNestedInput
-    facultyProfiles?: FacultyProfileUpdateManyWithoutCourseNestedInput
-    facultyCourseAssignments?: FacultyCourseAssignmentUpdateManyWithoutCourseNestedInput
     facultyBatchEntries?: FacultyBatchEntryUpdateManyWithoutCourseNestedInput
-    branchFaculties?: BranchFacultyUpdateManyWithoutCourseNestedInput
+    facultyCourseAssignments?: FacultyCourseAssignmentUpdateManyWithoutCourseNestedInput
+    facultyProfiles?: FacultyProfileUpdateManyWithoutCourseNestedInput
+    students?: StudentProfileUpdateManyWithoutCourseNestedInput
   }
 
   export type CourseUncheckedUpdateWithoutStatusHistoryInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     nameKey?: StringFieldUpdateOperationsInput | string
-    courseCode?: NullableStringFieldUpdateOperationsInput | string | null
-    branchId?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     feeReference?: NullableStringFieldUpdateOperationsInput | string | null
     mode?: StringFieldUpdateOperationsInput | string
@@ -49599,7 +47294,6 @@ export namespace Prisma {
     installment1?: NullableIntFieldUpdateOperationsInput | number | null
     installment2?: NullableIntFieldUpdateOperationsInput | number | null
     installment3?: NullableIntFieldUpdateOperationsInput | number | null
-    installments?: NullableJsonNullValueInput | InputJsonValue
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     statusChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     statusChangedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -49607,13 +47301,16 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    modules?: CourseModuleUncheckedUpdateManyWithoutCourseNestedInput
+    installments?: NullableJsonNullValueInput | InputJsonValue
+    branchId?: NullableStringFieldUpdateOperationsInput | string | null
+    courseCode?: NullableStringFieldUpdateOperationsInput | string | null
     batches?: BatchUncheckedUpdateManyWithoutCourseNestedInput
-    students?: StudentProfileUncheckedUpdateManyWithoutCourseNestedInput
-    facultyProfiles?: FacultyProfileUncheckedUpdateManyWithoutCourseNestedInput
-    facultyCourseAssignments?: FacultyCourseAssignmentUncheckedUpdateManyWithoutCourseNestedInput
-    facultyBatchEntries?: FacultyBatchEntryUncheckedUpdateManyWithoutCourseNestedInput
     branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutCourseNestedInput
+    modules?: CourseModuleUncheckedUpdateManyWithoutCourseNestedInput
+    facultyBatchEntries?: FacultyBatchEntryUncheckedUpdateManyWithoutCourseNestedInput
+    facultyCourseAssignments?: FacultyCourseAssignmentUncheckedUpdateManyWithoutCourseNestedInput
+    facultyProfiles?: FacultyProfileUncheckedUpdateManyWithoutCourseNestedInput
+    students?: StudentProfileUncheckedUpdateManyWithoutCourseNestedInput
   }
 
   export type BatchCreateWithoutStatusHistoryInput = {
@@ -49720,83 +47417,6 @@ export namespace Prisma {
     facultyAssignments?: BatchFacultyAssignmentUncheckedUpdateManyWithoutBatchNestedInput
   }
 
-  export type CourseCreateWithoutStudentsInput = {
-    id?: string
-    name: string
-    nameKey: string
-    courseCode?: string | null
-    description?: string | null
-    feeReference?: string | null
-    mode: string
-    duration?: number | null
-    hours?: number | null
-    actualFees?: number | null
-    registrationFees?: number | null
-    discount?: number | null
-    afterDiscount?: number | null
-    installmentCount?: number
-    installment1?: number | null
-    installment2?: number | null
-    installment3?: number | null
-    installments?: NullableJsonNullValueInput | InputJsonValue
-    status?: $Enums.RecordStatus
-    statusChangedAt?: Date | string | null
-    statusChangedBy?: string | null
-    createdBy?: string | null
-    updatedBy?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    branch?: BranchCreateNestedOneWithoutCoursesInput
-    modules?: CourseModuleCreateNestedManyWithoutCourseInput
-    batches?: BatchCreateNestedManyWithoutCourseInput
-    facultyProfiles?: FacultyProfileCreateNestedManyWithoutCourseInput
-    facultyCourseAssignments?: FacultyCourseAssignmentCreateNestedManyWithoutCourseInput
-    facultyBatchEntries?: FacultyBatchEntryCreateNestedManyWithoutCourseInput
-    statusHistory?: CourseStatusHistoryCreateNestedManyWithoutCourseInput
-    branchFaculties?: BranchFacultyCreateNestedManyWithoutCourseInput
-  }
-
-  export type CourseUncheckedCreateWithoutStudentsInput = {
-    id?: string
-    name: string
-    nameKey: string
-    courseCode?: string | null
-    branchId?: string | null
-    description?: string | null
-    feeReference?: string | null
-    mode: string
-    duration?: number | null
-    hours?: number | null
-    actualFees?: number | null
-    registrationFees?: number | null
-    discount?: number | null
-    afterDiscount?: number | null
-    installmentCount?: number
-    installment1?: number | null
-    installment2?: number | null
-    installment3?: number | null
-    installments?: NullableJsonNullValueInput | InputJsonValue
-    status?: $Enums.RecordStatus
-    statusChangedAt?: Date | string | null
-    statusChangedBy?: string | null
-    createdBy?: string | null
-    updatedBy?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    modules?: CourseModuleUncheckedCreateNestedManyWithoutCourseInput
-    batches?: BatchUncheckedCreateNestedManyWithoutCourseInput
-    facultyProfiles?: FacultyProfileUncheckedCreateNestedManyWithoutCourseInput
-    facultyCourseAssignments?: FacultyCourseAssignmentUncheckedCreateNestedManyWithoutCourseInput
-    facultyBatchEntries?: FacultyBatchEntryUncheckedCreateNestedManyWithoutCourseInput
-    statusHistory?: CourseStatusHistoryUncheckedCreateNestedManyWithoutCourseInput
-    branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutCourseInput
-  }
-
-  export type CourseCreateOrConnectWithoutStudentsInput = {
-    where: CourseWhereUniqueInput
-    create: XOR<CourseCreateWithoutStudentsInput, CourseUncheckedCreateWithoutStudentsInput>
-  }
-
   export type StudentAttendanceCreateWithoutStudentInput = {
     id?: string
     courseId?: string | null
@@ -49837,87 +47457,81 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type CourseUpsertWithoutStudentsInput = {
-    update: XOR<CourseUpdateWithoutStudentsInput, CourseUncheckedUpdateWithoutStudentsInput>
+  export type CourseCreateWithoutStudentsInput = {
+    id?: string
+    name: string
+    nameKey: string
+    description?: string | null
+    feeReference?: string | null
+    mode: string
+    duration?: number | null
+    hours?: number | null
+    actualFees?: number | null
+    registrationFees?: number | null
+    discount?: number | null
+    afterDiscount?: number | null
+    installmentCount?: number
+    installment1?: number | null
+    installment2?: number | null
+    installment3?: number | null
+    status?: $Enums.RecordStatus
+    statusChangedAt?: Date | string | null
+    statusChangedBy?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    installments?: NullableJsonNullValueInput | InputJsonValue
+    courseCode?: string | null
+    batches?: BatchCreateNestedManyWithoutCourseInput
+    branchFaculties?: BranchFacultyCreateNestedManyWithoutCourseInput
+    branch?: BranchCreateNestedOneWithoutCoursesInput
+    modules?: CourseModuleCreateNestedManyWithoutCourseInput
+    statusHistory?: CourseStatusHistoryCreateNestedManyWithoutCourseInput
+    facultyBatchEntries?: FacultyBatchEntryCreateNestedManyWithoutCourseInput
+    facultyCourseAssignments?: FacultyCourseAssignmentCreateNestedManyWithoutCourseInput
+    facultyProfiles?: FacultyProfileCreateNestedManyWithoutCourseInput
+  }
+
+  export type CourseUncheckedCreateWithoutStudentsInput = {
+    id?: string
+    name: string
+    nameKey: string
+    description?: string | null
+    feeReference?: string | null
+    mode: string
+    duration?: number | null
+    hours?: number | null
+    actualFees?: number | null
+    registrationFees?: number | null
+    discount?: number | null
+    afterDiscount?: number | null
+    installmentCount?: number
+    installment1?: number | null
+    installment2?: number | null
+    installment3?: number | null
+    status?: $Enums.RecordStatus
+    statusChangedAt?: Date | string | null
+    statusChangedBy?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    installments?: NullableJsonNullValueInput | InputJsonValue
+    branchId?: string | null
+    courseCode?: string | null
+    batches?: BatchUncheckedCreateNestedManyWithoutCourseInput
+    branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutCourseInput
+    modules?: CourseModuleUncheckedCreateNestedManyWithoutCourseInput
+    statusHistory?: CourseStatusHistoryUncheckedCreateNestedManyWithoutCourseInput
+    facultyBatchEntries?: FacultyBatchEntryUncheckedCreateNestedManyWithoutCourseInput
+    facultyCourseAssignments?: FacultyCourseAssignmentUncheckedCreateNestedManyWithoutCourseInput
+    facultyProfiles?: FacultyProfileUncheckedCreateNestedManyWithoutCourseInput
+  }
+
+  export type CourseCreateOrConnectWithoutStudentsInput = {
+    where: CourseWhereUniqueInput
     create: XOR<CourseCreateWithoutStudentsInput, CourseUncheckedCreateWithoutStudentsInput>
-    where?: CourseWhereInput
-  }
-
-  export type CourseUpdateToOneWithWhereWithoutStudentsInput = {
-    where?: CourseWhereInput
-    data: XOR<CourseUpdateWithoutStudentsInput, CourseUncheckedUpdateWithoutStudentsInput>
-  }
-
-  export type CourseUpdateWithoutStudentsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    nameKey?: StringFieldUpdateOperationsInput | string
-    courseCode?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    feeReference?: NullableStringFieldUpdateOperationsInput | string | null
-    mode?: StringFieldUpdateOperationsInput | string
-    duration?: NullableIntFieldUpdateOperationsInput | number | null
-    hours?: NullableIntFieldUpdateOperationsInput | number | null
-    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
-    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
-    discount?: NullableIntFieldUpdateOperationsInput | number | null
-    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
-    installmentCount?: IntFieldUpdateOperationsInput | number
-    installment1?: NullableIntFieldUpdateOperationsInput | number | null
-    installment2?: NullableIntFieldUpdateOperationsInput | number | null
-    installment3?: NullableIntFieldUpdateOperationsInput | number | null
-    installments?: NullableJsonNullValueInput | InputJsonValue
-    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
-    statusChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    statusChangedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    branch?: BranchUpdateOneWithoutCoursesNestedInput
-    modules?: CourseModuleUpdateManyWithoutCourseNestedInput
-    batches?: BatchUpdateManyWithoutCourseNestedInput
-    facultyProfiles?: FacultyProfileUpdateManyWithoutCourseNestedInput
-    facultyCourseAssignments?: FacultyCourseAssignmentUpdateManyWithoutCourseNestedInput
-    facultyBatchEntries?: FacultyBatchEntryUpdateManyWithoutCourseNestedInput
-    statusHistory?: CourseStatusHistoryUpdateManyWithoutCourseNestedInput
-    branchFaculties?: BranchFacultyUpdateManyWithoutCourseNestedInput
-  }
-
-  export type CourseUncheckedUpdateWithoutStudentsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    nameKey?: StringFieldUpdateOperationsInput | string
-    courseCode?: NullableStringFieldUpdateOperationsInput | string | null
-    branchId?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    feeReference?: NullableStringFieldUpdateOperationsInput | string | null
-    mode?: StringFieldUpdateOperationsInput | string
-    duration?: NullableIntFieldUpdateOperationsInput | number | null
-    hours?: NullableIntFieldUpdateOperationsInput | number | null
-    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
-    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
-    discount?: NullableIntFieldUpdateOperationsInput | number | null
-    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
-    installmentCount?: IntFieldUpdateOperationsInput | number
-    installment1?: NullableIntFieldUpdateOperationsInput | number | null
-    installment2?: NullableIntFieldUpdateOperationsInput | number | null
-    installment3?: NullableIntFieldUpdateOperationsInput | number | null
-    installments?: NullableJsonNullValueInput | InputJsonValue
-    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
-    statusChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    statusChangedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    modules?: CourseModuleUncheckedUpdateManyWithoutCourseNestedInput
-    batches?: BatchUncheckedUpdateManyWithoutCourseNestedInput
-    facultyProfiles?: FacultyProfileUncheckedUpdateManyWithoutCourseNestedInput
-    facultyCourseAssignments?: FacultyCourseAssignmentUncheckedUpdateManyWithoutCourseNestedInput
-    facultyBatchEntries?: FacultyBatchEntryUncheckedUpdateManyWithoutCourseNestedInput
-    statusHistory?: CourseStatusHistoryUncheckedUpdateManyWithoutCourseNestedInput
-    branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutCourseNestedInput
   }
 
   export type StudentAttendanceUpsertWithWhereUniqueWithoutStudentInput = {
@@ -49936,6 +47550,89 @@ export namespace Prisma {
     data: XOR<StudentAttendanceUpdateManyMutationInput, StudentAttendanceUncheckedUpdateManyWithoutStudentInput>
   }
 
+  export type CourseUpsertWithoutStudentsInput = {
+    update: XOR<CourseUpdateWithoutStudentsInput, CourseUncheckedUpdateWithoutStudentsInput>
+    create: XOR<CourseCreateWithoutStudentsInput, CourseUncheckedCreateWithoutStudentsInput>
+    where?: CourseWhereInput
+  }
+
+  export type CourseUpdateToOneWithWhereWithoutStudentsInput = {
+    where?: CourseWhereInput
+    data: XOR<CourseUpdateWithoutStudentsInput, CourseUncheckedUpdateWithoutStudentsInput>
+  }
+
+  export type CourseUpdateWithoutStudentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameKey?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    feeReference?: NullableStringFieldUpdateOperationsInput | string | null
+    mode?: StringFieldUpdateOperationsInput | string
+    duration?: NullableIntFieldUpdateOperationsInput | number | null
+    hours?: NullableIntFieldUpdateOperationsInput | number | null
+    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
+    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
+    discount?: NullableIntFieldUpdateOperationsInput | number | null
+    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
+    installmentCount?: IntFieldUpdateOperationsInput | number
+    installment1?: NullableIntFieldUpdateOperationsInput | number | null
+    installment2?: NullableIntFieldUpdateOperationsInput | number | null
+    installment3?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    statusChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    statusChangedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    installments?: NullableJsonNullValueInput | InputJsonValue
+    courseCode?: NullableStringFieldUpdateOperationsInput | string | null
+    batches?: BatchUpdateManyWithoutCourseNestedInput
+    branchFaculties?: BranchFacultyUpdateManyWithoutCourseNestedInput
+    branch?: BranchUpdateOneWithoutCoursesNestedInput
+    modules?: CourseModuleUpdateManyWithoutCourseNestedInput
+    statusHistory?: CourseStatusHistoryUpdateManyWithoutCourseNestedInput
+    facultyBatchEntries?: FacultyBatchEntryUpdateManyWithoutCourseNestedInput
+    facultyCourseAssignments?: FacultyCourseAssignmentUpdateManyWithoutCourseNestedInput
+    facultyProfiles?: FacultyProfileUpdateManyWithoutCourseNestedInput
+  }
+
+  export type CourseUncheckedUpdateWithoutStudentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameKey?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    feeReference?: NullableStringFieldUpdateOperationsInput | string | null
+    mode?: StringFieldUpdateOperationsInput | string
+    duration?: NullableIntFieldUpdateOperationsInput | number | null
+    hours?: NullableIntFieldUpdateOperationsInput | number | null
+    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
+    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
+    discount?: NullableIntFieldUpdateOperationsInput | number | null
+    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
+    installmentCount?: IntFieldUpdateOperationsInput | number
+    installment1?: NullableIntFieldUpdateOperationsInput | number | null
+    installment2?: NullableIntFieldUpdateOperationsInput | number | null
+    installment3?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    statusChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    statusChangedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    installments?: NullableJsonNullValueInput | InputJsonValue
+    branchId?: NullableStringFieldUpdateOperationsInput | string | null
+    courseCode?: NullableStringFieldUpdateOperationsInput | string | null
+    batches?: BatchUncheckedUpdateManyWithoutCourseNestedInput
+    branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutCourseNestedInput
+    modules?: CourseModuleUncheckedUpdateManyWithoutCourseNestedInput
+    statusHistory?: CourseStatusHistoryUncheckedUpdateManyWithoutCourseNestedInput
+    facultyBatchEntries?: FacultyBatchEntryUncheckedUpdateManyWithoutCourseNestedInput
+    facultyCourseAssignments?: FacultyCourseAssignmentUncheckedUpdateManyWithoutCourseNestedInput
+    facultyProfiles?: FacultyProfileUncheckedUpdateManyWithoutCourseNestedInput
+  }
+
   export type BranchCreateWithoutBranchStudentsInput = {
     id?: string
     branchId: string
@@ -49943,22 +47640,21 @@ export namespace Prisma {
     branchAdminName: string
     branchEmail: string
     branchPhone: string
-    branchCountryCode?: string
-    branchCountry?: string
-    branchStateCode?: string
-    branchState?: string
-    branchCity?: string
     branchAddress: string
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    branchCity?: string
+    branchCountry?: string
+    branchCountryCode?: string
+    branchState?: string
+    branchStateCode?: string
     adminUser?: UserCreateNestedOneWithoutManagedBranchInput
-    courses?: CourseCreateNestedManyWithoutBranchInput
     branchCourses?: BranchCourseCreateNestedManyWithoutBranchInput
     branchFaculties?: BranchFacultyCreateNestedManyWithoutBranchInput
-    branchInstallmentTemplates?: BranchInstallmentTemplateCreateNestedManyWithoutBranchInput
+    courses?: CourseCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutBranchStudentsInput = {
@@ -49968,11 +47664,6 @@ export namespace Prisma {
     branchAdminName: string
     branchEmail: string
     branchPhone: string
-    branchCountryCode?: string
-    branchCountry?: string
-    branchStateCode?: string
-    branchState?: string
-    branchCity?: string
     branchAddress: string
     status?: $Enums.RecordStatus
     adminUserId?: string | null
@@ -49980,10 +47671,14 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    courses?: CourseUncheckedCreateNestedManyWithoutBranchInput
+    branchCity?: string
+    branchCountry?: string
+    branchCountryCode?: string
+    branchState?: string
+    branchStateCode?: string
     branchCourses?: BranchCourseUncheckedCreateNestedManyWithoutBranchInput
     branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutBranchInput
-    branchInstallmentTemplates?: BranchInstallmentTemplateUncheckedCreateNestedManyWithoutBranchInput
+    courses?: CourseUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutBranchStudentsInput = {
@@ -50009,22 +47704,21 @@ export namespace Prisma {
     branchAdminName?: StringFieldUpdateOperationsInput | string
     branchEmail?: StringFieldUpdateOperationsInput | string
     branchPhone?: StringFieldUpdateOperationsInput | string
-    branchCountryCode?: StringFieldUpdateOperationsInput | string
-    branchCountry?: StringFieldUpdateOperationsInput | string
-    branchStateCode?: StringFieldUpdateOperationsInput | string
-    branchState?: StringFieldUpdateOperationsInput | string
-    branchCity?: StringFieldUpdateOperationsInput | string
     branchAddress?: StringFieldUpdateOperationsInput | string
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branchCity?: StringFieldUpdateOperationsInput | string
+    branchCountry?: StringFieldUpdateOperationsInput | string
+    branchCountryCode?: StringFieldUpdateOperationsInput | string
+    branchState?: StringFieldUpdateOperationsInput | string
+    branchStateCode?: StringFieldUpdateOperationsInput | string
     adminUser?: UserUpdateOneWithoutManagedBranchNestedInput
-    courses?: CourseUpdateManyWithoutBranchNestedInput
     branchCourses?: BranchCourseUpdateManyWithoutBranchNestedInput
     branchFaculties?: BranchFacultyUpdateManyWithoutBranchNestedInput
-    branchInstallmentTemplates?: BranchInstallmentTemplateUpdateManyWithoutBranchNestedInput
+    courses?: CourseUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutBranchStudentsInput = {
@@ -50034,11 +47728,6 @@ export namespace Prisma {
     branchAdminName?: StringFieldUpdateOperationsInput | string
     branchEmail?: StringFieldUpdateOperationsInput | string
     branchPhone?: StringFieldUpdateOperationsInput | string
-    branchCountryCode?: StringFieldUpdateOperationsInput | string
-    branchCountry?: StringFieldUpdateOperationsInput | string
-    branchStateCode?: StringFieldUpdateOperationsInput | string
-    branchState?: StringFieldUpdateOperationsInput | string
-    branchCity?: StringFieldUpdateOperationsInput | string
     branchAddress?: StringFieldUpdateOperationsInput | string
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     adminUserId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -50046,87 +47735,44 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    courses?: CourseUncheckedUpdateManyWithoutBranchNestedInput
+    branchCity?: StringFieldUpdateOperationsInput | string
+    branchCountry?: StringFieldUpdateOperationsInput | string
+    branchCountryCode?: StringFieldUpdateOperationsInput | string
+    branchState?: StringFieldUpdateOperationsInput | string
+    branchStateCode?: StringFieldUpdateOperationsInput | string
     branchCourses?: BranchCourseUncheckedUpdateManyWithoutBranchNestedInput
     branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutBranchNestedInput
-    branchInstallmentTemplates?: BranchInstallmentTemplateUncheckedUpdateManyWithoutBranchNestedInput
+    courses?: CourseUncheckedUpdateManyWithoutBranchNestedInput
   }
 
-  export type CourseCreateWithoutFacultyProfilesInput = {
+  export type FacultyBatchEntryCreateWithoutFacultyInput = {
     id?: string
-    name: string
-    nameKey: string
-    courseCode?: string | null
-    description?: string | null
-    feeReference?: string | null
-    mode: string
-    duration?: number | null
-    hours?: number | null
-    actualFees?: number | null
-    registrationFees?: number | null
-    discount?: number | null
-    afterDiscount?: number | null
-    installmentCount?: number
-    installment1?: number | null
-    installment2?: number | null
-    installment3?: number | null
-    installments?: NullableJsonNullValueInput | InputJsonValue
-    status?: $Enums.RecordStatus
-    statusChangedAt?: Date | string | null
-    statusChangedBy?: string | null
-    createdBy?: string | null
-    updatedBy?: string | null
+    batchName: string
+    batchTiming: string
+    sequenceNo?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    branch?: BranchCreateNestedOneWithoutCoursesInput
-    modules?: CourseModuleCreateNestedManyWithoutCourseInput
-    batches?: BatchCreateNestedManyWithoutCourseInput
-    students?: StudentProfileCreateNestedManyWithoutCourseInput
-    facultyCourseAssignments?: FacultyCourseAssignmentCreateNestedManyWithoutCourseInput
-    facultyBatchEntries?: FacultyBatchEntryCreateNestedManyWithoutCourseInput
-    statusHistory?: CourseStatusHistoryCreateNestedManyWithoutCourseInput
-    branchFaculties?: BranchFacultyCreateNestedManyWithoutCourseInput
+    course?: CourseCreateNestedOneWithoutFacultyBatchEntriesInput
   }
 
-  export type CourseUncheckedCreateWithoutFacultyProfilesInput = {
+  export type FacultyBatchEntryUncheckedCreateWithoutFacultyInput = {
     id?: string
-    name: string
-    nameKey: string
-    courseCode?: string | null
-    branchId?: string | null
-    description?: string | null
-    feeReference?: string | null
-    mode: string
-    duration?: number | null
-    hours?: number | null
-    actualFees?: number | null
-    registrationFees?: number | null
-    discount?: number | null
-    afterDiscount?: number | null
-    installmentCount?: number
-    installment1?: number | null
-    installment2?: number | null
-    installment3?: number | null
-    installments?: NullableJsonNullValueInput | InputJsonValue
-    status?: $Enums.RecordStatus
-    statusChangedAt?: Date | string | null
-    statusChangedBy?: string | null
-    createdBy?: string | null
-    updatedBy?: string | null
+    batchName: string
+    batchTiming: string
+    sequenceNo?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    modules?: CourseModuleUncheckedCreateNestedManyWithoutCourseInput
-    batches?: BatchUncheckedCreateNestedManyWithoutCourseInput
-    students?: StudentProfileUncheckedCreateNestedManyWithoutCourseInput
-    facultyCourseAssignments?: FacultyCourseAssignmentUncheckedCreateNestedManyWithoutCourseInput
-    facultyBatchEntries?: FacultyBatchEntryUncheckedCreateNestedManyWithoutCourseInput
-    statusHistory?: CourseStatusHistoryUncheckedCreateNestedManyWithoutCourseInput
-    branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutCourseInput
+    courseId?: string | null
   }
 
-  export type CourseCreateOrConnectWithoutFacultyProfilesInput = {
-    where: CourseWhereUniqueInput
-    create: XOR<CourseCreateWithoutFacultyProfilesInput, CourseUncheckedCreateWithoutFacultyProfilesInput>
+  export type FacultyBatchEntryCreateOrConnectWithoutFacultyInput = {
+    where: FacultyBatchEntryWhereUniqueInput
+    create: XOR<FacultyBatchEntryCreateWithoutFacultyInput, FacultyBatchEntryUncheckedCreateWithoutFacultyInput>
+  }
+
+  export type FacultyBatchEntryCreateManyFacultyInputEnvelope = {
+    data: FacultyBatchEntryCreateManyFacultyInput | FacultyBatchEntryCreateManyFacultyInput[]
+    skipDuplicates?: boolean
   }
 
   export type FacultyCourseAssignmentCreateWithoutFacultyInput = {
@@ -50157,133 +47803,81 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type FacultyBatchEntryCreateWithoutFacultyInput = {
+  export type CourseCreateWithoutFacultyProfilesInput = {
     id?: string
-    batchName: string
-    batchTiming: string
-    sequenceNo?: number
+    name: string
+    nameKey: string
+    description?: string | null
+    feeReference?: string | null
+    mode: string
+    duration?: number | null
+    hours?: number | null
+    actualFees?: number | null
+    registrationFees?: number | null
+    discount?: number | null
+    afterDiscount?: number | null
+    installmentCount?: number
+    installment1?: number | null
+    installment2?: number | null
+    installment3?: number | null
+    status?: $Enums.RecordStatus
+    statusChangedAt?: Date | string | null
+    statusChangedBy?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    course?: CourseCreateNestedOneWithoutFacultyBatchEntriesInput
+    installments?: NullableJsonNullValueInput | InputJsonValue
+    courseCode?: string | null
+    batches?: BatchCreateNestedManyWithoutCourseInput
+    branchFaculties?: BranchFacultyCreateNestedManyWithoutCourseInput
+    branch?: BranchCreateNestedOneWithoutCoursesInput
+    modules?: CourseModuleCreateNestedManyWithoutCourseInput
+    statusHistory?: CourseStatusHistoryCreateNestedManyWithoutCourseInput
+    facultyBatchEntries?: FacultyBatchEntryCreateNestedManyWithoutCourseInput
+    facultyCourseAssignments?: FacultyCourseAssignmentCreateNestedManyWithoutCourseInput
+    students?: StudentProfileCreateNestedManyWithoutCourseInput
   }
 
-  export type FacultyBatchEntryUncheckedCreateWithoutFacultyInput = {
+  export type CourseUncheckedCreateWithoutFacultyProfilesInput = {
     id?: string
-    courseId?: string | null
-    batchName: string
-    batchTiming: string
-    sequenceNo?: number
+    name: string
+    nameKey: string
+    description?: string | null
+    feeReference?: string | null
+    mode: string
+    duration?: number | null
+    hours?: number | null
+    actualFees?: number | null
+    registrationFees?: number | null
+    discount?: number | null
+    afterDiscount?: number | null
+    installmentCount?: number
+    installment1?: number | null
+    installment2?: number | null
+    installment3?: number | null
+    status?: $Enums.RecordStatus
+    statusChangedAt?: Date | string | null
+    statusChangedBy?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    installments?: NullableJsonNullValueInput | InputJsonValue
+    branchId?: string | null
+    courseCode?: string | null
+    batches?: BatchUncheckedCreateNestedManyWithoutCourseInput
+    branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutCourseInput
+    modules?: CourseModuleUncheckedCreateNestedManyWithoutCourseInput
+    statusHistory?: CourseStatusHistoryUncheckedCreateNestedManyWithoutCourseInput
+    facultyBatchEntries?: FacultyBatchEntryUncheckedCreateNestedManyWithoutCourseInput
+    facultyCourseAssignments?: FacultyCourseAssignmentUncheckedCreateNestedManyWithoutCourseInput
+    students?: StudentProfileUncheckedCreateNestedManyWithoutCourseInput
   }
 
-  export type FacultyBatchEntryCreateOrConnectWithoutFacultyInput = {
-    where: FacultyBatchEntryWhereUniqueInput
-    create: XOR<FacultyBatchEntryCreateWithoutFacultyInput, FacultyBatchEntryUncheckedCreateWithoutFacultyInput>
-  }
-
-  export type FacultyBatchEntryCreateManyFacultyInputEnvelope = {
-    data: FacultyBatchEntryCreateManyFacultyInput | FacultyBatchEntryCreateManyFacultyInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type CourseUpsertWithoutFacultyProfilesInput = {
-    update: XOR<CourseUpdateWithoutFacultyProfilesInput, CourseUncheckedUpdateWithoutFacultyProfilesInput>
+  export type CourseCreateOrConnectWithoutFacultyProfilesInput = {
+    where: CourseWhereUniqueInput
     create: XOR<CourseCreateWithoutFacultyProfilesInput, CourseUncheckedCreateWithoutFacultyProfilesInput>
-    where?: CourseWhereInput
-  }
-
-  export type CourseUpdateToOneWithWhereWithoutFacultyProfilesInput = {
-    where?: CourseWhereInput
-    data: XOR<CourseUpdateWithoutFacultyProfilesInput, CourseUncheckedUpdateWithoutFacultyProfilesInput>
-  }
-
-  export type CourseUpdateWithoutFacultyProfilesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    nameKey?: StringFieldUpdateOperationsInput | string
-    courseCode?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    feeReference?: NullableStringFieldUpdateOperationsInput | string | null
-    mode?: StringFieldUpdateOperationsInput | string
-    duration?: NullableIntFieldUpdateOperationsInput | number | null
-    hours?: NullableIntFieldUpdateOperationsInput | number | null
-    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
-    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
-    discount?: NullableIntFieldUpdateOperationsInput | number | null
-    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
-    installmentCount?: IntFieldUpdateOperationsInput | number
-    installment1?: NullableIntFieldUpdateOperationsInput | number | null
-    installment2?: NullableIntFieldUpdateOperationsInput | number | null
-    installment3?: NullableIntFieldUpdateOperationsInput | number | null
-    installments?: NullableJsonNullValueInput | InputJsonValue
-    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
-    statusChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    statusChangedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    branch?: BranchUpdateOneWithoutCoursesNestedInput
-    modules?: CourseModuleUpdateManyWithoutCourseNestedInput
-    batches?: BatchUpdateManyWithoutCourseNestedInput
-    students?: StudentProfileUpdateManyWithoutCourseNestedInput
-    facultyCourseAssignments?: FacultyCourseAssignmentUpdateManyWithoutCourseNestedInput
-    facultyBatchEntries?: FacultyBatchEntryUpdateManyWithoutCourseNestedInput
-    statusHistory?: CourseStatusHistoryUpdateManyWithoutCourseNestedInput
-    branchFaculties?: BranchFacultyUpdateManyWithoutCourseNestedInput
-  }
-
-  export type CourseUncheckedUpdateWithoutFacultyProfilesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    nameKey?: StringFieldUpdateOperationsInput | string
-    courseCode?: NullableStringFieldUpdateOperationsInput | string | null
-    branchId?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    feeReference?: NullableStringFieldUpdateOperationsInput | string | null
-    mode?: StringFieldUpdateOperationsInput | string
-    duration?: NullableIntFieldUpdateOperationsInput | number | null
-    hours?: NullableIntFieldUpdateOperationsInput | number | null
-    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
-    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
-    discount?: NullableIntFieldUpdateOperationsInput | number | null
-    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
-    installmentCount?: IntFieldUpdateOperationsInput | number
-    installment1?: NullableIntFieldUpdateOperationsInput | number | null
-    installment2?: NullableIntFieldUpdateOperationsInput | number | null
-    installment3?: NullableIntFieldUpdateOperationsInput | number | null
-    installments?: NullableJsonNullValueInput | InputJsonValue
-    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
-    statusChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    statusChangedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    modules?: CourseModuleUncheckedUpdateManyWithoutCourseNestedInput
-    batches?: BatchUncheckedUpdateManyWithoutCourseNestedInput
-    students?: StudentProfileUncheckedUpdateManyWithoutCourseNestedInput
-    facultyCourseAssignments?: FacultyCourseAssignmentUncheckedUpdateManyWithoutCourseNestedInput
-    facultyBatchEntries?: FacultyBatchEntryUncheckedUpdateManyWithoutCourseNestedInput
-    statusHistory?: CourseStatusHistoryUncheckedUpdateManyWithoutCourseNestedInput
-    branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutCourseNestedInput
-  }
-
-  export type FacultyCourseAssignmentUpsertWithWhereUniqueWithoutFacultyInput = {
-    where: FacultyCourseAssignmentWhereUniqueInput
-    update: XOR<FacultyCourseAssignmentUpdateWithoutFacultyInput, FacultyCourseAssignmentUncheckedUpdateWithoutFacultyInput>
-    create: XOR<FacultyCourseAssignmentCreateWithoutFacultyInput, FacultyCourseAssignmentUncheckedCreateWithoutFacultyInput>
-  }
-
-  export type FacultyCourseAssignmentUpdateWithWhereUniqueWithoutFacultyInput = {
-    where: FacultyCourseAssignmentWhereUniqueInput
-    data: XOR<FacultyCourseAssignmentUpdateWithoutFacultyInput, FacultyCourseAssignmentUncheckedUpdateWithoutFacultyInput>
-  }
-
-  export type FacultyCourseAssignmentUpdateManyWithWhereWithoutFacultyInput = {
-    where: FacultyCourseAssignmentScalarWhereInput
-    data: XOR<FacultyCourseAssignmentUpdateManyMutationInput, FacultyCourseAssignmentUncheckedUpdateManyWithoutFacultyInput>
   }
 
   export type FacultyBatchEntryUpsertWithWhereUniqueWithoutFacultyInput = {
@@ -50302,6 +47896,182 @@ export namespace Prisma {
     data: XOR<FacultyBatchEntryUpdateManyMutationInput, FacultyBatchEntryUncheckedUpdateManyWithoutFacultyInput>
   }
 
+  export type FacultyCourseAssignmentUpsertWithWhereUniqueWithoutFacultyInput = {
+    where: FacultyCourseAssignmentWhereUniqueInput
+    update: XOR<FacultyCourseAssignmentUpdateWithoutFacultyInput, FacultyCourseAssignmentUncheckedUpdateWithoutFacultyInput>
+    create: XOR<FacultyCourseAssignmentCreateWithoutFacultyInput, FacultyCourseAssignmentUncheckedCreateWithoutFacultyInput>
+  }
+
+  export type FacultyCourseAssignmentUpdateWithWhereUniqueWithoutFacultyInput = {
+    where: FacultyCourseAssignmentWhereUniqueInput
+    data: XOR<FacultyCourseAssignmentUpdateWithoutFacultyInput, FacultyCourseAssignmentUncheckedUpdateWithoutFacultyInput>
+  }
+
+  export type FacultyCourseAssignmentUpdateManyWithWhereWithoutFacultyInput = {
+    where: FacultyCourseAssignmentScalarWhereInput
+    data: XOR<FacultyCourseAssignmentUpdateManyMutationInput, FacultyCourseAssignmentUncheckedUpdateManyWithoutFacultyInput>
+  }
+
+  export type CourseUpsertWithoutFacultyProfilesInput = {
+    update: XOR<CourseUpdateWithoutFacultyProfilesInput, CourseUncheckedUpdateWithoutFacultyProfilesInput>
+    create: XOR<CourseCreateWithoutFacultyProfilesInput, CourseUncheckedCreateWithoutFacultyProfilesInput>
+    where?: CourseWhereInput
+  }
+
+  export type CourseUpdateToOneWithWhereWithoutFacultyProfilesInput = {
+    where?: CourseWhereInput
+    data: XOR<CourseUpdateWithoutFacultyProfilesInput, CourseUncheckedUpdateWithoutFacultyProfilesInput>
+  }
+
+  export type CourseUpdateWithoutFacultyProfilesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameKey?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    feeReference?: NullableStringFieldUpdateOperationsInput | string | null
+    mode?: StringFieldUpdateOperationsInput | string
+    duration?: NullableIntFieldUpdateOperationsInput | number | null
+    hours?: NullableIntFieldUpdateOperationsInput | number | null
+    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
+    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
+    discount?: NullableIntFieldUpdateOperationsInput | number | null
+    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
+    installmentCount?: IntFieldUpdateOperationsInput | number
+    installment1?: NullableIntFieldUpdateOperationsInput | number | null
+    installment2?: NullableIntFieldUpdateOperationsInput | number | null
+    installment3?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    statusChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    statusChangedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    installments?: NullableJsonNullValueInput | InputJsonValue
+    courseCode?: NullableStringFieldUpdateOperationsInput | string | null
+    batches?: BatchUpdateManyWithoutCourseNestedInput
+    branchFaculties?: BranchFacultyUpdateManyWithoutCourseNestedInput
+    branch?: BranchUpdateOneWithoutCoursesNestedInput
+    modules?: CourseModuleUpdateManyWithoutCourseNestedInput
+    statusHistory?: CourseStatusHistoryUpdateManyWithoutCourseNestedInput
+    facultyBatchEntries?: FacultyBatchEntryUpdateManyWithoutCourseNestedInput
+    facultyCourseAssignments?: FacultyCourseAssignmentUpdateManyWithoutCourseNestedInput
+    students?: StudentProfileUpdateManyWithoutCourseNestedInput
+  }
+
+  export type CourseUncheckedUpdateWithoutFacultyProfilesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameKey?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    feeReference?: NullableStringFieldUpdateOperationsInput | string | null
+    mode?: StringFieldUpdateOperationsInput | string
+    duration?: NullableIntFieldUpdateOperationsInput | number | null
+    hours?: NullableIntFieldUpdateOperationsInput | number | null
+    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
+    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
+    discount?: NullableIntFieldUpdateOperationsInput | number | null
+    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
+    installmentCount?: IntFieldUpdateOperationsInput | number
+    installment1?: NullableIntFieldUpdateOperationsInput | number | null
+    installment2?: NullableIntFieldUpdateOperationsInput | number | null
+    installment3?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    statusChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    statusChangedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    installments?: NullableJsonNullValueInput | InputJsonValue
+    branchId?: NullableStringFieldUpdateOperationsInput | string | null
+    courseCode?: NullableStringFieldUpdateOperationsInput | string | null
+    batches?: BatchUncheckedUpdateManyWithoutCourseNestedInput
+    branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutCourseNestedInput
+    modules?: CourseModuleUncheckedUpdateManyWithoutCourseNestedInput
+    statusHistory?: CourseStatusHistoryUncheckedUpdateManyWithoutCourseNestedInput
+    facultyBatchEntries?: FacultyBatchEntryUncheckedUpdateManyWithoutCourseNestedInput
+    facultyCourseAssignments?: FacultyCourseAssignmentUncheckedUpdateManyWithoutCourseNestedInput
+    students?: StudentProfileUncheckedUpdateManyWithoutCourseNestedInput
+  }
+
+  export type CourseCreateWithoutFacultyCourseAssignmentsInput = {
+    id?: string
+    name: string
+    nameKey: string
+    description?: string | null
+    feeReference?: string | null
+    mode: string
+    duration?: number | null
+    hours?: number | null
+    actualFees?: number | null
+    registrationFees?: number | null
+    discount?: number | null
+    afterDiscount?: number | null
+    installmentCount?: number
+    installment1?: number | null
+    installment2?: number | null
+    installment3?: number | null
+    status?: $Enums.RecordStatus
+    statusChangedAt?: Date | string | null
+    statusChangedBy?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    installments?: NullableJsonNullValueInput | InputJsonValue
+    courseCode?: string | null
+    batches?: BatchCreateNestedManyWithoutCourseInput
+    branchFaculties?: BranchFacultyCreateNestedManyWithoutCourseInput
+    branch?: BranchCreateNestedOneWithoutCoursesInput
+    modules?: CourseModuleCreateNestedManyWithoutCourseInput
+    statusHistory?: CourseStatusHistoryCreateNestedManyWithoutCourseInput
+    facultyBatchEntries?: FacultyBatchEntryCreateNestedManyWithoutCourseInput
+    facultyProfiles?: FacultyProfileCreateNestedManyWithoutCourseInput
+    students?: StudentProfileCreateNestedManyWithoutCourseInput
+  }
+
+  export type CourseUncheckedCreateWithoutFacultyCourseAssignmentsInput = {
+    id?: string
+    name: string
+    nameKey: string
+    description?: string | null
+    feeReference?: string | null
+    mode: string
+    duration?: number | null
+    hours?: number | null
+    actualFees?: number | null
+    registrationFees?: number | null
+    discount?: number | null
+    afterDiscount?: number | null
+    installmentCount?: number
+    installment1?: number | null
+    installment2?: number | null
+    installment3?: number | null
+    status?: $Enums.RecordStatus
+    statusChangedAt?: Date | string | null
+    statusChangedBy?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    installments?: NullableJsonNullValueInput | InputJsonValue
+    branchId?: string | null
+    courseCode?: string | null
+    batches?: BatchUncheckedCreateNestedManyWithoutCourseInput
+    branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutCourseInput
+    modules?: CourseModuleUncheckedCreateNestedManyWithoutCourseInput
+    statusHistory?: CourseStatusHistoryUncheckedCreateNestedManyWithoutCourseInput
+    facultyBatchEntries?: FacultyBatchEntryUncheckedCreateNestedManyWithoutCourseInput
+    facultyProfiles?: FacultyProfileUncheckedCreateNestedManyWithoutCourseInput
+    students?: StudentProfileUncheckedCreateNestedManyWithoutCourseInput
+  }
+
+  export type CourseCreateOrConnectWithoutFacultyCourseAssignmentsInput = {
+    where: CourseWhereUniqueInput
+    create: XOR<CourseCreateWithoutFacultyCourseAssignmentsInput, CourseUncheckedCreateWithoutFacultyCourseAssignmentsInput>
+  }
+
   export type FacultyProfileCreateWithoutCourseAssignmentsInput = {
     id?: string
     facultyName: string
@@ -50312,8 +48082,8 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    course?: CourseCreateNestedOneWithoutFacultyProfilesInput
     batchEntries?: FacultyBatchEntryCreateNestedManyWithoutFacultyInput
+    course?: CourseCreateNestedOneWithoutFacultyProfilesInput
   }
 
   export type FacultyProfileUncheckedCreateWithoutCourseAssignmentsInput = {
@@ -50335,81 +48105,87 @@ export namespace Prisma {
     create: XOR<FacultyProfileCreateWithoutCourseAssignmentsInput, FacultyProfileUncheckedCreateWithoutCourseAssignmentsInput>
   }
 
-  export type CourseCreateWithoutFacultyCourseAssignmentsInput = {
-    id?: string
-    name: string
-    nameKey: string
-    courseCode?: string | null
-    description?: string | null
-    feeReference?: string | null
-    mode: string
-    duration?: number | null
-    hours?: number | null
-    actualFees?: number | null
-    registrationFees?: number | null
-    discount?: number | null
-    afterDiscount?: number | null
-    installmentCount?: number
-    installment1?: number | null
-    installment2?: number | null
-    installment3?: number | null
-    installments?: NullableJsonNullValueInput | InputJsonValue
-    status?: $Enums.RecordStatus
-    statusChangedAt?: Date | string | null
-    statusChangedBy?: string | null
-    createdBy?: string | null
-    updatedBy?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    branch?: BranchCreateNestedOneWithoutCoursesInput
-    modules?: CourseModuleCreateNestedManyWithoutCourseInput
-    batches?: BatchCreateNestedManyWithoutCourseInput
-    students?: StudentProfileCreateNestedManyWithoutCourseInput
-    facultyProfiles?: FacultyProfileCreateNestedManyWithoutCourseInput
-    facultyBatchEntries?: FacultyBatchEntryCreateNestedManyWithoutCourseInput
-    statusHistory?: CourseStatusHistoryCreateNestedManyWithoutCourseInput
-    branchFaculties?: BranchFacultyCreateNestedManyWithoutCourseInput
-  }
-
-  export type CourseUncheckedCreateWithoutFacultyCourseAssignmentsInput = {
-    id?: string
-    name: string
-    nameKey: string
-    courseCode?: string | null
-    branchId?: string | null
-    description?: string | null
-    feeReference?: string | null
-    mode: string
-    duration?: number | null
-    hours?: number | null
-    actualFees?: number | null
-    registrationFees?: number | null
-    discount?: number | null
-    afterDiscount?: number | null
-    installmentCount?: number
-    installment1?: number | null
-    installment2?: number | null
-    installment3?: number | null
-    installments?: NullableJsonNullValueInput | InputJsonValue
-    status?: $Enums.RecordStatus
-    statusChangedAt?: Date | string | null
-    statusChangedBy?: string | null
-    createdBy?: string | null
-    updatedBy?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    modules?: CourseModuleUncheckedCreateNestedManyWithoutCourseInput
-    batches?: BatchUncheckedCreateNestedManyWithoutCourseInput
-    students?: StudentProfileUncheckedCreateNestedManyWithoutCourseInput
-    facultyProfiles?: FacultyProfileUncheckedCreateNestedManyWithoutCourseInput
-    facultyBatchEntries?: FacultyBatchEntryUncheckedCreateNestedManyWithoutCourseInput
-    statusHistory?: CourseStatusHistoryUncheckedCreateNestedManyWithoutCourseInput
-    branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutCourseInput
-  }
-
-  export type CourseCreateOrConnectWithoutFacultyCourseAssignmentsInput = {
-    where: CourseWhereUniqueInput
+  export type CourseUpsertWithoutFacultyCourseAssignmentsInput = {
+    update: XOR<CourseUpdateWithoutFacultyCourseAssignmentsInput, CourseUncheckedUpdateWithoutFacultyCourseAssignmentsInput>
     create: XOR<CourseCreateWithoutFacultyCourseAssignmentsInput, CourseUncheckedCreateWithoutFacultyCourseAssignmentsInput>
+    where?: CourseWhereInput
+  }
+
+  export type CourseUpdateToOneWithWhereWithoutFacultyCourseAssignmentsInput = {
+    where?: CourseWhereInput
+    data: XOR<CourseUpdateWithoutFacultyCourseAssignmentsInput, CourseUncheckedUpdateWithoutFacultyCourseAssignmentsInput>
+  }
+
+  export type CourseUpdateWithoutFacultyCourseAssignmentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameKey?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    feeReference?: NullableStringFieldUpdateOperationsInput | string | null
+    mode?: StringFieldUpdateOperationsInput | string
+    duration?: NullableIntFieldUpdateOperationsInput | number | null
+    hours?: NullableIntFieldUpdateOperationsInput | number | null
+    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
+    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
+    discount?: NullableIntFieldUpdateOperationsInput | number | null
+    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
+    installmentCount?: IntFieldUpdateOperationsInput | number
+    installment1?: NullableIntFieldUpdateOperationsInput | number | null
+    installment2?: NullableIntFieldUpdateOperationsInput | number | null
+    installment3?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    statusChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    statusChangedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    installments?: NullableJsonNullValueInput | InputJsonValue
+    courseCode?: NullableStringFieldUpdateOperationsInput | string | null
+    batches?: BatchUpdateManyWithoutCourseNestedInput
+    branchFaculties?: BranchFacultyUpdateManyWithoutCourseNestedInput
+    branch?: BranchUpdateOneWithoutCoursesNestedInput
+    modules?: CourseModuleUpdateManyWithoutCourseNestedInput
+    statusHistory?: CourseStatusHistoryUpdateManyWithoutCourseNestedInput
+    facultyBatchEntries?: FacultyBatchEntryUpdateManyWithoutCourseNestedInput
+    facultyProfiles?: FacultyProfileUpdateManyWithoutCourseNestedInput
+    students?: StudentProfileUpdateManyWithoutCourseNestedInput
+  }
+
+  export type CourseUncheckedUpdateWithoutFacultyCourseAssignmentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameKey?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    feeReference?: NullableStringFieldUpdateOperationsInput | string | null
+    mode?: StringFieldUpdateOperationsInput | string
+    duration?: NullableIntFieldUpdateOperationsInput | number | null
+    hours?: NullableIntFieldUpdateOperationsInput | number | null
+    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
+    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
+    discount?: NullableIntFieldUpdateOperationsInput | number | null
+    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
+    installmentCount?: IntFieldUpdateOperationsInput | number
+    installment1?: NullableIntFieldUpdateOperationsInput | number | null
+    installment2?: NullableIntFieldUpdateOperationsInput | number | null
+    installment3?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    statusChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    statusChangedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    installments?: NullableJsonNullValueInput | InputJsonValue
+    branchId?: NullableStringFieldUpdateOperationsInput | string | null
+    courseCode?: NullableStringFieldUpdateOperationsInput | string | null
+    batches?: BatchUncheckedUpdateManyWithoutCourseNestedInput
+    branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutCourseNestedInput
+    modules?: CourseModuleUncheckedUpdateManyWithoutCourseNestedInput
+    statusHistory?: CourseStatusHistoryUncheckedUpdateManyWithoutCourseNestedInput
+    facultyBatchEntries?: FacultyBatchEntryUncheckedUpdateManyWithoutCourseNestedInput
+    facultyProfiles?: FacultyProfileUncheckedUpdateManyWithoutCourseNestedInput
+    students?: StudentProfileUncheckedUpdateManyWithoutCourseNestedInput
   }
 
   export type FacultyProfileUpsertWithoutCourseAssignmentsInput = {
@@ -50433,8 +48209,8 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    course?: CourseUpdateOneWithoutFacultyProfilesNestedInput
     batchEntries?: FacultyBatchEntryUpdateManyWithoutFacultyNestedInput
+    course?: CourseUpdateOneWithoutFacultyProfilesNestedInput
   }
 
   export type FacultyProfileUncheckedUpdateWithoutCourseAssignmentsInput = {
@@ -50451,87 +48227,81 @@ export namespace Prisma {
     batchEntries?: FacultyBatchEntryUncheckedUpdateManyWithoutFacultyNestedInput
   }
 
-  export type CourseUpsertWithoutFacultyCourseAssignmentsInput = {
-    update: XOR<CourseUpdateWithoutFacultyCourseAssignmentsInput, CourseUncheckedUpdateWithoutFacultyCourseAssignmentsInput>
-    create: XOR<CourseCreateWithoutFacultyCourseAssignmentsInput, CourseUncheckedCreateWithoutFacultyCourseAssignmentsInput>
-    where?: CourseWhereInput
-  }
-
-  export type CourseUpdateToOneWithWhereWithoutFacultyCourseAssignmentsInput = {
-    where?: CourseWhereInput
-    data: XOR<CourseUpdateWithoutFacultyCourseAssignmentsInput, CourseUncheckedUpdateWithoutFacultyCourseAssignmentsInput>
-  }
-
-  export type CourseUpdateWithoutFacultyCourseAssignmentsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    nameKey?: StringFieldUpdateOperationsInput | string
-    courseCode?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    feeReference?: NullableStringFieldUpdateOperationsInput | string | null
-    mode?: StringFieldUpdateOperationsInput | string
-    duration?: NullableIntFieldUpdateOperationsInput | number | null
-    hours?: NullableIntFieldUpdateOperationsInput | number | null
-    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
-    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
-    discount?: NullableIntFieldUpdateOperationsInput | number | null
-    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
-    installmentCount?: IntFieldUpdateOperationsInput | number
-    installment1?: NullableIntFieldUpdateOperationsInput | number | null
-    installment2?: NullableIntFieldUpdateOperationsInput | number | null
-    installment3?: NullableIntFieldUpdateOperationsInput | number | null
+  export type CourseCreateWithoutFacultyBatchEntriesInput = {
+    id?: string
+    name: string
+    nameKey: string
+    description?: string | null
+    feeReference?: string | null
+    mode: string
+    duration?: number | null
+    hours?: number | null
+    actualFees?: number | null
+    registrationFees?: number | null
+    discount?: number | null
+    afterDiscount?: number | null
+    installmentCount?: number
+    installment1?: number | null
+    installment2?: number | null
+    installment3?: number | null
+    status?: $Enums.RecordStatus
+    statusChangedAt?: Date | string | null
+    statusChangedBy?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
     installments?: NullableJsonNullValueInput | InputJsonValue
-    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
-    statusChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    statusChangedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    branch?: BranchUpdateOneWithoutCoursesNestedInput
-    modules?: CourseModuleUpdateManyWithoutCourseNestedInput
-    batches?: BatchUpdateManyWithoutCourseNestedInput
-    students?: StudentProfileUpdateManyWithoutCourseNestedInput
-    facultyProfiles?: FacultyProfileUpdateManyWithoutCourseNestedInput
-    facultyBatchEntries?: FacultyBatchEntryUpdateManyWithoutCourseNestedInput
-    statusHistory?: CourseStatusHistoryUpdateManyWithoutCourseNestedInput
-    branchFaculties?: BranchFacultyUpdateManyWithoutCourseNestedInput
+    courseCode?: string | null
+    batches?: BatchCreateNestedManyWithoutCourseInput
+    branchFaculties?: BranchFacultyCreateNestedManyWithoutCourseInput
+    branch?: BranchCreateNestedOneWithoutCoursesInput
+    modules?: CourseModuleCreateNestedManyWithoutCourseInput
+    statusHistory?: CourseStatusHistoryCreateNestedManyWithoutCourseInput
+    facultyCourseAssignments?: FacultyCourseAssignmentCreateNestedManyWithoutCourseInput
+    facultyProfiles?: FacultyProfileCreateNestedManyWithoutCourseInput
+    students?: StudentProfileCreateNestedManyWithoutCourseInput
   }
 
-  export type CourseUncheckedUpdateWithoutFacultyCourseAssignmentsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    nameKey?: StringFieldUpdateOperationsInput | string
-    courseCode?: NullableStringFieldUpdateOperationsInput | string | null
-    branchId?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    feeReference?: NullableStringFieldUpdateOperationsInput | string | null
-    mode?: StringFieldUpdateOperationsInput | string
-    duration?: NullableIntFieldUpdateOperationsInput | number | null
-    hours?: NullableIntFieldUpdateOperationsInput | number | null
-    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
-    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
-    discount?: NullableIntFieldUpdateOperationsInput | number | null
-    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
-    installmentCount?: IntFieldUpdateOperationsInput | number
-    installment1?: NullableIntFieldUpdateOperationsInput | number | null
-    installment2?: NullableIntFieldUpdateOperationsInput | number | null
-    installment3?: NullableIntFieldUpdateOperationsInput | number | null
+  export type CourseUncheckedCreateWithoutFacultyBatchEntriesInput = {
+    id?: string
+    name: string
+    nameKey: string
+    description?: string | null
+    feeReference?: string | null
+    mode: string
+    duration?: number | null
+    hours?: number | null
+    actualFees?: number | null
+    registrationFees?: number | null
+    discount?: number | null
+    afterDiscount?: number | null
+    installmentCount?: number
+    installment1?: number | null
+    installment2?: number | null
+    installment3?: number | null
+    status?: $Enums.RecordStatus
+    statusChangedAt?: Date | string | null
+    statusChangedBy?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
     installments?: NullableJsonNullValueInput | InputJsonValue
-    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
-    statusChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    statusChangedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    modules?: CourseModuleUncheckedUpdateManyWithoutCourseNestedInput
-    batches?: BatchUncheckedUpdateManyWithoutCourseNestedInput
-    students?: StudentProfileUncheckedUpdateManyWithoutCourseNestedInput
-    facultyProfiles?: FacultyProfileUncheckedUpdateManyWithoutCourseNestedInput
-    facultyBatchEntries?: FacultyBatchEntryUncheckedUpdateManyWithoutCourseNestedInput
-    statusHistory?: CourseStatusHistoryUncheckedUpdateManyWithoutCourseNestedInput
-    branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutCourseNestedInput
+    branchId?: string | null
+    courseCode?: string | null
+    batches?: BatchUncheckedCreateNestedManyWithoutCourseInput
+    branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutCourseInput
+    modules?: CourseModuleUncheckedCreateNestedManyWithoutCourseInput
+    statusHistory?: CourseStatusHistoryUncheckedCreateNestedManyWithoutCourseInput
+    facultyCourseAssignments?: FacultyCourseAssignmentUncheckedCreateNestedManyWithoutCourseInput
+    facultyProfiles?: FacultyProfileUncheckedCreateNestedManyWithoutCourseInput
+    students?: StudentProfileUncheckedCreateNestedManyWithoutCourseInput
+  }
+
+  export type CourseCreateOrConnectWithoutFacultyBatchEntriesInput = {
+    where: CourseWhereUniqueInput
+    create: XOR<CourseCreateWithoutFacultyBatchEntriesInput, CourseUncheckedCreateWithoutFacultyBatchEntriesInput>
   }
 
   export type FacultyProfileCreateWithoutBatchEntriesInput = {
@@ -50544,8 +48314,8 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    course?: CourseCreateNestedOneWithoutFacultyProfilesInput
     courseAssignments?: FacultyCourseAssignmentCreateNestedManyWithoutFacultyInput
+    course?: CourseCreateNestedOneWithoutFacultyProfilesInput
   }
 
   export type FacultyProfileUncheckedCreateWithoutBatchEntriesInput = {
@@ -50567,81 +48337,87 @@ export namespace Prisma {
     create: XOR<FacultyProfileCreateWithoutBatchEntriesInput, FacultyProfileUncheckedCreateWithoutBatchEntriesInput>
   }
 
-  export type CourseCreateWithoutFacultyBatchEntriesInput = {
-    id?: string
-    name: string
-    nameKey: string
-    courseCode?: string | null
-    description?: string | null
-    feeReference?: string | null
-    mode: string
-    duration?: number | null
-    hours?: number | null
-    actualFees?: number | null
-    registrationFees?: number | null
-    discount?: number | null
-    afterDiscount?: number | null
-    installmentCount?: number
-    installment1?: number | null
-    installment2?: number | null
-    installment3?: number | null
-    installments?: NullableJsonNullValueInput | InputJsonValue
-    status?: $Enums.RecordStatus
-    statusChangedAt?: Date | string | null
-    statusChangedBy?: string | null
-    createdBy?: string | null
-    updatedBy?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    branch?: BranchCreateNestedOneWithoutCoursesInput
-    modules?: CourseModuleCreateNestedManyWithoutCourseInput
-    batches?: BatchCreateNestedManyWithoutCourseInput
-    students?: StudentProfileCreateNestedManyWithoutCourseInput
-    facultyProfiles?: FacultyProfileCreateNestedManyWithoutCourseInput
-    facultyCourseAssignments?: FacultyCourseAssignmentCreateNestedManyWithoutCourseInput
-    statusHistory?: CourseStatusHistoryCreateNestedManyWithoutCourseInput
-    branchFaculties?: BranchFacultyCreateNestedManyWithoutCourseInput
-  }
-
-  export type CourseUncheckedCreateWithoutFacultyBatchEntriesInput = {
-    id?: string
-    name: string
-    nameKey: string
-    courseCode?: string | null
-    branchId?: string | null
-    description?: string | null
-    feeReference?: string | null
-    mode: string
-    duration?: number | null
-    hours?: number | null
-    actualFees?: number | null
-    registrationFees?: number | null
-    discount?: number | null
-    afterDiscount?: number | null
-    installmentCount?: number
-    installment1?: number | null
-    installment2?: number | null
-    installment3?: number | null
-    installments?: NullableJsonNullValueInput | InputJsonValue
-    status?: $Enums.RecordStatus
-    statusChangedAt?: Date | string | null
-    statusChangedBy?: string | null
-    createdBy?: string | null
-    updatedBy?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    modules?: CourseModuleUncheckedCreateNestedManyWithoutCourseInput
-    batches?: BatchUncheckedCreateNestedManyWithoutCourseInput
-    students?: StudentProfileUncheckedCreateNestedManyWithoutCourseInput
-    facultyProfiles?: FacultyProfileUncheckedCreateNestedManyWithoutCourseInput
-    facultyCourseAssignments?: FacultyCourseAssignmentUncheckedCreateNestedManyWithoutCourseInput
-    statusHistory?: CourseStatusHistoryUncheckedCreateNestedManyWithoutCourseInput
-    branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutCourseInput
-  }
-
-  export type CourseCreateOrConnectWithoutFacultyBatchEntriesInput = {
-    where: CourseWhereUniqueInput
+  export type CourseUpsertWithoutFacultyBatchEntriesInput = {
+    update: XOR<CourseUpdateWithoutFacultyBatchEntriesInput, CourseUncheckedUpdateWithoutFacultyBatchEntriesInput>
     create: XOR<CourseCreateWithoutFacultyBatchEntriesInput, CourseUncheckedCreateWithoutFacultyBatchEntriesInput>
+    where?: CourseWhereInput
+  }
+
+  export type CourseUpdateToOneWithWhereWithoutFacultyBatchEntriesInput = {
+    where?: CourseWhereInput
+    data: XOR<CourseUpdateWithoutFacultyBatchEntriesInput, CourseUncheckedUpdateWithoutFacultyBatchEntriesInput>
+  }
+
+  export type CourseUpdateWithoutFacultyBatchEntriesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameKey?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    feeReference?: NullableStringFieldUpdateOperationsInput | string | null
+    mode?: StringFieldUpdateOperationsInput | string
+    duration?: NullableIntFieldUpdateOperationsInput | number | null
+    hours?: NullableIntFieldUpdateOperationsInput | number | null
+    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
+    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
+    discount?: NullableIntFieldUpdateOperationsInput | number | null
+    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
+    installmentCount?: IntFieldUpdateOperationsInput | number
+    installment1?: NullableIntFieldUpdateOperationsInput | number | null
+    installment2?: NullableIntFieldUpdateOperationsInput | number | null
+    installment3?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    statusChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    statusChangedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    installments?: NullableJsonNullValueInput | InputJsonValue
+    courseCode?: NullableStringFieldUpdateOperationsInput | string | null
+    batches?: BatchUpdateManyWithoutCourseNestedInput
+    branchFaculties?: BranchFacultyUpdateManyWithoutCourseNestedInput
+    branch?: BranchUpdateOneWithoutCoursesNestedInput
+    modules?: CourseModuleUpdateManyWithoutCourseNestedInput
+    statusHistory?: CourseStatusHistoryUpdateManyWithoutCourseNestedInput
+    facultyCourseAssignments?: FacultyCourseAssignmentUpdateManyWithoutCourseNestedInput
+    facultyProfiles?: FacultyProfileUpdateManyWithoutCourseNestedInput
+    students?: StudentProfileUpdateManyWithoutCourseNestedInput
+  }
+
+  export type CourseUncheckedUpdateWithoutFacultyBatchEntriesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameKey?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    feeReference?: NullableStringFieldUpdateOperationsInput | string | null
+    mode?: StringFieldUpdateOperationsInput | string
+    duration?: NullableIntFieldUpdateOperationsInput | number | null
+    hours?: NullableIntFieldUpdateOperationsInput | number | null
+    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
+    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
+    discount?: NullableIntFieldUpdateOperationsInput | number | null
+    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
+    installmentCount?: IntFieldUpdateOperationsInput | number
+    installment1?: NullableIntFieldUpdateOperationsInput | number | null
+    installment2?: NullableIntFieldUpdateOperationsInput | number | null
+    installment3?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    statusChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    statusChangedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    installments?: NullableJsonNullValueInput | InputJsonValue
+    branchId?: NullableStringFieldUpdateOperationsInput | string | null
+    courseCode?: NullableStringFieldUpdateOperationsInput | string | null
+    batches?: BatchUncheckedUpdateManyWithoutCourseNestedInput
+    branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutCourseNestedInput
+    modules?: CourseModuleUncheckedUpdateManyWithoutCourseNestedInput
+    statusHistory?: CourseStatusHistoryUncheckedUpdateManyWithoutCourseNestedInput
+    facultyCourseAssignments?: FacultyCourseAssignmentUncheckedUpdateManyWithoutCourseNestedInput
+    facultyProfiles?: FacultyProfileUncheckedUpdateManyWithoutCourseNestedInput
+    students?: StudentProfileUncheckedUpdateManyWithoutCourseNestedInput
   }
 
   export type FacultyProfileUpsertWithoutBatchEntriesInput = {
@@ -50665,8 +48441,8 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    course?: CourseUpdateOneWithoutFacultyProfilesNestedInput
     courseAssignments?: FacultyCourseAssignmentUpdateManyWithoutFacultyNestedInput
+    course?: CourseUpdateOneWithoutFacultyProfilesNestedInput
   }
 
   export type FacultyProfileUncheckedUpdateWithoutBatchEntriesInput = {
@@ -50681,89 +48457,6 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     courseAssignments?: FacultyCourseAssignmentUncheckedUpdateManyWithoutFacultyNestedInput
-  }
-
-  export type CourseUpsertWithoutFacultyBatchEntriesInput = {
-    update: XOR<CourseUpdateWithoutFacultyBatchEntriesInput, CourseUncheckedUpdateWithoutFacultyBatchEntriesInput>
-    create: XOR<CourseCreateWithoutFacultyBatchEntriesInput, CourseUncheckedCreateWithoutFacultyBatchEntriesInput>
-    where?: CourseWhereInput
-  }
-
-  export type CourseUpdateToOneWithWhereWithoutFacultyBatchEntriesInput = {
-    where?: CourseWhereInput
-    data: XOR<CourseUpdateWithoutFacultyBatchEntriesInput, CourseUncheckedUpdateWithoutFacultyBatchEntriesInput>
-  }
-
-  export type CourseUpdateWithoutFacultyBatchEntriesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    nameKey?: StringFieldUpdateOperationsInput | string
-    courseCode?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    feeReference?: NullableStringFieldUpdateOperationsInput | string | null
-    mode?: StringFieldUpdateOperationsInput | string
-    duration?: NullableIntFieldUpdateOperationsInput | number | null
-    hours?: NullableIntFieldUpdateOperationsInput | number | null
-    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
-    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
-    discount?: NullableIntFieldUpdateOperationsInput | number | null
-    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
-    installmentCount?: IntFieldUpdateOperationsInput | number
-    installment1?: NullableIntFieldUpdateOperationsInput | number | null
-    installment2?: NullableIntFieldUpdateOperationsInput | number | null
-    installment3?: NullableIntFieldUpdateOperationsInput | number | null
-    installments?: NullableJsonNullValueInput | InputJsonValue
-    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
-    statusChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    statusChangedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    branch?: BranchUpdateOneWithoutCoursesNestedInput
-    modules?: CourseModuleUpdateManyWithoutCourseNestedInput
-    batches?: BatchUpdateManyWithoutCourseNestedInput
-    students?: StudentProfileUpdateManyWithoutCourseNestedInput
-    facultyProfiles?: FacultyProfileUpdateManyWithoutCourseNestedInput
-    facultyCourseAssignments?: FacultyCourseAssignmentUpdateManyWithoutCourseNestedInput
-    statusHistory?: CourseStatusHistoryUpdateManyWithoutCourseNestedInput
-    branchFaculties?: BranchFacultyUpdateManyWithoutCourseNestedInput
-  }
-
-  export type CourseUncheckedUpdateWithoutFacultyBatchEntriesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    nameKey?: StringFieldUpdateOperationsInput | string
-    courseCode?: NullableStringFieldUpdateOperationsInput | string | null
-    branchId?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    feeReference?: NullableStringFieldUpdateOperationsInput | string | null
-    mode?: StringFieldUpdateOperationsInput | string
-    duration?: NullableIntFieldUpdateOperationsInput | number | null
-    hours?: NullableIntFieldUpdateOperationsInput | number | null
-    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
-    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
-    discount?: NullableIntFieldUpdateOperationsInput | number | null
-    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
-    installmentCount?: IntFieldUpdateOperationsInput | number
-    installment1?: NullableIntFieldUpdateOperationsInput | number | null
-    installment2?: NullableIntFieldUpdateOperationsInput | number | null
-    installment3?: NullableIntFieldUpdateOperationsInput | number | null
-    installments?: NullableJsonNullValueInput | InputJsonValue
-    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
-    statusChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    statusChangedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    modules?: CourseModuleUncheckedUpdateManyWithoutCourseNestedInput
-    batches?: BatchUncheckedUpdateManyWithoutCourseNestedInput
-    students?: StudentProfileUncheckedUpdateManyWithoutCourseNestedInput
-    facultyProfiles?: FacultyProfileUncheckedUpdateManyWithoutCourseNestedInput
-    facultyCourseAssignments?: FacultyCourseAssignmentUncheckedUpdateManyWithoutCourseNestedInput
-    statusHistory?: CourseStatusHistoryUncheckedUpdateManyWithoutCourseNestedInput
-    branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutCourseNestedInput
   }
 
   export type UserCreateWithoutFacultyAttendanceSessionsInput = {
@@ -50788,12 +48481,12 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    loginEvents?: LoginEventCreateNestedManyWithoutUserInput
-    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
     batchFacultyAssignments?: BatchFacultyAssignmentCreateNestedManyWithoutFacultyInput
-    targetedNotifications?: NotificationCreateNestedManyWithoutTargetUserInput
-    markedStudentAttendances?: StudentAttendanceCreateNestedManyWithoutFacultyUserInput
     managedBranch?: BranchCreateNestedOneWithoutAdminUserInput
+    loginEvents?: LoginEventCreateNestedManyWithoutUserInput
+    targetedNotifications?: NotificationCreateNestedManyWithoutTargetUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    markedStudentAttendances?: StudentAttendanceCreateNestedManyWithoutFacultyUserInput
   }
 
   export type UserUncheckedCreateWithoutFacultyAttendanceSessionsInput = {
@@ -50818,12 +48511,12 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    loginEvents?: LoginEventUncheckedCreateNestedManyWithoutUserInput
-    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
     batchFacultyAssignments?: BatchFacultyAssignmentUncheckedCreateNestedManyWithoutFacultyInput
-    targetedNotifications?: NotificationUncheckedCreateNestedManyWithoutTargetUserInput
-    markedStudentAttendances?: StudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
     managedBranch?: BranchUncheckedCreateNestedOneWithoutAdminUserInput
+    loginEvents?: LoginEventUncheckedCreateNestedManyWithoutUserInput
+    targetedNotifications?: NotificationUncheckedCreateNestedManyWithoutTargetUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    markedStudentAttendances?: StudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
   }
 
   export type UserCreateOrConnectWithoutFacultyAttendanceSessionsInput = {
@@ -50864,12 +48557,12 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    loginEvents?: LoginEventUpdateManyWithoutUserNestedInput
-    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
     batchFacultyAssignments?: BatchFacultyAssignmentUpdateManyWithoutFacultyNestedInput
-    targetedNotifications?: NotificationUpdateManyWithoutTargetUserNestedInput
-    markedStudentAttendances?: StudentAttendanceUpdateManyWithoutFacultyUserNestedInput
     managedBranch?: BranchUpdateOneWithoutAdminUserNestedInput
+    loginEvents?: LoginEventUpdateManyWithoutUserNestedInput
+    targetedNotifications?: NotificationUpdateManyWithoutTargetUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    markedStudentAttendances?: StudentAttendanceUpdateManyWithoutFacultyUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFacultyAttendanceSessionsInput = {
@@ -50894,109 +48587,12 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    loginEvents?: LoginEventUncheckedUpdateManyWithoutUserNestedInput
-    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
     batchFacultyAssignments?: BatchFacultyAssignmentUncheckedUpdateManyWithoutFacultyNestedInput
-    targetedNotifications?: NotificationUncheckedUpdateManyWithoutTargetUserNestedInput
-    markedStudentAttendances?: StudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
     managedBranch?: BranchUncheckedUpdateOneWithoutAdminUserNestedInput
-  }
-
-  export type StudentProfileCreateWithoutAttendanceRecordsInput = {
-    id?: string
-    studentCode: string
-    studentName: string
-    mobileNumber: string
-    emailAddress: string
-    linkedInUrl?: string | null
-    parentSpouseNumber?: string | null
-    location?: string | null
-    courseInterested: string
-    facultyId?: string | null
-    facultyName?: string | null
-    batchId?: string | null
-    batchName?: string | null
-    qualification?: string | null
-    passedOutYear?: number | null
-    currentStatus?: string | null
-    designation?: string | null
-    source?: string | null
-    actualFees?: number | null
-    registrationFees?: number | null
-    discount?: number | null
-    afterDiscount?: number | null
-    installment1?: number | null
-    installment2?: number | null
-    installment3?: number | null
-    installment4?: number | null
-    totalAmount?: number | null
-    admissionDate: string
-    firstInstallmentAmount?: number | null
-    firstInstallmentDate?: string | null
-    firstInstallmentStatus?: string
-    firstInstallmentPaidAt?: string | null
-    secondInstallmentAmount?: number | null
-    secondDueDate?: string | null
-    secondInstallmentStatus?: string
-    secondInstallmentPaidAt?: string | null
-    remarks?: string | null
-    recordStatus?: $Enums.RecordStatus
-    createdBy?: string | null
-    updatedBy?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    course?: CourseCreateNestedOneWithoutStudentsInput
-  }
-
-  export type StudentProfileUncheckedCreateWithoutAttendanceRecordsInput = {
-    id?: string
-    studentCode: string
-    studentName: string
-    mobileNumber: string
-    emailAddress: string
-    linkedInUrl?: string | null
-    parentSpouseNumber?: string | null
-    location?: string | null
-    courseId?: string | null
-    courseInterested: string
-    facultyId?: string | null
-    facultyName?: string | null
-    batchId?: string | null
-    batchName?: string | null
-    qualification?: string | null
-    passedOutYear?: number | null
-    currentStatus?: string | null
-    designation?: string | null
-    source?: string | null
-    actualFees?: number | null
-    registrationFees?: number | null
-    discount?: number | null
-    afterDiscount?: number | null
-    installment1?: number | null
-    installment2?: number | null
-    installment3?: number | null
-    installment4?: number | null
-    totalAmount?: number | null
-    admissionDate: string
-    firstInstallmentAmount?: number | null
-    firstInstallmentDate?: string | null
-    firstInstallmentStatus?: string
-    firstInstallmentPaidAt?: string | null
-    secondInstallmentAmount?: number | null
-    secondDueDate?: string | null
-    secondInstallmentStatus?: string
-    secondInstallmentPaidAt?: string | null
-    remarks?: string | null
-    recordStatus?: $Enums.RecordStatus
-    createdBy?: string | null
-    updatedBy?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type StudentProfileCreateOrConnectWithoutAttendanceRecordsInput = {
-    where: StudentProfileWhereUniqueInput
-    create: XOR<StudentProfileCreateWithoutAttendanceRecordsInput, StudentProfileUncheckedCreateWithoutAttendanceRecordsInput>
+    loginEvents?: LoginEventUncheckedUpdateManyWithoutUserNestedInput
+    targetedNotifications?: NotificationUncheckedUpdateManyWithoutTargetUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    markedStudentAttendances?: StudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
   }
 
   export type UserCreateWithoutMarkedStudentAttendancesInput = {
@@ -51021,12 +48617,12 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    loginEvents?: LoginEventCreateNestedManyWithoutUserInput
-    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
     batchFacultyAssignments?: BatchFacultyAssignmentCreateNestedManyWithoutFacultyInput
-    targetedNotifications?: NotificationCreateNestedManyWithoutTargetUserInput
-    facultyAttendanceSessions?: FacultyAttendanceSessionCreateNestedManyWithoutFacultyUserInput
     managedBranch?: BranchCreateNestedOneWithoutAdminUserInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionCreateNestedManyWithoutFacultyUserInput
+    loginEvents?: LoginEventCreateNestedManyWithoutUserInput
+    targetedNotifications?: NotificationCreateNestedManyWithoutTargetUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutMarkedStudentAttendancesInput = {
@@ -51051,12 +48647,12 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    loginEvents?: LoginEventUncheckedCreateNestedManyWithoutUserInput
-    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
     batchFacultyAssignments?: BatchFacultyAssignmentUncheckedCreateNestedManyWithoutFacultyInput
-    targetedNotifications?: NotificationUncheckedCreateNestedManyWithoutTargetUserInput
-    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedCreateNestedManyWithoutFacultyUserInput
     managedBranch?: BranchUncheckedCreateNestedOneWithoutAdminUserInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedCreateNestedManyWithoutFacultyUserInput
+    loginEvents?: LoginEventUncheckedCreateNestedManyWithoutUserInput
+    targetedNotifications?: NotificationUncheckedCreateNestedManyWithoutTargetUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutMarkedStudentAttendancesInput = {
@@ -51064,107 +48660,101 @@ export namespace Prisma {
     create: XOR<UserCreateWithoutMarkedStudentAttendancesInput, UserUncheckedCreateWithoutMarkedStudentAttendancesInput>
   }
 
-  export type StudentProfileUpsertWithoutAttendanceRecordsInput = {
-    update: XOR<StudentProfileUpdateWithoutAttendanceRecordsInput, StudentProfileUncheckedUpdateWithoutAttendanceRecordsInput>
+  export type StudentProfileCreateWithoutAttendanceRecordsInput = {
+    id?: string
+    studentCode: string
+    studentName: string
+    mobileNumber: string
+    emailAddress: string
+    parentSpouseNumber?: string | null
+    location?: string | null
+    courseInterested: string
+    facultyName?: string | null
+    batchName?: string | null
+    qualification?: string | null
+    passedOutYear?: number | null
+    currentStatus?: string | null
+    designation?: string | null
+    source?: string | null
+    actualFees?: number | null
+    registrationFees?: number | null
+    discount?: number | null
+    afterDiscount?: number | null
+    installment1?: number | null
+    installment2?: number | null
+    installment3?: number | null
+    totalAmount?: number | null
+    admissionDate: string
+    firstInstallmentAmount?: number | null
+    firstInstallmentDate?: string | null
+    firstInstallmentStatus?: string
+    firstInstallmentPaidAt?: string | null
+    secondInstallmentAmount?: number | null
+    secondDueDate?: string | null
+    secondInstallmentStatus?: string
+    secondInstallmentPaidAt?: string | null
+    remarks?: string | null
+    recordStatus?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    installment4?: number | null
+    batchId?: string | null
+    facultyId?: string | null
+    linkedInUrl?: string | null
+    course?: CourseCreateNestedOneWithoutStudentsInput
+  }
+
+  export type StudentProfileUncheckedCreateWithoutAttendanceRecordsInput = {
+    id?: string
+    studentCode: string
+    studentName: string
+    mobileNumber: string
+    emailAddress: string
+    parentSpouseNumber?: string | null
+    location?: string | null
+    courseId?: string | null
+    courseInterested: string
+    facultyName?: string | null
+    batchName?: string | null
+    qualification?: string | null
+    passedOutYear?: number | null
+    currentStatus?: string | null
+    designation?: string | null
+    source?: string | null
+    actualFees?: number | null
+    registrationFees?: number | null
+    discount?: number | null
+    afterDiscount?: number | null
+    installment1?: number | null
+    installment2?: number | null
+    installment3?: number | null
+    totalAmount?: number | null
+    admissionDate: string
+    firstInstallmentAmount?: number | null
+    firstInstallmentDate?: string | null
+    firstInstallmentStatus?: string
+    firstInstallmentPaidAt?: string | null
+    secondInstallmentAmount?: number | null
+    secondDueDate?: string | null
+    secondInstallmentStatus?: string
+    secondInstallmentPaidAt?: string | null
+    remarks?: string | null
+    recordStatus?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    installment4?: number | null
+    batchId?: string | null
+    facultyId?: string | null
+    linkedInUrl?: string | null
+  }
+
+  export type StudentProfileCreateOrConnectWithoutAttendanceRecordsInput = {
+    where: StudentProfileWhereUniqueInput
     create: XOR<StudentProfileCreateWithoutAttendanceRecordsInput, StudentProfileUncheckedCreateWithoutAttendanceRecordsInput>
-    where?: StudentProfileWhereInput
-  }
-
-  export type StudentProfileUpdateToOneWithWhereWithoutAttendanceRecordsInput = {
-    where?: StudentProfileWhereInput
-    data: XOR<StudentProfileUpdateWithoutAttendanceRecordsInput, StudentProfileUncheckedUpdateWithoutAttendanceRecordsInput>
-  }
-
-  export type StudentProfileUpdateWithoutAttendanceRecordsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    studentCode?: StringFieldUpdateOperationsInput | string
-    studentName?: StringFieldUpdateOperationsInput | string
-    mobileNumber?: StringFieldUpdateOperationsInput | string
-    emailAddress?: StringFieldUpdateOperationsInput | string
-    linkedInUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
-    location?: NullableStringFieldUpdateOperationsInput | string | null
-    courseInterested?: StringFieldUpdateOperationsInput | string
-    facultyId?: NullableStringFieldUpdateOperationsInput | string | null
-    facultyName?: NullableStringFieldUpdateOperationsInput | string | null
-    batchId?: NullableStringFieldUpdateOperationsInput | string | null
-    batchName?: NullableStringFieldUpdateOperationsInput | string | null
-    qualification?: NullableStringFieldUpdateOperationsInput | string | null
-    passedOutYear?: NullableIntFieldUpdateOperationsInput | number | null
-    currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
-    designation?: NullableStringFieldUpdateOperationsInput | string | null
-    source?: NullableStringFieldUpdateOperationsInput | string | null
-    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
-    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
-    discount?: NullableIntFieldUpdateOperationsInput | number | null
-    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
-    installment1?: NullableIntFieldUpdateOperationsInput | number | null
-    installment2?: NullableIntFieldUpdateOperationsInput | number | null
-    installment3?: NullableIntFieldUpdateOperationsInput | number | null
-    installment4?: NullableIntFieldUpdateOperationsInput | number | null
-    totalAmount?: NullableIntFieldUpdateOperationsInput | number | null
-    admissionDate?: StringFieldUpdateOperationsInput | string
-    firstInstallmentAmount?: NullableIntFieldUpdateOperationsInput | number | null
-    firstInstallmentDate?: NullableStringFieldUpdateOperationsInput | string | null
-    firstInstallmentStatus?: StringFieldUpdateOperationsInput | string
-    firstInstallmentPaidAt?: NullableStringFieldUpdateOperationsInput | string | null
-    secondInstallmentAmount?: NullableIntFieldUpdateOperationsInput | number | null
-    secondDueDate?: NullableStringFieldUpdateOperationsInput | string | null
-    secondInstallmentStatus?: StringFieldUpdateOperationsInput | string
-    secondInstallmentPaidAt?: NullableStringFieldUpdateOperationsInput | string | null
-    remarks?: NullableStringFieldUpdateOperationsInput | string | null
-    recordStatus?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    course?: CourseUpdateOneWithoutStudentsNestedInput
-  }
-
-  export type StudentProfileUncheckedUpdateWithoutAttendanceRecordsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    studentCode?: StringFieldUpdateOperationsInput | string
-    studentName?: StringFieldUpdateOperationsInput | string
-    mobileNumber?: StringFieldUpdateOperationsInput | string
-    emailAddress?: StringFieldUpdateOperationsInput | string
-    linkedInUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
-    location?: NullableStringFieldUpdateOperationsInput | string | null
-    courseId?: NullableStringFieldUpdateOperationsInput | string | null
-    courseInterested?: StringFieldUpdateOperationsInput | string
-    facultyId?: NullableStringFieldUpdateOperationsInput | string | null
-    facultyName?: NullableStringFieldUpdateOperationsInput | string | null
-    batchId?: NullableStringFieldUpdateOperationsInput | string | null
-    batchName?: NullableStringFieldUpdateOperationsInput | string | null
-    qualification?: NullableStringFieldUpdateOperationsInput | string | null
-    passedOutYear?: NullableIntFieldUpdateOperationsInput | number | null
-    currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
-    designation?: NullableStringFieldUpdateOperationsInput | string | null
-    source?: NullableStringFieldUpdateOperationsInput | string | null
-    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
-    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
-    discount?: NullableIntFieldUpdateOperationsInput | number | null
-    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
-    installment1?: NullableIntFieldUpdateOperationsInput | number | null
-    installment2?: NullableIntFieldUpdateOperationsInput | number | null
-    installment3?: NullableIntFieldUpdateOperationsInput | number | null
-    installment4?: NullableIntFieldUpdateOperationsInput | number | null
-    totalAmount?: NullableIntFieldUpdateOperationsInput | number | null
-    admissionDate?: StringFieldUpdateOperationsInput | string
-    firstInstallmentAmount?: NullableIntFieldUpdateOperationsInput | number | null
-    firstInstallmentDate?: NullableStringFieldUpdateOperationsInput | string | null
-    firstInstallmentStatus?: StringFieldUpdateOperationsInput | string
-    firstInstallmentPaidAt?: NullableStringFieldUpdateOperationsInput | string | null
-    secondInstallmentAmount?: NullableIntFieldUpdateOperationsInput | number | null
-    secondDueDate?: NullableStringFieldUpdateOperationsInput | string | null
-    secondInstallmentStatus?: StringFieldUpdateOperationsInput | string
-    secondInstallmentPaidAt?: NullableStringFieldUpdateOperationsInput | string | null
-    remarks?: NullableStringFieldUpdateOperationsInput | string | null
-    recordStatus?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type UserUpsertWithoutMarkedStudentAttendancesInput = {
@@ -51200,12 +48790,12 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    loginEvents?: LoginEventUpdateManyWithoutUserNestedInput
-    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
     batchFacultyAssignments?: BatchFacultyAssignmentUpdateManyWithoutFacultyNestedInput
-    targetedNotifications?: NotificationUpdateManyWithoutTargetUserNestedInput
-    facultyAttendanceSessions?: FacultyAttendanceSessionUpdateManyWithoutFacultyUserNestedInput
     managedBranch?: BranchUpdateOneWithoutAdminUserNestedInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUpdateManyWithoutFacultyUserNestedInput
+    loginEvents?: LoginEventUpdateManyWithoutUserNestedInput
+    targetedNotifications?: NotificationUpdateManyWithoutTargetUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMarkedStudentAttendancesInput = {
@@ -51230,144 +48820,115 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    loginEvents?: LoginEventUncheckedUpdateManyWithoutUserNestedInput
-    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
     batchFacultyAssignments?: BatchFacultyAssignmentUncheckedUpdateManyWithoutFacultyNestedInput
-    targetedNotifications?: NotificationUncheckedUpdateManyWithoutTargetUserNestedInput
-    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserNestedInput
     managedBranch?: BranchUncheckedUpdateOneWithoutAdminUserNestedInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserNestedInput
+    loginEvents?: LoginEventUncheckedUpdateManyWithoutUserNestedInput
+    targetedNotifications?: NotificationUncheckedUpdateManyWithoutTargetUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
   }
 
-  export type BranchCreateWithoutBranchFacultiesInput = {
-    id?: string
-    branchId: string
-    branchName: string
-    branchAdminName: string
-    branchEmail: string
-    branchPhone: string
-    branchCountryCode?: string
-    branchCountry?: string
-    branchStateCode?: string
-    branchState?: string
-    branchCity?: string
-    branchAddress: string
-    status?: $Enums.RecordStatus
-    createdBy?: string | null
-    updatedBy?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    adminUser?: UserCreateNestedOneWithoutManagedBranchInput
-    courses?: CourseCreateNestedManyWithoutBranchInput
-    branchCourses?: BranchCourseCreateNestedManyWithoutBranchInput
-    branchStudents?: BranchStudentCreateNestedManyWithoutBranchInput
-    branchInstallmentTemplates?: BranchInstallmentTemplateCreateNestedManyWithoutBranchInput
+  export type StudentProfileUpsertWithoutAttendanceRecordsInput = {
+    update: XOR<StudentProfileUpdateWithoutAttendanceRecordsInput, StudentProfileUncheckedUpdateWithoutAttendanceRecordsInput>
+    create: XOR<StudentProfileCreateWithoutAttendanceRecordsInput, StudentProfileUncheckedCreateWithoutAttendanceRecordsInput>
+    where?: StudentProfileWhereInput
   }
 
-  export type BranchUncheckedCreateWithoutBranchFacultiesInput = {
-    id?: string
-    branchId: string
-    branchName: string
-    branchAdminName: string
-    branchEmail: string
-    branchPhone: string
-    branchCountryCode?: string
-    branchCountry?: string
-    branchStateCode?: string
-    branchState?: string
-    branchCity?: string
-    branchAddress: string
-    status?: $Enums.RecordStatus
-    adminUserId?: string | null
-    createdBy?: string | null
-    updatedBy?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    courses?: CourseUncheckedCreateNestedManyWithoutBranchInput
-    branchCourses?: BranchCourseUncheckedCreateNestedManyWithoutBranchInput
-    branchStudents?: BranchStudentUncheckedCreateNestedManyWithoutBranchInput
-    branchInstallmentTemplates?: BranchInstallmentTemplateUncheckedCreateNestedManyWithoutBranchInput
+  export type StudentProfileUpdateToOneWithWhereWithoutAttendanceRecordsInput = {
+    where?: StudentProfileWhereInput
+    data: XOR<StudentProfileUpdateWithoutAttendanceRecordsInput, StudentProfileUncheckedUpdateWithoutAttendanceRecordsInput>
   }
 
-  export type BranchCreateOrConnectWithoutBranchFacultiesInput = {
-    where: BranchWhereUniqueInput
-    create: XOR<BranchCreateWithoutBranchFacultiesInput, BranchUncheckedCreateWithoutBranchFacultiesInput>
+  export type StudentProfileUpdateWithoutAttendanceRecordsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    studentCode?: StringFieldUpdateOperationsInput | string
+    studentName?: StringFieldUpdateOperationsInput | string
+    mobileNumber?: StringFieldUpdateOperationsInput | string
+    emailAddress?: StringFieldUpdateOperationsInput | string
+    parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    courseInterested?: StringFieldUpdateOperationsInput | string
+    facultyName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchName?: NullableStringFieldUpdateOperationsInput | string | null
+    qualification?: NullableStringFieldUpdateOperationsInput | string | null
+    passedOutYear?: NullableIntFieldUpdateOperationsInput | number | null
+    currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    designation?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: NullableStringFieldUpdateOperationsInput | string | null
+    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
+    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
+    discount?: NullableIntFieldUpdateOperationsInput | number | null
+    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
+    installment1?: NullableIntFieldUpdateOperationsInput | number | null
+    installment2?: NullableIntFieldUpdateOperationsInput | number | null
+    installment3?: NullableIntFieldUpdateOperationsInput | number | null
+    totalAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    admissionDate?: StringFieldUpdateOperationsInput | string
+    firstInstallmentAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    firstInstallmentDate?: NullableStringFieldUpdateOperationsInput | string | null
+    firstInstallmentStatus?: StringFieldUpdateOperationsInput | string
+    firstInstallmentPaidAt?: NullableStringFieldUpdateOperationsInput | string | null
+    secondInstallmentAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    secondDueDate?: NullableStringFieldUpdateOperationsInput | string | null
+    secondInstallmentStatus?: StringFieldUpdateOperationsInput | string
+    secondInstallmentPaidAt?: NullableStringFieldUpdateOperationsInput | string | null
+    remarks?: NullableStringFieldUpdateOperationsInput | string | null
+    recordStatus?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    installment4?: NullableIntFieldUpdateOperationsInput | number | null
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
+    facultyId?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedInUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    course?: CourseUpdateOneWithoutStudentsNestedInput
   }
 
-  export type CourseCreateWithoutBranchFacultiesInput = {
-    id?: string
-    name: string
-    nameKey: string
-    courseCode?: string | null
-    description?: string | null
-    feeReference?: string | null
-    mode: string
-    duration?: number | null
-    hours?: number | null
-    actualFees?: number | null
-    registrationFees?: number | null
-    discount?: number | null
-    afterDiscount?: number | null
-    installmentCount?: number
-    installment1?: number | null
-    installment2?: number | null
-    installment3?: number | null
-    installments?: NullableJsonNullValueInput | InputJsonValue
-    status?: $Enums.RecordStatus
-    statusChangedAt?: Date | string | null
-    statusChangedBy?: string | null
-    createdBy?: string | null
-    updatedBy?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    branch?: BranchCreateNestedOneWithoutCoursesInput
-    modules?: CourseModuleCreateNestedManyWithoutCourseInput
-    batches?: BatchCreateNestedManyWithoutCourseInput
-    students?: StudentProfileCreateNestedManyWithoutCourseInput
-    facultyProfiles?: FacultyProfileCreateNestedManyWithoutCourseInput
-    facultyCourseAssignments?: FacultyCourseAssignmentCreateNestedManyWithoutCourseInput
-    facultyBatchEntries?: FacultyBatchEntryCreateNestedManyWithoutCourseInput
-    statusHistory?: CourseStatusHistoryCreateNestedManyWithoutCourseInput
-  }
-
-  export type CourseUncheckedCreateWithoutBranchFacultiesInput = {
-    id?: string
-    name: string
-    nameKey: string
-    courseCode?: string | null
-    branchId?: string | null
-    description?: string | null
-    feeReference?: string | null
-    mode: string
-    duration?: number | null
-    hours?: number | null
-    actualFees?: number | null
-    registrationFees?: number | null
-    discount?: number | null
-    afterDiscount?: number | null
-    installmentCount?: number
-    installment1?: number | null
-    installment2?: number | null
-    installment3?: number | null
-    installments?: NullableJsonNullValueInput | InputJsonValue
-    status?: $Enums.RecordStatus
-    statusChangedAt?: Date | string | null
-    statusChangedBy?: string | null
-    createdBy?: string | null
-    updatedBy?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    modules?: CourseModuleUncheckedCreateNestedManyWithoutCourseInput
-    batches?: BatchUncheckedCreateNestedManyWithoutCourseInput
-    students?: StudentProfileUncheckedCreateNestedManyWithoutCourseInput
-    facultyProfiles?: FacultyProfileUncheckedCreateNestedManyWithoutCourseInput
-    facultyCourseAssignments?: FacultyCourseAssignmentUncheckedCreateNestedManyWithoutCourseInput
-    facultyBatchEntries?: FacultyBatchEntryUncheckedCreateNestedManyWithoutCourseInput
-    statusHistory?: CourseStatusHistoryUncheckedCreateNestedManyWithoutCourseInput
-  }
-
-  export type CourseCreateOrConnectWithoutBranchFacultiesInput = {
-    where: CourseWhereUniqueInput
-    create: XOR<CourseCreateWithoutBranchFacultiesInput, CourseUncheckedCreateWithoutBranchFacultiesInput>
+  export type StudentProfileUncheckedUpdateWithoutAttendanceRecordsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    studentCode?: StringFieldUpdateOperationsInput | string
+    studentName?: StringFieldUpdateOperationsInput | string
+    mobileNumber?: StringFieldUpdateOperationsInput | string
+    emailAddress?: StringFieldUpdateOperationsInput | string
+    parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    courseId?: NullableStringFieldUpdateOperationsInput | string | null
+    courseInterested?: StringFieldUpdateOperationsInput | string
+    facultyName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchName?: NullableStringFieldUpdateOperationsInput | string | null
+    qualification?: NullableStringFieldUpdateOperationsInput | string | null
+    passedOutYear?: NullableIntFieldUpdateOperationsInput | number | null
+    currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    designation?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: NullableStringFieldUpdateOperationsInput | string | null
+    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
+    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
+    discount?: NullableIntFieldUpdateOperationsInput | number | null
+    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
+    installment1?: NullableIntFieldUpdateOperationsInput | number | null
+    installment2?: NullableIntFieldUpdateOperationsInput | number | null
+    installment3?: NullableIntFieldUpdateOperationsInput | number | null
+    totalAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    admissionDate?: StringFieldUpdateOperationsInput | string
+    firstInstallmentAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    firstInstallmentDate?: NullableStringFieldUpdateOperationsInput | string | null
+    firstInstallmentStatus?: StringFieldUpdateOperationsInput | string
+    firstInstallmentPaidAt?: NullableStringFieldUpdateOperationsInput | string | null
+    secondInstallmentAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    secondDueDate?: NullableStringFieldUpdateOperationsInput | string | null
+    secondInstallmentStatus?: StringFieldUpdateOperationsInput | string
+    secondInstallmentPaidAt?: NullableStringFieldUpdateOperationsInput | string | null
+    remarks?: NullableStringFieldUpdateOperationsInput | string | null
+    recordStatus?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    installment4?: NullableIntFieldUpdateOperationsInput | number | null
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
+    facultyId?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedInUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type BranchCourseCreateWithoutBranchFacultiesInput = {
@@ -51390,7 +48951,6 @@ export namespace Prisma {
     updatedAt?: Date | string
     branch: BranchCreateNestedOneWithoutBranchCoursesInput
     modules?: BranchCourseModuleCreateNestedManyWithoutBranchCourseInput
-    installmentTemplate?: BranchInstallmentTemplateCreateNestedOneWithoutBranchCourseInput
   }
 
   export type BranchCourseUncheckedCreateWithoutBranchFacultiesInput = {
@@ -51413,7 +48973,6 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     modules?: BranchCourseModuleUncheckedCreateNestedManyWithoutBranchCourseInput
-    installmentTemplate?: BranchInstallmentTemplateUncheckedCreateNestedOneWithoutBranchCourseInput
   }
 
   export type BranchCourseCreateOrConnectWithoutBranchFacultiesInput = {
@@ -51421,148 +48980,134 @@ export namespace Prisma {
     create: XOR<BranchCourseCreateWithoutBranchFacultiesInput, BranchCourseUncheckedCreateWithoutBranchFacultiesInput>
   }
 
-  export type BranchUpsertWithoutBranchFacultiesInput = {
-    update: XOR<BranchUpdateWithoutBranchFacultiesInput, BranchUncheckedUpdateWithoutBranchFacultiesInput>
+  export type BranchCreateWithoutBranchFacultiesInput = {
+    id?: string
+    branchId: string
+    branchName: string
+    branchAdminName: string
+    branchEmail: string
+    branchPhone: string
+    branchAddress: string
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branchCity?: string
+    branchCountry?: string
+    branchCountryCode?: string
+    branchState?: string
+    branchStateCode?: string
+    adminUser?: UserCreateNestedOneWithoutManagedBranchInput
+    branchCourses?: BranchCourseCreateNestedManyWithoutBranchInput
+    branchStudents?: BranchStudentCreateNestedManyWithoutBranchInput
+    courses?: CourseCreateNestedManyWithoutBranchInput
+  }
+
+  export type BranchUncheckedCreateWithoutBranchFacultiesInput = {
+    id?: string
+    branchId: string
+    branchName: string
+    branchAdminName: string
+    branchEmail: string
+    branchPhone: string
+    branchAddress: string
+    status?: $Enums.RecordStatus
+    adminUserId?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branchCity?: string
+    branchCountry?: string
+    branchCountryCode?: string
+    branchState?: string
+    branchStateCode?: string
+    branchCourses?: BranchCourseUncheckedCreateNestedManyWithoutBranchInput
+    branchStudents?: BranchStudentUncheckedCreateNestedManyWithoutBranchInput
+    courses?: CourseUncheckedCreateNestedManyWithoutBranchInput
+  }
+
+  export type BranchCreateOrConnectWithoutBranchFacultiesInput = {
+    where: BranchWhereUniqueInput
     create: XOR<BranchCreateWithoutBranchFacultiesInput, BranchUncheckedCreateWithoutBranchFacultiesInput>
-    where?: BranchWhereInput
   }
 
-  export type BranchUpdateToOneWithWhereWithoutBranchFacultiesInput = {
-    where?: BranchWhereInput
-    data: XOR<BranchUpdateWithoutBranchFacultiesInput, BranchUncheckedUpdateWithoutBranchFacultiesInput>
+  export type CourseCreateWithoutBranchFacultiesInput = {
+    id?: string
+    name: string
+    nameKey: string
+    description?: string | null
+    feeReference?: string | null
+    mode: string
+    duration?: number | null
+    hours?: number | null
+    actualFees?: number | null
+    registrationFees?: number | null
+    discount?: number | null
+    afterDiscount?: number | null
+    installmentCount?: number
+    installment1?: number | null
+    installment2?: number | null
+    installment3?: number | null
+    status?: $Enums.RecordStatus
+    statusChangedAt?: Date | string | null
+    statusChangedBy?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    installments?: NullableJsonNullValueInput | InputJsonValue
+    courseCode?: string | null
+    batches?: BatchCreateNestedManyWithoutCourseInput
+    branch?: BranchCreateNestedOneWithoutCoursesInput
+    modules?: CourseModuleCreateNestedManyWithoutCourseInput
+    statusHistory?: CourseStatusHistoryCreateNestedManyWithoutCourseInput
+    facultyBatchEntries?: FacultyBatchEntryCreateNestedManyWithoutCourseInput
+    facultyCourseAssignments?: FacultyCourseAssignmentCreateNestedManyWithoutCourseInput
+    facultyProfiles?: FacultyProfileCreateNestedManyWithoutCourseInput
+    students?: StudentProfileCreateNestedManyWithoutCourseInput
   }
 
-  export type BranchUpdateWithoutBranchFacultiesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    branchId?: StringFieldUpdateOperationsInput | string
-    branchName?: StringFieldUpdateOperationsInput | string
-    branchAdminName?: StringFieldUpdateOperationsInput | string
-    branchEmail?: StringFieldUpdateOperationsInput | string
-    branchPhone?: StringFieldUpdateOperationsInput | string
-    branchCountryCode?: StringFieldUpdateOperationsInput | string
-    branchCountry?: StringFieldUpdateOperationsInput | string
-    branchStateCode?: StringFieldUpdateOperationsInput | string
-    branchState?: StringFieldUpdateOperationsInput | string
-    branchCity?: StringFieldUpdateOperationsInput | string
-    branchAddress?: StringFieldUpdateOperationsInput | string
-    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    adminUser?: UserUpdateOneWithoutManagedBranchNestedInput
-    courses?: CourseUpdateManyWithoutBranchNestedInput
-    branchCourses?: BranchCourseUpdateManyWithoutBranchNestedInput
-    branchStudents?: BranchStudentUpdateManyWithoutBranchNestedInput
-    branchInstallmentTemplates?: BranchInstallmentTemplateUpdateManyWithoutBranchNestedInput
+  export type CourseUncheckedCreateWithoutBranchFacultiesInput = {
+    id?: string
+    name: string
+    nameKey: string
+    description?: string | null
+    feeReference?: string | null
+    mode: string
+    duration?: number | null
+    hours?: number | null
+    actualFees?: number | null
+    registrationFees?: number | null
+    discount?: number | null
+    afterDiscount?: number | null
+    installmentCount?: number
+    installment1?: number | null
+    installment2?: number | null
+    installment3?: number | null
+    status?: $Enums.RecordStatus
+    statusChangedAt?: Date | string | null
+    statusChangedBy?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    installments?: NullableJsonNullValueInput | InputJsonValue
+    branchId?: string | null
+    courseCode?: string | null
+    batches?: BatchUncheckedCreateNestedManyWithoutCourseInput
+    modules?: CourseModuleUncheckedCreateNestedManyWithoutCourseInput
+    statusHistory?: CourseStatusHistoryUncheckedCreateNestedManyWithoutCourseInput
+    facultyBatchEntries?: FacultyBatchEntryUncheckedCreateNestedManyWithoutCourseInput
+    facultyCourseAssignments?: FacultyCourseAssignmentUncheckedCreateNestedManyWithoutCourseInput
+    facultyProfiles?: FacultyProfileUncheckedCreateNestedManyWithoutCourseInput
+    students?: StudentProfileUncheckedCreateNestedManyWithoutCourseInput
   }
 
-  export type BranchUncheckedUpdateWithoutBranchFacultiesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    branchId?: StringFieldUpdateOperationsInput | string
-    branchName?: StringFieldUpdateOperationsInput | string
-    branchAdminName?: StringFieldUpdateOperationsInput | string
-    branchEmail?: StringFieldUpdateOperationsInput | string
-    branchPhone?: StringFieldUpdateOperationsInput | string
-    branchCountryCode?: StringFieldUpdateOperationsInput | string
-    branchCountry?: StringFieldUpdateOperationsInput | string
-    branchStateCode?: StringFieldUpdateOperationsInput | string
-    branchState?: StringFieldUpdateOperationsInput | string
-    branchCity?: StringFieldUpdateOperationsInput | string
-    branchAddress?: StringFieldUpdateOperationsInput | string
-    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
-    adminUserId?: NullableStringFieldUpdateOperationsInput | string | null
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    courses?: CourseUncheckedUpdateManyWithoutBranchNestedInput
-    branchCourses?: BranchCourseUncheckedUpdateManyWithoutBranchNestedInput
-    branchStudents?: BranchStudentUncheckedUpdateManyWithoutBranchNestedInput
-    branchInstallmentTemplates?: BranchInstallmentTemplateUncheckedUpdateManyWithoutBranchNestedInput
-  }
-
-  export type CourseUpsertWithoutBranchFacultiesInput = {
-    update: XOR<CourseUpdateWithoutBranchFacultiesInput, CourseUncheckedUpdateWithoutBranchFacultiesInput>
+  export type CourseCreateOrConnectWithoutBranchFacultiesInput = {
+    where: CourseWhereUniqueInput
     create: XOR<CourseCreateWithoutBranchFacultiesInput, CourseUncheckedCreateWithoutBranchFacultiesInput>
-    where?: CourseWhereInput
-  }
-
-  export type CourseUpdateToOneWithWhereWithoutBranchFacultiesInput = {
-    where?: CourseWhereInput
-    data: XOR<CourseUpdateWithoutBranchFacultiesInput, CourseUncheckedUpdateWithoutBranchFacultiesInput>
-  }
-
-  export type CourseUpdateWithoutBranchFacultiesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    nameKey?: StringFieldUpdateOperationsInput | string
-    courseCode?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    feeReference?: NullableStringFieldUpdateOperationsInput | string | null
-    mode?: StringFieldUpdateOperationsInput | string
-    duration?: NullableIntFieldUpdateOperationsInput | number | null
-    hours?: NullableIntFieldUpdateOperationsInput | number | null
-    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
-    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
-    discount?: NullableIntFieldUpdateOperationsInput | number | null
-    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
-    installmentCount?: IntFieldUpdateOperationsInput | number
-    installment1?: NullableIntFieldUpdateOperationsInput | number | null
-    installment2?: NullableIntFieldUpdateOperationsInput | number | null
-    installment3?: NullableIntFieldUpdateOperationsInput | number | null
-    installments?: NullableJsonNullValueInput | InputJsonValue
-    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
-    statusChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    statusChangedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    branch?: BranchUpdateOneWithoutCoursesNestedInput
-    modules?: CourseModuleUpdateManyWithoutCourseNestedInput
-    batches?: BatchUpdateManyWithoutCourseNestedInput
-    students?: StudentProfileUpdateManyWithoutCourseNestedInput
-    facultyProfiles?: FacultyProfileUpdateManyWithoutCourseNestedInput
-    facultyCourseAssignments?: FacultyCourseAssignmentUpdateManyWithoutCourseNestedInput
-    facultyBatchEntries?: FacultyBatchEntryUpdateManyWithoutCourseNestedInput
-    statusHistory?: CourseStatusHistoryUpdateManyWithoutCourseNestedInput
-  }
-
-  export type CourseUncheckedUpdateWithoutBranchFacultiesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    nameKey?: StringFieldUpdateOperationsInput | string
-    courseCode?: NullableStringFieldUpdateOperationsInput | string | null
-    branchId?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    feeReference?: NullableStringFieldUpdateOperationsInput | string | null
-    mode?: StringFieldUpdateOperationsInput | string
-    duration?: NullableIntFieldUpdateOperationsInput | number | null
-    hours?: NullableIntFieldUpdateOperationsInput | number | null
-    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
-    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
-    discount?: NullableIntFieldUpdateOperationsInput | number | null
-    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
-    installmentCount?: IntFieldUpdateOperationsInput | number
-    installment1?: NullableIntFieldUpdateOperationsInput | number | null
-    installment2?: NullableIntFieldUpdateOperationsInput | number | null
-    installment3?: NullableIntFieldUpdateOperationsInput | number | null
-    installments?: NullableJsonNullValueInput | InputJsonValue
-    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
-    statusChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    statusChangedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    modules?: CourseModuleUncheckedUpdateManyWithoutCourseNestedInput
-    batches?: BatchUncheckedUpdateManyWithoutCourseNestedInput
-    students?: StudentProfileUncheckedUpdateManyWithoutCourseNestedInput
-    facultyProfiles?: FacultyProfileUncheckedUpdateManyWithoutCourseNestedInput
-    facultyCourseAssignments?: FacultyCourseAssignmentUncheckedUpdateManyWithoutCourseNestedInput
-    facultyBatchEntries?: FacultyBatchEntryUncheckedUpdateManyWithoutCourseNestedInput
-    statusHistory?: CourseStatusHistoryUncheckedUpdateManyWithoutCourseNestedInput
   }
 
   export type BranchCourseUpsertWithoutBranchFacultiesInput = {
@@ -51596,7 +49141,6 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     branch?: BranchUpdateOneRequiredWithoutBranchCoursesNestedInput
     modules?: BranchCourseModuleUpdateManyWithoutBranchCourseNestedInput
-    installmentTemplate?: BranchInstallmentTemplateUpdateOneWithoutBranchCourseNestedInput
   }
 
   export type BranchCourseUncheckedUpdateWithoutBranchFacultiesInput = {
@@ -51619,27 +49163,148 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     modules?: BranchCourseModuleUncheckedUpdateManyWithoutBranchCourseNestedInput
-    installmentTemplate?: BranchInstallmentTemplateUncheckedUpdateOneWithoutBranchCourseNestedInput
   }
 
-  export type LoginEventCreateManyUserInput = {
-    id?: string
-    eventType: $Enums.LoginEventType
-    success?: boolean
-    ipAddress?: string | null
-    userAgent?: string | null
-    reason?: string | null
-    meta?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
+  export type BranchUpsertWithoutBranchFacultiesInput = {
+    update: XOR<BranchUpdateWithoutBranchFacultiesInput, BranchUncheckedUpdateWithoutBranchFacultiesInput>
+    create: XOR<BranchCreateWithoutBranchFacultiesInput, BranchUncheckedCreateWithoutBranchFacultiesInput>
+    where?: BranchWhereInput
   }
 
-  export type PasswordResetTokenCreateManyUserInput = {
-    id?: string
-    tokenHash: string
-    expiresAt: Date | string
-    usedAt?: Date | string | null
-    createdBy?: string | null
-    createdAt?: Date | string
+  export type BranchUpdateToOneWithWhereWithoutBranchFacultiesInput = {
+    where?: BranchWhereInput
+    data: XOR<BranchUpdateWithoutBranchFacultiesInput, BranchUncheckedUpdateWithoutBranchFacultiesInput>
+  }
+
+  export type BranchUpdateWithoutBranchFacultiesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    branchName?: StringFieldUpdateOperationsInput | string
+    branchAdminName?: StringFieldUpdateOperationsInput | string
+    branchEmail?: StringFieldUpdateOperationsInput | string
+    branchPhone?: StringFieldUpdateOperationsInput | string
+    branchAddress?: StringFieldUpdateOperationsInput | string
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branchCity?: StringFieldUpdateOperationsInput | string
+    branchCountry?: StringFieldUpdateOperationsInput | string
+    branchCountryCode?: StringFieldUpdateOperationsInput | string
+    branchState?: StringFieldUpdateOperationsInput | string
+    branchStateCode?: StringFieldUpdateOperationsInput | string
+    adminUser?: UserUpdateOneWithoutManagedBranchNestedInput
+    branchCourses?: BranchCourseUpdateManyWithoutBranchNestedInput
+    branchStudents?: BranchStudentUpdateManyWithoutBranchNestedInput
+    courses?: CourseUpdateManyWithoutBranchNestedInput
+  }
+
+  export type BranchUncheckedUpdateWithoutBranchFacultiesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    branchName?: StringFieldUpdateOperationsInput | string
+    branchAdminName?: StringFieldUpdateOperationsInput | string
+    branchEmail?: StringFieldUpdateOperationsInput | string
+    branchPhone?: StringFieldUpdateOperationsInput | string
+    branchAddress?: StringFieldUpdateOperationsInput | string
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    adminUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branchCity?: StringFieldUpdateOperationsInput | string
+    branchCountry?: StringFieldUpdateOperationsInput | string
+    branchCountryCode?: StringFieldUpdateOperationsInput | string
+    branchState?: StringFieldUpdateOperationsInput | string
+    branchStateCode?: StringFieldUpdateOperationsInput | string
+    branchCourses?: BranchCourseUncheckedUpdateManyWithoutBranchNestedInput
+    branchStudents?: BranchStudentUncheckedUpdateManyWithoutBranchNestedInput
+    courses?: CourseUncheckedUpdateManyWithoutBranchNestedInput
+  }
+
+  export type CourseUpsertWithoutBranchFacultiesInput = {
+    update: XOR<CourseUpdateWithoutBranchFacultiesInput, CourseUncheckedUpdateWithoutBranchFacultiesInput>
+    create: XOR<CourseCreateWithoutBranchFacultiesInput, CourseUncheckedCreateWithoutBranchFacultiesInput>
+    where?: CourseWhereInput
+  }
+
+  export type CourseUpdateToOneWithWhereWithoutBranchFacultiesInput = {
+    where?: CourseWhereInput
+    data: XOR<CourseUpdateWithoutBranchFacultiesInput, CourseUncheckedUpdateWithoutBranchFacultiesInput>
+  }
+
+  export type CourseUpdateWithoutBranchFacultiesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameKey?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    feeReference?: NullableStringFieldUpdateOperationsInput | string | null
+    mode?: StringFieldUpdateOperationsInput | string
+    duration?: NullableIntFieldUpdateOperationsInput | number | null
+    hours?: NullableIntFieldUpdateOperationsInput | number | null
+    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
+    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
+    discount?: NullableIntFieldUpdateOperationsInput | number | null
+    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
+    installmentCount?: IntFieldUpdateOperationsInput | number
+    installment1?: NullableIntFieldUpdateOperationsInput | number | null
+    installment2?: NullableIntFieldUpdateOperationsInput | number | null
+    installment3?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    statusChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    statusChangedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    installments?: NullableJsonNullValueInput | InputJsonValue
+    courseCode?: NullableStringFieldUpdateOperationsInput | string | null
+    batches?: BatchUpdateManyWithoutCourseNestedInput
+    branch?: BranchUpdateOneWithoutCoursesNestedInput
+    modules?: CourseModuleUpdateManyWithoutCourseNestedInput
+    statusHistory?: CourseStatusHistoryUpdateManyWithoutCourseNestedInput
+    facultyBatchEntries?: FacultyBatchEntryUpdateManyWithoutCourseNestedInput
+    facultyCourseAssignments?: FacultyCourseAssignmentUpdateManyWithoutCourseNestedInput
+    facultyProfiles?: FacultyProfileUpdateManyWithoutCourseNestedInput
+    students?: StudentProfileUpdateManyWithoutCourseNestedInput
+  }
+
+  export type CourseUncheckedUpdateWithoutBranchFacultiesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameKey?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    feeReference?: NullableStringFieldUpdateOperationsInput | string | null
+    mode?: StringFieldUpdateOperationsInput | string
+    duration?: NullableIntFieldUpdateOperationsInput | number | null
+    hours?: NullableIntFieldUpdateOperationsInput | number | null
+    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
+    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
+    discount?: NullableIntFieldUpdateOperationsInput | number | null
+    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
+    installmentCount?: IntFieldUpdateOperationsInput | number
+    installment1?: NullableIntFieldUpdateOperationsInput | number | null
+    installment2?: NullableIntFieldUpdateOperationsInput | number | null
+    installment3?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    statusChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    statusChangedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    installments?: NullableJsonNullValueInput | InputJsonValue
+    branchId?: NullableStringFieldUpdateOperationsInput | string | null
+    courseCode?: NullableStringFieldUpdateOperationsInput | string | null
+    batches?: BatchUncheckedUpdateManyWithoutCourseNestedInput
+    modules?: CourseModuleUncheckedUpdateManyWithoutCourseNestedInput
+    statusHistory?: CourseStatusHistoryUncheckedUpdateManyWithoutCourseNestedInput
+    facultyBatchEntries?: FacultyBatchEntryUncheckedUpdateManyWithoutCourseNestedInput
+    facultyCourseAssignments?: FacultyCourseAssignmentUncheckedUpdateManyWithoutCourseNestedInput
+    facultyProfiles?: FacultyProfileUncheckedUpdateManyWithoutCourseNestedInput
+    students?: StudentProfileUncheckedUpdateManyWithoutCourseNestedInput
   }
 
   export type BatchFacultyAssignmentCreateManyFacultyInput = {
@@ -51658,6 +49323,31 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type FacultyAttendanceSessionCreateManyFacultyUserInput = {
+    id?: string
+    attendanceDate: string
+    loginAt: Date | string
+    logoutAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sessionSource?: string
+    logoutType?: string | null
+    logoutReason?: string | null
+    workReport?: string | null
+    workCompleted?: string | null
+  }
+
+  export type LoginEventCreateManyUserInput = {
+    id?: string
+    eventType: $Enums.LoginEventType
+    success?: boolean
+    ipAddress?: string | null
+    userAgent?: string | null
+    reason?: string | null
+    meta?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+  }
+
   export type NotificationCreateManyTargetUserInput = {
     id?: string
     kind: $Enums.NotificationKind
@@ -51665,19 +49355,6 @@ export namespace Prisma {
     title: string
     message: string
     actionLabel?: string | null
-    requestId?: string | null
-    requestStatus?: string | null
-    requestTitle?: string | null
-    requestReason?: string | null
-    requestDescription?: string | null
-    branchCourseId?: string | null
-    branchCourseName?: string | null
-    moduleId?: string | null
-    moduleName?: string | null
-    subModuleId?: string | null
-    subModuleName?: string | null
-    facultyId?: string | null
-    facultyName?: string | null
     targetBranchId?: string | null
     targetBranchEmail?: string | null
     targetBranchName?: string | null
@@ -51686,20 +49363,28 @@ export namespace Prisma {
     createdBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    branchCourseId?: string | null
+    branchCourseName?: string | null
+    facultyId?: string | null
+    facultyName?: string | null
+    moduleId?: string | null
+    moduleName?: string | null
+    requestDescription?: string | null
+    requestId?: string | null
+    requestReason?: string | null
+    requestStatus?: string | null
+    requestTitle?: string | null
+    subModuleId?: string | null
+    subModuleName?: string | null
   }
 
-  export type FacultyAttendanceSessionCreateManyFacultyUserInput = {
+  export type PasswordResetTokenCreateManyUserInput = {
     id?: string
-    attendanceDate: string
-    sessionSource?: string
-    loginAt: Date | string
-    logoutAt?: Date | string | null
-    logoutType?: string | null
-    logoutReason?: string | null
-    workReport?: string | null
-    workCompleted?: string | null
+    tokenHash: string
+    expiresAt: Date | string
+    usedAt?: Date | string | null
+    createdBy?: string | null
     createdAt?: Date | string
-    updatedAt?: Date | string
   }
 
   export type StudentAttendanceCreateManyFacultyUserInput = {
@@ -51715,66 +49400,6 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-  }
-
-  export type LoginEventUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    eventType?: EnumLoginEventTypeFieldUpdateOperationsInput | $Enums.LoginEventType
-    success?: BoolFieldUpdateOperationsInput | boolean
-    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
-    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
-    reason?: NullableStringFieldUpdateOperationsInput | string | null
-    meta?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type LoginEventUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    eventType?: EnumLoginEventTypeFieldUpdateOperationsInput | $Enums.LoginEventType
-    success?: BoolFieldUpdateOperationsInput | boolean
-    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
-    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
-    reason?: NullableStringFieldUpdateOperationsInput | string | null
-    meta?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type LoginEventUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    eventType?: EnumLoginEventTypeFieldUpdateOperationsInput | $Enums.LoginEventType
-    success?: BoolFieldUpdateOperationsInput | boolean
-    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
-    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
-    reason?: NullableStringFieldUpdateOperationsInput | string | null
-    meta?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type PasswordResetTokenUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    tokenHash?: StringFieldUpdateOperationsInput | string
-    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    usedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type PasswordResetTokenUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    tokenHash?: StringFieldUpdateOperationsInput | string
-    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    usedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type PasswordResetTokenUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    tokenHash?: StringFieldUpdateOperationsInput | string
-    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    usedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type BatchFacultyAssignmentUpdateWithoutFacultyInput = {
@@ -51825,6 +49450,81 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type FacultyAttendanceSessionUpdateWithoutFacultyUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    attendanceDate?: StringFieldUpdateOperationsInput | string
+    loginAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    logoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sessionSource?: StringFieldUpdateOperationsInput | string
+    logoutType?: NullableStringFieldUpdateOperationsInput | string | null
+    logoutReason?: NullableStringFieldUpdateOperationsInput | string | null
+    workReport?: NullableStringFieldUpdateOperationsInput | string | null
+    workCompleted?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type FacultyAttendanceSessionUncheckedUpdateWithoutFacultyUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    attendanceDate?: StringFieldUpdateOperationsInput | string
+    loginAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    logoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sessionSource?: StringFieldUpdateOperationsInput | string
+    logoutType?: NullableStringFieldUpdateOperationsInput | string | null
+    logoutReason?: NullableStringFieldUpdateOperationsInput | string | null
+    workReport?: NullableStringFieldUpdateOperationsInput | string | null
+    workCompleted?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    attendanceDate?: StringFieldUpdateOperationsInput | string
+    loginAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    logoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sessionSource?: StringFieldUpdateOperationsInput | string
+    logoutType?: NullableStringFieldUpdateOperationsInput | string | null
+    logoutReason?: NullableStringFieldUpdateOperationsInput | string | null
+    workReport?: NullableStringFieldUpdateOperationsInput | string | null
+    workCompleted?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type LoginEventUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventType?: EnumLoginEventTypeFieldUpdateOperationsInput | $Enums.LoginEventType
+    success?: BoolFieldUpdateOperationsInput | boolean
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    meta?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LoginEventUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventType?: EnumLoginEventTypeFieldUpdateOperationsInput | $Enums.LoginEventType
+    success?: BoolFieldUpdateOperationsInput | boolean
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    meta?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LoginEventUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventType?: EnumLoginEventTypeFieldUpdateOperationsInput | $Enums.LoginEventType
+    success?: BoolFieldUpdateOperationsInput | boolean
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    meta?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type NotificationUpdateWithoutTargetUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     kind?: EnumNotificationKindFieldUpdateOperationsInput | $Enums.NotificationKind
@@ -51832,18 +49532,6 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     message?: StringFieldUpdateOperationsInput | string
     actionLabel?: NullableStringFieldUpdateOperationsInput | string | null
-    requestStatus?: NullableStringFieldUpdateOperationsInput | string | null
-    requestTitle?: NullableStringFieldUpdateOperationsInput | string | null
-    requestReason?: NullableStringFieldUpdateOperationsInput | string | null
-    requestDescription?: NullableStringFieldUpdateOperationsInput | string | null
-    branchCourseId?: NullableStringFieldUpdateOperationsInput | string | null
-    branchCourseName?: NullableStringFieldUpdateOperationsInput | string | null
-    moduleId?: NullableStringFieldUpdateOperationsInput | string | null
-    moduleName?: NullableStringFieldUpdateOperationsInput | string | null
-    subModuleId?: NullableStringFieldUpdateOperationsInput | string | null
-    subModuleName?: NullableStringFieldUpdateOperationsInput | string | null
-    facultyId?: NullableStringFieldUpdateOperationsInput | string | null
-    facultyName?: NullableStringFieldUpdateOperationsInput | string | null
     targetBranchId?: NullableStringFieldUpdateOperationsInput | string | null
     targetBranchEmail?: NullableStringFieldUpdateOperationsInput | string | null
     targetBranchName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -51852,6 +49540,18 @@ export namespace Prisma {
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branchCourseId?: NullableStringFieldUpdateOperationsInput | string | null
+    branchCourseName?: NullableStringFieldUpdateOperationsInput | string | null
+    facultyId?: NullableStringFieldUpdateOperationsInput | string | null
+    facultyName?: NullableStringFieldUpdateOperationsInput | string | null
+    moduleId?: NullableStringFieldUpdateOperationsInput | string | null
+    moduleName?: NullableStringFieldUpdateOperationsInput | string | null
+    requestDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    requestReason?: NullableStringFieldUpdateOperationsInput | string | null
+    requestStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    requestTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    subModuleId?: NullableStringFieldUpdateOperationsInput | string | null
+    subModuleName?: NullableStringFieldUpdateOperationsInput | string | null
     request?: CourseEditRequestUpdateOneWithoutNotificationsNestedInput
   }
 
@@ -51862,19 +49562,6 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     message?: StringFieldUpdateOperationsInput | string
     actionLabel?: NullableStringFieldUpdateOperationsInput | string | null
-    requestId?: NullableStringFieldUpdateOperationsInput | string | null
-    requestStatus?: NullableStringFieldUpdateOperationsInput | string | null
-    requestTitle?: NullableStringFieldUpdateOperationsInput | string | null
-    requestReason?: NullableStringFieldUpdateOperationsInput | string | null
-    requestDescription?: NullableStringFieldUpdateOperationsInput | string | null
-    branchCourseId?: NullableStringFieldUpdateOperationsInput | string | null
-    branchCourseName?: NullableStringFieldUpdateOperationsInput | string | null
-    moduleId?: NullableStringFieldUpdateOperationsInput | string | null
-    moduleName?: NullableStringFieldUpdateOperationsInput | string | null
-    subModuleId?: NullableStringFieldUpdateOperationsInput | string | null
-    subModuleName?: NullableStringFieldUpdateOperationsInput | string | null
-    facultyId?: NullableStringFieldUpdateOperationsInput | string | null
-    facultyName?: NullableStringFieldUpdateOperationsInput | string | null
     targetBranchId?: NullableStringFieldUpdateOperationsInput | string | null
     targetBranchEmail?: NullableStringFieldUpdateOperationsInput | string | null
     targetBranchName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -51883,6 +49570,19 @@ export namespace Prisma {
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branchCourseId?: NullableStringFieldUpdateOperationsInput | string | null
+    branchCourseName?: NullableStringFieldUpdateOperationsInput | string | null
+    facultyId?: NullableStringFieldUpdateOperationsInput | string | null
+    facultyName?: NullableStringFieldUpdateOperationsInput | string | null
+    moduleId?: NullableStringFieldUpdateOperationsInput | string | null
+    moduleName?: NullableStringFieldUpdateOperationsInput | string | null
+    requestDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    requestId?: NullableStringFieldUpdateOperationsInput | string | null
+    requestReason?: NullableStringFieldUpdateOperationsInput | string | null
+    requestStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    requestTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    subModuleId?: NullableStringFieldUpdateOperationsInput | string | null
+    subModuleName?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type NotificationUncheckedUpdateManyWithoutTargetUserInput = {
@@ -51892,19 +49592,6 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     message?: StringFieldUpdateOperationsInput | string
     actionLabel?: NullableStringFieldUpdateOperationsInput | string | null
-    requestId?: NullableStringFieldUpdateOperationsInput | string | null
-    requestStatus?: NullableStringFieldUpdateOperationsInput | string | null
-    requestTitle?: NullableStringFieldUpdateOperationsInput | string | null
-    requestReason?: NullableStringFieldUpdateOperationsInput | string | null
-    requestDescription?: NullableStringFieldUpdateOperationsInput | string | null
-    branchCourseId?: NullableStringFieldUpdateOperationsInput | string | null
-    branchCourseName?: NullableStringFieldUpdateOperationsInput | string | null
-    moduleId?: NullableStringFieldUpdateOperationsInput | string | null
-    moduleName?: NullableStringFieldUpdateOperationsInput | string | null
-    subModuleId?: NullableStringFieldUpdateOperationsInput | string | null
-    subModuleName?: NullableStringFieldUpdateOperationsInput | string | null
-    facultyId?: NullableStringFieldUpdateOperationsInput | string | null
-    facultyName?: NullableStringFieldUpdateOperationsInput | string | null
     targetBranchId?: NullableStringFieldUpdateOperationsInput | string | null
     targetBranchEmail?: NullableStringFieldUpdateOperationsInput | string | null
     targetBranchName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -51913,48 +49600,46 @@ export namespace Prisma {
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branchCourseId?: NullableStringFieldUpdateOperationsInput | string | null
+    branchCourseName?: NullableStringFieldUpdateOperationsInput | string | null
+    facultyId?: NullableStringFieldUpdateOperationsInput | string | null
+    facultyName?: NullableStringFieldUpdateOperationsInput | string | null
+    moduleId?: NullableStringFieldUpdateOperationsInput | string | null
+    moduleName?: NullableStringFieldUpdateOperationsInput | string | null
+    requestDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    requestId?: NullableStringFieldUpdateOperationsInput | string | null
+    requestReason?: NullableStringFieldUpdateOperationsInput | string | null
+    requestStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    requestTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    subModuleId?: NullableStringFieldUpdateOperationsInput | string | null
+    subModuleName?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type FacultyAttendanceSessionUpdateWithoutFacultyUserInput = {
+  export type PasswordResetTokenUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    attendanceDate?: StringFieldUpdateOperationsInput | string
-    sessionSource?: StringFieldUpdateOperationsInput | string
-    loginAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    logoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    logoutType?: NullableStringFieldUpdateOperationsInput | string | null
-    logoutReason?: NullableStringFieldUpdateOperationsInput | string | null
-    workReport?: NullableStringFieldUpdateOperationsInput | string | null
-    workCompleted?: NullableStringFieldUpdateOperationsInput | string | null
+    tokenHash?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    usedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type FacultyAttendanceSessionUncheckedUpdateWithoutFacultyUserInput = {
+  export type PasswordResetTokenUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    attendanceDate?: StringFieldUpdateOperationsInput | string
-    sessionSource?: StringFieldUpdateOperationsInput | string
-    loginAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    logoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    logoutType?: NullableStringFieldUpdateOperationsInput | string | null
-    logoutReason?: NullableStringFieldUpdateOperationsInput | string | null
-    workReport?: NullableStringFieldUpdateOperationsInput | string | null
-    workCompleted?: NullableStringFieldUpdateOperationsInput | string | null
+    tokenHash?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    usedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserInput = {
+  export type PasswordResetTokenUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    attendanceDate?: StringFieldUpdateOperationsInput | string
-    sessionSource?: StringFieldUpdateOperationsInput | string
-    loginAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    logoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    logoutType?: NullableStringFieldUpdateOperationsInput | string | null
-    logoutReason?: NullableStringFieldUpdateOperationsInput | string | null
-    workReport?: NullableStringFieldUpdateOperationsInput | string | null
-    workCompleted?: NullableStringFieldUpdateOperationsInput | string | null
+    tokenHash?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    usedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type StudentAttendanceUpdateWithoutFacultyUserInput = {
@@ -52002,34 +49687,6 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type CourseCreateManyBranchInput = {
-    id?: string
-    name: string
-    nameKey: string
-    courseCode?: string | null
-    description?: string | null
-    feeReference?: string | null
-    mode: string
-    duration?: number | null
-    hours?: number | null
-    actualFees?: number | null
-    registrationFees?: number | null
-    discount?: number | null
-    afterDiscount?: number | null
-    installmentCount?: number
-    installment1?: number | null
-    installment2?: number | null
-    installment3?: number | null
-    installments?: NullableJsonNullValueInput | InputJsonValue
-    status?: $Enums.RecordStatus
-    statusChangedAt?: Date | string | null
-    statusChangedBy?: string | null
-    createdBy?: string | null
-    updatedBy?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
   export type BranchCourseCreateManyBranchInput = {
     id?: string
     courseCode: string
@@ -52062,13 +49719,13 @@ export namespace Prisma {
     stateCode?: string | null
     city?: string | null
     address?: string | null
-    courseId?: string | null
-    branchCourseId?: string | null
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    courseId?: string | null
+    branchCourseId?: string | null
   }
 
   export type BranchStudentCreateManyBranchInput = {
@@ -52077,7 +49734,6 @@ export namespace Prisma {
     studentName: string
     mobileNumber: string
     emailAddress: string
-    linkedInUrl?: string | null
     parentSpouseNumber?: string | null
     countryCode?: string | null
     country?: string | null
@@ -52091,129 +49747,42 @@ export namespace Prisma {
     designation?: string | null
     source?: string | null
     sourceOther?: string | null
-    remarks?: string | null
     admissionDate: string
     recordStatus?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    linkedInUrl?: string | null
+    remarks?: string | null
   }
 
-  export type BranchInstallmentTemplateCreateManyBranchInput = {
+  export type CourseCreateManyBranchInput = {
     id?: string
-    branchCourseId?: string | null
-    templateName: string
-    planType?: string
-    installmentCount: number
-    installments: JsonNullValueInput | InputJsonValue
-    dueRule?: string | null
-    allowCustomization?: boolean
+    name: string
+    nameKey: string
+    description?: string | null
+    feeReference?: string | null
+    mode: string
+    duration?: number | null
+    hours?: number | null
+    actualFees?: number | null
+    registrationFees?: number | null
+    discount?: number | null
+    afterDiscount?: number | null
+    installmentCount?: number
+    installment1?: number | null
+    installment2?: number | null
+    installment3?: number | null
     status?: $Enums.RecordStatus
+    statusChangedAt?: Date | string | null
+    statusChangedBy?: string | null
     createdBy?: string | null
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-  }
-
-  export type CourseUpdateWithoutBranchInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    nameKey?: StringFieldUpdateOperationsInput | string
-    courseCode?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    feeReference?: NullableStringFieldUpdateOperationsInput | string | null
-    mode?: StringFieldUpdateOperationsInput | string
-    duration?: NullableIntFieldUpdateOperationsInput | number | null
-    hours?: NullableIntFieldUpdateOperationsInput | number | null
-    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
-    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
-    discount?: NullableIntFieldUpdateOperationsInput | number | null
-    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
-    installmentCount?: IntFieldUpdateOperationsInput | number
-    installment1?: NullableIntFieldUpdateOperationsInput | number | null
-    installment2?: NullableIntFieldUpdateOperationsInput | number | null
-    installment3?: NullableIntFieldUpdateOperationsInput | number | null
     installments?: NullableJsonNullValueInput | InputJsonValue
-    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
-    statusChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    statusChangedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    modules?: CourseModuleUpdateManyWithoutCourseNestedInput
-    batches?: BatchUpdateManyWithoutCourseNestedInput
-    students?: StudentProfileUpdateManyWithoutCourseNestedInput
-    facultyProfiles?: FacultyProfileUpdateManyWithoutCourseNestedInput
-    facultyCourseAssignments?: FacultyCourseAssignmentUpdateManyWithoutCourseNestedInput
-    facultyBatchEntries?: FacultyBatchEntryUpdateManyWithoutCourseNestedInput
-    statusHistory?: CourseStatusHistoryUpdateManyWithoutCourseNestedInput
-    branchFaculties?: BranchFacultyUpdateManyWithoutCourseNestedInput
-  }
-
-  export type CourseUncheckedUpdateWithoutBranchInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    nameKey?: StringFieldUpdateOperationsInput | string
-    courseCode?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    feeReference?: NullableStringFieldUpdateOperationsInput | string | null
-    mode?: StringFieldUpdateOperationsInput | string
-    duration?: NullableIntFieldUpdateOperationsInput | number | null
-    hours?: NullableIntFieldUpdateOperationsInput | number | null
-    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
-    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
-    discount?: NullableIntFieldUpdateOperationsInput | number | null
-    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
-    installmentCount?: IntFieldUpdateOperationsInput | number
-    installment1?: NullableIntFieldUpdateOperationsInput | number | null
-    installment2?: NullableIntFieldUpdateOperationsInput | number | null
-    installment3?: NullableIntFieldUpdateOperationsInput | number | null
-    installments?: NullableJsonNullValueInput | InputJsonValue
-    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
-    statusChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    statusChangedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    modules?: CourseModuleUncheckedUpdateManyWithoutCourseNestedInput
-    batches?: BatchUncheckedUpdateManyWithoutCourseNestedInput
-    students?: StudentProfileUncheckedUpdateManyWithoutCourseNestedInput
-    facultyProfiles?: FacultyProfileUncheckedUpdateManyWithoutCourseNestedInput
-    facultyCourseAssignments?: FacultyCourseAssignmentUncheckedUpdateManyWithoutCourseNestedInput
-    facultyBatchEntries?: FacultyBatchEntryUncheckedUpdateManyWithoutCourseNestedInput
-    statusHistory?: CourseStatusHistoryUncheckedUpdateManyWithoutCourseNestedInput
-    branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutCourseNestedInput
-  }
-
-  export type CourseUncheckedUpdateManyWithoutBranchInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    nameKey?: StringFieldUpdateOperationsInput | string
-    courseCode?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    feeReference?: NullableStringFieldUpdateOperationsInput | string | null
-    mode?: StringFieldUpdateOperationsInput | string
-    duration?: NullableIntFieldUpdateOperationsInput | number | null
-    hours?: NullableIntFieldUpdateOperationsInput | number | null
-    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
-    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
-    discount?: NullableIntFieldUpdateOperationsInput | number | null
-    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
-    installmentCount?: IntFieldUpdateOperationsInput | number
-    installment1?: NullableIntFieldUpdateOperationsInput | number | null
-    installment2?: NullableIntFieldUpdateOperationsInput | number | null
-    installment3?: NullableIntFieldUpdateOperationsInput | number | null
-    installments?: NullableJsonNullValueInput | InputJsonValue
-    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
-    statusChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    statusChangedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    courseCode?: string | null
   }
 
   export type BranchCourseUpdateWithoutBranchInput = {
@@ -52236,7 +49805,6 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     modules?: BranchCourseModuleUpdateManyWithoutBranchCourseNestedInput
     branchFaculties?: BranchFacultyUpdateManyWithoutBranchCourseNestedInput
-    installmentTemplate?: BranchInstallmentTemplateUpdateOneWithoutBranchCourseNestedInput
   }
 
   export type BranchCourseUncheckedUpdateWithoutBranchInput = {
@@ -52259,7 +49827,6 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     modules?: BranchCourseModuleUncheckedUpdateManyWithoutBranchCourseNestedInput
     branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutBranchCourseNestedInput
-    installmentTemplate?: BranchInstallmentTemplateUncheckedUpdateOneWithoutBranchCourseNestedInput
   }
 
   export type BranchCourseUncheckedUpdateManyWithoutBranchInput = {
@@ -52299,8 +49866,8 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    course?: CourseUpdateOneWithoutBranchFacultiesNestedInput
     branchCourse?: BranchCourseUpdateOneWithoutBranchFacultiesNestedInput
+    course?: CourseUpdateOneWithoutBranchFacultiesNestedInput
   }
 
   export type BranchFacultyUncheckedUpdateWithoutBranchInput = {
@@ -52315,13 +49882,13 @@ export namespace Prisma {
     stateCode?: NullableStringFieldUpdateOperationsInput | string | null
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
-    courseId?: NullableStringFieldUpdateOperationsInput | string | null
-    branchCourseId?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    courseId?: NullableStringFieldUpdateOperationsInput | string | null
+    branchCourseId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type BranchFacultyUncheckedUpdateManyWithoutBranchInput = {
@@ -52336,13 +49903,13 @@ export namespace Prisma {
     stateCode?: NullableStringFieldUpdateOperationsInput | string | null
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
-    courseId?: NullableStringFieldUpdateOperationsInput | string | null
-    branchCourseId?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    courseId?: NullableStringFieldUpdateOperationsInput | string | null
+    branchCourseId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type BranchStudentUpdateWithoutBranchInput = {
@@ -52351,7 +49918,6 @@ export namespace Prisma {
     studentName?: StringFieldUpdateOperationsInput | string
     mobileNumber?: StringFieldUpdateOperationsInput | string
     emailAddress?: StringFieldUpdateOperationsInput | string
-    linkedInUrl?: NullableStringFieldUpdateOperationsInput | string | null
     parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
     countryCode?: NullableStringFieldUpdateOperationsInput | string | null
     country?: NullableStringFieldUpdateOperationsInput | string | null
@@ -52365,13 +49931,14 @@ export namespace Prisma {
     designation?: NullableStringFieldUpdateOperationsInput | string | null
     source?: NullableStringFieldUpdateOperationsInput | string | null
     sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
-    remarks?: NullableStringFieldUpdateOperationsInput | string | null
     admissionDate?: StringFieldUpdateOperationsInput | string
     recordStatus?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    linkedInUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    remarks?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type BranchStudentUncheckedUpdateWithoutBranchInput = {
@@ -52380,7 +49947,6 @@ export namespace Prisma {
     studentName?: StringFieldUpdateOperationsInput | string
     mobileNumber?: StringFieldUpdateOperationsInput | string
     emailAddress?: StringFieldUpdateOperationsInput | string
-    linkedInUrl?: NullableStringFieldUpdateOperationsInput | string | null
     parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
     countryCode?: NullableStringFieldUpdateOperationsInput | string | null
     country?: NullableStringFieldUpdateOperationsInput | string | null
@@ -52394,13 +49960,14 @@ export namespace Prisma {
     designation?: NullableStringFieldUpdateOperationsInput | string | null
     source?: NullableStringFieldUpdateOperationsInput | string | null
     sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
-    remarks?: NullableStringFieldUpdateOperationsInput | string | null
     admissionDate?: StringFieldUpdateOperationsInput | string
     recordStatus?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    linkedInUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    remarks?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type BranchStudentUncheckedUpdateManyWithoutBranchInput = {
@@ -52409,7 +49976,6 @@ export namespace Prisma {
     studentName?: StringFieldUpdateOperationsInput | string
     mobileNumber?: StringFieldUpdateOperationsInput | string
     emailAddress?: StringFieldUpdateOperationsInput | string
-    linkedInUrl?: NullableStringFieldUpdateOperationsInput | string | null
     parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
     countryCode?: NullableStringFieldUpdateOperationsInput | string | null
     country?: NullableStringFieldUpdateOperationsInput | string | null
@@ -52423,61 +49989,116 @@ export namespace Prisma {
     designation?: NullableStringFieldUpdateOperationsInput | string | null
     source?: NullableStringFieldUpdateOperationsInput | string | null
     sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
-    remarks?: NullableStringFieldUpdateOperationsInput | string | null
     admissionDate?: StringFieldUpdateOperationsInput | string
     recordStatus?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    linkedInUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    remarks?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-<<<<<<< HEAD
-  export type BranchInstallmentTemplateUpdateWithoutBranchInput = {
+  export type CourseUpdateWithoutBranchInput = {
     id?: StringFieldUpdateOperationsInput | string
-    templateName?: StringFieldUpdateOperationsInput | string
-    planType?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameKey?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    feeReference?: NullableStringFieldUpdateOperationsInput | string | null
+    mode?: StringFieldUpdateOperationsInput | string
+    duration?: NullableIntFieldUpdateOperationsInput | number | null
+    hours?: NullableIntFieldUpdateOperationsInput | number | null
+    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
+    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
+    discount?: NullableIntFieldUpdateOperationsInput | number | null
+    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
     installmentCount?: IntFieldUpdateOperationsInput | number
-    installments?: JsonNullValueInput | InputJsonValue
-    dueRule?: NullableStringFieldUpdateOperationsInput | string | null
-    allowCustomization?: BoolFieldUpdateOperationsInput | boolean
+    installment1?: NullableIntFieldUpdateOperationsInput | number | null
+    installment2?: NullableIntFieldUpdateOperationsInput | number | null
+    installment3?: NullableIntFieldUpdateOperationsInput | number | null
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    statusChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    statusChangedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    branchCourse?: BranchCourseUpdateOneWithoutInstallmentTemplateNestedInput
+    installments?: NullableJsonNullValueInput | InputJsonValue
+    courseCode?: NullableStringFieldUpdateOperationsInput | string | null
+    batches?: BatchUpdateManyWithoutCourseNestedInput
+    branchFaculties?: BranchFacultyUpdateManyWithoutCourseNestedInput
+    modules?: CourseModuleUpdateManyWithoutCourseNestedInput
+    statusHistory?: CourseStatusHistoryUpdateManyWithoutCourseNestedInput
+    facultyBatchEntries?: FacultyBatchEntryUpdateManyWithoutCourseNestedInput
+    facultyCourseAssignments?: FacultyCourseAssignmentUpdateManyWithoutCourseNestedInput
+    facultyProfiles?: FacultyProfileUpdateManyWithoutCourseNestedInput
+    students?: StudentProfileUpdateManyWithoutCourseNestedInput
   }
 
-  export type BranchInstallmentTemplateUncheckedUpdateWithoutBranchInput = {
+  export type CourseUncheckedUpdateWithoutBranchInput = {
     id?: StringFieldUpdateOperationsInput | string
-    branchCourseId?: NullableStringFieldUpdateOperationsInput | string | null
-    templateName?: StringFieldUpdateOperationsInput | string
-    planType?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameKey?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    feeReference?: NullableStringFieldUpdateOperationsInput | string | null
+    mode?: StringFieldUpdateOperationsInput | string
+    duration?: NullableIntFieldUpdateOperationsInput | number | null
+    hours?: NullableIntFieldUpdateOperationsInput | number | null
+    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
+    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
+    discount?: NullableIntFieldUpdateOperationsInput | number | null
+    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
     installmentCount?: IntFieldUpdateOperationsInput | number
-    installments?: JsonNullValueInput | InputJsonValue
-    dueRule?: NullableStringFieldUpdateOperationsInput | string | null
-    allowCustomization?: BoolFieldUpdateOperationsInput | boolean
+    installment1?: NullableIntFieldUpdateOperationsInput | number | null
+    installment2?: NullableIntFieldUpdateOperationsInput | number | null
+    installment3?: NullableIntFieldUpdateOperationsInput | number | null
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    statusChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    statusChangedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    installments?: NullableJsonNullValueInput | InputJsonValue
+    courseCode?: NullableStringFieldUpdateOperationsInput | string | null
+    batches?: BatchUncheckedUpdateManyWithoutCourseNestedInput
+    branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutCourseNestedInput
+    modules?: CourseModuleUncheckedUpdateManyWithoutCourseNestedInput
+    statusHistory?: CourseStatusHistoryUncheckedUpdateManyWithoutCourseNestedInput
+    facultyBatchEntries?: FacultyBatchEntryUncheckedUpdateManyWithoutCourseNestedInput
+    facultyCourseAssignments?: FacultyCourseAssignmentUncheckedUpdateManyWithoutCourseNestedInput
+    facultyProfiles?: FacultyProfileUncheckedUpdateManyWithoutCourseNestedInput
+    students?: StudentProfileUncheckedUpdateManyWithoutCourseNestedInput
   }
 
-  export type BranchInstallmentTemplateUncheckedUpdateManyWithoutBranchInput = {
+  export type CourseUncheckedUpdateManyWithoutBranchInput = {
     id?: StringFieldUpdateOperationsInput | string
-    branchCourseId?: NullableStringFieldUpdateOperationsInput | string | null
-    templateName?: StringFieldUpdateOperationsInput | string
-    planType?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameKey?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    feeReference?: NullableStringFieldUpdateOperationsInput | string | null
+    mode?: StringFieldUpdateOperationsInput | string
+    duration?: NullableIntFieldUpdateOperationsInput | number | null
+    hours?: NullableIntFieldUpdateOperationsInput | number | null
+    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
+    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
+    discount?: NullableIntFieldUpdateOperationsInput | number | null
+    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
     installmentCount?: IntFieldUpdateOperationsInput | number
-    installments?: JsonNullValueInput | InputJsonValue
-    dueRule?: NullableStringFieldUpdateOperationsInput | string | null
-    allowCustomization?: BoolFieldUpdateOperationsInput | boolean
+    installment1?: NullableIntFieldUpdateOperationsInput | number | null
+    installment2?: NullableIntFieldUpdateOperationsInput | number | null
+    installment3?: NullableIntFieldUpdateOperationsInput | number | null
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    statusChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    statusChangedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-=======
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    installments?: NullableJsonNullValueInput | InputJsonValue
+    courseCode?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
   export type NotificationCreateManyRequestInput = {
     id?: string
     kind: $Enums.NotificationKind
@@ -52485,19 +50106,6 @@ export namespace Prisma {
     title: string
     message: string
     actionLabel?: string | null
-    requestStatus?: string | null
-    requestTitle?: string | null
-    requestReason?: string | null
-    requestDescription?: string | null
-    branchCourseId?: string | null
-    branchCourseName?: string | null
-    moduleId?: string | null
-    moduleName?: string | null
-    subModuleId?: string | null
-    subModuleName?: string | null
-    facultyId?: string | null
-    facultyName?: string | null
-    targetUserId?: string | null
     targetBranchId?: string | null
     targetBranchEmail?: string | null
     targetBranchName?: string | null
@@ -52506,6 +50114,19 @@ export namespace Prisma {
     createdBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    targetUserId?: string | null
+    branchCourseId?: string | null
+    branchCourseName?: string | null
+    facultyId?: string | null
+    facultyName?: string | null
+    moduleId?: string | null
+    moduleName?: string | null
+    requestDescription?: string | null
+    requestReason?: string | null
+    requestStatus?: string | null
+    requestTitle?: string | null
+    subModuleId?: string | null
+    subModuleName?: string | null
   }
 
   export type NotificationUpdateWithoutRequestInput = {
@@ -52515,18 +50136,6 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     message?: StringFieldUpdateOperationsInput | string
     actionLabel?: NullableStringFieldUpdateOperationsInput | string | null
-    requestStatus?: NullableStringFieldUpdateOperationsInput | string | null
-    requestTitle?: NullableStringFieldUpdateOperationsInput | string | null
-    requestReason?: NullableStringFieldUpdateOperationsInput | string | null
-    requestDescription?: NullableStringFieldUpdateOperationsInput | string | null
-    branchCourseId?: NullableStringFieldUpdateOperationsInput | string | null
-    branchCourseName?: NullableStringFieldUpdateOperationsInput | string | null
-    moduleId?: NullableStringFieldUpdateOperationsInput | string | null
-    moduleName?: NullableStringFieldUpdateOperationsInput | string | null
-    subModuleId?: NullableStringFieldUpdateOperationsInput | string | null
-    subModuleName?: NullableStringFieldUpdateOperationsInput | string | null
-    facultyId?: NullableStringFieldUpdateOperationsInput | string | null
-    facultyName?: NullableStringFieldUpdateOperationsInput | string | null
     targetBranchId?: NullableStringFieldUpdateOperationsInput | string | null
     targetBranchEmail?: NullableStringFieldUpdateOperationsInput | string | null
     targetBranchName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -52535,6 +50144,18 @@ export namespace Prisma {
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branchCourseId?: NullableStringFieldUpdateOperationsInput | string | null
+    branchCourseName?: NullableStringFieldUpdateOperationsInput | string | null
+    facultyId?: NullableStringFieldUpdateOperationsInput | string | null
+    facultyName?: NullableStringFieldUpdateOperationsInput | string | null
+    moduleId?: NullableStringFieldUpdateOperationsInput | string | null
+    moduleName?: NullableStringFieldUpdateOperationsInput | string | null
+    requestDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    requestReason?: NullableStringFieldUpdateOperationsInput | string | null
+    requestStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    requestTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    subModuleId?: NullableStringFieldUpdateOperationsInput | string | null
+    subModuleName?: NullableStringFieldUpdateOperationsInput | string | null
     targetUser?: UserUpdateOneWithoutTargetedNotificationsNestedInput
   }
 
@@ -52545,19 +50166,6 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     message?: StringFieldUpdateOperationsInput | string
     actionLabel?: NullableStringFieldUpdateOperationsInput | string | null
-    requestStatus?: NullableStringFieldUpdateOperationsInput | string | null
-    requestTitle?: NullableStringFieldUpdateOperationsInput | string | null
-    requestReason?: NullableStringFieldUpdateOperationsInput | string | null
-    requestDescription?: NullableStringFieldUpdateOperationsInput | string | null
-    branchCourseId?: NullableStringFieldUpdateOperationsInput | string | null
-    branchCourseName?: NullableStringFieldUpdateOperationsInput | string | null
-    moduleId?: NullableStringFieldUpdateOperationsInput | string | null
-    moduleName?: NullableStringFieldUpdateOperationsInput | string | null
-    subModuleId?: NullableStringFieldUpdateOperationsInput | string | null
-    subModuleName?: NullableStringFieldUpdateOperationsInput | string | null
-    facultyId?: NullableStringFieldUpdateOperationsInput | string | null
-    facultyName?: NullableStringFieldUpdateOperationsInput | string | null
-    targetUserId?: NullableStringFieldUpdateOperationsInput | string | null
     targetBranchId?: NullableStringFieldUpdateOperationsInput | string | null
     targetBranchEmail?: NullableStringFieldUpdateOperationsInput | string | null
     targetBranchName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -52566,6 +50174,19 @@ export namespace Prisma {
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    targetUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    branchCourseId?: NullableStringFieldUpdateOperationsInput | string | null
+    branchCourseName?: NullableStringFieldUpdateOperationsInput | string | null
+    facultyId?: NullableStringFieldUpdateOperationsInput | string | null
+    facultyName?: NullableStringFieldUpdateOperationsInput | string | null
+    moduleId?: NullableStringFieldUpdateOperationsInput | string | null
+    moduleName?: NullableStringFieldUpdateOperationsInput | string | null
+    requestDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    requestReason?: NullableStringFieldUpdateOperationsInput | string | null
+    requestStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    requestTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    subModuleId?: NullableStringFieldUpdateOperationsInput | string | null
+    subModuleName?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type NotificationUncheckedUpdateManyWithoutRequestInput = {
@@ -52575,43 +50196,27 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     message?: StringFieldUpdateOperationsInput | string
     actionLabel?: NullableStringFieldUpdateOperationsInput | string | null
-    requestStatus?: NullableStringFieldUpdateOperationsInput | string | null
-    requestTitle?: NullableStringFieldUpdateOperationsInput | string | null
-    requestReason?: NullableStringFieldUpdateOperationsInput | string | null
-    requestDescription?: NullableStringFieldUpdateOperationsInput | string | null
-    branchCourseId?: NullableStringFieldUpdateOperationsInput | string | null
-    branchCourseName?: NullableStringFieldUpdateOperationsInput | string | null
-    moduleId?: NullableStringFieldUpdateOperationsInput | string | null
-    moduleName?: NullableStringFieldUpdateOperationsInput | string | null
-    subModuleId?: NullableStringFieldUpdateOperationsInput | string | null
-    subModuleName?: NullableStringFieldUpdateOperationsInput | string | null
-    facultyId?: NullableStringFieldUpdateOperationsInput | string | null
-    facultyName?: NullableStringFieldUpdateOperationsInput | string | null
-    targetUserId?: NullableStringFieldUpdateOperationsInput | string | null
     targetBranchId?: NullableStringFieldUpdateOperationsInput | string | null
     targetBranchEmail?: NullableStringFieldUpdateOperationsInput | string | null
     targetBranchName?: NullableStringFieldUpdateOperationsInput | string | null
     read?: BoolFieldUpdateOperationsInput | boolean
     readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
->>>>>>> fcadcbe (Add course edit request and update course faculty notifications)
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type CourseModuleCreateManyCourseInput = {
-    id?: string
-    title: string
-    titleKey: string
-    description?: string | null
-    sequenceNo: number
-    status?: $Enums.RecordStatus
-    statusChangedAt?: Date | string | null
-    statusChangedBy?: string | null
-    createdBy?: string | null
-    updatedBy?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
+    targetUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    branchCourseId?: NullableStringFieldUpdateOperationsInput | string | null
+    branchCourseName?: NullableStringFieldUpdateOperationsInput | string | null
+    facultyId?: NullableStringFieldUpdateOperationsInput | string | null
+    facultyName?: NullableStringFieldUpdateOperationsInput | string | null
+    moduleId?: NullableStringFieldUpdateOperationsInput | string | null
+    moduleName?: NullableStringFieldUpdateOperationsInput | string | null
+    requestDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    requestReason?: NullableStringFieldUpdateOperationsInput | string | null
+    requestStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    requestTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    subModuleId?: NullableStringFieldUpdateOperationsInput | string | null
+    subModuleName?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type BatchCreateManyCourseInput = {
@@ -52634,45 +50239,64 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
-  export type StudentProfileCreateManyCourseInput = {
+  export type BranchFacultyCreateManyCourseInput = {
     id?: string
-    studentCode: string
-    studentName: string
-    mobileNumber: string
-    emailAddress: string
-    linkedInUrl?: string | null
-    parentSpouseNumber?: string | null
-    location?: string | null
-    courseInterested: string
-    facultyId?: string | null
-    facultyName?: string | null
-    batchId?: string | null
-    batchName?: string | null
-    qualification?: string | null
-    passedOutYear?: number | null
-    currentStatus?: string | null
-    designation?: string | null
-    source?: string | null
-    actualFees?: number | null
-    registrationFees?: number | null
-    discount?: number | null
-    afterDiscount?: number | null
-    installment1?: number | null
-    installment2?: number | null
-    installment3?: number | null
-    installment4?: number | null
-    totalAmount?: number | null
-    admissionDate: string
-    firstInstallmentAmount?: number | null
-    firstInstallmentDate?: string | null
-    firstInstallmentStatus?: string
-    firstInstallmentPaidAt?: string | null
-    secondInstallmentAmount?: number | null
-    secondDueDate?: string | null
-    secondInstallmentStatus?: string
-    secondInstallmentPaidAt?: string | null
-    remarks?: string | null
-    recordStatus?: $Enums.RecordStatus
+    facultyId: string
+    branchId: string
+    name: string
+    email: string
+    phone: string
+    country?: string | null
+    countryCode?: string | null
+    state?: string | null
+    stateCode?: string | null
+    city?: string | null
+    address?: string | null
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branchCourseId?: string | null
+  }
+
+  export type CourseModuleCreateManyCourseInput = {
+    id?: string
+    title: string
+    titleKey: string
+    description?: string | null
+    sequenceNo: number
+    status?: $Enums.RecordStatus
+    statusChangedAt?: Date | string | null
+    statusChangedBy?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CourseStatusHistoryCreateManyCourseInput = {
+    id?: string
+    fromStatus?: $Enums.RecordStatus | null
+    toStatus: $Enums.RecordStatus
+    changedBy?: string | null
+    reason?: string | null
+    changedAt?: Date | string
+  }
+
+  export type FacultyBatchEntryCreateManyCourseInput = {
+    id?: string
+    facultyId: string
+    batchName: string
+    batchTiming: string
+    sequenceNo?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FacultyCourseAssignmentCreateManyCourseInput = {
+    id?: string
+    facultyId: string
     createdBy?: string | null
     updatedBy?: string | null
     createdAt?: Date | string
@@ -52691,98 +50315,49 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
-  export type FacultyCourseAssignmentCreateManyCourseInput = {
+  export type StudentProfileCreateManyCourseInput = {
     id?: string
-    facultyId: string
+    studentCode: string
+    studentName: string
+    mobileNumber: string
+    emailAddress: string
+    parentSpouseNumber?: string | null
+    location?: string | null
+    courseInterested: string
+    facultyName?: string | null
+    batchName?: string | null
+    qualification?: string | null
+    passedOutYear?: number | null
+    currentStatus?: string | null
+    designation?: string | null
+    source?: string | null
+    actualFees?: number | null
+    registrationFees?: number | null
+    discount?: number | null
+    afterDiscount?: number | null
+    installment1?: number | null
+    installment2?: number | null
+    installment3?: number | null
+    totalAmount?: number | null
+    admissionDate: string
+    firstInstallmentAmount?: number | null
+    firstInstallmentDate?: string | null
+    firstInstallmentStatus?: string
+    firstInstallmentPaidAt?: string | null
+    secondInstallmentAmount?: number | null
+    secondDueDate?: string | null
+    secondInstallmentStatus?: string
+    secondInstallmentPaidAt?: string | null
+    remarks?: string | null
+    recordStatus?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-  }
-
-  export type FacultyBatchEntryCreateManyCourseInput = {
-    id?: string
-    facultyId: string
-    batchName: string
-    batchTiming: string
-    sequenceNo?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type CourseStatusHistoryCreateManyCourseInput = {
-    id?: string
-    fromStatus?: $Enums.RecordStatus | null
-    toStatus: $Enums.RecordStatus
-    changedBy?: string | null
-    reason?: string | null
-    changedAt?: Date | string
-  }
-
-  export type BranchFacultyCreateManyCourseInput = {
-    id?: string
-    facultyId: string
-    branchId: string
-    name: string
-    email: string
-    phone: string
-    country?: string | null
-    countryCode?: string | null
-    state?: string | null
-    stateCode?: string | null
-    city?: string | null
-    address?: string | null
-    branchCourseId?: string | null
-    status?: $Enums.RecordStatus
-    createdBy?: string | null
-    updatedBy?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type CourseModuleUpdateWithoutCourseInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    titleKey?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    sequenceNo?: IntFieldUpdateOperationsInput | number
-    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
-    statusChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    statusChangedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type CourseModuleUncheckedUpdateWithoutCourseInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    titleKey?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    sequenceNo?: IntFieldUpdateOperationsInput | number
-    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
-    statusChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    statusChangedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type CourseModuleUncheckedUpdateManyWithoutCourseInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    titleKey?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    sequenceNo?: IntFieldUpdateOperationsInput | number
-    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
-    statusChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    statusChangedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    installment4?: number | null
+    batchId?: string | null
+    facultyId?: string | null
+    linkedInUrl?: string | null
   }
 
   export type BatchUpdateWithoutCourseInput = {
@@ -52849,208 +50424,139 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type StudentProfileUpdateWithoutCourseInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    studentCode?: StringFieldUpdateOperationsInput | string
-    studentName?: StringFieldUpdateOperationsInput | string
-    mobileNumber?: StringFieldUpdateOperationsInput | string
-    emailAddress?: StringFieldUpdateOperationsInput | string
-    linkedInUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
-    location?: NullableStringFieldUpdateOperationsInput | string | null
-    courseInterested?: StringFieldUpdateOperationsInput | string
-    facultyId?: NullableStringFieldUpdateOperationsInput | string | null
-    facultyName?: NullableStringFieldUpdateOperationsInput | string | null
-    batchId?: NullableStringFieldUpdateOperationsInput | string | null
-    batchName?: NullableStringFieldUpdateOperationsInput | string | null
-    qualification?: NullableStringFieldUpdateOperationsInput | string | null
-    passedOutYear?: NullableIntFieldUpdateOperationsInput | number | null
-    currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
-    designation?: NullableStringFieldUpdateOperationsInput | string | null
-    source?: NullableStringFieldUpdateOperationsInput | string | null
-    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
-    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
-    discount?: NullableIntFieldUpdateOperationsInput | number | null
-    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
-    installment1?: NullableIntFieldUpdateOperationsInput | number | null
-    installment2?: NullableIntFieldUpdateOperationsInput | number | null
-    installment3?: NullableIntFieldUpdateOperationsInput | number | null
-    installment4?: NullableIntFieldUpdateOperationsInput | number | null
-    totalAmount?: NullableIntFieldUpdateOperationsInput | number | null
-    admissionDate?: StringFieldUpdateOperationsInput | string
-    firstInstallmentAmount?: NullableIntFieldUpdateOperationsInput | number | null
-    firstInstallmentDate?: NullableStringFieldUpdateOperationsInput | string | null
-    firstInstallmentStatus?: StringFieldUpdateOperationsInput | string
-    firstInstallmentPaidAt?: NullableStringFieldUpdateOperationsInput | string | null
-    secondInstallmentAmount?: NullableIntFieldUpdateOperationsInput | number | null
-    secondDueDate?: NullableStringFieldUpdateOperationsInput | string | null
-    secondInstallmentStatus?: StringFieldUpdateOperationsInput | string
-    secondInstallmentPaidAt?: NullableStringFieldUpdateOperationsInput | string | null
-    remarks?: NullableStringFieldUpdateOperationsInput | string | null
-    recordStatus?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    attendanceRecords?: StudentAttendanceUpdateManyWithoutStudentNestedInput
-  }
-
-  export type StudentProfileUncheckedUpdateWithoutCourseInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    studentCode?: StringFieldUpdateOperationsInput | string
-    studentName?: StringFieldUpdateOperationsInput | string
-    mobileNumber?: StringFieldUpdateOperationsInput | string
-    emailAddress?: StringFieldUpdateOperationsInput | string
-    linkedInUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
-    location?: NullableStringFieldUpdateOperationsInput | string | null
-    courseInterested?: StringFieldUpdateOperationsInput | string
-    facultyId?: NullableStringFieldUpdateOperationsInput | string | null
-    facultyName?: NullableStringFieldUpdateOperationsInput | string | null
-    batchId?: NullableStringFieldUpdateOperationsInput | string | null
-    batchName?: NullableStringFieldUpdateOperationsInput | string | null
-    qualification?: NullableStringFieldUpdateOperationsInput | string | null
-    passedOutYear?: NullableIntFieldUpdateOperationsInput | number | null
-    currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
-    designation?: NullableStringFieldUpdateOperationsInput | string | null
-    source?: NullableStringFieldUpdateOperationsInput | string | null
-    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
-    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
-    discount?: NullableIntFieldUpdateOperationsInput | number | null
-    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
-    installment1?: NullableIntFieldUpdateOperationsInput | number | null
-    installment2?: NullableIntFieldUpdateOperationsInput | number | null
-    installment3?: NullableIntFieldUpdateOperationsInput | number | null
-    installment4?: NullableIntFieldUpdateOperationsInput | number | null
-    totalAmount?: NullableIntFieldUpdateOperationsInput | number | null
-    admissionDate?: StringFieldUpdateOperationsInput | string
-    firstInstallmentAmount?: NullableIntFieldUpdateOperationsInput | number | null
-    firstInstallmentDate?: NullableStringFieldUpdateOperationsInput | string | null
-    firstInstallmentStatus?: StringFieldUpdateOperationsInput | string
-    firstInstallmentPaidAt?: NullableStringFieldUpdateOperationsInput | string | null
-    secondInstallmentAmount?: NullableIntFieldUpdateOperationsInput | number | null
-    secondDueDate?: NullableStringFieldUpdateOperationsInput | string | null
-    secondInstallmentStatus?: StringFieldUpdateOperationsInput | string
-    secondInstallmentPaidAt?: NullableStringFieldUpdateOperationsInput | string | null
-    remarks?: NullableStringFieldUpdateOperationsInput | string | null
-    recordStatus?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    attendanceRecords?: StudentAttendanceUncheckedUpdateManyWithoutStudentNestedInput
-  }
-
-  export type StudentProfileUncheckedUpdateManyWithoutCourseInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    studentCode?: StringFieldUpdateOperationsInput | string
-    studentName?: StringFieldUpdateOperationsInput | string
-    mobileNumber?: StringFieldUpdateOperationsInput | string
-    emailAddress?: StringFieldUpdateOperationsInput | string
-    linkedInUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
-    location?: NullableStringFieldUpdateOperationsInput | string | null
-    courseInterested?: StringFieldUpdateOperationsInput | string
-    facultyId?: NullableStringFieldUpdateOperationsInput | string | null
-    facultyName?: NullableStringFieldUpdateOperationsInput | string | null
-    batchId?: NullableStringFieldUpdateOperationsInput | string | null
-    batchName?: NullableStringFieldUpdateOperationsInput | string | null
-    qualification?: NullableStringFieldUpdateOperationsInput | string | null
-    passedOutYear?: NullableIntFieldUpdateOperationsInput | number | null
-    currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
-    designation?: NullableStringFieldUpdateOperationsInput | string | null
-    source?: NullableStringFieldUpdateOperationsInput | string | null
-    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
-    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
-    discount?: NullableIntFieldUpdateOperationsInput | number | null
-    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
-    installment1?: NullableIntFieldUpdateOperationsInput | number | null
-    installment2?: NullableIntFieldUpdateOperationsInput | number | null
-    installment3?: NullableIntFieldUpdateOperationsInput | number | null
-    installment4?: NullableIntFieldUpdateOperationsInput | number | null
-    totalAmount?: NullableIntFieldUpdateOperationsInput | number | null
-    admissionDate?: StringFieldUpdateOperationsInput | string
-    firstInstallmentAmount?: NullableIntFieldUpdateOperationsInput | number | null
-    firstInstallmentDate?: NullableStringFieldUpdateOperationsInput | string | null
-    firstInstallmentStatus?: StringFieldUpdateOperationsInput | string
-    firstInstallmentPaidAt?: NullableStringFieldUpdateOperationsInput | string | null
-    secondInstallmentAmount?: NullableIntFieldUpdateOperationsInput | number | null
-    secondDueDate?: NullableStringFieldUpdateOperationsInput | string | null
-    secondInstallmentStatus?: StringFieldUpdateOperationsInput | string
-    secondInstallmentPaidAt?: NullableStringFieldUpdateOperationsInput | string | null
-    remarks?: NullableStringFieldUpdateOperationsInput | string | null
-    recordStatus?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type FacultyProfileUpdateWithoutCourseInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    facultyName?: StringFieldUpdateOperationsInput | string
-    facultyEmail?: StringFieldUpdateOperationsInput | string
-    facultyPhone?: StringFieldUpdateOperationsInput | string
-    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    courseAssignments?: FacultyCourseAssignmentUpdateManyWithoutFacultyNestedInput
-    batchEntries?: FacultyBatchEntryUpdateManyWithoutFacultyNestedInput
-  }
-
-  export type FacultyProfileUncheckedUpdateWithoutCourseInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    facultyName?: StringFieldUpdateOperationsInput | string
-    facultyEmail?: StringFieldUpdateOperationsInput | string
-    facultyPhone?: StringFieldUpdateOperationsInput | string
-    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    courseAssignments?: FacultyCourseAssignmentUncheckedUpdateManyWithoutFacultyNestedInput
-    batchEntries?: FacultyBatchEntryUncheckedUpdateManyWithoutFacultyNestedInput
-  }
-
-  export type FacultyProfileUncheckedUpdateManyWithoutCourseInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    facultyName?: StringFieldUpdateOperationsInput | string
-    facultyEmail?: StringFieldUpdateOperationsInput | string
-    facultyPhone?: StringFieldUpdateOperationsInput | string
-    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type FacultyCourseAssignmentUpdateWithoutCourseInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    faculty?: FacultyProfileUpdateOneRequiredWithoutCourseAssignmentsNestedInput
-  }
-
-  export type FacultyCourseAssignmentUncheckedUpdateWithoutCourseInput = {
+  export type BranchFacultyUpdateWithoutCourseInput = {
     id?: StringFieldUpdateOperationsInput | string
     facultyId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    countryCode?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    stateCode?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branchCourse?: BranchCourseUpdateOneWithoutBranchFacultiesNestedInput
+    branch?: BranchUpdateOneRequiredWithoutBranchFacultiesNestedInput
+  }
+
+  export type BranchFacultyUncheckedUpdateWithoutCourseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    facultyId?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    countryCode?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    stateCode?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branchCourseId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type BranchFacultyUncheckedUpdateManyWithoutCourseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    facultyId?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    countryCode?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    stateCode?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branchCourseId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CourseModuleUpdateWithoutCourseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    titleKey?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    sequenceNo?: IntFieldUpdateOperationsInput | number
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    statusChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    statusChangedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type FacultyCourseAssignmentUncheckedUpdateManyWithoutCourseInput = {
+  export type CourseModuleUncheckedUpdateWithoutCourseInput = {
     id?: StringFieldUpdateOperationsInput | string
-    facultyId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    titleKey?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    sequenceNo?: IntFieldUpdateOperationsInput | number
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    statusChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    statusChangedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CourseModuleUncheckedUpdateManyWithoutCourseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    titleKey?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    sequenceNo?: IntFieldUpdateOperationsInput | number
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    statusChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    statusChangedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CourseStatusHistoryUpdateWithoutCourseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fromStatus?: NullableEnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus | null
+    toStatus?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    changedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    changedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CourseStatusHistoryUncheckedUpdateWithoutCourseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fromStatus?: NullableEnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus | null
+    toStatus?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    changedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    changedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CourseStatusHistoryUncheckedUpdateManyWithoutCourseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fromStatus?: NullableEnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus | null
+    toStatus?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    changedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    changedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type FacultyBatchEntryUpdateWithoutCourseInput = {
@@ -53083,94 +50589,208 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type CourseStatusHistoryUpdateWithoutCourseInput = {
+  export type FacultyCourseAssignmentUpdateWithoutCourseInput = {
     id?: StringFieldUpdateOperationsInput | string
-    fromStatus?: NullableEnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus | null
-    toStatus?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
-    changedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    reason?: NullableStringFieldUpdateOperationsInput | string | null
-    changedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type CourseStatusHistoryUncheckedUpdateWithoutCourseInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    fromStatus?: NullableEnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus | null
-    toStatus?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
-    changedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    reason?: NullableStringFieldUpdateOperationsInput | string | null
-    changedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type CourseStatusHistoryUncheckedUpdateManyWithoutCourseInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    fromStatus?: NullableEnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus | null
-    toStatus?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
-    changedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    reason?: NullableStringFieldUpdateOperationsInput | string | null
-    changedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type BranchFacultyUpdateWithoutCourseInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    facultyId?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    phone?: StringFieldUpdateOperationsInput | string
-    country?: NullableStringFieldUpdateOperationsInput | string | null
-    countryCode?: NullableStringFieldUpdateOperationsInput | string | null
-    state?: NullableStringFieldUpdateOperationsInput | string | null
-    stateCode?: NullableStringFieldUpdateOperationsInput | string | null
-    city?: NullableStringFieldUpdateOperationsInput | string | null
-    address?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    branch?: BranchUpdateOneRequiredWithoutBranchFacultiesNestedInput
-    branchCourse?: BranchCourseUpdateOneWithoutBranchFacultiesNestedInput
+    faculty?: FacultyProfileUpdateOneRequiredWithoutCourseAssignmentsNestedInput
   }
 
-  export type BranchFacultyUncheckedUpdateWithoutCourseInput = {
+  export type FacultyCourseAssignmentUncheckedUpdateWithoutCourseInput = {
     id?: StringFieldUpdateOperationsInput | string
     facultyId?: StringFieldUpdateOperationsInput | string
-    branchId?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    phone?: StringFieldUpdateOperationsInput | string
-    country?: NullableStringFieldUpdateOperationsInput | string | null
-    countryCode?: NullableStringFieldUpdateOperationsInput | string | null
-    state?: NullableStringFieldUpdateOperationsInput | string | null
-    stateCode?: NullableStringFieldUpdateOperationsInput | string | null
-    city?: NullableStringFieldUpdateOperationsInput | string | null
-    address?: NullableStringFieldUpdateOperationsInput | string | null
-    branchCourseId?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type BranchFacultyUncheckedUpdateManyWithoutCourseInput = {
+  export type FacultyCourseAssignmentUncheckedUpdateManyWithoutCourseInput = {
     id?: StringFieldUpdateOperationsInput | string
     facultyId?: StringFieldUpdateOperationsInput | string
-    branchId?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    phone?: StringFieldUpdateOperationsInput | string
-    country?: NullableStringFieldUpdateOperationsInput | string | null
-    countryCode?: NullableStringFieldUpdateOperationsInput | string | null
-    state?: NullableStringFieldUpdateOperationsInput | string | null
-    stateCode?: NullableStringFieldUpdateOperationsInput | string | null
-    city?: NullableStringFieldUpdateOperationsInput | string | null
-    address?: NullableStringFieldUpdateOperationsInput | string | null
-    branchCourseId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FacultyProfileUpdateWithoutCourseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    facultyName?: StringFieldUpdateOperationsInput | string
+    facultyEmail?: StringFieldUpdateOperationsInput | string
+    facultyPhone?: StringFieldUpdateOperationsInput | string
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    batchEntries?: FacultyBatchEntryUpdateManyWithoutFacultyNestedInput
+    courseAssignments?: FacultyCourseAssignmentUpdateManyWithoutFacultyNestedInput
+  }
+
+  export type FacultyProfileUncheckedUpdateWithoutCourseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    facultyName?: StringFieldUpdateOperationsInput | string
+    facultyEmail?: StringFieldUpdateOperationsInput | string
+    facultyPhone?: StringFieldUpdateOperationsInput | string
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    batchEntries?: FacultyBatchEntryUncheckedUpdateManyWithoutFacultyNestedInput
+    courseAssignments?: FacultyCourseAssignmentUncheckedUpdateManyWithoutFacultyNestedInput
+  }
+
+  export type FacultyProfileUncheckedUpdateManyWithoutCourseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    facultyName?: StringFieldUpdateOperationsInput | string
+    facultyEmail?: StringFieldUpdateOperationsInput | string
+    facultyPhone?: StringFieldUpdateOperationsInput | string
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type StudentProfileUpdateWithoutCourseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    studentCode?: StringFieldUpdateOperationsInput | string
+    studentName?: StringFieldUpdateOperationsInput | string
+    mobileNumber?: StringFieldUpdateOperationsInput | string
+    emailAddress?: StringFieldUpdateOperationsInput | string
+    parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    courseInterested?: StringFieldUpdateOperationsInput | string
+    facultyName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchName?: NullableStringFieldUpdateOperationsInput | string | null
+    qualification?: NullableStringFieldUpdateOperationsInput | string | null
+    passedOutYear?: NullableIntFieldUpdateOperationsInput | number | null
+    currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    designation?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: NullableStringFieldUpdateOperationsInput | string | null
+    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
+    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
+    discount?: NullableIntFieldUpdateOperationsInput | number | null
+    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
+    installment1?: NullableIntFieldUpdateOperationsInput | number | null
+    installment2?: NullableIntFieldUpdateOperationsInput | number | null
+    installment3?: NullableIntFieldUpdateOperationsInput | number | null
+    totalAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    admissionDate?: StringFieldUpdateOperationsInput | string
+    firstInstallmentAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    firstInstallmentDate?: NullableStringFieldUpdateOperationsInput | string | null
+    firstInstallmentStatus?: StringFieldUpdateOperationsInput | string
+    firstInstallmentPaidAt?: NullableStringFieldUpdateOperationsInput | string | null
+    secondInstallmentAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    secondDueDate?: NullableStringFieldUpdateOperationsInput | string | null
+    secondInstallmentStatus?: StringFieldUpdateOperationsInput | string
+    secondInstallmentPaidAt?: NullableStringFieldUpdateOperationsInput | string | null
+    remarks?: NullableStringFieldUpdateOperationsInput | string | null
+    recordStatus?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    installment4?: NullableIntFieldUpdateOperationsInput | number | null
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
+    facultyId?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedInUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    attendanceRecords?: StudentAttendanceUpdateManyWithoutStudentNestedInput
+  }
+
+  export type StudentProfileUncheckedUpdateWithoutCourseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    studentCode?: StringFieldUpdateOperationsInput | string
+    studentName?: StringFieldUpdateOperationsInput | string
+    mobileNumber?: StringFieldUpdateOperationsInput | string
+    emailAddress?: StringFieldUpdateOperationsInput | string
+    parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    courseInterested?: StringFieldUpdateOperationsInput | string
+    facultyName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchName?: NullableStringFieldUpdateOperationsInput | string | null
+    qualification?: NullableStringFieldUpdateOperationsInput | string | null
+    passedOutYear?: NullableIntFieldUpdateOperationsInput | number | null
+    currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    designation?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: NullableStringFieldUpdateOperationsInput | string | null
+    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
+    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
+    discount?: NullableIntFieldUpdateOperationsInput | number | null
+    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
+    installment1?: NullableIntFieldUpdateOperationsInput | number | null
+    installment2?: NullableIntFieldUpdateOperationsInput | number | null
+    installment3?: NullableIntFieldUpdateOperationsInput | number | null
+    totalAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    admissionDate?: StringFieldUpdateOperationsInput | string
+    firstInstallmentAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    firstInstallmentDate?: NullableStringFieldUpdateOperationsInput | string | null
+    firstInstallmentStatus?: StringFieldUpdateOperationsInput | string
+    firstInstallmentPaidAt?: NullableStringFieldUpdateOperationsInput | string | null
+    secondInstallmentAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    secondDueDate?: NullableStringFieldUpdateOperationsInput | string | null
+    secondInstallmentStatus?: StringFieldUpdateOperationsInput | string
+    secondInstallmentPaidAt?: NullableStringFieldUpdateOperationsInput | string | null
+    remarks?: NullableStringFieldUpdateOperationsInput | string | null
+    recordStatus?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    installment4?: NullableIntFieldUpdateOperationsInput | number | null
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
+    facultyId?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedInUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    attendanceRecords?: StudentAttendanceUncheckedUpdateManyWithoutStudentNestedInput
+  }
+
+  export type StudentProfileUncheckedUpdateManyWithoutCourseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    studentCode?: StringFieldUpdateOperationsInput | string
+    studentName?: StringFieldUpdateOperationsInput | string
+    mobileNumber?: StringFieldUpdateOperationsInput | string
+    emailAddress?: StringFieldUpdateOperationsInput | string
+    parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    courseInterested?: StringFieldUpdateOperationsInput | string
+    facultyName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchName?: NullableStringFieldUpdateOperationsInput | string | null
+    qualification?: NullableStringFieldUpdateOperationsInput | string | null
+    passedOutYear?: NullableIntFieldUpdateOperationsInput | number | null
+    currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    designation?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: NullableStringFieldUpdateOperationsInput | string | null
+    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
+    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
+    discount?: NullableIntFieldUpdateOperationsInput | number | null
+    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
+    installment1?: NullableIntFieldUpdateOperationsInput | number | null
+    installment2?: NullableIntFieldUpdateOperationsInput | number | null
+    installment3?: NullableIntFieldUpdateOperationsInput | number | null
+    totalAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    admissionDate?: StringFieldUpdateOperationsInput | string
+    firstInstallmentAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    firstInstallmentDate?: NullableStringFieldUpdateOperationsInput | string | null
+    firstInstallmentStatus?: StringFieldUpdateOperationsInput | string
+    firstInstallmentPaidAt?: NullableStringFieldUpdateOperationsInput | string | null
+    secondInstallmentAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    secondDueDate?: NullableStringFieldUpdateOperationsInput | string | null
+    secondInstallmentStatus?: StringFieldUpdateOperationsInput | string
+    secondInstallmentPaidAt?: NullableStringFieldUpdateOperationsInput | string | null
+    remarks?: NullableStringFieldUpdateOperationsInput | string | null
+    recordStatus?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    installment4?: NullableIntFieldUpdateOperationsInput | number | null
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
+    facultyId?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedInUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type BranchCourseModuleCreateManyBranchCourseInput = {
@@ -53199,12 +50819,12 @@ export namespace Prisma {
     stateCode?: string | null
     city?: string | null
     address?: string | null
-    courseId?: string | null
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    courseId?: string | null
   }
 
   export type BranchCourseModuleUpdateWithoutBranchCourseInput = {
@@ -53282,12 +50902,12 @@ export namespace Prisma {
     stateCode?: NullableStringFieldUpdateOperationsInput | string | null
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
-    courseId?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    courseId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type BranchFacultyUncheckedUpdateManyWithoutBranchCourseInput = {
@@ -53303,12 +50923,12 @@ export namespace Prisma {
     stateCode?: NullableStringFieldUpdateOperationsInput | string | null
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
-    courseId?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    courseId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type BranchCourseSubmoduleCreateManyBranchCourseModuleInput = {
@@ -53523,6 +51143,16 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type FacultyBatchEntryCreateManyFacultyInput = {
+    id?: string
+    batchName: string
+    batchTiming: string
+    sequenceNo?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    courseId?: string | null
+  }
+
   export type FacultyCourseAssignmentCreateManyFacultyInput = {
     id?: string
     courseId: string
@@ -53532,14 +51162,34 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
-  export type FacultyBatchEntryCreateManyFacultyInput = {
-    id?: string
-    courseId?: string | null
-    batchName: string
-    batchTiming: string
-    sequenceNo?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
+  export type FacultyBatchEntryUpdateWithoutFacultyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    batchName?: StringFieldUpdateOperationsInput | string
+    batchTiming?: StringFieldUpdateOperationsInput | string
+    sequenceNo?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    course?: CourseUpdateOneWithoutFacultyBatchEntriesNestedInput
+  }
+
+  export type FacultyBatchEntryUncheckedUpdateWithoutFacultyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    batchName?: StringFieldUpdateOperationsInput | string
+    batchTiming?: StringFieldUpdateOperationsInput | string
+    sequenceNo?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    courseId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type FacultyBatchEntryUncheckedUpdateManyWithoutFacultyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    batchName?: StringFieldUpdateOperationsInput | string
+    batchTiming?: StringFieldUpdateOperationsInput | string
+    sequenceNo?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    courseId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type FacultyCourseAssignmentUpdateWithoutFacultyInput = {
@@ -53565,36 +51215,6 @@ export namespace Prisma {
     courseId?: StringFieldUpdateOperationsInput | string
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type FacultyBatchEntryUpdateWithoutFacultyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    batchName?: StringFieldUpdateOperationsInput | string
-    batchTiming?: StringFieldUpdateOperationsInput | string
-    sequenceNo?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    course?: CourseUpdateOneWithoutFacultyBatchEntriesNestedInput
-  }
-
-  export type FacultyBatchEntryUncheckedUpdateWithoutFacultyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    courseId?: NullableStringFieldUpdateOperationsInput | string | null
-    batchName?: StringFieldUpdateOperationsInput | string
-    batchTiming?: StringFieldUpdateOperationsInput | string
-    sequenceNo?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type FacultyBatchEntryUncheckedUpdateManyWithoutFacultyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    courseId?: NullableStringFieldUpdateOperationsInput | string | null
-    batchName?: StringFieldUpdateOperationsInput | string
-    batchTiming?: StringFieldUpdateOperationsInput | string
-    sequenceNo?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
