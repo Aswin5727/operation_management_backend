@@ -49,6 +49,11 @@ export type Course = $Result.DefaultSelection<Prisma.$CoursePayload>
  */
 export type BranchCourse = $Result.DefaultSelection<Prisma.$BranchCoursePayload>
 /**
+ * Model BranchInstallmentTemplate
+ * 
+ */
+export type BranchInstallmentTemplate = $Result.DefaultSelection<Prisma.$BranchInstallmentTemplatePayload>
+/**
  * Model BranchCourseModule
  * 
  */
@@ -159,7 +164,11 @@ export const NotificationKind: {
   BRANCH_INVITATION_RESENT: 'BRANCH_INVITATION_RESENT',
   BRANCH_LOGIN: 'BRANCH_LOGIN',
   BRANCH_FACULTY_LOGIN: 'BRANCH_FACULTY_LOGIN',
-  FACULTY_COURSE_ASSIGNED: 'FACULTY_COURSE_ASSIGNED'
+  FACULTY_COURSE_ASSIGNED: 'FACULTY_COURSE_ASSIGNED',
+  COURSE_EDIT_REQUEST: 'COURSE_EDIT_REQUEST',
+  COURSE_EDIT_REQUEST_ACCEPTED: 'COURSE_EDIT_REQUEST_ACCEPTED',
+  COURSE_EDIT_REQUEST_REJECTED: 'COURSE_EDIT_REQUEST_REJECTED',
+  COURSE_EDIT_MODULE_UPDATED: 'COURSE_EDIT_MODULE_UPDATED'
 };
 
 export type NotificationKind = (typeof NotificationKind)[keyof typeof NotificationKind]
@@ -418,6 +427,16 @@ export class PrismaClient<
     * ```
     */
   get branchCourse(): Prisma.BranchCourseDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.branchInstallmentTemplate`: Exposes CRUD operations for the **BranchInstallmentTemplate** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more BranchInstallmentTemplates
+    * const branchInstallmentTemplates = await prisma.branchInstallmentTemplate.findMany()
+    * ```
+    */
+  get branchInstallmentTemplate(): Prisma.BranchInstallmentTemplateDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.branchCourseModule`: Exposes CRUD operations for the **BranchCourseModule** model.
@@ -1009,6 +1028,7 @@ export namespace Prisma {
     PasswordResetToken: 'PasswordResetToken',
     Course: 'Course',
     BranchCourse: 'BranchCourse',
+    BranchInstallmentTemplate: 'BranchInstallmentTemplate',
     BranchCourseModule: 'BranchCourseModule',
     BranchCourseSubmodule: 'BranchCourseSubmodule',
     CourseModule: 'CourseModule',
@@ -1039,7 +1059,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "branch" | "loginEvent" | "notification" | "passwordResetToken" | "course" | "branchCourse" | "branchCourseModule" | "branchCourseSubmodule" | "courseModule" | "batch" | "batchFacultyAssignment" | "courseStatusHistory" | "batchStatusHistory" | "studentProfile" | "branchStudent" | "facultyProfile" | "facultyCourseAssignment" | "facultyBatchEntry" | "facultyAttendanceSession" | "studentAttendance" | "branchFaculty"
+      modelProps: "user" | "branch" | "loginEvent" | "notification" | "passwordResetToken" | "course" | "branchCourse" | "branchInstallmentTemplate" | "branchCourseModule" | "branchCourseSubmodule" | "courseModule" | "batch" | "batchFacultyAssignment" | "courseStatusHistory" | "batchStatusHistory" | "studentProfile" | "branchStudent" | "facultyProfile" | "facultyCourseAssignment" | "facultyBatchEntry" | "facultyAttendanceSession" | "studentAttendance" | "branchFaculty"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1558,6 +1578,80 @@ export namespace Prisma {
           count: {
             args: Prisma.BranchCourseCountArgs<ExtArgs>
             result: $Utils.Optional<BranchCourseCountAggregateOutputType> | number
+          }
+        }
+      }
+      BranchInstallmentTemplate: {
+        payload: Prisma.$BranchInstallmentTemplatePayload<ExtArgs>
+        fields: Prisma.BranchInstallmentTemplateFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.BranchInstallmentTemplateFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BranchInstallmentTemplatePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.BranchInstallmentTemplateFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BranchInstallmentTemplatePayload>
+          }
+          findFirst: {
+            args: Prisma.BranchInstallmentTemplateFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BranchInstallmentTemplatePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.BranchInstallmentTemplateFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BranchInstallmentTemplatePayload>
+          }
+          findMany: {
+            args: Prisma.BranchInstallmentTemplateFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BranchInstallmentTemplatePayload>[]
+          }
+          create: {
+            args: Prisma.BranchInstallmentTemplateCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BranchInstallmentTemplatePayload>
+          }
+          createMany: {
+            args: Prisma.BranchInstallmentTemplateCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.BranchInstallmentTemplateCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BranchInstallmentTemplatePayload>[]
+          }
+          delete: {
+            args: Prisma.BranchInstallmentTemplateDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BranchInstallmentTemplatePayload>
+          }
+          update: {
+            args: Prisma.BranchInstallmentTemplateUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BranchInstallmentTemplatePayload>
+          }
+          deleteMany: {
+            args: Prisma.BranchInstallmentTemplateDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.BranchInstallmentTemplateUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.BranchInstallmentTemplateUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BranchInstallmentTemplatePayload>[]
+          }
+          upsert: {
+            args: Prisma.BranchInstallmentTemplateUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BranchInstallmentTemplatePayload>
+          }
+          aggregate: {
+            args: Prisma.BranchInstallmentTemplateAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateBranchInstallmentTemplate>
+          }
+          groupBy: {
+            args: Prisma.BranchInstallmentTemplateGroupByArgs<ExtArgs>
+            result: $Utils.Optional<BranchInstallmentTemplateGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.BranchInstallmentTemplateCountArgs<ExtArgs>
+            result: $Utils.Optional<BranchInstallmentTemplateCountAggregateOutputType> | number
           }
         }
       }
@@ -2786,6 +2880,7 @@ export namespace Prisma {
     passwordResetToken?: PasswordResetTokenOmit
     course?: CourseOmit
     branchCourse?: BranchCourseOmit
+    branchInstallmentTemplate?: BranchInstallmentTemplateOmit
     branchCourseModule?: BranchCourseModuleOmit
     branchCourseSubmodule?: BranchCourseSubmoduleOmit
     courseModule?: CourseModuleOmit
@@ -2961,6 +3056,7 @@ export namespace Prisma {
     branchCourses: number
     branchFaculties: number
     branchStudents: number
+    branchInstallmentTemplates: number
   }
 
   export type BranchCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2968,6 +3064,7 @@ export namespace Prisma {
     branchCourses?: boolean | BranchCountOutputTypeCountBranchCoursesArgs
     branchFaculties?: boolean | BranchCountOutputTypeCountBranchFacultiesArgs
     branchStudents?: boolean | BranchCountOutputTypeCountBranchStudentsArgs
+    branchInstallmentTemplates?: boolean | BranchCountOutputTypeCountBranchInstallmentTemplatesArgs
   }
 
   // Custom InputTypes
@@ -3007,6 +3104,13 @@ export namespace Prisma {
    */
   export type BranchCountOutputTypeCountBranchStudentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: BranchStudentWhereInput
+  }
+
+  /**
+   * BranchCountOutputType without action
+   */
+  export type BranchCountOutputTypeCountBranchInstallmentTemplatesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BranchInstallmentTemplateWhereInput
   }
 
 
@@ -5047,6 +5151,7 @@ export namespace Prisma {
     branchCourses?: boolean | Branch$branchCoursesArgs<ExtArgs>
     branchFaculties?: boolean | Branch$branchFacultiesArgs<ExtArgs>
     branchStudents?: boolean | Branch$branchStudentsArgs<ExtArgs>
+    branchInstallmentTemplates?: boolean | Branch$branchInstallmentTemplatesArgs<ExtArgs>
     _count?: boolean | BranchCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["branch"]>
 
@@ -5122,6 +5227,7 @@ export namespace Prisma {
     branchCourses?: boolean | Branch$branchCoursesArgs<ExtArgs>
     branchFaculties?: boolean | Branch$branchFacultiesArgs<ExtArgs>
     branchStudents?: boolean | Branch$branchStudentsArgs<ExtArgs>
+    branchInstallmentTemplates?: boolean | Branch$branchInstallmentTemplatesArgs<ExtArgs>
     _count?: boolean | BranchCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type BranchIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -5139,6 +5245,7 @@ export namespace Prisma {
       branchCourses: Prisma.$BranchCoursePayload<ExtArgs>[]
       branchFaculties: Prisma.$BranchFacultyPayload<ExtArgs>[]
       branchStudents: Prisma.$BranchStudentPayload<ExtArgs>[]
+      branchInstallmentTemplates: Prisma.$BranchInstallmentTemplatePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -5558,6 +5665,7 @@ export namespace Prisma {
     branchCourses<T extends Branch$branchCoursesArgs<ExtArgs> = {}>(args?: Subset<T, Branch$branchCoursesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchCoursePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     branchFaculties<T extends Branch$branchFacultiesArgs<ExtArgs> = {}>(args?: Subset<T, Branch$branchFacultiesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchFacultyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     branchStudents<T extends Branch$branchStudentsArgs<ExtArgs> = {}>(args?: Subset<T, Branch$branchStudentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchStudentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    branchInstallmentTemplates<T extends Branch$branchInstallmentTemplatesArgs<ExtArgs> = {}>(args?: Subset<T, Branch$branchInstallmentTemplatesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchInstallmentTemplatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -6118,6 +6226,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: BranchStudentScalarFieldEnum | BranchStudentScalarFieldEnum[]
+  }
+
+  /**
+   * Branch.branchInstallmentTemplates
+   */
+  export type Branch$branchInstallmentTemplatesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchInstallmentTemplate
+     */
+    select?: BranchInstallmentTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchInstallmentTemplate
+     */
+    omit?: BranchInstallmentTemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchInstallmentTemplateInclude<ExtArgs> | null
+    where?: BranchInstallmentTemplateWhereInput
+    orderBy?: BranchInstallmentTemplateOrderByWithRelationInput | BranchInstallmentTemplateOrderByWithRelationInput[]
+    cursor?: BranchInstallmentTemplateWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: BranchInstallmentTemplateScalarFieldEnum | BranchInstallmentTemplateScalarFieldEnum[]
   }
 
   /**
@@ -11542,6 +11674,7 @@ export namespace Prisma {
     branch?: boolean | BranchDefaultArgs<ExtArgs>
     modules?: boolean | BranchCourse$modulesArgs<ExtArgs>
     branchFaculties?: boolean | BranchCourse$branchFacultiesArgs<ExtArgs>
+    installmentTemplate?: boolean | BranchCourse$installmentTemplateArgs<ExtArgs>
     _count?: boolean | BranchCourseCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["branchCourse"]>
 
@@ -11615,6 +11748,7 @@ export namespace Prisma {
     branch?: boolean | BranchDefaultArgs<ExtArgs>
     modules?: boolean | BranchCourse$modulesArgs<ExtArgs>
     branchFaculties?: boolean | BranchCourse$branchFacultiesArgs<ExtArgs>
+    installmentTemplate?: boolean | BranchCourse$installmentTemplateArgs<ExtArgs>
     _count?: boolean | BranchCourseCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type BranchCourseIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -11630,6 +11764,7 @@ export namespace Prisma {
       branch: Prisma.$BranchPayload<ExtArgs>
       modules: Prisma.$BranchCourseModulePayload<ExtArgs>[]
       branchFaculties: Prisma.$BranchFacultyPayload<ExtArgs>[]
+      installmentTemplate: Prisma.$BranchInstallmentTemplatePayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -12047,6 +12182,7 @@ export namespace Prisma {
     branch<T extends BranchDefaultArgs<ExtArgs> = {}>(args?: Subset<T, BranchDefaultArgs<ExtArgs>>): Prisma__BranchClient<$Result.GetResult<Prisma.$BranchPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     modules<T extends BranchCourse$modulesArgs<ExtArgs> = {}>(args?: Subset<T, BranchCourse$modulesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchCourseModulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     branchFaculties<T extends BranchCourse$branchFacultiesArgs<ExtArgs> = {}>(args?: Subset<T, BranchCourse$branchFacultiesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchFacultyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    installmentTemplate<T extends BranchCourse$installmentTemplateArgs<ExtArgs> = {}>(args?: Subset<T, BranchCourse$installmentTemplateArgs<ExtArgs>>): Prisma__BranchInstallmentTemplateClient<$Result.GetResult<Prisma.$BranchInstallmentTemplatePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -12543,6 +12679,25 @@ export namespace Prisma {
   }
 
   /**
+   * BranchCourse.installmentTemplate
+   */
+  export type BranchCourse$installmentTemplateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchInstallmentTemplate
+     */
+    select?: BranchInstallmentTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchInstallmentTemplate
+     */
+    omit?: BranchInstallmentTemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchInstallmentTemplateInclude<ExtArgs> | null
+    where?: BranchInstallmentTemplateWhereInput
+  }
+
+  /**
    * BranchCourse without action
    */
   export type BranchCourseDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -12558,6 +12713,1243 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: BranchCourseInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model BranchInstallmentTemplate
+   */
+
+  export type AggregateBranchInstallmentTemplate = {
+    _count: BranchInstallmentTemplateCountAggregateOutputType | null
+    _avg: BranchInstallmentTemplateAvgAggregateOutputType | null
+    _sum: BranchInstallmentTemplateSumAggregateOutputType | null
+    _min: BranchInstallmentTemplateMinAggregateOutputType | null
+    _max: BranchInstallmentTemplateMaxAggregateOutputType | null
+  }
+
+  export type BranchInstallmentTemplateAvgAggregateOutputType = {
+    installmentCount: number | null
+  }
+
+  export type BranchInstallmentTemplateSumAggregateOutputType = {
+    installmentCount: number | null
+  }
+
+  export type BranchInstallmentTemplateMinAggregateOutputType = {
+    id: string | null
+    branchId: string | null
+    branchCourseId: string | null
+    templateName: string | null
+    planType: string | null
+    installmentCount: number | null
+    dueRule: string | null
+    allowCustomization: boolean | null
+    status: $Enums.RecordStatus | null
+    createdBy: string | null
+    updatedBy: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type BranchInstallmentTemplateMaxAggregateOutputType = {
+    id: string | null
+    branchId: string | null
+    branchCourseId: string | null
+    templateName: string | null
+    planType: string | null
+    installmentCount: number | null
+    dueRule: string | null
+    allowCustomization: boolean | null
+    status: $Enums.RecordStatus | null
+    createdBy: string | null
+    updatedBy: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type BranchInstallmentTemplateCountAggregateOutputType = {
+    id: number
+    branchId: number
+    branchCourseId: number
+    templateName: number
+    planType: number
+    installmentCount: number
+    installments: number
+    dueRule: number
+    allowCustomization: number
+    status: number
+    createdBy: number
+    updatedBy: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type BranchInstallmentTemplateAvgAggregateInputType = {
+    installmentCount?: true
+  }
+
+  export type BranchInstallmentTemplateSumAggregateInputType = {
+    installmentCount?: true
+  }
+
+  export type BranchInstallmentTemplateMinAggregateInputType = {
+    id?: true
+    branchId?: true
+    branchCourseId?: true
+    templateName?: true
+    planType?: true
+    installmentCount?: true
+    dueRule?: true
+    allowCustomization?: true
+    status?: true
+    createdBy?: true
+    updatedBy?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type BranchInstallmentTemplateMaxAggregateInputType = {
+    id?: true
+    branchId?: true
+    branchCourseId?: true
+    templateName?: true
+    planType?: true
+    installmentCount?: true
+    dueRule?: true
+    allowCustomization?: true
+    status?: true
+    createdBy?: true
+    updatedBy?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type BranchInstallmentTemplateCountAggregateInputType = {
+    id?: true
+    branchId?: true
+    branchCourseId?: true
+    templateName?: true
+    planType?: true
+    installmentCount?: true
+    installments?: true
+    dueRule?: true
+    allowCustomization?: true
+    status?: true
+    createdBy?: true
+    updatedBy?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type BranchInstallmentTemplateAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which BranchInstallmentTemplate to aggregate.
+     */
+    where?: BranchInstallmentTemplateWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of BranchInstallmentTemplates to fetch.
+     */
+    orderBy?: BranchInstallmentTemplateOrderByWithRelationInput | BranchInstallmentTemplateOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: BranchInstallmentTemplateWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` BranchInstallmentTemplates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` BranchInstallmentTemplates.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned BranchInstallmentTemplates
+    **/
+    _count?: true | BranchInstallmentTemplateCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: BranchInstallmentTemplateAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: BranchInstallmentTemplateSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: BranchInstallmentTemplateMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: BranchInstallmentTemplateMaxAggregateInputType
+  }
+
+  export type GetBranchInstallmentTemplateAggregateType<T extends BranchInstallmentTemplateAggregateArgs> = {
+        [P in keyof T & keyof AggregateBranchInstallmentTemplate]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateBranchInstallmentTemplate[P]>
+      : GetScalarType<T[P], AggregateBranchInstallmentTemplate[P]>
+  }
+
+
+
+
+  export type BranchInstallmentTemplateGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BranchInstallmentTemplateWhereInput
+    orderBy?: BranchInstallmentTemplateOrderByWithAggregationInput | BranchInstallmentTemplateOrderByWithAggregationInput[]
+    by: BranchInstallmentTemplateScalarFieldEnum[] | BranchInstallmentTemplateScalarFieldEnum
+    having?: BranchInstallmentTemplateScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: BranchInstallmentTemplateCountAggregateInputType | true
+    _avg?: BranchInstallmentTemplateAvgAggregateInputType
+    _sum?: BranchInstallmentTemplateSumAggregateInputType
+    _min?: BranchInstallmentTemplateMinAggregateInputType
+    _max?: BranchInstallmentTemplateMaxAggregateInputType
+  }
+
+  export type BranchInstallmentTemplateGroupByOutputType = {
+    id: string
+    branchId: string
+    branchCourseId: string | null
+    templateName: string
+    planType: string
+    installmentCount: number
+    installments: JsonValue
+    dueRule: string | null
+    allowCustomization: boolean
+    status: $Enums.RecordStatus
+    createdBy: string | null
+    updatedBy: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: BranchInstallmentTemplateCountAggregateOutputType | null
+    _avg: BranchInstallmentTemplateAvgAggregateOutputType | null
+    _sum: BranchInstallmentTemplateSumAggregateOutputType | null
+    _min: BranchInstallmentTemplateMinAggregateOutputType | null
+    _max: BranchInstallmentTemplateMaxAggregateOutputType | null
+  }
+
+  type GetBranchInstallmentTemplateGroupByPayload<T extends BranchInstallmentTemplateGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<BranchInstallmentTemplateGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof BranchInstallmentTemplateGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], BranchInstallmentTemplateGroupByOutputType[P]>
+            : GetScalarType<T[P], BranchInstallmentTemplateGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type BranchInstallmentTemplateSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    branchId?: boolean
+    branchCourseId?: boolean
+    templateName?: boolean
+    planType?: boolean
+    installmentCount?: boolean
+    installments?: boolean
+    dueRule?: boolean
+    allowCustomization?: boolean
+    status?: boolean
+    createdBy?: boolean
+    updatedBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    branch?: boolean | BranchDefaultArgs<ExtArgs>
+    branchCourse?: boolean | BranchInstallmentTemplate$branchCourseArgs<ExtArgs>
+  }, ExtArgs["result"]["branchInstallmentTemplate"]>
+
+  export type BranchInstallmentTemplateSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    branchId?: boolean
+    branchCourseId?: boolean
+    templateName?: boolean
+    planType?: boolean
+    installmentCount?: boolean
+    installments?: boolean
+    dueRule?: boolean
+    allowCustomization?: boolean
+    status?: boolean
+    createdBy?: boolean
+    updatedBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    branch?: boolean | BranchDefaultArgs<ExtArgs>
+    branchCourse?: boolean | BranchInstallmentTemplate$branchCourseArgs<ExtArgs>
+  }, ExtArgs["result"]["branchInstallmentTemplate"]>
+
+  export type BranchInstallmentTemplateSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    branchId?: boolean
+    branchCourseId?: boolean
+    templateName?: boolean
+    planType?: boolean
+    installmentCount?: boolean
+    installments?: boolean
+    dueRule?: boolean
+    allowCustomization?: boolean
+    status?: boolean
+    createdBy?: boolean
+    updatedBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    branch?: boolean | BranchDefaultArgs<ExtArgs>
+    branchCourse?: boolean | BranchInstallmentTemplate$branchCourseArgs<ExtArgs>
+  }, ExtArgs["result"]["branchInstallmentTemplate"]>
+
+  export type BranchInstallmentTemplateSelectScalar = {
+    id?: boolean
+    branchId?: boolean
+    branchCourseId?: boolean
+    templateName?: boolean
+    planType?: boolean
+    installmentCount?: boolean
+    installments?: boolean
+    dueRule?: boolean
+    allowCustomization?: boolean
+    status?: boolean
+    createdBy?: boolean
+    updatedBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type BranchInstallmentTemplateOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "branchId" | "branchCourseId" | "templateName" | "planType" | "installmentCount" | "installments" | "dueRule" | "allowCustomization" | "status" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["branchInstallmentTemplate"]>
+  export type BranchInstallmentTemplateInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    branch?: boolean | BranchDefaultArgs<ExtArgs>
+    branchCourse?: boolean | BranchInstallmentTemplate$branchCourseArgs<ExtArgs>
+  }
+  export type BranchInstallmentTemplateIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    branch?: boolean | BranchDefaultArgs<ExtArgs>
+    branchCourse?: boolean | BranchInstallmentTemplate$branchCourseArgs<ExtArgs>
+  }
+  export type BranchInstallmentTemplateIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    branch?: boolean | BranchDefaultArgs<ExtArgs>
+    branchCourse?: boolean | BranchInstallmentTemplate$branchCourseArgs<ExtArgs>
+  }
+
+  export type $BranchInstallmentTemplatePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "BranchInstallmentTemplate"
+    objects: {
+      branch: Prisma.$BranchPayload<ExtArgs>
+      branchCourse: Prisma.$BranchCoursePayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      branchId: string
+      branchCourseId: string | null
+      templateName: string
+      planType: string
+      installmentCount: number
+      installments: Prisma.JsonValue
+      dueRule: string | null
+      allowCustomization: boolean
+      status: $Enums.RecordStatus
+      createdBy: string | null
+      updatedBy: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["branchInstallmentTemplate"]>
+    composites: {}
+  }
+
+  type BranchInstallmentTemplateGetPayload<S extends boolean | null | undefined | BranchInstallmentTemplateDefaultArgs> = $Result.GetResult<Prisma.$BranchInstallmentTemplatePayload, S>
+
+  type BranchInstallmentTemplateCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<BranchInstallmentTemplateFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: BranchInstallmentTemplateCountAggregateInputType | true
+    }
+
+  export interface BranchInstallmentTemplateDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['BranchInstallmentTemplate'], meta: { name: 'BranchInstallmentTemplate' } }
+    /**
+     * Find zero or one BranchInstallmentTemplate that matches the filter.
+     * @param {BranchInstallmentTemplateFindUniqueArgs} args - Arguments to find a BranchInstallmentTemplate
+     * @example
+     * // Get one BranchInstallmentTemplate
+     * const branchInstallmentTemplate = await prisma.branchInstallmentTemplate.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends BranchInstallmentTemplateFindUniqueArgs>(args: SelectSubset<T, BranchInstallmentTemplateFindUniqueArgs<ExtArgs>>): Prisma__BranchInstallmentTemplateClient<$Result.GetResult<Prisma.$BranchInstallmentTemplatePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one BranchInstallmentTemplate that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {BranchInstallmentTemplateFindUniqueOrThrowArgs} args - Arguments to find a BranchInstallmentTemplate
+     * @example
+     * // Get one BranchInstallmentTemplate
+     * const branchInstallmentTemplate = await prisma.branchInstallmentTemplate.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends BranchInstallmentTemplateFindUniqueOrThrowArgs>(args: SelectSubset<T, BranchInstallmentTemplateFindUniqueOrThrowArgs<ExtArgs>>): Prisma__BranchInstallmentTemplateClient<$Result.GetResult<Prisma.$BranchInstallmentTemplatePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first BranchInstallmentTemplate that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BranchInstallmentTemplateFindFirstArgs} args - Arguments to find a BranchInstallmentTemplate
+     * @example
+     * // Get one BranchInstallmentTemplate
+     * const branchInstallmentTemplate = await prisma.branchInstallmentTemplate.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends BranchInstallmentTemplateFindFirstArgs>(args?: SelectSubset<T, BranchInstallmentTemplateFindFirstArgs<ExtArgs>>): Prisma__BranchInstallmentTemplateClient<$Result.GetResult<Prisma.$BranchInstallmentTemplatePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first BranchInstallmentTemplate that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BranchInstallmentTemplateFindFirstOrThrowArgs} args - Arguments to find a BranchInstallmentTemplate
+     * @example
+     * // Get one BranchInstallmentTemplate
+     * const branchInstallmentTemplate = await prisma.branchInstallmentTemplate.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends BranchInstallmentTemplateFindFirstOrThrowArgs>(args?: SelectSubset<T, BranchInstallmentTemplateFindFirstOrThrowArgs<ExtArgs>>): Prisma__BranchInstallmentTemplateClient<$Result.GetResult<Prisma.$BranchInstallmentTemplatePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more BranchInstallmentTemplates that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BranchInstallmentTemplateFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all BranchInstallmentTemplates
+     * const branchInstallmentTemplates = await prisma.branchInstallmentTemplate.findMany()
+     * 
+     * // Get first 10 BranchInstallmentTemplates
+     * const branchInstallmentTemplates = await prisma.branchInstallmentTemplate.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const branchInstallmentTemplateWithIdOnly = await prisma.branchInstallmentTemplate.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends BranchInstallmentTemplateFindManyArgs>(args?: SelectSubset<T, BranchInstallmentTemplateFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchInstallmentTemplatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a BranchInstallmentTemplate.
+     * @param {BranchInstallmentTemplateCreateArgs} args - Arguments to create a BranchInstallmentTemplate.
+     * @example
+     * // Create one BranchInstallmentTemplate
+     * const BranchInstallmentTemplate = await prisma.branchInstallmentTemplate.create({
+     *   data: {
+     *     // ... data to create a BranchInstallmentTemplate
+     *   }
+     * })
+     * 
+     */
+    create<T extends BranchInstallmentTemplateCreateArgs>(args: SelectSubset<T, BranchInstallmentTemplateCreateArgs<ExtArgs>>): Prisma__BranchInstallmentTemplateClient<$Result.GetResult<Prisma.$BranchInstallmentTemplatePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many BranchInstallmentTemplates.
+     * @param {BranchInstallmentTemplateCreateManyArgs} args - Arguments to create many BranchInstallmentTemplates.
+     * @example
+     * // Create many BranchInstallmentTemplates
+     * const branchInstallmentTemplate = await prisma.branchInstallmentTemplate.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends BranchInstallmentTemplateCreateManyArgs>(args?: SelectSubset<T, BranchInstallmentTemplateCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many BranchInstallmentTemplates and returns the data saved in the database.
+     * @param {BranchInstallmentTemplateCreateManyAndReturnArgs} args - Arguments to create many BranchInstallmentTemplates.
+     * @example
+     * // Create many BranchInstallmentTemplates
+     * const branchInstallmentTemplate = await prisma.branchInstallmentTemplate.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many BranchInstallmentTemplates and only return the `id`
+     * const branchInstallmentTemplateWithIdOnly = await prisma.branchInstallmentTemplate.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends BranchInstallmentTemplateCreateManyAndReturnArgs>(args?: SelectSubset<T, BranchInstallmentTemplateCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchInstallmentTemplatePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a BranchInstallmentTemplate.
+     * @param {BranchInstallmentTemplateDeleteArgs} args - Arguments to delete one BranchInstallmentTemplate.
+     * @example
+     * // Delete one BranchInstallmentTemplate
+     * const BranchInstallmentTemplate = await prisma.branchInstallmentTemplate.delete({
+     *   where: {
+     *     // ... filter to delete one BranchInstallmentTemplate
+     *   }
+     * })
+     * 
+     */
+    delete<T extends BranchInstallmentTemplateDeleteArgs>(args: SelectSubset<T, BranchInstallmentTemplateDeleteArgs<ExtArgs>>): Prisma__BranchInstallmentTemplateClient<$Result.GetResult<Prisma.$BranchInstallmentTemplatePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one BranchInstallmentTemplate.
+     * @param {BranchInstallmentTemplateUpdateArgs} args - Arguments to update one BranchInstallmentTemplate.
+     * @example
+     * // Update one BranchInstallmentTemplate
+     * const branchInstallmentTemplate = await prisma.branchInstallmentTemplate.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends BranchInstallmentTemplateUpdateArgs>(args: SelectSubset<T, BranchInstallmentTemplateUpdateArgs<ExtArgs>>): Prisma__BranchInstallmentTemplateClient<$Result.GetResult<Prisma.$BranchInstallmentTemplatePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more BranchInstallmentTemplates.
+     * @param {BranchInstallmentTemplateDeleteManyArgs} args - Arguments to filter BranchInstallmentTemplates to delete.
+     * @example
+     * // Delete a few BranchInstallmentTemplates
+     * const { count } = await prisma.branchInstallmentTemplate.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends BranchInstallmentTemplateDeleteManyArgs>(args?: SelectSubset<T, BranchInstallmentTemplateDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more BranchInstallmentTemplates.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BranchInstallmentTemplateUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many BranchInstallmentTemplates
+     * const branchInstallmentTemplate = await prisma.branchInstallmentTemplate.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends BranchInstallmentTemplateUpdateManyArgs>(args: SelectSubset<T, BranchInstallmentTemplateUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more BranchInstallmentTemplates and returns the data updated in the database.
+     * @param {BranchInstallmentTemplateUpdateManyAndReturnArgs} args - Arguments to update many BranchInstallmentTemplates.
+     * @example
+     * // Update many BranchInstallmentTemplates
+     * const branchInstallmentTemplate = await prisma.branchInstallmentTemplate.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more BranchInstallmentTemplates and only return the `id`
+     * const branchInstallmentTemplateWithIdOnly = await prisma.branchInstallmentTemplate.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends BranchInstallmentTemplateUpdateManyAndReturnArgs>(args: SelectSubset<T, BranchInstallmentTemplateUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchInstallmentTemplatePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one BranchInstallmentTemplate.
+     * @param {BranchInstallmentTemplateUpsertArgs} args - Arguments to update or create a BranchInstallmentTemplate.
+     * @example
+     * // Update or create a BranchInstallmentTemplate
+     * const branchInstallmentTemplate = await prisma.branchInstallmentTemplate.upsert({
+     *   create: {
+     *     // ... data to create a BranchInstallmentTemplate
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the BranchInstallmentTemplate we want to update
+     *   }
+     * })
+     */
+    upsert<T extends BranchInstallmentTemplateUpsertArgs>(args: SelectSubset<T, BranchInstallmentTemplateUpsertArgs<ExtArgs>>): Prisma__BranchInstallmentTemplateClient<$Result.GetResult<Prisma.$BranchInstallmentTemplatePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of BranchInstallmentTemplates.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BranchInstallmentTemplateCountArgs} args - Arguments to filter BranchInstallmentTemplates to count.
+     * @example
+     * // Count the number of BranchInstallmentTemplates
+     * const count = await prisma.branchInstallmentTemplate.count({
+     *   where: {
+     *     // ... the filter for the BranchInstallmentTemplates we want to count
+     *   }
+     * })
+    **/
+    count<T extends BranchInstallmentTemplateCountArgs>(
+      args?: Subset<T, BranchInstallmentTemplateCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], BranchInstallmentTemplateCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a BranchInstallmentTemplate.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BranchInstallmentTemplateAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends BranchInstallmentTemplateAggregateArgs>(args: Subset<T, BranchInstallmentTemplateAggregateArgs>): Prisma.PrismaPromise<GetBranchInstallmentTemplateAggregateType<T>>
+
+    /**
+     * Group by BranchInstallmentTemplate.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BranchInstallmentTemplateGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends BranchInstallmentTemplateGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: BranchInstallmentTemplateGroupByArgs['orderBy'] }
+        : { orderBy?: BranchInstallmentTemplateGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, BranchInstallmentTemplateGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetBranchInstallmentTemplateGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the BranchInstallmentTemplate model
+   */
+  readonly fields: BranchInstallmentTemplateFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for BranchInstallmentTemplate.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__BranchInstallmentTemplateClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    branch<T extends BranchDefaultArgs<ExtArgs> = {}>(args?: Subset<T, BranchDefaultArgs<ExtArgs>>): Prisma__BranchClient<$Result.GetResult<Prisma.$BranchPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    branchCourse<T extends BranchInstallmentTemplate$branchCourseArgs<ExtArgs> = {}>(args?: Subset<T, BranchInstallmentTemplate$branchCourseArgs<ExtArgs>>): Prisma__BranchCourseClient<$Result.GetResult<Prisma.$BranchCoursePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the BranchInstallmentTemplate model
+   */
+  interface BranchInstallmentTemplateFieldRefs {
+    readonly id: FieldRef<"BranchInstallmentTemplate", 'String'>
+    readonly branchId: FieldRef<"BranchInstallmentTemplate", 'String'>
+    readonly branchCourseId: FieldRef<"BranchInstallmentTemplate", 'String'>
+    readonly templateName: FieldRef<"BranchInstallmentTemplate", 'String'>
+    readonly planType: FieldRef<"BranchInstallmentTemplate", 'String'>
+    readonly installmentCount: FieldRef<"BranchInstallmentTemplate", 'Int'>
+    readonly installments: FieldRef<"BranchInstallmentTemplate", 'Json'>
+    readonly dueRule: FieldRef<"BranchInstallmentTemplate", 'String'>
+    readonly allowCustomization: FieldRef<"BranchInstallmentTemplate", 'Boolean'>
+    readonly status: FieldRef<"BranchInstallmentTemplate", 'RecordStatus'>
+    readonly createdBy: FieldRef<"BranchInstallmentTemplate", 'String'>
+    readonly updatedBy: FieldRef<"BranchInstallmentTemplate", 'String'>
+    readonly createdAt: FieldRef<"BranchInstallmentTemplate", 'DateTime'>
+    readonly updatedAt: FieldRef<"BranchInstallmentTemplate", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * BranchInstallmentTemplate findUnique
+   */
+  export type BranchInstallmentTemplateFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchInstallmentTemplate
+     */
+    select?: BranchInstallmentTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchInstallmentTemplate
+     */
+    omit?: BranchInstallmentTemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchInstallmentTemplateInclude<ExtArgs> | null
+    /**
+     * Filter, which BranchInstallmentTemplate to fetch.
+     */
+    where: BranchInstallmentTemplateWhereUniqueInput
+  }
+
+  /**
+   * BranchInstallmentTemplate findUniqueOrThrow
+   */
+  export type BranchInstallmentTemplateFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchInstallmentTemplate
+     */
+    select?: BranchInstallmentTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchInstallmentTemplate
+     */
+    omit?: BranchInstallmentTemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchInstallmentTemplateInclude<ExtArgs> | null
+    /**
+     * Filter, which BranchInstallmentTemplate to fetch.
+     */
+    where: BranchInstallmentTemplateWhereUniqueInput
+  }
+
+  /**
+   * BranchInstallmentTemplate findFirst
+   */
+  export type BranchInstallmentTemplateFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchInstallmentTemplate
+     */
+    select?: BranchInstallmentTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchInstallmentTemplate
+     */
+    omit?: BranchInstallmentTemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchInstallmentTemplateInclude<ExtArgs> | null
+    /**
+     * Filter, which BranchInstallmentTemplate to fetch.
+     */
+    where?: BranchInstallmentTemplateWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of BranchInstallmentTemplates to fetch.
+     */
+    orderBy?: BranchInstallmentTemplateOrderByWithRelationInput | BranchInstallmentTemplateOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for BranchInstallmentTemplates.
+     */
+    cursor?: BranchInstallmentTemplateWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` BranchInstallmentTemplates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` BranchInstallmentTemplates.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of BranchInstallmentTemplates.
+     */
+    distinct?: BranchInstallmentTemplateScalarFieldEnum | BranchInstallmentTemplateScalarFieldEnum[]
+  }
+
+  /**
+   * BranchInstallmentTemplate findFirstOrThrow
+   */
+  export type BranchInstallmentTemplateFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchInstallmentTemplate
+     */
+    select?: BranchInstallmentTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchInstallmentTemplate
+     */
+    omit?: BranchInstallmentTemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchInstallmentTemplateInclude<ExtArgs> | null
+    /**
+     * Filter, which BranchInstallmentTemplate to fetch.
+     */
+    where?: BranchInstallmentTemplateWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of BranchInstallmentTemplates to fetch.
+     */
+    orderBy?: BranchInstallmentTemplateOrderByWithRelationInput | BranchInstallmentTemplateOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for BranchInstallmentTemplates.
+     */
+    cursor?: BranchInstallmentTemplateWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` BranchInstallmentTemplates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` BranchInstallmentTemplates.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of BranchInstallmentTemplates.
+     */
+    distinct?: BranchInstallmentTemplateScalarFieldEnum | BranchInstallmentTemplateScalarFieldEnum[]
+  }
+
+  /**
+   * BranchInstallmentTemplate findMany
+   */
+  export type BranchInstallmentTemplateFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchInstallmentTemplate
+     */
+    select?: BranchInstallmentTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchInstallmentTemplate
+     */
+    omit?: BranchInstallmentTemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchInstallmentTemplateInclude<ExtArgs> | null
+    /**
+     * Filter, which BranchInstallmentTemplates to fetch.
+     */
+    where?: BranchInstallmentTemplateWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of BranchInstallmentTemplates to fetch.
+     */
+    orderBy?: BranchInstallmentTemplateOrderByWithRelationInput | BranchInstallmentTemplateOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing BranchInstallmentTemplates.
+     */
+    cursor?: BranchInstallmentTemplateWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` BranchInstallmentTemplates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` BranchInstallmentTemplates.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of BranchInstallmentTemplates.
+     */
+    distinct?: BranchInstallmentTemplateScalarFieldEnum | BranchInstallmentTemplateScalarFieldEnum[]
+  }
+
+  /**
+   * BranchInstallmentTemplate create
+   */
+  export type BranchInstallmentTemplateCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchInstallmentTemplate
+     */
+    select?: BranchInstallmentTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchInstallmentTemplate
+     */
+    omit?: BranchInstallmentTemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchInstallmentTemplateInclude<ExtArgs> | null
+    /**
+     * The data needed to create a BranchInstallmentTemplate.
+     */
+    data: XOR<BranchInstallmentTemplateCreateInput, BranchInstallmentTemplateUncheckedCreateInput>
+  }
+
+  /**
+   * BranchInstallmentTemplate createMany
+   */
+  export type BranchInstallmentTemplateCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many BranchInstallmentTemplates.
+     */
+    data: BranchInstallmentTemplateCreateManyInput | BranchInstallmentTemplateCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * BranchInstallmentTemplate createManyAndReturn
+   */
+  export type BranchInstallmentTemplateCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchInstallmentTemplate
+     */
+    select?: BranchInstallmentTemplateSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchInstallmentTemplate
+     */
+    omit?: BranchInstallmentTemplateOmit<ExtArgs> | null
+    /**
+     * The data used to create many BranchInstallmentTemplates.
+     */
+    data: BranchInstallmentTemplateCreateManyInput | BranchInstallmentTemplateCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchInstallmentTemplateIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * BranchInstallmentTemplate update
+   */
+  export type BranchInstallmentTemplateUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchInstallmentTemplate
+     */
+    select?: BranchInstallmentTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchInstallmentTemplate
+     */
+    omit?: BranchInstallmentTemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchInstallmentTemplateInclude<ExtArgs> | null
+    /**
+     * The data needed to update a BranchInstallmentTemplate.
+     */
+    data: XOR<BranchInstallmentTemplateUpdateInput, BranchInstallmentTemplateUncheckedUpdateInput>
+    /**
+     * Choose, which BranchInstallmentTemplate to update.
+     */
+    where: BranchInstallmentTemplateWhereUniqueInput
+  }
+
+  /**
+   * BranchInstallmentTemplate updateMany
+   */
+  export type BranchInstallmentTemplateUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update BranchInstallmentTemplates.
+     */
+    data: XOR<BranchInstallmentTemplateUpdateManyMutationInput, BranchInstallmentTemplateUncheckedUpdateManyInput>
+    /**
+     * Filter which BranchInstallmentTemplates to update
+     */
+    where?: BranchInstallmentTemplateWhereInput
+    /**
+     * Limit how many BranchInstallmentTemplates to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * BranchInstallmentTemplate updateManyAndReturn
+   */
+  export type BranchInstallmentTemplateUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchInstallmentTemplate
+     */
+    select?: BranchInstallmentTemplateSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchInstallmentTemplate
+     */
+    omit?: BranchInstallmentTemplateOmit<ExtArgs> | null
+    /**
+     * The data used to update BranchInstallmentTemplates.
+     */
+    data: XOR<BranchInstallmentTemplateUpdateManyMutationInput, BranchInstallmentTemplateUncheckedUpdateManyInput>
+    /**
+     * Filter which BranchInstallmentTemplates to update
+     */
+    where?: BranchInstallmentTemplateWhereInput
+    /**
+     * Limit how many BranchInstallmentTemplates to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchInstallmentTemplateIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * BranchInstallmentTemplate upsert
+   */
+  export type BranchInstallmentTemplateUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchInstallmentTemplate
+     */
+    select?: BranchInstallmentTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchInstallmentTemplate
+     */
+    omit?: BranchInstallmentTemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchInstallmentTemplateInclude<ExtArgs> | null
+    /**
+     * The filter to search for the BranchInstallmentTemplate to update in case it exists.
+     */
+    where: BranchInstallmentTemplateWhereUniqueInput
+    /**
+     * In case the BranchInstallmentTemplate found by the `where` argument doesn't exist, create a new BranchInstallmentTemplate with this data.
+     */
+    create: XOR<BranchInstallmentTemplateCreateInput, BranchInstallmentTemplateUncheckedCreateInput>
+    /**
+     * In case the BranchInstallmentTemplate was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<BranchInstallmentTemplateUpdateInput, BranchInstallmentTemplateUncheckedUpdateInput>
+  }
+
+  /**
+   * BranchInstallmentTemplate delete
+   */
+  export type BranchInstallmentTemplateDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchInstallmentTemplate
+     */
+    select?: BranchInstallmentTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchInstallmentTemplate
+     */
+    omit?: BranchInstallmentTemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchInstallmentTemplateInclude<ExtArgs> | null
+    /**
+     * Filter which BranchInstallmentTemplate to delete.
+     */
+    where: BranchInstallmentTemplateWhereUniqueInput
+  }
+
+  /**
+   * BranchInstallmentTemplate deleteMany
+   */
+  export type BranchInstallmentTemplateDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which BranchInstallmentTemplates to delete
+     */
+    where?: BranchInstallmentTemplateWhereInput
+    /**
+     * Limit how many BranchInstallmentTemplates to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * BranchInstallmentTemplate.branchCourse
+   */
+  export type BranchInstallmentTemplate$branchCourseArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchCourse
+     */
+    select?: BranchCourseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchCourse
+     */
+    omit?: BranchCourseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchCourseInclude<ExtArgs> | null
+    where?: BranchCourseWhereInput
+  }
+
+  /**
+   * BranchInstallmentTemplate without action
+   */
+  export type BranchInstallmentTemplateDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchInstallmentTemplate
+     */
+    select?: BranchInstallmentTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchInstallmentTemplate
+     */
+    omit?: BranchInstallmentTemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchInstallmentTemplateInclude<ExtArgs> | null
   }
 
 
@@ -31151,6 +32543,26 @@ export namespace Prisma {
   export type BranchCourseScalarFieldEnum = (typeof BranchCourseScalarFieldEnum)[keyof typeof BranchCourseScalarFieldEnum]
 
 
+  export const BranchInstallmentTemplateScalarFieldEnum: {
+    id: 'id',
+    branchId: 'branchId',
+    branchCourseId: 'branchCourseId',
+    templateName: 'templateName',
+    planType: 'planType',
+    installmentCount: 'installmentCount',
+    installments: 'installments',
+    dueRule: 'dueRule',
+    allowCustomization: 'allowCustomization',
+    status: 'status',
+    createdBy: 'createdBy',
+    updatedBy: 'updatedBy',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type BranchInstallmentTemplateScalarFieldEnum = (typeof BranchInstallmentTemplateScalarFieldEnum)[keyof typeof BranchInstallmentTemplateScalarFieldEnum]
+
+
   export const BranchCourseModuleScalarFieldEnum: {
     id: 'id',
     branchCourseId: 'branchCourseId',
@@ -31475,6 +32887,13 @@ export namespace Prisma {
   };
 
   export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
+
+
+  export const JsonNullValueInput: {
+    JsonNull: typeof JsonNull
+  };
+
+  export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
   export const QueryMode: {
@@ -31867,6 +33286,7 @@ export namespace Prisma {
     branchCourses?: BranchCourseListRelationFilter
     branchFaculties?: BranchFacultyListRelationFilter
     branchStudents?: BranchStudentListRelationFilter
+    branchInstallmentTemplates?: BranchInstallmentTemplateListRelationFilter
   }
 
   export type BranchOrderByWithRelationInput = {
@@ -31893,6 +33313,7 @@ export namespace Prisma {
     branchCourses?: BranchCourseOrderByRelationAggregateInput
     branchFaculties?: BranchFacultyOrderByRelationAggregateInput
     branchStudents?: BranchStudentOrderByRelationAggregateInput
+    branchInstallmentTemplates?: BranchInstallmentTemplateOrderByRelationAggregateInput
   }
 
   export type BranchWhereUniqueInput = Prisma.AtLeast<{
@@ -31922,6 +33343,7 @@ export namespace Prisma {
     branchCourses?: BranchCourseListRelationFilter
     branchFaculties?: BranchFacultyListRelationFilter
     branchStudents?: BranchStudentListRelationFilter
+    branchInstallmentTemplates?: BranchInstallmentTemplateListRelationFilter
   }, "id" | "branchId" | "branchEmail" | "branchPhone" | "adminUserId">
 
   export type BranchOrderByWithAggregationInput = {
@@ -32428,6 +33850,7 @@ export namespace Prisma {
     branch?: XOR<BranchScalarRelationFilter, BranchWhereInput>
     modules?: BranchCourseModuleListRelationFilter
     branchFaculties?: BranchFacultyListRelationFilter
+    installmentTemplate?: XOR<BranchInstallmentTemplateNullableScalarRelationFilter, BranchInstallmentTemplateWhereInput> | null
   }
 
   export type BranchCourseOrderByWithRelationInput = {
@@ -32452,6 +33875,7 @@ export namespace Prisma {
     branch?: BranchOrderByWithRelationInput
     modules?: BranchCourseModuleOrderByRelationAggregateInput
     branchFaculties?: BranchFacultyOrderByRelationAggregateInput
+    installmentTemplate?: BranchInstallmentTemplateOrderByWithRelationInput
   }
 
   export type BranchCourseWhereUniqueInput = Prisma.AtLeast<{
@@ -32481,6 +33905,7 @@ export namespace Prisma {
     branch?: XOR<BranchScalarRelationFilter, BranchWhereInput>
     modules?: BranchCourseModuleListRelationFilter
     branchFaculties?: BranchFacultyListRelationFilter
+    installmentTemplate?: XOR<BranchInstallmentTemplateNullableScalarRelationFilter, BranchInstallmentTemplateWhereInput> | null
   }, "id" | "branchId_nameKey" | "branchId_courseCode">
 
   export type BranchCourseOrderByWithAggregationInput = {
@@ -32531,6 +33956,111 @@ export namespace Prisma {
     updatedBy?: StringNullableWithAggregatesFilter<"BranchCourse"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"BranchCourse"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"BranchCourse"> | Date | string
+  }
+
+  export type BranchInstallmentTemplateWhereInput = {
+    AND?: BranchInstallmentTemplateWhereInput | BranchInstallmentTemplateWhereInput[]
+    OR?: BranchInstallmentTemplateWhereInput[]
+    NOT?: BranchInstallmentTemplateWhereInput | BranchInstallmentTemplateWhereInput[]
+    id?: StringFilter<"BranchInstallmentTemplate"> | string
+    branchId?: StringFilter<"BranchInstallmentTemplate"> | string
+    branchCourseId?: StringNullableFilter<"BranchInstallmentTemplate"> | string | null
+    templateName?: StringFilter<"BranchInstallmentTemplate"> | string
+    planType?: StringFilter<"BranchInstallmentTemplate"> | string
+    installmentCount?: IntFilter<"BranchInstallmentTemplate"> | number
+    installments?: JsonFilter<"BranchInstallmentTemplate">
+    dueRule?: StringNullableFilter<"BranchInstallmentTemplate"> | string | null
+    allowCustomization?: BoolFilter<"BranchInstallmentTemplate"> | boolean
+    status?: EnumRecordStatusFilter<"BranchInstallmentTemplate"> | $Enums.RecordStatus
+    createdBy?: StringNullableFilter<"BranchInstallmentTemplate"> | string | null
+    updatedBy?: StringNullableFilter<"BranchInstallmentTemplate"> | string | null
+    createdAt?: DateTimeFilter<"BranchInstallmentTemplate"> | Date | string
+    updatedAt?: DateTimeFilter<"BranchInstallmentTemplate"> | Date | string
+    branch?: XOR<BranchScalarRelationFilter, BranchWhereInput>
+    branchCourse?: XOR<BranchCourseNullableScalarRelationFilter, BranchCourseWhereInput> | null
+  }
+
+  export type BranchInstallmentTemplateOrderByWithRelationInput = {
+    id?: SortOrder
+    branchId?: SortOrder
+    branchCourseId?: SortOrderInput | SortOrder
+    templateName?: SortOrder
+    planType?: SortOrder
+    installmentCount?: SortOrder
+    installments?: SortOrder
+    dueRule?: SortOrderInput | SortOrder
+    allowCustomization?: SortOrder
+    status?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    updatedBy?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    branch?: BranchOrderByWithRelationInput
+    branchCourse?: BranchCourseOrderByWithRelationInput
+  }
+
+  export type BranchInstallmentTemplateWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    branchCourseId?: string
+    AND?: BranchInstallmentTemplateWhereInput | BranchInstallmentTemplateWhereInput[]
+    OR?: BranchInstallmentTemplateWhereInput[]
+    NOT?: BranchInstallmentTemplateWhereInput | BranchInstallmentTemplateWhereInput[]
+    branchId?: StringFilter<"BranchInstallmentTemplate"> | string
+    templateName?: StringFilter<"BranchInstallmentTemplate"> | string
+    planType?: StringFilter<"BranchInstallmentTemplate"> | string
+    installmentCount?: IntFilter<"BranchInstallmentTemplate"> | number
+    installments?: JsonFilter<"BranchInstallmentTemplate">
+    dueRule?: StringNullableFilter<"BranchInstallmentTemplate"> | string | null
+    allowCustomization?: BoolFilter<"BranchInstallmentTemplate"> | boolean
+    status?: EnumRecordStatusFilter<"BranchInstallmentTemplate"> | $Enums.RecordStatus
+    createdBy?: StringNullableFilter<"BranchInstallmentTemplate"> | string | null
+    updatedBy?: StringNullableFilter<"BranchInstallmentTemplate"> | string | null
+    createdAt?: DateTimeFilter<"BranchInstallmentTemplate"> | Date | string
+    updatedAt?: DateTimeFilter<"BranchInstallmentTemplate"> | Date | string
+    branch?: XOR<BranchScalarRelationFilter, BranchWhereInput>
+    branchCourse?: XOR<BranchCourseNullableScalarRelationFilter, BranchCourseWhereInput> | null
+  }, "id" | "branchCourseId">
+
+  export type BranchInstallmentTemplateOrderByWithAggregationInput = {
+    id?: SortOrder
+    branchId?: SortOrder
+    branchCourseId?: SortOrderInput | SortOrder
+    templateName?: SortOrder
+    planType?: SortOrder
+    installmentCount?: SortOrder
+    installments?: SortOrder
+    dueRule?: SortOrderInput | SortOrder
+    allowCustomization?: SortOrder
+    status?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    updatedBy?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: BranchInstallmentTemplateCountOrderByAggregateInput
+    _avg?: BranchInstallmentTemplateAvgOrderByAggregateInput
+    _max?: BranchInstallmentTemplateMaxOrderByAggregateInput
+    _min?: BranchInstallmentTemplateMinOrderByAggregateInput
+    _sum?: BranchInstallmentTemplateSumOrderByAggregateInput
+  }
+
+  export type BranchInstallmentTemplateScalarWhereWithAggregatesInput = {
+    AND?: BranchInstallmentTemplateScalarWhereWithAggregatesInput | BranchInstallmentTemplateScalarWhereWithAggregatesInput[]
+    OR?: BranchInstallmentTemplateScalarWhereWithAggregatesInput[]
+    NOT?: BranchInstallmentTemplateScalarWhereWithAggregatesInput | BranchInstallmentTemplateScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"BranchInstallmentTemplate"> | string
+    branchId?: StringWithAggregatesFilter<"BranchInstallmentTemplate"> | string
+    branchCourseId?: StringNullableWithAggregatesFilter<"BranchInstallmentTemplate"> | string | null
+    templateName?: StringWithAggregatesFilter<"BranchInstallmentTemplate"> | string
+    planType?: StringWithAggregatesFilter<"BranchInstallmentTemplate"> | string
+    installmentCount?: IntWithAggregatesFilter<"BranchInstallmentTemplate"> | number
+    installments?: JsonWithAggregatesFilter<"BranchInstallmentTemplate">
+    dueRule?: StringNullableWithAggregatesFilter<"BranchInstallmentTemplate"> | string | null
+    allowCustomization?: BoolWithAggregatesFilter<"BranchInstallmentTemplate"> | boolean
+    status?: EnumRecordStatusWithAggregatesFilter<"BranchInstallmentTemplate"> | $Enums.RecordStatus
+    createdBy?: StringNullableWithAggregatesFilter<"BranchInstallmentTemplate"> | string | null
+    updatedBy?: StringNullableWithAggregatesFilter<"BranchInstallmentTemplate"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"BranchInstallmentTemplate"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"BranchInstallmentTemplate"> | Date | string
   }
 
   export type BranchCourseModuleWhereInput = {
@@ -34361,6 +35891,7 @@ export namespace Prisma {
     branchCourses?: BranchCourseCreateNestedManyWithoutBranchInput
     branchFaculties?: BranchFacultyCreateNestedManyWithoutBranchInput
     branchStudents?: BranchStudentCreateNestedManyWithoutBranchInput
+    branchInstallmentTemplates?: BranchInstallmentTemplateCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateInput = {
@@ -34386,6 +35917,7 @@ export namespace Prisma {
     branchCourses?: BranchCourseUncheckedCreateNestedManyWithoutBranchInput
     branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutBranchInput
     branchStudents?: BranchStudentUncheckedCreateNestedManyWithoutBranchInput
+    branchInstallmentTemplates?: BranchInstallmentTemplateUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUpdateInput = {
@@ -34411,6 +35943,7 @@ export namespace Prisma {
     branchCourses?: BranchCourseUpdateManyWithoutBranchNestedInput
     branchFaculties?: BranchFacultyUpdateManyWithoutBranchNestedInput
     branchStudents?: BranchStudentUpdateManyWithoutBranchNestedInput
+    branchInstallmentTemplates?: BranchInstallmentTemplateUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateInput = {
@@ -34436,6 +35969,7 @@ export namespace Prisma {
     branchCourses?: BranchCourseUncheckedUpdateManyWithoutBranchNestedInput
     branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutBranchNestedInput
     branchStudents?: BranchStudentUncheckedUpdateManyWithoutBranchNestedInput
+    branchInstallmentTemplates?: BranchInstallmentTemplateUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchCreateManyInput = {
@@ -35032,6 +36566,7 @@ export namespace Prisma {
     branch: BranchCreateNestedOneWithoutBranchCoursesInput
     modules?: BranchCourseModuleCreateNestedManyWithoutBranchCourseInput
     branchFaculties?: BranchFacultyCreateNestedManyWithoutBranchCourseInput
+    installmentTemplate?: BranchInstallmentTemplateCreateNestedOneWithoutBranchCourseInput
   }
 
   export type BranchCourseUncheckedCreateInput = {
@@ -35055,6 +36590,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     modules?: BranchCourseModuleUncheckedCreateNestedManyWithoutBranchCourseInput
     branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutBranchCourseInput
+    installmentTemplate?: BranchInstallmentTemplateUncheckedCreateNestedOneWithoutBranchCourseInput
   }
 
   export type BranchCourseUpdateInput = {
@@ -35078,6 +36614,7 @@ export namespace Prisma {
     branch?: BranchUpdateOneRequiredWithoutBranchCoursesNestedInput
     modules?: BranchCourseModuleUpdateManyWithoutBranchCourseNestedInput
     branchFaculties?: BranchFacultyUpdateManyWithoutBranchCourseNestedInput
+    installmentTemplate?: BranchInstallmentTemplateUpdateOneWithoutBranchCourseNestedInput
   }
 
   export type BranchCourseUncheckedUpdateInput = {
@@ -35101,6 +36638,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     modules?: BranchCourseModuleUncheckedUpdateManyWithoutBranchCourseNestedInput
     branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutBranchCourseNestedInput
+    installmentTemplate?: BranchInstallmentTemplateUncheckedUpdateOneWithoutBranchCourseNestedInput
   }
 
   export type BranchCourseCreateManyInput = {
@@ -35158,6 +36696,123 @@ export namespace Prisma {
     registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
     discount?: NullableIntFieldUpdateOperationsInput | number | null
     afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BranchInstallmentTemplateCreateInput = {
+    id?: string
+    templateName: string
+    planType?: string
+    installmentCount: number
+    installments: JsonNullValueInput | InputJsonValue
+    dueRule?: string | null
+    allowCustomization?: boolean
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branch: BranchCreateNestedOneWithoutBranchInstallmentTemplatesInput
+    branchCourse?: BranchCourseCreateNestedOneWithoutInstallmentTemplateInput
+  }
+
+  export type BranchInstallmentTemplateUncheckedCreateInput = {
+    id?: string
+    branchId: string
+    branchCourseId?: string | null
+    templateName: string
+    planType?: string
+    installmentCount: number
+    installments: JsonNullValueInput | InputJsonValue
+    dueRule?: string | null
+    allowCustomization?: boolean
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type BranchInstallmentTemplateUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    templateName?: StringFieldUpdateOperationsInput | string
+    planType?: StringFieldUpdateOperationsInput | string
+    installmentCount?: IntFieldUpdateOperationsInput | number
+    installments?: JsonNullValueInput | InputJsonValue
+    dueRule?: NullableStringFieldUpdateOperationsInput | string | null
+    allowCustomization?: BoolFieldUpdateOperationsInput | boolean
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branch?: BranchUpdateOneRequiredWithoutBranchInstallmentTemplatesNestedInput
+    branchCourse?: BranchCourseUpdateOneWithoutInstallmentTemplateNestedInput
+  }
+
+  export type BranchInstallmentTemplateUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    branchCourseId?: NullableStringFieldUpdateOperationsInput | string | null
+    templateName?: StringFieldUpdateOperationsInput | string
+    planType?: StringFieldUpdateOperationsInput | string
+    installmentCount?: IntFieldUpdateOperationsInput | number
+    installments?: JsonNullValueInput | InputJsonValue
+    dueRule?: NullableStringFieldUpdateOperationsInput | string | null
+    allowCustomization?: BoolFieldUpdateOperationsInput | boolean
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BranchInstallmentTemplateCreateManyInput = {
+    id?: string
+    branchId: string
+    branchCourseId?: string | null
+    templateName: string
+    planType?: string
+    installmentCount: number
+    installments: JsonNullValueInput | InputJsonValue
+    dueRule?: string | null
+    allowCustomization?: boolean
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type BranchInstallmentTemplateUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    templateName?: StringFieldUpdateOperationsInput | string
+    planType?: StringFieldUpdateOperationsInput | string
+    installmentCount?: IntFieldUpdateOperationsInput | number
+    installments?: JsonNullValueInput | InputJsonValue
+    dueRule?: NullableStringFieldUpdateOperationsInput | string | null
+    allowCustomization?: BoolFieldUpdateOperationsInput | boolean
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BranchInstallmentTemplateUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    branchCourseId?: NullableStringFieldUpdateOperationsInput | string | null
+    templateName?: StringFieldUpdateOperationsInput | string
+    planType?: StringFieldUpdateOperationsInput | string
+    installmentCount?: IntFieldUpdateOperationsInput | number
+    installments?: JsonNullValueInput | InputJsonValue
+    dueRule?: NullableStringFieldUpdateOperationsInput | string | null
+    allowCustomization?: BoolFieldUpdateOperationsInput | boolean
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -37384,6 +39039,12 @@ export namespace Prisma {
     none?: BranchStudentWhereInput
   }
 
+  export type BranchInstallmentTemplateListRelationFilter = {
+    every?: BranchInstallmentTemplateWhereInput
+    some?: BranchInstallmentTemplateWhereInput
+    none?: BranchInstallmentTemplateWhereInput
+  }
+
   export type CourseOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -37397,6 +39058,10 @@ export namespace Prisma {
   }
 
   export type BranchStudentOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type BranchInstallmentTemplateOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -37898,6 +39563,11 @@ export namespace Prisma {
     none?: BranchCourseModuleWhereInput
   }
 
+  export type BranchInstallmentTemplateNullableScalarRelationFilter = {
+    is?: BranchInstallmentTemplateWhereInput | null
+    isNot?: BranchInstallmentTemplateWhereInput | null
+  }
+
   export type BranchCourseModuleOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -37991,6 +39661,117 @@ export namespace Prisma {
     registrationFees?: SortOrder
     discount?: SortOrder
     afterDiscount?: SortOrder
+  }
+  export type JsonFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
+  export type BranchCourseNullableScalarRelationFilter = {
+    is?: BranchCourseWhereInput | null
+    isNot?: BranchCourseWhereInput | null
+  }
+
+  export type BranchInstallmentTemplateCountOrderByAggregateInput = {
+    id?: SortOrder
+    branchId?: SortOrder
+    branchCourseId?: SortOrder
+    templateName?: SortOrder
+    planType?: SortOrder
+    installmentCount?: SortOrder
+    installments?: SortOrder
+    dueRule?: SortOrder
+    allowCustomization?: SortOrder
+    status?: SortOrder
+    createdBy?: SortOrder
+    updatedBy?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type BranchInstallmentTemplateAvgOrderByAggregateInput = {
+    installmentCount?: SortOrder
+  }
+
+  export type BranchInstallmentTemplateMaxOrderByAggregateInput = {
+    id?: SortOrder
+    branchId?: SortOrder
+    branchCourseId?: SortOrder
+    templateName?: SortOrder
+    planType?: SortOrder
+    installmentCount?: SortOrder
+    dueRule?: SortOrder
+    allowCustomization?: SortOrder
+    status?: SortOrder
+    createdBy?: SortOrder
+    updatedBy?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type BranchInstallmentTemplateMinOrderByAggregateInput = {
+    id?: SortOrder
+    branchId?: SortOrder
+    branchCourseId?: SortOrder
+    templateName?: SortOrder
+    planType?: SortOrder
+    installmentCount?: SortOrder
+    dueRule?: SortOrder
+    allowCustomization?: SortOrder
+    status?: SortOrder
+    createdBy?: SortOrder
+    updatedBy?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type BranchInstallmentTemplateSumOrderByAggregateInput = {
+    installmentCount?: SortOrder
+  }
+  export type JsonWithAggregatesFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonWithAggregatesFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonWithAggregatesFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedJsonFilter<$PrismaModel>
+    _max?: NestedJsonFilter<$PrismaModel>
   }
 
   export type BranchCourseScalarRelationFilter = {
@@ -38979,11 +40760,6 @@ export namespace Prisma {
     _max?: NestedEnumAttendanceStatusFilter<$PrismaModel>
   }
 
-  export type BranchCourseNullableScalarRelationFilter = {
-    is?: BranchCourseWhereInput | null
-    isNot?: BranchCourseWhereInput | null
-  }
-
   export type BranchFacultyBranchIdFacultyIdCompoundUniqueInput = {
     branchId: string
     facultyId: string
@@ -39410,6 +41186,13 @@ export namespace Prisma {
     connect?: BranchStudentWhereUniqueInput | BranchStudentWhereUniqueInput[]
   }
 
+  export type BranchInstallmentTemplateCreateNestedManyWithoutBranchInput = {
+    create?: XOR<BranchInstallmentTemplateCreateWithoutBranchInput, BranchInstallmentTemplateUncheckedCreateWithoutBranchInput> | BranchInstallmentTemplateCreateWithoutBranchInput[] | BranchInstallmentTemplateUncheckedCreateWithoutBranchInput[]
+    connectOrCreate?: BranchInstallmentTemplateCreateOrConnectWithoutBranchInput | BranchInstallmentTemplateCreateOrConnectWithoutBranchInput[]
+    createMany?: BranchInstallmentTemplateCreateManyBranchInputEnvelope
+    connect?: BranchInstallmentTemplateWhereUniqueInput | BranchInstallmentTemplateWhereUniqueInput[]
+  }
+
   export type CourseUncheckedCreateNestedManyWithoutBranchInput = {
     create?: XOR<CourseCreateWithoutBranchInput, CourseUncheckedCreateWithoutBranchInput> | CourseCreateWithoutBranchInput[] | CourseUncheckedCreateWithoutBranchInput[]
     connectOrCreate?: CourseCreateOrConnectWithoutBranchInput | CourseCreateOrConnectWithoutBranchInput[]
@@ -39436,6 +41219,13 @@ export namespace Prisma {
     connectOrCreate?: BranchStudentCreateOrConnectWithoutBranchInput | BranchStudentCreateOrConnectWithoutBranchInput[]
     createMany?: BranchStudentCreateManyBranchInputEnvelope
     connect?: BranchStudentWhereUniqueInput | BranchStudentWhereUniqueInput[]
+  }
+
+  export type BranchInstallmentTemplateUncheckedCreateNestedManyWithoutBranchInput = {
+    create?: XOR<BranchInstallmentTemplateCreateWithoutBranchInput, BranchInstallmentTemplateUncheckedCreateWithoutBranchInput> | BranchInstallmentTemplateCreateWithoutBranchInput[] | BranchInstallmentTemplateUncheckedCreateWithoutBranchInput[]
+    connectOrCreate?: BranchInstallmentTemplateCreateOrConnectWithoutBranchInput | BranchInstallmentTemplateCreateOrConnectWithoutBranchInput[]
+    createMany?: BranchInstallmentTemplateCreateManyBranchInputEnvelope
+    connect?: BranchInstallmentTemplateWhereUniqueInput | BranchInstallmentTemplateWhereUniqueInput[]
   }
 
   export type EnumRecordStatusFieldUpdateOperationsInput = {
@@ -39508,6 +41298,20 @@ export namespace Prisma {
     deleteMany?: BranchStudentScalarWhereInput | BranchStudentScalarWhereInput[]
   }
 
+  export type BranchInstallmentTemplateUpdateManyWithoutBranchNestedInput = {
+    create?: XOR<BranchInstallmentTemplateCreateWithoutBranchInput, BranchInstallmentTemplateUncheckedCreateWithoutBranchInput> | BranchInstallmentTemplateCreateWithoutBranchInput[] | BranchInstallmentTemplateUncheckedCreateWithoutBranchInput[]
+    connectOrCreate?: BranchInstallmentTemplateCreateOrConnectWithoutBranchInput | BranchInstallmentTemplateCreateOrConnectWithoutBranchInput[]
+    upsert?: BranchInstallmentTemplateUpsertWithWhereUniqueWithoutBranchInput | BranchInstallmentTemplateUpsertWithWhereUniqueWithoutBranchInput[]
+    createMany?: BranchInstallmentTemplateCreateManyBranchInputEnvelope
+    set?: BranchInstallmentTemplateWhereUniqueInput | BranchInstallmentTemplateWhereUniqueInput[]
+    disconnect?: BranchInstallmentTemplateWhereUniqueInput | BranchInstallmentTemplateWhereUniqueInput[]
+    delete?: BranchInstallmentTemplateWhereUniqueInput | BranchInstallmentTemplateWhereUniqueInput[]
+    connect?: BranchInstallmentTemplateWhereUniqueInput | BranchInstallmentTemplateWhereUniqueInput[]
+    update?: BranchInstallmentTemplateUpdateWithWhereUniqueWithoutBranchInput | BranchInstallmentTemplateUpdateWithWhereUniqueWithoutBranchInput[]
+    updateMany?: BranchInstallmentTemplateUpdateManyWithWhereWithoutBranchInput | BranchInstallmentTemplateUpdateManyWithWhereWithoutBranchInput[]
+    deleteMany?: BranchInstallmentTemplateScalarWhereInput | BranchInstallmentTemplateScalarWhereInput[]
+  }
+
   export type CourseUncheckedUpdateManyWithoutBranchNestedInput = {
     create?: XOR<CourseCreateWithoutBranchInput, CourseUncheckedCreateWithoutBranchInput> | CourseCreateWithoutBranchInput[] | CourseUncheckedCreateWithoutBranchInput[]
     connectOrCreate?: CourseCreateOrConnectWithoutBranchInput | CourseCreateOrConnectWithoutBranchInput[]
@@ -39562,6 +41366,20 @@ export namespace Prisma {
     update?: BranchStudentUpdateWithWhereUniqueWithoutBranchInput | BranchStudentUpdateWithWhereUniqueWithoutBranchInput[]
     updateMany?: BranchStudentUpdateManyWithWhereWithoutBranchInput | BranchStudentUpdateManyWithWhereWithoutBranchInput[]
     deleteMany?: BranchStudentScalarWhereInput | BranchStudentScalarWhereInput[]
+  }
+
+  export type BranchInstallmentTemplateUncheckedUpdateManyWithoutBranchNestedInput = {
+    create?: XOR<BranchInstallmentTemplateCreateWithoutBranchInput, BranchInstallmentTemplateUncheckedCreateWithoutBranchInput> | BranchInstallmentTemplateCreateWithoutBranchInput[] | BranchInstallmentTemplateUncheckedCreateWithoutBranchInput[]
+    connectOrCreate?: BranchInstallmentTemplateCreateOrConnectWithoutBranchInput | BranchInstallmentTemplateCreateOrConnectWithoutBranchInput[]
+    upsert?: BranchInstallmentTemplateUpsertWithWhereUniqueWithoutBranchInput | BranchInstallmentTemplateUpsertWithWhereUniqueWithoutBranchInput[]
+    createMany?: BranchInstallmentTemplateCreateManyBranchInputEnvelope
+    set?: BranchInstallmentTemplateWhereUniqueInput | BranchInstallmentTemplateWhereUniqueInput[]
+    disconnect?: BranchInstallmentTemplateWhereUniqueInput | BranchInstallmentTemplateWhereUniqueInput[]
+    delete?: BranchInstallmentTemplateWhereUniqueInput | BranchInstallmentTemplateWhereUniqueInput[]
+    connect?: BranchInstallmentTemplateWhereUniqueInput | BranchInstallmentTemplateWhereUniqueInput[]
+    update?: BranchInstallmentTemplateUpdateWithWhereUniqueWithoutBranchInput | BranchInstallmentTemplateUpdateWithWhereUniqueWithoutBranchInput[]
+    updateMany?: BranchInstallmentTemplateUpdateManyWithWhereWithoutBranchInput | BranchInstallmentTemplateUpdateManyWithWhereWithoutBranchInput[]
+    deleteMany?: BranchInstallmentTemplateScalarWhereInput | BranchInstallmentTemplateScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutLoginEventsInput = {
@@ -39998,6 +41816,12 @@ export namespace Prisma {
     connect?: BranchFacultyWhereUniqueInput | BranchFacultyWhereUniqueInput[]
   }
 
+  export type BranchInstallmentTemplateCreateNestedOneWithoutBranchCourseInput = {
+    create?: XOR<BranchInstallmentTemplateCreateWithoutBranchCourseInput, BranchInstallmentTemplateUncheckedCreateWithoutBranchCourseInput>
+    connectOrCreate?: BranchInstallmentTemplateCreateOrConnectWithoutBranchCourseInput
+    connect?: BranchInstallmentTemplateWhereUniqueInput
+  }
+
   export type BranchCourseModuleUncheckedCreateNestedManyWithoutBranchCourseInput = {
     create?: XOR<BranchCourseModuleCreateWithoutBranchCourseInput, BranchCourseModuleUncheckedCreateWithoutBranchCourseInput> | BranchCourseModuleCreateWithoutBranchCourseInput[] | BranchCourseModuleUncheckedCreateWithoutBranchCourseInput[]
     connectOrCreate?: BranchCourseModuleCreateOrConnectWithoutBranchCourseInput | BranchCourseModuleCreateOrConnectWithoutBranchCourseInput[]
@@ -40010,6 +41834,12 @@ export namespace Prisma {
     connectOrCreate?: BranchFacultyCreateOrConnectWithoutBranchCourseInput | BranchFacultyCreateOrConnectWithoutBranchCourseInput[]
     createMany?: BranchFacultyCreateManyBranchCourseInputEnvelope
     connect?: BranchFacultyWhereUniqueInput | BranchFacultyWhereUniqueInput[]
+  }
+
+  export type BranchInstallmentTemplateUncheckedCreateNestedOneWithoutBranchCourseInput = {
+    create?: XOR<BranchInstallmentTemplateCreateWithoutBranchCourseInput, BranchInstallmentTemplateUncheckedCreateWithoutBranchCourseInput>
+    connectOrCreate?: BranchInstallmentTemplateCreateOrConnectWithoutBranchCourseInput
+    connect?: BranchInstallmentTemplateWhereUniqueInput
   }
 
   export type BranchUpdateOneRequiredWithoutBranchCoursesNestedInput = {
@@ -40048,6 +41878,16 @@ export namespace Prisma {
     deleteMany?: BranchFacultyScalarWhereInput | BranchFacultyScalarWhereInput[]
   }
 
+  export type BranchInstallmentTemplateUpdateOneWithoutBranchCourseNestedInput = {
+    create?: XOR<BranchInstallmentTemplateCreateWithoutBranchCourseInput, BranchInstallmentTemplateUncheckedCreateWithoutBranchCourseInput>
+    connectOrCreate?: BranchInstallmentTemplateCreateOrConnectWithoutBranchCourseInput
+    upsert?: BranchInstallmentTemplateUpsertWithoutBranchCourseInput
+    disconnect?: BranchInstallmentTemplateWhereInput | boolean
+    delete?: BranchInstallmentTemplateWhereInput | boolean
+    connect?: BranchInstallmentTemplateWhereUniqueInput
+    update?: XOR<XOR<BranchInstallmentTemplateUpdateToOneWithWhereWithoutBranchCourseInput, BranchInstallmentTemplateUpdateWithoutBranchCourseInput>, BranchInstallmentTemplateUncheckedUpdateWithoutBranchCourseInput>
+  }
+
   export type BranchCourseModuleUncheckedUpdateManyWithoutBranchCourseNestedInput = {
     create?: XOR<BranchCourseModuleCreateWithoutBranchCourseInput, BranchCourseModuleUncheckedCreateWithoutBranchCourseInput> | BranchCourseModuleCreateWithoutBranchCourseInput[] | BranchCourseModuleUncheckedCreateWithoutBranchCourseInput[]
     connectOrCreate?: BranchCourseModuleCreateOrConnectWithoutBranchCourseInput | BranchCourseModuleCreateOrConnectWithoutBranchCourseInput[]
@@ -40074,6 +41914,46 @@ export namespace Prisma {
     update?: BranchFacultyUpdateWithWhereUniqueWithoutBranchCourseInput | BranchFacultyUpdateWithWhereUniqueWithoutBranchCourseInput[]
     updateMany?: BranchFacultyUpdateManyWithWhereWithoutBranchCourseInput | BranchFacultyUpdateManyWithWhereWithoutBranchCourseInput[]
     deleteMany?: BranchFacultyScalarWhereInput | BranchFacultyScalarWhereInput[]
+  }
+
+  export type BranchInstallmentTemplateUncheckedUpdateOneWithoutBranchCourseNestedInput = {
+    create?: XOR<BranchInstallmentTemplateCreateWithoutBranchCourseInput, BranchInstallmentTemplateUncheckedCreateWithoutBranchCourseInput>
+    connectOrCreate?: BranchInstallmentTemplateCreateOrConnectWithoutBranchCourseInput
+    upsert?: BranchInstallmentTemplateUpsertWithoutBranchCourseInput
+    disconnect?: BranchInstallmentTemplateWhereInput | boolean
+    delete?: BranchInstallmentTemplateWhereInput | boolean
+    connect?: BranchInstallmentTemplateWhereUniqueInput
+    update?: XOR<XOR<BranchInstallmentTemplateUpdateToOneWithWhereWithoutBranchCourseInput, BranchInstallmentTemplateUpdateWithoutBranchCourseInput>, BranchInstallmentTemplateUncheckedUpdateWithoutBranchCourseInput>
+  }
+
+  export type BranchCreateNestedOneWithoutBranchInstallmentTemplatesInput = {
+    create?: XOR<BranchCreateWithoutBranchInstallmentTemplatesInput, BranchUncheckedCreateWithoutBranchInstallmentTemplatesInput>
+    connectOrCreate?: BranchCreateOrConnectWithoutBranchInstallmentTemplatesInput
+    connect?: BranchWhereUniqueInput
+  }
+
+  export type BranchCourseCreateNestedOneWithoutInstallmentTemplateInput = {
+    create?: XOR<BranchCourseCreateWithoutInstallmentTemplateInput, BranchCourseUncheckedCreateWithoutInstallmentTemplateInput>
+    connectOrCreate?: BranchCourseCreateOrConnectWithoutInstallmentTemplateInput
+    connect?: BranchCourseWhereUniqueInput
+  }
+
+  export type BranchUpdateOneRequiredWithoutBranchInstallmentTemplatesNestedInput = {
+    create?: XOR<BranchCreateWithoutBranchInstallmentTemplatesInput, BranchUncheckedCreateWithoutBranchInstallmentTemplatesInput>
+    connectOrCreate?: BranchCreateOrConnectWithoutBranchInstallmentTemplatesInput
+    upsert?: BranchUpsertWithoutBranchInstallmentTemplatesInput
+    connect?: BranchWhereUniqueInput
+    update?: XOR<XOR<BranchUpdateToOneWithWhereWithoutBranchInstallmentTemplatesInput, BranchUpdateWithoutBranchInstallmentTemplatesInput>, BranchUncheckedUpdateWithoutBranchInstallmentTemplatesInput>
+  }
+
+  export type BranchCourseUpdateOneWithoutInstallmentTemplateNestedInput = {
+    create?: XOR<BranchCourseCreateWithoutInstallmentTemplateInput, BranchCourseUncheckedCreateWithoutInstallmentTemplateInput>
+    connectOrCreate?: BranchCourseCreateOrConnectWithoutInstallmentTemplateInput
+    upsert?: BranchCourseUpsertWithoutInstallmentTemplateInput
+    disconnect?: BranchCourseWhereInput | boolean
+    delete?: BranchCourseWhereInput | boolean
+    connect?: BranchCourseWhereUniqueInput
+    update?: XOR<XOR<BranchCourseUpdateToOneWithWhereWithoutInstallmentTemplateInput, BranchCourseUpdateWithoutInstallmentTemplateInput>, BranchCourseUncheckedUpdateWithoutInstallmentTemplateInput>
   }
 
   export type BranchCourseCreateNestedOneWithoutModulesInput = {
@@ -40945,6 +42825,29 @@ export namespace Prisma {
     gte?: number | FloatFieldRefInput<$PrismaModel>
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
+  export type NestedJsonFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<NestedJsonFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonFilterBase<$PrismaModel>>, 'path'>>,
+        Required<NestedJsonFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<NestedJsonFilterBase<$PrismaModel>>, 'path'>>
+
+  export type NestedJsonFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
 
   export type NestedEnumBatchStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.BatchStatus | EnumBatchStatusFieldRefInput<$PrismaModel>
@@ -41277,6 +43180,7 @@ export namespace Prisma {
     branchCourses?: BranchCourseCreateNestedManyWithoutBranchInput
     branchFaculties?: BranchFacultyCreateNestedManyWithoutBranchInput
     branchStudents?: BranchStudentCreateNestedManyWithoutBranchInput
+    branchInstallmentTemplates?: BranchInstallmentTemplateCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutAdminUserInput = {
@@ -41301,6 +43205,7 @@ export namespace Prisma {
     branchCourses?: BranchCourseUncheckedCreateNestedManyWithoutBranchInput
     branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutBranchInput
     branchStudents?: BranchStudentUncheckedCreateNestedManyWithoutBranchInput
+    branchInstallmentTemplates?: BranchInstallmentTemplateUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutAdminUserInput = {
@@ -41543,6 +43448,7 @@ export namespace Prisma {
     branchCourses?: BranchCourseUpdateManyWithoutBranchNestedInput
     branchFaculties?: BranchFacultyUpdateManyWithoutBranchNestedInput
     branchStudents?: BranchStudentUpdateManyWithoutBranchNestedInput
+    branchInstallmentTemplates?: BranchInstallmentTemplateUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutAdminUserInput = {
@@ -41567,6 +43473,7 @@ export namespace Prisma {
     branchCourses?: BranchCourseUncheckedUpdateManyWithoutBranchNestedInput
     branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutBranchNestedInput
     branchStudents?: BranchStudentUncheckedUpdateManyWithoutBranchNestedInput
+    branchInstallmentTemplates?: BranchInstallmentTemplateUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type UserCreateWithoutManagedBranchInput = {
@@ -41736,6 +43643,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     modules?: BranchCourseModuleCreateNestedManyWithoutBranchCourseInput
     branchFaculties?: BranchFacultyCreateNestedManyWithoutBranchCourseInput
+    installmentTemplate?: BranchInstallmentTemplateCreateNestedOneWithoutBranchCourseInput
   }
 
   export type BranchCourseUncheckedCreateWithoutBranchInput = {
@@ -41758,6 +43666,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     modules?: BranchCourseModuleUncheckedCreateNestedManyWithoutBranchCourseInput
     branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutBranchCourseInput
+    installmentTemplate?: BranchInstallmentTemplateUncheckedCreateNestedOneWithoutBranchCourseInput
   }
 
   export type BranchCourseCreateOrConnectWithoutBranchInput = {
@@ -41887,6 +43796,48 @@ export namespace Prisma {
 
   export type BranchStudentCreateManyBranchInputEnvelope = {
     data: BranchStudentCreateManyBranchInput | BranchStudentCreateManyBranchInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type BranchInstallmentTemplateCreateWithoutBranchInput = {
+    id?: string
+    templateName: string
+    planType?: string
+    installmentCount: number
+    installments: JsonNullValueInput | InputJsonValue
+    dueRule?: string | null
+    allowCustomization?: boolean
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branchCourse?: BranchCourseCreateNestedOneWithoutInstallmentTemplateInput
+  }
+
+  export type BranchInstallmentTemplateUncheckedCreateWithoutBranchInput = {
+    id?: string
+    branchCourseId?: string | null
+    templateName: string
+    planType?: string
+    installmentCount: number
+    installments: JsonNullValueInput | InputJsonValue
+    dueRule?: string | null
+    allowCustomization?: boolean
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type BranchInstallmentTemplateCreateOrConnectWithoutBranchInput = {
+    where: BranchInstallmentTemplateWhereUniqueInput
+    create: XOR<BranchInstallmentTemplateCreateWithoutBranchInput, BranchInstallmentTemplateUncheckedCreateWithoutBranchInput>
+  }
+
+  export type BranchInstallmentTemplateCreateManyBranchInputEnvelope = {
+    data: BranchInstallmentTemplateCreateManyBranchInput | BranchInstallmentTemplateCreateManyBranchInput[]
     skipDuplicates?: boolean
   }
 
@@ -42137,6 +44088,42 @@ export namespace Prisma {
     updatedBy?: StringNullableFilter<"BranchStudent"> | string | null
     createdAt?: DateTimeFilter<"BranchStudent"> | Date | string
     updatedAt?: DateTimeFilter<"BranchStudent"> | Date | string
+  }
+
+  export type BranchInstallmentTemplateUpsertWithWhereUniqueWithoutBranchInput = {
+    where: BranchInstallmentTemplateWhereUniqueInput
+    update: XOR<BranchInstallmentTemplateUpdateWithoutBranchInput, BranchInstallmentTemplateUncheckedUpdateWithoutBranchInput>
+    create: XOR<BranchInstallmentTemplateCreateWithoutBranchInput, BranchInstallmentTemplateUncheckedCreateWithoutBranchInput>
+  }
+
+  export type BranchInstallmentTemplateUpdateWithWhereUniqueWithoutBranchInput = {
+    where: BranchInstallmentTemplateWhereUniqueInput
+    data: XOR<BranchInstallmentTemplateUpdateWithoutBranchInput, BranchInstallmentTemplateUncheckedUpdateWithoutBranchInput>
+  }
+
+  export type BranchInstallmentTemplateUpdateManyWithWhereWithoutBranchInput = {
+    where: BranchInstallmentTemplateScalarWhereInput
+    data: XOR<BranchInstallmentTemplateUpdateManyMutationInput, BranchInstallmentTemplateUncheckedUpdateManyWithoutBranchInput>
+  }
+
+  export type BranchInstallmentTemplateScalarWhereInput = {
+    AND?: BranchInstallmentTemplateScalarWhereInput | BranchInstallmentTemplateScalarWhereInput[]
+    OR?: BranchInstallmentTemplateScalarWhereInput[]
+    NOT?: BranchInstallmentTemplateScalarWhereInput | BranchInstallmentTemplateScalarWhereInput[]
+    id?: StringFilter<"BranchInstallmentTemplate"> | string
+    branchId?: StringFilter<"BranchInstallmentTemplate"> | string
+    branchCourseId?: StringNullableFilter<"BranchInstallmentTemplate"> | string | null
+    templateName?: StringFilter<"BranchInstallmentTemplate"> | string
+    planType?: StringFilter<"BranchInstallmentTemplate"> | string
+    installmentCount?: IntFilter<"BranchInstallmentTemplate"> | number
+    installments?: JsonFilter<"BranchInstallmentTemplate">
+    dueRule?: StringNullableFilter<"BranchInstallmentTemplate"> | string | null
+    allowCustomization?: BoolFilter<"BranchInstallmentTemplate"> | boolean
+    status?: EnumRecordStatusFilter<"BranchInstallmentTemplate"> | $Enums.RecordStatus
+    createdBy?: StringNullableFilter<"BranchInstallmentTemplate"> | string | null
+    updatedBy?: StringNullableFilter<"BranchInstallmentTemplate"> | string | null
+    createdAt?: DateTimeFilter<"BranchInstallmentTemplate"> | Date | string
+    updatedAt?: DateTimeFilter<"BranchInstallmentTemplate"> | Date | string
   }
 
   export type UserCreateWithoutLoginEventsInput = {
@@ -42569,6 +44556,7 @@ export namespace Prisma {
     branchCourses?: BranchCourseCreateNestedManyWithoutBranchInput
     branchFaculties?: BranchFacultyCreateNestedManyWithoutBranchInput
     branchStudents?: BranchStudentCreateNestedManyWithoutBranchInput
+    branchInstallmentTemplates?: BranchInstallmentTemplateCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutCoursesInput = {
@@ -42593,6 +44581,7 @@ export namespace Prisma {
     branchCourses?: BranchCourseUncheckedCreateNestedManyWithoutBranchInput
     branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutBranchInput
     branchStudents?: BranchStudentUncheckedCreateNestedManyWithoutBranchInput
+    branchInstallmentTemplates?: BranchInstallmentTemplateUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutCoursesInput = {
@@ -43005,6 +44994,7 @@ export namespace Prisma {
     branchCourses?: BranchCourseUpdateManyWithoutBranchNestedInput
     branchFaculties?: BranchFacultyUpdateManyWithoutBranchNestedInput
     branchStudents?: BranchStudentUpdateManyWithoutBranchNestedInput
+    branchInstallmentTemplates?: BranchInstallmentTemplateUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutCoursesInput = {
@@ -43029,6 +45019,7 @@ export namespace Prisma {
     branchCourses?: BranchCourseUncheckedUpdateManyWithoutBranchNestedInput
     branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutBranchNestedInput
     branchStudents?: BranchStudentUncheckedUpdateManyWithoutBranchNestedInput
+    branchInstallmentTemplates?: BranchInstallmentTemplateUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type CourseModuleUpsertWithWhereUniqueWithoutCourseInput = {
@@ -43329,6 +45320,7 @@ export namespace Prisma {
     courses?: CourseCreateNestedManyWithoutBranchInput
     branchFaculties?: BranchFacultyCreateNestedManyWithoutBranchInput
     branchStudents?: BranchStudentCreateNestedManyWithoutBranchInput
+    branchInstallmentTemplates?: BranchInstallmentTemplateCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutBranchCoursesInput = {
@@ -43353,6 +45345,7 @@ export namespace Prisma {
     courses?: CourseUncheckedCreateNestedManyWithoutBranchInput
     branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutBranchInput
     branchStudents?: BranchStudentUncheckedCreateNestedManyWithoutBranchInput
+    branchInstallmentTemplates?: BranchInstallmentTemplateUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutBranchCoursesInput = {
@@ -43450,6 +45443,43 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type BranchInstallmentTemplateCreateWithoutBranchCourseInput = {
+    id?: string
+    templateName: string
+    planType?: string
+    installmentCount: number
+    installments: JsonNullValueInput | InputJsonValue
+    dueRule?: string | null
+    allowCustomization?: boolean
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branch: BranchCreateNestedOneWithoutBranchInstallmentTemplatesInput
+  }
+
+  export type BranchInstallmentTemplateUncheckedCreateWithoutBranchCourseInput = {
+    id?: string
+    branchId: string
+    templateName: string
+    planType?: string
+    installmentCount: number
+    installments: JsonNullValueInput | InputJsonValue
+    dueRule?: string | null
+    allowCustomization?: boolean
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type BranchInstallmentTemplateCreateOrConnectWithoutBranchCourseInput = {
+    where: BranchInstallmentTemplateWhereUniqueInput
+    create: XOR<BranchInstallmentTemplateCreateWithoutBranchCourseInput, BranchInstallmentTemplateUncheckedCreateWithoutBranchCourseInput>
+  }
+
   export type BranchUpsertWithoutBranchCoursesInput = {
     update: XOR<BranchUpdateWithoutBranchCoursesInput, BranchUncheckedUpdateWithoutBranchCoursesInput>
     create: XOR<BranchCreateWithoutBranchCoursesInput, BranchUncheckedCreateWithoutBranchCoursesInput>
@@ -43483,6 +45513,7 @@ export namespace Prisma {
     courses?: CourseUpdateManyWithoutBranchNestedInput
     branchFaculties?: BranchFacultyUpdateManyWithoutBranchNestedInput
     branchStudents?: BranchStudentUpdateManyWithoutBranchNestedInput
+    branchInstallmentTemplates?: BranchInstallmentTemplateUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutBranchCoursesInput = {
@@ -43507,6 +45538,7 @@ export namespace Prisma {
     courses?: CourseUncheckedUpdateManyWithoutBranchNestedInput
     branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutBranchNestedInput
     branchStudents?: BranchStudentUncheckedUpdateManyWithoutBranchNestedInput
+    branchInstallmentTemplates?: BranchInstallmentTemplateUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchCourseModuleUpsertWithWhereUniqueWithoutBranchCourseInput = {
@@ -43558,6 +45590,273 @@ export namespace Prisma {
     data: XOR<BranchFacultyUpdateManyMutationInput, BranchFacultyUncheckedUpdateManyWithoutBranchCourseInput>
   }
 
+  export type BranchInstallmentTemplateUpsertWithoutBranchCourseInput = {
+    update: XOR<BranchInstallmentTemplateUpdateWithoutBranchCourseInput, BranchInstallmentTemplateUncheckedUpdateWithoutBranchCourseInput>
+    create: XOR<BranchInstallmentTemplateCreateWithoutBranchCourseInput, BranchInstallmentTemplateUncheckedCreateWithoutBranchCourseInput>
+    where?: BranchInstallmentTemplateWhereInput
+  }
+
+  export type BranchInstallmentTemplateUpdateToOneWithWhereWithoutBranchCourseInput = {
+    where?: BranchInstallmentTemplateWhereInput
+    data: XOR<BranchInstallmentTemplateUpdateWithoutBranchCourseInput, BranchInstallmentTemplateUncheckedUpdateWithoutBranchCourseInput>
+  }
+
+  export type BranchInstallmentTemplateUpdateWithoutBranchCourseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    templateName?: StringFieldUpdateOperationsInput | string
+    planType?: StringFieldUpdateOperationsInput | string
+    installmentCount?: IntFieldUpdateOperationsInput | number
+    installments?: JsonNullValueInput | InputJsonValue
+    dueRule?: NullableStringFieldUpdateOperationsInput | string | null
+    allowCustomization?: BoolFieldUpdateOperationsInput | boolean
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branch?: BranchUpdateOneRequiredWithoutBranchInstallmentTemplatesNestedInput
+  }
+
+  export type BranchInstallmentTemplateUncheckedUpdateWithoutBranchCourseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    templateName?: StringFieldUpdateOperationsInput | string
+    planType?: StringFieldUpdateOperationsInput | string
+    installmentCount?: IntFieldUpdateOperationsInput | number
+    installments?: JsonNullValueInput | InputJsonValue
+    dueRule?: NullableStringFieldUpdateOperationsInput | string | null
+    allowCustomization?: BoolFieldUpdateOperationsInput | boolean
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BranchCreateWithoutBranchInstallmentTemplatesInput = {
+    id?: string
+    branchId: string
+    branchName: string
+    branchAdminName: string
+    branchEmail: string
+    branchPhone: string
+    branchCountryCode?: string
+    branchCountry?: string
+    branchStateCode?: string
+    branchState?: string
+    branchCity?: string
+    branchAddress: string
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    adminUser?: UserCreateNestedOneWithoutManagedBranchInput
+    courses?: CourseCreateNestedManyWithoutBranchInput
+    branchCourses?: BranchCourseCreateNestedManyWithoutBranchInput
+    branchFaculties?: BranchFacultyCreateNestedManyWithoutBranchInput
+    branchStudents?: BranchStudentCreateNestedManyWithoutBranchInput
+  }
+
+  export type BranchUncheckedCreateWithoutBranchInstallmentTemplatesInput = {
+    id?: string
+    branchId: string
+    branchName: string
+    branchAdminName: string
+    branchEmail: string
+    branchPhone: string
+    branchCountryCode?: string
+    branchCountry?: string
+    branchStateCode?: string
+    branchState?: string
+    branchCity?: string
+    branchAddress: string
+    status?: $Enums.RecordStatus
+    adminUserId?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    courses?: CourseUncheckedCreateNestedManyWithoutBranchInput
+    branchCourses?: BranchCourseUncheckedCreateNestedManyWithoutBranchInput
+    branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutBranchInput
+    branchStudents?: BranchStudentUncheckedCreateNestedManyWithoutBranchInput
+  }
+
+  export type BranchCreateOrConnectWithoutBranchInstallmentTemplatesInput = {
+    where: BranchWhereUniqueInput
+    create: XOR<BranchCreateWithoutBranchInstallmentTemplatesInput, BranchUncheckedCreateWithoutBranchInstallmentTemplatesInput>
+  }
+
+  export type BranchCourseCreateWithoutInstallmentTemplateInput = {
+    id?: string
+    courseCode: string
+    name: string
+    nameKey: string
+    description?: string | null
+    mode: string
+    duration?: number | null
+    hours?: number | null
+    actualFees?: number | null
+    registrationFees?: number | null
+    discount?: number | null
+    afterDiscount?: number | null
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branch: BranchCreateNestedOneWithoutBranchCoursesInput
+    modules?: BranchCourseModuleCreateNestedManyWithoutBranchCourseInput
+    branchFaculties?: BranchFacultyCreateNestedManyWithoutBranchCourseInput
+  }
+
+  export type BranchCourseUncheckedCreateWithoutInstallmentTemplateInput = {
+    id?: string
+    branchId: string
+    courseCode: string
+    name: string
+    nameKey: string
+    description?: string | null
+    mode: string
+    duration?: number | null
+    hours?: number | null
+    actualFees?: number | null
+    registrationFees?: number | null
+    discount?: number | null
+    afterDiscount?: number | null
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    modules?: BranchCourseModuleUncheckedCreateNestedManyWithoutBranchCourseInput
+    branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutBranchCourseInput
+  }
+
+  export type BranchCourseCreateOrConnectWithoutInstallmentTemplateInput = {
+    where: BranchCourseWhereUniqueInput
+    create: XOR<BranchCourseCreateWithoutInstallmentTemplateInput, BranchCourseUncheckedCreateWithoutInstallmentTemplateInput>
+  }
+
+  export type BranchUpsertWithoutBranchInstallmentTemplatesInput = {
+    update: XOR<BranchUpdateWithoutBranchInstallmentTemplatesInput, BranchUncheckedUpdateWithoutBranchInstallmentTemplatesInput>
+    create: XOR<BranchCreateWithoutBranchInstallmentTemplatesInput, BranchUncheckedCreateWithoutBranchInstallmentTemplatesInput>
+    where?: BranchWhereInput
+  }
+
+  export type BranchUpdateToOneWithWhereWithoutBranchInstallmentTemplatesInput = {
+    where?: BranchWhereInput
+    data: XOR<BranchUpdateWithoutBranchInstallmentTemplatesInput, BranchUncheckedUpdateWithoutBranchInstallmentTemplatesInput>
+  }
+
+  export type BranchUpdateWithoutBranchInstallmentTemplatesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    branchName?: StringFieldUpdateOperationsInput | string
+    branchAdminName?: StringFieldUpdateOperationsInput | string
+    branchEmail?: StringFieldUpdateOperationsInput | string
+    branchPhone?: StringFieldUpdateOperationsInput | string
+    branchCountryCode?: StringFieldUpdateOperationsInput | string
+    branchCountry?: StringFieldUpdateOperationsInput | string
+    branchStateCode?: StringFieldUpdateOperationsInput | string
+    branchState?: StringFieldUpdateOperationsInput | string
+    branchCity?: StringFieldUpdateOperationsInput | string
+    branchAddress?: StringFieldUpdateOperationsInput | string
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    adminUser?: UserUpdateOneWithoutManagedBranchNestedInput
+    courses?: CourseUpdateManyWithoutBranchNestedInput
+    branchCourses?: BranchCourseUpdateManyWithoutBranchNestedInput
+    branchFaculties?: BranchFacultyUpdateManyWithoutBranchNestedInput
+    branchStudents?: BranchStudentUpdateManyWithoutBranchNestedInput
+  }
+
+  export type BranchUncheckedUpdateWithoutBranchInstallmentTemplatesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    branchName?: StringFieldUpdateOperationsInput | string
+    branchAdminName?: StringFieldUpdateOperationsInput | string
+    branchEmail?: StringFieldUpdateOperationsInput | string
+    branchPhone?: StringFieldUpdateOperationsInput | string
+    branchCountryCode?: StringFieldUpdateOperationsInput | string
+    branchCountry?: StringFieldUpdateOperationsInput | string
+    branchStateCode?: StringFieldUpdateOperationsInput | string
+    branchState?: StringFieldUpdateOperationsInput | string
+    branchCity?: StringFieldUpdateOperationsInput | string
+    branchAddress?: StringFieldUpdateOperationsInput | string
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    adminUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    courses?: CourseUncheckedUpdateManyWithoutBranchNestedInput
+    branchCourses?: BranchCourseUncheckedUpdateManyWithoutBranchNestedInput
+    branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutBranchNestedInput
+    branchStudents?: BranchStudentUncheckedUpdateManyWithoutBranchNestedInput
+  }
+
+  export type BranchCourseUpsertWithoutInstallmentTemplateInput = {
+    update: XOR<BranchCourseUpdateWithoutInstallmentTemplateInput, BranchCourseUncheckedUpdateWithoutInstallmentTemplateInput>
+    create: XOR<BranchCourseCreateWithoutInstallmentTemplateInput, BranchCourseUncheckedCreateWithoutInstallmentTemplateInput>
+    where?: BranchCourseWhereInput
+  }
+
+  export type BranchCourseUpdateToOneWithWhereWithoutInstallmentTemplateInput = {
+    where?: BranchCourseWhereInput
+    data: XOR<BranchCourseUpdateWithoutInstallmentTemplateInput, BranchCourseUncheckedUpdateWithoutInstallmentTemplateInput>
+  }
+
+  export type BranchCourseUpdateWithoutInstallmentTemplateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    courseCode?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameKey?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    mode?: StringFieldUpdateOperationsInput | string
+    duration?: NullableIntFieldUpdateOperationsInput | number | null
+    hours?: NullableIntFieldUpdateOperationsInput | number | null
+    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
+    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
+    discount?: NullableIntFieldUpdateOperationsInput | number | null
+    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branch?: BranchUpdateOneRequiredWithoutBranchCoursesNestedInput
+    modules?: BranchCourseModuleUpdateManyWithoutBranchCourseNestedInput
+    branchFaculties?: BranchFacultyUpdateManyWithoutBranchCourseNestedInput
+  }
+
+  export type BranchCourseUncheckedUpdateWithoutInstallmentTemplateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    courseCode?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameKey?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    mode?: StringFieldUpdateOperationsInput | string
+    duration?: NullableIntFieldUpdateOperationsInput | number | null
+    hours?: NullableIntFieldUpdateOperationsInput | number | null
+    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
+    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
+    discount?: NullableIntFieldUpdateOperationsInput | number | null
+    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    modules?: BranchCourseModuleUncheckedUpdateManyWithoutBranchCourseNestedInput
+    branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutBranchCourseNestedInput
+  }
+
   export type BranchCourseCreateWithoutModulesInput = {
     id?: string
     courseCode: string
@@ -43578,6 +45877,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     branch: BranchCreateNestedOneWithoutBranchCoursesInput
     branchFaculties?: BranchFacultyCreateNestedManyWithoutBranchCourseInput
+    installmentTemplate?: BranchInstallmentTemplateCreateNestedOneWithoutBranchCourseInput
   }
 
   export type BranchCourseUncheckedCreateWithoutModulesInput = {
@@ -43600,6 +45900,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutBranchCourseInput
+    installmentTemplate?: BranchInstallmentTemplateUncheckedCreateNestedOneWithoutBranchCourseInput
   }
 
   export type BranchCourseCreateOrConnectWithoutModulesInput = {
@@ -43674,6 +45975,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     branch?: BranchUpdateOneRequiredWithoutBranchCoursesNestedInput
     branchFaculties?: BranchFacultyUpdateManyWithoutBranchCourseNestedInput
+    installmentTemplate?: BranchInstallmentTemplateUpdateOneWithoutBranchCourseNestedInput
   }
 
   export type BranchCourseUncheckedUpdateWithoutModulesInput = {
@@ -43696,6 +45998,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutBranchCourseNestedInput
+    installmentTemplate?: BranchInstallmentTemplateUncheckedUpdateOneWithoutBranchCourseNestedInput
   }
 
   export type BranchCourseSubmoduleUpsertWithWhereUniqueWithoutBranchCourseModuleInput = {
@@ -44980,6 +47283,7 @@ export namespace Prisma {
     courses?: CourseCreateNestedManyWithoutBranchInput
     branchCourses?: BranchCourseCreateNestedManyWithoutBranchInput
     branchFaculties?: BranchFacultyCreateNestedManyWithoutBranchInput
+    branchInstallmentTemplates?: BranchInstallmentTemplateCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutBranchStudentsInput = {
@@ -45004,6 +47308,7 @@ export namespace Prisma {
     courses?: CourseUncheckedCreateNestedManyWithoutBranchInput
     branchCourses?: BranchCourseUncheckedCreateNestedManyWithoutBranchInput
     branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutBranchInput
+    branchInstallmentTemplates?: BranchInstallmentTemplateUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutBranchStudentsInput = {
@@ -45044,6 +47349,7 @@ export namespace Prisma {
     courses?: CourseUpdateManyWithoutBranchNestedInput
     branchCourses?: BranchCourseUpdateManyWithoutBranchNestedInput
     branchFaculties?: BranchFacultyUpdateManyWithoutBranchNestedInput
+    branchInstallmentTemplates?: BranchInstallmentTemplateUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutBranchStudentsInput = {
@@ -45068,6 +47374,7 @@ export namespace Prisma {
     courses?: CourseUncheckedUpdateManyWithoutBranchNestedInput
     branchCourses?: BranchCourseUncheckedUpdateManyWithoutBranchNestedInput
     branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutBranchNestedInput
+    branchInstallmentTemplates?: BranchInstallmentTemplateUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type CourseCreateWithoutFacultyProfilesInput = {
@@ -46278,6 +48585,7 @@ export namespace Prisma {
     courses?: CourseCreateNestedManyWithoutBranchInput
     branchCourses?: BranchCourseCreateNestedManyWithoutBranchInput
     branchStudents?: BranchStudentCreateNestedManyWithoutBranchInput
+    branchInstallmentTemplates?: BranchInstallmentTemplateCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutBranchFacultiesInput = {
@@ -46302,6 +48610,7 @@ export namespace Prisma {
     courses?: CourseUncheckedCreateNestedManyWithoutBranchInput
     branchCourses?: BranchCourseUncheckedCreateNestedManyWithoutBranchInput
     branchStudents?: BranchStudentUncheckedCreateNestedManyWithoutBranchInput
+    branchInstallmentTemplates?: BranchInstallmentTemplateUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutBranchFacultiesInput = {
@@ -46406,6 +48715,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     branch: BranchCreateNestedOneWithoutBranchCoursesInput
     modules?: BranchCourseModuleCreateNestedManyWithoutBranchCourseInput
+    installmentTemplate?: BranchInstallmentTemplateCreateNestedOneWithoutBranchCourseInput
   }
 
   export type BranchCourseUncheckedCreateWithoutBranchFacultiesInput = {
@@ -46428,6 +48738,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     modules?: BranchCourseModuleUncheckedCreateNestedManyWithoutBranchCourseInput
+    installmentTemplate?: BranchInstallmentTemplateUncheckedCreateNestedOneWithoutBranchCourseInput
   }
 
   export type BranchCourseCreateOrConnectWithoutBranchFacultiesInput = {
@@ -46468,6 +48779,7 @@ export namespace Prisma {
     courses?: CourseUpdateManyWithoutBranchNestedInput
     branchCourses?: BranchCourseUpdateManyWithoutBranchNestedInput
     branchStudents?: BranchStudentUpdateManyWithoutBranchNestedInput
+    branchInstallmentTemplates?: BranchInstallmentTemplateUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutBranchFacultiesInput = {
@@ -46492,6 +48804,7 @@ export namespace Prisma {
     courses?: CourseUncheckedUpdateManyWithoutBranchNestedInput
     branchCourses?: BranchCourseUncheckedUpdateManyWithoutBranchNestedInput
     branchStudents?: BranchStudentUncheckedUpdateManyWithoutBranchNestedInput
+    branchInstallmentTemplates?: BranchInstallmentTemplateUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type CourseUpsertWithoutBranchFacultiesInput = {
@@ -46608,6 +48921,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     branch?: BranchUpdateOneRequiredWithoutBranchCoursesNestedInput
     modules?: BranchCourseModuleUpdateManyWithoutBranchCourseNestedInput
+    installmentTemplate?: BranchInstallmentTemplateUpdateOneWithoutBranchCourseNestedInput
   }
 
   export type BranchCourseUncheckedUpdateWithoutBranchFacultiesInput = {
@@ -46630,6 +48944,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     modules?: BranchCourseModuleUncheckedUpdateManyWithoutBranchCourseNestedInput
+    installmentTemplate?: BranchInstallmentTemplateUncheckedUpdateOneWithoutBranchCourseNestedInput
   }
 
   export type LoginEventCreateManyUserInput = {
@@ -47058,6 +49373,22 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type BranchInstallmentTemplateCreateManyBranchInput = {
+    id?: string
+    branchCourseId?: string | null
+    templateName: string
+    planType?: string
+    installmentCount: number
+    installments: JsonNullValueInput | InputJsonValue
+    dueRule?: string | null
+    allowCustomization?: boolean
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type CourseUpdateWithoutBranchInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
@@ -47178,6 +49509,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     modules?: BranchCourseModuleUpdateManyWithoutBranchCourseNestedInput
     branchFaculties?: BranchFacultyUpdateManyWithoutBranchCourseNestedInput
+    installmentTemplate?: BranchInstallmentTemplateUpdateOneWithoutBranchCourseNestedInput
   }
 
   export type BranchCourseUncheckedUpdateWithoutBranchInput = {
@@ -47200,6 +49532,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     modules?: BranchCourseModuleUncheckedUpdateManyWithoutBranchCourseNestedInput
     branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutBranchCourseNestedInput
+    installmentTemplate?: BranchInstallmentTemplateUncheckedUpdateOneWithoutBranchCourseNestedInput
   }
 
   export type BranchCourseUncheckedUpdateManyWithoutBranchInput = {
@@ -47366,6 +49699,54 @@ export namespace Prisma {
     remarks?: NullableStringFieldUpdateOperationsInput | string | null
     admissionDate?: StringFieldUpdateOperationsInput | string
     recordStatus?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BranchInstallmentTemplateUpdateWithoutBranchInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    templateName?: StringFieldUpdateOperationsInput | string
+    planType?: StringFieldUpdateOperationsInput | string
+    installmentCount?: IntFieldUpdateOperationsInput | number
+    installments?: JsonNullValueInput | InputJsonValue
+    dueRule?: NullableStringFieldUpdateOperationsInput | string | null
+    allowCustomization?: BoolFieldUpdateOperationsInput | boolean
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branchCourse?: BranchCourseUpdateOneWithoutInstallmentTemplateNestedInput
+  }
+
+  export type BranchInstallmentTemplateUncheckedUpdateWithoutBranchInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchCourseId?: NullableStringFieldUpdateOperationsInput | string | null
+    templateName?: StringFieldUpdateOperationsInput | string
+    planType?: StringFieldUpdateOperationsInput | string
+    installmentCount?: IntFieldUpdateOperationsInput | number
+    installments?: JsonNullValueInput | InputJsonValue
+    dueRule?: NullableStringFieldUpdateOperationsInput | string | null
+    allowCustomization?: BoolFieldUpdateOperationsInput | boolean
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BranchInstallmentTemplateUncheckedUpdateManyWithoutBranchInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchCourseId?: NullableStringFieldUpdateOperationsInput | string | null
+    templateName?: StringFieldUpdateOperationsInput | string
+    planType?: StringFieldUpdateOperationsInput | string
+    installmentCount?: IntFieldUpdateOperationsInput | number
+    installments?: JsonNullValueInput | InputJsonValue
+    dueRule?: NullableStringFieldUpdateOperationsInput | string | null
+    allowCustomization?: BoolFieldUpdateOperationsInput | boolean
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string

@@ -7,6 +7,17 @@ import {
 
 const RECORD_STATUSES = new Set(["ACTIVE", "INACTIVE"]);
 const BRANCH_COURSE_HIERARCHY_KEYS = ["models", "modules", "courseModels"];
+const BRANCH_INSTALLMENT_TEMPLATE_KEYS = [
+  "installmentTemplate",
+  "templateName",
+  "planName",
+  "installmentCount",
+  "installments",
+  "installmentAmounts",
+  "dueRule",
+  "allowCustomization",
+  "status",
+];
 
 function normalizeString(value) {
   return String(value ?? "").trim();
@@ -91,6 +102,21 @@ function parseOptionalInt(value, fieldName, { allowZero = true } = {}) {
   return parsed;
 }
 
+function buildBalancedInstallments(totalAmount, installmentCount) {
+  const count = Math.max(1, Number(installmentCount) || 1);
+  const safeTotal = Math.max(0, Number(totalAmount) || 0);
+  const baseAmount = Math.floor(safeTotal / count);
+  let remainder = safeTotal - baseAmount * count;
+
+  return Array.from({ length: count }, () => {
+    const nextAmount = baseAmount + (remainder > 0 ? 1 : 0);
+    if (remainder > 0) {
+      remainder -= 1;
+    }
+    return nextAmount;
+  });
+}
+
 function parseStatus(value) {
   const status = normalizeString(value).toUpperCase() || "ACTIVE";
   if (!RECORD_STATUSES.has(status)) {
@@ -120,6 +146,122 @@ function distributePercentages(totalItems = 0) {
   }
 
   return percentages;
+}
+
+function hasInstallmentTemplatePayload(payload = {}) {
+  const template = payload?.installmentTemplate;
+
+  if (template && typeof template === "object") {
+    return true;
+  }
+
+  return BRANCH_INSTALLMENT_TEMPLATE_KEYS.some((key) =>
+    Object.prototype.hasOwnProperty.call(payload, key),
+  );
+}
+
+function parseBranchInstallmentValues(candidate = {}) {
+  const sourceValues = [];
+
+  if (Array.isArray(candidate.installments) && candidate.installments.length) {
+    sourceValues.push(...candidate.installments);
+  } else if (Array.isArray(candidate.installmentAmounts) && candidate.installmentAmounts.length) {
+    sourceValues.push(...candidate.installmentAmounts);
+  } else {
+    Object.entries(candidate)
+      .map(([key, value]) => {
+        const match = key.match(/^installment(\d+)$/i);
+        if (!match) return null;
+        return {
+          index: Number(match[1]),
+          value,
+        };
+      })
+      .filter(Boolean)
+      .sort((left, right) => left.index - right.index)
+      .forEach(({ value }) => {
+        sourceValues.push(value);
+      });
+  }
+
+  return sourceValues
+    .map((value, index) =>
+      parseOptionalInt(value, `Installment ${index + 1}`, { allowZero: false }),
+    )
+    .filter((value) => value !== null);
+}
+
+function parseBranchInstallmentTemplate(candidate = {}, course = null, existingTemplate = null) {
+  const templateSource = candidate.installmentTemplate && typeof candidate.installmentTemplate === "object"
+    ? candidate.installmentTemplate
+    : candidate;
+
+  if (!hasInstallmentTemplatePayload(templateSource)) {
+    return null;
+  }
+
+  const normalizedTemplateName = parseOptionalText(
+    templateSource.templateName ?? templateSource.planName ?? existingTemplate?.templateName,
+  ) || "Standard Installment Plan";
+
+  const parsedInstallments = parseBranchInstallmentValues(templateSource);
+  const rawInstallmentCount = templateSource.installmentCount ?? templateSource.count ?? existingTemplate?.installmentCount;
+  const installmentCount = parsedInstallments.length > 0
+    ? parsedInstallments.length
+    : parseOptionalInt(rawInstallmentCount, "Installment count", { allowZero: false }) ?? null;
+
+  if (!installmentCount || installmentCount <= 0) {
+    throw new AppError("Installment count must be greater than zero", 400);
+  }
+
+  const effectiveInstallments = parsedInstallments.length
+    ? parsedInstallments
+    : buildBalancedInstallments(course?.afterDiscount ?? 0, installmentCount);
+
+  if (effectiveInstallments.length !== installmentCount) {
+    throw new AppError("Installment count must match installment values", 400);
+  }
+
+  const installmentTotal = effectiveInstallments.reduce((total, amount) => total + amount, 0);
+  const finalFee = Number(course?.afterDiscount ?? 0);
+
+  if (Number.isFinite(finalFee) && installmentTotal !== finalFee) {
+    throw new AppError("Installment totals must match the discounted fee", 400);
+  }
+
+  const dueRule = parseOptionalText(templateSource.dueRule ?? existingTemplate?.dueRule);
+  const allowCustomization =
+    typeof templateSource.allowCustomization === "boolean"
+      ? templateSource.allowCustomization
+      : Boolean(existingTemplate?.allowCustomization ?? true);
+  const status = parseStatus(templateSource.status ?? existingTemplate?.status ?? "ACTIVE");
+
+  return {
+    templateName: normalizedTemplateName,
+    installmentCount,
+    installments: effectiveInstallments,
+    dueRule,
+    allowCustomization,
+    status,
+  };
+}
+
+function toBranchInstallmentTemplateSummary(template = null) {
+  if (!template) return null;
+
+  return {
+    id: template.id,
+    branchId: template.branchId,
+    branchCourseId: template.branchCourseId,
+    templateName: template.templateName,
+    installmentCount: template.installmentCount,
+    installments: Array.isArray(template.installments) ? template.installments : [],
+    dueRule: template.dueRule,
+    allowCustomization: Boolean(template.allowCustomization),
+    status: template.status,
+    createdAt: template.createdAt,
+    updatedAt: template.updatedAt,
+  };
 }
 
 async function resolveBranchProfile(actor) {
@@ -275,6 +417,7 @@ function toBranchCourseSummary(course) {
     discount: course.discount,
     afterDiscount: course.afterDiscount,
     status: course.status,
+    installmentTemplate: toBranchInstallmentTemplateSummary(course.installmentTemplate),
 
     assignedFaculty: Array.isArray(course.branchFaculties)
       ? course.branchFaculties.map((faculty) => ({
@@ -503,6 +646,21 @@ async function replaceBranchCourseHierarchy(tx, branchCourseId, modules = [], ac
 
 function getBranchCourseInclude() {
   return {
+    installmentTemplate: {
+      select: {
+        id: true,
+        branchId: true,
+        branchCourseId: true,
+        templateName: true,
+        installmentCount: true,
+        installments: true,
+        dueRule: true,
+        allowCustomization: true,
+        status: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    },
     branchFaculties: {
       select: {
         id: true,
@@ -606,6 +764,10 @@ export async function createBranchCourse(payload, actor) {
   const branchId = branchProfile.id;
   const parsed = buildBranchCoursePayload(payload);
   const hierarchy = buildBranchCourseHierarchyPayload(payload);
+  const installmentTemplate = parseBranchInstallmentTemplate(
+    payload?.installmentTemplate ? payload.installmentTemplate : payload,
+    parsed,
+  );
   const actorId = actor?.id ?? null;
 
   await ensureUniqueCourseName(parsed.nameKey, branchId);
@@ -623,6 +785,36 @@ export async function createBranchCourse(payload, actor) {
 
     if (hierarchy) {
       await replaceBranchCourseHierarchy(tx, course.id, hierarchy, actorId);
+    }
+
+    if (installmentTemplate) {
+      await tx.branchInstallmentTemplate.upsert({
+        where: {
+          branchCourseId: course.id,
+        },
+        create: {
+          branchId,
+          branchCourseId: course.id,
+          templateName: installmentTemplate.templateName,
+          installmentCount: installmentTemplate.installmentCount,
+          installments: installmentTemplate.installments,
+          dueRule: installmentTemplate.dueRule,
+          allowCustomization: installmentTemplate.allowCustomization,
+          status: installmentTemplate.status,
+          createdBy: actorId,
+          updatedBy: actorId,
+        },
+        update: {
+          branchId,
+          templateName: installmentTemplate.templateName,
+          installmentCount: installmentTemplate.installmentCount,
+          installments: installmentTemplate.installments,
+          dueRule: installmentTemplate.dueRule,
+          allowCustomization: installmentTemplate.allowCustomization,
+          status: installmentTemplate.status,
+          updatedBy: actorId,
+        },
+      });
     }
 
     return tx.branchCourse.findFirst({
@@ -669,6 +861,16 @@ export async function updateBranchCourse(courseId, payload, actor) {
 
   const parsed = buildBranchCoursePayload(payload, existingCourse);
   const hierarchy = buildBranchCourseHierarchyPayload(payload);
+  const existingTemplate = await prisma.branchInstallmentTemplate.findUnique({
+    where: {
+      branchCourseId: courseId,
+    },
+  });
+  const installmentTemplate = parseBranchInstallmentTemplate(
+    payload?.installmentTemplate ? payload.installmentTemplate : payload,
+    parsed,
+    existingTemplate,
+  );
   const actorId = actor?.id ?? null;
 
   await ensureUniqueCourseName(parsed.nameKey, branchProfile.id, courseId);
@@ -686,6 +888,36 @@ export async function updateBranchCourse(courseId, payload, actor) {
 
     if (hierarchy) {
       await replaceBranchCourseHierarchy(tx, course.id, hierarchy, actorId);
+    }
+
+    if (installmentTemplate) {
+      await tx.branchInstallmentTemplate.upsert({
+        where: {
+          branchCourseId: course.id,
+        },
+        create: {
+          branchId: branchProfile.id,
+          branchCourseId: course.id,
+          templateName: installmentTemplate.templateName,
+          installmentCount: installmentTemplate.installmentCount,
+          installments: installmentTemplate.installments,
+          dueRule: installmentTemplate.dueRule,
+          allowCustomization: installmentTemplate.allowCustomization,
+          status: installmentTemplate.status,
+          createdBy: actorId,
+          updatedBy: actorId,
+        },
+        update: {
+          branchId: branchProfile.id,
+          templateName: installmentTemplate.templateName,
+          installmentCount: installmentTemplate.installmentCount,
+          installments: installmentTemplate.installments,
+          dueRule: installmentTemplate.dueRule,
+          allowCustomization: installmentTemplate.allowCustomization,
+          status: installmentTemplate.status,
+          updatedBy: actorId,
+        },
+      });
     }
 
     return tx.branchCourse.findFirst({

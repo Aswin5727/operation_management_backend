@@ -33,6 +33,10 @@ enum NotificationKind {
   BRANCH_LOGIN
   BRANCH_FACULTY_LOGIN
   FACULTY_COURSE_ASSIGNED
+  COURSE_EDIT_REQUEST
+  COURSE_EDIT_REQUEST_ACCEPTED
+  COURSE_EDIT_REQUEST_REJECTED
+  COURSE_EDIT_MODULE_UPDATED
 }
 
 enum RecordStatus {
@@ -92,29 +96,30 @@ model User {
 }
 
 model Branch {
-  id                String          @id @default(cuid())
-  branchId          String          @unique
-  branchName        String
-  branchAdminName   String
-  branchEmail       String          @unique
-  branchPhone       String          @unique
-  branchCountryCode String          @default("")
-  branchCountry     String          @default("")
-  branchStateCode   String          @default("")
-  branchState       String          @default("")
-  branchCity        String          @default("")
-  branchAddress     String
-  status            RecordStatus    @default(ACTIVE)
-  adminUserId       String?         @unique
-  adminUser         User?           @relation("BranchAdminUser", fields: [adminUserId], references: [id], onDelete: SetNull)
-  createdBy         String?
-  updatedBy         String?
-  createdAt         DateTime        @default(now())
-  updatedAt         DateTime        @updatedAt
-  courses           Course[]
-  branchCourses     BranchCourse[]
-  branchFaculties   BranchFaculty[]
-  branchStudents    BranchStudent[]
+  id                         String                      @id @default(cuid())
+  branchId                   String                      @unique
+  branchName                 String
+  branchAdminName            String
+  branchEmail                String                      @unique
+  branchPhone                String                      @unique
+  branchCountryCode          String                      @default("")
+  branchCountry              String                      @default("")
+  branchStateCode            String                      @default("")
+  branchState                String                      @default("")
+  branchCity                 String                      @default("")
+  branchAddress              String
+  status                     RecordStatus                @default(ACTIVE)
+  adminUserId                String?                     @unique
+  adminUser                  User?                       @relation("BranchAdminUser", fields: [adminUserId], references: [id], onDelete: SetNull)
+  createdBy                  String?
+  updatedBy                  String?
+  createdAt                  DateTime                    @default(now())
+  updatedAt                  DateTime                    @updatedAt
+  courses                    Course[]
+  branchCourses              BranchCourse[]
+  branchFaculties            BranchFaculty[]
+  branchStudents             BranchStudent[]
+  branchInstallmentTemplates BranchInstallmentTemplate[]
 
   @@index([status])
   @@index([branchName])
@@ -243,13 +248,37 @@ model BranchCourse {
   createdAt        DateTime     @default(now())
   updatedAt        DateTime     @updatedAt
 
-  modules         BranchCourseModule[]
-  branchFaculties BranchFaculty[]
+  modules             BranchCourseModule[]
+  branchFaculties     BranchFaculty[]
+  installmentTemplate BranchInstallmentTemplate?
 
   @@unique([branchId, nameKey])
   @@unique([branchId, courseCode])
   @@index([branchId])
   @@index([status])
+  @@index([createdAt])
+}
+
+model BranchInstallmentTemplate {
+  id                 String        @id @default(cuid())
+  branchId           String
+  branch             Branch        @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  branchCourseId     String?       @unique
+  branchCourse       BranchCourse? @relation(fields: [branchCourseId], references: [id], onDelete: Cascade)
+  templateName       String
+  planType           String        @default("CUSTOM")
+  installmentCount   Int
+  installments       Json
+  dueRule            String?
+  allowCustomization Boolean       @default(true)
+  status             RecordStatus  @default(ACTIVE)
+  createdBy          String?
+  updatedBy          String?
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+
+  @@index([branchId, status])
+  @@index([branchCourseId, status])
   @@index([createdAt])
 }
 

@@ -33,6 +33,10 @@ enum NotificationKind {
   BRANCH_LOGIN
   BRANCH_FACULTY_LOGIN
   FACULTY_COURSE_ASSIGNED
+  COURSE_EDIT_REQUEST
+  COURSE_EDIT_REQUEST_ACCEPTED
+  COURSE_EDIT_REQUEST_REJECTED
+  COURSE_EDIT_MODULE_UPDATED
 }
 enum RecordStatus {
   ACTIVE
@@ -114,6 +118,7 @@ model Branch {
   branchCourses   BranchCourse[]
   branchFaculties BranchFaculty[]
   branchStudents  BranchStudent[]
+  branchInstallmentTemplates BranchInstallmentTemplate[]
 
   @@index([status])
   @@index([branchName])
@@ -244,11 +249,35 @@ model BranchCourse {
  
   modules         BranchCourseModule[]
   branchFaculties BranchFaculty[]
+  installmentTemplate BranchInstallmentTemplate?
 
   @@unique([branchId, nameKey])
   @@unique([branchId, courseCode])
   @@index([branchId])
   @@index([status])
+  @@index([createdAt])
+}
+
+model BranchInstallmentTemplate {
+  id                String        @id @default(cuid())
+  branchId          String
+  branch            Branch        @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  branchCourseId    String?       @unique
+  branchCourse      BranchCourse?  @relation(fields: [branchCourseId], references: [id], onDelete: Cascade)
+  templateName      String
+  planType          String        @default("CUSTOM")
+  installmentCount  Int
+  installments      Json
+  dueRule           String?
+  allowCustomization Boolean      @default(true)
+  status            RecordStatus   @default(ACTIVE)
+  createdBy         String?
+  updatedBy         String?
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+
+  @@index([branchId, status])
+  @@index([branchCourseId, status])
   @@index([createdAt])
 }
 

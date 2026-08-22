@@ -255,6 +255,23 @@ exports.Prisma.BranchCourseScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.BranchInstallmentTemplateScalarFieldEnum = {
+  id: 'id',
+  branchId: 'branchId',
+  branchCourseId: 'branchCourseId',
+  templateName: 'templateName',
+  planType: 'planType',
+  installmentCount: 'installmentCount',
+  installments: 'installments',
+  dueRule: 'dueRule',
+  allowCustomization: 'allowCustomization',
+  status: 'status',
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.BranchCourseModuleScalarFieldEnum = {
   id: 'id',
   branchCourseId: 'branchCourseId',
@@ -530,6 +547,10 @@ exports.Prisma.NullableJsonNullValueInput = {
   JsonNull: Prisma.JsonNull
 };
 
+exports.Prisma.JsonNullValueInput = {
+  JsonNull: Prisma.JsonNull
+};
+
 exports.Prisma.QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
@@ -575,7 +596,11 @@ exports.NotificationKind = exports.$Enums.NotificationKind = {
   BRANCH_INVITATION_RESENT: 'BRANCH_INVITATION_RESENT',
   BRANCH_LOGIN: 'BRANCH_LOGIN',
   BRANCH_FACULTY_LOGIN: 'BRANCH_FACULTY_LOGIN',
-  FACULTY_COURSE_ASSIGNED: 'FACULTY_COURSE_ASSIGNED'
+  FACULTY_COURSE_ASSIGNED: 'FACULTY_COURSE_ASSIGNED',
+  COURSE_EDIT_REQUEST: 'COURSE_EDIT_REQUEST',
+  COURSE_EDIT_REQUEST_ACCEPTED: 'COURSE_EDIT_REQUEST_ACCEPTED',
+  COURSE_EDIT_REQUEST_REJECTED: 'COURSE_EDIT_REQUEST_REJECTED',
+  COURSE_EDIT_MODULE_UPDATED: 'COURSE_EDIT_MODULE_UPDATED'
 };
 
 exports.BatchStatus = exports.$Enums.BatchStatus = {
@@ -603,6 +628,7 @@ exports.Prisma.ModelName = {
   PasswordResetToken: 'PasswordResetToken',
   Course: 'Course',
   BranchCourse: 'BranchCourse',
+  BranchInstallmentTemplate: 'BranchInstallmentTemplate',
   BranchCourseModule: 'BranchCourseModule',
   BranchCourseSubmodule: 'BranchCourseSubmodule',
   CourseModule: 'CourseModule',
