@@ -16,7 +16,16 @@ const BRANCH_INSTALLMENT_TEMPLATE_KEYS = [
   "installmentAmounts",
   "dueRule",
   "allowCustomization",
-  "status",
+];
+
+const BRANCH_INSTALLMENT_TEMPLATE_FIELD_KEYS = [
+  "templateName",
+  "planName",
+  "installmentCount",
+  "installments",
+  "installmentAmounts",
+  "dueRule",
+  "allowCustomization",
 ];
 
 function normalizeString(value) {
@@ -155,7 +164,7 @@ function hasInstallmentTemplatePayload(payload = {}) {
     return true;
   }
 
-  return BRANCH_INSTALLMENT_TEMPLATE_KEYS.some((key) =>
+  return BRANCH_INSTALLMENT_TEMPLATE_FIELD_KEYS.some((key) =>
     Object.prototype.hasOwnProperty.call(payload, key),
   );
 }
