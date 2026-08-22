@@ -7,9 +7,10 @@ let prismaClient = null;
 let prismaAdapter = null;
 let warmupPromise = null;
 const runtimeDatabaseUrl =
+  config.databaseUrl ||
   process.env.PRISMA_DATABASE_URL ||
   process.env.DIRECT_URL ||
-  config.databaseUrl;
+  "";
 
 function createPrismaClient() {
   if (prismaClient) {
