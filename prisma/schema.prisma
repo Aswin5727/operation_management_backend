@@ -62,6 +62,7 @@ model Branch {
   branchStateCode   String          @default("")
   adminUser         User?           @relation("BranchAdminUser", fields: [adminUserId], references: [id])
   branchCourses     BranchCourse[]
+  branchInstallmentTemplates BranchInstallmentTemplate[]
   branchFaculties   BranchFaculty[]
   branchStudents    BranchStudent[]
   courses           Course[]
@@ -237,6 +238,7 @@ model BranchCourse {
   createdAt        DateTime             @default(now())
   updatedAt        DateTime             @updatedAt
   branch           Branch               @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  installmentTemplate BranchInstallmentTemplate?
   modules          BranchCourseModule[]
   branchFaculties  BranchFaculty[]
 
@@ -601,6 +603,30 @@ model BranchFaculty {
   @@index([courseId])
   @@index([branchCourseId])
   @@index([status])
+}
+
+model BranchInstallmentTemplate {
+  id                 String        @id @default(cuid())
+  branchId           String
+  branchCourseId     String?       @unique
+  templateName       String
+  planType           String
+  installmentCount   Int
+  installments       Json
+  dueRule            String        @default("Admission")
+  allowCustomization Boolean       @default(true)
+  status             RecordStatus  @default(ACTIVE)
+  createdBy          String?
+  updatedBy          String?
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+  branch             Branch        @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  branchCourse       BranchCourse? @relation(fields: [branchCourseId], references: [id], onDelete: Cascade)
+
+  @@index([branchId])
+  @@index([branchCourseId])
+  @@index([status])
+  @@index([planType])
 }
 
 enum UserRole {

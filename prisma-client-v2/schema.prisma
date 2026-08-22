@@ -42,29 +42,30 @@ model User {
 }
 
 model Branch {
-  id                String          @id @default(cuid())
-  branchId          String          @unique
-  branchName        String
-  branchAdminName   String
-  branchEmail       String          @unique
-  branchPhone       String          @unique
-  branchAddress     String
-  status            RecordStatus    @default(ACTIVE)
-  adminUserId       String?         @unique
-  createdBy         String?
-  updatedBy         String?
-  createdAt         DateTime        @default(now())
-  updatedAt         DateTime        @updatedAt
-  branchCity        String          @default("")
-  branchCountry     String          @default("")
-  branchCountryCode String          @default("")
-  branchState       String          @default("")
-  branchStateCode   String          @default("")
-  adminUser         User?           @relation("BranchAdminUser", fields: [adminUserId], references: [id])
-  branchCourses     BranchCourse[]
-  branchFaculties   BranchFaculty[]
-  branchStudents    BranchStudent[]
-  courses           Course[]
+  id                         String                      @id @default(cuid())
+  branchId                   String                      @unique
+  branchName                 String
+  branchAdminName            String
+  branchEmail                String                      @unique
+  branchPhone                String                      @unique
+  branchAddress              String
+  status                     RecordStatus                @default(ACTIVE)
+  adminUserId                String?                     @unique
+  createdBy                  String?
+  updatedBy                  String?
+  createdAt                  DateTime                    @default(now())
+  updatedAt                  DateTime                    @updatedAt
+  branchCity                 String                      @default("")
+  branchCountry              String                      @default("")
+  branchCountryCode          String                      @default("")
+  branchState                String                      @default("")
+  branchStateCode            String                      @default("")
+  adminUser                  User?                       @relation("BranchAdminUser", fields: [adminUserId], references: [id])
+  branchCourses              BranchCourse[]
+  branchInstallmentTemplates BranchInstallmentTemplate[]
+  branchFaculties            BranchFaculty[]
+  branchStudents             BranchStudent[]
+  courses                    Course[]
 
   @@index([status])
   @@index([branchName])
@@ -218,27 +219,28 @@ model Course {
 }
 
 model BranchCourse {
-  id               String               @id @default(cuid())
-  branchId         String
-  courseCode       String
-  name             String
-  nameKey          String
-  description      String?
-  mode             String
-  duration         Int?
-  hours            Int?
-  actualFees       Int?
-  registrationFees Int?
-  discount         Int?
-  afterDiscount    Int?
-  status           RecordStatus         @default(ACTIVE)
-  createdBy        String?
-  updatedBy        String?
-  createdAt        DateTime             @default(now())
-  updatedAt        DateTime             @updatedAt
-  branch           Branch               @relation(fields: [branchId], references: [id], onDelete: Cascade)
-  modules          BranchCourseModule[]
-  branchFaculties  BranchFaculty[]
+  id                  String                     @id @default(cuid())
+  branchId            String
+  courseCode          String
+  name                String
+  nameKey             String
+  description         String?
+  mode                String
+  duration            Int?
+  hours               Int?
+  actualFees          Int?
+  registrationFees    Int?
+  discount            Int?
+  afterDiscount       Int?
+  status              RecordStatus               @default(ACTIVE)
+  createdBy           String?
+  updatedBy           String?
+  createdAt           DateTime                   @default(now())
+  updatedAt           DateTime                   @updatedAt
+  branch              Branch                     @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  installmentTemplate BranchInstallmentTemplate?
+  modules             BranchCourseModule[]
+  branchFaculties     BranchFaculty[]
 
   @@unique([branchId, nameKey])
   @@unique([branchId, courseCode])
@@ -601,6 +603,30 @@ model BranchFaculty {
   @@index([courseId])
   @@index([branchCourseId])
   @@index([status])
+}
+
+model BranchInstallmentTemplate {
+  id                 String        @id @default(cuid())
+  branchId           String
+  branchCourseId     String?       @unique
+  templateName       String
+  planType           String
+  installmentCount   Int
+  installments       Json
+  dueRule            String        @default("Admission")
+  allowCustomization Boolean       @default(true)
+  status             RecordStatus  @default(ACTIVE)
+  createdBy          String?
+  updatedBy          String?
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+  branch             Branch        @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  branchCourse       BranchCourse? @relation(fields: [branchCourseId], references: [id], onDelete: Cascade)
+
+  @@index([branchId])
+  @@index([branchCourseId])
+  @@index([status])
+  @@index([planType])
 }
 
 enum UserRole {

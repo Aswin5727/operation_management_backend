@@ -560,6 +560,23 @@ exports.Prisma.BranchFacultyScalarFieldEnum = {
   branchCourseId: 'branchCourseId'
 };
 
+exports.Prisma.BranchInstallmentTemplateScalarFieldEnum = {
+  id: 'id',
+  branchId: 'branchId',
+  branchCourseId: 'branchCourseId',
+  templateName: 'templateName',
+  planType: 'planType',
+  installmentCount: 'installmentCount',
+  installments: 'installments',
+  dueRule: 'dueRule',
+  allowCustomization: 'allowCustomization',
+  status: 'status',
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -567,6 +584,10 @@ exports.Prisma.SortOrder = {
 
 exports.Prisma.NullableJsonNullValueInput = {
   DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull
+};
+
+exports.Prisma.JsonNullValueInput = {
   JsonNull: Prisma.JsonNull
 };
 
@@ -670,7 +691,8 @@ exports.Prisma.ModelName = {
   FacultyBatchEntry: 'FacultyBatchEntry',
   FacultyAttendanceSession: 'FacultyAttendanceSession',
   StudentAttendance: 'StudentAttendance',
-  BranchFaculty: 'BranchFaculty'
+  BranchFaculty: 'BranchFaculty',
+  BranchInstallmentTemplate: 'BranchInstallmentTemplate'
 };
 
 /**
