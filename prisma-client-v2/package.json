@@ -1,5 +1,9 @@
 {
+<<<<<<< HEAD
   "name": "prisma-client-6426ec6ef171a1b2ac9c252d4f987d528706cedac216bc5e68b860015121e5d0",
+=======
+  "name": "prisma-client-8876dd28f64b6c1edd029b9533217ff250ed4d6e148f1efea2037b91a05e15ee",
+>>>>>>> fcadcbe (Add course edit request and update course faculty notifications)
   "main": "index.js",
   "types": "index.d.ts",
   "browser": "default.js",

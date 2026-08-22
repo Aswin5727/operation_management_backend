@@ -6,16 +6,39 @@ const NOTIFICATION_KIND_MAP = {
   BRANCH_LOGIN: "branch-login",
   BRANCH_FACULTY_LOGIN: "branch-faculty-login",
   FACULTY_COURSE_ASSIGNED: "faculty-course-assigned",
+  COURSE_EDIT_REQUEST: "course-edit-request",
+  COURSE_EDIT_REQUEST_ACCEPTED: "course-edit-request-accepted",
+  COURSE_EDIT_REQUEST_REJECTED: "course-edit-request-rejected",
+  COURSE_EDIT_MODULE_UPDATED: "course-edit-module-updated",
 };
 
 const BRANCH_ADMIN_VISIBLE_NOTIFICATION_KINDS = new Set([
   "BRANCH_INVITATION_RESENT",
   "BRANCH_LOGIN",
   "BRANCH_FACULTY_LOGIN",
+  "COURSE_EDIT_REQUEST",
+  "COURSE_EDIT_MODULE_UPDATED",
 ]);
 const DEFAULT_VISIBLE_NOTIFICATION_KINDS = new Set([
   "BRANCH_INVITATION_RESENT",
   "BRANCH_LOGIN",
+]);
+const SUPER_ADMIN_VISIBLE_NOTIFICATION_KINDS = new Set([
+  "BRANCH_CREATED",
+  "BRANCH_INVITATION_RESENT",
+  "BRANCH_LOGIN",
+  "BRANCH_FACULTY_LOGIN",
+  "FACULTY_COURSE_ASSIGNED",
+  "COURSE_EDIT_REQUEST",
+  "COURSE_EDIT_REQUEST_ACCEPTED",
+  "COURSE_EDIT_REQUEST_REJECTED",
+  "COURSE_EDIT_MODULE_UPDATED",
+]);
+const FACULTY_VISIBLE_NOTIFICATION_KINDS = new Set([
+  "FACULTY_COURSE_ASSIGNED",
+  "COURSE_EDIT_REQUEST_ACCEPTED",
+  "COURSE_EDIT_REQUEST_REJECTED",
+  "COURSE_EDIT_MODULE_UPDATED",
 ]);
 const BRANCH_ADMIN_SCOPE_CACHE = new Map();
 const BRANCH_ADMIN_SCOPE_CACHE_TTL_MS = 60 * 1000;
@@ -39,6 +62,19 @@ function normalizeNotificationRow(row) {
     title: normalizeString(row.title),
     message: normalizeString(row.message),
     actionLabel: normalizeString(row.actionLabel),
+    requestId: normalizeString(row.requestId),
+    requestStatus: normalizeString(row.requestStatus),
+    requestTitle: normalizeString(row.requestTitle),
+    requestReason: normalizeString(row.requestReason),
+    requestDescription: normalizeString(row.requestDescription),
+    branchCourseId: normalizeString(row.branchCourseId),
+    branchCourseName: normalizeString(row.branchCourseName),
+    moduleId: normalizeString(row.moduleId),
+    moduleName: normalizeString(row.moduleName),
+    subModuleId: normalizeString(row.subModuleId),
+    subModuleName: normalizeString(row.subModuleName),
+    facultyId: normalizeString(row.facultyId),
+    facultyName: normalizeString(row.facultyName),
     targetBranchId: normalizeString(row.targetBranchId),
     targetBranchEmail: normalizeEmail(row.targetBranchEmail),
     targetBranchName: normalizeString(row.targetBranchName),
@@ -47,11 +83,20 @@ function normalizeNotificationRow(row) {
     ),
     read: Boolean(row.read),
     readAt: row.readAt || null,
-    createdAt: row.createdAt,
+      createdAt: row.createdAt,
   };
 }
 
-function buildNotificationData({ kind, tone, title, message, actionLabel, branch = {}, createdBy = null }) {
+function buildNotificationData({
+  kind,
+  tone,
+  title,
+  message,
+  actionLabel,
+  branch = {},
+  createdBy = null,
+  extras = {},
+}) {
   return {
     kind,
     tone,
@@ -62,6 +107,7 @@ function buildNotificationData({ kind, tone, title, message, actionLabel, branch
     targetBranchEmail: normalizeEmail(branch.branchEmail),
     targetBranchName: normalizeString(branch.branchName),
     createdBy: createdBy || null,
+    ...extras,
   };
 }
 
@@ -132,8 +178,16 @@ async function buildBranchAdminScope(user = {}) {
 
 function getVisibleNotificationKindsForRole(user = {}) {
   const role = normalizeString(user?.role).toUpperCase();
+  if (role === "SUPER_ADMIN") {
+    return SUPER_ADMIN_VISIBLE_NOTIFICATION_KINDS;
+  }
+
   if (role === "BRANCH_ADMIN") {
     return BRANCH_ADMIN_VISIBLE_NOTIFICATION_KINDS;
+  }
+
+  if (role === "FACULTY") {
+    return FACULTY_VISIBLE_NOTIFICATION_KINDS;
   }
 
   return DEFAULT_VISIBLE_NOTIFICATION_KINDS;
@@ -152,7 +206,13 @@ function buildNotificationWhere({
   if (isFaculty) {
     return {
       targetUserId: user.id,
-      kind: "FACULTY_COURSE_ASSIGNED",
+      ...(normalizedKind
+        ? { kind: normalizedKind }
+        : {
+            kind: {
+              in: Array.from(visibleKinds),
+            },
+          }),
       ...(unreadOnly ? { read: false } : {}),
     };
   }
@@ -357,8 +417,8 @@ async function buildFallbackBranchNotifications(user = {}, branchScope = {}) {
   );
 }
 
-async function createNotification(data) {
-  const record = await prisma.notification.create({
+async function createNotification(data, prismaClient = prisma) {
+  const record = await prismaClient.notification.create({
     data,
   });
 
@@ -422,6 +482,148 @@ export async function createBranchFacultyLoginNotification(branch = {}, faculty 
   );
 }
 
+export async function createCourseEditRequestNotification({
+  request = {},
+  branchCourse = {},
+  faculty = {},
+  actor = {},
+  prismaClient = prisma,
+}) {
+  return createNotification(
+    buildNotificationData({
+      kind: "COURSE_EDIT_REQUEST",
+      tone: "amber",
+      title: "Edit Request Received",
+      message: `Faculty has requested permission to edit modules and sub-modules of ${branchCourse?.name || "the course"}.`,
+      actionLabel: "Review request",
+      branch: branchCourse?.branch || {},
+      createdBy: actor?.userId || actor?.id || null,
+      extras: {
+        requestId: request?.id || null,
+        requestStatus: request?.status || "PENDING",
+        requestTitle: request?.title || "",
+        requestReason: request?.reason || "",
+        requestDescription: request?.description || "",
+        branchCourseId: branchCourse?.id || "",
+        branchCourseName: branchCourse?.name || "",
+        facultyId: faculty?.facultyId || faculty?.id || "",
+        facultyName: faculty?.facultyName || faculty?.name || "",
+      },
+    }),
+    prismaClient,
+  );
+}
+
+export async function createCourseEditRequestAcceptedNotification({
+  request = {},
+  branchCourse = {},
+  faculty = {},
+  actor = {},
+  prismaClient = prisma,
+}) {
+  return createNotification(
+    buildNotificationData({
+      kind: "COURSE_EDIT_REQUEST_ACCEPTED",
+      tone: "green",
+      title: "Edit Request Approved",
+      message: `You can now edit the Modules and Sub Modules of ${branchCourse?.name || "the course"}.`,
+      actionLabel: "Open Edit",
+      branch: branchCourse?.branch || {},
+      createdBy: actor?.userId || actor?.id || null,
+      extras: {
+        targetUserId: faculty?.userId || faculty?.id || null,
+        requestId: request?.id || null,
+        requestStatus: request?.status || "ACCEPTED",
+        requestTitle: request?.title || "",
+        requestReason: request?.reason || "",
+        requestDescription: request?.description || "",
+        branchCourseId: branchCourse?.id || "",
+        branchCourseName: branchCourse?.name || "",
+        facultyId: faculty?.facultyId || faculty?.id || "",
+        facultyName: faculty?.facultyName || faculty?.name || "",
+      },
+    }),
+    prismaClient,
+  );
+}
+
+export async function createCourseEditRequestRejectedNotification({
+  request = {},
+  branchCourse = {},
+  faculty = {},
+  actor = {},
+  responseNote = "",
+  prismaClient = prisma,
+}) {
+  return createNotification(
+    buildNotificationData({
+      kind: "COURSE_EDIT_REQUEST_REJECTED",
+      tone: "red",
+      title: "Edit Request Rejected",
+      message: responseNote || `Your request to edit ${branchCourse?.name || "the course"} was rejected.`,
+      actionLabel: "View status",
+      branch: branchCourse?.branch || {},
+      createdBy: actor?.userId || actor?.id || null,
+      extras: {
+        targetUserId: faculty?.userId || faculty?.id || null,
+        requestId: request?.id || null,
+        requestStatus: request?.status || "REJECTED",
+        requestTitle: request?.title || "",
+        requestReason: request?.reason || "",
+        requestDescription: request?.description || "",
+        branchCourseId: branchCourse?.id || "",
+        branchCourseName: branchCourse?.name || "",
+        facultyId: faculty?.facultyId || faculty?.id || "",
+        facultyName: faculty?.facultyName || faculty?.name || "",
+      },
+    }),
+    prismaClient,
+  );
+}
+
+export async function createCourseEditModuleUpdatedNotification({
+  request = {},
+  branchCourse = {},
+  faculty = {},
+  module = {},
+  subModule = {},
+  actor = {},
+  updatedFields = [],
+  prismaClient = prisma,
+}) {
+  const moduleLabel = module?.title || "a module";
+  const subModuleLabel = subModule?.title ? ` / ${subModule.title}` : "";
+  const fieldLabel = Array.isArray(updatedFields) && updatedFields.length ? ` (${updatedFields.join(", ")})` : "";
+
+  return createNotification(
+    buildNotificationData({
+      kind: "COURSE_EDIT_MODULE_UPDATED",
+      tone: "blue",
+      title: "Course Module Updated",
+      message: `Faculty updated ${moduleLabel}${subModuleLabel} in ${branchCourse?.name || "the course"}${fieldLabel}.`,
+      actionLabel: "View update",
+      branch: branchCourse?.branch || {},
+      createdBy: actor?.userId || actor?.id || null,
+      extras: {
+        requestId: request?.id || null,
+        requestStatus: request?.status || "COMPLETED",
+        requestTitle: request?.title || "",
+        requestReason: request?.reason || "",
+        requestDescription: request?.description || "",
+        branchCourseId: branchCourse?.id || "",
+        branchCourseName: branchCourse?.name || "",
+        moduleId: module?.id || "",
+        moduleName: module?.title || "",
+        subModuleId: subModule?.id || "",
+        subModuleName: subModule?.title || "",
+        facultyId: faculty?.facultyId || faculty?.id || "",
+        facultyName: faculty?.facultyName || faculty?.name || "",
+      },
+    }),
+    prismaClient,
+  );
+}
+
 export async function listNotifications(query = {}, user = {}) {
   const page = Math.max(1, Number(query.page || 1));
   const limit = Math.min(100, Math.max(1, Number(query.limit || 10)));
@@ -453,34 +655,13 @@ export async function listNotifications(query = {}, user = {}) {
         take: limit,
       }),
       prisma.notification.count({
-        where: isFaculty
-          ? {
-              read: false,
-              targetUserId: user.id,
-              kind: "FACULTY_COURSE_ASSIGNED",
-            }
-          : Object.keys(branchScope).length > 0
-            ? {
-                read: false,
-                ...branchScope,
-                ...(kind
-                  ? { kind }
-                  : {
-                      kind: {
-                        in: Array.from(visibleKinds),
-                      },
-                    }),
-              }
-            : {
-                read: false,
-                ...(kind
-                  ? { kind }
-                  : {
-                      kind: {
-                        in: Array.from(visibleKinds),
-                      },
-                    }),
-            },
+        where: buildNotificationWhere({
+          user,
+          branchScope,
+          visibleKinds,
+          unreadOnly: true,
+          kind,
+        }),
       }),
     ]);
   } catch (error) {
@@ -587,13 +768,16 @@ export async function markNotificationsAsRead(
   const hasIds = Array.isArray(notificationIds) && notificationIds.length > 0;
   const now = new Date();
   const branchScope = await buildBranchAdminScope(user);
+  const visibleKinds = getVisibleNotificationKindsForRole(user);
 
   const facultyScope =
     user?.role === "FACULTY"
       ? {
-        targetUserId: user.id,
-        kind: "FACULTY_COURSE_ASSIGNED",
-      }
+          targetUserId: user.id,
+          kind: {
+            in: Array.from(visibleKinds),
+          },
+        }
       : Object.keys(branchScope).length > 0
         ? branchScope
         : {}

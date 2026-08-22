@@ -37,6 +37,17 @@ enum NotificationKind {
   COURSE_EDIT_REQUEST_ACCEPTED
   COURSE_EDIT_REQUEST_REJECTED
   COURSE_EDIT_MODULE_UPDATED
+<<<<<<< HEAD
+=======
+}
+
+enum CourseEditRequestStatus {
+  PENDING
+  ACCEPTED
+  EDITING
+  COMPLETED
+  REJECTED
+>>>>>>> fcadcbe (Add course edit request and update course faculty notifications)
 }
 
 enum RecordStatus {
@@ -142,12 +153,26 @@ model LoginEvent {
 }
 
 model Notification {
-  id          String           @id @default(cuid())
-  kind        NotificationKind
-  tone        String           @default("blue")
-  title       String
-  message     String
-  actionLabel String?
+  id                 String             @id @default(cuid())
+  kind               NotificationKind
+  tone               String             @default("blue")
+  title              String
+  message            String
+  actionLabel        String?
+  requestId          String?
+  request            CourseEditRequest? @relation("CourseEditRequestNotifications", fields: [requestId], references: [id], onDelete: SetNull)
+  requestStatus      String?
+  requestTitle       String?
+  requestReason      String?
+  requestDescription String?
+  branchCourseId     String?
+  branchCourseName   String?
+  moduleId           String?
+  moduleName         String?
+  subModuleId        String?
+  subModuleName      String?
+  facultyId          String?
+  facultyName        String?
 
   targetUserId String?
   targetUser   User?   @relation("NotificationTargetUser", fields: [targetUserId], references: [id], onDelete: SetNull)
@@ -165,9 +190,43 @@ model Notification {
   @@index([kind, createdAt])
   @@index([read, createdAt])
   @@index([targetUserId, read])
+  @@index([requestId])
   @@index([targetBranchId])
   @@index([targetBranchEmail])
   @@index([targetBranchName])
+}
+
+model CourseEditRequest {
+  id               String                  @id @default(cuid())
+  branchCourseId   String
+  branchId         String?
+  facultyUserId    String?
+  facultyId        String?
+  facultyName      String?
+  facultyEmail     String?
+  title            String
+  reason           String
+  description      String?
+  status           CourseEditRequestStatus @default(PENDING)
+  requestedModules Json?
+  reviewedByUserId String?
+  reviewedAt       DateTime?
+  acceptedAt       DateTime?
+  rejectedAt       DateTime?
+  editingStartedAt DateTime?
+  completedAt      DateTime?
+  responseNote     String?
+  updatedModules   Json?
+  createdBy        String?
+  updatedBy        String?
+  createdAt        DateTime                @default(now())
+  updatedAt        DateTime                @updatedAt
+  notifications    Notification[]          @relation("CourseEditRequestNotifications")
+
+  @@index([branchCourseId, status, createdAt])
+  @@index([branchId, status])
+  @@index([facultyUserId, status])
+  @@index([reviewedByUserId])
 }
 
 model PasswordResetToken {

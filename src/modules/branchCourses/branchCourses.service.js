@@ -573,7 +573,7 @@ function buildBranchCoursePayload(payload = {}, existingCourse = null) {
   };
 }
 
-function buildBranchCourseHierarchyPayload(payload = {}) {
+export function buildBranchCourseHierarchyPayload(payload = {}) {
   const { hasHierarchy, modules } = extractBranchCourseHierarchy(payload);
 
   if (!hasHierarchy) {
@@ -919,6 +919,44 @@ export async function updateBranchCourse(courseId, payload, actor) {
         },
       });
     }
+
+    return tx.branchCourse.findFirst({
+      where: {
+        id: courseId,
+        branchId: branchProfile.id,
+      },
+      include: getBranchCourseInclude(),
+    });
+  });
+
+  return toBranchCourseDetail(updated);
+}
+
+export async function updateBranchCourseModulesOnly(courseId, payload, actor, options = {}) {
+  const branchId = normalizeString(options.branchId) || null;
+  const branchProfile = branchId
+    ? { id: branchId }
+    : await resolveBranchProfile(actor);
+  const existingCourse = await prisma.branchCourse.findFirst({
+    where: {
+      id: courseId,
+      branchId: branchProfile.id,
+    },
+  });
+
+  if (!existingCourse) {
+    throw new AppError("Course not found", 404);
+  }
+
+  const hierarchy = buildBranchCourseHierarchyPayload(payload);
+  if (!hierarchy) {
+    throw new AppError("Modules are required", 400);
+  }
+
+  const actorId = actor?.id ?? null;
+
+  const updated = await prisma.$transaction(async (tx) => {
+    await replaceBranchCourseHierarchy(tx, courseId, hierarchy, actorId);
 
     return tx.branchCourse.findFirst({
       where: {

@@ -226,14 +226,129 @@ function normalizeBatchEntriesPayload(payload) {
   return [];
 }
 
+function getFacultyCourseInclude() {
+  return {
+    modules: {
+      orderBy: { sequenceNo: "asc" },
+    },
+    batches: {
+      orderBy: [{ startDate: "asc" }, { startTime: "asc" }],
+      select: {
+        id: true,
+        courseId: true,
+        batchName: true,
+        description: true,
+        startDate: true,
+        endDate: true,
+        startTime: true,
+        endTime: true,
+        capacity: true,
+        enrolledCount: true,
+        status: true,
+        statusChangedAt: true,
+        statusChangedBy: true,
+        createdBy: true,
+        updatedBy: true,
+        createdAt: true,
+        updatedAt: true,
+        _count: {
+          select: {
+            facultyAssignments: true,
+          },
+        },
+      },
+    },
+    _count: {
+      select: {
+        modules: true,
+        batches: true,
+      },
+    },
+  };
+}
+
 function toCourseSummary(course) {
   if (!course) return null;
 
   return {
     id: course.id,
     name: course.name,
+    courseCode: course.courseCode,
+    branchId: course.branchId,
+    description: course.description,
+    feeReference: course.feeReference,
     mode: course.mode,
+    duration: course.duration,
+    hours: course.hours,
+    actualFees: course.actualFees,
+    registrationFees: course.registrationFees,
+    discount: course.discount,
+    afterDiscount: course.afterDiscount,
+    installmentCount: course.installmentCount,
+    installment1: course.installment1,
+    installment2: course.installment2,
+    installment3: course.installment3,
+    installments: Array.isArray(course.installments) ? course.installments : [],
     status: course.status,
+    statusChangedAt: course.statusChangedAt,
+    statusChangedBy: course.statusChangedBy,
+    createdBy: course.createdBy,
+    updatedBy: course.updatedBy,
+    createdAt: course.createdAt,
+    updatedAt: course.updatedAt,
+    moduleCount: course._count?.modules ?? course.moduleCount ?? 0,
+    batchCount: course._count?.batches ?? course.batchCount ?? 0,
+  };
+}
+
+function toCourseModule(module) {
+  return {
+    id: module.id,
+    courseId: module.courseId,
+    title: module.title,
+    description: module.description,
+    sequenceNo: module.sequenceNo,
+    status: module.status === "ACTIVE" ? "Active" : "Inactive",
+    statusChangedAt: module.statusChangedAt,
+    statusChangedBy: module.statusChangedBy,
+    createdBy: module.createdBy,
+    updatedBy: module.updatedBy,
+    createdAt: module.createdAt,
+    updatedAt: module.updatedAt,
+  };
+}
+
+function toCourseBatch(batch) {
+  return {
+    id: batch.id,
+    courseId: batch.courseId,
+    batchName: batch.batchName,
+    description: batch.description,
+    startDate: batch.startDate,
+    endDate: batch.endDate,
+    startTime: batch.startTime,
+    endTime: batch.endTime,
+    capacity: batch.capacity,
+    enrolledCount: batch.enrolledCount,
+    status: batch.status === "ACTIVE" ? "Active" : batch.status === "INACTIVE" ? "Inactive" : batch.status,
+    statusChangedAt: batch.statusChangedAt,
+    statusChangedBy: batch.statusChangedBy,
+    createdBy: batch.createdBy,
+    updatedBy: batch.updatedBy,
+    createdAt: batch.createdAt,
+    updatedAt: batch.updatedAt,
+    facultyAssignmentCount: batch._count?.facultyAssignments ?? 0,
+  };
+}
+
+function toCourseDetail(course) {
+  const summary = toCourseSummary(course);
+  if (!summary) return null;
+
+  return {
+    ...summary,
+    modules: Array.isArray(course.modules) ? course.modules.map(toCourseModule) : [],
+    batches: Array.isArray(course.batches) ? course.batches.map(toCourseBatch) : [],
   };
 }
 
@@ -243,6 +358,7 @@ function toCourseAssignmentSummary(assignment) {
     facultyId: assignment.facultyId,
     courseId: assignment.courseId || "",
     courseName: assignment.course?.name || "",
+    course: assignment.course ? toCourseDetail(assignment.course) : null,
     createdAt: assignment.createdAt,
     updatedAt: assignment.updatedAt,
   };
@@ -254,6 +370,7 @@ function toBatchEntry(entry) {
     facultyId: entry.facultyId,
     courseId: entry.courseId || "",
     courseName: entry.course?.name || "",
+    course: entry.course ? toCourseDetail(entry.course) : null,
     batchName: entry.batchName,
     batchTiming: entry.batchTiming,
     sequenceNo: entry.sequenceNo,
@@ -285,7 +402,7 @@ function toFacultyRecord(record) {
     courseId: record.courseId,
     courseIds,
     courseName: record.course?.name || "",
-    course: toCourseSummary(record.course),
+    course: toCourseDetail(record.course),
     courseAssignments,
     status: record.status === "ACTIVE" ? "Active" : "Inactive",
     batchEntries,
@@ -296,6 +413,93 @@ function toFacultyRecord(record) {
     updatedAt: record.updatedAt,
     createdOn: record.createdAt,
     updatedOn: record.updatedAt,
+  };
+}
+
+function mapBranchCourseModule(module) {
+  return {
+    id: module.id,
+    title: module.title,
+    description: module.description,
+    sequenceNo: module.sequenceNo,
+    status: module.status,
+    submodules: Array.isArray(module.submodules)
+      ? module.submodules.map((submodule) => ({
+          id: submodule.id,
+          title: submodule.title,
+          description: submodule.description,
+          sequenceNo: submodule.sequenceNo,
+          status: submodule.status,
+        }))
+      : [],
+  };
+}
+
+function mapBranchCourseToFacultyCourse(branchCourse = null) {
+  if (!branchCourse) {
+    return null;
+  }
+
+  return {
+    id: branchCourse.id,
+    name: branchCourse.name,
+    courseCode: branchCourse.courseCode || "",
+    branchId: branchCourse.branchId || "",
+    description: branchCourse.description || "",
+    feeReference: branchCourse.feeReference || "",
+    mode: branchCourse.mode || "",
+    duration: branchCourse.duration ?? null,
+    hours: branchCourse.hours ?? null,
+    actualFees: branchCourse.actualFees ?? null,
+    registrationFees: branchCourse.registrationFees ?? null,
+    discount: branchCourse.discount ?? null,
+    afterDiscount: branchCourse.afterDiscount ?? null,
+    status: branchCourse.status || "ACTIVE",
+    modules: Array.isArray(branchCourse.modules) ? branchCourse.modules.map(mapBranchCourseModule) : [],
+    batches: [],
+  };
+}
+
+function buildFacultyFallbackRecord(user, branchFaculty, branchCourse = null) {
+  const fallbackCourse = mapBranchCourseToFacultyCourse(branchCourse);
+
+  return {
+    id: branchFaculty?.id || user?.id || "",
+    facultyName: branchFaculty?.name || user?.fullName || "",
+    facultyEmail: branchFaculty?.email || user?.email || "",
+    facultyPhone: branchFaculty?.phone || user?.phone || "",
+    courseId: branchFaculty?.courseId || branchFaculty?.branchCourseId || fallbackCourse?.id || "",
+    courseIds: Array.from(
+      new Set(
+        [branchFaculty?.courseId, branchFaculty?.branchCourseId, fallbackCourse?.id]
+          .map((courseId) => normalizeString(courseId))
+          .filter(Boolean),
+      ),
+    ),
+    courseName: fallbackCourse?.name || branchFaculty?.branchCourse?.name || branchFaculty?.course?.name || "",
+    course: fallbackCourse,
+    courseAssignments: fallbackCourse
+      ? [
+          {
+            id: branchFaculty?.branchCourseId || branchFaculty?.courseId || fallbackCourse.id,
+            facultyId: branchFaculty?.id || user?.id || "",
+            courseId: fallbackCourse.id,
+            courseName: fallbackCourse.name,
+            course: fallbackCourse,
+            createdAt: branchFaculty?.createdAt || null,
+            updatedAt: branchFaculty?.updatedAt || null,
+          },
+        ]
+      : [],
+    status: branchFaculty?.status === "INACTIVE" ? "Inactive" : "Active",
+    batchEntries: [],
+    batchCount: 0,
+    createdBy: branchFaculty?.createdBy || null,
+    updatedBy: branchFaculty?.updatedBy || null,
+    createdAt: branchFaculty?.createdAt || null,
+    updatedAt: branchFaculty?.updatedAt || null,
+    createdOn: branchFaculty?.createdAt || null,
+    updatedOn: branchFaculty?.updatedAt || null,
   };
 }
 
@@ -398,21 +602,13 @@ async function loadFacultyRecord(facultyId) {
     where: { id: facultyId },
     include: {
       course: {
-        select: {
-          id: true,
-          name: true,
-          mode: true,
-          status: true,
-        },
+        include: getFacultyCourseInclude(),
       },
       batchEntries: {
         orderBy: { sequenceNo: "asc" },
         include: {
           course: {
-            select: {
-              id: true,
-              name: true,
-            },
+            include: getFacultyCourseInclude(),
           },
         },
       },
@@ -420,12 +616,7 @@ async function loadFacultyRecord(facultyId) {
         orderBy: { createdAt: "asc" },
         include: {
           course: {
-            select: {
-              id: true,
-              name: true,
-              mode: true,
-              status: true,
-            },
+            include: getFacultyCourseInclude(),
           },
         },
       },
@@ -446,34 +637,26 @@ async function findFacultyLoginUser(existingFaculty) {
 
 async function getFacultyProfileForUser(user) {
   const normalizedEmail = normalizeString(user?.email).toLowerCase();
-
-  if (!normalizedEmail) {
-    throw new AppError("Faculty profile not found", 404);
-  }
+  const normalizedUserCode = normalizeString(user?.userCode);
+  const normalizedUserId = normalizeString(user?.id);
 
   const record = await prisma.facultyProfile.findFirst({
     where: {
       OR: [
         ...(normalizedEmail ? [{ facultyEmail: normalizedEmail }] : []),
+        ...(normalizedUserCode ? [{ facultyEmail: normalizedUserCode }] : []),
+        ...(normalizedUserId ? [{ facultyEmail: normalizedUserId }] : []),
       ],
     },
     include: {
       course: {
-        select: {
-          id: true,
-          name: true,
-          mode: true,
-          status: true,
-        },
+        include: getFacultyCourseInclude(),
       },
       batchEntries: {
         orderBy: { sequenceNo: "asc" },
         include: {
           course: {
-            select: {
-              id: true,
-              name: true,
-            },
+            include: getFacultyCourseInclude(),
           },
         },
       },
@@ -481,12 +664,7 @@ async function getFacultyProfileForUser(user) {
         orderBy: { createdAt: "asc" },
         include: {
           course: {
-            select: {
-              id: true,
-              name: true,
-              mode: true,
-              status: true,
-            },
+            include: getFacultyCourseInclude(),
           },
         },
       },
@@ -494,7 +672,60 @@ async function getFacultyProfileForUser(user) {
   });
 
   if (!record) {
-    throw new AppError("Faculty profile not found", 404);
+    const branchFaculty = await prisma.branchFaculty.findFirst({
+      where: {
+        OR: [
+          ...(normalizedEmail
+            ? [
+                {
+                  email: {
+                    equals: normalizedEmail,
+                    mode: "insensitive",
+                  },
+                },
+              ]
+            : []),
+          ...(normalizedUserCode
+            ? [
+                {
+                  facultyId: {
+                    equals: normalizedUserCode,
+                    mode: "insensitive",
+                  },
+                },
+              ]
+            : []),
+          ...(normalizedUserId ? [{ facultyId: normalizedUserId }] : []),
+        ],
+      },
+      include: {
+        branchCourse: {
+          include: {
+            modules: {
+              orderBy: { sequenceNo: "asc" },
+              include: {
+                submodules: {
+                  orderBy: { sequenceNo: "asc" },
+                },
+              },
+            },
+          },
+        },
+        course: {
+          include: {
+            modules: {
+              orderBy: { sequenceNo: "asc" },
+            },
+          },
+        },
+      },
+    });
+
+    if (!branchFaculty) {
+      throw new AppError("Faculty profile not found", 404);
+    }
+
+    return buildFacultyFallbackRecord(user, branchFaculty, branchFaculty.branchCourse || branchFaculty.course || null);
   }
 
   return toFacultyRecord(record);
@@ -537,21 +768,13 @@ export async function listFacultyRecords(query) {
       take,
       include: {
         course: {
-          select: {
-            id: true,
-            name: true,
-            mode: true,
-            status: true,
-          },
+          include: getFacultyCourseInclude(),
         },
         batchEntries: {
           orderBy: { sequenceNo: "asc" },
           include: {
             course: {
-              select: {
-                id: true,
-                name: true,
-              },
+              include: getFacultyCourseInclude(),
             },
           },
         },
@@ -559,12 +782,7 @@ export async function listFacultyRecords(query) {
           orderBy: { createdAt: "asc" },
           include: {
             course: {
-              select: {
-                id: true,
-                name: true,
-                mode: true,
-                status: true,
-              },
+              include: getFacultyCourseInclude(),
             },
           },
         },
@@ -691,40 +909,27 @@ export async function createFacultyRecord(payload, actor) {
 
       return tx.facultyProfile.findUnique({
         where: { id: created.id },
-        include: {
-          course: {
-            select: {
-              id: true,
-              name: true,
-              mode: true,
-              status: true,
-            },
-          },
-          batchEntries: {
-            orderBy: { sequenceNo: "asc" },
-            include: {
-              course: {
-                select: {
-                  id: true,
-                  name: true,
-                },
-              },
-            },
-          },
-          courseAssignments: {
-            orderBy: { createdAt: "asc" },
-            include: {
-              course: {
-                select: {
-                  id: true,
-                  name: true,
-                  mode: true,
-                  status: true,
-                },
-              },
+      include: {
+        course: {
+          include: getFacultyCourseInclude(),
+        },
+        batchEntries: {
+          orderBy: { sequenceNo: "asc" },
+          include: {
+            course: {
+              include: getFacultyCourseInclude(),
             },
           },
         },
+        courseAssignments: {
+          orderBy: { createdAt: "asc" },
+          include: {
+            course: {
+              include: getFacultyCourseInclude(),
+            },
+          },
+        },
+      },
       });
     });
   } catch (error) {
@@ -869,40 +1074,27 @@ export async function updateFacultyRecord(facultyId, payload, actor) {
 
       return tx.facultyProfile.findUnique({
         where: { id: facultyId },
-        include: {
-          course: {
-            select: {
-              id: true,
-              name: true,
-              mode: true,
-              status: true,
-            },
-          },
-          batchEntries: {
-            orderBy: { sequenceNo: "asc" },
-            include: {
-              course: {
-                select: {
-                  id: true,
-                  name: true,
-                },
-              },
-            },
-          },
-          courseAssignments: {
-            orderBy: { createdAt: "asc" },
-            include: {
-              course: {
-                select: {
-                  id: true,
-                  name: true,
-                  mode: true,
-                  status: true,
-                },
-              },
+      include: {
+        course: {
+          include: getFacultyCourseInclude(),
+        },
+        batchEntries: {
+          orderBy: { sequenceNo: "asc" },
+          include: {
+            course: {
+              include: getFacultyCourseInclude(),
             },
           },
         },
+        courseAssignments: {
+          orderBy: { createdAt: "asc" },
+          include: {
+            course: {
+              include: getFacultyCourseInclude(),
+            },
+          },
+        },
+      },
       });
     });
   } catch (error) {

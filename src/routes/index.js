@@ -7,6 +7,7 @@ import branchCoursesRoutes from "../modules/branchCourses/branchCourses.routes.j
 import branchInstallmentTemplatesRoutes from "../modules/branchInstallmentTemplates/branchInstallmentTemplates.routes.js";
 import branchFacultyRoutes from "../modules/branchFaculty/branchFaculty.routes.js";
 import branchStudentsRoutes from "../modules/branchStudents/branchStudents.routes.js";
+import courseEditRequestsRoutes from "../modules/courseEditRequests/courseEditRequests.routes.js";
 import facultyManagementRoutes from "../modules/facultyManagement/facultyManagement.routes.js";
 import dashboardRoutes from "../modules/dashboard/dashboard.routes.js";
 import notificationsRoutes from "../modules/notifications/notifications.routes.js";
@@ -30,6 +31,7 @@ router.use("/branch-courses", branchCoursesRoutes);
 router.use("/branch-installment-templates", branchInstallmentTemplatesRoutes);
 router.use("/branch-faculty", branchFacultyRoutes);
 router.use("/branch-students", branchStudentsRoutes);
+router.use("/course-edit-requests", courseEditRequestsRoutes);
 router.use("/dashboard", dashboardRoutes);
 router.use("/faculty-management", facultyManagementRoutes);
 router.use("/notifications", notificationsRoutes);
