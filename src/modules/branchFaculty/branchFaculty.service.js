@@ -13,7 +13,23 @@ function generateTemporaryPassword() {
 function normalizeString(value) {
   return String(value ?? "").trim();
 }
+async function ensureUniqueBranchFacultyUserIdentity(prisma, { email, phone }) {
+  const existingEmail = await prisma.user.findFirst({
+    where: { email },
+  });
 
+  if (existingEmail) {
+    throw new AppError("Email already registered in the system.", 400);
+  }
+
+  const existingPhone = await prisma.user.findFirst({
+    where: { phone },
+  });
+
+  if (existingPhone) {
+    throw new AppError("Phone number already registered in the system.", 400);
+  }
+}
 export function parseBranchFacultyPayload(rawPayload = {}, defaults = {}) {
   const source = { ...defaults, ...(rawPayload || {}) };
 
