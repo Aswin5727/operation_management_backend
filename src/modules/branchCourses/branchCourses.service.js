@@ -27,6 +27,7 @@ const BRANCH_INSTALLMENT_TEMPLATE_FIELD_KEYS = [
   "dueRule",
   "allowCustomization",
 ];
+const PLAN_TYPES = new Set(["FULL_PAYMENT", "CUSTOM"]);
 
 function normalizeString(value) {
   return String(value ?? "").trim();
@@ -134,6 +135,87 @@ function parseStatus(value) {
   return status;
 }
 
+function parsePlanType(value, fallback = "CUSTOM") {
+  const planType = normalizeString(value).toUpperCase() || normalizeString(fallback).toUpperCase() || "CUSTOM";
+  if (!PLAN_TYPES.has(planType)) {
+    throw new AppError("Invalid plan type", 400);
+  }
+  return planType;
+}
+
+function normalizeBranchCoursePaymentPlanType(value = "") {
+  return normalizeString(value).toLowerCase() === "custom" ? "custom" : "template";
+}
+
+function normalizeBranchCoursePaymentPlanInstallments(values = [], finalFee = 0, installmentCount = 1) {
+  const parsedInstallments = Array.isArray(values)
+    ? values
+        .map((value, index) =>
+          parseOptionalInt(value, `Payment plan installment ${index + 1}`, { allowZero: false }),
+        )
+        .filter((value) => value !== null)
+    : [];
+
+  const safeInstallmentCount = Math.max(1, Number(installmentCount) || 1);
+
+  if (parsedInstallments.length === safeInstallmentCount) {
+    return parsedInstallments;
+  }
+
+  return buildBalancedInstallments(finalFee, safeInstallmentCount);
+}
+
+function normalizeBranchCoursePaymentPlanSelection(plan = {}, finalFee = 0, index = 0) {
+  const type = normalizeBranchCoursePaymentPlanType(plan?.type ?? plan?.planType);
+  const installmentCount = Math.max(
+    1,
+    Number(
+      parseOptionalInt(plan?.installmentCount ?? plan?.count, `Payment plan ${index + 1} installment count`, {
+        allowZero: false,
+      }) ?? 1,
+    ) || 1,
+  );
+  const templateName = parseOptionalText(plan?.templateName ?? plan?.planName)
+    || (type === "custom" ? "Custom" : "Payment Plan");
+
+  return {
+    id: parseOptionalText(plan?.id) || `payment-plan-${index + 1}`,
+    type,
+    planType: installmentCount <= 1 ? "FULL_PAYMENT" : "CUSTOM",
+    templateId: parseOptionalText(plan?.templateId ?? plan?.id),
+    templateName,
+    installmentCount,
+    installments: normalizeBranchCoursePaymentPlanInstallments(plan?.installments, finalFee, installmentCount),
+    dueRule: parseOptionalText(plan?.dueRule) || "Admission",
+    allowCustomization:
+      typeof plan?.allowCustomization === "boolean"
+        ? plan.allowCustomization
+        : true,
+    status: parseStatus(plan?.status ?? "ACTIVE"),
+  };
+}
+
+function parseBranchCoursePaymentPlans(payload = {}, finalFee = 0) {
+  const candidate = payload || {};
+  const sourcePlans = Array.isArray(candidate.paymentPlans)
+    ? candidate.paymentPlans
+    : Array.isArray(candidate.paymentPlanSelections)
+      ? candidate.paymentPlanSelections
+      : Array.isArray(candidate.installmentPlans)
+        ? candidate.installmentPlans
+        : [];
+
+  const fallbackPlans = sourcePlans.length
+    ? sourcePlans
+    : candidate?.installmentTemplate && typeof candidate.installmentTemplate === "object"
+      ? [candidate.installmentTemplate]
+      : [];
+
+  return fallbackPlans.map((plan, index) =>
+    normalizeBranchCoursePaymentPlanSelection(plan, finalFee, index),
+  );
+}
+
 function distributePercentages(totalItems = 0) {
   const count = Math.max(0, Number(totalItems) || 0);
   if (!count) return [];
@@ -239,6 +321,11 @@ function parseBranchInstallmentTemplate(candidate = {}, course = null, existingT
   }
 
   const dueRule = parseOptionalText(templateSource.dueRule ?? existingTemplate?.dueRule);
+  const planType = parsePlanType(
+    templateSource.planType
+      ?? templateSource.templateType
+      ?? (installmentCount === 1 ? "FULL_PAYMENT" : "CUSTOM"),
+  );
   const allowCustomization =
     typeof templateSource.allowCustomization === "boolean"
       ? templateSource.allowCustomization
@@ -247,6 +334,7 @@ function parseBranchInstallmentTemplate(candidate = {}, course = null, existingT
 
   return {
     templateName: normalizedTemplateName,
+    planType,
     installmentCount,
     installments: effectiveInstallments,
     dueRule,
@@ -263,6 +351,7 @@ function toBranchInstallmentTemplateSummary(template = null) {
     branchId: template.branchId,
     branchCourseId: template.branchCourseId,
     templateName: template.templateName,
+    planType: template.planType,
     installmentCount: template.installmentCount,
     installments: Array.isArray(template.installments) ? template.installments : [],
     dueRule: template.dueRule,
@@ -425,6 +514,8 @@ function toBranchCourseSummary(course) {
     registrationFees: course.registrationFees,
     discount: course.discount,
     afterDiscount: course.afterDiscount,
+    paymentPlans: Array.isArray(course.paymentPlans) ? course.paymentPlans : [],
+    paymentPlanSelections: Array.isArray(course.paymentPlanSelections) ? course.paymentPlanSelections : [],
     status: course.status,
     installmentTemplate: toBranchInstallmentTemplateSummary(course.installmentTemplate),
 
@@ -565,6 +656,7 @@ function buildBranchCoursePayload(payload = {}, existingCourse = null) {
       ? Math.max(actualFees + registrationFees - discount, 0)
       : existingCourse?.afterDiscount ?? null;
   const status = parseStatus(candidate.status ?? existingCourse?.status ?? "ACTIVE");
+  const paymentPlans = parseBranchCoursePaymentPlans(candidate, afterDiscount ?? 0);
 
   return {
     courseCode,
@@ -578,6 +670,8 @@ function buildBranchCoursePayload(payload = {}, existingCourse = null) {
     registrationFees,
     discount,
     afterDiscount,
+    paymentPlans,
+    paymentPlanSelections: paymentPlans,
     status,
   };
 }
@@ -655,21 +749,22 @@ async function replaceBranchCourseHierarchy(tx, branchCourseId, modules = [], ac
 
 function getBranchCourseInclude() {
   return {
-    // installmentTemplate: {
-    //   select: {
-    //     id: true,
-    //     branchId: true,
-    //     branchCourseId: true,
-    //     templateName: true,
-    //     installmentCount: true,
-    //     installments: true,
-    //     dueRule: true,
-    //     allowCustomization: true,
-    //     status: true,
-    //     createdAt: true,
-    //     updatedAt: true,
-    //   },
-    // },
+    installmentTemplate: {
+      select: {
+        id: true,
+        branchId: true,
+        branchCourseId: true,
+        templateName: true,
+        planType: true,
+        installmentCount: true,
+        installments: true,
+        dueRule: true,
+        allowCustomization: true,
+        status: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    },
     branchFaculties: {
       select: {
         id: true,
@@ -805,6 +900,7 @@ export async function createBranchCourse(payload, actor) {
           branchId,
           branchCourseId: course.id,
           templateName: installmentTemplate.templateName,
+          planType: installmentTemplate.planType,
           installmentCount: installmentTemplate.installmentCount,
           installments: installmentTemplate.installments,
           dueRule: installmentTemplate.dueRule,
@@ -816,6 +912,7 @@ export async function createBranchCourse(payload, actor) {
         update: {
           branchId,
           templateName: installmentTemplate.templateName,
+          planType: installmentTemplate.planType,
           installmentCount: installmentTemplate.installmentCount,
           installments: installmentTemplate.installments,
           dueRule: installmentTemplate.dueRule,
@@ -908,6 +1005,7 @@ export async function updateBranchCourse(courseId, payload, actor) {
           branchId: branchProfile.id,
           branchCourseId: course.id,
           templateName: installmentTemplate.templateName,
+          planType: installmentTemplate.planType,
           installmentCount: installmentTemplate.installmentCount,
           installments: installmentTemplate.installments,
           dueRule: installmentTemplate.dueRule,
@@ -919,6 +1017,7 @@ export async function updateBranchCourse(courseId, payload, actor) {
         update: {
           branchId: branchProfile.id,
           templateName: installmentTemplate.templateName,
+          planType: installmentTemplate.planType,
           installmentCount: installmentTemplate.installmentCount,
           installments: installmentTemplate.installments,
           dueRule: installmentTemplate.dueRule,

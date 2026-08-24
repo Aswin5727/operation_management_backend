@@ -18,6 +18,19 @@ function errorHandler(err, _req, res, _next) {
     });
   }
 
+  if (
+    errorMessage.includes("Argument `") ||
+    errorMessage.includes("Unknown argument `") ||
+    errorMessage.includes("Invalid `prisma.") ||
+    errorMessage.includes("Expected property name") ||
+    errorMessage.includes("does not exist on the current model")
+  ) {
+    return res.status(400).json({
+      status: "error",
+      message: "Invalid request data. Please review the form and try again.",
+    });
+  }
+
   if (err instanceof AppError) {
     return res.status(statusCode).json({
       status,

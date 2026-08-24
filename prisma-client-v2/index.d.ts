@@ -13082,6 +13082,8 @@ export namespace Prisma {
     registrationFees: number
     discount: number
     afterDiscount: number
+    paymentPlans: number
+    paymentPlanSelections: number
     status: number
     createdBy: number
     updatedBy: number
@@ -13165,6 +13167,8 @@ export namespace Prisma {
     registrationFees?: true
     discount?: true
     afterDiscount?: true
+    paymentPlans?: true
+    paymentPlanSelections?: true
     status?: true
     createdBy?: true
     updatedBy?: true
@@ -13273,6 +13277,8 @@ export namespace Prisma {
     registrationFees: number | null
     discount: number | null
     afterDiscount: number | null
+    paymentPlans: JsonValue | null
+    paymentPlanSelections: JsonValue | null
     status: $Enums.RecordStatus
     createdBy: string | null
     updatedBy: string | null
@@ -13313,6 +13319,8 @@ export namespace Prisma {
     registrationFees?: boolean
     discount?: boolean
     afterDiscount?: boolean
+    paymentPlans?: boolean
+    paymentPlanSelections?: boolean
     status?: boolean
     createdBy?: boolean
     updatedBy?: boolean
@@ -13339,6 +13347,8 @@ export namespace Prisma {
     registrationFees?: boolean
     discount?: boolean
     afterDiscount?: boolean
+    paymentPlans?: boolean
+    paymentPlanSelections?: boolean
     status?: boolean
     createdBy?: boolean
     updatedBy?: boolean
@@ -13361,6 +13371,8 @@ export namespace Prisma {
     registrationFees?: boolean
     discount?: boolean
     afterDiscount?: boolean
+    paymentPlans?: boolean
+    paymentPlanSelections?: boolean
     status?: boolean
     createdBy?: boolean
     updatedBy?: boolean
@@ -13383,6 +13395,8 @@ export namespace Prisma {
     registrationFees?: boolean
     discount?: boolean
     afterDiscount?: boolean
+    paymentPlans?: boolean
+    paymentPlanSelections?: boolean
     status?: boolean
     createdBy?: boolean
     updatedBy?: boolean
@@ -13390,7 +13404,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type BranchCourseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "branchId" | "courseCode" | "name" | "nameKey" | "description" | "mode" | "duration" | "hours" | "actualFees" | "registrationFees" | "discount" | "afterDiscount" | "status" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["branchCourse"]>
+  export type BranchCourseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "branchId" | "courseCode" | "name" | "nameKey" | "description" | "mode" | "duration" | "hours" | "actualFees" | "registrationFees" | "discount" | "afterDiscount" | "paymentPlans" | "paymentPlanSelections" | "status" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["branchCourse"]>
   export type BranchCourseInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     branch?: boolean | BranchDefaultArgs<ExtArgs>
     installmentTemplate?: boolean | BranchCourse$installmentTemplateArgs<ExtArgs>
@@ -13427,6 +13441,8 @@ export namespace Prisma {
       registrationFees: number | null
       discount: number | null
       afterDiscount: number | null
+      paymentPlans: Prisma.JsonValue | null
+      paymentPlanSelections: Prisma.JsonValue | null
       status: $Enums.RecordStatus
       createdBy: string | null
       updatedBy: string | null
@@ -13872,6 +13888,8 @@ export namespace Prisma {
     readonly registrationFees: FieldRef<"BranchCourse", 'Int'>
     readonly discount: FieldRef<"BranchCourse", 'Int'>
     readonly afterDiscount: FieldRef<"BranchCourse", 'Int'>
+    readonly paymentPlans: FieldRef<"BranchCourse", 'Json'>
+    readonly paymentPlanSelections: FieldRef<"BranchCourse", 'Json'>
     readonly status: FieldRef<"BranchCourse", 'RecordStatus'>
     readonly createdBy: FieldRef<"BranchCourse", 'String'>
     readonly updatedBy: FieldRef<"BranchCourse", 'String'>
@@ -34223,6 +34241,8 @@ export namespace Prisma {
     registrationFees: 'registrationFees',
     discount: 'discount',
     afterDiscount: 'afterDiscount',
+    paymentPlans: 'paymentPlans',
+    paymentPlanSelections: 'paymentPlanSelections',
     status: 'status',
     createdBy: 'createdBy',
     updatedBy: 'updatedBy',
@@ -35764,6 +35784,8 @@ export namespace Prisma {
     registrationFees?: IntNullableFilter<"BranchCourse"> | number | null
     discount?: IntNullableFilter<"BranchCourse"> | number | null
     afterDiscount?: IntNullableFilter<"BranchCourse"> | number | null
+    paymentPlans?: JsonNullableFilter<"BranchCourse">
+    paymentPlanSelections?: JsonNullableFilter<"BranchCourse">
     status?: EnumRecordStatusFilter<"BranchCourse"> | $Enums.RecordStatus
     createdBy?: StringNullableFilter<"BranchCourse"> | string | null
     updatedBy?: StringNullableFilter<"BranchCourse"> | string | null
@@ -35789,6 +35811,8 @@ export namespace Prisma {
     registrationFees?: SortOrderInput | SortOrder
     discount?: SortOrderInput | SortOrder
     afterDiscount?: SortOrderInput | SortOrder
+    paymentPlans?: SortOrderInput | SortOrder
+    paymentPlanSelections?: SortOrderInput | SortOrder
     status?: SortOrder
     createdBy?: SortOrderInput | SortOrder
     updatedBy?: SortOrderInput | SortOrder
@@ -35819,6 +35843,8 @@ export namespace Prisma {
     registrationFees?: IntNullableFilter<"BranchCourse"> | number | null
     discount?: IntNullableFilter<"BranchCourse"> | number | null
     afterDiscount?: IntNullableFilter<"BranchCourse"> | number | null
+    paymentPlans?: JsonNullableFilter<"BranchCourse">
+    paymentPlanSelections?: JsonNullableFilter<"BranchCourse">
     status?: EnumRecordStatusFilter<"BranchCourse"> | $Enums.RecordStatus
     createdBy?: StringNullableFilter<"BranchCourse"> | string | null
     updatedBy?: StringNullableFilter<"BranchCourse"> | string | null
@@ -35844,6 +35870,8 @@ export namespace Prisma {
     registrationFees?: SortOrderInput | SortOrder
     discount?: SortOrderInput | SortOrder
     afterDiscount?: SortOrderInput | SortOrder
+    paymentPlans?: SortOrderInput | SortOrder
+    paymentPlanSelections?: SortOrderInput | SortOrder
     status?: SortOrder
     createdBy?: SortOrderInput | SortOrder
     updatedBy?: SortOrderInput | SortOrder
@@ -35873,6 +35901,8 @@ export namespace Prisma {
     registrationFees?: IntNullableWithAggregatesFilter<"BranchCourse"> | number | null
     discount?: IntNullableWithAggregatesFilter<"BranchCourse"> | number | null
     afterDiscount?: IntNullableWithAggregatesFilter<"BranchCourse"> | number | null
+    paymentPlans?: JsonNullableWithAggregatesFilter<"BranchCourse">
+    paymentPlanSelections?: JsonNullableWithAggregatesFilter<"BranchCourse">
     status?: EnumRecordStatusWithAggregatesFilter<"BranchCourse"> | $Enums.RecordStatus
     createdBy?: StringNullableWithAggregatesFilter<"BranchCourse"> | string | null
     updatedBy?: StringNullableWithAggregatesFilter<"BranchCourse"> | string | null
@@ -38763,6 +38793,8 @@ export namespace Prisma {
     registrationFees?: number | null
     discount?: number | null
     afterDiscount?: number | null
+    paymentPlans?: NullableJsonNullValueInput | InputJsonValue
+    paymentPlanSelections?: NullableJsonNullValueInput | InputJsonValue
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -38788,6 +38820,8 @@ export namespace Prisma {
     registrationFees?: number | null
     discount?: number | null
     afterDiscount?: number | null
+    paymentPlans?: NullableJsonNullValueInput | InputJsonValue
+    paymentPlanSelections?: NullableJsonNullValueInput | InputJsonValue
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -38811,6 +38845,8 @@ export namespace Prisma {
     registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
     discount?: NullableIntFieldUpdateOperationsInput | number | null
     afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
+    paymentPlans?: NullableJsonNullValueInput | InputJsonValue
+    paymentPlanSelections?: NullableJsonNullValueInput | InputJsonValue
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -38836,6 +38872,8 @@ export namespace Prisma {
     registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
     discount?: NullableIntFieldUpdateOperationsInput | number | null
     afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
+    paymentPlans?: NullableJsonNullValueInput | InputJsonValue
+    paymentPlanSelections?: NullableJsonNullValueInput | InputJsonValue
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -38860,6 +38898,8 @@ export namespace Prisma {
     registrationFees?: number | null
     discount?: number | null
     afterDiscount?: number | null
+    paymentPlans?: NullableJsonNullValueInput | InputJsonValue
+    paymentPlanSelections?: NullableJsonNullValueInput | InputJsonValue
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -38880,6 +38920,8 @@ export namespace Prisma {
     registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
     discount?: NullableIntFieldUpdateOperationsInput | number | null
     afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
+    paymentPlans?: NullableJsonNullValueInput | InputJsonValue
+    paymentPlanSelections?: NullableJsonNullValueInput | InputJsonValue
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -38901,6 +38943,8 @@ export namespace Prisma {
     registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
     discount?: NullableIntFieldUpdateOperationsInput | number | null
     afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
+    paymentPlans?: NullableJsonNullValueInput | InputJsonValue
+    paymentPlanSelections?: NullableJsonNullValueInput | InputJsonValue
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -41939,6 +41983,8 @@ export namespace Prisma {
     registrationFees?: SortOrder
     discount?: SortOrder
     afterDiscount?: SortOrder
+    paymentPlans?: SortOrder
+    paymentPlanSelections?: SortOrder
     status?: SortOrder
     createdBy?: SortOrder
     updatedBy?: SortOrder
@@ -46015,6 +46061,8 @@ export namespace Prisma {
     registrationFees?: number | null
     discount?: number | null
     afterDiscount?: number | null
+    paymentPlans?: NullableJsonNullValueInput | InputJsonValue
+    paymentPlanSelections?: NullableJsonNullValueInput | InputJsonValue
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -46038,6 +46086,8 @@ export namespace Prisma {
     registrationFees?: number | null
     discount?: number | null
     afterDiscount?: number | null
+    paymentPlans?: NullableJsonNullValueInput | InputJsonValue
+    paymentPlanSelections?: NullableJsonNullValueInput | InputJsonValue
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -46406,6 +46456,8 @@ export namespace Prisma {
     registrationFees?: IntNullableFilter<"BranchCourse"> | number | null
     discount?: IntNullableFilter<"BranchCourse"> | number | null
     afterDiscount?: IntNullableFilter<"BranchCourse"> | number | null
+    paymentPlans?: JsonNullableFilter<"BranchCourse">
+    paymentPlanSelections?: JsonNullableFilter<"BranchCourse">
     status?: EnumRecordStatusFilter<"BranchCourse"> | $Enums.RecordStatus
     createdBy?: StringNullableFilter<"BranchCourse"> | string | null
     updatedBy?: StringNullableFilter<"BranchCourse"> | string | null
@@ -48317,6 +48369,8 @@ export namespace Prisma {
     registrationFees?: number | null
     discount?: number | null
     afterDiscount?: number | null
+    paymentPlans?: NullableJsonNullValueInput | InputJsonValue
+    paymentPlanSelections?: NullableJsonNullValueInput | InputJsonValue
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -48341,6 +48395,8 @@ export namespace Prisma {
     registrationFees?: number | null
     discount?: number | null
     afterDiscount?: number | null
+    paymentPlans?: NullableJsonNullValueInput | InputJsonValue
+    paymentPlanSelections?: NullableJsonNullValueInput | InputJsonValue
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -48415,6 +48471,8 @@ export namespace Prisma {
     registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
     discount?: NullableIntFieldUpdateOperationsInput | number | null
     afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
+    paymentPlans?: NullableJsonNullValueInput | InputJsonValue
+    paymentPlanSelections?: NullableJsonNullValueInput | InputJsonValue
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -48439,6 +48497,8 @@ export namespace Prisma {
     registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
     discount?: NullableIntFieldUpdateOperationsInput | number | null
     afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
+    paymentPlans?: NullableJsonNullValueInput | InputJsonValue
+    paymentPlanSelections?: NullableJsonNullValueInput | InputJsonValue
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -51023,6 +51083,8 @@ export namespace Prisma {
     registrationFees?: number | null
     discount?: number | null
     afterDiscount?: number | null
+    paymentPlans?: NullableJsonNullValueInput | InputJsonValue
+    paymentPlanSelections?: NullableJsonNullValueInput | InputJsonValue
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -51047,6 +51109,8 @@ export namespace Prisma {
     registrationFees?: number | null
     discount?: number | null
     afterDiscount?: number | null
+    paymentPlans?: NullableJsonNullValueInput | InputJsonValue
+    paymentPlanSelections?: NullableJsonNullValueInput | InputJsonValue
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -51217,6 +51281,8 @@ export namespace Prisma {
     registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
     discount?: NullableIntFieldUpdateOperationsInput | number | null
     afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
+    paymentPlans?: NullableJsonNullValueInput | InputJsonValue
+    paymentPlanSelections?: NullableJsonNullValueInput | InputJsonValue
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -51241,6 +51307,8 @@ export namespace Prisma {
     registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
     discount?: NullableIntFieldUpdateOperationsInput | number | null
     afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
+    paymentPlans?: NullableJsonNullValueInput | InputJsonValue
+    paymentPlanSelections?: NullableJsonNullValueInput | InputJsonValue
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -51462,6 +51530,8 @@ export namespace Prisma {
     registrationFees?: number | null
     discount?: number | null
     afterDiscount?: number | null
+    paymentPlans?: NullableJsonNullValueInput | InputJsonValue
+    paymentPlanSelections?: NullableJsonNullValueInput | InputJsonValue
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -51486,6 +51556,8 @@ export namespace Prisma {
     registrationFees?: number | null
     discount?: number | null
     afterDiscount?: number | null
+    paymentPlans?: NullableJsonNullValueInput | InputJsonValue
+    paymentPlanSelections?: NullableJsonNullValueInput | InputJsonValue
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -51585,6 +51657,8 @@ export namespace Prisma {
     registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
     discount?: NullableIntFieldUpdateOperationsInput | number | null
     afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
+    paymentPlans?: NullableJsonNullValueInput | InputJsonValue
+    paymentPlanSelections?: NullableJsonNullValueInput | InputJsonValue
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -51609,6 +51683,8 @@ export namespace Prisma {
     registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
     discount?: NullableIntFieldUpdateOperationsInput | number | null
     afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
+    paymentPlans?: NullableJsonNullValueInput | InputJsonValue
+    paymentPlanSelections?: NullableJsonNullValueInput | InputJsonValue
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -52011,6 +52087,8 @@ export namespace Prisma {
     registrationFees?: number | null
     discount?: number | null
     afterDiscount?: number | null
+    paymentPlans?: NullableJsonNullValueInput | InputJsonValue
+    paymentPlanSelections?: NullableJsonNullValueInput | InputJsonValue
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -52125,6 +52203,8 @@ export namespace Prisma {
     registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
     discount?: NullableIntFieldUpdateOperationsInput | number | null
     afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
+    paymentPlans?: NullableJsonNullValueInput | InputJsonValue
+    paymentPlanSelections?: NullableJsonNullValueInput | InputJsonValue
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -52148,6 +52228,8 @@ export namespace Prisma {
     registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
     discount?: NullableIntFieldUpdateOperationsInput | number | null
     afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
+    paymentPlans?: NullableJsonNullValueInput | InputJsonValue
+    paymentPlanSelections?: NullableJsonNullValueInput | InputJsonValue
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -52171,6 +52253,8 @@ export namespace Prisma {
     registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
     discount?: NullableIntFieldUpdateOperationsInput | number | null
     afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
+    paymentPlans?: NullableJsonNullValueInput | InputJsonValue
+    paymentPlanSelections?: NullableJsonNullValueInput | InputJsonValue
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null

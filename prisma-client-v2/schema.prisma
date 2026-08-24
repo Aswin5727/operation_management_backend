@@ -219,28 +219,30 @@ model Course {
 }
 
 model BranchCourse {
-  id                  String                     @id @default(cuid())
-  branchId            String
-  courseCode          String
-  name                String
-  nameKey             String
-  description         String?
-  mode                String
-  duration            Int?
-  hours               Int?
-  actualFees          Int?
-  registrationFees    Int?
-  discount            Int?
-  afterDiscount       Int?
-  status              RecordStatus               @default(ACTIVE)
-  createdBy           String?
-  updatedBy           String?
-  createdAt           DateTime                   @default(now())
-  updatedAt           DateTime                   @updatedAt
-  branch              Branch                     @relation(fields: [branchId], references: [id], onDelete: Cascade)
-  installmentTemplate BranchInstallmentTemplate?
-  modules             BranchCourseModule[]
-  branchFaculties     BranchFaculty[]
+  id                    String                     @id @default(cuid())
+  branchId              String
+  courseCode            String
+  name                  String
+  nameKey               String
+  description           String?
+  mode                  String
+  duration              Int?
+  hours                 Int?
+  actualFees            Int?
+  registrationFees      Int?
+  discount              Int?
+  afterDiscount         Int?
+  paymentPlans          Json?
+  paymentPlanSelections Json?
+  status                RecordStatus               @default(ACTIVE)
+  createdBy             String?
+  updatedBy             String?
+  createdAt             DateTime                   @default(now())
+  updatedAt             DateTime                   @updatedAt
+  branch                Branch                     @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  installmentTemplate   BranchInstallmentTemplate?
+  modules               BranchCourseModule[]
+  branchFaculties       BranchFaculty[]
 
   @@unique([branchId, nameKey])
   @@unique([branchId, courseCode])

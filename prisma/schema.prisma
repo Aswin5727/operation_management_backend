@@ -232,6 +232,8 @@ model BranchCourse {
   registrationFees Int?
   discount         Int?
   afterDiscount    Int?
+  paymentPlans     Json?
+  paymentPlanSelections Json?
   status           RecordStatus         @default(ACTIVE)
   createdBy        String?
   updatedBy        String?

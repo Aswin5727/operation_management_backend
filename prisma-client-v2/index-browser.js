@@ -288,6 +288,8 @@ exports.Prisma.BranchCourseScalarFieldEnum = {
   registrationFees: 'registrationFees',
   discount: 'discount',
   afterDiscount: 'afterDiscount',
+  paymentPlans: 'paymentPlans',
+  paymentPlanSelections: 'paymentPlanSelections',
   status: 'status',
   createdBy: 'createdBy',
   updatedBy: 'updatedBy',
