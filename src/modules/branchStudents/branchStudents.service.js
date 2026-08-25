@@ -267,7 +267,7 @@ function buildBranchStudentPayload(payload = {}, existing = null) {
   const studentName = parseRequiredText(candidate.studentName, "Student name");
   const emailAddress = parseEmail(candidate.emailAddress);
   const mobileNumber = parsePhone(candidate.mobileNumber);
-  const parentSpouseNumber = parsePhone(candidate.parentSpouseNumber, "Parent / spouse number");
+  const parentSpouseNumber = candidate.parentSpouseNumber ? parsePhone(candidate.parentSpouseNumber, "Parent / spouse number") : null;
   const countryCode = parseRequiredText(candidate.countryCode, "Country code").toUpperCase();
   const country = parseRequiredText(candidate.country, "Country");
   const stateCode = parseRequiredText(candidate.stateCode, "State code").toUpperCase();
@@ -292,8 +292,7 @@ function buildBranchStudentPayload(payload = {}, existing = null) {
   if (source === "Others" && !sourceOther) {
     throw new AppError("Source details are required when source is Others", 400);
   }
-
-  return {
+  const studentData = {
     studentName,
     emailAddress,
     mobileNumber,
@@ -314,7 +313,31 @@ function buildBranchStudentPayload(payload = {}, existing = null) {
     remarks,
     admissionDate,
     recordStatus,
+    courseId: parseOptionalText(candidate.courseId),
+    courseName: parseOptionalText(candidate.courseName),
+    facultyId: parseOptionalText(candidate.facultyId),
+    facultyName: parseOptionalText(candidate.facultyName),
+    courseAmount: candidate.courseAmount && Number.isFinite(Number(String(candidate.courseAmount).replace(/,/g, ''))) 
+      ? Number(String(candidate.courseAmount).replace(/,/g, '')) 
+      : null,
+    paymentMode: parseOptionalText(candidate.paymentMode) || "Installment",
+    paymentPlan: parseOptionalText(candidate.paymentPlan) || parseOptionalText(candidate.paymentPlanId),
   };
+
+  let installmentSchedule = [];
+  if (Array.isArray(candidate.installmentSchedule)) {
+    installmentSchedule = candidate.installmentSchedule.map((inst, index) => ({
+      installmentNumber: index + 1,
+      amount: Number(String(inst.amount).replace(/,/g, '')) || 0,
+      dueDate: parseOptionalText(inst.dueDate),
+      status: parseOptionalText(inst.status) || "Pending",
+      paymentMethod: parseOptionalText(inst.paymentMethod),
+      remarks: parseOptionalText(inst.remarks),
+      paidAt: inst.paidAt ? new Date(inst.paidAt) : null,
+    }));
+  }
+
+  return { studentData, installmentSchedule };
 }
 
 async function getBranchContext(actor) {
@@ -412,12 +435,20 @@ function toBranchStudentSummary(record) {
     sourceOther: record.sourceOther,
     remarks: record.remarks,
     admissionDate: record.admissionDate,
+    courseId: record.courseId,
+    courseName: record.courseName,
+    facultyId: record.facultyId,
+    facultyName: record.facultyName,
+    courseAmount: record.courseAmount,
+    paymentMode: record.paymentMode,
+    paymentPlan: record.paymentPlan,
     status: displayStatus(record.recordStatus),
     recordStatus: record.recordStatus,
     createdBy: record.createdBy,
     updatedBy: record.updatedBy,
     createdAt: record.createdAt,
     updatedAt: record.updatedAt,
+    installmentSchedule: Array.isArray(record.installments) ? record.installments : [],
   };
 }
 
@@ -529,6 +560,11 @@ export async function listBranchStudents(query = {}, actor = null) {
       orderBy: buildBranchStudentOrderBy(sortBy, sortOrder),
       skip,
       take,
+      include: {
+        installments: {
+          orderBy: { installmentNumber: "asc" }
+        }
+      }
     }),
   ]);
 
@@ -546,13 +582,23 @@ export async function createBranchStudent(payload, actor) {
     throw new AppError("Branch ID is required", 400);
   }
 
-  const parsed = buildBranchStudentPayload(payload);
+  console.log("[createBranchStudent] incoming payload keys:", Object.keys(payload));
+  let studentData, installmentSchedule;
+  try {
+    ({ studentData, installmentSchedule } = buildBranchStudentPayload(payload));
+  } catch (err) {
+    console.error("[createBranchStudent] validation error:", err.message);
+    throw err;
+  }
+  console.log("[createBranchStudent] studentData keys:", Object.keys(studentData));
+  console.log("[createBranchStudent] studentData:", JSON.stringify(studentData, null, 2));
+  console.log("[createBranchStudent] installmentSchedule count:", installmentSchedule.length);
   const actorId = actor?.id ?? null;
   const temporaryPassword = createTemporaryPassword();
   const passwordHash = await hashPassword(temporaryPassword);
   const { resetToken, tokenHash, expiresAt } = createResetTokenArtifacts();
 
-  await ensureUniqueBranchStudentIdentity(parsed, branchId);
+  await ensureUniqueBranchStudentIdentity(studentData, branchId);
 
   const requestedStudentId = normalizeStudentId(payload.studentId);
   let studentId = requestedStudentId;
@@ -570,18 +616,27 @@ export async function createBranchStudent(payload, actor) {
           data: {
             branchId,
             studentId,
-            ...parsed,
+            ...studentData,
             createdBy: actorId,
             updatedBy: actorId,
           },
         });
 
+        if (installmentSchedule.length > 0) {
+          await tx.branchStudentInstallment.createMany({
+            data: installmentSchedule.map(inst => ({
+              ...inst,
+              branchStudentId: student.id,
+            }))
+          });
+        }
+
         const user = await tx.user.create({
           data: {
             userCode: buildBranchStudentUserCode(branchProfile?.branchId || branchId, studentId),
-            fullName: parsed.studentName,
-            email: parsed.emailAddress,
-            phone: parsed.mobileNumber,
+            fullName: studentData.studentName,
+            email: studentData.emailAddress,
+            phone: studentData.mobileNumber,
             role: "STUDENT",
             active: true,
             passwordHash,
@@ -599,7 +654,12 @@ export async function createBranchStudent(payload, actor) {
           },
         });
 
-        return student;
+        const createdStudent = await tx.branchStudent.findUnique({
+          where: { id: student.id },
+          include: { installments: { orderBy: { installmentNumber: "asc" } } }
+        });
+
+        return createdStudent;
       });
       break;
     } catch (error) {
@@ -618,8 +678,8 @@ export async function createBranchStudent(payload, actor) {
   }
 
   void sendStudentCredentialsEmail({
-    to: parsed.emailAddress,
-    fullName: parsed.studentName,
+    to: studentData.emailAddress,
+    fullName: studentData.studentName,
     studentCode: studentId,
     temporaryPassword,
     resetToken,
@@ -634,6 +694,9 @@ export async function getBranchStudent(studentId, actor = null) {
   const { where } = await ensureBranchStudentAccess(actor, studentId);
   const student = await prisma.branchStudent.findFirst({
     where,
+    include: {
+      installments: { orderBy: { installmentNumber: "asc" } }
+    }
   });
 
   if (!student) {
@@ -653,31 +716,49 @@ export async function updateBranchStudent(studentId, payload, actor = null) {
     throw new AppError("Branch student not found", 404);
   }
 
-  const parsed = buildBranchStudentPayload(payload, existing);
+  const { studentData, installmentSchedule } = buildBranchStudentPayload(payload, existing);
   const existingLoginUser = await findBranchStudentLoginUser(existing);
-  await ensureUniqueBranchStudentIdentity(parsed, existing.branchId, existing.id, existingLoginUser?.id);
+  await ensureUniqueBranchStudentIdentity(studentData, existing.branchId, existing.id, existingLoginUser?.id);
   const updated = await prisma.$transaction(async (tx) => {
     const student = await tx.branchStudent.update({
       where: { id: existing.id },
       data: {
-        ...parsed,
+        ...studentData,
         updatedBy: actor?.id ?? null,
       },
     });
+
+    await tx.branchStudentInstallment.deleteMany({
+      where: { branchStudentId: student.id }
+    });
+
+    if (installmentSchedule.length > 0) {
+      await tx.branchStudentInstallment.createMany({
+        data: installmentSchedule.map(inst => ({
+          ...inst,
+          branchStudentId: student.id,
+        }))
+      });
+    }
 
     if (existingLoginUser) {
       await tx.user.update({
         where: { id: existingLoginUser.id },
         data: {
-          fullName: parsed.studentName,
-          email: parsed.emailAddress,
-          phone: parsed.mobileNumber,
+          fullName: studentData.studentName,
+          email: studentData.emailAddress,
+          phone: studentData.mobileNumber,
           updatedBy: actor?.id ?? null,
         },
       });
     }
 
-    return student;
+    const updatedStudent = await tx.branchStudent.findUnique({
+      where: { id: student.id },
+      include: { installments: { orderBy: { installmentNumber: "asc" } } }
+    });
+
+    return updatedStudent;
   });
 
   return toBranchStudentSummary(updated);

@@ -210,7 +210,6 @@ model Course {
   facultyCourseAssignments FacultyCourseAssignment[]
   facultyProfiles          FacultyProfile[]
   students                 StudentProfile[]
-
   @@index([branchId])
   @@index([nameKey])
   @@index([status])
@@ -243,6 +242,7 @@ model BranchCourse {
   installmentTemplate BranchInstallmentTemplate?
   modules          BranchCourseModule[]
   branchFaculties  BranchFaculty[]
+  branchStudents   BranchStudent[]
 
   @@unique([branchId, nameKey])
   @@unique([branchId, courseCode])
@@ -471,7 +471,16 @@ model BranchStudent {
   updatedAt          DateTime     @updatedAt
   linkedInUrl        String?
   remarks            String?
+  courseId           String?
+  courseName         String?
+  facultyId          String?
+  facultyName        String?
+  courseAmount       Int?
+  paymentMode        String       @default("Installment")
+  paymentPlan        String?
   branch             Branch       @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  course             BranchCourse? @relation(fields: [courseId], references: [id])
+  installments       BranchStudentInstallment[]
 
   @@unique([branchId, studentId])
   @@index([branchId])
@@ -479,6 +488,25 @@ model BranchStudent {
   @@index([studentName])
   @@index([emailAddress])
   @@index([admissionDate])
+  @@index([courseId])
+}
+
+model BranchStudentInstallment {
+  id                 String       @id @default(cuid())
+  branchStudentId    String
+  installmentNumber  Int
+  amount             Int
+  dueDate            String?
+  status             String       @default("Pending")
+  paidAt             DateTime?
+  paymentMethod      String?
+  remarks            String?
+  createdAt          DateTime     @default(now())
+  updatedAt          DateTime     @updatedAt
+  branchStudent      BranchStudent @relation(fields: [branchStudentId], references: [id], onDelete: Cascade)
+
+  @@index([branchStudentId, status])
+  @@index([dueDate])
 }
 
 model FacultyProfile {

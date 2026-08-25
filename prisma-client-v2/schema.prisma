@@ -243,6 +243,7 @@ model BranchCourse {
   installmentTemplate   BranchInstallmentTemplate?
   modules               BranchCourseModule[]
   branchFaculties       BranchFaculty[]
+  branchStudents        BranchStudent[]
 
   @@unique([branchId, nameKey])
   @@unique([branchId, courseCode])
@@ -444,12 +445,12 @@ model StudentProfile {
 }
 
 model BranchStudent {
-  id                 String       @id @default(cuid())
+  id                 String                     @id @default(cuid())
   branchId           String
   studentId          String
   studentName        String
-  mobileNumber       String       @unique
-  emailAddress       String       @unique
+  mobileNumber       String                     @unique
+  emailAddress       String                     @unique
   parentSpouseNumber String?
   countryCode        String?
   country            String?
@@ -464,14 +465,23 @@ model BranchStudent {
   source             String?
   sourceOther        String?
   admissionDate      String
-  recordStatus       RecordStatus @default(ACTIVE)
+  recordStatus       RecordStatus               @default(ACTIVE)
   createdBy          String?
   updatedBy          String?
-  createdAt          DateTime     @default(now())
-  updatedAt          DateTime     @updatedAt
+  createdAt          DateTime                   @default(now())
+  updatedAt          DateTime                   @updatedAt
   linkedInUrl        String?
   remarks            String?
-  branch             Branch       @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  courseId           String?
+  courseName         String?
+  facultyId          String?
+  facultyName        String?
+  courseAmount       Int?
+  paymentMode        String                     @default("Installment")
+  paymentPlan        String?
+  branch             Branch                     @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  course             BranchCourse?              @relation(fields: [courseId], references: [id])
+  installments       BranchStudentInstallment[]
 
   @@unique([branchId, studentId])
   @@index([branchId])
@@ -479,6 +489,25 @@ model BranchStudent {
   @@index([studentName])
   @@index([emailAddress])
   @@index([admissionDate])
+  @@index([courseId])
+}
+
+model BranchStudentInstallment {
+  id                String        @id @default(cuid())
+  branchStudentId   String
+  installmentNumber Int
+  amount            Int
+  dueDate           String?
+  status            String        @default("Pending")
+  paidAt            DateTime?
+  paymentMethod     String?
+  remarks           String?
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+  branchStudent     BranchStudent @relation(fields: [branchStudentId], references: [id], onDelete: Cascade)
+
+  @@index([branchStudentId, status])
+  @@index([dueDate])
 }
 
 model FacultyProfile {

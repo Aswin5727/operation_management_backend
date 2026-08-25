@@ -1,6 +1,7 @@
 import AppError from "../errors/AppError.js";
 
 function errorHandler(err, _req, res, _next) {
+  console.error("GLOBAL ERROR CAUGHT:", err);
   const statusCode = err.statusCode || 500;
   const status = err.status || "error";
   const errorCode = String(err?.code || "").toUpperCase();
