@@ -479,6 +479,7 @@ exports.Prisma.BranchStudentScalarFieldEnum = {
   facultyName: 'facultyName',
   courseAmount: 'courseAmount',
   paymentMode: 'paymentMode',
+  paymentPlanId: 'paymentPlanId',
   paymentPlan: 'paymentPlan'
 };
 

@@ -24553,6 +24553,7 @@ export namespace Prisma {
     facultyName: string | null
     courseAmount: number | null
     paymentMode: string | null
+    paymentPlanId: string | null
     paymentPlan: string | null
   }
 
@@ -24590,6 +24591,7 @@ export namespace Prisma {
     facultyName: string | null
     courseAmount: number | null
     paymentMode: string | null
+    paymentPlanId: string | null
     paymentPlan: string | null
   }
 
@@ -24627,6 +24629,7 @@ export namespace Prisma {
     facultyName: number
     courseAmount: number
     paymentMode: number
+    paymentPlanId: number
     paymentPlan: number
     _all: number
   }
@@ -24674,6 +24677,7 @@ export namespace Prisma {
     facultyName?: true
     courseAmount?: true
     paymentMode?: true
+    paymentPlanId?: true
     paymentPlan?: true
   }
 
@@ -24711,6 +24715,7 @@ export namespace Prisma {
     facultyName?: true
     courseAmount?: true
     paymentMode?: true
+    paymentPlanId?: true
     paymentPlan?: true
   }
 
@@ -24748,6 +24753,7 @@ export namespace Prisma {
     facultyName?: true
     courseAmount?: true
     paymentMode?: true
+    paymentPlanId?: true
     paymentPlan?: true
     _all?: true
   }
@@ -24872,6 +24878,7 @@ export namespace Prisma {
     facultyName: string | null
     courseAmount: number | null
     paymentMode: string
+    paymentPlanId: string | null
     paymentPlan: string | null
     _count: BranchStudentCountAggregateOutputType | null
     _avg: BranchStudentAvgAggregateOutputType | null
@@ -24928,6 +24935,7 @@ export namespace Prisma {
     facultyName?: boolean
     courseAmount?: boolean
     paymentMode?: boolean
+    paymentPlanId?: boolean
     paymentPlan?: boolean
     branch?: boolean | BranchDefaultArgs<ExtArgs>
     course?: boolean | BranchStudent$courseArgs<ExtArgs>
@@ -24969,6 +24977,7 @@ export namespace Prisma {
     facultyName?: boolean
     courseAmount?: boolean
     paymentMode?: boolean
+    paymentPlanId?: boolean
     paymentPlan?: boolean
     branch?: boolean | BranchDefaultArgs<ExtArgs>
     course?: boolean | BranchStudent$courseArgs<ExtArgs>
@@ -25008,6 +25017,7 @@ export namespace Prisma {
     facultyName?: boolean
     courseAmount?: boolean
     paymentMode?: boolean
+    paymentPlanId?: boolean
     paymentPlan?: boolean
     branch?: boolean | BranchDefaultArgs<ExtArgs>
     course?: boolean | BranchStudent$courseArgs<ExtArgs>
@@ -25047,10 +25057,11 @@ export namespace Prisma {
     facultyName?: boolean
     courseAmount?: boolean
     paymentMode?: boolean
+    paymentPlanId?: boolean
     paymentPlan?: boolean
   }
 
-  export type BranchStudentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "branchId" | "studentId" | "studentName" | "mobileNumber" | "emailAddress" | "parentSpouseNumber" | "countryCode" | "country" | "stateCode" | "state" | "city" | "address" | "qualification" | "passedOutYear" | "currentStatus" | "designation" | "source" | "sourceOther" | "admissionDate" | "recordStatus" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt" | "linkedInUrl" | "remarks" | "courseId" | "courseName" | "facultyId" | "facultyName" | "courseAmount" | "paymentMode" | "paymentPlan", ExtArgs["result"]["branchStudent"]>
+  export type BranchStudentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "branchId" | "studentId" | "studentName" | "mobileNumber" | "emailAddress" | "parentSpouseNumber" | "countryCode" | "country" | "stateCode" | "state" | "city" | "address" | "qualification" | "passedOutYear" | "currentStatus" | "designation" | "source" | "sourceOther" | "admissionDate" | "recordStatus" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt" | "linkedInUrl" | "remarks" | "courseId" | "courseName" | "facultyId" | "facultyName" | "courseAmount" | "paymentMode" | "paymentPlanId" | "paymentPlan", ExtArgs["result"]["branchStudent"]>
   export type BranchStudentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     branch?: boolean | BranchDefaultArgs<ExtArgs>
     course?: boolean | BranchStudent$courseArgs<ExtArgs>
@@ -25107,6 +25118,7 @@ export namespace Prisma {
       facultyName: string | null
       courseAmount: number | null
       paymentMode: string
+      paymentPlanId: string | null
       paymentPlan: string | null
     }, ExtArgs["result"]["branchStudent"]>
     composites: {}
@@ -25567,6 +25579,7 @@ export namespace Prisma {
     readonly facultyName: FieldRef<"BranchStudent", 'String'>
     readonly courseAmount: FieldRef<"BranchStudent", 'Int'>
     readonly paymentMode: FieldRef<"BranchStudent", 'String'>
+    readonly paymentPlanId: FieldRef<"BranchStudent", 'String'>
     readonly paymentPlan: FieldRef<"BranchStudent", 'String'>
   }
     
@@ -35979,6 +35992,7 @@ export namespace Prisma {
     facultyName: 'facultyName',
     courseAmount: 'courseAmount',
     paymentMode: 'paymentMode',
+    paymentPlanId: 'paymentPlanId',
     paymentPlan: 'paymentPlan'
   };
 
@@ -38385,6 +38399,7 @@ export namespace Prisma {
     facultyName?: StringNullableFilter<"BranchStudent"> | string | null
     courseAmount?: IntNullableFilter<"BranchStudent"> | number | null
     paymentMode?: StringFilter<"BranchStudent"> | string
+    paymentPlanId?: StringNullableFilter<"BranchStudent"> | string | null
     paymentPlan?: StringNullableFilter<"BranchStudent"> | string | null
     branch?: XOR<BranchScalarRelationFilter, BranchWhereInput>
     course?: XOR<BranchCourseNullableScalarRelationFilter, BranchCourseWhereInput> | null
@@ -38425,6 +38440,7 @@ export namespace Prisma {
     facultyName?: SortOrderInput | SortOrder
     courseAmount?: SortOrderInput | SortOrder
     paymentMode?: SortOrder
+    paymentPlanId?: SortOrderInput | SortOrder
     paymentPlan?: SortOrderInput | SortOrder
     branch?: BranchOrderByWithRelationInput
     course?: BranchCourseOrderByWithRelationInput
@@ -38469,6 +38485,7 @@ export namespace Prisma {
     facultyName?: StringNullableFilter<"BranchStudent"> | string | null
     courseAmount?: IntNullableFilter<"BranchStudent"> | number | null
     paymentMode?: StringFilter<"BranchStudent"> | string
+    paymentPlanId?: StringNullableFilter<"BranchStudent"> | string | null
     paymentPlan?: StringNullableFilter<"BranchStudent"> | string | null
     branch?: XOR<BranchScalarRelationFilter, BranchWhereInput>
     course?: XOR<BranchCourseNullableScalarRelationFilter, BranchCourseWhereInput> | null
@@ -38509,6 +38526,7 @@ export namespace Prisma {
     facultyName?: SortOrderInput | SortOrder
     courseAmount?: SortOrderInput | SortOrder
     paymentMode?: SortOrder
+    paymentPlanId?: SortOrderInput | SortOrder
     paymentPlan?: SortOrderInput | SortOrder
     _count?: BranchStudentCountOrderByAggregateInput
     _avg?: BranchStudentAvgOrderByAggregateInput
@@ -38554,6 +38572,7 @@ export namespace Prisma {
     facultyName?: StringNullableWithAggregatesFilter<"BranchStudent"> | string | null
     courseAmount?: IntNullableWithAggregatesFilter<"BranchStudent"> | number | null
     paymentMode?: StringWithAggregatesFilter<"BranchStudent"> | string
+    paymentPlanId?: StringNullableWithAggregatesFilter<"BranchStudent"> | string | null
     paymentPlan?: StringNullableWithAggregatesFilter<"BranchStudent"> | string | null
   }
 
@@ -41708,6 +41727,7 @@ export namespace Prisma {
     facultyName?: string | null
     courseAmount?: number | null
     paymentMode?: string
+    paymentPlanId?: string | null
     paymentPlan?: string | null
     branch: BranchCreateNestedOneWithoutBranchStudentsInput
     course?: BranchCourseCreateNestedOneWithoutBranchStudentsInput
@@ -41748,6 +41768,7 @@ export namespace Prisma {
     facultyName?: string | null
     courseAmount?: number | null
     paymentMode?: string
+    paymentPlanId?: string | null
     paymentPlan?: string | null
     installments?: BranchStudentInstallmentUncheckedCreateNestedManyWithoutBranchStudentInput
   }
@@ -41784,6 +41805,7 @@ export namespace Prisma {
     facultyName?: NullableStringFieldUpdateOperationsInput | string | null
     courseAmount?: NullableIntFieldUpdateOperationsInput | number | null
     paymentMode?: StringFieldUpdateOperationsInput | string
+    paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
     paymentPlan?: NullableStringFieldUpdateOperationsInput | string | null
     branch?: BranchUpdateOneRequiredWithoutBranchStudentsNestedInput
     course?: BranchCourseUpdateOneWithoutBranchStudentsNestedInput
@@ -41824,6 +41846,7 @@ export namespace Prisma {
     facultyName?: NullableStringFieldUpdateOperationsInput | string | null
     courseAmount?: NullableIntFieldUpdateOperationsInput | number | null
     paymentMode?: StringFieldUpdateOperationsInput | string
+    paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
     paymentPlan?: NullableStringFieldUpdateOperationsInput | string | null
     installments?: BranchStudentInstallmentUncheckedUpdateManyWithoutBranchStudentNestedInput
   }
@@ -41862,6 +41885,7 @@ export namespace Prisma {
     facultyName?: string | null
     courseAmount?: number | null
     paymentMode?: string
+    paymentPlanId?: string | null
     paymentPlan?: string | null
   }
 
@@ -41897,6 +41921,7 @@ export namespace Prisma {
     facultyName?: NullableStringFieldUpdateOperationsInput | string | null
     courseAmount?: NullableIntFieldUpdateOperationsInput | number | null
     paymentMode?: StringFieldUpdateOperationsInput | string
+    paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
     paymentPlan?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -41934,6 +41959,7 @@ export namespace Prisma {
     facultyName?: NullableStringFieldUpdateOperationsInput | string | null
     courseAmount?: NullableIntFieldUpdateOperationsInput | number | null
     paymentMode?: StringFieldUpdateOperationsInput | string
+    paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
     paymentPlan?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -44587,6 +44613,7 @@ export namespace Prisma {
     facultyName?: SortOrder
     courseAmount?: SortOrder
     paymentMode?: SortOrder
+    paymentPlanId?: SortOrder
     paymentPlan?: SortOrder
   }
 
@@ -44628,6 +44655,7 @@ export namespace Prisma {
     facultyName?: SortOrder
     courseAmount?: SortOrder
     paymentMode?: SortOrder
+    paymentPlanId?: SortOrder
     paymentPlan?: SortOrder
   }
 
@@ -44665,6 +44693,7 @@ export namespace Prisma {
     facultyName?: SortOrder
     courseAmount?: SortOrder
     paymentMode?: SortOrder
+    paymentPlanId?: SortOrder
     paymentPlan?: SortOrder
   }
 
@@ -48276,6 +48305,7 @@ export namespace Prisma {
     facultyName?: string | null
     courseAmount?: number | null
     paymentMode?: string
+    paymentPlanId?: string | null
     paymentPlan?: string | null
     course?: BranchCourseCreateNestedOneWithoutBranchStudentsInput
     installments?: BranchStudentInstallmentCreateNestedManyWithoutBranchStudentInput
@@ -48314,6 +48344,7 @@ export namespace Prisma {
     facultyName?: string | null
     courseAmount?: number | null
     paymentMode?: string
+    paymentPlanId?: string | null
     paymentPlan?: string | null
     installments?: BranchStudentInstallmentUncheckedCreateNestedManyWithoutBranchStudentInput
   }
@@ -48653,6 +48684,7 @@ export namespace Prisma {
     facultyName?: StringNullableFilter<"BranchStudent"> | string | null
     courseAmount?: IntNullableFilter<"BranchStudent"> | number | null
     paymentMode?: StringFilter<"BranchStudent"> | string
+    paymentPlanId?: StringNullableFilter<"BranchStudent"> | string | null
     paymentPlan?: StringNullableFilter<"BranchStudent"> | string | null
   }
 
@@ -50300,6 +50332,7 @@ export namespace Prisma {
     facultyName?: string | null
     courseAmount?: number | null
     paymentMode?: string
+    paymentPlanId?: string | null
     paymentPlan?: string | null
     branch: BranchCreateNestedOneWithoutBranchStudentsInput
     installments?: BranchStudentInstallmentCreateNestedManyWithoutBranchStudentInput
@@ -50338,6 +50371,7 @@ export namespace Prisma {
     facultyName?: string | null
     courseAmount?: number | null
     paymentMode?: string
+    paymentPlanId?: string | null
     paymentPlan?: string | null
     installments?: BranchStudentInstallmentUncheckedCreateNestedManyWithoutBranchStudentInput
   }
@@ -52274,6 +52308,7 @@ export namespace Prisma {
     facultyName?: string | null
     courseAmount?: number | null
     paymentMode?: string
+    paymentPlanId?: string | null
     paymentPlan?: string | null
     branch: BranchCreateNestedOneWithoutBranchStudentsInput
     course?: BranchCourseCreateNestedOneWithoutBranchStudentsInput
@@ -52313,6 +52348,7 @@ export namespace Prisma {
     facultyName?: string | null
     courseAmount?: number | null
     paymentMode?: string
+    paymentPlanId?: string | null
     paymentPlan?: string | null
   }
 
@@ -52364,6 +52400,7 @@ export namespace Prisma {
     facultyName?: NullableStringFieldUpdateOperationsInput | string | null
     courseAmount?: NullableIntFieldUpdateOperationsInput | number | null
     paymentMode?: StringFieldUpdateOperationsInput | string
+    paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
     paymentPlan?: NullableStringFieldUpdateOperationsInput | string | null
     branch?: BranchUpdateOneRequiredWithoutBranchStudentsNestedInput
     course?: BranchCourseUpdateOneWithoutBranchStudentsNestedInput
@@ -52403,6 +52440,7 @@ export namespace Prisma {
     facultyName?: NullableStringFieldUpdateOperationsInput | string | null
     courseAmount?: NullableIntFieldUpdateOperationsInput | number | null
     paymentMode?: StringFieldUpdateOperationsInput | string
+    paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
     paymentPlan?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -54696,6 +54734,7 @@ export namespace Prisma {
     facultyName?: string | null
     courseAmount?: number | null
     paymentMode?: string
+    paymentPlanId?: string | null
     paymentPlan?: string | null
   }
 
@@ -54944,6 +54983,7 @@ export namespace Prisma {
     facultyName?: NullableStringFieldUpdateOperationsInput | string | null
     courseAmount?: NullableIntFieldUpdateOperationsInput | number | null
     paymentMode?: StringFieldUpdateOperationsInput | string
+    paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
     paymentPlan?: NullableStringFieldUpdateOperationsInput | string | null
     course?: BranchCourseUpdateOneWithoutBranchStudentsNestedInput
     installments?: BranchStudentInstallmentUpdateManyWithoutBranchStudentNestedInput
@@ -54982,6 +55022,7 @@ export namespace Prisma {
     facultyName?: NullableStringFieldUpdateOperationsInput | string | null
     courseAmount?: NullableIntFieldUpdateOperationsInput | number | null
     paymentMode?: StringFieldUpdateOperationsInput | string
+    paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
     paymentPlan?: NullableStringFieldUpdateOperationsInput | string | null
     installments?: BranchStudentInstallmentUncheckedUpdateManyWithoutBranchStudentNestedInput
   }
@@ -55019,6 +55060,7 @@ export namespace Prisma {
     facultyName?: NullableStringFieldUpdateOperationsInput | string | null
     courseAmount?: NullableIntFieldUpdateOperationsInput | number | null
     paymentMode?: StringFieldUpdateOperationsInput | string
+    paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
     paymentPlan?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -55883,6 +55925,7 @@ export namespace Prisma {
     facultyName?: string | null
     courseAmount?: number | null
     paymentMode?: string
+    paymentPlanId?: string | null
     paymentPlan?: string | null
   }
 
@@ -56022,6 +56065,7 @@ export namespace Prisma {
     facultyName?: NullableStringFieldUpdateOperationsInput | string | null
     courseAmount?: NullableIntFieldUpdateOperationsInput | number | null
     paymentMode?: StringFieldUpdateOperationsInput | string
+    paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
     paymentPlan?: NullableStringFieldUpdateOperationsInput | string | null
     branch?: BranchUpdateOneRequiredWithoutBranchStudentsNestedInput
     installments?: BranchStudentInstallmentUpdateManyWithoutBranchStudentNestedInput
@@ -56060,6 +56104,7 @@ export namespace Prisma {
     facultyName?: NullableStringFieldUpdateOperationsInput | string | null
     courseAmount?: NullableIntFieldUpdateOperationsInput | number | null
     paymentMode?: StringFieldUpdateOperationsInput | string
+    paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
     paymentPlan?: NullableStringFieldUpdateOperationsInput | string | null
     installments?: BranchStudentInstallmentUncheckedUpdateManyWithoutBranchStudentNestedInput
   }
@@ -56097,6 +56142,7 @@ export namespace Prisma {
     facultyName?: NullableStringFieldUpdateOperationsInput | string | null
     courseAmount?: NullableIntFieldUpdateOperationsInput | number | null
     paymentMode?: StringFieldUpdateOperationsInput | string
+    paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
     paymentPlan?: NullableStringFieldUpdateOperationsInput | string | null
   }
 

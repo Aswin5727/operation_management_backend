@@ -478,6 +478,7 @@ model BranchStudent {
   facultyName        String?
   courseAmount       Int?
   paymentMode        String                     @default("Installment")
+  paymentPlanId      String?
   paymentPlan        String?
   branch             Branch                     @relation(fields: [branchId], references: [id], onDelete: Cascade)
   course             BranchCourse?              @relation(fields: [courseId], references: [id])

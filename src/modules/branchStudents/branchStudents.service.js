@@ -321,7 +321,8 @@ function buildBranchStudentPayload(payload = {}, existing = null) {
       ? Number(String(candidate.courseAmount).replace(/,/g, '')) 
       : null,
     paymentMode: parseOptionalText(candidate.paymentMode) || "Installment",
-    paymentPlan: parseOptionalText(candidate.paymentPlan) || parseOptionalText(candidate.paymentPlanId),
+    paymentPlanId: parseOptionalText(candidate.paymentPlanId),
+    paymentPlan: parseOptionalText(candidate.paymentPlan),
   };
 
   let installmentSchedule = [];
@@ -441,6 +442,7 @@ function toBranchStudentSummary(record) {
     facultyName: record.facultyName,
     courseAmount: record.courseAmount,
     paymentMode: record.paymentMode,
+    paymentPlanId: record.paymentPlanId,
     paymentPlan: record.paymentPlan,
     status: displayStatus(record.recordStatus),
     recordStatus: record.recordStatus,
