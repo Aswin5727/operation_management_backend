@@ -8,6 +8,7 @@ import {
   getBranchStudentHandler,
   listBranchStudentsHandler,
   updateBranchStudentHandler,
+  createBranchStudentPaymentHandler,
 } from "./branchStudents.controller.js";
 
 const router = express.Router();
@@ -22,5 +23,6 @@ router.post("/", createBranchStudentHandler);
 router.get("/:studentId", getBranchStudentHandler);
 router.patch("/:studentId", updateBranchStudentHandler);
 router.delete("/:studentId", deleteBranchStudentHandler);
+router.post("/:studentId/payments", createBranchStudentPaymentHandler);
 
 export default router;

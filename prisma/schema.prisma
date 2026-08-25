@@ -65,6 +65,7 @@ model Branch {
   branchInstallmentTemplates BranchInstallmentTemplate[]
   branchFaculties   BranchFaculty[]
   branchStudents    BranchStudent[]
+  payments          BranchStudentPayment[]
   courses           Course[]
 
   @@index([status])
@@ -482,6 +483,7 @@ model BranchStudent {
   branch             Branch       @relation(fields: [branchId], references: [id], onDelete: Cascade)
   course             BranchCourse? @relation(fields: [courseId], references: [id])
   installments       BranchStudentInstallment[]
+  payments           BranchStudentPayment[]
 
   @@unique([branchId, studentId])
   @@index([branchId])
@@ -497,6 +499,7 @@ model BranchStudentInstallment {
   branchStudentId    String
   installmentNumber  Int
   amount             Int
+  amountPaid         Int          @default(0)
   dueDate            String?
   status             String       @default("Pending")
   paidAt             DateTime?
@@ -505,6 +508,7 @@ model BranchStudentInstallment {
   createdAt          DateTime     @default(now())
   updatedAt          DateTime     @updatedAt
   branchStudent      BranchStudent @relation(fields: [branchStudentId], references: [id], onDelete: Cascade)
+  payments           BranchStudentPayment[]
 
   @@index([branchStudentId, status])
   @@index([dueDate])
@@ -720,4 +724,31 @@ enum CourseEditRequestStatus {
   EDITING
   COMPLETED
   REJECTED
+}
+
+model BranchStudentPayment {
+  id                    String       @id @default(cuid())
+  receiptNumber         String       @unique
+  branchStudentId       String
+  branchId              String
+  amount                Int
+  paymentMode           String
+  transactionReference  String?
+  paymentDate           DateTime
+  collectedBy           String?
+  notes                 String?
+  paymentProof          String?
+  
+  payAgainst            String?      
+  installmentId         String?      
+
+  createdAt             DateTime     @default(now())
+  updatedAt             DateTime     @updatedAt
+  
+  branchStudent         BranchStudent @relation(fields: [branchStudentId], references: [id])
+  branch                Branch        @relation(fields: [branchId], references: [id])
+  installment           BranchStudentInstallment? @relation(fields: [installmentId], references: [id])
+
+  @@index([branchId])
+  @@index([branchStudentId])
 }

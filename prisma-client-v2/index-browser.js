@@ -488,6 +488,7 @@ exports.Prisma.BranchStudentInstallmentScalarFieldEnum = {
   branchStudentId: 'branchStudentId',
   installmentNumber: 'installmentNumber',
   amount: 'amount',
+  amountPaid: 'amountPaid',
   dueDate: 'dueDate',
   status: 'status',
   paidAt: 'paidAt',
@@ -597,6 +598,24 @@ exports.Prisma.BranchInstallmentTemplateScalarFieldEnum = {
   status: 'status',
   createdBy: 'createdBy',
   updatedBy: 'updatedBy',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.BranchStudentPaymentScalarFieldEnum = {
+  id: 'id',
+  receiptNumber: 'receiptNumber',
+  branchStudentId: 'branchStudentId',
+  branchId: 'branchId',
+  amount: 'amount',
+  paymentMode: 'paymentMode',
+  transactionReference: 'transactionReference',
+  paymentDate: 'paymentDate',
+  collectedBy: 'collectedBy',
+  notes: 'notes',
+  paymentProof: 'paymentProof',
+  payAgainst: 'payAgainst',
+  installmentId: 'installmentId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -717,7 +736,8 @@ exports.Prisma.ModelName = {
   FacultyAttendanceSession: 'FacultyAttendanceSession',
   StudentAttendance: 'StudentAttendance',
   BranchFaculty: 'BranchFaculty',
-  BranchInstallmentTemplate: 'BranchInstallmentTemplate'
+  BranchInstallmentTemplate: 'BranchInstallmentTemplate',
+  BranchStudentPayment: 'BranchStudentPayment'
 };
 
 /**

@@ -796,3 +796,70 @@ export async function deleteBranchStudent(studentId, actor = null) {
 
   return toBranchStudentSummary(existing);
 }
+
+export async function createBranchStudentPayment(studentId, payload, actor = null) {
+  const { where } = await ensureBranchStudentAccess(actor, studentId);
+  const student = await prisma.branchStudent.findFirst({
+    where,
+    include: {
+      installments: true,
+    },
+  });
+
+  if (!student) {
+    throw new AppError("Branch student not found", 404);
+  }
+
+  const amountReceived = Number(String(payload.amountReceived).replace(/,/g, ''));
+  if (isNaN(amountReceived) || amountReceived <= 0) {
+    throw new AppError("Invalid payment amount", 400);
+  }
+
+  const generatedReceiptNumber = `REC-${new Date().getFullYear()}-${String(Date.now()).slice(-4)}-${Math.floor(Math.random() * 900 + 100)}`;
+
+  let targetInstallmentId = null;
+  const payAgainst = String(payload.payAgainst || "").trim();
+
+  const payment = await prisma.$transaction(async (tx) => {
+    // Check if payAgainst matches any installment
+    const installmentMatch = payAgainst.match(/Installment\s+(\d+)/i);
+    if (installmentMatch) {
+      const instNum = parseInt(installmentMatch[1], 10);
+      const installment = student.installments.find(i => i.installmentNumber === instNum);
+      
+      if (installment) {
+        targetInstallmentId = installment.id;
+        
+        const newAmountPaid = installment.amountPaid + amountReceived;
+        const newStatus = newAmountPaid >= installment.amount ? "Paid" : "Pending";
+        
+        await tx.branchStudentInstallment.update({
+          where: { id: installment.id },
+          data: {
+            amountPaid: newAmountPaid,
+            status: newStatus,
+            paidAt: newStatus === "Paid" ? new Date() : installment.paidAt,
+          },
+        });
+      }
+    }
+
+    return await tx.branchStudentPayment.create({
+      data: {
+        receiptNumber: generatedReceiptNumber,
+        branchStudentId: student.id,
+        branchId: student.branchId,
+        amount: amountReceived,
+        paymentMode: String(payload.paymentMode || "Cash"),
+        transactionReference: payload.transactionReference ? String(payload.transactionReference) : null,
+        paymentDate: payload.paymentDate ? new Date(payload.paymentDate) : new Date(),
+        collectedBy: payload.collectedBy ? String(payload.collectedBy) : (actor?.name || actor?.email || "Admin"),
+        notes: payload.notes ? String(payload.notes) : null,
+        payAgainst: payAgainst,
+        installmentId: targetInstallmentId,
+      },
+    });
+  });
+
+  return payment;
+}

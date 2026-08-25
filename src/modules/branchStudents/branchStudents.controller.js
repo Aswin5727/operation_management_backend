@@ -5,6 +5,7 @@ import {
   getBranchStudent,
   listBranchStudents,
   updateBranchStudent,
+  createBranchStudentPayment,
 } from "./branchStudents.service.js";
 
 function sendSuccess(res, message, data, meta = undefined, statusCode = 200) {
@@ -44,4 +45,9 @@ export const updateBranchStudentHandler = asyncHandler(async (req, res) => {
 export const deleteBranchStudentHandler = asyncHandler(async (req, res) => {
   const student = await deleteBranchStudent(req.params.studentId, req.user);
   return sendSuccess(res, "Branch student deleted successfully", student);
+});
+
+export const createBranchStudentPaymentHandler = asyncHandler(async (req, res) => {
+  const payment = await createBranchStudentPayment(req.params.studentId, req.body || {}, req.user);
+  return sendSuccess(res, "Payment recorded successfully", payment, undefined, 201);
 });

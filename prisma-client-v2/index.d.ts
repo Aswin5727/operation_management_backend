@@ -138,6 +138,11 @@ export type BranchFaculty = $Result.DefaultSelection<Prisma.$BranchFacultyPayloa
  * 
  */
 export type BranchInstallmentTemplate = $Result.DefaultSelection<Prisma.$BranchInstallmentTemplatePayload>
+/**
+ * Model BranchStudentPayment
+ * 
+ */
+export type BranchStudentPayment = $Result.DefaultSelection<Prisma.$BranchStudentPaymentPayload>
 
 /**
  * Enums
@@ -632,6 +637,16 @@ export class PrismaClient<
     * ```
     */
   get branchInstallmentTemplate(): Prisma.BranchInstallmentTemplateDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.branchStudentPayment`: Exposes CRUD operations for the **BranchStudentPayment** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more BranchStudentPayments
+    * const branchStudentPayments = await prisma.branchStudentPayment.findMany()
+    * ```
+    */
+  get branchStudentPayment(): Prisma.BranchStudentPaymentDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -1090,7 +1105,8 @@ export namespace Prisma {
     FacultyAttendanceSession: 'FacultyAttendanceSession',
     StudentAttendance: 'StudentAttendance',
     BranchFaculty: 'BranchFaculty',
-    BranchInstallmentTemplate: 'BranchInstallmentTemplate'
+    BranchInstallmentTemplate: 'BranchInstallmentTemplate',
+    BranchStudentPayment: 'BranchStudentPayment'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1106,7 +1122,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "branch" | "loginEvent" | "notification" | "courseEditRequest" | "passwordResetToken" | "course" | "branchCourse" | "branchCourseModule" | "branchCourseSubmodule" | "courseModule" | "batch" | "batchFacultyAssignment" | "courseStatusHistory" | "batchStatusHistory" | "studentProfile" | "branchStudent" | "branchStudentInstallment" | "facultyProfile" | "facultyCourseAssignment" | "facultyBatchEntry" | "facultyAttendanceSession" | "studentAttendance" | "branchFaculty" | "branchInstallmentTemplate"
+      modelProps: "user" | "branch" | "loginEvent" | "notification" | "courseEditRequest" | "passwordResetToken" | "course" | "branchCourse" | "branchCourseModule" | "branchCourseSubmodule" | "courseModule" | "batch" | "batchFacultyAssignment" | "courseStatusHistory" | "batchStatusHistory" | "studentProfile" | "branchStudent" | "branchStudentInstallment" | "facultyProfile" | "facultyCourseAssignment" | "facultyBatchEntry" | "facultyAttendanceSession" | "studentAttendance" | "branchFaculty" | "branchInstallmentTemplate" | "branchStudentPayment"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2960,6 +2976,80 @@ export namespace Prisma {
           }
         }
       }
+      BranchStudentPayment: {
+        payload: Prisma.$BranchStudentPaymentPayload<ExtArgs>
+        fields: Prisma.BranchStudentPaymentFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.BranchStudentPaymentFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BranchStudentPaymentPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.BranchStudentPaymentFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BranchStudentPaymentPayload>
+          }
+          findFirst: {
+            args: Prisma.BranchStudentPaymentFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BranchStudentPaymentPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.BranchStudentPaymentFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BranchStudentPaymentPayload>
+          }
+          findMany: {
+            args: Prisma.BranchStudentPaymentFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BranchStudentPaymentPayload>[]
+          }
+          create: {
+            args: Prisma.BranchStudentPaymentCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BranchStudentPaymentPayload>
+          }
+          createMany: {
+            args: Prisma.BranchStudentPaymentCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.BranchStudentPaymentCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BranchStudentPaymentPayload>[]
+          }
+          delete: {
+            args: Prisma.BranchStudentPaymentDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BranchStudentPaymentPayload>
+          }
+          update: {
+            args: Prisma.BranchStudentPaymentUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BranchStudentPaymentPayload>
+          }
+          deleteMany: {
+            args: Prisma.BranchStudentPaymentDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.BranchStudentPaymentUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.BranchStudentPaymentUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BranchStudentPaymentPayload>[]
+          }
+          upsert: {
+            args: Prisma.BranchStudentPaymentUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BranchStudentPaymentPayload>
+          }
+          aggregate: {
+            args: Prisma.BranchStudentPaymentAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateBranchStudentPayment>
+          }
+          groupBy: {
+            args: Prisma.BranchStudentPaymentGroupByArgs<ExtArgs>
+            result: $Utils.Optional<BranchStudentPaymentGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.BranchStudentPaymentCountArgs<ExtArgs>
+            result: $Utils.Optional<BranchStudentPaymentCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -3093,6 +3183,7 @@ export namespace Prisma {
     studentAttendance?: StudentAttendanceOmit
     branchFaculty?: BranchFacultyOmit
     branchInstallmentTemplate?: BranchInstallmentTemplateOmit
+    branchStudentPayment?: BranchStudentPaymentOmit
   }
 
   /* Types for Logging */
@@ -3253,6 +3344,7 @@ export namespace Prisma {
     branchInstallmentTemplates: number
     branchFaculties: number
     branchStudents: number
+    payments: number
     courses: number
   }
 
@@ -3261,6 +3353,7 @@ export namespace Prisma {
     branchInstallmentTemplates?: boolean | BranchCountOutputTypeCountBranchInstallmentTemplatesArgs
     branchFaculties?: boolean | BranchCountOutputTypeCountBranchFacultiesArgs
     branchStudents?: boolean | BranchCountOutputTypeCountBranchStudentsArgs
+    payments?: boolean | BranchCountOutputTypeCountPaymentsArgs
     courses?: boolean | BranchCountOutputTypeCountCoursesArgs
   }
 
@@ -3301,6 +3394,13 @@ export namespace Prisma {
    */
   export type BranchCountOutputTypeCountBranchStudentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: BranchStudentWhereInput
+  }
+
+  /**
+   * BranchCountOutputType without action
+   */
+  export type BranchCountOutputTypeCountPaymentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BranchStudentPaymentWhereInput
   }
 
   /**
@@ -3593,10 +3693,12 @@ export namespace Prisma {
 
   export type BranchStudentCountOutputType = {
     installments: number
+    payments: number
   }
 
   export type BranchStudentCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     installments?: boolean | BranchStudentCountOutputTypeCountInstallmentsArgs
+    payments?: boolean | BranchStudentCountOutputTypeCountPaymentsArgs
   }
 
   // Custom InputTypes
@@ -3615,6 +3717,44 @@ export namespace Prisma {
    */
   export type BranchStudentCountOutputTypeCountInstallmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: BranchStudentInstallmentWhereInput
+  }
+
+  /**
+   * BranchStudentCountOutputType without action
+   */
+  export type BranchStudentCountOutputTypeCountPaymentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BranchStudentPaymentWhereInput
+  }
+
+
+  /**
+   * Count Type BranchStudentInstallmentCountOutputType
+   */
+
+  export type BranchStudentInstallmentCountOutputType = {
+    payments: number
+  }
+
+  export type BranchStudentInstallmentCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    payments?: boolean | BranchStudentInstallmentCountOutputTypeCountPaymentsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * BranchStudentInstallmentCountOutputType without action
+   */
+  export type BranchStudentInstallmentCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchStudentInstallmentCountOutputType
+     */
+    select?: BranchStudentInstallmentCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * BranchStudentInstallmentCountOutputType without action
+   */
+  export type BranchStudentInstallmentCountOutputTypeCountPaymentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BranchStudentPaymentWhereInput
   }
 
 
@@ -5419,6 +5559,7 @@ export namespace Prisma {
     branchInstallmentTemplates?: boolean | Branch$branchInstallmentTemplatesArgs<ExtArgs>
     branchFaculties?: boolean | Branch$branchFacultiesArgs<ExtArgs>
     branchStudents?: boolean | Branch$branchStudentsArgs<ExtArgs>
+    payments?: boolean | Branch$paymentsArgs<ExtArgs>
     courses?: boolean | Branch$coursesArgs<ExtArgs>
     _count?: boolean | BranchCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["branch"]>
@@ -5495,6 +5636,7 @@ export namespace Prisma {
     branchInstallmentTemplates?: boolean | Branch$branchInstallmentTemplatesArgs<ExtArgs>
     branchFaculties?: boolean | Branch$branchFacultiesArgs<ExtArgs>
     branchStudents?: boolean | Branch$branchStudentsArgs<ExtArgs>
+    payments?: boolean | Branch$paymentsArgs<ExtArgs>
     courses?: boolean | Branch$coursesArgs<ExtArgs>
     _count?: boolean | BranchCountOutputTypeDefaultArgs<ExtArgs>
   }
@@ -5513,6 +5655,7 @@ export namespace Prisma {
       branchInstallmentTemplates: Prisma.$BranchInstallmentTemplatePayload<ExtArgs>[]
       branchFaculties: Prisma.$BranchFacultyPayload<ExtArgs>[]
       branchStudents: Prisma.$BranchStudentPayload<ExtArgs>[]
+      payments: Prisma.$BranchStudentPaymentPayload<ExtArgs>[]
       courses: Prisma.$CoursePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -5933,6 +6076,7 @@ export namespace Prisma {
     branchInstallmentTemplates<T extends Branch$branchInstallmentTemplatesArgs<ExtArgs> = {}>(args?: Subset<T, Branch$branchInstallmentTemplatesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchInstallmentTemplatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     branchFaculties<T extends Branch$branchFacultiesArgs<ExtArgs> = {}>(args?: Subset<T, Branch$branchFacultiesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchFacultyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     branchStudents<T extends Branch$branchStudentsArgs<ExtArgs> = {}>(args?: Subset<T, Branch$branchStudentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchStudentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    payments<T extends Branch$paymentsArgs<ExtArgs> = {}>(args?: Subset<T, Branch$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchStudentPaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     courses<T extends Branch$coursesArgs<ExtArgs> = {}>(args?: Subset<T, Branch$coursesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CoursePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -6494,6 +6638,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: BranchStudentScalarFieldEnum | BranchStudentScalarFieldEnum[]
+  }
+
+  /**
+   * Branch.payments
+   */
+  export type Branch$paymentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchStudentPayment
+     */
+    select?: BranchStudentPaymentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchStudentPayment
+     */
+    omit?: BranchStudentPaymentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchStudentPaymentInclude<ExtArgs> | null
+    where?: BranchStudentPaymentWhereInput
+    orderBy?: BranchStudentPaymentOrderByWithRelationInput | BranchStudentPaymentOrderByWithRelationInput[]
+    cursor?: BranchStudentPaymentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: BranchStudentPaymentScalarFieldEnum | BranchStudentPaymentScalarFieldEnum[]
   }
 
   /**
@@ -24940,6 +25108,7 @@ export namespace Prisma {
     branch?: boolean | BranchDefaultArgs<ExtArgs>
     course?: boolean | BranchStudent$courseArgs<ExtArgs>
     installments?: boolean | BranchStudent$installmentsArgs<ExtArgs>
+    payments?: boolean | BranchStudent$paymentsArgs<ExtArgs>
     _count?: boolean | BranchStudentCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["branchStudent"]>
 
@@ -25066,6 +25235,7 @@ export namespace Prisma {
     branch?: boolean | BranchDefaultArgs<ExtArgs>
     course?: boolean | BranchStudent$courseArgs<ExtArgs>
     installments?: boolean | BranchStudent$installmentsArgs<ExtArgs>
+    payments?: boolean | BranchStudent$paymentsArgs<ExtArgs>
     _count?: boolean | BranchStudentCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type BranchStudentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -25083,6 +25253,7 @@ export namespace Prisma {
       branch: Prisma.$BranchPayload<ExtArgs>
       course: Prisma.$BranchCoursePayload<ExtArgs> | null
       installments: Prisma.$BranchStudentInstallmentPayload<ExtArgs>[]
+      payments: Prisma.$BranchStudentPaymentPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -25517,6 +25688,7 @@ export namespace Prisma {
     branch<T extends BranchDefaultArgs<ExtArgs> = {}>(args?: Subset<T, BranchDefaultArgs<ExtArgs>>): Prisma__BranchClient<$Result.GetResult<Prisma.$BranchPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     course<T extends BranchStudent$courseArgs<ExtArgs> = {}>(args?: Subset<T, BranchStudent$courseArgs<ExtArgs>>): Prisma__BranchCourseClient<$Result.GetResult<Prisma.$BranchCoursePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     installments<T extends BranchStudent$installmentsArgs<ExtArgs> = {}>(args?: Subset<T, BranchStudent$installmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchStudentInstallmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    payments<T extends BranchStudent$paymentsArgs<ExtArgs> = {}>(args?: Subset<T, BranchStudent$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchStudentPaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -26025,6 +26197,30 @@ export namespace Prisma {
   }
 
   /**
+   * BranchStudent.payments
+   */
+  export type BranchStudent$paymentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchStudentPayment
+     */
+    select?: BranchStudentPaymentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchStudentPayment
+     */
+    omit?: BranchStudentPaymentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchStudentPaymentInclude<ExtArgs> | null
+    where?: BranchStudentPaymentWhereInput
+    orderBy?: BranchStudentPaymentOrderByWithRelationInput | BranchStudentPaymentOrderByWithRelationInput[]
+    cursor?: BranchStudentPaymentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: BranchStudentPaymentScalarFieldEnum | BranchStudentPaymentScalarFieldEnum[]
+  }
+
+  /**
    * BranchStudent without action
    */
   export type BranchStudentDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -26058,11 +26254,13 @@ export namespace Prisma {
   export type BranchStudentInstallmentAvgAggregateOutputType = {
     installmentNumber: number | null
     amount: number | null
+    amountPaid: number | null
   }
 
   export type BranchStudentInstallmentSumAggregateOutputType = {
     installmentNumber: number | null
     amount: number | null
+    amountPaid: number | null
   }
 
   export type BranchStudentInstallmentMinAggregateOutputType = {
@@ -26070,6 +26268,7 @@ export namespace Prisma {
     branchStudentId: string | null
     installmentNumber: number | null
     amount: number | null
+    amountPaid: number | null
     dueDate: string | null
     status: string | null
     paidAt: Date | null
@@ -26084,6 +26283,7 @@ export namespace Prisma {
     branchStudentId: string | null
     installmentNumber: number | null
     amount: number | null
+    amountPaid: number | null
     dueDate: string | null
     status: string | null
     paidAt: Date | null
@@ -26098,6 +26298,7 @@ export namespace Prisma {
     branchStudentId: number
     installmentNumber: number
     amount: number
+    amountPaid: number
     dueDate: number
     status: number
     paidAt: number
@@ -26112,11 +26313,13 @@ export namespace Prisma {
   export type BranchStudentInstallmentAvgAggregateInputType = {
     installmentNumber?: true
     amount?: true
+    amountPaid?: true
   }
 
   export type BranchStudentInstallmentSumAggregateInputType = {
     installmentNumber?: true
     amount?: true
+    amountPaid?: true
   }
 
   export type BranchStudentInstallmentMinAggregateInputType = {
@@ -26124,6 +26327,7 @@ export namespace Prisma {
     branchStudentId?: true
     installmentNumber?: true
     amount?: true
+    amountPaid?: true
     dueDate?: true
     status?: true
     paidAt?: true
@@ -26138,6 +26342,7 @@ export namespace Prisma {
     branchStudentId?: true
     installmentNumber?: true
     amount?: true
+    amountPaid?: true
     dueDate?: true
     status?: true
     paidAt?: true
@@ -26152,6 +26357,7 @@ export namespace Prisma {
     branchStudentId?: true
     installmentNumber?: true
     amount?: true
+    amountPaid?: true
     dueDate?: true
     status?: true
     paidAt?: true
@@ -26253,6 +26459,7 @@ export namespace Prisma {
     branchStudentId: string
     installmentNumber: number
     amount: number
+    amountPaid: number
     dueDate: string | null
     status: string
     paidAt: Date | null
@@ -26286,6 +26493,7 @@ export namespace Prisma {
     branchStudentId?: boolean
     installmentNumber?: boolean
     amount?: boolean
+    amountPaid?: boolean
     dueDate?: boolean
     status?: boolean
     paidAt?: boolean
@@ -26294,6 +26502,8 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     branchStudent?: boolean | BranchStudentDefaultArgs<ExtArgs>
+    payments?: boolean | BranchStudentInstallment$paymentsArgs<ExtArgs>
+    _count?: boolean | BranchStudentInstallmentCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["branchStudentInstallment"]>
 
   export type BranchStudentInstallmentSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -26301,6 +26511,7 @@ export namespace Prisma {
     branchStudentId?: boolean
     installmentNumber?: boolean
     amount?: boolean
+    amountPaid?: boolean
     dueDate?: boolean
     status?: boolean
     paidAt?: boolean
@@ -26316,6 +26527,7 @@ export namespace Prisma {
     branchStudentId?: boolean
     installmentNumber?: boolean
     amount?: boolean
+    amountPaid?: boolean
     dueDate?: boolean
     status?: boolean
     paidAt?: boolean
@@ -26331,6 +26543,7 @@ export namespace Prisma {
     branchStudentId?: boolean
     installmentNumber?: boolean
     amount?: boolean
+    amountPaid?: boolean
     dueDate?: boolean
     status?: boolean
     paidAt?: boolean
@@ -26340,9 +26553,11 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type BranchStudentInstallmentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "branchStudentId" | "installmentNumber" | "amount" | "dueDate" | "status" | "paidAt" | "paymentMethod" | "remarks" | "createdAt" | "updatedAt", ExtArgs["result"]["branchStudentInstallment"]>
+  export type BranchStudentInstallmentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "branchStudentId" | "installmentNumber" | "amount" | "amountPaid" | "dueDate" | "status" | "paidAt" | "paymentMethod" | "remarks" | "createdAt" | "updatedAt", ExtArgs["result"]["branchStudentInstallment"]>
   export type BranchStudentInstallmentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     branchStudent?: boolean | BranchStudentDefaultArgs<ExtArgs>
+    payments?: boolean | BranchStudentInstallment$paymentsArgs<ExtArgs>
+    _count?: boolean | BranchStudentInstallmentCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type BranchStudentInstallmentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     branchStudent?: boolean | BranchStudentDefaultArgs<ExtArgs>
@@ -26355,12 +26570,14 @@ export namespace Prisma {
     name: "BranchStudentInstallment"
     objects: {
       branchStudent: Prisma.$BranchStudentPayload<ExtArgs>
+      payments: Prisma.$BranchStudentPaymentPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       branchStudentId: string
       installmentNumber: number
       amount: number
+      amountPaid: number
       dueDate: string | null
       status: string
       paidAt: Date | null
@@ -26763,6 +26980,7 @@ export namespace Prisma {
   export interface Prisma__BranchStudentInstallmentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     branchStudent<T extends BranchStudentDefaultArgs<ExtArgs> = {}>(args?: Subset<T, BranchStudentDefaultArgs<ExtArgs>>): Prisma__BranchStudentClient<$Result.GetResult<Prisma.$BranchStudentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    payments<T extends BranchStudentInstallment$paymentsArgs<ExtArgs> = {}>(args?: Subset<T, BranchStudentInstallment$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchStudentPaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -26796,6 +27014,7 @@ export namespace Prisma {
     readonly branchStudentId: FieldRef<"BranchStudentInstallment", 'String'>
     readonly installmentNumber: FieldRef<"BranchStudentInstallment", 'Int'>
     readonly amount: FieldRef<"BranchStudentInstallment", 'Int'>
+    readonly amountPaid: FieldRef<"BranchStudentInstallment", 'Int'>
     readonly dueDate: FieldRef<"BranchStudentInstallment", 'String'>
     readonly status: FieldRef<"BranchStudentInstallment", 'String'>
     readonly paidAt: FieldRef<"BranchStudentInstallment", 'DateTime'>
@@ -27201,6 +27420,30 @@ export namespace Prisma {
      * Limit how many BranchStudentInstallments to delete.
      */
     limit?: number
+  }
+
+  /**
+   * BranchStudentInstallment.payments
+   */
+  export type BranchStudentInstallment$paymentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchStudentPayment
+     */
+    select?: BranchStudentPaymentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchStudentPayment
+     */
+    omit?: BranchStudentPaymentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchStudentPaymentInclude<ExtArgs> | null
+    where?: BranchStudentPaymentWhereInput
+    orderBy?: BranchStudentPaymentOrderByWithRelationInput | BranchStudentPaymentOrderByWithRelationInput[]
+    cursor?: BranchStudentPaymentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: BranchStudentPaymentScalarFieldEnum | BranchStudentPaymentScalarFieldEnum[]
   }
 
   /**
@@ -35572,6 +35815,1268 @@ export namespace Prisma {
 
 
   /**
+   * Model BranchStudentPayment
+   */
+
+  export type AggregateBranchStudentPayment = {
+    _count: BranchStudentPaymentCountAggregateOutputType | null
+    _avg: BranchStudentPaymentAvgAggregateOutputType | null
+    _sum: BranchStudentPaymentSumAggregateOutputType | null
+    _min: BranchStudentPaymentMinAggregateOutputType | null
+    _max: BranchStudentPaymentMaxAggregateOutputType | null
+  }
+
+  export type BranchStudentPaymentAvgAggregateOutputType = {
+    amount: number | null
+  }
+
+  export type BranchStudentPaymentSumAggregateOutputType = {
+    amount: number | null
+  }
+
+  export type BranchStudentPaymentMinAggregateOutputType = {
+    id: string | null
+    receiptNumber: string | null
+    branchStudentId: string | null
+    branchId: string | null
+    amount: number | null
+    paymentMode: string | null
+    transactionReference: string | null
+    paymentDate: Date | null
+    collectedBy: string | null
+    notes: string | null
+    paymentProof: string | null
+    payAgainst: string | null
+    installmentId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type BranchStudentPaymentMaxAggregateOutputType = {
+    id: string | null
+    receiptNumber: string | null
+    branchStudentId: string | null
+    branchId: string | null
+    amount: number | null
+    paymentMode: string | null
+    transactionReference: string | null
+    paymentDate: Date | null
+    collectedBy: string | null
+    notes: string | null
+    paymentProof: string | null
+    payAgainst: string | null
+    installmentId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type BranchStudentPaymentCountAggregateOutputType = {
+    id: number
+    receiptNumber: number
+    branchStudentId: number
+    branchId: number
+    amount: number
+    paymentMode: number
+    transactionReference: number
+    paymentDate: number
+    collectedBy: number
+    notes: number
+    paymentProof: number
+    payAgainst: number
+    installmentId: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type BranchStudentPaymentAvgAggregateInputType = {
+    amount?: true
+  }
+
+  export type BranchStudentPaymentSumAggregateInputType = {
+    amount?: true
+  }
+
+  export type BranchStudentPaymentMinAggregateInputType = {
+    id?: true
+    receiptNumber?: true
+    branchStudentId?: true
+    branchId?: true
+    amount?: true
+    paymentMode?: true
+    transactionReference?: true
+    paymentDate?: true
+    collectedBy?: true
+    notes?: true
+    paymentProof?: true
+    payAgainst?: true
+    installmentId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type BranchStudentPaymentMaxAggregateInputType = {
+    id?: true
+    receiptNumber?: true
+    branchStudentId?: true
+    branchId?: true
+    amount?: true
+    paymentMode?: true
+    transactionReference?: true
+    paymentDate?: true
+    collectedBy?: true
+    notes?: true
+    paymentProof?: true
+    payAgainst?: true
+    installmentId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type BranchStudentPaymentCountAggregateInputType = {
+    id?: true
+    receiptNumber?: true
+    branchStudentId?: true
+    branchId?: true
+    amount?: true
+    paymentMode?: true
+    transactionReference?: true
+    paymentDate?: true
+    collectedBy?: true
+    notes?: true
+    paymentProof?: true
+    payAgainst?: true
+    installmentId?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type BranchStudentPaymentAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which BranchStudentPayment to aggregate.
+     */
+    where?: BranchStudentPaymentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of BranchStudentPayments to fetch.
+     */
+    orderBy?: BranchStudentPaymentOrderByWithRelationInput | BranchStudentPaymentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: BranchStudentPaymentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` BranchStudentPayments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` BranchStudentPayments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned BranchStudentPayments
+    **/
+    _count?: true | BranchStudentPaymentCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: BranchStudentPaymentAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: BranchStudentPaymentSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: BranchStudentPaymentMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: BranchStudentPaymentMaxAggregateInputType
+  }
+
+  export type GetBranchStudentPaymentAggregateType<T extends BranchStudentPaymentAggregateArgs> = {
+        [P in keyof T & keyof AggregateBranchStudentPayment]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateBranchStudentPayment[P]>
+      : GetScalarType<T[P], AggregateBranchStudentPayment[P]>
+  }
+
+
+
+
+  export type BranchStudentPaymentGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BranchStudentPaymentWhereInput
+    orderBy?: BranchStudentPaymentOrderByWithAggregationInput | BranchStudentPaymentOrderByWithAggregationInput[]
+    by: BranchStudentPaymentScalarFieldEnum[] | BranchStudentPaymentScalarFieldEnum
+    having?: BranchStudentPaymentScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: BranchStudentPaymentCountAggregateInputType | true
+    _avg?: BranchStudentPaymentAvgAggregateInputType
+    _sum?: BranchStudentPaymentSumAggregateInputType
+    _min?: BranchStudentPaymentMinAggregateInputType
+    _max?: BranchStudentPaymentMaxAggregateInputType
+  }
+
+  export type BranchStudentPaymentGroupByOutputType = {
+    id: string
+    receiptNumber: string
+    branchStudentId: string
+    branchId: string
+    amount: number
+    paymentMode: string
+    transactionReference: string | null
+    paymentDate: Date
+    collectedBy: string | null
+    notes: string | null
+    paymentProof: string | null
+    payAgainst: string | null
+    installmentId: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: BranchStudentPaymentCountAggregateOutputType | null
+    _avg: BranchStudentPaymentAvgAggregateOutputType | null
+    _sum: BranchStudentPaymentSumAggregateOutputType | null
+    _min: BranchStudentPaymentMinAggregateOutputType | null
+    _max: BranchStudentPaymentMaxAggregateOutputType | null
+  }
+
+  type GetBranchStudentPaymentGroupByPayload<T extends BranchStudentPaymentGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<BranchStudentPaymentGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof BranchStudentPaymentGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], BranchStudentPaymentGroupByOutputType[P]>
+            : GetScalarType<T[P], BranchStudentPaymentGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type BranchStudentPaymentSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    receiptNumber?: boolean
+    branchStudentId?: boolean
+    branchId?: boolean
+    amount?: boolean
+    paymentMode?: boolean
+    transactionReference?: boolean
+    paymentDate?: boolean
+    collectedBy?: boolean
+    notes?: boolean
+    paymentProof?: boolean
+    payAgainst?: boolean
+    installmentId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    branchStudent?: boolean | BranchStudentDefaultArgs<ExtArgs>
+    branch?: boolean | BranchDefaultArgs<ExtArgs>
+    installment?: boolean | BranchStudentPayment$installmentArgs<ExtArgs>
+  }, ExtArgs["result"]["branchStudentPayment"]>
+
+  export type BranchStudentPaymentSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    receiptNumber?: boolean
+    branchStudentId?: boolean
+    branchId?: boolean
+    amount?: boolean
+    paymentMode?: boolean
+    transactionReference?: boolean
+    paymentDate?: boolean
+    collectedBy?: boolean
+    notes?: boolean
+    paymentProof?: boolean
+    payAgainst?: boolean
+    installmentId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    branchStudent?: boolean | BranchStudentDefaultArgs<ExtArgs>
+    branch?: boolean | BranchDefaultArgs<ExtArgs>
+    installment?: boolean | BranchStudentPayment$installmentArgs<ExtArgs>
+  }, ExtArgs["result"]["branchStudentPayment"]>
+
+  export type BranchStudentPaymentSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    receiptNumber?: boolean
+    branchStudentId?: boolean
+    branchId?: boolean
+    amount?: boolean
+    paymentMode?: boolean
+    transactionReference?: boolean
+    paymentDate?: boolean
+    collectedBy?: boolean
+    notes?: boolean
+    paymentProof?: boolean
+    payAgainst?: boolean
+    installmentId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    branchStudent?: boolean | BranchStudentDefaultArgs<ExtArgs>
+    branch?: boolean | BranchDefaultArgs<ExtArgs>
+    installment?: boolean | BranchStudentPayment$installmentArgs<ExtArgs>
+  }, ExtArgs["result"]["branchStudentPayment"]>
+
+  export type BranchStudentPaymentSelectScalar = {
+    id?: boolean
+    receiptNumber?: boolean
+    branchStudentId?: boolean
+    branchId?: boolean
+    amount?: boolean
+    paymentMode?: boolean
+    transactionReference?: boolean
+    paymentDate?: boolean
+    collectedBy?: boolean
+    notes?: boolean
+    paymentProof?: boolean
+    payAgainst?: boolean
+    installmentId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type BranchStudentPaymentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "receiptNumber" | "branchStudentId" | "branchId" | "amount" | "paymentMode" | "transactionReference" | "paymentDate" | "collectedBy" | "notes" | "paymentProof" | "payAgainst" | "installmentId" | "createdAt" | "updatedAt", ExtArgs["result"]["branchStudentPayment"]>
+  export type BranchStudentPaymentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    branchStudent?: boolean | BranchStudentDefaultArgs<ExtArgs>
+    branch?: boolean | BranchDefaultArgs<ExtArgs>
+    installment?: boolean | BranchStudentPayment$installmentArgs<ExtArgs>
+  }
+  export type BranchStudentPaymentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    branchStudent?: boolean | BranchStudentDefaultArgs<ExtArgs>
+    branch?: boolean | BranchDefaultArgs<ExtArgs>
+    installment?: boolean | BranchStudentPayment$installmentArgs<ExtArgs>
+  }
+  export type BranchStudentPaymentIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    branchStudent?: boolean | BranchStudentDefaultArgs<ExtArgs>
+    branch?: boolean | BranchDefaultArgs<ExtArgs>
+    installment?: boolean | BranchStudentPayment$installmentArgs<ExtArgs>
+  }
+
+  export type $BranchStudentPaymentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "BranchStudentPayment"
+    objects: {
+      branchStudent: Prisma.$BranchStudentPayload<ExtArgs>
+      branch: Prisma.$BranchPayload<ExtArgs>
+      installment: Prisma.$BranchStudentInstallmentPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      receiptNumber: string
+      branchStudentId: string
+      branchId: string
+      amount: number
+      paymentMode: string
+      transactionReference: string | null
+      paymentDate: Date
+      collectedBy: string | null
+      notes: string | null
+      paymentProof: string | null
+      payAgainst: string | null
+      installmentId: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["branchStudentPayment"]>
+    composites: {}
+  }
+
+  type BranchStudentPaymentGetPayload<S extends boolean | null | undefined | BranchStudentPaymentDefaultArgs> = $Result.GetResult<Prisma.$BranchStudentPaymentPayload, S>
+
+  type BranchStudentPaymentCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<BranchStudentPaymentFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: BranchStudentPaymentCountAggregateInputType | true
+    }
+
+  export interface BranchStudentPaymentDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['BranchStudentPayment'], meta: { name: 'BranchStudentPayment' } }
+    /**
+     * Find zero or one BranchStudentPayment that matches the filter.
+     * @param {BranchStudentPaymentFindUniqueArgs} args - Arguments to find a BranchStudentPayment
+     * @example
+     * // Get one BranchStudentPayment
+     * const branchStudentPayment = await prisma.branchStudentPayment.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends BranchStudentPaymentFindUniqueArgs>(args: SelectSubset<T, BranchStudentPaymentFindUniqueArgs<ExtArgs>>): Prisma__BranchStudentPaymentClient<$Result.GetResult<Prisma.$BranchStudentPaymentPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one BranchStudentPayment that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {BranchStudentPaymentFindUniqueOrThrowArgs} args - Arguments to find a BranchStudentPayment
+     * @example
+     * // Get one BranchStudentPayment
+     * const branchStudentPayment = await prisma.branchStudentPayment.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends BranchStudentPaymentFindUniqueOrThrowArgs>(args: SelectSubset<T, BranchStudentPaymentFindUniqueOrThrowArgs<ExtArgs>>): Prisma__BranchStudentPaymentClient<$Result.GetResult<Prisma.$BranchStudentPaymentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first BranchStudentPayment that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BranchStudentPaymentFindFirstArgs} args - Arguments to find a BranchStudentPayment
+     * @example
+     * // Get one BranchStudentPayment
+     * const branchStudentPayment = await prisma.branchStudentPayment.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends BranchStudentPaymentFindFirstArgs>(args?: SelectSubset<T, BranchStudentPaymentFindFirstArgs<ExtArgs>>): Prisma__BranchStudentPaymentClient<$Result.GetResult<Prisma.$BranchStudentPaymentPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first BranchStudentPayment that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BranchStudentPaymentFindFirstOrThrowArgs} args - Arguments to find a BranchStudentPayment
+     * @example
+     * // Get one BranchStudentPayment
+     * const branchStudentPayment = await prisma.branchStudentPayment.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends BranchStudentPaymentFindFirstOrThrowArgs>(args?: SelectSubset<T, BranchStudentPaymentFindFirstOrThrowArgs<ExtArgs>>): Prisma__BranchStudentPaymentClient<$Result.GetResult<Prisma.$BranchStudentPaymentPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more BranchStudentPayments that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BranchStudentPaymentFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all BranchStudentPayments
+     * const branchStudentPayments = await prisma.branchStudentPayment.findMany()
+     * 
+     * // Get first 10 BranchStudentPayments
+     * const branchStudentPayments = await prisma.branchStudentPayment.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const branchStudentPaymentWithIdOnly = await prisma.branchStudentPayment.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends BranchStudentPaymentFindManyArgs>(args?: SelectSubset<T, BranchStudentPaymentFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchStudentPaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a BranchStudentPayment.
+     * @param {BranchStudentPaymentCreateArgs} args - Arguments to create a BranchStudentPayment.
+     * @example
+     * // Create one BranchStudentPayment
+     * const BranchStudentPayment = await prisma.branchStudentPayment.create({
+     *   data: {
+     *     // ... data to create a BranchStudentPayment
+     *   }
+     * })
+     * 
+     */
+    create<T extends BranchStudentPaymentCreateArgs>(args: SelectSubset<T, BranchStudentPaymentCreateArgs<ExtArgs>>): Prisma__BranchStudentPaymentClient<$Result.GetResult<Prisma.$BranchStudentPaymentPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many BranchStudentPayments.
+     * @param {BranchStudentPaymentCreateManyArgs} args - Arguments to create many BranchStudentPayments.
+     * @example
+     * // Create many BranchStudentPayments
+     * const branchStudentPayment = await prisma.branchStudentPayment.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends BranchStudentPaymentCreateManyArgs>(args?: SelectSubset<T, BranchStudentPaymentCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many BranchStudentPayments and returns the data saved in the database.
+     * @param {BranchStudentPaymentCreateManyAndReturnArgs} args - Arguments to create many BranchStudentPayments.
+     * @example
+     * // Create many BranchStudentPayments
+     * const branchStudentPayment = await prisma.branchStudentPayment.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many BranchStudentPayments and only return the `id`
+     * const branchStudentPaymentWithIdOnly = await prisma.branchStudentPayment.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends BranchStudentPaymentCreateManyAndReturnArgs>(args?: SelectSubset<T, BranchStudentPaymentCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchStudentPaymentPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a BranchStudentPayment.
+     * @param {BranchStudentPaymentDeleteArgs} args - Arguments to delete one BranchStudentPayment.
+     * @example
+     * // Delete one BranchStudentPayment
+     * const BranchStudentPayment = await prisma.branchStudentPayment.delete({
+     *   where: {
+     *     // ... filter to delete one BranchStudentPayment
+     *   }
+     * })
+     * 
+     */
+    delete<T extends BranchStudentPaymentDeleteArgs>(args: SelectSubset<T, BranchStudentPaymentDeleteArgs<ExtArgs>>): Prisma__BranchStudentPaymentClient<$Result.GetResult<Prisma.$BranchStudentPaymentPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one BranchStudentPayment.
+     * @param {BranchStudentPaymentUpdateArgs} args - Arguments to update one BranchStudentPayment.
+     * @example
+     * // Update one BranchStudentPayment
+     * const branchStudentPayment = await prisma.branchStudentPayment.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends BranchStudentPaymentUpdateArgs>(args: SelectSubset<T, BranchStudentPaymentUpdateArgs<ExtArgs>>): Prisma__BranchStudentPaymentClient<$Result.GetResult<Prisma.$BranchStudentPaymentPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more BranchStudentPayments.
+     * @param {BranchStudentPaymentDeleteManyArgs} args - Arguments to filter BranchStudentPayments to delete.
+     * @example
+     * // Delete a few BranchStudentPayments
+     * const { count } = await prisma.branchStudentPayment.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends BranchStudentPaymentDeleteManyArgs>(args?: SelectSubset<T, BranchStudentPaymentDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more BranchStudentPayments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BranchStudentPaymentUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many BranchStudentPayments
+     * const branchStudentPayment = await prisma.branchStudentPayment.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends BranchStudentPaymentUpdateManyArgs>(args: SelectSubset<T, BranchStudentPaymentUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more BranchStudentPayments and returns the data updated in the database.
+     * @param {BranchStudentPaymentUpdateManyAndReturnArgs} args - Arguments to update many BranchStudentPayments.
+     * @example
+     * // Update many BranchStudentPayments
+     * const branchStudentPayment = await prisma.branchStudentPayment.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more BranchStudentPayments and only return the `id`
+     * const branchStudentPaymentWithIdOnly = await prisma.branchStudentPayment.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends BranchStudentPaymentUpdateManyAndReturnArgs>(args: SelectSubset<T, BranchStudentPaymentUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchStudentPaymentPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one BranchStudentPayment.
+     * @param {BranchStudentPaymentUpsertArgs} args - Arguments to update or create a BranchStudentPayment.
+     * @example
+     * // Update or create a BranchStudentPayment
+     * const branchStudentPayment = await prisma.branchStudentPayment.upsert({
+     *   create: {
+     *     // ... data to create a BranchStudentPayment
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the BranchStudentPayment we want to update
+     *   }
+     * })
+     */
+    upsert<T extends BranchStudentPaymentUpsertArgs>(args: SelectSubset<T, BranchStudentPaymentUpsertArgs<ExtArgs>>): Prisma__BranchStudentPaymentClient<$Result.GetResult<Prisma.$BranchStudentPaymentPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of BranchStudentPayments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BranchStudentPaymentCountArgs} args - Arguments to filter BranchStudentPayments to count.
+     * @example
+     * // Count the number of BranchStudentPayments
+     * const count = await prisma.branchStudentPayment.count({
+     *   where: {
+     *     // ... the filter for the BranchStudentPayments we want to count
+     *   }
+     * })
+    **/
+    count<T extends BranchStudentPaymentCountArgs>(
+      args?: Subset<T, BranchStudentPaymentCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], BranchStudentPaymentCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a BranchStudentPayment.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BranchStudentPaymentAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends BranchStudentPaymentAggregateArgs>(args: Subset<T, BranchStudentPaymentAggregateArgs>): Prisma.PrismaPromise<GetBranchStudentPaymentAggregateType<T>>
+
+    /**
+     * Group by BranchStudentPayment.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BranchStudentPaymentGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends BranchStudentPaymentGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: BranchStudentPaymentGroupByArgs['orderBy'] }
+        : { orderBy?: BranchStudentPaymentGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, BranchStudentPaymentGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetBranchStudentPaymentGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the BranchStudentPayment model
+   */
+  readonly fields: BranchStudentPaymentFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for BranchStudentPayment.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__BranchStudentPaymentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    branchStudent<T extends BranchStudentDefaultArgs<ExtArgs> = {}>(args?: Subset<T, BranchStudentDefaultArgs<ExtArgs>>): Prisma__BranchStudentClient<$Result.GetResult<Prisma.$BranchStudentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    branch<T extends BranchDefaultArgs<ExtArgs> = {}>(args?: Subset<T, BranchDefaultArgs<ExtArgs>>): Prisma__BranchClient<$Result.GetResult<Prisma.$BranchPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    installment<T extends BranchStudentPayment$installmentArgs<ExtArgs> = {}>(args?: Subset<T, BranchStudentPayment$installmentArgs<ExtArgs>>): Prisma__BranchStudentInstallmentClient<$Result.GetResult<Prisma.$BranchStudentInstallmentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the BranchStudentPayment model
+   */
+  interface BranchStudentPaymentFieldRefs {
+    readonly id: FieldRef<"BranchStudentPayment", 'String'>
+    readonly receiptNumber: FieldRef<"BranchStudentPayment", 'String'>
+    readonly branchStudentId: FieldRef<"BranchStudentPayment", 'String'>
+    readonly branchId: FieldRef<"BranchStudentPayment", 'String'>
+    readonly amount: FieldRef<"BranchStudentPayment", 'Int'>
+    readonly paymentMode: FieldRef<"BranchStudentPayment", 'String'>
+    readonly transactionReference: FieldRef<"BranchStudentPayment", 'String'>
+    readonly paymentDate: FieldRef<"BranchStudentPayment", 'DateTime'>
+    readonly collectedBy: FieldRef<"BranchStudentPayment", 'String'>
+    readonly notes: FieldRef<"BranchStudentPayment", 'String'>
+    readonly paymentProof: FieldRef<"BranchStudentPayment", 'String'>
+    readonly payAgainst: FieldRef<"BranchStudentPayment", 'String'>
+    readonly installmentId: FieldRef<"BranchStudentPayment", 'String'>
+    readonly createdAt: FieldRef<"BranchStudentPayment", 'DateTime'>
+    readonly updatedAt: FieldRef<"BranchStudentPayment", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * BranchStudentPayment findUnique
+   */
+  export type BranchStudentPaymentFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchStudentPayment
+     */
+    select?: BranchStudentPaymentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchStudentPayment
+     */
+    omit?: BranchStudentPaymentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchStudentPaymentInclude<ExtArgs> | null
+    /**
+     * Filter, which BranchStudentPayment to fetch.
+     */
+    where: BranchStudentPaymentWhereUniqueInput
+  }
+
+  /**
+   * BranchStudentPayment findUniqueOrThrow
+   */
+  export type BranchStudentPaymentFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchStudentPayment
+     */
+    select?: BranchStudentPaymentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchStudentPayment
+     */
+    omit?: BranchStudentPaymentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchStudentPaymentInclude<ExtArgs> | null
+    /**
+     * Filter, which BranchStudentPayment to fetch.
+     */
+    where: BranchStudentPaymentWhereUniqueInput
+  }
+
+  /**
+   * BranchStudentPayment findFirst
+   */
+  export type BranchStudentPaymentFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchStudentPayment
+     */
+    select?: BranchStudentPaymentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchStudentPayment
+     */
+    omit?: BranchStudentPaymentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchStudentPaymentInclude<ExtArgs> | null
+    /**
+     * Filter, which BranchStudentPayment to fetch.
+     */
+    where?: BranchStudentPaymentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of BranchStudentPayments to fetch.
+     */
+    orderBy?: BranchStudentPaymentOrderByWithRelationInput | BranchStudentPaymentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for BranchStudentPayments.
+     */
+    cursor?: BranchStudentPaymentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` BranchStudentPayments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` BranchStudentPayments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of BranchStudentPayments.
+     */
+    distinct?: BranchStudentPaymentScalarFieldEnum | BranchStudentPaymentScalarFieldEnum[]
+  }
+
+  /**
+   * BranchStudentPayment findFirstOrThrow
+   */
+  export type BranchStudentPaymentFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchStudentPayment
+     */
+    select?: BranchStudentPaymentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchStudentPayment
+     */
+    omit?: BranchStudentPaymentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchStudentPaymentInclude<ExtArgs> | null
+    /**
+     * Filter, which BranchStudentPayment to fetch.
+     */
+    where?: BranchStudentPaymentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of BranchStudentPayments to fetch.
+     */
+    orderBy?: BranchStudentPaymentOrderByWithRelationInput | BranchStudentPaymentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for BranchStudentPayments.
+     */
+    cursor?: BranchStudentPaymentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` BranchStudentPayments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` BranchStudentPayments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of BranchStudentPayments.
+     */
+    distinct?: BranchStudentPaymentScalarFieldEnum | BranchStudentPaymentScalarFieldEnum[]
+  }
+
+  /**
+   * BranchStudentPayment findMany
+   */
+  export type BranchStudentPaymentFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchStudentPayment
+     */
+    select?: BranchStudentPaymentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchStudentPayment
+     */
+    omit?: BranchStudentPaymentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchStudentPaymentInclude<ExtArgs> | null
+    /**
+     * Filter, which BranchStudentPayments to fetch.
+     */
+    where?: BranchStudentPaymentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of BranchStudentPayments to fetch.
+     */
+    orderBy?: BranchStudentPaymentOrderByWithRelationInput | BranchStudentPaymentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing BranchStudentPayments.
+     */
+    cursor?: BranchStudentPaymentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` BranchStudentPayments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` BranchStudentPayments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of BranchStudentPayments.
+     */
+    distinct?: BranchStudentPaymentScalarFieldEnum | BranchStudentPaymentScalarFieldEnum[]
+  }
+
+  /**
+   * BranchStudentPayment create
+   */
+  export type BranchStudentPaymentCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchStudentPayment
+     */
+    select?: BranchStudentPaymentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchStudentPayment
+     */
+    omit?: BranchStudentPaymentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchStudentPaymentInclude<ExtArgs> | null
+    /**
+     * The data needed to create a BranchStudentPayment.
+     */
+    data: XOR<BranchStudentPaymentCreateInput, BranchStudentPaymentUncheckedCreateInput>
+  }
+
+  /**
+   * BranchStudentPayment createMany
+   */
+  export type BranchStudentPaymentCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many BranchStudentPayments.
+     */
+    data: BranchStudentPaymentCreateManyInput | BranchStudentPaymentCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * BranchStudentPayment createManyAndReturn
+   */
+  export type BranchStudentPaymentCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchStudentPayment
+     */
+    select?: BranchStudentPaymentSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchStudentPayment
+     */
+    omit?: BranchStudentPaymentOmit<ExtArgs> | null
+    /**
+     * The data used to create many BranchStudentPayments.
+     */
+    data: BranchStudentPaymentCreateManyInput | BranchStudentPaymentCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchStudentPaymentIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * BranchStudentPayment update
+   */
+  export type BranchStudentPaymentUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchStudentPayment
+     */
+    select?: BranchStudentPaymentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchStudentPayment
+     */
+    omit?: BranchStudentPaymentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchStudentPaymentInclude<ExtArgs> | null
+    /**
+     * The data needed to update a BranchStudentPayment.
+     */
+    data: XOR<BranchStudentPaymentUpdateInput, BranchStudentPaymentUncheckedUpdateInput>
+    /**
+     * Choose, which BranchStudentPayment to update.
+     */
+    where: BranchStudentPaymentWhereUniqueInput
+  }
+
+  /**
+   * BranchStudentPayment updateMany
+   */
+  export type BranchStudentPaymentUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update BranchStudentPayments.
+     */
+    data: XOR<BranchStudentPaymentUpdateManyMutationInput, BranchStudentPaymentUncheckedUpdateManyInput>
+    /**
+     * Filter which BranchStudentPayments to update
+     */
+    where?: BranchStudentPaymentWhereInput
+    /**
+     * Limit how many BranchStudentPayments to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * BranchStudentPayment updateManyAndReturn
+   */
+  export type BranchStudentPaymentUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchStudentPayment
+     */
+    select?: BranchStudentPaymentSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchStudentPayment
+     */
+    omit?: BranchStudentPaymentOmit<ExtArgs> | null
+    /**
+     * The data used to update BranchStudentPayments.
+     */
+    data: XOR<BranchStudentPaymentUpdateManyMutationInput, BranchStudentPaymentUncheckedUpdateManyInput>
+    /**
+     * Filter which BranchStudentPayments to update
+     */
+    where?: BranchStudentPaymentWhereInput
+    /**
+     * Limit how many BranchStudentPayments to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchStudentPaymentIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * BranchStudentPayment upsert
+   */
+  export type BranchStudentPaymentUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchStudentPayment
+     */
+    select?: BranchStudentPaymentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchStudentPayment
+     */
+    omit?: BranchStudentPaymentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchStudentPaymentInclude<ExtArgs> | null
+    /**
+     * The filter to search for the BranchStudentPayment to update in case it exists.
+     */
+    where: BranchStudentPaymentWhereUniqueInput
+    /**
+     * In case the BranchStudentPayment found by the `where` argument doesn't exist, create a new BranchStudentPayment with this data.
+     */
+    create: XOR<BranchStudentPaymentCreateInput, BranchStudentPaymentUncheckedCreateInput>
+    /**
+     * In case the BranchStudentPayment was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<BranchStudentPaymentUpdateInput, BranchStudentPaymentUncheckedUpdateInput>
+  }
+
+  /**
+   * BranchStudentPayment delete
+   */
+  export type BranchStudentPaymentDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchStudentPayment
+     */
+    select?: BranchStudentPaymentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchStudentPayment
+     */
+    omit?: BranchStudentPaymentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchStudentPaymentInclude<ExtArgs> | null
+    /**
+     * Filter which BranchStudentPayment to delete.
+     */
+    where: BranchStudentPaymentWhereUniqueInput
+  }
+
+  /**
+   * BranchStudentPayment deleteMany
+   */
+  export type BranchStudentPaymentDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which BranchStudentPayments to delete
+     */
+    where?: BranchStudentPaymentWhereInput
+    /**
+     * Limit how many BranchStudentPayments to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * BranchStudentPayment.installment
+   */
+  export type BranchStudentPayment$installmentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchStudentInstallment
+     */
+    select?: BranchStudentInstallmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchStudentInstallment
+     */
+    omit?: BranchStudentInstallmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchStudentInstallmentInclude<ExtArgs> | null
+    where?: BranchStudentInstallmentWhereInput
+  }
+
+  /**
+   * BranchStudentPayment without action
+   */
+  export type BranchStudentPaymentDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchStudentPayment
+     */
+    select?: BranchStudentPaymentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchStudentPayment
+     */
+    omit?: BranchStudentPaymentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchStudentPaymentInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -36004,6 +37509,7 @@ export namespace Prisma {
     branchStudentId: 'branchStudentId',
     installmentNumber: 'installmentNumber',
     amount: 'amount',
+    amountPaid: 'amountPaid',
     dueDate: 'dueDate',
     status: 'status',
     paidAt: 'paidAt',
@@ -36139,6 +37645,27 @@ export namespace Prisma {
   };
 
   export type BranchInstallmentTemplateScalarFieldEnum = (typeof BranchInstallmentTemplateScalarFieldEnum)[keyof typeof BranchInstallmentTemplateScalarFieldEnum]
+
+
+  export const BranchStudentPaymentScalarFieldEnum: {
+    id: 'id',
+    receiptNumber: 'receiptNumber',
+    branchStudentId: 'branchStudentId',
+    branchId: 'branchId',
+    amount: 'amount',
+    paymentMode: 'paymentMode',
+    transactionReference: 'transactionReference',
+    paymentDate: 'paymentDate',
+    collectedBy: 'collectedBy',
+    notes: 'notes',
+    paymentProof: 'paymentProof',
+    payAgainst: 'payAgainst',
+    installmentId: 'installmentId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type BranchStudentPaymentScalarFieldEnum = (typeof BranchStudentPaymentScalarFieldEnum)[keyof typeof BranchStudentPaymentScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -36568,6 +38095,7 @@ export namespace Prisma {
     branchInstallmentTemplates?: BranchInstallmentTemplateListRelationFilter
     branchFaculties?: BranchFacultyListRelationFilter
     branchStudents?: BranchStudentListRelationFilter
+    payments?: BranchStudentPaymentListRelationFilter
     courses?: CourseListRelationFilter
   }
 
@@ -36595,6 +38123,7 @@ export namespace Prisma {
     branchInstallmentTemplates?: BranchInstallmentTemplateOrderByRelationAggregateInput
     branchFaculties?: BranchFacultyOrderByRelationAggregateInput
     branchStudents?: BranchStudentOrderByRelationAggregateInput
+    payments?: BranchStudentPaymentOrderByRelationAggregateInput
     courses?: CourseOrderByRelationAggregateInput
   }
 
@@ -36625,6 +38154,7 @@ export namespace Prisma {
     branchInstallmentTemplates?: BranchInstallmentTemplateListRelationFilter
     branchFaculties?: BranchFacultyListRelationFilter
     branchStudents?: BranchStudentListRelationFilter
+    payments?: BranchStudentPaymentListRelationFilter
     courses?: CourseListRelationFilter
   }, "id" | "branchId" | "branchEmail" | "branchPhone" | "adminUserId">
 
@@ -38404,6 +39934,7 @@ export namespace Prisma {
     branch?: XOR<BranchScalarRelationFilter, BranchWhereInput>
     course?: XOR<BranchCourseNullableScalarRelationFilter, BranchCourseWhereInput> | null
     installments?: BranchStudentInstallmentListRelationFilter
+    payments?: BranchStudentPaymentListRelationFilter
   }
 
   export type BranchStudentOrderByWithRelationInput = {
@@ -38445,6 +39976,7 @@ export namespace Prisma {
     branch?: BranchOrderByWithRelationInput
     course?: BranchCourseOrderByWithRelationInput
     installments?: BranchStudentInstallmentOrderByRelationAggregateInput
+    payments?: BranchStudentPaymentOrderByRelationAggregateInput
   }
 
   export type BranchStudentWhereUniqueInput = Prisma.AtLeast<{
@@ -38490,6 +40022,7 @@ export namespace Prisma {
     branch?: XOR<BranchScalarRelationFilter, BranchWhereInput>
     course?: XOR<BranchCourseNullableScalarRelationFilter, BranchCourseWhereInput> | null
     installments?: BranchStudentInstallmentListRelationFilter
+    payments?: BranchStudentPaymentListRelationFilter
   }, "id" | "mobileNumber" | "emailAddress" | "branchId_studentId">
 
   export type BranchStudentOrderByWithAggregationInput = {
@@ -38584,6 +40117,7 @@ export namespace Prisma {
     branchStudentId?: StringFilter<"BranchStudentInstallment"> | string
     installmentNumber?: IntFilter<"BranchStudentInstallment"> | number
     amount?: IntFilter<"BranchStudentInstallment"> | number
+    amountPaid?: IntFilter<"BranchStudentInstallment"> | number
     dueDate?: StringNullableFilter<"BranchStudentInstallment"> | string | null
     status?: StringFilter<"BranchStudentInstallment"> | string
     paidAt?: DateTimeNullableFilter<"BranchStudentInstallment"> | Date | string | null
@@ -38592,6 +40126,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"BranchStudentInstallment"> | Date | string
     updatedAt?: DateTimeFilter<"BranchStudentInstallment"> | Date | string
     branchStudent?: XOR<BranchStudentScalarRelationFilter, BranchStudentWhereInput>
+    payments?: BranchStudentPaymentListRelationFilter
   }
 
   export type BranchStudentInstallmentOrderByWithRelationInput = {
@@ -38599,6 +40134,7 @@ export namespace Prisma {
     branchStudentId?: SortOrder
     installmentNumber?: SortOrder
     amount?: SortOrder
+    amountPaid?: SortOrder
     dueDate?: SortOrderInput | SortOrder
     status?: SortOrder
     paidAt?: SortOrderInput | SortOrder
@@ -38607,6 +40143,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     branchStudent?: BranchStudentOrderByWithRelationInput
+    payments?: BranchStudentPaymentOrderByRelationAggregateInput
   }
 
   export type BranchStudentInstallmentWhereUniqueInput = Prisma.AtLeast<{
@@ -38617,6 +40154,7 @@ export namespace Prisma {
     branchStudentId?: StringFilter<"BranchStudentInstallment"> | string
     installmentNumber?: IntFilter<"BranchStudentInstallment"> | number
     amount?: IntFilter<"BranchStudentInstallment"> | number
+    amountPaid?: IntFilter<"BranchStudentInstallment"> | number
     dueDate?: StringNullableFilter<"BranchStudentInstallment"> | string | null
     status?: StringFilter<"BranchStudentInstallment"> | string
     paidAt?: DateTimeNullableFilter<"BranchStudentInstallment"> | Date | string | null
@@ -38625,6 +40163,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"BranchStudentInstallment"> | Date | string
     updatedAt?: DateTimeFilter<"BranchStudentInstallment"> | Date | string
     branchStudent?: XOR<BranchStudentScalarRelationFilter, BranchStudentWhereInput>
+    payments?: BranchStudentPaymentListRelationFilter
   }, "id">
 
   export type BranchStudentInstallmentOrderByWithAggregationInput = {
@@ -38632,6 +40171,7 @@ export namespace Prisma {
     branchStudentId?: SortOrder
     installmentNumber?: SortOrder
     amount?: SortOrder
+    amountPaid?: SortOrder
     dueDate?: SortOrderInput | SortOrder
     status?: SortOrder
     paidAt?: SortOrderInput | SortOrder
@@ -38654,6 +40194,7 @@ export namespace Prisma {
     branchStudentId?: StringWithAggregatesFilter<"BranchStudentInstallment"> | string
     installmentNumber?: IntWithAggregatesFilter<"BranchStudentInstallment"> | number
     amount?: IntWithAggregatesFilter<"BranchStudentInstallment"> | number
+    amountPaid?: IntWithAggregatesFilter<"BranchStudentInstallment"> | number
     dueDate?: StringNullableWithAggregatesFilter<"BranchStudentInstallment"> | string | null
     status?: StringWithAggregatesFilter<"BranchStudentInstallment"> | string
     paidAt?: DateTimeNullableWithAggregatesFilter<"BranchStudentInstallment"> | Date | string | null
@@ -39320,6 +40861,119 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"BranchInstallmentTemplate"> | Date | string
   }
 
+  export type BranchStudentPaymentWhereInput = {
+    AND?: BranchStudentPaymentWhereInput | BranchStudentPaymentWhereInput[]
+    OR?: BranchStudentPaymentWhereInput[]
+    NOT?: BranchStudentPaymentWhereInput | BranchStudentPaymentWhereInput[]
+    id?: StringFilter<"BranchStudentPayment"> | string
+    receiptNumber?: StringFilter<"BranchStudentPayment"> | string
+    branchStudentId?: StringFilter<"BranchStudentPayment"> | string
+    branchId?: StringFilter<"BranchStudentPayment"> | string
+    amount?: IntFilter<"BranchStudentPayment"> | number
+    paymentMode?: StringFilter<"BranchStudentPayment"> | string
+    transactionReference?: StringNullableFilter<"BranchStudentPayment"> | string | null
+    paymentDate?: DateTimeFilter<"BranchStudentPayment"> | Date | string
+    collectedBy?: StringNullableFilter<"BranchStudentPayment"> | string | null
+    notes?: StringNullableFilter<"BranchStudentPayment"> | string | null
+    paymentProof?: StringNullableFilter<"BranchStudentPayment"> | string | null
+    payAgainst?: StringNullableFilter<"BranchStudentPayment"> | string | null
+    installmentId?: StringNullableFilter<"BranchStudentPayment"> | string | null
+    createdAt?: DateTimeFilter<"BranchStudentPayment"> | Date | string
+    updatedAt?: DateTimeFilter<"BranchStudentPayment"> | Date | string
+    branchStudent?: XOR<BranchStudentScalarRelationFilter, BranchStudentWhereInput>
+    branch?: XOR<BranchScalarRelationFilter, BranchWhereInput>
+    installment?: XOR<BranchStudentInstallmentNullableScalarRelationFilter, BranchStudentInstallmentWhereInput> | null
+  }
+
+  export type BranchStudentPaymentOrderByWithRelationInput = {
+    id?: SortOrder
+    receiptNumber?: SortOrder
+    branchStudentId?: SortOrder
+    branchId?: SortOrder
+    amount?: SortOrder
+    paymentMode?: SortOrder
+    transactionReference?: SortOrderInput | SortOrder
+    paymentDate?: SortOrder
+    collectedBy?: SortOrderInput | SortOrder
+    notes?: SortOrderInput | SortOrder
+    paymentProof?: SortOrderInput | SortOrder
+    payAgainst?: SortOrderInput | SortOrder
+    installmentId?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    branchStudent?: BranchStudentOrderByWithRelationInput
+    branch?: BranchOrderByWithRelationInput
+    installment?: BranchStudentInstallmentOrderByWithRelationInput
+  }
+
+  export type BranchStudentPaymentWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    receiptNumber?: string
+    AND?: BranchStudentPaymentWhereInput | BranchStudentPaymentWhereInput[]
+    OR?: BranchStudentPaymentWhereInput[]
+    NOT?: BranchStudentPaymentWhereInput | BranchStudentPaymentWhereInput[]
+    branchStudentId?: StringFilter<"BranchStudentPayment"> | string
+    branchId?: StringFilter<"BranchStudentPayment"> | string
+    amount?: IntFilter<"BranchStudentPayment"> | number
+    paymentMode?: StringFilter<"BranchStudentPayment"> | string
+    transactionReference?: StringNullableFilter<"BranchStudentPayment"> | string | null
+    paymentDate?: DateTimeFilter<"BranchStudentPayment"> | Date | string
+    collectedBy?: StringNullableFilter<"BranchStudentPayment"> | string | null
+    notes?: StringNullableFilter<"BranchStudentPayment"> | string | null
+    paymentProof?: StringNullableFilter<"BranchStudentPayment"> | string | null
+    payAgainst?: StringNullableFilter<"BranchStudentPayment"> | string | null
+    installmentId?: StringNullableFilter<"BranchStudentPayment"> | string | null
+    createdAt?: DateTimeFilter<"BranchStudentPayment"> | Date | string
+    updatedAt?: DateTimeFilter<"BranchStudentPayment"> | Date | string
+    branchStudent?: XOR<BranchStudentScalarRelationFilter, BranchStudentWhereInput>
+    branch?: XOR<BranchScalarRelationFilter, BranchWhereInput>
+    installment?: XOR<BranchStudentInstallmentNullableScalarRelationFilter, BranchStudentInstallmentWhereInput> | null
+  }, "id" | "receiptNumber">
+
+  export type BranchStudentPaymentOrderByWithAggregationInput = {
+    id?: SortOrder
+    receiptNumber?: SortOrder
+    branchStudentId?: SortOrder
+    branchId?: SortOrder
+    amount?: SortOrder
+    paymentMode?: SortOrder
+    transactionReference?: SortOrderInput | SortOrder
+    paymentDate?: SortOrder
+    collectedBy?: SortOrderInput | SortOrder
+    notes?: SortOrderInput | SortOrder
+    paymentProof?: SortOrderInput | SortOrder
+    payAgainst?: SortOrderInput | SortOrder
+    installmentId?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: BranchStudentPaymentCountOrderByAggregateInput
+    _avg?: BranchStudentPaymentAvgOrderByAggregateInput
+    _max?: BranchStudentPaymentMaxOrderByAggregateInput
+    _min?: BranchStudentPaymentMinOrderByAggregateInput
+    _sum?: BranchStudentPaymentSumOrderByAggregateInput
+  }
+
+  export type BranchStudentPaymentScalarWhereWithAggregatesInput = {
+    AND?: BranchStudentPaymentScalarWhereWithAggregatesInput | BranchStudentPaymentScalarWhereWithAggregatesInput[]
+    OR?: BranchStudentPaymentScalarWhereWithAggregatesInput[]
+    NOT?: BranchStudentPaymentScalarWhereWithAggregatesInput | BranchStudentPaymentScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"BranchStudentPayment"> | string
+    receiptNumber?: StringWithAggregatesFilter<"BranchStudentPayment"> | string
+    branchStudentId?: StringWithAggregatesFilter<"BranchStudentPayment"> | string
+    branchId?: StringWithAggregatesFilter<"BranchStudentPayment"> | string
+    amount?: IntWithAggregatesFilter<"BranchStudentPayment"> | number
+    paymentMode?: StringWithAggregatesFilter<"BranchStudentPayment"> | string
+    transactionReference?: StringNullableWithAggregatesFilter<"BranchStudentPayment"> | string | null
+    paymentDate?: DateTimeWithAggregatesFilter<"BranchStudentPayment"> | Date | string
+    collectedBy?: StringNullableWithAggregatesFilter<"BranchStudentPayment"> | string | null
+    notes?: StringNullableWithAggregatesFilter<"BranchStudentPayment"> | string | null
+    paymentProof?: StringNullableWithAggregatesFilter<"BranchStudentPayment"> | string | null
+    payAgainst?: StringNullableWithAggregatesFilter<"BranchStudentPayment"> | string | null
+    installmentId?: StringNullableWithAggregatesFilter<"BranchStudentPayment"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"BranchStudentPayment"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"BranchStudentPayment"> | Date | string
+  }
+
   export type UserCreateInput = {
     id?: string
     userCode: string
@@ -39539,6 +41193,7 @@ export namespace Prisma {
     branchInstallmentTemplates?: BranchInstallmentTemplateCreateNestedManyWithoutBranchInput
     branchFaculties?: BranchFacultyCreateNestedManyWithoutBranchInput
     branchStudents?: BranchStudentCreateNestedManyWithoutBranchInput
+    payments?: BranchStudentPaymentCreateNestedManyWithoutBranchInput
     courses?: CourseCreateNestedManyWithoutBranchInput
   }
 
@@ -39565,6 +41220,7 @@ export namespace Prisma {
     branchInstallmentTemplates?: BranchInstallmentTemplateUncheckedCreateNestedManyWithoutBranchInput
     branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutBranchInput
     branchStudents?: BranchStudentUncheckedCreateNestedManyWithoutBranchInput
+    payments?: BranchStudentPaymentUncheckedCreateNestedManyWithoutBranchInput
     courses?: CourseUncheckedCreateNestedManyWithoutBranchInput
   }
 
@@ -39591,6 +41247,7 @@ export namespace Prisma {
     branchInstallmentTemplates?: BranchInstallmentTemplateUpdateManyWithoutBranchNestedInput
     branchFaculties?: BranchFacultyUpdateManyWithoutBranchNestedInput
     branchStudents?: BranchStudentUpdateManyWithoutBranchNestedInput
+    payments?: BranchStudentPaymentUpdateManyWithoutBranchNestedInput
     courses?: CourseUpdateManyWithoutBranchNestedInput
   }
 
@@ -39617,6 +41274,7 @@ export namespace Prisma {
     branchInstallmentTemplates?: BranchInstallmentTemplateUncheckedUpdateManyWithoutBranchNestedInput
     branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutBranchNestedInput
     branchStudents?: BranchStudentUncheckedUpdateManyWithoutBranchNestedInput
+    payments?: BranchStudentPaymentUncheckedUpdateManyWithoutBranchNestedInput
     courses?: CourseUncheckedUpdateManyWithoutBranchNestedInput
   }
 
@@ -41732,6 +43390,7 @@ export namespace Prisma {
     branch: BranchCreateNestedOneWithoutBranchStudentsInput
     course?: BranchCourseCreateNestedOneWithoutBranchStudentsInput
     installments?: BranchStudentInstallmentCreateNestedManyWithoutBranchStudentInput
+    payments?: BranchStudentPaymentCreateNestedManyWithoutBranchStudentInput
   }
 
   export type BranchStudentUncheckedCreateInput = {
@@ -41771,6 +43430,7 @@ export namespace Prisma {
     paymentPlanId?: string | null
     paymentPlan?: string | null
     installments?: BranchStudentInstallmentUncheckedCreateNestedManyWithoutBranchStudentInput
+    payments?: BranchStudentPaymentUncheckedCreateNestedManyWithoutBranchStudentInput
   }
 
   export type BranchStudentUpdateInput = {
@@ -41810,6 +43470,7 @@ export namespace Prisma {
     branch?: BranchUpdateOneRequiredWithoutBranchStudentsNestedInput
     course?: BranchCourseUpdateOneWithoutBranchStudentsNestedInput
     installments?: BranchStudentInstallmentUpdateManyWithoutBranchStudentNestedInput
+    payments?: BranchStudentPaymentUpdateManyWithoutBranchStudentNestedInput
   }
 
   export type BranchStudentUncheckedUpdateInput = {
@@ -41849,6 +43510,7 @@ export namespace Prisma {
     paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
     paymentPlan?: NullableStringFieldUpdateOperationsInput | string | null
     installments?: BranchStudentInstallmentUncheckedUpdateManyWithoutBranchStudentNestedInput
+    payments?: BranchStudentPaymentUncheckedUpdateManyWithoutBranchStudentNestedInput
   }
 
   export type BranchStudentCreateManyInput = {
@@ -41967,6 +43629,7 @@ export namespace Prisma {
     id?: string
     installmentNumber: number
     amount: number
+    amountPaid?: number
     dueDate?: string | null
     status?: string
     paidAt?: Date | string | null
@@ -41975,6 +43638,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     branchStudent: BranchStudentCreateNestedOneWithoutInstallmentsInput
+    payments?: BranchStudentPaymentCreateNestedManyWithoutInstallmentInput
   }
 
   export type BranchStudentInstallmentUncheckedCreateInput = {
@@ -41982,6 +43646,7 @@ export namespace Prisma {
     branchStudentId: string
     installmentNumber: number
     amount: number
+    amountPaid?: number
     dueDate?: string | null
     status?: string
     paidAt?: Date | string | null
@@ -41989,12 +43654,14 @@ export namespace Prisma {
     remarks?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    payments?: BranchStudentPaymentUncheckedCreateNestedManyWithoutInstallmentInput
   }
 
   export type BranchStudentInstallmentUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     installmentNumber?: IntFieldUpdateOperationsInput | number
     amount?: IntFieldUpdateOperationsInput | number
+    amountPaid?: IntFieldUpdateOperationsInput | number
     dueDate?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -42003,6 +43670,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     branchStudent?: BranchStudentUpdateOneRequiredWithoutInstallmentsNestedInput
+    payments?: BranchStudentPaymentUpdateManyWithoutInstallmentNestedInput
   }
 
   export type BranchStudentInstallmentUncheckedUpdateInput = {
@@ -42010,6 +43678,7 @@ export namespace Prisma {
     branchStudentId?: StringFieldUpdateOperationsInput | string
     installmentNumber?: IntFieldUpdateOperationsInput | number
     amount?: IntFieldUpdateOperationsInput | number
+    amountPaid?: IntFieldUpdateOperationsInput | number
     dueDate?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -42017,6 +43686,7 @@ export namespace Prisma {
     remarks?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    payments?: BranchStudentPaymentUncheckedUpdateManyWithoutInstallmentNestedInput
   }
 
   export type BranchStudentInstallmentCreateManyInput = {
@@ -42024,6 +43694,7 @@ export namespace Prisma {
     branchStudentId: string
     installmentNumber: number
     amount: number
+    amountPaid?: number
     dueDate?: string | null
     status?: string
     paidAt?: Date | string | null
@@ -42037,6 +43708,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     installmentNumber?: IntFieldUpdateOperationsInput | number
     amount?: IntFieldUpdateOperationsInput | number
+    amountPaid?: IntFieldUpdateOperationsInput | number
     dueDate?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -42051,6 +43723,7 @@ export namespace Prisma {
     branchStudentId?: StringFieldUpdateOperationsInput | string
     installmentNumber?: IntFieldUpdateOperationsInput | number
     amount?: IntFieldUpdateOperationsInput | number
+    amountPaid?: IntFieldUpdateOperationsInput | number
     dueDate?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -42783,6 +44456,129 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type BranchStudentPaymentCreateInput = {
+    id?: string
+    receiptNumber: string
+    amount: number
+    paymentMode: string
+    transactionReference?: string | null
+    paymentDate: Date | string
+    collectedBy?: string | null
+    notes?: string | null
+    paymentProof?: string | null
+    payAgainst?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branchStudent: BranchStudentCreateNestedOneWithoutPaymentsInput
+    branch: BranchCreateNestedOneWithoutPaymentsInput
+    installment?: BranchStudentInstallmentCreateNestedOneWithoutPaymentsInput
+  }
+
+  export type BranchStudentPaymentUncheckedCreateInput = {
+    id?: string
+    receiptNumber: string
+    branchStudentId: string
+    branchId: string
+    amount: number
+    paymentMode: string
+    transactionReference?: string | null
+    paymentDate: Date | string
+    collectedBy?: string | null
+    notes?: string | null
+    paymentProof?: string | null
+    payAgainst?: string | null
+    installmentId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type BranchStudentPaymentUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    receiptNumber?: StringFieldUpdateOperationsInput | string
+    amount?: IntFieldUpdateOperationsInput | number
+    paymentMode?: StringFieldUpdateOperationsInput | string
+    transactionReference?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    collectedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProof?: NullableStringFieldUpdateOperationsInput | string | null
+    payAgainst?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branchStudent?: BranchStudentUpdateOneRequiredWithoutPaymentsNestedInput
+    branch?: BranchUpdateOneRequiredWithoutPaymentsNestedInput
+    installment?: BranchStudentInstallmentUpdateOneWithoutPaymentsNestedInput
+  }
+
+  export type BranchStudentPaymentUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    receiptNumber?: StringFieldUpdateOperationsInput | string
+    branchStudentId?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    amount?: IntFieldUpdateOperationsInput | number
+    paymentMode?: StringFieldUpdateOperationsInput | string
+    transactionReference?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    collectedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProof?: NullableStringFieldUpdateOperationsInput | string | null
+    payAgainst?: NullableStringFieldUpdateOperationsInput | string | null
+    installmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BranchStudentPaymentCreateManyInput = {
+    id?: string
+    receiptNumber: string
+    branchStudentId: string
+    branchId: string
+    amount: number
+    paymentMode: string
+    transactionReference?: string | null
+    paymentDate: Date | string
+    collectedBy?: string | null
+    notes?: string | null
+    paymentProof?: string | null
+    payAgainst?: string | null
+    installmentId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type BranchStudentPaymentUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    receiptNumber?: StringFieldUpdateOperationsInput | string
+    amount?: IntFieldUpdateOperationsInput | number
+    paymentMode?: StringFieldUpdateOperationsInput | string
+    transactionReference?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    collectedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProof?: NullableStringFieldUpdateOperationsInput | string | null
+    payAgainst?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BranchStudentPaymentUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    receiptNumber?: StringFieldUpdateOperationsInput | string
+    branchStudentId?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    amount?: IntFieldUpdateOperationsInput | number
+    paymentMode?: StringFieldUpdateOperationsInput | string
+    transactionReference?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    collectedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProof?: NullableStringFieldUpdateOperationsInput | string | null
+    payAgainst?: NullableStringFieldUpdateOperationsInput | string | null
+    installmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -43144,6 +44940,12 @@ export namespace Prisma {
     none?: BranchStudentWhereInput
   }
 
+  export type BranchStudentPaymentListRelationFilter = {
+    every?: BranchStudentPaymentWhereInput
+    some?: BranchStudentPaymentWhereInput
+    none?: BranchStudentPaymentWhereInput
+  }
+
   export type CourseListRelationFilter = {
     every?: CourseWhereInput
     some?: CourseWhereInput
@@ -43163,6 +44965,10 @@ export namespace Prisma {
   }
 
   export type BranchStudentOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type BranchStudentPaymentOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -44711,6 +46517,7 @@ export namespace Prisma {
     branchStudentId?: SortOrder
     installmentNumber?: SortOrder
     amount?: SortOrder
+    amountPaid?: SortOrder
     dueDate?: SortOrder
     status?: SortOrder
     paidAt?: SortOrder
@@ -44723,6 +46530,7 @@ export namespace Prisma {
   export type BranchStudentInstallmentAvgOrderByAggregateInput = {
     installmentNumber?: SortOrder
     amount?: SortOrder
+    amountPaid?: SortOrder
   }
 
   export type BranchStudentInstallmentMaxOrderByAggregateInput = {
@@ -44730,6 +46538,7 @@ export namespace Prisma {
     branchStudentId?: SortOrder
     installmentNumber?: SortOrder
     amount?: SortOrder
+    amountPaid?: SortOrder
     dueDate?: SortOrder
     status?: SortOrder
     paidAt?: SortOrder
@@ -44744,6 +46553,7 @@ export namespace Prisma {
     branchStudentId?: SortOrder
     installmentNumber?: SortOrder
     amount?: SortOrder
+    amountPaid?: SortOrder
     dueDate?: SortOrder
     status?: SortOrder
     paidAt?: SortOrder
@@ -44756,6 +46566,7 @@ export namespace Prisma {
   export type BranchStudentInstallmentSumOrderByAggregateInput = {
     installmentNumber?: SortOrder
     amount?: SortOrder
+    amountPaid?: SortOrder
   }
 
   export type FacultyProfileCountOrderByAggregateInput = {
@@ -45180,6 +46991,73 @@ export namespace Prisma {
     _max?: NestedJsonFilter<$PrismaModel>
   }
 
+  export type BranchStudentInstallmentNullableScalarRelationFilter = {
+    is?: BranchStudentInstallmentWhereInput | null
+    isNot?: BranchStudentInstallmentWhereInput | null
+  }
+
+  export type BranchStudentPaymentCountOrderByAggregateInput = {
+    id?: SortOrder
+    receiptNumber?: SortOrder
+    branchStudentId?: SortOrder
+    branchId?: SortOrder
+    amount?: SortOrder
+    paymentMode?: SortOrder
+    transactionReference?: SortOrder
+    paymentDate?: SortOrder
+    collectedBy?: SortOrder
+    notes?: SortOrder
+    paymentProof?: SortOrder
+    payAgainst?: SortOrder
+    installmentId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type BranchStudentPaymentAvgOrderByAggregateInput = {
+    amount?: SortOrder
+  }
+
+  export type BranchStudentPaymentMaxOrderByAggregateInput = {
+    id?: SortOrder
+    receiptNumber?: SortOrder
+    branchStudentId?: SortOrder
+    branchId?: SortOrder
+    amount?: SortOrder
+    paymentMode?: SortOrder
+    transactionReference?: SortOrder
+    paymentDate?: SortOrder
+    collectedBy?: SortOrder
+    notes?: SortOrder
+    paymentProof?: SortOrder
+    payAgainst?: SortOrder
+    installmentId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type BranchStudentPaymentMinOrderByAggregateInput = {
+    id?: SortOrder
+    receiptNumber?: SortOrder
+    branchStudentId?: SortOrder
+    branchId?: SortOrder
+    amount?: SortOrder
+    paymentMode?: SortOrder
+    transactionReference?: SortOrder
+    paymentDate?: SortOrder
+    collectedBy?: SortOrder
+    notes?: SortOrder
+    paymentProof?: SortOrder
+    payAgainst?: SortOrder
+    installmentId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type BranchStudentPaymentSumOrderByAggregateInput = {
+    amount?: SortOrder
+  }
+
   export type BatchFacultyAssignmentCreateNestedManyWithoutFacultyInput = {
     create?: XOR<BatchFacultyAssignmentCreateWithoutFacultyInput, BatchFacultyAssignmentUncheckedCreateWithoutFacultyInput> | BatchFacultyAssignmentCreateWithoutFacultyInput[] | BatchFacultyAssignmentUncheckedCreateWithoutFacultyInput[]
     connectOrCreate?: BatchFacultyAssignmentCreateOrConnectWithoutFacultyInput | BatchFacultyAssignmentCreateOrConnectWithoutFacultyInput[]
@@ -45530,6 +47408,13 @@ export namespace Prisma {
     connect?: BranchStudentWhereUniqueInput | BranchStudentWhereUniqueInput[]
   }
 
+  export type BranchStudentPaymentCreateNestedManyWithoutBranchInput = {
+    create?: XOR<BranchStudentPaymentCreateWithoutBranchInput, BranchStudentPaymentUncheckedCreateWithoutBranchInput> | BranchStudentPaymentCreateWithoutBranchInput[] | BranchStudentPaymentUncheckedCreateWithoutBranchInput[]
+    connectOrCreate?: BranchStudentPaymentCreateOrConnectWithoutBranchInput | BranchStudentPaymentCreateOrConnectWithoutBranchInput[]
+    createMany?: BranchStudentPaymentCreateManyBranchInputEnvelope
+    connect?: BranchStudentPaymentWhereUniqueInput | BranchStudentPaymentWhereUniqueInput[]
+  }
+
   export type CourseCreateNestedManyWithoutBranchInput = {
     create?: XOR<CourseCreateWithoutBranchInput, CourseUncheckedCreateWithoutBranchInput> | CourseCreateWithoutBranchInput[] | CourseUncheckedCreateWithoutBranchInput[]
     connectOrCreate?: CourseCreateOrConnectWithoutBranchInput | CourseCreateOrConnectWithoutBranchInput[]
@@ -45563,6 +47448,13 @@ export namespace Prisma {
     connectOrCreate?: BranchStudentCreateOrConnectWithoutBranchInput | BranchStudentCreateOrConnectWithoutBranchInput[]
     createMany?: BranchStudentCreateManyBranchInputEnvelope
     connect?: BranchStudentWhereUniqueInput | BranchStudentWhereUniqueInput[]
+  }
+
+  export type BranchStudentPaymentUncheckedCreateNestedManyWithoutBranchInput = {
+    create?: XOR<BranchStudentPaymentCreateWithoutBranchInput, BranchStudentPaymentUncheckedCreateWithoutBranchInput> | BranchStudentPaymentCreateWithoutBranchInput[] | BranchStudentPaymentUncheckedCreateWithoutBranchInput[]
+    connectOrCreate?: BranchStudentPaymentCreateOrConnectWithoutBranchInput | BranchStudentPaymentCreateOrConnectWithoutBranchInput[]
+    createMany?: BranchStudentPaymentCreateManyBranchInputEnvelope
+    connect?: BranchStudentPaymentWhereUniqueInput | BranchStudentPaymentWhereUniqueInput[]
   }
 
   export type CourseUncheckedCreateNestedManyWithoutBranchInput = {
@@ -45642,6 +47534,20 @@ export namespace Prisma {
     deleteMany?: BranchStudentScalarWhereInput | BranchStudentScalarWhereInput[]
   }
 
+  export type BranchStudentPaymentUpdateManyWithoutBranchNestedInput = {
+    create?: XOR<BranchStudentPaymentCreateWithoutBranchInput, BranchStudentPaymentUncheckedCreateWithoutBranchInput> | BranchStudentPaymentCreateWithoutBranchInput[] | BranchStudentPaymentUncheckedCreateWithoutBranchInput[]
+    connectOrCreate?: BranchStudentPaymentCreateOrConnectWithoutBranchInput | BranchStudentPaymentCreateOrConnectWithoutBranchInput[]
+    upsert?: BranchStudentPaymentUpsertWithWhereUniqueWithoutBranchInput | BranchStudentPaymentUpsertWithWhereUniqueWithoutBranchInput[]
+    createMany?: BranchStudentPaymentCreateManyBranchInputEnvelope
+    set?: BranchStudentPaymentWhereUniqueInput | BranchStudentPaymentWhereUniqueInput[]
+    disconnect?: BranchStudentPaymentWhereUniqueInput | BranchStudentPaymentWhereUniqueInput[]
+    delete?: BranchStudentPaymentWhereUniqueInput | BranchStudentPaymentWhereUniqueInput[]
+    connect?: BranchStudentPaymentWhereUniqueInput | BranchStudentPaymentWhereUniqueInput[]
+    update?: BranchStudentPaymentUpdateWithWhereUniqueWithoutBranchInput | BranchStudentPaymentUpdateWithWhereUniqueWithoutBranchInput[]
+    updateMany?: BranchStudentPaymentUpdateManyWithWhereWithoutBranchInput | BranchStudentPaymentUpdateManyWithWhereWithoutBranchInput[]
+    deleteMany?: BranchStudentPaymentScalarWhereInput | BranchStudentPaymentScalarWhereInput[]
+  }
+
   export type CourseUpdateManyWithoutBranchNestedInput = {
     create?: XOR<CourseCreateWithoutBranchInput, CourseUncheckedCreateWithoutBranchInput> | CourseCreateWithoutBranchInput[] | CourseUncheckedCreateWithoutBranchInput[]
     connectOrCreate?: CourseCreateOrConnectWithoutBranchInput | CourseCreateOrConnectWithoutBranchInput[]
@@ -45710,6 +47616,20 @@ export namespace Prisma {
     update?: BranchStudentUpdateWithWhereUniqueWithoutBranchInput | BranchStudentUpdateWithWhereUniqueWithoutBranchInput[]
     updateMany?: BranchStudentUpdateManyWithWhereWithoutBranchInput | BranchStudentUpdateManyWithWhereWithoutBranchInput[]
     deleteMany?: BranchStudentScalarWhereInput | BranchStudentScalarWhereInput[]
+  }
+
+  export type BranchStudentPaymentUncheckedUpdateManyWithoutBranchNestedInput = {
+    create?: XOR<BranchStudentPaymentCreateWithoutBranchInput, BranchStudentPaymentUncheckedCreateWithoutBranchInput> | BranchStudentPaymentCreateWithoutBranchInput[] | BranchStudentPaymentUncheckedCreateWithoutBranchInput[]
+    connectOrCreate?: BranchStudentPaymentCreateOrConnectWithoutBranchInput | BranchStudentPaymentCreateOrConnectWithoutBranchInput[]
+    upsert?: BranchStudentPaymentUpsertWithWhereUniqueWithoutBranchInput | BranchStudentPaymentUpsertWithWhereUniqueWithoutBranchInput[]
+    createMany?: BranchStudentPaymentCreateManyBranchInputEnvelope
+    set?: BranchStudentPaymentWhereUniqueInput | BranchStudentPaymentWhereUniqueInput[]
+    disconnect?: BranchStudentPaymentWhereUniqueInput | BranchStudentPaymentWhereUniqueInput[]
+    delete?: BranchStudentPaymentWhereUniqueInput | BranchStudentPaymentWhereUniqueInput[]
+    connect?: BranchStudentPaymentWhereUniqueInput | BranchStudentPaymentWhereUniqueInput[]
+    update?: BranchStudentPaymentUpdateWithWhereUniqueWithoutBranchInput | BranchStudentPaymentUpdateWithWhereUniqueWithoutBranchInput[]
+    updateMany?: BranchStudentPaymentUpdateManyWithWhereWithoutBranchInput | BranchStudentPaymentUpdateManyWithWhereWithoutBranchInput[]
+    deleteMany?: BranchStudentPaymentScalarWhereInput | BranchStudentPaymentScalarWhereInput[]
   }
 
   export type CourseUncheckedUpdateManyWithoutBranchNestedInput = {
@@ -46705,11 +48625,25 @@ export namespace Prisma {
     connect?: BranchStudentInstallmentWhereUniqueInput | BranchStudentInstallmentWhereUniqueInput[]
   }
 
+  export type BranchStudentPaymentCreateNestedManyWithoutBranchStudentInput = {
+    create?: XOR<BranchStudentPaymentCreateWithoutBranchStudentInput, BranchStudentPaymentUncheckedCreateWithoutBranchStudentInput> | BranchStudentPaymentCreateWithoutBranchStudentInput[] | BranchStudentPaymentUncheckedCreateWithoutBranchStudentInput[]
+    connectOrCreate?: BranchStudentPaymentCreateOrConnectWithoutBranchStudentInput | BranchStudentPaymentCreateOrConnectWithoutBranchStudentInput[]
+    createMany?: BranchStudentPaymentCreateManyBranchStudentInputEnvelope
+    connect?: BranchStudentPaymentWhereUniqueInput | BranchStudentPaymentWhereUniqueInput[]
+  }
+
   export type BranchStudentInstallmentUncheckedCreateNestedManyWithoutBranchStudentInput = {
     create?: XOR<BranchStudentInstallmentCreateWithoutBranchStudentInput, BranchStudentInstallmentUncheckedCreateWithoutBranchStudentInput> | BranchStudentInstallmentCreateWithoutBranchStudentInput[] | BranchStudentInstallmentUncheckedCreateWithoutBranchStudentInput[]
     connectOrCreate?: BranchStudentInstallmentCreateOrConnectWithoutBranchStudentInput | BranchStudentInstallmentCreateOrConnectWithoutBranchStudentInput[]
     createMany?: BranchStudentInstallmentCreateManyBranchStudentInputEnvelope
     connect?: BranchStudentInstallmentWhereUniqueInput | BranchStudentInstallmentWhereUniqueInput[]
+  }
+
+  export type BranchStudentPaymentUncheckedCreateNestedManyWithoutBranchStudentInput = {
+    create?: XOR<BranchStudentPaymentCreateWithoutBranchStudentInput, BranchStudentPaymentUncheckedCreateWithoutBranchStudentInput> | BranchStudentPaymentCreateWithoutBranchStudentInput[] | BranchStudentPaymentUncheckedCreateWithoutBranchStudentInput[]
+    connectOrCreate?: BranchStudentPaymentCreateOrConnectWithoutBranchStudentInput | BranchStudentPaymentCreateOrConnectWithoutBranchStudentInput[]
+    createMany?: BranchStudentPaymentCreateManyBranchStudentInputEnvelope
+    connect?: BranchStudentPaymentWhereUniqueInput | BranchStudentPaymentWhereUniqueInput[]
   }
 
   export type BranchUpdateOneRequiredWithoutBranchStudentsNestedInput = {
@@ -46744,6 +48678,20 @@ export namespace Prisma {
     deleteMany?: BranchStudentInstallmentScalarWhereInput | BranchStudentInstallmentScalarWhereInput[]
   }
 
+  export type BranchStudentPaymentUpdateManyWithoutBranchStudentNestedInput = {
+    create?: XOR<BranchStudentPaymentCreateWithoutBranchStudentInput, BranchStudentPaymentUncheckedCreateWithoutBranchStudentInput> | BranchStudentPaymentCreateWithoutBranchStudentInput[] | BranchStudentPaymentUncheckedCreateWithoutBranchStudentInput[]
+    connectOrCreate?: BranchStudentPaymentCreateOrConnectWithoutBranchStudentInput | BranchStudentPaymentCreateOrConnectWithoutBranchStudentInput[]
+    upsert?: BranchStudentPaymentUpsertWithWhereUniqueWithoutBranchStudentInput | BranchStudentPaymentUpsertWithWhereUniqueWithoutBranchStudentInput[]
+    createMany?: BranchStudentPaymentCreateManyBranchStudentInputEnvelope
+    set?: BranchStudentPaymentWhereUniqueInput | BranchStudentPaymentWhereUniqueInput[]
+    disconnect?: BranchStudentPaymentWhereUniqueInput | BranchStudentPaymentWhereUniqueInput[]
+    delete?: BranchStudentPaymentWhereUniqueInput | BranchStudentPaymentWhereUniqueInput[]
+    connect?: BranchStudentPaymentWhereUniqueInput | BranchStudentPaymentWhereUniqueInput[]
+    update?: BranchStudentPaymentUpdateWithWhereUniqueWithoutBranchStudentInput | BranchStudentPaymentUpdateWithWhereUniqueWithoutBranchStudentInput[]
+    updateMany?: BranchStudentPaymentUpdateManyWithWhereWithoutBranchStudentInput | BranchStudentPaymentUpdateManyWithWhereWithoutBranchStudentInput[]
+    deleteMany?: BranchStudentPaymentScalarWhereInput | BranchStudentPaymentScalarWhereInput[]
+  }
+
   export type BranchStudentInstallmentUncheckedUpdateManyWithoutBranchStudentNestedInput = {
     create?: XOR<BranchStudentInstallmentCreateWithoutBranchStudentInput, BranchStudentInstallmentUncheckedCreateWithoutBranchStudentInput> | BranchStudentInstallmentCreateWithoutBranchStudentInput[] | BranchStudentInstallmentUncheckedCreateWithoutBranchStudentInput[]
     connectOrCreate?: BranchStudentInstallmentCreateOrConnectWithoutBranchStudentInput | BranchStudentInstallmentCreateOrConnectWithoutBranchStudentInput[]
@@ -46758,10 +48706,38 @@ export namespace Prisma {
     deleteMany?: BranchStudentInstallmentScalarWhereInput | BranchStudentInstallmentScalarWhereInput[]
   }
 
+  export type BranchStudentPaymentUncheckedUpdateManyWithoutBranchStudentNestedInput = {
+    create?: XOR<BranchStudentPaymentCreateWithoutBranchStudentInput, BranchStudentPaymentUncheckedCreateWithoutBranchStudentInput> | BranchStudentPaymentCreateWithoutBranchStudentInput[] | BranchStudentPaymentUncheckedCreateWithoutBranchStudentInput[]
+    connectOrCreate?: BranchStudentPaymentCreateOrConnectWithoutBranchStudentInput | BranchStudentPaymentCreateOrConnectWithoutBranchStudentInput[]
+    upsert?: BranchStudentPaymentUpsertWithWhereUniqueWithoutBranchStudentInput | BranchStudentPaymentUpsertWithWhereUniqueWithoutBranchStudentInput[]
+    createMany?: BranchStudentPaymentCreateManyBranchStudentInputEnvelope
+    set?: BranchStudentPaymentWhereUniqueInput | BranchStudentPaymentWhereUniqueInput[]
+    disconnect?: BranchStudentPaymentWhereUniqueInput | BranchStudentPaymentWhereUniqueInput[]
+    delete?: BranchStudentPaymentWhereUniqueInput | BranchStudentPaymentWhereUniqueInput[]
+    connect?: BranchStudentPaymentWhereUniqueInput | BranchStudentPaymentWhereUniqueInput[]
+    update?: BranchStudentPaymentUpdateWithWhereUniqueWithoutBranchStudentInput | BranchStudentPaymentUpdateWithWhereUniqueWithoutBranchStudentInput[]
+    updateMany?: BranchStudentPaymentUpdateManyWithWhereWithoutBranchStudentInput | BranchStudentPaymentUpdateManyWithWhereWithoutBranchStudentInput[]
+    deleteMany?: BranchStudentPaymentScalarWhereInput | BranchStudentPaymentScalarWhereInput[]
+  }
+
   export type BranchStudentCreateNestedOneWithoutInstallmentsInput = {
     create?: XOR<BranchStudentCreateWithoutInstallmentsInput, BranchStudentUncheckedCreateWithoutInstallmentsInput>
     connectOrCreate?: BranchStudentCreateOrConnectWithoutInstallmentsInput
     connect?: BranchStudentWhereUniqueInput
+  }
+
+  export type BranchStudentPaymentCreateNestedManyWithoutInstallmentInput = {
+    create?: XOR<BranchStudentPaymentCreateWithoutInstallmentInput, BranchStudentPaymentUncheckedCreateWithoutInstallmentInput> | BranchStudentPaymentCreateWithoutInstallmentInput[] | BranchStudentPaymentUncheckedCreateWithoutInstallmentInput[]
+    connectOrCreate?: BranchStudentPaymentCreateOrConnectWithoutInstallmentInput | BranchStudentPaymentCreateOrConnectWithoutInstallmentInput[]
+    createMany?: BranchStudentPaymentCreateManyInstallmentInputEnvelope
+    connect?: BranchStudentPaymentWhereUniqueInput | BranchStudentPaymentWhereUniqueInput[]
+  }
+
+  export type BranchStudentPaymentUncheckedCreateNestedManyWithoutInstallmentInput = {
+    create?: XOR<BranchStudentPaymentCreateWithoutInstallmentInput, BranchStudentPaymentUncheckedCreateWithoutInstallmentInput> | BranchStudentPaymentCreateWithoutInstallmentInput[] | BranchStudentPaymentUncheckedCreateWithoutInstallmentInput[]
+    connectOrCreate?: BranchStudentPaymentCreateOrConnectWithoutInstallmentInput | BranchStudentPaymentCreateOrConnectWithoutInstallmentInput[]
+    createMany?: BranchStudentPaymentCreateManyInstallmentInputEnvelope
+    connect?: BranchStudentPaymentWhereUniqueInput | BranchStudentPaymentWhereUniqueInput[]
   }
 
   export type BranchStudentUpdateOneRequiredWithoutInstallmentsNestedInput = {
@@ -46770,6 +48746,34 @@ export namespace Prisma {
     upsert?: BranchStudentUpsertWithoutInstallmentsInput
     connect?: BranchStudentWhereUniqueInput
     update?: XOR<XOR<BranchStudentUpdateToOneWithWhereWithoutInstallmentsInput, BranchStudentUpdateWithoutInstallmentsInput>, BranchStudentUncheckedUpdateWithoutInstallmentsInput>
+  }
+
+  export type BranchStudentPaymentUpdateManyWithoutInstallmentNestedInput = {
+    create?: XOR<BranchStudentPaymentCreateWithoutInstallmentInput, BranchStudentPaymentUncheckedCreateWithoutInstallmentInput> | BranchStudentPaymentCreateWithoutInstallmentInput[] | BranchStudentPaymentUncheckedCreateWithoutInstallmentInput[]
+    connectOrCreate?: BranchStudentPaymentCreateOrConnectWithoutInstallmentInput | BranchStudentPaymentCreateOrConnectWithoutInstallmentInput[]
+    upsert?: BranchStudentPaymentUpsertWithWhereUniqueWithoutInstallmentInput | BranchStudentPaymentUpsertWithWhereUniqueWithoutInstallmentInput[]
+    createMany?: BranchStudentPaymentCreateManyInstallmentInputEnvelope
+    set?: BranchStudentPaymentWhereUniqueInput | BranchStudentPaymentWhereUniqueInput[]
+    disconnect?: BranchStudentPaymentWhereUniqueInput | BranchStudentPaymentWhereUniqueInput[]
+    delete?: BranchStudentPaymentWhereUniqueInput | BranchStudentPaymentWhereUniqueInput[]
+    connect?: BranchStudentPaymentWhereUniqueInput | BranchStudentPaymentWhereUniqueInput[]
+    update?: BranchStudentPaymentUpdateWithWhereUniqueWithoutInstallmentInput | BranchStudentPaymentUpdateWithWhereUniqueWithoutInstallmentInput[]
+    updateMany?: BranchStudentPaymentUpdateManyWithWhereWithoutInstallmentInput | BranchStudentPaymentUpdateManyWithWhereWithoutInstallmentInput[]
+    deleteMany?: BranchStudentPaymentScalarWhereInput | BranchStudentPaymentScalarWhereInput[]
+  }
+
+  export type BranchStudentPaymentUncheckedUpdateManyWithoutInstallmentNestedInput = {
+    create?: XOR<BranchStudentPaymentCreateWithoutInstallmentInput, BranchStudentPaymentUncheckedCreateWithoutInstallmentInput> | BranchStudentPaymentCreateWithoutInstallmentInput[] | BranchStudentPaymentUncheckedCreateWithoutInstallmentInput[]
+    connectOrCreate?: BranchStudentPaymentCreateOrConnectWithoutInstallmentInput | BranchStudentPaymentCreateOrConnectWithoutInstallmentInput[]
+    upsert?: BranchStudentPaymentUpsertWithWhereUniqueWithoutInstallmentInput | BranchStudentPaymentUpsertWithWhereUniqueWithoutInstallmentInput[]
+    createMany?: BranchStudentPaymentCreateManyInstallmentInputEnvelope
+    set?: BranchStudentPaymentWhereUniqueInput | BranchStudentPaymentWhereUniqueInput[]
+    disconnect?: BranchStudentPaymentWhereUniqueInput | BranchStudentPaymentWhereUniqueInput[]
+    delete?: BranchStudentPaymentWhereUniqueInput | BranchStudentPaymentWhereUniqueInput[]
+    connect?: BranchStudentPaymentWhereUniqueInput | BranchStudentPaymentWhereUniqueInput[]
+    update?: BranchStudentPaymentUpdateWithWhereUniqueWithoutInstallmentInput | BranchStudentPaymentUpdateWithWhereUniqueWithoutInstallmentInput[]
+    updateMany?: BranchStudentPaymentUpdateManyWithWhereWithoutInstallmentInput | BranchStudentPaymentUpdateManyWithWhereWithoutInstallmentInput[]
+    deleteMany?: BranchStudentPaymentScalarWhereInput | BranchStudentPaymentScalarWhereInput[]
   }
 
   export type FacultyBatchEntryCreateNestedManyWithoutFacultyInput = {
@@ -47052,6 +49056,50 @@ export namespace Prisma {
     delete?: BranchCourseWhereInput | boolean
     connect?: BranchCourseWhereUniqueInput
     update?: XOR<XOR<BranchCourseUpdateToOneWithWhereWithoutInstallmentTemplateInput, BranchCourseUpdateWithoutInstallmentTemplateInput>, BranchCourseUncheckedUpdateWithoutInstallmentTemplateInput>
+  }
+
+  export type BranchStudentCreateNestedOneWithoutPaymentsInput = {
+    create?: XOR<BranchStudentCreateWithoutPaymentsInput, BranchStudentUncheckedCreateWithoutPaymentsInput>
+    connectOrCreate?: BranchStudentCreateOrConnectWithoutPaymentsInput
+    connect?: BranchStudentWhereUniqueInput
+  }
+
+  export type BranchCreateNestedOneWithoutPaymentsInput = {
+    create?: XOR<BranchCreateWithoutPaymentsInput, BranchUncheckedCreateWithoutPaymentsInput>
+    connectOrCreate?: BranchCreateOrConnectWithoutPaymentsInput
+    connect?: BranchWhereUniqueInput
+  }
+
+  export type BranchStudentInstallmentCreateNestedOneWithoutPaymentsInput = {
+    create?: XOR<BranchStudentInstallmentCreateWithoutPaymentsInput, BranchStudentInstallmentUncheckedCreateWithoutPaymentsInput>
+    connectOrCreate?: BranchStudentInstallmentCreateOrConnectWithoutPaymentsInput
+    connect?: BranchStudentInstallmentWhereUniqueInput
+  }
+
+  export type BranchStudentUpdateOneRequiredWithoutPaymentsNestedInput = {
+    create?: XOR<BranchStudentCreateWithoutPaymentsInput, BranchStudentUncheckedCreateWithoutPaymentsInput>
+    connectOrCreate?: BranchStudentCreateOrConnectWithoutPaymentsInput
+    upsert?: BranchStudentUpsertWithoutPaymentsInput
+    connect?: BranchStudentWhereUniqueInput
+    update?: XOR<XOR<BranchStudentUpdateToOneWithWhereWithoutPaymentsInput, BranchStudentUpdateWithoutPaymentsInput>, BranchStudentUncheckedUpdateWithoutPaymentsInput>
+  }
+
+  export type BranchUpdateOneRequiredWithoutPaymentsNestedInput = {
+    create?: XOR<BranchCreateWithoutPaymentsInput, BranchUncheckedCreateWithoutPaymentsInput>
+    connectOrCreate?: BranchCreateOrConnectWithoutPaymentsInput
+    upsert?: BranchUpsertWithoutPaymentsInput
+    connect?: BranchWhereUniqueInput
+    update?: XOR<XOR<BranchUpdateToOneWithWhereWithoutPaymentsInput, BranchUpdateWithoutPaymentsInput>, BranchUncheckedUpdateWithoutPaymentsInput>
+  }
+
+  export type BranchStudentInstallmentUpdateOneWithoutPaymentsNestedInput = {
+    create?: XOR<BranchStudentInstallmentCreateWithoutPaymentsInput, BranchStudentInstallmentUncheckedCreateWithoutPaymentsInput>
+    connectOrCreate?: BranchStudentInstallmentCreateOrConnectWithoutPaymentsInput
+    upsert?: BranchStudentInstallmentUpsertWithoutPaymentsInput
+    disconnect?: BranchStudentInstallmentWhereInput | boolean
+    delete?: BranchStudentInstallmentWhereInput | boolean
+    connect?: BranchStudentInstallmentWhereUniqueInput
+    update?: XOR<XOR<BranchStudentInstallmentUpdateToOneWithWhereWithoutPaymentsInput, BranchStudentInstallmentUpdateWithoutPaymentsInput>, BranchStudentInstallmentUncheckedUpdateWithoutPaymentsInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -47535,6 +49583,7 @@ export namespace Prisma {
     branchInstallmentTemplates?: BranchInstallmentTemplateCreateNestedManyWithoutBranchInput
     branchFaculties?: BranchFacultyCreateNestedManyWithoutBranchInput
     branchStudents?: BranchStudentCreateNestedManyWithoutBranchInput
+    payments?: BranchStudentPaymentCreateNestedManyWithoutBranchInput
     courses?: CourseCreateNestedManyWithoutBranchInput
   }
 
@@ -47560,6 +49609,7 @@ export namespace Prisma {
     branchInstallmentTemplates?: BranchInstallmentTemplateUncheckedCreateNestedManyWithoutBranchInput
     branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutBranchInput
     branchStudents?: BranchStudentUncheckedCreateNestedManyWithoutBranchInput
+    payments?: BranchStudentPaymentUncheckedCreateNestedManyWithoutBranchInput
     courses?: CourseUncheckedCreateNestedManyWithoutBranchInput
   }
 
@@ -47845,6 +49895,7 @@ export namespace Prisma {
     branchInstallmentTemplates?: BranchInstallmentTemplateUpdateManyWithoutBranchNestedInput
     branchFaculties?: BranchFacultyUpdateManyWithoutBranchNestedInput
     branchStudents?: BranchStudentUpdateManyWithoutBranchNestedInput
+    payments?: BranchStudentPaymentUpdateManyWithoutBranchNestedInput
     courses?: CourseUpdateManyWithoutBranchNestedInput
   }
 
@@ -47870,6 +49921,7 @@ export namespace Prisma {
     branchInstallmentTemplates?: BranchInstallmentTemplateUncheckedUpdateManyWithoutBranchNestedInput
     branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutBranchNestedInput
     branchStudents?: BranchStudentUncheckedUpdateManyWithoutBranchNestedInput
+    payments?: BranchStudentPaymentUncheckedUpdateManyWithoutBranchNestedInput
     courses?: CourseUncheckedUpdateManyWithoutBranchNestedInput
   }
 
@@ -48309,6 +50361,7 @@ export namespace Prisma {
     paymentPlan?: string | null
     course?: BranchCourseCreateNestedOneWithoutBranchStudentsInput
     installments?: BranchStudentInstallmentCreateNestedManyWithoutBranchStudentInput
+    payments?: BranchStudentPaymentCreateNestedManyWithoutBranchStudentInput
   }
 
   export type BranchStudentUncheckedCreateWithoutBranchInput = {
@@ -48347,6 +50400,7 @@ export namespace Prisma {
     paymentPlanId?: string | null
     paymentPlan?: string | null
     installments?: BranchStudentInstallmentUncheckedCreateNestedManyWithoutBranchStudentInput
+    payments?: BranchStudentPaymentUncheckedCreateNestedManyWithoutBranchStudentInput
   }
 
   export type BranchStudentCreateOrConnectWithoutBranchInput = {
@@ -48356,6 +50410,50 @@ export namespace Prisma {
 
   export type BranchStudentCreateManyBranchInputEnvelope = {
     data: BranchStudentCreateManyBranchInput | BranchStudentCreateManyBranchInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type BranchStudentPaymentCreateWithoutBranchInput = {
+    id?: string
+    receiptNumber: string
+    amount: number
+    paymentMode: string
+    transactionReference?: string | null
+    paymentDate: Date | string
+    collectedBy?: string | null
+    notes?: string | null
+    paymentProof?: string | null
+    payAgainst?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branchStudent: BranchStudentCreateNestedOneWithoutPaymentsInput
+    installment?: BranchStudentInstallmentCreateNestedOneWithoutPaymentsInput
+  }
+
+  export type BranchStudentPaymentUncheckedCreateWithoutBranchInput = {
+    id?: string
+    receiptNumber: string
+    branchStudentId: string
+    amount: number
+    paymentMode: string
+    transactionReference?: string | null
+    paymentDate: Date | string
+    collectedBy?: string | null
+    notes?: string | null
+    paymentProof?: string | null
+    payAgainst?: string | null
+    installmentId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type BranchStudentPaymentCreateOrConnectWithoutBranchInput = {
+    where: BranchStudentPaymentWhereUniqueInput
+    create: XOR<BranchStudentPaymentCreateWithoutBranchInput, BranchStudentPaymentUncheckedCreateWithoutBranchInput>
+  }
+
+  export type BranchStudentPaymentCreateManyBranchInputEnvelope = {
+    data: BranchStudentPaymentCreateManyBranchInput | BranchStudentPaymentCreateManyBranchInput[]
     skipDuplicates?: boolean
   }
 
@@ -48686,6 +50784,43 @@ export namespace Prisma {
     paymentMode?: StringFilter<"BranchStudent"> | string
     paymentPlanId?: StringNullableFilter<"BranchStudent"> | string | null
     paymentPlan?: StringNullableFilter<"BranchStudent"> | string | null
+  }
+
+  export type BranchStudentPaymentUpsertWithWhereUniqueWithoutBranchInput = {
+    where: BranchStudentPaymentWhereUniqueInput
+    update: XOR<BranchStudentPaymentUpdateWithoutBranchInput, BranchStudentPaymentUncheckedUpdateWithoutBranchInput>
+    create: XOR<BranchStudentPaymentCreateWithoutBranchInput, BranchStudentPaymentUncheckedCreateWithoutBranchInput>
+  }
+
+  export type BranchStudentPaymentUpdateWithWhereUniqueWithoutBranchInput = {
+    where: BranchStudentPaymentWhereUniqueInput
+    data: XOR<BranchStudentPaymentUpdateWithoutBranchInput, BranchStudentPaymentUncheckedUpdateWithoutBranchInput>
+  }
+
+  export type BranchStudentPaymentUpdateManyWithWhereWithoutBranchInput = {
+    where: BranchStudentPaymentScalarWhereInput
+    data: XOR<BranchStudentPaymentUpdateManyMutationInput, BranchStudentPaymentUncheckedUpdateManyWithoutBranchInput>
+  }
+
+  export type BranchStudentPaymentScalarWhereInput = {
+    AND?: BranchStudentPaymentScalarWhereInput | BranchStudentPaymentScalarWhereInput[]
+    OR?: BranchStudentPaymentScalarWhereInput[]
+    NOT?: BranchStudentPaymentScalarWhereInput | BranchStudentPaymentScalarWhereInput[]
+    id?: StringFilter<"BranchStudentPayment"> | string
+    receiptNumber?: StringFilter<"BranchStudentPayment"> | string
+    branchStudentId?: StringFilter<"BranchStudentPayment"> | string
+    branchId?: StringFilter<"BranchStudentPayment"> | string
+    amount?: IntFilter<"BranchStudentPayment"> | number
+    paymentMode?: StringFilter<"BranchStudentPayment"> | string
+    transactionReference?: StringNullableFilter<"BranchStudentPayment"> | string | null
+    paymentDate?: DateTimeFilter<"BranchStudentPayment"> | Date | string
+    collectedBy?: StringNullableFilter<"BranchStudentPayment"> | string | null
+    notes?: StringNullableFilter<"BranchStudentPayment"> | string | null
+    paymentProof?: StringNullableFilter<"BranchStudentPayment"> | string | null
+    payAgainst?: StringNullableFilter<"BranchStudentPayment"> | string | null
+    installmentId?: StringNullableFilter<"BranchStudentPayment"> | string | null
+    createdAt?: DateTimeFilter<"BranchStudentPayment"> | Date | string
+    updatedAt?: DateTimeFilter<"BranchStudentPayment"> | Date | string
   }
 
   export type CourseUpsertWithWhereUniqueWithoutBranchInput = {
@@ -49483,6 +51618,7 @@ export namespace Prisma {
     branchInstallmentTemplates?: BranchInstallmentTemplateCreateNestedManyWithoutBranchInput
     branchFaculties?: BranchFacultyCreateNestedManyWithoutBranchInput
     branchStudents?: BranchStudentCreateNestedManyWithoutBranchInput
+    payments?: BranchStudentPaymentCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutCoursesInput = {
@@ -49508,6 +51644,7 @@ export namespace Prisma {
     branchInstallmentTemplates?: BranchInstallmentTemplateUncheckedCreateNestedManyWithoutBranchInput
     branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutBranchInput
     branchStudents?: BranchStudentUncheckedCreateNestedManyWithoutBranchInput
+    payments?: BranchStudentPaymentUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutCoursesInput = {
@@ -49871,6 +52008,7 @@ export namespace Prisma {
     branchInstallmentTemplates?: BranchInstallmentTemplateUpdateManyWithoutBranchNestedInput
     branchFaculties?: BranchFacultyUpdateManyWithoutBranchNestedInput
     branchStudents?: BranchStudentUpdateManyWithoutBranchNestedInput
+    payments?: BranchStudentPaymentUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutCoursesInput = {
@@ -49896,6 +52034,7 @@ export namespace Prisma {
     branchInstallmentTemplates?: BranchInstallmentTemplateUncheckedUpdateManyWithoutBranchNestedInput
     branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutBranchNestedInput
     branchStudents?: BranchStudentUncheckedUpdateManyWithoutBranchNestedInput
+    payments?: BranchStudentPaymentUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type CourseModuleUpsertWithWhereUniqueWithoutCourseInput = {
@@ -50140,6 +52279,7 @@ export namespace Prisma {
     branchInstallmentTemplates?: BranchInstallmentTemplateCreateNestedManyWithoutBranchInput
     branchFaculties?: BranchFacultyCreateNestedManyWithoutBranchInput
     branchStudents?: BranchStudentCreateNestedManyWithoutBranchInput
+    payments?: BranchStudentPaymentCreateNestedManyWithoutBranchInput
     courses?: CourseCreateNestedManyWithoutBranchInput
   }
 
@@ -50165,6 +52305,7 @@ export namespace Prisma {
     branchInstallmentTemplates?: BranchInstallmentTemplateUncheckedCreateNestedManyWithoutBranchInput
     branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutBranchInput
     branchStudents?: BranchStudentUncheckedCreateNestedManyWithoutBranchInput
+    payments?: BranchStudentPaymentUncheckedCreateNestedManyWithoutBranchInput
     courses?: CourseUncheckedCreateNestedManyWithoutBranchInput
   }
 
@@ -50336,6 +52477,7 @@ export namespace Prisma {
     paymentPlan?: string | null
     branch: BranchCreateNestedOneWithoutBranchStudentsInput
     installments?: BranchStudentInstallmentCreateNestedManyWithoutBranchStudentInput
+    payments?: BranchStudentPaymentCreateNestedManyWithoutBranchStudentInput
   }
 
   export type BranchStudentUncheckedCreateWithoutCourseInput = {
@@ -50374,6 +52516,7 @@ export namespace Prisma {
     paymentPlanId?: string | null
     paymentPlan?: string | null
     installments?: BranchStudentInstallmentUncheckedCreateNestedManyWithoutBranchStudentInput
+    payments?: BranchStudentPaymentUncheckedCreateNestedManyWithoutBranchStudentInput
   }
 
   export type BranchStudentCreateOrConnectWithoutCourseInput = {
@@ -50419,6 +52562,7 @@ export namespace Prisma {
     branchInstallmentTemplates?: BranchInstallmentTemplateUpdateManyWithoutBranchNestedInput
     branchFaculties?: BranchFacultyUpdateManyWithoutBranchNestedInput
     branchStudents?: BranchStudentUpdateManyWithoutBranchNestedInput
+    payments?: BranchStudentPaymentUpdateManyWithoutBranchNestedInput
     courses?: CourseUpdateManyWithoutBranchNestedInput
   }
 
@@ -50444,6 +52588,7 @@ export namespace Prisma {
     branchInstallmentTemplates?: BranchInstallmentTemplateUncheckedUpdateManyWithoutBranchNestedInput
     branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutBranchNestedInput
     branchStudents?: BranchStudentUncheckedUpdateManyWithoutBranchNestedInput
+    payments?: BranchStudentPaymentUncheckedUpdateManyWithoutBranchNestedInput
     courses?: CourseUncheckedUpdateManyWithoutBranchNestedInput
   }
 
@@ -51993,6 +54138,7 @@ export namespace Prisma {
     branchCourses?: BranchCourseCreateNestedManyWithoutBranchInput
     branchInstallmentTemplates?: BranchInstallmentTemplateCreateNestedManyWithoutBranchInput
     branchFaculties?: BranchFacultyCreateNestedManyWithoutBranchInput
+    payments?: BranchStudentPaymentCreateNestedManyWithoutBranchInput
     courses?: CourseCreateNestedManyWithoutBranchInput
   }
 
@@ -52018,6 +54164,7 @@ export namespace Prisma {
     branchCourses?: BranchCourseUncheckedCreateNestedManyWithoutBranchInput
     branchInstallmentTemplates?: BranchInstallmentTemplateUncheckedCreateNestedManyWithoutBranchInput
     branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutBranchInput
+    payments?: BranchStudentPaymentUncheckedCreateNestedManyWithoutBranchInput
     courses?: CourseUncheckedCreateNestedManyWithoutBranchInput
   }
 
@@ -52087,6 +54234,7 @@ export namespace Prisma {
     id?: string
     installmentNumber: number
     amount: number
+    amountPaid?: number
     dueDate?: string | null
     status?: string
     paidAt?: Date | string | null
@@ -52094,12 +54242,14 @@ export namespace Prisma {
     remarks?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    payments?: BranchStudentPaymentCreateNestedManyWithoutInstallmentInput
   }
 
   export type BranchStudentInstallmentUncheckedCreateWithoutBranchStudentInput = {
     id?: string
     installmentNumber: number
     amount: number
+    amountPaid?: number
     dueDate?: string | null
     status?: string
     paidAt?: Date | string | null
@@ -52107,6 +54257,7 @@ export namespace Prisma {
     remarks?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    payments?: BranchStudentPaymentUncheckedCreateNestedManyWithoutInstallmentInput
   }
 
   export type BranchStudentInstallmentCreateOrConnectWithoutBranchStudentInput = {
@@ -52116,6 +54267,50 @@ export namespace Prisma {
 
   export type BranchStudentInstallmentCreateManyBranchStudentInputEnvelope = {
     data: BranchStudentInstallmentCreateManyBranchStudentInput | BranchStudentInstallmentCreateManyBranchStudentInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type BranchStudentPaymentCreateWithoutBranchStudentInput = {
+    id?: string
+    receiptNumber: string
+    amount: number
+    paymentMode: string
+    transactionReference?: string | null
+    paymentDate: Date | string
+    collectedBy?: string | null
+    notes?: string | null
+    paymentProof?: string | null
+    payAgainst?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branch: BranchCreateNestedOneWithoutPaymentsInput
+    installment?: BranchStudentInstallmentCreateNestedOneWithoutPaymentsInput
+  }
+
+  export type BranchStudentPaymentUncheckedCreateWithoutBranchStudentInput = {
+    id?: string
+    receiptNumber: string
+    branchId: string
+    amount: number
+    paymentMode: string
+    transactionReference?: string | null
+    paymentDate: Date | string
+    collectedBy?: string | null
+    notes?: string | null
+    paymentProof?: string | null
+    payAgainst?: string | null
+    installmentId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type BranchStudentPaymentCreateOrConnectWithoutBranchStudentInput = {
+    where: BranchStudentPaymentWhereUniqueInput
+    create: XOR<BranchStudentPaymentCreateWithoutBranchStudentInput, BranchStudentPaymentUncheckedCreateWithoutBranchStudentInput>
+  }
+
+  export type BranchStudentPaymentCreateManyBranchStudentInputEnvelope = {
+    data: BranchStudentPaymentCreateManyBranchStudentInput | BranchStudentPaymentCreateManyBranchStudentInput[]
     skipDuplicates?: boolean
   }
 
@@ -52152,6 +54347,7 @@ export namespace Prisma {
     branchCourses?: BranchCourseUpdateManyWithoutBranchNestedInput
     branchInstallmentTemplates?: BranchInstallmentTemplateUpdateManyWithoutBranchNestedInput
     branchFaculties?: BranchFacultyUpdateManyWithoutBranchNestedInput
+    payments?: BranchStudentPaymentUpdateManyWithoutBranchNestedInput
     courses?: CourseUpdateManyWithoutBranchNestedInput
   }
 
@@ -52177,6 +54373,7 @@ export namespace Prisma {
     branchCourses?: BranchCourseUncheckedUpdateManyWithoutBranchNestedInput
     branchInstallmentTemplates?: BranchInstallmentTemplateUncheckedUpdateManyWithoutBranchNestedInput
     branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutBranchNestedInput
+    payments?: BranchStudentPaymentUncheckedUpdateManyWithoutBranchNestedInput
     courses?: CourseUncheckedUpdateManyWithoutBranchNestedInput
   }
 
@@ -52267,6 +54464,7 @@ export namespace Prisma {
     branchStudentId?: StringFilter<"BranchStudentInstallment"> | string
     installmentNumber?: IntFilter<"BranchStudentInstallment"> | number
     amount?: IntFilter<"BranchStudentInstallment"> | number
+    amountPaid?: IntFilter<"BranchStudentInstallment"> | number
     dueDate?: StringNullableFilter<"BranchStudentInstallment"> | string | null
     status?: StringFilter<"BranchStudentInstallment"> | string
     paidAt?: DateTimeNullableFilter<"BranchStudentInstallment"> | Date | string | null
@@ -52274,6 +54472,22 @@ export namespace Prisma {
     remarks?: StringNullableFilter<"BranchStudentInstallment"> | string | null
     createdAt?: DateTimeFilter<"BranchStudentInstallment"> | Date | string
     updatedAt?: DateTimeFilter<"BranchStudentInstallment"> | Date | string
+  }
+
+  export type BranchStudentPaymentUpsertWithWhereUniqueWithoutBranchStudentInput = {
+    where: BranchStudentPaymentWhereUniqueInput
+    update: XOR<BranchStudentPaymentUpdateWithoutBranchStudentInput, BranchStudentPaymentUncheckedUpdateWithoutBranchStudentInput>
+    create: XOR<BranchStudentPaymentCreateWithoutBranchStudentInput, BranchStudentPaymentUncheckedCreateWithoutBranchStudentInput>
+  }
+
+  export type BranchStudentPaymentUpdateWithWhereUniqueWithoutBranchStudentInput = {
+    where: BranchStudentPaymentWhereUniqueInput
+    data: XOR<BranchStudentPaymentUpdateWithoutBranchStudentInput, BranchStudentPaymentUncheckedUpdateWithoutBranchStudentInput>
+  }
+
+  export type BranchStudentPaymentUpdateManyWithWhereWithoutBranchStudentInput = {
+    where: BranchStudentPaymentScalarWhereInput
+    data: XOR<BranchStudentPaymentUpdateManyMutationInput, BranchStudentPaymentUncheckedUpdateManyWithoutBranchStudentInput>
   }
 
   export type BranchStudentCreateWithoutInstallmentsInput = {
@@ -52312,6 +54526,7 @@ export namespace Prisma {
     paymentPlan?: string | null
     branch: BranchCreateNestedOneWithoutBranchStudentsInput
     course?: BranchCourseCreateNestedOneWithoutBranchStudentsInput
+    payments?: BranchStudentPaymentCreateNestedManyWithoutBranchStudentInput
   }
 
   export type BranchStudentUncheckedCreateWithoutInstallmentsInput = {
@@ -52350,11 +54565,56 @@ export namespace Prisma {
     paymentMode?: string
     paymentPlanId?: string | null
     paymentPlan?: string | null
+    payments?: BranchStudentPaymentUncheckedCreateNestedManyWithoutBranchStudentInput
   }
 
   export type BranchStudentCreateOrConnectWithoutInstallmentsInput = {
     where: BranchStudentWhereUniqueInput
     create: XOR<BranchStudentCreateWithoutInstallmentsInput, BranchStudentUncheckedCreateWithoutInstallmentsInput>
+  }
+
+  export type BranchStudentPaymentCreateWithoutInstallmentInput = {
+    id?: string
+    receiptNumber: string
+    amount: number
+    paymentMode: string
+    transactionReference?: string | null
+    paymentDate: Date | string
+    collectedBy?: string | null
+    notes?: string | null
+    paymentProof?: string | null
+    payAgainst?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branchStudent: BranchStudentCreateNestedOneWithoutPaymentsInput
+    branch: BranchCreateNestedOneWithoutPaymentsInput
+  }
+
+  export type BranchStudentPaymentUncheckedCreateWithoutInstallmentInput = {
+    id?: string
+    receiptNumber: string
+    branchStudentId: string
+    branchId: string
+    amount: number
+    paymentMode: string
+    transactionReference?: string | null
+    paymentDate: Date | string
+    collectedBy?: string | null
+    notes?: string | null
+    paymentProof?: string | null
+    payAgainst?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type BranchStudentPaymentCreateOrConnectWithoutInstallmentInput = {
+    where: BranchStudentPaymentWhereUniqueInput
+    create: XOR<BranchStudentPaymentCreateWithoutInstallmentInput, BranchStudentPaymentUncheckedCreateWithoutInstallmentInput>
+  }
+
+  export type BranchStudentPaymentCreateManyInstallmentInputEnvelope = {
+    data: BranchStudentPaymentCreateManyInstallmentInput | BranchStudentPaymentCreateManyInstallmentInput[]
+    skipDuplicates?: boolean
   }
 
   export type BranchStudentUpsertWithoutInstallmentsInput = {
@@ -52404,6 +54664,7 @@ export namespace Prisma {
     paymentPlan?: NullableStringFieldUpdateOperationsInput | string | null
     branch?: BranchUpdateOneRequiredWithoutBranchStudentsNestedInput
     course?: BranchCourseUpdateOneWithoutBranchStudentsNestedInput
+    payments?: BranchStudentPaymentUpdateManyWithoutBranchStudentNestedInput
   }
 
   export type BranchStudentUncheckedUpdateWithoutInstallmentsInput = {
@@ -52442,6 +54703,23 @@ export namespace Prisma {
     paymentMode?: StringFieldUpdateOperationsInput | string
     paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
     paymentPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    payments?: BranchStudentPaymentUncheckedUpdateManyWithoutBranchStudentNestedInput
+  }
+
+  export type BranchStudentPaymentUpsertWithWhereUniqueWithoutInstallmentInput = {
+    where: BranchStudentPaymentWhereUniqueInput
+    update: XOR<BranchStudentPaymentUpdateWithoutInstallmentInput, BranchStudentPaymentUncheckedUpdateWithoutInstallmentInput>
+    create: XOR<BranchStudentPaymentCreateWithoutInstallmentInput, BranchStudentPaymentUncheckedCreateWithoutInstallmentInput>
+  }
+
+  export type BranchStudentPaymentUpdateWithWhereUniqueWithoutInstallmentInput = {
+    where: BranchStudentPaymentWhereUniqueInput
+    data: XOR<BranchStudentPaymentUpdateWithoutInstallmentInput, BranchStudentPaymentUncheckedUpdateWithoutInstallmentInput>
+  }
+
+  export type BranchStudentPaymentUpdateManyWithWhereWithoutInstallmentInput = {
+    where: BranchStudentPaymentScalarWhereInput
+    data: XOR<BranchStudentPaymentUpdateManyMutationInput, BranchStudentPaymentUncheckedUpdateManyWithoutInstallmentInput>
   }
 
   export type FacultyBatchEntryCreateWithoutFacultyInput = {
@@ -53709,6 +55987,7 @@ export namespace Prisma {
     branchCourses?: BranchCourseCreateNestedManyWithoutBranchInput
     branchInstallmentTemplates?: BranchInstallmentTemplateCreateNestedManyWithoutBranchInput
     branchStudents?: BranchStudentCreateNestedManyWithoutBranchInput
+    payments?: BranchStudentPaymentCreateNestedManyWithoutBranchInput
     courses?: CourseCreateNestedManyWithoutBranchInput
   }
 
@@ -53734,6 +56013,7 @@ export namespace Prisma {
     branchCourses?: BranchCourseUncheckedCreateNestedManyWithoutBranchInput
     branchInstallmentTemplates?: BranchInstallmentTemplateUncheckedCreateNestedManyWithoutBranchInput
     branchStudents?: BranchStudentUncheckedCreateNestedManyWithoutBranchInput
+    payments?: BranchStudentPaymentUncheckedCreateNestedManyWithoutBranchInput
     courses?: CourseUncheckedCreateNestedManyWithoutBranchInput
   }
 
@@ -53915,6 +56195,7 @@ export namespace Prisma {
     branchCourses?: BranchCourseUpdateManyWithoutBranchNestedInput
     branchInstallmentTemplates?: BranchInstallmentTemplateUpdateManyWithoutBranchNestedInput
     branchStudents?: BranchStudentUpdateManyWithoutBranchNestedInput
+    payments?: BranchStudentPaymentUpdateManyWithoutBranchNestedInput
     courses?: CourseUpdateManyWithoutBranchNestedInput
   }
 
@@ -53940,6 +56221,7 @@ export namespace Prisma {
     branchCourses?: BranchCourseUncheckedUpdateManyWithoutBranchNestedInput
     branchInstallmentTemplates?: BranchInstallmentTemplateUncheckedUpdateManyWithoutBranchNestedInput
     branchStudents?: BranchStudentUncheckedUpdateManyWithoutBranchNestedInput
+    payments?: BranchStudentPaymentUncheckedUpdateManyWithoutBranchNestedInput
     courses?: CourseUncheckedUpdateManyWithoutBranchNestedInput
   }
 
@@ -54048,6 +56330,7 @@ export namespace Prisma {
     branchCourses?: BranchCourseCreateNestedManyWithoutBranchInput
     branchFaculties?: BranchFacultyCreateNestedManyWithoutBranchInput
     branchStudents?: BranchStudentCreateNestedManyWithoutBranchInput
+    payments?: BranchStudentPaymentCreateNestedManyWithoutBranchInput
     courses?: CourseCreateNestedManyWithoutBranchInput
   }
 
@@ -54073,6 +56356,7 @@ export namespace Prisma {
     branchCourses?: BranchCourseUncheckedCreateNestedManyWithoutBranchInput
     branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutBranchInput
     branchStudents?: BranchStudentUncheckedCreateNestedManyWithoutBranchInput
+    payments?: BranchStudentPaymentUncheckedCreateNestedManyWithoutBranchInput
     courses?: CourseUncheckedCreateNestedManyWithoutBranchInput
   }
 
@@ -54171,6 +56455,7 @@ export namespace Prisma {
     branchCourses?: BranchCourseUpdateManyWithoutBranchNestedInput
     branchFaculties?: BranchFacultyUpdateManyWithoutBranchNestedInput
     branchStudents?: BranchStudentUpdateManyWithoutBranchNestedInput
+    payments?: BranchStudentPaymentUpdateManyWithoutBranchNestedInput
     courses?: CourseUpdateManyWithoutBranchNestedInput
   }
 
@@ -54196,6 +56481,7 @@ export namespace Prisma {
     branchCourses?: BranchCourseUncheckedUpdateManyWithoutBranchNestedInput
     branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutBranchNestedInput
     branchStudents?: BranchStudentUncheckedUpdateManyWithoutBranchNestedInput
+    payments?: BranchStudentPaymentUncheckedUpdateManyWithoutBranchNestedInput
     courses?: CourseUncheckedUpdateManyWithoutBranchNestedInput
   }
 
@@ -54260,6 +56546,374 @@ export namespace Prisma {
     modules?: BranchCourseModuleUncheckedUpdateManyWithoutBranchCourseNestedInput
     branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutBranchCourseNestedInput
     branchStudents?: BranchStudentUncheckedUpdateManyWithoutCourseNestedInput
+  }
+
+  export type BranchStudentCreateWithoutPaymentsInput = {
+    id?: string
+    studentId: string
+    studentName: string
+    mobileNumber: string
+    emailAddress: string
+    parentSpouseNumber?: string | null
+    countryCode?: string | null
+    country?: string | null
+    stateCode?: string | null
+    state?: string | null
+    city?: string | null
+    address?: string | null
+    qualification?: string | null
+    passedOutYear?: string | null
+    currentStatus?: string | null
+    designation?: string | null
+    source?: string | null
+    sourceOther?: string | null
+    admissionDate: string
+    recordStatus?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    linkedInUrl?: string | null
+    remarks?: string | null
+    courseName?: string | null
+    facultyId?: string | null
+    facultyName?: string | null
+    courseAmount?: number | null
+    paymentMode?: string
+    paymentPlanId?: string | null
+    paymentPlan?: string | null
+    branch: BranchCreateNestedOneWithoutBranchStudentsInput
+    course?: BranchCourseCreateNestedOneWithoutBranchStudentsInput
+    installments?: BranchStudentInstallmentCreateNestedManyWithoutBranchStudentInput
+  }
+
+  export type BranchStudentUncheckedCreateWithoutPaymentsInput = {
+    id?: string
+    branchId: string
+    studentId: string
+    studentName: string
+    mobileNumber: string
+    emailAddress: string
+    parentSpouseNumber?: string | null
+    countryCode?: string | null
+    country?: string | null
+    stateCode?: string | null
+    state?: string | null
+    city?: string | null
+    address?: string | null
+    qualification?: string | null
+    passedOutYear?: string | null
+    currentStatus?: string | null
+    designation?: string | null
+    source?: string | null
+    sourceOther?: string | null
+    admissionDate: string
+    recordStatus?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    linkedInUrl?: string | null
+    remarks?: string | null
+    courseId?: string | null
+    courseName?: string | null
+    facultyId?: string | null
+    facultyName?: string | null
+    courseAmount?: number | null
+    paymentMode?: string
+    paymentPlanId?: string | null
+    paymentPlan?: string | null
+    installments?: BranchStudentInstallmentUncheckedCreateNestedManyWithoutBranchStudentInput
+  }
+
+  export type BranchStudentCreateOrConnectWithoutPaymentsInput = {
+    where: BranchStudentWhereUniqueInput
+    create: XOR<BranchStudentCreateWithoutPaymentsInput, BranchStudentUncheckedCreateWithoutPaymentsInput>
+  }
+
+  export type BranchCreateWithoutPaymentsInput = {
+    id?: string
+    branchId: string
+    branchName: string
+    branchAdminName: string
+    branchEmail: string
+    branchPhone: string
+    branchAddress: string
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branchCity?: string
+    branchCountry?: string
+    branchCountryCode?: string
+    branchState?: string
+    branchStateCode?: string
+    adminUser?: UserCreateNestedOneWithoutManagedBranchInput
+    branchCourses?: BranchCourseCreateNestedManyWithoutBranchInput
+    branchInstallmentTemplates?: BranchInstallmentTemplateCreateNestedManyWithoutBranchInput
+    branchFaculties?: BranchFacultyCreateNestedManyWithoutBranchInput
+    branchStudents?: BranchStudentCreateNestedManyWithoutBranchInput
+    courses?: CourseCreateNestedManyWithoutBranchInput
+  }
+
+  export type BranchUncheckedCreateWithoutPaymentsInput = {
+    id?: string
+    branchId: string
+    branchName: string
+    branchAdminName: string
+    branchEmail: string
+    branchPhone: string
+    branchAddress: string
+    status?: $Enums.RecordStatus
+    adminUserId?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branchCity?: string
+    branchCountry?: string
+    branchCountryCode?: string
+    branchState?: string
+    branchStateCode?: string
+    branchCourses?: BranchCourseUncheckedCreateNestedManyWithoutBranchInput
+    branchInstallmentTemplates?: BranchInstallmentTemplateUncheckedCreateNestedManyWithoutBranchInput
+    branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutBranchInput
+    branchStudents?: BranchStudentUncheckedCreateNestedManyWithoutBranchInput
+    courses?: CourseUncheckedCreateNestedManyWithoutBranchInput
+  }
+
+  export type BranchCreateOrConnectWithoutPaymentsInput = {
+    where: BranchWhereUniqueInput
+    create: XOR<BranchCreateWithoutPaymentsInput, BranchUncheckedCreateWithoutPaymentsInput>
+  }
+
+  export type BranchStudentInstallmentCreateWithoutPaymentsInput = {
+    id?: string
+    installmentNumber: number
+    amount: number
+    amountPaid?: number
+    dueDate?: string | null
+    status?: string
+    paidAt?: Date | string | null
+    paymentMethod?: string | null
+    remarks?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branchStudent: BranchStudentCreateNestedOneWithoutInstallmentsInput
+  }
+
+  export type BranchStudentInstallmentUncheckedCreateWithoutPaymentsInput = {
+    id?: string
+    branchStudentId: string
+    installmentNumber: number
+    amount: number
+    amountPaid?: number
+    dueDate?: string | null
+    status?: string
+    paidAt?: Date | string | null
+    paymentMethod?: string | null
+    remarks?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type BranchStudentInstallmentCreateOrConnectWithoutPaymentsInput = {
+    where: BranchStudentInstallmentWhereUniqueInput
+    create: XOR<BranchStudentInstallmentCreateWithoutPaymentsInput, BranchStudentInstallmentUncheckedCreateWithoutPaymentsInput>
+  }
+
+  export type BranchStudentUpsertWithoutPaymentsInput = {
+    update: XOR<BranchStudentUpdateWithoutPaymentsInput, BranchStudentUncheckedUpdateWithoutPaymentsInput>
+    create: XOR<BranchStudentCreateWithoutPaymentsInput, BranchStudentUncheckedCreateWithoutPaymentsInput>
+    where?: BranchStudentWhereInput
+  }
+
+  export type BranchStudentUpdateToOneWithWhereWithoutPaymentsInput = {
+    where?: BranchStudentWhereInput
+    data: XOR<BranchStudentUpdateWithoutPaymentsInput, BranchStudentUncheckedUpdateWithoutPaymentsInput>
+  }
+
+  export type BranchStudentUpdateWithoutPaymentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    studentId?: StringFieldUpdateOperationsInput | string
+    studentName?: StringFieldUpdateOperationsInput | string
+    mobileNumber?: StringFieldUpdateOperationsInput | string
+    emailAddress?: StringFieldUpdateOperationsInput | string
+    parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    countryCode?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    stateCode?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    qualification?: NullableStringFieldUpdateOperationsInput | string | null
+    passedOutYear?: NullableStringFieldUpdateOperationsInput | string | null
+    currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    designation?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
+    admissionDate?: StringFieldUpdateOperationsInput | string
+    recordStatus?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    linkedInUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    remarks?: NullableStringFieldUpdateOperationsInput | string | null
+    courseName?: NullableStringFieldUpdateOperationsInput | string | null
+    facultyId?: NullableStringFieldUpdateOperationsInput | string | null
+    facultyName?: NullableStringFieldUpdateOperationsInput | string | null
+    courseAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    paymentMode?: StringFieldUpdateOperationsInput | string
+    paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    branch?: BranchUpdateOneRequiredWithoutBranchStudentsNestedInput
+    course?: BranchCourseUpdateOneWithoutBranchStudentsNestedInput
+    installments?: BranchStudentInstallmentUpdateManyWithoutBranchStudentNestedInput
+  }
+
+  export type BranchStudentUncheckedUpdateWithoutPaymentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    studentId?: StringFieldUpdateOperationsInput | string
+    studentName?: StringFieldUpdateOperationsInput | string
+    mobileNumber?: StringFieldUpdateOperationsInput | string
+    emailAddress?: StringFieldUpdateOperationsInput | string
+    parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    countryCode?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    stateCode?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    qualification?: NullableStringFieldUpdateOperationsInput | string | null
+    passedOutYear?: NullableStringFieldUpdateOperationsInput | string | null
+    currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    designation?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
+    admissionDate?: StringFieldUpdateOperationsInput | string
+    recordStatus?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    linkedInUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    remarks?: NullableStringFieldUpdateOperationsInput | string | null
+    courseId?: NullableStringFieldUpdateOperationsInput | string | null
+    courseName?: NullableStringFieldUpdateOperationsInput | string | null
+    facultyId?: NullableStringFieldUpdateOperationsInput | string | null
+    facultyName?: NullableStringFieldUpdateOperationsInput | string | null
+    courseAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    paymentMode?: StringFieldUpdateOperationsInput | string
+    paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    installments?: BranchStudentInstallmentUncheckedUpdateManyWithoutBranchStudentNestedInput
+  }
+
+  export type BranchUpsertWithoutPaymentsInput = {
+    update: XOR<BranchUpdateWithoutPaymentsInput, BranchUncheckedUpdateWithoutPaymentsInput>
+    create: XOR<BranchCreateWithoutPaymentsInput, BranchUncheckedCreateWithoutPaymentsInput>
+    where?: BranchWhereInput
+  }
+
+  export type BranchUpdateToOneWithWhereWithoutPaymentsInput = {
+    where?: BranchWhereInput
+    data: XOR<BranchUpdateWithoutPaymentsInput, BranchUncheckedUpdateWithoutPaymentsInput>
+  }
+
+  export type BranchUpdateWithoutPaymentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    branchName?: StringFieldUpdateOperationsInput | string
+    branchAdminName?: StringFieldUpdateOperationsInput | string
+    branchEmail?: StringFieldUpdateOperationsInput | string
+    branchPhone?: StringFieldUpdateOperationsInput | string
+    branchAddress?: StringFieldUpdateOperationsInput | string
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branchCity?: StringFieldUpdateOperationsInput | string
+    branchCountry?: StringFieldUpdateOperationsInput | string
+    branchCountryCode?: StringFieldUpdateOperationsInput | string
+    branchState?: StringFieldUpdateOperationsInput | string
+    branchStateCode?: StringFieldUpdateOperationsInput | string
+    adminUser?: UserUpdateOneWithoutManagedBranchNestedInput
+    branchCourses?: BranchCourseUpdateManyWithoutBranchNestedInput
+    branchInstallmentTemplates?: BranchInstallmentTemplateUpdateManyWithoutBranchNestedInput
+    branchFaculties?: BranchFacultyUpdateManyWithoutBranchNestedInput
+    branchStudents?: BranchStudentUpdateManyWithoutBranchNestedInput
+    courses?: CourseUpdateManyWithoutBranchNestedInput
+  }
+
+  export type BranchUncheckedUpdateWithoutPaymentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    branchName?: StringFieldUpdateOperationsInput | string
+    branchAdminName?: StringFieldUpdateOperationsInput | string
+    branchEmail?: StringFieldUpdateOperationsInput | string
+    branchPhone?: StringFieldUpdateOperationsInput | string
+    branchAddress?: StringFieldUpdateOperationsInput | string
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    adminUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branchCity?: StringFieldUpdateOperationsInput | string
+    branchCountry?: StringFieldUpdateOperationsInput | string
+    branchCountryCode?: StringFieldUpdateOperationsInput | string
+    branchState?: StringFieldUpdateOperationsInput | string
+    branchStateCode?: StringFieldUpdateOperationsInput | string
+    branchCourses?: BranchCourseUncheckedUpdateManyWithoutBranchNestedInput
+    branchInstallmentTemplates?: BranchInstallmentTemplateUncheckedUpdateManyWithoutBranchNestedInput
+    branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutBranchNestedInput
+    branchStudents?: BranchStudentUncheckedUpdateManyWithoutBranchNestedInput
+    courses?: CourseUncheckedUpdateManyWithoutBranchNestedInput
+  }
+
+  export type BranchStudentInstallmentUpsertWithoutPaymentsInput = {
+    update: XOR<BranchStudentInstallmentUpdateWithoutPaymentsInput, BranchStudentInstallmentUncheckedUpdateWithoutPaymentsInput>
+    create: XOR<BranchStudentInstallmentCreateWithoutPaymentsInput, BranchStudentInstallmentUncheckedCreateWithoutPaymentsInput>
+    where?: BranchStudentInstallmentWhereInput
+  }
+
+  export type BranchStudentInstallmentUpdateToOneWithWhereWithoutPaymentsInput = {
+    where?: BranchStudentInstallmentWhereInput
+    data: XOR<BranchStudentInstallmentUpdateWithoutPaymentsInput, BranchStudentInstallmentUncheckedUpdateWithoutPaymentsInput>
+  }
+
+  export type BranchStudentInstallmentUpdateWithoutPaymentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    installmentNumber?: IntFieldUpdateOperationsInput | number
+    amount?: IntFieldUpdateOperationsInput | number
+    amountPaid?: IntFieldUpdateOperationsInput | number
+    dueDate?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    remarks?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branchStudent?: BranchStudentUpdateOneRequiredWithoutInstallmentsNestedInput
+  }
+
+  export type BranchStudentInstallmentUncheckedUpdateWithoutPaymentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchStudentId?: StringFieldUpdateOperationsInput | string
+    installmentNumber?: IntFieldUpdateOperationsInput | number
+    amount?: IntFieldUpdateOperationsInput | number
+    amountPaid?: IntFieldUpdateOperationsInput | number
+    dueDate?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    remarks?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type BatchFacultyAssignmentCreateManyFacultyInput = {
@@ -54738,6 +57392,23 @@ export namespace Prisma {
     paymentPlan?: string | null
   }
 
+  export type BranchStudentPaymentCreateManyBranchInput = {
+    id?: string
+    receiptNumber: string
+    branchStudentId: string
+    amount: number
+    paymentMode: string
+    transactionReference?: string | null
+    paymentDate: Date | string
+    collectedBy?: string | null
+    notes?: string | null
+    paymentProof?: string | null
+    payAgainst?: string | null
+    installmentId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type CourseCreateManyBranchInput = {
     id?: string
     name: string
@@ -54987,6 +57658,7 @@ export namespace Prisma {
     paymentPlan?: NullableStringFieldUpdateOperationsInput | string | null
     course?: BranchCourseUpdateOneWithoutBranchStudentsNestedInput
     installments?: BranchStudentInstallmentUpdateManyWithoutBranchStudentNestedInput
+    payments?: BranchStudentPaymentUpdateManyWithoutBranchStudentNestedInput
   }
 
   export type BranchStudentUncheckedUpdateWithoutBranchInput = {
@@ -55025,6 +57697,7 @@ export namespace Prisma {
     paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
     paymentPlan?: NullableStringFieldUpdateOperationsInput | string | null
     installments?: BranchStudentInstallmentUncheckedUpdateManyWithoutBranchStudentNestedInput
+    payments?: BranchStudentPaymentUncheckedUpdateManyWithoutBranchStudentNestedInput
   }
 
   export type BranchStudentUncheckedUpdateManyWithoutBranchInput = {
@@ -55062,6 +57735,57 @@ export namespace Prisma {
     paymentMode?: StringFieldUpdateOperationsInput | string
     paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
     paymentPlan?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type BranchStudentPaymentUpdateWithoutBranchInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    receiptNumber?: StringFieldUpdateOperationsInput | string
+    amount?: IntFieldUpdateOperationsInput | number
+    paymentMode?: StringFieldUpdateOperationsInput | string
+    transactionReference?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    collectedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProof?: NullableStringFieldUpdateOperationsInput | string | null
+    payAgainst?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branchStudent?: BranchStudentUpdateOneRequiredWithoutPaymentsNestedInput
+    installment?: BranchStudentInstallmentUpdateOneWithoutPaymentsNestedInput
+  }
+
+  export type BranchStudentPaymentUncheckedUpdateWithoutBranchInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    receiptNumber?: StringFieldUpdateOperationsInput | string
+    branchStudentId?: StringFieldUpdateOperationsInput | string
+    amount?: IntFieldUpdateOperationsInput | number
+    paymentMode?: StringFieldUpdateOperationsInput | string
+    transactionReference?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    collectedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProof?: NullableStringFieldUpdateOperationsInput | string | null
+    payAgainst?: NullableStringFieldUpdateOperationsInput | string | null
+    installmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BranchStudentPaymentUncheckedUpdateManyWithoutBranchInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    receiptNumber?: StringFieldUpdateOperationsInput | string
+    branchStudentId?: StringFieldUpdateOperationsInput | string
+    amount?: IntFieldUpdateOperationsInput | number
+    paymentMode?: StringFieldUpdateOperationsInput | string
+    transactionReference?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    collectedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProof?: NullableStringFieldUpdateOperationsInput | string | null
+    payAgainst?: NullableStringFieldUpdateOperationsInput | string | null
+    installmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type CourseUpdateWithoutBranchInput = {
@@ -56069,6 +58793,7 @@ export namespace Prisma {
     paymentPlan?: NullableStringFieldUpdateOperationsInput | string | null
     branch?: BranchUpdateOneRequiredWithoutBranchStudentsNestedInput
     installments?: BranchStudentInstallmentUpdateManyWithoutBranchStudentNestedInput
+    payments?: BranchStudentPaymentUpdateManyWithoutBranchStudentNestedInput
   }
 
   export type BranchStudentUncheckedUpdateWithoutCourseInput = {
@@ -56107,6 +58832,7 @@ export namespace Prisma {
     paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
     paymentPlan?: NullableStringFieldUpdateOperationsInput | string | null
     installments?: BranchStudentInstallmentUncheckedUpdateManyWithoutBranchStudentNestedInput
+    payments?: BranchStudentPaymentUncheckedUpdateManyWithoutBranchStudentNestedInput
   }
 
   export type BranchStudentUncheckedUpdateManyWithoutCourseInput = {
@@ -56362,6 +59088,7 @@ export namespace Prisma {
     id?: string
     installmentNumber: number
     amount: number
+    amountPaid?: number
     dueDate?: string | null
     status?: string
     paidAt?: Date | string | null
@@ -56371,10 +59098,28 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type BranchStudentPaymentCreateManyBranchStudentInput = {
+    id?: string
+    receiptNumber: string
+    branchId: string
+    amount: number
+    paymentMode: string
+    transactionReference?: string | null
+    paymentDate: Date | string
+    collectedBy?: string | null
+    notes?: string | null
+    paymentProof?: string | null
+    payAgainst?: string | null
+    installmentId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type BranchStudentInstallmentUpdateWithoutBranchStudentInput = {
     id?: StringFieldUpdateOperationsInput | string
     installmentNumber?: IntFieldUpdateOperationsInput | number
     amount?: IntFieldUpdateOperationsInput | number
+    amountPaid?: IntFieldUpdateOperationsInput | number
     dueDate?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -56382,12 +59127,29 @@ export namespace Prisma {
     remarks?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    payments?: BranchStudentPaymentUpdateManyWithoutInstallmentNestedInput
   }
 
   export type BranchStudentInstallmentUncheckedUpdateWithoutBranchStudentInput = {
     id?: StringFieldUpdateOperationsInput | string
     installmentNumber?: IntFieldUpdateOperationsInput | number
     amount?: IntFieldUpdateOperationsInput | number
+    amountPaid?: IntFieldUpdateOperationsInput | number
+    dueDate?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    remarks?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    payments?: BranchStudentPaymentUncheckedUpdateManyWithoutInstallmentNestedInput
+  }
+
+  export type BranchStudentInstallmentUncheckedUpdateManyWithoutBranchStudentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    installmentNumber?: IntFieldUpdateOperationsInput | number
+    amount?: IntFieldUpdateOperationsInput | number
+    amountPaid?: IntFieldUpdateOperationsInput | number
     dueDate?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -56397,15 +59159,121 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type BranchStudentInstallmentUncheckedUpdateManyWithoutBranchStudentInput = {
+  export type BranchStudentPaymentUpdateWithoutBranchStudentInput = {
     id?: StringFieldUpdateOperationsInput | string
-    installmentNumber?: IntFieldUpdateOperationsInput | number
+    receiptNumber?: StringFieldUpdateOperationsInput | string
     amount?: IntFieldUpdateOperationsInput | number
-    dueDate?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: StringFieldUpdateOperationsInput | string
-    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
-    remarks?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMode?: StringFieldUpdateOperationsInput | string
+    transactionReference?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    collectedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProof?: NullableStringFieldUpdateOperationsInput | string | null
+    payAgainst?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branch?: BranchUpdateOneRequiredWithoutPaymentsNestedInput
+    installment?: BranchStudentInstallmentUpdateOneWithoutPaymentsNestedInput
+  }
+
+  export type BranchStudentPaymentUncheckedUpdateWithoutBranchStudentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    receiptNumber?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    amount?: IntFieldUpdateOperationsInput | number
+    paymentMode?: StringFieldUpdateOperationsInput | string
+    transactionReference?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    collectedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProof?: NullableStringFieldUpdateOperationsInput | string | null
+    payAgainst?: NullableStringFieldUpdateOperationsInput | string | null
+    installmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BranchStudentPaymentUncheckedUpdateManyWithoutBranchStudentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    receiptNumber?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    amount?: IntFieldUpdateOperationsInput | number
+    paymentMode?: StringFieldUpdateOperationsInput | string
+    transactionReference?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    collectedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProof?: NullableStringFieldUpdateOperationsInput | string | null
+    payAgainst?: NullableStringFieldUpdateOperationsInput | string | null
+    installmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BranchStudentPaymentCreateManyInstallmentInput = {
+    id?: string
+    receiptNumber: string
+    branchStudentId: string
+    branchId: string
+    amount: number
+    paymentMode: string
+    transactionReference?: string | null
+    paymentDate: Date | string
+    collectedBy?: string | null
+    notes?: string | null
+    paymentProof?: string | null
+    payAgainst?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type BranchStudentPaymentUpdateWithoutInstallmentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    receiptNumber?: StringFieldUpdateOperationsInput | string
+    amount?: IntFieldUpdateOperationsInput | number
+    paymentMode?: StringFieldUpdateOperationsInput | string
+    transactionReference?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    collectedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProof?: NullableStringFieldUpdateOperationsInput | string | null
+    payAgainst?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branchStudent?: BranchStudentUpdateOneRequiredWithoutPaymentsNestedInput
+    branch?: BranchUpdateOneRequiredWithoutPaymentsNestedInput
+  }
+
+  export type BranchStudentPaymentUncheckedUpdateWithoutInstallmentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    receiptNumber?: StringFieldUpdateOperationsInput | string
+    branchStudentId?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    amount?: IntFieldUpdateOperationsInput | number
+    paymentMode?: StringFieldUpdateOperationsInput | string
+    transactionReference?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    collectedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProof?: NullableStringFieldUpdateOperationsInput | string | null
+    payAgainst?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BranchStudentPaymentUncheckedUpdateManyWithoutInstallmentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    receiptNumber?: StringFieldUpdateOperationsInput | string
+    branchStudentId?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    amount?: IntFieldUpdateOperationsInput | number
+    paymentMode?: StringFieldUpdateOperationsInput | string
+    transactionReference?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    collectedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProof?: NullableStringFieldUpdateOperationsInput | string | null
+    payAgainst?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
