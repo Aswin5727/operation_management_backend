@@ -10,6 +10,7 @@ import branchStudentsRoutes from "../modules/branchStudents/branchStudents.route
 import courseEditRequestsRoutes from "../modules/courseEditRequests/courseEditRequests.routes.js";
 import facultyManagementRoutes from "../modules/facultyManagement/facultyManagement.routes.js";
 import dashboardRoutes from "../modules/dashboard/dashboard.routes.js";
+import facultyTodayWorkRoutes from "../modules/facultyTodayWork/facultyTodayWork.routes.js";
 import notificationsRoutes from "../modules/notifications/notifications.routes.js";
 import masterSetupRoutes from "../modules/masterSetup/masterSetup.routes.js";
 import reportsRoutes from "../modules/reports/reports.routes.js";
@@ -34,6 +35,7 @@ router.use("/branch-students", branchStudentsRoutes);
 router.use("/course-edit-requests", courseEditRequestsRoutes);
 router.use("/dashboard", dashboardRoutes);
 router.use("/faculty-management", facultyManagementRoutes);
+router.use("/faculty-today-work", facultyTodayWorkRoutes);
 router.use("/notifications", notificationsRoutes);
 router.use("/master-setup", masterSetupRoutes);
 router.use("/reports", reportsRoutes);

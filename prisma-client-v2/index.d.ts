@@ -124,6 +124,11 @@ export type FacultyBatchEntry = $Result.DefaultSelection<Prisma.$FacultyBatchEnt
  */
 export type FacultyAttendanceSession = $Result.DefaultSelection<Prisma.$FacultyAttendanceSessionPayload>
 /**
+ * Model FacultyTodayWorkEntry
+ * 
+ */
+export type FacultyTodayWorkEntry = $Result.DefaultSelection<Prisma.$FacultyTodayWorkEntryPayload>
+/**
  * Model StudentAttendance
  * 
  */
@@ -607,6 +612,16 @@ export class PrismaClient<
     * ```
     */
   get facultyAttendanceSession(): Prisma.FacultyAttendanceSessionDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.facultyTodayWorkEntry`: Exposes CRUD operations for the **FacultyTodayWorkEntry** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more FacultyTodayWorkEntries
+    * const facultyTodayWorkEntries = await prisma.facultyTodayWorkEntry.findMany()
+    * ```
+    */
+  get facultyTodayWorkEntry(): Prisma.FacultyTodayWorkEntryDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.studentAttendance`: Exposes CRUD operations for the **StudentAttendance** model.
@@ -1103,6 +1118,7 @@ export namespace Prisma {
     FacultyCourseAssignment: 'FacultyCourseAssignment',
     FacultyBatchEntry: 'FacultyBatchEntry',
     FacultyAttendanceSession: 'FacultyAttendanceSession',
+    FacultyTodayWorkEntry: 'FacultyTodayWorkEntry',
     StudentAttendance: 'StudentAttendance',
     BranchFaculty: 'BranchFaculty',
     BranchInstallmentTemplate: 'BranchInstallmentTemplate',
@@ -1122,7 +1138,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "branch" | "loginEvent" | "notification" | "courseEditRequest" | "passwordResetToken" | "course" | "branchCourse" | "branchCourseModule" | "branchCourseSubmodule" | "courseModule" | "batch" | "batchFacultyAssignment" | "courseStatusHistory" | "batchStatusHistory" | "studentProfile" | "branchStudent" | "branchStudentInstallment" | "facultyProfile" | "facultyCourseAssignment" | "facultyBatchEntry" | "facultyAttendanceSession" | "studentAttendance" | "branchFaculty" | "branchInstallmentTemplate" | "branchStudentPayment"
+      modelProps: "user" | "branch" | "loginEvent" | "notification" | "courseEditRequest" | "passwordResetToken" | "course" | "branchCourse" | "branchCourseModule" | "branchCourseSubmodule" | "courseModule" | "batch" | "batchFacultyAssignment" | "courseStatusHistory" | "batchStatusHistory" | "studentProfile" | "branchStudent" | "branchStudentInstallment" | "facultyProfile" | "facultyCourseAssignment" | "facultyBatchEntry" | "facultyAttendanceSession" | "facultyTodayWorkEntry" | "studentAttendance" | "branchFaculty" | "branchInstallmentTemplate" | "branchStudentPayment"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2754,6 +2770,80 @@ export namespace Prisma {
           }
         }
       }
+      FacultyTodayWorkEntry: {
+        payload: Prisma.$FacultyTodayWorkEntryPayload<ExtArgs>
+        fields: Prisma.FacultyTodayWorkEntryFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.FacultyTodayWorkEntryFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyTodayWorkEntryPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.FacultyTodayWorkEntryFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyTodayWorkEntryPayload>
+          }
+          findFirst: {
+            args: Prisma.FacultyTodayWorkEntryFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyTodayWorkEntryPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.FacultyTodayWorkEntryFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyTodayWorkEntryPayload>
+          }
+          findMany: {
+            args: Prisma.FacultyTodayWorkEntryFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyTodayWorkEntryPayload>[]
+          }
+          create: {
+            args: Prisma.FacultyTodayWorkEntryCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyTodayWorkEntryPayload>
+          }
+          createMany: {
+            args: Prisma.FacultyTodayWorkEntryCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.FacultyTodayWorkEntryCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyTodayWorkEntryPayload>[]
+          }
+          delete: {
+            args: Prisma.FacultyTodayWorkEntryDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyTodayWorkEntryPayload>
+          }
+          update: {
+            args: Prisma.FacultyTodayWorkEntryUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyTodayWorkEntryPayload>
+          }
+          deleteMany: {
+            args: Prisma.FacultyTodayWorkEntryDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.FacultyTodayWorkEntryUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.FacultyTodayWorkEntryUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyTodayWorkEntryPayload>[]
+          }
+          upsert: {
+            args: Prisma.FacultyTodayWorkEntryUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyTodayWorkEntryPayload>
+          }
+          aggregate: {
+            args: Prisma.FacultyTodayWorkEntryAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateFacultyTodayWorkEntry>
+          }
+          groupBy: {
+            args: Prisma.FacultyTodayWorkEntryGroupByArgs<ExtArgs>
+            result: $Utils.Optional<FacultyTodayWorkEntryGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.FacultyTodayWorkEntryCountArgs<ExtArgs>
+            result: $Utils.Optional<FacultyTodayWorkEntryCountAggregateOutputType> | number
+          }
+        }
+      }
       StudentAttendance: {
         payload: Prisma.$StudentAttendancePayload<ExtArgs>
         fields: Prisma.StudentAttendanceFieldRefs
@@ -3180,6 +3270,7 @@ export namespace Prisma {
     facultyCourseAssignment?: FacultyCourseAssignmentOmit
     facultyBatchEntry?: FacultyBatchEntryOmit
     facultyAttendanceSession?: FacultyAttendanceSessionOmit
+    facultyTodayWorkEntry?: FacultyTodayWorkEntryOmit
     studentAttendance?: StudentAttendanceOmit
     branchFaculty?: BranchFacultyOmit
     branchInstallmentTemplate?: BranchInstallmentTemplateOmit
@@ -3266,6 +3357,7 @@ export namespace Prisma {
   export type UserCountOutputType = {
     batchFacultyAssignments: number
     facultyAttendanceSessions: number
+    facultyTodayWorkEntries: number
     loginEvents: number
     targetedNotifications: number
     passwordResetTokens: number
@@ -3275,6 +3367,7 @@ export namespace Prisma {
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     batchFacultyAssignments?: boolean | UserCountOutputTypeCountBatchFacultyAssignmentsArgs
     facultyAttendanceSessions?: boolean | UserCountOutputTypeCountFacultyAttendanceSessionsArgs
+    facultyTodayWorkEntries?: boolean | UserCountOutputTypeCountFacultyTodayWorkEntriesArgs
     loginEvents?: boolean | UserCountOutputTypeCountLoginEventsArgs
     targetedNotifications?: boolean | UserCountOutputTypeCountTargetedNotificationsArgs
     passwordResetTokens?: boolean | UserCountOutputTypeCountPasswordResetTokensArgs
@@ -3304,6 +3397,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountFacultyAttendanceSessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: FacultyAttendanceSessionWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountFacultyTodayWorkEntriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FacultyTodayWorkEntryWhereInput
   }
 
   /**
@@ -3544,12 +3644,14 @@ export namespace Prisma {
     modules: number
     branchFaculties: number
     branchStudents: number
+    facultyTodayWorkEntries: number
   }
 
   export type BranchCourseCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     modules?: boolean | BranchCourseCountOutputTypeCountModulesArgs
     branchFaculties?: boolean | BranchCourseCountOutputTypeCountBranchFacultiesArgs
     branchStudents?: boolean | BranchCourseCountOutputTypeCountBranchStudentsArgs
+    facultyTodayWorkEntries?: boolean | BranchCourseCountOutputTypeCountFacultyTodayWorkEntriesArgs
   }
 
   // Custom InputTypes
@@ -3582,6 +3684,13 @@ export namespace Prisma {
    */
   export type BranchCourseCountOutputTypeCountBranchStudentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: BranchStudentWhereInput
+  }
+
+  /**
+   * BranchCourseCountOutputType without action
+   */
+  export type BranchCourseCountOutputTypeCountFacultyTodayWorkEntriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FacultyTodayWorkEntryWhereInput
   }
 
 
@@ -4135,6 +4244,7 @@ export namespace Prisma {
     batchFacultyAssignments?: boolean | User$batchFacultyAssignmentsArgs<ExtArgs>
     managedBranch?: boolean | User$managedBranchArgs<ExtArgs>
     facultyAttendanceSessions?: boolean | User$facultyAttendanceSessionsArgs<ExtArgs>
+    facultyTodayWorkEntries?: boolean | User$facultyTodayWorkEntriesArgs<ExtArgs>
     loginEvents?: boolean | User$loginEventsArgs<ExtArgs>
     targetedNotifications?: boolean | User$targetedNotificationsArgs<ExtArgs>
     passwordResetTokens?: boolean | User$passwordResetTokensArgs<ExtArgs>
@@ -4219,6 +4329,7 @@ export namespace Prisma {
     batchFacultyAssignments?: boolean | User$batchFacultyAssignmentsArgs<ExtArgs>
     managedBranch?: boolean | User$managedBranchArgs<ExtArgs>
     facultyAttendanceSessions?: boolean | User$facultyAttendanceSessionsArgs<ExtArgs>
+    facultyTodayWorkEntries?: boolean | User$facultyTodayWorkEntriesArgs<ExtArgs>
     loginEvents?: boolean | User$loginEventsArgs<ExtArgs>
     targetedNotifications?: boolean | User$targetedNotificationsArgs<ExtArgs>
     passwordResetTokens?: boolean | User$passwordResetTokensArgs<ExtArgs>
@@ -4234,6 +4345,7 @@ export namespace Prisma {
       batchFacultyAssignments: Prisma.$BatchFacultyAssignmentPayload<ExtArgs>[]
       managedBranch: Prisma.$BranchPayload<ExtArgs> | null
       facultyAttendanceSessions: Prisma.$FacultyAttendanceSessionPayload<ExtArgs>[]
+      facultyTodayWorkEntries: Prisma.$FacultyTodayWorkEntryPayload<ExtArgs>[]
       loginEvents: Prisma.$LoginEventPayload<ExtArgs>[]
       targetedNotifications: Prisma.$NotificationPayload<ExtArgs>[]
       passwordResetTokens: Prisma.$PasswordResetTokenPayload<ExtArgs>[]
@@ -4658,6 +4770,7 @@ export namespace Prisma {
     batchFacultyAssignments<T extends User$batchFacultyAssignmentsArgs<ExtArgs> = {}>(args?: Subset<T, User$batchFacultyAssignmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BatchFacultyAssignmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     managedBranch<T extends User$managedBranchArgs<ExtArgs> = {}>(args?: Subset<T, User$managedBranchArgs<ExtArgs>>): Prisma__BranchClient<$Result.GetResult<Prisma.$BranchPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     facultyAttendanceSessions<T extends User$facultyAttendanceSessionsArgs<ExtArgs> = {}>(args?: Subset<T, User$facultyAttendanceSessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FacultyAttendanceSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    facultyTodayWorkEntries<T extends User$facultyTodayWorkEntriesArgs<ExtArgs> = {}>(args?: Subset<T, User$facultyTodayWorkEntriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FacultyTodayWorkEntryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     loginEvents<T extends User$loginEventsArgs<ExtArgs> = {}>(args?: Subset<T, User$loginEventsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LoginEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     targetedNotifications<T extends User$targetedNotificationsArgs<ExtArgs> = {}>(args?: Subset<T, User$targetedNotificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     passwordResetTokens<T extends User$passwordResetTokensArgs<ExtArgs> = {}>(args?: Subset<T, User$passwordResetTokensArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PasswordResetTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -5169,6 +5282,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: FacultyAttendanceSessionScalarFieldEnum | FacultyAttendanceSessionScalarFieldEnum[]
+  }
+
+  /**
+   * User.facultyTodayWorkEntries
+   */
+  export type User$facultyTodayWorkEntriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyTodayWorkEntry
+     */
+    select?: FacultyTodayWorkEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyTodayWorkEntry
+     */
+    omit?: FacultyTodayWorkEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyTodayWorkEntryInclude<ExtArgs> | null
+    where?: FacultyTodayWorkEntryWhereInput
+    orderBy?: FacultyTodayWorkEntryOrderByWithRelationInput | FacultyTodayWorkEntryOrderByWithRelationInput[]
+    cursor?: FacultyTodayWorkEntryWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: FacultyTodayWorkEntryScalarFieldEnum | FacultyTodayWorkEntryScalarFieldEnum[]
   }
 
   /**
@@ -13630,6 +13767,7 @@ export namespace Prisma {
     modules?: boolean | BranchCourse$modulesArgs<ExtArgs>
     branchFaculties?: boolean | BranchCourse$branchFacultiesArgs<ExtArgs>
     branchStudents?: boolean | BranchCourse$branchStudentsArgs<ExtArgs>
+    facultyTodayWorkEntries?: boolean | BranchCourse$facultyTodayWorkEntriesArgs<ExtArgs>
     _count?: boolean | BranchCourseCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["branchCourse"]>
 
@@ -13711,6 +13849,7 @@ export namespace Prisma {
     modules?: boolean | BranchCourse$modulesArgs<ExtArgs>
     branchFaculties?: boolean | BranchCourse$branchFacultiesArgs<ExtArgs>
     branchStudents?: boolean | BranchCourse$branchStudentsArgs<ExtArgs>
+    facultyTodayWorkEntries?: boolean | BranchCourse$facultyTodayWorkEntriesArgs<ExtArgs>
     _count?: boolean | BranchCourseCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type BranchCourseIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -13728,6 +13867,7 @@ export namespace Prisma {
       modules: Prisma.$BranchCourseModulePayload<ExtArgs>[]
       branchFaculties: Prisma.$BranchFacultyPayload<ExtArgs>[]
       branchStudents: Prisma.$BranchStudentPayload<ExtArgs>[]
+      facultyTodayWorkEntries: Prisma.$FacultyTodayWorkEntryPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -14149,6 +14289,7 @@ export namespace Prisma {
     modules<T extends BranchCourse$modulesArgs<ExtArgs> = {}>(args?: Subset<T, BranchCourse$modulesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchCourseModulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     branchFaculties<T extends BranchCourse$branchFacultiesArgs<ExtArgs> = {}>(args?: Subset<T, BranchCourse$branchFacultiesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchFacultyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     branchStudents<T extends BranchCourse$branchStudentsArgs<ExtArgs> = {}>(args?: Subset<T, BranchCourse$branchStudentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchStudentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    facultyTodayWorkEntries<T extends BranchCourse$facultyTodayWorkEntriesArgs<ExtArgs> = {}>(args?: Subset<T, BranchCourse$facultyTodayWorkEntriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FacultyTodayWorkEntryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -14687,6 +14828,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: BranchStudentScalarFieldEnum | BranchStudentScalarFieldEnum[]
+  }
+
+  /**
+   * BranchCourse.facultyTodayWorkEntries
+   */
+  export type BranchCourse$facultyTodayWorkEntriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyTodayWorkEntry
+     */
+    select?: FacultyTodayWorkEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyTodayWorkEntry
+     */
+    omit?: FacultyTodayWorkEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyTodayWorkEntryInclude<ExtArgs> | null
+    where?: FacultyTodayWorkEntryWhereInput
+    orderBy?: FacultyTodayWorkEntryOrderByWithRelationInput | FacultyTodayWorkEntryOrderByWithRelationInput[]
+    cursor?: FacultyTodayWorkEntryWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: FacultyTodayWorkEntryScalarFieldEnum | FacultyTodayWorkEntryScalarFieldEnum[]
   }
 
   /**
@@ -32085,6 +32250,1336 @@ export namespace Prisma {
 
 
   /**
+   * Model FacultyTodayWorkEntry
+   */
+
+  export type AggregateFacultyTodayWorkEntry = {
+    _count: FacultyTodayWorkEntryCountAggregateOutputType | null
+    _avg: FacultyTodayWorkEntryAvgAggregateOutputType | null
+    _sum: FacultyTodayWorkEntrySumAggregateOutputType | null
+    _min: FacultyTodayWorkEntryMinAggregateOutputType | null
+    _max: FacultyTodayWorkEntryMaxAggregateOutputType | null
+  }
+
+  export type FacultyTodayWorkEntryAvgAggregateOutputType = {
+    studentCount: number | null
+    moduleProgress: number | null
+    submoduleProgress: number | null
+    courseProgress: number | null
+    moduleWeight: number | null
+  }
+
+  export type FacultyTodayWorkEntrySumAggregateOutputType = {
+    studentCount: number | null
+    moduleProgress: number | null
+    submoduleProgress: number | null
+    courseProgress: number | null
+    moduleWeight: number | null
+  }
+
+  export type FacultyTodayWorkEntryMinAggregateOutputType = {
+    id: string | null
+    facultyUserId: string | null
+    facultyProfileId: string | null
+    branchId: string | null
+    courseId: string | null
+    courseName: string | null
+    moduleId: string | null
+    moduleName: string | null
+    studentCount: number | null
+    applyToAllStudents: boolean | null
+    moduleProgress: number | null
+    submoduleProgress: number | null
+    courseProgress: number | null
+    moduleWeight: number | null
+    workDate: string | null
+    createdBy: string | null
+    updatedBy: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type FacultyTodayWorkEntryMaxAggregateOutputType = {
+    id: string | null
+    facultyUserId: string | null
+    facultyProfileId: string | null
+    branchId: string | null
+    courseId: string | null
+    courseName: string | null
+    moduleId: string | null
+    moduleName: string | null
+    studentCount: number | null
+    applyToAllStudents: boolean | null
+    moduleProgress: number | null
+    submoduleProgress: number | null
+    courseProgress: number | null
+    moduleWeight: number | null
+    workDate: string | null
+    createdBy: string | null
+    updatedBy: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type FacultyTodayWorkEntryCountAggregateOutputType = {
+    id: number
+    facultyUserId: number
+    facultyProfileId: number
+    branchId: number
+    courseId: number
+    courseName: number
+    moduleId: number
+    moduleName: number
+    submoduleIds: number
+    submodules: number
+    studentIds: number
+    studentCount: number
+    applyToAllStudents: number
+    moduleProgress: number
+    submoduleProgress: number
+    courseProgress: number
+    moduleWeight: number
+    workDate: number
+    createdBy: number
+    updatedBy: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type FacultyTodayWorkEntryAvgAggregateInputType = {
+    studentCount?: true
+    moduleProgress?: true
+    submoduleProgress?: true
+    courseProgress?: true
+    moduleWeight?: true
+  }
+
+  export type FacultyTodayWorkEntrySumAggregateInputType = {
+    studentCount?: true
+    moduleProgress?: true
+    submoduleProgress?: true
+    courseProgress?: true
+    moduleWeight?: true
+  }
+
+  export type FacultyTodayWorkEntryMinAggregateInputType = {
+    id?: true
+    facultyUserId?: true
+    facultyProfileId?: true
+    branchId?: true
+    courseId?: true
+    courseName?: true
+    moduleId?: true
+    moduleName?: true
+    studentCount?: true
+    applyToAllStudents?: true
+    moduleProgress?: true
+    submoduleProgress?: true
+    courseProgress?: true
+    moduleWeight?: true
+    workDate?: true
+    createdBy?: true
+    updatedBy?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type FacultyTodayWorkEntryMaxAggregateInputType = {
+    id?: true
+    facultyUserId?: true
+    facultyProfileId?: true
+    branchId?: true
+    courseId?: true
+    courseName?: true
+    moduleId?: true
+    moduleName?: true
+    studentCount?: true
+    applyToAllStudents?: true
+    moduleProgress?: true
+    submoduleProgress?: true
+    courseProgress?: true
+    moduleWeight?: true
+    workDate?: true
+    createdBy?: true
+    updatedBy?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type FacultyTodayWorkEntryCountAggregateInputType = {
+    id?: true
+    facultyUserId?: true
+    facultyProfileId?: true
+    branchId?: true
+    courseId?: true
+    courseName?: true
+    moduleId?: true
+    moduleName?: true
+    submoduleIds?: true
+    submodules?: true
+    studentIds?: true
+    studentCount?: true
+    applyToAllStudents?: true
+    moduleProgress?: true
+    submoduleProgress?: true
+    courseProgress?: true
+    moduleWeight?: true
+    workDate?: true
+    createdBy?: true
+    updatedBy?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type FacultyTodayWorkEntryAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FacultyTodayWorkEntry to aggregate.
+     */
+    where?: FacultyTodayWorkEntryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FacultyTodayWorkEntries to fetch.
+     */
+    orderBy?: FacultyTodayWorkEntryOrderByWithRelationInput | FacultyTodayWorkEntryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: FacultyTodayWorkEntryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FacultyTodayWorkEntries from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FacultyTodayWorkEntries.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned FacultyTodayWorkEntries
+    **/
+    _count?: true | FacultyTodayWorkEntryCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: FacultyTodayWorkEntryAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: FacultyTodayWorkEntrySumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: FacultyTodayWorkEntryMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: FacultyTodayWorkEntryMaxAggregateInputType
+  }
+
+  export type GetFacultyTodayWorkEntryAggregateType<T extends FacultyTodayWorkEntryAggregateArgs> = {
+        [P in keyof T & keyof AggregateFacultyTodayWorkEntry]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateFacultyTodayWorkEntry[P]>
+      : GetScalarType<T[P], AggregateFacultyTodayWorkEntry[P]>
+  }
+
+
+
+
+  export type FacultyTodayWorkEntryGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FacultyTodayWorkEntryWhereInput
+    orderBy?: FacultyTodayWorkEntryOrderByWithAggregationInput | FacultyTodayWorkEntryOrderByWithAggregationInput[]
+    by: FacultyTodayWorkEntryScalarFieldEnum[] | FacultyTodayWorkEntryScalarFieldEnum
+    having?: FacultyTodayWorkEntryScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: FacultyTodayWorkEntryCountAggregateInputType | true
+    _avg?: FacultyTodayWorkEntryAvgAggregateInputType
+    _sum?: FacultyTodayWorkEntrySumAggregateInputType
+    _min?: FacultyTodayWorkEntryMinAggregateInputType
+    _max?: FacultyTodayWorkEntryMaxAggregateInputType
+  }
+
+  export type FacultyTodayWorkEntryGroupByOutputType = {
+    id: string
+    facultyUserId: string
+    facultyProfileId: string | null
+    branchId: string | null
+    courseId: string
+    courseName: string
+    moduleId: string
+    moduleName: string
+    submoduleIds: JsonValue
+    submodules: JsonValue | null
+    studentIds: JsonValue
+    studentCount: number
+    applyToAllStudents: boolean
+    moduleProgress: number
+    submoduleProgress: number
+    courseProgress: number
+    moduleWeight: number
+    workDate: string
+    createdBy: string | null
+    updatedBy: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: FacultyTodayWorkEntryCountAggregateOutputType | null
+    _avg: FacultyTodayWorkEntryAvgAggregateOutputType | null
+    _sum: FacultyTodayWorkEntrySumAggregateOutputType | null
+    _min: FacultyTodayWorkEntryMinAggregateOutputType | null
+    _max: FacultyTodayWorkEntryMaxAggregateOutputType | null
+  }
+
+  type GetFacultyTodayWorkEntryGroupByPayload<T extends FacultyTodayWorkEntryGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<FacultyTodayWorkEntryGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof FacultyTodayWorkEntryGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], FacultyTodayWorkEntryGroupByOutputType[P]>
+            : GetScalarType<T[P], FacultyTodayWorkEntryGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type FacultyTodayWorkEntrySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    facultyUserId?: boolean
+    facultyProfileId?: boolean
+    branchId?: boolean
+    courseId?: boolean
+    courseName?: boolean
+    moduleId?: boolean
+    moduleName?: boolean
+    submoduleIds?: boolean
+    submodules?: boolean
+    studentIds?: boolean
+    studentCount?: boolean
+    applyToAllStudents?: boolean
+    moduleProgress?: boolean
+    submoduleProgress?: boolean
+    courseProgress?: boolean
+    moduleWeight?: boolean
+    workDate?: boolean
+    createdBy?: boolean
+    updatedBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    facultyUser?: boolean | UserDefaultArgs<ExtArgs>
+    branchCourse?: boolean | BranchCourseDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["facultyTodayWorkEntry"]>
+
+  export type FacultyTodayWorkEntrySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    facultyUserId?: boolean
+    facultyProfileId?: boolean
+    branchId?: boolean
+    courseId?: boolean
+    courseName?: boolean
+    moduleId?: boolean
+    moduleName?: boolean
+    submoduleIds?: boolean
+    submodules?: boolean
+    studentIds?: boolean
+    studentCount?: boolean
+    applyToAllStudents?: boolean
+    moduleProgress?: boolean
+    submoduleProgress?: boolean
+    courseProgress?: boolean
+    moduleWeight?: boolean
+    workDate?: boolean
+    createdBy?: boolean
+    updatedBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    facultyUser?: boolean | UserDefaultArgs<ExtArgs>
+    branchCourse?: boolean | BranchCourseDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["facultyTodayWorkEntry"]>
+
+  export type FacultyTodayWorkEntrySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    facultyUserId?: boolean
+    facultyProfileId?: boolean
+    branchId?: boolean
+    courseId?: boolean
+    courseName?: boolean
+    moduleId?: boolean
+    moduleName?: boolean
+    submoduleIds?: boolean
+    submodules?: boolean
+    studentIds?: boolean
+    studentCount?: boolean
+    applyToAllStudents?: boolean
+    moduleProgress?: boolean
+    submoduleProgress?: boolean
+    courseProgress?: boolean
+    moduleWeight?: boolean
+    workDate?: boolean
+    createdBy?: boolean
+    updatedBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    facultyUser?: boolean | UserDefaultArgs<ExtArgs>
+    branchCourse?: boolean | BranchCourseDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["facultyTodayWorkEntry"]>
+
+  export type FacultyTodayWorkEntrySelectScalar = {
+    id?: boolean
+    facultyUserId?: boolean
+    facultyProfileId?: boolean
+    branchId?: boolean
+    courseId?: boolean
+    courseName?: boolean
+    moduleId?: boolean
+    moduleName?: boolean
+    submoduleIds?: boolean
+    submodules?: boolean
+    studentIds?: boolean
+    studentCount?: boolean
+    applyToAllStudents?: boolean
+    moduleProgress?: boolean
+    submoduleProgress?: boolean
+    courseProgress?: boolean
+    moduleWeight?: boolean
+    workDate?: boolean
+    createdBy?: boolean
+    updatedBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type FacultyTodayWorkEntryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "facultyUserId" | "facultyProfileId" | "branchId" | "courseId" | "courseName" | "moduleId" | "moduleName" | "submoduleIds" | "submodules" | "studentIds" | "studentCount" | "applyToAllStudents" | "moduleProgress" | "submoduleProgress" | "courseProgress" | "moduleWeight" | "workDate" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["facultyTodayWorkEntry"]>
+  export type FacultyTodayWorkEntryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    facultyUser?: boolean | UserDefaultArgs<ExtArgs>
+    branchCourse?: boolean | BranchCourseDefaultArgs<ExtArgs>
+  }
+  export type FacultyTodayWorkEntryIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    facultyUser?: boolean | UserDefaultArgs<ExtArgs>
+    branchCourse?: boolean | BranchCourseDefaultArgs<ExtArgs>
+  }
+  export type FacultyTodayWorkEntryIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    facultyUser?: boolean | UserDefaultArgs<ExtArgs>
+    branchCourse?: boolean | BranchCourseDefaultArgs<ExtArgs>
+  }
+
+  export type $FacultyTodayWorkEntryPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "FacultyTodayWorkEntry"
+    objects: {
+      facultyUser: Prisma.$UserPayload<ExtArgs>
+      branchCourse: Prisma.$BranchCoursePayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      facultyUserId: string
+      facultyProfileId: string | null
+      branchId: string | null
+      courseId: string
+      courseName: string
+      moduleId: string
+      moduleName: string
+      submoduleIds: Prisma.JsonValue
+      submodules: Prisma.JsonValue | null
+      studentIds: Prisma.JsonValue
+      studentCount: number
+      applyToAllStudents: boolean
+      moduleProgress: number
+      submoduleProgress: number
+      courseProgress: number
+      moduleWeight: number
+      workDate: string
+      createdBy: string | null
+      updatedBy: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["facultyTodayWorkEntry"]>
+    composites: {}
+  }
+
+  type FacultyTodayWorkEntryGetPayload<S extends boolean | null | undefined | FacultyTodayWorkEntryDefaultArgs> = $Result.GetResult<Prisma.$FacultyTodayWorkEntryPayload, S>
+
+  type FacultyTodayWorkEntryCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<FacultyTodayWorkEntryFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: FacultyTodayWorkEntryCountAggregateInputType | true
+    }
+
+  export interface FacultyTodayWorkEntryDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['FacultyTodayWorkEntry'], meta: { name: 'FacultyTodayWorkEntry' } }
+    /**
+     * Find zero or one FacultyTodayWorkEntry that matches the filter.
+     * @param {FacultyTodayWorkEntryFindUniqueArgs} args - Arguments to find a FacultyTodayWorkEntry
+     * @example
+     * // Get one FacultyTodayWorkEntry
+     * const facultyTodayWorkEntry = await prisma.facultyTodayWorkEntry.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends FacultyTodayWorkEntryFindUniqueArgs>(args: SelectSubset<T, FacultyTodayWorkEntryFindUniqueArgs<ExtArgs>>): Prisma__FacultyTodayWorkEntryClient<$Result.GetResult<Prisma.$FacultyTodayWorkEntryPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one FacultyTodayWorkEntry that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {FacultyTodayWorkEntryFindUniqueOrThrowArgs} args - Arguments to find a FacultyTodayWorkEntry
+     * @example
+     * // Get one FacultyTodayWorkEntry
+     * const facultyTodayWorkEntry = await prisma.facultyTodayWorkEntry.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends FacultyTodayWorkEntryFindUniqueOrThrowArgs>(args: SelectSubset<T, FacultyTodayWorkEntryFindUniqueOrThrowArgs<ExtArgs>>): Prisma__FacultyTodayWorkEntryClient<$Result.GetResult<Prisma.$FacultyTodayWorkEntryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first FacultyTodayWorkEntry that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FacultyTodayWorkEntryFindFirstArgs} args - Arguments to find a FacultyTodayWorkEntry
+     * @example
+     * // Get one FacultyTodayWorkEntry
+     * const facultyTodayWorkEntry = await prisma.facultyTodayWorkEntry.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends FacultyTodayWorkEntryFindFirstArgs>(args?: SelectSubset<T, FacultyTodayWorkEntryFindFirstArgs<ExtArgs>>): Prisma__FacultyTodayWorkEntryClient<$Result.GetResult<Prisma.$FacultyTodayWorkEntryPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first FacultyTodayWorkEntry that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FacultyTodayWorkEntryFindFirstOrThrowArgs} args - Arguments to find a FacultyTodayWorkEntry
+     * @example
+     * // Get one FacultyTodayWorkEntry
+     * const facultyTodayWorkEntry = await prisma.facultyTodayWorkEntry.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends FacultyTodayWorkEntryFindFirstOrThrowArgs>(args?: SelectSubset<T, FacultyTodayWorkEntryFindFirstOrThrowArgs<ExtArgs>>): Prisma__FacultyTodayWorkEntryClient<$Result.GetResult<Prisma.$FacultyTodayWorkEntryPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more FacultyTodayWorkEntries that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FacultyTodayWorkEntryFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all FacultyTodayWorkEntries
+     * const facultyTodayWorkEntries = await prisma.facultyTodayWorkEntry.findMany()
+     * 
+     * // Get first 10 FacultyTodayWorkEntries
+     * const facultyTodayWorkEntries = await prisma.facultyTodayWorkEntry.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const facultyTodayWorkEntryWithIdOnly = await prisma.facultyTodayWorkEntry.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends FacultyTodayWorkEntryFindManyArgs>(args?: SelectSubset<T, FacultyTodayWorkEntryFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FacultyTodayWorkEntryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a FacultyTodayWorkEntry.
+     * @param {FacultyTodayWorkEntryCreateArgs} args - Arguments to create a FacultyTodayWorkEntry.
+     * @example
+     * // Create one FacultyTodayWorkEntry
+     * const FacultyTodayWorkEntry = await prisma.facultyTodayWorkEntry.create({
+     *   data: {
+     *     // ... data to create a FacultyTodayWorkEntry
+     *   }
+     * })
+     * 
+     */
+    create<T extends FacultyTodayWorkEntryCreateArgs>(args: SelectSubset<T, FacultyTodayWorkEntryCreateArgs<ExtArgs>>): Prisma__FacultyTodayWorkEntryClient<$Result.GetResult<Prisma.$FacultyTodayWorkEntryPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many FacultyTodayWorkEntries.
+     * @param {FacultyTodayWorkEntryCreateManyArgs} args - Arguments to create many FacultyTodayWorkEntries.
+     * @example
+     * // Create many FacultyTodayWorkEntries
+     * const facultyTodayWorkEntry = await prisma.facultyTodayWorkEntry.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends FacultyTodayWorkEntryCreateManyArgs>(args?: SelectSubset<T, FacultyTodayWorkEntryCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many FacultyTodayWorkEntries and returns the data saved in the database.
+     * @param {FacultyTodayWorkEntryCreateManyAndReturnArgs} args - Arguments to create many FacultyTodayWorkEntries.
+     * @example
+     * // Create many FacultyTodayWorkEntries
+     * const facultyTodayWorkEntry = await prisma.facultyTodayWorkEntry.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many FacultyTodayWorkEntries and only return the `id`
+     * const facultyTodayWorkEntryWithIdOnly = await prisma.facultyTodayWorkEntry.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends FacultyTodayWorkEntryCreateManyAndReturnArgs>(args?: SelectSubset<T, FacultyTodayWorkEntryCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FacultyTodayWorkEntryPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a FacultyTodayWorkEntry.
+     * @param {FacultyTodayWorkEntryDeleteArgs} args - Arguments to delete one FacultyTodayWorkEntry.
+     * @example
+     * // Delete one FacultyTodayWorkEntry
+     * const FacultyTodayWorkEntry = await prisma.facultyTodayWorkEntry.delete({
+     *   where: {
+     *     // ... filter to delete one FacultyTodayWorkEntry
+     *   }
+     * })
+     * 
+     */
+    delete<T extends FacultyTodayWorkEntryDeleteArgs>(args: SelectSubset<T, FacultyTodayWorkEntryDeleteArgs<ExtArgs>>): Prisma__FacultyTodayWorkEntryClient<$Result.GetResult<Prisma.$FacultyTodayWorkEntryPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one FacultyTodayWorkEntry.
+     * @param {FacultyTodayWorkEntryUpdateArgs} args - Arguments to update one FacultyTodayWorkEntry.
+     * @example
+     * // Update one FacultyTodayWorkEntry
+     * const facultyTodayWorkEntry = await prisma.facultyTodayWorkEntry.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends FacultyTodayWorkEntryUpdateArgs>(args: SelectSubset<T, FacultyTodayWorkEntryUpdateArgs<ExtArgs>>): Prisma__FacultyTodayWorkEntryClient<$Result.GetResult<Prisma.$FacultyTodayWorkEntryPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more FacultyTodayWorkEntries.
+     * @param {FacultyTodayWorkEntryDeleteManyArgs} args - Arguments to filter FacultyTodayWorkEntries to delete.
+     * @example
+     * // Delete a few FacultyTodayWorkEntries
+     * const { count } = await prisma.facultyTodayWorkEntry.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends FacultyTodayWorkEntryDeleteManyArgs>(args?: SelectSubset<T, FacultyTodayWorkEntryDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more FacultyTodayWorkEntries.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FacultyTodayWorkEntryUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many FacultyTodayWorkEntries
+     * const facultyTodayWorkEntry = await prisma.facultyTodayWorkEntry.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends FacultyTodayWorkEntryUpdateManyArgs>(args: SelectSubset<T, FacultyTodayWorkEntryUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more FacultyTodayWorkEntries and returns the data updated in the database.
+     * @param {FacultyTodayWorkEntryUpdateManyAndReturnArgs} args - Arguments to update many FacultyTodayWorkEntries.
+     * @example
+     * // Update many FacultyTodayWorkEntries
+     * const facultyTodayWorkEntry = await prisma.facultyTodayWorkEntry.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more FacultyTodayWorkEntries and only return the `id`
+     * const facultyTodayWorkEntryWithIdOnly = await prisma.facultyTodayWorkEntry.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends FacultyTodayWorkEntryUpdateManyAndReturnArgs>(args: SelectSubset<T, FacultyTodayWorkEntryUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FacultyTodayWorkEntryPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one FacultyTodayWorkEntry.
+     * @param {FacultyTodayWorkEntryUpsertArgs} args - Arguments to update or create a FacultyTodayWorkEntry.
+     * @example
+     * // Update or create a FacultyTodayWorkEntry
+     * const facultyTodayWorkEntry = await prisma.facultyTodayWorkEntry.upsert({
+     *   create: {
+     *     // ... data to create a FacultyTodayWorkEntry
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the FacultyTodayWorkEntry we want to update
+     *   }
+     * })
+     */
+    upsert<T extends FacultyTodayWorkEntryUpsertArgs>(args: SelectSubset<T, FacultyTodayWorkEntryUpsertArgs<ExtArgs>>): Prisma__FacultyTodayWorkEntryClient<$Result.GetResult<Prisma.$FacultyTodayWorkEntryPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of FacultyTodayWorkEntries.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FacultyTodayWorkEntryCountArgs} args - Arguments to filter FacultyTodayWorkEntries to count.
+     * @example
+     * // Count the number of FacultyTodayWorkEntries
+     * const count = await prisma.facultyTodayWorkEntry.count({
+     *   where: {
+     *     // ... the filter for the FacultyTodayWorkEntries we want to count
+     *   }
+     * })
+    **/
+    count<T extends FacultyTodayWorkEntryCountArgs>(
+      args?: Subset<T, FacultyTodayWorkEntryCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], FacultyTodayWorkEntryCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a FacultyTodayWorkEntry.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FacultyTodayWorkEntryAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends FacultyTodayWorkEntryAggregateArgs>(args: Subset<T, FacultyTodayWorkEntryAggregateArgs>): Prisma.PrismaPromise<GetFacultyTodayWorkEntryAggregateType<T>>
+
+    /**
+     * Group by FacultyTodayWorkEntry.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FacultyTodayWorkEntryGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends FacultyTodayWorkEntryGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: FacultyTodayWorkEntryGroupByArgs['orderBy'] }
+        : { orderBy?: FacultyTodayWorkEntryGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, FacultyTodayWorkEntryGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetFacultyTodayWorkEntryGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the FacultyTodayWorkEntry model
+   */
+  readonly fields: FacultyTodayWorkEntryFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for FacultyTodayWorkEntry.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__FacultyTodayWorkEntryClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    facultyUser<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    branchCourse<T extends BranchCourseDefaultArgs<ExtArgs> = {}>(args?: Subset<T, BranchCourseDefaultArgs<ExtArgs>>): Prisma__BranchCourseClient<$Result.GetResult<Prisma.$BranchCoursePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the FacultyTodayWorkEntry model
+   */
+  interface FacultyTodayWorkEntryFieldRefs {
+    readonly id: FieldRef<"FacultyTodayWorkEntry", 'String'>
+    readonly facultyUserId: FieldRef<"FacultyTodayWorkEntry", 'String'>
+    readonly facultyProfileId: FieldRef<"FacultyTodayWorkEntry", 'String'>
+    readonly branchId: FieldRef<"FacultyTodayWorkEntry", 'String'>
+    readonly courseId: FieldRef<"FacultyTodayWorkEntry", 'String'>
+    readonly courseName: FieldRef<"FacultyTodayWorkEntry", 'String'>
+    readonly moduleId: FieldRef<"FacultyTodayWorkEntry", 'String'>
+    readonly moduleName: FieldRef<"FacultyTodayWorkEntry", 'String'>
+    readonly submoduleIds: FieldRef<"FacultyTodayWorkEntry", 'Json'>
+    readonly submodules: FieldRef<"FacultyTodayWorkEntry", 'Json'>
+    readonly studentIds: FieldRef<"FacultyTodayWorkEntry", 'Json'>
+    readonly studentCount: FieldRef<"FacultyTodayWorkEntry", 'Int'>
+    readonly applyToAllStudents: FieldRef<"FacultyTodayWorkEntry", 'Boolean'>
+    readonly moduleProgress: FieldRef<"FacultyTodayWorkEntry", 'Float'>
+    readonly submoduleProgress: FieldRef<"FacultyTodayWorkEntry", 'Float'>
+    readonly courseProgress: FieldRef<"FacultyTodayWorkEntry", 'Float'>
+    readonly moduleWeight: FieldRef<"FacultyTodayWorkEntry", 'Float'>
+    readonly workDate: FieldRef<"FacultyTodayWorkEntry", 'String'>
+    readonly createdBy: FieldRef<"FacultyTodayWorkEntry", 'String'>
+    readonly updatedBy: FieldRef<"FacultyTodayWorkEntry", 'String'>
+    readonly createdAt: FieldRef<"FacultyTodayWorkEntry", 'DateTime'>
+    readonly updatedAt: FieldRef<"FacultyTodayWorkEntry", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * FacultyTodayWorkEntry findUnique
+   */
+  export type FacultyTodayWorkEntryFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyTodayWorkEntry
+     */
+    select?: FacultyTodayWorkEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyTodayWorkEntry
+     */
+    omit?: FacultyTodayWorkEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyTodayWorkEntryInclude<ExtArgs> | null
+    /**
+     * Filter, which FacultyTodayWorkEntry to fetch.
+     */
+    where: FacultyTodayWorkEntryWhereUniqueInput
+  }
+
+  /**
+   * FacultyTodayWorkEntry findUniqueOrThrow
+   */
+  export type FacultyTodayWorkEntryFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyTodayWorkEntry
+     */
+    select?: FacultyTodayWorkEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyTodayWorkEntry
+     */
+    omit?: FacultyTodayWorkEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyTodayWorkEntryInclude<ExtArgs> | null
+    /**
+     * Filter, which FacultyTodayWorkEntry to fetch.
+     */
+    where: FacultyTodayWorkEntryWhereUniqueInput
+  }
+
+  /**
+   * FacultyTodayWorkEntry findFirst
+   */
+  export type FacultyTodayWorkEntryFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyTodayWorkEntry
+     */
+    select?: FacultyTodayWorkEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyTodayWorkEntry
+     */
+    omit?: FacultyTodayWorkEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyTodayWorkEntryInclude<ExtArgs> | null
+    /**
+     * Filter, which FacultyTodayWorkEntry to fetch.
+     */
+    where?: FacultyTodayWorkEntryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FacultyTodayWorkEntries to fetch.
+     */
+    orderBy?: FacultyTodayWorkEntryOrderByWithRelationInput | FacultyTodayWorkEntryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FacultyTodayWorkEntries.
+     */
+    cursor?: FacultyTodayWorkEntryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FacultyTodayWorkEntries from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FacultyTodayWorkEntries.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FacultyTodayWorkEntries.
+     */
+    distinct?: FacultyTodayWorkEntryScalarFieldEnum | FacultyTodayWorkEntryScalarFieldEnum[]
+  }
+
+  /**
+   * FacultyTodayWorkEntry findFirstOrThrow
+   */
+  export type FacultyTodayWorkEntryFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyTodayWorkEntry
+     */
+    select?: FacultyTodayWorkEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyTodayWorkEntry
+     */
+    omit?: FacultyTodayWorkEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyTodayWorkEntryInclude<ExtArgs> | null
+    /**
+     * Filter, which FacultyTodayWorkEntry to fetch.
+     */
+    where?: FacultyTodayWorkEntryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FacultyTodayWorkEntries to fetch.
+     */
+    orderBy?: FacultyTodayWorkEntryOrderByWithRelationInput | FacultyTodayWorkEntryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FacultyTodayWorkEntries.
+     */
+    cursor?: FacultyTodayWorkEntryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FacultyTodayWorkEntries from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FacultyTodayWorkEntries.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FacultyTodayWorkEntries.
+     */
+    distinct?: FacultyTodayWorkEntryScalarFieldEnum | FacultyTodayWorkEntryScalarFieldEnum[]
+  }
+
+  /**
+   * FacultyTodayWorkEntry findMany
+   */
+  export type FacultyTodayWorkEntryFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyTodayWorkEntry
+     */
+    select?: FacultyTodayWorkEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyTodayWorkEntry
+     */
+    omit?: FacultyTodayWorkEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyTodayWorkEntryInclude<ExtArgs> | null
+    /**
+     * Filter, which FacultyTodayWorkEntries to fetch.
+     */
+    where?: FacultyTodayWorkEntryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FacultyTodayWorkEntries to fetch.
+     */
+    orderBy?: FacultyTodayWorkEntryOrderByWithRelationInput | FacultyTodayWorkEntryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing FacultyTodayWorkEntries.
+     */
+    cursor?: FacultyTodayWorkEntryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FacultyTodayWorkEntries from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FacultyTodayWorkEntries.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FacultyTodayWorkEntries.
+     */
+    distinct?: FacultyTodayWorkEntryScalarFieldEnum | FacultyTodayWorkEntryScalarFieldEnum[]
+  }
+
+  /**
+   * FacultyTodayWorkEntry create
+   */
+  export type FacultyTodayWorkEntryCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyTodayWorkEntry
+     */
+    select?: FacultyTodayWorkEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyTodayWorkEntry
+     */
+    omit?: FacultyTodayWorkEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyTodayWorkEntryInclude<ExtArgs> | null
+    /**
+     * The data needed to create a FacultyTodayWorkEntry.
+     */
+    data: XOR<FacultyTodayWorkEntryCreateInput, FacultyTodayWorkEntryUncheckedCreateInput>
+  }
+
+  /**
+   * FacultyTodayWorkEntry createMany
+   */
+  export type FacultyTodayWorkEntryCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many FacultyTodayWorkEntries.
+     */
+    data: FacultyTodayWorkEntryCreateManyInput | FacultyTodayWorkEntryCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * FacultyTodayWorkEntry createManyAndReturn
+   */
+  export type FacultyTodayWorkEntryCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyTodayWorkEntry
+     */
+    select?: FacultyTodayWorkEntrySelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyTodayWorkEntry
+     */
+    omit?: FacultyTodayWorkEntryOmit<ExtArgs> | null
+    /**
+     * The data used to create many FacultyTodayWorkEntries.
+     */
+    data: FacultyTodayWorkEntryCreateManyInput | FacultyTodayWorkEntryCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyTodayWorkEntryIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * FacultyTodayWorkEntry update
+   */
+  export type FacultyTodayWorkEntryUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyTodayWorkEntry
+     */
+    select?: FacultyTodayWorkEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyTodayWorkEntry
+     */
+    omit?: FacultyTodayWorkEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyTodayWorkEntryInclude<ExtArgs> | null
+    /**
+     * The data needed to update a FacultyTodayWorkEntry.
+     */
+    data: XOR<FacultyTodayWorkEntryUpdateInput, FacultyTodayWorkEntryUncheckedUpdateInput>
+    /**
+     * Choose, which FacultyTodayWorkEntry to update.
+     */
+    where: FacultyTodayWorkEntryWhereUniqueInput
+  }
+
+  /**
+   * FacultyTodayWorkEntry updateMany
+   */
+  export type FacultyTodayWorkEntryUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update FacultyTodayWorkEntries.
+     */
+    data: XOR<FacultyTodayWorkEntryUpdateManyMutationInput, FacultyTodayWorkEntryUncheckedUpdateManyInput>
+    /**
+     * Filter which FacultyTodayWorkEntries to update
+     */
+    where?: FacultyTodayWorkEntryWhereInput
+    /**
+     * Limit how many FacultyTodayWorkEntries to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * FacultyTodayWorkEntry updateManyAndReturn
+   */
+  export type FacultyTodayWorkEntryUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyTodayWorkEntry
+     */
+    select?: FacultyTodayWorkEntrySelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyTodayWorkEntry
+     */
+    omit?: FacultyTodayWorkEntryOmit<ExtArgs> | null
+    /**
+     * The data used to update FacultyTodayWorkEntries.
+     */
+    data: XOR<FacultyTodayWorkEntryUpdateManyMutationInput, FacultyTodayWorkEntryUncheckedUpdateManyInput>
+    /**
+     * Filter which FacultyTodayWorkEntries to update
+     */
+    where?: FacultyTodayWorkEntryWhereInput
+    /**
+     * Limit how many FacultyTodayWorkEntries to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyTodayWorkEntryIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * FacultyTodayWorkEntry upsert
+   */
+  export type FacultyTodayWorkEntryUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyTodayWorkEntry
+     */
+    select?: FacultyTodayWorkEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyTodayWorkEntry
+     */
+    omit?: FacultyTodayWorkEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyTodayWorkEntryInclude<ExtArgs> | null
+    /**
+     * The filter to search for the FacultyTodayWorkEntry to update in case it exists.
+     */
+    where: FacultyTodayWorkEntryWhereUniqueInput
+    /**
+     * In case the FacultyTodayWorkEntry found by the `where` argument doesn't exist, create a new FacultyTodayWorkEntry with this data.
+     */
+    create: XOR<FacultyTodayWorkEntryCreateInput, FacultyTodayWorkEntryUncheckedCreateInput>
+    /**
+     * In case the FacultyTodayWorkEntry was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<FacultyTodayWorkEntryUpdateInput, FacultyTodayWorkEntryUncheckedUpdateInput>
+  }
+
+  /**
+   * FacultyTodayWorkEntry delete
+   */
+  export type FacultyTodayWorkEntryDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyTodayWorkEntry
+     */
+    select?: FacultyTodayWorkEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyTodayWorkEntry
+     */
+    omit?: FacultyTodayWorkEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyTodayWorkEntryInclude<ExtArgs> | null
+    /**
+     * Filter which FacultyTodayWorkEntry to delete.
+     */
+    where: FacultyTodayWorkEntryWhereUniqueInput
+  }
+
+  /**
+   * FacultyTodayWorkEntry deleteMany
+   */
+  export type FacultyTodayWorkEntryDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FacultyTodayWorkEntries to delete
+     */
+    where?: FacultyTodayWorkEntryWhereInput
+    /**
+     * Limit how many FacultyTodayWorkEntries to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * FacultyTodayWorkEntry without action
+   */
+  export type FacultyTodayWorkEntryDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyTodayWorkEntry
+     */
+    select?: FacultyTodayWorkEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyTodayWorkEntry
+     */
+    omit?: FacultyTodayWorkEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyTodayWorkEntryInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model StudentAttendance
    */
 
@@ -37583,6 +39078,34 @@ export namespace Prisma {
   export type FacultyAttendanceSessionScalarFieldEnum = (typeof FacultyAttendanceSessionScalarFieldEnum)[keyof typeof FacultyAttendanceSessionScalarFieldEnum]
 
 
+  export const FacultyTodayWorkEntryScalarFieldEnum: {
+    id: 'id',
+    facultyUserId: 'facultyUserId',
+    facultyProfileId: 'facultyProfileId',
+    branchId: 'branchId',
+    courseId: 'courseId',
+    courseName: 'courseName',
+    moduleId: 'moduleId',
+    moduleName: 'moduleName',
+    submoduleIds: 'submoduleIds',
+    submodules: 'submodules',
+    studentIds: 'studentIds',
+    studentCount: 'studentCount',
+    applyToAllStudents: 'applyToAllStudents',
+    moduleProgress: 'moduleProgress',
+    submoduleProgress: 'submoduleProgress',
+    courseProgress: 'courseProgress',
+    moduleWeight: 'moduleWeight',
+    workDate: 'workDate',
+    createdBy: 'createdBy',
+    updatedBy: 'updatedBy',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type FacultyTodayWorkEntryScalarFieldEnum = (typeof FacultyTodayWorkEntryScalarFieldEnum)[keyof typeof FacultyTodayWorkEntryScalarFieldEnum]
+
+
   export const StudentAttendanceScalarFieldEnum: {
     id: 'id',
     studentId: 'studentId',
@@ -37883,20 +39406,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'AttendanceStatus'
-   */
-  export type EnumAttendanceStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AttendanceStatus'>
-    
-
-
-  /**
-   * Reference to a field of type 'AttendanceStatus[]'
-   */
-  export type ListEnumAttendanceStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AttendanceStatus[]'>
-    
-
-
-  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -37907,6 +39416,20 @@ export namespace Prisma {
    * Reference to a field of type 'Float[]'
    */
   export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'AttendanceStatus'
+   */
+  export type EnumAttendanceStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AttendanceStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'AttendanceStatus[]'
+   */
+  export type ListEnumAttendanceStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AttendanceStatus[]'>
     
   /**
    * Deep Input Types
@@ -37941,6 +39464,7 @@ export namespace Prisma {
     batchFacultyAssignments?: BatchFacultyAssignmentListRelationFilter
     managedBranch?: XOR<BranchNullableScalarRelationFilter, BranchWhereInput> | null
     facultyAttendanceSessions?: FacultyAttendanceSessionListRelationFilter
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryListRelationFilter
     loginEvents?: LoginEventListRelationFilter
     targetedNotifications?: NotificationListRelationFilter
     passwordResetTokens?: PasswordResetTokenListRelationFilter
@@ -37972,6 +39496,7 @@ export namespace Prisma {
     batchFacultyAssignments?: BatchFacultyAssignmentOrderByRelationAggregateInput
     managedBranch?: BranchOrderByWithRelationInput
     facultyAttendanceSessions?: FacultyAttendanceSessionOrderByRelationAggregateInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryOrderByRelationAggregateInput
     loginEvents?: LoginEventOrderByRelationAggregateInput
     targetedNotifications?: NotificationOrderByRelationAggregateInput
     passwordResetTokens?: PasswordResetTokenOrderByRelationAggregateInput
@@ -38006,6 +39531,7 @@ export namespace Prisma {
     batchFacultyAssignments?: BatchFacultyAssignmentListRelationFilter
     managedBranch?: XOR<BranchNullableScalarRelationFilter, BranchWhereInput> | null
     facultyAttendanceSessions?: FacultyAttendanceSessionListRelationFilter
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryListRelationFilter
     loginEvents?: LoginEventListRelationFilter
     targetedNotifications?: NotificationListRelationFilter
     passwordResetTokens?: PasswordResetTokenListRelationFilter
@@ -38884,6 +40410,7 @@ export namespace Prisma {
     modules?: BranchCourseModuleListRelationFilter
     branchFaculties?: BranchFacultyListRelationFilter
     branchStudents?: BranchStudentListRelationFilter
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryListRelationFilter
   }
 
   export type BranchCourseOrderByWithRelationInput = {
@@ -38912,6 +40439,7 @@ export namespace Prisma {
     modules?: BranchCourseModuleOrderByRelationAggregateInput
     branchFaculties?: BranchFacultyOrderByRelationAggregateInput
     branchStudents?: BranchStudentOrderByRelationAggregateInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryOrderByRelationAggregateInput
   }
 
   export type BranchCourseWhereUniqueInput = Prisma.AtLeast<{
@@ -38945,6 +40473,7 @@ export namespace Prisma {
     modules?: BranchCourseModuleListRelationFilter
     branchFaculties?: BranchFacultyListRelationFilter
     branchStudents?: BranchStudentListRelationFilter
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryListRelationFilter
   }, "id" | "branchId_nameKey" | "branchId_courseCode">
 
   export type BranchCourseOrderByWithAggregationInput = {
@@ -40524,6 +42053,151 @@ export namespace Prisma {
     workCompleted?: StringNullableWithAggregatesFilter<"FacultyAttendanceSession"> | string | null
   }
 
+  export type FacultyTodayWorkEntryWhereInput = {
+    AND?: FacultyTodayWorkEntryWhereInput | FacultyTodayWorkEntryWhereInput[]
+    OR?: FacultyTodayWorkEntryWhereInput[]
+    NOT?: FacultyTodayWorkEntryWhereInput | FacultyTodayWorkEntryWhereInput[]
+    id?: StringFilter<"FacultyTodayWorkEntry"> | string
+    facultyUserId?: StringFilter<"FacultyTodayWorkEntry"> | string
+    facultyProfileId?: StringNullableFilter<"FacultyTodayWorkEntry"> | string | null
+    branchId?: StringNullableFilter<"FacultyTodayWorkEntry"> | string | null
+    courseId?: StringFilter<"FacultyTodayWorkEntry"> | string
+    courseName?: StringFilter<"FacultyTodayWorkEntry"> | string
+    moduleId?: StringFilter<"FacultyTodayWorkEntry"> | string
+    moduleName?: StringFilter<"FacultyTodayWorkEntry"> | string
+    submoduleIds?: JsonFilter<"FacultyTodayWorkEntry">
+    submodules?: JsonNullableFilter<"FacultyTodayWorkEntry">
+    studentIds?: JsonFilter<"FacultyTodayWorkEntry">
+    studentCount?: IntFilter<"FacultyTodayWorkEntry"> | number
+    applyToAllStudents?: BoolFilter<"FacultyTodayWorkEntry"> | boolean
+    moduleProgress?: FloatFilter<"FacultyTodayWorkEntry"> | number
+    submoduleProgress?: FloatFilter<"FacultyTodayWorkEntry"> | number
+    courseProgress?: FloatFilter<"FacultyTodayWorkEntry"> | number
+    moduleWeight?: FloatFilter<"FacultyTodayWorkEntry"> | number
+    workDate?: StringFilter<"FacultyTodayWorkEntry"> | string
+    createdBy?: StringNullableFilter<"FacultyTodayWorkEntry"> | string | null
+    updatedBy?: StringNullableFilter<"FacultyTodayWorkEntry"> | string | null
+    createdAt?: DateTimeFilter<"FacultyTodayWorkEntry"> | Date | string
+    updatedAt?: DateTimeFilter<"FacultyTodayWorkEntry"> | Date | string
+    facultyUser?: XOR<UserScalarRelationFilter, UserWhereInput>
+    branchCourse?: XOR<BranchCourseScalarRelationFilter, BranchCourseWhereInput>
+  }
+
+  export type FacultyTodayWorkEntryOrderByWithRelationInput = {
+    id?: SortOrder
+    facultyUserId?: SortOrder
+    facultyProfileId?: SortOrderInput | SortOrder
+    branchId?: SortOrderInput | SortOrder
+    courseId?: SortOrder
+    courseName?: SortOrder
+    moduleId?: SortOrder
+    moduleName?: SortOrder
+    submoduleIds?: SortOrder
+    submodules?: SortOrderInput | SortOrder
+    studentIds?: SortOrder
+    studentCount?: SortOrder
+    applyToAllStudents?: SortOrder
+    moduleProgress?: SortOrder
+    submoduleProgress?: SortOrder
+    courseProgress?: SortOrder
+    moduleWeight?: SortOrder
+    workDate?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    updatedBy?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    facultyUser?: UserOrderByWithRelationInput
+    branchCourse?: BranchCourseOrderByWithRelationInput
+  }
+
+  export type FacultyTodayWorkEntryWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: FacultyTodayWorkEntryWhereInput | FacultyTodayWorkEntryWhereInput[]
+    OR?: FacultyTodayWorkEntryWhereInput[]
+    NOT?: FacultyTodayWorkEntryWhereInput | FacultyTodayWorkEntryWhereInput[]
+    facultyUserId?: StringFilter<"FacultyTodayWorkEntry"> | string
+    facultyProfileId?: StringNullableFilter<"FacultyTodayWorkEntry"> | string | null
+    branchId?: StringNullableFilter<"FacultyTodayWorkEntry"> | string | null
+    courseId?: StringFilter<"FacultyTodayWorkEntry"> | string
+    courseName?: StringFilter<"FacultyTodayWorkEntry"> | string
+    moduleId?: StringFilter<"FacultyTodayWorkEntry"> | string
+    moduleName?: StringFilter<"FacultyTodayWorkEntry"> | string
+    submoduleIds?: JsonFilter<"FacultyTodayWorkEntry">
+    submodules?: JsonNullableFilter<"FacultyTodayWorkEntry">
+    studentIds?: JsonFilter<"FacultyTodayWorkEntry">
+    studentCount?: IntFilter<"FacultyTodayWorkEntry"> | number
+    applyToAllStudents?: BoolFilter<"FacultyTodayWorkEntry"> | boolean
+    moduleProgress?: FloatFilter<"FacultyTodayWorkEntry"> | number
+    submoduleProgress?: FloatFilter<"FacultyTodayWorkEntry"> | number
+    courseProgress?: FloatFilter<"FacultyTodayWorkEntry"> | number
+    moduleWeight?: FloatFilter<"FacultyTodayWorkEntry"> | number
+    workDate?: StringFilter<"FacultyTodayWorkEntry"> | string
+    createdBy?: StringNullableFilter<"FacultyTodayWorkEntry"> | string | null
+    updatedBy?: StringNullableFilter<"FacultyTodayWorkEntry"> | string | null
+    createdAt?: DateTimeFilter<"FacultyTodayWorkEntry"> | Date | string
+    updatedAt?: DateTimeFilter<"FacultyTodayWorkEntry"> | Date | string
+    facultyUser?: XOR<UserScalarRelationFilter, UserWhereInput>
+    branchCourse?: XOR<BranchCourseScalarRelationFilter, BranchCourseWhereInput>
+  }, "id">
+
+  export type FacultyTodayWorkEntryOrderByWithAggregationInput = {
+    id?: SortOrder
+    facultyUserId?: SortOrder
+    facultyProfileId?: SortOrderInput | SortOrder
+    branchId?: SortOrderInput | SortOrder
+    courseId?: SortOrder
+    courseName?: SortOrder
+    moduleId?: SortOrder
+    moduleName?: SortOrder
+    submoduleIds?: SortOrder
+    submodules?: SortOrderInput | SortOrder
+    studentIds?: SortOrder
+    studentCount?: SortOrder
+    applyToAllStudents?: SortOrder
+    moduleProgress?: SortOrder
+    submoduleProgress?: SortOrder
+    courseProgress?: SortOrder
+    moduleWeight?: SortOrder
+    workDate?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    updatedBy?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: FacultyTodayWorkEntryCountOrderByAggregateInput
+    _avg?: FacultyTodayWorkEntryAvgOrderByAggregateInput
+    _max?: FacultyTodayWorkEntryMaxOrderByAggregateInput
+    _min?: FacultyTodayWorkEntryMinOrderByAggregateInput
+    _sum?: FacultyTodayWorkEntrySumOrderByAggregateInput
+  }
+
+  export type FacultyTodayWorkEntryScalarWhereWithAggregatesInput = {
+    AND?: FacultyTodayWorkEntryScalarWhereWithAggregatesInput | FacultyTodayWorkEntryScalarWhereWithAggregatesInput[]
+    OR?: FacultyTodayWorkEntryScalarWhereWithAggregatesInput[]
+    NOT?: FacultyTodayWorkEntryScalarWhereWithAggregatesInput | FacultyTodayWorkEntryScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"FacultyTodayWorkEntry"> | string
+    facultyUserId?: StringWithAggregatesFilter<"FacultyTodayWorkEntry"> | string
+    facultyProfileId?: StringNullableWithAggregatesFilter<"FacultyTodayWorkEntry"> | string | null
+    branchId?: StringNullableWithAggregatesFilter<"FacultyTodayWorkEntry"> | string | null
+    courseId?: StringWithAggregatesFilter<"FacultyTodayWorkEntry"> | string
+    courseName?: StringWithAggregatesFilter<"FacultyTodayWorkEntry"> | string
+    moduleId?: StringWithAggregatesFilter<"FacultyTodayWorkEntry"> | string
+    moduleName?: StringWithAggregatesFilter<"FacultyTodayWorkEntry"> | string
+    submoduleIds?: JsonWithAggregatesFilter<"FacultyTodayWorkEntry">
+    submodules?: JsonNullableWithAggregatesFilter<"FacultyTodayWorkEntry">
+    studentIds?: JsonWithAggregatesFilter<"FacultyTodayWorkEntry">
+    studentCount?: IntWithAggregatesFilter<"FacultyTodayWorkEntry"> | number
+    applyToAllStudents?: BoolWithAggregatesFilter<"FacultyTodayWorkEntry"> | boolean
+    moduleProgress?: FloatWithAggregatesFilter<"FacultyTodayWorkEntry"> | number
+    submoduleProgress?: FloatWithAggregatesFilter<"FacultyTodayWorkEntry"> | number
+    courseProgress?: FloatWithAggregatesFilter<"FacultyTodayWorkEntry"> | number
+    moduleWeight?: FloatWithAggregatesFilter<"FacultyTodayWorkEntry"> | number
+    workDate?: StringWithAggregatesFilter<"FacultyTodayWorkEntry"> | string
+    createdBy?: StringNullableWithAggregatesFilter<"FacultyTodayWorkEntry"> | string | null
+    updatedBy?: StringNullableWithAggregatesFilter<"FacultyTodayWorkEntry"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"FacultyTodayWorkEntry"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"FacultyTodayWorkEntry"> | Date | string
+  }
+
   export type StudentAttendanceWhereInput = {
     AND?: StudentAttendanceWhereInput | StudentAttendanceWhereInput[]
     OR?: StudentAttendanceWhereInput[]
@@ -40999,6 +42673,7 @@ export namespace Prisma {
     batchFacultyAssignments?: BatchFacultyAssignmentCreateNestedManyWithoutFacultyInput
     managedBranch?: BranchCreateNestedOneWithoutAdminUserInput
     facultyAttendanceSessions?: FacultyAttendanceSessionCreateNestedManyWithoutFacultyUserInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryCreateNestedManyWithoutFacultyUserInput
     loginEvents?: LoginEventCreateNestedManyWithoutUserInput
     targetedNotifications?: NotificationCreateNestedManyWithoutTargetUserInput
     passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
@@ -41030,6 +42705,7 @@ export namespace Prisma {
     batchFacultyAssignments?: BatchFacultyAssignmentUncheckedCreateNestedManyWithoutFacultyInput
     managedBranch?: BranchUncheckedCreateNestedOneWithoutAdminUserInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedCreateNestedManyWithoutFacultyUserInput
     loginEvents?: LoginEventUncheckedCreateNestedManyWithoutUserInput
     targetedNotifications?: NotificationUncheckedCreateNestedManyWithoutTargetUserInput
     passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
@@ -41061,6 +42737,7 @@ export namespace Prisma {
     batchFacultyAssignments?: BatchFacultyAssignmentUpdateManyWithoutFacultyNestedInput
     managedBranch?: BranchUpdateOneWithoutAdminUserNestedInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUpdateManyWithoutFacultyUserNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUpdateManyWithoutFacultyUserNestedInput
     loginEvents?: LoginEventUpdateManyWithoutUserNestedInput
     targetedNotifications?: NotificationUpdateManyWithoutTargetUserNestedInput
     passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
@@ -41092,6 +42769,7 @@ export namespace Prisma {
     batchFacultyAssignments?: BatchFacultyAssignmentUncheckedUpdateManyWithoutFacultyNestedInput
     managedBranch?: BranchUncheckedUpdateOneWithoutAdminUserNestedInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedUpdateManyWithoutFacultyUserNestedInput
     loginEvents?: LoginEventUncheckedUpdateManyWithoutUserNestedInput
     targetedNotifications?: NotificationUncheckedUpdateManyWithoutTargetUserNestedInput
     passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
@@ -42159,6 +43837,7 @@ export namespace Prisma {
     modules?: BranchCourseModuleCreateNestedManyWithoutBranchCourseInput
     branchFaculties?: BranchFacultyCreateNestedManyWithoutBranchCourseInput
     branchStudents?: BranchStudentCreateNestedManyWithoutCourseInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryCreateNestedManyWithoutBranchCourseInput
   }
 
   export type BranchCourseUncheckedCreateInput = {
@@ -42186,6 +43865,7 @@ export namespace Prisma {
     modules?: BranchCourseModuleUncheckedCreateNestedManyWithoutBranchCourseInput
     branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutBranchCourseInput
     branchStudents?: BranchStudentUncheckedCreateNestedManyWithoutCourseInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedCreateNestedManyWithoutBranchCourseInput
   }
 
   export type BranchCourseUpdateInput = {
@@ -42213,6 +43893,7 @@ export namespace Prisma {
     modules?: BranchCourseModuleUpdateManyWithoutBranchCourseNestedInput
     branchFaculties?: BranchFacultyUpdateManyWithoutBranchCourseNestedInput
     branchStudents?: BranchStudentUpdateManyWithoutCourseNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUpdateManyWithoutBranchCourseNestedInput
   }
 
   export type BranchCourseUncheckedUpdateInput = {
@@ -42240,6 +43921,7 @@ export namespace Prisma {
     modules?: BranchCourseModuleUncheckedUpdateManyWithoutBranchCourseNestedInput
     branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutBranchCourseNestedInput
     branchStudents?: BranchStudentUncheckedUpdateManyWithoutCourseNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedUpdateManyWithoutBranchCourseNestedInput
   }
 
   export type BranchCourseCreateManyInput = {
@@ -44078,6 +45760,179 @@ export namespace Prisma {
     workCompleted?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
+  export type FacultyTodayWorkEntryCreateInput = {
+    id?: string
+    facultyProfileId?: string | null
+    branchId?: string | null
+    courseName: string
+    moduleId: string
+    moduleName: string
+    submoduleIds: JsonNullValueInput | InputJsonValue
+    submodules?: NullableJsonNullValueInput | InputJsonValue
+    studentIds: JsonNullValueInput | InputJsonValue
+    studentCount?: number
+    applyToAllStudents?: boolean
+    moduleProgress?: number
+    submoduleProgress?: number
+    courseProgress?: number
+    moduleWeight?: number
+    workDate: string
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    facultyUser: UserCreateNestedOneWithoutFacultyTodayWorkEntriesInput
+    branchCourse: BranchCourseCreateNestedOneWithoutFacultyTodayWorkEntriesInput
+  }
+
+  export type FacultyTodayWorkEntryUncheckedCreateInput = {
+    id?: string
+    facultyUserId: string
+    facultyProfileId?: string | null
+    branchId?: string | null
+    courseId: string
+    courseName: string
+    moduleId: string
+    moduleName: string
+    submoduleIds: JsonNullValueInput | InputJsonValue
+    submodules?: NullableJsonNullValueInput | InputJsonValue
+    studentIds: JsonNullValueInput | InputJsonValue
+    studentCount?: number
+    applyToAllStudents?: boolean
+    moduleProgress?: number
+    submoduleProgress?: number
+    courseProgress?: number
+    moduleWeight?: number
+    workDate: string
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FacultyTodayWorkEntryUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    facultyProfileId?: NullableStringFieldUpdateOperationsInput | string | null
+    branchId?: NullableStringFieldUpdateOperationsInput | string | null
+    courseName?: StringFieldUpdateOperationsInput | string
+    moduleId?: StringFieldUpdateOperationsInput | string
+    moduleName?: StringFieldUpdateOperationsInput | string
+    submoduleIds?: JsonNullValueInput | InputJsonValue
+    submodules?: NullableJsonNullValueInput | InputJsonValue
+    studentIds?: JsonNullValueInput | InputJsonValue
+    studentCount?: IntFieldUpdateOperationsInput | number
+    applyToAllStudents?: BoolFieldUpdateOperationsInput | boolean
+    moduleProgress?: FloatFieldUpdateOperationsInput | number
+    submoduleProgress?: FloatFieldUpdateOperationsInput | number
+    courseProgress?: FloatFieldUpdateOperationsInput | number
+    moduleWeight?: FloatFieldUpdateOperationsInput | number
+    workDate?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    facultyUser?: UserUpdateOneRequiredWithoutFacultyTodayWorkEntriesNestedInput
+    branchCourse?: BranchCourseUpdateOneRequiredWithoutFacultyTodayWorkEntriesNestedInput
+  }
+
+  export type FacultyTodayWorkEntryUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    facultyUserId?: StringFieldUpdateOperationsInput | string
+    facultyProfileId?: NullableStringFieldUpdateOperationsInput | string | null
+    branchId?: NullableStringFieldUpdateOperationsInput | string | null
+    courseId?: StringFieldUpdateOperationsInput | string
+    courseName?: StringFieldUpdateOperationsInput | string
+    moduleId?: StringFieldUpdateOperationsInput | string
+    moduleName?: StringFieldUpdateOperationsInput | string
+    submoduleIds?: JsonNullValueInput | InputJsonValue
+    submodules?: NullableJsonNullValueInput | InputJsonValue
+    studentIds?: JsonNullValueInput | InputJsonValue
+    studentCount?: IntFieldUpdateOperationsInput | number
+    applyToAllStudents?: BoolFieldUpdateOperationsInput | boolean
+    moduleProgress?: FloatFieldUpdateOperationsInput | number
+    submoduleProgress?: FloatFieldUpdateOperationsInput | number
+    courseProgress?: FloatFieldUpdateOperationsInput | number
+    moduleWeight?: FloatFieldUpdateOperationsInput | number
+    workDate?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FacultyTodayWorkEntryCreateManyInput = {
+    id?: string
+    facultyUserId: string
+    facultyProfileId?: string | null
+    branchId?: string | null
+    courseId: string
+    courseName: string
+    moduleId: string
+    moduleName: string
+    submoduleIds: JsonNullValueInput | InputJsonValue
+    submodules?: NullableJsonNullValueInput | InputJsonValue
+    studentIds: JsonNullValueInput | InputJsonValue
+    studentCount?: number
+    applyToAllStudents?: boolean
+    moduleProgress?: number
+    submoduleProgress?: number
+    courseProgress?: number
+    moduleWeight?: number
+    workDate: string
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FacultyTodayWorkEntryUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    facultyProfileId?: NullableStringFieldUpdateOperationsInput | string | null
+    branchId?: NullableStringFieldUpdateOperationsInput | string | null
+    courseName?: StringFieldUpdateOperationsInput | string
+    moduleId?: StringFieldUpdateOperationsInput | string
+    moduleName?: StringFieldUpdateOperationsInput | string
+    submoduleIds?: JsonNullValueInput | InputJsonValue
+    submodules?: NullableJsonNullValueInput | InputJsonValue
+    studentIds?: JsonNullValueInput | InputJsonValue
+    studentCount?: IntFieldUpdateOperationsInput | number
+    applyToAllStudents?: BoolFieldUpdateOperationsInput | boolean
+    moduleProgress?: FloatFieldUpdateOperationsInput | number
+    submoduleProgress?: FloatFieldUpdateOperationsInput | number
+    courseProgress?: FloatFieldUpdateOperationsInput | number
+    moduleWeight?: FloatFieldUpdateOperationsInput | number
+    workDate?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FacultyTodayWorkEntryUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    facultyUserId?: StringFieldUpdateOperationsInput | string
+    facultyProfileId?: NullableStringFieldUpdateOperationsInput | string | null
+    branchId?: NullableStringFieldUpdateOperationsInput | string | null
+    courseId?: StringFieldUpdateOperationsInput | string
+    courseName?: StringFieldUpdateOperationsInput | string
+    moduleId?: StringFieldUpdateOperationsInput | string
+    moduleName?: StringFieldUpdateOperationsInput | string
+    submoduleIds?: JsonNullValueInput | InputJsonValue
+    submodules?: NullableJsonNullValueInput | InputJsonValue
+    studentIds?: JsonNullValueInput | InputJsonValue
+    studentCount?: IntFieldUpdateOperationsInput | number
+    applyToAllStudents?: BoolFieldUpdateOperationsInput | boolean
+    moduleProgress?: FloatFieldUpdateOperationsInput | number
+    submoduleProgress?: FloatFieldUpdateOperationsInput | number
+    courseProgress?: FloatFieldUpdateOperationsInput | number
+    moduleWeight?: FloatFieldUpdateOperationsInput | number
+    workDate?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StudentAttendanceCreateInput = {
     id?: string
     courseId?: string | null
@@ -44671,6 +46526,12 @@ export namespace Prisma {
     none?: FacultyAttendanceSessionWhereInput
   }
 
+  export type FacultyTodayWorkEntryListRelationFilter = {
+    every?: FacultyTodayWorkEntryWhereInput
+    some?: FacultyTodayWorkEntryWhereInput
+    none?: FacultyTodayWorkEntryWhereInput
+  }
+
   export type LoginEventListRelationFilter = {
     every?: LoginEventWhereInput
     some?: LoginEventWhereInput
@@ -44705,6 +46566,10 @@ export namespace Prisma {
   }
 
   export type FacultyAttendanceSessionOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type FacultyTodayWorkEntryOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -46733,6 +48598,167 @@ export namespace Prisma {
     workReport?: SortOrder
     workCompleted?: SortOrder
   }
+  export type JsonFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
+  export type FloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
+  export type FacultyTodayWorkEntryCountOrderByAggregateInput = {
+    id?: SortOrder
+    facultyUserId?: SortOrder
+    facultyProfileId?: SortOrder
+    branchId?: SortOrder
+    courseId?: SortOrder
+    courseName?: SortOrder
+    moduleId?: SortOrder
+    moduleName?: SortOrder
+    submoduleIds?: SortOrder
+    submodules?: SortOrder
+    studentIds?: SortOrder
+    studentCount?: SortOrder
+    applyToAllStudents?: SortOrder
+    moduleProgress?: SortOrder
+    submoduleProgress?: SortOrder
+    courseProgress?: SortOrder
+    moduleWeight?: SortOrder
+    workDate?: SortOrder
+    createdBy?: SortOrder
+    updatedBy?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type FacultyTodayWorkEntryAvgOrderByAggregateInput = {
+    studentCount?: SortOrder
+    moduleProgress?: SortOrder
+    submoduleProgress?: SortOrder
+    courseProgress?: SortOrder
+    moduleWeight?: SortOrder
+  }
+
+  export type FacultyTodayWorkEntryMaxOrderByAggregateInput = {
+    id?: SortOrder
+    facultyUserId?: SortOrder
+    facultyProfileId?: SortOrder
+    branchId?: SortOrder
+    courseId?: SortOrder
+    courseName?: SortOrder
+    moduleId?: SortOrder
+    moduleName?: SortOrder
+    studentCount?: SortOrder
+    applyToAllStudents?: SortOrder
+    moduleProgress?: SortOrder
+    submoduleProgress?: SortOrder
+    courseProgress?: SortOrder
+    moduleWeight?: SortOrder
+    workDate?: SortOrder
+    createdBy?: SortOrder
+    updatedBy?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type FacultyTodayWorkEntryMinOrderByAggregateInput = {
+    id?: SortOrder
+    facultyUserId?: SortOrder
+    facultyProfileId?: SortOrder
+    branchId?: SortOrder
+    courseId?: SortOrder
+    courseName?: SortOrder
+    moduleId?: SortOrder
+    moduleName?: SortOrder
+    studentCount?: SortOrder
+    applyToAllStudents?: SortOrder
+    moduleProgress?: SortOrder
+    submoduleProgress?: SortOrder
+    courseProgress?: SortOrder
+    moduleWeight?: SortOrder
+    workDate?: SortOrder
+    createdBy?: SortOrder
+    updatedBy?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type FacultyTodayWorkEntrySumOrderByAggregateInput = {
+    studentCount?: SortOrder
+    moduleProgress?: SortOrder
+    submoduleProgress?: SortOrder
+    courseProgress?: SortOrder
+    moduleWeight?: SortOrder
+  }
+  export type JsonWithAggregatesFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonWithAggregatesFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonWithAggregatesFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedJsonFilter<$PrismaModel>
+    _max?: NestedJsonFilter<$PrismaModel>
+  }
+
+  export type FloatWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedFloatFilter<$PrismaModel>
+    _min?: NestedFloatFilter<$PrismaModel>
+    _max?: NestedFloatFilter<$PrismaModel>
+  }
 
   export type EnumAttendanceStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.AttendanceStatus | EnumAttendanceStatusFieldRefInput<$PrismaModel>
@@ -46884,29 +48910,6 @@ export namespace Prisma {
     courseId?: SortOrder
     branchCourseId?: SortOrder
   }
-  export type JsonFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<JsonFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonFilterBase<$PrismaModel>>, 'path'>>,
-        Required<JsonFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<JsonFilterBase<$PrismaModel>>, 'path'>>
-
-  export type JsonFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-  }
 
   export type BranchInstallmentTemplateCountOrderByAggregateInput = {
     id?: SortOrder
@@ -46963,32 +48966,6 @@ export namespace Prisma {
 
   export type BranchInstallmentTemplateSumOrderByAggregateInput = {
     installmentCount?: SortOrder
-  }
-  export type JsonWithAggregatesFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
-        Required<JsonWithAggregatesFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
-
-  export type JsonWithAggregatesFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedJsonFilter<$PrismaModel>
-    _max?: NestedJsonFilter<$PrismaModel>
   }
 
   export type BranchStudentInstallmentNullableScalarRelationFilter = {
@@ -47078,6 +49055,13 @@ export namespace Prisma {
     connect?: FacultyAttendanceSessionWhereUniqueInput | FacultyAttendanceSessionWhereUniqueInput[]
   }
 
+  export type FacultyTodayWorkEntryCreateNestedManyWithoutFacultyUserInput = {
+    create?: XOR<FacultyTodayWorkEntryCreateWithoutFacultyUserInput, FacultyTodayWorkEntryUncheckedCreateWithoutFacultyUserInput> | FacultyTodayWorkEntryCreateWithoutFacultyUserInput[] | FacultyTodayWorkEntryUncheckedCreateWithoutFacultyUserInput[]
+    connectOrCreate?: FacultyTodayWorkEntryCreateOrConnectWithoutFacultyUserInput | FacultyTodayWorkEntryCreateOrConnectWithoutFacultyUserInput[]
+    createMany?: FacultyTodayWorkEntryCreateManyFacultyUserInputEnvelope
+    connect?: FacultyTodayWorkEntryWhereUniqueInput | FacultyTodayWorkEntryWhereUniqueInput[]
+  }
+
   export type LoginEventCreateNestedManyWithoutUserInput = {
     create?: XOR<LoginEventCreateWithoutUserInput, LoginEventUncheckedCreateWithoutUserInput> | LoginEventCreateWithoutUserInput[] | LoginEventUncheckedCreateWithoutUserInput[]
     connectOrCreate?: LoginEventCreateOrConnectWithoutUserInput | LoginEventCreateOrConnectWithoutUserInput[]
@@ -47124,6 +49108,13 @@ export namespace Prisma {
     connectOrCreate?: FacultyAttendanceSessionCreateOrConnectWithoutFacultyUserInput | FacultyAttendanceSessionCreateOrConnectWithoutFacultyUserInput[]
     createMany?: FacultyAttendanceSessionCreateManyFacultyUserInputEnvelope
     connect?: FacultyAttendanceSessionWhereUniqueInput | FacultyAttendanceSessionWhereUniqueInput[]
+  }
+
+  export type FacultyTodayWorkEntryUncheckedCreateNestedManyWithoutFacultyUserInput = {
+    create?: XOR<FacultyTodayWorkEntryCreateWithoutFacultyUserInput, FacultyTodayWorkEntryUncheckedCreateWithoutFacultyUserInput> | FacultyTodayWorkEntryCreateWithoutFacultyUserInput[] | FacultyTodayWorkEntryUncheckedCreateWithoutFacultyUserInput[]
+    connectOrCreate?: FacultyTodayWorkEntryCreateOrConnectWithoutFacultyUserInput | FacultyTodayWorkEntryCreateOrConnectWithoutFacultyUserInput[]
+    createMany?: FacultyTodayWorkEntryCreateManyFacultyUserInputEnvelope
+    connect?: FacultyTodayWorkEntryWhereUniqueInput | FacultyTodayWorkEntryWhereUniqueInput[]
   }
 
   export type LoginEventUncheckedCreateNestedManyWithoutUserInput = {
@@ -47224,6 +49215,20 @@ export namespace Prisma {
     deleteMany?: FacultyAttendanceSessionScalarWhereInput | FacultyAttendanceSessionScalarWhereInput[]
   }
 
+  export type FacultyTodayWorkEntryUpdateManyWithoutFacultyUserNestedInput = {
+    create?: XOR<FacultyTodayWorkEntryCreateWithoutFacultyUserInput, FacultyTodayWorkEntryUncheckedCreateWithoutFacultyUserInput> | FacultyTodayWorkEntryCreateWithoutFacultyUserInput[] | FacultyTodayWorkEntryUncheckedCreateWithoutFacultyUserInput[]
+    connectOrCreate?: FacultyTodayWorkEntryCreateOrConnectWithoutFacultyUserInput | FacultyTodayWorkEntryCreateOrConnectWithoutFacultyUserInput[]
+    upsert?: FacultyTodayWorkEntryUpsertWithWhereUniqueWithoutFacultyUserInput | FacultyTodayWorkEntryUpsertWithWhereUniqueWithoutFacultyUserInput[]
+    createMany?: FacultyTodayWorkEntryCreateManyFacultyUserInputEnvelope
+    set?: FacultyTodayWorkEntryWhereUniqueInput | FacultyTodayWorkEntryWhereUniqueInput[]
+    disconnect?: FacultyTodayWorkEntryWhereUniqueInput | FacultyTodayWorkEntryWhereUniqueInput[]
+    delete?: FacultyTodayWorkEntryWhereUniqueInput | FacultyTodayWorkEntryWhereUniqueInput[]
+    connect?: FacultyTodayWorkEntryWhereUniqueInput | FacultyTodayWorkEntryWhereUniqueInput[]
+    update?: FacultyTodayWorkEntryUpdateWithWhereUniqueWithoutFacultyUserInput | FacultyTodayWorkEntryUpdateWithWhereUniqueWithoutFacultyUserInput[]
+    updateMany?: FacultyTodayWorkEntryUpdateManyWithWhereWithoutFacultyUserInput | FacultyTodayWorkEntryUpdateManyWithWhereWithoutFacultyUserInput[]
+    deleteMany?: FacultyTodayWorkEntryScalarWhereInput | FacultyTodayWorkEntryScalarWhereInput[]
+  }
+
   export type LoginEventUpdateManyWithoutUserNestedInput = {
     create?: XOR<LoginEventCreateWithoutUserInput, LoginEventUncheckedCreateWithoutUserInput> | LoginEventCreateWithoutUserInput[] | LoginEventUncheckedCreateWithoutUserInput[]
     connectOrCreate?: LoginEventCreateOrConnectWithoutUserInput | LoginEventCreateOrConnectWithoutUserInput[]
@@ -47316,6 +49321,20 @@ export namespace Prisma {
     update?: FacultyAttendanceSessionUpdateWithWhereUniqueWithoutFacultyUserInput | FacultyAttendanceSessionUpdateWithWhereUniqueWithoutFacultyUserInput[]
     updateMany?: FacultyAttendanceSessionUpdateManyWithWhereWithoutFacultyUserInput | FacultyAttendanceSessionUpdateManyWithWhereWithoutFacultyUserInput[]
     deleteMany?: FacultyAttendanceSessionScalarWhereInput | FacultyAttendanceSessionScalarWhereInput[]
+  }
+
+  export type FacultyTodayWorkEntryUncheckedUpdateManyWithoutFacultyUserNestedInput = {
+    create?: XOR<FacultyTodayWorkEntryCreateWithoutFacultyUserInput, FacultyTodayWorkEntryUncheckedCreateWithoutFacultyUserInput> | FacultyTodayWorkEntryCreateWithoutFacultyUserInput[] | FacultyTodayWorkEntryUncheckedCreateWithoutFacultyUserInput[]
+    connectOrCreate?: FacultyTodayWorkEntryCreateOrConnectWithoutFacultyUserInput | FacultyTodayWorkEntryCreateOrConnectWithoutFacultyUserInput[]
+    upsert?: FacultyTodayWorkEntryUpsertWithWhereUniqueWithoutFacultyUserInput | FacultyTodayWorkEntryUpsertWithWhereUniqueWithoutFacultyUserInput[]
+    createMany?: FacultyTodayWorkEntryCreateManyFacultyUserInputEnvelope
+    set?: FacultyTodayWorkEntryWhereUniqueInput | FacultyTodayWorkEntryWhereUniqueInput[]
+    disconnect?: FacultyTodayWorkEntryWhereUniqueInput | FacultyTodayWorkEntryWhereUniqueInput[]
+    delete?: FacultyTodayWorkEntryWhereUniqueInput | FacultyTodayWorkEntryWhereUniqueInput[]
+    connect?: FacultyTodayWorkEntryWhereUniqueInput | FacultyTodayWorkEntryWhereUniqueInput[]
+    update?: FacultyTodayWorkEntryUpdateWithWhereUniqueWithoutFacultyUserInput | FacultyTodayWorkEntryUpdateWithWhereUniqueWithoutFacultyUserInput[]
+    updateMany?: FacultyTodayWorkEntryUpdateManyWithWhereWithoutFacultyUserInput | FacultyTodayWorkEntryUpdateManyWithWhereWithoutFacultyUserInput[]
+    deleteMany?: FacultyTodayWorkEntryScalarWhereInput | FacultyTodayWorkEntryScalarWhereInput[]
   }
 
   export type LoginEventUncheckedUpdateManyWithoutUserNestedInput = {
@@ -48155,6 +50174,13 @@ export namespace Prisma {
     connect?: BranchStudentWhereUniqueInput | BranchStudentWhereUniqueInput[]
   }
 
+  export type FacultyTodayWorkEntryCreateNestedManyWithoutBranchCourseInput = {
+    create?: XOR<FacultyTodayWorkEntryCreateWithoutBranchCourseInput, FacultyTodayWorkEntryUncheckedCreateWithoutBranchCourseInput> | FacultyTodayWorkEntryCreateWithoutBranchCourseInput[] | FacultyTodayWorkEntryUncheckedCreateWithoutBranchCourseInput[]
+    connectOrCreate?: FacultyTodayWorkEntryCreateOrConnectWithoutBranchCourseInput | FacultyTodayWorkEntryCreateOrConnectWithoutBranchCourseInput[]
+    createMany?: FacultyTodayWorkEntryCreateManyBranchCourseInputEnvelope
+    connect?: FacultyTodayWorkEntryWhereUniqueInput | FacultyTodayWorkEntryWhereUniqueInput[]
+  }
+
   export type BranchInstallmentTemplateUncheckedCreateNestedOneWithoutBranchCourseInput = {
     create?: XOR<BranchInstallmentTemplateCreateWithoutBranchCourseInput, BranchInstallmentTemplateUncheckedCreateWithoutBranchCourseInput>
     connectOrCreate?: BranchInstallmentTemplateCreateOrConnectWithoutBranchCourseInput
@@ -48180,6 +50206,13 @@ export namespace Prisma {
     connectOrCreate?: BranchStudentCreateOrConnectWithoutCourseInput | BranchStudentCreateOrConnectWithoutCourseInput[]
     createMany?: BranchStudentCreateManyCourseInputEnvelope
     connect?: BranchStudentWhereUniqueInput | BranchStudentWhereUniqueInput[]
+  }
+
+  export type FacultyTodayWorkEntryUncheckedCreateNestedManyWithoutBranchCourseInput = {
+    create?: XOR<FacultyTodayWorkEntryCreateWithoutBranchCourseInput, FacultyTodayWorkEntryUncheckedCreateWithoutBranchCourseInput> | FacultyTodayWorkEntryCreateWithoutBranchCourseInput[] | FacultyTodayWorkEntryUncheckedCreateWithoutBranchCourseInput[]
+    connectOrCreate?: FacultyTodayWorkEntryCreateOrConnectWithoutBranchCourseInput | FacultyTodayWorkEntryCreateOrConnectWithoutBranchCourseInput[]
+    createMany?: FacultyTodayWorkEntryCreateManyBranchCourseInputEnvelope
+    connect?: FacultyTodayWorkEntryWhereUniqueInput | FacultyTodayWorkEntryWhereUniqueInput[]
   }
 
   export type BranchUpdateOneRequiredWithoutBranchCoursesNestedInput = {
@@ -48242,6 +50275,20 @@ export namespace Prisma {
     deleteMany?: BranchStudentScalarWhereInput | BranchStudentScalarWhereInput[]
   }
 
+  export type FacultyTodayWorkEntryUpdateManyWithoutBranchCourseNestedInput = {
+    create?: XOR<FacultyTodayWorkEntryCreateWithoutBranchCourseInput, FacultyTodayWorkEntryUncheckedCreateWithoutBranchCourseInput> | FacultyTodayWorkEntryCreateWithoutBranchCourseInput[] | FacultyTodayWorkEntryUncheckedCreateWithoutBranchCourseInput[]
+    connectOrCreate?: FacultyTodayWorkEntryCreateOrConnectWithoutBranchCourseInput | FacultyTodayWorkEntryCreateOrConnectWithoutBranchCourseInput[]
+    upsert?: FacultyTodayWorkEntryUpsertWithWhereUniqueWithoutBranchCourseInput | FacultyTodayWorkEntryUpsertWithWhereUniqueWithoutBranchCourseInput[]
+    createMany?: FacultyTodayWorkEntryCreateManyBranchCourseInputEnvelope
+    set?: FacultyTodayWorkEntryWhereUniqueInput | FacultyTodayWorkEntryWhereUniqueInput[]
+    disconnect?: FacultyTodayWorkEntryWhereUniqueInput | FacultyTodayWorkEntryWhereUniqueInput[]
+    delete?: FacultyTodayWorkEntryWhereUniqueInput | FacultyTodayWorkEntryWhereUniqueInput[]
+    connect?: FacultyTodayWorkEntryWhereUniqueInput | FacultyTodayWorkEntryWhereUniqueInput[]
+    update?: FacultyTodayWorkEntryUpdateWithWhereUniqueWithoutBranchCourseInput | FacultyTodayWorkEntryUpdateWithWhereUniqueWithoutBranchCourseInput[]
+    updateMany?: FacultyTodayWorkEntryUpdateManyWithWhereWithoutBranchCourseInput | FacultyTodayWorkEntryUpdateManyWithWhereWithoutBranchCourseInput[]
+    deleteMany?: FacultyTodayWorkEntryScalarWhereInput | FacultyTodayWorkEntryScalarWhereInput[]
+  }
+
   export type BranchInstallmentTemplateUncheckedUpdateOneWithoutBranchCourseNestedInput = {
     create?: XOR<BranchInstallmentTemplateCreateWithoutBranchCourseInput, BranchInstallmentTemplateUncheckedCreateWithoutBranchCourseInput>
     connectOrCreate?: BranchInstallmentTemplateCreateOrConnectWithoutBranchCourseInput
@@ -48292,6 +50339,20 @@ export namespace Prisma {
     update?: BranchStudentUpdateWithWhereUniqueWithoutCourseInput | BranchStudentUpdateWithWhereUniqueWithoutCourseInput[]
     updateMany?: BranchStudentUpdateManyWithWhereWithoutCourseInput | BranchStudentUpdateManyWithWhereWithoutCourseInput[]
     deleteMany?: BranchStudentScalarWhereInput | BranchStudentScalarWhereInput[]
+  }
+
+  export type FacultyTodayWorkEntryUncheckedUpdateManyWithoutBranchCourseNestedInput = {
+    create?: XOR<FacultyTodayWorkEntryCreateWithoutBranchCourseInput, FacultyTodayWorkEntryUncheckedCreateWithoutBranchCourseInput> | FacultyTodayWorkEntryCreateWithoutBranchCourseInput[] | FacultyTodayWorkEntryUncheckedCreateWithoutBranchCourseInput[]
+    connectOrCreate?: FacultyTodayWorkEntryCreateOrConnectWithoutBranchCourseInput | FacultyTodayWorkEntryCreateOrConnectWithoutBranchCourseInput[]
+    upsert?: FacultyTodayWorkEntryUpsertWithWhereUniqueWithoutBranchCourseInput | FacultyTodayWorkEntryUpsertWithWhereUniqueWithoutBranchCourseInput[]
+    createMany?: FacultyTodayWorkEntryCreateManyBranchCourseInputEnvelope
+    set?: FacultyTodayWorkEntryWhereUniqueInput | FacultyTodayWorkEntryWhereUniqueInput[]
+    disconnect?: FacultyTodayWorkEntryWhereUniqueInput | FacultyTodayWorkEntryWhereUniqueInput[]
+    delete?: FacultyTodayWorkEntryWhereUniqueInput | FacultyTodayWorkEntryWhereUniqueInput[]
+    connect?: FacultyTodayWorkEntryWhereUniqueInput | FacultyTodayWorkEntryWhereUniqueInput[]
+    update?: FacultyTodayWorkEntryUpdateWithWhereUniqueWithoutBranchCourseInput | FacultyTodayWorkEntryUpdateWithWhereUniqueWithoutBranchCourseInput[]
+    updateMany?: FacultyTodayWorkEntryUpdateManyWithWhereWithoutBranchCourseInput | FacultyTodayWorkEntryUpdateManyWithWhereWithoutBranchCourseInput[]
+    deleteMany?: FacultyTodayWorkEntryScalarWhereInput | FacultyTodayWorkEntryScalarWhereInput[]
   }
 
   export type BranchCourseCreateNestedOneWithoutModulesInput = {
@@ -48948,6 +51009,42 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutFacultyAttendanceSessionsInput, UserUpdateWithoutFacultyAttendanceSessionsInput>, UserUncheckedUpdateWithoutFacultyAttendanceSessionsInput>
   }
 
+  export type UserCreateNestedOneWithoutFacultyTodayWorkEntriesInput = {
+    create?: XOR<UserCreateWithoutFacultyTodayWorkEntriesInput, UserUncheckedCreateWithoutFacultyTodayWorkEntriesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutFacultyTodayWorkEntriesInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type BranchCourseCreateNestedOneWithoutFacultyTodayWorkEntriesInput = {
+    create?: XOR<BranchCourseCreateWithoutFacultyTodayWorkEntriesInput, BranchCourseUncheckedCreateWithoutFacultyTodayWorkEntriesInput>
+    connectOrCreate?: BranchCourseCreateOrConnectWithoutFacultyTodayWorkEntriesInput
+    connect?: BranchCourseWhereUniqueInput
+  }
+
+  export type FloatFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type UserUpdateOneRequiredWithoutFacultyTodayWorkEntriesNestedInput = {
+    create?: XOR<UserCreateWithoutFacultyTodayWorkEntriesInput, UserUncheckedCreateWithoutFacultyTodayWorkEntriesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutFacultyTodayWorkEntriesInput
+    upsert?: UserUpsertWithoutFacultyTodayWorkEntriesInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutFacultyTodayWorkEntriesInput, UserUpdateWithoutFacultyTodayWorkEntriesInput>, UserUncheckedUpdateWithoutFacultyTodayWorkEntriesInput>
+  }
+
+  export type BranchCourseUpdateOneRequiredWithoutFacultyTodayWorkEntriesNestedInput = {
+    create?: XOR<BranchCourseCreateWithoutFacultyTodayWorkEntriesInput, BranchCourseUncheckedCreateWithoutFacultyTodayWorkEntriesInput>
+    connectOrCreate?: BranchCourseCreateOrConnectWithoutFacultyTodayWorkEntriesInput
+    upsert?: BranchCourseUpsertWithoutFacultyTodayWorkEntriesInput
+    connect?: BranchCourseWhereUniqueInput
+    update?: XOR<XOR<BranchCourseUpdateToOneWithWhereWithoutFacultyTodayWorkEntriesInput, BranchCourseUpdateWithoutFacultyTodayWorkEntriesInput>, BranchCourseUncheckedUpdateWithoutFacultyTodayWorkEntriesInput>
+  }
+
   export type UserCreateNestedOneWithoutMarkedStudentAttendancesInput = {
     create?: XOR<UserCreateWithoutMarkedStudentAttendancesInput, UserUncheckedCreateWithoutMarkedStudentAttendancesInput>
     connectOrCreate?: UserCreateOrConnectWithoutMarkedStudentAttendancesInput
@@ -49478,23 +51575,6 @@ export namespace Prisma {
     _min?: NestedEnumBatchStatusNullableFilter<$PrismaModel>
     _max?: NestedEnumBatchStatusNullableFilter<$PrismaModel>
   }
-
-  export type NestedEnumAttendanceStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.AttendanceStatus | EnumAttendanceStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.AttendanceStatus[] | ListEnumAttendanceStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.AttendanceStatus[] | ListEnumAttendanceStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumAttendanceStatusFilter<$PrismaModel> | $Enums.AttendanceStatus
-  }
-
-  export type NestedEnumAttendanceStatusWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.AttendanceStatus | EnumAttendanceStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.AttendanceStatus[] | ListEnumAttendanceStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.AttendanceStatus[] | ListEnumAttendanceStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumAttendanceStatusWithAggregatesFilter<$PrismaModel> | $Enums.AttendanceStatus
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumAttendanceStatusFilter<$PrismaModel>
-    _max?: NestedEnumAttendanceStatusFilter<$PrismaModel>
-  }
   export type NestedJsonFilter<$PrismaModel = never> =
     | PatchUndefined<
         Either<Required<NestedJsonFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonFilterBase<$PrismaModel>>, 'path'>>,
@@ -49517,6 +51597,39 @@ export namespace Prisma {
     gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
+  export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedFloatFilter<$PrismaModel>
+    _min?: NestedFloatFilter<$PrismaModel>
+    _max?: NestedFloatFilter<$PrismaModel>
+  }
+
+  export type NestedEnumAttendanceStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.AttendanceStatus | EnumAttendanceStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.AttendanceStatus[] | ListEnumAttendanceStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AttendanceStatus[] | ListEnumAttendanceStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumAttendanceStatusFilter<$PrismaModel> | $Enums.AttendanceStatus
+  }
+
+  export type NestedEnumAttendanceStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.AttendanceStatus | EnumAttendanceStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.AttendanceStatus[] | ListEnumAttendanceStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AttendanceStatus[] | ListEnumAttendanceStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumAttendanceStatusWithAggregatesFilter<$PrismaModel> | $Enums.AttendanceStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAttendanceStatusFilter<$PrismaModel>
+    _max?: NestedEnumAttendanceStatusFilter<$PrismaModel>
   }
 
   export type BatchFacultyAssignmentCreateWithoutFacultyInput = {
@@ -49653,6 +51766,64 @@ export namespace Prisma {
 
   export type FacultyAttendanceSessionCreateManyFacultyUserInputEnvelope = {
     data: FacultyAttendanceSessionCreateManyFacultyUserInput | FacultyAttendanceSessionCreateManyFacultyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type FacultyTodayWorkEntryCreateWithoutFacultyUserInput = {
+    id?: string
+    facultyProfileId?: string | null
+    branchId?: string | null
+    courseName: string
+    moduleId: string
+    moduleName: string
+    submoduleIds: JsonNullValueInput | InputJsonValue
+    submodules?: NullableJsonNullValueInput | InputJsonValue
+    studentIds: JsonNullValueInput | InputJsonValue
+    studentCount?: number
+    applyToAllStudents?: boolean
+    moduleProgress?: number
+    submoduleProgress?: number
+    courseProgress?: number
+    moduleWeight?: number
+    workDate: string
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branchCourse: BranchCourseCreateNestedOneWithoutFacultyTodayWorkEntriesInput
+  }
+
+  export type FacultyTodayWorkEntryUncheckedCreateWithoutFacultyUserInput = {
+    id?: string
+    facultyProfileId?: string | null
+    branchId?: string | null
+    courseId: string
+    courseName: string
+    moduleId: string
+    moduleName: string
+    submoduleIds: JsonNullValueInput | InputJsonValue
+    submodules?: NullableJsonNullValueInput | InputJsonValue
+    studentIds: JsonNullValueInput | InputJsonValue
+    studentCount?: number
+    applyToAllStudents?: boolean
+    moduleProgress?: number
+    submoduleProgress?: number
+    courseProgress?: number
+    moduleWeight?: number
+    workDate: string
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FacultyTodayWorkEntryCreateOrConnectWithoutFacultyUserInput = {
+    where: FacultyTodayWorkEntryWhereUniqueInput
+    create: XOR<FacultyTodayWorkEntryCreateWithoutFacultyUserInput, FacultyTodayWorkEntryUncheckedCreateWithoutFacultyUserInput>
+  }
+
+  export type FacultyTodayWorkEntryCreateManyFacultyUserInputEnvelope = {
+    data: FacultyTodayWorkEntryCreateManyFacultyUserInput | FacultyTodayWorkEntryCreateManyFacultyUserInput[]
     skipDuplicates?: boolean
   }
 
@@ -49959,6 +52130,50 @@ export namespace Prisma {
     workCompleted?: StringNullableFilter<"FacultyAttendanceSession"> | string | null
   }
 
+  export type FacultyTodayWorkEntryUpsertWithWhereUniqueWithoutFacultyUserInput = {
+    where: FacultyTodayWorkEntryWhereUniqueInput
+    update: XOR<FacultyTodayWorkEntryUpdateWithoutFacultyUserInput, FacultyTodayWorkEntryUncheckedUpdateWithoutFacultyUserInput>
+    create: XOR<FacultyTodayWorkEntryCreateWithoutFacultyUserInput, FacultyTodayWorkEntryUncheckedCreateWithoutFacultyUserInput>
+  }
+
+  export type FacultyTodayWorkEntryUpdateWithWhereUniqueWithoutFacultyUserInput = {
+    where: FacultyTodayWorkEntryWhereUniqueInput
+    data: XOR<FacultyTodayWorkEntryUpdateWithoutFacultyUserInput, FacultyTodayWorkEntryUncheckedUpdateWithoutFacultyUserInput>
+  }
+
+  export type FacultyTodayWorkEntryUpdateManyWithWhereWithoutFacultyUserInput = {
+    where: FacultyTodayWorkEntryScalarWhereInput
+    data: XOR<FacultyTodayWorkEntryUpdateManyMutationInput, FacultyTodayWorkEntryUncheckedUpdateManyWithoutFacultyUserInput>
+  }
+
+  export type FacultyTodayWorkEntryScalarWhereInput = {
+    AND?: FacultyTodayWorkEntryScalarWhereInput | FacultyTodayWorkEntryScalarWhereInput[]
+    OR?: FacultyTodayWorkEntryScalarWhereInput[]
+    NOT?: FacultyTodayWorkEntryScalarWhereInput | FacultyTodayWorkEntryScalarWhereInput[]
+    id?: StringFilter<"FacultyTodayWorkEntry"> | string
+    facultyUserId?: StringFilter<"FacultyTodayWorkEntry"> | string
+    facultyProfileId?: StringNullableFilter<"FacultyTodayWorkEntry"> | string | null
+    branchId?: StringNullableFilter<"FacultyTodayWorkEntry"> | string | null
+    courseId?: StringFilter<"FacultyTodayWorkEntry"> | string
+    courseName?: StringFilter<"FacultyTodayWorkEntry"> | string
+    moduleId?: StringFilter<"FacultyTodayWorkEntry"> | string
+    moduleName?: StringFilter<"FacultyTodayWorkEntry"> | string
+    submoduleIds?: JsonFilter<"FacultyTodayWorkEntry">
+    submodules?: JsonNullableFilter<"FacultyTodayWorkEntry">
+    studentIds?: JsonFilter<"FacultyTodayWorkEntry">
+    studentCount?: IntFilter<"FacultyTodayWorkEntry"> | number
+    applyToAllStudents?: BoolFilter<"FacultyTodayWorkEntry"> | boolean
+    moduleProgress?: FloatFilter<"FacultyTodayWorkEntry"> | number
+    submoduleProgress?: FloatFilter<"FacultyTodayWorkEntry"> | number
+    courseProgress?: FloatFilter<"FacultyTodayWorkEntry"> | number
+    moduleWeight?: FloatFilter<"FacultyTodayWorkEntry"> | number
+    workDate?: StringFilter<"FacultyTodayWorkEntry"> | string
+    createdBy?: StringNullableFilter<"FacultyTodayWorkEntry"> | string | null
+    updatedBy?: StringNullableFilter<"FacultyTodayWorkEntry"> | string | null
+    createdAt?: DateTimeFilter<"FacultyTodayWorkEntry"> | Date | string
+    updatedAt?: DateTimeFilter<"FacultyTodayWorkEntry"> | Date | string
+  }
+
   export type LoginEventUpsertWithWhereUniqueWithoutUserInput = {
     where: LoginEventWhereUniqueInput
     update: XOR<LoginEventUpdateWithoutUserInput, LoginEventUncheckedUpdateWithoutUserInput>
@@ -50128,6 +52343,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     batchFacultyAssignments?: BatchFacultyAssignmentCreateNestedManyWithoutFacultyInput
     facultyAttendanceSessions?: FacultyAttendanceSessionCreateNestedManyWithoutFacultyUserInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryCreateNestedManyWithoutFacultyUserInput
     loginEvents?: LoginEventCreateNestedManyWithoutUserInput
     targetedNotifications?: NotificationCreateNestedManyWithoutTargetUserInput
     passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
@@ -50158,6 +52374,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     batchFacultyAssignments?: BatchFacultyAssignmentUncheckedCreateNestedManyWithoutFacultyInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedCreateNestedManyWithoutFacultyUserInput
     loginEvents?: LoginEventUncheckedCreateNestedManyWithoutUserInput
     targetedNotifications?: NotificationUncheckedCreateNestedManyWithoutTargetUserInput
     passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
@@ -50193,6 +52410,7 @@ export namespace Prisma {
     modules?: BranchCourseModuleCreateNestedManyWithoutBranchCourseInput
     branchFaculties?: BranchFacultyCreateNestedManyWithoutBranchCourseInput
     branchStudents?: BranchStudentCreateNestedManyWithoutCourseInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryCreateNestedManyWithoutBranchCourseInput
   }
 
   export type BranchCourseUncheckedCreateWithoutBranchInput = {
@@ -50219,6 +52437,7 @@ export namespace Prisma {
     modules?: BranchCourseModuleUncheckedCreateNestedManyWithoutBranchCourseInput
     branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutBranchCourseInput
     branchStudents?: BranchStudentUncheckedCreateNestedManyWithoutCourseInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedCreateNestedManyWithoutBranchCourseInput
   }
 
   export type BranchCourseCreateOrConnectWithoutBranchInput = {
@@ -50574,6 +52793,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     batchFacultyAssignments?: BatchFacultyAssignmentUpdateManyWithoutFacultyNestedInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUpdateManyWithoutFacultyUserNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUpdateManyWithoutFacultyUserNestedInput
     loginEvents?: LoginEventUpdateManyWithoutUserNestedInput
     targetedNotifications?: NotificationUpdateManyWithoutTargetUserNestedInput
     passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
@@ -50604,6 +52824,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     batchFacultyAssignments?: BatchFacultyAssignmentUncheckedUpdateManyWithoutFacultyNestedInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedUpdateManyWithoutFacultyUserNestedInput
     loginEvents?: LoginEventUncheckedUpdateManyWithoutUserNestedInput
     targetedNotifications?: NotificationUncheckedUpdateManyWithoutTargetUserNestedInput
     passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
@@ -50896,6 +53117,7 @@ export namespace Prisma {
     batchFacultyAssignments?: BatchFacultyAssignmentCreateNestedManyWithoutFacultyInput
     managedBranch?: BranchCreateNestedOneWithoutAdminUserInput
     facultyAttendanceSessions?: FacultyAttendanceSessionCreateNestedManyWithoutFacultyUserInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryCreateNestedManyWithoutFacultyUserInput
     targetedNotifications?: NotificationCreateNestedManyWithoutTargetUserInput
     passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
     markedStudentAttendances?: StudentAttendanceCreateNestedManyWithoutFacultyUserInput
@@ -50926,6 +53148,7 @@ export namespace Prisma {
     batchFacultyAssignments?: BatchFacultyAssignmentUncheckedCreateNestedManyWithoutFacultyInput
     managedBranch?: BranchUncheckedCreateNestedOneWithoutAdminUserInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedCreateNestedManyWithoutFacultyUserInput
     targetedNotifications?: NotificationUncheckedCreateNestedManyWithoutTargetUserInput
     passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
     markedStudentAttendances?: StudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
@@ -50972,6 +53195,7 @@ export namespace Prisma {
     batchFacultyAssignments?: BatchFacultyAssignmentUpdateManyWithoutFacultyNestedInput
     managedBranch?: BranchUpdateOneWithoutAdminUserNestedInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUpdateManyWithoutFacultyUserNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUpdateManyWithoutFacultyUserNestedInput
     targetedNotifications?: NotificationUpdateManyWithoutTargetUserNestedInput
     passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
     markedStudentAttendances?: StudentAttendanceUpdateManyWithoutFacultyUserNestedInput
@@ -51002,6 +53226,7 @@ export namespace Prisma {
     batchFacultyAssignments?: BatchFacultyAssignmentUncheckedUpdateManyWithoutFacultyNestedInput
     managedBranch?: BranchUncheckedUpdateOneWithoutAdminUserNestedInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedUpdateManyWithoutFacultyUserNestedInput
     targetedNotifications?: NotificationUncheckedUpdateManyWithoutTargetUserNestedInput
     passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
     markedStudentAttendances?: StudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
@@ -51091,6 +53316,7 @@ export namespace Prisma {
     batchFacultyAssignments?: BatchFacultyAssignmentCreateNestedManyWithoutFacultyInput
     managedBranch?: BranchCreateNestedOneWithoutAdminUserInput
     facultyAttendanceSessions?: FacultyAttendanceSessionCreateNestedManyWithoutFacultyUserInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryCreateNestedManyWithoutFacultyUserInput
     loginEvents?: LoginEventCreateNestedManyWithoutUserInput
     passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
     markedStudentAttendances?: StudentAttendanceCreateNestedManyWithoutFacultyUserInput
@@ -51121,6 +53347,7 @@ export namespace Prisma {
     batchFacultyAssignments?: BatchFacultyAssignmentUncheckedCreateNestedManyWithoutFacultyInput
     managedBranch?: BranchUncheckedCreateNestedOneWithoutAdminUserInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedCreateNestedManyWithoutFacultyUserInput
     loginEvents?: LoginEventUncheckedCreateNestedManyWithoutUserInput
     passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
     markedStudentAttendances?: StudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
@@ -51232,6 +53459,7 @@ export namespace Prisma {
     batchFacultyAssignments?: BatchFacultyAssignmentUpdateManyWithoutFacultyNestedInput
     managedBranch?: BranchUpdateOneWithoutAdminUserNestedInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUpdateManyWithoutFacultyUserNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUpdateManyWithoutFacultyUserNestedInput
     loginEvents?: LoginEventUpdateManyWithoutUserNestedInput
     passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
     markedStudentAttendances?: StudentAttendanceUpdateManyWithoutFacultyUserNestedInput
@@ -51262,6 +53490,7 @@ export namespace Prisma {
     batchFacultyAssignments?: BatchFacultyAssignmentUncheckedUpdateManyWithoutFacultyNestedInput
     managedBranch?: BranchUncheckedUpdateOneWithoutAdminUserNestedInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedUpdateManyWithoutFacultyUserNestedInput
     loginEvents?: LoginEventUncheckedUpdateManyWithoutUserNestedInput
     passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
     markedStudentAttendances?: StudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
@@ -51378,6 +53607,7 @@ export namespace Prisma {
     batchFacultyAssignments?: BatchFacultyAssignmentCreateNestedManyWithoutFacultyInput
     managedBranch?: BranchCreateNestedOneWithoutAdminUserInput
     facultyAttendanceSessions?: FacultyAttendanceSessionCreateNestedManyWithoutFacultyUserInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryCreateNestedManyWithoutFacultyUserInput
     loginEvents?: LoginEventCreateNestedManyWithoutUserInput
     targetedNotifications?: NotificationCreateNestedManyWithoutTargetUserInput
     markedStudentAttendances?: StudentAttendanceCreateNestedManyWithoutFacultyUserInput
@@ -51408,6 +53638,7 @@ export namespace Prisma {
     batchFacultyAssignments?: BatchFacultyAssignmentUncheckedCreateNestedManyWithoutFacultyInput
     managedBranch?: BranchUncheckedCreateNestedOneWithoutAdminUserInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedCreateNestedManyWithoutFacultyUserInput
     loginEvents?: LoginEventUncheckedCreateNestedManyWithoutUserInput
     targetedNotifications?: NotificationUncheckedCreateNestedManyWithoutTargetUserInput
     markedStudentAttendances?: StudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
@@ -51454,6 +53685,7 @@ export namespace Prisma {
     batchFacultyAssignments?: BatchFacultyAssignmentUpdateManyWithoutFacultyNestedInput
     managedBranch?: BranchUpdateOneWithoutAdminUserNestedInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUpdateManyWithoutFacultyUserNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUpdateManyWithoutFacultyUserNestedInput
     loginEvents?: LoginEventUpdateManyWithoutUserNestedInput
     targetedNotifications?: NotificationUpdateManyWithoutTargetUserNestedInput
     markedStudentAttendances?: StudentAttendanceUpdateManyWithoutFacultyUserNestedInput
@@ -51484,6 +53716,7 @@ export namespace Prisma {
     batchFacultyAssignments?: BatchFacultyAssignmentUncheckedUpdateManyWithoutFacultyNestedInput
     managedBranch?: BranchUncheckedUpdateOneWithoutAdminUserNestedInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedUpdateManyWithoutFacultyUserNestedInput
     loginEvents?: LoginEventUncheckedUpdateManyWithoutUserNestedInput
     targetedNotifications?: NotificationUncheckedUpdateManyWithoutTargetUserNestedInput
     markedStudentAttendances?: StudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
@@ -52529,6 +54762,64 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type FacultyTodayWorkEntryCreateWithoutBranchCourseInput = {
+    id?: string
+    facultyProfileId?: string | null
+    branchId?: string | null
+    courseName: string
+    moduleId: string
+    moduleName: string
+    submoduleIds: JsonNullValueInput | InputJsonValue
+    submodules?: NullableJsonNullValueInput | InputJsonValue
+    studentIds: JsonNullValueInput | InputJsonValue
+    studentCount?: number
+    applyToAllStudents?: boolean
+    moduleProgress?: number
+    submoduleProgress?: number
+    courseProgress?: number
+    moduleWeight?: number
+    workDate: string
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    facultyUser: UserCreateNestedOneWithoutFacultyTodayWorkEntriesInput
+  }
+
+  export type FacultyTodayWorkEntryUncheckedCreateWithoutBranchCourseInput = {
+    id?: string
+    facultyUserId: string
+    facultyProfileId?: string | null
+    branchId?: string | null
+    courseName: string
+    moduleId: string
+    moduleName: string
+    submoduleIds: JsonNullValueInput | InputJsonValue
+    submodules?: NullableJsonNullValueInput | InputJsonValue
+    studentIds: JsonNullValueInput | InputJsonValue
+    studentCount?: number
+    applyToAllStudents?: boolean
+    moduleProgress?: number
+    submoduleProgress?: number
+    courseProgress?: number
+    moduleWeight?: number
+    workDate: string
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FacultyTodayWorkEntryCreateOrConnectWithoutBranchCourseInput = {
+    where: FacultyTodayWorkEntryWhereUniqueInput
+    create: XOR<FacultyTodayWorkEntryCreateWithoutBranchCourseInput, FacultyTodayWorkEntryUncheckedCreateWithoutBranchCourseInput>
+  }
+
+  export type FacultyTodayWorkEntryCreateManyBranchCourseInputEnvelope = {
+    data: FacultyTodayWorkEntryCreateManyBranchCourseInput | FacultyTodayWorkEntryCreateManyBranchCourseInput[]
+    skipDuplicates?: boolean
+  }
+
   export type BranchUpsertWithoutBranchCoursesInput = {
     update: XOR<BranchUpdateWithoutBranchCoursesInput, BranchUncheckedUpdateWithoutBranchCoursesInput>
     create: XOR<BranchCreateWithoutBranchCoursesInput, BranchUncheckedCreateWithoutBranchCoursesInput>
@@ -52700,6 +54991,22 @@ export namespace Prisma {
     data: XOR<BranchStudentUpdateManyMutationInput, BranchStudentUncheckedUpdateManyWithoutCourseInput>
   }
 
+  export type FacultyTodayWorkEntryUpsertWithWhereUniqueWithoutBranchCourseInput = {
+    where: FacultyTodayWorkEntryWhereUniqueInput
+    update: XOR<FacultyTodayWorkEntryUpdateWithoutBranchCourseInput, FacultyTodayWorkEntryUncheckedUpdateWithoutBranchCourseInput>
+    create: XOR<FacultyTodayWorkEntryCreateWithoutBranchCourseInput, FacultyTodayWorkEntryUncheckedCreateWithoutBranchCourseInput>
+  }
+
+  export type FacultyTodayWorkEntryUpdateWithWhereUniqueWithoutBranchCourseInput = {
+    where: FacultyTodayWorkEntryWhereUniqueInput
+    data: XOR<FacultyTodayWorkEntryUpdateWithoutBranchCourseInput, FacultyTodayWorkEntryUncheckedUpdateWithoutBranchCourseInput>
+  }
+
+  export type FacultyTodayWorkEntryUpdateManyWithWhereWithoutBranchCourseInput = {
+    where: FacultyTodayWorkEntryScalarWhereInput
+    data: XOR<FacultyTodayWorkEntryUpdateManyMutationInput, FacultyTodayWorkEntryUncheckedUpdateManyWithoutBranchCourseInput>
+  }
+
   export type BranchCourseCreateWithoutModulesInput = {
     id?: string
     courseCode: string
@@ -52724,6 +55031,7 @@ export namespace Prisma {
     installmentTemplate?: BranchInstallmentTemplateCreateNestedOneWithoutBranchCourseInput
     branchFaculties?: BranchFacultyCreateNestedManyWithoutBranchCourseInput
     branchStudents?: BranchStudentCreateNestedManyWithoutCourseInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryCreateNestedManyWithoutBranchCourseInput
   }
 
   export type BranchCourseUncheckedCreateWithoutModulesInput = {
@@ -52750,6 +55058,7 @@ export namespace Prisma {
     installmentTemplate?: BranchInstallmentTemplateUncheckedCreateNestedOneWithoutBranchCourseInput
     branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutBranchCourseInput
     branchStudents?: BranchStudentUncheckedCreateNestedManyWithoutCourseInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedCreateNestedManyWithoutBranchCourseInput
   }
 
   export type BranchCourseCreateOrConnectWithoutModulesInput = {
@@ -52828,6 +55137,7 @@ export namespace Prisma {
     installmentTemplate?: BranchInstallmentTemplateUpdateOneWithoutBranchCourseNestedInput
     branchFaculties?: BranchFacultyUpdateManyWithoutBranchCourseNestedInput
     branchStudents?: BranchStudentUpdateManyWithoutCourseNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUpdateManyWithoutBranchCourseNestedInput
   }
 
   export type BranchCourseUncheckedUpdateWithoutModulesInput = {
@@ -52854,6 +55164,7 @@ export namespace Prisma {
     installmentTemplate?: BranchInstallmentTemplateUncheckedUpdateOneWithoutBranchCourseNestedInput
     branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutBranchCourseNestedInput
     branchStudents?: BranchStudentUncheckedUpdateManyWithoutCourseNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedUpdateManyWithoutBranchCourseNestedInput
   }
 
   export type BranchCourseSubmoduleUpsertWithWhereUniqueWithoutBranchCourseModuleInput = {
@@ -53469,6 +55780,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     managedBranch?: BranchCreateNestedOneWithoutAdminUserInput
     facultyAttendanceSessions?: FacultyAttendanceSessionCreateNestedManyWithoutFacultyUserInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryCreateNestedManyWithoutFacultyUserInput
     loginEvents?: LoginEventCreateNestedManyWithoutUserInput
     targetedNotifications?: NotificationCreateNestedManyWithoutTargetUserInput
     passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
@@ -53499,6 +55811,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     managedBranch?: BranchUncheckedCreateNestedOneWithoutAdminUserInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedCreateNestedManyWithoutFacultyUserInput
     loginEvents?: LoginEventUncheckedCreateNestedManyWithoutUserInput
     targetedNotifications?: NotificationUncheckedCreateNestedManyWithoutTargetUserInput
     passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
@@ -53600,6 +55913,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     managedBranch?: BranchUpdateOneWithoutAdminUserNestedInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUpdateManyWithoutFacultyUserNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUpdateManyWithoutFacultyUserNestedInput
     loginEvents?: LoginEventUpdateManyWithoutUserNestedInput
     targetedNotifications?: NotificationUpdateManyWithoutTargetUserNestedInput
     passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
@@ -53630,6 +55944,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     managedBranch?: BranchUncheckedUpdateOneWithoutAdminUserNestedInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedUpdateManyWithoutFacultyUserNestedInput
     loginEvents?: LoginEventUncheckedUpdateManyWithoutUserNestedInput
     targetedNotifications?: NotificationUncheckedUpdateManyWithoutTargetUserNestedInput
     passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
@@ -54197,6 +56512,7 @@ export namespace Prisma {
     installmentTemplate?: BranchInstallmentTemplateCreateNestedOneWithoutBranchCourseInput
     modules?: BranchCourseModuleCreateNestedManyWithoutBranchCourseInput
     branchFaculties?: BranchFacultyCreateNestedManyWithoutBranchCourseInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryCreateNestedManyWithoutBranchCourseInput
   }
 
   export type BranchCourseUncheckedCreateWithoutBranchStudentsInput = {
@@ -54223,6 +56539,7 @@ export namespace Prisma {
     installmentTemplate?: BranchInstallmentTemplateUncheckedCreateNestedOneWithoutBranchCourseInput
     modules?: BranchCourseModuleUncheckedCreateNestedManyWithoutBranchCourseInput
     branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutBranchCourseInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedCreateNestedManyWithoutBranchCourseInput
   }
 
   export type BranchCourseCreateOrConnectWithoutBranchStudentsInput = {
@@ -54412,6 +56729,7 @@ export namespace Prisma {
     installmentTemplate?: BranchInstallmentTemplateUpdateOneWithoutBranchCourseNestedInput
     modules?: BranchCourseModuleUpdateManyWithoutBranchCourseNestedInput
     branchFaculties?: BranchFacultyUpdateManyWithoutBranchCourseNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUpdateManyWithoutBranchCourseNestedInput
   }
 
   export type BranchCourseUncheckedUpdateWithoutBranchStudentsInput = {
@@ -54438,6 +56756,7 @@ export namespace Prisma {
     installmentTemplate?: BranchInstallmentTemplateUncheckedUpdateOneWithoutBranchCourseNestedInput
     modules?: BranchCourseModuleUncheckedUpdateManyWithoutBranchCourseNestedInput
     branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutBranchCourseNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedUpdateManyWithoutBranchCourseNestedInput
   }
 
   export type BranchStudentInstallmentUpsertWithWhereUniqueWithoutBranchStudentInput = {
@@ -55460,6 +57779,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     batchFacultyAssignments?: BatchFacultyAssignmentCreateNestedManyWithoutFacultyInput
     managedBranch?: BranchCreateNestedOneWithoutAdminUserInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryCreateNestedManyWithoutFacultyUserInput
     loginEvents?: LoginEventCreateNestedManyWithoutUserInput
     targetedNotifications?: NotificationCreateNestedManyWithoutTargetUserInput
     passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
@@ -55490,6 +57810,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     batchFacultyAssignments?: BatchFacultyAssignmentUncheckedCreateNestedManyWithoutFacultyInput
     managedBranch?: BranchUncheckedCreateNestedOneWithoutAdminUserInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedCreateNestedManyWithoutFacultyUserInput
     loginEvents?: LoginEventUncheckedCreateNestedManyWithoutUserInput
     targetedNotifications?: NotificationUncheckedCreateNestedManyWithoutTargetUserInput
     passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
@@ -55536,6 +57857,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     batchFacultyAssignments?: BatchFacultyAssignmentUpdateManyWithoutFacultyNestedInput
     managedBranch?: BranchUpdateOneWithoutAdminUserNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUpdateManyWithoutFacultyUserNestedInput
     loginEvents?: LoginEventUpdateManyWithoutUserNestedInput
     targetedNotifications?: NotificationUpdateManyWithoutTargetUserNestedInput
     passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
@@ -55566,10 +57888,275 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     batchFacultyAssignments?: BatchFacultyAssignmentUncheckedUpdateManyWithoutFacultyNestedInput
     managedBranch?: BranchUncheckedUpdateOneWithoutAdminUserNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedUpdateManyWithoutFacultyUserNestedInput
     loginEvents?: LoginEventUncheckedUpdateManyWithoutUserNestedInput
     targetedNotifications?: NotificationUncheckedUpdateManyWithoutTargetUserNestedInput
     passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
     markedStudentAttendances?: StudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
+  }
+
+  export type UserCreateWithoutFacultyTodayWorkEntriesInput = {
+    id?: string
+    userCode: string
+    fullName: string
+    email: string
+    phone?: string | null
+    role: $Enums.UserRole
+    active?: boolean
+    passwordHash: string
+    passwordChangedAt?: Date | string | null
+    refreshTokenVersion?: number
+    failedLoginCount?: number
+    failedLoginWindowExpiresAt?: Date | string | null
+    lockedUntil?: Date | string | null
+    lastLoginAt?: Date | string | null
+    lastLogoutAt?: Date | string | null
+    lastLoginIp?: string | null
+    lastLoginUserAgent?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentCreateNestedManyWithoutFacultyInput
+    managedBranch?: BranchCreateNestedOneWithoutAdminUserInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionCreateNestedManyWithoutFacultyUserInput
+    loginEvents?: LoginEventCreateNestedManyWithoutUserInput
+    targetedNotifications?: NotificationCreateNestedManyWithoutTargetUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    markedStudentAttendances?: StudentAttendanceCreateNestedManyWithoutFacultyUserInput
+  }
+
+  export type UserUncheckedCreateWithoutFacultyTodayWorkEntriesInput = {
+    id?: string
+    userCode: string
+    fullName: string
+    email: string
+    phone?: string | null
+    role: $Enums.UserRole
+    active?: boolean
+    passwordHash: string
+    passwordChangedAt?: Date | string | null
+    refreshTokenVersion?: number
+    failedLoginCount?: number
+    failedLoginWindowExpiresAt?: Date | string | null
+    lockedUntil?: Date | string | null
+    lastLoginAt?: Date | string | null
+    lastLogoutAt?: Date | string | null
+    lastLoginIp?: string | null
+    lastLoginUserAgent?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentUncheckedCreateNestedManyWithoutFacultyInput
+    managedBranch?: BranchUncheckedCreateNestedOneWithoutAdminUserInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedCreateNestedManyWithoutFacultyUserInput
+    loginEvents?: LoginEventUncheckedCreateNestedManyWithoutUserInput
+    targetedNotifications?: NotificationUncheckedCreateNestedManyWithoutTargetUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    markedStudentAttendances?: StudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
+  }
+
+  export type UserCreateOrConnectWithoutFacultyTodayWorkEntriesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutFacultyTodayWorkEntriesInput, UserUncheckedCreateWithoutFacultyTodayWorkEntriesInput>
+  }
+
+  export type BranchCourseCreateWithoutFacultyTodayWorkEntriesInput = {
+    id?: string
+    courseCode: string
+    name: string
+    nameKey: string
+    description?: string | null
+    mode: string
+    duration?: number | null
+    hours?: number | null
+    actualFees?: number | null
+    registrationFees?: number | null
+    discount?: number | null
+    afterDiscount?: number | null
+    paymentPlans?: NullableJsonNullValueInput | InputJsonValue
+    paymentPlanSelections?: NullableJsonNullValueInput | InputJsonValue
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branch: BranchCreateNestedOneWithoutBranchCoursesInput
+    installmentTemplate?: BranchInstallmentTemplateCreateNestedOneWithoutBranchCourseInput
+    modules?: BranchCourseModuleCreateNestedManyWithoutBranchCourseInput
+    branchFaculties?: BranchFacultyCreateNestedManyWithoutBranchCourseInput
+    branchStudents?: BranchStudentCreateNestedManyWithoutCourseInput
+  }
+
+  export type BranchCourseUncheckedCreateWithoutFacultyTodayWorkEntriesInput = {
+    id?: string
+    branchId: string
+    courseCode: string
+    name: string
+    nameKey: string
+    description?: string | null
+    mode: string
+    duration?: number | null
+    hours?: number | null
+    actualFees?: number | null
+    registrationFees?: number | null
+    discount?: number | null
+    afterDiscount?: number | null
+    paymentPlans?: NullableJsonNullValueInput | InputJsonValue
+    paymentPlanSelections?: NullableJsonNullValueInput | InputJsonValue
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    installmentTemplate?: BranchInstallmentTemplateUncheckedCreateNestedOneWithoutBranchCourseInput
+    modules?: BranchCourseModuleUncheckedCreateNestedManyWithoutBranchCourseInput
+    branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutBranchCourseInput
+    branchStudents?: BranchStudentUncheckedCreateNestedManyWithoutCourseInput
+  }
+
+  export type BranchCourseCreateOrConnectWithoutFacultyTodayWorkEntriesInput = {
+    where: BranchCourseWhereUniqueInput
+    create: XOR<BranchCourseCreateWithoutFacultyTodayWorkEntriesInput, BranchCourseUncheckedCreateWithoutFacultyTodayWorkEntriesInput>
+  }
+
+  export type UserUpsertWithoutFacultyTodayWorkEntriesInput = {
+    update: XOR<UserUpdateWithoutFacultyTodayWorkEntriesInput, UserUncheckedUpdateWithoutFacultyTodayWorkEntriesInput>
+    create: XOR<UserCreateWithoutFacultyTodayWorkEntriesInput, UserUncheckedCreateWithoutFacultyTodayWorkEntriesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutFacultyTodayWorkEntriesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutFacultyTodayWorkEntriesInput, UserUncheckedUpdateWithoutFacultyTodayWorkEntriesInput>
+  }
+
+  export type UserUpdateWithoutFacultyTodayWorkEntriesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userCode?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refreshTokenVersion?: IntFieldUpdateOperationsInput | number
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    failedLoginWindowExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLogoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginUserAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentUpdateManyWithoutFacultyNestedInput
+    managedBranch?: BranchUpdateOneWithoutAdminUserNestedInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUpdateManyWithoutFacultyUserNestedInput
+    loginEvents?: LoginEventUpdateManyWithoutUserNestedInput
+    targetedNotifications?: NotificationUpdateManyWithoutTargetUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    markedStudentAttendances?: StudentAttendanceUpdateManyWithoutFacultyUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutFacultyTodayWorkEntriesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userCode?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refreshTokenVersion?: IntFieldUpdateOperationsInput | number
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    failedLoginWindowExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLogoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginUserAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentUncheckedUpdateManyWithoutFacultyNestedInput
+    managedBranch?: BranchUncheckedUpdateOneWithoutAdminUserNestedInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserNestedInput
+    loginEvents?: LoginEventUncheckedUpdateManyWithoutUserNestedInput
+    targetedNotifications?: NotificationUncheckedUpdateManyWithoutTargetUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    markedStudentAttendances?: StudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
+  }
+
+  export type BranchCourseUpsertWithoutFacultyTodayWorkEntriesInput = {
+    update: XOR<BranchCourseUpdateWithoutFacultyTodayWorkEntriesInput, BranchCourseUncheckedUpdateWithoutFacultyTodayWorkEntriesInput>
+    create: XOR<BranchCourseCreateWithoutFacultyTodayWorkEntriesInput, BranchCourseUncheckedCreateWithoutFacultyTodayWorkEntriesInput>
+    where?: BranchCourseWhereInput
+  }
+
+  export type BranchCourseUpdateToOneWithWhereWithoutFacultyTodayWorkEntriesInput = {
+    where?: BranchCourseWhereInput
+    data: XOR<BranchCourseUpdateWithoutFacultyTodayWorkEntriesInput, BranchCourseUncheckedUpdateWithoutFacultyTodayWorkEntriesInput>
+  }
+
+  export type BranchCourseUpdateWithoutFacultyTodayWorkEntriesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    courseCode?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameKey?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    mode?: StringFieldUpdateOperationsInput | string
+    duration?: NullableIntFieldUpdateOperationsInput | number | null
+    hours?: NullableIntFieldUpdateOperationsInput | number | null
+    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
+    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
+    discount?: NullableIntFieldUpdateOperationsInput | number | null
+    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
+    paymentPlans?: NullableJsonNullValueInput | InputJsonValue
+    paymentPlanSelections?: NullableJsonNullValueInput | InputJsonValue
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branch?: BranchUpdateOneRequiredWithoutBranchCoursesNestedInput
+    installmentTemplate?: BranchInstallmentTemplateUpdateOneWithoutBranchCourseNestedInput
+    modules?: BranchCourseModuleUpdateManyWithoutBranchCourseNestedInput
+    branchFaculties?: BranchFacultyUpdateManyWithoutBranchCourseNestedInput
+    branchStudents?: BranchStudentUpdateManyWithoutCourseNestedInput
+  }
+
+  export type BranchCourseUncheckedUpdateWithoutFacultyTodayWorkEntriesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    courseCode?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameKey?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    mode?: StringFieldUpdateOperationsInput | string
+    duration?: NullableIntFieldUpdateOperationsInput | number | null
+    hours?: NullableIntFieldUpdateOperationsInput | number | null
+    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
+    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
+    discount?: NullableIntFieldUpdateOperationsInput | number | null
+    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
+    paymentPlans?: NullableJsonNullValueInput | InputJsonValue
+    paymentPlanSelections?: NullableJsonNullValueInput | InputJsonValue
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    installmentTemplate?: BranchInstallmentTemplateUncheckedUpdateOneWithoutBranchCourseNestedInput
+    modules?: BranchCourseModuleUncheckedUpdateManyWithoutBranchCourseNestedInput
+    branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutBranchCourseNestedInput
+    branchStudents?: BranchStudentUncheckedUpdateManyWithoutCourseNestedInput
   }
 
   export type UserCreateWithoutMarkedStudentAttendancesInput = {
@@ -55597,6 +58184,7 @@ export namespace Prisma {
     batchFacultyAssignments?: BatchFacultyAssignmentCreateNestedManyWithoutFacultyInput
     managedBranch?: BranchCreateNestedOneWithoutAdminUserInput
     facultyAttendanceSessions?: FacultyAttendanceSessionCreateNestedManyWithoutFacultyUserInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryCreateNestedManyWithoutFacultyUserInput
     loginEvents?: LoginEventCreateNestedManyWithoutUserInput
     targetedNotifications?: NotificationCreateNestedManyWithoutTargetUserInput
     passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
@@ -55627,6 +58215,7 @@ export namespace Prisma {
     batchFacultyAssignments?: BatchFacultyAssignmentUncheckedCreateNestedManyWithoutFacultyInput
     managedBranch?: BranchUncheckedCreateNestedOneWithoutAdminUserInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedCreateNestedManyWithoutFacultyUserInput
     loginEvents?: LoginEventUncheckedCreateNestedManyWithoutUserInput
     targetedNotifications?: NotificationUncheckedCreateNestedManyWithoutTargetUserInput
     passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
@@ -55770,6 +58359,7 @@ export namespace Prisma {
     batchFacultyAssignments?: BatchFacultyAssignmentUpdateManyWithoutFacultyNestedInput
     managedBranch?: BranchUpdateOneWithoutAdminUserNestedInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUpdateManyWithoutFacultyUserNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUpdateManyWithoutFacultyUserNestedInput
     loginEvents?: LoginEventUpdateManyWithoutUserNestedInput
     targetedNotifications?: NotificationUpdateManyWithoutTargetUserNestedInput
     passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
@@ -55800,6 +58390,7 @@ export namespace Prisma {
     batchFacultyAssignments?: BatchFacultyAssignmentUncheckedUpdateManyWithoutFacultyNestedInput
     managedBranch?: BranchUncheckedUpdateOneWithoutAdminUserNestedInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedUpdateManyWithoutFacultyUserNestedInput
     loginEvents?: LoginEventUncheckedUpdateManyWithoutUserNestedInput
     targetedNotifications?: NotificationUncheckedUpdateManyWithoutTargetUserNestedInput
     passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
@@ -55932,6 +58523,7 @@ export namespace Prisma {
     installmentTemplate?: BranchInstallmentTemplateCreateNestedOneWithoutBranchCourseInput
     modules?: BranchCourseModuleCreateNestedManyWithoutBranchCourseInput
     branchStudents?: BranchStudentCreateNestedManyWithoutCourseInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryCreateNestedManyWithoutBranchCourseInput
   }
 
   export type BranchCourseUncheckedCreateWithoutBranchFacultiesInput = {
@@ -55958,6 +58550,7 @@ export namespace Prisma {
     installmentTemplate?: BranchInstallmentTemplateUncheckedCreateNestedOneWithoutBranchCourseInput
     modules?: BranchCourseModuleUncheckedCreateNestedManyWithoutBranchCourseInput
     branchStudents?: BranchStudentUncheckedCreateNestedManyWithoutCourseInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedCreateNestedManyWithoutBranchCourseInput
   }
 
   export type BranchCourseCreateOrConnectWithoutBranchFacultiesInput = {
@@ -56134,6 +58727,7 @@ export namespace Prisma {
     installmentTemplate?: BranchInstallmentTemplateUpdateOneWithoutBranchCourseNestedInput
     modules?: BranchCourseModuleUpdateManyWithoutBranchCourseNestedInput
     branchStudents?: BranchStudentUpdateManyWithoutCourseNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUpdateManyWithoutBranchCourseNestedInput
   }
 
   export type BranchCourseUncheckedUpdateWithoutBranchFacultiesInput = {
@@ -56160,6 +58754,7 @@ export namespace Prisma {
     installmentTemplate?: BranchInstallmentTemplateUncheckedUpdateOneWithoutBranchCourseNestedInput
     modules?: BranchCourseModuleUncheckedUpdateManyWithoutBranchCourseNestedInput
     branchStudents?: BranchStudentUncheckedUpdateManyWithoutCourseNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedUpdateManyWithoutBranchCourseNestedInput
   }
 
   export type BranchUpsertWithoutBranchFacultiesInput = {
@@ -56389,6 +58984,7 @@ export namespace Prisma {
     modules?: BranchCourseModuleCreateNestedManyWithoutBranchCourseInput
     branchFaculties?: BranchFacultyCreateNestedManyWithoutBranchCourseInput
     branchStudents?: BranchStudentCreateNestedManyWithoutCourseInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryCreateNestedManyWithoutBranchCourseInput
   }
 
   export type BranchCourseUncheckedCreateWithoutInstallmentTemplateInput = {
@@ -56415,6 +59011,7 @@ export namespace Prisma {
     modules?: BranchCourseModuleUncheckedCreateNestedManyWithoutBranchCourseInput
     branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutBranchCourseInput
     branchStudents?: BranchStudentUncheckedCreateNestedManyWithoutCourseInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedCreateNestedManyWithoutBranchCourseInput
   }
 
   export type BranchCourseCreateOrConnectWithoutInstallmentTemplateInput = {
@@ -56520,6 +59117,7 @@ export namespace Prisma {
     modules?: BranchCourseModuleUpdateManyWithoutBranchCourseNestedInput
     branchFaculties?: BranchFacultyUpdateManyWithoutBranchCourseNestedInput
     branchStudents?: BranchStudentUpdateManyWithoutCourseNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUpdateManyWithoutBranchCourseNestedInput
   }
 
   export type BranchCourseUncheckedUpdateWithoutInstallmentTemplateInput = {
@@ -56546,6 +59144,7 @@ export namespace Prisma {
     modules?: BranchCourseModuleUncheckedUpdateManyWithoutBranchCourseNestedInput
     branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutBranchCourseNestedInput
     branchStudents?: BranchStudentUncheckedUpdateManyWithoutCourseNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedUpdateManyWithoutBranchCourseNestedInput
   }
 
   export type BranchStudentCreateWithoutPaymentsInput = {
@@ -56946,6 +59545,30 @@ export namespace Prisma {
     workCompleted?: string | null
   }
 
+  export type FacultyTodayWorkEntryCreateManyFacultyUserInput = {
+    id?: string
+    facultyProfileId?: string | null
+    branchId?: string | null
+    courseId: string
+    courseName: string
+    moduleId: string
+    moduleName: string
+    submoduleIds: JsonNullValueInput | InputJsonValue
+    submodules?: NullableJsonNullValueInput | InputJsonValue
+    studentIds: JsonNullValueInput | InputJsonValue
+    studentCount?: number
+    applyToAllStudents?: boolean
+    moduleProgress?: number
+    submoduleProgress?: number
+    courseProgress?: number
+    moduleWeight?: number
+    workDate: string
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type LoginEventCreateManyUserInput = {
     id?: string
     eventType: $Enums.LoginEventType
@@ -57099,6 +59722,78 @@ export namespace Prisma {
     logoutReason?: NullableStringFieldUpdateOperationsInput | string | null
     workReport?: NullableStringFieldUpdateOperationsInput | string | null
     workCompleted?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type FacultyTodayWorkEntryUpdateWithoutFacultyUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    facultyProfileId?: NullableStringFieldUpdateOperationsInput | string | null
+    branchId?: NullableStringFieldUpdateOperationsInput | string | null
+    courseName?: StringFieldUpdateOperationsInput | string
+    moduleId?: StringFieldUpdateOperationsInput | string
+    moduleName?: StringFieldUpdateOperationsInput | string
+    submoduleIds?: JsonNullValueInput | InputJsonValue
+    submodules?: NullableJsonNullValueInput | InputJsonValue
+    studentIds?: JsonNullValueInput | InputJsonValue
+    studentCount?: IntFieldUpdateOperationsInput | number
+    applyToAllStudents?: BoolFieldUpdateOperationsInput | boolean
+    moduleProgress?: FloatFieldUpdateOperationsInput | number
+    submoduleProgress?: FloatFieldUpdateOperationsInput | number
+    courseProgress?: FloatFieldUpdateOperationsInput | number
+    moduleWeight?: FloatFieldUpdateOperationsInput | number
+    workDate?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branchCourse?: BranchCourseUpdateOneRequiredWithoutFacultyTodayWorkEntriesNestedInput
+  }
+
+  export type FacultyTodayWorkEntryUncheckedUpdateWithoutFacultyUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    facultyProfileId?: NullableStringFieldUpdateOperationsInput | string | null
+    branchId?: NullableStringFieldUpdateOperationsInput | string | null
+    courseId?: StringFieldUpdateOperationsInput | string
+    courseName?: StringFieldUpdateOperationsInput | string
+    moduleId?: StringFieldUpdateOperationsInput | string
+    moduleName?: StringFieldUpdateOperationsInput | string
+    submoduleIds?: JsonNullValueInput | InputJsonValue
+    submodules?: NullableJsonNullValueInput | InputJsonValue
+    studentIds?: JsonNullValueInput | InputJsonValue
+    studentCount?: IntFieldUpdateOperationsInput | number
+    applyToAllStudents?: BoolFieldUpdateOperationsInput | boolean
+    moduleProgress?: FloatFieldUpdateOperationsInput | number
+    submoduleProgress?: FloatFieldUpdateOperationsInput | number
+    courseProgress?: FloatFieldUpdateOperationsInput | number
+    moduleWeight?: FloatFieldUpdateOperationsInput | number
+    workDate?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FacultyTodayWorkEntryUncheckedUpdateManyWithoutFacultyUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    facultyProfileId?: NullableStringFieldUpdateOperationsInput | string | null
+    branchId?: NullableStringFieldUpdateOperationsInput | string | null
+    courseId?: StringFieldUpdateOperationsInput | string
+    courseName?: StringFieldUpdateOperationsInput | string
+    moduleId?: StringFieldUpdateOperationsInput | string
+    moduleName?: StringFieldUpdateOperationsInput | string
+    submoduleIds?: JsonNullValueInput | InputJsonValue
+    submodules?: NullableJsonNullValueInput | InputJsonValue
+    studentIds?: JsonNullValueInput | InputJsonValue
+    studentCount?: IntFieldUpdateOperationsInput | number
+    applyToAllStudents?: BoolFieldUpdateOperationsInput | boolean
+    moduleProgress?: FloatFieldUpdateOperationsInput | number
+    submoduleProgress?: FloatFieldUpdateOperationsInput | number
+    courseProgress?: FloatFieldUpdateOperationsInput | number
+    moduleWeight?: FloatFieldUpdateOperationsInput | number
+    workDate?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type LoginEventUpdateWithoutUserInput = {
@@ -57461,6 +60156,7 @@ export namespace Prisma {
     modules?: BranchCourseModuleUpdateManyWithoutBranchCourseNestedInput
     branchFaculties?: BranchFacultyUpdateManyWithoutBranchCourseNestedInput
     branchStudents?: BranchStudentUpdateManyWithoutCourseNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUpdateManyWithoutBranchCourseNestedInput
   }
 
   export type BranchCourseUncheckedUpdateWithoutBranchInput = {
@@ -57487,6 +60183,7 @@ export namespace Prisma {
     modules?: BranchCourseModuleUncheckedUpdateManyWithoutBranchCourseNestedInput
     branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutBranchCourseNestedInput
     branchStudents?: BranchStudentUncheckedUpdateManyWithoutCourseNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedUpdateManyWithoutBranchCourseNestedInput
   }
 
   export type BranchCourseUncheckedUpdateManyWithoutBranchInput = {
@@ -58653,6 +61350,30 @@ export namespace Prisma {
     paymentPlan?: string | null
   }
 
+  export type FacultyTodayWorkEntryCreateManyBranchCourseInput = {
+    id?: string
+    facultyUserId: string
+    facultyProfileId?: string | null
+    branchId?: string | null
+    courseName: string
+    moduleId: string
+    moduleName: string
+    submoduleIds: JsonNullValueInput | InputJsonValue
+    submodules?: NullableJsonNullValueInput | InputJsonValue
+    studentIds: JsonNullValueInput | InputJsonValue
+    studentCount?: number
+    applyToAllStudents?: boolean
+    moduleProgress?: number
+    submoduleProgress?: number
+    courseProgress?: number
+    moduleWeight?: number
+    workDate: string
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type BranchCourseModuleUpdateWithoutBranchCourseInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
@@ -58870,6 +61591,78 @@ export namespace Prisma {
     paymentMode?: StringFieldUpdateOperationsInput | string
     paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
     paymentPlan?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type FacultyTodayWorkEntryUpdateWithoutBranchCourseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    facultyProfileId?: NullableStringFieldUpdateOperationsInput | string | null
+    branchId?: NullableStringFieldUpdateOperationsInput | string | null
+    courseName?: StringFieldUpdateOperationsInput | string
+    moduleId?: StringFieldUpdateOperationsInput | string
+    moduleName?: StringFieldUpdateOperationsInput | string
+    submoduleIds?: JsonNullValueInput | InputJsonValue
+    submodules?: NullableJsonNullValueInput | InputJsonValue
+    studentIds?: JsonNullValueInput | InputJsonValue
+    studentCount?: IntFieldUpdateOperationsInput | number
+    applyToAllStudents?: BoolFieldUpdateOperationsInput | boolean
+    moduleProgress?: FloatFieldUpdateOperationsInput | number
+    submoduleProgress?: FloatFieldUpdateOperationsInput | number
+    courseProgress?: FloatFieldUpdateOperationsInput | number
+    moduleWeight?: FloatFieldUpdateOperationsInput | number
+    workDate?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    facultyUser?: UserUpdateOneRequiredWithoutFacultyTodayWorkEntriesNestedInput
+  }
+
+  export type FacultyTodayWorkEntryUncheckedUpdateWithoutBranchCourseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    facultyUserId?: StringFieldUpdateOperationsInput | string
+    facultyProfileId?: NullableStringFieldUpdateOperationsInput | string | null
+    branchId?: NullableStringFieldUpdateOperationsInput | string | null
+    courseName?: StringFieldUpdateOperationsInput | string
+    moduleId?: StringFieldUpdateOperationsInput | string
+    moduleName?: StringFieldUpdateOperationsInput | string
+    submoduleIds?: JsonNullValueInput | InputJsonValue
+    submodules?: NullableJsonNullValueInput | InputJsonValue
+    studentIds?: JsonNullValueInput | InputJsonValue
+    studentCount?: IntFieldUpdateOperationsInput | number
+    applyToAllStudents?: BoolFieldUpdateOperationsInput | boolean
+    moduleProgress?: FloatFieldUpdateOperationsInput | number
+    submoduleProgress?: FloatFieldUpdateOperationsInput | number
+    courseProgress?: FloatFieldUpdateOperationsInput | number
+    moduleWeight?: FloatFieldUpdateOperationsInput | number
+    workDate?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FacultyTodayWorkEntryUncheckedUpdateManyWithoutBranchCourseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    facultyUserId?: StringFieldUpdateOperationsInput | string
+    facultyProfileId?: NullableStringFieldUpdateOperationsInput | string | null
+    branchId?: NullableStringFieldUpdateOperationsInput | string | null
+    courseName?: StringFieldUpdateOperationsInput | string
+    moduleId?: StringFieldUpdateOperationsInput | string
+    moduleName?: StringFieldUpdateOperationsInput | string
+    submoduleIds?: JsonNullValueInput | InputJsonValue
+    submodules?: NullableJsonNullValueInput | InputJsonValue
+    studentIds?: JsonNullValueInput | InputJsonValue
+    studentCount?: IntFieldUpdateOperationsInput | number
+    applyToAllStudents?: BoolFieldUpdateOperationsInput | boolean
+    moduleProgress?: FloatFieldUpdateOperationsInput | number
+    submoduleProgress?: FloatFieldUpdateOperationsInput | number
+    courseProgress?: FloatFieldUpdateOperationsInput | number
+    moduleWeight?: FloatFieldUpdateOperationsInput | number
+    workDate?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type BranchCourseSubmoduleCreateManyBranchCourseModuleInput = {

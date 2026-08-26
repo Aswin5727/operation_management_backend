@@ -32,6 +32,7 @@ model User {
   batchFacultyAssignments    BatchFacultyAssignment[]
   managedBranch              Branch?                    @relation("BranchAdminUser")
   facultyAttendanceSessions  FacultyAttendanceSession[]
+  facultyTodayWorkEntries    FacultyTodayWorkEntry[]
   loginEvents                LoginEvent[]
   targetedNotifications      Notification[]             @relation("NotificationTargetUser")
   passwordResetTokens        PasswordResetToken[]
@@ -244,6 +245,7 @@ model BranchCourse {
   modules          BranchCourseModule[]
   branchFaculties  BranchFaculty[]
   branchStudents   BranchStudent[]
+  facultyTodayWorkEntries FacultyTodayWorkEntry[]
 
   @@unique([branchId, nameKey])
   @@unique([branchId, courseCode])
@@ -584,6 +586,38 @@ model FacultyAttendanceSession {
   @@index([facultyUserId, attendanceDate])
   @@index([facultyUserId, attendanceDate, sessionSource])
   @@index([attendanceDate])
+}
+
+model FacultyTodayWorkEntry {
+  id                  String          @id @default(cuid())
+  facultyUserId       String
+  facultyProfileId     String?
+  branchId            String?
+  courseId            String
+  courseName          String
+  moduleId            String
+  moduleName          String
+  submoduleIds        Json
+  submodules          Json?
+  studentIds          Json
+  studentCount        Int             @default(0)
+  applyToAllStudents  Boolean         @default(true)
+  moduleProgress      Float           @default(0)
+  submoduleProgress   Float           @default(0)
+  courseProgress      Float           @default(0)
+  moduleWeight        Float           @default(0)
+  workDate            String
+  createdBy           String?
+  updatedBy           String?
+  createdAt           DateTime        @default(now())
+  updatedAt           DateTime        @updatedAt
+  facultyUser         User            @relation(fields: [facultyUserId], references: [id], onDelete: Cascade)
+  branchCourse        BranchCourse    @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@index([facultyUserId, workDate])
+  @@index([facultyProfileId, workDate])
+  @@index([branchId, workDate])
+  @@index([courseId, moduleId])
 }
 
 model StudentAttendance {

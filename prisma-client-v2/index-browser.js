@@ -547,6 +547,31 @@ exports.Prisma.FacultyAttendanceSessionScalarFieldEnum = {
   workCompleted: 'workCompleted'
 };
 
+exports.Prisma.FacultyTodayWorkEntryScalarFieldEnum = {
+  id: 'id',
+  facultyUserId: 'facultyUserId',
+  facultyProfileId: 'facultyProfileId',
+  branchId: 'branchId',
+  courseId: 'courseId',
+  courseName: 'courseName',
+  moduleId: 'moduleId',
+  moduleName: 'moduleName',
+  submoduleIds: 'submoduleIds',
+  submodules: 'submodules',
+  studentIds: 'studentIds',
+  studentCount: 'studentCount',
+  applyToAllStudents: 'applyToAllStudents',
+  moduleProgress: 'moduleProgress',
+  submoduleProgress: 'submoduleProgress',
+  courseProgress: 'courseProgress',
+  moduleWeight: 'moduleWeight',
+  workDate: 'workDate',
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.StudentAttendanceScalarFieldEnum = {
   id: 'id',
   studentId: 'studentId',
@@ -734,6 +759,7 @@ exports.Prisma.ModelName = {
   FacultyCourseAssignment: 'FacultyCourseAssignment',
   FacultyBatchEntry: 'FacultyBatchEntry',
   FacultyAttendanceSession: 'FacultyAttendanceSession',
+  FacultyTodayWorkEntry: 'FacultyTodayWorkEntry',
   StudentAttendance: 'StudentAttendance',
   BranchFaculty: 'BranchFaculty',
   BranchInstallmentTemplate: 'BranchInstallmentTemplate',
