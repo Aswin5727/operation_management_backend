@@ -7,10 +7,19 @@ import config from "../../config/env.js";
 import AppError from "../../common/errors/AppError.js";
 import { hashPassword } from "../../common/utils/password.js";
 import { getCurrentBranchProfile } from "../branches/branches.service.js";
-import { sendStudentCredentialsEmail } from "../../common/services/resendEmail.js";
+import {
+  sendStudentCredentialsEmail,
+  sendStudentPaymentDueEmail,
+} from "../../common/services/resendEmail.js";
+import {
+  createFeeProgressAlertNotification,
+} from "../notifications/notifications.service.js";
 
 const RECORD_STATUSES = new Set(["ACTIVE", "INACTIVE"]);
 const CURRENT_STATUSES = new Set(["Student", "Employee", "Other"]);
+const PROGRESS_ALERT_TOLERANCE = 5;
+const DUE_REMINDER_WINDOW_DAYS = 7;
+const DUE_REMINDER_SWEEP_INTERVAL_MS = 24 * 60 * 60 * 1000;
 
 function normalizeString(value) {
   return String(value ?? "").trim();
@@ -88,6 +97,23 @@ function parseDateString(value, fieldName) {
     throw new AppError(`${fieldName} must be in YYYY-MM-DD format`, 400);
   }
   return text;
+}
+
+function parseOptionalProgress(value) {
+  if (value === undefined || value === null || value === "") {
+    return null;
+  }
+
+  const parsed = Number(value);
+  if (!Number.isFinite(parsed)) {
+    throw new AppError("Course progress must be a number", 400);
+  }
+
+  if (parsed < 0 || parsed > 100) {
+    throw new AppError("Course progress must be between 0 and 100", 400);
+  }
+
+  return Math.round(parsed);
 }
 
 function parsePage(value) {
@@ -198,6 +224,243 @@ async function generateUniqueStudentId(branchId) {
   throw new AppError("Unable to generate unique student ID", 500);
 }
 
+function calculateFeeProgressSnapshot(student = {}) {
+  const installments = Array.isArray(student.installments) ? student.installments : [];
+  const normalizedInstallments = installments
+    .map((installment, index) => ({
+      installmentNumber: Number(installment?.installmentNumber || index + 1) || index + 1,
+      amount: Number(String(installment?.amount ?? 0).replace(/,/g, "")) || 0,
+      amountPaid: Number(String(installment?.amountPaid ?? 0).replace(/,/g, "")) || 0,
+      dueDate: normalizeString(installment?.dueDate),
+      status: normalizeString(installment?.status || "Pending"),
+      dueReminderSentAt: installment?.dueReminderSentAt ? new Date(installment.dueReminderSentAt) : null,
+      id: installment?.id || null,
+    }))
+    .sort((left, right) => left.installmentNumber - right.installmentNumber);
+
+  const totalAmount = normalizedInstallments.length
+    ? normalizedInstallments.reduce((sum, installment) => sum + installment.amount, 0)
+    : Number(String(student.courseAmount ?? student.totalAmount ?? 0).replace(/,/g, "")) || 0;
+
+  const paidAmount = normalizedInstallments.length
+    ? normalizedInstallments.reduce((sum, installment) => sum + Math.min(installment.amountPaid, installment.amount), 0)
+    : 0;
+
+  const feeProgress = totalAmount > 0 ? Math.min(100, Math.round((paidAmount / totalAmount) * 100)) : 0;
+  const nextInstallment = normalizedInstallments.find((installment) => installment.amountPaid < installment.amount) || null;
+  const dueAmount = nextInstallment ? Math.max(nextInstallment.amount - nextInstallment.amountPaid, 0) : 0;
+
+  return {
+    totalAmount,
+    paidAmount,
+    feeProgress,
+    nextInstallment,
+    dueAmount,
+  };
+}
+
+function getReminderWindowDaysUntilDue(dueDateText) {
+  const text = normalizeString(dueDateText);
+  if (!text) {
+    return null;
+  }
+
+  const dueDate = new Date(`${text}T00:00:00`);
+  if (Number.isNaN(dueDate.getTime())) {
+    return null;
+  }
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const diffDays = Math.ceil((dueDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+  return Number.isFinite(diffDays) ? diffDays : null;
+}
+
+async function resolveBranchStudentFacultyUser(student = {}, branchId = "") {
+  const normalizedBranchId = normalizeString(branchId || student.branchId);
+  const facultyId = normalizeString(student.facultyId);
+  const facultyName = normalizeString(student.facultyName);
+
+  if (!normalizedBranchId || (!facultyId && !facultyName)) {
+    return null;
+  }
+
+  const branchFaculty = await prisma.branchFaculty.findFirst({
+    where: {
+      branchId: normalizedBranchId,
+      status: "ACTIVE",
+      OR: [
+        ...(facultyId ? [{ facultyId }] : []),
+        ...(facultyName ? [{ name: { equals: facultyName, mode: "insensitive" } }] : []),
+      ],
+    },
+    select: {
+      email: true,
+      name: true,
+      facultyId: true,
+    },
+  });
+
+  if (!branchFaculty?.email) {
+    return null;
+  }
+
+  return prisma.user.findFirst({
+    where: {
+      email: {
+        equals: branchFaculty.email,
+        mode: "insensitive",
+      },
+    },
+    select: {
+      id: true,
+      email: true,
+      fullName: true,
+      role: true,
+    },
+  });
+}
+
+function shouldSendDueReminder(nextInstallment = null) {
+  if (!nextInstallment) {
+    return false;
+  }
+
+  const dueDateText = normalizeString(nextInstallment.dueDate);
+  if (!dueDateText) {
+    return false;
+  }
+
+  if (nextInstallment.dueReminderSentAt) {
+    return false;
+  }
+
+  const diffDays = getReminderWindowDaysUntilDue(dueDateText);
+  if (diffDays === null) {
+    return false;
+  }
+
+  return diffDays >= 0 && diffDays <= DUE_REMINDER_WINDOW_DAYS;
+}
+
+async function markInstallmentDueReminderSent(installmentId) {
+  if (!installmentId) {
+    return;
+  }
+
+  await prisma.branchStudentInstallment.update({
+    where: { id: installmentId },
+    data: {
+      dueReminderSentAt: new Date(),
+    },
+  });
+}
+
+export async function sendBranchStudentDueReminderEmails() {
+  const students = await prisma.branchStudent.findMany({
+    where: {
+      recordStatus: "ACTIVE",
+      emailAddress: { not: "" },
+    },
+    include: {
+      installments: {
+        orderBy: { installmentNumber: "asc" },
+      },
+    },
+    orderBy: [{ createdAt: "asc" }, { id: "asc" }],
+  });
+
+  let sentCount = 0;
+
+  for (const student of students) {
+    const feeSnapshot = calculateFeeProgressSnapshot(student);
+    const nextInstallment = feeSnapshot.nextInstallment;
+
+    if (!shouldSendDueReminder(nextInstallment) || !student.emailAddress) {
+      continue;
+    }
+
+    // eslint-disable-next-line no-await-in-loop
+    await sendStudentPaymentDueEmail({
+      to: student.emailAddress,
+      fullName: student.studentName,
+      studentId: student.studentId,
+      courseName: student.courseName || student.courseInterested || "",
+      feeProgress: feeSnapshot.feeProgress,
+      courseProgress: student.courseProgress,
+      dueAmount: feeSnapshot.dueAmount,
+      dueDate: nextInstallment?.dueDate || "",
+      installmentNumber: nextInstallment?.installmentNumber || null,
+    });
+
+    // eslint-disable-next-line no-await-in-loop
+    await markInstallmentDueReminderSent(nextInstallment.id);
+    sentCount += 1;
+  }
+
+  return {
+    scannedCount: students.length,
+    sentCount,
+  };
+}
+
+export function startBranchStudentDueReminderScheduler() {
+  const runSweep = () => {
+    void sendBranchStudentDueReminderEmails().catch((error) => {
+      console.warn("Branch student due reminder sweep failed", error);
+    });
+  };
+
+  runSweep();
+
+  const timer = setInterval(runSweep, DUE_REMINDER_SWEEP_INTERVAL_MS);
+  timer.unref?.();
+
+  return timer;
+}
+
+async function notifyProgressAlignment(studentRecord, branchProfile, actor) {
+  if (!studentRecord?.id || !branchProfile?.id) {
+    return;
+  }
+
+  const courseProgress = Number(studentRecord.courseProgress);
+  if (!Number.isFinite(courseProgress)) {
+    return;
+  }
+
+  const feeSnapshot = calculateFeeProgressSnapshot(studentRecord);
+  if (feeSnapshot.totalAmount <= 0) {
+    return;
+  }
+
+  const paidProgress = feeSnapshot.feeProgress;
+  if (courseProgress < Math.max(0, paidProgress - PROGRESS_ALERT_TOLERANCE)) {
+    return;
+  }
+
+  const facultyUser = await resolveBranchStudentFacultyUser(studentRecord, branchProfile.id);
+
+  await createFeeProgressAlertNotification({
+    branch: {
+      id: branchProfile.id,
+      branchId: branchProfile.branchId,
+      branchEmail: branchProfile.branchEmail,
+      branchName: branchProfile.branchName,
+    },
+    student: studentRecord,
+    facultyUserId: facultyUser?.id || null,
+    actorId: actor?.id ?? null,
+    courseProgress,
+    paidProgress,
+    dueAmount: feeSnapshot.dueAmount,
+    dueDate: feeSnapshot.nextInstallment?.dueDate || "",
+    nextInstallmentNumber: feeSnapshot.nextInstallment?.installmentNumber || null,
+    tone: "amber",
+  });
+}
+
 async function normalizeBranchStudentIdentifiers(branchProfile, actorId = null) {
   if (!branchProfile?.id) {
     return [];
@@ -284,6 +547,7 @@ function buildBranchStudentPayload(payload = {}, existing = null) {
   const remarks = parseOptionalText(candidate.remarks);
   const admissionDate = parseDateString(candidate.admissionDate, "Admission date");
   const recordStatus = parseStatus(candidate.recordStatus || candidate.status || "ACTIVE");
+  const courseProgress = parseOptionalProgress(candidate.courseProgress);
 
   if (currentStatus === "Employee" && !designation) {
     throw new AppError("Designation is required for employees", 400);
@@ -312,6 +576,7 @@ function buildBranchStudentPayload(payload = {}, existing = null) {
     sourceOther,
     remarks,
     admissionDate,
+    courseProgress,
     recordStatus,
     courseId: parseOptionalText(candidate.courseId),
     courseName: parseOptionalText(candidate.courseName),
@@ -436,6 +701,7 @@ function toBranchStudentSummary(record) {
     sourceOther: record.sourceOther,
     remarks: record.remarks,
     admissionDate: record.admissionDate,
+    courseProgress: record.courseProgress,
     courseId: record.courseId,
     courseName: record.courseName,
     facultyId: record.facultyId,
@@ -720,6 +986,7 @@ export async function updateBranchStudent(studentId, payload, actor = null) {
 
   const { studentData, installmentSchedule } = buildBranchStudentPayload(payload, existing);
   const existingLoginUser = await findBranchStudentLoginUser(existing);
+  const previousCourseProgress = Number(existing.courseProgress);
   await ensureUniqueBranchStudentIdentity(studentData, existing.branchId, existing.id, existingLoginUser?.id);
   const updated = await prisma.$transaction(async (tx) => {
     const student = await tx.branchStudent.update({
@@ -762,6 +1029,22 @@ export async function updateBranchStudent(studentId, payload, actor = null) {
 
     return updatedStudent;
   });
+
+  const updatedCourseProgress = Number(updated?.courseProgress);
+  if (
+    Number.isFinite(updatedCourseProgress) &&
+    updatedCourseProgress !== previousCourseProgress &&
+    updatedCourseProgress > 0
+  ) {
+    void notifyProgressAlignment(updated, {
+      id: existing.branchId,
+      branchId: existing.branchId,
+      branchName: existing.branchName,
+      branchEmail: existing.branchEmail,
+    }, actor).catch((error) => {
+      console.warn("Branch student progress notification failed", error);
+    });
+  }
 
   return toBranchStudentSummary(updated);
 }
@@ -860,6 +1143,43 @@ export async function createBranchStudentPayment(studentId, payload, actor = nul
       },
     });
   });
+
+  const refreshedStudent = await prisma.branchStudent.findUnique({
+    where: { id: student.id },
+    include: {
+      installments: {
+        orderBy: { installmentNumber: "asc" },
+      },
+    },
+  });
+
+  if (refreshedStudent) {
+    const branchProfile = await getCurrentBranchProfile(actor).catch(() => null);
+
+    void notifyProgressAlignment(refreshedStudent, branchProfile || { id: student.branchId, branchId: student.branchId }, actor).catch((error) => {
+      console.warn("Branch student payment progress notification failed", error);
+    });
+
+    const feeSnapshot = calculateFeeProgressSnapshot(refreshedStudent);
+    const nextInstallment = feeSnapshot.nextInstallment;
+    if (shouldSendDueReminder(nextInstallment) && refreshedStudent.emailAddress) {
+      void sendStudentPaymentDueEmail({
+        to: refreshedStudent.emailAddress,
+        fullName: refreshedStudent.studentName,
+        studentId: refreshedStudent.studentId,
+        courseName: refreshedStudent.courseName || refreshedStudent.courseInterested || "",
+        feeProgress: feeSnapshot.feeProgress,
+        courseProgress: refreshedStudent.courseProgress,
+        dueAmount: feeSnapshot.dueAmount,
+        dueDate: nextInstallment?.dueDate || "",
+        installmentNumber: nextInstallment?.installmentNumber || null,
+      })
+        .then(() => markInstallmentDueReminderSent(nextInstallment?.id))
+        .catch((error) => {
+          console.warn("Branch student due reminder email failed to send", error);
+        });
+    }
+  }
 
   return payment;
 }

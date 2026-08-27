@@ -10,6 +10,8 @@ export function baseTemplate({
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<meta name="supported-color-schemes" content="light">
 
 <title>${title}</title>
 
@@ -20,6 +22,10 @@ margin:0;
 padding:0;
 background:#EEF2F7;
 font-family:Arial,Helvetica,sans-serif;
+-webkit-text-size-adjust:100%;
+-ms-text-size-adjust:100%;
+color-scheme:light;
+supported-color-schemes:light;
 ">
 
 <table

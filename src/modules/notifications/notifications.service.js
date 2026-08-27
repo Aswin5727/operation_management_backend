@@ -75,6 +75,13 @@ function normalizeNotificationRow(row) {
     subModuleName: normalizeString(row.subModuleName),
     facultyId: normalizeString(row.facultyId),
     facultyName: normalizeString(row.facultyName),
+    studentId: normalizeString(row.studentId),
+    studentName: normalizeString(row.studentName),
+    courseName: normalizeString(row.courseName),
+    courseProgress: normalizeString(row.courseProgress),
+    paidProgress: normalizeString(row.paidProgress),
+    dueAmount: normalizeString(row.dueAmount),
+    dueDate: normalizeString(row.dueDate),
     targetBranchId: normalizeString(row.targetBranchId),
     targetBranchEmail: normalizeEmail(row.targetBranchEmail),
     targetBranchName: normalizeString(row.targetBranchName),
@@ -856,4 +863,59 @@ export async function createFacultyCourseAssignedNotification({
     targetUserId: facultyUserId,
     createdBy: actorId,
   });
+}
+
+export async function createFeeProgressAlertNotification({
+  branch = {},
+  student = {},
+  facultyUserId = null,
+  actorId = null,
+  courseProgress = null,
+  paidProgress = null,
+  dueAmount = null,
+  dueDate = null,
+  nextInstallmentNumber = null,
+  tone = "amber",
+  prismaClient = prisma,
+}) {
+  const studentName = normalizeString(student?.studentName || student?.fullName || "Student");
+  const studentId = normalizeString(student?.studentId || student?.id || "");
+  const courseName = normalizeString(student?.courseName || student?.courseInterested || student?.course || "Course");
+  const courseProgressNumber = Number(courseProgress);
+  const paidProgressNumber = Number(paidProgress);
+  const progressGap = Number.isFinite(courseProgressNumber) && Number.isFinite(paidProgressNumber)
+    ? Math.max(0, courseProgressNumber - paidProgressNumber)
+    : null;
+
+  const title = progressGap && progressGap > 0
+    ? `${studentName} fee progress is behind course progress`
+    : `${studentName} payment progress updated`;
+
+  const message = progressGap && progressGap > 0
+    ? `Course progress is ${Math.round(progressGap)}% ahead of paid progress. Please follow up the next installment for ${studentName}.`
+    : `Payment progress has been updated for ${studentName}.`;
+
+  return createNotification(
+    buildNotificationData({
+      kind: "COURSE_EDIT_MODULE_UPDATED",
+      tone,
+      title,
+      message,
+      actionLabel: "Review student",
+      branch,
+      createdBy: actorId,
+      extras: {
+        targetUserId: facultyUserId || null,
+        studentId,
+        studentName,
+        courseName,
+        courseProgress: Number.isFinite(courseProgressNumber) ? String(Math.round(courseProgressNumber)) : "",
+        paidProgress: Number.isFinite(paidProgressNumber) ? String(Math.round(paidProgressNumber)) : "",
+        dueAmount: Number.isFinite(Number(dueAmount)) ? String(Number(dueAmount)) : "",
+        dueDate: normalizeString(dueDate),
+        requestTitle: nextInstallmentNumber ? `Installment ${nextInstallmentNumber}` : "",
+      },
+    }),
+    prismaClient,
+  );
 }

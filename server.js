@@ -3,6 +3,7 @@ import { fileURLToPath } from "node:url";
 import app from "./app.js";
 import config from "./src/config/env.js";
 import prisma, { warmPrismaConnection } from "./src/config/prisma.js";
+import { startBranchStudentDueReminderScheduler } from "./src/modules/branchStudents/branchStudents.service.js";
 
 const DATABASE_WARMUP_MAX_ATTEMPTS = 3;
 const DATABASE_WARMUP_RETRY_MS = 1500;
@@ -52,6 +53,12 @@ function startDatabaseKeepAlive() {
   return timer;
 }
 
+function startDueReminderScheduler() {
+  const timer = startBranchStudentDueReminderScheduler();
+  timer?.unref?.();
+  return timer;
+}
+
 async function startServer() {
   const warmed = await warmDatabaseConnection();
 
@@ -60,6 +67,7 @@ async function startServer() {
   }
 
   const keepAliveTimer = startDatabaseKeepAlive();
+  const dueReminderTimer = startDueReminderScheduler();
   const server = app.listen(config.port, "0.0.0.0", () => {
     console.log(`Backend server running on port ${config.port}`);
   });
@@ -67,6 +75,10 @@ async function startServer() {
   server.on("close", () => {
     if (keepAliveTimer) {
       clearInterval(keepAliveTimer);
+    }
+
+    if (dueReminderTimer) {
+      clearInterval(dueReminderTimer);
     }
 
     void prisma.$disconnect().catch((error) => {

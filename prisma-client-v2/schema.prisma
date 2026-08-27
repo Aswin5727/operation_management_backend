@@ -483,6 +483,7 @@ model BranchStudent {
   paymentMode        String                     @default("Installment")
   paymentPlanId      String?
   paymentPlan        String?
+  courseProgress     Int?
   branch             Branch                     @relation(fields: [branchId], references: [id], onDelete: Cascade)
   course             BranchCourse?              @relation(fields: [courseId], references: [id])
   installments       BranchStudentInstallment[]
@@ -504,6 +505,7 @@ model BranchStudentInstallment {
   amount            Int
   amountPaid        Int                    @default(0)
   dueDate           String?
+  dueReminderSentAt DateTime?
   status            String                 @default("Pending")
   paidAt            DateTime?
   paymentMethod     String?

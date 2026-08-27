@@ -10,6 +10,7 @@ import { resetPasswordTemplate } from "./emailTemplates/resetPasswordTemplate.js
 import { facultyTemplate } from "./emailTemplates/facultyTemplate.js";
 import { branchTemplate } from "./emailTemplates/branchTemplate.js";
 import { branchWelcomeTemplate } from "./emailTemplates/branchWelcomeTemplate.js";
+import { alertTemplate } from "./emailTemplates/alertTemplate.js";
 
 let cachedTransporter = null;
 let cachedResendClient = null;
@@ -562,43 +563,23 @@ export async function sendFacultyCourseAssignmentEmail({
   const safeName = escapeHtml(fullName || "Faculty");
   const safeFacultyId = escapeHtml(facultyId || "");
   const safeCourseName = escapeHtml(courseName || "");
-
-  const html = `
-    <div style="font-family: Arial, sans-serif; max-width: 640px; margin: 0 auto; padding: 24px;">
-      <h2>Course Assigned</h2>
-
-      <p>Hello ${safeName},</p>
-
-      <p>
-        A course has been assigned to you in the CISPRO Faculty Portal.
-      </p>
-
-      <p>
-        <strong>Faculty ID:</strong> ${safeFacultyId}
-      </p>
-
-      <p>
-        <strong>Assigned Course:</strong> ${safeCourseName}
-      </p>
-
-      ${
-        loginLink
-          ? `
-            <p>
-              <a href="${loginLink}">
-                Open Faculty Dashboard
-              </a>
-            </p>
-          `
-          : ""
-      }
-
-      <p>
-        Regards,<br />
-        CISPRO Team
-      </p>
-    </div>
-  `;
+  const html = alertTemplate({
+    eyebrow: "Faculty Assignment",
+    title: "Course Assigned",
+    subtitle: `Hello ${safeName}, a course has been assigned to your faculty account.`,
+    summary: "Please review your dashboard and start managing the assigned course.",
+    details: [
+      { label: "Faculty Name", value: safeName },
+      { label: "Faculty ID", value: safeFacultyId || "-" },
+      { label: "Assigned Course", value: safeCourseName || "-" },
+      { label: "Login Email", value: to },
+    ],
+    primaryActionLabel: "Open Faculty Dashboard",
+    primaryActionLink: loginLink,
+    secondaryActionLabel: "Reset Password",
+    secondaryActionLink: "",
+    note: "Use your login credentials to continue. If this is the first login, complete the password reset from the login page.",
+  });
 
   const text = [
     `Hello ${fullName || "Faculty"},`,
@@ -616,6 +597,65 @@ export async function sendFacultyCourseAssignmentEmail({
   return sendEmail({
     to,
     subject: `Course Assigned - ${courseName}`,
+    html,
+    text,
+  });
+}
+
+export async function sendStudentPaymentDueEmail({
+  to,
+  fullName,
+  studentId,
+  courseName,
+  feeProgress,
+  courseProgress,
+  dueAmount,
+  dueDate,
+  installmentNumber,
+}) {
+  const loginLink = buildLoginLink();
+  const safeName = escapeHtml(fullName || "Student");
+  const safeStudentId = escapeHtml(studentId || "-");
+  const safeCourseName = escapeHtml(courseName || "-");
+  const safeDueDate = escapeHtml(dueDate || "-");
+  const safeDueAmount = Number.isFinite(Number(dueAmount)) ? `₹${Number(dueAmount).toLocaleString("en-IN")}` : "-";
+
+  const html = alertTemplate({
+    eyebrow: "Installment Reminder",
+    title: "Next Installment Due",
+    subtitle: `Hello ${safeName}, your next installment is due soon.`,
+    summary: "Your next installment is due within 7 days. Please complete the payment on time.",
+    details: [
+      { label: "Student Name", value: safeName },
+      { label: "Student ID", value: safeStudentId },
+      { label: "Course", value: safeCourseName },
+      { label: "Pending Installment", value: installmentNumber ? `Installment ${installmentNumber}` : "-" },
+      { label: "Due Amount", value: safeDueAmount },
+      { label: "Due Date", value: safeDueDate },
+    ],
+    primaryActionLabel: "Open Student Dashboard",
+    primaryActionLink: loginLink,
+    secondaryActionLabel: "Reset Password",
+    secondaryActionLink: "",
+    note: "Please pay the due installment to avoid any delay in your course continuation.",
+  });
+
+  const text = [
+    `Hello ${fullName || "Student"},`,
+    "Your next installment is due within 7 days.",
+    studentId ? `Student ID: ${studentId}` : null,
+    courseName ? `Course: ${courseName}` : null,
+    installmentNumber ? `Pending installment: ${installmentNumber}` : null,
+    Number.isFinite(Number(dueAmount)) ? `Due amount: ${Number(dueAmount)}` : null,
+    dueDate ? `Due date: ${dueDate}` : null,
+    loginLink ? `Dashboard link: ${loginLink}` : null,
+  ]
+    .filter(Boolean)
+    .join("\n");
+
+  return sendEmail({
+    to,
+    subject: "Next installment reminder",
     html,
     text,
   });

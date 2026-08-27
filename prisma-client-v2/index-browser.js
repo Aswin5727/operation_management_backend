@@ -480,7 +480,8 @@ exports.Prisma.BranchStudentScalarFieldEnum = {
   courseAmount: 'courseAmount',
   paymentMode: 'paymentMode',
   paymentPlanId: 'paymentPlanId',
-  paymentPlan: 'paymentPlan'
+  paymentPlan: 'paymentPlan',
+  courseProgress: 'courseProgress'
 };
 
 exports.Prisma.BranchStudentInstallmentScalarFieldEnum = {
@@ -490,6 +491,7 @@ exports.Prisma.BranchStudentInstallmentScalarFieldEnum = {
   amount: 'amount',
   amountPaid: 'amountPaid',
   dueDate: 'dueDate',
+  dueReminderSentAt: 'dueReminderSentAt',
   status: 'status',
   paidAt: 'paidAt',
   paymentMethod: 'paymentMethod',
