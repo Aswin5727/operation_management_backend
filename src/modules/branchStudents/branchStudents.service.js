@@ -1062,6 +1062,10 @@ export async function deleteBranchStudent(studentId, actor = null) {
   const existingLoginUser = await findBranchStudentLoginUser(existing);
 
   await prisma.$transaction(async (tx) => {
+    await tx.branchStudentPayment.deleteMany({
+      where: { branchStudentId: existing.id },
+    });
+
     await tx.branchStudent.delete({
       where: { id: existing.id },
     });
