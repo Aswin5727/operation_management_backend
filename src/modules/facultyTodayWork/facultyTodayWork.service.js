@@ -192,6 +192,137 @@ function calculateProgress(course, module, selectedSubmoduleIds = []) {
   };
 }
 
+function normalizeWorkStudentId(value = "") {
+  return normalizeString(value).toLowerCase();
+}
+
+function getWorkEntryStudentIds(entry = {}) {
+  return parseIdList(entry.studentIds);
+}
+
+function getWorkEntrySubmoduleIds(entry = {}) {
+  return parseIdList(entry.submoduleIds || entry.selectedSubmoduleIds || entry.submodules);
+}
+
+function isWorkEntryForBranchStudent(entry = {}, student = {}) {
+  if (!entry || !student) return false;
+
+  const applyToAllStudents = Boolean(entry.applyToAllStudents);
+  const entryStudentIds = getWorkEntryStudentIds(entry).map((value) => normalizeWorkStudentId(value));
+  const studentIdsToMatch = [
+    normalizeWorkStudentId(student?.id),
+    normalizeWorkStudentId(student?.studentId),
+  ].filter(Boolean);
+
+  if (!applyToAllStudents && !studentIdsToMatch.some((value) => entryStudentIds.includes(value))) {
+    return false;
+  }
+
+  return true;
+}
+
+function calculateBranchStudentCourseProgress(course = {}, entries = [], student = null) {
+  const modules = Array.isArray(course?.modules) ? course.modules : [];
+  if (!modules.length) return 0;
+
+  const normalizedCourseId = normalizeString(course?.id || course?.courseId || "");
+  const matchingEntries = (Array.isArray(entries) ? entries : []).filter((entry) => {
+    const entryCourseId = normalizeString(entry?.courseId || "");
+    if (normalizedCourseId && entryCourseId && entryCourseId !== normalizedCourseId) {
+      return false;
+    }
+
+    if (!student) {
+      return true;
+    }
+
+    return isWorkEntryForBranchStudent(entry, student);
+  });
+
+  if (!matchingEntries.length) return 0;
+
+  const moduleCompletionMap = new Map();
+  modules.forEach((module, moduleIndex) => {
+    const moduleId = normalizeString(module?.id || `module-${moduleIndex}`);
+    if (!moduleId) return;
+    moduleCompletionMap.set(moduleId, new Set());
+  });
+
+  matchingEntries.forEach((entry) => {
+    const entryModuleId = normalizeString(entry?.moduleId || "");
+    const submoduleSet = moduleCompletionMap.get(entryModuleId);
+    if (!submoduleSet) return;
+
+    getWorkEntrySubmoduleIds(entry).forEach((submoduleId) => {
+      submoduleSet.add(normalizeString(submoduleId));
+    });
+  });
+
+  const totals = modules.reduce(
+    (acc, module, moduleIndex) => {
+      const moduleId = normalizeString(module?.id || `module-${moduleIndex}`);
+      const submodules = Array.isArray(module?.submodules) ? module.submodules : [];
+      const completedCount = Math.min(submodules.length, (moduleCompletionMap.get(moduleId) || new Set()).size);
+
+      acc.completed += completedCount;
+      acc.total += submodules.length;
+      return acc;
+    },
+    { completed: 0, total: 0 },
+  );
+
+  if (!totals.total) return 0;
+
+  return Math.min(100, Math.max(0, (totals.completed / totals.total) * 100));
+}
+
+async function syncBranchStudentCourseProgress(tx, { branchCourse, branchId, studentIds = [], actorId = null }) {
+  const normalizedBranchId = normalizeString(branchId);
+  const normalizedStudentIds = dedupeIds(studentIds)
+  const normalizedCourseId = normalizeString(branchCourse?.id || "");
+
+  if (!normalizedBranchId || !normalizedCourseId || !normalizedStudentIds.length) {
+    return;
+  }
+
+  const matchingBranchStudents = await tx.branchStudent.findMany({
+    where: {
+      branchId: normalizedBranchId,
+      OR: [
+        { id: { in: normalizedStudentIds } },
+        { studentId: { in: normalizedStudentIds } },
+      ],
+    },
+  });
+
+  if (!matchingBranchStudents.length) {
+    return;
+  }
+
+  const allWorkEntries = await tx.facultyTodayWorkEntry.findMany({
+    where: {
+      branchId: normalizedBranchId,
+      courseId: normalizedCourseId,
+    },
+    orderBy: [
+      { createdAt: "asc" },
+      { updatedAt: "asc" },
+    ],
+  });
+
+  for (const student of matchingBranchStudents) {
+    const courseProgress = calculateBranchStudentCourseProgress(branchCourse, allWorkEntries, student);
+
+    await tx.branchStudent.update({
+      where: { id: student.id },
+      data: {
+        courseProgress: Math.max(0, Math.min(100, Math.round(courseProgress))),
+        updatedBy: actorId || null,
+      },
+    });
+  }
+}
+
 function resolveStudentIds(payload = {}) {
   const selectedStudentIds = dedupeIds(
     parseIdList(payload.selectedStudentIds || payload.studentIds || payload.students),
@@ -324,28 +455,39 @@ export async function createFacultyTodayWorkEntry(payload = {}, user = null) {
     };
   });
 
-  const created = await prisma.facultyTodayWorkEntry.create({
-    data: {
-      facultyUserId,
-      facultyProfileId: facultyProfileId || null,
-      branchId: branchId || branchCourse.branchId || null,
-      courseId,
-      courseName: normalizeString(branchCourse.name || payload.courseName || "Course"),
-      moduleId,
-      moduleName: normalizeString(selectedModule.title || payload.moduleName || "Module"),
-      submoduleIds: selectedSubmoduleIds,
-      submodules: selectedSubmodulePayload,
+  const created = await prisma.$transaction(async (tx) => {
+    const workEntry = await tx.facultyTodayWorkEntry.create({
+      data: {
+        facultyUserId,
+        facultyProfileId: facultyProfileId || null,
+        branchId: branchId || branchCourse.branchId || null,
+        courseId,
+        courseName: normalizeString(branchCourse.name || payload.courseName || "Course"),
+        moduleId,
+        moduleName: normalizeString(selectedModule.title || payload.moduleName || "Module"),
+        submoduleIds: selectedSubmoduleIds,
+        submodules: selectedSubmodulePayload,
+        studentIds,
+        studentCount: studentIds.length,
+        applyToAllStudents,
+        moduleProgress: progress.moduleProgress,
+        submoduleProgress: progress.submoduleProgress,
+        courseProgress: progress.courseProgress,
+        moduleWeight: progress.moduleWeight,
+        workDate,
+        createdBy: normalizeString(user?.id) || null,
+        updatedBy: normalizeString(user?.id) || null,
+      },
+    });
+
+    await syncBranchStudentCourseProgress(tx, {
+      branchCourse,
+      branchId: branchCourse.branchId || branchId,
       studentIds,
-      studentCount: studentIds.length,
-      applyToAllStudents,
-      moduleProgress: progress.moduleProgress,
-      submoduleProgress: progress.submoduleProgress,
-      courseProgress: progress.courseProgress,
-      moduleWeight: progress.moduleWeight,
-      workDate,
-      createdBy: normalizeString(user?.id) || null,
-      updatedBy: normalizeString(user?.id) || null,
-    },
+      actorId: normalizeString(user?.id) || null,
+    });
+
+    return workEntry;
   });
 
   return mapWorkEntry(created);
