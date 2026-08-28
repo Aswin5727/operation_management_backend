@@ -44,6 +44,19 @@ const BRANCH_ADMIN_SCOPE_CACHE = new Map();
 const BRANCH_ADMIN_SCOPE_CACHE_TTL_MS = 60 * 1000;
 const LOGIN_SUCCESS_EVENT_TYPE = "LOGIN_SUCCESS";
 
+function resolveBranchIdentity(branch = {}, fallback = {}) {
+  const branchId = normalizeString(branch?.id || branch?.branchId || fallback?.id || fallback?.branchId);
+  const branchEmail = normalizeEmail(branch?.branchEmail || fallback?.branchEmail);
+  const branchName = normalizeString(branch?.branchName || fallback?.branchName);
+
+  return {
+    id: branchId,
+    branchId,
+    branchEmail,
+    branchName,
+  };
+}
+
 function normalizeString(value) {
   return String(value ?? "").trim();
 }
@@ -496,6 +509,11 @@ export async function createCourseEditRequestNotification({
   actor = {},
   prismaClient = prisma,
 }) {
+  const branch = resolveBranchIdentity(branchCourse?.branch || {}, {
+    id: request?.branchId || branchCourse?.branchId || "",
+    branchId: request?.branchId || branchCourse?.branchId || "",
+  });
+
   return createNotification(
     buildNotificationData({
       kind: "COURSE_EDIT_REQUEST",
@@ -503,7 +521,7 @@ export async function createCourseEditRequestNotification({
       title: "Edit Request Received",
       message: `Faculty has requested permission to edit modules and sub-modules of ${branchCourse?.name || "the course"}.`,
       actionLabel: "Review request",
-      branch: branchCourse?.branch || {},
+      branch,
       createdBy: actor?.userId || actor?.id || null,
       extras: {
         requestId: request?.id || null,
@@ -528,6 +546,11 @@ export async function createCourseEditRequestAcceptedNotification({
   actor = {},
   prismaClient = prisma,
 }) {
+  const branch = resolveBranchIdentity(branchCourse?.branch || {}, {
+    id: request?.branchId || branchCourse?.branchId || "",
+    branchId: request?.branchId || branchCourse?.branchId || "",
+  });
+
   return createNotification(
     buildNotificationData({
       kind: "COURSE_EDIT_REQUEST_ACCEPTED",
@@ -535,7 +558,7 @@ export async function createCourseEditRequestAcceptedNotification({
       title: "Edit Request Approved",
       message: `You can now edit the Modules and Sub Modules of ${branchCourse?.name || "the course"}.`,
       actionLabel: "Open Edit",
-      branch: branchCourse?.branch || {},
+      branch,
       createdBy: actor?.userId || actor?.id || null,
       extras: {
         targetUserId: faculty?.userId || faculty?.id || null,
@@ -562,6 +585,11 @@ export async function createCourseEditRequestRejectedNotification({
   responseNote = "",
   prismaClient = prisma,
 }) {
+  const branch = resolveBranchIdentity(branchCourse?.branch || {}, {
+    id: request?.branchId || branchCourse?.branchId || "",
+    branchId: request?.branchId || branchCourse?.branchId || "",
+  });
+
   return createNotification(
     buildNotificationData({
       kind: "COURSE_EDIT_REQUEST_REJECTED",
@@ -569,7 +597,7 @@ export async function createCourseEditRequestRejectedNotification({
       title: "Edit Request Rejected",
       message: responseNote || `Your request to edit ${branchCourse?.name || "the course"} was rejected.`,
       actionLabel: "View status",
-      branch: branchCourse?.branch || {},
+      branch,
       createdBy: actor?.userId || actor?.id || null,
       extras: {
         targetUserId: faculty?.userId || faculty?.id || null,
@@ -601,6 +629,10 @@ export async function createCourseEditModuleUpdatedNotification({
   const moduleLabel = module?.title || "a module";
   const subModuleLabel = subModule?.title ? ` / ${subModule.title}` : "";
   const fieldLabel = Array.isArray(updatedFields) && updatedFields.length ? ` (${updatedFields.join(", ")})` : "";
+  const branch = resolveBranchIdentity(branchCourse?.branch || {}, {
+    id: request?.branchId || branchCourse?.branchId || "",
+    branchId: request?.branchId || branchCourse?.branchId || "",
+  });
 
   return createNotification(
     buildNotificationData({
@@ -609,7 +641,7 @@ export async function createCourseEditModuleUpdatedNotification({
       title: "Course Module Updated",
       message: `Faculty updated ${moduleLabel}${subModuleLabel} in ${branchCourse?.name || "the course"}${fieldLabel}.`,
       actionLabel: "View update",
-      branch: branchCourse?.branch || {},
+      branch,
       createdBy: actor?.userId || actor?.id || null,
       extras: {
         requestId: request?.id || null,
