@@ -3,7 +3,10 @@ import { fileURLToPath } from "node:url";
 import app from "./app.js";
 import config from "./src/config/env.js";
 import prisma, { warmPrismaConnection } from "./src/config/prisma.js";
-import { startBranchStudentDueReminderScheduler } from "./src/modules/branchStudents/branchStudents.service.js";
+import {
+  ensureBranchStudentLedgerTable,
+  startBranchStudentDueReminderScheduler,
+} from "./src/modules/branchStudents/branchStudents.service.js";
 
 const DATABASE_WARMUP_MAX_ATTEMPTS = 3;
 const DATABASE_WARMUP_RETRY_MS = 1500;
@@ -65,6 +68,10 @@ async function startServer() {
   if (!warmed) {
     console.warn("Starting server without confirmed database warmup.");
   }
+
+  await ensureBranchStudentLedgerTable().catch((error) => {
+    console.warn(`Failed to ensure branch student ledger table: ${error?.message || error}`);
+  });
 
   const keepAliveTimer = startDatabaseKeepAlive();
   const dueReminderTimer = startDueReminderScheduler();

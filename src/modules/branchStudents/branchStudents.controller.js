@@ -3,7 +3,9 @@ import {
   createBranchStudent,
   deleteBranchStudent,
   getBranchStudent,
+  getBranchStudentLedger,
   listBranchStudents,
+  listBranchLedger,
   updateBranchStudent,
   createBranchStudentPayment,
 } from "./branchStudents.service.js";
@@ -32,9 +34,19 @@ export const createBranchStudentHandler = asyncHandler(async (req, res) => {
   return sendSuccess(res, "Branch student created successfully", student, undefined, 201);
 });
 
+export const listBranchLedgerHandler = asyncHandler(async (req, res) => {
+  const result = await listBranchLedger(req.query || {}, req.user);
+  return sendSuccess(res, "Branch ledger fetched successfully", result.entries, result.summary);
+});
+
 export const getBranchStudentHandler = asyncHandler(async (req, res) => {
   const student = await getBranchStudent(req.params.studentId, req.user);
   return sendSuccess(res, "Branch student fetched successfully", student);
+});
+
+export const getBranchStudentLedgerHandler = asyncHandler(async (req, res) => {
+  const result = await getBranchStudentLedger(req.params.studentId, req.user);
+  return sendSuccess(res, "Branch student ledger fetched successfully", result.entries, result.summary);
 });
 
 export const updateBranchStudentHandler = asyncHandler(async (req, res) => {

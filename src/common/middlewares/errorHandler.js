@@ -1,4 +1,5 @@
 import AppError from "../errors/AppError.js";
+import config from "../../config/env.js";
 
 function errorHandler(err, _req, res, _next) {
   console.error("GLOBAL ERROR CAUGHT:", err);
@@ -26,9 +27,12 @@ function errorHandler(err, _req, res, _next) {
     errorMessage.includes("Expected property name") ||
     errorMessage.includes("does not exist on the current model")
   ) {
+    const isProduction = String(config.nodeEnv || "").toLowerCase() === "production";
     return res.status(400).json({
       status: "error",
-      message: "Invalid request data. Please review the form and try again.",
+      message: isProduction
+        ? "Invalid request data. Please review the form and try again."
+        : errorMessage,
     });
   }
 

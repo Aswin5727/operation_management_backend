@@ -259,6 +259,704 @@ function calculateFeeProgressSnapshot(student = {}) {
   };
 }
 
+function buildLedgerDate(value, fallback = new Date()) {
+  if (value instanceof Date) {
+    return Number.isNaN(value.getTime()) ? new Date(fallback) : new Date(value);
+  }
+
+  const text = normalizeString(value);
+  if (!text) {
+    return new Date(fallback);
+  }
+
+  const direct = new Date(text);
+  if (!Number.isNaN(direct.getTime())) {
+    return direct;
+  }
+
+  const asDateOnly = new Date(`${text}T00:00:00`);
+  if (!Number.isNaN(asDateOnly.getTime())) {
+    return asDateOnly;
+  }
+
+  return new Date(fallback);
+}
+
+function buildBranchStudentLedgerKey(studentId, suffix) {
+  return `${normalizeString(studentId)}:${normalizeString(suffix)}`;
+}
+
+function resolveBranchStudentLedgerCourseAmount(student = {}) {
+  const courseAmount = Number(student.courseAmount ?? 0);
+  if (Number.isFinite(courseAmount) && courseAmount > 0) {
+    return Math.round(courseAmount);
+  }
+
+  const installmentTotal = Array.isArray(student.installments)
+    ? student.installments.reduce((sum, installment) => {
+      const amount = Number(installment?.amount ?? 0);
+      return Number.isFinite(amount) ? sum + Math.max(amount, 0) : sum;
+    }, 0)
+    : 0;
+
+  return installmentTotal > 0 ? Math.round(installmentTotal) : 0;
+}
+
+function normalizeBranchStudentLedgerDescription(payment = {}) {
+  const payAgainst = normalizeString(payment.payAgainst);
+  if (payAgainst) {
+    return payAgainst;
+  }
+
+  const installmentNumber = Number(payment.installment?.installmentNumber ?? 0);
+  if (Number.isFinite(installmentNumber) && installmentNumber > 0) {
+    return `Installment ${installmentNumber}`;
+  }
+
+  return "Payment";
+}
+
+function sortBranchStudentLedgerEntries(entries = []) {
+  return [...entries].sort((left, right) => {
+    const leftDate = buildLedgerDate(left.entryDate || left.paymentDate || left.createdAt || left.updatedAt || left.createdAt);
+    const rightDate = buildLedgerDate(right.entryDate || right.paymentDate || right.createdAt || right.updatedAt || right.createdAt);
+
+    const leftTime = leftDate.getTime();
+    const rightTime = rightDate.getTime();
+    if (leftTime !== rightTime) {
+      return leftTime - rightTime;
+    }
+
+    const leftPriority = String(left.entryType || "").toUpperCase() === "DEBIT" ? 0 : 1;
+    const rightPriority = String(right.entryType || "").toUpperCase() === "DEBIT" ? 0 : 1;
+    if (leftPriority !== rightPriority) {
+      return leftPriority - rightPriority;
+    }
+
+    return String(left.ledgerKey || left.id || "").localeCompare(String(right.ledgerKey || right.id || ""));
+  });
+}
+
+const BRANCH_STUDENT_LEDGER_TABLE = Prisma.raw('"BranchStudentLedgerEntry"');
+
+async function fetchBranchStudentLedgerRows(db, branchStudentId) {
+  return db.$queryRaw(Prisma.sql`
+    SELECT *
+    FROM ${BRANCH_STUDENT_LEDGER_TABLE}
+    WHERE "branchStudentId" = ${branchStudentId}
+    ORDER BY "entryDate" ASC NULLS LAST, "createdAt" ASC, "ledgerKey" ASC
+  `);
+}
+
+async function upsertBranchStudentLedgerEntry(db, data = {}) {
+  const now = new Date();
+  await db.$executeRaw(Prisma.sql`
+    INSERT INTO ${BRANCH_STUDENT_LEDGER_TABLE} (
+      "id",
+      "ledgerKey",
+      "branchId",
+      "branchStudentId",
+      "paymentId",
+      "installmentId",
+      "entryNo",
+      "entryType",
+      "description",
+      "debit",
+      "credit",
+      "amount",
+      "runningBalance",
+      "studentBalanceAfter",
+      "entryDate",
+      "paymentDate",
+      "referenceType",
+      "referenceId",
+      "paymentMode",
+      "receiptNumber",
+      "payAgainst",
+      "transactionReference",
+      "notes",
+      "createdBy",
+      "updatedBy",
+      "createdAt",
+      "updatedAt"
+    ) VALUES (
+      ${normalizeString(data.id) || crypto.randomUUID()},
+      ${normalizeString(data.ledgerKey)},
+      ${normalizeString(data.branchId)},
+      ${normalizeString(data.branchStudentId)},
+      ${data.paymentId ?? null},
+      ${data.installmentId ?? null},
+      ${Number(data.entryNo ?? 0)},
+      ${normalizeString(data.entryType)},
+      ${normalizeString(data.description)},
+      ${Number(data.debit ?? 0)},
+      ${Number(data.credit ?? 0)},
+      ${Number(data.amount ?? 0)},
+      ${Number(data.runningBalance ?? 0)},
+      ${Number(data.studentBalanceAfter ?? 0)},
+      ${data.entryDate ?? null},
+      ${data.paymentDate ?? null},
+      ${data.referenceType ?? null},
+      ${data.referenceId ?? null},
+      ${data.paymentMode ?? null},
+      ${data.receiptNumber ?? null},
+      ${data.payAgainst ?? null},
+      ${data.transactionReference ?? null},
+      ${data.notes ?? null},
+      ${data.createdBy ?? null},
+      ${data.updatedBy ?? null},
+      ${now},
+      ${now}
+    )
+    ON CONFLICT ("ledgerKey") DO UPDATE SET
+      "branchId" = EXCLUDED."branchId",
+      "paymentId" = EXCLUDED."paymentId",
+      "installmentId" = EXCLUDED."installmentId",
+      "entryNo" = EXCLUDED."entryNo",
+      "entryType" = EXCLUDED."entryType",
+      "description" = EXCLUDED."description",
+      "debit" = EXCLUDED."debit",
+      "credit" = EXCLUDED."credit",
+      "amount" = EXCLUDED."amount",
+      "runningBalance" = EXCLUDED."runningBalance",
+      "studentBalanceAfter" = EXCLUDED."studentBalanceAfter",
+      "entryDate" = EXCLUDED."entryDate",
+      "paymentDate" = EXCLUDED."paymentDate",
+      "referenceType" = EXCLUDED."referenceType",
+      "referenceId" = EXCLUDED."referenceId",
+      "paymentMode" = EXCLUDED."paymentMode",
+      "receiptNumber" = EXCLUDED."receiptNumber",
+      "payAgainst" = EXCLUDED."payAgainst",
+      "transactionReference" = EXCLUDED."transactionReference",
+      "notes" = EXCLUDED."notes",
+      "updatedBy" = EXCLUDED."updatedBy",
+      "updatedAt" = EXCLUDED."updatedAt"
+  `);
+}
+
+async function recomputeBranchStudentLedgerBalances(db, branchStudentId) {
+  const rows = await fetchBranchStudentLedgerRows(db, branchStudentId);
+  const sortedRows = sortBranchStudentLedgerEntries(rows);
+  let runningBalance = 0;
+
+  for (let index = 0; index < sortedRows.length; index += 1) {
+    const row = sortedRows[index];
+    runningBalance += Number(row.debit ?? 0) - Number(row.credit ?? 0);
+
+    if (
+      Number(row.entryNo ?? 0) !== index + 1 ||
+      Number(row.runningBalance ?? 0) !== runningBalance ||
+      Number(row.studentBalanceAfter ?? 0) !== runningBalance
+    ) {
+      // eslint-disable-next-line no-await-in-loop
+      await db.$executeRaw(Prisma.sql`
+        UPDATE ${BRANCH_STUDENT_LEDGER_TABLE}
+        SET
+          "entryNo" = ${index + 1},
+          "runningBalance" = ${runningBalance},
+          "studentBalanceAfter" = ${runningBalance},
+          "updatedAt" = ${new Date()}
+        WHERE "id" = ${row.id}
+      `);
+    }
+  }
+
+  return fetchBranchStudentLedgerRows(db, branchStudentId);
+}
+
+async function materializeBranchStudentLedgerEntries(db, student, { includePayments = true } = {}) {
+  const branchStudentId = String(student?.id || "").trim();
+  const branchId = String(student?.branchId || "").trim();
+
+  if (!branchStudentId || !branchId) {
+    throw new AppError("Branch student is required for ledger materialization", 400);
+  }
+
+  const studentCourseAmount = resolveBranchStudentLedgerCourseAmount(student);
+  const studentCreatedAt = buildLedgerDate(student.admissionDate || student.createdAt || new Date());
+
+  if (studentCourseAmount > 0) {
+    await upsertBranchStudentLedgerEntry(db, {
+      ledgerKey: buildBranchStudentLedgerKey(branchStudentId, "course-fee"),
+      branchId,
+      branchStudentId,
+      entryType: "DEBIT",
+      description: "Course Fee",
+      debit: studentCourseAmount,
+      credit: 0,
+      amount: studentCourseAmount,
+      entryDate: studentCreatedAt,
+      referenceType: "course-fee",
+      referenceId: branchStudentId,
+      createdBy: student.createdBy ?? null,
+      updatedBy: student.updatedBy ?? null,
+    });
+  }
+
+  if (includePayments) {
+    const payments = Array.isArray(student.payments) ? student.payments : [];
+
+    for (const payment of payments) {
+      const amount = Math.max(Number(payment.amount ?? 0), 0);
+      if (amount <= 0) {
+        continue;
+      }
+
+      const paymentDate = buildLedgerDate(payment.paymentDate || payment.createdAt || new Date());
+      const installmentNumber = Number(payment.installment?.installmentNumber ?? 0);
+      const payAgainst = normalizeString(payment.payAgainst)
+        || (Number.isFinite(installmentNumber) && installmentNumber > 0 ? `Installment ${installmentNumber}` : "");
+
+      // eslint-disable-next-line no-await-in-loop
+      await upsertBranchStudentLedgerEntry(db, {
+        ledgerKey: buildBranchStudentLedgerKey(branchStudentId, `payment-${payment.id}`),
+        branchId,
+        branchStudentId,
+        paymentId: payment.id,
+        installmentId: payment.installmentId || null,
+        entryType: "CREDIT",
+        description: normalizeBranchStudentLedgerDescription(payment),
+        debit: 0,
+        credit: amount,
+        amount,
+        entryDate: paymentDate,
+        paymentDate,
+        referenceType: "payment",
+        referenceId: payment.id,
+        paymentMode: normalizeString(payment.paymentMode),
+        receiptNumber: normalizeString(payment.receiptNumber),
+        payAgainst,
+        transactionReference: normalizeString(payment.transactionReference),
+        notes: normalizeString(payment.notes),
+        createdBy: payment.createdBy ?? null,
+        updatedBy: payment.updatedBy ?? null,
+      });
+    }
+  }
+
+  return recomputeBranchStudentLedgerBalances(db, branchStudentId);
+}
+
+const BRANCH_STUDENT_LEDGER_TABLE_DDL = [
+  `
+    CREATE TABLE IF NOT EXISTS "BranchStudentLedgerEntry" (
+      "id" TEXT PRIMARY KEY,
+      "ledgerKey" TEXT NOT NULL UNIQUE,
+      "branchId" TEXT NOT NULL,
+      "branchStudentId" TEXT NOT NULL,
+      "paymentId" TEXT,
+      "installmentId" TEXT,
+      "entryNo" INTEGER NOT NULL DEFAULT 0,
+      "entryType" TEXT NOT NULL,
+      "description" TEXT NOT NULL,
+      "debit" INTEGER NOT NULL DEFAULT 0,
+      "credit" INTEGER NOT NULL DEFAULT 0,
+      "amount" INTEGER NOT NULL DEFAULT 0,
+      "runningBalance" INTEGER NOT NULL DEFAULT 0,
+      "studentBalanceAfter" INTEGER NOT NULL DEFAULT 0,
+      "entryDate" TIMESTAMP(3),
+      "paymentDate" TIMESTAMP(3),
+      "referenceType" TEXT,
+      "referenceId" TEXT,
+      "paymentMode" TEXT,
+      "receiptNumber" TEXT,
+      "payAgainst" TEXT,
+      "transactionReference" TEXT,
+      "notes" TEXT,
+      "createdBy" TEXT,
+      "updatedBy" TEXT,
+      "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      CONSTRAINT "BranchStudentLedgerEntry_branchId_fkey"
+        FOREIGN KEY ("branchId") REFERENCES "Branch"("id") ON DELETE CASCADE,
+      CONSTRAINT "BranchStudentLedgerEntry_branchStudentId_fkey"
+        FOREIGN KEY ("branchStudentId") REFERENCES "BranchStudent"("id") ON DELETE CASCADE
+    )
+  `,
+  `
+    CREATE INDEX IF NOT EXISTS "BranchStudentLedgerEntry_branchId_idx"
+    ON "BranchStudentLedgerEntry" ("branchId")
+  `,
+  `
+    CREATE INDEX IF NOT EXISTS "BranchStudentLedgerEntry_branchStudentId_entryDate_entryNo_idx"
+    ON "BranchStudentLedgerEntry" ("branchStudentId", "entryDate", "entryNo")
+  `,
+  `
+    CREATE INDEX IF NOT EXISTS "BranchStudentLedgerEntry_branchStudentId_createdAt_idx"
+    ON "BranchStudentLedgerEntry" ("branchStudentId", "createdAt")
+  `,
+];
+
+export async function ensureBranchStudentLedgerTable() {
+  for (const statement of BRANCH_STUDENT_LEDGER_TABLE_DDL) {
+    // eslint-disable-next-line no-await-in-loop
+    await prisma.$executeRawUnsafe(statement);
+  }
+}
+
+function parseLedgerDate(value) {
+  if (!value) {
+    return null;
+  }
+
+  const date = value instanceof Date ? value : new Date(value);
+  if (Number.isNaN(date.getTime())) {
+    return null;
+  }
+
+  return date;
+}
+
+function toLedgerDateString(value) {
+  const date = parseLedgerDate(value);
+  return date ? date.toISOString() : null;
+}
+
+function toLedgerDisplayDate(value) {
+  const date = parseLedgerDate(value);
+  return date ? date.toISOString() : "";
+}
+
+function normalizeLedgerText(value) {
+  return normalizeString(value);
+}
+
+function resolveBranchStudentLedgerFeeAmount(student = {}) {
+  const explicitCourseAmount = Number(student.courseAmount ?? 0);
+  if (Number.isFinite(explicitCourseAmount) && explicitCourseAmount > 0) {
+    return explicitCourseAmount;
+  }
+
+  const installmentTotal = Array.isArray(student.installments)
+    ? student.installments.reduce((sum, installment) => {
+      const amount = Number(installment?.amount ?? 0);
+      return Number.isFinite(amount) ? sum + Math.max(amount, 0) : sum;
+    }, 0)
+    : 0;
+
+  if (installmentTotal > 0) {
+    return installmentTotal;
+  }
+
+  const paymentTotal = Array.isArray(student.payments)
+    ? student.payments.reduce((sum, payment) => {
+      const amount = Number(payment?.amount ?? 0);
+      return Number.isFinite(amount) ? sum + Math.max(amount, 0) : sum;
+    }, 0)
+    : 0;
+
+  return paymentTotal > 0 ? paymentTotal : 0;
+}
+
+function resolveBranchStudentLedgerDescription(payment = {}) {
+  const payAgainst = normalizeLedgerText(payment.payAgainst);
+  if (payAgainst) {
+    return payAgainst;
+  }
+
+  const installmentNumber = Number(payment.installment?.installmentNumber ?? 0);
+  if (Number.isFinite(installmentNumber) && installmentNumber > 0) {
+    return `Installment ${installmentNumber}`;
+  }
+
+  return "Payment";
+}
+
+function buildBranchStudentLedgerEntries(student = {}) {
+  const payments = Array.isArray(student.payments) ? student.payments : [];
+  const studentName = normalizeString(student.studentName);
+  const studentId = normalizeString(student.studentId);
+  const courseName = normalizeString(student.courseName || student.courseInterested || student.course?.name || "");
+  const feeAmount = resolveBranchStudentLedgerFeeAmount(student);
+  const baseDate = toLedgerDateString(student.admissionDate || student.createdAt || new Date()) || toLedgerDateString(new Date());
+
+  const rows = [];
+  let runningBalance = 0;
+  let totalDebit = 0;
+  let totalCredit = 0;
+  let entryNo = 0;
+
+  const pushRow = (row = {}) => {
+    const debit = Math.max(Number(row.debit ?? 0), 0);
+    const credit = Math.max(Number(row.credit ?? 0), 0);
+
+    totalDebit += debit;
+    totalCredit += credit;
+    runningBalance += debit - credit;
+    entryNo += 1;
+
+    rows.push({
+      id: normalizeString(row.id || `${student.id || studentId || "ledger"}-${entryNo}`),
+      studentRecordId: normalizeString(row.studentRecordId || student.id || ""),
+      branchId: normalizeString(row.branchId || student.branchId || ""),
+      studentId,
+      studentName,
+      course: courseName,
+      description: normalizeString(row.description || ""),
+      entryType: normalizeString(row.entryType || (credit > 0 ? "CREDIT" : "DEBIT")).toUpperCase(),
+      debit,
+      credit,
+      amount: Number(row.amount ?? debit ?? credit ?? 0),
+      runningBalance,
+      studentBalanceAfter: runningBalance,
+      paymentMode: normalizeString(row.paymentMode || ""),
+      receiptNumber: normalizeString(row.receiptNumber || ""),
+      payAgainst: normalizeString(row.payAgainst || ""),
+      transactionReference: normalizeString(row.transactionReference || ""),
+      notes: normalizeString(row.notes || ""),
+      referenceType: normalizeString(row.referenceType || ""),
+      referenceId: normalizeString(row.referenceId || ""),
+      dateRaw: toLedgerDateString(row.dateRaw || row.paymentDateRaw || row.paymentDate || row.createdAt || row.date || baseDate) || baseDate,
+      date: toLedgerDisplayDate(row.date || row.paymentDate || row.createdAt || row.dateRaw || baseDate) || baseDate,
+      status: normalizeString(row.status || ""),
+      entryNo,
+    });
+  };
+
+  if (feeAmount > 0) {
+    pushRow({
+      id: `${student.id || studentId || "ledger"}-course-fee`,
+      description: "Course Fee",
+      debit: feeAmount,
+      amount: feeAmount,
+      entryType: "DEBIT",
+      referenceType: "course-fee",
+      dateRaw: baseDate,
+      date: baseDate,
+    });
+  }
+
+  const sortedPayments = payments
+    .filter((payment) => Number(payment?.amount ?? 0) > 0)
+    .sort((left, right) => {
+      const leftTime = new Date(left.paymentDate || left.createdAt || 0).getTime();
+      const rightTime = new Date(right.paymentDate || right.createdAt || 0).getTime();
+
+      if (leftTime !== rightTime) {
+        return leftTime - rightTime;
+      }
+
+      return normalizeString(left.receiptNumber || left.id || "").localeCompare(
+        normalizeString(right.receiptNumber || right.id || ""),
+      );
+    });
+
+  sortedPayments.forEach((payment) => {
+    const amount = Number(payment.amount ?? 0);
+    const paymentDate = toLedgerDateString(payment.paymentDate || payment.createdAt || new Date()) || baseDate;
+    const description = resolveBranchStudentLedgerDescription(payment);
+    const installmentNumber = Number(payment.installment?.installmentNumber ?? 0);
+
+    pushRow({
+      id: payment.id || payment.receiptNumber || `${student.id || studentId || "ledger"}-${paymentDate}-${amount}`,
+      description,
+      credit: amount,
+      amount,
+      entryType: "CREDIT",
+      referenceType: "payment",
+      referenceId: payment.id || payment.receiptNumber || "",
+      paymentMode: payment.paymentMode || "",
+      receiptNumber: payment.receiptNumber || "",
+      payAgainst: payment.payAgainst || (Number.isFinite(installmentNumber) && installmentNumber > 0 ? `Installment ${installmentNumber}` : ""),
+      transactionReference: payment.transactionReference || "",
+      notes: payment.notes || "",
+      dateRaw: paymentDate,
+      date: paymentDate,
+      createdAt: payment.createdAt || paymentDate,
+      paymentDate: payment.paymentDate || paymentDate,
+    });
+  });
+
+  return {
+    student: {
+      id: student.id,
+      branchId: student.branchId,
+      studentId,
+      studentName,
+      courseName,
+    },
+    entries: rows,
+    summary: {
+      totalDebit,
+      totalCredit,
+      outstandingBalance: runningBalance,
+      entryCount: rows.length,
+      paymentCount: sortedPayments.length,
+      studentCount: 1,
+    },
+  };
+}
+
+async function loadBranchStudentForLedger(studentId, actor) {
+  const { where } = await ensureBranchStudentAccess(actor, studentId);
+
+  const student = await prisma.branchStudent.findFirst({
+    where,
+    include: {
+      installments: {
+        orderBy: { installmentNumber: "asc" },
+      },
+      payments: {
+        orderBy: [
+          { paymentDate: "asc" },
+          { createdAt: "asc" },
+          { id: "asc" },
+        ],
+        include: {
+          installment: {
+            select: {
+              installmentNumber: true,
+              amount: true,
+              dueDate: true,
+            },
+          },
+        },
+      },
+    },
+  });
+
+  if (!student) {
+    throw new AppError("Branch student not found", 404);
+  }
+
+  return student;
+}
+
+export async function getBranchStudentLedger(studentId, actor = null) {
+  const student = await loadBranchStudentForLedger(studentId, actor);
+
+  const updatedEntries = await prisma.$transaction(async (tx) => {
+    const materialized = await materializeBranchStudentLedgerEntries(tx, student);
+    return materialized;
+  });
+
+  const entries = sortBranchStudentLedgerEntries(updatedEntries).map((entry) => ({
+    id: entry.id,
+    ledgerKey: entry.ledgerKey,
+    branchId: entry.branchId,
+    branchStudentId: entry.branchStudentId,
+    paymentId: entry.paymentId,
+    installmentId: entry.installmentId,
+    entryNo: entry.entryNo,
+    entryType: entry.entryType,
+    description: entry.description,
+    debit: Number(entry.debit ?? 0),
+    credit: Number(entry.credit ?? 0),
+    amount: Number(entry.amount ?? 0),
+    runningBalance: Number(entry.runningBalance ?? 0),
+    studentBalanceAfter: Number(entry.studentBalanceAfter ?? 0),
+    entryDate: entry.entryDate,
+    paymentDate: entry.paymentDate,
+    referenceType: entry.referenceType,
+    referenceId: entry.referenceId,
+    paymentMode: entry.paymentMode,
+    receiptNumber: entry.receiptNumber,
+    payAgainst: entry.payAgainst,
+    transactionReference: entry.transactionReference,
+    notes: entry.notes,
+    createdBy: entry.createdBy,
+    updatedBy: entry.updatedBy,
+    createdAt: entry.createdAt,
+    updatedAt: entry.updatedAt,
+  }));
+
+  const summary = entries.reduce((acc, entry) => {
+    acc.totalDebit += Number(entry.debit ?? 0);
+    acc.totalCredit += Number(entry.credit ?? 0);
+    acc.outstandingBalance = Number(entry.runningBalance ?? acc.outstandingBalance ?? 0);
+    acc.entryCount += 1;
+    if (Number(entry.credit ?? 0) > 0) {
+      acc.paymentCount += 1;
+    }
+    return acc;
+  }, {
+    totalDebit: 0,
+    totalCredit: 0,
+    outstandingBalance: 0,
+    entryCount: 0,
+    paymentCount: 0,
+    studentCount: 1,
+  });
+
+  return {
+    student: {
+      id: student.id,
+      branchId: student.branchId,
+      studentId: student.studentId,
+      studentName: student.studentName,
+      courseName: student.courseName || student.courseInterested || "",
+    },
+    entries,
+    summary,
+  };
+}
+
+export async function listBranchLedger(query = {}, actor = null) {
+  const branchProfile = await getBranchContext(actor);
+  const normalizedStudentId = normalizeString(query.studentId);
+  const search = normalizeSearchKey(query.search);
+  const branchId = normalizeString(query.branchId || branchProfile?.id);
+
+  if (normalizedStudentId) {
+    return getBranchStudentLedger(normalizedStudentId, actor);
+  }
+
+  const where = branchId ? { branchId } : {};
+
+  if (search) {
+    where.OR = [
+      { studentId: { contains: search, mode: "insensitive" } },
+      { studentName: { contains: search, mode: "insensitive" } },
+      { courseName: { contains: search, mode: "insensitive" } },
+    ];
+  }
+
+  const students = await prisma.branchStudent.findMany({
+    where,
+    orderBy: [
+      { createdAt: "asc" },
+      { id: "asc" },
+    ],
+    select: {
+      id: true,
+      branchId: true,
+      studentId: true,
+      studentName: true,
+      courseName: true,
+    },
+  });
+
+  let entries = [];
+  for (const student of students) {
+    // eslint-disable-next-line no-await-in-loop
+    const ledger = await getBranchStudentLedger(student.id, actor);
+    entries = entries.concat(ledger.entries);
+  }
+
+  const summary = entries.reduce((acc, entry) => {
+    acc.totalDebit += Number(entry.debit ?? 0);
+    acc.totalCredit += Number(entry.credit ?? 0);
+    acc.outstandingBalance = Number(entry.runningBalance ?? acc.outstandingBalance ?? 0);
+    acc.entryCount += 1;
+    if (Number(entry.credit ?? 0) > 0) {
+      acc.paymentCount += 1;
+    }
+    return acc;
+  }, {
+    totalDebit: 0,
+    totalCredit: 0,
+    outstandingBalance: 0,
+    entryCount: 0,
+    paymentCount: 0,
+    studentCount: students.length,
+  });
+
+  return {
+    entries,
+    summary,
+  };
+}
+
 function getReminderWindowDaysUntilDue(dueDateText) {
   const text = normalizeString(dueDateText);
   if (!text) {
@@ -924,8 +1622,14 @@ export async function createBranchStudent(payload, actor) {
 
         const createdStudent = await tx.branchStudent.findUnique({
           where: { id: student.id },
-          include: { installments: { orderBy: { installmentNumber: "asc" } } }
+          include: {
+            installments: { orderBy: { installmentNumber: "asc" } },
+          },
         });
+
+        if (createdStudent) {
+          await materializeBranchStudentLedgerEntries(tx, createdStudent, { includePayments: false });
+        }
 
         return createdStudent;
       });
@@ -1010,6 +1714,15 @@ export async function updateBranchStudent(studentId, payload, actor = null) {
       });
     }
 
+    const updatedStudent = await tx.branchStudent.findUnique({
+      where: { id: student.id },
+      include: { installments: { orderBy: { installmentNumber: "asc" } } },
+    });
+
+    if (updatedStudent) {
+      await materializeBranchStudentLedgerEntries(tx, updatedStudent, { includePayments: false });
+    }
+
     if (existingLoginUser) {
       await tx.user.update({
         where: { id: existingLoginUser.id },
@@ -1021,11 +1734,6 @@ export async function updateBranchStudent(studentId, payload, actor = null) {
         },
       });
     }
-
-    const updatedStudent = await tx.branchStudent.findUnique({
-      where: { id: student.id },
-      include: { installments: { orderBy: { installmentNumber: "asc" } } }
-    });
 
     return updatedStudent;
   });
@@ -1148,13 +1856,38 @@ export async function createBranchStudentPayment(studentId, payload, actor = nul
     });
   });
 
-  const refreshedStudent = await prisma.branchStudent.findUnique({
-    where: { id: student.id },
-    include: {
-      installments: {
-        orderBy: { installmentNumber: "asc" },
+  const refreshedStudent = await prisma.$transaction(async (tx) => {
+    const currentStudent = await tx.branchStudent.findUnique({
+      where: { id: student.id },
+      include: {
+        installments: {
+          orderBy: { installmentNumber: "asc" },
+        },
+        payments: {
+          orderBy: [
+            { paymentDate: "asc" },
+            { createdAt: "asc" },
+            { id: "asc" },
+          ],
+          include: {
+            installment: {
+              select: {
+                installmentNumber: true,
+                amount: true,
+                dueDate: true,
+              },
+            },
+          },
+        },
       },
-    },
+    });
+
+    if (!currentStudent) {
+      return null;
+    }
+
+    await materializeBranchStudentLedgerEntries(tx, currentStudent);
+    return currentStudent;
   });
 
   if (refreshedStudent) {

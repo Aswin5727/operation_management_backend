@@ -66,6 +66,7 @@ model Branch {
   branchInstallmentTemplates BranchInstallmentTemplate[]
   branchFaculties   BranchFaculty[]
   branchStudents    BranchStudent[]
+  ledgerEntries      BranchStudentLedgerEntry[]
   payments          BranchStudentPayment[]
   courses           Course[]
 
@@ -487,6 +488,7 @@ model BranchStudent {
   course             BranchCourse? @relation(fields: [courseId], references: [id])
   installments       BranchStudentInstallment[]
   payments           BranchStudentPayment[]
+  ledgerEntries      BranchStudentLedgerEntry[]
 
   @@unique([branchId, studentId])
   @@index([branchId])
@@ -787,4 +789,40 @@ model BranchStudentPayment {
 
   @@index([branchId])
   @@index([branchStudentId])
+}
+
+model BranchStudentLedgerEntry {
+  id                   String       @id @default(cuid())
+  ledgerKey            String       @unique
+  branchId             String
+  branchStudentId      String
+  paymentId            String?
+  installmentId        String?
+  entryNo              Int          @default(0)
+  entryType            String
+  description          String
+  debit                Int          @default(0)
+  credit               Int          @default(0)
+  amount               Int          @default(0)
+  runningBalance       Int          @default(0)
+  studentBalanceAfter  Int          @default(0)
+  entryDate            DateTime?
+  paymentDate          DateTime?
+  referenceType        String?
+  referenceId          String?
+  paymentMode          String?
+  receiptNumber        String?
+  payAgainst           String?
+  transactionReference String?
+  notes                String?
+  createdBy            String?
+  updatedBy            String?
+  createdAt            DateTime     @default(now())
+  updatedAt            DateTime     @updatedAt
+  branch               Branch       @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  branchStudent        BranchStudent @relation(fields: [branchStudentId], references: [id], onDelete: Cascade)
+
+  @@index([branchId])
+  @@index([branchStudentId, entryDate, entryNo])
+  @@index([branchStudentId, createdAt])
 }

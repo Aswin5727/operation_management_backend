@@ -6,6 +6,8 @@ import {
   createBranchStudentHandler,
   deleteBranchStudentHandler,
   getBranchStudentHandler,
+  getBranchStudentLedgerHandler,
+  listBranchLedgerHandler,
   listBranchStudentsHandler,
   updateBranchStudentHandler,
   createBranchStudentPaymentHandler,
@@ -19,7 +21,9 @@ router.use(
 );
 
 router.get("/", listBranchStudentsHandler);
+router.get("/ledger", listBranchLedgerHandler);
 router.post("/", createBranchStudentHandler);
+router.get("/:studentId/ledger", getBranchStudentLedgerHandler);
 router.get("/:studentId", getBranchStudentHandler);
 router.patch("/:studentId", updateBranchStudentHandler);
 router.delete("/:studentId", deleteBranchStudentHandler);
