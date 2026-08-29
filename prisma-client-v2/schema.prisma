@@ -63,9 +63,11 @@ model Branch {
   branchStateCode            String                      @default("")
   adminUser                  User?                       @relation("BranchAdminUser", fields: [adminUserId], references: [id])
   branchCourses              BranchCourse[]
+  branchBatches              BranchBatch[]
   branchInstallmentTemplates BranchInstallmentTemplate[]
   branchFaculties            BranchFaculty[]
   branchStudents             BranchStudent[]
+  ledgerEntries              BranchStudentLedgerEntry[]
   payments                   BranchStudentPayment[]
   courses                    Course[]
 
@@ -245,6 +247,7 @@ model BranchCourse {
   installmentTemplate     BranchInstallmentTemplate?
   modules                 BranchCourseModule[]
   branchFaculties         BranchFaculty[]
+  branchBatches           BranchBatch[]
   branchStudents          BranchStudent[]
   facultyTodayWorkEntries FacultyTodayWorkEntry[]
 
@@ -368,6 +371,61 @@ model BatchFacultyAssignment {
   @@index([assignedDate])
 }
 
+model BranchBatch {
+  id              String           @id @default(cuid())
+  branchId        String
+  branchCourseId  String
+  branchFacultyId String
+  batchId         String           @unique
+  batchGroupId    String           @unique
+  courseId        String
+  courseName      String
+  facultyId       String
+  facultyName     String
+  facultyEmail    String
+  batchCount      Int              @default(0)
+  status          RecordStatus     @default(ACTIVE)
+  createdBy       String?
+  updatedBy       String?
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  branch          Branch           @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  branchCourse    BranchCourse     @relation(fields: [branchCourseId], references: [id], onDelete: Cascade)
+  branchFaculty   BranchFaculty    @relation(fields: [branchFacultyId], references: [id], onDelete: Cascade)
+  rows            BranchBatchRow[]
+
+  @@index([branchId])
+  @@index([branchCourseId])
+  @@index([branchFacultyId])
+  @@index([courseId])
+  @@index([facultyId])
+  @@index([status])
+}
+
+model BranchBatchRow {
+  id            String       @id @default(cuid())
+  branchBatchId String
+  batchId       String       @unique
+  batchName     String
+  startTime     String
+  startPeriod   String
+  endTime       String
+  endPeriod     String
+  batchTiming   String
+  totalSeats    Int
+  status        RecordStatus @default(ACTIVE)
+  sequenceNo    Int
+  createdBy     String?
+  updatedBy     String?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  branchBatch   BranchBatch  @relation(fields: [branchBatchId], references: [id], onDelete: Cascade)
+
+  @@index([branchBatchId])
+  @@index([batchId])
+  @@index([status])
+}
+
 model CourseStatusHistory {
   id         String        @id @default(cuid())
   courseId   String
@@ -488,6 +546,7 @@ model BranchStudent {
   course             BranchCourse?              @relation(fields: [courseId], references: [id])
   installments       BranchStudentInstallment[]
   payments           BranchStudentPayment[]
+  ledgerEntries      BranchStudentLedgerEntry[]
 
   @@unique([branchId, studentId])
   @@index([branchId])
@@ -668,6 +727,7 @@ model BranchFaculty {
   branchCourse   BranchCourse? @relation(fields: [branchCourseId], references: [id])
   branch         Branch        @relation(fields: [branchId], references: [id], onDelete: Cascade)
   course         Course?       @relation(fields: [courseId], references: [id])
+  branchBatches  BranchBatch[]
 
   @@unique([branchId, facultyId])
   @@unique([branchId, email])
@@ -788,4 +848,40 @@ model BranchStudentPayment {
 
   @@index([branchId])
   @@index([branchStudentId])
+}
+
+model BranchStudentLedgerEntry {
+  id                   String        @id @default(cuid())
+  ledgerKey            String        @unique
+  branchId             String
+  branchStudentId      String
+  paymentId            String?
+  installmentId        String?
+  entryNo              Int           @default(0)
+  entryType            String
+  description          String
+  debit                Int           @default(0)
+  credit               Int           @default(0)
+  amount               Int           @default(0)
+  runningBalance       Int           @default(0)
+  studentBalanceAfter  Int           @default(0)
+  entryDate            DateTime?
+  paymentDate          DateTime?
+  referenceType        String?
+  referenceId          String?
+  paymentMode          String?
+  receiptNumber        String?
+  payAgainst           String?
+  transactionReference String?
+  notes                String?
+  createdBy            String?
+  updatedBy            String?
+  createdAt            DateTime      @default(now())
+  updatedAt            DateTime      @updatedAt
+  branch               Branch        @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  branchStudent        BranchStudent @relation(fields: [branchStudentId], references: [id], onDelete: Cascade)
+
+  @@index([branchId])
+  @@index([branchStudentId, entryDate, entryNo])
+  @@index([branchStudentId, createdAt])
 }

@@ -126,6 +126,33 @@ function batchMatchesStudent(student, faculty, entry) {
   return false;
 }
 
+function toBranchFacultyBatchEntries(branchBatches = [], branchFaculty = null) {
+  if (!Array.isArray(branchBatches) || !branchBatches.length) {
+    return [];
+  }
+
+  return branchBatches.flatMap((batch) => {
+    const rows = Array.isArray(batch?.rows) ? batch.rows : [];
+    return rows.map((row) => ({
+      id: row?.id || row?.batchId || batch?.id || "",
+      facultyId: branchFaculty?.id || branchFaculty?.facultyId || batch?.facultyId || "",
+      facultyName: branchFaculty?.name || "",
+      facultyEmail: branchFaculty?.email || "",
+      courseId: batch?.courseId || batch?.branchCourseId || "",
+      courseName: batch?.courseName || batch?.branchCourse?.name || "",
+      batchGroupId: batch?.batchGroupId || batch?.id || "",
+      batchId: row?.batchId || batch?.batchId || "",
+      batchName: row?.batchName || "",
+      batchTiming: row?.batchTiming || "",
+      totalSeats: Number(row?.totalSeats || 0),
+      status: row?.status === "INACTIVE" ? "Inactive" : "Active",
+      sequenceNo: Number(row?.sequenceNo || 0),
+      createdAt: row?.createdAt || batch?.createdAt || null,
+      updatedAt: row?.updatedAt || batch?.updatedAt || null,
+    }));
+  });
+}
+
 async function getFacultyMyBatchesSummary(user) {
   const normalizedEmail = normalizeFacultyText(user?.email).toLowerCase();
 
@@ -147,6 +174,17 @@ async function getFacultyMyBatchesSummary(user) {
           id: true,
           courseCode: true,
           name: true,
+        },
+      },
+      branchBatches: {
+        where: {
+          status: "ACTIVE",
+        },
+        orderBy: [{ createdAt: "asc" }],
+        include: {
+          rows: {
+            orderBy: { sequenceNo: "asc" },
+          },
         },
       },
     },
@@ -195,22 +233,33 @@ async function getFacultyMyBatchesSummary(user) {
     },
   });
 
- if (!faculty) {
+  if (!faculty) {
   if (branchFaculty) {
+    const batchEntries = toBranchFacultyBatchEntries(branchFaculty.branchBatches, branchFaculty);
+    const courseIds = Array.from(
+      new Set(batchEntries.map((entry) => String(entry.courseId || '').trim()).filter(Boolean)),
+    );
+
     return {
       faculty: {
         id: branchFaculty.facultyId,
         facultyName: branchFaculty.name,
         facultyEmail: branchFaculty.email,
         courseId:
-          branchFaculty.branchCourse?.id || "",
+          branchFaculty.branchCourse?.id || batchEntries[0]?.courseId || "",
+        courseIds,
         courseName:
-          branchFaculty.branchCourse?.name || "",
+          branchFaculty.branchCourse?.name || batchEntries[0]?.courseName || "",
       },
 
-      totalBatches: 0,
+      totalBatches: batchEntries.length,
       totalStudents: 0,
-      batchCounts: [],
+      batchEntries,
+      batchCounts: batchEntries.map((entry) => ({
+        batchId: entry.id,
+        studentCount: 0,
+        studentRecords: [],
+      })),
     };
   }
 
@@ -241,6 +290,7 @@ async function getFacultyMyBatchesSummary(user) {
 
     totalBatches: 0,
     totalStudents: 0,
+    batchEntries: [],
     batchCounts: [],
   };
 }
@@ -368,6 +418,7 @@ async function getFacultyMyBatchesSummary(user) {
 
   totalBatches: batchEntries.length,
   totalStudents: uniqueStudentIds.size,
+  batchEntries,
   batchCounts,
 };
 }

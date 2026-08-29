@@ -79,6 +79,16 @@ export type Batch = $Result.DefaultSelection<Prisma.$BatchPayload>
  */
 export type BatchFacultyAssignment = $Result.DefaultSelection<Prisma.$BatchFacultyAssignmentPayload>
 /**
+ * Model BranchBatch
+ * 
+ */
+export type BranchBatch = $Result.DefaultSelection<Prisma.$BranchBatchPayload>
+/**
+ * Model BranchBatchRow
+ * 
+ */
+export type BranchBatchRow = $Result.DefaultSelection<Prisma.$BranchBatchRowPayload>
+/**
  * Model CourseStatusHistory
  * 
  */
@@ -148,6 +158,11 @@ export type BranchInstallmentTemplate = $Result.DefaultSelection<Prisma.$BranchI
  * 
  */
 export type BranchStudentPayment = $Result.DefaultSelection<Prisma.$BranchStudentPaymentPayload>
+/**
+ * Model BranchStudentLedgerEntry
+ * 
+ */
+export type BranchStudentLedgerEntry = $Result.DefaultSelection<Prisma.$BranchStudentLedgerEntryPayload>
 
 /**
  * Enums
@@ -524,6 +539,26 @@ export class PrismaClient<
   get batchFacultyAssignment(): Prisma.BatchFacultyAssignmentDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.branchBatch`: Exposes CRUD operations for the **BranchBatch** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more BranchBatches
+    * const branchBatches = await prisma.branchBatch.findMany()
+    * ```
+    */
+  get branchBatch(): Prisma.BranchBatchDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.branchBatchRow`: Exposes CRUD operations for the **BranchBatchRow** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more BranchBatchRows
+    * const branchBatchRows = await prisma.branchBatchRow.findMany()
+    * ```
+    */
+  get branchBatchRow(): Prisma.BranchBatchRowDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.courseStatusHistory`: Exposes CRUD operations for the **CourseStatusHistory** model.
     * Example usage:
     * ```ts
@@ -662,6 +697,16 @@ export class PrismaClient<
     * ```
     */
   get branchStudentPayment(): Prisma.BranchStudentPaymentDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.branchStudentLedgerEntry`: Exposes CRUD operations for the **BranchStudentLedgerEntry** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more BranchStudentLedgerEntries
+    * const branchStudentLedgerEntries = await prisma.branchStudentLedgerEntry.findMany()
+    * ```
+    */
+  get branchStudentLedgerEntry(): Prisma.BranchStudentLedgerEntryDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -1109,6 +1154,8 @@ export namespace Prisma {
     CourseModule: 'CourseModule',
     Batch: 'Batch',
     BatchFacultyAssignment: 'BatchFacultyAssignment',
+    BranchBatch: 'BranchBatch',
+    BranchBatchRow: 'BranchBatchRow',
     CourseStatusHistory: 'CourseStatusHistory',
     BatchStatusHistory: 'BatchStatusHistory',
     StudentProfile: 'StudentProfile',
@@ -1122,7 +1169,8 @@ export namespace Prisma {
     StudentAttendance: 'StudentAttendance',
     BranchFaculty: 'BranchFaculty',
     BranchInstallmentTemplate: 'BranchInstallmentTemplate',
-    BranchStudentPayment: 'BranchStudentPayment'
+    BranchStudentPayment: 'BranchStudentPayment',
+    BranchStudentLedgerEntry: 'BranchStudentLedgerEntry'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1138,7 +1186,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "branch" | "loginEvent" | "notification" | "courseEditRequest" | "passwordResetToken" | "course" | "branchCourse" | "branchCourseModule" | "branchCourseSubmodule" | "courseModule" | "batch" | "batchFacultyAssignment" | "courseStatusHistory" | "batchStatusHistory" | "studentProfile" | "branchStudent" | "branchStudentInstallment" | "facultyProfile" | "facultyCourseAssignment" | "facultyBatchEntry" | "facultyAttendanceSession" | "facultyTodayWorkEntry" | "studentAttendance" | "branchFaculty" | "branchInstallmentTemplate" | "branchStudentPayment"
+      modelProps: "user" | "branch" | "loginEvent" | "notification" | "courseEditRequest" | "passwordResetToken" | "course" | "branchCourse" | "branchCourseModule" | "branchCourseSubmodule" | "courseModule" | "batch" | "batchFacultyAssignment" | "branchBatch" | "branchBatchRow" | "courseStatusHistory" | "batchStatusHistory" | "studentProfile" | "branchStudent" | "branchStudentInstallment" | "facultyProfile" | "facultyCourseAssignment" | "facultyBatchEntry" | "facultyAttendanceSession" | "facultyTodayWorkEntry" | "studentAttendance" | "branchFaculty" | "branchInstallmentTemplate" | "branchStudentPayment" | "branchStudentLedgerEntry"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2101,6 +2149,154 @@ export namespace Prisma {
           count: {
             args: Prisma.BatchFacultyAssignmentCountArgs<ExtArgs>
             result: $Utils.Optional<BatchFacultyAssignmentCountAggregateOutputType> | number
+          }
+        }
+      }
+      BranchBatch: {
+        payload: Prisma.$BranchBatchPayload<ExtArgs>
+        fields: Prisma.BranchBatchFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.BranchBatchFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BranchBatchPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.BranchBatchFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BranchBatchPayload>
+          }
+          findFirst: {
+            args: Prisma.BranchBatchFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BranchBatchPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.BranchBatchFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BranchBatchPayload>
+          }
+          findMany: {
+            args: Prisma.BranchBatchFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BranchBatchPayload>[]
+          }
+          create: {
+            args: Prisma.BranchBatchCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BranchBatchPayload>
+          }
+          createMany: {
+            args: Prisma.BranchBatchCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.BranchBatchCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BranchBatchPayload>[]
+          }
+          delete: {
+            args: Prisma.BranchBatchDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BranchBatchPayload>
+          }
+          update: {
+            args: Prisma.BranchBatchUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BranchBatchPayload>
+          }
+          deleteMany: {
+            args: Prisma.BranchBatchDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.BranchBatchUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.BranchBatchUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BranchBatchPayload>[]
+          }
+          upsert: {
+            args: Prisma.BranchBatchUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BranchBatchPayload>
+          }
+          aggregate: {
+            args: Prisma.BranchBatchAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateBranchBatch>
+          }
+          groupBy: {
+            args: Prisma.BranchBatchGroupByArgs<ExtArgs>
+            result: $Utils.Optional<BranchBatchGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.BranchBatchCountArgs<ExtArgs>
+            result: $Utils.Optional<BranchBatchCountAggregateOutputType> | number
+          }
+        }
+      }
+      BranchBatchRow: {
+        payload: Prisma.$BranchBatchRowPayload<ExtArgs>
+        fields: Prisma.BranchBatchRowFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.BranchBatchRowFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BranchBatchRowPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.BranchBatchRowFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BranchBatchRowPayload>
+          }
+          findFirst: {
+            args: Prisma.BranchBatchRowFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BranchBatchRowPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.BranchBatchRowFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BranchBatchRowPayload>
+          }
+          findMany: {
+            args: Prisma.BranchBatchRowFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BranchBatchRowPayload>[]
+          }
+          create: {
+            args: Prisma.BranchBatchRowCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BranchBatchRowPayload>
+          }
+          createMany: {
+            args: Prisma.BranchBatchRowCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.BranchBatchRowCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BranchBatchRowPayload>[]
+          }
+          delete: {
+            args: Prisma.BranchBatchRowDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BranchBatchRowPayload>
+          }
+          update: {
+            args: Prisma.BranchBatchRowUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BranchBatchRowPayload>
+          }
+          deleteMany: {
+            args: Prisma.BranchBatchRowDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.BranchBatchRowUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.BranchBatchRowUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BranchBatchRowPayload>[]
+          }
+          upsert: {
+            args: Prisma.BranchBatchRowUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BranchBatchRowPayload>
+          }
+          aggregate: {
+            args: Prisma.BranchBatchRowAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateBranchBatchRow>
+          }
+          groupBy: {
+            args: Prisma.BranchBatchRowGroupByArgs<ExtArgs>
+            result: $Utils.Optional<BranchBatchRowGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.BranchBatchRowCountArgs<ExtArgs>
+            result: $Utils.Optional<BranchBatchRowCountAggregateOutputType> | number
           }
         }
       }
@@ -3140,6 +3336,80 @@ export namespace Prisma {
           }
         }
       }
+      BranchStudentLedgerEntry: {
+        payload: Prisma.$BranchStudentLedgerEntryPayload<ExtArgs>
+        fields: Prisma.BranchStudentLedgerEntryFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.BranchStudentLedgerEntryFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BranchStudentLedgerEntryPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.BranchStudentLedgerEntryFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BranchStudentLedgerEntryPayload>
+          }
+          findFirst: {
+            args: Prisma.BranchStudentLedgerEntryFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BranchStudentLedgerEntryPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.BranchStudentLedgerEntryFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BranchStudentLedgerEntryPayload>
+          }
+          findMany: {
+            args: Prisma.BranchStudentLedgerEntryFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BranchStudentLedgerEntryPayload>[]
+          }
+          create: {
+            args: Prisma.BranchStudentLedgerEntryCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BranchStudentLedgerEntryPayload>
+          }
+          createMany: {
+            args: Prisma.BranchStudentLedgerEntryCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.BranchStudentLedgerEntryCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BranchStudentLedgerEntryPayload>[]
+          }
+          delete: {
+            args: Prisma.BranchStudentLedgerEntryDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BranchStudentLedgerEntryPayload>
+          }
+          update: {
+            args: Prisma.BranchStudentLedgerEntryUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BranchStudentLedgerEntryPayload>
+          }
+          deleteMany: {
+            args: Prisma.BranchStudentLedgerEntryDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.BranchStudentLedgerEntryUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.BranchStudentLedgerEntryUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BranchStudentLedgerEntryPayload>[]
+          }
+          upsert: {
+            args: Prisma.BranchStudentLedgerEntryUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BranchStudentLedgerEntryPayload>
+          }
+          aggregate: {
+            args: Prisma.BranchStudentLedgerEntryAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateBranchStudentLedgerEntry>
+          }
+          groupBy: {
+            args: Prisma.BranchStudentLedgerEntryGroupByArgs<ExtArgs>
+            result: $Utils.Optional<BranchStudentLedgerEntryGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.BranchStudentLedgerEntryCountArgs<ExtArgs>
+            result: $Utils.Optional<BranchStudentLedgerEntryCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -3261,6 +3531,8 @@ export namespace Prisma {
     courseModule?: CourseModuleOmit
     batch?: BatchOmit
     batchFacultyAssignment?: BatchFacultyAssignmentOmit
+    branchBatch?: BranchBatchOmit
+    branchBatchRow?: BranchBatchRowOmit
     courseStatusHistory?: CourseStatusHistoryOmit
     batchStatusHistory?: BatchStatusHistoryOmit
     studentProfile?: StudentProfileOmit
@@ -3275,6 +3547,7 @@ export namespace Prisma {
     branchFaculty?: BranchFacultyOmit
     branchInstallmentTemplate?: BranchInstallmentTemplateOmit
     branchStudentPayment?: BranchStudentPaymentOmit
+    branchStudentLedgerEntry?: BranchStudentLedgerEntryOmit
   }
 
   /* Types for Logging */
@@ -3441,18 +3714,22 @@ export namespace Prisma {
 
   export type BranchCountOutputType = {
     branchCourses: number
+    branchBatches: number
     branchInstallmentTemplates: number
     branchFaculties: number
     branchStudents: number
+    ledgerEntries: number
     payments: number
     courses: number
   }
 
   export type BranchCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     branchCourses?: boolean | BranchCountOutputTypeCountBranchCoursesArgs
+    branchBatches?: boolean | BranchCountOutputTypeCountBranchBatchesArgs
     branchInstallmentTemplates?: boolean | BranchCountOutputTypeCountBranchInstallmentTemplatesArgs
     branchFaculties?: boolean | BranchCountOutputTypeCountBranchFacultiesArgs
     branchStudents?: boolean | BranchCountOutputTypeCountBranchStudentsArgs
+    ledgerEntries?: boolean | BranchCountOutputTypeCountLedgerEntriesArgs
     payments?: boolean | BranchCountOutputTypeCountPaymentsArgs
     courses?: boolean | BranchCountOutputTypeCountCoursesArgs
   }
@@ -3478,6 +3755,13 @@ export namespace Prisma {
   /**
    * BranchCountOutputType without action
    */
+  export type BranchCountOutputTypeCountBranchBatchesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BranchBatchWhereInput
+  }
+
+  /**
+   * BranchCountOutputType without action
+   */
   export type BranchCountOutputTypeCountBranchInstallmentTemplatesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: BranchInstallmentTemplateWhereInput
   }
@@ -3494,6 +3778,13 @@ export namespace Prisma {
    */
   export type BranchCountOutputTypeCountBranchStudentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: BranchStudentWhereInput
+  }
+
+  /**
+   * BranchCountOutputType without action
+   */
+  export type BranchCountOutputTypeCountLedgerEntriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BranchStudentLedgerEntryWhereInput
   }
 
   /**
@@ -3643,6 +3934,7 @@ export namespace Prisma {
   export type BranchCourseCountOutputType = {
     modules: number
     branchFaculties: number
+    branchBatches: number
     branchStudents: number
     facultyTodayWorkEntries: number
   }
@@ -3650,6 +3942,7 @@ export namespace Prisma {
   export type BranchCourseCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     modules?: boolean | BranchCourseCountOutputTypeCountModulesArgs
     branchFaculties?: boolean | BranchCourseCountOutputTypeCountBranchFacultiesArgs
+    branchBatches?: boolean | BranchCourseCountOutputTypeCountBranchBatchesArgs
     branchStudents?: boolean | BranchCourseCountOutputTypeCountBranchStudentsArgs
     facultyTodayWorkEntries?: boolean | BranchCourseCountOutputTypeCountFacultyTodayWorkEntriesArgs
   }
@@ -3677,6 +3970,13 @@ export namespace Prisma {
    */
   export type BranchCourseCountOutputTypeCountBranchFacultiesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: BranchFacultyWhereInput
+  }
+
+  /**
+   * BranchCourseCountOutputType without action
+   */
+  export type BranchCourseCountOutputTypeCountBranchBatchesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BranchBatchWhereInput
   }
 
   /**
@@ -3766,6 +4066,37 @@ export namespace Prisma {
 
 
   /**
+   * Count Type BranchBatchCountOutputType
+   */
+
+  export type BranchBatchCountOutputType = {
+    rows: number
+  }
+
+  export type BranchBatchCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    rows?: boolean | BranchBatchCountOutputTypeCountRowsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * BranchBatchCountOutputType without action
+   */
+  export type BranchBatchCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchBatchCountOutputType
+     */
+    select?: BranchBatchCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * BranchBatchCountOutputType without action
+   */
+  export type BranchBatchCountOutputTypeCountRowsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BranchBatchRowWhereInput
+  }
+
+
+  /**
    * Count Type StudentProfileCountOutputType
    */
 
@@ -3803,11 +4134,13 @@ export namespace Prisma {
   export type BranchStudentCountOutputType = {
     installments: number
     payments: number
+    ledgerEntries: number
   }
 
   export type BranchStudentCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     installments?: boolean | BranchStudentCountOutputTypeCountInstallmentsArgs
     payments?: boolean | BranchStudentCountOutputTypeCountPaymentsArgs
+    ledgerEntries?: boolean | BranchStudentCountOutputTypeCountLedgerEntriesArgs
   }
 
   // Custom InputTypes
@@ -3833,6 +4166,13 @@ export namespace Prisma {
    */
   export type BranchStudentCountOutputTypeCountPaymentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: BranchStudentPaymentWhereInput
+  }
+
+  /**
+   * BranchStudentCountOutputType without action
+   */
+  export type BranchStudentCountOutputTypeCountLedgerEntriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BranchStudentLedgerEntryWhereInput
   }
 
 
@@ -3904,6 +4244,37 @@ export namespace Prisma {
    */
   export type FacultyProfileCountOutputTypeCountCourseAssignmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: FacultyCourseAssignmentWhereInput
+  }
+
+
+  /**
+   * Count Type BranchFacultyCountOutputType
+   */
+
+  export type BranchFacultyCountOutputType = {
+    branchBatches: number
+  }
+
+  export type BranchFacultyCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    branchBatches?: boolean | BranchFacultyCountOutputTypeCountBranchBatchesArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * BranchFacultyCountOutputType without action
+   */
+  export type BranchFacultyCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchFacultyCountOutputType
+     */
+    select?: BranchFacultyCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * BranchFacultyCountOutputType without action
+   */
+  export type BranchFacultyCountOutputTypeCountBranchBatchesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BranchBatchWhereInput
   }
 
 
@@ -5693,9 +6064,11 @@ export namespace Prisma {
     branchStateCode?: boolean
     adminUser?: boolean | Branch$adminUserArgs<ExtArgs>
     branchCourses?: boolean | Branch$branchCoursesArgs<ExtArgs>
+    branchBatches?: boolean | Branch$branchBatchesArgs<ExtArgs>
     branchInstallmentTemplates?: boolean | Branch$branchInstallmentTemplatesArgs<ExtArgs>
     branchFaculties?: boolean | Branch$branchFacultiesArgs<ExtArgs>
     branchStudents?: boolean | Branch$branchStudentsArgs<ExtArgs>
+    ledgerEntries?: boolean | Branch$ledgerEntriesArgs<ExtArgs>
     payments?: boolean | Branch$paymentsArgs<ExtArgs>
     courses?: boolean | Branch$coursesArgs<ExtArgs>
     _count?: boolean | BranchCountOutputTypeDefaultArgs<ExtArgs>
@@ -5770,9 +6143,11 @@ export namespace Prisma {
   export type BranchInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     adminUser?: boolean | Branch$adminUserArgs<ExtArgs>
     branchCourses?: boolean | Branch$branchCoursesArgs<ExtArgs>
+    branchBatches?: boolean | Branch$branchBatchesArgs<ExtArgs>
     branchInstallmentTemplates?: boolean | Branch$branchInstallmentTemplatesArgs<ExtArgs>
     branchFaculties?: boolean | Branch$branchFacultiesArgs<ExtArgs>
     branchStudents?: boolean | Branch$branchStudentsArgs<ExtArgs>
+    ledgerEntries?: boolean | Branch$ledgerEntriesArgs<ExtArgs>
     payments?: boolean | Branch$paymentsArgs<ExtArgs>
     courses?: boolean | Branch$coursesArgs<ExtArgs>
     _count?: boolean | BranchCountOutputTypeDefaultArgs<ExtArgs>
@@ -5789,9 +6164,11 @@ export namespace Prisma {
     objects: {
       adminUser: Prisma.$UserPayload<ExtArgs> | null
       branchCourses: Prisma.$BranchCoursePayload<ExtArgs>[]
+      branchBatches: Prisma.$BranchBatchPayload<ExtArgs>[]
       branchInstallmentTemplates: Prisma.$BranchInstallmentTemplatePayload<ExtArgs>[]
       branchFaculties: Prisma.$BranchFacultyPayload<ExtArgs>[]
       branchStudents: Prisma.$BranchStudentPayload<ExtArgs>[]
+      ledgerEntries: Prisma.$BranchStudentLedgerEntryPayload<ExtArgs>[]
       payments: Prisma.$BranchStudentPaymentPayload<ExtArgs>[]
       courses: Prisma.$CoursePayload<ExtArgs>[]
     }
@@ -6210,9 +6587,11 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     adminUser<T extends Branch$adminUserArgs<ExtArgs> = {}>(args?: Subset<T, Branch$adminUserArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     branchCourses<T extends Branch$branchCoursesArgs<ExtArgs> = {}>(args?: Subset<T, Branch$branchCoursesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchCoursePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    branchBatches<T extends Branch$branchBatchesArgs<ExtArgs> = {}>(args?: Subset<T, Branch$branchBatchesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchBatchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     branchInstallmentTemplates<T extends Branch$branchInstallmentTemplatesArgs<ExtArgs> = {}>(args?: Subset<T, Branch$branchInstallmentTemplatesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchInstallmentTemplatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     branchFaculties<T extends Branch$branchFacultiesArgs<ExtArgs> = {}>(args?: Subset<T, Branch$branchFacultiesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchFacultyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     branchStudents<T extends Branch$branchStudentsArgs<ExtArgs> = {}>(args?: Subset<T, Branch$branchStudentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchStudentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    ledgerEntries<T extends Branch$ledgerEntriesArgs<ExtArgs> = {}>(args?: Subset<T, Branch$ledgerEntriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchStudentLedgerEntryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     payments<T extends Branch$paymentsArgs<ExtArgs> = {}>(args?: Subset<T, Branch$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchStudentPaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     courses<T extends Branch$coursesArgs<ExtArgs> = {}>(args?: Subset<T, Branch$coursesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CoursePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -6706,6 +7085,30 @@ export namespace Prisma {
   }
 
   /**
+   * Branch.branchBatches
+   */
+  export type Branch$branchBatchesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchBatch
+     */
+    select?: BranchBatchSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchBatch
+     */
+    omit?: BranchBatchOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchBatchInclude<ExtArgs> | null
+    where?: BranchBatchWhereInput
+    orderBy?: BranchBatchOrderByWithRelationInput | BranchBatchOrderByWithRelationInput[]
+    cursor?: BranchBatchWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: BranchBatchScalarFieldEnum | BranchBatchScalarFieldEnum[]
+  }
+
+  /**
    * Branch.branchInstallmentTemplates
    */
   export type Branch$branchInstallmentTemplatesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -6775,6 +7178,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: BranchStudentScalarFieldEnum | BranchStudentScalarFieldEnum[]
+  }
+
+  /**
+   * Branch.ledgerEntries
+   */
+  export type Branch$ledgerEntriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchStudentLedgerEntry
+     */
+    select?: BranchStudentLedgerEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchStudentLedgerEntry
+     */
+    omit?: BranchStudentLedgerEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchStudentLedgerEntryInclude<ExtArgs> | null
+    where?: BranchStudentLedgerEntryWhereInput
+    orderBy?: BranchStudentLedgerEntryOrderByWithRelationInput | BranchStudentLedgerEntryOrderByWithRelationInput[]
+    cursor?: BranchStudentLedgerEntryWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: BranchStudentLedgerEntryScalarFieldEnum | BranchStudentLedgerEntryScalarFieldEnum[]
   }
 
   /**
@@ -13766,6 +14193,7 @@ export namespace Prisma {
     installmentTemplate?: boolean | BranchCourse$installmentTemplateArgs<ExtArgs>
     modules?: boolean | BranchCourse$modulesArgs<ExtArgs>
     branchFaculties?: boolean | BranchCourse$branchFacultiesArgs<ExtArgs>
+    branchBatches?: boolean | BranchCourse$branchBatchesArgs<ExtArgs>
     branchStudents?: boolean | BranchCourse$branchStudentsArgs<ExtArgs>
     facultyTodayWorkEntries?: boolean | BranchCourse$facultyTodayWorkEntriesArgs<ExtArgs>
     _count?: boolean | BranchCourseCountOutputTypeDefaultArgs<ExtArgs>
@@ -13848,6 +14276,7 @@ export namespace Prisma {
     installmentTemplate?: boolean | BranchCourse$installmentTemplateArgs<ExtArgs>
     modules?: boolean | BranchCourse$modulesArgs<ExtArgs>
     branchFaculties?: boolean | BranchCourse$branchFacultiesArgs<ExtArgs>
+    branchBatches?: boolean | BranchCourse$branchBatchesArgs<ExtArgs>
     branchStudents?: boolean | BranchCourse$branchStudentsArgs<ExtArgs>
     facultyTodayWorkEntries?: boolean | BranchCourse$facultyTodayWorkEntriesArgs<ExtArgs>
     _count?: boolean | BranchCourseCountOutputTypeDefaultArgs<ExtArgs>
@@ -13866,6 +14295,7 @@ export namespace Prisma {
       installmentTemplate: Prisma.$BranchInstallmentTemplatePayload<ExtArgs> | null
       modules: Prisma.$BranchCourseModulePayload<ExtArgs>[]
       branchFaculties: Prisma.$BranchFacultyPayload<ExtArgs>[]
+      branchBatches: Prisma.$BranchBatchPayload<ExtArgs>[]
       branchStudents: Prisma.$BranchStudentPayload<ExtArgs>[]
       facultyTodayWorkEntries: Prisma.$FacultyTodayWorkEntryPayload<ExtArgs>[]
     }
@@ -14288,6 +14718,7 @@ export namespace Prisma {
     installmentTemplate<T extends BranchCourse$installmentTemplateArgs<ExtArgs> = {}>(args?: Subset<T, BranchCourse$installmentTemplateArgs<ExtArgs>>): Prisma__BranchInstallmentTemplateClient<$Result.GetResult<Prisma.$BranchInstallmentTemplatePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     modules<T extends BranchCourse$modulesArgs<ExtArgs> = {}>(args?: Subset<T, BranchCourse$modulesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchCourseModulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     branchFaculties<T extends BranchCourse$branchFacultiesArgs<ExtArgs> = {}>(args?: Subset<T, BranchCourse$branchFacultiesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchFacultyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    branchBatches<T extends BranchCourse$branchBatchesArgs<ExtArgs> = {}>(args?: Subset<T, BranchCourse$branchBatchesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchBatchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     branchStudents<T extends BranchCourse$branchStudentsArgs<ExtArgs> = {}>(args?: Subset<T, BranchCourse$branchStudentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchStudentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     facultyTodayWorkEntries<T extends BranchCourse$facultyTodayWorkEntriesArgs<ExtArgs> = {}>(args?: Subset<T, BranchCourse$facultyTodayWorkEntriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FacultyTodayWorkEntryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -14804,6 +15235,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: BranchFacultyScalarFieldEnum | BranchFacultyScalarFieldEnum[]
+  }
+
+  /**
+   * BranchCourse.branchBatches
+   */
+  export type BranchCourse$branchBatchesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchBatch
+     */
+    select?: BranchBatchSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchBatch
+     */
+    omit?: BranchBatchOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchBatchInclude<ExtArgs> | null
+    where?: BranchBatchWhereInput
+    orderBy?: BranchBatchOrderByWithRelationInput | BranchBatchOrderByWithRelationInput[]
+    cursor?: BranchBatchWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: BranchBatchScalarFieldEnum | BranchBatchScalarFieldEnum[]
   }
 
   /**
@@ -20971,6 +21426,2549 @@ export namespace Prisma {
 
 
   /**
+   * Model BranchBatch
+   */
+
+  export type AggregateBranchBatch = {
+    _count: BranchBatchCountAggregateOutputType | null
+    _avg: BranchBatchAvgAggregateOutputType | null
+    _sum: BranchBatchSumAggregateOutputType | null
+    _min: BranchBatchMinAggregateOutputType | null
+    _max: BranchBatchMaxAggregateOutputType | null
+  }
+
+  export type BranchBatchAvgAggregateOutputType = {
+    batchCount: number | null
+  }
+
+  export type BranchBatchSumAggregateOutputType = {
+    batchCount: number | null
+  }
+
+  export type BranchBatchMinAggregateOutputType = {
+    id: string | null
+    branchId: string | null
+    branchCourseId: string | null
+    branchFacultyId: string | null
+    batchId: string | null
+    batchGroupId: string | null
+    courseId: string | null
+    courseName: string | null
+    facultyId: string | null
+    facultyName: string | null
+    facultyEmail: string | null
+    batchCount: number | null
+    status: $Enums.RecordStatus | null
+    createdBy: string | null
+    updatedBy: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type BranchBatchMaxAggregateOutputType = {
+    id: string | null
+    branchId: string | null
+    branchCourseId: string | null
+    branchFacultyId: string | null
+    batchId: string | null
+    batchGroupId: string | null
+    courseId: string | null
+    courseName: string | null
+    facultyId: string | null
+    facultyName: string | null
+    facultyEmail: string | null
+    batchCount: number | null
+    status: $Enums.RecordStatus | null
+    createdBy: string | null
+    updatedBy: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type BranchBatchCountAggregateOutputType = {
+    id: number
+    branchId: number
+    branchCourseId: number
+    branchFacultyId: number
+    batchId: number
+    batchGroupId: number
+    courseId: number
+    courseName: number
+    facultyId: number
+    facultyName: number
+    facultyEmail: number
+    batchCount: number
+    status: number
+    createdBy: number
+    updatedBy: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type BranchBatchAvgAggregateInputType = {
+    batchCount?: true
+  }
+
+  export type BranchBatchSumAggregateInputType = {
+    batchCount?: true
+  }
+
+  export type BranchBatchMinAggregateInputType = {
+    id?: true
+    branchId?: true
+    branchCourseId?: true
+    branchFacultyId?: true
+    batchId?: true
+    batchGroupId?: true
+    courseId?: true
+    courseName?: true
+    facultyId?: true
+    facultyName?: true
+    facultyEmail?: true
+    batchCount?: true
+    status?: true
+    createdBy?: true
+    updatedBy?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type BranchBatchMaxAggregateInputType = {
+    id?: true
+    branchId?: true
+    branchCourseId?: true
+    branchFacultyId?: true
+    batchId?: true
+    batchGroupId?: true
+    courseId?: true
+    courseName?: true
+    facultyId?: true
+    facultyName?: true
+    facultyEmail?: true
+    batchCount?: true
+    status?: true
+    createdBy?: true
+    updatedBy?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type BranchBatchCountAggregateInputType = {
+    id?: true
+    branchId?: true
+    branchCourseId?: true
+    branchFacultyId?: true
+    batchId?: true
+    batchGroupId?: true
+    courseId?: true
+    courseName?: true
+    facultyId?: true
+    facultyName?: true
+    facultyEmail?: true
+    batchCount?: true
+    status?: true
+    createdBy?: true
+    updatedBy?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type BranchBatchAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which BranchBatch to aggregate.
+     */
+    where?: BranchBatchWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of BranchBatches to fetch.
+     */
+    orderBy?: BranchBatchOrderByWithRelationInput | BranchBatchOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: BranchBatchWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` BranchBatches from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` BranchBatches.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned BranchBatches
+    **/
+    _count?: true | BranchBatchCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: BranchBatchAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: BranchBatchSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: BranchBatchMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: BranchBatchMaxAggregateInputType
+  }
+
+  export type GetBranchBatchAggregateType<T extends BranchBatchAggregateArgs> = {
+        [P in keyof T & keyof AggregateBranchBatch]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateBranchBatch[P]>
+      : GetScalarType<T[P], AggregateBranchBatch[P]>
+  }
+
+
+
+
+  export type BranchBatchGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BranchBatchWhereInput
+    orderBy?: BranchBatchOrderByWithAggregationInput | BranchBatchOrderByWithAggregationInput[]
+    by: BranchBatchScalarFieldEnum[] | BranchBatchScalarFieldEnum
+    having?: BranchBatchScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: BranchBatchCountAggregateInputType | true
+    _avg?: BranchBatchAvgAggregateInputType
+    _sum?: BranchBatchSumAggregateInputType
+    _min?: BranchBatchMinAggregateInputType
+    _max?: BranchBatchMaxAggregateInputType
+  }
+
+  export type BranchBatchGroupByOutputType = {
+    id: string
+    branchId: string
+    branchCourseId: string
+    branchFacultyId: string
+    batchId: string
+    batchGroupId: string
+    courseId: string
+    courseName: string
+    facultyId: string
+    facultyName: string
+    facultyEmail: string
+    batchCount: number
+    status: $Enums.RecordStatus
+    createdBy: string | null
+    updatedBy: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: BranchBatchCountAggregateOutputType | null
+    _avg: BranchBatchAvgAggregateOutputType | null
+    _sum: BranchBatchSumAggregateOutputType | null
+    _min: BranchBatchMinAggregateOutputType | null
+    _max: BranchBatchMaxAggregateOutputType | null
+  }
+
+  type GetBranchBatchGroupByPayload<T extends BranchBatchGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<BranchBatchGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof BranchBatchGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], BranchBatchGroupByOutputType[P]>
+            : GetScalarType<T[P], BranchBatchGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type BranchBatchSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    branchId?: boolean
+    branchCourseId?: boolean
+    branchFacultyId?: boolean
+    batchId?: boolean
+    batchGroupId?: boolean
+    courseId?: boolean
+    courseName?: boolean
+    facultyId?: boolean
+    facultyName?: boolean
+    facultyEmail?: boolean
+    batchCount?: boolean
+    status?: boolean
+    createdBy?: boolean
+    updatedBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    branch?: boolean | BranchDefaultArgs<ExtArgs>
+    branchCourse?: boolean | BranchCourseDefaultArgs<ExtArgs>
+    branchFaculty?: boolean | BranchFacultyDefaultArgs<ExtArgs>
+    rows?: boolean | BranchBatch$rowsArgs<ExtArgs>
+    _count?: boolean | BranchBatchCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["branchBatch"]>
+
+  export type BranchBatchSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    branchId?: boolean
+    branchCourseId?: boolean
+    branchFacultyId?: boolean
+    batchId?: boolean
+    batchGroupId?: boolean
+    courseId?: boolean
+    courseName?: boolean
+    facultyId?: boolean
+    facultyName?: boolean
+    facultyEmail?: boolean
+    batchCount?: boolean
+    status?: boolean
+    createdBy?: boolean
+    updatedBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    branch?: boolean | BranchDefaultArgs<ExtArgs>
+    branchCourse?: boolean | BranchCourseDefaultArgs<ExtArgs>
+    branchFaculty?: boolean | BranchFacultyDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["branchBatch"]>
+
+  export type BranchBatchSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    branchId?: boolean
+    branchCourseId?: boolean
+    branchFacultyId?: boolean
+    batchId?: boolean
+    batchGroupId?: boolean
+    courseId?: boolean
+    courseName?: boolean
+    facultyId?: boolean
+    facultyName?: boolean
+    facultyEmail?: boolean
+    batchCount?: boolean
+    status?: boolean
+    createdBy?: boolean
+    updatedBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    branch?: boolean | BranchDefaultArgs<ExtArgs>
+    branchCourse?: boolean | BranchCourseDefaultArgs<ExtArgs>
+    branchFaculty?: boolean | BranchFacultyDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["branchBatch"]>
+
+  export type BranchBatchSelectScalar = {
+    id?: boolean
+    branchId?: boolean
+    branchCourseId?: boolean
+    branchFacultyId?: boolean
+    batchId?: boolean
+    batchGroupId?: boolean
+    courseId?: boolean
+    courseName?: boolean
+    facultyId?: boolean
+    facultyName?: boolean
+    facultyEmail?: boolean
+    batchCount?: boolean
+    status?: boolean
+    createdBy?: boolean
+    updatedBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type BranchBatchOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "branchId" | "branchCourseId" | "branchFacultyId" | "batchId" | "batchGroupId" | "courseId" | "courseName" | "facultyId" | "facultyName" | "facultyEmail" | "batchCount" | "status" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["branchBatch"]>
+  export type BranchBatchInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    branch?: boolean | BranchDefaultArgs<ExtArgs>
+    branchCourse?: boolean | BranchCourseDefaultArgs<ExtArgs>
+    branchFaculty?: boolean | BranchFacultyDefaultArgs<ExtArgs>
+    rows?: boolean | BranchBatch$rowsArgs<ExtArgs>
+    _count?: boolean | BranchBatchCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type BranchBatchIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    branch?: boolean | BranchDefaultArgs<ExtArgs>
+    branchCourse?: boolean | BranchCourseDefaultArgs<ExtArgs>
+    branchFaculty?: boolean | BranchFacultyDefaultArgs<ExtArgs>
+  }
+  export type BranchBatchIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    branch?: boolean | BranchDefaultArgs<ExtArgs>
+    branchCourse?: boolean | BranchCourseDefaultArgs<ExtArgs>
+    branchFaculty?: boolean | BranchFacultyDefaultArgs<ExtArgs>
+  }
+
+  export type $BranchBatchPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "BranchBatch"
+    objects: {
+      branch: Prisma.$BranchPayload<ExtArgs>
+      branchCourse: Prisma.$BranchCoursePayload<ExtArgs>
+      branchFaculty: Prisma.$BranchFacultyPayload<ExtArgs>
+      rows: Prisma.$BranchBatchRowPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      branchId: string
+      branchCourseId: string
+      branchFacultyId: string
+      batchId: string
+      batchGroupId: string
+      courseId: string
+      courseName: string
+      facultyId: string
+      facultyName: string
+      facultyEmail: string
+      batchCount: number
+      status: $Enums.RecordStatus
+      createdBy: string | null
+      updatedBy: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["branchBatch"]>
+    composites: {}
+  }
+
+  type BranchBatchGetPayload<S extends boolean | null | undefined | BranchBatchDefaultArgs> = $Result.GetResult<Prisma.$BranchBatchPayload, S>
+
+  type BranchBatchCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<BranchBatchFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: BranchBatchCountAggregateInputType | true
+    }
+
+  export interface BranchBatchDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['BranchBatch'], meta: { name: 'BranchBatch' } }
+    /**
+     * Find zero or one BranchBatch that matches the filter.
+     * @param {BranchBatchFindUniqueArgs} args - Arguments to find a BranchBatch
+     * @example
+     * // Get one BranchBatch
+     * const branchBatch = await prisma.branchBatch.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends BranchBatchFindUniqueArgs>(args: SelectSubset<T, BranchBatchFindUniqueArgs<ExtArgs>>): Prisma__BranchBatchClient<$Result.GetResult<Prisma.$BranchBatchPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one BranchBatch that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {BranchBatchFindUniqueOrThrowArgs} args - Arguments to find a BranchBatch
+     * @example
+     * // Get one BranchBatch
+     * const branchBatch = await prisma.branchBatch.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends BranchBatchFindUniqueOrThrowArgs>(args: SelectSubset<T, BranchBatchFindUniqueOrThrowArgs<ExtArgs>>): Prisma__BranchBatchClient<$Result.GetResult<Prisma.$BranchBatchPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first BranchBatch that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BranchBatchFindFirstArgs} args - Arguments to find a BranchBatch
+     * @example
+     * // Get one BranchBatch
+     * const branchBatch = await prisma.branchBatch.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends BranchBatchFindFirstArgs>(args?: SelectSubset<T, BranchBatchFindFirstArgs<ExtArgs>>): Prisma__BranchBatchClient<$Result.GetResult<Prisma.$BranchBatchPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first BranchBatch that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BranchBatchFindFirstOrThrowArgs} args - Arguments to find a BranchBatch
+     * @example
+     * // Get one BranchBatch
+     * const branchBatch = await prisma.branchBatch.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends BranchBatchFindFirstOrThrowArgs>(args?: SelectSubset<T, BranchBatchFindFirstOrThrowArgs<ExtArgs>>): Prisma__BranchBatchClient<$Result.GetResult<Prisma.$BranchBatchPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more BranchBatches that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BranchBatchFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all BranchBatches
+     * const branchBatches = await prisma.branchBatch.findMany()
+     * 
+     * // Get first 10 BranchBatches
+     * const branchBatches = await prisma.branchBatch.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const branchBatchWithIdOnly = await prisma.branchBatch.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends BranchBatchFindManyArgs>(args?: SelectSubset<T, BranchBatchFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchBatchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a BranchBatch.
+     * @param {BranchBatchCreateArgs} args - Arguments to create a BranchBatch.
+     * @example
+     * // Create one BranchBatch
+     * const BranchBatch = await prisma.branchBatch.create({
+     *   data: {
+     *     // ... data to create a BranchBatch
+     *   }
+     * })
+     * 
+     */
+    create<T extends BranchBatchCreateArgs>(args: SelectSubset<T, BranchBatchCreateArgs<ExtArgs>>): Prisma__BranchBatchClient<$Result.GetResult<Prisma.$BranchBatchPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many BranchBatches.
+     * @param {BranchBatchCreateManyArgs} args - Arguments to create many BranchBatches.
+     * @example
+     * // Create many BranchBatches
+     * const branchBatch = await prisma.branchBatch.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends BranchBatchCreateManyArgs>(args?: SelectSubset<T, BranchBatchCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many BranchBatches and returns the data saved in the database.
+     * @param {BranchBatchCreateManyAndReturnArgs} args - Arguments to create many BranchBatches.
+     * @example
+     * // Create many BranchBatches
+     * const branchBatch = await prisma.branchBatch.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many BranchBatches and only return the `id`
+     * const branchBatchWithIdOnly = await prisma.branchBatch.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends BranchBatchCreateManyAndReturnArgs>(args?: SelectSubset<T, BranchBatchCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchBatchPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a BranchBatch.
+     * @param {BranchBatchDeleteArgs} args - Arguments to delete one BranchBatch.
+     * @example
+     * // Delete one BranchBatch
+     * const BranchBatch = await prisma.branchBatch.delete({
+     *   where: {
+     *     // ... filter to delete one BranchBatch
+     *   }
+     * })
+     * 
+     */
+    delete<T extends BranchBatchDeleteArgs>(args: SelectSubset<T, BranchBatchDeleteArgs<ExtArgs>>): Prisma__BranchBatchClient<$Result.GetResult<Prisma.$BranchBatchPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one BranchBatch.
+     * @param {BranchBatchUpdateArgs} args - Arguments to update one BranchBatch.
+     * @example
+     * // Update one BranchBatch
+     * const branchBatch = await prisma.branchBatch.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends BranchBatchUpdateArgs>(args: SelectSubset<T, BranchBatchUpdateArgs<ExtArgs>>): Prisma__BranchBatchClient<$Result.GetResult<Prisma.$BranchBatchPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more BranchBatches.
+     * @param {BranchBatchDeleteManyArgs} args - Arguments to filter BranchBatches to delete.
+     * @example
+     * // Delete a few BranchBatches
+     * const { count } = await prisma.branchBatch.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends BranchBatchDeleteManyArgs>(args?: SelectSubset<T, BranchBatchDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more BranchBatches.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BranchBatchUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many BranchBatches
+     * const branchBatch = await prisma.branchBatch.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends BranchBatchUpdateManyArgs>(args: SelectSubset<T, BranchBatchUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more BranchBatches and returns the data updated in the database.
+     * @param {BranchBatchUpdateManyAndReturnArgs} args - Arguments to update many BranchBatches.
+     * @example
+     * // Update many BranchBatches
+     * const branchBatch = await prisma.branchBatch.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more BranchBatches and only return the `id`
+     * const branchBatchWithIdOnly = await prisma.branchBatch.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends BranchBatchUpdateManyAndReturnArgs>(args: SelectSubset<T, BranchBatchUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchBatchPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one BranchBatch.
+     * @param {BranchBatchUpsertArgs} args - Arguments to update or create a BranchBatch.
+     * @example
+     * // Update or create a BranchBatch
+     * const branchBatch = await prisma.branchBatch.upsert({
+     *   create: {
+     *     // ... data to create a BranchBatch
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the BranchBatch we want to update
+     *   }
+     * })
+     */
+    upsert<T extends BranchBatchUpsertArgs>(args: SelectSubset<T, BranchBatchUpsertArgs<ExtArgs>>): Prisma__BranchBatchClient<$Result.GetResult<Prisma.$BranchBatchPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of BranchBatches.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BranchBatchCountArgs} args - Arguments to filter BranchBatches to count.
+     * @example
+     * // Count the number of BranchBatches
+     * const count = await prisma.branchBatch.count({
+     *   where: {
+     *     // ... the filter for the BranchBatches we want to count
+     *   }
+     * })
+    **/
+    count<T extends BranchBatchCountArgs>(
+      args?: Subset<T, BranchBatchCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], BranchBatchCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a BranchBatch.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BranchBatchAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends BranchBatchAggregateArgs>(args: Subset<T, BranchBatchAggregateArgs>): Prisma.PrismaPromise<GetBranchBatchAggregateType<T>>
+
+    /**
+     * Group by BranchBatch.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BranchBatchGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends BranchBatchGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: BranchBatchGroupByArgs['orderBy'] }
+        : { orderBy?: BranchBatchGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, BranchBatchGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetBranchBatchGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the BranchBatch model
+   */
+  readonly fields: BranchBatchFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for BranchBatch.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__BranchBatchClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    branch<T extends BranchDefaultArgs<ExtArgs> = {}>(args?: Subset<T, BranchDefaultArgs<ExtArgs>>): Prisma__BranchClient<$Result.GetResult<Prisma.$BranchPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    branchCourse<T extends BranchCourseDefaultArgs<ExtArgs> = {}>(args?: Subset<T, BranchCourseDefaultArgs<ExtArgs>>): Prisma__BranchCourseClient<$Result.GetResult<Prisma.$BranchCoursePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    branchFaculty<T extends BranchFacultyDefaultArgs<ExtArgs> = {}>(args?: Subset<T, BranchFacultyDefaultArgs<ExtArgs>>): Prisma__BranchFacultyClient<$Result.GetResult<Prisma.$BranchFacultyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    rows<T extends BranchBatch$rowsArgs<ExtArgs> = {}>(args?: Subset<T, BranchBatch$rowsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchBatchRowPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the BranchBatch model
+   */
+  interface BranchBatchFieldRefs {
+    readonly id: FieldRef<"BranchBatch", 'String'>
+    readonly branchId: FieldRef<"BranchBatch", 'String'>
+    readonly branchCourseId: FieldRef<"BranchBatch", 'String'>
+    readonly branchFacultyId: FieldRef<"BranchBatch", 'String'>
+    readonly batchId: FieldRef<"BranchBatch", 'String'>
+    readonly batchGroupId: FieldRef<"BranchBatch", 'String'>
+    readonly courseId: FieldRef<"BranchBatch", 'String'>
+    readonly courseName: FieldRef<"BranchBatch", 'String'>
+    readonly facultyId: FieldRef<"BranchBatch", 'String'>
+    readonly facultyName: FieldRef<"BranchBatch", 'String'>
+    readonly facultyEmail: FieldRef<"BranchBatch", 'String'>
+    readonly batchCount: FieldRef<"BranchBatch", 'Int'>
+    readonly status: FieldRef<"BranchBatch", 'RecordStatus'>
+    readonly createdBy: FieldRef<"BranchBatch", 'String'>
+    readonly updatedBy: FieldRef<"BranchBatch", 'String'>
+    readonly createdAt: FieldRef<"BranchBatch", 'DateTime'>
+    readonly updatedAt: FieldRef<"BranchBatch", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * BranchBatch findUnique
+   */
+  export type BranchBatchFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchBatch
+     */
+    select?: BranchBatchSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchBatch
+     */
+    omit?: BranchBatchOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchBatchInclude<ExtArgs> | null
+    /**
+     * Filter, which BranchBatch to fetch.
+     */
+    where: BranchBatchWhereUniqueInput
+  }
+
+  /**
+   * BranchBatch findUniqueOrThrow
+   */
+  export type BranchBatchFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchBatch
+     */
+    select?: BranchBatchSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchBatch
+     */
+    omit?: BranchBatchOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchBatchInclude<ExtArgs> | null
+    /**
+     * Filter, which BranchBatch to fetch.
+     */
+    where: BranchBatchWhereUniqueInput
+  }
+
+  /**
+   * BranchBatch findFirst
+   */
+  export type BranchBatchFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchBatch
+     */
+    select?: BranchBatchSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchBatch
+     */
+    omit?: BranchBatchOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchBatchInclude<ExtArgs> | null
+    /**
+     * Filter, which BranchBatch to fetch.
+     */
+    where?: BranchBatchWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of BranchBatches to fetch.
+     */
+    orderBy?: BranchBatchOrderByWithRelationInput | BranchBatchOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for BranchBatches.
+     */
+    cursor?: BranchBatchWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` BranchBatches from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` BranchBatches.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of BranchBatches.
+     */
+    distinct?: BranchBatchScalarFieldEnum | BranchBatchScalarFieldEnum[]
+  }
+
+  /**
+   * BranchBatch findFirstOrThrow
+   */
+  export type BranchBatchFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchBatch
+     */
+    select?: BranchBatchSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchBatch
+     */
+    omit?: BranchBatchOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchBatchInclude<ExtArgs> | null
+    /**
+     * Filter, which BranchBatch to fetch.
+     */
+    where?: BranchBatchWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of BranchBatches to fetch.
+     */
+    orderBy?: BranchBatchOrderByWithRelationInput | BranchBatchOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for BranchBatches.
+     */
+    cursor?: BranchBatchWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` BranchBatches from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` BranchBatches.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of BranchBatches.
+     */
+    distinct?: BranchBatchScalarFieldEnum | BranchBatchScalarFieldEnum[]
+  }
+
+  /**
+   * BranchBatch findMany
+   */
+  export type BranchBatchFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchBatch
+     */
+    select?: BranchBatchSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchBatch
+     */
+    omit?: BranchBatchOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchBatchInclude<ExtArgs> | null
+    /**
+     * Filter, which BranchBatches to fetch.
+     */
+    where?: BranchBatchWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of BranchBatches to fetch.
+     */
+    orderBy?: BranchBatchOrderByWithRelationInput | BranchBatchOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing BranchBatches.
+     */
+    cursor?: BranchBatchWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` BranchBatches from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` BranchBatches.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of BranchBatches.
+     */
+    distinct?: BranchBatchScalarFieldEnum | BranchBatchScalarFieldEnum[]
+  }
+
+  /**
+   * BranchBatch create
+   */
+  export type BranchBatchCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchBatch
+     */
+    select?: BranchBatchSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchBatch
+     */
+    omit?: BranchBatchOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchBatchInclude<ExtArgs> | null
+    /**
+     * The data needed to create a BranchBatch.
+     */
+    data: XOR<BranchBatchCreateInput, BranchBatchUncheckedCreateInput>
+  }
+
+  /**
+   * BranchBatch createMany
+   */
+  export type BranchBatchCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many BranchBatches.
+     */
+    data: BranchBatchCreateManyInput | BranchBatchCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * BranchBatch createManyAndReturn
+   */
+  export type BranchBatchCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchBatch
+     */
+    select?: BranchBatchSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchBatch
+     */
+    omit?: BranchBatchOmit<ExtArgs> | null
+    /**
+     * The data used to create many BranchBatches.
+     */
+    data: BranchBatchCreateManyInput | BranchBatchCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchBatchIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * BranchBatch update
+   */
+  export type BranchBatchUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchBatch
+     */
+    select?: BranchBatchSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchBatch
+     */
+    omit?: BranchBatchOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchBatchInclude<ExtArgs> | null
+    /**
+     * The data needed to update a BranchBatch.
+     */
+    data: XOR<BranchBatchUpdateInput, BranchBatchUncheckedUpdateInput>
+    /**
+     * Choose, which BranchBatch to update.
+     */
+    where: BranchBatchWhereUniqueInput
+  }
+
+  /**
+   * BranchBatch updateMany
+   */
+  export type BranchBatchUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update BranchBatches.
+     */
+    data: XOR<BranchBatchUpdateManyMutationInput, BranchBatchUncheckedUpdateManyInput>
+    /**
+     * Filter which BranchBatches to update
+     */
+    where?: BranchBatchWhereInput
+    /**
+     * Limit how many BranchBatches to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * BranchBatch updateManyAndReturn
+   */
+  export type BranchBatchUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchBatch
+     */
+    select?: BranchBatchSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchBatch
+     */
+    omit?: BranchBatchOmit<ExtArgs> | null
+    /**
+     * The data used to update BranchBatches.
+     */
+    data: XOR<BranchBatchUpdateManyMutationInput, BranchBatchUncheckedUpdateManyInput>
+    /**
+     * Filter which BranchBatches to update
+     */
+    where?: BranchBatchWhereInput
+    /**
+     * Limit how many BranchBatches to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchBatchIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * BranchBatch upsert
+   */
+  export type BranchBatchUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchBatch
+     */
+    select?: BranchBatchSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchBatch
+     */
+    omit?: BranchBatchOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchBatchInclude<ExtArgs> | null
+    /**
+     * The filter to search for the BranchBatch to update in case it exists.
+     */
+    where: BranchBatchWhereUniqueInput
+    /**
+     * In case the BranchBatch found by the `where` argument doesn't exist, create a new BranchBatch with this data.
+     */
+    create: XOR<BranchBatchCreateInput, BranchBatchUncheckedCreateInput>
+    /**
+     * In case the BranchBatch was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<BranchBatchUpdateInput, BranchBatchUncheckedUpdateInput>
+  }
+
+  /**
+   * BranchBatch delete
+   */
+  export type BranchBatchDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchBatch
+     */
+    select?: BranchBatchSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchBatch
+     */
+    omit?: BranchBatchOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchBatchInclude<ExtArgs> | null
+    /**
+     * Filter which BranchBatch to delete.
+     */
+    where: BranchBatchWhereUniqueInput
+  }
+
+  /**
+   * BranchBatch deleteMany
+   */
+  export type BranchBatchDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which BranchBatches to delete
+     */
+    where?: BranchBatchWhereInput
+    /**
+     * Limit how many BranchBatches to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * BranchBatch.rows
+   */
+  export type BranchBatch$rowsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchBatchRow
+     */
+    select?: BranchBatchRowSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchBatchRow
+     */
+    omit?: BranchBatchRowOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchBatchRowInclude<ExtArgs> | null
+    where?: BranchBatchRowWhereInput
+    orderBy?: BranchBatchRowOrderByWithRelationInput | BranchBatchRowOrderByWithRelationInput[]
+    cursor?: BranchBatchRowWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: BranchBatchRowScalarFieldEnum | BranchBatchRowScalarFieldEnum[]
+  }
+
+  /**
+   * BranchBatch without action
+   */
+  export type BranchBatchDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchBatch
+     */
+    select?: BranchBatchSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchBatch
+     */
+    omit?: BranchBatchOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchBatchInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model BranchBatchRow
+   */
+
+  export type AggregateBranchBatchRow = {
+    _count: BranchBatchRowCountAggregateOutputType | null
+    _avg: BranchBatchRowAvgAggregateOutputType | null
+    _sum: BranchBatchRowSumAggregateOutputType | null
+    _min: BranchBatchRowMinAggregateOutputType | null
+    _max: BranchBatchRowMaxAggregateOutputType | null
+  }
+
+  export type BranchBatchRowAvgAggregateOutputType = {
+    totalSeats: number | null
+    sequenceNo: number | null
+  }
+
+  export type BranchBatchRowSumAggregateOutputType = {
+    totalSeats: number | null
+    sequenceNo: number | null
+  }
+
+  export type BranchBatchRowMinAggregateOutputType = {
+    id: string | null
+    branchBatchId: string | null
+    batchId: string | null
+    batchName: string | null
+    startTime: string | null
+    startPeriod: string | null
+    endTime: string | null
+    endPeriod: string | null
+    batchTiming: string | null
+    totalSeats: number | null
+    status: $Enums.RecordStatus | null
+    sequenceNo: number | null
+    createdBy: string | null
+    updatedBy: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type BranchBatchRowMaxAggregateOutputType = {
+    id: string | null
+    branchBatchId: string | null
+    batchId: string | null
+    batchName: string | null
+    startTime: string | null
+    startPeriod: string | null
+    endTime: string | null
+    endPeriod: string | null
+    batchTiming: string | null
+    totalSeats: number | null
+    status: $Enums.RecordStatus | null
+    sequenceNo: number | null
+    createdBy: string | null
+    updatedBy: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type BranchBatchRowCountAggregateOutputType = {
+    id: number
+    branchBatchId: number
+    batchId: number
+    batchName: number
+    startTime: number
+    startPeriod: number
+    endTime: number
+    endPeriod: number
+    batchTiming: number
+    totalSeats: number
+    status: number
+    sequenceNo: number
+    createdBy: number
+    updatedBy: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type BranchBatchRowAvgAggregateInputType = {
+    totalSeats?: true
+    sequenceNo?: true
+  }
+
+  export type BranchBatchRowSumAggregateInputType = {
+    totalSeats?: true
+    sequenceNo?: true
+  }
+
+  export type BranchBatchRowMinAggregateInputType = {
+    id?: true
+    branchBatchId?: true
+    batchId?: true
+    batchName?: true
+    startTime?: true
+    startPeriod?: true
+    endTime?: true
+    endPeriod?: true
+    batchTiming?: true
+    totalSeats?: true
+    status?: true
+    sequenceNo?: true
+    createdBy?: true
+    updatedBy?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type BranchBatchRowMaxAggregateInputType = {
+    id?: true
+    branchBatchId?: true
+    batchId?: true
+    batchName?: true
+    startTime?: true
+    startPeriod?: true
+    endTime?: true
+    endPeriod?: true
+    batchTiming?: true
+    totalSeats?: true
+    status?: true
+    sequenceNo?: true
+    createdBy?: true
+    updatedBy?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type BranchBatchRowCountAggregateInputType = {
+    id?: true
+    branchBatchId?: true
+    batchId?: true
+    batchName?: true
+    startTime?: true
+    startPeriod?: true
+    endTime?: true
+    endPeriod?: true
+    batchTiming?: true
+    totalSeats?: true
+    status?: true
+    sequenceNo?: true
+    createdBy?: true
+    updatedBy?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type BranchBatchRowAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which BranchBatchRow to aggregate.
+     */
+    where?: BranchBatchRowWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of BranchBatchRows to fetch.
+     */
+    orderBy?: BranchBatchRowOrderByWithRelationInput | BranchBatchRowOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: BranchBatchRowWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` BranchBatchRows from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` BranchBatchRows.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned BranchBatchRows
+    **/
+    _count?: true | BranchBatchRowCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: BranchBatchRowAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: BranchBatchRowSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: BranchBatchRowMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: BranchBatchRowMaxAggregateInputType
+  }
+
+  export type GetBranchBatchRowAggregateType<T extends BranchBatchRowAggregateArgs> = {
+        [P in keyof T & keyof AggregateBranchBatchRow]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateBranchBatchRow[P]>
+      : GetScalarType<T[P], AggregateBranchBatchRow[P]>
+  }
+
+
+
+
+  export type BranchBatchRowGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BranchBatchRowWhereInput
+    orderBy?: BranchBatchRowOrderByWithAggregationInput | BranchBatchRowOrderByWithAggregationInput[]
+    by: BranchBatchRowScalarFieldEnum[] | BranchBatchRowScalarFieldEnum
+    having?: BranchBatchRowScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: BranchBatchRowCountAggregateInputType | true
+    _avg?: BranchBatchRowAvgAggregateInputType
+    _sum?: BranchBatchRowSumAggregateInputType
+    _min?: BranchBatchRowMinAggregateInputType
+    _max?: BranchBatchRowMaxAggregateInputType
+  }
+
+  export type BranchBatchRowGroupByOutputType = {
+    id: string
+    branchBatchId: string
+    batchId: string
+    batchName: string
+    startTime: string
+    startPeriod: string
+    endTime: string
+    endPeriod: string
+    batchTiming: string
+    totalSeats: number
+    status: $Enums.RecordStatus
+    sequenceNo: number
+    createdBy: string | null
+    updatedBy: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: BranchBatchRowCountAggregateOutputType | null
+    _avg: BranchBatchRowAvgAggregateOutputType | null
+    _sum: BranchBatchRowSumAggregateOutputType | null
+    _min: BranchBatchRowMinAggregateOutputType | null
+    _max: BranchBatchRowMaxAggregateOutputType | null
+  }
+
+  type GetBranchBatchRowGroupByPayload<T extends BranchBatchRowGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<BranchBatchRowGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof BranchBatchRowGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], BranchBatchRowGroupByOutputType[P]>
+            : GetScalarType<T[P], BranchBatchRowGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type BranchBatchRowSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    branchBatchId?: boolean
+    batchId?: boolean
+    batchName?: boolean
+    startTime?: boolean
+    startPeriod?: boolean
+    endTime?: boolean
+    endPeriod?: boolean
+    batchTiming?: boolean
+    totalSeats?: boolean
+    status?: boolean
+    sequenceNo?: boolean
+    createdBy?: boolean
+    updatedBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    branchBatch?: boolean | BranchBatchDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["branchBatchRow"]>
+
+  export type BranchBatchRowSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    branchBatchId?: boolean
+    batchId?: boolean
+    batchName?: boolean
+    startTime?: boolean
+    startPeriod?: boolean
+    endTime?: boolean
+    endPeriod?: boolean
+    batchTiming?: boolean
+    totalSeats?: boolean
+    status?: boolean
+    sequenceNo?: boolean
+    createdBy?: boolean
+    updatedBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    branchBatch?: boolean | BranchBatchDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["branchBatchRow"]>
+
+  export type BranchBatchRowSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    branchBatchId?: boolean
+    batchId?: boolean
+    batchName?: boolean
+    startTime?: boolean
+    startPeriod?: boolean
+    endTime?: boolean
+    endPeriod?: boolean
+    batchTiming?: boolean
+    totalSeats?: boolean
+    status?: boolean
+    sequenceNo?: boolean
+    createdBy?: boolean
+    updatedBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    branchBatch?: boolean | BranchBatchDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["branchBatchRow"]>
+
+  export type BranchBatchRowSelectScalar = {
+    id?: boolean
+    branchBatchId?: boolean
+    batchId?: boolean
+    batchName?: boolean
+    startTime?: boolean
+    startPeriod?: boolean
+    endTime?: boolean
+    endPeriod?: boolean
+    batchTiming?: boolean
+    totalSeats?: boolean
+    status?: boolean
+    sequenceNo?: boolean
+    createdBy?: boolean
+    updatedBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type BranchBatchRowOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "branchBatchId" | "batchId" | "batchName" | "startTime" | "startPeriod" | "endTime" | "endPeriod" | "batchTiming" | "totalSeats" | "status" | "sequenceNo" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["branchBatchRow"]>
+  export type BranchBatchRowInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    branchBatch?: boolean | BranchBatchDefaultArgs<ExtArgs>
+  }
+  export type BranchBatchRowIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    branchBatch?: boolean | BranchBatchDefaultArgs<ExtArgs>
+  }
+  export type BranchBatchRowIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    branchBatch?: boolean | BranchBatchDefaultArgs<ExtArgs>
+  }
+
+  export type $BranchBatchRowPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "BranchBatchRow"
+    objects: {
+      branchBatch: Prisma.$BranchBatchPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      branchBatchId: string
+      batchId: string
+      batchName: string
+      startTime: string
+      startPeriod: string
+      endTime: string
+      endPeriod: string
+      batchTiming: string
+      totalSeats: number
+      status: $Enums.RecordStatus
+      sequenceNo: number
+      createdBy: string | null
+      updatedBy: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["branchBatchRow"]>
+    composites: {}
+  }
+
+  type BranchBatchRowGetPayload<S extends boolean | null | undefined | BranchBatchRowDefaultArgs> = $Result.GetResult<Prisma.$BranchBatchRowPayload, S>
+
+  type BranchBatchRowCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<BranchBatchRowFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: BranchBatchRowCountAggregateInputType | true
+    }
+
+  export interface BranchBatchRowDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['BranchBatchRow'], meta: { name: 'BranchBatchRow' } }
+    /**
+     * Find zero or one BranchBatchRow that matches the filter.
+     * @param {BranchBatchRowFindUniqueArgs} args - Arguments to find a BranchBatchRow
+     * @example
+     * // Get one BranchBatchRow
+     * const branchBatchRow = await prisma.branchBatchRow.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends BranchBatchRowFindUniqueArgs>(args: SelectSubset<T, BranchBatchRowFindUniqueArgs<ExtArgs>>): Prisma__BranchBatchRowClient<$Result.GetResult<Prisma.$BranchBatchRowPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one BranchBatchRow that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {BranchBatchRowFindUniqueOrThrowArgs} args - Arguments to find a BranchBatchRow
+     * @example
+     * // Get one BranchBatchRow
+     * const branchBatchRow = await prisma.branchBatchRow.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends BranchBatchRowFindUniqueOrThrowArgs>(args: SelectSubset<T, BranchBatchRowFindUniqueOrThrowArgs<ExtArgs>>): Prisma__BranchBatchRowClient<$Result.GetResult<Prisma.$BranchBatchRowPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first BranchBatchRow that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BranchBatchRowFindFirstArgs} args - Arguments to find a BranchBatchRow
+     * @example
+     * // Get one BranchBatchRow
+     * const branchBatchRow = await prisma.branchBatchRow.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends BranchBatchRowFindFirstArgs>(args?: SelectSubset<T, BranchBatchRowFindFirstArgs<ExtArgs>>): Prisma__BranchBatchRowClient<$Result.GetResult<Prisma.$BranchBatchRowPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first BranchBatchRow that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BranchBatchRowFindFirstOrThrowArgs} args - Arguments to find a BranchBatchRow
+     * @example
+     * // Get one BranchBatchRow
+     * const branchBatchRow = await prisma.branchBatchRow.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends BranchBatchRowFindFirstOrThrowArgs>(args?: SelectSubset<T, BranchBatchRowFindFirstOrThrowArgs<ExtArgs>>): Prisma__BranchBatchRowClient<$Result.GetResult<Prisma.$BranchBatchRowPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more BranchBatchRows that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BranchBatchRowFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all BranchBatchRows
+     * const branchBatchRows = await prisma.branchBatchRow.findMany()
+     * 
+     * // Get first 10 BranchBatchRows
+     * const branchBatchRows = await prisma.branchBatchRow.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const branchBatchRowWithIdOnly = await prisma.branchBatchRow.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends BranchBatchRowFindManyArgs>(args?: SelectSubset<T, BranchBatchRowFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchBatchRowPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a BranchBatchRow.
+     * @param {BranchBatchRowCreateArgs} args - Arguments to create a BranchBatchRow.
+     * @example
+     * // Create one BranchBatchRow
+     * const BranchBatchRow = await prisma.branchBatchRow.create({
+     *   data: {
+     *     // ... data to create a BranchBatchRow
+     *   }
+     * })
+     * 
+     */
+    create<T extends BranchBatchRowCreateArgs>(args: SelectSubset<T, BranchBatchRowCreateArgs<ExtArgs>>): Prisma__BranchBatchRowClient<$Result.GetResult<Prisma.$BranchBatchRowPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many BranchBatchRows.
+     * @param {BranchBatchRowCreateManyArgs} args - Arguments to create many BranchBatchRows.
+     * @example
+     * // Create many BranchBatchRows
+     * const branchBatchRow = await prisma.branchBatchRow.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends BranchBatchRowCreateManyArgs>(args?: SelectSubset<T, BranchBatchRowCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many BranchBatchRows and returns the data saved in the database.
+     * @param {BranchBatchRowCreateManyAndReturnArgs} args - Arguments to create many BranchBatchRows.
+     * @example
+     * // Create many BranchBatchRows
+     * const branchBatchRow = await prisma.branchBatchRow.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many BranchBatchRows and only return the `id`
+     * const branchBatchRowWithIdOnly = await prisma.branchBatchRow.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends BranchBatchRowCreateManyAndReturnArgs>(args?: SelectSubset<T, BranchBatchRowCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchBatchRowPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a BranchBatchRow.
+     * @param {BranchBatchRowDeleteArgs} args - Arguments to delete one BranchBatchRow.
+     * @example
+     * // Delete one BranchBatchRow
+     * const BranchBatchRow = await prisma.branchBatchRow.delete({
+     *   where: {
+     *     // ... filter to delete one BranchBatchRow
+     *   }
+     * })
+     * 
+     */
+    delete<T extends BranchBatchRowDeleteArgs>(args: SelectSubset<T, BranchBatchRowDeleteArgs<ExtArgs>>): Prisma__BranchBatchRowClient<$Result.GetResult<Prisma.$BranchBatchRowPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one BranchBatchRow.
+     * @param {BranchBatchRowUpdateArgs} args - Arguments to update one BranchBatchRow.
+     * @example
+     * // Update one BranchBatchRow
+     * const branchBatchRow = await prisma.branchBatchRow.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends BranchBatchRowUpdateArgs>(args: SelectSubset<T, BranchBatchRowUpdateArgs<ExtArgs>>): Prisma__BranchBatchRowClient<$Result.GetResult<Prisma.$BranchBatchRowPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more BranchBatchRows.
+     * @param {BranchBatchRowDeleteManyArgs} args - Arguments to filter BranchBatchRows to delete.
+     * @example
+     * // Delete a few BranchBatchRows
+     * const { count } = await prisma.branchBatchRow.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends BranchBatchRowDeleteManyArgs>(args?: SelectSubset<T, BranchBatchRowDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more BranchBatchRows.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BranchBatchRowUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many BranchBatchRows
+     * const branchBatchRow = await prisma.branchBatchRow.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends BranchBatchRowUpdateManyArgs>(args: SelectSubset<T, BranchBatchRowUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more BranchBatchRows and returns the data updated in the database.
+     * @param {BranchBatchRowUpdateManyAndReturnArgs} args - Arguments to update many BranchBatchRows.
+     * @example
+     * // Update many BranchBatchRows
+     * const branchBatchRow = await prisma.branchBatchRow.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more BranchBatchRows and only return the `id`
+     * const branchBatchRowWithIdOnly = await prisma.branchBatchRow.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends BranchBatchRowUpdateManyAndReturnArgs>(args: SelectSubset<T, BranchBatchRowUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchBatchRowPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one BranchBatchRow.
+     * @param {BranchBatchRowUpsertArgs} args - Arguments to update or create a BranchBatchRow.
+     * @example
+     * // Update or create a BranchBatchRow
+     * const branchBatchRow = await prisma.branchBatchRow.upsert({
+     *   create: {
+     *     // ... data to create a BranchBatchRow
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the BranchBatchRow we want to update
+     *   }
+     * })
+     */
+    upsert<T extends BranchBatchRowUpsertArgs>(args: SelectSubset<T, BranchBatchRowUpsertArgs<ExtArgs>>): Prisma__BranchBatchRowClient<$Result.GetResult<Prisma.$BranchBatchRowPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of BranchBatchRows.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BranchBatchRowCountArgs} args - Arguments to filter BranchBatchRows to count.
+     * @example
+     * // Count the number of BranchBatchRows
+     * const count = await prisma.branchBatchRow.count({
+     *   where: {
+     *     // ... the filter for the BranchBatchRows we want to count
+     *   }
+     * })
+    **/
+    count<T extends BranchBatchRowCountArgs>(
+      args?: Subset<T, BranchBatchRowCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], BranchBatchRowCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a BranchBatchRow.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BranchBatchRowAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends BranchBatchRowAggregateArgs>(args: Subset<T, BranchBatchRowAggregateArgs>): Prisma.PrismaPromise<GetBranchBatchRowAggregateType<T>>
+
+    /**
+     * Group by BranchBatchRow.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BranchBatchRowGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends BranchBatchRowGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: BranchBatchRowGroupByArgs['orderBy'] }
+        : { orderBy?: BranchBatchRowGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, BranchBatchRowGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetBranchBatchRowGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the BranchBatchRow model
+   */
+  readonly fields: BranchBatchRowFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for BranchBatchRow.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__BranchBatchRowClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    branchBatch<T extends BranchBatchDefaultArgs<ExtArgs> = {}>(args?: Subset<T, BranchBatchDefaultArgs<ExtArgs>>): Prisma__BranchBatchClient<$Result.GetResult<Prisma.$BranchBatchPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the BranchBatchRow model
+   */
+  interface BranchBatchRowFieldRefs {
+    readonly id: FieldRef<"BranchBatchRow", 'String'>
+    readonly branchBatchId: FieldRef<"BranchBatchRow", 'String'>
+    readonly batchId: FieldRef<"BranchBatchRow", 'String'>
+    readonly batchName: FieldRef<"BranchBatchRow", 'String'>
+    readonly startTime: FieldRef<"BranchBatchRow", 'String'>
+    readonly startPeriod: FieldRef<"BranchBatchRow", 'String'>
+    readonly endTime: FieldRef<"BranchBatchRow", 'String'>
+    readonly endPeriod: FieldRef<"BranchBatchRow", 'String'>
+    readonly batchTiming: FieldRef<"BranchBatchRow", 'String'>
+    readonly totalSeats: FieldRef<"BranchBatchRow", 'Int'>
+    readonly status: FieldRef<"BranchBatchRow", 'RecordStatus'>
+    readonly sequenceNo: FieldRef<"BranchBatchRow", 'Int'>
+    readonly createdBy: FieldRef<"BranchBatchRow", 'String'>
+    readonly updatedBy: FieldRef<"BranchBatchRow", 'String'>
+    readonly createdAt: FieldRef<"BranchBatchRow", 'DateTime'>
+    readonly updatedAt: FieldRef<"BranchBatchRow", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * BranchBatchRow findUnique
+   */
+  export type BranchBatchRowFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchBatchRow
+     */
+    select?: BranchBatchRowSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchBatchRow
+     */
+    omit?: BranchBatchRowOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchBatchRowInclude<ExtArgs> | null
+    /**
+     * Filter, which BranchBatchRow to fetch.
+     */
+    where: BranchBatchRowWhereUniqueInput
+  }
+
+  /**
+   * BranchBatchRow findUniqueOrThrow
+   */
+  export type BranchBatchRowFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchBatchRow
+     */
+    select?: BranchBatchRowSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchBatchRow
+     */
+    omit?: BranchBatchRowOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchBatchRowInclude<ExtArgs> | null
+    /**
+     * Filter, which BranchBatchRow to fetch.
+     */
+    where: BranchBatchRowWhereUniqueInput
+  }
+
+  /**
+   * BranchBatchRow findFirst
+   */
+  export type BranchBatchRowFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchBatchRow
+     */
+    select?: BranchBatchRowSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchBatchRow
+     */
+    omit?: BranchBatchRowOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchBatchRowInclude<ExtArgs> | null
+    /**
+     * Filter, which BranchBatchRow to fetch.
+     */
+    where?: BranchBatchRowWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of BranchBatchRows to fetch.
+     */
+    orderBy?: BranchBatchRowOrderByWithRelationInput | BranchBatchRowOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for BranchBatchRows.
+     */
+    cursor?: BranchBatchRowWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` BranchBatchRows from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` BranchBatchRows.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of BranchBatchRows.
+     */
+    distinct?: BranchBatchRowScalarFieldEnum | BranchBatchRowScalarFieldEnum[]
+  }
+
+  /**
+   * BranchBatchRow findFirstOrThrow
+   */
+  export type BranchBatchRowFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchBatchRow
+     */
+    select?: BranchBatchRowSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchBatchRow
+     */
+    omit?: BranchBatchRowOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchBatchRowInclude<ExtArgs> | null
+    /**
+     * Filter, which BranchBatchRow to fetch.
+     */
+    where?: BranchBatchRowWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of BranchBatchRows to fetch.
+     */
+    orderBy?: BranchBatchRowOrderByWithRelationInput | BranchBatchRowOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for BranchBatchRows.
+     */
+    cursor?: BranchBatchRowWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` BranchBatchRows from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` BranchBatchRows.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of BranchBatchRows.
+     */
+    distinct?: BranchBatchRowScalarFieldEnum | BranchBatchRowScalarFieldEnum[]
+  }
+
+  /**
+   * BranchBatchRow findMany
+   */
+  export type BranchBatchRowFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchBatchRow
+     */
+    select?: BranchBatchRowSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchBatchRow
+     */
+    omit?: BranchBatchRowOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchBatchRowInclude<ExtArgs> | null
+    /**
+     * Filter, which BranchBatchRows to fetch.
+     */
+    where?: BranchBatchRowWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of BranchBatchRows to fetch.
+     */
+    orderBy?: BranchBatchRowOrderByWithRelationInput | BranchBatchRowOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing BranchBatchRows.
+     */
+    cursor?: BranchBatchRowWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` BranchBatchRows from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` BranchBatchRows.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of BranchBatchRows.
+     */
+    distinct?: BranchBatchRowScalarFieldEnum | BranchBatchRowScalarFieldEnum[]
+  }
+
+  /**
+   * BranchBatchRow create
+   */
+  export type BranchBatchRowCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchBatchRow
+     */
+    select?: BranchBatchRowSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchBatchRow
+     */
+    omit?: BranchBatchRowOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchBatchRowInclude<ExtArgs> | null
+    /**
+     * The data needed to create a BranchBatchRow.
+     */
+    data: XOR<BranchBatchRowCreateInput, BranchBatchRowUncheckedCreateInput>
+  }
+
+  /**
+   * BranchBatchRow createMany
+   */
+  export type BranchBatchRowCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many BranchBatchRows.
+     */
+    data: BranchBatchRowCreateManyInput | BranchBatchRowCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * BranchBatchRow createManyAndReturn
+   */
+  export type BranchBatchRowCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchBatchRow
+     */
+    select?: BranchBatchRowSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchBatchRow
+     */
+    omit?: BranchBatchRowOmit<ExtArgs> | null
+    /**
+     * The data used to create many BranchBatchRows.
+     */
+    data: BranchBatchRowCreateManyInput | BranchBatchRowCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchBatchRowIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * BranchBatchRow update
+   */
+  export type BranchBatchRowUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchBatchRow
+     */
+    select?: BranchBatchRowSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchBatchRow
+     */
+    omit?: BranchBatchRowOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchBatchRowInclude<ExtArgs> | null
+    /**
+     * The data needed to update a BranchBatchRow.
+     */
+    data: XOR<BranchBatchRowUpdateInput, BranchBatchRowUncheckedUpdateInput>
+    /**
+     * Choose, which BranchBatchRow to update.
+     */
+    where: BranchBatchRowWhereUniqueInput
+  }
+
+  /**
+   * BranchBatchRow updateMany
+   */
+  export type BranchBatchRowUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update BranchBatchRows.
+     */
+    data: XOR<BranchBatchRowUpdateManyMutationInput, BranchBatchRowUncheckedUpdateManyInput>
+    /**
+     * Filter which BranchBatchRows to update
+     */
+    where?: BranchBatchRowWhereInput
+    /**
+     * Limit how many BranchBatchRows to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * BranchBatchRow updateManyAndReturn
+   */
+  export type BranchBatchRowUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchBatchRow
+     */
+    select?: BranchBatchRowSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchBatchRow
+     */
+    omit?: BranchBatchRowOmit<ExtArgs> | null
+    /**
+     * The data used to update BranchBatchRows.
+     */
+    data: XOR<BranchBatchRowUpdateManyMutationInput, BranchBatchRowUncheckedUpdateManyInput>
+    /**
+     * Filter which BranchBatchRows to update
+     */
+    where?: BranchBatchRowWhereInput
+    /**
+     * Limit how many BranchBatchRows to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchBatchRowIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * BranchBatchRow upsert
+   */
+  export type BranchBatchRowUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchBatchRow
+     */
+    select?: BranchBatchRowSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchBatchRow
+     */
+    omit?: BranchBatchRowOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchBatchRowInclude<ExtArgs> | null
+    /**
+     * The filter to search for the BranchBatchRow to update in case it exists.
+     */
+    where: BranchBatchRowWhereUniqueInput
+    /**
+     * In case the BranchBatchRow found by the `where` argument doesn't exist, create a new BranchBatchRow with this data.
+     */
+    create: XOR<BranchBatchRowCreateInput, BranchBatchRowUncheckedCreateInput>
+    /**
+     * In case the BranchBatchRow was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<BranchBatchRowUpdateInput, BranchBatchRowUncheckedUpdateInput>
+  }
+
+  /**
+   * BranchBatchRow delete
+   */
+  export type BranchBatchRowDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchBatchRow
+     */
+    select?: BranchBatchRowSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchBatchRow
+     */
+    omit?: BranchBatchRowOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchBatchRowInclude<ExtArgs> | null
+    /**
+     * Filter which BranchBatchRow to delete.
+     */
+    where: BranchBatchRowWhereUniqueInput
+  }
+
+  /**
+   * BranchBatchRow deleteMany
+   */
+  export type BranchBatchRowDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which BranchBatchRows to delete
+     */
+    where?: BranchBatchRowWhereInput
+    /**
+     * Limit how many BranchBatchRows to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * BranchBatchRow without action
+   */
+  export type BranchBatchRowDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchBatchRow
+     */
+    select?: BranchBatchRowSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchBatchRow
+     */
+    omit?: BranchBatchRowOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchBatchRowInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model CourseStatusHistory
    */
 
@@ -25286,6 +28284,7 @@ export namespace Prisma {
     course?: boolean | BranchStudent$courseArgs<ExtArgs>
     installments?: boolean | BranchStudent$installmentsArgs<ExtArgs>
     payments?: boolean | BranchStudent$paymentsArgs<ExtArgs>
+    ledgerEntries?: boolean | BranchStudent$ledgerEntriesArgs<ExtArgs>
     _count?: boolean | BranchStudentCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["branchStudent"]>
 
@@ -25416,6 +28415,7 @@ export namespace Prisma {
     course?: boolean | BranchStudent$courseArgs<ExtArgs>
     installments?: boolean | BranchStudent$installmentsArgs<ExtArgs>
     payments?: boolean | BranchStudent$paymentsArgs<ExtArgs>
+    ledgerEntries?: boolean | BranchStudent$ledgerEntriesArgs<ExtArgs>
     _count?: boolean | BranchStudentCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type BranchStudentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -25434,6 +28434,7 @@ export namespace Prisma {
       course: Prisma.$BranchCoursePayload<ExtArgs> | null
       installments: Prisma.$BranchStudentInstallmentPayload<ExtArgs>[]
       payments: Prisma.$BranchStudentPaymentPayload<ExtArgs>[]
+      ledgerEntries: Prisma.$BranchStudentLedgerEntryPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -25870,6 +28871,7 @@ export namespace Prisma {
     course<T extends BranchStudent$courseArgs<ExtArgs> = {}>(args?: Subset<T, BranchStudent$courseArgs<ExtArgs>>): Prisma__BranchCourseClient<$Result.GetResult<Prisma.$BranchCoursePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     installments<T extends BranchStudent$installmentsArgs<ExtArgs> = {}>(args?: Subset<T, BranchStudent$installmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchStudentInstallmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     payments<T extends BranchStudent$paymentsArgs<ExtArgs> = {}>(args?: Subset<T, BranchStudent$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchStudentPaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    ledgerEntries<T extends BranchStudent$ledgerEntriesArgs<ExtArgs> = {}>(args?: Subset<T, BranchStudent$ledgerEntriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchStudentLedgerEntryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -26400,6 +29402,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: BranchStudentPaymentScalarFieldEnum | BranchStudentPaymentScalarFieldEnum[]
+  }
+
+  /**
+   * BranchStudent.ledgerEntries
+   */
+  export type BranchStudent$ledgerEntriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchStudentLedgerEntry
+     */
+    select?: BranchStudentLedgerEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchStudentLedgerEntry
+     */
+    omit?: BranchStudentLedgerEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchStudentLedgerEntryInclude<ExtArgs> | null
+    where?: BranchStudentLedgerEntryWhereInput
+    orderBy?: BranchStudentLedgerEntryOrderByWithRelationInput | BranchStudentLedgerEntryOrderByWithRelationInput[]
+    cursor?: BranchStudentLedgerEntryWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: BranchStudentLedgerEntryScalarFieldEnum | BranchStudentLedgerEntryScalarFieldEnum[]
   }
 
   /**
@@ -35082,6 +38108,8 @@ export namespace Prisma {
     branchCourse?: boolean | BranchFaculty$branchCourseArgs<ExtArgs>
     branch?: boolean | BranchDefaultArgs<ExtArgs>
     course?: boolean | BranchFaculty$courseArgs<ExtArgs>
+    branchBatches?: boolean | BranchFaculty$branchBatchesArgs<ExtArgs>
+    _count?: boolean | BranchFacultyCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["branchFaculty"]>
 
   export type BranchFacultySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -35161,6 +38189,8 @@ export namespace Prisma {
     branchCourse?: boolean | BranchFaculty$branchCourseArgs<ExtArgs>
     branch?: boolean | BranchDefaultArgs<ExtArgs>
     course?: boolean | BranchFaculty$courseArgs<ExtArgs>
+    branchBatches?: boolean | BranchFaculty$branchBatchesArgs<ExtArgs>
+    _count?: boolean | BranchFacultyCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type BranchFacultyIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     branchCourse?: boolean | BranchFaculty$branchCourseArgs<ExtArgs>
@@ -35179,6 +38209,7 @@ export namespace Prisma {
       branchCourse: Prisma.$BranchCoursePayload<ExtArgs> | null
       branch: Prisma.$BranchPayload<ExtArgs>
       course: Prisma.$CoursePayload<ExtArgs> | null
+      branchBatches: Prisma.$BranchBatchPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -35597,6 +38628,7 @@ export namespace Prisma {
     branchCourse<T extends BranchFaculty$branchCourseArgs<ExtArgs> = {}>(args?: Subset<T, BranchFaculty$branchCourseArgs<ExtArgs>>): Prisma__BranchCourseClient<$Result.GetResult<Prisma.$BranchCoursePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     branch<T extends BranchDefaultArgs<ExtArgs> = {}>(args?: Subset<T, BranchDefaultArgs<ExtArgs>>): Prisma__BranchClient<$Result.GetResult<Prisma.$BranchPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     course<T extends BranchFaculty$courseArgs<ExtArgs> = {}>(args?: Subset<T, BranchFaculty$courseArgs<ExtArgs>>): Prisma__CourseClient<$Result.GetResult<Prisma.$CoursePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    branchBatches<T extends BranchFaculty$branchBatchesArgs<ExtArgs> = {}>(args?: Subset<T, BranchFaculty$branchBatchesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchBatchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -36081,6 +39113,30 @@ export namespace Prisma {
      */
     include?: CourseInclude<ExtArgs> | null
     where?: CourseWhereInput
+  }
+
+  /**
+   * BranchFaculty.branchBatches
+   */
+  export type BranchFaculty$branchBatchesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchBatch
+     */
+    select?: BranchBatchSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchBatch
+     */
+    omit?: BranchBatchOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchBatchInclude<ExtArgs> | null
+    where?: BranchBatchWhereInput
+    orderBy?: BranchBatchOrderByWithRelationInput | BranchBatchOrderByWithRelationInput[]
+    cursor?: BranchBatchWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: BranchBatchScalarFieldEnum | BranchBatchScalarFieldEnum[]
   }
 
   /**
@@ -38602,6 +41658,1417 @@ export namespace Prisma {
 
 
   /**
+   * Model BranchStudentLedgerEntry
+   */
+
+  export type AggregateBranchStudentLedgerEntry = {
+    _count: BranchStudentLedgerEntryCountAggregateOutputType | null
+    _avg: BranchStudentLedgerEntryAvgAggregateOutputType | null
+    _sum: BranchStudentLedgerEntrySumAggregateOutputType | null
+    _min: BranchStudentLedgerEntryMinAggregateOutputType | null
+    _max: BranchStudentLedgerEntryMaxAggregateOutputType | null
+  }
+
+  export type BranchStudentLedgerEntryAvgAggregateOutputType = {
+    entryNo: number | null
+    debit: number | null
+    credit: number | null
+    amount: number | null
+    runningBalance: number | null
+    studentBalanceAfter: number | null
+  }
+
+  export type BranchStudentLedgerEntrySumAggregateOutputType = {
+    entryNo: number | null
+    debit: number | null
+    credit: number | null
+    amount: number | null
+    runningBalance: number | null
+    studentBalanceAfter: number | null
+  }
+
+  export type BranchStudentLedgerEntryMinAggregateOutputType = {
+    id: string | null
+    ledgerKey: string | null
+    branchId: string | null
+    branchStudentId: string | null
+    paymentId: string | null
+    installmentId: string | null
+    entryNo: number | null
+    entryType: string | null
+    description: string | null
+    debit: number | null
+    credit: number | null
+    amount: number | null
+    runningBalance: number | null
+    studentBalanceAfter: number | null
+    entryDate: Date | null
+    paymentDate: Date | null
+    referenceType: string | null
+    referenceId: string | null
+    paymentMode: string | null
+    receiptNumber: string | null
+    payAgainst: string | null
+    transactionReference: string | null
+    notes: string | null
+    createdBy: string | null
+    updatedBy: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type BranchStudentLedgerEntryMaxAggregateOutputType = {
+    id: string | null
+    ledgerKey: string | null
+    branchId: string | null
+    branchStudentId: string | null
+    paymentId: string | null
+    installmentId: string | null
+    entryNo: number | null
+    entryType: string | null
+    description: string | null
+    debit: number | null
+    credit: number | null
+    amount: number | null
+    runningBalance: number | null
+    studentBalanceAfter: number | null
+    entryDate: Date | null
+    paymentDate: Date | null
+    referenceType: string | null
+    referenceId: string | null
+    paymentMode: string | null
+    receiptNumber: string | null
+    payAgainst: string | null
+    transactionReference: string | null
+    notes: string | null
+    createdBy: string | null
+    updatedBy: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type BranchStudentLedgerEntryCountAggregateOutputType = {
+    id: number
+    ledgerKey: number
+    branchId: number
+    branchStudentId: number
+    paymentId: number
+    installmentId: number
+    entryNo: number
+    entryType: number
+    description: number
+    debit: number
+    credit: number
+    amount: number
+    runningBalance: number
+    studentBalanceAfter: number
+    entryDate: number
+    paymentDate: number
+    referenceType: number
+    referenceId: number
+    paymentMode: number
+    receiptNumber: number
+    payAgainst: number
+    transactionReference: number
+    notes: number
+    createdBy: number
+    updatedBy: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type BranchStudentLedgerEntryAvgAggregateInputType = {
+    entryNo?: true
+    debit?: true
+    credit?: true
+    amount?: true
+    runningBalance?: true
+    studentBalanceAfter?: true
+  }
+
+  export type BranchStudentLedgerEntrySumAggregateInputType = {
+    entryNo?: true
+    debit?: true
+    credit?: true
+    amount?: true
+    runningBalance?: true
+    studentBalanceAfter?: true
+  }
+
+  export type BranchStudentLedgerEntryMinAggregateInputType = {
+    id?: true
+    ledgerKey?: true
+    branchId?: true
+    branchStudentId?: true
+    paymentId?: true
+    installmentId?: true
+    entryNo?: true
+    entryType?: true
+    description?: true
+    debit?: true
+    credit?: true
+    amount?: true
+    runningBalance?: true
+    studentBalanceAfter?: true
+    entryDate?: true
+    paymentDate?: true
+    referenceType?: true
+    referenceId?: true
+    paymentMode?: true
+    receiptNumber?: true
+    payAgainst?: true
+    transactionReference?: true
+    notes?: true
+    createdBy?: true
+    updatedBy?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type BranchStudentLedgerEntryMaxAggregateInputType = {
+    id?: true
+    ledgerKey?: true
+    branchId?: true
+    branchStudentId?: true
+    paymentId?: true
+    installmentId?: true
+    entryNo?: true
+    entryType?: true
+    description?: true
+    debit?: true
+    credit?: true
+    amount?: true
+    runningBalance?: true
+    studentBalanceAfter?: true
+    entryDate?: true
+    paymentDate?: true
+    referenceType?: true
+    referenceId?: true
+    paymentMode?: true
+    receiptNumber?: true
+    payAgainst?: true
+    transactionReference?: true
+    notes?: true
+    createdBy?: true
+    updatedBy?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type BranchStudentLedgerEntryCountAggregateInputType = {
+    id?: true
+    ledgerKey?: true
+    branchId?: true
+    branchStudentId?: true
+    paymentId?: true
+    installmentId?: true
+    entryNo?: true
+    entryType?: true
+    description?: true
+    debit?: true
+    credit?: true
+    amount?: true
+    runningBalance?: true
+    studentBalanceAfter?: true
+    entryDate?: true
+    paymentDate?: true
+    referenceType?: true
+    referenceId?: true
+    paymentMode?: true
+    receiptNumber?: true
+    payAgainst?: true
+    transactionReference?: true
+    notes?: true
+    createdBy?: true
+    updatedBy?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type BranchStudentLedgerEntryAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which BranchStudentLedgerEntry to aggregate.
+     */
+    where?: BranchStudentLedgerEntryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of BranchStudentLedgerEntries to fetch.
+     */
+    orderBy?: BranchStudentLedgerEntryOrderByWithRelationInput | BranchStudentLedgerEntryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: BranchStudentLedgerEntryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` BranchStudentLedgerEntries from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` BranchStudentLedgerEntries.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned BranchStudentLedgerEntries
+    **/
+    _count?: true | BranchStudentLedgerEntryCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: BranchStudentLedgerEntryAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: BranchStudentLedgerEntrySumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: BranchStudentLedgerEntryMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: BranchStudentLedgerEntryMaxAggregateInputType
+  }
+
+  export type GetBranchStudentLedgerEntryAggregateType<T extends BranchStudentLedgerEntryAggregateArgs> = {
+        [P in keyof T & keyof AggregateBranchStudentLedgerEntry]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateBranchStudentLedgerEntry[P]>
+      : GetScalarType<T[P], AggregateBranchStudentLedgerEntry[P]>
+  }
+
+
+
+
+  export type BranchStudentLedgerEntryGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BranchStudentLedgerEntryWhereInput
+    orderBy?: BranchStudentLedgerEntryOrderByWithAggregationInput | BranchStudentLedgerEntryOrderByWithAggregationInput[]
+    by: BranchStudentLedgerEntryScalarFieldEnum[] | BranchStudentLedgerEntryScalarFieldEnum
+    having?: BranchStudentLedgerEntryScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: BranchStudentLedgerEntryCountAggregateInputType | true
+    _avg?: BranchStudentLedgerEntryAvgAggregateInputType
+    _sum?: BranchStudentLedgerEntrySumAggregateInputType
+    _min?: BranchStudentLedgerEntryMinAggregateInputType
+    _max?: BranchStudentLedgerEntryMaxAggregateInputType
+  }
+
+  export type BranchStudentLedgerEntryGroupByOutputType = {
+    id: string
+    ledgerKey: string
+    branchId: string
+    branchStudentId: string
+    paymentId: string | null
+    installmentId: string | null
+    entryNo: number
+    entryType: string
+    description: string
+    debit: number
+    credit: number
+    amount: number
+    runningBalance: number
+    studentBalanceAfter: number
+    entryDate: Date | null
+    paymentDate: Date | null
+    referenceType: string | null
+    referenceId: string | null
+    paymentMode: string | null
+    receiptNumber: string | null
+    payAgainst: string | null
+    transactionReference: string | null
+    notes: string | null
+    createdBy: string | null
+    updatedBy: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: BranchStudentLedgerEntryCountAggregateOutputType | null
+    _avg: BranchStudentLedgerEntryAvgAggregateOutputType | null
+    _sum: BranchStudentLedgerEntrySumAggregateOutputType | null
+    _min: BranchStudentLedgerEntryMinAggregateOutputType | null
+    _max: BranchStudentLedgerEntryMaxAggregateOutputType | null
+  }
+
+  type GetBranchStudentLedgerEntryGroupByPayload<T extends BranchStudentLedgerEntryGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<BranchStudentLedgerEntryGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof BranchStudentLedgerEntryGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], BranchStudentLedgerEntryGroupByOutputType[P]>
+            : GetScalarType<T[P], BranchStudentLedgerEntryGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type BranchStudentLedgerEntrySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    ledgerKey?: boolean
+    branchId?: boolean
+    branchStudentId?: boolean
+    paymentId?: boolean
+    installmentId?: boolean
+    entryNo?: boolean
+    entryType?: boolean
+    description?: boolean
+    debit?: boolean
+    credit?: boolean
+    amount?: boolean
+    runningBalance?: boolean
+    studentBalanceAfter?: boolean
+    entryDate?: boolean
+    paymentDate?: boolean
+    referenceType?: boolean
+    referenceId?: boolean
+    paymentMode?: boolean
+    receiptNumber?: boolean
+    payAgainst?: boolean
+    transactionReference?: boolean
+    notes?: boolean
+    createdBy?: boolean
+    updatedBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    branch?: boolean | BranchDefaultArgs<ExtArgs>
+    branchStudent?: boolean | BranchStudentDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["branchStudentLedgerEntry"]>
+
+  export type BranchStudentLedgerEntrySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    ledgerKey?: boolean
+    branchId?: boolean
+    branchStudentId?: boolean
+    paymentId?: boolean
+    installmentId?: boolean
+    entryNo?: boolean
+    entryType?: boolean
+    description?: boolean
+    debit?: boolean
+    credit?: boolean
+    amount?: boolean
+    runningBalance?: boolean
+    studentBalanceAfter?: boolean
+    entryDate?: boolean
+    paymentDate?: boolean
+    referenceType?: boolean
+    referenceId?: boolean
+    paymentMode?: boolean
+    receiptNumber?: boolean
+    payAgainst?: boolean
+    transactionReference?: boolean
+    notes?: boolean
+    createdBy?: boolean
+    updatedBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    branch?: boolean | BranchDefaultArgs<ExtArgs>
+    branchStudent?: boolean | BranchStudentDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["branchStudentLedgerEntry"]>
+
+  export type BranchStudentLedgerEntrySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    ledgerKey?: boolean
+    branchId?: boolean
+    branchStudentId?: boolean
+    paymentId?: boolean
+    installmentId?: boolean
+    entryNo?: boolean
+    entryType?: boolean
+    description?: boolean
+    debit?: boolean
+    credit?: boolean
+    amount?: boolean
+    runningBalance?: boolean
+    studentBalanceAfter?: boolean
+    entryDate?: boolean
+    paymentDate?: boolean
+    referenceType?: boolean
+    referenceId?: boolean
+    paymentMode?: boolean
+    receiptNumber?: boolean
+    payAgainst?: boolean
+    transactionReference?: boolean
+    notes?: boolean
+    createdBy?: boolean
+    updatedBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    branch?: boolean | BranchDefaultArgs<ExtArgs>
+    branchStudent?: boolean | BranchStudentDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["branchStudentLedgerEntry"]>
+
+  export type BranchStudentLedgerEntrySelectScalar = {
+    id?: boolean
+    ledgerKey?: boolean
+    branchId?: boolean
+    branchStudentId?: boolean
+    paymentId?: boolean
+    installmentId?: boolean
+    entryNo?: boolean
+    entryType?: boolean
+    description?: boolean
+    debit?: boolean
+    credit?: boolean
+    amount?: boolean
+    runningBalance?: boolean
+    studentBalanceAfter?: boolean
+    entryDate?: boolean
+    paymentDate?: boolean
+    referenceType?: boolean
+    referenceId?: boolean
+    paymentMode?: boolean
+    receiptNumber?: boolean
+    payAgainst?: boolean
+    transactionReference?: boolean
+    notes?: boolean
+    createdBy?: boolean
+    updatedBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type BranchStudentLedgerEntryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "ledgerKey" | "branchId" | "branchStudentId" | "paymentId" | "installmentId" | "entryNo" | "entryType" | "description" | "debit" | "credit" | "amount" | "runningBalance" | "studentBalanceAfter" | "entryDate" | "paymentDate" | "referenceType" | "referenceId" | "paymentMode" | "receiptNumber" | "payAgainst" | "transactionReference" | "notes" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["branchStudentLedgerEntry"]>
+  export type BranchStudentLedgerEntryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    branch?: boolean | BranchDefaultArgs<ExtArgs>
+    branchStudent?: boolean | BranchStudentDefaultArgs<ExtArgs>
+  }
+  export type BranchStudentLedgerEntryIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    branch?: boolean | BranchDefaultArgs<ExtArgs>
+    branchStudent?: boolean | BranchStudentDefaultArgs<ExtArgs>
+  }
+  export type BranchStudentLedgerEntryIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    branch?: boolean | BranchDefaultArgs<ExtArgs>
+    branchStudent?: boolean | BranchStudentDefaultArgs<ExtArgs>
+  }
+
+  export type $BranchStudentLedgerEntryPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "BranchStudentLedgerEntry"
+    objects: {
+      branch: Prisma.$BranchPayload<ExtArgs>
+      branchStudent: Prisma.$BranchStudentPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      ledgerKey: string
+      branchId: string
+      branchStudentId: string
+      paymentId: string | null
+      installmentId: string | null
+      entryNo: number
+      entryType: string
+      description: string
+      debit: number
+      credit: number
+      amount: number
+      runningBalance: number
+      studentBalanceAfter: number
+      entryDate: Date | null
+      paymentDate: Date | null
+      referenceType: string | null
+      referenceId: string | null
+      paymentMode: string | null
+      receiptNumber: string | null
+      payAgainst: string | null
+      transactionReference: string | null
+      notes: string | null
+      createdBy: string | null
+      updatedBy: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["branchStudentLedgerEntry"]>
+    composites: {}
+  }
+
+  type BranchStudentLedgerEntryGetPayload<S extends boolean | null | undefined | BranchStudentLedgerEntryDefaultArgs> = $Result.GetResult<Prisma.$BranchStudentLedgerEntryPayload, S>
+
+  type BranchStudentLedgerEntryCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<BranchStudentLedgerEntryFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: BranchStudentLedgerEntryCountAggregateInputType | true
+    }
+
+  export interface BranchStudentLedgerEntryDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['BranchStudentLedgerEntry'], meta: { name: 'BranchStudentLedgerEntry' } }
+    /**
+     * Find zero or one BranchStudentLedgerEntry that matches the filter.
+     * @param {BranchStudentLedgerEntryFindUniqueArgs} args - Arguments to find a BranchStudentLedgerEntry
+     * @example
+     * // Get one BranchStudentLedgerEntry
+     * const branchStudentLedgerEntry = await prisma.branchStudentLedgerEntry.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends BranchStudentLedgerEntryFindUniqueArgs>(args: SelectSubset<T, BranchStudentLedgerEntryFindUniqueArgs<ExtArgs>>): Prisma__BranchStudentLedgerEntryClient<$Result.GetResult<Prisma.$BranchStudentLedgerEntryPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one BranchStudentLedgerEntry that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {BranchStudentLedgerEntryFindUniqueOrThrowArgs} args - Arguments to find a BranchStudentLedgerEntry
+     * @example
+     * // Get one BranchStudentLedgerEntry
+     * const branchStudentLedgerEntry = await prisma.branchStudentLedgerEntry.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends BranchStudentLedgerEntryFindUniqueOrThrowArgs>(args: SelectSubset<T, BranchStudentLedgerEntryFindUniqueOrThrowArgs<ExtArgs>>): Prisma__BranchStudentLedgerEntryClient<$Result.GetResult<Prisma.$BranchStudentLedgerEntryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first BranchStudentLedgerEntry that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BranchStudentLedgerEntryFindFirstArgs} args - Arguments to find a BranchStudentLedgerEntry
+     * @example
+     * // Get one BranchStudentLedgerEntry
+     * const branchStudentLedgerEntry = await prisma.branchStudentLedgerEntry.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends BranchStudentLedgerEntryFindFirstArgs>(args?: SelectSubset<T, BranchStudentLedgerEntryFindFirstArgs<ExtArgs>>): Prisma__BranchStudentLedgerEntryClient<$Result.GetResult<Prisma.$BranchStudentLedgerEntryPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first BranchStudentLedgerEntry that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BranchStudentLedgerEntryFindFirstOrThrowArgs} args - Arguments to find a BranchStudentLedgerEntry
+     * @example
+     * // Get one BranchStudentLedgerEntry
+     * const branchStudentLedgerEntry = await prisma.branchStudentLedgerEntry.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends BranchStudentLedgerEntryFindFirstOrThrowArgs>(args?: SelectSubset<T, BranchStudentLedgerEntryFindFirstOrThrowArgs<ExtArgs>>): Prisma__BranchStudentLedgerEntryClient<$Result.GetResult<Prisma.$BranchStudentLedgerEntryPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more BranchStudentLedgerEntries that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BranchStudentLedgerEntryFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all BranchStudentLedgerEntries
+     * const branchStudentLedgerEntries = await prisma.branchStudentLedgerEntry.findMany()
+     * 
+     * // Get first 10 BranchStudentLedgerEntries
+     * const branchStudentLedgerEntries = await prisma.branchStudentLedgerEntry.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const branchStudentLedgerEntryWithIdOnly = await prisma.branchStudentLedgerEntry.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends BranchStudentLedgerEntryFindManyArgs>(args?: SelectSubset<T, BranchStudentLedgerEntryFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchStudentLedgerEntryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a BranchStudentLedgerEntry.
+     * @param {BranchStudentLedgerEntryCreateArgs} args - Arguments to create a BranchStudentLedgerEntry.
+     * @example
+     * // Create one BranchStudentLedgerEntry
+     * const BranchStudentLedgerEntry = await prisma.branchStudentLedgerEntry.create({
+     *   data: {
+     *     // ... data to create a BranchStudentLedgerEntry
+     *   }
+     * })
+     * 
+     */
+    create<T extends BranchStudentLedgerEntryCreateArgs>(args: SelectSubset<T, BranchStudentLedgerEntryCreateArgs<ExtArgs>>): Prisma__BranchStudentLedgerEntryClient<$Result.GetResult<Prisma.$BranchStudentLedgerEntryPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many BranchStudentLedgerEntries.
+     * @param {BranchStudentLedgerEntryCreateManyArgs} args - Arguments to create many BranchStudentLedgerEntries.
+     * @example
+     * // Create many BranchStudentLedgerEntries
+     * const branchStudentLedgerEntry = await prisma.branchStudentLedgerEntry.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends BranchStudentLedgerEntryCreateManyArgs>(args?: SelectSubset<T, BranchStudentLedgerEntryCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many BranchStudentLedgerEntries and returns the data saved in the database.
+     * @param {BranchStudentLedgerEntryCreateManyAndReturnArgs} args - Arguments to create many BranchStudentLedgerEntries.
+     * @example
+     * // Create many BranchStudentLedgerEntries
+     * const branchStudentLedgerEntry = await prisma.branchStudentLedgerEntry.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many BranchStudentLedgerEntries and only return the `id`
+     * const branchStudentLedgerEntryWithIdOnly = await prisma.branchStudentLedgerEntry.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends BranchStudentLedgerEntryCreateManyAndReturnArgs>(args?: SelectSubset<T, BranchStudentLedgerEntryCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchStudentLedgerEntryPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a BranchStudentLedgerEntry.
+     * @param {BranchStudentLedgerEntryDeleteArgs} args - Arguments to delete one BranchStudentLedgerEntry.
+     * @example
+     * // Delete one BranchStudentLedgerEntry
+     * const BranchStudentLedgerEntry = await prisma.branchStudentLedgerEntry.delete({
+     *   where: {
+     *     // ... filter to delete one BranchStudentLedgerEntry
+     *   }
+     * })
+     * 
+     */
+    delete<T extends BranchStudentLedgerEntryDeleteArgs>(args: SelectSubset<T, BranchStudentLedgerEntryDeleteArgs<ExtArgs>>): Prisma__BranchStudentLedgerEntryClient<$Result.GetResult<Prisma.$BranchStudentLedgerEntryPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one BranchStudentLedgerEntry.
+     * @param {BranchStudentLedgerEntryUpdateArgs} args - Arguments to update one BranchStudentLedgerEntry.
+     * @example
+     * // Update one BranchStudentLedgerEntry
+     * const branchStudentLedgerEntry = await prisma.branchStudentLedgerEntry.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends BranchStudentLedgerEntryUpdateArgs>(args: SelectSubset<T, BranchStudentLedgerEntryUpdateArgs<ExtArgs>>): Prisma__BranchStudentLedgerEntryClient<$Result.GetResult<Prisma.$BranchStudentLedgerEntryPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more BranchStudentLedgerEntries.
+     * @param {BranchStudentLedgerEntryDeleteManyArgs} args - Arguments to filter BranchStudentLedgerEntries to delete.
+     * @example
+     * // Delete a few BranchStudentLedgerEntries
+     * const { count } = await prisma.branchStudentLedgerEntry.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends BranchStudentLedgerEntryDeleteManyArgs>(args?: SelectSubset<T, BranchStudentLedgerEntryDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more BranchStudentLedgerEntries.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BranchStudentLedgerEntryUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many BranchStudentLedgerEntries
+     * const branchStudentLedgerEntry = await prisma.branchStudentLedgerEntry.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends BranchStudentLedgerEntryUpdateManyArgs>(args: SelectSubset<T, BranchStudentLedgerEntryUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more BranchStudentLedgerEntries and returns the data updated in the database.
+     * @param {BranchStudentLedgerEntryUpdateManyAndReturnArgs} args - Arguments to update many BranchStudentLedgerEntries.
+     * @example
+     * // Update many BranchStudentLedgerEntries
+     * const branchStudentLedgerEntry = await prisma.branchStudentLedgerEntry.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more BranchStudentLedgerEntries and only return the `id`
+     * const branchStudentLedgerEntryWithIdOnly = await prisma.branchStudentLedgerEntry.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends BranchStudentLedgerEntryUpdateManyAndReturnArgs>(args: SelectSubset<T, BranchStudentLedgerEntryUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchStudentLedgerEntryPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one BranchStudentLedgerEntry.
+     * @param {BranchStudentLedgerEntryUpsertArgs} args - Arguments to update or create a BranchStudentLedgerEntry.
+     * @example
+     * // Update or create a BranchStudentLedgerEntry
+     * const branchStudentLedgerEntry = await prisma.branchStudentLedgerEntry.upsert({
+     *   create: {
+     *     // ... data to create a BranchStudentLedgerEntry
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the BranchStudentLedgerEntry we want to update
+     *   }
+     * })
+     */
+    upsert<T extends BranchStudentLedgerEntryUpsertArgs>(args: SelectSubset<T, BranchStudentLedgerEntryUpsertArgs<ExtArgs>>): Prisma__BranchStudentLedgerEntryClient<$Result.GetResult<Prisma.$BranchStudentLedgerEntryPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of BranchStudentLedgerEntries.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BranchStudentLedgerEntryCountArgs} args - Arguments to filter BranchStudentLedgerEntries to count.
+     * @example
+     * // Count the number of BranchStudentLedgerEntries
+     * const count = await prisma.branchStudentLedgerEntry.count({
+     *   where: {
+     *     // ... the filter for the BranchStudentLedgerEntries we want to count
+     *   }
+     * })
+    **/
+    count<T extends BranchStudentLedgerEntryCountArgs>(
+      args?: Subset<T, BranchStudentLedgerEntryCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], BranchStudentLedgerEntryCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a BranchStudentLedgerEntry.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BranchStudentLedgerEntryAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends BranchStudentLedgerEntryAggregateArgs>(args: Subset<T, BranchStudentLedgerEntryAggregateArgs>): Prisma.PrismaPromise<GetBranchStudentLedgerEntryAggregateType<T>>
+
+    /**
+     * Group by BranchStudentLedgerEntry.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BranchStudentLedgerEntryGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends BranchStudentLedgerEntryGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: BranchStudentLedgerEntryGroupByArgs['orderBy'] }
+        : { orderBy?: BranchStudentLedgerEntryGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, BranchStudentLedgerEntryGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetBranchStudentLedgerEntryGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the BranchStudentLedgerEntry model
+   */
+  readonly fields: BranchStudentLedgerEntryFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for BranchStudentLedgerEntry.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__BranchStudentLedgerEntryClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    branch<T extends BranchDefaultArgs<ExtArgs> = {}>(args?: Subset<T, BranchDefaultArgs<ExtArgs>>): Prisma__BranchClient<$Result.GetResult<Prisma.$BranchPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    branchStudent<T extends BranchStudentDefaultArgs<ExtArgs> = {}>(args?: Subset<T, BranchStudentDefaultArgs<ExtArgs>>): Prisma__BranchStudentClient<$Result.GetResult<Prisma.$BranchStudentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the BranchStudentLedgerEntry model
+   */
+  interface BranchStudentLedgerEntryFieldRefs {
+    readonly id: FieldRef<"BranchStudentLedgerEntry", 'String'>
+    readonly ledgerKey: FieldRef<"BranchStudentLedgerEntry", 'String'>
+    readonly branchId: FieldRef<"BranchStudentLedgerEntry", 'String'>
+    readonly branchStudentId: FieldRef<"BranchStudentLedgerEntry", 'String'>
+    readonly paymentId: FieldRef<"BranchStudentLedgerEntry", 'String'>
+    readonly installmentId: FieldRef<"BranchStudentLedgerEntry", 'String'>
+    readonly entryNo: FieldRef<"BranchStudentLedgerEntry", 'Int'>
+    readonly entryType: FieldRef<"BranchStudentLedgerEntry", 'String'>
+    readonly description: FieldRef<"BranchStudentLedgerEntry", 'String'>
+    readonly debit: FieldRef<"BranchStudentLedgerEntry", 'Int'>
+    readonly credit: FieldRef<"BranchStudentLedgerEntry", 'Int'>
+    readonly amount: FieldRef<"BranchStudentLedgerEntry", 'Int'>
+    readonly runningBalance: FieldRef<"BranchStudentLedgerEntry", 'Int'>
+    readonly studentBalanceAfter: FieldRef<"BranchStudentLedgerEntry", 'Int'>
+    readonly entryDate: FieldRef<"BranchStudentLedgerEntry", 'DateTime'>
+    readonly paymentDate: FieldRef<"BranchStudentLedgerEntry", 'DateTime'>
+    readonly referenceType: FieldRef<"BranchStudentLedgerEntry", 'String'>
+    readonly referenceId: FieldRef<"BranchStudentLedgerEntry", 'String'>
+    readonly paymentMode: FieldRef<"BranchStudentLedgerEntry", 'String'>
+    readonly receiptNumber: FieldRef<"BranchStudentLedgerEntry", 'String'>
+    readonly payAgainst: FieldRef<"BranchStudentLedgerEntry", 'String'>
+    readonly transactionReference: FieldRef<"BranchStudentLedgerEntry", 'String'>
+    readonly notes: FieldRef<"BranchStudentLedgerEntry", 'String'>
+    readonly createdBy: FieldRef<"BranchStudentLedgerEntry", 'String'>
+    readonly updatedBy: FieldRef<"BranchStudentLedgerEntry", 'String'>
+    readonly createdAt: FieldRef<"BranchStudentLedgerEntry", 'DateTime'>
+    readonly updatedAt: FieldRef<"BranchStudentLedgerEntry", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * BranchStudentLedgerEntry findUnique
+   */
+  export type BranchStudentLedgerEntryFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchStudentLedgerEntry
+     */
+    select?: BranchStudentLedgerEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchStudentLedgerEntry
+     */
+    omit?: BranchStudentLedgerEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchStudentLedgerEntryInclude<ExtArgs> | null
+    /**
+     * Filter, which BranchStudentLedgerEntry to fetch.
+     */
+    where: BranchStudentLedgerEntryWhereUniqueInput
+  }
+
+  /**
+   * BranchStudentLedgerEntry findUniqueOrThrow
+   */
+  export type BranchStudentLedgerEntryFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchStudentLedgerEntry
+     */
+    select?: BranchStudentLedgerEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchStudentLedgerEntry
+     */
+    omit?: BranchStudentLedgerEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchStudentLedgerEntryInclude<ExtArgs> | null
+    /**
+     * Filter, which BranchStudentLedgerEntry to fetch.
+     */
+    where: BranchStudentLedgerEntryWhereUniqueInput
+  }
+
+  /**
+   * BranchStudentLedgerEntry findFirst
+   */
+  export type BranchStudentLedgerEntryFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchStudentLedgerEntry
+     */
+    select?: BranchStudentLedgerEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchStudentLedgerEntry
+     */
+    omit?: BranchStudentLedgerEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchStudentLedgerEntryInclude<ExtArgs> | null
+    /**
+     * Filter, which BranchStudentLedgerEntry to fetch.
+     */
+    where?: BranchStudentLedgerEntryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of BranchStudentLedgerEntries to fetch.
+     */
+    orderBy?: BranchStudentLedgerEntryOrderByWithRelationInput | BranchStudentLedgerEntryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for BranchStudentLedgerEntries.
+     */
+    cursor?: BranchStudentLedgerEntryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` BranchStudentLedgerEntries from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` BranchStudentLedgerEntries.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of BranchStudentLedgerEntries.
+     */
+    distinct?: BranchStudentLedgerEntryScalarFieldEnum | BranchStudentLedgerEntryScalarFieldEnum[]
+  }
+
+  /**
+   * BranchStudentLedgerEntry findFirstOrThrow
+   */
+  export type BranchStudentLedgerEntryFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchStudentLedgerEntry
+     */
+    select?: BranchStudentLedgerEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchStudentLedgerEntry
+     */
+    omit?: BranchStudentLedgerEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchStudentLedgerEntryInclude<ExtArgs> | null
+    /**
+     * Filter, which BranchStudentLedgerEntry to fetch.
+     */
+    where?: BranchStudentLedgerEntryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of BranchStudentLedgerEntries to fetch.
+     */
+    orderBy?: BranchStudentLedgerEntryOrderByWithRelationInput | BranchStudentLedgerEntryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for BranchStudentLedgerEntries.
+     */
+    cursor?: BranchStudentLedgerEntryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` BranchStudentLedgerEntries from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` BranchStudentLedgerEntries.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of BranchStudentLedgerEntries.
+     */
+    distinct?: BranchStudentLedgerEntryScalarFieldEnum | BranchStudentLedgerEntryScalarFieldEnum[]
+  }
+
+  /**
+   * BranchStudentLedgerEntry findMany
+   */
+  export type BranchStudentLedgerEntryFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchStudentLedgerEntry
+     */
+    select?: BranchStudentLedgerEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchStudentLedgerEntry
+     */
+    omit?: BranchStudentLedgerEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchStudentLedgerEntryInclude<ExtArgs> | null
+    /**
+     * Filter, which BranchStudentLedgerEntries to fetch.
+     */
+    where?: BranchStudentLedgerEntryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of BranchStudentLedgerEntries to fetch.
+     */
+    orderBy?: BranchStudentLedgerEntryOrderByWithRelationInput | BranchStudentLedgerEntryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing BranchStudentLedgerEntries.
+     */
+    cursor?: BranchStudentLedgerEntryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` BranchStudentLedgerEntries from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` BranchStudentLedgerEntries.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of BranchStudentLedgerEntries.
+     */
+    distinct?: BranchStudentLedgerEntryScalarFieldEnum | BranchStudentLedgerEntryScalarFieldEnum[]
+  }
+
+  /**
+   * BranchStudentLedgerEntry create
+   */
+  export type BranchStudentLedgerEntryCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchStudentLedgerEntry
+     */
+    select?: BranchStudentLedgerEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchStudentLedgerEntry
+     */
+    omit?: BranchStudentLedgerEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchStudentLedgerEntryInclude<ExtArgs> | null
+    /**
+     * The data needed to create a BranchStudentLedgerEntry.
+     */
+    data: XOR<BranchStudentLedgerEntryCreateInput, BranchStudentLedgerEntryUncheckedCreateInput>
+  }
+
+  /**
+   * BranchStudentLedgerEntry createMany
+   */
+  export type BranchStudentLedgerEntryCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many BranchStudentLedgerEntries.
+     */
+    data: BranchStudentLedgerEntryCreateManyInput | BranchStudentLedgerEntryCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * BranchStudentLedgerEntry createManyAndReturn
+   */
+  export type BranchStudentLedgerEntryCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchStudentLedgerEntry
+     */
+    select?: BranchStudentLedgerEntrySelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchStudentLedgerEntry
+     */
+    omit?: BranchStudentLedgerEntryOmit<ExtArgs> | null
+    /**
+     * The data used to create many BranchStudentLedgerEntries.
+     */
+    data: BranchStudentLedgerEntryCreateManyInput | BranchStudentLedgerEntryCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchStudentLedgerEntryIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * BranchStudentLedgerEntry update
+   */
+  export type BranchStudentLedgerEntryUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchStudentLedgerEntry
+     */
+    select?: BranchStudentLedgerEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchStudentLedgerEntry
+     */
+    omit?: BranchStudentLedgerEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchStudentLedgerEntryInclude<ExtArgs> | null
+    /**
+     * The data needed to update a BranchStudentLedgerEntry.
+     */
+    data: XOR<BranchStudentLedgerEntryUpdateInput, BranchStudentLedgerEntryUncheckedUpdateInput>
+    /**
+     * Choose, which BranchStudentLedgerEntry to update.
+     */
+    where: BranchStudentLedgerEntryWhereUniqueInput
+  }
+
+  /**
+   * BranchStudentLedgerEntry updateMany
+   */
+  export type BranchStudentLedgerEntryUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update BranchStudentLedgerEntries.
+     */
+    data: XOR<BranchStudentLedgerEntryUpdateManyMutationInput, BranchStudentLedgerEntryUncheckedUpdateManyInput>
+    /**
+     * Filter which BranchStudentLedgerEntries to update
+     */
+    where?: BranchStudentLedgerEntryWhereInput
+    /**
+     * Limit how many BranchStudentLedgerEntries to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * BranchStudentLedgerEntry updateManyAndReturn
+   */
+  export type BranchStudentLedgerEntryUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchStudentLedgerEntry
+     */
+    select?: BranchStudentLedgerEntrySelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchStudentLedgerEntry
+     */
+    omit?: BranchStudentLedgerEntryOmit<ExtArgs> | null
+    /**
+     * The data used to update BranchStudentLedgerEntries.
+     */
+    data: XOR<BranchStudentLedgerEntryUpdateManyMutationInput, BranchStudentLedgerEntryUncheckedUpdateManyInput>
+    /**
+     * Filter which BranchStudentLedgerEntries to update
+     */
+    where?: BranchStudentLedgerEntryWhereInput
+    /**
+     * Limit how many BranchStudentLedgerEntries to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchStudentLedgerEntryIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * BranchStudentLedgerEntry upsert
+   */
+  export type BranchStudentLedgerEntryUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchStudentLedgerEntry
+     */
+    select?: BranchStudentLedgerEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchStudentLedgerEntry
+     */
+    omit?: BranchStudentLedgerEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchStudentLedgerEntryInclude<ExtArgs> | null
+    /**
+     * The filter to search for the BranchStudentLedgerEntry to update in case it exists.
+     */
+    where: BranchStudentLedgerEntryWhereUniqueInput
+    /**
+     * In case the BranchStudentLedgerEntry found by the `where` argument doesn't exist, create a new BranchStudentLedgerEntry with this data.
+     */
+    create: XOR<BranchStudentLedgerEntryCreateInput, BranchStudentLedgerEntryUncheckedCreateInput>
+    /**
+     * In case the BranchStudentLedgerEntry was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<BranchStudentLedgerEntryUpdateInput, BranchStudentLedgerEntryUncheckedUpdateInput>
+  }
+
+  /**
+   * BranchStudentLedgerEntry delete
+   */
+  export type BranchStudentLedgerEntryDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchStudentLedgerEntry
+     */
+    select?: BranchStudentLedgerEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchStudentLedgerEntry
+     */
+    omit?: BranchStudentLedgerEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchStudentLedgerEntryInclude<ExtArgs> | null
+    /**
+     * Filter which BranchStudentLedgerEntry to delete.
+     */
+    where: BranchStudentLedgerEntryWhereUniqueInput
+  }
+
+  /**
+   * BranchStudentLedgerEntry deleteMany
+   */
+  export type BranchStudentLedgerEntryDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which BranchStudentLedgerEntries to delete
+     */
+    where?: BranchStudentLedgerEntryWhereInput
+    /**
+     * Limit how many BranchStudentLedgerEntries to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * BranchStudentLedgerEntry without action
+   */
+  export type BranchStudentLedgerEntryDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchStudentLedgerEntry
+     */
+    select?: BranchStudentLedgerEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchStudentLedgerEntry
+     */
+    omit?: BranchStudentLedgerEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchStudentLedgerEntryInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -38913,6 +43380,51 @@ export namespace Prisma {
   export type BatchFacultyAssignmentScalarFieldEnum = (typeof BatchFacultyAssignmentScalarFieldEnum)[keyof typeof BatchFacultyAssignmentScalarFieldEnum]
 
 
+  export const BranchBatchScalarFieldEnum: {
+    id: 'id',
+    branchId: 'branchId',
+    branchCourseId: 'branchCourseId',
+    branchFacultyId: 'branchFacultyId',
+    batchId: 'batchId',
+    batchGroupId: 'batchGroupId',
+    courseId: 'courseId',
+    courseName: 'courseName',
+    facultyId: 'facultyId',
+    facultyName: 'facultyName',
+    facultyEmail: 'facultyEmail',
+    batchCount: 'batchCount',
+    status: 'status',
+    createdBy: 'createdBy',
+    updatedBy: 'updatedBy',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type BranchBatchScalarFieldEnum = (typeof BranchBatchScalarFieldEnum)[keyof typeof BranchBatchScalarFieldEnum]
+
+
+  export const BranchBatchRowScalarFieldEnum: {
+    id: 'id',
+    branchBatchId: 'branchBatchId',
+    batchId: 'batchId',
+    batchName: 'batchName',
+    startTime: 'startTime',
+    startPeriod: 'startPeriod',
+    endTime: 'endTime',
+    endPeriod: 'endPeriod',
+    batchTiming: 'batchTiming',
+    totalSeats: 'totalSeats',
+    status: 'status',
+    sequenceNo: 'sequenceNo',
+    createdBy: 'createdBy',
+    updatedBy: 'updatedBy',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type BranchBatchRowScalarFieldEnum = (typeof BranchBatchRowScalarFieldEnum)[keyof typeof BranchBatchRowScalarFieldEnum]
+
+
   export const CourseStatusHistoryScalarFieldEnum: {
     id: 'id',
     courseId: 'courseId',
@@ -39221,6 +43733,39 @@ export namespace Prisma {
   };
 
   export type BranchStudentPaymentScalarFieldEnum = (typeof BranchStudentPaymentScalarFieldEnum)[keyof typeof BranchStudentPaymentScalarFieldEnum]
+
+
+  export const BranchStudentLedgerEntryScalarFieldEnum: {
+    id: 'id',
+    ledgerKey: 'ledgerKey',
+    branchId: 'branchId',
+    branchStudentId: 'branchStudentId',
+    paymentId: 'paymentId',
+    installmentId: 'installmentId',
+    entryNo: 'entryNo',
+    entryType: 'entryType',
+    description: 'description',
+    debit: 'debit',
+    credit: 'credit',
+    amount: 'amount',
+    runningBalance: 'runningBalance',
+    studentBalanceAfter: 'studentBalanceAfter',
+    entryDate: 'entryDate',
+    paymentDate: 'paymentDate',
+    referenceType: 'referenceType',
+    referenceId: 'referenceId',
+    paymentMode: 'paymentMode',
+    receiptNumber: 'receiptNumber',
+    payAgainst: 'payAgainst',
+    transactionReference: 'transactionReference',
+    notes: 'notes',
+    createdBy: 'createdBy',
+    updatedBy: 'updatedBy',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type BranchStudentLedgerEntryScalarFieldEnum = (typeof BranchStudentLedgerEntryScalarFieldEnum)[keyof typeof BranchStudentLedgerEntryScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -39650,9 +44195,11 @@ export namespace Prisma {
     branchStateCode?: StringFilter<"Branch"> | string
     adminUser?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     branchCourses?: BranchCourseListRelationFilter
+    branchBatches?: BranchBatchListRelationFilter
     branchInstallmentTemplates?: BranchInstallmentTemplateListRelationFilter
     branchFaculties?: BranchFacultyListRelationFilter
     branchStudents?: BranchStudentListRelationFilter
+    ledgerEntries?: BranchStudentLedgerEntryListRelationFilter
     payments?: BranchStudentPaymentListRelationFilter
     courses?: CourseListRelationFilter
   }
@@ -39678,9 +44225,11 @@ export namespace Prisma {
     branchStateCode?: SortOrder
     adminUser?: UserOrderByWithRelationInput
     branchCourses?: BranchCourseOrderByRelationAggregateInput
+    branchBatches?: BranchBatchOrderByRelationAggregateInput
     branchInstallmentTemplates?: BranchInstallmentTemplateOrderByRelationAggregateInput
     branchFaculties?: BranchFacultyOrderByRelationAggregateInput
     branchStudents?: BranchStudentOrderByRelationAggregateInput
+    ledgerEntries?: BranchStudentLedgerEntryOrderByRelationAggregateInput
     payments?: BranchStudentPaymentOrderByRelationAggregateInput
     courses?: CourseOrderByRelationAggregateInput
   }
@@ -39709,9 +44258,11 @@ export namespace Prisma {
     branchStateCode?: StringFilter<"Branch"> | string
     adminUser?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     branchCourses?: BranchCourseListRelationFilter
+    branchBatches?: BranchBatchListRelationFilter
     branchInstallmentTemplates?: BranchInstallmentTemplateListRelationFilter
     branchFaculties?: BranchFacultyListRelationFilter
     branchStudents?: BranchStudentListRelationFilter
+    ledgerEntries?: BranchStudentLedgerEntryListRelationFilter
     payments?: BranchStudentPaymentListRelationFilter
     courses?: CourseListRelationFilter
   }, "id" | "branchId" | "branchEmail" | "branchPhone" | "adminUserId">
@@ -40441,6 +44992,7 @@ export namespace Prisma {
     installmentTemplate?: XOR<BranchInstallmentTemplateNullableScalarRelationFilter, BranchInstallmentTemplateWhereInput> | null
     modules?: BranchCourseModuleListRelationFilter
     branchFaculties?: BranchFacultyListRelationFilter
+    branchBatches?: BranchBatchListRelationFilter
     branchStudents?: BranchStudentListRelationFilter
     facultyTodayWorkEntries?: FacultyTodayWorkEntryListRelationFilter
   }
@@ -40470,6 +45022,7 @@ export namespace Prisma {
     installmentTemplate?: BranchInstallmentTemplateOrderByWithRelationInput
     modules?: BranchCourseModuleOrderByRelationAggregateInput
     branchFaculties?: BranchFacultyOrderByRelationAggregateInput
+    branchBatches?: BranchBatchOrderByRelationAggregateInput
     branchStudents?: BranchStudentOrderByRelationAggregateInput
     facultyTodayWorkEntries?: FacultyTodayWorkEntryOrderByRelationAggregateInput
   }
@@ -40504,6 +45057,7 @@ export namespace Prisma {
     installmentTemplate?: XOR<BranchInstallmentTemplateNullableScalarRelationFilter, BranchInstallmentTemplateWhereInput> | null
     modules?: BranchCourseModuleListRelationFilter
     branchFaculties?: BranchFacultyListRelationFilter
+    branchBatches?: BranchBatchListRelationFilter
     branchStudents?: BranchStudentListRelationFilter
     facultyTodayWorkEntries?: FacultyTodayWorkEntryListRelationFilter
   }, "id" | "branchId_nameKey" | "branchId_courseCode">
@@ -41073,6 +45627,244 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"BatchFacultyAssignment"> | Date | string
   }
 
+  export type BranchBatchWhereInput = {
+    AND?: BranchBatchWhereInput | BranchBatchWhereInput[]
+    OR?: BranchBatchWhereInput[]
+    NOT?: BranchBatchWhereInput | BranchBatchWhereInput[]
+    id?: StringFilter<"BranchBatch"> | string
+    branchId?: StringFilter<"BranchBatch"> | string
+    branchCourseId?: StringFilter<"BranchBatch"> | string
+    branchFacultyId?: StringFilter<"BranchBatch"> | string
+    batchId?: StringFilter<"BranchBatch"> | string
+    batchGroupId?: StringFilter<"BranchBatch"> | string
+    courseId?: StringFilter<"BranchBatch"> | string
+    courseName?: StringFilter<"BranchBatch"> | string
+    facultyId?: StringFilter<"BranchBatch"> | string
+    facultyName?: StringFilter<"BranchBatch"> | string
+    facultyEmail?: StringFilter<"BranchBatch"> | string
+    batchCount?: IntFilter<"BranchBatch"> | number
+    status?: EnumRecordStatusFilter<"BranchBatch"> | $Enums.RecordStatus
+    createdBy?: StringNullableFilter<"BranchBatch"> | string | null
+    updatedBy?: StringNullableFilter<"BranchBatch"> | string | null
+    createdAt?: DateTimeFilter<"BranchBatch"> | Date | string
+    updatedAt?: DateTimeFilter<"BranchBatch"> | Date | string
+    branch?: XOR<BranchScalarRelationFilter, BranchWhereInput>
+    branchCourse?: XOR<BranchCourseScalarRelationFilter, BranchCourseWhereInput>
+    branchFaculty?: XOR<BranchFacultyScalarRelationFilter, BranchFacultyWhereInput>
+    rows?: BranchBatchRowListRelationFilter
+  }
+
+  export type BranchBatchOrderByWithRelationInput = {
+    id?: SortOrder
+    branchId?: SortOrder
+    branchCourseId?: SortOrder
+    branchFacultyId?: SortOrder
+    batchId?: SortOrder
+    batchGroupId?: SortOrder
+    courseId?: SortOrder
+    courseName?: SortOrder
+    facultyId?: SortOrder
+    facultyName?: SortOrder
+    facultyEmail?: SortOrder
+    batchCount?: SortOrder
+    status?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    updatedBy?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    branch?: BranchOrderByWithRelationInput
+    branchCourse?: BranchCourseOrderByWithRelationInput
+    branchFaculty?: BranchFacultyOrderByWithRelationInput
+    rows?: BranchBatchRowOrderByRelationAggregateInput
+  }
+
+  export type BranchBatchWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    batchId?: string
+    batchGroupId?: string
+    AND?: BranchBatchWhereInput | BranchBatchWhereInput[]
+    OR?: BranchBatchWhereInput[]
+    NOT?: BranchBatchWhereInput | BranchBatchWhereInput[]
+    branchId?: StringFilter<"BranchBatch"> | string
+    branchCourseId?: StringFilter<"BranchBatch"> | string
+    branchFacultyId?: StringFilter<"BranchBatch"> | string
+    courseId?: StringFilter<"BranchBatch"> | string
+    courseName?: StringFilter<"BranchBatch"> | string
+    facultyId?: StringFilter<"BranchBatch"> | string
+    facultyName?: StringFilter<"BranchBatch"> | string
+    facultyEmail?: StringFilter<"BranchBatch"> | string
+    batchCount?: IntFilter<"BranchBatch"> | number
+    status?: EnumRecordStatusFilter<"BranchBatch"> | $Enums.RecordStatus
+    createdBy?: StringNullableFilter<"BranchBatch"> | string | null
+    updatedBy?: StringNullableFilter<"BranchBatch"> | string | null
+    createdAt?: DateTimeFilter<"BranchBatch"> | Date | string
+    updatedAt?: DateTimeFilter<"BranchBatch"> | Date | string
+    branch?: XOR<BranchScalarRelationFilter, BranchWhereInput>
+    branchCourse?: XOR<BranchCourseScalarRelationFilter, BranchCourseWhereInput>
+    branchFaculty?: XOR<BranchFacultyScalarRelationFilter, BranchFacultyWhereInput>
+    rows?: BranchBatchRowListRelationFilter
+  }, "id" | "batchId" | "batchGroupId">
+
+  export type BranchBatchOrderByWithAggregationInput = {
+    id?: SortOrder
+    branchId?: SortOrder
+    branchCourseId?: SortOrder
+    branchFacultyId?: SortOrder
+    batchId?: SortOrder
+    batchGroupId?: SortOrder
+    courseId?: SortOrder
+    courseName?: SortOrder
+    facultyId?: SortOrder
+    facultyName?: SortOrder
+    facultyEmail?: SortOrder
+    batchCount?: SortOrder
+    status?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    updatedBy?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: BranchBatchCountOrderByAggregateInput
+    _avg?: BranchBatchAvgOrderByAggregateInput
+    _max?: BranchBatchMaxOrderByAggregateInput
+    _min?: BranchBatchMinOrderByAggregateInput
+    _sum?: BranchBatchSumOrderByAggregateInput
+  }
+
+  export type BranchBatchScalarWhereWithAggregatesInput = {
+    AND?: BranchBatchScalarWhereWithAggregatesInput | BranchBatchScalarWhereWithAggregatesInput[]
+    OR?: BranchBatchScalarWhereWithAggregatesInput[]
+    NOT?: BranchBatchScalarWhereWithAggregatesInput | BranchBatchScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"BranchBatch"> | string
+    branchId?: StringWithAggregatesFilter<"BranchBatch"> | string
+    branchCourseId?: StringWithAggregatesFilter<"BranchBatch"> | string
+    branchFacultyId?: StringWithAggregatesFilter<"BranchBatch"> | string
+    batchId?: StringWithAggregatesFilter<"BranchBatch"> | string
+    batchGroupId?: StringWithAggregatesFilter<"BranchBatch"> | string
+    courseId?: StringWithAggregatesFilter<"BranchBatch"> | string
+    courseName?: StringWithAggregatesFilter<"BranchBatch"> | string
+    facultyId?: StringWithAggregatesFilter<"BranchBatch"> | string
+    facultyName?: StringWithAggregatesFilter<"BranchBatch"> | string
+    facultyEmail?: StringWithAggregatesFilter<"BranchBatch"> | string
+    batchCount?: IntWithAggregatesFilter<"BranchBatch"> | number
+    status?: EnumRecordStatusWithAggregatesFilter<"BranchBatch"> | $Enums.RecordStatus
+    createdBy?: StringNullableWithAggregatesFilter<"BranchBatch"> | string | null
+    updatedBy?: StringNullableWithAggregatesFilter<"BranchBatch"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"BranchBatch"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"BranchBatch"> | Date | string
+  }
+
+  export type BranchBatchRowWhereInput = {
+    AND?: BranchBatchRowWhereInput | BranchBatchRowWhereInput[]
+    OR?: BranchBatchRowWhereInput[]
+    NOT?: BranchBatchRowWhereInput | BranchBatchRowWhereInput[]
+    id?: StringFilter<"BranchBatchRow"> | string
+    branchBatchId?: StringFilter<"BranchBatchRow"> | string
+    batchId?: StringFilter<"BranchBatchRow"> | string
+    batchName?: StringFilter<"BranchBatchRow"> | string
+    startTime?: StringFilter<"BranchBatchRow"> | string
+    startPeriod?: StringFilter<"BranchBatchRow"> | string
+    endTime?: StringFilter<"BranchBatchRow"> | string
+    endPeriod?: StringFilter<"BranchBatchRow"> | string
+    batchTiming?: StringFilter<"BranchBatchRow"> | string
+    totalSeats?: IntFilter<"BranchBatchRow"> | number
+    status?: EnumRecordStatusFilter<"BranchBatchRow"> | $Enums.RecordStatus
+    sequenceNo?: IntFilter<"BranchBatchRow"> | number
+    createdBy?: StringNullableFilter<"BranchBatchRow"> | string | null
+    updatedBy?: StringNullableFilter<"BranchBatchRow"> | string | null
+    createdAt?: DateTimeFilter<"BranchBatchRow"> | Date | string
+    updatedAt?: DateTimeFilter<"BranchBatchRow"> | Date | string
+    branchBatch?: XOR<BranchBatchScalarRelationFilter, BranchBatchWhereInput>
+  }
+
+  export type BranchBatchRowOrderByWithRelationInput = {
+    id?: SortOrder
+    branchBatchId?: SortOrder
+    batchId?: SortOrder
+    batchName?: SortOrder
+    startTime?: SortOrder
+    startPeriod?: SortOrder
+    endTime?: SortOrder
+    endPeriod?: SortOrder
+    batchTiming?: SortOrder
+    totalSeats?: SortOrder
+    status?: SortOrder
+    sequenceNo?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    updatedBy?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    branchBatch?: BranchBatchOrderByWithRelationInput
+  }
+
+  export type BranchBatchRowWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    batchId?: string
+    AND?: BranchBatchRowWhereInput | BranchBatchRowWhereInput[]
+    OR?: BranchBatchRowWhereInput[]
+    NOT?: BranchBatchRowWhereInput | BranchBatchRowWhereInput[]
+    branchBatchId?: StringFilter<"BranchBatchRow"> | string
+    batchName?: StringFilter<"BranchBatchRow"> | string
+    startTime?: StringFilter<"BranchBatchRow"> | string
+    startPeriod?: StringFilter<"BranchBatchRow"> | string
+    endTime?: StringFilter<"BranchBatchRow"> | string
+    endPeriod?: StringFilter<"BranchBatchRow"> | string
+    batchTiming?: StringFilter<"BranchBatchRow"> | string
+    totalSeats?: IntFilter<"BranchBatchRow"> | number
+    status?: EnumRecordStatusFilter<"BranchBatchRow"> | $Enums.RecordStatus
+    sequenceNo?: IntFilter<"BranchBatchRow"> | number
+    createdBy?: StringNullableFilter<"BranchBatchRow"> | string | null
+    updatedBy?: StringNullableFilter<"BranchBatchRow"> | string | null
+    createdAt?: DateTimeFilter<"BranchBatchRow"> | Date | string
+    updatedAt?: DateTimeFilter<"BranchBatchRow"> | Date | string
+    branchBatch?: XOR<BranchBatchScalarRelationFilter, BranchBatchWhereInput>
+  }, "id" | "batchId">
+
+  export type BranchBatchRowOrderByWithAggregationInput = {
+    id?: SortOrder
+    branchBatchId?: SortOrder
+    batchId?: SortOrder
+    batchName?: SortOrder
+    startTime?: SortOrder
+    startPeriod?: SortOrder
+    endTime?: SortOrder
+    endPeriod?: SortOrder
+    batchTiming?: SortOrder
+    totalSeats?: SortOrder
+    status?: SortOrder
+    sequenceNo?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    updatedBy?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: BranchBatchRowCountOrderByAggregateInput
+    _avg?: BranchBatchRowAvgOrderByAggregateInput
+    _max?: BranchBatchRowMaxOrderByAggregateInput
+    _min?: BranchBatchRowMinOrderByAggregateInput
+    _sum?: BranchBatchRowSumOrderByAggregateInput
+  }
+
+  export type BranchBatchRowScalarWhereWithAggregatesInput = {
+    AND?: BranchBatchRowScalarWhereWithAggregatesInput | BranchBatchRowScalarWhereWithAggregatesInput[]
+    OR?: BranchBatchRowScalarWhereWithAggregatesInput[]
+    NOT?: BranchBatchRowScalarWhereWithAggregatesInput | BranchBatchRowScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"BranchBatchRow"> | string
+    branchBatchId?: StringWithAggregatesFilter<"BranchBatchRow"> | string
+    batchId?: StringWithAggregatesFilter<"BranchBatchRow"> | string
+    batchName?: StringWithAggregatesFilter<"BranchBatchRow"> | string
+    startTime?: StringWithAggregatesFilter<"BranchBatchRow"> | string
+    startPeriod?: StringWithAggregatesFilter<"BranchBatchRow"> | string
+    endTime?: StringWithAggregatesFilter<"BranchBatchRow"> | string
+    endPeriod?: StringWithAggregatesFilter<"BranchBatchRow"> | string
+    batchTiming?: StringWithAggregatesFilter<"BranchBatchRow"> | string
+    totalSeats?: IntWithAggregatesFilter<"BranchBatchRow"> | number
+    status?: EnumRecordStatusWithAggregatesFilter<"BranchBatchRow"> | $Enums.RecordStatus
+    sequenceNo?: IntWithAggregatesFilter<"BranchBatchRow"> | number
+    createdBy?: StringNullableWithAggregatesFilter<"BranchBatchRow"> | string | null
+    updatedBy?: StringNullableWithAggregatesFilter<"BranchBatchRow"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"BranchBatchRow"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"BranchBatchRow"> | Date | string
+  }
+
   export type CourseStatusHistoryWhereInput = {
     AND?: CourseStatusHistoryWhereInput | CourseStatusHistoryWhereInput[]
     OR?: CourseStatusHistoryWhereInput[]
@@ -41497,6 +46289,7 @@ export namespace Prisma {
     course?: XOR<BranchCourseNullableScalarRelationFilter, BranchCourseWhereInput> | null
     installments?: BranchStudentInstallmentListRelationFilter
     payments?: BranchStudentPaymentListRelationFilter
+    ledgerEntries?: BranchStudentLedgerEntryListRelationFilter
   }
 
   export type BranchStudentOrderByWithRelationInput = {
@@ -41540,6 +46333,7 @@ export namespace Prisma {
     course?: BranchCourseOrderByWithRelationInput
     installments?: BranchStudentInstallmentOrderByRelationAggregateInput
     payments?: BranchStudentPaymentOrderByRelationAggregateInput
+    ledgerEntries?: BranchStudentLedgerEntryOrderByRelationAggregateInput
   }
 
   export type BranchStudentWhereUniqueInput = Prisma.AtLeast<{
@@ -41587,6 +46381,7 @@ export namespace Prisma {
     course?: XOR<BranchCourseNullableScalarRelationFilter, BranchCourseWhereInput> | null
     installments?: BranchStudentInstallmentListRelationFilter
     payments?: BranchStudentPaymentListRelationFilter
+    ledgerEntries?: BranchStudentLedgerEntryListRelationFilter
   }, "id" | "mobileNumber" | "emailAddress" | "branchId_studentId">
 
   export type BranchStudentOrderByWithAggregationInput = {
@@ -42365,6 +47160,7 @@ export namespace Prisma {
     branchCourse?: XOR<BranchCourseNullableScalarRelationFilter, BranchCourseWhereInput> | null
     branch?: XOR<BranchScalarRelationFilter, BranchWhereInput>
     course?: XOR<CourseNullableScalarRelationFilter, CourseWhereInput> | null
+    branchBatches?: BranchBatchListRelationFilter
   }
 
   export type BranchFacultyOrderByWithRelationInput = {
@@ -42390,6 +47186,7 @@ export namespace Prisma {
     branchCourse?: BranchCourseOrderByWithRelationInput
     branch?: BranchOrderByWithRelationInput
     course?: CourseOrderByWithRelationInput
+    branchBatches?: BranchBatchOrderByRelationAggregateInput
   }
 
   export type BranchFacultyWhereUniqueInput = Prisma.AtLeast<{
@@ -42420,6 +47217,7 @@ export namespace Prisma {
     branchCourse?: XOR<BranchCourseNullableScalarRelationFilter, BranchCourseWhereInput> | null
     branch?: XOR<BranchScalarRelationFilter, BranchWhereInput>
     course?: XOR<CourseNullableScalarRelationFilter, CourseWhereInput> | null
+    branchBatches?: BranchBatchListRelationFilter
   }, "id" | "branchId_facultyId" | "branchId_email">
 
   export type BranchFacultyOrderByWithAggregationInput = {
@@ -42690,6 +47488,176 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"BranchStudentPayment"> | Date | string
   }
 
+  export type BranchStudentLedgerEntryWhereInput = {
+    AND?: BranchStudentLedgerEntryWhereInput | BranchStudentLedgerEntryWhereInput[]
+    OR?: BranchStudentLedgerEntryWhereInput[]
+    NOT?: BranchStudentLedgerEntryWhereInput | BranchStudentLedgerEntryWhereInput[]
+    id?: StringFilter<"BranchStudentLedgerEntry"> | string
+    ledgerKey?: StringFilter<"BranchStudentLedgerEntry"> | string
+    branchId?: StringFilter<"BranchStudentLedgerEntry"> | string
+    branchStudentId?: StringFilter<"BranchStudentLedgerEntry"> | string
+    paymentId?: StringNullableFilter<"BranchStudentLedgerEntry"> | string | null
+    installmentId?: StringNullableFilter<"BranchStudentLedgerEntry"> | string | null
+    entryNo?: IntFilter<"BranchStudentLedgerEntry"> | number
+    entryType?: StringFilter<"BranchStudentLedgerEntry"> | string
+    description?: StringFilter<"BranchStudentLedgerEntry"> | string
+    debit?: IntFilter<"BranchStudentLedgerEntry"> | number
+    credit?: IntFilter<"BranchStudentLedgerEntry"> | number
+    amount?: IntFilter<"BranchStudentLedgerEntry"> | number
+    runningBalance?: IntFilter<"BranchStudentLedgerEntry"> | number
+    studentBalanceAfter?: IntFilter<"BranchStudentLedgerEntry"> | number
+    entryDate?: DateTimeNullableFilter<"BranchStudentLedgerEntry"> | Date | string | null
+    paymentDate?: DateTimeNullableFilter<"BranchStudentLedgerEntry"> | Date | string | null
+    referenceType?: StringNullableFilter<"BranchStudentLedgerEntry"> | string | null
+    referenceId?: StringNullableFilter<"BranchStudentLedgerEntry"> | string | null
+    paymentMode?: StringNullableFilter<"BranchStudentLedgerEntry"> | string | null
+    receiptNumber?: StringNullableFilter<"BranchStudentLedgerEntry"> | string | null
+    payAgainst?: StringNullableFilter<"BranchStudentLedgerEntry"> | string | null
+    transactionReference?: StringNullableFilter<"BranchStudentLedgerEntry"> | string | null
+    notes?: StringNullableFilter<"BranchStudentLedgerEntry"> | string | null
+    createdBy?: StringNullableFilter<"BranchStudentLedgerEntry"> | string | null
+    updatedBy?: StringNullableFilter<"BranchStudentLedgerEntry"> | string | null
+    createdAt?: DateTimeFilter<"BranchStudentLedgerEntry"> | Date | string
+    updatedAt?: DateTimeFilter<"BranchStudentLedgerEntry"> | Date | string
+    branch?: XOR<BranchScalarRelationFilter, BranchWhereInput>
+    branchStudent?: XOR<BranchStudentScalarRelationFilter, BranchStudentWhereInput>
+  }
+
+  export type BranchStudentLedgerEntryOrderByWithRelationInput = {
+    id?: SortOrder
+    ledgerKey?: SortOrder
+    branchId?: SortOrder
+    branchStudentId?: SortOrder
+    paymentId?: SortOrderInput | SortOrder
+    installmentId?: SortOrderInput | SortOrder
+    entryNo?: SortOrder
+    entryType?: SortOrder
+    description?: SortOrder
+    debit?: SortOrder
+    credit?: SortOrder
+    amount?: SortOrder
+    runningBalance?: SortOrder
+    studentBalanceAfter?: SortOrder
+    entryDate?: SortOrderInput | SortOrder
+    paymentDate?: SortOrderInput | SortOrder
+    referenceType?: SortOrderInput | SortOrder
+    referenceId?: SortOrderInput | SortOrder
+    paymentMode?: SortOrderInput | SortOrder
+    receiptNumber?: SortOrderInput | SortOrder
+    payAgainst?: SortOrderInput | SortOrder
+    transactionReference?: SortOrderInput | SortOrder
+    notes?: SortOrderInput | SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    updatedBy?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    branch?: BranchOrderByWithRelationInput
+    branchStudent?: BranchStudentOrderByWithRelationInput
+  }
+
+  export type BranchStudentLedgerEntryWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    ledgerKey?: string
+    AND?: BranchStudentLedgerEntryWhereInput | BranchStudentLedgerEntryWhereInput[]
+    OR?: BranchStudentLedgerEntryWhereInput[]
+    NOT?: BranchStudentLedgerEntryWhereInput | BranchStudentLedgerEntryWhereInput[]
+    branchId?: StringFilter<"BranchStudentLedgerEntry"> | string
+    branchStudentId?: StringFilter<"BranchStudentLedgerEntry"> | string
+    paymentId?: StringNullableFilter<"BranchStudentLedgerEntry"> | string | null
+    installmentId?: StringNullableFilter<"BranchStudentLedgerEntry"> | string | null
+    entryNo?: IntFilter<"BranchStudentLedgerEntry"> | number
+    entryType?: StringFilter<"BranchStudentLedgerEntry"> | string
+    description?: StringFilter<"BranchStudentLedgerEntry"> | string
+    debit?: IntFilter<"BranchStudentLedgerEntry"> | number
+    credit?: IntFilter<"BranchStudentLedgerEntry"> | number
+    amount?: IntFilter<"BranchStudentLedgerEntry"> | number
+    runningBalance?: IntFilter<"BranchStudentLedgerEntry"> | number
+    studentBalanceAfter?: IntFilter<"BranchStudentLedgerEntry"> | number
+    entryDate?: DateTimeNullableFilter<"BranchStudentLedgerEntry"> | Date | string | null
+    paymentDate?: DateTimeNullableFilter<"BranchStudentLedgerEntry"> | Date | string | null
+    referenceType?: StringNullableFilter<"BranchStudentLedgerEntry"> | string | null
+    referenceId?: StringNullableFilter<"BranchStudentLedgerEntry"> | string | null
+    paymentMode?: StringNullableFilter<"BranchStudentLedgerEntry"> | string | null
+    receiptNumber?: StringNullableFilter<"BranchStudentLedgerEntry"> | string | null
+    payAgainst?: StringNullableFilter<"BranchStudentLedgerEntry"> | string | null
+    transactionReference?: StringNullableFilter<"BranchStudentLedgerEntry"> | string | null
+    notes?: StringNullableFilter<"BranchStudentLedgerEntry"> | string | null
+    createdBy?: StringNullableFilter<"BranchStudentLedgerEntry"> | string | null
+    updatedBy?: StringNullableFilter<"BranchStudentLedgerEntry"> | string | null
+    createdAt?: DateTimeFilter<"BranchStudentLedgerEntry"> | Date | string
+    updatedAt?: DateTimeFilter<"BranchStudentLedgerEntry"> | Date | string
+    branch?: XOR<BranchScalarRelationFilter, BranchWhereInput>
+    branchStudent?: XOR<BranchStudentScalarRelationFilter, BranchStudentWhereInput>
+  }, "id" | "ledgerKey">
+
+  export type BranchStudentLedgerEntryOrderByWithAggregationInput = {
+    id?: SortOrder
+    ledgerKey?: SortOrder
+    branchId?: SortOrder
+    branchStudentId?: SortOrder
+    paymentId?: SortOrderInput | SortOrder
+    installmentId?: SortOrderInput | SortOrder
+    entryNo?: SortOrder
+    entryType?: SortOrder
+    description?: SortOrder
+    debit?: SortOrder
+    credit?: SortOrder
+    amount?: SortOrder
+    runningBalance?: SortOrder
+    studentBalanceAfter?: SortOrder
+    entryDate?: SortOrderInput | SortOrder
+    paymentDate?: SortOrderInput | SortOrder
+    referenceType?: SortOrderInput | SortOrder
+    referenceId?: SortOrderInput | SortOrder
+    paymentMode?: SortOrderInput | SortOrder
+    receiptNumber?: SortOrderInput | SortOrder
+    payAgainst?: SortOrderInput | SortOrder
+    transactionReference?: SortOrderInput | SortOrder
+    notes?: SortOrderInput | SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    updatedBy?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: BranchStudentLedgerEntryCountOrderByAggregateInput
+    _avg?: BranchStudentLedgerEntryAvgOrderByAggregateInput
+    _max?: BranchStudentLedgerEntryMaxOrderByAggregateInput
+    _min?: BranchStudentLedgerEntryMinOrderByAggregateInput
+    _sum?: BranchStudentLedgerEntrySumOrderByAggregateInput
+  }
+
+  export type BranchStudentLedgerEntryScalarWhereWithAggregatesInput = {
+    AND?: BranchStudentLedgerEntryScalarWhereWithAggregatesInput | BranchStudentLedgerEntryScalarWhereWithAggregatesInput[]
+    OR?: BranchStudentLedgerEntryScalarWhereWithAggregatesInput[]
+    NOT?: BranchStudentLedgerEntryScalarWhereWithAggregatesInput | BranchStudentLedgerEntryScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"BranchStudentLedgerEntry"> | string
+    ledgerKey?: StringWithAggregatesFilter<"BranchStudentLedgerEntry"> | string
+    branchId?: StringWithAggregatesFilter<"BranchStudentLedgerEntry"> | string
+    branchStudentId?: StringWithAggregatesFilter<"BranchStudentLedgerEntry"> | string
+    paymentId?: StringNullableWithAggregatesFilter<"BranchStudentLedgerEntry"> | string | null
+    installmentId?: StringNullableWithAggregatesFilter<"BranchStudentLedgerEntry"> | string | null
+    entryNo?: IntWithAggregatesFilter<"BranchStudentLedgerEntry"> | number
+    entryType?: StringWithAggregatesFilter<"BranchStudentLedgerEntry"> | string
+    description?: StringWithAggregatesFilter<"BranchStudentLedgerEntry"> | string
+    debit?: IntWithAggregatesFilter<"BranchStudentLedgerEntry"> | number
+    credit?: IntWithAggregatesFilter<"BranchStudentLedgerEntry"> | number
+    amount?: IntWithAggregatesFilter<"BranchStudentLedgerEntry"> | number
+    runningBalance?: IntWithAggregatesFilter<"BranchStudentLedgerEntry"> | number
+    studentBalanceAfter?: IntWithAggregatesFilter<"BranchStudentLedgerEntry"> | number
+    entryDate?: DateTimeNullableWithAggregatesFilter<"BranchStudentLedgerEntry"> | Date | string | null
+    paymentDate?: DateTimeNullableWithAggregatesFilter<"BranchStudentLedgerEntry"> | Date | string | null
+    referenceType?: StringNullableWithAggregatesFilter<"BranchStudentLedgerEntry"> | string | null
+    referenceId?: StringNullableWithAggregatesFilter<"BranchStudentLedgerEntry"> | string | null
+    paymentMode?: StringNullableWithAggregatesFilter<"BranchStudentLedgerEntry"> | string | null
+    receiptNumber?: StringNullableWithAggregatesFilter<"BranchStudentLedgerEntry"> | string | null
+    payAgainst?: StringNullableWithAggregatesFilter<"BranchStudentLedgerEntry"> | string | null
+    transactionReference?: StringNullableWithAggregatesFilter<"BranchStudentLedgerEntry"> | string | null
+    notes?: StringNullableWithAggregatesFilter<"BranchStudentLedgerEntry"> | string | null
+    createdBy?: StringNullableWithAggregatesFilter<"BranchStudentLedgerEntry"> | string | null
+    updatedBy?: StringNullableWithAggregatesFilter<"BranchStudentLedgerEntry"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"BranchStudentLedgerEntry"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"BranchStudentLedgerEntry"> | Date | string
+  }
+
   export type UserCreateInput = {
     id?: string
     userCode: string
@@ -42910,9 +47878,11 @@ export namespace Prisma {
     branchStateCode?: string
     adminUser?: UserCreateNestedOneWithoutManagedBranchInput
     branchCourses?: BranchCourseCreateNestedManyWithoutBranchInput
+    branchBatches?: BranchBatchCreateNestedManyWithoutBranchInput
     branchInstallmentTemplates?: BranchInstallmentTemplateCreateNestedManyWithoutBranchInput
     branchFaculties?: BranchFacultyCreateNestedManyWithoutBranchInput
     branchStudents?: BranchStudentCreateNestedManyWithoutBranchInput
+    ledgerEntries?: BranchStudentLedgerEntryCreateNestedManyWithoutBranchInput
     payments?: BranchStudentPaymentCreateNestedManyWithoutBranchInput
     courses?: CourseCreateNestedManyWithoutBranchInput
   }
@@ -42937,9 +47907,11 @@ export namespace Prisma {
     branchState?: string
     branchStateCode?: string
     branchCourses?: BranchCourseUncheckedCreateNestedManyWithoutBranchInput
+    branchBatches?: BranchBatchUncheckedCreateNestedManyWithoutBranchInput
     branchInstallmentTemplates?: BranchInstallmentTemplateUncheckedCreateNestedManyWithoutBranchInput
     branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutBranchInput
     branchStudents?: BranchStudentUncheckedCreateNestedManyWithoutBranchInput
+    ledgerEntries?: BranchStudentLedgerEntryUncheckedCreateNestedManyWithoutBranchInput
     payments?: BranchStudentPaymentUncheckedCreateNestedManyWithoutBranchInput
     courses?: CourseUncheckedCreateNestedManyWithoutBranchInput
   }
@@ -42964,9 +47936,11 @@ export namespace Prisma {
     branchStateCode?: StringFieldUpdateOperationsInput | string
     adminUser?: UserUpdateOneWithoutManagedBranchNestedInput
     branchCourses?: BranchCourseUpdateManyWithoutBranchNestedInput
+    branchBatches?: BranchBatchUpdateManyWithoutBranchNestedInput
     branchInstallmentTemplates?: BranchInstallmentTemplateUpdateManyWithoutBranchNestedInput
     branchFaculties?: BranchFacultyUpdateManyWithoutBranchNestedInput
     branchStudents?: BranchStudentUpdateManyWithoutBranchNestedInput
+    ledgerEntries?: BranchStudentLedgerEntryUpdateManyWithoutBranchNestedInput
     payments?: BranchStudentPaymentUpdateManyWithoutBranchNestedInput
     courses?: CourseUpdateManyWithoutBranchNestedInput
   }
@@ -42991,9 +47965,11 @@ export namespace Prisma {
     branchState?: StringFieldUpdateOperationsInput | string
     branchStateCode?: StringFieldUpdateOperationsInput | string
     branchCourses?: BranchCourseUncheckedUpdateManyWithoutBranchNestedInput
+    branchBatches?: BranchBatchUncheckedUpdateManyWithoutBranchNestedInput
     branchInstallmentTemplates?: BranchInstallmentTemplateUncheckedUpdateManyWithoutBranchNestedInput
     branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutBranchNestedInput
     branchStudents?: BranchStudentUncheckedUpdateManyWithoutBranchNestedInput
+    ledgerEntries?: BranchStudentLedgerEntryUncheckedUpdateManyWithoutBranchNestedInput
     payments?: BranchStudentPaymentUncheckedUpdateManyWithoutBranchNestedInput
     courses?: CourseUncheckedUpdateManyWithoutBranchNestedInput
   }
@@ -43878,6 +48854,7 @@ export namespace Prisma {
     installmentTemplate?: BranchInstallmentTemplateCreateNestedOneWithoutBranchCourseInput
     modules?: BranchCourseModuleCreateNestedManyWithoutBranchCourseInput
     branchFaculties?: BranchFacultyCreateNestedManyWithoutBranchCourseInput
+    branchBatches?: BranchBatchCreateNestedManyWithoutBranchCourseInput
     branchStudents?: BranchStudentCreateNestedManyWithoutCourseInput
     facultyTodayWorkEntries?: FacultyTodayWorkEntryCreateNestedManyWithoutBranchCourseInput
   }
@@ -43906,6 +48883,7 @@ export namespace Prisma {
     installmentTemplate?: BranchInstallmentTemplateUncheckedCreateNestedOneWithoutBranchCourseInput
     modules?: BranchCourseModuleUncheckedCreateNestedManyWithoutBranchCourseInput
     branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutBranchCourseInput
+    branchBatches?: BranchBatchUncheckedCreateNestedManyWithoutBranchCourseInput
     branchStudents?: BranchStudentUncheckedCreateNestedManyWithoutCourseInput
     facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedCreateNestedManyWithoutBranchCourseInput
   }
@@ -43934,6 +48912,7 @@ export namespace Prisma {
     installmentTemplate?: BranchInstallmentTemplateUpdateOneWithoutBranchCourseNestedInput
     modules?: BranchCourseModuleUpdateManyWithoutBranchCourseNestedInput
     branchFaculties?: BranchFacultyUpdateManyWithoutBranchCourseNestedInput
+    branchBatches?: BranchBatchUpdateManyWithoutBranchCourseNestedInput
     branchStudents?: BranchStudentUpdateManyWithoutCourseNestedInput
     facultyTodayWorkEntries?: FacultyTodayWorkEntryUpdateManyWithoutBranchCourseNestedInput
   }
@@ -43962,6 +48941,7 @@ export namespace Prisma {
     installmentTemplate?: BranchInstallmentTemplateUncheckedUpdateOneWithoutBranchCourseNestedInput
     modules?: BranchCourseModuleUncheckedUpdateManyWithoutBranchCourseNestedInput
     branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutBranchCourseNestedInput
+    branchBatches?: BranchBatchUncheckedUpdateManyWithoutBranchCourseNestedInput
     branchStudents?: BranchStudentUncheckedUpdateManyWithoutCourseNestedInput
     facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedUpdateManyWithoutBranchCourseNestedInput
   }
@@ -44614,6 +49594,279 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type BranchBatchCreateInput = {
+    id?: string
+    batchId: string
+    batchGroupId: string
+    courseId: string
+    courseName: string
+    facultyId: string
+    facultyName: string
+    facultyEmail: string
+    batchCount?: number
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branch: BranchCreateNestedOneWithoutBranchBatchesInput
+    branchCourse: BranchCourseCreateNestedOneWithoutBranchBatchesInput
+    branchFaculty: BranchFacultyCreateNestedOneWithoutBranchBatchesInput
+    rows?: BranchBatchRowCreateNestedManyWithoutBranchBatchInput
+  }
+
+  export type BranchBatchUncheckedCreateInput = {
+    id?: string
+    branchId: string
+    branchCourseId: string
+    branchFacultyId: string
+    batchId: string
+    batchGroupId: string
+    courseId: string
+    courseName: string
+    facultyId: string
+    facultyName: string
+    facultyEmail: string
+    batchCount?: number
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    rows?: BranchBatchRowUncheckedCreateNestedManyWithoutBranchBatchInput
+  }
+
+  export type BranchBatchUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    batchId?: StringFieldUpdateOperationsInput | string
+    batchGroupId?: StringFieldUpdateOperationsInput | string
+    courseId?: StringFieldUpdateOperationsInput | string
+    courseName?: StringFieldUpdateOperationsInput | string
+    facultyId?: StringFieldUpdateOperationsInput | string
+    facultyName?: StringFieldUpdateOperationsInput | string
+    facultyEmail?: StringFieldUpdateOperationsInput | string
+    batchCount?: IntFieldUpdateOperationsInput | number
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branch?: BranchUpdateOneRequiredWithoutBranchBatchesNestedInput
+    branchCourse?: BranchCourseUpdateOneRequiredWithoutBranchBatchesNestedInput
+    branchFaculty?: BranchFacultyUpdateOneRequiredWithoutBranchBatchesNestedInput
+    rows?: BranchBatchRowUpdateManyWithoutBranchBatchNestedInput
+  }
+
+  export type BranchBatchUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    branchCourseId?: StringFieldUpdateOperationsInput | string
+    branchFacultyId?: StringFieldUpdateOperationsInput | string
+    batchId?: StringFieldUpdateOperationsInput | string
+    batchGroupId?: StringFieldUpdateOperationsInput | string
+    courseId?: StringFieldUpdateOperationsInput | string
+    courseName?: StringFieldUpdateOperationsInput | string
+    facultyId?: StringFieldUpdateOperationsInput | string
+    facultyName?: StringFieldUpdateOperationsInput | string
+    facultyEmail?: StringFieldUpdateOperationsInput | string
+    batchCount?: IntFieldUpdateOperationsInput | number
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    rows?: BranchBatchRowUncheckedUpdateManyWithoutBranchBatchNestedInput
+  }
+
+  export type BranchBatchCreateManyInput = {
+    id?: string
+    branchId: string
+    branchCourseId: string
+    branchFacultyId: string
+    batchId: string
+    batchGroupId: string
+    courseId: string
+    courseName: string
+    facultyId: string
+    facultyName: string
+    facultyEmail: string
+    batchCount?: number
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type BranchBatchUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    batchId?: StringFieldUpdateOperationsInput | string
+    batchGroupId?: StringFieldUpdateOperationsInput | string
+    courseId?: StringFieldUpdateOperationsInput | string
+    courseName?: StringFieldUpdateOperationsInput | string
+    facultyId?: StringFieldUpdateOperationsInput | string
+    facultyName?: StringFieldUpdateOperationsInput | string
+    facultyEmail?: StringFieldUpdateOperationsInput | string
+    batchCount?: IntFieldUpdateOperationsInput | number
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BranchBatchUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    branchCourseId?: StringFieldUpdateOperationsInput | string
+    branchFacultyId?: StringFieldUpdateOperationsInput | string
+    batchId?: StringFieldUpdateOperationsInput | string
+    batchGroupId?: StringFieldUpdateOperationsInput | string
+    courseId?: StringFieldUpdateOperationsInput | string
+    courseName?: StringFieldUpdateOperationsInput | string
+    facultyId?: StringFieldUpdateOperationsInput | string
+    facultyName?: StringFieldUpdateOperationsInput | string
+    facultyEmail?: StringFieldUpdateOperationsInput | string
+    batchCount?: IntFieldUpdateOperationsInput | number
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BranchBatchRowCreateInput = {
+    id?: string
+    batchId: string
+    batchName: string
+    startTime: string
+    startPeriod: string
+    endTime: string
+    endPeriod: string
+    batchTiming: string
+    totalSeats: number
+    status?: $Enums.RecordStatus
+    sequenceNo: number
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branchBatch: BranchBatchCreateNestedOneWithoutRowsInput
+  }
+
+  export type BranchBatchRowUncheckedCreateInput = {
+    id?: string
+    branchBatchId: string
+    batchId: string
+    batchName: string
+    startTime: string
+    startPeriod: string
+    endTime: string
+    endPeriod: string
+    batchTiming: string
+    totalSeats: number
+    status?: $Enums.RecordStatus
+    sequenceNo: number
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type BranchBatchRowUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    batchId?: StringFieldUpdateOperationsInput | string
+    batchName?: StringFieldUpdateOperationsInput | string
+    startTime?: StringFieldUpdateOperationsInput | string
+    startPeriod?: StringFieldUpdateOperationsInput | string
+    endTime?: StringFieldUpdateOperationsInput | string
+    endPeriod?: StringFieldUpdateOperationsInput | string
+    batchTiming?: StringFieldUpdateOperationsInput | string
+    totalSeats?: IntFieldUpdateOperationsInput | number
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    sequenceNo?: IntFieldUpdateOperationsInput | number
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branchBatch?: BranchBatchUpdateOneRequiredWithoutRowsNestedInput
+  }
+
+  export type BranchBatchRowUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchBatchId?: StringFieldUpdateOperationsInput | string
+    batchId?: StringFieldUpdateOperationsInput | string
+    batchName?: StringFieldUpdateOperationsInput | string
+    startTime?: StringFieldUpdateOperationsInput | string
+    startPeriod?: StringFieldUpdateOperationsInput | string
+    endTime?: StringFieldUpdateOperationsInput | string
+    endPeriod?: StringFieldUpdateOperationsInput | string
+    batchTiming?: StringFieldUpdateOperationsInput | string
+    totalSeats?: IntFieldUpdateOperationsInput | number
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    sequenceNo?: IntFieldUpdateOperationsInput | number
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BranchBatchRowCreateManyInput = {
+    id?: string
+    branchBatchId: string
+    batchId: string
+    batchName: string
+    startTime: string
+    startPeriod: string
+    endTime: string
+    endPeriod: string
+    batchTiming: string
+    totalSeats: number
+    status?: $Enums.RecordStatus
+    sequenceNo: number
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type BranchBatchRowUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    batchId?: StringFieldUpdateOperationsInput | string
+    batchName?: StringFieldUpdateOperationsInput | string
+    startTime?: StringFieldUpdateOperationsInput | string
+    startPeriod?: StringFieldUpdateOperationsInput | string
+    endTime?: StringFieldUpdateOperationsInput | string
+    endPeriod?: StringFieldUpdateOperationsInput | string
+    batchTiming?: StringFieldUpdateOperationsInput | string
+    totalSeats?: IntFieldUpdateOperationsInput | number
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    sequenceNo?: IntFieldUpdateOperationsInput | number
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BranchBatchRowUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchBatchId?: StringFieldUpdateOperationsInput | string
+    batchId?: StringFieldUpdateOperationsInput | string
+    batchName?: StringFieldUpdateOperationsInput | string
+    startTime?: StringFieldUpdateOperationsInput | string
+    startPeriod?: StringFieldUpdateOperationsInput | string
+    endTime?: StringFieldUpdateOperationsInput | string
+    endPeriod?: StringFieldUpdateOperationsInput | string
+    batchTiming?: StringFieldUpdateOperationsInput | string
+    totalSeats?: IntFieldUpdateOperationsInput | number
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    sequenceNo?: IntFieldUpdateOperationsInput | number
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type CourseStatusHistoryCreateInput = {
     id?: string
     fromStatus?: $Enums.RecordStatus | null
@@ -45116,6 +50369,7 @@ export namespace Prisma {
     course?: BranchCourseCreateNestedOneWithoutBranchStudentsInput
     installments?: BranchStudentInstallmentCreateNestedManyWithoutBranchStudentInput
     payments?: BranchStudentPaymentCreateNestedManyWithoutBranchStudentInput
+    ledgerEntries?: BranchStudentLedgerEntryCreateNestedManyWithoutBranchStudentInput
   }
 
   export type BranchStudentUncheckedCreateInput = {
@@ -45157,6 +50411,7 @@ export namespace Prisma {
     courseProgress?: number | null
     installments?: BranchStudentInstallmentUncheckedCreateNestedManyWithoutBranchStudentInput
     payments?: BranchStudentPaymentUncheckedCreateNestedManyWithoutBranchStudentInput
+    ledgerEntries?: BranchStudentLedgerEntryUncheckedCreateNestedManyWithoutBranchStudentInput
   }
 
   export type BranchStudentUpdateInput = {
@@ -45198,6 +50453,7 @@ export namespace Prisma {
     course?: BranchCourseUpdateOneWithoutBranchStudentsNestedInput
     installments?: BranchStudentInstallmentUpdateManyWithoutBranchStudentNestedInput
     payments?: BranchStudentPaymentUpdateManyWithoutBranchStudentNestedInput
+    ledgerEntries?: BranchStudentLedgerEntryUpdateManyWithoutBranchStudentNestedInput
   }
 
   export type BranchStudentUncheckedUpdateInput = {
@@ -45239,6 +50495,7 @@ export namespace Prisma {
     courseProgress?: NullableIntFieldUpdateOperationsInput | number | null
     installments?: BranchStudentInstallmentUncheckedUpdateManyWithoutBranchStudentNestedInput
     payments?: BranchStudentPaymentUncheckedUpdateManyWithoutBranchStudentNestedInput
+    ledgerEntries?: BranchStudentLedgerEntryUncheckedUpdateManyWithoutBranchStudentNestedInput
   }
 
   export type BranchStudentCreateManyInput = {
@@ -46119,6 +51376,7 @@ export namespace Prisma {
     branchCourse?: BranchCourseCreateNestedOneWithoutBranchFacultiesInput
     branch: BranchCreateNestedOneWithoutBranchFacultiesInput
     course?: CourseCreateNestedOneWithoutBranchFacultiesInput
+    branchBatches?: BranchBatchCreateNestedManyWithoutBranchFacultyInput
   }
 
   export type BranchFacultyUncheckedCreateInput = {
@@ -46141,6 +51399,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     courseId?: string | null
     branchCourseId?: string | null
+    branchBatches?: BranchBatchUncheckedCreateNestedManyWithoutBranchFacultyInput
   }
 
   export type BranchFacultyUpdateInput = {
@@ -46163,6 +51422,7 @@ export namespace Prisma {
     branchCourse?: BranchCourseUpdateOneWithoutBranchFacultiesNestedInput
     branch?: BranchUpdateOneRequiredWithoutBranchFacultiesNestedInput
     course?: CourseUpdateOneWithoutBranchFacultiesNestedInput
+    branchBatches?: BranchBatchUpdateManyWithoutBranchFacultyNestedInput
   }
 
   export type BranchFacultyUncheckedUpdateInput = {
@@ -46185,6 +51445,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     courseId?: NullableStringFieldUpdateOperationsInput | string | null
     branchCourseId?: NullableStringFieldUpdateOperationsInput | string | null
+    branchBatches?: BranchBatchUncheckedUpdateManyWithoutBranchFacultyNestedInput
   }
 
   export type BranchFacultyCreateManyInput = {
@@ -46486,6 +51747,214 @@ export namespace Prisma {
     paymentProof?: NullableStringFieldUpdateOperationsInput | string | null
     payAgainst?: NullableStringFieldUpdateOperationsInput | string | null
     installmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BranchStudentLedgerEntryCreateInput = {
+    id?: string
+    ledgerKey: string
+    paymentId?: string | null
+    installmentId?: string | null
+    entryNo?: number
+    entryType: string
+    description: string
+    debit?: number
+    credit?: number
+    amount?: number
+    runningBalance?: number
+    studentBalanceAfter?: number
+    entryDate?: Date | string | null
+    paymentDate?: Date | string | null
+    referenceType?: string | null
+    referenceId?: string | null
+    paymentMode?: string | null
+    receiptNumber?: string | null
+    payAgainst?: string | null
+    transactionReference?: string | null
+    notes?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branch: BranchCreateNestedOneWithoutLedgerEntriesInput
+    branchStudent: BranchStudentCreateNestedOneWithoutLedgerEntriesInput
+  }
+
+  export type BranchStudentLedgerEntryUncheckedCreateInput = {
+    id?: string
+    ledgerKey: string
+    branchId: string
+    branchStudentId: string
+    paymentId?: string | null
+    installmentId?: string | null
+    entryNo?: number
+    entryType: string
+    description: string
+    debit?: number
+    credit?: number
+    amount?: number
+    runningBalance?: number
+    studentBalanceAfter?: number
+    entryDate?: Date | string | null
+    paymentDate?: Date | string | null
+    referenceType?: string | null
+    referenceId?: string | null
+    paymentMode?: string | null
+    receiptNumber?: string | null
+    payAgainst?: string | null
+    transactionReference?: string | null
+    notes?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type BranchStudentLedgerEntryUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    ledgerKey?: StringFieldUpdateOperationsInput | string
+    paymentId?: NullableStringFieldUpdateOperationsInput | string | null
+    installmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    entryNo?: IntFieldUpdateOperationsInput | number
+    entryType?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    debit?: IntFieldUpdateOperationsInput | number
+    credit?: IntFieldUpdateOperationsInput | number
+    amount?: IntFieldUpdateOperationsInput | number
+    runningBalance?: IntFieldUpdateOperationsInput | number
+    studentBalanceAfter?: IntFieldUpdateOperationsInput | number
+    entryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    referenceType?: NullableStringFieldUpdateOperationsInput | string | null
+    referenceId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMode?: NullableStringFieldUpdateOperationsInput | string | null
+    receiptNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    payAgainst?: NullableStringFieldUpdateOperationsInput | string | null
+    transactionReference?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branch?: BranchUpdateOneRequiredWithoutLedgerEntriesNestedInput
+    branchStudent?: BranchStudentUpdateOneRequiredWithoutLedgerEntriesNestedInput
+  }
+
+  export type BranchStudentLedgerEntryUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    ledgerKey?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    branchStudentId?: StringFieldUpdateOperationsInput | string
+    paymentId?: NullableStringFieldUpdateOperationsInput | string | null
+    installmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    entryNo?: IntFieldUpdateOperationsInput | number
+    entryType?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    debit?: IntFieldUpdateOperationsInput | number
+    credit?: IntFieldUpdateOperationsInput | number
+    amount?: IntFieldUpdateOperationsInput | number
+    runningBalance?: IntFieldUpdateOperationsInput | number
+    studentBalanceAfter?: IntFieldUpdateOperationsInput | number
+    entryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    referenceType?: NullableStringFieldUpdateOperationsInput | string | null
+    referenceId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMode?: NullableStringFieldUpdateOperationsInput | string | null
+    receiptNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    payAgainst?: NullableStringFieldUpdateOperationsInput | string | null
+    transactionReference?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BranchStudentLedgerEntryCreateManyInput = {
+    id?: string
+    ledgerKey: string
+    branchId: string
+    branchStudentId: string
+    paymentId?: string | null
+    installmentId?: string | null
+    entryNo?: number
+    entryType: string
+    description: string
+    debit?: number
+    credit?: number
+    amount?: number
+    runningBalance?: number
+    studentBalanceAfter?: number
+    entryDate?: Date | string | null
+    paymentDate?: Date | string | null
+    referenceType?: string | null
+    referenceId?: string | null
+    paymentMode?: string | null
+    receiptNumber?: string | null
+    payAgainst?: string | null
+    transactionReference?: string | null
+    notes?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type BranchStudentLedgerEntryUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    ledgerKey?: StringFieldUpdateOperationsInput | string
+    paymentId?: NullableStringFieldUpdateOperationsInput | string | null
+    installmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    entryNo?: IntFieldUpdateOperationsInput | number
+    entryType?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    debit?: IntFieldUpdateOperationsInput | number
+    credit?: IntFieldUpdateOperationsInput | number
+    amount?: IntFieldUpdateOperationsInput | number
+    runningBalance?: IntFieldUpdateOperationsInput | number
+    studentBalanceAfter?: IntFieldUpdateOperationsInput | number
+    entryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    referenceType?: NullableStringFieldUpdateOperationsInput | string | null
+    referenceId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMode?: NullableStringFieldUpdateOperationsInput | string | null
+    receiptNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    payAgainst?: NullableStringFieldUpdateOperationsInput | string | null
+    transactionReference?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BranchStudentLedgerEntryUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    ledgerKey?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    branchStudentId?: StringFieldUpdateOperationsInput | string
+    paymentId?: NullableStringFieldUpdateOperationsInput | string | null
+    installmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    entryNo?: IntFieldUpdateOperationsInput | number
+    entryType?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    debit?: IntFieldUpdateOperationsInput | number
+    credit?: IntFieldUpdateOperationsInput | number
+    amount?: IntFieldUpdateOperationsInput | number
+    runningBalance?: IntFieldUpdateOperationsInput | number
+    studentBalanceAfter?: IntFieldUpdateOperationsInput | number
+    entryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    referenceType?: NullableStringFieldUpdateOperationsInput | string | null
+    referenceId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMode?: NullableStringFieldUpdateOperationsInput | string | null
+    receiptNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    payAgainst?: NullableStringFieldUpdateOperationsInput | string | null
+    transactionReference?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -46843,6 +52312,12 @@ export namespace Prisma {
     none?: BranchCourseWhereInput
   }
 
+  export type BranchBatchListRelationFilter = {
+    every?: BranchBatchWhereInput
+    some?: BranchBatchWhereInput
+    none?: BranchBatchWhereInput
+  }
+
   export type BranchInstallmentTemplateListRelationFilter = {
     every?: BranchInstallmentTemplateWhereInput
     some?: BranchInstallmentTemplateWhereInput
@@ -46861,6 +52336,12 @@ export namespace Prisma {
     none?: BranchStudentWhereInput
   }
 
+  export type BranchStudentLedgerEntryListRelationFilter = {
+    every?: BranchStudentLedgerEntryWhereInput
+    some?: BranchStudentLedgerEntryWhereInput
+    none?: BranchStudentLedgerEntryWhereInput
+  }
+
   export type BranchStudentPaymentListRelationFilter = {
     every?: BranchStudentPaymentWhereInput
     some?: BranchStudentPaymentWhereInput
@@ -46877,6 +52358,10 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
+  export type BranchBatchOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type BranchInstallmentTemplateOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -46886,6 +52371,10 @@ export namespace Prisma {
   }
 
   export type BranchStudentOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type BranchStudentLedgerEntryOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -48019,6 +53508,161 @@ export namespace Prisma {
     _max?: NestedEnumAssignmentStatusFilter<$PrismaModel>
   }
 
+  export type BranchFacultyScalarRelationFilter = {
+    is?: BranchFacultyWhereInput
+    isNot?: BranchFacultyWhereInput
+  }
+
+  export type BranchBatchRowListRelationFilter = {
+    every?: BranchBatchRowWhereInput
+    some?: BranchBatchRowWhereInput
+    none?: BranchBatchRowWhereInput
+  }
+
+  export type BranchBatchRowOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type BranchBatchCountOrderByAggregateInput = {
+    id?: SortOrder
+    branchId?: SortOrder
+    branchCourseId?: SortOrder
+    branchFacultyId?: SortOrder
+    batchId?: SortOrder
+    batchGroupId?: SortOrder
+    courseId?: SortOrder
+    courseName?: SortOrder
+    facultyId?: SortOrder
+    facultyName?: SortOrder
+    facultyEmail?: SortOrder
+    batchCount?: SortOrder
+    status?: SortOrder
+    createdBy?: SortOrder
+    updatedBy?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type BranchBatchAvgOrderByAggregateInput = {
+    batchCount?: SortOrder
+  }
+
+  export type BranchBatchMaxOrderByAggregateInput = {
+    id?: SortOrder
+    branchId?: SortOrder
+    branchCourseId?: SortOrder
+    branchFacultyId?: SortOrder
+    batchId?: SortOrder
+    batchGroupId?: SortOrder
+    courseId?: SortOrder
+    courseName?: SortOrder
+    facultyId?: SortOrder
+    facultyName?: SortOrder
+    facultyEmail?: SortOrder
+    batchCount?: SortOrder
+    status?: SortOrder
+    createdBy?: SortOrder
+    updatedBy?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type BranchBatchMinOrderByAggregateInput = {
+    id?: SortOrder
+    branchId?: SortOrder
+    branchCourseId?: SortOrder
+    branchFacultyId?: SortOrder
+    batchId?: SortOrder
+    batchGroupId?: SortOrder
+    courseId?: SortOrder
+    courseName?: SortOrder
+    facultyId?: SortOrder
+    facultyName?: SortOrder
+    facultyEmail?: SortOrder
+    batchCount?: SortOrder
+    status?: SortOrder
+    createdBy?: SortOrder
+    updatedBy?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type BranchBatchSumOrderByAggregateInput = {
+    batchCount?: SortOrder
+  }
+
+  export type BranchBatchScalarRelationFilter = {
+    is?: BranchBatchWhereInput
+    isNot?: BranchBatchWhereInput
+  }
+
+  export type BranchBatchRowCountOrderByAggregateInput = {
+    id?: SortOrder
+    branchBatchId?: SortOrder
+    batchId?: SortOrder
+    batchName?: SortOrder
+    startTime?: SortOrder
+    startPeriod?: SortOrder
+    endTime?: SortOrder
+    endPeriod?: SortOrder
+    batchTiming?: SortOrder
+    totalSeats?: SortOrder
+    status?: SortOrder
+    sequenceNo?: SortOrder
+    createdBy?: SortOrder
+    updatedBy?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type BranchBatchRowAvgOrderByAggregateInput = {
+    totalSeats?: SortOrder
+    sequenceNo?: SortOrder
+  }
+
+  export type BranchBatchRowMaxOrderByAggregateInput = {
+    id?: SortOrder
+    branchBatchId?: SortOrder
+    batchId?: SortOrder
+    batchName?: SortOrder
+    startTime?: SortOrder
+    startPeriod?: SortOrder
+    endTime?: SortOrder
+    endPeriod?: SortOrder
+    batchTiming?: SortOrder
+    totalSeats?: SortOrder
+    status?: SortOrder
+    sequenceNo?: SortOrder
+    createdBy?: SortOrder
+    updatedBy?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type BranchBatchRowMinOrderByAggregateInput = {
+    id?: SortOrder
+    branchBatchId?: SortOrder
+    batchId?: SortOrder
+    batchName?: SortOrder
+    startTime?: SortOrder
+    startPeriod?: SortOrder
+    endTime?: SortOrder
+    endPeriod?: SortOrder
+    batchTiming?: SortOrder
+    totalSeats?: SortOrder
+    status?: SortOrder
+    sequenceNo?: SortOrder
+    createdBy?: SortOrder
+    updatedBy?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type BranchBatchRowSumOrderByAggregateInput = {
+    totalSeats?: SortOrder
+    sequenceNo?: SortOrder
+  }
+
   export type EnumRecordStatusNullableFilter<$PrismaModel = never> = {
     equals?: $Enums.RecordStatus | EnumRecordStatusFieldRefInput<$PrismaModel> | null
     in?: $Enums.RecordStatus[] | ListEnumRecordStatusFieldRefInput<$PrismaModel> | null
@@ -49099,6 +54743,114 @@ export namespace Prisma {
     amount?: SortOrder
   }
 
+  export type BranchStudentLedgerEntryCountOrderByAggregateInput = {
+    id?: SortOrder
+    ledgerKey?: SortOrder
+    branchId?: SortOrder
+    branchStudentId?: SortOrder
+    paymentId?: SortOrder
+    installmentId?: SortOrder
+    entryNo?: SortOrder
+    entryType?: SortOrder
+    description?: SortOrder
+    debit?: SortOrder
+    credit?: SortOrder
+    amount?: SortOrder
+    runningBalance?: SortOrder
+    studentBalanceAfter?: SortOrder
+    entryDate?: SortOrder
+    paymentDate?: SortOrder
+    referenceType?: SortOrder
+    referenceId?: SortOrder
+    paymentMode?: SortOrder
+    receiptNumber?: SortOrder
+    payAgainst?: SortOrder
+    transactionReference?: SortOrder
+    notes?: SortOrder
+    createdBy?: SortOrder
+    updatedBy?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type BranchStudentLedgerEntryAvgOrderByAggregateInput = {
+    entryNo?: SortOrder
+    debit?: SortOrder
+    credit?: SortOrder
+    amount?: SortOrder
+    runningBalance?: SortOrder
+    studentBalanceAfter?: SortOrder
+  }
+
+  export type BranchStudentLedgerEntryMaxOrderByAggregateInput = {
+    id?: SortOrder
+    ledgerKey?: SortOrder
+    branchId?: SortOrder
+    branchStudentId?: SortOrder
+    paymentId?: SortOrder
+    installmentId?: SortOrder
+    entryNo?: SortOrder
+    entryType?: SortOrder
+    description?: SortOrder
+    debit?: SortOrder
+    credit?: SortOrder
+    amount?: SortOrder
+    runningBalance?: SortOrder
+    studentBalanceAfter?: SortOrder
+    entryDate?: SortOrder
+    paymentDate?: SortOrder
+    referenceType?: SortOrder
+    referenceId?: SortOrder
+    paymentMode?: SortOrder
+    receiptNumber?: SortOrder
+    payAgainst?: SortOrder
+    transactionReference?: SortOrder
+    notes?: SortOrder
+    createdBy?: SortOrder
+    updatedBy?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type BranchStudentLedgerEntryMinOrderByAggregateInput = {
+    id?: SortOrder
+    ledgerKey?: SortOrder
+    branchId?: SortOrder
+    branchStudentId?: SortOrder
+    paymentId?: SortOrder
+    installmentId?: SortOrder
+    entryNo?: SortOrder
+    entryType?: SortOrder
+    description?: SortOrder
+    debit?: SortOrder
+    credit?: SortOrder
+    amount?: SortOrder
+    runningBalance?: SortOrder
+    studentBalanceAfter?: SortOrder
+    entryDate?: SortOrder
+    paymentDate?: SortOrder
+    referenceType?: SortOrder
+    referenceId?: SortOrder
+    paymentMode?: SortOrder
+    receiptNumber?: SortOrder
+    payAgainst?: SortOrder
+    transactionReference?: SortOrder
+    notes?: SortOrder
+    createdBy?: SortOrder
+    updatedBy?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type BranchStudentLedgerEntrySumOrderByAggregateInput = {
+    entryNo?: SortOrder
+    debit?: SortOrder
+    credit?: SortOrder
+    amount?: SortOrder
+    runningBalance?: SortOrder
+    studentBalanceAfter?: SortOrder
+  }
+
   export type BatchFacultyAssignmentCreateNestedManyWithoutFacultyInput = {
     create?: XOR<BatchFacultyAssignmentCreateWithoutFacultyInput, BatchFacultyAssignmentUncheckedCreateWithoutFacultyInput> | BatchFacultyAssignmentCreateWithoutFacultyInput[] | BatchFacultyAssignmentUncheckedCreateWithoutFacultyInput[]
     connectOrCreate?: BatchFacultyAssignmentCreateOrConnectWithoutFacultyInput | BatchFacultyAssignmentCreateOrConnectWithoutFacultyInput[]
@@ -49470,6 +55222,13 @@ export namespace Prisma {
     connect?: BranchCourseWhereUniqueInput | BranchCourseWhereUniqueInput[]
   }
 
+  export type BranchBatchCreateNestedManyWithoutBranchInput = {
+    create?: XOR<BranchBatchCreateWithoutBranchInput, BranchBatchUncheckedCreateWithoutBranchInput> | BranchBatchCreateWithoutBranchInput[] | BranchBatchUncheckedCreateWithoutBranchInput[]
+    connectOrCreate?: BranchBatchCreateOrConnectWithoutBranchInput | BranchBatchCreateOrConnectWithoutBranchInput[]
+    createMany?: BranchBatchCreateManyBranchInputEnvelope
+    connect?: BranchBatchWhereUniqueInput | BranchBatchWhereUniqueInput[]
+  }
+
   export type BranchInstallmentTemplateCreateNestedManyWithoutBranchInput = {
     create?: XOR<BranchInstallmentTemplateCreateWithoutBranchInput, BranchInstallmentTemplateUncheckedCreateWithoutBranchInput> | BranchInstallmentTemplateCreateWithoutBranchInput[] | BranchInstallmentTemplateUncheckedCreateWithoutBranchInput[]
     connectOrCreate?: BranchInstallmentTemplateCreateOrConnectWithoutBranchInput | BranchInstallmentTemplateCreateOrConnectWithoutBranchInput[]
@@ -49489,6 +55248,13 @@ export namespace Prisma {
     connectOrCreate?: BranchStudentCreateOrConnectWithoutBranchInput | BranchStudentCreateOrConnectWithoutBranchInput[]
     createMany?: BranchStudentCreateManyBranchInputEnvelope
     connect?: BranchStudentWhereUniqueInput | BranchStudentWhereUniqueInput[]
+  }
+
+  export type BranchStudentLedgerEntryCreateNestedManyWithoutBranchInput = {
+    create?: XOR<BranchStudentLedgerEntryCreateWithoutBranchInput, BranchStudentLedgerEntryUncheckedCreateWithoutBranchInput> | BranchStudentLedgerEntryCreateWithoutBranchInput[] | BranchStudentLedgerEntryUncheckedCreateWithoutBranchInput[]
+    connectOrCreate?: BranchStudentLedgerEntryCreateOrConnectWithoutBranchInput | BranchStudentLedgerEntryCreateOrConnectWithoutBranchInput[]
+    createMany?: BranchStudentLedgerEntryCreateManyBranchInputEnvelope
+    connect?: BranchStudentLedgerEntryWhereUniqueInput | BranchStudentLedgerEntryWhereUniqueInput[]
   }
 
   export type BranchStudentPaymentCreateNestedManyWithoutBranchInput = {
@@ -49512,6 +55278,13 @@ export namespace Prisma {
     connect?: BranchCourseWhereUniqueInput | BranchCourseWhereUniqueInput[]
   }
 
+  export type BranchBatchUncheckedCreateNestedManyWithoutBranchInput = {
+    create?: XOR<BranchBatchCreateWithoutBranchInput, BranchBatchUncheckedCreateWithoutBranchInput> | BranchBatchCreateWithoutBranchInput[] | BranchBatchUncheckedCreateWithoutBranchInput[]
+    connectOrCreate?: BranchBatchCreateOrConnectWithoutBranchInput | BranchBatchCreateOrConnectWithoutBranchInput[]
+    createMany?: BranchBatchCreateManyBranchInputEnvelope
+    connect?: BranchBatchWhereUniqueInput | BranchBatchWhereUniqueInput[]
+  }
+
   export type BranchInstallmentTemplateUncheckedCreateNestedManyWithoutBranchInput = {
     create?: XOR<BranchInstallmentTemplateCreateWithoutBranchInput, BranchInstallmentTemplateUncheckedCreateWithoutBranchInput> | BranchInstallmentTemplateCreateWithoutBranchInput[] | BranchInstallmentTemplateUncheckedCreateWithoutBranchInput[]
     connectOrCreate?: BranchInstallmentTemplateCreateOrConnectWithoutBranchInput | BranchInstallmentTemplateCreateOrConnectWithoutBranchInput[]
@@ -49531,6 +55304,13 @@ export namespace Prisma {
     connectOrCreate?: BranchStudentCreateOrConnectWithoutBranchInput | BranchStudentCreateOrConnectWithoutBranchInput[]
     createMany?: BranchStudentCreateManyBranchInputEnvelope
     connect?: BranchStudentWhereUniqueInput | BranchStudentWhereUniqueInput[]
+  }
+
+  export type BranchStudentLedgerEntryUncheckedCreateNestedManyWithoutBranchInput = {
+    create?: XOR<BranchStudentLedgerEntryCreateWithoutBranchInput, BranchStudentLedgerEntryUncheckedCreateWithoutBranchInput> | BranchStudentLedgerEntryCreateWithoutBranchInput[] | BranchStudentLedgerEntryUncheckedCreateWithoutBranchInput[]
+    connectOrCreate?: BranchStudentLedgerEntryCreateOrConnectWithoutBranchInput | BranchStudentLedgerEntryCreateOrConnectWithoutBranchInput[]
+    createMany?: BranchStudentLedgerEntryCreateManyBranchInputEnvelope
+    connect?: BranchStudentLedgerEntryWhereUniqueInput | BranchStudentLedgerEntryWhereUniqueInput[]
   }
 
   export type BranchStudentPaymentUncheckedCreateNestedManyWithoutBranchInput = {
@@ -49575,6 +55355,20 @@ export namespace Prisma {
     deleteMany?: BranchCourseScalarWhereInput | BranchCourseScalarWhereInput[]
   }
 
+  export type BranchBatchUpdateManyWithoutBranchNestedInput = {
+    create?: XOR<BranchBatchCreateWithoutBranchInput, BranchBatchUncheckedCreateWithoutBranchInput> | BranchBatchCreateWithoutBranchInput[] | BranchBatchUncheckedCreateWithoutBranchInput[]
+    connectOrCreate?: BranchBatchCreateOrConnectWithoutBranchInput | BranchBatchCreateOrConnectWithoutBranchInput[]
+    upsert?: BranchBatchUpsertWithWhereUniqueWithoutBranchInput | BranchBatchUpsertWithWhereUniqueWithoutBranchInput[]
+    createMany?: BranchBatchCreateManyBranchInputEnvelope
+    set?: BranchBatchWhereUniqueInput | BranchBatchWhereUniqueInput[]
+    disconnect?: BranchBatchWhereUniqueInput | BranchBatchWhereUniqueInput[]
+    delete?: BranchBatchWhereUniqueInput | BranchBatchWhereUniqueInput[]
+    connect?: BranchBatchWhereUniqueInput | BranchBatchWhereUniqueInput[]
+    update?: BranchBatchUpdateWithWhereUniqueWithoutBranchInput | BranchBatchUpdateWithWhereUniqueWithoutBranchInput[]
+    updateMany?: BranchBatchUpdateManyWithWhereWithoutBranchInput | BranchBatchUpdateManyWithWhereWithoutBranchInput[]
+    deleteMany?: BranchBatchScalarWhereInput | BranchBatchScalarWhereInput[]
+  }
+
   export type BranchInstallmentTemplateUpdateManyWithoutBranchNestedInput = {
     create?: XOR<BranchInstallmentTemplateCreateWithoutBranchInput, BranchInstallmentTemplateUncheckedCreateWithoutBranchInput> | BranchInstallmentTemplateCreateWithoutBranchInput[] | BranchInstallmentTemplateUncheckedCreateWithoutBranchInput[]
     connectOrCreate?: BranchInstallmentTemplateCreateOrConnectWithoutBranchInput | BranchInstallmentTemplateCreateOrConnectWithoutBranchInput[]
@@ -49615,6 +55409,20 @@ export namespace Prisma {
     update?: BranchStudentUpdateWithWhereUniqueWithoutBranchInput | BranchStudentUpdateWithWhereUniqueWithoutBranchInput[]
     updateMany?: BranchStudentUpdateManyWithWhereWithoutBranchInput | BranchStudentUpdateManyWithWhereWithoutBranchInput[]
     deleteMany?: BranchStudentScalarWhereInput | BranchStudentScalarWhereInput[]
+  }
+
+  export type BranchStudentLedgerEntryUpdateManyWithoutBranchNestedInput = {
+    create?: XOR<BranchStudentLedgerEntryCreateWithoutBranchInput, BranchStudentLedgerEntryUncheckedCreateWithoutBranchInput> | BranchStudentLedgerEntryCreateWithoutBranchInput[] | BranchStudentLedgerEntryUncheckedCreateWithoutBranchInput[]
+    connectOrCreate?: BranchStudentLedgerEntryCreateOrConnectWithoutBranchInput | BranchStudentLedgerEntryCreateOrConnectWithoutBranchInput[]
+    upsert?: BranchStudentLedgerEntryUpsertWithWhereUniqueWithoutBranchInput | BranchStudentLedgerEntryUpsertWithWhereUniqueWithoutBranchInput[]
+    createMany?: BranchStudentLedgerEntryCreateManyBranchInputEnvelope
+    set?: BranchStudentLedgerEntryWhereUniqueInput | BranchStudentLedgerEntryWhereUniqueInput[]
+    disconnect?: BranchStudentLedgerEntryWhereUniqueInput | BranchStudentLedgerEntryWhereUniqueInput[]
+    delete?: BranchStudentLedgerEntryWhereUniqueInput | BranchStudentLedgerEntryWhereUniqueInput[]
+    connect?: BranchStudentLedgerEntryWhereUniqueInput | BranchStudentLedgerEntryWhereUniqueInput[]
+    update?: BranchStudentLedgerEntryUpdateWithWhereUniqueWithoutBranchInput | BranchStudentLedgerEntryUpdateWithWhereUniqueWithoutBranchInput[]
+    updateMany?: BranchStudentLedgerEntryUpdateManyWithWhereWithoutBranchInput | BranchStudentLedgerEntryUpdateManyWithWhereWithoutBranchInput[]
+    deleteMany?: BranchStudentLedgerEntryScalarWhereInput | BranchStudentLedgerEntryScalarWhereInput[]
   }
 
   export type BranchStudentPaymentUpdateManyWithoutBranchNestedInput = {
@@ -49659,6 +55467,20 @@ export namespace Prisma {
     deleteMany?: BranchCourseScalarWhereInput | BranchCourseScalarWhereInput[]
   }
 
+  export type BranchBatchUncheckedUpdateManyWithoutBranchNestedInput = {
+    create?: XOR<BranchBatchCreateWithoutBranchInput, BranchBatchUncheckedCreateWithoutBranchInput> | BranchBatchCreateWithoutBranchInput[] | BranchBatchUncheckedCreateWithoutBranchInput[]
+    connectOrCreate?: BranchBatchCreateOrConnectWithoutBranchInput | BranchBatchCreateOrConnectWithoutBranchInput[]
+    upsert?: BranchBatchUpsertWithWhereUniqueWithoutBranchInput | BranchBatchUpsertWithWhereUniqueWithoutBranchInput[]
+    createMany?: BranchBatchCreateManyBranchInputEnvelope
+    set?: BranchBatchWhereUniqueInput | BranchBatchWhereUniqueInput[]
+    disconnect?: BranchBatchWhereUniqueInput | BranchBatchWhereUniqueInput[]
+    delete?: BranchBatchWhereUniqueInput | BranchBatchWhereUniqueInput[]
+    connect?: BranchBatchWhereUniqueInput | BranchBatchWhereUniqueInput[]
+    update?: BranchBatchUpdateWithWhereUniqueWithoutBranchInput | BranchBatchUpdateWithWhereUniqueWithoutBranchInput[]
+    updateMany?: BranchBatchUpdateManyWithWhereWithoutBranchInput | BranchBatchUpdateManyWithWhereWithoutBranchInput[]
+    deleteMany?: BranchBatchScalarWhereInput | BranchBatchScalarWhereInput[]
+  }
+
   export type BranchInstallmentTemplateUncheckedUpdateManyWithoutBranchNestedInput = {
     create?: XOR<BranchInstallmentTemplateCreateWithoutBranchInput, BranchInstallmentTemplateUncheckedCreateWithoutBranchInput> | BranchInstallmentTemplateCreateWithoutBranchInput[] | BranchInstallmentTemplateUncheckedCreateWithoutBranchInput[]
     connectOrCreate?: BranchInstallmentTemplateCreateOrConnectWithoutBranchInput | BranchInstallmentTemplateCreateOrConnectWithoutBranchInput[]
@@ -49699,6 +55521,20 @@ export namespace Prisma {
     update?: BranchStudentUpdateWithWhereUniqueWithoutBranchInput | BranchStudentUpdateWithWhereUniqueWithoutBranchInput[]
     updateMany?: BranchStudentUpdateManyWithWhereWithoutBranchInput | BranchStudentUpdateManyWithWhereWithoutBranchInput[]
     deleteMany?: BranchStudentScalarWhereInput | BranchStudentScalarWhereInput[]
+  }
+
+  export type BranchStudentLedgerEntryUncheckedUpdateManyWithoutBranchNestedInput = {
+    create?: XOR<BranchStudentLedgerEntryCreateWithoutBranchInput, BranchStudentLedgerEntryUncheckedCreateWithoutBranchInput> | BranchStudentLedgerEntryCreateWithoutBranchInput[] | BranchStudentLedgerEntryUncheckedCreateWithoutBranchInput[]
+    connectOrCreate?: BranchStudentLedgerEntryCreateOrConnectWithoutBranchInput | BranchStudentLedgerEntryCreateOrConnectWithoutBranchInput[]
+    upsert?: BranchStudentLedgerEntryUpsertWithWhereUniqueWithoutBranchInput | BranchStudentLedgerEntryUpsertWithWhereUniqueWithoutBranchInput[]
+    createMany?: BranchStudentLedgerEntryCreateManyBranchInputEnvelope
+    set?: BranchStudentLedgerEntryWhereUniqueInput | BranchStudentLedgerEntryWhereUniqueInput[]
+    disconnect?: BranchStudentLedgerEntryWhereUniqueInput | BranchStudentLedgerEntryWhereUniqueInput[]
+    delete?: BranchStudentLedgerEntryWhereUniqueInput | BranchStudentLedgerEntryWhereUniqueInput[]
+    connect?: BranchStudentLedgerEntryWhereUniqueInput | BranchStudentLedgerEntryWhereUniqueInput[]
+    update?: BranchStudentLedgerEntryUpdateWithWhereUniqueWithoutBranchInput | BranchStudentLedgerEntryUpdateWithWhereUniqueWithoutBranchInput[]
+    updateMany?: BranchStudentLedgerEntryUpdateManyWithWhereWithoutBranchInput | BranchStudentLedgerEntryUpdateManyWithWhereWithoutBranchInput[]
+    deleteMany?: BranchStudentLedgerEntryScalarWhereInput | BranchStudentLedgerEntryScalarWhereInput[]
   }
 
   export type BranchStudentPaymentUncheckedUpdateManyWithoutBranchNestedInput = {
@@ -50231,6 +56067,13 @@ export namespace Prisma {
     connect?: BranchFacultyWhereUniqueInput | BranchFacultyWhereUniqueInput[]
   }
 
+  export type BranchBatchCreateNestedManyWithoutBranchCourseInput = {
+    create?: XOR<BranchBatchCreateWithoutBranchCourseInput, BranchBatchUncheckedCreateWithoutBranchCourseInput> | BranchBatchCreateWithoutBranchCourseInput[] | BranchBatchUncheckedCreateWithoutBranchCourseInput[]
+    connectOrCreate?: BranchBatchCreateOrConnectWithoutBranchCourseInput | BranchBatchCreateOrConnectWithoutBranchCourseInput[]
+    createMany?: BranchBatchCreateManyBranchCourseInputEnvelope
+    connect?: BranchBatchWhereUniqueInput | BranchBatchWhereUniqueInput[]
+  }
+
   export type BranchStudentCreateNestedManyWithoutCourseInput = {
     create?: XOR<BranchStudentCreateWithoutCourseInput, BranchStudentUncheckedCreateWithoutCourseInput> | BranchStudentCreateWithoutCourseInput[] | BranchStudentUncheckedCreateWithoutCourseInput[]
     connectOrCreate?: BranchStudentCreateOrConnectWithoutCourseInput | BranchStudentCreateOrConnectWithoutCourseInput[]
@@ -50263,6 +56106,13 @@ export namespace Prisma {
     connectOrCreate?: BranchFacultyCreateOrConnectWithoutBranchCourseInput | BranchFacultyCreateOrConnectWithoutBranchCourseInput[]
     createMany?: BranchFacultyCreateManyBranchCourseInputEnvelope
     connect?: BranchFacultyWhereUniqueInput | BranchFacultyWhereUniqueInput[]
+  }
+
+  export type BranchBatchUncheckedCreateNestedManyWithoutBranchCourseInput = {
+    create?: XOR<BranchBatchCreateWithoutBranchCourseInput, BranchBatchUncheckedCreateWithoutBranchCourseInput> | BranchBatchCreateWithoutBranchCourseInput[] | BranchBatchUncheckedCreateWithoutBranchCourseInput[]
+    connectOrCreate?: BranchBatchCreateOrConnectWithoutBranchCourseInput | BranchBatchCreateOrConnectWithoutBranchCourseInput[]
+    createMany?: BranchBatchCreateManyBranchCourseInputEnvelope
+    connect?: BranchBatchWhereUniqueInput | BranchBatchWhereUniqueInput[]
   }
 
   export type BranchStudentUncheckedCreateNestedManyWithoutCourseInput = {
@@ -50323,6 +56173,20 @@ export namespace Prisma {
     update?: BranchFacultyUpdateWithWhereUniqueWithoutBranchCourseInput | BranchFacultyUpdateWithWhereUniqueWithoutBranchCourseInput[]
     updateMany?: BranchFacultyUpdateManyWithWhereWithoutBranchCourseInput | BranchFacultyUpdateManyWithWhereWithoutBranchCourseInput[]
     deleteMany?: BranchFacultyScalarWhereInput | BranchFacultyScalarWhereInput[]
+  }
+
+  export type BranchBatchUpdateManyWithoutBranchCourseNestedInput = {
+    create?: XOR<BranchBatchCreateWithoutBranchCourseInput, BranchBatchUncheckedCreateWithoutBranchCourseInput> | BranchBatchCreateWithoutBranchCourseInput[] | BranchBatchUncheckedCreateWithoutBranchCourseInput[]
+    connectOrCreate?: BranchBatchCreateOrConnectWithoutBranchCourseInput | BranchBatchCreateOrConnectWithoutBranchCourseInput[]
+    upsert?: BranchBatchUpsertWithWhereUniqueWithoutBranchCourseInput | BranchBatchUpsertWithWhereUniqueWithoutBranchCourseInput[]
+    createMany?: BranchBatchCreateManyBranchCourseInputEnvelope
+    set?: BranchBatchWhereUniqueInput | BranchBatchWhereUniqueInput[]
+    disconnect?: BranchBatchWhereUniqueInput | BranchBatchWhereUniqueInput[]
+    delete?: BranchBatchWhereUniqueInput | BranchBatchWhereUniqueInput[]
+    connect?: BranchBatchWhereUniqueInput | BranchBatchWhereUniqueInput[]
+    update?: BranchBatchUpdateWithWhereUniqueWithoutBranchCourseInput | BranchBatchUpdateWithWhereUniqueWithoutBranchCourseInput[]
+    updateMany?: BranchBatchUpdateManyWithWhereWithoutBranchCourseInput | BranchBatchUpdateManyWithWhereWithoutBranchCourseInput[]
+    deleteMany?: BranchBatchScalarWhereInput | BranchBatchScalarWhereInput[]
   }
 
   export type BranchStudentUpdateManyWithoutCourseNestedInput = {
@@ -50389,6 +56253,20 @@ export namespace Prisma {
     update?: BranchFacultyUpdateWithWhereUniqueWithoutBranchCourseInput | BranchFacultyUpdateWithWhereUniqueWithoutBranchCourseInput[]
     updateMany?: BranchFacultyUpdateManyWithWhereWithoutBranchCourseInput | BranchFacultyUpdateManyWithWhereWithoutBranchCourseInput[]
     deleteMany?: BranchFacultyScalarWhereInput | BranchFacultyScalarWhereInput[]
+  }
+
+  export type BranchBatchUncheckedUpdateManyWithoutBranchCourseNestedInput = {
+    create?: XOR<BranchBatchCreateWithoutBranchCourseInput, BranchBatchUncheckedCreateWithoutBranchCourseInput> | BranchBatchCreateWithoutBranchCourseInput[] | BranchBatchUncheckedCreateWithoutBranchCourseInput[]
+    connectOrCreate?: BranchBatchCreateOrConnectWithoutBranchCourseInput | BranchBatchCreateOrConnectWithoutBranchCourseInput[]
+    upsert?: BranchBatchUpsertWithWhereUniqueWithoutBranchCourseInput | BranchBatchUpsertWithWhereUniqueWithoutBranchCourseInput[]
+    createMany?: BranchBatchCreateManyBranchCourseInputEnvelope
+    set?: BranchBatchWhereUniqueInput | BranchBatchWhereUniqueInput[]
+    disconnect?: BranchBatchWhereUniqueInput | BranchBatchWhereUniqueInput[]
+    delete?: BranchBatchWhereUniqueInput | BranchBatchWhereUniqueInput[]
+    connect?: BranchBatchWhereUniqueInput | BranchBatchWhereUniqueInput[]
+    update?: BranchBatchUpdateWithWhereUniqueWithoutBranchCourseInput | BranchBatchUpdateWithWhereUniqueWithoutBranchCourseInput[]
+    updateMany?: BranchBatchUpdateManyWithWhereWithoutBranchCourseInput | BranchBatchUpdateManyWithWhereWithoutBranchCourseInput[]
+    deleteMany?: BranchBatchScalarWhereInput | BranchBatchScalarWhereInput[]
   }
 
   export type BranchStudentUncheckedUpdateManyWithoutCourseNestedInput = {
@@ -50637,6 +56515,104 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutBatchFacultyAssignmentsInput, UserUpdateWithoutBatchFacultyAssignmentsInput>, UserUncheckedUpdateWithoutBatchFacultyAssignmentsInput>
   }
 
+  export type BranchCreateNestedOneWithoutBranchBatchesInput = {
+    create?: XOR<BranchCreateWithoutBranchBatchesInput, BranchUncheckedCreateWithoutBranchBatchesInput>
+    connectOrCreate?: BranchCreateOrConnectWithoutBranchBatchesInput
+    connect?: BranchWhereUniqueInput
+  }
+
+  export type BranchCourseCreateNestedOneWithoutBranchBatchesInput = {
+    create?: XOR<BranchCourseCreateWithoutBranchBatchesInput, BranchCourseUncheckedCreateWithoutBranchBatchesInput>
+    connectOrCreate?: BranchCourseCreateOrConnectWithoutBranchBatchesInput
+    connect?: BranchCourseWhereUniqueInput
+  }
+
+  export type BranchFacultyCreateNestedOneWithoutBranchBatchesInput = {
+    create?: XOR<BranchFacultyCreateWithoutBranchBatchesInput, BranchFacultyUncheckedCreateWithoutBranchBatchesInput>
+    connectOrCreate?: BranchFacultyCreateOrConnectWithoutBranchBatchesInput
+    connect?: BranchFacultyWhereUniqueInput
+  }
+
+  export type BranchBatchRowCreateNestedManyWithoutBranchBatchInput = {
+    create?: XOR<BranchBatchRowCreateWithoutBranchBatchInput, BranchBatchRowUncheckedCreateWithoutBranchBatchInput> | BranchBatchRowCreateWithoutBranchBatchInput[] | BranchBatchRowUncheckedCreateWithoutBranchBatchInput[]
+    connectOrCreate?: BranchBatchRowCreateOrConnectWithoutBranchBatchInput | BranchBatchRowCreateOrConnectWithoutBranchBatchInput[]
+    createMany?: BranchBatchRowCreateManyBranchBatchInputEnvelope
+    connect?: BranchBatchRowWhereUniqueInput | BranchBatchRowWhereUniqueInput[]
+  }
+
+  export type BranchBatchRowUncheckedCreateNestedManyWithoutBranchBatchInput = {
+    create?: XOR<BranchBatchRowCreateWithoutBranchBatchInput, BranchBatchRowUncheckedCreateWithoutBranchBatchInput> | BranchBatchRowCreateWithoutBranchBatchInput[] | BranchBatchRowUncheckedCreateWithoutBranchBatchInput[]
+    connectOrCreate?: BranchBatchRowCreateOrConnectWithoutBranchBatchInput | BranchBatchRowCreateOrConnectWithoutBranchBatchInput[]
+    createMany?: BranchBatchRowCreateManyBranchBatchInputEnvelope
+    connect?: BranchBatchRowWhereUniqueInput | BranchBatchRowWhereUniqueInput[]
+  }
+
+  export type BranchUpdateOneRequiredWithoutBranchBatchesNestedInput = {
+    create?: XOR<BranchCreateWithoutBranchBatchesInput, BranchUncheckedCreateWithoutBranchBatchesInput>
+    connectOrCreate?: BranchCreateOrConnectWithoutBranchBatchesInput
+    upsert?: BranchUpsertWithoutBranchBatchesInput
+    connect?: BranchWhereUniqueInput
+    update?: XOR<XOR<BranchUpdateToOneWithWhereWithoutBranchBatchesInput, BranchUpdateWithoutBranchBatchesInput>, BranchUncheckedUpdateWithoutBranchBatchesInput>
+  }
+
+  export type BranchCourseUpdateOneRequiredWithoutBranchBatchesNestedInput = {
+    create?: XOR<BranchCourseCreateWithoutBranchBatchesInput, BranchCourseUncheckedCreateWithoutBranchBatchesInput>
+    connectOrCreate?: BranchCourseCreateOrConnectWithoutBranchBatchesInput
+    upsert?: BranchCourseUpsertWithoutBranchBatchesInput
+    connect?: BranchCourseWhereUniqueInput
+    update?: XOR<XOR<BranchCourseUpdateToOneWithWhereWithoutBranchBatchesInput, BranchCourseUpdateWithoutBranchBatchesInput>, BranchCourseUncheckedUpdateWithoutBranchBatchesInput>
+  }
+
+  export type BranchFacultyUpdateOneRequiredWithoutBranchBatchesNestedInput = {
+    create?: XOR<BranchFacultyCreateWithoutBranchBatchesInput, BranchFacultyUncheckedCreateWithoutBranchBatchesInput>
+    connectOrCreate?: BranchFacultyCreateOrConnectWithoutBranchBatchesInput
+    upsert?: BranchFacultyUpsertWithoutBranchBatchesInput
+    connect?: BranchFacultyWhereUniqueInput
+    update?: XOR<XOR<BranchFacultyUpdateToOneWithWhereWithoutBranchBatchesInput, BranchFacultyUpdateWithoutBranchBatchesInput>, BranchFacultyUncheckedUpdateWithoutBranchBatchesInput>
+  }
+
+  export type BranchBatchRowUpdateManyWithoutBranchBatchNestedInput = {
+    create?: XOR<BranchBatchRowCreateWithoutBranchBatchInput, BranchBatchRowUncheckedCreateWithoutBranchBatchInput> | BranchBatchRowCreateWithoutBranchBatchInput[] | BranchBatchRowUncheckedCreateWithoutBranchBatchInput[]
+    connectOrCreate?: BranchBatchRowCreateOrConnectWithoutBranchBatchInput | BranchBatchRowCreateOrConnectWithoutBranchBatchInput[]
+    upsert?: BranchBatchRowUpsertWithWhereUniqueWithoutBranchBatchInput | BranchBatchRowUpsertWithWhereUniqueWithoutBranchBatchInput[]
+    createMany?: BranchBatchRowCreateManyBranchBatchInputEnvelope
+    set?: BranchBatchRowWhereUniqueInput | BranchBatchRowWhereUniqueInput[]
+    disconnect?: BranchBatchRowWhereUniqueInput | BranchBatchRowWhereUniqueInput[]
+    delete?: BranchBatchRowWhereUniqueInput | BranchBatchRowWhereUniqueInput[]
+    connect?: BranchBatchRowWhereUniqueInput | BranchBatchRowWhereUniqueInput[]
+    update?: BranchBatchRowUpdateWithWhereUniqueWithoutBranchBatchInput | BranchBatchRowUpdateWithWhereUniqueWithoutBranchBatchInput[]
+    updateMany?: BranchBatchRowUpdateManyWithWhereWithoutBranchBatchInput | BranchBatchRowUpdateManyWithWhereWithoutBranchBatchInput[]
+    deleteMany?: BranchBatchRowScalarWhereInput | BranchBatchRowScalarWhereInput[]
+  }
+
+  export type BranchBatchRowUncheckedUpdateManyWithoutBranchBatchNestedInput = {
+    create?: XOR<BranchBatchRowCreateWithoutBranchBatchInput, BranchBatchRowUncheckedCreateWithoutBranchBatchInput> | BranchBatchRowCreateWithoutBranchBatchInput[] | BranchBatchRowUncheckedCreateWithoutBranchBatchInput[]
+    connectOrCreate?: BranchBatchRowCreateOrConnectWithoutBranchBatchInput | BranchBatchRowCreateOrConnectWithoutBranchBatchInput[]
+    upsert?: BranchBatchRowUpsertWithWhereUniqueWithoutBranchBatchInput | BranchBatchRowUpsertWithWhereUniqueWithoutBranchBatchInput[]
+    createMany?: BranchBatchRowCreateManyBranchBatchInputEnvelope
+    set?: BranchBatchRowWhereUniqueInput | BranchBatchRowWhereUniqueInput[]
+    disconnect?: BranchBatchRowWhereUniqueInput | BranchBatchRowWhereUniqueInput[]
+    delete?: BranchBatchRowWhereUniqueInput | BranchBatchRowWhereUniqueInput[]
+    connect?: BranchBatchRowWhereUniqueInput | BranchBatchRowWhereUniqueInput[]
+    update?: BranchBatchRowUpdateWithWhereUniqueWithoutBranchBatchInput | BranchBatchRowUpdateWithWhereUniqueWithoutBranchBatchInput[]
+    updateMany?: BranchBatchRowUpdateManyWithWhereWithoutBranchBatchInput | BranchBatchRowUpdateManyWithWhereWithoutBranchBatchInput[]
+    deleteMany?: BranchBatchRowScalarWhereInput | BranchBatchRowScalarWhereInput[]
+  }
+
+  export type BranchBatchCreateNestedOneWithoutRowsInput = {
+    create?: XOR<BranchBatchCreateWithoutRowsInput, BranchBatchUncheckedCreateWithoutRowsInput>
+    connectOrCreate?: BranchBatchCreateOrConnectWithoutRowsInput
+    connect?: BranchBatchWhereUniqueInput
+  }
+
+  export type BranchBatchUpdateOneRequiredWithoutRowsNestedInput = {
+    create?: XOR<BranchBatchCreateWithoutRowsInput, BranchBatchUncheckedCreateWithoutRowsInput>
+    connectOrCreate?: BranchBatchCreateOrConnectWithoutRowsInput
+    upsert?: BranchBatchUpsertWithoutRowsInput
+    connect?: BranchBatchWhereUniqueInput
+    update?: XOR<XOR<BranchBatchUpdateToOneWithWhereWithoutRowsInput, BranchBatchUpdateWithoutRowsInput>, BranchBatchUncheckedUpdateWithoutRowsInput>
+  }
+
   export type CourseCreateNestedOneWithoutStatusHistoryInput = {
     create?: XOR<CourseCreateWithoutStatusHistoryInput, CourseUncheckedCreateWithoutStatusHistoryInput>
     connectOrCreate?: CourseCreateOrConnectWithoutStatusHistoryInput
@@ -50757,6 +56733,13 @@ export namespace Prisma {
     connect?: BranchStudentPaymentWhereUniqueInput | BranchStudentPaymentWhereUniqueInput[]
   }
 
+  export type BranchStudentLedgerEntryCreateNestedManyWithoutBranchStudentInput = {
+    create?: XOR<BranchStudentLedgerEntryCreateWithoutBranchStudentInput, BranchStudentLedgerEntryUncheckedCreateWithoutBranchStudentInput> | BranchStudentLedgerEntryCreateWithoutBranchStudentInput[] | BranchStudentLedgerEntryUncheckedCreateWithoutBranchStudentInput[]
+    connectOrCreate?: BranchStudentLedgerEntryCreateOrConnectWithoutBranchStudentInput | BranchStudentLedgerEntryCreateOrConnectWithoutBranchStudentInput[]
+    createMany?: BranchStudentLedgerEntryCreateManyBranchStudentInputEnvelope
+    connect?: BranchStudentLedgerEntryWhereUniqueInput | BranchStudentLedgerEntryWhereUniqueInput[]
+  }
+
   export type BranchStudentInstallmentUncheckedCreateNestedManyWithoutBranchStudentInput = {
     create?: XOR<BranchStudentInstallmentCreateWithoutBranchStudentInput, BranchStudentInstallmentUncheckedCreateWithoutBranchStudentInput> | BranchStudentInstallmentCreateWithoutBranchStudentInput[] | BranchStudentInstallmentUncheckedCreateWithoutBranchStudentInput[]
     connectOrCreate?: BranchStudentInstallmentCreateOrConnectWithoutBranchStudentInput | BranchStudentInstallmentCreateOrConnectWithoutBranchStudentInput[]
@@ -50769,6 +56752,13 @@ export namespace Prisma {
     connectOrCreate?: BranchStudentPaymentCreateOrConnectWithoutBranchStudentInput | BranchStudentPaymentCreateOrConnectWithoutBranchStudentInput[]
     createMany?: BranchStudentPaymentCreateManyBranchStudentInputEnvelope
     connect?: BranchStudentPaymentWhereUniqueInput | BranchStudentPaymentWhereUniqueInput[]
+  }
+
+  export type BranchStudentLedgerEntryUncheckedCreateNestedManyWithoutBranchStudentInput = {
+    create?: XOR<BranchStudentLedgerEntryCreateWithoutBranchStudentInput, BranchStudentLedgerEntryUncheckedCreateWithoutBranchStudentInput> | BranchStudentLedgerEntryCreateWithoutBranchStudentInput[] | BranchStudentLedgerEntryUncheckedCreateWithoutBranchStudentInput[]
+    connectOrCreate?: BranchStudentLedgerEntryCreateOrConnectWithoutBranchStudentInput | BranchStudentLedgerEntryCreateOrConnectWithoutBranchStudentInput[]
+    createMany?: BranchStudentLedgerEntryCreateManyBranchStudentInputEnvelope
+    connect?: BranchStudentLedgerEntryWhereUniqueInput | BranchStudentLedgerEntryWhereUniqueInput[]
   }
 
   export type BranchUpdateOneRequiredWithoutBranchStudentsNestedInput = {
@@ -50817,6 +56807,20 @@ export namespace Prisma {
     deleteMany?: BranchStudentPaymentScalarWhereInput | BranchStudentPaymentScalarWhereInput[]
   }
 
+  export type BranchStudentLedgerEntryUpdateManyWithoutBranchStudentNestedInput = {
+    create?: XOR<BranchStudentLedgerEntryCreateWithoutBranchStudentInput, BranchStudentLedgerEntryUncheckedCreateWithoutBranchStudentInput> | BranchStudentLedgerEntryCreateWithoutBranchStudentInput[] | BranchStudentLedgerEntryUncheckedCreateWithoutBranchStudentInput[]
+    connectOrCreate?: BranchStudentLedgerEntryCreateOrConnectWithoutBranchStudentInput | BranchStudentLedgerEntryCreateOrConnectWithoutBranchStudentInput[]
+    upsert?: BranchStudentLedgerEntryUpsertWithWhereUniqueWithoutBranchStudentInput | BranchStudentLedgerEntryUpsertWithWhereUniqueWithoutBranchStudentInput[]
+    createMany?: BranchStudentLedgerEntryCreateManyBranchStudentInputEnvelope
+    set?: BranchStudentLedgerEntryWhereUniqueInput | BranchStudentLedgerEntryWhereUniqueInput[]
+    disconnect?: BranchStudentLedgerEntryWhereUniqueInput | BranchStudentLedgerEntryWhereUniqueInput[]
+    delete?: BranchStudentLedgerEntryWhereUniqueInput | BranchStudentLedgerEntryWhereUniqueInput[]
+    connect?: BranchStudentLedgerEntryWhereUniqueInput | BranchStudentLedgerEntryWhereUniqueInput[]
+    update?: BranchStudentLedgerEntryUpdateWithWhereUniqueWithoutBranchStudentInput | BranchStudentLedgerEntryUpdateWithWhereUniqueWithoutBranchStudentInput[]
+    updateMany?: BranchStudentLedgerEntryUpdateManyWithWhereWithoutBranchStudentInput | BranchStudentLedgerEntryUpdateManyWithWhereWithoutBranchStudentInput[]
+    deleteMany?: BranchStudentLedgerEntryScalarWhereInput | BranchStudentLedgerEntryScalarWhereInput[]
+  }
+
   export type BranchStudentInstallmentUncheckedUpdateManyWithoutBranchStudentNestedInput = {
     create?: XOR<BranchStudentInstallmentCreateWithoutBranchStudentInput, BranchStudentInstallmentUncheckedCreateWithoutBranchStudentInput> | BranchStudentInstallmentCreateWithoutBranchStudentInput[] | BranchStudentInstallmentUncheckedCreateWithoutBranchStudentInput[]
     connectOrCreate?: BranchStudentInstallmentCreateOrConnectWithoutBranchStudentInput | BranchStudentInstallmentCreateOrConnectWithoutBranchStudentInput[]
@@ -50843,6 +56847,20 @@ export namespace Prisma {
     update?: BranchStudentPaymentUpdateWithWhereUniqueWithoutBranchStudentInput | BranchStudentPaymentUpdateWithWhereUniqueWithoutBranchStudentInput[]
     updateMany?: BranchStudentPaymentUpdateManyWithWhereWithoutBranchStudentInput | BranchStudentPaymentUpdateManyWithWhereWithoutBranchStudentInput[]
     deleteMany?: BranchStudentPaymentScalarWhereInput | BranchStudentPaymentScalarWhereInput[]
+  }
+
+  export type BranchStudentLedgerEntryUncheckedUpdateManyWithoutBranchStudentNestedInput = {
+    create?: XOR<BranchStudentLedgerEntryCreateWithoutBranchStudentInput, BranchStudentLedgerEntryUncheckedCreateWithoutBranchStudentInput> | BranchStudentLedgerEntryCreateWithoutBranchStudentInput[] | BranchStudentLedgerEntryUncheckedCreateWithoutBranchStudentInput[]
+    connectOrCreate?: BranchStudentLedgerEntryCreateOrConnectWithoutBranchStudentInput | BranchStudentLedgerEntryCreateOrConnectWithoutBranchStudentInput[]
+    upsert?: BranchStudentLedgerEntryUpsertWithWhereUniqueWithoutBranchStudentInput | BranchStudentLedgerEntryUpsertWithWhereUniqueWithoutBranchStudentInput[]
+    createMany?: BranchStudentLedgerEntryCreateManyBranchStudentInputEnvelope
+    set?: BranchStudentLedgerEntryWhereUniqueInput | BranchStudentLedgerEntryWhereUniqueInput[]
+    disconnect?: BranchStudentLedgerEntryWhereUniqueInput | BranchStudentLedgerEntryWhereUniqueInput[]
+    delete?: BranchStudentLedgerEntryWhereUniqueInput | BranchStudentLedgerEntryWhereUniqueInput[]
+    connect?: BranchStudentLedgerEntryWhereUniqueInput | BranchStudentLedgerEntryWhereUniqueInput[]
+    update?: BranchStudentLedgerEntryUpdateWithWhereUniqueWithoutBranchStudentInput | BranchStudentLedgerEntryUpdateWithWhereUniqueWithoutBranchStudentInput[]
+    updateMany?: BranchStudentLedgerEntryUpdateManyWithWhereWithoutBranchStudentInput | BranchStudentLedgerEntryUpdateManyWithWhereWithoutBranchStudentInput[]
+    deleteMany?: BranchStudentLedgerEntryScalarWhereInput | BranchStudentLedgerEntryScalarWhereInput[]
   }
 
   export type BranchStudentCreateNestedOneWithoutInstallmentsInput = {
@@ -51161,6 +57179,20 @@ export namespace Prisma {
     connect?: CourseWhereUniqueInput
   }
 
+  export type BranchBatchCreateNestedManyWithoutBranchFacultyInput = {
+    create?: XOR<BranchBatchCreateWithoutBranchFacultyInput, BranchBatchUncheckedCreateWithoutBranchFacultyInput> | BranchBatchCreateWithoutBranchFacultyInput[] | BranchBatchUncheckedCreateWithoutBranchFacultyInput[]
+    connectOrCreate?: BranchBatchCreateOrConnectWithoutBranchFacultyInput | BranchBatchCreateOrConnectWithoutBranchFacultyInput[]
+    createMany?: BranchBatchCreateManyBranchFacultyInputEnvelope
+    connect?: BranchBatchWhereUniqueInput | BranchBatchWhereUniqueInput[]
+  }
+
+  export type BranchBatchUncheckedCreateNestedManyWithoutBranchFacultyInput = {
+    create?: XOR<BranchBatchCreateWithoutBranchFacultyInput, BranchBatchUncheckedCreateWithoutBranchFacultyInput> | BranchBatchCreateWithoutBranchFacultyInput[] | BranchBatchUncheckedCreateWithoutBranchFacultyInput[]
+    connectOrCreate?: BranchBatchCreateOrConnectWithoutBranchFacultyInput | BranchBatchCreateOrConnectWithoutBranchFacultyInput[]
+    createMany?: BranchBatchCreateManyBranchFacultyInputEnvelope
+    connect?: BranchBatchWhereUniqueInput | BranchBatchWhereUniqueInput[]
+  }
+
   export type BranchCourseUpdateOneWithoutBranchFacultiesNestedInput = {
     create?: XOR<BranchCourseCreateWithoutBranchFacultiesInput, BranchCourseUncheckedCreateWithoutBranchFacultiesInput>
     connectOrCreate?: BranchCourseCreateOrConnectWithoutBranchFacultiesInput
@@ -51187,6 +57219,34 @@ export namespace Prisma {
     delete?: CourseWhereInput | boolean
     connect?: CourseWhereUniqueInput
     update?: XOR<XOR<CourseUpdateToOneWithWhereWithoutBranchFacultiesInput, CourseUpdateWithoutBranchFacultiesInput>, CourseUncheckedUpdateWithoutBranchFacultiesInput>
+  }
+
+  export type BranchBatchUpdateManyWithoutBranchFacultyNestedInput = {
+    create?: XOR<BranchBatchCreateWithoutBranchFacultyInput, BranchBatchUncheckedCreateWithoutBranchFacultyInput> | BranchBatchCreateWithoutBranchFacultyInput[] | BranchBatchUncheckedCreateWithoutBranchFacultyInput[]
+    connectOrCreate?: BranchBatchCreateOrConnectWithoutBranchFacultyInput | BranchBatchCreateOrConnectWithoutBranchFacultyInput[]
+    upsert?: BranchBatchUpsertWithWhereUniqueWithoutBranchFacultyInput | BranchBatchUpsertWithWhereUniqueWithoutBranchFacultyInput[]
+    createMany?: BranchBatchCreateManyBranchFacultyInputEnvelope
+    set?: BranchBatchWhereUniqueInput | BranchBatchWhereUniqueInput[]
+    disconnect?: BranchBatchWhereUniqueInput | BranchBatchWhereUniqueInput[]
+    delete?: BranchBatchWhereUniqueInput | BranchBatchWhereUniqueInput[]
+    connect?: BranchBatchWhereUniqueInput | BranchBatchWhereUniqueInput[]
+    update?: BranchBatchUpdateWithWhereUniqueWithoutBranchFacultyInput | BranchBatchUpdateWithWhereUniqueWithoutBranchFacultyInput[]
+    updateMany?: BranchBatchUpdateManyWithWhereWithoutBranchFacultyInput | BranchBatchUpdateManyWithWhereWithoutBranchFacultyInput[]
+    deleteMany?: BranchBatchScalarWhereInput | BranchBatchScalarWhereInput[]
+  }
+
+  export type BranchBatchUncheckedUpdateManyWithoutBranchFacultyNestedInput = {
+    create?: XOR<BranchBatchCreateWithoutBranchFacultyInput, BranchBatchUncheckedCreateWithoutBranchFacultyInput> | BranchBatchCreateWithoutBranchFacultyInput[] | BranchBatchUncheckedCreateWithoutBranchFacultyInput[]
+    connectOrCreate?: BranchBatchCreateOrConnectWithoutBranchFacultyInput | BranchBatchCreateOrConnectWithoutBranchFacultyInput[]
+    upsert?: BranchBatchUpsertWithWhereUniqueWithoutBranchFacultyInput | BranchBatchUpsertWithWhereUniqueWithoutBranchFacultyInput[]
+    createMany?: BranchBatchCreateManyBranchFacultyInputEnvelope
+    set?: BranchBatchWhereUniqueInput | BranchBatchWhereUniqueInput[]
+    disconnect?: BranchBatchWhereUniqueInput | BranchBatchWhereUniqueInput[]
+    delete?: BranchBatchWhereUniqueInput | BranchBatchWhereUniqueInput[]
+    connect?: BranchBatchWhereUniqueInput | BranchBatchWhereUniqueInput[]
+    update?: BranchBatchUpdateWithWhereUniqueWithoutBranchFacultyInput | BranchBatchUpdateWithWhereUniqueWithoutBranchFacultyInput[]
+    updateMany?: BranchBatchUpdateManyWithWhereWithoutBranchFacultyInput | BranchBatchUpdateManyWithWhereWithoutBranchFacultyInput[]
+    deleteMany?: BranchBatchScalarWhereInput | BranchBatchScalarWhereInput[]
   }
 
   export type BranchCreateNestedOneWithoutBranchInstallmentTemplatesInput = {
@@ -51261,6 +57321,34 @@ export namespace Prisma {
     delete?: BranchStudentInstallmentWhereInput | boolean
     connect?: BranchStudentInstallmentWhereUniqueInput
     update?: XOR<XOR<BranchStudentInstallmentUpdateToOneWithWhereWithoutPaymentsInput, BranchStudentInstallmentUpdateWithoutPaymentsInput>, BranchStudentInstallmentUncheckedUpdateWithoutPaymentsInput>
+  }
+
+  export type BranchCreateNestedOneWithoutLedgerEntriesInput = {
+    create?: XOR<BranchCreateWithoutLedgerEntriesInput, BranchUncheckedCreateWithoutLedgerEntriesInput>
+    connectOrCreate?: BranchCreateOrConnectWithoutLedgerEntriesInput
+    connect?: BranchWhereUniqueInput
+  }
+
+  export type BranchStudentCreateNestedOneWithoutLedgerEntriesInput = {
+    create?: XOR<BranchStudentCreateWithoutLedgerEntriesInput, BranchStudentUncheckedCreateWithoutLedgerEntriesInput>
+    connectOrCreate?: BranchStudentCreateOrConnectWithoutLedgerEntriesInput
+    connect?: BranchStudentWhereUniqueInput
+  }
+
+  export type BranchUpdateOneRequiredWithoutLedgerEntriesNestedInput = {
+    create?: XOR<BranchCreateWithoutLedgerEntriesInput, BranchUncheckedCreateWithoutLedgerEntriesInput>
+    connectOrCreate?: BranchCreateOrConnectWithoutLedgerEntriesInput
+    upsert?: BranchUpsertWithoutLedgerEntriesInput
+    connect?: BranchWhereUniqueInput
+    update?: XOR<XOR<BranchUpdateToOneWithWhereWithoutLedgerEntriesInput, BranchUpdateWithoutLedgerEntriesInput>, BranchUncheckedUpdateWithoutLedgerEntriesInput>
+  }
+
+  export type BranchStudentUpdateOneRequiredWithoutLedgerEntriesNestedInput = {
+    create?: XOR<BranchStudentCreateWithoutLedgerEntriesInput, BranchStudentUncheckedCreateWithoutLedgerEntriesInput>
+    connectOrCreate?: BranchStudentCreateOrConnectWithoutLedgerEntriesInput
+    upsert?: BranchStudentUpsertWithoutLedgerEntriesInput
+    connect?: BranchStudentWhereUniqueInput
+    update?: XOR<XOR<BranchStudentUpdateToOneWithWhereWithoutLedgerEntriesInput, BranchStudentUpdateWithoutLedgerEntriesInput>, BranchStudentUncheckedUpdateWithoutLedgerEntriesInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -51757,9 +57845,11 @@ export namespace Prisma {
     branchState?: string
     branchStateCode?: string
     branchCourses?: BranchCourseCreateNestedManyWithoutBranchInput
+    branchBatches?: BranchBatchCreateNestedManyWithoutBranchInput
     branchInstallmentTemplates?: BranchInstallmentTemplateCreateNestedManyWithoutBranchInput
     branchFaculties?: BranchFacultyCreateNestedManyWithoutBranchInput
     branchStudents?: BranchStudentCreateNestedManyWithoutBranchInput
+    ledgerEntries?: BranchStudentLedgerEntryCreateNestedManyWithoutBranchInput
     payments?: BranchStudentPaymentCreateNestedManyWithoutBranchInput
     courses?: CourseCreateNestedManyWithoutBranchInput
   }
@@ -51783,9 +57873,11 @@ export namespace Prisma {
     branchState?: string
     branchStateCode?: string
     branchCourses?: BranchCourseUncheckedCreateNestedManyWithoutBranchInput
+    branchBatches?: BranchBatchUncheckedCreateNestedManyWithoutBranchInput
     branchInstallmentTemplates?: BranchInstallmentTemplateUncheckedCreateNestedManyWithoutBranchInput
     branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutBranchInput
     branchStudents?: BranchStudentUncheckedCreateNestedManyWithoutBranchInput
+    ledgerEntries?: BranchStudentLedgerEntryUncheckedCreateNestedManyWithoutBranchInput
     payments?: BranchStudentPaymentUncheckedCreateNestedManyWithoutBranchInput
     courses?: CourseUncheckedCreateNestedManyWithoutBranchInput
   }
@@ -52127,9 +58219,11 @@ export namespace Prisma {
     branchState?: StringFieldUpdateOperationsInput | string
     branchStateCode?: StringFieldUpdateOperationsInput | string
     branchCourses?: BranchCourseUpdateManyWithoutBranchNestedInput
+    branchBatches?: BranchBatchUpdateManyWithoutBranchNestedInput
     branchInstallmentTemplates?: BranchInstallmentTemplateUpdateManyWithoutBranchNestedInput
     branchFaculties?: BranchFacultyUpdateManyWithoutBranchNestedInput
     branchStudents?: BranchStudentUpdateManyWithoutBranchNestedInput
+    ledgerEntries?: BranchStudentLedgerEntryUpdateManyWithoutBranchNestedInput
     payments?: BranchStudentPaymentUpdateManyWithoutBranchNestedInput
     courses?: CourseUpdateManyWithoutBranchNestedInput
   }
@@ -52153,9 +58247,11 @@ export namespace Prisma {
     branchState?: StringFieldUpdateOperationsInput | string
     branchStateCode?: StringFieldUpdateOperationsInput | string
     branchCourses?: BranchCourseUncheckedUpdateManyWithoutBranchNestedInput
+    branchBatches?: BranchBatchUncheckedUpdateManyWithoutBranchNestedInput
     branchInstallmentTemplates?: BranchInstallmentTemplateUncheckedUpdateManyWithoutBranchNestedInput
     branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutBranchNestedInput
     branchStudents?: BranchStudentUncheckedUpdateManyWithoutBranchNestedInput
+    ledgerEntries?: BranchStudentLedgerEntryUncheckedUpdateManyWithoutBranchNestedInput
     payments?: BranchStudentPaymentUncheckedUpdateManyWithoutBranchNestedInput
     courses?: CourseUncheckedUpdateManyWithoutBranchNestedInput
   }
@@ -52473,6 +58569,7 @@ export namespace Prisma {
     installmentTemplate?: BranchInstallmentTemplateCreateNestedOneWithoutBranchCourseInput
     modules?: BranchCourseModuleCreateNestedManyWithoutBranchCourseInput
     branchFaculties?: BranchFacultyCreateNestedManyWithoutBranchCourseInput
+    branchBatches?: BranchBatchCreateNestedManyWithoutBranchCourseInput
     branchStudents?: BranchStudentCreateNestedManyWithoutCourseInput
     facultyTodayWorkEntries?: FacultyTodayWorkEntryCreateNestedManyWithoutBranchCourseInput
   }
@@ -52500,6 +58597,7 @@ export namespace Prisma {
     installmentTemplate?: BranchInstallmentTemplateUncheckedCreateNestedOneWithoutBranchCourseInput
     modules?: BranchCourseModuleUncheckedCreateNestedManyWithoutBranchCourseInput
     branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutBranchCourseInput
+    branchBatches?: BranchBatchUncheckedCreateNestedManyWithoutBranchCourseInput
     branchStudents?: BranchStudentUncheckedCreateNestedManyWithoutCourseInput
     facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedCreateNestedManyWithoutBranchCourseInput
   }
@@ -52511,6 +58609,56 @@ export namespace Prisma {
 
   export type BranchCourseCreateManyBranchInputEnvelope = {
     data: BranchCourseCreateManyBranchInput | BranchCourseCreateManyBranchInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type BranchBatchCreateWithoutBranchInput = {
+    id?: string
+    batchId: string
+    batchGroupId: string
+    courseId: string
+    courseName: string
+    facultyId: string
+    facultyName: string
+    facultyEmail: string
+    batchCount?: number
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branchCourse: BranchCourseCreateNestedOneWithoutBranchBatchesInput
+    branchFaculty: BranchFacultyCreateNestedOneWithoutBranchBatchesInput
+    rows?: BranchBatchRowCreateNestedManyWithoutBranchBatchInput
+  }
+
+  export type BranchBatchUncheckedCreateWithoutBranchInput = {
+    id?: string
+    branchCourseId: string
+    branchFacultyId: string
+    batchId: string
+    batchGroupId: string
+    courseId: string
+    courseName: string
+    facultyId: string
+    facultyName: string
+    facultyEmail: string
+    batchCount?: number
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    rows?: BranchBatchRowUncheckedCreateNestedManyWithoutBranchBatchInput
+  }
+
+  export type BranchBatchCreateOrConnectWithoutBranchInput = {
+    where: BranchBatchWhereUniqueInput
+    create: XOR<BranchBatchCreateWithoutBranchInput, BranchBatchUncheckedCreateWithoutBranchInput>
+  }
+
+  export type BranchBatchCreateManyBranchInputEnvelope = {
+    data: BranchBatchCreateManyBranchInput | BranchBatchCreateManyBranchInput[]
     skipDuplicates?: boolean
   }
 
@@ -52575,6 +58723,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     branchCourse?: BranchCourseCreateNestedOneWithoutBranchFacultiesInput
     course?: CourseCreateNestedOneWithoutBranchFacultiesInput
+    branchBatches?: BranchBatchCreateNestedManyWithoutBranchFacultyInput
   }
 
   export type BranchFacultyUncheckedCreateWithoutBranchInput = {
@@ -52596,6 +58745,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     courseId?: string | null
     branchCourseId?: string | null
+    branchBatches?: BranchBatchUncheckedCreateNestedManyWithoutBranchFacultyInput
   }
 
   export type BranchFacultyCreateOrConnectWithoutBranchInput = {
@@ -52646,6 +58796,7 @@ export namespace Prisma {
     course?: BranchCourseCreateNestedOneWithoutBranchStudentsInput
     installments?: BranchStudentInstallmentCreateNestedManyWithoutBranchStudentInput
     payments?: BranchStudentPaymentCreateNestedManyWithoutBranchStudentInput
+    ledgerEntries?: BranchStudentLedgerEntryCreateNestedManyWithoutBranchStudentInput
   }
 
   export type BranchStudentUncheckedCreateWithoutBranchInput = {
@@ -52686,6 +58837,7 @@ export namespace Prisma {
     courseProgress?: number | null
     installments?: BranchStudentInstallmentUncheckedCreateNestedManyWithoutBranchStudentInput
     payments?: BranchStudentPaymentUncheckedCreateNestedManyWithoutBranchStudentInput
+    ledgerEntries?: BranchStudentLedgerEntryUncheckedCreateNestedManyWithoutBranchStudentInput
   }
 
   export type BranchStudentCreateOrConnectWithoutBranchInput = {
@@ -52695,6 +58847,74 @@ export namespace Prisma {
 
   export type BranchStudentCreateManyBranchInputEnvelope = {
     data: BranchStudentCreateManyBranchInput | BranchStudentCreateManyBranchInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type BranchStudentLedgerEntryCreateWithoutBranchInput = {
+    id?: string
+    ledgerKey: string
+    paymentId?: string | null
+    installmentId?: string | null
+    entryNo?: number
+    entryType: string
+    description: string
+    debit?: number
+    credit?: number
+    amount?: number
+    runningBalance?: number
+    studentBalanceAfter?: number
+    entryDate?: Date | string | null
+    paymentDate?: Date | string | null
+    referenceType?: string | null
+    referenceId?: string | null
+    paymentMode?: string | null
+    receiptNumber?: string | null
+    payAgainst?: string | null
+    transactionReference?: string | null
+    notes?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branchStudent: BranchStudentCreateNestedOneWithoutLedgerEntriesInput
+  }
+
+  export type BranchStudentLedgerEntryUncheckedCreateWithoutBranchInput = {
+    id?: string
+    ledgerKey: string
+    branchStudentId: string
+    paymentId?: string | null
+    installmentId?: string | null
+    entryNo?: number
+    entryType: string
+    description: string
+    debit?: number
+    credit?: number
+    amount?: number
+    runningBalance?: number
+    studentBalanceAfter?: number
+    entryDate?: Date | string | null
+    paymentDate?: Date | string | null
+    referenceType?: string | null
+    referenceId?: string | null
+    paymentMode?: string | null
+    receiptNumber?: string | null
+    payAgainst?: string | null
+    transactionReference?: string | null
+    notes?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type BranchStudentLedgerEntryCreateOrConnectWithoutBranchInput = {
+    where: BranchStudentLedgerEntryWhereUniqueInput
+    create: XOR<BranchStudentLedgerEntryCreateWithoutBranchInput, BranchStudentLedgerEntryUncheckedCreateWithoutBranchInput>
+  }
+
+  export type BranchStudentLedgerEntryCreateManyBranchInputEnvelope = {
+    data: BranchStudentLedgerEntryCreateManyBranchInput | BranchStudentLedgerEntryCreateManyBranchInput[]
     skipDuplicates?: boolean
   }
 
@@ -52939,6 +59159,45 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"BranchCourse"> | Date | string
   }
 
+  export type BranchBatchUpsertWithWhereUniqueWithoutBranchInput = {
+    where: BranchBatchWhereUniqueInput
+    update: XOR<BranchBatchUpdateWithoutBranchInput, BranchBatchUncheckedUpdateWithoutBranchInput>
+    create: XOR<BranchBatchCreateWithoutBranchInput, BranchBatchUncheckedCreateWithoutBranchInput>
+  }
+
+  export type BranchBatchUpdateWithWhereUniqueWithoutBranchInput = {
+    where: BranchBatchWhereUniqueInput
+    data: XOR<BranchBatchUpdateWithoutBranchInput, BranchBatchUncheckedUpdateWithoutBranchInput>
+  }
+
+  export type BranchBatchUpdateManyWithWhereWithoutBranchInput = {
+    where: BranchBatchScalarWhereInput
+    data: XOR<BranchBatchUpdateManyMutationInput, BranchBatchUncheckedUpdateManyWithoutBranchInput>
+  }
+
+  export type BranchBatchScalarWhereInput = {
+    AND?: BranchBatchScalarWhereInput | BranchBatchScalarWhereInput[]
+    OR?: BranchBatchScalarWhereInput[]
+    NOT?: BranchBatchScalarWhereInput | BranchBatchScalarWhereInput[]
+    id?: StringFilter<"BranchBatch"> | string
+    branchId?: StringFilter<"BranchBatch"> | string
+    branchCourseId?: StringFilter<"BranchBatch"> | string
+    branchFacultyId?: StringFilter<"BranchBatch"> | string
+    batchId?: StringFilter<"BranchBatch"> | string
+    batchGroupId?: StringFilter<"BranchBatch"> | string
+    courseId?: StringFilter<"BranchBatch"> | string
+    courseName?: StringFilter<"BranchBatch"> | string
+    facultyId?: StringFilter<"BranchBatch"> | string
+    facultyName?: StringFilter<"BranchBatch"> | string
+    facultyEmail?: StringFilter<"BranchBatch"> | string
+    batchCount?: IntFilter<"BranchBatch"> | number
+    status?: EnumRecordStatusFilter<"BranchBatch"> | $Enums.RecordStatus
+    createdBy?: StringNullableFilter<"BranchBatch"> | string | null
+    updatedBy?: StringNullableFilter<"BranchBatch"> | string | null
+    createdAt?: DateTimeFilter<"BranchBatch"> | Date | string
+    updatedAt?: DateTimeFilter<"BranchBatch"> | Date | string
+  }
+
   export type BranchInstallmentTemplateUpsertWithWhereUniqueWithoutBranchInput = {
     where: BranchInstallmentTemplateWhereUniqueInput
     update: XOR<BranchInstallmentTemplateUpdateWithoutBranchInput, BranchInstallmentTemplateUncheckedUpdateWithoutBranchInput>
@@ -53072,6 +59331,55 @@ export namespace Prisma {
     paymentPlanId?: StringNullableFilter<"BranchStudent"> | string | null
     paymentPlan?: StringNullableFilter<"BranchStudent"> | string | null
     courseProgress?: IntNullableFilter<"BranchStudent"> | number | null
+  }
+
+  export type BranchStudentLedgerEntryUpsertWithWhereUniqueWithoutBranchInput = {
+    where: BranchStudentLedgerEntryWhereUniqueInput
+    update: XOR<BranchStudentLedgerEntryUpdateWithoutBranchInput, BranchStudentLedgerEntryUncheckedUpdateWithoutBranchInput>
+    create: XOR<BranchStudentLedgerEntryCreateWithoutBranchInput, BranchStudentLedgerEntryUncheckedCreateWithoutBranchInput>
+  }
+
+  export type BranchStudentLedgerEntryUpdateWithWhereUniqueWithoutBranchInput = {
+    where: BranchStudentLedgerEntryWhereUniqueInput
+    data: XOR<BranchStudentLedgerEntryUpdateWithoutBranchInput, BranchStudentLedgerEntryUncheckedUpdateWithoutBranchInput>
+  }
+
+  export type BranchStudentLedgerEntryUpdateManyWithWhereWithoutBranchInput = {
+    where: BranchStudentLedgerEntryScalarWhereInput
+    data: XOR<BranchStudentLedgerEntryUpdateManyMutationInput, BranchStudentLedgerEntryUncheckedUpdateManyWithoutBranchInput>
+  }
+
+  export type BranchStudentLedgerEntryScalarWhereInput = {
+    AND?: BranchStudentLedgerEntryScalarWhereInput | BranchStudentLedgerEntryScalarWhereInput[]
+    OR?: BranchStudentLedgerEntryScalarWhereInput[]
+    NOT?: BranchStudentLedgerEntryScalarWhereInput | BranchStudentLedgerEntryScalarWhereInput[]
+    id?: StringFilter<"BranchStudentLedgerEntry"> | string
+    ledgerKey?: StringFilter<"BranchStudentLedgerEntry"> | string
+    branchId?: StringFilter<"BranchStudentLedgerEntry"> | string
+    branchStudentId?: StringFilter<"BranchStudentLedgerEntry"> | string
+    paymentId?: StringNullableFilter<"BranchStudentLedgerEntry"> | string | null
+    installmentId?: StringNullableFilter<"BranchStudentLedgerEntry"> | string | null
+    entryNo?: IntFilter<"BranchStudentLedgerEntry"> | number
+    entryType?: StringFilter<"BranchStudentLedgerEntry"> | string
+    description?: StringFilter<"BranchStudentLedgerEntry"> | string
+    debit?: IntFilter<"BranchStudentLedgerEntry"> | number
+    credit?: IntFilter<"BranchStudentLedgerEntry"> | number
+    amount?: IntFilter<"BranchStudentLedgerEntry"> | number
+    runningBalance?: IntFilter<"BranchStudentLedgerEntry"> | number
+    studentBalanceAfter?: IntFilter<"BranchStudentLedgerEntry"> | number
+    entryDate?: DateTimeNullableFilter<"BranchStudentLedgerEntry"> | Date | string | null
+    paymentDate?: DateTimeNullableFilter<"BranchStudentLedgerEntry"> | Date | string | null
+    referenceType?: StringNullableFilter<"BranchStudentLedgerEntry"> | string | null
+    referenceId?: StringNullableFilter<"BranchStudentLedgerEntry"> | string | null
+    paymentMode?: StringNullableFilter<"BranchStudentLedgerEntry"> | string | null
+    receiptNumber?: StringNullableFilter<"BranchStudentLedgerEntry"> | string | null
+    payAgainst?: StringNullableFilter<"BranchStudentLedgerEntry"> | string | null
+    transactionReference?: StringNullableFilter<"BranchStudentLedgerEntry"> | string | null
+    notes?: StringNullableFilter<"BranchStudentLedgerEntry"> | string | null
+    createdBy?: StringNullableFilter<"BranchStudentLedgerEntry"> | string | null
+    updatedBy?: StringNullableFilter<"BranchStudentLedgerEntry"> | string | null
+    createdAt?: DateTimeFilter<"BranchStudentLedgerEntry"> | Date | string
+    updatedAt?: DateTimeFilter<"BranchStudentLedgerEntry"> | Date | string
   }
 
   export type BranchStudentPaymentUpsertWithWhereUniqueWithoutBranchInput = {
@@ -53862,6 +60170,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     branchCourse?: BranchCourseCreateNestedOneWithoutBranchFacultiesInput
     branch: BranchCreateNestedOneWithoutBranchFacultiesInput
+    branchBatches?: BranchBatchCreateNestedManyWithoutBranchFacultyInput
   }
 
   export type BranchFacultyUncheckedCreateWithoutCourseInput = {
@@ -53883,6 +60192,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     branchCourseId?: string | null
+    branchBatches?: BranchBatchUncheckedCreateNestedManyWithoutBranchFacultyInput
   }
 
   export type BranchFacultyCreateOrConnectWithoutCourseInput = {
@@ -53915,9 +60225,11 @@ export namespace Prisma {
     branchStateCode?: string
     adminUser?: UserCreateNestedOneWithoutManagedBranchInput
     branchCourses?: BranchCourseCreateNestedManyWithoutBranchInput
+    branchBatches?: BranchBatchCreateNestedManyWithoutBranchInput
     branchInstallmentTemplates?: BranchInstallmentTemplateCreateNestedManyWithoutBranchInput
     branchFaculties?: BranchFacultyCreateNestedManyWithoutBranchInput
     branchStudents?: BranchStudentCreateNestedManyWithoutBranchInput
+    ledgerEntries?: BranchStudentLedgerEntryCreateNestedManyWithoutBranchInput
     payments?: BranchStudentPaymentCreateNestedManyWithoutBranchInput
   }
 
@@ -53941,9 +60253,11 @@ export namespace Prisma {
     branchState?: string
     branchStateCode?: string
     branchCourses?: BranchCourseUncheckedCreateNestedManyWithoutBranchInput
+    branchBatches?: BranchBatchUncheckedCreateNestedManyWithoutBranchInput
     branchInstallmentTemplates?: BranchInstallmentTemplateUncheckedCreateNestedManyWithoutBranchInput
     branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutBranchInput
     branchStudents?: BranchStudentUncheckedCreateNestedManyWithoutBranchInput
+    ledgerEntries?: BranchStudentLedgerEntryUncheckedCreateNestedManyWithoutBranchInput
     payments?: BranchStudentPaymentUncheckedCreateNestedManyWithoutBranchInput
   }
 
@@ -54305,9 +60619,11 @@ export namespace Prisma {
     branchStateCode?: StringFieldUpdateOperationsInput | string
     adminUser?: UserUpdateOneWithoutManagedBranchNestedInput
     branchCourses?: BranchCourseUpdateManyWithoutBranchNestedInput
+    branchBatches?: BranchBatchUpdateManyWithoutBranchNestedInput
     branchInstallmentTemplates?: BranchInstallmentTemplateUpdateManyWithoutBranchNestedInput
     branchFaculties?: BranchFacultyUpdateManyWithoutBranchNestedInput
     branchStudents?: BranchStudentUpdateManyWithoutBranchNestedInput
+    ledgerEntries?: BranchStudentLedgerEntryUpdateManyWithoutBranchNestedInput
     payments?: BranchStudentPaymentUpdateManyWithoutBranchNestedInput
   }
 
@@ -54331,9 +60647,11 @@ export namespace Prisma {
     branchState?: StringFieldUpdateOperationsInput | string
     branchStateCode?: StringFieldUpdateOperationsInput | string
     branchCourses?: BranchCourseUncheckedUpdateManyWithoutBranchNestedInput
+    branchBatches?: BranchBatchUncheckedUpdateManyWithoutBranchNestedInput
     branchInstallmentTemplates?: BranchInstallmentTemplateUncheckedUpdateManyWithoutBranchNestedInput
     branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutBranchNestedInput
     branchStudents?: BranchStudentUncheckedUpdateManyWithoutBranchNestedInput
+    ledgerEntries?: BranchStudentLedgerEntryUncheckedUpdateManyWithoutBranchNestedInput
     payments?: BranchStudentPaymentUncheckedUpdateManyWithoutBranchNestedInput
   }
 
@@ -54576,9 +60894,11 @@ export namespace Prisma {
     branchState?: string
     branchStateCode?: string
     adminUser?: UserCreateNestedOneWithoutManagedBranchInput
+    branchBatches?: BranchBatchCreateNestedManyWithoutBranchInput
     branchInstallmentTemplates?: BranchInstallmentTemplateCreateNestedManyWithoutBranchInput
     branchFaculties?: BranchFacultyCreateNestedManyWithoutBranchInput
     branchStudents?: BranchStudentCreateNestedManyWithoutBranchInput
+    ledgerEntries?: BranchStudentLedgerEntryCreateNestedManyWithoutBranchInput
     payments?: BranchStudentPaymentCreateNestedManyWithoutBranchInput
     courses?: CourseCreateNestedManyWithoutBranchInput
   }
@@ -54602,9 +60922,11 @@ export namespace Prisma {
     branchCountryCode?: string
     branchState?: string
     branchStateCode?: string
+    branchBatches?: BranchBatchUncheckedCreateNestedManyWithoutBranchInput
     branchInstallmentTemplates?: BranchInstallmentTemplateUncheckedCreateNestedManyWithoutBranchInput
     branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutBranchInput
     branchStudents?: BranchStudentUncheckedCreateNestedManyWithoutBranchInput
+    ledgerEntries?: BranchStudentLedgerEntryUncheckedCreateNestedManyWithoutBranchInput
     payments?: BranchStudentPaymentUncheckedCreateNestedManyWithoutBranchInput
     courses?: CourseUncheckedCreateNestedManyWithoutBranchInput
   }
@@ -54708,6 +61030,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     branch: BranchCreateNestedOneWithoutBranchFacultiesInput
     course?: CourseCreateNestedOneWithoutBranchFacultiesInput
+    branchBatches?: BranchBatchCreateNestedManyWithoutBranchFacultyInput
   }
 
   export type BranchFacultyUncheckedCreateWithoutBranchCourseInput = {
@@ -54729,6 +61052,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     courseId?: string | null
+    branchBatches?: BranchBatchUncheckedCreateNestedManyWithoutBranchFacultyInput
   }
 
   export type BranchFacultyCreateOrConnectWithoutBranchCourseInput = {
@@ -54738,6 +61062,56 @@ export namespace Prisma {
 
   export type BranchFacultyCreateManyBranchCourseInputEnvelope = {
     data: BranchFacultyCreateManyBranchCourseInput | BranchFacultyCreateManyBranchCourseInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type BranchBatchCreateWithoutBranchCourseInput = {
+    id?: string
+    batchId: string
+    batchGroupId: string
+    courseId: string
+    courseName: string
+    facultyId: string
+    facultyName: string
+    facultyEmail: string
+    batchCount?: number
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branch: BranchCreateNestedOneWithoutBranchBatchesInput
+    branchFaculty: BranchFacultyCreateNestedOneWithoutBranchBatchesInput
+    rows?: BranchBatchRowCreateNestedManyWithoutBranchBatchInput
+  }
+
+  export type BranchBatchUncheckedCreateWithoutBranchCourseInput = {
+    id?: string
+    branchId: string
+    branchFacultyId: string
+    batchId: string
+    batchGroupId: string
+    courseId: string
+    courseName: string
+    facultyId: string
+    facultyName: string
+    facultyEmail: string
+    batchCount?: number
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    rows?: BranchBatchRowUncheckedCreateNestedManyWithoutBranchBatchInput
+  }
+
+  export type BranchBatchCreateOrConnectWithoutBranchCourseInput = {
+    where: BranchBatchWhereUniqueInput
+    create: XOR<BranchBatchCreateWithoutBranchCourseInput, BranchBatchUncheckedCreateWithoutBranchCourseInput>
+  }
+
+  export type BranchBatchCreateManyBranchCourseInputEnvelope = {
+    data: BranchBatchCreateManyBranchCourseInput | BranchBatchCreateManyBranchCourseInput[]
     skipDuplicates?: boolean
   }
 
@@ -54779,6 +61153,7 @@ export namespace Prisma {
     branch: BranchCreateNestedOneWithoutBranchStudentsInput
     installments?: BranchStudentInstallmentCreateNestedManyWithoutBranchStudentInput
     payments?: BranchStudentPaymentCreateNestedManyWithoutBranchStudentInput
+    ledgerEntries?: BranchStudentLedgerEntryCreateNestedManyWithoutBranchStudentInput
   }
 
   export type BranchStudentUncheckedCreateWithoutCourseInput = {
@@ -54819,6 +61194,7 @@ export namespace Prisma {
     courseProgress?: number | null
     installments?: BranchStudentInstallmentUncheckedCreateNestedManyWithoutBranchStudentInput
     payments?: BranchStudentPaymentUncheckedCreateNestedManyWithoutBranchStudentInput
+    ledgerEntries?: BranchStudentLedgerEntryUncheckedCreateNestedManyWithoutBranchStudentInput
   }
 
   export type BranchStudentCreateOrConnectWithoutCourseInput = {
@@ -54919,9 +61295,11 @@ export namespace Prisma {
     branchState?: StringFieldUpdateOperationsInput | string
     branchStateCode?: StringFieldUpdateOperationsInput | string
     adminUser?: UserUpdateOneWithoutManagedBranchNestedInput
+    branchBatches?: BranchBatchUpdateManyWithoutBranchNestedInput
     branchInstallmentTemplates?: BranchInstallmentTemplateUpdateManyWithoutBranchNestedInput
     branchFaculties?: BranchFacultyUpdateManyWithoutBranchNestedInput
     branchStudents?: BranchStudentUpdateManyWithoutBranchNestedInput
+    ledgerEntries?: BranchStudentLedgerEntryUpdateManyWithoutBranchNestedInput
     payments?: BranchStudentPaymentUpdateManyWithoutBranchNestedInput
     courses?: CourseUpdateManyWithoutBranchNestedInput
   }
@@ -54945,9 +61323,11 @@ export namespace Prisma {
     branchCountryCode?: StringFieldUpdateOperationsInput | string
     branchState?: StringFieldUpdateOperationsInput | string
     branchStateCode?: StringFieldUpdateOperationsInput | string
+    branchBatches?: BranchBatchUncheckedUpdateManyWithoutBranchNestedInput
     branchInstallmentTemplates?: BranchInstallmentTemplateUncheckedUpdateManyWithoutBranchNestedInput
     branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutBranchNestedInput
     branchStudents?: BranchStudentUncheckedUpdateManyWithoutBranchNestedInput
+    ledgerEntries?: BranchStudentLedgerEntryUncheckedUpdateManyWithoutBranchNestedInput
     payments?: BranchStudentPaymentUncheckedUpdateManyWithoutBranchNestedInput
     courses?: CourseUncheckedUpdateManyWithoutBranchNestedInput
   }
@@ -55044,6 +61424,22 @@ export namespace Prisma {
     data: XOR<BranchFacultyUpdateManyMutationInput, BranchFacultyUncheckedUpdateManyWithoutBranchCourseInput>
   }
 
+  export type BranchBatchUpsertWithWhereUniqueWithoutBranchCourseInput = {
+    where: BranchBatchWhereUniqueInput
+    update: XOR<BranchBatchUpdateWithoutBranchCourseInput, BranchBatchUncheckedUpdateWithoutBranchCourseInput>
+    create: XOR<BranchBatchCreateWithoutBranchCourseInput, BranchBatchUncheckedCreateWithoutBranchCourseInput>
+  }
+
+  export type BranchBatchUpdateWithWhereUniqueWithoutBranchCourseInput = {
+    where: BranchBatchWhereUniqueInput
+    data: XOR<BranchBatchUpdateWithoutBranchCourseInput, BranchBatchUncheckedUpdateWithoutBranchCourseInput>
+  }
+
+  export type BranchBatchUpdateManyWithWhereWithoutBranchCourseInput = {
+    where: BranchBatchScalarWhereInput
+    data: XOR<BranchBatchUpdateManyMutationInput, BranchBatchUncheckedUpdateManyWithoutBranchCourseInput>
+  }
+
   export type BranchStudentUpsertWithWhereUniqueWithoutCourseInput = {
     where: BranchStudentWhereUniqueInput
     update: XOR<BranchStudentUpdateWithoutCourseInput, BranchStudentUncheckedUpdateWithoutCourseInput>
@@ -55099,6 +61495,7 @@ export namespace Prisma {
     branch: BranchCreateNestedOneWithoutBranchCoursesInput
     installmentTemplate?: BranchInstallmentTemplateCreateNestedOneWithoutBranchCourseInput
     branchFaculties?: BranchFacultyCreateNestedManyWithoutBranchCourseInput
+    branchBatches?: BranchBatchCreateNestedManyWithoutBranchCourseInput
     branchStudents?: BranchStudentCreateNestedManyWithoutCourseInput
     facultyTodayWorkEntries?: FacultyTodayWorkEntryCreateNestedManyWithoutBranchCourseInput
   }
@@ -55126,6 +61523,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     installmentTemplate?: BranchInstallmentTemplateUncheckedCreateNestedOneWithoutBranchCourseInput
     branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutBranchCourseInput
+    branchBatches?: BranchBatchUncheckedCreateNestedManyWithoutBranchCourseInput
     branchStudents?: BranchStudentUncheckedCreateNestedManyWithoutCourseInput
     facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedCreateNestedManyWithoutBranchCourseInput
   }
@@ -55205,6 +61603,7 @@ export namespace Prisma {
     branch?: BranchUpdateOneRequiredWithoutBranchCoursesNestedInput
     installmentTemplate?: BranchInstallmentTemplateUpdateOneWithoutBranchCourseNestedInput
     branchFaculties?: BranchFacultyUpdateManyWithoutBranchCourseNestedInput
+    branchBatches?: BranchBatchUpdateManyWithoutBranchCourseNestedInput
     branchStudents?: BranchStudentUpdateManyWithoutCourseNestedInput
     facultyTodayWorkEntries?: FacultyTodayWorkEntryUpdateManyWithoutBranchCourseNestedInput
   }
@@ -55232,6 +61631,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     installmentTemplate?: BranchInstallmentTemplateUncheckedUpdateOneWithoutBranchCourseNestedInput
     branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutBranchCourseNestedInput
+    branchBatches?: BranchBatchUncheckedUpdateManyWithoutBranchCourseNestedInput
     branchStudents?: BranchStudentUncheckedUpdateManyWithoutCourseNestedInput
     facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedUpdateManyWithoutBranchCourseNestedInput
   }
@@ -56020,6 +62420,546 @@ export namespace Prisma {
     markedStudentAttendances?: StudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
   }
 
+  export type BranchCreateWithoutBranchBatchesInput = {
+    id?: string
+    branchId: string
+    branchName: string
+    branchAdminName: string
+    branchEmail: string
+    branchPhone: string
+    branchAddress: string
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branchCity?: string
+    branchCountry?: string
+    branchCountryCode?: string
+    branchState?: string
+    branchStateCode?: string
+    adminUser?: UserCreateNestedOneWithoutManagedBranchInput
+    branchCourses?: BranchCourseCreateNestedManyWithoutBranchInput
+    branchInstallmentTemplates?: BranchInstallmentTemplateCreateNestedManyWithoutBranchInput
+    branchFaculties?: BranchFacultyCreateNestedManyWithoutBranchInput
+    branchStudents?: BranchStudentCreateNestedManyWithoutBranchInput
+    ledgerEntries?: BranchStudentLedgerEntryCreateNestedManyWithoutBranchInput
+    payments?: BranchStudentPaymentCreateNestedManyWithoutBranchInput
+    courses?: CourseCreateNestedManyWithoutBranchInput
+  }
+
+  export type BranchUncheckedCreateWithoutBranchBatchesInput = {
+    id?: string
+    branchId: string
+    branchName: string
+    branchAdminName: string
+    branchEmail: string
+    branchPhone: string
+    branchAddress: string
+    status?: $Enums.RecordStatus
+    adminUserId?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branchCity?: string
+    branchCountry?: string
+    branchCountryCode?: string
+    branchState?: string
+    branchStateCode?: string
+    branchCourses?: BranchCourseUncheckedCreateNestedManyWithoutBranchInput
+    branchInstallmentTemplates?: BranchInstallmentTemplateUncheckedCreateNestedManyWithoutBranchInput
+    branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutBranchInput
+    branchStudents?: BranchStudentUncheckedCreateNestedManyWithoutBranchInput
+    ledgerEntries?: BranchStudentLedgerEntryUncheckedCreateNestedManyWithoutBranchInput
+    payments?: BranchStudentPaymentUncheckedCreateNestedManyWithoutBranchInput
+    courses?: CourseUncheckedCreateNestedManyWithoutBranchInput
+  }
+
+  export type BranchCreateOrConnectWithoutBranchBatchesInput = {
+    where: BranchWhereUniqueInput
+    create: XOR<BranchCreateWithoutBranchBatchesInput, BranchUncheckedCreateWithoutBranchBatchesInput>
+  }
+
+  export type BranchCourseCreateWithoutBranchBatchesInput = {
+    id?: string
+    courseCode: string
+    name: string
+    nameKey: string
+    description?: string | null
+    mode: string
+    duration?: number | null
+    hours?: number | null
+    actualFees?: number | null
+    registrationFees?: number | null
+    discount?: number | null
+    afterDiscount?: number | null
+    paymentPlans?: NullableJsonNullValueInput | InputJsonValue
+    paymentPlanSelections?: NullableJsonNullValueInput | InputJsonValue
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branch: BranchCreateNestedOneWithoutBranchCoursesInput
+    installmentTemplate?: BranchInstallmentTemplateCreateNestedOneWithoutBranchCourseInput
+    modules?: BranchCourseModuleCreateNestedManyWithoutBranchCourseInput
+    branchFaculties?: BranchFacultyCreateNestedManyWithoutBranchCourseInput
+    branchStudents?: BranchStudentCreateNestedManyWithoutCourseInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryCreateNestedManyWithoutBranchCourseInput
+  }
+
+  export type BranchCourseUncheckedCreateWithoutBranchBatchesInput = {
+    id?: string
+    branchId: string
+    courseCode: string
+    name: string
+    nameKey: string
+    description?: string | null
+    mode: string
+    duration?: number | null
+    hours?: number | null
+    actualFees?: number | null
+    registrationFees?: number | null
+    discount?: number | null
+    afterDiscount?: number | null
+    paymentPlans?: NullableJsonNullValueInput | InputJsonValue
+    paymentPlanSelections?: NullableJsonNullValueInput | InputJsonValue
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    installmentTemplate?: BranchInstallmentTemplateUncheckedCreateNestedOneWithoutBranchCourseInput
+    modules?: BranchCourseModuleUncheckedCreateNestedManyWithoutBranchCourseInput
+    branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutBranchCourseInput
+    branchStudents?: BranchStudentUncheckedCreateNestedManyWithoutCourseInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedCreateNestedManyWithoutBranchCourseInput
+  }
+
+  export type BranchCourseCreateOrConnectWithoutBranchBatchesInput = {
+    where: BranchCourseWhereUniqueInput
+    create: XOR<BranchCourseCreateWithoutBranchBatchesInput, BranchCourseUncheckedCreateWithoutBranchBatchesInput>
+  }
+
+  export type BranchFacultyCreateWithoutBranchBatchesInput = {
+    id?: string
+    facultyId: string
+    name: string
+    email: string
+    phone: string
+    country?: string | null
+    countryCode?: string | null
+    state?: string | null
+    stateCode?: string | null
+    city?: string | null
+    address?: string | null
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branchCourse?: BranchCourseCreateNestedOneWithoutBranchFacultiesInput
+    branch: BranchCreateNestedOneWithoutBranchFacultiesInput
+    course?: CourseCreateNestedOneWithoutBranchFacultiesInput
+  }
+
+  export type BranchFacultyUncheckedCreateWithoutBranchBatchesInput = {
+    id?: string
+    facultyId: string
+    branchId: string
+    name: string
+    email: string
+    phone: string
+    country?: string | null
+    countryCode?: string | null
+    state?: string | null
+    stateCode?: string | null
+    city?: string | null
+    address?: string | null
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    courseId?: string | null
+    branchCourseId?: string | null
+  }
+
+  export type BranchFacultyCreateOrConnectWithoutBranchBatchesInput = {
+    where: BranchFacultyWhereUniqueInput
+    create: XOR<BranchFacultyCreateWithoutBranchBatchesInput, BranchFacultyUncheckedCreateWithoutBranchBatchesInput>
+  }
+
+  export type BranchBatchRowCreateWithoutBranchBatchInput = {
+    id?: string
+    batchId: string
+    batchName: string
+    startTime: string
+    startPeriod: string
+    endTime: string
+    endPeriod: string
+    batchTiming: string
+    totalSeats: number
+    status?: $Enums.RecordStatus
+    sequenceNo: number
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type BranchBatchRowUncheckedCreateWithoutBranchBatchInput = {
+    id?: string
+    batchId: string
+    batchName: string
+    startTime: string
+    startPeriod: string
+    endTime: string
+    endPeriod: string
+    batchTiming: string
+    totalSeats: number
+    status?: $Enums.RecordStatus
+    sequenceNo: number
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type BranchBatchRowCreateOrConnectWithoutBranchBatchInput = {
+    where: BranchBatchRowWhereUniqueInput
+    create: XOR<BranchBatchRowCreateWithoutBranchBatchInput, BranchBatchRowUncheckedCreateWithoutBranchBatchInput>
+  }
+
+  export type BranchBatchRowCreateManyBranchBatchInputEnvelope = {
+    data: BranchBatchRowCreateManyBranchBatchInput | BranchBatchRowCreateManyBranchBatchInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type BranchUpsertWithoutBranchBatchesInput = {
+    update: XOR<BranchUpdateWithoutBranchBatchesInput, BranchUncheckedUpdateWithoutBranchBatchesInput>
+    create: XOR<BranchCreateWithoutBranchBatchesInput, BranchUncheckedCreateWithoutBranchBatchesInput>
+    where?: BranchWhereInput
+  }
+
+  export type BranchUpdateToOneWithWhereWithoutBranchBatchesInput = {
+    where?: BranchWhereInput
+    data: XOR<BranchUpdateWithoutBranchBatchesInput, BranchUncheckedUpdateWithoutBranchBatchesInput>
+  }
+
+  export type BranchUpdateWithoutBranchBatchesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    branchName?: StringFieldUpdateOperationsInput | string
+    branchAdminName?: StringFieldUpdateOperationsInput | string
+    branchEmail?: StringFieldUpdateOperationsInput | string
+    branchPhone?: StringFieldUpdateOperationsInput | string
+    branchAddress?: StringFieldUpdateOperationsInput | string
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branchCity?: StringFieldUpdateOperationsInput | string
+    branchCountry?: StringFieldUpdateOperationsInput | string
+    branchCountryCode?: StringFieldUpdateOperationsInput | string
+    branchState?: StringFieldUpdateOperationsInput | string
+    branchStateCode?: StringFieldUpdateOperationsInput | string
+    adminUser?: UserUpdateOneWithoutManagedBranchNestedInput
+    branchCourses?: BranchCourseUpdateManyWithoutBranchNestedInput
+    branchInstallmentTemplates?: BranchInstallmentTemplateUpdateManyWithoutBranchNestedInput
+    branchFaculties?: BranchFacultyUpdateManyWithoutBranchNestedInput
+    branchStudents?: BranchStudentUpdateManyWithoutBranchNestedInput
+    ledgerEntries?: BranchStudentLedgerEntryUpdateManyWithoutBranchNestedInput
+    payments?: BranchStudentPaymentUpdateManyWithoutBranchNestedInput
+    courses?: CourseUpdateManyWithoutBranchNestedInput
+  }
+
+  export type BranchUncheckedUpdateWithoutBranchBatchesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    branchName?: StringFieldUpdateOperationsInput | string
+    branchAdminName?: StringFieldUpdateOperationsInput | string
+    branchEmail?: StringFieldUpdateOperationsInput | string
+    branchPhone?: StringFieldUpdateOperationsInput | string
+    branchAddress?: StringFieldUpdateOperationsInput | string
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    adminUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branchCity?: StringFieldUpdateOperationsInput | string
+    branchCountry?: StringFieldUpdateOperationsInput | string
+    branchCountryCode?: StringFieldUpdateOperationsInput | string
+    branchState?: StringFieldUpdateOperationsInput | string
+    branchStateCode?: StringFieldUpdateOperationsInput | string
+    branchCourses?: BranchCourseUncheckedUpdateManyWithoutBranchNestedInput
+    branchInstallmentTemplates?: BranchInstallmentTemplateUncheckedUpdateManyWithoutBranchNestedInput
+    branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutBranchNestedInput
+    branchStudents?: BranchStudentUncheckedUpdateManyWithoutBranchNestedInput
+    ledgerEntries?: BranchStudentLedgerEntryUncheckedUpdateManyWithoutBranchNestedInput
+    payments?: BranchStudentPaymentUncheckedUpdateManyWithoutBranchNestedInput
+    courses?: CourseUncheckedUpdateManyWithoutBranchNestedInput
+  }
+
+  export type BranchCourseUpsertWithoutBranchBatchesInput = {
+    update: XOR<BranchCourseUpdateWithoutBranchBatchesInput, BranchCourseUncheckedUpdateWithoutBranchBatchesInput>
+    create: XOR<BranchCourseCreateWithoutBranchBatchesInput, BranchCourseUncheckedCreateWithoutBranchBatchesInput>
+    where?: BranchCourseWhereInput
+  }
+
+  export type BranchCourseUpdateToOneWithWhereWithoutBranchBatchesInput = {
+    where?: BranchCourseWhereInput
+    data: XOR<BranchCourseUpdateWithoutBranchBatchesInput, BranchCourseUncheckedUpdateWithoutBranchBatchesInput>
+  }
+
+  export type BranchCourseUpdateWithoutBranchBatchesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    courseCode?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameKey?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    mode?: StringFieldUpdateOperationsInput | string
+    duration?: NullableIntFieldUpdateOperationsInput | number | null
+    hours?: NullableIntFieldUpdateOperationsInput | number | null
+    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
+    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
+    discount?: NullableIntFieldUpdateOperationsInput | number | null
+    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
+    paymentPlans?: NullableJsonNullValueInput | InputJsonValue
+    paymentPlanSelections?: NullableJsonNullValueInput | InputJsonValue
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branch?: BranchUpdateOneRequiredWithoutBranchCoursesNestedInput
+    installmentTemplate?: BranchInstallmentTemplateUpdateOneWithoutBranchCourseNestedInput
+    modules?: BranchCourseModuleUpdateManyWithoutBranchCourseNestedInput
+    branchFaculties?: BranchFacultyUpdateManyWithoutBranchCourseNestedInput
+    branchStudents?: BranchStudentUpdateManyWithoutCourseNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUpdateManyWithoutBranchCourseNestedInput
+  }
+
+  export type BranchCourseUncheckedUpdateWithoutBranchBatchesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    courseCode?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameKey?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    mode?: StringFieldUpdateOperationsInput | string
+    duration?: NullableIntFieldUpdateOperationsInput | number | null
+    hours?: NullableIntFieldUpdateOperationsInput | number | null
+    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
+    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
+    discount?: NullableIntFieldUpdateOperationsInput | number | null
+    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
+    paymentPlans?: NullableJsonNullValueInput | InputJsonValue
+    paymentPlanSelections?: NullableJsonNullValueInput | InputJsonValue
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    installmentTemplate?: BranchInstallmentTemplateUncheckedUpdateOneWithoutBranchCourseNestedInput
+    modules?: BranchCourseModuleUncheckedUpdateManyWithoutBranchCourseNestedInput
+    branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutBranchCourseNestedInput
+    branchStudents?: BranchStudentUncheckedUpdateManyWithoutCourseNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedUpdateManyWithoutBranchCourseNestedInput
+  }
+
+  export type BranchFacultyUpsertWithoutBranchBatchesInput = {
+    update: XOR<BranchFacultyUpdateWithoutBranchBatchesInput, BranchFacultyUncheckedUpdateWithoutBranchBatchesInput>
+    create: XOR<BranchFacultyCreateWithoutBranchBatchesInput, BranchFacultyUncheckedCreateWithoutBranchBatchesInput>
+    where?: BranchFacultyWhereInput
+  }
+
+  export type BranchFacultyUpdateToOneWithWhereWithoutBranchBatchesInput = {
+    where?: BranchFacultyWhereInput
+    data: XOR<BranchFacultyUpdateWithoutBranchBatchesInput, BranchFacultyUncheckedUpdateWithoutBranchBatchesInput>
+  }
+
+  export type BranchFacultyUpdateWithoutBranchBatchesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    facultyId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    countryCode?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    stateCode?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branchCourse?: BranchCourseUpdateOneWithoutBranchFacultiesNestedInput
+    branch?: BranchUpdateOneRequiredWithoutBranchFacultiesNestedInput
+    course?: CourseUpdateOneWithoutBranchFacultiesNestedInput
+  }
+
+  export type BranchFacultyUncheckedUpdateWithoutBranchBatchesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    facultyId?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    countryCode?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    stateCode?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    courseId?: NullableStringFieldUpdateOperationsInput | string | null
+    branchCourseId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type BranchBatchRowUpsertWithWhereUniqueWithoutBranchBatchInput = {
+    where: BranchBatchRowWhereUniqueInput
+    update: XOR<BranchBatchRowUpdateWithoutBranchBatchInput, BranchBatchRowUncheckedUpdateWithoutBranchBatchInput>
+    create: XOR<BranchBatchRowCreateWithoutBranchBatchInput, BranchBatchRowUncheckedCreateWithoutBranchBatchInput>
+  }
+
+  export type BranchBatchRowUpdateWithWhereUniqueWithoutBranchBatchInput = {
+    where: BranchBatchRowWhereUniqueInput
+    data: XOR<BranchBatchRowUpdateWithoutBranchBatchInput, BranchBatchRowUncheckedUpdateWithoutBranchBatchInput>
+  }
+
+  export type BranchBatchRowUpdateManyWithWhereWithoutBranchBatchInput = {
+    where: BranchBatchRowScalarWhereInput
+    data: XOR<BranchBatchRowUpdateManyMutationInput, BranchBatchRowUncheckedUpdateManyWithoutBranchBatchInput>
+  }
+
+  export type BranchBatchRowScalarWhereInput = {
+    AND?: BranchBatchRowScalarWhereInput | BranchBatchRowScalarWhereInput[]
+    OR?: BranchBatchRowScalarWhereInput[]
+    NOT?: BranchBatchRowScalarWhereInput | BranchBatchRowScalarWhereInput[]
+    id?: StringFilter<"BranchBatchRow"> | string
+    branchBatchId?: StringFilter<"BranchBatchRow"> | string
+    batchId?: StringFilter<"BranchBatchRow"> | string
+    batchName?: StringFilter<"BranchBatchRow"> | string
+    startTime?: StringFilter<"BranchBatchRow"> | string
+    startPeriod?: StringFilter<"BranchBatchRow"> | string
+    endTime?: StringFilter<"BranchBatchRow"> | string
+    endPeriod?: StringFilter<"BranchBatchRow"> | string
+    batchTiming?: StringFilter<"BranchBatchRow"> | string
+    totalSeats?: IntFilter<"BranchBatchRow"> | number
+    status?: EnumRecordStatusFilter<"BranchBatchRow"> | $Enums.RecordStatus
+    sequenceNo?: IntFilter<"BranchBatchRow"> | number
+    createdBy?: StringNullableFilter<"BranchBatchRow"> | string | null
+    updatedBy?: StringNullableFilter<"BranchBatchRow"> | string | null
+    createdAt?: DateTimeFilter<"BranchBatchRow"> | Date | string
+    updatedAt?: DateTimeFilter<"BranchBatchRow"> | Date | string
+  }
+
+  export type BranchBatchCreateWithoutRowsInput = {
+    id?: string
+    batchId: string
+    batchGroupId: string
+    courseId: string
+    courseName: string
+    facultyId: string
+    facultyName: string
+    facultyEmail: string
+    batchCount?: number
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branch: BranchCreateNestedOneWithoutBranchBatchesInput
+    branchCourse: BranchCourseCreateNestedOneWithoutBranchBatchesInput
+    branchFaculty: BranchFacultyCreateNestedOneWithoutBranchBatchesInput
+  }
+
+  export type BranchBatchUncheckedCreateWithoutRowsInput = {
+    id?: string
+    branchId: string
+    branchCourseId: string
+    branchFacultyId: string
+    batchId: string
+    batchGroupId: string
+    courseId: string
+    courseName: string
+    facultyId: string
+    facultyName: string
+    facultyEmail: string
+    batchCount?: number
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type BranchBatchCreateOrConnectWithoutRowsInput = {
+    where: BranchBatchWhereUniqueInput
+    create: XOR<BranchBatchCreateWithoutRowsInput, BranchBatchUncheckedCreateWithoutRowsInput>
+  }
+
+  export type BranchBatchUpsertWithoutRowsInput = {
+    update: XOR<BranchBatchUpdateWithoutRowsInput, BranchBatchUncheckedUpdateWithoutRowsInput>
+    create: XOR<BranchBatchCreateWithoutRowsInput, BranchBatchUncheckedCreateWithoutRowsInput>
+    where?: BranchBatchWhereInput
+  }
+
+  export type BranchBatchUpdateToOneWithWhereWithoutRowsInput = {
+    where?: BranchBatchWhereInput
+    data: XOR<BranchBatchUpdateWithoutRowsInput, BranchBatchUncheckedUpdateWithoutRowsInput>
+  }
+
+  export type BranchBatchUpdateWithoutRowsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    batchId?: StringFieldUpdateOperationsInput | string
+    batchGroupId?: StringFieldUpdateOperationsInput | string
+    courseId?: StringFieldUpdateOperationsInput | string
+    courseName?: StringFieldUpdateOperationsInput | string
+    facultyId?: StringFieldUpdateOperationsInput | string
+    facultyName?: StringFieldUpdateOperationsInput | string
+    facultyEmail?: StringFieldUpdateOperationsInput | string
+    batchCount?: IntFieldUpdateOperationsInput | number
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branch?: BranchUpdateOneRequiredWithoutBranchBatchesNestedInput
+    branchCourse?: BranchCourseUpdateOneRequiredWithoutBranchBatchesNestedInput
+    branchFaculty?: BranchFacultyUpdateOneRequiredWithoutBranchBatchesNestedInput
+  }
+
+  export type BranchBatchUncheckedUpdateWithoutRowsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    branchCourseId?: StringFieldUpdateOperationsInput | string
+    branchFacultyId?: StringFieldUpdateOperationsInput | string
+    batchId?: StringFieldUpdateOperationsInput | string
+    batchGroupId?: StringFieldUpdateOperationsInput | string
+    courseId?: StringFieldUpdateOperationsInput | string
+    courseName?: StringFieldUpdateOperationsInput | string
+    facultyId?: StringFieldUpdateOperationsInput | string
+    facultyName?: StringFieldUpdateOperationsInput | string
+    facultyEmail?: StringFieldUpdateOperationsInput | string
+    batchCount?: IntFieldUpdateOperationsInput | number
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type CourseCreateWithoutStatusHistoryInput = {
     id?: string
     name: string
@@ -56520,8 +63460,10 @@ export namespace Prisma {
     branchStateCode?: string
     adminUser?: UserCreateNestedOneWithoutManagedBranchInput
     branchCourses?: BranchCourseCreateNestedManyWithoutBranchInput
+    branchBatches?: BranchBatchCreateNestedManyWithoutBranchInput
     branchInstallmentTemplates?: BranchInstallmentTemplateCreateNestedManyWithoutBranchInput
     branchFaculties?: BranchFacultyCreateNestedManyWithoutBranchInput
+    ledgerEntries?: BranchStudentLedgerEntryCreateNestedManyWithoutBranchInput
     payments?: BranchStudentPaymentCreateNestedManyWithoutBranchInput
     courses?: CourseCreateNestedManyWithoutBranchInput
   }
@@ -56546,8 +63488,10 @@ export namespace Prisma {
     branchState?: string
     branchStateCode?: string
     branchCourses?: BranchCourseUncheckedCreateNestedManyWithoutBranchInput
+    branchBatches?: BranchBatchUncheckedCreateNestedManyWithoutBranchInput
     branchInstallmentTemplates?: BranchInstallmentTemplateUncheckedCreateNestedManyWithoutBranchInput
     branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutBranchInput
+    ledgerEntries?: BranchStudentLedgerEntryUncheckedCreateNestedManyWithoutBranchInput
     payments?: BranchStudentPaymentUncheckedCreateNestedManyWithoutBranchInput
     courses?: CourseUncheckedCreateNestedManyWithoutBranchInput
   }
@@ -56581,6 +63525,7 @@ export namespace Prisma {
     installmentTemplate?: BranchInstallmentTemplateCreateNestedOneWithoutBranchCourseInput
     modules?: BranchCourseModuleCreateNestedManyWithoutBranchCourseInput
     branchFaculties?: BranchFacultyCreateNestedManyWithoutBranchCourseInput
+    branchBatches?: BranchBatchCreateNestedManyWithoutBranchCourseInput
     facultyTodayWorkEntries?: FacultyTodayWorkEntryCreateNestedManyWithoutBranchCourseInput
   }
 
@@ -56608,6 +63553,7 @@ export namespace Prisma {
     installmentTemplate?: BranchInstallmentTemplateUncheckedCreateNestedOneWithoutBranchCourseInput
     modules?: BranchCourseModuleUncheckedCreateNestedManyWithoutBranchCourseInput
     branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutBranchCourseInput
+    branchBatches?: BranchBatchUncheckedCreateNestedManyWithoutBranchCourseInput
     facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedCreateNestedManyWithoutBranchCourseInput
   }
 
@@ -56702,6 +63648,74 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type BranchStudentLedgerEntryCreateWithoutBranchStudentInput = {
+    id?: string
+    ledgerKey: string
+    paymentId?: string | null
+    installmentId?: string | null
+    entryNo?: number
+    entryType: string
+    description: string
+    debit?: number
+    credit?: number
+    amount?: number
+    runningBalance?: number
+    studentBalanceAfter?: number
+    entryDate?: Date | string | null
+    paymentDate?: Date | string | null
+    referenceType?: string | null
+    referenceId?: string | null
+    paymentMode?: string | null
+    receiptNumber?: string | null
+    payAgainst?: string | null
+    transactionReference?: string | null
+    notes?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branch: BranchCreateNestedOneWithoutLedgerEntriesInput
+  }
+
+  export type BranchStudentLedgerEntryUncheckedCreateWithoutBranchStudentInput = {
+    id?: string
+    ledgerKey: string
+    branchId: string
+    paymentId?: string | null
+    installmentId?: string | null
+    entryNo?: number
+    entryType: string
+    description: string
+    debit?: number
+    credit?: number
+    amount?: number
+    runningBalance?: number
+    studentBalanceAfter?: number
+    entryDate?: Date | string | null
+    paymentDate?: Date | string | null
+    referenceType?: string | null
+    referenceId?: string | null
+    paymentMode?: string | null
+    receiptNumber?: string | null
+    payAgainst?: string | null
+    transactionReference?: string | null
+    notes?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type BranchStudentLedgerEntryCreateOrConnectWithoutBranchStudentInput = {
+    where: BranchStudentLedgerEntryWhereUniqueInput
+    create: XOR<BranchStudentLedgerEntryCreateWithoutBranchStudentInput, BranchStudentLedgerEntryUncheckedCreateWithoutBranchStudentInput>
+  }
+
+  export type BranchStudentLedgerEntryCreateManyBranchStudentInputEnvelope = {
+    data: BranchStudentLedgerEntryCreateManyBranchStudentInput | BranchStudentLedgerEntryCreateManyBranchStudentInput[]
+    skipDuplicates?: boolean
+  }
+
   export type BranchUpsertWithoutBranchStudentsInput = {
     update: XOR<BranchUpdateWithoutBranchStudentsInput, BranchUncheckedUpdateWithoutBranchStudentsInput>
     create: XOR<BranchCreateWithoutBranchStudentsInput, BranchUncheckedCreateWithoutBranchStudentsInput>
@@ -56733,8 +63747,10 @@ export namespace Prisma {
     branchStateCode?: StringFieldUpdateOperationsInput | string
     adminUser?: UserUpdateOneWithoutManagedBranchNestedInput
     branchCourses?: BranchCourseUpdateManyWithoutBranchNestedInput
+    branchBatches?: BranchBatchUpdateManyWithoutBranchNestedInput
     branchInstallmentTemplates?: BranchInstallmentTemplateUpdateManyWithoutBranchNestedInput
     branchFaculties?: BranchFacultyUpdateManyWithoutBranchNestedInput
+    ledgerEntries?: BranchStudentLedgerEntryUpdateManyWithoutBranchNestedInput
     payments?: BranchStudentPaymentUpdateManyWithoutBranchNestedInput
     courses?: CourseUpdateManyWithoutBranchNestedInput
   }
@@ -56759,8 +63775,10 @@ export namespace Prisma {
     branchState?: StringFieldUpdateOperationsInput | string
     branchStateCode?: StringFieldUpdateOperationsInput | string
     branchCourses?: BranchCourseUncheckedUpdateManyWithoutBranchNestedInput
+    branchBatches?: BranchBatchUncheckedUpdateManyWithoutBranchNestedInput
     branchInstallmentTemplates?: BranchInstallmentTemplateUncheckedUpdateManyWithoutBranchNestedInput
     branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutBranchNestedInput
+    ledgerEntries?: BranchStudentLedgerEntryUncheckedUpdateManyWithoutBranchNestedInput
     payments?: BranchStudentPaymentUncheckedUpdateManyWithoutBranchNestedInput
     courses?: CourseUncheckedUpdateManyWithoutBranchNestedInput
   }
@@ -56800,6 +63818,7 @@ export namespace Prisma {
     installmentTemplate?: BranchInstallmentTemplateUpdateOneWithoutBranchCourseNestedInput
     modules?: BranchCourseModuleUpdateManyWithoutBranchCourseNestedInput
     branchFaculties?: BranchFacultyUpdateManyWithoutBranchCourseNestedInput
+    branchBatches?: BranchBatchUpdateManyWithoutBranchCourseNestedInput
     facultyTodayWorkEntries?: FacultyTodayWorkEntryUpdateManyWithoutBranchCourseNestedInput
   }
 
@@ -56827,6 +63846,7 @@ export namespace Prisma {
     installmentTemplate?: BranchInstallmentTemplateUncheckedUpdateOneWithoutBranchCourseNestedInput
     modules?: BranchCourseModuleUncheckedUpdateManyWithoutBranchCourseNestedInput
     branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutBranchCourseNestedInput
+    branchBatches?: BranchBatchUncheckedUpdateManyWithoutBranchCourseNestedInput
     facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedUpdateManyWithoutBranchCourseNestedInput
   }
 
@@ -56881,6 +63901,22 @@ export namespace Prisma {
     data: XOR<BranchStudentPaymentUpdateManyMutationInput, BranchStudentPaymentUncheckedUpdateManyWithoutBranchStudentInput>
   }
 
+  export type BranchStudentLedgerEntryUpsertWithWhereUniqueWithoutBranchStudentInput = {
+    where: BranchStudentLedgerEntryWhereUniqueInput
+    update: XOR<BranchStudentLedgerEntryUpdateWithoutBranchStudentInput, BranchStudentLedgerEntryUncheckedUpdateWithoutBranchStudentInput>
+    create: XOR<BranchStudentLedgerEntryCreateWithoutBranchStudentInput, BranchStudentLedgerEntryUncheckedCreateWithoutBranchStudentInput>
+  }
+
+  export type BranchStudentLedgerEntryUpdateWithWhereUniqueWithoutBranchStudentInput = {
+    where: BranchStudentLedgerEntryWhereUniqueInput
+    data: XOR<BranchStudentLedgerEntryUpdateWithoutBranchStudentInput, BranchStudentLedgerEntryUncheckedUpdateWithoutBranchStudentInput>
+  }
+
+  export type BranchStudentLedgerEntryUpdateManyWithWhereWithoutBranchStudentInput = {
+    where: BranchStudentLedgerEntryScalarWhereInput
+    data: XOR<BranchStudentLedgerEntryUpdateManyMutationInput, BranchStudentLedgerEntryUncheckedUpdateManyWithoutBranchStudentInput>
+  }
+
   export type BranchStudentCreateWithoutInstallmentsInput = {
     id?: string
     studentId: string
@@ -56919,6 +63955,7 @@ export namespace Prisma {
     branch: BranchCreateNestedOneWithoutBranchStudentsInput
     course?: BranchCourseCreateNestedOneWithoutBranchStudentsInput
     payments?: BranchStudentPaymentCreateNestedManyWithoutBranchStudentInput
+    ledgerEntries?: BranchStudentLedgerEntryCreateNestedManyWithoutBranchStudentInput
   }
 
   export type BranchStudentUncheckedCreateWithoutInstallmentsInput = {
@@ -56959,6 +63996,7 @@ export namespace Prisma {
     paymentPlan?: string | null
     courseProgress?: number | null
     payments?: BranchStudentPaymentUncheckedCreateNestedManyWithoutBranchStudentInput
+    ledgerEntries?: BranchStudentLedgerEntryUncheckedCreateNestedManyWithoutBranchStudentInput
   }
 
   export type BranchStudentCreateOrConnectWithoutInstallmentsInput = {
@@ -57059,6 +64097,7 @@ export namespace Prisma {
     branch?: BranchUpdateOneRequiredWithoutBranchStudentsNestedInput
     course?: BranchCourseUpdateOneWithoutBranchStudentsNestedInput
     payments?: BranchStudentPaymentUpdateManyWithoutBranchStudentNestedInput
+    ledgerEntries?: BranchStudentLedgerEntryUpdateManyWithoutBranchStudentNestedInput
   }
 
   export type BranchStudentUncheckedUpdateWithoutInstallmentsInput = {
@@ -57099,6 +64138,7 @@ export namespace Prisma {
     paymentPlan?: NullableStringFieldUpdateOperationsInput | string | null
     courseProgress?: NullableIntFieldUpdateOperationsInput | number | null
     payments?: BranchStudentPaymentUncheckedUpdateManyWithoutBranchStudentNestedInput
+    ledgerEntries?: BranchStudentLedgerEntryUncheckedUpdateManyWithoutBranchStudentNestedInput
   }
 
   export type BranchStudentPaymentUpsertWithWhereUniqueWithoutInstallmentInput = {
@@ -58062,6 +65102,7 @@ export namespace Prisma {
     installmentTemplate?: BranchInstallmentTemplateCreateNestedOneWithoutBranchCourseInput
     modules?: BranchCourseModuleCreateNestedManyWithoutBranchCourseInput
     branchFaculties?: BranchFacultyCreateNestedManyWithoutBranchCourseInput
+    branchBatches?: BranchBatchCreateNestedManyWithoutBranchCourseInput
     branchStudents?: BranchStudentCreateNestedManyWithoutCourseInput
   }
 
@@ -58089,6 +65130,7 @@ export namespace Prisma {
     installmentTemplate?: BranchInstallmentTemplateUncheckedCreateNestedOneWithoutBranchCourseInput
     modules?: BranchCourseModuleUncheckedCreateNestedManyWithoutBranchCourseInput
     branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutBranchCourseInput
+    branchBatches?: BranchBatchUncheckedCreateNestedManyWithoutBranchCourseInput
     branchStudents?: BranchStudentUncheckedCreateNestedManyWithoutCourseInput
   }
 
@@ -58205,6 +65247,7 @@ export namespace Prisma {
     installmentTemplate?: BranchInstallmentTemplateUpdateOneWithoutBranchCourseNestedInput
     modules?: BranchCourseModuleUpdateManyWithoutBranchCourseNestedInput
     branchFaculties?: BranchFacultyUpdateManyWithoutBranchCourseNestedInput
+    branchBatches?: BranchBatchUpdateManyWithoutBranchCourseNestedInput
     branchStudents?: BranchStudentUpdateManyWithoutCourseNestedInput
   }
 
@@ -58232,6 +65275,7 @@ export namespace Prisma {
     installmentTemplate?: BranchInstallmentTemplateUncheckedUpdateOneWithoutBranchCourseNestedInput
     modules?: BranchCourseModuleUncheckedUpdateManyWithoutBranchCourseNestedInput
     branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutBranchCourseNestedInput
+    branchBatches?: BranchBatchUncheckedUpdateManyWithoutBranchCourseNestedInput
     branchStudents?: BranchStudentUncheckedUpdateManyWithoutCourseNestedInput
   }
 
@@ -58598,6 +65642,7 @@ export namespace Prisma {
     branch: BranchCreateNestedOneWithoutBranchCoursesInput
     installmentTemplate?: BranchInstallmentTemplateCreateNestedOneWithoutBranchCourseInput
     modules?: BranchCourseModuleCreateNestedManyWithoutBranchCourseInput
+    branchBatches?: BranchBatchCreateNestedManyWithoutBranchCourseInput
     branchStudents?: BranchStudentCreateNestedManyWithoutCourseInput
     facultyTodayWorkEntries?: FacultyTodayWorkEntryCreateNestedManyWithoutBranchCourseInput
   }
@@ -58625,6 +65670,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     installmentTemplate?: BranchInstallmentTemplateUncheckedCreateNestedOneWithoutBranchCourseInput
     modules?: BranchCourseModuleUncheckedCreateNestedManyWithoutBranchCourseInput
+    branchBatches?: BranchBatchUncheckedCreateNestedManyWithoutBranchCourseInput
     branchStudents?: BranchStudentUncheckedCreateNestedManyWithoutCourseInput
     facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedCreateNestedManyWithoutBranchCourseInput
   }
@@ -58654,8 +65700,10 @@ export namespace Prisma {
     branchStateCode?: string
     adminUser?: UserCreateNestedOneWithoutManagedBranchInput
     branchCourses?: BranchCourseCreateNestedManyWithoutBranchInput
+    branchBatches?: BranchBatchCreateNestedManyWithoutBranchInput
     branchInstallmentTemplates?: BranchInstallmentTemplateCreateNestedManyWithoutBranchInput
     branchStudents?: BranchStudentCreateNestedManyWithoutBranchInput
+    ledgerEntries?: BranchStudentLedgerEntryCreateNestedManyWithoutBranchInput
     payments?: BranchStudentPaymentCreateNestedManyWithoutBranchInput
     courses?: CourseCreateNestedManyWithoutBranchInput
   }
@@ -58680,8 +65728,10 @@ export namespace Prisma {
     branchState?: string
     branchStateCode?: string
     branchCourses?: BranchCourseUncheckedCreateNestedManyWithoutBranchInput
+    branchBatches?: BranchBatchUncheckedCreateNestedManyWithoutBranchInput
     branchInstallmentTemplates?: BranchInstallmentTemplateUncheckedCreateNestedManyWithoutBranchInput
     branchStudents?: BranchStudentUncheckedCreateNestedManyWithoutBranchInput
+    ledgerEntries?: BranchStudentLedgerEntryUncheckedCreateNestedManyWithoutBranchInput
     payments?: BranchStudentPaymentUncheckedCreateNestedManyWithoutBranchInput
     courses?: CourseUncheckedCreateNestedManyWithoutBranchInput
   }
@@ -58768,6 +65818,56 @@ export namespace Prisma {
     create: XOR<CourseCreateWithoutBranchFacultiesInput, CourseUncheckedCreateWithoutBranchFacultiesInput>
   }
 
+  export type BranchBatchCreateWithoutBranchFacultyInput = {
+    id?: string
+    batchId: string
+    batchGroupId: string
+    courseId: string
+    courseName: string
+    facultyId: string
+    facultyName: string
+    facultyEmail: string
+    batchCount?: number
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branch: BranchCreateNestedOneWithoutBranchBatchesInput
+    branchCourse: BranchCourseCreateNestedOneWithoutBranchBatchesInput
+    rows?: BranchBatchRowCreateNestedManyWithoutBranchBatchInput
+  }
+
+  export type BranchBatchUncheckedCreateWithoutBranchFacultyInput = {
+    id?: string
+    branchId: string
+    branchCourseId: string
+    batchId: string
+    batchGroupId: string
+    courseId: string
+    courseName: string
+    facultyId: string
+    facultyName: string
+    facultyEmail: string
+    batchCount?: number
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    rows?: BranchBatchRowUncheckedCreateNestedManyWithoutBranchBatchInput
+  }
+
+  export type BranchBatchCreateOrConnectWithoutBranchFacultyInput = {
+    where: BranchBatchWhereUniqueInput
+    create: XOR<BranchBatchCreateWithoutBranchFacultyInput, BranchBatchUncheckedCreateWithoutBranchFacultyInput>
+  }
+
+  export type BranchBatchCreateManyBranchFacultyInputEnvelope = {
+    data: BranchBatchCreateManyBranchFacultyInput | BranchBatchCreateManyBranchFacultyInput[]
+    skipDuplicates?: boolean
+  }
+
   export type BranchCourseUpsertWithoutBranchFacultiesInput = {
     update: XOR<BranchCourseUpdateWithoutBranchFacultiesInput, BranchCourseUncheckedUpdateWithoutBranchFacultiesInput>
     create: XOR<BranchCourseCreateWithoutBranchFacultiesInput, BranchCourseUncheckedCreateWithoutBranchFacultiesInput>
@@ -58802,6 +65902,7 @@ export namespace Prisma {
     branch?: BranchUpdateOneRequiredWithoutBranchCoursesNestedInput
     installmentTemplate?: BranchInstallmentTemplateUpdateOneWithoutBranchCourseNestedInput
     modules?: BranchCourseModuleUpdateManyWithoutBranchCourseNestedInput
+    branchBatches?: BranchBatchUpdateManyWithoutBranchCourseNestedInput
     branchStudents?: BranchStudentUpdateManyWithoutCourseNestedInput
     facultyTodayWorkEntries?: FacultyTodayWorkEntryUpdateManyWithoutBranchCourseNestedInput
   }
@@ -58829,6 +65930,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     installmentTemplate?: BranchInstallmentTemplateUncheckedUpdateOneWithoutBranchCourseNestedInput
     modules?: BranchCourseModuleUncheckedUpdateManyWithoutBranchCourseNestedInput
+    branchBatches?: BranchBatchUncheckedUpdateManyWithoutBranchCourseNestedInput
     branchStudents?: BranchStudentUncheckedUpdateManyWithoutCourseNestedInput
     facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedUpdateManyWithoutBranchCourseNestedInput
   }
@@ -58864,8 +65966,10 @@ export namespace Prisma {
     branchStateCode?: StringFieldUpdateOperationsInput | string
     adminUser?: UserUpdateOneWithoutManagedBranchNestedInput
     branchCourses?: BranchCourseUpdateManyWithoutBranchNestedInput
+    branchBatches?: BranchBatchUpdateManyWithoutBranchNestedInput
     branchInstallmentTemplates?: BranchInstallmentTemplateUpdateManyWithoutBranchNestedInput
     branchStudents?: BranchStudentUpdateManyWithoutBranchNestedInput
+    ledgerEntries?: BranchStudentLedgerEntryUpdateManyWithoutBranchNestedInput
     payments?: BranchStudentPaymentUpdateManyWithoutBranchNestedInput
     courses?: CourseUpdateManyWithoutBranchNestedInput
   }
@@ -58890,8 +65994,10 @@ export namespace Prisma {
     branchState?: StringFieldUpdateOperationsInput | string
     branchStateCode?: StringFieldUpdateOperationsInput | string
     branchCourses?: BranchCourseUncheckedUpdateManyWithoutBranchNestedInput
+    branchBatches?: BranchBatchUncheckedUpdateManyWithoutBranchNestedInput
     branchInstallmentTemplates?: BranchInstallmentTemplateUncheckedUpdateManyWithoutBranchNestedInput
     branchStudents?: BranchStudentUncheckedUpdateManyWithoutBranchNestedInput
+    ledgerEntries?: BranchStudentLedgerEntryUncheckedUpdateManyWithoutBranchNestedInput
     payments?: BranchStudentPaymentUncheckedUpdateManyWithoutBranchNestedInput
     courses?: CourseUncheckedUpdateManyWithoutBranchNestedInput
   }
@@ -58979,6 +66085,22 @@ export namespace Prisma {
     students?: StudentProfileUncheckedUpdateManyWithoutCourseNestedInput
   }
 
+  export type BranchBatchUpsertWithWhereUniqueWithoutBranchFacultyInput = {
+    where: BranchBatchWhereUniqueInput
+    update: XOR<BranchBatchUpdateWithoutBranchFacultyInput, BranchBatchUncheckedUpdateWithoutBranchFacultyInput>
+    create: XOR<BranchBatchCreateWithoutBranchFacultyInput, BranchBatchUncheckedCreateWithoutBranchFacultyInput>
+  }
+
+  export type BranchBatchUpdateWithWhereUniqueWithoutBranchFacultyInput = {
+    where: BranchBatchWhereUniqueInput
+    data: XOR<BranchBatchUpdateWithoutBranchFacultyInput, BranchBatchUncheckedUpdateWithoutBranchFacultyInput>
+  }
+
+  export type BranchBatchUpdateManyWithWhereWithoutBranchFacultyInput = {
+    where: BranchBatchScalarWhereInput
+    data: XOR<BranchBatchUpdateManyMutationInput, BranchBatchUncheckedUpdateManyWithoutBranchFacultyInput>
+  }
+
   export type BranchCreateWithoutBranchInstallmentTemplatesInput = {
     id?: string
     branchId: string
@@ -58999,8 +66121,10 @@ export namespace Prisma {
     branchStateCode?: string
     adminUser?: UserCreateNestedOneWithoutManagedBranchInput
     branchCourses?: BranchCourseCreateNestedManyWithoutBranchInput
+    branchBatches?: BranchBatchCreateNestedManyWithoutBranchInput
     branchFaculties?: BranchFacultyCreateNestedManyWithoutBranchInput
     branchStudents?: BranchStudentCreateNestedManyWithoutBranchInput
+    ledgerEntries?: BranchStudentLedgerEntryCreateNestedManyWithoutBranchInput
     payments?: BranchStudentPaymentCreateNestedManyWithoutBranchInput
     courses?: CourseCreateNestedManyWithoutBranchInput
   }
@@ -59025,8 +66149,10 @@ export namespace Prisma {
     branchState?: string
     branchStateCode?: string
     branchCourses?: BranchCourseUncheckedCreateNestedManyWithoutBranchInput
+    branchBatches?: BranchBatchUncheckedCreateNestedManyWithoutBranchInput
     branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutBranchInput
     branchStudents?: BranchStudentUncheckedCreateNestedManyWithoutBranchInput
+    ledgerEntries?: BranchStudentLedgerEntryUncheckedCreateNestedManyWithoutBranchInput
     payments?: BranchStudentPaymentUncheckedCreateNestedManyWithoutBranchInput
     courses?: CourseUncheckedCreateNestedManyWithoutBranchInput
   }
@@ -59059,6 +66185,7 @@ export namespace Prisma {
     branch: BranchCreateNestedOneWithoutBranchCoursesInput
     modules?: BranchCourseModuleCreateNestedManyWithoutBranchCourseInput
     branchFaculties?: BranchFacultyCreateNestedManyWithoutBranchCourseInput
+    branchBatches?: BranchBatchCreateNestedManyWithoutBranchCourseInput
     branchStudents?: BranchStudentCreateNestedManyWithoutCourseInput
     facultyTodayWorkEntries?: FacultyTodayWorkEntryCreateNestedManyWithoutBranchCourseInput
   }
@@ -59086,6 +66213,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     modules?: BranchCourseModuleUncheckedCreateNestedManyWithoutBranchCourseInput
     branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutBranchCourseInput
+    branchBatches?: BranchBatchUncheckedCreateNestedManyWithoutBranchCourseInput
     branchStudents?: BranchStudentUncheckedCreateNestedManyWithoutCourseInput
     facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedCreateNestedManyWithoutBranchCourseInput
   }
@@ -59126,8 +66254,10 @@ export namespace Prisma {
     branchStateCode?: StringFieldUpdateOperationsInput | string
     adminUser?: UserUpdateOneWithoutManagedBranchNestedInput
     branchCourses?: BranchCourseUpdateManyWithoutBranchNestedInput
+    branchBatches?: BranchBatchUpdateManyWithoutBranchNestedInput
     branchFaculties?: BranchFacultyUpdateManyWithoutBranchNestedInput
     branchStudents?: BranchStudentUpdateManyWithoutBranchNestedInput
+    ledgerEntries?: BranchStudentLedgerEntryUpdateManyWithoutBranchNestedInput
     payments?: BranchStudentPaymentUpdateManyWithoutBranchNestedInput
     courses?: CourseUpdateManyWithoutBranchNestedInput
   }
@@ -59152,8 +66282,10 @@ export namespace Prisma {
     branchState?: StringFieldUpdateOperationsInput | string
     branchStateCode?: StringFieldUpdateOperationsInput | string
     branchCourses?: BranchCourseUncheckedUpdateManyWithoutBranchNestedInput
+    branchBatches?: BranchBatchUncheckedUpdateManyWithoutBranchNestedInput
     branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutBranchNestedInput
     branchStudents?: BranchStudentUncheckedUpdateManyWithoutBranchNestedInput
+    ledgerEntries?: BranchStudentLedgerEntryUncheckedUpdateManyWithoutBranchNestedInput
     payments?: BranchStudentPaymentUncheckedUpdateManyWithoutBranchNestedInput
     courses?: CourseUncheckedUpdateManyWithoutBranchNestedInput
   }
@@ -59192,6 +66324,7 @@ export namespace Prisma {
     branch?: BranchUpdateOneRequiredWithoutBranchCoursesNestedInput
     modules?: BranchCourseModuleUpdateManyWithoutBranchCourseNestedInput
     branchFaculties?: BranchFacultyUpdateManyWithoutBranchCourseNestedInput
+    branchBatches?: BranchBatchUpdateManyWithoutBranchCourseNestedInput
     branchStudents?: BranchStudentUpdateManyWithoutCourseNestedInput
     facultyTodayWorkEntries?: FacultyTodayWorkEntryUpdateManyWithoutBranchCourseNestedInput
   }
@@ -59219,6 +66352,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     modules?: BranchCourseModuleUncheckedUpdateManyWithoutBranchCourseNestedInput
     branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutBranchCourseNestedInput
+    branchBatches?: BranchBatchUncheckedUpdateManyWithoutBranchCourseNestedInput
     branchStudents?: BranchStudentUncheckedUpdateManyWithoutCourseNestedInput
     facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedUpdateManyWithoutBranchCourseNestedInput
   }
@@ -59261,6 +66395,7 @@ export namespace Prisma {
     branch: BranchCreateNestedOneWithoutBranchStudentsInput
     course?: BranchCourseCreateNestedOneWithoutBranchStudentsInput
     installments?: BranchStudentInstallmentCreateNestedManyWithoutBranchStudentInput
+    ledgerEntries?: BranchStudentLedgerEntryCreateNestedManyWithoutBranchStudentInput
   }
 
   export type BranchStudentUncheckedCreateWithoutPaymentsInput = {
@@ -59301,6 +66436,7 @@ export namespace Prisma {
     paymentPlan?: string | null
     courseProgress?: number | null
     installments?: BranchStudentInstallmentUncheckedCreateNestedManyWithoutBranchStudentInput
+    ledgerEntries?: BranchStudentLedgerEntryUncheckedCreateNestedManyWithoutBranchStudentInput
   }
 
   export type BranchStudentCreateOrConnectWithoutPaymentsInput = {
@@ -59328,9 +66464,11 @@ export namespace Prisma {
     branchStateCode?: string
     adminUser?: UserCreateNestedOneWithoutManagedBranchInput
     branchCourses?: BranchCourseCreateNestedManyWithoutBranchInput
+    branchBatches?: BranchBatchCreateNestedManyWithoutBranchInput
     branchInstallmentTemplates?: BranchInstallmentTemplateCreateNestedManyWithoutBranchInput
     branchFaculties?: BranchFacultyCreateNestedManyWithoutBranchInput
     branchStudents?: BranchStudentCreateNestedManyWithoutBranchInput
+    ledgerEntries?: BranchStudentLedgerEntryCreateNestedManyWithoutBranchInput
     courses?: CourseCreateNestedManyWithoutBranchInput
   }
 
@@ -59354,9 +66492,11 @@ export namespace Prisma {
     branchState?: string
     branchStateCode?: string
     branchCourses?: BranchCourseUncheckedCreateNestedManyWithoutBranchInput
+    branchBatches?: BranchBatchUncheckedCreateNestedManyWithoutBranchInput
     branchInstallmentTemplates?: BranchInstallmentTemplateUncheckedCreateNestedManyWithoutBranchInput
     branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutBranchInput
     branchStudents?: BranchStudentUncheckedCreateNestedManyWithoutBranchInput
+    ledgerEntries?: BranchStudentLedgerEntryUncheckedCreateNestedManyWithoutBranchInput
     courses?: CourseUncheckedCreateNestedManyWithoutBranchInput
   }
 
@@ -59451,6 +66591,7 @@ export namespace Prisma {
     branch?: BranchUpdateOneRequiredWithoutBranchStudentsNestedInput
     course?: BranchCourseUpdateOneWithoutBranchStudentsNestedInput
     installments?: BranchStudentInstallmentUpdateManyWithoutBranchStudentNestedInput
+    ledgerEntries?: BranchStudentLedgerEntryUpdateManyWithoutBranchStudentNestedInput
   }
 
   export type BranchStudentUncheckedUpdateWithoutPaymentsInput = {
@@ -59491,6 +66632,7 @@ export namespace Prisma {
     paymentPlan?: NullableStringFieldUpdateOperationsInput | string | null
     courseProgress?: NullableIntFieldUpdateOperationsInput | number | null
     installments?: BranchStudentInstallmentUncheckedUpdateManyWithoutBranchStudentNestedInput
+    ledgerEntries?: BranchStudentLedgerEntryUncheckedUpdateManyWithoutBranchStudentNestedInput
   }
 
   export type BranchUpsertWithoutPaymentsInput = {
@@ -59524,9 +66666,11 @@ export namespace Prisma {
     branchStateCode?: StringFieldUpdateOperationsInput | string
     adminUser?: UserUpdateOneWithoutManagedBranchNestedInput
     branchCourses?: BranchCourseUpdateManyWithoutBranchNestedInput
+    branchBatches?: BranchBatchUpdateManyWithoutBranchNestedInput
     branchInstallmentTemplates?: BranchInstallmentTemplateUpdateManyWithoutBranchNestedInput
     branchFaculties?: BranchFacultyUpdateManyWithoutBranchNestedInput
     branchStudents?: BranchStudentUpdateManyWithoutBranchNestedInput
+    ledgerEntries?: BranchStudentLedgerEntryUpdateManyWithoutBranchNestedInput
     courses?: CourseUpdateManyWithoutBranchNestedInput
   }
 
@@ -59550,9 +66694,11 @@ export namespace Prisma {
     branchState?: StringFieldUpdateOperationsInput | string
     branchStateCode?: StringFieldUpdateOperationsInput | string
     branchCourses?: BranchCourseUncheckedUpdateManyWithoutBranchNestedInput
+    branchBatches?: BranchBatchUncheckedUpdateManyWithoutBranchNestedInput
     branchInstallmentTemplates?: BranchInstallmentTemplateUncheckedUpdateManyWithoutBranchNestedInput
     branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutBranchNestedInput
     branchStudents?: BranchStudentUncheckedUpdateManyWithoutBranchNestedInput
+    ledgerEntries?: BranchStudentLedgerEntryUncheckedUpdateManyWithoutBranchNestedInput
     courses?: CourseUncheckedUpdateManyWithoutBranchNestedInput
   }
 
@@ -59597,6 +66743,314 @@ export namespace Prisma {
     remarks?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BranchCreateWithoutLedgerEntriesInput = {
+    id?: string
+    branchId: string
+    branchName: string
+    branchAdminName: string
+    branchEmail: string
+    branchPhone: string
+    branchAddress: string
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branchCity?: string
+    branchCountry?: string
+    branchCountryCode?: string
+    branchState?: string
+    branchStateCode?: string
+    adminUser?: UserCreateNestedOneWithoutManagedBranchInput
+    branchCourses?: BranchCourseCreateNestedManyWithoutBranchInput
+    branchBatches?: BranchBatchCreateNestedManyWithoutBranchInput
+    branchInstallmentTemplates?: BranchInstallmentTemplateCreateNestedManyWithoutBranchInput
+    branchFaculties?: BranchFacultyCreateNestedManyWithoutBranchInput
+    branchStudents?: BranchStudentCreateNestedManyWithoutBranchInput
+    payments?: BranchStudentPaymentCreateNestedManyWithoutBranchInput
+    courses?: CourseCreateNestedManyWithoutBranchInput
+  }
+
+  export type BranchUncheckedCreateWithoutLedgerEntriesInput = {
+    id?: string
+    branchId: string
+    branchName: string
+    branchAdminName: string
+    branchEmail: string
+    branchPhone: string
+    branchAddress: string
+    status?: $Enums.RecordStatus
+    adminUserId?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branchCity?: string
+    branchCountry?: string
+    branchCountryCode?: string
+    branchState?: string
+    branchStateCode?: string
+    branchCourses?: BranchCourseUncheckedCreateNestedManyWithoutBranchInput
+    branchBatches?: BranchBatchUncheckedCreateNestedManyWithoutBranchInput
+    branchInstallmentTemplates?: BranchInstallmentTemplateUncheckedCreateNestedManyWithoutBranchInput
+    branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutBranchInput
+    branchStudents?: BranchStudentUncheckedCreateNestedManyWithoutBranchInput
+    payments?: BranchStudentPaymentUncheckedCreateNestedManyWithoutBranchInput
+    courses?: CourseUncheckedCreateNestedManyWithoutBranchInput
+  }
+
+  export type BranchCreateOrConnectWithoutLedgerEntriesInput = {
+    where: BranchWhereUniqueInput
+    create: XOR<BranchCreateWithoutLedgerEntriesInput, BranchUncheckedCreateWithoutLedgerEntriesInput>
+  }
+
+  export type BranchStudentCreateWithoutLedgerEntriesInput = {
+    id?: string
+    studentId: string
+    studentName: string
+    mobileNumber: string
+    emailAddress: string
+    parentSpouseNumber?: string | null
+    countryCode?: string | null
+    country?: string | null
+    stateCode?: string | null
+    state?: string | null
+    city?: string | null
+    address?: string | null
+    qualification?: string | null
+    passedOutYear?: string | null
+    currentStatus?: string | null
+    designation?: string | null
+    source?: string | null
+    sourceOther?: string | null
+    admissionDate: string
+    recordStatus?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    linkedInUrl?: string | null
+    remarks?: string | null
+    courseName?: string | null
+    facultyId?: string | null
+    facultyName?: string | null
+    courseAmount?: number | null
+    paymentMode?: string
+    paymentPlanId?: string | null
+    paymentPlan?: string | null
+    courseProgress?: number | null
+    branch: BranchCreateNestedOneWithoutBranchStudentsInput
+    course?: BranchCourseCreateNestedOneWithoutBranchStudentsInput
+    installments?: BranchStudentInstallmentCreateNestedManyWithoutBranchStudentInput
+    payments?: BranchStudentPaymentCreateNestedManyWithoutBranchStudentInput
+  }
+
+  export type BranchStudentUncheckedCreateWithoutLedgerEntriesInput = {
+    id?: string
+    branchId: string
+    studentId: string
+    studentName: string
+    mobileNumber: string
+    emailAddress: string
+    parentSpouseNumber?: string | null
+    countryCode?: string | null
+    country?: string | null
+    stateCode?: string | null
+    state?: string | null
+    city?: string | null
+    address?: string | null
+    qualification?: string | null
+    passedOutYear?: string | null
+    currentStatus?: string | null
+    designation?: string | null
+    source?: string | null
+    sourceOther?: string | null
+    admissionDate: string
+    recordStatus?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    linkedInUrl?: string | null
+    remarks?: string | null
+    courseId?: string | null
+    courseName?: string | null
+    facultyId?: string | null
+    facultyName?: string | null
+    courseAmount?: number | null
+    paymentMode?: string
+    paymentPlanId?: string | null
+    paymentPlan?: string | null
+    courseProgress?: number | null
+    installments?: BranchStudentInstallmentUncheckedCreateNestedManyWithoutBranchStudentInput
+    payments?: BranchStudentPaymentUncheckedCreateNestedManyWithoutBranchStudentInput
+  }
+
+  export type BranchStudentCreateOrConnectWithoutLedgerEntriesInput = {
+    where: BranchStudentWhereUniqueInput
+    create: XOR<BranchStudentCreateWithoutLedgerEntriesInput, BranchStudentUncheckedCreateWithoutLedgerEntriesInput>
+  }
+
+  export type BranchUpsertWithoutLedgerEntriesInput = {
+    update: XOR<BranchUpdateWithoutLedgerEntriesInput, BranchUncheckedUpdateWithoutLedgerEntriesInput>
+    create: XOR<BranchCreateWithoutLedgerEntriesInput, BranchUncheckedCreateWithoutLedgerEntriesInput>
+    where?: BranchWhereInput
+  }
+
+  export type BranchUpdateToOneWithWhereWithoutLedgerEntriesInput = {
+    where?: BranchWhereInput
+    data: XOR<BranchUpdateWithoutLedgerEntriesInput, BranchUncheckedUpdateWithoutLedgerEntriesInput>
+  }
+
+  export type BranchUpdateWithoutLedgerEntriesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    branchName?: StringFieldUpdateOperationsInput | string
+    branchAdminName?: StringFieldUpdateOperationsInput | string
+    branchEmail?: StringFieldUpdateOperationsInput | string
+    branchPhone?: StringFieldUpdateOperationsInput | string
+    branchAddress?: StringFieldUpdateOperationsInput | string
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branchCity?: StringFieldUpdateOperationsInput | string
+    branchCountry?: StringFieldUpdateOperationsInput | string
+    branchCountryCode?: StringFieldUpdateOperationsInput | string
+    branchState?: StringFieldUpdateOperationsInput | string
+    branchStateCode?: StringFieldUpdateOperationsInput | string
+    adminUser?: UserUpdateOneWithoutManagedBranchNestedInput
+    branchCourses?: BranchCourseUpdateManyWithoutBranchNestedInput
+    branchBatches?: BranchBatchUpdateManyWithoutBranchNestedInput
+    branchInstallmentTemplates?: BranchInstallmentTemplateUpdateManyWithoutBranchNestedInput
+    branchFaculties?: BranchFacultyUpdateManyWithoutBranchNestedInput
+    branchStudents?: BranchStudentUpdateManyWithoutBranchNestedInput
+    payments?: BranchStudentPaymentUpdateManyWithoutBranchNestedInput
+    courses?: CourseUpdateManyWithoutBranchNestedInput
+  }
+
+  export type BranchUncheckedUpdateWithoutLedgerEntriesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    branchName?: StringFieldUpdateOperationsInput | string
+    branchAdminName?: StringFieldUpdateOperationsInput | string
+    branchEmail?: StringFieldUpdateOperationsInput | string
+    branchPhone?: StringFieldUpdateOperationsInput | string
+    branchAddress?: StringFieldUpdateOperationsInput | string
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    adminUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branchCity?: StringFieldUpdateOperationsInput | string
+    branchCountry?: StringFieldUpdateOperationsInput | string
+    branchCountryCode?: StringFieldUpdateOperationsInput | string
+    branchState?: StringFieldUpdateOperationsInput | string
+    branchStateCode?: StringFieldUpdateOperationsInput | string
+    branchCourses?: BranchCourseUncheckedUpdateManyWithoutBranchNestedInput
+    branchBatches?: BranchBatchUncheckedUpdateManyWithoutBranchNestedInput
+    branchInstallmentTemplates?: BranchInstallmentTemplateUncheckedUpdateManyWithoutBranchNestedInput
+    branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutBranchNestedInput
+    branchStudents?: BranchStudentUncheckedUpdateManyWithoutBranchNestedInput
+    payments?: BranchStudentPaymentUncheckedUpdateManyWithoutBranchNestedInput
+    courses?: CourseUncheckedUpdateManyWithoutBranchNestedInput
+  }
+
+  export type BranchStudentUpsertWithoutLedgerEntriesInput = {
+    update: XOR<BranchStudentUpdateWithoutLedgerEntriesInput, BranchStudentUncheckedUpdateWithoutLedgerEntriesInput>
+    create: XOR<BranchStudentCreateWithoutLedgerEntriesInput, BranchStudentUncheckedCreateWithoutLedgerEntriesInput>
+    where?: BranchStudentWhereInput
+  }
+
+  export type BranchStudentUpdateToOneWithWhereWithoutLedgerEntriesInput = {
+    where?: BranchStudentWhereInput
+    data: XOR<BranchStudentUpdateWithoutLedgerEntriesInput, BranchStudentUncheckedUpdateWithoutLedgerEntriesInput>
+  }
+
+  export type BranchStudentUpdateWithoutLedgerEntriesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    studentId?: StringFieldUpdateOperationsInput | string
+    studentName?: StringFieldUpdateOperationsInput | string
+    mobileNumber?: StringFieldUpdateOperationsInput | string
+    emailAddress?: StringFieldUpdateOperationsInput | string
+    parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    countryCode?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    stateCode?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    qualification?: NullableStringFieldUpdateOperationsInput | string | null
+    passedOutYear?: NullableStringFieldUpdateOperationsInput | string | null
+    currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    designation?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
+    admissionDate?: StringFieldUpdateOperationsInput | string
+    recordStatus?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    linkedInUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    remarks?: NullableStringFieldUpdateOperationsInput | string | null
+    courseName?: NullableStringFieldUpdateOperationsInput | string | null
+    facultyId?: NullableStringFieldUpdateOperationsInput | string | null
+    facultyName?: NullableStringFieldUpdateOperationsInput | string | null
+    courseAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    paymentMode?: StringFieldUpdateOperationsInput | string
+    paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    courseProgress?: NullableIntFieldUpdateOperationsInput | number | null
+    branch?: BranchUpdateOneRequiredWithoutBranchStudentsNestedInput
+    course?: BranchCourseUpdateOneWithoutBranchStudentsNestedInput
+    installments?: BranchStudentInstallmentUpdateManyWithoutBranchStudentNestedInput
+    payments?: BranchStudentPaymentUpdateManyWithoutBranchStudentNestedInput
+  }
+
+  export type BranchStudentUncheckedUpdateWithoutLedgerEntriesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    studentId?: StringFieldUpdateOperationsInput | string
+    studentName?: StringFieldUpdateOperationsInput | string
+    mobileNumber?: StringFieldUpdateOperationsInput | string
+    emailAddress?: StringFieldUpdateOperationsInput | string
+    parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    countryCode?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    stateCode?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    qualification?: NullableStringFieldUpdateOperationsInput | string | null
+    passedOutYear?: NullableStringFieldUpdateOperationsInput | string | null
+    currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    designation?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
+    admissionDate?: StringFieldUpdateOperationsInput | string
+    recordStatus?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    linkedInUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    remarks?: NullableStringFieldUpdateOperationsInput | string | null
+    courseId?: NullableStringFieldUpdateOperationsInput | string | null
+    courseName?: NullableStringFieldUpdateOperationsInput | string | null
+    facultyId?: NullableStringFieldUpdateOperationsInput | string | null
+    facultyName?: NullableStringFieldUpdateOperationsInput | string | null
+    courseAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    paymentMode?: StringFieldUpdateOperationsInput | string
+    paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    courseProgress?: NullableIntFieldUpdateOperationsInput | number | null
+    installments?: BranchStudentInstallmentUncheckedUpdateManyWithoutBranchStudentNestedInput
+    payments?: BranchStudentPaymentUncheckedUpdateManyWithoutBranchStudentNestedInput
   }
 
   export type BatchFacultyAssignmentCreateManyFacultyInput = {
@@ -60097,6 +67551,25 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type BranchBatchCreateManyBranchInput = {
+    id?: string
+    branchCourseId: string
+    branchFacultyId: string
+    batchId: string
+    batchGroupId: string
+    courseId: string
+    courseName: string
+    facultyId: string
+    facultyName: string
+    facultyEmail: string
+    batchCount?: number
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type BranchInstallmentTemplateCreateManyBranchInput = {
     id?: string
     branchCourseId?: string | null
@@ -60172,6 +67645,35 @@ export namespace Prisma {
     courseProgress?: number | null
   }
 
+  export type BranchStudentLedgerEntryCreateManyBranchInput = {
+    id?: string
+    ledgerKey: string
+    branchStudentId: string
+    paymentId?: string | null
+    installmentId?: string | null
+    entryNo?: number
+    entryType: string
+    description: string
+    debit?: number
+    credit?: number
+    amount?: number
+    runningBalance?: number
+    studentBalanceAfter?: number
+    entryDate?: Date | string | null
+    paymentDate?: Date | string | null
+    referenceType?: string | null
+    referenceId?: string | null
+    paymentMode?: string | null
+    receiptNumber?: string | null
+    payAgainst?: string | null
+    transactionReference?: string | null
+    notes?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type BranchStudentPaymentCreateManyBranchInput = {
     id?: string
     receiptNumber: string
@@ -60240,6 +67742,7 @@ export namespace Prisma {
     installmentTemplate?: BranchInstallmentTemplateUpdateOneWithoutBranchCourseNestedInput
     modules?: BranchCourseModuleUpdateManyWithoutBranchCourseNestedInput
     branchFaculties?: BranchFacultyUpdateManyWithoutBranchCourseNestedInput
+    branchBatches?: BranchBatchUpdateManyWithoutBranchCourseNestedInput
     branchStudents?: BranchStudentUpdateManyWithoutCourseNestedInput
     facultyTodayWorkEntries?: FacultyTodayWorkEntryUpdateManyWithoutBranchCourseNestedInput
   }
@@ -60267,6 +67770,7 @@ export namespace Prisma {
     installmentTemplate?: BranchInstallmentTemplateUncheckedUpdateOneWithoutBranchCourseNestedInput
     modules?: BranchCourseModuleUncheckedUpdateManyWithoutBranchCourseNestedInput
     branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutBranchCourseNestedInput
+    branchBatches?: BranchBatchUncheckedUpdateManyWithoutBranchCourseNestedInput
     branchStudents?: BranchStudentUncheckedUpdateManyWithoutCourseNestedInput
     facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedUpdateManyWithoutBranchCourseNestedInput
   }
@@ -60286,6 +67790,65 @@ export namespace Prisma {
     afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
     paymentPlans?: NullableJsonNullValueInput | InputJsonValue
     paymentPlanSelections?: NullableJsonNullValueInput | InputJsonValue
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BranchBatchUpdateWithoutBranchInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    batchId?: StringFieldUpdateOperationsInput | string
+    batchGroupId?: StringFieldUpdateOperationsInput | string
+    courseId?: StringFieldUpdateOperationsInput | string
+    courseName?: StringFieldUpdateOperationsInput | string
+    facultyId?: StringFieldUpdateOperationsInput | string
+    facultyName?: StringFieldUpdateOperationsInput | string
+    facultyEmail?: StringFieldUpdateOperationsInput | string
+    batchCount?: IntFieldUpdateOperationsInput | number
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branchCourse?: BranchCourseUpdateOneRequiredWithoutBranchBatchesNestedInput
+    branchFaculty?: BranchFacultyUpdateOneRequiredWithoutBranchBatchesNestedInput
+    rows?: BranchBatchRowUpdateManyWithoutBranchBatchNestedInput
+  }
+
+  export type BranchBatchUncheckedUpdateWithoutBranchInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchCourseId?: StringFieldUpdateOperationsInput | string
+    branchFacultyId?: StringFieldUpdateOperationsInput | string
+    batchId?: StringFieldUpdateOperationsInput | string
+    batchGroupId?: StringFieldUpdateOperationsInput | string
+    courseId?: StringFieldUpdateOperationsInput | string
+    courseName?: StringFieldUpdateOperationsInput | string
+    facultyId?: StringFieldUpdateOperationsInput | string
+    facultyName?: StringFieldUpdateOperationsInput | string
+    facultyEmail?: StringFieldUpdateOperationsInput | string
+    batchCount?: IntFieldUpdateOperationsInput | number
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    rows?: BranchBatchRowUncheckedUpdateManyWithoutBranchBatchNestedInput
+  }
+
+  export type BranchBatchUncheckedUpdateManyWithoutBranchInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchCourseId?: StringFieldUpdateOperationsInput | string
+    branchFacultyId?: StringFieldUpdateOperationsInput | string
+    batchId?: StringFieldUpdateOperationsInput | string
+    batchGroupId?: StringFieldUpdateOperationsInput | string
+    courseId?: StringFieldUpdateOperationsInput | string
+    courseName?: StringFieldUpdateOperationsInput | string
+    facultyId?: StringFieldUpdateOperationsInput | string
+    facultyName?: StringFieldUpdateOperationsInput | string
+    facultyEmail?: StringFieldUpdateOperationsInput | string
+    batchCount?: IntFieldUpdateOperationsInput | number
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -60360,6 +67923,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     branchCourse?: BranchCourseUpdateOneWithoutBranchFacultiesNestedInput
     course?: CourseUpdateOneWithoutBranchFacultiesNestedInput
+    branchBatches?: BranchBatchUpdateManyWithoutBranchFacultyNestedInput
   }
 
   export type BranchFacultyUncheckedUpdateWithoutBranchInput = {
@@ -60381,6 +67945,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     courseId?: NullableStringFieldUpdateOperationsInput | string | null
     branchCourseId?: NullableStringFieldUpdateOperationsInput | string | null
+    branchBatches?: BranchBatchUncheckedUpdateManyWithoutBranchFacultyNestedInput
   }
 
   export type BranchFacultyUncheckedUpdateManyWithoutBranchInput = {
@@ -60442,6 +68007,7 @@ export namespace Prisma {
     course?: BranchCourseUpdateOneWithoutBranchStudentsNestedInput
     installments?: BranchStudentInstallmentUpdateManyWithoutBranchStudentNestedInput
     payments?: BranchStudentPaymentUpdateManyWithoutBranchStudentNestedInput
+    ledgerEntries?: BranchStudentLedgerEntryUpdateManyWithoutBranchStudentNestedInput
   }
 
   export type BranchStudentUncheckedUpdateWithoutBranchInput = {
@@ -60482,6 +68048,7 @@ export namespace Prisma {
     courseProgress?: NullableIntFieldUpdateOperationsInput | number | null
     installments?: BranchStudentInstallmentUncheckedUpdateManyWithoutBranchStudentNestedInput
     payments?: BranchStudentPaymentUncheckedUpdateManyWithoutBranchStudentNestedInput
+    ledgerEntries?: BranchStudentLedgerEntryUncheckedUpdateManyWithoutBranchStudentNestedInput
   }
 
   export type BranchStudentUncheckedUpdateManyWithoutBranchInput = {
@@ -60520,6 +68087,93 @@ export namespace Prisma {
     paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
     paymentPlan?: NullableStringFieldUpdateOperationsInput | string | null
     courseProgress?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type BranchStudentLedgerEntryUpdateWithoutBranchInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    ledgerKey?: StringFieldUpdateOperationsInput | string
+    paymentId?: NullableStringFieldUpdateOperationsInput | string | null
+    installmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    entryNo?: IntFieldUpdateOperationsInput | number
+    entryType?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    debit?: IntFieldUpdateOperationsInput | number
+    credit?: IntFieldUpdateOperationsInput | number
+    amount?: IntFieldUpdateOperationsInput | number
+    runningBalance?: IntFieldUpdateOperationsInput | number
+    studentBalanceAfter?: IntFieldUpdateOperationsInput | number
+    entryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    referenceType?: NullableStringFieldUpdateOperationsInput | string | null
+    referenceId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMode?: NullableStringFieldUpdateOperationsInput | string | null
+    receiptNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    payAgainst?: NullableStringFieldUpdateOperationsInput | string | null
+    transactionReference?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branchStudent?: BranchStudentUpdateOneRequiredWithoutLedgerEntriesNestedInput
+  }
+
+  export type BranchStudentLedgerEntryUncheckedUpdateWithoutBranchInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    ledgerKey?: StringFieldUpdateOperationsInput | string
+    branchStudentId?: StringFieldUpdateOperationsInput | string
+    paymentId?: NullableStringFieldUpdateOperationsInput | string | null
+    installmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    entryNo?: IntFieldUpdateOperationsInput | number
+    entryType?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    debit?: IntFieldUpdateOperationsInput | number
+    credit?: IntFieldUpdateOperationsInput | number
+    amount?: IntFieldUpdateOperationsInput | number
+    runningBalance?: IntFieldUpdateOperationsInput | number
+    studentBalanceAfter?: IntFieldUpdateOperationsInput | number
+    entryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    referenceType?: NullableStringFieldUpdateOperationsInput | string | null
+    referenceId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMode?: NullableStringFieldUpdateOperationsInput | string | null
+    receiptNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    payAgainst?: NullableStringFieldUpdateOperationsInput | string | null
+    transactionReference?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BranchStudentLedgerEntryUncheckedUpdateManyWithoutBranchInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    ledgerKey?: StringFieldUpdateOperationsInput | string
+    branchStudentId?: StringFieldUpdateOperationsInput | string
+    paymentId?: NullableStringFieldUpdateOperationsInput | string | null
+    installmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    entryNo?: IntFieldUpdateOperationsInput | number
+    entryType?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    debit?: IntFieldUpdateOperationsInput | number
+    credit?: IntFieldUpdateOperationsInput | number
+    amount?: IntFieldUpdateOperationsInput | number
+    runningBalance?: IntFieldUpdateOperationsInput | number
+    studentBalanceAfter?: IntFieldUpdateOperationsInput | number
+    entryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    referenceType?: NullableStringFieldUpdateOperationsInput | string | null
+    referenceId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMode?: NullableStringFieldUpdateOperationsInput | string | null
+    receiptNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    payAgainst?: NullableStringFieldUpdateOperationsInput | string | null
+    transactionReference?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type BranchStudentPaymentUpdateWithoutBranchInput = {
@@ -61017,6 +68671,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     branchCourse?: BranchCourseUpdateOneWithoutBranchFacultiesNestedInput
     branch?: BranchUpdateOneRequiredWithoutBranchFacultiesNestedInput
+    branchBatches?: BranchBatchUpdateManyWithoutBranchFacultyNestedInput
   }
 
   export type BranchFacultyUncheckedUpdateWithoutCourseInput = {
@@ -61038,6 +68693,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     branchCourseId?: NullableStringFieldUpdateOperationsInput | string | null
+    branchBatches?: BranchBatchUncheckedUpdateManyWithoutBranchFacultyNestedInput
   }
 
   export type BranchFacultyUncheckedUpdateManyWithoutCourseInput = {
@@ -61401,6 +69057,25 @@ export namespace Prisma {
     courseId?: string | null
   }
 
+  export type BranchBatchCreateManyBranchCourseInput = {
+    id?: string
+    branchId: string
+    branchFacultyId: string
+    batchId: string
+    batchGroupId: string
+    courseId: string
+    courseName: string
+    facultyId: string
+    facultyName: string
+    facultyEmail: string
+    batchCount?: number
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type BranchStudentCreateManyCourseInput = {
     id?: string
     branchId: string
@@ -61523,6 +69198,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     branch?: BranchUpdateOneRequiredWithoutBranchFacultiesNestedInput
     course?: CourseUpdateOneWithoutBranchFacultiesNestedInput
+    branchBatches?: BranchBatchUpdateManyWithoutBranchFacultyNestedInput
   }
 
   export type BranchFacultyUncheckedUpdateWithoutBranchCourseInput = {
@@ -61544,6 +69220,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     courseId?: NullableStringFieldUpdateOperationsInput | string | null
+    branchBatches?: BranchBatchUncheckedUpdateManyWithoutBranchFacultyNestedInput
   }
 
   export type BranchFacultyUncheckedUpdateManyWithoutBranchCourseInput = {
@@ -61565,6 +69242,65 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     courseId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type BranchBatchUpdateWithoutBranchCourseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    batchId?: StringFieldUpdateOperationsInput | string
+    batchGroupId?: StringFieldUpdateOperationsInput | string
+    courseId?: StringFieldUpdateOperationsInput | string
+    courseName?: StringFieldUpdateOperationsInput | string
+    facultyId?: StringFieldUpdateOperationsInput | string
+    facultyName?: StringFieldUpdateOperationsInput | string
+    facultyEmail?: StringFieldUpdateOperationsInput | string
+    batchCount?: IntFieldUpdateOperationsInput | number
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branch?: BranchUpdateOneRequiredWithoutBranchBatchesNestedInput
+    branchFaculty?: BranchFacultyUpdateOneRequiredWithoutBranchBatchesNestedInput
+    rows?: BranchBatchRowUpdateManyWithoutBranchBatchNestedInput
+  }
+
+  export type BranchBatchUncheckedUpdateWithoutBranchCourseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    branchFacultyId?: StringFieldUpdateOperationsInput | string
+    batchId?: StringFieldUpdateOperationsInput | string
+    batchGroupId?: StringFieldUpdateOperationsInput | string
+    courseId?: StringFieldUpdateOperationsInput | string
+    courseName?: StringFieldUpdateOperationsInput | string
+    facultyId?: StringFieldUpdateOperationsInput | string
+    facultyName?: StringFieldUpdateOperationsInput | string
+    facultyEmail?: StringFieldUpdateOperationsInput | string
+    batchCount?: IntFieldUpdateOperationsInput | number
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    rows?: BranchBatchRowUncheckedUpdateManyWithoutBranchBatchNestedInput
+  }
+
+  export type BranchBatchUncheckedUpdateManyWithoutBranchCourseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    branchFacultyId?: StringFieldUpdateOperationsInput | string
+    batchId?: StringFieldUpdateOperationsInput | string
+    batchGroupId?: StringFieldUpdateOperationsInput | string
+    courseId?: StringFieldUpdateOperationsInput | string
+    courseName?: StringFieldUpdateOperationsInput | string
+    facultyId?: StringFieldUpdateOperationsInput | string
+    facultyName?: StringFieldUpdateOperationsInput | string
+    facultyEmail?: StringFieldUpdateOperationsInput | string
+    batchCount?: IntFieldUpdateOperationsInput | number
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type BranchStudentUpdateWithoutCourseInput = {
@@ -61605,6 +69341,7 @@ export namespace Prisma {
     branch?: BranchUpdateOneRequiredWithoutBranchStudentsNestedInput
     installments?: BranchStudentInstallmentUpdateManyWithoutBranchStudentNestedInput
     payments?: BranchStudentPaymentUpdateManyWithoutBranchStudentNestedInput
+    ledgerEntries?: BranchStudentLedgerEntryUpdateManyWithoutBranchStudentNestedInput
   }
 
   export type BranchStudentUncheckedUpdateWithoutCourseInput = {
@@ -61645,6 +69382,7 @@ export namespace Prisma {
     courseProgress?: NullableIntFieldUpdateOperationsInput | number | null
     installments?: BranchStudentInstallmentUncheckedUpdateManyWithoutBranchStudentNestedInput
     payments?: BranchStudentPaymentUncheckedUpdateManyWithoutBranchStudentNestedInput
+    ledgerEntries?: BranchStudentLedgerEntryUncheckedUpdateManyWithoutBranchStudentNestedInput
   }
 
   export type BranchStudentUncheckedUpdateManyWithoutCourseInput = {
@@ -61909,6 +69647,78 @@ export namespace Prisma {
     changedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type BranchBatchRowCreateManyBranchBatchInput = {
+    id?: string
+    batchId: string
+    batchName: string
+    startTime: string
+    startPeriod: string
+    endTime: string
+    endPeriod: string
+    batchTiming: string
+    totalSeats: number
+    status?: $Enums.RecordStatus
+    sequenceNo: number
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type BranchBatchRowUpdateWithoutBranchBatchInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    batchId?: StringFieldUpdateOperationsInput | string
+    batchName?: StringFieldUpdateOperationsInput | string
+    startTime?: StringFieldUpdateOperationsInput | string
+    startPeriod?: StringFieldUpdateOperationsInput | string
+    endTime?: StringFieldUpdateOperationsInput | string
+    endPeriod?: StringFieldUpdateOperationsInput | string
+    batchTiming?: StringFieldUpdateOperationsInput | string
+    totalSeats?: IntFieldUpdateOperationsInput | number
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    sequenceNo?: IntFieldUpdateOperationsInput | number
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BranchBatchRowUncheckedUpdateWithoutBranchBatchInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    batchId?: StringFieldUpdateOperationsInput | string
+    batchName?: StringFieldUpdateOperationsInput | string
+    startTime?: StringFieldUpdateOperationsInput | string
+    startPeriod?: StringFieldUpdateOperationsInput | string
+    endTime?: StringFieldUpdateOperationsInput | string
+    endPeriod?: StringFieldUpdateOperationsInput | string
+    batchTiming?: StringFieldUpdateOperationsInput | string
+    totalSeats?: IntFieldUpdateOperationsInput | number
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    sequenceNo?: IntFieldUpdateOperationsInput | number
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BranchBatchRowUncheckedUpdateManyWithoutBranchBatchInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    batchId?: StringFieldUpdateOperationsInput | string
+    batchName?: StringFieldUpdateOperationsInput | string
+    startTime?: StringFieldUpdateOperationsInput | string
+    startPeriod?: StringFieldUpdateOperationsInput | string
+    endTime?: StringFieldUpdateOperationsInput | string
+    endPeriod?: StringFieldUpdateOperationsInput | string
+    batchTiming?: StringFieldUpdateOperationsInput | string
+    totalSeats?: IntFieldUpdateOperationsInput | number
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    sequenceNo?: IntFieldUpdateOperationsInput | number
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StudentAttendanceCreateManyStudentInput = {
     id?: string
     facultyUserId?: string | null
@@ -61997,6 +69807,35 @@ export namespace Prisma {
     paymentProof?: string | null
     payAgainst?: string | null
     installmentId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type BranchStudentLedgerEntryCreateManyBranchStudentInput = {
+    id?: string
+    ledgerKey: string
+    branchId: string
+    paymentId?: string | null
+    installmentId?: string | null
+    entryNo?: number
+    entryType: string
+    description: string
+    debit?: number
+    credit?: number
+    amount?: number
+    runningBalance?: number
+    studentBalanceAfter?: number
+    entryDate?: Date | string | null
+    paymentDate?: Date | string | null
+    referenceType?: string | null
+    referenceId?: string | null
+    paymentMode?: string | null
+    receiptNumber?: string | null
+    payAgainst?: string | null
+    transactionReference?: string | null
+    notes?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -62095,6 +69934,93 @@ export namespace Prisma {
     paymentProof?: NullableStringFieldUpdateOperationsInput | string | null
     payAgainst?: NullableStringFieldUpdateOperationsInput | string | null
     installmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BranchStudentLedgerEntryUpdateWithoutBranchStudentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    ledgerKey?: StringFieldUpdateOperationsInput | string
+    paymentId?: NullableStringFieldUpdateOperationsInput | string | null
+    installmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    entryNo?: IntFieldUpdateOperationsInput | number
+    entryType?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    debit?: IntFieldUpdateOperationsInput | number
+    credit?: IntFieldUpdateOperationsInput | number
+    amount?: IntFieldUpdateOperationsInput | number
+    runningBalance?: IntFieldUpdateOperationsInput | number
+    studentBalanceAfter?: IntFieldUpdateOperationsInput | number
+    entryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    referenceType?: NullableStringFieldUpdateOperationsInput | string | null
+    referenceId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMode?: NullableStringFieldUpdateOperationsInput | string | null
+    receiptNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    payAgainst?: NullableStringFieldUpdateOperationsInput | string | null
+    transactionReference?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branch?: BranchUpdateOneRequiredWithoutLedgerEntriesNestedInput
+  }
+
+  export type BranchStudentLedgerEntryUncheckedUpdateWithoutBranchStudentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    ledgerKey?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    paymentId?: NullableStringFieldUpdateOperationsInput | string | null
+    installmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    entryNo?: IntFieldUpdateOperationsInput | number
+    entryType?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    debit?: IntFieldUpdateOperationsInput | number
+    credit?: IntFieldUpdateOperationsInput | number
+    amount?: IntFieldUpdateOperationsInput | number
+    runningBalance?: IntFieldUpdateOperationsInput | number
+    studentBalanceAfter?: IntFieldUpdateOperationsInput | number
+    entryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    referenceType?: NullableStringFieldUpdateOperationsInput | string | null
+    referenceId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMode?: NullableStringFieldUpdateOperationsInput | string | null
+    receiptNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    payAgainst?: NullableStringFieldUpdateOperationsInput | string | null
+    transactionReference?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BranchStudentLedgerEntryUncheckedUpdateManyWithoutBranchStudentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    ledgerKey?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    paymentId?: NullableStringFieldUpdateOperationsInput | string | null
+    installmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    entryNo?: IntFieldUpdateOperationsInput | number
+    entryType?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    debit?: IntFieldUpdateOperationsInput | number
+    credit?: IntFieldUpdateOperationsInput | number
+    amount?: IntFieldUpdateOperationsInput | number
+    runningBalance?: IntFieldUpdateOperationsInput | number
+    studentBalanceAfter?: IntFieldUpdateOperationsInput | number
+    entryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    referenceType?: NullableStringFieldUpdateOperationsInput | string | null
+    referenceId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMode?: NullableStringFieldUpdateOperationsInput | string | null
+    receiptNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    payAgainst?: NullableStringFieldUpdateOperationsInput | string | null
+    transactionReference?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -62237,6 +70163,84 @@ export namespace Prisma {
   export type FacultyCourseAssignmentUncheckedUpdateManyWithoutFacultyInput = {
     id?: StringFieldUpdateOperationsInput | string
     courseId?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BranchBatchCreateManyBranchFacultyInput = {
+    id?: string
+    branchId: string
+    branchCourseId: string
+    batchId: string
+    batchGroupId: string
+    courseId: string
+    courseName: string
+    facultyId: string
+    facultyName: string
+    facultyEmail: string
+    batchCount?: number
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type BranchBatchUpdateWithoutBranchFacultyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    batchId?: StringFieldUpdateOperationsInput | string
+    batchGroupId?: StringFieldUpdateOperationsInput | string
+    courseId?: StringFieldUpdateOperationsInput | string
+    courseName?: StringFieldUpdateOperationsInput | string
+    facultyId?: StringFieldUpdateOperationsInput | string
+    facultyName?: StringFieldUpdateOperationsInput | string
+    facultyEmail?: StringFieldUpdateOperationsInput | string
+    batchCount?: IntFieldUpdateOperationsInput | number
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branch?: BranchUpdateOneRequiredWithoutBranchBatchesNestedInput
+    branchCourse?: BranchCourseUpdateOneRequiredWithoutBranchBatchesNestedInput
+    rows?: BranchBatchRowUpdateManyWithoutBranchBatchNestedInput
+  }
+
+  export type BranchBatchUncheckedUpdateWithoutBranchFacultyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    branchCourseId?: StringFieldUpdateOperationsInput | string
+    batchId?: StringFieldUpdateOperationsInput | string
+    batchGroupId?: StringFieldUpdateOperationsInput | string
+    courseId?: StringFieldUpdateOperationsInput | string
+    courseName?: StringFieldUpdateOperationsInput | string
+    facultyId?: StringFieldUpdateOperationsInput | string
+    facultyName?: StringFieldUpdateOperationsInput | string
+    facultyEmail?: StringFieldUpdateOperationsInput | string
+    batchCount?: IntFieldUpdateOperationsInput | number
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    rows?: BranchBatchRowUncheckedUpdateManyWithoutBranchBatchNestedInput
+  }
+
+  export type BranchBatchUncheckedUpdateManyWithoutBranchFacultyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    branchCourseId?: StringFieldUpdateOperationsInput | string
+    batchId?: StringFieldUpdateOperationsInput | string
+    batchGroupId?: StringFieldUpdateOperationsInput | string
+    courseId?: StringFieldUpdateOperationsInput | string
+    courseName?: StringFieldUpdateOperationsInput | string
+    facultyId?: StringFieldUpdateOperationsInput | string
+    facultyName?: StringFieldUpdateOperationsInput | string
+    facultyEmail?: StringFieldUpdateOperationsInput | string
+    batchCount?: IntFieldUpdateOperationsInput | number
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string

@@ -379,6 +379,45 @@ exports.Prisma.BatchFacultyAssignmentScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.BranchBatchScalarFieldEnum = {
+  id: 'id',
+  branchId: 'branchId',
+  branchCourseId: 'branchCourseId',
+  branchFacultyId: 'branchFacultyId',
+  batchId: 'batchId',
+  batchGroupId: 'batchGroupId',
+  courseId: 'courseId',
+  courseName: 'courseName',
+  facultyId: 'facultyId',
+  facultyName: 'facultyName',
+  facultyEmail: 'facultyEmail',
+  batchCount: 'batchCount',
+  status: 'status',
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.BranchBatchRowScalarFieldEnum = {
+  id: 'id',
+  branchBatchId: 'branchBatchId',
+  batchId: 'batchId',
+  batchName: 'batchName',
+  startTime: 'startTime',
+  startPeriod: 'startPeriod',
+  endTime: 'endTime',
+  endPeriod: 'endPeriod',
+  batchTiming: 'batchTiming',
+  totalSeats: 'totalSeats',
+  status: 'status',
+  sequenceNo: 'sequenceNo',
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.CourseStatusHistoryScalarFieldEnum = {
   id: 'id',
   courseId: 'courseId',
@@ -647,6 +686,36 @@ exports.Prisma.BranchStudentPaymentScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.BranchStudentLedgerEntryScalarFieldEnum = {
+  id: 'id',
+  ledgerKey: 'ledgerKey',
+  branchId: 'branchId',
+  branchStudentId: 'branchStudentId',
+  paymentId: 'paymentId',
+  installmentId: 'installmentId',
+  entryNo: 'entryNo',
+  entryType: 'entryType',
+  description: 'description',
+  debit: 'debit',
+  credit: 'credit',
+  amount: 'amount',
+  runningBalance: 'runningBalance',
+  studentBalanceAfter: 'studentBalanceAfter',
+  entryDate: 'entryDate',
+  paymentDate: 'paymentDate',
+  referenceType: 'referenceType',
+  referenceId: 'referenceId',
+  paymentMode: 'paymentMode',
+  receiptNumber: 'receiptNumber',
+  payAgainst: 'payAgainst',
+  transactionReference: 'transactionReference',
+  notes: 'notes',
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -752,6 +821,8 @@ exports.Prisma.ModelName = {
   CourseModule: 'CourseModule',
   Batch: 'Batch',
   BatchFacultyAssignment: 'BatchFacultyAssignment',
+  BranchBatch: 'BranchBatch',
+  BranchBatchRow: 'BranchBatchRow',
   CourseStatusHistory: 'CourseStatusHistory',
   BatchStatusHistory: 'BatchStatusHistory',
   StudentProfile: 'StudentProfile',
@@ -765,7 +836,8 @@ exports.Prisma.ModelName = {
   StudentAttendance: 'StudentAttendance',
   BranchFaculty: 'BranchFaculty',
   BranchInstallmentTemplate: 'BranchInstallmentTemplate',
-  BranchStudentPayment: 'BranchStudentPayment'
+  BranchStudentPayment: 'BranchStudentPayment',
+  BranchStudentLedgerEntry: 'BranchStudentLedgerEntry'
 };
 
 /**

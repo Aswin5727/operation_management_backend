@@ -379,6 +379,37 @@ function toBatchEntry(entry) {
   };
 }
 
+function toBranchBatchEntry(batch = {}, row = {}, branchFaculty = null) {
+  const rowId = normalizeString(row?.id);
+  const batchId = normalizeString(row?.batchId || batch?.batchId || batch?.batchGroupId || batch?.id);
+  return {
+    id: rowId || batchId,
+    facultyId: branchFaculty?.id || branchFaculty?.facultyId || batch?.facultyId || "",
+    courseId: batch?.courseId || batch?.branchCourseId || branchFaculty?.branchCourseId || "",
+    courseName: batch?.courseName || batch?.branchCourse?.name || "",
+    batchName: row?.batchName || "",
+    batchTiming: row?.batchTiming || "",
+    sequenceNo: Number(row?.sequenceNo || 0),
+    batchGroupId: batch?.batchGroupId || batch?.id || "",
+    batchId: row?.batchId || batch?.batchId || "",
+    totalSeats: Number(row?.totalSeats || 0),
+    status: row?.status === "INACTIVE" ? "Inactive" : "Active",
+    createdAt: row?.createdAt || batch?.createdAt || null,
+    updatedAt: row?.updatedAt || batch?.updatedAt || null,
+  };
+}
+
+function flattenBranchBatchEntries(branchBatches = [], branchFaculty = null) {
+  if (!Array.isArray(branchBatches) || !branchBatches.length) {
+    return [];
+  }
+
+  return branchBatches.flatMap((batch) => {
+    const rows = Array.isArray(batch?.rows) ? batch.rows : [];
+    return rows.map((row) => toBranchBatchEntry(batch, row, branchFaculty)).filter((entry) => String(entry.id || "").trim());
+  });
+}
+
 function toFacultyRecord(record) {
   const batchEntries = Array.isArray(record.batchEntries) ? record.batchEntries.map(toBatchEntry) : [];
   const courseAssignments = Array.isArray(record.courseAssignments) ? record.courseAssignments.map(toCourseAssignmentSummary) : [];
@@ -462,38 +493,55 @@ function mapBranchCourseToFacultyCourse(branchCourse = null) {
 
 function buildFacultyFallbackRecord(user, branchFaculty, branchCourse = null) {
   const fallbackCourse = mapBranchCourseToFacultyCourse(branchCourse);
+  const batchEntries = flattenBranchBatchEntries(branchFaculty?.branchBatches, branchFaculty);
+  const batchCourseIds = Array.from(
+    new Set(
+      batchEntries
+        .map((entry) => normalizeString(entry.courseId))
+        .filter(Boolean),
+    ),
+  );
+  const resolvedCourseIds = Array.from(
+    new Set(
+      [branchFaculty?.courseId, branchFaculty?.branchCourseId, fallbackCourse?.id, ...batchCourseIds]
+        .map((courseId) => normalizeString(courseId))
+        .filter(Boolean),
+    ),
+  );
+  const courseAssignments = resolvedCourseIds.map((courseId) => {
+    const matchingEntry = batchEntries.find((entry) => normalizeString(entry.courseId) === courseId) || null;
+    const courseName = matchingEntry?.courseName || fallbackCourse?.name || branchFaculty?.branchCourse?.name || branchFaculty?.course?.name || "";
+
+    return {
+      id: `${branchFaculty?.id || user?.id || "faculty"}-${courseId}`,
+      facultyId: branchFaculty?.id || user?.id || "",
+      courseId,
+      courseName,
+      course: courseName
+        ? {
+            id: courseId,
+            name: courseName,
+            courseCode: matchingEntry?.courseCode || branchFaculty?.branchCourse?.courseCode || "",
+          }
+        : null,
+      createdAt: branchFaculty?.createdAt || null,
+      updatedAt: branchFaculty?.updatedAt || null,
+    };
+  });
 
   return {
     id: branchFaculty?.id || user?.id || "",
     facultyName: branchFaculty?.name || user?.fullName || "",
     facultyEmail: branchFaculty?.email || user?.email || "",
     facultyPhone: branchFaculty?.phone || user?.phone || "",
-    courseId: branchFaculty?.courseId || branchFaculty?.branchCourseId || fallbackCourse?.id || "",
-    courseIds: Array.from(
-      new Set(
-        [branchFaculty?.courseId, branchFaculty?.branchCourseId, fallbackCourse?.id]
-          .map((courseId) => normalizeString(courseId))
-          .filter(Boolean),
-      ),
-    ),
+    courseId: resolvedCourseIds[0] || "",
+    courseIds: resolvedCourseIds,
     courseName: fallbackCourse?.name || branchFaculty?.branchCourse?.name || branchFaculty?.course?.name || "",
     course: fallbackCourse,
-    courseAssignments: fallbackCourse
-      ? [
-          {
-            id: branchFaculty?.branchCourseId || branchFaculty?.courseId || fallbackCourse.id,
-            facultyId: branchFaculty?.id || user?.id || "",
-            courseId: fallbackCourse.id,
-            courseName: fallbackCourse.name,
-            course: fallbackCourse,
-            createdAt: branchFaculty?.createdAt || null,
-            updatedAt: branchFaculty?.updatedAt || null,
-          },
-        ]
-      : [],
+    courseAssignments,
     status: branchFaculty?.status === "INACTIVE" ? "Inactive" : "Active",
-    batchEntries: [],
-    batchCount: 0,
+    batchEntries,
+    batchCount: batchEntries.length,
     createdBy: branchFaculty?.createdBy || null,
     updatedBy: branchFaculty?.updatedBy || null,
     createdAt: branchFaculty?.createdAt || null,
@@ -714,6 +762,17 @@ async function getFacultyProfileForUser(user) {
         course: {
           include: {
             modules: {
+              orderBy: { sequenceNo: "asc" },
+            },
+          },
+        },
+        branchBatches: {
+          where: {
+            status: "ACTIVE",
+          },
+          orderBy: [{ createdAt: "asc" }],
+          include: {
+            rows: {
               orderBy: { sequenceNo: "asc" },
             },
           },

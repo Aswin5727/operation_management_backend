@@ -602,6 +602,77 @@ export async function sendFacultyCourseAssignmentEmail({
   });
 }
 
+export async function sendFacultyBatchAssignmentEmail({
+  to,
+  fullName,
+  facultyId,
+  courseName,
+  batchGroupId,
+  batchCount = 0,
+  batches = [],
+}) {
+  const loginLink = buildLoginLink();
+  const safeName = escapeHtml(fullName || "Faculty");
+  const safeFacultyId = escapeHtml(facultyId || "");
+  const safeCourseName = escapeHtml(courseName || "");
+  const safeBatchGroupId = escapeHtml(batchGroupId || "");
+  const normalizedBatches = Array.isArray(batches) ? batches : [];
+
+  const batchSummaryLines = normalizedBatches.map((batch, index) => {
+    const label = escapeHtml(batch?.batchName || `Batch ${index + 1}`);
+    const timing = escapeHtml(batch?.batchTiming || "-");
+    const seats = escapeHtml(String(batch?.totalSeats ?? "-"));
+    const status = escapeHtml(String(batch?.status || "ACTIVE"));
+    return `${label} | ${timing} | Seats: ${seats} | ${status}`;
+  });
+
+  const html = alertTemplate({
+    eyebrow: "Faculty Batch Assignment",
+    title: "Batches Assigned",
+    subtitle: `Hello ${safeName}, batches have been assigned to your faculty account.`,
+    summary: "Please review the batch group and manage the assigned batches from your dashboard.",
+    details: [
+      { label: "Faculty Name", value: safeName },
+      { label: "Faculty ID", value: safeFacultyId || "-" },
+      { label: "Course", value: safeCourseName || "-" },
+      { label: "Batch Group ID", value: safeBatchGroupId || "-" },
+      { label: "Batch Count", value: String(Number(batchCount || normalizedBatches.length || 0)) },
+      {
+        label: "Batch Details",
+        value: batchSummaryLines.length ? batchSummaryLines.join(" ; ") : "-",
+      },
+    ],
+    primaryActionLabel: "Open Faculty Dashboard",
+    primaryActionLink: loginLink,
+    secondaryActionLabel: "",
+    secondaryActionLink: "",
+    note: "Use your faculty dashboard to view the assigned batches, timing, seat count, and status.",
+  });
+
+  const text = [
+    `Hello ${fullName || "Faculty"},`,
+    "",
+    "Batches have been assigned to your faculty account.",
+    facultyId ? `Faculty ID: ${facultyId}` : null,
+    courseName ? `Course: ${courseName}` : null,
+    batchGroupId ? `Batch Group ID: ${batchGroupId}` : null,
+    `Batch Count: ${Number(batchCount || normalizedBatches.length || 0)}`,
+    "",
+    ...batchSummaryLines,
+    "",
+    loginLink ? `Faculty Dashboard: ${loginLink}` : null,
+  ]
+    .filter(Boolean)
+    .join("\n");
+
+  return sendEmail({
+    to,
+    subject: `Batch Assignment - ${courseName || "Faculty"}`,
+    html,
+    text,
+  });
+}
+
 export async function sendStudentPaymentDueEmail({
   to,
   fullName,
