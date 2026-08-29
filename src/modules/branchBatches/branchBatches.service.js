@@ -362,6 +362,31 @@ function parseBatchRows(rows = []) {
   });
 }
 
+async function resolveUniqueBatchGroupId(branchId, preferredId = "") {
+  const normalizedPreferredId = normalizeString(preferredId);
+
+  if (normalizedPreferredId) {
+    const existing = await prisma.branchBatch.findFirst({
+      where: {
+        branchId,
+        OR: [
+          { id: normalizedPreferredId },
+          { batchId: normalizedPreferredId },
+          { batchGroupId: normalizedPreferredId },
+        ],
+      },
+      select: { id: true },
+    });
+
+    if (!existing) {
+      return normalizedPreferredId;
+    }
+  }
+
+  const nextSequence = await getNextBatchGroupSequenceNumber(branchId);
+  return makeBatchGroupId(nextSequence);
+}
+
 function parseBatchPayload(payload = {}) {
   const batchGroupId = normalizeString(payload.batchGroupId || payload.branchBatchGroupId || payload.groupId);
   const courseId = normalizeString(payload.courseId || payload.branchCourseId);
@@ -566,8 +591,7 @@ export async function createBranchBatch(payload = {}, actor = null) {
   const branchFaculty = await ensureBranchFaculty(branchProfile.id, parsed.facultyId);
   const actorId = actor?.id ?? null;
   const nextSequenceStart = await getNextBatchSequenceNumber(branchProfile.id);
-  const nextBatchGroupSequence = await getNextBatchGroupSequenceNumber(branchProfile.id);
-  const batchGroupId = parsed.batchGroupId || makeBatchGroupId(nextBatchGroupSequence);
+  const batchGroupId = await resolveUniqueBatchGroupId(branchProfile.id, parsed.batchGroupId);
   const batchRows = parsed.rows.map((row, index) => ({
     batchId: makeBatchId(nextSequenceStart + index),
     batchName: row.batchName,
@@ -643,10 +667,9 @@ export async function updateBranchBatch(batchGroupId, payload = {}, actor = null
   const branchFaculty = await ensureBranchFaculty(branchProfile.id, parsed.facultyId);
   const actorId = actor?.id ?? null;
   const nextBatchGroupSequence = await getNextBatchGroupSequenceNumber(branchProfile.id);
-  const batchPrefixMatch = String(existing.batchId || "").match(/^BAT-(\d+)$/i);
-  const startSequence = batchPrefixMatch ? Number(batchPrefixMatch[1]) || 1 : 1;
+  const nextSequenceStart = await getNextBatchSequenceNumber(branchProfile.id);
   const nextBatchRows = parsed.rows.map((row, index) => ({
-    batchId: makeBatchId(startSequence + index),
+    batchId: makeBatchId(nextSequenceStart + index),
     batchName: row.batchName,
     batchTiming: buildBatchTiming(row),
     startTime: row.startTime,
@@ -742,3 +765,4 @@ export async function deleteBranchBatch(batchGroupId, actor = null) {
 
   return toBatchDetail(deleted);
 }
+
