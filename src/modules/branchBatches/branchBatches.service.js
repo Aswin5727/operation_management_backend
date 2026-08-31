@@ -152,6 +152,22 @@ function makeBatchGroupId(sequenceNumber = 1) {
   return `BBG-${String(safeSequence).padStart(3, "0")}`;
 }
 
+function isPrismaUniqueConstraintError(error) {
+  return Boolean(error && typeof error === "object" && error.code === "P2002");
+}
+
+function getBatchConflictMessage(error, fallbackMessage) {
+  const target = Array.isArray(error?.meta?.target)
+    ? error.meta.target.join(", ")
+    : String(error?.meta?.target || "");
+
+  if (target.includes("batchGroupId") || target.includes("batchId")) {
+    return "This batch group already exists. Please refresh and try again.";
+  }
+
+  return fallbackMessage;
+}
+
 function toBatchRow(record = {}) {
   return {
     id: record.id,
@@ -512,6 +528,39 @@ async function maybeClearBranchFacultyCourseLink(branchId, branchFacultyId, bran
   });
 }
 
+async function syncBranchStudentsForBatchFacultyChange(tx, {
+  branchId,
+  previousCourseId,
+  previousFacultyId,
+  nextCourseId,
+  nextCourseName,
+  nextFacultyId,
+  nextFacultyName,
+  actorId,
+}) {
+  if (!branchId || !previousCourseId || !previousFacultyId || !nextCourseId || !nextFacultyId) {
+    return 0;
+  }
+
+  const result = await tx.branchStudent.updateMany({
+    where: {
+      branchId,
+      courseId: previousCourseId,
+      facultyId: previousFacultyId,
+      recordStatus: "ACTIVE",
+    },
+    data: {
+      courseId: nextCourseId,
+      courseName: nextCourseName,
+      facultyId: nextFacultyId,
+      facultyName: nextFacultyName,
+      updatedBy: actorId,
+    },
+  });
+
+  return Number(result?.count || 0);
+}
+
 export async function listBranchBatches(query = {}, actor = null) {
   const branchProfile = await getCurrentBranchProfile(actor);
   const { page, limit, skip, take } = buildPagination(query);
@@ -590,53 +639,71 @@ export async function createBranchBatch(payload = {}, actor = null) {
   const branchCourse = await ensureBranchCourse(branchProfile.id, parsed.courseId);
   const branchFaculty = await ensureBranchFaculty(branchProfile.id, parsed.facultyId);
   const actorId = actor?.id ?? null;
-  const nextSequenceStart = await getNextBatchSequenceNumber(branchProfile.id);
-  const batchGroupId = await resolveUniqueBatchGroupId(branchProfile.id, parsed.batchGroupId);
-  const batchRows = parsed.rows.map((row, index) => ({
-    batchId: makeBatchId(nextSequenceStart + index),
-    batchName: row.batchName,
-    batchTiming: buildBatchTiming(row),
-    startTime: row.startTime,
-    startPeriod: row.startPeriod,
-    endTime: row.endTime,
-    endPeriod: row.endPeriod,
-    totalSeats: row.totalSeats,
-    status: row.status,
-    sequenceNo: row.sequenceNo,
-    createdBy: actorId,
-    updatedBy: actorId,
-  }));
+  for (let attempt = 0; attempt < 3; attempt += 1) {
+    const batchGroupId = await resolveUniqueBatchGroupId(branchProfile.id, attempt === 0 ? parsed.batchGroupId : "");
+    const batchRows = parsed.rows.map((row, index) => ({
+      batchId: makeBatchId(index + 1),
+      batchName: row.batchName,
+      batchTiming: buildBatchTiming(row),
+      startTime: row.startTime,
+      startPeriod: row.startPeriod,
+      endTime: row.endTime,
+      endPeriod: row.endPeriod,
+      totalSeats: row.totalSeats,
+      status: row.status,
+      sequenceNo: row.sequenceNo,
+      createdBy: actorId,
+      updatedBy: actorId,
+    }));
 
-  const created = await prisma.$transaction(async (tx) => {
-    const batch = await tx.branchBatch.create({
-      data: {
-        branchId: branchProfile.id,
-        branchCourseId: branchCourse.id,
-        branchFacultyId: branchFaculty.id,
-    batchId: batchGroupId,
-    batchGroupId,
-        courseId: branchCourse.id,
-        courseName: branchCourse.name,
-        facultyId: branchFaculty.facultyId || branchFaculty.id,
-        facultyName: branchFaculty.name,
-        facultyEmail: branchFaculty.email,
-        batchCount: batchRows.length,
-        status: batchRows[0]?.status || "ACTIVE",
-        createdBy: actorId,
-        updatedBy: actorId,
-        rows: {
-          create: batchRows,
-        },
-      },
-      include: getInclude(),
-    });
-    return batch;
-  }, { timeout: 15000 });
+    try {
+      const created = await prisma.$transaction(async (tx) => {
+        const batch = await tx.branchBatch.create({
+          data: {
+            branchId: branchProfile.id,
+            branchCourseId: branchCourse.id,
+            branchFacultyId: branchFaculty.id,
+            batchId: batchGroupId,
+            batchGroupId,
+            courseId: branchCourse.id,
+            courseName: branchCourse.name,
+            facultyId: branchFaculty.facultyId || branchFaculty.id,
+            facultyName: branchFaculty.name,
+            facultyEmail: branchFaculty.email,
+            batchCount: batchRows.length,
+            status: batchRows[0]?.status || "ACTIVE",
+            createdBy: actorId,
+            updatedBy: actorId,
+            rows: {
+              create: batchRows,
+            },
+          },
+          include: getInclude(),
+        });
+        return batch;
+      }, { timeout: 15000 });
 
-  await syncBranchFacultyCourseLink(prisma, branchFaculty, branchCourse.id, actorId);
-  queueFacultyBatchAssignmentEmail(created);
+      await syncBranchFacultyCourseLink(prisma, branchFaculty, branchCourse.id, actorId);
+      queueFacultyBatchAssignmentEmail(created);
 
-  return toBatchDetail(created);
+      return toBatchDetail(created);
+    } catch (error) {
+      if (isPrismaUniqueConstraintError(error) && attempt < 2) {
+        continue;
+      }
+
+      if (isPrismaUniqueConstraintError(error)) {
+        throw new AppError(
+          getBatchConflictMessage(error, "Unable to save this batch right now. Please refresh and try again."),
+          409,
+        );
+      }
+
+      throw error;
+    }
+  }
+
+  throw new AppError("Unable to save this batch right now. Please refresh and try again.", 500);
 }
 
 export async function updateBranchBatch(batchGroupId, payload = {}, actor = null) {
@@ -667,9 +734,8 @@ export async function updateBranchBatch(batchGroupId, payload = {}, actor = null
   const branchFaculty = await ensureBranchFaculty(branchProfile.id, parsed.facultyId);
   const actorId = actor?.id ?? null;
   const nextBatchGroupSequence = await getNextBatchGroupSequenceNumber(branchProfile.id);
-  const nextSequenceStart = await getNextBatchSequenceNumber(branchProfile.id);
   const nextBatchRows = parsed.rows.map((row, index) => ({
-    batchId: makeBatchId(nextSequenceStart + index),
+    batchId: makeBatchId(index + 1),
     batchName: row.batchName,
     batchTiming: buildBatchTiming(row),
     startTime: row.startTime,
@@ -741,21 +807,8 @@ export async function deleteBranchBatch(batchGroupId, actor = null) {
   const actorId = actor?.id ?? null;
 
   const deleted = await prisma.$transaction(async (tx) => {
-    const batch = await tx.branchBatch.update({
+    const batch = await tx.branchBatch.delete({
       where: { id: existing.id },
-      data: {
-        status: "INACTIVE",
-        updatedBy: actorId,
-        rows: {
-          updateMany: {
-            where: {},
-            data: {
-              status: "INACTIVE",
-              updatedBy: actorId,
-            },
-          },
-        },
-      },
       include: getInclude(),
     });
     return batch;

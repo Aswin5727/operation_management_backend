@@ -375,8 +375,8 @@ model BranchBatch {
   branchId        String
   branchCourseId  String
   branchFacultyId String
-  batchId         String          @unique
-  batchGroupId    String          @unique
+  batchId         String
+  batchGroupId    String
   courseId        String
   courseName      String
   facultyId       String
@@ -396,6 +396,7 @@ model BranchBatch {
   @@index([branchId])
   @@index([branchCourseId])
   @@index([branchFacultyId])
+  @@unique([branchId, batchGroupId])
   @@index([courseId])
   @@index([facultyId])
   @@index([status])
@@ -404,7 +405,7 @@ model BranchBatch {
 model BranchBatchRow {
   id            String       @id @default(cuid())
   branchBatchId String
-  batchId       String       @unique
+  batchId       String
   batchName     String
   startTime     String
   startPeriod   String
@@ -421,6 +422,7 @@ model BranchBatchRow {
   branchBatch   BranchBatch  @relation(fields: [branchBatchId], references: [id], onDelete: Cascade)
 
   @@index([branchBatchId])
+  @@unique([branchBatchId, batchId])
   @@index([batchId])
   @@index([status])
 }

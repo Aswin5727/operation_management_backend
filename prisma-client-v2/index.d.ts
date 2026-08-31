@@ -45680,14 +45680,15 @@ export namespace Prisma {
 
   export type BranchBatchWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    batchId?: string
-    batchGroupId?: string
+    branchId_batchGroupId?: BranchBatchBranchIdBatchGroupIdCompoundUniqueInput
     AND?: BranchBatchWhereInput | BranchBatchWhereInput[]
     OR?: BranchBatchWhereInput[]
     NOT?: BranchBatchWhereInput | BranchBatchWhereInput[]
     branchId?: StringFilter<"BranchBatch"> | string
     branchCourseId?: StringFilter<"BranchBatch"> | string
     branchFacultyId?: StringFilter<"BranchBatch"> | string
+    batchId?: StringFilter<"BranchBatch"> | string
+    batchGroupId?: StringFilter<"BranchBatch"> | string
     courseId?: StringFilter<"BranchBatch"> | string
     courseName?: StringFilter<"BranchBatch"> | string
     facultyId?: StringFilter<"BranchBatch"> | string
@@ -45703,7 +45704,7 @@ export namespace Prisma {
     branchCourse?: XOR<BranchCourseScalarRelationFilter, BranchCourseWhereInput>
     branchFaculty?: XOR<BranchFacultyScalarRelationFilter, BranchFacultyWhereInput>
     rows?: BranchBatchRowListRelationFilter
-  }, "id" | "batchId" | "batchGroupId">
+  }, "id" | "branchId_batchGroupId">
 
   export type BranchBatchOrderByWithAggregationInput = {
     id?: SortOrder
@@ -45798,11 +45799,12 @@ export namespace Prisma {
 
   export type BranchBatchRowWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    batchId?: string
+    branchBatchId_batchId?: BranchBatchRowBranchBatchIdBatchIdCompoundUniqueInput
     AND?: BranchBatchRowWhereInput | BranchBatchRowWhereInput[]
     OR?: BranchBatchRowWhereInput[]
     NOT?: BranchBatchRowWhereInput | BranchBatchRowWhereInput[]
     branchBatchId?: StringFilter<"BranchBatchRow"> | string
+    batchId?: StringFilter<"BranchBatchRow"> | string
     batchName?: StringFilter<"BranchBatchRow"> | string
     startTime?: StringFilter<"BranchBatchRow"> | string
     startPeriod?: StringFilter<"BranchBatchRow"> | string
@@ -45817,7 +45819,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"BranchBatchRow"> | Date | string
     updatedAt?: DateTimeFilter<"BranchBatchRow"> | Date | string
     branchBatch?: XOR<BranchBatchScalarRelationFilter, BranchBatchWhereInput>
-  }, "id" | "batchId">
+  }, "id" | "branchBatchId_batchId">
 
   export type BranchBatchRowOrderByWithAggregationInput = {
     id?: SortOrder
@@ -53523,6 +53525,11 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
+  export type BranchBatchBranchIdBatchGroupIdCompoundUniqueInput = {
+    branchId: string
+    batchGroupId: string
+  }
+
   export type BranchBatchCountOrderByAggregateInput = {
     id?: SortOrder
     branchId?: SortOrder
@@ -53594,6 +53601,11 @@ export namespace Prisma {
   export type BranchBatchScalarRelationFilter = {
     is?: BranchBatchWhereInput
     isNot?: BranchBatchWhereInput
+  }
+
+  export type BranchBatchRowBranchBatchIdBatchIdCompoundUniqueInput = {
+    branchBatchId: string
+    batchId: string
   }
 
   export type BranchBatchRowCountOrderByAggregateInput = {
