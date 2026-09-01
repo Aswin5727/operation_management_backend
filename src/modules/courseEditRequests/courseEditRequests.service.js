@@ -273,39 +273,41 @@ async function resolveFacultyAssignment(branchCourseId, actor = {}) {
   const normalizedUserId = normalizeString(actor?.id);
   const normalizedUserCode = normalizeString(actor?.userCode);
 
-  const where = {
-    branchCourseId,
-    ...(normalizedEmail || normalizedUserId || normalizedUserCode
-      ? {
-          OR: [
-            ...(normalizedEmail
-              ? [
-                  {
-                    email: {
-                      equals: normalizedEmail,
-                      mode: "insensitive",
-                    },
-                  },
-                ]
-              : []),
-            ...(normalizedUserCode
-              ? [
-                  {
-                    facultyId: {
-                      equals: normalizedUserCode,
-                      mode: "insensitive",
-                    },
-                  },
-                ]
-              : []),
-            ...(normalizedUserId ? [{ facultyId: normalizedUserId }] : []),
-          ],
-        }
-      : {}),
-  };
+  const identityFilters = [
+    ...(normalizedEmail
+      ? [
+          {
+            email: {
+              equals: normalizedEmail,
+              mode: "insensitive",
+            },
+          },
+        ]
+      : []),
+    ...(normalizedUserCode
+      ? [
+          {
+            facultyId: {
+              equals: normalizedUserCode,
+              mode: "insensitive",
+            },
+          },
+        ]
+      : []),
+    ...(normalizedUserId ? [{ facultyId: normalizedUserId }] : []),
+  ];
 
-  return prisma.branchFaculty.findFirst({
-    where,
+  if (!identityFilters.length) {
+    return null;
+  }
+
+  // A BranchFaculty row keeps the current direct course link, while batch
+  // assignments can link the same faculty member to additional courses.
+  // Check the direct link first, then fall back to the branch batch mapping.
+  const faculty = await prisma.branchFaculty.findFirst({
+    where: {
+      OR: identityFilters,
+    },
     select: {
       id: true,
       facultyId: true,
@@ -317,6 +319,32 @@ async function resolveFacultyAssignment(branchCourseId, actor = {}) {
       status: true,
     },
   });
+
+  if (!faculty) {
+    return null;
+  }
+
+  if (
+    (faculty.branchCourseId && faculty.branchCourseId === branchCourseId) ||
+    (faculty.courseId && faculty.courseId === branchCourseId)
+  ) {
+    return faculty;
+  }
+
+  const batchAssignment = await prisma.branchBatch.findFirst({
+    where: {
+      branchCourseId,
+      branchId: faculty.branchId,
+      status: "ACTIVE",
+      OR: [
+        { branchFacultyId: faculty.id },
+        ...(faculty.facultyId ? [{ facultyId: faculty.facultyId }] : []),
+      ],
+    },
+    select: { id: true },
+  });
+
+  return batchAssignment ? faculty : null;
 }
 
 async function resolveFacultyUser(facultyEmail, facultyId = null) {
@@ -457,7 +485,7 @@ export async function createCourseEditRequest(actor, payload = {}) {
     throw new AppError("Only faculty can create an edit request", 403);
   }
 
-  const branchCourseId = parseRequiredText(payload.branchCourseId, "Course");
+  const branchCourseId = parseRequiredText(payload.branchCourseId || payload.courseId, "Course");
   const title = parseRequiredText(payload.title || payload.requestTitle, "Request title");
   const reason = parseRequiredText(payload.reason || payload.requestReason, "Request reason");
   const description = parseOptionalText(payload.description || payload.requestDescription);
