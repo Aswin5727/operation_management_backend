@@ -1650,12 +1650,31 @@ export async function createBranchStudent(payload, actor) {
     }
   }
 
+  const selectedBatchId = normalizeString(payload.batchId || payload.batchEntryId);
+  const assignedBatch = selectedBatchId
+    ? await prisma.branchBatchRow.findFirst({
+        where: {
+          OR: [{ id: selectedBatchId }, { batchId: selectedBatchId }],
+          branchBatch: { branchId },
+        },
+        select: {
+          batchName: true,
+          batchTiming: true,
+          branchBatch: { select: { courseName: true } },
+        },
+      })
+    : null;
+
   void sendStudentCredentialsEmail({
     to: studentData.emailAddress,
     fullName: studentData.studentName,
     studentCode: studentId,
     temporaryPassword,
     resetToken,
+    courseName: studentData.courseName || assignedBatch?.branchBatch?.courseName || "",
+    facultyName: studentData.facultyName || "",
+    batchName: assignedBatch?.batchName || "",
+    batchTiming: assignedBatch?.batchTiming || "",
   }).catch((error) => {
     console.warn("Branch student credentials email failed to send", error);
   });

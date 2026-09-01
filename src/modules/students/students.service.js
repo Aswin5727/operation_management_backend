@@ -971,6 +971,9 @@ export async function createStudent(payload, actor) {
     studentCode,
     temporaryPassword,
     resetToken,
+    courseName: parsed.courseInterested,
+    facultyName: parsed.facultyName,
+    batchName: parsed.batchName,
   }).catch((error) => {
     console.warn("Student credentials email failed to send", error);
   });

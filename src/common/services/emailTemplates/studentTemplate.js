@@ -1,13 +1,30 @@
 import { baseTemplate } from "./baseTemplate.js";
 
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+}
+
 export function studentTemplate({
   fullName,
   email,
   studentCode,
+  courseName,
+  facultyName,
+  batchName,
+  batchTiming,
 }) {
   const safeFullName = String(fullName || "Student").trim();
   const safeEmail = String(email || "-").trim();
   const safeStudentCode = String(studentCode || "-").trim();
+  const safeCourseName = String(courseName || "").trim();
+  const safeFacultyName = String(facultyName || "").trim();
+  const safeBatchName = String(batchName || "").trim();
+  const safeBatchTiming = String(batchTiming || "").trim();
 
   const content = `
     <div style="margin-top:10px;font-family:'Segoe UI',Tahoma,Arial,sans-serif;">
@@ -55,10 +72,14 @@ export function studentTemplate({
           <td style="width:34%;padding:15px 18px;background:#f8fafc;color:#334155;font-size:13px;font-weight:700;">
             Email
           </td>
-          <td style="padding:15px 18px;background:#ffffff;color:#0f172a;font-size:14px;font-weight:600;">
+          <td style="padding:15px 18px;background:#ffffff;color:#0f172a;font-size:14px;font-weight:600;border-bottom:1px solid #e2e8f0;">
             ${safeEmail}
           </td>
         </tr>
+        ${safeCourseName ? `<tr><td style="width:34%;padding:15px 18px;background:#f8fafc;color:#334155;font-size:13px;font-weight:700;border-bottom:1px solid #e2e8f0;">Course</td><td style="padding:15px 18px;background:#ffffff;color:#0f172a;font-size:14px;font-weight:600;border-bottom:1px solid #e2e8f0;">${escapeHtml(safeCourseName)}</td></tr>` : ""}
+        ${safeFacultyName ? `<tr><td style="width:34%;padding:15px 18px;background:#f8fafc;color:#334155;font-size:13px;font-weight:700;border-bottom:1px solid #e2e8f0;">Faculty Name</td><td style="padding:15px 18px;background:#ffffff;color:#0f172a;font-size:14px;font-weight:600;border-bottom:1px solid #e2e8f0;">${escapeHtml(safeFacultyName)}</td></tr>` : ""}
+        ${safeBatchName ? `<tr><td style="width:34%;padding:15px 18px;background:#f8fafc;color:#334155;font-size:13px;font-weight:700;border-bottom:1px solid #e2e8f0;">Batch</td><td style="padding:15px 18px;background:#ffffff;color:#0f172a;font-size:14px;font-weight:600;border-bottom:1px solid #e2e8f0;">${escapeHtml(safeBatchName)}</td></tr>` : ""}
+        ${safeBatchTiming ? `<tr><td style="width:34%;padding:15px 18px;background:#f8fafc;color:#334155;font-size:13px;font-weight:700;">Batch Timing</td><td style="padding:15px 18px;background:#ffffff;color:#0f172a;font-size:14px;font-weight:600;">${escapeHtml(safeBatchTiming)}</td></tr>` : ""}
       </table>
     </div>
   `;

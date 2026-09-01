@@ -122,23 +122,28 @@ export function paymentReceiptTemplate({
 export function paymentReceiptMailTemplate({
   studentName,
   paymentFor,
+  receiptNumber,
+  paymentDate,
+  amount,
 }) {
   const safeName = escapeHtml(studentName || "Student");
   const safePaymentFor = escapeHtml(paymentFor || "your installment payment");
+  const safeReceiptNumber = escapeHtml(receiptNumber || "payment-receipt");
+  const safePaymentDate = escapeHtml(formatDate(paymentDate));
+  const safeAmount = formatAmount(amount);
 
-  return baseTemplate({
-    title: "Payment Receipt",
-    subtitle: "Your payment receipt PDF is attached to this email.",
-    content: `
-      <div style="font-family:Arial,Helvetica,sans-serif;color:#132b4f;font-size:15px;line-height:26px;">
-        <p style="margin:0 0 18px;">Hi <strong>${safeName}</strong>,</p>
-        <p style="margin:0 0 18px;">Your <strong>${safePaymentFor}</strong> has been recorded successfully.</p>
-        <div style="margin:22px 0;padding:18px 20px;border:1px solid #b8c9e5;border-radius:12px;background:#f5f8ff;color:#1e3a8a;font-size:14px;line-height:23px;">
-          Your payment receipt is attached as a PDF. Please download the attached file and keep it for your records.
-        </div>
-        <p style="margin:20px 0 0;">Thank you,<br><strong>CISPRO Training Team</strong></p>
-      </div>
-    `,
-  });
+  return `<!doctype html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Payment Receipt</title></head>
+<body style="margin:0;padding:32px 24px;background:#ffffff;font-family:Arial,Helvetica,sans-serif;color:#202124;-webkit-text-size-adjust:100%;">
+  <div style="max-width:680px;font-size:16px;line-height:28px;">
+    <p style="margin:0 0 22px;">Hi <strong>${safeName}</strong>,</p>
+    <p style="margin:0 0 22px;">Your <strong>${safePaymentFor}</strong> has been received successfully.</p>
+    <p style="margin:0 0 22px;">Receipt number: <strong>${safeReceiptNumber}</strong><br>Payment date: ${safePaymentDate}<br>Amount received: <strong>${safeAmount}</strong></p>
+    <p style="margin:0 0 22px;">Your payment receipt is attached to this email as a PDF. Please download and keep it for your records.</p>
+    <p style="margin:28px 0 0;">Thank you,<br><strong>CISPRO Training Team</strong></p>
+  </div>
+</body>
+</html>`;
 }
 import { baseTemplate } from "./baseTemplate.js";

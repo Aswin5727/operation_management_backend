@@ -335,7 +335,7 @@ export async function sendPasswordResetEmail({ to, resetToken, expiryMinutes = 2
   });
 }
 
-export async function sendStudentCredentialsEmail({ to, fullName, studentCode, temporaryPassword, resetToken }) {
+export async function sendStudentCredentialsEmail({ to, fullName, studentCode, temporaryPassword, resetToken, courseName, facultyName, batchName, batchTiming }) {
   const safeName = escapeHtml(fullName || "Student");
   const safeCode = escapeHtml(studentCode || "-");
 
@@ -343,6 +343,10 @@ export async function sendStudentCredentialsEmail({ to, fullName, studentCode, t
     fullName: safeName,
     email: to,
     studentCode: safeCode,
+    courseName: escapeHtml(courseName || ""),
+    facultyName: escapeHtml(facultyName || ""),
+    batchName: escapeHtml(batchName || ""),
+    batchTiming: escapeHtml(batchTiming || ""),
   });
 
 
@@ -350,6 +354,10 @@ export async function sendStudentCredentialsEmail({ to, fullName, studentCode, t
     `CISPRO Training registration completed for ${safeName}.`,
     safeCode ? `Student ID: ${safeCode}` : null,
     `Email: ${to}`,
+    courseName ? `Course: ${courseName}` : null,
+    facultyName ? `Faculty: ${facultyName}` : null,
+    batchName ? `Batch: ${batchName}` : null,
+    batchTiming ? `Batch timing: ${batchTiming}` : null,
   ].filter(Boolean);
 
   return sendEmail({
@@ -654,10 +662,6 @@ export async function sendFacultyBatchAssignmentEmail({
       { label: "Course", value: safeCourseName || "-" },
       { label: "Batch Group ID", value: safeBatchGroupId || "-" },
       { label: "Batch Count", value: String(Number(batchCount || normalizedBatches.length || 0)) },
-      {
-        label: "Batch Details",
-        value: batchSummaryLines.length ? batchSummaryLines.join(" ; ") : "-",
-      },
     ],
     primaryActionLabel: "Open Faculty Dashboard",
     primaryActionLink: loginLink,
@@ -773,6 +777,9 @@ export async function sendStudentPaymentReceiptEmail({
   const html = paymentReceiptMailTemplate({
     studentName,
     paymentFor,
+    receiptNumber,
+    paymentDate,
+    amount,
   });
 
   const text = [
