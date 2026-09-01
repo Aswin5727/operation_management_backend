@@ -11,6 +11,7 @@ import { facultyTemplate } from "./emailTemplates/facultyTemplate.js";
 import { branchTemplate } from "./emailTemplates/branchTemplate.js";
 import { branchWelcomeTemplate } from "./emailTemplates/branchWelcomeTemplate.js";
 import { alertTemplate } from "./emailTemplates/alertTemplate.js";
+import { paymentReceiptMailTemplate } from "./emailTemplates/paymentReceiptTemplate.js";
 
 let cachedTransporter = null;
 let cachedResendClient = null;
@@ -130,7 +131,7 @@ function getTransporter() {
   return cachedTransporter;
 }
 
-async function sendWithResend({ to, subject, html, text, replyTo }) {
+async function sendWithResend({ to, subject, html, text, replyTo, attachments }) {
   const resend = getResendClient();
   if (!resend) {
     throw new AppError("RESEND_API_KEY is not configured", 500);
@@ -143,12 +144,18 @@ async function sendWithResend({ to, subject, html, text, replyTo }) {
     html,
     text,
     replyTo: replyTo || undefined,
+    attachments: attachments?.length
+      ? attachments.map((attachment) => ({
+          ...attachment,
+          content: Buffer.from(String(attachment.content || ""), "base64"),
+        }))
+      : undefined,
   });
 
   return result;
 }
 
-async function sendWithNodemailer({ to, subject, html, text, replyTo }) {
+async function sendWithNodemailer({ to, subject, html, text, replyTo, attachments }) {
   ensureMailerReady();
 
   if (!hasGmailConfig()) {
@@ -167,10 +174,16 @@ async function sendWithNodemailer({ to, subject, html, text, replyTo }) {
     html,
     text,
     replyTo: replyTo || undefined,
+    attachments: attachments?.length
+      ? attachments.map((attachment) => ({
+          filename: attachment.filename,
+          content: Buffer.from(String(attachment.content || ""), "base64"),
+        }))
+      : undefined,
   });
 }
 
-async function sendWithSendGrid({ to, subject, html, text, replyTo }) {
+async function sendWithSendGrid({ to, subject, html, text, replyTo, attachments }) {
   if (!hasSendGridConfig()) {
     throw new AppError("SENDGRID_API_KEY or SENDGRID_FROM is not configured", 500);
   }
@@ -211,6 +224,7 @@ async function sendWithSendGrid({ to, subject, html, text, replyTo }) {
       from: { email: config.sendgridFrom },
       subject,
       content,
+      ...(attachments?.length ? { attachments } : {}),
     }),
   });
 
@@ -229,7 +243,7 @@ async function sendWithSendGrid({ to, subject, html, text, replyTo }) {
   };
 }
 
-async function sendEmail({ to, subject, html, text, replyTo }) {
+async function sendEmail({ to, subject, html, text, replyTo, attachments }) {
   const recipient = String(to || "").trim();
   if (!recipient) {
     throw new AppError("Recipient email is required", 400);
@@ -250,6 +264,7 @@ async function sendEmail({ to, subject, html, text, replyTo }) {
         html,
         text,
         replyTo,
+        attachments,
       });
     } catch (error) {
       console.warn("Gmail failed:", error);
@@ -264,6 +279,7 @@ async function sendEmail({ to, subject, html, text, replyTo }) {
         html,
         text,
         replyTo,
+        attachments,
       });
     } catch (error) {
       console.warn("Resend failed:", error);
@@ -277,6 +293,7 @@ async function sendEmail({ to, subject, html, text, replyTo }) {
       html,
       text,
       replyTo,
+      attachments,
     });
   }
 
@@ -729,5 +746,61 @@ export async function sendStudentPaymentDueEmail({
     subject: "Next installment reminder",
     html,
     text,
+  });
+}
+
+export async function sendStudentPaymentReceiptEmail({
+  to,
+  studentName,
+  studentId,
+  courseName,
+  batchName,
+  branchName,
+  branchAddress,
+  receiptNumber,
+  paymentDate,
+  paymentFor,
+  paymentMode,
+  transactionReference,
+  collectedBy,
+  amount,
+  totalCourseFee,
+  totalPaid,
+  balance,
+  installments,
+  receiptAttachment = null,
+}) {
+  const html = paymentReceiptMailTemplate({
+    studentName,
+    paymentFor,
+  });
+
+  const text = [
+    "CISPRO Payment Receipt",
+    `Student: ${studentName || "Student"}`,
+    studentId ? `Student ID: ${studentId}` : null,
+    `Receipt Number: ${receiptNumber || "-"}`,
+    `Payment Date: ${paymentDate || "-"}`,
+    `Payment For: ${paymentFor || "-"}`,
+    `Amount Received: ${amount || 0}`,
+    `Remaining Balance: ${balance || 0}`,
+  ].filter(Boolean).join("\n");
+
+  const attachmentContent = String(receiptAttachment?.content || "").trim();
+  const attachments = attachmentContent
+    ? [{
+        content: attachmentContent,
+        filename: String(receiptAttachment?.filename || `Payment_Receipt_${receiptNumber || "receipt"}.pdf`),
+        type: String(receiptAttachment?.contentType || "application/pdf"),
+        disposition: "attachment",
+      }]
+    : [];
+
+  return sendEmail({
+    to,
+    subject: `Payment Receipt ${receiptNumber || "-"} - CISPRO Training`,
+    html,
+    text,
+    attachments,
   });
 }

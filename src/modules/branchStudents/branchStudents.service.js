@@ -9,6 +9,7 @@ import { hashPassword } from "../../common/utils/password.js";
 import { getCurrentBranchProfile } from "../branches/branches.service.js";
 import {
   sendStudentCredentialsEmail,
+  sendStudentPaymentReceiptEmail,
   sendStudentPaymentDueEmail,
 } from "../../common/services/resendEmail.js";
 import {
@@ -1892,6 +1893,48 @@ export async function createBranchStudentPayment(studentId, payload, actor = nul
 
   if (refreshedStudent) {
     const branchProfile = await getCurrentBranchProfile(actor).catch(() => null);
+
+    const savedPayment = Array.isArray(refreshedStudent.payments)
+      ? refreshedStudent.payments.find((item) => item.id === payment.id)
+      : payment;
+    const totalCourseFee = Number(
+      refreshedStudent.totalCourseFee ||
+      refreshedStudent.courseFee ||
+      refreshedStudent.totalFees ||
+      refreshedStudent.totalAmount ||
+      refreshedStudent.afterDiscount ||
+      0
+    );
+    const totalPaid = Array.isArray(refreshedStudent.payments)
+      ? refreshedStudent.payments.reduce((sum, item) => sum + Number(item.amount || 0), 0)
+      : Number(savedPayment?.amount || 0);
+
+    if (refreshedStudent.emailAddress) {
+      void sendStudentPaymentReceiptEmail({
+        to: refreshedStudent.emailAddress,
+        studentName: refreshedStudent.studentName,
+        studentId: refreshedStudent.studentId,
+        courseName: refreshedStudent.courseName || refreshedStudent.courseInterested || "",
+        batchName: refreshedStudent.batchName || refreshedStudent.batch || "",
+        branchName: branchProfile?.branchName || refreshedStudent.branchName || "CISPRO Training",
+        branchAddress: branchProfile?.branchAddress || refreshedStudent.branchAddress || "",
+        receiptNumber: savedPayment?.receiptNumber || payment.receiptNumber,
+        paymentDate: savedPayment?.paymentDate || payment.paymentDate,
+        paymentFor: savedPayment?.payAgainst || payment.payAgainst,
+        paymentMode: savedPayment?.paymentMode || payment.paymentMode,
+        transactionReference: savedPayment?.transactionReference || payment.transactionReference,
+        collectedBy: savedPayment?.collectedBy || payment.collectedBy,
+        amount: savedPayment?.amount || payment.amount,
+        totalCourseFee,
+        totalPaid,
+        balance: Math.max(totalCourseFee - totalPaid, 0),
+        installments: refreshedStudent.installments,
+        receiptAttachment: payload.receiptAttachment,
+      })
+        .catch((error) => {
+          console.warn("Branch student payment receipt email failed to send", error);
+        });
+    }
 
     void notifyProgressAlignment(refreshedStudent, branchProfile || { id: student.branchId, branchId: student.branchId }, actor).catch((error) => {
       console.warn("Branch student payment progress notification failed", error);
