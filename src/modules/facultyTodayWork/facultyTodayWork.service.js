@@ -217,11 +217,13 @@ function isWorkEntryForBranchStudent(entry = {}, student = {}) {
     normalizeWorkStudentId(student?.studentId),
   ].filter(Boolean);
 
-  if (!applyToAllStudents && !studentIdsToMatch.some((value) => entryStudentIds.includes(value))) {
+  // The selected student IDs are the reliable scope for older entries that
+  // do not have batch columns, including apply-to-all submissions.
+  if (entryStudentIds.length && !studentIdsToMatch.some((value) => entryStudentIds.includes(value))) {
     return false;
   }
 
-  return true;
+  return entryStudentIds.length > 0 || applyToAllStudents;
 }
 
 function calculateBranchStudentCourseProgress(course = {}, entries = [], student = null) {
@@ -245,19 +247,34 @@ function calculateBranchStudentCourseProgress(course = {}, entries = [], student
   if (!matchingEntries.length) return 0;
 
   const moduleCompletionMap = new Map();
+  const moduleSubmoduleIdMap = new Map();
   modules.forEach((module, moduleIndex) => {
     const moduleId = normalizeString(module?.id || `module-${moduleIndex}`);
     if (!moduleId) return;
     moduleCompletionMap.set(moduleId, new Set());
+    moduleSubmoduleIdMap.set(
+      moduleId,
+      new Set(
+        (Array.isArray(module?.submodules) ? module.submodules : [])
+          .map((submodule, submoduleIndex) => normalizeString(
+            submodule?.id || submodule?.submoduleId || `submodule-${submoduleIndex}`,
+          ))
+          .filter(Boolean),
+      ),
+    );
   });
 
   matchingEntries.forEach((entry) => {
     const entryModuleId = normalizeString(entry?.moduleId || "");
     const submoduleSet = moduleCompletionMap.get(entryModuleId);
+    const validSubmoduleIds = moduleSubmoduleIdMap.get(entryModuleId);
     if (!submoduleSet) return;
 
     getWorkEntrySubmoduleIds(entry).forEach((submoduleId) => {
-      submoduleSet.add(normalizeString(submoduleId));
+      const normalizedSubmoduleId = normalizeString(submoduleId);
+      if (normalizedSubmoduleId && validSubmoduleIds?.has(normalizedSubmoduleId)) {
+        submoduleSet.add(normalizedSubmoduleId);
+      }
     });
   });
 
