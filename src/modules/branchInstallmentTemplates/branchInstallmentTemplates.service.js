@@ -386,6 +386,16 @@ export async function updateBranchInstallmentTemplate(templateId, payload, actor
   return toBranchInstallmentTemplateSummary(updated);
 }
 
+
+
+
+
+
+
+
+
+
+
 export async function deleteBranchInstallmentTemplate(templateId, actor) {
   const branchProfile = await getCurrentBranchProfile(actor);
   if (!branchProfile?.id) {
