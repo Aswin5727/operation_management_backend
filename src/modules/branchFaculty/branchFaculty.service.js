@@ -221,6 +221,12 @@ export async function listBranchFaculty(actorUser, query) {
             name: true,
           },
         },
+
+        _count: {
+          select: {
+            branchBatches: true,
+          },
+        },
       },
     }),
 
