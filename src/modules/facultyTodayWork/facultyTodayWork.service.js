@@ -213,28 +213,23 @@ async function validateFacultyBatchScope({ branchId, courseId, batchId, facultyP
     throw new AppError("Batch is required", 400);
   }
 
-  const batch = await prisma.branchBatchRow.findFirst({
+  const batch = await prisma.branchBatch.findFirst({
     where: {
       batchId: normalizedBatchId,
       status: "ACTIVE",
-      branchBatch: {
-        branchId: normalizeString(branchId),
-        branchCourseId: normalizeString(courseId),
-        status: "ACTIVE",
-        OR: [
-          { branchFacultyId: normalizeString(facultyProfileId) },
-          { facultyId: normalizeString(facultyProfileId) },
-          { facultyEmail: normalizeString(facultyUserId) },
-        ],
-      },
+      branchId: normalizeString(branchId),
+      branchCourseId: normalizeString(courseId),
+      OR: [
+        { branchFacultyId: normalizeString(facultyProfileId) },
+        { facultyId: normalizeString(facultyProfileId) },
+        { facultyEmail: normalizeString(facultyUserId) },
+      ],
     },
     select: {
       batchId: true,
       batchName: true,
       batchTiming: true,
-      branchBatch: {
-        select: { facultyId: true },
-      },
+      facultyId: true,
     },
   });
 
@@ -257,7 +252,7 @@ async function validateFacultyBatchScope({ branchId, courseId, batchId, facultyP
     select: { id: true, studentId: true, facultyId: true },
   });
 
-  const expectedFacultyId = normalizeString(batch.branchBatch?.facultyId);
+  const expectedFacultyId = normalizeString(batch.facultyId);
   const validStudents = students.filter((student) => (
     !expectedFacultyId || normalizeString(student.facultyId) === expectedFacultyId
   ));

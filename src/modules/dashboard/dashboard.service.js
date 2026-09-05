@@ -97,19 +97,22 @@ function normalizeFacultyKey(value) {
 
 function batchMatchesStudent(student, faculty, entry) {
   const studentFacultyId = normalizeFacultyText(student?.facultyId);
-  const studentFacultyName = normalizeFacultyKey(student?.facultyName);
   const studentBatchId = normalizeFacultyText(student?.batchId || student?.batchEntryId);
   const studentCourseId = normalizeFacultyText(student?.courseId);
 
   const batchId = normalizeFacultyText(entry?.batchId || entry?.id);
   const courseId = normalizeFacultyText(entry?.courseId || faculty?.courseId);
+  const facultyId = normalizeFacultyText(faculty?.id || faculty?.facultyId);
 
-  if (batchId && studentBatchId && studentBatchId === batchId) {
-    return true;
-  }
-
-  const courseMatches = !courseId || !studentCourseId || studentCourseId === courseId;
-  return Boolean(batchId && studentBatchId && studentBatchId === batchId && courseMatches);
+  return Boolean(
+    batchId &&
+    studentBatchId &&
+    studentBatchId === batchId &&
+    courseId &&
+    studentCourseId &&
+    studentCourseId === courseId &&
+    (!facultyId || studentFacultyId === facultyId),
+  );
 }
 
 function toBranchFacultyBatchEntries(branchBatches = [], branchFaculty = null) {
@@ -117,26 +120,22 @@ function toBranchFacultyBatchEntries(branchBatches = [], branchFaculty = null) {
     return [];
   }
 
-  return branchBatches.flatMap((batch) => {
-    const rows = Array.isArray(batch?.rows) ? batch.rows : [];
-    return rows.map((row) => ({
-      id: row?.batchId || row?.id || batch?.id || "",
+  return branchBatches.map((batch) => ({
+      id: batch?.batchId || batch?.id || "",
       facultyId: branchFaculty?.id || branchFaculty?.facultyId || batch?.facultyId || "",
       facultyName: branchFaculty?.name || "",
       facultyEmail: branchFaculty?.email || "",
       courseId: batch?.courseId || batch?.branchCourseId || "",
       courseName: batch?.courseName || batch?.branchCourse?.name || "",
-      batchGroupId: batch?.batchGroupId || batch?.id || "",
-      batchId: row?.batchId || batch?.batchId || "",
-      batchName: row?.batchName || "",
-      batchTiming: row?.batchTiming || "",
-      totalSeats: Number(row?.totalSeats || 0),
-      status: row?.status === "INACTIVE" ? "Inactive" : "Active",
-      sequenceNo: Number(row?.sequenceNo || 0),
-      createdAt: row?.createdAt || batch?.createdAt || null,
-      updatedAt: row?.updatedAt || batch?.updatedAt || null,
+      batchId: batch?.batchId || "",
+      batchName: batch?.batchName || "",
+      batchTiming: batch?.batchTiming || "",
+      totalSeats: Number(batch?.totalSeats || 0),
+      status: batch?.status === "INACTIVE" ? "Inactive" : "Active",
+      sequenceNo: Number(batch?.sequenceNo || 0),
+      createdAt: batch?.createdAt || null,
+      updatedAt: batch?.updatedAt || null,
     }));
-  });
 }
 
 async function getFacultyMyBatchesSummary(user) {
@@ -167,14 +166,6 @@ async function getFacultyMyBatchesSummary(user) {
           status: "ACTIVE",
         },
         orderBy: [{ createdAt: "asc" }],
-        include: {
-          rows: {
-            where: {
-              status: "ACTIVE",
-            },
-            orderBy: { sequenceNo: "asc" },
-          },
-        },
       },
     },
   });

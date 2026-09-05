@@ -18,9 +18,9 @@ router.use(authorize(USER_ROLES.BRANCH_ADMIN, USER_ROLES.SUPER_ADMIN));
 
 router.get("/", listBranchBatchesHandler);
 router.post("/", createBranchBatchHandler);
-router.get("/:batchGroupId", getBranchBatchHandler);
-router.patch("/:batchGroupId", updateBranchBatchHandler);
-router.delete("/:batchGroupId", deleteBranchBatchHandler);
+router.get("/:batchId", getBranchBatchHandler);
+router.patch("/:batchId", updateBranchBatchHandler);
+router.delete("/:batchId", deleteBranchBatchHandler);
 
 export default router;
 

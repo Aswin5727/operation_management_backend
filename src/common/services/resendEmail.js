@@ -632,7 +632,7 @@ export async function sendFacultyBatchAssignmentEmail({
   fullName,
   facultyId,
   courseName,
-  batchGroupId,
+  batchId,
   batchCount = 0,
   batches = [],
 }) {
@@ -640,7 +640,7 @@ export async function sendFacultyBatchAssignmentEmail({
   const safeName = escapeHtml(fullName || "Faculty");
   const safeFacultyId = escapeHtml(facultyId || "");
   const safeCourseName = escapeHtml(courseName || "");
-  const safeBatchGroupId = escapeHtml(batchGroupId || "");
+  const safeBatchId = escapeHtml(batchId || "");
   const normalizedBatches = Array.isArray(batches) ? batches : [];
 
   const batchSummaryLines = normalizedBatches.map((batch, index) => {
@@ -655,12 +655,12 @@ export async function sendFacultyBatchAssignmentEmail({
     eyebrow: "Faculty Batch Assignment",
     title: "Batches Assigned",
     subtitle: `Hello ${safeName}, batches have been assigned to your faculty account.`,
-    summary: "Please review the batch group and manage the assigned batches from your dashboard.",
+    summary: "Please review the assigned batch and manage it from your dashboard.",
     details: [
       { label: "Faculty Name", value: safeName },
       { label: "Faculty ID", value: safeFacultyId || "-" },
       { label: "Course", value: safeCourseName || "-" },
-      { label: "Batch Group ID", value: safeBatchGroupId || "-" },
+      { label: "Batch ID", value: safeBatchId || "-" },
       { label: "Batch Count", value: String(Number(batchCount || normalizedBatches.length || 0)) },
     ],
     primaryActionLabel: "Open Faculty Dashboard",
@@ -676,7 +676,7 @@ export async function sendFacultyBatchAssignmentEmail({
     "Batches have been assigned to your faculty account.",
     facultyId ? `Faculty ID: ${facultyId}` : null,
     courseName ? `Course: ${courseName}` : null,
-    batchGroupId ? `Batch Group ID: ${batchGroupId}` : null,
+    batchId ? `Batch ID: ${batchId}` : null,
     `Batch Count: ${Number(batchCount || normalizedBatches.length || 0)}`,
     "",
     ...batchSummaryLines,

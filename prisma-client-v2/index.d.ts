@@ -84,11 +84,6 @@ export type BatchFacultyAssignment = $Result.DefaultSelection<Prisma.$BatchFacul
  */
 export type BranchBatch = $Result.DefaultSelection<Prisma.$BranchBatchPayload>
 /**
- * Model BranchBatchRow
- * 
- */
-export type BranchBatchRow = $Result.DefaultSelection<Prisma.$BranchBatchRowPayload>
-/**
  * Model CourseStatusHistory
  * 
  */
@@ -547,16 +542,6 @@ export class PrismaClient<
     * ```
     */
   get branchBatch(): Prisma.BranchBatchDelegate<ExtArgs, ClientOptions>;
-
-  /**
-   * `prisma.branchBatchRow`: Exposes CRUD operations for the **BranchBatchRow** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more BranchBatchRows
-    * const branchBatchRows = await prisma.branchBatchRow.findMany()
-    * ```
-    */
-  get branchBatchRow(): Prisma.BranchBatchRowDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.courseStatusHistory`: Exposes CRUD operations for the **CourseStatusHistory** model.
@@ -1155,7 +1140,6 @@ export namespace Prisma {
     Batch: 'Batch',
     BatchFacultyAssignment: 'BatchFacultyAssignment',
     BranchBatch: 'BranchBatch',
-    BranchBatchRow: 'BranchBatchRow',
     CourseStatusHistory: 'CourseStatusHistory',
     BatchStatusHistory: 'BatchStatusHistory',
     StudentProfile: 'StudentProfile',
@@ -1186,7 +1170,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "branch" | "loginEvent" | "notification" | "courseEditRequest" | "passwordResetToken" | "course" | "branchCourse" | "branchCourseModule" | "branchCourseSubmodule" | "courseModule" | "batch" | "batchFacultyAssignment" | "branchBatch" | "branchBatchRow" | "courseStatusHistory" | "batchStatusHistory" | "studentProfile" | "branchStudent" | "branchStudentInstallment" | "facultyProfile" | "facultyCourseAssignment" | "facultyBatchEntry" | "facultyAttendanceSession" | "facultyTodayWorkEntry" | "studentAttendance" | "branchFaculty" | "branchInstallmentTemplate" | "branchStudentPayment" | "branchStudentLedgerEntry"
+      modelProps: "user" | "branch" | "loginEvent" | "notification" | "courseEditRequest" | "passwordResetToken" | "course" | "branchCourse" | "branchCourseModule" | "branchCourseSubmodule" | "courseModule" | "batch" | "batchFacultyAssignment" | "branchBatch" | "courseStatusHistory" | "batchStatusHistory" | "studentProfile" | "branchStudent" | "branchStudentInstallment" | "facultyProfile" | "facultyCourseAssignment" | "facultyBatchEntry" | "facultyAttendanceSession" | "facultyTodayWorkEntry" | "studentAttendance" | "branchFaculty" | "branchInstallmentTemplate" | "branchStudentPayment" | "branchStudentLedgerEntry"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2223,80 +2207,6 @@ export namespace Prisma {
           count: {
             args: Prisma.BranchBatchCountArgs<ExtArgs>
             result: $Utils.Optional<BranchBatchCountAggregateOutputType> | number
-          }
-        }
-      }
-      BranchBatchRow: {
-        payload: Prisma.$BranchBatchRowPayload<ExtArgs>
-        fields: Prisma.BranchBatchRowFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.BranchBatchRowFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$BranchBatchRowPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.BranchBatchRowFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$BranchBatchRowPayload>
-          }
-          findFirst: {
-            args: Prisma.BranchBatchRowFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$BranchBatchRowPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.BranchBatchRowFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$BranchBatchRowPayload>
-          }
-          findMany: {
-            args: Prisma.BranchBatchRowFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$BranchBatchRowPayload>[]
-          }
-          create: {
-            args: Prisma.BranchBatchRowCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$BranchBatchRowPayload>
-          }
-          createMany: {
-            args: Prisma.BranchBatchRowCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          createManyAndReturn: {
-            args: Prisma.BranchBatchRowCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$BranchBatchRowPayload>[]
-          }
-          delete: {
-            args: Prisma.BranchBatchRowDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$BranchBatchRowPayload>
-          }
-          update: {
-            args: Prisma.BranchBatchRowUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$BranchBatchRowPayload>
-          }
-          deleteMany: {
-            args: Prisma.BranchBatchRowDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.BranchBatchRowUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateManyAndReturn: {
-            args: Prisma.BranchBatchRowUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$BranchBatchRowPayload>[]
-          }
-          upsert: {
-            args: Prisma.BranchBatchRowUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$BranchBatchRowPayload>
-          }
-          aggregate: {
-            args: Prisma.BranchBatchRowAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateBranchBatchRow>
-          }
-          groupBy: {
-            args: Prisma.BranchBatchRowGroupByArgs<ExtArgs>
-            result: $Utils.Optional<BranchBatchRowGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.BranchBatchRowCountArgs<ExtArgs>
-            result: $Utils.Optional<BranchBatchRowCountAggregateOutputType> | number
           }
         }
       }
@@ -3532,7 +3442,6 @@ export namespace Prisma {
     batch?: BatchOmit
     batchFacultyAssignment?: BatchFacultyAssignmentOmit
     branchBatch?: BranchBatchOmit
-    branchBatchRow?: BranchBatchRowOmit
     courseStatusHistory?: CourseStatusHistoryOmit
     batchStatusHistory?: BatchStatusHistoryOmit
     studentProfile?: StudentProfileOmit
@@ -4062,37 +3971,6 @@ export namespace Prisma {
    */
   export type BatchCountOutputTypeCountStatusHistoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: BatchStatusHistoryWhereInput
-  }
-
-
-  /**
-   * Count Type BranchBatchCountOutputType
-   */
-
-  export type BranchBatchCountOutputType = {
-    rows: number
-  }
-
-  export type BranchBatchCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    rows?: boolean | BranchBatchCountOutputTypeCountRowsArgs
-  }
-
-  // Custom InputTypes
-  /**
-   * BranchBatchCountOutputType without action
-   */
-  export type BranchBatchCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the BranchBatchCountOutputType
-     */
-    select?: BranchBatchCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * BranchBatchCountOutputType without action
-   */
-  export type BranchBatchCountOutputTypeCountRowsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: BranchBatchRowWhereInput
   }
 
 
@@ -21438,11 +21316,13 @@ export namespace Prisma {
   }
 
   export type BranchBatchAvgAggregateOutputType = {
-    batchCount: number | null
+    totalSeats: number | null
+    sequenceNo: number | null
   }
 
   export type BranchBatchSumAggregateOutputType = {
-    batchCount: number | null
+    totalSeats: number | null
+    sequenceNo: number | null
   }
 
   export type BranchBatchMinAggregateOutputType = {
@@ -21451,13 +21331,19 @@ export namespace Prisma {
     branchCourseId: string | null
     branchFacultyId: string | null
     batchId: string | null
-    batchGroupId: string | null
     courseId: string | null
     courseName: string | null
     facultyId: string | null
     facultyName: string | null
     facultyEmail: string | null
-    batchCount: number | null
+    batchName: string | null
+    startTime: string | null
+    startPeriod: string | null
+    endTime: string | null
+    endPeriod: string | null
+    batchTiming: string | null
+    totalSeats: number | null
+    sequenceNo: number | null
     status: $Enums.RecordStatus | null
     createdBy: string | null
     updatedBy: string | null
@@ -21471,13 +21357,19 @@ export namespace Prisma {
     branchCourseId: string | null
     branchFacultyId: string | null
     batchId: string | null
-    batchGroupId: string | null
     courseId: string | null
     courseName: string | null
     facultyId: string | null
     facultyName: string | null
     facultyEmail: string | null
-    batchCount: number | null
+    batchName: string | null
+    startTime: string | null
+    startPeriod: string | null
+    endTime: string | null
+    endPeriod: string | null
+    batchTiming: string | null
+    totalSeats: number | null
+    sequenceNo: number | null
     status: $Enums.RecordStatus | null
     createdBy: string | null
     updatedBy: string | null
@@ -21491,13 +21383,19 @@ export namespace Prisma {
     branchCourseId: number
     branchFacultyId: number
     batchId: number
-    batchGroupId: number
     courseId: number
     courseName: number
     facultyId: number
     facultyName: number
     facultyEmail: number
-    batchCount: number
+    batchName: number
+    startTime: number
+    startPeriod: number
+    endTime: number
+    endPeriod: number
+    batchTiming: number
+    totalSeats: number
+    sequenceNo: number
     status: number
     createdBy: number
     updatedBy: number
@@ -21508,11 +21406,13 @@ export namespace Prisma {
 
 
   export type BranchBatchAvgAggregateInputType = {
-    batchCount?: true
+    totalSeats?: true
+    sequenceNo?: true
   }
 
   export type BranchBatchSumAggregateInputType = {
-    batchCount?: true
+    totalSeats?: true
+    sequenceNo?: true
   }
 
   export type BranchBatchMinAggregateInputType = {
@@ -21521,13 +21421,19 @@ export namespace Prisma {
     branchCourseId?: true
     branchFacultyId?: true
     batchId?: true
-    batchGroupId?: true
     courseId?: true
     courseName?: true
     facultyId?: true
     facultyName?: true
     facultyEmail?: true
-    batchCount?: true
+    batchName?: true
+    startTime?: true
+    startPeriod?: true
+    endTime?: true
+    endPeriod?: true
+    batchTiming?: true
+    totalSeats?: true
+    sequenceNo?: true
     status?: true
     createdBy?: true
     updatedBy?: true
@@ -21541,13 +21447,19 @@ export namespace Prisma {
     branchCourseId?: true
     branchFacultyId?: true
     batchId?: true
-    batchGroupId?: true
     courseId?: true
     courseName?: true
     facultyId?: true
     facultyName?: true
     facultyEmail?: true
-    batchCount?: true
+    batchName?: true
+    startTime?: true
+    startPeriod?: true
+    endTime?: true
+    endPeriod?: true
+    batchTiming?: true
+    totalSeats?: true
+    sequenceNo?: true
     status?: true
     createdBy?: true
     updatedBy?: true
@@ -21561,13 +21473,19 @@ export namespace Prisma {
     branchCourseId?: true
     branchFacultyId?: true
     batchId?: true
-    batchGroupId?: true
     courseId?: true
     courseName?: true
     facultyId?: true
     facultyName?: true
     facultyEmail?: true
-    batchCount?: true
+    batchName?: true
+    startTime?: true
+    startPeriod?: true
+    endTime?: true
+    endPeriod?: true
+    batchTiming?: true
+    totalSeats?: true
+    sequenceNo?: true
     status?: true
     createdBy?: true
     updatedBy?: true
@@ -21668,13 +21586,19 @@ export namespace Prisma {
     branchCourseId: string
     branchFacultyId: string
     batchId: string
-    batchGroupId: string
     courseId: string
     courseName: string
     facultyId: string
     facultyName: string
     facultyEmail: string
-    batchCount: number
+    batchName: string
+    startTime: string
+    startPeriod: string
+    endTime: string
+    endPeriod: string
+    batchTiming: string
+    totalSeats: number
+    sequenceNo: number
     status: $Enums.RecordStatus
     createdBy: string | null
     updatedBy: string | null
@@ -21707,13 +21631,19 @@ export namespace Prisma {
     branchCourseId?: boolean
     branchFacultyId?: boolean
     batchId?: boolean
-    batchGroupId?: boolean
     courseId?: boolean
     courseName?: boolean
     facultyId?: boolean
     facultyName?: boolean
     facultyEmail?: boolean
-    batchCount?: boolean
+    batchName?: boolean
+    startTime?: boolean
+    startPeriod?: boolean
+    endTime?: boolean
+    endPeriod?: boolean
+    batchTiming?: boolean
+    totalSeats?: boolean
+    sequenceNo?: boolean
     status?: boolean
     createdBy?: boolean
     updatedBy?: boolean
@@ -21722,8 +21652,6 @@ export namespace Prisma {
     branch?: boolean | BranchDefaultArgs<ExtArgs>
     branchCourse?: boolean | BranchCourseDefaultArgs<ExtArgs>
     branchFaculty?: boolean | BranchFacultyDefaultArgs<ExtArgs>
-    rows?: boolean | BranchBatch$rowsArgs<ExtArgs>
-    _count?: boolean | BranchBatchCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["branchBatch"]>
 
   export type BranchBatchSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -21732,13 +21660,19 @@ export namespace Prisma {
     branchCourseId?: boolean
     branchFacultyId?: boolean
     batchId?: boolean
-    batchGroupId?: boolean
     courseId?: boolean
     courseName?: boolean
     facultyId?: boolean
     facultyName?: boolean
     facultyEmail?: boolean
-    batchCount?: boolean
+    batchName?: boolean
+    startTime?: boolean
+    startPeriod?: boolean
+    endTime?: boolean
+    endPeriod?: boolean
+    batchTiming?: boolean
+    totalSeats?: boolean
+    sequenceNo?: boolean
     status?: boolean
     createdBy?: boolean
     updatedBy?: boolean
@@ -21755,13 +21689,19 @@ export namespace Prisma {
     branchCourseId?: boolean
     branchFacultyId?: boolean
     batchId?: boolean
-    batchGroupId?: boolean
     courseId?: boolean
     courseName?: boolean
     facultyId?: boolean
     facultyName?: boolean
     facultyEmail?: boolean
-    batchCount?: boolean
+    batchName?: boolean
+    startTime?: boolean
+    startPeriod?: boolean
+    endTime?: boolean
+    endPeriod?: boolean
+    batchTiming?: boolean
+    totalSeats?: boolean
+    sequenceNo?: boolean
     status?: boolean
     createdBy?: boolean
     updatedBy?: boolean
@@ -21778,13 +21718,19 @@ export namespace Prisma {
     branchCourseId?: boolean
     branchFacultyId?: boolean
     batchId?: boolean
-    batchGroupId?: boolean
     courseId?: boolean
     courseName?: boolean
     facultyId?: boolean
     facultyName?: boolean
     facultyEmail?: boolean
-    batchCount?: boolean
+    batchName?: boolean
+    startTime?: boolean
+    startPeriod?: boolean
+    endTime?: boolean
+    endPeriod?: boolean
+    batchTiming?: boolean
+    totalSeats?: boolean
+    sequenceNo?: boolean
     status?: boolean
     createdBy?: boolean
     updatedBy?: boolean
@@ -21792,13 +21738,11 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type BranchBatchOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "branchId" | "branchCourseId" | "branchFacultyId" | "batchId" | "batchGroupId" | "courseId" | "courseName" | "facultyId" | "facultyName" | "facultyEmail" | "batchCount" | "status" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["branchBatch"]>
+  export type BranchBatchOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "branchId" | "branchCourseId" | "branchFacultyId" | "batchId" | "courseId" | "courseName" | "facultyId" | "facultyName" | "facultyEmail" | "batchName" | "startTime" | "startPeriod" | "endTime" | "endPeriod" | "batchTiming" | "totalSeats" | "sequenceNo" | "status" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["branchBatch"]>
   export type BranchBatchInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     branch?: boolean | BranchDefaultArgs<ExtArgs>
     branchCourse?: boolean | BranchCourseDefaultArgs<ExtArgs>
     branchFaculty?: boolean | BranchFacultyDefaultArgs<ExtArgs>
-    rows?: boolean | BranchBatch$rowsArgs<ExtArgs>
-    _count?: boolean | BranchBatchCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type BranchBatchIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     branch?: boolean | BranchDefaultArgs<ExtArgs>
@@ -21817,7 +21761,6 @@ export namespace Prisma {
       branch: Prisma.$BranchPayload<ExtArgs>
       branchCourse: Prisma.$BranchCoursePayload<ExtArgs>
       branchFaculty: Prisma.$BranchFacultyPayload<ExtArgs>
-      rows: Prisma.$BranchBatchRowPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -21825,13 +21768,19 @@ export namespace Prisma {
       branchCourseId: string
       branchFacultyId: string
       batchId: string
-      batchGroupId: string
       courseId: string
       courseName: string
       facultyId: string
       facultyName: string
       facultyEmail: string
-      batchCount: number
+      batchName: string
+      startTime: string
+      startPeriod: string
+      endTime: string
+      endPeriod: string
+      batchTiming: string
+      totalSeats: number
+      sequenceNo: number
       status: $Enums.RecordStatus
       createdBy: string | null
       updatedBy: string | null
@@ -22234,7 +22183,6 @@ export namespace Prisma {
     branch<T extends BranchDefaultArgs<ExtArgs> = {}>(args?: Subset<T, BranchDefaultArgs<ExtArgs>>): Prisma__BranchClient<$Result.GetResult<Prisma.$BranchPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     branchCourse<T extends BranchCourseDefaultArgs<ExtArgs> = {}>(args?: Subset<T, BranchCourseDefaultArgs<ExtArgs>>): Prisma__BranchCourseClient<$Result.GetResult<Prisma.$BranchCoursePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     branchFaculty<T extends BranchFacultyDefaultArgs<ExtArgs> = {}>(args?: Subset<T, BranchFacultyDefaultArgs<ExtArgs>>): Prisma__BranchFacultyClient<$Result.GetResult<Prisma.$BranchFacultyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    rows<T extends BranchBatch$rowsArgs<ExtArgs> = {}>(args?: Subset<T, BranchBatch$rowsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchBatchRowPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -22269,13 +22217,19 @@ export namespace Prisma {
     readonly branchCourseId: FieldRef<"BranchBatch", 'String'>
     readonly branchFacultyId: FieldRef<"BranchBatch", 'String'>
     readonly batchId: FieldRef<"BranchBatch", 'String'>
-    readonly batchGroupId: FieldRef<"BranchBatch", 'String'>
     readonly courseId: FieldRef<"BranchBatch", 'String'>
     readonly courseName: FieldRef<"BranchBatch", 'String'>
     readonly facultyId: FieldRef<"BranchBatch", 'String'>
     readonly facultyName: FieldRef<"BranchBatch", 'String'>
     readonly facultyEmail: FieldRef<"BranchBatch", 'String'>
-    readonly batchCount: FieldRef<"BranchBatch", 'Int'>
+    readonly batchName: FieldRef<"BranchBatch", 'String'>
+    readonly startTime: FieldRef<"BranchBatch", 'String'>
+    readonly startPeriod: FieldRef<"BranchBatch", 'String'>
+    readonly endTime: FieldRef<"BranchBatch", 'String'>
+    readonly endPeriod: FieldRef<"BranchBatch", 'String'>
+    readonly batchTiming: FieldRef<"BranchBatch", 'String'>
+    readonly totalSeats: FieldRef<"BranchBatch", 'Int'>
+    readonly sequenceNo: FieldRef<"BranchBatch", 'Int'>
     readonly status: FieldRef<"BranchBatch", 'RecordStatus'>
     readonly createdBy: FieldRef<"BranchBatch", 'String'>
     readonly updatedBy: FieldRef<"BranchBatch", 'String'>
@@ -22682,30 +22636,6 @@ export namespace Prisma {
   }
 
   /**
-   * BranchBatch.rows
-   */
-  export type BranchBatch$rowsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the BranchBatchRow
-     */
-    select?: BranchBatchRowSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the BranchBatchRow
-     */
-    omit?: BranchBatchRowOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: BranchBatchRowInclude<ExtArgs> | null
-    where?: BranchBatchRowWhereInput
-    orderBy?: BranchBatchRowOrderByWithRelationInput | BranchBatchRowOrderByWithRelationInput[]
-    cursor?: BranchBatchRowWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: BranchBatchRowScalarFieldEnum | BranchBatchRowScalarFieldEnum[]
-  }
-
-  /**
    * BranchBatch without action
    */
   export type BranchBatchDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -22721,1250 +22651,6 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: BranchBatchInclude<ExtArgs> | null
-  }
-
-
-  /**
-   * Model BranchBatchRow
-   */
-
-  export type AggregateBranchBatchRow = {
-    _count: BranchBatchRowCountAggregateOutputType | null
-    _avg: BranchBatchRowAvgAggregateOutputType | null
-    _sum: BranchBatchRowSumAggregateOutputType | null
-    _min: BranchBatchRowMinAggregateOutputType | null
-    _max: BranchBatchRowMaxAggregateOutputType | null
-  }
-
-  export type BranchBatchRowAvgAggregateOutputType = {
-    totalSeats: number | null
-    sequenceNo: number | null
-  }
-
-  export type BranchBatchRowSumAggregateOutputType = {
-    totalSeats: number | null
-    sequenceNo: number | null
-  }
-
-  export type BranchBatchRowMinAggregateOutputType = {
-    id: string | null
-    branchBatchId: string | null
-    batchId: string | null
-    batchName: string | null
-    startTime: string | null
-    startPeriod: string | null
-    endTime: string | null
-    endPeriod: string | null
-    batchTiming: string | null
-    totalSeats: number | null
-    status: $Enums.RecordStatus | null
-    sequenceNo: number | null
-    createdBy: string | null
-    updatedBy: string | null
-    createdAt: Date | null
-    updatedAt: Date | null
-  }
-
-  export type BranchBatchRowMaxAggregateOutputType = {
-    id: string | null
-    branchBatchId: string | null
-    batchId: string | null
-    batchName: string | null
-    startTime: string | null
-    startPeriod: string | null
-    endTime: string | null
-    endPeriod: string | null
-    batchTiming: string | null
-    totalSeats: number | null
-    status: $Enums.RecordStatus | null
-    sequenceNo: number | null
-    createdBy: string | null
-    updatedBy: string | null
-    createdAt: Date | null
-    updatedAt: Date | null
-  }
-
-  export type BranchBatchRowCountAggregateOutputType = {
-    id: number
-    branchBatchId: number
-    batchId: number
-    batchName: number
-    startTime: number
-    startPeriod: number
-    endTime: number
-    endPeriod: number
-    batchTiming: number
-    totalSeats: number
-    status: number
-    sequenceNo: number
-    createdBy: number
-    updatedBy: number
-    createdAt: number
-    updatedAt: number
-    _all: number
-  }
-
-
-  export type BranchBatchRowAvgAggregateInputType = {
-    totalSeats?: true
-    sequenceNo?: true
-  }
-
-  export type BranchBatchRowSumAggregateInputType = {
-    totalSeats?: true
-    sequenceNo?: true
-  }
-
-  export type BranchBatchRowMinAggregateInputType = {
-    id?: true
-    branchBatchId?: true
-    batchId?: true
-    batchName?: true
-    startTime?: true
-    startPeriod?: true
-    endTime?: true
-    endPeriod?: true
-    batchTiming?: true
-    totalSeats?: true
-    status?: true
-    sequenceNo?: true
-    createdBy?: true
-    updatedBy?: true
-    createdAt?: true
-    updatedAt?: true
-  }
-
-  export type BranchBatchRowMaxAggregateInputType = {
-    id?: true
-    branchBatchId?: true
-    batchId?: true
-    batchName?: true
-    startTime?: true
-    startPeriod?: true
-    endTime?: true
-    endPeriod?: true
-    batchTiming?: true
-    totalSeats?: true
-    status?: true
-    sequenceNo?: true
-    createdBy?: true
-    updatedBy?: true
-    createdAt?: true
-    updatedAt?: true
-  }
-
-  export type BranchBatchRowCountAggregateInputType = {
-    id?: true
-    branchBatchId?: true
-    batchId?: true
-    batchName?: true
-    startTime?: true
-    startPeriod?: true
-    endTime?: true
-    endPeriod?: true
-    batchTiming?: true
-    totalSeats?: true
-    status?: true
-    sequenceNo?: true
-    createdBy?: true
-    updatedBy?: true
-    createdAt?: true
-    updatedAt?: true
-    _all?: true
-  }
-
-  export type BranchBatchRowAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which BranchBatchRow to aggregate.
-     */
-    where?: BranchBatchRowWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of BranchBatchRows to fetch.
-     */
-    orderBy?: BranchBatchRowOrderByWithRelationInput | BranchBatchRowOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: BranchBatchRowWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` BranchBatchRows from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` BranchBatchRows.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned BranchBatchRows
-    **/
-    _count?: true | BranchBatchRowCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to average
-    **/
-    _avg?: BranchBatchRowAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: BranchBatchRowSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: BranchBatchRowMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: BranchBatchRowMaxAggregateInputType
-  }
-
-  export type GetBranchBatchRowAggregateType<T extends BranchBatchRowAggregateArgs> = {
-        [P in keyof T & keyof AggregateBranchBatchRow]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateBranchBatchRow[P]>
-      : GetScalarType<T[P], AggregateBranchBatchRow[P]>
-  }
-
-
-
-
-  export type BranchBatchRowGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: BranchBatchRowWhereInput
-    orderBy?: BranchBatchRowOrderByWithAggregationInput | BranchBatchRowOrderByWithAggregationInput[]
-    by: BranchBatchRowScalarFieldEnum[] | BranchBatchRowScalarFieldEnum
-    having?: BranchBatchRowScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: BranchBatchRowCountAggregateInputType | true
-    _avg?: BranchBatchRowAvgAggregateInputType
-    _sum?: BranchBatchRowSumAggregateInputType
-    _min?: BranchBatchRowMinAggregateInputType
-    _max?: BranchBatchRowMaxAggregateInputType
-  }
-
-  export type BranchBatchRowGroupByOutputType = {
-    id: string
-    branchBatchId: string
-    batchId: string
-    batchName: string
-    startTime: string
-    startPeriod: string
-    endTime: string
-    endPeriod: string
-    batchTiming: string
-    totalSeats: number
-    status: $Enums.RecordStatus
-    sequenceNo: number
-    createdBy: string | null
-    updatedBy: string | null
-    createdAt: Date
-    updatedAt: Date
-    _count: BranchBatchRowCountAggregateOutputType | null
-    _avg: BranchBatchRowAvgAggregateOutputType | null
-    _sum: BranchBatchRowSumAggregateOutputType | null
-    _min: BranchBatchRowMinAggregateOutputType | null
-    _max: BranchBatchRowMaxAggregateOutputType | null
-  }
-
-  type GetBranchBatchRowGroupByPayload<T extends BranchBatchRowGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<BranchBatchRowGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof BranchBatchRowGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], BranchBatchRowGroupByOutputType[P]>
-            : GetScalarType<T[P], BranchBatchRowGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type BranchBatchRowSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    branchBatchId?: boolean
-    batchId?: boolean
-    batchName?: boolean
-    startTime?: boolean
-    startPeriod?: boolean
-    endTime?: boolean
-    endPeriod?: boolean
-    batchTiming?: boolean
-    totalSeats?: boolean
-    status?: boolean
-    sequenceNo?: boolean
-    createdBy?: boolean
-    updatedBy?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    branchBatch?: boolean | BranchBatchDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["branchBatchRow"]>
-
-  export type BranchBatchRowSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    branchBatchId?: boolean
-    batchId?: boolean
-    batchName?: boolean
-    startTime?: boolean
-    startPeriod?: boolean
-    endTime?: boolean
-    endPeriod?: boolean
-    batchTiming?: boolean
-    totalSeats?: boolean
-    status?: boolean
-    sequenceNo?: boolean
-    createdBy?: boolean
-    updatedBy?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    branchBatch?: boolean | BranchBatchDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["branchBatchRow"]>
-
-  export type BranchBatchRowSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    branchBatchId?: boolean
-    batchId?: boolean
-    batchName?: boolean
-    startTime?: boolean
-    startPeriod?: boolean
-    endTime?: boolean
-    endPeriod?: boolean
-    batchTiming?: boolean
-    totalSeats?: boolean
-    status?: boolean
-    sequenceNo?: boolean
-    createdBy?: boolean
-    updatedBy?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    branchBatch?: boolean | BranchBatchDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["branchBatchRow"]>
-
-  export type BranchBatchRowSelectScalar = {
-    id?: boolean
-    branchBatchId?: boolean
-    batchId?: boolean
-    batchName?: boolean
-    startTime?: boolean
-    startPeriod?: boolean
-    endTime?: boolean
-    endPeriod?: boolean
-    batchTiming?: boolean
-    totalSeats?: boolean
-    status?: boolean
-    sequenceNo?: boolean
-    createdBy?: boolean
-    updatedBy?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-  }
-
-  export type BranchBatchRowOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "branchBatchId" | "batchId" | "batchName" | "startTime" | "startPeriod" | "endTime" | "endPeriod" | "batchTiming" | "totalSeats" | "status" | "sequenceNo" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["branchBatchRow"]>
-  export type BranchBatchRowInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    branchBatch?: boolean | BranchBatchDefaultArgs<ExtArgs>
-  }
-  export type BranchBatchRowIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    branchBatch?: boolean | BranchBatchDefaultArgs<ExtArgs>
-  }
-  export type BranchBatchRowIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    branchBatch?: boolean | BranchBatchDefaultArgs<ExtArgs>
-  }
-
-  export type $BranchBatchRowPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "BranchBatchRow"
-    objects: {
-      branchBatch: Prisma.$BranchBatchPayload<ExtArgs>
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: string
-      branchBatchId: string
-      batchId: string
-      batchName: string
-      startTime: string
-      startPeriod: string
-      endTime: string
-      endPeriod: string
-      batchTiming: string
-      totalSeats: number
-      status: $Enums.RecordStatus
-      sequenceNo: number
-      createdBy: string | null
-      updatedBy: string | null
-      createdAt: Date
-      updatedAt: Date
-    }, ExtArgs["result"]["branchBatchRow"]>
-    composites: {}
-  }
-
-  type BranchBatchRowGetPayload<S extends boolean | null | undefined | BranchBatchRowDefaultArgs> = $Result.GetResult<Prisma.$BranchBatchRowPayload, S>
-
-  type BranchBatchRowCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<BranchBatchRowFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: BranchBatchRowCountAggregateInputType | true
-    }
-
-  export interface BranchBatchRowDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['BranchBatchRow'], meta: { name: 'BranchBatchRow' } }
-    /**
-     * Find zero or one BranchBatchRow that matches the filter.
-     * @param {BranchBatchRowFindUniqueArgs} args - Arguments to find a BranchBatchRow
-     * @example
-     * // Get one BranchBatchRow
-     * const branchBatchRow = await prisma.branchBatchRow.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends BranchBatchRowFindUniqueArgs>(args: SelectSubset<T, BranchBatchRowFindUniqueArgs<ExtArgs>>): Prisma__BranchBatchRowClient<$Result.GetResult<Prisma.$BranchBatchRowPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one BranchBatchRow that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {BranchBatchRowFindUniqueOrThrowArgs} args - Arguments to find a BranchBatchRow
-     * @example
-     * // Get one BranchBatchRow
-     * const branchBatchRow = await prisma.branchBatchRow.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends BranchBatchRowFindUniqueOrThrowArgs>(args: SelectSubset<T, BranchBatchRowFindUniqueOrThrowArgs<ExtArgs>>): Prisma__BranchBatchRowClient<$Result.GetResult<Prisma.$BranchBatchRowPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first BranchBatchRow that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {BranchBatchRowFindFirstArgs} args - Arguments to find a BranchBatchRow
-     * @example
-     * // Get one BranchBatchRow
-     * const branchBatchRow = await prisma.branchBatchRow.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends BranchBatchRowFindFirstArgs>(args?: SelectSubset<T, BranchBatchRowFindFirstArgs<ExtArgs>>): Prisma__BranchBatchRowClient<$Result.GetResult<Prisma.$BranchBatchRowPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first BranchBatchRow that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {BranchBatchRowFindFirstOrThrowArgs} args - Arguments to find a BranchBatchRow
-     * @example
-     * // Get one BranchBatchRow
-     * const branchBatchRow = await prisma.branchBatchRow.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends BranchBatchRowFindFirstOrThrowArgs>(args?: SelectSubset<T, BranchBatchRowFindFirstOrThrowArgs<ExtArgs>>): Prisma__BranchBatchRowClient<$Result.GetResult<Prisma.$BranchBatchRowPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more BranchBatchRows that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {BranchBatchRowFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all BranchBatchRows
-     * const branchBatchRows = await prisma.branchBatchRow.findMany()
-     * 
-     * // Get first 10 BranchBatchRows
-     * const branchBatchRows = await prisma.branchBatchRow.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const branchBatchRowWithIdOnly = await prisma.branchBatchRow.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends BranchBatchRowFindManyArgs>(args?: SelectSubset<T, BranchBatchRowFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchBatchRowPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a BranchBatchRow.
-     * @param {BranchBatchRowCreateArgs} args - Arguments to create a BranchBatchRow.
-     * @example
-     * // Create one BranchBatchRow
-     * const BranchBatchRow = await prisma.branchBatchRow.create({
-     *   data: {
-     *     // ... data to create a BranchBatchRow
-     *   }
-     * })
-     * 
-     */
-    create<T extends BranchBatchRowCreateArgs>(args: SelectSubset<T, BranchBatchRowCreateArgs<ExtArgs>>): Prisma__BranchBatchRowClient<$Result.GetResult<Prisma.$BranchBatchRowPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many BranchBatchRows.
-     * @param {BranchBatchRowCreateManyArgs} args - Arguments to create many BranchBatchRows.
-     * @example
-     * // Create many BranchBatchRows
-     * const branchBatchRow = await prisma.branchBatchRow.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends BranchBatchRowCreateManyArgs>(args?: SelectSubset<T, BranchBatchRowCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create many BranchBatchRows and returns the data saved in the database.
-     * @param {BranchBatchRowCreateManyAndReturnArgs} args - Arguments to create many BranchBatchRows.
-     * @example
-     * // Create many BranchBatchRows
-     * const branchBatchRow = await prisma.branchBatchRow.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Create many BranchBatchRows and only return the `id`
-     * const branchBatchRowWithIdOnly = await prisma.branchBatchRow.createManyAndReturn({
-     *   select: { id: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    createManyAndReturn<T extends BranchBatchRowCreateManyAndReturnArgs>(args?: SelectSubset<T, BranchBatchRowCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchBatchRowPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Delete a BranchBatchRow.
-     * @param {BranchBatchRowDeleteArgs} args - Arguments to delete one BranchBatchRow.
-     * @example
-     * // Delete one BranchBatchRow
-     * const BranchBatchRow = await prisma.branchBatchRow.delete({
-     *   where: {
-     *     // ... filter to delete one BranchBatchRow
-     *   }
-     * })
-     * 
-     */
-    delete<T extends BranchBatchRowDeleteArgs>(args: SelectSubset<T, BranchBatchRowDeleteArgs<ExtArgs>>): Prisma__BranchBatchRowClient<$Result.GetResult<Prisma.$BranchBatchRowPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one BranchBatchRow.
-     * @param {BranchBatchRowUpdateArgs} args - Arguments to update one BranchBatchRow.
-     * @example
-     * // Update one BranchBatchRow
-     * const branchBatchRow = await prisma.branchBatchRow.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends BranchBatchRowUpdateArgs>(args: SelectSubset<T, BranchBatchRowUpdateArgs<ExtArgs>>): Prisma__BranchBatchRowClient<$Result.GetResult<Prisma.$BranchBatchRowPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more BranchBatchRows.
-     * @param {BranchBatchRowDeleteManyArgs} args - Arguments to filter BranchBatchRows to delete.
-     * @example
-     * // Delete a few BranchBatchRows
-     * const { count } = await prisma.branchBatchRow.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends BranchBatchRowDeleteManyArgs>(args?: SelectSubset<T, BranchBatchRowDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more BranchBatchRows.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {BranchBatchRowUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many BranchBatchRows
-     * const branchBatchRow = await prisma.branchBatchRow.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends BranchBatchRowUpdateManyArgs>(args: SelectSubset<T, BranchBatchRowUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more BranchBatchRows and returns the data updated in the database.
-     * @param {BranchBatchRowUpdateManyAndReturnArgs} args - Arguments to update many BranchBatchRows.
-     * @example
-     * // Update many BranchBatchRows
-     * const branchBatchRow = await prisma.branchBatchRow.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more BranchBatchRows and only return the `id`
-     * const branchBatchRowWithIdOnly = await prisma.branchBatchRow.updateManyAndReturn({
-     *   select: { id: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends BranchBatchRowUpdateManyAndReturnArgs>(args: SelectSubset<T, BranchBatchRowUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchBatchRowPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Create or update one BranchBatchRow.
-     * @param {BranchBatchRowUpsertArgs} args - Arguments to update or create a BranchBatchRow.
-     * @example
-     * // Update or create a BranchBatchRow
-     * const branchBatchRow = await prisma.branchBatchRow.upsert({
-     *   create: {
-     *     // ... data to create a BranchBatchRow
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the BranchBatchRow we want to update
-     *   }
-     * })
-     */
-    upsert<T extends BranchBatchRowUpsertArgs>(args: SelectSubset<T, BranchBatchRowUpsertArgs<ExtArgs>>): Prisma__BranchBatchRowClient<$Result.GetResult<Prisma.$BranchBatchRowPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of BranchBatchRows.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {BranchBatchRowCountArgs} args - Arguments to filter BranchBatchRows to count.
-     * @example
-     * // Count the number of BranchBatchRows
-     * const count = await prisma.branchBatchRow.count({
-     *   where: {
-     *     // ... the filter for the BranchBatchRows we want to count
-     *   }
-     * })
-    **/
-    count<T extends BranchBatchRowCountArgs>(
-      args?: Subset<T, BranchBatchRowCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], BranchBatchRowCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a BranchBatchRow.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {BranchBatchRowAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends BranchBatchRowAggregateArgs>(args: Subset<T, BranchBatchRowAggregateArgs>): Prisma.PrismaPromise<GetBranchBatchRowAggregateType<T>>
-
-    /**
-     * Group by BranchBatchRow.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {BranchBatchRowGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends BranchBatchRowGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: BranchBatchRowGroupByArgs['orderBy'] }
-        : { orderBy?: BranchBatchRowGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, BranchBatchRowGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetBranchBatchRowGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the BranchBatchRow model
-   */
-  readonly fields: BranchBatchRowFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for BranchBatchRow.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__BranchBatchRowClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    branchBatch<T extends BranchBatchDefaultArgs<ExtArgs> = {}>(args?: Subset<T, BranchBatchDefaultArgs<ExtArgs>>): Prisma__BranchBatchClient<$Result.GetResult<Prisma.$BranchBatchPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the BranchBatchRow model
-   */
-  interface BranchBatchRowFieldRefs {
-    readonly id: FieldRef<"BranchBatchRow", 'String'>
-    readonly branchBatchId: FieldRef<"BranchBatchRow", 'String'>
-    readonly batchId: FieldRef<"BranchBatchRow", 'String'>
-    readonly batchName: FieldRef<"BranchBatchRow", 'String'>
-    readonly startTime: FieldRef<"BranchBatchRow", 'String'>
-    readonly startPeriod: FieldRef<"BranchBatchRow", 'String'>
-    readonly endTime: FieldRef<"BranchBatchRow", 'String'>
-    readonly endPeriod: FieldRef<"BranchBatchRow", 'String'>
-    readonly batchTiming: FieldRef<"BranchBatchRow", 'String'>
-    readonly totalSeats: FieldRef<"BranchBatchRow", 'Int'>
-    readonly status: FieldRef<"BranchBatchRow", 'RecordStatus'>
-    readonly sequenceNo: FieldRef<"BranchBatchRow", 'Int'>
-    readonly createdBy: FieldRef<"BranchBatchRow", 'String'>
-    readonly updatedBy: FieldRef<"BranchBatchRow", 'String'>
-    readonly createdAt: FieldRef<"BranchBatchRow", 'DateTime'>
-    readonly updatedAt: FieldRef<"BranchBatchRow", 'DateTime'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * BranchBatchRow findUnique
-   */
-  export type BranchBatchRowFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the BranchBatchRow
-     */
-    select?: BranchBatchRowSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the BranchBatchRow
-     */
-    omit?: BranchBatchRowOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: BranchBatchRowInclude<ExtArgs> | null
-    /**
-     * Filter, which BranchBatchRow to fetch.
-     */
-    where: BranchBatchRowWhereUniqueInput
-  }
-
-  /**
-   * BranchBatchRow findUniqueOrThrow
-   */
-  export type BranchBatchRowFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the BranchBatchRow
-     */
-    select?: BranchBatchRowSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the BranchBatchRow
-     */
-    omit?: BranchBatchRowOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: BranchBatchRowInclude<ExtArgs> | null
-    /**
-     * Filter, which BranchBatchRow to fetch.
-     */
-    where: BranchBatchRowWhereUniqueInput
-  }
-
-  /**
-   * BranchBatchRow findFirst
-   */
-  export type BranchBatchRowFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the BranchBatchRow
-     */
-    select?: BranchBatchRowSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the BranchBatchRow
-     */
-    omit?: BranchBatchRowOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: BranchBatchRowInclude<ExtArgs> | null
-    /**
-     * Filter, which BranchBatchRow to fetch.
-     */
-    where?: BranchBatchRowWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of BranchBatchRows to fetch.
-     */
-    orderBy?: BranchBatchRowOrderByWithRelationInput | BranchBatchRowOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for BranchBatchRows.
-     */
-    cursor?: BranchBatchRowWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` BranchBatchRows from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` BranchBatchRows.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of BranchBatchRows.
-     */
-    distinct?: BranchBatchRowScalarFieldEnum | BranchBatchRowScalarFieldEnum[]
-  }
-
-  /**
-   * BranchBatchRow findFirstOrThrow
-   */
-  export type BranchBatchRowFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the BranchBatchRow
-     */
-    select?: BranchBatchRowSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the BranchBatchRow
-     */
-    omit?: BranchBatchRowOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: BranchBatchRowInclude<ExtArgs> | null
-    /**
-     * Filter, which BranchBatchRow to fetch.
-     */
-    where?: BranchBatchRowWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of BranchBatchRows to fetch.
-     */
-    orderBy?: BranchBatchRowOrderByWithRelationInput | BranchBatchRowOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for BranchBatchRows.
-     */
-    cursor?: BranchBatchRowWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` BranchBatchRows from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` BranchBatchRows.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of BranchBatchRows.
-     */
-    distinct?: BranchBatchRowScalarFieldEnum | BranchBatchRowScalarFieldEnum[]
-  }
-
-  /**
-   * BranchBatchRow findMany
-   */
-  export type BranchBatchRowFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the BranchBatchRow
-     */
-    select?: BranchBatchRowSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the BranchBatchRow
-     */
-    omit?: BranchBatchRowOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: BranchBatchRowInclude<ExtArgs> | null
-    /**
-     * Filter, which BranchBatchRows to fetch.
-     */
-    where?: BranchBatchRowWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of BranchBatchRows to fetch.
-     */
-    orderBy?: BranchBatchRowOrderByWithRelationInput | BranchBatchRowOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing BranchBatchRows.
-     */
-    cursor?: BranchBatchRowWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` BranchBatchRows from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` BranchBatchRows.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of BranchBatchRows.
-     */
-    distinct?: BranchBatchRowScalarFieldEnum | BranchBatchRowScalarFieldEnum[]
-  }
-
-  /**
-   * BranchBatchRow create
-   */
-  export type BranchBatchRowCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the BranchBatchRow
-     */
-    select?: BranchBatchRowSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the BranchBatchRow
-     */
-    omit?: BranchBatchRowOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: BranchBatchRowInclude<ExtArgs> | null
-    /**
-     * The data needed to create a BranchBatchRow.
-     */
-    data: XOR<BranchBatchRowCreateInput, BranchBatchRowUncheckedCreateInput>
-  }
-
-  /**
-   * BranchBatchRow createMany
-   */
-  export type BranchBatchRowCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many BranchBatchRows.
-     */
-    data: BranchBatchRowCreateManyInput | BranchBatchRowCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * BranchBatchRow createManyAndReturn
-   */
-  export type BranchBatchRowCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the BranchBatchRow
-     */
-    select?: BranchBatchRowSelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the BranchBatchRow
-     */
-    omit?: BranchBatchRowOmit<ExtArgs> | null
-    /**
-     * The data used to create many BranchBatchRows.
-     */
-    data: BranchBatchRowCreateManyInput | BranchBatchRowCreateManyInput[]
-    skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: BranchBatchRowIncludeCreateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * BranchBatchRow update
-   */
-  export type BranchBatchRowUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the BranchBatchRow
-     */
-    select?: BranchBatchRowSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the BranchBatchRow
-     */
-    omit?: BranchBatchRowOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: BranchBatchRowInclude<ExtArgs> | null
-    /**
-     * The data needed to update a BranchBatchRow.
-     */
-    data: XOR<BranchBatchRowUpdateInput, BranchBatchRowUncheckedUpdateInput>
-    /**
-     * Choose, which BranchBatchRow to update.
-     */
-    where: BranchBatchRowWhereUniqueInput
-  }
-
-  /**
-   * BranchBatchRow updateMany
-   */
-  export type BranchBatchRowUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update BranchBatchRows.
-     */
-    data: XOR<BranchBatchRowUpdateManyMutationInput, BranchBatchRowUncheckedUpdateManyInput>
-    /**
-     * Filter which BranchBatchRows to update
-     */
-    where?: BranchBatchRowWhereInput
-    /**
-     * Limit how many BranchBatchRows to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * BranchBatchRow updateManyAndReturn
-   */
-  export type BranchBatchRowUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the BranchBatchRow
-     */
-    select?: BranchBatchRowSelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the BranchBatchRow
-     */
-    omit?: BranchBatchRowOmit<ExtArgs> | null
-    /**
-     * The data used to update BranchBatchRows.
-     */
-    data: XOR<BranchBatchRowUpdateManyMutationInput, BranchBatchRowUncheckedUpdateManyInput>
-    /**
-     * Filter which BranchBatchRows to update
-     */
-    where?: BranchBatchRowWhereInput
-    /**
-     * Limit how many BranchBatchRows to update.
-     */
-    limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: BranchBatchRowIncludeUpdateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * BranchBatchRow upsert
-   */
-  export type BranchBatchRowUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the BranchBatchRow
-     */
-    select?: BranchBatchRowSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the BranchBatchRow
-     */
-    omit?: BranchBatchRowOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: BranchBatchRowInclude<ExtArgs> | null
-    /**
-     * The filter to search for the BranchBatchRow to update in case it exists.
-     */
-    where: BranchBatchRowWhereUniqueInput
-    /**
-     * In case the BranchBatchRow found by the `where` argument doesn't exist, create a new BranchBatchRow with this data.
-     */
-    create: XOR<BranchBatchRowCreateInput, BranchBatchRowUncheckedCreateInput>
-    /**
-     * In case the BranchBatchRow was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<BranchBatchRowUpdateInput, BranchBatchRowUncheckedUpdateInput>
-  }
-
-  /**
-   * BranchBatchRow delete
-   */
-  export type BranchBatchRowDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the BranchBatchRow
-     */
-    select?: BranchBatchRowSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the BranchBatchRow
-     */
-    omit?: BranchBatchRowOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: BranchBatchRowInclude<ExtArgs> | null
-    /**
-     * Filter which BranchBatchRow to delete.
-     */
-    where: BranchBatchRowWhereUniqueInput
-  }
-
-  /**
-   * BranchBatchRow deleteMany
-   */
-  export type BranchBatchRowDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which BranchBatchRows to delete
-     */
-    where?: BranchBatchRowWhereInput
-    /**
-     * Limit how many BranchBatchRows to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * BranchBatchRow without action
-   */
-  export type BranchBatchRowDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the BranchBatchRow
-     */
-    select?: BranchBatchRowSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the BranchBatchRow
-     */
-    omit?: BranchBatchRowOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: BranchBatchRowInclude<ExtArgs> | null
   }
 
 
@@ -43464,13 +42150,19 @@ export namespace Prisma {
     branchCourseId: 'branchCourseId',
     branchFacultyId: 'branchFacultyId',
     batchId: 'batchId',
-    batchGroupId: 'batchGroupId',
     courseId: 'courseId',
     courseName: 'courseName',
     facultyId: 'facultyId',
     facultyName: 'facultyName',
     facultyEmail: 'facultyEmail',
-    batchCount: 'batchCount',
+    batchName: 'batchName',
+    startTime: 'startTime',
+    startPeriod: 'startPeriod',
+    endTime: 'endTime',
+    endPeriod: 'endPeriod',
+    batchTiming: 'batchTiming',
+    totalSeats: 'totalSeats',
+    sequenceNo: 'sequenceNo',
     status: 'status',
     createdBy: 'createdBy',
     updatedBy: 'updatedBy',
@@ -43479,28 +42171,6 @@ export namespace Prisma {
   };
 
   export type BranchBatchScalarFieldEnum = (typeof BranchBatchScalarFieldEnum)[keyof typeof BranchBatchScalarFieldEnum]
-
-
-  export const BranchBatchRowScalarFieldEnum: {
-    id: 'id',
-    branchBatchId: 'branchBatchId',
-    batchId: 'batchId',
-    batchName: 'batchName',
-    startTime: 'startTime',
-    startPeriod: 'startPeriod',
-    endTime: 'endTime',
-    endPeriod: 'endPeriod',
-    batchTiming: 'batchTiming',
-    totalSeats: 'totalSeats',
-    status: 'status',
-    sequenceNo: 'sequenceNo',
-    createdBy: 'createdBy',
-    updatedBy: 'updatedBy',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
-  };
-
-  export type BranchBatchRowScalarFieldEnum = (typeof BranchBatchRowScalarFieldEnum)[keyof typeof BranchBatchRowScalarFieldEnum]
 
 
   export const CourseStatusHistoryScalarFieldEnum: {
@@ -45720,13 +44390,19 @@ export namespace Prisma {
     branchCourseId?: StringFilter<"BranchBatch"> | string
     branchFacultyId?: StringFilter<"BranchBatch"> | string
     batchId?: StringFilter<"BranchBatch"> | string
-    batchGroupId?: StringFilter<"BranchBatch"> | string
     courseId?: StringFilter<"BranchBatch"> | string
     courseName?: StringFilter<"BranchBatch"> | string
     facultyId?: StringFilter<"BranchBatch"> | string
     facultyName?: StringFilter<"BranchBatch"> | string
     facultyEmail?: StringFilter<"BranchBatch"> | string
-    batchCount?: IntFilter<"BranchBatch"> | number
+    batchName?: StringFilter<"BranchBatch"> | string
+    startTime?: StringFilter<"BranchBatch"> | string
+    startPeriod?: StringFilter<"BranchBatch"> | string
+    endTime?: StringFilter<"BranchBatch"> | string
+    endPeriod?: StringFilter<"BranchBatch"> | string
+    batchTiming?: StringFilter<"BranchBatch"> | string
+    totalSeats?: IntFilter<"BranchBatch"> | number
+    sequenceNo?: IntFilter<"BranchBatch"> | number
     status?: EnumRecordStatusFilter<"BranchBatch"> | $Enums.RecordStatus
     createdBy?: StringNullableFilter<"BranchBatch"> | string | null
     updatedBy?: StringNullableFilter<"BranchBatch"> | string | null
@@ -45735,7 +44411,6 @@ export namespace Prisma {
     branch?: XOR<BranchScalarRelationFilter, BranchWhereInput>
     branchCourse?: XOR<BranchCourseScalarRelationFilter, BranchCourseWhereInput>
     branchFaculty?: XOR<BranchFacultyScalarRelationFilter, BranchFacultyWhereInput>
-    rows?: BranchBatchRowListRelationFilter
   }
 
   export type BranchBatchOrderByWithRelationInput = {
@@ -45744,13 +44419,19 @@ export namespace Prisma {
     branchCourseId?: SortOrder
     branchFacultyId?: SortOrder
     batchId?: SortOrder
-    batchGroupId?: SortOrder
     courseId?: SortOrder
     courseName?: SortOrder
     facultyId?: SortOrder
     facultyName?: SortOrder
     facultyEmail?: SortOrder
-    batchCount?: SortOrder
+    batchName?: SortOrder
+    startTime?: SortOrder
+    startPeriod?: SortOrder
+    endTime?: SortOrder
+    endPeriod?: SortOrder
+    batchTiming?: SortOrder
+    totalSeats?: SortOrder
+    sequenceNo?: SortOrder
     status?: SortOrder
     createdBy?: SortOrderInput | SortOrder
     updatedBy?: SortOrderInput | SortOrder
@@ -45759,12 +44440,11 @@ export namespace Prisma {
     branch?: BranchOrderByWithRelationInput
     branchCourse?: BranchCourseOrderByWithRelationInput
     branchFaculty?: BranchFacultyOrderByWithRelationInput
-    rows?: BranchBatchRowOrderByRelationAggregateInput
   }
 
   export type BranchBatchWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    branchId_batchGroupId?: BranchBatchBranchIdBatchGroupIdCompoundUniqueInput
+    branchId_courseId_facultyId_batchId?: BranchBatchBranchIdCourseIdFacultyIdBatchIdCompoundUniqueInput
     AND?: BranchBatchWhereInput | BranchBatchWhereInput[]
     OR?: BranchBatchWhereInput[]
     NOT?: BranchBatchWhereInput | BranchBatchWhereInput[]
@@ -45772,13 +44452,19 @@ export namespace Prisma {
     branchCourseId?: StringFilter<"BranchBatch"> | string
     branchFacultyId?: StringFilter<"BranchBatch"> | string
     batchId?: StringFilter<"BranchBatch"> | string
-    batchGroupId?: StringFilter<"BranchBatch"> | string
     courseId?: StringFilter<"BranchBatch"> | string
     courseName?: StringFilter<"BranchBatch"> | string
     facultyId?: StringFilter<"BranchBatch"> | string
     facultyName?: StringFilter<"BranchBatch"> | string
     facultyEmail?: StringFilter<"BranchBatch"> | string
-    batchCount?: IntFilter<"BranchBatch"> | number
+    batchName?: StringFilter<"BranchBatch"> | string
+    startTime?: StringFilter<"BranchBatch"> | string
+    startPeriod?: StringFilter<"BranchBatch"> | string
+    endTime?: StringFilter<"BranchBatch"> | string
+    endPeriod?: StringFilter<"BranchBatch"> | string
+    batchTiming?: StringFilter<"BranchBatch"> | string
+    totalSeats?: IntFilter<"BranchBatch"> | number
+    sequenceNo?: IntFilter<"BranchBatch"> | number
     status?: EnumRecordStatusFilter<"BranchBatch"> | $Enums.RecordStatus
     createdBy?: StringNullableFilter<"BranchBatch"> | string | null
     updatedBy?: StringNullableFilter<"BranchBatch"> | string | null
@@ -45787,8 +44473,7 @@ export namespace Prisma {
     branch?: XOR<BranchScalarRelationFilter, BranchWhereInput>
     branchCourse?: XOR<BranchCourseScalarRelationFilter, BranchCourseWhereInput>
     branchFaculty?: XOR<BranchFacultyScalarRelationFilter, BranchFacultyWhereInput>
-    rows?: BranchBatchRowListRelationFilter
-  }, "id" | "branchId_batchGroupId">
+  }, "id" | "branchId_courseId_facultyId_batchId">
 
   export type BranchBatchOrderByWithAggregationInput = {
     id?: SortOrder
@@ -45796,13 +44481,19 @@ export namespace Prisma {
     branchCourseId?: SortOrder
     branchFacultyId?: SortOrder
     batchId?: SortOrder
-    batchGroupId?: SortOrder
     courseId?: SortOrder
     courseName?: SortOrder
     facultyId?: SortOrder
     facultyName?: SortOrder
     facultyEmail?: SortOrder
-    batchCount?: SortOrder
+    batchName?: SortOrder
+    startTime?: SortOrder
+    startPeriod?: SortOrder
+    endTime?: SortOrder
+    endPeriod?: SortOrder
+    batchTiming?: SortOrder
+    totalSeats?: SortOrder
+    sequenceNo?: SortOrder
     status?: SortOrder
     createdBy?: SortOrderInput | SortOrder
     updatedBy?: SortOrderInput | SortOrder
@@ -45824,131 +44515,24 @@ export namespace Prisma {
     branchCourseId?: StringWithAggregatesFilter<"BranchBatch"> | string
     branchFacultyId?: StringWithAggregatesFilter<"BranchBatch"> | string
     batchId?: StringWithAggregatesFilter<"BranchBatch"> | string
-    batchGroupId?: StringWithAggregatesFilter<"BranchBatch"> | string
     courseId?: StringWithAggregatesFilter<"BranchBatch"> | string
     courseName?: StringWithAggregatesFilter<"BranchBatch"> | string
     facultyId?: StringWithAggregatesFilter<"BranchBatch"> | string
     facultyName?: StringWithAggregatesFilter<"BranchBatch"> | string
     facultyEmail?: StringWithAggregatesFilter<"BranchBatch"> | string
-    batchCount?: IntWithAggregatesFilter<"BranchBatch"> | number
+    batchName?: StringWithAggregatesFilter<"BranchBatch"> | string
+    startTime?: StringWithAggregatesFilter<"BranchBatch"> | string
+    startPeriod?: StringWithAggregatesFilter<"BranchBatch"> | string
+    endTime?: StringWithAggregatesFilter<"BranchBatch"> | string
+    endPeriod?: StringWithAggregatesFilter<"BranchBatch"> | string
+    batchTiming?: StringWithAggregatesFilter<"BranchBatch"> | string
+    totalSeats?: IntWithAggregatesFilter<"BranchBatch"> | number
+    sequenceNo?: IntWithAggregatesFilter<"BranchBatch"> | number
     status?: EnumRecordStatusWithAggregatesFilter<"BranchBatch"> | $Enums.RecordStatus
     createdBy?: StringNullableWithAggregatesFilter<"BranchBatch"> | string | null
     updatedBy?: StringNullableWithAggregatesFilter<"BranchBatch"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"BranchBatch"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"BranchBatch"> | Date | string
-  }
-
-  export type BranchBatchRowWhereInput = {
-    AND?: BranchBatchRowWhereInput | BranchBatchRowWhereInput[]
-    OR?: BranchBatchRowWhereInput[]
-    NOT?: BranchBatchRowWhereInput | BranchBatchRowWhereInput[]
-    id?: StringFilter<"BranchBatchRow"> | string
-    branchBatchId?: StringFilter<"BranchBatchRow"> | string
-    batchId?: StringFilter<"BranchBatchRow"> | string
-    batchName?: StringFilter<"BranchBatchRow"> | string
-    startTime?: StringFilter<"BranchBatchRow"> | string
-    startPeriod?: StringFilter<"BranchBatchRow"> | string
-    endTime?: StringFilter<"BranchBatchRow"> | string
-    endPeriod?: StringFilter<"BranchBatchRow"> | string
-    batchTiming?: StringFilter<"BranchBatchRow"> | string
-    totalSeats?: IntFilter<"BranchBatchRow"> | number
-    status?: EnumRecordStatusFilter<"BranchBatchRow"> | $Enums.RecordStatus
-    sequenceNo?: IntFilter<"BranchBatchRow"> | number
-    createdBy?: StringNullableFilter<"BranchBatchRow"> | string | null
-    updatedBy?: StringNullableFilter<"BranchBatchRow"> | string | null
-    createdAt?: DateTimeFilter<"BranchBatchRow"> | Date | string
-    updatedAt?: DateTimeFilter<"BranchBatchRow"> | Date | string
-    branchBatch?: XOR<BranchBatchScalarRelationFilter, BranchBatchWhereInput>
-  }
-
-  export type BranchBatchRowOrderByWithRelationInput = {
-    id?: SortOrder
-    branchBatchId?: SortOrder
-    batchId?: SortOrder
-    batchName?: SortOrder
-    startTime?: SortOrder
-    startPeriod?: SortOrder
-    endTime?: SortOrder
-    endPeriod?: SortOrder
-    batchTiming?: SortOrder
-    totalSeats?: SortOrder
-    status?: SortOrder
-    sequenceNo?: SortOrder
-    createdBy?: SortOrderInput | SortOrder
-    updatedBy?: SortOrderInput | SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    branchBatch?: BranchBatchOrderByWithRelationInput
-  }
-
-  export type BranchBatchRowWhereUniqueInput = Prisma.AtLeast<{
-    id?: string
-    branchBatchId_batchId?: BranchBatchRowBranchBatchIdBatchIdCompoundUniqueInput
-    AND?: BranchBatchRowWhereInput | BranchBatchRowWhereInput[]
-    OR?: BranchBatchRowWhereInput[]
-    NOT?: BranchBatchRowWhereInput | BranchBatchRowWhereInput[]
-    branchBatchId?: StringFilter<"BranchBatchRow"> | string
-    batchId?: StringFilter<"BranchBatchRow"> | string
-    batchName?: StringFilter<"BranchBatchRow"> | string
-    startTime?: StringFilter<"BranchBatchRow"> | string
-    startPeriod?: StringFilter<"BranchBatchRow"> | string
-    endTime?: StringFilter<"BranchBatchRow"> | string
-    endPeriod?: StringFilter<"BranchBatchRow"> | string
-    batchTiming?: StringFilter<"BranchBatchRow"> | string
-    totalSeats?: IntFilter<"BranchBatchRow"> | number
-    status?: EnumRecordStatusFilter<"BranchBatchRow"> | $Enums.RecordStatus
-    sequenceNo?: IntFilter<"BranchBatchRow"> | number
-    createdBy?: StringNullableFilter<"BranchBatchRow"> | string | null
-    updatedBy?: StringNullableFilter<"BranchBatchRow"> | string | null
-    createdAt?: DateTimeFilter<"BranchBatchRow"> | Date | string
-    updatedAt?: DateTimeFilter<"BranchBatchRow"> | Date | string
-    branchBatch?: XOR<BranchBatchScalarRelationFilter, BranchBatchWhereInput>
-  }, "id" | "branchBatchId_batchId">
-
-  export type BranchBatchRowOrderByWithAggregationInput = {
-    id?: SortOrder
-    branchBatchId?: SortOrder
-    batchId?: SortOrder
-    batchName?: SortOrder
-    startTime?: SortOrder
-    startPeriod?: SortOrder
-    endTime?: SortOrder
-    endPeriod?: SortOrder
-    batchTiming?: SortOrder
-    totalSeats?: SortOrder
-    status?: SortOrder
-    sequenceNo?: SortOrder
-    createdBy?: SortOrderInput | SortOrder
-    updatedBy?: SortOrderInput | SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    _count?: BranchBatchRowCountOrderByAggregateInput
-    _avg?: BranchBatchRowAvgOrderByAggregateInput
-    _max?: BranchBatchRowMaxOrderByAggregateInput
-    _min?: BranchBatchRowMinOrderByAggregateInput
-    _sum?: BranchBatchRowSumOrderByAggregateInput
-  }
-
-  export type BranchBatchRowScalarWhereWithAggregatesInput = {
-    AND?: BranchBatchRowScalarWhereWithAggregatesInput | BranchBatchRowScalarWhereWithAggregatesInput[]
-    OR?: BranchBatchRowScalarWhereWithAggregatesInput[]
-    NOT?: BranchBatchRowScalarWhereWithAggregatesInput | BranchBatchRowScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"BranchBatchRow"> | string
-    branchBatchId?: StringWithAggregatesFilter<"BranchBatchRow"> | string
-    batchId?: StringWithAggregatesFilter<"BranchBatchRow"> | string
-    batchName?: StringWithAggregatesFilter<"BranchBatchRow"> | string
-    startTime?: StringWithAggregatesFilter<"BranchBatchRow"> | string
-    startPeriod?: StringWithAggregatesFilter<"BranchBatchRow"> | string
-    endTime?: StringWithAggregatesFilter<"BranchBatchRow"> | string
-    endPeriod?: StringWithAggregatesFilter<"BranchBatchRow"> | string
-    batchTiming?: StringWithAggregatesFilter<"BranchBatchRow"> | string
-    totalSeats?: IntWithAggregatesFilter<"BranchBatchRow"> | number
-    status?: EnumRecordStatusWithAggregatesFilter<"BranchBatchRow"> | $Enums.RecordStatus
-    sequenceNo?: IntWithAggregatesFilter<"BranchBatchRow"> | number
-    createdBy?: StringNullableWithAggregatesFilter<"BranchBatchRow"> | string | null
-    updatedBy?: StringNullableWithAggregatesFilter<"BranchBatchRow"> | string | null
-    createdAt?: DateTimeWithAggregatesFilter<"BranchBatchRow"> | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter<"BranchBatchRow"> | Date | string
   }
 
   export type CourseStatusHistoryWhereInput = {
@@ -49713,13 +48297,19 @@ export namespace Prisma {
   export type BranchBatchCreateInput = {
     id?: string
     batchId: string
-    batchGroupId: string
     courseId: string
     courseName: string
     facultyId: string
     facultyName: string
     facultyEmail: string
-    batchCount?: number
+    batchName: string
+    startTime: string
+    startPeriod: string
+    endTime: string
+    endPeriod: string
+    batchTiming: string
+    totalSeats: number
+    sequenceNo?: number
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -49728,7 +48318,6 @@ export namespace Prisma {
     branch: BranchCreateNestedOneWithoutBranchBatchesInput
     branchCourse: BranchCourseCreateNestedOneWithoutBranchBatchesInput
     branchFaculty: BranchFacultyCreateNestedOneWithoutBranchBatchesInput
-    rows?: BranchBatchRowCreateNestedManyWithoutBranchBatchInput
   }
 
   export type BranchBatchUncheckedCreateInput = {
@@ -49737,31 +48326,42 @@ export namespace Prisma {
     branchCourseId: string
     branchFacultyId: string
     batchId: string
-    batchGroupId: string
     courseId: string
     courseName: string
     facultyId: string
     facultyName: string
     facultyEmail: string
-    batchCount?: number
+    batchName: string
+    startTime: string
+    startPeriod: string
+    endTime: string
+    endPeriod: string
+    batchTiming: string
+    totalSeats: number
+    sequenceNo?: number
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    rows?: BranchBatchRowUncheckedCreateNestedManyWithoutBranchBatchInput
   }
 
   export type BranchBatchUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     batchId?: StringFieldUpdateOperationsInput | string
-    batchGroupId?: StringFieldUpdateOperationsInput | string
     courseId?: StringFieldUpdateOperationsInput | string
     courseName?: StringFieldUpdateOperationsInput | string
     facultyId?: StringFieldUpdateOperationsInput | string
     facultyName?: StringFieldUpdateOperationsInput | string
     facultyEmail?: StringFieldUpdateOperationsInput | string
-    batchCount?: IntFieldUpdateOperationsInput | number
+    batchName?: StringFieldUpdateOperationsInput | string
+    startTime?: StringFieldUpdateOperationsInput | string
+    startPeriod?: StringFieldUpdateOperationsInput | string
+    endTime?: StringFieldUpdateOperationsInput | string
+    endPeriod?: StringFieldUpdateOperationsInput | string
+    batchTiming?: StringFieldUpdateOperationsInput | string
+    totalSeats?: IntFieldUpdateOperationsInput | number
+    sequenceNo?: IntFieldUpdateOperationsInput | number
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -49770,7 +48370,6 @@ export namespace Prisma {
     branch?: BranchUpdateOneRequiredWithoutBranchBatchesNestedInput
     branchCourse?: BranchCourseUpdateOneRequiredWithoutBranchBatchesNestedInput
     branchFaculty?: BranchFacultyUpdateOneRequiredWithoutBranchBatchesNestedInput
-    rows?: BranchBatchRowUpdateManyWithoutBranchBatchNestedInput
   }
 
   export type BranchBatchUncheckedUpdateInput = {
@@ -49779,19 +48378,24 @@ export namespace Prisma {
     branchCourseId?: StringFieldUpdateOperationsInput | string
     branchFacultyId?: StringFieldUpdateOperationsInput | string
     batchId?: StringFieldUpdateOperationsInput | string
-    batchGroupId?: StringFieldUpdateOperationsInput | string
     courseId?: StringFieldUpdateOperationsInput | string
     courseName?: StringFieldUpdateOperationsInput | string
     facultyId?: StringFieldUpdateOperationsInput | string
     facultyName?: StringFieldUpdateOperationsInput | string
     facultyEmail?: StringFieldUpdateOperationsInput | string
-    batchCount?: IntFieldUpdateOperationsInput | number
+    batchName?: StringFieldUpdateOperationsInput | string
+    startTime?: StringFieldUpdateOperationsInput | string
+    startPeriod?: StringFieldUpdateOperationsInput | string
+    endTime?: StringFieldUpdateOperationsInput | string
+    endPeriod?: StringFieldUpdateOperationsInput | string
+    batchTiming?: StringFieldUpdateOperationsInput | string
+    totalSeats?: IntFieldUpdateOperationsInput | number
+    sequenceNo?: IntFieldUpdateOperationsInput | number
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    rows?: BranchBatchRowUncheckedUpdateManyWithoutBranchBatchNestedInput
   }
 
   export type BranchBatchCreateManyInput = {
@@ -49800,13 +48404,19 @@ export namespace Prisma {
     branchCourseId: string
     branchFacultyId: string
     batchId: string
-    batchGroupId: string
     courseId: string
     courseName: string
     facultyId: string
     facultyName: string
     facultyEmail: string
-    batchCount?: number
+    batchName: string
+    startTime: string
+    startPeriod: string
+    endTime: string
+    endPeriod: string
+    batchTiming: string
+    totalSeats: number
+    sequenceNo?: number
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -49817,13 +48427,19 @@ export namespace Prisma {
   export type BranchBatchUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     batchId?: StringFieldUpdateOperationsInput | string
-    batchGroupId?: StringFieldUpdateOperationsInput | string
     courseId?: StringFieldUpdateOperationsInput | string
     courseName?: StringFieldUpdateOperationsInput | string
     facultyId?: StringFieldUpdateOperationsInput | string
     facultyName?: StringFieldUpdateOperationsInput | string
     facultyEmail?: StringFieldUpdateOperationsInput | string
-    batchCount?: IntFieldUpdateOperationsInput | number
+    batchName?: StringFieldUpdateOperationsInput | string
+    startTime?: StringFieldUpdateOperationsInput | string
+    startPeriod?: StringFieldUpdateOperationsInput | string
+    endTime?: StringFieldUpdateOperationsInput | string
+    endPeriod?: StringFieldUpdateOperationsInput | string
+    batchTiming?: StringFieldUpdateOperationsInput | string
+    totalSeats?: IntFieldUpdateOperationsInput | number
+    sequenceNo?: IntFieldUpdateOperationsInput | number
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -49837,61 +48453,11 @@ export namespace Prisma {
     branchCourseId?: StringFieldUpdateOperationsInput | string
     branchFacultyId?: StringFieldUpdateOperationsInput | string
     batchId?: StringFieldUpdateOperationsInput | string
-    batchGroupId?: StringFieldUpdateOperationsInput | string
     courseId?: StringFieldUpdateOperationsInput | string
     courseName?: StringFieldUpdateOperationsInput | string
     facultyId?: StringFieldUpdateOperationsInput | string
     facultyName?: StringFieldUpdateOperationsInput | string
     facultyEmail?: StringFieldUpdateOperationsInput | string
-    batchCount?: IntFieldUpdateOperationsInput | number
-    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type BranchBatchRowCreateInput = {
-    id?: string
-    batchId: string
-    batchName: string
-    startTime: string
-    startPeriod: string
-    endTime: string
-    endPeriod: string
-    batchTiming: string
-    totalSeats: number
-    status?: $Enums.RecordStatus
-    sequenceNo: number
-    createdBy?: string | null
-    updatedBy?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    branchBatch: BranchBatchCreateNestedOneWithoutRowsInput
-  }
-
-  export type BranchBatchRowUncheckedCreateInput = {
-    id?: string
-    branchBatchId: string
-    batchId: string
-    batchName: string
-    startTime: string
-    startPeriod: string
-    endTime: string
-    endPeriod: string
-    batchTiming: string
-    totalSeats: number
-    status?: $Enums.RecordStatus
-    sequenceNo: number
-    createdBy?: string | null
-    updatedBy?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type BranchBatchRowUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    batchId?: StringFieldUpdateOperationsInput | string
     batchName?: StringFieldUpdateOperationsInput | string
     startTime?: StringFieldUpdateOperationsInput | string
     startPeriod?: StringFieldUpdateOperationsInput | string
@@ -49899,84 +48465,8 @@ export namespace Prisma {
     endPeriod?: StringFieldUpdateOperationsInput | string
     batchTiming?: StringFieldUpdateOperationsInput | string
     totalSeats?: IntFieldUpdateOperationsInput | number
-    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     sequenceNo?: IntFieldUpdateOperationsInput | number
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    branchBatch?: BranchBatchUpdateOneRequiredWithoutRowsNestedInput
-  }
-
-  export type BranchBatchRowUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    branchBatchId?: StringFieldUpdateOperationsInput | string
-    batchId?: StringFieldUpdateOperationsInput | string
-    batchName?: StringFieldUpdateOperationsInput | string
-    startTime?: StringFieldUpdateOperationsInput | string
-    startPeriod?: StringFieldUpdateOperationsInput | string
-    endTime?: StringFieldUpdateOperationsInput | string
-    endPeriod?: StringFieldUpdateOperationsInput | string
-    batchTiming?: StringFieldUpdateOperationsInput | string
-    totalSeats?: IntFieldUpdateOperationsInput | number
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
-    sequenceNo?: IntFieldUpdateOperationsInput | number
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type BranchBatchRowCreateManyInput = {
-    id?: string
-    branchBatchId: string
-    batchId: string
-    batchName: string
-    startTime: string
-    startPeriod: string
-    endTime: string
-    endPeriod: string
-    batchTiming: string
-    totalSeats: number
-    status?: $Enums.RecordStatus
-    sequenceNo: number
-    createdBy?: string | null
-    updatedBy?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type BranchBatchRowUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    batchId?: StringFieldUpdateOperationsInput | string
-    batchName?: StringFieldUpdateOperationsInput | string
-    startTime?: StringFieldUpdateOperationsInput | string
-    startPeriod?: StringFieldUpdateOperationsInput | string
-    endTime?: StringFieldUpdateOperationsInput | string
-    endPeriod?: StringFieldUpdateOperationsInput | string
-    batchTiming?: StringFieldUpdateOperationsInput | string
-    totalSeats?: IntFieldUpdateOperationsInput | number
-    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
-    sequenceNo?: IntFieldUpdateOperationsInput | number
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type BranchBatchRowUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    branchBatchId?: StringFieldUpdateOperationsInput | string
-    batchId?: StringFieldUpdateOperationsInput | string
-    batchName?: StringFieldUpdateOperationsInput | string
-    startTime?: StringFieldUpdateOperationsInput | string
-    startPeriod?: StringFieldUpdateOperationsInput | string
-    endTime?: StringFieldUpdateOperationsInput | string
-    endPeriod?: StringFieldUpdateOperationsInput | string
-    batchTiming?: StringFieldUpdateOperationsInput | string
-    totalSeats?: IntFieldUpdateOperationsInput | number
-    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
-    sequenceNo?: IntFieldUpdateOperationsInput | number
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -53671,19 +52161,11 @@ export namespace Prisma {
     isNot?: BranchFacultyWhereInput
   }
 
-  export type BranchBatchRowListRelationFilter = {
-    every?: BranchBatchRowWhereInput
-    some?: BranchBatchRowWhereInput
-    none?: BranchBatchRowWhereInput
-  }
-
-  export type BranchBatchRowOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type BranchBatchBranchIdBatchGroupIdCompoundUniqueInput = {
+  export type BranchBatchBranchIdCourseIdFacultyIdBatchIdCompoundUniqueInput = {
     branchId: string
-    batchGroupId: string
+    courseId: string
+    facultyId: string
+    batchId: string
   }
 
   export type BranchBatchCountOrderByAggregateInput = {
@@ -53692,13 +52174,19 @@ export namespace Prisma {
     branchCourseId?: SortOrder
     branchFacultyId?: SortOrder
     batchId?: SortOrder
-    batchGroupId?: SortOrder
     courseId?: SortOrder
     courseName?: SortOrder
     facultyId?: SortOrder
     facultyName?: SortOrder
     facultyEmail?: SortOrder
-    batchCount?: SortOrder
+    batchName?: SortOrder
+    startTime?: SortOrder
+    startPeriod?: SortOrder
+    endTime?: SortOrder
+    endPeriod?: SortOrder
+    batchTiming?: SortOrder
+    totalSeats?: SortOrder
+    sequenceNo?: SortOrder
     status?: SortOrder
     createdBy?: SortOrder
     updatedBy?: SortOrder
@@ -53707,7 +52195,8 @@ export namespace Prisma {
   }
 
   export type BranchBatchAvgOrderByAggregateInput = {
-    batchCount?: SortOrder
+    totalSeats?: SortOrder
+    sequenceNo?: SortOrder
   }
 
   export type BranchBatchMaxOrderByAggregateInput = {
@@ -53716,13 +52205,19 @@ export namespace Prisma {
     branchCourseId?: SortOrder
     branchFacultyId?: SortOrder
     batchId?: SortOrder
-    batchGroupId?: SortOrder
     courseId?: SortOrder
     courseName?: SortOrder
     facultyId?: SortOrder
     facultyName?: SortOrder
     facultyEmail?: SortOrder
-    batchCount?: SortOrder
+    batchName?: SortOrder
+    startTime?: SortOrder
+    startPeriod?: SortOrder
+    endTime?: SortOrder
+    endPeriod?: SortOrder
+    batchTiming?: SortOrder
+    totalSeats?: SortOrder
+    sequenceNo?: SortOrder
     status?: SortOrder
     createdBy?: SortOrder
     updatedBy?: SortOrder
@@ -53736,13 +52231,19 @@ export namespace Prisma {
     branchCourseId?: SortOrder
     branchFacultyId?: SortOrder
     batchId?: SortOrder
-    batchGroupId?: SortOrder
     courseId?: SortOrder
     courseName?: SortOrder
     facultyId?: SortOrder
     facultyName?: SortOrder
     facultyEmail?: SortOrder
-    batchCount?: SortOrder
+    batchName?: SortOrder
+    startTime?: SortOrder
+    startPeriod?: SortOrder
+    endTime?: SortOrder
+    endPeriod?: SortOrder
+    batchTiming?: SortOrder
+    totalSeats?: SortOrder
+    sequenceNo?: SortOrder
     status?: SortOrder
     createdBy?: SortOrder
     updatedBy?: SortOrder
@@ -53751,82 +52252,6 @@ export namespace Prisma {
   }
 
   export type BranchBatchSumOrderByAggregateInput = {
-    batchCount?: SortOrder
-  }
-
-  export type BranchBatchScalarRelationFilter = {
-    is?: BranchBatchWhereInput
-    isNot?: BranchBatchWhereInput
-  }
-
-  export type BranchBatchRowBranchBatchIdBatchIdCompoundUniqueInput = {
-    branchBatchId: string
-    batchId: string
-  }
-
-  export type BranchBatchRowCountOrderByAggregateInput = {
-    id?: SortOrder
-    branchBatchId?: SortOrder
-    batchId?: SortOrder
-    batchName?: SortOrder
-    startTime?: SortOrder
-    startPeriod?: SortOrder
-    endTime?: SortOrder
-    endPeriod?: SortOrder
-    batchTiming?: SortOrder
-    totalSeats?: SortOrder
-    status?: SortOrder
-    sequenceNo?: SortOrder
-    createdBy?: SortOrder
-    updatedBy?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type BranchBatchRowAvgOrderByAggregateInput = {
-    totalSeats?: SortOrder
-    sequenceNo?: SortOrder
-  }
-
-  export type BranchBatchRowMaxOrderByAggregateInput = {
-    id?: SortOrder
-    branchBatchId?: SortOrder
-    batchId?: SortOrder
-    batchName?: SortOrder
-    startTime?: SortOrder
-    startPeriod?: SortOrder
-    endTime?: SortOrder
-    endPeriod?: SortOrder
-    batchTiming?: SortOrder
-    totalSeats?: SortOrder
-    status?: SortOrder
-    sequenceNo?: SortOrder
-    createdBy?: SortOrder
-    updatedBy?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type BranchBatchRowMinOrderByAggregateInput = {
-    id?: SortOrder
-    branchBatchId?: SortOrder
-    batchId?: SortOrder
-    batchName?: SortOrder
-    startTime?: SortOrder
-    startPeriod?: SortOrder
-    endTime?: SortOrder
-    endPeriod?: SortOrder
-    batchTiming?: SortOrder
-    totalSeats?: SortOrder
-    status?: SortOrder
-    sequenceNo?: SortOrder
-    createdBy?: SortOrder
-    updatedBy?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type BranchBatchRowSumOrderByAggregateInput = {
     totalSeats?: SortOrder
     sequenceNo?: SortOrder
   }
@@ -56719,20 +55144,6 @@ export namespace Prisma {
     connect?: BranchFacultyWhereUniqueInput
   }
 
-  export type BranchBatchRowCreateNestedManyWithoutBranchBatchInput = {
-    create?: XOR<BranchBatchRowCreateWithoutBranchBatchInput, BranchBatchRowUncheckedCreateWithoutBranchBatchInput> | BranchBatchRowCreateWithoutBranchBatchInput[] | BranchBatchRowUncheckedCreateWithoutBranchBatchInput[]
-    connectOrCreate?: BranchBatchRowCreateOrConnectWithoutBranchBatchInput | BranchBatchRowCreateOrConnectWithoutBranchBatchInput[]
-    createMany?: BranchBatchRowCreateManyBranchBatchInputEnvelope
-    connect?: BranchBatchRowWhereUniqueInput | BranchBatchRowWhereUniqueInput[]
-  }
-
-  export type BranchBatchRowUncheckedCreateNestedManyWithoutBranchBatchInput = {
-    create?: XOR<BranchBatchRowCreateWithoutBranchBatchInput, BranchBatchRowUncheckedCreateWithoutBranchBatchInput> | BranchBatchRowCreateWithoutBranchBatchInput[] | BranchBatchRowUncheckedCreateWithoutBranchBatchInput[]
-    connectOrCreate?: BranchBatchRowCreateOrConnectWithoutBranchBatchInput | BranchBatchRowCreateOrConnectWithoutBranchBatchInput[]
-    createMany?: BranchBatchRowCreateManyBranchBatchInputEnvelope
-    connect?: BranchBatchRowWhereUniqueInput | BranchBatchRowWhereUniqueInput[]
-  }
-
   export type BranchUpdateOneRequiredWithoutBranchBatchesNestedInput = {
     create?: XOR<BranchCreateWithoutBranchBatchesInput, BranchUncheckedCreateWithoutBranchBatchesInput>
     connectOrCreate?: BranchCreateOrConnectWithoutBranchBatchesInput
@@ -56755,48 +55166,6 @@ export namespace Prisma {
     upsert?: BranchFacultyUpsertWithoutBranchBatchesInput
     connect?: BranchFacultyWhereUniqueInput
     update?: XOR<XOR<BranchFacultyUpdateToOneWithWhereWithoutBranchBatchesInput, BranchFacultyUpdateWithoutBranchBatchesInput>, BranchFacultyUncheckedUpdateWithoutBranchBatchesInput>
-  }
-
-  export type BranchBatchRowUpdateManyWithoutBranchBatchNestedInput = {
-    create?: XOR<BranchBatchRowCreateWithoutBranchBatchInput, BranchBatchRowUncheckedCreateWithoutBranchBatchInput> | BranchBatchRowCreateWithoutBranchBatchInput[] | BranchBatchRowUncheckedCreateWithoutBranchBatchInput[]
-    connectOrCreate?: BranchBatchRowCreateOrConnectWithoutBranchBatchInput | BranchBatchRowCreateOrConnectWithoutBranchBatchInput[]
-    upsert?: BranchBatchRowUpsertWithWhereUniqueWithoutBranchBatchInput | BranchBatchRowUpsertWithWhereUniqueWithoutBranchBatchInput[]
-    createMany?: BranchBatchRowCreateManyBranchBatchInputEnvelope
-    set?: BranchBatchRowWhereUniqueInput | BranchBatchRowWhereUniqueInput[]
-    disconnect?: BranchBatchRowWhereUniqueInput | BranchBatchRowWhereUniqueInput[]
-    delete?: BranchBatchRowWhereUniqueInput | BranchBatchRowWhereUniqueInput[]
-    connect?: BranchBatchRowWhereUniqueInput | BranchBatchRowWhereUniqueInput[]
-    update?: BranchBatchRowUpdateWithWhereUniqueWithoutBranchBatchInput | BranchBatchRowUpdateWithWhereUniqueWithoutBranchBatchInput[]
-    updateMany?: BranchBatchRowUpdateManyWithWhereWithoutBranchBatchInput | BranchBatchRowUpdateManyWithWhereWithoutBranchBatchInput[]
-    deleteMany?: BranchBatchRowScalarWhereInput | BranchBatchRowScalarWhereInput[]
-  }
-
-  export type BranchBatchRowUncheckedUpdateManyWithoutBranchBatchNestedInput = {
-    create?: XOR<BranchBatchRowCreateWithoutBranchBatchInput, BranchBatchRowUncheckedCreateWithoutBranchBatchInput> | BranchBatchRowCreateWithoutBranchBatchInput[] | BranchBatchRowUncheckedCreateWithoutBranchBatchInput[]
-    connectOrCreate?: BranchBatchRowCreateOrConnectWithoutBranchBatchInput | BranchBatchRowCreateOrConnectWithoutBranchBatchInput[]
-    upsert?: BranchBatchRowUpsertWithWhereUniqueWithoutBranchBatchInput | BranchBatchRowUpsertWithWhereUniqueWithoutBranchBatchInput[]
-    createMany?: BranchBatchRowCreateManyBranchBatchInputEnvelope
-    set?: BranchBatchRowWhereUniqueInput | BranchBatchRowWhereUniqueInput[]
-    disconnect?: BranchBatchRowWhereUniqueInput | BranchBatchRowWhereUniqueInput[]
-    delete?: BranchBatchRowWhereUniqueInput | BranchBatchRowWhereUniqueInput[]
-    connect?: BranchBatchRowWhereUniqueInput | BranchBatchRowWhereUniqueInput[]
-    update?: BranchBatchRowUpdateWithWhereUniqueWithoutBranchBatchInput | BranchBatchRowUpdateWithWhereUniqueWithoutBranchBatchInput[]
-    updateMany?: BranchBatchRowUpdateManyWithWhereWithoutBranchBatchInput | BranchBatchRowUpdateManyWithWhereWithoutBranchBatchInput[]
-    deleteMany?: BranchBatchRowScalarWhereInput | BranchBatchRowScalarWhereInput[]
-  }
-
-  export type BranchBatchCreateNestedOneWithoutRowsInput = {
-    create?: XOR<BranchBatchCreateWithoutRowsInput, BranchBatchUncheckedCreateWithoutRowsInput>
-    connectOrCreate?: BranchBatchCreateOrConnectWithoutRowsInput
-    connect?: BranchBatchWhereUniqueInput
-  }
-
-  export type BranchBatchUpdateOneRequiredWithoutRowsNestedInput = {
-    create?: XOR<BranchBatchCreateWithoutRowsInput, BranchBatchUncheckedCreateWithoutRowsInput>
-    connectOrCreate?: BranchBatchCreateOrConnectWithoutRowsInput
-    upsert?: BranchBatchUpsertWithoutRowsInput
-    connect?: BranchBatchWhereUniqueInput
-    update?: XOR<XOR<BranchBatchUpdateToOneWithWhereWithoutRowsInput, BranchBatchUpdateWithoutRowsInput>, BranchBatchUncheckedUpdateWithoutRowsInput>
   }
 
   export type CourseCreateNestedOneWithoutStatusHistoryInput = {
@@ -58810,13 +57179,19 @@ export namespace Prisma {
   export type BranchBatchCreateWithoutBranchInput = {
     id?: string
     batchId: string
-    batchGroupId: string
     courseId: string
     courseName: string
     facultyId: string
     facultyName: string
     facultyEmail: string
-    batchCount?: number
+    batchName: string
+    startTime: string
+    startPeriod: string
+    endTime: string
+    endPeriod: string
+    batchTiming: string
+    totalSeats: number
+    sequenceNo?: number
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -58824,7 +57199,6 @@ export namespace Prisma {
     updatedAt?: Date | string
     branchCourse: BranchCourseCreateNestedOneWithoutBranchBatchesInput
     branchFaculty: BranchFacultyCreateNestedOneWithoutBranchBatchesInput
-    rows?: BranchBatchRowCreateNestedManyWithoutBranchBatchInput
   }
 
   export type BranchBatchUncheckedCreateWithoutBranchInput = {
@@ -58832,19 +57206,24 @@ export namespace Prisma {
     branchCourseId: string
     branchFacultyId: string
     batchId: string
-    batchGroupId: string
     courseId: string
     courseName: string
     facultyId: string
     facultyName: string
     facultyEmail: string
-    batchCount?: number
+    batchName: string
+    startTime: string
+    startPeriod: string
+    endTime: string
+    endPeriod: string
+    batchTiming: string
+    totalSeats: number
+    sequenceNo?: number
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    rows?: BranchBatchRowUncheckedCreateNestedManyWithoutBranchBatchInput
   }
 
   export type BranchBatchCreateOrConnectWithoutBranchInput = {
@@ -59385,13 +57764,19 @@ export namespace Prisma {
     branchCourseId?: StringFilter<"BranchBatch"> | string
     branchFacultyId?: StringFilter<"BranchBatch"> | string
     batchId?: StringFilter<"BranchBatch"> | string
-    batchGroupId?: StringFilter<"BranchBatch"> | string
     courseId?: StringFilter<"BranchBatch"> | string
     courseName?: StringFilter<"BranchBatch"> | string
     facultyId?: StringFilter<"BranchBatch"> | string
     facultyName?: StringFilter<"BranchBatch"> | string
     facultyEmail?: StringFilter<"BranchBatch"> | string
-    batchCount?: IntFilter<"BranchBatch"> | number
+    batchName?: StringFilter<"BranchBatch"> | string
+    startTime?: StringFilter<"BranchBatch"> | string
+    startPeriod?: StringFilter<"BranchBatch"> | string
+    endTime?: StringFilter<"BranchBatch"> | string
+    endPeriod?: StringFilter<"BranchBatch"> | string
+    batchTiming?: StringFilter<"BranchBatch"> | string
+    totalSeats?: IntFilter<"BranchBatch"> | number
+    sequenceNo?: IntFilter<"BranchBatch"> | number
     status?: EnumRecordStatusFilter<"BranchBatch"> | $Enums.RecordStatus
     createdBy?: StringNullableFilter<"BranchBatch"> | string | null
     updatedBy?: StringNullableFilter<"BranchBatch"> | string | null
@@ -61272,13 +59657,19 @@ export namespace Prisma {
   export type BranchBatchCreateWithoutBranchCourseInput = {
     id?: string
     batchId: string
-    batchGroupId: string
     courseId: string
     courseName: string
     facultyId: string
     facultyName: string
     facultyEmail: string
-    batchCount?: number
+    batchName: string
+    startTime: string
+    startPeriod: string
+    endTime: string
+    endPeriod: string
+    batchTiming: string
+    totalSeats: number
+    sequenceNo?: number
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -61286,7 +59677,6 @@ export namespace Prisma {
     updatedAt?: Date | string
     branch: BranchCreateNestedOneWithoutBranchBatchesInput
     branchFaculty: BranchFacultyCreateNestedOneWithoutBranchBatchesInput
-    rows?: BranchBatchRowCreateNestedManyWithoutBranchBatchInput
   }
 
   export type BranchBatchUncheckedCreateWithoutBranchCourseInput = {
@@ -61294,19 +59684,24 @@ export namespace Prisma {
     branchId: string
     branchFacultyId: string
     batchId: string
-    batchGroupId: string
     courseId: string
     courseName: string
     facultyId: string
     facultyName: string
     facultyEmail: string
-    batchCount?: number
+    batchName: string
+    startTime: string
+    startPeriod: string
+    endTime: string
+    endPeriod: string
+    batchTiming: string
+    totalSeats: number
+    sequenceNo?: number
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    rows?: BranchBatchRowUncheckedCreateNestedManyWithoutBranchBatchInput
   }
 
   export type BranchBatchCreateOrConnectWithoutBranchCourseInput = {
@@ -62807,52 +61202,6 @@ export namespace Prisma {
     create: XOR<BranchFacultyCreateWithoutBranchBatchesInput, BranchFacultyUncheckedCreateWithoutBranchBatchesInput>
   }
 
-  export type BranchBatchRowCreateWithoutBranchBatchInput = {
-    id?: string
-    batchId: string
-    batchName: string
-    startTime: string
-    startPeriod: string
-    endTime: string
-    endPeriod: string
-    batchTiming: string
-    totalSeats: number
-    status?: $Enums.RecordStatus
-    sequenceNo: number
-    createdBy?: string | null
-    updatedBy?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type BranchBatchRowUncheckedCreateWithoutBranchBatchInput = {
-    id?: string
-    batchId: string
-    batchName: string
-    startTime: string
-    startPeriod: string
-    endTime: string
-    endPeriod: string
-    batchTiming: string
-    totalSeats: number
-    status?: $Enums.RecordStatus
-    sequenceNo: number
-    createdBy?: string | null
-    updatedBy?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type BranchBatchRowCreateOrConnectWithoutBranchBatchInput = {
-    where: BranchBatchRowWhereUniqueInput
-    create: XOR<BranchBatchRowCreateWithoutBranchBatchInput, BranchBatchRowUncheckedCreateWithoutBranchBatchInput>
-  }
-
-  export type BranchBatchRowCreateManyBranchBatchInputEnvelope = {
-    data: BranchBatchRowCreateManyBranchBatchInput | BranchBatchRowCreateManyBranchBatchInput[]
-    skipDuplicates?: boolean
-  }
-
   export type BranchUpsertWithoutBranchBatchesInput = {
     update: XOR<BranchUpdateWithoutBranchBatchesInput, BranchUncheckedUpdateWithoutBranchBatchesInput>
     create: XOR<BranchCreateWithoutBranchBatchesInput, BranchUncheckedCreateWithoutBranchBatchesInput>
@@ -63040,140 +61389,6 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     courseId?: NullableStringFieldUpdateOperationsInput | string | null
     branchCourseId?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type BranchBatchRowUpsertWithWhereUniqueWithoutBranchBatchInput = {
-    where: BranchBatchRowWhereUniqueInput
-    update: XOR<BranchBatchRowUpdateWithoutBranchBatchInput, BranchBatchRowUncheckedUpdateWithoutBranchBatchInput>
-    create: XOR<BranchBatchRowCreateWithoutBranchBatchInput, BranchBatchRowUncheckedCreateWithoutBranchBatchInput>
-  }
-
-  export type BranchBatchRowUpdateWithWhereUniqueWithoutBranchBatchInput = {
-    where: BranchBatchRowWhereUniqueInput
-    data: XOR<BranchBatchRowUpdateWithoutBranchBatchInput, BranchBatchRowUncheckedUpdateWithoutBranchBatchInput>
-  }
-
-  export type BranchBatchRowUpdateManyWithWhereWithoutBranchBatchInput = {
-    where: BranchBatchRowScalarWhereInput
-    data: XOR<BranchBatchRowUpdateManyMutationInput, BranchBatchRowUncheckedUpdateManyWithoutBranchBatchInput>
-  }
-
-  export type BranchBatchRowScalarWhereInput = {
-    AND?: BranchBatchRowScalarWhereInput | BranchBatchRowScalarWhereInput[]
-    OR?: BranchBatchRowScalarWhereInput[]
-    NOT?: BranchBatchRowScalarWhereInput | BranchBatchRowScalarWhereInput[]
-    id?: StringFilter<"BranchBatchRow"> | string
-    branchBatchId?: StringFilter<"BranchBatchRow"> | string
-    batchId?: StringFilter<"BranchBatchRow"> | string
-    batchName?: StringFilter<"BranchBatchRow"> | string
-    startTime?: StringFilter<"BranchBatchRow"> | string
-    startPeriod?: StringFilter<"BranchBatchRow"> | string
-    endTime?: StringFilter<"BranchBatchRow"> | string
-    endPeriod?: StringFilter<"BranchBatchRow"> | string
-    batchTiming?: StringFilter<"BranchBatchRow"> | string
-    totalSeats?: IntFilter<"BranchBatchRow"> | number
-    status?: EnumRecordStatusFilter<"BranchBatchRow"> | $Enums.RecordStatus
-    sequenceNo?: IntFilter<"BranchBatchRow"> | number
-    createdBy?: StringNullableFilter<"BranchBatchRow"> | string | null
-    updatedBy?: StringNullableFilter<"BranchBatchRow"> | string | null
-    createdAt?: DateTimeFilter<"BranchBatchRow"> | Date | string
-    updatedAt?: DateTimeFilter<"BranchBatchRow"> | Date | string
-  }
-
-  export type BranchBatchCreateWithoutRowsInput = {
-    id?: string
-    batchId: string
-    batchGroupId: string
-    courseId: string
-    courseName: string
-    facultyId: string
-    facultyName: string
-    facultyEmail: string
-    batchCount?: number
-    status?: $Enums.RecordStatus
-    createdBy?: string | null
-    updatedBy?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    branch: BranchCreateNestedOneWithoutBranchBatchesInput
-    branchCourse: BranchCourseCreateNestedOneWithoutBranchBatchesInput
-    branchFaculty: BranchFacultyCreateNestedOneWithoutBranchBatchesInput
-  }
-
-  export type BranchBatchUncheckedCreateWithoutRowsInput = {
-    id?: string
-    branchId: string
-    branchCourseId: string
-    branchFacultyId: string
-    batchId: string
-    batchGroupId: string
-    courseId: string
-    courseName: string
-    facultyId: string
-    facultyName: string
-    facultyEmail: string
-    batchCount?: number
-    status?: $Enums.RecordStatus
-    createdBy?: string | null
-    updatedBy?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type BranchBatchCreateOrConnectWithoutRowsInput = {
-    where: BranchBatchWhereUniqueInput
-    create: XOR<BranchBatchCreateWithoutRowsInput, BranchBatchUncheckedCreateWithoutRowsInput>
-  }
-
-  export type BranchBatchUpsertWithoutRowsInput = {
-    update: XOR<BranchBatchUpdateWithoutRowsInput, BranchBatchUncheckedUpdateWithoutRowsInput>
-    create: XOR<BranchBatchCreateWithoutRowsInput, BranchBatchUncheckedCreateWithoutRowsInput>
-    where?: BranchBatchWhereInput
-  }
-
-  export type BranchBatchUpdateToOneWithWhereWithoutRowsInput = {
-    where?: BranchBatchWhereInput
-    data: XOR<BranchBatchUpdateWithoutRowsInput, BranchBatchUncheckedUpdateWithoutRowsInput>
-  }
-
-  export type BranchBatchUpdateWithoutRowsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    batchId?: StringFieldUpdateOperationsInput | string
-    batchGroupId?: StringFieldUpdateOperationsInput | string
-    courseId?: StringFieldUpdateOperationsInput | string
-    courseName?: StringFieldUpdateOperationsInput | string
-    facultyId?: StringFieldUpdateOperationsInput | string
-    facultyName?: StringFieldUpdateOperationsInput | string
-    facultyEmail?: StringFieldUpdateOperationsInput | string
-    batchCount?: IntFieldUpdateOperationsInput | number
-    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    branch?: BranchUpdateOneRequiredWithoutBranchBatchesNestedInput
-    branchCourse?: BranchCourseUpdateOneRequiredWithoutBranchBatchesNestedInput
-    branchFaculty?: BranchFacultyUpdateOneRequiredWithoutBranchBatchesNestedInput
-  }
-
-  export type BranchBatchUncheckedUpdateWithoutRowsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    branchId?: StringFieldUpdateOperationsInput | string
-    branchCourseId?: StringFieldUpdateOperationsInput | string
-    branchFacultyId?: StringFieldUpdateOperationsInput | string
-    batchId?: StringFieldUpdateOperationsInput | string
-    batchGroupId?: StringFieldUpdateOperationsInput | string
-    courseId?: StringFieldUpdateOperationsInput | string
-    courseName?: StringFieldUpdateOperationsInput | string
-    facultyId?: StringFieldUpdateOperationsInput | string
-    facultyName?: StringFieldUpdateOperationsInput | string
-    facultyEmail?: StringFieldUpdateOperationsInput | string
-    batchCount?: IntFieldUpdateOperationsInput | number
-    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type CourseCreateWithoutStatusHistoryInput = {
@@ -66049,13 +64264,19 @@ export namespace Prisma {
   export type BranchBatchCreateWithoutBranchFacultyInput = {
     id?: string
     batchId: string
-    batchGroupId: string
     courseId: string
     courseName: string
     facultyId: string
     facultyName: string
     facultyEmail: string
-    batchCount?: number
+    batchName: string
+    startTime: string
+    startPeriod: string
+    endTime: string
+    endPeriod: string
+    batchTiming: string
+    totalSeats: number
+    sequenceNo?: number
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -66063,7 +64284,6 @@ export namespace Prisma {
     updatedAt?: Date | string
     branch: BranchCreateNestedOneWithoutBranchBatchesInput
     branchCourse: BranchCourseCreateNestedOneWithoutBranchBatchesInput
-    rows?: BranchBatchRowCreateNestedManyWithoutBranchBatchInput
   }
 
   export type BranchBatchUncheckedCreateWithoutBranchFacultyInput = {
@@ -66071,19 +64291,24 @@ export namespace Prisma {
     branchId: string
     branchCourseId: string
     batchId: string
-    batchGroupId: string
     courseId: string
     courseName: string
     facultyId: string
     facultyName: string
     facultyEmail: string
-    batchCount?: number
+    batchName: string
+    startTime: string
+    startPeriod: string
+    endTime: string
+    endPeriod: string
+    batchTiming: string
+    totalSeats: number
+    sequenceNo?: number
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    rows?: BranchBatchRowUncheckedCreateNestedManyWithoutBranchBatchInput
   }
 
   export type BranchBatchCreateOrConnectWithoutBranchFacultyInput = {
@@ -67820,13 +66045,19 @@ export namespace Prisma {
     branchCourseId: string
     branchFacultyId: string
     batchId: string
-    batchGroupId: string
     courseId: string
     courseName: string
     facultyId: string
     facultyName: string
     facultyEmail: string
-    batchCount?: number
+    batchName: string
+    startTime: string
+    startPeriod: string
+    endTime: string
+    endPeriod: string
+    batchTiming: string
+    totalSeats: number
+    sequenceNo?: number
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -68067,13 +66298,19 @@ export namespace Prisma {
   export type BranchBatchUpdateWithoutBranchInput = {
     id?: StringFieldUpdateOperationsInput | string
     batchId?: StringFieldUpdateOperationsInput | string
-    batchGroupId?: StringFieldUpdateOperationsInput | string
     courseId?: StringFieldUpdateOperationsInput | string
     courseName?: StringFieldUpdateOperationsInput | string
     facultyId?: StringFieldUpdateOperationsInput | string
     facultyName?: StringFieldUpdateOperationsInput | string
     facultyEmail?: StringFieldUpdateOperationsInput | string
-    batchCount?: IntFieldUpdateOperationsInput | number
+    batchName?: StringFieldUpdateOperationsInput | string
+    startTime?: StringFieldUpdateOperationsInput | string
+    startPeriod?: StringFieldUpdateOperationsInput | string
+    endTime?: StringFieldUpdateOperationsInput | string
+    endPeriod?: StringFieldUpdateOperationsInput | string
+    batchTiming?: StringFieldUpdateOperationsInput | string
+    totalSeats?: IntFieldUpdateOperationsInput | number
+    sequenceNo?: IntFieldUpdateOperationsInput | number
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -68081,7 +66318,6 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     branchCourse?: BranchCourseUpdateOneRequiredWithoutBranchBatchesNestedInput
     branchFaculty?: BranchFacultyUpdateOneRequiredWithoutBranchBatchesNestedInput
-    rows?: BranchBatchRowUpdateManyWithoutBranchBatchNestedInput
   }
 
   export type BranchBatchUncheckedUpdateWithoutBranchInput = {
@@ -68089,19 +66325,24 @@ export namespace Prisma {
     branchCourseId?: StringFieldUpdateOperationsInput | string
     branchFacultyId?: StringFieldUpdateOperationsInput | string
     batchId?: StringFieldUpdateOperationsInput | string
-    batchGroupId?: StringFieldUpdateOperationsInput | string
     courseId?: StringFieldUpdateOperationsInput | string
     courseName?: StringFieldUpdateOperationsInput | string
     facultyId?: StringFieldUpdateOperationsInput | string
     facultyName?: StringFieldUpdateOperationsInput | string
     facultyEmail?: StringFieldUpdateOperationsInput | string
-    batchCount?: IntFieldUpdateOperationsInput | number
+    batchName?: StringFieldUpdateOperationsInput | string
+    startTime?: StringFieldUpdateOperationsInput | string
+    startPeriod?: StringFieldUpdateOperationsInput | string
+    endTime?: StringFieldUpdateOperationsInput | string
+    endPeriod?: StringFieldUpdateOperationsInput | string
+    batchTiming?: StringFieldUpdateOperationsInput | string
+    totalSeats?: IntFieldUpdateOperationsInput | number
+    sequenceNo?: IntFieldUpdateOperationsInput | number
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    rows?: BranchBatchRowUncheckedUpdateManyWithoutBranchBatchNestedInput
   }
 
   export type BranchBatchUncheckedUpdateManyWithoutBranchInput = {
@@ -68109,13 +66350,19 @@ export namespace Prisma {
     branchCourseId?: StringFieldUpdateOperationsInput | string
     branchFacultyId?: StringFieldUpdateOperationsInput | string
     batchId?: StringFieldUpdateOperationsInput | string
-    batchGroupId?: StringFieldUpdateOperationsInput | string
     courseId?: StringFieldUpdateOperationsInput | string
     courseName?: StringFieldUpdateOperationsInput | string
     facultyId?: StringFieldUpdateOperationsInput | string
     facultyName?: StringFieldUpdateOperationsInput | string
     facultyEmail?: StringFieldUpdateOperationsInput | string
-    batchCount?: IntFieldUpdateOperationsInput | number
+    batchName?: StringFieldUpdateOperationsInput | string
+    startTime?: StringFieldUpdateOperationsInput | string
+    startPeriod?: StringFieldUpdateOperationsInput | string
+    endTime?: StringFieldUpdateOperationsInput | string
+    endPeriod?: StringFieldUpdateOperationsInput | string
+    batchTiming?: StringFieldUpdateOperationsInput | string
+    totalSeats?: IntFieldUpdateOperationsInput | number
+    sequenceNo?: IntFieldUpdateOperationsInput | number
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -69338,13 +67585,19 @@ export namespace Prisma {
     branchId: string
     branchFacultyId: string
     batchId: string
-    batchGroupId: string
     courseId: string
     courseName: string
     facultyId: string
     facultyName: string
     facultyEmail: string
-    batchCount?: number
+    batchName: string
+    startTime: string
+    startPeriod: string
+    endTime: string
+    endPeriod: string
+    batchTiming: string
+    totalSeats: number
+    sequenceNo?: number
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -69529,13 +67782,19 @@ export namespace Prisma {
   export type BranchBatchUpdateWithoutBranchCourseInput = {
     id?: StringFieldUpdateOperationsInput | string
     batchId?: StringFieldUpdateOperationsInput | string
-    batchGroupId?: StringFieldUpdateOperationsInput | string
     courseId?: StringFieldUpdateOperationsInput | string
     courseName?: StringFieldUpdateOperationsInput | string
     facultyId?: StringFieldUpdateOperationsInput | string
     facultyName?: StringFieldUpdateOperationsInput | string
     facultyEmail?: StringFieldUpdateOperationsInput | string
-    batchCount?: IntFieldUpdateOperationsInput | number
+    batchName?: StringFieldUpdateOperationsInput | string
+    startTime?: StringFieldUpdateOperationsInput | string
+    startPeriod?: StringFieldUpdateOperationsInput | string
+    endTime?: StringFieldUpdateOperationsInput | string
+    endPeriod?: StringFieldUpdateOperationsInput | string
+    batchTiming?: StringFieldUpdateOperationsInput | string
+    totalSeats?: IntFieldUpdateOperationsInput | number
+    sequenceNo?: IntFieldUpdateOperationsInput | number
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -69543,7 +67802,6 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     branch?: BranchUpdateOneRequiredWithoutBranchBatchesNestedInput
     branchFaculty?: BranchFacultyUpdateOneRequiredWithoutBranchBatchesNestedInput
-    rows?: BranchBatchRowUpdateManyWithoutBranchBatchNestedInput
   }
 
   export type BranchBatchUncheckedUpdateWithoutBranchCourseInput = {
@@ -69551,19 +67809,24 @@ export namespace Prisma {
     branchId?: StringFieldUpdateOperationsInput | string
     branchFacultyId?: StringFieldUpdateOperationsInput | string
     batchId?: StringFieldUpdateOperationsInput | string
-    batchGroupId?: StringFieldUpdateOperationsInput | string
     courseId?: StringFieldUpdateOperationsInput | string
     courseName?: StringFieldUpdateOperationsInput | string
     facultyId?: StringFieldUpdateOperationsInput | string
     facultyName?: StringFieldUpdateOperationsInput | string
     facultyEmail?: StringFieldUpdateOperationsInput | string
-    batchCount?: IntFieldUpdateOperationsInput | number
+    batchName?: StringFieldUpdateOperationsInput | string
+    startTime?: StringFieldUpdateOperationsInput | string
+    startPeriod?: StringFieldUpdateOperationsInput | string
+    endTime?: StringFieldUpdateOperationsInput | string
+    endPeriod?: StringFieldUpdateOperationsInput | string
+    batchTiming?: StringFieldUpdateOperationsInput | string
+    totalSeats?: IntFieldUpdateOperationsInput | number
+    sequenceNo?: IntFieldUpdateOperationsInput | number
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    rows?: BranchBatchRowUncheckedUpdateManyWithoutBranchBatchNestedInput
   }
 
   export type BranchBatchUncheckedUpdateManyWithoutBranchCourseInput = {
@@ -69571,13 +67834,19 @@ export namespace Prisma {
     branchId?: StringFieldUpdateOperationsInput | string
     branchFacultyId?: StringFieldUpdateOperationsInput | string
     batchId?: StringFieldUpdateOperationsInput | string
-    batchGroupId?: StringFieldUpdateOperationsInput | string
     courseId?: StringFieldUpdateOperationsInput | string
     courseName?: StringFieldUpdateOperationsInput | string
     facultyId?: StringFieldUpdateOperationsInput | string
     facultyName?: StringFieldUpdateOperationsInput | string
     facultyEmail?: StringFieldUpdateOperationsInput | string
-    batchCount?: IntFieldUpdateOperationsInput | number
+    batchName?: StringFieldUpdateOperationsInput | string
+    startTime?: StringFieldUpdateOperationsInput | string
+    startPeriod?: StringFieldUpdateOperationsInput | string
+    endTime?: StringFieldUpdateOperationsInput | string
+    endPeriod?: StringFieldUpdateOperationsInput | string
+    batchTiming?: StringFieldUpdateOperationsInput | string
+    totalSeats?: IntFieldUpdateOperationsInput | number
+    sequenceNo?: IntFieldUpdateOperationsInput | number
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -69945,78 +68214,6 @@ export namespace Prisma {
     changedBy?: NullableStringFieldUpdateOperationsInput | string | null
     reason?: NullableStringFieldUpdateOperationsInput | string | null
     changedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type BranchBatchRowCreateManyBranchBatchInput = {
-    id?: string
-    batchId: string
-    batchName: string
-    startTime: string
-    startPeriod: string
-    endTime: string
-    endPeriod: string
-    batchTiming: string
-    totalSeats: number
-    status?: $Enums.RecordStatus
-    sequenceNo: number
-    createdBy?: string | null
-    updatedBy?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type BranchBatchRowUpdateWithoutBranchBatchInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    batchId?: StringFieldUpdateOperationsInput | string
-    batchName?: StringFieldUpdateOperationsInput | string
-    startTime?: StringFieldUpdateOperationsInput | string
-    startPeriod?: StringFieldUpdateOperationsInput | string
-    endTime?: StringFieldUpdateOperationsInput | string
-    endPeriod?: StringFieldUpdateOperationsInput | string
-    batchTiming?: StringFieldUpdateOperationsInput | string
-    totalSeats?: IntFieldUpdateOperationsInput | number
-    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
-    sequenceNo?: IntFieldUpdateOperationsInput | number
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type BranchBatchRowUncheckedUpdateWithoutBranchBatchInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    batchId?: StringFieldUpdateOperationsInput | string
-    batchName?: StringFieldUpdateOperationsInput | string
-    startTime?: StringFieldUpdateOperationsInput | string
-    startPeriod?: StringFieldUpdateOperationsInput | string
-    endTime?: StringFieldUpdateOperationsInput | string
-    endPeriod?: StringFieldUpdateOperationsInput | string
-    batchTiming?: StringFieldUpdateOperationsInput | string
-    totalSeats?: IntFieldUpdateOperationsInput | number
-    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
-    sequenceNo?: IntFieldUpdateOperationsInput | number
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type BranchBatchRowUncheckedUpdateManyWithoutBranchBatchInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    batchId?: StringFieldUpdateOperationsInput | string
-    batchName?: StringFieldUpdateOperationsInput | string
-    startTime?: StringFieldUpdateOperationsInput | string
-    startPeriod?: StringFieldUpdateOperationsInput | string
-    endTime?: StringFieldUpdateOperationsInput | string
-    endPeriod?: StringFieldUpdateOperationsInput | string
-    batchTiming?: StringFieldUpdateOperationsInput | string
-    totalSeats?: IntFieldUpdateOperationsInput | number
-    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
-    sequenceNo?: IntFieldUpdateOperationsInput | number
-    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
-    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type StudentAttendanceCreateManyStudentInput = {
@@ -70474,13 +68671,19 @@ export namespace Prisma {
     branchId: string
     branchCourseId: string
     batchId: string
-    batchGroupId: string
     courseId: string
     courseName: string
     facultyId: string
     facultyName: string
     facultyEmail: string
-    batchCount?: number
+    batchName: string
+    startTime: string
+    startPeriod: string
+    endTime: string
+    endPeriod: string
+    batchTiming: string
+    totalSeats: number
+    sequenceNo?: number
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -70491,13 +68694,19 @@ export namespace Prisma {
   export type BranchBatchUpdateWithoutBranchFacultyInput = {
     id?: StringFieldUpdateOperationsInput | string
     batchId?: StringFieldUpdateOperationsInput | string
-    batchGroupId?: StringFieldUpdateOperationsInput | string
     courseId?: StringFieldUpdateOperationsInput | string
     courseName?: StringFieldUpdateOperationsInput | string
     facultyId?: StringFieldUpdateOperationsInput | string
     facultyName?: StringFieldUpdateOperationsInput | string
     facultyEmail?: StringFieldUpdateOperationsInput | string
-    batchCount?: IntFieldUpdateOperationsInput | number
+    batchName?: StringFieldUpdateOperationsInput | string
+    startTime?: StringFieldUpdateOperationsInput | string
+    startPeriod?: StringFieldUpdateOperationsInput | string
+    endTime?: StringFieldUpdateOperationsInput | string
+    endPeriod?: StringFieldUpdateOperationsInput | string
+    batchTiming?: StringFieldUpdateOperationsInput | string
+    totalSeats?: IntFieldUpdateOperationsInput | number
+    sequenceNo?: IntFieldUpdateOperationsInput | number
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -70505,7 +68714,6 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     branch?: BranchUpdateOneRequiredWithoutBranchBatchesNestedInput
     branchCourse?: BranchCourseUpdateOneRequiredWithoutBranchBatchesNestedInput
-    rows?: BranchBatchRowUpdateManyWithoutBranchBatchNestedInput
   }
 
   export type BranchBatchUncheckedUpdateWithoutBranchFacultyInput = {
@@ -70513,19 +68721,24 @@ export namespace Prisma {
     branchId?: StringFieldUpdateOperationsInput | string
     branchCourseId?: StringFieldUpdateOperationsInput | string
     batchId?: StringFieldUpdateOperationsInput | string
-    batchGroupId?: StringFieldUpdateOperationsInput | string
     courseId?: StringFieldUpdateOperationsInput | string
     courseName?: StringFieldUpdateOperationsInput | string
     facultyId?: StringFieldUpdateOperationsInput | string
     facultyName?: StringFieldUpdateOperationsInput | string
     facultyEmail?: StringFieldUpdateOperationsInput | string
-    batchCount?: IntFieldUpdateOperationsInput | number
+    batchName?: StringFieldUpdateOperationsInput | string
+    startTime?: StringFieldUpdateOperationsInput | string
+    startPeriod?: StringFieldUpdateOperationsInput | string
+    endTime?: StringFieldUpdateOperationsInput | string
+    endPeriod?: StringFieldUpdateOperationsInput | string
+    batchTiming?: StringFieldUpdateOperationsInput | string
+    totalSeats?: IntFieldUpdateOperationsInput | number
+    sequenceNo?: IntFieldUpdateOperationsInput | number
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    rows?: BranchBatchRowUncheckedUpdateManyWithoutBranchBatchNestedInput
   }
 
   export type BranchBatchUncheckedUpdateManyWithoutBranchFacultyInput = {
@@ -70533,13 +68746,19 @@ export namespace Prisma {
     branchId?: StringFieldUpdateOperationsInput | string
     branchCourseId?: StringFieldUpdateOperationsInput | string
     batchId?: StringFieldUpdateOperationsInput | string
-    batchGroupId?: StringFieldUpdateOperationsInput | string
     courseId?: StringFieldUpdateOperationsInput | string
     courseName?: StringFieldUpdateOperationsInput | string
     facultyId?: StringFieldUpdateOperationsInput | string
     facultyName?: StringFieldUpdateOperationsInput | string
     facultyEmail?: StringFieldUpdateOperationsInput | string
-    batchCount?: IntFieldUpdateOperationsInput | number
+    batchName?: StringFieldUpdateOperationsInput | string
+    startTime?: StringFieldUpdateOperationsInput | string
+    startPeriod?: StringFieldUpdateOperationsInput | string
+    endTime?: StringFieldUpdateOperationsInput | string
+    endPeriod?: StringFieldUpdateOperationsInput | string
+    batchTiming?: StringFieldUpdateOperationsInput | string
+    totalSeats?: IntFieldUpdateOperationsInput | number
+    sequenceNo?: IntFieldUpdateOperationsInput | number
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null

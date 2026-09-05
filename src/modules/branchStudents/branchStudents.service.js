@@ -1570,17 +1570,21 @@ export async function createBranchStudent(payload, actor) {
   }
   const selectedBatchId = normalizeString(payload.batchId || payload.batchEntryId);
   const assignedBatch = selectedBatchId
-    ? await prisma.branchBatchRow.findFirst({
+    ? await prisma.branchBatch.findFirst({
         where: {
           batchId: selectedBatchId,
           status: "ACTIVE",
-          branchBatch: { branchId, status: "ACTIVE" },
+          branchId,
+          ...(studentData.courseId ? { courseId: studentData.courseId } : {}),
         },
         select: {
           batchId: true,
           batchName: true,
           batchTiming: true,
-          branchBatch: { select: { courseId: true, courseName: true, facultyId: true, facultyName: true } },
+          courseId: true,
+          courseName: true,
+          facultyId: true,
+          facultyName: true,
         },
       })
     : null;
@@ -1593,10 +1597,10 @@ export async function createBranchStudent(payload, actor) {
     studentData.batchId = assignedBatch.batchId;
     studentData.batchName = assignedBatch.batchName;
     studentData.batchTiming = assignedBatch.batchTiming;
-    studentData.courseId = studentData.courseId || assignedBatch.branchBatch.courseId;
-    studentData.courseName = studentData.courseName || assignedBatch.branchBatch.courseName;
-    studentData.facultyId = studentData.facultyId || assignedBatch.branchBatch.facultyId;
-    studentData.facultyName = studentData.facultyName || assignedBatch.branchBatch.facultyName;
+    studentData.courseId = studentData.courseId || assignedBatch.courseId;
+    studentData.courseName = studentData.courseName || assignedBatch.courseName;
+    studentData.facultyId = studentData.facultyId || assignedBatch.facultyId;
+    studentData.facultyName = studentData.facultyName || assignedBatch.facultyName;
   }
   console.log("[createBranchStudent] studentData keys:", Object.keys(studentData));
   console.log("[createBranchStudent] studentData:", JSON.stringify(studentData, null, 2));
@@ -1697,7 +1701,7 @@ export async function createBranchStudent(payload, actor) {
     studentCode: studentId,
     temporaryPassword,
     resetToken,
-    courseName: studentData.courseName || assignedBatch?.branchBatch?.courseName || "",
+    courseName: studentData.courseName || assignedBatch?.courseName || "",
     facultyName: studentData.facultyName || "",
     batchName: assignedBatch?.batchName || "",
     batchTiming: assignedBatch?.batchTiming || "",
@@ -1737,17 +1741,21 @@ export async function updateBranchStudent(studentId, payload, actor = null) {
   const { studentData, installmentSchedule } = buildBranchStudentPayload(payload, existing);
   const selectedBatchId = normalizeString(studentData.batchId);
   if (selectedBatchId) {
-    const assignedBatch = await prisma.branchBatchRow.findFirst({
+    const assignedBatch = await prisma.branchBatch.findFirst({
       where: {
         batchId: selectedBatchId,
         status: "ACTIVE",
-        branchBatch: { branchId: existing.branchId, status: "ACTIVE" },
+        branchId: existing.branchId,
+        ...(studentData.courseId ? { courseId: studentData.courseId } : {}),
       },
       select: {
         batchId: true,
         batchName: true,
         batchTiming: true,
-        branchBatch: { select: { courseId: true, courseName: true, facultyId: true, facultyName: true } },
+        courseId: true,
+        courseName: true,
+        facultyId: true,
+        facultyName: true,
       },
     });
 
@@ -1758,10 +1766,10 @@ export async function updateBranchStudent(studentId, payload, actor = null) {
     studentData.batchId = assignedBatch.batchId;
     studentData.batchName = assignedBatch.batchName;
     studentData.batchTiming = assignedBatch.batchTiming;
-    studentData.courseId = studentData.courseId || assignedBatch.branchBatch.courseId;
-    studentData.courseName = studentData.courseName || assignedBatch.branchBatch.courseName;
-    studentData.facultyId = studentData.facultyId || assignedBatch.branchBatch.facultyId;
-    studentData.facultyName = studentData.facultyName || assignedBatch.branchBatch.facultyName;
+    studentData.courseId = studentData.courseId || assignedBatch.courseId;
+    studentData.courseName = studentData.courseName || assignedBatch.courseName;
+    studentData.facultyId = studentData.facultyId || assignedBatch.facultyId;
+    studentData.facultyName = studentData.facultyName || assignedBatch.facultyName;
   }
   const existingLoginUser = await findBranchStudentLoginUser(existing);
   const previousCourseProgress = Number(existing.courseProgress);

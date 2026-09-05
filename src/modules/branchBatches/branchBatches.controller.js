@@ -27,7 +27,7 @@ export const listBranchBatchesHandler = asyncHandler(async (req, res) => {
 });
 
 export const getBranchBatchHandler = asyncHandler(async (req, res) => {
-  const batch = await getBranchBatch(req.params.batchGroupId, req.user);
+  const batch = await getBranchBatch(req.params.batchId, req.user);
   return sendSuccess(res, "Branch batch fetched successfully", batch);
 });
 
@@ -37,12 +37,12 @@ export const createBranchBatchHandler = asyncHandler(async (req, res) => {
 });
 
 export const updateBranchBatchHandler = asyncHandler(async (req, res) => {
-  const batch = await updateBranchBatch(req.params.batchGroupId, req.body || {}, req.user);
+  const batch = await updateBranchBatch(req.params.batchId, req.body || {}, req.user);
   return sendSuccess(res, "Branch batch updated successfully", batch);
 });
 
 export const deleteBranchBatchHandler = asyncHandler(async (req, res) => {
-  const batch = await deleteBranchBatch(req.params.batchGroupId, req.user);
+  const batch = await deleteBranchBatch(req.params.batchId, req.user);
   return sendSuccess(res, "Branch batch deleted successfully", batch);
 });
 

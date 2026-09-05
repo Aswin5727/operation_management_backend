@@ -379,22 +379,21 @@ function toBatchEntry(entry) {
   };
 }
 
-function toBranchBatchEntry(batch = {}, row = {}, branchFaculty = null) {
-  const rowId = normalizeString(row?.batchId || row?.id);
-  const batchId = normalizeString(row?.batchId || batch?.batchId || batch?.id);
+function toBranchBatchEntry(batch = {}, branchFaculty = null) {
+  const batchId = normalizeString(batch?.batchId || batch?.id);
   return {
-    id: batchId || rowId,
+    id: batchId,
     facultyId: branchFaculty?.id || branchFaculty?.facultyId || batch?.facultyId || "",
     courseId: batch?.courseId || batch?.branchCourseId || branchFaculty?.branchCourseId || "",
     courseName: batch?.courseName || batch?.branchCourse?.name || "",
-    batchName: row?.batchName || "",
-    batchTiming: row?.batchTiming || "",
-    sequenceNo: Number(row?.sequenceNo || 0),
+    batchName: batch?.batchName || "",
+    batchTiming: batch?.batchTiming || "",
+    sequenceNo: Number(batch?.sequenceNo || 0),
     batchId,
-    totalSeats: Number(row?.totalSeats || 0),
-    status: row?.status === "INACTIVE" ? "Inactive" : "Active",
-    createdAt: row?.createdAt || batch?.createdAt || null,
-    updatedAt: row?.updatedAt || batch?.updatedAt || null,
+    totalSeats: Number(batch?.totalSeats || 0),
+    status: batch?.status === "INACTIVE" ? "Inactive" : "Active",
+    createdAt: batch?.createdAt || null,
+    updatedAt: batch?.updatedAt || null,
   };
 }
 
@@ -403,10 +402,7 @@ function flattenBranchBatchEntries(branchBatches = [], branchFaculty = null) {
     return [];
   }
 
-  return branchBatches.flatMap((batch) => {
-    const rows = Array.isArray(batch?.rows) ? batch.rows : [];
-    return rows.map((row) => toBranchBatchEntry(batch, row, branchFaculty)).filter((entry) => String(entry.id || "").trim());
-  });
+  return branchBatches.map((batch) => toBranchBatchEntry(batch, branchFaculty)).filter((entry) => String(entry.id || "").trim());
 }
 
 function toFacultyRecord(record) {
@@ -770,11 +766,6 @@ async function getFacultyProfileForUser(user) {
             status: "ACTIVE",
           },
           orderBy: [{ createdAt: "asc" }],
-          include: {
-            rows: {
-              orderBy: { sequenceNo: "asc" },
-            },
-          },
         },
       },
     });

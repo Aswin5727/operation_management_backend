@@ -376,13 +376,19 @@ model BranchBatch {
   branchCourseId  String
   branchFacultyId String
   batchId         String
-  batchGroupId    String
   courseId        String
   courseName      String
   facultyId       String
   facultyName     String
   facultyEmail    String
-  batchCount      Int             @default(0)
+  batchName       String
+  startTime       String
+  startPeriod     String
+  endTime         String
+  endPeriod       String
+  batchTiming     String
+  totalSeats      Int
+  sequenceNo      Int             @default(1)
   status          RecordStatus    @default(ACTIVE)
   createdBy       String?
   updatedBy       String?
@@ -391,39 +397,14 @@ model BranchBatch {
   branch          Branch          @relation(fields: [branchId], references: [id], onDelete: Cascade)
   branchCourse    BranchCourse    @relation(fields: [branchCourseId], references: [id], onDelete: Cascade)
   branchFaculty   BranchFaculty   @relation(fields: [branchFacultyId], references: [id], onDelete: Cascade)
-  rows            BranchBatchRow[]
 
   @@index([branchId])
   @@index([branchCourseId])
   @@index([branchFacultyId])
-  @@unique([branchId, batchGroupId])
+  @@unique([branchId, courseId, facultyId, batchId])
   @@index([courseId])
   @@index([facultyId])
-  @@index([status])
-}
-
-model BranchBatchRow {
-  id            String       @id @default(cuid())
-  branchBatchId String
-  batchId       String
-  batchName     String
-  startTime     String
-  startPeriod   String
-  endTime       String
-  endPeriod     String
-  batchTiming   String
-  totalSeats    Int
-  status        RecordStatus @default(ACTIVE)
-  sequenceNo    Int
-  createdBy     String?
-  updatedBy     String?
-  createdAt     DateTime     @default(now())
-  updatedAt     DateTime     @updatedAt
-  branchBatch   BranchBatch  @relation(fields: [branchBatchId], references: [id], onDelete: Cascade)
-
-  @@index([branchBatchId])
-  @@unique([branchBatchId, batchId])
-  @@index([batchId])
+  @@index([branchId, batchId])
   @@index([status])
 }
 
