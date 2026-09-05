@@ -99,13 +99,9 @@ function batchMatchesStudent(student, faculty, entry) {
   const studentFacultyId = normalizeFacultyText(student?.facultyId);
   const studentFacultyName = normalizeFacultyKey(student?.facultyName);
   const studentBatchId = normalizeFacultyText(student?.batchId || student?.batchEntryId);
-  const studentBatchName = normalizeFacultyKey(student?.batchName || student?.batch);
   const studentCourseId = normalizeFacultyText(student?.courseId);
 
-  const facultyId = normalizeFacultyText(faculty?.id);
-  const facultyName = normalizeFacultyKey(faculty?.facultyName);
-  const batchId = normalizeFacultyText(entry?.id);
-  const batchName = normalizeFacultyKey(entry?.batchName);
+  const batchId = normalizeFacultyText(entry?.batchId || entry?.id);
   const courseId = normalizeFacultyText(entry?.courseId || faculty?.courseId);
 
   if (batchId && studentBatchId && studentBatchId === batchId) {
@@ -113,17 +109,7 @@ function batchMatchesStudent(student, faculty, entry) {
   }
 
   const courseMatches = !courseId || !studentCourseId || studentCourseId === courseId;
-  const batchNameMatches = batchName && studentBatchName && studentBatchName === batchName;
-
-  if (facultyId && studentFacultyId && studentFacultyId === facultyId && batchNameMatches && courseMatches) {
-    return true;
-  }
-
-  if (facultyName && studentFacultyName && studentFacultyName === facultyName && batchNameMatches && courseMatches) {
-    return true;
-  }
-
-  return false;
+  return Boolean(batchId && studentBatchId && studentBatchId === batchId && courseMatches);
 }
 
 function toBranchFacultyBatchEntries(branchBatches = [], branchFaculty = null) {
@@ -134,7 +120,7 @@ function toBranchFacultyBatchEntries(branchBatches = [], branchFaculty = null) {
   return branchBatches.flatMap((batch) => {
     const rows = Array.isArray(batch?.rows) ? batch.rows : [];
     return rows.map((row) => ({
-      id: row?.id || row?.batchId || batch?.id || "",
+      id: row?.batchId || row?.id || batch?.id || "",
       facultyId: branchFaculty?.id || branchFaculty?.facultyId || batch?.facultyId || "",
       facultyName: branchFaculty?.name || "",
       facultyEmail: branchFaculty?.email || "",
@@ -183,6 +169,9 @@ async function getFacultyMyBatchesSummary(user) {
         orderBy: [{ createdAt: "asc" }],
         include: {
           rows: {
+            where: {
+              status: "ACTIVE",
+            },
             orderBy: { sequenceNo: "asc" },
           },
         },
@@ -235,7 +224,16 @@ async function getFacultyMyBatchesSummary(user) {
 
   if (!faculty) {
   if (branchFaculty) {
-    const batchEntries = toBranchFacultyBatchEntries(branchFaculty.branchBatches, branchFaculty);
+    // BranchFaculty.branchCourseId is the current course assignment. Older
+    // active batch records can remain after a course reassignment, so they
+    // must not leak into the faculty dashboard summary.
+    const currentCourseId = String(branchFaculty.branchCourseId || '').trim();
+    const currentCourseBatches = currentCourseId
+      ? branchFaculty.branchBatches.filter((batch) =>
+          String(batch?.courseId || batch?.branchCourseId || '').trim() === currentCourseId,
+        )
+      : branchFaculty.branchBatches;
+    const batchEntries = toBranchFacultyBatchEntries(currentCourseBatches, branchFaculty);
     const courseIds = Array.from(
       new Set(batchEntries.map((entry) => String(entry.courseId || '').trim()).filter(Boolean)),
     );

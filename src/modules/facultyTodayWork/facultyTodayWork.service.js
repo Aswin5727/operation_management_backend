@@ -207,8 +207,75 @@ function getWorkEntrySubmoduleIds(entry = {}) {
   return parseIdList(entry.submoduleIds || entry.selectedSubmoduleIds || entry.submodules);
 }
 
+async function validateFacultyBatchScope({ branchId, courseId, batchId, facultyProfileId, facultyUserId, studentIds }) {
+  const normalizedBatchId = normalizeString(batchId);
+  if (!normalizedBatchId) {
+    throw new AppError("Batch is required", 400);
+  }
+
+  const batch = await prisma.branchBatchRow.findFirst({
+    where: {
+      batchId: normalizedBatchId,
+      status: "ACTIVE",
+      branchBatch: {
+        branchId: normalizeString(branchId),
+        branchCourseId: normalizeString(courseId),
+        status: "ACTIVE",
+        OR: [
+          { branchFacultyId: normalizeString(facultyProfileId) },
+          { facultyId: normalizeString(facultyProfileId) },
+          { facultyEmail: normalizeString(facultyUserId) },
+        ],
+      },
+    },
+    select: {
+      batchId: true,
+      batchName: true,
+      batchTiming: true,
+      branchBatch: {
+        select: { facultyId: true },
+      },
+    },
+  });
+
+  if (!batch) {
+    throw new AppError("Selected batch is not assigned to this faculty course", 403);
+  }
+
+  const normalizedStudentIds = dedupeIds(studentIds);
+  const students = await prisma.branchStudent.findMany({
+    where: {
+      branchId: normalizeString(branchId),
+      courseId: normalizeString(courseId),
+      batchId: normalizedBatchId,
+      recordStatus: "ACTIVE",
+      OR: [
+        { id: { in: normalizedStudentIds } },
+        { studentId: { in: normalizedStudentIds } },
+      ],
+    },
+    select: { id: true, studentId: true, facultyId: true },
+  });
+
+  const expectedFacultyId = normalizeString(batch.branchBatch?.facultyId);
+  const validStudents = students.filter((student) => (
+    !expectedFacultyId || normalizeString(student.facultyId) === expectedFacultyId
+  ));
+
+  if (validStudents.length !== normalizedStudentIds.length) {
+    throw new AppError("One or more selected students are not assigned to this faculty batch", 403);
+  }
+
+  return batch;
+}
+
 function isWorkEntryForBranchStudent(entry = {}, student = {}) {
   if (!entry || !student) return false;
+
+  const entryBatchId = normalizeWorkStudentId(entry.batchId);
+  const studentBatchId = normalizeWorkStudentId(student.batchId);
+  if (entryBatchId && studentBatchId && entryBatchId !== studentBatchId) return false;
+  if (entryBatchId && !studentBatchId) return false;
 
   const applyToAllStudents = Boolean(entry.applyToAllStudents);
   const entryStudentIds = getWorkEntryStudentIds(entry).map((value) => normalizeWorkStudentId(value));
@@ -296,7 +363,7 @@ function calculateBranchStudentCourseProgress(course = {}, entries = [], student
   return Math.min(100, Math.max(0, (totals.completed / totals.total) * 100));
 }
 
-async function syncBranchStudentCourseProgress(tx, { branchCourse, branchId, studentIds = [], actorId = null }) {
+async function syncBranchStudentCourseProgress(tx, { branchCourse, branchId, batchId, studentIds = [], actorId = null }) {
   const normalizedBranchId = normalizeString(branchId);
   const normalizedStudentIds = dedupeIds(studentIds)
   const normalizedCourseId = normalizeString(branchCourse?.id || "");
@@ -308,6 +375,7 @@ async function syncBranchStudentCourseProgress(tx, { branchCourse, branchId, stu
   const matchingBranchStudents = await tx.branchStudent.findMany({
     where: {
       branchId: normalizedBranchId,
+      batchId: normalizeString(batchId),
       OR: [
         { id: { in: normalizedStudentIds } },
         { studentId: { in: normalizedStudentIds } },
@@ -323,6 +391,7 @@ async function syncBranchStudentCourseProgress(tx, { branchCourse, branchId, stu
     where: {
       branchId: normalizedBranchId,
       courseId: normalizedCourseId,
+      ...(normalizeString(batchId) ? { batchId: normalizeString(batchId) } : {}),
     },
     orderBy: [
       { createdAt: "asc" },
@@ -368,6 +437,9 @@ function mapWorkEntry(record) {
     branchId: record.branchId || "",
     courseId: record.courseId,
     courseName: record.courseName,
+    batchId: record.batchId || "",
+    batchName: record.batchName || "",
+    batchTiming: record.batchTiming || "",
     moduleId: record.moduleId,
     moduleName: record.moduleName,
     applyToAllStudents: Boolean(record.applyToAllStudents),
@@ -421,6 +493,7 @@ export async function createFacultyTodayWorkEntry(payload = {}, user = null) {
   }
 
   const courseId = normalizeString(payload.courseId);
+  const batchId = normalizeString(payload.batchId || payload.batchEntryId);
   const moduleId = normalizeString(payload.moduleId);
   const facultyProfileId = normalizeString(payload.facultyProfileId || payload.facultyId || "");
   const branchId = normalizeString(payload.branchId || "");
@@ -478,6 +551,15 @@ export async function createFacultyTodayWorkEntry(payload = {}, user = null) {
 
   const progress = calculateProgress(branchCourse, selectedModule, selectedSubmoduleIds);
 
+  const selectedBatch = await validateFacultyBatchScope({
+    branchId: branchCourse.branchId || branchId,
+    courseId,
+    batchId,
+    facultyProfileId,
+    facultyUserId,
+    studentIds,
+  });
+
   const selectedSubmodulePayload = selectedSubmoduleIds.map((submoduleId) => {
     const source = selectedSubmoduleLookup.get(submoduleId) || {};
     return {
@@ -495,6 +577,9 @@ export async function createFacultyTodayWorkEntry(payload = {}, user = null) {
         branchId: branchId || branchCourse.branchId || null,
         courseId,
         courseName: normalizeString(branchCourse.name || payload.courseName || "Course"),
+        batchId,
+        batchName: normalizeString(selectedBatch.batchName || payload.batchName),
+        batchTiming: normalizeString(selectedBatch.batchTiming || payload.batchTiming),
         moduleId,
         moduleName: normalizeString(selectedModule.title || payload.moduleName || "Module"),
         submoduleIds: selectedSubmoduleIds,
@@ -515,6 +600,7 @@ export async function createFacultyTodayWorkEntry(payload = {}, user = null) {
     await syncBranchStudentCourseProgress(tx, {
       branchCourse,
       branchId: branchCourse.branchId || branchId,
+      batchId,
       studentIds,
       actorId: normalizeString(user?.id) || null,
     });

@@ -27882,6 +27882,9 @@ export namespace Prisma {
     remarks: string | null
     courseId: string | null
     courseName: string | null
+    batchId: string | null
+    batchName: string | null
+    batchTiming: string | null
     facultyId: string | null
     facultyName: string | null
     courseAmount: number | null
@@ -27921,6 +27924,9 @@ export namespace Prisma {
     remarks: string | null
     courseId: string | null
     courseName: string | null
+    batchId: string | null
+    batchName: string | null
+    batchTiming: string | null
     facultyId: string | null
     facultyName: string | null
     courseAmount: number | null
@@ -27960,6 +27966,9 @@ export namespace Prisma {
     remarks: number
     courseId: number
     courseName: number
+    batchId: number
+    batchName: number
+    batchTiming: number
     facultyId: number
     facultyName: number
     courseAmount: number
@@ -28011,6 +28020,9 @@ export namespace Prisma {
     remarks?: true
     courseId?: true
     courseName?: true
+    batchId?: true
+    batchName?: true
+    batchTiming?: true
     facultyId?: true
     facultyName?: true
     courseAmount?: true
@@ -28050,6 +28062,9 @@ export namespace Prisma {
     remarks?: true
     courseId?: true
     courseName?: true
+    batchId?: true
+    batchName?: true
+    batchTiming?: true
     facultyId?: true
     facultyName?: true
     courseAmount?: true
@@ -28089,6 +28104,9 @@ export namespace Prisma {
     remarks?: true
     courseId?: true
     courseName?: true
+    batchId?: true
+    batchName?: true
+    batchTiming?: true
     facultyId?: true
     facultyName?: true
     courseAmount?: true
@@ -28215,6 +28233,9 @@ export namespace Prisma {
     remarks: string | null
     courseId: string | null
     courseName: string | null
+    batchId: string | null
+    batchName: string | null
+    batchTiming: string | null
     facultyId: string | null
     facultyName: string | null
     courseAmount: number | null
@@ -28273,6 +28294,9 @@ export namespace Prisma {
     remarks?: boolean
     courseId?: boolean
     courseName?: boolean
+    batchId?: boolean
+    batchName?: boolean
+    batchTiming?: boolean
     facultyId?: boolean
     facultyName?: boolean
     courseAmount?: boolean
@@ -28318,6 +28342,9 @@ export namespace Prisma {
     remarks?: boolean
     courseId?: boolean
     courseName?: boolean
+    batchId?: boolean
+    batchName?: boolean
+    batchTiming?: boolean
     facultyId?: boolean
     facultyName?: boolean
     courseAmount?: boolean
@@ -28359,6 +28386,9 @@ export namespace Prisma {
     remarks?: boolean
     courseId?: boolean
     courseName?: boolean
+    batchId?: boolean
+    batchName?: boolean
+    batchTiming?: boolean
     facultyId?: boolean
     facultyName?: boolean
     courseAmount?: boolean
@@ -28400,6 +28430,9 @@ export namespace Prisma {
     remarks?: boolean
     courseId?: boolean
     courseName?: boolean
+    batchId?: boolean
+    batchName?: boolean
+    batchTiming?: boolean
     facultyId?: boolean
     facultyName?: boolean
     courseAmount?: boolean
@@ -28409,7 +28442,7 @@ export namespace Prisma {
     courseProgress?: boolean
   }
 
-  export type BranchStudentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "branchId" | "studentId" | "studentName" | "mobileNumber" | "emailAddress" | "parentSpouseNumber" | "countryCode" | "country" | "stateCode" | "state" | "city" | "address" | "qualification" | "passedOutYear" | "currentStatus" | "designation" | "source" | "sourceOther" | "admissionDate" | "recordStatus" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt" | "linkedInUrl" | "remarks" | "courseId" | "courseName" | "facultyId" | "facultyName" | "courseAmount" | "paymentMode" | "paymentPlanId" | "paymentPlan" | "courseProgress", ExtArgs["result"]["branchStudent"]>
+  export type BranchStudentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "branchId" | "studentId" | "studentName" | "mobileNumber" | "emailAddress" | "parentSpouseNumber" | "countryCode" | "country" | "stateCode" | "state" | "city" | "address" | "qualification" | "passedOutYear" | "currentStatus" | "designation" | "source" | "sourceOther" | "admissionDate" | "recordStatus" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt" | "linkedInUrl" | "remarks" | "courseId" | "courseName" | "batchId" | "batchName" | "batchTiming" | "facultyId" | "facultyName" | "courseAmount" | "paymentMode" | "paymentPlanId" | "paymentPlan" | "courseProgress", ExtArgs["result"]["branchStudent"]>
   export type BranchStudentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     branch?: boolean | BranchDefaultArgs<ExtArgs>
     course?: boolean | BranchStudent$courseArgs<ExtArgs>
@@ -28466,6 +28499,9 @@ export namespace Prisma {
       remarks: string | null
       courseId: string | null
       courseName: string | null
+      batchId: string | null
+      batchName: string | null
+      batchTiming: string | null
       facultyId: string | null
       facultyName: string | null
       courseAmount: number | null
@@ -28930,6 +28966,9 @@ export namespace Prisma {
     readonly remarks: FieldRef<"BranchStudent", 'String'>
     readonly courseId: FieldRef<"BranchStudent", 'String'>
     readonly courseName: FieldRef<"BranchStudent", 'String'>
+    readonly batchId: FieldRef<"BranchStudent", 'String'>
+    readonly batchName: FieldRef<"BranchStudent", 'String'>
+    readonly batchTiming: FieldRef<"BranchStudent", 'String'>
     readonly facultyId: FieldRef<"BranchStudent", 'String'>
     readonly facultyName: FieldRef<"BranchStudent", 'String'>
     readonly courseAmount: FieldRef<"BranchStudent", 'Int'>
@@ -35340,6 +35379,9 @@ export namespace Prisma {
     branchId: string | null
     courseId: string | null
     courseName: string | null
+    batchId: string | null
+    batchName: string | null
+    batchTiming: string | null
     moduleId: string | null
     moduleName: string | null
     studentCount: number | null
@@ -35362,6 +35404,9 @@ export namespace Prisma {
     branchId: string | null
     courseId: string | null
     courseName: string | null
+    batchId: string | null
+    batchName: string | null
+    batchTiming: string | null
     moduleId: string | null
     moduleName: string | null
     studentCount: number | null
@@ -35384,6 +35429,9 @@ export namespace Prisma {
     branchId: number
     courseId: number
     courseName: number
+    batchId: number
+    batchName: number
+    batchTiming: number
     moduleId: number
     moduleName: number
     submoduleIds: number
@@ -35427,6 +35475,9 @@ export namespace Prisma {
     branchId?: true
     courseId?: true
     courseName?: true
+    batchId?: true
+    batchName?: true
+    batchTiming?: true
     moduleId?: true
     moduleName?: true
     studentCount?: true
@@ -35449,6 +35500,9 @@ export namespace Prisma {
     branchId?: true
     courseId?: true
     courseName?: true
+    batchId?: true
+    batchName?: true
+    batchTiming?: true
     moduleId?: true
     moduleName?: true
     studentCount?: true
@@ -35471,6 +35525,9 @@ export namespace Prisma {
     branchId?: true
     courseId?: true
     courseName?: true
+    batchId?: true
+    batchName?: true
+    batchTiming?: true
     moduleId?: true
     moduleName?: true
     submoduleIds?: true
@@ -35583,6 +35640,9 @@ export namespace Prisma {
     branchId: string | null
     courseId: string
     courseName: string
+    batchId: string | null
+    batchName: string | null
+    batchTiming: string | null
     moduleId: string
     moduleName: string
     submoduleIds: JsonValue
@@ -35627,6 +35687,9 @@ export namespace Prisma {
     branchId?: boolean
     courseId?: boolean
     courseName?: boolean
+    batchId?: boolean
+    batchName?: boolean
+    batchTiming?: boolean
     moduleId?: boolean
     moduleName?: boolean
     submoduleIds?: boolean
@@ -35654,6 +35717,9 @@ export namespace Prisma {
     branchId?: boolean
     courseId?: boolean
     courseName?: boolean
+    batchId?: boolean
+    batchName?: boolean
+    batchTiming?: boolean
     moduleId?: boolean
     moduleName?: boolean
     submoduleIds?: boolean
@@ -35681,6 +35747,9 @@ export namespace Prisma {
     branchId?: boolean
     courseId?: boolean
     courseName?: boolean
+    batchId?: boolean
+    batchName?: boolean
+    batchTiming?: boolean
     moduleId?: boolean
     moduleName?: boolean
     submoduleIds?: boolean
@@ -35708,6 +35777,9 @@ export namespace Prisma {
     branchId?: boolean
     courseId?: boolean
     courseName?: boolean
+    batchId?: boolean
+    batchName?: boolean
+    batchTiming?: boolean
     moduleId?: boolean
     moduleName?: boolean
     submoduleIds?: boolean
@@ -35726,7 +35798,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type FacultyTodayWorkEntryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "facultyUserId" | "facultyProfileId" | "branchId" | "courseId" | "courseName" | "moduleId" | "moduleName" | "submoduleIds" | "submodules" | "studentIds" | "studentCount" | "applyToAllStudents" | "moduleProgress" | "submoduleProgress" | "courseProgress" | "moduleWeight" | "workDate" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["facultyTodayWorkEntry"]>
+  export type FacultyTodayWorkEntryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "facultyUserId" | "facultyProfileId" | "branchId" | "courseId" | "courseName" | "batchId" | "batchName" | "batchTiming" | "moduleId" | "moduleName" | "submoduleIds" | "submodules" | "studentIds" | "studentCount" | "applyToAllStudents" | "moduleProgress" | "submoduleProgress" | "courseProgress" | "moduleWeight" | "workDate" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["facultyTodayWorkEntry"]>
   export type FacultyTodayWorkEntryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     facultyUser?: boolean | UserDefaultArgs<ExtArgs>
     branchCourse?: boolean | BranchCourseDefaultArgs<ExtArgs>
@@ -35753,6 +35825,9 @@ export namespace Prisma {
       branchId: string | null
       courseId: string
       courseName: string
+      batchId: string | null
+      batchName: string | null
+      batchTiming: string | null
       moduleId: string
       moduleName: string
       submoduleIds: Prisma.JsonValue
@@ -36200,6 +36275,9 @@ export namespace Prisma {
     readonly branchId: FieldRef<"FacultyTodayWorkEntry", 'String'>
     readonly courseId: FieldRef<"FacultyTodayWorkEntry", 'String'>
     readonly courseName: FieldRef<"FacultyTodayWorkEntry", 'String'>
+    readonly batchId: FieldRef<"FacultyTodayWorkEntry", 'String'>
+    readonly batchName: FieldRef<"FacultyTodayWorkEntry", 'String'>
+    readonly batchTiming: FieldRef<"FacultyTodayWorkEntry", 'String'>
     readonly moduleId: FieldRef<"FacultyTodayWorkEntry", 'String'>
     readonly moduleName: FieldRef<"FacultyTodayWorkEntry", 'String'>
     readonly submoduleIds: FieldRef<"FacultyTodayWorkEntry", 'Json'>
@@ -43530,6 +43608,9 @@ export namespace Prisma {
     remarks: 'remarks',
     courseId: 'courseId',
     courseName: 'courseName',
+    batchId: 'batchId',
+    batchName: 'batchName',
+    batchTiming: 'batchTiming',
     facultyId: 'facultyId',
     facultyName: 'facultyName',
     courseAmount: 'courseAmount',
@@ -43629,6 +43710,9 @@ export namespace Prisma {
     branchId: 'branchId',
     courseId: 'courseId',
     courseName: 'courseName',
+    batchId: 'batchId',
+    batchName: 'batchName',
+    batchTiming: 'batchTiming',
     moduleId: 'moduleId',
     moduleName: 'moduleName',
     submoduleIds: 'submoduleIds',
@@ -46280,6 +46364,9 @@ export namespace Prisma {
     remarks?: StringNullableFilter<"BranchStudent"> | string | null
     courseId?: StringNullableFilter<"BranchStudent"> | string | null
     courseName?: StringNullableFilter<"BranchStudent"> | string | null
+    batchId?: StringNullableFilter<"BranchStudent"> | string | null
+    batchName?: StringNullableFilter<"BranchStudent"> | string | null
+    batchTiming?: StringNullableFilter<"BranchStudent"> | string | null
     facultyId?: StringNullableFilter<"BranchStudent"> | string | null
     facultyName?: StringNullableFilter<"BranchStudent"> | string | null
     courseAmount?: IntNullableFilter<"BranchStudent"> | number | null
@@ -46324,6 +46411,9 @@ export namespace Prisma {
     remarks?: SortOrderInput | SortOrder
     courseId?: SortOrderInput | SortOrder
     courseName?: SortOrderInput | SortOrder
+    batchId?: SortOrderInput | SortOrder
+    batchName?: SortOrderInput | SortOrder
+    batchTiming?: SortOrderInput | SortOrder
     facultyId?: SortOrderInput | SortOrder
     facultyName?: SortOrderInput | SortOrder
     courseAmount?: SortOrderInput | SortOrder
@@ -46372,6 +46462,9 @@ export namespace Prisma {
     remarks?: StringNullableFilter<"BranchStudent"> | string | null
     courseId?: StringNullableFilter<"BranchStudent"> | string | null
     courseName?: StringNullableFilter<"BranchStudent"> | string | null
+    batchId?: StringNullableFilter<"BranchStudent"> | string | null
+    batchName?: StringNullableFilter<"BranchStudent"> | string | null
+    batchTiming?: StringNullableFilter<"BranchStudent"> | string | null
     facultyId?: StringNullableFilter<"BranchStudent"> | string | null
     facultyName?: StringNullableFilter<"BranchStudent"> | string | null
     courseAmount?: IntNullableFilter<"BranchStudent"> | number | null
@@ -46416,6 +46509,9 @@ export namespace Prisma {
     remarks?: SortOrderInput | SortOrder
     courseId?: SortOrderInput | SortOrder
     courseName?: SortOrderInput | SortOrder
+    batchId?: SortOrderInput | SortOrder
+    batchName?: SortOrderInput | SortOrder
+    batchTiming?: SortOrderInput | SortOrder
     facultyId?: SortOrderInput | SortOrder
     facultyName?: SortOrderInput | SortOrder
     courseAmount?: SortOrderInput | SortOrder
@@ -46463,6 +46559,9 @@ export namespace Prisma {
     remarks?: StringNullableWithAggregatesFilter<"BranchStudent"> | string | null
     courseId?: StringNullableWithAggregatesFilter<"BranchStudent"> | string | null
     courseName?: StringNullableWithAggregatesFilter<"BranchStudent"> | string | null
+    batchId?: StringNullableWithAggregatesFilter<"BranchStudent"> | string | null
+    batchName?: StringNullableWithAggregatesFilter<"BranchStudent"> | string | null
+    batchTiming?: StringNullableWithAggregatesFilter<"BranchStudent"> | string | null
     facultyId?: StringNullableWithAggregatesFilter<"BranchStudent"> | string | null
     facultyName?: StringNullableWithAggregatesFilter<"BranchStudent"> | string | null
     courseAmount?: IntNullableWithAggregatesFilter<"BranchStudent"> | number | null
@@ -46902,6 +47001,9 @@ export namespace Prisma {
     branchId?: StringNullableFilter<"FacultyTodayWorkEntry"> | string | null
     courseId?: StringFilter<"FacultyTodayWorkEntry"> | string
     courseName?: StringFilter<"FacultyTodayWorkEntry"> | string
+    batchId?: StringNullableFilter<"FacultyTodayWorkEntry"> | string | null
+    batchName?: StringNullableFilter<"FacultyTodayWorkEntry"> | string | null
+    batchTiming?: StringNullableFilter<"FacultyTodayWorkEntry"> | string | null
     moduleId?: StringFilter<"FacultyTodayWorkEntry"> | string
     moduleName?: StringFilter<"FacultyTodayWorkEntry"> | string
     submoduleIds?: JsonFilter<"FacultyTodayWorkEntry">
@@ -46929,6 +47031,9 @@ export namespace Prisma {
     branchId?: SortOrderInput | SortOrder
     courseId?: SortOrder
     courseName?: SortOrder
+    batchId?: SortOrderInput | SortOrder
+    batchName?: SortOrderInput | SortOrder
+    batchTiming?: SortOrderInput | SortOrder
     moduleId?: SortOrder
     moduleName?: SortOrder
     submoduleIds?: SortOrder
@@ -46959,6 +47064,9 @@ export namespace Prisma {
     branchId?: StringNullableFilter<"FacultyTodayWorkEntry"> | string | null
     courseId?: StringFilter<"FacultyTodayWorkEntry"> | string
     courseName?: StringFilter<"FacultyTodayWorkEntry"> | string
+    batchId?: StringNullableFilter<"FacultyTodayWorkEntry"> | string | null
+    batchName?: StringNullableFilter<"FacultyTodayWorkEntry"> | string | null
+    batchTiming?: StringNullableFilter<"FacultyTodayWorkEntry"> | string | null
     moduleId?: StringFilter<"FacultyTodayWorkEntry"> | string
     moduleName?: StringFilter<"FacultyTodayWorkEntry"> | string
     submoduleIds?: JsonFilter<"FacultyTodayWorkEntry">
@@ -46986,6 +47094,9 @@ export namespace Prisma {
     branchId?: SortOrderInput | SortOrder
     courseId?: SortOrder
     courseName?: SortOrder
+    batchId?: SortOrderInput | SortOrder
+    batchName?: SortOrderInput | SortOrder
+    batchTiming?: SortOrderInput | SortOrder
     moduleId?: SortOrder
     moduleName?: SortOrder
     submoduleIds?: SortOrder
@@ -47019,6 +47130,9 @@ export namespace Prisma {
     branchId?: StringNullableWithAggregatesFilter<"FacultyTodayWorkEntry"> | string | null
     courseId?: StringWithAggregatesFilter<"FacultyTodayWorkEntry"> | string
     courseName?: StringWithAggregatesFilter<"FacultyTodayWorkEntry"> | string
+    batchId?: StringNullableWithAggregatesFilter<"FacultyTodayWorkEntry"> | string | null
+    batchName?: StringNullableWithAggregatesFilter<"FacultyTodayWorkEntry"> | string | null
+    batchTiming?: StringNullableWithAggregatesFilter<"FacultyTodayWorkEntry"> | string | null
     moduleId?: StringWithAggregatesFilter<"FacultyTodayWorkEntry"> | string
     moduleName?: StringWithAggregatesFilter<"FacultyTodayWorkEntry"> | string
     submoduleIds?: JsonWithAggregatesFilter<"FacultyTodayWorkEntry">
@@ -50360,6 +50474,9 @@ export namespace Prisma {
     linkedInUrl?: string | null
     remarks?: string | null
     courseName?: string | null
+    batchId?: string | null
+    batchName?: string | null
+    batchTiming?: string | null
     facultyId?: string | null
     facultyName?: string | null
     courseAmount?: number | null
@@ -50404,6 +50521,9 @@ export namespace Prisma {
     remarks?: string | null
     courseId?: string | null
     courseName?: string | null
+    batchId?: string | null
+    batchName?: string | null
+    batchTiming?: string | null
     facultyId?: string | null
     facultyName?: string | null
     courseAmount?: number | null
@@ -50444,6 +50564,9 @@ export namespace Prisma {
     linkedInUrl?: NullableStringFieldUpdateOperationsInput | string | null
     remarks?: NullableStringFieldUpdateOperationsInput | string | null
     courseName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
+    batchName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchTiming?: NullableStringFieldUpdateOperationsInput | string | null
     facultyId?: NullableStringFieldUpdateOperationsInput | string | null
     facultyName?: NullableStringFieldUpdateOperationsInput | string | null
     courseAmount?: NullableIntFieldUpdateOperationsInput | number | null
@@ -50488,6 +50611,9 @@ export namespace Prisma {
     remarks?: NullableStringFieldUpdateOperationsInput | string | null
     courseId?: NullableStringFieldUpdateOperationsInput | string | null
     courseName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
+    batchName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchTiming?: NullableStringFieldUpdateOperationsInput | string | null
     facultyId?: NullableStringFieldUpdateOperationsInput | string | null
     facultyName?: NullableStringFieldUpdateOperationsInput | string | null
     courseAmount?: NullableIntFieldUpdateOperationsInput | number | null
@@ -50530,6 +50656,9 @@ export namespace Prisma {
     remarks?: string | null
     courseId?: string | null
     courseName?: string | null
+    batchId?: string | null
+    batchName?: string | null
+    batchTiming?: string | null
     facultyId?: string | null
     facultyName?: string | null
     courseAmount?: number | null
@@ -50567,6 +50696,9 @@ export namespace Prisma {
     linkedInUrl?: NullableStringFieldUpdateOperationsInput | string | null
     remarks?: NullableStringFieldUpdateOperationsInput | string | null
     courseName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
+    batchName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchTiming?: NullableStringFieldUpdateOperationsInput | string | null
     facultyId?: NullableStringFieldUpdateOperationsInput | string | null
     facultyName?: NullableStringFieldUpdateOperationsInput | string | null
     courseAmount?: NullableIntFieldUpdateOperationsInput | number | null
@@ -50606,6 +50738,9 @@ export namespace Prisma {
     remarks?: NullableStringFieldUpdateOperationsInput | string | null
     courseId?: NullableStringFieldUpdateOperationsInput | string | null
     courseName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
+    batchName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchTiming?: NullableStringFieldUpdateOperationsInput | string | null
     facultyId?: NullableStringFieldUpdateOperationsInput | string | null
     facultyName?: NullableStringFieldUpdateOperationsInput | string | null
     courseAmount?: NullableIntFieldUpdateOperationsInput | number | null
@@ -51080,6 +51215,9 @@ export namespace Prisma {
     facultyProfileId?: string | null
     branchId?: string | null
     courseName: string
+    batchId?: string | null
+    batchName?: string | null
+    batchTiming?: string | null
     moduleId: string
     moduleName: string
     submoduleIds: JsonNullValueInput | InputJsonValue
@@ -51107,6 +51245,9 @@ export namespace Prisma {
     branchId?: string | null
     courseId: string
     courseName: string
+    batchId?: string | null
+    batchName?: string | null
+    batchTiming?: string | null
     moduleId: string
     moduleName: string
     submoduleIds: JsonNullValueInput | InputJsonValue
@@ -51130,6 +51271,9 @@ export namespace Prisma {
     facultyProfileId?: NullableStringFieldUpdateOperationsInput | string | null
     branchId?: NullableStringFieldUpdateOperationsInput | string | null
     courseName?: StringFieldUpdateOperationsInput | string
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
+    batchName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchTiming?: NullableStringFieldUpdateOperationsInput | string | null
     moduleId?: StringFieldUpdateOperationsInput | string
     moduleName?: StringFieldUpdateOperationsInput | string
     submoduleIds?: JsonNullValueInput | InputJsonValue
@@ -51157,6 +51301,9 @@ export namespace Prisma {
     branchId?: NullableStringFieldUpdateOperationsInput | string | null
     courseId?: StringFieldUpdateOperationsInput | string
     courseName?: StringFieldUpdateOperationsInput | string
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
+    batchName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchTiming?: NullableStringFieldUpdateOperationsInput | string | null
     moduleId?: StringFieldUpdateOperationsInput | string
     moduleName?: StringFieldUpdateOperationsInput | string
     submoduleIds?: JsonNullValueInput | InputJsonValue
@@ -51182,6 +51329,9 @@ export namespace Prisma {
     branchId?: string | null
     courseId: string
     courseName: string
+    batchId?: string | null
+    batchName?: string | null
+    batchTiming?: string | null
     moduleId: string
     moduleName: string
     submoduleIds: JsonNullValueInput | InputJsonValue
@@ -51205,6 +51355,9 @@ export namespace Prisma {
     facultyProfileId?: NullableStringFieldUpdateOperationsInput | string | null
     branchId?: NullableStringFieldUpdateOperationsInput | string | null
     courseName?: StringFieldUpdateOperationsInput | string
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
+    batchName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchTiming?: NullableStringFieldUpdateOperationsInput | string | null
     moduleId?: StringFieldUpdateOperationsInput | string
     moduleName?: StringFieldUpdateOperationsInput | string
     submoduleIds?: JsonNullValueInput | InputJsonValue
@@ -51230,6 +51383,9 @@ export namespace Prisma {
     branchId?: NullableStringFieldUpdateOperationsInput | string | null
     courseId?: StringFieldUpdateOperationsInput | string
     courseName?: StringFieldUpdateOperationsInput | string
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
+    batchName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchTiming?: NullableStringFieldUpdateOperationsInput | string | null
     moduleId?: StringFieldUpdateOperationsInput | string
     moduleName?: StringFieldUpdateOperationsInput | string
     submoduleIds?: JsonNullValueInput | InputJsonValue
@@ -53992,6 +54148,9 @@ export namespace Prisma {
     remarks?: SortOrder
     courseId?: SortOrder
     courseName?: SortOrder
+    batchId?: SortOrder
+    batchName?: SortOrder
+    batchTiming?: SortOrder
     facultyId?: SortOrder
     facultyName?: SortOrder
     courseAmount?: SortOrder
@@ -54036,6 +54195,9 @@ export namespace Prisma {
     remarks?: SortOrder
     courseId?: SortOrder
     courseName?: SortOrder
+    batchId?: SortOrder
+    batchName?: SortOrder
+    batchTiming?: SortOrder
     facultyId?: SortOrder
     facultyName?: SortOrder
     courseAmount?: SortOrder
@@ -54075,6 +54237,9 @@ export namespace Prisma {
     remarks?: SortOrder
     courseId?: SortOrder
     courseName?: SortOrder
+    batchId?: SortOrder
+    batchName?: SortOrder
+    batchTiming?: SortOrder
     facultyId?: SortOrder
     facultyName?: SortOrder
     courseAmount?: SortOrder
@@ -54360,6 +54525,9 @@ export namespace Prisma {
     branchId?: SortOrder
     courseId?: SortOrder
     courseName?: SortOrder
+    batchId?: SortOrder
+    batchName?: SortOrder
+    batchTiming?: SortOrder
     moduleId?: SortOrder
     moduleName?: SortOrder
     submoduleIds?: SortOrder
@@ -54393,6 +54561,9 @@ export namespace Prisma {
     branchId?: SortOrder
     courseId?: SortOrder
     courseName?: SortOrder
+    batchId?: SortOrder
+    batchName?: SortOrder
+    batchTiming?: SortOrder
     moduleId?: SortOrder
     moduleName?: SortOrder
     studentCount?: SortOrder
@@ -54415,6 +54586,9 @@ export namespace Prisma {
     branchId?: SortOrder
     courseId?: SortOrder
     courseName?: SortOrder
+    batchId?: SortOrder
+    batchName?: SortOrder
+    batchTiming?: SortOrder
     moduleId?: SortOrder
     moduleName?: SortOrder
     studentCount?: SortOrder
@@ -57942,6 +58116,9 @@ export namespace Prisma {
     facultyProfileId?: string | null
     branchId?: string | null
     courseName: string
+    batchId?: string | null
+    batchName?: string | null
+    batchTiming?: string | null
     moduleId: string
     moduleName: string
     submoduleIds: JsonNullValueInput | InputJsonValue
@@ -57967,6 +58144,9 @@ export namespace Prisma {
     branchId?: string | null
     courseId: string
     courseName: string
+    batchId?: string | null
+    batchName?: string | null
+    batchTiming?: string | null
     moduleId: string
     moduleName: string
     submoduleIds: JsonNullValueInput | InputJsonValue
@@ -58328,6 +58508,9 @@ export namespace Prisma {
     branchId?: StringNullableFilter<"FacultyTodayWorkEntry"> | string | null
     courseId?: StringFilter<"FacultyTodayWorkEntry"> | string
     courseName?: StringFilter<"FacultyTodayWorkEntry"> | string
+    batchId?: StringNullableFilter<"FacultyTodayWorkEntry"> | string | null
+    batchName?: StringNullableFilter<"FacultyTodayWorkEntry"> | string | null
+    batchTiming?: StringNullableFilter<"FacultyTodayWorkEntry"> | string | null
     moduleId?: StringFilter<"FacultyTodayWorkEntry"> | string
     moduleName?: StringFilter<"FacultyTodayWorkEntry"> | string
     submoduleIds?: JsonFilter<"FacultyTodayWorkEntry">
@@ -58798,6 +58981,9 @@ export namespace Prisma {
     linkedInUrl?: string | null
     remarks?: string | null
     courseName?: string | null
+    batchId?: string | null
+    batchName?: string | null
+    batchTiming?: string | null
     facultyId?: string | null
     facultyName?: string | null
     courseAmount?: number | null
@@ -58840,6 +59026,9 @@ export namespace Prisma {
     remarks?: string | null
     courseId?: string | null
     courseName?: string | null
+    batchId?: string | null
+    batchName?: string | null
+    batchTiming?: string | null
     facultyId?: string | null
     facultyName?: string | null
     courseAmount?: number | null
@@ -59336,6 +59525,9 @@ export namespace Prisma {
     remarks?: StringNullableFilter<"BranchStudent"> | string | null
     courseId?: StringNullableFilter<"BranchStudent"> | string | null
     courseName?: StringNullableFilter<"BranchStudent"> | string | null
+    batchId?: StringNullableFilter<"BranchStudent"> | string | null
+    batchName?: StringNullableFilter<"BranchStudent"> | string | null
+    batchTiming?: StringNullableFilter<"BranchStudent"> | string | null
     facultyId?: StringNullableFilter<"BranchStudent"> | string | null
     facultyName?: StringNullableFilter<"BranchStudent"> | string | null
     courseAmount?: IntNullableFilter<"BranchStudent"> | number | null
@@ -61155,6 +61347,9 @@ export namespace Prisma {
     linkedInUrl?: string | null
     remarks?: string | null
     courseName?: string | null
+    batchId?: string | null
+    batchName?: string | null
+    batchTiming?: string | null
     facultyId?: string | null
     facultyName?: string | null
     courseAmount?: number | null
@@ -61197,6 +61392,9 @@ export namespace Prisma {
     linkedInUrl?: string | null
     remarks?: string | null
     courseName?: string | null
+    batchId?: string | null
+    batchName?: string | null
+    batchTiming?: string | null
     facultyId?: string | null
     facultyName?: string | null
     courseAmount?: number | null
@@ -61224,6 +61422,9 @@ export namespace Prisma {
     facultyProfileId?: string | null
     branchId?: string | null
     courseName: string
+    batchId?: string | null
+    batchName?: string | null
+    batchTiming?: string | null
     moduleId: string
     moduleName: string
     submoduleIds: JsonNullValueInput | InputJsonValue
@@ -61249,6 +61450,9 @@ export namespace Prisma {
     facultyProfileId?: string | null
     branchId?: string | null
     courseName: string
+    batchId?: string | null
+    batchName?: string | null
+    batchTiming?: string | null
     moduleId: string
     moduleName: string
     submoduleIds: JsonNullValueInput | InputJsonValue
@@ -63957,6 +64161,9 @@ export namespace Prisma {
     linkedInUrl?: string | null
     remarks?: string | null
     courseName?: string | null
+    batchId?: string | null
+    batchName?: string | null
+    batchTiming?: string | null
     facultyId?: string | null
     facultyName?: string | null
     courseAmount?: number | null
@@ -64000,6 +64207,9 @@ export namespace Prisma {
     remarks?: string | null
     courseId?: string | null
     courseName?: string | null
+    batchId?: string | null
+    batchName?: string | null
+    batchTiming?: string | null
     facultyId?: string | null
     facultyName?: string | null
     courseAmount?: number | null
@@ -64099,6 +64309,9 @@ export namespace Prisma {
     linkedInUrl?: NullableStringFieldUpdateOperationsInput | string | null
     remarks?: NullableStringFieldUpdateOperationsInput | string | null
     courseName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
+    batchName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchTiming?: NullableStringFieldUpdateOperationsInput | string | null
     facultyId?: NullableStringFieldUpdateOperationsInput | string | null
     facultyName?: NullableStringFieldUpdateOperationsInput | string | null
     courseAmount?: NullableIntFieldUpdateOperationsInput | number | null
@@ -64142,6 +64355,9 @@ export namespace Prisma {
     remarks?: NullableStringFieldUpdateOperationsInput | string | null
     courseId?: NullableStringFieldUpdateOperationsInput | string | null
     courseName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
+    batchName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchTiming?: NullableStringFieldUpdateOperationsInput | string | null
     facultyId?: NullableStringFieldUpdateOperationsInput | string | null
     facultyName?: NullableStringFieldUpdateOperationsInput | string | null
     courseAmount?: NullableIntFieldUpdateOperationsInput | number | null
@@ -66397,6 +66613,9 @@ export namespace Prisma {
     linkedInUrl?: string | null
     remarks?: string | null
     courseName?: string | null
+    batchId?: string | null
+    batchName?: string | null
+    batchTiming?: string | null
     facultyId?: string | null
     facultyName?: string | null
     courseAmount?: number | null
@@ -66440,6 +66659,9 @@ export namespace Prisma {
     remarks?: string | null
     courseId?: string | null
     courseName?: string | null
+    batchId?: string | null
+    batchName?: string | null
+    batchTiming?: string | null
     facultyId?: string | null
     facultyName?: string | null
     courseAmount?: number | null
@@ -66593,6 +66815,9 @@ export namespace Prisma {
     linkedInUrl?: NullableStringFieldUpdateOperationsInput | string | null
     remarks?: NullableStringFieldUpdateOperationsInput | string | null
     courseName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
+    batchName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchTiming?: NullableStringFieldUpdateOperationsInput | string | null
     facultyId?: NullableStringFieldUpdateOperationsInput | string | null
     facultyName?: NullableStringFieldUpdateOperationsInput | string | null
     courseAmount?: NullableIntFieldUpdateOperationsInput | number | null
@@ -66636,6 +66861,9 @@ export namespace Prisma {
     remarks?: NullableStringFieldUpdateOperationsInput | string | null
     courseId?: NullableStringFieldUpdateOperationsInput | string | null
     courseName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
+    batchName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchTiming?: NullableStringFieldUpdateOperationsInput | string | null
     facultyId?: NullableStringFieldUpdateOperationsInput | string | null
     facultyName?: NullableStringFieldUpdateOperationsInput | string | null
     courseAmount?: NullableIntFieldUpdateOperationsInput | number | null
@@ -66846,6 +67074,9 @@ export namespace Prisma {
     linkedInUrl?: string | null
     remarks?: string | null
     courseName?: string | null
+    batchId?: string | null
+    batchName?: string | null
+    batchTiming?: string | null
     facultyId?: string | null
     facultyName?: string | null
     courseAmount?: number | null
@@ -66889,6 +67120,9 @@ export namespace Prisma {
     remarks?: string | null
     courseId?: string | null
     courseName?: string | null
+    batchId?: string | null
+    batchName?: string | null
+    batchTiming?: string | null
     facultyId?: string | null
     facultyName?: string | null
     courseAmount?: number | null
@@ -67011,6 +67245,9 @@ export namespace Prisma {
     linkedInUrl?: NullableStringFieldUpdateOperationsInput | string | null
     remarks?: NullableStringFieldUpdateOperationsInput | string | null
     courseName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
+    batchName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchTiming?: NullableStringFieldUpdateOperationsInput | string | null
     facultyId?: NullableStringFieldUpdateOperationsInput | string | null
     facultyName?: NullableStringFieldUpdateOperationsInput | string | null
     courseAmount?: NullableIntFieldUpdateOperationsInput | number | null
@@ -67054,6 +67291,9 @@ export namespace Prisma {
     remarks?: NullableStringFieldUpdateOperationsInput | string | null
     courseId?: NullableStringFieldUpdateOperationsInput | string | null
     courseName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
+    batchName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchTiming?: NullableStringFieldUpdateOperationsInput | string | null
     facultyId?: NullableStringFieldUpdateOperationsInput | string | null
     facultyName?: NullableStringFieldUpdateOperationsInput | string | null
     courseAmount?: NullableIntFieldUpdateOperationsInput | number | null
@@ -67101,6 +67341,9 @@ export namespace Prisma {
     branchId?: string | null
     courseId: string
     courseName: string
+    batchId?: string | null
+    batchName?: string | null
+    batchTiming?: string | null
     moduleId: string
     moduleName: string
     submoduleIds: JsonNullValueInput | InputJsonValue
@@ -67279,6 +67522,9 @@ export namespace Prisma {
     facultyProfileId?: NullableStringFieldUpdateOperationsInput | string | null
     branchId?: NullableStringFieldUpdateOperationsInput | string | null
     courseName?: StringFieldUpdateOperationsInput | string
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
+    batchName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchTiming?: NullableStringFieldUpdateOperationsInput | string | null
     moduleId?: StringFieldUpdateOperationsInput | string
     moduleName?: StringFieldUpdateOperationsInput | string
     submoduleIds?: JsonNullValueInput | InputJsonValue
@@ -67304,6 +67550,9 @@ export namespace Prisma {
     branchId?: NullableStringFieldUpdateOperationsInput | string | null
     courseId?: StringFieldUpdateOperationsInput | string
     courseName?: StringFieldUpdateOperationsInput | string
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
+    batchName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchTiming?: NullableStringFieldUpdateOperationsInput | string | null
     moduleId?: StringFieldUpdateOperationsInput | string
     moduleName?: StringFieldUpdateOperationsInput | string
     submoduleIds?: JsonNullValueInput | InputJsonValue
@@ -67328,6 +67577,9 @@ export namespace Prisma {
     branchId?: NullableStringFieldUpdateOperationsInput | string | null
     courseId?: StringFieldUpdateOperationsInput | string
     courseName?: StringFieldUpdateOperationsInput | string
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
+    batchName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchTiming?: NullableStringFieldUpdateOperationsInput | string | null
     moduleId?: StringFieldUpdateOperationsInput | string
     moduleName?: StringFieldUpdateOperationsInput | string
     submoduleIds?: JsonNullValueInput | InputJsonValue
@@ -67648,6 +67900,9 @@ export namespace Prisma {
     remarks?: string | null
     courseId?: string | null
     courseName?: string | null
+    batchId?: string | null
+    batchName?: string | null
+    batchTiming?: string | null
     facultyId?: string | null
     facultyName?: string | null
     courseAmount?: number | null
@@ -68009,6 +68264,9 @@ export namespace Prisma {
     linkedInUrl?: NullableStringFieldUpdateOperationsInput | string | null
     remarks?: NullableStringFieldUpdateOperationsInput | string | null
     courseName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
+    batchName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchTiming?: NullableStringFieldUpdateOperationsInput | string | null
     facultyId?: NullableStringFieldUpdateOperationsInput | string | null
     facultyName?: NullableStringFieldUpdateOperationsInput | string | null
     courseAmount?: NullableIntFieldUpdateOperationsInput | number | null
@@ -68051,6 +68309,9 @@ export namespace Prisma {
     remarks?: NullableStringFieldUpdateOperationsInput | string | null
     courseId?: NullableStringFieldUpdateOperationsInput | string | null
     courseName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
+    batchName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchTiming?: NullableStringFieldUpdateOperationsInput | string | null
     facultyId?: NullableStringFieldUpdateOperationsInput | string | null
     facultyName?: NullableStringFieldUpdateOperationsInput | string | null
     courseAmount?: NullableIntFieldUpdateOperationsInput | number | null
@@ -68092,6 +68353,9 @@ export namespace Prisma {
     remarks?: NullableStringFieldUpdateOperationsInput | string | null
     courseId?: NullableStringFieldUpdateOperationsInput | string | null
     courseName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
+    batchName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchTiming?: NullableStringFieldUpdateOperationsInput | string | null
     facultyId?: NullableStringFieldUpdateOperationsInput | string | null
     facultyName?: NullableStringFieldUpdateOperationsInput | string | null
     courseAmount?: NullableIntFieldUpdateOperationsInput | number | null
@@ -69117,6 +69381,9 @@ export namespace Prisma {
     linkedInUrl?: string | null
     remarks?: string | null
     courseName?: string | null
+    batchId?: string | null
+    batchName?: string | null
+    batchTiming?: string | null
     facultyId?: string | null
     facultyName?: string | null
     courseAmount?: number | null
@@ -69132,6 +69399,9 @@ export namespace Prisma {
     facultyProfileId?: string | null
     branchId?: string | null
     courseName: string
+    batchId?: string | null
+    batchName?: string | null
+    batchTiming?: string | null
     moduleId: string
     moduleName: string
     submoduleIds: JsonNullValueInput | InputJsonValue
@@ -69343,6 +69613,9 @@ export namespace Prisma {
     linkedInUrl?: NullableStringFieldUpdateOperationsInput | string | null
     remarks?: NullableStringFieldUpdateOperationsInput | string | null
     courseName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
+    batchName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchTiming?: NullableStringFieldUpdateOperationsInput | string | null
     facultyId?: NullableStringFieldUpdateOperationsInput | string | null
     facultyName?: NullableStringFieldUpdateOperationsInput | string | null
     courseAmount?: NullableIntFieldUpdateOperationsInput | number | null
@@ -69385,6 +69658,9 @@ export namespace Prisma {
     linkedInUrl?: NullableStringFieldUpdateOperationsInput | string | null
     remarks?: NullableStringFieldUpdateOperationsInput | string | null
     courseName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
+    batchName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchTiming?: NullableStringFieldUpdateOperationsInput | string | null
     facultyId?: NullableStringFieldUpdateOperationsInput | string | null
     facultyName?: NullableStringFieldUpdateOperationsInput | string | null
     courseAmount?: NullableIntFieldUpdateOperationsInput | number | null
@@ -69426,6 +69702,9 @@ export namespace Prisma {
     linkedInUrl?: NullableStringFieldUpdateOperationsInput | string | null
     remarks?: NullableStringFieldUpdateOperationsInput | string | null
     courseName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
+    batchName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchTiming?: NullableStringFieldUpdateOperationsInput | string | null
     facultyId?: NullableStringFieldUpdateOperationsInput | string | null
     facultyName?: NullableStringFieldUpdateOperationsInput | string | null
     courseAmount?: NullableIntFieldUpdateOperationsInput | number | null
@@ -69440,6 +69719,9 @@ export namespace Prisma {
     facultyProfileId?: NullableStringFieldUpdateOperationsInput | string | null
     branchId?: NullableStringFieldUpdateOperationsInput | string | null
     courseName?: StringFieldUpdateOperationsInput | string
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
+    batchName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchTiming?: NullableStringFieldUpdateOperationsInput | string | null
     moduleId?: StringFieldUpdateOperationsInput | string
     moduleName?: StringFieldUpdateOperationsInput | string
     submoduleIds?: JsonNullValueInput | InputJsonValue
@@ -69465,6 +69747,9 @@ export namespace Prisma {
     facultyProfileId?: NullableStringFieldUpdateOperationsInput | string | null
     branchId?: NullableStringFieldUpdateOperationsInput | string | null
     courseName?: StringFieldUpdateOperationsInput | string
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
+    batchName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchTiming?: NullableStringFieldUpdateOperationsInput | string | null
     moduleId?: StringFieldUpdateOperationsInput | string
     moduleName?: StringFieldUpdateOperationsInput | string
     submoduleIds?: JsonNullValueInput | InputJsonValue
@@ -69489,6 +69774,9 @@ export namespace Prisma {
     facultyProfileId?: NullableStringFieldUpdateOperationsInput | string | null
     branchId?: NullableStringFieldUpdateOperationsInput | string | null
     courseName?: StringFieldUpdateOperationsInput | string
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
+    batchName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchTiming?: NullableStringFieldUpdateOperationsInput | string | null
     moduleId?: StringFieldUpdateOperationsInput | string
     moduleName?: StringFieldUpdateOperationsInput | string
     submoduleIds?: JsonNullValueInput | InputJsonValue

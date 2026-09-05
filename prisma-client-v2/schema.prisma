@@ -537,6 +537,9 @@ model BranchStudent {
   remarks            String?
   courseId           String?
   courseName         String?
+  batchId            String?
+  batchName          String?
+  batchTiming        String?
   facultyId          String?
   facultyName        String?
   courseAmount       Int?
@@ -557,6 +560,8 @@ model BranchStudent {
   @@index([emailAddress])
   @@index([admissionDate])
   @@index([courseId])
+  @@index([branchId, batchId])
+  @@index([branchId, courseId, facultyId, batchId])
 }
 
 model BranchStudentInstallment {
@@ -659,6 +664,9 @@ model FacultyTodayWorkEntry {
   branchId           String?
   courseId           String
   courseName         String
+  batchId            String?
+  batchName          String?
+  batchTiming        String?
   moduleId           String
   moduleName         String
   submoduleIds       Json
@@ -682,6 +690,7 @@ model FacultyTodayWorkEntry {
   @@index([facultyProfileId, workDate])
   @@index([branchId, workDate])
   @@index([courseId, moduleId])
+  @@index([branchId, courseId, batchId])
 }
 
 model StudentAttendance {

@@ -1279,6 +1279,9 @@ function buildBranchStudentPayload(payload = {}, existing = null) {
     recordStatus,
     courseId: parseOptionalText(candidate.courseId),
     courseName: parseOptionalText(candidate.courseName),
+    batchId: parseOptionalText(candidate.batchId || candidate.batchEntryId),
+    batchName: parseOptionalText(candidate.batchName || candidate.batch),
+    batchTiming: parseOptionalText(candidate.batchTiming || candidate.batchTime),
     facultyId: parseOptionalText(candidate.facultyId),
     facultyName: parseOptionalText(candidate.facultyName),
     courseAmount: candidate.courseAmount && Number.isFinite(Number(String(candidate.courseAmount).replace(/,/g, ''))) 
@@ -1354,6 +1357,11 @@ function buildBranchStudentWhere(query = {}, branchProfile = null) {
     where.branchId = normalizeString(query.branchId);
   }
 
+  const batchId = normalizeString(query.batchId || query.batchEntryId);
+  if (batchId) {
+    where.batchId = batchId;
+  }
+
   return where;
 }
 
@@ -1403,6 +1411,9 @@ function toBranchStudentSummary(record) {
     courseProgress: record.courseProgress,
     courseId: record.courseId,
     courseName: record.courseName,
+    batchId: record.batchId,
+    batchName: record.batchName,
+    batchTiming: record.batchTiming,
     facultyId: record.facultyId,
     facultyName: record.facultyName,
     courseAmount: record.courseAmount,
@@ -1557,6 +1568,36 @@ export async function createBranchStudent(payload, actor) {
     console.error("[createBranchStudent] validation error:", err.message);
     throw err;
   }
+  const selectedBatchId = normalizeString(payload.batchId || payload.batchEntryId);
+  const assignedBatch = selectedBatchId
+    ? await prisma.branchBatchRow.findFirst({
+        where: {
+          batchId: selectedBatchId,
+          status: "ACTIVE",
+          branchBatch: { branchId, status: "ACTIVE" },
+        },
+        select: {
+          batchId: true,
+          batchName: true,
+          batchTiming: true,
+          branchBatch: { select: { courseId: true, courseName: true, facultyId: true, facultyName: true } },
+        },
+      })
+    : null;
+
+  if (selectedBatchId && !assignedBatch) {
+    throw new AppError("Selected batch was not found in this branch", 400);
+  }
+
+  if (assignedBatch) {
+    studentData.batchId = assignedBatch.batchId;
+    studentData.batchName = assignedBatch.batchName;
+    studentData.batchTiming = assignedBatch.batchTiming;
+    studentData.courseId = studentData.courseId || assignedBatch.branchBatch.courseId;
+    studentData.courseName = studentData.courseName || assignedBatch.branchBatch.courseName;
+    studentData.facultyId = studentData.facultyId || assignedBatch.branchBatch.facultyId;
+    studentData.facultyName = studentData.facultyName || assignedBatch.branchBatch.facultyName;
+  }
   console.log("[createBranchStudent] studentData keys:", Object.keys(studentData));
   console.log("[createBranchStudent] studentData:", JSON.stringify(studentData, null, 2));
   console.log("[createBranchStudent] installmentSchedule count:", installmentSchedule.length);
@@ -1650,21 +1691,6 @@ export async function createBranchStudent(payload, actor) {
     }
   }
 
-  const selectedBatchId = normalizeString(payload.batchId || payload.batchEntryId);
-  const assignedBatch = selectedBatchId
-    ? await prisma.branchBatchRow.findFirst({
-        where: {
-          OR: [{ id: selectedBatchId }, { batchId: selectedBatchId }],
-          branchBatch: { branchId },
-        },
-        select: {
-          batchName: true,
-          batchTiming: true,
-          branchBatch: { select: { courseName: true } },
-        },
-      })
-    : null;
-
   void sendStudentCredentialsEmail({
     to: studentData.emailAddress,
     fullName: studentData.studentName,
@@ -1709,6 +1735,34 @@ export async function updateBranchStudent(studentId, payload, actor = null) {
   }
 
   const { studentData, installmentSchedule } = buildBranchStudentPayload(payload, existing);
+  const selectedBatchId = normalizeString(studentData.batchId);
+  if (selectedBatchId) {
+    const assignedBatch = await prisma.branchBatchRow.findFirst({
+      where: {
+        batchId: selectedBatchId,
+        status: "ACTIVE",
+        branchBatch: { branchId: existing.branchId, status: "ACTIVE" },
+      },
+      select: {
+        batchId: true,
+        batchName: true,
+        batchTiming: true,
+        branchBatch: { select: { courseId: true, courseName: true, facultyId: true, facultyName: true } },
+      },
+    });
+
+    if (!assignedBatch) {
+      throw new AppError("Selected batch was not found in this branch", 400);
+    }
+
+    studentData.batchId = assignedBatch.batchId;
+    studentData.batchName = assignedBatch.batchName;
+    studentData.batchTiming = assignedBatch.batchTiming;
+    studentData.courseId = studentData.courseId || assignedBatch.branchBatch.courseId;
+    studentData.courseName = studentData.courseName || assignedBatch.branchBatch.courseName;
+    studentData.facultyId = studentData.facultyId || assignedBatch.branchBatch.facultyId;
+    studentData.facultyName = studentData.facultyName || assignedBatch.branchBatch.facultyName;
+  }
   const existingLoginUser = await findBranchStudentLoginUser(existing);
   const previousCourseProgress = Number(existing.courseProgress);
   await ensureUniqueBranchStudentIdentity(studentData, existing.branchId, existing.id, existingLoginUser?.id);

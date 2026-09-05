@@ -639,10 +639,11 @@ export async function createBranchBatch(payload = {}, actor = null) {
   const branchCourse = await ensureBranchCourse(branchProfile.id, parsed.courseId);
   const branchFaculty = await ensureBranchFaculty(branchProfile.id, parsed.facultyId);
   const actorId = actor?.id ?? null;
+  const firstBatchSequence = await getNextBatchSequenceNumber(branchProfile.id);
   for (let attempt = 0; attempt < 3; attempt += 1) {
     const batchGroupId = await resolveUniqueBatchGroupId(branchProfile.id, attempt === 0 ? parsed.batchGroupId : "");
     const batchRows = parsed.rows.map((row, index) => ({
-      batchId: makeBatchId(index + 1),
+      batchId: makeBatchId(firstBatchSequence + index),
       batchName: row.batchName,
       batchTiming: buildBatchTiming(row),
       startTime: row.startTime,
@@ -734,8 +735,9 @@ export async function updateBranchBatch(batchGroupId, payload = {}, actor = null
   const branchFaculty = await ensureBranchFaculty(branchProfile.id, parsed.facultyId);
   const actorId = actor?.id ?? null;
   const nextBatchGroupSequence = await getNextBatchGroupSequenceNumber(branchProfile.id);
+  const nextBatchSequence = await getNextBatchSequenceNumber(branchProfile.id);
   const nextBatchRows = parsed.rows.map((row, index) => ({
-    batchId: makeBatchId(index + 1),
+    batchId: existing.rows?.[index]?.batchId || makeBatchId(nextBatchSequence + index),
     batchName: row.batchName,
     batchTiming: buildBatchTiming(row),
     startTime: row.startTime,
@@ -777,6 +779,25 @@ export async function updateBranchBatch(batchGroupId, payload = {}, actor = null
       },
       include: getInclude(),
     });
+
+    const batchIds = nextBatchRows.map((row) => row.batchId).filter(Boolean);
+    if (batchIds.length) {
+      await tx.branchStudent.updateMany({
+        where: {
+          branchId: branchProfile.id,
+          batchId: { in: batchIds },
+          recordStatus: "ACTIVE",
+        },
+        data: {
+          courseId: branchCourse.id,
+          courseName: branchCourse.name,
+          facultyId: branchFaculty.facultyId || branchFaculty.id,
+          facultyName: branchFaculty.name,
+          updatedBy: actorId,
+        },
+      });
+    }
+
     return batch;
   }, { timeout: 15000 });
 

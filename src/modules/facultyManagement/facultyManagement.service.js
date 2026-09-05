@@ -380,18 +380,17 @@ function toBatchEntry(entry) {
 }
 
 function toBranchBatchEntry(batch = {}, row = {}, branchFaculty = null) {
-  const rowId = normalizeString(row?.id);
-  const batchId = normalizeString(row?.batchId || batch?.batchId || batch?.batchGroupId || batch?.id);
+  const rowId = normalizeString(row?.batchId || row?.id);
+  const batchId = normalizeString(row?.batchId || batch?.batchId || batch?.id);
   return {
-    id: rowId || batchId,
+    id: batchId || rowId,
     facultyId: branchFaculty?.id || branchFaculty?.facultyId || batch?.facultyId || "",
     courseId: batch?.courseId || batch?.branchCourseId || branchFaculty?.branchCourseId || "",
     courseName: batch?.courseName || batch?.branchCourse?.name || "",
     batchName: row?.batchName || "",
     batchTiming: row?.batchTiming || "",
     sequenceNo: Number(row?.sequenceNo || 0),
-    batchGroupId: batch?.batchGroupId || batch?.id || "",
-    batchId: row?.batchId || batch?.batchId || "",
+    batchId,
     totalSeats: Number(row?.totalSeats || 0),
     status: row?.status === "INACTIVE" ? "Inactive" : "Active",
     createdAt: row?.createdAt || batch?.createdAt || null,
