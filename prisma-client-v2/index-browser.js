@@ -492,6 +492,8 @@ exports.Prisma.BranchStudentScalarFieldEnum = {
   source: 'source',
   sourceOther: 'sourceOther',
   admissionDate: 'admissionDate',
+  courseStartDate: 'courseStartDate',
+  classSchedule: 'classSchedule',
   recordStatus: 'recordStatus',
   createdBy: 'createdBy',
   updatedBy: 'updatedBy',

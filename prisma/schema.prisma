@@ -508,6 +508,8 @@ model BranchStudent {
   source             String?
   sourceOther        String?
   admissionDate      String
+  courseStartDate    String?
+  classSchedule      String?
   recordStatus       RecordStatus @default(ACTIVE)
   createdBy          String?
   updatedBy          String?

@@ -26559,6 +26559,8 @@ export namespace Prisma {
     source: string | null
     sourceOther: string | null
     admissionDate: string | null
+    courseStartDate: string | null
+    classSchedule: string | null
     recordStatus: $Enums.RecordStatus | null
     createdBy: string | null
     updatedBy: string | null
@@ -26601,6 +26603,8 @@ export namespace Prisma {
     source: string | null
     sourceOther: string | null
     admissionDate: string | null
+    courseStartDate: string | null
+    classSchedule: string | null
     recordStatus: $Enums.RecordStatus | null
     createdBy: string | null
     updatedBy: string | null
@@ -26643,6 +26647,8 @@ export namespace Prisma {
     source: number
     sourceOther: number
     admissionDate: number
+    courseStartDate: number
+    classSchedule: number
     recordStatus: number
     createdBy: number
     updatedBy: number
@@ -26697,6 +26703,8 @@ export namespace Prisma {
     source?: true
     sourceOther?: true
     admissionDate?: true
+    courseStartDate?: true
+    classSchedule?: true
     recordStatus?: true
     createdBy?: true
     updatedBy?: true
@@ -26739,6 +26747,8 @@ export namespace Prisma {
     source?: true
     sourceOther?: true
     admissionDate?: true
+    courseStartDate?: true
+    classSchedule?: true
     recordStatus?: true
     createdBy?: true
     updatedBy?: true
@@ -26781,6 +26791,8 @@ export namespace Prisma {
     source?: true
     sourceOther?: true
     admissionDate?: true
+    courseStartDate?: true
+    classSchedule?: true
     recordStatus?: true
     createdBy?: true
     updatedBy?: true
@@ -26910,6 +26922,8 @@ export namespace Prisma {
     source: string | null
     sourceOther: string | null
     admissionDate: string
+    courseStartDate: string | null
+    classSchedule: string | null
     recordStatus: $Enums.RecordStatus
     createdBy: string | null
     updatedBy: string | null
@@ -26971,6 +26985,8 @@ export namespace Prisma {
     source?: boolean
     sourceOther?: boolean
     admissionDate?: boolean
+    courseStartDate?: boolean
+    classSchedule?: boolean
     recordStatus?: boolean
     createdBy?: boolean
     updatedBy?: boolean
@@ -27019,6 +27035,8 @@ export namespace Prisma {
     source?: boolean
     sourceOther?: boolean
     admissionDate?: boolean
+    courseStartDate?: boolean
+    classSchedule?: boolean
     recordStatus?: boolean
     createdBy?: boolean
     updatedBy?: boolean
@@ -27063,6 +27081,8 @@ export namespace Prisma {
     source?: boolean
     sourceOther?: boolean
     admissionDate?: boolean
+    courseStartDate?: boolean
+    classSchedule?: boolean
     recordStatus?: boolean
     createdBy?: boolean
     updatedBy?: boolean
@@ -27107,6 +27127,8 @@ export namespace Prisma {
     source?: boolean
     sourceOther?: boolean
     admissionDate?: boolean
+    courseStartDate?: boolean
+    classSchedule?: boolean
     recordStatus?: boolean
     createdBy?: boolean
     updatedBy?: boolean
@@ -27128,7 +27150,7 @@ export namespace Prisma {
     courseProgress?: boolean
   }
 
-  export type BranchStudentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "branchId" | "studentId" | "studentName" | "mobileNumber" | "emailAddress" | "parentSpouseNumber" | "countryCode" | "country" | "stateCode" | "state" | "city" | "address" | "qualification" | "passedOutYear" | "currentStatus" | "designation" | "source" | "sourceOther" | "admissionDate" | "recordStatus" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt" | "linkedInUrl" | "remarks" | "courseId" | "courseName" | "batchId" | "batchName" | "batchTiming" | "facultyId" | "facultyName" | "courseAmount" | "paymentMode" | "paymentPlanId" | "paymentPlan" | "courseProgress", ExtArgs["result"]["branchStudent"]>
+  export type BranchStudentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "branchId" | "studentId" | "studentName" | "mobileNumber" | "emailAddress" | "parentSpouseNumber" | "countryCode" | "country" | "stateCode" | "state" | "city" | "address" | "qualification" | "passedOutYear" | "currentStatus" | "designation" | "source" | "sourceOther" | "admissionDate" | "courseStartDate" | "classSchedule" | "recordStatus" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt" | "linkedInUrl" | "remarks" | "courseId" | "courseName" | "batchId" | "batchName" | "batchTiming" | "facultyId" | "facultyName" | "courseAmount" | "paymentMode" | "paymentPlanId" | "paymentPlan" | "courseProgress", ExtArgs["result"]["branchStudent"]>
   export type BranchStudentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     branch?: boolean | BranchDefaultArgs<ExtArgs>
     course?: boolean | BranchStudent$courseArgs<ExtArgs>
@@ -27176,6 +27198,8 @@ export namespace Prisma {
       source: string | null
       sourceOther: string | null
       admissionDate: string
+      courseStartDate: string | null
+      classSchedule: string | null
       recordStatus: $Enums.RecordStatus
       createdBy: string | null
       updatedBy: string | null
@@ -27643,6 +27667,8 @@ export namespace Prisma {
     readonly source: FieldRef<"BranchStudent", 'String'>
     readonly sourceOther: FieldRef<"BranchStudent", 'String'>
     readonly admissionDate: FieldRef<"BranchStudent", 'String'>
+    readonly courseStartDate: FieldRef<"BranchStudent", 'String'>
+    readonly classSchedule: FieldRef<"BranchStudent", 'String'>
     readonly recordStatus: FieldRef<"BranchStudent", 'RecordStatus'>
     readonly createdBy: FieldRef<"BranchStudent", 'String'>
     readonly updatedBy: FieldRef<"BranchStudent", 'String'>
@@ -42269,6 +42295,8 @@ export namespace Prisma {
     source: 'source',
     sourceOther: 'sourceOther',
     admissionDate: 'admissionDate',
+    courseStartDate: 'courseStartDate',
+    classSchedule: 'classSchedule',
     recordStatus: 'recordStatus',
     createdBy: 'createdBy',
     updatedBy: 'updatedBy',
@@ -44939,6 +44967,8 @@ export namespace Prisma {
     source?: StringNullableFilter<"BranchStudent"> | string | null
     sourceOther?: StringNullableFilter<"BranchStudent"> | string | null
     admissionDate?: StringFilter<"BranchStudent"> | string
+    courseStartDate?: StringNullableFilter<"BranchStudent"> | string | null
+    classSchedule?: StringNullableFilter<"BranchStudent"> | string | null
     recordStatus?: EnumRecordStatusFilter<"BranchStudent"> | $Enums.RecordStatus
     createdBy?: StringNullableFilter<"BranchStudent"> | string | null
     updatedBy?: StringNullableFilter<"BranchStudent"> | string | null
@@ -44986,6 +45016,8 @@ export namespace Prisma {
     source?: SortOrderInput | SortOrder
     sourceOther?: SortOrderInput | SortOrder
     admissionDate?: SortOrder
+    courseStartDate?: SortOrderInput | SortOrder
+    classSchedule?: SortOrderInput | SortOrder
     recordStatus?: SortOrder
     createdBy?: SortOrderInput | SortOrder
     updatedBy?: SortOrderInput | SortOrder
@@ -45037,6 +45069,8 @@ export namespace Prisma {
     source?: StringNullableFilter<"BranchStudent"> | string | null
     sourceOther?: StringNullableFilter<"BranchStudent"> | string | null
     admissionDate?: StringFilter<"BranchStudent"> | string
+    courseStartDate?: StringNullableFilter<"BranchStudent"> | string | null
+    classSchedule?: StringNullableFilter<"BranchStudent"> | string | null
     recordStatus?: EnumRecordStatusFilter<"BranchStudent"> | $Enums.RecordStatus
     createdBy?: StringNullableFilter<"BranchStudent"> | string | null
     updatedBy?: StringNullableFilter<"BranchStudent"> | string | null
@@ -45084,6 +45118,8 @@ export namespace Prisma {
     source?: SortOrderInput | SortOrder
     sourceOther?: SortOrderInput | SortOrder
     admissionDate?: SortOrder
+    courseStartDate?: SortOrderInput | SortOrder
+    classSchedule?: SortOrderInput | SortOrder
     recordStatus?: SortOrder
     createdBy?: SortOrderInput | SortOrder
     updatedBy?: SortOrderInput | SortOrder
@@ -45134,6 +45170,8 @@ export namespace Prisma {
     source?: StringNullableWithAggregatesFilter<"BranchStudent"> | string | null
     sourceOther?: StringNullableWithAggregatesFilter<"BranchStudent"> | string | null
     admissionDate?: StringWithAggregatesFilter<"BranchStudent"> | string
+    courseStartDate?: StringNullableWithAggregatesFilter<"BranchStudent"> | string | null
+    classSchedule?: StringNullableWithAggregatesFilter<"BranchStudent"> | string | null
     recordStatus?: EnumRecordStatusWithAggregatesFilter<"BranchStudent"> | $Enums.RecordStatus
     createdBy?: StringNullableWithAggregatesFilter<"BranchStudent"> | string | null
     updatedBy?: StringNullableWithAggregatesFilter<"BranchStudent"> | string | null
@@ -48956,6 +48994,8 @@ export namespace Prisma {
     source?: string | null
     sourceOther?: string | null
     admissionDate: string
+    courseStartDate?: string | null
+    classSchedule?: string | null
     recordStatus?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -49002,6 +49042,8 @@ export namespace Prisma {
     source?: string | null
     sourceOther?: string | null
     admissionDate: string
+    courseStartDate?: string | null
+    classSchedule?: string | null
     recordStatus?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -49046,6 +49088,8 @@ export namespace Prisma {
     source?: NullableStringFieldUpdateOperationsInput | string | null
     sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
     admissionDate?: StringFieldUpdateOperationsInput | string
+    courseStartDate?: NullableStringFieldUpdateOperationsInput | string | null
+    classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     recordStatus?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -49092,6 +49136,8 @@ export namespace Prisma {
     source?: NullableStringFieldUpdateOperationsInput | string | null
     sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
     admissionDate?: StringFieldUpdateOperationsInput | string
+    courseStartDate?: NullableStringFieldUpdateOperationsInput | string | null
+    classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     recordStatus?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -49137,6 +49183,8 @@ export namespace Prisma {
     source?: string | null
     sourceOther?: string | null
     admissionDate: string
+    courseStartDate?: string | null
+    classSchedule?: string | null
     recordStatus?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -49178,6 +49226,8 @@ export namespace Prisma {
     source?: NullableStringFieldUpdateOperationsInput | string | null
     sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
     admissionDate?: StringFieldUpdateOperationsInput | string
+    courseStartDate?: NullableStringFieldUpdateOperationsInput | string | null
+    classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     recordStatus?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -49219,6 +49269,8 @@ export namespace Prisma {
     source?: NullableStringFieldUpdateOperationsInput | string | null
     sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
     admissionDate?: StringFieldUpdateOperationsInput | string
+    courseStartDate?: NullableStringFieldUpdateOperationsInput | string | null
+    classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     recordStatus?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -52564,6 +52616,8 @@ export namespace Prisma {
     source?: SortOrder
     sourceOther?: SortOrder
     admissionDate?: SortOrder
+    courseStartDate?: SortOrder
+    classSchedule?: SortOrder
     recordStatus?: SortOrder
     createdBy?: SortOrder
     updatedBy?: SortOrder
@@ -52611,6 +52665,8 @@ export namespace Prisma {
     source?: SortOrder
     sourceOther?: SortOrder
     admissionDate?: SortOrder
+    courseStartDate?: SortOrder
+    classSchedule?: SortOrder
     recordStatus?: SortOrder
     createdBy?: SortOrder
     updatedBy?: SortOrder
@@ -52653,6 +52709,8 @@ export namespace Prisma {
     source?: SortOrder
     sourceOther?: SortOrder
     admissionDate?: SortOrder
+    courseStartDate?: SortOrder
+    classSchedule?: SortOrder
     recordStatus?: SortOrder
     createdBy?: SortOrder
     updatedBy?: SortOrder
@@ -57352,6 +57410,8 @@ export namespace Prisma {
     source?: string | null
     sourceOther?: string | null
     admissionDate: string
+    courseStartDate?: string | null
+    classSchedule?: string | null
     recordStatus?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -57396,6 +57456,8 @@ export namespace Prisma {
     source?: string | null
     sourceOther?: string | null
     admissionDate: string
+    courseStartDate?: string | null
+    classSchedule?: string | null
     recordStatus?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -57901,6 +57963,8 @@ export namespace Prisma {
     source?: StringNullableFilter<"BranchStudent"> | string | null
     sourceOther?: StringNullableFilter<"BranchStudent"> | string | null
     admissionDate?: StringFilter<"BranchStudent"> | string
+    courseStartDate?: StringNullableFilter<"BranchStudent"> | string | null
+    classSchedule?: StringNullableFilter<"BranchStudent"> | string | null
     recordStatus?: EnumRecordStatusFilter<"BranchStudent"> | $Enums.RecordStatus
     createdBy?: StringNullableFilter<"BranchStudent"> | string | null
     updatedBy?: StringNullableFilter<"BranchStudent"> | string | null
@@ -59734,6 +59798,8 @@ export namespace Prisma {
     source?: string | null
     sourceOther?: string | null
     admissionDate: string
+    courseStartDate?: string | null
+    classSchedule?: string | null
     recordStatus?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -59779,6 +59845,8 @@ export namespace Prisma {
     source?: string | null
     sourceOther?: string | null
     admissionDate: string
+    courseStartDate?: string | null
+    classSchedule?: string | null
     recordStatus?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -62368,6 +62436,8 @@ export namespace Prisma {
     source?: string | null
     sourceOther?: string | null
     admissionDate: string
+    courseStartDate?: string | null
+    classSchedule?: string | null
     recordStatus?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -62413,6 +62483,8 @@ export namespace Prisma {
     source?: string | null
     sourceOther?: string | null
     admissionDate: string
+    courseStartDate?: string | null
+    classSchedule?: string | null
     recordStatus?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -62516,6 +62588,8 @@ export namespace Prisma {
     source?: NullableStringFieldUpdateOperationsInput | string | null
     sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
     admissionDate?: StringFieldUpdateOperationsInput | string
+    courseStartDate?: NullableStringFieldUpdateOperationsInput | string | null
+    classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     recordStatus?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -62561,6 +62635,8 @@ export namespace Prisma {
     source?: NullableStringFieldUpdateOperationsInput | string | null
     sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
     admissionDate?: StringFieldUpdateOperationsInput | string
+    courseStartDate?: NullableStringFieldUpdateOperationsInput | string | null
+    classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     recordStatus?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -64830,6 +64906,8 @@ export namespace Prisma {
     source?: string | null
     sourceOther?: string | null
     admissionDate: string
+    courseStartDate?: string | null
+    classSchedule?: string | null
     recordStatus?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -64875,6 +64953,8 @@ export namespace Prisma {
     source?: string | null
     sourceOther?: string | null
     admissionDate: string
+    courseStartDate?: string | null
+    classSchedule?: string | null
     recordStatus?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -65032,6 +65112,8 @@ export namespace Prisma {
     source?: NullableStringFieldUpdateOperationsInput | string | null
     sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
     admissionDate?: StringFieldUpdateOperationsInput | string
+    courseStartDate?: NullableStringFieldUpdateOperationsInput | string | null
+    classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     recordStatus?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -65077,6 +65159,8 @@ export namespace Prisma {
     source?: NullableStringFieldUpdateOperationsInput | string | null
     sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
     admissionDate?: StringFieldUpdateOperationsInput | string
+    courseStartDate?: NullableStringFieldUpdateOperationsInput | string | null
+    classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     recordStatus?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -65291,6 +65375,8 @@ export namespace Prisma {
     source?: string | null
     sourceOther?: string | null
     admissionDate: string
+    courseStartDate?: string | null
+    classSchedule?: string | null
     recordStatus?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -65336,6 +65422,8 @@ export namespace Prisma {
     source?: string | null
     sourceOther?: string | null
     admissionDate: string
+    courseStartDate?: string | null
+    classSchedule?: string | null
     recordStatus?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -65462,6 +65550,8 @@ export namespace Prisma {
     source?: NullableStringFieldUpdateOperationsInput | string | null
     sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
     admissionDate?: StringFieldUpdateOperationsInput | string
+    courseStartDate?: NullableStringFieldUpdateOperationsInput | string | null
+    classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     recordStatus?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -65507,6 +65597,8 @@ export namespace Prisma {
     source?: NullableStringFieldUpdateOperationsInput | string | null
     sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
     admissionDate?: StringFieldUpdateOperationsInput | string
+    courseStartDate?: NullableStringFieldUpdateOperationsInput | string | null
+    classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     recordStatus?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -66122,6 +66214,8 @@ export namespace Prisma {
     source?: string | null
     sourceOther?: string | null
     admissionDate: string
+    courseStartDate?: string | null
+    classSchedule?: string | null
     recordStatus?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -66503,6 +66597,8 @@ export namespace Prisma {
     source?: NullableStringFieldUpdateOperationsInput | string | null
     sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
     admissionDate?: StringFieldUpdateOperationsInput | string
+    courseStartDate?: NullableStringFieldUpdateOperationsInput | string | null
+    classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     recordStatus?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -66547,6 +66643,8 @@ export namespace Prisma {
     source?: NullableStringFieldUpdateOperationsInput | string | null
     sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
     admissionDate?: StringFieldUpdateOperationsInput | string
+    courseStartDate?: NullableStringFieldUpdateOperationsInput | string | null
+    classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     recordStatus?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -66591,6 +66689,8 @@ export namespace Prisma {
     source?: NullableStringFieldUpdateOperationsInput | string | null
     sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
     admissionDate?: StringFieldUpdateOperationsInput | string
+    courseStartDate?: NullableStringFieldUpdateOperationsInput | string | null
+    classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     recordStatus?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -67626,6 +67726,8 @@ export namespace Prisma {
     source?: string | null
     sourceOther?: string | null
     admissionDate: string
+    courseStartDate?: string | null
+    classSchedule?: string | null
     recordStatus?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -67874,6 +67976,8 @@ export namespace Prisma {
     source?: NullableStringFieldUpdateOperationsInput | string | null
     sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
     admissionDate?: StringFieldUpdateOperationsInput | string
+    courseStartDate?: NullableStringFieldUpdateOperationsInput | string | null
+    classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     recordStatus?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -67919,6 +68023,8 @@ export namespace Prisma {
     source?: NullableStringFieldUpdateOperationsInput | string | null
     sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
     admissionDate?: StringFieldUpdateOperationsInput | string
+    courseStartDate?: NullableStringFieldUpdateOperationsInput | string | null
+    classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     recordStatus?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -67963,6 +68069,8 @@ export namespace Prisma {
     source?: NullableStringFieldUpdateOperationsInput | string | null
     sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
     admissionDate?: StringFieldUpdateOperationsInput | string
+    courseStartDate?: NullableStringFieldUpdateOperationsInput | string | null
+    classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     recordStatus?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null

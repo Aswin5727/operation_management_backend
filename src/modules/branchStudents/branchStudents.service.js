@@ -1245,6 +1245,8 @@ function buildBranchStudentPayload(payload = {}, existing = null) {
   const sourceOther = source === "Others" ? parseRequiredText(candidate.sourceOther, "Source details") : parseOptionalText(candidate.sourceOther);
   const remarks = parseOptionalText(candidate.remarks);
   const admissionDate = parseDateString(candidate.admissionDate, "Admission date");
+  const courseStartDate = parseOptionalText(candidate.courseStartDate);
+  const classSchedule = parseOptionalText(candidate.classSchedule);
   const recordStatus = parseStatus(candidate.recordStatus || candidate.status || "ACTIVE");
   const courseProgress = parseOptionalProgress(candidate.courseProgress);
 
@@ -1275,6 +1277,8 @@ function buildBranchStudentPayload(payload = {}, existing = null) {
     sourceOther,
     remarks,
     admissionDate,
+    courseStartDate,
+    classSchedule,
     courseProgress,
     recordStatus,
     courseId: parseOptionalText(candidate.courseId),
@@ -1408,6 +1412,8 @@ function toBranchStudentSummary(record) {
     sourceOther: record.sourceOther,
     remarks: record.remarks,
     admissionDate: record.admissionDate,
+    courseStartDate: record.courseStartDate,
+    classSchedule: record.classSchedule,
     courseProgress: record.courseProgress,
     courseId: record.courseId,
     courseName: record.courseName,

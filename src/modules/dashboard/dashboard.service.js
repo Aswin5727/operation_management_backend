@@ -122,7 +122,9 @@ function toBranchFacultyBatchEntries(branchBatches = [], branchFaculty = null) {
 
   return branchBatches.map((batch) => ({
       id: batch?.batchId || batch?.id || "",
-      facultyId: branchFaculty?.id || branchFaculty?.facultyId || batch?.facultyId || "",
+      // BranchStudent stores the assigned faculty's public ID (for example
+      // FC-003), so keep the batch's faculty ID ahead of the internal row ID.
+      facultyId: batch?.facultyId || branchFaculty?.facultyId || branchFaculty?.id || "",
       facultyName: branchFaculty?.name || "",
       facultyEmail: branchFaculty?.email || "",
       courseId: batch?.courseId || batch?.branchCourseId || "",
@@ -225,6 +227,47 @@ async function getFacultyMyBatchesSummary(user) {
         )
       : branchFaculty.branchBatches;
     const batchEntries = toBranchFacultyBatchEntries(currentCourseBatches, branchFaculty);
+    const batchIds = batchEntries
+      .map((entry) => normalizeFacultyText(entry.batchId || entry.id))
+      .filter(Boolean);
+    const branchStudentRows = batchIds.length
+      ? await prisma.branchStudent.findMany({
+          where: {
+            branchId: branchFaculty.branchId,
+            recordStatus: "ACTIVE",
+            batchId: { in: batchIds },
+          },
+          select: {
+            batchId: true,
+            courseId: true,
+            facultyId: true,
+          },
+        })
+      : [];
+    const studentCountByBatch = new Map();
+
+    branchStudentRows.forEach((student) => {
+      const key = [
+        normalizeFacultyKey(student.batchId),
+        normalizeFacultyKey(student.courseId),
+        normalizeFacultyKey(student.facultyId),
+      ].join("|");
+      studentCountByBatch.set(key, (studentCountByBatch.get(key) || 0) + 1);
+    });
+
+    const batchCounts = batchEntries.map((entry) => {
+      const key = [
+        normalizeFacultyKey(entry.batchId || entry.id),
+        normalizeFacultyKey(entry.courseId),
+        normalizeFacultyKey(entry.facultyId),
+      ].join("|");
+
+      return {
+        batchId: entry.id,
+        studentCount: studentCountByBatch.get(key) || 0,
+        studentRecords: [],
+      };
+    });
     const courseIds = Array.from(
       new Set(batchEntries.map((entry) => String(entry.courseId || '').trim()).filter(Boolean)),
     );
@@ -242,13 +285,9 @@ async function getFacultyMyBatchesSummary(user) {
       },
 
       totalBatches: batchEntries.length,
-      totalStudents: 0,
+      totalStudents: batchCounts.reduce((total, entry) => total + entry.studentCount, 0),
       batchEntries,
-      batchCounts: batchEntries.map((entry) => ({
-        batchId: entry.id,
-        studentCount: 0,
-        studentRecords: [],
-      })),
+      batchCounts,
     };
   }
 
