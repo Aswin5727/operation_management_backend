@@ -12,6 +12,7 @@ import {
   sendStudentPaymentReceiptEmail,
   sendStudentPaymentDueEmail,
 } from "../../common/services/resendEmail.js";
+import { buildBranchEntityId, extractEntitySequence, normalizeBranchEntityId } from "../../common/utils/branchIdentifiers.js";
 import {
   createFeeProgressAlertNotification,
 } from "../notifications/notifications.service.js";
@@ -170,11 +171,12 @@ function normalizeStudentId(value) {
   return normalizeString(value).toUpperCase();
 }
 
-function generateStudentIdFromSequence(sequenceNumber) {
-  return `STU-${String(sequenceNumber).padStart(3, "0")}`;
+function generateStudentIdFromSequence(sequenceNumber, branchId) {
+  return buildBranchEntityId(branchId, "STU", sequenceNumber);
 }
 
 async function generateNextStudentId(branchId) {
+  const branch = await prisma.branch.findUnique({ where: { id: branchId }, select: { branchId: true } });
   const branchStudents = await prisma.branchStudent.findMany({
     where: { branchId },
     select: { studentId: true },
@@ -183,16 +185,13 @@ async function generateNextStudentId(branchId) {
   let highest = 0;
 
   branchStudents.forEach((record) => {
-    const match = normalizeStudentId(record.studentId).match(/^STU-(\d+)$/i);
-    if (!match) return;
-
-    const numeric = Number(match[1]);
+    const numeric = extractEntitySequence(record.studentId, branch.branchId, "STU");
     if (Number.isInteger(numeric) && numeric > highest) {
       highest = numeric;
     }
   });
 
-  return generateStudentIdFromSequence(highest + 1);
+  return generateStudentIdFromSequence(highest + 1, branch.branchId);
 }
 
 async function isStudentIdTaken(branchId, studentId) {
@@ -1173,7 +1172,7 @@ async function normalizeBranchStudentIdentifiers(branchProfile, actorId = null) 
 
   const planned = rows.map((row, index) => ({
     row,
-    nextStudentId: generateStudentIdFromSequence(index + 1),
+    nextStudentId: generateStudentIdFromSequence(index + 1, branchProfile.branchId),
   }));
 
   const needsMigration = planned.some(({ row, nextStudentId }) => row.studentId !== nextStudentId);
@@ -1533,9 +1532,7 @@ function createResetTokenArtifacts() {
 }
 
 function buildBranchStudentUserCode(branchCode, studentId) {
-  const safeBranchCode = normalizeString(branchCode).toUpperCase() || "BRANCH";
-  const safeStudentId = normalizeStudentId(studentId);
-  return `${safeBranchCode}-${safeStudentId}`;
+  return normalizeBranchEntityId(studentId, branchCode, "STU");
 }
 
 async function findBranchStudentLoginUser(student) {
@@ -1677,9 +1674,11 @@ export async function createBranchStudent(payload, actor) {
 
   await ensureUniqueBranchStudentIdentity(studentData, branchId);
 
-  const requestedStudentId = normalizeStudentId(payload.studentId);
+  const requestedStudentId = payload.studentId
+    ? normalizeBranchEntityId(payload.studentId, branchProfile?.branchId || branchId, "STU")
+    : "";
   let studentId = requestedStudentId;
-  if (!/^STU-\d+$/i.test(studentId) || await isStudentIdTaken(branchId, studentId)) {
+  if (!studentId || await isStudentIdTaken(branchId, studentId)) {
     studentId = await generateUniqueStudentId(branchId);
   }
 

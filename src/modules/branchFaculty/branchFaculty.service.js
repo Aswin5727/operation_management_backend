@@ -5,6 +5,7 @@ import { getCurrentBranchProfile } from "../branches/branches.service.js";
 import config from "../../config/env.js";
 import { hashPassword } from "../../common/utils/password.js";
 import { sendFacultyCredentialsEmail } from "../../common/services/resendEmail.js";
+import { normalizeBranchEntityId } from "../../common/utils/branchIdentifiers.js";
 
 function generateTemporaryPassword() {
   return crypto.randomBytes(9).toString("base64url");
@@ -264,7 +265,8 @@ export async function createBranchFaculty(actorUser, payload) {
   const courseLinks = await resolveFacultyCourseLinks(branchProfile.id, payload);
 
   const parsed = parseBranchFacultyPayload(payload, { status: "ACTIVE" });
-  const userCode = `${branchProfile.branchId}-${parsed.facultyId}`;
+  parsed.facultyId = normalizeBranchEntityId(parsed.facultyId, branchProfile.branchId, "FC");
+  const userCode = parsed.facultyId;
 
   const existingId = await prisma.branchFaculty.findUnique({
     where: {
@@ -394,14 +396,20 @@ export async function updateBranchFaculty(actorUser, branchFacultyId, payload) {
   if (!existing) {
     throw new AppError("Branch faculty not found.", 404);
   }
-  const courseLinks = await resolveFacultyCourseLinks(branchProfile.id, payload, existing);
+  const normalizedPayload = {
+    ...payload,
+    facultyId: payload.facultyId
+      ? normalizeBranchEntityId(payload.facultyId, branchProfile.branchId, "FC")
+      : existing.facultyId,
+  };
+  const courseLinks = await resolveFacultyCourseLinks(branchProfile.id, normalizedPayload, existing);
 
-  if (payload.facultyId && payload.facultyId !== existing.facultyId) {
+  if (normalizedPayload.facultyId && normalizedPayload.facultyId !== existing.facultyId) {
     const existingId = await prisma.branchFaculty.findUnique({
       where: {
         branchId_facultyId: {
           branchId: branchProfile.id,
-          facultyId: payload.facultyId,
+          facultyId: normalizedPayload.facultyId,
         },
       },
     });
@@ -429,19 +437,19 @@ export async function updateBranchFaculty(actorUser, branchFacultyId, payload) {
   const updated = await prisma.branchFaculty.update({
     where: { id: branchFacultyId },
     data: {
-      facultyId: payload.facultyId,
-      name: payload.name,
-      email: payload.email,
-      phone: payload.phone,
-      country: payload.country,
-      countryCode: payload.countryCode,
-      state: payload.state,
-      stateCode: payload.stateCode,
-      city: payload.city,
-      address: payload.address,
+      facultyId: normalizedPayload.facultyId,
+      name: normalizedPayload.name,
+      email: normalizedPayload.email,
+      phone: normalizedPayload.phone,
+      country: normalizedPayload.country,
+      countryCode: normalizedPayload.countryCode,
+      state: normalizedPayload.state,
+      stateCode: normalizedPayload.stateCode,
+      city: normalizedPayload.city,
+      address: normalizedPayload.address,
       courseId: courseLinks.courseId,
       branchCourseId: courseLinks.branchCourseId,
-      status: payload.status ? payload.status.toUpperCase() : undefined,
+      status: normalizedPayload.status ? normalizedPayload.status.toUpperCase() : undefined,
       updatedBy: actorUser.id,
     },
   });
