@@ -226,6 +226,8 @@ function toStudentSummary(student) {
       ? {
           id: student.course.id,
           name: student.course.name,
+          courseCode: student.course.courseCode,
+          duration: student.course.duration,
           status: student.course.status,
           mode: student.course.mode,
         }
@@ -829,6 +831,8 @@ export async function listStudents(query, actor = null) {
           select: {
             id: true,
             name: true,
+            courseCode: true,
+            duration: true,
             status: true,
             mode: true,
           },
@@ -864,6 +868,8 @@ export async function getCurrentStudentProfile(user) {
         select: {
           id: true,
           name: true,
+          courseCode: true,
+          duration: true,
           status: true,
           mode: true,
         },

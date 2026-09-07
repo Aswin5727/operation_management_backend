@@ -1420,6 +1420,17 @@ function toBranchStudentSummary(record) {
     courseId: record.courseId,
     courseName: record.courseName,
     courseMode: record.courseMode,
+    courseDuration: record.course?.duration ?? record.courseDuration ?? null,
+    course: record.course
+      ? {
+          id: record.course.id,
+          name: record.course.name,
+          courseCode: record.course.courseCode,
+          duration: record.course.duration,
+          mode: record.course.mode,
+          status: record.course.status,
+        }
+      : null,
     batchId: record.batchId,
     batchName: record.batchName,
     batchTiming: record.batchTiming,
@@ -1576,6 +1587,16 @@ export async function listBranchStudents(query = {}, actor = null) {
       skip,
       take,
       include: {
+        course: {
+          select: {
+            id: true,
+            name: true,
+            courseCode: true,
+            duration: true,
+            mode: true,
+            status: true,
+          },
+        },
         installments: {
           orderBy: { installmentNumber: "asc" }
         }
@@ -1761,6 +1782,16 @@ export async function getBranchStudent(studentId, actor = null) {
   const student = await prisma.branchStudent.findFirst({
     where,
     include: {
+      course: {
+        select: {
+          id: true,
+          name: true,
+          courseCode: true,
+          duration: true,
+          mode: true,
+          status: true,
+        },
+      },
       installments: { orderBy: { installmentNumber: "asc" } }
     }
   });
@@ -1788,6 +1819,16 @@ export async function getCurrentBranchStudentProfile(user) {
       ],
     },
     include: {
+      course: {
+        select: {
+          id: true,
+          name: true,
+          courseCode: true,
+          duration: true,
+          mode: true,
+          status: true,
+        },
+      },
       installments: { orderBy: { installmentNumber: "asc" } },
     },
   });
