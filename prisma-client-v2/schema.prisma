@@ -389,6 +389,7 @@ model BranchBatch {
   endPeriod       String
   batchTiming     String
   totalSeats      Int
+  offlineSeats    Int           @default(0)
   sequenceNo      Int           @default(1)
   status          RecordStatus  @default(ACTIVE)
   createdBy       String?
@@ -520,6 +521,7 @@ model BranchStudent {
   remarks            String?
   courseId           String?
   courseName         String?
+  courseMode         String?
   batchId            String?
   batchName          String?
   batchTiming        String?

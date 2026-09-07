@@ -1247,6 +1247,7 @@ function buildBranchStudentPayload(payload = {}, existing = null) {
   const admissionDate = parseDateString(candidate.admissionDate, "Admission date");
   const courseStartDate = parseOptionalText(candidate.courseStartDate);
   const classSchedule = parseOptionalText(candidate.classSchedule);
+  const courseMode = parseOptionalText(candidate.courseMode);
   const recordStatus = parseStatus(candidate.recordStatus || candidate.status || "ACTIVE");
   const courseProgress = parseOptionalProgress(candidate.courseProgress);
 
@@ -1283,6 +1284,7 @@ function buildBranchStudentPayload(payload = {}, existing = null) {
     recordStatus,
     courseId: parseOptionalText(candidate.courseId),
     courseName: parseOptionalText(candidate.courseName),
+    courseMode,
     batchId: parseOptionalText(candidate.batchId || candidate.batchEntryId),
     batchName: parseOptionalText(candidate.batchName || candidate.batch),
     batchTiming: parseOptionalText(candidate.batchTiming || candidate.batchTime),
@@ -1417,6 +1419,7 @@ function toBranchStudentSummary(record) {
     courseProgress: record.courseProgress,
     courseId: record.courseId,
     courseName: record.courseName,
+    courseMode: record.courseMode,
     batchId: record.batchId,
     batchName: record.batchName,
     batchTiming: record.batchTiming,
@@ -1434,6 +1437,34 @@ function toBranchStudentSummary(record) {
     updatedAt: record.updatedAt,
     installmentSchedule: Array.isArray(record.installments) ? record.installments : [],
   };
+}
+
+async function ensureAvailableOfflineSeat(batch, courseMode, excludeStudentId = null) {
+  if (String(courseMode || '').trim().toLowerCase() !== 'offline') return
+
+  const offlineSeatLimit = Math.max(Number(batch?.offlineSeats || 0), 0)
+  const studentWhere = {
+    branchId: batch.branchId,
+    batchId: batch.batchId,
+    recordStatus: 'ACTIVE',
+    ...(excludeStudentId ? { NOT: { id: excludeStudentId } } : {}),
+  }
+  const [totalStudentCount, offlineStudentCount] = await Promise.all([
+    prisma.branchStudent.count({ where: studentWhere }),
+    prisma.branchStudent.count({
+      where: {
+        ...studentWhere,
+        courseMode: { equals: 'Offline', mode: 'insensitive' },
+      },
+    }),
+  ])
+
+  if (
+    totalStudentCount >= Number(batch?.totalSeats || 0) ||
+    offlineStudentCount >= offlineSeatLimit
+  ) {
+    throw new AppError('No offline seats available in the selected batch. Please select another batch.', 400)
+  }
 }
 
 async function ensureUniqueBranchStudentIdentity({ emailAddress, mobileNumber }, branchId, excludeId = null, excludeUserId = null) {
@@ -1584,9 +1615,12 @@ export async function createBranchStudent(payload, actor) {
           ...(studentData.courseId ? { courseId: studentData.courseId } : {}),
         },
         select: {
+          branchId: true,
           batchId: true,
           batchName: true,
           batchTiming: true,
+          totalSeats: true,
+          offlineSeats: true,
           courseId: true,
           courseName: true,
           facultyId: true,
@@ -1597,6 +1631,10 @@ export async function createBranchStudent(payload, actor) {
 
   if (selectedBatchId && !assignedBatch) {
     throw new AppError("Selected batch was not found in this branch", 400);
+  }
+
+  if (assignedBatch) {
+    await ensureAvailableOfflineSeat(assignedBatch, studentData.courseMode);
   }
 
   if (assignedBatch) {
@@ -1755,9 +1793,12 @@ export async function updateBranchStudent(studentId, payload, actor = null) {
         ...(studentData.courseId ? { courseId: studentData.courseId } : {}),
       },
       select: {
+        branchId: true,
         batchId: true,
         batchName: true,
         batchTiming: true,
+        totalSeats: true,
+        offlineSeats: true,
         courseId: true,
         courseName: true,
         facultyId: true,
@@ -1768,6 +1809,8 @@ export async function updateBranchStudent(studentId, payload, actor = null) {
     if (!assignedBatch) {
       throw new AppError("Selected batch was not found in this branch", 400);
     }
+
+    await ensureAvailableOfflineSeat(assignedBatch, studentData.courseMode, existing.id);
 
     studentData.batchId = assignedBatch.batchId;
     studentData.batchName = assignedBatch.batchName;

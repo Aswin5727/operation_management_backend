@@ -26,12 +26,16 @@ function clock(time, meridiem) {
 function buildTiming(value) { const start = clock(value.startTime, value.startPeriod); const end = clock(value.endTime, value.endPeriod); return `${start}${start && end ? " - " : ""}${end}`.trim(); }
 function makeBatchId(sequence) { return `BAT-${String(Math.max(1, Number(sequence) || 1)).padStart(3, "0")}`; }
 function positive(value, label) { const n = Number(value); if (!Number.isInteger(n) || n <= 0) throw new AppError(`${label} must be greater than zero`, 400); return n; }
+function nonNegative(value, label) { const n = Number(value ?? 0); if (!Number.isInteger(n) || n < 0) throw new AppError(`${label} must be zero or greater`, 400); return n; }
 
 function normalizeBatch(value, index = 0) {
   const input = value || {};
   const startTime = parseTime(input.startTime); const endTime = parseTime(input.endTime);
   const startPeriod = period(input.startPeriod); const endPeriod = period(input.endPeriod);
-  const parsed = { batchId: text(input.batchId || input.id), batchName: required(input.batchName || input.name, `Batch ${index + 1} name`), startTime, startPeriod, endTime, endPeriod, totalSeats: positive(input.totalSeats || input.seats, `Batch ${index + 1} total seats`), status: parseStatus(input.status), sequenceNo: Number(input.sequenceNo) || index + 1 };
+  const totalSeats = positive(input.totalSeats || input.seats, `Batch ${index + 1} total seats`);
+  const offlineSeats = nonNegative(input.offlineSeats, `Batch ${index + 1} offline seats`);
+  if (offlineSeats > totalSeats) throw new AppError(`Batch ${index + 1} offline seats cannot exceed total seats`, 400);
+  const parsed = { batchId: text(input.batchId || input.id), batchName: required(input.batchName || input.name, `Batch ${index + 1} name`), startTime, startPeriod, endTime, endPeriod, totalSeats, offlineSeats, status: parseStatus(input.status), sequenceNo: Number(input.sequenceNo) || index + 1 };
   return { ...parsed, batchTiming: text(input.batchTiming) || buildTiming(parsed) };
 }
 
@@ -57,7 +61,7 @@ function toBatch(record = {}) {
     facultyId: record.facultyId || record.branchFaculty?.facultyId || record.branchFacultyId || "", facultyName: record.facultyName || record.branchFaculty?.name || "",
     facultyEmail: record.facultyEmail || record.branchFaculty?.email || "", batchName: record.batchName || "", startTime: record.startTime || "",
     startPeriod: record.startPeriod || "AM", endTime: record.endTime || "", endPeriod: record.endPeriod || "AM", batchTiming: record.batchTiming || buildTiming(record),
-    totalSeats: Number(record.totalSeats || 0), sequenceNo: Number(record.sequenceNo || 1), status: text(record.status || "ACTIVE").toUpperCase(),
+    totalSeats: Number(record.totalSeats || 0), offlineSeats: Number(record.offlineSeats || 0), sequenceNo: Number(record.sequenceNo || 1), status: text(record.status || "ACTIVE").toUpperCase(),
     createdAt: record.createdAt || null, updatedAt: record.updatedAt || null,
   };
 }
