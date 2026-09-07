@@ -2,6 +2,7 @@ import prisma from "../../config/prisma.js";
 import AppError from "../../common/errors/AppError.js";
 import { getCurrentBranchProfile } from "../branches/branches.service.js";
 import { sendFacultyBatchAssignmentEmail } from "../../common/services/resendEmail.js";
+import { buildBranchEntityId, normalizeBranchEntityId, extractEntitySequence } from "../../common/utils/branchIdentifiers.js";
 
 const STATUSES = new Set(["ACTIVE", "INACTIVE"]);
 
@@ -24,7 +25,7 @@ function clock(time, meridiem) {
   return `${String(hour % 12 || 12).padStart(2, "0")}:${match[2]} ${hour >= 12 ? "PM" : "AM"}`;
 }
 function buildTiming(value) { const start = clock(value.startTime, value.startPeriod); const end = clock(value.endTime, value.endPeriod); return `${start}${start && end ? " - " : ""}${end}`.trim(); }
-function makeBatchId(sequence) { return `BAT-${String(Math.max(1, Number(sequence) || 1)).padStart(3, "0")}`; }
+function makeBatchId(branchId, sequence) { return buildBranchEntityId(branchId, "BAT", Math.max(1, Number(sequence) || 1)); }
 function positive(value, label) { const n = Number(value); if (!Number.isInteger(n) || n <= 0) throw new AppError(`${label} must be greater than zero`, 400); return n; }
 function nonNegative(value, label) { const n = Number(value ?? 0); if (!Number.isInteger(n) || n < 0) throw new AppError(`${label} must be zero or greater`, 400); return n; }
 
@@ -80,8 +81,9 @@ async function ensureFaculty(branchId, facultyId) {
   if (!result) throw new AppError("Faculty not found", 404); if (result.status !== "ACTIVE") throw new AppError("Selected faculty is inactive", 400); return result;
 }
 async function nextSequence(branchId) {
+  const branch = await prisma.branch.findUnique({ where: { id: branchId }, select: { branchId: true } });
   const records = await prisma.branchBatch.findMany({ where: { branchId }, select: { batchId: true } });
-  return records.reduce((max, row) => { const match = text(row.batchId).match(/^BAT-(\d+)$/i); return match ? Math.max(max, Number(match[1])) : max; }, 0) + 1;
+  return records.reduce((max, row) => Math.max(max, extractEntitySequence(row.batchId, branch.branchId, "BAT")), 0) + 1;
 }
 function whereFor(branchId, query = {}) {
   const where = { branchId, status: STATUSES.has(text(query.status).toUpperCase()) ? text(query.status).toUpperCase() : "ACTIVE" };
@@ -106,7 +108,7 @@ export async function getBranchBatch(batchId, actor = null) {
 export async function createBranchBatch(payload = {}, actor = null) {
   const branch = await getCurrentBranchProfile(actor); const parsed = parsePayload(payload); if (!parsed.courseId) throw new AppError("Course is required", 400); if (!parsed.facultyId) throw new AppError("Faculty is required", 400);
   const course = await ensureCourse(branch.id, parsed.courseId); const faculty = await ensureFaculty(branch.id, parsed.facultyId); let sequence = await nextSequence(branch.id); const actorId = actor?.id ?? null;
-  const created = await prisma.$transaction(async (tx) => { const records = []; for (const input of parsed.batches) { const record = await tx.branchBatch.create({ data: { branchId: branch.id, branchCourseId: course.id, branchFacultyId: faculty.id, batchId: input.batchId || makeBatchId(sequence++), courseId: course.id, courseName: course.name, facultyId: faculty.facultyId || faculty.id, facultyName: faculty.name, facultyEmail: faculty.email, ...input, createdBy: actorId, updatedBy: actorId }, include: relations() }); records.push(record); } return records; });
+  const created = await prisma.$transaction(async (tx) => { const records = []; for (const input of parsed.batches) { const record = await tx.branchBatch.create({ data: { branchId: branch.id, branchCourseId: course.id, branchFacultyId: faculty.id, courseId: course.id, courseName: course.name, facultyId: faculty.facultyId || faculty.id, facultyName: faculty.name, facultyEmail: faculty.email, ...input, batchId: input.batchId ? normalizeBranchEntityId(input.batchId, branch.branchId, "BAT") : makeBatchId(branch.branchId, sequence++), createdBy: actorId, updatedBy: actorId }, include: relations() }); records.push(record); } return records; });
   await prisma.branchFaculty.update({ where: { id: faculty.id }, data: { branchCourseId: course.id, updatedBy: actorId } }); created.forEach(queueFacultyEmail); return toBatch(created[0]);
 }
 

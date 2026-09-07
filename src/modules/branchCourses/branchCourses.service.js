@@ -4,6 +4,7 @@ import { getCurrentBranchProfile } from "../branches/branches.service.js";
 import {
   sendFacultyCourseAssignmentEmail,
 } from "../../common/services/resendEmail.js";
+import { normalizeBranchEntityId } from "../../common/utils/branchIdentifiers.js";
 
 const RECORD_STATUSES = new Set(["ACTIVE", "INACTIVE"]);
 const BRANCH_COURSE_HIERARCHY_KEYS = ["models", "modules", "courseModels"];
@@ -867,6 +868,7 @@ export async function createBranchCourse(payload, actor) {
   const branchProfile = await resolveBranchProfile(actor);
   const branchId = branchProfile.id;
   const parsed = buildBranchCoursePayload(payload);
+  parsed.courseCode = normalizeBranchEntityId(parsed.courseCode, branchProfile.branchId, "COU");
   const hierarchy = buildBranchCourseHierarchyPayload(payload);
   const installmentTemplate = parseBranchInstallmentTemplate(
     payload?.installmentTemplate ? payload.installmentTemplate : payload,
@@ -966,6 +968,7 @@ export async function updateBranchCourse(courseId, payload, actor) {
   }
 
   const parsed = buildBranchCoursePayload(payload, existingCourse);
+  parsed.courseCode = normalizeBranchEntityId(parsed.courseCode, branchProfile.branchId, "COU");
   const hierarchy = buildBranchCourseHierarchyPayload(payload);
   const existingTemplate = await prisma.branchInstallmentTemplate.findUnique({
     where: {

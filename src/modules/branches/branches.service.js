@@ -4,6 +4,7 @@ import prisma from "../../config/prisma.js";
 import config from "../../config/env.js";
 import AppError from "../../common/errors/AppError.js";
 import { hashPassword } from "../../common/utils/password.js";
+import { normalizeBranchId } from "../../common/utils/branchIdentifiers.js";
 import {
   sendBranchCredentialsEmail,
 } from "../../common/services/resendEmail.js";
@@ -92,11 +93,7 @@ function parseStatus(value) {
 }
 
 function parseBranchId(value) {
-  const branchId = parseRequiredText(value, "Branch ID").toUpperCase();
-  if (!/^BR-\d{3}$/.test(branchId)) {
-    throw new AppError("Branch ID must follow BR-001 format", 400);
-  }
-  return branchId;
+  return normalizeBranchId(value);
 }
 
 function parseLocationCode(value, fieldName) {
