@@ -3,6 +3,7 @@ import {
   createBranchStudent,
   deleteBranchStudent,
   getBranchStudent,
+  getCurrentBranchStudentProfile,
   getBranchStudentLedger,
   listBranchStudents,
   listBranchLedger,
@@ -27,6 +28,11 @@ function sendSuccess(res, message, data, meta = undefined, statusCode = 200) {
 export const listBranchStudentsHandler = asyncHandler(async (req, res) => {
   const result = await listBranchStudents(req.query, req.user);
   return sendSuccess(res, "Branch students fetched successfully", result.data, result.meta);
+});
+
+export const getCurrentBranchStudentProfileHandler = asyncHandler(async (req, res) => {
+  const student = await getCurrentBranchStudentProfile(req.user);
+  return sendSuccess(res, "Branch student profile fetched successfully", student);
 });
 
 export const createBranchStudentHandler = asyncHandler(async (req, res) => {

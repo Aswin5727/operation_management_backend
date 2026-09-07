@@ -338,15 +338,22 @@ export async function sendPasswordResetEmail({ to, resetToken, expiryMinutes = 2
 export async function sendStudentCredentialsEmail({ to, fullName, studentCode, temporaryPassword, resetToken, courseName, facultyName, batchName, batchTiming }) {
   const safeName = escapeHtml(fullName || "Student");
   const safeCode = escapeHtml(studentCode || "-");
+  const loginLink = buildLoginLink();
+  const resetLink = buildResetLink(resetToken, temporaryPassword);
+  const safeEmail = escapeHtml(to || "");
+  const safePassword = escapeHtml(temporaryPassword || "");
 
   const html = studentTemplate({
     fullName: safeName,
-    email: to,
+    email: safeEmail,
     studentCode: safeCode,
     courseName: escapeHtml(courseName || ""),
     facultyName: escapeHtml(facultyName || ""),
     batchName: escapeHtml(batchName || ""),
     batchTiming: escapeHtml(batchTiming || ""),
+    temporaryPassword: safePassword,
+    loginLink,
+    resetLink,
   });
 
 
@@ -358,6 +365,10 @@ export async function sendStudentCredentialsEmail({ to, fullName, studentCode, t
     facultyName ? `Faculty: ${facultyName}` : null,
     batchName ? `Batch: ${batchName}` : null,
     batchTiming ? `Batch timing: ${batchTiming}` : null,
+    `Temporary password: ${temporaryPassword || ""}`,
+    loginLink ? `Login link: ${loginLink}` : null,
+    resetLink ? `Reset password link: ${resetLink}` : null,
+    "You can sign in with the temporary password. Please reset it after your first login.",
   ].filter(Boolean);
 
   return sendEmail({

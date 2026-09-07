@@ -6,6 +6,7 @@ import {
   createBranchStudentHandler,
   deleteBranchStudentHandler,
   getBranchStudentHandler,
+  getCurrentBranchStudentProfileHandler,
   getBranchStudentLedgerHandler,
   listBranchLedgerHandler,
   listBranchStudentsHandler,
@@ -15,9 +16,16 @@ import {
 
 const router = express.Router();
 
+router.get(
+  "/me",
+  authenticate,
+  authorize("STUDENT"),
+  getCurrentBranchStudentProfileHandler,
+);
+
 router.use(
   authenticate,
-  authorize("BRANCH_ADMIN", "SUPER_ADMIN", "BUSINESS_OWNER", "OPERATION_MANAGER"),
+  authorize("BRANCH_ADMIN", "SUPER_ADMIN", "BUSINESS_OWNER", "OPERATION_MANAGER", "STUDENT"),
 );
 
 router.get("/", listBranchStudentsHandler);

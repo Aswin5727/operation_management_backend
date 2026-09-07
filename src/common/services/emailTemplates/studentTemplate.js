@@ -17,6 +17,9 @@ export function studentTemplate({
   facultyName,
   batchName,
   batchTiming,
+  temporaryPassword,
+  loginLink,
+  resetLink,
 }) {
   const safeFullName = String(fullName || "Student").trim();
   const safeEmail = String(email || "-").trim();
@@ -25,6 +28,7 @@ export function studentTemplate({
   const safeFacultyName = String(facultyName || "").trim();
   const safeBatchName = String(batchName || "").trim();
   const safeBatchTiming = String(batchTiming || "").trim();
+  const safeTemporaryPassword = String(temporaryPassword || "").trim();
 
   const content = `
     <div style="margin-top:10px;font-family:'Segoe UI',Tahoma,Arial,sans-serif;">
@@ -80,7 +84,17 @@ export function studentTemplate({
         ${safeFacultyName ? `<tr><td style="width:34%;padding:15px 18px;background:#f8fafc;color:#334155;font-size:13px;font-weight:700;border-bottom:1px solid #e2e8f0;">Faculty Name</td><td style="padding:15px 18px;background:#ffffff;color:#0f172a;font-size:14px;font-weight:600;border-bottom:1px solid #e2e8f0;">${escapeHtml(safeFacultyName)}</td></tr>` : ""}
         ${safeBatchName ? `<tr><td style="width:34%;padding:15px 18px;background:#f8fafc;color:#334155;font-size:13px;font-weight:700;border-bottom:1px solid #e2e8f0;">Batch</td><td style="padding:15px 18px;background:#ffffff;color:#0f172a;font-size:14px;font-weight:600;border-bottom:1px solid #e2e8f0;">${escapeHtml(safeBatchName)}</td></tr>` : ""}
         ${safeBatchTiming ? `<tr><td style="width:34%;padding:15px 18px;background:#f8fafc;color:#334155;font-size:13px;font-weight:700;">Batch Timing</td><td style="padding:15px 18px;background:#ffffff;color:#0f172a;font-size:14px;font-weight:600;">${escapeHtml(safeBatchTiming)}</td></tr>` : ""}
+        ${safeTemporaryPassword ? `<tr><td style="width:34%;padding:15px 18px;background:#f8fafc;color:#334155;font-size:13px;font-weight:700;">Temporary Password</td><td style="padding:15px 18px;background:#ffffff;color:#0f172a;font-size:14px;font-weight:700;letter-spacing:.4px;">${escapeHtml(safeTemporaryPassword)}</td></tr>` : ""}
       </table>
+
+      <div style="text-align:center;margin-top:28px;">
+        ${loginLink ? `<a href="${escapeHtml(loginLink)}" style="background:#2563eb;color:#fff;text-decoration:none;padding:13px 24px;border-radius:8px;display:inline-block;font-weight:700;margin:0 6px 10px 0;">Login to Student Portal</a>` : ""}
+        ${resetLink ? `<a href="${escapeHtml(resetLink)}" style="background:#ea580c;color:#fff;text-decoration:none;padding:13px 24px;border-radius:8px;display:inline-block;font-weight:700;margin:0 0 10px 6px;">Reset Password</a>` : ""}
+      </div>
+
+      <div style="margin-top:18px;padding:15px 18px;background:#eff6ff;border-left:4px solid #2563eb;border-radius:6px;font-size:14px;line-height:22px;color:#334155;">
+        Use the temporary password to sign in. Your student dashboard will remind you to reset it. The reset link is valid for a limited time.
+      </div>
     </div>
   `;
 

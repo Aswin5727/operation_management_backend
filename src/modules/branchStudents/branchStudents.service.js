@@ -1772,6 +1772,33 @@ export async function getBranchStudent(studentId, actor = null) {
   return toBranchStudentSummary(student);
 }
 
+export async function getCurrentBranchStudentProfile(user) {
+  const email = normalizeString(user?.email).toLowerCase();
+  const userCode = normalizeString(user?.userCode);
+
+  if (!email && !userCode) {
+    throw new AppError("Branch student profile not found", 404);
+  }
+
+  const student = await prisma.branchStudent.findFirst({
+    where: {
+      OR: [
+        ...(email ? [{ emailAddress: email }] : []),
+        ...(userCode ? [{ studentId: userCode }, { id: userCode }] : []),
+      ],
+    },
+    include: {
+      installments: { orderBy: { installmentNumber: "asc" } },
+    },
+  });
+
+  if (!student) {
+    throw new AppError("Branch student profile not found", 404);
+  }
+
+  return toBranchStudentSummary(student);
+}
+
 export async function updateBranchStudent(studentId, payload, actor = null) {
   const { where } = await ensureBranchStudentAccess(actor, studentId);
   const existing = await prisma.branchStudent.findFirst({
