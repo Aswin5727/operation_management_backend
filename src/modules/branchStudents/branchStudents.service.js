@@ -12,7 +12,12 @@ import {
   sendStudentPaymentReceiptEmail,
   sendStudentPaymentDueEmail,
 } from "../../common/services/resendEmail.js";
-import { buildBranchEntityId, extractEntitySequence, normalizeBranchEntityId } from "../../common/utils/branchIdentifiers.js";
+import {
+  buildBranchEntityId,
+  extractEntitySequence,
+  getBranchPublicPrefix,
+  normalizeBranchEntityId,
+} from "../../common/utils/branchIdentifiers.js";
 import {
   createFeeProgressAlertNotification,
 } from "../notifications/notifications.service.js";
@@ -177,15 +182,34 @@ function generateStudentIdFromSequence(sequenceNumber, branchId) {
 
 async function generateNextStudentId(branchId) {
   const branch = await prisma.branch.findUnique({ where: { id: branchId }, select: { branchId: true } });
-  const branchStudents = await prisma.branchStudent.findMany({
-    where: { branchId },
-    select: { studentId: true },
-  });
+  const [branchStudents, loginUsers] = await Promise.all([
+    prisma.branchStudent.findMany({
+      where: { branchId },
+      select: { studentId: true },
+    }),
+    branch?.branchId
+      ? prisma.user.findMany({
+          where: {
+            userCode: {
+              startsWith: `${getBranchPublicPrefix(branch.branchId)}STU`,
+            },
+          },
+          select: { userCode: true },
+        })
+      : [],
+  ]);
 
   let highest = 0;
 
   branchStudents.forEach((record) => {
     const numeric = extractEntitySequence(record.studentId, branch.branchId, "STU");
+    if (Number.isInteger(numeric) && numeric > highest) {
+      highest = numeric;
+    }
+  });
+
+  loginUsers.forEach((user) => {
+    const numeric = extractEntitySequence(user.userCode, branch.branchId, "STU");
     if (Number.isInteger(numeric) && numeric > highest) {
       highest = numeric;
     }
@@ -201,15 +225,35 @@ async function isStudentIdTaken(branchId, studentId) {
     return false;
   }
 
-  const branchStudent = await prisma.branchStudent.findFirst({
-    where: {
-      branchId,
-      studentId: normalizedStudentId,
-    },
-    select: { id: true },
+  const branch = await prisma.branch.findUnique({
+    where: { id: branchId },
+    select: { branchId: true },
   });
 
-  return Boolean(branchStudent);
+  const branchUserCode = branch?.branchId
+    ? buildBranchStudentUserCode(branch.branchId, normalizedStudentId)
+    : normalizedStudentId;
+
+  const [branchStudent, loginUser] = await Promise.all([
+    prisma.branchStudent.findFirst({
+      where: {
+        branchId,
+        studentId: normalizedStudentId,
+      },
+      select: { id: true },
+    }),
+    prisma.user.findFirst({
+      where: {
+        OR: [
+          { userCode: normalizedStudentId },
+          { userCode: branchUserCode },
+        ],
+      },
+      select: { id: true },
+    }),
+  ]);
+
+  return Boolean(branchStudent || loginUser);
 }
 
 async function generateUniqueStudentId(branchId) {
@@ -1247,6 +1291,13 @@ function buildBranchStudentPayload(payload = {}, existing = null) {
   const courseStartDate = parseOptionalText(candidate.courseStartDate);
   const classSchedule = parseOptionalText(candidate.classSchedule);
   const courseMode = parseOptionalText(candidate.courseMode);
+  const totalWorkingDaysValue = candidate.totalWorkingDays === undefined || candidate.totalWorkingDays === null || candidate.totalWorkingDays === ''
+    ? null
+    : Number(candidate.totalWorkingDays);
+  if (totalWorkingDaysValue !== null && (!Number.isInteger(totalWorkingDaysValue) || totalWorkingDaysValue <= 0)) {
+    throw new AppError("Total working days must be a positive whole number", 400);
+  }
+  const courseEndDate = parseOptionalText(candidate.courseEndDate);
   const recordStatus = parseStatus(candidate.recordStatus || candidate.status || "ACTIVE");
   const courseProgress = parseOptionalProgress(candidate.courseProgress);
 
@@ -1284,6 +1335,8 @@ function buildBranchStudentPayload(payload = {}, existing = null) {
     courseId: parseOptionalText(candidate.courseId),
     courseName: parseOptionalText(candidate.courseName),
     courseMode,
+    totalWorkingDays: totalWorkingDaysValue,
+    courseEndDate,
     batchId: parseOptionalText(candidate.batchId || candidate.batchEntryId),
     batchName: parseOptionalText(candidate.batchName || candidate.batch),
     batchTiming: parseOptionalText(candidate.batchTiming || candidate.batchTime),
@@ -1419,6 +1472,8 @@ function toBranchStudentSummary(record) {
     courseId: record.courseId,
     courseName: record.courseName,
     courseMode: record.courseMode,
+    totalWorkingDays: record.totalWorkingDays,
+    courseEndDate: record.courseEndDate,
     courseDuration: record.course?.duration ?? record.courseDuration ?? null,
     course: record.course
       ? {
@@ -1536,11 +1591,21 @@ function buildBranchStudentUserCode(branchCode, studentId) {
 }
 
 async function findBranchStudentLoginUser(student) {
+  const branch = student?.branchId
+    ? await prisma.branch.findUnique({
+        where: { id: student.branchId },
+        select: { branchId: true },
+      })
+    : null;
+  const branchUserCode = branch?.branchId
+    ? buildBranchStudentUserCode(branch.branchId, student.studentId)
+    : null;
+
   return prisma.user.findFirst({
     where: {
       OR: [
         { userCode: student.studentId },
-        { userCode: buildBranchStudentUserCode(student.branchId, student.studentId) },
+        ...(branchUserCode ? [{ userCode: branchUserCode }] : []),
         { email: student.emailAddress },
       ],
     },
@@ -1568,12 +1633,8 @@ export async function listBranchStudents(query = {}, actor = null) {
   const sortBy = normalizeString(query.sortBy).toLowerCase() || "createdat";
   const sortOrder = parseSortOrder(query.sortOrder);
   const branchProfile = await getBranchContext(actor);
-  const actorId = actor?.id ?? null;
 
-  if (branchProfile?.id) {
-    await normalizeBranchStudentIdentifiers(branchProfile, actorId);
-  }
-
+  // Listing students must remain read-only; identifier migration belongs in an explicit admin flow.
   const where = buildBranchStudentWhere(query, branchProfile);
 
   const [total, rows] = await prisma.$transaction([

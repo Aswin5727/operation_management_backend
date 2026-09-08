@@ -505,6 +505,8 @@ exports.Prisma.BranchStudentScalarFieldEnum = {
   courseId: 'courseId',
   courseName: 'courseName',
   courseMode: 'courseMode',
+  totalWorkingDays: 'totalWorkingDays',
+  courseEndDate: 'courseEndDate',
   batchId: 'batchId',
   batchName: 'batchName',
   batchTiming: 'batchTiming',
@@ -515,6 +517,46 @@ exports.Prisma.BranchStudentScalarFieldEnum = {
   paymentPlanId: 'paymentPlanId',
   paymentPlan: 'paymentPlan',
   courseProgress: 'courseProgress'
+};
+
+exports.Prisma.BranchStudentAttendanceScalarFieldEnum = {
+  id: 'id',
+  branchStudentId: 'branchStudentId',
+  facultyUserId: 'facultyUserId',
+  courseId: 'courseId',
+  batchId: 'batchId',
+  moduleId: 'moduleId',
+  moduleName: 'moduleName',
+  submoduleId: 'submoduleId',
+  submoduleName: 'submoduleName',
+  attendanceDate: 'attendanceDate',
+  status: 'status',
+  progress: 'progress',
+  notes: 'notes',
+  markedAt: 'markedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.BranchCalendarHolidayScalarFieldEnum = {
+  id: 'id',
+  branchId: 'branchId',
+  holidayDate: 'holidayDate',
+  name: 'name',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.BranchCalendarLeaveScalarFieldEnum = {
+  id: 'id',
+  branchId: 'branchId',
+  batchId: 'batchId',
+  leaveDate: 'leaveDate',
+  reason: 'reason',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.BranchStudentInstallmentScalarFieldEnum = {
@@ -823,6 +865,9 @@ exports.Prisma.ModelName = {
   BatchStatusHistory: 'BatchStatusHistory',
   StudentProfile: 'StudentProfile',
   BranchStudent: 'BranchStudent',
+  BranchStudentAttendance: 'BranchStudentAttendance',
+  BranchCalendarHoliday: 'BranchCalendarHoliday',
+  BranchCalendarLeave: 'BranchCalendarLeave',
   BranchStudentInstallment: 'BranchStudentInstallment',
   FacultyProfile: 'FacultyProfile',
   FacultyCourseAssignment: 'FacultyCourseAssignment',

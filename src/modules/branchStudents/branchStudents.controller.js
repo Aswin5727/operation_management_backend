@@ -10,6 +10,7 @@ import {
   updateBranchStudent,
   createBranchStudentPayment,
 } from "./branchStudents.service.js";
+import { getCurrentBranchStudentCalendar } from "./branchStudentCalendar.service.js";
 
 function sendSuccess(res, message, data, meta = undefined, statusCode = 200) {
   const payload = {
@@ -33,6 +34,11 @@ export const listBranchStudentsHandler = asyncHandler(async (req, res) => {
 export const getCurrentBranchStudentProfileHandler = asyncHandler(async (req, res) => {
   const student = await getCurrentBranchStudentProfile(req.user);
   return sendSuccess(res, "Branch student profile fetched successfully", student);
+});
+
+export const getCurrentBranchStudentCalendarHandler = asyncHandler(async (req, res) => {
+  const calendar = await getCurrentBranchStudentCalendar(req.user, req.query || {});
+  return sendSuccess(res, "Branch student calendar fetched successfully", calendar);
 });
 
 export const createBranchStudentHandler = asyncHandler(async (req, res) => {

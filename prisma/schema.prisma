@@ -37,6 +37,7 @@ model User {
   targetedNotifications      Notification[]             @relation("NotificationTargetUser")
   passwordResetTokens        PasswordResetToken[]
   markedStudentAttendances   StudentAttendance[]
+  markedBranchStudentAttendances BranchStudentAttendance[]
 
   @@index([role])
   @@index([active])
@@ -67,6 +68,8 @@ model Branch {
   branchInstallmentTemplates BranchInstallmentTemplate[]
   branchFaculties   BranchFaculty[]
   branchStudents    BranchStudent[]
+  calendarHolidays  BranchCalendarHoliday[]
+  calendarLeaves    BranchCalendarLeave[]
   ledgerEntries      BranchStudentLedgerEntry[]
   payments          BranchStudentPayment[]
   courses           Course[]
@@ -521,6 +524,8 @@ model BranchStudent {
   courseId           String?
   courseName         String?
   courseMode         String?
+  totalWorkingDays   Int?
+  courseEndDate      String?
   batchId            String?
   batchName          String?
   batchTiming        String?
@@ -536,6 +541,7 @@ model BranchStudent {
   installments       BranchStudentInstallment[]
   payments           BranchStudentPayment[]
   ledgerEntries      BranchStudentLedgerEntry[]
+  calendarAttendanceRecords BranchStudentAttendance[]
 
   @@unique([branchId, studentId])
   @@index([branchId])
@@ -546,6 +552,60 @@ model BranchStudent {
   @@index([courseId])
   @@index([branchId, batchId])
   @@index([branchId, courseId, facultyId, batchId])
+}
+
+model BranchStudentAttendance {
+  id              String       @id @default(cuid())
+  branchStudentId String
+  facultyUserId   String?
+  courseId        String?
+  batchId         String?
+  moduleId        String?
+  moduleName      String?
+  submoduleId     String?
+  submoduleName   String?
+  attendanceDate  String
+  status          AttendanceStatus
+  progress        Float?
+  notes           String?
+  markedAt        DateTime     @default(now())
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  branchStudent   BranchStudent @relation(fields: [branchStudentId], references: [id], onDelete: Cascade)
+  facultyUser     User?        @relation(fields: [facultyUserId], references: [id])
+
+  @@unique([branchStudentId, attendanceDate])
+  @@index([branchStudentId, attendanceDate])
+  @@index([batchId, attendanceDate])
+}
+
+model BranchCalendarHoliday {
+  id         String       @id @default(cuid())
+  branchId   String?
+  holidayDate String
+  name       String
+  status     RecordStatus @default(ACTIVE)
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  branch     Branch?      @relation(fields: [branchId], references: [id], onDelete: Cascade)
+
+  @@index([branchId, holidayDate])
+  @@index([holidayDate, status])
+}
+
+model BranchCalendarLeave {
+  id          String       @id @default(cuid())
+  branchId    String
+  batchId     String?
+  leaveDate   String
+  reason      String?
+  status      RecordStatus @default(ACTIVE)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  branch      Branch       @relation(fields: [branchId], references: [id], onDelete: Cascade)
+
+  @@index([branchId, leaveDate, status])
+  @@index([batchId, leaveDate, status])
 }
 
 model BranchStudentInstallment {

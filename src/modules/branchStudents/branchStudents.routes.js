@@ -7,6 +7,7 @@ import {
   deleteBranchStudentHandler,
   getBranchStudentHandler,
   getCurrentBranchStudentProfileHandler,
+  getCurrentBranchStudentCalendarHandler,
   getBranchStudentLedgerHandler,
   listBranchLedgerHandler,
   listBranchStudentsHandler,
@@ -21,6 +22,12 @@ router.get(
   authenticate,
   authorize("STUDENT"),
   getCurrentBranchStudentProfileHandler,
+);
+router.get(
+  "/me/calendar",
+  authenticate,
+  authorize("STUDENT"),
+  getCurrentBranchStudentCalendarHandler,
 );
 
 router.use(

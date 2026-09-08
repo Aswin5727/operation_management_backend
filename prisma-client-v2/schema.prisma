@@ -8,35 +8,36 @@ datasource db {
 }
 
 model User {
-  id                         String                     @id @default(cuid())
-  userCode                   String                     @unique
-  fullName                   String
-  email                      String                     @unique
-  phone                      String?                    @unique
-  role                       UserRole
-  active                     Boolean                    @default(true)
-  passwordHash               String
-  passwordChangedAt          DateTime?
-  refreshTokenVersion        Int                        @default(0)
-  failedLoginCount           Int                        @default(0)
-  failedLoginWindowExpiresAt DateTime?
-  lockedUntil                DateTime?
-  lastLoginAt                DateTime?
-  lastLogoutAt               DateTime?
-  lastLoginIp                String?
-  lastLoginUserAgent         String?
-  createdBy                  String?
-  updatedBy                  String?
-  createdAt                  DateTime                   @default(now())
-  updatedAt                  DateTime                   @updatedAt
-  batchFacultyAssignments    BatchFacultyAssignment[]
-  managedBranch              Branch?                    @relation("BranchAdminUser")
-  facultyAttendanceSessions  FacultyAttendanceSession[]
-  facultyTodayWorkEntries    FacultyTodayWorkEntry[]
-  loginEvents                LoginEvent[]
-  targetedNotifications      Notification[]             @relation("NotificationTargetUser")
-  passwordResetTokens        PasswordResetToken[]
-  markedStudentAttendances   StudentAttendance[]
+  id                             String                     @id @default(cuid())
+  userCode                       String                     @unique
+  fullName                       String
+  email                          String                     @unique
+  phone                          String?                    @unique
+  role                           UserRole
+  active                         Boolean                    @default(true)
+  passwordHash                   String
+  passwordChangedAt              DateTime?
+  refreshTokenVersion            Int                        @default(0)
+  failedLoginCount               Int                        @default(0)
+  failedLoginWindowExpiresAt     DateTime?
+  lockedUntil                    DateTime?
+  lastLoginAt                    DateTime?
+  lastLogoutAt                   DateTime?
+  lastLoginIp                    String?
+  lastLoginUserAgent             String?
+  createdBy                      String?
+  updatedBy                      String?
+  createdAt                      DateTime                   @default(now())
+  updatedAt                      DateTime                   @updatedAt
+  batchFacultyAssignments        BatchFacultyAssignment[]
+  managedBranch                  Branch?                    @relation("BranchAdminUser")
+  facultyAttendanceSessions      FacultyAttendanceSession[]
+  facultyTodayWorkEntries        FacultyTodayWorkEntry[]
+  loginEvents                    LoginEvent[]
+  targetedNotifications          Notification[]             @relation("NotificationTargetUser")
+  passwordResetTokens            PasswordResetToken[]
+  markedStudentAttendances       StudentAttendance[]
+  markedBranchStudentAttendances BranchStudentAttendance[]
 
   @@index([role])
   @@index([active])
@@ -67,6 +68,8 @@ model Branch {
   branchInstallmentTemplates BranchInstallmentTemplate[]
   branchFaculties            BranchFaculty[]
   branchStudents             BranchStudent[]
+  calendarHolidays           BranchCalendarHoliday[]
+  calendarLeaves             BranchCalendarLeave[]
   ledgerEntries              BranchStudentLedgerEntry[]
   payments                   BranchStudentPayment[]
   courses                    Course[]
@@ -490,53 +493,56 @@ model StudentProfile {
 }
 
 model BranchStudent {
-  id                 String                     @id @default(cuid())
-  branchId           String
-  studentId          String
-  studentName        String
-  mobileNumber       String                     @unique
-  emailAddress       String                     @unique
-  parentSpouseNumber String?
-  countryCode        String?
-  country            String?
-  stateCode          String?
-  state              String?
-  city               String?
-  address            String?
-  qualification      String?
-  passedOutYear      String?
-  currentStatus      String?
-  designation        String?
-  source             String?
-  sourceOther        String?
-  admissionDate      String
-  courseStartDate    String?
-  classSchedule      String?
-  recordStatus       RecordStatus               @default(ACTIVE)
-  createdBy          String?
-  updatedBy          String?
-  createdAt          DateTime                   @default(now())
-  updatedAt          DateTime                   @updatedAt
-  linkedInUrl        String?
-  remarks            String?
-  courseId           String?
-  courseName         String?
-  courseMode         String?
-  batchId            String?
-  batchName          String?
-  batchTiming        String?
-  facultyId          String?
-  facultyName        String?
-  courseAmount       Int?
-  paymentMode        String                     @default("Installment")
-  paymentPlanId      String?
-  paymentPlan        String?
-  courseProgress     Int?
-  branch             Branch                     @relation(fields: [branchId], references: [id], onDelete: Cascade)
-  course             BranchCourse?              @relation(fields: [courseId], references: [id])
-  installments       BranchStudentInstallment[]
-  payments           BranchStudentPayment[]
-  ledgerEntries      BranchStudentLedgerEntry[]
+  id                        String                     @id @default(cuid())
+  branchId                  String
+  studentId                 String
+  studentName               String
+  mobileNumber              String                     @unique
+  emailAddress              String                     @unique
+  parentSpouseNumber        String?
+  countryCode               String?
+  country                   String?
+  stateCode                 String?
+  state                     String?
+  city                      String?
+  address                   String?
+  qualification             String?
+  passedOutYear             String?
+  currentStatus             String?
+  designation               String?
+  source                    String?
+  sourceOther               String?
+  admissionDate             String
+  courseStartDate           String?
+  classSchedule             String?
+  recordStatus              RecordStatus               @default(ACTIVE)
+  createdBy                 String?
+  updatedBy                 String?
+  createdAt                 DateTime                   @default(now())
+  updatedAt                 DateTime                   @updatedAt
+  linkedInUrl               String?
+  remarks                   String?
+  courseId                  String?
+  courseName                String?
+  courseMode                String?
+  totalWorkingDays          Int?
+  courseEndDate             String?
+  batchId                   String?
+  batchName                 String?
+  batchTiming               String?
+  facultyId                 String?
+  facultyName               String?
+  courseAmount              Int?
+  paymentMode               String                     @default("Installment")
+  paymentPlanId             String?
+  paymentPlan               String?
+  courseProgress            Int?
+  branch                    Branch                     @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  course                    BranchCourse?              @relation(fields: [courseId], references: [id])
+  installments              BranchStudentInstallment[]
+  payments                  BranchStudentPayment[]
+  ledgerEntries             BranchStudentLedgerEntry[]
+  calendarAttendanceRecords BranchStudentAttendance[]
 
   @@unique([branchId, studentId])
   @@index([branchId])
@@ -547,6 +553,60 @@ model BranchStudent {
   @@index([courseId])
   @@index([branchId, batchId])
   @@index([branchId, courseId, facultyId, batchId])
+}
+
+model BranchStudentAttendance {
+  id              String           @id @default(cuid())
+  branchStudentId String
+  facultyUserId   String?
+  courseId        String?
+  batchId         String?
+  moduleId        String?
+  moduleName      String?
+  submoduleId     String?
+  submoduleName   String?
+  attendanceDate  String
+  status          AttendanceStatus
+  progress        Float?
+  notes           String?
+  markedAt        DateTime         @default(now())
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  branchStudent   BranchStudent    @relation(fields: [branchStudentId], references: [id], onDelete: Cascade)
+  facultyUser     User?            @relation(fields: [facultyUserId], references: [id])
+
+  @@unique([branchStudentId, attendanceDate])
+  @@index([branchStudentId, attendanceDate])
+  @@index([batchId, attendanceDate])
+}
+
+model BranchCalendarHoliday {
+  id          String       @id @default(cuid())
+  branchId    String?
+  holidayDate String
+  name        String
+  status      RecordStatus @default(ACTIVE)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  branch      Branch?      @relation(fields: [branchId], references: [id], onDelete: Cascade)
+
+  @@index([branchId, holidayDate])
+  @@index([holidayDate, status])
+}
+
+model BranchCalendarLeave {
+  id        String       @id @default(cuid())
+  branchId  String
+  batchId   String?
+  leaveDate String
+  reason    String?
+  status    RecordStatus @default(ACTIVE)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+  branch    Branch       @relation(fields: [branchId], references: [id], onDelete: Cascade)
+
+  @@index([branchId, leaveDate, status])
+  @@index([batchId, leaveDate, status])
 }
 
 model BranchStudentInstallment {
