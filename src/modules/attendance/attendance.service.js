@@ -348,6 +348,206 @@ function buildFacultyScope(profile) {
   );
 }
 
+async function resolveBranchFacultyCandidates(user, facultyId = "") {
+  const role = normalizeString(user?.role).toUpperCase();
+  if (role === "FACULTY") {
+    const email = normalizeString(user?.email).toLowerCase();
+    if (!email) return [];
+    const faculty = await prisma.branchFaculty.findFirst({
+      where: {
+        email: { equals: email, mode: "insensitive" },
+        status: "ACTIVE",
+      },
+      select: { id: true, facultyId: true },
+    });
+    return uniqueByKey([faculty?.id, faculty?.facultyId].map(normalizeString).filter(Boolean), (value) => value.toLowerCase());
+  }
+
+  return uniqueByKey([facultyId].map(normalizeString).filter(Boolean), (value) => value.toLowerCase());
+}
+
+async function findBranchAttendanceBatch(user, payload = {}, facultyId = "") {
+  const courseId = normalizeString(payload.courseId);
+  const batchName = normalizeString(payload.batchName);
+  const batchId = normalizeString(payload.batchId || payload.batchEntryId);
+  const branchId = normalizeString(payload.branchId || payload.branchCode);
+  const facultyCandidates = await resolveBranchFacultyCandidates(user, facultyId);
+  const facultyEmail = normalizeString(user?.email).toLowerCase();
+
+  if (!courseId || !batchName) return null;
+
+  return prisma.branchBatch.findFirst({
+    where: {
+      ...(branchId ? { branchId } : {}),
+      status: "ACTIVE",
+      courseId,
+      batchName: { equals: batchName, mode: "insensitive" },
+      ...(batchId ? { OR: [{ id: batchId }, { batchId }] } : {}),
+      AND: [{
+        OR: [
+          ...(facultyCandidates.length ? [
+            { facultyId: { in: facultyCandidates } },
+            { branchFacultyId: { in: facultyCandidates } },
+          ] : []),
+          ...(facultyEmail ? [{ facultyEmail: { equals: facultyEmail, mode: "insensitive" } }] : []),
+        ],
+      }],
+    },
+    select: {
+      id: true,
+      branchId: true,
+      branchCourseId: true,
+      batchId: true,
+      batchName: true,
+      batchTiming: true,
+      courseId: true,
+      courseName: true,
+      facultyId: true,
+      facultyName: true,
+      facultyEmail: true,
+    },
+  });
+}
+
+function mapBranchAttendanceStudent(student, attendance) {
+  return {
+    id: student.id,
+    studentCode: student.studentId,
+    studentName: student.studentName,
+    emailAddress: student.emailAddress,
+    mobileNumber: student.mobileNumber,
+    location: student.city || student.state || student.country || "",
+    qualification: student.qualification,
+    passedOutYear: student.passedOutYear,
+    currentStatus: student.currentStatus,
+    admissionDate: student.admissionDate,
+    attendanceStatus: attendance?.status || "UNMARKED",
+    attendanceMarkedAt: attendance?.markedAt || null,
+    attendanceMarkedAtLabel: formatDateTime(attendance?.markedAt),
+    attendanceNotes: attendance?.notes || "",
+  };
+}
+
+async function markBranchStudentAttendance(user, payload, date, batch) {
+  const entries = Array.isArray(payload.students) ? payload.students : [];
+  const submittedStudents = uniqueByKey(
+    entries
+      .map((entry) => ({
+        studentId: normalizeString(entry?.studentId),
+        status: parseAttendanceStatus(entry?.status),
+        notes: normalizeString(entry?.notes),
+      }))
+      .filter((entry) => entry.studentId),
+    (entry) => entry.studentId,
+  );
+
+  if (!submittedStudents.length) throw new AppError("Valid student attendance entries are required", 400);
+
+  const students = await prisma.branchStudent.findMany({
+    where: {
+      branchId: batch.branchId,
+      courseId: batch.courseId,
+      batchId: batch.batchId,
+      recordStatus: "ACTIVE",
+      OR: [
+        { id: { in: submittedStudents.map((entry) => entry.studentId) } },
+        { studentId: { in: submittedStudents.map((entry) => entry.studentId) } },
+      ],
+    },
+    select: { id: true, studentId: true },
+  });
+  const studentByIdentifier = new Map(students.flatMap((student) => [[student.id, student], [student.studentId, student]]));
+  if (students.length !== submittedStudents.length) throw new AppError("One or more students do not belong to this batch", 400);
+
+  const firstSubmodule = Array.isArray(payload.submodules) ? payload.submodules[0] : null;
+  await prisma.$transaction(
+    submittedStudents.map((entry) => {
+      const student = studentByIdentifier.get(entry.studentId);
+      return prisma.branchStudentAttendance.upsert({
+        where: { branchStudentId_attendanceDate: { branchStudentId: student.id, attendanceDate: date } },
+        create: {
+          branchStudentId: student.id,
+          facultyUserId: normalizeString(user?.id) || null,
+          courseId: batch.courseId,
+          batchId: batch.batchId,
+          moduleId: normalizeString(payload.moduleId) || null,
+          moduleName: normalizeString(payload.moduleName) || null,
+          submoduleId: normalizeString(payload.submoduleId || firstSubmodule?.id) || null,
+          submoduleName: normalizeString(payload.submoduleName || firstSubmodule?.name) || null,
+          attendanceDate: date,
+          status: entry.status,
+          notes: entry.notes || null,
+        },
+        update: {
+          facultyUserId: normalizeString(user?.id) || null,
+          courseId: batch.courseId,
+          batchId: batch.batchId,
+          moduleId: normalizeString(payload.moduleId) || null,
+          moduleName: normalizeString(payload.moduleName) || null,
+          submoduleId: normalizeString(payload.submoduleId || firstSubmodule?.id) || null,
+          submoduleName: normalizeString(payload.submoduleName || firstSubmodule?.name) || null,
+          status: entry.status,
+          notes: entry.notes || null,
+          markedAt: new Date(),
+        },
+      });
+    }),
+  );
+
+  return getCurrentFacultyAttendanceOverview(user, date, "");
+}
+
+async function getBranchFacultyAttendanceOverview(user, date, facultyId = "") {
+  const candidates = await resolveBranchFacultyCandidates(user, facultyId);
+  const email = normalizeString(user?.email).toLowerCase();
+  const facultyOr = [
+    ...(candidates.length ? [{ facultyId: { in: candidates } }, { branchFacultyId: { in: candidates } }] : []),
+    ...(email ? [{ facultyEmail: { equals: email, mode: "insensitive" } }] : []),
+  ];
+  if (!facultyOr.length) return null;
+
+  const branchBatches = await prisma.branchBatch.findMany({
+    where: { status: "ACTIVE", OR: facultyOr },
+    orderBy: { sequenceNo: "asc" },
+    select: { id: true, branchId: true, courseId: true, courseName: true, batchId: true, batchName: true, batchTiming: true, sequenceNo: true },
+  });
+  if (!branchBatches.length) return null;
+
+  const students = await prisma.branchStudent.findMany({
+    where: {
+      recordStatus: "ACTIVE",
+      OR: branchBatches.map((batch) => ({ branchId: batch.branchId, courseId: batch.courseId, batchId: batch.batchId })),
+    },
+    select: { id: true, studentId: true, studentName: true, emailAddress: true, mobileNumber: true, city: true, state: true, country: true, qualification: true, passedOutYear: true, currentStatus: true, admissionDate: true, courseId: true, batchId: true, branchId: true },
+  });
+  const studentIds = students.map((student) => student.id);
+  const attendanceRecords = studentIds.length
+    ? await prisma.branchStudentAttendance.findMany({
+        where: { branchStudentId: { in: studentIds }, attendanceDate: { gte: getRecentMonths(6)[0]?.start || date } },
+        select: { branchStudentId: true, attendanceDate: true, status: true, markedAt: true, notes: true },
+      })
+    : [];
+  const todayMap = new Map(attendanceRecords.filter((record) => record.attendanceDate === date).map((record) => [record.branchStudentId, record]));
+  const batches = branchBatches.map((batch) => {
+    const batchStudents = students
+      .filter((student) => student.branchId === batch.branchId && student.courseId === batch.courseId && student.batchId === batch.batchId)
+      .map((student) => mapBranchAttendanceStudent(student, todayMap.get(student.id)));
+    const present = batchStudents.filter((student) => student.attendanceStatus === "PRESENT").length;
+    const absent = batchStudents.filter((student) => student.attendanceStatus === "ABSENT").length;
+    return { id: batch.id || batch.batchId, courseId: batch.courseId, courseName: batch.courseName, batchId: batch.batchId, batchName: batch.batchName, batchTiming: batch.batchTiming, sequenceNo: batch.sequenceNo, present, absent, unmarked: Math.max(0, batchStudents.length - present - absent), totalStudents: batchStudents.length, students: batchStudents };
+  });
+  const present = batches.reduce((sum, batch) => sum + batch.present, 0);
+  const absent = batches.reduce((sum, batch) => sum + batch.absent, 0);
+  const marked = present + absent;
+  return {
+    date,
+    facultySession: { loginAt: null, logoutAt: null, loginAtLabel: "", logoutAtLabel: "", activeSessionId: null, totalSessions: 0, sessions: [] },
+    summary: { totalBatches: batches.length, totalStudents: students.length, present, absent, unmarked: Math.max(0, students.length - marked), attendancePercentage: marked ? Math.round((present / marked) * 1000) / 10 : 0 },
+    monthlySeries: buildMonthlySeries(attendanceRecords),
+    batches,
+  };
+}
+
 function groupStudentsByBatch(scopeEntries, students, attendanceMap) {
   return scopeEntries.map((scopeEntry) => {
     const batchStudents = students
@@ -569,6 +769,9 @@ export async function recordFacultyAttendanceLogout(user, payload = {}) {
 
 export async function getCurrentFacultyAttendanceOverview(user, dateValue, facultyId = "") {
   const date = parseDateString(dateValue);
+  const branchOverview = await getBranchFacultyAttendanceOverview(user, date, facultyId);
+  if (branchOverview) return branchOverview;
+
   const { profile, facultyUserId } = await resolveFacultyAttendanceContext(user, facultyId);
   const scopeEntries = buildFacultyScope(profile);
 
@@ -676,6 +879,11 @@ export async function markFacultyStudentAttendance(user, payload = {}) {
 
   if (!entries.length) {
     throw new AppError("At least one student attendance entry is required", 400);
+  }
+
+  const branchBatch = await findBranchAttendanceBatch(user, payload, facultyId);
+  if (branchBatch) {
+    return markBranchStudentAttendance(user, payload, date, branchBatch);
   }
 
   const { profile, facultyUserId, actingUserId } = await resolveFacultyAttendanceContext(user, facultyId);

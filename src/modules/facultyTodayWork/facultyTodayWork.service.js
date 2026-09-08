@@ -207,6 +207,20 @@ function getWorkEntrySubmoduleIds(entry = {}) {
   return parseIdList(entry.submoduleIds || entry.selectedSubmoduleIds || entry.submodules);
 }
 
+function getWorkEntrySubmoduleStatus(entry = {}, submoduleId = "", studentId = "") {
+  const statuses = entry?.submoduleStatuses;
+  if (!statuses || typeof statuses !== "object") return "";
+
+  const normalizedStudentId = normalizeWorkStudentId(studentId);
+  const normalizedSubmoduleId = normalizeWorkStudentId(submoduleId);
+  const studentStatuses = statuses[studentId] || statuses[normalizedStudentId];
+  const status = studentStatuses && typeof studentStatuses === "object"
+    ? studentStatuses[submoduleId] || studentStatuses[normalizedSubmoduleId]
+    : statuses[submoduleId] || statuses[normalizedSubmoduleId];
+
+  return normalizeString(status);
+}
+
 async function validateFacultyBatchScope({ branchId, courseId, batchId, facultyProfileId, facultyUserId, studentIds }) {
   const normalizedBatchId = normalizeString(batchId);
   if (!normalizedBatchId) {
@@ -334,7 +348,15 @@ function calculateBranchStudentCourseProgress(course = {}, entries = [], student
 
     getWorkEntrySubmoduleIds(entry).forEach((submoduleId) => {
       const normalizedSubmoduleId = normalizeString(submoduleId);
-      if (normalizedSubmoduleId && validSubmoduleIds?.has(normalizedSubmoduleId)) {
+      const studentId = student?.id || student?.studentId || "";
+      const status = getWorkEntrySubmoduleStatus(entry, normalizedSubmoduleId, studentId).toLowerCase();
+      const hasStudentStatuses = Boolean(
+        entry?.submoduleStatuses && typeof entry.submoduleStatuses === "object" && Object.keys(entry.submoduleStatuses).length,
+      );
+      const isCompleted = status
+        ? status === "completed"
+        : !hasStudentStatuses;
+      if (isCompleted && normalizedSubmoduleId && validSubmoduleIds?.has(normalizedSubmoduleId)) {
         submoduleSet.add(normalizedSubmoduleId);
       }
     });
@@ -421,6 +443,7 @@ function mapWorkEntry(record) {
   const selectedStudentIds = parseIdList(record.studentIds);
   const selectedSubmoduleIds = parseIdList(record.submoduleIds);
   const submodules = Array.isArray(record.submodules) ? record.submodules : [];
+  const persistedSubmoduleStatuses = submodules.find((item) => item?.studentStatuses)?.studentStatuses || {};
 
   return {
     id: record.id,
@@ -444,6 +467,7 @@ function mapWorkEntry(record) {
     submoduleIds: selectedSubmoduleIds,
     selectedSubmoduleIds,
     submodules,
+    submoduleStatuses: persistedSubmoduleStatuses,
     moduleProgress: Number(record.moduleProgress || 0),
     submoduleProgress: Number(record.submoduleProgress || 0),
     courseProgress: Number(record.courseProgress || 0),
@@ -561,6 +585,7 @@ export async function createFacultyTodayWorkEntry(payload = {}, user = null) {
       id: submoduleId,
       name: normalizeString(source.title || source.name || source.submoduleName || submoduleId),
       sequenceNo: Number(source.sequenceNo || 0) || 0,
+      studentStatuses: payload.submoduleStatuses || {},
     };
   });
 
