@@ -226,33 +226,34 @@ model Course {
 }
 
 model BranchCourse {
-  id                      String                     @id @default(cuid())
-  branchId                String
-  courseCode              String
-  name                    String
-  nameKey                 String
-  description             String?
-  mode                    String
-  duration                Int?
-  hours                   Int?
-  actualFees              Int?
-  registrationFees        Int?
-  discount                Int?
-  afterDiscount           Int?
-  paymentPlans            Json?
-  paymentPlanSelections   Json?
-  status                  RecordStatus               @default(ACTIVE)
-  createdBy               String?
-  updatedBy               String?
-  createdAt               DateTime                   @default(now())
-  updatedAt               DateTime                   @updatedAt
-  branch                  Branch                     @relation(fields: [branchId], references: [id], onDelete: Cascade)
-  installmentTemplate     BranchInstallmentTemplate?
-  modules                 BranchCourseModule[]
-  branchFaculties         BranchFaculty[]
-  branchBatches           BranchBatch[]
-  branchStudents          BranchStudent[]
-  facultyTodayWorkEntries FacultyTodayWorkEntry[]
+  id                             String                         @id @default(cuid())
+  branchId                       String
+  courseCode                     String
+  name                           String
+  nameKey                        String
+  description                    String?
+  mode                           String
+  duration                       Int?
+  hours                          Int?
+  actualFees                     Int?
+  registrationFees               Int?
+  discount                       Int?
+  afterDiscount                  Int?
+  paymentPlans                   Json?
+  paymentPlanSelections          Json?
+  status                         RecordStatus                   @default(ACTIVE)
+  createdBy                      String?
+  updatedBy                      String?
+  createdAt                      DateTime                       @default(now())
+  updatedAt                      DateTime                       @updatedAt
+  branch                         Branch                         @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  installmentTemplate            BranchInstallmentTemplate?
+  modules                        BranchCourseModule[]
+  branchFaculties                BranchFaculty[]
+  branchBatches                  BranchBatch[]
+  branchStudents                 BranchStudent[]
+  facultyTodayWorkEntries        FacultyTodayWorkEntry[]
+  facultyTodayWorkStudentEntries FacultyTodayWorkStudentEntry[]
 
   @@unique([branchId, nameKey])
   @@unique([branchId, courseCode])
@@ -493,56 +494,57 @@ model StudentProfile {
 }
 
 model BranchStudent {
-  id                        String                     @id @default(cuid())
-  branchId                  String
-  studentId                 String
-  studentName               String
-  mobileNumber              String                     @unique
-  emailAddress              String                     @unique
-  parentSpouseNumber        String?
-  countryCode               String?
-  country                   String?
-  stateCode                 String?
-  state                     String?
-  city                      String?
-  address                   String?
-  qualification             String?
-  passedOutYear             String?
-  currentStatus             String?
-  designation               String?
-  source                    String?
-  sourceOther               String?
-  admissionDate             String
-  courseStartDate           String?
-  classSchedule             String?
-  recordStatus              RecordStatus               @default(ACTIVE)
-  createdBy                 String?
-  updatedBy                 String?
-  createdAt                 DateTime                   @default(now())
-  updatedAt                 DateTime                   @updatedAt
-  linkedInUrl               String?
-  remarks                   String?
-  courseId                  String?
-  courseName                String?
-  courseMode                String?
-  totalWorkingDays          Int?
-  courseEndDate             String?
-  batchId                   String?
-  batchName                 String?
-  batchTiming               String?
-  facultyId                 String?
-  facultyName               String?
-  courseAmount              Int?
-  paymentMode               String                     @default("Installment")
-  paymentPlanId             String?
-  paymentPlan               String?
-  courseProgress            Int?
-  branch                    Branch                     @relation(fields: [branchId], references: [id], onDelete: Cascade)
-  course                    BranchCourse?              @relation(fields: [courseId], references: [id])
-  installments              BranchStudentInstallment[]
-  payments                  BranchStudentPayment[]
-  ledgerEntries             BranchStudentLedgerEntry[]
-  calendarAttendanceRecords BranchStudentAttendance[]
+  id                             String                         @id @default(cuid())
+  branchId                       String
+  studentId                      String
+  studentName                    String
+  mobileNumber                   String                         @unique
+  emailAddress                   String                         @unique
+  parentSpouseNumber             String?
+  countryCode                    String?
+  country                        String?
+  stateCode                      String?
+  state                          String?
+  city                           String?
+  address                        String?
+  qualification                  String?
+  passedOutYear                  String?
+  currentStatus                  String?
+  designation                    String?
+  source                         String?
+  sourceOther                    String?
+  admissionDate                  String
+  courseStartDate                String?
+  classSchedule                  String?
+  recordStatus                   RecordStatus                   @default(ACTIVE)
+  createdBy                      String?
+  updatedBy                      String?
+  createdAt                      DateTime                       @default(now())
+  updatedAt                      DateTime                       @updatedAt
+  linkedInUrl                    String?
+  remarks                        String?
+  courseId                       String?
+  courseName                     String?
+  courseMode                     String?
+  totalWorkingDays               Int?
+  courseEndDate                  String?
+  batchId                        String?
+  batchName                      String?
+  batchTiming                    String?
+  facultyId                      String?
+  facultyName                    String?
+  courseAmount                   Int?
+  paymentMode                    String                         @default("Installment")
+  paymentPlanId                  String?
+  paymentPlan                    String?
+  courseProgress                 Int?
+  branch                         Branch                         @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  course                         BranchCourse?                  @relation(fields: [courseId], references: [id])
+  installments                   BranchStudentInstallment[]
+  payments                       BranchStudentPayment[]
+  ledgerEntries                  BranchStudentLedgerEntry[]
+  calendarAttendanceRecords      BranchStudentAttendance[]
+  facultyTodayWorkStudentEntries FacultyTodayWorkStudentEntry[]
 
   @@unique([branchId, studentId])
   @@index([branchId])
@@ -703,7 +705,7 @@ model FacultyAttendanceSession {
 }
 
 model FacultyTodayWorkEntry {
-  id                 String       @id @default(cuid())
+  id                 String                         @id @default(cuid())
   facultyUserId      String
   facultyProfileId   String?
   branchId           String?
@@ -717,25 +719,52 @@ model FacultyTodayWorkEntry {
   submoduleIds       Json
   submodules         Json?
   studentIds         Json
-  studentCount       Int          @default(0)
-  applyToAllStudents Boolean      @default(true)
-  moduleProgress     Float        @default(0)
-  submoduleProgress  Float        @default(0)
-  courseProgress     Float        @default(0)
-  moduleWeight       Float        @default(0)
+  studentCount       Int                            @default(0)
+  applyToAllStudents Boolean                        @default(true)
+  moduleProgress     Float                          @default(0)
+  submoduleProgress  Float                          @default(0)
+  courseProgress     Float                          @default(0)
+  moduleWeight       Float                          @default(0)
   workDate           String
   createdBy          String?
   updatedBy          String?
-  createdAt          DateTime     @default(now())
-  updatedAt          DateTime     @updatedAt
-  facultyUser        User         @relation(fields: [facultyUserId], references: [id], onDelete: Cascade)
-  branchCourse       BranchCourse @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  createdAt          DateTime                       @default(now())
+  updatedAt          DateTime                       @updatedAt
+  facultyUser        User                           @relation(fields: [facultyUserId], references: [id], onDelete: Cascade)
+  branchCourse       BranchCourse                   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  studentEntries     FacultyTodayWorkStudentEntry[]
 
   @@index([facultyUserId, workDate])
   @@index([facultyProfileId, workDate])
   @@index([branchId, workDate])
   @@index([courseId, moduleId])
   @@index([branchId, courseId, batchId])
+}
+
+model FacultyTodayWorkStudentEntry {
+  id                      String                @id @default(cuid())
+  facultyTodayWorkEntryId String
+  branchStudentId         String
+  branchId                String
+  courseId                String
+  batchId                 String
+  moduleId                String
+  submoduleId             String
+  workDate                String
+  attendanceStatus        String                @default("PENDING")
+  completionStatus        String                @default("PENDING")
+  notes                   String?
+  completedAt             DateTime?
+  createdAt               DateTime              @default(now())
+  updatedAt               DateTime              @updatedAt
+  facultyTodayWorkEntry   FacultyTodayWorkEntry @relation(fields: [facultyTodayWorkEntryId], references: [id], onDelete: Cascade)
+  branchStudent           BranchStudent         @relation(fields: [branchStudentId], references: [id], onDelete: Cascade)
+  branchCourse            BranchCourse          @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@index([branchStudentId, courseId, batchId, submoduleId])
+  @@index([branchStudentId, workDate])
+  @@index([batchId, workDate])
+  @@index([courseId, moduleId, submoduleId])
 }
 
 model StudentAttendance {

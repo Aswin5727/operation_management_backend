@@ -252,6 +252,7 @@ model BranchCourse {
   branchBatches    BranchBatch[]
   branchStudents   BranchStudent[]
   facultyTodayWorkEntries FacultyTodayWorkEntry[]
+  facultyTodayWorkStudentEntries FacultyTodayWorkStudentEntry[]
 
   @@unique([branchId, nameKey])
   @@unique([branchId, courseCode])
@@ -542,6 +543,7 @@ model BranchStudent {
   payments           BranchStudentPayment[]
   ledgerEntries      BranchStudentLedgerEntry[]
   calendarAttendanceRecords BranchStudentAttendance[]
+  facultyTodayWorkStudentEntries FacultyTodayWorkStudentEntry[]
 
   @@unique([branchId, studentId])
   @@index([branchId])
@@ -729,12 +731,39 @@ model FacultyTodayWorkEntry {
   updatedAt           DateTime        @updatedAt
   facultyUser         User            @relation(fields: [facultyUserId], references: [id], onDelete: Cascade)
   branchCourse        BranchCourse    @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  studentEntries      FacultyTodayWorkStudentEntry[]
 
   @@index([facultyUserId, workDate])
   @@index([facultyProfileId, workDate])
   @@index([branchId, workDate])
   @@index([courseId, moduleId])
   @@index([branchId, courseId, batchId])
+}
+
+model FacultyTodayWorkStudentEntry {
+  id                      String                @id @default(cuid())
+  facultyTodayWorkEntryId String
+  branchStudentId         String
+  branchId                String
+  courseId                String
+  batchId                 String
+  moduleId                String
+  submoduleId             String
+  workDate                String
+  attendanceStatus        String                @default("PENDING")
+  completionStatus        String                @default("PENDING")
+  notes                   String?
+  completedAt             DateTime?
+  createdAt               DateTime              @default(now())
+  updatedAt               DateTime              @updatedAt
+  facultyTodayWorkEntry   FacultyTodayWorkEntry @relation(fields: [facultyTodayWorkEntryId], references: [id], onDelete: Cascade)
+  branchStudent           BranchStudent         @relation(fields: [branchStudentId], references: [id], onDelete: Cascade)
+  branchCourse            BranchCourse          @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@index([branchStudentId, courseId, batchId, submoduleId])
+  @@index([branchStudentId, workDate])
+  @@index([batchId, workDate])
+  @@index([courseId, moduleId, submoduleId])
 }
 
 model StudentAttendance {

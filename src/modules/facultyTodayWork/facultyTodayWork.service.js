@@ -93,6 +93,59 @@ function dedupeIds(ids = []) {
   );
 }
 
+function normalizeProgressStatus(value = "") {
+  const status = normalizeString(value).toUpperCase().replace(/[-_ ]+/g, "_");
+  if (status === "COMPLETED") return "COMPLETED";
+  if (status === "IN_PROGRESS") return "IN_PROGRESS";
+  return "PENDING";
+}
+
+function normalizeAttendanceStatus(value = "") {
+  const status = normalizeString(value).toUpperCase();
+  return status === "PRESENT" || status === "ABSENT" ? status : "PENDING";
+}
+
+function parseStudentResults(payload = {}, studentIds = [], selectedSubmoduleIds = []) {
+  const explicitResults = Array.isArray(payload.studentResults) ? payload.studentResults : [];
+  if (explicitResults.length) {
+    return explicitResults.flatMap((result) => {
+      const studentId = normalizeString(result?.studentId || result?.id);
+      if (!studentId) return [];
+      const resultSubmodules = Array.isArray(result?.submodules) ? result.submodules : [];
+      return selectedSubmoduleIds.map((submoduleId) => {
+        const submodule = resultSubmodules.find((item) => normalizeString(item?.submoduleId || item?.id) === submoduleId) || {};
+        const attendanceStatus = normalizeAttendanceStatus(result?.attendanceStatus || result?.status || submodule?.attendanceStatus);
+        const requestedCompletion = normalizeProgressStatus(submodule?.completionStatus || submodule?.status || result?.completionStatus);
+        return {
+          studentId,
+          submoduleId,
+          attendanceStatus,
+          completionStatus: attendanceStatus === "PRESENT" && requestedCompletion === "COMPLETED" ? "COMPLETED" : requestedCompletion === "IN_PROGRESS" && attendanceStatus === "PRESENT" ? "IN_PROGRESS" : "PENDING",
+          notes: normalizeString(submodule?.notes || result?.notes),
+        };
+      });
+    });
+  }
+
+  const statuses = payload.submoduleStatuses && typeof payload.submoduleStatuses === "object"
+    ? payload.submoduleStatuses
+    : {};
+  const attendanceRows = Array.isArray(payload.students) ? payload.students : [];
+  return studentIds.flatMap((studentId) => selectedSubmoduleIds.map((submoduleId) => {
+    const attendanceRow = attendanceRows.find((row) => normalizeString(row?.studentId || row?.id) === studentId) || {};
+    const attendanceStatus = normalizeAttendanceStatus(attendanceRow?.status || attendanceRow?.attendanceStatus);
+    const studentStatus = statuses[studentId]?.[submoduleId] || statuses[studentId?.toLowerCase()]?.[submoduleId];
+    const completionStatus = normalizeProgressStatus(studentStatus);
+    return {
+      studentId,
+      submoduleId,
+      attendanceStatus,
+      completionStatus: attendanceStatus === "PRESENT" && completionStatus === "COMPLETED" ? "COMPLETED" : completionStatus === "IN_PROGRESS" && attendanceStatus === "PRESENT" ? "IN_PROGRESS" : "PENDING",
+      notes: "",
+    };
+  }));
+}
+
 function sortBySequenceNo(items = []) {
   return [...(Array.isArray(items) ? items : [])].sort((left, right) => {
     const leftSeq = Number(left?.sequenceNo ?? left?.sequence ?? left?.order ?? 0) || 0;
@@ -275,7 +328,7 @@ async function validateFacultyBatchScope({ branchId, courseId, batchId, facultyP
     throw new AppError("One or more selected students are not assigned to this faculty batch", 403);
   }
 
-  return batch;
+  return { ...batch, students: validStudents };
 }
 
 function isWorkEntryForBranchStudent(entry = {}, student = {}) {
@@ -302,7 +355,7 @@ function isWorkEntryForBranchStudent(entry = {}, student = {}) {
   return entryStudentIds.length > 0 || applyToAllStudents;
 }
 
-function calculateBranchStudentCourseProgress(course = {}, entries = [], student = null) {
+function calculateBranchStudentCourseProgress(course = {}, entries = [], student = null, studentAttempts = []) {
   const modules = Array.isArray(course?.modules) ? course.modules : [];
   if (!modules.length) return 0;
 
@@ -362,6 +415,14 @@ function calculateBranchStudentCourseProgress(course = {}, entries = [], student
     });
   });
 
+  (Array.isArray(studentAttempts) ? studentAttempts : []).forEach((attempt) => {
+    if (normalizeString(attempt?.completionStatus).toUpperCase() !== "COMPLETED") return;
+    const submoduleSet = moduleCompletionMap.get(normalizeString(attempt?.moduleId));
+    const validSubmoduleIds = moduleSubmoduleIdMap.get(normalizeString(attempt?.moduleId));
+    const submoduleId = normalizeString(attempt?.submoduleId);
+    if (submoduleSet && validSubmoduleIds?.has(submoduleId)) submoduleSet.add(submoduleId);
+  });
+
   const totals = modules.reduce(
     (acc, module, moduleIndex) => {
       const moduleId = normalizeString(module?.id || `module-${moduleIndex}`);
@@ -416,8 +477,20 @@ async function syncBranchStudentCourseProgress(tx, { branchCourse, branchId, bat
     ],
   });
 
+  const studentAttempts = await tx.facultyTodayWorkStudentEntry.findMany({
+    where: {
+      branchId: normalizedBranchId,
+      courseId: normalizedCourseId,
+      ...(normalizeString(batchId) ? { batchId: normalizeString(batchId) } : {}),
+    },
+    orderBy: [{ createdAt: "asc" }, { updatedAt: "asc" }],
+  });
+
   for (const student of matchingBranchStudents) {
-    const courseProgress = calculateBranchStudentCourseProgress(branchCourse, allWorkEntries, student);
+    const attemptsForStudent = studentAttempts.filter((attempt) => (
+      normalizeString(attempt.branchStudentId) === normalizeString(student.id)
+    ));
+    const courseProgress = calculateBranchStudentCourseProgress(branchCourse, allWorkEntries, student, attemptsForStudent);
 
     await tx.branchStudent.update({
       where: { id: student.id },
@@ -467,6 +540,15 @@ function mapWorkEntry(record) {
     submoduleIds: selectedSubmoduleIds,
     selectedSubmoduleIds,
     submodules,
+    studentResults: Array.isArray(record.studentEntries)
+      ? record.studentEntries.map((item) => ({
+          studentId: item.branchStudentId,
+          submoduleId: item.submoduleId,
+          attendanceStatus: item.attendanceStatus,
+          completionStatus: item.completionStatus,
+          workDate: item.workDate,
+        }))
+      : [],
     submoduleStatuses: persistedSubmoduleStatuses,
     moduleProgress: Number(record.moduleProgress || 0),
     submoduleProgress: Number(record.submoduleProgress || 0),
@@ -494,6 +576,7 @@ export async function listFacultyTodayWorkEntries(query = {}, user = null) {
 
   const records = await prisma.facultyTodayWorkEntry.findMany({
     where,
+    include: { studentEntries: true },
     orderBy: [
       { createdAt: "desc" },
       { updatedAt: "desc" },
@@ -578,6 +661,13 @@ export async function createFacultyTodayWorkEntry(payload = {}, user = null) {
     facultyUserId,
     studentIds,
   });
+  const studentResults = parseStudentResults(payload, studentIds, selectedSubmoduleIds);
+  const studentByAnyId = new Map(
+    selectedBatch.students.flatMap((student) => [
+      [normalizeWorkStudentId(student.id), student],
+      [normalizeWorkStudentId(student.studentId), student],
+    ]).filter(([key]) => key),
+  );
 
   const selectedSubmodulePayload = selectedSubmoduleIds.map((submoduleId) => {
     const source = selectedSubmoduleLookup.get(submoduleId) || {};
@@ -616,6 +706,31 @@ export async function createFacultyTodayWorkEntry(payload = {}, user = null) {
         updatedBy: normalizeString(user?.id) || null,
       },
     });
+
+    const attemptRows = studentResults.map((result) => {
+      const branchStudent = studentByAnyId.get(normalizeWorkStudentId(result.studentId));
+      if (!branchStudent) return null;
+      return {
+        id: undefined,
+        facultyTodayWorkEntryId: workEntry.id,
+        branchStudentId: branchStudent.id,
+        branchId: branchCourse.branchId || branchId,
+        courseId,
+        batchId,
+        moduleId,
+        submoduleId: result.submoduleId,
+        workDate,
+        attendanceStatus: result.attendanceStatus,
+        completionStatus: result.completionStatus,
+        notes: result.notes || null,
+        completedAt: result.completionStatus === "COMPLETED" ? new Date() : null,
+        updatedAt: new Date(),
+      };
+    }).filter(Boolean).map(({ id, ...row }) => row);
+
+    if (attemptRows.length) {
+      await tx.facultyTodayWorkStudentEntry.createMany({ data: attemptRows });
+    }
 
     await syncBranchStudentCourseProgress(tx, {
       branchCourse,
