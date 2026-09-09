@@ -3,7 +3,21 @@ import AppError from "../../common/errors/AppError.js";
 import { getCurrentBranchProfile } from "../branches/branches.service.js";
 
 export async function getBranchAttendanceOverview(user, query = {}) {
-  const branch = await getCurrentBranchProfile(user);
+  const requestedBranchId = String(query.branchId || '').trim();
+  let branch;
+
+  if (requestedBranchId && ['SUPER_ADMIN', 'BUSINESS_OWNER', 'OPERATION_MANAGER'].includes(String(user?.role || '').toUpperCase())) {
+    branch = await prisma.branch.findUnique({
+      where: { id: requestedBranchId },
+      select: { id: true },
+    });
+
+    if (!branch) {
+      throw new AppError("Branch profile not found", 404);
+    }
+  } else {
+    branch = await getCurrentBranchProfile(user);
+  }
   const today = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Calcutta" }).format(new Date());
   const date = String(query.date || today);
   const parsed = new Date(`${date}T00:00:00Z`);
