@@ -17,7 +17,9 @@ import masterSetupRoutes from "../modules/masterSetup/masterSetup.routes.js";
 import reportsRoutes from "../modules/reports/reports.routes.js";
 import studentRoutes from "../modules/students/students.routes.js";
 
+import instituteLeaveRoutes from "../modules/instituteLeave/instituteLeave.routes.js";
 const router = express.Router();
+router.use("/institute-leaves", instituteLeaveRoutes);
 
 router.get("/health", (_req, res) => {
   res.json({

@@ -1,3 +1,4 @@
+import { assertAttendanceAllowed } from "../instituteLeave/instituteLeave.service.js";
 import prisma from "../../config/prisma.js";
 import AppError from "../../common/errors/AppError.js";
 import {
@@ -680,6 +681,8 @@ export async function createFacultyTodayWorkEntry(payload = {}, user = null) {
   });
 
   const created = await prisma.$transaction(async (tx) => {
+    await tx.$queryRaw`SELECT id FROM "Branch" WHERE id = ${branchCourse.branchId} FOR UPDATE`;
+    await assertAttendanceAllowed(tx, selectedBatch.students, workDate, branchCourse.branchId);
     const workEntry = await tx.facultyTodayWorkEntry.create({
       data: {
         facultyUserId,

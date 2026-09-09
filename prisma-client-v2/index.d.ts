@@ -210,6 +210,7 @@ export type LoginEventType = (typeof LoginEventType)[keyof typeof LoginEventType
 
 
 export const NotificationKind: {
+  INSTITUTE_LEAVE: 'INSTITUTE_LEAVE',
   BRANCH_CREATED: 'BRANCH_CREATED',
   BRANCH_INVITATION_RESENT: 'BRANCH_INVITATION_RESENT',
   BRANCH_LOGIN: 'BRANCH_LOGIN',
@@ -6173,6 +6174,7 @@ export namespace Prisma {
     updatedBy: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    timezone: string | null
     branchCity: string | null
     branchCountry: string | null
     branchCountryCode: string | null
@@ -6194,6 +6196,7 @@ export namespace Prisma {
     updatedBy: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    timezone: string | null
     branchCity: string | null
     branchCountry: string | null
     branchCountryCode: string | null
@@ -6215,6 +6218,7 @@ export namespace Prisma {
     updatedBy: number
     createdAt: number
     updatedAt: number
+    timezone: number
     branchCity: number
     branchCountry: number
     branchCountryCode: number
@@ -6238,6 +6242,7 @@ export namespace Prisma {
     updatedBy?: true
     createdAt?: true
     updatedAt?: true
+    timezone?: true
     branchCity?: true
     branchCountry?: true
     branchCountryCode?: true
@@ -6259,6 +6264,7 @@ export namespace Prisma {
     updatedBy?: true
     createdAt?: true
     updatedAt?: true
+    timezone?: true
     branchCity?: true
     branchCountry?: true
     branchCountryCode?: true
@@ -6280,6 +6286,7 @@ export namespace Prisma {
     updatedBy?: true
     createdAt?: true
     updatedAt?: true
+    timezone?: true
     branchCity?: true
     branchCountry?: true
     branchCountryCode?: true
@@ -6374,6 +6381,7 @@ export namespace Prisma {
     updatedBy: string | null
     createdAt: Date
     updatedAt: Date
+    timezone: string
     branchCity: string
     branchCountry: string
     branchCountryCode: string
@@ -6412,6 +6420,7 @@ export namespace Prisma {
     updatedBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    timezone?: boolean
     branchCity?: boolean
     branchCountry?: boolean
     branchCountryCode?: boolean
@@ -6445,6 +6454,7 @@ export namespace Prisma {
     updatedBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    timezone?: boolean
     branchCity?: boolean
     branchCountry?: boolean
     branchCountryCode?: boolean
@@ -6467,6 +6477,7 @@ export namespace Prisma {
     updatedBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    timezone?: boolean
     branchCity?: boolean
     branchCountry?: boolean
     branchCountryCode?: boolean
@@ -6489,6 +6500,7 @@ export namespace Prisma {
     updatedBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    timezone?: boolean
     branchCity?: boolean
     branchCountry?: boolean
     branchCountryCode?: boolean
@@ -6496,7 +6508,7 @@ export namespace Prisma {
     branchStateCode?: boolean
   }
 
-  export type BranchOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "branchId" | "branchName" | "branchAdminName" | "branchEmail" | "branchPhone" | "branchAddress" | "status" | "adminUserId" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt" | "branchCity" | "branchCountry" | "branchCountryCode" | "branchState" | "branchStateCode", ExtArgs["result"]["branch"]>
+  export type BranchOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "branchId" | "branchName" | "branchAdminName" | "branchEmail" | "branchPhone" | "branchAddress" | "status" | "adminUserId" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt" | "timezone" | "branchCity" | "branchCountry" | "branchCountryCode" | "branchState" | "branchStateCode", ExtArgs["result"]["branch"]>
   export type BranchInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     adminUser?: boolean | Branch$adminUserArgs<ExtArgs>
     branchCourses?: boolean | Branch$branchCoursesArgs<ExtArgs>
@@ -6547,6 +6559,7 @@ export namespace Prisma {
       updatedBy: string | null
       createdAt: Date
       updatedAt: Date
+      timezone: string
       branchCity: string
       branchCountry: string
       branchCountryCode: string
@@ -6999,6 +7012,7 @@ export namespace Prisma {
     readonly updatedBy: FieldRef<"Branch", 'String'>
     readonly createdAt: FieldRef<"Branch", 'DateTime'>
     readonly updatedAt: FieldRef<"Branch", 'DateTime'>
+    readonly timezone: FieldRef<"Branch", 'String'>
     readonly branchCity: FieldRef<"Branch", 'String'>
     readonly branchCountry: FieldRef<"Branch", 'String'>
     readonly branchCountryCode: FieldRef<"Branch", 'String'>
@@ -31261,6 +31275,9 @@ export namespace Prisma {
   }
 
   export type BranchCalendarLeaveMinAggregateOutputType = {
+    isInstitute: boolean | null
+    declaredAt: Date | null
+    declaredBy: string | null
     id: string | null
     branchId: string | null
     batchId: string | null
@@ -31272,6 +31289,9 @@ export namespace Prisma {
   }
 
   export type BranchCalendarLeaveMaxAggregateOutputType = {
+    isInstitute: boolean | null
+    declaredAt: Date | null
+    declaredBy: string | null
     id: string | null
     branchId: string | null
     batchId: string | null
@@ -31283,6 +31303,10 @@ export namespace Prisma {
   }
 
   export type BranchCalendarLeaveCountAggregateOutputType = {
+    isInstitute: number
+    declaredAt: number
+    declaredBy: number
+    affectedClasses: number
     id: number
     branchId: number
     batchId: number
@@ -31296,6 +31320,9 @@ export namespace Prisma {
 
 
   export type BranchCalendarLeaveMinAggregateInputType = {
+    isInstitute?: true
+    declaredAt?: true
+    declaredBy?: true
     id?: true
     branchId?: true
     batchId?: true
@@ -31307,6 +31334,9 @@ export namespace Prisma {
   }
 
   export type BranchCalendarLeaveMaxAggregateInputType = {
+    isInstitute?: true
+    declaredAt?: true
+    declaredBy?: true
     id?: true
     branchId?: true
     batchId?: true
@@ -31318,6 +31348,10 @@ export namespace Prisma {
   }
 
   export type BranchCalendarLeaveCountAggregateInputType = {
+    isInstitute?: true
+    declaredAt?: true
+    declaredBy?: true
+    affectedClasses?: true
     id?: true
     branchId?: true
     batchId?: true
@@ -31402,6 +31436,10 @@ export namespace Prisma {
   }
 
   export type BranchCalendarLeaveGroupByOutputType = {
+    isInstitute: boolean
+    declaredAt: Date
+    declaredBy: string | null
+    affectedClasses: JsonValue
     id: string
     branchId: string
     batchId: string | null
@@ -31430,6 +31468,10 @@ export namespace Prisma {
 
 
   export type BranchCalendarLeaveSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    isInstitute?: boolean
+    declaredAt?: boolean
+    declaredBy?: boolean
+    affectedClasses?: boolean
     id?: boolean
     branchId?: boolean
     batchId?: boolean
@@ -31442,6 +31484,10 @@ export namespace Prisma {
   }, ExtArgs["result"]["branchCalendarLeave"]>
 
   export type BranchCalendarLeaveSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    isInstitute?: boolean
+    declaredAt?: boolean
+    declaredBy?: boolean
+    affectedClasses?: boolean
     id?: boolean
     branchId?: boolean
     batchId?: boolean
@@ -31454,6 +31500,10 @@ export namespace Prisma {
   }, ExtArgs["result"]["branchCalendarLeave"]>
 
   export type BranchCalendarLeaveSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    isInstitute?: boolean
+    declaredAt?: boolean
+    declaredBy?: boolean
+    affectedClasses?: boolean
     id?: boolean
     branchId?: boolean
     batchId?: boolean
@@ -31466,6 +31516,10 @@ export namespace Prisma {
   }, ExtArgs["result"]["branchCalendarLeave"]>
 
   export type BranchCalendarLeaveSelectScalar = {
+    isInstitute?: boolean
+    declaredAt?: boolean
+    declaredBy?: boolean
+    affectedClasses?: boolean
     id?: boolean
     branchId?: boolean
     batchId?: boolean
@@ -31476,7 +31530,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type BranchCalendarLeaveOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "branchId" | "batchId" | "leaveDate" | "reason" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["branchCalendarLeave"]>
+  export type BranchCalendarLeaveOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"isInstitute" | "declaredAt" | "declaredBy" | "affectedClasses" | "id" | "branchId" | "batchId" | "leaveDate" | "reason" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["branchCalendarLeave"]>
   export type BranchCalendarLeaveInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     branch?: boolean | BranchDefaultArgs<ExtArgs>
   }
@@ -31493,6 +31547,10 @@ export namespace Prisma {
       branch: Prisma.$BranchPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
+      isInstitute: boolean
+      declaredAt: Date
+      declaredBy: string | null
+      affectedClasses: Prisma.JsonValue
       id: string
       branchId: string
       batchId: string | null
@@ -31584,8 +31642,8 @@ export namespace Prisma {
      * // Get first 10 BranchCalendarLeaves
      * const branchCalendarLeaves = await prisma.branchCalendarLeave.findMany({ take: 10 })
      * 
-     * // Only select the `id`
-     * const branchCalendarLeaveWithIdOnly = await prisma.branchCalendarLeave.findMany({ select: { id: true } })
+     * // Only select the `isInstitute`
+     * const branchCalendarLeaveWithIsInstituteOnly = await prisma.branchCalendarLeave.findMany({ select: { isInstitute: true } })
      * 
      */
     findMany<T extends BranchCalendarLeaveFindManyArgs>(args?: SelectSubset<T, BranchCalendarLeaveFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchCalendarLeavePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
@@ -31629,9 +31687,9 @@ export namespace Prisma {
      *   ]
      * })
      * 
-     * // Create many BranchCalendarLeaves and only return the `id`
-     * const branchCalendarLeaveWithIdOnly = await prisma.branchCalendarLeave.createManyAndReturn({
-     *   select: { id: true },
+     * // Create many BranchCalendarLeaves and only return the `isInstitute`
+     * const branchCalendarLeaveWithIsInstituteOnly = await prisma.branchCalendarLeave.createManyAndReturn({
+     *   select: { isInstitute: true },
      *   data: [
      *     // ... provide data here
      *   ]
@@ -31720,9 +31778,9 @@ export namespace Prisma {
      *   ]
      * })
      * 
-     * // Update zero or more BranchCalendarLeaves and only return the `id`
-     * const branchCalendarLeaveWithIdOnly = await prisma.branchCalendarLeave.updateManyAndReturn({
-     *   select: { id: true },
+     * // Update zero or more BranchCalendarLeaves and only return the `isInstitute`
+     * const branchCalendarLeaveWithIsInstituteOnly = await prisma.branchCalendarLeave.updateManyAndReturn({
+     *   select: { isInstitute: true },
      *   where: {
      *     // ... provide filter here
      *   },
@@ -31925,6 +31983,10 @@ export namespace Prisma {
    * Fields of the BranchCalendarLeave model
    */
   interface BranchCalendarLeaveFieldRefs {
+    readonly isInstitute: FieldRef<"BranchCalendarLeave", 'Boolean'>
+    readonly declaredAt: FieldRef<"BranchCalendarLeave", 'DateTime'>
+    readonly declaredBy: FieldRef<"BranchCalendarLeave", 'String'>
+    readonly affectedClasses: FieldRef<"BranchCalendarLeave", 'Json'>
     readonly id: FieldRef<"BranchCalendarLeave", 'String'>
     readonly branchId: FieldRef<"BranchCalendarLeave", 'String'>
     readonly batchId: FieldRef<"BranchCalendarLeave", 'String'>
@@ -47306,6 +47368,7 @@ export namespace Prisma {
     updatedBy: 'updatedBy',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
+    timezone: 'timezone',
     branchCity: 'branchCity',
     branchCountry: 'branchCountry',
     branchCountryCode: 'branchCountryCode',
@@ -47754,6 +47817,10 @@ export namespace Prisma {
 
 
   export const BranchCalendarLeaveScalarFieldEnum: {
+    isInstitute: 'isInstitute',
+    declaredAt: 'declaredAt',
+    declaredBy: 'declaredBy',
+    affectedClasses: 'affectedClasses',
     id: 'id',
     branchId: 'branchId',
     batchId: 'batchId',
@@ -48440,6 +48507,7 @@ export namespace Prisma {
     updatedBy?: StringNullableFilter<"Branch"> | string | null
     createdAt?: DateTimeFilter<"Branch"> | Date | string
     updatedAt?: DateTimeFilter<"Branch"> | Date | string
+    timezone?: StringFilter<"Branch"> | string
     branchCity?: StringFilter<"Branch"> | string
     branchCountry?: StringFilter<"Branch"> | string
     branchCountryCode?: StringFilter<"Branch"> | string
@@ -48472,6 +48540,7 @@ export namespace Prisma {
     updatedBy?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    timezone?: SortOrder
     branchCity?: SortOrder
     branchCountry?: SortOrder
     branchCountryCode?: SortOrder
@@ -48507,6 +48576,7 @@ export namespace Prisma {
     updatedBy?: StringNullableFilter<"Branch"> | string | null
     createdAt?: DateTimeFilter<"Branch"> | Date | string
     updatedAt?: DateTimeFilter<"Branch"> | Date | string
+    timezone?: StringFilter<"Branch"> | string
     branchCity?: StringFilter<"Branch"> | string
     branchCountry?: StringFilter<"Branch"> | string
     branchCountryCode?: StringFilter<"Branch"> | string
@@ -48539,6 +48609,7 @@ export namespace Prisma {
     updatedBy?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    timezone?: SortOrder
     branchCity?: SortOrder
     branchCountry?: SortOrder
     branchCountryCode?: SortOrder
@@ -48566,6 +48637,7 @@ export namespace Prisma {
     updatedBy?: StringNullableWithAggregatesFilter<"Branch"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Branch"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Branch"> | Date | string
+    timezone?: StringWithAggregatesFilter<"Branch"> | string
     branchCity?: StringWithAggregatesFilter<"Branch"> | string
     branchCountry?: StringWithAggregatesFilter<"Branch"> | string
     branchCountryCode?: StringWithAggregatesFilter<"Branch"> | string
@@ -50883,6 +50955,10 @@ export namespace Prisma {
     AND?: BranchCalendarLeaveWhereInput | BranchCalendarLeaveWhereInput[]
     OR?: BranchCalendarLeaveWhereInput[]
     NOT?: BranchCalendarLeaveWhereInput | BranchCalendarLeaveWhereInput[]
+    isInstitute?: BoolFilter<"BranchCalendarLeave"> | boolean
+    declaredAt?: DateTimeFilter<"BranchCalendarLeave"> | Date | string
+    declaredBy?: StringNullableFilter<"BranchCalendarLeave"> | string | null
+    affectedClasses?: JsonFilter<"BranchCalendarLeave">
     id?: StringFilter<"BranchCalendarLeave"> | string
     branchId?: StringFilter<"BranchCalendarLeave"> | string
     batchId?: StringNullableFilter<"BranchCalendarLeave"> | string | null
@@ -50895,6 +50971,10 @@ export namespace Prisma {
   }
 
   export type BranchCalendarLeaveOrderByWithRelationInput = {
+    isInstitute?: SortOrder
+    declaredAt?: SortOrder
+    declaredBy?: SortOrderInput | SortOrder
+    affectedClasses?: SortOrder
     id?: SortOrder
     branchId?: SortOrder
     batchId?: SortOrderInput | SortOrder
@@ -50911,6 +50991,10 @@ export namespace Prisma {
     AND?: BranchCalendarLeaveWhereInput | BranchCalendarLeaveWhereInput[]
     OR?: BranchCalendarLeaveWhereInput[]
     NOT?: BranchCalendarLeaveWhereInput | BranchCalendarLeaveWhereInput[]
+    isInstitute?: BoolFilter<"BranchCalendarLeave"> | boolean
+    declaredAt?: DateTimeFilter<"BranchCalendarLeave"> | Date | string
+    declaredBy?: StringNullableFilter<"BranchCalendarLeave"> | string | null
+    affectedClasses?: JsonFilter<"BranchCalendarLeave">
     branchId?: StringFilter<"BranchCalendarLeave"> | string
     batchId?: StringNullableFilter<"BranchCalendarLeave"> | string | null
     leaveDate?: StringFilter<"BranchCalendarLeave"> | string
@@ -50922,6 +51006,10 @@ export namespace Prisma {
   }, "id">
 
   export type BranchCalendarLeaveOrderByWithAggregationInput = {
+    isInstitute?: SortOrder
+    declaredAt?: SortOrder
+    declaredBy?: SortOrderInput | SortOrder
+    affectedClasses?: SortOrder
     id?: SortOrder
     branchId?: SortOrder
     batchId?: SortOrderInput | SortOrder
@@ -50939,6 +51027,10 @@ export namespace Prisma {
     AND?: BranchCalendarLeaveScalarWhereWithAggregatesInput | BranchCalendarLeaveScalarWhereWithAggregatesInput[]
     OR?: BranchCalendarLeaveScalarWhereWithAggregatesInput[]
     NOT?: BranchCalendarLeaveScalarWhereWithAggregatesInput | BranchCalendarLeaveScalarWhereWithAggregatesInput[]
+    isInstitute?: BoolWithAggregatesFilter<"BranchCalendarLeave"> | boolean
+    declaredAt?: DateTimeWithAggregatesFilter<"BranchCalendarLeave"> | Date | string
+    declaredBy?: StringNullableWithAggregatesFilter<"BranchCalendarLeave"> | string | null
+    affectedClasses?: JsonWithAggregatesFilter<"BranchCalendarLeave">
     id?: StringWithAggregatesFilter<"BranchCalendarLeave"> | string
     branchId?: StringWithAggregatesFilter<"BranchCalendarLeave"> | string
     batchId?: StringNullableWithAggregatesFilter<"BranchCalendarLeave"> | string | null
@@ -52483,6 +52575,7 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    timezone?: string
     branchCity?: string
     branchCountry?: string
     branchCountryCode?: string
@@ -52515,6 +52608,7 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    timezone?: string
     branchCity?: string
     branchCountry?: string
     branchCountryCode?: string
@@ -52545,6 +52639,7 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    timezone?: StringFieldUpdateOperationsInput | string
     branchCity?: StringFieldUpdateOperationsInput | string
     branchCountry?: StringFieldUpdateOperationsInput | string
     branchCountryCode?: StringFieldUpdateOperationsInput | string
@@ -52577,6 +52672,7 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    timezone?: StringFieldUpdateOperationsInput | string
     branchCity?: StringFieldUpdateOperationsInput | string
     branchCountry?: StringFieldUpdateOperationsInput | string
     branchCountryCode?: StringFieldUpdateOperationsInput | string
@@ -52608,6 +52704,7 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    timezone?: string
     branchCity?: string
     branchCountry?: string
     branchCountryCode?: string
@@ -52628,6 +52725,7 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    timezone?: StringFieldUpdateOperationsInput | string
     branchCity?: StringFieldUpdateOperationsInput | string
     branchCountry?: StringFieldUpdateOperationsInput | string
     branchCountryCode?: StringFieldUpdateOperationsInput | string
@@ -52649,6 +52747,7 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    timezone?: StringFieldUpdateOperationsInput | string
     branchCity?: StringFieldUpdateOperationsInput | string
     branchCountry?: StringFieldUpdateOperationsInput | string
     branchCountryCode?: StringFieldUpdateOperationsInput | string
@@ -55415,6 +55514,10 @@ export namespace Prisma {
   }
 
   export type BranchCalendarLeaveCreateInput = {
+    isInstitute?: boolean
+    declaredAt?: Date | string
+    declaredBy?: string | null
+    affectedClasses?: JsonNullValueInput | InputJsonValue
     id?: string
     batchId?: string | null
     leaveDate: string
@@ -55426,6 +55529,10 @@ export namespace Prisma {
   }
 
   export type BranchCalendarLeaveUncheckedCreateInput = {
+    isInstitute?: boolean
+    declaredAt?: Date | string
+    declaredBy?: string | null
+    affectedClasses?: JsonNullValueInput | InputJsonValue
     id?: string
     branchId: string
     batchId?: string | null
@@ -55437,6 +55544,10 @@ export namespace Prisma {
   }
 
   export type BranchCalendarLeaveUpdateInput = {
+    isInstitute?: BoolFieldUpdateOperationsInput | boolean
+    declaredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    declaredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    affectedClasses?: JsonNullValueInput | InputJsonValue
     id?: StringFieldUpdateOperationsInput | string
     batchId?: NullableStringFieldUpdateOperationsInput | string | null
     leaveDate?: StringFieldUpdateOperationsInput | string
@@ -55448,6 +55559,10 @@ export namespace Prisma {
   }
 
   export type BranchCalendarLeaveUncheckedUpdateInput = {
+    isInstitute?: BoolFieldUpdateOperationsInput | boolean
+    declaredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    declaredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    affectedClasses?: JsonNullValueInput | InputJsonValue
     id?: StringFieldUpdateOperationsInput | string
     branchId?: StringFieldUpdateOperationsInput | string
     batchId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -55459,6 +55574,10 @@ export namespace Prisma {
   }
 
   export type BranchCalendarLeaveCreateManyInput = {
+    isInstitute?: boolean
+    declaredAt?: Date | string
+    declaredBy?: string | null
+    affectedClasses?: JsonNullValueInput | InputJsonValue
     id?: string
     branchId: string
     batchId?: string | null
@@ -55470,6 +55589,10 @@ export namespace Prisma {
   }
 
   export type BranchCalendarLeaveUpdateManyMutationInput = {
+    isInstitute?: BoolFieldUpdateOperationsInput | boolean
+    declaredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    declaredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    affectedClasses?: JsonNullValueInput | InputJsonValue
     id?: StringFieldUpdateOperationsInput | string
     batchId?: NullableStringFieldUpdateOperationsInput | string | null
     leaveDate?: StringFieldUpdateOperationsInput | string
@@ -55480,6 +55603,10 @@ export namespace Prisma {
   }
 
   export type BranchCalendarLeaveUncheckedUpdateManyInput = {
+    isInstitute?: BoolFieldUpdateOperationsInput | boolean
+    declaredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    declaredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    affectedClasses?: JsonNullValueInput | InputJsonValue
     id?: StringFieldUpdateOperationsInput | string
     branchId?: StringFieldUpdateOperationsInput | string
     batchId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -57455,6 +57582,7 @@ export namespace Prisma {
     updatedBy?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    timezone?: SortOrder
     branchCity?: SortOrder
     branchCountry?: SortOrder
     branchCountryCode?: SortOrder
@@ -57476,6 +57604,7 @@ export namespace Prisma {
     updatedBy?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    timezone?: SortOrder
     branchCity?: SortOrder
     branchCountry?: SortOrder
     branchCountryCode?: SortOrder
@@ -57497,6 +57626,7 @@ export namespace Prisma {
     updatedBy?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    timezone?: SortOrder
     branchCity?: SortOrder
     branchCountry?: SortOrder
     branchCountryCode?: SortOrder
@@ -59266,8 +59396,35 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
+  export type JsonFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
 
   export type BranchCalendarLeaveCountOrderByAggregateInput = {
+    isInstitute?: SortOrder
+    declaredAt?: SortOrder
+    declaredBy?: SortOrder
+    affectedClasses?: SortOrder
     id?: SortOrder
     branchId?: SortOrder
     batchId?: SortOrder
@@ -59279,6 +59436,9 @@ export namespace Prisma {
   }
 
   export type BranchCalendarLeaveMaxOrderByAggregateInput = {
+    isInstitute?: SortOrder
+    declaredAt?: SortOrder
+    declaredBy?: SortOrder
     id?: SortOrder
     branchId?: SortOrder
     batchId?: SortOrder
@@ -59290,6 +59450,9 @@ export namespace Prisma {
   }
 
   export type BranchCalendarLeaveMinOrderByAggregateInput = {
+    isInstitute?: SortOrder
+    declaredAt?: SortOrder
+    declaredBy?: SortOrder
     id?: SortOrder
     branchId?: SortOrder
     batchId?: SortOrder
@@ -59298,6 +59461,32 @@ export namespace Prisma {
     status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+  export type JsonWithAggregatesFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonWithAggregatesFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonWithAggregatesFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedJsonFilter<$PrismaModel>
+    _max?: NestedJsonFilter<$PrismaModel>
   }
 
   export type BranchStudentInstallmentCountOrderByAggregateInput = {
@@ -59524,29 +59713,6 @@ export namespace Prisma {
     workReport?: SortOrder
     workCompleted?: SortOrder
   }
-  export type JsonFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<JsonFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonFilterBase<$PrismaModel>>, 'path'>>,
-        Required<JsonFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<JsonFilterBase<$PrismaModel>>, 'path'>>
-
-  export type JsonFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-  }
 
   export type FloatFilter<$PrismaModel = never> = {
     equals?: number | FloatFieldRefInput<$PrismaModel>
@@ -59651,32 +59817,6 @@ export namespace Prisma {
     submoduleProgress?: SortOrder
     courseProgress?: SortOrder
     moduleWeight?: SortOrder
-  }
-  export type JsonWithAggregatesFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
-        Required<JsonWithAggregatesFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
-
-  export type JsonWithAggregatesFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedJsonFilter<$PrismaModel>
-    _max?: NestedJsonFilter<$PrismaModel>
   }
 
   export type FloatWithAggregatesFilter<$PrismaModel = never> = {
@@ -63472,6 +63612,7 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    timezone?: string
     branchCity?: string
     branchCountry?: string
     branchCountryCode?: string
@@ -63502,6 +63643,7 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    timezone?: string
     branchCity?: string
     branchCountry?: string
     branchCountryCode?: string
@@ -63904,6 +64046,7 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    timezone?: StringFieldUpdateOperationsInput | string
     branchCity?: StringFieldUpdateOperationsInput | string
     branchCountry?: StringFieldUpdateOperationsInput | string
     branchCountryCode?: StringFieldUpdateOperationsInput | string
@@ -63934,6 +64077,7 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    timezone?: StringFieldUpdateOperationsInput | string
     branchCity?: StringFieldUpdateOperationsInput | string
     branchCountry?: StringFieldUpdateOperationsInput | string
     branchCountryCode?: StringFieldUpdateOperationsInput | string
@@ -64651,6 +64795,10 @@ export namespace Prisma {
   }
 
   export type BranchCalendarLeaveCreateWithoutBranchInput = {
+    isInstitute?: boolean
+    declaredAt?: Date | string
+    declaredBy?: string | null
+    affectedClasses?: JsonNullValueInput | InputJsonValue
     id?: string
     batchId?: string | null
     leaveDate: string
@@ -64661,6 +64809,10 @@ export namespace Prisma {
   }
 
   export type BranchCalendarLeaveUncheckedCreateWithoutBranchInput = {
+    isInstitute?: boolean
+    declaredAt?: Date | string
+    declaredBy?: string | null
+    affectedClasses?: JsonNullValueInput | InputJsonValue
     id?: string
     batchId?: string | null
     leaveDate: string
@@ -65229,6 +65381,10 @@ export namespace Prisma {
     AND?: BranchCalendarLeaveScalarWhereInput | BranchCalendarLeaveScalarWhereInput[]
     OR?: BranchCalendarLeaveScalarWhereInput[]
     NOT?: BranchCalendarLeaveScalarWhereInput | BranchCalendarLeaveScalarWhereInput[]
+    isInstitute?: BoolFilter<"BranchCalendarLeave"> | boolean
+    declaredAt?: DateTimeFilter<"BranchCalendarLeave"> | Date | string
+    declaredBy?: StringNullableFilter<"BranchCalendarLeave"> | string | null
+    affectedClasses?: JsonFilter<"BranchCalendarLeave">
     id?: StringFilter<"BranchCalendarLeave"> | string
     branchId?: StringFilter<"BranchCalendarLeave"> | string
     batchId?: StringNullableFilter<"BranchCalendarLeave"> | string | null
@@ -66136,6 +66292,7 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    timezone?: string
     branchCity?: string
     branchCountry?: string
     branchCountryCode?: string
@@ -66167,6 +66324,7 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    timezone?: string
     branchCity?: string
     branchCountry?: string
     branchCountryCode?: string
@@ -66534,6 +66692,7 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    timezone?: StringFieldUpdateOperationsInput | string
     branchCity?: StringFieldUpdateOperationsInput | string
     branchCountry?: StringFieldUpdateOperationsInput | string
     branchCountryCode?: StringFieldUpdateOperationsInput | string
@@ -66565,6 +66724,7 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    timezone?: StringFieldUpdateOperationsInput | string
     branchCity?: StringFieldUpdateOperationsInput | string
     branchCountry?: StringFieldUpdateOperationsInput | string
     branchCountryCode?: StringFieldUpdateOperationsInput | string
@@ -66814,6 +66974,7 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    timezone?: string
     branchCity?: string
     branchCountry?: string
     branchCountryCode?: string
@@ -66845,6 +67006,7 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    timezone?: string
     branchCity?: string
     branchCountry?: string
     branchCountryCode?: string
@@ -67303,6 +67465,7 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    timezone?: StringFieldUpdateOperationsInput | string
     branchCity?: StringFieldUpdateOperationsInput | string
     branchCountry?: StringFieldUpdateOperationsInput | string
     branchCountryCode?: StringFieldUpdateOperationsInput | string
@@ -67334,6 +67497,7 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    timezone?: StringFieldUpdateOperationsInput | string
     branchCity?: StringFieldUpdateOperationsInput | string
     branchCountry?: StringFieldUpdateOperationsInput | string
     branchCountryCode?: StringFieldUpdateOperationsInput | string
@@ -68496,6 +68660,7 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    timezone?: string
     branchCity?: string
     branchCountry?: string
     branchCountryCode?: string
@@ -68527,6 +68692,7 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    timezone?: string
     branchCity?: string
     branchCountry?: string
     branchCountryCode?: string
@@ -68684,6 +68850,7 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    timezone?: StringFieldUpdateOperationsInput | string
     branchCity?: StringFieldUpdateOperationsInput | string
     branchCountry?: StringFieldUpdateOperationsInput | string
     branchCountryCode?: StringFieldUpdateOperationsInput | string
@@ -68715,6 +68882,7 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    timezone?: StringFieldUpdateOperationsInput | string
     branchCity?: StringFieldUpdateOperationsInput | string
     branchCountry?: StringFieldUpdateOperationsInput | string
     branchCountryCode?: StringFieldUpdateOperationsInput | string
@@ -69348,6 +69516,7 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    timezone?: string
     branchCity?: string
     branchCountry?: string
     branchCountryCode?: string
@@ -69379,6 +69548,7 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    timezone?: string
     branchCity?: string
     branchCountry?: string
     branchCountryCode?: string
@@ -69731,6 +69901,7 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    timezone?: StringFieldUpdateOperationsInput | string
     branchCity?: StringFieldUpdateOperationsInput | string
     branchCountry?: StringFieldUpdateOperationsInput | string
     branchCountryCode?: StringFieldUpdateOperationsInput | string
@@ -69762,6 +69933,7 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    timezone?: StringFieldUpdateOperationsInput | string
     branchCity?: StringFieldUpdateOperationsInput | string
     branchCountry?: StringFieldUpdateOperationsInput | string
     branchCountryCode?: StringFieldUpdateOperationsInput | string
@@ -70323,6 +70495,7 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    timezone?: string
     branchCity?: string
     branchCountry?: string
     branchCountryCode?: string
@@ -70354,6 +70527,7 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    timezone?: string
     branchCity?: string
     branchCountry?: string
     branchCountryCode?: string
@@ -70399,6 +70573,7 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    timezone?: StringFieldUpdateOperationsInput | string
     branchCity?: StringFieldUpdateOperationsInput | string
     branchCountry?: StringFieldUpdateOperationsInput | string
     branchCountryCode?: StringFieldUpdateOperationsInput | string
@@ -70430,6 +70605,7 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    timezone?: StringFieldUpdateOperationsInput | string
     branchCity?: StringFieldUpdateOperationsInput | string
     branchCountry?: StringFieldUpdateOperationsInput | string
     branchCountryCode?: StringFieldUpdateOperationsInput | string
@@ -70459,6 +70635,7 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    timezone?: string
     branchCity?: string
     branchCountry?: string
     branchCountryCode?: string
@@ -70490,6 +70667,7 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    timezone?: string
     branchCity?: string
     branchCountry?: string
     branchCountryCode?: string
@@ -70535,6 +70713,7 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    timezone?: StringFieldUpdateOperationsInput | string
     branchCity?: StringFieldUpdateOperationsInput | string
     branchCountry?: StringFieldUpdateOperationsInput | string
     branchCountryCode?: StringFieldUpdateOperationsInput | string
@@ -70566,6 +70745,7 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    timezone?: StringFieldUpdateOperationsInput | string
     branchCity?: StringFieldUpdateOperationsInput | string
     branchCountry?: StringFieldUpdateOperationsInput | string
     branchCountryCode?: StringFieldUpdateOperationsInput | string
@@ -72956,6 +73136,7 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    timezone?: string
     branchCity?: string
     branchCountry?: string
     branchCountryCode?: string
@@ -72987,6 +73168,7 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    timezone?: string
     branchCity?: string
     branchCountry?: string
     branchCountryCode?: string
@@ -73240,6 +73422,7 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    timezone?: StringFieldUpdateOperationsInput | string
     branchCity?: StringFieldUpdateOperationsInput | string
     branchCountry?: StringFieldUpdateOperationsInput | string
     branchCountryCode?: StringFieldUpdateOperationsInput | string
@@ -73271,6 +73454,7 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    timezone?: StringFieldUpdateOperationsInput | string
     branchCity?: StringFieldUpdateOperationsInput | string
     branchCountry?: StringFieldUpdateOperationsInput | string
     branchCountryCode?: StringFieldUpdateOperationsInput | string
@@ -73399,6 +73583,7 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    timezone?: string
     branchCity?: string
     branchCountry?: string
     branchCountryCode?: string
@@ -73430,6 +73615,7 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    timezone?: string
     branchCity?: string
     branchCountry?: string
     branchCountryCode?: string
@@ -73538,6 +73724,7 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    timezone?: StringFieldUpdateOperationsInput | string
     branchCity?: StringFieldUpdateOperationsInput | string
     branchCountry?: StringFieldUpdateOperationsInput | string
     branchCountryCode?: StringFieldUpdateOperationsInput | string
@@ -73569,6 +73756,7 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    timezone?: StringFieldUpdateOperationsInput | string
     branchCity?: StringFieldUpdateOperationsInput | string
     branchCountry?: StringFieldUpdateOperationsInput | string
     branchCountryCode?: StringFieldUpdateOperationsInput | string
@@ -73774,6 +73962,7 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    timezone?: string
     branchCity?: string
     branchCountry?: string
     branchCountryCode?: string
@@ -73805,6 +73994,7 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    timezone?: string
     branchCity?: string
     branchCountry?: string
     branchCountryCode?: string
@@ -74000,6 +74190,7 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    timezone?: StringFieldUpdateOperationsInput | string
     branchCity?: StringFieldUpdateOperationsInput | string
     branchCountry?: StringFieldUpdateOperationsInput | string
     branchCountryCode?: StringFieldUpdateOperationsInput | string
@@ -74031,6 +74222,7 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    timezone?: StringFieldUpdateOperationsInput | string
     branchCity?: StringFieldUpdateOperationsInput | string
     branchCountry?: StringFieldUpdateOperationsInput | string
     branchCountryCode?: StringFieldUpdateOperationsInput | string
@@ -74103,6 +74295,7 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    timezone?: string
     branchCity?: string
     branchCountry?: string
     branchCountryCode?: string
@@ -74134,6 +74327,7 @@ export namespace Prisma {
     updatedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    timezone?: string
     branchCity?: string
     branchCountry?: string
     branchCountryCode?: string
@@ -74286,6 +74480,7 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    timezone?: StringFieldUpdateOperationsInput | string
     branchCity?: StringFieldUpdateOperationsInput | string
     branchCountry?: StringFieldUpdateOperationsInput | string
     branchCountryCode?: StringFieldUpdateOperationsInput | string
@@ -74317,6 +74512,7 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    timezone?: StringFieldUpdateOperationsInput | string
     branchCity?: StringFieldUpdateOperationsInput | string
     branchCountry?: StringFieldUpdateOperationsInput | string
     branchCountryCode?: StringFieldUpdateOperationsInput | string
@@ -75149,6 +75345,10 @@ export namespace Prisma {
   }
 
   export type BranchCalendarLeaveCreateManyBranchInput = {
+    isInstitute?: boolean
+    declaredAt?: Date | string
+    declaredBy?: string | null
+    affectedClasses?: JsonNullValueInput | InputJsonValue
     id?: string
     batchId?: string | null
     leaveDate: string
@@ -75679,6 +75879,10 @@ export namespace Prisma {
   }
 
   export type BranchCalendarLeaveUpdateWithoutBranchInput = {
+    isInstitute?: BoolFieldUpdateOperationsInput | boolean
+    declaredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    declaredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    affectedClasses?: JsonNullValueInput | InputJsonValue
     id?: StringFieldUpdateOperationsInput | string
     batchId?: NullableStringFieldUpdateOperationsInput | string | null
     leaveDate?: StringFieldUpdateOperationsInput | string
@@ -75689,6 +75893,10 @@ export namespace Prisma {
   }
 
   export type BranchCalendarLeaveUncheckedUpdateWithoutBranchInput = {
+    isInstitute?: BoolFieldUpdateOperationsInput | boolean
+    declaredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    declaredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    affectedClasses?: JsonNullValueInput | InputJsonValue
     id?: StringFieldUpdateOperationsInput | string
     batchId?: NullableStringFieldUpdateOperationsInput | string | null
     leaveDate?: StringFieldUpdateOperationsInput | string
@@ -75699,6 +75907,10 @@ export namespace Prisma {
   }
 
   export type BranchCalendarLeaveUncheckedUpdateManyWithoutBranchInput = {
+    isInstitute?: BoolFieldUpdateOperationsInput | boolean
+    declaredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    declaredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    affectedClasses?: JsonNullValueInput | InputJsonValue
     id?: StringFieldUpdateOperationsInput | string
     batchId?: NullableStringFieldUpdateOperationsInput | string | null
     leaveDate?: StringFieldUpdateOperationsInput | string

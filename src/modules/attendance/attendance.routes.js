@@ -1,4 +1,6 @@
 import express from "express";
+import asyncHandler from "../../common/utils/asyncHandler.js";
+import { getBranchAttendanceOverview } from "./branchAttendance.service.js";
 
 import { authenticate } from "../../common/middlewares/authenticate.js";
 import { authorize } from "../../common/middlewares/authorize.js";
@@ -11,6 +13,11 @@ import {
 } from "./attendance.controller.js";
 
 const router = express.Router();
+
+router.get("/branch/overview", authenticate, authorize("BRANCH_ADMIN", "SUPER_ADMIN", "BUSINESS_OWNER", "OPERATION_MANAGER"), asyncHandler(async (req, res) => {
+  const data = await getBranchAttendanceOverview(req.user, req.query);
+  res.json({ status: "success", data });
+}));
 
 router.get(
   "/faculty/overview",

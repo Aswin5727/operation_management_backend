@@ -158,6 +158,7 @@ exports.Prisma.BranchScalarFieldEnum = {
   updatedBy: 'updatedBy',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
+  timezone: 'timezone',
   branchCity: 'branchCity',
   branchCountry: 'branchCountry',
   branchCountryCode: 'branchCountryCode',
@@ -549,6 +550,10 @@ exports.Prisma.BranchCalendarHolidayScalarFieldEnum = {
 };
 
 exports.Prisma.BranchCalendarLeaveScalarFieldEnum = {
+  isInstitute: 'isInstitute',
+  declaredAt: 'declaredAt',
+  declaredBy: 'declaredBy',
+  affectedClasses: 'affectedClasses',
   id: 'id',
   branchId: 'branchId',
   batchId: 'batchId',
@@ -828,6 +833,7 @@ exports.LoginEventType = exports.$Enums.LoginEventType = {
 };
 
 exports.NotificationKind = exports.$Enums.NotificationKind = {
+  INSTITUTE_LEAVE: 'INSTITUTE_LEAVE',
   BRANCH_CREATED: 'BRANCH_CREATED',
   BRANCH_INVITATION_RESENT: 'BRANCH_INVITATION_RESENT',
   BRANCH_LOGIN: 'BRANCH_LOGIN',

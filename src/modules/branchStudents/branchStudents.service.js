@@ -2,6 +2,7 @@ import crypto from "node:crypto";
 
 import { Prisma } from "@prisma/client";
 
+import { syncStudentCourseEnd } from "../instituteLeave/instituteLeave.service.js";
 import prisma from "../../config/prisma.js";
 import config from "../../config/env.js";
 import AppError from "../../common/errors/AppError.js";
@@ -1751,6 +1752,7 @@ export async function createBranchStudent(payload, actor) {
     try {
       // eslint-disable-next-line no-await-in-loop
       created = await prisma.$transaction(async (tx) => {
+        await tx.$queryRaw`SELECT id FROM "Branch" WHERE id = ${branchId} FOR UPDATE`;
         const student = await tx.branchStudent.create({
           data: {
             branchId,
@@ -1760,6 +1762,8 @@ export async function createBranchStudent(payload, actor) {
             updatedBy: actorId,
           },
         });
+
+        await syncStudentCourseEnd(tx, student);
 
         if (installmentSchedule.length > 0) {
           await tx.branchStudentInstallment.createMany({
@@ -1956,6 +1960,7 @@ export async function updateBranchStudent(studentId, payload, actor = null) {
   const previousCourseProgress = Number(existing.courseProgress);
   await ensureUniqueBranchStudentIdentity(studentData, existing.branchId, existing.id, existingLoginUser?.id);
   const updated = await prisma.$transaction(async (tx) => {
+    await tx.$queryRaw`SELECT id FROM "Branch" WHERE id = ${existing.branchId} FOR UPDATE`;
     const student = await tx.branchStudent.update({
       where: { id: existing.id },
       data: {
@@ -1963,6 +1968,8 @@ export async function updateBranchStudent(studentId, payload, actor = null) {
         updatedBy: actor?.id ?? null,
       },
     });
+
+    await syncStudentCourseEnd(tx, student);
 
     await tx.branchStudentInstallment.deleteMany({
       where: { branchStudentId: student.id }

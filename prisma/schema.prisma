@@ -57,6 +57,7 @@ model Branch {
   updatedBy         String?
   createdAt         DateTime        @default(now())
   updatedAt         DateTime        @updatedAt
+  timezone          String          @default("Asia/Kolkata")
   branchCity        String          @default("")
   branchCountry     String          @default("")
   branchCountryCode String          @default("")
@@ -596,6 +597,10 @@ model BranchCalendarHoliday {
 }
 
 model BranchCalendarLeave {
+  isInstitute Boolean @default(false)
+  declaredAt DateTime @default(now())
+  declaredBy String?
+  affectedClasses Json @default("[]")
   id          String       @id @default(cuid())
   branchId    String
   batchId     String?
@@ -866,6 +871,7 @@ enum LoginEventType {
 }
 
 enum NotificationKind {
+  INSTITUTE_LEAVE
   BRANCH_CREATED
   BRANCH_INVITATION_RESENT
   BRANCH_LOGIN

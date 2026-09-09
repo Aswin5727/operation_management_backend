@@ -57,6 +57,7 @@ model Branch {
   updatedBy                  String?
   createdAt                  DateTime                    @default(now())
   updatedAt                  DateTime                    @updatedAt
+  timezone                   String                      @default("Asia/Kolkata")
   branchCity                 String                      @default("")
   branchCountry              String                      @default("")
   branchCountryCode          String                      @default("")
@@ -597,15 +598,19 @@ model BranchCalendarHoliday {
 }
 
 model BranchCalendarLeave {
-  id        String       @id @default(cuid())
-  branchId  String
-  batchId   String?
-  leaveDate String
-  reason    String?
-  status    RecordStatus @default(ACTIVE)
-  createdAt DateTime     @default(now())
-  updatedAt DateTime     @updatedAt
-  branch    Branch       @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  isInstitute     Boolean      @default(false)
+  declaredAt      DateTime     @default(now())
+  declaredBy      String?
+  affectedClasses Json         @default("[]")
+  id              String       @id @default(cuid())
+  branchId        String
+  batchId         String?
+  leaveDate       String
+  reason          String?
+  status          RecordStatus @default(ACTIVE)
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  branch          Branch       @relation(fields: [branchId], references: [id], onDelete: Cascade)
 
   @@index([branchId, leaveDate, status])
   @@index([batchId, leaveDate, status])
@@ -867,6 +872,7 @@ enum LoginEventType {
 }
 
 enum NotificationKind {
+  INSTITUTE_LEAVE
   BRANCH_CREATED
   BRANCH_INVITATION_RESENT
   BRANCH_LOGIN

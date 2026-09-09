@@ -1,3 +1,4 @@
+import { assertAttendanceAllowed, attendanceExclusions } from "../instituteLeave/instituteLeave.service.js";
 import prisma from "../../config/prisma.js";
 import AppError from "../../common/errors/AppError.js";
 
@@ -460,10 +461,12 @@ async function markBranchStudentAttendance(user, payload, date, batch) {
   if (students.length !== submittedStudents.length) throw new AppError("One or more students do not belong to this batch", 400);
 
   const firstSubmodule = Array.isArray(payload.submodules) ? payload.submodules[0] : null;
-  await prisma.$transaction(
-    submittedStudents.map((entry) => {
+  await prisma.$transaction(async (tx) => {
+    await tx.$queryRaw`SELECT id FROM "Branch" WHERE id = ${batch.branchId} FOR UPDATE`;
+    await assertAttendanceAllowed(tx, students, date, batch.branchId);
+    await Promise.all(submittedStudents.map((entry) => {
       const student = studentByIdentifier.get(entry.studentId);
-      return prisma.branchStudentAttendance.upsert({
+      return tx.branchStudentAttendance.upsert({
         where: { branchStudentId_attendanceDate: { branchStudentId: student.id, attendanceDate: date } },
         create: {
           branchStudentId: student.id,
@@ -491,8 +494,8 @@ async function markBranchStudentAttendance(user, payload, date, batch) {
           markedAt: new Date(),
         },
       });
-    }),
-  );
+    }));
+  });
 
   return getCurrentFacultyAttendanceOverview(user, date, "");
 }
@@ -527,14 +530,15 @@ async function getBranchFacultyAttendanceOverview(user, date, facultyId = "") {
         select: { branchStudentId: true, attendanceDate: true, status: true, markedAt: true, notes: true },
       })
     : [];
+  const instituteExclusions = await attendanceExclusions(prisma, students, date);
   const todayMap = new Map(attendanceRecords.filter((record) => record.attendanceDate === date).map((record) => [record.branchStudentId, record]));
   const batches = branchBatches.map((batch) => {
     const batchStudents = students
       .filter((student) => student.branchId === batch.branchId && student.courseId === batch.courseId && student.batchId === batch.batchId)
-      .map((student) => mapBranchAttendanceStudent(student, todayMap.get(student.id)));
+      .map((student) => mapBranchAttendanceStudent(student, instituteExclusions.has(student.id) ? { status: "NOT_APPLICABLE" } : todayMap.get(student.id)));
     const present = batchStudents.filter((student) => student.attendanceStatus === "PRESENT").length;
     const absent = batchStudents.filter((student) => student.attendanceStatus === "ABSENT").length;
-    return { id: batch.id || batch.batchId, courseId: batch.courseId, courseName: batch.courseName, batchId: batch.batchId, batchName: batch.batchName, batchTiming: batch.batchTiming, sequenceNo: batch.sequenceNo, present, absent, unmarked: Math.max(0, batchStudents.length - present - absent), totalStudents: batchStudents.length, students: batchStudents };
+    return { id: batch.id || batch.batchId, courseId: batch.courseId, courseName: batch.courseName, batchId: batch.batchId, batchName: batch.batchName, batchTiming: batch.batchTiming, sequenceNo: batch.sequenceNo, present, absent, notApplicable: batchStudents.filter(s => s.attendanceStatus === "NOT_APPLICABLE").length, unmarked: batchStudents.filter(s => s.attendanceStatus === "UNMARKED").length, totalStudents: batchStudents.length, students: batchStudents };
   });
   const present = batches.reduce((sum, batch) => sum + batch.present, 0);
   const absent = batches.reduce((sum, batch) => sum + batch.absent, 0);
@@ -542,7 +546,7 @@ async function getBranchFacultyAttendanceOverview(user, date, facultyId = "") {
   return {
     date,
     facultySession: { loginAt: null, logoutAt: null, loginAtLabel: "", logoutAtLabel: "", activeSessionId: null, totalSessions: 0, sessions: [] },
-    summary: { totalBatches: batches.length, totalStudents: students.length, present, absent, unmarked: Math.max(0, students.length - marked), attendancePercentage: marked ? Math.round((present / marked) * 1000) / 10 : 0 },
+    summary: { totalBatches: batches.length, totalStudents: students.length, present, absent, notApplicable: instituteExclusions.size, unmarked: Math.max(0, students.length - marked - instituteExclusions.size), attendancePercentage: marked ? Math.round((present / marked) * 1000) / 10 : 0 },
     monthlySeries: buildMonthlySeries(attendanceRecords),
     batches,
   };

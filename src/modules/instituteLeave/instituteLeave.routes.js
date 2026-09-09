@@ -1,0 +1,15 @@
+import express from 'express';
+import { authenticate } from '../../common/middlewares/authenticate.js';
+import { authorize } from '../../common/middlewares/authorize.js';
+import asyncHandler from '../../common/utils/asyncHandler.js';
+import { listLeaves, getLeave, mutateLeave, facultyCalendar } from './instituteLeave.service.js';
+const router = express.Router();
+router.use(authenticate);
+router.get('/faculty-calendar', authorize('FACULTY'), asyncHandler(async (req, res) => res.json({ data: await facultyCalendar(req.user, req.query) })));
+router.use(authorize('BRANCH_ADMIN'));
+router.get('/', asyncHandler(async (req, res) => res.json({ data: await listLeaves(req.user, req.query) })));
+router.post('/', asyncHandler(async (req, res) => res.status(201).json({ data: await mutateLeave(req.user, null, req.body) })));
+router.get('/:id', asyncHandler(async (req, res) => res.json({ data: await getLeave(req.user, req.params.id) })));
+router.patch('/:id', asyncHandler(async (req, res) => res.json({ data: await mutateLeave(req.user, req.params.id, req.body) })));
+router.delete('/:id', asyncHandler(async (req, res) => res.json({ data: await mutateLeave(req.user, req.params.id, {}, true) })));
+export default router;

@@ -1,6 +1,7 @@
 import prisma from "../../config/prisma.js";
 
 const NOTIFICATION_KIND_MAP = {
+  INSTITUTE_LEAVE: "institute-leave",
   BRANCH_CREATED: "branch-created",
   BRANCH_INVITATION_RESENT: "branch-mail",
   BRANCH_LOGIN: "branch-login",
@@ -35,6 +36,7 @@ const SUPER_ADMIN_VISIBLE_NOTIFICATION_KINDS = new Set([
   "COURSE_EDIT_MODULE_UPDATED",
 ]);
 const FACULTY_VISIBLE_NOTIFICATION_KINDS = new Set([
+  "INSTITUTE_LEAVE",
   "FACULTY_COURSE_ASSIGNED",
   "COURSE_EDIT_REQUEST_ACCEPTED",
   "COURSE_EDIT_REQUEST_REJECTED",
@@ -206,6 +208,8 @@ function getVisibleNotificationKindsForRole(user = {}) {
     return BRANCH_ADMIN_VISIBLE_NOTIFICATION_KINDS;
   }
 
+  if (role === "STUDENT") return new Set(["INSTITUTE_LEAVE"]);
+
   if (role === "FACULTY") {
     return FACULTY_VISIBLE_NOTIFICATION_KINDS;
   }
@@ -220,7 +224,7 @@ function buildNotificationWhere({
   unreadOnly = false,
   kind = "",
 } = {}) {
-  const isFaculty = String(user?.role || "").toUpperCase() === "FACULTY";
+  const isFaculty = ["FACULTY", "STUDENT"].includes(String(user?.role || "").toUpperCase());
   const normalizedKind = normalizeString(kind).toUpperCase();
 
   if (isFaculty) {
@@ -669,7 +673,7 @@ export async function listNotifications(query = {}, user = {}) {
   const unreadOnly = String(query.unreadOnly || "").trim().toLowerCase() === "true";
   const kind = normalizeString(query.kind).toUpperCase();
 
-  const isFaculty = String(user?.role || "").toUpperCase() === "FACULTY";
+  const isFaculty = ["FACULTY", "STUDENT"].includes(String(user?.role || "").toUpperCase());
   const branchScope = await buildBranchAdminScope(user);
   const visibleKinds = getVisibleNotificationKindsForRole(user);
   const where = buildNotificationWhere({
@@ -810,7 +814,7 @@ export async function markNotificationsAsRead(
   const visibleKinds = getVisibleNotificationKindsForRole(user);
 
   const facultyScope =
-    user?.role === "FACULTY"
+    ["FACULTY", "STUDENT"].includes(user?.role)
       ? {
           targetUserId: user.id,
           kind: {

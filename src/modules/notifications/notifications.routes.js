@@ -15,6 +15,7 @@ router.use(
     "SUPER_ADMIN",
     "BRANCH_ADMIN",
     "FACULTY",
+    "STUDENT",
   ),
 );
 router.get("/", listNotificationsHandler);

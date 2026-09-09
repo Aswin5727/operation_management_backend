@@ -1,3 +1,4 @@
+import { studentCalendar } from "../instituteLeave/instituteLeave.service.js";
 import prisma from "../../config/prisma.js";
 import AppError from "../../common/errors/AppError.js";
 
@@ -168,6 +169,8 @@ export async function getCurrentBranchStudentCalendar(user, query = {}) {
 
   if (!student) throw new AppError("Branch student profile not found", 404);
 
+  if (student.batchId && student.courseId && student.facultyId) return studentCalendar(user, query);
+
   const startDate = dateKey(student.courseStartDate || student.admissionDate);
   if (!startDate) throw new AppError("Course start date is not configured for this student", 400);
 
@@ -186,7 +189,7 @@ export async function getCurrentBranchStudentCalendar(user, query = {}) {
       orderBy: { holidayDate: "asc" },
     }),
     prisma.branchCalendarLeave.findMany({
-      where: { branchId: student.branchId, status: "ACTIVE", ...(student.batchId ? { OR: [{ batchId: null }, { batchId: student.batchId }] } : {}), leaveDate: { gte: startDate } },
+      where: { branchId: student.branchId, status: "ACTIVE", isInstitute: false, ...(student.batchId ? { OR: [{ batchId: null }, { batchId: student.batchId }] } : {}), leaveDate: { gte: startDate } },
       orderBy: { leaveDate: "asc" },
     }),
   ]);
