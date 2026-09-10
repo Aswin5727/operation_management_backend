@@ -1506,32 +1506,15 @@ function toBranchStudentSummary(record) {
   };
 }
 
-async function ensureAvailableOfflineSeat(batch, courseMode, excludeStudentId = null) {
-  if (String(courseMode || '').trim().toLowerCase() !== 'offline') return
-
-  const offlineSeatLimit = Math.max(Number(batch?.offlineSeats || 0), 0)
+async function ensureAvailableBatchCapacity(batch, excludeStudentId = null) {
   const studentWhere = {
     branchId: batch.branchId,
     batchId: batch.batchId,
     recordStatus: 'ACTIVE',
     ...(excludeStudentId ? { NOT: { id: excludeStudentId } } : {}),
   }
-  const [totalStudentCount, offlineStudentCount] = await Promise.all([
-    prisma.branchStudent.count({ where: studentWhere }),
-    prisma.branchStudent.count({
-      where: {
-        ...studentWhere,
-        courseMode: { equals: 'Offline', mode: 'insensitive' },
-      },
-    }),
-  ])
-
-  if (
-    totalStudentCount >= Number(batch?.totalSeats || 0) ||
-    offlineStudentCount >= offlineSeatLimit
-  ) {
-    throw new AppError('No offline seats available in the selected batch. Please select another batch.', 400)
-  }
+  const totalStudentCount = await prisma.branchStudent.count({ where: studentWhere })
+  if (totalStudentCount >= Number(batch?.totalSeats || 0)) throw new AppError('This batch has reached its total seat capacity.', 400)
 }
 
 async function ensureUniqueBranchStudentIdentity({ emailAddress, mobileNumber }, branchId, excludeId = null, excludeUserId = null) {
@@ -1707,6 +1690,10 @@ export async function createBranchStudent(payload, actor) {
           courseName: true,
           facultyId: true,
           facultyName: true,
+          weekType: true,
+          mode: true,
+          courseStartDate: true,
+          courseEndDate: true,
         },
       })
     : null;
@@ -1716,7 +1703,10 @@ export async function createBranchStudent(payload, actor) {
   }
 
   if (assignedBatch) {
-    await ensureAvailableOfflineSeat(assignedBatch, studentData.courseMode);
+    const requestedWeekType = normalizeString(payload.weekType).toUpperCase();
+    const requestedMode = normalizeString(payload.mode || payload.courseMode).toUpperCase();
+    if ((requestedWeekType && requestedWeekType !== assignedBatch.weekType) || (requestedMode && requestedMode !== assignedBatch.mode)) throw new AppError("Selected batch does not match the selected course, week type, or mode.", 400);
+    await ensureAvailableBatchCapacity(assignedBatch);
   }
 
   if (assignedBatch) {
@@ -1727,6 +1717,8 @@ export async function createBranchStudent(payload, actor) {
     studentData.courseName = studentData.courseName || assignedBatch.courseName;
     studentData.facultyId = studentData.facultyId || assignedBatch.facultyId;
     studentData.facultyName = studentData.facultyName || assignedBatch.facultyName;
+    studentData.courseStartDate = studentData.courseStartDate || assignedBatch.courseStartDate;
+    studentData.courseEndDate = studentData.courseEndDate || assignedBatch.courseEndDate;
   }
   console.log("[createBranchStudent] studentData keys:", Object.keys(studentData));
   console.log("[createBranchStudent] studentData:", JSON.stringify(studentData, null, 2));
@@ -1939,6 +1931,10 @@ export async function updateBranchStudent(studentId, payload, actor = null) {
         courseName: true,
         facultyId: true,
         facultyName: true,
+        weekType: true,
+        mode: true,
+        courseStartDate: true,
+        courseEndDate: true,
       },
     });
 
@@ -1946,7 +1942,10 @@ export async function updateBranchStudent(studentId, payload, actor = null) {
       throw new AppError("Selected batch was not found in this branch", 400);
     }
 
-    await ensureAvailableOfflineSeat(assignedBatch, studentData.courseMode, existing.id);
+    const requestedWeekType = normalizeString(payload.weekType).toUpperCase();
+    const requestedMode = normalizeString(payload.mode || payload.courseMode).toUpperCase();
+    if ((requestedWeekType && requestedWeekType !== assignedBatch.weekType) || (requestedMode && requestedMode !== assignedBatch.mode)) throw new AppError("Selected batch does not match the selected course, week type, or mode.", 400);
+    await ensureAvailableBatchCapacity(assignedBatch, existing.id);
 
     studentData.batchId = assignedBatch.batchId;
     studentData.batchName = assignedBatch.batchName;
@@ -1955,6 +1954,8 @@ export async function updateBranchStudent(studentId, payload, actor = null) {
     studentData.courseName = studentData.courseName || assignedBatch.courseName;
     studentData.facultyId = studentData.facultyId || assignedBatch.facultyId;
     studentData.facultyName = studentData.facultyName || assignedBatch.facultyName;
+    studentData.courseStartDate = studentData.courseStartDate || assignedBatch.courseStartDate;
+    studentData.courseEndDate = studentData.courseEndDate || assignedBatch.courseEndDate;
   }
   const existingLoginUser = await findBranchStudentLoginUser(existing);
   const previousCourseProgress = Number(existing.courseProgress);
