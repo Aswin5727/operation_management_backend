@@ -21921,6 +21921,10 @@ export namespace Prisma {
     batchTiming: string | null
     totalSeats: number | null
     offlineSeats: number | null
+    weekType: string | null
+    mode: string | null
+    courseStartDate: string | null
+    courseEndDate: string | null
     sequenceNo: number | null
     status: $Enums.RecordStatus | null
     createdBy: string | null
@@ -21948,6 +21952,10 @@ export namespace Prisma {
     batchTiming: string | null
     totalSeats: number | null
     offlineSeats: number | null
+    weekType: string | null
+    mode: string | null
+    courseStartDate: string | null
+    courseEndDate: string | null
     sequenceNo: number | null
     status: $Enums.RecordStatus | null
     createdBy: string | null
@@ -21975,6 +21983,10 @@ export namespace Prisma {
     batchTiming: number
     totalSeats: number
     offlineSeats: number
+    weekType: number
+    mode: number
+    courseStartDate: number
+    courseEndDate: number
     sequenceNo: number
     status: number
     createdBy: number
@@ -22016,6 +22028,10 @@ export namespace Prisma {
     batchTiming?: true
     totalSeats?: true
     offlineSeats?: true
+    weekType?: true
+    mode?: true
+    courseStartDate?: true
+    courseEndDate?: true
     sequenceNo?: true
     status?: true
     createdBy?: true
@@ -22043,6 +22059,10 @@ export namespace Prisma {
     batchTiming?: true
     totalSeats?: true
     offlineSeats?: true
+    weekType?: true
+    mode?: true
+    courseStartDate?: true
+    courseEndDate?: true
     sequenceNo?: true
     status?: true
     createdBy?: true
@@ -22070,6 +22090,10 @@ export namespace Prisma {
     batchTiming?: true
     totalSeats?: true
     offlineSeats?: true
+    weekType?: true
+    mode?: true
+    courseStartDate?: true
+    courseEndDate?: true
     sequenceNo?: true
     status?: true
     createdBy?: true
@@ -22184,6 +22208,10 @@ export namespace Prisma {
     batchTiming: string
     totalSeats: number
     offlineSeats: number
+    weekType: string | null
+    mode: string | null
+    courseStartDate: string | null
+    courseEndDate: string | null
     sequenceNo: number
     status: $Enums.RecordStatus
     createdBy: string | null
@@ -22230,6 +22258,10 @@ export namespace Prisma {
     batchTiming?: boolean
     totalSeats?: boolean
     offlineSeats?: boolean
+    weekType?: boolean
+    mode?: boolean
+    courseStartDate?: boolean
+    courseEndDate?: boolean
     sequenceNo?: boolean
     status?: boolean
     createdBy?: boolean
@@ -22260,6 +22292,10 @@ export namespace Prisma {
     batchTiming?: boolean
     totalSeats?: boolean
     offlineSeats?: boolean
+    weekType?: boolean
+    mode?: boolean
+    courseStartDate?: boolean
+    courseEndDate?: boolean
     sequenceNo?: boolean
     status?: boolean
     createdBy?: boolean
@@ -22290,6 +22326,10 @@ export namespace Prisma {
     batchTiming?: boolean
     totalSeats?: boolean
     offlineSeats?: boolean
+    weekType?: boolean
+    mode?: boolean
+    courseStartDate?: boolean
+    courseEndDate?: boolean
     sequenceNo?: boolean
     status?: boolean
     createdBy?: boolean
@@ -22320,6 +22360,10 @@ export namespace Prisma {
     batchTiming?: boolean
     totalSeats?: boolean
     offlineSeats?: boolean
+    weekType?: boolean
+    mode?: boolean
+    courseStartDate?: boolean
+    courseEndDate?: boolean
     sequenceNo?: boolean
     status?: boolean
     createdBy?: boolean
@@ -22328,7 +22372,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type BranchBatchOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "branchId" | "branchCourseId" | "branchFacultyId" | "batchId" | "courseId" | "courseName" | "facultyId" | "facultyName" | "facultyEmail" | "batchName" | "startTime" | "startPeriod" | "endTime" | "endPeriod" | "batchTiming" | "totalSeats" | "offlineSeats" | "sequenceNo" | "status" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["branchBatch"]>
+  export type BranchBatchOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "branchId" | "branchCourseId" | "branchFacultyId" | "batchId" | "courseId" | "courseName" | "facultyId" | "facultyName" | "facultyEmail" | "batchName" | "startTime" | "startPeriod" | "endTime" | "endPeriod" | "batchTiming" | "totalSeats" | "offlineSeats" | "weekType" | "mode" | "courseStartDate" | "courseEndDate" | "sequenceNo" | "status" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["branchBatch"]>
   export type BranchBatchInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     branch?: boolean | BranchDefaultArgs<ExtArgs>
     branchCourse?: boolean | BranchCourseDefaultArgs<ExtArgs>
@@ -22371,6 +22415,10 @@ export namespace Prisma {
       batchTiming: string
       totalSeats: number
       offlineSeats: number
+      weekType: string | null
+      mode: string | null
+      courseStartDate: string | null
+      courseEndDate: string | null
       sequenceNo: number
       status: $Enums.RecordStatus
       createdBy: string | null
@@ -22821,6 +22869,10 @@ export namespace Prisma {
     readonly batchTiming: FieldRef<"BranchBatch", 'String'>
     readonly totalSeats: FieldRef<"BranchBatch", 'Int'>
     readonly offlineSeats: FieldRef<"BranchBatch", 'Int'>
+    readonly weekType: FieldRef<"BranchBatch", 'String'>
+    readonly mode: FieldRef<"BranchBatch", 'String'>
+    readonly courseStartDate: FieldRef<"BranchBatch", 'String'>
+    readonly courseEndDate: FieldRef<"BranchBatch", 'String'>
     readonly sequenceNo: FieldRef<"BranchBatch", 'Int'>
     readonly status: FieldRef<"BranchBatch", 'RecordStatus'>
     readonly createdBy: FieldRef<"BranchBatch", 'String'>
@@ -31282,6 +31334,8 @@ export namespace Prisma {
     branchId: string | null
     batchId: string | null
     leaveDate: string | null
+    leaveStartTime: string | null
+    leaveEndTime: string | null
     reason: string | null
     status: $Enums.RecordStatus | null
     createdAt: Date | null
@@ -31296,6 +31350,8 @@ export namespace Prisma {
     branchId: string | null
     batchId: string | null
     leaveDate: string | null
+    leaveStartTime: string | null
+    leaveEndTime: string | null
     reason: string | null
     status: $Enums.RecordStatus | null
     createdAt: Date | null
@@ -31311,6 +31367,8 @@ export namespace Prisma {
     branchId: number
     batchId: number
     leaveDate: number
+    leaveStartTime: number
+    leaveEndTime: number
     reason: number
     status: number
     createdAt: number
@@ -31327,6 +31385,8 @@ export namespace Prisma {
     branchId?: true
     batchId?: true
     leaveDate?: true
+    leaveStartTime?: true
+    leaveEndTime?: true
     reason?: true
     status?: true
     createdAt?: true
@@ -31341,6 +31401,8 @@ export namespace Prisma {
     branchId?: true
     batchId?: true
     leaveDate?: true
+    leaveStartTime?: true
+    leaveEndTime?: true
     reason?: true
     status?: true
     createdAt?: true
@@ -31356,6 +31418,8 @@ export namespace Prisma {
     branchId?: true
     batchId?: true
     leaveDate?: true
+    leaveStartTime?: true
+    leaveEndTime?: true
     reason?: true
     status?: true
     createdAt?: true
@@ -31444,6 +31508,8 @@ export namespace Prisma {
     branchId: string
     batchId: string | null
     leaveDate: string
+    leaveStartTime: string | null
+    leaveEndTime: string | null
     reason: string | null
     status: $Enums.RecordStatus
     createdAt: Date
@@ -31476,6 +31542,8 @@ export namespace Prisma {
     branchId?: boolean
     batchId?: boolean
     leaveDate?: boolean
+    leaveStartTime?: boolean
+    leaveEndTime?: boolean
     reason?: boolean
     status?: boolean
     createdAt?: boolean
@@ -31492,6 +31560,8 @@ export namespace Prisma {
     branchId?: boolean
     batchId?: boolean
     leaveDate?: boolean
+    leaveStartTime?: boolean
+    leaveEndTime?: boolean
     reason?: boolean
     status?: boolean
     createdAt?: boolean
@@ -31508,6 +31578,8 @@ export namespace Prisma {
     branchId?: boolean
     batchId?: boolean
     leaveDate?: boolean
+    leaveStartTime?: boolean
+    leaveEndTime?: boolean
     reason?: boolean
     status?: boolean
     createdAt?: boolean
@@ -31524,13 +31596,15 @@ export namespace Prisma {
     branchId?: boolean
     batchId?: boolean
     leaveDate?: boolean
+    leaveStartTime?: boolean
+    leaveEndTime?: boolean
     reason?: boolean
     status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type BranchCalendarLeaveOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"isInstitute" | "declaredAt" | "declaredBy" | "affectedClasses" | "id" | "branchId" | "batchId" | "leaveDate" | "reason" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["branchCalendarLeave"]>
+  export type BranchCalendarLeaveOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"isInstitute" | "declaredAt" | "declaredBy" | "affectedClasses" | "id" | "branchId" | "batchId" | "leaveDate" | "leaveStartTime" | "leaveEndTime" | "reason" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["branchCalendarLeave"]>
   export type BranchCalendarLeaveInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     branch?: boolean | BranchDefaultArgs<ExtArgs>
   }
@@ -31555,6 +31629,8 @@ export namespace Prisma {
       branchId: string
       batchId: string | null
       leaveDate: string
+      leaveStartTime: string | null
+      leaveEndTime: string | null
       reason: string | null
       status: $Enums.RecordStatus
       createdAt: Date
@@ -31991,6 +32067,8 @@ export namespace Prisma {
     readonly branchId: FieldRef<"BranchCalendarLeave", 'String'>
     readonly batchId: FieldRef<"BranchCalendarLeave", 'String'>
     readonly leaveDate: FieldRef<"BranchCalendarLeave", 'String'>
+    readonly leaveStartTime: FieldRef<"BranchCalendarLeave", 'String'>
+    readonly leaveEndTime: FieldRef<"BranchCalendarLeave", 'String'>
     readonly reason: FieldRef<"BranchCalendarLeave", 'String'>
     readonly status: FieldRef<"BranchCalendarLeave", 'RecordStatus'>
     readonly createdAt: FieldRef<"BranchCalendarLeave", 'DateTime'>
@@ -47645,6 +47723,10 @@ export namespace Prisma {
     batchTiming: 'batchTiming',
     totalSeats: 'totalSeats',
     offlineSeats: 'offlineSeats',
+    weekType: 'weekType',
+    mode: 'mode',
+    courseStartDate: 'courseStartDate',
+    courseEndDate: 'courseEndDate',
     sequenceNo: 'sequenceNo',
     status: 'status',
     createdBy: 'createdBy',
@@ -47825,6 +47907,8 @@ export namespace Prisma {
     branchId: 'branchId',
     batchId: 'batchId',
     leaveDate: 'leaveDate',
+    leaveStartTime: 'leaveStartTime',
+    leaveEndTime: 'leaveEndTime',
     reason: 'reason',
     status: 'status',
     createdAt: 'createdAt',
@@ -49982,6 +50066,10 @@ export namespace Prisma {
     batchTiming?: StringFilter<"BranchBatch"> | string
     totalSeats?: IntFilter<"BranchBatch"> | number
     offlineSeats?: IntFilter<"BranchBatch"> | number
+    weekType?: StringNullableFilter<"BranchBatch"> | string | null
+    mode?: StringNullableFilter<"BranchBatch"> | string | null
+    courseStartDate?: StringNullableFilter<"BranchBatch"> | string | null
+    courseEndDate?: StringNullableFilter<"BranchBatch"> | string | null
     sequenceNo?: IntFilter<"BranchBatch"> | number
     status?: EnumRecordStatusFilter<"BranchBatch"> | $Enums.RecordStatus
     createdBy?: StringNullableFilter<"BranchBatch"> | string | null
@@ -50012,6 +50100,10 @@ export namespace Prisma {
     batchTiming?: SortOrder
     totalSeats?: SortOrder
     offlineSeats?: SortOrder
+    weekType?: SortOrderInput | SortOrder
+    mode?: SortOrderInput | SortOrder
+    courseStartDate?: SortOrderInput | SortOrder
+    courseEndDate?: SortOrderInput | SortOrder
     sequenceNo?: SortOrder
     status?: SortOrder
     createdBy?: SortOrderInput | SortOrder
@@ -50046,6 +50138,10 @@ export namespace Prisma {
     batchTiming?: StringFilter<"BranchBatch"> | string
     totalSeats?: IntFilter<"BranchBatch"> | number
     offlineSeats?: IntFilter<"BranchBatch"> | number
+    weekType?: StringNullableFilter<"BranchBatch"> | string | null
+    mode?: StringNullableFilter<"BranchBatch"> | string | null
+    courseStartDate?: StringNullableFilter<"BranchBatch"> | string | null
+    courseEndDate?: StringNullableFilter<"BranchBatch"> | string | null
     sequenceNo?: IntFilter<"BranchBatch"> | number
     status?: EnumRecordStatusFilter<"BranchBatch"> | $Enums.RecordStatus
     createdBy?: StringNullableFilter<"BranchBatch"> | string | null
@@ -50076,6 +50172,10 @@ export namespace Prisma {
     batchTiming?: SortOrder
     totalSeats?: SortOrder
     offlineSeats?: SortOrder
+    weekType?: SortOrderInput | SortOrder
+    mode?: SortOrderInput | SortOrder
+    courseStartDate?: SortOrderInput | SortOrder
+    courseEndDate?: SortOrderInput | SortOrder
     sequenceNo?: SortOrder
     status?: SortOrder
     createdBy?: SortOrderInput | SortOrder
@@ -50111,6 +50211,10 @@ export namespace Prisma {
     batchTiming?: StringWithAggregatesFilter<"BranchBatch"> | string
     totalSeats?: IntWithAggregatesFilter<"BranchBatch"> | number
     offlineSeats?: IntWithAggregatesFilter<"BranchBatch"> | number
+    weekType?: StringNullableWithAggregatesFilter<"BranchBatch"> | string | null
+    mode?: StringNullableWithAggregatesFilter<"BranchBatch"> | string | null
+    courseStartDate?: StringNullableWithAggregatesFilter<"BranchBatch"> | string | null
+    courseEndDate?: StringNullableWithAggregatesFilter<"BranchBatch"> | string | null
     sequenceNo?: IntWithAggregatesFilter<"BranchBatch"> | number
     status?: EnumRecordStatusWithAggregatesFilter<"BranchBatch"> | $Enums.RecordStatus
     createdBy?: StringNullableWithAggregatesFilter<"BranchBatch"> | string | null
@@ -50963,6 +51067,8 @@ export namespace Prisma {
     branchId?: StringFilter<"BranchCalendarLeave"> | string
     batchId?: StringNullableFilter<"BranchCalendarLeave"> | string | null
     leaveDate?: StringFilter<"BranchCalendarLeave"> | string
+    leaveStartTime?: StringNullableFilter<"BranchCalendarLeave"> | string | null
+    leaveEndTime?: StringNullableFilter<"BranchCalendarLeave"> | string | null
     reason?: StringNullableFilter<"BranchCalendarLeave"> | string | null
     status?: EnumRecordStatusFilter<"BranchCalendarLeave"> | $Enums.RecordStatus
     createdAt?: DateTimeFilter<"BranchCalendarLeave"> | Date | string
@@ -50979,6 +51085,8 @@ export namespace Prisma {
     branchId?: SortOrder
     batchId?: SortOrderInput | SortOrder
     leaveDate?: SortOrder
+    leaveStartTime?: SortOrderInput | SortOrder
+    leaveEndTime?: SortOrderInput | SortOrder
     reason?: SortOrderInput | SortOrder
     status?: SortOrder
     createdAt?: SortOrder
@@ -50998,6 +51106,8 @@ export namespace Prisma {
     branchId?: StringFilter<"BranchCalendarLeave"> | string
     batchId?: StringNullableFilter<"BranchCalendarLeave"> | string | null
     leaveDate?: StringFilter<"BranchCalendarLeave"> | string
+    leaveStartTime?: StringNullableFilter<"BranchCalendarLeave"> | string | null
+    leaveEndTime?: StringNullableFilter<"BranchCalendarLeave"> | string | null
     reason?: StringNullableFilter<"BranchCalendarLeave"> | string | null
     status?: EnumRecordStatusFilter<"BranchCalendarLeave"> | $Enums.RecordStatus
     createdAt?: DateTimeFilter<"BranchCalendarLeave"> | Date | string
@@ -51014,6 +51124,8 @@ export namespace Prisma {
     branchId?: SortOrder
     batchId?: SortOrderInput | SortOrder
     leaveDate?: SortOrder
+    leaveStartTime?: SortOrderInput | SortOrder
+    leaveEndTime?: SortOrderInput | SortOrder
     reason?: SortOrderInput | SortOrder
     status?: SortOrder
     createdAt?: SortOrder
@@ -51035,6 +51147,8 @@ export namespace Prisma {
     branchId?: StringWithAggregatesFilter<"BranchCalendarLeave"> | string
     batchId?: StringNullableWithAggregatesFilter<"BranchCalendarLeave"> | string | null
     leaveDate?: StringWithAggregatesFilter<"BranchCalendarLeave"> | string
+    leaveStartTime?: StringNullableWithAggregatesFilter<"BranchCalendarLeave"> | string | null
+    leaveEndTime?: StringNullableWithAggregatesFilter<"BranchCalendarLeave"> | string | null
     reason?: StringNullableWithAggregatesFilter<"BranchCalendarLeave"> | string | null
     status?: EnumRecordStatusWithAggregatesFilter<"BranchCalendarLeave"> | $Enums.RecordStatus
     createdAt?: DateTimeWithAggregatesFilter<"BranchCalendarLeave"> | Date | string
@@ -54333,6 +54447,10 @@ export namespace Prisma {
     batchTiming: string
     totalSeats: number
     offlineSeats?: number
+    weekType?: string | null
+    mode?: string | null
+    courseStartDate?: string | null
+    courseEndDate?: string | null
     sequenceNo?: number
     status?: $Enums.RecordStatus
     createdBy?: string | null
@@ -54363,6 +54481,10 @@ export namespace Prisma {
     batchTiming: string
     totalSeats: number
     offlineSeats?: number
+    weekType?: string | null
+    mode?: string | null
+    courseStartDate?: string | null
+    courseEndDate?: string | null
     sequenceNo?: number
     status?: $Enums.RecordStatus
     createdBy?: string | null
@@ -54387,6 +54509,10 @@ export namespace Prisma {
     batchTiming?: StringFieldUpdateOperationsInput | string
     totalSeats?: IntFieldUpdateOperationsInput | number
     offlineSeats?: IntFieldUpdateOperationsInput | number
+    weekType?: NullableStringFieldUpdateOperationsInput | string | null
+    mode?: NullableStringFieldUpdateOperationsInput | string | null
+    courseStartDate?: NullableStringFieldUpdateOperationsInput | string | null
+    courseEndDate?: NullableStringFieldUpdateOperationsInput | string | null
     sequenceNo?: IntFieldUpdateOperationsInput | number
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -54417,6 +54543,10 @@ export namespace Prisma {
     batchTiming?: StringFieldUpdateOperationsInput | string
     totalSeats?: IntFieldUpdateOperationsInput | number
     offlineSeats?: IntFieldUpdateOperationsInput | number
+    weekType?: NullableStringFieldUpdateOperationsInput | string | null
+    mode?: NullableStringFieldUpdateOperationsInput | string | null
+    courseStartDate?: NullableStringFieldUpdateOperationsInput | string | null
+    courseEndDate?: NullableStringFieldUpdateOperationsInput | string | null
     sequenceNo?: IntFieldUpdateOperationsInput | number
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -54444,6 +54574,10 @@ export namespace Prisma {
     batchTiming: string
     totalSeats: number
     offlineSeats?: number
+    weekType?: string | null
+    mode?: string | null
+    courseStartDate?: string | null
+    courseEndDate?: string | null
     sequenceNo?: number
     status?: $Enums.RecordStatus
     createdBy?: string | null
@@ -54468,6 +54602,10 @@ export namespace Prisma {
     batchTiming?: StringFieldUpdateOperationsInput | string
     totalSeats?: IntFieldUpdateOperationsInput | number
     offlineSeats?: IntFieldUpdateOperationsInput | number
+    weekType?: NullableStringFieldUpdateOperationsInput | string | null
+    mode?: NullableStringFieldUpdateOperationsInput | string | null
+    courseStartDate?: NullableStringFieldUpdateOperationsInput | string | null
+    courseEndDate?: NullableStringFieldUpdateOperationsInput | string | null
     sequenceNo?: IntFieldUpdateOperationsInput | number
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -54495,6 +54633,10 @@ export namespace Prisma {
     batchTiming?: StringFieldUpdateOperationsInput | string
     totalSeats?: IntFieldUpdateOperationsInput | number
     offlineSeats?: IntFieldUpdateOperationsInput | number
+    weekType?: NullableStringFieldUpdateOperationsInput | string | null
+    mode?: NullableStringFieldUpdateOperationsInput | string | null
+    courseStartDate?: NullableStringFieldUpdateOperationsInput | string | null
+    courseEndDate?: NullableStringFieldUpdateOperationsInput | string | null
     sequenceNo?: IntFieldUpdateOperationsInput | number
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -55521,6 +55663,8 @@ export namespace Prisma {
     id?: string
     batchId?: string | null
     leaveDate: string
+    leaveStartTime?: string | null
+    leaveEndTime?: string | null
     reason?: string | null
     status?: $Enums.RecordStatus
     createdAt?: Date | string
@@ -55537,6 +55681,8 @@ export namespace Prisma {
     branchId: string
     batchId?: string | null
     leaveDate: string
+    leaveStartTime?: string | null
+    leaveEndTime?: string | null
     reason?: string | null
     status?: $Enums.RecordStatus
     createdAt?: Date | string
@@ -55551,6 +55697,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     batchId?: NullableStringFieldUpdateOperationsInput | string | null
     leaveDate?: StringFieldUpdateOperationsInput | string
+    leaveStartTime?: NullableStringFieldUpdateOperationsInput | string | null
+    leaveEndTime?: NullableStringFieldUpdateOperationsInput | string | null
     reason?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -55567,6 +55715,8 @@ export namespace Prisma {
     branchId?: StringFieldUpdateOperationsInput | string
     batchId?: NullableStringFieldUpdateOperationsInput | string | null
     leaveDate?: StringFieldUpdateOperationsInput | string
+    leaveStartTime?: NullableStringFieldUpdateOperationsInput | string | null
+    leaveEndTime?: NullableStringFieldUpdateOperationsInput | string | null
     reason?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -55582,6 +55732,8 @@ export namespace Prisma {
     branchId: string
     batchId?: string | null
     leaveDate: string
+    leaveStartTime?: string | null
+    leaveEndTime?: string | null
     reason?: string | null
     status?: $Enums.RecordStatus
     createdAt?: Date | string
@@ -55596,6 +55748,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     batchId?: NullableStringFieldUpdateOperationsInput | string | null
     leaveDate?: StringFieldUpdateOperationsInput | string
+    leaveStartTime?: NullableStringFieldUpdateOperationsInput | string | null
+    leaveEndTime?: NullableStringFieldUpdateOperationsInput | string | null
     reason?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -55611,6 +55765,8 @@ export namespace Prisma {
     branchId?: StringFieldUpdateOperationsInput | string
     batchId?: NullableStringFieldUpdateOperationsInput | string | null
     leaveDate?: StringFieldUpdateOperationsInput | string
+    leaveStartTime?: NullableStringFieldUpdateOperationsInput | string | null
+    leaveEndTime?: NullableStringFieldUpdateOperationsInput | string | null
     reason?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -58734,6 +58890,10 @@ export namespace Prisma {
     batchTiming?: SortOrder
     totalSeats?: SortOrder
     offlineSeats?: SortOrder
+    weekType?: SortOrder
+    mode?: SortOrder
+    courseStartDate?: SortOrder
+    courseEndDate?: SortOrder
     sequenceNo?: SortOrder
     status?: SortOrder
     createdBy?: SortOrder
@@ -58767,6 +58927,10 @@ export namespace Prisma {
     batchTiming?: SortOrder
     totalSeats?: SortOrder
     offlineSeats?: SortOrder
+    weekType?: SortOrder
+    mode?: SortOrder
+    courseStartDate?: SortOrder
+    courseEndDate?: SortOrder
     sequenceNo?: SortOrder
     status?: SortOrder
     createdBy?: SortOrder
@@ -58794,6 +58958,10 @@ export namespace Prisma {
     batchTiming?: SortOrder
     totalSeats?: SortOrder
     offlineSeats?: SortOrder
+    weekType?: SortOrder
+    mode?: SortOrder
+    courseStartDate?: SortOrder
+    courseEndDate?: SortOrder
     sequenceNo?: SortOrder
     status?: SortOrder
     createdBy?: SortOrder
@@ -59429,6 +59597,8 @@ export namespace Prisma {
     branchId?: SortOrder
     batchId?: SortOrder
     leaveDate?: SortOrder
+    leaveStartTime?: SortOrder
+    leaveEndTime?: SortOrder
     reason?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
@@ -59443,6 +59613,8 @@ export namespace Prisma {
     branchId?: SortOrder
     batchId?: SortOrder
     leaveDate?: SortOrder
+    leaveStartTime?: SortOrder
+    leaveEndTime?: SortOrder
     reason?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
@@ -59457,6 +59629,8 @@ export namespace Prisma {
     branchId?: SortOrder
     batchId?: SortOrder
     leaveDate?: SortOrder
+    leaveStartTime?: SortOrder
+    leaveEndTime?: SortOrder
     reason?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
@@ -64512,6 +64686,10 @@ export namespace Prisma {
     batchTiming: string
     totalSeats: number
     offlineSeats?: number
+    weekType?: string | null
+    mode?: string | null
+    courseStartDate?: string | null
+    courseEndDate?: string | null
     sequenceNo?: number
     status?: $Enums.RecordStatus
     createdBy?: string | null
@@ -64540,6 +64718,10 @@ export namespace Prisma {
     batchTiming: string
     totalSeats: number
     offlineSeats?: number
+    weekType?: string | null
+    mode?: string | null
+    courseStartDate?: string | null
+    courseEndDate?: string | null
     sequenceNo?: number
     status?: $Enums.RecordStatus
     createdBy?: string | null
@@ -64802,6 +64984,8 @@ export namespace Prisma {
     id?: string
     batchId?: string | null
     leaveDate: string
+    leaveStartTime?: string | null
+    leaveEndTime?: string | null
     reason?: string | null
     status?: $Enums.RecordStatus
     createdAt?: Date | string
@@ -64816,6 +65000,8 @@ export namespace Prisma {
     id?: string
     batchId?: string | null
     leaveDate: string
+    leaveStartTime?: string | null
+    leaveEndTime?: string | null
     reason?: string | null
     status?: $Enums.RecordStatus
     createdAt?: Date | string
@@ -65181,6 +65367,10 @@ export namespace Prisma {
     batchTiming?: StringFilter<"BranchBatch"> | string
     totalSeats?: IntFilter<"BranchBatch"> | number
     offlineSeats?: IntFilter<"BranchBatch"> | number
+    weekType?: StringNullableFilter<"BranchBatch"> | string | null
+    mode?: StringNullableFilter<"BranchBatch"> | string | null
+    courseStartDate?: StringNullableFilter<"BranchBatch"> | string | null
+    courseEndDate?: StringNullableFilter<"BranchBatch"> | string | null
     sequenceNo?: IntFilter<"BranchBatch"> | number
     status?: EnumRecordStatusFilter<"BranchBatch"> | $Enums.RecordStatus
     createdBy?: StringNullableFilter<"BranchBatch"> | string | null
@@ -65389,6 +65579,8 @@ export namespace Prisma {
     branchId?: StringFilter<"BranchCalendarLeave"> | string
     batchId?: StringNullableFilter<"BranchCalendarLeave"> | string | null
     leaveDate?: StringFilter<"BranchCalendarLeave"> | string
+    leaveStartTime?: StringNullableFilter<"BranchCalendarLeave"> | string | null
+    leaveEndTime?: StringNullableFilter<"BranchCalendarLeave"> | string | null
     reason?: StringNullableFilter<"BranchCalendarLeave"> | string | null
     status?: EnumRecordStatusFilter<"BranchCalendarLeave"> | $Enums.RecordStatus
     createdAt?: DateTimeFilter<"BranchCalendarLeave"> | Date | string
@@ -67173,6 +67365,10 @@ export namespace Prisma {
     batchTiming: string
     totalSeats: number
     offlineSeats?: number
+    weekType?: string | null
+    mode?: string | null
+    courseStartDate?: string | null
+    courseEndDate?: string | null
     sequenceNo?: number
     status?: $Enums.RecordStatus
     createdBy?: string | null
@@ -67201,6 +67397,10 @@ export namespace Prisma {
     batchTiming: string
     totalSeats: number
     offlineSeats?: number
+    weekType?: string | null
+    mode?: string | null
+    courseStartDate?: string | null
+    courseEndDate?: string | null
     sequenceNo?: number
     status?: $Enums.RecordStatus
     createdBy?: string | null
@@ -73283,6 +73483,10 @@ export namespace Prisma {
     batchTiming: string
     totalSeats: number
     offlineSeats?: number
+    weekType?: string | null
+    mode?: string | null
+    courseStartDate?: string | null
+    courseEndDate?: string | null
     sequenceNo?: number
     status?: $Enums.RecordStatus
     createdBy?: string | null
@@ -73311,6 +73515,10 @@ export namespace Prisma {
     batchTiming: string
     totalSeats: number
     offlineSeats?: number
+    weekType?: string | null
+    mode?: string | null
+    courseStartDate?: string | null
+    courseEndDate?: string | null
     sequenceNo?: number
     status?: $Enums.RecordStatus
     createdBy?: string | null
@@ -75244,6 +75452,10 @@ export namespace Prisma {
     batchTiming: string
     totalSeats: number
     offlineSeats?: number
+    weekType?: string | null
+    mode?: string | null
+    courseStartDate?: string | null
+    courseEndDate?: string | null
     sequenceNo?: number
     status?: $Enums.RecordStatus
     createdBy?: string | null
@@ -75352,6 +75564,8 @@ export namespace Prisma {
     id?: string
     batchId?: string | null
     leaveDate: string
+    leaveStartTime?: string | null
+    leaveEndTime?: string | null
     reason?: string | null
     status?: $Enums.RecordStatus
     createdAt?: Date | string
@@ -75528,6 +75742,10 @@ export namespace Prisma {
     batchTiming?: StringFieldUpdateOperationsInput | string
     totalSeats?: IntFieldUpdateOperationsInput | number
     offlineSeats?: IntFieldUpdateOperationsInput | number
+    weekType?: NullableStringFieldUpdateOperationsInput | string | null
+    mode?: NullableStringFieldUpdateOperationsInput | string | null
+    courseStartDate?: NullableStringFieldUpdateOperationsInput | string | null
+    courseEndDate?: NullableStringFieldUpdateOperationsInput | string | null
     sequenceNo?: IntFieldUpdateOperationsInput | number
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -75556,6 +75774,10 @@ export namespace Prisma {
     batchTiming?: StringFieldUpdateOperationsInput | string
     totalSeats?: IntFieldUpdateOperationsInput | number
     offlineSeats?: IntFieldUpdateOperationsInput | number
+    weekType?: NullableStringFieldUpdateOperationsInput | string | null
+    mode?: NullableStringFieldUpdateOperationsInput | string | null
+    courseStartDate?: NullableStringFieldUpdateOperationsInput | string | null
+    courseEndDate?: NullableStringFieldUpdateOperationsInput | string | null
     sequenceNo?: IntFieldUpdateOperationsInput | number
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -75582,6 +75804,10 @@ export namespace Prisma {
     batchTiming?: StringFieldUpdateOperationsInput | string
     totalSeats?: IntFieldUpdateOperationsInput | number
     offlineSeats?: IntFieldUpdateOperationsInput | number
+    weekType?: NullableStringFieldUpdateOperationsInput | string | null
+    mode?: NullableStringFieldUpdateOperationsInput | string | null
+    courseStartDate?: NullableStringFieldUpdateOperationsInput | string | null
+    courseEndDate?: NullableStringFieldUpdateOperationsInput | string | null
     sequenceNo?: IntFieldUpdateOperationsInput | number
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -75886,6 +76112,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     batchId?: NullableStringFieldUpdateOperationsInput | string | null
     leaveDate?: StringFieldUpdateOperationsInput | string
+    leaveStartTime?: NullableStringFieldUpdateOperationsInput | string | null
+    leaveEndTime?: NullableStringFieldUpdateOperationsInput | string | null
     reason?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -75900,6 +76128,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     batchId?: NullableStringFieldUpdateOperationsInput | string | null
     leaveDate?: StringFieldUpdateOperationsInput | string
+    leaveStartTime?: NullableStringFieldUpdateOperationsInput | string | null
+    leaveEndTime?: NullableStringFieldUpdateOperationsInput | string | null
     reason?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -75914,6 +76144,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     batchId?: NullableStringFieldUpdateOperationsInput | string | null
     leaveDate?: StringFieldUpdateOperationsInput | string
+    leaveStartTime?: NullableStringFieldUpdateOperationsInput | string | null
+    leaveEndTime?: NullableStringFieldUpdateOperationsInput | string | null
     reason?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -76906,6 +77138,10 @@ export namespace Prisma {
     batchTiming: string
     totalSeats: number
     offlineSeats?: number
+    weekType?: string | null
+    mode?: string | null
+    courseStartDate?: string | null
+    courseEndDate?: string | null
     sequenceNo?: number
     status?: $Enums.RecordStatus
     createdBy?: string | null
@@ -77126,6 +77362,10 @@ export namespace Prisma {
     batchTiming?: StringFieldUpdateOperationsInput | string
     totalSeats?: IntFieldUpdateOperationsInput | number
     offlineSeats?: IntFieldUpdateOperationsInput | number
+    weekType?: NullableStringFieldUpdateOperationsInput | string | null
+    mode?: NullableStringFieldUpdateOperationsInput | string | null
+    courseStartDate?: NullableStringFieldUpdateOperationsInput | string | null
+    courseEndDate?: NullableStringFieldUpdateOperationsInput | string | null
     sequenceNo?: IntFieldUpdateOperationsInput | number
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -77154,6 +77394,10 @@ export namespace Prisma {
     batchTiming?: StringFieldUpdateOperationsInput | string
     totalSeats?: IntFieldUpdateOperationsInput | number
     offlineSeats?: IntFieldUpdateOperationsInput | number
+    weekType?: NullableStringFieldUpdateOperationsInput | string | null
+    mode?: NullableStringFieldUpdateOperationsInput | string | null
+    courseStartDate?: NullableStringFieldUpdateOperationsInput | string | null
+    courseEndDate?: NullableStringFieldUpdateOperationsInput | string | null
     sequenceNo?: IntFieldUpdateOperationsInput | number
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -77180,6 +77424,10 @@ export namespace Prisma {
     batchTiming?: StringFieldUpdateOperationsInput | string
     totalSeats?: IntFieldUpdateOperationsInput | number
     offlineSeats?: IntFieldUpdateOperationsInput | number
+    weekType?: NullableStringFieldUpdateOperationsInput | string | null
+    mode?: NullableStringFieldUpdateOperationsInput | string | null
+    courseStartDate?: NullableStringFieldUpdateOperationsInput | string | null
+    courseEndDate?: NullableStringFieldUpdateOperationsInput | string | null
     sequenceNo?: IntFieldUpdateOperationsInput | number
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -78298,6 +78546,10 @@ export namespace Prisma {
     batchTiming: string
     totalSeats: number
     offlineSeats?: number
+    weekType?: string | null
+    mode?: string | null
+    courseStartDate?: string | null
+    courseEndDate?: string | null
     sequenceNo?: number
     status?: $Enums.RecordStatus
     createdBy?: string | null
@@ -78322,6 +78574,10 @@ export namespace Prisma {
     batchTiming?: StringFieldUpdateOperationsInput | string
     totalSeats?: IntFieldUpdateOperationsInput | number
     offlineSeats?: IntFieldUpdateOperationsInput | number
+    weekType?: NullableStringFieldUpdateOperationsInput | string | null
+    mode?: NullableStringFieldUpdateOperationsInput | string | null
+    courseStartDate?: NullableStringFieldUpdateOperationsInput | string | null
+    courseEndDate?: NullableStringFieldUpdateOperationsInput | string | null
     sequenceNo?: IntFieldUpdateOperationsInput | number
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -78350,6 +78606,10 @@ export namespace Prisma {
     batchTiming?: StringFieldUpdateOperationsInput | string
     totalSeats?: IntFieldUpdateOperationsInput | number
     offlineSeats?: IntFieldUpdateOperationsInput | number
+    weekType?: NullableStringFieldUpdateOperationsInput | string | null
+    mode?: NullableStringFieldUpdateOperationsInput | string | null
+    courseStartDate?: NullableStringFieldUpdateOperationsInput | string | null
+    courseEndDate?: NullableStringFieldUpdateOperationsInput | string | null
     sequenceNo?: IntFieldUpdateOperationsInput | number
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -78376,6 +78636,10 @@ export namespace Prisma {
     batchTiming?: StringFieldUpdateOperationsInput | string
     totalSeats?: IntFieldUpdateOperationsInput | number
     offlineSeats?: IntFieldUpdateOperationsInput | number
+    weekType?: NullableStringFieldUpdateOperationsInput | string | null
+    mode?: NullableStringFieldUpdateOperationsInput | string | null
+    courseStartDate?: NullableStringFieldUpdateOperationsInput | string | null
+    courseEndDate?: NullableStringFieldUpdateOperationsInput | string | null
     sequenceNo?: IntFieldUpdateOperationsInput | number
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null

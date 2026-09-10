@@ -1,4 +1,5 @@
 // Shared, deterministic calendar calculation. Dates are branch-local ISO dates.
+import { batchDailyHours } from '../branchBatches/batchAllocation.js';
 export function localClock(now, timeZone) {
   const parts = Object.fromEntries(new Intl.DateTimeFormat('en-CA', {
     timeZone, year: 'numeric', month: '2-digit', day: '2-digit',
@@ -22,6 +23,14 @@ export function timeMinutes(value, period = '') {
   if (meridiem && hour >= 1 && hour <= 12) hour = hour % 12 + (meridiem === 'PM' ? 12 : 0);
   return hour * 60 + minute;
 }
+export function leaveOverlapsBatch(leave, batch) {
+  const leaveStart = leave.leaveStartTime == null ? null : timeMinutes(leave.leaveStartTime);
+  const leaveEnd = leave.leaveEndTime == null ? null : timeMinutes(leave.leaveEndTime);
+  if (leaveStart === null || leaveEnd === null) return true;
+  const batchStart = timeMinutes(batch?.startTime, batch?.startPeriod);
+  const batchEnd = timeMinutes(batch?.endTime, batch?.endPeriod);
+  return batchStart !== null && batchEnd !== null && batchStart < leaveEnd && batchEnd > leaveStart;
+}
 const timeLabel = minutes => `${String(Math.floor(minutes / 60) % 24).padStart(2, '0')}:${String(Math.round(minutes % 60)).padStart(2, '0')}`;
 export function timingFor(student, batch) {
   const split = String(student.batchTiming || batch?.batchTiming || '').split(/\s*[-–—]\s*/);
@@ -30,18 +39,18 @@ export function timingFor(student, batch) {
   if (start === null || end === null || end <= start) throw new Error(`Configure valid same-day batch timing for ${student.studentId || student.id}`);
   return { start, end, hours: (end - start) / 60 };
 }
-export function isAffected(leave, date, start, timezone) {
-  const declared = localClock(new Date(leave.declaredAt || leave.createdAt), timezone);
-  return leave.leaveDate === date && (date > declared.date || (date === declared.date && start * 60 > declared.seconds));
+export function isAffected(leave, date, batch) {
+  return leave.leaveDate === date && leaveOverlapsBatch(leave, batch);
 }
 const nextDay = date => new Date(Date.parse(`${date}T00:00:00Z`) + 86400000).toISOString().slice(0, 10);
 export function generateSchedule({ student, batch, holidays = [], leaves = [], timezone = 'Asia/Kolkata', now = new Date() }) {
   const startDate = student.courseStartDate || student.admissionDate;
   if (!validDate(startDate)) throw new Error(`Configure course start date for ${student.studentId || student.id}`);
   const timing = timingFor(student, batch);
-  const weekend = /weekend/i.test(student.classSchedule || 'Weekday');
+  const weekend = String(batch?.weekType || '').toUpperCase() === 'WEEKEND' || /weekend/i.test(student.classSchedule || '');
   const eligible = date => weekend ? [0, 6].includes(new Date(`${date}T00:00:00Z`).getUTCDay()) : ![0, 6].includes(new Date(`${date}T00:00:00Z`).getUTCDay());
   const holidayMap = new Map(holidays.map(h => [h.holidayDate, h]));
+  const configuredDailyHours = batch?.weekType && batch?.mode ? batchDailyHours(batch.weekType, batch.mode) : timing.hours;
   let requiredHours = Number(student.course?.hours || 0);
   if (!(requiredHours > 0)) {
     let days = Number(student.totalWorkingDays || 0);
@@ -61,9 +70,9 @@ export function generateSchedule({ student, batch, holidays = [], leaves = [], t
     const events = [];
     for (let date = startDate, guard = 0; remaining > 0.000001 && guard < 3660; date = nextDay(date), guard++) {
       const mark = attendance.get(date);
-      const scheduledHours = Math.min(timing.hours, remaining);
+      const scheduledHours = Math.min(configuredDailyHours, remaining);
       const legacy = activeLeaves.find(l => !l.isInstitute && l.leaveDate === date);
-      const leave = applyInstitute && activeLeaves.find(l => l.isInstitute && isAffected(l, date, timing.start, timezone));
+      const leave = applyInstitute && activeLeaves.find(l => l.isInstitute && isAffected(l, date, batch));
       const holiday = holidayMap.get(date);
       const isClassDay = eligible(date);
       // Attendance already recorded is immutable and takes precedence over a later declaration.
@@ -93,8 +102,8 @@ export function generateSchedule({ student, batch, holidays = [], leaves = [], t
   }
   return { ...result, startDate, expectedEndDate: baseline.endDate, actualCourseEndDate: result.endDate,
     requiredHours, totalHours: requiredHours, completedHours: result.completedHours,
-    pendingHours: requiredHours - result.completedHours, cancelledHours, replacementHours, hoursPerDay: timing.hours,
-    requiredTeachingDays: Math.ceil(requiredHours / timing.hours), totalWorkingDays: Math.ceil(requiredHours / timing.hours),
+    pendingHours: requiredHours - result.completedHours, cancelledHours, replacementHours, hoursPerDay: configuredDailyHours,
+    requiredTeachingDays: Math.ceil(requiredHours / configuredDailyHours), totalWorkingDays: Math.ceil(requiredHours / configuredDailyHours),
     actualTeachingDays: result.events.filter(e => e.isCourseDay).length,
     calendarDurationDays: (Date.parse(result.endDate) - Date.parse(startDate)) / 86400000 + 1,
     schedule: weekend ? 'Weekend' : 'Weekday', timezone };

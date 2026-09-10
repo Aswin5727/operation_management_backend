@@ -395,6 +395,10 @@ model BranchBatch {
   batchTiming     String
   totalSeats      Int
   offlineSeats    Int           @default(0)
+  weekType        String?
+  mode            String?
+  courseStartDate String?
+  courseEndDate   String?
   sequenceNo      Int           @default(1)
   status          RecordStatus  @default(ACTIVE)
   createdBy       String?
@@ -413,6 +417,7 @@ model BranchBatch {
   @@index([facultyId])
   @@index([branchId, batchId])
   @@index([status])
+  @@index([courseId, weekType, mode])
 }
 
 model CourseStatusHistory {
@@ -606,6 +611,8 @@ model BranchCalendarLeave {
   branchId        String
   batchId         String?
   leaveDate       String
+  leaveStartTime  String?
+  leaveEndTime    String?
   reason          String?
   status          RecordStatus @default(ACTIVE)
   createdAt       DateTime     @default(now())

@@ -1,6 +1,6 @@
 import prisma from '../../config/prisma.js';
 import AppError from '../../common/errors/AppError.js';
-import { generateSchedule, localClock, validDate } from './instituteSchedule.js';
+import { generateSchedule, localClock, timeMinutes, validDate } from './instituteSchedule.js';
 
 function notificationDate(value) {
   const match = String(value || '').slice(0, 10).match(/^(\d{4})-(\d{2})-(\d{2})$/);
@@ -17,7 +17,7 @@ function notificationTime(value) {
 export async function scheduleContext(db, branchId) {
   const [branch, batches, holidays, leaves] = await Promise.all([
     db.branch.findUnique({ where: { id: branchId } }),
-    db.branchBatch.findMany({ where: { branchId } }),
+    db.branchBatch.findMany({ where: { branchId }, include: { branchCourse: true } }),
     db.branchCalendarHoliday.findMany({ where: { status: 'ACTIVE', OR: [{ branchId }, { branchId: null }] } }),
     db.branchCalendarLeave.findMany({ where: { branchId, status: 'ACTIVE' } }),
   ]);
@@ -76,14 +76,20 @@ export async function mutateLeave(user, id, payload = {}, cancel = false, client
     if (id && !existing) throw new AppError('Institute Leave not found', 404);
     if (existing && (existing.status !== 'ACTIVE' || existing.leaveDate < today)) throw new AppError('Only active current or future leaves can be changed', 409);
     const date = payload.leaveDate, reason = typeof payload.reason === 'string' ? payload.reason.trim() : '';
+    const leaveStartTime = payload.leaveStartTime ? String(payload.leaveStartTime).trim() : null;
+    const leaveEndTime = payload.leaveEndTime ? String(payload.leaveEndTime).trim() : null;
+    const startMinutes = leaveStartTime == null ? null : timeMinutes(leaveStartTime);
+    const endMinutes = leaveEndTime == null ? null : timeMinutes(leaveEndTime);
     if (!cancel && (!validDate(date) || date < today || (existing && date < today))) throw new AppError('Select a valid leave date; edited leaves cannot be historical', 400);
     if (!cancel && (!reason || reason.length > 1000)) throw new AppError('Reason is required and must be at most 1000 characters', 400);
+    if (!cancel && ((leaveStartTime && startMinutes === null) || (leaveEndTime && endMinutes === null) || (leaveStartTime && !leaveEndTime) || (!leaveStartTime && leaveEndTime) || (startMinutes !== null && endMinutes !== null && startMinutes >= endMinutes))) throw new AppError('Leave start and end times must be a valid range', 400);
     const context = await scheduleContext(db, branch.id);
     if (!cancel && context.leaves.some(l => l.id !== id && l.isInstitute && l.leaveDate === date)) throw new AppError('Active Institute Leave already exists for this date', 409);
     const students = await db.branchStudent.findMany({ where: { branchId: branch.id, recordStatus: 'ACTIVE', batchId: { not: null }, courseId: { not: null } }, include: { course: true, calendarAttendanceRecords: true } });
     const before = new Map(students.map(s => [s.id, studentSchedule(s, context, now)]));
-    const record = existing ? await db.branchCalendarLeave.update({ where: { id }, data: cancel ? { status: 'INACTIVE' } : { leaveDate: date, reason, declaredAt: now, declaredBy: user.id } })
-      : await db.branchCalendarLeave.create({ data: { branchId: branch.id, leaveDate: date, reason, isInstitute: true, declaredAt: now, declaredBy: user.id } });
+    const leaveData = { leaveDate: date, leaveStartTime, leaveEndTime, reason, declaredAt: now, declaredBy: user.id };
+    const record = existing ? await db.branchCalendarLeave.update({ where: { id }, data: cancel ? { status: 'INACTIVE' } : leaveData })
+      : await db.branchCalendarLeave.create({ data: { branchId: branch.id, isInstitute: true, ...leaveData } });
     context.leaves = context.leaves.filter(l => l.id !== id);
     if (!cancel) context.leaves.push(record);
     const effects = [], after = new Map();
@@ -92,6 +98,11 @@ export async function mutateLeave(user, id, payload = {}, cancel = false, client
       after.set(student.id, schedule);
       effects.push(...schedule.events.filter(e => e.leaveId === record.id).map(e => ({ ...e, studentName: student.studentName })));
       if (schedule.endDate !== before.get(student.id).endDate) await db.branchStudent.update({ where: { id: student.id }, data: { courseEndDate: schedule.endDate } });
+    }
+    for (const batch of context.batches) {
+      if (!batch.courseStartDate || !batch.branchCourse) continue;
+      const schedule = generateSchedule({ student: { id: batch.id, studentId: batch.batchId, batchId: batch.batchId, batchName: batch.batchName, courseStartDate: batch.courseStartDate, course: batch.branchCourse, classSchedule: batch.weekType === 'WEEKEND' ? 'Weekend' : 'Weekday', facultyId: batch.facultyId, batchTiming: batch.batchTiming }, batch, ...context, timezone: context.branch.timezone, now });
+      if (schedule.actualCourseEndDate !== batch.courseEndDate) await db.branchBatch.update({ where: { id: batch.id }, data: { courseEndDate: schedule.actualCourseEndDate } });
     }
     // Recompute snapshots for other active leaves: earlier edits can move later affected sessions.
     for (const leave of context.leaves.filter(l => l.isInstitute && l.id !== record.id && l.leaveDate > today)) {

@@ -410,6 +410,45 @@ export async function sendStudentWelcomeEmail({ to, fullName, courseName }) {
   });
 }
 
+function formatEmailDate(value) {
+  const match = String(value || '').slice(0, 10).match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  return match ? `${match[3]}-${match[2]}-${match[1]}` : value || '-';
+}
+
+export async function sendStudentScheduleChangedEmail({ to, fullName, courseName, batchName, previousStartDate, courseStartDate, courseEndDate }) {
+  const safeName = escapeHtml(fullName || "Student");
+  const safeCourse = escapeHtml(courseName || "-");
+  const safeBatch = escapeHtml(batchName || "-");
+  const displayPrevious = formatEmailDate(previousStartDate);
+  const displayStart = formatEmailDate(courseStartDate);
+  const displayEnd = formatEmailDate(courseEndDate);
+  const safePrevious = escapeHtml(displayPrevious);
+  const safeStart = escapeHtml(displayStart);
+  const safeEnd = escapeHtml(displayEnd);
+  const html = alertTemplate({
+    eyebrow: "Course Schedule Update",
+    title: "Your course dates have changed",
+    subtitle: `Hello ${safeName}, your batch schedule has been updated.`,
+    summary: "Please use the updated dates for your course planning and attendance.",
+    details: [
+      { label: "Course", value: safeCourse },
+      { label: "Batch", value: safeBatch },
+      { label: "Previous Start Date", value: safePrevious },
+      { label: "New Start Date", value: safeStart },
+      { label: "New End Date", value: safeEnd },
+    ],
+    primaryActionLabel: "Open Student Dashboard",
+    primaryActionLink: buildLoginLink(),
+    note: "This update was made by your institute. Contact the institute if you have any questions.",
+  });
+  return sendEmail({
+    to,
+    subject: "Your CISPRO course schedule has changed",
+    html,
+    text: [`Hello ${fullName || "Student"},`, "Your course schedule has been updated.", `Course: ${courseName || "-"}`, `Batch: ${batchName || "-"}`, `Previous start date: ${displayPrevious}`, `New start date: ${displayStart}`, `New end date: ${displayEnd}`].join("\n"),
+  });
+}
+
 export async function sendFacultyCredentialsEmail({
   to,
   fullName,
