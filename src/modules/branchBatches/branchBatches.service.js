@@ -35,6 +35,11 @@ function positive(value, label) { const n = Number(value); if (!Number.isInteger
 function nonNegative(value, label) { const n = Number(value ?? 0); if (!Number.isInteger(n) || n < 0) throw new AppError(`${label} must be zero or greater`, 400); return n; }
 function parseWeekType(value) { const result = text(value).toUpperCase(); if (!WEEK_TYPES.has(result)) throw new AppError("Week type is required and must be WEEKDAY or WEEKEND", 400); return result; }
 function parseMode(value) { const result = text(value).toUpperCase(); if (!MODES.has(result)) throw new AppError("Mode is required and must be OFFLINE or ONLINE", 400); return result; }
+function validateCourseMode(courseMode, batchMode) {
+  const allowed = text(courseMode).toUpperCase()
+  if (allowed === "HYBRID") return
+  if (allowed && allowed !== batchMode) throw new AppError(`This course is configured for ${allowed.toLowerCase()} mode only`, 400)
+}
 function parseDate(value, label) { const result = text(value); if (!/^\d{4}-\d{2}-\d{2}$/.test(result) || Number.isNaN(new Date(`${result}T00:00:00`).getTime())) throw new AppError(`${label} must be a valid date`, 400); return result; }
 export { calculateBatchCourseEndDate } from "./batchAllocation.js";
 
@@ -61,7 +66,7 @@ function parsePayload(payload = {}) {
 
 function relations() {
   return {
-    branchCourse: { select: { id: true, name: true, courseCode: true, status: true, duration: true, hours: true } },
+    branchCourse: { select: { id: true, name: true, courseCode: true, status: true, duration: true, hours: true, mode: true } },
     branchFaculty: { select: { id: true, facultyId: true, name: true, email: true, phone: true, status: true } },
   };
 }
@@ -85,7 +90,7 @@ function queueFacultyEmail(batch) {
 }
 
 async function ensureCourse(branchId, courseId) {
-  const result = await prisma.branchCourse.findFirst({ where: { id: courseId, branchId }, select: { id: true, name: true, courseCode: true, status: true, duration: true, hours: true } });
+  const result = await prisma.branchCourse.findFirst({ where: { id: courseId, branchId }, select: { id: true, name: true, courseCode: true, status: true, duration: true, hours: true, mode: true } });
   if (!result) throw new AppError("Course not found", 404); if (result.status !== "ACTIVE") throw new AppError("Selected course is inactive", 400); return result;
 }
 async function ensureFaculty(branchId, facultyId) {
@@ -133,7 +138,7 @@ export async function getBranchBatch(batchId, actor = null) {
 
 export async function createBranchBatch(payload = {}, actor = null) {
   const branch = await getCurrentBranchProfile(actor); const parsed = parsePayload(payload); if (!parsed.courseId) throw new AppError("Course is required", 400); if (!parsed.facultyId) throw new AppError("Faculty is required", 400);
-  const course = await ensureCourse(branch.id, parsed.courseId); const faculty = await ensureFaculty(branch.id, parsed.facultyId); let sequence = await nextSequence(branch.id); const actorId = actor?.id ?? null;
+  const course = await ensureCourse(branch.id, parsed.courseId); parsed.batches.forEach((input) => validateCourseMode(course.mode, input.mode)); const faculty = await ensureFaculty(branch.id, parsed.facultyId); let sequence = await nextSequence(branch.id); const actorId = actor?.id ?? null;
   parsed.batches = await Promise.all(parsed.batches.map(async (input) => ({ ...input, courseEndDate: await calculateStoredBatchEndDate(branch, course, input, input.batchId) })));
   const created = await prisma.$transaction(async (tx) => { const records = []; for (const input of parsed.batches) {
     let batchId = input.batchId ? normalizeBranchEntityId(input.batchId, branch.branchId, "BAT") : "";
@@ -156,7 +161,7 @@ export async function updateBranchBatch(batchId, payload = {}, actor = null) {
   const existing = await prisma.branchBatch.findFirst({ where: scopedWhere, include: relations() }) ||
     await prisma.branchBatch.findFirst({ where: { branchId: branch.id, OR: [{ id: text(batchId) }, { batchId: text(batchId) }] }, include: relations() });
   if (!existing) throw new AppError("Batch not found", 404); const parsed = parsePayload({ ...payload, courseId: payload.courseId || existing.courseId, facultyId: payload.facultyId || existing.facultyId, batches: payload.batches || payload.rows || [payload] });
-  const course = await ensureCourse(branch.id, parsed.courseId); const faculty = await ensureFaculty(branch.id, parsed.facultyId); const calculatedEndDate = await calculateStoredBatchEndDate(branch, course, parsed.batches[0], existing.batchId); if (!calculatedEndDate) throw new AppError("Selected course has no valid duration", 400); const input = { ...parsed.batches[0], courseEndDate: calculatedEndDate, batchId: existing.batchId };
+  const course = await ensureCourse(branch.id, parsed.courseId); validateCourseMode(course.mode, parsed.batches[0].mode); const faculty = await ensureFaculty(branch.id, parsed.facultyId); const calculatedEndDate = await calculateStoredBatchEndDate(branch, course, parsed.batches[0], existing.batchId); if (!calculatedEndDate) throw new AppError("Selected course has no valid duration", 400); const input = { ...parsed.batches[0], courseEndDate: calculatedEndDate, batchId: existing.batchId };
   const synced = await prisma.$transaction(async (tx) => {
     const updatedBatch = await tx.branchBatch.update({ where: { id: existing.id }, data: { branchCourseId: course.id, branchFacultyId: faculty.id, courseId: course.id, courseName: course.name, facultyId: faculty.facultyId || faculty.id, facultyName: faculty.name, facultyEmail: faculty.email, ...input, updatedBy: actor?.id ?? null }, include: relations() });
     if (existing.courseStartDate === input.courseStartDate) {
