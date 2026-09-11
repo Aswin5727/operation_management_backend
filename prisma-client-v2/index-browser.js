@@ -144,6 +144,28 @@ exports.Prisma.UserScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.DashboardWidgetScalarFieldEnum = {
+  id: 'id',
+  widgetKey: 'widgetKey',
+  widgetName: 'widgetName',
+  category: 'category',
+  description: 'description',
+  allowedRoles: 'allowedRoles',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.UserDashboardWidgetScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  widgetId: 'widgetId',
+  isVisible: 'isVisible',
+  displayOrder: 'displayOrder',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.BranchScalarFieldEnum = {
   id: 'id',
   branchId: 'branchId',
@@ -878,6 +900,8 @@ exports.AttendanceStatus = exports.$Enums.AttendanceStatus = {
 
 exports.Prisma.ModelName = {
   User: 'User',
+  DashboardWidget: 'DashboardWidget',
+  UserDashboardWidget: 'UserDashboardWidget',
   Branch: 'Branch',
   LoginEvent: 'LoginEvent',
   Notification: 'Notification',

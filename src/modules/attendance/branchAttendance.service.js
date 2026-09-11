@@ -7,8 +7,8 @@ export async function getBranchAttendanceOverview(user, query = {}) {
   let branch;
 
   if (requestedBranchId && ['SUPER_ADMIN', 'BUSINESS_OWNER', 'OPERATION_MANAGER'].includes(String(user?.role || '').toUpperCase())) {
-    branch = await prisma.branch.findUnique({
-      where: { id: requestedBranchId },
+    branch = await prisma.branch.findFirst({
+      where: { OR: [{ id: requestedBranchId }, { branchId: requestedBranchId }] },
       select: { id: true },
     });
 
