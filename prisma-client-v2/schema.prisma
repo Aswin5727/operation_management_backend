@@ -38,9 +38,41 @@ model User {
   passwordResetTokens            PasswordResetToken[]
   markedStudentAttendances       StudentAttendance[]
   markedBranchStudentAttendances BranchStudentAttendance[]
+  dashboardWidgetPreferences     UserDashboardWidget[]
 
   @@index([role])
   @@index([active])
+}
+
+model DashboardWidget {
+  id           String                @id @default(cuid())
+  widgetKey    String                @unique
+  widgetName   String
+  category     String
+  description  String                @default("")
+  allowedRoles String[]
+  isActive     Boolean               @default(true)
+  createdAt    DateTime              @default(now())
+  updatedAt    DateTime              @updatedAt
+  preferences  UserDashboardWidget[]
+
+  @@index([isActive])
+}
+
+model UserDashboardWidget {
+  id           String          @id @default(cuid())
+  userId       String
+  widgetId     String
+  isVisible    Boolean         @default(true)
+  displayOrder Int
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+  user         User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  widget       DashboardWidget @relation(fields: [widgetId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, widgetId])
+  @@index([userId, displayOrder])
+  @@index([widgetId])
 }
 
 model Branch {
