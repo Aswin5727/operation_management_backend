@@ -7,11 +7,24 @@ import {
   getBatchAttendanceReportHandler,
   getFacultyAttendanceReportHandler,
   getStudentAttendanceReportHandler,
+  getBranchBatchAttendanceReportHandler,
+  getBranchStudentAttendanceReportHandler,
 } from "./reports.controller.js";
 
 const router = express.Router();
 
 router.use(authenticate);
+
+router.get(
+  "/branch-student-attendance",
+  authorize("BRANCH_ADMIN", "SUPER_ADMIN", "BUSINESS_OWNER", "OPERATION_MANAGER"),
+  getBranchStudentAttendanceReportHandler,
+);
+router.get(
+  "/branch-batch-attendance",
+  authorize("BRANCH_ADMIN", "SUPER_ADMIN", "BUSINESS_OWNER", "OPERATION_MANAGER"),
+  getBranchBatchAttendanceReportHandler,
+);
 
 router.get(
   "/student-attendance",

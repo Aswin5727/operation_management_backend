@@ -5,6 +5,10 @@ import {
   generateFacultyAttendanceReport,
   generateStudentAttendanceReport,
 } from "./reports.service.js";
+import {
+  generateBranchBatchAttendanceReport,
+  generateBranchStudentAttendanceReport,
+} from "./branchAttendanceReports.service.js";
 
 function sendExcelResponse(res, report) {
   res.setHeader("Content-Type", report.contentType);
@@ -31,5 +35,15 @@ export const getFacultyAttendanceReportHandler = asyncHandler(async (req, res) =
 
 export const getAllFacultyAttendanceReportHandler = asyncHandler(async (req, res) => {
   const report = await generateAllFacultyAttendanceReport(req.query);
+  return sendExcelResponse(res, report);
+});
+
+export const getBranchStudentAttendanceReportHandler = asyncHandler(async (req, res) => {
+  const report = await generateBranchStudentAttendanceReport(req.query, req.user);
+  return sendExcelResponse(res, report);
+});
+
+export const getBranchBatchAttendanceReportHandler = asyncHandler(async (req, res) => {
+  const report = await generateBranchBatchAttendanceReport(req.query, req.user);
   return sendExcelResponse(res, report);
 });
