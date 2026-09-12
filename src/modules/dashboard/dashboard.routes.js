@@ -9,9 +9,10 @@ const router = express.Router();
 
 router.get("/faculty/my-batches-summary", authenticate, authorize("FACULTY"), getFacultyMyBatchesSummaryHandler);
 
-router.get("/branch/widgets", authenticate, authorize("BRANCH_ADMIN"), getBranchAdminWidgetsHandler);
-router.put("/branch/widgets", authenticate, authorize("BRANCH_ADMIN"), saveBranchAdminWidgetsHandler);
-router.post("/branch/widgets/reset", authenticate, authorize("BRANCH_ADMIN"), resetBranchAdminWidgetsHandler);
+const branchWidgetRoles = ["BRANCH_ADMIN", "SUPER_ADMIN", "BUSINESS_OWNER", "OPERATION_MANAGER"];
+router.get("/branch/widgets", authenticate, authorize(...branchWidgetRoles), getBranchAdminWidgetsHandler);
+router.put("/branch/widgets", authenticate, authorize(...branchWidgetRoles), saveBranchAdminWidgetsHandler);
+router.post("/branch/widgets/reset", authenticate, authorize(...branchWidgetRoles), resetBranchAdminWidgetsHandler);
 
 router.use(authenticate, authorize("OPERATION_MANAGER", "BUSINESS_OWNER"));
 

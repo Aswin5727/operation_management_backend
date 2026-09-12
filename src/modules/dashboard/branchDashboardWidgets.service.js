@@ -15,10 +15,27 @@ const BRANCH_ADMIN_WIDGETS = [
   widgetKey, widgetName, category, description: `${widgetName} on the branch dashboard`, allowedRoles: ["BRANCH_ADMIN"],
 }));
 
-function assertBranchAdmin(user) {
-  if (String(user?.role || "").toUpperCase() !== "BRANCH_ADMIN") throw new AppError("You do not have permission for this action", 403);
-  if (!user?.userId && !user?.id) throw new AppError("Authentication required", 401);
-  return String(user.userId || user.id);
+async function resolveWidgetOwnerUserId(user) {
+  const role = String(user?.role || "").toUpperCase();
+  const userId = String(user?.userId || user?.id || "").trim();
+
+  if (role === "BRANCH_ADMIN") {
+    if (!userId) throw new AppError("Authentication required", 401);
+    return userId;
+  }
+
+  // Super Admin branch view edits the selected branch admin's widget layout,
+  // rather than creating a separate global layout for the Super Admin.
+  if (["SUPER_ADMIN", "BUSINESS_OWNER", "OPERATION_MANAGER"].includes(role) && user?.impersonatedBranchId) {
+    const branch = await prisma.branch.findFirst({
+      where: { OR: [{ id: user.impersonatedBranchId }, { branchId: user.impersonatedBranchId }] },
+      select: { adminUserId: true },
+    });
+    if (!branch?.adminUserId) throw new AppError("Branch admin profile not found", 404);
+    return branch.adminUserId;
+  }
+
+  throw new AppError("You do not have permission for this action", 403);
 }
 
 async function ensureWidgetCatalog() {
@@ -37,7 +54,7 @@ function toConfig(widget, preference, fallbackOrder) {
 }
 
 export async function getBranchAdminWidgetConfig(user) {
-  const userId = assertBranchAdmin(user);
+  const userId = await resolveWidgetOwnerUserId(user);
   const widgets = await ensureWidgetCatalog();
   const preferences = await prisma.userDashboardWidget.findMany({ where: { userId }, include: { widget: true }, orderBy: { displayOrder: "asc" } });
   const preferenceMap = new Map(preferences.map((item) => [item.widgetId, item]));
@@ -45,7 +62,7 @@ export async function getBranchAdminWidgetConfig(user) {
 }
 
 export async function saveBranchAdminWidgetConfig(user, payload = {}) {
-  const userId = assertBranchAdmin(user);
+  const userId = await resolveWidgetOwnerUserId(user);
   const requested = Array.isArray(payload.widgets) ? payload.widgets : [];
   const keys = requested.map((item) => String(item?.widgetKey || "").trim()).filter(Boolean);
   if (!keys.length || new Set(keys).size !== keys.length) throw new AppError("Widget configuration must contain unique widgets", 400);
@@ -60,7 +77,7 @@ export async function saveBranchAdminWidgetConfig(user, payload = {}) {
 }
 
 export async function resetBranchAdminWidgetConfig(user) {
-  const userId = assertBranchAdmin(user);
+  const userId = await resolveWidgetOwnerUserId(user);
   await prisma.userDashboardWidget.deleteMany({ where: { userId } });
   return getBranchAdminWidgetConfig(user);
 }
