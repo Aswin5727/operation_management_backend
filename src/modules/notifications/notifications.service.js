@@ -184,11 +184,15 @@ async function buildBranchAdminScope(user = {}) {
     return fallbackScope;
   }
 
-  const scope = {
-    targetBranchId: normalizeString(branch.id || branch.branchId),
-    targetBranchEmail: normalizeEmail(branch.branchEmail),
-    targetBranchName: normalizeString(branch.branchName),
-  };
+  // Branch ID is the canonical tenant boundary. Older notifications may not
+  // have email/name populated, so requiring all three fields hides valid rows.
+  // Keep email as a fallback only when the branch record cannot be resolved.
+  const scope = branch.id
+    ? { targetBranchId: normalizeString(branch.id) }
+    : {
+        targetBranchId: normalizeString(branch.branchId),
+        targetBranchEmail: normalizeEmail(branch.branchEmail),
+      };
 
   BRANCH_ADMIN_SCOPE_CACHE.set(cacheKey, {
     scope,
@@ -449,6 +453,17 @@ async function createNotification(data, prismaClient = prisma) {
   return normalizeNotificationRow(record);
 }
 
+async function findCourseEditNotification(prismaClient, kind, requestId) {
+  if (!requestId || !prismaClient?.notification?.findFirst) return null;
+
+  const existing = await prismaClient.notification.findFirst({
+    where: { kind, requestId },
+    orderBy: { createdAt: "desc" },
+  });
+
+  return existing ? normalizeNotificationRow(existing) : null;
+}
+
 export async function createBranchCreatedNotification(branch = {}, actor = {}) {
   return createNotification(
     buildNotificationData({
@@ -513,6 +528,13 @@ export async function createCourseEditRequestNotification({
   actor = {},
   prismaClient = prisma,
 }) {
+  const existing = await findCourseEditNotification(
+    prismaClient,
+    "COURSE_EDIT_REQUEST",
+    request?.id,
+  );
+  if (existing) return existing;
+
   const branch = resolveBranchIdentity(branchCourse?.branch || {}, {
     id: request?.branchId || branchCourse?.branchId || "",
     branchId: request?.branchId || branchCourse?.branchId || "",
@@ -622,6 +644,7 @@ export async function createCourseEditRequestRejectedNotification({
 
 export async function createCourseEditModuleUpdatedNotification({
   request = {},
+  branch: branchContext = {},
   branchCourse = {},
   faculty = {},
   module = {},
@@ -630,12 +653,39 @@ export async function createCourseEditModuleUpdatedNotification({
   updatedFields = [],
   prismaClient = prisma,
 }) {
+  const existing = await findCourseEditNotification(
+    prismaClient,
+    "COURSE_EDIT_MODULE_UPDATED",
+    request?.id,
+  );
+  if (existing) return existing;
+
   const moduleLabel = module?.title || "a module";
   const subModuleLabel = subModule?.title ? ` / ${subModule.title}` : "";
   const fieldLabel = Array.isArray(updatedFields) && updatedFields.length ? ` (${updatedFields.join(", ")})` : "";
-  const branch = resolveBranchIdentity(branchCourse?.branch || {}, {
-    id: request?.branchId || branchCourse?.branchId || "",
-    branchId: request?.branchId || branchCourse?.branchId || "",
+  const branchReference = request?.branchId || branchCourse?.branchId || "";
+  let persistedBranch = branchCourse?.branch || branchContext || null;
+
+  // The module-only course update returns a lean course record without its
+  // branch relation. Resolve it here so the notification is fully scoped and
+  // remains visible to the correct branch admin.
+  if (!persistedBranch && branchReference && prismaClient?.branch?.findFirst) {
+    persistedBranch = await prismaClient.branch.findFirst({
+      where: {
+        OR: [{ id: branchReference }, { branchId: branchReference }],
+      },
+      select: {
+        id: true,
+        branchId: true,
+        branchName: true,
+        branchEmail: true,
+      },
+    });
+  }
+
+  const branch = resolveBranchIdentity(persistedBranch || {}, {
+    id: branchReference,
+    branchId: branchReference,
   });
 
   return createNotification(

@@ -14,6 +14,25 @@ function getBearerToken(req) {
   return req.cookies?.[ACCESS_COOKIE_NAME] || null;
 }
 
+async function findUserForAuthentication(userId) {
+  for (let attempt = 0; attempt < 3; attempt += 1) {
+    try {
+      return await prisma.user.findUnique({
+        where: { id: userId },
+      });
+    } catch (error) {
+      if (attempt < 2) {
+        await new Promise((resolve) => setTimeout(resolve, 250 * (attempt + 1)));
+      }
+    }
+  }
+
+  throw new AppError(
+    "Database temporarily unavailable. Please try again.",
+    503,
+  );
+}
+
 async function authenticate(req, _res, next) {
   try {
     const token = getBearerToken(req);
@@ -24,9 +43,7 @@ async function authenticate(req, _res, next) {
 
     const payload = verifyAccessToken(token);
     const userId = payload.subject || payload.sub;
-    const user = await prisma.user.findUnique({
-      where: { id: userId },
-    });
+    const user = await findUserForAuthentication(userId);
 
     if (!user || !user.active || user.refreshTokenVersion !== payload.tokenVersion) {
       throw new AppError("Session expired", 401);
@@ -49,6 +66,11 @@ async function authenticate(req, _res, next) {
 
     next();
   } catch (error) {
+    if (error instanceof AppError) {
+      next(error);
+      return;
+    }
+
     next(new AppError(error.message || "Authentication required", 401));
   }
 }

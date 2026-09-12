@@ -75,8 +75,13 @@ async function findUserByIdentifier(identifier) {
   }
 
   const byEmail = normalizedIdentifier.includes("@")
-    ? await prisma.user.findUnique({
-        where: { email: normalizedIdentifier },
+    ? await prisma.user.findFirst({
+        where: {
+          email: {
+            equals: normalizedIdentifier,
+            mode: "insensitive",
+          },
+        },
         select: AUTH_USER_SELECT,
       })
     : null;
@@ -85,8 +90,13 @@ async function findUserByIdentifier(identifier) {
     return byEmail;
   }
 
-  return prisma.user.findUnique({
-    where: { userCode: rawIdentifier },
+  return prisma.user.findFirst({
+    where: {
+      userCode: {
+        equals: rawIdentifier,
+        mode: "insensitive",
+      },
+    },
     select: AUTH_USER_SELECT,
   });
 }
