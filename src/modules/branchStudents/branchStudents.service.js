@@ -946,6 +946,71 @@ export async function listBranchLedger(query = {}, actor = null) {
     return getBranchStudentLedger(normalizedStudentId, actor);
   }
 
+  // Dashboard aggregation only needs persisted ledger rows. The regular
+  // ledger view materializes each student's ledger for backwards compatibility,
+  // but doing that here creates an N+1 query/write operation for every student.
+  if (String(query.fast || '').toLowerCase() === 'true' || String(query.fast || '') === '1') {
+    const ledgerWhere = branchId ? { branchId } : {};
+    if (search) {
+      ledgerWhere.OR = [
+        { branchStudent: { studentId: { contains: search, mode: "insensitive" } } },
+        { branchStudent: { studentName: { contains: search, mode: "insensitive" } } },
+      ];
+    }
+
+    const entries = await prisma.branchStudentLedgerEntry.findMany({
+      where: ledgerWhere,
+      orderBy: [{ entryDate: "desc" }, { createdAt: "desc" }, { entryNo: "desc" }],
+      take: Math.min(Math.max(Number(query.limit) || 500, 1), 5000),
+      select: {
+        id: true,
+        ledgerKey: true,
+        branchId: true,
+        branchStudentId: true,
+        paymentId: true,
+        installmentId: true,
+        entryNo: true,
+        entryType: true,
+        description: true,
+        debit: true,
+        credit: true,
+        amount: true,
+        runningBalance: true,
+        studentBalanceAfter: true,
+        entryDate: true,
+        paymentDate: true,
+        paymentMode: true,
+        receiptNumber: true,
+        payAgainst: true,
+        transactionReference: true,
+        notes: true,
+        createdAt: true,
+        updatedAt: true,
+        branchStudent: { select: { studentId: true, studentName: true, courseName: true } },
+      },
+    });
+
+    const normalizedEntries = entries.map((entry) => ({
+      ...entry,
+      studentId: entry.branchStudent?.studentId || "",
+      studentName: entry.branchStudent?.studentName || "",
+      course: entry.branchStudent?.courseName || "",
+      dateRaw: entry.entryDate || entry.paymentDate || entry.createdAt,
+      date: entry.entryDate || entry.paymentDate || entry.createdAt,
+    }));
+
+    return {
+      entries: normalizedEntries,
+      summary: normalizedEntries.reduce((acc, entry) => {
+        acc.totalDebit += Number(entry.debit || 0);
+        acc.totalCredit += Number(entry.credit || 0);
+        acc.entryCount += 1;
+        if (Number(entry.credit || 0) > 0) acc.paymentCount += 1;
+        return acc;
+      }, { totalDebit: 0, totalCredit: 0, outstandingBalance: Number(normalizedEntries[0]?.runningBalance || 0), entryCount: 0, paymentCount: 0, studentCount: 0 }),
+    };
+  }
+
   const where = branchId ? { branchId } : {};
 
   if (search) {
