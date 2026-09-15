@@ -740,6 +740,36 @@ export async function createFacultyLeaveRequestNotification({ request = {}, bran
   }), prismaClient);
 }
 
+export async function createFacultyLeaveRequestChangeNotification({ request = {}, branch = {}, faculty = {}, action = "edited", changes = [], prismaClient = prisma }) {
+  const edited = action === "edited";
+  const title = edited ? "Faculty Leave Request Edited" : "Faculty Leave Request Cancelled";
+  const facultyName = faculty?.name || request?.facultyName || "Faculty";
+  const changedSentences = changes.map((change) => {
+    const separatorIndex = change.indexOf(" changed: ");
+    if (separatorIndex < 0) return `The requested ${change.replace(/ changed$/, "")} has been changed.`;
+    const field = change.slice(0, separatorIndex);
+    const values = change.slice(separatorIndex + " changed: ".length).split(" → ");
+    return `The requested ${field} has been changed from ${values[0] || "-"} to ${values[1] || "-"}.`;
+  });
+  const dateLabel = `${request?.fromDate || "-"}${request?.fromDate !== request?.toDate ? ` - ${request?.toDate || "-"}` : ""}`;
+  return createNotification(buildNotificationData({
+    kind: "FACULTY_LEAVE_REQUEST",
+    tone: edited ? "blue" : "slate",
+    title,
+    message: edited ? `${facultyName} has edited their leave request. ${changedSentences.join(" ") || "The requested details have been changed."}` : `${facultyName} has cancelled their leave request, scheduled for ${dateLabel}.`,
+    actionLabel: "View Request",
+    branch,
+    extras: {
+      leaveRequestId: request?.id || null,
+      facultyId: faculty?.facultyId || request?.facultyId || "",
+      facultyName,
+      requestStatus: request?.status || (edited ? "PENDING" : "CANCELLED"),
+      requestReason: request?.reason || "",
+      requestDescription: edited ? changedSentences.join(" ") : `${facultyName} has cancelled their leave request, scheduled for ${dateLabel}.`,
+    },
+  }), prismaClient);
+}
+
 export async function listNotifications(query = {}, user = {}) {
   const page = Math.max(1, Number(query.page || 1));
   const limit = Math.min(100, Math.max(1, Number(query.limit || 10)));

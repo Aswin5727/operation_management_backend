@@ -46203,6 +46203,7 @@ export namespace Prisma {
     permissionEnd: string | null
     reason: string | null
     status: string | null
+    cancelledAt: Date | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -46226,6 +46227,7 @@ export namespace Prisma {
     permissionEnd: string | null
     reason: string | null
     status: string | null
+    cancelledAt: Date | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -46249,6 +46251,7 @@ export namespace Prisma {
     permissionEnd: number
     reason: number
     status: number
+    cancelledAt: number
     affectedClasses: number
     createdAt: number
     updatedAt: number
@@ -46283,6 +46286,7 @@ export namespace Prisma {
     permissionEnd?: true
     reason?: true
     status?: true
+    cancelledAt?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -46306,6 +46310,7 @@ export namespace Prisma {
     permissionEnd?: true
     reason?: true
     status?: true
+    cancelledAt?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -46329,6 +46334,7 @@ export namespace Prisma {
     permissionEnd?: true
     reason?: true
     status?: true
+    cancelledAt?: true
     affectedClasses?: true
     createdAt?: true
     updatedAt?: true
@@ -46440,6 +46446,7 @@ export namespace Prisma {
     permissionEnd: string | null
     reason: string
     status: string
+    cancelledAt: Date | null
     affectedClasses: JsonValue
     createdAt: Date
     updatedAt: Date
@@ -46483,6 +46490,7 @@ export namespace Prisma {
     permissionEnd?: boolean
     reason?: boolean
     status?: boolean
+    cancelledAt?: boolean
     affectedClasses?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -46509,6 +46517,7 @@ export namespace Prisma {
     permissionEnd?: boolean
     reason?: boolean
     status?: boolean
+    cancelledAt?: boolean
     affectedClasses?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -46535,6 +46544,7 @@ export namespace Prisma {
     permissionEnd?: boolean
     reason?: boolean
     status?: boolean
+    cancelledAt?: boolean
     affectedClasses?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -46561,12 +46571,13 @@ export namespace Prisma {
     permissionEnd?: boolean
     reason?: boolean
     status?: boolean
+    cancelledAt?: boolean
     affectedClasses?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type FacultyLeaveRequestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "facultyUserId" | "branchId" | "facultyId" | "facultyName" | "facultyEmail" | "leaveType" | "fromDate" | "toDate" | "durationType" | "halfDayPeriod" | "halfDayStart" | "halfDayEnd" | "permissionHours" | "permissionStart" | "permissionEnd" | "reason" | "status" | "affectedClasses" | "createdAt" | "updatedAt", ExtArgs["result"]["facultyLeaveRequest"]>
+  export type FacultyLeaveRequestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "facultyUserId" | "branchId" | "facultyId" | "facultyName" | "facultyEmail" | "leaveType" | "fromDate" | "toDate" | "durationType" | "halfDayPeriod" | "halfDayStart" | "halfDayEnd" | "permissionHours" | "permissionStart" | "permissionEnd" | "reason" | "status" | "cancelledAt" | "affectedClasses" | "createdAt" | "updatedAt", ExtArgs["result"]["facultyLeaveRequest"]>
   export type FacultyLeaveRequestInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     facultyUser?: boolean | UserDefaultArgs<ExtArgs>
     branch?: boolean | BranchDefaultArgs<ExtArgs>
@@ -46605,6 +46616,7 @@ export namespace Prisma {
       permissionEnd: string | null
       reason: string
       status: string
+      cancelledAt: Date | null
       affectedClasses: Prisma.JsonValue
       createdAt: Date
       updatedAt: Date
@@ -47046,11 +47058,12 @@ export namespace Prisma {
     readonly halfDayPeriod: FieldRef<"FacultyLeaveRequest", 'String'>
     readonly halfDayStart: FieldRef<"FacultyLeaveRequest", 'String'>
     readonly halfDayEnd: FieldRef<"FacultyLeaveRequest", 'String'>
-    readonly permissionHours: FieldRef<"FacultyLeaveRequest", 'Int'>
+    readonly permissionHours: FieldRef<"FacultyLeaveRequest", 'Float'>
     readonly permissionStart: FieldRef<"FacultyLeaveRequest", 'String'>
     readonly permissionEnd: FieldRef<"FacultyLeaveRequest", 'String'>
     readonly reason: FieldRef<"FacultyLeaveRequest", 'String'>
     readonly status: FieldRef<"FacultyLeaveRequest", 'String'>
+    readonly cancelledAt: FieldRef<"FacultyLeaveRequest", 'DateTime'>
     readonly affectedClasses: FieldRef<"FacultyLeaveRequest", 'Json'>
     readonly createdAt: FieldRef<"FacultyLeaveRequest", 'DateTime'>
     readonly updatedAt: FieldRef<"FacultyLeaveRequest", 'DateTime'>
@@ -52134,6 +52147,7 @@ export namespace Prisma {
     permissionEnd: 'permissionEnd',
     reason: 'reason',
     status: 'status',
+    cancelledAt: 'cancelledAt',
     affectedClasses: 'affectedClasses',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
@@ -56309,11 +56323,12 @@ export namespace Prisma {
     halfDayPeriod?: StringNullableFilter<"FacultyLeaveRequest"> | string | null
     halfDayStart?: StringNullableFilter<"FacultyLeaveRequest"> | string | null
     halfDayEnd?: StringNullableFilter<"FacultyLeaveRequest"> | string | null
-    permissionHours?: IntNullableFilter<"FacultyLeaveRequest"> | number | null
+    permissionHours?: FloatNullableFilter<"FacultyLeaveRequest"> | number | null
     permissionStart?: StringNullableFilter<"FacultyLeaveRequest"> | string | null
     permissionEnd?: StringNullableFilter<"FacultyLeaveRequest"> | string | null
     reason?: StringFilter<"FacultyLeaveRequest"> | string
     status?: StringFilter<"FacultyLeaveRequest"> | string
+    cancelledAt?: DateTimeNullableFilter<"FacultyLeaveRequest"> | Date | string | null
     affectedClasses?: JsonFilter<"FacultyLeaveRequest">
     createdAt?: DateTimeFilter<"FacultyLeaveRequest"> | Date | string
     updatedAt?: DateTimeFilter<"FacultyLeaveRequest"> | Date | string
@@ -56340,6 +56355,7 @@ export namespace Prisma {
     permissionEnd?: SortOrderInput | SortOrder
     reason?: SortOrder
     status?: SortOrder
+    cancelledAt?: SortOrderInput | SortOrder
     affectedClasses?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -56364,11 +56380,12 @@ export namespace Prisma {
     halfDayPeriod?: StringNullableFilter<"FacultyLeaveRequest"> | string | null
     halfDayStart?: StringNullableFilter<"FacultyLeaveRequest"> | string | null
     halfDayEnd?: StringNullableFilter<"FacultyLeaveRequest"> | string | null
-    permissionHours?: IntNullableFilter<"FacultyLeaveRequest"> | number | null
+    permissionHours?: FloatNullableFilter<"FacultyLeaveRequest"> | number | null
     permissionStart?: StringNullableFilter<"FacultyLeaveRequest"> | string | null
     permissionEnd?: StringNullableFilter<"FacultyLeaveRequest"> | string | null
     reason?: StringFilter<"FacultyLeaveRequest"> | string
     status?: StringFilter<"FacultyLeaveRequest"> | string
+    cancelledAt?: DateTimeNullableFilter<"FacultyLeaveRequest"> | Date | string | null
     affectedClasses?: JsonFilter<"FacultyLeaveRequest">
     createdAt?: DateTimeFilter<"FacultyLeaveRequest"> | Date | string
     updatedAt?: DateTimeFilter<"FacultyLeaveRequest"> | Date | string
@@ -56395,6 +56412,7 @@ export namespace Prisma {
     permissionEnd?: SortOrderInput | SortOrder
     reason?: SortOrder
     status?: SortOrder
+    cancelledAt?: SortOrderInput | SortOrder
     affectedClasses?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -56422,11 +56440,12 @@ export namespace Prisma {
     halfDayPeriod?: StringNullableWithAggregatesFilter<"FacultyLeaveRequest"> | string | null
     halfDayStart?: StringNullableWithAggregatesFilter<"FacultyLeaveRequest"> | string | null
     halfDayEnd?: StringNullableWithAggregatesFilter<"FacultyLeaveRequest"> | string | null
-    permissionHours?: IntNullableWithAggregatesFilter<"FacultyLeaveRequest"> | number | null
+    permissionHours?: FloatNullableWithAggregatesFilter<"FacultyLeaveRequest"> | number | null
     permissionStart?: StringNullableWithAggregatesFilter<"FacultyLeaveRequest"> | string | null
     permissionEnd?: StringNullableWithAggregatesFilter<"FacultyLeaveRequest"> | string | null
     reason?: StringWithAggregatesFilter<"FacultyLeaveRequest"> | string
     status?: StringWithAggregatesFilter<"FacultyLeaveRequest"> | string
+    cancelledAt?: DateTimeNullableWithAggregatesFilter<"FacultyLeaveRequest"> | Date | string | null
     affectedClasses?: JsonWithAggregatesFilter<"FacultyLeaveRequest">
     createdAt?: DateTimeWithAggregatesFilter<"FacultyLeaveRequest"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"FacultyLeaveRequest"> | Date | string
@@ -61359,6 +61378,7 @@ export namespace Prisma {
     permissionEnd?: string | null
     reason: string
     status?: string
+    cancelledAt?: Date | string | null
     affectedClasses?: JsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -61385,6 +61405,7 @@ export namespace Prisma {
     permissionEnd?: string | null
     reason: string
     status?: string
+    cancelledAt?: Date | string | null
     affectedClasses?: JsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -61402,11 +61423,12 @@ export namespace Prisma {
     halfDayPeriod?: NullableStringFieldUpdateOperationsInput | string | null
     halfDayStart?: NullableStringFieldUpdateOperationsInput | string | null
     halfDayEnd?: NullableStringFieldUpdateOperationsInput | string | null
-    permissionHours?: NullableIntFieldUpdateOperationsInput | number | null
+    permissionHours?: NullableFloatFieldUpdateOperationsInput | number | null
     permissionStart?: NullableStringFieldUpdateOperationsInput | string | null
     permissionEnd?: NullableStringFieldUpdateOperationsInput | string | null
     reason?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     affectedClasses?: JsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -61428,11 +61450,12 @@ export namespace Prisma {
     halfDayPeriod?: NullableStringFieldUpdateOperationsInput | string | null
     halfDayStart?: NullableStringFieldUpdateOperationsInput | string | null
     halfDayEnd?: NullableStringFieldUpdateOperationsInput | string | null
-    permissionHours?: NullableIntFieldUpdateOperationsInput | number | null
+    permissionHours?: NullableFloatFieldUpdateOperationsInput | number | null
     permissionStart?: NullableStringFieldUpdateOperationsInput | string | null
     permissionEnd?: NullableStringFieldUpdateOperationsInput | string | null
     reason?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     affectedClasses?: JsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -61457,6 +61480,7 @@ export namespace Prisma {
     permissionEnd?: string | null
     reason: string
     status?: string
+    cancelledAt?: Date | string | null
     affectedClasses?: JsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -61474,11 +61498,12 @@ export namespace Prisma {
     halfDayPeriod?: NullableStringFieldUpdateOperationsInput | string | null
     halfDayStart?: NullableStringFieldUpdateOperationsInput | string | null
     halfDayEnd?: NullableStringFieldUpdateOperationsInput | string | null
-    permissionHours?: NullableIntFieldUpdateOperationsInput | number | null
+    permissionHours?: NullableFloatFieldUpdateOperationsInput | number | null
     permissionStart?: NullableStringFieldUpdateOperationsInput | string | null
     permissionEnd?: NullableStringFieldUpdateOperationsInput | string | null
     reason?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     affectedClasses?: JsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -61498,11 +61523,12 @@ export namespace Prisma {
     halfDayPeriod?: NullableStringFieldUpdateOperationsInput | string | null
     halfDayStart?: NullableStringFieldUpdateOperationsInput | string | null
     halfDayEnd?: NullableStringFieldUpdateOperationsInput | string | null
-    permissionHours?: NullableIntFieldUpdateOperationsInput | number | null
+    permissionHours?: NullableFloatFieldUpdateOperationsInput | number | null
     permissionStart?: NullableStringFieldUpdateOperationsInput | string | null
     permissionEnd?: NullableStringFieldUpdateOperationsInput | string | null
     reason?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     affectedClasses?: JsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -65023,6 +65049,7 @@ export namespace Prisma {
     permissionEnd?: SortOrder
     reason?: SortOrder
     status?: SortOrder
+    cancelledAt?: SortOrder
     affectedClasses?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -65051,6 +65078,7 @@ export namespace Prisma {
     permissionEnd?: SortOrder
     reason?: SortOrder
     status?: SortOrder
+    cancelledAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -65074,6 +65102,7 @@ export namespace Prisma {
     permissionEnd?: SortOrder
     reason?: SortOrder
     status?: SortOrder
+    cancelledAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -69322,6 +69351,7 @@ export namespace Prisma {
     permissionEnd?: string | null
     reason: string
     status?: string
+    cancelledAt?: Date | string | null
     affectedClasses?: JsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -69346,6 +69376,7 @@ export namespace Prisma {
     permissionEnd?: string | null
     reason: string
     status?: string
+    cancelledAt?: Date | string | null
     affectedClasses?: JsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -69799,11 +69830,12 @@ export namespace Prisma {
     halfDayPeriod?: StringNullableFilter<"FacultyLeaveRequest"> | string | null
     halfDayStart?: StringNullableFilter<"FacultyLeaveRequest"> | string | null
     halfDayEnd?: StringNullableFilter<"FacultyLeaveRequest"> | string | null
-    permissionHours?: IntNullableFilter<"FacultyLeaveRequest"> | number | null
+    permissionHours?: FloatNullableFilter<"FacultyLeaveRequest"> | number | null
     permissionStart?: StringNullableFilter<"FacultyLeaveRequest"> | string | null
     permissionEnd?: StringNullableFilter<"FacultyLeaveRequest"> | string | null
     reason?: StringFilter<"FacultyLeaveRequest"> | string
     status?: StringFilter<"FacultyLeaveRequest"> | string
+    cancelledAt?: DateTimeNullableFilter<"FacultyLeaveRequest"> | Date | string | null
     affectedClasses?: JsonFilter<"FacultyLeaveRequest">
     createdAt?: DateTimeFilter<"FacultyLeaveRequest"> | Date | string
     updatedAt?: DateTimeFilter<"FacultyLeaveRequest"> | Date | string
@@ -70769,6 +70801,7 @@ export namespace Prisma {
     permissionEnd?: string | null
     reason: string
     status?: string
+    cancelledAt?: Date | string | null
     affectedClasses?: JsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -70793,6 +70826,7 @@ export namespace Prisma {
     permissionEnd?: string | null
     reason: string
     status?: string
+    cancelledAt?: Date | string | null
     affectedClasses?: JsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -81036,6 +81070,7 @@ export namespace Prisma {
     permissionEnd?: string | null
     reason: string
     status?: string
+    cancelledAt?: Date | string | null
     affectedClasses?: JsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -81505,11 +81540,12 @@ export namespace Prisma {
     halfDayPeriod?: NullableStringFieldUpdateOperationsInput | string | null
     halfDayStart?: NullableStringFieldUpdateOperationsInput | string | null
     halfDayEnd?: NullableStringFieldUpdateOperationsInput | string | null
-    permissionHours?: NullableIntFieldUpdateOperationsInput | number | null
+    permissionHours?: NullableFloatFieldUpdateOperationsInput | number | null
     permissionStart?: NullableStringFieldUpdateOperationsInput | string | null
     permissionEnd?: NullableStringFieldUpdateOperationsInput | string | null
     reason?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     affectedClasses?: JsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -81529,11 +81565,12 @@ export namespace Prisma {
     halfDayPeriod?: NullableStringFieldUpdateOperationsInput | string | null
     halfDayStart?: NullableStringFieldUpdateOperationsInput | string | null
     halfDayEnd?: NullableStringFieldUpdateOperationsInput | string | null
-    permissionHours?: NullableIntFieldUpdateOperationsInput | number | null
+    permissionHours?: NullableFloatFieldUpdateOperationsInput | number | null
     permissionStart?: NullableStringFieldUpdateOperationsInput | string | null
     permissionEnd?: NullableStringFieldUpdateOperationsInput | string | null
     reason?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     affectedClasses?: JsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -81552,11 +81589,12 @@ export namespace Prisma {
     halfDayPeriod?: NullableStringFieldUpdateOperationsInput | string | null
     halfDayStart?: NullableStringFieldUpdateOperationsInput | string | null
     halfDayEnd?: NullableStringFieldUpdateOperationsInput | string | null
-    permissionHours?: NullableIntFieldUpdateOperationsInput | number | null
+    permissionHours?: NullableFloatFieldUpdateOperationsInput | number | null
     permissionStart?: NullableStringFieldUpdateOperationsInput | string | null
     permissionEnd?: NullableStringFieldUpdateOperationsInput | string | null
     reason?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     affectedClasses?: JsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -81850,6 +81888,7 @@ export namespace Prisma {
     permissionEnd?: string | null
     reason: string
     status?: string
+    cancelledAt?: Date | string | null
     affectedClasses?: JsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -82611,11 +82650,12 @@ export namespace Prisma {
     halfDayPeriod?: NullableStringFieldUpdateOperationsInput | string | null
     halfDayStart?: NullableStringFieldUpdateOperationsInput | string | null
     halfDayEnd?: NullableStringFieldUpdateOperationsInput | string | null
-    permissionHours?: NullableIntFieldUpdateOperationsInput | number | null
+    permissionHours?: NullableFloatFieldUpdateOperationsInput | number | null
     permissionStart?: NullableStringFieldUpdateOperationsInput | string | null
     permissionEnd?: NullableStringFieldUpdateOperationsInput | string | null
     reason?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     affectedClasses?: JsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -82635,11 +82675,12 @@ export namespace Prisma {
     halfDayPeriod?: NullableStringFieldUpdateOperationsInput | string | null
     halfDayStart?: NullableStringFieldUpdateOperationsInput | string | null
     halfDayEnd?: NullableStringFieldUpdateOperationsInput | string | null
-    permissionHours?: NullableIntFieldUpdateOperationsInput | number | null
+    permissionHours?: NullableFloatFieldUpdateOperationsInput | number | null
     permissionStart?: NullableStringFieldUpdateOperationsInput | string | null
     permissionEnd?: NullableStringFieldUpdateOperationsInput | string | null
     reason?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     affectedClasses?: JsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -82658,11 +82699,12 @@ export namespace Prisma {
     halfDayPeriod?: NullableStringFieldUpdateOperationsInput | string | null
     halfDayStart?: NullableStringFieldUpdateOperationsInput | string | null
     halfDayEnd?: NullableStringFieldUpdateOperationsInput | string | null
-    permissionHours?: NullableIntFieldUpdateOperationsInput | number | null
+    permissionHours?: NullableFloatFieldUpdateOperationsInput | number | null
     permissionStart?: NullableStringFieldUpdateOperationsInput | string | null
     permissionEnd?: NullableStringFieldUpdateOperationsInput | string | null
     reason?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     affectedClasses?: JsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string

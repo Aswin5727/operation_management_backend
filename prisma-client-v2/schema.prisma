@@ -870,7 +870,7 @@ model BranchFaculty {
 }
 
 model FacultyLeaveRequest {
-  id              String   @id @default(cuid())
+  id              String    @id @default(cuid())
   facultyUserId   String
   branchId        String
   facultyId       String
@@ -883,16 +883,17 @@ model FacultyLeaveRequest {
   halfDayPeriod   String?
   halfDayStart    String?
   halfDayEnd      String?
-  permissionHours Int?
+  permissionHours Float?
   permissionStart String?
   permissionEnd   String?
   reason          String
-  status          String   @default("PENDING")
-  affectedClasses Json     @default("[]")
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-  facultyUser     User     @relation(fields: [facultyUserId], references: [id], onDelete: Cascade)
-  branch          Branch   @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  status          String    @default("PENDING")
+  cancelledAt     DateTime?
+  affectedClasses Json      @default("[]")
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  facultyUser     User      @relation(fields: [facultyUserId], references: [id], onDelete: Cascade)
+  branch          Branch    @relation(fields: [branchId], references: [id], onDelete: Cascade)
 
   @@index([facultyUserId, fromDate, toDate])
   @@index([branchId, status, createdAt])

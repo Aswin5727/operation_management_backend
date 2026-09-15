@@ -882,11 +882,12 @@ model FacultyLeaveRequest {
   halfDayPeriod  String?
   halfDayStart   String?
   halfDayEnd     String?
-  permissionHours Int?
+  permissionHours Float?
   permissionStart String?
   permissionEnd   String?
   reason         String
   status         String   @default("PENDING")
+  cancelledAt    DateTime?
   affectedClasses Json    @default("[]")
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt

@@ -1,6 +1,6 @@
 import prisma from "../../config/prisma.js";
 import AppError from "../../common/errors/AppError.js";
-import { createFacultyLeaveRequestNotification } from "../notifications/notifications.service.js";
+import { createFacultyLeaveRequestChangeNotification, createFacultyLeaveRequestNotification } from "../notifications/notifications.service.js";
 
 const LEAVE_TYPES = new Set(["PLANNED", "UNPLANNED", "EMERGENCY"]);
 const DURATIONS = new Set(["FULL_DAY", "HALF_DAY", "PERMISSION"]);
@@ -112,13 +112,15 @@ function validatePayload(payload = {}) {
   const durationType = text(payload.durationType).toUpperCase();
   const halfDayStart = text(payload.halfDayStart) || null;
   const halfDayEnd = text(payload.halfDayEnd) || null;
-  const permissionHours = payload.permissionHours == null || payload.permissionHours === "" ? null : Number(payload.permissionHours);
-  const permissionStart = text(payload.permissionStart) || null;
+  let permissionHours = payload.permissionHours == null || payload.permissionHours === "" ? null : Number(payload.permissionHours);
+  let permissionStart = text(payload.permissionStart) || null;
+  const permissionEndInput = text(payload.permissionEnd) || null;
   const fromDate = parseDate(payload.fromDate, "From date");
   const toDate = parseDate(payload.toDate, "To date");
   if (!LEAVE_TYPES.has(leaveType)) throw new AppError("Select a valid leave type", 400);
   if (!DURATIONS.has(durationType)) throw new AppError("Select a valid leave duration", 400);
   if (toDate < fromDate) throw new AppError("To date cannot be before from date", 400);
+  if (durationType === "PERMISSION" && toDate !== fromDate) throw new AppError("Permission leave must use one date", 400);
   if (durationType === "HALF_DAY") {
     const startMinutes = parseTime(halfDayStart);
     const endMinutes = parseTime(halfDayEnd);
@@ -129,11 +131,17 @@ function validatePayload(payload = {}) {
   }
   let permissionEnd = null;
   if (durationType === "PERMISSION") {
-    if (![1, 2].includes(permissionHours)) throw new AppError("Permission leave must be 1 or 2 hours", 400);
     const startMinutes = parseTime(permissionStart);
-    if (startMinutes == null || startMinutes + permissionHours * 60 > 24 * 60) throw new AppError("Select a valid permission start time", 400);
-    permissionEnd = formatTime(startMinutes + permissionHours * 60);
-  } else if (permissionHours != null || permissionStart) {
+    const endMinutes = parseTime(permissionEndInput);
+    if (startMinutes == null || endMinutes == null) throw new AppError("Select valid permission start and end times", 400);
+    if (endMinutes <= startMinutes) throw new AppError("Permission end time must be after start time", 400);
+    permissionEnd = formatTime(endMinutes);
+    const calculatedHours = (endMinutes - startMinutes) / 60;
+    if (!Number.isFinite(calculatedHours) || calculatedHours <= 0) throw new AppError("Select a valid permission time range", 400);
+    if (permissionHours != null && permissionHours !== calculatedHours) throw new AppError("Permission total hours do not match the selected times", 400);
+    permissionHours = calculatedHours;
+    permissionStart = formatTime(startMinutes);
+  } else if (permissionHours != null || permissionStart || permissionEndInput) {
     throw new AppError("Permission duration and time are only valid for permission leave", 400);
   }
   const reason = text(payload.reason);
@@ -169,6 +177,27 @@ async function calculateAffectedClasses(branchId, facultyId, leave) {
 
 function mapRequest(item) {
   return { ...item, affectedClassCount: Array.isArray(item.affectedClasses) ? item.affectedClasses.length : 0 };
+}
+
+function displayTime(value) {
+  const minutes = parseTime(value);
+  if (minutes == null) return text(value) || "-";
+  const hour = Math.floor(minutes / 60) % 24;
+  return `${String(hour % 12 || 12).padStart(2, "0")}:${String(minutes % 60).padStart(2, "0")} ${hour >= 12 ? "PM" : "AM"}`;
+}
+
+function leaveChanges(previous, next) {
+  const changes = [];
+  if (previous.fromDate !== next.fromDate || previous.toDate !== next.toDate) changes.push(`Date changed: ${previous.fromDate}${previous.fromDate !== previous.toDate ? ` - ${previous.toDate}` : ""} → ${next.fromDate}${next.fromDate !== next.toDate ? ` - ${next.toDate}` : ""}`);
+  if (previous.durationType !== next.durationType) changes.push(`Day Type changed: ${previous.durationType} → ${next.durationType}`);
+  const previousStart = previous.permissionStart || previous.halfDayStart;
+  const previousEnd = previous.permissionEnd || previous.halfDayEnd;
+  const nextStart = next.permissionStart || next.halfDayStart;
+  const nextEnd = next.permissionEnd || next.halfDayEnd;
+  if (previousStart !== nextStart || previousEnd !== nextEnd) changes.push(`Time changed: ${displayTime(previousStart)}-${displayTime(previousEnd)} → ${displayTime(nextStart)}-${displayTime(nextEnd)}`);
+  if (previous.leaveType !== next.leaveType) changes.push(`Leave Type changed: ${previous.leaveType} → ${next.leaveType}`);
+  if (previous.reason !== next.reason) changes.push("Reason changed");
+  return changes;
 }
 
 export async function listMyFacultyLeaveRequests(user) {
@@ -228,6 +257,44 @@ export async function createFacultyLeaveRequest(user, payload) {
     console.warn("Faculty leave request notification failed to save", error);
   }
   return mapRequest(created);
+}
+
+export async function updateFacultyLeaveRequest(user, requestId, payload) {
+  const faculty = await resolveFacultyContext(user);
+  const existing = await prisma.facultyLeaveRequest.findFirst({ where: { id: requestId, facultyUserId: user.id } });
+  if (!existing) throw new AppError("Leave request not found", 404);
+  if (existing.status !== "PENDING") throw new AppError("Only pending leave requests can be edited", 409);
+  const leave = validatePayload(payload);
+  const overlap = await prisma.facultyLeaveRequest.findFirst({
+    where: { id: { not: requestId }, facultyUserId: user.id, status: { in: ["PENDING", "APPROVED"] }, fromDate: { lte: leave.toDate }, toDate: { gte: leave.fromDate } },
+    select: { id: true },
+  });
+  if (overlap) throw new AppError("You already have a pending or approved leave request for this date range", 409);
+  const affectedClasses = await calculateAffectedClasses(faculty.branchId, faculty.facultyId, leave);
+  const updated = await prisma.facultyLeaveRequest.update({
+    where: { id: requestId },
+    data: { ...leave, affectedClasses, status: "PENDING", cancelledAt: null },
+  });
+  try {
+    await createFacultyLeaveRequestChangeNotification({ request: updated, branch: faculty.branch, faculty, action: "edited", changes: leaveChanges(existing, updated) });
+  } catch (error) {
+    console.warn("Faculty leave edit notification failed to save", error);
+  }
+  return mapRequest(updated);
+}
+
+export async function cancelFacultyLeaveRequest(user, requestId) {
+  const faculty = await resolveFacultyContext(user);
+  const existing = await prisma.facultyLeaveRequest.findFirst({ where: { id: requestId, facultyUserId: user.id } });
+  if (!existing) throw new AppError("Leave request not found", 404);
+  if (existing.status !== "PENDING") throw new AppError("Only pending leave requests can be cancelled", 409);
+  const cancelled = await prisma.facultyLeaveRequest.update({ where: { id: requestId }, data: { status: "CANCELLED", cancelledAt: new Date() } });
+  try {
+    await createFacultyLeaveRequestChangeNotification({ request: cancelled, branch: faculty.branch, faculty, action: "cancelled" });
+  } catch (error) {
+    console.warn("Faculty leave cancellation notification failed to save", error);
+  }
+  return mapRequest(cancelled);
 }
 
 export async function listBranchFacultyLeaveRequests(user, query = {}) {
