@@ -1,15 +1,11 @@
 import prisma from "../../config/prisma.js";
 import AppError from "../../common/errors/AppError.js";
+import { createFacultyLeaveRequestNotification } from "../notifications/notifications.service.js";
 
 const LEAVE_TYPES = new Set(["PLANNED", "UNPLANNED", "EMERGENCY"]);
-const DURATIONS = new Set(["FULL_DAY", "HALF_DAY"]);
-const PERIODS = new Set(["MORNING", "AFTERNOON"]);
-
-// One source of truth until the product has branch-level working-hour settings.
-const HALF_DAY_WINDOWS = {
-  MORNING: { start: "09:00", end: "13:00" },
-  AFTERNOON: { start: "14:00", end: "18:00" },
-};
+const DURATIONS = new Set(["FULL_DAY", "HALF_DAY", "PERMISSION"]);
+const FULL_DAY_DURATION_MINUTES = 10 * 60;
+const MAX_HALF_DAY_DURATION_MINUTES = FULL_DAY_DURATION_MINUTES / 2;
 
 function text(value) {
   return String(value ?? "").trim();
@@ -38,6 +34,11 @@ function parseTime(value) {
     if (period === "PM" && hour !== 12) hour += 12;
   }
   return hour * 60 + minute;
+}
+
+function formatTime(minutes) {
+  const hour = Math.floor(minutes / 60) % 24;
+  return `${String(hour).padStart(2, "0")}:${String(minutes % 60).padStart(2, "0")}`;
 }
 
 function dateRange(fromDate, toDate) {
@@ -80,7 +81,12 @@ function serializeBatch(batch, date, leave) {
     endTime,
     batchTiming: batch.batchTiming,
     durationType: leave.durationType,
-    halfDayPeriod: leave.halfDayPeriod || null,
+    halfDayPeriod: null,
+    halfDayStart: leave.halfDayStart || null,
+    halfDayEnd: leave.halfDayEnd || null,
+    permissionHours: leave.permissionHours || null,
+    permissionStart: leave.permissionStart || null,
+    permissionEnd: leave.permissionEnd || null,
   };
 }
 
@@ -104,18 +110,36 @@ async function resolveFacultyContext(user) {
 function validatePayload(payload = {}) {
   const leaveType = text(payload.leaveType).toUpperCase();
   const durationType = text(payload.durationType).toUpperCase();
-  const halfDayPeriod = text(payload.halfDayPeriod).toUpperCase() || null;
+  const halfDayStart = text(payload.halfDayStart) || null;
+  const halfDayEnd = text(payload.halfDayEnd) || null;
+  const permissionHours = payload.permissionHours == null || payload.permissionHours === "" ? null : Number(payload.permissionHours);
+  const permissionStart = text(payload.permissionStart) || null;
   const fromDate = parseDate(payload.fromDate, "From date");
   const toDate = parseDate(payload.toDate, "To date");
   if (!LEAVE_TYPES.has(leaveType)) throw new AppError("Select a valid leave type", 400);
   if (!DURATIONS.has(durationType)) throw new AppError("Select a valid leave duration", 400);
   if (toDate < fromDate) throw new AppError("To date cannot be before from date", 400);
-  if (durationType === "FULL_DAY" && halfDayPeriod) throw new AppError("Full-day leave cannot have a half-day period", 400);
-  if (durationType === "HALF_DAY" && !PERIODS.has(halfDayPeriod)) throw new AppError("Select Morning or Afternoon for half-day leave", 400);
+  if (durationType === "HALF_DAY") {
+    const startMinutes = parseTime(halfDayStart);
+    const endMinutes = parseTime(halfDayEnd);
+    if (startMinutes == null || endMinutes == null || endMinutes <= startMinutes) throw new AppError("Select a valid half-day start and end time", 400);
+    if (endMinutes - startMinutes > MAX_HALF_DAY_DURATION_MINUTES) throw new AppError("Half-day leave cannot exceed 5 hours", 400);
+  } else if (halfDayStart || halfDayEnd || payload.halfDayPeriod) {
+    throw new AppError("Half-day times are only valid for half-day leave", 400);
+  }
+  let permissionEnd = null;
+  if (durationType === "PERMISSION") {
+    if (![1, 2].includes(permissionHours)) throw new AppError("Permission leave must be 1 or 2 hours", 400);
+    const startMinutes = parseTime(permissionStart);
+    if (startMinutes == null || startMinutes + permissionHours * 60 > 24 * 60) throw new AppError("Select a valid permission start time", 400);
+    permissionEnd = formatTime(startMinutes + permissionHours * 60);
+  } else if (permissionHours != null || permissionStart) {
+    throw new AppError("Permission duration and time are only valid for permission leave", 400);
+  }
   const reason = text(payload.reason);
   if (!reason) throw new AppError("Reason is required", 400);
   if (reason.length > 1000) throw new AppError("Reason cannot exceed 1000 characters", 400);
-  return { leaveType, durationType, halfDayPeriod, fromDate, toDate, reason };
+  return { leaveType, durationType, halfDayPeriod: null, halfDayStart: durationType === "HALF_DAY" ? halfDayStart : null, halfDayEnd: durationType === "HALF_DAY" ? halfDayEnd : null, permissionHours: durationType === "PERMISSION" ? permissionHours : null, permissionStart: durationType === "PERMISSION" ? permissionStart : null, permissionEnd, fromDate, toDate, reason };
 }
 
 async function calculateAffectedClasses(branchId, facultyId, leave) {
@@ -132,7 +156,9 @@ async function calculateAffectedClasses(branchId, facultyId, leave) {
         affected.push(serializeBatch(batch, date, leave));
         continue;
       }
-      const window = HALF_DAY_WINDOWS[leave.halfDayPeriod];
+      const window = leave.durationType === "PERMISSION"
+        ? { start: leave.permissionStart, end: leave.permissionEnd }
+        : { start: leave.halfDayStart, end: leave.halfDayEnd };
       if (overlaps(parseTime(batch.startTime), parseTime(batch.endTime), parseTime(window.start), parseTime(window.end))) {
         affected.push(serializeBatch(batch, date, leave));
       }
@@ -151,6 +177,29 @@ export async function listMyFacultyLeaveRequests(user) {
   return { requests: rows.map(mapRequest) };
 }
 
+export async function listMyFacultySchedule(user) {
+  const faculty = await resolveFacultyContext(user);
+  const batches = await prisma.branchBatch.findMany({
+    where: { branchId: faculty.branchId, facultyId: faculty.facultyId, status: "ACTIVE" },
+    orderBy: [{ startTime: "asc" }, { batchName: "asc" }],
+    select: { id: true, batchName: true, batchTiming: true, startTime: true, startPeriod: true, endTime: true, endPeriod: true },
+  });
+  const slots = [];
+  const seen = new Set();
+  for (const batch of batches) {
+    const start = text(batch.startTime);
+    const end = text(batch.endTime);
+    const startMinutes = parseTime(`${start} ${text(batch.startPeriod)}`);
+    const endMinutes = parseTime(`${end} ${text(batch.endPeriod)}`);
+    if (!start || !end || startMinutes == null || endMinutes == null || endMinutes <= startMinutes) continue;
+    const key = `${start}|${end}|${batch.startPeriod}|${batch.endPeriod}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    slots.push({ id: key, batchName: batch.batchName, batchTiming: batch.batchTiming, startTime: start, startPeriod: batch.startPeriod, endTime: end, endPeriod: batch.endPeriod, durationMinutes: endMinutes - startMinutes });
+  }
+  return { slots };
+}
+
 export async function createFacultyLeaveRequest(user, payload) {
   const faculty = await resolveFacultyContext(user);
   const leave = validatePayload(payload);
@@ -164,11 +213,20 @@ export async function createFacultyLeaveRequest(user, payload) {
     data: {
       facultyUserId: user.id, branchId: faculty.branchId, facultyId: faculty.facultyId,
       facultyName: faculty.name, facultyEmail: faculty.email, ...leave,
-      halfDayStart: leave.halfDayPeriod ? HALF_DAY_WINDOWS[leave.halfDayPeriod].start : null,
-      halfDayEnd: leave.halfDayPeriod ? HALF_DAY_WINDOWS[leave.halfDayPeriod].end : null,
+      halfDayStart: leave.halfDayStart,
+      halfDayEnd: leave.halfDayEnd,
+      permissionHours: leave.permissionHours,
+      permissionStart: leave.permissionStart,
+      permissionEnd: leave.permissionEnd,
       affectedClasses,
     },
   });
+  try {
+    await createFacultyLeaveRequestNotification({ request: created, branch: faculty.branch, faculty });
+  } catch (error) {
+    // The leave request remains valid even if notification persistence is temporarily unavailable.
+    console.warn("Faculty leave request notification failed to save", error);
+  }
   return mapRequest(created);
 }
 
@@ -180,4 +238,4 @@ export async function listBranchFacultyLeaveRequests(user, query = {}) {
   return { requests: rows.map(mapRequest) };
 }
 
-export { HALF_DAY_WINDOWS };
+export { FULL_DAY_DURATION_MINUTES, MAX_HALF_DAY_DURATION_MINUTES };

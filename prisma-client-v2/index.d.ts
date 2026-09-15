@@ -234,7 +234,8 @@ export const NotificationKind: {
   COURSE_EDIT_REQUEST: 'COURSE_EDIT_REQUEST',
   COURSE_EDIT_REQUEST_ACCEPTED: 'COURSE_EDIT_REQUEST_ACCEPTED',
   COURSE_EDIT_REQUEST_REJECTED: 'COURSE_EDIT_REQUEST_REJECTED',
-  COURSE_EDIT_MODULE_UPDATED: 'COURSE_EDIT_MODULE_UPDATED'
+  COURSE_EDIT_MODULE_UPDATED: 'COURSE_EDIT_MODULE_UPDATED',
+  FACULTY_LEAVE_REQUEST: 'FACULTY_LEAVE_REQUEST'
 };
 
 export type NotificationKind = (typeof NotificationKind)[keyof typeof NotificationKind]
@@ -11529,6 +11530,7 @@ export namespace Prisma {
     moduleName: string | null
     requestDescription: string | null
     requestId: string | null
+    leaveRequestId: string | null
     requestReason: string | null
     requestStatus: string | null
     requestTitle: string | null
@@ -11560,6 +11562,7 @@ export namespace Prisma {
     moduleName: string | null
     requestDescription: string | null
     requestId: string | null
+    leaveRequestId: string | null
     requestReason: string | null
     requestStatus: string | null
     requestTitle: string | null
@@ -11591,6 +11594,7 @@ export namespace Prisma {
     moduleName: number
     requestDescription: number
     requestId: number
+    leaveRequestId: number
     requestReason: number
     requestStatus: number
     requestTitle: number
@@ -11624,6 +11628,7 @@ export namespace Prisma {
     moduleName?: true
     requestDescription?: true
     requestId?: true
+    leaveRequestId?: true
     requestReason?: true
     requestStatus?: true
     requestTitle?: true
@@ -11655,6 +11660,7 @@ export namespace Prisma {
     moduleName?: true
     requestDescription?: true
     requestId?: true
+    leaveRequestId?: true
     requestReason?: true
     requestStatus?: true
     requestTitle?: true
@@ -11686,6 +11692,7 @@ export namespace Prisma {
     moduleName?: true
     requestDescription?: true
     requestId?: true
+    leaveRequestId?: true
     requestReason?: true
     requestStatus?: true
     requestTitle?: true
@@ -11790,6 +11797,7 @@ export namespace Prisma {
     moduleName: string | null
     requestDescription: string | null
     requestId: string | null
+    leaveRequestId: string | null
     requestReason: string | null
     requestStatus: string | null
     requestTitle: string | null
@@ -11838,6 +11846,7 @@ export namespace Prisma {
     moduleName?: boolean
     requestDescription?: boolean
     requestId?: boolean
+    leaveRequestId?: boolean
     requestReason?: boolean
     requestStatus?: boolean
     requestTitle?: boolean
@@ -11871,6 +11880,7 @@ export namespace Prisma {
     moduleName?: boolean
     requestDescription?: boolean
     requestId?: boolean
+    leaveRequestId?: boolean
     requestReason?: boolean
     requestStatus?: boolean
     requestTitle?: boolean
@@ -11904,6 +11914,7 @@ export namespace Prisma {
     moduleName?: boolean
     requestDescription?: boolean
     requestId?: boolean
+    leaveRequestId?: boolean
     requestReason?: boolean
     requestStatus?: boolean
     requestTitle?: boolean
@@ -11937,6 +11948,7 @@ export namespace Prisma {
     moduleName?: boolean
     requestDescription?: boolean
     requestId?: boolean
+    leaveRequestId?: boolean
     requestReason?: boolean
     requestStatus?: boolean
     requestTitle?: boolean
@@ -11944,7 +11956,7 @@ export namespace Prisma {
     subModuleName?: boolean
   }
 
-  export type NotificationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "kind" | "tone" | "title" | "message" | "actionLabel" | "targetBranchId" | "targetBranchEmail" | "targetBranchName" | "read" | "readAt" | "createdBy" | "createdAt" | "updatedAt" | "targetUserId" | "branchCourseId" | "branchCourseName" | "facultyId" | "facultyName" | "moduleId" | "moduleName" | "requestDescription" | "requestId" | "requestReason" | "requestStatus" | "requestTitle" | "subModuleId" | "subModuleName", ExtArgs["result"]["notification"]>
+  export type NotificationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "kind" | "tone" | "title" | "message" | "actionLabel" | "targetBranchId" | "targetBranchEmail" | "targetBranchName" | "read" | "readAt" | "createdBy" | "createdAt" | "updatedAt" | "targetUserId" | "branchCourseId" | "branchCourseName" | "facultyId" | "facultyName" | "moduleId" | "moduleName" | "requestDescription" | "requestId" | "leaveRequestId" | "requestReason" | "requestStatus" | "requestTitle" | "subModuleId" | "subModuleName", ExtArgs["result"]["notification"]>
   export type NotificationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     request?: boolean | Notification$requestArgs<ExtArgs>
     targetUser?: boolean | Notification$targetUserArgs<ExtArgs>
@@ -11988,6 +12000,7 @@ export namespace Prisma {
       moduleName: string | null
       requestDescription: string | null
       requestId: string | null
+      leaveRequestId: string | null
       requestReason: string | null
       requestStatus: string | null
       requestTitle: string | null
@@ -12441,6 +12454,7 @@ export namespace Prisma {
     readonly moduleName: FieldRef<"Notification", 'String'>
     readonly requestDescription: FieldRef<"Notification", 'String'>
     readonly requestId: FieldRef<"Notification", 'String'>
+    readonly leaveRequestId: FieldRef<"Notification", 'String'>
     readonly requestReason: FieldRef<"Notification", 'String'>
     readonly requestStatus: FieldRef<"Notification", 'String'>
     readonly requestTitle: FieldRef<"Notification", 'String'>
@@ -46156,8 +46170,18 @@ export namespace Prisma {
 
   export type AggregateFacultyLeaveRequest = {
     _count: FacultyLeaveRequestCountAggregateOutputType | null
+    _avg: FacultyLeaveRequestAvgAggregateOutputType | null
+    _sum: FacultyLeaveRequestSumAggregateOutputType | null
     _min: FacultyLeaveRequestMinAggregateOutputType | null
     _max: FacultyLeaveRequestMaxAggregateOutputType | null
+  }
+
+  export type FacultyLeaveRequestAvgAggregateOutputType = {
+    permissionHours: number | null
+  }
+
+  export type FacultyLeaveRequestSumAggregateOutputType = {
+    permissionHours: number | null
   }
 
   export type FacultyLeaveRequestMinAggregateOutputType = {
@@ -46174,6 +46198,9 @@ export namespace Prisma {
     halfDayPeriod: string | null
     halfDayStart: string | null
     halfDayEnd: string | null
+    permissionHours: number | null
+    permissionStart: string | null
+    permissionEnd: string | null
     reason: string | null
     status: string | null
     createdAt: Date | null
@@ -46194,6 +46221,9 @@ export namespace Prisma {
     halfDayPeriod: string | null
     halfDayStart: string | null
     halfDayEnd: string | null
+    permissionHours: number | null
+    permissionStart: string | null
+    permissionEnd: string | null
     reason: string | null
     status: string | null
     createdAt: Date | null
@@ -46214,6 +46244,9 @@ export namespace Prisma {
     halfDayPeriod: number
     halfDayStart: number
     halfDayEnd: number
+    permissionHours: number
+    permissionStart: number
+    permissionEnd: number
     reason: number
     status: number
     affectedClasses: number
@@ -46222,6 +46255,14 @@ export namespace Prisma {
     _all: number
   }
 
+
+  export type FacultyLeaveRequestAvgAggregateInputType = {
+    permissionHours?: true
+  }
+
+  export type FacultyLeaveRequestSumAggregateInputType = {
+    permissionHours?: true
+  }
 
   export type FacultyLeaveRequestMinAggregateInputType = {
     id?: true
@@ -46237,6 +46278,9 @@ export namespace Prisma {
     halfDayPeriod?: true
     halfDayStart?: true
     halfDayEnd?: true
+    permissionHours?: true
+    permissionStart?: true
+    permissionEnd?: true
     reason?: true
     status?: true
     createdAt?: true
@@ -46257,6 +46301,9 @@ export namespace Prisma {
     halfDayPeriod?: true
     halfDayStart?: true
     halfDayEnd?: true
+    permissionHours?: true
+    permissionStart?: true
+    permissionEnd?: true
     reason?: true
     status?: true
     createdAt?: true
@@ -46277,6 +46324,9 @@ export namespace Prisma {
     halfDayPeriod?: true
     halfDayStart?: true
     halfDayEnd?: true
+    permissionHours?: true
+    permissionStart?: true
+    permissionEnd?: true
     reason?: true
     status?: true
     affectedClasses?: true
@@ -46323,6 +46373,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: FacultyLeaveRequestAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: FacultyLeaveRequestSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: FacultyLeaveRequestMinAggregateInputType
@@ -46353,6 +46415,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: FacultyLeaveRequestCountAggregateInputType | true
+    _avg?: FacultyLeaveRequestAvgAggregateInputType
+    _sum?: FacultyLeaveRequestSumAggregateInputType
     _min?: FacultyLeaveRequestMinAggregateInputType
     _max?: FacultyLeaveRequestMaxAggregateInputType
   }
@@ -46371,12 +46435,17 @@ export namespace Prisma {
     halfDayPeriod: string | null
     halfDayStart: string | null
     halfDayEnd: string | null
+    permissionHours: number | null
+    permissionStart: string | null
+    permissionEnd: string | null
     reason: string
     status: string
     affectedClasses: JsonValue
     createdAt: Date
     updatedAt: Date
     _count: FacultyLeaveRequestCountAggregateOutputType | null
+    _avg: FacultyLeaveRequestAvgAggregateOutputType | null
+    _sum: FacultyLeaveRequestSumAggregateOutputType | null
     _min: FacultyLeaveRequestMinAggregateOutputType | null
     _max: FacultyLeaveRequestMaxAggregateOutputType | null
   }
@@ -46409,6 +46478,9 @@ export namespace Prisma {
     halfDayPeriod?: boolean
     halfDayStart?: boolean
     halfDayEnd?: boolean
+    permissionHours?: boolean
+    permissionStart?: boolean
+    permissionEnd?: boolean
     reason?: boolean
     status?: boolean
     affectedClasses?: boolean
@@ -46432,6 +46504,9 @@ export namespace Prisma {
     halfDayPeriod?: boolean
     halfDayStart?: boolean
     halfDayEnd?: boolean
+    permissionHours?: boolean
+    permissionStart?: boolean
+    permissionEnd?: boolean
     reason?: boolean
     status?: boolean
     affectedClasses?: boolean
@@ -46455,6 +46530,9 @@ export namespace Prisma {
     halfDayPeriod?: boolean
     halfDayStart?: boolean
     halfDayEnd?: boolean
+    permissionHours?: boolean
+    permissionStart?: boolean
+    permissionEnd?: boolean
     reason?: boolean
     status?: boolean
     affectedClasses?: boolean
@@ -46478,6 +46556,9 @@ export namespace Prisma {
     halfDayPeriod?: boolean
     halfDayStart?: boolean
     halfDayEnd?: boolean
+    permissionHours?: boolean
+    permissionStart?: boolean
+    permissionEnd?: boolean
     reason?: boolean
     status?: boolean
     affectedClasses?: boolean
@@ -46485,7 +46566,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type FacultyLeaveRequestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "facultyUserId" | "branchId" | "facultyId" | "facultyName" | "facultyEmail" | "leaveType" | "fromDate" | "toDate" | "durationType" | "halfDayPeriod" | "halfDayStart" | "halfDayEnd" | "reason" | "status" | "affectedClasses" | "createdAt" | "updatedAt", ExtArgs["result"]["facultyLeaveRequest"]>
+  export type FacultyLeaveRequestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "facultyUserId" | "branchId" | "facultyId" | "facultyName" | "facultyEmail" | "leaveType" | "fromDate" | "toDate" | "durationType" | "halfDayPeriod" | "halfDayStart" | "halfDayEnd" | "permissionHours" | "permissionStart" | "permissionEnd" | "reason" | "status" | "affectedClasses" | "createdAt" | "updatedAt", ExtArgs["result"]["facultyLeaveRequest"]>
   export type FacultyLeaveRequestInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     facultyUser?: boolean | UserDefaultArgs<ExtArgs>
     branch?: boolean | BranchDefaultArgs<ExtArgs>
@@ -46519,6 +46600,9 @@ export namespace Prisma {
       halfDayPeriod: string | null
       halfDayStart: string | null
       halfDayEnd: string | null
+      permissionHours: number | null
+      permissionStart: string | null
+      permissionEnd: string | null
       reason: string
       status: string
       affectedClasses: Prisma.JsonValue
@@ -46962,6 +47046,9 @@ export namespace Prisma {
     readonly halfDayPeriod: FieldRef<"FacultyLeaveRequest", 'String'>
     readonly halfDayStart: FieldRef<"FacultyLeaveRequest", 'String'>
     readonly halfDayEnd: FieldRef<"FacultyLeaveRequest", 'String'>
+    readonly permissionHours: FieldRef<"FacultyLeaveRequest", 'Int'>
+    readonly permissionStart: FieldRef<"FacultyLeaveRequest", 'String'>
+    readonly permissionEnd: FieldRef<"FacultyLeaveRequest", 'String'>
     readonly reason: FieldRef<"FacultyLeaveRequest", 'String'>
     readonly status: FieldRef<"FacultyLeaveRequest", 'String'>
     readonly affectedClasses: FieldRef<"FacultyLeaveRequest", 'Json'>
@@ -51429,6 +51516,7 @@ export namespace Prisma {
     moduleName: 'moduleName',
     requestDescription: 'requestDescription',
     requestId: 'requestId',
+    leaveRequestId: 'leaveRequestId',
     requestReason: 'requestReason',
     requestStatus: 'requestStatus',
     requestTitle: 'requestTitle',
@@ -52041,6 +52129,9 @@ export namespace Prisma {
     halfDayPeriod: 'halfDayPeriod',
     halfDayStart: 'halfDayStart',
     halfDayEnd: 'halfDayEnd',
+    permissionHours: 'permissionHours',
+    permissionStart: 'permissionStart',
+    permissionEnd: 'permissionEnd',
     reason: 'reason',
     status: 'status',
     affectedClasses: 'affectedClasses',
@@ -52943,6 +53034,7 @@ export namespace Prisma {
     moduleName?: StringNullableFilter<"Notification"> | string | null
     requestDescription?: StringNullableFilter<"Notification"> | string | null
     requestId?: StringNullableFilter<"Notification"> | string | null
+    leaveRequestId?: StringNullableFilter<"Notification"> | string | null
     requestReason?: StringNullableFilter<"Notification"> | string | null
     requestStatus?: StringNullableFilter<"Notification"> | string | null
     requestTitle?: StringNullableFilter<"Notification"> | string | null
@@ -52976,6 +53068,7 @@ export namespace Prisma {
     moduleName?: SortOrderInput | SortOrder
     requestDescription?: SortOrderInput | SortOrder
     requestId?: SortOrderInput | SortOrder
+    leaveRequestId?: SortOrderInput | SortOrder
     requestReason?: SortOrderInput | SortOrder
     requestStatus?: SortOrderInput | SortOrder
     requestTitle?: SortOrderInput | SortOrder
@@ -53012,6 +53105,7 @@ export namespace Prisma {
     moduleName?: StringNullableFilter<"Notification"> | string | null
     requestDescription?: StringNullableFilter<"Notification"> | string | null
     requestId?: StringNullableFilter<"Notification"> | string | null
+    leaveRequestId?: StringNullableFilter<"Notification"> | string | null
     requestReason?: StringNullableFilter<"Notification"> | string | null
     requestStatus?: StringNullableFilter<"Notification"> | string | null
     requestTitle?: StringNullableFilter<"Notification"> | string | null
@@ -53045,6 +53139,7 @@ export namespace Prisma {
     moduleName?: SortOrderInput | SortOrder
     requestDescription?: SortOrderInput | SortOrder
     requestId?: SortOrderInput | SortOrder
+    leaveRequestId?: SortOrderInput | SortOrder
     requestReason?: SortOrderInput | SortOrder
     requestStatus?: SortOrderInput | SortOrder
     requestTitle?: SortOrderInput | SortOrder
@@ -53082,6 +53177,7 @@ export namespace Prisma {
     moduleName?: StringNullableWithAggregatesFilter<"Notification"> | string | null
     requestDescription?: StringNullableWithAggregatesFilter<"Notification"> | string | null
     requestId?: StringNullableWithAggregatesFilter<"Notification"> | string | null
+    leaveRequestId?: StringNullableWithAggregatesFilter<"Notification"> | string | null
     requestReason?: StringNullableWithAggregatesFilter<"Notification"> | string | null
     requestStatus?: StringNullableWithAggregatesFilter<"Notification"> | string | null
     requestTitle?: StringNullableWithAggregatesFilter<"Notification"> | string | null
@@ -56213,6 +56309,9 @@ export namespace Prisma {
     halfDayPeriod?: StringNullableFilter<"FacultyLeaveRequest"> | string | null
     halfDayStart?: StringNullableFilter<"FacultyLeaveRequest"> | string | null
     halfDayEnd?: StringNullableFilter<"FacultyLeaveRequest"> | string | null
+    permissionHours?: IntNullableFilter<"FacultyLeaveRequest"> | number | null
+    permissionStart?: StringNullableFilter<"FacultyLeaveRequest"> | string | null
+    permissionEnd?: StringNullableFilter<"FacultyLeaveRequest"> | string | null
     reason?: StringFilter<"FacultyLeaveRequest"> | string
     status?: StringFilter<"FacultyLeaveRequest"> | string
     affectedClasses?: JsonFilter<"FacultyLeaveRequest">
@@ -56236,6 +56335,9 @@ export namespace Prisma {
     halfDayPeriod?: SortOrderInput | SortOrder
     halfDayStart?: SortOrderInput | SortOrder
     halfDayEnd?: SortOrderInput | SortOrder
+    permissionHours?: SortOrderInput | SortOrder
+    permissionStart?: SortOrderInput | SortOrder
+    permissionEnd?: SortOrderInput | SortOrder
     reason?: SortOrder
     status?: SortOrder
     affectedClasses?: SortOrder
@@ -56262,6 +56364,9 @@ export namespace Prisma {
     halfDayPeriod?: StringNullableFilter<"FacultyLeaveRequest"> | string | null
     halfDayStart?: StringNullableFilter<"FacultyLeaveRequest"> | string | null
     halfDayEnd?: StringNullableFilter<"FacultyLeaveRequest"> | string | null
+    permissionHours?: IntNullableFilter<"FacultyLeaveRequest"> | number | null
+    permissionStart?: StringNullableFilter<"FacultyLeaveRequest"> | string | null
+    permissionEnd?: StringNullableFilter<"FacultyLeaveRequest"> | string | null
     reason?: StringFilter<"FacultyLeaveRequest"> | string
     status?: StringFilter<"FacultyLeaveRequest"> | string
     affectedClasses?: JsonFilter<"FacultyLeaveRequest">
@@ -56285,14 +56390,19 @@ export namespace Prisma {
     halfDayPeriod?: SortOrderInput | SortOrder
     halfDayStart?: SortOrderInput | SortOrder
     halfDayEnd?: SortOrderInput | SortOrder
+    permissionHours?: SortOrderInput | SortOrder
+    permissionStart?: SortOrderInput | SortOrder
+    permissionEnd?: SortOrderInput | SortOrder
     reason?: SortOrder
     status?: SortOrder
     affectedClasses?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: FacultyLeaveRequestCountOrderByAggregateInput
+    _avg?: FacultyLeaveRequestAvgOrderByAggregateInput
     _max?: FacultyLeaveRequestMaxOrderByAggregateInput
     _min?: FacultyLeaveRequestMinOrderByAggregateInput
+    _sum?: FacultyLeaveRequestSumOrderByAggregateInput
   }
 
   export type FacultyLeaveRequestScalarWhereWithAggregatesInput = {
@@ -56312,6 +56422,9 @@ export namespace Prisma {
     halfDayPeriod?: StringNullableWithAggregatesFilter<"FacultyLeaveRequest"> | string | null
     halfDayStart?: StringNullableWithAggregatesFilter<"FacultyLeaveRequest"> | string | null
     halfDayEnd?: StringNullableWithAggregatesFilter<"FacultyLeaveRequest"> | string | null
+    permissionHours?: IntNullableWithAggregatesFilter<"FacultyLeaveRequest"> | number | null
+    permissionStart?: StringNullableWithAggregatesFilter<"FacultyLeaveRequest"> | string | null
+    permissionEnd?: StringNullableWithAggregatesFilter<"FacultyLeaveRequest"> | string | null
     reason?: StringWithAggregatesFilter<"FacultyLeaveRequest"> | string
     status?: StringWithAggregatesFilter<"FacultyLeaveRequest"> | string
     affectedClasses?: JsonWithAggregatesFilter<"FacultyLeaveRequest">
@@ -57377,6 +57490,7 @@ export namespace Prisma {
     moduleId?: string | null
     moduleName?: string | null
     requestDescription?: string | null
+    leaveRequestId?: string | null
     requestReason?: string | null
     requestStatus?: string | null
     requestTitle?: string | null
@@ -57410,6 +57524,7 @@ export namespace Prisma {
     moduleName?: string | null
     requestDescription?: string | null
     requestId?: string | null
+    leaveRequestId?: string | null
     requestReason?: string | null
     requestStatus?: string | null
     requestTitle?: string | null
@@ -57439,6 +57554,7 @@ export namespace Prisma {
     moduleId?: NullableStringFieldUpdateOperationsInput | string | null
     moduleName?: NullableStringFieldUpdateOperationsInput | string | null
     requestDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    leaveRequestId?: NullableStringFieldUpdateOperationsInput | string | null
     requestReason?: NullableStringFieldUpdateOperationsInput | string | null
     requestStatus?: NullableStringFieldUpdateOperationsInput | string | null
     requestTitle?: NullableStringFieldUpdateOperationsInput | string | null
@@ -57472,6 +57588,7 @@ export namespace Prisma {
     moduleName?: NullableStringFieldUpdateOperationsInput | string | null
     requestDescription?: NullableStringFieldUpdateOperationsInput | string | null
     requestId?: NullableStringFieldUpdateOperationsInput | string | null
+    leaveRequestId?: NullableStringFieldUpdateOperationsInput | string | null
     requestReason?: NullableStringFieldUpdateOperationsInput | string | null
     requestStatus?: NullableStringFieldUpdateOperationsInput | string | null
     requestTitle?: NullableStringFieldUpdateOperationsInput | string | null
@@ -57503,6 +57620,7 @@ export namespace Prisma {
     moduleName?: string | null
     requestDescription?: string | null
     requestId?: string | null
+    leaveRequestId?: string | null
     requestReason?: string | null
     requestStatus?: string | null
     requestTitle?: string | null
@@ -57532,6 +57650,7 @@ export namespace Prisma {
     moduleId?: NullableStringFieldUpdateOperationsInput | string | null
     moduleName?: NullableStringFieldUpdateOperationsInput | string | null
     requestDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    leaveRequestId?: NullableStringFieldUpdateOperationsInput | string | null
     requestReason?: NullableStringFieldUpdateOperationsInput | string | null
     requestStatus?: NullableStringFieldUpdateOperationsInput | string | null
     requestTitle?: NullableStringFieldUpdateOperationsInput | string | null
@@ -57563,6 +57682,7 @@ export namespace Prisma {
     moduleName?: NullableStringFieldUpdateOperationsInput | string | null
     requestDescription?: NullableStringFieldUpdateOperationsInput | string | null
     requestId?: NullableStringFieldUpdateOperationsInput | string | null
+    leaveRequestId?: NullableStringFieldUpdateOperationsInput | string | null
     requestReason?: NullableStringFieldUpdateOperationsInput | string | null
     requestStatus?: NullableStringFieldUpdateOperationsInput | string | null
     requestTitle?: NullableStringFieldUpdateOperationsInput | string | null
@@ -61234,6 +61354,9 @@ export namespace Prisma {
     halfDayPeriod?: string | null
     halfDayStart?: string | null
     halfDayEnd?: string | null
+    permissionHours?: number | null
+    permissionStart?: string | null
+    permissionEnd?: string | null
     reason: string
     status?: string
     affectedClasses?: JsonNullValueInput | InputJsonValue
@@ -61257,6 +61380,9 @@ export namespace Prisma {
     halfDayPeriod?: string | null
     halfDayStart?: string | null
     halfDayEnd?: string | null
+    permissionHours?: number | null
+    permissionStart?: string | null
+    permissionEnd?: string | null
     reason: string
     status?: string
     affectedClasses?: JsonNullValueInput | InputJsonValue
@@ -61276,6 +61402,9 @@ export namespace Prisma {
     halfDayPeriod?: NullableStringFieldUpdateOperationsInput | string | null
     halfDayStart?: NullableStringFieldUpdateOperationsInput | string | null
     halfDayEnd?: NullableStringFieldUpdateOperationsInput | string | null
+    permissionHours?: NullableIntFieldUpdateOperationsInput | number | null
+    permissionStart?: NullableStringFieldUpdateOperationsInput | string | null
+    permissionEnd?: NullableStringFieldUpdateOperationsInput | string | null
     reason?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     affectedClasses?: JsonNullValueInput | InputJsonValue
@@ -61299,6 +61428,9 @@ export namespace Prisma {
     halfDayPeriod?: NullableStringFieldUpdateOperationsInput | string | null
     halfDayStart?: NullableStringFieldUpdateOperationsInput | string | null
     halfDayEnd?: NullableStringFieldUpdateOperationsInput | string | null
+    permissionHours?: NullableIntFieldUpdateOperationsInput | number | null
+    permissionStart?: NullableStringFieldUpdateOperationsInput | string | null
+    permissionEnd?: NullableStringFieldUpdateOperationsInput | string | null
     reason?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     affectedClasses?: JsonNullValueInput | InputJsonValue
@@ -61320,6 +61452,9 @@ export namespace Prisma {
     halfDayPeriod?: string | null
     halfDayStart?: string | null
     halfDayEnd?: string | null
+    permissionHours?: number | null
+    permissionStart?: string | null
+    permissionEnd?: string | null
     reason: string
     status?: string
     affectedClasses?: JsonNullValueInput | InputJsonValue
@@ -61339,6 +61474,9 @@ export namespace Prisma {
     halfDayPeriod?: NullableStringFieldUpdateOperationsInput | string | null
     halfDayStart?: NullableStringFieldUpdateOperationsInput | string | null
     halfDayEnd?: NullableStringFieldUpdateOperationsInput | string | null
+    permissionHours?: NullableIntFieldUpdateOperationsInput | number | null
+    permissionStart?: NullableStringFieldUpdateOperationsInput | string | null
+    permissionEnd?: NullableStringFieldUpdateOperationsInput | string | null
     reason?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     affectedClasses?: JsonNullValueInput | InputJsonValue
@@ -61360,6 +61498,9 @@ export namespace Prisma {
     halfDayPeriod?: NullableStringFieldUpdateOperationsInput | string | null
     halfDayStart?: NullableStringFieldUpdateOperationsInput | string | null
     halfDayEnd?: NullableStringFieldUpdateOperationsInput | string | null
+    permissionHours?: NullableIntFieldUpdateOperationsInput | number | null
+    permissionStart?: NullableStringFieldUpdateOperationsInput | string | null
+    permissionEnd?: NullableStringFieldUpdateOperationsInput | string | null
     reason?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     affectedClasses?: JsonNullValueInput | InputJsonValue
@@ -62599,6 +62740,7 @@ export namespace Prisma {
     moduleName?: SortOrder
     requestDescription?: SortOrder
     requestId?: SortOrder
+    leaveRequestId?: SortOrder
     requestReason?: SortOrder
     requestStatus?: SortOrder
     requestTitle?: SortOrder
@@ -62630,6 +62772,7 @@ export namespace Prisma {
     moduleName?: SortOrder
     requestDescription?: SortOrder
     requestId?: SortOrder
+    leaveRequestId?: SortOrder
     requestReason?: SortOrder
     requestStatus?: SortOrder
     requestTitle?: SortOrder
@@ -62661,6 +62804,7 @@ export namespace Prisma {
     moduleName?: SortOrder
     requestDescription?: SortOrder
     requestId?: SortOrder
+    leaveRequestId?: SortOrder
     requestReason?: SortOrder
     requestStatus?: SortOrder
     requestTitle?: SortOrder
@@ -64874,11 +65018,18 @@ export namespace Prisma {
     halfDayPeriod?: SortOrder
     halfDayStart?: SortOrder
     halfDayEnd?: SortOrder
+    permissionHours?: SortOrder
+    permissionStart?: SortOrder
+    permissionEnd?: SortOrder
     reason?: SortOrder
     status?: SortOrder
     affectedClasses?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type FacultyLeaveRequestAvgOrderByAggregateInput = {
+    permissionHours?: SortOrder
   }
 
   export type FacultyLeaveRequestMaxOrderByAggregateInput = {
@@ -64895,6 +65046,9 @@ export namespace Prisma {
     halfDayPeriod?: SortOrder
     halfDayStart?: SortOrder
     halfDayEnd?: SortOrder
+    permissionHours?: SortOrder
+    permissionStart?: SortOrder
+    permissionEnd?: SortOrder
     reason?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
@@ -64915,10 +65069,17 @@ export namespace Prisma {
     halfDayPeriod?: SortOrder
     halfDayStart?: SortOrder
     halfDayEnd?: SortOrder
+    permissionHours?: SortOrder
+    permissionStart?: SortOrder
+    permissionEnd?: SortOrder
     reason?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type FacultyLeaveRequestSumOrderByAggregateInput = {
+    permissionHours?: SortOrder
   }
 
   export type BranchInstallmentTemplateCountOrderByAggregateInput = {
@@ -68952,6 +69113,7 @@ export namespace Prisma {
     moduleId?: string | null
     moduleName?: string | null
     requestDescription?: string | null
+    leaveRequestId?: string | null
     requestReason?: string | null
     requestStatus?: string | null
     requestTitle?: string | null
@@ -68983,6 +69145,7 @@ export namespace Prisma {
     moduleName?: string | null
     requestDescription?: string | null
     requestId?: string | null
+    leaveRequestId?: string | null
     requestReason?: string | null
     requestStatus?: string | null
     requestTitle?: string | null
@@ -69154,6 +69317,9 @@ export namespace Prisma {
     halfDayPeriod?: string | null
     halfDayStart?: string | null
     halfDayEnd?: string | null
+    permissionHours?: number | null
+    permissionStart?: string | null
+    permissionEnd?: string | null
     reason: string
     status?: string
     affectedClasses?: JsonNullValueInput | InputJsonValue
@@ -69175,6 +69341,9 @@ export namespace Prisma {
     halfDayPeriod?: string | null
     halfDayStart?: string | null
     halfDayEnd?: string | null
+    permissionHours?: number | null
+    permissionStart?: string | null
+    permissionEnd?: string | null
     reason: string
     status?: string
     affectedClasses?: JsonNullValueInput | InputJsonValue
@@ -69458,6 +69627,7 @@ export namespace Prisma {
     moduleName?: StringNullableFilter<"Notification"> | string | null
     requestDescription?: StringNullableFilter<"Notification"> | string | null
     requestId?: StringNullableFilter<"Notification"> | string | null
+    leaveRequestId?: StringNullableFilter<"Notification"> | string | null
     requestReason?: StringNullableFilter<"Notification"> | string | null
     requestStatus?: StringNullableFilter<"Notification"> | string | null
     requestTitle?: StringNullableFilter<"Notification"> | string | null
@@ -69629,6 +69799,9 @@ export namespace Prisma {
     halfDayPeriod?: StringNullableFilter<"FacultyLeaveRequest"> | string | null
     halfDayStart?: StringNullableFilter<"FacultyLeaveRequest"> | string | null
     halfDayEnd?: StringNullableFilter<"FacultyLeaveRequest"> | string | null
+    permissionHours?: IntNullableFilter<"FacultyLeaveRequest"> | number | null
+    permissionStart?: StringNullableFilter<"FacultyLeaveRequest"> | string | null
+    permissionEnd?: StringNullableFilter<"FacultyLeaveRequest"> | string | null
     reason?: StringFilter<"FacultyLeaveRequest"> | string
     status?: StringFilter<"FacultyLeaveRequest"> | string
     affectedClasses?: JsonFilter<"FacultyLeaveRequest">
@@ -70591,6 +70764,9 @@ export namespace Prisma {
     halfDayPeriod?: string | null
     halfDayStart?: string | null
     halfDayEnd?: string | null
+    permissionHours?: number | null
+    permissionStart?: string | null
+    permissionEnd?: string | null
     reason: string
     status?: string
     affectedClasses?: JsonNullValueInput | InputJsonValue
@@ -70612,6 +70788,9 @@ export namespace Prisma {
     halfDayPeriod?: string | null
     halfDayStart?: string | null
     halfDayEnd?: string | null
+    permissionHours?: number | null
+    permissionStart?: string | null
+    permissionEnd?: string | null
     reason: string
     status?: string
     affectedClasses?: JsonNullValueInput | InputJsonValue
@@ -71608,6 +71787,7 @@ export namespace Prisma {
     moduleId?: string | null
     moduleName?: string | null
     requestDescription?: string | null
+    leaveRequestId?: string | null
     requestReason?: string | null
     requestStatus?: string | null
     requestTitle?: string | null
@@ -71639,6 +71819,7 @@ export namespace Prisma {
     moduleId?: string | null
     moduleName?: string | null
     requestDescription?: string | null
+    leaveRequestId?: string | null
     requestReason?: string | null
     requestStatus?: string | null
     requestTitle?: string | null
@@ -80778,6 +80959,7 @@ export namespace Prisma {
     moduleName?: string | null
     requestDescription?: string | null
     requestId?: string | null
+    leaveRequestId?: string | null
     requestReason?: string | null
     requestStatus?: string | null
     requestTitle?: string | null
@@ -80849,6 +81031,9 @@ export namespace Prisma {
     halfDayPeriod?: string | null
     halfDayStart?: string | null
     halfDayEnd?: string | null
+    permissionHours?: number | null
+    permissionStart?: string | null
+    permissionEnd?: string | null
     reason: string
     status?: string
     affectedClasses?: JsonNullValueInput | InputJsonValue
@@ -81084,6 +81269,7 @@ export namespace Prisma {
     moduleId?: NullableStringFieldUpdateOperationsInput | string | null
     moduleName?: NullableStringFieldUpdateOperationsInput | string | null
     requestDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    leaveRequestId?: NullableStringFieldUpdateOperationsInput | string | null
     requestReason?: NullableStringFieldUpdateOperationsInput | string | null
     requestStatus?: NullableStringFieldUpdateOperationsInput | string | null
     requestTitle?: NullableStringFieldUpdateOperationsInput | string | null
@@ -81115,6 +81301,7 @@ export namespace Prisma {
     moduleName?: NullableStringFieldUpdateOperationsInput | string | null
     requestDescription?: NullableStringFieldUpdateOperationsInput | string | null
     requestId?: NullableStringFieldUpdateOperationsInput | string | null
+    leaveRequestId?: NullableStringFieldUpdateOperationsInput | string | null
     requestReason?: NullableStringFieldUpdateOperationsInput | string | null
     requestStatus?: NullableStringFieldUpdateOperationsInput | string | null
     requestTitle?: NullableStringFieldUpdateOperationsInput | string | null
@@ -81145,6 +81332,7 @@ export namespace Prisma {
     moduleName?: NullableStringFieldUpdateOperationsInput | string | null
     requestDescription?: NullableStringFieldUpdateOperationsInput | string | null
     requestId?: NullableStringFieldUpdateOperationsInput | string | null
+    leaveRequestId?: NullableStringFieldUpdateOperationsInput | string | null
     requestReason?: NullableStringFieldUpdateOperationsInput | string | null
     requestStatus?: NullableStringFieldUpdateOperationsInput | string | null
     requestTitle?: NullableStringFieldUpdateOperationsInput | string | null
@@ -81317,6 +81505,9 @@ export namespace Prisma {
     halfDayPeriod?: NullableStringFieldUpdateOperationsInput | string | null
     halfDayStart?: NullableStringFieldUpdateOperationsInput | string | null
     halfDayEnd?: NullableStringFieldUpdateOperationsInput | string | null
+    permissionHours?: NullableIntFieldUpdateOperationsInput | number | null
+    permissionStart?: NullableStringFieldUpdateOperationsInput | string | null
+    permissionEnd?: NullableStringFieldUpdateOperationsInput | string | null
     reason?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     affectedClasses?: JsonNullValueInput | InputJsonValue
@@ -81338,6 +81529,9 @@ export namespace Prisma {
     halfDayPeriod?: NullableStringFieldUpdateOperationsInput | string | null
     halfDayStart?: NullableStringFieldUpdateOperationsInput | string | null
     halfDayEnd?: NullableStringFieldUpdateOperationsInput | string | null
+    permissionHours?: NullableIntFieldUpdateOperationsInput | number | null
+    permissionStart?: NullableStringFieldUpdateOperationsInput | string | null
+    permissionEnd?: NullableStringFieldUpdateOperationsInput | string | null
     reason?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     affectedClasses?: JsonNullValueInput | InputJsonValue
@@ -81358,6 +81552,9 @@ export namespace Prisma {
     halfDayPeriod?: NullableStringFieldUpdateOperationsInput | string | null
     halfDayStart?: NullableStringFieldUpdateOperationsInput | string | null
     halfDayEnd?: NullableStringFieldUpdateOperationsInput | string | null
+    permissionHours?: NullableIntFieldUpdateOperationsInput | number | null
+    permissionStart?: NullableStringFieldUpdateOperationsInput | string | null
+    permissionEnd?: NullableStringFieldUpdateOperationsInput | string | null
     reason?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     affectedClasses?: JsonNullValueInput | InputJsonValue
@@ -81648,6 +81845,9 @@ export namespace Prisma {
     halfDayPeriod?: string | null
     halfDayStart?: string | null
     halfDayEnd?: string | null
+    permissionHours?: number | null
+    permissionStart?: string | null
+    permissionEnd?: string | null
     reason: string
     status?: string
     affectedClasses?: JsonNullValueInput | InputJsonValue
@@ -82411,6 +82611,9 @@ export namespace Prisma {
     halfDayPeriod?: NullableStringFieldUpdateOperationsInput | string | null
     halfDayStart?: NullableStringFieldUpdateOperationsInput | string | null
     halfDayEnd?: NullableStringFieldUpdateOperationsInput | string | null
+    permissionHours?: NullableIntFieldUpdateOperationsInput | number | null
+    permissionStart?: NullableStringFieldUpdateOperationsInput | string | null
+    permissionEnd?: NullableStringFieldUpdateOperationsInput | string | null
     reason?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     affectedClasses?: JsonNullValueInput | InputJsonValue
@@ -82432,6 +82635,9 @@ export namespace Prisma {
     halfDayPeriod?: NullableStringFieldUpdateOperationsInput | string | null
     halfDayStart?: NullableStringFieldUpdateOperationsInput | string | null
     halfDayEnd?: NullableStringFieldUpdateOperationsInput | string | null
+    permissionHours?: NullableIntFieldUpdateOperationsInput | number | null
+    permissionStart?: NullableStringFieldUpdateOperationsInput | string | null
+    permissionEnd?: NullableStringFieldUpdateOperationsInput | string | null
     reason?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     affectedClasses?: JsonNullValueInput | InputJsonValue
@@ -82452,6 +82658,9 @@ export namespace Prisma {
     halfDayPeriod?: NullableStringFieldUpdateOperationsInput | string | null
     halfDayStart?: NullableStringFieldUpdateOperationsInput | string | null
     halfDayEnd?: NullableStringFieldUpdateOperationsInput | string | null
+    permissionHours?: NullableIntFieldUpdateOperationsInput | number | null
+    permissionStart?: NullableStringFieldUpdateOperationsInput | string | null
+    permissionEnd?: NullableStringFieldUpdateOperationsInput | string | null
     reason?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     affectedClasses?: JsonNullValueInput | InputJsonValue
@@ -82482,6 +82691,7 @@ export namespace Prisma {
     moduleId?: string | null
     moduleName?: string | null
     requestDescription?: string | null
+    leaveRequestId?: string | null
     requestReason?: string | null
     requestStatus?: string | null
     requestTitle?: string | null
@@ -82511,6 +82721,7 @@ export namespace Prisma {
     moduleId?: NullableStringFieldUpdateOperationsInput | string | null
     moduleName?: NullableStringFieldUpdateOperationsInput | string | null
     requestDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    leaveRequestId?: NullableStringFieldUpdateOperationsInput | string | null
     requestReason?: NullableStringFieldUpdateOperationsInput | string | null
     requestStatus?: NullableStringFieldUpdateOperationsInput | string | null
     requestTitle?: NullableStringFieldUpdateOperationsInput | string | null
@@ -82542,6 +82753,7 @@ export namespace Prisma {
     moduleId?: NullableStringFieldUpdateOperationsInput | string | null
     moduleName?: NullableStringFieldUpdateOperationsInput | string | null
     requestDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    leaveRequestId?: NullableStringFieldUpdateOperationsInput | string | null
     requestReason?: NullableStringFieldUpdateOperationsInput | string | null
     requestStatus?: NullableStringFieldUpdateOperationsInput | string | null
     requestTitle?: NullableStringFieldUpdateOperationsInput | string | null
@@ -82572,6 +82784,7 @@ export namespace Prisma {
     moduleId?: NullableStringFieldUpdateOperationsInput | string | null
     moduleName?: NullableStringFieldUpdateOperationsInput | string | null
     requestDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    leaveRequestId?: NullableStringFieldUpdateOperationsInput | string | null
     requestReason?: NullableStringFieldUpdateOperationsInput | string | null
     requestStatus?: NullableStringFieldUpdateOperationsInput | string | null
     requestTitle?: NullableStringFieldUpdateOperationsInput | string | null

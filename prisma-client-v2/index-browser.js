@@ -224,6 +224,7 @@ exports.Prisma.NotificationScalarFieldEnum = {
   moduleName: 'moduleName',
   requestDescription: 'requestDescription',
   requestId: 'requestId',
+  leaveRequestId: 'leaveRequestId',
   requestReason: 'requestReason',
   requestStatus: 'requestStatus',
   requestTitle: 'requestTitle',
@@ -755,6 +756,9 @@ exports.Prisma.FacultyLeaveRequestScalarFieldEnum = {
   halfDayPeriod: 'halfDayPeriod',
   halfDayStart: 'halfDayStart',
   halfDayEnd: 'halfDayEnd',
+  permissionHours: 'permissionHours',
+  permissionStart: 'permissionStart',
+  permissionEnd: 'permissionEnd',
   reason: 'reason',
   status: 'status',
   affectedClasses: 'affectedClasses',
@@ -891,7 +895,8 @@ exports.NotificationKind = exports.$Enums.NotificationKind = {
   COURSE_EDIT_REQUEST: 'COURSE_EDIT_REQUEST',
   COURSE_EDIT_REQUEST_ACCEPTED: 'COURSE_EDIT_REQUEST_ACCEPTED',
   COURSE_EDIT_REQUEST_REJECTED: 'COURSE_EDIT_REQUEST_REJECTED',
-  COURSE_EDIT_MODULE_UPDATED: 'COURSE_EDIT_MODULE_UPDATED'
+  COURSE_EDIT_MODULE_UPDATED: 'COURSE_EDIT_MODULE_UPDATED',
+  FACULTY_LEAVE_REQUEST: 'FACULTY_LEAVE_REQUEST'
 };
 
 exports.CourseEditRequestStatus = exports.$Enums.CourseEditRequestStatus = {

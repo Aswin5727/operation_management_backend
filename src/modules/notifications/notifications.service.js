@@ -11,6 +11,7 @@ const NOTIFICATION_KIND_MAP = {
   COURSE_EDIT_REQUEST_ACCEPTED: "course-edit-request-accepted",
   COURSE_EDIT_REQUEST_REJECTED: "course-edit-request-rejected",
   COURSE_EDIT_MODULE_UPDATED: "course-edit-module-updated",
+  FACULTY_LEAVE_REQUEST: "faculty-leave-request",
 };
 
 const BRANCH_ADMIN_VISIBLE_NOTIFICATION_KINDS = new Set([
@@ -19,6 +20,7 @@ const BRANCH_ADMIN_VISIBLE_NOTIFICATION_KINDS = new Set([
   "BRANCH_FACULTY_LOGIN",
   "COURSE_EDIT_REQUEST",
   "COURSE_EDIT_MODULE_UPDATED",
+  "FACULTY_LEAVE_REQUEST",
 ]);
 const DEFAULT_VISIBLE_NOTIFICATION_KINDS = new Set([
   "BRANCH_INVITATION_RESENT",
@@ -78,6 +80,7 @@ function normalizeNotificationRow(row) {
     message: normalizeString(row.message),
     actionLabel: normalizeString(row.actionLabel),
     requestId: normalizeString(row.requestId),
+    leaveRequestId: normalizeString(row.leaveRequestId),
     requestStatus: normalizeString(row.requestStatus),
     requestTitle: normalizeString(row.requestTitle),
     requestReason: normalizeString(row.requestReason),
@@ -715,6 +718,26 @@ export async function createCourseEditModuleUpdatedNotification({
     }),
     prismaClient,
   );
+}
+
+export async function createFacultyLeaveRequestNotification({ request = {}, branch = {}, faculty = {}, actor = {}, prismaClient = prisma }) {
+  return createNotification(buildNotificationData({
+    kind: "FACULTY_LEAVE_REQUEST",
+    tone: "amber",
+    title: "Faculty Leave Request",
+    message: `${faculty?.name || request?.facultyName || "Faculty"} submitted a ${String(request?.durationType || "").toLowerCase().replaceAll("_", " ")} request for ${request?.fromDate || "selected dates"}.`,
+    actionLabel: "View Request",
+    branch,
+    createdBy: actor?.userId || actor?.id || null,
+    extras: {
+      leaveRequestId: request?.id || null,
+      facultyId: faculty?.facultyId || request?.facultyId || "",
+      facultyName: faculty?.name || request?.facultyName || "",
+      requestStatus: request?.status || "PENDING",
+      requestReason: request?.reason || "",
+      requestDescription: request?.durationType || "",
+    },
+  }), prismaClient);
 }
 
 export async function listNotifications(query = {}, user = {}) {

@@ -153,6 +153,7 @@ model Notification {
   moduleName         String?
   requestDescription String?
   requestId          String?
+  leaveRequestId     String?
   requestReason      String?
   requestStatus      String?
   requestTitle       String?
@@ -882,6 +883,9 @@ model FacultyLeaveRequest {
   halfDayPeriod   String?
   halfDayStart    String?
   halfDayEnd      String?
+  permissionHours Int?
+  permissionStart String?
+  permissionEnd   String?
   reason          String
   status          String   @default("PENDING")
   affectedClasses Json     @default("[]")
@@ -950,6 +954,7 @@ enum NotificationKind {
   COURSE_EDIT_REQUEST_ACCEPTED
   COURSE_EDIT_REQUEST_REJECTED
   COURSE_EDIT_MODULE_UPDATED
+  FACULTY_LEAVE_REQUEST
 }
 
 enum RecordStatus {
