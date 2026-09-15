@@ -24608,6 +24608,7 @@ export namespace Prisma {
     mode: string | null
     courseStartDate: string | null
     courseEndDate: string | null
+    weeklyOffDay: string | null
     sequenceNo: number | null
     status: $Enums.RecordStatus | null
     createdBy: string | null
@@ -24639,6 +24640,7 @@ export namespace Prisma {
     mode: string | null
     courseStartDate: string | null
     courseEndDate: string | null
+    weeklyOffDay: string | null
     sequenceNo: number | null
     status: $Enums.RecordStatus | null
     createdBy: string | null
@@ -24670,6 +24672,7 @@ export namespace Prisma {
     mode: number
     courseStartDate: number
     courseEndDate: number
+    weeklyOffDay: number
     sequenceNo: number
     status: number
     createdBy: number
@@ -24715,6 +24718,7 @@ export namespace Prisma {
     mode?: true
     courseStartDate?: true
     courseEndDate?: true
+    weeklyOffDay?: true
     sequenceNo?: true
     status?: true
     createdBy?: true
@@ -24746,6 +24750,7 @@ export namespace Prisma {
     mode?: true
     courseStartDate?: true
     courseEndDate?: true
+    weeklyOffDay?: true
     sequenceNo?: true
     status?: true
     createdBy?: true
@@ -24777,6 +24782,7 @@ export namespace Prisma {
     mode?: true
     courseStartDate?: true
     courseEndDate?: true
+    weeklyOffDay?: true
     sequenceNo?: true
     status?: true
     createdBy?: true
@@ -24895,6 +24901,7 @@ export namespace Prisma {
     mode: string | null
     courseStartDate: string | null
     courseEndDate: string | null
+    weeklyOffDay: string | null
     sequenceNo: number
     status: $Enums.RecordStatus
     createdBy: string | null
@@ -24945,6 +24952,7 @@ export namespace Prisma {
     mode?: boolean
     courseStartDate?: boolean
     courseEndDate?: boolean
+    weeklyOffDay?: boolean
     sequenceNo?: boolean
     status?: boolean
     createdBy?: boolean
@@ -24979,6 +24987,7 @@ export namespace Prisma {
     mode?: boolean
     courseStartDate?: boolean
     courseEndDate?: boolean
+    weeklyOffDay?: boolean
     sequenceNo?: boolean
     status?: boolean
     createdBy?: boolean
@@ -25013,6 +25022,7 @@ export namespace Prisma {
     mode?: boolean
     courseStartDate?: boolean
     courseEndDate?: boolean
+    weeklyOffDay?: boolean
     sequenceNo?: boolean
     status?: boolean
     createdBy?: boolean
@@ -25047,6 +25057,7 @@ export namespace Prisma {
     mode?: boolean
     courseStartDate?: boolean
     courseEndDate?: boolean
+    weeklyOffDay?: boolean
     sequenceNo?: boolean
     status?: boolean
     createdBy?: boolean
@@ -25055,7 +25066,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type BranchBatchOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "branchId" | "branchCourseId" | "branchFacultyId" | "batchId" | "courseId" | "courseName" | "facultyId" | "facultyName" | "facultyEmail" | "batchName" | "startTime" | "startPeriod" | "endTime" | "endPeriod" | "batchTiming" | "totalSeats" | "offlineSeats" | "weekType" | "mode" | "courseStartDate" | "courseEndDate" | "sequenceNo" | "status" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["branchBatch"]>
+  export type BranchBatchOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "branchId" | "branchCourseId" | "branchFacultyId" | "batchId" | "courseId" | "courseName" | "facultyId" | "facultyName" | "facultyEmail" | "batchName" | "startTime" | "startPeriod" | "endTime" | "endPeriod" | "batchTiming" | "totalSeats" | "offlineSeats" | "weekType" | "mode" | "courseStartDate" | "courseEndDate" | "weeklyOffDay" | "sequenceNo" | "status" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["branchBatch"]>
   export type BranchBatchInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     branch?: boolean | BranchDefaultArgs<ExtArgs>
     branchCourse?: boolean | BranchCourseDefaultArgs<ExtArgs>
@@ -25102,6 +25113,7 @@ export namespace Prisma {
       mode: string | null
       courseStartDate: string | null
       courseEndDate: string | null
+      weeklyOffDay: string | null
       sequenceNo: number
       status: $Enums.RecordStatus
       createdBy: string | null
@@ -25556,6 +25568,7 @@ export namespace Prisma {
     readonly mode: FieldRef<"BranchBatch", 'String'>
     readonly courseStartDate: FieldRef<"BranchBatch", 'String'>
     readonly courseEndDate: FieldRef<"BranchBatch", 'String'>
+    readonly weeklyOffDay: FieldRef<"BranchBatch", 'String'>
     readonly sequenceNo: FieldRef<"BranchBatch", 'Int'>
     readonly status: FieldRef<"BranchBatch", 'RecordStatus'>
     readonly createdBy: FieldRef<"BranchBatch", 'String'>
@@ -29907,6 +29920,7 @@ export namespace Prisma {
     batchTiming: string | null
     facultyId: string | null
     facultyName: string | null
+    weeklyOffDay: string | null
     courseAmount: number | null
     paymentMode: string | null
     paymentPlanId: string | null
@@ -29954,6 +29968,7 @@ export namespace Prisma {
     batchTiming: string | null
     facultyId: string | null
     facultyName: string | null
+    weeklyOffDay: string | null
     courseAmount: number | null
     paymentMode: string | null
     paymentPlanId: string | null
@@ -30001,6 +30016,7 @@ export namespace Prisma {
     batchTiming: number
     facultyId: number
     facultyName: number
+    weeklyOffDay: number
     courseAmount: number
     paymentMode: number
     paymentPlanId: number
@@ -30062,6 +30078,7 @@ export namespace Prisma {
     batchTiming?: true
     facultyId?: true
     facultyName?: true
+    weeklyOffDay?: true
     courseAmount?: true
     paymentMode?: true
     paymentPlanId?: true
@@ -30109,6 +30126,7 @@ export namespace Prisma {
     batchTiming?: true
     facultyId?: true
     facultyName?: true
+    weeklyOffDay?: true
     courseAmount?: true
     paymentMode?: true
     paymentPlanId?: true
@@ -30156,6 +30174,7 @@ export namespace Prisma {
     batchTiming?: true
     facultyId?: true
     facultyName?: true
+    weeklyOffDay?: true
     courseAmount?: true
     paymentMode?: true
     paymentPlanId?: true
@@ -30290,6 +30309,7 @@ export namespace Prisma {
     batchTiming: string | null
     facultyId: string | null
     facultyName: string | null
+    weeklyOffDay: string | null
     courseAmount: number | null
     paymentMode: string
     paymentPlanId: string | null
@@ -30356,6 +30376,7 @@ export namespace Prisma {
     batchTiming?: boolean
     facultyId?: boolean
     facultyName?: boolean
+    weeklyOffDay?: boolean
     courseAmount?: boolean
     paymentMode?: boolean
     paymentPlanId?: boolean
@@ -30411,6 +30432,7 @@ export namespace Prisma {
     batchTiming?: boolean
     facultyId?: boolean
     facultyName?: boolean
+    weeklyOffDay?: boolean
     courseAmount?: boolean
     paymentMode?: boolean
     paymentPlanId?: boolean
@@ -30460,6 +30482,7 @@ export namespace Prisma {
     batchTiming?: boolean
     facultyId?: boolean
     facultyName?: boolean
+    weeklyOffDay?: boolean
     courseAmount?: boolean
     paymentMode?: boolean
     paymentPlanId?: boolean
@@ -30509,6 +30532,7 @@ export namespace Prisma {
     batchTiming?: boolean
     facultyId?: boolean
     facultyName?: boolean
+    weeklyOffDay?: boolean
     courseAmount?: boolean
     paymentMode?: boolean
     paymentPlanId?: boolean
@@ -30516,7 +30540,7 @@ export namespace Prisma {
     courseProgress?: boolean
   }
 
-  export type BranchStudentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "branchId" | "studentId" | "studentName" | "mobileNumber" | "emailAddress" | "parentSpouseNumber" | "countryCode" | "country" | "stateCode" | "state" | "city" | "address" | "qualification" | "passedOutYear" | "currentStatus" | "designation" | "source" | "sourceOther" | "admissionDate" | "courseStartDate" | "classSchedule" | "recordStatus" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt" | "linkedInUrl" | "remarks" | "courseId" | "courseName" | "courseMode" | "totalWorkingDays" | "courseEndDate" | "batchId" | "batchName" | "batchTiming" | "facultyId" | "facultyName" | "courseAmount" | "paymentMode" | "paymentPlanId" | "paymentPlan" | "courseProgress", ExtArgs["result"]["branchStudent"]>
+  export type BranchStudentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "branchId" | "studentId" | "studentName" | "mobileNumber" | "emailAddress" | "parentSpouseNumber" | "countryCode" | "country" | "stateCode" | "state" | "city" | "address" | "qualification" | "passedOutYear" | "currentStatus" | "designation" | "source" | "sourceOther" | "admissionDate" | "courseStartDate" | "classSchedule" | "recordStatus" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt" | "linkedInUrl" | "remarks" | "courseId" | "courseName" | "courseMode" | "totalWorkingDays" | "courseEndDate" | "batchId" | "batchName" | "batchTiming" | "facultyId" | "facultyName" | "weeklyOffDay" | "courseAmount" | "paymentMode" | "paymentPlanId" | "paymentPlan" | "courseProgress", ExtArgs["result"]["branchStudent"]>
   export type BranchStudentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     branch?: boolean | BranchDefaultArgs<ExtArgs>
     course?: boolean | BranchStudent$courseArgs<ExtArgs>
@@ -30587,6 +30611,7 @@ export namespace Prisma {
       batchTiming: string | null
       facultyId: string | null
       facultyName: string | null
+      weeklyOffDay: string | null
       courseAmount: number | null
       paymentMode: string
       paymentPlanId: string | null
@@ -31061,6 +31086,7 @@ export namespace Prisma {
     readonly batchTiming: FieldRef<"BranchStudent", 'String'>
     readonly facultyId: FieldRef<"BranchStudent", 'String'>
     readonly facultyName: FieldRef<"BranchStudent", 'String'>
+    readonly weeklyOffDay: FieldRef<"BranchStudent", 'String'>
     readonly courseAmount: FieldRef<"BranchStudent", 'Int'>
     readonly paymentMode: FieldRef<"BranchStudent", 'String'>
     readonly paymentPlanId: FieldRef<"BranchStudent", 'String'>
@@ -44858,6 +44884,7 @@ export namespace Prisma {
     stateCode: string | null
     city: string | null
     address: string | null
+    weeklyOffDay: string | null
     status: $Enums.RecordStatus | null
     createdBy: string | null
     updatedBy: string | null
@@ -44880,6 +44907,7 @@ export namespace Prisma {
     stateCode: string | null
     city: string | null
     address: string | null
+    weeklyOffDay: string | null
     status: $Enums.RecordStatus | null
     createdBy: string | null
     updatedBy: string | null
@@ -44902,6 +44930,7 @@ export namespace Prisma {
     stateCode: number
     city: number
     address: number
+    weeklyOffDay: number
     status: number
     createdBy: number
     updatedBy: number
@@ -44926,6 +44955,7 @@ export namespace Prisma {
     stateCode?: true
     city?: true
     address?: true
+    weeklyOffDay?: true
     status?: true
     createdBy?: true
     updatedBy?: true
@@ -44948,6 +44978,7 @@ export namespace Prisma {
     stateCode?: true
     city?: true
     address?: true
+    weeklyOffDay?: true
     status?: true
     createdBy?: true
     updatedBy?: true
@@ -44970,6 +45001,7 @@ export namespace Prisma {
     stateCode?: true
     city?: true
     address?: true
+    weeklyOffDay?: true
     status?: true
     createdBy?: true
     updatedBy?: true
@@ -45065,6 +45097,7 @@ export namespace Prisma {
     stateCode: string | null
     city: string | null
     address: string | null
+    weeklyOffDay: string | null
     status: $Enums.RecordStatus
     createdBy: string | null
     updatedBy: string | null
@@ -45104,6 +45137,7 @@ export namespace Prisma {
     stateCode?: boolean
     city?: boolean
     address?: boolean
+    weeklyOffDay?: boolean
     status?: boolean
     createdBy?: boolean
     updatedBy?: boolean
@@ -45131,6 +45165,7 @@ export namespace Prisma {
     stateCode?: boolean
     city?: boolean
     address?: boolean
+    weeklyOffDay?: boolean
     status?: boolean
     createdBy?: boolean
     updatedBy?: boolean
@@ -45156,6 +45191,7 @@ export namespace Prisma {
     stateCode?: boolean
     city?: boolean
     address?: boolean
+    weeklyOffDay?: boolean
     status?: boolean
     createdBy?: boolean
     updatedBy?: boolean
@@ -45181,6 +45217,7 @@ export namespace Prisma {
     stateCode?: boolean
     city?: boolean
     address?: boolean
+    weeklyOffDay?: boolean
     status?: boolean
     createdBy?: boolean
     updatedBy?: boolean
@@ -45190,7 +45227,7 @@ export namespace Prisma {
     branchCourseId?: boolean
   }
 
-  export type BranchFacultyOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "facultyId" | "branchId" | "name" | "email" | "phone" | "country" | "countryCode" | "state" | "stateCode" | "city" | "address" | "status" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt" | "courseId" | "branchCourseId", ExtArgs["result"]["branchFaculty"]>
+  export type BranchFacultyOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "facultyId" | "branchId" | "name" | "email" | "phone" | "country" | "countryCode" | "state" | "stateCode" | "city" | "address" | "weeklyOffDay" | "status" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt" | "courseId" | "branchCourseId", ExtArgs["result"]["branchFaculty"]>
   export type BranchFacultyInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     branchCourse?: boolean | BranchFaculty$branchCourseArgs<ExtArgs>
     branch?: boolean | BranchDefaultArgs<ExtArgs>
@@ -45230,6 +45267,7 @@ export namespace Prisma {
       stateCode: string | null
       city: string | null
       address: string | null
+      weeklyOffDay: string | null
       status: $Enums.RecordStatus
       createdBy: string | null
       updatedBy: string | null
@@ -45676,6 +45714,7 @@ export namespace Prisma {
     readonly stateCode: FieldRef<"BranchFaculty", 'String'>
     readonly city: FieldRef<"BranchFaculty", 'String'>
     readonly address: FieldRef<"BranchFaculty", 'String'>
+    readonly weeklyOffDay: FieldRef<"BranchFaculty", 'String'>
     readonly status: FieldRef<"BranchFaculty", 'RecordStatus'>
     readonly createdBy: FieldRef<"BranchFaculty", 'String'>
     readonly updatedBy: FieldRef<"BranchFaculty", 'String'>
@@ -51778,6 +51817,7 @@ export namespace Prisma {
     mode: 'mode',
     courseStartDate: 'courseStartDate',
     courseEndDate: 'courseEndDate',
+    weeklyOffDay: 'weeklyOffDay',
     sequenceNo: 'sequenceNo',
     status: 'status',
     createdBy: 'createdBy',
@@ -51904,6 +51944,7 @@ export namespace Prisma {
     batchTiming: 'batchTiming',
     facultyId: 'facultyId',
     facultyName: 'facultyName',
+    weeklyOffDay: 'weeklyOffDay',
     courseAmount: 'courseAmount',
     paymentMode: 'paymentMode',
     paymentPlanId: 'paymentPlanId',
@@ -52133,6 +52174,7 @@ export namespace Prisma {
     stateCode: 'stateCode',
     city: 'city',
     address: 'address',
+    weeklyOffDay: 'weeklyOffDay',
     status: 'status',
     createdBy: 'createdBy',
     updatedBy: 'updatedBy',
@@ -54310,6 +54352,7 @@ export namespace Prisma {
     mode?: StringNullableFilter<"BranchBatch"> | string | null
     courseStartDate?: StringNullableFilter<"BranchBatch"> | string | null
     courseEndDate?: StringNullableFilter<"BranchBatch"> | string | null
+    weeklyOffDay?: StringNullableFilter<"BranchBatch"> | string | null
     sequenceNo?: IntFilter<"BranchBatch"> | number
     status?: EnumRecordStatusFilter<"BranchBatch"> | $Enums.RecordStatus
     createdBy?: StringNullableFilter<"BranchBatch"> | string | null
@@ -54344,6 +54387,7 @@ export namespace Prisma {
     mode?: SortOrderInput | SortOrder
     courseStartDate?: SortOrderInput | SortOrder
     courseEndDate?: SortOrderInput | SortOrder
+    weeklyOffDay?: SortOrderInput | SortOrder
     sequenceNo?: SortOrder
     status?: SortOrder
     createdBy?: SortOrderInput | SortOrder
@@ -54382,6 +54426,7 @@ export namespace Prisma {
     mode?: StringNullableFilter<"BranchBatch"> | string | null
     courseStartDate?: StringNullableFilter<"BranchBatch"> | string | null
     courseEndDate?: StringNullableFilter<"BranchBatch"> | string | null
+    weeklyOffDay?: StringNullableFilter<"BranchBatch"> | string | null
     sequenceNo?: IntFilter<"BranchBatch"> | number
     status?: EnumRecordStatusFilter<"BranchBatch"> | $Enums.RecordStatus
     createdBy?: StringNullableFilter<"BranchBatch"> | string | null
@@ -54416,6 +54461,7 @@ export namespace Prisma {
     mode?: SortOrderInput | SortOrder
     courseStartDate?: SortOrderInput | SortOrder
     courseEndDate?: SortOrderInput | SortOrder
+    weeklyOffDay?: SortOrderInput | SortOrder
     sequenceNo?: SortOrder
     status?: SortOrder
     createdBy?: SortOrderInput | SortOrder
@@ -54455,6 +54501,7 @@ export namespace Prisma {
     mode?: StringNullableWithAggregatesFilter<"BranchBatch"> | string | null
     courseStartDate?: StringNullableWithAggregatesFilter<"BranchBatch"> | string | null
     courseEndDate?: StringNullableWithAggregatesFilter<"BranchBatch"> | string | null
+    weeklyOffDay?: StringNullableWithAggregatesFilter<"BranchBatch"> | string | null
     sequenceNo?: IntWithAggregatesFilter<"BranchBatch"> | number
     status?: EnumRecordStatusWithAggregatesFilter<"BranchBatch"> | $Enums.RecordStatus
     createdBy?: StringNullableWithAggregatesFilter<"BranchBatch"> | string | null
@@ -54886,6 +54933,7 @@ export namespace Prisma {
     batchTiming?: StringNullableFilter<"BranchStudent"> | string | null
     facultyId?: StringNullableFilter<"BranchStudent"> | string | null
     facultyName?: StringNullableFilter<"BranchStudent"> | string | null
+    weeklyOffDay?: StringNullableFilter<"BranchStudent"> | string | null
     courseAmount?: IntNullableFilter<"BranchStudent"> | number | null
     paymentMode?: StringFilter<"BranchStudent"> | string
     paymentPlanId?: StringNullableFilter<"BranchStudent"> | string | null
@@ -54940,6 +54988,7 @@ export namespace Prisma {
     batchTiming?: SortOrderInput | SortOrder
     facultyId?: SortOrderInput | SortOrder
     facultyName?: SortOrderInput | SortOrder
+    weeklyOffDay?: SortOrderInput | SortOrder
     courseAmount?: SortOrderInput | SortOrder
     paymentMode?: SortOrder
     paymentPlanId?: SortOrderInput | SortOrder
@@ -54998,6 +55047,7 @@ export namespace Prisma {
     batchTiming?: StringNullableFilter<"BranchStudent"> | string | null
     facultyId?: StringNullableFilter<"BranchStudent"> | string | null
     facultyName?: StringNullableFilter<"BranchStudent"> | string | null
+    weeklyOffDay?: StringNullableFilter<"BranchStudent"> | string | null
     courseAmount?: IntNullableFilter<"BranchStudent"> | number | null
     paymentMode?: StringFilter<"BranchStudent"> | string
     paymentPlanId?: StringNullableFilter<"BranchStudent"> | string | null
@@ -55052,6 +55102,7 @@ export namespace Prisma {
     batchTiming?: SortOrderInput | SortOrder
     facultyId?: SortOrderInput | SortOrder
     facultyName?: SortOrderInput | SortOrder
+    weeklyOffDay?: SortOrderInput | SortOrder
     courseAmount?: SortOrderInput | SortOrder
     paymentMode?: SortOrder
     paymentPlanId?: SortOrderInput | SortOrder
@@ -55107,6 +55158,7 @@ export namespace Prisma {
     batchTiming?: StringNullableWithAggregatesFilter<"BranchStudent"> | string | null
     facultyId?: StringNullableWithAggregatesFilter<"BranchStudent"> | string | null
     facultyName?: StringNullableWithAggregatesFilter<"BranchStudent"> | string | null
+    weeklyOffDay?: StringNullableWithAggregatesFilter<"BranchStudent"> | string | null
     courseAmount?: IntNullableWithAggregatesFilter<"BranchStudent"> | number | null
     paymentMode?: StringWithAggregatesFilter<"BranchStudent"> | string
     paymentPlanId?: StringNullableWithAggregatesFilter<"BranchStudent"> | string | null
@@ -56204,6 +56256,7 @@ export namespace Prisma {
     stateCode?: StringNullableFilter<"BranchFaculty"> | string | null
     city?: StringNullableFilter<"BranchFaculty"> | string | null
     address?: StringNullableFilter<"BranchFaculty"> | string | null
+    weeklyOffDay?: StringNullableFilter<"BranchFaculty"> | string | null
     status?: EnumRecordStatusFilter<"BranchFaculty"> | $Enums.RecordStatus
     createdBy?: StringNullableFilter<"BranchFaculty"> | string | null
     updatedBy?: StringNullableFilter<"BranchFaculty"> | string | null
@@ -56230,6 +56283,7 @@ export namespace Prisma {
     stateCode?: SortOrderInput | SortOrder
     city?: SortOrderInput | SortOrder
     address?: SortOrderInput | SortOrder
+    weeklyOffDay?: SortOrderInput | SortOrder
     status?: SortOrder
     createdBy?: SortOrderInput | SortOrder
     updatedBy?: SortOrderInput | SortOrder
@@ -56261,6 +56315,7 @@ export namespace Prisma {
     stateCode?: StringNullableFilter<"BranchFaculty"> | string | null
     city?: StringNullableFilter<"BranchFaculty"> | string | null
     address?: StringNullableFilter<"BranchFaculty"> | string | null
+    weeklyOffDay?: StringNullableFilter<"BranchFaculty"> | string | null
     status?: EnumRecordStatusFilter<"BranchFaculty"> | $Enums.RecordStatus
     createdBy?: StringNullableFilter<"BranchFaculty"> | string | null
     updatedBy?: StringNullableFilter<"BranchFaculty"> | string | null
@@ -56287,6 +56342,7 @@ export namespace Prisma {
     stateCode?: SortOrderInput | SortOrder
     city?: SortOrderInput | SortOrder
     address?: SortOrderInput | SortOrder
+    weeklyOffDay?: SortOrderInput | SortOrder
     status?: SortOrder
     createdBy?: SortOrderInput | SortOrder
     updatedBy?: SortOrderInput | SortOrder
@@ -56315,6 +56371,7 @@ export namespace Prisma {
     stateCode?: StringNullableWithAggregatesFilter<"BranchFaculty"> | string | null
     city?: StringNullableWithAggregatesFilter<"BranchFaculty"> | string | null
     address?: StringNullableWithAggregatesFilter<"BranchFaculty"> | string | null
+    weeklyOffDay?: StringNullableWithAggregatesFilter<"BranchFaculty"> | string | null
     status?: EnumRecordStatusWithAggregatesFilter<"BranchFaculty"> | $Enums.RecordStatus
     createdBy?: StringNullableWithAggregatesFilter<"BranchFaculty"> | string | null
     updatedBy?: StringNullableWithAggregatesFilter<"BranchFaculty"> | string | null
@@ -59016,6 +59073,7 @@ export namespace Prisma {
     mode?: string | null
     courseStartDate?: string | null
     courseEndDate?: string | null
+    weeklyOffDay?: string | null
     sequenceNo?: number
     status?: $Enums.RecordStatus
     createdBy?: string | null
@@ -59050,6 +59108,7 @@ export namespace Prisma {
     mode?: string | null
     courseStartDate?: string | null
     courseEndDate?: string | null
+    weeklyOffDay?: string | null
     sequenceNo?: number
     status?: $Enums.RecordStatus
     createdBy?: string | null
@@ -59078,6 +59137,7 @@ export namespace Prisma {
     mode?: NullableStringFieldUpdateOperationsInput | string | null
     courseStartDate?: NullableStringFieldUpdateOperationsInput | string | null
     courseEndDate?: NullableStringFieldUpdateOperationsInput | string | null
+    weeklyOffDay?: NullableStringFieldUpdateOperationsInput | string | null
     sequenceNo?: IntFieldUpdateOperationsInput | number
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -59112,6 +59172,7 @@ export namespace Prisma {
     mode?: NullableStringFieldUpdateOperationsInput | string | null
     courseStartDate?: NullableStringFieldUpdateOperationsInput | string | null
     courseEndDate?: NullableStringFieldUpdateOperationsInput | string | null
+    weeklyOffDay?: NullableStringFieldUpdateOperationsInput | string | null
     sequenceNo?: IntFieldUpdateOperationsInput | number
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -59143,6 +59204,7 @@ export namespace Prisma {
     mode?: string | null
     courseStartDate?: string | null
     courseEndDate?: string | null
+    weeklyOffDay?: string | null
     sequenceNo?: number
     status?: $Enums.RecordStatus
     createdBy?: string | null
@@ -59171,6 +59233,7 @@ export namespace Prisma {
     mode?: NullableStringFieldUpdateOperationsInput | string | null
     courseStartDate?: NullableStringFieldUpdateOperationsInput | string | null
     courseEndDate?: NullableStringFieldUpdateOperationsInput | string | null
+    weeklyOffDay?: NullableStringFieldUpdateOperationsInput | string | null
     sequenceNo?: IntFieldUpdateOperationsInput | number
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -59202,6 +59265,7 @@ export namespace Prisma {
     mode?: NullableStringFieldUpdateOperationsInput | string | null
     courseStartDate?: NullableStringFieldUpdateOperationsInput | string | null
     courseEndDate?: NullableStringFieldUpdateOperationsInput | string | null
+    weeklyOffDay?: NullableStringFieldUpdateOperationsInput | string | null
     sequenceNo?: IntFieldUpdateOperationsInput | number
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -59711,6 +59775,7 @@ export namespace Prisma {
     batchTiming?: string | null
     facultyId?: string | null
     facultyName?: string | null
+    weeklyOffDay?: string | null
     courseAmount?: number | null
     paymentMode?: string
     paymentPlanId?: string | null
@@ -59765,6 +59830,7 @@ export namespace Prisma {
     batchTiming?: string | null
     facultyId?: string | null
     facultyName?: string | null
+    weeklyOffDay?: string | null
     courseAmount?: number | null
     paymentMode?: string
     paymentPlanId?: string | null
@@ -59815,6 +59881,7 @@ export namespace Prisma {
     batchTiming?: NullableStringFieldUpdateOperationsInput | string | null
     facultyId?: NullableStringFieldUpdateOperationsInput | string | null
     facultyName?: NullableStringFieldUpdateOperationsInput | string | null
+    weeklyOffDay?: NullableStringFieldUpdateOperationsInput | string | null
     courseAmount?: NullableIntFieldUpdateOperationsInput | number | null
     paymentMode?: StringFieldUpdateOperationsInput | string
     paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -59869,6 +59936,7 @@ export namespace Prisma {
     batchTiming?: NullableStringFieldUpdateOperationsInput | string | null
     facultyId?: NullableStringFieldUpdateOperationsInput | string | null
     facultyName?: NullableStringFieldUpdateOperationsInput | string | null
+    weeklyOffDay?: NullableStringFieldUpdateOperationsInput | string | null
     courseAmount?: NullableIntFieldUpdateOperationsInput | number | null
     paymentMode?: StringFieldUpdateOperationsInput | string
     paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -59921,6 +59989,7 @@ export namespace Prisma {
     batchTiming?: string | null
     facultyId?: string | null
     facultyName?: string | null
+    weeklyOffDay?: string | null
     courseAmount?: number | null
     paymentMode?: string
     paymentPlanId?: string | null
@@ -59966,6 +60035,7 @@ export namespace Prisma {
     batchTiming?: NullableStringFieldUpdateOperationsInput | string | null
     facultyId?: NullableStringFieldUpdateOperationsInput | string | null
     facultyName?: NullableStringFieldUpdateOperationsInput | string | null
+    weeklyOffDay?: NullableStringFieldUpdateOperationsInput | string | null
     courseAmount?: NullableIntFieldUpdateOperationsInput | number | null
     paymentMode?: StringFieldUpdateOperationsInput | string
     paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -60013,6 +60083,7 @@ export namespace Prisma {
     batchTiming?: NullableStringFieldUpdateOperationsInput | string | null
     facultyId?: NullableStringFieldUpdateOperationsInput | string | null
     facultyName?: NullableStringFieldUpdateOperationsInput | string | null
+    weeklyOffDay?: NullableStringFieldUpdateOperationsInput | string | null
     courseAmount?: NullableIntFieldUpdateOperationsInput | number | null
     paymentMode?: StringFieldUpdateOperationsInput | string
     paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -61241,6 +61312,7 @@ export namespace Prisma {
     stateCode?: string | null
     city?: string | null
     address?: string | null
+    weeklyOffDay?: string | null
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -61265,6 +61337,7 @@ export namespace Prisma {
     stateCode?: string | null
     city?: string | null
     address?: string | null
+    weeklyOffDay?: string | null
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -61287,6 +61360,7 @@ export namespace Prisma {
     stateCode?: NullableStringFieldUpdateOperationsInput | string | null
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
+    weeklyOffDay?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -61311,6 +61385,7 @@ export namespace Prisma {
     stateCode?: NullableStringFieldUpdateOperationsInput | string | null
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
+    weeklyOffDay?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -61334,6 +61409,7 @@ export namespace Prisma {
     stateCode?: string | null
     city?: string | null
     address?: string | null
+    weeklyOffDay?: string | null
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -61355,6 +61431,7 @@ export namespace Prisma {
     stateCode?: NullableStringFieldUpdateOperationsInput | string | null
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
+    weeklyOffDay?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -61375,6 +61452,7 @@ export namespace Prisma {
     stateCode?: NullableStringFieldUpdateOperationsInput | string | null
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
+    weeklyOffDay?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -63752,6 +63830,7 @@ export namespace Prisma {
     mode?: SortOrder
     courseStartDate?: SortOrder
     courseEndDate?: SortOrder
+    weeklyOffDay?: SortOrder
     sequenceNo?: SortOrder
     status?: SortOrder
     createdBy?: SortOrder
@@ -63789,6 +63868,7 @@ export namespace Prisma {
     mode?: SortOrder
     courseStartDate?: SortOrder
     courseEndDate?: SortOrder
+    weeklyOffDay?: SortOrder
     sequenceNo?: SortOrder
     status?: SortOrder
     createdBy?: SortOrder
@@ -63820,6 +63900,7 @@ export namespace Prisma {
     mode?: SortOrder
     courseStartDate?: SortOrder
     courseEndDate?: SortOrder
+    weeklyOffDay?: SortOrder
     sequenceNo?: SortOrder
     status?: SortOrder
     createdBy?: SortOrder
@@ -64161,6 +64242,7 @@ export namespace Prisma {
     batchTiming?: SortOrder
     facultyId?: SortOrder
     facultyName?: SortOrder
+    weeklyOffDay?: SortOrder
     courseAmount?: SortOrder
     paymentMode?: SortOrder
     paymentPlanId?: SortOrder
@@ -64214,6 +64296,7 @@ export namespace Prisma {
     batchTiming?: SortOrder
     facultyId?: SortOrder
     facultyName?: SortOrder
+    weeklyOffDay?: SortOrder
     courseAmount?: SortOrder
     paymentMode?: SortOrder
     paymentPlanId?: SortOrder
@@ -64261,6 +64344,7 @@ export namespace Prisma {
     batchTiming?: SortOrder
     facultyId?: SortOrder
     facultyName?: SortOrder
+    weeklyOffDay?: SortOrder
     courseAmount?: SortOrder
     paymentMode?: SortOrder
     paymentPlanId?: SortOrder
@@ -65007,6 +65091,7 @@ export namespace Prisma {
     stateCode?: SortOrder
     city?: SortOrder
     address?: SortOrder
+    weeklyOffDay?: SortOrder
     status?: SortOrder
     createdBy?: SortOrder
     updatedBy?: SortOrder
@@ -65029,6 +65114,7 @@ export namespace Prisma {
     stateCode?: SortOrder
     city?: SortOrder
     address?: SortOrder
+    weeklyOffDay?: SortOrder
     status?: SortOrder
     createdBy?: SortOrder
     updatedBy?: SortOrder
@@ -65051,6 +65137,7 @@ export namespace Prisma {
     stateCode?: SortOrder
     city?: SortOrder
     address?: SortOrder
+    weeklyOffDay?: SortOrder
     status?: SortOrder
     createdBy?: SortOrder
     updatedBy?: SortOrder
@@ -70300,6 +70387,7 @@ export namespace Prisma {
     mode?: string | null
     courseStartDate?: string | null
     courseEndDate?: string | null
+    weeklyOffDay?: string | null
     sequenceNo?: number
     status?: $Enums.RecordStatus
     createdBy?: string | null
@@ -70332,6 +70420,7 @@ export namespace Prisma {
     mode?: string | null
     courseStartDate?: string | null
     courseEndDate?: string | null
+    weeklyOffDay?: string | null
     sequenceNo?: number
     status?: $Enums.RecordStatus
     createdBy?: string | null
@@ -70404,6 +70493,7 @@ export namespace Prisma {
     stateCode?: string | null
     city?: string | null
     address?: string | null
+    weeklyOffDay?: string | null
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -70426,6 +70516,7 @@ export namespace Prisma {
     stateCode?: string | null
     city?: string | null
     address?: string | null
+    weeklyOffDay?: string | null
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -70484,6 +70575,7 @@ export namespace Prisma {
     batchTiming?: string | null
     facultyId?: string | null
     facultyName?: string | null
+    weeklyOffDay?: string | null
     courseAmount?: number | null
     paymentMode?: string
     paymentPlanId?: string | null
@@ -70536,6 +70628,7 @@ export namespace Prisma {
     batchTiming?: string | null
     facultyId?: string | null
     facultyName?: string | null
+    weeklyOffDay?: string | null
     courseAmount?: number | null
     paymentMode?: string
     paymentPlanId?: string | null
@@ -71045,6 +71138,7 @@ export namespace Prisma {
     mode?: StringNullableFilter<"BranchBatch"> | string | null
     courseStartDate?: StringNullableFilter<"BranchBatch"> | string | null
     courseEndDate?: StringNullableFilter<"BranchBatch"> | string | null
+    weeklyOffDay?: StringNullableFilter<"BranchBatch"> | string | null
     sequenceNo?: IntFilter<"BranchBatch"> | number
     status?: EnumRecordStatusFilter<"BranchBatch"> | $Enums.RecordStatus
     createdBy?: StringNullableFilter<"BranchBatch"> | string | null
@@ -71121,6 +71215,7 @@ export namespace Prisma {
     stateCode?: StringNullableFilter<"BranchFaculty"> | string | null
     city?: StringNullableFilter<"BranchFaculty"> | string | null
     address?: StringNullableFilter<"BranchFaculty"> | string | null
+    weeklyOffDay?: StringNullableFilter<"BranchFaculty"> | string | null
     status?: EnumRecordStatusFilter<"BranchFaculty"> | $Enums.RecordStatus
     createdBy?: StringNullableFilter<"BranchFaculty"> | string | null
     updatedBy?: StringNullableFilter<"BranchFaculty"> | string | null
@@ -71189,6 +71284,7 @@ export namespace Prisma {
     batchTiming?: StringNullableFilter<"BranchStudent"> | string | null
     facultyId?: StringNullableFilter<"BranchStudent"> | string | null
     facultyName?: StringNullableFilter<"BranchStudent"> | string | null
+    weeklyOffDay?: StringNullableFilter<"BranchStudent"> | string | null
     courseAmount?: IntNullableFilter<"BranchStudent"> | number | null
     paymentMode?: StringFilter<"BranchStudent"> | string
     paymentPlanId?: StringNullableFilter<"BranchStudent"> | string | null
@@ -72145,6 +72241,7 @@ export namespace Prisma {
     stateCode?: string | null
     city?: string | null
     address?: string | null
+    weeklyOffDay?: string | null
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -72168,6 +72265,7 @@ export namespace Prisma {
     stateCode?: string | null
     city?: string | null
     address?: string | null
+    weeklyOffDay?: string | null
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -73029,6 +73127,7 @@ export namespace Prisma {
     stateCode?: string | null
     city?: string | null
     address?: string | null
+    weeklyOffDay?: string | null
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -73052,6 +73151,7 @@ export namespace Prisma {
     stateCode?: string | null
     city?: string | null
     address?: string | null
+    weeklyOffDay?: string | null
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -73091,6 +73191,7 @@ export namespace Prisma {
     mode?: string | null
     courseStartDate?: string | null
     courseEndDate?: string | null
+    weeklyOffDay?: string | null
     sequenceNo?: number
     status?: $Enums.RecordStatus
     createdBy?: string | null
@@ -73123,6 +73224,7 @@ export namespace Prisma {
     mode?: string | null
     courseStartDate?: string | null
     courseEndDate?: string | null
+    weeklyOffDay?: string | null
     sequenceNo?: number
     status?: $Enums.RecordStatus
     createdBy?: string | null
@@ -73179,6 +73281,7 @@ export namespace Prisma {
     batchTiming?: string | null
     facultyId?: string | null
     facultyName?: string | null
+    weeklyOffDay?: string | null
     courseAmount?: number | null
     paymentMode?: string
     paymentPlanId?: string | null
@@ -73231,6 +73334,7 @@ export namespace Prisma {
     batchTiming?: string | null
     facultyId?: string | null
     facultyName?: string | null
+    weeklyOffDay?: string | null
     courseAmount?: number | null
     paymentMode?: string
     paymentPlanId?: string | null
@@ -74723,6 +74827,7 @@ export namespace Prisma {
     stateCode?: string | null
     city?: string | null
     address?: string | null
+    weeklyOffDay?: string | null
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -74746,6 +74851,7 @@ export namespace Prisma {
     stateCode?: string | null
     city?: string | null
     address?: string | null
+    weeklyOffDay?: string | null
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -74927,6 +75033,7 @@ export namespace Prisma {
     stateCode?: NullableStringFieldUpdateOperationsInput | string | null
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
+    weeklyOffDay?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -74950,6 +75057,7 @@ export namespace Prisma {
     stateCode?: NullableStringFieldUpdateOperationsInput | string | null
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
+    weeklyOffDay?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -76096,6 +76204,7 @@ export namespace Prisma {
     batchTiming?: string | null
     facultyId?: string | null
     facultyName?: string | null
+    weeklyOffDay?: string | null
     courseAmount?: number | null
     paymentMode?: string
     paymentPlanId?: string | null
@@ -76149,6 +76258,7 @@ export namespace Prisma {
     batchTiming?: string | null
     facultyId?: string | null
     facultyName?: string | null
+    weeklyOffDay?: string | null
     courseAmount?: number | null
     paymentMode?: string
     paymentPlanId?: string | null
@@ -76287,6 +76397,7 @@ export namespace Prisma {
     batchTiming?: NullableStringFieldUpdateOperationsInput | string | null
     facultyId?: NullableStringFieldUpdateOperationsInput | string | null
     facultyName?: NullableStringFieldUpdateOperationsInput | string | null
+    weeklyOffDay?: NullableStringFieldUpdateOperationsInput | string | null
     courseAmount?: NullableIntFieldUpdateOperationsInput | number | null
     paymentMode?: StringFieldUpdateOperationsInput | string
     paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -76340,6 +76451,7 @@ export namespace Prisma {
     batchTiming?: NullableStringFieldUpdateOperationsInput | string | null
     facultyId?: NullableStringFieldUpdateOperationsInput | string | null
     facultyName?: NullableStringFieldUpdateOperationsInput | string | null
+    weeklyOffDay?: NullableStringFieldUpdateOperationsInput | string | null
     courseAmount?: NullableIntFieldUpdateOperationsInput | number | null
     paymentMode?: StringFieldUpdateOperationsInput | string
     paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -76756,6 +76868,7 @@ export namespace Prisma {
     batchTiming?: string | null
     facultyId?: string | null
     facultyName?: string | null
+    weeklyOffDay?: string | null
     courseAmount?: number | null
     paymentMode?: string
     paymentPlanId?: string | null
@@ -76809,6 +76922,7 @@ export namespace Prisma {
     batchTiming?: string | null
     facultyId?: string | null
     facultyName?: string | null
+    weeklyOffDay?: string | null
     courseAmount?: number | null
     paymentMode?: string
     paymentPlanId?: string | null
@@ -76918,6 +77032,7 @@ export namespace Prisma {
     batchTiming?: NullableStringFieldUpdateOperationsInput | string | null
     facultyId?: NullableStringFieldUpdateOperationsInput | string | null
     facultyName?: NullableStringFieldUpdateOperationsInput | string | null
+    weeklyOffDay?: NullableStringFieldUpdateOperationsInput | string | null
     courseAmount?: NullableIntFieldUpdateOperationsInput | number | null
     paymentMode?: StringFieldUpdateOperationsInput | string
     paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -76971,6 +77086,7 @@ export namespace Prisma {
     batchTiming?: NullableStringFieldUpdateOperationsInput | string | null
     facultyId?: NullableStringFieldUpdateOperationsInput | string | null
     facultyName?: NullableStringFieldUpdateOperationsInput | string | null
+    weeklyOffDay?: NullableStringFieldUpdateOperationsInput | string | null
     courseAmount?: NullableIntFieldUpdateOperationsInput | number | null
     paymentMode?: StringFieldUpdateOperationsInput | string
     paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -78307,6 +78423,7 @@ export namespace Prisma {
     batchTiming?: string | null
     facultyId?: string | null
     facultyName?: string | null
+    weeklyOffDay?: string | null
     courseAmount?: number | null
     paymentMode?: string
     paymentPlanId?: string | null
@@ -78360,6 +78477,7 @@ export namespace Prisma {
     batchTiming?: string | null
     facultyId?: string | null
     facultyName?: string | null
+    weeklyOffDay?: string | null
     courseAmount?: number | null
     paymentMode?: string
     paymentPlanId?: string | null
@@ -78555,6 +78673,7 @@ export namespace Prisma {
     batchTiming?: NullableStringFieldUpdateOperationsInput | string | null
     facultyId?: NullableStringFieldUpdateOperationsInput | string | null
     facultyName?: NullableStringFieldUpdateOperationsInput | string | null
+    weeklyOffDay?: NullableStringFieldUpdateOperationsInput | string | null
     courseAmount?: NullableIntFieldUpdateOperationsInput | number | null
     paymentMode?: StringFieldUpdateOperationsInput | string
     paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -78608,6 +78727,7 @@ export namespace Prisma {
     batchTiming?: NullableStringFieldUpdateOperationsInput | string | null
     facultyId?: NullableStringFieldUpdateOperationsInput | string | null
     facultyName?: NullableStringFieldUpdateOperationsInput | string | null
+    weeklyOffDay?: NullableStringFieldUpdateOperationsInput | string | null
     courseAmount?: NullableIntFieldUpdateOperationsInput | number | null
     paymentMode?: StringFieldUpdateOperationsInput | string
     paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -79269,6 +79389,7 @@ export namespace Prisma {
     mode?: string | null
     courseStartDate?: string | null
     courseEndDate?: string | null
+    weeklyOffDay?: string | null
     sequenceNo?: number
     status?: $Enums.RecordStatus
     createdBy?: string | null
@@ -79301,6 +79422,7 @@ export namespace Prisma {
     mode?: string | null
     courseStartDate?: string | null
     courseEndDate?: string | null
+    weeklyOffDay?: string | null
     sequenceNo?: number
     status?: $Enums.RecordStatus
     createdBy?: string | null
@@ -80172,6 +80294,7 @@ export namespace Prisma {
     batchTiming?: string | null
     facultyId?: string | null
     facultyName?: string | null
+    weeklyOffDay?: string | null
     courseAmount?: number | null
     paymentMode?: string
     paymentPlanId?: string | null
@@ -80225,6 +80348,7 @@ export namespace Prisma {
     batchTiming?: string | null
     facultyId?: string | null
     facultyName?: string | null
+    weeklyOffDay?: string | null
     courseAmount?: number | null
     paymentMode?: string
     paymentPlanId?: string | null
@@ -80396,6 +80520,7 @@ export namespace Prisma {
     batchTiming?: NullableStringFieldUpdateOperationsInput | string | null
     facultyId?: NullableStringFieldUpdateOperationsInput | string | null
     facultyName?: NullableStringFieldUpdateOperationsInput | string | null
+    weeklyOffDay?: NullableStringFieldUpdateOperationsInput | string | null
     courseAmount?: NullableIntFieldUpdateOperationsInput | number | null
     paymentMode?: StringFieldUpdateOperationsInput | string
     paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -80449,6 +80574,7 @@ export namespace Prisma {
     batchTiming?: NullableStringFieldUpdateOperationsInput | string | null
     facultyId?: NullableStringFieldUpdateOperationsInput | string | null
     facultyName?: NullableStringFieldUpdateOperationsInput | string | null
+    weeklyOffDay?: NullableStringFieldUpdateOperationsInput | string | null
     courseAmount?: NullableIntFieldUpdateOperationsInput | number | null
     paymentMode?: StringFieldUpdateOperationsInput | string
     paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -80685,6 +80811,7 @@ export namespace Prisma {
     batchTiming?: string | null
     facultyId?: string | null
     facultyName?: string | null
+    weeklyOffDay?: string | null
     courseAmount?: number | null
     paymentMode?: string
     paymentPlanId?: string | null
@@ -80738,6 +80865,7 @@ export namespace Prisma {
     batchTiming?: string | null
     facultyId?: string | null
     facultyName?: string | null
+    weeklyOffDay?: string | null
     courseAmount?: number | null
     paymentMode?: string
     paymentPlanId?: string | null
@@ -80878,6 +81006,7 @@ export namespace Prisma {
     batchTiming?: NullableStringFieldUpdateOperationsInput | string | null
     facultyId?: NullableStringFieldUpdateOperationsInput | string | null
     facultyName?: NullableStringFieldUpdateOperationsInput | string | null
+    weeklyOffDay?: NullableStringFieldUpdateOperationsInput | string | null
     courseAmount?: NullableIntFieldUpdateOperationsInput | number | null
     paymentMode?: StringFieldUpdateOperationsInput | string
     paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -80931,6 +81060,7 @@ export namespace Prisma {
     batchTiming?: NullableStringFieldUpdateOperationsInput | string | null
     facultyId?: NullableStringFieldUpdateOperationsInput | string | null
     facultyName?: NullableStringFieldUpdateOperationsInput | string | null
+    weeklyOffDay?: NullableStringFieldUpdateOperationsInput | string | null
     courseAmount?: NullableIntFieldUpdateOperationsInput | number | null
     paymentMode?: StringFieldUpdateOperationsInput | string
     paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -81724,6 +81854,7 @@ export namespace Prisma {
     mode?: string | null
     courseStartDate?: string | null
     courseEndDate?: string | null
+    weeklyOffDay?: string | null
     sequenceNo?: number
     status?: $Enums.RecordStatus
     createdBy?: string | null
@@ -81760,6 +81891,7 @@ export namespace Prisma {
     stateCode?: string | null
     city?: string | null
     address?: string | null
+    weeklyOffDay?: string | null
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -81808,6 +81940,7 @@ export namespace Prisma {
     batchTiming?: string | null
     facultyId?: string | null
     facultyName?: string | null
+    weeklyOffDay?: string | null
     courseAmount?: number | null
     paymentMode?: string
     paymentPlanId?: string | null
@@ -82039,6 +82172,7 @@ export namespace Prisma {
     mode?: NullableStringFieldUpdateOperationsInput | string | null
     courseStartDate?: NullableStringFieldUpdateOperationsInput | string | null
     courseEndDate?: NullableStringFieldUpdateOperationsInput | string | null
+    weeklyOffDay?: NullableStringFieldUpdateOperationsInput | string | null
     sequenceNo?: IntFieldUpdateOperationsInput | number
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -82071,6 +82205,7 @@ export namespace Prisma {
     mode?: NullableStringFieldUpdateOperationsInput | string | null
     courseStartDate?: NullableStringFieldUpdateOperationsInput | string | null
     courseEndDate?: NullableStringFieldUpdateOperationsInput | string | null
+    weeklyOffDay?: NullableStringFieldUpdateOperationsInput | string | null
     sequenceNo?: IntFieldUpdateOperationsInput | number
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -82101,6 +82236,7 @@ export namespace Prisma {
     mode?: NullableStringFieldUpdateOperationsInput | string | null
     courseStartDate?: NullableStringFieldUpdateOperationsInput | string | null
     courseEndDate?: NullableStringFieldUpdateOperationsInput | string | null
+    weeklyOffDay?: NullableStringFieldUpdateOperationsInput | string | null
     sequenceNo?: IntFieldUpdateOperationsInput | number
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -82169,6 +82305,7 @@ export namespace Prisma {
     stateCode?: NullableStringFieldUpdateOperationsInput | string | null
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
+    weeklyOffDay?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -82191,6 +82328,7 @@ export namespace Prisma {
     stateCode?: NullableStringFieldUpdateOperationsInput | string | null
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
+    weeklyOffDay?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -82213,6 +82351,7 @@ export namespace Prisma {
     stateCode?: NullableStringFieldUpdateOperationsInput | string | null
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
+    weeklyOffDay?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -82260,6 +82399,7 @@ export namespace Prisma {
     batchTiming?: NullableStringFieldUpdateOperationsInput | string | null
     facultyId?: NullableStringFieldUpdateOperationsInput | string | null
     facultyName?: NullableStringFieldUpdateOperationsInput | string | null
+    weeklyOffDay?: NullableStringFieldUpdateOperationsInput | string | null
     courseAmount?: NullableIntFieldUpdateOperationsInput | number | null
     paymentMode?: StringFieldUpdateOperationsInput | string
     paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -82312,6 +82452,7 @@ export namespace Prisma {
     batchTiming?: NullableStringFieldUpdateOperationsInput | string | null
     facultyId?: NullableStringFieldUpdateOperationsInput | string | null
     facultyName?: NullableStringFieldUpdateOperationsInput | string | null
+    weeklyOffDay?: NullableStringFieldUpdateOperationsInput | string | null
     courseAmount?: NullableIntFieldUpdateOperationsInput | number | null
     paymentMode?: StringFieldUpdateOperationsInput | string
     paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -82363,6 +82504,7 @@ export namespace Prisma {
     batchTiming?: NullableStringFieldUpdateOperationsInput | string | null
     facultyId?: NullableStringFieldUpdateOperationsInput | string | null
     facultyName?: NullableStringFieldUpdateOperationsInput | string | null
+    weeklyOffDay?: NullableStringFieldUpdateOperationsInput | string | null
     courseAmount?: NullableIntFieldUpdateOperationsInput | number | null
     paymentMode?: StringFieldUpdateOperationsInput | string
     paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -82915,6 +83057,7 @@ export namespace Prisma {
     stateCode?: string | null
     city?: string | null
     address?: string | null
+    weeklyOffDay?: string | null
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -83099,6 +83242,7 @@ export namespace Prisma {
     stateCode?: NullableStringFieldUpdateOperationsInput | string | null
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
+    weeklyOffDay?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -83122,6 +83266,7 @@ export namespace Prisma {
     stateCode?: NullableStringFieldUpdateOperationsInput | string | null
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
+    weeklyOffDay?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -83144,6 +83289,7 @@ export namespace Prisma {
     stateCode?: NullableStringFieldUpdateOperationsInput | string | null
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
+    weeklyOffDay?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -83484,6 +83630,7 @@ export namespace Prisma {
     stateCode?: string | null
     city?: string | null
     address?: string | null
+    weeklyOffDay?: string | null
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -83514,6 +83661,7 @@ export namespace Prisma {
     mode?: string | null
     courseStartDate?: string | null
     courseEndDate?: string | null
+    weeklyOffDay?: string | null
     sequenceNo?: number
     status?: $Enums.RecordStatus
     createdBy?: string | null
@@ -83561,6 +83709,7 @@ export namespace Prisma {
     batchTiming?: string | null
     facultyId?: string | null
     facultyName?: string | null
+    weeklyOffDay?: string | null
     courseAmount?: number | null
     paymentMode?: string
     paymentPlanId?: string | null
@@ -83665,6 +83814,7 @@ export namespace Prisma {
     stateCode?: NullableStringFieldUpdateOperationsInput | string | null
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
+    weeklyOffDay?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -83688,6 +83838,7 @@ export namespace Prisma {
     stateCode?: NullableStringFieldUpdateOperationsInput | string | null
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
+    weeklyOffDay?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -83710,6 +83861,7 @@ export namespace Prisma {
     stateCode?: NullableStringFieldUpdateOperationsInput | string | null
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
+    weeklyOffDay?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -83738,6 +83890,7 @@ export namespace Prisma {
     mode?: NullableStringFieldUpdateOperationsInput | string | null
     courseStartDate?: NullableStringFieldUpdateOperationsInput | string | null
     courseEndDate?: NullableStringFieldUpdateOperationsInput | string | null
+    weeklyOffDay?: NullableStringFieldUpdateOperationsInput | string | null
     sequenceNo?: IntFieldUpdateOperationsInput | number
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -83770,6 +83923,7 @@ export namespace Prisma {
     mode?: NullableStringFieldUpdateOperationsInput | string | null
     courseStartDate?: NullableStringFieldUpdateOperationsInput | string | null
     courseEndDate?: NullableStringFieldUpdateOperationsInput | string | null
+    weeklyOffDay?: NullableStringFieldUpdateOperationsInput | string | null
     sequenceNo?: IntFieldUpdateOperationsInput | number
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -83800,6 +83954,7 @@ export namespace Prisma {
     mode?: NullableStringFieldUpdateOperationsInput | string | null
     courseStartDate?: NullableStringFieldUpdateOperationsInput | string | null
     courseEndDate?: NullableStringFieldUpdateOperationsInput | string | null
+    weeklyOffDay?: NullableStringFieldUpdateOperationsInput | string | null
     sequenceNo?: IntFieldUpdateOperationsInput | number
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -83846,6 +84001,7 @@ export namespace Prisma {
     batchTiming?: NullableStringFieldUpdateOperationsInput | string | null
     facultyId?: NullableStringFieldUpdateOperationsInput | string | null
     facultyName?: NullableStringFieldUpdateOperationsInput | string | null
+    weeklyOffDay?: NullableStringFieldUpdateOperationsInput | string | null
     courseAmount?: NullableIntFieldUpdateOperationsInput | number | null
     paymentMode?: StringFieldUpdateOperationsInput | string
     paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -83898,6 +84054,7 @@ export namespace Prisma {
     batchTiming?: NullableStringFieldUpdateOperationsInput | string | null
     facultyId?: NullableStringFieldUpdateOperationsInput | string | null
     facultyName?: NullableStringFieldUpdateOperationsInput | string | null
+    weeklyOffDay?: NullableStringFieldUpdateOperationsInput | string | null
     courseAmount?: NullableIntFieldUpdateOperationsInput | number | null
     paymentMode?: StringFieldUpdateOperationsInput | string
     paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -83949,6 +84106,7 @@ export namespace Prisma {
     batchTiming?: NullableStringFieldUpdateOperationsInput | string | null
     facultyId?: NullableStringFieldUpdateOperationsInput | string | null
     facultyName?: NullableStringFieldUpdateOperationsInput | string | null
+    weeklyOffDay?: NullableStringFieldUpdateOperationsInput | string | null
     courseAmount?: NullableIntFieldUpdateOperationsInput | number | null
     paymentMode?: StringFieldUpdateOperationsInput | string
     paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -84922,6 +85080,7 @@ export namespace Prisma {
     mode?: string | null
     courseStartDate?: string | null
     courseEndDate?: string | null
+    weeklyOffDay?: string | null
     sequenceNo?: number
     status?: $Enums.RecordStatus
     createdBy?: string | null
@@ -84950,6 +85109,7 @@ export namespace Prisma {
     mode?: NullableStringFieldUpdateOperationsInput | string | null
     courseStartDate?: NullableStringFieldUpdateOperationsInput | string | null
     courseEndDate?: NullableStringFieldUpdateOperationsInput | string | null
+    weeklyOffDay?: NullableStringFieldUpdateOperationsInput | string | null
     sequenceNo?: IntFieldUpdateOperationsInput | number
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -84982,6 +85142,7 @@ export namespace Prisma {
     mode?: NullableStringFieldUpdateOperationsInput | string | null
     courseStartDate?: NullableStringFieldUpdateOperationsInput | string | null
     courseEndDate?: NullableStringFieldUpdateOperationsInput | string | null
+    weeklyOffDay?: NullableStringFieldUpdateOperationsInput | string | null
     sequenceNo?: IntFieldUpdateOperationsInput | number
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -85012,6 +85173,7 @@ export namespace Prisma {
     mode?: NullableStringFieldUpdateOperationsInput | string | null
     courseStartDate?: NullableStringFieldUpdateOperationsInput | string | null
     courseEndDate?: NullableStringFieldUpdateOperationsInput | string | null
+    weeklyOffDay?: NullableStringFieldUpdateOperationsInput | string | null
     sequenceNo?: IntFieldUpdateOperationsInput | number
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null

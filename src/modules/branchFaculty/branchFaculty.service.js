@@ -14,6 +14,7 @@ function generateTemporaryPassword() {
 function normalizeString(value) {
   return String(value ?? "").trim();
 }
+const FACULTY_WEEKLY_OFF_DAYS = new Set(["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY"]);
 async function ensureUniqueBranchFacultyUserIdentity(prisma, { email, phone }) {
   const existingEmail = await prisma.user.findFirst({
     where: { email },
@@ -39,6 +40,7 @@ export function parseBranchFacultyPayload(rawPayload = {}, defaults = {}) {
   const email = normalizeString(source.email).toLowerCase();
   const phone = normalizeString(source.phone);
   const status = normalizeString(source.status || "ACTIVE").toUpperCase();
+  const weeklyOffDay = normalizeString(source.weeklyOffDay).toUpperCase();
 
   if (!facultyId) {
     throw new AppError("Faculty ID is required", 400);
@@ -67,6 +69,9 @@ export function parseBranchFacultyPayload(rawPayload = {}, defaults = {}) {
   if (!['ACTIVE', 'INACTIVE'].includes(status)) {
     throw new AppError("Invalid faculty status", 400);
   }
+  if (weeklyOffDay && !FACULTY_WEEKLY_OFF_DAYS.has(weeklyOffDay)) {
+    throw new AppError("Faculty weekly off must be Monday to Friday", 400);
+  }
 
   return {
     facultyId,
@@ -80,6 +85,7 @@ export function parseBranchFacultyPayload(rawPayload = {}, defaults = {}) {
     city: normalizeString(source.city),
     address: normalizeString(source.address),
     status,
+    weeklyOffDay: weeklyOffDay || null,
   };
 }
 
@@ -351,6 +357,7 @@ export async function createBranchFaculty(actorUser, payload) {
         courseId: courseLinks.courseId,
         branchCourseId: courseLinks.branchCourseId,
         status: payload.status ? payload.status.toUpperCase() : "ACTIVE",
+        weeklyOffDay: parsed.weeklyOffDay,
         createdBy: actorUser.id,
       },
     });
@@ -401,7 +408,15 @@ export async function updateBranchFaculty(actorUser, branchFacultyId, payload) {
     facultyId: payload.facultyId
       ? normalizeBranchEntityId(payload.facultyId, branchProfile.branchId, "FC")
       : existing.facultyId,
+    name: payload.name ?? existing.name,
+    email: payload.email ?? existing.email,
+    phone: payload.phone ?? existing.phone,
+    status: payload.status ?? existing.status,
+    weeklyOffDay: Object.prototype.hasOwnProperty.call(payload, "weeklyOffDay")
+      ? payload.weeklyOffDay
+      : existing.weeklyOffDay,
   };
+  const parsed = parseBranchFacultyPayload(normalizedPayload);
   const courseLinks = await resolveFacultyCourseLinks(branchProfile.id, normalizedPayload, existing);
 
   if (normalizedPayload.facultyId && normalizedPayload.facultyId !== existing.facultyId) {
@@ -437,10 +452,10 @@ export async function updateBranchFaculty(actorUser, branchFacultyId, payload) {
   const updated = await prisma.branchFaculty.update({
     where: { id: branchFacultyId },
     data: {
-      facultyId: normalizedPayload.facultyId,
-      name: normalizedPayload.name,
-      email: normalizedPayload.email,
-      phone: normalizedPayload.phone,
+      facultyId: parsed.facultyId,
+      name: parsed.name,
+      email: parsed.email,
+      phone: parsed.phone,
       country: normalizedPayload.country,
       countryCode: normalizedPayload.countryCode,
       state: normalizedPayload.state,
@@ -449,7 +464,8 @@ export async function updateBranchFaculty(actorUser, branchFacultyId, payload) {
       address: normalizedPayload.address,
       courseId: courseLinks.courseId,
       branchCourseId: courseLinks.branchCourseId,
-      status: normalizedPayload.status ? normalizedPayload.status.toUpperCase() : undefined,
+      status: parsed.status,
+      weeklyOffDay: parsed.weeklyOffDay,
       updatedBy: actorUser.id,
     },
   });

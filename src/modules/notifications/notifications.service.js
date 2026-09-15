@@ -1022,6 +1022,9 @@ export async function createFeeProgressAlertNotification({
   const courseName = normalizeString(student?.courseName || student?.courseInterested || student?.course || "Course");
   const courseProgressNumber = Number(courseProgress);
   const paidProgressNumber = Number(paidProgress);
+  if (Number.isFinite(courseProgressNumber) && Number.isFinite(paidProgressNumber) && courseProgressNumber <= 0 && paidProgressNumber <= 0) {
+    return null;
+  }
   const progressGap = Number.isFinite(courseProgressNumber) && Number.isFinite(paidProgressNumber)
     ? Math.max(0, courseProgressNumber - paidProgressNumber)
     : null;

@@ -67,7 +67,7 @@ function parsePayload(payload = {}) {
 function relations() {
   return {
     branchCourse: { select: { id: true, name: true, courseCode: true, status: true, duration: true, hours: true, mode: true } },
-    branchFaculty: { select: { id: true, facultyId: true, name: true, email: true, phone: true, status: true } },
+    branchFaculty: { select: { id: true, facultyId: true, name: true, email: true, phone: true, status: true, weeklyOffDay: true } },
   };
 }
 
@@ -79,7 +79,7 @@ function toBatch(record = {}) {
     facultyId: record.facultyId || record.branchFaculty?.facultyId || record.branchFacultyId || "", facultyName: record.facultyName || record.branchFaculty?.name || "",
     facultyEmail: record.facultyEmail || record.branchFaculty?.email || "", batchName: record.batchName || "", startTime: record.startTime || "",
     startPeriod: record.startPeriod || "AM", endTime: record.endTime || "", endPeriod: record.endPeriod || "AM", batchTiming: record.batchTiming || buildTiming(record),
-    totalSeats: Number(record.totalSeats || 0), weekType: text(record.weekType).toUpperCase(), mode: text(record.mode).toUpperCase(), courseStartDate: record.courseStartDate || null, courseEndDate: record.courseEndDate || null, sequenceNo: Number(record.sequenceNo || 1), status: text(record.status || "ACTIVE").toUpperCase(),
+    totalSeats: Number(record.totalSeats || 0), weekType: text(record.weekType).toUpperCase(), mode: text(record.mode).toUpperCase(), courseStartDate: record.courseStartDate || null, courseEndDate: record.courseEndDate || null, weeklyOffDay: record.weeklyOffDay || record.branchFaculty?.weeklyOffDay || null, sequenceNo: Number(record.sequenceNo || 1), status: text(record.status || "ACTIVE").toUpperCase(),
     createdAt: record.createdAt || null, updatedAt: record.updatedAt || null,
   };
 }
@@ -94,7 +94,7 @@ async function ensureCourse(branchId, courseId) {
   if (!result) throw new AppError("Course not found", 404); if (result.status !== "ACTIVE") throw new AppError("Selected course is inactive", 400); return result;
 }
 async function ensureFaculty(branchId, facultyId) {
-  const result = await prisma.branchFaculty.findFirst({ where: { branchId, OR: [{ id: facultyId }, { facultyId }] }, select: { id: true, facultyId: true, name: true, email: true, status: true } });
+  const result = await prisma.branchFaculty.findFirst({ where: { branchId, OR: [{ id: facultyId }, { facultyId }] }, select: { id: true, facultyId: true, name: true, email: true, status: true, weeklyOffDay: true } });
   if (!result) throw new AppError("Faculty not found", 404); if (result.status !== "ACTIVE") throw new AppError("Selected faculty is inactive", 400); return result;
 }
 async function nextSequence(branchId) {
@@ -111,11 +111,11 @@ function whereFor(branchId, query = {}) {
   const mode = text(query.mode).toUpperCase(); if (MODES.has(mode)) where.mode = mode;
   return where;
 }
-async function calculateStoredBatchEndDate(branch, course, input, batchId) {
+async function calculateStoredBatchEndDate(branch, course, input, batchId, weeklyOffDay = null) {
   const leaves = await prisma.branchCalendarLeave.findMany({ where: { branchId: branch.id, status: "ACTIVE", isInstitute: true } });
   const schedule = generateSchedule({
-    student: { id: batchId || "batch", studentId: batchId || "batch", batchId: batchId || "batch", batchName: input.batchName, courseStartDate: input.courseStartDate, course, classSchedule: input.weekType === "WEEKEND" ? "Weekend" : "Weekday", facultyId: "batch", batchTiming: input.batchTiming },
-    batch: { ...input, id: batchId || "batch", batchId: batchId || "batch", courseId: course.id, facultyId: "batch" },
+    student: { id: batchId || "batch", studentId: batchId || "batch", batchId: batchId || "batch", batchName: input.batchName, courseStartDate: input.courseStartDate, course, classSchedule: input.weekType === "WEEKEND" ? "Weekend" : "Weekday", facultyId: "batch", batchTiming: input.batchTiming, weeklyOffDay },
+    batch: { ...input, id: batchId || "batch", batchId: batchId || "batch", courseId: course.id, facultyId: "batch", weeklyOffDay },
     leaves,
     holidays: [],
     timezone: branch.timezone || "Asia/Kolkata",
@@ -139,7 +139,7 @@ export async function getBranchBatch(batchId, actor = null) {
 export async function createBranchBatch(payload = {}, actor = null) {
   const branch = await getCurrentBranchProfile(actor); const parsed = parsePayload(payload); if (!parsed.courseId) throw new AppError("Course is required", 400); if (!parsed.facultyId) throw new AppError("Faculty is required", 400);
   const course = await ensureCourse(branch.id, parsed.courseId); parsed.batches.forEach((input) => validateCourseMode(course.mode, input.mode)); const faculty = await ensureFaculty(branch.id, parsed.facultyId); let sequence = await nextSequence(branch.id); const actorId = actor?.id ?? null;
-  parsed.batches = await Promise.all(parsed.batches.map(async (input) => ({ ...input, courseEndDate: await calculateStoredBatchEndDate(branch, course, input, input.batchId) })));
+  parsed.batches = await Promise.all(parsed.batches.map(async (input) => ({ ...input, weeklyOffDay: faculty.weeklyOffDay || null, courseEndDate: await calculateStoredBatchEndDate(branch, course, input, input.batchId, faculty.weeklyOffDay) })));
   const created = await prisma.$transaction(async (tx) => { const records = []; for (const input of parsed.batches) {
     let batchId = input.batchId ? normalizeBranchEntityId(input.batchId, branch.branchId, "BAT") : "";
     if (batchId && await tx.branchBatch.findFirst({ where: { branchId: branch.id, batchId }, select: { id: true } })) batchId = "";
@@ -161,7 +161,7 @@ export async function updateBranchBatch(batchId, payload = {}, actor = null) {
   const existing = await prisma.branchBatch.findFirst({ where: scopedWhere, include: relations() }) ||
     await prisma.branchBatch.findFirst({ where: { branchId: branch.id, OR: [{ id: text(batchId) }, { batchId: text(batchId) }] }, include: relations() });
   if (!existing) throw new AppError("Batch not found", 404); const parsed = parsePayload({ ...payload, courseId: payload.courseId || existing.courseId, facultyId: payload.facultyId || existing.facultyId, batches: payload.batches || payload.rows || [payload] });
-  const course = await ensureCourse(branch.id, parsed.courseId); validateCourseMode(course.mode, parsed.batches[0].mode); const faculty = await ensureFaculty(branch.id, parsed.facultyId); const calculatedEndDate = await calculateStoredBatchEndDate(branch, course, parsed.batches[0], existing.batchId); if (!calculatedEndDate) throw new AppError("Selected course has no valid duration", 400); const input = { ...parsed.batches[0], courseEndDate: calculatedEndDate, batchId: existing.batchId };
+  const course = await ensureCourse(branch.id, parsed.courseId); validateCourseMode(course.mode, parsed.batches[0].mode); const faculty = await ensureFaculty(branch.id, parsed.facultyId); const weeklyOffDay = existing.facultyId === faculty.facultyId ? existing.weeklyOffDay : faculty.weeklyOffDay; const calculatedEndDate = await calculateStoredBatchEndDate(branch, course, parsed.batches[0], existing.batchId, weeklyOffDay); if (!calculatedEndDate) throw new AppError("Selected course has no valid duration", 400); const input = { ...parsed.batches[0], weeklyOffDay: weeklyOffDay || null, courseEndDate: calculatedEndDate, batchId: existing.batchId };
   const synced = await prisma.$transaction(async (tx) => {
     const updatedBatch = await tx.branchBatch.update({ where: { id: existing.id }, data: { branchCourseId: course.id, branchFacultyId: faculty.id, courseId: course.id, courseName: course.name, facultyId: faculty.facultyId || faculty.id, facultyName: faculty.name, facultyEmail: faculty.email, ...input, updatedBy: actor?.id ?? null }, include: relations() });
     if (existing.courseStartDate === input.courseStartDate) {
