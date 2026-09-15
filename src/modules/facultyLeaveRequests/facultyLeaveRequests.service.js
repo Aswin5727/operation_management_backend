@@ -49,6 +49,10 @@ function dateRange(fromDate, toDate) {
   return result;
 }
 
+function dateCount(fromDate, toDate) {
+  return Math.round((new Date(`${toDate}T00:00:00Z`) - new Date(`${fromDate}T00:00:00Z`)) / 86400000) + 1;
+}
+
 function overlaps(start, end, windowStart, windowEnd) {
   return start != null && end != null && start < windowEnd && end > windowStart;
 }
@@ -120,6 +124,7 @@ function validatePayload(payload = {}) {
   if (!LEAVE_TYPES.has(leaveType)) throw new AppError("Select a valid leave type", 400);
   if (!DURATIONS.has(durationType)) throw new AppError("Select a valid leave duration", 400);
   if (toDate < fromDate) throw new AppError("To date cannot be before from date", 400);
+  const durationDays = durationType === "FULL_DAY" ? dateCount(fromDate, toDate) : null;
   if (durationType === "PERMISSION" && toDate !== fromDate) throw new AppError("Permission leave must use one date", 400);
   if (durationType === "HALF_DAY") {
     const startMinutes = parseTime(halfDayStart);
@@ -147,7 +152,7 @@ function validatePayload(payload = {}) {
   const reason = text(payload.reason);
   if (!reason) throw new AppError("Reason is required", 400);
   if (reason.length > 1000) throw new AppError("Reason cannot exceed 1000 characters", 400);
-  return { leaveType, durationType, halfDayPeriod: null, halfDayStart: durationType === "HALF_DAY" ? halfDayStart : null, halfDayEnd: durationType === "HALF_DAY" ? halfDayEnd : null, permissionHours: durationType === "PERMISSION" ? permissionHours : null, permissionStart: durationType === "PERMISSION" ? permissionStart : null, permissionEnd, fromDate, toDate, reason };
+  return { leaveType, durationType, durationDays, halfDayPeriod: null, halfDayStart: durationType === "HALF_DAY" ? halfDayStart : null, halfDayEnd: durationType === "HALF_DAY" ? halfDayEnd : null, permissionHours: durationType === "PERMISSION" ? permissionHours : null, permissionStart: durationType === "PERMISSION" ? permissionStart : null, permissionEnd, fromDate, toDate, reason };
 }
 
 async function calculateAffectedClasses(branchId, facultyId, leave) {

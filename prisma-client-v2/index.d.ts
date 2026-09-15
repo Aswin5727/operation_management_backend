@@ -46177,10 +46177,12 @@ export namespace Prisma {
   }
 
   export type FacultyLeaveRequestAvgAggregateOutputType = {
+    durationDays: number | null
     permissionHours: number | null
   }
 
   export type FacultyLeaveRequestSumAggregateOutputType = {
+    durationDays: number | null
     permissionHours: number | null
   }
 
@@ -46195,6 +46197,7 @@ export namespace Prisma {
     fromDate: string | null
     toDate: string | null
     durationType: string | null
+    durationDays: number | null
     halfDayPeriod: string | null
     halfDayStart: string | null
     halfDayEnd: string | null
@@ -46219,6 +46222,7 @@ export namespace Prisma {
     fromDate: string | null
     toDate: string | null
     durationType: string | null
+    durationDays: number | null
     halfDayPeriod: string | null
     halfDayStart: string | null
     halfDayEnd: string | null
@@ -46243,6 +46247,7 @@ export namespace Prisma {
     fromDate: number
     toDate: number
     durationType: number
+    durationDays: number
     halfDayPeriod: number
     halfDayStart: number
     halfDayEnd: number
@@ -46260,10 +46265,12 @@ export namespace Prisma {
 
 
   export type FacultyLeaveRequestAvgAggregateInputType = {
+    durationDays?: true
     permissionHours?: true
   }
 
   export type FacultyLeaveRequestSumAggregateInputType = {
+    durationDays?: true
     permissionHours?: true
   }
 
@@ -46278,6 +46285,7 @@ export namespace Prisma {
     fromDate?: true
     toDate?: true
     durationType?: true
+    durationDays?: true
     halfDayPeriod?: true
     halfDayStart?: true
     halfDayEnd?: true
@@ -46302,6 +46310,7 @@ export namespace Prisma {
     fromDate?: true
     toDate?: true
     durationType?: true
+    durationDays?: true
     halfDayPeriod?: true
     halfDayStart?: true
     halfDayEnd?: true
@@ -46326,6 +46335,7 @@ export namespace Prisma {
     fromDate?: true
     toDate?: true
     durationType?: true
+    durationDays?: true
     halfDayPeriod?: true
     halfDayStart?: true
     halfDayEnd?: true
@@ -46438,6 +46448,7 @@ export namespace Prisma {
     fromDate: string
     toDate: string
     durationType: string
+    durationDays: number | null
     halfDayPeriod: string | null
     halfDayStart: string | null
     halfDayEnd: string | null
@@ -46482,6 +46493,7 @@ export namespace Prisma {
     fromDate?: boolean
     toDate?: boolean
     durationType?: boolean
+    durationDays?: boolean
     halfDayPeriod?: boolean
     halfDayStart?: boolean
     halfDayEnd?: boolean
@@ -46509,6 +46521,7 @@ export namespace Prisma {
     fromDate?: boolean
     toDate?: boolean
     durationType?: boolean
+    durationDays?: boolean
     halfDayPeriod?: boolean
     halfDayStart?: boolean
     halfDayEnd?: boolean
@@ -46536,6 +46549,7 @@ export namespace Prisma {
     fromDate?: boolean
     toDate?: boolean
     durationType?: boolean
+    durationDays?: boolean
     halfDayPeriod?: boolean
     halfDayStart?: boolean
     halfDayEnd?: boolean
@@ -46563,6 +46577,7 @@ export namespace Prisma {
     fromDate?: boolean
     toDate?: boolean
     durationType?: boolean
+    durationDays?: boolean
     halfDayPeriod?: boolean
     halfDayStart?: boolean
     halfDayEnd?: boolean
@@ -46577,7 +46592,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type FacultyLeaveRequestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "facultyUserId" | "branchId" | "facultyId" | "facultyName" | "facultyEmail" | "leaveType" | "fromDate" | "toDate" | "durationType" | "halfDayPeriod" | "halfDayStart" | "halfDayEnd" | "permissionHours" | "permissionStart" | "permissionEnd" | "reason" | "status" | "cancelledAt" | "affectedClasses" | "createdAt" | "updatedAt", ExtArgs["result"]["facultyLeaveRequest"]>
+  export type FacultyLeaveRequestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "facultyUserId" | "branchId" | "facultyId" | "facultyName" | "facultyEmail" | "leaveType" | "fromDate" | "toDate" | "durationType" | "durationDays" | "halfDayPeriod" | "halfDayStart" | "halfDayEnd" | "permissionHours" | "permissionStart" | "permissionEnd" | "reason" | "status" | "cancelledAt" | "affectedClasses" | "createdAt" | "updatedAt", ExtArgs["result"]["facultyLeaveRequest"]>
   export type FacultyLeaveRequestInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     facultyUser?: boolean | UserDefaultArgs<ExtArgs>
     branch?: boolean | BranchDefaultArgs<ExtArgs>
@@ -46608,6 +46623,7 @@ export namespace Prisma {
       fromDate: string
       toDate: string
       durationType: string
+      durationDays: number | null
       halfDayPeriod: string | null
       halfDayStart: string | null
       halfDayEnd: string | null
@@ -47055,6 +47071,7 @@ export namespace Prisma {
     readonly fromDate: FieldRef<"FacultyLeaveRequest", 'String'>
     readonly toDate: FieldRef<"FacultyLeaveRequest", 'String'>
     readonly durationType: FieldRef<"FacultyLeaveRequest", 'String'>
+    readonly durationDays: FieldRef<"FacultyLeaveRequest", 'Int'>
     readonly halfDayPeriod: FieldRef<"FacultyLeaveRequest", 'String'>
     readonly halfDayStart: FieldRef<"FacultyLeaveRequest", 'String'>
     readonly halfDayEnd: FieldRef<"FacultyLeaveRequest", 'String'>
@@ -52139,6 +52156,7 @@ export namespace Prisma {
     fromDate: 'fromDate',
     toDate: 'toDate',
     durationType: 'durationType',
+    durationDays: 'durationDays',
     halfDayPeriod: 'halfDayPeriod',
     halfDayStart: 'halfDayStart',
     halfDayEnd: 'halfDayEnd',
@@ -56320,6 +56338,7 @@ export namespace Prisma {
     fromDate?: StringFilter<"FacultyLeaveRequest"> | string
     toDate?: StringFilter<"FacultyLeaveRequest"> | string
     durationType?: StringFilter<"FacultyLeaveRequest"> | string
+    durationDays?: IntNullableFilter<"FacultyLeaveRequest"> | number | null
     halfDayPeriod?: StringNullableFilter<"FacultyLeaveRequest"> | string | null
     halfDayStart?: StringNullableFilter<"FacultyLeaveRequest"> | string | null
     halfDayEnd?: StringNullableFilter<"FacultyLeaveRequest"> | string | null
@@ -56347,6 +56366,7 @@ export namespace Prisma {
     fromDate?: SortOrder
     toDate?: SortOrder
     durationType?: SortOrder
+    durationDays?: SortOrderInput | SortOrder
     halfDayPeriod?: SortOrderInput | SortOrder
     halfDayStart?: SortOrderInput | SortOrder
     halfDayEnd?: SortOrderInput | SortOrder
@@ -56377,6 +56397,7 @@ export namespace Prisma {
     fromDate?: StringFilter<"FacultyLeaveRequest"> | string
     toDate?: StringFilter<"FacultyLeaveRequest"> | string
     durationType?: StringFilter<"FacultyLeaveRequest"> | string
+    durationDays?: IntNullableFilter<"FacultyLeaveRequest"> | number | null
     halfDayPeriod?: StringNullableFilter<"FacultyLeaveRequest"> | string | null
     halfDayStart?: StringNullableFilter<"FacultyLeaveRequest"> | string | null
     halfDayEnd?: StringNullableFilter<"FacultyLeaveRequest"> | string | null
@@ -56404,6 +56425,7 @@ export namespace Prisma {
     fromDate?: SortOrder
     toDate?: SortOrder
     durationType?: SortOrder
+    durationDays?: SortOrderInput | SortOrder
     halfDayPeriod?: SortOrderInput | SortOrder
     halfDayStart?: SortOrderInput | SortOrder
     halfDayEnd?: SortOrderInput | SortOrder
@@ -56437,6 +56459,7 @@ export namespace Prisma {
     fromDate?: StringWithAggregatesFilter<"FacultyLeaveRequest"> | string
     toDate?: StringWithAggregatesFilter<"FacultyLeaveRequest"> | string
     durationType?: StringWithAggregatesFilter<"FacultyLeaveRequest"> | string
+    durationDays?: IntNullableWithAggregatesFilter<"FacultyLeaveRequest"> | number | null
     halfDayPeriod?: StringNullableWithAggregatesFilter<"FacultyLeaveRequest"> | string | null
     halfDayStart?: StringNullableWithAggregatesFilter<"FacultyLeaveRequest"> | string | null
     halfDayEnd?: StringNullableWithAggregatesFilter<"FacultyLeaveRequest"> | string | null
@@ -61370,6 +61393,7 @@ export namespace Prisma {
     fromDate: string
     toDate: string
     durationType: string
+    durationDays?: number | null
     halfDayPeriod?: string | null
     halfDayStart?: string | null
     halfDayEnd?: string | null
@@ -61397,6 +61421,7 @@ export namespace Prisma {
     fromDate: string
     toDate: string
     durationType: string
+    durationDays?: number | null
     halfDayPeriod?: string | null
     halfDayStart?: string | null
     halfDayEnd?: string | null
@@ -61420,6 +61445,7 @@ export namespace Prisma {
     fromDate?: StringFieldUpdateOperationsInput | string
     toDate?: StringFieldUpdateOperationsInput | string
     durationType?: StringFieldUpdateOperationsInput | string
+    durationDays?: NullableIntFieldUpdateOperationsInput | number | null
     halfDayPeriod?: NullableStringFieldUpdateOperationsInput | string | null
     halfDayStart?: NullableStringFieldUpdateOperationsInput | string | null
     halfDayEnd?: NullableStringFieldUpdateOperationsInput | string | null
@@ -61447,6 +61473,7 @@ export namespace Prisma {
     fromDate?: StringFieldUpdateOperationsInput | string
     toDate?: StringFieldUpdateOperationsInput | string
     durationType?: StringFieldUpdateOperationsInput | string
+    durationDays?: NullableIntFieldUpdateOperationsInput | number | null
     halfDayPeriod?: NullableStringFieldUpdateOperationsInput | string | null
     halfDayStart?: NullableStringFieldUpdateOperationsInput | string | null
     halfDayEnd?: NullableStringFieldUpdateOperationsInput | string | null
@@ -61472,6 +61499,7 @@ export namespace Prisma {
     fromDate: string
     toDate: string
     durationType: string
+    durationDays?: number | null
     halfDayPeriod?: string | null
     halfDayStart?: string | null
     halfDayEnd?: string | null
@@ -61495,6 +61523,7 @@ export namespace Prisma {
     fromDate?: StringFieldUpdateOperationsInput | string
     toDate?: StringFieldUpdateOperationsInput | string
     durationType?: StringFieldUpdateOperationsInput | string
+    durationDays?: NullableIntFieldUpdateOperationsInput | number | null
     halfDayPeriod?: NullableStringFieldUpdateOperationsInput | string | null
     halfDayStart?: NullableStringFieldUpdateOperationsInput | string | null
     halfDayEnd?: NullableStringFieldUpdateOperationsInput | string | null
@@ -61520,6 +61549,7 @@ export namespace Prisma {
     fromDate?: StringFieldUpdateOperationsInput | string
     toDate?: StringFieldUpdateOperationsInput | string
     durationType?: StringFieldUpdateOperationsInput | string
+    durationDays?: NullableIntFieldUpdateOperationsInput | number | null
     halfDayPeriod?: NullableStringFieldUpdateOperationsInput | string | null
     halfDayStart?: NullableStringFieldUpdateOperationsInput | string | null
     halfDayEnd?: NullableStringFieldUpdateOperationsInput | string | null
@@ -65041,6 +65071,7 @@ export namespace Prisma {
     fromDate?: SortOrder
     toDate?: SortOrder
     durationType?: SortOrder
+    durationDays?: SortOrder
     halfDayPeriod?: SortOrder
     halfDayStart?: SortOrder
     halfDayEnd?: SortOrder
@@ -65056,6 +65087,7 @@ export namespace Prisma {
   }
 
   export type FacultyLeaveRequestAvgOrderByAggregateInput = {
+    durationDays?: SortOrder
     permissionHours?: SortOrder
   }
 
@@ -65070,6 +65102,7 @@ export namespace Prisma {
     fromDate?: SortOrder
     toDate?: SortOrder
     durationType?: SortOrder
+    durationDays?: SortOrder
     halfDayPeriod?: SortOrder
     halfDayStart?: SortOrder
     halfDayEnd?: SortOrder
@@ -65094,6 +65127,7 @@ export namespace Prisma {
     fromDate?: SortOrder
     toDate?: SortOrder
     durationType?: SortOrder
+    durationDays?: SortOrder
     halfDayPeriod?: SortOrder
     halfDayStart?: SortOrder
     halfDayEnd?: SortOrder
@@ -65108,6 +65142,7 @@ export namespace Prisma {
   }
 
   export type FacultyLeaveRequestSumOrderByAggregateInput = {
+    durationDays?: SortOrder
     permissionHours?: SortOrder
   }
 
@@ -69343,6 +69378,7 @@ export namespace Prisma {
     fromDate: string
     toDate: string
     durationType: string
+    durationDays?: number | null
     halfDayPeriod?: string | null
     halfDayStart?: string | null
     halfDayEnd?: string | null
@@ -69368,6 +69404,7 @@ export namespace Prisma {
     fromDate: string
     toDate: string
     durationType: string
+    durationDays?: number | null
     halfDayPeriod?: string | null
     halfDayStart?: string | null
     halfDayEnd?: string | null
@@ -69827,6 +69864,7 @@ export namespace Prisma {
     fromDate?: StringFilter<"FacultyLeaveRequest"> | string
     toDate?: StringFilter<"FacultyLeaveRequest"> | string
     durationType?: StringFilter<"FacultyLeaveRequest"> | string
+    durationDays?: IntNullableFilter<"FacultyLeaveRequest"> | number | null
     halfDayPeriod?: StringNullableFilter<"FacultyLeaveRequest"> | string | null
     halfDayStart?: StringNullableFilter<"FacultyLeaveRequest"> | string | null
     halfDayEnd?: StringNullableFilter<"FacultyLeaveRequest"> | string | null
@@ -70793,6 +70831,7 @@ export namespace Prisma {
     fromDate: string
     toDate: string
     durationType: string
+    durationDays?: number | null
     halfDayPeriod?: string | null
     halfDayStart?: string | null
     halfDayEnd?: string | null
@@ -70818,6 +70857,7 @@ export namespace Prisma {
     fromDate: string
     toDate: string
     durationType: string
+    durationDays?: number | null
     halfDayPeriod?: string | null
     halfDayStart?: string | null
     halfDayEnd?: string | null
@@ -81062,6 +81102,7 @@ export namespace Prisma {
     fromDate: string
     toDate: string
     durationType: string
+    durationDays?: number | null
     halfDayPeriod?: string | null
     halfDayStart?: string | null
     halfDayEnd?: string | null
@@ -81537,6 +81578,7 @@ export namespace Prisma {
     fromDate?: StringFieldUpdateOperationsInput | string
     toDate?: StringFieldUpdateOperationsInput | string
     durationType?: StringFieldUpdateOperationsInput | string
+    durationDays?: NullableIntFieldUpdateOperationsInput | number | null
     halfDayPeriod?: NullableStringFieldUpdateOperationsInput | string | null
     halfDayStart?: NullableStringFieldUpdateOperationsInput | string | null
     halfDayEnd?: NullableStringFieldUpdateOperationsInput | string | null
@@ -81562,6 +81604,7 @@ export namespace Prisma {
     fromDate?: StringFieldUpdateOperationsInput | string
     toDate?: StringFieldUpdateOperationsInput | string
     durationType?: StringFieldUpdateOperationsInput | string
+    durationDays?: NullableIntFieldUpdateOperationsInput | number | null
     halfDayPeriod?: NullableStringFieldUpdateOperationsInput | string | null
     halfDayStart?: NullableStringFieldUpdateOperationsInput | string | null
     halfDayEnd?: NullableStringFieldUpdateOperationsInput | string | null
@@ -81586,6 +81629,7 @@ export namespace Prisma {
     fromDate?: StringFieldUpdateOperationsInput | string
     toDate?: StringFieldUpdateOperationsInput | string
     durationType?: StringFieldUpdateOperationsInput | string
+    durationDays?: NullableIntFieldUpdateOperationsInput | number | null
     halfDayPeriod?: NullableStringFieldUpdateOperationsInput | string | null
     halfDayStart?: NullableStringFieldUpdateOperationsInput | string | null
     halfDayEnd?: NullableStringFieldUpdateOperationsInput | string | null
@@ -81880,6 +81924,7 @@ export namespace Prisma {
     fromDate: string
     toDate: string
     durationType: string
+    durationDays?: number | null
     halfDayPeriod?: string | null
     halfDayStart?: string | null
     halfDayEnd?: string | null
@@ -82647,6 +82692,7 @@ export namespace Prisma {
     fromDate?: StringFieldUpdateOperationsInput | string
     toDate?: StringFieldUpdateOperationsInput | string
     durationType?: StringFieldUpdateOperationsInput | string
+    durationDays?: NullableIntFieldUpdateOperationsInput | number | null
     halfDayPeriod?: NullableStringFieldUpdateOperationsInput | string | null
     halfDayStart?: NullableStringFieldUpdateOperationsInput | string | null
     halfDayEnd?: NullableStringFieldUpdateOperationsInput | string | null
@@ -82672,6 +82718,7 @@ export namespace Prisma {
     fromDate?: StringFieldUpdateOperationsInput | string
     toDate?: StringFieldUpdateOperationsInput | string
     durationType?: StringFieldUpdateOperationsInput | string
+    durationDays?: NullableIntFieldUpdateOperationsInput | number | null
     halfDayPeriod?: NullableStringFieldUpdateOperationsInput | string | null
     halfDayStart?: NullableStringFieldUpdateOperationsInput | string | null
     halfDayEnd?: NullableStringFieldUpdateOperationsInput | string | null
@@ -82696,6 +82743,7 @@ export namespace Prisma {
     fromDate?: StringFieldUpdateOperationsInput | string
     toDate?: StringFieldUpdateOperationsInput | string
     durationType?: StringFieldUpdateOperationsInput | string
+    durationDays?: NullableIntFieldUpdateOperationsInput | number | null
     halfDayPeriod?: NullableStringFieldUpdateOperationsInput | string | null
     halfDayStart?: NullableStringFieldUpdateOperationsInput | string | null
     halfDayEnd?: NullableStringFieldUpdateOperationsInput | string | null

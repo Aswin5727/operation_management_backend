@@ -879,6 +879,7 @@ model FacultyLeaveRequest {
   fromDate       String
   toDate         String
   durationType   String
+  durationDays   Int?
   halfDayPeriod  String?
   halfDayStart   String?
   halfDayEnd     String?

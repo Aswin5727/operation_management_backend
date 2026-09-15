@@ -753,6 +753,7 @@ exports.Prisma.FacultyLeaveRequestScalarFieldEnum = {
   fromDate: 'fromDate',
   toDate: 'toDate',
   durationType: 'durationType',
+  durationDays: 'durationDays',
   halfDayPeriod: 'halfDayPeriod',
   halfDayStart: 'halfDayStart',
   halfDayEnd: 'halfDayEnd',
