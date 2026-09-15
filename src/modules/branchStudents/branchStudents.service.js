@@ -1244,6 +1244,11 @@ async function notifyProgressAlignment(studentRecord, branchProfile, actor) {
   }
 
   const paidProgress = feeSnapshot.feeProgress;
+  // A newly created student has no course or fee progress yet. Do not create
+  // a misleading "payment progress updated" notification for that baseline.
+  if (courseProgress <= 0 && paidProgress <= 0) {
+    return;
+  }
   if (courseProgress < Math.max(0, paidProgress - PROGRESS_ALERT_TOLERANCE)) {
     return;
   }
@@ -1759,6 +1764,7 @@ export async function createBranchStudent(payload, actor) {
           mode: true,
           courseStartDate: true,
           courseEndDate: true,
+          weeklyOffDay: true,
         },
       })
     : null;
@@ -1782,6 +1788,7 @@ export async function createBranchStudent(payload, actor) {
     studentData.courseName = studentData.courseName || assignedBatch.courseName;
     studentData.facultyId = studentData.facultyId || assignedBatch.facultyId;
     studentData.facultyName = studentData.facultyName || assignedBatch.facultyName;
+    studentData.weeklyOffDay = assignedBatch.weeklyOffDay || null;
     studentData.courseStartDate = studentData.courseStartDate || assignedBatch.courseStartDate;
     studentData.courseEndDate = studentData.courseEndDate || assignedBatch.courseEndDate;
   }
@@ -2000,6 +2007,7 @@ export async function updateBranchStudent(studentId, payload, actor = null) {
         mode: true,
         courseStartDate: true,
         courseEndDate: true,
+        weeklyOffDay: true,
       },
     });
 
@@ -2019,6 +2027,7 @@ export async function updateBranchStudent(studentId, payload, actor = null) {
     studentData.courseName = studentData.courseName || assignedBatch.courseName;
     studentData.facultyId = studentData.facultyId || assignedBatch.facultyId;
     studentData.facultyName = studentData.facultyName || assignedBatch.facultyName;
+    studentData.weeklyOffDay = assignedBatch.weeklyOffDay || null;
     studentData.courseStartDate = studentData.courseStartDate || assignedBatch.courseStartDate;
     studentData.courseEndDate = studentData.courseEndDate || assignedBatch.courseEndDate;
   }

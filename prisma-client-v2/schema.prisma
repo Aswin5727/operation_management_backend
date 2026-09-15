@@ -436,6 +436,7 @@ model BranchBatch {
   mode            String?
   courseStartDate String?
   courseEndDate   String?
+  weeklyOffDay    String?
   sequenceNo      Int           @default(1)
   status          RecordStatus  @default(ACTIVE)
   createdBy       String?
@@ -576,6 +577,7 @@ model BranchStudent {
   batchTiming                    String?
   facultyId                      String?
   facultyName                    String?
+  weeklyOffDay                   String?
   courseAmount                   Int?
   paymentMode                    String                         @default("Installment")
   paymentPlanId                  String?
@@ -885,6 +887,7 @@ model BranchFaculty {
   stateCode      String?       @default("")
   city           String?       @default("")
   address        String?
+  weeklyOffDay   String?
   status         RecordStatus  @default(ACTIVE)
   createdBy      String?
   updatedBy      String?
