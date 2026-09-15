@@ -32,6 +32,8 @@ model User {
   batchFacultyAssignments    BatchFacultyAssignment[]
   managedBranch              Branch?                    @relation("BranchAdminUser")
   facultyAttendanceSessions  FacultyAttendanceSession[]
+  facultyAttendanceDays      FacultyAttendanceDay[]
+  facultyAttendanceBatchWork FacultyAttendanceBatchWork[]
   facultyTodayWorkEntries    FacultyTodayWorkEntry[]
   loginEvents                LoginEvent[]
   targetedNotifications      Notification[]             @relation("NotificationTargetUser")
@@ -744,10 +746,44 @@ model FacultyAttendanceSession {
   workReport     String?
   workCompleted  String?
   facultyUser    User      @relation(fields: [facultyUserId], references: [id], onDelete: Cascade)
+  batchWork      FacultyAttendanceBatchWork[]
 
   @@index([facultyUserId, attendanceDate])
   @@index([facultyUserId, attendanceDate, sessionSource])
   @@index([attendanceDate])
+}
+
+model FacultyAttendanceDay {
+  id             String   @id @default(cuid())
+  facultyUserId  String
+  attendanceDate String
+  status         String   @default("NOT_LOGGED_IN")
+  firstLoginAt   DateTime?
+  finalLogoutAt  DateTime?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  facultyUser    User     @relation(fields: [facultyUserId], references: [id], onDelete: Cascade)
+
+  @@unique([facultyUserId, attendanceDate])
+  @@index([attendanceDate, status])
+}
+
+model FacultyAttendanceBatchWork {
+  id                  String   @id @default(cuid())
+  attendanceSessionId String
+  facultyUserId       String
+  attendanceDate      String
+  branchId            String
+  batchId             String
+  workSummary         String   @default("")
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+  session             FacultyAttendanceSession @relation(fields: [attendanceSessionId], references: [id], onDelete: Cascade)
+  facultyUser         User     @relation(fields: [facultyUserId], references: [id], onDelete: Cascade)
+
+  @@unique([attendanceSessionId, batchId])
+  @@index([facultyUserId, attendanceDate])
+  @@index([batchId, attendanceDate])
 }
 
 model FacultyTodayWorkEntry {

@@ -1,6 +1,7 @@
 import express from "express";
 
 import attendanceRoutes from "../modules/attendance/attendance.routes.js";
+import facultyAttendanceRoutes from "../modules/attendance/facultyAttendance.routes.js";
 import authRoutes from "../modules/auth/auth.routes.js";
 import branchesRoutes from "../modules/branches/branches.routes.js";
 import branchCoursesRoutes from "../modules/branchCourses/branchCourses.routes.js";
@@ -32,6 +33,7 @@ router.get("/health", (_req, res) => {
 
 router.use("/auth", authRoutes);
 router.use("/attendance", attendanceRoutes);
+router.use("/faculty/attendance", facultyAttendanceRoutes);
 router.use("/branches", branchesRoutes);
 router.use("/branch-courses", branchCoursesRoutes);
 router.use("/branch-batches", branchBatchesRoutes);

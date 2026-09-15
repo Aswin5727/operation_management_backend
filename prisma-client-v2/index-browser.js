@@ -658,6 +658,29 @@ exports.Prisma.FacultyAttendanceSessionScalarFieldEnum = {
   workCompleted: 'workCompleted'
 };
 
+exports.Prisma.FacultyAttendanceDayScalarFieldEnum = {
+  id: 'id',
+  facultyUserId: 'facultyUserId',
+  attendanceDate: 'attendanceDate',
+  status: 'status',
+  firstLoginAt: 'firstLoginAt',
+  finalLogoutAt: 'finalLogoutAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.FacultyAttendanceBatchWorkScalarFieldEnum = {
+  id: 'id',
+  attendanceSessionId: 'attendanceSessionId',
+  facultyUserId: 'facultyUserId',
+  attendanceDate: 'attendanceDate',
+  branchId: 'branchId',
+  batchId: 'batchId',
+  workSummary: 'workSummary',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.FacultyTodayWorkEntryScalarFieldEnum = {
   id: 'id',
   facultyUserId: 'facultyUserId',
@@ -955,6 +978,8 @@ exports.Prisma.ModelName = {
   FacultyCourseAssignment: 'FacultyCourseAssignment',
   FacultyBatchEntry: 'FacultyBatchEntry',
   FacultyAttendanceSession: 'FacultyAttendanceSession',
+  FacultyAttendanceDay: 'FacultyAttendanceDay',
+  FacultyAttendanceBatchWork: 'FacultyAttendanceBatchWork',
   FacultyTodayWorkEntry: 'FacultyTodayWorkEntry',
   FacultyTodayWorkStudentEntry: 'FacultyTodayWorkStudentEntry',
   StudentAttendance: 'StudentAttendance',

@@ -154,6 +154,16 @@ export type FacultyBatchEntry = $Result.DefaultSelection<Prisma.$FacultyBatchEnt
  */
 export type FacultyAttendanceSession = $Result.DefaultSelection<Prisma.$FacultyAttendanceSessionPayload>
 /**
+ * Model FacultyAttendanceDay
+ * 
+ */
+export type FacultyAttendanceDay = $Result.DefaultSelection<Prisma.$FacultyAttendanceDayPayload>
+/**
+ * Model FacultyAttendanceBatchWork
+ * 
+ */
+export type FacultyAttendanceBatchWork = $Result.DefaultSelection<Prisma.$FacultyAttendanceBatchWorkPayload>
+/**
  * Model FacultyTodayWorkEntry
  * 
  */
@@ -721,6 +731,26 @@ export class PrismaClient<
   get facultyAttendanceSession(): Prisma.FacultyAttendanceSessionDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.facultyAttendanceDay`: Exposes CRUD operations for the **FacultyAttendanceDay** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more FacultyAttendanceDays
+    * const facultyAttendanceDays = await prisma.facultyAttendanceDay.findMany()
+    * ```
+    */
+  get facultyAttendanceDay(): Prisma.FacultyAttendanceDayDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.facultyAttendanceBatchWork`: Exposes CRUD operations for the **FacultyAttendanceBatchWork** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more FacultyAttendanceBatchWorks
+    * const facultyAttendanceBatchWorks = await prisma.facultyAttendanceBatchWork.findMany()
+    * ```
+    */
+  get facultyAttendanceBatchWork(): Prisma.FacultyAttendanceBatchWorkDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.facultyTodayWorkEntry`: Exposes CRUD operations for the **FacultyTodayWorkEntry** model.
     * Example usage:
     * ```ts
@@ -1261,6 +1291,8 @@ export namespace Prisma {
     FacultyCourseAssignment: 'FacultyCourseAssignment',
     FacultyBatchEntry: 'FacultyBatchEntry',
     FacultyAttendanceSession: 'FacultyAttendanceSession',
+    FacultyAttendanceDay: 'FacultyAttendanceDay',
+    FacultyAttendanceBatchWork: 'FacultyAttendanceBatchWork',
     FacultyTodayWorkEntry: 'FacultyTodayWorkEntry',
     FacultyTodayWorkStudentEntry: 'FacultyTodayWorkStudentEntry',
     StudentAttendance: 'StudentAttendance',
@@ -1284,7 +1316,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "dashboardWidget" | "userDashboardWidget" | "branch" | "loginEvent" | "notification" | "courseEditRequest" | "passwordResetToken" | "course" | "branchCourse" | "branchCourseModule" | "branchCourseSubmodule" | "courseModule" | "batch" | "batchFacultyAssignment" | "branchBatch" | "courseStatusHistory" | "batchStatusHistory" | "studentProfile" | "branchStudent" | "branchStudentAttendance" | "branchCalendarHoliday" | "branchCalendarLeave" | "branchStudentInstallment" | "facultyProfile" | "facultyCourseAssignment" | "facultyBatchEntry" | "facultyAttendanceSession" | "facultyTodayWorkEntry" | "facultyTodayWorkStudentEntry" | "studentAttendance" | "branchFaculty" | "facultyLeaveRequest" | "branchInstallmentTemplate" | "branchStudentPayment" | "branchStudentLedgerEntry"
+      modelProps: "user" | "dashboardWidget" | "userDashboardWidget" | "branch" | "loginEvent" | "notification" | "courseEditRequest" | "passwordResetToken" | "course" | "branchCourse" | "branchCourseModule" | "branchCourseSubmodule" | "courseModule" | "batch" | "batchFacultyAssignment" | "branchBatch" | "courseStatusHistory" | "batchStatusHistory" | "studentProfile" | "branchStudent" | "branchStudentAttendance" | "branchCalendarHoliday" | "branchCalendarLeave" | "branchStudentInstallment" | "facultyProfile" | "facultyCourseAssignment" | "facultyBatchEntry" | "facultyAttendanceSession" | "facultyAttendanceDay" | "facultyAttendanceBatchWork" | "facultyTodayWorkEntry" | "facultyTodayWorkStudentEntry" | "studentAttendance" | "branchFaculty" | "facultyLeaveRequest" | "branchInstallmentTemplate" | "branchStudentPayment" | "branchStudentLedgerEntry"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -3360,6 +3392,154 @@ export namespace Prisma {
           }
         }
       }
+      FacultyAttendanceDay: {
+        payload: Prisma.$FacultyAttendanceDayPayload<ExtArgs>
+        fields: Prisma.FacultyAttendanceDayFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.FacultyAttendanceDayFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyAttendanceDayPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.FacultyAttendanceDayFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyAttendanceDayPayload>
+          }
+          findFirst: {
+            args: Prisma.FacultyAttendanceDayFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyAttendanceDayPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.FacultyAttendanceDayFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyAttendanceDayPayload>
+          }
+          findMany: {
+            args: Prisma.FacultyAttendanceDayFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyAttendanceDayPayload>[]
+          }
+          create: {
+            args: Prisma.FacultyAttendanceDayCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyAttendanceDayPayload>
+          }
+          createMany: {
+            args: Prisma.FacultyAttendanceDayCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.FacultyAttendanceDayCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyAttendanceDayPayload>[]
+          }
+          delete: {
+            args: Prisma.FacultyAttendanceDayDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyAttendanceDayPayload>
+          }
+          update: {
+            args: Prisma.FacultyAttendanceDayUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyAttendanceDayPayload>
+          }
+          deleteMany: {
+            args: Prisma.FacultyAttendanceDayDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.FacultyAttendanceDayUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.FacultyAttendanceDayUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyAttendanceDayPayload>[]
+          }
+          upsert: {
+            args: Prisma.FacultyAttendanceDayUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyAttendanceDayPayload>
+          }
+          aggregate: {
+            args: Prisma.FacultyAttendanceDayAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateFacultyAttendanceDay>
+          }
+          groupBy: {
+            args: Prisma.FacultyAttendanceDayGroupByArgs<ExtArgs>
+            result: $Utils.Optional<FacultyAttendanceDayGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.FacultyAttendanceDayCountArgs<ExtArgs>
+            result: $Utils.Optional<FacultyAttendanceDayCountAggregateOutputType> | number
+          }
+        }
+      }
+      FacultyAttendanceBatchWork: {
+        payload: Prisma.$FacultyAttendanceBatchWorkPayload<ExtArgs>
+        fields: Prisma.FacultyAttendanceBatchWorkFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.FacultyAttendanceBatchWorkFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyAttendanceBatchWorkPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.FacultyAttendanceBatchWorkFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyAttendanceBatchWorkPayload>
+          }
+          findFirst: {
+            args: Prisma.FacultyAttendanceBatchWorkFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyAttendanceBatchWorkPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.FacultyAttendanceBatchWorkFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyAttendanceBatchWorkPayload>
+          }
+          findMany: {
+            args: Prisma.FacultyAttendanceBatchWorkFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyAttendanceBatchWorkPayload>[]
+          }
+          create: {
+            args: Prisma.FacultyAttendanceBatchWorkCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyAttendanceBatchWorkPayload>
+          }
+          createMany: {
+            args: Prisma.FacultyAttendanceBatchWorkCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.FacultyAttendanceBatchWorkCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyAttendanceBatchWorkPayload>[]
+          }
+          delete: {
+            args: Prisma.FacultyAttendanceBatchWorkDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyAttendanceBatchWorkPayload>
+          }
+          update: {
+            args: Prisma.FacultyAttendanceBatchWorkUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyAttendanceBatchWorkPayload>
+          }
+          deleteMany: {
+            args: Prisma.FacultyAttendanceBatchWorkDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.FacultyAttendanceBatchWorkUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.FacultyAttendanceBatchWorkUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyAttendanceBatchWorkPayload>[]
+          }
+          upsert: {
+            args: Prisma.FacultyAttendanceBatchWorkUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyAttendanceBatchWorkPayload>
+          }
+          aggregate: {
+            args: Prisma.FacultyAttendanceBatchWorkAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateFacultyAttendanceBatchWork>
+          }
+          groupBy: {
+            args: Prisma.FacultyAttendanceBatchWorkGroupByArgs<ExtArgs>
+            result: $Utils.Optional<FacultyAttendanceBatchWorkGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.FacultyAttendanceBatchWorkCountArgs<ExtArgs>
+            result: $Utils.Optional<FacultyAttendanceBatchWorkCountAggregateOutputType> | number
+          }
+        }
+      }
       FacultyTodayWorkEntry: {
         payload: Prisma.$FacultyTodayWorkEntryPayload<ExtArgs>
         fields: Prisma.FacultyTodayWorkEntryFieldRefs
@@ -4088,6 +4268,8 @@ export namespace Prisma {
     facultyCourseAssignment?: FacultyCourseAssignmentOmit
     facultyBatchEntry?: FacultyBatchEntryOmit
     facultyAttendanceSession?: FacultyAttendanceSessionOmit
+    facultyAttendanceDay?: FacultyAttendanceDayOmit
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkOmit
     facultyTodayWorkEntry?: FacultyTodayWorkEntryOmit
     facultyTodayWorkStudentEntry?: FacultyTodayWorkStudentEntryOmit
     studentAttendance?: StudentAttendanceOmit
@@ -4178,6 +4360,8 @@ export namespace Prisma {
   export type UserCountOutputType = {
     batchFacultyAssignments: number
     facultyAttendanceSessions: number
+    facultyAttendanceDays: number
+    facultyAttendanceBatchWork: number
     facultyTodayWorkEntries: number
     loginEvents: number
     targetedNotifications: number
@@ -4191,6 +4375,8 @@ export namespace Prisma {
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     batchFacultyAssignments?: boolean | UserCountOutputTypeCountBatchFacultyAssignmentsArgs
     facultyAttendanceSessions?: boolean | UserCountOutputTypeCountFacultyAttendanceSessionsArgs
+    facultyAttendanceDays?: boolean | UserCountOutputTypeCountFacultyAttendanceDaysArgs
+    facultyAttendanceBatchWork?: boolean | UserCountOutputTypeCountFacultyAttendanceBatchWorkArgs
     facultyTodayWorkEntries?: boolean | UserCountOutputTypeCountFacultyTodayWorkEntriesArgs
     loginEvents?: boolean | UserCountOutputTypeCountLoginEventsArgs
     targetedNotifications?: boolean | UserCountOutputTypeCountTargetedNotificationsArgs
@@ -4224,6 +4410,20 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountFacultyAttendanceSessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: FacultyAttendanceSessionWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountFacultyAttendanceDaysArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FacultyAttendanceDayWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountFacultyAttendanceBatchWorkArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FacultyAttendanceBatchWorkWhereInput
   }
 
   /**
@@ -4877,6 +5077,37 @@ export namespace Prisma {
 
 
   /**
+   * Count Type FacultyAttendanceSessionCountOutputType
+   */
+
+  export type FacultyAttendanceSessionCountOutputType = {
+    batchWork: number
+  }
+
+  export type FacultyAttendanceSessionCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    batchWork?: boolean | FacultyAttendanceSessionCountOutputTypeCountBatchWorkArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * FacultyAttendanceSessionCountOutputType without action
+   */
+  export type FacultyAttendanceSessionCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyAttendanceSessionCountOutputType
+     */
+    select?: FacultyAttendanceSessionCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * FacultyAttendanceSessionCountOutputType without action
+   */
+  export type FacultyAttendanceSessionCountOutputTypeCountBatchWorkArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FacultyAttendanceBatchWorkWhereInput
+  }
+
+
+  /**
    * Count Type FacultyTodayWorkEntryCountOutputType
    */
 
@@ -5275,6 +5506,8 @@ export namespace Prisma {
     batchFacultyAssignments?: boolean | User$batchFacultyAssignmentsArgs<ExtArgs>
     managedBranch?: boolean | User$managedBranchArgs<ExtArgs>
     facultyAttendanceSessions?: boolean | User$facultyAttendanceSessionsArgs<ExtArgs>
+    facultyAttendanceDays?: boolean | User$facultyAttendanceDaysArgs<ExtArgs>
+    facultyAttendanceBatchWork?: boolean | User$facultyAttendanceBatchWorkArgs<ExtArgs>
     facultyTodayWorkEntries?: boolean | User$facultyTodayWorkEntriesArgs<ExtArgs>
     loginEvents?: boolean | User$loginEventsArgs<ExtArgs>
     targetedNotifications?: boolean | User$targetedNotificationsArgs<ExtArgs>
@@ -5363,6 +5596,8 @@ export namespace Prisma {
     batchFacultyAssignments?: boolean | User$batchFacultyAssignmentsArgs<ExtArgs>
     managedBranch?: boolean | User$managedBranchArgs<ExtArgs>
     facultyAttendanceSessions?: boolean | User$facultyAttendanceSessionsArgs<ExtArgs>
+    facultyAttendanceDays?: boolean | User$facultyAttendanceDaysArgs<ExtArgs>
+    facultyAttendanceBatchWork?: boolean | User$facultyAttendanceBatchWorkArgs<ExtArgs>
     facultyTodayWorkEntries?: boolean | User$facultyTodayWorkEntriesArgs<ExtArgs>
     loginEvents?: boolean | User$loginEventsArgs<ExtArgs>
     targetedNotifications?: boolean | User$targetedNotificationsArgs<ExtArgs>
@@ -5382,6 +5617,8 @@ export namespace Prisma {
       batchFacultyAssignments: Prisma.$BatchFacultyAssignmentPayload<ExtArgs>[]
       managedBranch: Prisma.$BranchPayload<ExtArgs> | null
       facultyAttendanceSessions: Prisma.$FacultyAttendanceSessionPayload<ExtArgs>[]
+      facultyAttendanceDays: Prisma.$FacultyAttendanceDayPayload<ExtArgs>[]
+      facultyAttendanceBatchWork: Prisma.$FacultyAttendanceBatchWorkPayload<ExtArgs>[]
       facultyTodayWorkEntries: Prisma.$FacultyTodayWorkEntryPayload<ExtArgs>[]
       loginEvents: Prisma.$LoginEventPayload<ExtArgs>[]
       targetedNotifications: Prisma.$NotificationPayload<ExtArgs>[]
@@ -5810,6 +6047,8 @@ export namespace Prisma {
     batchFacultyAssignments<T extends User$batchFacultyAssignmentsArgs<ExtArgs> = {}>(args?: Subset<T, User$batchFacultyAssignmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BatchFacultyAssignmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     managedBranch<T extends User$managedBranchArgs<ExtArgs> = {}>(args?: Subset<T, User$managedBranchArgs<ExtArgs>>): Prisma__BranchClient<$Result.GetResult<Prisma.$BranchPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     facultyAttendanceSessions<T extends User$facultyAttendanceSessionsArgs<ExtArgs> = {}>(args?: Subset<T, User$facultyAttendanceSessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FacultyAttendanceSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    facultyAttendanceDays<T extends User$facultyAttendanceDaysArgs<ExtArgs> = {}>(args?: Subset<T, User$facultyAttendanceDaysArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FacultyAttendanceDayPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    facultyAttendanceBatchWork<T extends User$facultyAttendanceBatchWorkArgs<ExtArgs> = {}>(args?: Subset<T, User$facultyAttendanceBatchWorkArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FacultyAttendanceBatchWorkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     facultyTodayWorkEntries<T extends User$facultyTodayWorkEntriesArgs<ExtArgs> = {}>(args?: Subset<T, User$facultyTodayWorkEntriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FacultyTodayWorkEntryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     loginEvents<T extends User$loginEventsArgs<ExtArgs> = {}>(args?: Subset<T, User$loginEventsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LoginEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     targetedNotifications<T extends User$targetedNotificationsArgs<ExtArgs> = {}>(args?: Subset<T, User$targetedNotificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -6325,6 +6564,54 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: FacultyAttendanceSessionScalarFieldEnum | FacultyAttendanceSessionScalarFieldEnum[]
+  }
+
+  /**
+   * User.facultyAttendanceDays
+   */
+  export type User$facultyAttendanceDaysArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyAttendanceDay
+     */
+    select?: FacultyAttendanceDaySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyAttendanceDay
+     */
+    omit?: FacultyAttendanceDayOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyAttendanceDayInclude<ExtArgs> | null
+    where?: FacultyAttendanceDayWhereInput
+    orderBy?: FacultyAttendanceDayOrderByWithRelationInput | FacultyAttendanceDayOrderByWithRelationInput[]
+    cursor?: FacultyAttendanceDayWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: FacultyAttendanceDayScalarFieldEnum | FacultyAttendanceDayScalarFieldEnum[]
+  }
+
+  /**
+   * User.facultyAttendanceBatchWork
+   */
+  export type User$facultyAttendanceBatchWorkArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyAttendanceBatchWork
+     */
+    select?: FacultyAttendanceBatchWorkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyAttendanceBatchWork
+     */
+    omit?: FacultyAttendanceBatchWorkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyAttendanceBatchWorkInclude<ExtArgs> | null
+    where?: FacultyAttendanceBatchWorkWhereInput
+    orderBy?: FacultyAttendanceBatchWorkOrderByWithRelationInput | FacultyAttendanceBatchWorkOrderByWithRelationInput[]
+    cursor?: FacultyAttendanceBatchWorkWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: FacultyAttendanceBatchWorkScalarFieldEnum | FacultyAttendanceBatchWorkScalarFieldEnum[]
   }
 
   /**
@@ -40100,6 +40387,8 @@ export namespace Prisma {
     workReport?: boolean
     workCompleted?: boolean
     facultyUser?: boolean | UserDefaultArgs<ExtArgs>
+    batchWork?: boolean | FacultyAttendanceSession$batchWorkArgs<ExtArgs>
+    _count?: boolean | FacultyAttendanceSessionCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["facultyAttendanceSession"]>
 
   export type FacultyAttendanceSessionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -40152,6 +40441,8 @@ export namespace Prisma {
   export type FacultyAttendanceSessionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "facultyUserId" | "attendanceDate" | "loginAt" | "logoutAt" | "createdAt" | "updatedAt" | "sessionSource" | "logoutType" | "logoutReason" | "workReport" | "workCompleted", ExtArgs["result"]["facultyAttendanceSession"]>
   export type FacultyAttendanceSessionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     facultyUser?: boolean | UserDefaultArgs<ExtArgs>
+    batchWork?: boolean | FacultyAttendanceSession$batchWorkArgs<ExtArgs>
+    _count?: boolean | FacultyAttendanceSessionCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type FacultyAttendanceSessionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     facultyUser?: boolean | UserDefaultArgs<ExtArgs>
@@ -40164,6 +40455,7 @@ export namespace Prisma {
     name: "FacultyAttendanceSession"
     objects: {
       facultyUser: Prisma.$UserPayload<ExtArgs>
+      batchWork: Prisma.$FacultyAttendanceBatchWorkPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -40573,6 +40865,7 @@ export namespace Prisma {
   export interface Prisma__FacultyAttendanceSessionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     facultyUser<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    batchWork<T extends FacultyAttendanceSession$batchWorkArgs<ExtArgs> = {}>(args?: Subset<T, FacultyAttendanceSession$batchWorkArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FacultyAttendanceBatchWorkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -41015,6 +41308,30 @@ export namespace Prisma {
   }
 
   /**
+   * FacultyAttendanceSession.batchWork
+   */
+  export type FacultyAttendanceSession$batchWorkArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyAttendanceBatchWork
+     */
+    select?: FacultyAttendanceBatchWorkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyAttendanceBatchWork
+     */
+    omit?: FacultyAttendanceBatchWorkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyAttendanceBatchWorkInclude<ExtArgs> | null
+    where?: FacultyAttendanceBatchWorkWhereInput
+    orderBy?: FacultyAttendanceBatchWorkOrderByWithRelationInput | FacultyAttendanceBatchWorkOrderByWithRelationInput[]
+    cursor?: FacultyAttendanceBatchWorkWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: FacultyAttendanceBatchWorkScalarFieldEnum | FacultyAttendanceBatchWorkScalarFieldEnum[]
+  }
+
+  /**
    * FacultyAttendanceSession without action
    */
   export type FacultyAttendanceSessionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -41030,6 +41347,2231 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: FacultyAttendanceSessionInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model FacultyAttendanceDay
+   */
+
+  export type AggregateFacultyAttendanceDay = {
+    _count: FacultyAttendanceDayCountAggregateOutputType | null
+    _min: FacultyAttendanceDayMinAggregateOutputType | null
+    _max: FacultyAttendanceDayMaxAggregateOutputType | null
+  }
+
+  export type FacultyAttendanceDayMinAggregateOutputType = {
+    id: string | null
+    facultyUserId: string | null
+    attendanceDate: string | null
+    status: string | null
+    firstLoginAt: Date | null
+    finalLogoutAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type FacultyAttendanceDayMaxAggregateOutputType = {
+    id: string | null
+    facultyUserId: string | null
+    attendanceDate: string | null
+    status: string | null
+    firstLoginAt: Date | null
+    finalLogoutAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type FacultyAttendanceDayCountAggregateOutputType = {
+    id: number
+    facultyUserId: number
+    attendanceDate: number
+    status: number
+    firstLoginAt: number
+    finalLogoutAt: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type FacultyAttendanceDayMinAggregateInputType = {
+    id?: true
+    facultyUserId?: true
+    attendanceDate?: true
+    status?: true
+    firstLoginAt?: true
+    finalLogoutAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type FacultyAttendanceDayMaxAggregateInputType = {
+    id?: true
+    facultyUserId?: true
+    attendanceDate?: true
+    status?: true
+    firstLoginAt?: true
+    finalLogoutAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type FacultyAttendanceDayCountAggregateInputType = {
+    id?: true
+    facultyUserId?: true
+    attendanceDate?: true
+    status?: true
+    firstLoginAt?: true
+    finalLogoutAt?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type FacultyAttendanceDayAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FacultyAttendanceDay to aggregate.
+     */
+    where?: FacultyAttendanceDayWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FacultyAttendanceDays to fetch.
+     */
+    orderBy?: FacultyAttendanceDayOrderByWithRelationInput | FacultyAttendanceDayOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: FacultyAttendanceDayWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FacultyAttendanceDays from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FacultyAttendanceDays.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned FacultyAttendanceDays
+    **/
+    _count?: true | FacultyAttendanceDayCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: FacultyAttendanceDayMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: FacultyAttendanceDayMaxAggregateInputType
+  }
+
+  export type GetFacultyAttendanceDayAggregateType<T extends FacultyAttendanceDayAggregateArgs> = {
+        [P in keyof T & keyof AggregateFacultyAttendanceDay]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateFacultyAttendanceDay[P]>
+      : GetScalarType<T[P], AggregateFacultyAttendanceDay[P]>
+  }
+
+
+
+
+  export type FacultyAttendanceDayGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FacultyAttendanceDayWhereInput
+    orderBy?: FacultyAttendanceDayOrderByWithAggregationInput | FacultyAttendanceDayOrderByWithAggregationInput[]
+    by: FacultyAttendanceDayScalarFieldEnum[] | FacultyAttendanceDayScalarFieldEnum
+    having?: FacultyAttendanceDayScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: FacultyAttendanceDayCountAggregateInputType | true
+    _min?: FacultyAttendanceDayMinAggregateInputType
+    _max?: FacultyAttendanceDayMaxAggregateInputType
+  }
+
+  export type FacultyAttendanceDayGroupByOutputType = {
+    id: string
+    facultyUserId: string
+    attendanceDate: string
+    status: string
+    firstLoginAt: Date | null
+    finalLogoutAt: Date | null
+    createdAt: Date
+    updatedAt: Date
+    _count: FacultyAttendanceDayCountAggregateOutputType | null
+    _min: FacultyAttendanceDayMinAggregateOutputType | null
+    _max: FacultyAttendanceDayMaxAggregateOutputType | null
+  }
+
+  type GetFacultyAttendanceDayGroupByPayload<T extends FacultyAttendanceDayGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<FacultyAttendanceDayGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof FacultyAttendanceDayGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], FacultyAttendanceDayGroupByOutputType[P]>
+            : GetScalarType<T[P], FacultyAttendanceDayGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type FacultyAttendanceDaySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    facultyUserId?: boolean
+    attendanceDate?: boolean
+    status?: boolean
+    firstLoginAt?: boolean
+    finalLogoutAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    facultyUser?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["facultyAttendanceDay"]>
+
+  export type FacultyAttendanceDaySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    facultyUserId?: boolean
+    attendanceDate?: boolean
+    status?: boolean
+    firstLoginAt?: boolean
+    finalLogoutAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    facultyUser?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["facultyAttendanceDay"]>
+
+  export type FacultyAttendanceDaySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    facultyUserId?: boolean
+    attendanceDate?: boolean
+    status?: boolean
+    firstLoginAt?: boolean
+    finalLogoutAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    facultyUser?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["facultyAttendanceDay"]>
+
+  export type FacultyAttendanceDaySelectScalar = {
+    id?: boolean
+    facultyUserId?: boolean
+    attendanceDate?: boolean
+    status?: boolean
+    firstLoginAt?: boolean
+    finalLogoutAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type FacultyAttendanceDayOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "facultyUserId" | "attendanceDate" | "status" | "firstLoginAt" | "finalLogoutAt" | "createdAt" | "updatedAt", ExtArgs["result"]["facultyAttendanceDay"]>
+  export type FacultyAttendanceDayInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    facultyUser?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type FacultyAttendanceDayIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    facultyUser?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type FacultyAttendanceDayIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    facultyUser?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $FacultyAttendanceDayPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "FacultyAttendanceDay"
+    objects: {
+      facultyUser: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      facultyUserId: string
+      attendanceDate: string
+      status: string
+      firstLoginAt: Date | null
+      finalLogoutAt: Date | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["facultyAttendanceDay"]>
+    composites: {}
+  }
+
+  type FacultyAttendanceDayGetPayload<S extends boolean | null | undefined | FacultyAttendanceDayDefaultArgs> = $Result.GetResult<Prisma.$FacultyAttendanceDayPayload, S>
+
+  type FacultyAttendanceDayCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<FacultyAttendanceDayFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: FacultyAttendanceDayCountAggregateInputType | true
+    }
+
+  export interface FacultyAttendanceDayDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['FacultyAttendanceDay'], meta: { name: 'FacultyAttendanceDay' } }
+    /**
+     * Find zero or one FacultyAttendanceDay that matches the filter.
+     * @param {FacultyAttendanceDayFindUniqueArgs} args - Arguments to find a FacultyAttendanceDay
+     * @example
+     * // Get one FacultyAttendanceDay
+     * const facultyAttendanceDay = await prisma.facultyAttendanceDay.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends FacultyAttendanceDayFindUniqueArgs>(args: SelectSubset<T, FacultyAttendanceDayFindUniqueArgs<ExtArgs>>): Prisma__FacultyAttendanceDayClient<$Result.GetResult<Prisma.$FacultyAttendanceDayPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one FacultyAttendanceDay that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {FacultyAttendanceDayFindUniqueOrThrowArgs} args - Arguments to find a FacultyAttendanceDay
+     * @example
+     * // Get one FacultyAttendanceDay
+     * const facultyAttendanceDay = await prisma.facultyAttendanceDay.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends FacultyAttendanceDayFindUniqueOrThrowArgs>(args: SelectSubset<T, FacultyAttendanceDayFindUniqueOrThrowArgs<ExtArgs>>): Prisma__FacultyAttendanceDayClient<$Result.GetResult<Prisma.$FacultyAttendanceDayPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first FacultyAttendanceDay that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FacultyAttendanceDayFindFirstArgs} args - Arguments to find a FacultyAttendanceDay
+     * @example
+     * // Get one FacultyAttendanceDay
+     * const facultyAttendanceDay = await prisma.facultyAttendanceDay.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends FacultyAttendanceDayFindFirstArgs>(args?: SelectSubset<T, FacultyAttendanceDayFindFirstArgs<ExtArgs>>): Prisma__FacultyAttendanceDayClient<$Result.GetResult<Prisma.$FacultyAttendanceDayPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first FacultyAttendanceDay that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FacultyAttendanceDayFindFirstOrThrowArgs} args - Arguments to find a FacultyAttendanceDay
+     * @example
+     * // Get one FacultyAttendanceDay
+     * const facultyAttendanceDay = await prisma.facultyAttendanceDay.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends FacultyAttendanceDayFindFirstOrThrowArgs>(args?: SelectSubset<T, FacultyAttendanceDayFindFirstOrThrowArgs<ExtArgs>>): Prisma__FacultyAttendanceDayClient<$Result.GetResult<Prisma.$FacultyAttendanceDayPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more FacultyAttendanceDays that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FacultyAttendanceDayFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all FacultyAttendanceDays
+     * const facultyAttendanceDays = await prisma.facultyAttendanceDay.findMany()
+     * 
+     * // Get first 10 FacultyAttendanceDays
+     * const facultyAttendanceDays = await prisma.facultyAttendanceDay.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const facultyAttendanceDayWithIdOnly = await prisma.facultyAttendanceDay.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends FacultyAttendanceDayFindManyArgs>(args?: SelectSubset<T, FacultyAttendanceDayFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FacultyAttendanceDayPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a FacultyAttendanceDay.
+     * @param {FacultyAttendanceDayCreateArgs} args - Arguments to create a FacultyAttendanceDay.
+     * @example
+     * // Create one FacultyAttendanceDay
+     * const FacultyAttendanceDay = await prisma.facultyAttendanceDay.create({
+     *   data: {
+     *     // ... data to create a FacultyAttendanceDay
+     *   }
+     * })
+     * 
+     */
+    create<T extends FacultyAttendanceDayCreateArgs>(args: SelectSubset<T, FacultyAttendanceDayCreateArgs<ExtArgs>>): Prisma__FacultyAttendanceDayClient<$Result.GetResult<Prisma.$FacultyAttendanceDayPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many FacultyAttendanceDays.
+     * @param {FacultyAttendanceDayCreateManyArgs} args - Arguments to create many FacultyAttendanceDays.
+     * @example
+     * // Create many FacultyAttendanceDays
+     * const facultyAttendanceDay = await prisma.facultyAttendanceDay.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends FacultyAttendanceDayCreateManyArgs>(args?: SelectSubset<T, FacultyAttendanceDayCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many FacultyAttendanceDays and returns the data saved in the database.
+     * @param {FacultyAttendanceDayCreateManyAndReturnArgs} args - Arguments to create many FacultyAttendanceDays.
+     * @example
+     * // Create many FacultyAttendanceDays
+     * const facultyAttendanceDay = await prisma.facultyAttendanceDay.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many FacultyAttendanceDays and only return the `id`
+     * const facultyAttendanceDayWithIdOnly = await prisma.facultyAttendanceDay.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends FacultyAttendanceDayCreateManyAndReturnArgs>(args?: SelectSubset<T, FacultyAttendanceDayCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FacultyAttendanceDayPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a FacultyAttendanceDay.
+     * @param {FacultyAttendanceDayDeleteArgs} args - Arguments to delete one FacultyAttendanceDay.
+     * @example
+     * // Delete one FacultyAttendanceDay
+     * const FacultyAttendanceDay = await prisma.facultyAttendanceDay.delete({
+     *   where: {
+     *     // ... filter to delete one FacultyAttendanceDay
+     *   }
+     * })
+     * 
+     */
+    delete<T extends FacultyAttendanceDayDeleteArgs>(args: SelectSubset<T, FacultyAttendanceDayDeleteArgs<ExtArgs>>): Prisma__FacultyAttendanceDayClient<$Result.GetResult<Prisma.$FacultyAttendanceDayPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one FacultyAttendanceDay.
+     * @param {FacultyAttendanceDayUpdateArgs} args - Arguments to update one FacultyAttendanceDay.
+     * @example
+     * // Update one FacultyAttendanceDay
+     * const facultyAttendanceDay = await prisma.facultyAttendanceDay.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends FacultyAttendanceDayUpdateArgs>(args: SelectSubset<T, FacultyAttendanceDayUpdateArgs<ExtArgs>>): Prisma__FacultyAttendanceDayClient<$Result.GetResult<Prisma.$FacultyAttendanceDayPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more FacultyAttendanceDays.
+     * @param {FacultyAttendanceDayDeleteManyArgs} args - Arguments to filter FacultyAttendanceDays to delete.
+     * @example
+     * // Delete a few FacultyAttendanceDays
+     * const { count } = await prisma.facultyAttendanceDay.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends FacultyAttendanceDayDeleteManyArgs>(args?: SelectSubset<T, FacultyAttendanceDayDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more FacultyAttendanceDays.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FacultyAttendanceDayUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many FacultyAttendanceDays
+     * const facultyAttendanceDay = await prisma.facultyAttendanceDay.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends FacultyAttendanceDayUpdateManyArgs>(args: SelectSubset<T, FacultyAttendanceDayUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more FacultyAttendanceDays and returns the data updated in the database.
+     * @param {FacultyAttendanceDayUpdateManyAndReturnArgs} args - Arguments to update many FacultyAttendanceDays.
+     * @example
+     * // Update many FacultyAttendanceDays
+     * const facultyAttendanceDay = await prisma.facultyAttendanceDay.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more FacultyAttendanceDays and only return the `id`
+     * const facultyAttendanceDayWithIdOnly = await prisma.facultyAttendanceDay.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends FacultyAttendanceDayUpdateManyAndReturnArgs>(args: SelectSubset<T, FacultyAttendanceDayUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FacultyAttendanceDayPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one FacultyAttendanceDay.
+     * @param {FacultyAttendanceDayUpsertArgs} args - Arguments to update or create a FacultyAttendanceDay.
+     * @example
+     * // Update or create a FacultyAttendanceDay
+     * const facultyAttendanceDay = await prisma.facultyAttendanceDay.upsert({
+     *   create: {
+     *     // ... data to create a FacultyAttendanceDay
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the FacultyAttendanceDay we want to update
+     *   }
+     * })
+     */
+    upsert<T extends FacultyAttendanceDayUpsertArgs>(args: SelectSubset<T, FacultyAttendanceDayUpsertArgs<ExtArgs>>): Prisma__FacultyAttendanceDayClient<$Result.GetResult<Prisma.$FacultyAttendanceDayPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of FacultyAttendanceDays.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FacultyAttendanceDayCountArgs} args - Arguments to filter FacultyAttendanceDays to count.
+     * @example
+     * // Count the number of FacultyAttendanceDays
+     * const count = await prisma.facultyAttendanceDay.count({
+     *   where: {
+     *     // ... the filter for the FacultyAttendanceDays we want to count
+     *   }
+     * })
+    **/
+    count<T extends FacultyAttendanceDayCountArgs>(
+      args?: Subset<T, FacultyAttendanceDayCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], FacultyAttendanceDayCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a FacultyAttendanceDay.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FacultyAttendanceDayAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends FacultyAttendanceDayAggregateArgs>(args: Subset<T, FacultyAttendanceDayAggregateArgs>): Prisma.PrismaPromise<GetFacultyAttendanceDayAggregateType<T>>
+
+    /**
+     * Group by FacultyAttendanceDay.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FacultyAttendanceDayGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends FacultyAttendanceDayGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: FacultyAttendanceDayGroupByArgs['orderBy'] }
+        : { orderBy?: FacultyAttendanceDayGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, FacultyAttendanceDayGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetFacultyAttendanceDayGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the FacultyAttendanceDay model
+   */
+  readonly fields: FacultyAttendanceDayFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for FacultyAttendanceDay.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__FacultyAttendanceDayClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    facultyUser<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the FacultyAttendanceDay model
+   */
+  interface FacultyAttendanceDayFieldRefs {
+    readonly id: FieldRef<"FacultyAttendanceDay", 'String'>
+    readonly facultyUserId: FieldRef<"FacultyAttendanceDay", 'String'>
+    readonly attendanceDate: FieldRef<"FacultyAttendanceDay", 'String'>
+    readonly status: FieldRef<"FacultyAttendanceDay", 'String'>
+    readonly firstLoginAt: FieldRef<"FacultyAttendanceDay", 'DateTime'>
+    readonly finalLogoutAt: FieldRef<"FacultyAttendanceDay", 'DateTime'>
+    readonly createdAt: FieldRef<"FacultyAttendanceDay", 'DateTime'>
+    readonly updatedAt: FieldRef<"FacultyAttendanceDay", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * FacultyAttendanceDay findUnique
+   */
+  export type FacultyAttendanceDayFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyAttendanceDay
+     */
+    select?: FacultyAttendanceDaySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyAttendanceDay
+     */
+    omit?: FacultyAttendanceDayOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyAttendanceDayInclude<ExtArgs> | null
+    /**
+     * Filter, which FacultyAttendanceDay to fetch.
+     */
+    where: FacultyAttendanceDayWhereUniqueInput
+  }
+
+  /**
+   * FacultyAttendanceDay findUniqueOrThrow
+   */
+  export type FacultyAttendanceDayFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyAttendanceDay
+     */
+    select?: FacultyAttendanceDaySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyAttendanceDay
+     */
+    omit?: FacultyAttendanceDayOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyAttendanceDayInclude<ExtArgs> | null
+    /**
+     * Filter, which FacultyAttendanceDay to fetch.
+     */
+    where: FacultyAttendanceDayWhereUniqueInput
+  }
+
+  /**
+   * FacultyAttendanceDay findFirst
+   */
+  export type FacultyAttendanceDayFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyAttendanceDay
+     */
+    select?: FacultyAttendanceDaySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyAttendanceDay
+     */
+    omit?: FacultyAttendanceDayOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyAttendanceDayInclude<ExtArgs> | null
+    /**
+     * Filter, which FacultyAttendanceDay to fetch.
+     */
+    where?: FacultyAttendanceDayWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FacultyAttendanceDays to fetch.
+     */
+    orderBy?: FacultyAttendanceDayOrderByWithRelationInput | FacultyAttendanceDayOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FacultyAttendanceDays.
+     */
+    cursor?: FacultyAttendanceDayWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FacultyAttendanceDays from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FacultyAttendanceDays.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FacultyAttendanceDays.
+     */
+    distinct?: FacultyAttendanceDayScalarFieldEnum | FacultyAttendanceDayScalarFieldEnum[]
+  }
+
+  /**
+   * FacultyAttendanceDay findFirstOrThrow
+   */
+  export type FacultyAttendanceDayFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyAttendanceDay
+     */
+    select?: FacultyAttendanceDaySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyAttendanceDay
+     */
+    omit?: FacultyAttendanceDayOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyAttendanceDayInclude<ExtArgs> | null
+    /**
+     * Filter, which FacultyAttendanceDay to fetch.
+     */
+    where?: FacultyAttendanceDayWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FacultyAttendanceDays to fetch.
+     */
+    orderBy?: FacultyAttendanceDayOrderByWithRelationInput | FacultyAttendanceDayOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FacultyAttendanceDays.
+     */
+    cursor?: FacultyAttendanceDayWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FacultyAttendanceDays from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FacultyAttendanceDays.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FacultyAttendanceDays.
+     */
+    distinct?: FacultyAttendanceDayScalarFieldEnum | FacultyAttendanceDayScalarFieldEnum[]
+  }
+
+  /**
+   * FacultyAttendanceDay findMany
+   */
+  export type FacultyAttendanceDayFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyAttendanceDay
+     */
+    select?: FacultyAttendanceDaySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyAttendanceDay
+     */
+    omit?: FacultyAttendanceDayOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyAttendanceDayInclude<ExtArgs> | null
+    /**
+     * Filter, which FacultyAttendanceDays to fetch.
+     */
+    where?: FacultyAttendanceDayWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FacultyAttendanceDays to fetch.
+     */
+    orderBy?: FacultyAttendanceDayOrderByWithRelationInput | FacultyAttendanceDayOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing FacultyAttendanceDays.
+     */
+    cursor?: FacultyAttendanceDayWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FacultyAttendanceDays from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FacultyAttendanceDays.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FacultyAttendanceDays.
+     */
+    distinct?: FacultyAttendanceDayScalarFieldEnum | FacultyAttendanceDayScalarFieldEnum[]
+  }
+
+  /**
+   * FacultyAttendanceDay create
+   */
+  export type FacultyAttendanceDayCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyAttendanceDay
+     */
+    select?: FacultyAttendanceDaySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyAttendanceDay
+     */
+    omit?: FacultyAttendanceDayOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyAttendanceDayInclude<ExtArgs> | null
+    /**
+     * The data needed to create a FacultyAttendanceDay.
+     */
+    data: XOR<FacultyAttendanceDayCreateInput, FacultyAttendanceDayUncheckedCreateInput>
+  }
+
+  /**
+   * FacultyAttendanceDay createMany
+   */
+  export type FacultyAttendanceDayCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many FacultyAttendanceDays.
+     */
+    data: FacultyAttendanceDayCreateManyInput | FacultyAttendanceDayCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * FacultyAttendanceDay createManyAndReturn
+   */
+  export type FacultyAttendanceDayCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyAttendanceDay
+     */
+    select?: FacultyAttendanceDaySelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyAttendanceDay
+     */
+    omit?: FacultyAttendanceDayOmit<ExtArgs> | null
+    /**
+     * The data used to create many FacultyAttendanceDays.
+     */
+    data: FacultyAttendanceDayCreateManyInput | FacultyAttendanceDayCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyAttendanceDayIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * FacultyAttendanceDay update
+   */
+  export type FacultyAttendanceDayUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyAttendanceDay
+     */
+    select?: FacultyAttendanceDaySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyAttendanceDay
+     */
+    omit?: FacultyAttendanceDayOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyAttendanceDayInclude<ExtArgs> | null
+    /**
+     * The data needed to update a FacultyAttendanceDay.
+     */
+    data: XOR<FacultyAttendanceDayUpdateInput, FacultyAttendanceDayUncheckedUpdateInput>
+    /**
+     * Choose, which FacultyAttendanceDay to update.
+     */
+    where: FacultyAttendanceDayWhereUniqueInput
+  }
+
+  /**
+   * FacultyAttendanceDay updateMany
+   */
+  export type FacultyAttendanceDayUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update FacultyAttendanceDays.
+     */
+    data: XOR<FacultyAttendanceDayUpdateManyMutationInput, FacultyAttendanceDayUncheckedUpdateManyInput>
+    /**
+     * Filter which FacultyAttendanceDays to update
+     */
+    where?: FacultyAttendanceDayWhereInput
+    /**
+     * Limit how many FacultyAttendanceDays to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * FacultyAttendanceDay updateManyAndReturn
+   */
+  export type FacultyAttendanceDayUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyAttendanceDay
+     */
+    select?: FacultyAttendanceDaySelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyAttendanceDay
+     */
+    omit?: FacultyAttendanceDayOmit<ExtArgs> | null
+    /**
+     * The data used to update FacultyAttendanceDays.
+     */
+    data: XOR<FacultyAttendanceDayUpdateManyMutationInput, FacultyAttendanceDayUncheckedUpdateManyInput>
+    /**
+     * Filter which FacultyAttendanceDays to update
+     */
+    where?: FacultyAttendanceDayWhereInput
+    /**
+     * Limit how many FacultyAttendanceDays to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyAttendanceDayIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * FacultyAttendanceDay upsert
+   */
+  export type FacultyAttendanceDayUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyAttendanceDay
+     */
+    select?: FacultyAttendanceDaySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyAttendanceDay
+     */
+    omit?: FacultyAttendanceDayOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyAttendanceDayInclude<ExtArgs> | null
+    /**
+     * The filter to search for the FacultyAttendanceDay to update in case it exists.
+     */
+    where: FacultyAttendanceDayWhereUniqueInput
+    /**
+     * In case the FacultyAttendanceDay found by the `where` argument doesn't exist, create a new FacultyAttendanceDay with this data.
+     */
+    create: XOR<FacultyAttendanceDayCreateInput, FacultyAttendanceDayUncheckedCreateInput>
+    /**
+     * In case the FacultyAttendanceDay was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<FacultyAttendanceDayUpdateInput, FacultyAttendanceDayUncheckedUpdateInput>
+  }
+
+  /**
+   * FacultyAttendanceDay delete
+   */
+  export type FacultyAttendanceDayDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyAttendanceDay
+     */
+    select?: FacultyAttendanceDaySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyAttendanceDay
+     */
+    omit?: FacultyAttendanceDayOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyAttendanceDayInclude<ExtArgs> | null
+    /**
+     * Filter which FacultyAttendanceDay to delete.
+     */
+    where: FacultyAttendanceDayWhereUniqueInput
+  }
+
+  /**
+   * FacultyAttendanceDay deleteMany
+   */
+  export type FacultyAttendanceDayDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FacultyAttendanceDays to delete
+     */
+    where?: FacultyAttendanceDayWhereInput
+    /**
+     * Limit how many FacultyAttendanceDays to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * FacultyAttendanceDay without action
+   */
+  export type FacultyAttendanceDayDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyAttendanceDay
+     */
+    select?: FacultyAttendanceDaySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyAttendanceDay
+     */
+    omit?: FacultyAttendanceDayOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyAttendanceDayInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model FacultyAttendanceBatchWork
+   */
+
+  export type AggregateFacultyAttendanceBatchWork = {
+    _count: FacultyAttendanceBatchWorkCountAggregateOutputType | null
+    _min: FacultyAttendanceBatchWorkMinAggregateOutputType | null
+    _max: FacultyAttendanceBatchWorkMaxAggregateOutputType | null
+  }
+
+  export type FacultyAttendanceBatchWorkMinAggregateOutputType = {
+    id: string | null
+    attendanceSessionId: string | null
+    facultyUserId: string | null
+    attendanceDate: string | null
+    branchId: string | null
+    batchId: string | null
+    workSummary: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type FacultyAttendanceBatchWorkMaxAggregateOutputType = {
+    id: string | null
+    attendanceSessionId: string | null
+    facultyUserId: string | null
+    attendanceDate: string | null
+    branchId: string | null
+    batchId: string | null
+    workSummary: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type FacultyAttendanceBatchWorkCountAggregateOutputType = {
+    id: number
+    attendanceSessionId: number
+    facultyUserId: number
+    attendanceDate: number
+    branchId: number
+    batchId: number
+    workSummary: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type FacultyAttendanceBatchWorkMinAggregateInputType = {
+    id?: true
+    attendanceSessionId?: true
+    facultyUserId?: true
+    attendanceDate?: true
+    branchId?: true
+    batchId?: true
+    workSummary?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type FacultyAttendanceBatchWorkMaxAggregateInputType = {
+    id?: true
+    attendanceSessionId?: true
+    facultyUserId?: true
+    attendanceDate?: true
+    branchId?: true
+    batchId?: true
+    workSummary?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type FacultyAttendanceBatchWorkCountAggregateInputType = {
+    id?: true
+    attendanceSessionId?: true
+    facultyUserId?: true
+    attendanceDate?: true
+    branchId?: true
+    batchId?: true
+    workSummary?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type FacultyAttendanceBatchWorkAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FacultyAttendanceBatchWork to aggregate.
+     */
+    where?: FacultyAttendanceBatchWorkWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FacultyAttendanceBatchWorks to fetch.
+     */
+    orderBy?: FacultyAttendanceBatchWorkOrderByWithRelationInput | FacultyAttendanceBatchWorkOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: FacultyAttendanceBatchWorkWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FacultyAttendanceBatchWorks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FacultyAttendanceBatchWorks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned FacultyAttendanceBatchWorks
+    **/
+    _count?: true | FacultyAttendanceBatchWorkCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: FacultyAttendanceBatchWorkMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: FacultyAttendanceBatchWorkMaxAggregateInputType
+  }
+
+  export type GetFacultyAttendanceBatchWorkAggregateType<T extends FacultyAttendanceBatchWorkAggregateArgs> = {
+        [P in keyof T & keyof AggregateFacultyAttendanceBatchWork]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateFacultyAttendanceBatchWork[P]>
+      : GetScalarType<T[P], AggregateFacultyAttendanceBatchWork[P]>
+  }
+
+
+
+
+  export type FacultyAttendanceBatchWorkGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FacultyAttendanceBatchWorkWhereInput
+    orderBy?: FacultyAttendanceBatchWorkOrderByWithAggregationInput | FacultyAttendanceBatchWorkOrderByWithAggregationInput[]
+    by: FacultyAttendanceBatchWorkScalarFieldEnum[] | FacultyAttendanceBatchWorkScalarFieldEnum
+    having?: FacultyAttendanceBatchWorkScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: FacultyAttendanceBatchWorkCountAggregateInputType | true
+    _min?: FacultyAttendanceBatchWorkMinAggregateInputType
+    _max?: FacultyAttendanceBatchWorkMaxAggregateInputType
+  }
+
+  export type FacultyAttendanceBatchWorkGroupByOutputType = {
+    id: string
+    attendanceSessionId: string
+    facultyUserId: string
+    attendanceDate: string
+    branchId: string
+    batchId: string
+    workSummary: string
+    createdAt: Date
+    updatedAt: Date
+    _count: FacultyAttendanceBatchWorkCountAggregateOutputType | null
+    _min: FacultyAttendanceBatchWorkMinAggregateOutputType | null
+    _max: FacultyAttendanceBatchWorkMaxAggregateOutputType | null
+  }
+
+  type GetFacultyAttendanceBatchWorkGroupByPayload<T extends FacultyAttendanceBatchWorkGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<FacultyAttendanceBatchWorkGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof FacultyAttendanceBatchWorkGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], FacultyAttendanceBatchWorkGroupByOutputType[P]>
+            : GetScalarType<T[P], FacultyAttendanceBatchWorkGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type FacultyAttendanceBatchWorkSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    attendanceSessionId?: boolean
+    facultyUserId?: boolean
+    attendanceDate?: boolean
+    branchId?: boolean
+    batchId?: boolean
+    workSummary?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    session?: boolean | FacultyAttendanceSessionDefaultArgs<ExtArgs>
+    facultyUser?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["facultyAttendanceBatchWork"]>
+
+  export type FacultyAttendanceBatchWorkSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    attendanceSessionId?: boolean
+    facultyUserId?: boolean
+    attendanceDate?: boolean
+    branchId?: boolean
+    batchId?: boolean
+    workSummary?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    session?: boolean | FacultyAttendanceSessionDefaultArgs<ExtArgs>
+    facultyUser?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["facultyAttendanceBatchWork"]>
+
+  export type FacultyAttendanceBatchWorkSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    attendanceSessionId?: boolean
+    facultyUserId?: boolean
+    attendanceDate?: boolean
+    branchId?: boolean
+    batchId?: boolean
+    workSummary?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    session?: boolean | FacultyAttendanceSessionDefaultArgs<ExtArgs>
+    facultyUser?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["facultyAttendanceBatchWork"]>
+
+  export type FacultyAttendanceBatchWorkSelectScalar = {
+    id?: boolean
+    attendanceSessionId?: boolean
+    facultyUserId?: boolean
+    attendanceDate?: boolean
+    branchId?: boolean
+    batchId?: boolean
+    workSummary?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type FacultyAttendanceBatchWorkOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "attendanceSessionId" | "facultyUserId" | "attendanceDate" | "branchId" | "batchId" | "workSummary" | "createdAt" | "updatedAt", ExtArgs["result"]["facultyAttendanceBatchWork"]>
+  export type FacultyAttendanceBatchWorkInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    session?: boolean | FacultyAttendanceSessionDefaultArgs<ExtArgs>
+    facultyUser?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type FacultyAttendanceBatchWorkIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    session?: boolean | FacultyAttendanceSessionDefaultArgs<ExtArgs>
+    facultyUser?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type FacultyAttendanceBatchWorkIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    session?: boolean | FacultyAttendanceSessionDefaultArgs<ExtArgs>
+    facultyUser?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $FacultyAttendanceBatchWorkPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "FacultyAttendanceBatchWork"
+    objects: {
+      session: Prisma.$FacultyAttendanceSessionPayload<ExtArgs>
+      facultyUser: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      attendanceSessionId: string
+      facultyUserId: string
+      attendanceDate: string
+      branchId: string
+      batchId: string
+      workSummary: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["facultyAttendanceBatchWork"]>
+    composites: {}
+  }
+
+  type FacultyAttendanceBatchWorkGetPayload<S extends boolean | null | undefined | FacultyAttendanceBatchWorkDefaultArgs> = $Result.GetResult<Prisma.$FacultyAttendanceBatchWorkPayload, S>
+
+  type FacultyAttendanceBatchWorkCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<FacultyAttendanceBatchWorkFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: FacultyAttendanceBatchWorkCountAggregateInputType | true
+    }
+
+  export interface FacultyAttendanceBatchWorkDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['FacultyAttendanceBatchWork'], meta: { name: 'FacultyAttendanceBatchWork' } }
+    /**
+     * Find zero or one FacultyAttendanceBatchWork that matches the filter.
+     * @param {FacultyAttendanceBatchWorkFindUniqueArgs} args - Arguments to find a FacultyAttendanceBatchWork
+     * @example
+     * // Get one FacultyAttendanceBatchWork
+     * const facultyAttendanceBatchWork = await prisma.facultyAttendanceBatchWork.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends FacultyAttendanceBatchWorkFindUniqueArgs>(args: SelectSubset<T, FacultyAttendanceBatchWorkFindUniqueArgs<ExtArgs>>): Prisma__FacultyAttendanceBatchWorkClient<$Result.GetResult<Prisma.$FacultyAttendanceBatchWorkPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one FacultyAttendanceBatchWork that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {FacultyAttendanceBatchWorkFindUniqueOrThrowArgs} args - Arguments to find a FacultyAttendanceBatchWork
+     * @example
+     * // Get one FacultyAttendanceBatchWork
+     * const facultyAttendanceBatchWork = await prisma.facultyAttendanceBatchWork.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends FacultyAttendanceBatchWorkFindUniqueOrThrowArgs>(args: SelectSubset<T, FacultyAttendanceBatchWorkFindUniqueOrThrowArgs<ExtArgs>>): Prisma__FacultyAttendanceBatchWorkClient<$Result.GetResult<Prisma.$FacultyAttendanceBatchWorkPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first FacultyAttendanceBatchWork that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FacultyAttendanceBatchWorkFindFirstArgs} args - Arguments to find a FacultyAttendanceBatchWork
+     * @example
+     * // Get one FacultyAttendanceBatchWork
+     * const facultyAttendanceBatchWork = await prisma.facultyAttendanceBatchWork.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends FacultyAttendanceBatchWorkFindFirstArgs>(args?: SelectSubset<T, FacultyAttendanceBatchWorkFindFirstArgs<ExtArgs>>): Prisma__FacultyAttendanceBatchWorkClient<$Result.GetResult<Prisma.$FacultyAttendanceBatchWorkPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first FacultyAttendanceBatchWork that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FacultyAttendanceBatchWorkFindFirstOrThrowArgs} args - Arguments to find a FacultyAttendanceBatchWork
+     * @example
+     * // Get one FacultyAttendanceBatchWork
+     * const facultyAttendanceBatchWork = await prisma.facultyAttendanceBatchWork.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends FacultyAttendanceBatchWorkFindFirstOrThrowArgs>(args?: SelectSubset<T, FacultyAttendanceBatchWorkFindFirstOrThrowArgs<ExtArgs>>): Prisma__FacultyAttendanceBatchWorkClient<$Result.GetResult<Prisma.$FacultyAttendanceBatchWorkPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more FacultyAttendanceBatchWorks that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FacultyAttendanceBatchWorkFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all FacultyAttendanceBatchWorks
+     * const facultyAttendanceBatchWorks = await prisma.facultyAttendanceBatchWork.findMany()
+     * 
+     * // Get first 10 FacultyAttendanceBatchWorks
+     * const facultyAttendanceBatchWorks = await prisma.facultyAttendanceBatchWork.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const facultyAttendanceBatchWorkWithIdOnly = await prisma.facultyAttendanceBatchWork.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends FacultyAttendanceBatchWorkFindManyArgs>(args?: SelectSubset<T, FacultyAttendanceBatchWorkFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FacultyAttendanceBatchWorkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a FacultyAttendanceBatchWork.
+     * @param {FacultyAttendanceBatchWorkCreateArgs} args - Arguments to create a FacultyAttendanceBatchWork.
+     * @example
+     * // Create one FacultyAttendanceBatchWork
+     * const FacultyAttendanceBatchWork = await prisma.facultyAttendanceBatchWork.create({
+     *   data: {
+     *     // ... data to create a FacultyAttendanceBatchWork
+     *   }
+     * })
+     * 
+     */
+    create<T extends FacultyAttendanceBatchWorkCreateArgs>(args: SelectSubset<T, FacultyAttendanceBatchWorkCreateArgs<ExtArgs>>): Prisma__FacultyAttendanceBatchWorkClient<$Result.GetResult<Prisma.$FacultyAttendanceBatchWorkPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many FacultyAttendanceBatchWorks.
+     * @param {FacultyAttendanceBatchWorkCreateManyArgs} args - Arguments to create many FacultyAttendanceBatchWorks.
+     * @example
+     * // Create many FacultyAttendanceBatchWorks
+     * const facultyAttendanceBatchWork = await prisma.facultyAttendanceBatchWork.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends FacultyAttendanceBatchWorkCreateManyArgs>(args?: SelectSubset<T, FacultyAttendanceBatchWorkCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many FacultyAttendanceBatchWorks and returns the data saved in the database.
+     * @param {FacultyAttendanceBatchWorkCreateManyAndReturnArgs} args - Arguments to create many FacultyAttendanceBatchWorks.
+     * @example
+     * // Create many FacultyAttendanceBatchWorks
+     * const facultyAttendanceBatchWork = await prisma.facultyAttendanceBatchWork.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many FacultyAttendanceBatchWorks and only return the `id`
+     * const facultyAttendanceBatchWorkWithIdOnly = await prisma.facultyAttendanceBatchWork.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends FacultyAttendanceBatchWorkCreateManyAndReturnArgs>(args?: SelectSubset<T, FacultyAttendanceBatchWorkCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FacultyAttendanceBatchWorkPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a FacultyAttendanceBatchWork.
+     * @param {FacultyAttendanceBatchWorkDeleteArgs} args - Arguments to delete one FacultyAttendanceBatchWork.
+     * @example
+     * // Delete one FacultyAttendanceBatchWork
+     * const FacultyAttendanceBatchWork = await prisma.facultyAttendanceBatchWork.delete({
+     *   where: {
+     *     // ... filter to delete one FacultyAttendanceBatchWork
+     *   }
+     * })
+     * 
+     */
+    delete<T extends FacultyAttendanceBatchWorkDeleteArgs>(args: SelectSubset<T, FacultyAttendanceBatchWorkDeleteArgs<ExtArgs>>): Prisma__FacultyAttendanceBatchWorkClient<$Result.GetResult<Prisma.$FacultyAttendanceBatchWorkPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one FacultyAttendanceBatchWork.
+     * @param {FacultyAttendanceBatchWorkUpdateArgs} args - Arguments to update one FacultyAttendanceBatchWork.
+     * @example
+     * // Update one FacultyAttendanceBatchWork
+     * const facultyAttendanceBatchWork = await prisma.facultyAttendanceBatchWork.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends FacultyAttendanceBatchWorkUpdateArgs>(args: SelectSubset<T, FacultyAttendanceBatchWorkUpdateArgs<ExtArgs>>): Prisma__FacultyAttendanceBatchWorkClient<$Result.GetResult<Prisma.$FacultyAttendanceBatchWorkPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more FacultyAttendanceBatchWorks.
+     * @param {FacultyAttendanceBatchWorkDeleteManyArgs} args - Arguments to filter FacultyAttendanceBatchWorks to delete.
+     * @example
+     * // Delete a few FacultyAttendanceBatchWorks
+     * const { count } = await prisma.facultyAttendanceBatchWork.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends FacultyAttendanceBatchWorkDeleteManyArgs>(args?: SelectSubset<T, FacultyAttendanceBatchWorkDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more FacultyAttendanceBatchWorks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FacultyAttendanceBatchWorkUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many FacultyAttendanceBatchWorks
+     * const facultyAttendanceBatchWork = await prisma.facultyAttendanceBatchWork.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends FacultyAttendanceBatchWorkUpdateManyArgs>(args: SelectSubset<T, FacultyAttendanceBatchWorkUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more FacultyAttendanceBatchWorks and returns the data updated in the database.
+     * @param {FacultyAttendanceBatchWorkUpdateManyAndReturnArgs} args - Arguments to update many FacultyAttendanceBatchWorks.
+     * @example
+     * // Update many FacultyAttendanceBatchWorks
+     * const facultyAttendanceBatchWork = await prisma.facultyAttendanceBatchWork.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more FacultyAttendanceBatchWorks and only return the `id`
+     * const facultyAttendanceBatchWorkWithIdOnly = await prisma.facultyAttendanceBatchWork.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends FacultyAttendanceBatchWorkUpdateManyAndReturnArgs>(args: SelectSubset<T, FacultyAttendanceBatchWorkUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FacultyAttendanceBatchWorkPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one FacultyAttendanceBatchWork.
+     * @param {FacultyAttendanceBatchWorkUpsertArgs} args - Arguments to update or create a FacultyAttendanceBatchWork.
+     * @example
+     * // Update or create a FacultyAttendanceBatchWork
+     * const facultyAttendanceBatchWork = await prisma.facultyAttendanceBatchWork.upsert({
+     *   create: {
+     *     // ... data to create a FacultyAttendanceBatchWork
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the FacultyAttendanceBatchWork we want to update
+     *   }
+     * })
+     */
+    upsert<T extends FacultyAttendanceBatchWorkUpsertArgs>(args: SelectSubset<T, FacultyAttendanceBatchWorkUpsertArgs<ExtArgs>>): Prisma__FacultyAttendanceBatchWorkClient<$Result.GetResult<Prisma.$FacultyAttendanceBatchWorkPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of FacultyAttendanceBatchWorks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FacultyAttendanceBatchWorkCountArgs} args - Arguments to filter FacultyAttendanceBatchWorks to count.
+     * @example
+     * // Count the number of FacultyAttendanceBatchWorks
+     * const count = await prisma.facultyAttendanceBatchWork.count({
+     *   where: {
+     *     // ... the filter for the FacultyAttendanceBatchWorks we want to count
+     *   }
+     * })
+    **/
+    count<T extends FacultyAttendanceBatchWorkCountArgs>(
+      args?: Subset<T, FacultyAttendanceBatchWorkCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], FacultyAttendanceBatchWorkCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a FacultyAttendanceBatchWork.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FacultyAttendanceBatchWorkAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends FacultyAttendanceBatchWorkAggregateArgs>(args: Subset<T, FacultyAttendanceBatchWorkAggregateArgs>): Prisma.PrismaPromise<GetFacultyAttendanceBatchWorkAggregateType<T>>
+
+    /**
+     * Group by FacultyAttendanceBatchWork.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FacultyAttendanceBatchWorkGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends FacultyAttendanceBatchWorkGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: FacultyAttendanceBatchWorkGroupByArgs['orderBy'] }
+        : { orderBy?: FacultyAttendanceBatchWorkGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, FacultyAttendanceBatchWorkGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetFacultyAttendanceBatchWorkGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the FacultyAttendanceBatchWork model
+   */
+  readonly fields: FacultyAttendanceBatchWorkFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for FacultyAttendanceBatchWork.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__FacultyAttendanceBatchWorkClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    session<T extends FacultyAttendanceSessionDefaultArgs<ExtArgs> = {}>(args?: Subset<T, FacultyAttendanceSessionDefaultArgs<ExtArgs>>): Prisma__FacultyAttendanceSessionClient<$Result.GetResult<Prisma.$FacultyAttendanceSessionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    facultyUser<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the FacultyAttendanceBatchWork model
+   */
+  interface FacultyAttendanceBatchWorkFieldRefs {
+    readonly id: FieldRef<"FacultyAttendanceBatchWork", 'String'>
+    readonly attendanceSessionId: FieldRef<"FacultyAttendanceBatchWork", 'String'>
+    readonly facultyUserId: FieldRef<"FacultyAttendanceBatchWork", 'String'>
+    readonly attendanceDate: FieldRef<"FacultyAttendanceBatchWork", 'String'>
+    readonly branchId: FieldRef<"FacultyAttendanceBatchWork", 'String'>
+    readonly batchId: FieldRef<"FacultyAttendanceBatchWork", 'String'>
+    readonly workSummary: FieldRef<"FacultyAttendanceBatchWork", 'String'>
+    readonly createdAt: FieldRef<"FacultyAttendanceBatchWork", 'DateTime'>
+    readonly updatedAt: FieldRef<"FacultyAttendanceBatchWork", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * FacultyAttendanceBatchWork findUnique
+   */
+  export type FacultyAttendanceBatchWorkFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyAttendanceBatchWork
+     */
+    select?: FacultyAttendanceBatchWorkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyAttendanceBatchWork
+     */
+    omit?: FacultyAttendanceBatchWorkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyAttendanceBatchWorkInclude<ExtArgs> | null
+    /**
+     * Filter, which FacultyAttendanceBatchWork to fetch.
+     */
+    where: FacultyAttendanceBatchWorkWhereUniqueInput
+  }
+
+  /**
+   * FacultyAttendanceBatchWork findUniqueOrThrow
+   */
+  export type FacultyAttendanceBatchWorkFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyAttendanceBatchWork
+     */
+    select?: FacultyAttendanceBatchWorkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyAttendanceBatchWork
+     */
+    omit?: FacultyAttendanceBatchWorkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyAttendanceBatchWorkInclude<ExtArgs> | null
+    /**
+     * Filter, which FacultyAttendanceBatchWork to fetch.
+     */
+    where: FacultyAttendanceBatchWorkWhereUniqueInput
+  }
+
+  /**
+   * FacultyAttendanceBatchWork findFirst
+   */
+  export type FacultyAttendanceBatchWorkFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyAttendanceBatchWork
+     */
+    select?: FacultyAttendanceBatchWorkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyAttendanceBatchWork
+     */
+    omit?: FacultyAttendanceBatchWorkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyAttendanceBatchWorkInclude<ExtArgs> | null
+    /**
+     * Filter, which FacultyAttendanceBatchWork to fetch.
+     */
+    where?: FacultyAttendanceBatchWorkWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FacultyAttendanceBatchWorks to fetch.
+     */
+    orderBy?: FacultyAttendanceBatchWorkOrderByWithRelationInput | FacultyAttendanceBatchWorkOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FacultyAttendanceBatchWorks.
+     */
+    cursor?: FacultyAttendanceBatchWorkWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FacultyAttendanceBatchWorks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FacultyAttendanceBatchWorks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FacultyAttendanceBatchWorks.
+     */
+    distinct?: FacultyAttendanceBatchWorkScalarFieldEnum | FacultyAttendanceBatchWorkScalarFieldEnum[]
+  }
+
+  /**
+   * FacultyAttendanceBatchWork findFirstOrThrow
+   */
+  export type FacultyAttendanceBatchWorkFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyAttendanceBatchWork
+     */
+    select?: FacultyAttendanceBatchWorkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyAttendanceBatchWork
+     */
+    omit?: FacultyAttendanceBatchWorkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyAttendanceBatchWorkInclude<ExtArgs> | null
+    /**
+     * Filter, which FacultyAttendanceBatchWork to fetch.
+     */
+    where?: FacultyAttendanceBatchWorkWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FacultyAttendanceBatchWorks to fetch.
+     */
+    orderBy?: FacultyAttendanceBatchWorkOrderByWithRelationInput | FacultyAttendanceBatchWorkOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FacultyAttendanceBatchWorks.
+     */
+    cursor?: FacultyAttendanceBatchWorkWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FacultyAttendanceBatchWorks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FacultyAttendanceBatchWorks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FacultyAttendanceBatchWorks.
+     */
+    distinct?: FacultyAttendanceBatchWorkScalarFieldEnum | FacultyAttendanceBatchWorkScalarFieldEnum[]
+  }
+
+  /**
+   * FacultyAttendanceBatchWork findMany
+   */
+  export type FacultyAttendanceBatchWorkFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyAttendanceBatchWork
+     */
+    select?: FacultyAttendanceBatchWorkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyAttendanceBatchWork
+     */
+    omit?: FacultyAttendanceBatchWorkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyAttendanceBatchWorkInclude<ExtArgs> | null
+    /**
+     * Filter, which FacultyAttendanceBatchWorks to fetch.
+     */
+    where?: FacultyAttendanceBatchWorkWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FacultyAttendanceBatchWorks to fetch.
+     */
+    orderBy?: FacultyAttendanceBatchWorkOrderByWithRelationInput | FacultyAttendanceBatchWorkOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing FacultyAttendanceBatchWorks.
+     */
+    cursor?: FacultyAttendanceBatchWorkWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FacultyAttendanceBatchWorks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FacultyAttendanceBatchWorks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FacultyAttendanceBatchWorks.
+     */
+    distinct?: FacultyAttendanceBatchWorkScalarFieldEnum | FacultyAttendanceBatchWorkScalarFieldEnum[]
+  }
+
+  /**
+   * FacultyAttendanceBatchWork create
+   */
+  export type FacultyAttendanceBatchWorkCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyAttendanceBatchWork
+     */
+    select?: FacultyAttendanceBatchWorkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyAttendanceBatchWork
+     */
+    omit?: FacultyAttendanceBatchWorkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyAttendanceBatchWorkInclude<ExtArgs> | null
+    /**
+     * The data needed to create a FacultyAttendanceBatchWork.
+     */
+    data: XOR<FacultyAttendanceBatchWorkCreateInput, FacultyAttendanceBatchWorkUncheckedCreateInput>
+  }
+
+  /**
+   * FacultyAttendanceBatchWork createMany
+   */
+  export type FacultyAttendanceBatchWorkCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many FacultyAttendanceBatchWorks.
+     */
+    data: FacultyAttendanceBatchWorkCreateManyInput | FacultyAttendanceBatchWorkCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * FacultyAttendanceBatchWork createManyAndReturn
+   */
+  export type FacultyAttendanceBatchWorkCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyAttendanceBatchWork
+     */
+    select?: FacultyAttendanceBatchWorkSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyAttendanceBatchWork
+     */
+    omit?: FacultyAttendanceBatchWorkOmit<ExtArgs> | null
+    /**
+     * The data used to create many FacultyAttendanceBatchWorks.
+     */
+    data: FacultyAttendanceBatchWorkCreateManyInput | FacultyAttendanceBatchWorkCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyAttendanceBatchWorkIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * FacultyAttendanceBatchWork update
+   */
+  export type FacultyAttendanceBatchWorkUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyAttendanceBatchWork
+     */
+    select?: FacultyAttendanceBatchWorkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyAttendanceBatchWork
+     */
+    omit?: FacultyAttendanceBatchWorkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyAttendanceBatchWorkInclude<ExtArgs> | null
+    /**
+     * The data needed to update a FacultyAttendanceBatchWork.
+     */
+    data: XOR<FacultyAttendanceBatchWorkUpdateInput, FacultyAttendanceBatchWorkUncheckedUpdateInput>
+    /**
+     * Choose, which FacultyAttendanceBatchWork to update.
+     */
+    where: FacultyAttendanceBatchWorkWhereUniqueInput
+  }
+
+  /**
+   * FacultyAttendanceBatchWork updateMany
+   */
+  export type FacultyAttendanceBatchWorkUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update FacultyAttendanceBatchWorks.
+     */
+    data: XOR<FacultyAttendanceBatchWorkUpdateManyMutationInput, FacultyAttendanceBatchWorkUncheckedUpdateManyInput>
+    /**
+     * Filter which FacultyAttendanceBatchWorks to update
+     */
+    where?: FacultyAttendanceBatchWorkWhereInput
+    /**
+     * Limit how many FacultyAttendanceBatchWorks to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * FacultyAttendanceBatchWork updateManyAndReturn
+   */
+  export type FacultyAttendanceBatchWorkUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyAttendanceBatchWork
+     */
+    select?: FacultyAttendanceBatchWorkSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyAttendanceBatchWork
+     */
+    omit?: FacultyAttendanceBatchWorkOmit<ExtArgs> | null
+    /**
+     * The data used to update FacultyAttendanceBatchWorks.
+     */
+    data: XOR<FacultyAttendanceBatchWorkUpdateManyMutationInput, FacultyAttendanceBatchWorkUncheckedUpdateManyInput>
+    /**
+     * Filter which FacultyAttendanceBatchWorks to update
+     */
+    where?: FacultyAttendanceBatchWorkWhereInput
+    /**
+     * Limit how many FacultyAttendanceBatchWorks to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyAttendanceBatchWorkIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * FacultyAttendanceBatchWork upsert
+   */
+  export type FacultyAttendanceBatchWorkUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyAttendanceBatchWork
+     */
+    select?: FacultyAttendanceBatchWorkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyAttendanceBatchWork
+     */
+    omit?: FacultyAttendanceBatchWorkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyAttendanceBatchWorkInclude<ExtArgs> | null
+    /**
+     * The filter to search for the FacultyAttendanceBatchWork to update in case it exists.
+     */
+    where: FacultyAttendanceBatchWorkWhereUniqueInput
+    /**
+     * In case the FacultyAttendanceBatchWork found by the `where` argument doesn't exist, create a new FacultyAttendanceBatchWork with this data.
+     */
+    create: XOR<FacultyAttendanceBatchWorkCreateInput, FacultyAttendanceBatchWorkUncheckedCreateInput>
+    /**
+     * In case the FacultyAttendanceBatchWork was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<FacultyAttendanceBatchWorkUpdateInput, FacultyAttendanceBatchWorkUncheckedUpdateInput>
+  }
+
+  /**
+   * FacultyAttendanceBatchWork delete
+   */
+  export type FacultyAttendanceBatchWorkDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyAttendanceBatchWork
+     */
+    select?: FacultyAttendanceBatchWorkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyAttendanceBatchWork
+     */
+    omit?: FacultyAttendanceBatchWorkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyAttendanceBatchWorkInclude<ExtArgs> | null
+    /**
+     * Filter which FacultyAttendanceBatchWork to delete.
+     */
+    where: FacultyAttendanceBatchWorkWhereUniqueInput
+  }
+
+  /**
+   * FacultyAttendanceBatchWork deleteMany
+   */
+  export type FacultyAttendanceBatchWorkDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FacultyAttendanceBatchWorks to delete
+     */
+    where?: FacultyAttendanceBatchWorkWhereInput
+    /**
+     * Limit how many FacultyAttendanceBatchWorks to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * FacultyAttendanceBatchWork without action
+   */
+  export type FacultyAttendanceBatchWorkDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyAttendanceBatchWork
+     */
+    select?: FacultyAttendanceBatchWorkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyAttendanceBatchWork
+     */
+    omit?: FacultyAttendanceBatchWorkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyAttendanceBatchWorkInclude<ExtArgs> | null
   }
 
 
@@ -52049,6 +54591,35 @@ export namespace Prisma {
   export type FacultyAttendanceSessionScalarFieldEnum = (typeof FacultyAttendanceSessionScalarFieldEnum)[keyof typeof FacultyAttendanceSessionScalarFieldEnum]
 
 
+  export const FacultyAttendanceDayScalarFieldEnum: {
+    id: 'id',
+    facultyUserId: 'facultyUserId',
+    attendanceDate: 'attendanceDate',
+    status: 'status',
+    firstLoginAt: 'firstLoginAt',
+    finalLogoutAt: 'finalLogoutAt',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type FacultyAttendanceDayScalarFieldEnum = (typeof FacultyAttendanceDayScalarFieldEnum)[keyof typeof FacultyAttendanceDayScalarFieldEnum]
+
+
+  export const FacultyAttendanceBatchWorkScalarFieldEnum: {
+    id: 'id',
+    attendanceSessionId: 'attendanceSessionId',
+    facultyUserId: 'facultyUserId',
+    attendanceDate: 'attendanceDate',
+    branchId: 'branchId',
+    batchId: 'batchId',
+    workSummary: 'workSummary',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type FacultyAttendanceBatchWorkScalarFieldEnum = (typeof FacultyAttendanceBatchWorkScalarFieldEnum)[keyof typeof FacultyAttendanceBatchWorkScalarFieldEnum]
+
+
   export const FacultyTodayWorkEntryScalarFieldEnum: {
     id: 'id',
     facultyUserId: 'facultyUserId',
@@ -52521,6 +55092,8 @@ export namespace Prisma {
     batchFacultyAssignments?: BatchFacultyAssignmentListRelationFilter
     managedBranch?: XOR<BranchNullableScalarRelationFilter, BranchWhereInput> | null
     facultyAttendanceSessions?: FacultyAttendanceSessionListRelationFilter
+    facultyAttendanceDays?: FacultyAttendanceDayListRelationFilter
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkListRelationFilter
     facultyTodayWorkEntries?: FacultyTodayWorkEntryListRelationFilter
     loginEvents?: LoginEventListRelationFilter
     targetedNotifications?: NotificationListRelationFilter
@@ -52556,6 +55129,8 @@ export namespace Prisma {
     batchFacultyAssignments?: BatchFacultyAssignmentOrderByRelationAggregateInput
     managedBranch?: BranchOrderByWithRelationInput
     facultyAttendanceSessions?: FacultyAttendanceSessionOrderByRelationAggregateInput
+    facultyAttendanceDays?: FacultyAttendanceDayOrderByRelationAggregateInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkOrderByRelationAggregateInput
     facultyTodayWorkEntries?: FacultyTodayWorkEntryOrderByRelationAggregateInput
     loginEvents?: LoginEventOrderByRelationAggregateInput
     targetedNotifications?: NotificationOrderByRelationAggregateInput
@@ -52594,6 +55169,8 @@ export namespace Prisma {
     batchFacultyAssignments?: BatchFacultyAssignmentListRelationFilter
     managedBranch?: XOR<BranchNullableScalarRelationFilter, BranchWhereInput> | null
     facultyAttendanceSessions?: FacultyAttendanceSessionListRelationFilter
+    facultyAttendanceDays?: FacultyAttendanceDayListRelationFilter
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkListRelationFilter
     facultyTodayWorkEntries?: FacultyTodayWorkEntryListRelationFilter
     loginEvents?: LoginEventListRelationFilter
     targetedNotifications?: NotificationListRelationFilter
@@ -55742,6 +58319,7 @@ export namespace Prisma {
     workReport?: StringNullableFilter<"FacultyAttendanceSession"> | string | null
     workCompleted?: StringNullableFilter<"FacultyAttendanceSession"> | string | null
     facultyUser?: XOR<UserScalarRelationFilter, UserWhereInput>
+    batchWork?: FacultyAttendanceBatchWorkListRelationFilter
   }
 
   export type FacultyAttendanceSessionOrderByWithRelationInput = {
@@ -55758,6 +58336,7 @@ export namespace Prisma {
     workReport?: SortOrderInput | SortOrder
     workCompleted?: SortOrderInput | SortOrder
     facultyUser?: UserOrderByWithRelationInput
+    batchWork?: FacultyAttendanceBatchWorkOrderByRelationAggregateInput
   }
 
   export type FacultyAttendanceSessionWhereUniqueInput = Prisma.AtLeast<{
@@ -55777,6 +58356,7 @@ export namespace Prisma {
     workReport?: StringNullableFilter<"FacultyAttendanceSession"> | string | null
     workCompleted?: StringNullableFilter<"FacultyAttendanceSession"> | string | null
     facultyUser?: XOR<UserScalarRelationFilter, UserWhereInput>
+    batchWork?: FacultyAttendanceBatchWorkListRelationFilter
   }, "id">
 
   export type FacultyAttendanceSessionOrderByWithAggregationInput = {
@@ -55813,6 +58393,156 @@ export namespace Prisma {
     logoutReason?: StringNullableWithAggregatesFilter<"FacultyAttendanceSession"> | string | null
     workReport?: StringNullableWithAggregatesFilter<"FacultyAttendanceSession"> | string | null
     workCompleted?: StringNullableWithAggregatesFilter<"FacultyAttendanceSession"> | string | null
+  }
+
+  export type FacultyAttendanceDayWhereInput = {
+    AND?: FacultyAttendanceDayWhereInput | FacultyAttendanceDayWhereInput[]
+    OR?: FacultyAttendanceDayWhereInput[]
+    NOT?: FacultyAttendanceDayWhereInput | FacultyAttendanceDayWhereInput[]
+    id?: StringFilter<"FacultyAttendanceDay"> | string
+    facultyUserId?: StringFilter<"FacultyAttendanceDay"> | string
+    attendanceDate?: StringFilter<"FacultyAttendanceDay"> | string
+    status?: StringFilter<"FacultyAttendanceDay"> | string
+    firstLoginAt?: DateTimeNullableFilter<"FacultyAttendanceDay"> | Date | string | null
+    finalLogoutAt?: DateTimeNullableFilter<"FacultyAttendanceDay"> | Date | string | null
+    createdAt?: DateTimeFilter<"FacultyAttendanceDay"> | Date | string
+    updatedAt?: DateTimeFilter<"FacultyAttendanceDay"> | Date | string
+    facultyUser?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type FacultyAttendanceDayOrderByWithRelationInput = {
+    id?: SortOrder
+    facultyUserId?: SortOrder
+    attendanceDate?: SortOrder
+    status?: SortOrder
+    firstLoginAt?: SortOrderInput | SortOrder
+    finalLogoutAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    facultyUser?: UserOrderByWithRelationInput
+  }
+
+  export type FacultyAttendanceDayWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    facultyUserId_attendanceDate?: FacultyAttendanceDayFacultyUserIdAttendanceDateCompoundUniqueInput
+    AND?: FacultyAttendanceDayWhereInput | FacultyAttendanceDayWhereInput[]
+    OR?: FacultyAttendanceDayWhereInput[]
+    NOT?: FacultyAttendanceDayWhereInput | FacultyAttendanceDayWhereInput[]
+    facultyUserId?: StringFilter<"FacultyAttendanceDay"> | string
+    attendanceDate?: StringFilter<"FacultyAttendanceDay"> | string
+    status?: StringFilter<"FacultyAttendanceDay"> | string
+    firstLoginAt?: DateTimeNullableFilter<"FacultyAttendanceDay"> | Date | string | null
+    finalLogoutAt?: DateTimeNullableFilter<"FacultyAttendanceDay"> | Date | string | null
+    createdAt?: DateTimeFilter<"FacultyAttendanceDay"> | Date | string
+    updatedAt?: DateTimeFilter<"FacultyAttendanceDay"> | Date | string
+    facultyUser?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id" | "facultyUserId_attendanceDate">
+
+  export type FacultyAttendanceDayOrderByWithAggregationInput = {
+    id?: SortOrder
+    facultyUserId?: SortOrder
+    attendanceDate?: SortOrder
+    status?: SortOrder
+    firstLoginAt?: SortOrderInput | SortOrder
+    finalLogoutAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: FacultyAttendanceDayCountOrderByAggregateInput
+    _max?: FacultyAttendanceDayMaxOrderByAggregateInput
+    _min?: FacultyAttendanceDayMinOrderByAggregateInput
+  }
+
+  export type FacultyAttendanceDayScalarWhereWithAggregatesInput = {
+    AND?: FacultyAttendanceDayScalarWhereWithAggregatesInput | FacultyAttendanceDayScalarWhereWithAggregatesInput[]
+    OR?: FacultyAttendanceDayScalarWhereWithAggregatesInput[]
+    NOT?: FacultyAttendanceDayScalarWhereWithAggregatesInput | FacultyAttendanceDayScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"FacultyAttendanceDay"> | string
+    facultyUserId?: StringWithAggregatesFilter<"FacultyAttendanceDay"> | string
+    attendanceDate?: StringWithAggregatesFilter<"FacultyAttendanceDay"> | string
+    status?: StringWithAggregatesFilter<"FacultyAttendanceDay"> | string
+    firstLoginAt?: DateTimeNullableWithAggregatesFilter<"FacultyAttendanceDay"> | Date | string | null
+    finalLogoutAt?: DateTimeNullableWithAggregatesFilter<"FacultyAttendanceDay"> | Date | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"FacultyAttendanceDay"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"FacultyAttendanceDay"> | Date | string
+  }
+
+  export type FacultyAttendanceBatchWorkWhereInput = {
+    AND?: FacultyAttendanceBatchWorkWhereInput | FacultyAttendanceBatchWorkWhereInput[]
+    OR?: FacultyAttendanceBatchWorkWhereInput[]
+    NOT?: FacultyAttendanceBatchWorkWhereInput | FacultyAttendanceBatchWorkWhereInput[]
+    id?: StringFilter<"FacultyAttendanceBatchWork"> | string
+    attendanceSessionId?: StringFilter<"FacultyAttendanceBatchWork"> | string
+    facultyUserId?: StringFilter<"FacultyAttendanceBatchWork"> | string
+    attendanceDate?: StringFilter<"FacultyAttendanceBatchWork"> | string
+    branchId?: StringFilter<"FacultyAttendanceBatchWork"> | string
+    batchId?: StringFilter<"FacultyAttendanceBatchWork"> | string
+    workSummary?: StringFilter<"FacultyAttendanceBatchWork"> | string
+    createdAt?: DateTimeFilter<"FacultyAttendanceBatchWork"> | Date | string
+    updatedAt?: DateTimeFilter<"FacultyAttendanceBatchWork"> | Date | string
+    session?: XOR<FacultyAttendanceSessionScalarRelationFilter, FacultyAttendanceSessionWhereInput>
+    facultyUser?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type FacultyAttendanceBatchWorkOrderByWithRelationInput = {
+    id?: SortOrder
+    attendanceSessionId?: SortOrder
+    facultyUserId?: SortOrder
+    attendanceDate?: SortOrder
+    branchId?: SortOrder
+    batchId?: SortOrder
+    workSummary?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    session?: FacultyAttendanceSessionOrderByWithRelationInput
+    facultyUser?: UserOrderByWithRelationInput
+  }
+
+  export type FacultyAttendanceBatchWorkWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    attendanceSessionId_batchId?: FacultyAttendanceBatchWorkAttendanceSessionIdBatchIdCompoundUniqueInput
+    AND?: FacultyAttendanceBatchWorkWhereInput | FacultyAttendanceBatchWorkWhereInput[]
+    OR?: FacultyAttendanceBatchWorkWhereInput[]
+    NOT?: FacultyAttendanceBatchWorkWhereInput | FacultyAttendanceBatchWorkWhereInput[]
+    attendanceSessionId?: StringFilter<"FacultyAttendanceBatchWork"> | string
+    facultyUserId?: StringFilter<"FacultyAttendanceBatchWork"> | string
+    attendanceDate?: StringFilter<"FacultyAttendanceBatchWork"> | string
+    branchId?: StringFilter<"FacultyAttendanceBatchWork"> | string
+    batchId?: StringFilter<"FacultyAttendanceBatchWork"> | string
+    workSummary?: StringFilter<"FacultyAttendanceBatchWork"> | string
+    createdAt?: DateTimeFilter<"FacultyAttendanceBatchWork"> | Date | string
+    updatedAt?: DateTimeFilter<"FacultyAttendanceBatchWork"> | Date | string
+    session?: XOR<FacultyAttendanceSessionScalarRelationFilter, FacultyAttendanceSessionWhereInput>
+    facultyUser?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id" | "attendanceSessionId_batchId">
+
+  export type FacultyAttendanceBatchWorkOrderByWithAggregationInput = {
+    id?: SortOrder
+    attendanceSessionId?: SortOrder
+    facultyUserId?: SortOrder
+    attendanceDate?: SortOrder
+    branchId?: SortOrder
+    batchId?: SortOrder
+    workSummary?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: FacultyAttendanceBatchWorkCountOrderByAggregateInput
+    _max?: FacultyAttendanceBatchWorkMaxOrderByAggregateInput
+    _min?: FacultyAttendanceBatchWorkMinOrderByAggregateInput
+  }
+
+  export type FacultyAttendanceBatchWorkScalarWhereWithAggregatesInput = {
+    AND?: FacultyAttendanceBatchWorkScalarWhereWithAggregatesInput | FacultyAttendanceBatchWorkScalarWhereWithAggregatesInput[]
+    OR?: FacultyAttendanceBatchWorkScalarWhereWithAggregatesInput[]
+    NOT?: FacultyAttendanceBatchWorkScalarWhereWithAggregatesInput | FacultyAttendanceBatchWorkScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"FacultyAttendanceBatchWork"> | string
+    attendanceSessionId?: StringWithAggregatesFilter<"FacultyAttendanceBatchWork"> | string
+    facultyUserId?: StringWithAggregatesFilter<"FacultyAttendanceBatchWork"> | string
+    attendanceDate?: StringWithAggregatesFilter<"FacultyAttendanceBatchWork"> | string
+    branchId?: StringWithAggregatesFilter<"FacultyAttendanceBatchWork"> | string
+    batchId?: StringWithAggregatesFilter<"FacultyAttendanceBatchWork"> | string
+    workSummary?: StringWithAggregatesFilter<"FacultyAttendanceBatchWork"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"FacultyAttendanceBatchWork"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"FacultyAttendanceBatchWork"> | Date | string
   }
 
   export type FacultyTodayWorkEntryWhereInput = {
@@ -56887,6 +59617,8 @@ export namespace Prisma {
     batchFacultyAssignments?: BatchFacultyAssignmentCreateNestedManyWithoutFacultyInput
     managedBranch?: BranchCreateNestedOneWithoutAdminUserInput
     facultyAttendanceSessions?: FacultyAttendanceSessionCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceDays?: FacultyAttendanceDayCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkCreateNestedManyWithoutFacultyUserInput
     facultyTodayWorkEntries?: FacultyTodayWorkEntryCreateNestedManyWithoutFacultyUserInput
     loginEvents?: LoginEventCreateNestedManyWithoutUserInput
     targetedNotifications?: NotificationCreateNestedManyWithoutTargetUserInput
@@ -56922,6 +59654,8 @@ export namespace Prisma {
     batchFacultyAssignments?: BatchFacultyAssignmentUncheckedCreateNestedManyWithoutFacultyInput
     managedBranch?: BranchUncheckedCreateNestedOneWithoutAdminUserInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceDays?: FacultyAttendanceDayUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUncheckedCreateNestedManyWithoutFacultyUserInput
     facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedCreateNestedManyWithoutFacultyUserInput
     loginEvents?: LoginEventUncheckedCreateNestedManyWithoutUserInput
     targetedNotifications?: NotificationUncheckedCreateNestedManyWithoutTargetUserInput
@@ -56957,6 +59691,8 @@ export namespace Prisma {
     batchFacultyAssignments?: BatchFacultyAssignmentUpdateManyWithoutFacultyNestedInput
     managedBranch?: BranchUpdateOneWithoutAdminUserNestedInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceDays?: FacultyAttendanceDayUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUpdateManyWithoutFacultyUserNestedInput
     facultyTodayWorkEntries?: FacultyTodayWorkEntryUpdateManyWithoutFacultyUserNestedInput
     loginEvents?: LoginEventUpdateManyWithoutUserNestedInput
     targetedNotifications?: NotificationUpdateManyWithoutTargetUserNestedInput
@@ -56992,6 +59728,8 @@ export namespace Prisma {
     batchFacultyAssignments?: BatchFacultyAssignmentUncheckedUpdateManyWithoutFacultyNestedInput
     managedBranch?: BranchUncheckedUpdateOneWithoutAdminUserNestedInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceDays?: FacultyAttendanceDayUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUncheckedUpdateManyWithoutFacultyUserNestedInput
     facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedUpdateManyWithoutFacultyUserNestedInput
     loginEvents?: LoginEventUncheckedUpdateManyWithoutUserNestedInput
     targetedNotifications?: NotificationUncheckedUpdateManyWithoutTargetUserNestedInput
@@ -60707,6 +63445,7 @@ export namespace Prisma {
     workReport?: string | null
     workCompleted?: string | null
     facultyUser: UserCreateNestedOneWithoutFacultyAttendanceSessionsInput
+    batchWork?: FacultyAttendanceBatchWorkCreateNestedManyWithoutSessionInput
   }
 
   export type FacultyAttendanceSessionUncheckedCreateInput = {
@@ -60722,6 +63461,7 @@ export namespace Prisma {
     logoutReason?: string | null
     workReport?: string | null
     workCompleted?: string | null
+    batchWork?: FacultyAttendanceBatchWorkUncheckedCreateNestedManyWithoutSessionInput
   }
 
   export type FacultyAttendanceSessionUpdateInput = {
@@ -60737,6 +63477,7 @@ export namespace Prisma {
     workReport?: NullableStringFieldUpdateOperationsInput | string | null
     workCompleted?: NullableStringFieldUpdateOperationsInput | string | null
     facultyUser?: UserUpdateOneRequiredWithoutFacultyAttendanceSessionsNestedInput
+    batchWork?: FacultyAttendanceBatchWorkUpdateManyWithoutSessionNestedInput
   }
 
   export type FacultyAttendanceSessionUncheckedUpdateInput = {
@@ -60752,6 +63493,7 @@ export namespace Prisma {
     logoutReason?: NullableStringFieldUpdateOperationsInput | string | null
     workReport?: NullableStringFieldUpdateOperationsInput | string | null
     workCompleted?: NullableStringFieldUpdateOperationsInput | string | null
+    batchWork?: FacultyAttendanceBatchWorkUncheckedUpdateManyWithoutSessionNestedInput
   }
 
   export type FacultyAttendanceSessionCreateManyInput = {
@@ -60796,6 +63538,164 @@ export namespace Prisma {
     logoutReason?: NullableStringFieldUpdateOperationsInput | string | null
     workReport?: NullableStringFieldUpdateOperationsInput | string | null
     workCompleted?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type FacultyAttendanceDayCreateInput = {
+    id?: string
+    attendanceDate: string
+    status?: string
+    firstLoginAt?: Date | string | null
+    finalLogoutAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    facultyUser: UserCreateNestedOneWithoutFacultyAttendanceDaysInput
+  }
+
+  export type FacultyAttendanceDayUncheckedCreateInput = {
+    id?: string
+    facultyUserId: string
+    attendanceDate: string
+    status?: string
+    firstLoginAt?: Date | string | null
+    finalLogoutAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FacultyAttendanceDayUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    attendanceDate?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    firstLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    finalLogoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    facultyUser?: UserUpdateOneRequiredWithoutFacultyAttendanceDaysNestedInput
+  }
+
+  export type FacultyAttendanceDayUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    facultyUserId?: StringFieldUpdateOperationsInput | string
+    attendanceDate?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    firstLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    finalLogoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FacultyAttendanceDayCreateManyInput = {
+    id?: string
+    facultyUserId: string
+    attendanceDate: string
+    status?: string
+    firstLoginAt?: Date | string | null
+    finalLogoutAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FacultyAttendanceDayUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    attendanceDate?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    firstLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    finalLogoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FacultyAttendanceDayUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    facultyUserId?: StringFieldUpdateOperationsInput | string
+    attendanceDate?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    firstLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    finalLogoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FacultyAttendanceBatchWorkCreateInput = {
+    id?: string
+    attendanceDate: string
+    branchId: string
+    batchId: string
+    workSummary?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    session: FacultyAttendanceSessionCreateNestedOneWithoutBatchWorkInput
+    facultyUser: UserCreateNestedOneWithoutFacultyAttendanceBatchWorkInput
+  }
+
+  export type FacultyAttendanceBatchWorkUncheckedCreateInput = {
+    id?: string
+    attendanceSessionId: string
+    facultyUserId: string
+    attendanceDate: string
+    branchId: string
+    batchId: string
+    workSummary?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FacultyAttendanceBatchWorkUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    attendanceDate?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    batchId?: StringFieldUpdateOperationsInput | string
+    workSummary?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    session?: FacultyAttendanceSessionUpdateOneRequiredWithoutBatchWorkNestedInput
+    facultyUser?: UserUpdateOneRequiredWithoutFacultyAttendanceBatchWorkNestedInput
+  }
+
+  export type FacultyAttendanceBatchWorkUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    attendanceSessionId?: StringFieldUpdateOperationsInput | string
+    facultyUserId?: StringFieldUpdateOperationsInput | string
+    attendanceDate?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    batchId?: StringFieldUpdateOperationsInput | string
+    workSummary?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FacultyAttendanceBatchWorkCreateManyInput = {
+    id?: string
+    attendanceSessionId: string
+    facultyUserId: string
+    attendanceDate: string
+    branchId: string
+    batchId: string
+    workSummary?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FacultyAttendanceBatchWorkUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    attendanceDate?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    batchId?: StringFieldUpdateOperationsInput | string
+    workSummary?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FacultyAttendanceBatchWorkUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    attendanceSessionId?: StringFieldUpdateOperationsInput | string
+    facultyUserId?: StringFieldUpdateOperationsInput | string
+    attendanceDate?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    batchId?: StringFieldUpdateOperationsInput | string
+    workSummary?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type FacultyTodayWorkEntryCreateInput = {
@@ -62104,6 +65004,18 @@ export namespace Prisma {
     none?: FacultyAttendanceSessionWhereInput
   }
 
+  export type FacultyAttendanceDayListRelationFilter = {
+    every?: FacultyAttendanceDayWhereInput
+    some?: FacultyAttendanceDayWhereInput
+    none?: FacultyAttendanceDayWhereInput
+  }
+
+  export type FacultyAttendanceBatchWorkListRelationFilter = {
+    every?: FacultyAttendanceBatchWorkWhereInput
+    some?: FacultyAttendanceBatchWorkWhereInput
+    none?: FacultyAttendanceBatchWorkWhereInput
+  }
+
   export type FacultyTodayWorkEntryListRelationFilter = {
     every?: FacultyTodayWorkEntryWhereInput
     some?: FacultyTodayWorkEntryWhereInput
@@ -62162,6 +65074,14 @@ export namespace Prisma {
   }
 
   export type FacultyAttendanceSessionOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type FacultyAttendanceDayOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type FacultyAttendanceBatchWorkOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -64746,6 +67666,90 @@ export namespace Prisma {
     workCompleted?: SortOrder
   }
 
+  export type FacultyAttendanceDayFacultyUserIdAttendanceDateCompoundUniqueInput = {
+    facultyUserId: string
+    attendanceDate: string
+  }
+
+  export type FacultyAttendanceDayCountOrderByAggregateInput = {
+    id?: SortOrder
+    facultyUserId?: SortOrder
+    attendanceDate?: SortOrder
+    status?: SortOrder
+    firstLoginAt?: SortOrder
+    finalLogoutAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type FacultyAttendanceDayMaxOrderByAggregateInput = {
+    id?: SortOrder
+    facultyUserId?: SortOrder
+    attendanceDate?: SortOrder
+    status?: SortOrder
+    firstLoginAt?: SortOrder
+    finalLogoutAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type FacultyAttendanceDayMinOrderByAggregateInput = {
+    id?: SortOrder
+    facultyUserId?: SortOrder
+    attendanceDate?: SortOrder
+    status?: SortOrder
+    firstLoginAt?: SortOrder
+    finalLogoutAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type FacultyAttendanceSessionScalarRelationFilter = {
+    is?: FacultyAttendanceSessionWhereInput
+    isNot?: FacultyAttendanceSessionWhereInput
+  }
+
+  export type FacultyAttendanceBatchWorkAttendanceSessionIdBatchIdCompoundUniqueInput = {
+    attendanceSessionId: string
+    batchId: string
+  }
+
+  export type FacultyAttendanceBatchWorkCountOrderByAggregateInput = {
+    id?: SortOrder
+    attendanceSessionId?: SortOrder
+    facultyUserId?: SortOrder
+    attendanceDate?: SortOrder
+    branchId?: SortOrder
+    batchId?: SortOrder
+    workSummary?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type FacultyAttendanceBatchWorkMaxOrderByAggregateInput = {
+    id?: SortOrder
+    attendanceSessionId?: SortOrder
+    facultyUserId?: SortOrder
+    attendanceDate?: SortOrder
+    branchId?: SortOrder
+    batchId?: SortOrder
+    workSummary?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type FacultyAttendanceBatchWorkMinOrderByAggregateInput = {
+    id?: SortOrder
+    attendanceSessionId?: SortOrder
+    facultyUserId?: SortOrder
+    attendanceDate?: SortOrder
+    branchId?: SortOrder
+    batchId?: SortOrder
+    workSummary?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
   export type FloatFilter<$PrismaModel = never> = {
     equals?: number | FloatFieldRefInput<$PrismaModel>
     in?: number[] | ListFloatFieldRefInput<$PrismaModel>
@@ -65398,6 +68402,20 @@ export namespace Prisma {
     connect?: FacultyAttendanceSessionWhereUniqueInput | FacultyAttendanceSessionWhereUniqueInput[]
   }
 
+  export type FacultyAttendanceDayCreateNestedManyWithoutFacultyUserInput = {
+    create?: XOR<FacultyAttendanceDayCreateWithoutFacultyUserInput, FacultyAttendanceDayUncheckedCreateWithoutFacultyUserInput> | FacultyAttendanceDayCreateWithoutFacultyUserInput[] | FacultyAttendanceDayUncheckedCreateWithoutFacultyUserInput[]
+    connectOrCreate?: FacultyAttendanceDayCreateOrConnectWithoutFacultyUserInput | FacultyAttendanceDayCreateOrConnectWithoutFacultyUserInput[]
+    createMany?: FacultyAttendanceDayCreateManyFacultyUserInputEnvelope
+    connect?: FacultyAttendanceDayWhereUniqueInput | FacultyAttendanceDayWhereUniqueInput[]
+  }
+
+  export type FacultyAttendanceBatchWorkCreateNestedManyWithoutFacultyUserInput = {
+    create?: XOR<FacultyAttendanceBatchWorkCreateWithoutFacultyUserInput, FacultyAttendanceBatchWorkUncheckedCreateWithoutFacultyUserInput> | FacultyAttendanceBatchWorkCreateWithoutFacultyUserInput[] | FacultyAttendanceBatchWorkUncheckedCreateWithoutFacultyUserInput[]
+    connectOrCreate?: FacultyAttendanceBatchWorkCreateOrConnectWithoutFacultyUserInput | FacultyAttendanceBatchWorkCreateOrConnectWithoutFacultyUserInput[]
+    createMany?: FacultyAttendanceBatchWorkCreateManyFacultyUserInputEnvelope
+    connect?: FacultyAttendanceBatchWorkWhereUniqueInput | FacultyAttendanceBatchWorkWhereUniqueInput[]
+  }
+
   export type FacultyTodayWorkEntryCreateNestedManyWithoutFacultyUserInput = {
     create?: XOR<FacultyTodayWorkEntryCreateWithoutFacultyUserInput, FacultyTodayWorkEntryUncheckedCreateWithoutFacultyUserInput> | FacultyTodayWorkEntryCreateWithoutFacultyUserInput[] | FacultyTodayWorkEntryUncheckedCreateWithoutFacultyUserInput[]
     connectOrCreate?: FacultyTodayWorkEntryCreateOrConnectWithoutFacultyUserInput | FacultyTodayWorkEntryCreateOrConnectWithoutFacultyUserInput[]
@@ -65472,6 +68490,20 @@ export namespace Prisma {
     connectOrCreate?: FacultyAttendanceSessionCreateOrConnectWithoutFacultyUserInput | FacultyAttendanceSessionCreateOrConnectWithoutFacultyUserInput[]
     createMany?: FacultyAttendanceSessionCreateManyFacultyUserInputEnvelope
     connect?: FacultyAttendanceSessionWhereUniqueInput | FacultyAttendanceSessionWhereUniqueInput[]
+  }
+
+  export type FacultyAttendanceDayUncheckedCreateNestedManyWithoutFacultyUserInput = {
+    create?: XOR<FacultyAttendanceDayCreateWithoutFacultyUserInput, FacultyAttendanceDayUncheckedCreateWithoutFacultyUserInput> | FacultyAttendanceDayCreateWithoutFacultyUserInput[] | FacultyAttendanceDayUncheckedCreateWithoutFacultyUserInput[]
+    connectOrCreate?: FacultyAttendanceDayCreateOrConnectWithoutFacultyUserInput | FacultyAttendanceDayCreateOrConnectWithoutFacultyUserInput[]
+    createMany?: FacultyAttendanceDayCreateManyFacultyUserInputEnvelope
+    connect?: FacultyAttendanceDayWhereUniqueInput | FacultyAttendanceDayWhereUniqueInput[]
+  }
+
+  export type FacultyAttendanceBatchWorkUncheckedCreateNestedManyWithoutFacultyUserInput = {
+    create?: XOR<FacultyAttendanceBatchWorkCreateWithoutFacultyUserInput, FacultyAttendanceBatchWorkUncheckedCreateWithoutFacultyUserInput> | FacultyAttendanceBatchWorkCreateWithoutFacultyUserInput[] | FacultyAttendanceBatchWorkUncheckedCreateWithoutFacultyUserInput[]
+    connectOrCreate?: FacultyAttendanceBatchWorkCreateOrConnectWithoutFacultyUserInput | FacultyAttendanceBatchWorkCreateOrConnectWithoutFacultyUserInput[]
+    createMany?: FacultyAttendanceBatchWorkCreateManyFacultyUserInputEnvelope
+    connect?: FacultyAttendanceBatchWorkWhereUniqueInput | FacultyAttendanceBatchWorkWhereUniqueInput[]
   }
 
   export type FacultyTodayWorkEntryUncheckedCreateNestedManyWithoutFacultyUserInput = {
@@ -65598,6 +68630,34 @@ export namespace Prisma {
     update?: FacultyAttendanceSessionUpdateWithWhereUniqueWithoutFacultyUserInput | FacultyAttendanceSessionUpdateWithWhereUniqueWithoutFacultyUserInput[]
     updateMany?: FacultyAttendanceSessionUpdateManyWithWhereWithoutFacultyUserInput | FacultyAttendanceSessionUpdateManyWithWhereWithoutFacultyUserInput[]
     deleteMany?: FacultyAttendanceSessionScalarWhereInput | FacultyAttendanceSessionScalarWhereInput[]
+  }
+
+  export type FacultyAttendanceDayUpdateManyWithoutFacultyUserNestedInput = {
+    create?: XOR<FacultyAttendanceDayCreateWithoutFacultyUserInput, FacultyAttendanceDayUncheckedCreateWithoutFacultyUserInput> | FacultyAttendanceDayCreateWithoutFacultyUserInput[] | FacultyAttendanceDayUncheckedCreateWithoutFacultyUserInput[]
+    connectOrCreate?: FacultyAttendanceDayCreateOrConnectWithoutFacultyUserInput | FacultyAttendanceDayCreateOrConnectWithoutFacultyUserInput[]
+    upsert?: FacultyAttendanceDayUpsertWithWhereUniqueWithoutFacultyUserInput | FacultyAttendanceDayUpsertWithWhereUniqueWithoutFacultyUserInput[]
+    createMany?: FacultyAttendanceDayCreateManyFacultyUserInputEnvelope
+    set?: FacultyAttendanceDayWhereUniqueInput | FacultyAttendanceDayWhereUniqueInput[]
+    disconnect?: FacultyAttendanceDayWhereUniqueInput | FacultyAttendanceDayWhereUniqueInput[]
+    delete?: FacultyAttendanceDayWhereUniqueInput | FacultyAttendanceDayWhereUniqueInput[]
+    connect?: FacultyAttendanceDayWhereUniqueInput | FacultyAttendanceDayWhereUniqueInput[]
+    update?: FacultyAttendanceDayUpdateWithWhereUniqueWithoutFacultyUserInput | FacultyAttendanceDayUpdateWithWhereUniqueWithoutFacultyUserInput[]
+    updateMany?: FacultyAttendanceDayUpdateManyWithWhereWithoutFacultyUserInput | FacultyAttendanceDayUpdateManyWithWhereWithoutFacultyUserInput[]
+    deleteMany?: FacultyAttendanceDayScalarWhereInput | FacultyAttendanceDayScalarWhereInput[]
+  }
+
+  export type FacultyAttendanceBatchWorkUpdateManyWithoutFacultyUserNestedInput = {
+    create?: XOR<FacultyAttendanceBatchWorkCreateWithoutFacultyUserInput, FacultyAttendanceBatchWorkUncheckedCreateWithoutFacultyUserInput> | FacultyAttendanceBatchWorkCreateWithoutFacultyUserInput[] | FacultyAttendanceBatchWorkUncheckedCreateWithoutFacultyUserInput[]
+    connectOrCreate?: FacultyAttendanceBatchWorkCreateOrConnectWithoutFacultyUserInput | FacultyAttendanceBatchWorkCreateOrConnectWithoutFacultyUserInput[]
+    upsert?: FacultyAttendanceBatchWorkUpsertWithWhereUniqueWithoutFacultyUserInput | FacultyAttendanceBatchWorkUpsertWithWhereUniqueWithoutFacultyUserInput[]
+    createMany?: FacultyAttendanceBatchWorkCreateManyFacultyUserInputEnvelope
+    set?: FacultyAttendanceBatchWorkWhereUniqueInput | FacultyAttendanceBatchWorkWhereUniqueInput[]
+    disconnect?: FacultyAttendanceBatchWorkWhereUniqueInput | FacultyAttendanceBatchWorkWhereUniqueInput[]
+    delete?: FacultyAttendanceBatchWorkWhereUniqueInput | FacultyAttendanceBatchWorkWhereUniqueInput[]
+    connect?: FacultyAttendanceBatchWorkWhereUniqueInput | FacultyAttendanceBatchWorkWhereUniqueInput[]
+    update?: FacultyAttendanceBatchWorkUpdateWithWhereUniqueWithoutFacultyUserInput | FacultyAttendanceBatchWorkUpdateWithWhereUniqueWithoutFacultyUserInput[]
+    updateMany?: FacultyAttendanceBatchWorkUpdateManyWithWhereWithoutFacultyUserInput | FacultyAttendanceBatchWorkUpdateManyWithWhereWithoutFacultyUserInput[]
+    deleteMany?: FacultyAttendanceBatchWorkScalarWhereInput | FacultyAttendanceBatchWorkScalarWhereInput[]
   }
 
   export type FacultyTodayWorkEntryUpdateManyWithoutFacultyUserNestedInput = {
@@ -65748,6 +68808,34 @@ export namespace Prisma {
     update?: FacultyAttendanceSessionUpdateWithWhereUniqueWithoutFacultyUserInput | FacultyAttendanceSessionUpdateWithWhereUniqueWithoutFacultyUserInput[]
     updateMany?: FacultyAttendanceSessionUpdateManyWithWhereWithoutFacultyUserInput | FacultyAttendanceSessionUpdateManyWithWhereWithoutFacultyUserInput[]
     deleteMany?: FacultyAttendanceSessionScalarWhereInput | FacultyAttendanceSessionScalarWhereInput[]
+  }
+
+  export type FacultyAttendanceDayUncheckedUpdateManyWithoutFacultyUserNestedInput = {
+    create?: XOR<FacultyAttendanceDayCreateWithoutFacultyUserInput, FacultyAttendanceDayUncheckedCreateWithoutFacultyUserInput> | FacultyAttendanceDayCreateWithoutFacultyUserInput[] | FacultyAttendanceDayUncheckedCreateWithoutFacultyUserInput[]
+    connectOrCreate?: FacultyAttendanceDayCreateOrConnectWithoutFacultyUserInput | FacultyAttendanceDayCreateOrConnectWithoutFacultyUserInput[]
+    upsert?: FacultyAttendanceDayUpsertWithWhereUniqueWithoutFacultyUserInput | FacultyAttendanceDayUpsertWithWhereUniqueWithoutFacultyUserInput[]
+    createMany?: FacultyAttendanceDayCreateManyFacultyUserInputEnvelope
+    set?: FacultyAttendanceDayWhereUniqueInput | FacultyAttendanceDayWhereUniqueInput[]
+    disconnect?: FacultyAttendanceDayWhereUniqueInput | FacultyAttendanceDayWhereUniqueInput[]
+    delete?: FacultyAttendanceDayWhereUniqueInput | FacultyAttendanceDayWhereUniqueInput[]
+    connect?: FacultyAttendanceDayWhereUniqueInput | FacultyAttendanceDayWhereUniqueInput[]
+    update?: FacultyAttendanceDayUpdateWithWhereUniqueWithoutFacultyUserInput | FacultyAttendanceDayUpdateWithWhereUniqueWithoutFacultyUserInput[]
+    updateMany?: FacultyAttendanceDayUpdateManyWithWhereWithoutFacultyUserInput | FacultyAttendanceDayUpdateManyWithWhereWithoutFacultyUserInput[]
+    deleteMany?: FacultyAttendanceDayScalarWhereInput | FacultyAttendanceDayScalarWhereInput[]
+  }
+
+  export type FacultyAttendanceBatchWorkUncheckedUpdateManyWithoutFacultyUserNestedInput = {
+    create?: XOR<FacultyAttendanceBatchWorkCreateWithoutFacultyUserInput, FacultyAttendanceBatchWorkUncheckedCreateWithoutFacultyUserInput> | FacultyAttendanceBatchWorkCreateWithoutFacultyUserInput[] | FacultyAttendanceBatchWorkUncheckedCreateWithoutFacultyUserInput[]
+    connectOrCreate?: FacultyAttendanceBatchWorkCreateOrConnectWithoutFacultyUserInput | FacultyAttendanceBatchWorkCreateOrConnectWithoutFacultyUserInput[]
+    upsert?: FacultyAttendanceBatchWorkUpsertWithWhereUniqueWithoutFacultyUserInput | FacultyAttendanceBatchWorkUpsertWithWhereUniqueWithoutFacultyUserInput[]
+    createMany?: FacultyAttendanceBatchWorkCreateManyFacultyUserInputEnvelope
+    set?: FacultyAttendanceBatchWorkWhereUniqueInput | FacultyAttendanceBatchWorkWhereUniqueInput[]
+    disconnect?: FacultyAttendanceBatchWorkWhereUniqueInput | FacultyAttendanceBatchWorkWhereUniqueInput[]
+    delete?: FacultyAttendanceBatchWorkWhereUniqueInput | FacultyAttendanceBatchWorkWhereUniqueInput[]
+    connect?: FacultyAttendanceBatchWorkWhereUniqueInput | FacultyAttendanceBatchWorkWhereUniqueInput[]
+    update?: FacultyAttendanceBatchWorkUpdateWithWhereUniqueWithoutFacultyUserInput | FacultyAttendanceBatchWorkUpdateWithWhereUniqueWithoutFacultyUserInput[]
+    updateMany?: FacultyAttendanceBatchWorkUpdateManyWithWhereWithoutFacultyUserInput | FacultyAttendanceBatchWorkUpdateManyWithWhereWithoutFacultyUserInput[]
+    deleteMany?: FacultyAttendanceBatchWorkScalarWhereInput | FacultyAttendanceBatchWorkScalarWhereInput[]
   }
 
   export type FacultyTodayWorkEntryUncheckedUpdateManyWithoutFacultyUserNestedInput = {
@@ -68083,12 +71171,96 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
+  export type FacultyAttendanceBatchWorkCreateNestedManyWithoutSessionInput = {
+    create?: XOR<FacultyAttendanceBatchWorkCreateWithoutSessionInput, FacultyAttendanceBatchWorkUncheckedCreateWithoutSessionInput> | FacultyAttendanceBatchWorkCreateWithoutSessionInput[] | FacultyAttendanceBatchWorkUncheckedCreateWithoutSessionInput[]
+    connectOrCreate?: FacultyAttendanceBatchWorkCreateOrConnectWithoutSessionInput | FacultyAttendanceBatchWorkCreateOrConnectWithoutSessionInput[]
+    createMany?: FacultyAttendanceBatchWorkCreateManySessionInputEnvelope
+    connect?: FacultyAttendanceBatchWorkWhereUniqueInput | FacultyAttendanceBatchWorkWhereUniqueInput[]
+  }
+
+  export type FacultyAttendanceBatchWorkUncheckedCreateNestedManyWithoutSessionInput = {
+    create?: XOR<FacultyAttendanceBatchWorkCreateWithoutSessionInput, FacultyAttendanceBatchWorkUncheckedCreateWithoutSessionInput> | FacultyAttendanceBatchWorkCreateWithoutSessionInput[] | FacultyAttendanceBatchWorkUncheckedCreateWithoutSessionInput[]
+    connectOrCreate?: FacultyAttendanceBatchWorkCreateOrConnectWithoutSessionInput | FacultyAttendanceBatchWorkCreateOrConnectWithoutSessionInput[]
+    createMany?: FacultyAttendanceBatchWorkCreateManySessionInputEnvelope
+    connect?: FacultyAttendanceBatchWorkWhereUniqueInput | FacultyAttendanceBatchWorkWhereUniqueInput[]
+  }
+
   export type UserUpdateOneRequiredWithoutFacultyAttendanceSessionsNestedInput = {
     create?: XOR<UserCreateWithoutFacultyAttendanceSessionsInput, UserUncheckedCreateWithoutFacultyAttendanceSessionsInput>
     connectOrCreate?: UserCreateOrConnectWithoutFacultyAttendanceSessionsInput
     upsert?: UserUpsertWithoutFacultyAttendanceSessionsInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutFacultyAttendanceSessionsInput, UserUpdateWithoutFacultyAttendanceSessionsInput>, UserUncheckedUpdateWithoutFacultyAttendanceSessionsInput>
+  }
+
+  export type FacultyAttendanceBatchWorkUpdateManyWithoutSessionNestedInput = {
+    create?: XOR<FacultyAttendanceBatchWorkCreateWithoutSessionInput, FacultyAttendanceBatchWorkUncheckedCreateWithoutSessionInput> | FacultyAttendanceBatchWorkCreateWithoutSessionInput[] | FacultyAttendanceBatchWorkUncheckedCreateWithoutSessionInput[]
+    connectOrCreate?: FacultyAttendanceBatchWorkCreateOrConnectWithoutSessionInput | FacultyAttendanceBatchWorkCreateOrConnectWithoutSessionInput[]
+    upsert?: FacultyAttendanceBatchWorkUpsertWithWhereUniqueWithoutSessionInput | FacultyAttendanceBatchWorkUpsertWithWhereUniqueWithoutSessionInput[]
+    createMany?: FacultyAttendanceBatchWorkCreateManySessionInputEnvelope
+    set?: FacultyAttendanceBatchWorkWhereUniqueInput | FacultyAttendanceBatchWorkWhereUniqueInput[]
+    disconnect?: FacultyAttendanceBatchWorkWhereUniqueInput | FacultyAttendanceBatchWorkWhereUniqueInput[]
+    delete?: FacultyAttendanceBatchWorkWhereUniqueInput | FacultyAttendanceBatchWorkWhereUniqueInput[]
+    connect?: FacultyAttendanceBatchWorkWhereUniqueInput | FacultyAttendanceBatchWorkWhereUniqueInput[]
+    update?: FacultyAttendanceBatchWorkUpdateWithWhereUniqueWithoutSessionInput | FacultyAttendanceBatchWorkUpdateWithWhereUniqueWithoutSessionInput[]
+    updateMany?: FacultyAttendanceBatchWorkUpdateManyWithWhereWithoutSessionInput | FacultyAttendanceBatchWorkUpdateManyWithWhereWithoutSessionInput[]
+    deleteMany?: FacultyAttendanceBatchWorkScalarWhereInput | FacultyAttendanceBatchWorkScalarWhereInput[]
+  }
+
+  export type FacultyAttendanceBatchWorkUncheckedUpdateManyWithoutSessionNestedInput = {
+    create?: XOR<FacultyAttendanceBatchWorkCreateWithoutSessionInput, FacultyAttendanceBatchWorkUncheckedCreateWithoutSessionInput> | FacultyAttendanceBatchWorkCreateWithoutSessionInput[] | FacultyAttendanceBatchWorkUncheckedCreateWithoutSessionInput[]
+    connectOrCreate?: FacultyAttendanceBatchWorkCreateOrConnectWithoutSessionInput | FacultyAttendanceBatchWorkCreateOrConnectWithoutSessionInput[]
+    upsert?: FacultyAttendanceBatchWorkUpsertWithWhereUniqueWithoutSessionInput | FacultyAttendanceBatchWorkUpsertWithWhereUniqueWithoutSessionInput[]
+    createMany?: FacultyAttendanceBatchWorkCreateManySessionInputEnvelope
+    set?: FacultyAttendanceBatchWorkWhereUniqueInput | FacultyAttendanceBatchWorkWhereUniqueInput[]
+    disconnect?: FacultyAttendanceBatchWorkWhereUniqueInput | FacultyAttendanceBatchWorkWhereUniqueInput[]
+    delete?: FacultyAttendanceBatchWorkWhereUniqueInput | FacultyAttendanceBatchWorkWhereUniqueInput[]
+    connect?: FacultyAttendanceBatchWorkWhereUniqueInput | FacultyAttendanceBatchWorkWhereUniqueInput[]
+    update?: FacultyAttendanceBatchWorkUpdateWithWhereUniqueWithoutSessionInput | FacultyAttendanceBatchWorkUpdateWithWhereUniqueWithoutSessionInput[]
+    updateMany?: FacultyAttendanceBatchWorkUpdateManyWithWhereWithoutSessionInput | FacultyAttendanceBatchWorkUpdateManyWithWhereWithoutSessionInput[]
+    deleteMany?: FacultyAttendanceBatchWorkScalarWhereInput | FacultyAttendanceBatchWorkScalarWhereInput[]
+  }
+
+  export type UserCreateNestedOneWithoutFacultyAttendanceDaysInput = {
+    create?: XOR<UserCreateWithoutFacultyAttendanceDaysInput, UserUncheckedCreateWithoutFacultyAttendanceDaysInput>
+    connectOrCreate?: UserCreateOrConnectWithoutFacultyAttendanceDaysInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutFacultyAttendanceDaysNestedInput = {
+    create?: XOR<UserCreateWithoutFacultyAttendanceDaysInput, UserUncheckedCreateWithoutFacultyAttendanceDaysInput>
+    connectOrCreate?: UserCreateOrConnectWithoutFacultyAttendanceDaysInput
+    upsert?: UserUpsertWithoutFacultyAttendanceDaysInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutFacultyAttendanceDaysInput, UserUpdateWithoutFacultyAttendanceDaysInput>, UserUncheckedUpdateWithoutFacultyAttendanceDaysInput>
+  }
+
+  export type FacultyAttendanceSessionCreateNestedOneWithoutBatchWorkInput = {
+    create?: XOR<FacultyAttendanceSessionCreateWithoutBatchWorkInput, FacultyAttendanceSessionUncheckedCreateWithoutBatchWorkInput>
+    connectOrCreate?: FacultyAttendanceSessionCreateOrConnectWithoutBatchWorkInput
+    connect?: FacultyAttendanceSessionWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutFacultyAttendanceBatchWorkInput = {
+    create?: XOR<UserCreateWithoutFacultyAttendanceBatchWorkInput, UserUncheckedCreateWithoutFacultyAttendanceBatchWorkInput>
+    connectOrCreate?: UserCreateOrConnectWithoutFacultyAttendanceBatchWorkInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type FacultyAttendanceSessionUpdateOneRequiredWithoutBatchWorkNestedInput = {
+    create?: XOR<FacultyAttendanceSessionCreateWithoutBatchWorkInput, FacultyAttendanceSessionUncheckedCreateWithoutBatchWorkInput>
+    connectOrCreate?: FacultyAttendanceSessionCreateOrConnectWithoutBatchWorkInput
+    upsert?: FacultyAttendanceSessionUpsertWithoutBatchWorkInput
+    connect?: FacultyAttendanceSessionWhereUniqueInput
+    update?: XOR<XOR<FacultyAttendanceSessionUpdateToOneWithWhereWithoutBatchWorkInput, FacultyAttendanceSessionUpdateWithoutBatchWorkInput>, FacultyAttendanceSessionUncheckedUpdateWithoutBatchWorkInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutFacultyAttendanceBatchWorkNestedInput = {
+    create?: XOR<UserCreateWithoutFacultyAttendanceBatchWorkInput, UserUncheckedCreateWithoutFacultyAttendanceBatchWorkInput>
+    connectOrCreate?: UserCreateOrConnectWithoutFacultyAttendanceBatchWorkInput
+    upsert?: UserUpsertWithoutFacultyAttendanceBatchWorkInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutFacultyAttendanceBatchWorkInput, UserUpdateWithoutFacultyAttendanceBatchWorkInput>, UserUncheckedUpdateWithoutFacultyAttendanceBatchWorkInput>
   }
 
   export type UserCreateNestedOneWithoutFacultyTodayWorkEntriesInput = {
@@ -69031,6 +72203,7 @@ export namespace Prisma {
     logoutReason?: string | null
     workReport?: string | null
     workCompleted?: string | null
+    batchWork?: FacultyAttendanceBatchWorkCreateNestedManyWithoutSessionInput
   }
 
   export type FacultyAttendanceSessionUncheckedCreateWithoutFacultyUserInput = {
@@ -69045,6 +72218,7 @@ export namespace Prisma {
     logoutReason?: string | null
     workReport?: string | null
     workCompleted?: string | null
+    batchWork?: FacultyAttendanceBatchWorkUncheckedCreateNestedManyWithoutSessionInput
   }
 
   export type FacultyAttendanceSessionCreateOrConnectWithoutFacultyUserInput = {
@@ -69054,6 +72228,68 @@ export namespace Prisma {
 
   export type FacultyAttendanceSessionCreateManyFacultyUserInputEnvelope = {
     data: FacultyAttendanceSessionCreateManyFacultyUserInput | FacultyAttendanceSessionCreateManyFacultyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type FacultyAttendanceDayCreateWithoutFacultyUserInput = {
+    id?: string
+    attendanceDate: string
+    status?: string
+    firstLoginAt?: Date | string | null
+    finalLogoutAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FacultyAttendanceDayUncheckedCreateWithoutFacultyUserInput = {
+    id?: string
+    attendanceDate: string
+    status?: string
+    firstLoginAt?: Date | string | null
+    finalLogoutAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FacultyAttendanceDayCreateOrConnectWithoutFacultyUserInput = {
+    where: FacultyAttendanceDayWhereUniqueInput
+    create: XOR<FacultyAttendanceDayCreateWithoutFacultyUserInput, FacultyAttendanceDayUncheckedCreateWithoutFacultyUserInput>
+  }
+
+  export type FacultyAttendanceDayCreateManyFacultyUserInputEnvelope = {
+    data: FacultyAttendanceDayCreateManyFacultyUserInput | FacultyAttendanceDayCreateManyFacultyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type FacultyAttendanceBatchWorkCreateWithoutFacultyUserInput = {
+    id?: string
+    attendanceDate: string
+    branchId: string
+    batchId: string
+    workSummary?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    session: FacultyAttendanceSessionCreateNestedOneWithoutBatchWorkInput
+  }
+
+  export type FacultyAttendanceBatchWorkUncheckedCreateWithoutFacultyUserInput = {
+    id?: string
+    attendanceSessionId: string
+    attendanceDate: string
+    branchId: string
+    batchId: string
+    workSummary?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FacultyAttendanceBatchWorkCreateOrConnectWithoutFacultyUserInput = {
+    where: FacultyAttendanceBatchWorkWhereUniqueInput
+    create: XOR<FacultyAttendanceBatchWorkCreateWithoutFacultyUserInput, FacultyAttendanceBatchWorkUncheckedCreateWithoutFacultyUserInput>
+  }
+
+  export type FacultyAttendanceBatchWorkCreateManyFacultyUserInputEnvelope = {
+    data: FacultyAttendanceBatchWorkCreateManyFacultyUserInput | FacultyAttendanceBatchWorkCreateManyFacultyUserInput[]
     skipDuplicates?: boolean
   }
 
@@ -69574,6 +72810,67 @@ export namespace Prisma {
     workCompleted?: StringNullableFilter<"FacultyAttendanceSession"> | string | null
   }
 
+  export type FacultyAttendanceDayUpsertWithWhereUniqueWithoutFacultyUserInput = {
+    where: FacultyAttendanceDayWhereUniqueInput
+    update: XOR<FacultyAttendanceDayUpdateWithoutFacultyUserInput, FacultyAttendanceDayUncheckedUpdateWithoutFacultyUserInput>
+    create: XOR<FacultyAttendanceDayCreateWithoutFacultyUserInput, FacultyAttendanceDayUncheckedCreateWithoutFacultyUserInput>
+  }
+
+  export type FacultyAttendanceDayUpdateWithWhereUniqueWithoutFacultyUserInput = {
+    where: FacultyAttendanceDayWhereUniqueInput
+    data: XOR<FacultyAttendanceDayUpdateWithoutFacultyUserInput, FacultyAttendanceDayUncheckedUpdateWithoutFacultyUserInput>
+  }
+
+  export type FacultyAttendanceDayUpdateManyWithWhereWithoutFacultyUserInput = {
+    where: FacultyAttendanceDayScalarWhereInput
+    data: XOR<FacultyAttendanceDayUpdateManyMutationInput, FacultyAttendanceDayUncheckedUpdateManyWithoutFacultyUserInput>
+  }
+
+  export type FacultyAttendanceDayScalarWhereInput = {
+    AND?: FacultyAttendanceDayScalarWhereInput | FacultyAttendanceDayScalarWhereInput[]
+    OR?: FacultyAttendanceDayScalarWhereInput[]
+    NOT?: FacultyAttendanceDayScalarWhereInput | FacultyAttendanceDayScalarWhereInput[]
+    id?: StringFilter<"FacultyAttendanceDay"> | string
+    facultyUserId?: StringFilter<"FacultyAttendanceDay"> | string
+    attendanceDate?: StringFilter<"FacultyAttendanceDay"> | string
+    status?: StringFilter<"FacultyAttendanceDay"> | string
+    firstLoginAt?: DateTimeNullableFilter<"FacultyAttendanceDay"> | Date | string | null
+    finalLogoutAt?: DateTimeNullableFilter<"FacultyAttendanceDay"> | Date | string | null
+    createdAt?: DateTimeFilter<"FacultyAttendanceDay"> | Date | string
+    updatedAt?: DateTimeFilter<"FacultyAttendanceDay"> | Date | string
+  }
+
+  export type FacultyAttendanceBatchWorkUpsertWithWhereUniqueWithoutFacultyUserInput = {
+    where: FacultyAttendanceBatchWorkWhereUniqueInput
+    update: XOR<FacultyAttendanceBatchWorkUpdateWithoutFacultyUserInput, FacultyAttendanceBatchWorkUncheckedUpdateWithoutFacultyUserInput>
+    create: XOR<FacultyAttendanceBatchWorkCreateWithoutFacultyUserInput, FacultyAttendanceBatchWorkUncheckedCreateWithoutFacultyUserInput>
+  }
+
+  export type FacultyAttendanceBatchWorkUpdateWithWhereUniqueWithoutFacultyUserInput = {
+    where: FacultyAttendanceBatchWorkWhereUniqueInput
+    data: XOR<FacultyAttendanceBatchWorkUpdateWithoutFacultyUserInput, FacultyAttendanceBatchWorkUncheckedUpdateWithoutFacultyUserInput>
+  }
+
+  export type FacultyAttendanceBatchWorkUpdateManyWithWhereWithoutFacultyUserInput = {
+    where: FacultyAttendanceBatchWorkScalarWhereInput
+    data: XOR<FacultyAttendanceBatchWorkUpdateManyMutationInput, FacultyAttendanceBatchWorkUncheckedUpdateManyWithoutFacultyUserInput>
+  }
+
+  export type FacultyAttendanceBatchWorkScalarWhereInput = {
+    AND?: FacultyAttendanceBatchWorkScalarWhereInput | FacultyAttendanceBatchWorkScalarWhereInput[]
+    OR?: FacultyAttendanceBatchWorkScalarWhereInput[]
+    NOT?: FacultyAttendanceBatchWorkScalarWhereInput | FacultyAttendanceBatchWorkScalarWhereInput[]
+    id?: StringFilter<"FacultyAttendanceBatchWork"> | string
+    attendanceSessionId?: StringFilter<"FacultyAttendanceBatchWork"> | string
+    facultyUserId?: StringFilter<"FacultyAttendanceBatchWork"> | string
+    attendanceDate?: StringFilter<"FacultyAttendanceBatchWork"> | string
+    branchId?: StringFilter<"FacultyAttendanceBatchWork"> | string
+    batchId?: StringFilter<"FacultyAttendanceBatchWork"> | string
+    workSummary?: StringFilter<"FacultyAttendanceBatchWork"> | string
+    createdAt?: DateTimeFilter<"FacultyAttendanceBatchWork"> | Date | string
+    updatedAt?: DateTimeFilter<"FacultyAttendanceBatchWork"> | Date | string
+  }
+
   export type FacultyTodayWorkEntryUpsertWithWhereUniqueWithoutFacultyUserInput = {
     where: FacultyTodayWorkEntryWhereUniqueInput
     update: XOR<FacultyTodayWorkEntryUpdateWithoutFacultyUserInput, FacultyTodayWorkEntryUncheckedUpdateWithoutFacultyUserInput>
@@ -69948,6 +73245,8 @@ export namespace Prisma {
     batchFacultyAssignments?: BatchFacultyAssignmentCreateNestedManyWithoutFacultyInput
     managedBranch?: BranchCreateNestedOneWithoutAdminUserInput
     facultyAttendanceSessions?: FacultyAttendanceSessionCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceDays?: FacultyAttendanceDayCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkCreateNestedManyWithoutFacultyUserInput
     facultyTodayWorkEntries?: FacultyTodayWorkEntryCreateNestedManyWithoutFacultyUserInput
     loginEvents?: LoginEventCreateNestedManyWithoutUserInput
     targetedNotifications?: NotificationCreateNestedManyWithoutTargetUserInput
@@ -69982,6 +73281,8 @@ export namespace Prisma {
     batchFacultyAssignments?: BatchFacultyAssignmentUncheckedCreateNestedManyWithoutFacultyInput
     managedBranch?: BranchUncheckedCreateNestedOneWithoutAdminUserInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceDays?: FacultyAttendanceDayUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUncheckedCreateNestedManyWithoutFacultyUserInput
     facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedCreateNestedManyWithoutFacultyUserInput
     loginEvents?: LoginEventUncheckedCreateNestedManyWithoutUserInput
     targetedNotifications?: NotificationUncheckedCreateNestedManyWithoutTargetUserInput
@@ -70061,6 +73362,8 @@ export namespace Prisma {
     batchFacultyAssignments?: BatchFacultyAssignmentUpdateManyWithoutFacultyNestedInput
     managedBranch?: BranchUpdateOneWithoutAdminUserNestedInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceDays?: FacultyAttendanceDayUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUpdateManyWithoutFacultyUserNestedInput
     facultyTodayWorkEntries?: FacultyTodayWorkEntryUpdateManyWithoutFacultyUserNestedInput
     loginEvents?: LoginEventUpdateManyWithoutUserNestedInput
     targetedNotifications?: NotificationUpdateManyWithoutTargetUserNestedInput
@@ -70095,6 +73398,8 @@ export namespace Prisma {
     batchFacultyAssignments?: BatchFacultyAssignmentUncheckedUpdateManyWithoutFacultyNestedInput
     managedBranch?: BranchUncheckedUpdateOneWithoutAdminUserNestedInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceDays?: FacultyAttendanceDayUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUncheckedUpdateManyWithoutFacultyUserNestedInput
     facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedUpdateManyWithoutFacultyUserNestedInput
     loginEvents?: LoginEventUncheckedUpdateManyWithoutUserNestedInput
     targetedNotifications?: NotificationUncheckedUpdateManyWithoutTargetUserNestedInput
@@ -70163,6 +73468,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     batchFacultyAssignments?: BatchFacultyAssignmentCreateNestedManyWithoutFacultyInput
     facultyAttendanceSessions?: FacultyAttendanceSessionCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceDays?: FacultyAttendanceDayCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkCreateNestedManyWithoutFacultyUserInput
     facultyTodayWorkEntries?: FacultyTodayWorkEntryCreateNestedManyWithoutFacultyUserInput
     loginEvents?: LoginEventCreateNestedManyWithoutUserInput
     targetedNotifications?: NotificationCreateNestedManyWithoutTargetUserInput
@@ -70197,6 +73504,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     batchFacultyAssignments?: BatchFacultyAssignmentUncheckedCreateNestedManyWithoutFacultyInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceDays?: FacultyAttendanceDayUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUncheckedCreateNestedManyWithoutFacultyUserInput
     facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedCreateNestedManyWithoutFacultyUserInput
     loginEvents?: LoginEventUncheckedCreateNestedManyWithoutUserInput
     targetedNotifications?: NotificationUncheckedCreateNestedManyWithoutTargetUserInput
@@ -70917,6 +74226,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     batchFacultyAssignments?: BatchFacultyAssignmentUpdateManyWithoutFacultyNestedInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceDays?: FacultyAttendanceDayUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUpdateManyWithoutFacultyUserNestedInput
     facultyTodayWorkEntries?: FacultyTodayWorkEntryUpdateManyWithoutFacultyUserNestedInput
     loginEvents?: LoginEventUpdateManyWithoutUserNestedInput
     targetedNotifications?: NotificationUpdateManyWithoutTargetUserNestedInput
@@ -70951,6 +74262,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     batchFacultyAssignments?: BatchFacultyAssignmentUncheckedUpdateManyWithoutFacultyNestedInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceDays?: FacultyAttendanceDayUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUncheckedUpdateManyWithoutFacultyUserNestedInput
     facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedUpdateManyWithoutFacultyUserNestedInput
     loginEvents?: LoginEventUncheckedUpdateManyWithoutUserNestedInput
     targetedNotifications?: NotificationUncheckedUpdateManyWithoutTargetUserNestedInput
@@ -71436,6 +74749,8 @@ export namespace Prisma {
     batchFacultyAssignments?: BatchFacultyAssignmentCreateNestedManyWithoutFacultyInput
     managedBranch?: BranchCreateNestedOneWithoutAdminUserInput
     facultyAttendanceSessions?: FacultyAttendanceSessionCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceDays?: FacultyAttendanceDayCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkCreateNestedManyWithoutFacultyUserInput
     facultyTodayWorkEntries?: FacultyTodayWorkEntryCreateNestedManyWithoutFacultyUserInput
     targetedNotifications?: NotificationCreateNestedManyWithoutTargetUserInput
     passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
@@ -71470,6 +74785,8 @@ export namespace Prisma {
     batchFacultyAssignments?: BatchFacultyAssignmentUncheckedCreateNestedManyWithoutFacultyInput
     managedBranch?: BranchUncheckedCreateNestedOneWithoutAdminUserInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceDays?: FacultyAttendanceDayUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUncheckedCreateNestedManyWithoutFacultyUserInput
     facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedCreateNestedManyWithoutFacultyUserInput
     targetedNotifications?: NotificationUncheckedCreateNestedManyWithoutTargetUserInput
     passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
@@ -71520,6 +74837,8 @@ export namespace Prisma {
     batchFacultyAssignments?: BatchFacultyAssignmentUpdateManyWithoutFacultyNestedInput
     managedBranch?: BranchUpdateOneWithoutAdminUserNestedInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceDays?: FacultyAttendanceDayUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUpdateManyWithoutFacultyUserNestedInput
     facultyTodayWorkEntries?: FacultyTodayWorkEntryUpdateManyWithoutFacultyUserNestedInput
     targetedNotifications?: NotificationUpdateManyWithoutTargetUserNestedInput
     passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
@@ -71554,6 +74873,8 @@ export namespace Prisma {
     batchFacultyAssignments?: BatchFacultyAssignmentUncheckedUpdateManyWithoutFacultyNestedInput
     managedBranch?: BranchUncheckedUpdateOneWithoutAdminUserNestedInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceDays?: FacultyAttendanceDayUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUncheckedUpdateManyWithoutFacultyUserNestedInput
     facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedUpdateManyWithoutFacultyUserNestedInput
     targetedNotifications?: NotificationUncheckedUpdateManyWithoutTargetUserNestedInput
     passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
@@ -71647,6 +74968,8 @@ export namespace Prisma {
     batchFacultyAssignments?: BatchFacultyAssignmentCreateNestedManyWithoutFacultyInput
     managedBranch?: BranchCreateNestedOneWithoutAdminUserInput
     facultyAttendanceSessions?: FacultyAttendanceSessionCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceDays?: FacultyAttendanceDayCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkCreateNestedManyWithoutFacultyUserInput
     facultyTodayWorkEntries?: FacultyTodayWorkEntryCreateNestedManyWithoutFacultyUserInput
     loginEvents?: LoginEventCreateNestedManyWithoutUserInput
     passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
@@ -71681,6 +75004,8 @@ export namespace Prisma {
     batchFacultyAssignments?: BatchFacultyAssignmentUncheckedCreateNestedManyWithoutFacultyInput
     managedBranch?: BranchUncheckedCreateNestedOneWithoutAdminUserInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceDays?: FacultyAttendanceDayUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUncheckedCreateNestedManyWithoutFacultyUserInput
     facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedCreateNestedManyWithoutFacultyUserInput
     loginEvents?: LoginEventUncheckedCreateNestedManyWithoutUserInput
     passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
@@ -71796,6 +75121,8 @@ export namespace Prisma {
     batchFacultyAssignments?: BatchFacultyAssignmentUpdateManyWithoutFacultyNestedInput
     managedBranch?: BranchUpdateOneWithoutAdminUserNestedInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceDays?: FacultyAttendanceDayUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUpdateManyWithoutFacultyUserNestedInput
     facultyTodayWorkEntries?: FacultyTodayWorkEntryUpdateManyWithoutFacultyUserNestedInput
     loginEvents?: LoginEventUpdateManyWithoutUserNestedInput
     passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
@@ -71830,6 +75157,8 @@ export namespace Prisma {
     batchFacultyAssignments?: BatchFacultyAssignmentUncheckedUpdateManyWithoutFacultyNestedInput
     managedBranch?: BranchUncheckedUpdateOneWithoutAdminUserNestedInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceDays?: FacultyAttendanceDayUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUncheckedUpdateManyWithoutFacultyUserNestedInput
     facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedUpdateManyWithoutFacultyUserNestedInput
     loginEvents?: LoginEventUncheckedUpdateManyWithoutUserNestedInput
     passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
@@ -71952,6 +75281,8 @@ export namespace Prisma {
     batchFacultyAssignments?: BatchFacultyAssignmentCreateNestedManyWithoutFacultyInput
     managedBranch?: BranchCreateNestedOneWithoutAdminUserInput
     facultyAttendanceSessions?: FacultyAttendanceSessionCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceDays?: FacultyAttendanceDayCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkCreateNestedManyWithoutFacultyUserInput
     facultyTodayWorkEntries?: FacultyTodayWorkEntryCreateNestedManyWithoutFacultyUserInput
     loginEvents?: LoginEventCreateNestedManyWithoutUserInput
     targetedNotifications?: NotificationCreateNestedManyWithoutTargetUserInput
@@ -71986,6 +75317,8 @@ export namespace Prisma {
     batchFacultyAssignments?: BatchFacultyAssignmentUncheckedCreateNestedManyWithoutFacultyInput
     managedBranch?: BranchUncheckedCreateNestedOneWithoutAdminUserInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceDays?: FacultyAttendanceDayUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUncheckedCreateNestedManyWithoutFacultyUserInput
     facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedCreateNestedManyWithoutFacultyUserInput
     loginEvents?: LoginEventUncheckedCreateNestedManyWithoutUserInput
     targetedNotifications?: NotificationUncheckedCreateNestedManyWithoutTargetUserInput
@@ -72036,6 +75369,8 @@ export namespace Prisma {
     batchFacultyAssignments?: BatchFacultyAssignmentUpdateManyWithoutFacultyNestedInput
     managedBranch?: BranchUpdateOneWithoutAdminUserNestedInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceDays?: FacultyAttendanceDayUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUpdateManyWithoutFacultyUserNestedInput
     facultyTodayWorkEntries?: FacultyTodayWorkEntryUpdateManyWithoutFacultyUserNestedInput
     loginEvents?: LoginEventUpdateManyWithoutUserNestedInput
     targetedNotifications?: NotificationUpdateManyWithoutTargetUserNestedInput
@@ -72070,6 +75405,8 @@ export namespace Prisma {
     batchFacultyAssignments?: BatchFacultyAssignmentUncheckedUpdateManyWithoutFacultyNestedInput
     managedBranch?: BranchUncheckedUpdateOneWithoutAdminUserNestedInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceDays?: FacultyAttendanceDayUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUncheckedUpdateManyWithoutFacultyUserNestedInput
     facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedUpdateManyWithoutFacultyUserNestedInput
     loginEvents?: LoginEventUncheckedUpdateManyWithoutUserNestedInput
     targetedNotifications?: NotificationUncheckedUpdateManyWithoutTargetUserNestedInput
@@ -74396,6 +77733,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     managedBranch?: BranchCreateNestedOneWithoutAdminUserInput
     facultyAttendanceSessions?: FacultyAttendanceSessionCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceDays?: FacultyAttendanceDayCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkCreateNestedManyWithoutFacultyUserInput
     facultyTodayWorkEntries?: FacultyTodayWorkEntryCreateNestedManyWithoutFacultyUserInput
     loginEvents?: LoginEventCreateNestedManyWithoutUserInput
     targetedNotifications?: NotificationCreateNestedManyWithoutTargetUserInput
@@ -74430,6 +77769,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     managedBranch?: BranchUncheckedCreateNestedOneWithoutAdminUserInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceDays?: FacultyAttendanceDayUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUncheckedCreateNestedManyWithoutFacultyUserInput
     facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedCreateNestedManyWithoutFacultyUserInput
     loginEvents?: LoginEventUncheckedCreateNestedManyWithoutUserInput
     targetedNotifications?: NotificationUncheckedCreateNestedManyWithoutTargetUserInput
@@ -74535,6 +77876,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     managedBranch?: BranchUpdateOneWithoutAdminUserNestedInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceDays?: FacultyAttendanceDayUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUpdateManyWithoutFacultyUserNestedInput
     facultyTodayWorkEntries?: FacultyTodayWorkEntryUpdateManyWithoutFacultyUserNestedInput
     loginEvents?: LoginEventUpdateManyWithoutUserNestedInput
     targetedNotifications?: NotificationUpdateManyWithoutTargetUserNestedInput
@@ -74569,6 +77912,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     managedBranch?: BranchUncheckedUpdateOneWithoutAdminUserNestedInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceDays?: FacultyAttendanceDayUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUncheckedUpdateManyWithoutFacultyUserNestedInput
     facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedUpdateManyWithoutFacultyUserNestedInput
     loginEvents?: LoginEventUncheckedUpdateManyWithoutUserNestedInput
     targetedNotifications?: NotificationUncheckedUpdateManyWithoutTargetUserNestedInput
@@ -76190,6 +79535,8 @@ export namespace Prisma {
     batchFacultyAssignments?: BatchFacultyAssignmentCreateNestedManyWithoutFacultyInput
     managedBranch?: BranchCreateNestedOneWithoutAdminUserInput
     facultyAttendanceSessions?: FacultyAttendanceSessionCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceDays?: FacultyAttendanceDayCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkCreateNestedManyWithoutFacultyUserInput
     facultyTodayWorkEntries?: FacultyTodayWorkEntryCreateNestedManyWithoutFacultyUserInput
     loginEvents?: LoginEventCreateNestedManyWithoutUserInput
     targetedNotifications?: NotificationCreateNestedManyWithoutTargetUserInput
@@ -76224,6 +79571,8 @@ export namespace Prisma {
     batchFacultyAssignments?: BatchFacultyAssignmentUncheckedCreateNestedManyWithoutFacultyInput
     managedBranch?: BranchUncheckedCreateNestedOneWithoutAdminUserInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceDays?: FacultyAttendanceDayUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUncheckedCreateNestedManyWithoutFacultyUserInput
     facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedCreateNestedManyWithoutFacultyUserInput
     loginEvents?: LoginEventUncheckedCreateNestedManyWithoutUserInput
     targetedNotifications?: NotificationUncheckedCreateNestedManyWithoutTargetUserInput
@@ -76387,6 +79736,8 @@ export namespace Prisma {
     batchFacultyAssignments?: BatchFacultyAssignmentUpdateManyWithoutFacultyNestedInput
     managedBranch?: BranchUpdateOneWithoutAdminUserNestedInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceDays?: FacultyAttendanceDayUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUpdateManyWithoutFacultyUserNestedInput
     facultyTodayWorkEntries?: FacultyTodayWorkEntryUpdateManyWithoutFacultyUserNestedInput
     loginEvents?: LoginEventUpdateManyWithoutUserNestedInput
     targetedNotifications?: NotificationUpdateManyWithoutTargetUserNestedInput
@@ -76421,6 +79772,8 @@ export namespace Prisma {
     batchFacultyAssignments?: BatchFacultyAssignmentUncheckedUpdateManyWithoutFacultyNestedInput
     managedBranch?: BranchUncheckedUpdateOneWithoutAdminUserNestedInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceDays?: FacultyAttendanceDayUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUncheckedUpdateManyWithoutFacultyUserNestedInput
     facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedUpdateManyWithoutFacultyUserNestedInput
     loginEvents?: LoginEventUncheckedUpdateManyWithoutUserNestedInput
     targetedNotifications?: NotificationUncheckedUpdateManyWithoutTargetUserNestedInput
@@ -77736,6 +81089,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     batchFacultyAssignments?: BatchFacultyAssignmentCreateNestedManyWithoutFacultyInput
     managedBranch?: BranchCreateNestedOneWithoutAdminUserInput
+    facultyAttendanceDays?: FacultyAttendanceDayCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkCreateNestedManyWithoutFacultyUserInput
     facultyTodayWorkEntries?: FacultyTodayWorkEntryCreateNestedManyWithoutFacultyUserInput
     loginEvents?: LoginEventCreateNestedManyWithoutUserInput
     targetedNotifications?: NotificationCreateNestedManyWithoutTargetUserInput
@@ -77770,6 +81125,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     batchFacultyAssignments?: BatchFacultyAssignmentUncheckedCreateNestedManyWithoutFacultyInput
     managedBranch?: BranchUncheckedCreateNestedOneWithoutAdminUserInput
+    facultyAttendanceDays?: FacultyAttendanceDayUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUncheckedCreateNestedManyWithoutFacultyUserInput
     facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedCreateNestedManyWithoutFacultyUserInput
     loginEvents?: LoginEventUncheckedCreateNestedManyWithoutUserInput
     targetedNotifications?: NotificationUncheckedCreateNestedManyWithoutTargetUserInput
@@ -77783,6 +81140,38 @@ export namespace Prisma {
   export type UserCreateOrConnectWithoutFacultyAttendanceSessionsInput = {
     where: UserWhereUniqueInput
     create: XOR<UserCreateWithoutFacultyAttendanceSessionsInput, UserUncheckedCreateWithoutFacultyAttendanceSessionsInput>
+  }
+
+  export type FacultyAttendanceBatchWorkCreateWithoutSessionInput = {
+    id?: string
+    attendanceDate: string
+    branchId: string
+    batchId: string
+    workSummary?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    facultyUser: UserCreateNestedOneWithoutFacultyAttendanceBatchWorkInput
+  }
+
+  export type FacultyAttendanceBatchWorkUncheckedCreateWithoutSessionInput = {
+    id?: string
+    facultyUserId: string
+    attendanceDate: string
+    branchId: string
+    batchId: string
+    workSummary?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FacultyAttendanceBatchWorkCreateOrConnectWithoutSessionInput = {
+    where: FacultyAttendanceBatchWorkWhereUniqueInput
+    create: XOR<FacultyAttendanceBatchWorkCreateWithoutSessionInput, FacultyAttendanceBatchWorkUncheckedCreateWithoutSessionInput>
+  }
+
+  export type FacultyAttendanceBatchWorkCreateManySessionInputEnvelope = {
+    data: FacultyAttendanceBatchWorkCreateManySessionInput | FacultyAttendanceBatchWorkCreateManySessionInput[]
+    skipDuplicates?: boolean
   }
 
   export type UserUpsertWithoutFacultyAttendanceSessionsInput = {
@@ -77820,6 +81209,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     batchFacultyAssignments?: BatchFacultyAssignmentUpdateManyWithoutFacultyNestedInput
     managedBranch?: BranchUpdateOneWithoutAdminUserNestedInput
+    facultyAttendanceDays?: FacultyAttendanceDayUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUpdateManyWithoutFacultyUserNestedInput
     facultyTodayWorkEntries?: FacultyTodayWorkEntryUpdateManyWithoutFacultyUserNestedInput
     loginEvents?: LoginEventUpdateManyWithoutUserNestedInput
     targetedNotifications?: NotificationUpdateManyWithoutTargetUserNestedInput
@@ -77854,6 +81245,420 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     batchFacultyAssignments?: BatchFacultyAssignmentUncheckedUpdateManyWithoutFacultyNestedInput
     managedBranch?: BranchUncheckedUpdateOneWithoutAdminUserNestedInput
+    facultyAttendanceDays?: FacultyAttendanceDayUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedUpdateManyWithoutFacultyUserNestedInput
+    loginEvents?: LoginEventUncheckedUpdateManyWithoutUserNestedInput
+    targetedNotifications?: NotificationUncheckedUpdateManyWithoutTargetUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    markedStudentAttendances?: StudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
+    dashboardWidgetPreferences?: UserDashboardWidgetUncheckedUpdateManyWithoutUserNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutFacultyUserNestedInput
+  }
+
+  export type FacultyAttendanceBatchWorkUpsertWithWhereUniqueWithoutSessionInput = {
+    where: FacultyAttendanceBatchWorkWhereUniqueInput
+    update: XOR<FacultyAttendanceBatchWorkUpdateWithoutSessionInput, FacultyAttendanceBatchWorkUncheckedUpdateWithoutSessionInput>
+    create: XOR<FacultyAttendanceBatchWorkCreateWithoutSessionInput, FacultyAttendanceBatchWorkUncheckedCreateWithoutSessionInput>
+  }
+
+  export type FacultyAttendanceBatchWorkUpdateWithWhereUniqueWithoutSessionInput = {
+    where: FacultyAttendanceBatchWorkWhereUniqueInput
+    data: XOR<FacultyAttendanceBatchWorkUpdateWithoutSessionInput, FacultyAttendanceBatchWorkUncheckedUpdateWithoutSessionInput>
+  }
+
+  export type FacultyAttendanceBatchWorkUpdateManyWithWhereWithoutSessionInput = {
+    where: FacultyAttendanceBatchWorkScalarWhereInput
+    data: XOR<FacultyAttendanceBatchWorkUpdateManyMutationInput, FacultyAttendanceBatchWorkUncheckedUpdateManyWithoutSessionInput>
+  }
+
+  export type UserCreateWithoutFacultyAttendanceDaysInput = {
+    id?: string
+    userCode: string
+    fullName: string
+    email: string
+    phone?: string | null
+    role: $Enums.UserRole
+    active?: boolean
+    passwordHash: string
+    passwordChangedAt?: Date | string | null
+    refreshTokenVersion?: number
+    failedLoginCount?: number
+    failedLoginWindowExpiresAt?: Date | string | null
+    lockedUntil?: Date | string | null
+    lastLoginAt?: Date | string | null
+    lastLogoutAt?: Date | string | null
+    lastLoginIp?: string | null
+    lastLoginUserAgent?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentCreateNestedManyWithoutFacultyInput
+    managedBranch?: BranchCreateNestedOneWithoutAdminUserInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkCreateNestedManyWithoutFacultyUserInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryCreateNestedManyWithoutFacultyUserInput
+    loginEvents?: LoginEventCreateNestedManyWithoutUserInput
+    targetedNotifications?: NotificationCreateNestedManyWithoutTargetUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    markedStudentAttendances?: StudentAttendanceCreateNestedManyWithoutFacultyUserInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceCreateNestedManyWithoutFacultyUserInput
+    dashboardWidgetPreferences?: UserDashboardWidgetCreateNestedManyWithoutUserInput
+    facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutFacultyUserInput
+  }
+
+  export type UserUncheckedCreateWithoutFacultyAttendanceDaysInput = {
+    id?: string
+    userCode: string
+    fullName: string
+    email: string
+    phone?: string | null
+    role: $Enums.UserRole
+    active?: boolean
+    passwordHash: string
+    passwordChangedAt?: Date | string | null
+    refreshTokenVersion?: number
+    failedLoginCount?: number
+    failedLoginWindowExpiresAt?: Date | string | null
+    lockedUntil?: Date | string | null
+    lastLoginAt?: Date | string | null
+    lastLogoutAt?: Date | string | null
+    lastLoginIp?: string | null
+    lastLoginUserAgent?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentUncheckedCreateNestedManyWithoutFacultyInput
+    managedBranch?: BranchUncheckedCreateNestedOneWithoutAdminUserInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedCreateNestedManyWithoutFacultyUserInput
+    loginEvents?: LoginEventUncheckedCreateNestedManyWithoutUserInput
+    targetedNotifications?: NotificationUncheckedCreateNestedManyWithoutTargetUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    markedStudentAttendances?: StudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
+    dashboardWidgetPreferences?: UserDashboardWidgetUncheckedCreateNestedManyWithoutUserInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutFacultyUserInput
+  }
+
+  export type UserCreateOrConnectWithoutFacultyAttendanceDaysInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutFacultyAttendanceDaysInput, UserUncheckedCreateWithoutFacultyAttendanceDaysInput>
+  }
+
+  export type UserUpsertWithoutFacultyAttendanceDaysInput = {
+    update: XOR<UserUpdateWithoutFacultyAttendanceDaysInput, UserUncheckedUpdateWithoutFacultyAttendanceDaysInput>
+    create: XOR<UserCreateWithoutFacultyAttendanceDaysInput, UserUncheckedCreateWithoutFacultyAttendanceDaysInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutFacultyAttendanceDaysInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutFacultyAttendanceDaysInput, UserUncheckedUpdateWithoutFacultyAttendanceDaysInput>
+  }
+
+  export type UserUpdateWithoutFacultyAttendanceDaysInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userCode?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refreshTokenVersion?: IntFieldUpdateOperationsInput | number
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    failedLoginWindowExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLogoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginUserAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentUpdateManyWithoutFacultyNestedInput
+    managedBranch?: BranchUpdateOneWithoutAdminUserNestedInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUpdateManyWithoutFacultyUserNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUpdateManyWithoutFacultyUserNestedInput
+    loginEvents?: LoginEventUpdateManyWithoutUserNestedInput
+    targetedNotifications?: NotificationUpdateManyWithoutTargetUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    markedStudentAttendances?: StudentAttendanceUpdateManyWithoutFacultyUserNestedInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceUpdateManyWithoutFacultyUserNestedInput
+    dashboardWidgetPreferences?: UserDashboardWidgetUpdateManyWithoutUserNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutFacultyUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutFacultyAttendanceDaysInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userCode?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refreshTokenVersion?: IntFieldUpdateOperationsInput | number
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    failedLoginWindowExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLogoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginUserAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentUncheckedUpdateManyWithoutFacultyNestedInput
+    managedBranch?: BranchUncheckedUpdateOneWithoutAdminUserNestedInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedUpdateManyWithoutFacultyUserNestedInput
+    loginEvents?: LoginEventUncheckedUpdateManyWithoutUserNestedInput
+    targetedNotifications?: NotificationUncheckedUpdateManyWithoutTargetUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    markedStudentAttendances?: StudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
+    dashboardWidgetPreferences?: UserDashboardWidgetUncheckedUpdateManyWithoutUserNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutFacultyUserNestedInput
+  }
+
+  export type FacultyAttendanceSessionCreateWithoutBatchWorkInput = {
+    id?: string
+    attendanceDate: string
+    loginAt: Date | string
+    logoutAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sessionSource?: string
+    logoutType?: string | null
+    logoutReason?: string | null
+    workReport?: string | null
+    workCompleted?: string | null
+    facultyUser: UserCreateNestedOneWithoutFacultyAttendanceSessionsInput
+  }
+
+  export type FacultyAttendanceSessionUncheckedCreateWithoutBatchWorkInput = {
+    id?: string
+    facultyUserId: string
+    attendanceDate: string
+    loginAt: Date | string
+    logoutAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sessionSource?: string
+    logoutType?: string | null
+    logoutReason?: string | null
+    workReport?: string | null
+    workCompleted?: string | null
+  }
+
+  export type FacultyAttendanceSessionCreateOrConnectWithoutBatchWorkInput = {
+    where: FacultyAttendanceSessionWhereUniqueInput
+    create: XOR<FacultyAttendanceSessionCreateWithoutBatchWorkInput, FacultyAttendanceSessionUncheckedCreateWithoutBatchWorkInput>
+  }
+
+  export type UserCreateWithoutFacultyAttendanceBatchWorkInput = {
+    id?: string
+    userCode: string
+    fullName: string
+    email: string
+    phone?: string | null
+    role: $Enums.UserRole
+    active?: boolean
+    passwordHash: string
+    passwordChangedAt?: Date | string | null
+    refreshTokenVersion?: number
+    failedLoginCount?: number
+    failedLoginWindowExpiresAt?: Date | string | null
+    lockedUntil?: Date | string | null
+    lastLoginAt?: Date | string | null
+    lastLogoutAt?: Date | string | null
+    lastLoginIp?: string | null
+    lastLoginUserAgent?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentCreateNestedManyWithoutFacultyInput
+    managedBranch?: BranchCreateNestedOneWithoutAdminUserInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceDays?: FacultyAttendanceDayCreateNestedManyWithoutFacultyUserInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryCreateNestedManyWithoutFacultyUserInput
+    loginEvents?: LoginEventCreateNestedManyWithoutUserInput
+    targetedNotifications?: NotificationCreateNestedManyWithoutTargetUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    markedStudentAttendances?: StudentAttendanceCreateNestedManyWithoutFacultyUserInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceCreateNestedManyWithoutFacultyUserInput
+    dashboardWidgetPreferences?: UserDashboardWidgetCreateNestedManyWithoutUserInput
+    facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutFacultyUserInput
+  }
+
+  export type UserUncheckedCreateWithoutFacultyAttendanceBatchWorkInput = {
+    id?: string
+    userCode: string
+    fullName: string
+    email: string
+    phone?: string | null
+    role: $Enums.UserRole
+    active?: boolean
+    passwordHash: string
+    passwordChangedAt?: Date | string | null
+    refreshTokenVersion?: number
+    failedLoginCount?: number
+    failedLoginWindowExpiresAt?: Date | string | null
+    lockedUntil?: Date | string | null
+    lastLoginAt?: Date | string | null
+    lastLogoutAt?: Date | string | null
+    lastLoginIp?: string | null
+    lastLoginUserAgent?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentUncheckedCreateNestedManyWithoutFacultyInput
+    managedBranch?: BranchUncheckedCreateNestedOneWithoutAdminUserInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceDays?: FacultyAttendanceDayUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedCreateNestedManyWithoutFacultyUserInput
+    loginEvents?: LoginEventUncheckedCreateNestedManyWithoutUserInput
+    targetedNotifications?: NotificationUncheckedCreateNestedManyWithoutTargetUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    markedStudentAttendances?: StudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
+    dashboardWidgetPreferences?: UserDashboardWidgetUncheckedCreateNestedManyWithoutUserInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutFacultyUserInput
+  }
+
+  export type UserCreateOrConnectWithoutFacultyAttendanceBatchWorkInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutFacultyAttendanceBatchWorkInput, UserUncheckedCreateWithoutFacultyAttendanceBatchWorkInput>
+  }
+
+  export type FacultyAttendanceSessionUpsertWithoutBatchWorkInput = {
+    update: XOR<FacultyAttendanceSessionUpdateWithoutBatchWorkInput, FacultyAttendanceSessionUncheckedUpdateWithoutBatchWorkInput>
+    create: XOR<FacultyAttendanceSessionCreateWithoutBatchWorkInput, FacultyAttendanceSessionUncheckedCreateWithoutBatchWorkInput>
+    where?: FacultyAttendanceSessionWhereInput
+  }
+
+  export type FacultyAttendanceSessionUpdateToOneWithWhereWithoutBatchWorkInput = {
+    where?: FacultyAttendanceSessionWhereInput
+    data: XOR<FacultyAttendanceSessionUpdateWithoutBatchWorkInput, FacultyAttendanceSessionUncheckedUpdateWithoutBatchWorkInput>
+  }
+
+  export type FacultyAttendanceSessionUpdateWithoutBatchWorkInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    attendanceDate?: StringFieldUpdateOperationsInput | string
+    loginAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    logoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sessionSource?: StringFieldUpdateOperationsInput | string
+    logoutType?: NullableStringFieldUpdateOperationsInput | string | null
+    logoutReason?: NullableStringFieldUpdateOperationsInput | string | null
+    workReport?: NullableStringFieldUpdateOperationsInput | string | null
+    workCompleted?: NullableStringFieldUpdateOperationsInput | string | null
+    facultyUser?: UserUpdateOneRequiredWithoutFacultyAttendanceSessionsNestedInput
+  }
+
+  export type FacultyAttendanceSessionUncheckedUpdateWithoutBatchWorkInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    facultyUserId?: StringFieldUpdateOperationsInput | string
+    attendanceDate?: StringFieldUpdateOperationsInput | string
+    loginAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    logoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sessionSource?: StringFieldUpdateOperationsInput | string
+    logoutType?: NullableStringFieldUpdateOperationsInput | string | null
+    logoutReason?: NullableStringFieldUpdateOperationsInput | string | null
+    workReport?: NullableStringFieldUpdateOperationsInput | string | null
+    workCompleted?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type UserUpsertWithoutFacultyAttendanceBatchWorkInput = {
+    update: XOR<UserUpdateWithoutFacultyAttendanceBatchWorkInput, UserUncheckedUpdateWithoutFacultyAttendanceBatchWorkInput>
+    create: XOR<UserCreateWithoutFacultyAttendanceBatchWorkInput, UserUncheckedCreateWithoutFacultyAttendanceBatchWorkInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutFacultyAttendanceBatchWorkInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutFacultyAttendanceBatchWorkInput, UserUncheckedUpdateWithoutFacultyAttendanceBatchWorkInput>
+  }
+
+  export type UserUpdateWithoutFacultyAttendanceBatchWorkInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userCode?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refreshTokenVersion?: IntFieldUpdateOperationsInput | number
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    failedLoginWindowExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLogoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginUserAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentUpdateManyWithoutFacultyNestedInput
+    managedBranch?: BranchUpdateOneWithoutAdminUserNestedInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceDays?: FacultyAttendanceDayUpdateManyWithoutFacultyUserNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUpdateManyWithoutFacultyUserNestedInput
+    loginEvents?: LoginEventUpdateManyWithoutUserNestedInput
+    targetedNotifications?: NotificationUpdateManyWithoutTargetUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    markedStudentAttendances?: StudentAttendanceUpdateManyWithoutFacultyUserNestedInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceUpdateManyWithoutFacultyUserNestedInput
+    dashboardWidgetPreferences?: UserDashboardWidgetUpdateManyWithoutUserNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutFacultyUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutFacultyAttendanceBatchWorkInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userCode?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refreshTokenVersion?: IntFieldUpdateOperationsInput | number
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    failedLoginWindowExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLogoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginUserAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentUncheckedUpdateManyWithoutFacultyNestedInput
+    managedBranch?: BranchUncheckedUpdateOneWithoutAdminUserNestedInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceDays?: FacultyAttendanceDayUncheckedUpdateManyWithoutFacultyUserNestedInput
     facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedUpdateManyWithoutFacultyUserNestedInput
     loginEvents?: LoginEventUncheckedUpdateManyWithoutUserNestedInput
     targetedNotifications?: NotificationUncheckedUpdateManyWithoutTargetUserNestedInput
@@ -77889,6 +81694,8 @@ export namespace Prisma {
     batchFacultyAssignments?: BatchFacultyAssignmentCreateNestedManyWithoutFacultyInput
     managedBranch?: BranchCreateNestedOneWithoutAdminUserInput
     facultyAttendanceSessions?: FacultyAttendanceSessionCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceDays?: FacultyAttendanceDayCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkCreateNestedManyWithoutFacultyUserInput
     loginEvents?: LoginEventCreateNestedManyWithoutUserInput
     targetedNotifications?: NotificationCreateNestedManyWithoutTargetUserInput
     passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
@@ -77923,6 +81730,8 @@ export namespace Prisma {
     batchFacultyAssignments?: BatchFacultyAssignmentUncheckedCreateNestedManyWithoutFacultyInput
     managedBranch?: BranchUncheckedCreateNestedOneWithoutAdminUserInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceDays?: FacultyAttendanceDayUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUncheckedCreateNestedManyWithoutFacultyUserInput
     loginEvents?: LoginEventUncheckedCreateNestedManyWithoutUserInput
     targetedNotifications?: NotificationUncheckedCreateNestedManyWithoutTargetUserInput
     passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
@@ -78080,6 +81889,8 @@ export namespace Prisma {
     batchFacultyAssignments?: BatchFacultyAssignmentUpdateManyWithoutFacultyNestedInput
     managedBranch?: BranchUpdateOneWithoutAdminUserNestedInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceDays?: FacultyAttendanceDayUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUpdateManyWithoutFacultyUserNestedInput
     loginEvents?: LoginEventUpdateManyWithoutUserNestedInput
     targetedNotifications?: NotificationUpdateManyWithoutTargetUserNestedInput
     passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
@@ -78114,6 +81925,8 @@ export namespace Prisma {
     batchFacultyAssignments?: BatchFacultyAssignmentUncheckedUpdateManyWithoutFacultyNestedInput
     managedBranch?: BranchUncheckedUpdateOneWithoutAdminUserNestedInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceDays?: FacultyAttendanceDayUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUncheckedUpdateManyWithoutFacultyUserNestedInput
     loginEvents?: LoginEventUncheckedUpdateManyWithoutUserNestedInput
     targetedNotifications?: NotificationUncheckedUpdateManyWithoutTargetUserNestedInput
     passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
@@ -78713,6 +82526,8 @@ export namespace Prisma {
     batchFacultyAssignments?: BatchFacultyAssignmentCreateNestedManyWithoutFacultyInput
     managedBranch?: BranchCreateNestedOneWithoutAdminUserInput
     facultyAttendanceSessions?: FacultyAttendanceSessionCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceDays?: FacultyAttendanceDayCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkCreateNestedManyWithoutFacultyUserInput
     facultyTodayWorkEntries?: FacultyTodayWorkEntryCreateNestedManyWithoutFacultyUserInput
     loginEvents?: LoginEventCreateNestedManyWithoutUserInput
     targetedNotifications?: NotificationCreateNestedManyWithoutTargetUserInput
@@ -78747,6 +82562,8 @@ export namespace Prisma {
     batchFacultyAssignments?: BatchFacultyAssignmentUncheckedCreateNestedManyWithoutFacultyInput
     managedBranch?: BranchUncheckedCreateNestedOneWithoutAdminUserInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceDays?: FacultyAttendanceDayUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUncheckedCreateNestedManyWithoutFacultyUserInput
     facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedCreateNestedManyWithoutFacultyUserInput
     loginEvents?: LoginEventUncheckedCreateNestedManyWithoutUserInput
     targetedNotifications?: NotificationUncheckedCreateNestedManyWithoutTargetUserInput
@@ -78894,6 +82711,8 @@ export namespace Prisma {
     batchFacultyAssignments?: BatchFacultyAssignmentUpdateManyWithoutFacultyNestedInput
     managedBranch?: BranchUpdateOneWithoutAdminUserNestedInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceDays?: FacultyAttendanceDayUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUpdateManyWithoutFacultyUserNestedInput
     facultyTodayWorkEntries?: FacultyTodayWorkEntryUpdateManyWithoutFacultyUserNestedInput
     loginEvents?: LoginEventUpdateManyWithoutUserNestedInput
     targetedNotifications?: NotificationUpdateManyWithoutTargetUserNestedInput
@@ -78928,6 +82747,8 @@ export namespace Prisma {
     batchFacultyAssignments?: BatchFacultyAssignmentUncheckedUpdateManyWithoutFacultyNestedInput
     managedBranch?: BranchUncheckedUpdateOneWithoutAdminUserNestedInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceDays?: FacultyAttendanceDayUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUncheckedUpdateManyWithoutFacultyUserNestedInput
     facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedUpdateManyWithoutFacultyUserNestedInput
     loginEvents?: LoginEventUncheckedUpdateManyWithoutUserNestedInput
     targetedNotifications?: NotificationUncheckedUpdateManyWithoutTargetUserNestedInput
@@ -79587,6 +83408,8 @@ export namespace Prisma {
     batchFacultyAssignments?: BatchFacultyAssignmentCreateNestedManyWithoutFacultyInput
     managedBranch?: BranchCreateNestedOneWithoutAdminUserInput
     facultyAttendanceSessions?: FacultyAttendanceSessionCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceDays?: FacultyAttendanceDayCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkCreateNestedManyWithoutFacultyUserInput
     facultyTodayWorkEntries?: FacultyTodayWorkEntryCreateNestedManyWithoutFacultyUserInput
     loginEvents?: LoginEventCreateNestedManyWithoutUserInput
     targetedNotifications?: NotificationCreateNestedManyWithoutTargetUserInput
@@ -79621,6 +83444,8 @@ export namespace Prisma {
     batchFacultyAssignments?: BatchFacultyAssignmentUncheckedCreateNestedManyWithoutFacultyInput
     managedBranch?: BranchUncheckedCreateNestedOneWithoutAdminUserInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceDays?: FacultyAttendanceDayUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUncheckedCreateNestedManyWithoutFacultyUserInput
     facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedCreateNestedManyWithoutFacultyUserInput
     loginEvents?: LoginEventUncheckedCreateNestedManyWithoutUserInput
     targetedNotifications?: NotificationUncheckedCreateNestedManyWithoutTargetUserInput
@@ -79740,6 +83565,8 @@ export namespace Prisma {
     batchFacultyAssignments?: BatchFacultyAssignmentUpdateManyWithoutFacultyNestedInput
     managedBranch?: BranchUpdateOneWithoutAdminUserNestedInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceDays?: FacultyAttendanceDayUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUpdateManyWithoutFacultyUserNestedInput
     facultyTodayWorkEntries?: FacultyTodayWorkEntryUpdateManyWithoutFacultyUserNestedInput
     loginEvents?: LoginEventUpdateManyWithoutUserNestedInput
     targetedNotifications?: NotificationUpdateManyWithoutTargetUserNestedInput
@@ -79774,6 +83601,8 @@ export namespace Prisma {
     batchFacultyAssignments?: BatchFacultyAssignmentUncheckedUpdateManyWithoutFacultyNestedInput
     managedBranch?: BranchUncheckedUpdateOneWithoutAdminUserNestedInput
     facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceDays?: FacultyAttendanceDayUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUncheckedUpdateManyWithoutFacultyUserNestedInput
     facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedUpdateManyWithoutFacultyUserNestedInput
     loginEvents?: LoginEventUncheckedUpdateManyWithoutUserNestedInput
     targetedNotifications?: NotificationUncheckedUpdateManyWithoutTargetUserNestedInput
@@ -80972,6 +84801,27 @@ export namespace Prisma {
     workCompleted?: string | null
   }
 
+  export type FacultyAttendanceDayCreateManyFacultyUserInput = {
+    id?: string
+    attendanceDate: string
+    status?: string
+    firstLoginAt?: Date | string | null
+    finalLogoutAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FacultyAttendanceBatchWorkCreateManyFacultyUserInput = {
+    id?: string
+    attendanceSessionId: string
+    attendanceDate: string
+    branchId: string
+    batchId: string
+    workSummary?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type FacultyTodayWorkEntryCreateManyFacultyUserInput = {
     id?: string
     facultyProfileId?: string | null
@@ -81177,6 +85027,7 @@ export namespace Prisma {
     logoutReason?: NullableStringFieldUpdateOperationsInput | string | null
     workReport?: NullableStringFieldUpdateOperationsInput | string | null
     workCompleted?: NullableStringFieldUpdateOperationsInput | string | null
+    batchWork?: FacultyAttendanceBatchWorkUpdateManyWithoutSessionNestedInput
   }
 
   export type FacultyAttendanceSessionUncheckedUpdateWithoutFacultyUserInput = {
@@ -81191,6 +85042,7 @@ export namespace Prisma {
     logoutReason?: NullableStringFieldUpdateOperationsInput | string | null
     workReport?: NullableStringFieldUpdateOperationsInput | string | null
     workCompleted?: NullableStringFieldUpdateOperationsInput | string | null
+    batchWork?: FacultyAttendanceBatchWorkUncheckedUpdateManyWithoutSessionNestedInput
   }
 
   export type FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserInput = {
@@ -81205,6 +85057,69 @@ export namespace Prisma {
     logoutReason?: NullableStringFieldUpdateOperationsInput | string | null
     workReport?: NullableStringFieldUpdateOperationsInput | string | null
     workCompleted?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type FacultyAttendanceDayUpdateWithoutFacultyUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    attendanceDate?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    firstLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    finalLogoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FacultyAttendanceDayUncheckedUpdateWithoutFacultyUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    attendanceDate?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    firstLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    finalLogoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FacultyAttendanceDayUncheckedUpdateManyWithoutFacultyUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    attendanceDate?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    firstLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    finalLogoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FacultyAttendanceBatchWorkUpdateWithoutFacultyUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    attendanceDate?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    batchId?: StringFieldUpdateOperationsInput | string
+    workSummary?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    session?: FacultyAttendanceSessionUpdateOneRequiredWithoutBatchWorkNestedInput
+  }
+
+  export type FacultyAttendanceBatchWorkUncheckedUpdateWithoutFacultyUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    attendanceSessionId?: StringFieldUpdateOperationsInput | string
+    attendanceDate?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    batchId?: StringFieldUpdateOperationsInput | string
+    workSummary?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FacultyAttendanceBatchWorkUncheckedUpdateManyWithoutFacultyUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    attendanceSessionId?: StringFieldUpdateOperationsInput | string
+    attendanceDate?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    batchId?: StringFieldUpdateOperationsInput | string
+    workSummary?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type FacultyTodayWorkEntryUpdateWithoutFacultyUserInput = {
@@ -84828,6 +88743,50 @@ export namespace Prisma {
     courseId?: StringFieldUpdateOperationsInput | string
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FacultyAttendanceBatchWorkCreateManySessionInput = {
+    id?: string
+    facultyUserId: string
+    attendanceDate: string
+    branchId: string
+    batchId: string
+    workSummary?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FacultyAttendanceBatchWorkUpdateWithoutSessionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    attendanceDate?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    batchId?: StringFieldUpdateOperationsInput | string
+    workSummary?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    facultyUser?: UserUpdateOneRequiredWithoutFacultyAttendanceBatchWorkNestedInput
+  }
+
+  export type FacultyAttendanceBatchWorkUncheckedUpdateWithoutSessionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    facultyUserId?: StringFieldUpdateOperationsInput | string
+    attendanceDate?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    batchId?: StringFieldUpdateOperationsInput | string
+    workSummary?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FacultyAttendanceBatchWorkUncheckedUpdateManyWithoutSessionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    facultyUserId?: StringFieldUpdateOperationsInput | string
+    attendanceDate?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    batchId?: StringFieldUpdateOperationsInput | string
+    workSummary?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
