@@ -174,6 +174,11 @@ export type StudentAttendance = $Result.DefaultSelection<Prisma.$StudentAttendan
  */
 export type BranchFaculty = $Result.DefaultSelection<Prisma.$BranchFacultyPayload>
 /**
+ * Model FacultyLeaveRequest
+ * 
+ */
+export type FacultyLeaveRequest = $Result.DefaultSelection<Prisma.$FacultyLeaveRequestPayload>
+/**
  * Model BranchInstallmentTemplate
  * 
  */
@@ -755,6 +760,16 @@ export class PrismaClient<
   get branchFaculty(): Prisma.BranchFacultyDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.facultyLeaveRequest`: Exposes CRUD operations for the **FacultyLeaveRequest** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more FacultyLeaveRequests
+    * const facultyLeaveRequests = await prisma.facultyLeaveRequest.findMany()
+    * ```
+    */
+  get facultyLeaveRequest(): Prisma.FacultyLeaveRequestDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.branchInstallmentTemplate`: Exposes CRUD operations for the **BranchInstallmentTemplate** model.
     * Example usage:
     * ```ts
@@ -1249,6 +1264,7 @@ export namespace Prisma {
     FacultyTodayWorkStudentEntry: 'FacultyTodayWorkStudentEntry',
     StudentAttendance: 'StudentAttendance',
     BranchFaculty: 'BranchFaculty',
+    FacultyLeaveRequest: 'FacultyLeaveRequest',
     BranchInstallmentTemplate: 'BranchInstallmentTemplate',
     BranchStudentPayment: 'BranchStudentPayment',
     BranchStudentLedgerEntry: 'BranchStudentLedgerEntry'
@@ -1267,7 +1283,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "dashboardWidget" | "userDashboardWidget" | "branch" | "loginEvent" | "notification" | "courseEditRequest" | "passwordResetToken" | "course" | "branchCourse" | "branchCourseModule" | "branchCourseSubmodule" | "courseModule" | "batch" | "batchFacultyAssignment" | "branchBatch" | "courseStatusHistory" | "batchStatusHistory" | "studentProfile" | "branchStudent" | "branchStudentAttendance" | "branchCalendarHoliday" | "branchCalendarLeave" | "branchStudentInstallment" | "facultyProfile" | "facultyCourseAssignment" | "facultyBatchEntry" | "facultyAttendanceSession" | "facultyTodayWorkEntry" | "facultyTodayWorkStudentEntry" | "studentAttendance" | "branchFaculty" | "branchInstallmentTemplate" | "branchStudentPayment" | "branchStudentLedgerEntry"
+      modelProps: "user" | "dashboardWidget" | "userDashboardWidget" | "branch" | "loginEvent" | "notification" | "courseEditRequest" | "passwordResetToken" | "course" | "branchCourse" | "branchCourseModule" | "branchCourseSubmodule" | "courseModule" | "batch" | "batchFacultyAssignment" | "branchBatch" | "courseStatusHistory" | "batchStatusHistory" | "studentProfile" | "branchStudent" | "branchStudentAttendance" | "branchCalendarHoliday" | "branchCalendarLeave" | "branchStudentInstallment" | "facultyProfile" | "facultyCourseAssignment" | "facultyBatchEntry" | "facultyAttendanceSession" | "facultyTodayWorkEntry" | "facultyTodayWorkStudentEntry" | "studentAttendance" | "branchFaculty" | "facultyLeaveRequest" | "branchInstallmentTemplate" | "branchStudentPayment" | "branchStudentLedgerEntry"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -3639,6 +3655,80 @@ export namespace Prisma {
           }
         }
       }
+      FacultyLeaveRequest: {
+        payload: Prisma.$FacultyLeaveRequestPayload<ExtArgs>
+        fields: Prisma.FacultyLeaveRequestFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.FacultyLeaveRequestFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyLeaveRequestPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.FacultyLeaveRequestFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyLeaveRequestPayload>
+          }
+          findFirst: {
+            args: Prisma.FacultyLeaveRequestFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyLeaveRequestPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.FacultyLeaveRequestFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyLeaveRequestPayload>
+          }
+          findMany: {
+            args: Prisma.FacultyLeaveRequestFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyLeaveRequestPayload>[]
+          }
+          create: {
+            args: Prisma.FacultyLeaveRequestCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyLeaveRequestPayload>
+          }
+          createMany: {
+            args: Prisma.FacultyLeaveRequestCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.FacultyLeaveRequestCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyLeaveRequestPayload>[]
+          }
+          delete: {
+            args: Prisma.FacultyLeaveRequestDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyLeaveRequestPayload>
+          }
+          update: {
+            args: Prisma.FacultyLeaveRequestUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyLeaveRequestPayload>
+          }
+          deleteMany: {
+            args: Prisma.FacultyLeaveRequestDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.FacultyLeaveRequestUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.FacultyLeaveRequestUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyLeaveRequestPayload>[]
+          }
+          upsert: {
+            args: Prisma.FacultyLeaveRequestUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyLeaveRequestPayload>
+          }
+          aggregate: {
+            args: Prisma.FacultyLeaveRequestAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateFacultyLeaveRequest>
+          }
+          groupBy: {
+            args: Prisma.FacultyLeaveRequestGroupByArgs<ExtArgs>
+            result: $Utils.Optional<FacultyLeaveRequestGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.FacultyLeaveRequestCountArgs<ExtArgs>
+            result: $Utils.Optional<FacultyLeaveRequestCountAggregateOutputType> | number
+          }
+        }
+      }
       BranchInstallmentTemplate: {
         payload: Prisma.$BranchInstallmentTemplatePayload<ExtArgs>
         fields: Prisma.BranchInstallmentTemplateFieldRefs
@@ -4001,6 +4091,7 @@ export namespace Prisma {
     facultyTodayWorkStudentEntry?: FacultyTodayWorkStudentEntryOmit
     studentAttendance?: StudentAttendanceOmit
     branchFaculty?: BranchFacultyOmit
+    facultyLeaveRequest?: FacultyLeaveRequestOmit
     branchInstallmentTemplate?: BranchInstallmentTemplateOmit
     branchStudentPayment?: BranchStudentPaymentOmit
     branchStudentLedgerEntry?: BranchStudentLedgerEntryOmit
@@ -4093,6 +4184,7 @@ export namespace Prisma {
     markedStudentAttendances: number
     markedBranchStudentAttendances: number
     dashboardWidgetPreferences: number
+    facultyLeaveRequests: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4105,6 +4197,7 @@ export namespace Prisma {
     markedStudentAttendances?: boolean | UserCountOutputTypeCountMarkedStudentAttendancesArgs
     markedBranchStudentAttendances?: boolean | UserCountOutputTypeCountMarkedBranchStudentAttendancesArgs
     dashboardWidgetPreferences?: boolean | UserCountOutputTypeCountDashboardWidgetPreferencesArgs
+    facultyLeaveRequests?: boolean | UserCountOutputTypeCountFacultyLeaveRequestsArgs
   }
 
   // Custom InputTypes
@@ -4181,6 +4274,13 @@ export namespace Prisma {
     where?: UserDashboardWidgetWhereInput
   }
 
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountFacultyLeaveRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FacultyLeaveRequestWhereInput
+  }
+
 
   /**
    * Count Type DashboardWidgetCountOutputType
@@ -4228,6 +4328,7 @@ export namespace Prisma {
     ledgerEntries: number
     payments: number
     courses: number
+    facultyLeaveRequests: number
   }
 
   export type BranchCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4241,6 +4342,7 @@ export namespace Prisma {
     ledgerEntries?: boolean | BranchCountOutputTypeCountLedgerEntriesArgs
     payments?: boolean | BranchCountOutputTypeCountPaymentsArgs
     courses?: boolean | BranchCountOutputTypeCountCoursesArgs
+    facultyLeaveRequests?: boolean | BranchCountOutputTypeCountFacultyLeaveRequestsArgs
   }
 
   // Custom InputTypes
@@ -4322,6 +4424,13 @@ export namespace Prisma {
    */
   export type BranchCountOutputTypeCountCoursesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: CourseWhereInput
+  }
+
+  /**
+   * BranchCountOutputType without action
+   */
+  export type BranchCountOutputTypeCountFacultyLeaveRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FacultyLeaveRequestWhereInput
   }
 
 
@@ -5172,6 +5281,7 @@ export namespace Prisma {
     markedStudentAttendances?: boolean | User$markedStudentAttendancesArgs<ExtArgs>
     markedBranchStudentAttendances?: boolean | User$markedBranchStudentAttendancesArgs<ExtArgs>
     dashboardWidgetPreferences?: boolean | User$dashboardWidgetPreferencesArgs<ExtArgs>
+    facultyLeaveRequests?: boolean | User$facultyLeaveRequestsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -5259,6 +5369,7 @@ export namespace Prisma {
     markedStudentAttendances?: boolean | User$markedStudentAttendancesArgs<ExtArgs>
     markedBranchStudentAttendances?: boolean | User$markedBranchStudentAttendancesArgs<ExtArgs>
     dashboardWidgetPreferences?: boolean | User$dashboardWidgetPreferencesArgs<ExtArgs>
+    facultyLeaveRequests?: boolean | User$facultyLeaveRequestsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -5277,6 +5388,7 @@ export namespace Prisma {
       markedStudentAttendances: Prisma.$StudentAttendancePayload<ExtArgs>[]
       markedBranchStudentAttendances: Prisma.$BranchStudentAttendancePayload<ExtArgs>[]
       dashboardWidgetPreferences: Prisma.$UserDashboardWidgetPayload<ExtArgs>[]
+      facultyLeaveRequests: Prisma.$FacultyLeaveRequestPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -5704,6 +5816,7 @@ export namespace Prisma {
     markedStudentAttendances<T extends User$markedStudentAttendancesArgs<ExtArgs> = {}>(args?: Subset<T, User$markedStudentAttendancesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StudentAttendancePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     markedBranchStudentAttendances<T extends User$markedBranchStudentAttendancesArgs<ExtArgs> = {}>(args?: Subset<T, User$markedBranchStudentAttendancesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchStudentAttendancePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     dashboardWidgetPreferences<T extends User$dashboardWidgetPreferencesArgs<ExtArgs> = {}>(args?: Subset<T, User$dashboardWidgetPreferencesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserDashboardWidgetPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    facultyLeaveRequests<T extends User$facultyLeaveRequestsArgs<ExtArgs> = {}>(args?: Subset<T, User$facultyLeaveRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FacultyLeaveRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -6379,6 +6492,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: UserDashboardWidgetScalarFieldEnum | UserDashboardWidgetScalarFieldEnum[]
+  }
+
+  /**
+   * User.facultyLeaveRequests
+   */
+  export type User$facultyLeaveRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyLeaveRequest
+     */
+    select?: FacultyLeaveRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyLeaveRequest
+     */
+    omit?: FacultyLeaveRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyLeaveRequestInclude<ExtArgs> | null
+    where?: FacultyLeaveRequestWhereInput
+    orderBy?: FacultyLeaveRequestOrderByWithRelationInput | FacultyLeaveRequestOrderByWithRelationInput[]
+    cursor?: FacultyLeaveRequestWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: FacultyLeaveRequestScalarFieldEnum | FacultyLeaveRequestScalarFieldEnum[]
   }
 
   /**
@@ -8941,6 +9078,7 @@ export namespace Prisma {
     ledgerEntries?: boolean | Branch$ledgerEntriesArgs<ExtArgs>
     payments?: boolean | Branch$paymentsArgs<ExtArgs>
     courses?: boolean | Branch$coursesArgs<ExtArgs>
+    facultyLeaveRequests?: boolean | Branch$facultyLeaveRequestsArgs<ExtArgs>
     _count?: boolean | BranchCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["branch"]>
 
@@ -9025,6 +9163,7 @@ export namespace Prisma {
     ledgerEntries?: boolean | Branch$ledgerEntriesArgs<ExtArgs>
     payments?: boolean | Branch$paymentsArgs<ExtArgs>
     courses?: boolean | Branch$coursesArgs<ExtArgs>
+    facultyLeaveRequests?: boolean | Branch$facultyLeaveRequestsArgs<ExtArgs>
     _count?: boolean | BranchCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type BranchIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -9048,6 +9187,7 @@ export namespace Prisma {
       ledgerEntries: Prisma.$BranchStudentLedgerEntryPayload<ExtArgs>[]
       payments: Prisma.$BranchStudentPaymentPayload<ExtArgs>[]
       courses: Prisma.$CoursePayload<ExtArgs>[]
+      facultyLeaveRequests: Prisma.$FacultyLeaveRequestPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -9474,6 +9614,7 @@ export namespace Prisma {
     ledgerEntries<T extends Branch$ledgerEntriesArgs<ExtArgs> = {}>(args?: Subset<T, Branch$ledgerEntriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchStudentLedgerEntryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     payments<T extends Branch$paymentsArgs<ExtArgs> = {}>(args?: Subset<T, Branch$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchStudentPaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     courses<T extends Branch$coursesArgs<ExtArgs> = {}>(args?: Subset<T, Branch$coursesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CoursePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    facultyLeaveRequests<T extends Branch$facultyLeaveRequestsArgs<ExtArgs> = {}>(args?: Subset<T, Branch$facultyLeaveRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FacultyLeaveRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -10179,6 +10320,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: CourseScalarFieldEnum | CourseScalarFieldEnum[]
+  }
+
+  /**
+   * Branch.facultyLeaveRequests
+   */
+  export type Branch$facultyLeaveRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyLeaveRequest
+     */
+    select?: FacultyLeaveRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyLeaveRequest
+     */
+    omit?: FacultyLeaveRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyLeaveRequestInclude<ExtArgs> | null
+    where?: FacultyLeaveRequestWhereInput
+    orderBy?: FacultyLeaveRequestOrderByWithRelationInput | FacultyLeaveRequestOrderByWithRelationInput[]
+    cursor?: FacultyLeaveRequestWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: FacultyLeaveRequestScalarFieldEnum | FacultyLeaveRequestScalarFieldEnum[]
   }
 
   /**
@@ -45986,6 +46151,1242 @@ export namespace Prisma {
 
 
   /**
+   * Model FacultyLeaveRequest
+   */
+
+  export type AggregateFacultyLeaveRequest = {
+    _count: FacultyLeaveRequestCountAggregateOutputType | null
+    _min: FacultyLeaveRequestMinAggregateOutputType | null
+    _max: FacultyLeaveRequestMaxAggregateOutputType | null
+  }
+
+  export type FacultyLeaveRequestMinAggregateOutputType = {
+    id: string | null
+    facultyUserId: string | null
+    branchId: string | null
+    facultyId: string | null
+    facultyName: string | null
+    facultyEmail: string | null
+    leaveType: string | null
+    fromDate: string | null
+    toDate: string | null
+    durationType: string | null
+    halfDayPeriod: string | null
+    halfDayStart: string | null
+    halfDayEnd: string | null
+    reason: string | null
+    status: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type FacultyLeaveRequestMaxAggregateOutputType = {
+    id: string | null
+    facultyUserId: string | null
+    branchId: string | null
+    facultyId: string | null
+    facultyName: string | null
+    facultyEmail: string | null
+    leaveType: string | null
+    fromDate: string | null
+    toDate: string | null
+    durationType: string | null
+    halfDayPeriod: string | null
+    halfDayStart: string | null
+    halfDayEnd: string | null
+    reason: string | null
+    status: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type FacultyLeaveRequestCountAggregateOutputType = {
+    id: number
+    facultyUserId: number
+    branchId: number
+    facultyId: number
+    facultyName: number
+    facultyEmail: number
+    leaveType: number
+    fromDate: number
+    toDate: number
+    durationType: number
+    halfDayPeriod: number
+    halfDayStart: number
+    halfDayEnd: number
+    reason: number
+    status: number
+    affectedClasses: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type FacultyLeaveRequestMinAggregateInputType = {
+    id?: true
+    facultyUserId?: true
+    branchId?: true
+    facultyId?: true
+    facultyName?: true
+    facultyEmail?: true
+    leaveType?: true
+    fromDate?: true
+    toDate?: true
+    durationType?: true
+    halfDayPeriod?: true
+    halfDayStart?: true
+    halfDayEnd?: true
+    reason?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type FacultyLeaveRequestMaxAggregateInputType = {
+    id?: true
+    facultyUserId?: true
+    branchId?: true
+    facultyId?: true
+    facultyName?: true
+    facultyEmail?: true
+    leaveType?: true
+    fromDate?: true
+    toDate?: true
+    durationType?: true
+    halfDayPeriod?: true
+    halfDayStart?: true
+    halfDayEnd?: true
+    reason?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type FacultyLeaveRequestCountAggregateInputType = {
+    id?: true
+    facultyUserId?: true
+    branchId?: true
+    facultyId?: true
+    facultyName?: true
+    facultyEmail?: true
+    leaveType?: true
+    fromDate?: true
+    toDate?: true
+    durationType?: true
+    halfDayPeriod?: true
+    halfDayStart?: true
+    halfDayEnd?: true
+    reason?: true
+    status?: true
+    affectedClasses?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type FacultyLeaveRequestAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FacultyLeaveRequest to aggregate.
+     */
+    where?: FacultyLeaveRequestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FacultyLeaveRequests to fetch.
+     */
+    orderBy?: FacultyLeaveRequestOrderByWithRelationInput | FacultyLeaveRequestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: FacultyLeaveRequestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FacultyLeaveRequests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FacultyLeaveRequests.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned FacultyLeaveRequests
+    **/
+    _count?: true | FacultyLeaveRequestCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: FacultyLeaveRequestMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: FacultyLeaveRequestMaxAggregateInputType
+  }
+
+  export type GetFacultyLeaveRequestAggregateType<T extends FacultyLeaveRequestAggregateArgs> = {
+        [P in keyof T & keyof AggregateFacultyLeaveRequest]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateFacultyLeaveRequest[P]>
+      : GetScalarType<T[P], AggregateFacultyLeaveRequest[P]>
+  }
+
+
+
+
+  export type FacultyLeaveRequestGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FacultyLeaveRequestWhereInput
+    orderBy?: FacultyLeaveRequestOrderByWithAggregationInput | FacultyLeaveRequestOrderByWithAggregationInput[]
+    by: FacultyLeaveRequestScalarFieldEnum[] | FacultyLeaveRequestScalarFieldEnum
+    having?: FacultyLeaveRequestScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: FacultyLeaveRequestCountAggregateInputType | true
+    _min?: FacultyLeaveRequestMinAggregateInputType
+    _max?: FacultyLeaveRequestMaxAggregateInputType
+  }
+
+  export type FacultyLeaveRequestGroupByOutputType = {
+    id: string
+    facultyUserId: string
+    branchId: string
+    facultyId: string
+    facultyName: string
+    facultyEmail: string
+    leaveType: string
+    fromDate: string
+    toDate: string
+    durationType: string
+    halfDayPeriod: string | null
+    halfDayStart: string | null
+    halfDayEnd: string | null
+    reason: string
+    status: string
+    affectedClasses: JsonValue
+    createdAt: Date
+    updatedAt: Date
+    _count: FacultyLeaveRequestCountAggregateOutputType | null
+    _min: FacultyLeaveRequestMinAggregateOutputType | null
+    _max: FacultyLeaveRequestMaxAggregateOutputType | null
+  }
+
+  type GetFacultyLeaveRequestGroupByPayload<T extends FacultyLeaveRequestGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<FacultyLeaveRequestGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof FacultyLeaveRequestGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], FacultyLeaveRequestGroupByOutputType[P]>
+            : GetScalarType<T[P], FacultyLeaveRequestGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type FacultyLeaveRequestSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    facultyUserId?: boolean
+    branchId?: boolean
+    facultyId?: boolean
+    facultyName?: boolean
+    facultyEmail?: boolean
+    leaveType?: boolean
+    fromDate?: boolean
+    toDate?: boolean
+    durationType?: boolean
+    halfDayPeriod?: boolean
+    halfDayStart?: boolean
+    halfDayEnd?: boolean
+    reason?: boolean
+    status?: boolean
+    affectedClasses?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    facultyUser?: boolean | UserDefaultArgs<ExtArgs>
+    branch?: boolean | BranchDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["facultyLeaveRequest"]>
+
+  export type FacultyLeaveRequestSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    facultyUserId?: boolean
+    branchId?: boolean
+    facultyId?: boolean
+    facultyName?: boolean
+    facultyEmail?: boolean
+    leaveType?: boolean
+    fromDate?: boolean
+    toDate?: boolean
+    durationType?: boolean
+    halfDayPeriod?: boolean
+    halfDayStart?: boolean
+    halfDayEnd?: boolean
+    reason?: boolean
+    status?: boolean
+    affectedClasses?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    facultyUser?: boolean | UserDefaultArgs<ExtArgs>
+    branch?: boolean | BranchDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["facultyLeaveRequest"]>
+
+  export type FacultyLeaveRequestSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    facultyUserId?: boolean
+    branchId?: boolean
+    facultyId?: boolean
+    facultyName?: boolean
+    facultyEmail?: boolean
+    leaveType?: boolean
+    fromDate?: boolean
+    toDate?: boolean
+    durationType?: boolean
+    halfDayPeriod?: boolean
+    halfDayStart?: boolean
+    halfDayEnd?: boolean
+    reason?: boolean
+    status?: boolean
+    affectedClasses?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    facultyUser?: boolean | UserDefaultArgs<ExtArgs>
+    branch?: boolean | BranchDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["facultyLeaveRequest"]>
+
+  export type FacultyLeaveRequestSelectScalar = {
+    id?: boolean
+    facultyUserId?: boolean
+    branchId?: boolean
+    facultyId?: boolean
+    facultyName?: boolean
+    facultyEmail?: boolean
+    leaveType?: boolean
+    fromDate?: boolean
+    toDate?: boolean
+    durationType?: boolean
+    halfDayPeriod?: boolean
+    halfDayStart?: boolean
+    halfDayEnd?: boolean
+    reason?: boolean
+    status?: boolean
+    affectedClasses?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type FacultyLeaveRequestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "facultyUserId" | "branchId" | "facultyId" | "facultyName" | "facultyEmail" | "leaveType" | "fromDate" | "toDate" | "durationType" | "halfDayPeriod" | "halfDayStart" | "halfDayEnd" | "reason" | "status" | "affectedClasses" | "createdAt" | "updatedAt", ExtArgs["result"]["facultyLeaveRequest"]>
+  export type FacultyLeaveRequestInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    facultyUser?: boolean | UserDefaultArgs<ExtArgs>
+    branch?: boolean | BranchDefaultArgs<ExtArgs>
+  }
+  export type FacultyLeaveRequestIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    facultyUser?: boolean | UserDefaultArgs<ExtArgs>
+    branch?: boolean | BranchDefaultArgs<ExtArgs>
+  }
+  export type FacultyLeaveRequestIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    facultyUser?: boolean | UserDefaultArgs<ExtArgs>
+    branch?: boolean | BranchDefaultArgs<ExtArgs>
+  }
+
+  export type $FacultyLeaveRequestPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "FacultyLeaveRequest"
+    objects: {
+      facultyUser: Prisma.$UserPayload<ExtArgs>
+      branch: Prisma.$BranchPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      facultyUserId: string
+      branchId: string
+      facultyId: string
+      facultyName: string
+      facultyEmail: string
+      leaveType: string
+      fromDate: string
+      toDate: string
+      durationType: string
+      halfDayPeriod: string | null
+      halfDayStart: string | null
+      halfDayEnd: string | null
+      reason: string
+      status: string
+      affectedClasses: Prisma.JsonValue
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["facultyLeaveRequest"]>
+    composites: {}
+  }
+
+  type FacultyLeaveRequestGetPayload<S extends boolean | null | undefined | FacultyLeaveRequestDefaultArgs> = $Result.GetResult<Prisma.$FacultyLeaveRequestPayload, S>
+
+  type FacultyLeaveRequestCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<FacultyLeaveRequestFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: FacultyLeaveRequestCountAggregateInputType | true
+    }
+
+  export interface FacultyLeaveRequestDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['FacultyLeaveRequest'], meta: { name: 'FacultyLeaveRequest' } }
+    /**
+     * Find zero or one FacultyLeaveRequest that matches the filter.
+     * @param {FacultyLeaveRequestFindUniqueArgs} args - Arguments to find a FacultyLeaveRequest
+     * @example
+     * // Get one FacultyLeaveRequest
+     * const facultyLeaveRequest = await prisma.facultyLeaveRequest.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends FacultyLeaveRequestFindUniqueArgs>(args: SelectSubset<T, FacultyLeaveRequestFindUniqueArgs<ExtArgs>>): Prisma__FacultyLeaveRequestClient<$Result.GetResult<Prisma.$FacultyLeaveRequestPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one FacultyLeaveRequest that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {FacultyLeaveRequestFindUniqueOrThrowArgs} args - Arguments to find a FacultyLeaveRequest
+     * @example
+     * // Get one FacultyLeaveRequest
+     * const facultyLeaveRequest = await prisma.facultyLeaveRequest.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends FacultyLeaveRequestFindUniqueOrThrowArgs>(args: SelectSubset<T, FacultyLeaveRequestFindUniqueOrThrowArgs<ExtArgs>>): Prisma__FacultyLeaveRequestClient<$Result.GetResult<Prisma.$FacultyLeaveRequestPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first FacultyLeaveRequest that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FacultyLeaveRequestFindFirstArgs} args - Arguments to find a FacultyLeaveRequest
+     * @example
+     * // Get one FacultyLeaveRequest
+     * const facultyLeaveRequest = await prisma.facultyLeaveRequest.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends FacultyLeaveRequestFindFirstArgs>(args?: SelectSubset<T, FacultyLeaveRequestFindFirstArgs<ExtArgs>>): Prisma__FacultyLeaveRequestClient<$Result.GetResult<Prisma.$FacultyLeaveRequestPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first FacultyLeaveRequest that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FacultyLeaveRequestFindFirstOrThrowArgs} args - Arguments to find a FacultyLeaveRequest
+     * @example
+     * // Get one FacultyLeaveRequest
+     * const facultyLeaveRequest = await prisma.facultyLeaveRequest.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends FacultyLeaveRequestFindFirstOrThrowArgs>(args?: SelectSubset<T, FacultyLeaveRequestFindFirstOrThrowArgs<ExtArgs>>): Prisma__FacultyLeaveRequestClient<$Result.GetResult<Prisma.$FacultyLeaveRequestPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more FacultyLeaveRequests that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FacultyLeaveRequestFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all FacultyLeaveRequests
+     * const facultyLeaveRequests = await prisma.facultyLeaveRequest.findMany()
+     * 
+     * // Get first 10 FacultyLeaveRequests
+     * const facultyLeaveRequests = await prisma.facultyLeaveRequest.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const facultyLeaveRequestWithIdOnly = await prisma.facultyLeaveRequest.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends FacultyLeaveRequestFindManyArgs>(args?: SelectSubset<T, FacultyLeaveRequestFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FacultyLeaveRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a FacultyLeaveRequest.
+     * @param {FacultyLeaveRequestCreateArgs} args - Arguments to create a FacultyLeaveRequest.
+     * @example
+     * // Create one FacultyLeaveRequest
+     * const FacultyLeaveRequest = await prisma.facultyLeaveRequest.create({
+     *   data: {
+     *     // ... data to create a FacultyLeaveRequest
+     *   }
+     * })
+     * 
+     */
+    create<T extends FacultyLeaveRequestCreateArgs>(args: SelectSubset<T, FacultyLeaveRequestCreateArgs<ExtArgs>>): Prisma__FacultyLeaveRequestClient<$Result.GetResult<Prisma.$FacultyLeaveRequestPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many FacultyLeaveRequests.
+     * @param {FacultyLeaveRequestCreateManyArgs} args - Arguments to create many FacultyLeaveRequests.
+     * @example
+     * // Create many FacultyLeaveRequests
+     * const facultyLeaveRequest = await prisma.facultyLeaveRequest.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends FacultyLeaveRequestCreateManyArgs>(args?: SelectSubset<T, FacultyLeaveRequestCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many FacultyLeaveRequests and returns the data saved in the database.
+     * @param {FacultyLeaveRequestCreateManyAndReturnArgs} args - Arguments to create many FacultyLeaveRequests.
+     * @example
+     * // Create many FacultyLeaveRequests
+     * const facultyLeaveRequest = await prisma.facultyLeaveRequest.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many FacultyLeaveRequests and only return the `id`
+     * const facultyLeaveRequestWithIdOnly = await prisma.facultyLeaveRequest.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends FacultyLeaveRequestCreateManyAndReturnArgs>(args?: SelectSubset<T, FacultyLeaveRequestCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FacultyLeaveRequestPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a FacultyLeaveRequest.
+     * @param {FacultyLeaveRequestDeleteArgs} args - Arguments to delete one FacultyLeaveRequest.
+     * @example
+     * // Delete one FacultyLeaveRequest
+     * const FacultyLeaveRequest = await prisma.facultyLeaveRequest.delete({
+     *   where: {
+     *     // ... filter to delete one FacultyLeaveRequest
+     *   }
+     * })
+     * 
+     */
+    delete<T extends FacultyLeaveRequestDeleteArgs>(args: SelectSubset<T, FacultyLeaveRequestDeleteArgs<ExtArgs>>): Prisma__FacultyLeaveRequestClient<$Result.GetResult<Prisma.$FacultyLeaveRequestPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one FacultyLeaveRequest.
+     * @param {FacultyLeaveRequestUpdateArgs} args - Arguments to update one FacultyLeaveRequest.
+     * @example
+     * // Update one FacultyLeaveRequest
+     * const facultyLeaveRequest = await prisma.facultyLeaveRequest.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends FacultyLeaveRequestUpdateArgs>(args: SelectSubset<T, FacultyLeaveRequestUpdateArgs<ExtArgs>>): Prisma__FacultyLeaveRequestClient<$Result.GetResult<Prisma.$FacultyLeaveRequestPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more FacultyLeaveRequests.
+     * @param {FacultyLeaveRequestDeleteManyArgs} args - Arguments to filter FacultyLeaveRequests to delete.
+     * @example
+     * // Delete a few FacultyLeaveRequests
+     * const { count } = await prisma.facultyLeaveRequest.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends FacultyLeaveRequestDeleteManyArgs>(args?: SelectSubset<T, FacultyLeaveRequestDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more FacultyLeaveRequests.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FacultyLeaveRequestUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many FacultyLeaveRequests
+     * const facultyLeaveRequest = await prisma.facultyLeaveRequest.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends FacultyLeaveRequestUpdateManyArgs>(args: SelectSubset<T, FacultyLeaveRequestUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more FacultyLeaveRequests and returns the data updated in the database.
+     * @param {FacultyLeaveRequestUpdateManyAndReturnArgs} args - Arguments to update many FacultyLeaveRequests.
+     * @example
+     * // Update many FacultyLeaveRequests
+     * const facultyLeaveRequest = await prisma.facultyLeaveRequest.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more FacultyLeaveRequests and only return the `id`
+     * const facultyLeaveRequestWithIdOnly = await prisma.facultyLeaveRequest.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends FacultyLeaveRequestUpdateManyAndReturnArgs>(args: SelectSubset<T, FacultyLeaveRequestUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FacultyLeaveRequestPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one FacultyLeaveRequest.
+     * @param {FacultyLeaveRequestUpsertArgs} args - Arguments to update or create a FacultyLeaveRequest.
+     * @example
+     * // Update or create a FacultyLeaveRequest
+     * const facultyLeaveRequest = await prisma.facultyLeaveRequest.upsert({
+     *   create: {
+     *     // ... data to create a FacultyLeaveRequest
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the FacultyLeaveRequest we want to update
+     *   }
+     * })
+     */
+    upsert<T extends FacultyLeaveRequestUpsertArgs>(args: SelectSubset<T, FacultyLeaveRequestUpsertArgs<ExtArgs>>): Prisma__FacultyLeaveRequestClient<$Result.GetResult<Prisma.$FacultyLeaveRequestPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of FacultyLeaveRequests.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FacultyLeaveRequestCountArgs} args - Arguments to filter FacultyLeaveRequests to count.
+     * @example
+     * // Count the number of FacultyLeaveRequests
+     * const count = await prisma.facultyLeaveRequest.count({
+     *   where: {
+     *     // ... the filter for the FacultyLeaveRequests we want to count
+     *   }
+     * })
+    **/
+    count<T extends FacultyLeaveRequestCountArgs>(
+      args?: Subset<T, FacultyLeaveRequestCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], FacultyLeaveRequestCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a FacultyLeaveRequest.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FacultyLeaveRequestAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends FacultyLeaveRequestAggregateArgs>(args: Subset<T, FacultyLeaveRequestAggregateArgs>): Prisma.PrismaPromise<GetFacultyLeaveRequestAggregateType<T>>
+
+    /**
+     * Group by FacultyLeaveRequest.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FacultyLeaveRequestGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends FacultyLeaveRequestGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: FacultyLeaveRequestGroupByArgs['orderBy'] }
+        : { orderBy?: FacultyLeaveRequestGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, FacultyLeaveRequestGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetFacultyLeaveRequestGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the FacultyLeaveRequest model
+   */
+  readonly fields: FacultyLeaveRequestFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for FacultyLeaveRequest.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__FacultyLeaveRequestClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    facultyUser<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    branch<T extends BranchDefaultArgs<ExtArgs> = {}>(args?: Subset<T, BranchDefaultArgs<ExtArgs>>): Prisma__BranchClient<$Result.GetResult<Prisma.$BranchPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the FacultyLeaveRequest model
+   */
+  interface FacultyLeaveRequestFieldRefs {
+    readonly id: FieldRef<"FacultyLeaveRequest", 'String'>
+    readonly facultyUserId: FieldRef<"FacultyLeaveRequest", 'String'>
+    readonly branchId: FieldRef<"FacultyLeaveRequest", 'String'>
+    readonly facultyId: FieldRef<"FacultyLeaveRequest", 'String'>
+    readonly facultyName: FieldRef<"FacultyLeaveRequest", 'String'>
+    readonly facultyEmail: FieldRef<"FacultyLeaveRequest", 'String'>
+    readonly leaveType: FieldRef<"FacultyLeaveRequest", 'String'>
+    readonly fromDate: FieldRef<"FacultyLeaveRequest", 'String'>
+    readonly toDate: FieldRef<"FacultyLeaveRequest", 'String'>
+    readonly durationType: FieldRef<"FacultyLeaveRequest", 'String'>
+    readonly halfDayPeriod: FieldRef<"FacultyLeaveRequest", 'String'>
+    readonly halfDayStart: FieldRef<"FacultyLeaveRequest", 'String'>
+    readonly halfDayEnd: FieldRef<"FacultyLeaveRequest", 'String'>
+    readonly reason: FieldRef<"FacultyLeaveRequest", 'String'>
+    readonly status: FieldRef<"FacultyLeaveRequest", 'String'>
+    readonly affectedClasses: FieldRef<"FacultyLeaveRequest", 'Json'>
+    readonly createdAt: FieldRef<"FacultyLeaveRequest", 'DateTime'>
+    readonly updatedAt: FieldRef<"FacultyLeaveRequest", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * FacultyLeaveRequest findUnique
+   */
+  export type FacultyLeaveRequestFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyLeaveRequest
+     */
+    select?: FacultyLeaveRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyLeaveRequest
+     */
+    omit?: FacultyLeaveRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyLeaveRequestInclude<ExtArgs> | null
+    /**
+     * Filter, which FacultyLeaveRequest to fetch.
+     */
+    where: FacultyLeaveRequestWhereUniqueInput
+  }
+
+  /**
+   * FacultyLeaveRequest findUniqueOrThrow
+   */
+  export type FacultyLeaveRequestFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyLeaveRequest
+     */
+    select?: FacultyLeaveRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyLeaveRequest
+     */
+    omit?: FacultyLeaveRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyLeaveRequestInclude<ExtArgs> | null
+    /**
+     * Filter, which FacultyLeaveRequest to fetch.
+     */
+    where: FacultyLeaveRequestWhereUniqueInput
+  }
+
+  /**
+   * FacultyLeaveRequest findFirst
+   */
+  export type FacultyLeaveRequestFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyLeaveRequest
+     */
+    select?: FacultyLeaveRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyLeaveRequest
+     */
+    omit?: FacultyLeaveRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyLeaveRequestInclude<ExtArgs> | null
+    /**
+     * Filter, which FacultyLeaveRequest to fetch.
+     */
+    where?: FacultyLeaveRequestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FacultyLeaveRequests to fetch.
+     */
+    orderBy?: FacultyLeaveRequestOrderByWithRelationInput | FacultyLeaveRequestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FacultyLeaveRequests.
+     */
+    cursor?: FacultyLeaveRequestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FacultyLeaveRequests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FacultyLeaveRequests.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FacultyLeaveRequests.
+     */
+    distinct?: FacultyLeaveRequestScalarFieldEnum | FacultyLeaveRequestScalarFieldEnum[]
+  }
+
+  /**
+   * FacultyLeaveRequest findFirstOrThrow
+   */
+  export type FacultyLeaveRequestFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyLeaveRequest
+     */
+    select?: FacultyLeaveRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyLeaveRequest
+     */
+    omit?: FacultyLeaveRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyLeaveRequestInclude<ExtArgs> | null
+    /**
+     * Filter, which FacultyLeaveRequest to fetch.
+     */
+    where?: FacultyLeaveRequestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FacultyLeaveRequests to fetch.
+     */
+    orderBy?: FacultyLeaveRequestOrderByWithRelationInput | FacultyLeaveRequestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FacultyLeaveRequests.
+     */
+    cursor?: FacultyLeaveRequestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FacultyLeaveRequests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FacultyLeaveRequests.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FacultyLeaveRequests.
+     */
+    distinct?: FacultyLeaveRequestScalarFieldEnum | FacultyLeaveRequestScalarFieldEnum[]
+  }
+
+  /**
+   * FacultyLeaveRequest findMany
+   */
+  export type FacultyLeaveRequestFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyLeaveRequest
+     */
+    select?: FacultyLeaveRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyLeaveRequest
+     */
+    omit?: FacultyLeaveRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyLeaveRequestInclude<ExtArgs> | null
+    /**
+     * Filter, which FacultyLeaveRequests to fetch.
+     */
+    where?: FacultyLeaveRequestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FacultyLeaveRequests to fetch.
+     */
+    orderBy?: FacultyLeaveRequestOrderByWithRelationInput | FacultyLeaveRequestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing FacultyLeaveRequests.
+     */
+    cursor?: FacultyLeaveRequestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FacultyLeaveRequests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FacultyLeaveRequests.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FacultyLeaveRequests.
+     */
+    distinct?: FacultyLeaveRequestScalarFieldEnum | FacultyLeaveRequestScalarFieldEnum[]
+  }
+
+  /**
+   * FacultyLeaveRequest create
+   */
+  export type FacultyLeaveRequestCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyLeaveRequest
+     */
+    select?: FacultyLeaveRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyLeaveRequest
+     */
+    omit?: FacultyLeaveRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyLeaveRequestInclude<ExtArgs> | null
+    /**
+     * The data needed to create a FacultyLeaveRequest.
+     */
+    data: XOR<FacultyLeaveRequestCreateInput, FacultyLeaveRequestUncheckedCreateInput>
+  }
+
+  /**
+   * FacultyLeaveRequest createMany
+   */
+  export type FacultyLeaveRequestCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many FacultyLeaveRequests.
+     */
+    data: FacultyLeaveRequestCreateManyInput | FacultyLeaveRequestCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * FacultyLeaveRequest createManyAndReturn
+   */
+  export type FacultyLeaveRequestCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyLeaveRequest
+     */
+    select?: FacultyLeaveRequestSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyLeaveRequest
+     */
+    omit?: FacultyLeaveRequestOmit<ExtArgs> | null
+    /**
+     * The data used to create many FacultyLeaveRequests.
+     */
+    data: FacultyLeaveRequestCreateManyInput | FacultyLeaveRequestCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyLeaveRequestIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * FacultyLeaveRequest update
+   */
+  export type FacultyLeaveRequestUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyLeaveRequest
+     */
+    select?: FacultyLeaveRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyLeaveRequest
+     */
+    omit?: FacultyLeaveRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyLeaveRequestInclude<ExtArgs> | null
+    /**
+     * The data needed to update a FacultyLeaveRequest.
+     */
+    data: XOR<FacultyLeaveRequestUpdateInput, FacultyLeaveRequestUncheckedUpdateInput>
+    /**
+     * Choose, which FacultyLeaveRequest to update.
+     */
+    where: FacultyLeaveRequestWhereUniqueInput
+  }
+
+  /**
+   * FacultyLeaveRequest updateMany
+   */
+  export type FacultyLeaveRequestUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update FacultyLeaveRequests.
+     */
+    data: XOR<FacultyLeaveRequestUpdateManyMutationInput, FacultyLeaveRequestUncheckedUpdateManyInput>
+    /**
+     * Filter which FacultyLeaveRequests to update
+     */
+    where?: FacultyLeaveRequestWhereInput
+    /**
+     * Limit how many FacultyLeaveRequests to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * FacultyLeaveRequest updateManyAndReturn
+   */
+  export type FacultyLeaveRequestUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyLeaveRequest
+     */
+    select?: FacultyLeaveRequestSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyLeaveRequest
+     */
+    omit?: FacultyLeaveRequestOmit<ExtArgs> | null
+    /**
+     * The data used to update FacultyLeaveRequests.
+     */
+    data: XOR<FacultyLeaveRequestUpdateManyMutationInput, FacultyLeaveRequestUncheckedUpdateManyInput>
+    /**
+     * Filter which FacultyLeaveRequests to update
+     */
+    where?: FacultyLeaveRequestWhereInput
+    /**
+     * Limit how many FacultyLeaveRequests to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyLeaveRequestIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * FacultyLeaveRequest upsert
+   */
+  export type FacultyLeaveRequestUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyLeaveRequest
+     */
+    select?: FacultyLeaveRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyLeaveRequest
+     */
+    omit?: FacultyLeaveRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyLeaveRequestInclude<ExtArgs> | null
+    /**
+     * The filter to search for the FacultyLeaveRequest to update in case it exists.
+     */
+    where: FacultyLeaveRequestWhereUniqueInput
+    /**
+     * In case the FacultyLeaveRequest found by the `where` argument doesn't exist, create a new FacultyLeaveRequest with this data.
+     */
+    create: XOR<FacultyLeaveRequestCreateInput, FacultyLeaveRequestUncheckedCreateInput>
+    /**
+     * In case the FacultyLeaveRequest was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<FacultyLeaveRequestUpdateInput, FacultyLeaveRequestUncheckedUpdateInput>
+  }
+
+  /**
+   * FacultyLeaveRequest delete
+   */
+  export type FacultyLeaveRequestDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyLeaveRequest
+     */
+    select?: FacultyLeaveRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyLeaveRequest
+     */
+    omit?: FacultyLeaveRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyLeaveRequestInclude<ExtArgs> | null
+    /**
+     * Filter which FacultyLeaveRequest to delete.
+     */
+    where: FacultyLeaveRequestWhereUniqueInput
+  }
+
+  /**
+   * FacultyLeaveRequest deleteMany
+   */
+  export type FacultyLeaveRequestDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FacultyLeaveRequests to delete
+     */
+    where?: FacultyLeaveRequestWhereInput
+    /**
+     * Limit how many FacultyLeaveRequests to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * FacultyLeaveRequest without action
+   */
+  export type FacultyLeaveRequestDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyLeaveRequest
+     */
+    select?: FacultyLeaveRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyLeaveRequest
+     */
+    omit?: FacultyLeaveRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyLeaveRequestInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model BranchInstallmentTemplate
    */
 
@@ -50626,6 +52027,30 @@ export namespace Prisma {
   export type BranchFacultyScalarFieldEnum = (typeof BranchFacultyScalarFieldEnum)[keyof typeof BranchFacultyScalarFieldEnum]
 
 
+  export const FacultyLeaveRequestScalarFieldEnum: {
+    id: 'id',
+    facultyUserId: 'facultyUserId',
+    branchId: 'branchId',
+    facultyId: 'facultyId',
+    facultyName: 'facultyName',
+    facultyEmail: 'facultyEmail',
+    leaveType: 'leaveType',
+    fromDate: 'fromDate',
+    toDate: 'toDate',
+    durationType: 'durationType',
+    halfDayPeriod: 'halfDayPeriod',
+    halfDayStart: 'halfDayStart',
+    halfDayEnd: 'halfDayEnd',
+    reason: 'reason',
+    status: 'status',
+    affectedClasses: 'affectedClasses',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type FacultyLeaveRequestScalarFieldEnum = (typeof FacultyLeaveRequestScalarFieldEnum)[keyof typeof FacultyLeaveRequestScalarFieldEnum]
+
+
   export const BranchInstallmentTemplateScalarFieldEnum: {
     id: 'id',
     branchId: 'branchId',
@@ -50980,6 +52405,7 @@ export namespace Prisma {
     markedStudentAttendances?: StudentAttendanceListRelationFilter
     markedBranchStudentAttendances?: BranchStudentAttendanceListRelationFilter
     dashboardWidgetPreferences?: UserDashboardWidgetListRelationFilter
+    facultyLeaveRequests?: FacultyLeaveRequestListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -51014,6 +52440,7 @@ export namespace Prisma {
     markedStudentAttendances?: StudentAttendanceOrderByRelationAggregateInput
     markedBranchStudentAttendances?: BranchStudentAttendanceOrderByRelationAggregateInput
     dashboardWidgetPreferences?: UserDashboardWidgetOrderByRelationAggregateInput
+    facultyLeaveRequests?: FacultyLeaveRequestOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -51051,6 +52478,7 @@ export namespace Prisma {
     markedStudentAttendances?: StudentAttendanceListRelationFilter
     markedBranchStudentAttendances?: BranchStudentAttendanceListRelationFilter
     dashboardWidgetPreferences?: UserDashboardWidgetListRelationFilter
+    facultyLeaveRequests?: FacultyLeaveRequestListRelationFilter
   }, "id" | "userCode" | "email" | "phone">
 
   export type UserOrderByWithAggregationInput = {
@@ -51289,6 +52717,7 @@ export namespace Prisma {
     ledgerEntries?: BranchStudentLedgerEntryListRelationFilter
     payments?: BranchStudentPaymentListRelationFilter
     courses?: CourseListRelationFilter
+    facultyLeaveRequests?: FacultyLeaveRequestListRelationFilter
   }
 
   export type BranchOrderByWithRelationInput = {
@@ -51322,6 +52751,7 @@ export namespace Prisma {
     ledgerEntries?: BranchStudentLedgerEntryOrderByRelationAggregateInput
     payments?: BranchStudentPaymentOrderByRelationAggregateInput
     courses?: CourseOrderByRelationAggregateInput
+    facultyLeaveRequests?: FacultyLeaveRequestOrderByRelationAggregateInput
   }
 
   export type BranchWhereUniqueInput = Prisma.AtLeast<{
@@ -51358,6 +52788,7 @@ export namespace Prisma {
     ledgerEntries?: BranchStudentLedgerEntryListRelationFilter
     payments?: BranchStudentPaymentListRelationFilter
     courses?: CourseListRelationFilter
+    facultyLeaveRequests?: FacultyLeaveRequestListRelationFilter
   }, "id" | "branchId" | "branchEmail" | "branchPhone" | "adminUserId">
 
   export type BranchOrderByWithAggregationInput = {
@@ -54765,6 +56196,129 @@ export namespace Prisma {
     branchCourseId?: StringNullableWithAggregatesFilter<"BranchFaculty"> | string | null
   }
 
+  export type FacultyLeaveRequestWhereInput = {
+    AND?: FacultyLeaveRequestWhereInput | FacultyLeaveRequestWhereInput[]
+    OR?: FacultyLeaveRequestWhereInput[]
+    NOT?: FacultyLeaveRequestWhereInput | FacultyLeaveRequestWhereInput[]
+    id?: StringFilter<"FacultyLeaveRequest"> | string
+    facultyUserId?: StringFilter<"FacultyLeaveRequest"> | string
+    branchId?: StringFilter<"FacultyLeaveRequest"> | string
+    facultyId?: StringFilter<"FacultyLeaveRequest"> | string
+    facultyName?: StringFilter<"FacultyLeaveRequest"> | string
+    facultyEmail?: StringFilter<"FacultyLeaveRequest"> | string
+    leaveType?: StringFilter<"FacultyLeaveRequest"> | string
+    fromDate?: StringFilter<"FacultyLeaveRequest"> | string
+    toDate?: StringFilter<"FacultyLeaveRequest"> | string
+    durationType?: StringFilter<"FacultyLeaveRequest"> | string
+    halfDayPeriod?: StringNullableFilter<"FacultyLeaveRequest"> | string | null
+    halfDayStart?: StringNullableFilter<"FacultyLeaveRequest"> | string | null
+    halfDayEnd?: StringNullableFilter<"FacultyLeaveRequest"> | string | null
+    reason?: StringFilter<"FacultyLeaveRequest"> | string
+    status?: StringFilter<"FacultyLeaveRequest"> | string
+    affectedClasses?: JsonFilter<"FacultyLeaveRequest">
+    createdAt?: DateTimeFilter<"FacultyLeaveRequest"> | Date | string
+    updatedAt?: DateTimeFilter<"FacultyLeaveRequest"> | Date | string
+    facultyUser?: XOR<UserScalarRelationFilter, UserWhereInput>
+    branch?: XOR<BranchScalarRelationFilter, BranchWhereInput>
+  }
+
+  export type FacultyLeaveRequestOrderByWithRelationInput = {
+    id?: SortOrder
+    facultyUserId?: SortOrder
+    branchId?: SortOrder
+    facultyId?: SortOrder
+    facultyName?: SortOrder
+    facultyEmail?: SortOrder
+    leaveType?: SortOrder
+    fromDate?: SortOrder
+    toDate?: SortOrder
+    durationType?: SortOrder
+    halfDayPeriod?: SortOrderInput | SortOrder
+    halfDayStart?: SortOrderInput | SortOrder
+    halfDayEnd?: SortOrderInput | SortOrder
+    reason?: SortOrder
+    status?: SortOrder
+    affectedClasses?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    facultyUser?: UserOrderByWithRelationInput
+    branch?: BranchOrderByWithRelationInput
+  }
+
+  export type FacultyLeaveRequestWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: FacultyLeaveRequestWhereInput | FacultyLeaveRequestWhereInput[]
+    OR?: FacultyLeaveRequestWhereInput[]
+    NOT?: FacultyLeaveRequestWhereInput | FacultyLeaveRequestWhereInput[]
+    facultyUserId?: StringFilter<"FacultyLeaveRequest"> | string
+    branchId?: StringFilter<"FacultyLeaveRequest"> | string
+    facultyId?: StringFilter<"FacultyLeaveRequest"> | string
+    facultyName?: StringFilter<"FacultyLeaveRequest"> | string
+    facultyEmail?: StringFilter<"FacultyLeaveRequest"> | string
+    leaveType?: StringFilter<"FacultyLeaveRequest"> | string
+    fromDate?: StringFilter<"FacultyLeaveRequest"> | string
+    toDate?: StringFilter<"FacultyLeaveRequest"> | string
+    durationType?: StringFilter<"FacultyLeaveRequest"> | string
+    halfDayPeriod?: StringNullableFilter<"FacultyLeaveRequest"> | string | null
+    halfDayStart?: StringNullableFilter<"FacultyLeaveRequest"> | string | null
+    halfDayEnd?: StringNullableFilter<"FacultyLeaveRequest"> | string | null
+    reason?: StringFilter<"FacultyLeaveRequest"> | string
+    status?: StringFilter<"FacultyLeaveRequest"> | string
+    affectedClasses?: JsonFilter<"FacultyLeaveRequest">
+    createdAt?: DateTimeFilter<"FacultyLeaveRequest"> | Date | string
+    updatedAt?: DateTimeFilter<"FacultyLeaveRequest"> | Date | string
+    facultyUser?: XOR<UserScalarRelationFilter, UserWhereInput>
+    branch?: XOR<BranchScalarRelationFilter, BranchWhereInput>
+  }, "id">
+
+  export type FacultyLeaveRequestOrderByWithAggregationInput = {
+    id?: SortOrder
+    facultyUserId?: SortOrder
+    branchId?: SortOrder
+    facultyId?: SortOrder
+    facultyName?: SortOrder
+    facultyEmail?: SortOrder
+    leaveType?: SortOrder
+    fromDate?: SortOrder
+    toDate?: SortOrder
+    durationType?: SortOrder
+    halfDayPeriod?: SortOrderInput | SortOrder
+    halfDayStart?: SortOrderInput | SortOrder
+    halfDayEnd?: SortOrderInput | SortOrder
+    reason?: SortOrder
+    status?: SortOrder
+    affectedClasses?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: FacultyLeaveRequestCountOrderByAggregateInput
+    _max?: FacultyLeaveRequestMaxOrderByAggregateInput
+    _min?: FacultyLeaveRequestMinOrderByAggregateInput
+  }
+
+  export type FacultyLeaveRequestScalarWhereWithAggregatesInput = {
+    AND?: FacultyLeaveRequestScalarWhereWithAggregatesInput | FacultyLeaveRequestScalarWhereWithAggregatesInput[]
+    OR?: FacultyLeaveRequestScalarWhereWithAggregatesInput[]
+    NOT?: FacultyLeaveRequestScalarWhereWithAggregatesInput | FacultyLeaveRequestScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"FacultyLeaveRequest"> | string
+    facultyUserId?: StringWithAggregatesFilter<"FacultyLeaveRequest"> | string
+    branchId?: StringWithAggregatesFilter<"FacultyLeaveRequest"> | string
+    facultyId?: StringWithAggregatesFilter<"FacultyLeaveRequest"> | string
+    facultyName?: StringWithAggregatesFilter<"FacultyLeaveRequest"> | string
+    facultyEmail?: StringWithAggregatesFilter<"FacultyLeaveRequest"> | string
+    leaveType?: StringWithAggregatesFilter<"FacultyLeaveRequest"> | string
+    fromDate?: StringWithAggregatesFilter<"FacultyLeaveRequest"> | string
+    toDate?: StringWithAggregatesFilter<"FacultyLeaveRequest"> | string
+    durationType?: StringWithAggregatesFilter<"FacultyLeaveRequest"> | string
+    halfDayPeriod?: StringNullableWithAggregatesFilter<"FacultyLeaveRequest"> | string | null
+    halfDayStart?: StringNullableWithAggregatesFilter<"FacultyLeaveRequest"> | string | null
+    halfDayEnd?: StringNullableWithAggregatesFilter<"FacultyLeaveRequest"> | string | null
+    reason?: StringWithAggregatesFilter<"FacultyLeaveRequest"> | string
+    status?: StringWithAggregatesFilter<"FacultyLeaveRequest"> | string
+    affectedClasses?: JsonWithAggregatesFilter<"FacultyLeaveRequest">
+    createdAt?: DateTimeWithAggregatesFilter<"FacultyLeaveRequest"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"FacultyLeaveRequest"> | Date | string
+  }
+
   export type BranchInstallmentTemplateWhereInput = {
     AND?: BranchInstallmentTemplateWhereInput | BranchInstallmentTemplateWhereInput[]
     OR?: BranchInstallmentTemplateWhereInput[]
@@ -55185,6 +56739,7 @@ export namespace Prisma {
     markedStudentAttendances?: StudentAttendanceCreateNestedManyWithoutFacultyUserInput
     markedBranchStudentAttendances?: BranchStudentAttendanceCreateNestedManyWithoutFacultyUserInput
     dashboardWidgetPreferences?: UserDashboardWidgetCreateNestedManyWithoutUserInput
+    facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutFacultyUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -55219,6 +56774,7 @@ export namespace Prisma {
     markedStudentAttendances?: StudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
     markedBranchStudentAttendances?: BranchStudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
     dashboardWidgetPreferences?: UserDashboardWidgetUncheckedCreateNestedManyWithoutUserInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutFacultyUserInput
   }
 
   export type UserUpdateInput = {
@@ -55253,6 +56809,7 @@ export namespace Prisma {
     markedStudentAttendances?: StudentAttendanceUpdateManyWithoutFacultyUserNestedInput
     markedBranchStudentAttendances?: BranchStudentAttendanceUpdateManyWithoutFacultyUserNestedInput
     dashboardWidgetPreferences?: UserDashboardWidgetUpdateManyWithoutUserNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutFacultyUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -55287,6 +56844,7 @@ export namespace Prisma {
     markedStudentAttendances?: StudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
     markedBranchStudentAttendances?: BranchStudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
     dashboardWidgetPreferences?: UserDashboardWidgetUncheckedUpdateManyWithoutUserNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutFacultyUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -55547,6 +57105,7 @@ export namespace Prisma {
     ledgerEntries?: BranchStudentLedgerEntryCreateNestedManyWithoutBranchInput
     payments?: BranchStudentPaymentCreateNestedManyWithoutBranchInput
     courses?: CourseCreateNestedManyWithoutBranchInput
+    facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateInput = {
@@ -55579,6 +57138,7 @@ export namespace Prisma {
     ledgerEntries?: BranchStudentLedgerEntryUncheckedCreateNestedManyWithoutBranchInput
     payments?: BranchStudentPaymentUncheckedCreateNestedManyWithoutBranchInput
     courses?: CourseUncheckedCreateNestedManyWithoutBranchInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUpdateInput = {
@@ -55611,6 +57171,7 @@ export namespace Prisma {
     ledgerEntries?: BranchStudentLedgerEntryUpdateManyWithoutBranchNestedInput
     payments?: BranchStudentPaymentUpdateManyWithoutBranchNestedInput
     courses?: CourseUpdateManyWithoutBranchNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateInput = {
@@ -55643,6 +57204,7 @@ export namespace Prisma {
     ledgerEntries?: BranchStudentLedgerEntryUncheckedUpdateManyWithoutBranchNestedInput
     payments?: BranchStudentPaymentUncheckedUpdateManyWithoutBranchNestedInput
     courses?: CourseUncheckedUpdateManyWithoutBranchNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchCreateManyInput = {
@@ -59660,6 +61222,151 @@ export namespace Prisma {
     branchCourseId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
+  export type FacultyLeaveRequestCreateInput = {
+    id?: string
+    facultyId: string
+    facultyName: string
+    facultyEmail: string
+    leaveType: string
+    fromDate: string
+    toDate: string
+    durationType: string
+    halfDayPeriod?: string | null
+    halfDayStart?: string | null
+    halfDayEnd?: string | null
+    reason: string
+    status?: string
+    affectedClasses?: JsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    facultyUser: UserCreateNestedOneWithoutFacultyLeaveRequestsInput
+    branch: BranchCreateNestedOneWithoutFacultyLeaveRequestsInput
+  }
+
+  export type FacultyLeaveRequestUncheckedCreateInput = {
+    id?: string
+    facultyUserId: string
+    branchId: string
+    facultyId: string
+    facultyName: string
+    facultyEmail: string
+    leaveType: string
+    fromDate: string
+    toDate: string
+    durationType: string
+    halfDayPeriod?: string | null
+    halfDayStart?: string | null
+    halfDayEnd?: string | null
+    reason: string
+    status?: string
+    affectedClasses?: JsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FacultyLeaveRequestUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    facultyId?: StringFieldUpdateOperationsInput | string
+    facultyName?: StringFieldUpdateOperationsInput | string
+    facultyEmail?: StringFieldUpdateOperationsInput | string
+    leaveType?: StringFieldUpdateOperationsInput | string
+    fromDate?: StringFieldUpdateOperationsInput | string
+    toDate?: StringFieldUpdateOperationsInput | string
+    durationType?: StringFieldUpdateOperationsInput | string
+    halfDayPeriod?: NullableStringFieldUpdateOperationsInput | string | null
+    halfDayStart?: NullableStringFieldUpdateOperationsInput | string | null
+    halfDayEnd?: NullableStringFieldUpdateOperationsInput | string | null
+    reason?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    affectedClasses?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    facultyUser?: UserUpdateOneRequiredWithoutFacultyLeaveRequestsNestedInput
+    branch?: BranchUpdateOneRequiredWithoutFacultyLeaveRequestsNestedInput
+  }
+
+  export type FacultyLeaveRequestUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    facultyUserId?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    facultyId?: StringFieldUpdateOperationsInput | string
+    facultyName?: StringFieldUpdateOperationsInput | string
+    facultyEmail?: StringFieldUpdateOperationsInput | string
+    leaveType?: StringFieldUpdateOperationsInput | string
+    fromDate?: StringFieldUpdateOperationsInput | string
+    toDate?: StringFieldUpdateOperationsInput | string
+    durationType?: StringFieldUpdateOperationsInput | string
+    halfDayPeriod?: NullableStringFieldUpdateOperationsInput | string | null
+    halfDayStart?: NullableStringFieldUpdateOperationsInput | string | null
+    halfDayEnd?: NullableStringFieldUpdateOperationsInput | string | null
+    reason?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    affectedClasses?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FacultyLeaveRequestCreateManyInput = {
+    id?: string
+    facultyUserId: string
+    branchId: string
+    facultyId: string
+    facultyName: string
+    facultyEmail: string
+    leaveType: string
+    fromDate: string
+    toDate: string
+    durationType: string
+    halfDayPeriod?: string | null
+    halfDayStart?: string | null
+    halfDayEnd?: string | null
+    reason: string
+    status?: string
+    affectedClasses?: JsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FacultyLeaveRequestUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    facultyId?: StringFieldUpdateOperationsInput | string
+    facultyName?: StringFieldUpdateOperationsInput | string
+    facultyEmail?: StringFieldUpdateOperationsInput | string
+    leaveType?: StringFieldUpdateOperationsInput | string
+    fromDate?: StringFieldUpdateOperationsInput | string
+    toDate?: StringFieldUpdateOperationsInput | string
+    durationType?: StringFieldUpdateOperationsInput | string
+    halfDayPeriod?: NullableStringFieldUpdateOperationsInput | string | null
+    halfDayStart?: NullableStringFieldUpdateOperationsInput | string | null
+    halfDayEnd?: NullableStringFieldUpdateOperationsInput | string | null
+    reason?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    affectedClasses?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FacultyLeaveRequestUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    facultyUserId?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    facultyId?: StringFieldUpdateOperationsInput | string
+    facultyName?: StringFieldUpdateOperationsInput | string
+    facultyEmail?: StringFieldUpdateOperationsInput | string
+    leaveType?: StringFieldUpdateOperationsInput | string
+    fromDate?: StringFieldUpdateOperationsInput | string
+    toDate?: StringFieldUpdateOperationsInput | string
+    durationType?: StringFieldUpdateOperationsInput | string
+    halfDayPeriod?: NullableStringFieldUpdateOperationsInput | string | null
+    halfDayStart?: NullableStringFieldUpdateOperationsInput | string | null
+    halfDayEnd?: NullableStringFieldUpdateOperationsInput | string | null
+    reason?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    affectedClasses?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type BranchInstallmentTemplateCreateInput = {
     id?: string
     templateName: string
@@ -60242,6 +61949,12 @@ export namespace Prisma {
     none?: UserDashboardWidgetWhereInput
   }
 
+  export type FacultyLeaveRequestListRelationFilter = {
+    every?: FacultyLeaveRequestWhereInput
+    some?: FacultyLeaveRequestWhereInput
+    none?: FacultyLeaveRequestWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -60280,6 +61993,10 @@ export namespace Prisma {
   }
 
   export type UserDashboardWidgetOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type FacultyLeaveRequestOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -63143,6 +64860,67 @@ export namespace Prisma {
     branchCourseId?: SortOrder
   }
 
+  export type FacultyLeaveRequestCountOrderByAggregateInput = {
+    id?: SortOrder
+    facultyUserId?: SortOrder
+    branchId?: SortOrder
+    facultyId?: SortOrder
+    facultyName?: SortOrder
+    facultyEmail?: SortOrder
+    leaveType?: SortOrder
+    fromDate?: SortOrder
+    toDate?: SortOrder
+    durationType?: SortOrder
+    halfDayPeriod?: SortOrder
+    halfDayStart?: SortOrder
+    halfDayEnd?: SortOrder
+    reason?: SortOrder
+    status?: SortOrder
+    affectedClasses?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type FacultyLeaveRequestMaxOrderByAggregateInput = {
+    id?: SortOrder
+    facultyUserId?: SortOrder
+    branchId?: SortOrder
+    facultyId?: SortOrder
+    facultyName?: SortOrder
+    facultyEmail?: SortOrder
+    leaveType?: SortOrder
+    fromDate?: SortOrder
+    toDate?: SortOrder
+    durationType?: SortOrder
+    halfDayPeriod?: SortOrder
+    halfDayStart?: SortOrder
+    halfDayEnd?: SortOrder
+    reason?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type FacultyLeaveRequestMinOrderByAggregateInput = {
+    id?: SortOrder
+    facultyUserId?: SortOrder
+    branchId?: SortOrder
+    facultyId?: SortOrder
+    facultyName?: SortOrder
+    facultyEmail?: SortOrder
+    leaveType?: SortOrder
+    fromDate?: SortOrder
+    toDate?: SortOrder
+    durationType?: SortOrder
+    halfDayPeriod?: SortOrder
+    halfDayStart?: SortOrder
+    halfDayEnd?: SortOrder
+    reason?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
   export type BranchInstallmentTemplateCountOrderByAggregateInput = {
     id?: SortOrder
     branchId?: SortOrder
@@ -63444,6 +65222,13 @@ export namespace Prisma {
     connect?: UserDashboardWidgetWhereUniqueInput | UserDashboardWidgetWhereUniqueInput[]
   }
 
+  export type FacultyLeaveRequestCreateNestedManyWithoutFacultyUserInput = {
+    create?: XOR<FacultyLeaveRequestCreateWithoutFacultyUserInput, FacultyLeaveRequestUncheckedCreateWithoutFacultyUserInput> | FacultyLeaveRequestCreateWithoutFacultyUserInput[] | FacultyLeaveRequestUncheckedCreateWithoutFacultyUserInput[]
+    connectOrCreate?: FacultyLeaveRequestCreateOrConnectWithoutFacultyUserInput | FacultyLeaveRequestCreateOrConnectWithoutFacultyUserInput[]
+    createMany?: FacultyLeaveRequestCreateManyFacultyUserInputEnvelope
+    connect?: FacultyLeaveRequestWhereUniqueInput | FacultyLeaveRequestWhereUniqueInput[]
+  }
+
   export type BatchFacultyAssignmentUncheckedCreateNestedManyWithoutFacultyInput = {
     create?: XOR<BatchFacultyAssignmentCreateWithoutFacultyInput, BatchFacultyAssignmentUncheckedCreateWithoutFacultyInput> | BatchFacultyAssignmentCreateWithoutFacultyInput[] | BatchFacultyAssignmentUncheckedCreateWithoutFacultyInput[]
     connectOrCreate?: BatchFacultyAssignmentCreateOrConnectWithoutFacultyInput | BatchFacultyAssignmentCreateOrConnectWithoutFacultyInput[]
@@ -63511,6 +65296,13 @@ export namespace Prisma {
     connectOrCreate?: UserDashboardWidgetCreateOrConnectWithoutUserInput | UserDashboardWidgetCreateOrConnectWithoutUserInput[]
     createMany?: UserDashboardWidgetCreateManyUserInputEnvelope
     connect?: UserDashboardWidgetWhereUniqueInput | UserDashboardWidgetWhereUniqueInput[]
+  }
+
+  export type FacultyLeaveRequestUncheckedCreateNestedManyWithoutFacultyUserInput = {
+    create?: XOR<FacultyLeaveRequestCreateWithoutFacultyUserInput, FacultyLeaveRequestUncheckedCreateWithoutFacultyUserInput> | FacultyLeaveRequestCreateWithoutFacultyUserInput[] | FacultyLeaveRequestUncheckedCreateWithoutFacultyUserInput[]
+    connectOrCreate?: FacultyLeaveRequestCreateOrConnectWithoutFacultyUserInput | FacultyLeaveRequestCreateOrConnectWithoutFacultyUserInput[]
+    createMany?: FacultyLeaveRequestCreateManyFacultyUserInputEnvelope
+    connect?: FacultyLeaveRequestWhereUniqueInput | FacultyLeaveRequestWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -63681,6 +65473,20 @@ export namespace Prisma {
     deleteMany?: UserDashboardWidgetScalarWhereInput | UserDashboardWidgetScalarWhereInput[]
   }
 
+  export type FacultyLeaveRequestUpdateManyWithoutFacultyUserNestedInput = {
+    create?: XOR<FacultyLeaveRequestCreateWithoutFacultyUserInput, FacultyLeaveRequestUncheckedCreateWithoutFacultyUserInput> | FacultyLeaveRequestCreateWithoutFacultyUserInput[] | FacultyLeaveRequestUncheckedCreateWithoutFacultyUserInput[]
+    connectOrCreate?: FacultyLeaveRequestCreateOrConnectWithoutFacultyUserInput | FacultyLeaveRequestCreateOrConnectWithoutFacultyUserInput[]
+    upsert?: FacultyLeaveRequestUpsertWithWhereUniqueWithoutFacultyUserInput | FacultyLeaveRequestUpsertWithWhereUniqueWithoutFacultyUserInput[]
+    createMany?: FacultyLeaveRequestCreateManyFacultyUserInputEnvelope
+    set?: FacultyLeaveRequestWhereUniqueInput | FacultyLeaveRequestWhereUniqueInput[]
+    disconnect?: FacultyLeaveRequestWhereUniqueInput | FacultyLeaveRequestWhereUniqueInput[]
+    delete?: FacultyLeaveRequestWhereUniqueInput | FacultyLeaveRequestWhereUniqueInput[]
+    connect?: FacultyLeaveRequestWhereUniqueInput | FacultyLeaveRequestWhereUniqueInput[]
+    update?: FacultyLeaveRequestUpdateWithWhereUniqueWithoutFacultyUserInput | FacultyLeaveRequestUpdateWithWhereUniqueWithoutFacultyUserInput[]
+    updateMany?: FacultyLeaveRequestUpdateManyWithWhereWithoutFacultyUserInput | FacultyLeaveRequestUpdateManyWithWhereWithoutFacultyUserInput[]
+    deleteMany?: FacultyLeaveRequestScalarWhereInput | FacultyLeaveRequestScalarWhereInput[]
+  }
+
   export type BatchFacultyAssignmentUncheckedUpdateManyWithoutFacultyNestedInput = {
     create?: XOR<BatchFacultyAssignmentCreateWithoutFacultyInput, BatchFacultyAssignmentUncheckedCreateWithoutFacultyInput> | BatchFacultyAssignmentCreateWithoutFacultyInput[] | BatchFacultyAssignmentUncheckedCreateWithoutFacultyInput[]
     connectOrCreate?: BatchFacultyAssignmentCreateOrConnectWithoutFacultyInput | BatchFacultyAssignmentCreateOrConnectWithoutFacultyInput[]
@@ -63815,6 +65621,20 @@ export namespace Prisma {
     update?: UserDashboardWidgetUpdateWithWhereUniqueWithoutUserInput | UserDashboardWidgetUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: UserDashboardWidgetUpdateManyWithWhereWithoutUserInput | UserDashboardWidgetUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: UserDashboardWidgetScalarWhereInput | UserDashboardWidgetScalarWhereInput[]
+  }
+
+  export type FacultyLeaveRequestUncheckedUpdateManyWithoutFacultyUserNestedInput = {
+    create?: XOR<FacultyLeaveRequestCreateWithoutFacultyUserInput, FacultyLeaveRequestUncheckedCreateWithoutFacultyUserInput> | FacultyLeaveRequestCreateWithoutFacultyUserInput[] | FacultyLeaveRequestUncheckedCreateWithoutFacultyUserInput[]
+    connectOrCreate?: FacultyLeaveRequestCreateOrConnectWithoutFacultyUserInput | FacultyLeaveRequestCreateOrConnectWithoutFacultyUserInput[]
+    upsert?: FacultyLeaveRequestUpsertWithWhereUniqueWithoutFacultyUserInput | FacultyLeaveRequestUpsertWithWhereUniqueWithoutFacultyUserInput[]
+    createMany?: FacultyLeaveRequestCreateManyFacultyUserInputEnvelope
+    set?: FacultyLeaveRequestWhereUniqueInput | FacultyLeaveRequestWhereUniqueInput[]
+    disconnect?: FacultyLeaveRequestWhereUniqueInput | FacultyLeaveRequestWhereUniqueInput[]
+    delete?: FacultyLeaveRequestWhereUniqueInput | FacultyLeaveRequestWhereUniqueInput[]
+    connect?: FacultyLeaveRequestWhereUniqueInput | FacultyLeaveRequestWhereUniqueInput[]
+    update?: FacultyLeaveRequestUpdateWithWhereUniqueWithoutFacultyUserInput | FacultyLeaveRequestUpdateWithWhereUniqueWithoutFacultyUserInput[]
+    updateMany?: FacultyLeaveRequestUpdateManyWithWhereWithoutFacultyUserInput | FacultyLeaveRequestUpdateManyWithWhereWithoutFacultyUserInput[]
+    deleteMany?: FacultyLeaveRequestScalarWhereInput | FacultyLeaveRequestScalarWhereInput[]
   }
 
   export type DashboardWidgetCreateallowedRolesInput = {
@@ -63972,6 +65792,13 @@ export namespace Prisma {
     connect?: CourseWhereUniqueInput | CourseWhereUniqueInput[]
   }
 
+  export type FacultyLeaveRequestCreateNestedManyWithoutBranchInput = {
+    create?: XOR<FacultyLeaveRequestCreateWithoutBranchInput, FacultyLeaveRequestUncheckedCreateWithoutBranchInput> | FacultyLeaveRequestCreateWithoutBranchInput[] | FacultyLeaveRequestUncheckedCreateWithoutBranchInput[]
+    connectOrCreate?: FacultyLeaveRequestCreateOrConnectWithoutBranchInput | FacultyLeaveRequestCreateOrConnectWithoutBranchInput[]
+    createMany?: FacultyLeaveRequestCreateManyBranchInputEnvelope
+    connect?: FacultyLeaveRequestWhereUniqueInput | FacultyLeaveRequestWhereUniqueInput[]
+  }
+
   export type BranchCourseUncheckedCreateNestedManyWithoutBranchInput = {
     create?: XOR<BranchCourseCreateWithoutBranchInput, BranchCourseUncheckedCreateWithoutBranchInput> | BranchCourseCreateWithoutBranchInput[] | BranchCourseUncheckedCreateWithoutBranchInput[]
     connectOrCreate?: BranchCourseCreateOrConnectWithoutBranchInput | BranchCourseCreateOrConnectWithoutBranchInput[]
@@ -64040,6 +65867,13 @@ export namespace Prisma {
     connectOrCreate?: CourseCreateOrConnectWithoutBranchInput | CourseCreateOrConnectWithoutBranchInput[]
     createMany?: CourseCreateManyBranchInputEnvelope
     connect?: CourseWhereUniqueInput | CourseWhereUniqueInput[]
+  }
+
+  export type FacultyLeaveRequestUncheckedCreateNestedManyWithoutBranchInput = {
+    create?: XOR<FacultyLeaveRequestCreateWithoutBranchInput, FacultyLeaveRequestUncheckedCreateWithoutBranchInput> | FacultyLeaveRequestCreateWithoutBranchInput[] | FacultyLeaveRequestUncheckedCreateWithoutBranchInput[]
+    connectOrCreate?: FacultyLeaveRequestCreateOrConnectWithoutBranchInput | FacultyLeaveRequestCreateOrConnectWithoutBranchInput[]
+    createMany?: FacultyLeaveRequestCreateManyBranchInputEnvelope
+    connect?: FacultyLeaveRequestWhereUniqueInput | FacultyLeaveRequestWhereUniqueInput[]
   }
 
   export type EnumRecordStatusFieldUpdateOperationsInput = {
@@ -64196,6 +66030,20 @@ export namespace Prisma {
     deleteMany?: CourseScalarWhereInput | CourseScalarWhereInput[]
   }
 
+  export type FacultyLeaveRequestUpdateManyWithoutBranchNestedInput = {
+    create?: XOR<FacultyLeaveRequestCreateWithoutBranchInput, FacultyLeaveRequestUncheckedCreateWithoutBranchInput> | FacultyLeaveRequestCreateWithoutBranchInput[] | FacultyLeaveRequestUncheckedCreateWithoutBranchInput[]
+    connectOrCreate?: FacultyLeaveRequestCreateOrConnectWithoutBranchInput | FacultyLeaveRequestCreateOrConnectWithoutBranchInput[]
+    upsert?: FacultyLeaveRequestUpsertWithWhereUniqueWithoutBranchInput | FacultyLeaveRequestUpsertWithWhereUniqueWithoutBranchInput[]
+    createMany?: FacultyLeaveRequestCreateManyBranchInputEnvelope
+    set?: FacultyLeaveRequestWhereUniqueInput | FacultyLeaveRequestWhereUniqueInput[]
+    disconnect?: FacultyLeaveRequestWhereUniqueInput | FacultyLeaveRequestWhereUniqueInput[]
+    delete?: FacultyLeaveRequestWhereUniqueInput | FacultyLeaveRequestWhereUniqueInput[]
+    connect?: FacultyLeaveRequestWhereUniqueInput | FacultyLeaveRequestWhereUniqueInput[]
+    update?: FacultyLeaveRequestUpdateWithWhereUniqueWithoutBranchInput | FacultyLeaveRequestUpdateWithWhereUniqueWithoutBranchInput[]
+    updateMany?: FacultyLeaveRequestUpdateManyWithWhereWithoutBranchInput | FacultyLeaveRequestUpdateManyWithWhereWithoutBranchInput[]
+    deleteMany?: FacultyLeaveRequestScalarWhereInput | FacultyLeaveRequestScalarWhereInput[]
+  }
+
   export type BranchCourseUncheckedUpdateManyWithoutBranchNestedInput = {
     create?: XOR<BranchCourseCreateWithoutBranchInput, BranchCourseUncheckedCreateWithoutBranchInput> | BranchCourseCreateWithoutBranchInput[] | BranchCourseUncheckedCreateWithoutBranchInput[]
     connectOrCreate?: BranchCourseCreateOrConnectWithoutBranchInput | BranchCourseCreateOrConnectWithoutBranchInput[]
@@ -64334,6 +66182,20 @@ export namespace Prisma {
     update?: CourseUpdateWithWhereUniqueWithoutBranchInput | CourseUpdateWithWhereUniqueWithoutBranchInput[]
     updateMany?: CourseUpdateManyWithWhereWithoutBranchInput | CourseUpdateManyWithWhereWithoutBranchInput[]
     deleteMany?: CourseScalarWhereInput | CourseScalarWhereInput[]
+  }
+
+  export type FacultyLeaveRequestUncheckedUpdateManyWithoutBranchNestedInput = {
+    create?: XOR<FacultyLeaveRequestCreateWithoutBranchInput, FacultyLeaveRequestUncheckedCreateWithoutBranchInput> | FacultyLeaveRequestCreateWithoutBranchInput[] | FacultyLeaveRequestUncheckedCreateWithoutBranchInput[]
+    connectOrCreate?: FacultyLeaveRequestCreateOrConnectWithoutBranchInput | FacultyLeaveRequestCreateOrConnectWithoutBranchInput[]
+    upsert?: FacultyLeaveRequestUpsertWithWhereUniqueWithoutBranchInput | FacultyLeaveRequestUpsertWithWhereUniqueWithoutBranchInput[]
+    createMany?: FacultyLeaveRequestCreateManyBranchInputEnvelope
+    set?: FacultyLeaveRequestWhereUniqueInput | FacultyLeaveRequestWhereUniqueInput[]
+    disconnect?: FacultyLeaveRequestWhereUniqueInput | FacultyLeaveRequestWhereUniqueInput[]
+    delete?: FacultyLeaveRequestWhereUniqueInput | FacultyLeaveRequestWhereUniqueInput[]
+    connect?: FacultyLeaveRequestWhereUniqueInput | FacultyLeaveRequestWhereUniqueInput[]
+    update?: FacultyLeaveRequestUpdateWithWhereUniqueWithoutBranchInput | FacultyLeaveRequestUpdateWithWhereUniqueWithoutBranchInput[]
+    updateMany?: FacultyLeaveRequestUpdateManyWithWhereWithoutBranchInput | FacultyLeaveRequestUpdateManyWithWhereWithoutBranchInput[]
+    deleteMany?: FacultyLeaveRequestScalarWhereInput | FacultyLeaveRequestScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutLoginEventsInput = {
@@ -66242,6 +68104,34 @@ export namespace Prisma {
     deleteMany?: BranchBatchScalarWhereInput | BranchBatchScalarWhereInput[]
   }
 
+  export type UserCreateNestedOneWithoutFacultyLeaveRequestsInput = {
+    create?: XOR<UserCreateWithoutFacultyLeaveRequestsInput, UserUncheckedCreateWithoutFacultyLeaveRequestsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutFacultyLeaveRequestsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type BranchCreateNestedOneWithoutFacultyLeaveRequestsInput = {
+    create?: XOR<BranchCreateWithoutFacultyLeaveRequestsInput, BranchUncheckedCreateWithoutFacultyLeaveRequestsInput>
+    connectOrCreate?: BranchCreateOrConnectWithoutFacultyLeaveRequestsInput
+    connect?: BranchWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutFacultyLeaveRequestsNestedInput = {
+    create?: XOR<UserCreateWithoutFacultyLeaveRequestsInput, UserUncheckedCreateWithoutFacultyLeaveRequestsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutFacultyLeaveRequestsInput
+    upsert?: UserUpsertWithoutFacultyLeaveRequestsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutFacultyLeaveRequestsInput, UserUpdateWithoutFacultyLeaveRequestsInput>, UserUncheckedUpdateWithoutFacultyLeaveRequestsInput>
+  }
+
+  export type BranchUpdateOneRequiredWithoutFacultyLeaveRequestsNestedInput = {
+    create?: XOR<BranchCreateWithoutFacultyLeaveRequestsInput, BranchUncheckedCreateWithoutFacultyLeaveRequestsInput>
+    connectOrCreate?: BranchCreateOrConnectWithoutFacultyLeaveRequestsInput
+    upsert?: BranchUpsertWithoutFacultyLeaveRequestsInput
+    connect?: BranchWhereUniqueInput
+    update?: XOR<XOR<BranchUpdateToOneWithWhereWithoutFacultyLeaveRequestsInput, BranchUpdateWithoutFacultyLeaveRequestsInput>, BranchUncheckedUpdateWithoutFacultyLeaveRequestsInput>
+  }
+
   export type BranchCreateNestedOneWithoutBranchInstallmentTemplatesInput = {
     create?: XOR<BranchCreateWithoutBranchInstallmentTemplatesInput, BranchUncheckedCreateWithoutBranchInstallmentTemplatesInput>
     connectOrCreate?: BranchCreateOrConnectWithoutBranchInstallmentTemplatesInput
@@ -66864,6 +68754,7 @@ export namespace Prisma {
     ledgerEntries?: BranchStudentLedgerEntryCreateNestedManyWithoutBranchInput
     payments?: BranchStudentPaymentCreateNestedManyWithoutBranchInput
     courses?: CourseCreateNestedManyWithoutBranchInput
+    facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutAdminUserInput = {
@@ -66895,6 +68786,7 @@ export namespace Prisma {
     ledgerEntries?: BranchStudentLedgerEntryUncheckedCreateNestedManyWithoutBranchInput
     payments?: BranchStudentPaymentUncheckedCreateNestedManyWithoutBranchInput
     courses?: CourseUncheckedCreateNestedManyWithoutBranchInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutAdminUserInput = {
@@ -67250,6 +69142,56 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type FacultyLeaveRequestCreateWithoutFacultyUserInput = {
+    id?: string
+    facultyId: string
+    facultyName: string
+    facultyEmail: string
+    leaveType: string
+    fromDate: string
+    toDate: string
+    durationType: string
+    halfDayPeriod?: string | null
+    halfDayStart?: string | null
+    halfDayEnd?: string | null
+    reason: string
+    status?: string
+    affectedClasses?: JsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branch: BranchCreateNestedOneWithoutFacultyLeaveRequestsInput
+  }
+
+  export type FacultyLeaveRequestUncheckedCreateWithoutFacultyUserInput = {
+    id?: string
+    branchId: string
+    facultyId: string
+    facultyName: string
+    facultyEmail: string
+    leaveType: string
+    fromDate: string
+    toDate: string
+    durationType: string
+    halfDayPeriod?: string | null
+    halfDayStart?: string | null
+    halfDayEnd?: string | null
+    reason: string
+    status?: string
+    affectedClasses?: JsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FacultyLeaveRequestCreateOrConnectWithoutFacultyUserInput = {
+    where: FacultyLeaveRequestWhereUniqueInput
+    create: XOR<FacultyLeaveRequestCreateWithoutFacultyUserInput, FacultyLeaveRequestUncheckedCreateWithoutFacultyUserInput>
+  }
+
+  export type FacultyLeaveRequestCreateManyFacultyUserInputEnvelope = {
+    data: FacultyLeaveRequestCreateManyFacultyUserInput | FacultyLeaveRequestCreateManyFacultyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type BatchFacultyAssignmentUpsertWithWhereUniqueWithoutFacultyInput = {
     where: BatchFacultyAssignmentWhereUniqueInput
     update: XOR<BatchFacultyAssignmentUpdateWithoutFacultyInput, BatchFacultyAssignmentUncheckedUpdateWithoutFacultyInput>
@@ -67326,6 +69268,7 @@ export namespace Prisma {
     ledgerEntries?: BranchStudentLedgerEntryUpdateManyWithoutBranchNestedInput
     payments?: BranchStudentPaymentUpdateManyWithoutBranchNestedInput
     courses?: CourseUpdateManyWithoutBranchNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutAdminUserInput = {
@@ -67357,6 +69300,7 @@ export namespace Prisma {
     ledgerEntries?: BranchStudentLedgerEntryUncheckedUpdateManyWithoutBranchNestedInput
     payments?: BranchStudentPaymentUncheckedUpdateManyWithoutBranchNestedInput
     courses?: CourseUncheckedUpdateManyWithoutBranchNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type FacultyAttendanceSessionUpsertWithWhereUniqueWithoutFacultyUserInput = {
@@ -67652,6 +69596,46 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"UserDashboardWidget"> | Date | string
   }
 
+  export type FacultyLeaveRequestUpsertWithWhereUniqueWithoutFacultyUserInput = {
+    where: FacultyLeaveRequestWhereUniqueInput
+    update: XOR<FacultyLeaveRequestUpdateWithoutFacultyUserInput, FacultyLeaveRequestUncheckedUpdateWithoutFacultyUserInput>
+    create: XOR<FacultyLeaveRequestCreateWithoutFacultyUserInput, FacultyLeaveRequestUncheckedCreateWithoutFacultyUserInput>
+  }
+
+  export type FacultyLeaveRequestUpdateWithWhereUniqueWithoutFacultyUserInput = {
+    where: FacultyLeaveRequestWhereUniqueInput
+    data: XOR<FacultyLeaveRequestUpdateWithoutFacultyUserInput, FacultyLeaveRequestUncheckedUpdateWithoutFacultyUserInput>
+  }
+
+  export type FacultyLeaveRequestUpdateManyWithWhereWithoutFacultyUserInput = {
+    where: FacultyLeaveRequestScalarWhereInput
+    data: XOR<FacultyLeaveRequestUpdateManyMutationInput, FacultyLeaveRequestUncheckedUpdateManyWithoutFacultyUserInput>
+  }
+
+  export type FacultyLeaveRequestScalarWhereInput = {
+    AND?: FacultyLeaveRequestScalarWhereInput | FacultyLeaveRequestScalarWhereInput[]
+    OR?: FacultyLeaveRequestScalarWhereInput[]
+    NOT?: FacultyLeaveRequestScalarWhereInput | FacultyLeaveRequestScalarWhereInput[]
+    id?: StringFilter<"FacultyLeaveRequest"> | string
+    facultyUserId?: StringFilter<"FacultyLeaveRequest"> | string
+    branchId?: StringFilter<"FacultyLeaveRequest"> | string
+    facultyId?: StringFilter<"FacultyLeaveRequest"> | string
+    facultyName?: StringFilter<"FacultyLeaveRequest"> | string
+    facultyEmail?: StringFilter<"FacultyLeaveRequest"> | string
+    leaveType?: StringFilter<"FacultyLeaveRequest"> | string
+    fromDate?: StringFilter<"FacultyLeaveRequest"> | string
+    toDate?: StringFilter<"FacultyLeaveRequest"> | string
+    durationType?: StringFilter<"FacultyLeaveRequest"> | string
+    halfDayPeriod?: StringNullableFilter<"FacultyLeaveRequest"> | string | null
+    halfDayStart?: StringNullableFilter<"FacultyLeaveRequest"> | string | null
+    halfDayEnd?: StringNullableFilter<"FacultyLeaveRequest"> | string | null
+    reason?: StringFilter<"FacultyLeaveRequest"> | string
+    status?: StringFilter<"FacultyLeaveRequest"> | string
+    affectedClasses?: JsonFilter<"FacultyLeaveRequest">
+    createdAt?: DateTimeFilter<"FacultyLeaveRequest"> | Date | string
+    updatedAt?: DateTimeFilter<"FacultyLeaveRequest"> | Date | string
+  }
+
   export type UserDashboardWidgetCreateWithoutWidgetInput = {
     id?: string
     isVisible?: boolean
@@ -67727,6 +69711,7 @@ export namespace Prisma {
     passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
     markedStudentAttendances?: StudentAttendanceCreateNestedManyWithoutFacultyUserInput
     markedBranchStudentAttendances?: BranchStudentAttendanceCreateNestedManyWithoutFacultyUserInput
+    facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutFacultyUserInput
   }
 
   export type UserUncheckedCreateWithoutDashboardWidgetPreferencesInput = {
@@ -67760,6 +69745,7 @@ export namespace Prisma {
     passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
     markedStudentAttendances?: StudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
     markedBranchStudentAttendances?: BranchStudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutFacultyUserInput
   }
 
   export type UserCreateOrConnectWithoutDashboardWidgetPreferencesInput = {
@@ -67838,6 +69824,7 @@ export namespace Prisma {
     passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
     markedStudentAttendances?: StudentAttendanceUpdateManyWithoutFacultyUserNestedInput
     markedBranchStudentAttendances?: BranchStudentAttendanceUpdateManyWithoutFacultyUserNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutFacultyUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDashboardWidgetPreferencesInput = {
@@ -67871,6 +69858,7 @@ export namespace Prisma {
     passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
     markedStudentAttendances?: StudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
     markedBranchStudentAttendances?: BranchStudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutFacultyUserNestedInput
   }
 
   export type DashboardWidgetUpsertWithoutPreferencesInput = {
@@ -67939,6 +69927,7 @@ export namespace Prisma {
     markedStudentAttendances?: StudentAttendanceCreateNestedManyWithoutFacultyUserInput
     markedBranchStudentAttendances?: BranchStudentAttendanceCreateNestedManyWithoutFacultyUserInput
     dashboardWidgetPreferences?: UserDashboardWidgetCreateNestedManyWithoutUserInput
+    facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutFacultyUserInput
   }
 
   export type UserUncheckedCreateWithoutManagedBranchInput = {
@@ -67972,6 +69961,7 @@ export namespace Prisma {
     markedStudentAttendances?: StudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
     markedBranchStudentAttendances?: BranchStudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
     dashboardWidgetPreferences?: UserDashboardWidgetUncheckedCreateNestedManyWithoutUserInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutFacultyUserInput
   }
 
   export type UserCreateOrConnectWithoutManagedBranchInput = {
@@ -68589,6 +70579,56 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type FacultyLeaveRequestCreateWithoutBranchInput = {
+    id?: string
+    facultyId: string
+    facultyName: string
+    facultyEmail: string
+    leaveType: string
+    fromDate: string
+    toDate: string
+    durationType: string
+    halfDayPeriod?: string | null
+    halfDayStart?: string | null
+    halfDayEnd?: string | null
+    reason: string
+    status?: string
+    affectedClasses?: JsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    facultyUser: UserCreateNestedOneWithoutFacultyLeaveRequestsInput
+  }
+
+  export type FacultyLeaveRequestUncheckedCreateWithoutBranchInput = {
+    id?: string
+    facultyUserId: string
+    facultyId: string
+    facultyName: string
+    facultyEmail: string
+    leaveType: string
+    fromDate: string
+    toDate: string
+    durationType: string
+    halfDayPeriod?: string | null
+    halfDayStart?: string | null
+    halfDayEnd?: string | null
+    reason: string
+    status?: string
+    affectedClasses?: JsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FacultyLeaveRequestCreateOrConnectWithoutBranchInput = {
+    where: FacultyLeaveRequestWhereUniqueInput
+    create: XOR<FacultyLeaveRequestCreateWithoutBranchInput, FacultyLeaveRequestUncheckedCreateWithoutBranchInput>
+  }
+
+  export type FacultyLeaveRequestCreateManyBranchInputEnvelope = {
+    data: FacultyLeaveRequestCreateManyBranchInput | FacultyLeaveRequestCreateManyBranchInput[]
+    skipDuplicates?: boolean
+  }
+
   export type UserUpsertWithoutManagedBranchInput = {
     update: XOR<UserUpdateWithoutManagedBranchInput, UserUncheckedUpdateWithoutManagedBranchInput>
     create: XOR<UserCreateWithoutManagedBranchInput, UserUncheckedCreateWithoutManagedBranchInput>
@@ -68631,6 +70671,7 @@ export namespace Prisma {
     markedStudentAttendances?: StudentAttendanceUpdateManyWithoutFacultyUserNestedInput
     markedBranchStudentAttendances?: BranchStudentAttendanceUpdateManyWithoutFacultyUserNestedInput
     dashboardWidgetPreferences?: UserDashboardWidgetUpdateManyWithoutUserNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutFacultyUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutManagedBranchInput = {
@@ -68664,6 +70705,7 @@ export namespace Prisma {
     markedStudentAttendances?: StudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
     markedBranchStudentAttendances?: BranchStudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
     dashboardWidgetPreferences?: UserDashboardWidgetUncheckedUpdateManyWithoutUserNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutFacultyUserNestedInput
   }
 
   export type BranchCourseUpsertWithWhereUniqueWithoutBranchInput = {
@@ -69100,6 +71142,22 @@ export namespace Prisma {
     courseCode?: StringNullableFilter<"Course"> | string | null
   }
 
+  export type FacultyLeaveRequestUpsertWithWhereUniqueWithoutBranchInput = {
+    where: FacultyLeaveRequestWhereUniqueInput
+    update: XOR<FacultyLeaveRequestUpdateWithoutBranchInput, FacultyLeaveRequestUncheckedUpdateWithoutBranchInput>
+    create: XOR<FacultyLeaveRequestCreateWithoutBranchInput, FacultyLeaveRequestUncheckedCreateWithoutBranchInput>
+  }
+
+  export type FacultyLeaveRequestUpdateWithWhereUniqueWithoutBranchInput = {
+    where: FacultyLeaveRequestWhereUniqueInput
+    data: XOR<FacultyLeaveRequestUpdateWithoutBranchInput, FacultyLeaveRequestUncheckedUpdateWithoutBranchInput>
+  }
+
+  export type FacultyLeaveRequestUpdateManyWithWhereWithoutBranchInput = {
+    where: FacultyLeaveRequestScalarWhereInput
+    data: XOR<FacultyLeaveRequestUpdateManyMutationInput, FacultyLeaveRequestUncheckedUpdateManyWithoutBranchInput>
+  }
+
   export type UserCreateWithoutLoginEventsInput = {
     id?: string
     userCode: string
@@ -69131,6 +71189,7 @@ export namespace Prisma {
     markedStudentAttendances?: StudentAttendanceCreateNestedManyWithoutFacultyUserInput
     markedBranchStudentAttendances?: BranchStudentAttendanceCreateNestedManyWithoutFacultyUserInput
     dashboardWidgetPreferences?: UserDashboardWidgetCreateNestedManyWithoutUserInput
+    facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutFacultyUserInput
   }
 
   export type UserUncheckedCreateWithoutLoginEventsInput = {
@@ -69164,6 +71223,7 @@ export namespace Prisma {
     markedStudentAttendances?: StudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
     markedBranchStudentAttendances?: BranchStudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
     dashboardWidgetPreferences?: UserDashboardWidgetUncheckedCreateNestedManyWithoutUserInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutFacultyUserInput
   }
 
   export type UserCreateOrConnectWithoutLoginEventsInput = {
@@ -69213,6 +71273,7 @@ export namespace Prisma {
     markedStudentAttendances?: StudentAttendanceUpdateManyWithoutFacultyUserNestedInput
     markedBranchStudentAttendances?: BranchStudentAttendanceUpdateManyWithoutFacultyUserNestedInput
     dashboardWidgetPreferences?: UserDashboardWidgetUpdateManyWithoutUserNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutFacultyUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLoginEventsInput = {
@@ -69246,6 +71307,7 @@ export namespace Prisma {
     markedStudentAttendances?: StudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
     markedBranchStudentAttendances?: BranchStudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
     dashboardWidgetPreferences?: UserDashboardWidgetUncheckedUpdateManyWithoutUserNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutFacultyUserNestedInput
   }
 
   export type CourseEditRequestCreateWithoutNotificationsInput = {
@@ -69338,6 +71400,7 @@ export namespace Prisma {
     markedStudentAttendances?: StudentAttendanceCreateNestedManyWithoutFacultyUserInput
     markedBranchStudentAttendances?: BranchStudentAttendanceCreateNestedManyWithoutFacultyUserInput
     dashboardWidgetPreferences?: UserDashboardWidgetCreateNestedManyWithoutUserInput
+    facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutFacultyUserInput
   }
 
   export type UserUncheckedCreateWithoutTargetedNotificationsInput = {
@@ -69371,6 +71434,7 @@ export namespace Prisma {
     markedStudentAttendances?: StudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
     markedBranchStudentAttendances?: BranchStudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
     dashboardWidgetPreferences?: UserDashboardWidgetUncheckedCreateNestedManyWithoutUserInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutFacultyUserInput
   }
 
   export type UserCreateOrConnectWithoutTargetedNotificationsInput = {
@@ -69485,6 +71549,7 @@ export namespace Prisma {
     markedStudentAttendances?: StudentAttendanceUpdateManyWithoutFacultyUserNestedInput
     markedBranchStudentAttendances?: BranchStudentAttendanceUpdateManyWithoutFacultyUserNestedInput
     dashboardWidgetPreferences?: UserDashboardWidgetUpdateManyWithoutUserNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutFacultyUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTargetedNotificationsInput = {
@@ -69518,6 +71583,7 @@ export namespace Prisma {
     markedStudentAttendances?: StudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
     markedBranchStudentAttendances?: BranchStudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
     dashboardWidgetPreferences?: UserDashboardWidgetUncheckedUpdateManyWithoutUserNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutFacultyUserNestedInput
   }
 
   export type NotificationCreateWithoutRequestInput = {
@@ -69637,6 +71703,7 @@ export namespace Prisma {
     markedStudentAttendances?: StudentAttendanceCreateNestedManyWithoutFacultyUserInput
     markedBranchStudentAttendances?: BranchStudentAttendanceCreateNestedManyWithoutFacultyUserInput
     dashboardWidgetPreferences?: UserDashboardWidgetCreateNestedManyWithoutUserInput
+    facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutFacultyUserInput
   }
 
   export type UserUncheckedCreateWithoutPasswordResetTokensInput = {
@@ -69670,6 +71737,7 @@ export namespace Prisma {
     markedStudentAttendances?: StudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
     markedBranchStudentAttendances?: BranchStudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
     dashboardWidgetPreferences?: UserDashboardWidgetUncheckedCreateNestedManyWithoutUserInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutFacultyUserInput
   }
 
   export type UserCreateOrConnectWithoutPasswordResetTokensInput = {
@@ -69719,6 +71787,7 @@ export namespace Prisma {
     markedStudentAttendances?: StudentAttendanceUpdateManyWithoutFacultyUserNestedInput
     markedBranchStudentAttendances?: BranchStudentAttendanceUpdateManyWithoutFacultyUserNestedInput
     dashboardWidgetPreferences?: UserDashboardWidgetUpdateManyWithoutUserNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutFacultyUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPasswordResetTokensInput = {
@@ -69752,6 +71821,7 @@ export namespace Prisma {
     markedStudentAttendances?: StudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
     markedBranchStudentAttendances?: BranchStudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
     dashboardWidgetPreferences?: UserDashboardWidgetUncheckedUpdateManyWithoutUserNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutFacultyUserNestedInput
   }
 
   export type BatchCreateWithoutCourseInput = {
@@ -69891,6 +71961,7 @@ export namespace Prisma {
     calendarLeaves?: BranchCalendarLeaveCreateNestedManyWithoutBranchInput
     ledgerEntries?: BranchStudentLedgerEntryCreateNestedManyWithoutBranchInput
     payments?: BranchStudentPaymentCreateNestedManyWithoutBranchInput
+    facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutCoursesInput = {
@@ -69922,6 +71993,7 @@ export namespace Prisma {
     calendarLeaves?: BranchCalendarLeaveUncheckedCreateNestedManyWithoutBranchInput
     ledgerEntries?: BranchStudentLedgerEntryUncheckedCreateNestedManyWithoutBranchInput
     payments?: BranchStudentPaymentUncheckedCreateNestedManyWithoutBranchInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutCoursesInput = {
@@ -70291,6 +72363,7 @@ export namespace Prisma {
     calendarLeaves?: BranchCalendarLeaveUpdateManyWithoutBranchNestedInput
     ledgerEntries?: BranchStudentLedgerEntryUpdateManyWithoutBranchNestedInput
     payments?: BranchStudentPaymentUpdateManyWithoutBranchNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutCoursesInput = {
@@ -70322,6 +72395,7 @@ export namespace Prisma {
     calendarLeaves?: BranchCalendarLeaveUncheckedUpdateManyWithoutBranchNestedInput
     ledgerEntries?: BranchStudentLedgerEntryUncheckedUpdateManyWithoutBranchNestedInput
     payments?: BranchStudentPaymentUncheckedUpdateManyWithoutBranchNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type CourseModuleUpsertWithWhereUniqueWithoutCourseInput = {
@@ -70573,6 +72647,7 @@ export namespace Prisma {
     ledgerEntries?: BranchStudentLedgerEntryCreateNestedManyWithoutBranchInput
     payments?: BranchStudentPaymentCreateNestedManyWithoutBranchInput
     courses?: CourseCreateNestedManyWithoutBranchInput
+    facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutBranchCoursesInput = {
@@ -70604,6 +72679,7 @@ export namespace Prisma {
     ledgerEntries?: BranchStudentLedgerEntryUncheckedCreateNestedManyWithoutBranchInput
     payments?: BranchStudentPaymentUncheckedCreateNestedManyWithoutBranchInput
     courses?: CourseUncheckedCreateNestedManyWithoutBranchInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutBranchCoursesInput = {
@@ -71072,6 +73148,7 @@ export namespace Prisma {
     ledgerEntries?: BranchStudentLedgerEntryUpdateManyWithoutBranchNestedInput
     payments?: BranchStudentPaymentUpdateManyWithoutBranchNestedInput
     courses?: CourseUpdateManyWithoutBranchNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutBranchCoursesInput = {
@@ -71103,6 +73180,7 @@ export namespace Prisma {
     ledgerEntries?: BranchStudentLedgerEntryUncheckedUpdateManyWithoutBranchNestedInput
     payments?: BranchStudentPaymentUncheckedUpdateManyWithoutBranchNestedInput
     courses?: CourseUncheckedUpdateManyWithoutBranchNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchInstallmentTemplateUpsertWithoutBranchCourseInput = {
@@ -72070,6 +74148,7 @@ export namespace Prisma {
     markedStudentAttendances?: StudentAttendanceCreateNestedManyWithoutFacultyUserInput
     markedBranchStudentAttendances?: BranchStudentAttendanceCreateNestedManyWithoutFacultyUserInput
     dashboardWidgetPreferences?: UserDashboardWidgetCreateNestedManyWithoutUserInput
+    facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutFacultyUserInput
   }
 
   export type UserUncheckedCreateWithoutBatchFacultyAssignmentsInput = {
@@ -72103,6 +74182,7 @@ export namespace Prisma {
     markedStudentAttendances?: StudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
     markedBranchStudentAttendances?: BranchStudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
     dashboardWidgetPreferences?: UserDashboardWidgetUncheckedCreateNestedManyWithoutUserInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutFacultyUserInput
   }
 
   export type UserCreateOrConnectWithoutBatchFacultyAssignmentsInput = {
@@ -72207,6 +74287,7 @@ export namespace Prisma {
     markedStudentAttendances?: StudentAttendanceUpdateManyWithoutFacultyUserNestedInput
     markedBranchStudentAttendances?: BranchStudentAttendanceUpdateManyWithoutFacultyUserNestedInput
     dashboardWidgetPreferences?: UserDashboardWidgetUpdateManyWithoutUserNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutFacultyUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutBatchFacultyAssignmentsInput = {
@@ -72240,6 +74321,7 @@ export namespace Prisma {
     markedStudentAttendances?: StudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
     markedBranchStudentAttendances?: BranchStudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
     dashboardWidgetPreferences?: UserDashboardWidgetUncheckedUpdateManyWithoutUserNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutFacultyUserNestedInput
   }
 
   export type BranchCreateWithoutBranchBatchesInput = {
@@ -72271,6 +74353,7 @@ export namespace Prisma {
     ledgerEntries?: BranchStudentLedgerEntryCreateNestedManyWithoutBranchInput
     payments?: BranchStudentPaymentCreateNestedManyWithoutBranchInput
     courses?: CourseCreateNestedManyWithoutBranchInput
+    facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutBranchBatchesInput = {
@@ -72302,6 +74385,7 @@ export namespace Prisma {
     ledgerEntries?: BranchStudentLedgerEntryUncheckedCreateNestedManyWithoutBranchInput
     payments?: BranchStudentPaymentUncheckedCreateNestedManyWithoutBranchInput
     courses?: CourseUncheckedCreateNestedManyWithoutBranchInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutBranchBatchesInput = {
@@ -72461,6 +74545,7 @@ export namespace Prisma {
     ledgerEntries?: BranchStudentLedgerEntryUpdateManyWithoutBranchNestedInput
     payments?: BranchStudentPaymentUpdateManyWithoutBranchNestedInput
     courses?: CourseUpdateManyWithoutBranchNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutBranchBatchesInput = {
@@ -72492,6 +74577,7 @@ export namespace Prisma {
     ledgerEntries?: BranchStudentLedgerEntryUncheckedUpdateManyWithoutBranchNestedInput
     payments?: BranchStudentPaymentUncheckedUpdateManyWithoutBranchNestedInput
     courses?: CourseUncheckedUpdateManyWithoutBranchNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchCourseUpsertWithoutBranchBatchesInput = {
@@ -73127,6 +75213,7 @@ export namespace Prisma {
     ledgerEntries?: BranchStudentLedgerEntryCreateNestedManyWithoutBranchInput
     payments?: BranchStudentPaymentCreateNestedManyWithoutBranchInput
     courses?: CourseCreateNestedManyWithoutBranchInput
+    facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutBranchStudentsInput = {
@@ -73158,6 +75245,7 @@ export namespace Prisma {
     ledgerEntries?: BranchStudentLedgerEntryUncheckedCreateNestedManyWithoutBranchInput
     payments?: BranchStudentPaymentUncheckedCreateNestedManyWithoutBranchInput
     courses?: CourseUncheckedCreateNestedManyWithoutBranchInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutBranchStudentsInput = {
@@ -73512,6 +75600,7 @@ export namespace Prisma {
     ledgerEntries?: BranchStudentLedgerEntryUpdateManyWithoutBranchNestedInput
     payments?: BranchStudentPaymentUpdateManyWithoutBranchNestedInput
     courses?: CourseUpdateManyWithoutBranchNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutBranchStudentsInput = {
@@ -73543,6 +75632,7 @@ export namespace Prisma {
     ledgerEntries?: BranchStudentLedgerEntryUncheckedUpdateManyWithoutBranchNestedInput
     payments?: BranchStudentPaymentUncheckedUpdateManyWithoutBranchNestedInput
     courses?: CourseUncheckedUpdateManyWithoutBranchNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchCourseUpsertWithoutBranchStudentsInput = {
@@ -73851,6 +75941,7 @@ export namespace Prisma {
     passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
     markedStudentAttendances?: StudentAttendanceCreateNestedManyWithoutFacultyUserInput
     dashboardWidgetPreferences?: UserDashboardWidgetCreateNestedManyWithoutUserInput
+    facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutFacultyUserInput
   }
 
   export type UserUncheckedCreateWithoutMarkedBranchStudentAttendancesInput = {
@@ -73884,6 +75975,7 @@ export namespace Prisma {
     passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
     markedStudentAttendances?: StudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
     dashboardWidgetPreferences?: UserDashboardWidgetUncheckedCreateNestedManyWithoutUserInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutFacultyUserInput
   }
 
   export type UserCreateOrConnectWithoutMarkedBranchStudentAttendancesInput = {
@@ -74046,6 +76138,7 @@ export namespace Prisma {
     passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
     markedStudentAttendances?: StudentAttendanceUpdateManyWithoutFacultyUserNestedInput
     dashboardWidgetPreferences?: UserDashboardWidgetUpdateManyWithoutUserNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutFacultyUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMarkedBranchStudentAttendancesInput = {
@@ -74079,6 +76172,7 @@ export namespace Prisma {
     passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
     markedStudentAttendances?: StudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
     dashboardWidgetPreferences?: UserDashboardWidgetUncheckedUpdateManyWithoutUserNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutFacultyUserNestedInput
   }
 
   export type BranchCreateWithoutCalendarHolidaysInput = {
@@ -74110,6 +76204,7 @@ export namespace Prisma {
     ledgerEntries?: BranchStudentLedgerEntryCreateNestedManyWithoutBranchInput
     payments?: BranchStudentPaymentCreateNestedManyWithoutBranchInput
     courses?: CourseCreateNestedManyWithoutBranchInput
+    facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutCalendarHolidaysInput = {
@@ -74141,6 +76236,7 @@ export namespace Prisma {
     ledgerEntries?: BranchStudentLedgerEntryUncheckedCreateNestedManyWithoutBranchInput
     payments?: BranchStudentPaymentUncheckedCreateNestedManyWithoutBranchInput
     courses?: CourseUncheckedCreateNestedManyWithoutBranchInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutCalendarHolidaysInput = {
@@ -74188,6 +76284,7 @@ export namespace Prisma {
     ledgerEntries?: BranchStudentLedgerEntryUpdateManyWithoutBranchNestedInput
     payments?: BranchStudentPaymentUpdateManyWithoutBranchNestedInput
     courses?: CourseUpdateManyWithoutBranchNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutCalendarHolidaysInput = {
@@ -74219,6 +76316,7 @@ export namespace Prisma {
     ledgerEntries?: BranchStudentLedgerEntryUncheckedUpdateManyWithoutBranchNestedInput
     payments?: BranchStudentPaymentUncheckedUpdateManyWithoutBranchNestedInput
     courses?: CourseUncheckedUpdateManyWithoutBranchNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchCreateWithoutCalendarLeavesInput = {
@@ -74250,6 +76348,7 @@ export namespace Prisma {
     ledgerEntries?: BranchStudentLedgerEntryCreateNestedManyWithoutBranchInput
     payments?: BranchStudentPaymentCreateNestedManyWithoutBranchInput
     courses?: CourseCreateNestedManyWithoutBranchInput
+    facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutCalendarLeavesInput = {
@@ -74281,6 +76380,7 @@ export namespace Prisma {
     ledgerEntries?: BranchStudentLedgerEntryUncheckedCreateNestedManyWithoutBranchInput
     payments?: BranchStudentPaymentUncheckedCreateNestedManyWithoutBranchInput
     courses?: CourseUncheckedCreateNestedManyWithoutBranchInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutCalendarLeavesInput = {
@@ -74328,6 +76428,7 @@ export namespace Prisma {
     ledgerEntries?: BranchStudentLedgerEntryUpdateManyWithoutBranchNestedInput
     payments?: BranchStudentPaymentUpdateManyWithoutBranchNestedInput
     courses?: CourseUpdateManyWithoutBranchNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutCalendarLeavesInput = {
@@ -74359,6 +76460,7 @@ export namespace Prisma {
     ledgerEntries?: BranchStudentLedgerEntryUncheckedUpdateManyWithoutBranchNestedInput
     payments?: BranchStudentPaymentUncheckedUpdateManyWithoutBranchNestedInput
     courses?: CourseUncheckedUpdateManyWithoutBranchNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchStudentCreateWithoutInstallmentsInput = {
@@ -75386,6 +77488,7 @@ export namespace Prisma {
     markedStudentAttendances?: StudentAttendanceCreateNestedManyWithoutFacultyUserInput
     markedBranchStudentAttendances?: BranchStudentAttendanceCreateNestedManyWithoutFacultyUserInput
     dashboardWidgetPreferences?: UserDashboardWidgetCreateNestedManyWithoutUserInput
+    facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutFacultyUserInput
   }
 
   export type UserUncheckedCreateWithoutFacultyAttendanceSessionsInput = {
@@ -75419,6 +77522,7 @@ export namespace Prisma {
     markedStudentAttendances?: StudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
     markedBranchStudentAttendances?: BranchStudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
     dashboardWidgetPreferences?: UserDashboardWidgetUncheckedCreateNestedManyWithoutUserInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutFacultyUserInput
   }
 
   export type UserCreateOrConnectWithoutFacultyAttendanceSessionsInput = {
@@ -75468,6 +77572,7 @@ export namespace Prisma {
     markedStudentAttendances?: StudentAttendanceUpdateManyWithoutFacultyUserNestedInput
     markedBranchStudentAttendances?: BranchStudentAttendanceUpdateManyWithoutFacultyUserNestedInput
     dashboardWidgetPreferences?: UserDashboardWidgetUpdateManyWithoutUserNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutFacultyUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFacultyAttendanceSessionsInput = {
@@ -75501,6 +77606,7 @@ export namespace Prisma {
     markedStudentAttendances?: StudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
     markedBranchStudentAttendances?: BranchStudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
     dashboardWidgetPreferences?: UserDashboardWidgetUncheckedUpdateManyWithoutUserNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutFacultyUserNestedInput
   }
 
   export type UserCreateWithoutFacultyTodayWorkEntriesInput = {
@@ -75534,6 +77640,7 @@ export namespace Prisma {
     markedStudentAttendances?: StudentAttendanceCreateNestedManyWithoutFacultyUserInput
     markedBranchStudentAttendances?: BranchStudentAttendanceCreateNestedManyWithoutFacultyUserInput
     dashboardWidgetPreferences?: UserDashboardWidgetCreateNestedManyWithoutUserInput
+    facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutFacultyUserInput
   }
 
   export type UserUncheckedCreateWithoutFacultyTodayWorkEntriesInput = {
@@ -75567,6 +77674,7 @@ export namespace Prisma {
     markedStudentAttendances?: StudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
     markedBranchStudentAttendances?: BranchStudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
     dashboardWidgetPreferences?: UserDashboardWidgetUncheckedCreateNestedManyWithoutUserInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutFacultyUserInput
   }
 
   export type UserCreateOrConnectWithoutFacultyTodayWorkEntriesInput = {
@@ -75723,6 +77831,7 @@ export namespace Prisma {
     markedStudentAttendances?: StudentAttendanceUpdateManyWithoutFacultyUserNestedInput
     markedBranchStudentAttendances?: BranchStudentAttendanceUpdateManyWithoutFacultyUserNestedInput
     dashboardWidgetPreferences?: UserDashboardWidgetUpdateManyWithoutUserNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutFacultyUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFacultyTodayWorkEntriesInput = {
@@ -75756,6 +77865,7 @@ export namespace Prisma {
     markedStudentAttendances?: StudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
     markedBranchStudentAttendances?: BranchStudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
     dashboardWidgetPreferences?: UserDashboardWidgetUncheckedUpdateManyWithoutUserNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutFacultyUserNestedInput
   }
 
   export type BranchCourseUpsertWithoutFacultyTodayWorkEntriesInput = {
@@ -76354,6 +78464,7 @@ export namespace Prisma {
     passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
     markedBranchStudentAttendances?: BranchStudentAttendanceCreateNestedManyWithoutFacultyUserInput
     dashboardWidgetPreferences?: UserDashboardWidgetCreateNestedManyWithoutUserInput
+    facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutFacultyUserInput
   }
 
   export type UserUncheckedCreateWithoutMarkedStudentAttendancesInput = {
@@ -76387,6 +78498,7 @@ export namespace Prisma {
     passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
     markedBranchStudentAttendances?: BranchStudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
     dashboardWidgetPreferences?: UserDashboardWidgetUncheckedCreateNestedManyWithoutUserInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutFacultyUserInput
   }
 
   export type UserCreateOrConnectWithoutMarkedStudentAttendancesInput = {
@@ -76533,6 +78645,7 @@ export namespace Prisma {
     passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
     markedBranchStudentAttendances?: BranchStudentAttendanceUpdateManyWithoutFacultyUserNestedInput
     dashboardWidgetPreferences?: UserDashboardWidgetUpdateManyWithoutUserNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutFacultyUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMarkedStudentAttendancesInput = {
@@ -76566,6 +78679,7 @@ export namespace Prisma {
     passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
     markedBranchStudentAttendances?: BranchStudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
     dashboardWidgetPreferences?: UserDashboardWidgetUncheckedUpdateManyWithoutUserNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutFacultyUserNestedInput
   }
 
   export type StudentProfileUpsertWithoutAttendanceRecordsInput = {
@@ -76763,6 +78877,7 @@ export namespace Prisma {
     ledgerEntries?: BranchStudentLedgerEntryCreateNestedManyWithoutBranchInput
     payments?: BranchStudentPaymentCreateNestedManyWithoutBranchInput
     courses?: CourseCreateNestedManyWithoutBranchInput
+    facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutBranchFacultiesInput = {
@@ -76794,6 +78909,7 @@ export namespace Prisma {
     ledgerEntries?: BranchStudentLedgerEntryUncheckedCreateNestedManyWithoutBranchInput
     payments?: BranchStudentPaymentUncheckedCreateNestedManyWithoutBranchInput
     courses?: CourseUncheckedCreateNestedManyWithoutBranchInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutBranchFacultiesInput = {
@@ -77057,6 +79173,7 @@ export namespace Prisma {
     ledgerEntries?: BranchStudentLedgerEntryUpdateManyWithoutBranchNestedInput
     payments?: BranchStudentPaymentUpdateManyWithoutBranchNestedInput
     courses?: CourseUpdateManyWithoutBranchNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutBranchFacultiesInput = {
@@ -77088,6 +79205,7 @@ export namespace Prisma {
     ledgerEntries?: BranchStudentLedgerEntryUncheckedUpdateManyWithoutBranchNestedInput
     payments?: BranchStudentPaymentUncheckedUpdateManyWithoutBranchNestedInput
     courses?: CourseUncheckedUpdateManyWithoutBranchNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type CourseUpsertWithoutBranchFacultiesInput = {
@@ -77189,6 +79307,302 @@ export namespace Prisma {
     data: XOR<BranchBatchUpdateManyMutationInput, BranchBatchUncheckedUpdateManyWithoutBranchFacultyInput>
   }
 
+  export type UserCreateWithoutFacultyLeaveRequestsInput = {
+    id?: string
+    userCode: string
+    fullName: string
+    email: string
+    phone?: string | null
+    role: $Enums.UserRole
+    active?: boolean
+    passwordHash: string
+    passwordChangedAt?: Date | string | null
+    refreshTokenVersion?: number
+    failedLoginCount?: number
+    failedLoginWindowExpiresAt?: Date | string | null
+    lockedUntil?: Date | string | null
+    lastLoginAt?: Date | string | null
+    lastLogoutAt?: Date | string | null
+    lastLoginIp?: string | null
+    lastLoginUserAgent?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentCreateNestedManyWithoutFacultyInput
+    managedBranch?: BranchCreateNestedOneWithoutAdminUserInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionCreateNestedManyWithoutFacultyUserInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryCreateNestedManyWithoutFacultyUserInput
+    loginEvents?: LoginEventCreateNestedManyWithoutUserInput
+    targetedNotifications?: NotificationCreateNestedManyWithoutTargetUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    markedStudentAttendances?: StudentAttendanceCreateNestedManyWithoutFacultyUserInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceCreateNestedManyWithoutFacultyUserInput
+    dashboardWidgetPreferences?: UserDashboardWidgetCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutFacultyLeaveRequestsInput = {
+    id?: string
+    userCode: string
+    fullName: string
+    email: string
+    phone?: string | null
+    role: $Enums.UserRole
+    active?: boolean
+    passwordHash: string
+    passwordChangedAt?: Date | string | null
+    refreshTokenVersion?: number
+    failedLoginCount?: number
+    failedLoginWindowExpiresAt?: Date | string | null
+    lockedUntil?: Date | string | null
+    lastLoginAt?: Date | string | null
+    lastLogoutAt?: Date | string | null
+    lastLoginIp?: string | null
+    lastLoginUserAgent?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentUncheckedCreateNestedManyWithoutFacultyInput
+    managedBranch?: BranchUncheckedCreateNestedOneWithoutAdminUserInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedCreateNestedManyWithoutFacultyUserInput
+    loginEvents?: LoginEventUncheckedCreateNestedManyWithoutUserInput
+    targetedNotifications?: NotificationUncheckedCreateNestedManyWithoutTargetUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    markedStudentAttendances?: StudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
+    dashboardWidgetPreferences?: UserDashboardWidgetUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutFacultyLeaveRequestsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutFacultyLeaveRequestsInput, UserUncheckedCreateWithoutFacultyLeaveRequestsInput>
+  }
+
+  export type BranchCreateWithoutFacultyLeaveRequestsInput = {
+    id?: string
+    branchId: string
+    branchName: string
+    branchAdminName: string
+    branchEmail: string
+    branchPhone: string
+    branchAddress: string
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    timezone?: string
+    branchCity?: string
+    branchCountry?: string
+    branchCountryCode?: string
+    branchState?: string
+    branchStateCode?: string
+    adminUser?: UserCreateNestedOneWithoutManagedBranchInput
+    branchCourses?: BranchCourseCreateNestedManyWithoutBranchInput
+    branchBatches?: BranchBatchCreateNestedManyWithoutBranchInput
+    branchInstallmentTemplates?: BranchInstallmentTemplateCreateNestedManyWithoutBranchInput
+    branchFaculties?: BranchFacultyCreateNestedManyWithoutBranchInput
+    branchStudents?: BranchStudentCreateNestedManyWithoutBranchInput
+    calendarHolidays?: BranchCalendarHolidayCreateNestedManyWithoutBranchInput
+    calendarLeaves?: BranchCalendarLeaveCreateNestedManyWithoutBranchInput
+    ledgerEntries?: BranchStudentLedgerEntryCreateNestedManyWithoutBranchInput
+    payments?: BranchStudentPaymentCreateNestedManyWithoutBranchInput
+    courses?: CourseCreateNestedManyWithoutBranchInput
+  }
+
+  export type BranchUncheckedCreateWithoutFacultyLeaveRequestsInput = {
+    id?: string
+    branchId: string
+    branchName: string
+    branchAdminName: string
+    branchEmail: string
+    branchPhone: string
+    branchAddress: string
+    status?: $Enums.RecordStatus
+    adminUserId?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    timezone?: string
+    branchCity?: string
+    branchCountry?: string
+    branchCountryCode?: string
+    branchState?: string
+    branchStateCode?: string
+    branchCourses?: BranchCourseUncheckedCreateNestedManyWithoutBranchInput
+    branchBatches?: BranchBatchUncheckedCreateNestedManyWithoutBranchInput
+    branchInstallmentTemplates?: BranchInstallmentTemplateUncheckedCreateNestedManyWithoutBranchInput
+    branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutBranchInput
+    branchStudents?: BranchStudentUncheckedCreateNestedManyWithoutBranchInput
+    calendarHolidays?: BranchCalendarHolidayUncheckedCreateNestedManyWithoutBranchInput
+    calendarLeaves?: BranchCalendarLeaveUncheckedCreateNestedManyWithoutBranchInput
+    ledgerEntries?: BranchStudentLedgerEntryUncheckedCreateNestedManyWithoutBranchInput
+    payments?: BranchStudentPaymentUncheckedCreateNestedManyWithoutBranchInput
+    courses?: CourseUncheckedCreateNestedManyWithoutBranchInput
+  }
+
+  export type BranchCreateOrConnectWithoutFacultyLeaveRequestsInput = {
+    where: BranchWhereUniqueInput
+    create: XOR<BranchCreateWithoutFacultyLeaveRequestsInput, BranchUncheckedCreateWithoutFacultyLeaveRequestsInput>
+  }
+
+  export type UserUpsertWithoutFacultyLeaveRequestsInput = {
+    update: XOR<UserUpdateWithoutFacultyLeaveRequestsInput, UserUncheckedUpdateWithoutFacultyLeaveRequestsInput>
+    create: XOR<UserCreateWithoutFacultyLeaveRequestsInput, UserUncheckedCreateWithoutFacultyLeaveRequestsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutFacultyLeaveRequestsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutFacultyLeaveRequestsInput, UserUncheckedUpdateWithoutFacultyLeaveRequestsInput>
+  }
+
+  export type UserUpdateWithoutFacultyLeaveRequestsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userCode?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refreshTokenVersion?: IntFieldUpdateOperationsInput | number
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    failedLoginWindowExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLogoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginUserAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentUpdateManyWithoutFacultyNestedInput
+    managedBranch?: BranchUpdateOneWithoutAdminUserNestedInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUpdateManyWithoutFacultyUserNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUpdateManyWithoutFacultyUserNestedInput
+    loginEvents?: LoginEventUpdateManyWithoutUserNestedInput
+    targetedNotifications?: NotificationUpdateManyWithoutTargetUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    markedStudentAttendances?: StudentAttendanceUpdateManyWithoutFacultyUserNestedInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceUpdateManyWithoutFacultyUserNestedInput
+    dashboardWidgetPreferences?: UserDashboardWidgetUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutFacultyLeaveRequestsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userCode?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refreshTokenVersion?: IntFieldUpdateOperationsInput | number
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    failedLoginWindowExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLogoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginUserAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentUncheckedUpdateManyWithoutFacultyNestedInput
+    managedBranch?: BranchUncheckedUpdateOneWithoutAdminUserNestedInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedUpdateManyWithoutFacultyUserNestedInput
+    loginEvents?: LoginEventUncheckedUpdateManyWithoutUserNestedInput
+    targetedNotifications?: NotificationUncheckedUpdateManyWithoutTargetUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    markedStudentAttendances?: StudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
+    dashboardWidgetPreferences?: UserDashboardWidgetUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type BranchUpsertWithoutFacultyLeaveRequestsInput = {
+    update: XOR<BranchUpdateWithoutFacultyLeaveRequestsInput, BranchUncheckedUpdateWithoutFacultyLeaveRequestsInput>
+    create: XOR<BranchCreateWithoutFacultyLeaveRequestsInput, BranchUncheckedCreateWithoutFacultyLeaveRequestsInput>
+    where?: BranchWhereInput
+  }
+
+  export type BranchUpdateToOneWithWhereWithoutFacultyLeaveRequestsInput = {
+    where?: BranchWhereInput
+    data: XOR<BranchUpdateWithoutFacultyLeaveRequestsInput, BranchUncheckedUpdateWithoutFacultyLeaveRequestsInput>
+  }
+
+  export type BranchUpdateWithoutFacultyLeaveRequestsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    branchName?: StringFieldUpdateOperationsInput | string
+    branchAdminName?: StringFieldUpdateOperationsInput | string
+    branchEmail?: StringFieldUpdateOperationsInput | string
+    branchPhone?: StringFieldUpdateOperationsInput | string
+    branchAddress?: StringFieldUpdateOperationsInput | string
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    timezone?: StringFieldUpdateOperationsInput | string
+    branchCity?: StringFieldUpdateOperationsInput | string
+    branchCountry?: StringFieldUpdateOperationsInput | string
+    branchCountryCode?: StringFieldUpdateOperationsInput | string
+    branchState?: StringFieldUpdateOperationsInput | string
+    branchStateCode?: StringFieldUpdateOperationsInput | string
+    adminUser?: UserUpdateOneWithoutManagedBranchNestedInput
+    branchCourses?: BranchCourseUpdateManyWithoutBranchNestedInput
+    branchBatches?: BranchBatchUpdateManyWithoutBranchNestedInput
+    branchInstallmentTemplates?: BranchInstallmentTemplateUpdateManyWithoutBranchNestedInput
+    branchFaculties?: BranchFacultyUpdateManyWithoutBranchNestedInput
+    branchStudents?: BranchStudentUpdateManyWithoutBranchNestedInput
+    calendarHolidays?: BranchCalendarHolidayUpdateManyWithoutBranchNestedInput
+    calendarLeaves?: BranchCalendarLeaveUpdateManyWithoutBranchNestedInput
+    ledgerEntries?: BranchStudentLedgerEntryUpdateManyWithoutBranchNestedInput
+    payments?: BranchStudentPaymentUpdateManyWithoutBranchNestedInput
+    courses?: CourseUpdateManyWithoutBranchNestedInput
+  }
+
+  export type BranchUncheckedUpdateWithoutFacultyLeaveRequestsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    branchName?: StringFieldUpdateOperationsInput | string
+    branchAdminName?: StringFieldUpdateOperationsInput | string
+    branchEmail?: StringFieldUpdateOperationsInput | string
+    branchPhone?: StringFieldUpdateOperationsInput | string
+    branchAddress?: StringFieldUpdateOperationsInput | string
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    adminUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    timezone?: StringFieldUpdateOperationsInput | string
+    branchCity?: StringFieldUpdateOperationsInput | string
+    branchCountry?: StringFieldUpdateOperationsInput | string
+    branchCountryCode?: StringFieldUpdateOperationsInput | string
+    branchState?: StringFieldUpdateOperationsInput | string
+    branchStateCode?: StringFieldUpdateOperationsInput | string
+    branchCourses?: BranchCourseUncheckedUpdateManyWithoutBranchNestedInput
+    branchBatches?: BranchBatchUncheckedUpdateManyWithoutBranchNestedInput
+    branchInstallmentTemplates?: BranchInstallmentTemplateUncheckedUpdateManyWithoutBranchNestedInput
+    branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutBranchNestedInput
+    branchStudents?: BranchStudentUncheckedUpdateManyWithoutBranchNestedInput
+    calendarHolidays?: BranchCalendarHolidayUncheckedUpdateManyWithoutBranchNestedInput
+    calendarLeaves?: BranchCalendarLeaveUncheckedUpdateManyWithoutBranchNestedInput
+    ledgerEntries?: BranchStudentLedgerEntryUncheckedUpdateManyWithoutBranchNestedInput
+    payments?: BranchStudentPaymentUncheckedUpdateManyWithoutBranchNestedInput
+    courses?: CourseUncheckedUpdateManyWithoutBranchNestedInput
+  }
+
   export type BranchCreateWithoutBranchInstallmentTemplatesInput = {
     id?: string
     branchId: string
@@ -77218,6 +79632,7 @@ export namespace Prisma {
     ledgerEntries?: BranchStudentLedgerEntryCreateNestedManyWithoutBranchInput
     payments?: BranchStudentPaymentCreateNestedManyWithoutBranchInput
     courses?: CourseCreateNestedManyWithoutBranchInput
+    facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutBranchInstallmentTemplatesInput = {
@@ -77249,6 +79664,7 @@ export namespace Prisma {
     ledgerEntries?: BranchStudentLedgerEntryUncheckedCreateNestedManyWithoutBranchInput
     payments?: BranchStudentPaymentUncheckedCreateNestedManyWithoutBranchInput
     courses?: CourseUncheckedCreateNestedManyWithoutBranchInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutBranchInstallmentTemplatesInput = {
@@ -77359,6 +79775,7 @@ export namespace Prisma {
     ledgerEntries?: BranchStudentLedgerEntryUpdateManyWithoutBranchNestedInput
     payments?: BranchStudentPaymentUpdateManyWithoutBranchNestedInput
     courses?: CourseUpdateManyWithoutBranchNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutBranchInstallmentTemplatesInput = {
@@ -77390,6 +79807,7 @@ export namespace Prisma {
     ledgerEntries?: BranchStudentLedgerEntryUncheckedUpdateManyWithoutBranchNestedInput
     payments?: BranchStudentPaymentUncheckedUpdateManyWithoutBranchNestedInput
     courses?: CourseUncheckedUpdateManyWithoutBranchNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchCourseUpsertWithoutInstallmentTemplateInput = {
@@ -77597,6 +80015,7 @@ export namespace Prisma {
     calendarLeaves?: BranchCalendarLeaveCreateNestedManyWithoutBranchInput
     ledgerEntries?: BranchStudentLedgerEntryCreateNestedManyWithoutBranchInput
     courses?: CourseCreateNestedManyWithoutBranchInput
+    facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutPaymentsInput = {
@@ -77628,6 +80047,7 @@ export namespace Prisma {
     calendarLeaves?: BranchCalendarLeaveUncheckedCreateNestedManyWithoutBranchInput
     ledgerEntries?: BranchStudentLedgerEntryUncheckedCreateNestedManyWithoutBranchInput
     courses?: CourseUncheckedCreateNestedManyWithoutBranchInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutPaymentsInput = {
@@ -77825,6 +80245,7 @@ export namespace Prisma {
     calendarLeaves?: BranchCalendarLeaveUpdateManyWithoutBranchNestedInput
     ledgerEntries?: BranchStudentLedgerEntryUpdateManyWithoutBranchNestedInput
     courses?: CourseUpdateManyWithoutBranchNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutPaymentsInput = {
@@ -77856,6 +80277,7 @@ export namespace Prisma {
     calendarLeaves?: BranchCalendarLeaveUncheckedUpdateManyWithoutBranchNestedInput
     ledgerEntries?: BranchStudentLedgerEntryUncheckedUpdateManyWithoutBranchNestedInput
     courses?: CourseUncheckedUpdateManyWithoutBranchNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchStudentInstallmentUpsertWithoutPaymentsInput = {
@@ -77930,6 +80352,7 @@ export namespace Prisma {
     calendarLeaves?: BranchCalendarLeaveCreateNestedManyWithoutBranchInput
     payments?: BranchStudentPaymentCreateNestedManyWithoutBranchInput
     courses?: CourseCreateNestedManyWithoutBranchInput
+    facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutLedgerEntriesInput = {
@@ -77961,6 +80384,7 @@ export namespace Prisma {
     calendarLeaves?: BranchCalendarLeaveUncheckedCreateNestedManyWithoutBranchInput
     payments?: BranchStudentPaymentUncheckedCreateNestedManyWithoutBranchInput
     courses?: CourseUncheckedCreateNestedManyWithoutBranchInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutLedgerEntriesInput = {
@@ -78115,6 +80539,7 @@ export namespace Prisma {
     calendarLeaves?: BranchCalendarLeaveUpdateManyWithoutBranchNestedInput
     payments?: BranchStudentPaymentUpdateManyWithoutBranchNestedInput
     courses?: CourseUpdateManyWithoutBranchNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutLedgerEntriesInput = {
@@ -78146,6 +80571,7 @@ export namespace Prisma {
     calendarLeaves?: BranchCalendarLeaveUncheckedUpdateManyWithoutBranchNestedInput
     payments?: BranchStudentPaymentUncheckedUpdateManyWithoutBranchNestedInput
     courses?: CourseUncheckedUpdateManyWithoutBranchNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchStudentUpsertWithoutLedgerEntriesInput = {
@@ -78406,6 +80832,26 @@ export namespace Prisma {
     widgetId: string
     isVisible?: boolean
     displayOrder: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FacultyLeaveRequestCreateManyFacultyUserInput = {
+    id?: string
+    branchId: string
+    facultyId: string
+    facultyName: string
+    facultyEmail: string
+    leaveType: string
+    fromDate: string
+    toDate: string
+    durationType: string
+    halfDayPeriod?: string | null
+    halfDayStart?: string | null
+    halfDayEnd?: string | null
+    reason: string
+    status?: string
+    affectedClasses?: JsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -78859,6 +81305,66 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type FacultyLeaveRequestUpdateWithoutFacultyUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    facultyId?: StringFieldUpdateOperationsInput | string
+    facultyName?: StringFieldUpdateOperationsInput | string
+    facultyEmail?: StringFieldUpdateOperationsInput | string
+    leaveType?: StringFieldUpdateOperationsInput | string
+    fromDate?: StringFieldUpdateOperationsInput | string
+    toDate?: StringFieldUpdateOperationsInput | string
+    durationType?: StringFieldUpdateOperationsInput | string
+    halfDayPeriod?: NullableStringFieldUpdateOperationsInput | string | null
+    halfDayStart?: NullableStringFieldUpdateOperationsInput | string | null
+    halfDayEnd?: NullableStringFieldUpdateOperationsInput | string | null
+    reason?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    affectedClasses?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branch?: BranchUpdateOneRequiredWithoutFacultyLeaveRequestsNestedInput
+  }
+
+  export type FacultyLeaveRequestUncheckedUpdateWithoutFacultyUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    facultyId?: StringFieldUpdateOperationsInput | string
+    facultyName?: StringFieldUpdateOperationsInput | string
+    facultyEmail?: StringFieldUpdateOperationsInput | string
+    leaveType?: StringFieldUpdateOperationsInput | string
+    fromDate?: StringFieldUpdateOperationsInput | string
+    toDate?: StringFieldUpdateOperationsInput | string
+    durationType?: StringFieldUpdateOperationsInput | string
+    halfDayPeriod?: NullableStringFieldUpdateOperationsInput | string | null
+    halfDayStart?: NullableStringFieldUpdateOperationsInput | string | null
+    halfDayEnd?: NullableStringFieldUpdateOperationsInput | string | null
+    reason?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    affectedClasses?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FacultyLeaveRequestUncheckedUpdateManyWithoutFacultyUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    facultyId?: StringFieldUpdateOperationsInput | string
+    facultyName?: StringFieldUpdateOperationsInput | string
+    facultyEmail?: StringFieldUpdateOperationsInput | string
+    leaveType?: StringFieldUpdateOperationsInput | string
+    fromDate?: StringFieldUpdateOperationsInput | string
+    toDate?: StringFieldUpdateOperationsInput | string
+    durationType?: StringFieldUpdateOperationsInput | string
+    halfDayPeriod?: NullableStringFieldUpdateOperationsInput | string | null
+    halfDayStart?: NullableStringFieldUpdateOperationsInput | string | null
+    halfDayEnd?: NullableStringFieldUpdateOperationsInput | string | null
+    reason?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    affectedClasses?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type UserDashboardWidgetCreateManyWidgetInput = {
     id?: string
     userId: string
@@ -79127,6 +81633,26 @@ export namespace Prisma {
     updatedAt?: Date | string
     installments?: NullableJsonNullValueInput | InputJsonValue
     courseCode?: string | null
+  }
+
+  export type FacultyLeaveRequestCreateManyBranchInput = {
+    id?: string
+    facultyUserId: string
+    facultyId: string
+    facultyName: string
+    facultyEmail: string
+    leaveType: string
+    fromDate: string
+    toDate: string
+    durationType: string
+    halfDayPeriod?: string | null
+    halfDayStart?: string | null
+    halfDayEnd?: string | null
+    reason: string
+    status?: string
+    affectedClasses?: JsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type BranchCourseUpdateWithoutBranchInput = {
@@ -79871,6 +82397,66 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     installments?: NullableJsonNullValueInput | InputJsonValue
     courseCode?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type FacultyLeaveRequestUpdateWithoutBranchInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    facultyId?: StringFieldUpdateOperationsInput | string
+    facultyName?: StringFieldUpdateOperationsInput | string
+    facultyEmail?: StringFieldUpdateOperationsInput | string
+    leaveType?: StringFieldUpdateOperationsInput | string
+    fromDate?: StringFieldUpdateOperationsInput | string
+    toDate?: StringFieldUpdateOperationsInput | string
+    durationType?: StringFieldUpdateOperationsInput | string
+    halfDayPeriod?: NullableStringFieldUpdateOperationsInput | string | null
+    halfDayStart?: NullableStringFieldUpdateOperationsInput | string | null
+    halfDayEnd?: NullableStringFieldUpdateOperationsInput | string | null
+    reason?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    affectedClasses?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    facultyUser?: UserUpdateOneRequiredWithoutFacultyLeaveRequestsNestedInput
+  }
+
+  export type FacultyLeaveRequestUncheckedUpdateWithoutBranchInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    facultyUserId?: StringFieldUpdateOperationsInput | string
+    facultyId?: StringFieldUpdateOperationsInput | string
+    facultyName?: StringFieldUpdateOperationsInput | string
+    facultyEmail?: StringFieldUpdateOperationsInput | string
+    leaveType?: StringFieldUpdateOperationsInput | string
+    fromDate?: StringFieldUpdateOperationsInput | string
+    toDate?: StringFieldUpdateOperationsInput | string
+    durationType?: StringFieldUpdateOperationsInput | string
+    halfDayPeriod?: NullableStringFieldUpdateOperationsInput | string | null
+    halfDayStart?: NullableStringFieldUpdateOperationsInput | string | null
+    halfDayEnd?: NullableStringFieldUpdateOperationsInput | string | null
+    reason?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    affectedClasses?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FacultyLeaveRequestUncheckedUpdateManyWithoutBranchInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    facultyUserId?: StringFieldUpdateOperationsInput | string
+    facultyId?: StringFieldUpdateOperationsInput | string
+    facultyName?: StringFieldUpdateOperationsInput | string
+    facultyEmail?: StringFieldUpdateOperationsInput | string
+    leaveType?: StringFieldUpdateOperationsInput | string
+    fromDate?: StringFieldUpdateOperationsInput | string
+    toDate?: StringFieldUpdateOperationsInput | string
+    durationType?: StringFieldUpdateOperationsInput | string
+    halfDayPeriod?: NullableStringFieldUpdateOperationsInput | string | null
+    halfDayStart?: NullableStringFieldUpdateOperationsInput | string | null
+    halfDayEnd?: NullableStringFieldUpdateOperationsInput | string | null
+    reason?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    affectedClasses?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type NotificationCreateManyRequestInput = {

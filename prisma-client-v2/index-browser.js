@@ -741,6 +741,27 @@ exports.Prisma.BranchFacultyScalarFieldEnum = {
   branchCourseId: 'branchCourseId'
 };
 
+exports.Prisma.FacultyLeaveRequestScalarFieldEnum = {
+  id: 'id',
+  facultyUserId: 'facultyUserId',
+  branchId: 'branchId',
+  facultyId: 'facultyId',
+  facultyName: 'facultyName',
+  facultyEmail: 'facultyEmail',
+  leaveType: 'leaveType',
+  fromDate: 'fromDate',
+  toDate: 'toDate',
+  durationType: 'durationType',
+  halfDayPeriod: 'halfDayPeriod',
+  halfDayStart: 'halfDayStart',
+  halfDayEnd: 'halfDayEnd',
+  reason: 'reason',
+  status: 'status',
+  affectedClasses: 'affectedClasses',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.BranchInstallmentTemplateScalarFieldEnum = {
   id: 'id',
   branchId: 'branchId',
@@ -931,6 +952,7 @@ exports.Prisma.ModelName = {
   FacultyTodayWorkStudentEntry: 'FacultyTodayWorkStudentEntry',
   StudentAttendance: 'StudentAttendance',
   BranchFaculty: 'BranchFaculty',
+  FacultyLeaveRequest: 'FacultyLeaveRequest',
   BranchInstallmentTemplate: 'BranchInstallmentTemplate',
   BranchStudentPayment: 'BranchStudentPayment',
   BranchStudentLedgerEntry: 'BranchStudentLedgerEntry'

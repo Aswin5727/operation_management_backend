@@ -39,6 +39,7 @@ model User {
   markedStudentAttendances   StudentAttendance[]
   markedBranchStudentAttendances BranchStudentAttendance[]
   dashboardWidgetPreferences UserDashboardWidget[]
+  facultyLeaveRequests      FacultyLeaveRequest[]
 
   @@index([role])
   @@index([active])
@@ -106,6 +107,7 @@ model Branch {
   ledgerEntries      BranchStudentLedgerEntry[]
   payments          BranchStudentPayment[]
   courses           Course[]
+  facultyLeaveRequests FacultyLeaveRequest[]
 
   @@index([status])
   @@index([branchName])
@@ -863,6 +865,33 @@ model BranchFaculty {
   @@index([courseId])
   @@index([branchCourseId])
   @@index([status])
+}
+
+model FacultyLeaveRequest {
+  id             String   @id @default(cuid())
+  facultyUserId  String
+  branchId       String
+  facultyId      String
+  facultyName    String
+  facultyEmail   String
+  leaveType      String
+  fromDate       String
+  toDate         String
+  durationType   String
+  halfDayPeriod  String?
+  halfDayStart   String?
+  halfDayEnd     String?
+  reason         String
+  status         String   @default("PENDING")
+  affectedClasses Json    @default("[]")
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  facultyUser    User     @relation(fields: [facultyUserId], references: [id], onDelete: Cascade)
+  branch         Branch   @relation(fields: [branchId], references: [id], onDelete: Cascade)
+
+  @@index([facultyUserId, fromDate, toDate])
+  @@index([branchId, status, createdAt])
+  @@index([facultyId, status])
 }
 
 model BranchInstallmentTemplate {

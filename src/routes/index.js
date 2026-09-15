@@ -18,8 +18,10 @@ import reportsRoutes from "../modules/reports/reports.routes.js";
 import studentRoutes from "../modules/students/students.routes.js";
 
 import instituteLeaveRoutes from "../modules/instituteLeave/instituteLeave.routes.js";
+import facultyLeaveRequestsRoutes from "../modules/facultyLeaveRequests/facultyLeaveRequests.routes.js";
 const router = express.Router();
 router.use("/institute-leaves", instituteLeaveRoutes);
+router.use("/faculty-leave-requests", facultyLeaveRequestsRoutes);
 
 router.get("/health", (_req, res) => {
   res.json({
