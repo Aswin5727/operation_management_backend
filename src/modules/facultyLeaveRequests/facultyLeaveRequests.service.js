@@ -1,7 +1,7 @@
 import prisma from "../../config/prisma.js";
 import AppError from "../../common/errors/AppError.js";
 import { createFacultyLeaveRequestChangeNotification, createFacultyLeaveRequestNotification, createNotification } from "../notifications/notifications.service.js";
-import { sendFacultyReplacementBatchEmail } from "../../common/services/resendEmail.js";
+import { sendFacultyReplacementBatchEmail, sendStudentFacultyReassignmentEmail } from "../../common/services/resendEmail.js";
 
 const LEAVE_TYPES = new Set(["PLANNED", "UNPLANNED", "EMERGENCY"]);
 const DURATIONS = new Set(["FULL_DAY", "HALF_DAY", "PERMISSION"]);
@@ -403,6 +403,69 @@ export async function resolveBranchFacultyLeaveSession(user, leaveId, sessionId,
     } catch (error) {
       console.error("[REPLACE] Replacement email failed:", error?.message || error);
     }
+
+    // Notify only the active students registered in the affected batch. The
+    // temporary replacement never changes their permanent batch/faculty data.
+    const affectedStudents = saved.batchId
+      ? await prisma.branchStudent.findMany({
+          where: { branchId, batchId: saved.batchId, recordStatus: "ACTIVE" },
+          select: { id: true, studentId: true, studentName: true, emailAddress: true },
+        })
+      : [];
+    if (!saved.batchId) console.error(`[REPLACE] Student notification skipped: affected session ${saved.id} has no batchId`);
+    const studentEmails = affectedStudents.map((student) => String(student.emailAddress || "").trim().toLowerCase()).filter(Boolean);
+    const studentUsers = studentEmails.length
+      ? await prisma.user.findMany({
+          where: { active: true, OR: studentEmails.map((email) => ({ email: { equals: email, mode: "insensitive" } })) },
+          select: { id: true, email: true },
+        })
+      : [];
+    const usersByEmail = new Map(studentUsers.map((studentUser) => [String(studentUser.email || "").trim().toLowerCase(), studentUser]));
+    const replacementKeyPrefix = `student-faculty-reassigned:${saved.id}:`;
+    const studentNotificationMessage = `Your batch ${saved.batchName || "your batch"} has been reassigned to another faculty for ${displayDate(saved.replacementDate)}, from ${displayTime(saved.replacementStartTime)} to ${displayTime(saved.replacementEndTime)}.`;
+
+    await Promise.all(affectedStudents.map(async (student) => {
+      const email = String(student.emailAddress || "").trim().toLowerCase();
+      const targetUser = usersByEmail.get(email);
+      const notificationKey = `${replacementKeyPrefix}${student.id}`;
+      const alreadySent = targetUser
+        ? await prisma.notification.findFirst({
+            where: { kind: "INSTITUTE_LEAVE", targetUserId: targetUser.id, requestDescription: notificationKey },
+            select: { id: true },
+          })
+        : null;
+      if (alreadySent) return;
+
+      if (targetUser) {
+        await createNotification({
+          kind: "INSTITUTE_LEAVE",
+          tone: "blue",
+          title: "Faculty Reassigned",
+          message: studentNotificationMessage,
+          actionLabel: "View Schedule",
+          targetUserId: targetUser.id,
+          targetBranchId: branchId,
+          leaveRequestId: request.id,
+          requestStatus: "REPLACEMENT_ASSIGNED",
+          requestDescription: notificationKey,
+        });
+      } else {
+        console.warn(`[REPLACE] No active student user found for ${student.studentId || student.id}; sending email only`);
+      }
+
+      try {
+        await sendStudentFacultyReassignmentEmail({
+          to: student.emailAddress,
+          fullName: student.studentName,
+          batchName: saved.batchName,
+          replacementDate: saved.replacementDate,
+          replacementStartTime: saved.replacementStartTime,
+          replacementEndTime: saved.replacementEndTime,
+        });
+      } catch (error) {
+        console.error(`[REPLACE] Student reassignment email failed for ${student.studentId || student.id}:`, error?.message || error);
+      }
+    }));
   }
   return mapSession(updated);
 }

@@ -769,6 +769,51 @@ export async function sendFacultyReplacementBatchEmail({ to, fullName, courseNam
   return sendEmail({ to, subject: `Replacement Batch Assigned - ${batchName || "Faculty"}`, html, text });
 }
 
+export async function sendStudentFacultyReassignmentEmail({ to, fullName, batchName, replacementDate, replacementStartTime, replacementEndTime }) {
+  const formatTime = (value) => {
+    const match = String(value || "").match(/^(\d{1,2}):(\d{2})$/);
+    if (!match) return String(value || "-");
+    const hour = Number(match[1]);
+    return `${String(hour % 12 || 12).padStart(2, "0")}:${match[2]} ${hour >= 12 ? "PM" : "AM"}`;
+  };
+  const formatDate = (value) => {
+    const date = new Date(`${String(value || "").trim()}T00:00:00Z`);
+    return Number.isNaN(date.getTime()) ? String(value || "-") : new Intl.DateTimeFormat("en-GB", { day: "2-digit", month: "short", year: "numeric", timeZone: "UTC" }).format(date);
+  };
+  const displayDate = formatDate(replacementDate);
+  const displayStart = formatTime(replacementStartTime);
+  const displayEnd = formatTime(replacementEndTime);
+  const safeName = escapeHtml(fullName || "Student");
+  const safeBatch = escapeHtml(batchName || "your batch");
+  const safeDate = escapeHtml(displayDate);
+  const safeStart = escapeHtml(displayStart);
+  const safeEnd = escapeHtml(displayEnd);
+  const subject = `Faculty Reassigned - ${batchName || "Your Batch"}`;
+  const html = alertTemplate({
+    eyebrow: "Schedule Update",
+    title: subject,
+    subtitle: `Hi ${safeName}, your batch has been reassigned to another faculty.`,
+    summary: "Please check your Student Dashboard for the updated schedule.",
+    details: [
+      { label: "Batch", value: safeBatch },
+      { label: "Date", value: safeDate },
+      { label: "Time", value: `${safeStart} - ${safeEnd}` },
+    ],
+    note: "This is a temporary, session-specific faculty reassignment.",
+  });
+  const text = [
+    `Hi ${fullName || "Student"},`,
+    "",
+    `Your batch ${batchName || "your batch"} has been reassigned to another faculty.`,
+    "",
+    `Date: ${displayDate}`,
+    `Time: ${displayStart} - ${displayEnd}`,
+    "",
+    "Please check your Student Dashboard for the updated schedule.",
+  ].join("\n");
+  return sendEmail({ to, subject, html, text });
+}
+
 export async function sendStudentPaymentDueEmail({
   to,
   fullName,
