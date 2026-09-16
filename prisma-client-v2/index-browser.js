@@ -789,7 +789,72 @@ exports.Prisma.FacultyLeaveRequestScalarFieldEnum = {
   reason: 'reason',
   status: 'status',
   cancelledAt: 'cancelledAt',
+  approvedBy: 'approvedBy',
+  approvedAt: 'approvedAt',
+  rejectedBy: 'rejectedBy',
+  rejectedAt: 'rejectedAt',
+  rejectionReason: 'rejectionReason',
+  reviewedBy: 'reviewedBy',
+  reviewedAt: 'reviewedAt',
   affectedClasses: 'affectedClasses',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.BranchFacultyCourseScalarFieldEnum = {
+  id: 'id',
+  branchId: 'branchId',
+  branchFacultyId: 'branchFacultyId',
+  branchCourseId: 'branchCourseId',
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.FacultyLeaveAffectedSessionScalarFieldEnum = {
+  id: 'id',
+  leaveRequestId: 'leaveRequestId',
+  branchId: 'branchId',
+  batchRecordId: 'batchRecordId',
+  batchId: 'batchId',
+  batchName: 'batchName',
+  courseId: 'courseId',
+  courseName: 'courseName',
+  originalFacultyId: 'originalFacultyId',
+  originalFacultyName: 'originalFacultyName',
+  sessionDate: 'sessionDate',
+  originalStartTime: 'originalStartTime',
+  originalEndTime: 'originalEndTime',
+  resolutionStatus: 'resolutionStatus',
+  assignmentType: 'assignmentType',
+  replacementFacultyId: 'replacementFacultyId',
+  replacementFacultyName: 'replacementFacultyName',
+  replacementStatus: 'replacementStatus',
+  combinedSessionId: 'combinedSessionId',
+  rescheduledDate: 'rescheduledDate',
+  rescheduledStartTime: 'rescheduledStartTime',
+  rescheduledEndTime: 'rescheduledEndTime',
+  resolutionReason: 'resolutionReason',
+  resolvedBy: 'resolvedBy',
+  resolvedAt: 'resolvedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.FacultyLeaveCombinedSessionScalarFieldEnum = {
+  id: 'id',
+  branchId: 'branchId',
+  sessionDate: 'sessionDate',
+  startTime: 'startTime',
+  endTime: 'endTime',
+  courseId: 'courseId',
+  courseName: 'courseName',
+  facultyId: 'facultyId',
+  facultyName: 'facultyName',
+  mode: 'mode',
+  status: 'status',
+  createdBy: 'createdBy',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -988,6 +1053,9 @@ exports.Prisma.ModelName = {
   StudentAttendance: 'StudentAttendance',
   BranchFaculty: 'BranchFaculty',
   FacultyLeaveRequest: 'FacultyLeaveRequest',
+  BranchFacultyCourse: 'BranchFacultyCourse',
+  FacultyLeaveAffectedSession: 'FacultyLeaveAffectedSession',
+  FacultyLeaveCombinedSession: 'FacultyLeaveCombinedSession',
   BranchInstallmentTemplate: 'BranchInstallmentTemplate',
   BranchStudentPayment: 'BranchStudentPayment',
   BranchStudentLedgerEntry: 'BranchStudentLedgerEntry'

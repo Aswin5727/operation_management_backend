@@ -288,6 +288,7 @@ model BranchCourse {
   installmentTemplate            BranchInstallmentTemplate?
   modules                        BranchCourseModule[]
   branchFaculties                BranchFaculty[]
+  facultyAssignments             BranchFacultyCourse[]
   branchBatches                  BranchBatch[]
   branchStudents                 BranchStudent[]
   facultyTodayWorkEntries        FacultyTodayWorkEntry[]
@@ -875,30 +876,31 @@ model StudentAttendance {
 }
 
 model BranchFaculty {
-  id             String        @id @default(cuid())
-  facultyId      String
-  branchId       String
-  name           String
-  email          String
-  phone          String
-  country        String?       @default("")
-  countryCode    String?       @default("")
-  state          String?       @default("")
-  stateCode      String?       @default("")
-  city           String?       @default("")
-  address        String?
-  weeklyOffDay   String?
-  status         RecordStatus  @default(ACTIVE)
-  createdBy      String?
-  updatedBy      String?
-  createdAt      DateTime      @default(now())
-  updatedAt      DateTime      @updatedAt
-  courseId       String?
-  branchCourseId String?
-  branchCourse   BranchCourse? @relation(fields: [branchCourseId], references: [id])
-  branch         Branch        @relation(fields: [branchId], references: [id], onDelete: Cascade)
-  course         Course?       @relation(fields: [courseId], references: [id])
-  branchBatches  BranchBatch[]
+  id                String                @id @default(cuid())
+  facultyId         String
+  branchId          String
+  name              String
+  email             String
+  phone             String
+  country           String?               @default("")
+  countryCode       String?               @default("")
+  state             String?               @default("")
+  stateCode         String?               @default("")
+  city              String?               @default("")
+  address           String?
+  weeklyOffDay      String?
+  status            RecordStatus          @default(ACTIVE)
+  createdBy         String?
+  updatedBy         String?
+  createdAt         DateTime              @default(now())
+  updatedAt         DateTime              @updatedAt
+  courseId          String?
+  branchCourseId    String?
+  branchCourse      BranchCourse?         @relation(fields: [branchCourseId], references: [id])
+  branch            Branch                @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  course            Course?               @relation(fields: [courseId], references: [id])
+  branchBatches     BranchBatch[]
+  courseAssignments BranchFacultyCourse[]
 
   @@unique([branchId, facultyId])
   @@unique([branchId, email])
@@ -929,6 +931,13 @@ model FacultyLeaveRequest {
   reason          String
   status          String    @default("PENDING")
   cancelledAt     DateTime?
+  approvedBy      String?
+  approvedAt      DateTime?
+  rejectedBy      String?
+  rejectedAt      DateTime?
+  rejectionReason String?
+  reviewedBy      String?
+  reviewedAt      DateTime?
   affectedClasses Json      @default("[]")
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
@@ -938,6 +947,78 @@ model FacultyLeaveRequest {
   @@index([facultyUserId, fromDate, toDate])
   @@index([branchId, status, createdAt])
   @@index([facultyId, status])
+}
+
+model BranchFacultyCourse {
+  id              String        @id @default(cuid())
+  branchId        String
+  branchFacultyId String
+  branchCourseId  String
+  createdBy       String?
+  updatedBy       String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  branchFaculty   BranchFaculty @relation(fields: [branchFacultyId], references: [id], onDelete: Cascade)
+  branchCourse    BranchCourse  @relation(fields: [branchCourseId], references: [id], onDelete: Cascade)
+
+  @@unique([branchFacultyId, branchCourseId])
+  @@index([branchId, branchFacultyId])
+  @@index([branchId, branchCourseId])
+}
+
+model FacultyLeaveAffectedSession {
+  id                     String    @id @default(cuid())
+  leaveRequestId         String
+  branchId               String
+  batchRecordId          String
+  batchId                String
+  batchName              String
+  courseId               String?
+  courseName             String?
+  originalFacultyId      String
+  originalFacultyName    String?
+  sessionDate            String
+  originalStartTime      String
+  originalEndTime        String
+  resolutionStatus       String    @default("UNRESOLVED")
+  assignmentType         String?
+  replacementFacultyId   String?
+  replacementFacultyName String?
+  replacementStatus      String?
+  combinedSessionId      String?
+  rescheduledDate        String?
+  rescheduledStartTime   String?
+  rescheduledEndTime     String?
+  resolutionReason       String?
+  resolvedBy             String?
+  resolvedAt             DateTime?
+  createdAt              DateTime  @default(now())
+  updatedAt              DateTime  @updatedAt
+
+  @@unique([leaveRequestId, batchRecordId, sessionDate])
+  @@index([branchId, resolutionStatus])
+  @@index([leaveRequestId, resolutionStatus])
+  @@index([batchRecordId, sessionDate])
+}
+
+model FacultyLeaveCombinedSession {
+  id          String   @id @default(cuid())
+  branchId    String
+  sessionDate String
+  startTime   String
+  endTime     String
+  courseId    String?
+  courseName  String?
+  facultyId   String
+  facultyName String?
+  mode        String?
+  status      String   @default("ACTIVE")
+  createdBy   String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([branchId, sessionDate, startTime, endTime, facultyId])
+  @@index([branchId, sessionDate])
 }
 
 model BranchInstallmentTemplate {

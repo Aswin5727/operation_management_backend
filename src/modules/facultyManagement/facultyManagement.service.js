@@ -685,16 +685,8 @@ async function findFacultyLoginUser(existingFaculty) {
 async function getFacultyProfileForUser(user) {
   const normalizedEmail = normalizeString(user?.email).toLowerCase();
   const normalizedUserCode = normalizeString(user?.userCode);
-  const normalizedUserId = normalizeString(user?.id);
 
-  const record = await prisma.facultyProfile.findFirst({
-    where: {
-      OR: [
-        ...(normalizedEmail ? [{ facultyEmail: normalizedEmail }] : []),
-        ...(normalizedUserCode ? [{ facultyEmail: normalizedUserCode }] : []),
-        ...(normalizedUserId ? [{ facultyEmail: normalizedUserId }] : []),
-      ],
-    },
+  const profileInclude = {
     include: {
       course: {
         include: getFacultyCourseInclude(),
@@ -716,63 +708,45 @@ async function getFacultyProfileForUser(user) {
         },
       },
     },
-  });
+  };
+
+  // Resolve the profile from the authenticated identity in a strict order.
+  // Never treat a user code or database id as an email, and never let an OR
+  // query return another faculty's profile after an account switch.
+  let record = normalizedEmail
+    ? await prisma.facultyProfile.findFirst({
+      where: { facultyEmail: { equals: normalizedEmail, mode: "insensitive" } },
+      ...profileInclude,
+    })
+    : null;
 
   if (!record) {
-    const branchFaculty = await prisma.branchFaculty.findFirst({
-      where: {
-        OR: [
-          ...(normalizedEmail
-            ? [
-                {
-                  email: {
-                    equals: normalizedEmail,
-                    mode: "insensitive",
-                  },
-                },
-              ]
-            : []),
-          ...(normalizedUserCode
-            ? [
-                {
-                  facultyId: {
-                    equals: normalizedUserCode,
-                    mode: "insensitive",
-                  },
-                },
-              ]
-            : []),
-          ...(normalizedUserId ? [{ facultyId: normalizedUserId }] : []),
-        ],
-      },
-      include: {
-        branchCourse: {
-          include: {
-            modules: {
-              orderBy: { sequenceNo: "asc" },
-              include: {
-                submodules: {
-                  orderBy: { sequenceNo: "asc" },
-                },
-              },
-            },
+    const branchFacultyInclude = {
+      branchCourse: {
+        include: {
+          modules: {
+            orderBy: { sequenceNo: "asc" },
+            include: { submodules: { orderBy: { sequenceNo: "asc" } } },
           },
-        },
-        course: {
-          include: {
-            modules: {
-              orderBy: { sequenceNo: "asc" },
-            },
-          },
-        },
-        branchBatches: {
-          where: {
-            status: "ACTIVE",
-          },
-          orderBy: [{ createdAt: "asc" }],
         },
       },
-    });
+      course: { include: { modules: { orderBy: { sequenceNo: "asc" } } } },
+      branchBatches: { where: { status: "ACTIVE" }, orderBy: [{ createdAt: "asc" }] },
+    };
+
+    let branchFaculty = normalizedEmail
+      ? await prisma.branchFaculty.findFirst({
+        where: { email: { equals: normalizedEmail, mode: "insensitive" } },
+        include: branchFacultyInclude,
+      })
+      : null;
+
+    if (!branchFaculty && normalizedUserCode) {
+      branchFaculty = await prisma.branchFaculty.findFirst({
+        where: { facultyId: { equals: normalizedUserCode, mode: "insensitive" } },
+        include: branchFacultyInclude,
+      });
+    }
 
     if (!branchFaculty) {
       throw new AppError("Faculty profile not found", 404);

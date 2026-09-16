@@ -122,11 +122,13 @@ function toBranchFacultyBatchEntries(branchBatches = [], branchFaculty = null) {
 
   return branchBatches.map((batch) => ({
       id: batch?.batchId || batch?.id || "",
+      branchId: batch?.branchId || branchFaculty?.branchId || "",
+      branchCode: batch?.branch?.branchId || branchFaculty?.branch?.branchId || "",
       // BranchStudent stores the assigned faculty's public ID (for example
       // FC-003), so keep the batch's faculty ID ahead of the internal row ID.
       facultyId: batch?.facultyId || branchFaculty?.facultyId || branchFaculty?.id || "",
-      facultyName: branchFaculty?.name || "",
-      facultyEmail: branchFaculty?.email || "",
+      facultyName: batch?.facultyName || branchFaculty?.name || "",
+      facultyEmail: batch?.facultyEmail || branchFaculty?.email || "",
       courseId: batch?.courseId || batch?.branchCourseId || "",
       courseName: batch?.courseName || batch?.branchCourse?.name || "",
       batchId: batch?.batchId || "",
@@ -163,11 +165,20 @@ async function getFacultyMyBatchesSummary(user) {
           name: true,
         },
       },
+      branch: {
+        select: {
+          id: true,
+          branchId: true,
+        },
+      },
       branchBatches: {
         where: {
           status: "ACTIVE",
         },
         orderBy: [{ createdAt: "asc" }],
+      },
+      courseAssignments: {
+        select: { branchCourseId: true, branchCourse: { select: { id: true, name: true, courseCode: true } } },
       },
     },
   });
@@ -215,18 +226,14 @@ async function getFacultyMyBatchesSummary(user) {
     },
   });
 
-  if (!faculty) {
+  // Branch faculty records are the source of truth for branch dashboards.
+  // Prefer them even when an older FacultyProfile row also exists for the
+  // same email; that legacy row only supports one course assignment.
   if (branchFaculty) {
-    // BranchFaculty.branchCourseId is the current course assignment. Older
-    // active batch records can remain after a course reassignment, so they
-    // must not leak into the faculty dashboard summary.
-    const currentCourseId = String(branchFaculty.branchCourseId || '').trim();
-    const currentCourseBatches = currentCourseId
-      ? branchFaculty.branchBatches.filter((batch) =>
-          String(batch?.courseId || batch?.branchCourseId || '').trim() === currentCourseId,
-        )
-      : branchFaculty.branchBatches;
-    const batchEntries = toBranchFacultyBatchEntries(currentCourseBatches, branchFaculty);
+    // BranchFaculty has a legacy single-course pointer. Dashboard data must
+    // use the batch rows and mapping table so older and newer course links are
+    // both visible for the same faculty.
+    const batchEntries = toBranchFacultyBatchEntries(branchFaculty.branchBatches, branchFaculty);
     const batchIds = batchEntries
       .map((entry) => normalizeFacultyText(entry.batchId || entry.id))
       .filter(Boolean);
@@ -275,13 +282,20 @@ async function getFacultyMyBatchesSummary(user) {
     return {
       faculty: {
         id: branchFaculty.facultyId,
+        branchId: branchFaculty.branchId,
+        branchCode: branchFaculty.branch?.branchId || "",
         facultyName: branchFaculty.name,
         facultyEmail: branchFaculty.email,
         courseId:
           branchFaculty.branchCourse?.id || batchEntries[0]?.courseId || "",
         courseIds,
         courseName:
-          branchFaculty.branchCourse?.name || batchEntries[0]?.courseName || "",
+          branchFaculty.courseAssignments?.[0]?.branchCourse?.name || branchFaculty.branchCourse?.name || batchEntries[0]?.courseName || "",
+        courseAssignments: (branchFaculty.courseAssignments || []).map((assignment) => ({
+          courseId: assignment.branchCourseId,
+          courseName: assignment.branchCourse?.name || "",
+          courseCode: assignment.branchCourse?.courseCode || "",
+        })),
       },
 
       totalBatches: batchEntries.length,
@@ -291,11 +305,12 @@ async function getFacultyMyBatchesSummary(user) {
     };
   }
 
-  throw new AppError(
-    "Faculty profile not found",
-    404,
-  );
-}
+  if (!faculty) {
+    throw new AppError(
+      "Faculty profile not found",
+      404,
+    );
+  }
 
   const batchEntries = Array.isArray(faculty.batchEntries) ? faculty.batchEntries : [];
   if (!batchEntries.length) {

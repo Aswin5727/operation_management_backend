@@ -250,7 +250,10 @@ function buildNotificationWhere({
 
   if (Object.keys(branchScope).length > 0) {
     return {
-      ...branchScope,
+      OR: [
+        branchScope,
+        ...(user?.id ? [{ targetUserId: user.id }] : []),
+      ],
       ...(unreadOnly ? { read: false } : {}),
       ...(normalizedKind
         ? { kind: normalizedKind }
@@ -448,7 +451,7 @@ async function buildFallbackBranchNotifications(user = {}, branchScope = {}) {
   );
 }
 
-async function createNotification(data, prismaClient = prisma) {
+export async function createNotification(data, prismaClient = prisma) {
   const record = await prismaClient.notification.create({
     data,
   });
@@ -736,6 +739,10 @@ export async function createFacultyLeaveRequestNotification({ request = {}, bran
       requestStatus: request?.status || "PENDING",
       requestReason: request?.reason || "",
       requestDescription: request?.durationType || "",
+      // Target the branch admin account directly as well as the branch scope.
+      // This prevents a valid leave request from being hidden when an older
+      // branch notification has incomplete scope metadata.
+      targetUserId: branch?.adminUserId || null,
     },
   }), prismaClient);
 }

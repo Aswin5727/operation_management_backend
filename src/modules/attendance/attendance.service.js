@@ -367,13 +367,16 @@ async function resolveBranchFacultyCandidates(user, facultyId = "") {
   return uniqueByKey([facultyId].map(normalizeString).filter(Boolean), (value) => value.toLowerCase());
 }
 
-async function findBranchAttendanceBatch(user, payload = {}, facultyId = "") {
+async function findBranchAttendanceBatch(user, payload = {}, facultyId = "", attendanceDate = "") {
   const courseId = normalizeString(payload.courseId);
   const batchName = normalizeString(payload.batchName);
   const batchId = normalizeString(payload.batchId || payload.batchEntryId);
   const branchId = normalizeString(payload.branchId || payload.branchCode);
   const facultyCandidates = await resolveBranchFacultyCandidates(user, facultyId);
   const facultyEmail = normalizeString(user?.email).toLowerCase();
+  const replacementAssignments = attendanceDate && facultyCandidates.length
+    ? await prisma.facultyLeaveAffectedSession.findMany({ where: { sessionDate: attendanceDate, replacementFacultyId: { in: facultyCandidates }, replacementStatus: "CONFIRMED", resolutionStatus: "REPLACEMENT_ASSIGNED" }, select: { batchRecordId: true, batchId: true } })
+    : [];
 
   if (!courseId || !batchName) return null;
 
@@ -391,6 +394,7 @@ async function findBranchAttendanceBatch(user, payload = {}, facultyId = "") {
             { branchFacultyId: { in: facultyCandidates } },
           ] : []),
           ...(facultyEmail ? [{ facultyEmail: { equals: facultyEmail, mode: "insensitive" } }] : []),
+          ...(replacementAssignments.length ? [{ id: { in: replacementAssignments.map((item) => item.batchRecordId) } }, { batchId: { in: replacementAssignments.map((item) => item.batchId) } }] : []),
         ],
       }],
     },
@@ -885,7 +889,7 @@ export async function markFacultyStudentAttendance(user, payload = {}) {
     throw new AppError("At least one student attendance entry is required", 400);
   }
 
-  const branchBatch = await findBranchAttendanceBatch(user, payload, facultyId);
+  const branchBatch = await findBranchAttendanceBatch(user, payload, facultyId, date);
   if (branchBatch) {
     return markBranchStudentAttendance(user, payload, date, branchBatch);
   }

@@ -173,6 +173,15 @@ async function resolveFacultyCourseLinks(branchId, payload = {}, existing = null
   };
 }
 
+async function syncFacultyCourseAssignment(tx, { branchId, facultyId, branchCourseId, actorId }) {
+  if (!branchCourseId) return;
+  await tx.branchFacultyCourse.upsert({
+    where: { branchFacultyId_branchCourseId: { branchFacultyId: facultyId, branchCourseId } },
+    create: { branchId, branchFacultyId: facultyId, branchCourseId, createdBy: actorId, updatedBy: actorId },
+    update: { updatedBy: actorId },
+  });
+}
+
 export async function listBranchFaculty(actorUser, query) {
   const branchProfile = await getCurrentBranchProfile(actorUser);
 
@@ -234,6 +243,7 @@ export async function listBranchFaculty(actorUser, query) {
             branchBatches: true,
           },
         },
+        courseAssignments: { include: { branchCourse: { select: { id: true, courseCode: true, name: true, mode: true } } } },
       },
     }),
 
@@ -250,6 +260,7 @@ export async function listBranchFaculty(actorUser, query) {
       faculty.branchCourse ||
       faculty.course ||
       null,
+    courses: faculty.courseAssignments.map((assignment) => assignment.branchCourse).filter(Boolean),
   }));
 
   return {
@@ -341,7 +352,7 @@ export async function createBranchFaculty(actorUser, payload) {
       },
     });
 
-    return tx.branchFaculty.create({
+    const createdFaculty = await tx.branchFaculty.create({
       data: {
         branchId: branchProfile.id,
         facultyId: payload.facultyId,
@@ -361,6 +372,8 @@ export async function createBranchFaculty(actorUser, payload) {
         createdBy: actorUser.id,
       },
     });
+    await syncFacultyCourseAssignment(tx, { branchId: branchProfile.id, facultyId: createdFaculty.id, branchCourseId: courseLinks.branchCourseId, actorId: actorUser.id });
+    return createdFaculty;
   });
 
   let courseNameContext = "";
@@ -469,6 +482,8 @@ export async function updateBranchFaculty(actorUser, branchFacultyId, payload) {
       updatedBy: actorUser.id,
     },
   });
+
+  await syncFacultyCourseAssignment(prisma, { branchId: branchProfile.id, facultyId: updated.id, branchCourseId: courseLinks.branchCourseId, actorId: actorUser.id });
 
   return updated;
 }

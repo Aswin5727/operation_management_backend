@@ -275,23 +275,25 @@ function getWorkEntrySubmoduleStatus(entry = {}, submoduleId = "", studentId = "
   return normalizeString(status);
 }
 
-async function validateFacultyBatchScope({ branchId, courseId, batchId, facultyProfileId, facultyUserId, studentIds }) {
+async function validateFacultyBatchScope({ branchId, courseId, batchId, facultyProfileId, facultyUserId, studentIds, workDate }) {
   const normalizedBatchId = normalizeString(batchId);
   if (!normalizedBatchId) {
     throw new AppError("Batch is required", 400);
   }
 
+  const replacementProfile = await prisma.branchFaculty.findFirst({ where: { branchId: normalizeString(branchId), OR: [{ facultyId: normalizeString(facultyProfileId) }, { email: { equals: normalizeString(facultyUserId), mode: "insensitive" } }] }, select: { facultyId: true } });
+  const replacementAssignment = replacementProfile ? await prisma.facultyLeaveAffectedSession.findFirst({ where: { branchId: normalizeString(branchId), batchId: normalizedBatchId, sessionDate: workDate, resolutionStatus: "REPLACEMENT_ASSIGNED", replacementStatus: "CONFIRMED", replacementFacultyId: replacementProfile.facultyId }, select: { id: true } }) : null;
   const batch = await prisma.branchBatch.findFirst({
     where: {
       batchId: normalizedBatchId,
       status: "ACTIVE",
       branchId: normalizeString(branchId),
       branchCourseId: normalizeString(courseId),
-      OR: [
+      ...(replacementAssignment ? {} : { OR: [
         { branchFacultyId: normalizeString(facultyProfileId) },
         { facultyId: normalizeString(facultyProfileId) },
         { facultyEmail: normalizeString(facultyUserId) },
-      ],
+      ] }),
     },
     select: {
       batchId: true,
@@ -322,7 +324,7 @@ async function validateFacultyBatchScope({ branchId, courseId, batchId, facultyP
 
   const expectedFacultyId = normalizeString(batch.facultyId);
   const validStudents = students.filter((student) => (
-    !expectedFacultyId || normalizeString(student.facultyId) === expectedFacultyId
+    replacementAssignment || !expectedFacultyId || normalizeString(student.facultyId) === expectedFacultyId
   ));
 
   if (validStudents.length !== normalizedStudentIds.length) {
@@ -661,6 +663,7 @@ export async function createFacultyTodayWorkEntry(payload = {}, user = null) {
     facultyProfileId,
     facultyUserId,
     studentIds,
+    workDate,
   });
   const studentResults = parseStudentResults(payload, studentIds, selectedSubmoduleIds);
   const studentByAnyId = new Map(

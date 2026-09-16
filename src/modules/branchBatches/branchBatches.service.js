@@ -144,7 +144,9 @@ export async function createBranchBatch(payload = {}, actor = null) {
     let batchId = input.batchId ? normalizeBranchEntityId(input.batchId, branch.branchId, "BAT") : "";
     if (batchId && await tx.branchBatch.findFirst({ where: { branchId: branch.id, batchId }, select: { id: true } })) batchId = "";
     while (!batchId || await tx.branchBatch.findFirst({ where: { branchId: branch.id, batchId }, select: { id: true } })) batchId = makeBatchId(branch.branchId, sequence++);
-    const record = await tx.branchBatch.create({ data: { branchId: branch.id, branchCourseId: course.id, branchFacultyId: faculty.id, courseId: course.id, courseName: course.name, facultyId: faculty.facultyId || faculty.id, facultyName: faculty.name, facultyEmail: faculty.email, ...input, batchId, createdBy: actorId, updatedBy: actorId }, include: relations() }); records.push(record); } return records; });
+    const record = await tx.branchBatch.create({ data: { branchId: branch.id, branchCourseId: course.id, branchFacultyId: faculty.id, courseId: course.id, courseName: course.name, facultyId: faculty.facultyId || faculty.id, facultyName: faculty.name, facultyEmail: faculty.email, ...input, batchId, createdBy: actorId, updatedBy: actorId }, include: relations() }); records.push(record); }
+    await tx.branchFacultyCourse.upsert({ where: { branchFacultyId_branchCourseId: { branchFacultyId: faculty.id, branchCourseId: course.id } }, create: { branchId: branch.id, branchFacultyId: faculty.id, branchCourseId: course.id, createdBy: actorId, updatedBy: actorId }, update: { updatedBy: actorId } });
+    return records; });
   await prisma.branchFaculty.update({ where: { id: faculty.id }, data: { branchCourseId: course.id, updatedBy: actorId } }); created.forEach(queueFacultyEmail); return toBatch(created[0]);
 }
 
@@ -164,6 +166,7 @@ export async function updateBranchBatch(batchId, payload = {}, actor = null) {
   const course = await ensureCourse(branch.id, parsed.courseId); validateCourseMode(course.mode, parsed.batches[0].mode); const faculty = await ensureFaculty(branch.id, parsed.facultyId); const weeklyOffDay = existing.facultyId === faculty.facultyId ? existing.weeklyOffDay : faculty.weeklyOffDay; const calculatedEndDate = await calculateStoredBatchEndDate(branch, course, parsed.batches[0], existing.batchId, weeklyOffDay); if (!calculatedEndDate) throw new AppError("Selected course has no valid duration", 400); const input = { ...parsed.batches[0], weeklyOffDay: weeklyOffDay || null, courseEndDate: calculatedEndDate, batchId: existing.batchId };
   const synced = await prisma.$transaction(async (tx) => {
     const updatedBatch = await tx.branchBatch.update({ where: { id: existing.id }, data: { branchCourseId: course.id, branchFacultyId: faculty.id, courseId: course.id, courseName: course.name, facultyId: faculty.facultyId || faculty.id, facultyName: faculty.name, facultyEmail: faculty.email, ...input, updatedBy: actor?.id ?? null }, include: relations() });
+    await tx.branchFacultyCourse.upsert({ where: { branchFacultyId_branchCourseId: { branchFacultyId: faculty.id, branchCourseId: course.id } }, create: { branchId: branch.id, branchFacultyId: faculty.id, branchCourseId: course.id, createdBy: actor?.id ?? null, updatedBy: actor?.id ?? null }, update: { updatedBy: actor?.id ?? null } });
     if (existing.courseStartDate === input.courseStartDate) {
       await tx.branchFaculty.update({ where: { id: faculty.id }, data: { branchCourseId: course.id, updatedBy: actor?.id ?? null } });
       return { updatedBatch, students: [] };

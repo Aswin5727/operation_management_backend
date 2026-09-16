@@ -140,7 +140,15 @@ export async function facultyAttendanceLogin(user) {
 }
 export async function facultyAttendanceBatches(user) {
   const email = text(user.email).toLowerCase();
+  const profile = await prisma.branchFaculty.findFirst({ where: { OR: [{ facultyId: user.userCode }, { email: { equals: email, mode: "insensitive" } }] }, select: { facultyId: true } });
   const rows = await prisma.branchBatch.findMany({ where: { status: "ACTIVE", OR: [{ facultyId: user.userCode }, { facultyId: user.id }, ...(email ? [{ facultyEmail: { equals: email, mode: "insensitive" } }] : [])] }, orderBy: [{ courseName: "asc" }, { sequenceNo: "asc" }], select: { id: true, batchId: true, batchName: true, branchId: true, courseId: true, courseName: true, batchTiming: true, facultyId: true, facultyEmail: true, branch: { select: { branchName: true, branchId: true } } } });
+  if (profile?.facultyId) {
+    const assignments = await prisma.facultyLeaveAffectedSession.findMany({ where: { replacementFacultyId: profile.facultyId, replacementStatus: "CONFIRMED", resolutionStatus: "REPLACEMENT_ASSIGNED", sessionDate: today() }, select: { batchRecordId: true } });
+    if (assignments.length) {
+      const replacementRows = await prisma.branchBatch.findMany({ where: { id: { in: assignments.map((item) => item.batchRecordId) }, status: "ACTIVE" }, select: { id: true, batchId: true, batchName: true, branchId: true, courseId: true, courseName: true, batchTiming: true, facultyId: true, facultyEmail: true, branch: { select: { branchName: true, branchId: true } } } });
+      rows.push(...replacementRows);
+    }
+  }
   const unique = new Map();
   rows.forEach((batch) => {
     const key = `${text(batch.branchId).toLowerCase()}::${text(batch.batchId || batch.id).toLowerCase()}`;
