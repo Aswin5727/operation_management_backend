@@ -1,5 +1,5 @@
 import asyncHandler from "../../common/utils/asyncHandler.js";
-import { getFacultyMyBatchesSummary, getRevenueSummary } from "./dashboard.service.js";
+import { getFacultyDashboardOverview, getFacultyMyBatchesSummary, getRevenueSummary } from "./dashboard.service.js";
 
 function sendSuccess(res, message, data, statusCode = 200) {
   return res.status(statusCode).json({
@@ -17,4 +17,9 @@ export const getRevenueSummaryHandler = asyncHandler(async (_req, res) => {
 export const getFacultyMyBatchesSummaryHandler = asyncHandler(async (req, res) => {
   const summary = await getFacultyMyBatchesSummary(req.user);
   return sendSuccess(res, "Faculty batches summary fetched successfully", summary);
+});
+
+export const getFacultyDashboardOverviewHandler = asyncHandler(async (req, res) => {
+  const overview = await getFacultyDashboardOverview(req.user);
+  return sendSuccess(res, "Faculty dashboard overview fetched successfully", overview);
 });

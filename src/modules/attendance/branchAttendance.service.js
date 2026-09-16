@@ -36,11 +36,12 @@ export async function getBranchAttendanceOverview(user, query = {}) {
   const from = (augustStart < historyStart ? augustStart : historyStart).toISOString().slice(0, 10);
   const [students, holidays, leaves] = await Promise.all([
     prisma.branchStudent.findMany({
-      where: { branchId: branch.id },
+      where: { branchId: branch.id, recordStatus: "ACTIVE" },
       orderBy: [{ studentName: "asc" }, { id: "asc" }],
       select: {
         id: true, studentId: true, studentName: true, courseId: true, courseName: true,
-        batchId: true, batchName: true, recordStatus: true,
+        batchId: true, batchName: true, recordStatus: true, classSchedule: true,
+        courseStartDate: true, courseEndDate: true, weeklyOffDay: true,
         calendarAttendanceRecords: {
           where: { attendanceDate: { gte: from, lte: date } },
           select: { attendanceDate: true, status: true, batchId: true, courseId: true },
@@ -53,6 +54,7 @@ export async function getBranchAttendanceOverview(user, query = {}) {
   const holidayDates = new Set(holidays.map((item) => item.holidayDate));
   return {
     branchId: branch.id, date, weekStart, monthStart,
+    exclusions: { holidays: [...holidayDates], leaves },
     students: students.map(({ calendarAttendanceRecords, ...student }) => ({
       ...student,
       records: calendarAttendanceRecords.filter((record) => !holidayDates.has(record.attendanceDate) && !leaves.some((leave) => leave.leaveDate === record.attendanceDate && (!leave.batchId || leave.batchId === record.batchId))),
