@@ -509,6 +509,56 @@ export async function listMyTemporaryFacultyBatches(user) {
   })) };
 }
 
+export async function listMyTemporaryBatchStudents(user, sessionId) {
+  const faculty = await resolveFacultyContext(user);
+  const today = new Date().toISOString().slice(0, 10);
+  const session = await prisma.facultyLeaveAffectedSession.findFirst({
+    where: { id: text(sessionId), branchId: faculty.branchId, replacementFacultyId: faculty.facultyId, replacementStatus: "CONFIRMED", resolutionStatus: "REPLACEMENT_ASSIGNED", replacementDate: { gte: today } },
+    select: { id: true, batchId: true, batchName: true, courseId: true, courseName: true, sessionDate: true, replacementDate: true, replacementStartTime: true, replacementEndTime: true, originalFacultyId: true, originalFacultyName: true },
+  });
+  if (!session) throw new AppError("This replacement assignment is no longer available", 403);
+  const students = await prisma.branchStudent.findMany({ where: { branchId: faculty.branchId, batchId: session.batchId, recordStatus: "ACTIVE" }, orderBy: { studentName: "asc" }, include: { course: { select: { id: true, name: true, duration: true, hours: true, mode: true } }, installments: { select: { amount: true, amountPaid: true } }, calendarAttendanceRecords: { where: { attendanceDate: session.replacementDate }, select: { status: true } } } });
+  return {
+    session,
+    students: students.map((student) => {
+      const totalAmount = student.installments.reduce((sum, item) => sum + Number(item.amount || 0), 0);
+      const paidAmount = student.installments.reduce((sum, item) => sum + Math.min(Number(item.amountPaid || 0), Number(item.amount || 0)), 0);
+      return {
+        id: student.id,
+        studentId: student.studentId,
+        studentName: student.studentName,
+        emailAddress: student.emailAddress,
+        mobileNumber: student.mobileNumber,
+        courseId: student.courseId,
+        courseName: student.courseName || student.course?.name || "",
+        course: student.course,
+        courseMode: student.courseMode || student.course?.mode || "",
+        courseStartDate: student.courseStartDate,
+        admissionDate: student.admissionDate,
+        courseEndDate: student.courseEndDate,
+        classSchedule: student.classSchedule,
+        batchId: student.batchId,
+        batchName: student.batchName,
+        batchTiming: student.batchTiming,
+        totalWorkingDays: student.totalWorkingDays,
+        paidProgress: totalAmount ? Math.round((paidAmount / totalAmount) * 100) : 0,
+        courseProgress: student.courseProgress ?? 0,
+        attendance: student.calendarAttendanceRecords[0]?.status || "UNMARKED",
+        calendarEvents: [{
+          date: session.replacementDate,
+          status: "Scheduled",
+          isCourseDay: true,
+          isReplacement: true,
+          classTime: `${session.replacementStartTime} - ${session.replacementEndTime}`,
+          courseName: student.courseName || student.course?.name || "",
+          batchName: student.batchName || "",
+          facultyName: session.replacementFacultyName || faculty.facultyName || "",
+        }],
+      };
+    }),
+  };
+}
+
 export async function createFacultyLeaveRequest(user, payload) {
   const faculty = await resolveFacultyContext(user);
   const leave = validatePayload(payload);

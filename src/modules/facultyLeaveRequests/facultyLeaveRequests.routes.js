@@ -2,13 +2,14 @@ import express from "express";
 import { authenticate } from "../../common/middlewares/authenticate.js";
 import { authorize } from "../../common/middlewares/authorize.js";
 import asyncHandler from "../../common/utils/asyncHandler.js";
-import { approveBranchFacultyLeave, cancelFacultyLeaveRequest, createFacultyLeaveRequest, getBranchFacultyLeaveRequest, listBranchFacultyLeaveRequests, listMyFacultyLeaveRequests, listMyFacultySchedule, listMyTemporaryFacultyBatches, listReplacementFaculty, rejectBranchFacultyLeave, resolveBranchFacultyLeaveSession, updateFacultyLeaveRequest } from "./facultyLeaveRequests.service.js";
+import { approveBranchFacultyLeave, cancelFacultyLeaveRequest, createFacultyLeaveRequest, getBranchFacultyLeaveRequest, listBranchFacultyLeaveRequests, listMyFacultyLeaveRequests, listMyFacultySchedule, listMyTemporaryBatchStudents, listMyTemporaryFacultyBatches, listReplacementFaculty, rejectBranchFacultyLeave, resolveBranchFacultyLeaveSession, updateFacultyLeaveRequest } from "./facultyLeaveRequests.service.js";
 
 const router = express.Router();
 router.use(authenticate);
 router.get("/me", authorize("FACULTY"), asyncHandler(async (req, res) => res.json({ data: await listMyFacultyLeaveRequests(req.user) })));
 router.get("/me/schedule", authorize("FACULTY"), asyncHandler(async (req, res) => res.json({ data: await listMyFacultySchedule(req.user) })));
 router.get("/me/temporary-batches", authorize("FACULTY"), asyncHandler(async (req, res) => res.json({ data: await listMyTemporaryFacultyBatches(req.user) })));
+router.get("/me/temporary-batches/:sessionId/students", authorize("FACULTY"), asyncHandler(async (req, res) => res.json({ data: await listMyTemporaryBatchStudents(req.user, req.params.sessionId) })));
 router.post("/", authorize("FACULTY"), asyncHandler(async (req, res) => res.status(201).json({ data: await createFacultyLeaveRequest(req.user, req.body) })));
 router.patch("/:id", authorize("FACULTY"), asyncHandler(async (req, res) => res.json({ data: await updateFacultyLeaveRequest(req.user, req.params.id, req.body) })));
 router.post("/:id/cancel", authorize("FACULTY"), asyncHandler(async (req, res) => res.json({ data: await cancelFacultyLeaveRequest(req.user, req.params.id) })));
