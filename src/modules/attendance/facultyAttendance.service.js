@@ -1,5 +1,6 @@
 import prisma from "../../config/prisma.js";
 import AppError from "../../common/errors/AppError.js";
+import { getCurrentBranchProfile } from "../branches/branches.service.js";
 
 const TIME_ZONE = "Asia/Kolkata";
 const APPROVED = "APPROVED";
@@ -62,7 +63,7 @@ function workingSeconds(rows, records) {
 }
 function serializeInterruption(item) { return item ? { interruptionType: item.window.type, interruptionStartTime: item.window.startTime, interruptionEndTime: item.window.endTime, interruptionReason: item.window.reason } : { interruptionType: "NONE", interruptionStartTime: null, interruptionEndTime: null, interruptionReason: "" }; }
 
-export async function getFacultyAttendanceStatus(user) {
+async function buildFacultyAttendanceStatus(user, persist = true) {
   const date = today(); const rows = await sessions(user.id, date); const records = await findApprovedInterruptions(user.id, date); const nowValue = currentMinutes(); const open = activeSession(rows); const active = interruptionState(rows, records, nowValue);
   const loginRequired = Boolean(open && !active && latestEndedNeedsLogin(rows, records, nowValue));
   const status = rows.length && !open ? "LOGGED_OUT" : active ? "ON_PERMISSION" : loginRequired ? "LOGIN_REQUIRED" : open ? "LOGGED_IN" : "NOT_LOGGED_IN";
@@ -71,8 +72,63 @@ export async function getFacultyAttendanceStatus(user) {
   const remainingSeconds = active ? Math.max(0, (active.window.end - nowValue) * 60) : 0;
   const firstLoginAt = rows[0]?.loginAt || null;
   const finalLogoutAt = status === "LOGGED_OUT" ? rows[rows.length - 1]?.logoutAt || null : null;
-  await prisma.facultyAttendanceDay.upsert({ where: { facultyUserId_attendanceDate: { facultyUserId: user.id, attendanceDate: date } }, create: { facultyUserId: user.id, attendanceDate: date, status, firstLoginAt, finalLogoutAt }, update: { status, firstLoginAt, finalLogoutAt } });
+  if (persist) {
+    await prisma.facultyAttendanceDay.upsert({ where: { facultyUserId_attendanceDate: { facultyUserId: user.id, attendanceDate: date } }, create: { facultyUserId: user.id, attendanceDate: date, status, firstLoginAt, finalLogoutAt }, update: { status, firstLoginAt, finalLogoutAt } });
+  }
   return { status, faculty: { id: user.id, name: user.fullName, facultyId: user.userCode }, attendanceDate: date, currentServerTime: new Date().toISOString(), firstLoginAt, finalLogoutAt, currentSession: open, workingSeconds: workingSeconds(rows, records), remainingSeconds, ...interruptionData, canLogin: status === "NOT_LOGGED_IN" || status === "LOGIN_REQUIRED", canLogout: status === "LOGGED_IN" };
+}
+
+export async function getFacultyAttendanceStatus(user) {
+  return buildFacultyAttendanceStatus(user);
+}
+
+export async function getBranchFacultyAttendanceStatus(actor, facultyReference) {
+  const branch = await getCurrentBranchProfile(actor);
+  if (!branch?.id) throw new AppError("Branch profile not found.", 404);
+
+  const reference = text(facultyReference);
+  if (!reference) throw new AppError("Faculty reference is required.", 400);
+
+  const branchFaculty = await prisma.branchFaculty.findFirst({
+    where: {
+      branchId: branch.id,
+      OR: [{ id: reference }, { facultyId: reference }],
+    },
+    select: { facultyId: true, email: true, name: true },
+  });
+  if (!branchFaculty) throw new AppError("Faculty not found in this branch.", 404);
+
+  const facultyUser = await prisma.user.findFirst({
+    where: {
+      role: "FACULTY",
+      active: true,
+      OR: [
+        { userCode: branchFaculty.facultyId },
+        { email: { equals: branchFaculty.email, mode: "insensitive" } },
+      ],
+    },
+  });
+  if (!facultyUser) {
+    return {
+      status: "NOT_LOGGED_IN",
+      faculty: { id: null, name: branchFaculty.name, facultyId: branchFaculty.facultyId },
+      attendanceDate: today(),
+      currentServerTime: new Date().toISOString(),
+      firstLoginAt: null,
+      finalLogoutAt: null,
+      currentSession: null,
+      workingSeconds: 0,
+      remainingSeconds: 0,
+      interruptionType: "NONE",
+      interruptionStartTime: null,
+      interruptionEndTime: null,
+      interruptionReason: "",
+      canLogin: false,
+      canLogout: false,
+    };
+  }
+
+  return buildFacultyAttendanceStatus(facultyUser, false);
 }
 export async function facultyAttendanceLogin(user) {
   const state = await getFacultyAttendanceStatus(user);
