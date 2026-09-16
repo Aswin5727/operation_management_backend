@@ -51661,6 +51661,9 @@ export namespace Prisma {
     replacementFacultyId: string | null
     replacementFacultyName: string | null
     replacementStatus: string | null
+    replacementDate: string | null
+    replacementStartTime: string | null
+    replacementEndTime: string | null
     combinedSessionId: string | null
     rescheduledDate: string | null
     rescheduledStartTime: string | null
@@ -51691,6 +51694,9 @@ export namespace Prisma {
     replacementFacultyId: string | null
     replacementFacultyName: string | null
     replacementStatus: string | null
+    replacementDate: string | null
+    replacementStartTime: string | null
+    replacementEndTime: string | null
     combinedSessionId: string | null
     rescheduledDate: string | null
     rescheduledStartTime: string | null
@@ -51721,6 +51727,9 @@ export namespace Prisma {
     replacementFacultyId: number
     replacementFacultyName: number
     replacementStatus: number
+    replacementDate: number
+    replacementStartTime: number
+    replacementEndTime: number
     combinedSessionId: number
     rescheduledDate: number
     rescheduledStartTime: number
@@ -51753,6 +51762,9 @@ export namespace Prisma {
     replacementFacultyId?: true
     replacementFacultyName?: true
     replacementStatus?: true
+    replacementDate?: true
+    replacementStartTime?: true
+    replacementEndTime?: true
     combinedSessionId?: true
     rescheduledDate?: true
     rescheduledStartTime?: true
@@ -51783,6 +51795,9 @@ export namespace Prisma {
     replacementFacultyId?: true
     replacementFacultyName?: true
     replacementStatus?: true
+    replacementDate?: true
+    replacementStartTime?: true
+    replacementEndTime?: true
     combinedSessionId?: true
     rescheduledDate?: true
     rescheduledStartTime?: true
@@ -51813,6 +51828,9 @@ export namespace Prisma {
     replacementFacultyId?: true
     replacementFacultyName?: true
     replacementStatus?: true
+    replacementDate?: true
+    replacementStartTime?: true
+    replacementEndTime?: true
     combinedSessionId?: true
     rescheduledDate?: true
     rescheduledStartTime?: true
@@ -51916,6 +51934,9 @@ export namespace Prisma {
     replacementFacultyId: string | null
     replacementFacultyName: string | null
     replacementStatus: string | null
+    replacementDate: string | null
+    replacementStartTime: string | null
+    replacementEndTime: string | null
     combinedSessionId: string | null
     rescheduledDate: string | null
     rescheduledStartTime: string | null
@@ -51963,6 +51984,9 @@ export namespace Prisma {
     replacementFacultyId?: boolean
     replacementFacultyName?: boolean
     replacementStatus?: boolean
+    replacementDate?: boolean
+    replacementStartTime?: boolean
+    replacementEndTime?: boolean
     combinedSessionId?: boolean
     rescheduledDate?: boolean
     rescheduledStartTime?: boolean
@@ -51993,6 +52017,9 @@ export namespace Prisma {
     replacementFacultyId?: boolean
     replacementFacultyName?: boolean
     replacementStatus?: boolean
+    replacementDate?: boolean
+    replacementStartTime?: boolean
+    replacementEndTime?: boolean
     combinedSessionId?: boolean
     rescheduledDate?: boolean
     rescheduledStartTime?: boolean
@@ -52023,6 +52050,9 @@ export namespace Prisma {
     replacementFacultyId?: boolean
     replacementFacultyName?: boolean
     replacementStatus?: boolean
+    replacementDate?: boolean
+    replacementStartTime?: boolean
+    replacementEndTime?: boolean
     combinedSessionId?: boolean
     rescheduledDate?: boolean
     rescheduledStartTime?: boolean
@@ -52053,6 +52083,9 @@ export namespace Prisma {
     replacementFacultyId?: boolean
     replacementFacultyName?: boolean
     replacementStatus?: boolean
+    replacementDate?: boolean
+    replacementStartTime?: boolean
+    replacementEndTime?: boolean
     combinedSessionId?: boolean
     rescheduledDate?: boolean
     rescheduledStartTime?: boolean
@@ -52064,7 +52097,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type FacultyLeaveAffectedSessionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "leaveRequestId" | "branchId" | "batchRecordId" | "batchId" | "batchName" | "courseId" | "courseName" | "originalFacultyId" | "originalFacultyName" | "sessionDate" | "originalStartTime" | "originalEndTime" | "resolutionStatus" | "assignmentType" | "replacementFacultyId" | "replacementFacultyName" | "replacementStatus" | "combinedSessionId" | "rescheduledDate" | "rescheduledStartTime" | "rescheduledEndTime" | "resolutionReason" | "resolvedBy" | "resolvedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["facultyLeaveAffectedSession"]>
+  export type FacultyLeaveAffectedSessionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "leaveRequestId" | "branchId" | "batchRecordId" | "batchId" | "batchName" | "courseId" | "courseName" | "originalFacultyId" | "originalFacultyName" | "sessionDate" | "originalStartTime" | "originalEndTime" | "resolutionStatus" | "assignmentType" | "replacementFacultyId" | "replacementFacultyName" | "replacementStatus" | "replacementDate" | "replacementStartTime" | "replacementEndTime" | "combinedSessionId" | "rescheduledDate" | "rescheduledStartTime" | "rescheduledEndTime" | "resolutionReason" | "resolvedBy" | "resolvedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["facultyLeaveAffectedSession"]>
 
   export type $FacultyLeaveAffectedSessionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "FacultyLeaveAffectedSession"
@@ -52088,6 +52121,9 @@ export namespace Prisma {
       replacementFacultyId: string | null
       replacementFacultyName: string | null
       replacementStatus: string | null
+      replacementDate: string | null
+      replacementStartTime: string | null
+      replacementEndTime: string | null
       combinedSessionId: string | null
       rescheduledDate: string | null
       rescheduledStartTime: string | null
@@ -52538,6 +52574,9 @@ export namespace Prisma {
     readonly replacementFacultyId: FieldRef<"FacultyLeaveAffectedSession", 'String'>
     readonly replacementFacultyName: FieldRef<"FacultyLeaveAffectedSession", 'String'>
     readonly replacementStatus: FieldRef<"FacultyLeaveAffectedSession", 'String'>
+    readonly replacementDate: FieldRef<"FacultyLeaveAffectedSession", 'String'>
+    readonly replacementStartTime: FieldRef<"FacultyLeaveAffectedSession", 'String'>
+    readonly replacementEndTime: FieldRef<"FacultyLeaveAffectedSession", 'String'>
     readonly combinedSessionId: FieldRef<"FacultyLeaveAffectedSession", 'String'>
     readonly rescheduledDate: FieldRef<"FacultyLeaveAffectedSession", 'String'>
     readonly rescheduledStartTime: FieldRef<"FacultyLeaveAffectedSession", 'String'>
@@ -58778,6 +58817,9 @@ export namespace Prisma {
     replacementFacultyId: 'replacementFacultyId',
     replacementFacultyName: 'replacementFacultyName',
     replacementStatus: 'replacementStatus',
+    replacementDate: 'replacementDate',
+    replacementStartTime: 'replacementStartTime',
+    replacementEndTime: 'replacementEndTime',
     combinedSessionId: 'combinedSessionId',
     rescheduledDate: 'rescheduledDate',
     rescheduledStartTime: 'rescheduledStartTime',
@@ -63423,6 +63465,9 @@ export namespace Prisma {
     replacementFacultyId?: StringNullableFilter<"FacultyLeaveAffectedSession"> | string | null
     replacementFacultyName?: StringNullableFilter<"FacultyLeaveAffectedSession"> | string | null
     replacementStatus?: StringNullableFilter<"FacultyLeaveAffectedSession"> | string | null
+    replacementDate?: StringNullableFilter<"FacultyLeaveAffectedSession"> | string | null
+    replacementStartTime?: StringNullableFilter<"FacultyLeaveAffectedSession"> | string | null
+    replacementEndTime?: StringNullableFilter<"FacultyLeaveAffectedSession"> | string | null
     combinedSessionId?: StringNullableFilter<"FacultyLeaveAffectedSession"> | string | null
     rescheduledDate?: StringNullableFilter<"FacultyLeaveAffectedSession"> | string | null
     rescheduledStartTime?: StringNullableFilter<"FacultyLeaveAffectedSession"> | string | null
@@ -63453,6 +63498,9 @@ export namespace Prisma {
     replacementFacultyId?: SortOrderInput | SortOrder
     replacementFacultyName?: SortOrderInput | SortOrder
     replacementStatus?: SortOrderInput | SortOrder
+    replacementDate?: SortOrderInput | SortOrder
+    replacementStartTime?: SortOrderInput | SortOrder
+    replacementEndTime?: SortOrderInput | SortOrder
     combinedSessionId?: SortOrderInput | SortOrder
     rescheduledDate?: SortOrderInput | SortOrder
     rescheduledStartTime?: SortOrderInput | SortOrder
@@ -63487,6 +63535,9 @@ export namespace Prisma {
     replacementFacultyId?: StringNullableFilter<"FacultyLeaveAffectedSession"> | string | null
     replacementFacultyName?: StringNullableFilter<"FacultyLeaveAffectedSession"> | string | null
     replacementStatus?: StringNullableFilter<"FacultyLeaveAffectedSession"> | string | null
+    replacementDate?: StringNullableFilter<"FacultyLeaveAffectedSession"> | string | null
+    replacementStartTime?: StringNullableFilter<"FacultyLeaveAffectedSession"> | string | null
+    replacementEndTime?: StringNullableFilter<"FacultyLeaveAffectedSession"> | string | null
     combinedSessionId?: StringNullableFilter<"FacultyLeaveAffectedSession"> | string | null
     rescheduledDate?: StringNullableFilter<"FacultyLeaveAffectedSession"> | string | null
     rescheduledStartTime?: StringNullableFilter<"FacultyLeaveAffectedSession"> | string | null
@@ -63517,6 +63568,9 @@ export namespace Prisma {
     replacementFacultyId?: SortOrderInput | SortOrder
     replacementFacultyName?: SortOrderInput | SortOrder
     replacementStatus?: SortOrderInput | SortOrder
+    replacementDate?: SortOrderInput | SortOrder
+    replacementStartTime?: SortOrderInput | SortOrder
+    replacementEndTime?: SortOrderInput | SortOrder
     combinedSessionId?: SortOrderInput | SortOrder
     rescheduledDate?: SortOrderInput | SortOrder
     rescheduledStartTime?: SortOrderInput | SortOrder
@@ -63553,6 +63607,9 @@ export namespace Prisma {
     replacementFacultyId?: StringNullableWithAggregatesFilter<"FacultyLeaveAffectedSession"> | string | null
     replacementFacultyName?: StringNullableWithAggregatesFilter<"FacultyLeaveAffectedSession"> | string | null
     replacementStatus?: StringNullableWithAggregatesFilter<"FacultyLeaveAffectedSession"> | string | null
+    replacementDate?: StringNullableWithAggregatesFilter<"FacultyLeaveAffectedSession"> | string | null
+    replacementStartTime?: StringNullableWithAggregatesFilter<"FacultyLeaveAffectedSession"> | string | null
+    replacementEndTime?: StringNullableWithAggregatesFilter<"FacultyLeaveAffectedSession"> | string | null
     combinedSessionId?: StringNullableWithAggregatesFilter<"FacultyLeaveAffectedSession"> | string | null
     rescheduledDate?: StringNullableWithAggregatesFilter<"FacultyLeaveAffectedSession"> | string | null
     rescheduledStartTime?: StringNullableWithAggregatesFilter<"FacultyLeaveAffectedSession"> | string | null
@@ -69094,6 +69151,9 @@ export namespace Prisma {
     replacementFacultyId?: string | null
     replacementFacultyName?: string | null
     replacementStatus?: string | null
+    replacementDate?: string | null
+    replacementStartTime?: string | null
+    replacementEndTime?: string | null
     combinedSessionId?: string | null
     rescheduledDate?: string | null
     rescheduledStartTime?: string | null
@@ -69124,6 +69184,9 @@ export namespace Prisma {
     replacementFacultyId?: string | null
     replacementFacultyName?: string | null
     replacementStatus?: string | null
+    replacementDate?: string | null
+    replacementStartTime?: string | null
+    replacementEndTime?: string | null
     combinedSessionId?: string | null
     rescheduledDate?: string | null
     rescheduledStartTime?: string | null
@@ -69154,6 +69217,9 @@ export namespace Prisma {
     replacementFacultyId?: NullableStringFieldUpdateOperationsInput | string | null
     replacementFacultyName?: NullableStringFieldUpdateOperationsInput | string | null
     replacementStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    replacementDate?: NullableStringFieldUpdateOperationsInput | string | null
+    replacementStartTime?: NullableStringFieldUpdateOperationsInput | string | null
+    replacementEndTime?: NullableStringFieldUpdateOperationsInput | string | null
     combinedSessionId?: NullableStringFieldUpdateOperationsInput | string | null
     rescheduledDate?: NullableStringFieldUpdateOperationsInput | string | null
     rescheduledStartTime?: NullableStringFieldUpdateOperationsInput | string | null
@@ -69184,6 +69250,9 @@ export namespace Prisma {
     replacementFacultyId?: NullableStringFieldUpdateOperationsInput | string | null
     replacementFacultyName?: NullableStringFieldUpdateOperationsInput | string | null
     replacementStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    replacementDate?: NullableStringFieldUpdateOperationsInput | string | null
+    replacementStartTime?: NullableStringFieldUpdateOperationsInput | string | null
+    replacementEndTime?: NullableStringFieldUpdateOperationsInput | string | null
     combinedSessionId?: NullableStringFieldUpdateOperationsInput | string | null
     rescheduledDate?: NullableStringFieldUpdateOperationsInput | string | null
     rescheduledStartTime?: NullableStringFieldUpdateOperationsInput | string | null
@@ -69214,6 +69283,9 @@ export namespace Prisma {
     replacementFacultyId?: string | null
     replacementFacultyName?: string | null
     replacementStatus?: string | null
+    replacementDate?: string | null
+    replacementStartTime?: string | null
+    replacementEndTime?: string | null
     combinedSessionId?: string | null
     rescheduledDate?: string | null
     rescheduledStartTime?: string | null
@@ -69244,6 +69316,9 @@ export namespace Prisma {
     replacementFacultyId?: NullableStringFieldUpdateOperationsInput | string | null
     replacementFacultyName?: NullableStringFieldUpdateOperationsInput | string | null
     replacementStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    replacementDate?: NullableStringFieldUpdateOperationsInput | string | null
+    replacementStartTime?: NullableStringFieldUpdateOperationsInput | string | null
+    replacementEndTime?: NullableStringFieldUpdateOperationsInput | string | null
     combinedSessionId?: NullableStringFieldUpdateOperationsInput | string | null
     rescheduledDate?: NullableStringFieldUpdateOperationsInput | string | null
     rescheduledStartTime?: NullableStringFieldUpdateOperationsInput | string | null
@@ -69274,6 +69349,9 @@ export namespace Prisma {
     replacementFacultyId?: NullableStringFieldUpdateOperationsInput | string | null
     replacementFacultyName?: NullableStringFieldUpdateOperationsInput | string | null
     replacementStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    replacementDate?: NullableStringFieldUpdateOperationsInput | string | null
+    replacementStartTime?: NullableStringFieldUpdateOperationsInput | string | null
+    replacementEndTime?: NullableStringFieldUpdateOperationsInput | string | null
     combinedSessionId?: NullableStringFieldUpdateOperationsInput | string | null
     rescheduledDate?: NullableStringFieldUpdateOperationsInput | string | null
     rescheduledStartTime?: NullableStringFieldUpdateOperationsInput | string | null
@@ -73193,6 +73271,9 @@ export namespace Prisma {
     replacementFacultyId?: SortOrder
     replacementFacultyName?: SortOrder
     replacementStatus?: SortOrder
+    replacementDate?: SortOrder
+    replacementStartTime?: SortOrder
+    replacementEndTime?: SortOrder
     combinedSessionId?: SortOrder
     rescheduledDate?: SortOrder
     rescheduledStartTime?: SortOrder
@@ -73223,6 +73304,9 @@ export namespace Prisma {
     replacementFacultyId?: SortOrder
     replacementFacultyName?: SortOrder
     replacementStatus?: SortOrder
+    replacementDate?: SortOrder
+    replacementStartTime?: SortOrder
+    replacementEndTime?: SortOrder
     combinedSessionId?: SortOrder
     rescheduledDate?: SortOrder
     rescheduledStartTime?: SortOrder
@@ -73253,6 +73337,9 @@ export namespace Prisma {
     replacementFacultyId?: SortOrder
     replacementFacultyName?: SortOrder
     replacementStatus?: SortOrder
+    replacementDate?: SortOrder
+    replacementStartTime?: SortOrder
+    replacementEndTime?: SortOrder
     combinedSessionId?: SortOrder
     rescheduledDate?: SortOrder
     rescheduledStartTime?: SortOrder

@@ -1,6 +1,7 @@
 import prisma from "../../config/prisma.js";
 import AppError from "../../common/errors/AppError.js";
 import { createFacultyLeaveRequestChangeNotification, createFacultyLeaveRequestNotification, createNotification } from "../notifications/notifications.service.js";
+import { sendFacultyReplacementBatchEmail } from "../../common/services/resendEmail.js";
 
 const LEAVE_TYPES = new Set(["PLANNED", "UNPLANNED", "EMERGENCY"]);
 const DURATIONS = new Set(["FULL_DAY", "HALF_DAY", "PERMISSION"]);
@@ -178,11 +179,16 @@ async function calculateAffectedClasses(branchId, facultyId, leave) {
   const affected = [];
   for (const date of dateRange(leave.fromDate, leave.toDate)) {
     for (const batch of batches) {
-      if (!batchRunsOnDate(batch, date) || !batchIsInCourseWindow(batch, date)) continue;
+      if (!batchIsInCourseWindow(batch, date)) continue;
       if (leave.durationType === "FULL_DAY") {
+        // A full-day faculty leave affects every active batch assigned to the
+        // faculty. Do not drop a batch just because its normal weekly pattern
+        // does not run on the requested date; the branch admin still needs a
+        // real affected-session row to resolve or cancel that class.
         affected.push(serializeBatch(batch, date, leave));
         continue;
       }
+      if (!batchRunsOnDate(batch, date)) continue;
       const window = leave.durationType === "PERMISSION"
         ? { start: leave.permissionStart, end: leave.permissionEnd }
         : { start: leave.halfDayStart, end: leave.halfDayEnd };
@@ -258,8 +264,20 @@ function mapSession(session) {
 export async function getBranchFacultyLeaveRequest(user, leaveId) {
   await getScopedLeave(user, leaveId);
   const request = await prisma.facultyLeaveRequest.findUnique({ where: { id: leaveId } });
-  const sessions = await prisma.facultyLeaveAffectedSession.findMany({ where: { leaveRequestId: leaveId }, orderBy: [{ sessionDate: "asc" }, { originalStartTime: "asc" }] });
-  return { ...mapRequest(request), affectedSessions: sessions.map(mapSession), unresolvedSessionCount: sessions.filter((session) => session.resolutionStatus === "UNRESOLVED").length };
+  let sessions = await prisma.facultyLeaveAffectedSession.findMany({ where: { leaveRequestId: leaveId }, orderBy: [{ sessionDate: "asc" }, { originalStartTime: "asc" }] });
+  let affectedClasses = Array.isArray(request.affectedClasses) ? request.affectedClasses : [];
+  // Older requests were created before full-day leave included every active
+  // faculty batch. Backfill their real affected-session rows when the branch
+  // admin opens the review, so the existing request also gets working actions.
+  if (!sessions.length && ["PENDING", "UNDER_REVIEW"].includes(request.status)) {
+    affectedClasses = await calculateAffectedClasses(request.branchId, request.facultyId, request);
+    if (affectedClasses.length) {
+      await prisma.facultyLeaveAffectedSession.createMany({ data: affectedClasses.map(item => affectedSessionData(request, item)) });
+      await prisma.facultyLeaveRequest.update({ where: { id: request.id }, data: { affectedClasses } });
+      sessions = await prisma.facultyLeaveAffectedSession.findMany({ where: { leaveRequestId: leaveId }, orderBy: [{ sessionDate: "asc" }, { originalStartTime: "asc" }] });
+    }
+  }
+  return { ...mapRequest({ ...request, affectedClasses }), affectedSessions: sessions.map(mapSession), unresolvedSessionCount: sessions.filter((session) => session.resolutionStatus === "UNRESOLVED").length };
 }
 
 async function notifyLeaveReview(request, branchId, actor, message, status) {
@@ -278,10 +296,23 @@ export async function listReplacementFaculty(user, leaveId, sessionId) {
   if (!session) throw new AppError("Affected class not found", 404);
   const sameCourseBatches = await prisma.branchBatch.findMany({ where: { branchId, courseId: session.courseId, status: "ACTIVE" }, select: { facultyId: true } });
   const sameCourseFacultyIds = [...new Set(sameCourseBatches.map((item) => item.facultyId).filter((id) => id && id !== request.facultyId))];
-  const faculty = await prisma.branchFaculty.findMany({ where: { branchId, status: "ACTIVE", facultyId: { in: sameCourseFacultyIds } }, orderBy: { name: "asc" }, select: { id: true, facultyId: true, name: true, email: true, weeklyOffDay: true } });
+  const faculty = await prisma.branchFaculty.findMany({
+    where: {
+      branchId,
+      status: "ACTIVE",
+      OR: [
+        ...(sameCourseFacultyIds.length ? [{ facultyId: { in: sameCourseFacultyIds } }] : []),
+        { courseId: session.courseId },
+        { branchCourseId: session.courseId },
+        { courseAssignments: { some: { branchCourseId: session.courseId } } },
+      ],
+    },
+    orderBy: { name: "asc" },
+    select: { id: true, facultyId: true, name: true, email: true, weeklyOffDay: true },
+  });
   const start = parseTime(session.originalStartTime);
   const end = parseTime(session.originalEndTime);
-  const availableFaculty = faculty.filter((item) => {
+  const availableFaculty = faculty.filter((item) => item.facultyId !== request.facultyId).filter((item) => {
     const leaveDay = new Date(`${session.sessionDate}T00:00:00Z`).getUTCDay();
     const off = ["SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"].indexOf(text(item.weeklyOffDay).toUpperCase());
     return off !== leaveDay;
@@ -312,13 +343,29 @@ export async function resolveBranchFacultyLeaveSession(user, leaveId, sessionId,
   const data = { assignmentType, resolvedBy: user.id, resolvedAt: new Date(), resolutionReason: text(payload.reason) || null, resolutionStatus: assignmentType === "REPLACEMENT" ? "REPLACEMENT_ASSIGNED" : assignmentType };
   if (assignmentType === "REPLACEMENT") {
     const replacementFacultyId = text(payload.replacementFacultyId);
+    const replacementDate = text(payload.replacementDate) || session.sessionDate;
+    const replacementStartTime = text(payload.replacementStartTime);
+    const replacementEndTime = text(payload.replacementEndTime);
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(replacementDate)) throw new AppError("Select a valid replacement date", 400);
+    const replacementStart = parseTime(replacementStartTime);
+    const replacementEnd = parseTime(replacementEndTime);
+    const originalStart = parseTime(session.originalStartTime);
+    const originalEnd = parseTime(session.originalEndTime);
+    if (replacementStart == null || replacementEnd == null || replacementEnd <= replacementStart) throw new AppError("Select a valid replacement time range", 400);
+    if (originalStart != null && originalEnd != null && replacementEnd - replacementStart !== originalEnd - originalStart) throw new AppError("Replacement duration must match the original class duration", 400);
     const replacement = await prisma.branchFaculty.findFirst({ where: { branchId, facultyId: replacementFacultyId, status: "ACTIVE" }, select: { facultyId: true, name: true, email: true } });
     if (!replacement || replacement.facultyId === request.facultyId) throw new AppError("Select an active replacement faculty from this branch", 400);
-    const conflict = await prisma.facultyLeaveRequest.findFirst({ where: { branchId, facultyId: replacement.facultyId, status: { in: ["PENDING", "APPROVED"] }, fromDate: { lte: session.sessionDate }, toDate: { gte: session.sessionDate }, ...(request.leaveType ? { NOT: { id: request.id } } : {}) }, select: { id: true } });
+    const conflict = await prisma.facultyLeaveRequest.findFirst({ where: { branchId, facultyId: replacement.facultyId, status: { in: ["PENDING", "APPROVED"] }, fromDate: { lte: replacementDate }, toDate: { gte: replacementDate }, ...(request.leaveType ? { NOT: { id: request.id } } : {}) }, select: { id: true } });
     if (conflict) throw new AppError("The selected faculty is on leave for this class date", 409);
+    const assignedBatches = await prisma.branchBatch.findMany({ where: { branchId, facultyId: replacement.facultyId, status: "ACTIVE" }, select: { startTime: true, endTime: true, startPeriod: true, endPeriod: true, weekType: true, weeklyOffDay: true } });
+    const busy = assignedBatches.some(batch => batchRunsOnDate(batch, replacementDate) && overlaps(parseTime(`${batch.startTime} ${batch.startPeriod || ''}`), parseTime(`${batch.endTime} ${batch.endPeriod || ''}`), replacementStart, replacementEnd));
+    if (busy) throw new AppError("Replacement timing conflicts with an existing faculty batch", 409);
     data.replacementFacultyId = replacement.facultyId;
     data.replacementFacultyName = replacement.name;
     data.replacementStatus = "CONFIRMED";
+    data.replacementDate = replacementDate;
+    data.replacementStartTime = formatTime(replacementStart);
+    data.replacementEndTime = formatTime(replacementEnd);
   }
   if (assignmentType === "RESCHEDULED") {
     const date = parseDate(payload.rescheduledDate, "Rescheduled date");
@@ -330,14 +377,31 @@ export async function resolveBranchFacultyLeaveSession(user, leaveId, sessionId,
   if (assignmentType === "COMBINED") {
     const target = await prisma.branchBatch.findFirst({ where: { OR: [{ id: text(payload.targetSessionId) }, { batchId: text(payload.targetSessionId) }], branchId, status: "ACTIVE" } });
     if (!target || target.courseId !== session.courseId || target.startTime !== session.originalStartTime || target.endTime !== session.originalEndTime || !batchRunsOnDate(target, session.sessionDate)) throw new AppError("Combine is allowed only for the same course, date, and timing", 400);
-    data.combinedSessionId = target.id;
+    const combined = await prisma.facultyLeaveCombinedSession.upsert({
+      where: { branchId_sessionDate_startTime_endTime_facultyId: { branchId, sessionDate: session.sessionDate, startTime: session.originalStartTime, endTime: session.originalEndTime, facultyId: target.facultyId } },
+      update: { status: "ACTIVE", facultyName: target.facultyName, courseName: target.courseName },
+      create: { branchId, sessionDate: session.sessionDate, startTime: session.originalStartTime, endTime: session.originalEndTime, courseId: target.courseId, courseName: target.courseName, facultyId: target.facultyId, facultyName: target.facultyName, mode: target.mode, createdBy: user.id },
+    });
+    data.combinedSessionId = combined.id;
   }
   const updated = await prisma.facultyLeaveAffectedSession.update({ where: { id: session.id }, data });
   await prisma.facultyLeaveRequest.update({ where: { id: request.id }, data: { status: "UNDER_REVIEW", reviewedBy: user.id, reviewedAt: new Date() } });
   if (assignmentType === "REPLACEMENT") {
-    const replacementUser = await prisma.user.findFirst({ where: { email: { equals: text(data.replacementFacultyId ? (await prisma.branchFaculty.findFirst({ where: { branchId, facultyId: data.replacementFacultyId }, select: { email: true } }))?.email : ""), mode: "insensitive" }, active: true }, select: { id: true } });
+    const saved = await prisma.facultyLeaveAffectedSession.findUnique({ where: { id: updated.id } });
+    const replacementFaculty = await prisma.branchFaculty.findFirst({ where: { branchId, facultyId: saved.replacementFacultyId }, select: { facultyId: true, name: true, email: true } });
+    const replacementUser = replacementFaculty?.email ? await prisma.user.findFirst({ where: { email: { equals: replacementFaculty.email, mode: "insensitive" }, active: true }, select: { id: true } }) : null;
+    let existingNotification = null;
     if (replacementUser) {
-      await createNotification({ kind: "FACULTY_LEAVE_REQUEST", tone: "blue", title: "Replacement Class Assigned", message: `${session.courseName || "Your course"} · ${session.batchName} is assigned to you on ${session.sessionDate} from ${displayTime(parseTime(session.originalStartTime))} to ${displayTime(parseTime(session.originalEndTime))}.`, actionLabel: "View Class", targetUserId: replacementUser.id, targetBranchId: branchId, facultyId: data.replacementFacultyId, facultyName: data.replacementFacultyName, leaveRequestId: request.id, requestStatus: "REPLACEMENT_ASSIGNED", requestDescription: "Replacement class assignment" });
+      const notificationKey = `replacement-session:${saved.id}`;
+      existingNotification = await prisma.notification.findFirst({ where: { kind: "FACULTY_LEAVE_REQUEST", leaveRequestId: request.id, targetUserId: replacementUser.id, requestDescription: notificationKey }, select: { id: true } });
+      if (!existingNotification) {
+        await createNotification({ kind: "FACULTY_LEAVE_REQUEST", tone: "blue", title: "Replacement Batch Assigned", message: `${saved.batchName} has been assigned to you for ${displayDate(saved.replacementDate)}, from ${displayTime(saved.replacementStartTime)} to ${displayTime(saved.replacementEndTime)}.`, actionLabel: "View Class", targetUserId: replacementUser.id, targetBranchId: branchId, facultyId: replacementFaculty.facultyId, facultyName: replacementFaculty.name, leaveRequestId: request.id, requestStatus: "REPLACEMENT_ASSIGNED", requestDescription: notificationKey });
+      }
+    }
+    try {
+      if (!existingNotification && replacementFaculty?.email) await sendFacultyReplacementBatchEmail({ to: replacementFaculty.email, fullName: replacementFaculty.name, courseName: saved.courseName, batchName: saved.batchName, replacementDate: saved.replacementDate, replacementStartTime: saved.replacementStartTime, replacementEndTime: saved.replacementEndTime });
+    } catch (error) {
+      console.error("[REPLACE] Replacement email failed:", error?.message || error);
     }
   }
   return mapSession(updated);
@@ -409,6 +473,40 @@ export async function listMyFacultySchedule(user) {
     slots.push({ id: key, batchName: batch.batchName, batchTiming: batch.batchTiming, startTime: start, startPeriod: batch.startPeriod, endTime: end, endPeriod: batch.endPeriod, durationMinutes: endMinutes - startMinutes });
   }
   return { slots };
+}
+
+function displayDate(value) {
+  const date = new Date(`${text(value)}T00:00:00Z`);
+  if (Number.isNaN(date.getTime())) return text(value) || "-";
+  return new Intl.DateTimeFormat("en-GB", { day: "2-digit", month: "short", year: "numeric", timeZone: "UTC" }).format(date);
+}
+
+export async function listMyTemporaryFacultyBatches(user) {
+  const faculty = await resolveFacultyContext(user);
+  const today = new Date().toISOString().slice(0, 10);
+  const sessions = await prisma.facultyLeaveAffectedSession.findMany({
+    where: {
+      branchId: faculty.branchId,
+      sessionDate: { gte: today },
+      resolutionStatus: { in: ["REPLACEMENT_ASSIGNED", "COMBINED"] },
+      OR: [
+        { replacementFacultyId: faculty.facultyId },
+        { combinedSessionId: { not: null } },
+      ],
+    },
+    orderBy: [{ sessionDate: "asc" }, { originalStartTime: "asc" }],
+  });
+  const combinedIds = sessions.map(session => session.combinedSessionId).filter(Boolean);
+  const combined = combinedIds.length ? await prisma.facultyLeaveCombinedSession.findMany({ where: { id: { in: combinedIds }, facultyId: faculty.facultyId, status: "ACTIVE", sessionDate: { gte: today } } }) : [];
+  const combinedById = new Map(combined.map(item => [item.id, item]));
+  return { batches: sessions.filter(session => (session.resolutionStatus === "REPLACEMENT_ASSIGNED" && session.replacementFacultyId === faculty.facultyId) || combinedById.has(session.combinedSessionId)).map(session => ({
+    ...mapSession(session),
+    assignmentType: session.resolutionStatus === "COMBINED" ? "COMBINED" : "REPLACEMENT",
+    temporary: true,
+    effectiveDate: session.replacementDate || session.sessionDate,
+    effectiveStartTime: session.resolutionStatus === "COMBINED" ? combinedById.get(session.combinedSessionId)?.startTime : session.replacementStartTime || session.rescheduledStartTime || session.originalStartTime,
+    effectiveEndTime: session.resolutionStatus === "COMBINED" ? combinedById.get(session.combinedSessionId)?.endTime : session.replacementEndTime || session.rescheduledEndTime || session.originalEndTime,
+  })) };
 }
 
 export async function createFacultyLeaveRequest(user, payload) {

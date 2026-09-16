@@ -985,6 +985,9 @@ model FacultyLeaveAffectedSession {
   replacementFacultyId   String?
   replacementFacultyName String?
   replacementStatus      String?
+  replacementDate        String?
+  replacementStartTime   String?
+  replacementEndTime     String?
   combinedSessionId      String?
   rescheduledDate        String?
   rescheduledStartTime   String?

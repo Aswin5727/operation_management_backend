@@ -39,6 +39,7 @@ const SUPER_ADMIN_VISIBLE_NOTIFICATION_KINDS = new Set([
 ]);
 const FACULTY_VISIBLE_NOTIFICATION_KINDS = new Set([
   "INSTITUTE_LEAVE",
+  "FACULTY_LEAVE_REQUEST",
   "FACULTY_COURSE_ASSIGNED",
   "COURSE_EDIT_REQUEST_ACCEPTED",
   "COURSE_EDIT_REQUEST_REJECTED",
@@ -69,6 +70,25 @@ function normalizeEmail(value) {
   return String(value ?? "").trim().toLowerCase();
 }
 
+function formatNotificationTime(value) {
+  const text = normalizeString(value);
+  const match = text.match(/^(\d{1,3})(?::(\d{2}))?$/);
+  if (!match) return text;
+  const totalMinutes = match[2] ? Number(match[1]) * 60 + Number(match[2]) : Number(match[1]);
+  if (totalMinutes < 0 || totalMinutes > 1439) return text;
+  const hour = Math.floor(totalMinutes / 60);
+  return `${String(hour % 12 || 12).padStart(2, "0")}:${String(totalMinutes % 60).padStart(2, "0")} ${hour >= 12 ? "PM" : "AM"}`;
+}
+
+function normalizeReplacementNotificationMessage(message) {
+  return normalizeString(message)
+    .replace(/(from\s+)(\d{1,3}(?::\d{2})?)(\s+to\s+)(\d{1,3}(?::\d{2})?)/i, (_match, before, start, between, end) => `${before}${formatNotificationTime(start)}${between}${formatNotificationTime(end)}`)
+    .replace(/\b(\d{4})-(\d{2})-(\d{2})\b/g, (_match, year, month, day) => {
+      const date = new Date(`${year}-${month}-${day}T00:00:00Z`);
+      return Number.isNaN(date.getTime()) ? _match : new Intl.DateTimeFormat("en-GB", { day: "2-digit", month: "short", year: "numeric", timeZone: "UTC" }).format(date);
+    });
+}
+
 function normalizeNotificationRow(row) {
   if (!row) return null;
 
@@ -77,7 +97,7 @@ function normalizeNotificationRow(row) {
     kind: NOTIFICATION_KIND_MAP[row.kind] || String(row.kind || "").trim().toLowerCase(),
     tone: normalizeString(row.tone) || "blue",
     title: normalizeString(row.title),
-    message: normalizeString(row.message),
+    message: String(row.title || "").toLowerCase().includes("replacement") ? normalizeReplacementNotificationMessage(row.message) : normalizeString(row.message),
     actionLabel: normalizeString(row.actionLabel),
     requestId: normalizeString(row.requestId),
     leaveRequestId: normalizeString(row.leaveRequestId),

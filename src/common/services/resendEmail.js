@@ -744,6 +744,31 @@ export async function sendFacultyBatchAssignmentEmail({
   });
 }
 
+export async function sendFacultyReplacementBatchEmail({ to, fullName, courseName, batchName, replacementDate, replacementStartTime, replacementEndTime }) {
+  const formatTime = (value) => {
+    const match = String(value || "").match(/^(\d{1,2}):(\d{2})$/);
+    if (!match) return String(value || "-");
+    const hour = Number(match[1]);
+    return `${String(hour % 12 || 12).padStart(2, "0")}:${match[2]} ${hour >= 12 ? "PM" : "AM"}`;
+  };
+  const formatDate = (value) => {
+    const date = new Date(`${String(value || "").trim()}T00:00:00Z`);
+    return Number.isNaN(date.getTime()) ? String(value || "-") : new Intl.DateTimeFormat("en-GB", { day: "2-digit", month: "short", year: "numeric", timeZone: "UTC" }).format(date);
+  };
+  const displayDate = formatDate(replacementDate);
+  const displayStart = formatTime(replacementStartTime);
+  const displayEnd = formatTime(replacementEndTime);
+  const safeName = escapeHtml(fullName || "Faculty");
+  const safeCourse = escapeHtml(courseName || "-");
+  const safeBatch = escapeHtml(batchName || "-");
+  const safeDate = escapeHtml(displayDate);
+  const safeStart = escapeHtml(displayStart);
+  const safeEnd = escapeHtml(displayEnd);
+  const html = alertTemplate({ eyebrow: "Replacement Class", title: `Replacement Batch Assigned - ${safeBatch}`, subtitle: `Hi ${safeName}, a replacement batch has been assigned to you.`, summary: "Please check your Faculty Dashboard for the complete batch details.", details: [{ label: "Batch", value: safeBatch }, { label: "Course", value: safeCourse }, { label: "Date", value: safeDate }, { label: "Time", value: `${safeStart} - ${safeEnd}` }, { label: "Assignment Type", value: "Replacement Class" }], note: "Thank you." });
+  const text = [`Hi ${fullName || "Faculty"},`, "", "A replacement batch has been assigned to you.", "", `Batch: ${batchName || "-"}`, `Course: ${courseName || "-"}`, `Date: ${displayDate}`, `Time: ${displayStart} - ${displayEnd}`, "Assignment Type: Replacement Class", "", "Please check your Faculty Dashboard for the complete batch details.", "", "Thank you."].join("\n");
+  return sendEmail({ to, subject: `Replacement Batch Assigned - ${batchName || "Faculty"}`, html, text });
+}
+
 export async function sendStudentPaymentDueEmail({
   to,
   fullName,
