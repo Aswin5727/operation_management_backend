@@ -15,13 +15,26 @@ function notificationTime(value) {
 }
 
 export async function scheduleContext(db, branchId) {
-  const [branch, batches, holidays, leaves] = await Promise.all([
+  const [branch, batches] = await Promise.all([
     db.branch.findUnique({ where: { id: branchId } }),
     db.branchBatch.findMany({ where: { branchId }, include: { branchCourse: true } }),
+  ]);
+  const [holidays, leaves] = await Promise.all([
     db.branchCalendarHoliday.findMany({ where: { status: 'ACTIVE', OR: [{ branchId }, { branchId: null }] } }),
     db.branchCalendarLeave.findMany({ where: { branchId, status: 'ACTIVE' } }),
   ]);
   return { branch, batches, holidays, leaves };
+}
+
+function branchToday() {
+  return new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Kolkata' }).format(new Date());
+}
+
+function datesBetween(from, to) {
+  if (!validDate(from) || !validDate(to) || from > to) return [];
+  const dates = [];
+  for (let cursor = new Date(`${from}T00:00:00Z`), end = new Date(`${to}T00:00:00Z`); cursor <= end; cursor.setUTCDate(cursor.getUTCDate() + 1)) dates.push(cursor.toISOString().slice(0, 10));
+  return dates;
 }
 export function studentSchedule(student, context, now = new Date()) {
   const batch = context.batches.find(b => [b.batchId, b.id].includes(student.batchId) && [b.courseId, b.branchCourseId].includes(student.courseId) && [b.facultyId, b.branchFacultyId].includes(student.facultyId));
@@ -149,18 +162,52 @@ export async function mutateLeave(user, id, payload = {}, cancel = false, client
 export async function facultyCalendar(user, query = {}) {
   const faculties = await prisma.branchFaculty.findMany({ where: { email: { equals: user.email, mode: 'insensitive' }, status: 'ACTIVE' } });
   const events = new Map();
+  const from = validDate(query.from) ? query.from : '';
+  const to = validDate(query.to) ? query.to : '';
+  const loginRows = from && to ? await prisma.facultyAttendanceSession.findMany({ where: { facultyUserId: user.id, attendanceDate: { gte: from, lte: to }, sessionSource: { in: ['AUTH', 'ATTENDANCE'] } }, orderBy: [{ attendanceDate: 'asc' }, { loginAt: 'asc' }], select: { attendanceDate: true, loginAt: true } }) : [];
+  const loginsByDate = new Map();
+  for (const row of loginRows) if (!loginsByDate.has(row.attendanceDate)) loginsByDate.set(row.attendanceDate, row);
+  const today = branchToday();
+  for (const date of datesBetween(from, to)) {
+    if (date > today) continue;
+    const login = loginsByDate.get(date);
+    events.set(`faculty-attendance:${date}`, { id: `faculty-attendance:${date}`, date, code: login ? 'FACULTY_PRESENT' : 'FACULTY_ABSENT', status: login ? 'Present' : 'Absent', attendanceStatus: login ? 'PRESENT' : 'ABSENT', loginAt: login?.loginAt || null, facultyId: user.userCode || user.id, facultyUserId: user.id });
+  }
   for (const branchId of new Set(faculties.map(f => f.branchId))) {
     const context = await scheduleContext(prisma, branchId);
     const ids = faculties.filter(f => f.branchId === branchId).flatMap(f => [f.id, f.facultyId]);
     const students = await prisma.branchStudent.findMany({ where: { branchId, facultyId: { in: ids }, recordStatus: 'ACTIVE', batchId: { not: null } }, include: { course: true, calendarAttendanceRecords: true } });
     for (const student of students) for (const event of studentSchedule(student, context).events) {
-      if (!event.scheduledHours || (validDate(query.from) && event.date < query.from) || (validDate(query.to) && event.date > query.to)) continue;
+      if (event.code === 'HOLIDAY') continue;
+      if ((validDate(query.from) && event.date < query.from) || (validDate(query.to) && event.date > query.to)) continue;
       const key = `${event.batchRecordId}:${event.date}:${event.startTime}:${event.code}`;
       const previous = events.get(key);
-      events.set(key, { ...event, studentCount: (previous?.studentCount || 0) + 1 });
+      const batch = context.batches.find(item => item.id === event.batchRecordId);
+      events.set(key, { ...event, courseId: batch?.courseId || student.courseId, courseName: batch?.courseName || student.course?.name || null, mode: batch?.mode || student.courseMode || null, studentCount: (previous?.studentCount || 0) + 1 });
+    }
+    const facultyBatches = context.batches.filter(batch => ids.includes(batch.id) || ids.includes(batch.facultyId) || ids.includes(batch.branchFacultyId));
+    for (const holiday of context.holidays) {
+      if (!validDate(holiday.holidayDate)) continue;
+      const affectedBatch = facultyBatches.find(batch => (!validDate(batch.courseStartDate) || holiday.holidayDate >= batch.courseStartDate) && (!validDate(batch.courseEndDate) || holiday.holidayDate <= batch.courseEndDate));
+      if (!affectedBatch || (validDate(query.from) && holiday.holidayDate < query.from) || (validDate(query.to) && holiday.holidayDate > query.to)) continue;
+      const key = `holiday:${holiday.holidayDate}`;
+      events.set(key, { id: holiday.id, date: holiday.holidayDate, code: 'HOLIDAY', status: 'General Holiday', holidayName: holiday.name, name: holiday.name, holidayType: 'GENERAL', affectedBatchIds: facultyBatches.filter(batch => (!validDate(batch.courseStartDate) || holiday.holidayDate >= batch.courseStartDate) && (!validDate(batch.courseEndDate) || holiday.holidayDate <= batch.courseEndDate)).map(batch => batch.batchId) });
+    }
+    const approved = await prisma.facultyLeaveRequest.findMany({ where: { branchId, facultyId: { in: ids }, status: 'APPROVED' }, orderBy: [{ fromDate: 'asc' }, { createdAt: 'asc' }] });
+    for (const leave of approved) {
+      for (let cursor = new Date(`${leave.fromDate}T00:00:00Z`), end = new Date(`${leave.toDate}T00:00:00Z`); cursor <= end; cursor.setUTCDate(cursor.getUTCDate() + 1)) {
+        const date = cursor.toISOString().slice(0, 10);
+        if ((validDate(query.from) && date < query.from) || (validDate(query.to) && date > query.to)) continue;
+        const code = leave.durationType === 'PERMISSION' ? 'PERMISSION' : leave.durationType === 'HALF_DAY' ? 'HALF_DAY' : 'LEAVE';
+        const key = `faculty-leave:${leave.id}:${date}`;
+        events.set(key, { id: leave.id, date, code, status: 'Approved', leaveType: leave.leaveType, durationType: leave.durationType, durationDays: leave.durationDays, halfDayStart: leave.halfDayStart, halfDayEnd: leave.halfDayEnd, permissionStart: leave.permissionStart, permissionEnd: leave.permissionEnd, permissionHours: leave.permissionHours, reason: leave.reason, facultyId: leave.facultyId, facultyName: leave.facultyName, affectedClasses: leave.affectedClasses || [] });
+      }
     }
   }
-  return { events: [...events.values()].sort((a, b) => `${a.date}${a.startTime}`.localeCompare(`${b.date}${b.startTime}`)) };
+  const batchRows = faculties.length ? await prisma.branchBatch.findMany({ where: { branchId: { in: [...new Set(faculties.map(f => f.branchId))] }, facultyId: { in: faculties.flatMap(f => [f.id, f.facultyId]) }, status: 'ACTIVE' }, select: { id: true, batchId: true, batchName: true, courseId: true, courseName: true, facultyId: true, courseStartDate: true, courseEndDate: true, weeklyOffDay: true, weekType: true, mode: true, startTime: true, startPeriod: true, endTime: true, endPeriod: true, batchTiming: true } }) : [];
+  const starts = batchRows.map(row => row.courseStartDate).filter(validDate).sort();
+  const ends = batchRows.map(row => row.courseEndDate).filter(validDate).sort();
+  return { faculty: faculties[0] ? { id: faculties[0].facultyId, name: faculties[0].name, email: faculties[0].email } : null, batches: batchRows, startDate: starts[0] || null, endDate: ends.at(-1) || null, events: [...events.values()].sort((a, b) => `${a.date}${a.startTime || ''}`.localeCompare(`${b.date}${b.startTime || ''}`)) };
 }
 export async function assertAttendanceAllowed(db, students, date, branchId) {
   const context = await scheduleContext(db, branchId);

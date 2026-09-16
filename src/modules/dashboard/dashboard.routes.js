@@ -2,12 +2,13 @@ import express from "express";
 
 import { authenticate } from "../../common/middlewares/authenticate.js";
 import { authorize } from "../../common/middlewares/authorize.js";
-import { getFacultyMyBatchesSummaryHandler, getRevenueSummaryHandler } from "./dashboard.controller.js";
+import { getFacultyDashboardOverviewHandler, getFacultyMyBatchesSummaryHandler, getRevenueSummaryHandler } from "./dashboard.controller.js";
 import { getBranchAdminWidgetsHandler, resetBranchAdminWidgetsHandler, saveBranchAdminWidgetsHandler } from "./branchDashboardWidgets.controller.js";
 
 const router = express.Router();
 
 router.get("/faculty/my-batches-summary", authenticate, authorize("FACULTY"), getFacultyMyBatchesSummaryHandler);
+router.get("/faculty/overview", authenticate, authorize("FACULTY"), getFacultyDashboardOverviewHandler);
 
 const branchWidgetRoles = ["BRANCH_ADMIN", "SUPER_ADMIN", "BUSINESS_OWNER", "OPERATION_MANAGER"];
 router.get("/branch/widgets", authenticate, authorize(...branchWidgetRoles), getBranchAdminWidgetsHandler);

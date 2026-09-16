@@ -20,7 +20,9 @@ import studentRoutes from "../modules/students/students.routes.js";
 
 import instituteLeaveRoutes from "../modules/instituteLeave/instituteLeave.routes.js";
 import facultyLeaveRequestsRoutes from "../modules/facultyLeaveRequests/facultyLeaveRequests.routes.js";
+import branchHolidaysRoutes from "../modules/branchHolidays/branchHolidays.routes.js";
 const router = express.Router();
+router.use("/branch-holidays", branchHolidaysRoutes);
 router.use("/institute-leaves", instituteLeaveRoutes);
 router.use("/faculty-leave-requests", facultyLeaveRequestsRoutes);
 

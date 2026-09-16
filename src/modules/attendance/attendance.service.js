@@ -426,6 +426,13 @@ function mapBranchAttendanceStudent(student, attendance) {
     passedOutYear: student.passedOutYear,
     currentStatus: student.currentStatus,
     admissionDate: student.admissionDate,
+    courseId: student.courseId || null,
+    batchId: student.batchId || null,
+    batchName: student.batchName || null,
+    classSchedule: student.classSchedule || null,
+    courseStartDate: student.courseStartDate || null,
+    courseEndDate: student.courseEndDate || null,
+    weeklyOffDay: student.weeklyOffDay || null,
     attendanceStatus: attendance?.status || "UNMARKED",
     attendanceMarkedAt: attendance?.markedAt || null,
     attendanceMarkedAtLabel: formatDateTime(attendance?.markedAt),
@@ -516,7 +523,7 @@ async function getBranchFacultyAttendanceOverview(user, date, facultyId = "") {
   const branchBatches = await prisma.branchBatch.findMany({
     where: { status: "ACTIVE", OR: facultyOr },
     orderBy: { sequenceNo: "asc" },
-    select: { id: true, branchId: true, courseId: true, courseName: true, batchId: true, batchName: true, batchTiming: true, sequenceNo: true },
+    select: { id: true, branchId: true, courseId: true, courseName: true, batchId: true, batchName: true, batchTiming: true, sequenceNo: true, weekType: true, weeklyOffDay: true, courseStartDate: true, courseEndDate: true },
   });
   if (!branchBatches.length) return null;
 
@@ -525,7 +532,7 @@ async function getBranchFacultyAttendanceOverview(user, date, facultyId = "") {
       recordStatus: "ACTIVE",
       OR: branchBatches.map((batch) => ({ branchId: batch.branchId, courseId: batch.courseId, batchId: batch.batchId })),
     },
-    select: { id: true, studentId: true, studentName: true, emailAddress: true, mobileNumber: true, city: true, state: true, country: true, qualification: true, passedOutYear: true, currentStatus: true, admissionDate: true, courseId: true, batchId: true, branchId: true },
+    select: { id: true, studentId: true, studentName: true, emailAddress: true, mobileNumber: true, city: true, state: true, country: true, qualification: true, passedOutYear: true, currentStatus: true, admissionDate: true, courseId: true, batchId: true, branchId: true, classSchedule: true, courseStartDate: true, courseEndDate: true, weeklyOffDay: true },
   });
   const studentIds = students.map((student) => student.id);
   const attendanceRecords = studentIds.length
@@ -539,7 +546,7 @@ async function getBranchFacultyAttendanceOverview(user, date, facultyId = "") {
   const batches = branchBatches.map((batch) => {
     const batchStudents = students
       .filter((student) => student.branchId === batch.branchId && student.courseId === batch.courseId && student.batchId === batch.batchId)
-      .map((student) => mapBranchAttendanceStudent(student, instituteExclusions.has(student.id) ? { status: "NOT_APPLICABLE" } : todayMap.get(student.id)));
+      .map((student) => ({ ...mapBranchAttendanceStudent(student, instituteExclusions.has(student.id) ? { status: "NOT_APPLICABLE" } : todayMap.get(student.id)), classSchedule: batch.weekType || student.classSchedule, weeklyOffDay: batch.weeklyOffDay || student.weeklyOffDay, courseStartDate: batch.courseStartDate || student.courseStartDate, courseEndDate: batch.courseEndDate || student.courseEndDate, records: attendanceRecords.filter((record) => record.branchStudentId === student.id).map(({ branchStudentId, ...record }) => record) }));
     const present = batchStudents.filter((student) => student.attendanceStatus === "PRESENT").length;
     const absent = batchStudents.filter((student) => student.attendanceStatus === "ABSENT").length;
     return { id: batch.id || batch.batchId, courseId: batch.courseId, courseName: batch.courseName, batchId: batch.batchId, batchName: batch.batchName, batchTiming: batch.batchTiming, sequenceNo: batch.sequenceNo, present, absent, notApplicable: batchStudents.filter(s => s.attendanceStatus === "NOT_APPLICABLE").length, unmarked: batchStudents.filter(s => s.attendanceStatus === "UNMARKED").length, totalStudents: batchStudents.length, students: batchStudents };
@@ -553,6 +560,8 @@ async function getBranchFacultyAttendanceOverview(user, date, facultyId = "") {
     summary: { totalBatches: batches.length, totalStudents: students.length, present, absent, notApplicable: instituteExclusions.size, unmarked: Math.max(0, students.length - marked - instituteExclusions.size), attendancePercentage: marked ? Math.round((present / marked) * 1000) / 10 : 0 },
     monthlySeries: buildMonthlySeries(attendanceRecords),
     batches,
+    exclusions: { holidays: [], leaves: [] },
+    students: batches.flatMap((batch) => batch.students).filter((student, index, list) => list.findIndex((item) => item.id === student.id) === index),
   };
 }
 
