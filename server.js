@@ -7,6 +7,7 @@ import {
   ensureBranchStudentLedgerTable,
   startBranchStudentDueReminderScheduler,
 } from "./src/modules/branchStudents/branchStudents.service.js";
+import { startTamilNaduHolidaySyncScheduler } from "./src/modules/branchHolidays/holidaySync.scheduler.js";
 
 const DATABASE_WARMUP_MAX_ATTEMPTS = 3;
 const DATABASE_WARMUP_RETRY_MS = 1500;
@@ -75,6 +76,7 @@ async function startServer() {
 
   const keepAliveTimer = startDatabaseKeepAlive();
   const dueReminderTimer = startDueReminderScheduler();
+  const holidaySyncTimer = startTamilNaduHolidaySyncScheduler();
   const server = app.listen(config.port, "0.0.0.0", () => {
     console.log(`Backend server running on port ${config.port}`);
   });
@@ -86,6 +88,10 @@ async function startServer() {
 
     if (dueReminderTimer) {
       clearInterval(dueReminderTimer);
+    }
+
+    if (holidaySyncTimer) {
+      clearInterval(holidaySyncTimer);
     }
 
     void prisma.$disconnect().catch((error) => {
