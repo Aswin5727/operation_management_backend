@@ -25,6 +25,17 @@ export async function scheduleContext(db, branchId) {
   ]);
   return { branch, batches, holidays, leaves };
 }
+
+function branchToday() {
+  return new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Kolkata' }).format(new Date());
+}
+
+function datesBetween(from, to) {
+  if (!validDate(from) || !validDate(to) || from > to) return [];
+  const dates = [];
+  for (let cursor = new Date(`${from}T00:00:00Z`), end = new Date(`${to}T00:00:00Z`); cursor <= end; cursor.setUTCDate(cursor.getUTCDate() + 1)) dates.push(cursor.toISOString().slice(0, 10));
+  return dates;
+}
 export function studentSchedule(student, context, now = new Date()) {
   const batch = context.batches.find(b => [b.batchId, b.id].includes(student.batchId) && [b.courseId, b.branchCourseId].includes(student.courseId) && [b.facultyId, b.branchFacultyId].includes(student.facultyId));
   if (!batch) throw new AppError(`Student ${student.studentId} has no valid assigned batch`, 409);
@@ -151,6 +162,17 @@ export async function mutateLeave(user, id, payload = {}, cancel = false, client
 export async function facultyCalendar(user, query = {}) {
   const faculties = await prisma.branchFaculty.findMany({ where: { email: { equals: user.email, mode: 'insensitive' }, status: 'ACTIVE' } });
   const events = new Map();
+  const from = validDate(query.from) ? query.from : '';
+  const to = validDate(query.to) ? query.to : '';
+  const loginRows = from && to ? await prisma.facultyAttendanceSession.findMany({ where: { facultyUserId: user.id, attendanceDate: { gte: from, lte: to }, sessionSource: { in: ['AUTH', 'ATTENDANCE'] } }, orderBy: [{ attendanceDate: 'asc' }, { loginAt: 'asc' }], select: { attendanceDate: true, loginAt: true } }) : [];
+  const loginsByDate = new Map();
+  for (const row of loginRows) if (!loginsByDate.has(row.attendanceDate)) loginsByDate.set(row.attendanceDate, row);
+  const today = branchToday();
+  for (const date of datesBetween(from, to)) {
+    if (date > today) continue;
+    const login = loginsByDate.get(date);
+    events.set(`faculty-attendance:${date}`, { id: `faculty-attendance:${date}`, date, code: login ? 'FACULTY_PRESENT' : 'FACULTY_ABSENT', status: login ? 'Present' : 'Absent', attendanceStatus: login ? 'PRESENT' : 'ABSENT', loginAt: login?.loginAt || null, facultyId: user.userCode || user.id, facultyUserId: user.id });
+  }
   for (const branchId of new Set(faculties.map(f => f.branchId))) {
     const context = await scheduleContext(prisma, branchId);
     const ids = faculties.filter(f => f.branchId === branchId).flatMap(f => [f.id, f.facultyId]);
