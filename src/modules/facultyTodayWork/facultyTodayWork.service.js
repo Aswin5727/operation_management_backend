@@ -30,6 +30,19 @@ function parseDateKey(value, fallback = toDateKey()) {
   return text;
 }
 
+function clockMinutes(value) {
+  const match = normalizeString(value).match(/^(\d{1,2}):(\d{2})$/);
+  if (!match) return null;
+  const hour = Number(match[1]);
+  const minute = Number(match[2]);
+  return hour >= 0 && hour <= 23 && minute >= 0 && minute <= 59 ? hour * 60 + minute : null;
+}
+
+function currentLocalMinutes() {
+  const parts = new Intl.DateTimeFormat("en-GB", { timeZone: LOCAL_TIME_ZONE, hour: "2-digit", minute: "2-digit", hour12: false }).formatToParts(new Date());
+  return Number(parts.find((part) => part.type === "hour")?.value || 0) * 60 + Number(parts.find((part) => part.type === "minute")?.value || 0);
+}
+
 function parseBoolean(value, fallback = false) {
   if (typeof value === "boolean") return value;
   const text = normalizeString(value).toLowerCase();
@@ -282,14 +295,27 @@ async function validateFacultyBatchScope({ branchId, courseId, batchId, facultyP
   }
 
   const replacementProfile = await prisma.branchFaculty.findFirst({ where: { branchId: normalizeString(branchId), OR: [{ facultyId: normalizeString(facultyProfileId) }, { email: { equals: normalizeString(facultyEmail), mode: "insensitive" } }] }, select: { facultyId: true } });
-  const replacementAssignment = replacementProfile ? await prisma.facultyLeaveAffectedSession.findFirst({ where: { branchId: normalizeString(branchId), batchId: normalizedBatchId, OR: [{ replacementDate: workDate }, { sessionDate: workDate }], resolutionStatus: "REPLACEMENT_ASSIGNED", replacementStatus: "CONFIRMED", replacementFacultyId: replacementProfile.facultyId }, select: { id: true, replacementDate: true, replacementStartTime: true, replacementEndTime: true } }) : null;
+  const replacementAssignment = replacementProfile ? await prisma.facultyLeaveAffectedSession.findFirst({ where: { branchId: normalizeString(branchId), batchId: normalizedBatchId, replacementDate: workDate, resolutionStatus: "REPLACEMENT_ASSIGNED", replacementStatus: "CONFIRMED", replacementFacultyId: replacementProfile.facultyId }, select: { id: true, replacementDate: true, replacementStartTime: true, replacementEndTime: true } }) : null;
+  const combinedLinks = replacementProfile ? await prisma.facultyLeaveCombinedSession.findMany({ where: { branchId: normalizeString(branchId), facultyId: replacementProfile.facultyId, status: "ACTIVE", sessionDate: workDate }, select: { id: true, sessionDate: true, startTime: true, endTime: true } }) : [];
+  const combinedAssignment = combinedLinks.length ? await prisma.facultyLeaveAffectedSession.findFirst({ where: { branchId: normalizeString(branchId), batchId: normalizedBatchId, resolutionStatus: "COMBINED", combinedSessionId: { in: combinedLinks.map((item) => item.id) } }, select: { id: true, sessionDate: true, combinedSessionId: true } }) : null;
+  const temporaryAssignment = replacementAssignment || combinedAssignment;
+  if (temporaryAssignment) {
+    const isCombined = Boolean(combinedAssignment);
+    const combinedWindow = isCombined ? combinedLinks.find((item) => item.id === combinedAssignment.combinedSessionId) : null;
+    const assignmentDate = isCombined ? combinedWindow?.sessionDate : replacementAssignment?.replacementDate;
+    const start = clockMinutes(isCombined ? combinedWindow?.startTime : replacementAssignment?.replacementStartTime);
+    const end = clockMinutes(isCombined ? combinedWindow?.endTime : replacementAssignment?.replacementEndTime);
+    if (!assignmentDate || workDate !== assignmentDate || workDate < toDateKey() || start == null || end == null || (workDate === toDateKey() && (currentLocalMinutes() < start || currentLocalMinutes() >= end))) {
+      throw new AppError(`${isCombined ? "Combined class" : "Replacement class"} work is available only during the assigned session time`, 403);
+    }
+  }
   const batch = await prisma.branchBatch.findFirst({
     where: {
       batchId: normalizedBatchId,
       status: "ACTIVE",
       branchId: normalizeString(branchId),
       branchCourseId: normalizeString(courseId),
-      ...(replacementAssignment ? {} : { OR: [
+      ...(temporaryAssignment ? {} : { OR: [
         { branchFacultyId: normalizeString(facultyProfileId) },
         { facultyId: normalizeString(facultyProfileId) },
         { facultyEmail: normalizeString(facultyUserId) },
@@ -324,7 +350,7 @@ async function validateFacultyBatchScope({ branchId, courseId, batchId, facultyP
 
   const expectedFacultyId = normalizeString(batch.facultyId);
   const validStudents = students.filter((student) => (
-    replacementAssignment || !expectedFacultyId || normalizeString(student.facultyId) === expectedFacultyId
+    temporaryAssignment || !expectedFacultyId || normalizeString(student.facultyId) === expectedFacultyId
   ));
 
   if (validStudents.length !== normalizedStudentIds.length) {
@@ -406,12 +432,10 @@ function calculateBranchStudentCourseProgress(course = {}, entries = [], student
       const normalizedSubmoduleId = normalizeString(submoduleId);
       const studentId = student?.id || student?.studentId || "";
       const status = getWorkEntrySubmoduleStatus(entry, normalizedSubmoduleId, studentId).toLowerCase();
-      const hasStudentStatuses = Boolean(
-        entry?.submoduleStatuses && typeof entry.submoduleStatuses === "object" && Object.keys(entry.submoduleStatuses).length,
-      );
-      const isCompleted = status
-        ? status === "completed"
-        : !hasStudentStatuses;
+      // A selected sub-module contributes to course progress only after it is
+      // explicitly marked COMPLETED. IN_PROGRESS/PENDING and legacy records
+      // without a student status must not increase the percentage.
+      const isCompleted = status === "completed";
       if (isCompleted && normalizedSubmoduleId && validSubmoduleIds?.has(normalizedSubmoduleId)) {
         submoduleSet.add(normalizedSubmoduleId);
       }
@@ -584,7 +608,13 @@ export async function listFacultyTodayWorkEntries(query = {}, user = null) {
   // exact batch/date entry when the permanent faculty opens their own work.
   // This keeps the temporary access session-scoped without changing ownership.
   const facultyProfile = await prisma.branchFaculty.findFirst({
-    where: { email: { equals: normalizeString(user?.email), mode: "insensitive" }, status: "ACTIVE" },
+    where: {
+      status: "ACTIVE",
+      OR: [
+        ...(normalizeString(user?.userCode) ? [{ facultyId: normalizeString(user.userCode) }] : []),
+        ...(normalizeString(user?.email) ? [{ email: { equals: normalizeString(user.email), mode: "insensitive" } }] : []),
+      ],
+    },
     select: { branchId: true, facultyId: true },
   });
   if (facultyProfile?.branchId && facultyProfile?.facultyId) {
@@ -592,15 +622,17 @@ export async function listFacultyTodayWorkEntries(query = {}, user = null) {
       where: {
         branchId: facultyProfile.branchId,
         originalFacultyId: facultyProfile.facultyId,
-        resolutionStatus: "REPLACEMENT_ASSIGNED",
-        replacementStatus: "CONFIRMED",
-        ...(workDate ? { replacementDate: parseDateKey(workDate) } : { replacementDate: { not: null } }),
+        OR: [
+          { resolutionStatus: "COMBINED", ...(workDate ? { sessionDate: parseDateKey(workDate) } : {}) },
+          { resolutionStatus: "REPLACEMENT_ASSIGNED", replacementStatus: "CONFIRMED", ...(workDate ? { replacementDate: parseDateKey(workDate) } : { replacementDate: { not: null } }) },
+        ],
       },
-      select: { batchId: true, replacementDate: true, originalFacultyId: true, originalFacultyName: true },
+      select: { batchId: true, replacementDate: true, sessionDate: true, resolutionStatus: true, originalFacultyId: true, originalFacultyName: true },
     });
     inheritedAssignments.forEach((assignment) => {
-      if (assignment.batchId && assignment.replacementDate) {
-        whereScopes.push({ batchId: assignment.batchId, workDate: assignment.replacementDate });
+      const assignmentDate = assignment.resolutionStatus === "COMBINED" ? assignment.sessionDate : assignment.replacementDate;
+      if (assignment.batchId && assignmentDate) {
+        whereScopes.push({ batchId: assignment.batchId, workDate: assignmentDate });
       }
     });
   }
@@ -616,7 +648,7 @@ export async function listFacultyTodayWorkEntries(query = {}, user = null) {
 
   return records.map((record) => {
     const replacementAssignment = inheritedAssignments.find((assignment) => (
-      assignment.batchId === record.batchId && assignment.replacementDate === record.workDate
+      assignment.batchId === record.batchId && (assignment.replacementDate || assignment.sessionDate) === record.workDate
     ));
     return mapWorkEntry(replacementAssignment
       ? {

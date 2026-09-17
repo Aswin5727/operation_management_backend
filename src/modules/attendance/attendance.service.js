@@ -33,6 +33,24 @@ function parseDateString(value, fallback = getTodayValue()) {
   return text;
 }
 
+function parseTime(value) {
+  const match = normalizeString(value).match(/^(\d{1,2}):(\d{2})(?:\s*(AM|PM))?$/i);
+  if (!match) return null;
+
+  let hour = Number(match[1]);
+  const minute = Number(match[2]);
+  const period = normalizeString(match[3]).toUpperCase();
+
+  if (period) {
+    if (hour < 1 || hour > 12) return null;
+    if (period === "AM" && hour === 12) hour = 0;
+    if (period === "PM" && hour !== 12) hour += 12;
+  }
+
+  if (hour > 23 || minute > 59) return null;
+  return hour * 60 + minute;
+}
+
 function parseAttendanceStatus(value) {
   const status = normalizeString(value).toUpperCase();
 
@@ -375,12 +393,19 @@ async function findBranchAttendanceBatch(user, payload = {}, facultyId = "", att
   const facultyCandidates = await resolveBranchFacultyCandidates(user, facultyId);
   const facultyEmail = normalizeString(user?.email).toLowerCase();
   const replacementAssignments = attendanceDate && facultyCandidates.length
-    ? await prisma.facultyLeaveAffectedSession.findMany({ where: { OR: [{ sessionDate: attendanceDate }, { replacementDate: attendanceDate }], replacementFacultyId: { in: facultyCandidates }, replacementStatus: "CONFIRMED", resolutionStatus: "REPLACEMENT_ASSIGNED" }, select: { batchRecordId: true, batchId: true, replacementDate: true, replacementStartTime: true, replacementEndTime: true } })
+    ? await prisma.facultyLeaveAffectedSession.findMany({ where: { replacementDate: attendanceDate, replacementFacultyId: { in: facultyCandidates }, replacementStatus: "CONFIRMED", resolutionStatus: "REPLACEMENT_ASSIGNED" }, select: { batchRecordId: true, batchId: true, replacementDate: true, replacementStartTime: true, replacementEndTime: true } })
     : [];
+  const combinedLinks = attendanceDate && facultyCandidates.length
+    ? await prisma.facultyLeaveCombinedSession.findMany({ where: { sessionDate: attendanceDate, facultyId: { in: facultyCandidates }, status: "ACTIVE" }, select: { id: true, sessionDate: true, startTime: true, endTime: true } })
+    : [];
+  const combinedAssignments = combinedLinks.length
+    ? await prisma.facultyLeaveAffectedSession.findMany({ where: { combinedSessionId: { in: combinedLinks.map((item) => item.id) }, resolutionStatus: "COMBINED" }, select: { batchRecordId: true, batchId: true, sessionDate: true, combinedSessionId: true } })
+    : [];
+  const temporaryAssignments = [...replacementAssignments, ...combinedAssignments.map((item) => ({ ...item, replacementDate: item.sessionDate, replacementStartTime: combinedLinks.find((link) => link.id === item.combinedSessionId)?.startTime, replacementEndTime: combinedLinks.find((link) => link.id === item.combinedSessionId)?.endTime, combined: true }))];
 
   if (!courseId || !batchName) return null;
 
-  return prisma.branchBatch.findFirst({
+  const batch = await prisma.branchBatch.findFirst({
     where: {
       ...(branchId ? { branchId } : {}),
       status: "ACTIVE",
@@ -394,7 +419,7 @@ async function findBranchAttendanceBatch(user, payload = {}, facultyId = "", att
             { branchFacultyId: { in: facultyCandidates } },
           ] : []),
           ...(facultyEmail ? [{ facultyEmail: { equals: facultyEmail, mode: "insensitive" } }] : []),
-          ...(replacementAssignments.length ? [{ id: { in: replacementAssignments.map((item) => item.batchRecordId) } }, { batchId: { in: replacementAssignments.map((item) => item.batchId) } }] : []),
+          ...(temporaryAssignments.length ? [{ id: { in: temporaryAssignments.map((item) => item.batchRecordId).filter(Boolean) } }, { batchId: { in: temporaryAssignments.map((item) => item.batchId).filter(Boolean) } }] : []),
         ],
       }],
     },
@@ -412,6 +437,17 @@ async function findBranchAttendanceBatch(user, payload = {}, facultyId = "", att
       facultyEmail: true,
     },
   });
+  if (!batch) return null;
+  const temporaryAssignment = temporaryAssignments.find((item) => item.batchRecordId === batch.id || item.batchId === batch.batchId);
+  return temporaryAssignment ? {
+    ...batch,
+    temporarySessionWindow: {
+      kind: temporaryAssignment.combined ? "COMBINED" : "REPLACEMENT",
+      date: temporaryAssignment.replacementDate || attendanceDate,
+      startTime: temporaryAssignment.replacementStartTime,
+      endTime: temporaryAssignment.replacementEndTime,
+    },
+  } : batch;
 }
 
 function mapBranchAttendanceStudent(student, attendance) {
@@ -441,6 +477,16 @@ function mapBranchAttendanceStudent(student, attendance) {
 }
 
 async function markBranchStudentAttendance(user, payload, date, batch) {
+  if (batch.temporarySessionWindow) {
+    const start = parseTime(batch.temporarySessionWindow.startTime);
+    const end = parseTime(batch.temporarySessionWindow.endTime);
+    const todayValue = getTodayValue();
+    const nowMinutes = new Date().getHours() * 60 + new Date().getMinutes();
+    if (date !== batch.temporarySessionWindow.date || date < todayValue || start == null || end == null || (date === todayValue && (nowMinutes < start || nowMinutes >= end))) {
+      const label = batch.temporarySessionWindow.kind === "COMBINED" ? "Combined class" : "Replacement class";
+      throw new AppError(`${label} attendance is available only during the assigned session time`, 403);
+    }
+  }
   const entries = Array.isArray(payload.students) ? payload.students : [];
   const submittedStudents = uniqueByKey(
     entries

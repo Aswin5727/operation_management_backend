@@ -769,6 +769,38 @@ export async function sendFacultyReplacementBatchEmail({ to, fullName, courseNam
   return sendEmail({ to, subject: `Replacement Batch Assigned - ${batchName || "Faculty"}`, html, text });
 }
 
+export async function sendFacultyCombinedClassEmail({ to, fullName, courseName, batchName, originalFacultyName, combinedDate, combinedStartTime, combinedEndTime }) {
+  const formatTime = (value) => {
+    const match = String(value || "").match(/^(\d{1,2}):(\d{2})$/);
+    if (!match) return String(value || "-");
+    const hour = Number(match[1]);
+    return `${String(hour % 12 || 12).padStart(2, "0")}:${match[2]} ${hour >= 12 ? "PM" : "AM"}`;
+  };
+  const formatDate = (value) => {
+    const date = new Date(`${String(value || "").trim()}T00:00:00Z`);
+    return Number.isNaN(date.getTime()) ? String(value || "-") : new Intl.DateTimeFormat("en-GB", { day: "2-digit", month: "short", year: "numeric", timeZone: "UTC" }).format(date);
+  };
+  const displayDate = formatDate(combinedDate);
+  const displayTime = `${formatTime(combinedStartTime)} - ${formatTime(combinedEndTime)}`;
+  const subject = `Combined Class Assigned - ${batchName || "Faculty"}`;
+  const html = alertTemplate({
+    eyebrow: "Combined Class",
+    title: subject,
+    subtitle: `Hi ${escapeHtml(fullName || "Faculty")}, you have been assigned this batch for a Combined Class.`,
+    summary: "Please check your Faculty Dashboard for the complete class details.",
+    details: [
+      { label: "Course", value: escapeHtml(courseName || "-") },
+      { label: "Batch", value: escapeHtml(batchName || "-") },
+      { label: "Original Faculty", value: escapeHtml(originalFacultyName || "-") },
+      { label: "Date", value: escapeHtml(displayDate) },
+      { label: "Time", value: escapeHtml(displayTime) },
+      { label: "Assignment Type", value: "Combined Class" },
+    ],
+  });
+  const text = [`Hi ${fullName || "Faculty"},`, "", `You have been assigned the ${batchName || "batch"} class for a Combined Class on ${displayDate}, from ${displayTime}.`, "", `Course: ${courseName || "-"}`, `Batch: ${batchName || "-"}`, `Original Faculty: ${originalFacultyName || "-"}`, `Class Time: ${displayTime}`, "Assignment Type: Combined Class", "", "Please check your Faculty Dashboard for the complete class details."].join("\n");
+  return sendEmail({ to, subject, html, text });
+}
+
 export async function sendStudentFacultyReassignmentEmail({ to, fullName, batchName, replacementDate, replacementStartTime, replacementEndTime }) {
   const formatTime = (value) => {
     const match = String(value || "").match(/^(\d{1,2}):(\d{2})$/);
@@ -811,6 +843,39 @@ export async function sendStudentFacultyReassignmentEmail({ to, fullName, batchN
     "",
     "Please check your Student Dashboard for the updated schedule.",
   ].join("\n");
+  return sendEmail({ to, subject, html, text });
+}
+
+export async function sendStudentCombinedClassEmail({ to, fullName, courseName, batchName, originalFacultyName, combinedFacultyName, combinedDate, combinedStartTime, combinedEndTime }) {
+  const formatTime = (value) => {
+    const match = String(value || "").match(/^(\d{1,2}):(\d{2})$/);
+    if (!match) return String(value || "-");
+    const hour = Number(match[1]);
+    return `${String(hour % 12 || 12).padStart(2, "0")}:${match[2]} ${hour >= 12 ? "PM" : "AM"}`;
+  };
+  const formatDate = (value) => {
+    const date = new Date(`${String(value || "").trim()}T00:00:00Z`);
+    return Number.isNaN(date.getTime()) ? String(value || "-") : new Intl.DateTimeFormat("en-GB", { day: "2-digit", month: "short", year: "numeric", timeZone: "UTC" }).format(date);
+  };
+  const displayDate = formatDate(combinedDate);
+  const displayTime = `${formatTime(combinedStartTime)} - ${formatTime(combinedEndTime)}`;
+  const subject = `Combined Class - ${batchName || "Your Batch"}`;
+  const html = alertTemplate({
+    eyebrow: "Schedule Update",
+    title: subject,
+    subtitle: `Hi ${escapeHtml(fullName || "Student")}, your class will be handled by ${escapeHtml(combinedFacultyName || "the assigned faculty")} instead of your regular faculty ${escapeHtml(originalFacultyName || "your regular faculty")}.`,
+    summary: "Please check your Student Dashboard for the updated schedule.",
+    details: [
+      { label: "Course", value: escapeHtml(courseName || "-") },
+      { label: "Batch", value: escapeHtml(batchName || "-") },
+      { label: "Class Faculty", value: escapeHtml(combinedFacultyName || "-") },
+      { label: "Original Faculty", value: escapeHtml(originalFacultyName || "-") },
+      { label: "Date", value: escapeHtml(displayDate) },
+      { label: "Time", value: escapeHtml(displayTime) },
+      { label: "Assignment Type", value: "Combined Class" },
+    ],
+  });
+  const text = [`Hi ${fullName || "Student"},`, "", `Your ${courseName || "course"} - ${batchName || "batch"} class scheduled on ${displayDate}, from ${displayTime}, will be handled by ${combinedFacultyName || "the assigned faculty"} instead of your regular faculty ${originalFacultyName || "your regular faculty"}.`, "", `Course: ${courseName || "-"}`, `Batch: ${batchName || "-"}`, `Original Faculty: ${originalFacultyName || "-"}`, `Class Faculty: ${combinedFacultyName || "-"}`, `Date: ${displayDate}`, `Time: ${displayTime}`, "Assignment Type: Combined Class", "", "Please check your Student Dashboard for the updated schedule."].join("\n");
   return sendEmail({ to, subject, html, text });
 }
 
