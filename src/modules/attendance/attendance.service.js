@@ -392,6 +392,10 @@ async function findBranchAttendanceBatch(user, payload = {}, facultyId = "", att
   const branchId = normalizeString(payload.branchId || payload.branchCode);
   const facultyCandidates = await resolveBranchFacultyCandidates(user, facultyId);
   const facultyEmail = normalizeString(user?.email).toLowerCase();
+  const movedOriginalAssignments = attendanceDate && facultyCandidates.length
+    ? await prisma.facultyLeaveAffectedSession.findMany({ where: { sessionDate: attendanceDate, originalFacultyId: { in: facultyCandidates }, resolutionStatus: "RESCHEDULED", ...(batchId ? { OR: [{ batchRecordId: batchId }, { batchId }] } : {}) }, select: { id: true, batchRecordId: true, batchId: true, rescheduledDate: true, rescheduledStartTime: true, rescheduledEndTime: true } })
+    : [];
+  if (movedOriginalAssignments.length) throw new AppError("This class was rescheduled and attendance is available only on the new session date", 403);
   const replacementAssignments = attendanceDate && facultyCandidates.length
     ? await prisma.facultyLeaveAffectedSession.findMany({ where: { replacementDate: attendanceDate, replacementFacultyId: { in: facultyCandidates }, replacementStatus: "CONFIRMED", resolutionStatus: "REPLACEMENT_ASSIGNED" }, select: { batchRecordId: true, batchId: true, replacementDate: true, replacementStartTime: true, replacementEndTime: true } })
     : [];
@@ -402,6 +406,10 @@ async function findBranchAttendanceBatch(user, payload = {}, facultyId = "", att
     ? await prisma.facultyLeaveAffectedSession.findMany({ where: { combinedSessionId: { in: combinedLinks.map((item) => item.id) }, resolutionStatus: "COMBINED" }, select: { batchRecordId: true, batchId: true, sessionDate: true, combinedSessionId: true } })
     : [];
   const temporaryAssignments = [...replacementAssignments, ...combinedAssignments.map((item) => ({ ...item, replacementDate: item.sessionDate, replacementStartTime: combinedLinks.find((link) => link.id === item.combinedSessionId)?.startTime, replacementEndTime: combinedLinks.find((link) => link.id === item.combinedSessionId)?.endTime, combined: true }))];
+  const rescheduledAssignments = attendanceDate && facultyCandidates.length
+    ? await prisma.facultyLeaveAffectedSession.findMany({ where: { rescheduledDate: attendanceDate, originalFacultyId: { in: facultyCandidates }, resolutionStatus: "RESCHEDULED", ...(batchId ? { OR: [{ batchRecordId: batchId }, { batchId }] } : {}) }, select: { batchRecordId: true, batchId: true, rescheduledDate: true, rescheduledStartTime: true, rescheduledEndTime: true } })
+    : [];
+  temporaryAssignments.push(...rescheduledAssignments.map((item) => ({ ...item, replacementDate: item.rescheduledDate, replacementStartTime: item.rescheduledStartTime, replacementEndTime: item.rescheduledEndTime, rescheduled: true })));
 
   if (!courseId || !batchName) return null;
 
@@ -442,7 +450,7 @@ async function findBranchAttendanceBatch(user, payload = {}, facultyId = "", att
   return temporaryAssignment ? {
     ...batch,
     temporarySessionWindow: {
-      kind: temporaryAssignment.combined ? "COMBINED" : "REPLACEMENT",
+      kind: temporaryAssignment.combined ? "COMBINED" : temporaryAssignment.rescheduled ? "RESCHEDULED" : "REPLACEMENT",
       date: temporaryAssignment.replacementDate || attendanceDate,
       startTime: temporaryAssignment.replacementStartTime,
       endTime: temporaryAssignment.replacementEndTime,
@@ -483,7 +491,7 @@ async function markBranchStudentAttendance(user, payload, date, batch) {
     const todayValue = getTodayValue();
     const nowMinutes = new Date().getHours() * 60 + new Date().getMinutes();
     if (date !== batch.temporarySessionWindow.date || date < todayValue || start == null || end == null || (date === todayValue && (nowMinutes < start || nowMinutes >= end))) {
-      const label = batch.temporarySessionWindow.kind === "COMBINED" ? "Combined class" : "Replacement class";
+      const label = batch.temporarySessionWindow.kind === "COMBINED" ? "Combined class" : batch.temporarySessionWindow.kind === "RESCHEDULED" ? "Rescheduled class" : "Replacement class";
       throw new AppError(`${label} attendance is available only during the assigned session time`, 403);
     }
   }

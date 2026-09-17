@@ -295,16 +295,19 @@ async function validateFacultyBatchScope({ branchId, courseId, batchId, facultyP
   }
 
   const replacementProfile = await prisma.branchFaculty.findFirst({ where: { branchId: normalizeString(branchId), OR: [{ facultyId: normalizeString(facultyProfileId) }, { email: { equals: normalizeString(facultyEmail), mode: "insensitive" } }] }, select: { facultyId: true } });
+  const rescheduledOriginal = replacementProfile ? await prisma.facultyLeaveAffectedSession.findFirst({ where: { branchId: normalizeString(branchId), batchId: normalizedBatchId, sessionDate: workDate, originalFacultyId: replacementProfile.facultyId, resolutionStatus: "RESCHEDULED" }, select: { id: true } }) : null;
+  if (rescheduledOriginal) throw new AppError("This class was rescheduled and Today's Work is available only on the new session date", 403);
   const replacementAssignment = replacementProfile ? await prisma.facultyLeaveAffectedSession.findFirst({ where: { branchId: normalizeString(branchId), batchId: normalizedBatchId, replacementDate: workDate, resolutionStatus: "REPLACEMENT_ASSIGNED", replacementStatus: "CONFIRMED", replacementFacultyId: replacementProfile.facultyId }, select: { id: true, replacementDate: true, replacementStartTime: true, replacementEndTime: true } }) : null;
+  const rescheduledAssignment = replacementProfile ? await prisma.facultyLeaveAffectedSession.findFirst({ where: { branchId: normalizeString(branchId), batchId: normalizedBatchId, rescheduledDate: workDate, resolutionStatus: "RESCHEDULED", originalFacultyId: replacementProfile.facultyId }, select: { id: true, rescheduledDate: true, rescheduledStartTime: true, rescheduledEndTime: true } }) : null;
   const combinedLinks = replacementProfile ? await prisma.facultyLeaveCombinedSession.findMany({ where: { branchId: normalizeString(branchId), facultyId: replacementProfile.facultyId, status: "ACTIVE", sessionDate: workDate }, select: { id: true, sessionDate: true, startTime: true, endTime: true } }) : [];
   const combinedAssignment = combinedLinks.length ? await prisma.facultyLeaveAffectedSession.findFirst({ where: { branchId: normalizeString(branchId), batchId: normalizedBatchId, resolutionStatus: "COMBINED", combinedSessionId: { in: combinedLinks.map((item) => item.id) } }, select: { id: true, sessionDate: true, combinedSessionId: true } }) : null;
-  const temporaryAssignment = replacementAssignment || combinedAssignment;
+  const temporaryAssignment = replacementAssignment || rescheduledAssignment || combinedAssignment;
   if (temporaryAssignment) {
     const isCombined = Boolean(combinedAssignment);
     const combinedWindow = isCombined ? combinedLinks.find((item) => item.id === combinedAssignment.combinedSessionId) : null;
-    const assignmentDate = isCombined ? combinedWindow?.sessionDate : replacementAssignment?.replacementDate;
-    const start = clockMinutes(isCombined ? combinedWindow?.startTime : replacementAssignment?.replacementStartTime);
-    const end = clockMinutes(isCombined ? combinedWindow?.endTime : replacementAssignment?.replacementEndTime);
+    const assignmentDate = isCombined ? combinedWindow?.sessionDate : rescheduledAssignment?.rescheduledDate || replacementAssignment?.replacementDate;
+    const start = clockMinutes(isCombined ? combinedWindow?.startTime : rescheduledAssignment?.rescheduledStartTime || replacementAssignment?.replacementStartTime);
+    const end = clockMinutes(isCombined ? combinedWindow?.endTime : rescheduledAssignment?.rescheduledEndTime || replacementAssignment?.replacementEndTime);
     if (!assignmentDate || workDate !== assignmentDate || workDate < toDateKey() || start == null || end == null || (workDate === toDateKey() && (currentLocalMinutes() < start || currentLocalMinutes() >= end))) {
       throw new AppError(`${isCombined ? "Combined class" : "Replacement class"} work is available only during the assigned session time`, 403);
     }
