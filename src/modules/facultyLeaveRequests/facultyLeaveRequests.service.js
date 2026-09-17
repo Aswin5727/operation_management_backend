@@ -983,23 +983,32 @@ function displayDate(value) {
   return new Intl.DateTimeFormat("en-GB", { day: "2-digit", month: "short", year: "numeric", timeZone: "UTC" }).format(date);
 }
 
+function temporaryAssignmentIsActive(dateValue, startTime, endTime) {
+  const parts = Object.fromEntries(new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Kolkata", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", hourCycle: "h23" }).formatToParts(new Date()).map((part) => [part.type, part.value]));
+  const today = `${parts.year}-${parts.month}-${parts.day}`;
+  const currentMinutes = Number(parts.hour) * 60 + Number(parts.minute);
+  const date = text(dateValue);
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return false;
+  if (date > today) return true;
+  if (date < today) return false;
+  const end = parseTime(endTime);
+  return end == null || end > currentMinutes;
+}
+
 export async function listMyTemporaryFacultyBatches(user) {
   const faculty = await resolveFacultyContext(user);
-  const today = new Date().toISOString().slice(0, 10);
   const sessions = await prisma.facultyLeaveAffectedSession.findMany({
     where: {
       branchId: faculty.branchId,
-      sessionDate: { gte: today },
-      resolutionStatus: { in: ["REPLACEMENT_ASSIGNED", "COMBINED"] },
       OR: [
-        { replacementFacultyId: faculty.facultyId },
-        { combinedSessionId: { not: null } },
+        { replacementFacultyId: faculty.facultyId, replacementStatus: "CONFIRMED", resolutionStatus: "REPLACEMENT_ASSIGNED" },
+        { resolutionStatus: "COMBINED", combinedSessionId: { not: null } },
       ],
     },
     orderBy: [{ sessionDate: "asc" }, { originalStartTime: "asc" }],
   });
   const combinedIds = sessions.map(session => session.combinedSessionId).filter(Boolean);
-  const combined = combinedIds.length ? await prisma.facultyLeaveCombinedSession.findMany({ where: { id: { in: combinedIds }, facultyId: faculty.facultyId, status: "ACTIVE", sessionDate: { gte: today } } }) : [];
+  const combined = combinedIds.length ? await prisma.facultyLeaveCombinedSession.findMany({ where: { id: { in: combinedIds }, facultyId: faculty.facultyId, status: "ACTIVE" } }) : [];
   const combinedById = new Map(combined.map(item => [item.id, item]));
   return { batches: sessions.filter(session => (session.resolutionStatus === "REPLACEMENT_ASSIGNED" && session.replacementFacultyId === faculty.facultyId) || combinedById.has(session.combinedSessionId)).map(session => ({
     ...mapSession(session),
@@ -1007,18 +1016,17 @@ export async function listMyTemporaryFacultyBatches(user) {
     assignmentLabel: session.resolutionStatus === "COMBINED" ? "Combined Class" : "Replacement",
     combinedFacultyName: session.resolutionStatus === "COMBINED" ? combinedById.get(session.combinedSessionId)?.facultyName || null : null,
     temporary: true,
-    effectiveDate: session.replacementDate || session.sessionDate,
+    effectiveDate: session.resolutionStatus === "COMBINED" ? combinedById.get(session.combinedSessionId)?.sessionDate : session.replacementDate || session.sessionDate,
     effectiveStartTime: session.resolutionStatus === "COMBINED" ? combinedById.get(session.combinedSessionId)?.startTime : session.replacementStartTime || session.rescheduledStartTime || session.originalStartTime,
     effectiveEndTime: session.resolutionStatus === "COMBINED" ? combinedById.get(session.combinedSessionId)?.endTime : session.replacementEndTime || session.rescheduledEndTime || session.originalEndTime,
-  })) };
+  })).filter(item => temporaryAssignmentIsActive(item.effectiveDate, item.effectiveStartTime, item.effectiveEndTime)) };
 }
 
 export async function listMyTemporaryBatchStudents(user, sessionId) {
   const faculty = await resolveFacultyContext(user);
-  const today = new Date().toISOString().slice(0, 10);
   const session = await prisma.facultyLeaveAffectedSession.findFirst({
-    where: { id: text(sessionId), branchId: faculty.branchId, sessionDate: { gte: today }, OR: [
-      { replacementFacultyId: faculty.facultyId, replacementStatus: "CONFIRMED", resolutionStatus: "REPLACEMENT_ASSIGNED", replacementDate: { gte: today } },
+    where: { id: text(sessionId), branchId: faculty.branchId, OR: [
+      { replacementFacultyId: faculty.facultyId, replacementStatus: "CONFIRMED", resolutionStatus: "REPLACEMENT_ASSIGNED" },
       { resolutionStatus: "COMBINED", combinedSessionId: { not: null } },
     ] },
     select: { id: true, batchId: true, batchName: true, courseId: true, courseName: true, sessionDate: true, replacementDate: true, replacementStartTime: true, replacementEndTime: true, originalFacultyId: true, originalFacultyName: true, replacementFacultyName: true, resolutionStatus: true, combinedSessionId: true },
@@ -1026,13 +1034,14 @@ export async function listMyTemporaryBatchStudents(user, sessionId) {
   if (!session) throw new AppError("This replacement assignment is no longer available", 403);
   let combined = null;
   if (session.resolutionStatus === "COMBINED") {
-    combined = await prisma.facultyLeaveCombinedSession.findFirst({ where: { id: session.combinedSessionId, facultyId: faculty.facultyId, status: "ACTIVE", sessionDate: { gte: today } } });
+    combined = await prisma.facultyLeaveCombinedSession.findFirst({ where: { id: session.combinedSessionId, facultyId: faculty.facultyId, status: "ACTIVE" } });
     if (!combined) throw new AppError("This combined assignment is no longer available", 403);
     session.replacementDate = combined.sessionDate;
     session.replacementStartTime = combined.startTime;
     session.replacementEndTime = combined.endTime;
     session.replacementFacultyName = combined.facultyName;
   }
+  if (!temporaryAssignmentIsActive(session.replacementDate, session.replacementStartTime, session.replacementEndTime)) throw new AppError("This temporary assignment is no longer available", 403);
   const students = await prisma.branchStudent.findMany({ where: { branchId: faculty.branchId, batchId: session.batchId, recordStatus: "ACTIVE" }, orderBy: { studentName: "asc" }, include: { course: { select: { id: true, name: true, duration: true, hours: true, mode: true } }, installments: { select: { amount: true, amountPaid: true } }, calendarAttendanceRecords: { where: { attendanceDate: session.replacementDate }, select: { status: true } } } });
   return {
     session,
