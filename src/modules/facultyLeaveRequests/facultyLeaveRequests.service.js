@@ -1,7 +1,7 @@
 import prisma from "../../config/prisma.js";
 import AppError from "../../common/errors/AppError.js";
 import { createFacultyLeaveRequestChangeNotification, createFacultyLeaveRequestNotification, createNotification } from "../notifications/notifications.service.js";
-import { sendFacultyCombinedClassEmail, sendFacultyReplacementBatchEmail, sendStudentCombinedClassEmail, sendStudentFacultyReassignmentEmail } from "../../common/services/resendEmail.js";
+import { sendFacultyCombinedClassEmail, sendFacultyLeaveApprovalEmail, sendFacultyReplacementBatchEmail, sendStudentCombinedClassEmail, sendStudentFacultyReassignmentEmail } from "../../common/services/resendEmail.js";
 
 const LEAVE_TYPES = new Set(["PLANNED", "UNPLANNED", "EMERGENCY"]);
 const DURATIONS = new Set(["FULL_DAY", "HALF_DAY", "PERMISSION"]);
@@ -168,6 +168,16 @@ function validatePayload(payload = {}) {
   if (!reason) throw new AppError("Reason is required", 400);
   if (reason.length > 1000) throw new AppError("Reason cannot exceed 1000 characters", 400);
   return { leaveType, durationType, durationDays, halfDayPeriod: null, halfDayStart: durationType === "HALF_DAY" ? halfDayStart : null, halfDayEnd: durationType === "HALF_DAY" ? halfDayEnd : null, permissionHours: durationType === "PERMISSION" ? permissionHours : null, permissionStart: durationType === "PERMISSION" ? permissionStart : null, permissionEnd, fromDate, toDate, reason };
+}
+
+function leaveRequestsOverlap(existing, next) {
+  if (existing.toDate < next.fromDate || existing.fromDate > next.toDate) return false;
+  if (existing.durationType === "FULL_DAY" || next.durationType === "FULL_DAY") return true;
+  const existingStart = existing.durationType === "PERMISSION" ? existing.permissionStart : existing.halfDayStart;
+  const existingEnd = existing.durationType === "PERMISSION" ? existing.permissionEnd : existing.halfDayEnd;
+  const nextStart = next.durationType === "PERMISSION" ? next.permissionStart : next.halfDayStart;
+  const nextEnd = next.durationType === "PERMISSION" ? next.permissionEnd : next.halfDayEnd;
+  return overlaps(parseTime(existingStart), parseTime(existingEnd), parseTime(nextStart), parseTime(nextEnd));
 }
 
 async function calculateAffectedClasses(branchId, facultyId, leave) {
@@ -648,13 +658,40 @@ export async function resolveBranchFacultyLeaveSession(user, leaveId, sessionId,
   return mapSession(updated);
 }
 
+async function notifyFacultyLeaveApproval(request, branchId, actor) {
+  const facultyUser = request.facultyUserId
+    ? await prisma.user.findUnique({ where: { id: request.facultyUserId }, select: { id: true, email: true, fullName: true } })
+    : null;
+  const targetUserId = facultyUser?.id || null;
+  const facultyEmail = String(facultyUser?.email || request.facultyEmail || "").trim();
+  const facultyName = facultyUser?.fullName || request.facultyName || "Faculty";
+  const dayType = request.durationType === "HALF_DAY" ? "Half Day" : request.durationType === "PERMISSION" ? "Permission" : "Full Day";
+  const startTime = request.durationType === "PERMISSION" ? request.permissionStart : request.halfDayStart;
+  const endTime = request.durationType === "PERMISSION" ? request.permissionEnd : request.halfDayEnd;
+  const notificationKey = `faculty-leave-approval:${request.id}`;
+  if (targetUserId) {
+    const existing = await prisma.notification.findFirst({ where: { kind: "INSTITUTE_LEAVE", targetUserId, requestDescription: notificationKey }, select: { id: true } });
+    if (!existing) await createNotification({
+      kind: "INSTITUTE_LEAVE", tone: "green", title: "Leave Request Approved",
+      message: `${facultyName}, your ${dayType.toLowerCase()} leave request has been approved for ${displayDate(request.fromDate)}${startTime && endTime ? `, from ${displayTime(startTime)} to ${displayTime(endTime)}` : "."}`,
+      actionLabel: "View Leave Request", targetUserId, targetBranchId: branchId, leaveRequestId: request.id,
+      facultyId: request.facultyId || "", facultyName, requestStatus: "APPROVED", requestReason: request.reason || "",
+      requestDescription: notificationKey, createdBy: actor?.id || null,
+    });
+  }
+  if (facultyEmail) {
+    try { await sendFacultyLeaveApprovalEmail({ to: facultyEmail, fullName: facultyName, leaveDate: request.fromDate, leaveType: request.leaveType, dayType, startTime, endTime }); }
+    catch (error) { console.warn("Faculty leave approval email failed", error?.message || error); }
+  }
+}
+
 export async function approveBranchFacultyLeave(user, leaveId) {
   const { branchId, request } = await getScopedLeave(user, leaveId);
   if (!["PENDING", "UNDER_REVIEW"].includes(request.status)) throw new AppError("Only pending leave requests can be approved", 409);
   const unresolved = await prisma.facultyLeaveAffectedSession.count({ where: { leaveRequestId: leaveId, branchId, resolutionStatus: "UNRESOLVED" } });
   if (unresolved) throw new AppError("Resolve all affected classes before approving this leave request", 409);
   const approved = await prisma.facultyLeaveRequest.update({ where: { id: leaveId }, data: { status: "APPROVED", approvedBy: user.id, approvedAt: new Date(), reviewedBy: user.id, reviewedAt: new Date() } });
-  await notifyLeaveReview(approved, branchId, user, "Leave request approved", "APPROVED");
+  await notifyFacultyLeaveApproval(approved, branchId, user);
   return mapRequest(approved);
 }
 
@@ -817,11 +854,12 @@ export async function listMyTemporaryBatchStudents(user, sessionId) {
 export async function createFacultyLeaveRequest(user, payload) {
   const faculty = await resolveFacultyContext(user);
   const leave = validatePayload(payload);
-  const overlap = await prisma.facultyLeaveRequest.findFirst({
+  const existingLeaves = await prisma.facultyLeaveRequest.findMany({
     where: { facultyUserId: user.id, status: { in: ["PENDING", "APPROVED"] }, fromDate: { lte: leave.toDate }, toDate: { gte: leave.fromDate } },
-    select: { id: true },
+    select: { id: true, fromDate: true, toDate: true, durationType: true, halfDayStart: true, halfDayEnd: true, permissionStart: true, permissionEnd: true },
   });
-  if (overlap) throw new AppError("You already have a pending or approved leave request for this date range", 409);
+  const overlap = existingLeaves.find((existing) => leaveRequestsOverlap(existing, leave));
+  if (overlap) throw new AppError("You already have a pending or approved leave request overlapping this date/time", 409);
   const affectedClasses = await calculateAffectedClasses(faculty.branchId, faculty.facultyId, leave);
   const created = await prisma.facultyLeaveRequest.create({
     data: {
@@ -853,11 +891,11 @@ export async function updateFacultyLeaveRequest(user, requestId, payload) {
   if (!existing) throw new AppError("Leave request not found", 404);
   if (existing.status !== "PENDING") throw new AppError("Only pending leave requests can be edited", 409);
   const leave = validatePayload(payload);
-  const overlap = await prisma.facultyLeaveRequest.findFirst({
+  const existingLeaves = await prisma.facultyLeaveRequest.findMany({
     where: { id: { not: requestId }, facultyUserId: user.id, status: { in: ["PENDING", "APPROVED"] }, fromDate: { lte: leave.toDate }, toDate: { gte: leave.fromDate } },
-    select: { id: true },
+    select: { id: true, fromDate: true, toDate: true, durationType: true, halfDayStart: true, halfDayEnd: true, permissionStart: true, permissionEnd: true },
   });
-  if (overlap) throw new AppError("You already have a pending or approved leave request for this date range", 409);
+  if (existingLeaves.some((existing) => leaveRequestsOverlap(existing, leave))) throw new AppError("You already have a pending or approved leave request overlapping this date/time", 409);
   const affectedClasses = await calculateAffectedClasses(faculty.branchId, faculty.facultyId, leave);
   const updated = await prisma.facultyLeaveRequest.update({
     where: { id: requestId },
@@ -895,7 +933,8 @@ export async function listBranchFacultyLeaveRequests(user, query = {}) {
   const rows = await prisma.facultyLeaveRequest.findMany({ where: { branchId, ...(status ? { status } : {}) }, orderBy: { createdAt: "desc" } });
   const requests = await Promise.all(rows.map(async (row) => {
     const affectedClasses = await calculateAffectedClasses(row.branchId, row.facultyId, row);
-    return mapRequest({ ...row, affectedClasses });
+    const unresolvedSessionCount = await prisma.facultyLeaveAffectedSession.count({ where: { leaveRequestId: row.id, resolutionStatus: "UNRESOLVED" } });
+    return mapRequest({ ...row, affectedClasses, unresolvedSessionCount });
   }));
   return { requests };
 }

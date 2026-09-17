@@ -46,10 +46,53 @@ export async function studentCalendar(user, query = {}) {
   const student = await prisma.branchStudent.findFirst({ where: { emailAddress: { equals: user.email, mode: 'insensitive' } }, include: { course: true, calendarAttendanceRecords: true } });
   if (!student) throw new AppError('Student profile not found', 404);
   const calculation = studentSchedule(student, await scheduleContext(prisma, student.branchId));
+  const affectedSessions = await prisma.facultyLeaveAffectedSession.findMany({
+    where: {
+      branchId: student.branchId,
+      batchId: student.batchId,
+    },
+    select: { id: true, leaveRequestId: true, batchId: true, batchName: true, courseId: true, courseName: true, originalFacultyId: true, originalFacultyName: true, sessionDate: true, originalStartTime: true, originalEndTime: true, resolutionStatus: true, replacementFacultyId: true, replacementFacultyName: true, replacementDate: true, replacementStartTime: true, replacementEndTime: true, combinedSessionId: true, resolutionReason: true },
+  });
+  const combinedRows = await prisma.facultyLeaveCombinedSession.findMany({ where: { id: { in: affectedSessions.map(session => session.combinedSessionId).filter(Boolean) }, status: 'ACTIVE' } });
+  const combinedById = new Map(combinedRows.map(row => [row.id, row]));
+  const assignmentEvents = affectedSessions.flatMap(session => {
+    const combined = session.resolutionStatus === 'COMBINED' ? combinedById.get(session.combinedSessionId) : null;
+    const date = session.resolutionStatus === 'COMBINED' ? combined?.sessionDate || session.sessionDate : session.replacementDate || session.sessionDate;
+    if (!validDate(date) || (validDate(query.from) && date < query.from) || (validDate(query.to) && date > query.to)) return [];
+    const assignedFacultyName = session.resolutionStatus === 'COMBINED' ? combined?.facultyName : session.replacementFacultyName;
+    const assignedFacultyId = session.resolutionStatus === 'COMBINED' ? combined?.facultyId : session.replacementFacultyId;
+    const isCombined = session.resolutionStatus === 'COMBINED' && combined;
+    const isAssigned = isCombined || session.resolutionStatus === 'REPLACEMENT_ASSIGNED';
+    return [{
+      id: `faculty-leave-session:${session.id}`,
+      sessionId: session.id,
+      leaveRequestId: session.leaveRequestId,
+      date,
+      code: isCombined ? 'COMBINED' : isAssigned ? 'REASSIGNED' : 'LEAVE',
+      status: isCombined ? 'Combined' : isAssigned ? 'Reassigned' : 'Leave',
+      courseId: session.courseId || student.courseId,
+      courseName: session.courseName || student.courseName || student.course?.name || '',
+      batchId: session.batchId,
+      batchName: session.batchName || student.batchName,
+      batchRecordId: session.batchRecordId || null,
+      originalFacultyId: session.originalFacultyId,
+      originalFacultyName: session.originalFacultyName,
+      replacementFacultyId: assignedFacultyId || null,
+      replacementFacultyName: assignedFacultyName || null,
+      combinedFacultyId: isCombined ? assignedFacultyId || null : null,
+      combinedFacultyName: isCombined ? assignedFacultyName || null : null,
+      assignmentType: isCombined ? 'COMBINED' : isAssigned ? 'REPLACEMENT' : 'LEAVE',
+      startTime: isCombined ? combined.startTime : session.replacementStartTime || session.originalStartTime,
+      endTime: isCombined ? combined.endTime : session.replacementEndTime || session.originalEndTime,
+      reason: session.resolutionReason || '',
+    }];
+  });
+  const eventMap = new Map(calculation.events.map(event => [`${event.date}:${event.batchId || ''}:${event.startTime || ''}`, event]));
+  assignmentEvents.forEach(event => eventMap.set(`assignment:${event.id}`, event));
   return { ...calculation, studentId: student.studentId, course: { ...student.course, totalHours: calculation.totalHours },
     batch: { id: student.batchId, name: student.batchName, timing: student.batchTiming },
     courseMode: student.courseMode || student.course?.mode,
-    events: calculation.events.filter(e => (!validDate(query.from) || e.date >= query.from) && (!validDate(query.to) || e.date <= query.to)) };
+    events: [...eventMap.values()].filter(e => (!validDate(query.from) || e.date >= query.from) && (!validDate(query.to) || e.date <= query.to)) };
 }
 async function adminBranch(user, db = prisma) {
   if (user.role !== 'BRANCH_ADMIN') throw new AppError('Only Branch Admin can manage Institute Leave', 403);
@@ -160,7 +203,11 @@ export async function mutateLeave(user, id, payload = {}, cancel = false, client
   }
 }
 export async function facultyCalendar(user, query = {}) {
-  const faculties = await prisma.branchFaculty.findMany({ where: { email: { equals: user.email, mode: 'insensitive' }, status: 'ACTIVE' } });
+  const facultyIdentity = [user?.userCode, user?.id].map(value => String(value || '').trim()).filter(Boolean);
+  const faculties = await prisma.branchFaculty.findMany({ where: { status: 'ACTIVE', OR: [
+    ...(user?.email ? [{ email: { equals: user.email, mode: 'insensitive' } }] : []),
+    ...(facultyIdentity.length ? [{ facultyId: { in: facultyIdentity } }, { id: { in: facultyIdentity } }] : []),
+  ] } });
   const events = new Map();
   const from = validDate(query.from) ? query.from : '';
   const to = validDate(query.to) ? query.to : '';
@@ -203,11 +250,84 @@ export async function facultyCalendar(user, query = {}) {
         events.set(key, { id: leave.id, date, code, status: 'Approved', leaveType: leave.leaveType, durationType: leave.durationType, durationDays: leave.durationDays, halfDayStart: leave.halfDayStart, halfDayEnd: leave.halfDayEnd, permissionStart: leave.permissionStart, permissionEnd: leave.permissionEnd, permissionHours: leave.permissionHours, reason: leave.reason, facultyId: leave.facultyId, facultyName: leave.facultyName, affectedClasses: leave.affectedClasses || [] });
       }
     }
+
+    const facultyIds = faculties.filter(f => f.branchId === branchId).flatMap(f => [f.id, f.facultyId]).filter(Boolean);
+    const affectedSessions = await prisma.facultyLeaveAffectedSession.findMany({
+      where: {
+        branchId,
+        OR: [
+          { originalFacultyId: { in: facultyIds } },
+          { replacementFacultyId: { in: facultyIds }, replacementStatus: 'CONFIRMED', resolutionStatus: 'REPLACEMENT_ASSIGNED' },
+          { resolutionStatus: 'COMBINED', combinedSessionId: { not: null } },
+        ],
+      },
+      select: { id: true, leaveRequestId: true, batchRecordId: true, batchId: true, batchName: true, courseId: true, courseName: true, originalFacultyId: true, originalFacultyName: true, sessionDate: true, originalStartTime: true, originalEndTime: true, resolutionStatus: true, replacementFacultyId: true, replacementFacultyName: true, replacementStatus: true, replacementDate: true, replacementStartTime: true, replacementEndTime: true, combinedSessionId: true, resolutionReason: true },
+    });
+    const combinedRows = await prisma.facultyLeaveCombinedSession.findMany({
+      where: { id: { in: affectedSessions.map(session => session.combinedSessionId).filter(Boolean) }, status: 'ACTIVE' },
+    });
+    const combinedById = new Map(combinedRows.map(row => [row.id, row]));
+    for (const session of affectedSessions) {
+      const combined = session.resolutionStatus === 'COMBINED' ? combinedById.get(session.combinedSessionId) : null;
+      const isOriginalFaculty = facultyIds.includes(session.originalFacultyId);
+      if (session.resolutionStatus === 'COMBINED' && (!combined || (!facultyIds.includes(combined.facultyId) && !isOriginalFaculty))) continue;
+      const temporaryFacultyId = session.resolutionStatus === 'COMBINED' ? combined?.facultyId : session.replacementFacultyId;
+      const isTemporaryFaculty = temporaryFacultyId && facultyIds.includes(temporaryFacultyId);
+      const eventDate = session.resolutionStatus === 'COMBINED' ? combined?.sessionDate || session.sessionDate : session.replacementDate || session.sessionDate;
+      if (!validDate(eventDate) || (from && eventDate < from) || (to && eventDate > to)) continue;
+      const startTime = session.resolutionStatus === 'COMBINED' ? combined?.startTime : session.replacementStartTime || session.originalStartTime;
+      const endTime = session.resolutionStatus === 'COMBINED' ? combined?.endTime : session.replacementEndTime || session.originalEndTime;
+      const assignmentType = session.resolutionStatus === 'COMBINED' ? 'COMBINED' : 'REPLACEMENT';
+      const code = isTemporaryFaculty ? (assignmentType === 'COMBINED' ? 'COMBINED' : 'REASSIGNED') : 'LEAVE';
+      const batchRecord = context.batches.find(batch => batch.id === session.batchRecordId || batch.batchId === session.batchId);
+      const event = {
+        id: `faculty-leave-session:${session.id}`,
+        leaveRequestId: session.leaveRequestId || session.requestId || null,
+        sessionId: session.id,
+        batchRecordId: session.batchRecordId || batchRecord?.id || null,
+        batchId: session.batchId || batchRecord?.batchId || null,
+        batchName: session.batchName || batchRecord?.batchName || null,
+        courseId: session.courseId || batchRecord?.courseId || null,
+        courseName: session.courseName || batchRecord?.courseName || null,
+        date: eventDate,
+        code,
+        status: code === 'COMBINED' ? 'Combined' : code === 'REASSIGNED' ? 'Reassigned' : 'Leave',
+        startTime,
+        endTime,
+        originalFacultyId: session.originalFacultyId || null,
+        originalFacultyName: session.originalFacultyName || null,
+        replacementFacultyId: assignmentType === 'COMBINED' ? combined?.facultyId || null : session.replacementFacultyId || null,
+        replacementFacultyName: assignmentType === 'COMBINED' ? combined?.facultyName || null : session.replacementFacultyName || null,
+        combinedFacultyId: assignmentType === 'COMBINED' ? combined?.facultyId || null : null,
+        combinedFacultyName: assignmentType === 'COMBINED' ? combined?.facultyName || null : null,
+        assignmentType,
+        resolutionType: assignmentType,
+        reason: session.resolutionReason || '',
+        durationType: session.durationType || null,
+        permissionStart: session.permissionStart || null,
+        permissionEnd: session.permissionEnd || null,
+      };
+      events.set(event.id, event);
+    }
   }
-  const batchRows = faculties.length ? await prisma.branchBatch.findMany({ where: { branchId: { in: [...new Set(faculties.map(f => f.branchId))] }, facultyId: { in: faculties.flatMap(f => [f.id, f.facultyId]) }, status: 'ACTIVE' }, select: { id: true, batchId: true, batchName: true, courseId: true, courseName: true, facultyId: true, courseStartDate: true, courseEndDate: true, weeklyOffDay: true, weekType: true, mode: true, startTime: true, startPeriod: true, endTime: true, endPeriod: true, batchTiming: true } }) : [];
-  const starts = batchRows.map(row => row.courseStartDate).filter(validDate).sort();
-  const ends = batchRows.map(row => row.courseEndDate).filter(validDate).sort();
-  return { faculty: faculties[0] ? { id: faculties[0].facultyId, name: faculties[0].name, email: faculties[0].email } : null, batches: batchRows, startDate: starts[0] || null, endDate: ends.at(-1) || null, events: [...events.values()].sort((a, b) => `${a.date}${a.startTime || ''}`.localeCompare(`${b.date}${b.startTime || ''}`)) };
+  const permanentFacultyIds = faculties.flatMap(f => [f.id, f.facultyId]);
+  const temporarySessionIds = [...events.values()].filter(event => ['REASSIGNED', 'COMBINED'].includes(event.code)).map(event => event.batchRecordId).filter(Boolean);
+  const batchRows = faculties.length ? await prisma.branchBatch.findMany({ where: { branchId: { in: [...new Set(faculties.map(f => f.branchId))] }, OR: [
+    { facultyId: { in: permanentFacultyIds } },
+    ...(temporarySessionIds.length ? [{ id: { in: temporarySessionIds } }] : []),
+  ], status: 'ACTIVE' }, select: { id: true, batchId: true, batchName: true, courseId: true, courseName: true, facultyId: true, courseStartDate: true, courseEndDate: true, weeklyOffDay: true, weekType: true, mode: true, startTime: true, startPeriod: true, endTime: true, endPeriod: true, batchTiming: true } }) : [];
+  const batchStudentRows = batchRows.length ? await prisma.branchStudent.findMany({
+    where: { branchId: { in: [...new Set(faculties.map(f => f.branchId))] }, batchId: { in: batchRows.map(row => row.batchId) }, recordStatus: 'ACTIVE' },
+    select: { batchId: true },
+  }) : [];
+  const studentCountByBatch = batchStudentRows.reduce((counts, student) => {
+    counts.set(student.batchId, (counts.get(student.batchId) || 0) + 1);
+    return counts;
+  }, new Map());
+  const calendarBatchRows = batchRows.map(row => ({ ...row, studentCount: studentCountByBatch.get(row.batchId) || 0 }));
+  const starts = calendarBatchRows.map(row => row.courseStartDate).filter(validDate).sort();
+  const ends = calendarBatchRows.map(row => row.courseEndDate).filter(validDate).sort();
+  return { faculty: faculties[0] ? { id: faculties[0].facultyId, name: faculties[0].name, email: faculties[0].email } : null, batches: calendarBatchRows, startDate: starts[0] || null, endDate: ends.at(-1) || null, events: [...events.values()].sort((a, b) => `${a.date}${a.startTime || ''}`.localeCompare(`${b.date}${b.startTime || ''}`)) };
 }
 export async function assertAttendanceAllowed(db, students, date, branchId) {
   const context = await scheduleContext(db, branchId);

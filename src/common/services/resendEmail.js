@@ -846,6 +846,38 @@ export async function sendStudentFacultyReassignmentEmail({ to, fullName, batchN
   return sendEmail({ to, subject, html, text });
 }
 
+export async function sendFacultyLeaveApprovalEmail({ to, fullName, leaveDate, leaveType, dayType, startTime, endTime }) {
+  const formatTime = (value) => {
+    const match = String(value || '').match(/^(\d{1,2}):(\d{2})$/)
+    if (!match) return String(value || '-')
+    const hour = Number(match[1])
+    return `${String(hour % 12 || 12).padStart(2, '0')}:${match[2]} ${hour >= 12 ? 'PM' : 'AM'}`
+  }
+  const formatDate = (value) => {
+    const date = new Date(`${String(value || '').trim()}T00:00:00Z`)
+    return Number.isNaN(date.getTime()) ? String(value || '-') : new Intl.DateTimeFormat('en-GB', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'UTC' }).format(date)
+  }
+  const displayDate = formatDate(leaveDate)
+  const displayStart = startTime ? formatTime(startTime) : '-'
+  const displayEnd = endTime ? formatTime(endTime) : '-'
+  const subject = `Leave Request Approved - ${displayDate}`
+  const html = alertTemplate({
+    eyebrow: 'Leave Management',
+    title: subject,
+    subtitle: `Hello ${escapeHtml(fullName || 'Faculty')}, your leave request has been approved.`,
+    summary: 'Please check your Faculty Dashboard for the complete details.',
+    details: [
+      { label: 'Date', value: escapeHtml(displayDate) },
+      { label: 'Leave Type', value: escapeHtml(leaveType || '-') },
+      { label: 'Day Type', value: escapeHtml(dayType || '-') },
+      ...(startTime && endTime ? [{ label: 'Time', value: `${escapeHtml(displayStart)} - ${escapeHtml(displayEnd)}` }] : []),
+      { label: 'Status', value: 'Approved' },
+    ],
+  })
+  const text = [`Hello ${fullName || 'Faculty'},`, '', `Your ${leaveType || ''} leave request has been approved.`, '', `Date: ${displayDate}`, `Leave Type: ${leaveType || '-'}`, `Day Type: ${dayType || '-'}`, startTime && endTime ? `From: ${displayStart}\nTo: ${displayEnd}` : null, 'Status: Approved', '', 'Please check your Faculty Dashboard for the complete details.'].filter(Boolean).join('\n')
+  return sendEmail({ to, subject, html, text })
+}
+
 export async function sendStudentCombinedClassEmail({ to, fullName, courseName, batchName, originalFacultyName, combinedFacultyName, combinedDate, combinedStartTime, combinedEndTime }) {
   const formatTime = (value) => {
     const match = String(value || "").match(/^(\d{1,2}):(\d{2})$/);
