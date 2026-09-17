@@ -275,14 +275,14 @@ function getWorkEntrySubmoduleStatus(entry = {}, submoduleId = "", studentId = "
   return normalizeString(status);
 }
 
-async function validateFacultyBatchScope({ branchId, courseId, batchId, facultyProfileId, facultyUserId, studentIds, workDate }) {
+async function validateFacultyBatchScope({ branchId, courseId, batchId, facultyProfileId, facultyUserId, facultyEmail, studentIds, workDate }) {
   const normalizedBatchId = normalizeString(batchId);
   if (!normalizedBatchId) {
     throw new AppError("Batch is required", 400);
   }
 
-  const replacementProfile = await prisma.branchFaculty.findFirst({ where: { branchId: normalizeString(branchId), OR: [{ facultyId: normalizeString(facultyProfileId) }, { email: { equals: normalizeString(facultyUserId), mode: "insensitive" } }] }, select: { facultyId: true } });
-  const replacementAssignment = replacementProfile ? await prisma.facultyLeaveAffectedSession.findFirst({ where: { branchId: normalizeString(branchId), batchId: normalizedBatchId, sessionDate: workDate, resolutionStatus: "REPLACEMENT_ASSIGNED", replacementStatus: "CONFIRMED", replacementFacultyId: replacementProfile.facultyId }, select: { id: true } }) : null;
+  const replacementProfile = await prisma.branchFaculty.findFirst({ where: { branchId: normalizeString(branchId), OR: [{ facultyId: normalizeString(facultyProfileId) }, { email: { equals: normalizeString(facultyEmail), mode: "insensitive" } }] }, select: { facultyId: true } });
+  const replacementAssignment = replacementProfile ? await prisma.facultyLeaveAffectedSession.findFirst({ where: { branchId: normalizeString(branchId), batchId: normalizedBatchId, OR: [{ replacementDate: workDate }, { sessionDate: workDate }], resolutionStatus: "REPLACEMENT_ASSIGNED", replacementStatus: "CONFIRMED", replacementFacultyId: replacementProfile.facultyId }, select: { id: true, replacementDate: true, replacementStartTime: true, replacementEndTime: true } }) : null;
   const batch = await prisma.branchBatch.findFirst({
     where: {
       batchId: normalizedBatchId,
@@ -528,6 +528,9 @@ function mapWorkEntry(record) {
     facultyId: record.facultyProfileId || record.facultyUserId,
     facultyName: record.facultyName || "",
     facultyEmail: record.facultyEmail || "",
+    isReplacement: Boolean(record.isReplacement),
+    originalFacultyId: record.originalFacultyId || "",
+    originalFacultyName: record.originalFacultyName || "",
     branchId: record.branchId || "",
     courseId: record.courseId,
     courseName: record.courseName,
@@ -568,17 +571,42 @@ function mapWorkEntry(record) {
 export async function listFacultyTodayWorkEntries(query = {}, user = null) {
   ensureFacultyRole(user);
 
-  const where = {
-    facultyUserId: normalizeString(user?.id),
-  };
-
   const workDate = normalizeString(query.workDate);
-  if (workDate) {
-    where.workDate = parseDateKey(workDate);
+  const ownWorkScope = {
+    facultyUserId: normalizeString(user?.id),
+    ...(workDate ? { workDate: parseDateKey(workDate) } : {}),
+  };
+  const whereScopes = [ownWorkScope];
+  let inheritedAssignments = [];
+
+  // A replacement work entry is stored with the replacement faculty as the
+  // audit actor, but it belongs to the original batch/session. Include that
+  // exact batch/date entry when the permanent faculty opens their own work.
+  // This keeps the temporary access session-scoped without changing ownership.
+  const facultyProfile = await prisma.branchFaculty.findFirst({
+    where: { email: { equals: normalizeString(user?.email), mode: "insensitive" }, status: "ACTIVE" },
+    select: { branchId: true, facultyId: true },
+  });
+  if (facultyProfile?.branchId && facultyProfile?.facultyId) {
+    inheritedAssignments = await prisma.facultyLeaveAffectedSession.findMany({
+      where: {
+        branchId: facultyProfile.branchId,
+        originalFacultyId: facultyProfile.facultyId,
+        resolutionStatus: "REPLACEMENT_ASSIGNED",
+        replacementStatus: "CONFIRMED",
+        ...(workDate ? { replacementDate: parseDateKey(workDate) } : { replacementDate: { not: null } }),
+      },
+      select: { batchId: true, replacementDate: true, originalFacultyId: true, originalFacultyName: true },
+    });
+    inheritedAssignments.forEach((assignment) => {
+      if (assignment.batchId && assignment.replacementDate) {
+        whereScopes.push({ batchId: assignment.batchId, workDate: assignment.replacementDate });
+      }
+    });
   }
 
   const records = await prisma.facultyTodayWorkEntry.findMany({
-    where,
+    where: { OR: whereScopes },
     include: { studentEntries: true },
     orderBy: [
       { createdAt: "desc" },
@@ -586,7 +614,19 @@ export async function listFacultyTodayWorkEntries(query = {}, user = null) {
     ],
   });
 
-  return records.map(mapWorkEntry);
+  return records.map((record) => {
+    const replacementAssignment = inheritedAssignments.find((assignment) => (
+      assignment.batchId === record.batchId && assignment.replacementDate === record.workDate
+    ));
+    return mapWorkEntry(replacementAssignment
+      ? {
+          ...record,
+          isReplacement: true,
+          originalFacultyId: replacementAssignment.originalFacultyId,
+          originalFacultyName: replacementAssignment.originalFacultyName,
+        }
+      : record);
+  });
 }
 
 export async function createFacultyTodayWorkEntry(payload = {}, user = null) {
@@ -662,6 +702,7 @@ export async function createFacultyTodayWorkEntry(payload = {}, user = null) {
     batchId,
     facultyProfileId,
     facultyUserId,
+    facultyEmail: user?.email,
     studentIds,
     workDate,
   });

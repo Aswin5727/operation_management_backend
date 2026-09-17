@@ -375,7 +375,7 @@ async function findBranchAttendanceBatch(user, payload = {}, facultyId = "", att
   const facultyCandidates = await resolveBranchFacultyCandidates(user, facultyId);
   const facultyEmail = normalizeString(user?.email).toLowerCase();
   const replacementAssignments = attendanceDate && facultyCandidates.length
-    ? await prisma.facultyLeaveAffectedSession.findMany({ where: { sessionDate: attendanceDate, replacementFacultyId: { in: facultyCandidates }, replacementStatus: "CONFIRMED", resolutionStatus: "REPLACEMENT_ASSIGNED" }, select: { batchRecordId: true, batchId: true } })
+    ? await prisma.facultyLeaveAffectedSession.findMany({ where: { OR: [{ sessionDate: attendanceDate }, { replacementDate: attendanceDate }], replacementFacultyId: { in: facultyCandidates }, replacementStatus: "CONFIRMED", resolutionStatus: "REPLACEMENT_ASSIGNED" }, select: { batchRecordId: true, batchId: true, replacementDate: true, replacementStartTime: true, replacementEndTime: true } })
     : [];
 
   if (!courseId || !batchName) return null;
