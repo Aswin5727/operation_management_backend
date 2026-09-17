@@ -80,6 +80,75 @@ function batchIsInCourseWindow(batch, date) {
   return (!start || date >= start) && (!end || date <= end);
 }
 
+function jsonArray(value) {
+  if (Array.isArray(value)) return value.map(text).filter(Boolean);
+  return [];
+}
+
+async function findRescheduleCombineTarget({ branchId, session, date, startTime, endTime }) {
+  const sourceProgress = await prisma.facultyTodayWorkEntry.findFirst({
+    where: { branchId, courseId: session.courseId, batchId: session.batchId },
+    orderBy: [{ workDate: "desc" }, { createdAt: "desc" }],
+    select: { moduleId: true, submoduleIds: true, submodules: true },
+  });
+  const defaultModule = await prisma.branchCourseModule.findFirst({
+    where: { branchCourseId: session.courseId, status: "ACTIVE" },
+    orderBy: { sequenceNo: "asc" },
+    select: { id: true, submodules: { where: { status: "ACTIVE" }, orderBy: { sequenceNo: "asc" }, select: { id: true } } },
+  });
+  const sourceModuleId = text(sourceProgress?.moduleId) || text(defaultModule?.id);
+  if (!sourceModuleId) return null;
+
+  const targetScheduleType = scheduleTypeForDate(date);
+  const startMinutes = parseTime(startTime);
+  const endMinutes = parseTime(endTime);
+  const candidates = await prisma.branchBatch.findMany({
+    where: {
+      branchId,
+      courseId: session.courseId,
+      status: "ACTIVE",
+    },
+    orderBy: [{ batchName: "asc" }],
+    select: {
+      id: true, batchId: true, batchName: true, courseId: true, courseName: true,
+      facultyId: true, facultyName: true, startTime: true, startPeriod: true,
+      endTime: true, endPeriod: true, weekType: true, weeklyOffDay: true,
+      courseStartDate: true, courseEndDate: true, mode: true,
+    },
+  });
+  const sourceSubmoduleIds = new Set([
+    ...jsonArray(sourceProgress?.submoduleIds),
+    ...(Array.isArray(sourceProgress?.submodules)
+      ? sourceProgress.submodules.map((item) => text(item?.id || item?.submoduleId)).filter(Boolean)
+      : []),
+    ...(Array.isArray(defaultModule?.submodules) ? defaultModule.submodules.map((item) => text(item.id)).filter(Boolean) : []),
+  ]);
+  if (!sourceSubmoduleIds.size) return null;
+
+  for (const candidate of candidates) {
+    if (text(candidate.weekType).toUpperCase() !== targetScheduleType || !batchRunsOnDate(candidate, date) || !batchIsInCourseWindow(candidate, date)) continue;
+    const candidateStart = parseTime(`${candidate.startTime} ${candidate.startPeriod || ""}`);
+    const candidateEnd = parseTime(`${candidate.endTime} ${candidate.endPeriod || ""}`);
+    if (candidateStart !== startMinutes || candidateEnd !== endMinutes) continue;
+    const targetProgress = await prisma.facultyTodayWorkEntry.findFirst({
+      where: { branchId, courseId: session.courseId, batchId: candidate.batchId },
+      orderBy: [{ workDate: "desc" }, { createdAt: "desc" }],
+      select: { moduleId: true, submoduleIds: true, submodules: true },
+    });
+    const targetModuleId = text(targetProgress?.moduleId) || text(defaultModule?.id);
+    if (targetModuleId !== sourceModuleId) continue;
+    const targetSubmoduleIds = new Set([
+      ...jsonArray(targetProgress?.submoduleIds),
+      ...(Array.isArray(targetProgress?.submodules)
+        ? targetProgress.submodules.map((item) => text(item?.id || item?.submoduleId)).filter(Boolean)
+        : []),
+      ...(Array.isArray(defaultModule?.submodules) ? defaultModule.submodules.map((item) => text(item.id)).filter(Boolean) : []),
+    ]);
+    if ([...sourceSubmoduleIds].some((id) => targetSubmoduleIds.has(id))) return candidate;
+  }
+  return null;
+}
+
 function serializeBatch(batch, date, leave) {
   const startTime = text(batch.startTime);
   const endTime = text(batch.endTime);
@@ -346,7 +415,16 @@ export async function listReplacementFaculty(user, leaveId, sessionId, assignmen
       const timingConflict = runs && requestedStart != null && requestedEnd != null && batchStart != null && batchEnd != null && overlaps(batchStart, batchEnd, requestedStart, requestedEnd);
       availability.push({ batchId: batch.batchId, batchRecordId: batch.id, batchName: batch.batchName, courseName: batch.courseName, moduleName: work?.moduleName || defaultModule?.title || null, moduleId: defaultModule?.id || null, submodules, courseProgress: Math.round(Number(courseProgress) || 0), moduleProgress: work?.moduleProgress ?? null, startTime: batch.startTime, startPeriod: batch.startPeriod, endTime: batch.endTime, endPeriod: batch.endPeriod, weekType: batch.weekType, availabilityStatus: timingConflict ? "ALREADY_SCHEDULED" : "AVAILABLE" });
     }
-    return { availability, source: { facultyId: request.facultyId, courseId: session.courseId, originalDate: session.sessionDate } };
+    const combineTarget = requestedStart != null && requestedEnd != null
+      ? await findRescheduleCombineTarget({
+        branchId,
+        session,
+        date: targetDate,
+        startTime: options.targetStartTime,
+        endTime: options.targetEndTime,
+      })
+      : null;
+    return { availability, combineTarget, source: { facultyId: request.facultyId, courseId: session.courseId, originalDate: session.sessionDate } };
   }
   if (text(assignmentType).toUpperCase() === "COMBINED") {
     const defaultModule = await prisma.branchCourseModule.findFirst({
@@ -482,6 +560,7 @@ export async function resolveBranchFacultyLeaveSession(user, leaveId, sessionId,
   const assignmentType = text(payload.assignmentType).toUpperCase();
   if (!["REPLACEMENT", "COMBINED", "RESCHEDULED", "CANCELLED"].includes(assignmentType)) throw new AppError("Select a valid class resolution", 400);
   const data = { assignmentType, resolvedBy: user.id, resolvedAt: new Date(), resolutionReason: text(payload.reason) || null, resolutionStatus: assignmentType === "REPLACEMENT" ? "REPLACEMENT_ASSIGNED" : assignmentType };
+  let rescheduleCombineTarget = null;
   if (assignmentType === "REPLACEMENT") {
     const replacementFacultyId = text(payload.replacementFacultyId);
     const replacementDate = text(payload.replacementDate) || session.sessionDate;
@@ -527,11 +606,46 @@ export async function resolveBranchFacultyLeaveSession(user, leaveId, sessionId,
     if (holiday) throw new AppError("The selected date is a holiday", 409);
     const facultyLeave = await prisma.facultyLeaveRequest.findFirst({ where: { branchId, facultyId: session.originalFacultyId, status: { in: ["PENDING", "APPROVED", "UNDER_REVIEW"] }, fromDate: { lte: date }, toDate: { gte: date }, NOT: { id: request.id } }, select: { id: true } });
     if (facultyLeave) throw new AppError("The faculty is unavailable on the selected date", 409);
+    // Find the auto-combine target before occupancy validation. The target may
+    // belong to the same faculty when their weekday/weekend batches overlap.
+    rescheduleCombineTarget = await findRescheduleCombineTarget({ branchId, session, date, startTime: start, endTime: end });
     const existingSessions = await prisma.facultyLeaveAffectedSession.findMany({ where: { branchId, originalFacultyId: session.originalFacultyId, sessionDate: date, resolutionStatus: { notIn: ["CANCELLED", "RESCHEDULED"] }, NOT: { id: session.id } }, select: { originalStartTime: true, originalEndTime: true, replacementStartTime: true, replacementEndTime: true } });
     if (existingSessions.some(item => overlaps(parseTime(item.replacementStartTime || item.originalStartTime), parseTime(item.replacementEndTime || item.originalEndTime), parseTime(start), parseTime(end)))) throw new AppError("The faculty already has another affected session at this time", 409);
-    const facultyBatches = await prisma.branchBatch.findMany({ where: { branchId, facultyId: session.originalFacultyId, status: "ACTIVE", id: { not: originalBatch.id } }, select: { startTime: true, endTime: true, weekType: true, weeklyOffDay: true } });
-    if (facultyBatches.some(batch => batchRunsOnDate(batch, date) && overlaps(parseTime(batch.startTime), parseTime(batch.endTime), parseTime(start), parseTime(end)))) throw new AppError("The faculty already has a batch at this time", 409);
+    const facultyBatches = await prisma.branchBatch.findMany({ where: { branchId, facultyId: session.originalFacultyId, status: "ACTIVE", id: { not: originalBatch.id } }, select: { startTime: true, startPeriod: true, endTime: true, endPeriod: true, weekType: true, weeklyOffDay: true, batchId: true } });
+    const hasFacultyBatchConflict = facultyBatches.some(batch => batchRunsOnDate(batch, date) && overlaps(parseTime(`${batch.startTime} ${batch.startPeriod || ""}`), parseTime(`${batch.endTime} ${batch.endPeriod || ""}`), parseTime(start), parseTime(end)));
+    if (hasFacultyBatchConflict && !rescheduleCombineTarget) throw new AppError("The faculty already has a batch at this time", 409);
     data.rescheduledDate = date; data.rescheduledStartTime = start; data.rescheduledEndTime = end;
+
+    // Reschedule-only rule: combine only with an opposite-schedule batch
+    // that has the same course, module and submodule at the selected time.
+    // The existing manual COMBINED resolution is intentionally untouched.
+    if (rescheduleCombineTarget) {
+      const combined = await prisma.facultyLeaveCombinedSession.upsert({
+        where: {
+          branchId_sessionDate_startTime_endTime_facultyId: {
+            branchId,
+            sessionDate: date,
+            startTime: start,
+            endTime: end,
+            facultyId: rescheduleCombineTarget.facultyId,
+          },
+        },
+        update: { status: "ACTIVE", courseName: rescheduleCombineTarget.courseName, facultyName: rescheduleCombineTarget.facultyName },
+        create: {
+          branchId,
+          sessionDate: date,
+          startTime: start,
+          endTime: end,
+          courseId: rescheduleCombineTarget.courseId,
+          courseName: rescheduleCombineTarget.courseName,
+          facultyId: rescheduleCombineTarget.facultyId,
+          facultyName: rescheduleCombineTarget.facultyName,
+          mode: rescheduleCombineTarget.mode,
+          createdBy: user.id,
+        },
+      });
+      data.combinedSessionId = combined.id;
+    }
   }
   if (assignmentType === "COMBINED") {
     const target = await prisma.branchBatch.findFirst({ where: { OR: [{ id: text(payload.targetSessionId) }, { batchId: text(payload.targetSessionId) }], branchId, status: "ACTIVE" } });
@@ -553,7 +667,7 @@ export async function resolveBranchFacultyLeaveSession(user, leaveId, sessionId,
     updated = await prisma.facultyLeaveAffectedSession.update({ where: { id: session.id }, data });
     await prisma.facultyLeaveRequest.update({ where: { id: request.id }, data: { status: "UNDER_REVIEW", reviewedBy: user.id, reviewedAt: new Date() } });
   }
-  if (assignmentType === "RESCHEDULED") await notifyRescheduledClass(updated, branchId);
+  if (assignmentType === "RESCHEDULED") await notifyRescheduledClass(updated, branchId, rescheduleCombineTarget);
   if (assignmentType === "REPLACEMENT") {
     const saved = await prisma.facultyLeaveAffectedSession.findUnique({ where: { id: updated.id } });
     const replacementFaculty = await prisma.branchFaculty.findFirst({ where: { branchId, facultyId: saved.replacementFacultyId }, select: { facultyId: true, name: true, email: true } });
@@ -742,15 +856,13 @@ async function notifyFacultyLeaveApproval(request, branchId, actor) {
   }
 }
 
-async function notifyRescheduledClass(session, branchId) {
+async function notifyRescheduledClass(session, branchId, combinedBatch = null) {
   const originalDate = session.sessionDate;
   const newDate = session.rescheduledDate;
   const originalStartTime = session.originalStartTime;
   const originalEndTime = session.originalEndTime;
   const newStartTime = session.rescheduledStartTime;
   const newEndTime = session.rescheduledEndTime;
-  const progress = await prisma.facultyTodayWorkEntry.findFirst({ where: { branchId, batchId: session.batchId, ...(session.courseId ? { courseId: session.courseId } : {}) }, orderBy: [{ workDate: "desc" }, { createdAt: "desc" }], select: { moduleName: true } });
-  const moduleName = progress?.moduleName || null;
   const faculty = await prisma.branchFaculty.findFirst({ where: { branchId, facultyId: session.originalFacultyId, status: "ACTIVE" }, select: { name: true, email: true } });
   const facultyUser = faculty?.email ? await prisma.user.findFirst({ where: { email: { equals: faculty.email, mode: "insensitive" }, active: true }, select: { id: true, email: true, fullName: true } }) : null;
   const facultyMessage = `Your ${session.courseName || "class"} - ${session.batchName} class has been rescheduled from ${displayDate(originalDate)} to ${displayDate(newDate)}, from ${displayTime(newStartTime)} to ${displayTime(newEndTime)}.`;
@@ -759,27 +871,40 @@ async function notifyRescheduledClass(session, branchId) {
     const existing = await prisma.notification.findFirst({ where: { kind: "FACULTY_LEAVE_REQUEST", targetUserId: facultyUser.id, requestDescription: key }, select: { id: true } });
     if (!existing) await createNotification({ kind: "FACULTY_LEAVE_REQUEST", tone: "blue", title: "Class Rescheduled", message: facultyMessage, actionLabel: "View Calendar", targetUserId: facultyUser.id, targetBranchId: branchId, facultyId: session.originalFacultyId, facultyName: faculty?.name || session.originalFacultyName || "", requestDescription: key });
     if (facultyUser.email) {
-      try { await sendFacultyRescheduledClassEmail({ to: facultyUser.email, fullName: facultyUser.fullName || faculty?.name, courseName: session.courseName, batchName: session.batchName, moduleName, originalDate, originalStartTime, originalEndTime, newDate, newStartTime, newEndTime }); } catch (error) { console.warn("[RESCHEDULE] Faculty email failed:", error?.message || error); }
+      try { await sendFacultyRescheduledClassEmail({ to: facultyUser.email, fullName: facultyUser.fullName || faculty?.name, courseName: session.courseName, batchName: session.batchName, originalDate, originalStartTime, originalEndTime, newDate, newStartTime, newEndTime }); } catch (error) { console.warn("[RESCHEDULE] Faculty email failed:", error?.message || error); }
     }
   }
   const linkedBatch = session.batchRecordId
     ? await prisma.branchBatch.findFirst({ where: { id: session.batchRecordId, branchId }, select: { batchId: true } })
     : null;
-  const affectedBatchIds = [...new Set([session.batchId, linkedBatch?.batchId].map(value => text(value)).filter(Boolean))];
+  const affectedBatchIds = [...new Set([session.batchId, linkedBatch?.batchId, combinedBatch?.batchId].map(value => text(value)).filter(Boolean))];
   const students = affectedBatchIds.length
-    ? await prisma.branchStudent.findMany({ where: { branchId, batchId: { in: affectedBatchIds }, recordStatus: "ACTIVE" }, select: { id: true, studentId: true, studentName: true, emailAddress: true } })
+    ? await prisma.branchStudent.findMany({ where: { branchId, batchId: { in: affectedBatchIds }, recordStatus: "ACTIVE" }, select: { id: true, studentId: true, studentName: true, emailAddress: true, batchId: true } })
     : [];
   for (const student of students) {
     const user = student.emailAddress ? await prisma.user.findFirst({ where: { email: { equals: student.emailAddress, mode: "insensitive" }, active: true }, select: { id: true, email: true, fullName: true } }) : null;
-    const key = `rescheduled-session:${session.id}:student:${student.id}`;
+    const isCombinedTarget = Boolean(combinedBatch?.batchId && student.batchId === combinedBatch.batchId);
+    const studentBatchName = isCombinedTarget ? combinedBatch.batchName : session.batchName;
+    const studentMessage = isCombinedTarget
+      ? "Your " + (session.courseName || "course") + " - " + (studentBatchName || "batch") + " class on " + displayDate(newDate) + " at " + displayTime(newStartTime) + " - " + displayTime(newEndTime) + " will be combined with " + (session.batchName || "another batch") + "."
+      : combinedBatch
+        ? "Your " + (session.courseName || "course") + " - " + (studentBatchName || "batch") + " class has been rescheduled from " + displayDate(originalDate) + " to " + displayDate(newDate) + ", from " + displayTime(newStartTime) + " to " + displayTime(newEndTime) + ", and combined with " + (combinedBatch.batchName || "another batch") + "."
+        : "Your " + (session.courseName || "class") + " - " + (studentBatchName || "batch") + " class has been rescheduled from " + displayDate(originalDate) + " to " + displayDate(newDate) + ", from " + displayTime(newStartTime) + " to " + displayTime(newEndTime) + ".";
+    const key = `rescheduled-session:${session.id}:student:${student.id}:${isCombinedTarget ? "combined" : "source"}`;
     if (user) {
       const existing = await prisma.notification.findFirst({ where: { kind: "INSTITUTE_LEAVE", targetUserId: user.id, requestDescription: key }, select: { id: true } });
-      if (!existing) await createNotification({ kind: "INSTITUTE_LEAVE", tone: "blue", title: "Class Rescheduled", message: `Your ${session.courseName || "class"} - ${session.batchName} class has been rescheduled from ${displayDate(originalDate)} to ${displayDate(newDate)}, from ${displayTime(newStartTime)} to ${displayTime(newEndTime)}.`, actionLabel: "View Calendar", targetUserId: user.id, targetBranchId: branchId, requestDescription: key });
+      if (!existing) await createNotification({ kind: "INSTITUTE_LEAVE", tone: "blue", title: combinedBatch ? "Class Rescheduled and Combined" : "Class Rescheduled", message: studentMessage, actionLabel: "View Calendar", targetUserId: user.id, targetBranchId: branchId, requestDescription: key });
     } else {
       console.warn(`[RESCHEDULE] No active student user found for ${student.studentId || student.id}; email will still be sent`);
     }
     if (student.emailAddress) {
-      try { await sendStudentRescheduledClassEmail({ to: student.emailAddress, fullName: user?.fullName || student.studentName, courseName: session.courseName, batchName: session.batchName, facultyName: session.originalFacultyName, originalDate, originalStartTime, originalEndTime, newDate, newStartTime, newEndTime }); } catch (error) { console.warn(`[RESCHEDULE] Student email failed for ${student.studentId}:`, error?.message || error); }
+      try {
+        if (isCombinedTarget) {
+          await sendStudentCombinedClassEmail({ to: student.emailAddress, fullName: user?.fullName || student.studentName, courseName: session.courseName, batchName: studentBatchName, originalFacultyName: combinedBatch.facultyName, combinedFacultyName: session.originalFacultyName, combinedDate: newDate, combinedStartTime: newStartTime, combinedEndTime: newEndTime });
+        } else {
+          await sendStudentRescheduledClassEmail({ to: student.emailAddress, fullName: user?.fullName || student.studentName, courseName: session.courseName, batchName: studentBatchName, facultyName: session.originalFacultyName, originalDate, originalStartTime, originalEndTime, newDate, newStartTime, newEndTime });
+        }
+      } catch (error) { console.warn("[RESCHEDULE] Student email failed for " + student.studentId + ":", error?.message || error); }
     }
   }
 }

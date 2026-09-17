@@ -878,16 +878,16 @@ export async function sendFacultyLeaveApprovalEmail({ to, fullName, leaveDate, l
   return sendEmail({ to, subject, html, text })
 }
 
-export async function sendFacultyRescheduledClassEmail({ to, fullName, courseName, batchName, moduleName, originalDate, originalStartTime, originalEndTime, newDate, newStartTime, newEndTime }) {
+export async function sendFacultyRescheduledClassEmail({ to, fullName, courseName, batchName, originalDate, originalStartTime, originalEndTime, newDate, newStartTime, newEndTime }) {
   const formatTime = value => { const match = String(value || '').match(/^(\d{1,2}):(\d{2})$/); if (!match) return String(value || '-'); const hour = Number(match[1]); return `${String(hour % 12 || 12).padStart(2, '0')}:${match[2]} ${hour >= 12 ? 'PM' : 'AM'}` }
   const formatDate = value => { const date = new Date(`${String(value || '').trim()}T00:00:00Z`); return Number.isNaN(date.getTime()) ? String(value || '-') : new Intl.DateTimeFormat('en-GB', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'UTC' }).format(date) }
   const subject = `Class Rescheduled - ${batchName || 'Your Batch'}`
   const details = [
-    { label: 'Course', value: escapeHtml(courseName || '-') }, { label: 'Batch', value: escapeHtml(batchName || '-') }, { label: 'Module', value: escapeHtml(moduleName || '-') },
+    { label: 'Course', value: escapeHtml(courseName || '-') }, { label: 'Batch', value: escapeHtml(batchName || '-') },
     { label: 'Original Date', value: escapeHtml(formatDate(originalDate)) }, { label: 'Original Time', value: `${escapeHtml(formatTime(originalStartTime))} - ${escapeHtml(formatTime(originalEndTime))}` },
     { label: 'New Date', value: escapeHtml(formatDate(newDate)) }, { label: 'New Time', value: `${escapeHtml(formatTime(newStartTime))} - ${escapeHtml(formatTime(newEndTime))}` }, { label: 'Assignment Type', value: 'Rescheduled' },
   ]
-  return sendEmail({ to, subject, html: alertTemplate({ eyebrow: 'Schedule Update', title: subject, subtitle: `Hello ${escapeHtml(fullName || 'Faculty')}, your class has been rescheduled.`, summary: 'Please check your Faculty Dashboard for the updated schedule.', details }), text: [`Hello ${fullName || 'Faculty'},`, '', 'Your class has been rescheduled.', '', `Course: ${courseName || '-'}`, `Batch: ${batchName || '-'}`, `Module: ${moduleName || '-'}`, `Original Date: ${formatDate(originalDate)}`, `Original Time: ${formatTime(originalStartTime)} - ${formatTime(originalEndTime)}`, `New Date: ${formatDate(newDate)}`, `New Time: ${formatTime(newStartTime)} - ${formatTime(newEndTime)}`, 'Assignment Type: Rescheduled', '', 'Please check your Faculty Dashboard for the updated schedule.'].join('\n') })
+  return sendEmail({ to, subject, html: alertTemplate({ eyebrow: 'Schedule Update', title: subject, subtitle: `Hello ${escapeHtml(fullName || 'Faculty')}, your class has been rescheduled.`, summary: 'Please check your Faculty Dashboard for the updated schedule.', details }), text: [`Hello ${fullName || 'Faculty'},`, '', 'Your class has been rescheduled.', '', `Course: ${courseName || '-'}`, `Batch: ${batchName || '-'}`, `Original Date: ${formatDate(originalDate)}`, `Original Time: ${formatTime(originalStartTime)} - ${formatTime(originalEndTime)}`, `New Date: ${formatDate(newDate)}`, `New Time: ${formatTime(newStartTime)} - ${formatTime(newEndTime)}`, 'Assignment Type: Rescheduled', '', 'Please check your Faculty Dashboard for the updated schedule.'].join('\n') })
 }
 
 export async function sendStudentRescheduledClassEmail({ to, fullName, courseName, batchName, facultyName, originalDate, originalStartTime, originalEndTime, newDate, newStartTime, newEndTime }) {
