@@ -6,7 +6,7 @@ import { listLeaves, getLeave, mutateLeave, facultyCalendar } from './instituteL
 const router = express.Router();
 router.use(authenticate);
 router.get('/faculty-calendar', authorize('FACULTY'), asyncHandler(async (req, res) => res.json({ data: await facultyCalendar(req.user, req.query) })));
-router.use(authorize('BRANCH_ADMIN'));
+router.use(authorize('BRANCH_ADMIN', 'SUPER_ADMIN'));
 router.get('/', asyncHandler(async (req, res) => res.json({ data: await listLeaves(req.user, req.query) })));
 router.post('/', asyncHandler(async (req, res) => res.status(201).json({ data: await mutateLeave(req.user, null, req.body) })));
 router.get('/:id', asyncHandler(async (req, res) => res.json({ data: await getLeave(req.user, req.params.id) })));

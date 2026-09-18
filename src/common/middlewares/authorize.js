@@ -12,6 +12,13 @@ function authorize(...allowedRoles) {
 
     const currentRole = String(req.user.role || "").trim().toUpperCase();
 
+    // Super Admin is the platform-wide administrator. Keep feature routes
+    // safe for normal roles while allowing Super Admin branch/faculty views
+    // even when an older route has not listed the role explicitly.
+    if (currentRole === "SUPER_ADMIN") {
+      return next();
+    }
+
     if (!normalizedAllowedRoles.includes(currentRole)) {
       return next(new AppError("You do not have permission for this action", 403));
     }

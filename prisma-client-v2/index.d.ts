@@ -17581,6 +17581,7 @@ export namespace Prisma {
     courseCode: string | null
     name: string | null
     nameKey: string | null
+    courseType: string | null
     description: string | null
     mode: string | null
     duration: number | null
@@ -17602,6 +17603,7 @@ export namespace Prisma {
     courseCode: string | null
     name: string | null
     nameKey: string | null
+    courseType: string | null
     description: string | null
     mode: string | null
     duration: number | null
@@ -17623,6 +17625,7 @@ export namespace Prisma {
     courseCode: number
     name: number
     nameKey: number
+    courseType: number
     description: number
     mode: number
     duration: number
@@ -17666,6 +17669,7 @@ export namespace Prisma {
     courseCode?: true
     name?: true
     nameKey?: true
+    courseType?: true
     description?: true
     mode?: true
     duration?: true
@@ -17687,6 +17691,7 @@ export namespace Prisma {
     courseCode?: true
     name?: true
     nameKey?: true
+    courseType?: true
     description?: true
     mode?: true
     duration?: true
@@ -17708,6 +17713,7 @@ export namespace Prisma {
     courseCode?: true
     name?: true
     nameKey?: true
+    courseType?: true
     description?: true
     mode?: true
     duration?: true
@@ -17818,6 +17824,7 @@ export namespace Prisma {
     courseCode: string
     name: string
     nameKey: string
+    courseType: string
     description: string | null
     mode: string
     duration: number | null
@@ -17860,6 +17867,7 @@ export namespace Prisma {
     courseCode?: boolean
     name?: boolean
     nameKey?: boolean
+    courseType?: boolean
     description?: boolean
     mode?: boolean
     duration?: boolean
@@ -17893,6 +17901,7 @@ export namespace Prisma {
     courseCode?: boolean
     name?: boolean
     nameKey?: boolean
+    courseType?: boolean
     description?: boolean
     mode?: boolean
     duration?: boolean
@@ -17917,6 +17926,7 @@ export namespace Prisma {
     courseCode?: boolean
     name?: boolean
     nameKey?: boolean
+    courseType?: boolean
     description?: boolean
     mode?: boolean
     duration?: boolean
@@ -17941,6 +17951,7 @@ export namespace Prisma {
     courseCode?: boolean
     name?: boolean
     nameKey?: boolean
+    courseType?: boolean
     description?: boolean
     mode?: boolean
     duration?: boolean
@@ -17958,7 +17969,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type BranchCourseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "branchId" | "courseCode" | "name" | "nameKey" | "description" | "mode" | "duration" | "hours" | "actualFees" | "registrationFees" | "discount" | "afterDiscount" | "paymentPlans" | "paymentPlanSelections" | "status" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["branchCourse"]>
+  export type BranchCourseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "branchId" | "courseCode" | "name" | "nameKey" | "courseType" | "description" | "mode" | "duration" | "hours" | "actualFees" | "registrationFees" | "discount" | "afterDiscount" | "paymentPlans" | "paymentPlanSelections" | "status" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["branchCourse"]>
   export type BranchCourseInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     branch?: boolean | BranchDefaultArgs<ExtArgs>
     installmentTemplate?: boolean | BranchCourse$installmentTemplateArgs<ExtArgs>
@@ -17997,6 +18008,7 @@ export namespace Prisma {
       courseCode: string
       name: string
       nameKey: string
+      courseType: string
       description: string | null
       mode: string
       duration: number | null
@@ -18449,6 +18461,7 @@ export namespace Prisma {
     readonly courseCode: FieldRef<"BranchCourse", 'String'>
     readonly name: FieldRef<"BranchCourse", 'String'>
     readonly nameKey: FieldRef<"BranchCourse", 'String'>
+    readonly courseType: FieldRef<"BranchCourse", 'String'>
     readonly description: FieldRef<"BranchCourse", 'String'>
     readonly mode: FieldRef<"BranchCourse", 'String'>
     readonly duration: FieldRef<"BranchCourse", 'Int'>
@@ -58235,6 +58248,7 @@ export namespace Prisma {
     courseCode: 'courseCode',
     name: 'name',
     nameKey: 'nameKey',
+    courseType: 'courseType',
     description: 'description',
     mode: 'mode',
     duration: 'duration',
@@ -60341,6 +60355,7 @@ export namespace Prisma {
     courseCode?: StringFilter<"BranchCourse"> | string
     name?: StringFilter<"BranchCourse"> | string
     nameKey?: StringFilter<"BranchCourse"> | string
+    courseType?: StringFilter<"BranchCourse"> | string
     description?: StringNullableFilter<"BranchCourse"> | string | null
     mode?: StringFilter<"BranchCourse"> | string
     duration?: IntNullableFilter<"BranchCourse"> | number | null
@@ -60373,6 +60388,7 @@ export namespace Prisma {
     courseCode?: SortOrder
     name?: SortOrder
     nameKey?: SortOrder
+    courseType?: SortOrder
     description?: SortOrderInput | SortOrder
     mode?: SortOrder
     duration?: SortOrderInput | SortOrder
@@ -60410,6 +60426,7 @@ export namespace Prisma {
     courseCode?: StringFilter<"BranchCourse"> | string
     name?: StringFilter<"BranchCourse"> | string
     nameKey?: StringFilter<"BranchCourse"> | string
+    courseType?: StringFilter<"BranchCourse"> | string
     description?: StringNullableFilter<"BranchCourse"> | string | null
     mode?: StringFilter<"BranchCourse"> | string
     duration?: IntNullableFilter<"BranchCourse"> | number | null
@@ -60442,6 +60459,7 @@ export namespace Prisma {
     courseCode?: SortOrder
     name?: SortOrder
     nameKey?: SortOrder
+    courseType?: SortOrder
     description?: SortOrderInput | SortOrder
     mode?: SortOrder
     duration?: SortOrderInput | SortOrder
@@ -60473,6 +60491,7 @@ export namespace Prisma {
     courseCode?: StringWithAggregatesFilter<"BranchCourse"> | string
     name?: StringWithAggregatesFilter<"BranchCourse"> | string
     nameKey?: StringWithAggregatesFilter<"BranchCourse"> | string
+    courseType?: StringWithAggregatesFilter<"BranchCourse"> | string
     description?: StringNullableWithAggregatesFilter<"BranchCourse"> | string | null
     mode?: StringWithAggregatesFilter<"BranchCourse"> | string
     duration?: IntNullableWithAggregatesFilter<"BranchCourse"> | number | null
@@ -65524,6 +65543,7 @@ export namespace Prisma {
     courseCode: string
     name: string
     nameKey: string
+    courseType?: string
     description?: string | null
     mode: string
     duration?: number | null
@@ -65556,6 +65576,7 @@ export namespace Prisma {
     courseCode: string
     name: string
     nameKey: string
+    courseType?: string
     description?: string | null
     mode: string
     duration?: number | null
@@ -65586,6 +65607,7 @@ export namespace Prisma {
     courseCode?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     nameKey?: StringFieldUpdateOperationsInput | string
+    courseType?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     mode?: StringFieldUpdateOperationsInput | string
     duration?: NullableIntFieldUpdateOperationsInput | number | null
@@ -65618,6 +65640,7 @@ export namespace Prisma {
     courseCode?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     nameKey?: StringFieldUpdateOperationsInput | string
+    courseType?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     mode?: StringFieldUpdateOperationsInput | string
     duration?: NullableIntFieldUpdateOperationsInput | number | null
@@ -65649,6 +65672,7 @@ export namespace Prisma {
     courseCode: string
     name: string
     nameKey: string
+    courseType?: string
     description?: string | null
     mode: string
     duration?: number | null
@@ -65671,6 +65695,7 @@ export namespace Prisma {
     courseCode?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     nameKey?: StringFieldUpdateOperationsInput | string
+    courseType?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     mode?: StringFieldUpdateOperationsInput | string
     duration?: NullableIntFieldUpdateOperationsInput | number | null
@@ -65694,6 +65719,7 @@ export namespace Prisma {
     courseCode?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     nameKey?: StringFieldUpdateOperationsInput | string
+    courseType?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     mode?: StringFieldUpdateOperationsInput | string
     duration?: NullableIntFieldUpdateOperationsInput | number | null
@@ -71256,6 +71282,7 @@ export namespace Prisma {
     courseCode?: SortOrder
     name?: SortOrder
     nameKey?: SortOrder
+    courseType?: SortOrder
     description?: SortOrder
     mode?: SortOrder
     duration?: SortOrder
@@ -71288,6 +71315,7 @@ export namespace Prisma {
     courseCode?: SortOrder
     name?: SortOrder
     nameKey?: SortOrder
+    courseType?: SortOrder
     description?: SortOrder
     mode?: SortOrder
     duration?: SortOrder
@@ -71309,6 +71337,7 @@ export namespace Prisma {
     courseCode?: SortOrder
     name?: SortOrder
     nameKey?: SortOrder
+    courseType?: SortOrder
     description?: SortOrder
     mode?: SortOrder
     duration?: SortOrder
@@ -78980,6 +79009,7 @@ export namespace Prisma {
     courseCode: string
     name: string
     nameKey: string
+    courseType?: string
     description?: string | null
     mode: string
     duration?: number | null
@@ -79010,6 +79040,7 @@ export namespace Prisma {
     courseCode: string
     name: string
     nameKey: string
+    courseType?: string
     description?: string | null
     mode: string
     duration?: number | null
@@ -79781,6 +79812,7 @@ export namespace Prisma {
     courseCode?: StringFilter<"BranchCourse"> | string
     name?: StringFilter<"BranchCourse"> | string
     nameKey?: StringFilter<"BranchCourse"> | string
+    courseType?: StringFilter<"BranchCourse"> | string
     description?: StringNullableFilter<"BranchCourse"> | string | null
     mode?: StringFilter<"BranchCourse"> | string
     duration?: IntNullableFilter<"BranchCourse"> | number | null
@@ -82517,6 +82549,7 @@ export namespace Prisma {
     courseCode: string
     name: string
     nameKey: string
+    courseType?: string
     description?: string | null
     mode: string
     duration?: number | null
@@ -82548,6 +82581,7 @@ export namespace Prisma {
     courseCode: string
     name: string
     nameKey: string
+    courseType?: string
     description?: string | null
     mode: string
     duration?: number | null
@@ -82629,6 +82663,7 @@ export namespace Prisma {
     courseCode?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     nameKey?: StringFieldUpdateOperationsInput | string
+    courseType?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     mode?: StringFieldUpdateOperationsInput | string
     duration?: NullableIntFieldUpdateOperationsInput | number | null
@@ -82660,6 +82695,7 @@ export namespace Prisma {
     courseCode?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     nameKey?: StringFieldUpdateOperationsInput | string
+    courseType?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     mode?: StringFieldUpdateOperationsInput | string
     duration?: NullableIntFieldUpdateOperationsInput | number | null
@@ -83562,6 +83598,7 @@ export namespace Prisma {
     courseCode: string
     name: string
     nameKey: string
+    courseType?: string
     description?: string | null
     mode: string
     duration?: number | null
@@ -83593,6 +83630,7 @@ export namespace Prisma {
     courseCode: string
     name: string
     nameKey: string
+    courseType?: string
     description?: string | null
     mode: string
     duration?: number | null
@@ -83766,6 +83804,7 @@ export namespace Prisma {
     courseCode?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     nameKey?: StringFieldUpdateOperationsInput | string
+    courseType?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     mode?: StringFieldUpdateOperationsInput | string
     duration?: NullableIntFieldUpdateOperationsInput | number | null
@@ -83797,6 +83836,7 @@ export namespace Prisma {
     courseCode?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     nameKey?: StringFieldUpdateOperationsInput | string
+    courseType?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     mode?: StringFieldUpdateOperationsInput | string
     duration?: NullableIntFieldUpdateOperationsInput | number | null
@@ -84434,6 +84474,7 @@ export namespace Prisma {
     courseCode: string
     name: string
     nameKey: string
+    courseType?: string
     description?: string | null
     mode: string
     duration?: number | null
@@ -84465,6 +84506,7 @@ export namespace Prisma {
     courseCode: string
     name: string
     nameKey: string
+    courseType?: string
     description?: string | null
     mode: string
     duration?: number | null
@@ -84829,6 +84871,7 @@ export namespace Prisma {
     courseCode?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     nameKey?: StringFieldUpdateOperationsInput | string
+    courseType?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     mode?: StringFieldUpdateOperationsInput | string
     duration?: NullableIntFieldUpdateOperationsInput | number | null
@@ -84860,6 +84903,7 @@ export namespace Prisma {
     courseCode?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     nameKey?: StringFieldUpdateOperationsInput | string
+    courseType?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     mode?: StringFieldUpdateOperationsInput | string
     duration?: NullableIntFieldUpdateOperationsInput | number | null
@@ -87347,6 +87391,7 @@ export namespace Prisma {
     courseCode: string
     name: string
     nameKey: string
+    courseType?: string
     description?: string | null
     mode: string
     duration?: number | null
@@ -87378,6 +87423,7 @@ export namespace Prisma {
     courseCode: string
     name: string
     nameKey: string
+    courseType?: string
     description?: string | null
     mode: string
     duration?: number | null
@@ -87550,6 +87596,7 @@ export namespace Prisma {
     courseCode?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     nameKey?: StringFieldUpdateOperationsInput | string
+    courseType?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     mode?: StringFieldUpdateOperationsInput | string
     duration?: NullableIntFieldUpdateOperationsInput | number | null
@@ -87581,6 +87628,7 @@ export namespace Prisma {
     courseCode?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     nameKey?: StringFieldUpdateOperationsInput | string
+    courseType?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     mode?: StringFieldUpdateOperationsInput | string
     duration?: NullableIntFieldUpdateOperationsInput | number | null
@@ -87798,6 +87846,7 @@ export namespace Prisma {
     courseCode: string
     name: string
     nameKey: string
+    courseType?: string
     description?: string | null
     mode: string
     duration?: number | null
@@ -87829,6 +87878,7 @@ export namespace Prisma {
     courseCode: string
     name: string
     nameKey: string
+    courseType?: string
     description?: string | null
     mode: string
     duration?: number | null
@@ -88058,6 +88108,7 @@ export namespace Prisma {
     courseCode?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     nameKey?: StringFieldUpdateOperationsInput | string
+    courseType?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     mode?: StringFieldUpdateOperationsInput | string
     duration?: NullableIntFieldUpdateOperationsInput | number | null
@@ -88089,6 +88140,7 @@ export namespace Prisma {
     courseCode?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     nameKey?: StringFieldUpdateOperationsInput | string
+    courseType?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     mode?: StringFieldUpdateOperationsInput | string
     duration?: NullableIntFieldUpdateOperationsInput | number | null
@@ -88478,6 +88530,7 @@ export namespace Prisma {
     courseCode: string
     name: string
     nameKey: string
+    courseType?: string
     description?: string | null
     mode: string
     duration?: number | null
@@ -88509,6 +88562,7 @@ export namespace Prisma {
     courseCode: string
     name: string
     nameKey: string
+    courseType?: string
     description?: string | null
     mode: string
     duration?: number | null
@@ -88802,6 +88856,7 @@ export namespace Prisma {
     courseCode?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     nameKey?: StringFieldUpdateOperationsInput | string
+    courseType?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     mode?: StringFieldUpdateOperationsInput | string
     duration?: NullableIntFieldUpdateOperationsInput | number | null
@@ -88833,6 +88888,7 @@ export namespace Prisma {
     courseCode?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     nameKey?: StringFieldUpdateOperationsInput | string
+    courseType?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     mode?: StringFieldUpdateOperationsInput | string
     duration?: NullableIntFieldUpdateOperationsInput | number | null
@@ -89409,6 +89465,7 @@ export namespace Prisma {
     courseCode: string
     name: string
     nameKey: string
+    courseType?: string
     description?: string | null
     mode: string
     duration?: number | null
@@ -89440,6 +89497,7 @@ export namespace Prisma {
     courseCode: string
     name: string
     nameKey: string
+    courseType?: string
     description?: string | null
     mode: string
     duration?: number | null
@@ -89544,6 +89602,7 @@ export namespace Prisma {
     courseCode?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     nameKey?: StringFieldUpdateOperationsInput | string
+    courseType?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     mode?: StringFieldUpdateOperationsInput | string
     duration?: NullableIntFieldUpdateOperationsInput | number | null
@@ -89575,6 +89634,7 @@ export namespace Prisma {
     courseCode?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     nameKey?: StringFieldUpdateOperationsInput | string
+    courseType?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     mode?: StringFieldUpdateOperationsInput | string
     duration?: NullableIntFieldUpdateOperationsInput | number | null
@@ -89673,6 +89733,7 @@ export namespace Prisma {
     courseCode: string
     name: string
     nameKey: string
+    courseType?: string
     description?: string | null
     mode: string
     duration?: number | null
@@ -89704,6 +89765,7 @@ export namespace Prisma {
     courseCode: string
     name: string
     nameKey: string
+    courseType?: string
     description?: string | null
     mode: string
     duration?: number | null
@@ -89824,6 +89886,7 @@ export namespace Prisma {
     courseCode?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     nameKey?: StringFieldUpdateOperationsInput | string
+    courseType?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     mode?: StringFieldUpdateOperationsInput | string
     duration?: NullableIntFieldUpdateOperationsInput | number | null
@@ -89855,6 +89918,7 @@ export namespace Prisma {
     courseCode?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     nameKey?: StringFieldUpdateOperationsInput | string
+    courseType?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     mode?: StringFieldUpdateOperationsInput | string
     duration?: NullableIntFieldUpdateOperationsInput | number | null
@@ -91564,6 +91628,7 @@ export namespace Prisma {
     courseCode: string
     name: string
     nameKey: string
+    courseType?: string
     description?: string | null
     mode: string
     duration?: number | null
@@ -91835,6 +91900,7 @@ export namespace Prisma {
     courseCode?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     nameKey?: StringFieldUpdateOperationsInput | string
+    courseType?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     mode?: StringFieldUpdateOperationsInput | string
     duration?: NullableIntFieldUpdateOperationsInput | number | null
@@ -91865,6 +91931,7 @@ export namespace Prisma {
     courseCode?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     nameKey?: StringFieldUpdateOperationsInput | string
+    courseType?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     mode?: StringFieldUpdateOperationsInput | string
     duration?: NullableIntFieldUpdateOperationsInput | number | null
@@ -91895,6 +91962,7 @@ export namespace Prisma {
     courseCode?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     nameKey?: StringFieldUpdateOperationsInput | string
+    courseType?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     mode?: StringFieldUpdateOperationsInput | string
     duration?: NullableIntFieldUpdateOperationsInput | number | null
