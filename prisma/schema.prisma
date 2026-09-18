@@ -583,6 +583,7 @@ model BranchStudent {
   paymentPlanId      String?
   paymentPlan        String?
   courseProgress     Int?
+  courseCompletedAt  DateTime?
   branch             Branch       @relation(fields: [branchId], references: [id], onDelete: Cascade)
   course             BranchCourse? @relation(fields: [courseId], references: [id])
   installments       BranchStudentInstallment[]

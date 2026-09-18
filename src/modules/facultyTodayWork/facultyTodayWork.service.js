@@ -522,12 +522,22 @@ async function syncBranchStudentCourseProgress(tx, { branchCourse, branchId, bat
     ));
     const courseProgress = calculateBranchStudentCourseProgress(branchCourse, allWorkEntries, student, attemptsForStudent);
 
+    const normalizedCourseProgress = Math.max(0, Math.min(100, Math.round(courseProgress)));
+    const progressData = {
+      courseProgress: normalizedCourseProgress,
+      updatedBy: actorId || null,
+    };
+
+    // Keep the first time the persisted course progress reached completion.
+    // The timestamp is lifecycle metadata; course status remains derived from
+    // the current courseProgress value.
+    if (normalizedCourseProgress >= 100 && !student.courseCompletedAt) {
+      progressData.courseCompletedAt = new Date();
+    }
+
     await tx.branchStudent.update({
       where: { id: student.id },
-      data: {
-        courseProgress: Math.max(0, Math.min(100, Math.round(courseProgress))),
-        updatedBy: actorId || null,
-      },
+      data: progressData,
     });
   }
 }

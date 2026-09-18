@@ -80,8 +80,41 @@ function toBatch(record = {}) {
     facultyEmail: record.facultyEmail || record.branchFaculty?.email || "", batchName: record.batchName || "", startTime: record.startTime || "",
     startPeriod: record.startPeriod || "AM", endTime: record.endTime || "", endPeriod: record.endPeriod || "AM", batchTiming: record.batchTiming || buildTiming(record),
     totalSeats: Number(record.totalSeats || 0), weekType: text(record.weekType).toUpperCase(), mode: text(record.mode).toUpperCase(), courseStartDate: record.courseStartDate || null, courseEndDate: record.courseEndDate || null, weeklyOffDay: record.weeklyOffDay || record.branchFaculty?.weeklyOffDay || null, sequenceNo: Number(record.sequenceNo || 1), status: text(record.status || "ACTIVE").toUpperCase(),
+    completionStatus: text(record.completionStatus || "AVAILABLE").toUpperCase(),
+    activeStudentCount: Number(record.activeStudentCount || 0),
+    completedStudentCount: Number(record.completedStudentCount || 0),
     createdAt: record.createdAt || null, updatedAt: record.updatedAt || null,
   };
+}
+
+async function addBatchCompletionMetadata(records = []) {
+  const batchIds = records.map((record) => text(record.batchId)).filter(Boolean);
+  if (!batchIds.length) return records;
+
+  const students = await prisma.branchStudent.findMany({
+    where: { batchId: { in: batchIds }, recordStatus: "ACTIVE" },
+    select: { batchId: true, courseProgress: true },
+  });
+  const byBatch = new Map();
+
+  students.forEach((student) => {
+    const key = text(student.batchId);
+    const current = byBatch.get(key) || { activeStudentCount: 0, completedStudentCount: 0 };
+    current.activeStudentCount += 1;
+    if (Number(student.courseProgress) >= 100) current.completedStudentCount += 1;
+    byBatch.set(key, current);
+  });
+
+  return records.map((record) => {
+    const summary = byBatch.get(text(record.batchId)) || { activeStudentCount: 0, completedStudentCount: 0 };
+    return {
+      ...record,
+      completionStatus: summary.activeStudentCount > 0 && summary.activeStudentCount === summary.completedStudentCount
+        ? "COMPLETED"
+        : "AVAILABLE",
+      ...summary,
+    };
+  });
 }
 
 function queueFacultyEmail(batch) {
@@ -128,7 +161,8 @@ export async function listBranchBatches(query = {}, actor = null) {
   const branch = await getCurrentBranchProfile(actor); const currentPage = page(query.page); const currentLimit = limit(query.limit); const where = whereFor(branch.id, query);
   const order = text(query.sortOrder).toLowerCase() === "asc" ? "asc" : "desc";
   const [total, records] = await prisma.$transaction([prisma.branchBatch.count({ where }), prisma.branchBatch.findMany({ where, orderBy: { createdAt: order }, skip: (currentPage - 1) * currentLimit, take: currentLimit, include: relations() })]);
-  return { data: records.map(toBatch), meta: { page: currentPage, limit: currentLimit, total, totalPages: Math.max(1, Math.ceil(total / currentLimit)) } };
+  const recordsWithCompletion = await addBatchCompletionMetadata(records);
+  return { data: recordsWithCompletion.map(toBatch), meta: { page: currentPage, limit: currentLimit, total, totalPages: Math.max(1, Math.ceil(total / currentLimit)) } };
 }
 
 export async function getBranchBatch(batchId, actor = null) {

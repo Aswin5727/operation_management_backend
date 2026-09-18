@@ -173,6 +173,27 @@ function displayStatus(value) {
   }
 }
 
+function courseStatusFromProgress(value) {
+  const progress = Number(value);
+  if (!Number.isFinite(progress) || progress <= 0) return "NOT_STARTED";
+  if (progress >= 100) return "COMPLETED";
+  return "IN_PROGRESS";
+}
+
+function addCourseLifecycleFilter(where, value) {
+  const lifecycle = normalizeString(value).toUpperCase();
+  if (!lifecycle) return;
+
+  const condition = lifecycle === "COMPLETED"
+    ? { courseProgress: { gte: 100 } }
+    : lifecycle === "ACTIVE" || lifecycle === "IN_PROGRESS"
+      ? { OR: [{ courseProgress: null }, { courseProgress: { lt: 100 } }] }
+      : null;
+
+  if (!condition) return;
+  where.AND = [...(Array.isArray(where.AND) ? where.AND : []), condition];
+}
+
 function normalizeStudentId(value) {
   return normalizeString(value).toUpperCase();
 }
@@ -1491,6 +1512,13 @@ function buildBranchStudentWhere(query = {}, branchProfile = null) {
     where.batchId = batchId;
   }
 
+  const facultyId = normalizeString(query.facultyId);
+  if (facultyId) {
+    where.facultyId = facultyId;
+  }
+
+  addCourseLifecycleFilter(where, query.lifecycle || query.courseStatus);
+
   return where;
 }
 
@@ -1540,6 +1568,8 @@ function toBranchStudentSummary(record) {
     courseStartDate: record.courseStartDate,
     classSchedule: record.classSchedule,
     courseProgress: record.courseProgress,
+    courseStatus: courseStatusFromProgress(record.courseProgress),
+    courseCompletedAt: record.courseCompletedAt || null,
     courseId: record.courseId,
     courseName: record.courseName,
     courseMode: record.courseMode,
@@ -1581,6 +1611,7 @@ async function ensureAvailableBatchCapacity(batch, excludeStudentId = null) {
     branchId: batch.branchId,
     batchId: batch.batchId,
     recordStatus: 'ACTIVE',
+    OR: [{ courseProgress: null }, { courseProgress: { lt: 100 } }],
     ...(excludeStudentId ? { NOT: { id: excludeStudentId } } : {}),
   }
   const totalStudentCount = await prisma.branchStudent.count({ where: studentWhere })
@@ -1687,10 +1718,35 @@ export async function listBranchStudents(query = {}, actor = null) {
   const { page, limit, skip, take } = buildPagination(query);
   const sortBy = normalizeString(query.sortBy).toLowerCase() || "createdat";
   const sortOrder = parseSortOrder(query.sortOrder);
-  const branchProfile = await getBranchContext(actor);
+  let branchProfile = await getBranchContext(actor);
+  let scopedQuery = query;
+
+  if (normalizeString(actor?.role).toUpperCase() === "FACULTY") {
+    const faculty = await prisma.branchFaculty.findFirst({
+      where: {
+        status: "ACTIVE",
+        OR: [
+          ...(normalizeString(actor?.userCode) ? [{ facultyId: normalizeString(actor.userCode) }] : []),
+          ...(normalizeString(actor?.email) ? [{ email: { equals: normalizeString(actor.email), mode: "insensitive" } }] : []),
+        ],
+      },
+      select: { id: true, branchId: true, facultyId: true },
+    });
+
+    if (!faculty?.branchId) {
+      throw new AppError("Faculty profile not found", 404);
+    }
+
+    branchProfile = { id: faculty.branchId };
+    scopedQuery = {
+      ...query,
+      branchId: faculty.branchId,
+      facultyId: faculty.facultyId || faculty.id,
+    };
+  }
 
   // Listing students must remain read-only; identifier migration belongs in an explicit admin flow.
-  const where = buildBranchStudentWhere(query, branchProfile);
+  const where = buildBranchStudentWhere(scopedQuery, branchProfile);
 
   const [total, rows] = await prisma.$transaction([
     prisma.branchStudent.count({ where }),
@@ -2036,12 +2092,16 @@ export async function updateBranchStudent(studentId, payload, actor = null) {
   await ensureUniqueBranchStudentIdentity(studentData, existing.branchId, existing.id, existingLoginUser?.id);
   const updated = await prisma.$transaction(async (tx) => {
     await tx.$queryRaw`SELECT id FROM "Branch" WHERE id = ${existing.branchId} FOR UPDATE`;
+    const studentUpdateData = {
+      ...studentData,
+      updatedBy: actor?.id ?? null,
+      ...(Number(studentData.courseProgress) >= 100 && !existing.courseCompletedAt
+        ? { courseCompletedAt: new Date() }
+        : {}),
+    };
     const student = await tx.branchStudent.update({
       where: { id: existing.id },
-      data: {
-        ...studentData,
-        updatedBy: actor?.id ?? null,
-      },
+      data: studentUpdateData,
     });
 
     await syncStudentCourseEnd(tx, student);

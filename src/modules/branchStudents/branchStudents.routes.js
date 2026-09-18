@@ -18,6 +18,13 @@ import {
 const router = express.Router();
 
 router.get(
+  "/",
+  authenticate,
+  authorize("BRANCH_ADMIN", "SUPER_ADMIN", "BUSINESS_OWNER", "OPERATION_MANAGER", "STUDENT", "FACULTY"),
+  listBranchStudentsHandler,
+);
+
+router.get(
   "/me",
   authenticate,
   authorize("STUDENT"),
@@ -35,7 +42,6 @@ router.use(
   authorize("BRANCH_ADMIN", "SUPER_ADMIN", "BUSINESS_OWNER", "OPERATION_MANAGER", "STUDENT"),
 );
 
-router.get("/", listBranchStudentsHandler);
 router.get("/ledger", listBranchLedgerHandler);
 router.post("/", createBranchStudentHandler);
 router.get("/:studentId/ledger", getBranchStudentLedgerHandler);
