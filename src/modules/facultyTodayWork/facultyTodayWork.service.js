@@ -599,12 +599,23 @@ export async function listFacultyTodayWorkEntries(query = {}, user = null) {
   ensureFacultyRole(user);
 
   const workDate = normalizeString(query.workDate);
+  const role = normalizeString(user?.role).toUpperCase();
   const ownWorkScope = {
     facultyUserId: normalizeString(user?.id),
     ...(workDate ? { workDate: parseDateKey(workDate) } : {}),
   };
   const whereScopes = [ownWorkScope];
   let inheritedAssignments = [];
+
+  // Super Admin's embedded branch view must read the selected branch's work
+  // log, not the Super Admin's own user-owned entries.
+  const impersonatedBranchId = normalizeString(user?.impersonatedBranchId);
+  if (role === 'SUPER_ADMIN' && impersonatedBranchId) {
+    whereScopes.push({
+      branchId: impersonatedBranchId,
+      ...(workDate ? { workDate: parseDateKey(workDate) } : {}),
+    });
+  }
 
   // A replacement work entry is stored with the replacement faculty as the
   // audit actor, but it belongs to the original batch/session. Include that

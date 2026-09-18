@@ -107,7 +107,21 @@ export async function studentCalendar(user, query = {}) {
     events: [...eventMap.values()].filter(e => (!validDate(query.from) || e.date >= query.from) && (!validDate(query.to) || e.date <= query.to)) };
 }
 async function adminBranch(user, db = prisma) {
-  if (user.role !== 'BRANCH_ADMIN') throw new AppError('Only Branch Admin can manage Institute Leave', 403);
+  const role = String(user?.role || '').trim().toUpperCase();
+  const impersonatedBranchId = String(user?.impersonatedBranchId || '').trim();
+
+  if (role === 'SUPER_ADMIN' && impersonatedBranchId) {
+    const branch = await db.branch.findFirst({
+      where: {
+        status: 'ACTIVE',
+        OR: [{ id: impersonatedBranchId }, { branchId: impersonatedBranchId }],
+      },
+    });
+    if (!branch) throw new AppError('Authorized branch not found', 404);
+    return branch;
+  }
+
+  if (role !== 'BRANCH_ADMIN') throw new AppError('Only Branch Admin can manage Institute Leave', 403);
   const branch = await db.branch.findFirst({ where: { adminUserId: user.id, status: 'ACTIVE' } });
   if (!branch) throw new AppError('Authorized branch not found', 403);
   return branch;

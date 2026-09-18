@@ -38,6 +38,16 @@ function normalizeKey(value) {
   return normalizeString(value).toLowerCase().replace(/\s+/g, " ");
 }
 
+function normalizeCourseNameKey(value) {
+  return normalizeString(value)
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .split(/\s+/)
+    .filter(Boolean)
+    .sort()
+    .join(" ");
+}
+
 function parsePage(value) {
   const parsed = Number(value ?? 1);
   if (!Number.isInteger(parsed) || parsed < 1) return 1;
@@ -601,15 +611,17 @@ function buildBranchCourseOrderBy(sortBy, sortOrder) {
 }
 
 async function ensureUniqueCourseName(nameKey, branchId, excludeId = null) {
-  const existing = await prisma.branchCourse.findFirst({
+  const existingCourses = await prisma.branchCourse.findMany({
     where: {
       branchId,
-      nameKey,
       ...(excludeId ? { id: { not: excludeId } } : {}),
     },
-    select: { id: true },
+    select: { id: true, name: true, nameKey: true },
   });
 
+  const existing = existingCourses.find((course) =>
+    normalizeCourseNameKey(course.name || course.nameKey) === normalizeCourseNameKey(nameKey),
+  );
   if (existing) {
     throw new AppError("Course name already exists", 409);
   }
@@ -662,7 +674,7 @@ function buildBranchCoursePayload(payload = {}, existingCourse = null) {
   return {
     courseCode,
     name,
-    nameKey: normalizeKey(name),
+    nameKey: normalizeCourseNameKey(name),
     description,
     mode,
     duration,
