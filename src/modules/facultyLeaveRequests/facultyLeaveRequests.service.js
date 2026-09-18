@@ -753,23 +753,23 @@ export async function resolveBranchFacultyLeaveSession(user, leaveId, sessionId,
             select: { id: true },
           })
         : null;
-      if (alreadySent) return;
-
-      if (targetUser) {
-        await createNotification({
-          kind: "INSTITUTE_LEAVE",
-          tone: "blue",
-          title: "Faculty Reassigned",
-          message: studentNotificationMessage,
-          actionLabel: "View Schedule",
-          targetUserId: targetUser.id,
-          targetBranchId: branchId,
-          leaveRequestId: request.id,
-          requestStatus: "REPLACEMENT_ASSIGNED",
-          requestDescription: notificationKey,
-        });
-      } else {
-        console.warn(`[REPLACE] No active student user found for ${student.studentId || student.id}; sending email only`);
+      if (!alreadySent) {
+        if (targetUser) {
+          await createNotification({
+            kind: "INSTITUTE_LEAVE",
+            tone: "blue",
+            title: "Faculty Reassigned",
+            message: studentNotificationMessage,
+            actionLabel: "View Schedule",
+            targetUserId: targetUser.id,
+            targetBranchId: branchId,
+            leaveRequestId: request.id,
+            requestStatus: "REPLACEMENT_ASSIGNED",
+            requestDescription: notificationKey,
+          });
+        } else {
+          console.warn(`[REPLACE] No active student user found for ${student.studentId || student.id}; sending email only`);
+        }
       }
 
       try {
@@ -798,6 +798,8 @@ export async function resolveBranchFacultyLeaveSession(user, leaveId, sessionId,
     const combinedDate = combined?.sessionDate || saved?.sessionDate;
     const combinedStartTime = combined?.startTime || saved?.originalStartTime;
     const combinedEndTime = combined?.endTime || saved?.originalEndTime;
+    const targetBatch = await prisma.branchBatch.findFirst({ where: { OR: [{ id: text(payload.targetSessionId) }, { batchId: text(payload.targetSessionId) }], branchId, status: "ACTIVE" }, select: { batchId: true, batchName: true } });
+    const targetBatchName = targetBatch?.batchName || "Target Batch";
     const facultyUser = combinedFaculty?.email
       ? await prisma.user.findFirst({ where: { email: { equals: combinedFaculty.email, mode: "insensitive" }, active: true }, select: { id: true } })
       : null;
@@ -810,7 +812,7 @@ export async function resolveBranchFacultyLeaveSession(user, leaveId, sessionId,
         kind: "FACULTY_LEAVE_REQUEST",
         tone: "blue",
         title: "Combined Class Assigned",
-        message: `${saved.batchName || "Batch"} Batch is assigned to you for a Combined Class on ${displayDate(combinedDate)}, from ${displayTime(combinedStartTime)} to ${displayTime(combinedEndTime)}. Course: ${saved.courseName || "-"}. Original Faculty: ${saved.originalFacultyName || "-"}.`,
+        message: `Batch ${targetBatchName} has been assigned to you for a combined class on ${displayDate(combinedDate)}, from ${displayTime(combinedStartTime)} to ${displayTime(combinedEndTime)}. Course: ${saved.courseName || "-"}. Original Batch: ${saved.batchName || "-"}. Original Faculty: ${saved.originalFacultyName || "-"}.`,
         actionLabel: "View Class",
         targetUserId: facultyUser.id,
         targetBranchId: branchId,
@@ -822,13 +824,14 @@ export async function resolveBranchFacultyLeaveSession(user, leaveId, sessionId,
       });
     }
     try {
-      if (!existingFacultyNotification && combinedFaculty?.email) await sendFacultyCombinedClassEmail({ to: combinedFaculty.email, fullName: combinedFaculty.name, courseName: saved.courseName, batchName: saved.batchName, originalFacultyName: saved.originalFacultyName, combinedDate, combinedStartTime, combinedEndTime });
+      if (combinedFaculty?.email) await sendFacultyCombinedClassEmail({ to: combinedFaculty.email, fullName: combinedFaculty.name, courseName: saved.courseName, batchName: saved.batchName, originalFacultyName: saved.originalFacultyName, combinedDate, combinedStartTime, combinedEndTime });
     } catch (error) {
       console.error("[COMBINE] Combined faculty email failed:", error?.message || error);
     }
 
-    const affectedStudents = saved.batchId
-      ? await prisma.branchStudent.findMany({ where: { branchId, batchId: saved.batchId, recordStatus: "ACTIVE" }, select: { id: true, studentId: true, studentName: true, emailAddress: true } })
+    const combinedStudentBatchIds = [...new Set([saved.batchId, targetBatch?.batchId].filter(Boolean))];
+    const affectedStudents = combinedStudentBatchIds.length
+      ? await prisma.branchStudent.findMany({ where: { branchId, batchId: { in: combinedStudentBatchIds }, recordStatus: "ACTIVE" }, select: { id: true, studentId: true, studentName: true, emailAddress: true, batchId: true } })
       : [];
     const studentEmails = affectedStudents.map((student) => String(student.emailAddress || "").trim().toLowerCase()).filter(Boolean);
     const studentUsers = studentEmails.length
@@ -838,42 +841,49 @@ export async function resolveBranchFacultyLeaveSession(user, leaveId, sessionId,
     await Promise.all(affectedStudents.map(async (student) => {
       const email = String(student.emailAddress || "").trim().toLowerCase();
       const targetUser = usersByEmail.get(email);
+      const studentBatchName = student.batchId === targetBatch?.batchId ? targetBatchName : saved.batchName || "batch";
       const notificationKey = `student-faculty-combined:${saved.id}:${student.id}`;
       const alreadySent = targetUser
         ? await prisma.notification.findFirst({ where: { kind: "INSTITUTE_LEAVE", targetUserId: targetUser.id, requestDescription: notificationKey }, select: { id: true } })
         : null;
-      if (alreadySent) return;
-      if (targetUser) {
-        await createNotification({
-          kind: "INSTITUTE_LEAVE",
-          tone: "blue",
-          title: "Class Combined",
-          message: `Your ${saved.courseName || "course"} - ${saved.batchName || "batch"} class on ${displayDate(combinedDate)}, from ${displayTime(combinedStartTime)} to ${displayTime(combinedEndTime)} will be handled by ${combinedFaculty?.name || "the assigned faculty"} instead of ${saved.originalFacultyName || "your regular faculty"}.`,
-          actionLabel: "View Schedule",
-          targetUserId: targetUser.id,
-          targetBranchId: branchId,
-          leaveRequestId: request.id,
-          requestStatus: "COMBINED",
-          requestDescription: notificationKey,
-        });
+      if (!alreadySent) {
+        if (targetUser) {
+          await createNotification({
+            kind: "INSTITUTE_LEAVE",
+            tone: "blue",
+            title: "Class Combined",
+            message: `Your ${saved.courseName || "course"} - ${studentBatchName} class on ${displayDate(combinedDate)}, from ${displayTime(combinedStartTime)} to ${displayTime(combinedEndTime)} will be handled by ${combinedFaculty?.name || "the assigned faculty"} instead of ${saved.originalFacultyName || "your regular faculty"}.`,
+            actionLabel: "View Schedule",
+            targetUserId: targetUser.id,
+            targetBranchId: branchId,
+            leaveRequestId: request.id,
+            requestStatus: "COMBINED",
+            requestDescription: notificationKey,
+          });
+        }
       }
       try {
-        if (student.emailAddress) await sendStudentCombinedClassEmail({ to: student.emailAddress, fullName: student.studentName, courseName: saved.courseName, batchName: saved.batchName, originalFacultyName: saved.originalFacultyName, combinedFacultyName: combinedFaculty?.name, combinedDate, combinedStartTime, combinedEndTime });
+        if (student.emailAddress) await sendStudentCombinedClassEmail({ to: student.emailAddress, fullName: student.studentName, courseName: saved.courseName, batchName: studentBatchName, originalFacultyName: saved.originalFacultyName, combinedFacultyName: combinedFaculty?.name, combinedDate, combinedStartTime, combinedEndTime });
       } catch (error) {
         console.error(`[COMBINE] Student combined email failed for ${student.studentId || student.id}:`, error?.message || error);
       }
     }));
-    if (text(request.leaveType).toUpperCase() === "EMERGENCY") await notifyBranchAdminSessionResolution(request, branchId, saved, combinedFaculty?.name, "Combination");
+    if (text(request.leaveType).toUpperCase() === "EMERGENCY") await notifyBranchAdminSessionResolution(request, branchId, saved, combinedFaculty?.name, "Combination", targetBatchName, combinedDate, combinedStartTime, combinedEndTime);
   }
   return mapSession(updated);
 }
 
-async function notifyBranchAdminSessionResolution(request, branchId, session, assignedFacultyName, resolutionType) {
+async function notifyBranchAdminSessionResolution(request, branchId, session, assignedFacultyName, resolutionType, targetBatchName = "Target Batch", resolvedDate = null, resolvedStartTime = null, resolvedEndTime = null) {
   const branch = await prisma.branch.findUnique({ where: { id: branchId }, select: { adminUserId: true, branchEmail: true } });
   const admin = branch?.adminUserId ? await prisma.user.findUnique({ where: { id: branch.adminUserId }, select: { id: true, email: true } }) : null;
   const email = String(admin?.email || branch?.branchEmail || '').trim();
   const key = `emergency-session-resolution:${session.id}:${resolutionType}`;
-  const message = `The affected batch ${session.batchName || '-'} was ${resolutionType.toLowerCase()} by ${request.facultyName || 'the requesting faculty'} for ${displayDate(session.replacementDate || session.sessionDate)} from ${displayTime(session.replacementStartTime || session.originalStartTime)} to ${displayTime(session.replacementEndTime || session.originalEndTime)}. Assigned faculty: ${assignedFacultyName || '-'}.`;
+  const date = resolvedDate || session.replacementDate || session.sessionDate;
+  const startTime = resolvedStartTime || session.replacementStartTime || session.originalStartTime;
+  const endTime = resolvedEndTime || session.replacementEndTime || session.originalEndTime;
+  const message = resolutionType === "Combination"
+    ? `Batch ${session.batchName || '-'} has been successfully combined with Batch ${targetBatchName} on ${displayDate(date)}, from ${displayTime(startTime)} to ${displayTime(endTime)}. Course: ${session.courseName || '-'}. Original Faculty: ${session.originalFacultyName || '-'}. Assigned Faculty: ${assignedFacultyName || '-'}.`
+    : `The affected batch ${session.batchName || '-'} was ${resolutionType.toLowerCase()} by ${request.facultyName || 'the requesting faculty'} for ${displayDate(date)} from ${displayTime(startTime)} to ${displayTime(endTime)}. Assigned faculty: ${assignedFacultyName || '-'}.`;
   if (admin?.id) {
     const existing = await prisma.notification.findFirst({ where: { kind: 'FACULTY_LEAVE_REQUEST', targetUserId: admin.id, requestDescription: key }, select: { id: true } });
     if (!existing) await createNotification({ kind: 'FACULTY_LEAVE_REQUEST', tone: 'blue', title: `Emergency Faculty ${resolutionType} Completed`, message, actionLabel: 'View Faculty Leave', targetUserId: admin.id, targetBranchId: branchId, leaveRequestId: request.id, requestStatus: session.resolutionStatus, requestDescription: key });
@@ -887,9 +897,12 @@ async function notifyFacultyLeaveApproval(request, branchId, actor) {
   const facultyUser = request.facultyUserId
     ? await prisma.user.findUnique({ where: { id: request.facultyUserId }, select: { id: true, email: true, fullName: true } })
     : null;
+  const facultyProfile = !facultyUser?.email && request.facultyId
+    ? await prisma.branchFaculty.findFirst({ where: { branchId, facultyId: request.facultyId, status: "ACTIVE" }, select: { email: true, name: true } })
+    : null;
   const targetUserId = facultyUser?.id || null;
-  const facultyEmail = String(facultyUser?.email || request.facultyEmail || "").trim();
-  const facultyName = facultyUser?.fullName || request.facultyName || "Faculty";
+  const facultyEmail = String(facultyUser?.email || request.facultyEmail || facultyProfile?.email || "").trim();
+  const facultyName = facultyUser?.fullName || request.facultyName || facultyProfile?.name || "Faculty";
   const dayType = request.durationType === "HALF_DAY" ? "Half Day" : request.durationType === "PERMISSION" ? "Permission" : "Full Day";
   const startTime = request.durationType === "PERMISSION" ? request.permissionStart : request.halfDayStart;
   const endTime = request.durationType === "PERMISSION" ? request.permissionEnd : request.halfDayEnd;
