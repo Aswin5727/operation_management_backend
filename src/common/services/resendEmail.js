@@ -846,7 +846,7 @@ export async function sendStudentFacultyReassignmentEmail({ to, fullName, batchN
   return sendEmail({ to, subject, html, text });
 }
 
-export async function sendFacultyLeaveApprovalEmail({ to, fullName, leaveDate, leaveType, dayType, startTime, endTime }) {
+export async function sendFacultyLeaveApprovalEmail({ to, fullName, leaveDate, leaveType, dayType, startTime, endTime, isDelegated = false }) {
   const formatTime = (value) => {
     const match = String(value || '').match(/^(\d{1,2}):(\d{2})$/)
     if (!match) return String(value || '-')
@@ -860,12 +860,19 @@ export async function sendFacultyLeaveApprovalEmail({ to, fullName, leaveDate, l
   const displayDate = formatDate(leaveDate)
   const displayStart = startTime ? formatTime(startTime) : '-'
   const displayEnd = endTime ? formatTime(endTime) : '-'
-  const subject = `Leave Request Approved - ${displayDate}`
+  const emergency = String(leaveType || '').toUpperCase() === 'EMERGENCY'
+  const delegated = emergency && isDelegated === true
+  const subject = delegated ? `Emergency Leave Approved & Delegated - ${displayDate}` : emergency ? `Emergency Leave Approved - ${displayDate}` : `Leave Request Approved - ${displayDate}`
+  const subtitle = delegated
+    ? `Hello ${escapeHtml(fullName || 'Faculty')}, your emergency leave has been approved and affected-session handling has been delegated to you.`
+    : emergency
+      ? `Hello ${escapeHtml(fullName || 'Faculty')}, your emergency leave has been approved. The Branch Admin will handle the affected sessions.`
+      : `Hello ${escapeHtml(fullName || 'Faculty')}, your leave request has been approved.`
   const html = alertTemplate({
     eyebrow: 'Leave Management',
     title: subject,
-    subtitle: `Hello ${escapeHtml(fullName || 'Faculty')}, your leave request has been approved.`,
-    summary: 'Please check your Faculty Dashboard for the complete details.',
+    subtitle,
+    summary: delegated ? 'You can now use Replace or Combine for the affected batches.' : 'Please check your Faculty Dashboard for the complete details.',
     details: [
       { label: 'Date', value: escapeHtml(displayDate) },
       { label: 'Leave Type', value: escapeHtml(leaveType || '-') },
@@ -874,8 +881,21 @@ export async function sendFacultyLeaveApprovalEmail({ to, fullName, leaveDate, l
       { label: 'Status', value: 'Approved' },
     ],
   })
-  const text = [`Hello ${fullName || 'Faculty'},`, '', `Your ${leaveType || ''} leave request has been approved.`, '', `Date: ${displayDate}`, `Leave Type: ${leaveType || '-'}`, `Day Type: ${dayType || '-'}`, startTime && endTime ? `From: ${displayStart}\nTo: ${displayEnd}` : null, 'Status: Approved', '', 'Please check your Faculty Dashboard for the complete details.'].filter(Boolean).join('\n')
+  const text = [`Hello ${fullName || 'Faculty'},`, '', delegated ? 'Your emergency leave request has been approved and affected-session handling has been delegated to you.' : emergency ? 'Your emergency leave request has been approved. The Branch Admin will handle the affected sessions.' : `Your ${leaveType || ''} leave request has been approved.`, '', `Date: ${displayDate}`, `Leave Type: ${leaveType || '-'}`, `Day Type: ${dayType || '-'}`, startTime && endTime ? `From: ${displayStart}\nTo: ${displayEnd}` : null, 'Status: Approved', delegated ? 'You can now use Replace or Combine for the affected batches.' : 'Please check your Faculty Dashboard for the complete details.'].filter(Boolean).join('\n')
   return sendEmail({ to, subject, html, text })
+}
+
+export async function sendEmergencySessionResolutionEmail({ to, batchName, courseName, originalFacultyName, replacementFacultyName, date, startTime, endTime, resolutionType = 'Replacement' }) {
+  const subject = `Emergency Faculty ${resolutionType} Completed - ${batchName || 'Affected Batch'}`
+  const details = [
+    { label: 'Batch', value: escapeHtml(batchName || '-') },
+    { label: 'Course', value: escapeHtml(courseName || '-') },
+    { label: 'Original Faculty', value: escapeHtml(originalFacultyName || '-') },
+    { label: 'Assigned Faculty', value: escapeHtml(replacementFacultyName || '-') },
+    { label: 'Date', value: escapeHtml(String(date || '-')) },
+    { label: 'Time', value: `${escapeHtml(String(startTime || '-'))} - ${escapeHtml(String(endTime || '-'))}` },
+  ]
+  return sendEmail({ to, subject, html: alertTemplate({ eyebrow: 'Emergency Faculty Leave', title: subject, subtitle: 'An affected emergency leave session has been resolved.', summary: 'Please review the updated faculty and student calendars.', details }), text: [`Emergency Faculty ${resolutionType} Completed`, '', `Batch: ${batchName || '-'}`, `Course: ${courseName || '-'}`, `Original Faculty: ${originalFacultyName || '-'}`, `Assigned Faculty: ${replacementFacultyName || '-'}`, `Date: ${date || '-'}`, `Time: ${startTime || '-'} - ${endTime || '-'}`].join('\n') })
 }
 
 export async function sendFacultyRescheduledClassEmail({ to, fullName, courseName, batchName, originalDate, originalStartTime, originalEndTime, newDate, newStartTime, newEndTime }) {

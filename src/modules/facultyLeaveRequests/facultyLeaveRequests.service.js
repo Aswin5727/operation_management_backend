@@ -1,7 +1,7 @@
 import prisma from "../../config/prisma.js";
 import AppError from "../../common/errors/AppError.js";
 import { createFacultyLeaveRequestChangeNotification, createFacultyLeaveRequestNotification, createNotification } from "../notifications/notifications.service.js";
-import { sendFacultyCombinedClassEmail, sendFacultyLeaveApprovalEmail, sendFacultyReplacementBatchEmail, sendFacultyRescheduledClassEmail, sendStudentCombinedClassEmail, sendStudentFacultyReassignmentEmail, sendStudentRescheduledClassEmail } from "../../common/services/resendEmail.js";
+import { sendEmergencySessionResolutionEmail, sendFacultyCombinedClassEmail, sendFacultyLeaveApprovalEmail, sendFacultyReplacementBatchEmail, sendFacultyRescheduledClassEmail, sendStudentCombinedClassEmail, sendStudentFacultyReassignmentEmail, sendStudentRescheduledClassEmail } from "../../common/services/resendEmail.js";
 
 const LEAVE_TYPES = new Set(["PLANNED", "UNPLANNED", "EMERGENCY"]);
 const DURATIONS = new Set(["FULL_DAY", "HALF_DAY", "PERMISSION"]);
@@ -331,6 +331,15 @@ async function getScopedLeave(user, leaveId) {
   return { branchId, request };
 }
 
+async function getDelegatedFacultyLeave(user, leaveId) {
+  const faculty = await resolveFacultyContext(user);
+  const request = await prisma.facultyLeaveRequest.findFirst({
+    where: { id: leaveId, facultyUserId: user.id, branchId: faculty.branchId, leaveType: "EMERGENCY", status: "APPROVED", isDelegated: true },
+  });
+  if (!request) throw new AppError("This emergency leave is not delegated to you", 403);
+  return { branchId: faculty.branchId, request, faculty };
+}
+
 function sessionStatusLabel(session) {
   if (session.resolutionStatus === "REPLACEMENT_ASSIGNED") return session.replacementStatus === "PENDING_CONFIRMATION" ? "Awaiting replacement confirmation" : "Replacement assigned";
   if (session.resolutionStatus === "COMBINED") return "Combined with another class";
@@ -390,7 +399,9 @@ async function notifyLeaveReview(request, branchId, actor, message, status) {
 }
 
 export async function listReplacementFaculty(user, leaveId, sessionId, assignmentType = "", options = {}) {
-  const { branchId, request } = await getScopedLeave(user, leaveId);
+  const { branchId, request } = String(user?.role || "").toUpperCase() === "FACULTY"
+    ? await getDelegatedFacultyLeave(user, leaveId)
+    : await getScopedLeave(user, leaveId);
   const session = await prisma.facultyLeaveAffectedSession.findFirst({ where: { id: sessionId, leaveRequestId: request.id, branchId } });
   if (!session) throw new AppError("Affected class not found", 404);
   if (text(assignmentType).toUpperCase() === "RESCHEDULED") {
@@ -536,10 +547,27 @@ export async function listReplacementFaculty(user, leaveId, sessionId, assignmen
     return off !== leaveDay;
   });
   const available = [];
+  const delegatedFacultySelection = String(user?.role || "").toUpperCase() === "FACULTY";
   for (const item of availableFaculty) {
     const conflicts = await prisma.branchBatch.findMany({ where: { branchId, facultyId: item.facultyId, status: "ACTIVE" }, select: { startTime: true, endTime: true, weekType: true, weeklyOffDay: true, courseName: true, batchName: true } });
     const busy = conflicts.some((batch) => batchRunsOnDate(batch, session.sessionDate) && overlaps(start, end, parseTime(batch.startTime), parseTime(batch.endTime)));
-    if (!busy) available.push({ ...item, availableTime: `${displayTime(start)} - ${displayTime(end)}` });
+    if (!busy || delegatedFacultySelection) available.push({ ...item, availabilityStatus: busy ? "HAS_TIMING_CONFLICT" : "AVAILABLE", availableTime: `${displayTime(start)} - ${displayTime(end)}` });
+  }
+  const selectedReplacementFacultyId = text(options.replacementFacultyId);
+  let replacementBatches = [];
+  if (selectedReplacementFacultyId) {
+    const requestedStart = parseTime(options.replacementStartTime);
+    const requestedEnd = parseTime(options.replacementEndTime);
+    const batches = await prisma.branchBatch.findMany({
+      where: { branchId, facultyId: selectedReplacementFacultyId, courseId: session.courseId, status: "ACTIVE", weekType: scheduleTypeForDate(session.sessionDate) },
+      orderBy: [{ startTime: "asc" }, { batchName: "asc" }],
+      select: { id: true, batchId: true, batchName: true, courseId: true, courseName: true, startTime: true, startPeriod: true, endTime: true, endPeriod: true, weekType: true, weeklyOffDay: true, courseStartDate: true, courseEndDate: true },
+    });
+    replacementBatches = batches.filter((batch) => batchRunsOnDate(batch, session.sessionDate) && batchIsInCourseWindow(batch, session.sessionDate)).map((batch) => {
+      const batchStart = parseTime(`${batch.startTime} ${batch.startPeriod || ""}`);
+      const batchEnd = parseTime(`${batch.endTime} ${batch.endPeriod || ""}`);
+      return { ...batch, availabilityStatus: requestedStart != null && requestedEnd != null && overlaps(batchStart, batchEnd, requestedStart, requestedEnd) ? "ALREADY_SCHEDULED" : "AVAILABLE" };
+    });
   }
   const combineBatches = await prisma.branchBatch.findMany({ where: { branchId, courseId: session.courseId, status: "ACTIVE", facultyId: { not: request.facultyId }, startTime: session.originalStartTime, endTime: session.originalEndTime }, orderBy: [{ batchName: "asc" }], select: { id: true, batchId: true, batchName: true, facultyId: true, facultyName: true, courseId: true, courseName: true, startTime: true, endTime: true, weekType: true, weeklyOffDay: true } });
   const combineSessions = [];
@@ -548,17 +576,21 @@ export async function listReplacementFaculty(user, leaveId, sessionId, assignmen
     const progress = await prisma.facultyTodayWorkEntry.findFirst({ where: { branchId, courseId: session.courseId, batchId: batch.batchId }, orderBy: [{ workDate: "desc" }, { createdAt: "desc" }], select: { moduleId: true, moduleName: true, moduleProgress: true, courseProgress: true } });
     combineSessions.push({ id: batch.id, batchRecordId: batch.id, batchId: batch.batchId, batchName: batch.batchName, facultyId: batch.facultyId, facultyName: batch.facultyName, courseId: batch.courseId, courseName: batch.courseName, sessionDate: session.sessionDate, originalStartTime: batch.startTime, originalEndTime: batch.endTime, resolutionStatus: "COMBINE_CANDIDATE", moduleId: progress?.moduleId || null, moduleName: progress?.moduleName || null, moduleProgress: progress?.moduleProgress ?? null, courseProgress: progress?.courseProgress ?? null });
   }
-  return { faculty: available, combineSessions };
+  return { faculty: available, combineSessions, replacementBatches };
 }
 
 export async function resolveBranchFacultyLeaveSession(user, leaveId, sessionId, payload = {}) {
-  const { branchId, request } = await getScopedLeave(user, leaveId);
+  const delegatedFaculty = String(user?.role || "").toUpperCase() === "FACULTY";
+  const { branchId, request } = delegatedFaculty
+    ? await getDelegatedFacultyLeave(user, leaveId)
+    : await getScopedLeave(user, leaveId);
   if (["REJECTED", "CANCELLED"].includes(request.status)) throw new AppError("This leave request is no longer actionable", 409);
   const session = await prisma.facultyLeaveAffectedSession.findFirst({ where: { id: sessionId, leaveRequestId: leaveId, branchId } });
   if (!session) throw new AppError("Affected class not found", 404);
   if (session.resolutionStatus !== "UNRESOLVED") throw new AppError("This affected class has already been resolved", 409);
   const assignmentType = text(payload.assignmentType).toUpperCase();
   if (!["REPLACEMENT", "COMBINED", "RESCHEDULED", "CANCELLED"].includes(assignmentType)) throw new AppError("Select a valid class resolution", 400);
+  if (delegatedFaculty && !["REPLACEMENT", "COMBINED"].includes(assignmentType)) throw new AppError("Delegated emergency leave supports Replace or Combine only", 403);
   const data = { assignmentType, resolvedBy: user.id, resolvedAt: new Date(), resolutionReason: text(payload.reason) || null, resolutionStatus: assignmentType === "REPLACEMENT" ? "REPLACEMENT_ASSIGNED" : assignmentType };
   let rescheduleCombineTarget = null;
   if (assignmentType === "REPLACEMENT") {
@@ -575,6 +607,11 @@ export async function resolveBranchFacultyLeaveSession(user, leaveId, sessionId,
     if (originalStart != null && originalEnd != null && replacementEnd - replacementStart !== originalEnd - originalStart) throw new AppError("Replacement duration must match the original class duration", 400);
     const replacement = await prisma.branchFaculty.findFirst({ where: { branchId, facultyId: replacementFacultyId, status: "ACTIVE" }, select: { facultyId: true, name: true, email: true } });
     if (!replacement || replacement.facultyId === request.facultyId) throw new AppError("Select an active replacement faculty from this branch", 400);
+    const replacementBatchRecordId = text(payload.replacementBatchRecordId);
+    if (replacementBatchRecordId) {
+      const selectedBatch = await prisma.branchBatch.findFirst({ where: { id: replacementBatchRecordId, branchId, facultyId: replacement.facultyId, courseId: session.courseId, status: "ACTIVE" }, select: { id: true, weekType: true, weeklyOffDay: true, courseStartDate: true, courseEndDate: true } });
+      if (!selectedBatch || text(selectedBatch.weekType).toUpperCase() !== scheduleTypeForDate(replacementDate) || !batchRunsOnDate(selectedBatch, replacementDate) || !batchIsInCourseWindow(selectedBatch, replacementDate)) throw new AppError("Select a valid same-course batch for the selected date", 400);
+    }
     const conflict = await prisma.facultyLeaveRequest.findFirst({ where: { branchId, facultyId: replacement.facultyId, status: { in: ["PENDING", "APPROVED"] }, fromDate: { lte: replacementDate }, toDate: { gte: replacementDate }, ...(request.leaveType ? { NOT: { id: request.id } } : {}) }, select: { id: true } });
     if (conflict) throw new AppError("The selected faculty is on leave for this class date", 409);
     const assignedBatches = await prisma.branchBatch.findMany({ where: { branchId, facultyId: replacement.facultyId, status: "ACTIVE" }, select: { startTime: true, endTime: true, startPeriod: true, endPeriod: true, weekType: true, weeklyOffDay: true } });
@@ -661,11 +698,11 @@ export async function resolveBranchFacultyLeaveSession(user, leaveId, sessionId,
   if (assignmentType === "RESCHEDULED") {
     [updated] = await prisma.$transaction([
       prisma.facultyLeaveAffectedSession.update({ where: { id: session.id }, data }),
-      prisma.facultyLeaveRequest.update({ where: { id: request.id }, data: { status: "UNDER_REVIEW", reviewedBy: user.id, reviewedAt: new Date() } }),
+      prisma.facultyLeaveRequest.update({ where: { id: request.id }, data: { status: delegatedFaculty ? "APPROVED" : "UNDER_REVIEW", reviewedBy: user.id, reviewedAt: new Date() } }),
     ]);
   } else {
     updated = await prisma.facultyLeaveAffectedSession.update({ where: { id: session.id }, data });
-    await prisma.facultyLeaveRequest.update({ where: { id: request.id }, data: { status: "UNDER_REVIEW", reviewedBy: user.id, reviewedAt: new Date() } });
+    await prisma.facultyLeaveRequest.update({ where: { id: request.id }, data: { status: delegatedFaculty ? "APPROVED" : "UNDER_REVIEW", reviewedBy: user.id, reviewedAt: new Date() } });
   }
   if (assignmentType === "RESCHEDULED") await notifyRescheduledClass(updated, branchId, rescheduleCombineTarget);
   if (assignmentType === "REPLACEMENT") {
@@ -748,6 +785,7 @@ export async function resolveBranchFacultyLeaveSession(user, leaveId, sessionId,
         console.error(`[REPLACE] Student reassignment email failed for ${student.studentId || student.id}:`, error?.message || error);
       }
     }));
+    if (text(request.leaveType).toUpperCase() === "EMERGENCY") await notifyBranchAdminSessionResolution(request, branchId, saved, replacementFaculty?.name, "Replacement");
   }
   if (assignmentType === "COMBINED") {
     const saved = await prisma.facultyLeaveAffectedSession.findUnique({ where: { id: updated.id } });
@@ -825,8 +863,24 @@ export async function resolveBranchFacultyLeaveSession(user, leaveId, sessionId,
         console.error(`[COMBINE] Student combined email failed for ${student.studentId || student.id}:`, error?.message || error);
       }
     }));
+    if (text(request.leaveType).toUpperCase() === "EMERGENCY") await notifyBranchAdminSessionResolution(request, branchId, saved, combinedFaculty?.name, "Combination");
   }
   return mapSession(updated);
+}
+
+async function notifyBranchAdminSessionResolution(request, branchId, session, assignedFacultyName, resolutionType) {
+  const branch = await prisma.branch.findUnique({ where: { id: branchId }, select: { adminUserId: true, branchEmail: true } });
+  const admin = branch?.adminUserId ? await prisma.user.findUnique({ where: { id: branch.adminUserId }, select: { id: true, email: true } }) : null;
+  const email = String(admin?.email || branch?.branchEmail || '').trim();
+  const key = `emergency-session-resolution:${session.id}:${resolutionType}`;
+  const message = `The affected batch ${session.batchName || '-'} was ${resolutionType.toLowerCase()} by ${request.facultyName || 'the requesting faculty'} for ${displayDate(session.replacementDate || session.sessionDate)} from ${displayTime(session.replacementStartTime || session.originalStartTime)} to ${displayTime(session.replacementEndTime || session.originalEndTime)}. Assigned faculty: ${assignedFacultyName || '-'}.`;
+  if (admin?.id) {
+    const existing = await prisma.notification.findFirst({ where: { kind: 'FACULTY_LEAVE_REQUEST', targetUserId: admin.id, requestDescription: key }, select: { id: true } });
+    if (!existing) await createNotification({ kind: 'FACULTY_LEAVE_REQUEST', tone: 'blue', title: `Emergency Faculty ${resolutionType} Completed`, message, actionLabel: 'View Faculty Leave', targetUserId: admin.id, targetBranchId: branchId, leaveRequestId: request.id, requestStatus: session.resolutionStatus, requestDescription: key });
+  }
+  if (email) {
+    try { await sendEmergencySessionResolutionEmail({ to: email, batchName: session.batchName, courseName: session.courseName, originalFacultyName: session.originalFacultyName, replacementFacultyName: assignedFacultyName, date: session.replacementDate || session.sessionDate, startTime: session.replacementStartTime || session.originalStartTime, endTime: session.replacementEndTime || session.originalEndTime, resolutionType }); } catch (error) { console.warn('[EMERGENCY] Branch admin email failed:', error?.message || error); }
+  }
 }
 
 async function notifyFacultyLeaveApproval(request, branchId, actor) {
@@ -839,19 +893,27 @@ async function notifyFacultyLeaveApproval(request, branchId, actor) {
   const dayType = request.durationType === "HALF_DAY" ? "Half Day" : request.durationType === "PERMISSION" ? "Permission" : "Full Day";
   const startTime = request.durationType === "PERMISSION" ? request.permissionStart : request.halfDayStart;
   const endTime = request.durationType === "PERMISSION" ? request.permissionEnd : request.halfDayEnd;
-  const notificationKey = `faculty-leave-approval:${request.id}`;
+  const emergency = text(request.leaveType).toUpperCase() === "EMERGENCY";
+  const delegated = emergency && request.isDelegated === true;
+  const notificationKey = `faculty-leave-approval:${request.id}:${delegated ? "delegated" : "admin"}`;
+  const title = delegated ? "Emergency Leave Approved & Delegated" : emergency ? "Emergency Leave Approved" : "Leave Request Approved";
+  const message = delegated
+    ? `${facultyName}, your emergency leave request has been approved. You have been allowed to handle the affected sessions. You can now use Replace or Combine for the affected batches.`
+    : emergency
+      ? `${facultyName}, your emergency leave request has been approved. The Branch Admin will handle the affected sessions by arranging the required replacement, rescheduling, or combination.`
+      : `${facultyName}, your ${dayType.toLowerCase()} leave request has been approved for ${displayDate(request.fromDate)}${startTime && endTime ? `, from ${displayTime(startTime)} to ${displayTime(endTime)}` : "."}`;
   if (targetUserId) {
     const existing = await prisma.notification.findFirst({ where: { kind: "INSTITUTE_LEAVE", targetUserId, requestDescription: notificationKey }, select: { id: true } });
     if (!existing) await createNotification({
-      kind: "INSTITUTE_LEAVE", tone: "green", title: "Leave Request Approved",
-      message: `${facultyName}, your ${dayType.toLowerCase()} leave request has been approved for ${displayDate(request.fromDate)}${startTime && endTime ? `, from ${displayTime(startTime)} to ${displayTime(endTime)}` : "."}`,
+      kind: "INSTITUTE_LEAVE", tone: "green", title,
+      message,
       actionLabel: "View Leave Request", targetUserId, targetBranchId: branchId, leaveRequestId: request.id,
       facultyId: request.facultyId || "", facultyName, requestStatus: "APPROVED", requestReason: request.reason || "",
       requestDescription: notificationKey, createdBy: actor?.id || null,
     });
   }
   if (facultyEmail) {
-    try { await sendFacultyLeaveApprovalEmail({ to: facultyEmail, fullName: facultyName, leaveDate: request.fromDate, leaveType: request.leaveType, dayType, startTime, endTime }); }
+    try { await sendFacultyLeaveApprovalEmail({ to: facultyEmail, fullName: facultyName, leaveDate: request.fromDate, leaveType: request.leaveType, dayType, startTime, endTime, isDelegated: delegated }); }
     catch (error) { console.warn("Faculty leave approval email failed", error?.message || error); }
   }
 }
@@ -909,12 +971,13 @@ async function notifyRescheduledClass(session, branchId, combinedBatch = null) {
   }
 }
 
-export async function approveBranchFacultyLeave(user, leaveId) {
+export async function approveBranchFacultyLeave(user, leaveId, options = {}) {
   const { branchId, request } = await getScopedLeave(user, leaveId);
   if (!["PENDING", "UNDER_REVIEW"].includes(request.status)) throw new AppError("Only pending leave requests can be approved", 409);
   const unresolved = await prisma.facultyLeaveAffectedSession.count({ where: { leaveRequestId: leaveId, branchId, resolutionStatus: "UNRESOLVED" } });
-  if (unresolved) throw new AppError("Resolve all affected classes before approving this leave request", 409);
-  const approved = await prisma.facultyLeaveRequest.update({ where: { id: leaveId }, data: { status: "APPROVED", approvedBy: user.id, approvedAt: new Date(), reviewedBy: user.id, reviewedAt: new Date() } });
+  if (unresolved && text(request.leaveType).toUpperCase() !== "EMERGENCY") throw new AppError("Resolve all affected classes before approving this leave request", 409);
+  const delegated = text(request.leaveType).toUpperCase() === "EMERGENCY" && options.delegate === true;
+  const approved = await prisma.facultyLeaveRequest.update({ where: { id: leaveId }, data: { status: "APPROVED", isDelegated: delegated, approvedBy: user.id, approvedAt: new Date(), reviewedBy: user.id, reviewedAt: new Date() } });
   await notifyFacultyLeaveApproval(approved, branchId, user);
   return mapRequest(approved);
 }
@@ -952,6 +1015,23 @@ export async function listMyFacultyLeaveRequests(user) {
   await resolveFacultyContext(user);
   const rows = await prisma.facultyLeaveRequest.findMany({ where: { facultyUserId: user.id }, orderBy: { createdAt: "desc" } });
   return { requests: rows.map(mapRequest) };
+}
+
+export async function listMyDelegatedEmergencySessions(user) {
+  const faculty = await resolveFacultyContext(user);
+  const requests = await prisma.facultyLeaveRequest.findMany({
+    where: { facultyUserId: user.id, branchId: faculty.branchId, leaveType: "EMERGENCY", status: "APPROVED", isDelegated: true },
+    orderBy: { createdAt: "desc" },
+  });
+  const result = [];
+  for (const request of requests) {
+    const sessions = await prisma.facultyLeaveAffectedSession.findMany({
+      where: { leaveRequestId: request.id, branchId: faculty.branchId, resolutionStatus: "UNRESOLVED" },
+      orderBy: [{ sessionDate: "asc" }, { originalStartTime: "asc" }],
+    });
+    for (const session of sessions) result.push({ ...mapSession(session), leaveRequestId: request.id, leaveRequestStatus: request.status, isDelegated: true, leaveReason: request.reason });
+  }
+  return { sessions: result };
 }
 
 export async function listMyFacultySchedule(user) {

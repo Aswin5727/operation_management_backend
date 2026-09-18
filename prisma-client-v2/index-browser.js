@@ -788,6 +788,7 @@ exports.Prisma.FacultyLeaveRequestScalarFieldEnum = {
   permissionEnd: 'permissionEnd',
   reason: 'reason',
   status: 'status',
+  isDelegated: 'isDelegated',
   cancelledAt: 'cancelledAt',
   approvedBy: 'approvedBy',
   approvedAt: 'approvedAt',

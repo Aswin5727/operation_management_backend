@@ -929,6 +929,7 @@ model FacultyLeaveRequest {
   permissionEnd   String?
   reason         String
   status         String   @default("PENDING")
+  isDelegated    Boolean  @default(false)
   cancelledAt    DateTime?
   approvedBy     String?
   approvedAt     DateTime?

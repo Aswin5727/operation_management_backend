@@ -49134,6 +49134,7 @@ export namespace Prisma {
     permissionEnd: string | null
     reason: string | null
     status: string | null
+    isDelegated: boolean | null
     cancelledAt: Date | null
     approvedBy: string | null
     approvedAt: Date | null
@@ -49166,6 +49167,7 @@ export namespace Prisma {
     permissionEnd: string | null
     reason: string | null
     status: string | null
+    isDelegated: boolean | null
     cancelledAt: Date | null
     approvedBy: string | null
     approvedAt: Date | null
@@ -49198,6 +49200,7 @@ export namespace Prisma {
     permissionEnd: number
     reason: number
     status: number
+    isDelegated: number
     cancelledAt: number
     approvedBy: number
     approvedAt: number
@@ -49243,6 +49246,7 @@ export namespace Prisma {
     permissionEnd?: true
     reason?: true
     status?: true
+    isDelegated?: true
     cancelledAt?: true
     approvedBy?: true
     approvedAt?: true
@@ -49275,6 +49279,7 @@ export namespace Prisma {
     permissionEnd?: true
     reason?: true
     status?: true
+    isDelegated?: true
     cancelledAt?: true
     approvedBy?: true
     approvedAt?: true
@@ -49307,6 +49312,7 @@ export namespace Prisma {
     permissionEnd?: true
     reason?: true
     status?: true
+    isDelegated?: true
     cancelledAt?: true
     approvedBy?: true
     approvedAt?: true
@@ -49427,6 +49433,7 @@ export namespace Prisma {
     permissionEnd: string | null
     reason: string
     status: string
+    isDelegated: boolean
     cancelledAt: Date | null
     approvedBy: string | null
     approvedAt: Date | null
@@ -49479,6 +49486,7 @@ export namespace Prisma {
     permissionEnd?: boolean
     reason?: boolean
     status?: boolean
+    isDelegated?: boolean
     cancelledAt?: boolean
     approvedBy?: boolean
     approvedAt?: boolean
@@ -49514,6 +49522,7 @@ export namespace Prisma {
     permissionEnd?: boolean
     reason?: boolean
     status?: boolean
+    isDelegated?: boolean
     cancelledAt?: boolean
     approvedBy?: boolean
     approvedAt?: boolean
@@ -49549,6 +49558,7 @@ export namespace Prisma {
     permissionEnd?: boolean
     reason?: boolean
     status?: boolean
+    isDelegated?: boolean
     cancelledAt?: boolean
     approvedBy?: boolean
     approvedAt?: boolean
@@ -49584,6 +49594,7 @@ export namespace Prisma {
     permissionEnd?: boolean
     reason?: boolean
     status?: boolean
+    isDelegated?: boolean
     cancelledAt?: boolean
     approvedBy?: boolean
     approvedAt?: boolean
@@ -49597,7 +49608,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type FacultyLeaveRequestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "facultyUserId" | "branchId" | "facultyId" | "facultyName" | "facultyEmail" | "leaveType" | "fromDate" | "toDate" | "durationType" | "durationDays" | "halfDayPeriod" | "halfDayStart" | "halfDayEnd" | "permissionHours" | "permissionStart" | "permissionEnd" | "reason" | "status" | "cancelledAt" | "approvedBy" | "approvedAt" | "rejectedBy" | "rejectedAt" | "rejectionReason" | "reviewedBy" | "reviewedAt" | "affectedClasses" | "createdAt" | "updatedAt", ExtArgs["result"]["facultyLeaveRequest"]>
+  export type FacultyLeaveRequestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "facultyUserId" | "branchId" | "facultyId" | "facultyName" | "facultyEmail" | "leaveType" | "fromDate" | "toDate" | "durationType" | "durationDays" | "halfDayPeriod" | "halfDayStart" | "halfDayEnd" | "permissionHours" | "permissionStart" | "permissionEnd" | "reason" | "status" | "isDelegated" | "cancelledAt" | "approvedBy" | "approvedAt" | "rejectedBy" | "rejectedAt" | "rejectionReason" | "reviewedBy" | "reviewedAt" | "affectedClasses" | "createdAt" | "updatedAt", ExtArgs["result"]["facultyLeaveRequest"]>
   export type FacultyLeaveRequestInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     facultyUser?: boolean | UserDefaultArgs<ExtArgs>
     branch?: boolean | BranchDefaultArgs<ExtArgs>
@@ -49637,6 +49648,7 @@ export namespace Prisma {
       permissionEnd: string | null
       reason: string
       status: string
+      isDelegated: boolean
       cancelledAt: Date | null
       approvedBy: string | null
       approvedAt: Date | null
@@ -50092,6 +50104,7 @@ export namespace Prisma {
     readonly permissionEnd: FieldRef<"FacultyLeaveRequest", 'String'>
     readonly reason: FieldRef<"FacultyLeaveRequest", 'String'>
     readonly status: FieldRef<"FacultyLeaveRequest", 'String'>
+    readonly isDelegated: FieldRef<"FacultyLeaveRequest", 'Boolean'>
     readonly cancelledAt: FieldRef<"FacultyLeaveRequest", 'DateTime'>
     readonly approvedBy: FieldRef<"FacultyLeaveRequest", 'String'>
     readonly approvedAt: FieldRef<"FacultyLeaveRequest", 'DateTime'>
@@ -58768,6 +58781,7 @@ export namespace Prisma {
     permissionEnd: 'permissionEnd',
     reason: 'reason',
     status: 'status',
+    isDelegated: 'isDelegated',
     cancelledAt: 'cancelledAt',
     approvedBy: 'approvedBy',
     approvedAt: 'approvedAt',
@@ -63207,6 +63221,7 @@ export namespace Prisma {
     permissionEnd?: StringNullableFilter<"FacultyLeaveRequest"> | string | null
     reason?: StringFilter<"FacultyLeaveRequest"> | string
     status?: StringFilter<"FacultyLeaveRequest"> | string
+    isDelegated?: BoolFilter<"FacultyLeaveRequest"> | boolean
     cancelledAt?: DateTimeNullableFilter<"FacultyLeaveRequest"> | Date | string | null
     approvedBy?: StringNullableFilter<"FacultyLeaveRequest"> | string | null
     approvedAt?: DateTimeNullableFilter<"FacultyLeaveRequest"> | Date | string | null
@@ -63242,6 +63257,7 @@ export namespace Prisma {
     permissionEnd?: SortOrderInput | SortOrder
     reason?: SortOrder
     status?: SortOrder
+    isDelegated?: SortOrder
     cancelledAt?: SortOrderInput | SortOrder
     approvedBy?: SortOrderInput | SortOrder
     approvedAt?: SortOrderInput | SortOrder
@@ -63280,6 +63296,7 @@ export namespace Prisma {
     permissionEnd?: StringNullableFilter<"FacultyLeaveRequest"> | string | null
     reason?: StringFilter<"FacultyLeaveRequest"> | string
     status?: StringFilter<"FacultyLeaveRequest"> | string
+    isDelegated?: BoolFilter<"FacultyLeaveRequest"> | boolean
     cancelledAt?: DateTimeNullableFilter<"FacultyLeaveRequest"> | Date | string | null
     approvedBy?: StringNullableFilter<"FacultyLeaveRequest"> | string | null
     approvedAt?: DateTimeNullableFilter<"FacultyLeaveRequest"> | Date | string | null
@@ -63315,6 +63332,7 @@ export namespace Prisma {
     permissionEnd?: SortOrderInput | SortOrder
     reason?: SortOrder
     status?: SortOrder
+    isDelegated?: SortOrder
     cancelledAt?: SortOrderInput | SortOrder
     approvedBy?: SortOrderInput | SortOrder
     approvedAt?: SortOrderInput | SortOrder
@@ -63356,6 +63374,7 @@ export namespace Prisma {
     permissionEnd?: StringNullableWithAggregatesFilter<"FacultyLeaveRequest"> | string | null
     reason?: StringWithAggregatesFilter<"FacultyLeaveRequest"> | string
     status?: StringWithAggregatesFilter<"FacultyLeaveRequest"> | string
+    isDelegated?: BoolWithAggregatesFilter<"FacultyLeaveRequest"> | boolean
     cancelledAt?: DateTimeNullableWithAggregatesFilter<"FacultyLeaveRequest"> | Date | string | null
     approvedBy?: StringNullableWithAggregatesFilter<"FacultyLeaveRequest"> | string | null
     approvedAt?: DateTimeNullableWithAggregatesFilter<"FacultyLeaveRequest"> | Date | string | null
@@ -68846,6 +68865,7 @@ export namespace Prisma {
     permissionEnd?: string | null
     reason: string
     status?: string
+    isDelegated?: boolean
     cancelledAt?: Date | string | null
     approvedBy?: string | null
     approvedAt?: Date | string | null
@@ -68881,6 +68901,7 @@ export namespace Prisma {
     permissionEnd?: string | null
     reason: string
     status?: string
+    isDelegated?: boolean
     cancelledAt?: Date | string | null
     approvedBy?: string | null
     approvedAt?: Date | string | null
@@ -68912,6 +68933,7 @@ export namespace Prisma {
     permissionEnd?: NullableStringFieldUpdateOperationsInput | string | null
     reason?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
+    isDelegated?: BoolFieldUpdateOperationsInput | boolean
     cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
     approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -68947,6 +68969,7 @@ export namespace Prisma {
     permissionEnd?: NullableStringFieldUpdateOperationsInput | string | null
     reason?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
+    isDelegated?: BoolFieldUpdateOperationsInput | boolean
     cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
     approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -68980,6 +69003,7 @@ export namespace Prisma {
     permissionEnd?: string | null
     reason: string
     status?: string
+    isDelegated?: boolean
     cancelledAt?: Date | string | null
     approvedBy?: string | null
     approvedAt?: Date | string | null
@@ -69011,6 +69035,7 @@ export namespace Prisma {
     permissionEnd?: NullableStringFieldUpdateOperationsInput | string | null
     reason?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
+    isDelegated?: BoolFieldUpdateOperationsInput | boolean
     cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
     approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -69044,6 +69069,7 @@ export namespace Prisma {
     permissionEnd?: NullableStringFieldUpdateOperationsInput | string | null
     reason?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
+    isDelegated?: BoolFieldUpdateOperationsInput | boolean
     cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
     approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -73121,6 +73147,7 @@ export namespace Prisma {
     permissionEnd?: SortOrder
     reason?: SortOrder
     status?: SortOrder
+    isDelegated?: SortOrder
     cancelledAt?: SortOrder
     approvedBy?: SortOrder
     approvedAt?: SortOrder
@@ -73159,6 +73186,7 @@ export namespace Prisma {
     permissionEnd?: SortOrder
     reason?: SortOrder
     status?: SortOrder
+    isDelegated?: SortOrder
     cancelledAt?: SortOrder
     approvedBy?: SortOrder
     approvedAt?: SortOrder
@@ -73191,6 +73219,7 @@ export namespace Prisma {
     permissionEnd?: SortOrder
     reason?: SortOrder
     status?: SortOrder
+    isDelegated?: SortOrder
     cancelledAt?: SortOrder
     approvedBy?: SortOrder
     approvedAt?: SortOrder
@@ -77995,6 +78024,7 @@ export namespace Prisma {
     permissionEnd?: string | null
     reason: string
     status?: string
+    isDelegated?: boolean
     cancelledAt?: Date | string | null
     approvedBy?: string | null
     approvedAt?: Date | string | null
@@ -78028,6 +78058,7 @@ export namespace Prisma {
     permissionEnd?: string | null
     reason: string
     status?: string
+    isDelegated?: boolean
     cancelledAt?: Date | string | null
     approvedBy?: string | null
     approvedAt?: Date | string | null
@@ -78556,6 +78587,7 @@ export namespace Prisma {
     permissionEnd?: StringNullableFilter<"FacultyLeaveRequest"> | string | null
     reason?: StringFilter<"FacultyLeaveRequest"> | string
     status?: StringFilter<"FacultyLeaveRequest"> | string
+    isDelegated?: BoolFilter<"FacultyLeaveRequest"> | boolean
     cancelledAt?: DateTimeNullableFilter<"FacultyLeaveRequest"> | Date | string | null
     approvedBy?: StringNullableFilter<"FacultyLeaveRequest"> | string | null
     approvedAt?: DateTimeNullableFilter<"FacultyLeaveRequest"> | Date | string | null
@@ -79552,6 +79584,7 @@ export namespace Prisma {
     permissionEnd?: string | null
     reason: string
     status?: string
+    isDelegated?: boolean
     cancelledAt?: Date | string | null
     approvedBy?: string | null
     approvedAt?: Date | string | null
@@ -79585,6 +79618,7 @@ export namespace Prisma {
     permissionEnd?: string | null
     reason: string
     status?: string
+    isDelegated?: boolean
     cancelledAt?: Date | string | null
     approvedBy?: string | null
     approvedAt?: Date | string | null
@@ -90805,6 +90839,7 @@ export namespace Prisma {
     permissionEnd?: string | null
     reason: string
     status?: string
+    isDelegated?: boolean
     cancelledAt?: Date | string | null
     approvedBy?: string | null
     approvedAt?: Date | string | null
@@ -91353,6 +91388,7 @@ export namespace Prisma {
     permissionEnd?: NullableStringFieldUpdateOperationsInput | string | null
     reason?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
+    isDelegated?: BoolFieldUpdateOperationsInput | boolean
     cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
     approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -91386,6 +91422,7 @@ export namespace Prisma {
     permissionEnd?: NullableStringFieldUpdateOperationsInput | string | null
     reason?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
+    isDelegated?: BoolFieldUpdateOperationsInput | boolean
     cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
     approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -91418,6 +91455,7 @@ export namespace Prisma {
     permissionEnd?: NullableStringFieldUpdateOperationsInput | string | null
     reason?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
+    isDelegated?: BoolFieldUpdateOperationsInput | boolean
     cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
     approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -91723,6 +91761,7 @@ export namespace Prisma {
     permissionEnd?: string | null
     reason: string
     status?: string
+    isDelegated?: boolean
     cancelledAt?: Date | string | null
     approvedBy?: string | null
     approvedAt?: Date | string | null
@@ -92511,6 +92550,7 @@ export namespace Prisma {
     permissionEnd?: NullableStringFieldUpdateOperationsInput | string | null
     reason?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
+    isDelegated?: BoolFieldUpdateOperationsInput | boolean
     cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
     approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -92544,6 +92584,7 @@ export namespace Prisma {
     permissionEnd?: NullableStringFieldUpdateOperationsInput | string | null
     reason?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
+    isDelegated?: BoolFieldUpdateOperationsInput | boolean
     cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
     approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -92576,6 +92617,7 @@ export namespace Prisma {
     permissionEnd?: NullableStringFieldUpdateOperationsInput | string | null
     reason?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
+    isDelegated?: BoolFieldUpdateOperationsInput | boolean
     cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
     approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
