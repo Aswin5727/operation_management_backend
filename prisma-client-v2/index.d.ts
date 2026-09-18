@@ -30490,12 +30490,14 @@ export namespace Prisma {
   export type BranchStudentAvgAggregateOutputType = {
     totalWorkingDays: number | null
     courseAmount: number | null
+    fee70TargetHours: number | null
     courseProgress: number | null
   }
 
   export type BranchStudentSumAggregateOutputType = {
     totalWorkingDays: number | null
     courseAmount: number | null
+    fee70TargetHours: number | null
     courseProgress: number | null
   }
 
@@ -30544,6 +30546,12 @@ export namespace Prisma {
     paymentMode: string | null
     paymentPlanId: string | null
     paymentPlan: string | null
+    feeScheduleMode: string | null
+    feeFirstPaymentDate: string | null
+    fee70ProgressDate: string | null
+    fee70TargetHours: number | null
+    feePaymentDeadline: string | null
+    feeComplianceStatus: string | null
     courseProgress: number | null
   }
 
@@ -30592,6 +30600,12 @@ export namespace Prisma {
     paymentMode: string | null
     paymentPlanId: string | null
     paymentPlan: string | null
+    feeScheduleMode: string | null
+    feeFirstPaymentDate: string | null
+    fee70ProgressDate: string | null
+    fee70TargetHours: number | null
+    feePaymentDeadline: string | null
+    feeComplianceStatus: string | null
     courseProgress: number | null
   }
 
@@ -30640,6 +30654,12 @@ export namespace Prisma {
     paymentMode: number
     paymentPlanId: number
     paymentPlan: number
+    feeScheduleMode: number
+    feeFirstPaymentDate: number
+    fee70ProgressDate: number
+    fee70TargetHours: number
+    feePaymentDeadline: number
+    feeComplianceStatus: number
     courseProgress: number
     _all: number
   }
@@ -30648,12 +30668,14 @@ export namespace Prisma {
   export type BranchStudentAvgAggregateInputType = {
     totalWorkingDays?: true
     courseAmount?: true
+    fee70TargetHours?: true
     courseProgress?: true
   }
 
   export type BranchStudentSumAggregateInputType = {
     totalWorkingDays?: true
     courseAmount?: true
+    fee70TargetHours?: true
     courseProgress?: true
   }
 
@@ -30702,6 +30724,12 @@ export namespace Prisma {
     paymentMode?: true
     paymentPlanId?: true
     paymentPlan?: true
+    feeScheduleMode?: true
+    feeFirstPaymentDate?: true
+    fee70ProgressDate?: true
+    fee70TargetHours?: true
+    feePaymentDeadline?: true
+    feeComplianceStatus?: true
     courseProgress?: true
   }
 
@@ -30750,6 +30778,12 @@ export namespace Prisma {
     paymentMode?: true
     paymentPlanId?: true
     paymentPlan?: true
+    feeScheduleMode?: true
+    feeFirstPaymentDate?: true
+    fee70ProgressDate?: true
+    fee70TargetHours?: true
+    feePaymentDeadline?: true
+    feeComplianceStatus?: true
     courseProgress?: true
   }
 
@@ -30798,6 +30832,12 @@ export namespace Prisma {
     paymentMode?: true
     paymentPlanId?: true
     paymentPlan?: true
+    feeScheduleMode?: true
+    feeFirstPaymentDate?: true
+    fee70ProgressDate?: true
+    fee70TargetHours?: true
+    feePaymentDeadline?: true
+    feeComplianceStatus?: true
     courseProgress?: true
     _all?: true
   }
@@ -30933,6 +30973,12 @@ export namespace Prisma {
     paymentMode: string
     paymentPlanId: string | null
     paymentPlan: string | null
+    feeScheduleMode: string
+    feeFirstPaymentDate: string | null
+    fee70ProgressDate: string | null
+    fee70TargetHours: number | null
+    feePaymentDeadline: string | null
+    feeComplianceStatus: string
     courseProgress: number | null
     _count: BranchStudentCountAggregateOutputType | null
     _avg: BranchStudentAvgAggregateOutputType | null
@@ -31000,6 +31046,12 @@ export namespace Prisma {
     paymentMode?: boolean
     paymentPlanId?: boolean
     paymentPlan?: boolean
+    feeScheduleMode?: boolean
+    feeFirstPaymentDate?: boolean
+    fee70ProgressDate?: boolean
+    fee70TargetHours?: boolean
+    feePaymentDeadline?: boolean
+    feeComplianceStatus?: boolean
     courseProgress?: boolean
     branch?: boolean | BranchDefaultArgs<ExtArgs>
     course?: boolean | BranchStudent$courseArgs<ExtArgs>
@@ -31056,6 +31108,12 @@ export namespace Prisma {
     paymentMode?: boolean
     paymentPlanId?: boolean
     paymentPlan?: boolean
+    feeScheduleMode?: boolean
+    feeFirstPaymentDate?: boolean
+    fee70ProgressDate?: boolean
+    fee70TargetHours?: boolean
+    feePaymentDeadline?: boolean
+    feeComplianceStatus?: boolean
     courseProgress?: boolean
     branch?: boolean | BranchDefaultArgs<ExtArgs>
     course?: boolean | BranchStudent$courseArgs<ExtArgs>
@@ -31106,6 +31164,12 @@ export namespace Prisma {
     paymentMode?: boolean
     paymentPlanId?: boolean
     paymentPlan?: boolean
+    feeScheduleMode?: boolean
+    feeFirstPaymentDate?: boolean
+    fee70ProgressDate?: boolean
+    fee70TargetHours?: boolean
+    feePaymentDeadline?: boolean
+    feeComplianceStatus?: boolean
     courseProgress?: boolean
     branch?: boolean | BranchDefaultArgs<ExtArgs>
     course?: boolean | BranchStudent$courseArgs<ExtArgs>
@@ -31156,10 +31220,16 @@ export namespace Prisma {
     paymentMode?: boolean
     paymentPlanId?: boolean
     paymentPlan?: boolean
+    feeScheduleMode?: boolean
+    feeFirstPaymentDate?: boolean
+    fee70ProgressDate?: boolean
+    fee70TargetHours?: boolean
+    feePaymentDeadline?: boolean
+    feeComplianceStatus?: boolean
     courseProgress?: boolean
   }
 
-  export type BranchStudentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "branchId" | "studentId" | "studentName" | "mobileNumber" | "emailAddress" | "parentSpouseNumber" | "countryCode" | "country" | "stateCode" | "state" | "city" | "address" | "qualification" | "passedOutYear" | "currentStatus" | "designation" | "source" | "sourceOther" | "admissionDate" | "courseStartDate" | "classSchedule" | "recordStatus" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt" | "linkedInUrl" | "remarks" | "courseId" | "courseName" | "courseMode" | "totalWorkingDays" | "courseEndDate" | "batchId" | "batchName" | "batchTiming" | "facultyId" | "facultyName" | "weeklyOffDay" | "courseAmount" | "paymentMode" | "paymentPlanId" | "paymentPlan" | "courseProgress", ExtArgs["result"]["branchStudent"]>
+  export type BranchStudentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "branchId" | "studentId" | "studentName" | "mobileNumber" | "emailAddress" | "parentSpouseNumber" | "countryCode" | "country" | "stateCode" | "state" | "city" | "address" | "qualification" | "passedOutYear" | "currentStatus" | "designation" | "source" | "sourceOther" | "admissionDate" | "courseStartDate" | "classSchedule" | "recordStatus" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt" | "linkedInUrl" | "remarks" | "courseId" | "courseName" | "courseMode" | "totalWorkingDays" | "courseEndDate" | "batchId" | "batchName" | "batchTiming" | "facultyId" | "facultyName" | "weeklyOffDay" | "courseAmount" | "paymentMode" | "paymentPlanId" | "paymentPlan" | "feeScheduleMode" | "feeFirstPaymentDate" | "fee70ProgressDate" | "fee70TargetHours" | "feePaymentDeadline" | "feeComplianceStatus" | "courseProgress", ExtArgs["result"]["branchStudent"]>
   export type BranchStudentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     branch?: boolean | BranchDefaultArgs<ExtArgs>
     course?: boolean | BranchStudent$courseArgs<ExtArgs>
@@ -31235,6 +31305,12 @@ export namespace Prisma {
       paymentMode: string
       paymentPlanId: string | null
       paymentPlan: string | null
+      feeScheduleMode: string
+      feeFirstPaymentDate: string | null
+      fee70ProgressDate: string | null
+      fee70TargetHours: number | null
+      feePaymentDeadline: string | null
+      feeComplianceStatus: string
       courseProgress: number | null
     }, ExtArgs["result"]["branchStudent"]>
     composites: {}
@@ -31710,6 +31786,12 @@ export namespace Prisma {
     readonly paymentMode: FieldRef<"BranchStudent", 'String'>
     readonly paymentPlanId: FieldRef<"BranchStudent", 'String'>
     readonly paymentPlan: FieldRef<"BranchStudent", 'String'>
+    readonly feeScheduleMode: FieldRef<"BranchStudent", 'String'>
+    readonly feeFirstPaymentDate: FieldRef<"BranchStudent", 'String'>
+    readonly fee70ProgressDate: FieldRef<"BranchStudent", 'String'>
+    readonly fee70TargetHours: FieldRef<"BranchStudent", 'Float'>
+    readonly feePaymentDeadline: FieldRef<"BranchStudent", 'String'>
+    readonly feeComplianceStatus: FieldRef<"BranchStudent", 'String'>
     readonly courseProgress: FieldRef<"BranchStudent", 'Int'>
   }
     
@@ -58495,6 +58577,12 @@ export namespace Prisma {
     paymentMode: 'paymentMode',
     paymentPlanId: 'paymentPlanId',
     paymentPlan: 'paymentPlan',
+    feeScheduleMode: 'feeScheduleMode',
+    feeFirstPaymentDate: 'feeFirstPaymentDate',
+    fee70ProgressDate: 'fee70ProgressDate',
+    fee70TargetHours: 'fee70TargetHours',
+    feePaymentDeadline: 'feePaymentDeadline',
+    feeComplianceStatus: 'feeComplianceStatus',
     courseProgress: 'courseProgress'
   };
 
@@ -59157,20 +59245,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'AttendanceStatus'
-   */
-  export type EnumAttendanceStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AttendanceStatus'>
-    
-
-
-  /**
-   * Reference to a field of type 'AttendanceStatus[]'
-   */
-  export type ListEnumAttendanceStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AttendanceStatus[]'>
-    
-
-
-  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -59181,6 +59255,20 @@ export namespace Prisma {
    * Reference to a field of type 'Float[]'
    */
   export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'AttendanceStatus'
+   */
+  export type EnumAttendanceStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AttendanceStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'AttendanceStatus[]'
+   */
+  export type ListEnumAttendanceStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AttendanceStatus[]'>
     
   /**
    * Deep Input Types
@@ -61604,6 +61692,12 @@ export namespace Prisma {
     paymentMode?: StringFilter<"BranchStudent"> | string
     paymentPlanId?: StringNullableFilter<"BranchStudent"> | string | null
     paymentPlan?: StringNullableFilter<"BranchStudent"> | string | null
+    feeScheduleMode?: StringFilter<"BranchStudent"> | string
+    feeFirstPaymentDate?: StringNullableFilter<"BranchStudent"> | string | null
+    fee70ProgressDate?: StringNullableFilter<"BranchStudent"> | string | null
+    fee70TargetHours?: FloatNullableFilter<"BranchStudent"> | number | null
+    feePaymentDeadline?: StringNullableFilter<"BranchStudent"> | string | null
+    feeComplianceStatus?: StringFilter<"BranchStudent"> | string
     courseProgress?: IntNullableFilter<"BranchStudent"> | number | null
     branch?: XOR<BranchScalarRelationFilter, BranchWhereInput>
     course?: XOR<BranchCourseNullableScalarRelationFilter, BranchCourseWhereInput> | null
@@ -61659,6 +61753,12 @@ export namespace Prisma {
     paymentMode?: SortOrder
     paymentPlanId?: SortOrderInput | SortOrder
     paymentPlan?: SortOrderInput | SortOrder
+    feeScheduleMode?: SortOrder
+    feeFirstPaymentDate?: SortOrderInput | SortOrder
+    fee70ProgressDate?: SortOrderInput | SortOrder
+    fee70TargetHours?: SortOrderInput | SortOrder
+    feePaymentDeadline?: SortOrderInput | SortOrder
+    feeComplianceStatus?: SortOrder
     courseProgress?: SortOrderInput | SortOrder
     branch?: BranchOrderByWithRelationInput
     course?: BranchCourseOrderByWithRelationInput
@@ -61718,6 +61818,12 @@ export namespace Prisma {
     paymentMode?: StringFilter<"BranchStudent"> | string
     paymentPlanId?: StringNullableFilter<"BranchStudent"> | string | null
     paymentPlan?: StringNullableFilter<"BranchStudent"> | string | null
+    feeScheduleMode?: StringFilter<"BranchStudent"> | string
+    feeFirstPaymentDate?: StringNullableFilter<"BranchStudent"> | string | null
+    fee70ProgressDate?: StringNullableFilter<"BranchStudent"> | string | null
+    fee70TargetHours?: FloatNullableFilter<"BranchStudent"> | number | null
+    feePaymentDeadline?: StringNullableFilter<"BranchStudent"> | string | null
+    feeComplianceStatus?: StringFilter<"BranchStudent"> | string
     courseProgress?: IntNullableFilter<"BranchStudent"> | number | null
     branch?: XOR<BranchScalarRelationFilter, BranchWhereInput>
     course?: XOR<BranchCourseNullableScalarRelationFilter, BranchCourseWhereInput> | null
@@ -61773,6 +61879,12 @@ export namespace Prisma {
     paymentMode?: SortOrder
     paymentPlanId?: SortOrderInput | SortOrder
     paymentPlan?: SortOrderInput | SortOrder
+    feeScheduleMode?: SortOrder
+    feeFirstPaymentDate?: SortOrderInput | SortOrder
+    fee70ProgressDate?: SortOrderInput | SortOrder
+    fee70TargetHours?: SortOrderInput | SortOrder
+    feePaymentDeadline?: SortOrderInput | SortOrder
+    feeComplianceStatus?: SortOrder
     courseProgress?: SortOrderInput | SortOrder
     _count?: BranchStudentCountOrderByAggregateInput
     _avg?: BranchStudentAvgOrderByAggregateInput
@@ -61829,6 +61941,12 @@ export namespace Prisma {
     paymentMode?: StringWithAggregatesFilter<"BranchStudent"> | string
     paymentPlanId?: StringNullableWithAggregatesFilter<"BranchStudent"> | string | null
     paymentPlan?: StringNullableWithAggregatesFilter<"BranchStudent"> | string | null
+    feeScheduleMode?: StringWithAggregatesFilter<"BranchStudent"> | string
+    feeFirstPaymentDate?: StringNullableWithAggregatesFilter<"BranchStudent"> | string | null
+    fee70ProgressDate?: StringNullableWithAggregatesFilter<"BranchStudent"> | string | null
+    fee70TargetHours?: FloatNullableWithAggregatesFilter<"BranchStudent"> | number | null
+    feePaymentDeadline?: StringNullableWithAggregatesFilter<"BranchStudent"> | string | null
+    feeComplianceStatus?: StringWithAggregatesFilter<"BranchStudent"> | string
     courseProgress?: IntNullableWithAggregatesFilter<"BranchStudent"> | number | null
   }
 
@@ -67006,6 +67124,12 @@ export namespace Prisma {
     paymentMode?: string
     paymentPlanId?: string | null
     paymentPlan?: string | null
+    feeScheduleMode?: string
+    feeFirstPaymentDate?: string | null
+    fee70ProgressDate?: string | null
+    fee70TargetHours?: number | null
+    feePaymentDeadline?: string | null
+    feeComplianceStatus?: string
     courseProgress?: number | null
     branch: BranchCreateNestedOneWithoutBranchStudentsInput
     course?: BranchCourseCreateNestedOneWithoutBranchStudentsInput
@@ -67061,6 +67185,12 @@ export namespace Prisma {
     paymentMode?: string
     paymentPlanId?: string | null
     paymentPlan?: string | null
+    feeScheduleMode?: string
+    feeFirstPaymentDate?: string | null
+    fee70ProgressDate?: string | null
+    fee70TargetHours?: number | null
+    feePaymentDeadline?: string | null
+    feeComplianceStatus?: string
     courseProgress?: number | null
     installments?: BranchStudentInstallmentUncheckedCreateNestedManyWithoutBranchStudentInput
     payments?: BranchStudentPaymentUncheckedCreateNestedManyWithoutBranchStudentInput
@@ -67112,6 +67242,12 @@ export namespace Prisma {
     paymentMode?: StringFieldUpdateOperationsInput | string
     paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
     paymentPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    feeScheduleMode?: StringFieldUpdateOperationsInput | string
+    feeFirstPaymentDate?: NullableStringFieldUpdateOperationsInput | string | null
+    fee70ProgressDate?: NullableStringFieldUpdateOperationsInput | string | null
+    fee70TargetHours?: NullableFloatFieldUpdateOperationsInput | number | null
+    feePaymentDeadline?: NullableStringFieldUpdateOperationsInput | string | null
+    feeComplianceStatus?: StringFieldUpdateOperationsInput | string
     courseProgress?: NullableIntFieldUpdateOperationsInput | number | null
     branch?: BranchUpdateOneRequiredWithoutBranchStudentsNestedInput
     course?: BranchCourseUpdateOneWithoutBranchStudentsNestedInput
@@ -67167,6 +67303,12 @@ export namespace Prisma {
     paymentMode?: StringFieldUpdateOperationsInput | string
     paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
     paymentPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    feeScheduleMode?: StringFieldUpdateOperationsInput | string
+    feeFirstPaymentDate?: NullableStringFieldUpdateOperationsInput | string | null
+    fee70ProgressDate?: NullableStringFieldUpdateOperationsInput | string | null
+    fee70TargetHours?: NullableFloatFieldUpdateOperationsInput | number | null
+    feePaymentDeadline?: NullableStringFieldUpdateOperationsInput | string | null
+    feeComplianceStatus?: StringFieldUpdateOperationsInput | string
     courseProgress?: NullableIntFieldUpdateOperationsInput | number | null
     installments?: BranchStudentInstallmentUncheckedUpdateManyWithoutBranchStudentNestedInput
     payments?: BranchStudentPaymentUncheckedUpdateManyWithoutBranchStudentNestedInput
@@ -67220,6 +67362,12 @@ export namespace Prisma {
     paymentMode?: string
     paymentPlanId?: string | null
     paymentPlan?: string | null
+    feeScheduleMode?: string
+    feeFirstPaymentDate?: string | null
+    fee70ProgressDate?: string | null
+    fee70TargetHours?: number | null
+    feePaymentDeadline?: string | null
+    feeComplianceStatus?: string
     courseProgress?: number | null
   }
 
@@ -67266,6 +67414,12 @@ export namespace Prisma {
     paymentMode?: StringFieldUpdateOperationsInput | string
     paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
     paymentPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    feeScheduleMode?: StringFieldUpdateOperationsInput | string
+    feeFirstPaymentDate?: NullableStringFieldUpdateOperationsInput | string | null
+    fee70ProgressDate?: NullableStringFieldUpdateOperationsInput | string | null
+    fee70TargetHours?: NullableFloatFieldUpdateOperationsInput | number | null
+    feePaymentDeadline?: NullableStringFieldUpdateOperationsInput | string | null
+    feeComplianceStatus?: StringFieldUpdateOperationsInput | string
     courseProgress?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
@@ -67314,6 +67468,12 @@ export namespace Prisma {
     paymentMode?: StringFieldUpdateOperationsInput | string
     paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
     paymentPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    feeScheduleMode?: StringFieldUpdateOperationsInput | string
+    feeFirstPaymentDate?: NullableStringFieldUpdateOperationsInput | string | null
+    fee70ProgressDate?: NullableStringFieldUpdateOperationsInput | string | null
+    fee70TargetHours?: NullableFloatFieldUpdateOperationsInput | number | null
+    feePaymentDeadline?: NullableStringFieldUpdateOperationsInput | string | null
+    feeComplianceStatus?: StringFieldUpdateOperationsInput | string
     courseProgress?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
@@ -72081,6 +72241,17 @@ export namespace Prisma {
     installment4?: SortOrder
   }
 
+  export type FloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
   export type BranchCourseNullableScalarRelationFilter = {
     is?: BranchCourseWhereInput | null
     isNot?: BranchCourseWhereInput | null
@@ -72146,12 +72317,19 @@ export namespace Prisma {
     paymentMode?: SortOrder
     paymentPlanId?: SortOrder
     paymentPlan?: SortOrder
+    feeScheduleMode?: SortOrder
+    feeFirstPaymentDate?: SortOrder
+    fee70ProgressDate?: SortOrder
+    fee70TargetHours?: SortOrder
+    feePaymentDeadline?: SortOrder
+    feeComplianceStatus?: SortOrder
     courseProgress?: SortOrder
   }
 
   export type BranchStudentAvgOrderByAggregateInput = {
     totalWorkingDays?: SortOrder
     courseAmount?: SortOrder
+    fee70TargetHours?: SortOrder
     courseProgress?: SortOrder
   }
 
@@ -72200,6 +72378,12 @@ export namespace Prisma {
     paymentMode?: SortOrder
     paymentPlanId?: SortOrder
     paymentPlan?: SortOrder
+    feeScheduleMode?: SortOrder
+    feeFirstPaymentDate?: SortOrder
+    fee70ProgressDate?: SortOrder
+    fee70TargetHours?: SortOrder
+    feePaymentDeadline?: SortOrder
+    feeComplianceStatus?: SortOrder
     courseProgress?: SortOrder
   }
 
@@ -72248,23 +72432,23 @@ export namespace Prisma {
     paymentMode?: SortOrder
     paymentPlanId?: SortOrder
     paymentPlan?: SortOrder
+    feeScheduleMode?: SortOrder
+    feeFirstPaymentDate?: SortOrder
+    fee70ProgressDate?: SortOrder
+    fee70TargetHours?: SortOrder
+    feePaymentDeadline?: SortOrder
+    feeComplianceStatus?: SortOrder
     courseProgress?: SortOrder
   }
 
   export type BranchStudentSumOrderByAggregateInput = {
     totalWorkingDays?: SortOrder
     courseAmount?: SortOrder
+    fee70TargetHours?: SortOrder
     courseProgress?: SortOrder
   }
 
-  export type EnumAttendanceStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.AttendanceStatus | EnumAttendanceStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.AttendanceStatus[] | ListEnumAttendanceStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.AttendanceStatus[] | ListEnumAttendanceStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumAttendanceStatusFilter<$PrismaModel> | $Enums.AttendanceStatus
-  }
-
-  export type FloatNullableFilter<$PrismaModel = never> = {
+  export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | FloatFieldRefInput<$PrismaModel> | null
     in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
     notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
@@ -72272,7 +72456,19 @@ export namespace Prisma {
     lte?: number | FloatFieldRefInput<$PrismaModel>
     gt?: number | FloatFieldRefInput<$PrismaModel>
     gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedFloatNullableFilter<$PrismaModel>
+    _min?: NestedFloatNullableFilter<$PrismaModel>
+    _max?: NestedFloatNullableFilter<$PrismaModel>
+  }
+
+  export type EnumAttendanceStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.AttendanceStatus | EnumAttendanceStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.AttendanceStatus[] | ListEnumAttendanceStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AttendanceStatus[] | ListEnumAttendanceStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumAttendanceStatusFilter<$PrismaModel> | $Enums.AttendanceStatus
   }
 
   export type BranchStudentScalarRelationFilter = {
@@ -72358,22 +72554,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumAttendanceStatusFilter<$PrismaModel>
     _max?: NestedEnumAttendanceStatusFilter<$PrismaModel>
-  }
-
-  export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedFloatNullableFilter<$PrismaModel>
-    _min?: NestedFloatNullableFilter<$PrismaModel>
-    _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
   export type BranchCalendarHolidayCountOrderByAggregateInput = {
@@ -76052,6 +76232,14 @@ export namespace Prisma {
     connect?: FacultyTodayWorkStudentEntryWhereUniqueInput | FacultyTodayWorkStudentEntryWhereUniqueInput[]
   }
 
+  export type NullableFloatFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
   export type BranchUpdateOneRequiredWithoutBranchStudentsNestedInput = {
     create?: XOR<BranchCreateWithoutBranchStudentsInput, BranchUncheckedCreateWithoutBranchStudentsInput>
     connectOrCreate?: BranchCreateOrConnectWithoutBranchStudentsInput
@@ -76224,14 +76412,6 @@ export namespace Prisma {
 
   export type EnumAttendanceStatusFieldUpdateOperationsInput = {
     set?: $Enums.AttendanceStatus
-  }
-
-  export type NullableFloatFieldUpdateOperationsInput = {
-    set?: number | null
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
   }
 
   export type BranchStudentUpdateOneRequiredWithoutCalendarAttendanceRecordsNestedInput = {
@@ -77409,6 +77589,22 @@ export namespace Prisma {
     _max?: NestedEnumBatchStatusNullableFilter<$PrismaModel>
   }
 
+  export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedFloatNullableFilter<$PrismaModel>
+    _min?: NestedFloatNullableFilter<$PrismaModel>
+    _max?: NestedFloatNullableFilter<$PrismaModel>
+  }
+
   export type NestedEnumAttendanceStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.AttendanceStatus | EnumAttendanceStatusFieldRefInput<$PrismaModel>
     in?: $Enums.AttendanceStatus[] | ListEnumAttendanceStatusFieldRefInput<$PrismaModel>
@@ -77424,22 +77620,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumAttendanceStatusFilter<$PrismaModel>
     _max?: NestedEnumAttendanceStatusFilter<$PrismaModel>
-  }
-
-  export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedFloatNullableFilter<$PrismaModel>
-    _min?: NestedFloatNullableFilter<$PrismaModel>
-    _max?: NestedFloatNullableFilter<$PrismaModel>
   }
   export type NestedJsonFilter<$PrismaModel = never> =
     | PatchUndefined<
@@ -79230,6 +79410,12 @@ export namespace Prisma {
     paymentMode?: string
     paymentPlanId?: string | null
     paymentPlan?: string | null
+    feeScheduleMode?: string
+    feeFirstPaymentDate?: string | null
+    fee70ProgressDate?: string | null
+    fee70TargetHours?: number | null
+    feePaymentDeadline?: string | null
+    feeComplianceStatus?: string
     courseProgress?: number | null
     course?: BranchCourseCreateNestedOneWithoutBranchStudentsInput
     installments?: BranchStudentInstallmentCreateNestedManyWithoutBranchStudentInput
@@ -79283,6 +79469,12 @@ export namespace Prisma {
     paymentMode?: string
     paymentPlanId?: string | null
     paymentPlan?: string | null
+    feeScheduleMode?: string
+    feeFirstPaymentDate?: string | null
+    fee70ProgressDate?: string | null
+    fee70TargetHours?: number | null
+    feePaymentDeadline?: string | null
+    feeComplianceStatus?: string
     courseProgress?: number | null
     installments?: BranchStudentInstallmentUncheckedCreateNestedManyWithoutBranchStudentInput
     payments?: BranchStudentPaymentUncheckedCreateNestedManyWithoutBranchStudentInput
@@ -79958,6 +80150,12 @@ export namespace Prisma {
     paymentMode?: StringFilter<"BranchStudent"> | string
     paymentPlanId?: StringNullableFilter<"BranchStudent"> | string | null
     paymentPlan?: StringNullableFilter<"BranchStudent"> | string | null
+    feeScheduleMode?: StringFilter<"BranchStudent"> | string
+    feeFirstPaymentDate?: StringNullableFilter<"BranchStudent"> | string | null
+    fee70ProgressDate?: StringNullableFilter<"BranchStudent"> | string | null
+    fee70TargetHours?: FloatNullableFilter<"BranchStudent"> | number | null
+    feePaymentDeadline?: StringNullableFilter<"BranchStudent"> | string | null
+    feeComplianceStatus?: StringFilter<"BranchStudent"> | string
     courseProgress?: IntNullableFilter<"BranchStudent"> | number | null
   }
 
@@ -82013,6 +82211,12 @@ export namespace Prisma {
     paymentMode?: string
     paymentPlanId?: string | null
     paymentPlan?: string | null
+    feeScheduleMode?: string
+    feeFirstPaymentDate?: string | null
+    fee70ProgressDate?: string | null
+    fee70TargetHours?: number | null
+    feePaymentDeadline?: string | null
+    feeComplianceStatus?: string
     courseProgress?: number | null
     branch: BranchCreateNestedOneWithoutBranchStudentsInput
     installments?: BranchStudentInstallmentCreateNestedManyWithoutBranchStudentInput
@@ -82066,6 +82270,12 @@ export namespace Prisma {
     paymentMode?: string
     paymentPlanId?: string | null
     paymentPlan?: string | null
+    feeScheduleMode?: string
+    feeFirstPaymentDate?: string | null
+    fee70ProgressDate?: string | null
+    fee70TargetHours?: number | null
+    feePaymentDeadline?: string | null
+    feeComplianceStatus?: string
     courseProgress?: number | null
     installments?: BranchStudentInstallmentUncheckedCreateNestedManyWithoutBranchStudentInput
     payments?: BranchStudentPaymentUncheckedCreateNestedManyWithoutBranchStudentInput
@@ -85002,6 +85212,12 @@ export namespace Prisma {
     paymentMode?: string
     paymentPlanId?: string | null
     paymentPlan?: string | null
+    feeScheduleMode?: string
+    feeFirstPaymentDate?: string | null
+    fee70ProgressDate?: string | null
+    fee70TargetHours?: number | null
+    feePaymentDeadline?: string | null
+    feeComplianceStatus?: string
     courseProgress?: number | null
     branch: BranchCreateNestedOneWithoutBranchStudentsInput
     course?: BranchCourseCreateNestedOneWithoutBranchStudentsInput
@@ -85056,6 +85272,12 @@ export namespace Prisma {
     paymentMode?: string
     paymentPlanId?: string | null
     paymentPlan?: string | null
+    feeScheduleMode?: string
+    feeFirstPaymentDate?: string | null
+    fee70ProgressDate?: string | null
+    fee70TargetHours?: number | null
+    feePaymentDeadline?: string | null
+    feeComplianceStatus?: string
     courseProgress?: number | null
     installments?: BranchStudentInstallmentUncheckedCreateNestedManyWithoutBranchStudentInput
     payments?: BranchStudentPaymentUncheckedCreateNestedManyWithoutBranchStudentInput
@@ -85199,6 +85421,12 @@ export namespace Prisma {
     paymentMode?: StringFieldUpdateOperationsInput | string
     paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
     paymentPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    feeScheduleMode?: StringFieldUpdateOperationsInput | string
+    feeFirstPaymentDate?: NullableStringFieldUpdateOperationsInput | string | null
+    fee70ProgressDate?: NullableStringFieldUpdateOperationsInput | string | null
+    fee70TargetHours?: NullableFloatFieldUpdateOperationsInput | number | null
+    feePaymentDeadline?: NullableStringFieldUpdateOperationsInput | string | null
+    feeComplianceStatus?: StringFieldUpdateOperationsInput | string
     courseProgress?: NullableIntFieldUpdateOperationsInput | number | null
     branch?: BranchUpdateOneRequiredWithoutBranchStudentsNestedInput
     course?: BranchCourseUpdateOneWithoutBranchStudentsNestedInput
@@ -85253,6 +85481,12 @@ export namespace Prisma {
     paymentMode?: StringFieldUpdateOperationsInput | string
     paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
     paymentPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    feeScheduleMode?: StringFieldUpdateOperationsInput | string
+    feeFirstPaymentDate?: NullableStringFieldUpdateOperationsInput | string | null
+    fee70ProgressDate?: NullableStringFieldUpdateOperationsInput | string | null
+    fee70TargetHours?: NullableFloatFieldUpdateOperationsInput | number | null
+    feePaymentDeadline?: NullableStringFieldUpdateOperationsInput | string | null
+    feeComplianceStatus?: StringFieldUpdateOperationsInput | string
     courseProgress?: NullableIntFieldUpdateOperationsInput | number | null
     installments?: BranchStudentInstallmentUncheckedUpdateManyWithoutBranchStudentNestedInput
     payments?: BranchStudentPaymentUncheckedUpdateManyWithoutBranchStudentNestedInput
@@ -85674,6 +85908,12 @@ export namespace Prisma {
     paymentMode?: string
     paymentPlanId?: string | null
     paymentPlan?: string | null
+    feeScheduleMode?: string
+    feeFirstPaymentDate?: string | null
+    fee70ProgressDate?: string | null
+    fee70TargetHours?: number | null
+    feePaymentDeadline?: string | null
+    feeComplianceStatus?: string
     courseProgress?: number | null
     branch: BranchCreateNestedOneWithoutBranchStudentsInput
     course?: BranchCourseCreateNestedOneWithoutBranchStudentsInput
@@ -85728,6 +85968,12 @@ export namespace Prisma {
     paymentMode?: string
     paymentPlanId?: string | null
     paymentPlan?: string | null
+    feeScheduleMode?: string
+    feeFirstPaymentDate?: string | null
+    fee70ProgressDate?: string | null
+    fee70TargetHours?: number | null
+    feePaymentDeadline?: string | null
+    feeComplianceStatus?: string
     courseProgress?: number | null
     payments?: BranchStudentPaymentUncheckedCreateNestedManyWithoutBranchStudentInput
     ledgerEntries?: BranchStudentLedgerEntryUncheckedCreateNestedManyWithoutBranchStudentInput
@@ -85838,6 +86084,12 @@ export namespace Prisma {
     paymentMode?: StringFieldUpdateOperationsInput | string
     paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
     paymentPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    feeScheduleMode?: StringFieldUpdateOperationsInput | string
+    feeFirstPaymentDate?: NullableStringFieldUpdateOperationsInput | string | null
+    fee70ProgressDate?: NullableStringFieldUpdateOperationsInput | string | null
+    fee70TargetHours?: NullableFloatFieldUpdateOperationsInput | number | null
+    feePaymentDeadline?: NullableStringFieldUpdateOperationsInput | string | null
+    feeComplianceStatus?: StringFieldUpdateOperationsInput | string
     courseProgress?: NullableIntFieldUpdateOperationsInput | number | null
     branch?: BranchUpdateOneRequiredWithoutBranchStudentsNestedInput
     course?: BranchCourseUpdateOneWithoutBranchStudentsNestedInput
@@ -85892,6 +86144,12 @@ export namespace Prisma {
     paymentMode?: StringFieldUpdateOperationsInput | string
     paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
     paymentPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    feeScheduleMode?: StringFieldUpdateOperationsInput | string
+    feeFirstPaymentDate?: NullableStringFieldUpdateOperationsInput | string | null
+    fee70ProgressDate?: NullableStringFieldUpdateOperationsInput | string | null
+    fee70TargetHours?: NullableFloatFieldUpdateOperationsInput | number | null
+    feePaymentDeadline?: NullableStringFieldUpdateOperationsInput | string | null
+    feeComplianceStatus?: StringFieldUpdateOperationsInput | string
     courseProgress?: NullableIntFieldUpdateOperationsInput | number | null
     payments?: BranchStudentPaymentUncheckedUpdateManyWithoutBranchStudentNestedInput
     ledgerEntries?: BranchStudentLedgerEntryUncheckedUpdateManyWithoutBranchStudentNestedInput
@@ -87697,6 +87955,12 @@ export namespace Prisma {
     paymentMode?: string
     paymentPlanId?: string | null
     paymentPlan?: string | null
+    feeScheduleMode?: string
+    feeFirstPaymentDate?: string | null
+    fee70ProgressDate?: string | null
+    fee70TargetHours?: number | null
+    feePaymentDeadline?: string | null
+    feeComplianceStatus?: string
     courseProgress?: number | null
     branch: BranchCreateNestedOneWithoutBranchStudentsInput
     course?: BranchCourseCreateNestedOneWithoutBranchStudentsInput
@@ -87751,6 +88015,12 @@ export namespace Prisma {
     paymentMode?: string
     paymentPlanId?: string | null
     paymentPlan?: string | null
+    feeScheduleMode?: string
+    feeFirstPaymentDate?: string | null
+    fee70ProgressDate?: string | null
+    fee70TargetHours?: number | null
+    feePaymentDeadline?: string | null
+    feeComplianceStatus?: string
     courseProgress?: number | null
     installments?: BranchStudentInstallmentUncheckedCreateNestedManyWithoutBranchStudentInput
     payments?: BranchStudentPaymentUncheckedCreateNestedManyWithoutBranchStudentInput
@@ -87951,6 +88221,12 @@ export namespace Prisma {
     paymentMode?: StringFieldUpdateOperationsInput | string
     paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
     paymentPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    feeScheduleMode?: StringFieldUpdateOperationsInput | string
+    feeFirstPaymentDate?: NullableStringFieldUpdateOperationsInput | string | null
+    fee70ProgressDate?: NullableStringFieldUpdateOperationsInput | string | null
+    fee70TargetHours?: NullableFloatFieldUpdateOperationsInput | number | null
+    feePaymentDeadline?: NullableStringFieldUpdateOperationsInput | string | null
+    feeComplianceStatus?: StringFieldUpdateOperationsInput | string
     courseProgress?: NullableIntFieldUpdateOperationsInput | number | null
     branch?: BranchUpdateOneRequiredWithoutBranchStudentsNestedInput
     course?: BranchCourseUpdateOneWithoutBranchStudentsNestedInput
@@ -88005,6 +88281,12 @@ export namespace Prisma {
     paymentMode?: StringFieldUpdateOperationsInput | string
     paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
     paymentPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    feeScheduleMode?: StringFieldUpdateOperationsInput | string
+    feeFirstPaymentDate?: NullableStringFieldUpdateOperationsInput | string | null
+    fee70ProgressDate?: NullableStringFieldUpdateOperationsInput | string | null
+    fee70TargetHours?: NullableFloatFieldUpdateOperationsInput | number | null
+    feePaymentDeadline?: NullableStringFieldUpdateOperationsInput | string | null
+    feeComplianceStatus?: StringFieldUpdateOperationsInput | string
     courseProgress?: NullableIntFieldUpdateOperationsInput | number | null
     installments?: BranchStudentInstallmentUncheckedUpdateManyWithoutBranchStudentNestedInput
     payments?: BranchStudentPaymentUncheckedUpdateManyWithoutBranchStudentNestedInput
@@ -89906,6 +90188,12 @@ export namespace Prisma {
     paymentMode?: string
     paymentPlanId?: string | null
     paymentPlan?: string | null
+    feeScheduleMode?: string
+    feeFirstPaymentDate?: string | null
+    fee70ProgressDate?: string | null
+    fee70TargetHours?: number | null
+    feePaymentDeadline?: string | null
+    feeComplianceStatus?: string
     courseProgress?: number | null
     branch: BranchCreateNestedOneWithoutBranchStudentsInput
     course?: BranchCourseCreateNestedOneWithoutBranchStudentsInput
@@ -89960,6 +90248,12 @@ export namespace Prisma {
     paymentMode?: string
     paymentPlanId?: string | null
     paymentPlan?: string | null
+    feeScheduleMode?: string
+    feeFirstPaymentDate?: string | null
+    fee70ProgressDate?: string | null
+    fee70TargetHours?: number | null
+    feePaymentDeadline?: string | null
+    feeComplianceStatus?: string
     courseProgress?: number | null
     installments?: BranchStudentInstallmentUncheckedCreateNestedManyWithoutBranchStudentInput
     ledgerEntries?: BranchStudentLedgerEntryUncheckedCreateNestedManyWithoutBranchStudentInput
@@ -90132,6 +90426,12 @@ export namespace Prisma {
     paymentMode?: StringFieldUpdateOperationsInput | string
     paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
     paymentPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    feeScheduleMode?: StringFieldUpdateOperationsInput | string
+    feeFirstPaymentDate?: NullableStringFieldUpdateOperationsInput | string | null
+    fee70ProgressDate?: NullableStringFieldUpdateOperationsInput | string | null
+    fee70TargetHours?: NullableFloatFieldUpdateOperationsInput | number | null
+    feePaymentDeadline?: NullableStringFieldUpdateOperationsInput | string | null
+    feeComplianceStatus?: StringFieldUpdateOperationsInput | string
     courseProgress?: NullableIntFieldUpdateOperationsInput | number | null
     branch?: BranchUpdateOneRequiredWithoutBranchStudentsNestedInput
     course?: BranchCourseUpdateOneWithoutBranchStudentsNestedInput
@@ -90186,6 +90486,12 @@ export namespace Prisma {
     paymentMode?: StringFieldUpdateOperationsInput | string
     paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
     paymentPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    feeScheduleMode?: StringFieldUpdateOperationsInput | string
+    feeFirstPaymentDate?: NullableStringFieldUpdateOperationsInput | string | null
+    fee70ProgressDate?: NullableStringFieldUpdateOperationsInput | string | null
+    fee70TargetHours?: NullableFloatFieldUpdateOperationsInput | number | null
+    feePaymentDeadline?: NullableStringFieldUpdateOperationsInput | string | null
+    feeComplianceStatus?: StringFieldUpdateOperationsInput | string
     courseProgress?: NullableIntFieldUpdateOperationsInput | number | null
     installments?: BranchStudentInstallmentUncheckedUpdateManyWithoutBranchStudentNestedInput
     ledgerEntries?: BranchStudentLedgerEntryUncheckedUpdateManyWithoutBranchStudentNestedInput
@@ -90423,6 +90729,12 @@ export namespace Prisma {
     paymentMode?: string
     paymentPlanId?: string | null
     paymentPlan?: string | null
+    feeScheduleMode?: string
+    feeFirstPaymentDate?: string | null
+    fee70ProgressDate?: string | null
+    fee70TargetHours?: number | null
+    feePaymentDeadline?: string | null
+    feeComplianceStatus?: string
     courseProgress?: number | null
     branch: BranchCreateNestedOneWithoutBranchStudentsInput
     course?: BranchCourseCreateNestedOneWithoutBranchStudentsInput
@@ -90477,6 +90789,12 @@ export namespace Prisma {
     paymentMode?: string
     paymentPlanId?: string | null
     paymentPlan?: string | null
+    feeScheduleMode?: string
+    feeFirstPaymentDate?: string | null
+    fee70ProgressDate?: string | null
+    fee70TargetHours?: number | null
+    feePaymentDeadline?: string | null
+    feeComplianceStatus?: string
     courseProgress?: number | null
     installments?: BranchStudentInstallmentUncheckedCreateNestedManyWithoutBranchStudentInput
     payments?: BranchStudentPaymentUncheckedCreateNestedManyWithoutBranchStudentInput
@@ -90618,6 +90936,12 @@ export namespace Prisma {
     paymentMode?: StringFieldUpdateOperationsInput | string
     paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
     paymentPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    feeScheduleMode?: StringFieldUpdateOperationsInput | string
+    feeFirstPaymentDate?: NullableStringFieldUpdateOperationsInput | string | null
+    fee70ProgressDate?: NullableStringFieldUpdateOperationsInput | string | null
+    fee70TargetHours?: NullableFloatFieldUpdateOperationsInput | number | null
+    feePaymentDeadline?: NullableStringFieldUpdateOperationsInput | string | null
+    feeComplianceStatus?: StringFieldUpdateOperationsInput | string
     courseProgress?: NullableIntFieldUpdateOperationsInput | number | null
     branch?: BranchUpdateOneRequiredWithoutBranchStudentsNestedInput
     course?: BranchCourseUpdateOneWithoutBranchStudentsNestedInput
@@ -90672,6 +90996,12 @@ export namespace Prisma {
     paymentMode?: StringFieldUpdateOperationsInput | string
     paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
     paymentPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    feeScheduleMode?: StringFieldUpdateOperationsInput | string
+    feeFirstPaymentDate?: NullableStringFieldUpdateOperationsInput | string | null
+    fee70ProgressDate?: NullableStringFieldUpdateOperationsInput | string | null
+    fee70TargetHours?: NullableFloatFieldUpdateOperationsInput | number | null
+    feePaymentDeadline?: NullableStringFieldUpdateOperationsInput | string | null
+    feeComplianceStatus?: StringFieldUpdateOperationsInput | string
     courseProgress?: NullableIntFieldUpdateOperationsInput | number | null
     installments?: BranchStudentInstallmentUncheckedUpdateManyWithoutBranchStudentNestedInput
     payments?: BranchStudentPaymentUncheckedUpdateManyWithoutBranchStudentNestedInput
@@ -91667,6 +91997,12 @@ export namespace Prisma {
     paymentMode?: string
     paymentPlanId?: string | null
     paymentPlan?: string | null
+    feeScheduleMode?: string
+    feeFirstPaymentDate?: string | null
+    fee70ProgressDate?: string | null
+    fee70TargetHours?: number | null
+    feePaymentDeadline?: string | null
+    feeComplianceStatus?: string
     courseProgress?: number | null
   }
 
@@ -92140,6 +92476,12 @@ export namespace Prisma {
     paymentMode?: StringFieldUpdateOperationsInput | string
     paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
     paymentPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    feeScheduleMode?: StringFieldUpdateOperationsInput | string
+    feeFirstPaymentDate?: NullableStringFieldUpdateOperationsInput | string | null
+    fee70ProgressDate?: NullableStringFieldUpdateOperationsInput | string | null
+    fee70TargetHours?: NullableFloatFieldUpdateOperationsInput | number | null
+    feePaymentDeadline?: NullableStringFieldUpdateOperationsInput | string | null
+    feeComplianceStatus?: StringFieldUpdateOperationsInput | string
     courseProgress?: NullableIntFieldUpdateOperationsInput | number | null
     course?: BranchCourseUpdateOneWithoutBranchStudentsNestedInput
     installments?: BranchStudentInstallmentUpdateManyWithoutBranchStudentNestedInput
@@ -92193,6 +92535,12 @@ export namespace Prisma {
     paymentMode?: StringFieldUpdateOperationsInput | string
     paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
     paymentPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    feeScheduleMode?: StringFieldUpdateOperationsInput | string
+    feeFirstPaymentDate?: NullableStringFieldUpdateOperationsInput | string | null
+    fee70ProgressDate?: NullableStringFieldUpdateOperationsInput | string | null
+    fee70TargetHours?: NullableFloatFieldUpdateOperationsInput | number | null
+    feePaymentDeadline?: NullableStringFieldUpdateOperationsInput | string | null
+    feeComplianceStatus?: StringFieldUpdateOperationsInput | string
     courseProgress?: NullableIntFieldUpdateOperationsInput | number | null
     installments?: BranchStudentInstallmentUncheckedUpdateManyWithoutBranchStudentNestedInput
     payments?: BranchStudentPaymentUncheckedUpdateManyWithoutBranchStudentNestedInput
@@ -92245,6 +92593,12 @@ export namespace Prisma {
     paymentMode?: StringFieldUpdateOperationsInput | string
     paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
     paymentPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    feeScheduleMode?: StringFieldUpdateOperationsInput | string
+    feeFirstPaymentDate?: NullableStringFieldUpdateOperationsInput | string | null
+    fee70ProgressDate?: NullableStringFieldUpdateOperationsInput | string | null
+    fee70TargetHours?: NullableFloatFieldUpdateOperationsInput | number | null
+    feePaymentDeadline?: NullableStringFieldUpdateOperationsInput | string | null
+    feeComplianceStatus?: StringFieldUpdateOperationsInput | string
     courseProgress?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
@@ -93483,6 +93837,12 @@ export namespace Prisma {
     paymentMode?: string
     paymentPlanId?: string | null
     paymentPlan?: string | null
+    feeScheduleMode?: string
+    feeFirstPaymentDate?: string | null
+    fee70ProgressDate?: string | null
+    fee70TargetHours?: number | null
+    feePaymentDeadline?: string | null
+    feeComplianceStatus?: string
     courseProgress?: number | null
   }
 
@@ -93807,6 +94167,12 @@ export namespace Prisma {
     paymentMode?: StringFieldUpdateOperationsInput | string
     paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
     paymentPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    feeScheduleMode?: StringFieldUpdateOperationsInput | string
+    feeFirstPaymentDate?: NullableStringFieldUpdateOperationsInput | string | null
+    fee70ProgressDate?: NullableStringFieldUpdateOperationsInput | string | null
+    fee70TargetHours?: NullableFloatFieldUpdateOperationsInput | number | null
+    feePaymentDeadline?: NullableStringFieldUpdateOperationsInput | string | null
+    feeComplianceStatus?: StringFieldUpdateOperationsInput | string
     courseProgress?: NullableIntFieldUpdateOperationsInput | number | null
     branch?: BranchUpdateOneRequiredWithoutBranchStudentsNestedInput
     installments?: BranchStudentInstallmentUpdateManyWithoutBranchStudentNestedInput
@@ -93860,6 +94226,12 @@ export namespace Prisma {
     paymentMode?: StringFieldUpdateOperationsInput | string
     paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
     paymentPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    feeScheduleMode?: StringFieldUpdateOperationsInput | string
+    feeFirstPaymentDate?: NullableStringFieldUpdateOperationsInput | string | null
+    fee70ProgressDate?: NullableStringFieldUpdateOperationsInput | string | null
+    fee70TargetHours?: NullableFloatFieldUpdateOperationsInput | number | null
+    feePaymentDeadline?: NullableStringFieldUpdateOperationsInput | string | null
+    feeComplianceStatus?: StringFieldUpdateOperationsInput | string
     courseProgress?: NullableIntFieldUpdateOperationsInput | number | null
     installments?: BranchStudentInstallmentUncheckedUpdateManyWithoutBranchStudentNestedInput
     payments?: BranchStudentPaymentUncheckedUpdateManyWithoutBranchStudentNestedInput
@@ -93912,6 +94284,12 @@ export namespace Prisma {
     paymentMode?: StringFieldUpdateOperationsInput | string
     paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
     paymentPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    feeScheduleMode?: StringFieldUpdateOperationsInput | string
+    feeFirstPaymentDate?: NullableStringFieldUpdateOperationsInput | string | null
+    fee70ProgressDate?: NullableStringFieldUpdateOperationsInput | string | null
+    fee70TargetHours?: NullableFloatFieldUpdateOperationsInput | number | null
+    feePaymentDeadline?: NullableStringFieldUpdateOperationsInput | string | null
+    feeComplianceStatus?: StringFieldUpdateOperationsInput | string
     courseProgress?: NullableIntFieldUpdateOperationsInput | number | null
   }
 

@@ -4,6 +4,9 @@ import AppError from "../../common/errors/AppError.js";
 import {
   createCourseEditModuleUpdatedNotification,
 } from "../notifications/notifications.service.js";
+import {
+  calculateBranchStudentFeeComplianceStatus,
+} from "../branchStudents/branchStudents.service.js";
 
 const LOCAL_TIME_ZONE = "Asia/Calcutta";
 const FACULTY_ROLES = new Set([
@@ -489,6 +492,10 @@ async function syncBranchStudentCourseProgress(tx, { branchCourse, branchId, bat
         { studentId: { in: normalizedStudentIds } },
       ],
     },
+    include: {
+      installments: true,
+      payments: true,
+    },
   });
 
   if (!matchingBranchStudents.length) {
@@ -526,6 +533,10 @@ async function syncBranchStudentCourseProgress(tx, { branchCourse, branchId, bat
       where: { id: student.id },
       data: {
         courseProgress: Math.max(0, Math.min(100, Math.round(courseProgress))),
+        feeComplianceStatus: calculateBranchStudentFeeComplianceStatus({
+          ...student,
+          courseProgress: Math.max(0, Math.min(100, Math.round(courseProgress))),
+        }),
         updatedBy: actorId || null,
       },
     });
