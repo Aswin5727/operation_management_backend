@@ -269,6 +269,7 @@ model BranchCourse {
   courseCode                     String
   name                           String
   nameKey                        String
+  courseType                     String                         @default("")
   description                    String?
   mode                           String
   duration                       Int?
@@ -297,6 +298,7 @@ model BranchCourse {
   @@unique([branchId, nameKey])
   @@unique([branchId, courseCode])
   @@index([branchId])
+  @@index([branchId, courseType])
   @@index([status])
   @@index([createdAt])
 }

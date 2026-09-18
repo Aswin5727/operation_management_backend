@@ -517,6 +517,7 @@ function toBranchCourseSummary(course) {
     courseCode: course.courseCode,
     name: course.name,
     nameKey: course.nameKey,
+    courseType: course.courseType,
     description: course.description,
     mode: course.mode,
     duration: course.duration,
@@ -567,6 +568,7 @@ function buildBranchCourseWhere(query, actor = null) {
       { courseCode: { contains: search, mode: "insensitive" } },
       { name: { contains: search, mode: "insensitive" } },
       { nameKey: { contains: normalizeKey(search), mode: "insensitive" } },
+      { courseType: { contains: search, mode: "insensitive" } },
       { description: { contains: search, mode: "insensitive" } },
       { mode: { contains: search, mode: "insensitive" } },
     ];
@@ -651,6 +653,7 @@ async function ensureUniqueCourseCode(courseCode, branchId, excludeId = null) {
 function buildBranchCoursePayload(payload = {}, existingCourse = null) {
   const candidate = payload || {};
   const courseCode = parseRequiredText(candidate.courseCode ?? existingCourse?.courseCode, "Course code");
+  const courseType = parseRequiredText(candidate.courseType ?? existingCourse?.courseType, "Course type");
   const name = parseRequiredText(candidate.name ?? candidate.courseName ?? existingCourse?.name, "Course name");
   const description = parseOptionalText(candidate.description ?? existingCourse?.description);
   const mode = parseRequiredText(candidate.mode ?? existingCourse?.mode, "Mode");
@@ -673,6 +676,7 @@ function buildBranchCoursePayload(payload = {}, existingCourse = null) {
 
   return {
     courseCode,
+    courseType,
     name,
     nameKey: normalizeCourseNameKey(name),
     description,
@@ -832,6 +836,7 @@ function buildBranchCourseListQuery(query = {}, branchId) {
       { description: { contains: search, mode: "insensitive" } },
       { mode: { contains: search, mode: "insensitive" } },
       { nameKey: { contains: normalizeKey(search), mode: "insensitive" } },
+      { courseType: { contains: search, mode: "insensitive" } },
     ];
 
     if (Number.isInteger(numeric)) {
@@ -891,7 +896,8 @@ export async function createBranchCourse(payload, actor) {
   await ensureUniqueCourseName(parsed.nameKey, branchId);
   await ensureUniqueCourseCode(parsed.courseCode, branchId);
 
-  const created = await prisma.$transaction(async (tx) => {
+  const created = await prisma.$transaction(
+    async (tx) => {
     const course = await tx.branchCourse.create({
       data: {
         ...parsed,
@@ -944,7 +950,9 @@ export async function createBranchCourse(payload, actor) {
       },
       include: getBranchCourseInclude(),
     });
-  });
+    },
+    { maxWait: 10000, timeout: 15000 },
+  );
 
   return toBranchCourseDetail(created);
 }
@@ -997,7 +1005,8 @@ export async function updateBranchCourse(courseId, payload, actor) {
   await ensureUniqueCourseName(parsed.nameKey, branchProfile.id, courseId);
   await ensureUniqueCourseCode(parsed.courseCode, branchProfile.id, courseId);
 
-  const updated = await prisma.$transaction(async (tx) => {
+  const updated = await prisma.$transaction(
+    async (tx) => {
     const course = await tx.branchCourse.update({
       where: { id: courseId },
       data: {
@@ -1050,7 +1059,9 @@ export async function updateBranchCourse(courseId, payload, actor) {
       },
       include: getBranchCourseInclude(),
     });
-  });
+    },
+    { maxWait: 10000, timeout: 15000 },
+  );
 
   return toBranchCourseDetail(updated);
 }
@@ -1078,7 +1089,8 @@ export async function updateBranchCourseModulesOnly(courseId, payload, actor, op
 
   const actorId = actor?.id ?? null;
 
-  const updated = await prisma.$transaction(async (tx) => {
+  const updated = await prisma.$transaction(
+    async (tx) => {
     await replaceBranchCourseHierarchy(tx, courseId, hierarchy, actorId);
 
     return tx.branchCourse.findFirst({
@@ -1088,7 +1100,9 @@ export async function updateBranchCourseModulesOnly(courseId, payload, actor, op
       },
       include: getBranchCourseInclude(),
     });
-  });
+    },
+    { maxWait: 10000, timeout: 15000 },
+  );
 
   return toBranchCourseDetail(updated);
 }
