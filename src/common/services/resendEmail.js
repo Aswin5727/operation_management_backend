@@ -917,7 +917,7 @@ export async function sendStudentRescheduledClassEmail({ to, fullName, courseNam
   return sendEmail({ to, subject, html: alertTemplate({ eyebrow: 'Schedule Update', title: subject, subtitle: `Hi ${escapeHtml(fullName || 'Student')}, your class has been rescheduled.`, summary: 'Please attend the class at the new scheduled date and time.', details: [{ label: 'Course', value: escapeHtml(courseName || '-') }, { label: 'Batch', value: escapeHtml(batchName || '-') }, { label: 'Faculty', value: escapeHtml(facultyName || '-') }, { label: 'Original Date', value: escapeHtml(formatDate(originalDate)) }, { label: 'Original Time', value: `${escapeHtml(formatTime(originalStartTime))} - ${escapeHtml(formatTime(originalEndTime))}` }, { label: 'New Date', value: escapeHtml(formatDate(newDate)) }, { label: 'New Time', value: `${escapeHtml(formatTime(newStartTime))} - ${escapeHtml(formatTime(newEndTime))}` }] }), text: [`Hello ${fullName || 'Student'},`, '', 'Your class has been rescheduled.', '', `Course: ${courseName || '-'}`, `Batch: ${batchName || '-'}`, `Faculty: ${facultyName || '-'}`, `Original Date: ${formatDate(originalDate)}`, `Original Time: ${formatTime(originalStartTime)} - ${formatTime(originalEndTime)}`, `New Date: ${formatDate(newDate)}`, `New Time: ${formatTime(newStartTime)} - ${formatTime(newEndTime)}`, '', 'Please attend the class at the new scheduled date and time.'].join('\n') })
 }
 
-export async function sendStudentCombinedClassEmail({ to, fullName, courseName, batchName, originalFacultyName, combinedFacultyName, combinedDate, combinedStartTime, combinedEndTime }) {
+export async function sendStudentCombinedClassEmail({ to, fullName, courseName, batchName, targetBatchName, moduleName, submoduleName, originalFacultyName, combinedFacultyName, combinedDate, combinedStartTime, combinedEndTime }) {
   const formatTime = (value) => {
     const match = String(value || "").match(/^(\d{1,2}):(\d{2})$/);
     if (!match) return String(value || "-");
@@ -931,6 +931,9 @@ export async function sendStudentCombinedClassEmail({ to, fullName, courseName, 
   const displayDate = formatDate(combinedDate);
   const displayTime = `${formatTime(combinedStartTime)} - ${formatTime(combinedEndTime)}`;
   const subject = `Combined Class - ${batchName || "Your Batch"}`;
+  const targetBatch = targetBatchName || "the combined batch";
+  const moduleDetails = moduleName ? ` Module: ${moduleName}.` : "";
+  const submoduleDetails = submoduleName ? ` Sub-module: ${submoduleName}.` : "";
   const html = alertTemplate({
     eyebrow: "Schedule Update",
     title: subject,
@@ -938,7 +941,10 @@ export async function sendStudentCombinedClassEmail({ to, fullName, courseName, 
     summary: "Please check your Student Dashboard for the updated schedule.",
     details: [
       { label: "Course", value: escapeHtml(courseName || "-") },
-      { label: "Batch", value: escapeHtml(batchName || "-") },
+      { label: "Original Batch", value: escapeHtml(batchName || "-") },
+      { label: "Combined Batch", value: escapeHtml(targetBatch) },
+      ...(moduleName ? [{ label: "Module", value: escapeHtml(moduleName) }] : []),
+      ...(submoduleName ? [{ label: "Sub-module", value: escapeHtml(submoduleName) }] : []),
       { label: "Class Faculty", value: escapeHtml(combinedFacultyName || "-") },
       { label: "Original Faculty", value: escapeHtml(originalFacultyName || "-") },
       { label: "Date", value: escapeHtml(displayDate) },
@@ -946,7 +952,7 @@ export async function sendStudentCombinedClassEmail({ to, fullName, courseName, 
       { label: "Assignment Type", value: "Combined Class" },
     ],
   });
-  const text = [`Hi ${fullName || "Student"},`, "", `Your ${courseName || "course"} - ${batchName || "batch"} class scheduled on ${displayDate}, from ${displayTime}, will be handled by ${combinedFacultyName || "the assigned faculty"} instead of your regular faculty ${originalFacultyName || "your regular faculty"}.`, "", `Course: ${courseName || "-"}`, `Batch: ${batchName || "-"}`, `Original Faculty: ${originalFacultyName || "-"}`, `Class Faculty: ${combinedFacultyName || "-"}`, `Date: ${displayDate}`, `Time: ${displayTime}`, "Assignment Type: Combined Class", "", "Please check your Student Dashboard for the updated schedule."].join("\n");
+  const text = [`Hi ${fullName || "Student"},`, "", `Your class on ${displayDate} has been combined with ${targetBatch} under Faculty ${combinedFacultyName || "the assigned faculty"}. Your class timing for this date is ${displayTime}. Original Batch: ${batchName || "-"}. Course: ${courseName || "-"}.${moduleDetails}${submoduleDetails}`, "", `Course: ${courseName || "-"}`, `Original Batch: ${batchName || "-"}`, `Combined Batch: ${targetBatch}`, moduleName ? `Module: ${moduleName}` : null, submoduleName ? `Sub-module: ${submoduleName}` : null, `Original Faculty: ${originalFacultyName || "-"}`, `Combined Faculty: ${combinedFacultyName || "-"}`, `Affected Date: ${displayDate}`, `Target Batch Time: ${displayTime}`, "Assignment Type: Combined Class", "", "Please check your Student Dashboard for the updated schedule."].filter(Boolean).join("\n");
   return sendEmail({ to, subject, html, text });
 }
 
