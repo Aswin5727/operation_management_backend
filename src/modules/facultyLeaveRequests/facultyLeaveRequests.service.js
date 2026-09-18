@@ -254,6 +254,16 @@ function leaveRequestsOverlap(existing, next) {
   return overlaps(parseTime(existingStart), parseTime(existingEnd), parseTime(nextStart), parseTime(nextEnd));
 }
 
+function leaveOverlapMessage(existing) {
+  const date = existing.fromDate === existing.toDate
+    ? displayDate(existing.fromDate)
+    : `${displayDate(existing.fromDate)} - ${displayDate(existing.toDate)}`;
+  if (existing.durationType === "FULL_DAY") return `You already have a ${String(existing.status || "pending").toLowerCase()} leave request for ${date} (Full Day).`;
+  const start = existing.durationType === "PERMISSION" ? existing.permissionStart : existing.halfDayStart;
+  const end = existing.durationType === "PERMISSION" ? existing.permissionEnd : existing.halfDayEnd;
+  return `You already have a ${String(existing.status || "pending").toLowerCase()} leave request for ${date}, from ${displayTime(start)} to ${displayTime(end)}.`;
+}
+
 async function calculateAffectedClasses(branchId, facultyId, leave) {
   const batches = await prisma.branchBatch.findMany({
     where: { branchId, facultyId, status: "ACTIVE" },
@@ -441,15 +451,20 @@ export async function listReplacementFaculty(user, leaveId, sessionId, assignmen
     const defaultModule = await prisma.branchCourseModule.findFirst({
       where: { branchCourseId: session.courseId, status: "ACTIVE" },
       orderBy: { sequenceNo: "asc" },
-      select: { id: true, title: true },
+      select: { id: true, title: true, submodules: { where: { status: "ACTIVE" }, orderBy: { sequenceNo: "asc" }, select: { id: true, title: true } } },
     });
     const getBatchProgress = async (batchId) => {
       const work = await prisma.facultyTodayWorkEntry.findFirst({
         where: { branchId, courseId: session.courseId, batchId },
         orderBy: [{ workDate: "desc" }, { createdAt: "desc" }],
-        select: { moduleId: true, moduleName: true, moduleProgress: true, courseProgress: true },
+        select: { moduleId: true, moduleName: true, submoduleIds: true, submodules: true, moduleProgress: true, courseProgress: true },
       });
-      if (work) return work;
+      if (work) {
+        const currentSubmodule = Array.isArray(work.submodules)
+          ? work.submodules.find(item => item?.isCurrent || item?.current || ["IN_PROGRESS", "STARTED"].includes(text(item?.status || item?.completionStatus).toUpperCase())) || work.submodules[0]
+          : null;
+        return { ...work, currentSubmoduleId: text(currentSubmodule?.id || currentSubmodule?.submoduleId || work.submoduleIds?.[0]), currentSubmoduleName: text(currentSubmodule?.name || currentSubmodule?.title || currentSubmodule?.submoduleName) };
+      }
       const students = await prisma.branchStudent.findMany({
         where: { branchId, courseId: session.courseId, batchId, recordStatus: "ACTIVE" },
         select: { courseProgress: true },
@@ -463,6 +478,8 @@ export async function listReplacementFaculty(user, leaveId, sessionId, assignmen
         moduleName: defaultModule?.title || null,
         moduleProgress: 0,
         courseProgress,
+        currentSubmoduleId: defaultModule?.submodules?.[0]?.id || null,
+        currentSubmoduleName: defaultModule?.submodules?.[0]?.title || null,
       };
     };
     const sourceProgress = await getBatchProgress(session.batchId);
@@ -479,6 +496,14 @@ export async function listReplacementFaculty(user, leaveId, sessionId, assignmen
       if (sourceModuleId && candidateModuleId) return candidateModuleId === sourceModuleId;
       return Boolean(sourceModuleName && candidateModuleName) && candidateModuleName === sourceModuleName;
     };
+    const sameSubmodule = (candidateId, candidateName) => {
+      const sourceSubmoduleId = text(sourceProgress?.currentSubmoduleId).toLowerCase();
+      const sourceSubmoduleName = text(sourceProgress?.currentSubmoduleName).toLowerCase();
+      const candidateSubmoduleId = text(candidateId).toLowerCase();
+      const candidateSubmoduleName = text(candidateName).toLowerCase();
+      if (sourceSubmoduleId && candidateSubmoduleId) return sourceSubmoduleId === candidateSubmoduleId;
+      return Boolean(sourceSubmoduleName && candidateSubmoduleName) && sourceSubmoduleName === candidateSubmoduleName;
+    };
     const candidateBatches = await prisma.branchBatch.findMany({
       where: { branchId, courseId: session.courseId, status: "ACTIVE", facultyId: { not: request.facultyId } },
       orderBy: [{ batchName: "asc" }],
@@ -489,7 +514,7 @@ export async function listReplacementFaculty(user, leaveId, sessionId, assignmen
       if (!batchRunsOnDate(batch, session.sessionDate)) continue;
       const progress = await getBatchProgress(batch.batchId);
       const candidateProgress = progress?.courseProgress ?? progress?.moduleProgress ?? null;
-      if (!sameModule(progress?.moduleId, progress?.moduleName) || !sameProgress(candidateProgress)) continue;
+      if (!sameModule(progress?.moduleId, progress?.moduleName) || !sameSubmodule(progress?.currentSubmoduleId, progress?.currentSubmoduleName) || !sameProgress(candidateProgress)) continue;
       matchingBatches.push({ batch, progress });
     }
     const facultyIds = [...new Set(matchingBatches.map(({ batch }) => batch.facultyId).filter(Boolean))];
@@ -513,6 +538,8 @@ export async function listReplacementFaculty(user, leaveId, sessionId, assignmen
         originalEndTime: batch.endTime,
         moduleId: progress?.moduleId || null,
         moduleName: progress?.moduleName || null,
+        currentSubmoduleId: progress?.currentSubmoduleId || null,
+        currentSubmoduleName: progress?.currentSubmoduleName || null,
         moduleProgress: progress?.moduleProgress ?? null,
         courseProgress: progress?.courseProgress ?? null,
         resolutionStatus: "COMBINE_CANDIDATE",
@@ -520,7 +547,7 @@ export async function listReplacementFaculty(user, leaveId, sessionId, assignmen
     return {
       faculty: facultyRows,
       combineSessions,
-      source: { courseId: session.courseId, moduleId: sourceProgress?.moduleId || null, moduleName: sourceProgress?.moduleName || null, moduleProgress: sourceProgress?.moduleProgress ?? null, courseProgress: sourceProgress?.courseProgress ?? null, startTime: session.originalStartTime, endTime: session.originalEndTime },
+      source: { batchName: session.batchName || null, batchId: session.batchId || null, courseId: session.courseId, courseName: session.courseName || null, moduleId: sourceProgress?.moduleId || null, moduleName: sourceProgress?.moduleName || null, currentSubmoduleId: sourceProgress?.currentSubmoduleId || null, currentSubmoduleName: sourceProgress?.currentSubmoduleName || null, moduleProgress: sourceProgress?.moduleProgress ?? null, courseProgress: sourceProgress?.courseProgress ?? null, startTime: session.originalStartTime, endTime: session.originalEndTime },
     };
   }
   const sameCourseBatches = await prisma.branchBatch.findMany({ where: { branchId, courseId: session.courseId, status: "ACTIVE" }, select: { facultyId: true } });
@@ -1182,10 +1209,10 @@ export async function createFacultyLeaveRequest(user, payload) {
   const leave = validatePayload(payload);
   const existingLeaves = await prisma.facultyLeaveRequest.findMany({
     where: { facultyUserId: user.id, status: { in: ["PENDING", "APPROVED"] }, fromDate: { lte: leave.toDate }, toDate: { gte: leave.fromDate } },
-    select: { id: true, fromDate: true, toDate: true, durationType: true, halfDayStart: true, halfDayEnd: true, permissionStart: true, permissionEnd: true },
+    select: { id: true, status: true, fromDate: true, toDate: true, durationType: true, halfDayStart: true, halfDayEnd: true, permissionStart: true, permissionEnd: true },
   });
   const overlap = existingLeaves.find((existing) => leaveRequestsOverlap(existing, leave));
-  if (overlap) throw new AppError("You already have a pending or approved leave request overlapping this date/time", 409);
+  if (overlap) throw new AppError(leaveOverlapMessage(overlap), 409);
   const affectedClasses = await calculateAffectedClasses(faculty.branchId, faculty.facultyId, leave);
   const created = await prisma.facultyLeaveRequest.create({
     data: {
@@ -1219,9 +1246,10 @@ export async function updateFacultyLeaveRequest(user, requestId, payload) {
   const leave = validatePayload(payload);
   const existingLeaves = await prisma.facultyLeaveRequest.findMany({
     where: { id: { not: requestId }, facultyUserId: user.id, status: { in: ["PENDING", "APPROVED"] }, fromDate: { lte: leave.toDate }, toDate: { gte: leave.fromDate } },
-    select: { id: true, fromDate: true, toDate: true, durationType: true, halfDayStart: true, halfDayEnd: true, permissionStart: true, permissionEnd: true },
+    select: { id: true, status: true, fromDate: true, toDate: true, durationType: true, halfDayStart: true, halfDayEnd: true, permissionStart: true, permissionEnd: true },
   });
-  if (existingLeaves.some((existing) => leaveRequestsOverlap(existing, leave))) throw new AppError("You already have a pending or approved leave request overlapping this date/time", 409);
+  const overlap = existingLeaves.find((existing) => leaveRequestsOverlap(existing, leave));
+  if (overlap) throw new AppError(leaveOverlapMessage(overlap), 409);
   const affectedClasses = await calculateAffectedClasses(faculty.branchId, faculty.facultyId, leave);
   const updated = await prisma.facultyLeaveRequest.update({
     where: { id: requestId },
