@@ -1,4 +1,5 @@
 import prisma from "../../config/prisma.js";
+import { sendFacultyWeekOffApprovalEmail, sendFacultyWeekOffRejectionEmail } from "../../common/services/resendEmail.js";
 
 const NOTIFICATION_KIND_MAP = {
   INSTITUTE_LEAVE: "institute-leave",
@@ -472,8 +473,37 @@ async function buildFallbackBranchNotifications(user = {}, branchScope = {}) {
 }
 
 export async function createNotification(data, prismaClient = prisma) {
+  // Notification.requestId is a foreign key for CourseEditRequest only.
+  // Other workflows (such as temporary week-off requests) use the same
+  // notification payload shape but have their own request table.
+  const safeData = { ...data };
+  if (safeData.requestId) {
+    const linkedRequest = await prismaClient.courseEditRequest.findUnique({
+      where: { id: safeData.requestId },
+      select: { id: true },
+    });
+    if (!linkedRequest) safeData.requestId = null;
+  }
+  if (["Week-Off Request Approved", "Week-Off Request Rejected"].includes(data?.title) && data?.requestId && data?.targetUserId) {
+    const weekOffRequest = await prismaClient.facultyWeekOffRequest.findUnique({ where: { id: data.requestId } });
+    const recipient = await prismaClient.user.findUnique({ where: { id: data.targetUserId }, select: { email: true, fullName: true } });
+    if (weekOffRequest?.facultyEmail || recipient?.email) {
+      const emailPayload = {
+        to: weekOffRequest?.facultyEmail || recipient.email,
+        fullName: weekOffRequest?.facultyName || recipient.fullName,
+        requestedWeekStartDate: weekOffRequest?.requestedWeekStartDate,
+        requestedWeekEndDate: weekOffRequest?.requestedWeekEndDate,
+        requestedWeekOffDay: weekOffRequest?.requestedWeekOffDay,
+        requestedWeekOffDate: weekOffRequest?.requestedWeekOffDate,
+      };
+      const emailPromise = data.title === "Week-Off Request Approved"
+        ? sendFacultyWeekOffApprovalEmail({ ...emailPayload, defaultWeekOffDay: weekOffRequest?.defaultWeekOffDay, defaultWeekOffDate: weekOffRequest?.defaultWeekOffDate })
+        : sendFacultyWeekOffRejectionEmail({ ...emailPayload, rejectionReason: data.requestReason });
+      void emailPromise.catch((error) => console.warn(`Faculty week-off ${data.title === "Week-Off Request Approved" ? "approval" : "rejection"} email failed`, error?.message || error));
+    }
+  }
   const record = await prismaClient.notification.create({
-    data,
+    data: safeData,
   });
 
   return normalizeNotificationRow(record);

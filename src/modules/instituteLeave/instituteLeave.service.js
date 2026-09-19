@@ -19,11 +19,12 @@ export async function scheduleContext(db, branchId) {
     db.branch.findUnique({ where: { id: branchId } }),
     db.branchBatch.findMany({ where: { branchId }, include: { branchCourse: true } }),
   ]);
-  const [holidays, leaves] = await Promise.all([
+  const [holidays, leaves, weekOffOverrides] = await Promise.all([
     db.branchCalendarHoliday.findMany({ where: { status: 'ACTIVE', OR: [{ branchId }, { branchId: null }] } }),
     db.branchCalendarLeave.findMany({ where: { branchId, status: 'ACTIVE' } }),
+    db.facultyWeekOffRequest.findMany({ where: { branchId, status: 'APPROVED' }, select: { status: true, facultyId: true, requestedWeekStartDate: true, requestedWeekEndDate: true, requestedWeekOffDay: true, requestedWeekOffDate: true } }),
   ]);
-  return { branch, batches, holidays, leaves };
+  return { branch, batches, holidays, leaves, weekOffOverrides };
 }
 
 function branchToday() {

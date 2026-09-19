@@ -952,6 +952,35 @@ model FacultyLeaveRequest {
   @@index([facultyId, status])
 }
 
+model FacultyWeekOffRequest {
+  id                    String   @id @default(cuid())
+  facultyUserId         String
+  branchId              String
+  facultyId             String
+  facultyName           String
+  facultyEmail          String
+  requestedWeekStartDate String
+  requestedWeekEndDate   String
+  defaultWeekOffDay     String
+  defaultWeekOffDate    String
+  requestedWeekOffDay   String
+  requestedWeekOffDate  String
+  reason                String
+  status                String   @default("PENDING")
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  approvedAt            DateTime?
+  approvedBy            String?
+  rejectedAt            DateTime?
+  rejectedBy            String?
+  rejectionReason       String?
+
+  @@unique([facultyId, requestedWeekStartDate, requestedWeekEndDate])
+  @@index([branchId, status, createdAt])
+  @@index([facultyUserId, requestedWeekStartDate])
+  @@index([facultyId, requestedWeekOffDate])
+}
+
 model BranchFacultyCourse {
   id             String       @id @default(cuid())
   branchId       String

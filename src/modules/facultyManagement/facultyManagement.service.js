@@ -533,6 +533,7 @@ function buildFacultyFallbackRecord(user, branchFaculty, branchCourse = null) {
     facultyName: branchFaculty?.name || user?.fullName || "",
     facultyEmail: branchFaculty?.email || user?.email || "",
     facultyPhone: branchFaculty?.phone || user?.phone || "",
+    weeklyOffDay: branchFaculty?.weeklyOffDay || null,
     courseId: resolvedCourseIds[0] || "",
     courseIds: resolvedCourseIds,
     courseName: fallbackCourse?.name || branchFaculty?.branchCourse?.name || branchFaculty?.course?.name || "",
@@ -755,7 +756,17 @@ async function getFacultyProfileForUser(user) {
     return buildFacultyFallbackRecord(user, branchFaculty, branchFaculty.branchCourse || branchFaculty.course || null);
   }
 
-  return toFacultyRecord(record);
+  const branchFaculty = await prisma.branchFaculty.findFirst({
+    where: {
+      status: "ACTIVE",
+      OR: [
+        ...(normalizedEmail ? [{ email: { equals: normalizedEmail, mode: "insensitive" } }] : []),
+        ...(normalizedUserCode ? [{ facultyId: { equals: normalizedUserCode, mode: "insensitive" } }] : []),
+      ],
+    },
+    select: { weeklyOffDay: true },
+  });
+  return { ...toFacultyRecord(record), weeklyOffDay: branchFaculty?.weeklyOffDay || null };
 }
 
 function handleKnownPrismaError(error) {

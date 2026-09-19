@@ -885,6 +885,50 @@ export async function sendFacultyLeaveApprovalEmail({ to, fullName, leaveDate, l
   return sendEmail({ to, subject, html, text })
 }
 
+export async function sendFacultyWeekOffApprovalEmail({ to, fullName, requestedWeekStartDate, requestedWeekEndDate, defaultWeekOffDay, defaultWeekOffDate, requestedWeekOffDay, requestedWeekOffDate }) {
+  const formatDate = (value) => {
+    const date = new Date(`${String(value || '').trim()}T00:00:00Z`)
+    return Number.isNaN(date.getTime()) ? String(value || '-') : new Intl.DateTimeFormat('en-GB', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'UTC' }).format(date)
+  }
+  const subject = `Temporary Week-Off Approved - ${formatDate(requestedWeekOffDate)}`
+  const html = alertTemplate({
+    eyebrow: 'Week-Off Management',
+    title: subject,
+    subtitle: `Hello ${escapeHtml(fullName || 'Faculty')}, your temporary week-off request has been approved.`,
+    summary: 'This change applies only to the selected calendar week. Your regular weekly-off remains unchanged.',
+    details: [
+      { label: 'Requested Week', value: `${escapeHtml(formatDate(requestedWeekStartDate))} - ${escapeHtml(formatDate(requestedWeekEndDate))}` },
+      { label: 'Regular Weekly-Off', value: `${escapeHtml(defaultWeekOffDay || '-')} (${escapeHtml(formatDate(defaultWeekOffDate))})` },
+      { label: 'Temporary Weekly-Off', value: `${escapeHtml(requestedWeekOffDay || '-')} (${escapeHtml(formatDate(requestedWeekOffDate))})` },
+      { label: 'Status', value: 'Approved' },
+    ],
+  })
+  const text = [`Hello ${fullName || 'Faculty'},`, '', 'Your temporary week-off request has been approved.', '', `Requested Week: ${formatDate(requestedWeekStartDate)} - ${formatDate(requestedWeekEndDate)}`, `Regular Weekly-Off: ${defaultWeekOffDay || '-'} (${formatDate(defaultWeekOffDate)})`, `Temporary Weekly-Off: ${requestedWeekOffDay || '-'} (${formatDate(requestedWeekOffDate)})`, 'Status: Approved', '', 'This change applies only to the selected calendar week. Your regular weekly-off remains unchanged.'].join('\n')
+  return sendEmail({ to, subject, html, text })
+}
+
+export async function sendFacultyWeekOffRejectionEmail({ to, fullName, requestedWeekStartDate, requestedWeekEndDate, requestedWeekOffDay, requestedWeekOffDate, rejectionReason }) {
+  const formatDate = (value) => {
+    const date = new Date(`${String(value || '').trim()}T00:00:00Z`)
+    return Number.isNaN(date.getTime()) ? String(value || '-') : new Intl.DateTimeFormat('en-GB', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'UTC' }).format(date)
+  }
+  const subject = `Temporary Week-Off Rejected - ${formatDate(requestedWeekOffDate)}`
+  const html = alertTemplate({
+    eyebrow: 'Week-Off Management',
+    title: subject,
+    subtitle: `Hello ${escapeHtml(fullName || 'Faculty')}, your temporary week-off request was rejected.`,
+    summary: 'Your regular weekly-off remains unchanged. Please contact your Branch Admin if you need clarification.',
+    details: [
+      { label: 'Requested Week', value: `${escapeHtml(formatDate(requestedWeekStartDate))} - ${escapeHtml(formatDate(requestedWeekEndDate))}` },
+      { label: 'Requested Weekly-Off', value: `${escapeHtml(requestedWeekOffDay || '-')} (${escapeHtml(formatDate(requestedWeekOffDate))})` },
+      { label: 'Rejection Reason', value: escapeHtml(rejectionReason || '-') },
+      { label: 'Status', value: 'Rejected' },
+    ],
+  })
+  const text = [`Hello ${fullName || 'Faculty'},`, '', 'Your temporary week-off request was rejected.', '', `Requested Week: ${formatDate(requestedWeekStartDate)} - ${formatDate(requestedWeekEndDate)}`, `Requested Weekly-Off: ${requestedWeekOffDay || '-'} (${formatDate(requestedWeekOffDate)})`, `Rejection Reason: ${rejectionReason || '-'}`, 'Status: Rejected', '', 'Your regular weekly-off remains unchanged.'].join('\n')
+  return sendEmail({ to, subject, html, text })
+}
+
 export async function sendEmergencySessionResolutionEmail({ to, batchName, courseName, originalFacultyName, replacementFacultyName, date, startTime, endTime, resolutionType = 'Replacement' }) {
   const subject = `Emergency Faculty ${resolutionType} Completed - ${batchName || 'Affected Batch'}`
   const details = [

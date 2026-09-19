@@ -804,6 +804,30 @@ exports.Prisma.FacultyLeaveRequestScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.FacultyWeekOffRequestScalarFieldEnum = {
+  id: 'id',
+  facultyUserId: 'facultyUserId',
+  branchId: 'branchId',
+  facultyId: 'facultyId',
+  facultyName: 'facultyName',
+  facultyEmail: 'facultyEmail',
+  requestedWeekStartDate: 'requestedWeekStartDate',
+  requestedWeekEndDate: 'requestedWeekEndDate',
+  defaultWeekOffDay: 'defaultWeekOffDay',
+  defaultWeekOffDate: 'defaultWeekOffDate',
+  requestedWeekOffDay: 'requestedWeekOffDay',
+  requestedWeekOffDate: 'requestedWeekOffDate',
+  reason: 'reason',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  approvedAt: 'approvedAt',
+  approvedBy: 'approvedBy',
+  rejectedAt: 'rejectedAt',
+  rejectedBy: 'rejectedBy',
+  rejectionReason: 'rejectionReason'
+};
+
 exports.Prisma.BranchFacultyCourseScalarFieldEnum = {
   id: 'id',
   branchId: 'branchId',
@@ -1059,6 +1083,7 @@ exports.Prisma.ModelName = {
   StudentAttendance: 'StudentAttendance',
   BranchFaculty: 'BranchFaculty',
   FacultyLeaveRequest: 'FacultyLeaveRequest',
+  FacultyWeekOffRequest: 'FacultyWeekOffRequest',
   BranchFacultyCourse: 'BranchFacultyCourse',
   FacultyLeaveAffectedSession: 'FacultyLeaveAffectedSession',
   FacultyLeaveCombinedSession: 'FacultyLeaveCombinedSession',

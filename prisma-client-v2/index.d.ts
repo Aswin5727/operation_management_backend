@@ -189,6 +189,11 @@ export type BranchFaculty = $Result.DefaultSelection<Prisma.$BranchFacultyPayloa
  */
 export type FacultyLeaveRequest = $Result.DefaultSelection<Prisma.$FacultyLeaveRequestPayload>
 /**
+ * Model FacultyWeekOffRequest
+ * 
+ */
+export type FacultyWeekOffRequest = $Result.DefaultSelection<Prisma.$FacultyWeekOffRequestPayload>
+/**
  * Model BranchFacultyCourse
  * 
  */
@@ -816,6 +821,16 @@ export class PrismaClient<
   get facultyLeaveRequest(): Prisma.FacultyLeaveRequestDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.facultyWeekOffRequest`: Exposes CRUD operations for the **FacultyWeekOffRequest** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more FacultyWeekOffRequests
+    * const facultyWeekOffRequests = await prisma.facultyWeekOffRequest.findMany()
+    * ```
+    */
+  get facultyWeekOffRequest(): Prisma.FacultyWeekOffRequestDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.branchFacultyCourse`: Exposes CRUD operations for the **BranchFacultyCourse** model.
     * Example usage:
     * ```ts
@@ -1343,6 +1358,7 @@ export namespace Prisma {
     StudentAttendance: 'StudentAttendance',
     BranchFaculty: 'BranchFaculty',
     FacultyLeaveRequest: 'FacultyLeaveRequest',
+    FacultyWeekOffRequest: 'FacultyWeekOffRequest',
     BranchFacultyCourse: 'BranchFacultyCourse',
     FacultyLeaveAffectedSession: 'FacultyLeaveAffectedSession',
     FacultyLeaveCombinedSession: 'FacultyLeaveCombinedSession',
@@ -1364,7 +1380,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "dashboardWidget" | "userDashboardWidget" | "branch" | "loginEvent" | "notification" | "courseEditRequest" | "passwordResetToken" | "course" | "branchCourse" | "branchCourseModule" | "branchCourseSubmodule" | "courseModule" | "batch" | "batchFacultyAssignment" | "branchBatch" | "courseStatusHistory" | "batchStatusHistory" | "studentProfile" | "branchStudent" | "branchStudentAttendance" | "branchCalendarHoliday" | "branchCalendarLeave" | "branchStudentInstallment" | "facultyProfile" | "facultyCourseAssignment" | "facultyBatchEntry" | "facultyAttendanceSession" | "facultyAttendanceDay" | "facultyAttendanceBatchWork" | "facultyTodayWorkEntry" | "facultyTodayWorkStudentEntry" | "studentAttendance" | "branchFaculty" | "facultyLeaveRequest" | "branchFacultyCourse" | "facultyLeaveAffectedSession" | "facultyLeaveCombinedSession" | "branchInstallmentTemplate" | "branchStudentPayment" | "branchStudentLedgerEntry"
+      modelProps: "user" | "dashboardWidget" | "userDashboardWidget" | "branch" | "loginEvent" | "notification" | "courseEditRequest" | "passwordResetToken" | "course" | "branchCourse" | "branchCourseModule" | "branchCourseSubmodule" | "courseModule" | "batch" | "batchFacultyAssignment" | "branchBatch" | "courseStatusHistory" | "batchStatusHistory" | "studentProfile" | "branchStudent" | "branchStudentAttendance" | "branchCalendarHoliday" | "branchCalendarLeave" | "branchStudentInstallment" | "facultyProfile" | "facultyCourseAssignment" | "facultyBatchEntry" | "facultyAttendanceSession" | "facultyAttendanceDay" | "facultyAttendanceBatchWork" | "facultyTodayWorkEntry" | "facultyTodayWorkStudentEntry" | "studentAttendance" | "branchFaculty" | "facultyLeaveRequest" | "facultyWeekOffRequest" | "branchFacultyCourse" | "facultyLeaveAffectedSession" | "facultyLeaveCombinedSession" | "branchInstallmentTemplate" | "branchStudentPayment" | "branchStudentLedgerEntry"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -3958,6 +3974,80 @@ export namespace Prisma {
           }
         }
       }
+      FacultyWeekOffRequest: {
+        payload: Prisma.$FacultyWeekOffRequestPayload<ExtArgs>
+        fields: Prisma.FacultyWeekOffRequestFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.FacultyWeekOffRequestFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyWeekOffRequestPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.FacultyWeekOffRequestFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyWeekOffRequestPayload>
+          }
+          findFirst: {
+            args: Prisma.FacultyWeekOffRequestFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyWeekOffRequestPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.FacultyWeekOffRequestFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyWeekOffRequestPayload>
+          }
+          findMany: {
+            args: Prisma.FacultyWeekOffRequestFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyWeekOffRequestPayload>[]
+          }
+          create: {
+            args: Prisma.FacultyWeekOffRequestCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyWeekOffRequestPayload>
+          }
+          createMany: {
+            args: Prisma.FacultyWeekOffRequestCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.FacultyWeekOffRequestCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyWeekOffRequestPayload>[]
+          }
+          delete: {
+            args: Prisma.FacultyWeekOffRequestDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyWeekOffRequestPayload>
+          }
+          update: {
+            args: Prisma.FacultyWeekOffRequestUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyWeekOffRequestPayload>
+          }
+          deleteMany: {
+            args: Prisma.FacultyWeekOffRequestDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.FacultyWeekOffRequestUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.FacultyWeekOffRequestUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyWeekOffRequestPayload>[]
+          }
+          upsert: {
+            args: Prisma.FacultyWeekOffRequestUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyWeekOffRequestPayload>
+          }
+          aggregate: {
+            args: Prisma.FacultyWeekOffRequestAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateFacultyWeekOffRequest>
+          }
+          groupBy: {
+            args: Prisma.FacultyWeekOffRequestGroupByArgs<ExtArgs>
+            result: $Utils.Optional<FacultyWeekOffRequestGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.FacultyWeekOffRequestCountArgs<ExtArgs>
+            result: $Utils.Optional<FacultyWeekOffRequestCountAggregateOutputType> | number
+          }
+        }
+      }
       BranchFacultyCourse: {
         payload: Prisma.$BranchFacultyCoursePayload<ExtArgs>
         fields: Prisma.BranchFacultyCourseFieldRefs
@@ -4545,6 +4635,7 @@ export namespace Prisma {
     studentAttendance?: StudentAttendanceOmit
     branchFaculty?: BranchFacultyOmit
     facultyLeaveRequest?: FacultyLeaveRequestOmit
+    facultyWeekOffRequest?: FacultyWeekOffRequestOmit
     branchFacultyCourse?: BranchFacultyCourseOmit
     facultyLeaveAffectedSession?: FacultyLeaveAffectedSessionOmit
     facultyLeaveCombinedSession?: FacultyLeaveCombinedSessionOmit
@@ -50562,6 +50653,1214 @@ export namespace Prisma {
 
 
   /**
+   * Model FacultyWeekOffRequest
+   */
+
+  export type AggregateFacultyWeekOffRequest = {
+    _count: FacultyWeekOffRequestCountAggregateOutputType | null
+    _min: FacultyWeekOffRequestMinAggregateOutputType | null
+    _max: FacultyWeekOffRequestMaxAggregateOutputType | null
+  }
+
+  export type FacultyWeekOffRequestMinAggregateOutputType = {
+    id: string | null
+    facultyUserId: string | null
+    branchId: string | null
+    facultyId: string | null
+    facultyName: string | null
+    facultyEmail: string | null
+    requestedWeekStartDate: string | null
+    requestedWeekEndDate: string | null
+    defaultWeekOffDay: string | null
+    defaultWeekOffDate: string | null
+    requestedWeekOffDay: string | null
+    requestedWeekOffDate: string | null
+    reason: string | null
+    status: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    approvedAt: Date | null
+    approvedBy: string | null
+    rejectedAt: Date | null
+    rejectedBy: string | null
+    rejectionReason: string | null
+  }
+
+  export type FacultyWeekOffRequestMaxAggregateOutputType = {
+    id: string | null
+    facultyUserId: string | null
+    branchId: string | null
+    facultyId: string | null
+    facultyName: string | null
+    facultyEmail: string | null
+    requestedWeekStartDate: string | null
+    requestedWeekEndDate: string | null
+    defaultWeekOffDay: string | null
+    defaultWeekOffDate: string | null
+    requestedWeekOffDay: string | null
+    requestedWeekOffDate: string | null
+    reason: string | null
+    status: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    approvedAt: Date | null
+    approvedBy: string | null
+    rejectedAt: Date | null
+    rejectedBy: string | null
+    rejectionReason: string | null
+  }
+
+  export type FacultyWeekOffRequestCountAggregateOutputType = {
+    id: number
+    facultyUserId: number
+    branchId: number
+    facultyId: number
+    facultyName: number
+    facultyEmail: number
+    requestedWeekStartDate: number
+    requestedWeekEndDate: number
+    defaultWeekOffDay: number
+    defaultWeekOffDate: number
+    requestedWeekOffDay: number
+    requestedWeekOffDate: number
+    reason: number
+    status: number
+    createdAt: number
+    updatedAt: number
+    approvedAt: number
+    approvedBy: number
+    rejectedAt: number
+    rejectedBy: number
+    rejectionReason: number
+    _all: number
+  }
+
+
+  export type FacultyWeekOffRequestMinAggregateInputType = {
+    id?: true
+    facultyUserId?: true
+    branchId?: true
+    facultyId?: true
+    facultyName?: true
+    facultyEmail?: true
+    requestedWeekStartDate?: true
+    requestedWeekEndDate?: true
+    defaultWeekOffDay?: true
+    defaultWeekOffDate?: true
+    requestedWeekOffDay?: true
+    requestedWeekOffDate?: true
+    reason?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+    approvedAt?: true
+    approvedBy?: true
+    rejectedAt?: true
+    rejectedBy?: true
+    rejectionReason?: true
+  }
+
+  export type FacultyWeekOffRequestMaxAggregateInputType = {
+    id?: true
+    facultyUserId?: true
+    branchId?: true
+    facultyId?: true
+    facultyName?: true
+    facultyEmail?: true
+    requestedWeekStartDate?: true
+    requestedWeekEndDate?: true
+    defaultWeekOffDay?: true
+    defaultWeekOffDate?: true
+    requestedWeekOffDay?: true
+    requestedWeekOffDate?: true
+    reason?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+    approvedAt?: true
+    approvedBy?: true
+    rejectedAt?: true
+    rejectedBy?: true
+    rejectionReason?: true
+  }
+
+  export type FacultyWeekOffRequestCountAggregateInputType = {
+    id?: true
+    facultyUserId?: true
+    branchId?: true
+    facultyId?: true
+    facultyName?: true
+    facultyEmail?: true
+    requestedWeekStartDate?: true
+    requestedWeekEndDate?: true
+    defaultWeekOffDay?: true
+    defaultWeekOffDate?: true
+    requestedWeekOffDay?: true
+    requestedWeekOffDate?: true
+    reason?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+    approvedAt?: true
+    approvedBy?: true
+    rejectedAt?: true
+    rejectedBy?: true
+    rejectionReason?: true
+    _all?: true
+  }
+
+  export type FacultyWeekOffRequestAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FacultyWeekOffRequest to aggregate.
+     */
+    where?: FacultyWeekOffRequestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FacultyWeekOffRequests to fetch.
+     */
+    orderBy?: FacultyWeekOffRequestOrderByWithRelationInput | FacultyWeekOffRequestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: FacultyWeekOffRequestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FacultyWeekOffRequests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FacultyWeekOffRequests.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned FacultyWeekOffRequests
+    **/
+    _count?: true | FacultyWeekOffRequestCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: FacultyWeekOffRequestMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: FacultyWeekOffRequestMaxAggregateInputType
+  }
+
+  export type GetFacultyWeekOffRequestAggregateType<T extends FacultyWeekOffRequestAggregateArgs> = {
+        [P in keyof T & keyof AggregateFacultyWeekOffRequest]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateFacultyWeekOffRequest[P]>
+      : GetScalarType<T[P], AggregateFacultyWeekOffRequest[P]>
+  }
+
+
+
+
+  export type FacultyWeekOffRequestGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FacultyWeekOffRequestWhereInput
+    orderBy?: FacultyWeekOffRequestOrderByWithAggregationInput | FacultyWeekOffRequestOrderByWithAggregationInput[]
+    by: FacultyWeekOffRequestScalarFieldEnum[] | FacultyWeekOffRequestScalarFieldEnum
+    having?: FacultyWeekOffRequestScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: FacultyWeekOffRequestCountAggregateInputType | true
+    _min?: FacultyWeekOffRequestMinAggregateInputType
+    _max?: FacultyWeekOffRequestMaxAggregateInputType
+  }
+
+  export type FacultyWeekOffRequestGroupByOutputType = {
+    id: string
+    facultyUserId: string
+    branchId: string
+    facultyId: string
+    facultyName: string
+    facultyEmail: string
+    requestedWeekStartDate: string
+    requestedWeekEndDate: string
+    defaultWeekOffDay: string
+    defaultWeekOffDate: string
+    requestedWeekOffDay: string
+    requestedWeekOffDate: string
+    reason: string
+    status: string
+    createdAt: Date
+    updatedAt: Date
+    approvedAt: Date | null
+    approvedBy: string | null
+    rejectedAt: Date | null
+    rejectedBy: string | null
+    rejectionReason: string | null
+    _count: FacultyWeekOffRequestCountAggregateOutputType | null
+    _min: FacultyWeekOffRequestMinAggregateOutputType | null
+    _max: FacultyWeekOffRequestMaxAggregateOutputType | null
+  }
+
+  type GetFacultyWeekOffRequestGroupByPayload<T extends FacultyWeekOffRequestGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<FacultyWeekOffRequestGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof FacultyWeekOffRequestGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], FacultyWeekOffRequestGroupByOutputType[P]>
+            : GetScalarType<T[P], FacultyWeekOffRequestGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type FacultyWeekOffRequestSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    facultyUserId?: boolean
+    branchId?: boolean
+    facultyId?: boolean
+    facultyName?: boolean
+    facultyEmail?: boolean
+    requestedWeekStartDate?: boolean
+    requestedWeekEndDate?: boolean
+    defaultWeekOffDay?: boolean
+    defaultWeekOffDate?: boolean
+    requestedWeekOffDay?: boolean
+    requestedWeekOffDate?: boolean
+    reason?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    approvedAt?: boolean
+    approvedBy?: boolean
+    rejectedAt?: boolean
+    rejectedBy?: boolean
+    rejectionReason?: boolean
+  }, ExtArgs["result"]["facultyWeekOffRequest"]>
+
+  export type FacultyWeekOffRequestSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    facultyUserId?: boolean
+    branchId?: boolean
+    facultyId?: boolean
+    facultyName?: boolean
+    facultyEmail?: boolean
+    requestedWeekStartDate?: boolean
+    requestedWeekEndDate?: boolean
+    defaultWeekOffDay?: boolean
+    defaultWeekOffDate?: boolean
+    requestedWeekOffDay?: boolean
+    requestedWeekOffDate?: boolean
+    reason?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    approvedAt?: boolean
+    approvedBy?: boolean
+    rejectedAt?: boolean
+    rejectedBy?: boolean
+    rejectionReason?: boolean
+  }, ExtArgs["result"]["facultyWeekOffRequest"]>
+
+  export type FacultyWeekOffRequestSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    facultyUserId?: boolean
+    branchId?: boolean
+    facultyId?: boolean
+    facultyName?: boolean
+    facultyEmail?: boolean
+    requestedWeekStartDate?: boolean
+    requestedWeekEndDate?: boolean
+    defaultWeekOffDay?: boolean
+    defaultWeekOffDate?: boolean
+    requestedWeekOffDay?: boolean
+    requestedWeekOffDate?: boolean
+    reason?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    approvedAt?: boolean
+    approvedBy?: boolean
+    rejectedAt?: boolean
+    rejectedBy?: boolean
+    rejectionReason?: boolean
+  }, ExtArgs["result"]["facultyWeekOffRequest"]>
+
+  export type FacultyWeekOffRequestSelectScalar = {
+    id?: boolean
+    facultyUserId?: boolean
+    branchId?: boolean
+    facultyId?: boolean
+    facultyName?: boolean
+    facultyEmail?: boolean
+    requestedWeekStartDate?: boolean
+    requestedWeekEndDate?: boolean
+    defaultWeekOffDay?: boolean
+    defaultWeekOffDate?: boolean
+    requestedWeekOffDay?: boolean
+    requestedWeekOffDate?: boolean
+    reason?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    approvedAt?: boolean
+    approvedBy?: boolean
+    rejectedAt?: boolean
+    rejectedBy?: boolean
+    rejectionReason?: boolean
+  }
+
+  export type FacultyWeekOffRequestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "facultyUserId" | "branchId" | "facultyId" | "facultyName" | "facultyEmail" | "requestedWeekStartDate" | "requestedWeekEndDate" | "defaultWeekOffDay" | "defaultWeekOffDate" | "requestedWeekOffDay" | "requestedWeekOffDate" | "reason" | "status" | "createdAt" | "updatedAt" | "approvedAt" | "approvedBy" | "rejectedAt" | "rejectedBy" | "rejectionReason", ExtArgs["result"]["facultyWeekOffRequest"]>
+
+  export type $FacultyWeekOffRequestPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "FacultyWeekOffRequest"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      facultyUserId: string
+      branchId: string
+      facultyId: string
+      facultyName: string
+      facultyEmail: string
+      requestedWeekStartDate: string
+      requestedWeekEndDate: string
+      defaultWeekOffDay: string
+      defaultWeekOffDate: string
+      requestedWeekOffDay: string
+      requestedWeekOffDate: string
+      reason: string
+      status: string
+      createdAt: Date
+      updatedAt: Date
+      approvedAt: Date | null
+      approvedBy: string | null
+      rejectedAt: Date | null
+      rejectedBy: string | null
+      rejectionReason: string | null
+    }, ExtArgs["result"]["facultyWeekOffRequest"]>
+    composites: {}
+  }
+
+  type FacultyWeekOffRequestGetPayload<S extends boolean | null | undefined | FacultyWeekOffRequestDefaultArgs> = $Result.GetResult<Prisma.$FacultyWeekOffRequestPayload, S>
+
+  type FacultyWeekOffRequestCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<FacultyWeekOffRequestFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: FacultyWeekOffRequestCountAggregateInputType | true
+    }
+
+  export interface FacultyWeekOffRequestDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['FacultyWeekOffRequest'], meta: { name: 'FacultyWeekOffRequest' } }
+    /**
+     * Find zero or one FacultyWeekOffRequest that matches the filter.
+     * @param {FacultyWeekOffRequestFindUniqueArgs} args - Arguments to find a FacultyWeekOffRequest
+     * @example
+     * // Get one FacultyWeekOffRequest
+     * const facultyWeekOffRequest = await prisma.facultyWeekOffRequest.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends FacultyWeekOffRequestFindUniqueArgs>(args: SelectSubset<T, FacultyWeekOffRequestFindUniqueArgs<ExtArgs>>): Prisma__FacultyWeekOffRequestClient<$Result.GetResult<Prisma.$FacultyWeekOffRequestPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one FacultyWeekOffRequest that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {FacultyWeekOffRequestFindUniqueOrThrowArgs} args - Arguments to find a FacultyWeekOffRequest
+     * @example
+     * // Get one FacultyWeekOffRequest
+     * const facultyWeekOffRequest = await prisma.facultyWeekOffRequest.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends FacultyWeekOffRequestFindUniqueOrThrowArgs>(args: SelectSubset<T, FacultyWeekOffRequestFindUniqueOrThrowArgs<ExtArgs>>): Prisma__FacultyWeekOffRequestClient<$Result.GetResult<Prisma.$FacultyWeekOffRequestPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first FacultyWeekOffRequest that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FacultyWeekOffRequestFindFirstArgs} args - Arguments to find a FacultyWeekOffRequest
+     * @example
+     * // Get one FacultyWeekOffRequest
+     * const facultyWeekOffRequest = await prisma.facultyWeekOffRequest.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends FacultyWeekOffRequestFindFirstArgs>(args?: SelectSubset<T, FacultyWeekOffRequestFindFirstArgs<ExtArgs>>): Prisma__FacultyWeekOffRequestClient<$Result.GetResult<Prisma.$FacultyWeekOffRequestPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first FacultyWeekOffRequest that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FacultyWeekOffRequestFindFirstOrThrowArgs} args - Arguments to find a FacultyWeekOffRequest
+     * @example
+     * // Get one FacultyWeekOffRequest
+     * const facultyWeekOffRequest = await prisma.facultyWeekOffRequest.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends FacultyWeekOffRequestFindFirstOrThrowArgs>(args?: SelectSubset<T, FacultyWeekOffRequestFindFirstOrThrowArgs<ExtArgs>>): Prisma__FacultyWeekOffRequestClient<$Result.GetResult<Prisma.$FacultyWeekOffRequestPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more FacultyWeekOffRequests that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FacultyWeekOffRequestFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all FacultyWeekOffRequests
+     * const facultyWeekOffRequests = await prisma.facultyWeekOffRequest.findMany()
+     * 
+     * // Get first 10 FacultyWeekOffRequests
+     * const facultyWeekOffRequests = await prisma.facultyWeekOffRequest.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const facultyWeekOffRequestWithIdOnly = await prisma.facultyWeekOffRequest.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends FacultyWeekOffRequestFindManyArgs>(args?: SelectSubset<T, FacultyWeekOffRequestFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FacultyWeekOffRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a FacultyWeekOffRequest.
+     * @param {FacultyWeekOffRequestCreateArgs} args - Arguments to create a FacultyWeekOffRequest.
+     * @example
+     * // Create one FacultyWeekOffRequest
+     * const FacultyWeekOffRequest = await prisma.facultyWeekOffRequest.create({
+     *   data: {
+     *     // ... data to create a FacultyWeekOffRequest
+     *   }
+     * })
+     * 
+     */
+    create<T extends FacultyWeekOffRequestCreateArgs>(args: SelectSubset<T, FacultyWeekOffRequestCreateArgs<ExtArgs>>): Prisma__FacultyWeekOffRequestClient<$Result.GetResult<Prisma.$FacultyWeekOffRequestPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many FacultyWeekOffRequests.
+     * @param {FacultyWeekOffRequestCreateManyArgs} args - Arguments to create many FacultyWeekOffRequests.
+     * @example
+     * // Create many FacultyWeekOffRequests
+     * const facultyWeekOffRequest = await prisma.facultyWeekOffRequest.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends FacultyWeekOffRequestCreateManyArgs>(args?: SelectSubset<T, FacultyWeekOffRequestCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many FacultyWeekOffRequests and returns the data saved in the database.
+     * @param {FacultyWeekOffRequestCreateManyAndReturnArgs} args - Arguments to create many FacultyWeekOffRequests.
+     * @example
+     * // Create many FacultyWeekOffRequests
+     * const facultyWeekOffRequest = await prisma.facultyWeekOffRequest.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many FacultyWeekOffRequests and only return the `id`
+     * const facultyWeekOffRequestWithIdOnly = await prisma.facultyWeekOffRequest.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends FacultyWeekOffRequestCreateManyAndReturnArgs>(args?: SelectSubset<T, FacultyWeekOffRequestCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FacultyWeekOffRequestPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a FacultyWeekOffRequest.
+     * @param {FacultyWeekOffRequestDeleteArgs} args - Arguments to delete one FacultyWeekOffRequest.
+     * @example
+     * // Delete one FacultyWeekOffRequest
+     * const FacultyWeekOffRequest = await prisma.facultyWeekOffRequest.delete({
+     *   where: {
+     *     // ... filter to delete one FacultyWeekOffRequest
+     *   }
+     * })
+     * 
+     */
+    delete<T extends FacultyWeekOffRequestDeleteArgs>(args: SelectSubset<T, FacultyWeekOffRequestDeleteArgs<ExtArgs>>): Prisma__FacultyWeekOffRequestClient<$Result.GetResult<Prisma.$FacultyWeekOffRequestPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one FacultyWeekOffRequest.
+     * @param {FacultyWeekOffRequestUpdateArgs} args - Arguments to update one FacultyWeekOffRequest.
+     * @example
+     * // Update one FacultyWeekOffRequest
+     * const facultyWeekOffRequest = await prisma.facultyWeekOffRequest.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends FacultyWeekOffRequestUpdateArgs>(args: SelectSubset<T, FacultyWeekOffRequestUpdateArgs<ExtArgs>>): Prisma__FacultyWeekOffRequestClient<$Result.GetResult<Prisma.$FacultyWeekOffRequestPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more FacultyWeekOffRequests.
+     * @param {FacultyWeekOffRequestDeleteManyArgs} args - Arguments to filter FacultyWeekOffRequests to delete.
+     * @example
+     * // Delete a few FacultyWeekOffRequests
+     * const { count } = await prisma.facultyWeekOffRequest.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends FacultyWeekOffRequestDeleteManyArgs>(args?: SelectSubset<T, FacultyWeekOffRequestDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more FacultyWeekOffRequests.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FacultyWeekOffRequestUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many FacultyWeekOffRequests
+     * const facultyWeekOffRequest = await prisma.facultyWeekOffRequest.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends FacultyWeekOffRequestUpdateManyArgs>(args: SelectSubset<T, FacultyWeekOffRequestUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more FacultyWeekOffRequests and returns the data updated in the database.
+     * @param {FacultyWeekOffRequestUpdateManyAndReturnArgs} args - Arguments to update many FacultyWeekOffRequests.
+     * @example
+     * // Update many FacultyWeekOffRequests
+     * const facultyWeekOffRequest = await prisma.facultyWeekOffRequest.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more FacultyWeekOffRequests and only return the `id`
+     * const facultyWeekOffRequestWithIdOnly = await prisma.facultyWeekOffRequest.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends FacultyWeekOffRequestUpdateManyAndReturnArgs>(args: SelectSubset<T, FacultyWeekOffRequestUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FacultyWeekOffRequestPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one FacultyWeekOffRequest.
+     * @param {FacultyWeekOffRequestUpsertArgs} args - Arguments to update or create a FacultyWeekOffRequest.
+     * @example
+     * // Update or create a FacultyWeekOffRequest
+     * const facultyWeekOffRequest = await prisma.facultyWeekOffRequest.upsert({
+     *   create: {
+     *     // ... data to create a FacultyWeekOffRequest
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the FacultyWeekOffRequest we want to update
+     *   }
+     * })
+     */
+    upsert<T extends FacultyWeekOffRequestUpsertArgs>(args: SelectSubset<T, FacultyWeekOffRequestUpsertArgs<ExtArgs>>): Prisma__FacultyWeekOffRequestClient<$Result.GetResult<Prisma.$FacultyWeekOffRequestPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of FacultyWeekOffRequests.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FacultyWeekOffRequestCountArgs} args - Arguments to filter FacultyWeekOffRequests to count.
+     * @example
+     * // Count the number of FacultyWeekOffRequests
+     * const count = await prisma.facultyWeekOffRequest.count({
+     *   where: {
+     *     // ... the filter for the FacultyWeekOffRequests we want to count
+     *   }
+     * })
+    **/
+    count<T extends FacultyWeekOffRequestCountArgs>(
+      args?: Subset<T, FacultyWeekOffRequestCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], FacultyWeekOffRequestCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a FacultyWeekOffRequest.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FacultyWeekOffRequestAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends FacultyWeekOffRequestAggregateArgs>(args: Subset<T, FacultyWeekOffRequestAggregateArgs>): Prisma.PrismaPromise<GetFacultyWeekOffRequestAggregateType<T>>
+
+    /**
+     * Group by FacultyWeekOffRequest.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FacultyWeekOffRequestGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends FacultyWeekOffRequestGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: FacultyWeekOffRequestGroupByArgs['orderBy'] }
+        : { orderBy?: FacultyWeekOffRequestGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, FacultyWeekOffRequestGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetFacultyWeekOffRequestGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the FacultyWeekOffRequest model
+   */
+  readonly fields: FacultyWeekOffRequestFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for FacultyWeekOffRequest.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__FacultyWeekOffRequestClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the FacultyWeekOffRequest model
+   */
+  interface FacultyWeekOffRequestFieldRefs {
+    readonly id: FieldRef<"FacultyWeekOffRequest", 'String'>
+    readonly facultyUserId: FieldRef<"FacultyWeekOffRequest", 'String'>
+    readonly branchId: FieldRef<"FacultyWeekOffRequest", 'String'>
+    readonly facultyId: FieldRef<"FacultyWeekOffRequest", 'String'>
+    readonly facultyName: FieldRef<"FacultyWeekOffRequest", 'String'>
+    readonly facultyEmail: FieldRef<"FacultyWeekOffRequest", 'String'>
+    readonly requestedWeekStartDate: FieldRef<"FacultyWeekOffRequest", 'String'>
+    readonly requestedWeekEndDate: FieldRef<"FacultyWeekOffRequest", 'String'>
+    readonly defaultWeekOffDay: FieldRef<"FacultyWeekOffRequest", 'String'>
+    readonly defaultWeekOffDate: FieldRef<"FacultyWeekOffRequest", 'String'>
+    readonly requestedWeekOffDay: FieldRef<"FacultyWeekOffRequest", 'String'>
+    readonly requestedWeekOffDate: FieldRef<"FacultyWeekOffRequest", 'String'>
+    readonly reason: FieldRef<"FacultyWeekOffRequest", 'String'>
+    readonly status: FieldRef<"FacultyWeekOffRequest", 'String'>
+    readonly createdAt: FieldRef<"FacultyWeekOffRequest", 'DateTime'>
+    readonly updatedAt: FieldRef<"FacultyWeekOffRequest", 'DateTime'>
+    readonly approvedAt: FieldRef<"FacultyWeekOffRequest", 'DateTime'>
+    readonly approvedBy: FieldRef<"FacultyWeekOffRequest", 'String'>
+    readonly rejectedAt: FieldRef<"FacultyWeekOffRequest", 'DateTime'>
+    readonly rejectedBy: FieldRef<"FacultyWeekOffRequest", 'String'>
+    readonly rejectionReason: FieldRef<"FacultyWeekOffRequest", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * FacultyWeekOffRequest findUnique
+   */
+  export type FacultyWeekOffRequestFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyWeekOffRequest
+     */
+    select?: FacultyWeekOffRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyWeekOffRequest
+     */
+    omit?: FacultyWeekOffRequestOmit<ExtArgs> | null
+    /**
+     * Filter, which FacultyWeekOffRequest to fetch.
+     */
+    where: FacultyWeekOffRequestWhereUniqueInput
+  }
+
+  /**
+   * FacultyWeekOffRequest findUniqueOrThrow
+   */
+  export type FacultyWeekOffRequestFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyWeekOffRequest
+     */
+    select?: FacultyWeekOffRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyWeekOffRequest
+     */
+    omit?: FacultyWeekOffRequestOmit<ExtArgs> | null
+    /**
+     * Filter, which FacultyWeekOffRequest to fetch.
+     */
+    where: FacultyWeekOffRequestWhereUniqueInput
+  }
+
+  /**
+   * FacultyWeekOffRequest findFirst
+   */
+  export type FacultyWeekOffRequestFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyWeekOffRequest
+     */
+    select?: FacultyWeekOffRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyWeekOffRequest
+     */
+    omit?: FacultyWeekOffRequestOmit<ExtArgs> | null
+    /**
+     * Filter, which FacultyWeekOffRequest to fetch.
+     */
+    where?: FacultyWeekOffRequestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FacultyWeekOffRequests to fetch.
+     */
+    orderBy?: FacultyWeekOffRequestOrderByWithRelationInput | FacultyWeekOffRequestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FacultyWeekOffRequests.
+     */
+    cursor?: FacultyWeekOffRequestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FacultyWeekOffRequests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FacultyWeekOffRequests.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FacultyWeekOffRequests.
+     */
+    distinct?: FacultyWeekOffRequestScalarFieldEnum | FacultyWeekOffRequestScalarFieldEnum[]
+  }
+
+  /**
+   * FacultyWeekOffRequest findFirstOrThrow
+   */
+  export type FacultyWeekOffRequestFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyWeekOffRequest
+     */
+    select?: FacultyWeekOffRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyWeekOffRequest
+     */
+    omit?: FacultyWeekOffRequestOmit<ExtArgs> | null
+    /**
+     * Filter, which FacultyWeekOffRequest to fetch.
+     */
+    where?: FacultyWeekOffRequestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FacultyWeekOffRequests to fetch.
+     */
+    orderBy?: FacultyWeekOffRequestOrderByWithRelationInput | FacultyWeekOffRequestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FacultyWeekOffRequests.
+     */
+    cursor?: FacultyWeekOffRequestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FacultyWeekOffRequests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FacultyWeekOffRequests.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FacultyWeekOffRequests.
+     */
+    distinct?: FacultyWeekOffRequestScalarFieldEnum | FacultyWeekOffRequestScalarFieldEnum[]
+  }
+
+  /**
+   * FacultyWeekOffRequest findMany
+   */
+  export type FacultyWeekOffRequestFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyWeekOffRequest
+     */
+    select?: FacultyWeekOffRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyWeekOffRequest
+     */
+    omit?: FacultyWeekOffRequestOmit<ExtArgs> | null
+    /**
+     * Filter, which FacultyWeekOffRequests to fetch.
+     */
+    where?: FacultyWeekOffRequestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FacultyWeekOffRequests to fetch.
+     */
+    orderBy?: FacultyWeekOffRequestOrderByWithRelationInput | FacultyWeekOffRequestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing FacultyWeekOffRequests.
+     */
+    cursor?: FacultyWeekOffRequestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FacultyWeekOffRequests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FacultyWeekOffRequests.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FacultyWeekOffRequests.
+     */
+    distinct?: FacultyWeekOffRequestScalarFieldEnum | FacultyWeekOffRequestScalarFieldEnum[]
+  }
+
+  /**
+   * FacultyWeekOffRequest create
+   */
+  export type FacultyWeekOffRequestCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyWeekOffRequest
+     */
+    select?: FacultyWeekOffRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyWeekOffRequest
+     */
+    omit?: FacultyWeekOffRequestOmit<ExtArgs> | null
+    /**
+     * The data needed to create a FacultyWeekOffRequest.
+     */
+    data: XOR<FacultyWeekOffRequestCreateInput, FacultyWeekOffRequestUncheckedCreateInput>
+  }
+
+  /**
+   * FacultyWeekOffRequest createMany
+   */
+  export type FacultyWeekOffRequestCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many FacultyWeekOffRequests.
+     */
+    data: FacultyWeekOffRequestCreateManyInput | FacultyWeekOffRequestCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * FacultyWeekOffRequest createManyAndReturn
+   */
+  export type FacultyWeekOffRequestCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyWeekOffRequest
+     */
+    select?: FacultyWeekOffRequestSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyWeekOffRequest
+     */
+    omit?: FacultyWeekOffRequestOmit<ExtArgs> | null
+    /**
+     * The data used to create many FacultyWeekOffRequests.
+     */
+    data: FacultyWeekOffRequestCreateManyInput | FacultyWeekOffRequestCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * FacultyWeekOffRequest update
+   */
+  export type FacultyWeekOffRequestUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyWeekOffRequest
+     */
+    select?: FacultyWeekOffRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyWeekOffRequest
+     */
+    omit?: FacultyWeekOffRequestOmit<ExtArgs> | null
+    /**
+     * The data needed to update a FacultyWeekOffRequest.
+     */
+    data: XOR<FacultyWeekOffRequestUpdateInput, FacultyWeekOffRequestUncheckedUpdateInput>
+    /**
+     * Choose, which FacultyWeekOffRequest to update.
+     */
+    where: FacultyWeekOffRequestWhereUniqueInput
+  }
+
+  /**
+   * FacultyWeekOffRequest updateMany
+   */
+  export type FacultyWeekOffRequestUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update FacultyWeekOffRequests.
+     */
+    data: XOR<FacultyWeekOffRequestUpdateManyMutationInput, FacultyWeekOffRequestUncheckedUpdateManyInput>
+    /**
+     * Filter which FacultyWeekOffRequests to update
+     */
+    where?: FacultyWeekOffRequestWhereInput
+    /**
+     * Limit how many FacultyWeekOffRequests to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * FacultyWeekOffRequest updateManyAndReturn
+   */
+  export type FacultyWeekOffRequestUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyWeekOffRequest
+     */
+    select?: FacultyWeekOffRequestSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyWeekOffRequest
+     */
+    omit?: FacultyWeekOffRequestOmit<ExtArgs> | null
+    /**
+     * The data used to update FacultyWeekOffRequests.
+     */
+    data: XOR<FacultyWeekOffRequestUpdateManyMutationInput, FacultyWeekOffRequestUncheckedUpdateManyInput>
+    /**
+     * Filter which FacultyWeekOffRequests to update
+     */
+    where?: FacultyWeekOffRequestWhereInput
+    /**
+     * Limit how many FacultyWeekOffRequests to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * FacultyWeekOffRequest upsert
+   */
+  export type FacultyWeekOffRequestUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyWeekOffRequest
+     */
+    select?: FacultyWeekOffRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyWeekOffRequest
+     */
+    omit?: FacultyWeekOffRequestOmit<ExtArgs> | null
+    /**
+     * The filter to search for the FacultyWeekOffRequest to update in case it exists.
+     */
+    where: FacultyWeekOffRequestWhereUniqueInput
+    /**
+     * In case the FacultyWeekOffRequest found by the `where` argument doesn't exist, create a new FacultyWeekOffRequest with this data.
+     */
+    create: XOR<FacultyWeekOffRequestCreateInput, FacultyWeekOffRequestUncheckedCreateInput>
+    /**
+     * In case the FacultyWeekOffRequest was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<FacultyWeekOffRequestUpdateInput, FacultyWeekOffRequestUncheckedUpdateInput>
+  }
+
+  /**
+   * FacultyWeekOffRequest delete
+   */
+  export type FacultyWeekOffRequestDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyWeekOffRequest
+     */
+    select?: FacultyWeekOffRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyWeekOffRequest
+     */
+    omit?: FacultyWeekOffRequestOmit<ExtArgs> | null
+    /**
+     * Filter which FacultyWeekOffRequest to delete.
+     */
+    where: FacultyWeekOffRequestWhereUniqueInput
+  }
+
+  /**
+   * FacultyWeekOffRequest deleteMany
+   */
+  export type FacultyWeekOffRequestDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FacultyWeekOffRequests to delete
+     */
+    where?: FacultyWeekOffRequestWhereInput
+    /**
+     * Limit how many FacultyWeekOffRequests to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * FacultyWeekOffRequest without action
+   */
+  export type FacultyWeekOffRequestDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyWeekOffRequest
+     */
+    select?: FacultyWeekOffRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyWeekOffRequest
+     */
+    omit?: FacultyWeekOffRequestOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Model BranchFacultyCourse
    */
 
@@ -58826,6 +60125,33 @@ export namespace Prisma {
   export type FacultyLeaveRequestScalarFieldEnum = (typeof FacultyLeaveRequestScalarFieldEnum)[keyof typeof FacultyLeaveRequestScalarFieldEnum]
 
 
+  export const FacultyWeekOffRequestScalarFieldEnum: {
+    id: 'id',
+    facultyUserId: 'facultyUserId',
+    branchId: 'branchId',
+    facultyId: 'facultyId',
+    facultyName: 'facultyName',
+    facultyEmail: 'facultyEmail',
+    requestedWeekStartDate: 'requestedWeekStartDate',
+    requestedWeekEndDate: 'requestedWeekEndDate',
+    defaultWeekOffDay: 'defaultWeekOffDay',
+    defaultWeekOffDate: 'defaultWeekOffDate',
+    requestedWeekOffDay: 'requestedWeekOffDay',
+    requestedWeekOffDate: 'requestedWeekOffDate',
+    reason: 'reason',
+    status: 'status',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    approvedAt: 'approvedAt',
+    approvedBy: 'approvedBy',
+    rejectedAt: 'rejectedAt',
+    rejectedBy: 'rejectedBy',
+    rejectionReason: 'rejectionReason'
+  };
+
+  export type FacultyWeekOffRequestScalarFieldEnum = (typeof FacultyWeekOffRequestScalarFieldEnum)[keyof typeof FacultyWeekOffRequestScalarFieldEnum]
+
+
   export const BranchFacultyCourseScalarFieldEnum: {
     id: 'id',
     branchId: 'branchId',
@@ -63424,6 +64750,139 @@ export namespace Prisma {
     affectedClasses?: JsonWithAggregatesFilter<"FacultyLeaveRequest">
     createdAt?: DateTimeWithAggregatesFilter<"FacultyLeaveRequest"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"FacultyLeaveRequest"> | Date | string
+  }
+
+  export type FacultyWeekOffRequestWhereInput = {
+    AND?: FacultyWeekOffRequestWhereInput | FacultyWeekOffRequestWhereInput[]
+    OR?: FacultyWeekOffRequestWhereInput[]
+    NOT?: FacultyWeekOffRequestWhereInput | FacultyWeekOffRequestWhereInput[]
+    id?: StringFilter<"FacultyWeekOffRequest"> | string
+    facultyUserId?: StringFilter<"FacultyWeekOffRequest"> | string
+    branchId?: StringFilter<"FacultyWeekOffRequest"> | string
+    facultyId?: StringFilter<"FacultyWeekOffRequest"> | string
+    facultyName?: StringFilter<"FacultyWeekOffRequest"> | string
+    facultyEmail?: StringFilter<"FacultyWeekOffRequest"> | string
+    requestedWeekStartDate?: StringFilter<"FacultyWeekOffRequest"> | string
+    requestedWeekEndDate?: StringFilter<"FacultyWeekOffRequest"> | string
+    defaultWeekOffDay?: StringFilter<"FacultyWeekOffRequest"> | string
+    defaultWeekOffDate?: StringFilter<"FacultyWeekOffRequest"> | string
+    requestedWeekOffDay?: StringFilter<"FacultyWeekOffRequest"> | string
+    requestedWeekOffDate?: StringFilter<"FacultyWeekOffRequest"> | string
+    reason?: StringFilter<"FacultyWeekOffRequest"> | string
+    status?: StringFilter<"FacultyWeekOffRequest"> | string
+    createdAt?: DateTimeFilter<"FacultyWeekOffRequest"> | Date | string
+    updatedAt?: DateTimeFilter<"FacultyWeekOffRequest"> | Date | string
+    approvedAt?: DateTimeNullableFilter<"FacultyWeekOffRequest"> | Date | string | null
+    approvedBy?: StringNullableFilter<"FacultyWeekOffRequest"> | string | null
+    rejectedAt?: DateTimeNullableFilter<"FacultyWeekOffRequest"> | Date | string | null
+    rejectedBy?: StringNullableFilter<"FacultyWeekOffRequest"> | string | null
+    rejectionReason?: StringNullableFilter<"FacultyWeekOffRequest"> | string | null
+  }
+
+  export type FacultyWeekOffRequestOrderByWithRelationInput = {
+    id?: SortOrder
+    facultyUserId?: SortOrder
+    branchId?: SortOrder
+    facultyId?: SortOrder
+    facultyName?: SortOrder
+    facultyEmail?: SortOrder
+    requestedWeekStartDate?: SortOrder
+    requestedWeekEndDate?: SortOrder
+    defaultWeekOffDay?: SortOrder
+    defaultWeekOffDate?: SortOrder
+    requestedWeekOffDay?: SortOrder
+    requestedWeekOffDate?: SortOrder
+    reason?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    approvedAt?: SortOrderInput | SortOrder
+    approvedBy?: SortOrderInput | SortOrder
+    rejectedAt?: SortOrderInput | SortOrder
+    rejectedBy?: SortOrderInput | SortOrder
+    rejectionReason?: SortOrderInput | SortOrder
+  }
+
+  export type FacultyWeekOffRequestWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    facultyId_requestedWeekStartDate_requestedWeekEndDate?: FacultyWeekOffRequestFacultyIdRequestedWeekStartDateRequestedWeekEndDateCompoundUniqueInput
+    AND?: FacultyWeekOffRequestWhereInput | FacultyWeekOffRequestWhereInput[]
+    OR?: FacultyWeekOffRequestWhereInput[]
+    NOT?: FacultyWeekOffRequestWhereInput | FacultyWeekOffRequestWhereInput[]
+    facultyUserId?: StringFilter<"FacultyWeekOffRequest"> | string
+    branchId?: StringFilter<"FacultyWeekOffRequest"> | string
+    facultyId?: StringFilter<"FacultyWeekOffRequest"> | string
+    facultyName?: StringFilter<"FacultyWeekOffRequest"> | string
+    facultyEmail?: StringFilter<"FacultyWeekOffRequest"> | string
+    requestedWeekStartDate?: StringFilter<"FacultyWeekOffRequest"> | string
+    requestedWeekEndDate?: StringFilter<"FacultyWeekOffRequest"> | string
+    defaultWeekOffDay?: StringFilter<"FacultyWeekOffRequest"> | string
+    defaultWeekOffDate?: StringFilter<"FacultyWeekOffRequest"> | string
+    requestedWeekOffDay?: StringFilter<"FacultyWeekOffRequest"> | string
+    requestedWeekOffDate?: StringFilter<"FacultyWeekOffRequest"> | string
+    reason?: StringFilter<"FacultyWeekOffRequest"> | string
+    status?: StringFilter<"FacultyWeekOffRequest"> | string
+    createdAt?: DateTimeFilter<"FacultyWeekOffRequest"> | Date | string
+    updatedAt?: DateTimeFilter<"FacultyWeekOffRequest"> | Date | string
+    approvedAt?: DateTimeNullableFilter<"FacultyWeekOffRequest"> | Date | string | null
+    approvedBy?: StringNullableFilter<"FacultyWeekOffRequest"> | string | null
+    rejectedAt?: DateTimeNullableFilter<"FacultyWeekOffRequest"> | Date | string | null
+    rejectedBy?: StringNullableFilter<"FacultyWeekOffRequest"> | string | null
+    rejectionReason?: StringNullableFilter<"FacultyWeekOffRequest"> | string | null
+  }, "id" | "facultyId_requestedWeekStartDate_requestedWeekEndDate">
+
+  export type FacultyWeekOffRequestOrderByWithAggregationInput = {
+    id?: SortOrder
+    facultyUserId?: SortOrder
+    branchId?: SortOrder
+    facultyId?: SortOrder
+    facultyName?: SortOrder
+    facultyEmail?: SortOrder
+    requestedWeekStartDate?: SortOrder
+    requestedWeekEndDate?: SortOrder
+    defaultWeekOffDay?: SortOrder
+    defaultWeekOffDate?: SortOrder
+    requestedWeekOffDay?: SortOrder
+    requestedWeekOffDate?: SortOrder
+    reason?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    approvedAt?: SortOrderInput | SortOrder
+    approvedBy?: SortOrderInput | SortOrder
+    rejectedAt?: SortOrderInput | SortOrder
+    rejectedBy?: SortOrderInput | SortOrder
+    rejectionReason?: SortOrderInput | SortOrder
+    _count?: FacultyWeekOffRequestCountOrderByAggregateInput
+    _max?: FacultyWeekOffRequestMaxOrderByAggregateInput
+    _min?: FacultyWeekOffRequestMinOrderByAggregateInput
+  }
+
+  export type FacultyWeekOffRequestScalarWhereWithAggregatesInput = {
+    AND?: FacultyWeekOffRequestScalarWhereWithAggregatesInput | FacultyWeekOffRequestScalarWhereWithAggregatesInput[]
+    OR?: FacultyWeekOffRequestScalarWhereWithAggregatesInput[]
+    NOT?: FacultyWeekOffRequestScalarWhereWithAggregatesInput | FacultyWeekOffRequestScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"FacultyWeekOffRequest"> | string
+    facultyUserId?: StringWithAggregatesFilter<"FacultyWeekOffRequest"> | string
+    branchId?: StringWithAggregatesFilter<"FacultyWeekOffRequest"> | string
+    facultyId?: StringWithAggregatesFilter<"FacultyWeekOffRequest"> | string
+    facultyName?: StringWithAggregatesFilter<"FacultyWeekOffRequest"> | string
+    facultyEmail?: StringWithAggregatesFilter<"FacultyWeekOffRequest"> | string
+    requestedWeekStartDate?: StringWithAggregatesFilter<"FacultyWeekOffRequest"> | string
+    requestedWeekEndDate?: StringWithAggregatesFilter<"FacultyWeekOffRequest"> | string
+    defaultWeekOffDay?: StringWithAggregatesFilter<"FacultyWeekOffRequest"> | string
+    defaultWeekOffDate?: StringWithAggregatesFilter<"FacultyWeekOffRequest"> | string
+    requestedWeekOffDay?: StringWithAggregatesFilter<"FacultyWeekOffRequest"> | string
+    requestedWeekOffDate?: StringWithAggregatesFilter<"FacultyWeekOffRequest"> | string
+    reason?: StringWithAggregatesFilter<"FacultyWeekOffRequest"> | string
+    status?: StringWithAggregatesFilter<"FacultyWeekOffRequest"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"FacultyWeekOffRequest"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"FacultyWeekOffRequest"> | Date | string
+    approvedAt?: DateTimeNullableWithAggregatesFilter<"FacultyWeekOffRequest"> | Date | string | null
+    approvedBy?: StringNullableWithAggregatesFilter<"FacultyWeekOffRequest"> | string | null
+    rejectedAt?: DateTimeNullableWithAggregatesFilter<"FacultyWeekOffRequest"> | Date | string | null
+    rejectedBy?: StringNullableWithAggregatesFilter<"FacultyWeekOffRequest"> | string | null
+    rejectionReason?: StringNullableWithAggregatesFilter<"FacultyWeekOffRequest"> | string | null
   }
 
   export type BranchFacultyCourseWhereInput = {
@@ -69135,6 +70594,174 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type FacultyWeekOffRequestCreateInput = {
+    id?: string
+    facultyUserId: string
+    branchId: string
+    facultyId: string
+    facultyName: string
+    facultyEmail: string
+    requestedWeekStartDate: string
+    requestedWeekEndDate: string
+    defaultWeekOffDay: string
+    defaultWeekOffDate: string
+    requestedWeekOffDay: string
+    requestedWeekOffDate: string
+    reason: string
+    status?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    approvedAt?: Date | string | null
+    approvedBy?: string | null
+    rejectedAt?: Date | string | null
+    rejectedBy?: string | null
+    rejectionReason?: string | null
+  }
+
+  export type FacultyWeekOffRequestUncheckedCreateInput = {
+    id?: string
+    facultyUserId: string
+    branchId: string
+    facultyId: string
+    facultyName: string
+    facultyEmail: string
+    requestedWeekStartDate: string
+    requestedWeekEndDate: string
+    defaultWeekOffDay: string
+    defaultWeekOffDate: string
+    requestedWeekOffDay: string
+    requestedWeekOffDate: string
+    reason: string
+    status?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    approvedAt?: Date | string | null
+    approvedBy?: string | null
+    rejectedAt?: Date | string | null
+    rejectedBy?: string | null
+    rejectionReason?: string | null
+  }
+
+  export type FacultyWeekOffRequestUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    facultyUserId?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    facultyId?: StringFieldUpdateOperationsInput | string
+    facultyName?: StringFieldUpdateOperationsInput | string
+    facultyEmail?: StringFieldUpdateOperationsInput | string
+    requestedWeekStartDate?: StringFieldUpdateOperationsInput | string
+    requestedWeekEndDate?: StringFieldUpdateOperationsInput | string
+    defaultWeekOffDay?: StringFieldUpdateOperationsInput | string
+    defaultWeekOffDate?: StringFieldUpdateOperationsInput | string
+    requestedWeekOffDay?: StringFieldUpdateOperationsInput | string
+    requestedWeekOffDate?: StringFieldUpdateOperationsInput | string
+    reason?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type FacultyWeekOffRequestUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    facultyUserId?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    facultyId?: StringFieldUpdateOperationsInput | string
+    facultyName?: StringFieldUpdateOperationsInput | string
+    facultyEmail?: StringFieldUpdateOperationsInput | string
+    requestedWeekStartDate?: StringFieldUpdateOperationsInput | string
+    requestedWeekEndDate?: StringFieldUpdateOperationsInput | string
+    defaultWeekOffDay?: StringFieldUpdateOperationsInput | string
+    defaultWeekOffDate?: StringFieldUpdateOperationsInput | string
+    requestedWeekOffDay?: StringFieldUpdateOperationsInput | string
+    requestedWeekOffDate?: StringFieldUpdateOperationsInput | string
+    reason?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type FacultyWeekOffRequestCreateManyInput = {
+    id?: string
+    facultyUserId: string
+    branchId: string
+    facultyId: string
+    facultyName: string
+    facultyEmail: string
+    requestedWeekStartDate: string
+    requestedWeekEndDate: string
+    defaultWeekOffDay: string
+    defaultWeekOffDate: string
+    requestedWeekOffDay: string
+    requestedWeekOffDate: string
+    reason: string
+    status?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    approvedAt?: Date | string | null
+    approvedBy?: string | null
+    rejectedAt?: Date | string | null
+    rejectedBy?: string | null
+    rejectionReason?: string | null
+  }
+
+  export type FacultyWeekOffRequestUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    facultyUserId?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    facultyId?: StringFieldUpdateOperationsInput | string
+    facultyName?: StringFieldUpdateOperationsInput | string
+    facultyEmail?: StringFieldUpdateOperationsInput | string
+    requestedWeekStartDate?: StringFieldUpdateOperationsInput | string
+    requestedWeekEndDate?: StringFieldUpdateOperationsInput | string
+    defaultWeekOffDay?: StringFieldUpdateOperationsInput | string
+    defaultWeekOffDate?: StringFieldUpdateOperationsInput | string
+    requestedWeekOffDay?: StringFieldUpdateOperationsInput | string
+    requestedWeekOffDate?: StringFieldUpdateOperationsInput | string
+    reason?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type FacultyWeekOffRequestUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    facultyUserId?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    facultyId?: StringFieldUpdateOperationsInput | string
+    facultyName?: StringFieldUpdateOperationsInput | string
+    facultyEmail?: StringFieldUpdateOperationsInput | string
+    requestedWeekStartDate?: StringFieldUpdateOperationsInput | string
+    requestedWeekEndDate?: StringFieldUpdateOperationsInput | string
+    defaultWeekOffDay?: StringFieldUpdateOperationsInput | string
+    defaultWeekOffDate?: StringFieldUpdateOperationsInput | string
+    requestedWeekOffDay?: StringFieldUpdateOperationsInput | string
+    requestedWeekOffDate?: StringFieldUpdateOperationsInput | string
+    reason?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rejectedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
   export type BranchFacultyCourseCreateInput = {
     id?: string
     branchId: string
@@ -73293,6 +74920,84 @@ export namespace Prisma {
   export type FacultyLeaveRequestSumOrderByAggregateInput = {
     durationDays?: SortOrder
     permissionHours?: SortOrder
+  }
+
+  export type FacultyWeekOffRequestFacultyIdRequestedWeekStartDateRequestedWeekEndDateCompoundUniqueInput = {
+    facultyId: string
+    requestedWeekStartDate: string
+    requestedWeekEndDate: string
+  }
+
+  export type FacultyWeekOffRequestCountOrderByAggregateInput = {
+    id?: SortOrder
+    facultyUserId?: SortOrder
+    branchId?: SortOrder
+    facultyId?: SortOrder
+    facultyName?: SortOrder
+    facultyEmail?: SortOrder
+    requestedWeekStartDate?: SortOrder
+    requestedWeekEndDate?: SortOrder
+    defaultWeekOffDay?: SortOrder
+    defaultWeekOffDate?: SortOrder
+    requestedWeekOffDay?: SortOrder
+    requestedWeekOffDate?: SortOrder
+    reason?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    approvedAt?: SortOrder
+    approvedBy?: SortOrder
+    rejectedAt?: SortOrder
+    rejectedBy?: SortOrder
+    rejectionReason?: SortOrder
+  }
+
+  export type FacultyWeekOffRequestMaxOrderByAggregateInput = {
+    id?: SortOrder
+    facultyUserId?: SortOrder
+    branchId?: SortOrder
+    facultyId?: SortOrder
+    facultyName?: SortOrder
+    facultyEmail?: SortOrder
+    requestedWeekStartDate?: SortOrder
+    requestedWeekEndDate?: SortOrder
+    defaultWeekOffDay?: SortOrder
+    defaultWeekOffDate?: SortOrder
+    requestedWeekOffDay?: SortOrder
+    requestedWeekOffDate?: SortOrder
+    reason?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    approvedAt?: SortOrder
+    approvedBy?: SortOrder
+    rejectedAt?: SortOrder
+    rejectedBy?: SortOrder
+    rejectionReason?: SortOrder
+  }
+
+  export type FacultyWeekOffRequestMinOrderByAggregateInput = {
+    id?: SortOrder
+    facultyUserId?: SortOrder
+    branchId?: SortOrder
+    facultyId?: SortOrder
+    facultyName?: SortOrder
+    facultyEmail?: SortOrder
+    requestedWeekStartDate?: SortOrder
+    requestedWeekEndDate?: SortOrder
+    defaultWeekOffDay?: SortOrder
+    defaultWeekOffDate?: SortOrder
+    requestedWeekOffDay?: SortOrder
+    requestedWeekOffDate?: SortOrder
+    reason?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    approvedAt?: SortOrder
+    approvedBy?: SortOrder
+    rejectedAt?: SortOrder
+    rejectedBy?: SortOrder
+    rejectionReason?: SortOrder
   }
 
   export type BranchFacultyCourseBranchFacultyIdBranchCourseIdCompoundUniqueInput = {

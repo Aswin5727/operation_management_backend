@@ -43,15 +43,23 @@ export function isAffected(leave, date, batch) {
   return leave.leaveDate === date && leaveOverlapsBatch(leave, batch);
 }
 const nextDay = date => new Date(Date.parse(`${date}T00:00:00Z`) + 86400000).toISOString().slice(0, 10);
-export function generateSchedule({ student, batch, holidays = [], leaves = [], timezone = 'Asia/Kolkata', now = new Date() }) {
+export function generateSchedule({ student, batch, holidays = [], leaves = [], weekOffOverrides = [], timezone = 'Asia/Kolkata', now = new Date() }) {
   const startDate = student.courseStartDate || student.admissionDate;
   if (!validDate(startDate)) throw new Error(`Configure course start date for ${student.studentId || student.id}`);
   const timing = timingFor(student, batch);
   const weekend = String(batch?.weekType || '').toUpperCase() === 'WEEKEND' || /weekend/i.test(student.classSchedule || '');
-  const weeklyOffIndex = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'].indexOf(String(student.weeklyOffDay || batch?.weeklyOffDay || '').toUpperCase());
+  const dayNames = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
+  const permanentWeeklyOffDay = String(student.weeklyOffDay || batch?.weeklyOffDay || '').toUpperCase();
+  const permanentWeeklyOffIndex = dayNames.indexOf(permanentWeeklyOffDay);
+  const facultyKeys = new Set([student.facultyId, batch?.facultyId, batch?.branchFacultyId].filter(Boolean).map(value => String(value)));
+  const approvedOverrides = weekOffOverrides.filter(item => item.status === 'APPROVED' && facultyKeys.has(String(item.facultyId)));
+  const weeklyOffIndexForDate = date => {
+    const override = approvedOverrides.find(item => date >= item.requestedWeekStartDate && date <= item.requestedWeekEndDate);
+    return override ? dayNames.indexOf(String(override.requestedWeekOffDay || '').toUpperCase()) : permanentWeeklyOffIndex;
+  };
   const eligible = date => {
     const day = new Date(`${date}T00:00:00Z`).getUTCDay();
-    return weekend ? [0, 6].includes(day) : ![0, 6].includes(day) && day !== weeklyOffIndex;
+    return weekend ? [0, 6].includes(day) : ![0, 6].includes(day) && day !== weeklyOffIndexForDate(date);
   };
   const holidayMap = new Map(holidays.map(h => [h.holidayDate, h]));
   const configuredDailyHours = batch?.weekType && batch?.mode ? batchDailyHours(batch.weekType, batch.mode) : timing.hours;
@@ -85,10 +93,12 @@ export function generateSchedule({ student, batch, holidays = [], leaves = [], t
       if (classHours) remaining = Math.max(0, remaining - classHours);
       if (classHours && mark?.status === 'PRESENT') completedHours += classHours;
       const finished = date < today.date || (date === today.date && timing.end * 60 <= today.seconds);
-      const isWeeklyOff = !weekend && weeklyOffIndex >= 1 && new Date(`${date}T00:00:00Z`).getUTCDay() === weeklyOffIndex;
+      const effectiveWeeklyOffIndex = weeklyOffIndexForDate(date);
+      const isWeeklyOff = !weekend && effectiveWeeklyOffIndex >= 1 && new Date(`${date}T00:00:00Z`).getUTCDay() === effectiveWeeklyOffIndex;
+      const effectiveWeeklyOffDay = effectiveWeeklyOffIndex >= 1 ? dayNames[effectiveWeeklyOffIndex] : null;
       const code = isWeeklyOff ? 'FACULTY_WEEKLY_OFF' : !isClassDay ? 'NO_CLASS' : excluded ? (leave ? 'INSTITUTE_LEAVE' : legacy ? 'LEAVE' : 'HOLIDAY') : mark?.status === 'PRESENT' ? 'COMPLETED' : finished ? 'CLASS' : 'SCHEDULED';
       events.push({ date, code, status: ({ NO_CLASS: 'No Class', FACULTY_WEEKLY_OFF: 'Faculty Weekly Off', INSTITUTE_LEAVE: 'Institute Leave', LEAVE: 'Leave', HOLIDAY: 'Government Holiday', COMPLETED: 'Completed', CLASS: 'Class', SCHEDULED: 'Scheduled' })[code],
-        studentId: student.id, batchId: student.batchId, batchRecordId: batch?.id || null, batchName: student.batchName || batch?.batchName, weeklyOffDay: student.weeklyOffDay || batch?.weeklyOffDay || null,
+        studentId: student.id, batchId: student.batchId, batchRecordId: batch?.id || null, batchName: student.batchName || batch?.batchName, weeklyOffDay: effectiveWeeklyOffDay,
         facultyId: student.facultyId || batch?.facultyId, startTime: timeLabel(timing.start), endTime: timeLabel(timing.start + scheduledHours * 60),
         scheduledHours: isClassDay ? scheduledHours : 0, classHours, isCourseDay: classHours > 0,
         attendanceStatus: excluded ? 'NOT_APPLICABLE' : mark?.status || null,
@@ -111,5 +121,5 @@ export function generateSchedule({ student, batch, holidays = [], leaves = [], t
     requiredTeachingDays: Math.ceil(requiredHours / configuredDailyHours), totalWorkingDays: Math.ceil(requiredHours / configuredDailyHours),
     actualTeachingDays: result.events.filter(e => e.isCourseDay).length,
     calendarDurationDays: (Date.parse(result.endDate) - Date.parse(startDate)) / 86400000 + 1,
-    schedule: weekend ? 'Weekend' : 'Weekday', weeklyOffDay: weeklyOffIndex >= 1 ? String(student.weeklyOffDay || batch?.weeklyOffDay).toUpperCase() : null, timezone };
+    schedule: weekend ? 'Weekend' : 'Weekday', weeklyOffDay: permanentWeeklyOffIndex >= 1 ? permanentWeeklyOffDay : null, timezone };
 }
