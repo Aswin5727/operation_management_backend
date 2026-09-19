@@ -390,7 +390,7 @@ function isWorkEntryForBranchStudent(entry = {}, student = {}) {
   return entryStudentIds.length > 0 || applyToAllStudents;
 }
 
-function calculateBranchStudentCourseProgress(course = {}, entries = [], student = null, studentAttempts = []) {
+export function calculateBranchStudentCourseProgress(course = {}, entries = [], student = null, studentAttempts = []) {
   const modules = Array.isArray(course?.modules) ? course.modules : [];
   if (!modules.length) return 0;
 
@@ -472,6 +472,78 @@ function calculateBranchStudentCourseProgress(course = {}, entries = [], student
   if (!totals.total) return 0;
 
   return Math.min(100, Math.max(0, (totals.completed / totals.total) * 100));
+}
+
+export function buildBranchStudentCourseProgressView(course = {}, entries = [], student = null, studentAttempts = []) {
+  const modules = Array.isArray(course?.modules) ? course.modules : [];
+  const normalizedCourseId = normalizeString(course?.id || course?.courseId || "");
+  const matchingEntries = (Array.isArray(entries) ? entries : []).filter((entry) => {
+    const entryCourseId = normalizeString(entry?.courseId || "");
+    if (normalizedCourseId && entryCourseId && entryCourseId !== normalizedCourseId) return false;
+    return isWorkEntryForBranchStudent(entry, student);
+  });
+  const completedByModule = new Map();
+  const inProgressByModule = new Map();
+  const submoduleByModule = new Map();
+
+  modules.forEach((module, moduleIndex) => {
+    const moduleId = normalizeString(module?.id || `module-${moduleIndex}`);
+    const submodules = Array.isArray(module?.submodules) ? module.submodules : [];
+    submoduleByModule.set(moduleId, new Set(submodules.map((item, index) => normalizeString(item?.id || `submodule-${index}`)).filter(Boolean)));
+    completedByModule.set(moduleId, new Set());
+    inProgressByModule.set(moduleId, new Set());
+  });
+
+  matchingEntries.forEach((entry) => {
+    const moduleId = normalizeString(entry?.moduleId || "");
+    const validIds = submoduleByModule.get(moduleId);
+    if (!validIds) return;
+    getWorkEntrySubmoduleIds(entry).forEach((submoduleId) => {
+      const normalizedId = normalizeString(submoduleId);
+      if (!validIds.has(normalizedId)) return;
+      const status = getWorkEntrySubmoduleStatus(entry, normalizedId, student?.id || student?.studentId || "").toUpperCase();
+      if (status === "COMPLETED") completedByModule.get(moduleId).add(normalizedId);
+      else if (status === "IN_PROGRESS") inProgressByModule.get(moduleId).add(normalizedId);
+    });
+  });
+
+  (Array.isArray(studentAttempts) ? studentAttempts : []).forEach((attempt) => {
+    const moduleId = normalizeString(attempt?.moduleId || "");
+    const submoduleId = normalizeString(attempt?.submoduleId || "");
+    if (!submoduleByModule.get(moduleId)?.has(submoduleId)) return;
+    const status = normalizeString(attempt?.completionStatus).toUpperCase();
+    if (status === "COMPLETED") completedByModule.get(moduleId).add(submoduleId);
+    else if (status === "IN_PROGRESS") inProgressByModule.get(moduleId).add(submoduleId);
+  });
+
+  const resultModules = modules.map((module, moduleIndex) => {
+    const moduleId = normalizeString(module?.id || `module-${moduleIndex}`);
+    const submodules = Array.isArray(module?.submodules) ? module.submodules : [];
+    const completed = completedByModule.get(moduleId) || new Set();
+    const inProgress = inProgressByModule.get(moduleId) || new Set();
+    const completedCount = Math.min(submodules.length, completed.size);
+    return {
+      id: module?.id || moduleId,
+      name: module?.title || module?.name || "",
+      sequenceNo: module?.sequenceNo ?? moduleIndex + 1,
+      completedCount,
+      totalCount: submodules.length,
+      progress: submodules.length ? Math.round((completedCount / submodules.length) * 100) : null,
+      subModules: submodules.map((submodule, submoduleIndex) => {
+        const id = normalizeString(submodule?.id || `submodule-${submoduleIndex}`);
+        const status = completed.has(id) ? "COMPLETED" : inProgress.has(id) ? "IN_PROGRESS" : "NOT_STARTED";
+        return { id: submodule?.id || id, name: submodule?.title || submodule?.name || "", sequenceNo: submodule?.sequenceNo ?? submoduleIndex + 1, status };
+      }),
+    };
+  });
+  const completedCount = resultModules.reduce((total, module) => total + module.completedCount, 0);
+  const totalCount = resultModules.reduce((total, module) => total + module.totalCount, 0);
+  return {
+    progress: totalCount ? Math.round((completedCount / totalCount) * 100) : null,
+    completedCount,
+    totalCount,
+    modules: resultModules,
+  };
 }
 
 async function syncBranchStudentCourseProgress(tx, { branchCourse, branchId, batchId, studentIds = [], actorId = null }) {

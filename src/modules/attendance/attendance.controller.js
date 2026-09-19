@@ -7,6 +7,7 @@ import {
   recordFacultyAttendanceLogout,
 } from "./attendance.service.js";
 import { getStudentAttendanceOverview } from "./studentAttendanceOverview.service.js";
+import { getStudentCourse } from "./studentCourse.service.js";
 
 function sendSuccess(res, message, data, meta = undefined, statusCode = 200) {
   const payload = {
@@ -50,4 +51,9 @@ export const getCurrentStudentAttendanceOverviewHandler = asyncHandler(async (re
 export const getStudentAttendanceOverviewHandler = asyncHandler(async (req, res) => {
   const overview = await getStudentAttendanceOverview(req.user);
   return sendSuccess(res, "Student attendance overview fetched successfully", overview);
+});
+
+export const getStudentCourseHandler = asyncHandler(async (req, res) => {
+  const course = await getStudentCourse(req.user);
+  return sendSuccess(res, "Student course fetched successfully", course);
 });
