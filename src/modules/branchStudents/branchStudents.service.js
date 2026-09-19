@@ -2,7 +2,11 @@ import crypto from "node:crypto";
 
 import { Prisma } from "@prisma/client";
 
-import { syncStudentCourseEnd } from "../instituteLeave/instituteLeave.service.js";
+import {
+  scheduleContext,
+  studentSchedule,
+  syncStudentCourseEnd,
+} from "../instituteLeave/instituteLeave.service.js";
 import prisma from "../../config/prisma.js";
 import config from "../../config/env.js";
 import AppError from "../../common/errors/AppError.js";
@@ -122,6 +126,285 @@ function parseOptionalProgress(value) {
   }
 
   return Math.round(parsed);
+}
+
+const FEE_SCHEDULE_MODES = new Set([
+  "MONTHLY_FIXED_DATE",
+  "BEFORE_70_PERCENT",
+  "CUSTOM_DATES",
+]);
+
+function normalizeFeeScheduleMode(value) {
+  const mode = normalizeString(value || "BEFORE_70_PERCENT").toUpperCase();
+  if (!FEE_SCHEDULE_MODES.has(mode)) {
+    throw new AppError("Invalid fee schedule mode", 400);
+  }
+  return mode;
+}
+
+function validIsoDate(value) {
+  return /^\d{4}-\d{2}-\d{2}$/.test(normalizeString(value));
+}
+
+function addDaysToIsoDate(value, days) {
+  const date = new Date(`${value}T00:00:00Z`);
+  date.setUTCDate(date.getUTCDate() + Number(days || 0));
+  return date.toISOString().slice(0, 10);
+}
+
+function addMonthsToIsoDate(value, months) {
+  const source = new Date(`${value}T00:00:00Z`);
+  if (Number.isNaN(source.getTime())) return "";
+
+  const day = source.getUTCDate();
+  const target = new Date(Date.UTC(source.getUTCFullYear(), source.getUTCMonth() + Number(months || 0), 1));
+  const lastDay = new Date(Date.UTC(target.getUTCFullYear(), target.getUTCMonth() + 1, 0)).getUTCDate();
+  target.setUTCDate(Math.min(day, lastDay));
+  return target.toISOString().slice(0, 10);
+}
+
+function dateDistanceInDays(start, end) {
+  return Math.max(0, Math.round((Date.parse(`${end}T00:00:00Z`) - Date.parse(`${start}T00:00:00Z`)) / 86400000));
+}
+
+function distributeFeeDueDates(firstDate, deadline, count) {
+  const safeCount = Math.max(1, Number(count) || 1);
+  if (!validIsoDate(firstDate) || !validIsoDate(deadline) || firstDate > deadline) {
+    throw new AppError("First payment date must be on or before the 70% payment deadline", 400);
+  }
+
+  if (safeCount === 1) return [firstDate];
+
+  // Prefer the normal monthly cadence. The 70% date is a cutoff, not a
+  // mandatory due date, so a two-installment plan should be first month plus
+  // the following month whenever that date is still within the cutoff.
+  const monthlyDates = Array.from({ length: safeCount }, (_, index) => addMonthsToIsoDate(firstDate, index));
+  if (monthlyDates.every((date) => validIsoDate(date) && date <= deadline)) {
+    return monthlyDates;
+  }
+
+  const finalDueDate = addDaysToIsoDate(deadline, -1) > firstDate
+    ? addDaysToIsoDate(deadline, -1)
+    : deadline;
+  const compressedWindowDays = dateDistanceInDays(firstDate, finalDueDate);
+  return Array.from({ length: safeCount }, (_, index) => {
+    const offset = Math.round((compressedWindowDays * index) / (safeCount - 1));
+    return addDaysToIsoDate(firstDate, offset);
+  });
+}
+
+export function calculateBranchStudentFeeComplianceStatus(student = {}) {
+  const directTotal = Number(String(
+    student.courseAmount ?? student.totalAmount ?? student.afterDiscount ?? 0,
+  ).replace(/,/g, "")) || 0;
+  const installmentTotal = Array.isArray(student.installments)
+    ? student.installments.reduce((sum, installment) => sum + Number(installment.amount || 0), 0)
+    : 0;
+  const totalFee = directTotal > 0 ? directTotal : installmentTotal;
+  const paidAmount = Array.isArray(student.payments)
+    ? student.payments.reduce((sum, payment) => sum + Number(payment.amount || 0), 0)
+    : Array.isArray(student.installments)
+      ? student.installments.reduce((sum, installment) => sum + Number(installment.amountPaid || 0), 0)
+      : 0;
+  const courseProgress = Number(student.courseProgress || 0);
+  const deadline = normalizeString(student.feePaymentDeadline || student.fee70ProgressDate);
+
+  if (totalFee <= 0 || !deadline) return "PENDING";
+  if (paidAmount >= totalFee && courseProgress > 70) return "PAID_AFTER_70";
+  if (paidAmount >= totalFee) return "FULLY_PAID";
+  if (courseProgress >= 70) return "FEE_PENDING_BEFORE_70";
+  if (courseProgress >= 60) return "PAYMENT_DUE";
+  return "ON_TRACK";
+}
+
+async function calculateStudentFeeDeadline(studentInput, branchId, db = prisma) {
+  const student = {
+    ...studentInput,
+    branchId,
+    course: studentInput.course || null,
+    calendarAttendanceRecords: studentInput.calendarAttendanceRecords || [],
+  };
+
+  const context = await scheduleContext(db, branchId);
+  const matchingBatch = context.batches.find((batch) => (
+    [batch.batchId, batch.id].includes(student.batchId) &&
+    (!student.courseId || [batch.courseId, batch.branchCourseId].includes(student.courseId))
+  ));
+
+  // Batch assignment is the source of truth for the calendar. Older student
+  // rows can have a stale faculty/course reference, so hydrate those values
+  // from the selected batch before calculating the deadline.
+  if (matchingBatch) {
+    student.courseId = student.courseId || matchingBatch.courseId || matchingBatch.branchCourseId;
+    student.facultyId = matchingBatch.facultyId || matchingBatch.branchFacultyId || student.facultyId;
+    student.batchId = matchingBatch.batchId || matchingBatch.id;
+    student.batchName = student.batchName || matchingBatch.batchName;
+    student.batchTiming = student.batchTiming || matchingBatch.batchTiming;
+    student.course = student.course || matchingBatch.branchCourse || null;
+    student.courseStartDate = student.courseStartDate || matchingBatch.courseStartDate;
+    student.weeklyOffDay = student.weeklyOffDay || matchingBatch.weeklyOffDay;
+  }
+
+  if (!student.courseId || !student.batchId || !student.facultyId) return null;
+
+  let schedule;
+  try {
+    schedule = studentSchedule(student, context);
+  } catch (error) {
+    throw new AppError(`Unable to calculate the 70% payment deadline: ${error.message}`, 400);
+  }
+
+  const targetHours = Number((Number(schedule.totalHours || 0) * 0.7).toFixed(2));
+  if (!(targetHours > 0)) return null;
+
+  let accumulatedHours = 0;
+  let progressDate = schedule.endDate;
+  for (const event of schedule.events || []) {
+    accumulatedHours += Number(event.classHours || 0);
+    if (accumulatedHours + 0.000001 >= targetHours) {
+      progressDate = event.date;
+      break;
+    }
+  }
+
+  return {
+    targetHours,
+    progressDate,
+    scheduleMode: normalizeFeeScheduleMode(studentInput.feeScheduleMode),
+  };
+}
+
+async function buildStudentFeePlan({ studentData, installmentSchedule, payload, branchId, course, existingStudent = null }) {
+  // The student flow uses one authoritative schedule: full fee due by 70%
+  // of the actual batch calendar. Keep legacy mode values from changing it.
+  const scheduleMode = "BEFORE_70_PERCENT";
+  const firstPaymentDate = normalizeString(
+    payload?.feeFirstPaymentDate || payload?.firstPaymentDate || existingStudent?.feeFirstPaymentDate || studentData.admissionDate,
+  );
+  const deadline = await calculateStudentFeeDeadline(
+    { ...studentData, ...existingStudent, course, feeScheduleMode: scheduleMode },
+    branchId,
+  );
+  const feeFields = {
+    feeScheduleMode: scheduleMode,
+    feeFirstPaymentDate: firstPaymentDate,
+    fee70ProgressDate: deadline?.progressDate || existingStudent?.fee70ProgressDate || null,
+    fee70TargetHours: deadline?.targetHours || existingStudent?.fee70TargetHours || null,
+    feePaymentDeadline: deadline?.progressDate || existingStudent?.feePaymentDeadline || null,
+  };
+
+  if (scheduleMode === "BEFORE_70_PERCENT" && !deadline?.progressDate) {
+    throw new AppError("Unable to calculate the 70% payment deadline from the selected batch calendar", 400);
+  }
+
+  if (!installmentSchedule.length) {
+    return {
+      schedule: installmentSchedule,
+      fields: { ...feeFields, feeComplianceStatus: calculateBranchStudentFeeComplianceStatus({ ...studentData, ...feeFields, installments: installmentSchedule }) },
+    };
+  }
+
+  const totalFee = Number(String(
+    studentData.courseAmount ?? studentData.totalAmount ?? studentData.afterDiscount ?? 0,
+  ).replace(/,/g, "")) || 0;
+  const scheduledTotal = installmentSchedule.reduce((sum, installment) => sum + Number(installment.amount || 0), 0);
+  if (totalFee > 0 && Math.abs(scheduledTotal - totalFee) > 0.01) {
+    throw new AppError("Installment amounts must equal the total course fee", 400);
+  }
+
+  if (scheduleMode === "MONTHLY_FIXED_DATE") {
+    const schedule = installmentSchedule.map((installment, index) => ({
+      ...installment,
+      dueDate: addMonthsToIsoDate(firstPaymentDate, index),
+    }));
+    return {
+      schedule,
+      fields: {
+        ...feeFields,
+        feeComplianceStatus: calculateBranchStudentFeeComplianceStatus({ ...studentData, ...feeFields, installments: schedule }),
+      },
+    };
+  }
+
+  if (!deadline?.progressDate || scheduleMode === "CUSTOM_DATES") {
+    return {
+      schedule: installmentSchedule,
+      fields: { ...feeFields, feeComplianceStatus: calculateBranchStudentFeeComplianceStatus({ ...studentData, ...feeFields, installments: installmentSchedule }) },
+    };
+  }
+
+  if (payload?.preserveInstallmentDates === true) {
+    const invalidInstallment = installmentSchedule.find((installment) => {
+      const dueDate = normalizeString(installment.dueDate);
+      return !validIsoDate(dueDate) || dueDate > deadline.progressDate;
+    });
+    if (invalidInstallment) {
+      throw new AppError("Each installment date must be on or before the 70% payment deadline", 400);
+    }
+    return {
+      schedule: installmentSchedule,
+      fields: {
+        ...feeFields,
+        feeComplianceStatus: calculateBranchStudentFeeComplianceStatus({ ...studentData, ...feeFields, installments: installmentSchedule }),
+      },
+    };
+  }
+
+  const generatedDates = distributeFeeDueDates(firstPaymentDate, deadline.progressDate, installmentSchedule.length);
+  const schedule = installmentSchedule.map((installment, index) => ({
+    ...installment,
+    dueDate: generatedDates[index],
+  }));
+
+  return {
+    schedule,
+    fields: {
+      ...feeFields,
+      feeComplianceStatus: calculateBranchStudentFeeComplianceStatus({ ...studentData, ...feeFields, installments: schedule }),
+    },
+  };
+}
+
+async function replaceStudentInstallmentSchedule(tx, studentId, schedule, existingInstallments = []) {
+  const existingByNumber = new Map(
+    existingInstallments.map((installment) => [Number(installment.installmentNumber), installment]),
+  );
+  const incomingNumbers = new Set(schedule.map((installment) => Number(installment.installmentNumber)));
+
+  for (const installment of schedule) {
+    const number = Number(installment.installmentNumber);
+    const existing = existingByNumber.get(number);
+    if (existing) {
+      const amountPaid = Number(existing.amountPaid || 0);
+      const amount = Number(installment.amount || 0);
+      const status = amountPaid >= amount ? "Paid" : amountPaid > 0 ? "Partially Paid" : installment.status || "Pending";
+      await tx.branchStudentInstallment.update({
+        where: { id: existing.id },
+        data: {
+          amount,
+          dueDate: installment.dueDate || null,
+          status,
+          amountPaid,
+          paidAt: status === "Paid" ? existing.paidAt || new Date() : existing.paidAt,
+          paymentMethod: existing.paymentMethod || installment.paymentMethod || null,
+          remarks: installment.remarks || existing.remarks || null,
+        },
+      });
+      continue;
+    }
+
+    await tx.branchStudentInstallment.create({
+      data: {
+        ...installment,
+        branchStudentId: studentId,
+      },
+    });
+  }
+
+  for (const existing of existingInstallments) {
+    if (incomingNumbers.has(Number(existing.installmentNumber)) || Number(existing.amountPaid || 0) > 0) continue;
+    await tx.branchStudentInstallment.delete({ where: { id: existing.id } });
+  }
 }
 
 function parsePage(value) {
@@ -1440,6 +1723,14 @@ function buildBranchStudentPayload(payload = {}, existing = null) {
     paymentMode: parseOptionalText(candidate.paymentMode) || "Installment",
     paymentPlanId: parseOptionalText(candidate.paymentPlanId),
     paymentPlan: parseOptionalText(candidate.paymentPlan),
+    feeScheduleMode: normalizeFeeScheduleMode(candidate.feeScheduleMode || candidate.scheduleMode),
+    feeFirstPaymentDate: parseOptionalText(candidate.feeFirstPaymentDate || candidate.firstPaymentDate) || admissionDate,
+    fee70ProgressDate: parseOptionalText(candidate.fee70ProgressDate),
+    fee70TargetHours: candidate.fee70TargetHours === undefined || candidate.fee70TargetHours === null || candidate.fee70TargetHours === ''
+      ? null
+      : Number(candidate.fee70TargetHours),
+    feePaymentDeadline: parseOptionalText(candidate.feePaymentDeadline),
+    feeComplianceStatus: parseOptionalText(candidate.feeComplianceStatus) || "PENDING",
   };
 
   let installmentSchedule = [];
@@ -1596,6 +1887,12 @@ function toBranchStudentSummary(record) {
     paymentMode: record.paymentMode,
     paymentPlanId: record.paymentPlanId,
     paymentPlan: record.paymentPlan,
+    feeScheduleMode: record.feeScheduleMode,
+    feeFirstPaymentDate: record.feeFirstPaymentDate,
+    fee70ProgressDate: record.fee70ProgressDate,
+    fee70TargetHours: record.fee70TargetHours,
+    feePaymentDeadline: record.feePaymentDeadline,
+    feeComplianceStatus: record.feeComplianceStatus,
     status: displayStatus(record.recordStatus),
     recordStatus: record.recordStatus,
     createdBy: record.createdBy,
@@ -1848,6 +2145,21 @@ export async function createBranchStudent(payload, actor) {
     studentData.courseStartDate = studentData.courseStartDate || assignedBatch.courseStartDate;
     studentData.courseEndDate = studentData.courseEndDate || assignedBatch.courseEndDate;
   }
+  const feeCourse = studentData.courseId
+    ? await prisma.branchCourse.findFirst({
+        where: { id: studentData.courseId, branchId },
+        select: { id: true, hours: true, duration: true, mode: true },
+      })
+    : null;
+  const feePlan = await buildStudentFeePlan({
+    studentData,
+    installmentSchedule,
+    payload,
+    branchId,
+    course: feeCourse,
+  });
+  Object.assign(studentData, feePlan.fields);
+  installmentSchedule = feePlan.schedule;
   console.log("[createBranchStudent] studentData keys:", Object.keys(studentData));
   console.log("[createBranchStudent] studentData:", JSON.stringify(studentData, null, 2));
   console.log("[createBranchStudent] installmentSchedule count:", installmentSchedule.length);
@@ -1963,6 +2275,80 @@ export async function createBranchStudent(payload, actor) {
   return toBranchStudentSummary(created);
 }
 
+export async function previewBranchStudentFeePlan(payload = {}, actor = null) {
+  const branchProfile = await getBranchContext(actor);
+  const branchId = branchProfile?.id || normalizeString(payload.branchId);
+  const batchId = normalizeString(payload.batchId || payload.batchEntryId);
+  const courseId = normalizeString(payload.courseId);
+
+  if (!branchId || !batchId || !courseId) {
+    throw new AppError("Course and batch are required to preview the fee schedule", 400);
+  }
+
+  const [batch, course] = await Promise.all([
+    prisma.branchBatch.findFirst({
+      where: { branchId, batchId, status: "ACTIVE", courseId },
+      select: {
+        batchId: true,
+        batchName: true,
+        batchTiming: true,
+        courseId: true,
+        courseName: true,
+        facultyId: true,
+        facultyName: true,
+        weekType: true,
+        mode: true,
+        courseStartDate: true,
+        courseEndDate: true,
+        weeklyOffDay: true,
+      },
+    }),
+    prisma.branchCourse.findFirst({
+      where: { id: courseId, branchId },
+      select: { id: true, hours: true, duration: true, mode: true },
+    }),
+  ]);
+
+  if (!batch || !course) {
+    throw new AppError("Selected course or batch was not found in this branch", 400);
+  }
+
+  const installmentSchedule = Array.isArray(payload.installmentSchedule)
+    ? payload.installmentSchedule.map((installment, index) => ({
+        installmentNumber: index + 1,
+        amount: Number(String(installment?.amount ?? 0).replace(/,/g, "")) || 0,
+        dueDate: parseOptionalText(installment?.dueDate),
+      }))
+    : [];
+  const studentData = {
+    admissionDate: parseOptionalText(payload.admissionDate) || batch.courseStartDate,
+    courseStartDate: parseOptionalText(payload.courseStartDate) || batch.courseStartDate,
+    courseId: batch.courseId,
+    courseName: batch.courseName,
+    courseMode: parseOptionalText(payload.courseMode) || batch.mode,
+    batchId: batch.batchId,
+    batchName: batch.batchName,
+    batchTiming: batch.batchTiming,
+    classSchedule: batch.weekType,
+    weeklyOffDay: batch.weeklyOffDay,
+    facultyId: batch.facultyId,
+    facultyName: batch.facultyName,
+    courseAmount: Number(String(payload.courseAmount ?? 0).replace(/,/g, "")) || 0,
+  };
+  const feePlan = await buildStudentFeePlan({
+    studentData,
+    installmentSchedule,
+    payload,
+    branchId,
+    course,
+  });
+
+  return {
+    ...feePlan.fields,
+    installmentSchedule: feePlan.schedule,
+  };
+}
+
 export async function getBranchStudent(studentId, actor = null) {
   const { where } = await ensureBranchStudentAccess(actor, studentId);
   const student = await prisma.branchStudent.findFirst({
@@ -2032,13 +2418,18 @@ export async function updateBranchStudent(studentId, payload, actor = null) {
   const { where } = await ensureBranchStudentAccess(actor, studentId);
   const existing = await prisma.branchStudent.findFirst({
     where,
+    include: {
+      course: { select: { id: true, hours: true, duration: true, mode: true } },
+      installments: { orderBy: { installmentNumber: "asc" } },
+      calendarAttendanceRecords: true,
+    },
   });
 
   if (!existing) {
     throw new AppError("Branch student not found", 404);
   }
 
-  const { studentData, installmentSchedule } = buildBranchStudentPayload(payload, existing);
+  let { studentData, installmentSchedule } = buildBranchStudentPayload(payload, existing);
   const selectedBatchId = normalizeString(studentData.batchId);
   if (selectedBatchId) {
     const assignedBatch = await prisma.branchBatch.findFirst({
@@ -2087,6 +2478,16 @@ export async function updateBranchStudent(studentId, payload, actor = null) {
     studentData.courseStartDate = studentData.courseStartDate || assignedBatch.courseStartDate;
     studentData.courseEndDate = studentData.courseEndDate || assignedBatch.courseEndDate;
   }
+  const feePlan = await buildStudentFeePlan({
+    studentData,
+    installmentSchedule,
+    payload,
+    branchId: existing.branchId,
+    course: existing.course,
+    existingStudent: existing,
+  });
+  Object.assign(studentData, feePlan.fields);
+  installmentSchedule = feePlan.schedule;
   const existingLoginUser = await findBranchStudentLoginUser(existing);
   const previousCourseProgress = Number(existing.courseProgress);
   await ensureUniqueBranchStudentIdentity(studentData, existing.branchId, existing.id, existingLoginUser?.id);
@@ -2106,18 +2507,7 @@ export async function updateBranchStudent(studentId, payload, actor = null) {
 
     await syncStudentCourseEnd(tx, student);
 
-    await tx.branchStudentInstallment.deleteMany({
-      where: { branchStudentId: student.id }
-    });
-
-    if (installmentSchedule.length > 0) {
-      await tx.branchStudentInstallment.createMany({
-        data: installmentSchedule.map(inst => ({
-          ...inst,
-          branchStudentId: student.id,
-        }))
-      });
-    }
+    await replaceStudentInstallmentSchedule(tx, student.id, installmentSchedule, existing.installments || []);
 
     const updatedStudent = await tx.branchStudent.findUnique({
       where: { id: student.id },
@@ -2291,6 +2681,12 @@ export async function createBranchStudentPayment(studentId, payload, actor = nul
       return null;
     }
 
+    const feeComplianceStatus = calculateBranchStudentFeeComplianceStatus(currentStudent);
+    await tx.branchStudent.update({
+      where: { id: currentStudent.id },
+      data: { feeComplianceStatus },
+    });
+    currentStudent.feeComplianceStatus = feeComplianceStatus;
     await materializeBranchStudentLedgerEntries(tx, currentStudent);
     return currentStudent;
   });
