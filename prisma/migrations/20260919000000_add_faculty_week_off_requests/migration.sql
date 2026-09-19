@@ -1,4 +1,4 @@
-CREATE TABLE "FacultyWeekOffRequest" (
+CREATE TABLE IF NOT EXISTS "FacultyWeekOffRequest" (
   "id" TEXT NOT NULL,
   "facultyUserId" TEXT NOT NULL,
   "branchId" TEXT NOT NULL,
@@ -22,7 +22,7 @@ CREATE TABLE "FacultyWeekOffRequest" (
   "rejectionReason" TEXT,
   CONSTRAINT "FacultyWeekOffRequest_pkey" PRIMARY KEY ("id")
 );
-CREATE UNIQUE INDEX "FacultyWeekOffRequest_facultyId_requestedWeekStartDate_requestedWeekEndDate_key" ON "FacultyWeekOffRequest"("facultyId", "requestedWeekStartDate", "requestedWeekEndDate");
-CREATE INDEX "FacultyWeekOffRequest_branchId_status_createdAt_idx" ON "FacultyWeekOffRequest"("branchId", "status", "createdAt");
-CREATE INDEX "FacultyWeekOffRequest_facultyUserId_requestedWeekStartDate_idx" ON "FacultyWeekOffRequest"("facultyUserId", "requestedWeekStartDate");
-CREATE INDEX "FacultyWeekOffRequest_facultyId_requestedWeekOffDate_idx" ON "FacultyWeekOffRequest"("facultyId", "requestedWeekOffDate");
+CREATE UNIQUE INDEX IF NOT EXISTS "FacultyWeekOffRequest_facultyId_requestedWeekStartDate_requestedWeekEndDate_key" ON "FacultyWeekOffRequest"("facultyId", "requestedWeekStartDate", "requestedWeekEndDate");
+CREATE INDEX IF NOT EXISTS "FacultyWeekOffRequest_branchId_status_createdAt_idx" ON "FacultyWeekOffRequest"("branchId", "status", "createdAt");
+CREATE INDEX IF NOT EXISTS "FacultyWeekOffRequest_facultyUserId_requestedWeekStartDate_idx" ON "FacultyWeekOffRequest"("facultyUserId", "requestedWeekStartDate");
+CREATE INDEX IF NOT EXISTS "FacultyWeekOffRequest_facultyId_requestedWeekOffDate_idx" ON "FacultyWeekOffRequest"("facultyId", "requestedWeekOffDate");
