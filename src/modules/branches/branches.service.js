@@ -154,6 +154,9 @@ function toBranchSummary(record, options = {}) {
     id: record.id,
     branchId: record.branchId,
     branchName: record.branchName,
+    // BranchStudent has a unique (branchId, studentId) constraint, so this
+    // relation count represents the current number of students in this branch.
+    studentCount: record?._count?.branchStudents ?? 0,
     branchAdminName: record.branchAdminName,
     branchEmail: record.branchEmail,
     branchPhone: record.branchPhone,
@@ -340,6 +343,11 @@ async function loadBranch(branchId) {
           lastLoginAt: true,
         },
       },
+      _count: {
+        select: {
+          branchStudents: true,
+        },
+      },
     },
   });
 }
@@ -414,6 +422,11 @@ export async function listBranches(query = {}) {
             active: true,
             passwordChangedAt: true,
             lastLoginAt: true,
+          },
+        },
+        _count: {
+          select: {
+            branchStudents: true,
           },
         },
       },
