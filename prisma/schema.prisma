@@ -584,6 +584,12 @@ model BranchStudent {
   paymentMode        String       @default("Installment")
   paymentPlanId      String?
   paymentPlan        String?
+  feeScheduleMode    String       @default("BEFORE_70_PERCENT")
+  feeFirstPaymentDate String?
+  fee70ProgressDate  String?
+  fee70TargetHours   Float?
+  feePaymentDeadline String?
+  feeComplianceStatus String      @default("PENDING")
   courseProgress     Int?
   courseCompletedAt  DateTime?
   branch             Branch       @relation(fields: [branchId], references: [id], onDelete: Cascade)

@@ -547,6 +547,12 @@ exports.Prisma.BranchStudentScalarFieldEnum = {
   paymentMode: 'paymentMode',
   paymentPlanId: 'paymentPlanId',
   paymentPlan: 'paymentPlan',
+  feeScheduleMode: 'feeScheduleMode',
+  feeFirstPaymentDate: 'feeFirstPaymentDate',
+  fee70ProgressDate: 'fee70ProgressDate',
+  fee70TargetHours: 'fee70TargetHours',
+  feePaymentDeadline: 'feePaymentDeadline',
+  feeComplianceStatus: 'feeComplianceStatus',
   courseProgress: 'courseProgress',
   courseCompletedAt: 'courseCompletedAt'
 };
