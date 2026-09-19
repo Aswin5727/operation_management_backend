@@ -6,6 +6,7 @@ import { authenticate } from "../../common/middlewares/authenticate.js";
 import { authorize } from "../../common/middlewares/authorize.js";
 import {
   getCurrentStudentAttendanceOverviewHandler,
+  getStudentAttendanceOverviewHandler,
   getFacultyAttendanceOverviewHandler,
   markFacultyStudentAttendanceHandler,
   recordFacultyAttendanceLoginHandler,
@@ -44,5 +45,6 @@ router.post(
   markFacultyStudentAttendanceHandler,
 );
 router.get("/student/me", authenticate, authorize("STUDENT"), getCurrentStudentAttendanceOverviewHandler);
+router.get("/student/me/overview", authenticate, authorize("STUDENT"), getStudentAttendanceOverviewHandler);
 
 export default router;
