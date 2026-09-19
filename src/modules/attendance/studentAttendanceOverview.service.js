@@ -36,8 +36,8 @@ function formatTime(value) {
   return new Intl.DateTimeFormat("en-GB", { hour: "2-digit", minute: "2-digit", timeZone: TIME_ZONE }).format(new Date(value));
 }
 
-function percentage(present, applicable) {
-  return applicable ? Math.round((present / applicable) * 100) : 0;
+function percentage(value, denominator) {
+  return denominator ? Math.round((value / denominator) * 100) : 0;
 }
 
 function rangeDays(start, end) {
@@ -88,9 +88,22 @@ function summarize(days) {
   const present = days.filter((day) => day.status === "PRESENT").length;
   const absent = days.filter((day) => day.status === "ABSENT").length;
   const leave = days.filter((day) => day.status === "LEAVE").length;
-  const scheduledSessions = days.filter((day) => day.isCourseDay && day.status !== "NO_CLASS").length;
+  const scheduledStatuses = new Set(["PRESENT", "ABSENT", "UPCOMING", "NOT_RECORDED"]);
+  const scheduledSessions = days.filter((day) => day.isCourseDay && scheduledStatuses.has(day.status)).length;
+  const futureDays = days.filter((day) => day.isCourseDay && day.status === "UPCOMING").length;
   const applicableSessions = present + absent;
-  return { percentage: percentage(present, applicableSessions), present, absent, leave, scheduledSessions, applicableSessions };
+  return {
+    percentage: percentage(present, scheduledSessions),
+    presentPercentage: percentage(present, scheduledSessions),
+    absentPercentage: percentage(absent, scheduledSessions),
+    present,
+    absent,
+    leave,
+    futureDays,
+    scheduledDays: scheduledSessions,
+    scheduledSessions,
+    applicableSessions,
+  };
 }
 
 function currentWeekStart(value) {
@@ -107,7 +120,8 @@ function buildWeekly(days, courseStart, courseEnd, currentDate) {
     const end = addDays(start, 6);
     const boundedStart = start < courseStart ? courseStart : start;
     const boundedEnd = end > courseEnd ? courseEnd : end;
-    const rows = boundedStart <= boundedEnd ? days.filter((day) => day.date >= boundedStart && day.date <= boundedEnd) : [];
+    const inCoursePeriod = boundedStart <= boundedEnd;
+    const rows = inCoursePeriod ? days.filter((day) => day.date >= boundedStart && day.date <= boundedEnd) : [];
     return { week: index + 1, startDate: boundedStart, endDate: boundedEnd, dateRange: boundedStart <= boundedEnd ? `${formatDate(boundedStart)} – ${formatDate(boundedEnd)}` : "Not in course period", ...summarize(rows) };
   });
 }
@@ -153,11 +167,28 @@ export async function getStudentAttendanceOverview(user) {
     courseStart = dateOnly(calendar.startDate || courseStart);
     courseEnd = dateOnly(calendar.endDate || courseEnd || courseStart);
     events = Array.isArray(calendar.events) ? calendar.events : [];
-    records = await prisma.branchStudentAttendance.findMany({ where: { branchStudentId: student.id, attendanceDate: { gte: courseStart, lte: courseEnd } }, orderBy: { attendanceDate: "asc" }, select: { attendanceDate: true, status: true, markedAt: true } });
+    records = await prisma.branchStudentAttendance.findMany({
+      where: {
+        branchStudentId: student.id,
+        ...(student.courseId ? { courseId: student.courseId } : {}),
+        ...(student.batchId ? { batchId: student.batchId } : {}),
+        attendanceDate: { gte: courseStart, lte: courseEnd },
+      },
+      orderBy: { attendanceDate: "asc" },
+      select: { attendanceDate: true, status: true, markedAt: true, courseId: true, batchId: true },
+    });
   } else {
     const durationMonths = Number(student.course?.duration || 0);
     courseEnd = courseEnd || (durationMonths ? keyFromDate(new Date(dateFromKey(courseStart).getFullYear(), dateFromKey(courseStart).getMonth() + durationMonths, dateFromKey(courseStart).getDate() - 1)) : courseStart);
-    records = await prisma.studentAttendance.findMany({ where: { studentId: student.id, attendanceDate: { gte: courseStart, lte: courseEnd } }, orderBy: { attendanceDate: "asc" }, select: { attendanceDate: true, status: true, markedAt: true } });
+    records = await prisma.studentAttendance.findMany({
+      where: {
+        studentId: student.id,
+        ...(student.courseId ? { courseId: student.courseId } : {}),
+        attendanceDate: { gte: courseStart, lte: courseEnd },
+      },
+      orderBy: { attendanceDate: "asc" },
+      select: { attendanceDate: true, status: true, markedAt: true, courseId: true, batchName: true },
+    });
   }
   if (!courseStart || !courseEnd) throw new AppError("Course period is not configured", 400);
   const days = aggregateEvents(events, records, courseStart, courseEnd, currentDate);
