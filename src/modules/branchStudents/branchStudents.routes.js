@@ -13,6 +13,7 @@ import {
   listBranchStudentsHandler,
   updateBranchStudentHandler,
   createBranchStudentPaymentHandler,
+  previewBranchStudentFeePlanHandler,
 } from "./branchStudents.controller.js";
 
 const router = express.Router();
@@ -37,6 +38,7 @@ router.use(
 
 router.get("/", listBranchStudentsHandler);
 router.get("/ledger", listBranchLedgerHandler);
+router.post("/fee-plan-preview", previewBranchStudentFeePlanHandler);
 router.post("/", createBranchStudentHandler);
 router.get("/:studentId/ledger", getBranchStudentLedgerHandler);
 router.get("/:studentId", getBranchStudentHandler);

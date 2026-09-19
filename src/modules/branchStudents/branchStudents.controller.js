@@ -9,6 +9,7 @@ import {
   listBranchLedger,
   updateBranchStudent,
   createBranchStudentPayment,
+  previewBranchStudentFeePlan,
 } from "./branchStudents.service.js";
 import { getCurrentBranchStudentCalendar } from "./branchStudentCalendar.service.js";
 
@@ -44,6 +45,11 @@ export const getCurrentBranchStudentCalendarHandler = asyncHandler(async (req, r
 export const createBranchStudentHandler = asyncHandler(async (req, res) => {
   const student = await createBranchStudent(req.body || {}, req.user);
   return sendSuccess(res, "Branch student created successfully", student, undefined, 201);
+});
+
+export const previewBranchStudentFeePlanHandler = asyncHandler(async (req, res) => {
+  const plan = await previewBranchStudentFeePlan(req.body || {}, req.user);
+  return sendSuccess(res, "Student fee schedule preview generated successfully", plan);
 });
 
 export const listBranchLedgerHandler = asyncHandler(async (req, res) => {

@@ -584,7 +584,7 @@ model BranchStudent {
   paymentMode        String       @default("Installment")
   paymentPlanId      String?
   paymentPlan        String?
-  feeScheduleMode    String       @default("MONTHLY_FIXED_DATE")
+  feeScheduleMode    String       @default("BEFORE_70_PERCENT")
   feeFirstPaymentDate String?
   fee70ProgressDate  String?
   fee70TargetHours   Float?
