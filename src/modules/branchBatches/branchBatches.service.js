@@ -35,6 +35,36 @@ function positive(value, label) { const n = Number(value); if (!Number.isInteger
 function nonNegative(value, label) { const n = Number(value ?? 0); if (!Number.isInteger(n) || n < 0) throw new AppError(`${label} must be zero or greater`, 400); return n; }
 function parseWeekType(value) { const result = text(value).toUpperCase(); if (!WEEK_TYPES.has(result)) throw new AppError("Week type is required and must be WEEKDAY or WEEKEND", 400); return result; }
 function parseMode(value) { const result = text(value).toUpperCase(); if (!MODES.has(result)) throw new AppError("Mode is required and must be OFFLINE or ONLINE", 400); return result; }
+function timeMinutes(value, meridiem) {
+  const normalized = parseTime(value);
+  if (!normalized) return null;
+  let hours = Number(normalized.slice(0, 2));
+  const minutes = Number(normalized.slice(3, 5));
+  const periodValue = period(meridiem);
+  if (periodValue === "AM" && hours === 12) hours = 0;
+  if (periodValue === "PM" && hours < 12) hours += 12;
+  return hours * 60 + minutes;
+}
+function requiredDuration(weekType, mode) {
+  if (mode === "ONLINE") return { minutes: 60, label: "1 hour" };
+  if (weekType === "WEEKEND" && mode === "OFFLINE") return { minutes: 180, label: "3 hours" };
+  if (weekType === "WEEKDAY" && mode === "OFFLINE") return { minutes: 120, label: "2 hours" };
+  return null;
+}
+function validateBatchDuration({ weekType, mode, startTime, startPeriod, endTime, endPeriod }) {
+  const requirement = requiredDuration(weekType, mode);
+  if (!requirement) return;
+  const startMinutes = timeMinutes(startTime, startPeriod);
+  const endMinutes = timeMinutes(endTime, endPeriod);
+  if (!Number.isFinite(startMinutes) || !Number.isFinite(endMinutes) || endMinutes <= startMinutes) {
+    throw new AppError("Start time must be before end time", 400);
+  }
+  if (endMinutes - startMinutes !== requirement.minutes) {
+    const schedule = weekType === "WEEKEND" ? "Weekend" : "Weekday";
+    const deliveryMode = mode === "ONLINE" ? "online" : "offline";
+    throw new AppError(`${schedule} ${deliveryMode} batches must be exactly ${requirement.label}`, 400);
+  }
+}
 function validateCourseMode(courseMode, batchMode) {
   const allowed = text(courseMode).toUpperCase()
   if (allowed === "HYBRID") return
@@ -49,6 +79,7 @@ function normalizeBatch(value, index = 0) {
   const startPeriod = period(input.startPeriod); const endPeriod = period(input.endPeriod);
   const totalSeats = positive(input.totalSeats || input.seats, `Batch ${index + 1} total seats`);
   const parsed = { batchId: text(input.batchId || input.id), batchName: required(input.batchName || input.name, `Batch ${index + 1} name`), startTime, startPeriod, endTime, endPeriod, totalSeats, weekType: parseWeekType(input.weekType), mode: parseMode(input.mode), courseStartDate: parseDate(input.courseStartDate || input.startDate, "Course start date"), status: parseStatus(input.status), sequenceNo: Number(input.sequenceNo) || index + 1 };
+  validateBatchDuration(parsed);
   return { ...parsed, batchTiming: text(input.batchTiming) || buildTiming(parsed) };
 }
 
