@@ -592,4 +592,205 @@ function invalidateRevenueSummaryCache() {
   cachedRevenueSummaryExpiresAt = 0;
 }
 
-export { getRevenueSummary, getFacultyMyBatchesSummary, getFacultyDashboardOverview, invalidateRevenueSummaryCache };
+function money(value) {
+  const number = Number(value || 0);
+  return Number.isFinite(number) ? number : 0;
+}
+
+function monthKey(year, month) { return `${year}-${String(month).padStart(2, "0")}`; }
+
+function previousMonth(year, month) {
+  return month === 1 ? { year: year - 1, month: 12 } : { year, month: month - 1 };
+}
+
+function dateIsInMonth(value, year, month) {
+  return String(value || "").slice(0, 7) === monthKey(year, month);
+}
+
+function buildSuperAdminPaymentBuckets(today, payments, students) {
+  const daily = Array.from({ length: 7 }, (_, index) => {
+    const date = addDays(today, index - 6);
+    return { key: date, label: new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", timeZone: "UTC" }).format(new Date(`${date}T00:00:00Z`)), expected: 0, actual: 0 };
+  });
+  const todayParts = toIstDateParts(new Date());
+  const weekStart = addDays(today, -new Date(`${today}T00:00:00Z`).getUTCDay());
+  const weekly = Array.from({ length: 7 }, (_, index) => {
+    const date = addDays(weekStart, index);
+    return { key: date, label: new Intl.DateTimeFormat("en-US", { weekday: "short", timeZone: "UTC" }).format(new Date(`${date}T00:00:00Z`)), expected: 0, actual: 0, start: date, end: date };
+  });
+  const daysInMonth = new Date(Date.UTC(todayParts.year, todayParts.month, 0)).getUTCDate();
+  const monthly = [1, 2, 3, 4].map((index) => {
+    const start = (index - 1) * 7 + 1;
+    const end = Math.min(index * 7, daysInMonth);
+    return { key: `${today.slice(0, 7)}-${start}`, label: `Week ${index}`, expected: 0, actual: 0, start: `${today.slice(0, 7)}-${String(start).padStart(2, "0")}`, end: `${today.slice(0, 7)}-${String(end).padStart(2, "0")}` };
+  });
+  payments.forEach((payment) => {
+    const date = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Calcutta" }).format(new Date(payment.paymentDate));
+    const amount = money(payment.amount);
+    const day = daily.find((item) => item.key === date); if (day) day.actual += amount;
+    const week = weekly.find((item) => date >= item.start && date <= item.end); if (week) week.actual += amount;
+    const month = monthly.find((item) => date >= item.start && date <= item.end); if (month) month.actual += amount;
+  });
+  (students || []).forEach((student) => (student.installments || []).forEach((installment) => {
+    const date = String(installment.dueDate || "").slice(0, 10); const amount = Math.max(money(installment.amount) - money(installment.amountPaid), 0); if (!date || !amount) return;
+    const day = daily.find((item) => item.key === date); if (day) day.expected += amount;
+    const week = weekly.find((item) => date >= item.start && date <= item.end); if (week) week.expected += amount;
+    const month = monthly.find((item) => date >= item.start && date <= item.end); if (month) month.expected += amount;
+  }));
+  return { daily, weekly, monthly };
+}
+
+function paymentOverviewDate(value, options) {
+  return new Intl.DateTimeFormat("en-US", { timeZone: "UTC", ...options }).format(new Date(String(value) + "T00:00:00Z"));
+}
+
+function buildAccuratePaymentOverview(today, payments, students) {
+  const parts = toIstDateParts();
+  const todayDate = new Date(String(today) + "T00:00:00Z");
+  const monthKeyValue = monthKey(parts.year, parts.month);
+  const monthStart = monthKeyValue + "-01";
+  const monthEnd = monthKeyValue + "-" + String(new Date(Date.UTC(parts.year, parts.month, 0)).getUTCDate()).padStart(2, "0");
+  const currentWeekStart = addDays(today, -todayDate.getUTCDay());
+  const daily = Array.from({ length: 7 }, (_, index) => {
+    const date = addDays(currentWeekStart, index);
+    return { key: date, label: paymentOverviewDate(date, { weekday: "short" }), fullLabel: paymentOverviewDate(date, { weekday: "long", day: "numeric", month: "short" }), expected: 0, actual: 0 };
+  });
+  const weekly = [];
+  let cursor = monthStart;
+  let weekNumber = 1;
+  while (cursor <= monthEnd) {
+    const cursorDate = new Date(String(cursor) + "T00:00:00Z");
+    const sunday = addDays(cursor, -cursorDate.getUTCDay());
+    const saturday = addDays(sunday, 6);
+    const start = cursor > sunday ? cursor : sunday;
+    const end = monthEnd < saturday ? monthEnd : saturday;
+    weekly.push({ key: monthKeyValue + "-" + weekNumber, label: "Week " + weekNumber, fullLabel: paymentOverviewDate(start, { day: "numeric", month: "short" }) + " – " + paymentOverviewDate(end, { day: "numeric", month: "short" }), expected: 0, actual: 0, start, end });
+    cursor = addDays(end, 1);
+    weekNumber += 1;
+  }
+  const monthly = Array.from({ length: 6 }, (_, index) => {
+    const date = new Date(Date.UTC(parts.year, parts.month - 2 + index, 1));
+    const year = date.getUTCFullYear();
+    const month = date.getUTCMonth() + 1;
+    const key = monthKey(year, month);
+    const start = key + "-01";
+    const end = key + "-" + String(new Date(Date.UTC(year, month, 0)).getUTCDate()).padStart(2, "0");
+    return { key, label: paymentOverviewDate(start, { month: "short" }), fullLabel: paymentOverviewDate(start, { month: "long", year: "numeric" }), expected: 0, actual: 0, start, end };
+  });
+  const paymentDate = (payment) => new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Calcutta" }).format(new Date(payment.paymentDate));
+  payments.forEach((payment) => {
+    const date = paymentDate(payment);
+    const amount = money(payment.amount);
+    const day = daily.find((item) => item.key === date); if (day) day.actual += amount;
+    const week = weekly.find((item) => date >= item.start && date <= item.end); if (week) week.actual += amount;
+    const month = monthly.find((item) => date >= item.start && date <= item.end); if (month) month.actual += amount;
+  });
+  students.forEach((student) => (student.installments || []).forEach((installment) => {
+    const date = String(installment.dueDate || "").slice(0, 10);
+    const amount = money(installment.amount);
+    if (!date || !amount) return;
+    const day = daily.find((item) => item.key === date); if (day) day.expected += amount;
+    const week = weekly.find((item) => date >= item.start && date <= item.end); if (week) week.expected += amount;
+    const month = monthly.find((item) => date >= item.start && date <= item.end); if (month) month.expected += amount;
+  }));
+  return { daily, weekly, monthly };
+}
+
+function getPerformanceDateRange(options = {}) {
+  const todayParts = toIstDateParts();
+  const today = toDateStringFromParts(todayParts.year, todayParts.month, todayParts.day);
+  const currentMonth = monthKey(todayParts.year, todayParts.month);
+  const previous = previousMonth(todayParts.year, todayParts.month);
+  const previousMonthKey = monthKey(previous.year, previous.month);
+  const period = normalizeString(options.period).toLowerCase() || "thismonth";
+  const monthStartForOffset = (offset) => {
+    const date = new Date(Date.UTC(todayParts.year, todayParts.month - 1 + offset, 1));
+    return monthKey(date.getUTCFullYear(), date.getUTCMonth() + 1) + "-01";
+  };
+  const monthEndFor = (start) => {
+    const [year, month] = start.slice(0, 7).split("-").map(Number);
+    return monthKey(year, month) + "-" + String(new Date(Date.UTC(year, month, 0)).getUTCDate()).padStart(2, "0");
+  };
+  if (period === "previousmonth") return { period, startDate: previousMonthKey + "-01", endDate: monthEndFor(previousMonthKey + "-01") };
+  if (period === "last3months") return { period, startDate: monthStartForOffset(-2), endDate: today };
+  if (period === "last6months") return { period, startDate: monthStartForOffset(-5), endDate: today };
+  if (period === "thisyear") return { period, startDate: String(todayParts.year) + "-01-01", endDate: today };
+  if (period === "customrange" && /^\d{4}-\d{2}-\d{2}$/.test(options.startDate || "") && /^\d{4}-\d{2}-\d{2}$/.test(options.endDate || "") && options.startDate <= options.endDate) {
+    return { period, startDate: options.startDate, endDate: options.endDate };
+  }
+  return { period: "thismonth", startDate: currentMonth + "-01", endDate: today };
+}
+
+async function getSuperAdminOverview(branchId = null, performanceOptions = {}) {
+  const requested = normalizeString(branchId);
+  const branch = requested ? await prisma.branch.findFirst({ where: { OR: [{ id: requested }, { branchId: requested }], status: "ACTIVE" }, select: { id: true, branchId: true, branchName: true, branchCity: true, branchState: true, status: true } }) : null;
+  if (requested && !branch) throw new AppError("Branch not found or inactive", 404);
+  const branches = branch ? [branch] : await prisma.branch.findMany({ where: { status: "ACTIVE" }, orderBy: { branchName: "asc" }, select: { id: true, branchId: true, branchName: true, branchCity: true, branchState: true, status: true } });
+  const branchIds = branches.map((item) => item.id);
+  const students = branchIds.length ? await prisma.branchStudent.findMany({ where: { branchId: { in: branchIds }, recordStatus: "ACTIVE" }, select: { id: true, branchId: true, studentName: true, admissionDate: true, courseName: true, courseAmount: true, installments: { select: { amount: true, amountPaid: true, dueDate: true } }, payments: { select: { amount: true, paymentDate: true } }, calendarAttendanceRecords: { select: { attendanceDate: true, status: true } } } }) : [];
+  const todayParts = toIstDateParts();
+  const today = toDateStringFromParts(todayParts.year, todayParts.month, todayParts.day);
+  const currentMonth = monthKey(todayParts.year, todayParts.month);
+  const performanceRange = getPerformanceDateRange(performanceOptions);
+  const previous = previousMonth(todayParts.year, todayParts.month);
+  const admissionsByMonth = [previous, { year: todayParts.year, month: todayParts.month }].map((item) => ({ key: monthKey(item.year, item.month), label: new Intl.DateTimeFormat("en-US", { month: "short", timeZone: "UTC" }).format(new Date(Date.UTC(item.year, item.month - 1, 1))), value: students.filter((student) => dateIsInMonth(student.admissionDate, item.year, item.month)).length }));
+  const payments = students.flatMap((student) => student.payments || []);
+  const buckets = buildSuperAdminPaymentBuckets(today, payments, students);
+  const paymentOverview = buildAccuratePaymentOverview(today, payments, students);
+  const summary = { totalBranches: branches.length, totalStudents: students.length, thisMonthAdmissions: admissionsByMonth.at(-1).value, totalPayment: payments.reduce((sum, payment) => sum + money(payment.amount), 0), thisMonthPayment: payments.filter((payment) => new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Calcutta" }).format(new Date(payment.paymentDate)).startsWith(currentMonth)).reduce((sum, payment) => sum + money(payment.amount), 0), totalOutstanding: 0, thisMonthDue: 0, todayDue: 0, yesterdayDue: 0, overdueAmount: 0, dueStudents: new Set(), todayCollection: 0, yesterdayCollection: 0 };
+  const yesterday = addDays(today, -1);
+  students.forEach((student) => {
+    const paid = (student.installments || []).reduce((sum, item) => sum + money(item.amountPaid), 0);
+    const planned = money(student.courseAmount) || (student.installments || []).reduce((sum, item) => sum + money(item.amount), 0);
+    summary.totalOutstanding += Math.max(planned - paid, 0);
+    (student.installments || []).forEach((installment) => {
+      const due = String(installment.dueDate || "").slice(0, 10); const unpaid = Math.max(money(installment.amount) - money(installment.amountPaid), 0); if (!due || !unpaid) return;
+      if (due.startsWith(currentMonth)) summary.thisMonthDue += unpaid;
+      if (due === today) summary.todayDue += unpaid;
+      if (due === yesterday) summary.yesterdayDue += unpaid;
+      if (due < today) summary.overdueAmount += unpaid;
+      if (due <= today) summary.dueStudents.add(student.id);
+    });
+  });
+  payments.forEach((payment) => { const date = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Calcutta" }).format(new Date(payment.paymentDate)); if (date === today) summary.todayCollection += money(payment.amount); if (date === yesterday) summary.yesterdayCollection += money(payment.amount); });
+  const courseCounts = new Map();
+  students.forEach((student) => {
+    if (!dateIsInMonth(student.admissionDate, todayParts.year, todayParts.month)) return;
+    const name = String(student.courseName || "").trim();
+    if (name) courseCounts.set(name, (courseCounts.get(name) || 0) + 1);
+  });
+  const trendingCourseEntries = [...courseCounts.entries()]
+    .sort((left, right) => right[1] - left[1] || left[0].localeCompare(right[0]))
+    .slice(0, 5);
+  const topTrendingCount = trendingCourseEntries[0]?.[1] || 0;
+  const trendingCourses = trendingCourseEntries.map(([courseName, admissionCount], index) => ({
+    courseId: courseName,
+    courseName,
+    admissionCount,
+    rank: index + 1,
+    progress: topTrendingCount ? Math.round((admissionCount / topTrendingCount) * 100) : 0,
+  }));
+  const branchPerformance = branches.map((branchRecord) => {
+    const branchStudents = students.filter((student) => student.branchId === branchRecord.id);
+    const branchPayments = branchStudents.flatMap((student) => student.payments || []);
+    const branchInstallments = branchStudents.flatMap((student) => student.installments || []);
+    const branchAttendance = branchStudents.flatMap((student) => student.calendarAttendanceRecords || []).filter((record) => record.attendanceDate >= performanceRange.startDate && record.attendanceDate <= performanceRange.endDate);
+    const due = branchInstallments.reduce((total, installment) => {
+      const date = String(installment.dueDate || "").slice(0, 10);
+      return date >= performanceRange.startDate && date <= performanceRange.endDate ? total + Math.max(money(installment.amount) - money(installment.amountPaid), 0) : total;
+    }, 0);
+    const outstanding = branchStudents.reduce((total, student) => {
+      const planned = money(student.courseAmount) || (student.installments || []).reduce((sum, installment) => sum + money(installment.amount), 0);
+      const paid = (student.installments || []).reduce((sum, installment) => sum + money(installment.amountPaid), 0);
+      return total + Math.max(planned - paid, 0);
+    }, 0);
+    const present = branchAttendance.filter((record) => record.status === "PRESENT").length;
+    const recorded = branchAttendance.filter((record) => record.status === "PRESENT" || record.status === "ABSENT").length;
+    const collection = branchPayments.filter((payment) => { const date = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Calcutta" }).format(new Date(payment.paymentDate)); return date >= performanceRange.startDate && date <= performanceRange.endDate; }).reduce((total, payment) => total + money(payment.amount), 0);
+    const admissions = branchStudents.filter((student) => { const date = String(student.admissionDate || "").slice(0, 10); return date >= performanceRange.startDate && date <= performanceRange.endDate; }).length;
+    return { branchId: branchRecord.branchId, branchName: branchRecord.branchName, totalStudents: branchStudents.length, thisMonthAdmissions: admissions, collection, due, outstanding, attendance: recorded ? Math.round((present / recorded) * 1000) / 10 : null, hasPeriodData: Boolean(admissions || collection || due || branchAttendance.length), courses: [...new Set(branchStudents.map((student) => String(student.courseName || "").trim()).filter(Boolean))] };
+  });
+  return { generatedAt: new Date().toISOString(), scope: branch ? { type: "branch", branchId: branch.branchId, branchName: branch.branchName } : { type: "all" }, ...summary, dueStudents: summary.dueStudents.size, paymentOverview, admissionsByMonth, dailyPaymentData: paymentOverview.daily, weeklyPaymentData: paymentOverview.weekly, monthlyPaymentChartData: paymentOverview.monthly, monthlyPaymentData: paymentOverview.monthly, trendingCourses, branchPerformance, branchPerformanceHasData: branchPerformance.some((item) => item.hasPeriodData), performancePeriod: performanceRange, trendingMonth: new Intl.DateTimeFormat("en-US", { month: "long", year: "numeric", timeZone: "Asia/Calcutta" }).format(new Date()) };
+}
+
+export { getRevenueSummary, getFacultyMyBatchesSummary, getFacultyDashboardOverview, getSuperAdminOverview, invalidateRevenueSummaryCache };
