@@ -37,6 +37,17 @@ function normalizeString(value) {
   return String(value ?? "").trim();
 }
 
+function getCurrentMonthDateRange() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth();
+  const format = (date) => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+  return {
+    start: format(new Date(year, month, 1)),
+    end: format(new Date(year, month + 1, 0)),
+  };
+}
+
 function normalizeSearchKey(value) {
   return normalizeString(value).toLowerCase().replace(/\s+/g, " ");
 }
@@ -1645,6 +1656,7 @@ async function normalizeBranchStudentIdentifiers(branchProfile, actorId = null) 
 function buildBranchStudentPayload(payload = {}, existing = null) {
   const candidate = existing ? { ...existing, ...payload } : payload;
   const studentName = parseRequiredText(candidate.studentName, "Student name");
+  const parentName = parseOptionalText(candidate.parentName);
   const emailAddress = parseEmail(candidate.emailAddress);
   const mobileNumber = parsePhone(candidate.mobileNumber);
   const parentSpouseNumber = candidate.parentSpouseNumber ? parsePhone(candidate.parentSpouseNumber, "Parent / spouse number") : null;
@@ -1685,6 +1697,7 @@ function buildBranchStudentPayload(payload = {}, existing = null) {
   }
   const studentData = {
     studentName,
+    parentName,
     emailAddress,
     mobileNumber,
     parentSpouseNumber,
@@ -1838,6 +1851,7 @@ function toBranchStudentSummary(record) {
     branchId: record.branchId,
     studentId: record.studentId,
     studentName: record.studentName,
+    parentName: record.parentName,
     emailAddress: record.emailAddress,
     mobileNumber: record.mobileNumber,
     parentSpouseNumber: record.parentSpouseNumber,
@@ -1871,7 +1885,8 @@ function toBranchStudentSummary(record) {
       ? {
           id: record.course.id,
           name: record.course.name,
-          courseCode: record.course.courseCode,
+    courseCode: record.course.courseCode,
+          courseType: record.course.courseType,
           duration: record.course.duration,
           hours: record.course.hours,
           mode: record.course.mode,
@@ -1900,6 +1915,14 @@ function toBranchStudentSummary(record) {
     createdAt: record.createdAt,
     updatedAt: record.updatedAt,
     installmentSchedule: Array.isArray(record.installments) ? record.installments : [],
+    attendanceRecords: Array.isArray(record.calendarAttendanceRecords)
+      ? record.calendarAttendanceRecords.map((attendance) => ({
+          attendanceDate: attendance.attendanceDate,
+          status: attendance.status,
+          markedAt: attendance.markedAt,
+          notes: attendance.notes,
+        }))
+      : [],
   };
 }
 
@@ -2044,6 +2067,7 @@ export async function listBranchStudents(query = {}, actor = null) {
 
   // Listing students must remain read-only; identifier migration belongs in an explicit admin flow.
   const where = buildBranchStudentWhere(scopedQuery, branchProfile);
+  const currentMonth = getCurrentMonthDateRange();
 
   const [total, rows] = await prisma.$transaction([
     prisma.branchStudent.count({ where }),
@@ -2058,6 +2082,7 @@ export async function listBranchStudents(query = {}, actor = null) {
             id: true,
             name: true,
             courseCode: true,
+            courseType: true,
             duration: true,
             hours: true,
             mode: true,
@@ -2066,7 +2091,22 @@ export async function listBranchStudents(query = {}, actor = null) {
         },
         installments: {
           orderBy: { installmentNumber: "asc" }
-        }
+        },
+        calendarAttendanceRecords: {
+          where: {
+            attendanceDate: {
+              gte: currentMonth.start,
+              lte: currentMonth.end,
+            },
+          },
+          orderBy: { attendanceDate: "asc" },
+          select: {
+            attendanceDate: true,
+            status: true,
+            markedAt: true,
+            notes: true,
+          },
+        },
       }
     }),
   ]);
@@ -2359,6 +2399,7 @@ export async function getBranchStudent(studentId, actor = null) {
           id: true,
           name: true,
           courseCode: true,
+          courseType: true,
           duration: true,
           hours: true,
           mode: true,
@@ -2397,6 +2438,7 @@ export async function getCurrentBranchStudentProfile(user) {
           id: true,
           name: true,
           courseCode: true,
+          courseType: true,
           duration: true,
           hours: true,
           mode: true,

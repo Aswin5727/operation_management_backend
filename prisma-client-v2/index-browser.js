@@ -507,6 +507,7 @@ exports.Prisma.BranchStudentScalarFieldEnum = {
   branchId: 'branchId',
   studentId: 'studentId',
   studentName: 'studentName',
+  parentName: 'parentName',
   mobileNumber: 'mobileNumber',
   emailAddress: 'emailAddress',
   parentSpouseNumber: 'parentSpouseNumber',

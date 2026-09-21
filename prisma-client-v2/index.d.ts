@@ -30597,6 +30597,7 @@ export namespace Prisma {
     branchId: string | null
     studentId: string | null
     studentName: string | null
+    parentName: string | null
     mobileNumber: string | null
     emailAddress: string | null
     parentSpouseNumber: string | null
@@ -30652,6 +30653,7 @@ export namespace Prisma {
     branchId: string | null
     studentId: string | null
     studentName: string | null
+    parentName: string | null
     mobileNumber: string | null
     emailAddress: string | null
     parentSpouseNumber: string | null
@@ -30707,6 +30709,7 @@ export namespace Prisma {
     branchId: number
     studentId: number
     studentName: number
+    parentName: number
     mobileNumber: number
     emailAddress: number
     parentSpouseNumber: number
@@ -30778,6 +30781,7 @@ export namespace Prisma {
     branchId?: true
     studentId?: true
     studentName?: true
+    parentName?: true
     mobileNumber?: true
     emailAddress?: true
     parentSpouseNumber?: true
@@ -30833,6 +30837,7 @@ export namespace Prisma {
     branchId?: true
     studentId?: true
     studentName?: true
+    parentName?: true
     mobileNumber?: true
     emailAddress?: true
     parentSpouseNumber?: true
@@ -30888,6 +30893,7 @@ export namespace Prisma {
     branchId?: true
     studentId?: true
     studentName?: true
+    parentName?: true
     mobileNumber?: true
     emailAddress?: true
     parentSpouseNumber?: true
@@ -31030,6 +31036,7 @@ export namespace Prisma {
     branchId: string
     studentId: string
     studentName: string
+    parentName: string | null
     mobileNumber: string
     emailAddress: string
     parentSpouseNumber: string | null
@@ -31104,6 +31111,7 @@ export namespace Prisma {
     branchId?: boolean
     studentId?: boolean
     studentName?: boolean
+    parentName?: boolean
     mobileNumber?: boolean
     emailAddress?: boolean
     parentSpouseNumber?: boolean
@@ -31167,6 +31175,7 @@ export namespace Prisma {
     branchId?: boolean
     studentId?: boolean
     studentName?: boolean
+    parentName?: boolean
     mobileNumber?: boolean
     emailAddress?: boolean
     parentSpouseNumber?: boolean
@@ -31224,6 +31233,7 @@ export namespace Prisma {
     branchId?: boolean
     studentId?: boolean
     studentName?: boolean
+    parentName?: boolean
     mobileNumber?: boolean
     emailAddress?: boolean
     parentSpouseNumber?: boolean
@@ -31281,6 +31291,7 @@ export namespace Prisma {
     branchId?: boolean
     studentId?: boolean
     studentName?: boolean
+    parentName?: boolean
     mobileNumber?: boolean
     emailAddress?: boolean
     parentSpouseNumber?: boolean
@@ -31331,7 +31342,7 @@ export namespace Prisma {
     courseCompletedAt?: boolean
   }
 
-  export type BranchStudentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "branchId" | "studentId" | "studentName" | "mobileNumber" | "emailAddress" | "parentSpouseNumber" | "countryCode" | "country" | "stateCode" | "state" | "city" | "address" | "qualification" | "passedOutYear" | "currentStatus" | "designation" | "source" | "sourceOther" | "admissionDate" | "courseStartDate" | "classSchedule" | "recordStatus" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt" | "linkedInUrl" | "remarks" | "courseId" | "courseName" | "courseMode" | "totalWorkingDays" | "courseEndDate" | "batchId" | "batchName" | "batchTiming" | "facultyId" | "facultyName" | "weeklyOffDay" | "courseAmount" | "paymentMode" | "paymentPlanId" | "paymentPlan" | "feeScheduleMode" | "feeFirstPaymentDate" | "fee70ProgressDate" | "fee70TargetHours" | "feePaymentDeadline" | "feeComplianceStatus" | "courseProgress" | "courseCompletedAt", ExtArgs["result"]["branchStudent"]>
+  export type BranchStudentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "branchId" | "studentId" | "studentName" | "parentName" | "mobileNumber" | "emailAddress" | "parentSpouseNumber" | "countryCode" | "country" | "stateCode" | "state" | "city" | "address" | "qualification" | "passedOutYear" | "currentStatus" | "designation" | "source" | "sourceOther" | "admissionDate" | "courseStartDate" | "classSchedule" | "recordStatus" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt" | "linkedInUrl" | "remarks" | "courseId" | "courseName" | "courseMode" | "totalWorkingDays" | "courseEndDate" | "batchId" | "batchName" | "batchTiming" | "facultyId" | "facultyName" | "weeklyOffDay" | "courseAmount" | "paymentMode" | "paymentPlanId" | "paymentPlan" | "feeScheduleMode" | "feeFirstPaymentDate" | "fee70ProgressDate" | "fee70TargetHours" | "feePaymentDeadline" | "feeComplianceStatus" | "courseProgress" | "courseCompletedAt", ExtArgs["result"]["branchStudent"]>
   export type BranchStudentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     branch?: boolean | BranchDefaultArgs<ExtArgs>
     course?: boolean | BranchStudent$courseArgs<ExtArgs>
@@ -31367,6 +31378,7 @@ export namespace Prisma {
       branchId: string
       studentId: string
       studentName: string
+      parentName: string | null
       mobileNumber: string
       emailAddress: string
       parentSpouseNumber: string | null
@@ -31849,6 +31861,7 @@ export namespace Prisma {
     readonly branchId: FieldRef<"BranchStudent", 'String'>
     readonly studentId: FieldRef<"BranchStudent", 'String'>
     readonly studentName: FieldRef<"BranchStudent", 'String'>
+    readonly parentName: FieldRef<"BranchStudent", 'String'>
     readonly mobileNumber: FieldRef<"BranchStudent", 'String'>
     readonly emailAddress: FieldRef<"BranchStudent", 'String'>
     readonly parentSpouseNumber: FieldRef<"BranchStudent", 'String'>
@@ -59862,6 +59875,7 @@ export namespace Prisma {
     branchId: 'branchId',
     studentId: 'studentId',
     studentName: 'studentName',
+    parentName: 'parentName',
     mobileNumber: 'mobileNumber',
     emailAddress: 'emailAddress',
     parentSpouseNumber: 'parentSpouseNumber',
@@ -63006,6 +63020,7 @@ export namespace Prisma {
     branchId?: StringFilter<"BranchStudent"> | string
     studentId?: StringFilter<"BranchStudent"> | string
     studentName?: StringFilter<"BranchStudent"> | string
+    parentName?: StringNullableFilter<"BranchStudent"> | string | null
     mobileNumber?: StringFilter<"BranchStudent"> | string
     emailAddress?: StringFilter<"BranchStudent"> | string
     parentSpouseNumber?: StringNullableFilter<"BranchStudent"> | string | null
@@ -63068,6 +63083,7 @@ export namespace Prisma {
     branchId?: SortOrder
     studentId?: SortOrder
     studentName?: SortOrder
+    parentName?: SortOrderInput | SortOrder
     mobileNumber?: SortOrder
     emailAddress?: SortOrder
     parentSpouseNumber?: SortOrderInput | SortOrder
@@ -63136,6 +63152,7 @@ export namespace Prisma {
     branchId?: StringFilter<"BranchStudent"> | string
     studentId?: StringFilter<"BranchStudent"> | string
     studentName?: StringFilter<"BranchStudent"> | string
+    parentName?: StringNullableFilter<"BranchStudent"> | string | null
     parentSpouseNumber?: StringNullableFilter<"BranchStudent"> | string | null
     countryCode?: StringNullableFilter<"BranchStudent"> | string | null
     country?: StringNullableFilter<"BranchStudent"> | string | null
@@ -63196,6 +63213,7 @@ export namespace Prisma {
     branchId?: SortOrder
     studentId?: SortOrder
     studentName?: SortOrder
+    parentName?: SortOrderInput | SortOrder
     mobileNumber?: SortOrder
     emailAddress?: SortOrder
     parentSpouseNumber?: SortOrderInput | SortOrder
@@ -63259,6 +63277,7 @@ export namespace Prisma {
     branchId?: StringWithAggregatesFilter<"BranchStudent"> | string
     studentId?: StringWithAggregatesFilter<"BranchStudent"> | string
     studentName?: StringWithAggregatesFilter<"BranchStudent"> | string
+    parentName?: StringNullableWithAggregatesFilter<"BranchStudent"> | string | null
     mobileNumber?: StringWithAggregatesFilter<"BranchStudent"> | string
     emailAddress?: StringWithAggregatesFilter<"BranchStudent"> | string
     parentSpouseNumber?: StringNullableWithAggregatesFilter<"BranchStudent"> | string | null
@@ -68582,6 +68601,7 @@ export namespace Prisma {
     id?: string
     studentId: string
     studentName: string
+    parentName?: string | null
     mobileNumber: string
     emailAddress: string
     parentSpouseNumber?: string | null
@@ -68643,6 +68663,7 @@ export namespace Prisma {
     branchId: string
     studentId: string
     studentName: string
+    parentName?: string | null
     mobileNumber: string
     emailAddress: string
     parentSpouseNumber?: string | null
@@ -68702,6 +68723,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     studentId?: StringFieldUpdateOperationsInput | string
     studentName?: StringFieldUpdateOperationsInput | string
+    parentName?: NullableStringFieldUpdateOperationsInput | string | null
     mobileNumber?: StringFieldUpdateOperationsInput | string
     emailAddress?: StringFieldUpdateOperationsInput | string
     parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -68763,6 +68785,7 @@ export namespace Prisma {
     branchId?: StringFieldUpdateOperationsInput | string
     studentId?: StringFieldUpdateOperationsInput | string
     studentName?: StringFieldUpdateOperationsInput | string
+    parentName?: NullableStringFieldUpdateOperationsInput | string | null
     mobileNumber?: StringFieldUpdateOperationsInput | string
     emailAddress?: StringFieldUpdateOperationsInput | string
     parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -68823,6 +68846,7 @@ export namespace Prisma {
     branchId: string
     studentId: string
     studentName: string
+    parentName?: string | null
     mobileNumber: string
     emailAddress: string
     parentSpouseNumber?: string | null
@@ -68877,6 +68901,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     studentId?: StringFieldUpdateOperationsInput | string
     studentName?: StringFieldUpdateOperationsInput | string
+    parentName?: NullableStringFieldUpdateOperationsInput | string | null
     mobileNumber?: StringFieldUpdateOperationsInput | string
     emailAddress?: StringFieldUpdateOperationsInput | string
     parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -68931,6 +68956,7 @@ export namespace Prisma {
     branchId?: StringFieldUpdateOperationsInput | string
     studentId?: StringFieldUpdateOperationsInput | string
     studentName?: StringFieldUpdateOperationsInput | string
+    parentName?: NullableStringFieldUpdateOperationsInput | string | null
     mobileNumber?: StringFieldUpdateOperationsInput | string
     emailAddress?: StringFieldUpdateOperationsInput | string
     parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -73956,6 +73982,7 @@ export namespace Prisma {
     branchId?: SortOrder
     studentId?: SortOrder
     studentName?: SortOrder
+    parentName?: SortOrder
     mobileNumber?: SortOrder
     emailAddress?: SortOrder
     parentSpouseNumber?: SortOrder
@@ -74018,6 +74045,7 @@ export namespace Prisma {
     branchId?: SortOrder
     studentId?: SortOrder
     studentName?: SortOrder
+    parentName?: SortOrder
     mobileNumber?: SortOrder
     emailAddress?: SortOrder
     parentSpouseNumber?: SortOrder
@@ -74073,6 +74101,7 @@ export namespace Prisma {
     branchId?: SortOrder
     studentId?: SortOrder
     studentName?: SortOrder
+    parentName?: SortOrder
     mobileNumber?: SortOrder
     emailAddress?: SortOrder
     parentSpouseNumber?: SortOrder
@@ -81137,6 +81166,7 @@ export namespace Prisma {
     id?: string
     studentId: string
     studentName: string
+    parentName?: string | null
     mobileNumber: string
     emailAddress: string
     parentSpouseNumber?: string | null
@@ -81196,6 +81226,7 @@ export namespace Prisma {
     id?: string
     studentId: string
     studentName: string
+    parentName?: string | null
     mobileNumber: string
     emailAddress: string
     parentSpouseNumber?: string | null
@@ -81880,6 +81911,7 @@ export namespace Prisma {
     branchId?: StringFilter<"BranchStudent"> | string
     studentId?: StringFilter<"BranchStudent"> | string
     studentName?: StringFilter<"BranchStudent"> | string
+    parentName?: StringNullableFilter<"BranchStudent"> | string | null
     mobileNumber?: StringFilter<"BranchStudent"> | string
     emailAddress?: StringFilter<"BranchStudent"> | string
     parentSpouseNumber?: StringNullableFilter<"BranchStudent"> | string | null
@@ -83943,6 +83975,7 @@ export namespace Prisma {
     id?: string
     studentId: string
     studentName: string
+    parentName?: string | null
     mobileNumber: string
     emailAddress: string
     parentSpouseNumber?: string | null
@@ -84003,6 +84036,7 @@ export namespace Prisma {
     branchId: string
     studentId: string
     studentName: string
+    parentName?: string | null
     mobileNumber: string
     emailAddress: string
     parentSpouseNumber?: string | null
@@ -86946,6 +86980,7 @@ export namespace Prisma {
     id?: string
     studentId: string
     studentName: string
+    parentName?: string | null
     mobileNumber: string
     emailAddress: string
     parentSpouseNumber?: string | null
@@ -87006,6 +87041,7 @@ export namespace Prisma {
     branchId: string
     studentId: string
     studentName: string
+    parentName?: string | null
     mobileNumber: string
     emailAddress: string
     parentSpouseNumber?: string | null
@@ -87157,6 +87193,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     studentId?: StringFieldUpdateOperationsInput | string
     studentName?: StringFieldUpdateOperationsInput | string
+    parentName?: NullableStringFieldUpdateOperationsInput | string | null
     mobileNumber?: StringFieldUpdateOperationsInput | string
     emailAddress?: StringFieldUpdateOperationsInput | string
     parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -87217,6 +87254,7 @@ export namespace Prisma {
     branchId?: StringFieldUpdateOperationsInput | string
     studentId?: StringFieldUpdateOperationsInput | string
     studentName?: StringFieldUpdateOperationsInput | string
+    parentName?: NullableStringFieldUpdateOperationsInput | string | null
     mobileNumber?: StringFieldUpdateOperationsInput | string
     emailAddress?: StringFieldUpdateOperationsInput | string
     parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -87646,6 +87684,7 @@ export namespace Prisma {
     id?: string
     studentId: string
     studentName: string
+    parentName?: string | null
     mobileNumber: string
     emailAddress: string
     parentSpouseNumber?: string | null
@@ -87706,6 +87745,7 @@ export namespace Prisma {
     branchId: string
     studentId: string
     studentName: string
+    parentName?: string | null
     mobileNumber: string
     emailAddress: string
     parentSpouseNumber?: string | null
@@ -87824,6 +87864,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     studentId?: StringFieldUpdateOperationsInput | string
     studentName?: StringFieldUpdateOperationsInput | string
+    parentName?: NullableStringFieldUpdateOperationsInput | string | null
     mobileNumber?: StringFieldUpdateOperationsInput | string
     emailAddress?: StringFieldUpdateOperationsInput | string
     parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -87884,6 +87925,7 @@ export namespace Prisma {
     branchId?: StringFieldUpdateOperationsInput | string
     studentId?: StringFieldUpdateOperationsInput | string
     studentName?: StringFieldUpdateOperationsInput | string
+    parentName?: NullableStringFieldUpdateOperationsInput | string | null
     mobileNumber?: StringFieldUpdateOperationsInput | string
     emailAddress?: StringFieldUpdateOperationsInput | string
     parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -89697,6 +89739,7 @@ export namespace Prisma {
     id?: string
     studentId: string
     studentName: string
+    parentName?: string | null
     mobileNumber: string
     emailAddress: string
     parentSpouseNumber?: string | null
@@ -89757,6 +89800,7 @@ export namespace Prisma {
     branchId: string
     studentId: string
     studentName: string
+    parentName?: string | null
     mobileNumber: string
     emailAddress: string
     parentSpouseNumber?: string | null
@@ -89965,6 +90009,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     studentId?: StringFieldUpdateOperationsInput | string
     studentName?: StringFieldUpdateOperationsInput | string
+    parentName?: NullableStringFieldUpdateOperationsInput | string | null
     mobileNumber?: StringFieldUpdateOperationsInput | string
     emailAddress?: StringFieldUpdateOperationsInput | string
     parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -90025,6 +90070,7 @@ export namespace Prisma {
     branchId?: StringFieldUpdateOperationsInput | string
     studentId?: StringFieldUpdateOperationsInput | string
     studentName?: StringFieldUpdateOperationsInput | string
+    parentName?: NullableStringFieldUpdateOperationsInput | string | null
     mobileNumber?: StringFieldUpdateOperationsInput | string
     emailAddress?: StringFieldUpdateOperationsInput | string
     parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -91934,6 +91980,7 @@ export namespace Prisma {
     id?: string
     studentId: string
     studentName: string
+    parentName?: string | null
     mobileNumber: string
     emailAddress: string
     parentSpouseNumber?: string | null
@@ -91994,6 +92041,7 @@ export namespace Prisma {
     branchId: string
     studentId: string
     studentName: string
+    parentName?: string | null
     mobileNumber: string
     emailAddress: string
     parentSpouseNumber?: string | null
@@ -92174,6 +92222,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     studentId?: StringFieldUpdateOperationsInput | string
     studentName?: StringFieldUpdateOperationsInput | string
+    parentName?: NullableStringFieldUpdateOperationsInput | string | null
     mobileNumber?: StringFieldUpdateOperationsInput | string
     emailAddress?: StringFieldUpdateOperationsInput | string
     parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -92234,6 +92283,7 @@ export namespace Prisma {
     branchId?: StringFieldUpdateOperationsInput | string
     studentId?: StringFieldUpdateOperationsInput | string
     studentName?: StringFieldUpdateOperationsInput | string
+    parentName?: NullableStringFieldUpdateOperationsInput | string | null
     mobileNumber?: StringFieldUpdateOperationsInput | string
     emailAddress?: StringFieldUpdateOperationsInput | string
     parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -92479,6 +92529,7 @@ export namespace Prisma {
     id?: string
     studentId: string
     studentName: string
+    parentName?: string | null
     mobileNumber: string
     emailAddress: string
     parentSpouseNumber?: string | null
@@ -92539,6 +92590,7 @@ export namespace Prisma {
     branchId: string
     studentId: string
     studentName: string
+    parentName?: string | null
     mobileNumber: string
     emailAddress: string
     parentSpouseNumber?: string | null
@@ -92688,6 +92740,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     studentId?: StringFieldUpdateOperationsInput | string
     studentName?: StringFieldUpdateOperationsInput | string
+    parentName?: NullableStringFieldUpdateOperationsInput | string | null
     mobileNumber?: StringFieldUpdateOperationsInput | string
     emailAddress?: StringFieldUpdateOperationsInput | string
     parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -92748,6 +92801,7 @@ export namespace Prisma {
     branchId?: StringFieldUpdateOperationsInput | string
     studentId?: StringFieldUpdateOperationsInput | string
     studentName?: StringFieldUpdateOperationsInput | string
+    parentName?: NullableStringFieldUpdateOperationsInput | string | null
     mobileNumber?: StringFieldUpdateOperationsInput | string
     emailAddress?: StringFieldUpdateOperationsInput | string
     parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -93754,6 +93808,7 @@ export namespace Prisma {
     id?: string
     studentId: string
     studentName: string
+    parentName?: string | null
     mobileNumber: string
     emailAddress: string
     parentSpouseNumber?: string | null
@@ -94236,6 +94291,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     studentId?: StringFieldUpdateOperationsInput | string
     studentName?: StringFieldUpdateOperationsInput | string
+    parentName?: NullableStringFieldUpdateOperationsInput | string | null
     mobileNumber?: StringFieldUpdateOperationsInput | string
     emailAddress?: StringFieldUpdateOperationsInput | string
     parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -94295,6 +94351,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     studentId?: StringFieldUpdateOperationsInput | string
     studentName?: StringFieldUpdateOperationsInput | string
+    parentName?: NullableStringFieldUpdateOperationsInput | string | null
     mobileNumber?: StringFieldUpdateOperationsInput | string
     emailAddress?: StringFieldUpdateOperationsInput | string
     parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -94354,6 +94411,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     studentId?: StringFieldUpdateOperationsInput | string
     studentName?: StringFieldUpdateOperationsInput | string
+    parentName?: NullableStringFieldUpdateOperationsInput | string | null
     mobileNumber?: StringFieldUpdateOperationsInput | string
     emailAddress?: StringFieldUpdateOperationsInput | string
     parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -95603,6 +95661,7 @@ export namespace Prisma {
     branchId: string
     studentId: string
     studentName: string
+    parentName?: string | null
     mobileNumber: string
     emailAddress: string
     parentSpouseNumber?: string | null
@@ -95934,6 +95993,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     studentId?: StringFieldUpdateOperationsInput | string
     studentName?: StringFieldUpdateOperationsInput | string
+    parentName?: NullableStringFieldUpdateOperationsInput | string | null
     mobileNumber?: StringFieldUpdateOperationsInput | string
     emailAddress?: StringFieldUpdateOperationsInput | string
     parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -95994,6 +96054,7 @@ export namespace Prisma {
     branchId?: StringFieldUpdateOperationsInput | string
     studentId?: StringFieldUpdateOperationsInput | string
     studentName?: StringFieldUpdateOperationsInput | string
+    parentName?: NullableStringFieldUpdateOperationsInput | string | null
     mobileNumber?: StringFieldUpdateOperationsInput | string
     emailAddress?: StringFieldUpdateOperationsInput | string
     parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -96053,6 +96114,7 @@ export namespace Prisma {
     branchId?: StringFieldUpdateOperationsInput | string
     studentId?: StringFieldUpdateOperationsInput | string
     studentName?: StringFieldUpdateOperationsInput | string
+    parentName?: NullableStringFieldUpdateOperationsInput | string | null
     mobileNumber?: StringFieldUpdateOperationsInput | string
     emailAddress?: StringFieldUpdateOperationsInput | string
     parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null

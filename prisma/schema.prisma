@@ -544,6 +544,7 @@ model BranchStudent {
   branchId           String
   studentId          String
   studentName        String
+  parentName         String?
   mobileNumber       String       @unique
   emailAddress       String       @unique
   parentSpouseNumber String?
