@@ -1,5 +1,5 @@
 import asyncHandler from "../../common/utils/asyncHandler.js";
-import { getFacultyDashboardOverview, getFacultyMyBatchesSummary, getRevenueSummary } from "./dashboard.service.js";
+import { getFacultyDashboardOverview, getFacultyMyBatchesSummary, getRevenueSummary, getSuperAdminOverview } from "./dashboard.service.js";
 
 function sendSuccess(res, message, data, statusCode = 200) {
   return res.status(statusCode).json({
@@ -22,4 +22,13 @@ export const getFacultyMyBatchesSummaryHandler = asyncHandler(async (req, res) =
 export const getFacultyDashboardOverviewHandler = asyncHandler(async (req, res) => {
   const overview = await getFacultyDashboardOverview(req.user);
   return sendSuccess(res, "Faculty dashboard overview fetched successfully", overview);
+});
+
+export const getSuperAdminOverviewHandler = asyncHandler(async (req, res) => {
+  const overview = await getSuperAdminOverview(req.query?.branchId || null, {
+    period: req.query?.period,
+    startDate: req.query?.startDate,
+    endDate: req.query?.endDate,
+  });
+  return sendSuccess(res, "Super Admin dashboard overview fetched successfully", overview);
 });
