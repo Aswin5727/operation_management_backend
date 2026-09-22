@@ -12933,6 +12933,9 @@ export namespace Prisma {
     requestReason: string | null
     requestStatus: string | null
     requestTitle: string | null
+    examId: string | null
+    examScheduleId: string | null
+    batchId: string | null
     subModuleId: string | null
     subModuleName: string | null
   }
@@ -12965,6 +12968,9 @@ export namespace Prisma {
     requestReason: string | null
     requestStatus: string | null
     requestTitle: string | null
+    examId: string | null
+    examScheduleId: string | null
+    batchId: string | null
     subModuleId: string | null
     subModuleName: string | null
   }
@@ -12997,6 +13003,9 @@ export namespace Prisma {
     requestReason: number
     requestStatus: number
     requestTitle: number
+    examId: number
+    examScheduleId: number
+    batchId: number
     subModuleId: number
     subModuleName: number
     _all: number
@@ -13031,6 +13040,9 @@ export namespace Prisma {
     requestReason?: true
     requestStatus?: true
     requestTitle?: true
+    examId?: true
+    examScheduleId?: true
+    batchId?: true
     subModuleId?: true
     subModuleName?: true
   }
@@ -13063,6 +13075,9 @@ export namespace Prisma {
     requestReason?: true
     requestStatus?: true
     requestTitle?: true
+    examId?: true
+    examScheduleId?: true
+    batchId?: true
     subModuleId?: true
     subModuleName?: true
   }
@@ -13095,6 +13110,9 @@ export namespace Prisma {
     requestReason?: true
     requestStatus?: true
     requestTitle?: true
+    examId?: true
+    examScheduleId?: true
+    batchId?: true
     subModuleId?: true
     subModuleName?: true
     _all?: true
@@ -13200,6 +13218,9 @@ export namespace Prisma {
     requestReason: string | null
     requestStatus: string | null
     requestTitle: string | null
+    examId: string | null
+    examScheduleId: string | null
+    batchId: string | null
     subModuleId: string | null
     subModuleName: string | null
     _count: NotificationCountAggregateOutputType | null
@@ -13249,6 +13270,9 @@ export namespace Prisma {
     requestReason?: boolean
     requestStatus?: boolean
     requestTitle?: boolean
+    examId?: boolean
+    examScheduleId?: boolean
+    batchId?: boolean
     subModuleId?: boolean
     subModuleName?: boolean
     request?: boolean | Notification$requestArgs<ExtArgs>
@@ -13283,6 +13307,9 @@ export namespace Prisma {
     requestReason?: boolean
     requestStatus?: boolean
     requestTitle?: boolean
+    examId?: boolean
+    examScheduleId?: boolean
+    batchId?: boolean
     subModuleId?: boolean
     subModuleName?: boolean
     request?: boolean | Notification$requestArgs<ExtArgs>
@@ -13317,6 +13344,9 @@ export namespace Prisma {
     requestReason?: boolean
     requestStatus?: boolean
     requestTitle?: boolean
+    examId?: boolean
+    examScheduleId?: boolean
+    batchId?: boolean
     subModuleId?: boolean
     subModuleName?: boolean
     request?: boolean | Notification$requestArgs<ExtArgs>
@@ -13351,11 +13381,14 @@ export namespace Prisma {
     requestReason?: boolean
     requestStatus?: boolean
     requestTitle?: boolean
+    examId?: boolean
+    examScheduleId?: boolean
+    batchId?: boolean
     subModuleId?: boolean
     subModuleName?: boolean
   }
 
-  export type NotificationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "kind" | "tone" | "title" | "message" | "actionLabel" | "targetBranchId" | "targetBranchEmail" | "targetBranchName" | "read" | "readAt" | "createdBy" | "createdAt" | "updatedAt" | "targetUserId" | "branchCourseId" | "branchCourseName" | "facultyId" | "facultyName" | "moduleId" | "moduleName" | "requestDescription" | "requestId" | "leaveRequestId" | "requestReason" | "requestStatus" | "requestTitle" | "subModuleId" | "subModuleName", ExtArgs["result"]["notification"]>
+  export type NotificationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "kind" | "tone" | "title" | "message" | "actionLabel" | "targetBranchId" | "targetBranchEmail" | "targetBranchName" | "read" | "readAt" | "createdBy" | "createdAt" | "updatedAt" | "targetUserId" | "branchCourseId" | "branchCourseName" | "facultyId" | "facultyName" | "moduleId" | "moduleName" | "requestDescription" | "requestId" | "leaveRequestId" | "requestReason" | "requestStatus" | "requestTitle" | "examId" | "examScheduleId" | "batchId" | "subModuleId" | "subModuleName", ExtArgs["result"]["notification"]>
   export type NotificationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     request?: boolean | Notification$requestArgs<ExtArgs>
     targetUser?: boolean | Notification$targetUserArgs<ExtArgs>
@@ -13403,6 +13436,9 @@ export namespace Prisma {
       requestReason: string | null
       requestStatus: string | null
       requestTitle: string | null
+      examId: string | null
+      examScheduleId: string | null
+      batchId: string | null
       subModuleId: string | null
       subModuleName: string | null
     }, ExtArgs["result"]["notification"]>
@@ -13857,6 +13893,9 @@ export namespace Prisma {
     readonly requestReason: FieldRef<"Notification", 'String'>
     readonly requestStatus: FieldRef<"Notification", 'String'>
     readonly requestTitle: FieldRef<"Notification", 'String'>
+    readonly examId: FieldRef<"Notification", 'String'>
+    readonly examScheduleId: FieldRef<"Notification", 'String'>
+    readonly batchId: FieldRef<"Notification", 'String'>
     readonly subModuleId: FieldRef<"Notification", 'String'>
     readonly subModuleName: FieldRef<"Notification", 'String'>
   }
@@ -66465,6 +66504,9 @@ export namespace Prisma {
     requestReason: 'requestReason',
     requestStatus: 'requestStatus',
     requestTitle: 'requestTitle',
+    examId: 'examId',
+    examScheduleId: 'examScheduleId',
+    batchId: 'batchId',
     subModuleId: 'subModuleId',
     subModuleName: 'subModuleName'
   };
@@ -68223,6 +68265,9 @@ export namespace Prisma {
     requestReason?: StringNullableFilter<"Notification"> | string | null
     requestStatus?: StringNullableFilter<"Notification"> | string | null
     requestTitle?: StringNullableFilter<"Notification"> | string | null
+    examId?: StringNullableFilter<"Notification"> | string | null
+    examScheduleId?: StringNullableFilter<"Notification"> | string | null
+    batchId?: StringNullableFilter<"Notification"> | string | null
     subModuleId?: StringNullableFilter<"Notification"> | string | null
     subModuleName?: StringNullableFilter<"Notification"> | string | null
     request?: XOR<CourseEditRequestNullableScalarRelationFilter, CourseEditRequestWhereInput> | null
@@ -68257,6 +68302,9 @@ export namespace Prisma {
     requestReason?: SortOrderInput | SortOrder
     requestStatus?: SortOrderInput | SortOrder
     requestTitle?: SortOrderInput | SortOrder
+    examId?: SortOrderInput | SortOrder
+    examScheduleId?: SortOrderInput | SortOrder
+    batchId?: SortOrderInput | SortOrder
     subModuleId?: SortOrderInput | SortOrder
     subModuleName?: SortOrderInput | SortOrder
     request?: CourseEditRequestOrderByWithRelationInput
@@ -68294,6 +68342,9 @@ export namespace Prisma {
     requestReason?: StringNullableFilter<"Notification"> | string | null
     requestStatus?: StringNullableFilter<"Notification"> | string | null
     requestTitle?: StringNullableFilter<"Notification"> | string | null
+    examId?: StringNullableFilter<"Notification"> | string | null
+    examScheduleId?: StringNullableFilter<"Notification"> | string | null
+    batchId?: StringNullableFilter<"Notification"> | string | null
     subModuleId?: StringNullableFilter<"Notification"> | string | null
     subModuleName?: StringNullableFilter<"Notification"> | string | null
     request?: XOR<CourseEditRequestNullableScalarRelationFilter, CourseEditRequestWhereInput> | null
@@ -68328,6 +68379,9 @@ export namespace Prisma {
     requestReason?: SortOrderInput | SortOrder
     requestStatus?: SortOrderInput | SortOrder
     requestTitle?: SortOrderInput | SortOrder
+    examId?: SortOrderInput | SortOrder
+    examScheduleId?: SortOrderInput | SortOrder
+    batchId?: SortOrderInput | SortOrder
     subModuleId?: SortOrderInput | SortOrder
     subModuleName?: SortOrderInput | SortOrder
     _count?: NotificationCountOrderByAggregateInput
@@ -68366,6 +68420,9 @@ export namespace Prisma {
     requestReason?: StringNullableWithAggregatesFilter<"Notification"> | string | null
     requestStatus?: StringNullableWithAggregatesFilter<"Notification"> | string | null
     requestTitle?: StringNullableWithAggregatesFilter<"Notification"> | string | null
+    examId?: StringNullableWithAggregatesFilter<"Notification"> | string | null
+    examScheduleId?: StringNullableWithAggregatesFilter<"Notification"> | string | null
+    batchId?: StringNullableWithAggregatesFilter<"Notification"> | string | null
     subModuleId?: StringNullableWithAggregatesFilter<"Notification"> | string | null
     subModuleName?: StringNullableWithAggregatesFilter<"Notification"> | string | null
   }
@@ -73910,6 +73967,9 @@ export namespace Prisma {
     requestReason?: string | null
     requestStatus?: string | null
     requestTitle?: string | null
+    examId?: string | null
+    examScheduleId?: string | null
+    batchId?: string | null
     subModuleId?: string | null
     subModuleName?: string | null
     request?: CourseEditRequestCreateNestedOneWithoutNotificationsInput
@@ -73944,6 +74004,9 @@ export namespace Prisma {
     requestReason?: string | null
     requestStatus?: string | null
     requestTitle?: string | null
+    examId?: string | null
+    examScheduleId?: string | null
+    batchId?: string | null
     subModuleId?: string | null
     subModuleName?: string | null
   }
@@ -73974,6 +74037,9 @@ export namespace Prisma {
     requestReason?: NullableStringFieldUpdateOperationsInput | string | null
     requestStatus?: NullableStringFieldUpdateOperationsInput | string | null
     requestTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    examId?: NullableStringFieldUpdateOperationsInput | string | null
+    examScheduleId?: NullableStringFieldUpdateOperationsInput | string | null
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
     subModuleId?: NullableStringFieldUpdateOperationsInput | string | null
     subModuleName?: NullableStringFieldUpdateOperationsInput | string | null
     request?: CourseEditRequestUpdateOneWithoutNotificationsNestedInput
@@ -74008,6 +74074,9 @@ export namespace Prisma {
     requestReason?: NullableStringFieldUpdateOperationsInput | string | null
     requestStatus?: NullableStringFieldUpdateOperationsInput | string | null
     requestTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    examId?: NullableStringFieldUpdateOperationsInput | string | null
+    examScheduleId?: NullableStringFieldUpdateOperationsInput | string | null
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
     subModuleId?: NullableStringFieldUpdateOperationsInput | string | null
     subModuleName?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -74040,6 +74109,9 @@ export namespace Prisma {
     requestReason?: string | null
     requestStatus?: string | null
     requestTitle?: string | null
+    examId?: string | null
+    examScheduleId?: string | null
+    batchId?: string | null
     subModuleId?: string | null
     subModuleName?: string | null
   }
@@ -74070,6 +74142,9 @@ export namespace Prisma {
     requestReason?: NullableStringFieldUpdateOperationsInput | string | null
     requestStatus?: NullableStringFieldUpdateOperationsInput | string | null
     requestTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    examId?: NullableStringFieldUpdateOperationsInput | string | null
+    examScheduleId?: NullableStringFieldUpdateOperationsInput | string | null
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
     subModuleId?: NullableStringFieldUpdateOperationsInput | string | null
     subModuleName?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -74102,6 +74177,9 @@ export namespace Prisma {
     requestReason?: NullableStringFieldUpdateOperationsInput | string | null
     requestStatus?: NullableStringFieldUpdateOperationsInput | string | null
     requestTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    examId?: NullableStringFieldUpdateOperationsInput | string | null
+    examScheduleId?: NullableStringFieldUpdateOperationsInput | string | null
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
     subModuleId?: NullableStringFieldUpdateOperationsInput | string | null
     subModuleName?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -80600,6 +80678,9 @@ export namespace Prisma {
     requestReason?: SortOrder
     requestStatus?: SortOrder
     requestTitle?: SortOrder
+    examId?: SortOrder
+    examScheduleId?: SortOrder
+    batchId?: SortOrder
     subModuleId?: SortOrder
     subModuleName?: SortOrder
   }
@@ -80632,6 +80713,9 @@ export namespace Prisma {
     requestReason?: SortOrder
     requestStatus?: SortOrder
     requestTitle?: SortOrder
+    examId?: SortOrder
+    examScheduleId?: SortOrder
+    batchId?: SortOrder
     subModuleId?: SortOrder
     subModuleName?: SortOrder
   }
@@ -80664,6 +80748,9 @@ export namespace Prisma {
     requestReason?: SortOrder
     requestStatus?: SortOrder
     requestTitle?: SortOrder
+    examId?: SortOrder
+    examScheduleId?: SortOrder
+    batchId?: SortOrder
     subModuleId?: SortOrder
     subModuleName?: SortOrder
   }
@@ -88757,6 +88844,9 @@ export namespace Prisma {
     requestReason?: string | null
     requestStatus?: string | null
     requestTitle?: string | null
+    examId?: string | null
+    examScheduleId?: string | null
+    batchId?: string | null
     subModuleId?: string | null
     subModuleName?: string | null
     request?: CourseEditRequestCreateNestedOneWithoutNotificationsInput
@@ -88789,6 +88879,9 @@ export namespace Prisma {
     requestReason?: string | null
     requestStatus?: string | null
     requestTitle?: string | null
+    examId?: string | null
+    examScheduleId?: string | null
+    batchId?: string | null
     subModuleId?: string | null
     subModuleName?: string | null
   }
@@ -89444,6 +89537,9 @@ export namespace Prisma {
     requestReason?: StringNullableFilter<"Notification"> | string | null
     requestStatus?: StringNullableFilter<"Notification"> | string | null
     requestTitle?: StringNullableFilter<"Notification"> | string | null
+    examId?: StringNullableFilter<"Notification"> | string | null
+    examScheduleId?: StringNullableFilter<"Notification"> | string | null
+    batchId?: StringNullableFilter<"Notification"> | string | null
     subModuleId?: StringNullableFilter<"Notification"> | string | null
     subModuleName?: StringNullableFilter<"Notification"> | string | null
   }
@@ -91816,6 +91912,9 @@ export namespace Prisma {
     requestReason?: string | null
     requestStatus?: string | null
     requestTitle?: string | null
+    examId?: string | null
+    examScheduleId?: string | null
+    batchId?: string | null
     subModuleId?: string | null
     subModuleName?: string | null
     targetUser?: UserCreateNestedOneWithoutTargetedNotificationsInput
@@ -91848,6 +91947,9 @@ export namespace Prisma {
     requestReason?: string | null
     requestStatus?: string | null
     requestTitle?: string | null
+    examId?: string | null
+    examScheduleId?: string | null
+    batchId?: string | null
     subModuleId?: string | null
     subModuleName?: string | null
   }
@@ -104273,6 +104375,9 @@ export namespace Prisma {
     requestReason?: string | null
     requestStatus?: string | null
     requestTitle?: string | null
+    examId?: string | null
+    examScheduleId?: string | null
+    batchId?: string | null
     subModuleId?: string | null
     subModuleName?: string | null
   }
@@ -104690,6 +104795,9 @@ export namespace Prisma {
     requestReason?: NullableStringFieldUpdateOperationsInput | string | null
     requestStatus?: NullableStringFieldUpdateOperationsInput | string | null
     requestTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    examId?: NullableStringFieldUpdateOperationsInput | string | null
+    examScheduleId?: NullableStringFieldUpdateOperationsInput | string | null
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
     subModuleId?: NullableStringFieldUpdateOperationsInput | string | null
     subModuleName?: NullableStringFieldUpdateOperationsInput | string | null
     request?: CourseEditRequestUpdateOneWithoutNotificationsNestedInput
@@ -104722,6 +104830,9 @@ export namespace Prisma {
     requestReason?: NullableStringFieldUpdateOperationsInput | string | null
     requestStatus?: NullableStringFieldUpdateOperationsInput | string | null
     requestTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    examId?: NullableStringFieldUpdateOperationsInput | string | null
+    examScheduleId?: NullableStringFieldUpdateOperationsInput | string | null
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
     subModuleId?: NullableStringFieldUpdateOperationsInput | string | null
     subModuleName?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -104753,6 +104864,9 @@ export namespace Prisma {
     requestReason?: NullableStringFieldUpdateOperationsInput | string | null
     requestStatus?: NullableStringFieldUpdateOperationsInput | string | null
     requestTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    examId?: NullableStringFieldUpdateOperationsInput | string | null
+    examScheduleId?: NullableStringFieldUpdateOperationsInput | string | null
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
     subModuleId?: NullableStringFieldUpdateOperationsInput | string | null
     subModuleName?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -106344,6 +106458,9 @@ export namespace Prisma {
     requestReason?: string | null
     requestStatus?: string | null
     requestTitle?: string | null
+    examId?: string | null
+    examScheduleId?: string | null
+    batchId?: string | null
     subModuleId?: string | null
     subModuleName?: string | null
   }
@@ -106374,6 +106491,9 @@ export namespace Prisma {
     requestReason?: NullableStringFieldUpdateOperationsInput | string | null
     requestStatus?: NullableStringFieldUpdateOperationsInput | string | null
     requestTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    examId?: NullableStringFieldUpdateOperationsInput | string | null
+    examScheduleId?: NullableStringFieldUpdateOperationsInput | string | null
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
     subModuleId?: NullableStringFieldUpdateOperationsInput | string | null
     subModuleName?: NullableStringFieldUpdateOperationsInput | string | null
     targetUser?: UserUpdateOneWithoutTargetedNotificationsNestedInput
@@ -106406,6 +106526,9 @@ export namespace Prisma {
     requestReason?: NullableStringFieldUpdateOperationsInput | string | null
     requestStatus?: NullableStringFieldUpdateOperationsInput | string | null
     requestTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    examId?: NullableStringFieldUpdateOperationsInput | string | null
+    examScheduleId?: NullableStringFieldUpdateOperationsInput | string | null
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
     subModuleId?: NullableStringFieldUpdateOperationsInput | string | null
     subModuleName?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -106437,6 +106560,9 @@ export namespace Prisma {
     requestReason?: NullableStringFieldUpdateOperationsInput | string | null
     requestStatus?: NullableStringFieldUpdateOperationsInput | string | null
     requestTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    examId?: NullableStringFieldUpdateOperationsInput | string | null
+    examScheduleId?: NullableStringFieldUpdateOperationsInput | string | null
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
     subModuleId?: NullableStringFieldUpdateOperationsInput | string | null
     subModuleName?: NullableStringFieldUpdateOperationsInput | string | null
   }

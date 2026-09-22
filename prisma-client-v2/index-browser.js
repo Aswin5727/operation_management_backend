@@ -228,6 +228,9 @@ exports.Prisma.NotificationScalarFieldEnum = {
   requestReason: 'requestReason',
   requestStatus: 'requestStatus',
   requestTitle: 'requestTitle',
+  examId: 'examId',
+  examScheduleId: 'examScheduleId',
+  batchId: 'batchId',
   subModuleId: 'subModuleId',
   subModuleName: 'subModuleName'
 };

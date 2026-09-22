@@ -145,11 +145,18 @@ export async function createTest(user, payload = {}) {
   const totalQuestions = questions.length;
   const created = await prisma.$transaction(async (tx) => {
     const exam = await tx.exam.create({ data: { title: text(payload.title) || "MCQ Test", branchCourseId: courseId, moduleId, facultyId: user.id, marksPerQuestion, totalQuestions, totalMarks: totalQuestions * marksPerQuestion, status: "SCHEDULED", questions: { create: questions }, schedules: { create: normalizedSchedules.map(({ batch, ...schedule }) => schedule) } }, include: examInclude(true) });
-    const students = await tx.branchStudent.findMany({ where: { batchId: { in: batchIds }, recordStatus: "ACTIVE" }, select: { id: true, emailAddress: true, studentName: true } });
-    const users = await tx.user.findMany({ where: { role: "STUDENT", email: { in: students.map((student) => student.emailAddress) } }, select: { id: true, email: true } });
+    const batchCodes = batches.map((batch) => text(batch.batchId)).filter(Boolean);
+    const students = await tx.branchStudent.findMany({ where: { recordStatus: "ACTIVE", OR: [{ batchId: { in: batchIds } }, { batchId: { in: batchCodes } }] }, select: { id: true, batchId: true, emailAddress: true, studentName: true } });
+    const studentEmails = students.map((student) => text(student.emailAddress).toLowerCase()).filter(Boolean);
+    const users = studentEmails.length ? await tx.user.findMany({ where: { role: "STUDENT", OR: studentEmails.map((email) => ({ email: { equals: email, mode: "insensitive" } })) }, select: { id: true, email: true } }) : [];
     const userByEmail = new Map(users.map((item) => [text(item.email).toLowerCase(), item.id]));
-    const notificationRows = students.map((student) => { const email = text(student.emailAddress).toLowerCase(); const schedule = normalizedSchedules.find((item) => item.branchBatchId === student.batchId); return schedule && userByEmail.has(email) ? { kind: "EXAM_SCHEDULED", tone: "blue", title: "New Test Scheduled", message: `You have a test for ${course.name}. Date: ${schedule.testDate}. Time: ${schedule.startTime} - ${schedule.endTime}. Total Marks: ${exam.totalMarks}`, targetUserId: userByEmail.get(email), createdBy: user.id } : null; }).filter(Boolean);
+    const schedulesByBatch = new Map(exam.schedules.flatMap((schedule) => [[schedule.branchBatchId, schedule], [schedule.branchBatch?.batchId, schedule]].filter(([batchKey]) => Boolean(batchKey))));
+    const candidateNotifications = students.map((student) => { const email = text(student.emailAddress).toLowerCase(); const schedule = schedulesByBatch.get(student.batchId); const targetUserId = userByEmail.get(email); return schedule && targetUserId ? { kind: "EXAM_SCHEDULED", tone: "blue", title: "New Test Scheduled", message: `You have a test scheduled for ${course.name} - ${module.title} on ${schedule.testDate} from ${schedule.startTime} to ${schedule.endTime}.`, targetUserId, examId: exam.id, examScheduleId: schedule.id, batchId: student.batchId, createdBy: user.id } : null; }).filter(Boolean);
+    const existingNotifications = candidateNotifications.length ? await tx.notification.findMany({ where: { kind: "EXAM_SCHEDULED", examId: exam.id, examScheduleId: { in: candidateNotifications.map((item) => item.examScheduleId) }, targetUserId: { in: candidateNotifications.map((item) => item.targetUserId) } }, select: { targetUserId: true, examScheduleId: true } }) : [];
+    const existingKeys = new Set(existingNotifications.map((item) => `${item.targetUserId}:${item.examScheduleId}`));
+    const notificationRows = candidateNotifications.filter((item) => !existingKeys.has(`${item.targetUserId}:${item.examScheduleId}`));
     if (notificationRows.length) await tx.notification.createMany({ data: notificationRows });
+    console.info("[EXAM CREATE]", { testId: exam.id, selectedBatchIds: batchIds, studentIds: students.map((student) => student.id), notificationsCreated: notificationRows.length });
     return exam;
   });
   return { ...created, schedules: created.schedules.map(publicSchedule) };
@@ -231,7 +238,13 @@ async function facultySchedule(user, testId, scheduleId) {
 
 export async function listSubmissions(user, testId, scheduleId) {
   const schedule = await facultySchedule(user, testId, scheduleId);
-  return prisma.examAttempt.findMany({ where: { scheduleId: schedule.id }, include: { branchStudent: { select: { id: true, studentId: true, studentName: true, emailAddress: true } } }, orderBy: { submittedAt: "desc" } });
+  const studentWhere = { recordStatus: "ACTIVE", OR: [{ batchId: schedule.branchBatchId }, { batchId: schedule.branchBatch.batchId }] };
+  const [students, attempts] = await Promise.all([
+    prisma.branchStudent.findMany({ where: studentWhere, select: { id: true, studentId: true, studentName: true, emailAddress: true }, orderBy: { studentName: "asc" } }),
+    prisma.examAttempt.findMany({ where: { scheduleId: schedule.id }, include: { branchStudent: { select: { id: true, studentId: true, studentName: true, emailAddress: true } } }, orderBy: { submittedAt: "desc" } }),
+  ]);
+  const attemptsByStudent = new Map(attempts.map((attempt) => [attempt.branchStudentId, attempt]));
+  return students.map((student) => attemptsByStudent.get(student.id) || { id: `pending-${student.id}`, scheduleId: schedule.id, examId: testId, branchStudentId: student.id, branchStudent: student, status: "NOT_STARTED", correctAnswers: 0, wrongAnswers: 0, unansweredQuestions: schedule.exam.totalQuestions, obtainedMarks: 0, totalMarks: schedule.exam.totalMarks, percentage: 0, submittedAt: null });
 }
 
 export async function getSubmission(user, testId, scheduleId, attemptId) {

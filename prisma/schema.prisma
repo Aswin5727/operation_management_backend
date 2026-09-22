@@ -161,6 +161,9 @@ model Notification {
   requestReason      String?
   requestStatus      String?
   requestTitle       String?
+  examId             String?
+  examScheduleId     String?
+  batchId            String?
   subModuleId        String?
   subModuleName      String?
   request            CourseEditRequest? @relation("CourseEditRequestNotifications", fields: [requestId], references: [id])
@@ -173,6 +176,7 @@ model Notification {
   @@index([targetBranchId])
   @@index([targetBranchEmail])
   @@index([targetBranchName])
+  @@index([targetUserId, examId, examScheduleId])
 }
 
 model CourseEditRequest {
