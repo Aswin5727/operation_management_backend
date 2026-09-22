@@ -183,9 +183,10 @@ async function syncFacultyCourseAssignment(tx, { branchId, facultyId, branchCour
 }
 
 export async function listBranchFaculty(actorUser, query) {
-  const branchProfile = await getCurrentBranchProfile(actorUser);
+  const role = normalizeString(actorUser?.role).toUpperCase();
+  const branchProfile = role === "BRANCH_ADMIN" ? await getCurrentBranchProfile(actorUser) : null;
 
-  if (!branchProfile) {
+  if (role !== "SUPER_ADMIN" && !branchProfile) {
     throw new AppError("Branch profile not found.", 404);
   }
 
@@ -200,9 +201,12 @@ export async function listBranchFaculty(actorUser, query) {
   const skip = (Number(page) - 1) * Number(limit);
   const take = Number(limit);
 
-  const where = {
-    branchId: branchProfile.id,
-  };
+  const where = {};
+  if (branchProfile?.id) {
+    where.branchId = branchProfile.id;
+  } else if (role === "SUPER_ADMIN" && normalizeString(query.branchId)) {
+    where.branchId = normalizeString(query.branchId);
+  }
 
   if (search) {
     where.OR = [
@@ -223,6 +227,14 @@ export async function listBranchFaculty(actorUser, query) {
       },
 
       include: {
+        branch: {
+          select: {
+            id: true,
+            branchId: true,
+            branchName: true,
+            branchAdminName: true,
+          },
+        },
         course: {
           select: {
             id: true,
@@ -254,6 +266,8 @@ export async function listBranchFaculty(actorUser, query) {
 
   const normalizedData = data.map((faculty) => ({
     ...faculty,
+    branchName: faculty.branch?.branchName || "",
+    branchAdminName: faculty.branch?.branchAdminName || "",
 
     // Branch Admin assign panna BranchCourse first priority
     course:
