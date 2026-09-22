@@ -42,6 +42,8 @@ model User {
   markedBranchStudentAttendances BranchStudentAttendance[]
   dashboardWidgetPreferences UserDashboardWidget[]
   facultyLeaveRequests      FacultyLeaveRequest[]
+  createdExams              Exam[]                  @relation("ExamFaculty")
+  examAttempts              ExamAttempt[]
 
   @@index([role])
   @@index([active])
@@ -293,6 +295,7 @@ model BranchCourse {
   branchStudents   BranchStudent[]
   facultyTodayWorkEntries FacultyTodayWorkEntry[]
   facultyTodayWorkStudentEntries FacultyTodayWorkStudentEntry[]
+  exams            Exam[]
 
   @@unique([branchId, nameKey])
   @@unique([branchId, courseCode])
@@ -316,6 +319,7 @@ model BranchCourseModule {
   updatedAt      DateTime                @updatedAt
   branchCourse   BranchCourse            @relation(fields: [branchCourseId], references: [id], onDelete: Cascade)
   submodules     BranchCourseSubmodule[]
+  exams          Exam[]
 
   @@unique([branchCourseId, sequenceNo])
   @@unique([branchCourseId, titleKey])
@@ -448,6 +452,7 @@ model BranchBatch {
   branch          Branch          @relation(fields: [branchId], references: [id], onDelete: Cascade)
   branchCourse    BranchCourse    @relation(fields: [branchCourseId], references: [id], onDelete: Cascade)
   branchFaculty   BranchFaculty   @relation(fields: [branchFacultyId], references: [id], onDelete: Cascade)
+  examSchedules   ExamSchedule[]
 
   @@index([branchId])
   @@index([branchCourseId])
@@ -600,6 +605,7 @@ model BranchStudent {
   ledgerEntries      BranchStudentLedgerEntry[]
   calendarAttendanceRecords BranchStudentAttendance[]
   facultyTodayWorkStudentEntries FacultyTodayWorkStudentEntry[]
+  examAttempts    ExamAttempt[]
 
   @@unique([branchId, studentId])
   @@index([branchId])
@@ -1087,6 +1093,110 @@ model BranchInstallmentTemplate {
   @@index([planType])
 }
 
+model Exam {
+  id               String              @id @default(cuid())
+  title            String              @default("MCQ Test")
+  branchCourseId   String
+  moduleId         String
+  facultyId        String
+  marksPerQuestion Int
+  totalQuestions   Int
+  totalMarks       Int
+  status           String              @default("SCHEDULED")
+  createdAt        DateTime            @default(now())
+  updatedAt        DateTime            @updatedAt
+  branchCourse     BranchCourse        @relation(fields: [branchCourseId], references: [id], onDelete: Cascade)
+  module           BranchCourseModule  @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  faculty          User                @relation("ExamFaculty", fields: [facultyId], references: [id])
+  schedules        ExamSchedule[]
+  questions        ExamQuestion[]
+  attempts         ExamAttempt[]
+
+  @@index([facultyId])
+  @@index([branchCourseId])
+  @@index([moduleId])
+}
+
+model ExamSchedule {
+  id            String      @id @default(cuid())
+  examId        String
+  branchBatchId String
+  testDate      String
+  startTime     String
+  endTime       String
+  status        String      @default("SCHEDULED")
+  exam          Exam        @relation(fields: [examId], references: [id], onDelete: Cascade)
+  branchBatch   BranchBatch @relation(fields: [branchBatchId], references: [id], onDelete: Cascade)
+  attempts      ExamAttempt[]
+
+  @@unique([examId, branchBatchId])
+  @@index([branchBatchId, testDate])
+  @@index([examId])
+}
+
+model ExamQuestion {
+  id            String       @id @default(cuid())
+  examId        String
+  question      String
+  optionA       String
+  optionB       String
+  optionC       String
+  optionD       String
+  correctAnswer String
+  questionOrder Int
+  exam          Exam         @relation(fields: [examId], references: [id], onDelete: Cascade)
+  answers       ExamAnswer[]
+
+  @@unique([examId, questionOrder])
+  @@index([examId])
+}
+
+model ExamAttempt {
+  id                 String        @id @default(cuid())
+  examId             String
+  scheduleId         String
+  branchStudentId    String
+  studentUserId      String?
+  startedAt          DateTime      @default(now())
+  submittedAt        DateTime?
+  timeTakenSeconds   Int?
+  status             String        @default("IN_PROGRESS")
+  totalQuestions     Int
+  attemptedQuestions Int           @default(0)
+  correctAnswers     Int           @default(0)
+  wrongAnswers       Int           @default(0)
+  unansweredQuestions Int         @default(0)
+  totalMarks         Int
+  obtainedMarks      Int           @default(0)
+  percentage         Float         @default(0)
+  exam               Exam          @relation(fields: [examId], references: [id], onDelete: Cascade)
+  schedule           ExamSchedule  @relation(fields: [scheduleId], references: [id], onDelete: Cascade)
+  branchStudent      BranchStudent @relation(fields: [branchStudentId], references: [id], onDelete: Cascade)
+  studentUser        User?         @relation(fields: [studentUserId], references: [id])
+  answers            ExamAnswer[]
+
+  @@unique([scheduleId, branchStudentId])
+  @@index([branchStudentId])
+  @@index([examId])
+  @@index([scheduleId])
+  @@index([studentUserId])
+}
+
+model ExamAnswer {
+  id             String       @id @default(cuid())
+  attemptId      String
+  questionId     String
+  selectedAnswer String?
+  isCorrect      Boolean      @default(false)
+  marksAwarded   Int          @default(0)
+  attempt        ExamAttempt  @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  question       ExamQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@unique([attemptId, questionId])
+  @@index([attemptId])
+  @@index([questionId])
+}
+
 enum UserRole {
   BUSINESS_OWNER
   OPERATION_MANAGER
@@ -1119,6 +1229,7 @@ enum NotificationKind {
   COURSE_EDIT_REQUEST_REJECTED
   COURSE_EDIT_MODULE_UPDATED
   FACULTY_LEAVE_REQUEST
+  EXAM_SCHEDULED
 }
 
 enum RecordStatus {

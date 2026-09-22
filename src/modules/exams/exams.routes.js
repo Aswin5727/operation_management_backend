@@ -1,0 +1,23 @@
+import express from "express";
+import { authenticate } from "../../common/middlewares/authenticate.js";
+import { authorize } from "../../common/middlewares/authorize.js";
+import * as controller from "./exams.controller.js";
+
+const router = express.Router();
+router.use(authenticate);
+router.get("/faculty/courses", authorize("FACULTY"), controller.facultyCourses);
+router.get("/faculty/courses/:courseId/batches", authorize("FACULTY"), controller.facultyBatches);
+router.get("/faculty/courses/:courseId/modules", authorize("FACULTY"), controller.facultyModules);
+router.get("/faculty/tests", authorize("FACULTY"), controller.listFacultyTests);
+router.post("/faculty/tests", authorize("FACULTY"), controller.createTest);
+router.put("/faculty/tests/:testId", authorize("FACULTY"), controller.updateTest);
+router.get("/faculty/tests/:testId", authorize("FACULTY"), controller.getFacultyTest);
+router.get("/faculty/tests/:testId/pdf", authorize("FACULTY"), controller.downloadPdf);
+router.get("/faculty/tests/:testId/schedules/:scheduleId/submissions", authorize("FACULTY"), controller.listSubmissions);
+router.get("/faculty/tests/:testId/schedules/:scheduleId/submissions/:attemptId", authorize("FACULTY"), controller.getSubmission);
+router.get("/student/tests", authorize("STUDENT"), controller.listStudentTests);
+router.get("/student/tests/:scheduleId", authorize("STUDENT"), controller.getStudentTest);
+router.post("/student/tests/:scheduleId/start", authorize("STUDENT"), controller.startTest);
+router.post("/student/tests/:scheduleId/submit", authorize("STUDENT"), controller.submitTest);
+router.get("/student/tests/:scheduleId/result", authorize("STUDENT"), controller.getStudentResult);
+export default router;
