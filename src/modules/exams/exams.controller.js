@@ -12,6 +12,8 @@ export const downloadPdf = asyncHandler(async (req, res) => { const result = awa
 export const listSubmissions = asyncHandler(async (req, res) => res.json({ status: "success", data: await service.listSubmissions(req.user, req.params.testId, req.params.scheduleId) }));
 export const listFacultyExamReports = asyncHandler(async (req, res) => res.json({ status: "success", data: await service.listFacultyExamReports(req.user, req.query) }));
 export const getFacultyStudentExamReport = asyncHandler(async (req, res) => res.json({ status: "success", data: await service.getFacultyStudentExamReport(req.user, req.params.moduleId, req.params.batchId) }));
+export const listFacultyAssessmentReports = asyncHandler(async (req, res) => res.json({ status: "success", data: await service.listFacultyAssessmentReports(req.user) }));
+export const getFacultyAssessmentStudentReport = asyncHandler(async (req, res) => res.json({ status: "success", data: await service.getFacultyAssessmentStudentReport(req.user, req.params.courseId, req.params.batchId, req.params.moduleId) }));
 export const getSubmission = asyncHandler(async (req, res) => res.json({ status: "success", data: await service.getSubmission(req.user, req.params.testId, req.params.scheduleId, req.params.attemptId) }));
 export const listStudentTests = asyncHandler(async (req, res) => res.json({ status: "success", data: await service.listStudentTests(req.user) }));
 export const getStudentTest = asyncHandler(async (req, res) => res.json({ status: "success", data: await service.getStudentTest(req.user, req.params.scheduleId) }));

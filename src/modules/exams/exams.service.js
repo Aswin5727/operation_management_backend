@@ -333,7 +333,7 @@ export async function createAssessment(user, payload = {}) {
 
 export async function updateAssessment(user, assessmentId, payload = {}) {
   const existing = await facultyAssessment(user, assessmentId);
-  if (new Date() >= new Date(existing.startDate)) throw new AppError("This assessment can no longer be edited after it starts.", 409);
+  if (new Date() > new Date(existing.endDate)) throw new AppError("This assessment can no longer be edited after its end date and time.", 409);
   const dates = assessmentDates(payload);
   const { course, module, batch } = await validateAssessmentScope(user, payload);
   const totalMarks = Number(payload.totalMarks);
@@ -437,6 +437,25 @@ export async function getFacultyStudentExamReport(user, moduleId, batchId) {
   const testRows = tests.map((test) => ({ id: test.id, name: test.title, maximumMarks: test.totalMarks, totalQuestions: test.totalQuestions, marksPerQuestion: test.marksPerQuestion, schedule: test.schedules[0] || null }));
   const studentRows = students.map((student) => { let totalObtainedMarks = 0; let totalMaximumMarks = 0; const testResults = testRows.map((test) => { const attempt = test.schedule ? attemptMap.get(`${student.id}:${test.schedule.id}`) : null; if (attempt?.status === "SUBMITTED") { totalObtainedMarks += Number(attempt.obtainedMarks || 0); totalMaximumMarks += Number(attempt.totalMarks || test.maximumMarks || 0); } return { testId: test.id, obtainedMarks: attempt?.status === "SUBMITTED" ? attempt.obtainedMarks : null, maximumMarks: test.maximumMarks, percentage: attempt?.status === "SUBMITTED" ? Number(attempt.percentage || 0) : null, status: attempt?.status || "NOT_ATTEMPTED", correct: attempt?.correctAnswers ?? null, wrong: attempt?.wrongAnswers ?? null, unanswered: attempt?.unansweredQuestions ?? null, startedAt: attempt?.startedAt || null, submittedAt: attempt?.submittedAt || null }; }); return { studentId: student.studentId, studentName: student.studentName, emailAddress: student.emailAddress, tests: testResults, totalObtainedMarks, totalMaximumMarks, overallPercentage: totalMaximumMarks ? (totalObtainedMarks / totalMaximumMarks) * 100 : 0 }; });
   return { course: batch.branchCourse, module: { id: module.id, name: module.title }, batch: { id: batch.id, batchId: batch.batchId, name: batch.batchName, timing: batch.batchTiming }, tests: testRows, totalTests: testRows.length, totalMcqs: testRows.reduce((sum, test) => sum + test.totalQuestions, 0), totalStudents: students.length, students: studentRows };
+}
+
+export async function listFacultyAssessmentReports(user) {
+  const assessments = await prisma.assessment.findMany({ where: { facultyId: user.id }, include: { branchCourse: { select: { id: true, name: true } }, module: { select: { id: true, title: true } }, branchBatch: { select: { id: true, batchId: true, batchName: true, batchTiming: true } } }, orderBy: [{ startDate: "asc" }, { createdAt: "asc" }] });
+  const groups = new Map();
+  assessments.forEach((assessment) => { const key = `${assessment.branchCourseId}:${assessment.branchBatchId}:${assessment.moduleId}`; const row = groups.get(key) || { course: assessment.branchCourse, batch: { id: assessment.branchBatch.id, batchId: assessment.branchBatch.batchId, name: assessment.branchBatch.batchName, timing: assessment.branchBatch.batchTiming }, module: { id: assessment.module.id, name: assessment.module.title }, assessmentCount: 0 }; row.assessmentCount += 1; groups.set(key, row); });
+  return Array.from(groups.values()).sort((a, b) => `${a.course.name}:${a.batch.name}:${a.module.name}`.localeCompare(`${b.course.name}:${b.batch.name}:${b.module.name}`));
+}
+
+export async function getFacultyAssessmentStudentReport(user, courseId, batchId, moduleId) {
+  const { batch, module } = await assertFacultyReportScope(user, moduleId, batchId);
+  if (batch.branchCourseId !== courseId) throw new AppError("Course does not match the selected batch.", 422);
+  const assessments = await prisma.assessment.findMany({ where: { facultyId: user.id, branchCourseId: courseId, branchBatchId: batch.id, moduleId }, select: { id: true, assessmentName: true, totalMarks: true, startDate: true, endDate: true, createdAt: true }, orderBy: [{ startDate: "asc" }, { createdAt: "asc" }] });
+  const students = await prisma.branchStudent.findMany({ where: { recordStatus: "ACTIVE", OR: [{ batchId: batch.id }, { batchId: batch.batchId }] }, select: { id: true, studentId: true, studentName: true, emailAddress: true }, orderBy: { studentName: "asc" } });
+  const submissions = assessments.length && students.length ? await prisma.assessmentSubmission.findMany({ where: { assessmentId: { in: assessments.map((assessment) => assessment.id) }, branchStudentId: { in: students.map((student) => student.id) } }, select: { assessmentId: true, branchStudentId: true, status: true, submittedAt: true, marksObtained: true, feedback: true } }) : [];
+  const submissionMap = new Map(submissions.map((submission) => [`${submission.branchStudentId}:${submission.assessmentId}`, submission]));
+  const assessmentRows = assessments.map((assessment) => ({ id: assessment.id, assessmentName: assessment.assessmentName, totalMarks: assessment.totalMarks, startDate: assessment.startDate, endDate: assessment.endDate }));
+  const studentRows = students.map((student) => { let overallMarks = 0; let overallMaximum = 0; const results = {}; assessments.forEach((assessment) => { const submission = submissionMap.get(`${student.id}:${assessment.id}`); const evaluated = submission?.status === "EVALUATED" && submission.marksObtained != null; if (evaluated) { overallMarks += submission.marksObtained; overallMaximum += assessment.totalMarks; } results[assessment.id] = { status: submission?.status || "NOT_SUBMITTED", marksObtained: evaluated ? submission.marksObtained : null, totalMarks: assessment.totalMarks, percentage: evaluated ? (submission.marksObtained / assessment.totalMarks) * 100 : null, submittedAt: submission?.submittedAt || null, feedback: submission?.feedback || null }; }); return { studentId: student.studentId, studentName: student.studentName, emailAddress: student.emailAddress, assessments: results, overall: { marksObtained: overallMarks, totalMarks: overallMaximum, percentage: overallMaximum ? (overallMarks / overallMaximum) * 100 : null } }; });
+  return { course: batch.branchCourse, batch: { id: batch.id, batchId: batch.batchId, name: batch.batchName, timing: batch.batchTiming }, module: { id: module.id, name: module.title }, assessments: assessmentRows, totalAssessments: assessmentRows.length, totalStudents: studentRows.length, students: studentRows };
 }
 function createProfessionalPdf(pageLines) {
   const pages = pageLines.length ? pageLines : [[{ text: "No question data available." }]];

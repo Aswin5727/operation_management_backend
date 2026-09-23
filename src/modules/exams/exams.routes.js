@@ -16,6 +16,8 @@ router.get("/faculty/tests/:testId/pdf", authorize("FACULTY"), controller.downlo
 router.get("/faculty/tests/:testId/schedules/:scheduleId/submissions", authorize("FACULTY"), controller.listSubmissions);
 router.get("/faculty/exam-reports", authorize("FACULTY"), controller.listFacultyExamReports);
 router.get("/faculty/exam-reports/:moduleId/:batchId", authorize("FACULTY"), controller.getFacultyStudentExamReport);
+router.get("/faculty/assessment-reports", authorize("FACULTY"), controller.listFacultyAssessmentReports);
+router.get("/faculty/assessment-reports/:courseId/:batchId/:moduleId", authorize("FACULTY"), controller.getFacultyAssessmentStudentReport);
 router.get("/faculty/tests/:testId/schedules/:scheduleId/submissions/:attemptId", authorize("FACULTY"), controller.getSubmission);
 router.get("/faculty/assessments", authorize("FACULTY"), controller.listFacultyAssessments);
 router.get("/faculty/assessments/:assessmentId", authorize("FACULTY"), controller.getFacultyAssessment);
