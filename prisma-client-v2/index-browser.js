@@ -1016,6 +1016,20 @@ exports.Prisma.ExamAnswerScalarFieldEnum = {
   marksAwarded: 'marksAwarded'
 };
 
+exports.Prisma.FacultyReportShareScalarFieldEnum = {
+  id: 'id',
+  facultyId: 'facultyId',
+  branchId: 'branchId',
+  batchId: 'batchId',
+  courseId: 'courseId',
+  testModuleIds: 'testModuleIds',
+  assessmentModuleIds: 'assessmentModuleIds',
+  sentAt: 'sentAt',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.BranchStudentPaymentScalarFieldEnum = {
   id: 'id',
   receiptNumber: 'receiptNumber',
@@ -1131,7 +1145,8 @@ exports.NotificationKind = exports.$Enums.NotificationKind = {
   COURSE_EDIT_MODULE_UPDATED: 'COURSE_EDIT_MODULE_UPDATED',
   FACULTY_LEAVE_REQUEST: 'FACULTY_LEAVE_REQUEST',
   EXAM_SCHEDULED: 'EXAM_SCHEDULED',
-  ASSESSMENT_AVAILABLE: 'ASSESSMENT_AVAILABLE'
+  ASSESSMENT_AVAILABLE: 'ASSESSMENT_AVAILABLE',
+  FACULTY_REPORT_SHARED: 'FACULTY_REPORT_SHARED'
 };
 
 exports.CourseEditRequestStatus = exports.$Enums.CourseEditRequestStatus = {
@@ -1207,6 +1222,7 @@ exports.Prisma.ModelName = {
   ExamQuestion: 'ExamQuestion',
   ExamAttempt: 'ExamAttempt',
   ExamAnswer: 'ExamAnswer',
+  FacultyReportShare: 'FacultyReportShare',
   BranchStudentPayment: 'BranchStudentPayment',
   BranchStudentLedgerEntry: 'BranchStudentLedgerEntry'
 };

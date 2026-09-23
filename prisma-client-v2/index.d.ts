@@ -249,6 +249,11 @@ export type ExamAttempt = $Result.DefaultSelection<Prisma.$ExamAttemptPayload>
  */
 export type ExamAnswer = $Result.DefaultSelection<Prisma.$ExamAnswerPayload>
 /**
+ * Model FacultyReportShare
+ * 
+ */
+export type FacultyReportShare = $Result.DefaultSelection<Prisma.$FacultyReportSharePayload>
+/**
  * Model BranchStudentPayment
  * 
  */
@@ -302,7 +307,8 @@ export const NotificationKind: {
   COURSE_EDIT_MODULE_UPDATED: 'COURSE_EDIT_MODULE_UPDATED',
   FACULTY_LEAVE_REQUEST: 'FACULTY_LEAVE_REQUEST',
   EXAM_SCHEDULED: 'EXAM_SCHEDULED',
-  ASSESSMENT_AVAILABLE: 'ASSESSMENT_AVAILABLE'
+  ASSESSMENT_AVAILABLE: 'ASSESSMENT_AVAILABLE',
+  FACULTY_REPORT_SHARED: 'FACULTY_REPORT_SHARED'
 };
 
 export type NotificationKind = (typeof NotificationKind)[keyof typeof NotificationKind]
@@ -978,6 +984,16 @@ export class PrismaClient<
   get examAnswer(): Prisma.ExamAnswerDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.facultyReportShare`: Exposes CRUD operations for the **FacultyReportShare** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more FacultyReportShares
+    * const facultyReportShares = await prisma.facultyReportShare.findMany()
+    * ```
+    */
+  get facultyReportShare(): Prisma.FacultyReportShareDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.branchStudentPayment`: Exposes CRUD operations for the **BranchStudentPayment** model.
     * Example usage:
     * ```ts
@@ -1477,6 +1493,7 @@ export namespace Prisma {
     ExamQuestion: 'ExamQuestion',
     ExamAttempt: 'ExamAttempt',
     ExamAnswer: 'ExamAnswer',
+    FacultyReportShare: 'FacultyReportShare',
     BranchStudentPayment: 'BranchStudentPayment',
     BranchStudentLedgerEntry: 'BranchStudentLedgerEntry'
   };
@@ -1494,7 +1511,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "dashboardWidget" | "userDashboardWidget" | "branch" | "loginEvent" | "notification" | "courseEditRequest" | "passwordResetToken" | "course" | "branchCourse" | "branchCourseModule" | "branchCourseSubmodule" | "courseModule" | "batch" | "batchFacultyAssignment" | "branchBatch" | "courseStatusHistory" | "batchStatusHistory" | "studentProfile" | "branchStudent" | "branchStudentAttendance" | "branchCalendarHoliday" | "branchCalendarLeave" | "branchStudentInstallment" | "facultyProfile" | "facultyCourseAssignment" | "facultyBatchEntry" | "facultyAttendanceSession" | "facultyAttendanceDay" | "facultyAttendanceBatchWork" | "facultyTodayWorkEntry" | "facultyTodayWorkStudentEntry" | "studentAttendance" | "branchFaculty" | "facultyLeaveRequest" | "facultyWeekOffRequest" | "branchFacultyCourse" | "facultyLeaveAffectedSession" | "facultyLeaveCombinedSession" | "branchInstallmentTemplate" | "assessment" | "assessmentSubmission" | "exam" | "examSchedule" | "examQuestion" | "examAttempt" | "examAnswer" | "branchStudentPayment" | "branchStudentLedgerEntry"
+      modelProps: "user" | "dashboardWidget" | "userDashboardWidget" | "branch" | "loginEvent" | "notification" | "courseEditRequest" | "passwordResetToken" | "course" | "branchCourse" | "branchCourseModule" | "branchCourseSubmodule" | "courseModule" | "batch" | "batchFacultyAssignment" | "branchBatch" | "courseStatusHistory" | "batchStatusHistory" | "studentProfile" | "branchStudent" | "branchStudentAttendance" | "branchCalendarHoliday" | "branchCalendarLeave" | "branchStudentInstallment" | "facultyProfile" | "facultyCourseAssignment" | "facultyBatchEntry" | "facultyAttendanceSession" | "facultyAttendanceDay" | "facultyAttendanceBatchWork" | "facultyTodayWorkEntry" | "facultyTodayWorkStudentEntry" | "studentAttendance" | "branchFaculty" | "facultyLeaveRequest" | "facultyWeekOffRequest" | "branchFacultyCourse" | "facultyLeaveAffectedSession" | "facultyLeaveCombinedSession" | "branchInstallmentTemplate" | "assessment" | "assessmentSubmission" | "exam" | "examSchedule" | "examQuestion" | "examAttempt" | "examAnswer" | "facultyReportShare" | "branchStudentPayment" | "branchStudentLedgerEntry"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -4976,6 +4993,80 @@ export namespace Prisma {
           }
         }
       }
+      FacultyReportShare: {
+        payload: Prisma.$FacultyReportSharePayload<ExtArgs>
+        fields: Prisma.FacultyReportShareFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.FacultyReportShareFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyReportSharePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.FacultyReportShareFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyReportSharePayload>
+          }
+          findFirst: {
+            args: Prisma.FacultyReportShareFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyReportSharePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.FacultyReportShareFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyReportSharePayload>
+          }
+          findMany: {
+            args: Prisma.FacultyReportShareFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyReportSharePayload>[]
+          }
+          create: {
+            args: Prisma.FacultyReportShareCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyReportSharePayload>
+          }
+          createMany: {
+            args: Prisma.FacultyReportShareCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.FacultyReportShareCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyReportSharePayload>[]
+          }
+          delete: {
+            args: Prisma.FacultyReportShareDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyReportSharePayload>
+          }
+          update: {
+            args: Prisma.FacultyReportShareUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyReportSharePayload>
+          }
+          deleteMany: {
+            args: Prisma.FacultyReportShareDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.FacultyReportShareUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.FacultyReportShareUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyReportSharePayload>[]
+          }
+          upsert: {
+            args: Prisma.FacultyReportShareUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FacultyReportSharePayload>
+          }
+          aggregate: {
+            args: Prisma.FacultyReportShareAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateFacultyReportShare>
+          }
+          groupBy: {
+            args: Prisma.FacultyReportShareGroupByArgs<ExtArgs>
+            result: $Utils.Optional<FacultyReportShareGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.FacultyReportShareCountArgs<ExtArgs>
+            result: $Utils.Optional<FacultyReportShareCountAggregateOutputType> | number
+          }
+        }
+      }
       BranchStudentPayment: {
         payload: Prisma.$BranchStudentPaymentPayload<ExtArgs>
         fields: Prisma.BranchStudentPaymentFieldRefs
@@ -5279,6 +5370,7 @@ export namespace Prisma {
     examQuestion?: ExamQuestionOmit
     examAttempt?: ExamAttemptOmit
     examAnswer?: ExamAnswerOmit
+    facultyReportShare?: FacultyReportShareOmit
     branchStudentPayment?: BranchStudentPaymentOmit
     branchStudentLedgerEntry?: BranchStudentLedgerEntryOmit
   }
@@ -66661,6 +66753,1076 @@ export namespace Prisma {
 
 
   /**
+   * Model FacultyReportShare
+   */
+
+  export type AggregateFacultyReportShare = {
+    _count: FacultyReportShareCountAggregateOutputType | null
+    _min: FacultyReportShareMinAggregateOutputType | null
+    _max: FacultyReportShareMaxAggregateOutputType | null
+  }
+
+  export type FacultyReportShareMinAggregateOutputType = {
+    id: string | null
+    facultyId: string | null
+    branchId: string | null
+    batchId: string | null
+    courseId: string | null
+    sentAt: Date | null
+    status: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type FacultyReportShareMaxAggregateOutputType = {
+    id: string | null
+    facultyId: string | null
+    branchId: string | null
+    batchId: string | null
+    courseId: string | null
+    sentAt: Date | null
+    status: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type FacultyReportShareCountAggregateOutputType = {
+    id: number
+    facultyId: number
+    branchId: number
+    batchId: number
+    courseId: number
+    testModuleIds: number
+    assessmentModuleIds: number
+    sentAt: number
+    status: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type FacultyReportShareMinAggregateInputType = {
+    id?: true
+    facultyId?: true
+    branchId?: true
+    batchId?: true
+    courseId?: true
+    sentAt?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type FacultyReportShareMaxAggregateInputType = {
+    id?: true
+    facultyId?: true
+    branchId?: true
+    batchId?: true
+    courseId?: true
+    sentAt?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type FacultyReportShareCountAggregateInputType = {
+    id?: true
+    facultyId?: true
+    branchId?: true
+    batchId?: true
+    courseId?: true
+    testModuleIds?: true
+    assessmentModuleIds?: true
+    sentAt?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type FacultyReportShareAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FacultyReportShare to aggregate.
+     */
+    where?: FacultyReportShareWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FacultyReportShares to fetch.
+     */
+    orderBy?: FacultyReportShareOrderByWithRelationInput | FacultyReportShareOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: FacultyReportShareWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FacultyReportShares from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FacultyReportShares.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned FacultyReportShares
+    **/
+    _count?: true | FacultyReportShareCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: FacultyReportShareMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: FacultyReportShareMaxAggregateInputType
+  }
+
+  export type GetFacultyReportShareAggregateType<T extends FacultyReportShareAggregateArgs> = {
+        [P in keyof T & keyof AggregateFacultyReportShare]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateFacultyReportShare[P]>
+      : GetScalarType<T[P], AggregateFacultyReportShare[P]>
+  }
+
+
+
+
+  export type FacultyReportShareGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FacultyReportShareWhereInput
+    orderBy?: FacultyReportShareOrderByWithAggregationInput | FacultyReportShareOrderByWithAggregationInput[]
+    by: FacultyReportShareScalarFieldEnum[] | FacultyReportShareScalarFieldEnum
+    having?: FacultyReportShareScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: FacultyReportShareCountAggregateInputType | true
+    _min?: FacultyReportShareMinAggregateInputType
+    _max?: FacultyReportShareMaxAggregateInputType
+  }
+
+  export type FacultyReportShareGroupByOutputType = {
+    id: string
+    facultyId: string
+    branchId: string
+    batchId: string
+    courseId: string
+    testModuleIds: JsonValue
+    assessmentModuleIds: JsonValue
+    sentAt: Date
+    status: string
+    createdAt: Date
+    updatedAt: Date
+    _count: FacultyReportShareCountAggregateOutputType | null
+    _min: FacultyReportShareMinAggregateOutputType | null
+    _max: FacultyReportShareMaxAggregateOutputType | null
+  }
+
+  type GetFacultyReportShareGroupByPayload<T extends FacultyReportShareGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<FacultyReportShareGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof FacultyReportShareGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], FacultyReportShareGroupByOutputType[P]>
+            : GetScalarType<T[P], FacultyReportShareGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type FacultyReportShareSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    facultyId?: boolean
+    branchId?: boolean
+    batchId?: boolean
+    courseId?: boolean
+    testModuleIds?: boolean
+    assessmentModuleIds?: boolean
+    sentAt?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["facultyReportShare"]>
+
+  export type FacultyReportShareSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    facultyId?: boolean
+    branchId?: boolean
+    batchId?: boolean
+    courseId?: boolean
+    testModuleIds?: boolean
+    assessmentModuleIds?: boolean
+    sentAt?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["facultyReportShare"]>
+
+  export type FacultyReportShareSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    facultyId?: boolean
+    branchId?: boolean
+    batchId?: boolean
+    courseId?: boolean
+    testModuleIds?: boolean
+    assessmentModuleIds?: boolean
+    sentAt?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["facultyReportShare"]>
+
+  export type FacultyReportShareSelectScalar = {
+    id?: boolean
+    facultyId?: boolean
+    branchId?: boolean
+    batchId?: boolean
+    courseId?: boolean
+    testModuleIds?: boolean
+    assessmentModuleIds?: boolean
+    sentAt?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type FacultyReportShareOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "facultyId" | "branchId" | "batchId" | "courseId" | "testModuleIds" | "assessmentModuleIds" | "sentAt" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["facultyReportShare"]>
+
+  export type $FacultyReportSharePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "FacultyReportShare"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      facultyId: string
+      branchId: string
+      batchId: string
+      courseId: string
+      testModuleIds: Prisma.JsonValue
+      assessmentModuleIds: Prisma.JsonValue
+      sentAt: Date
+      status: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["facultyReportShare"]>
+    composites: {}
+  }
+
+  type FacultyReportShareGetPayload<S extends boolean | null | undefined | FacultyReportShareDefaultArgs> = $Result.GetResult<Prisma.$FacultyReportSharePayload, S>
+
+  type FacultyReportShareCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<FacultyReportShareFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: FacultyReportShareCountAggregateInputType | true
+    }
+
+  export interface FacultyReportShareDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['FacultyReportShare'], meta: { name: 'FacultyReportShare' } }
+    /**
+     * Find zero or one FacultyReportShare that matches the filter.
+     * @param {FacultyReportShareFindUniqueArgs} args - Arguments to find a FacultyReportShare
+     * @example
+     * // Get one FacultyReportShare
+     * const facultyReportShare = await prisma.facultyReportShare.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends FacultyReportShareFindUniqueArgs>(args: SelectSubset<T, FacultyReportShareFindUniqueArgs<ExtArgs>>): Prisma__FacultyReportShareClient<$Result.GetResult<Prisma.$FacultyReportSharePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one FacultyReportShare that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {FacultyReportShareFindUniqueOrThrowArgs} args - Arguments to find a FacultyReportShare
+     * @example
+     * // Get one FacultyReportShare
+     * const facultyReportShare = await prisma.facultyReportShare.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends FacultyReportShareFindUniqueOrThrowArgs>(args: SelectSubset<T, FacultyReportShareFindUniqueOrThrowArgs<ExtArgs>>): Prisma__FacultyReportShareClient<$Result.GetResult<Prisma.$FacultyReportSharePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first FacultyReportShare that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FacultyReportShareFindFirstArgs} args - Arguments to find a FacultyReportShare
+     * @example
+     * // Get one FacultyReportShare
+     * const facultyReportShare = await prisma.facultyReportShare.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends FacultyReportShareFindFirstArgs>(args?: SelectSubset<T, FacultyReportShareFindFirstArgs<ExtArgs>>): Prisma__FacultyReportShareClient<$Result.GetResult<Prisma.$FacultyReportSharePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first FacultyReportShare that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FacultyReportShareFindFirstOrThrowArgs} args - Arguments to find a FacultyReportShare
+     * @example
+     * // Get one FacultyReportShare
+     * const facultyReportShare = await prisma.facultyReportShare.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends FacultyReportShareFindFirstOrThrowArgs>(args?: SelectSubset<T, FacultyReportShareFindFirstOrThrowArgs<ExtArgs>>): Prisma__FacultyReportShareClient<$Result.GetResult<Prisma.$FacultyReportSharePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more FacultyReportShares that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FacultyReportShareFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all FacultyReportShares
+     * const facultyReportShares = await prisma.facultyReportShare.findMany()
+     * 
+     * // Get first 10 FacultyReportShares
+     * const facultyReportShares = await prisma.facultyReportShare.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const facultyReportShareWithIdOnly = await prisma.facultyReportShare.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends FacultyReportShareFindManyArgs>(args?: SelectSubset<T, FacultyReportShareFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FacultyReportSharePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a FacultyReportShare.
+     * @param {FacultyReportShareCreateArgs} args - Arguments to create a FacultyReportShare.
+     * @example
+     * // Create one FacultyReportShare
+     * const FacultyReportShare = await prisma.facultyReportShare.create({
+     *   data: {
+     *     // ... data to create a FacultyReportShare
+     *   }
+     * })
+     * 
+     */
+    create<T extends FacultyReportShareCreateArgs>(args: SelectSubset<T, FacultyReportShareCreateArgs<ExtArgs>>): Prisma__FacultyReportShareClient<$Result.GetResult<Prisma.$FacultyReportSharePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many FacultyReportShares.
+     * @param {FacultyReportShareCreateManyArgs} args - Arguments to create many FacultyReportShares.
+     * @example
+     * // Create many FacultyReportShares
+     * const facultyReportShare = await prisma.facultyReportShare.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends FacultyReportShareCreateManyArgs>(args?: SelectSubset<T, FacultyReportShareCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many FacultyReportShares and returns the data saved in the database.
+     * @param {FacultyReportShareCreateManyAndReturnArgs} args - Arguments to create many FacultyReportShares.
+     * @example
+     * // Create many FacultyReportShares
+     * const facultyReportShare = await prisma.facultyReportShare.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many FacultyReportShares and only return the `id`
+     * const facultyReportShareWithIdOnly = await prisma.facultyReportShare.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends FacultyReportShareCreateManyAndReturnArgs>(args?: SelectSubset<T, FacultyReportShareCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FacultyReportSharePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a FacultyReportShare.
+     * @param {FacultyReportShareDeleteArgs} args - Arguments to delete one FacultyReportShare.
+     * @example
+     * // Delete one FacultyReportShare
+     * const FacultyReportShare = await prisma.facultyReportShare.delete({
+     *   where: {
+     *     // ... filter to delete one FacultyReportShare
+     *   }
+     * })
+     * 
+     */
+    delete<T extends FacultyReportShareDeleteArgs>(args: SelectSubset<T, FacultyReportShareDeleteArgs<ExtArgs>>): Prisma__FacultyReportShareClient<$Result.GetResult<Prisma.$FacultyReportSharePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one FacultyReportShare.
+     * @param {FacultyReportShareUpdateArgs} args - Arguments to update one FacultyReportShare.
+     * @example
+     * // Update one FacultyReportShare
+     * const facultyReportShare = await prisma.facultyReportShare.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends FacultyReportShareUpdateArgs>(args: SelectSubset<T, FacultyReportShareUpdateArgs<ExtArgs>>): Prisma__FacultyReportShareClient<$Result.GetResult<Prisma.$FacultyReportSharePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more FacultyReportShares.
+     * @param {FacultyReportShareDeleteManyArgs} args - Arguments to filter FacultyReportShares to delete.
+     * @example
+     * // Delete a few FacultyReportShares
+     * const { count } = await prisma.facultyReportShare.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends FacultyReportShareDeleteManyArgs>(args?: SelectSubset<T, FacultyReportShareDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more FacultyReportShares.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FacultyReportShareUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many FacultyReportShares
+     * const facultyReportShare = await prisma.facultyReportShare.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends FacultyReportShareUpdateManyArgs>(args: SelectSubset<T, FacultyReportShareUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more FacultyReportShares and returns the data updated in the database.
+     * @param {FacultyReportShareUpdateManyAndReturnArgs} args - Arguments to update many FacultyReportShares.
+     * @example
+     * // Update many FacultyReportShares
+     * const facultyReportShare = await prisma.facultyReportShare.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more FacultyReportShares and only return the `id`
+     * const facultyReportShareWithIdOnly = await prisma.facultyReportShare.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends FacultyReportShareUpdateManyAndReturnArgs>(args: SelectSubset<T, FacultyReportShareUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FacultyReportSharePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one FacultyReportShare.
+     * @param {FacultyReportShareUpsertArgs} args - Arguments to update or create a FacultyReportShare.
+     * @example
+     * // Update or create a FacultyReportShare
+     * const facultyReportShare = await prisma.facultyReportShare.upsert({
+     *   create: {
+     *     // ... data to create a FacultyReportShare
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the FacultyReportShare we want to update
+     *   }
+     * })
+     */
+    upsert<T extends FacultyReportShareUpsertArgs>(args: SelectSubset<T, FacultyReportShareUpsertArgs<ExtArgs>>): Prisma__FacultyReportShareClient<$Result.GetResult<Prisma.$FacultyReportSharePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of FacultyReportShares.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FacultyReportShareCountArgs} args - Arguments to filter FacultyReportShares to count.
+     * @example
+     * // Count the number of FacultyReportShares
+     * const count = await prisma.facultyReportShare.count({
+     *   where: {
+     *     // ... the filter for the FacultyReportShares we want to count
+     *   }
+     * })
+    **/
+    count<T extends FacultyReportShareCountArgs>(
+      args?: Subset<T, FacultyReportShareCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], FacultyReportShareCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a FacultyReportShare.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FacultyReportShareAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends FacultyReportShareAggregateArgs>(args: Subset<T, FacultyReportShareAggregateArgs>): Prisma.PrismaPromise<GetFacultyReportShareAggregateType<T>>
+
+    /**
+     * Group by FacultyReportShare.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FacultyReportShareGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends FacultyReportShareGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: FacultyReportShareGroupByArgs['orderBy'] }
+        : { orderBy?: FacultyReportShareGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, FacultyReportShareGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetFacultyReportShareGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the FacultyReportShare model
+   */
+  readonly fields: FacultyReportShareFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for FacultyReportShare.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__FacultyReportShareClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the FacultyReportShare model
+   */
+  interface FacultyReportShareFieldRefs {
+    readonly id: FieldRef<"FacultyReportShare", 'String'>
+    readonly facultyId: FieldRef<"FacultyReportShare", 'String'>
+    readonly branchId: FieldRef<"FacultyReportShare", 'String'>
+    readonly batchId: FieldRef<"FacultyReportShare", 'String'>
+    readonly courseId: FieldRef<"FacultyReportShare", 'String'>
+    readonly testModuleIds: FieldRef<"FacultyReportShare", 'Json'>
+    readonly assessmentModuleIds: FieldRef<"FacultyReportShare", 'Json'>
+    readonly sentAt: FieldRef<"FacultyReportShare", 'DateTime'>
+    readonly status: FieldRef<"FacultyReportShare", 'String'>
+    readonly createdAt: FieldRef<"FacultyReportShare", 'DateTime'>
+    readonly updatedAt: FieldRef<"FacultyReportShare", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * FacultyReportShare findUnique
+   */
+  export type FacultyReportShareFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyReportShare
+     */
+    select?: FacultyReportShareSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyReportShare
+     */
+    omit?: FacultyReportShareOmit<ExtArgs> | null
+    /**
+     * Filter, which FacultyReportShare to fetch.
+     */
+    where: FacultyReportShareWhereUniqueInput
+  }
+
+  /**
+   * FacultyReportShare findUniqueOrThrow
+   */
+  export type FacultyReportShareFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyReportShare
+     */
+    select?: FacultyReportShareSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyReportShare
+     */
+    omit?: FacultyReportShareOmit<ExtArgs> | null
+    /**
+     * Filter, which FacultyReportShare to fetch.
+     */
+    where: FacultyReportShareWhereUniqueInput
+  }
+
+  /**
+   * FacultyReportShare findFirst
+   */
+  export type FacultyReportShareFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyReportShare
+     */
+    select?: FacultyReportShareSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyReportShare
+     */
+    omit?: FacultyReportShareOmit<ExtArgs> | null
+    /**
+     * Filter, which FacultyReportShare to fetch.
+     */
+    where?: FacultyReportShareWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FacultyReportShares to fetch.
+     */
+    orderBy?: FacultyReportShareOrderByWithRelationInput | FacultyReportShareOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FacultyReportShares.
+     */
+    cursor?: FacultyReportShareWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FacultyReportShares from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FacultyReportShares.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FacultyReportShares.
+     */
+    distinct?: FacultyReportShareScalarFieldEnum | FacultyReportShareScalarFieldEnum[]
+  }
+
+  /**
+   * FacultyReportShare findFirstOrThrow
+   */
+  export type FacultyReportShareFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyReportShare
+     */
+    select?: FacultyReportShareSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyReportShare
+     */
+    omit?: FacultyReportShareOmit<ExtArgs> | null
+    /**
+     * Filter, which FacultyReportShare to fetch.
+     */
+    where?: FacultyReportShareWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FacultyReportShares to fetch.
+     */
+    orderBy?: FacultyReportShareOrderByWithRelationInput | FacultyReportShareOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FacultyReportShares.
+     */
+    cursor?: FacultyReportShareWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FacultyReportShares from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FacultyReportShares.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FacultyReportShares.
+     */
+    distinct?: FacultyReportShareScalarFieldEnum | FacultyReportShareScalarFieldEnum[]
+  }
+
+  /**
+   * FacultyReportShare findMany
+   */
+  export type FacultyReportShareFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyReportShare
+     */
+    select?: FacultyReportShareSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyReportShare
+     */
+    omit?: FacultyReportShareOmit<ExtArgs> | null
+    /**
+     * Filter, which FacultyReportShares to fetch.
+     */
+    where?: FacultyReportShareWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FacultyReportShares to fetch.
+     */
+    orderBy?: FacultyReportShareOrderByWithRelationInput | FacultyReportShareOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing FacultyReportShares.
+     */
+    cursor?: FacultyReportShareWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FacultyReportShares from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FacultyReportShares.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FacultyReportShares.
+     */
+    distinct?: FacultyReportShareScalarFieldEnum | FacultyReportShareScalarFieldEnum[]
+  }
+
+  /**
+   * FacultyReportShare create
+   */
+  export type FacultyReportShareCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyReportShare
+     */
+    select?: FacultyReportShareSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyReportShare
+     */
+    omit?: FacultyReportShareOmit<ExtArgs> | null
+    /**
+     * The data needed to create a FacultyReportShare.
+     */
+    data: XOR<FacultyReportShareCreateInput, FacultyReportShareUncheckedCreateInput>
+  }
+
+  /**
+   * FacultyReportShare createMany
+   */
+  export type FacultyReportShareCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many FacultyReportShares.
+     */
+    data: FacultyReportShareCreateManyInput | FacultyReportShareCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * FacultyReportShare createManyAndReturn
+   */
+  export type FacultyReportShareCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyReportShare
+     */
+    select?: FacultyReportShareSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyReportShare
+     */
+    omit?: FacultyReportShareOmit<ExtArgs> | null
+    /**
+     * The data used to create many FacultyReportShares.
+     */
+    data: FacultyReportShareCreateManyInput | FacultyReportShareCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * FacultyReportShare update
+   */
+  export type FacultyReportShareUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyReportShare
+     */
+    select?: FacultyReportShareSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyReportShare
+     */
+    omit?: FacultyReportShareOmit<ExtArgs> | null
+    /**
+     * The data needed to update a FacultyReportShare.
+     */
+    data: XOR<FacultyReportShareUpdateInput, FacultyReportShareUncheckedUpdateInput>
+    /**
+     * Choose, which FacultyReportShare to update.
+     */
+    where: FacultyReportShareWhereUniqueInput
+  }
+
+  /**
+   * FacultyReportShare updateMany
+   */
+  export type FacultyReportShareUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update FacultyReportShares.
+     */
+    data: XOR<FacultyReportShareUpdateManyMutationInput, FacultyReportShareUncheckedUpdateManyInput>
+    /**
+     * Filter which FacultyReportShares to update
+     */
+    where?: FacultyReportShareWhereInput
+    /**
+     * Limit how many FacultyReportShares to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * FacultyReportShare updateManyAndReturn
+   */
+  export type FacultyReportShareUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyReportShare
+     */
+    select?: FacultyReportShareSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyReportShare
+     */
+    omit?: FacultyReportShareOmit<ExtArgs> | null
+    /**
+     * The data used to update FacultyReportShares.
+     */
+    data: XOR<FacultyReportShareUpdateManyMutationInput, FacultyReportShareUncheckedUpdateManyInput>
+    /**
+     * Filter which FacultyReportShares to update
+     */
+    where?: FacultyReportShareWhereInput
+    /**
+     * Limit how many FacultyReportShares to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * FacultyReportShare upsert
+   */
+  export type FacultyReportShareUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyReportShare
+     */
+    select?: FacultyReportShareSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyReportShare
+     */
+    omit?: FacultyReportShareOmit<ExtArgs> | null
+    /**
+     * The filter to search for the FacultyReportShare to update in case it exists.
+     */
+    where: FacultyReportShareWhereUniqueInput
+    /**
+     * In case the FacultyReportShare found by the `where` argument doesn't exist, create a new FacultyReportShare with this data.
+     */
+    create: XOR<FacultyReportShareCreateInput, FacultyReportShareUncheckedCreateInput>
+    /**
+     * In case the FacultyReportShare was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<FacultyReportShareUpdateInput, FacultyReportShareUncheckedUpdateInput>
+  }
+
+  /**
+   * FacultyReportShare delete
+   */
+  export type FacultyReportShareDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyReportShare
+     */
+    select?: FacultyReportShareSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyReportShare
+     */
+    omit?: FacultyReportShareOmit<ExtArgs> | null
+    /**
+     * Filter which FacultyReportShare to delete.
+     */
+    where: FacultyReportShareWhereUniqueInput
+  }
+
+  /**
+   * FacultyReportShare deleteMany
+   */
+  export type FacultyReportShareDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FacultyReportShares to delete
+     */
+    where?: FacultyReportShareWhereInput
+    /**
+     * Limit how many FacultyReportShares to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * FacultyReportShare without action
+   */
+  export type FacultyReportShareDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyReportShare
+     */
+    select?: FacultyReportShareSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyReportShare
+     */
+    omit?: FacultyReportShareOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Model BranchStudentPayment
    */
 
@@ -70382,6 +71544,23 @@ export namespace Prisma {
   };
 
   export type ExamAnswerScalarFieldEnum = (typeof ExamAnswerScalarFieldEnum)[keyof typeof ExamAnswerScalarFieldEnum]
+
+
+  export const FacultyReportShareScalarFieldEnum: {
+    id: 'id',
+    facultyId: 'facultyId',
+    branchId: 'branchId',
+    batchId: 'batchId',
+    courseId: 'courseId',
+    testModuleIds: 'testModuleIds',
+    assessmentModuleIds: 'assessmentModuleIds',
+    sentAt: 'sentAt',
+    status: 'status',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type FacultyReportShareScalarFieldEnum = (typeof FacultyReportShareScalarFieldEnum)[keyof typeof FacultyReportShareScalarFieldEnum]
 
 
   export const BranchStudentPaymentScalarFieldEnum: {
@@ -76245,6 +77424,88 @@ export namespace Prisma {
     selectedAnswer?: StringNullableWithAggregatesFilter<"ExamAnswer"> | string | null
     isCorrect?: BoolWithAggregatesFilter<"ExamAnswer"> | boolean
     marksAwarded?: IntWithAggregatesFilter<"ExamAnswer"> | number
+  }
+
+  export type FacultyReportShareWhereInput = {
+    AND?: FacultyReportShareWhereInput | FacultyReportShareWhereInput[]
+    OR?: FacultyReportShareWhereInput[]
+    NOT?: FacultyReportShareWhereInput | FacultyReportShareWhereInput[]
+    id?: StringFilter<"FacultyReportShare"> | string
+    facultyId?: StringFilter<"FacultyReportShare"> | string
+    branchId?: StringFilter<"FacultyReportShare"> | string
+    batchId?: StringFilter<"FacultyReportShare"> | string
+    courseId?: StringFilter<"FacultyReportShare"> | string
+    testModuleIds?: JsonFilter<"FacultyReportShare">
+    assessmentModuleIds?: JsonFilter<"FacultyReportShare">
+    sentAt?: DateTimeFilter<"FacultyReportShare"> | Date | string
+    status?: StringFilter<"FacultyReportShare"> | string
+    createdAt?: DateTimeFilter<"FacultyReportShare"> | Date | string
+    updatedAt?: DateTimeFilter<"FacultyReportShare"> | Date | string
+  }
+
+  export type FacultyReportShareOrderByWithRelationInput = {
+    id?: SortOrder
+    facultyId?: SortOrder
+    branchId?: SortOrder
+    batchId?: SortOrder
+    courseId?: SortOrder
+    testModuleIds?: SortOrder
+    assessmentModuleIds?: SortOrder
+    sentAt?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type FacultyReportShareWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: FacultyReportShareWhereInput | FacultyReportShareWhereInput[]
+    OR?: FacultyReportShareWhereInput[]
+    NOT?: FacultyReportShareWhereInput | FacultyReportShareWhereInput[]
+    facultyId?: StringFilter<"FacultyReportShare"> | string
+    branchId?: StringFilter<"FacultyReportShare"> | string
+    batchId?: StringFilter<"FacultyReportShare"> | string
+    courseId?: StringFilter<"FacultyReportShare"> | string
+    testModuleIds?: JsonFilter<"FacultyReportShare">
+    assessmentModuleIds?: JsonFilter<"FacultyReportShare">
+    sentAt?: DateTimeFilter<"FacultyReportShare"> | Date | string
+    status?: StringFilter<"FacultyReportShare"> | string
+    createdAt?: DateTimeFilter<"FacultyReportShare"> | Date | string
+    updatedAt?: DateTimeFilter<"FacultyReportShare"> | Date | string
+  }, "id">
+
+  export type FacultyReportShareOrderByWithAggregationInput = {
+    id?: SortOrder
+    facultyId?: SortOrder
+    branchId?: SortOrder
+    batchId?: SortOrder
+    courseId?: SortOrder
+    testModuleIds?: SortOrder
+    assessmentModuleIds?: SortOrder
+    sentAt?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: FacultyReportShareCountOrderByAggregateInput
+    _max?: FacultyReportShareMaxOrderByAggregateInput
+    _min?: FacultyReportShareMinOrderByAggregateInput
+  }
+
+  export type FacultyReportShareScalarWhereWithAggregatesInput = {
+    AND?: FacultyReportShareScalarWhereWithAggregatesInput | FacultyReportShareScalarWhereWithAggregatesInput[]
+    OR?: FacultyReportShareScalarWhereWithAggregatesInput[]
+    NOT?: FacultyReportShareScalarWhereWithAggregatesInput | FacultyReportShareScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"FacultyReportShare"> | string
+    facultyId?: StringWithAggregatesFilter<"FacultyReportShare"> | string
+    branchId?: StringWithAggregatesFilter<"FacultyReportShare"> | string
+    batchId?: StringWithAggregatesFilter<"FacultyReportShare"> | string
+    courseId?: StringWithAggregatesFilter<"FacultyReportShare"> | string
+    testModuleIds?: JsonWithAggregatesFilter<"FacultyReportShare">
+    assessmentModuleIds?: JsonWithAggregatesFilter<"FacultyReportShare">
+    sentAt?: DateTimeWithAggregatesFilter<"FacultyReportShare"> | Date | string
+    status?: StringWithAggregatesFilter<"FacultyReportShare"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"FacultyReportShare"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"FacultyReportShare"> | Date | string
   }
 
   export type BranchStudentPaymentWhereInput = {
@@ -83038,6 +84299,104 @@ export namespace Prisma {
     marksAwarded?: IntFieldUpdateOperationsInput | number
   }
 
+  export type FacultyReportShareCreateInput = {
+    id?: string
+    facultyId: string
+    branchId: string
+    batchId: string
+    courseId: string
+    testModuleIds?: JsonNullValueInput | InputJsonValue
+    assessmentModuleIds?: JsonNullValueInput | InputJsonValue
+    sentAt?: Date | string
+    status?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FacultyReportShareUncheckedCreateInput = {
+    id?: string
+    facultyId: string
+    branchId: string
+    batchId: string
+    courseId: string
+    testModuleIds?: JsonNullValueInput | InputJsonValue
+    assessmentModuleIds?: JsonNullValueInput | InputJsonValue
+    sentAt?: Date | string
+    status?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FacultyReportShareUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    facultyId?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    batchId?: StringFieldUpdateOperationsInput | string
+    courseId?: StringFieldUpdateOperationsInput | string
+    testModuleIds?: JsonNullValueInput | InputJsonValue
+    assessmentModuleIds?: JsonNullValueInput | InputJsonValue
+    sentAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FacultyReportShareUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    facultyId?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    batchId?: StringFieldUpdateOperationsInput | string
+    courseId?: StringFieldUpdateOperationsInput | string
+    testModuleIds?: JsonNullValueInput | InputJsonValue
+    assessmentModuleIds?: JsonNullValueInput | InputJsonValue
+    sentAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FacultyReportShareCreateManyInput = {
+    id?: string
+    facultyId: string
+    branchId: string
+    batchId: string
+    courseId: string
+    testModuleIds?: JsonNullValueInput | InputJsonValue
+    assessmentModuleIds?: JsonNullValueInput | InputJsonValue
+    sentAt?: Date | string
+    status?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FacultyReportShareUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    facultyId?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    batchId?: StringFieldUpdateOperationsInput | string
+    courseId?: StringFieldUpdateOperationsInput | string
+    testModuleIds?: JsonNullValueInput | InputJsonValue
+    assessmentModuleIds?: JsonNullValueInput | InputJsonValue
+    sentAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FacultyReportShareUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    facultyId?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    batchId?: StringFieldUpdateOperationsInput | string
+    courseId?: StringFieldUpdateOperationsInput | string
+    testModuleIds?: JsonNullValueInput | InputJsonValue
+    assessmentModuleIds?: JsonNullValueInput | InputJsonValue
+    sentAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type BranchStudentPaymentCreateInput = {
     id?: string
     receiptNumber: string
@@ -87516,6 +88875,44 @@ export namespace Prisma {
 
   export type ExamAnswerSumOrderByAggregateInput = {
     marksAwarded?: SortOrder
+  }
+
+  export type FacultyReportShareCountOrderByAggregateInput = {
+    id?: SortOrder
+    facultyId?: SortOrder
+    branchId?: SortOrder
+    batchId?: SortOrder
+    courseId?: SortOrder
+    testModuleIds?: SortOrder
+    assessmentModuleIds?: SortOrder
+    sentAt?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type FacultyReportShareMaxOrderByAggregateInput = {
+    id?: SortOrder
+    facultyId?: SortOrder
+    branchId?: SortOrder
+    batchId?: SortOrder
+    courseId?: SortOrder
+    sentAt?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type FacultyReportShareMinOrderByAggregateInput = {
+    id?: SortOrder
+    facultyId?: SortOrder
+    branchId?: SortOrder
+    batchId?: SortOrder
+    courseId?: SortOrder
+    sentAt?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type BranchStudentInstallmentNullableScalarRelationFilter = {

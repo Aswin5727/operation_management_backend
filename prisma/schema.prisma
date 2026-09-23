@@ -1294,6 +1294,25 @@ enum NotificationKind {
   FACULTY_LEAVE_REQUEST
   EXAM_SCHEDULED
   ASSESSMENT_AVAILABLE
+  FACULTY_REPORT_SHARED
+}
+
+model FacultyReportShare {
+  id                  String   @id @default(cuid())
+  facultyId           String
+  branchId            String
+  batchId             String
+  courseId            String
+  testModuleIds       Json     @default("[]")
+  assessmentModuleIds Json     @default("[]")
+  sentAt              DateTime @default(now())
+  status              String   @default("SENT")
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  @@index([branchId, sentAt])
+  @@index([facultyId, sentAt])
+  @@index([batchId, courseId])
 }
 
 enum RecordStatus {

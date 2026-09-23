@@ -1,5 +1,6 @@
 import asyncHandler from "../../common/utils/asyncHandler.js";
 import * as service from "./exams.service.js";
+import * as sharingService from "./reportSharing.service.js";
 
 export const facultyCourses = asyncHandler(async (req, res) => res.json({ status: "success", data: await service.listFacultyCourses(req.user) }));
 export const facultyBatches = asyncHandler(async (req, res) => res.json({ status: "success", data: await service.listFacultyBatches(req.user, req.params.courseId) }));
@@ -11,6 +12,7 @@ export const getFacultyTest = asyncHandler(async (req, res) => res.json({ status
 export const downloadPdf = asyncHandler(async (req, res) => { const result = await service.buildQuestionPaperPdf(req.user, req.params.testId); res.type("application/pdf").set("Content-Disposition", `attachment; filename="${result.fileName}"`).send(result.buffer); });
 export const listSubmissions = asyncHandler(async (req, res) => res.json({ status: "success", data: await service.listSubmissions(req.user, req.params.testId, req.params.scheduleId) }));
 export const listFacultyExamReports = asyncHandler(async (req, res) => res.json({ status: "success", data: await service.listFacultyExamReports(req.user, req.query) }));
+export const sendFacultyReport = asyncHandler(async (req, res) => res.status(201).json({ status: "success", data: await sharingService.sendFacultyReport(req.user, req.body) }));
 export const getFacultyStudentExamReport = asyncHandler(async (req, res) => res.json({ status: "success", data: await service.getFacultyStudentExamReport(req.user, req.params.moduleId, req.params.batchId) }));
 export const listFacultyAssessmentReports = asyncHandler(async (req, res) => res.json({ status: "success", data: await service.listFacultyAssessmentReports(req.user) }));
 export const getFacultyAssessmentStudentReport = asyncHandler(async (req, res) => res.json({ status: "success", data: await service.getFacultyAssessmentStudentReport(req.user, req.params.courseId, req.params.batchId, req.params.moduleId) }));
@@ -34,3 +36,6 @@ export const submitAssessment = asyncHandler(async (req, res) => res.json({ stat
 export const getStudentAssessmentSubmission = asyncHandler(async (req, res) => res.json({ status: "success", data: await service.getStudentAssessmentSubmission(req.user, req.params.assessmentId) }));
 export const getStudentAssessmentReports = asyncHandler(async (req, res) => res.json({ status: "success", data: await service.getStudentAssessmentReports(req.user) }));
 export const getAssessmentScreenshot = asyncHandler(async (req, res) => { const file = await service.getAssessmentScreenshot(req.user, req.params.fileName); res.type(file.mimeType).set("Content-Disposition", `inline; filename="${file.fileName}"`).send(file.buffer); });
+export const listBranchReportShares = asyncHandler(async (req, res) => res.json({ status: "success", data: await sharingService.listBranchReportShares(req.user) }));
+export const getBranchReportShare = asyncHandler(async (req, res) => res.json({ status: "success", data: await sharingService.getBranchReportShare(req.user, req.params.shareId) }));
+export const getBranchReportShareStudents = asyncHandler(async (req, res) => res.json({ status: "success", data: await sharingService.getBranchReportShareStudents(req.user, req.params.shareId) }));

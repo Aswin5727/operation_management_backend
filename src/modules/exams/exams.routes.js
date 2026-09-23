@@ -16,6 +16,7 @@ router.get("/faculty/tests/:testId", authorize("FACULTY"), controller.getFaculty
 router.get("/faculty/tests/:testId/pdf", authorize("FACULTY"), controller.downloadPdf);
 router.get("/faculty/tests/:testId/schedules/:scheduleId/submissions", authorize("FACULTY"), controller.listSubmissions);
 router.get("/faculty/exam-reports", authorize("FACULTY"), controller.listFacultyExamReports);
+router.post("/faculty/report-shares", authorize("FACULTY"), controller.sendFacultyReport);
 router.get("/faculty/exam-reports/:moduleId/:batchId", authorize("FACULTY"), controller.getFacultyStudentExamReport);
 router.get("/faculty/assessment-reports", authorize("FACULTY"), controller.listFacultyAssessmentReports);
 router.get("/faculty/assessment-reports/:courseId/:batchId/:moduleId", authorize("FACULTY"), controller.getFacultyAssessmentStudentReport);
@@ -39,4 +40,7 @@ router.get("/student/assessments/:assessmentId", authorize("STUDENT"), controlle
 router.post("/student/assessments/:assessmentId/submit", authorize("STUDENT"), assessmentScreenshotUpload.single("screenshot"), controller.submitAssessment);
 router.get("/student/assessments/submissions/:fileName/screenshot", authorize("STUDENT", "FACULTY"), controller.getAssessmentScreenshot);
 router.get("/student/assessments/:assessmentId/submission", authorize("STUDENT"), controller.getStudentAssessmentSubmission);
+router.get("/branch-admin/report-shares", authorize("BRANCH_ADMIN"), controller.listBranchReportShares);
+router.get("/branch-admin/report-shares/:shareId", authorize("BRANCH_ADMIN"), controller.getBranchReportShare);
+router.get("/branch-admin/report-shares/:shareId/students", authorize("BRANCH_ADMIN"), controller.getBranchReportShareStudents);
 export default router;
