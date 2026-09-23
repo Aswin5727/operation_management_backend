@@ -1135,8 +1135,12 @@ model AssessmentSubmission {
   assessmentId    String
   branchStudentId String
   response        String?
+  screenshotUrl   String?
+  screenshotFileName String?
+  screenshotMimeType String?
   submittedAt     DateTime?
   status          String        @default("NOT_SUBMITTED")
+  evaluationStatus String       @default("Pending")
   marksObtained   Int?
   feedback        String?
   evaluatedBy     String?

@@ -1131,21 +1131,25 @@ model Assessment {
 }
 
 model AssessmentSubmission {
-  id              String        @id @default(cuid())
-  assessmentId    String
-  branchStudentId String
-  response        String?
-  submittedAt     DateTime?
-  status          String        @default("NOT_SUBMITTED")
-  marksObtained   Int?
-  feedback        String?
-  evaluatedBy     String?
-  evaluatedAt     DateTime?
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt
-  assessment      Assessment    @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
-  branchStudent   BranchStudent @relation(fields: [branchStudentId], references: [id], onDelete: Cascade)
-  evaluator       User?         @relation("AssessmentEvaluator", fields: [evaluatedBy], references: [id])
+  id                 String        @id @default(cuid())
+  assessmentId       String
+  branchStudentId    String
+  response           String?
+  screenshotUrl      String?
+  screenshotFileName String?
+  screenshotMimeType String?
+  submittedAt        DateTime?
+  status             String        @default("NOT_SUBMITTED")
+  evaluationStatus   String        @default("Pending")
+  marksObtained      Int?
+  feedback           String?
+  evaluatedBy        String?
+  evaluatedAt        DateTime?
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+  assessment         Assessment    @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+  branchStudent      BranchStudent @relation(fields: [branchStudentId], references: [id], onDelete: Cascade)
+  evaluator          User?         @relation("AssessmentEvaluator", fields: [evaluatedBy], references: [id])
 
   @@unique([assessmentId, branchStudentId])
   @@index([assessmentId, status])

@@ -59343,8 +59343,12 @@ export namespace Prisma {
     assessmentId: string | null
     branchStudentId: string | null
     response: string | null
+    screenshotUrl: string | null
+    screenshotFileName: string | null
+    screenshotMimeType: string | null
     submittedAt: Date | null
     status: string | null
+    evaluationStatus: string | null
     marksObtained: number | null
     feedback: string | null
     evaluatedBy: string | null
@@ -59358,8 +59362,12 @@ export namespace Prisma {
     assessmentId: string | null
     branchStudentId: string | null
     response: string | null
+    screenshotUrl: string | null
+    screenshotFileName: string | null
+    screenshotMimeType: string | null
     submittedAt: Date | null
     status: string | null
+    evaluationStatus: string | null
     marksObtained: number | null
     feedback: string | null
     evaluatedBy: string | null
@@ -59373,8 +59381,12 @@ export namespace Prisma {
     assessmentId: number
     branchStudentId: number
     response: number
+    screenshotUrl: number
+    screenshotFileName: number
+    screenshotMimeType: number
     submittedAt: number
     status: number
+    evaluationStatus: number
     marksObtained: number
     feedback: number
     evaluatedBy: number
@@ -59398,8 +59410,12 @@ export namespace Prisma {
     assessmentId?: true
     branchStudentId?: true
     response?: true
+    screenshotUrl?: true
+    screenshotFileName?: true
+    screenshotMimeType?: true
     submittedAt?: true
     status?: true
+    evaluationStatus?: true
     marksObtained?: true
     feedback?: true
     evaluatedBy?: true
@@ -59413,8 +59429,12 @@ export namespace Prisma {
     assessmentId?: true
     branchStudentId?: true
     response?: true
+    screenshotUrl?: true
+    screenshotFileName?: true
+    screenshotMimeType?: true
     submittedAt?: true
     status?: true
+    evaluationStatus?: true
     marksObtained?: true
     feedback?: true
     evaluatedBy?: true
@@ -59428,8 +59448,12 @@ export namespace Prisma {
     assessmentId?: true
     branchStudentId?: true
     response?: true
+    screenshotUrl?: true
+    screenshotFileName?: true
+    screenshotMimeType?: true
     submittedAt?: true
     status?: true
+    evaluationStatus?: true
     marksObtained?: true
     feedback?: true
     evaluatedBy?: true
@@ -59530,8 +59554,12 @@ export namespace Prisma {
     assessmentId: string
     branchStudentId: string
     response: string | null
+    screenshotUrl: string | null
+    screenshotFileName: string | null
+    screenshotMimeType: string | null
     submittedAt: Date | null
     status: string
+    evaluationStatus: string
     marksObtained: number | null
     feedback: string | null
     evaluatedBy: string | null
@@ -59564,8 +59592,12 @@ export namespace Prisma {
     assessmentId?: boolean
     branchStudentId?: boolean
     response?: boolean
+    screenshotUrl?: boolean
+    screenshotFileName?: boolean
+    screenshotMimeType?: boolean
     submittedAt?: boolean
     status?: boolean
+    evaluationStatus?: boolean
     marksObtained?: boolean
     feedback?: boolean
     evaluatedBy?: boolean
@@ -59582,8 +59614,12 @@ export namespace Prisma {
     assessmentId?: boolean
     branchStudentId?: boolean
     response?: boolean
+    screenshotUrl?: boolean
+    screenshotFileName?: boolean
+    screenshotMimeType?: boolean
     submittedAt?: boolean
     status?: boolean
+    evaluationStatus?: boolean
     marksObtained?: boolean
     feedback?: boolean
     evaluatedBy?: boolean
@@ -59600,8 +59636,12 @@ export namespace Prisma {
     assessmentId?: boolean
     branchStudentId?: boolean
     response?: boolean
+    screenshotUrl?: boolean
+    screenshotFileName?: boolean
+    screenshotMimeType?: boolean
     submittedAt?: boolean
     status?: boolean
+    evaluationStatus?: boolean
     marksObtained?: boolean
     feedback?: boolean
     evaluatedBy?: boolean
@@ -59618,8 +59658,12 @@ export namespace Prisma {
     assessmentId?: boolean
     branchStudentId?: boolean
     response?: boolean
+    screenshotUrl?: boolean
+    screenshotFileName?: boolean
+    screenshotMimeType?: boolean
     submittedAt?: boolean
     status?: boolean
+    evaluationStatus?: boolean
     marksObtained?: boolean
     feedback?: boolean
     evaluatedBy?: boolean
@@ -59628,7 +59672,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type AssessmentSubmissionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "assessmentId" | "branchStudentId" | "response" | "submittedAt" | "status" | "marksObtained" | "feedback" | "evaluatedBy" | "evaluatedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["assessmentSubmission"]>
+  export type AssessmentSubmissionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "assessmentId" | "branchStudentId" | "response" | "screenshotUrl" | "screenshotFileName" | "screenshotMimeType" | "submittedAt" | "status" | "evaluationStatus" | "marksObtained" | "feedback" | "evaluatedBy" | "evaluatedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["assessmentSubmission"]>
   export type AssessmentSubmissionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     assessment?: boolean | AssessmentDefaultArgs<ExtArgs>
     branchStudent?: boolean | BranchStudentDefaultArgs<ExtArgs>
@@ -59657,8 +59701,12 @@ export namespace Prisma {
       assessmentId: string
       branchStudentId: string
       response: string | null
+      screenshotUrl: string | null
+      screenshotFileName: string | null
+      screenshotMimeType: string | null
       submittedAt: Date | null
       status: string
+      evaluationStatus: string
       marksObtained: number | null
       feedback: string | null
       evaluatedBy: string | null
@@ -60095,8 +60143,12 @@ export namespace Prisma {
     readonly assessmentId: FieldRef<"AssessmentSubmission", 'String'>
     readonly branchStudentId: FieldRef<"AssessmentSubmission", 'String'>
     readonly response: FieldRef<"AssessmentSubmission", 'String'>
+    readonly screenshotUrl: FieldRef<"AssessmentSubmission", 'String'>
+    readonly screenshotFileName: FieldRef<"AssessmentSubmission", 'String'>
+    readonly screenshotMimeType: FieldRef<"AssessmentSubmission", 'String'>
     readonly submittedAt: FieldRef<"AssessmentSubmission", 'DateTime'>
     readonly status: FieldRef<"AssessmentSubmission", 'String'>
+    readonly evaluationStatus: FieldRef<"AssessmentSubmission", 'String'>
     readonly marksObtained: FieldRef<"AssessmentSubmission", 'Int'>
     readonly feedback: FieldRef<"AssessmentSubmission", 'String'>
     readonly evaluatedBy: FieldRef<"AssessmentSubmission", 'String'>
@@ -70235,8 +70287,12 @@ export namespace Prisma {
     assessmentId: 'assessmentId',
     branchStudentId: 'branchStudentId',
     response: 'response',
+    screenshotUrl: 'screenshotUrl',
+    screenshotFileName: 'screenshotFileName',
+    screenshotMimeType: 'screenshotMimeType',
     submittedAt: 'submittedAt',
     status: 'status',
+    evaluationStatus: 'evaluationStatus',
     marksObtained: 'marksObtained',
     feedback: 'feedback',
     evaluatedBy: 'evaluatedBy',
@@ -75629,8 +75685,12 @@ export namespace Prisma {
     assessmentId?: StringFilter<"AssessmentSubmission"> | string
     branchStudentId?: StringFilter<"AssessmentSubmission"> | string
     response?: StringNullableFilter<"AssessmentSubmission"> | string | null
+    screenshotUrl?: StringNullableFilter<"AssessmentSubmission"> | string | null
+    screenshotFileName?: StringNullableFilter<"AssessmentSubmission"> | string | null
+    screenshotMimeType?: StringNullableFilter<"AssessmentSubmission"> | string | null
     submittedAt?: DateTimeNullableFilter<"AssessmentSubmission"> | Date | string | null
     status?: StringFilter<"AssessmentSubmission"> | string
+    evaluationStatus?: StringFilter<"AssessmentSubmission"> | string
     marksObtained?: IntNullableFilter<"AssessmentSubmission"> | number | null
     feedback?: StringNullableFilter<"AssessmentSubmission"> | string | null
     evaluatedBy?: StringNullableFilter<"AssessmentSubmission"> | string | null
@@ -75647,8 +75707,12 @@ export namespace Prisma {
     assessmentId?: SortOrder
     branchStudentId?: SortOrder
     response?: SortOrderInput | SortOrder
+    screenshotUrl?: SortOrderInput | SortOrder
+    screenshotFileName?: SortOrderInput | SortOrder
+    screenshotMimeType?: SortOrderInput | SortOrder
     submittedAt?: SortOrderInput | SortOrder
     status?: SortOrder
+    evaluationStatus?: SortOrder
     marksObtained?: SortOrderInput | SortOrder
     feedback?: SortOrderInput | SortOrder
     evaluatedBy?: SortOrderInput | SortOrder
@@ -75669,8 +75733,12 @@ export namespace Prisma {
     assessmentId?: StringFilter<"AssessmentSubmission"> | string
     branchStudentId?: StringFilter<"AssessmentSubmission"> | string
     response?: StringNullableFilter<"AssessmentSubmission"> | string | null
+    screenshotUrl?: StringNullableFilter<"AssessmentSubmission"> | string | null
+    screenshotFileName?: StringNullableFilter<"AssessmentSubmission"> | string | null
+    screenshotMimeType?: StringNullableFilter<"AssessmentSubmission"> | string | null
     submittedAt?: DateTimeNullableFilter<"AssessmentSubmission"> | Date | string | null
     status?: StringFilter<"AssessmentSubmission"> | string
+    evaluationStatus?: StringFilter<"AssessmentSubmission"> | string
     marksObtained?: IntNullableFilter<"AssessmentSubmission"> | number | null
     feedback?: StringNullableFilter<"AssessmentSubmission"> | string | null
     evaluatedBy?: StringNullableFilter<"AssessmentSubmission"> | string | null
@@ -75687,8 +75755,12 @@ export namespace Prisma {
     assessmentId?: SortOrder
     branchStudentId?: SortOrder
     response?: SortOrderInput | SortOrder
+    screenshotUrl?: SortOrderInput | SortOrder
+    screenshotFileName?: SortOrderInput | SortOrder
+    screenshotMimeType?: SortOrderInput | SortOrder
     submittedAt?: SortOrderInput | SortOrder
     status?: SortOrder
+    evaluationStatus?: SortOrder
     marksObtained?: SortOrderInput | SortOrder
     feedback?: SortOrderInput | SortOrder
     evaluatedBy?: SortOrderInput | SortOrder
@@ -75710,8 +75782,12 @@ export namespace Prisma {
     assessmentId?: StringWithAggregatesFilter<"AssessmentSubmission"> | string
     branchStudentId?: StringWithAggregatesFilter<"AssessmentSubmission"> | string
     response?: StringNullableWithAggregatesFilter<"AssessmentSubmission"> | string | null
+    screenshotUrl?: StringNullableWithAggregatesFilter<"AssessmentSubmission"> | string | null
+    screenshotFileName?: StringNullableWithAggregatesFilter<"AssessmentSubmission"> | string | null
+    screenshotMimeType?: StringNullableWithAggregatesFilter<"AssessmentSubmission"> | string | null
     submittedAt?: DateTimeNullableWithAggregatesFilter<"AssessmentSubmission"> | Date | string | null
     status?: StringWithAggregatesFilter<"AssessmentSubmission"> | string
+    evaluationStatus?: StringWithAggregatesFilter<"AssessmentSubmission"> | string
     marksObtained?: IntNullableWithAggregatesFilter<"AssessmentSubmission"> | number | null
     feedback?: StringNullableWithAggregatesFilter<"AssessmentSubmission"> | string | null
     evaluatedBy?: StringNullableWithAggregatesFilter<"AssessmentSubmission"> | string | null
@@ -82368,8 +82444,12 @@ export namespace Prisma {
   export type AssessmentSubmissionCreateInput = {
     id?: string
     response?: string | null
+    screenshotUrl?: string | null
+    screenshotFileName?: string | null
+    screenshotMimeType?: string | null
     submittedAt?: Date | string | null
     status?: string
+    evaluationStatus?: string
     marksObtained?: number | null
     feedback?: string | null
     evaluatedAt?: Date | string | null
@@ -82385,8 +82465,12 @@ export namespace Prisma {
     assessmentId: string
     branchStudentId: string
     response?: string | null
+    screenshotUrl?: string | null
+    screenshotFileName?: string | null
+    screenshotMimeType?: string | null
     submittedAt?: Date | string | null
     status?: string
+    evaluationStatus?: string
     marksObtained?: number | null
     feedback?: string | null
     evaluatedBy?: string | null
@@ -82398,8 +82482,12 @@ export namespace Prisma {
   export type AssessmentSubmissionUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     response?: NullableStringFieldUpdateOperationsInput | string | null
+    screenshotUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    screenshotFileName?: NullableStringFieldUpdateOperationsInput | string | null
+    screenshotMimeType?: NullableStringFieldUpdateOperationsInput | string | null
     submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: StringFieldUpdateOperationsInput | string
+    evaluationStatus?: StringFieldUpdateOperationsInput | string
     marksObtained?: NullableIntFieldUpdateOperationsInput | number | null
     feedback?: NullableStringFieldUpdateOperationsInput | string | null
     evaluatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -82415,8 +82503,12 @@ export namespace Prisma {
     assessmentId?: StringFieldUpdateOperationsInput | string
     branchStudentId?: StringFieldUpdateOperationsInput | string
     response?: NullableStringFieldUpdateOperationsInput | string | null
+    screenshotUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    screenshotFileName?: NullableStringFieldUpdateOperationsInput | string | null
+    screenshotMimeType?: NullableStringFieldUpdateOperationsInput | string | null
     submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: StringFieldUpdateOperationsInput | string
+    evaluationStatus?: StringFieldUpdateOperationsInput | string
     marksObtained?: NullableIntFieldUpdateOperationsInput | number | null
     feedback?: NullableStringFieldUpdateOperationsInput | string | null
     evaluatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -82430,8 +82522,12 @@ export namespace Prisma {
     assessmentId: string
     branchStudentId: string
     response?: string | null
+    screenshotUrl?: string | null
+    screenshotFileName?: string | null
+    screenshotMimeType?: string | null
     submittedAt?: Date | string | null
     status?: string
+    evaluationStatus?: string
     marksObtained?: number | null
     feedback?: string | null
     evaluatedBy?: string | null
@@ -82443,8 +82539,12 @@ export namespace Prisma {
   export type AssessmentSubmissionUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     response?: NullableStringFieldUpdateOperationsInput | string | null
+    screenshotUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    screenshotFileName?: NullableStringFieldUpdateOperationsInput | string | null
+    screenshotMimeType?: NullableStringFieldUpdateOperationsInput | string | null
     submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: StringFieldUpdateOperationsInput | string
+    evaluationStatus?: StringFieldUpdateOperationsInput | string
     marksObtained?: NullableIntFieldUpdateOperationsInput | number | null
     feedback?: NullableStringFieldUpdateOperationsInput | string | null
     evaluatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -82457,8 +82557,12 @@ export namespace Prisma {
     assessmentId?: StringFieldUpdateOperationsInput | string
     branchStudentId?: StringFieldUpdateOperationsInput | string
     response?: NullableStringFieldUpdateOperationsInput | string | null
+    screenshotUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    screenshotFileName?: NullableStringFieldUpdateOperationsInput | string | null
+    screenshotMimeType?: NullableStringFieldUpdateOperationsInput | string | null
     submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: StringFieldUpdateOperationsInput | string
+    evaluationStatus?: StringFieldUpdateOperationsInput | string
     marksObtained?: NullableIntFieldUpdateOperationsInput | number | null
     feedback?: NullableStringFieldUpdateOperationsInput | string | null
     evaluatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -87047,8 +87151,12 @@ export namespace Prisma {
     assessmentId?: SortOrder
     branchStudentId?: SortOrder
     response?: SortOrder
+    screenshotUrl?: SortOrder
+    screenshotFileName?: SortOrder
+    screenshotMimeType?: SortOrder
     submittedAt?: SortOrder
     status?: SortOrder
+    evaluationStatus?: SortOrder
     marksObtained?: SortOrder
     feedback?: SortOrder
     evaluatedBy?: SortOrder
@@ -87066,8 +87174,12 @@ export namespace Prisma {
     assessmentId?: SortOrder
     branchStudentId?: SortOrder
     response?: SortOrder
+    screenshotUrl?: SortOrder
+    screenshotFileName?: SortOrder
+    screenshotMimeType?: SortOrder
     submittedAt?: SortOrder
     status?: SortOrder
+    evaluationStatus?: SortOrder
     marksObtained?: SortOrder
     feedback?: SortOrder
     evaluatedBy?: SortOrder
@@ -87081,8 +87193,12 @@ export namespace Prisma {
     assessmentId?: SortOrder
     branchStudentId?: SortOrder
     response?: SortOrder
+    screenshotUrl?: SortOrder
+    screenshotFileName?: SortOrder
+    screenshotMimeType?: SortOrder
     submittedAt?: SortOrder
     status?: SortOrder
+    evaluationStatus?: SortOrder
     marksObtained?: SortOrder
     feedback?: SortOrder
     evaluatedBy?: SortOrder
@@ -93199,8 +93315,12 @@ export namespace Prisma {
   export type AssessmentSubmissionCreateWithoutEvaluatorInput = {
     id?: string
     response?: string | null
+    screenshotUrl?: string | null
+    screenshotFileName?: string | null
+    screenshotMimeType?: string | null
     submittedAt?: Date | string | null
     status?: string
+    evaluationStatus?: string
     marksObtained?: number | null
     feedback?: string | null
     evaluatedAt?: Date | string | null
@@ -93215,8 +93335,12 @@ export namespace Prisma {
     assessmentId: string
     branchStudentId: string
     response?: string | null
+    screenshotUrl?: string | null
+    screenshotFileName?: string | null
+    screenshotMimeType?: string | null
     submittedAt?: Date | string | null
     status?: string
+    evaluationStatus?: string
     marksObtained?: number | null
     feedback?: string | null
     evaluatedAt?: Date | string | null
@@ -93887,8 +94011,12 @@ export namespace Prisma {
     assessmentId?: StringFilter<"AssessmentSubmission"> | string
     branchStudentId?: StringFilter<"AssessmentSubmission"> | string
     response?: StringNullableFilter<"AssessmentSubmission"> | string | null
+    screenshotUrl?: StringNullableFilter<"AssessmentSubmission"> | string | null
+    screenshotFileName?: StringNullableFilter<"AssessmentSubmission"> | string | null
+    screenshotMimeType?: StringNullableFilter<"AssessmentSubmission"> | string | null
     submittedAt?: DateTimeNullableFilter<"AssessmentSubmission"> | Date | string | null
     status?: StringFilter<"AssessmentSubmission"> | string
+    evaluationStatus?: StringFilter<"AssessmentSubmission"> | string
     marksObtained?: IntNullableFilter<"AssessmentSubmission"> | number | null
     feedback?: StringNullableFilter<"AssessmentSubmission"> | string | null
     evaluatedBy?: StringNullableFilter<"AssessmentSubmission"> | string | null
@@ -100605,8 +100733,12 @@ export namespace Prisma {
   export type AssessmentSubmissionCreateWithoutBranchStudentInput = {
     id?: string
     response?: string | null
+    screenshotUrl?: string | null
+    screenshotFileName?: string | null
+    screenshotMimeType?: string | null
     submittedAt?: Date | string | null
     status?: string
+    evaluationStatus?: string
     marksObtained?: number | null
     feedback?: string | null
     evaluatedAt?: Date | string | null
@@ -100620,8 +100752,12 @@ export namespace Prisma {
     id?: string
     assessmentId: string
     response?: string | null
+    screenshotUrl?: string | null
+    screenshotFileName?: string | null
+    screenshotMimeType?: string | null
     submittedAt?: Date | string | null
     status?: string
+    evaluationStatus?: string
     marksObtained?: number | null
     feedback?: string | null
     evaluatedBy?: string | null
@@ -106370,8 +106506,12 @@ export namespace Prisma {
   export type AssessmentSubmissionCreateWithoutAssessmentInput = {
     id?: string
     response?: string | null
+    screenshotUrl?: string | null
+    screenshotFileName?: string | null
+    screenshotMimeType?: string | null
     submittedAt?: Date | string | null
     status?: string
+    evaluationStatus?: string
     marksObtained?: number | null
     feedback?: string | null
     evaluatedAt?: Date | string | null
@@ -106385,8 +106525,12 @@ export namespace Prisma {
     id?: string
     branchStudentId: string
     response?: string | null
+    screenshotUrl?: string | null
+    screenshotFileName?: string | null
+    screenshotMimeType?: string | null
     submittedAt?: Date | string | null
     status?: string
+    evaluationStatus?: string
     marksObtained?: number | null
     feedback?: string | null
     evaluatedBy?: string | null
@@ -110167,8 +110311,12 @@ export namespace Prisma {
     assessmentId: string
     branchStudentId: string
     response?: string | null
+    screenshotUrl?: string | null
+    screenshotFileName?: string | null
+    screenshotMimeType?: string | null
     submittedAt?: Date | string | null
     status?: string
+    evaluationStatus?: string
     marksObtained?: number | null
     feedback?: string | null
     evaluatedAt?: Date | string | null
@@ -110955,8 +111103,12 @@ export namespace Prisma {
   export type AssessmentSubmissionUpdateWithoutEvaluatorInput = {
     id?: StringFieldUpdateOperationsInput | string
     response?: NullableStringFieldUpdateOperationsInput | string | null
+    screenshotUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    screenshotFileName?: NullableStringFieldUpdateOperationsInput | string | null
+    screenshotMimeType?: NullableStringFieldUpdateOperationsInput | string | null
     submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: StringFieldUpdateOperationsInput | string
+    evaluationStatus?: StringFieldUpdateOperationsInput | string
     marksObtained?: NullableIntFieldUpdateOperationsInput | number | null
     feedback?: NullableStringFieldUpdateOperationsInput | string | null
     evaluatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -110971,8 +111123,12 @@ export namespace Prisma {
     assessmentId?: StringFieldUpdateOperationsInput | string
     branchStudentId?: StringFieldUpdateOperationsInput | string
     response?: NullableStringFieldUpdateOperationsInput | string | null
+    screenshotUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    screenshotFileName?: NullableStringFieldUpdateOperationsInput | string | null
+    screenshotMimeType?: NullableStringFieldUpdateOperationsInput | string | null
     submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: StringFieldUpdateOperationsInput | string
+    evaluationStatus?: StringFieldUpdateOperationsInput | string
     marksObtained?: NullableIntFieldUpdateOperationsInput | number | null
     feedback?: NullableStringFieldUpdateOperationsInput | string | null
     evaluatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -110985,8 +111141,12 @@ export namespace Prisma {
     assessmentId?: StringFieldUpdateOperationsInput | string
     branchStudentId?: StringFieldUpdateOperationsInput | string
     response?: NullableStringFieldUpdateOperationsInput | string | null
+    screenshotUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    screenshotFileName?: NullableStringFieldUpdateOperationsInput | string | null
+    screenshotMimeType?: NullableStringFieldUpdateOperationsInput | string | null
     submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: StringFieldUpdateOperationsInput | string
+    evaluationStatus?: StringFieldUpdateOperationsInput | string
     marksObtained?: NullableIntFieldUpdateOperationsInput | number | null
     feedback?: NullableStringFieldUpdateOperationsInput | string | null
     evaluatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -114315,8 +114475,12 @@ export namespace Prisma {
     id?: string
     assessmentId: string
     response?: string | null
+    screenshotUrl?: string | null
+    screenshotFileName?: string | null
+    screenshotMimeType?: string | null
     submittedAt?: Date | string | null
     status?: string
+    evaluationStatus?: string
     marksObtained?: number | null
     feedback?: string | null
     evaluatedBy?: string | null
@@ -114677,8 +114841,12 @@ export namespace Prisma {
   export type AssessmentSubmissionUpdateWithoutBranchStudentInput = {
     id?: StringFieldUpdateOperationsInput | string
     response?: NullableStringFieldUpdateOperationsInput | string | null
+    screenshotUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    screenshotFileName?: NullableStringFieldUpdateOperationsInput | string | null
+    screenshotMimeType?: NullableStringFieldUpdateOperationsInput | string | null
     submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: StringFieldUpdateOperationsInput | string
+    evaluationStatus?: StringFieldUpdateOperationsInput | string
     marksObtained?: NullableIntFieldUpdateOperationsInput | number | null
     feedback?: NullableStringFieldUpdateOperationsInput | string | null
     evaluatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -114692,8 +114860,12 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     assessmentId?: StringFieldUpdateOperationsInput | string
     response?: NullableStringFieldUpdateOperationsInput | string | null
+    screenshotUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    screenshotFileName?: NullableStringFieldUpdateOperationsInput | string | null
+    screenshotMimeType?: NullableStringFieldUpdateOperationsInput | string | null
     submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: StringFieldUpdateOperationsInput | string
+    evaluationStatus?: StringFieldUpdateOperationsInput | string
     marksObtained?: NullableIntFieldUpdateOperationsInput | number | null
     feedback?: NullableStringFieldUpdateOperationsInput | string | null
     evaluatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -114706,8 +114878,12 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     assessmentId?: StringFieldUpdateOperationsInput | string
     response?: NullableStringFieldUpdateOperationsInput | string | null
+    screenshotUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    screenshotFileName?: NullableStringFieldUpdateOperationsInput | string | null
+    screenshotMimeType?: NullableStringFieldUpdateOperationsInput | string | null
     submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: StringFieldUpdateOperationsInput | string
+    evaluationStatus?: StringFieldUpdateOperationsInput | string
     marksObtained?: NullableIntFieldUpdateOperationsInput | number | null
     feedback?: NullableStringFieldUpdateOperationsInput | string | null
     evaluatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -115144,8 +115320,12 @@ export namespace Prisma {
     id?: string
     branchStudentId: string
     response?: string | null
+    screenshotUrl?: string | null
+    screenshotFileName?: string | null
+    screenshotMimeType?: string | null
     submittedAt?: Date | string | null
     status?: string
+    evaluationStatus?: string
     marksObtained?: number | null
     feedback?: string | null
     evaluatedBy?: string | null
@@ -115157,8 +115337,12 @@ export namespace Prisma {
   export type AssessmentSubmissionUpdateWithoutAssessmentInput = {
     id?: StringFieldUpdateOperationsInput | string
     response?: NullableStringFieldUpdateOperationsInput | string | null
+    screenshotUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    screenshotFileName?: NullableStringFieldUpdateOperationsInput | string | null
+    screenshotMimeType?: NullableStringFieldUpdateOperationsInput | string | null
     submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: StringFieldUpdateOperationsInput | string
+    evaluationStatus?: StringFieldUpdateOperationsInput | string
     marksObtained?: NullableIntFieldUpdateOperationsInput | number | null
     feedback?: NullableStringFieldUpdateOperationsInput | string | null
     evaluatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -115172,8 +115356,12 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     branchStudentId?: StringFieldUpdateOperationsInput | string
     response?: NullableStringFieldUpdateOperationsInput | string | null
+    screenshotUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    screenshotFileName?: NullableStringFieldUpdateOperationsInput | string | null
+    screenshotMimeType?: NullableStringFieldUpdateOperationsInput | string | null
     submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: StringFieldUpdateOperationsInput | string
+    evaluationStatus?: StringFieldUpdateOperationsInput | string
     marksObtained?: NullableIntFieldUpdateOperationsInput | number | null
     feedback?: NullableStringFieldUpdateOperationsInput | string | null
     evaluatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -115186,8 +115374,12 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     branchStudentId?: StringFieldUpdateOperationsInput | string
     response?: NullableStringFieldUpdateOperationsInput | string | null
+    screenshotUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    screenshotFileName?: NullableStringFieldUpdateOperationsInput | string | null
+    screenshotMimeType?: NullableStringFieldUpdateOperationsInput | string | null
     submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: StringFieldUpdateOperationsInput | string
+    evaluationStatus?: StringFieldUpdateOperationsInput | string
     marksObtained?: NullableIntFieldUpdateOperationsInput | number | null
     feedback?: NullableStringFieldUpdateOperationsInput | string | null
     evaluatedBy?: NullableStringFieldUpdateOperationsInput | string | null

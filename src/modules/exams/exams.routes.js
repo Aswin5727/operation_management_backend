@@ -2,6 +2,7 @@ import express from "express";
 import { authenticate } from "../../common/middlewares/authenticate.js";
 import { authorize } from "../../common/middlewares/authorize.js";
 import * as controller from "./exams.controller.js";
+import { assessmentScreenshotUpload } from "../../common/middlewares/assessmentUpload.js";
 
 const router = express.Router();
 router.use(authenticate);
@@ -26,13 +27,16 @@ router.get("/faculty/assessments/:assessmentId/students", authorize("FACULTY"), 
 router.get("/faculty/assessments/:assessmentId/submissions", authorize("FACULTY"), controller.listAssessmentSubmissions);
 router.patch("/faculty/assessments/:assessmentId", authorize("FACULTY"), controller.updateAssessment);
 router.patch("/faculty/assessments/:assessmentId/submissions/:studentId", authorize("FACULTY"), controller.evaluateAssessment);
+router.patch("/assessment-submissions/:submissionId/evaluate", authorize("FACULTY"), controller.evaluateAssessmentSubmission);
 router.get("/student/tests", authorize("STUDENT"), controller.listStudentTests);
 router.get("/student/tests/:scheduleId", authorize("STUDENT"), controller.getStudentTest);
 router.post("/student/tests/:scheduleId/start", authorize("STUDENT"), controller.startTest);
 router.post("/student/tests/:scheduleId/submit", authorize("STUDENT"), controller.submitTest);
 router.get("/student/tests/:scheduleId/result", authorize("STUDENT"), controller.getStudentResult);
 router.get("/student/assessments", authorize("STUDENT"), controller.listStudentAssessments);
+router.get("/student/assessment-reports", authorize("STUDENT"), controller.getStudentAssessmentReports);
 router.get("/student/assessments/:assessmentId", authorize("STUDENT"), controller.getStudentAssessment);
-router.post("/student/assessments/:assessmentId/submit", authorize("STUDENT"), controller.submitAssessment);
+router.post("/student/assessments/:assessmentId/submit", authorize("STUDENT"), assessmentScreenshotUpload.single("screenshot"), controller.submitAssessment);
+router.get("/student/assessments/submissions/:fileName/screenshot", authorize("STUDENT", "FACULTY"), controller.getAssessmentScreenshot);
 router.get("/student/assessments/:assessmentId/submission", authorize("STUDENT"), controller.getStudentAssessmentSubmission);
 export default router;

@@ -1,10 +1,14 @@
 import prisma from "../../config/prisma.js";
 import AppError from "../../common/errors/AppError.js";
+import fs from "node:fs/promises";
+import path from "node:path";
+import crypto from "node:crypto";
 
 const active = { status: "ACTIVE" };
 const text = (value) => String(value ?? "").trim();
 const unwrap = (value) => value?.data ?? value;
 const notificationDateTime = (value) => new Intl.DateTimeFormat("en-IN", { dateStyle: "medium", timeStyle: "short" }).format(new Date(value));
+const assessmentUploadRoot = path.resolve(process.cwd(), "uploads", "assessments");
 
 function parseTime(value) {
   const raw = text(value).toUpperCase();
@@ -356,8 +360,17 @@ export async function evaluateAssessment(user, assessmentId, studentId, payload 
   const marks = Number(payload.marksObtained);
   const assessment = await prisma.assessment.findUnique({ where: { id: assessmentId } });
   if (!Number.isInteger(marks) || marks < 0 || marks > assessment.totalMarks) throw new AppError("Marks must be between zero and total marks.", 422);
-  const row = await prisma.assessmentSubmission.upsert({ where: { assessmentId_branchStudentId: { assessmentId, branchStudentId: studentId } }, create: { assessmentId, branchStudentId: studentId, status: "EVALUATED", marksObtained: marks, feedback: text(payload.feedback) || null, evaluatedBy: user.id, evaluatedAt: new Date() }, update: { status: "EVALUATED", marksObtained: marks, feedback: text(payload.feedback) || null, evaluatedBy: user.id, evaluatedAt: new Date() } });
+  const row = await prisma.assessmentSubmission.upsert({ where: { assessmentId_branchStudentId: { assessmentId, branchStudentId: studentId } }, create: { assessmentId, branchStudentId: studentId, status: "EVALUATED", evaluationStatus: "Evaluated", marksObtained: marks, feedback: text(payload.feedback) || null, evaluatedBy: user.id, evaluatedAt: new Date() }, update: { status: "EVALUATED", evaluationStatus: "Evaluated", marksObtained: marks, feedback: text(payload.feedback) || null, evaluatedBy: user.id, evaluatedAt: new Date() } });
   return { ...row, percentage: assessment.totalMarks ? (marks / assessment.totalMarks) * 100 : 0 };
+}
+
+export async function evaluateAssessmentSubmission(user, submissionId, payload = {}) {
+  const submission = await prisma.assessmentSubmission.findUnique({ where: { id: submissionId }, include: { assessment: true } });
+  if (!submission) throw new AppError("Assessment submission not found.", 404);
+  if (submission.assessment.facultyId !== user.id) throw new AppError("You are not authorized to evaluate this submission.", 403);
+  const marks = Number(payload.marks);
+  if (!Number.isInteger(marks) || marks < 0 || marks > submission.assessment.totalMarks) throw new AppError("Marks must be between zero and total marks.", 422);
+  return prisma.assessmentSubmission.update({ where: { id: submissionId }, data: { marksObtained: marks, feedback: text(payload.facultyFeedback) || null, evaluatedBy: user.id, evaluatedAt: new Date(), status: "EVALUATED", evaluationStatus: "Evaluated" } });
 }
 
 async function studentAssessment(user, assessmentId) {
@@ -372,14 +385,57 @@ export async function listStudentAssessments(user) {
   return rows.map((row) => assessmentPublic(row, row.submissions[0] ? { ...row.submissions[0], percentage: row.totalMarks && row.submissions[0].marksObtained != null ? (row.submissions[0].marksObtained / row.totalMarks) * 100 : null } : null));
 }
 export async function getStudentAssessment(user, assessmentId) { const { item } = await studentAssessment(user, assessmentId); return assessmentPublic(item); }
-export async function submitAssessment(user, assessmentId, payload = {}) {
+export async function submitAssessment(user, assessmentId, payload = {}, file = null) {
   const { student, item } = await studentAssessment(user, assessmentId);
   if (assessmentStatus(item) !== "ACTIVE") throw new AppError("This assessment is outside its submission window.", 403);
+  if (!text(payload.response)) throw new AppError("Assessment response is required.", 422);
+  if (!file) throw new AppError("Attached screenshot is required.", 422);
   const existing = await prisma.assessmentSubmission.findUnique({ where: { assessmentId_branchStudentId: { assessmentId, branchStudentId: student.id } } });
   if (existing?.submittedAt) throw new AppError("Duplicate submission is not allowed.", 409);
-  return prisma.assessmentSubmission.upsert({ where: { assessmentId_branchStudentId: { assessmentId, branchStudentId: student.id } }, create: { assessmentId, branchStudentId: student.id, response: text(payload.response) || null, submittedAt: new Date(), status: "SUBMITTED" }, update: { response: text(payload.response) || null, submittedAt: new Date(), status: "SUBMITTED" } });
+  await fs.mkdir(assessmentUploadRoot, { recursive: true });
+  const extension = file.mimetype === "image/png" ? "png" : file.mimetype === "image/webp" ? "webp" : "jpg";
+  const fileName = `${crypto.randomUUID()}.${extension}`;
+  await fs.writeFile(path.join(assessmentUploadRoot, fileName), file.buffer);
+  return prisma.assessmentSubmission.upsert({ where: { assessmentId_branchStudentId: { assessmentId, branchStudentId: student.id } }, create: { assessmentId, branchStudentId: student.id, response: text(payload.response), screenshotUrl: `/exams/student/assessments/submissions/${fileName}/screenshot`, screenshotFileName: file.originalname, screenshotMimeType: file.mimetype, submittedAt: new Date(), status: "SUBMITTED", evaluationStatus: "Pending" }, update: { response: text(payload.response), screenshotUrl: `/exams/student/assessments/submissions/${fileName}/screenshot`, screenshotFileName: file.originalname, screenshotMimeType: file.mimetype, submittedAt: new Date(), status: "SUBMITTED", evaluationStatus: "Pending" } });
 }
 export async function getStudentAssessmentSubmission(user, assessmentId) { const { student, item } = await studentAssessment(user, assessmentId); const row = await prisma.assessmentSubmission.findUnique({ where: { assessmentId_branchStudentId: { assessmentId, branchStudentId: student.id } } }); return row ? { ...row, percentage: row.marksObtained != null ? (row.marksObtained / item.totalMarks) * 100 : null } : null; }
+
+export async function getStudentAssessmentReports(user) {
+  const student = await assertStudent(user);
+  const assessments = await prisma.assessment.findMany({
+    where: { branchBatch: { OR: [{ id: student.batchId }, { batchId: student.batchId }] } },
+    include: {
+      branchCourse: { select: { id: true, name: true } },
+      module: { select: { id: true, title: true } },
+      branchBatch: { select: { id: true, batchId: true, batchName: true } },
+      submissions: { where: { branchStudentId: student.id }, select: { status: true, submittedAt: true, marksObtained: true, feedback: true } },
+    },
+    orderBy: [{ startDate: "asc" }, { createdAt: "asc" }],
+  });
+  const modules = new Map();
+  assessments.forEach((assessment) => {
+    const key = `${assessment.branchCourseId}:${assessment.moduleId}`;
+    const group = modules.get(key) || { moduleId: assessment.moduleId, moduleName: assessment.module.title, courseId: assessment.branchCourseId, courseName: assessment.branchCourse.name, batchId: assessment.branchBatch.id, batchName: assessment.branchBatch.batchName, totalAssessments: 0, assessments: [], overallMarksObtained: 0, overallTotalMarks: 0 };
+    const submission = assessment.submissions[0];
+    const evaluated = submission?.status === "EVALUATED" && submission.marksObtained != null;
+    const submitted = Boolean(submission?.submittedAt);
+    const marksObtained = evaluated ? Number(submission.marksObtained) : null;
+    group.totalAssessments += 1;
+    group.assessments.push({ assessmentId: assessment.id, assessmentName: assessment.assessmentName, marksObtained, totalMarks: assessment.totalMarks, percentage: evaluated ? (marksObtained / assessment.totalMarks) * 100 : null, status: evaluated ? "EVALUATED" : submitted ? "PENDING_EVALUATION" : "NOT_SUBMITTED", submittedAt: submission?.submittedAt || null, feedback: submission?.feedback || null });
+    if (evaluated) { group.overallMarksObtained += marksObtained; group.overallTotalMarks += assessment.totalMarks; }
+    modules.set(key, group);
+  });
+  return { student: { id: student.id, name: student.studentName }, modules: Array.from(modules.values()).map((group) => ({ ...group, overallPercentage: group.overallTotalMarks ? (group.overallMarksObtained / group.overallTotalMarks) * 100 : null })) };
+}
+
+export async function getAssessmentScreenshot(user, fileName) {
+  const submission = await prisma.assessmentSubmission.findFirst({ where: { screenshotUrl: { endsWith: `/${text(fileName)}/screenshot` } }, include: { assessment: true } });
+  if (!submission?.screenshotUrl) throw new AppError("Screenshot not found.", 404);
+  if (user.role === "FACULTY" && submission.assessment.facultyId !== user.id) throw new AppError("You are not authorized to view this screenshot.", 403);
+  if (user.role === "STUDENT") { const { student } = await assertStudent(user); if (student.id !== submission.branchStudentId) throw new AppError("You are not authorized to view this screenshot.", 403); }
+  const filePath = path.join(assessmentUploadRoot, text(fileName));
+  try { return { buffer: await fs.readFile(filePath), mimeType: submission.screenshotMimeType || "image/jpeg", fileName: submission.screenshotFileName || text(fileName) }; } catch { throw new AppError("Screenshot file is missing.", 404); }
+}
 
 function pdfEscape(value) { return text(value).replace(/([\\()])/g, "\\$1").replace(/[^\x20-\x7e]/g, "?"); }
 function wrapPdfText(value, maxChars = 86) { const words = text(value).split(/\s+/).filter(Boolean); const lines = []; let line = ""; for (const word of words) { if (!line) line = word; else if ((line.length + word.length + 1) <= maxChars) line += ` ${word}`; else { lines.push(line); line = word; } } if (line || !lines.length) lines.push(line); return lines; }
