@@ -184,7 +184,19 @@ async function syncFacultyCourseAssignment(tx, { branchId, facultyId, branchCour
 
 export async function listBranchFaculty(actorUser, query) {
   const role = normalizeString(actorUser?.role).toUpperCase();
-  const branchProfile = role === "BRANCH_ADMIN" ? await getCurrentBranchProfile(actorUser) : null;
+  const impersonatedBranchId = role === "SUPER_ADMIN"
+    ? normalizeString(actorUser?.impersonatedBranchId)
+    : "";
+  const branchProfile = role === "BRANCH_ADMIN"
+    ? await getCurrentBranchProfile(actorUser)
+    : impersonatedBranchId
+      ? await prisma.branch.findFirst({
+          where: {
+            OR: [{ id: impersonatedBranchId }, { branchId: impersonatedBranchId }],
+          },
+          select: { id: true, branchId: true },
+        })
+      : null;
 
   if (role !== "SUPER_ADMIN" && !branchProfile) {
     throw new AppError("Branch profile not found.", 404);

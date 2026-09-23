@@ -38,7 +38,40 @@ function datesBetween(from, to) {
   return dates;
 }
 export function studentSchedule(student, context, now = new Date()) {
-  const batch = context.batches.find(b => [b.batchId, b.id].includes(student.batchId) && [b.courseId, b.branchCourseId].includes(student.courseId) && [b.facultyId, b.branchFacultyId].includes(student.facultyId));
+  const sameValue = (left, right) => {
+    const normalizedLeft = String(left ?? '').trim();
+    const normalizedRight = String(right ?? '').trim();
+    return Boolean(normalizedLeft && normalizedRight && normalizedLeft === normalizedRight);
+  };
+  const studentBatchId = String(student.batchId ?? '').trim();
+  const studentBatchName = String(student.batchName ?? student.batch ?? '').trim();
+  const studentCourseId = String(student.courseId ?? '').trim();
+  const studentCourseName = String(student.courseName ?? student.courseInterested ?? student.course?.name ?? '').trim();
+  const studentFacultyId = String(student.facultyId ?? '').trim();
+  const studentFacultyName = String(student.facultyName ?? '').trim();
+  const batchIdMatches = batch => (
+    [batch.batchId, batch.id, batch.batchName].some(value => sameValue(value, studentBatchId))
+    || sameValue(batch.batchName, studentBatchName)
+  );
+  const courseMatches = batch => (
+    (!studentCourseId && !studentCourseName)
+    || [batch.courseId, batch.branchCourseId].some(value => sameValue(value, studentCourseId))
+    || sameValue(batch.courseName, studentCourseName)
+    || sameValue(batch.branchCourse?.name, studentCourseName)
+  );
+  const facultyMatches = batch => (
+    (!studentFacultyId && !studentFacultyName)
+    || [batch.facultyId, batch.branchFacultyId].some(value => sameValue(value, studentFacultyId))
+    || sameValue(batch.facultyName, studentFacultyName)
+    || sameValue(batch.facultyEmail, student.facultyEmail)
+  );
+
+  // The batch assignment is authoritative. Faculty/course references on older
+  // student rows can contain a legacy ID, while the batch still identifies the
+  // correct branch schedule and current faculty.
+  const batch = context.batches.find(batch => batchIdMatches(batch) && courseMatches(batch) && facultyMatches(batch))
+    || context.batches.find(batch => batchIdMatches(batch) && courseMatches(batch))
+    || context.batches.find(batch => batchIdMatches(batch));
   if (!batch) throw new AppError(`Student ${student.studentId} has no valid assigned batch`, 409);
   try { return generateSchedule({ student, batch, ...context, timezone: context.branch.timezone, now }); }
   catch (error) { throw new AppError(error.message, 409); }
