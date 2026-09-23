@@ -255,6 +255,86 @@ export async function getSubmission(user, testId, scheduleId, attemptId) {
 }
 
 function pdfEscape(value) { return text(value).replace(/([\\()])/g, "\\$1").replace(/[^\x20-\x7e]/g, "?"); }
-function createSimplePdf(lines) { const content = ["BT", "/F1 10 Tf", "50 790 Td", ...lines.flatMap((line, index) => [index ? "0 -16 Td" : "", `(${pdfEscape(line)}) Tj`]), "ET"].filter(Boolean).join("\n"); const objects = [`1 0 obj<< /Type /Catalog /Pages 2 0 R >>endobj`, `2 0 obj<< /Type /Pages /Kids [3 0 R] /Count 1 >>endobj`, `3 0 obj<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 4 0 R >> >> /Contents 5 0 R >>endobj`, `4 0 obj<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>endobj`, `5 0 obj<< /Length ${Buffer.byteLength(content)} >>stream\n${content}\nendstream endobj`]; let pdf = "%PDF-1.4\n"; const offsets = []; for (const object of objects) { offsets.push(Buffer.byteLength(pdf)); pdf += `${object}\n`; } const xref = Buffer.byteLength(pdf); pdf += `xref\n0 ${objects.length + 1}\n0000000000 65535 f \n${offsets.map((offset) => `${String(offset).padStart(10, "0")} 00000 n `).join("\n")}\ntrailer<< /Size ${objects.length + 1} /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF`; return Buffer.from(pdf); }
+function wrapPdfText(value, maxChars = 86) { const words = text(value).split(/\s+/).filter(Boolean); const lines = []; let line = ""; for (const word of words) { if (!line) line = word; else if ((line.length + word.length + 1) <= maxChars) line += ` ${word}`; else { lines.push(line); line = word; } } if (line || !lines.length) lines.push(line); return lines; }
+function makePdfPage(lines, pageNumber, totalPages) {
+  const commands = ["q", "0.12 0.28 0.55 rg", "Q", "BT"];
+  let y = 775;
+  for (const line of lines) {
+    if (line.rule) { commands.push("0.85 0.88 0.92 RG", `${line.x || 52} ${y + 5} m 543 ${y + 5} l S`); y -= 12; continue; }
+    if (line.fill) { commands.push(`${line.fill} rg`, `52 ${y - 5} 491 ${line.height || 22} re f`); y -= line.fillGap || 0; }
+    if (line.parts) { line.parts.forEach((part) => { const size = part.size || line.size || 10; commands.push(`${part.color || line.color || "0.12 0.16 0.22"} rg`, `/${part.bold ? "F2" : "F1"} ${size} Tf`, `1 0 0 1 ${part.x || 52} ${y} Tm`, `(${pdfEscape(part.text)}) Tj`); }); } else { const size = line.size || 10; commands.push(`${line.color || "0.12 0.16 0.22"} rg`, `/${line.bold ? "F2" : "F1"} ${size} Tf`, `1 0 0 1 ${line.x || 52} ${y} Tm`, `(${pdfEscape(line.text)}) Tj`); }
+    y -= line.gap || Math.max(14, line.size || 10 + 4);
+  }
+  commands.push("ET", "BT", "0.38 0.45 0.55 rg", "/F1 8 Tf", "1 0 0 1 52 28 Tm", `(${pdfEscape(`CISPRO - Test Question Paper    Page ${pageNumber} of ${totalPages}`)}) Tj`, "ET");
+  return commands.join("\n");
+}
 
-export async function buildQuestionPaperPdf(user, testId) { const test = await getFacultyTest(user, testId); const lines = [`${test.title}`, `Course: ${test.branchCourse.name}`, `Module: ${test.module.title}`, `Questions: ${test.totalQuestions} | Marks per question: ${test.marksPerQuestion} | Total: ${test.totalMarks}`, ""]; test.schedules.forEach((schedule) => lines.push(`Batch: ${schedule.batchName || schedule.batchId} | ${schedule.testDate} | ${schedule.startTime} - ${schedule.endTime}`)); lines.push(""); test.questions.forEach((question, index) => { lines.push(`${index + 1}. ${question.question}`, `A. ${question.optionA}`, `B. ${question.optionB}`, `C. ${question.optionC}`, `D. ${question.optionD}`, ""); }); return createSimplePdf(lines); }
+function facultyBatchWhere(user, batchId = null) {
+  const ids = facultyIds(user);
+  return {
+    ...(batchId ? { id: batchId } : {}),
+    ...active,
+    OR: [
+      { facultyId: { in: ids } },
+      { branchFaculty: { facultyId: { in: ids }, status: "ACTIVE" } },
+    ],
+  };
+}
+
+async function assertFacultyReportScope(user, moduleId, batchId) {
+  const batch = await prisma.branchBatch.findFirst({ where: facultyBatchWhere(user, batchId), include: { branchCourse: { select: { id: true, name: true, courseCode: true } } } });
+  if (!batch) throw new AppError("Batch not found or not assigned to this faculty.", 403);
+  const module = await prisma.branchCourseModule.findFirst({ where: { id: moduleId, branchCourseId: batch.branchCourseId, status: "ACTIVE" }, select: { id: true, title: true, branchCourseId: true } });
+  if (!module) throw new AppError("Module not found for the selected batch course.", 403);
+  return { batch, module };
+}
+
+export async function listFacultyExamReports(user, filters = {}) {
+  const courseId = text(filters.courseId); const moduleId = text(filters.moduleId); const batchId = text(filters.batchId);
+  if (courseId) await assertFacultyCourse(user, courseId);
+  if (batchId) await assertFacultyReportScope(user, moduleId || (await prisma.branchCourseModule.findFirst({ where: { branchCourseId: courseId, status: "ACTIVE" }, select: { id: true } }))?.id, batchId);
+  const courseWhere = await facultyCourseWhere(user, courseId || null);
+  const tests = await prisma.exam.findMany({ where: { facultyId: user.id, ...(courseId ? { branchCourseId: courseId } : {}), ...(moduleId ? { moduleId } : {}), branchCourse: courseWhere, schedules: { some: { branchBatch: facultyBatchWhere(user, batchId || null) } } }, select: { id: true, totalQuestions: true, module: { select: { id: true, title: true } }, branchCourse: { select: { id: true, name: true } }, schedules: { where: { branchBatch: facultyBatchWhere(user, batchId || null) }, select: { branchBatch: { select: { id: true, batchId: true, batchName: true, batchTiming: true } } } }, questions: { select: { id: true } } }, orderBy: { createdAt: "desc" } });
+  const grouped = new Map();
+  tests.forEach((test) => test.schedules.forEach((schedule) => { const batch = schedule.branchBatch; const key = `${test.module.id}:${batch.id}`; const row = grouped.get(key) || { course: test.branchCourse, module: test.module, batch: { id: batch.id, batchId: batch.batchId, name: batch.batchName, timing: batch.batchTiming }, testIds: new Set(), mcqCount: 0 }; if (!row.testIds.has(test.id)) { row.testIds.add(test.id); row.mcqCount += test.questions.length; } grouped.set(key, row); }));
+  return Array.from(grouped.values()).map(({ testIds, ...row }) => ({ ...row, testCount: testIds.size })).sort((a, b) => `${a.module.title}:${a.batch.name}`.localeCompare(`${b.module.title}:${b.batch.name}`));
+}
+
+export async function getFacultyStudentExamReport(user, moduleId, batchId) {
+  const { batch, module } = await assertFacultyReportScope(user, moduleId, batchId);
+  const tests = await prisma.exam.findMany({ where: { facultyId: user.id, branchCourseId: batch.branchCourseId, moduleId, schedules: { some: { branchBatchId: batch.id } } }, select: { id: true, title: true, totalMarks: true, totalQuestions: true, marksPerQuestion: true, schedules: { where: { branchBatchId: batch.id }, select: { id: true, testDate: true, startTime: true, endTime: true } } }, orderBy: { createdAt: "asc" } });
+  const scheduleIds = tests.flatMap((test) => test.schedules.map((schedule) => schedule.id));
+  const students = await prisma.branchStudent.findMany({ where: { recordStatus: "ACTIVE", OR: [{ batchId: batch.id }, { batchId: batch.batchId }] }, select: { id: true, studentId: true, studentName: true, emailAddress: true }, orderBy: { studentName: "asc" } });
+  const attempts = scheduleIds.length && students.length ? await prisma.examAttempt.findMany({ where: { scheduleId: { in: scheduleIds }, branchStudentId: { in: students.map((student) => student.id) } }, select: { scheduleId: true, branchStudentId: true, status: true, startedAt: true, submittedAt: true, obtainedMarks: true, totalMarks: true, percentage: true, correctAnswers: true, wrongAnswers: true, unansweredQuestions: true } }) : [];
+  const attemptMap = new Map(attempts.map((attempt) => [`${attempt.branchStudentId}:${attempt.scheduleId}`, attempt]));
+  const testRows = tests.map((test) => ({ id: test.id, name: test.title, maximumMarks: test.totalMarks, totalQuestions: test.totalQuestions, marksPerQuestion: test.marksPerQuestion, schedule: test.schedules[0] || null }));
+  const studentRows = students.map((student) => { let totalObtainedMarks = 0; let totalMaximumMarks = 0; const testResults = testRows.map((test) => { const attempt = test.schedule ? attemptMap.get(`${student.id}:${test.schedule.id}`) : null; if (attempt?.status === "SUBMITTED") { totalObtainedMarks += Number(attempt.obtainedMarks || 0); totalMaximumMarks += Number(attempt.totalMarks || test.maximumMarks || 0); } return { testId: test.id, obtainedMarks: attempt?.status === "SUBMITTED" ? attempt.obtainedMarks : null, maximumMarks: test.maximumMarks, percentage: attempt?.status === "SUBMITTED" ? Number(attempt.percentage || 0) : null, status: attempt?.status || "NOT_ATTEMPTED", correct: attempt?.correctAnswers ?? null, wrong: attempt?.wrongAnswers ?? null, unanswered: attempt?.unansweredQuestions ?? null, startedAt: attempt?.startedAt || null, submittedAt: attempt?.submittedAt || null }; }); return { studentId: student.studentId, studentName: student.studentName, emailAddress: student.emailAddress, tests: testResults, totalObtainedMarks, totalMaximumMarks, overallPercentage: totalMaximumMarks ? (totalObtainedMarks / totalMaximumMarks) * 100 : 0 }; });
+  return { course: batch.branchCourse, module: { id: module.id, name: module.title }, batch: { id: batch.id, batchId: batch.batchId, name: batch.batchName, timing: batch.batchTiming }, tests: testRows, totalTests: testRows.length, totalMcqs: testRows.reduce((sum, test) => sum + test.totalQuestions, 0), totalStudents: students.length, students: studentRows };
+}
+function createProfessionalPdf(pageLines) {
+  const pages = pageLines.length ? pageLines : [[{ text: "No question data available." }]];
+  const objects = [null, "<< /Type /Catalog /Pages 2 0 R >>", null, "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>", "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>"];
+  const pageRefs = []; const pageContents = [];
+  pages.forEach((lines, index) => { const content = makePdfPage(lines, index + 1, pages.length); const contentIndex = objects.length; objects.push(`<< /Length ${Buffer.byteLength(content)} >>\nstream\n${content}\nendstream`); const pageIndex = objects.length; objects.push(null); pageContents.push(contentIndex); pageRefs.push(pageIndex); });
+  objects[2] = `<< /Type /Pages /Kids [${pageRefs.map((index) => `${index} 0 R`).join(" ")}] /Count ${pages.length} >>`;
+  pageRefs.forEach((pageIndex, index) => { objects[pageIndex] = `<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 4 0 R /F2 5 0 R >> >> /Contents ${pageContents[index]} 0 R >>`; });
+  let pdf = "%PDF-1.4\n"; const offsets = [];
+  objects.forEach((object, index) => { if (index === 0) return; offsets[index] = Buffer.byteLength(pdf); pdf += `${index} 0 obj\n${object}\nendobj\n`; });
+  const xref = Buffer.byteLength(pdf); pdf += `xref\n0 ${objects.length}\n0000000000 65535 f \n${offsets.slice(1).map((offset) => `${String(offset).padStart(10, "0")} 00000 n `).join("\n")}\ntrailer\n<< /Size ${objects.length} /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF`;
+  return Buffer.from(pdf);
+}
+function pdfDate(value) { if (!value) return "-"; const parsed = new Date(`${value}T00:00:00`); return Number.isNaN(parsed.getTime()) ? value : new Intl.DateTimeFormat("en-GB", { day: "2-digit", month: "long", year: "numeric" }).format(parsed); }
+function safeFilePart(value) { return text(value).replace(/[^a-z0-9]+/gi, "_").replace(/^_+|_+$/g, "").slice(0, 60) || "Test"; }
+
+export async function buildQuestionPaperPdf(user, testId) {
+  const test = await getFacultyTest(user, testId);
+  const lines = [{ text: "CISPRO", x: 250, size: 21, bold: true, color: "0.10 0.30 0.72", gap: 25 }, { text: "TEST QUESTION PAPER", x: 211, size: 13, bold: true, color: "0.18 0.24 0.32", gap: 22 }, { rule: true }, { text: "EXAM INFORMATION", size: 11, bold: true, color: "0.10 0.30 0.72", fill: "0.93 0.96 1", height: 22, gap: 24 }];
+  const info = [["Test Name", test.title], ["Course", test.branchCourse?.name], ["Module", test.module?.title], ["Questions", test.questions.length], ["Marks / Question", test.marksPerQuestion], ["Total Marks", test.questions.length * test.marksPerQuestion]];
+  info.forEach(([label, value]) => { const valueLines = wrapPdfText(String(value ?? "-"), 64); lines.push({ parts: [{ text: label, x: 70, bold: true, color: "0.30 0.38 0.48" }, { text: valueLines[0], x: 205, color: "0.08 0.12 0.18" }], gap: 15 }); valueLines.slice(1).forEach((line) => lines.push({ parts: [{ text: "", x: 70 }, { text: line, x: 205, color: "0.08 0.12 0.18" }], gap: 15 })); });
+  lines.push({ text: "", gap: 16 }, { text: "BATCH SCHEDULE", size: 11, bold: true, color: "0.10 0.30 0.72", fill: "0.93 0.96 1", height: 22, gap: 24 });
+  test.schedules.forEach((schedule) => lines.push({ parts: [{ text: "Batch", x: 70, bold: true, color: "0.30 0.38 0.48" }, { text: schedule.batchName || schedule.batchId || "-", x: 205, bold: true }], gap: 15 }, { parts: [{ text: "Date", x: 70, bold: true, color: "0.30 0.38 0.48" }, { text: pdfDate(schedule.testDate), x: 205 }, { text: "Time", x: 350, bold: true, color: "0.30 0.38 0.48" }, { text: `${schedule.startTime} - ${schedule.endTime}`, x: 395 }], gap: 20 }));
+  lines.push({ rule: true }, { text: "QUESTION PAPER", size: 13, bold: true, color: "0.10 0.30 0.72", fill: "0.93 0.96 1", height: 22, gap: 26 });
+  test.questions.forEach((question, index) => { lines.push(...wrapPdfText(`${index + 1}. ${question.question}`, 82).map((line, lineIndex) => ({ text: line, x: 65, bold: lineIndex === 0, size: 10, gap: 15 }))); ["A", "B", "C", "D"].forEach((letter) => lines.push(...wrapPdfText(`${letter}. ${question[`option${letter}`]}`, 76).map((line, lineIndex) => ({ text: line, x: 82, size: 10, gap: lineIndex === 0 ? 14 : 13 })))); lines.push({ text: `Correct Answer: ${question.correctAnswer}`, x: 82, bold: true, color: "0.08 0.48 0.28", gap: 24 }); });
+  const pages = []; let page = []; let height = 0; for (const line of lines) { const lineHeight = line.rule ? 18 : (line.gap || 15); if (page.length && height + lineHeight > 700) { pages.push(page); page = []; height = 0; } page.push(line); height += lineHeight; } if (page.length) pages.push(page);
+  return { buffer: createProfessionalPdf(pages), fileName: `${safeFilePart(test.branchCourse?.name)}_${safeFilePart(test.module?.title)}_${safeFilePart(test.schedules[0]?.batchName || "Batch")}_Test.pdf` };
+}

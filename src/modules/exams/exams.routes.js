@@ -14,6 +14,8 @@ router.put("/faculty/tests/:testId", authorize("FACULTY"), controller.updateTest
 router.get("/faculty/tests/:testId", authorize("FACULTY"), controller.getFacultyTest);
 router.get("/faculty/tests/:testId/pdf", authorize("FACULTY"), controller.downloadPdf);
 router.get("/faculty/tests/:testId/schedules/:scheduleId/submissions", authorize("FACULTY"), controller.listSubmissions);
+router.get("/faculty/exam-reports", authorize("FACULTY"), controller.listFacultyExamReports);
+router.get("/faculty/exam-reports/:moduleId/:batchId", authorize("FACULTY"), controller.getFacultyStudentExamReport);
 router.get("/faculty/tests/:testId/schedules/:scheduleId/submissions/:attemptId", authorize("FACULTY"), controller.getSubmission);
 router.get("/student/tests", authorize("STUDENT"), controller.listStudentTests);
 router.get("/student/tests/:scheduleId", authorize("STUDENT"), controller.getStudentTest);
