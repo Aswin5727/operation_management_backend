@@ -140,8 +140,6 @@ export async function createTest(user, payload = {}) {
     if (!start || !end || end <= start) throw new AppError("Every schedule must have a valid date and end time after its start time.", 422);
     return { branchBatchId: text(item.batchId), testDate: date, startTime, endTime, status: "SCHEDULED", batch: batchMap.get(text(item.batchId)) };
   });
-  const duplicate = await prisma.exam.findFirst({ where: { facultyId: user.id, branchCourseId: courseId, moduleId, schedules: { some: { branchBatchId: { in: batchIds }, testDate: { in: normalizedSchedules.map((item) => item.testDate) } } } } });
-  if (duplicate) throw new AppError("A test already exists for one of the selected batch/date combinations.", 409);
   const totalQuestions = questions.length;
   const created = await prisma.$transaction(async (tx) => {
     const exam = await tx.exam.create({ data: { title: text(payload.title) || "MCQ Test", branchCourseId: courseId, moduleId, facultyId: user.id, marksPerQuestion, totalQuestions, totalMarks: totalQuestions * marksPerQuestion, status: "SCHEDULED", questions: { create: questions }, schedules: { create: normalizedSchedules.map(({ batch, ...schedule }) => schedule) } }, include: examInclude(true) });
