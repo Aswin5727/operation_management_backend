@@ -44,6 +44,8 @@ model User {
   facultyLeaveRequests           FacultyLeaveRequest[]
   createdExams                   Exam[]                       @relation("ExamFaculty")
   examAttempts                   ExamAttempt[]
+  createdAssessments             Assessment[]                 @relation("AssessmentFaculty")
+  evaluatedSubmissions           AssessmentSubmission[]       @relation("AssessmentEvaluator")
 
   @@index([role])
   @@index([active])
@@ -163,6 +165,7 @@ model Notification {
   requestTitle       String?
   examId             String?
   examScheduleId     String?
+  assessmentId       String?
   batchId            String?
   subModuleId        String?
   subModuleName      String?
@@ -177,6 +180,7 @@ model Notification {
   @@index([targetBranchEmail])
   @@index([targetBranchName])
   @@index([targetUserId, examId, examScheduleId])
+  @@index([targetUserId, assessmentId])
 }
 
 model CourseEditRequest {
@@ -301,6 +305,7 @@ model BranchCourse {
   facultyTodayWorkEntries        FacultyTodayWorkEntry[]
   facultyTodayWorkStudentEntries FacultyTodayWorkStudentEntry[]
   exams                          Exam[]
+  assessments                    Assessment[]
 
   @@unique([branchId, nameKey])
   @@unique([branchId, courseCode])
@@ -325,6 +330,7 @@ model BranchCourseModule {
   branchCourse   BranchCourse            @relation(fields: [branchCourseId], references: [id], onDelete: Cascade)
   submodules     BranchCourseSubmodule[]
   exams          Exam[]
+  assessments    Assessment[]
 
   @@unique([branchCourseId, sequenceNo])
   @@unique([branchCourseId, titleKey])
@@ -458,6 +464,7 @@ model BranchBatch {
   branchCourse    BranchCourse   @relation(fields: [branchCourseId], references: [id], onDelete: Cascade)
   branchFaculty   BranchFaculty  @relation(fields: [branchFacultyId], references: [id], onDelete: Cascade)
   examSchedules   ExamSchedule[]
+  assessments     Assessment[]
 
   @@unique([branchId, courseId, facultyId, batchId])
   @@index([branchId])
@@ -611,6 +618,7 @@ model BranchStudent {
   calendarAttendanceRecords      BranchStudentAttendance[]
   facultyTodayWorkStudentEntries FacultyTodayWorkStudentEntry[]
   examAttempts                   ExamAttempt[]
+  assessmentSubmissions          AssessmentSubmission[]
 
   @@unique([branchId, studentId])
   @@index([branchId])
@@ -1098,6 +1106,52 @@ model BranchInstallmentTemplate {
   @@index([planType])
 }
 
+model Assessment {
+  id             String                 @id @default(cuid())
+  assessmentName String
+  branchCourseId String
+  moduleId       String
+  branchBatchId  String
+  totalMarks     Int
+  startDate      DateTime
+  endDate        DateTime
+  details        String?
+  facultyId      String
+  createdAt      DateTime               @default(now())
+  updatedAt      DateTime               @updatedAt
+  branchCourse   BranchCourse           @relation(fields: [branchCourseId], references: [id], onDelete: Cascade)
+  module         BranchCourseModule     @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  branchBatch    BranchBatch            @relation(fields: [branchBatchId], references: [id], onDelete: Cascade)
+  faculty        User                   @relation("AssessmentFaculty", fields: [facultyId], references: [id])
+  submissions    AssessmentSubmission[]
+
+  @@index([facultyId, createdAt])
+  @@index([branchBatchId, startDate, endDate])
+  @@index([branchCourseId, moduleId])
+}
+
+model AssessmentSubmission {
+  id              String        @id @default(cuid())
+  assessmentId    String
+  branchStudentId String
+  response        String?
+  submittedAt     DateTime?
+  status          String        @default("NOT_SUBMITTED")
+  marksObtained   Int?
+  feedback        String?
+  evaluatedBy     String?
+  evaluatedAt     DateTime?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  assessment      Assessment    @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+  branchStudent   BranchStudent @relation(fields: [branchStudentId], references: [id], onDelete: Cascade)
+  evaluator       User?         @relation("AssessmentEvaluator", fields: [evaluatedBy], references: [id])
+
+  @@unique([assessmentId, branchStudentId])
+  @@index([assessmentId, status])
+  @@index([branchStudentId])
+}
+
 model Exam {
   id               String             @id @default(cuid())
   title            String             @default("MCQ Test")
@@ -1235,6 +1289,7 @@ enum NotificationKind {
   COURSE_EDIT_MODULE_UPDATED
   FACULTY_LEAVE_REQUEST
   EXAM_SCHEDULED
+  ASSESSMENT_AVAILABLE
 }
 
 enum RecordStatus {

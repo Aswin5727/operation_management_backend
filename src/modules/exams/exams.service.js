@@ -4,6 +4,7 @@ import AppError from "../../common/errors/AppError.js";
 const active = { status: "ACTIVE" };
 const text = (value) => String(value ?? "").trim();
 const unwrap = (value) => value?.data ?? value;
+const notificationDateTime = (value) => new Intl.DateTimeFormat("en-IN", { dateStyle: "medium", timeStyle: "short" }).format(new Date(value));
 
 function parseTime(value) {
   const raw = text(value).toUpperCase();
@@ -251,6 +252,134 @@ export async function getSubmission(user, testId, scheduleId, attemptId) {
   if (!attempt) throw new AppError("Submission not found.", 404);
   return attempt;
 }
+
+const assessmentInclude = {
+  branchCourse: { select: { id: true, name: true, courseCode: true } },
+  module: { select: { id: true, title: true } },
+  branchBatch: { select: { id: true, batchId: true, batchName: true, batchTiming: true } },
+};
+
+function assessmentStatus(item, now = new Date()) {
+  if (now < new Date(item.startDate)) return "UPCOMING";
+  if (now <= new Date(item.endDate)) return "ACTIVE";
+  return "CLOSED";
+}
+
+async function facultyAssessment(user, assessmentId) {
+  const item = await prisma.assessment.findFirst({ where: { id: assessmentId, facultyId: user.id }, include: assessmentInclude });
+  if (!item) throw new AppError("Assessment not found.", 404);
+  return item;
+}
+
+function assessmentPublic(item, submission = null) {
+  return { ...item, status: assessmentStatus(item), submission: submission || null };
+}
+
+export async function listFacultyAssessments(user) {
+  const rows = await prisma.assessment.findMany({ where: { facultyId: user.id }, include: assessmentInclude, orderBy: { createdAt: "desc" } });
+  return rows.map((row) => assessmentPublic(row));
+}
+
+export async function getFacultyAssessment(user, assessmentId) { return assessmentPublic(await facultyAssessment(user, assessmentId)); }
+
+function assessmentDates(payload) {
+  const startValue = text(payload.startDate);
+  const endValue = text(payload.endDate);
+  const datePattern = /^(\d{4})-(\d{2})-(\d{2})$/;
+  const startMatch = startValue.match(datePattern);
+  const endMatch = endValue.match(datePattern);
+  if (!startMatch || !endMatch) throw new AppError("Start date and end date are required.", 422);
+  const startDay = Date.UTC(Number(startMatch[1]), Number(startMatch[2]) - 1, Number(startMatch[3]));
+  const endDay = Date.UTC(Number(endMatch[1]), Number(endMatch[2]) - 1, Number(endMatch[3]));
+  if (endDay < startDay) throw new AppError("End date cannot be before start date.", 422);
+  const oneDay = endDay === startDay;
+  const startMinutes = oneDay ? parseTime(payload.startTime) : 0;
+  const endMinutes = oneDay ? parseTime(payload.endTime) : (23 * 60 + 59);
+  if (oneDay && (startMinutes == null || endMinutes == null || endMinutes <= startMinutes)) throw new AppError("For a one-day assessment, end time must be after start time.", 422);
+  const startDate = new Date(`${startValue}T${String(Math.floor(startMinutes / 60)).padStart(2, "0")}:${String(startMinutes % 60).padStart(2, "0")}:00+05:30`);
+  const endDate = new Date(`${endValue}T${String(Math.floor(endMinutes / 60)).padStart(2, "0")}:${String(endMinutes % 60).padStart(2, "0")}:59+05:30`);
+  return { startDate, endDate };
+}
+
+async function validateAssessmentScope(user, payload) {
+  const course = await assertFacultyCourse(user, text(payload.courseId));
+  const module = course.modules.find((item) => item.id === text(payload.moduleId));
+  if (!module) throw new AppError("Selected module does not belong to the selected course.", 422);
+  const ids = facultyIds(user);
+  const batch = await prisma.branchBatch.findFirst({ where: { AND: [{ id: text(payload.batchId) }, { OR: [{ branchCourseId: course.id }, { courseId: course.id }] }, { OR: [{ facultyId: { in: ids } }, { branchFaculty: { facultyId: { in: ids }, status: "ACTIVE" } }] }, active] }, include: { branchCourse: true } });
+  if (!batch) throw new AppError("Selected batch is not assigned to this faculty.", 403);
+  return { course, module, batch };
+}
+
+export async function createAssessment(user, payload = {}) {
+  const assessmentName = text(payload.assessmentName);
+  const totalMarks = Number(payload.totalMarks);
+  if (!assessmentName || !text(payload.courseId) || !text(payload.moduleId) || !text(payload.batchId) || !Number.isInteger(totalMarks) || totalMarks <= 0) throw new AppError("Assessment name, course, module, batch, and positive total marks are required.", 422);
+  const dates = assessmentDates(payload);
+  const { course, module, batch } = await validateAssessmentScope(user, payload);
+  const created = await prisma.$transaction(async (tx) => {
+    const assessment = await tx.assessment.create({ data: { assessmentName, branchCourseId: course.id, moduleId: module.id, branchBatchId: batch.id, totalMarks, startDate: dates.startDate, endDate: dates.endDate, details: text(payload.details) || null, facultyId: user.id }, include: assessmentInclude });
+    const students = await tx.branchStudent.findMany({ where: { recordStatus: "ACTIVE", OR: [{ batchId: batch.id }, { batchId: batch.batchId }] }, select: { id: true, emailAddress: true } });
+    const emails = students.map((s) => text(s.emailAddress).toLowerCase()).filter(Boolean);
+    const users = emails.length ? await tx.user.findMany({ where: { role: "STUDENT", OR: emails.map((email) => ({ email: { equals: email, mode: "insensitive" } })) }, select: { id: true, email: true } }) : [];
+    const byEmail = new Map(users.map((item) => [text(item.email).toLowerCase(), item.id]));
+    const scheduleMessage = `A new assessment \"${assessmentName}\" is scheduled for ${course.name} - ${module.title}. Total marks: ${totalMarks}. Start: ${notificationDateTime(dates.startDate)}. End: ${notificationDateTime(dates.endDate)}.`;
+    const rows = students.map((student) => { const targetUserId = byEmail.get(text(student.emailAddress).toLowerCase()); return targetUserId ? { kind: "ASSESSMENT_AVAILABLE", tone: "blue", title: "New Assessment Available", message: scheduleMessage, targetUserId, assessmentId: assessment.id, batchId: batch.id, branchCourseId: course.id, moduleId: module.id, createdBy: user.id } : null; }).filter(Boolean);
+    if (rows.length) await tx.notification.createMany({ data: rows });
+    return assessment;
+  });
+  return assessmentPublic(created);
+}
+
+export async function updateAssessment(user, assessmentId, payload = {}) {
+  const existing = await facultyAssessment(user, assessmentId);
+  if (new Date() >= new Date(existing.startDate)) throw new AppError("This assessment can no longer be edited after it starts.", 409);
+  const dates = assessmentDates(payload);
+  const { course, module, batch } = await validateAssessmentScope(user, payload);
+  const totalMarks = Number(payload.totalMarks);
+  if (!Number.isInteger(totalMarks) || totalMarks <= 0) throw new AppError("Total marks must be greater than zero.", 422);
+  return assessmentPublic(await prisma.assessment.update({ where: { id: assessmentId }, data: { assessmentName: text(payload.assessmentName), branchCourseId: course.id, moduleId: module.id, branchBatchId: batch.id, totalMarks, startDate: dates.startDate, endDate: dates.endDate, details: text(payload.details) || null }, include: assessmentInclude }));
+}
+
+async function assessmentStudents(user, assessmentId) {
+  const assessment = await facultyAssessment(user, assessmentId);
+  const students = await prisma.branchStudent.findMany({ where: { recordStatus: "ACTIVE", OR: [{ batchId: assessment.branchBatch.id }, { batchId: assessment.branchBatch.batchId }] }, select: { id: true, studentId: true, studentName: true, emailAddress: true }, orderBy: { studentName: "asc" } });
+  const submissions = await prisma.assessmentSubmission.findMany({ where: { assessmentId }, include: { evaluator: { select: { fullName: true } } } });
+  const byStudent = new Map(submissions.map((row) => [row.branchStudentId, row]));
+  return students.map((student) => { const submission = byStudent.get(student.id); return { student, ...(submission || { id: `pending-${student.id}`, status: "NOT_SUBMITTED", submittedAt: null, marksObtained: null, feedback: null, evaluatedAt: null, evaluatedBy: null }) }; });
+}
+export async function listAssessmentStudents(user, assessmentId) { return assessmentStudents(user, assessmentId); }
+export async function listAssessmentSubmissions(user, assessmentId) { return assessmentStudents(user, assessmentId); }
+
+export async function evaluateAssessment(user, assessmentId, studentId, payload = {}) {
+  await facultyAssessment(user, assessmentId);
+  const marks = Number(payload.marksObtained);
+  const assessment = await prisma.assessment.findUnique({ where: { id: assessmentId } });
+  if (!Number.isInteger(marks) || marks < 0 || marks > assessment.totalMarks) throw new AppError("Marks must be between zero and total marks.", 422);
+  const row = await prisma.assessmentSubmission.upsert({ where: { assessmentId_branchStudentId: { assessmentId, branchStudentId: studentId } }, create: { assessmentId, branchStudentId: studentId, status: "EVALUATED", marksObtained: marks, feedback: text(payload.feedback) || null, evaluatedBy: user.id, evaluatedAt: new Date() }, update: { status: "EVALUATED", marksObtained: marks, feedback: text(payload.feedback) || null, evaluatedBy: user.id, evaluatedAt: new Date() } });
+  return { ...row, percentage: assessment.totalMarks ? (marks / assessment.totalMarks) * 100 : 0 };
+}
+
+async function studentAssessment(user, assessmentId) {
+  const student = await assertStudent(user);
+  const item = await prisma.assessment.findFirst({ where: { id: assessmentId, branchBatch: { OR: [{ id: student.batchId }, { batchId: student.batchId }] } }, include: assessmentInclude });
+  if (!item) throw new AppError("Assessment not found or you are not enrolled in its batch.", 404);
+  return { student, item };
+}
+export async function listStudentAssessments(user) {
+  const student = await assertStudent(user);
+  const rows = await prisma.assessment.findMany({ where: { branchBatch: { OR: [{ id: student.batchId }, { batchId: student.batchId }] } }, include: { ...assessmentInclude, submissions: { where: { branchStudentId: student.id } } }, orderBy: { startDate: "asc" } });
+  return rows.map((row) => assessmentPublic(row, row.submissions[0] ? { ...row.submissions[0], percentage: row.totalMarks && row.submissions[0].marksObtained != null ? (row.submissions[0].marksObtained / row.totalMarks) * 100 : null } : null));
+}
+export async function getStudentAssessment(user, assessmentId) { const { item } = await studentAssessment(user, assessmentId); return assessmentPublic(item); }
+export async function submitAssessment(user, assessmentId, payload = {}) {
+  const { student, item } = await studentAssessment(user, assessmentId);
+  if (assessmentStatus(item) !== "ACTIVE") throw new AppError("This assessment is outside its submission window.", 403);
+  const existing = await prisma.assessmentSubmission.findUnique({ where: { assessmentId_branchStudentId: { assessmentId, branchStudentId: student.id } } });
+  if (existing?.submittedAt) throw new AppError("Duplicate submission is not allowed.", 409);
+  return prisma.assessmentSubmission.upsert({ where: { assessmentId_branchStudentId: { assessmentId, branchStudentId: student.id } }, create: { assessmentId, branchStudentId: student.id, response: text(payload.response) || null, submittedAt: new Date(), status: "SUBMITTED" }, update: { response: text(payload.response) || null, submittedAt: new Date(), status: "SUBMITTED" } });
+}
+export async function getStudentAssessmentSubmission(user, assessmentId) { const { student, item } = await studentAssessment(user, assessmentId); const row = await prisma.assessmentSubmission.findUnique({ where: { assessmentId_branchStudentId: { assessmentId, branchStudentId: student.id } } }); return row ? { ...row, percentage: row.marksObtained != null ? (row.marksObtained / item.totalMarks) * 100 : null } : null; }
 
 function pdfEscape(value) { return text(value).replace(/([\\()])/g, "\\$1").replace(/[^\x20-\x7e]/g, "?"); }
 function wrapPdfText(value, maxChars = 86) { const words = text(value).split(/\s+/).filter(Boolean); const lines = []; let line = ""; for (const word of words) { if (!line) line = word; else if ((line.length + word.length + 1) <= maxChars) line += ` ${word}`; else { lines.push(line); line = word; } } if (line || !lines.length) lines.push(line); return lines; }

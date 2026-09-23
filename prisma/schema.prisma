@@ -8,72 +8,74 @@ datasource db {
 }
 
 model User {
-  id                         String                     @id @default(cuid())
-  userCode                   String                     @unique
-  fullName                   String
-  email                      String                     @unique
-  phone                      String?                    @unique
-  role                       UserRole
-  active                     Boolean                    @default(true)
-  passwordHash               String
-  passwordChangedAt          DateTime?
-  refreshTokenVersion        Int                        @default(0)
-  failedLoginCount           Int                        @default(0)
-  failedLoginWindowExpiresAt DateTime?
-  lockedUntil                DateTime?
-  lastLoginAt                DateTime?
-  lastLogoutAt               DateTime?
-  lastLoginIp                String?
-  lastLoginUserAgent         String?
-  createdBy                  String?
-  updatedBy                  String?
-  createdAt                  DateTime                   @default(now())
-  updatedAt                  DateTime                   @updatedAt
-  batchFacultyAssignments    BatchFacultyAssignment[]
-  managedBranch              Branch?                    @relation("BranchAdminUser")
-  facultyAttendanceSessions  FacultyAttendanceSession[]
-  facultyAttendanceDays      FacultyAttendanceDay[]
-  facultyAttendanceBatchWork FacultyAttendanceBatchWork[]
-  facultyTodayWorkEntries    FacultyTodayWorkEntry[]
-  loginEvents                LoginEvent[]
-  targetedNotifications      Notification[]             @relation("NotificationTargetUser")
-  passwordResetTokens        PasswordResetToken[]
-  markedStudentAttendances   StudentAttendance[]
+  id                             String                       @id @default(cuid())
+  userCode                       String                       @unique
+  fullName                       String
+  email                          String                       @unique
+  phone                          String?                      @unique
+  role                           UserRole
+  active                         Boolean                      @default(true)
+  passwordHash                   String
+  passwordChangedAt              DateTime?
+  refreshTokenVersion            Int                          @default(0)
+  failedLoginCount               Int                          @default(0)
+  failedLoginWindowExpiresAt     DateTime?
+  lockedUntil                    DateTime?
+  lastLoginAt                    DateTime?
+  lastLogoutAt                   DateTime?
+  lastLoginIp                    String?
+  lastLoginUserAgent             String?
+  createdBy                      String?
+  updatedBy                      String?
+  createdAt                      DateTime                     @default(now())
+  updatedAt                      DateTime                     @updatedAt
+  batchFacultyAssignments        BatchFacultyAssignment[]
+  managedBranch                  Branch?                      @relation("BranchAdminUser")
+  facultyAttendanceSessions      FacultyAttendanceSession[]
+  facultyAttendanceDays          FacultyAttendanceDay[]
+  facultyAttendanceBatchWork     FacultyAttendanceBatchWork[]
+  facultyTodayWorkEntries        FacultyTodayWorkEntry[]
+  loginEvents                    LoginEvent[]
+  targetedNotifications          Notification[]               @relation("NotificationTargetUser")
+  passwordResetTokens            PasswordResetToken[]
+  markedStudentAttendances       StudentAttendance[]
   markedBranchStudentAttendances BranchStudentAttendance[]
-  dashboardWidgetPreferences UserDashboardWidget[]
-  facultyLeaveRequests      FacultyLeaveRequest[]
-  createdExams              Exam[]                  @relation("ExamFaculty")
-  examAttempts              ExamAttempt[]
+  dashboardWidgetPreferences     UserDashboardWidget[]
+  facultyLeaveRequests           FacultyLeaveRequest[]
+  createdExams                   Exam[]                       @relation("ExamFaculty")
+  examAttempts                   ExamAttempt[]
+  createdAssessments             Assessment[]                 @relation("AssessmentFaculty")
+  evaluatedSubmissions           AssessmentSubmission[]       @relation("AssessmentEvaluator")
 
   @@index([role])
   @@index([active])
 }
 
 model DashboardWidget {
-  id           String                  @id @default(cuid())
-  widgetKey    String                  @unique
+  id           String                @id @default(cuid())
+  widgetKey    String                @unique
   widgetName   String
   category     String
-  description  String                  @default("")
+  description  String                @default("")
   allowedRoles String[]
-  isActive     Boolean                 @default(true)
-  createdAt    DateTime                @default(now())
-  updatedAt    DateTime                @updatedAt
+  isActive     Boolean               @default(true)
+  createdAt    DateTime              @default(now())
+  updatedAt    DateTime              @updatedAt
   preferences  UserDashboardWidget[]
 
   @@index([isActive])
 }
 
 model UserDashboardWidget {
-  id          String         @id @default(cuid())
-  userId      String
-  widgetId    String
-  isVisible   Boolean        @default(true)
+  id           String          @id @default(cuid())
+  userId       String
+  widgetId     String
+  isVisible    Boolean         @default(true)
   displayOrder Int
-  createdAt   DateTime       @default(now())
-  updatedAt   DateTime       @updatedAt
-  user        User           @relation(fields: [userId], references: [id], onDelete: Cascade)
-  widget      DashboardWidget @relation(fields: [widgetId], references: [id], onDelete: Cascade)
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+  user         User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  widget       DashboardWidget @relation(fields: [widgetId], references: [id], onDelete: Cascade)
 
   @@unique([userId, widgetId])
   @@index([userId, displayOrder])
@@ -81,37 +83,37 @@ model UserDashboardWidget {
 }
 
 model Branch {
-  id                String          @id @default(cuid())
-  branchId          String          @unique
-  branchName        String
-  branchAdminName   String
-  branchEmail       String          @unique
-  branchPhone       String          @unique
-  branchAddress     String
-  status            RecordStatus    @default(ACTIVE)
-  adminUserId       String?         @unique
-  createdBy         String?
-  updatedBy         String?
-  createdAt         DateTime        @default(now())
-  updatedAt         DateTime        @updatedAt
-  timezone          String          @default("Asia/Kolkata")
-  branchCity        String          @default("")
-  branchCountry     String          @default("")
-  branchCountryCode String          @default("")
-  branchState       String          @default("")
-  branchStateCode   String          @default("")
-  adminUser         User?           @relation("BranchAdminUser", fields: [adminUserId], references: [id])
-  branchCourses     BranchCourse[]
-  branchBatches     BranchBatch[]
+  id                         String                      @id @default(cuid())
+  branchId                   String                      @unique
+  branchName                 String
+  branchAdminName            String
+  branchEmail                String                      @unique
+  branchPhone                String                      @unique
+  branchAddress              String
+  status                     RecordStatus                @default(ACTIVE)
+  adminUserId                String?                     @unique
+  createdBy                  String?
+  updatedBy                  String?
+  createdAt                  DateTime                    @default(now())
+  updatedAt                  DateTime                    @updatedAt
+  timezone                   String                      @default("Asia/Kolkata")
+  branchCity                 String                      @default("")
+  branchCountry              String                      @default("")
+  branchCountryCode          String                      @default("")
+  branchState                String                      @default("")
+  branchStateCode            String                      @default("")
+  adminUser                  User?                       @relation("BranchAdminUser", fields: [adminUserId], references: [id])
+  branchCourses              BranchCourse[]
+  branchBatches              BranchBatch[]
   branchInstallmentTemplates BranchInstallmentTemplate[]
-  branchFaculties   BranchFaculty[]
-  branchStudents    BranchStudent[]
-  calendarHolidays  BranchCalendarHoliday[]
-  calendarLeaves    BranchCalendarLeave[]
-  ledgerEntries      BranchStudentLedgerEntry[]
-  payments          BranchStudentPayment[]
-  courses           Course[]
-  facultyLeaveRequests FacultyLeaveRequest[]
+  branchFaculties            BranchFaculty[]
+  branchStudents             BranchStudent[]
+  calendarHolidays           BranchCalendarHoliday[]
+  calendarLeaves             BranchCalendarLeave[]
+  ledgerEntries              BranchStudentLedgerEntry[]
+  payments                   BranchStudentPayment[]
+  courses                    Course[]
+  facultyLeaveRequests       FacultyLeaveRequest[]
 
   @@index([status])
   @@index([branchName])
@@ -163,6 +165,7 @@ model Notification {
   requestTitle       String?
   examId             String?
   examScheduleId     String?
+  assessmentId       String?
   batchId            String?
   subModuleId        String?
   subModuleName      String?
@@ -177,6 +180,7 @@ model Notification {
   @@index([targetBranchEmail])
   @@index([targetBranchName])
   @@index([targetUserId, examId, examScheduleId])
+  @@index([targetUserId, assessmentId])
 }
 
 model CourseEditRequest {
@@ -261,6 +265,7 @@ model Course {
   facultyCourseAssignments FacultyCourseAssignment[]
   facultyProfiles          FacultyProfile[]
   students                 StudentProfile[]
+
   @@index([branchId])
   @@index([nameKey])
   @@index([status])
@@ -269,37 +274,38 @@ model Course {
 }
 
 model BranchCourse {
-  id               String               @id @default(cuid())
-  branchId         String
-  courseCode       String
-  name             String
-  nameKey          String
-  courseType       String               @default("")
-  description      String?
-  mode             String
-  duration         Int?
-  hours            Int?
-  actualFees       Int?
-  registrationFees Int?
-  discount         Int?
-  afterDiscount    Int?
-  paymentPlans     Json?
-  paymentPlanSelections Json?
-  status           RecordStatus         @default(ACTIVE)
-  createdBy        String?
-  updatedBy        String?
-  createdAt        DateTime             @default(now())
-  updatedAt        DateTime             @updatedAt
-  branch           Branch               @relation(fields: [branchId], references: [id], onDelete: Cascade)
-  installmentTemplate BranchInstallmentTemplate?
-  modules          BranchCourseModule[]
-  branchFaculties  BranchFaculty[]
-  facultyAssignments BranchFacultyCourse[]
-  branchBatches    BranchBatch[]
-  branchStudents   BranchStudent[]
-  facultyTodayWorkEntries FacultyTodayWorkEntry[]
+  id                             String                         @id @default(cuid())
+  branchId                       String
+  courseCode                     String
+  name                           String
+  nameKey                        String
+  courseType                     String                         @default("")
+  description                    String?
+  mode                           String
+  duration                       Int?
+  hours                          Int?
+  actualFees                     Int?
+  registrationFees               Int?
+  discount                       Int?
+  afterDiscount                  Int?
+  paymentPlans                   Json?
+  paymentPlanSelections          Json?
+  status                         RecordStatus                   @default(ACTIVE)
+  createdBy                      String?
+  updatedBy                      String?
+  createdAt                      DateTime                       @default(now())
+  updatedAt                      DateTime                       @updatedAt
+  branch                         Branch                         @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  installmentTemplate            BranchInstallmentTemplate?
+  modules                        BranchCourseModule[]
+  branchFaculties                BranchFaculty[]
+  facultyAssignments             BranchFacultyCourse[]
+  branchBatches                  BranchBatch[]
+  branchStudents                 BranchStudent[]
+  facultyTodayWorkEntries        FacultyTodayWorkEntry[]
   facultyTodayWorkStudentEntries FacultyTodayWorkStudentEntry[]
-  exams            Exam[]
+  exams                          Exam[]
+  assessments                    Assessment[]
 
   @@unique([branchId, nameKey])
   @@unique([branchId, courseCode])
@@ -324,6 +330,7 @@ model BranchCourseModule {
   branchCourse   BranchCourse            @relation(fields: [branchCourseId], references: [id], onDelete: Cascade)
   submodules     BranchCourseSubmodule[]
   exams          Exam[]
+  assessments    Assessment[]
 
   @@unique([branchCourseId, sequenceNo])
   @@unique([branchCourseId, titleKey])
@@ -424,7 +431,7 @@ model BatchFacultyAssignment {
 }
 
 model BranchBatch {
-  id              String          @id @default(cuid())
+  id              String         @id @default(cuid())
   branchId        String
   branchCourseId  String
   branchFacultyId String
@@ -441,27 +448,28 @@ model BranchBatch {
   endPeriod       String
   batchTiming     String
   totalSeats      Int
-  offlineSeats    Int             @default(0)
+  offlineSeats    Int            @default(0)
   weekType        String?
   mode            String?
   courseStartDate String?
   courseEndDate   String?
   weeklyOffDay    String?
-  sequenceNo      Int             @default(1)
-  status          RecordStatus    @default(ACTIVE)
+  sequenceNo      Int            @default(1)
+  status          RecordStatus   @default(ACTIVE)
   createdBy       String?
   updatedBy       String?
-  createdAt       DateTime        @default(now())
-  updatedAt       DateTime        @updatedAt
-  branch          Branch          @relation(fields: [branchId], references: [id], onDelete: Cascade)
-  branchCourse    BranchCourse    @relation(fields: [branchCourseId], references: [id], onDelete: Cascade)
-  branchFaculty   BranchFaculty   @relation(fields: [branchFacultyId], references: [id], onDelete: Cascade)
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  branch          Branch         @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  branchCourse    BranchCourse   @relation(fields: [branchCourseId], references: [id], onDelete: Cascade)
+  branchFaculty   BranchFaculty  @relation(fields: [branchFacultyId], references: [id], onDelete: Cascade)
   examSchedules   ExamSchedule[]
+  assessments     Assessment[]
 
+  @@unique([branchId, courseId, facultyId, batchId])
   @@index([branchId])
   @@index([branchCourseId])
   @@index([branchFacultyId])
-  @@unique([branchId, courseId, facultyId, batchId])
   @@index([courseId])
   @@index([facultyId])
   @@index([branchId, batchId])
@@ -549,67 +557,68 @@ model StudentProfile {
 }
 
 model BranchStudent {
-  id                 String       @id @default(cuid())
-  branchId           String
-  studentId          String
-  studentName        String
-  parentName         String?
-  mobileNumber       String       @unique
-  emailAddress       String       @unique
-  parentSpouseNumber String?
-  countryCode        String?
-  country            String?
-  stateCode          String?
-  state              String?
-  city               String?
-  address            String?
-  qualification      String?
-  passedOutYear      String?
-  currentStatus      String?
-  designation        String?
-  source             String?
-  sourceOther        String?
-  admissionDate      String
-  courseStartDate    String?
-  classSchedule      String?
-  recordStatus       RecordStatus @default(ACTIVE)
-  createdBy          String?
-  updatedBy          String?
-  createdAt          DateTime     @default(now())
-  updatedAt          DateTime     @updatedAt
-  linkedInUrl        String?
-  remarks            String?
-  courseId           String?
-  courseName         String?
-  courseMode         String?
-  totalWorkingDays   Int?
-  courseEndDate      String?
-  batchId            String?
-  batchName          String?
-  batchTiming        String?
-  facultyId          String?
-  facultyName        String?
-  weeklyOffDay       String?
-  courseAmount       Int?
-  paymentMode        String       @default("Installment")
-  paymentPlanId      String?
-  paymentPlan        String?
-  feeScheduleMode    String       @default("BEFORE_70_PERCENT")
-  feeFirstPaymentDate String?
-  fee70ProgressDate  String?
-  fee70TargetHours   Float?
-  feePaymentDeadline String?
-  feeComplianceStatus String      @default("PENDING")
-  courseProgress     Int?
-  courseCompletedAt  DateTime?
-  branch             Branch       @relation(fields: [branchId], references: [id], onDelete: Cascade)
-  course             BranchCourse? @relation(fields: [courseId], references: [id])
-  installments       BranchStudentInstallment[]
-  payments           BranchStudentPayment[]
-  ledgerEntries      BranchStudentLedgerEntry[]
-  calendarAttendanceRecords BranchStudentAttendance[]
+  id                             String                         @id @default(cuid())
+  branchId                       String
+  studentId                      String
+  studentName                    String
+  parentName                     String?
+  mobileNumber                   String                         @unique
+  emailAddress                   String                         @unique
+  parentSpouseNumber             String?
+  countryCode                    String?
+  country                        String?
+  stateCode                      String?
+  state                          String?
+  city                           String?
+  address                        String?
+  qualification                  String?
+  passedOutYear                  String?
+  currentStatus                  String?
+  designation                    String?
+  source                         String?
+  sourceOther                    String?
+  admissionDate                  String
+  courseStartDate                String?
+  classSchedule                  String?
+  recordStatus                   RecordStatus                   @default(ACTIVE)
+  createdBy                      String?
+  updatedBy                      String?
+  createdAt                      DateTime                       @default(now())
+  updatedAt                      DateTime                       @updatedAt
+  linkedInUrl                    String?
+  remarks                        String?
+  courseId                       String?
+  courseName                     String?
+  courseMode                     String?
+  totalWorkingDays               Int?
+  courseEndDate                  String?
+  batchId                        String?
+  batchName                      String?
+  batchTiming                    String?
+  facultyId                      String?
+  facultyName                    String?
+  weeklyOffDay                   String?
+  courseAmount                   Int?
+  paymentMode                    String                         @default("Installment")
+  paymentPlanId                  String?
+  paymentPlan                    String?
+  feeScheduleMode                String                         @default("BEFORE_70_PERCENT")
+  feeFirstPaymentDate            String?
+  fee70ProgressDate              String?
+  fee70TargetHours               Float?
+  feePaymentDeadline             String?
+  feeComplianceStatus            String                         @default("PENDING")
+  courseProgress                 Int?
+  courseCompletedAt              DateTime?
+  branch                         Branch                         @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  course                         BranchCourse?                  @relation(fields: [courseId], references: [id])
+  installments                   BranchStudentInstallment[]
+  payments                       BranchStudentPayment[]
+  ledgerEntries                  BranchStudentLedgerEntry[]
+  calendarAttendanceRecords      BranchStudentAttendance[]
   facultyTodayWorkStudentEntries FacultyTodayWorkStudentEntry[]
-  examAttempts    ExamAttempt[]
+  examAttempts                   ExamAttempt[]
+  assessmentSubmissions          AssessmentSubmission[]
 
   @@unique([branchId, studentId])
   @@index([branchId])
@@ -623,7 +632,7 @@ model BranchStudent {
 }
 
 model BranchStudentAttendance {
-  id              String       @id @default(cuid())
+  id              String           @id @default(cuid())
   branchStudentId String
   facultyUserId   String?
   courseId        String?
@@ -636,11 +645,11 @@ model BranchStudentAttendance {
   status          AttendanceStatus
   progress        Float?
   notes           String?
-  markedAt        DateTime     @default(now())
-  createdAt       DateTime     @default(now())
-  updatedAt       DateTime     @updatedAt
-  branchStudent   BranchStudent @relation(fields: [branchStudentId], references: [id], onDelete: Cascade)
-  facultyUser     User?        @relation(fields: [facultyUserId], references: [id])
+  markedAt        DateTime         @default(now())
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  branchStudent   BranchStudent    @relation(fields: [branchStudentId], references: [id], onDelete: Cascade)
+  facultyUser     User?            @relation(fields: [facultyUserId], references: [id])
 
   @@unique([branchStudentId, attendanceDate])
   @@index([branchStudentId, attendanceDate])
@@ -648,56 +657,56 @@ model BranchStudentAttendance {
 }
 
 model BranchCalendarHoliday {
-  id         String       @id @default(cuid())
-  branchId   String?
+  id          String       @id @default(cuid())
+  branchId    String?
   holidayDate String
-  name       String
-  status     RecordStatus @default(ACTIVE)
-  createdAt  DateTime     @default(now())
-  updatedAt  DateTime     @updatedAt
-  branch     Branch?      @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  name        String
+  status      RecordStatus @default(ACTIVE)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  branch      Branch?      @relation(fields: [branchId], references: [id], onDelete: Cascade)
 
   @@index([branchId, holidayDate])
   @@index([holidayDate, status])
 }
 
 model BranchCalendarLeave {
-  isInstitute Boolean @default(false)
-  declaredAt DateTime @default(now())
-  declaredBy String?
-  affectedClasses Json @default("[]")
-  id          String       @id @default(cuid())
-  branchId    String
-  batchId     String?
-  leaveDate   String
-  leaveStartTime String?
-  leaveEndTime String?
-  reason      String?
-  status      RecordStatus @default(ACTIVE)
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
-  branch      Branch       @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  isInstitute     Boolean      @default(false)
+  declaredAt      DateTime     @default(now())
+  declaredBy      String?
+  affectedClasses Json         @default("[]")
+  id              String       @id @default(cuid())
+  branchId        String
+  batchId         String?
+  leaveDate       String
+  leaveStartTime  String?
+  leaveEndTime    String?
+  reason          String?
+  status          RecordStatus @default(ACTIVE)
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  branch          Branch       @relation(fields: [branchId], references: [id], onDelete: Cascade)
 
   @@index([branchId, leaveDate, status])
   @@index([batchId, leaveDate, status])
 }
 
 model BranchStudentInstallment {
-  id                 String       @id @default(cuid())
-  branchStudentId    String
-  installmentNumber  Int
-  amount             Int
-  amountPaid         Int          @default(0)
-  dueDate            String?
-  dueReminderSentAt  DateTime?
-  status             String       @default("Pending")
-  paidAt             DateTime?
-  paymentMethod      String?
-  remarks            String?
-  createdAt          DateTime     @default(now())
-  updatedAt          DateTime     @updatedAt
-  branchStudent      BranchStudent @relation(fields: [branchStudentId], references: [id], onDelete: Cascade)
-  payments           BranchStudentPayment[]
+  id                String                 @id @default(cuid())
+  branchStudentId   String
+  installmentNumber Int
+  amount            Int
+  amountPaid        Int                    @default(0)
+  dueDate           String?
+  dueReminderSentAt DateTime?
+  status            String                 @default("Pending")
+  paidAt            DateTime?
+  paymentMethod     String?
+  remarks           String?
+  createdAt         DateTime               @default(now())
+  updatedAt         DateTime               @updatedAt
+  branchStudent     BranchStudent          @relation(fields: [branchStudentId], references: [id], onDelete: Cascade)
+  payments          BranchStudentPayment[]
 
   @@index([branchStudentId, status])
   @@index([dueDate])
@@ -756,19 +765,19 @@ model FacultyBatchEntry {
 }
 
 model FacultyAttendanceSession {
-  id             String    @id @default(cuid())
+  id             String                       @id @default(cuid())
   facultyUserId  String
   attendanceDate String
   loginAt        DateTime
   logoutAt       DateTime?
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
-  sessionSource  String    @default("ATTENDANCE")
+  createdAt      DateTime                     @default(now())
+  updatedAt      DateTime                     @updatedAt
+  sessionSource  String                       @default("ATTENDANCE")
   logoutType     String?
   logoutReason   String?
   workReport     String?
   workCompleted  String?
-  facultyUser    User      @relation(fields: [facultyUserId], references: [id], onDelete: Cascade)
+  facultyUser    User                         @relation(fields: [facultyUserId], references: [id], onDelete: Cascade)
   batchWork      FacultyAttendanceBatchWork[]
 
   @@index([facultyUserId, attendanceDate])
@@ -777,32 +786,32 @@ model FacultyAttendanceSession {
 }
 
 model FacultyAttendanceDay {
-  id             String   @id @default(cuid())
+  id             String    @id @default(cuid())
   facultyUserId  String
   attendanceDate String
-  status         String   @default("NOT_LOGGED_IN")
+  status         String    @default("NOT_LOGGED_IN")
   firstLoginAt   DateTime?
   finalLogoutAt  DateTime?
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-  facultyUser    User     @relation(fields: [facultyUserId], references: [id], onDelete: Cascade)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  facultyUser    User      @relation(fields: [facultyUserId], references: [id], onDelete: Cascade)
 
   @@unique([facultyUserId, attendanceDate])
   @@index([attendanceDate, status])
 }
 
 model FacultyAttendanceBatchWork {
-  id                  String   @id @default(cuid())
+  id                  String                   @id @default(cuid())
   attendanceSessionId String
   facultyUserId       String
   attendanceDate      String
   branchId            String
   batchId             String
-  workSummary         String   @default("")
-  createdAt           DateTime @default(now())
-  updatedAt           DateTime @updatedAt
+  workSummary         String                   @default("")
+  createdAt           DateTime                 @default(now())
+  updatedAt           DateTime                 @updatedAt
   session             FacultyAttendanceSession @relation(fields: [attendanceSessionId], references: [id], onDelete: Cascade)
-  facultyUser         User     @relation(fields: [facultyUserId], references: [id], onDelete: Cascade)
+  facultyUser         User                     @relation(fields: [facultyUserId], references: [id], onDelete: Cascade)
 
   @@unique([attendanceSessionId, batchId])
   @@index([facultyUserId, attendanceDate])
@@ -810,34 +819,34 @@ model FacultyAttendanceBatchWork {
 }
 
 model FacultyTodayWorkEntry {
-  id                  String          @id @default(cuid())
-  facultyUserId       String
-  facultyProfileId     String?
-  branchId            String?
-  courseId            String
-  courseName          String
-  batchId             String?
-  batchName           String?
-  batchTiming         String?
-  moduleId            String
-  moduleName          String
-  submoduleIds        Json
-  submodules          Json?
-  studentIds          Json
-  studentCount        Int             @default(0)
-  applyToAllStudents  Boolean         @default(true)
-  moduleProgress      Float           @default(0)
-  submoduleProgress   Float           @default(0)
-  courseProgress      Float           @default(0)
-  moduleWeight        Float           @default(0)
-  workDate            String
-  createdBy           String?
-  updatedBy           String?
-  createdAt           DateTime        @default(now())
-  updatedAt           DateTime        @updatedAt
-  facultyUser         User            @relation(fields: [facultyUserId], references: [id], onDelete: Cascade)
-  branchCourse        BranchCourse    @relation(fields: [courseId], references: [id], onDelete: Cascade)
-  studentEntries      FacultyTodayWorkStudentEntry[]
+  id                 String                         @id @default(cuid())
+  facultyUserId      String
+  facultyProfileId   String?
+  branchId           String?
+  courseId           String
+  courseName         String
+  batchId            String?
+  batchName          String?
+  batchTiming        String?
+  moduleId           String
+  moduleName         String
+  submoduleIds       Json
+  submodules         Json?
+  studentIds         Json
+  studentCount       Int                            @default(0)
+  applyToAllStudents Boolean                        @default(true)
+  moduleProgress     Float                          @default(0)
+  submoduleProgress  Float                          @default(0)
+  courseProgress     Float                          @default(0)
+  moduleWeight       Float                          @default(0)
+  workDate           String
+  createdBy          String?
+  updatedBy          String?
+  createdAt          DateTime                       @default(now())
+  updatedAt          DateTime                       @updatedAt
+  facultyUser        User                           @relation(fields: [facultyUserId], references: [id], onDelete: Cascade)
+  branchCourse       BranchCourse                   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  studentEntries     FacultyTodayWorkStudentEntry[]
 
   @@index([facultyUserId, workDate])
   @@index([facultyProfileId, workDate])
@@ -895,30 +904,30 @@ model StudentAttendance {
 }
 
 model BranchFaculty {
-  id             String        @id @default(cuid())
-  facultyId      String
-  branchId       String
-  name           String
-  email          String
-  phone          String
-  country        String?       @default("")
-  countryCode    String?       @default("")
-  state          String?       @default("")
-  stateCode      String?       @default("")
-  city           String?       @default("")
-  address        String?
-  weeklyOffDay   String?
-  status         RecordStatus  @default(ACTIVE)
-  createdBy      String?
-  updatedBy      String?
-  createdAt      DateTime      @default(now())
-  updatedAt      DateTime      @updatedAt
-  courseId       String?
-  branchCourseId String?
-  branchCourse   BranchCourse? @relation(fields: [branchCourseId], references: [id])
-  branch         Branch        @relation(fields: [branchId], references: [id], onDelete: Cascade)
-  course         Course?       @relation(fields: [courseId], references: [id])
-  branchBatches  BranchBatch[]
+  id                String                @id @default(cuid())
+  facultyId         String
+  branchId          String
+  name              String
+  email             String
+  phone             String
+  country           String?               @default("")
+  countryCode       String?               @default("")
+  state             String?               @default("")
+  stateCode         String?               @default("")
+  city              String?               @default("")
+  address           String?
+  weeklyOffDay      String?
+  status            RecordStatus          @default(ACTIVE)
+  createdBy         String?
+  updatedBy         String?
+  createdAt         DateTime              @default(now())
+  updatedAt         DateTime              @updatedAt
+  courseId          String?
+  branchCourseId    String?
+  branchCourse      BranchCourse?         @relation(fields: [branchCourseId], references: [id])
+  branch            Branch                @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  course            Course?               @relation(fields: [courseId], references: [id])
+  branchBatches     BranchBatch[]
   courseAssignments BranchFacultyCourse[]
 
   @@unique([branchId, facultyId])
@@ -930,39 +939,39 @@ model BranchFaculty {
 }
 
 model FacultyLeaveRequest {
-  id             String   @id @default(cuid())
-  facultyUserId  String
-  branchId       String
-  facultyId      String
-  facultyName    String
-  facultyEmail   String
-  leaveType      String
-  fromDate       String
-  toDate         String
-  durationType   String
-  durationDays   Int?
-  halfDayPeriod  String?
-  halfDayStart   String?
-  halfDayEnd     String?
+  id              String    @id @default(cuid())
+  facultyUserId   String
+  branchId        String
+  facultyId       String
+  facultyName     String
+  facultyEmail    String
+  leaveType       String
+  fromDate        String
+  toDate          String
+  durationType    String
+  durationDays    Int?
+  halfDayPeriod   String?
+  halfDayStart    String?
+  halfDayEnd      String?
   permissionHours Float?
   permissionStart String?
   permissionEnd   String?
-  reason         String
-  status         String   @default("PENDING")
-  isDelegated    Boolean  @default(false)
-  cancelledAt    DateTime?
-  approvedBy     String?
-  approvedAt     DateTime?
-  rejectedBy     String?
-  rejectedAt     DateTime?
+  reason          String
+  status          String    @default("PENDING")
+  isDelegated     Boolean   @default(false)
+  cancelledAt     DateTime?
+  approvedBy      String?
+  approvedAt      DateTime?
+  rejectedBy      String?
+  rejectedAt      DateTime?
   rejectionReason String?
-  reviewedBy     String?
-  reviewedAt     DateTime?
-  affectedClasses Json    @default("[]")
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-  facultyUser    User     @relation(fields: [facultyUserId], references: [id], onDelete: Cascade)
-  branch         Branch   @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  reviewedBy      String?
+  reviewedAt      DateTime?
+  affectedClasses Json      @default("[]")
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  facultyUser     User      @relation(fields: [facultyUserId], references: [id], onDelete: Cascade)
+  branch          Branch    @relation(fields: [branchId], references: [id], onDelete: Cascade)
 
   @@index([facultyUserId, fromDate, toDate])
   @@index([branchId, status, createdAt])
@@ -970,27 +979,27 @@ model FacultyLeaveRequest {
 }
 
 model FacultyWeekOffRequest {
-  id                    String   @id @default(cuid())
-  facultyUserId         String
-  branchId              String
-  facultyId             String
-  facultyName           String
-  facultyEmail          String
+  id                     String    @id @default(cuid())
+  facultyUserId          String
+  branchId               String
+  facultyId              String
+  facultyName            String
+  facultyEmail           String
   requestedWeekStartDate String
   requestedWeekEndDate   String
-  defaultWeekOffDay     String
-  defaultWeekOffDate    String
-  requestedWeekOffDay   String
-  requestedWeekOffDate  String
-  reason                String
-  status                String   @default("PENDING")
-  createdAt             DateTime @default(now())
-  updatedAt             DateTime @updatedAt
-  approvedAt            DateTime?
-  approvedBy            String?
-  rejectedAt            DateTime?
-  rejectedBy            String?
-  rejectionReason       String?
+  defaultWeekOffDay      String
+  defaultWeekOffDate     String
+  requestedWeekOffDay    String
+  requestedWeekOffDate   String
+  reason                 String
+  status                 String    @default("PENDING")
+  createdAt              DateTime  @default(now())
+  updatedAt              DateTime  @updatedAt
+  approvedAt             DateTime?
+  approvedBy             String?
+  rejectedAt             DateTime?
+  rejectedBy             String?
+  rejectionReason        String?
 
   @@unique([facultyId, requestedWeekStartDate, requestedWeekEndDate])
   @@index([branchId, status, createdAt])
@@ -999,16 +1008,16 @@ model FacultyWeekOffRequest {
 }
 
 model BranchFacultyCourse {
-  id             String       @id @default(cuid())
-  branchId       String
+  id              String        @id @default(cuid())
+  branchId        String
   branchFacultyId String
-  branchCourseId String
-  createdBy      String?
-  updatedBy      String?
-  createdAt      DateTime     @default(now())
-  updatedAt      DateTime     @updatedAt
-  branchFaculty  BranchFaculty @relation(fields: [branchFacultyId], references: [id], onDelete: Cascade)
-  branchCourse   BranchCourse  @relation(fields: [branchCourseId], references: [id], onDelete: Cascade)
+  branchCourseId  String
+  createdBy       String?
+  updatedBy       String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  branchFaculty   BranchFaculty @relation(fields: [branchFacultyId], references: [id], onDelete: Cascade)
+  branchCourse    BranchCourse  @relation(fields: [branchCourseId], references: [id], onDelete: Cascade)
 
   @@unique([branchFacultyId, branchCourseId])
   @@index([branchId, branchFacultyId])
@@ -1016,36 +1025,36 @@ model BranchFacultyCourse {
 }
 
 model FacultyLeaveAffectedSession {
-  id                    String   @id @default(cuid())
-  leaveRequestId        String
-  branchId              String
-  batchRecordId         String
-  batchId               String
-  batchName             String
-  courseId              String?
-  courseName            String?
-  originalFacultyId     String
-  originalFacultyName   String?
-  sessionDate           String
-  originalStartTime     String
-  originalEndTime       String
-  resolutionStatus      String   @default("UNRESOLVED")
-  assignmentType        String?
-  replacementFacultyId  String?
+  id                     String    @id @default(cuid())
+  leaveRequestId         String
+  branchId               String
+  batchRecordId          String
+  batchId                String
+  batchName              String
+  courseId               String?
+  courseName             String?
+  originalFacultyId      String
+  originalFacultyName    String?
+  sessionDate            String
+  originalStartTime      String
+  originalEndTime        String
+  resolutionStatus       String    @default("UNRESOLVED")
+  assignmentType         String?
+  replacementFacultyId   String?
   replacementFacultyName String?
-  replacementStatus     String?
-  replacementDate       String?
-  replacementStartTime  String?
-  replacementEndTime    String?
-  combinedSessionId     String?
-  rescheduledDate       String?
-  rescheduledStartTime  String?
-  rescheduledEndTime    String?
-  resolutionReason      String?
-  resolvedBy            String?
-  resolvedAt            DateTime?
-  createdAt             DateTime @default(now())
-  updatedAt             DateTime @updatedAt
+  replacementStatus      String?
+  replacementDate        String?
+  replacementStartTime   String?
+  replacementEndTime     String?
+  combinedSessionId      String?
+  rescheduledDate        String?
+  rescheduledStartTime   String?
+  rescheduledEndTime     String?
+  resolutionReason       String?
+  resolvedBy             String?
+  resolvedAt             DateTime?
+  createdAt              DateTime  @default(now())
+  updatedAt              DateTime  @updatedAt
 
   @@unique([leaveRequestId, batchRecordId, sessionDate])
   @@index([branchId, resolutionStatus])
@@ -1054,20 +1063,20 @@ model FacultyLeaveAffectedSession {
 }
 
 model FacultyLeaveCombinedSession {
-  id                 String   @id @default(cuid())
-  branchId           String
-  sessionDate        String
-  startTime          String
-  endTime            String
-  courseId           String?
-  courseName         String?
-  facultyId          String
-  facultyName        String?
-  mode               String?
-  status             String   @default("ACTIVE")
-  createdBy          String?
-  createdAt          DateTime @default(now())
-  updatedAt          DateTime @updatedAt
+  id          String   @id @default(cuid())
+  branchId    String
+  sessionDate String
+  startTime   String
+  endTime     String
+  courseId    String?
+  courseName  String?
+  facultyId   String
+  facultyName String?
+  mode        String?
+  status      String   @default("ACTIVE")
+  createdBy   String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   @@unique([branchId, sessionDate, startTime, endTime, facultyId])
   @@index([branchId, sessionDate])
@@ -1097,21 +1106,67 @@ model BranchInstallmentTemplate {
   @@index([planType])
 }
 
+model Assessment {
+  id             String                 @id @default(cuid())
+  assessmentName String
+  branchCourseId String
+  moduleId       String
+  branchBatchId  String
+  totalMarks     Int
+  startDate      DateTime
+  endDate        DateTime
+  details        String?
+  facultyId      String
+  createdAt      DateTime               @default(now())
+  updatedAt      DateTime               @updatedAt
+  branchCourse   BranchCourse           @relation(fields: [branchCourseId], references: [id], onDelete: Cascade)
+  module         BranchCourseModule     @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  branchBatch    BranchBatch            @relation(fields: [branchBatchId], references: [id], onDelete: Cascade)
+  faculty        User                   @relation("AssessmentFaculty", fields: [facultyId], references: [id])
+  submissions    AssessmentSubmission[]
+
+  @@index([facultyId, createdAt])
+  @@index([branchBatchId, startDate, endDate])
+  @@index([branchCourseId, moduleId])
+}
+
+model AssessmentSubmission {
+  id              String        @id @default(cuid())
+  assessmentId    String
+  branchStudentId String
+  response        String?
+  submittedAt     DateTime?
+  status          String        @default("NOT_SUBMITTED")
+  marksObtained   Int?
+  feedback        String?
+  evaluatedBy     String?
+  evaluatedAt     DateTime?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  assessment      Assessment    @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+  branchStudent   BranchStudent @relation(fields: [branchStudentId], references: [id], onDelete: Cascade)
+  evaluator       User?         @relation("AssessmentEvaluator", fields: [evaluatedBy], references: [id])
+
+  @@unique([assessmentId, branchStudentId])
+  @@index([assessmentId, status])
+  @@index([branchStudentId])
+}
+
 model Exam {
-  id               String              @id @default(cuid())
-  title            String              @default("MCQ Test")
+  id               String             @id @default(cuid())
+  title            String             @default("MCQ Test")
   branchCourseId   String
   moduleId         String
   facultyId        String
   marksPerQuestion Int
   totalQuestions   Int
   totalMarks       Int
-  status           String              @default("SCHEDULED")
-  createdAt        DateTime            @default(now())
-  updatedAt        DateTime            @updatedAt
-  branchCourse     BranchCourse        @relation(fields: [branchCourseId], references: [id], onDelete: Cascade)
-  module           BranchCourseModule  @relation(fields: [moduleId], references: [id], onDelete: Cascade)
-  faculty          User                @relation("ExamFaculty", fields: [facultyId], references: [id])
+  status           String             @default("SCHEDULED")
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  branchCourse     BranchCourse       @relation(fields: [branchCourseId], references: [id], onDelete: Cascade)
+  module           BranchCourseModule @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  faculty          User               @relation("ExamFaculty", fields: [facultyId], references: [id])
   schedules        ExamSchedule[]
   questions        ExamQuestion[]
   attempts         ExamAttempt[]
@@ -1122,15 +1177,15 @@ model Exam {
 }
 
 model ExamSchedule {
-  id            String      @id @default(cuid())
+  id            String        @id @default(cuid())
   examId        String
   branchBatchId String
   testDate      String
   startTime     String
   endTime       String
-  status        String      @default("SCHEDULED")
-  exam          Exam        @relation(fields: [examId], references: [id], onDelete: Cascade)
-  branchBatch   BranchBatch @relation(fields: [branchBatchId], references: [id], onDelete: Cascade)
+  status        String        @default("SCHEDULED")
+  exam          Exam          @relation(fields: [examId], references: [id], onDelete: Cascade)
+  branchBatch   BranchBatch   @relation(fields: [branchBatchId], references: [id], onDelete: Cascade)
   attempts      ExamAttempt[]
 
   @@unique([examId, branchBatchId])
@@ -1156,28 +1211,28 @@ model ExamQuestion {
 }
 
 model ExamAttempt {
-  id                 String        @id @default(cuid())
-  examId             String
-  scheduleId         String
-  branchStudentId    String
-  studentUserId      String?
-  startedAt          DateTime      @default(now())
-  submittedAt        DateTime?
-  timeTakenSeconds   Int?
-  status             String        @default("IN_PROGRESS")
-  totalQuestions     Int
-  attemptedQuestions Int           @default(0)
-  correctAnswers     Int           @default(0)
-  wrongAnswers       Int           @default(0)
-  unansweredQuestions Int         @default(0)
-  totalMarks         Int
-  obtainedMarks      Int           @default(0)
-  percentage         Float         @default(0)
-  exam               Exam          @relation(fields: [examId], references: [id], onDelete: Cascade)
-  schedule           ExamSchedule  @relation(fields: [scheduleId], references: [id], onDelete: Cascade)
-  branchStudent      BranchStudent @relation(fields: [branchStudentId], references: [id], onDelete: Cascade)
-  studentUser        User?         @relation(fields: [studentUserId], references: [id])
-  answers            ExamAnswer[]
+  id                  String        @id @default(cuid())
+  examId              String
+  scheduleId          String
+  branchStudentId     String
+  studentUserId       String?
+  startedAt           DateTime      @default(now())
+  submittedAt         DateTime?
+  timeTakenSeconds    Int?
+  status              String        @default("IN_PROGRESS")
+  totalQuestions      Int
+  attemptedQuestions  Int           @default(0)
+  correctAnswers      Int           @default(0)
+  wrongAnswers        Int           @default(0)
+  unansweredQuestions Int           @default(0)
+  totalMarks          Int
+  obtainedMarks       Int           @default(0)
+  percentage          Float         @default(0)
+  exam                Exam          @relation(fields: [examId], references: [id], onDelete: Cascade)
+  schedule            ExamSchedule  @relation(fields: [scheduleId], references: [id], onDelete: Cascade)
+  branchStudent       BranchStudent @relation(fields: [branchStudentId], references: [id], onDelete: Cascade)
+  studentUser         User?         @relation(fields: [studentUserId], references: [id])
+  answers             ExamAnswer[]
 
   @@unique([scheduleId, branchStudentId])
   @@index([branchStudentId])
@@ -1234,6 +1289,7 @@ enum NotificationKind {
   COURSE_EDIT_MODULE_UPDATED
   FACULTY_LEAVE_REQUEST
   EXAM_SCHEDULED
+  ASSESSMENT_AVAILABLE
 }
 
 enum RecordStatus {
@@ -1267,47 +1323,47 @@ enum CourseEditRequestStatus {
 }
 
 model BranchStudentPayment {
-  id                    String       @id @default(cuid())
-  receiptNumber         String       @unique
-  branchStudentId       String
-  branchId              String
-  amount                Int
-  paymentMode           String
-  transactionReference  String?
-  paymentDate           DateTime
-  collectedBy           String?
-  notes                 String?
-  paymentProof          String?
-  
-  payAgainst            String?      
-  installmentId         String?      
+  id                   String   @id @default(cuid())
+  receiptNumber        String   @unique
+  branchStudentId      String
+  branchId             String
+  amount               Int
+  paymentMode          String
+  transactionReference String?
+  paymentDate          DateTime
+  collectedBy          String?
+  notes                String?
+  paymentProof         String?
 
-  createdAt             DateTime     @default(now())
-  updatedAt             DateTime     @updatedAt
-  
-  branchStudent         BranchStudent @relation(fields: [branchStudentId], references: [id])
-  branch                Branch        @relation(fields: [branchId], references: [id])
-  installment           BranchStudentInstallment? @relation(fields: [installmentId], references: [id])
+  payAgainst    String?
+  installmentId String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  branchStudent BranchStudent             @relation(fields: [branchStudentId], references: [id])
+  branch        Branch                    @relation(fields: [branchId], references: [id])
+  installment   BranchStudentInstallment? @relation(fields: [installmentId], references: [id])
 
   @@index([branchId])
   @@index([branchStudentId])
 }
 
 model BranchStudentLedgerEntry {
-  id                   String       @id @default(cuid())
-  ledgerKey            String       @unique
+  id                   String        @id @default(cuid())
+  ledgerKey            String        @unique
   branchId             String
   branchStudentId      String
   paymentId            String?
   installmentId        String?
-  entryNo              Int          @default(0)
+  entryNo              Int           @default(0)
   entryType            String
   description          String
-  debit                Int          @default(0)
-  credit               Int          @default(0)
-  amount               Int          @default(0)
-  runningBalance       Int          @default(0)
-  studentBalanceAfter  Int          @default(0)
+  debit                Int           @default(0)
+  credit               Int           @default(0)
+  amount               Int           @default(0)
+  runningBalance       Int           @default(0)
+  studentBalanceAfter  Int           @default(0)
   entryDate            DateTime?
   paymentDate          DateTime?
   referenceType        String?
@@ -1319,9 +1375,9 @@ model BranchStudentLedgerEntry {
   notes                String?
   createdBy            String?
   updatedBy            String?
-  createdAt            DateTime     @default(now())
-  updatedAt            DateTime     @updatedAt
-  branch               Branch       @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  createdAt            DateTime      @default(now())
+  updatedAt            DateTime      @updatedAt
+  branch               Branch        @relation(fields: [branchId], references: [id], onDelete: Cascade)
   branchStudent        BranchStudent @relation(fields: [branchStudentId], references: [id], onDelete: Cascade)
 
   @@index([branchId])

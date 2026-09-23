@@ -230,6 +230,7 @@ exports.Prisma.NotificationScalarFieldEnum = {
   requestTitle: 'requestTitle',
   examId: 'examId',
   examScheduleId: 'examScheduleId',
+  assessmentId: 'assessmentId',
   batchId: 'batchId',
   subModuleId: 'subModuleId',
   subModuleName: 'subModuleName'
@@ -916,6 +917,36 @@ exports.Prisma.BranchInstallmentTemplateScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.AssessmentScalarFieldEnum = {
+  id: 'id',
+  assessmentName: 'assessmentName',
+  branchCourseId: 'branchCourseId',
+  moduleId: 'moduleId',
+  branchBatchId: 'branchBatchId',
+  totalMarks: 'totalMarks',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  details: 'details',
+  facultyId: 'facultyId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.AssessmentSubmissionScalarFieldEnum = {
+  id: 'id',
+  assessmentId: 'assessmentId',
+  branchStudentId: 'branchStudentId',
+  response: 'response',
+  submittedAt: 'submittedAt',
+  status: 'status',
+  marksObtained: 'marksObtained',
+  feedback: 'feedback',
+  evaluatedBy: 'evaluatedBy',
+  evaluatedAt: 'evaluatedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.ExamScalarFieldEnum = {
   id: 'id',
   title: 'title',
@@ -1095,7 +1126,8 @@ exports.NotificationKind = exports.$Enums.NotificationKind = {
   COURSE_EDIT_REQUEST_REJECTED: 'COURSE_EDIT_REQUEST_REJECTED',
   COURSE_EDIT_MODULE_UPDATED: 'COURSE_EDIT_MODULE_UPDATED',
   FACULTY_LEAVE_REQUEST: 'FACULTY_LEAVE_REQUEST',
-  EXAM_SCHEDULED: 'EXAM_SCHEDULED'
+  EXAM_SCHEDULED: 'EXAM_SCHEDULED',
+  ASSESSMENT_AVAILABLE: 'ASSESSMENT_AVAILABLE'
 };
 
 exports.CourseEditRequestStatus = exports.$Enums.CourseEditRequestStatus = {
@@ -1164,6 +1196,8 @@ exports.Prisma.ModelName = {
   FacultyLeaveAffectedSession: 'FacultyLeaveAffectedSession',
   FacultyLeaveCombinedSession: 'FacultyLeaveCombinedSession',
   BranchInstallmentTemplate: 'BranchInstallmentTemplate',
+  Assessment: 'Assessment',
+  AssessmentSubmission: 'AssessmentSubmission',
   Exam: 'Exam',
   ExamSchedule: 'ExamSchedule',
   ExamQuestion: 'ExamQuestion',

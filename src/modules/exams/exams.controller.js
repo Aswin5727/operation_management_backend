@@ -18,3 +18,14 @@ export const getStudentTest = asyncHandler(async (req, res) => res.json({ status
 export const startTest = asyncHandler(async (req, res) => res.status(201).json({ status: "success", data: await service.startTest(req.user, req.params.scheduleId) }));
 export const submitTest = asyncHandler(async (req, res) => res.json({ status: "success", data: await service.submitTest(req.user, req.params.scheduleId, req.body) }));
 export const getStudentResult = asyncHandler(async (req, res) => res.json({ status: "success", data: await service.getStudentResult(req.user, req.params.scheduleId) }));
+export const listFacultyAssessments = asyncHandler(async (req, res) => res.json({ status: "success", data: await service.listFacultyAssessments(req.user) }));
+export const getFacultyAssessment = asyncHandler(async (req, res) => res.json({ status: "success", data: await service.getFacultyAssessment(req.user, req.params.assessmentId) }));
+export const createAssessment = asyncHandler(async (req, res) => res.status(201).json({ status: "success", data: await service.createAssessment(req.user, req.body) }));
+export const updateAssessment = asyncHandler(async (req, res) => res.json({ status: "success", data: await service.updateAssessment(req.user, req.params.assessmentId, req.body) }));
+export const listAssessmentStudents = asyncHandler(async (req, res) => res.json({ status: "success", data: await service.listAssessmentStudents(req.user, req.params.assessmentId) }));
+export const listAssessmentSubmissions = listAssessmentStudents;
+export const evaluateAssessment = asyncHandler(async (req, res) => res.json({ status: "success", data: await service.evaluateAssessment(req.user, req.params.assessmentId, req.params.studentId, req.body) }));
+export const listStudentAssessments = asyncHandler(async (req, res) => res.json({ status: "success", data: await service.listStudentAssessments(req.user) }));
+export const getStudentAssessment = asyncHandler(async (req, res) => res.json({ status: "success", data: await service.getStudentAssessment(req.user, req.params.assessmentId) }));
+export const submitAssessment = asyncHandler(async (req, res) => res.json({ status: "success", data: await service.submitAssessment(req.user, req.params.assessmentId, req.body) }));
+export const getStudentAssessmentSubmission = asyncHandler(async (req, res) => res.json({ status: "success", data: await service.getStudentSubmission(req.user, req.params.assessmentId) }));

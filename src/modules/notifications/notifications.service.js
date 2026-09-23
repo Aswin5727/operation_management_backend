@@ -236,7 +236,7 @@ function getVisibleNotificationKindsForRole(user = {}) {
     return BRANCH_ADMIN_VISIBLE_NOTIFICATION_KINDS;
   }
 
-  if (role === "STUDENT") return new Set(["INSTITUTE_LEAVE", "EXAM_SCHEDULED"]);
+  if (role === "STUDENT") return new Set(["INSTITUTE_LEAVE", "EXAM_SCHEDULED", "ASSESSMENT_AVAILABLE"]);
 
   if (role === "FACULTY") {
     return FACULTY_VISIBLE_NOTIFICATION_KINDS;
