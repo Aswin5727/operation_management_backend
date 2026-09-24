@@ -128,11 +128,7 @@ function hasBranchActivated(record) {
 }
 
 function toDisplayStatus(record) {
-  if (String(record?.status || "").toUpperCase() === "INACTIVE") {
-    return "Inactive";
-  }
-
-  return hasBranchActivated(record) ? "Active" : "Inactive";
+  return String(record?.status || "").toUpperCase() === "INACTIVE" ? "Inactive" : "Active";
 }
 
 function toResendMailStatus(record) {
