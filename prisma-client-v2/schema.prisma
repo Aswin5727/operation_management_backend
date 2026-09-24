@@ -42,6 +42,10 @@ model User {
   markedBranchStudentAttendances BranchStudentAttendance[]
   dashboardWidgetPreferences     UserDashboardWidget[]
   facultyLeaveRequests           FacultyLeaveRequest[]
+  createdExams                   Exam[]                       @relation("ExamFaculty")
+  examAttempts                   ExamAttempt[]
+  createdAssessments             Assessment[]                 @relation("AssessmentFaculty")
+  evaluatedSubmissions           AssessmentSubmission[]       @relation("AssessmentEvaluator")
 
   @@index([role])
   @@index([active])
@@ -159,6 +163,10 @@ model Notification {
   requestReason      String?
   requestStatus      String?
   requestTitle       String?
+  examId             String?
+  examScheduleId     String?
+  assessmentId       String?
+  batchId            String?
   subModuleId        String?
   subModuleName      String?
   request            CourseEditRequest? @relation("CourseEditRequestNotifications", fields: [requestId], references: [id])
@@ -171,6 +179,8 @@ model Notification {
   @@index([targetBranchId])
   @@index([targetBranchEmail])
   @@index([targetBranchName])
+  @@index([targetUserId, examId, examScheduleId])
+  @@index([targetUserId, assessmentId])
 }
 
 model CourseEditRequest {
@@ -294,6 +304,8 @@ model BranchCourse {
   branchStudents                 BranchStudent[]
   facultyTodayWorkEntries        FacultyTodayWorkEntry[]
   facultyTodayWorkStudentEntries FacultyTodayWorkStudentEntry[]
+  exams                          Exam[]
+  assessments                    Assessment[]
 
   @@unique([branchId, nameKey])
   @@unique([branchId, courseCode])
@@ -317,6 +329,8 @@ model BranchCourseModule {
   updatedAt      DateTime                @updatedAt
   branchCourse   BranchCourse            @relation(fields: [branchCourseId], references: [id], onDelete: Cascade)
   submodules     BranchCourseSubmodule[]
+  exams          Exam[]
+  assessments    Assessment[]
 
   @@unique([branchCourseId, sequenceNo])
   @@unique([branchCourseId, titleKey])
@@ -417,7 +431,7 @@ model BatchFacultyAssignment {
 }
 
 model BranchBatch {
-  id              String        @id @default(cuid())
+  id              String         @id @default(cuid())
   branchId        String
   branchCourseId  String
   branchFacultyId String
@@ -434,21 +448,23 @@ model BranchBatch {
   endPeriod       String
   batchTiming     String
   totalSeats      Int
-  offlineSeats    Int           @default(0)
+  offlineSeats    Int            @default(0)
   weekType        String?
   mode            String?
   courseStartDate String?
   courseEndDate   String?
   weeklyOffDay    String?
-  sequenceNo      Int           @default(1)
-  status          RecordStatus  @default(ACTIVE)
+  sequenceNo      Int            @default(1)
+  status          RecordStatus   @default(ACTIVE)
   createdBy       String?
   updatedBy       String?
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt
-  branch          Branch        @relation(fields: [branchId], references: [id], onDelete: Cascade)
-  branchCourse    BranchCourse  @relation(fields: [branchCourseId], references: [id], onDelete: Cascade)
-  branchFaculty   BranchFaculty @relation(fields: [branchFacultyId], references: [id], onDelete: Cascade)
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  branch          Branch         @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  branchCourse    BranchCourse   @relation(fields: [branchCourseId], references: [id], onDelete: Cascade)
+  branchFaculty   BranchFaculty  @relation(fields: [branchFacultyId], references: [id], onDelete: Cascade)
+  examSchedules   ExamSchedule[]
+  assessments     Assessment[]
 
   @@unique([branchId, courseId, facultyId, batchId])
   @@index([branchId])
@@ -601,6 +617,10 @@ model BranchStudent {
   ledgerEntries                  BranchStudentLedgerEntry[]
   calendarAttendanceRecords      BranchStudentAttendance[]
   facultyTodayWorkStudentEntries FacultyTodayWorkStudentEntry[]
+  examAttempts                   ExamAttempt[]
+  assessmentSubmissions          AssessmentSubmission[]
+  retestExams                    Exam[]                         @relation("ExamRetestStudent")
+  reassessmentAssessments        Assessment[]                   @relation("AssessmentReassessmentStudent")
 
   @@unique([branchId, studentId])
   @@index([branchId])
@@ -1088,6 +1108,178 @@ model BranchInstallmentTemplate {
   @@index([planType])
 }
 
+model Assessment {
+  isReassessment        Boolean                @default(false)
+  originalAssessmentId  String?
+  reassessmentStudentId String?
+  id                    String                 @id @default(cuid())
+  assessmentName        String
+  branchCourseId        String
+  moduleId              String
+  branchBatchId         String
+  totalMarks            Int
+  startDate             DateTime
+  endDate               DateTime
+  details               String?
+  facultyId             String
+  createdAt             DateTime               @default(now())
+  updatedAt             DateTime               @updatedAt
+  branchCourse          BranchCourse           @relation(fields: [branchCourseId], references: [id], onDelete: Cascade)
+  module                BranchCourseModule     @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  branchBatch           BranchBatch            @relation(fields: [branchBatchId], references: [id], onDelete: Cascade)
+  faculty               User                   @relation("AssessmentFaculty", fields: [facultyId], references: [id])
+  submissions           AssessmentSubmission[]
+  originalAssessment    Assessment?            @relation("AssessmentReassessmentSource", fields: [originalAssessmentId], references: [id], onDelete: SetNull)
+  reassessments         Assessment[]           @relation("AssessmentReassessmentSource")
+  reassessmentStudent   BranchStudent?         @relation("AssessmentReassessmentStudent", fields: [reassessmentStudentId], references: [id], onDelete: SetNull)
+
+  @@index([facultyId, createdAt])
+  @@index([branchBatchId, startDate, endDate])
+  @@index([branchCourseId, moduleId])
+  @@index([originalAssessmentId])
+  @@index([reassessmentStudentId])
+  @@index([isReassessment, reassessmentStudentId])
+}
+
+model AssessmentSubmission {
+  id                 String        @id @default(cuid())
+  assessmentId       String
+  branchStudentId    String
+  response           String?
+  screenshotUrl      String?
+  screenshotFileName String?
+  screenshotMimeType String?
+  submittedAt        DateTime?
+  status             String        @default("NOT_SUBMITTED")
+  evaluationStatus   String        @default("Pending")
+  marksObtained      Int?
+  feedback           String?
+  evaluatedBy        String?
+  evaluatedAt        DateTime?
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+  assessment         Assessment    @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+  branchStudent      BranchStudent @relation(fields: [branchStudentId], references: [id], onDelete: Cascade)
+  evaluator          User?         @relation("AssessmentEvaluator", fields: [evaluatedBy], references: [id])
+
+  @@unique([assessmentId, branchStudentId])
+  @@index([assessmentId, status])
+  @@index([branchStudentId])
+}
+
+model Exam {
+  isRetest         Boolean            @default(false)
+  originalTestId   String?
+  retestStudentId  String?
+  id               String             @id @default(cuid())
+  title            String             @default("MCQ Test")
+  branchCourseId   String
+  moduleId         String
+  facultyId        String
+  marksPerQuestion Int
+  totalQuestions   Int
+  totalMarks       Int
+  status           String             @default("SCHEDULED")
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  branchCourse     BranchCourse       @relation(fields: [branchCourseId], references: [id], onDelete: Cascade)
+  module           BranchCourseModule @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  faculty          User               @relation("ExamFaculty", fields: [facultyId], references: [id])
+  schedules        ExamSchedule[]
+  questions        ExamQuestion[]
+  attempts         ExamAttempt[]
+  originalTest     Exam?              @relation("ExamRetestSource", fields: [originalTestId], references: [id], onDelete: SetNull)
+  retests          Exam[]             @relation("ExamRetestSource")
+  retestStudent    BranchStudent?     @relation("ExamRetestStudent", fields: [retestStudentId], references: [id], onDelete: SetNull)
+
+  @@index([facultyId])
+  @@index([branchCourseId])
+  @@index([moduleId])
+  @@index([originalTestId])
+  @@index([retestStudentId])
+  @@index([isRetest, retestStudentId])
+}
+
+model ExamSchedule {
+  id            String        @id @default(cuid())
+  examId        String
+  branchBatchId String
+  testDate      String
+  startTime     String
+  endTime       String
+  status        String        @default("SCHEDULED")
+  exam          Exam          @relation(fields: [examId], references: [id], onDelete: Cascade)
+  branchBatch   BranchBatch   @relation(fields: [branchBatchId], references: [id], onDelete: Cascade)
+  attempts      ExamAttempt[]
+
+  @@unique([examId, branchBatchId])
+  @@index([branchBatchId, testDate])
+  @@index([examId])
+}
+
+model ExamQuestion {
+  id            String       @id @default(cuid())
+  examId        String
+  question      String
+  optionA       String
+  optionB       String
+  optionC       String
+  optionD       String
+  correctAnswer String
+  questionOrder Int
+  exam          Exam         @relation(fields: [examId], references: [id], onDelete: Cascade)
+  answers       ExamAnswer[]
+
+  @@unique([examId, questionOrder])
+  @@index([examId])
+}
+
+model ExamAttempt {
+  id                  String        @id @default(cuid())
+  examId              String
+  scheduleId          String
+  branchStudentId     String
+  studentUserId       String?
+  startedAt           DateTime      @default(now())
+  submittedAt         DateTime?
+  timeTakenSeconds    Int?
+  status              String        @default("IN_PROGRESS")
+  totalQuestions      Int
+  attemptedQuestions  Int           @default(0)
+  correctAnswers      Int           @default(0)
+  wrongAnswers        Int           @default(0)
+  unansweredQuestions Int           @default(0)
+  totalMarks          Int
+  obtainedMarks       Int           @default(0)
+  percentage          Float         @default(0)
+  exam                Exam          @relation(fields: [examId], references: [id], onDelete: Cascade)
+  schedule            ExamSchedule  @relation(fields: [scheduleId], references: [id], onDelete: Cascade)
+  branchStudent       BranchStudent @relation(fields: [branchStudentId], references: [id], onDelete: Cascade)
+  studentUser         User?         @relation(fields: [studentUserId], references: [id])
+  answers             ExamAnswer[]
+
+  @@unique([scheduleId, branchStudentId])
+  @@index([branchStudentId])
+  @@index([examId])
+  @@index([scheduleId])
+  @@index([studentUserId])
+}
+
+model ExamAnswer {
+  id             String       @id @default(cuid())
+  attemptId      String
+  questionId     String
+  selectedAnswer String?
+  isCorrect      Boolean      @default(false)
+  marksAwarded   Int          @default(0)
+  attempt        ExamAttempt  @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  question       ExamQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@unique([attemptId, questionId])
+  @@index([attemptId])
+  @@index([questionId])
+}
+
 enum UserRole {
   BUSINESS_OWNER
   OPERATION_MANAGER
@@ -1120,6 +1312,29 @@ enum NotificationKind {
   COURSE_EDIT_REQUEST_REJECTED
   COURSE_EDIT_MODULE_UPDATED
   FACULTY_LEAVE_REQUEST
+  EXAM_SCHEDULED
+  ASSESSMENT_AVAILABLE
+  FACULTY_REPORT_SHARED
+  EXAM_RETEST_ASSIGNED
+  ASSESSMENT_REASSESSMENT_ASSIGNED
+}
+
+model FacultyReportShare {
+  id                  String   @id @default(cuid())
+  facultyId           String
+  branchId            String
+  batchId             String
+  courseId            String
+  testModuleIds       Json     @default("[]")
+  assessmentModuleIds Json     @default("[]")
+  sentAt              DateTime @default(now())
+  status              String   @default("SENT")
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  @@index([branchId, sentAt])
+  @@index([facultyId, sentAt])
+  @@index([batchId, courseId])
 }
 
 enum RecordStatus {

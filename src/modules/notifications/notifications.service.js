@@ -13,6 +13,7 @@ const NOTIFICATION_KIND_MAP = {
   COURSE_EDIT_REQUEST_REJECTED: "course-edit-request-rejected",
   COURSE_EDIT_MODULE_UPDATED: "course-edit-module-updated",
   FACULTY_LEAVE_REQUEST: "faculty-leave-request",
+  FACULTY_REPORT_SHARED: "faculty-report-shared",
 };
 
 const BRANCH_ADMIN_VISIBLE_NOTIFICATION_KINDS = new Set([
@@ -22,6 +23,7 @@ const BRANCH_ADMIN_VISIBLE_NOTIFICATION_KINDS = new Set([
   "COURSE_EDIT_REQUEST",
   "COURSE_EDIT_MODULE_UPDATED",
   "FACULTY_LEAVE_REQUEST",
+  "FACULTY_REPORT_SHARED",
 ]);
 const DEFAULT_VISIBLE_NOTIFICATION_KINDS = new Set([
   "BRANCH_INVITATION_RESENT",
@@ -236,7 +238,7 @@ function getVisibleNotificationKindsForRole(user = {}) {
     return BRANCH_ADMIN_VISIBLE_NOTIFICATION_KINDS;
   }
 
-  if (role === "STUDENT") return new Set(["INSTITUTE_LEAVE"]);
+  if (role === "STUDENT") return new Set(["INSTITUTE_LEAVE", "EXAM_SCHEDULED", "EXAM_RETEST_ASSIGNED", "ASSESSMENT_AVAILABLE", "ASSESSMENT_REASSESSMENT_ASSIGNED"]);
 
   if (role === "FACULTY") {
     return FACULTY_VISIBLE_NOTIFICATION_KINDS;

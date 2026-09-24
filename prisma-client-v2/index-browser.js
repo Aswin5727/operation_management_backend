@@ -228,6 +228,10 @@ exports.Prisma.NotificationScalarFieldEnum = {
   requestReason: 'requestReason',
   requestStatus: 'requestStatus',
   requestTitle: 'requestTitle',
+  examId: 'examId',
+  examScheduleId: 'examScheduleId',
+  assessmentId: 'assessmentId',
+  batchId: 'batchId',
   subModuleId: 'subModuleId',
   subModuleName: 'subModuleName'
 };
@@ -913,6 +917,125 @@ exports.Prisma.BranchInstallmentTemplateScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.AssessmentScalarFieldEnum = {
+  isReassessment: 'isReassessment',
+  originalAssessmentId: 'originalAssessmentId',
+  reassessmentStudentId: 'reassessmentStudentId',
+  id: 'id',
+  assessmentName: 'assessmentName',
+  branchCourseId: 'branchCourseId',
+  moduleId: 'moduleId',
+  branchBatchId: 'branchBatchId',
+  totalMarks: 'totalMarks',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  details: 'details',
+  facultyId: 'facultyId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.AssessmentSubmissionScalarFieldEnum = {
+  id: 'id',
+  assessmentId: 'assessmentId',
+  branchStudentId: 'branchStudentId',
+  response: 'response',
+  screenshotUrl: 'screenshotUrl',
+  screenshotFileName: 'screenshotFileName',
+  screenshotMimeType: 'screenshotMimeType',
+  submittedAt: 'submittedAt',
+  status: 'status',
+  evaluationStatus: 'evaluationStatus',
+  marksObtained: 'marksObtained',
+  feedback: 'feedback',
+  evaluatedBy: 'evaluatedBy',
+  evaluatedAt: 'evaluatedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ExamScalarFieldEnum = {
+  isRetest: 'isRetest',
+  originalTestId: 'originalTestId',
+  retestStudentId: 'retestStudentId',
+  id: 'id',
+  title: 'title',
+  branchCourseId: 'branchCourseId',
+  moduleId: 'moduleId',
+  facultyId: 'facultyId',
+  marksPerQuestion: 'marksPerQuestion',
+  totalQuestions: 'totalQuestions',
+  totalMarks: 'totalMarks',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ExamScheduleScalarFieldEnum = {
+  id: 'id',
+  examId: 'examId',
+  branchBatchId: 'branchBatchId',
+  testDate: 'testDate',
+  startTime: 'startTime',
+  endTime: 'endTime',
+  status: 'status'
+};
+
+exports.Prisma.ExamQuestionScalarFieldEnum = {
+  id: 'id',
+  examId: 'examId',
+  question: 'question',
+  optionA: 'optionA',
+  optionB: 'optionB',
+  optionC: 'optionC',
+  optionD: 'optionD',
+  correctAnswer: 'correctAnswer',
+  questionOrder: 'questionOrder'
+};
+
+exports.Prisma.ExamAttemptScalarFieldEnum = {
+  id: 'id',
+  examId: 'examId',
+  scheduleId: 'scheduleId',
+  branchStudentId: 'branchStudentId',
+  studentUserId: 'studentUserId',
+  startedAt: 'startedAt',
+  submittedAt: 'submittedAt',
+  timeTakenSeconds: 'timeTakenSeconds',
+  status: 'status',
+  totalQuestions: 'totalQuestions',
+  attemptedQuestions: 'attemptedQuestions',
+  correctAnswers: 'correctAnswers',
+  wrongAnswers: 'wrongAnswers',
+  unansweredQuestions: 'unansweredQuestions',
+  totalMarks: 'totalMarks',
+  obtainedMarks: 'obtainedMarks',
+  percentage: 'percentage'
+};
+
+exports.Prisma.ExamAnswerScalarFieldEnum = {
+  id: 'id',
+  attemptId: 'attemptId',
+  questionId: 'questionId',
+  selectedAnswer: 'selectedAnswer',
+  isCorrect: 'isCorrect',
+  marksAwarded: 'marksAwarded'
+};
+
+exports.Prisma.FacultyReportShareScalarFieldEnum = {
+  id: 'id',
+  facultyId: 'facultyId',
+  branchId: 'branchId',
+  batchId: 'batchId',
+  courseId: 'courseId',
+  testModuleIds: 'testModuleIds',
+  assessmentModuleIds: 'assessmentModuleIds',
+  sentAt: 'sentAt',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.BranchStudentPaymentScalarFieldEnum = {
   id: 'id',
   receiptNumber: 'receiptNumber',
@@ -1026,7 +1149,12 @@ exports.NotificationKind = exports.$Enums.NotificationKind = {
   COURSE_EDIT_REQUEST_ACCEPTED: 'COURSE_EDIT_REQUEST_ACCEPTED',
   COURSE_EDIT_REQUEST_REJECTED: 'COURSE_EDIT_REQUEST_REJECTED',
   COURSE_EDIT_MODULE_UPDATED: 'COURSE_EDIT_MODULE_UPDATED',
-  FACULTY_LEAVE_REQUEST: 'FACULTY_LEAVE_REQUEST'
+  FACULTY_LEAVE_REQUEST: 'FACULTY_LEAVE_REQUEST',
+  EXAM_SCHEDULED: 'EXAM_SCHEDULED',
+  ASSESSMENT_AVAILABLE: 'ASSESSMENT_AVAILABLE',
+  FACULTY_REPORT_SHARED: 'FACULTY_REPORT_SHARED',
+  EXAM_RETEST_ASSIGNED: 'EXAM_RETEST_ASSIGNED',
+  ASSESSMENT_REASSESSMENT_ASSIGNED: 'ASSESSMENT_REASSESSMENT_ASSIGNED'
 };
 
 exports.CourseEditRequestStatus = exports.$Enums.CourseEditRequestStatus = {
@@ -1095,6 +1223,14 @@ exports.Prisma.ModelName = {
   FacultyLeaveAffectedSession: 'FacultyLeaveAffectedSession',
   FacultyLeaveCombinedSession: 'FacultyLeaveCombinedSession',
   BranchInstallmentTemplate: 'BranchInstallmentTemplate',
+  Assessment: 'Assessment',
+  AssessmentSubmission: 'AssessmentSubmission',
+  Exam: 'Exam',
+  ExamSchedule: 'ExamSchedule',
+  ExamQuestion: 'ExamQuestion',
+  ExamAttempt: 'ExamAttempt',
+  ExamAnswer: 'ExamAnswer',
+  FacultyReportShare: 'FacultyReportShare',
   BranchStudentPayment: 'BranchStudentPayment',
   BranchStudentLedgerEntry: 'BranchStudentLedgerEntry'
 };
