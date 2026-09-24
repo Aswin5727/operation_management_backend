@@ -619,6 +619,7 @@ model BranchStudent {
   facultyTodayWorkStudentEntries FacultyTodayWorkStudentEntry[]
   examAttempts                   ExamAttempt[]
   assessmentSubmissions          AssessmentSubmission[]
+  retestExams                    Exam[]                       @relation("ExamRetestStudent")
 
   @@unique([branchId, studentId])
   @@index([branchId])
@@ -1157,6 +1158,9 @@ model AssessmentSubmission {
 }
 
 model Exam {
+  isRetest         Boolean            @default(false)
+  originalTestId   String?
+  retestStudentId  String?
   id               String             @id @default(cuid())
   title            String             @default("MCQ Test")
   branchCourseId   String
@@ -1174,10 +1178,16 @@ model Exam {
   schedules        ExamSchedule[]
   questions        ExamQuestion[]
   attempts         ExamAttempt[]
+  originalTest     Exam?              @relation("ExamRetestSource", fields: [originalTestId], references: [id], onDelete: SetNull)
+  retests          Exam[]             @relation("ExamRetestSource")
+  retestStudent    BranchStudent?     @relation("ExamRetestStudent", fields: [retestStudentId], references: [id], onDelete: SetNull)
 
   @@index([facultyId])
   @@index([branchCourseId])
   @@index([moduleId])
+  @@index([originalTestId])
+  @@index([retestStudentId])
+  @@index([isRetest, retestStudentId])
 }
 
 model ExamSchedule {
@@ -1295,6 +1305,7 @@ enum NotificationKind {
   EXAM_SCHEDULED
   ASSESSMENT_AVAILABLE
   FACULTY_REPORT_SHARED
+  EXAM_RETEST_ASSIGNED
 }
 
 model FacultyReportShare {

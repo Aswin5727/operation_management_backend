@@ -952,6 +952,9 @@ exports.Prisma.AssessmentSubmissionScalarFieldEnum = {
 };
 
 exports.Prisma.ExamScalarFieldEnum = {
+  isRetest: 'isRetest',
+  originalTestId: 'originalTestId',
+  retestStudentId: 'retestStudentId',
   id: 'id',
   title: 'title',
   branchCourseId: 'branchCourseId',
@@ -1146,7 +1149,8 @@ exports.NotificationKind = exports.$Enums.NotificationKind = {
   FACULTY_LEAVE_REQUEST: 'FACULTY_LEAVE_REQUEST',
   EXAM_SCHEDULED: 'EXAM_SCHEDULED',
   ASSESSMENT_AVAILABLE: 'ASSESSMENT_AVAILABLE',
-  FACULTY_REPORT_SHARED: 'FACULTY_REPORT_SHARED'
+  FACULTY_REPORT_SHARED: 'FACULTY_REPORT_SHARED',
+  EXAM_RETEST_ASSIGNED: 'EXAM_RETEST_ASSIGNED'
 };
 
 exports.CourseEditRequestStatus = exports.$Enums.CourseEditRequestStatus = {

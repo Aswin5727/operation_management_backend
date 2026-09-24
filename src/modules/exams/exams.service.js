@@ -165,6 +165,51 @@ export async function createTest(user, payload = {}) {
   return { ...created, schedules: created.schedules.map(publicSchedule) };
 }
 
+export async function createRetest(user, testId, scheduleId, payload = {}) {
+  const originalSchedule = await facultySchedule(user, testId, scheduleId);
+  if (originalSchedule.exam.isRetest) throw new AppError("A retest cannot be used to create another retest.", 422);
+  const studentId = text(payload.studentId);
+  const student = await prisma.branchStudent.findFirst({
+    where: {
+      id: studentId,
+      recordStatus: "ACTIVE",
+      OR: [{ batchId: originalSchedule.branchBatchId }, { batchId: originalSchedule.branchBatch.batchId }],
+    },
+    select: { id: true, studentId: true, studentName: true, emailAddress: true, batchId: true },
+  });
+  if (!student) throw new AppError("Selected student does not belong to this test batch.", 403);
+  const courseId = originalSchedule.exam.branchCourseId;
+  const moduleId = originalSchedule.exam.moduleId;
+  const marksPerQuestion = Number(payload.marksPerQuestion || originalSchedule.exam.marksPerQuestion);
+  const sourceQuestions = Array.isArray(payload.questions) && payload.questions.length ? payload.questions : await prisma.examQuestion.findMany({ where: { examId: testId }, orderBy: { questionOrder: "asc" } });
+  const questions = sourceQuestions.map(normalizeQuestion);
+  const date = text(payload.testDate);
+  const startTime = text(payload.startTime);
+  const endTime = text(payload.endTime);
+  const start = scheduledDate(date, startTime);
+  const end = scheduledDate(date, endTime);
+  if (!Number.isInteger(marksPerQuestion) || marksPerQuestion <= 0 || marksPerQuestion > 100 || !questions.length) throw new AppError("A valid retest mark and at least one question are required.", 422);
+  if (!start || !end || end <= start) throw new AppError("Retest date and end time must be valid, with end time after start time.", 422);
+  const created = await prisma.$transaction(async (tx) => {
+    const exam = await tx.exam.create({ data: { title: text(payload.title) || `${originalSchedule.exam.title} - Retest`, branchCourseId: courseId, moduleId, facultyId: user.id, marksPerQuestion, totalQuestions: questions.length, totalMarks: questions.length * marksPerQuestion, status: "SCHEDULED", isRetest: true, originalTestId: testId, retestStudentId: student.id, questions: { create: questions }, schedules: { create: { branchBatchId: originalSchedule.branchBatchId, testDate: date, startTime, endTime, status: "SCHEDULED" } } }, include: examInclude(true) });
+    const target = await tx.user.findFirst({ where: { role: "STUDENT", email: { equals: text(student.emailAddress).toLowerCase(), mode: "insensitive" } }, select: { id: true } });
+    if (target) {
+      const retestSchedule = exam.schedules[0];
+      await tx.notification.create({ data: { kind: "EXAM_RETEST_ASSIGNED", tone: "blue", title: "Retest Assigned", message: `A retest has been assigned for ${exam.module.title}.`, actionLabel: "View test", targetUserId: target.id, createdBy: user.id, examId: exam.id, examScheduleId: retestSchedule.id, batchId: student.batchId } });
+    }
+    return exam;
+  });
+  return { ...created, isRetest: true, originalTestId: testId, retestStudentId: student.id, schedules: created.schedules.map(publicSchedule) };
+}
+
+export async function listFacultyRetests(user) {
+  const rows = await prisma.exam.findMany({ where: { facultyId: user.id, isRetest: true }, include: { ...examInclude(), schedules: { include: { branchBatch: { select: { id: true, batchId: true, batchName: true, batchTiming: true } } } }, }, orderBy: { createdAt: "desc" } });
+  const studentIds = rows.map((row) => row.retestStudentId).filter(Boolean);
+  const students = studentIds.length ? await prisma.branchStudent.findMany({ where: { id: { in: studentIds } }, select: { id: true, studentId: true, studentName: true, emailAddress: true } }) : [];
+  const studentMap = new Map(students.map((student) => [student.id, student]));
+  return rows.map((row) => ({ ...row, student: studentMap.get(row.retestStudentId) || null, schedules: row.schedules.map(publicSchedule) }));
+}
+
 export async function updateTest(user, testId, payload = {}) {
   const existing = await prisma.exam.findFirst({ where: { id: testId, facultyId: user.id }, include: { schedules: true } });
   if (!existing) throw new AppError("Test not found.", 404);
@@ -183,13 +228,17 @@ export async function updateTest(user, testId, payload = {}) {
 }
 
 function studentScheduleWhere(student, scheduleId) {
-  return { id: scheduleId, OR: [{ branchBatchId: student.batchId }, { branchBatch: { batchId: student.batchId } }] };
+  return {
+    id: scheduleId,
+    OR: [{ branchBatchId: student.batchId }, { branchBatch: { batchId: student.batchId } }],
+    exam: { OR: [{ isRetest: false }, { isRetest: true, retestStudentId: student.id }] },
+  };
 }
 
 export async function listStudentTests(user) {
   const student = await assertStudent(user);
-  const schedules = await prisma.examSchedule.findMany({ where: { OR: [{ branchBatchId: student.batchId }, { branchBatch: { batchId: student.batchId } }] }, include: { exam: { include: examInclude() }, attempts: { where: { branchStudentId: student.id }, select: { id: true, status: true, submittedAt: true, obtainedMarks: true, totalMarks: true, percentage: true } } }, orderBy: [{ testDate: "asc" }, { startTime: "asc" }] });
-  return schedules.map((schedule) => ({ id: schedule.id, testId: schedule.examId, course: schedule.exam.branchCourse, module: schedule.exam.module, totalQuestions: schedule.exam.totalQuestions, marksPerQuestion: schedule.exam.marksPerQuestion, totalMarks: schedule.exam.totalMarks, ...publicSchedule(schedule), attempt: schedule.attempts[0] || null }));
+  const schedules = await prisma.examSchedule.findMany({ where: { OR: [{ branchBatchId: student.batchId }, { branchBatch: { batchId: student.batchId } }], exam: { OR: [{ isRetest: false }, { isRetest: true, retestStudentId: student.id }] } }, include: { exam: { include: examInclude() }, attempts: { where: { branchStudentId: student.id }, select: { id: true, status: true, submittedAt: true, obtainedMarks: true, totalMarks: true, percentage: true } } }, orderBy: [{ testDate: "asc" }, { startTime: "asc" }] });
+  return schedules.map((schedule) => ({ id: schedule.id, testId: schedule.examId, course: schedule.exam.branchCourse, module: schedule.exam.module, totalQuestions: schedule.exam.totalQuestions, marksPerQuestion: schedule.exam.marksPerQuestion, totalMarks: schedule.exam.totalMarks, isRetest: schedule.exam.isRetest, originalTestId: schedule.exam.originalTestId, ...publicSchedule(schedule), attempt: schedule.attempts[0] || null }));
 }
 
 export async function getStudentTest(user, scheduleId) {
@@ -241,7 +290,7 @@ async function facultySchedule(user, testId, scheduleId) {
 
 export async function listSubmissions(user, testId, scheduleId) {
   const schedule = await facultySchedule(user, testId, scheduleId);
-  const studentWhere = { recordStatus: "ACTIVE", OR: [{ batchId: schedule.branchBatchId }, { batchId: schedule.branchBatch.batchId }] };
+  const studentWhere = { recordStatus: "ACTIVE", OR: [{ batchId: schedule.branchBatchId }, { batchId: schedule.branchBatch.batchId }], ...(schedule.exam.isRetest && schedule.exam.retestStudentId ? { id: schedule.exam.retestStudentId } : {}) };
   const [students, attempts] = await Promise.all([
     prisma.branchStudent.findMany({ where: studentWhere, select: { id: true, studentId: true, studentName: true, emailAddress: true }, orderBy: { studentName: "asc" } }),
     prisma.examAttempt.findMany({ where: { scheduleId: schedule.id }, include: { branchStudent: { select: { id: true, studentId: true, studentName: true, emailAddress: true } } }, orderBy: { submittedAt: "desc" } }),

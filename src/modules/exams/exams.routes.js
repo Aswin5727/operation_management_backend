@@ -11,6 +11,8 @@ router.get("/faculty/courses/:courseId/batches", authorize("FACULTY"), controlle
 router.get("/faculty/courses/:courseId/modules", authorize("FACULTY"), controller.facultyModules);
 router.get("/faculty/tests", authorize("FACULTY"), controller.listFacultyTests);
 router.post("/faculty/tests", authorize("FACULTY"), controller.createTest);
+router.get("/faculty/retests", authorize("FACULTY"), controller.listFacultyRetests);
+router.post("/faculty/tests/:testId/schedules/:scheduleId/retests", authorize("FACULTY"), controller.createRetest);
 router.put("/faculty/tests/:testId", authorize("FACULTY"), controller.updateTest);
 router.get("/faculty/tests/:testId", authorize("FACULTY"), controller.getFacultyTest);
 router.get("/faculty/tests/:testId/pdf", authorize("FACULTY"), controller.downloadPdf);

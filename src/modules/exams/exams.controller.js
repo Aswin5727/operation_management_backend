@@ -7,6 +7,8 @@ export const facultyBatches = asyncHandler(async (req, res) => res.json({ status
 export const facultyModules = asyncHandler(async (req, res) => res.json({ status: "success", data: await service.listFacultyModules(req.user, req.params.courseId) }));
 export const listFacultyTests = asyncHandler(async (req, res) => res.json({ status: "success", data: await service.listFacultyTests(req.user) }));
 export const createTest = asyncHandler(async (req, res) => res.status(201).json({ status: "success", data: await service.createTest(req.user, req.body) }));
+export const createRetest = asyncHandler(async (req, res) => res.status(201).json({ status: "success", data: await service.createRetest(req.user, req.params.testId, req.params.scheduleId, req.body) }));
+export const listFacultyRetests = asyncHandler(async (req, res) => res.json({ status: "success", data: await service.listFacultyRetests(req.user) }));
 export const updateTest = asyncHandler(async (req, res) => res.json({ status: "success", data: await service.updateTest(req.user, req.params.testId, req.body) }));
 export const getFacultyTest = asyncHandler(async (req, res) => res.json({ status: "success", data: await service.getFacultyTest(req.user, req.params.testId) }));
 export const downloadPdf = asyncHandler(async (req, res) => { const result = await service.buildQuestionPaperPdf(req.user, req.params.testId); res.type("application/pdf").set("Content-Disposition", `attachment; filename="${result.fileName}"`).send(result.buffer); });
