@@ -26,6 +26,7 @@ router.get("/faculty/tests/:testId/schedules/:scheduleId/submissions/:attemptId"
 router.get("/faculty/assessments", authorize("FACULTY"), controller.listFacultyAssessments);
 router.get("/faculty/assessments/:assessmentId", authorize("FACULTY"), controller.getFacultyAssessment);
 router.post("/faculty/assessments", authorize("FACULTY"), controller.createAssessment);
+router.post("/faculty/assessments/:assessmentId/reassessments", authorize("FACULTY"), controller.createReassessment);
 router.get("/faculty/assessments/:assessmentId/students", authorize("FACULTY"), controller.listAssessmentStudents);
 router.get("/faculty/assessments/:assessmentId/submissions", authorize("FACULTY"), controller.listAssessmentSubmissions);
 router.patch("/faculty/assessments/:assessmentId", authorize("FACULTY"), controller.updateAssessment);
@@ -39,7 +40,7 @@ router.get("/student/tests/:scheduleId/result", authorize("STUDENT"), controller
 router.get("/student/assessments", authorize("STUDENT"), controller.listStudentAssessments);
 router.get("/student/assessment-reports", authorize("STUDENT"), controller.getStudentAssessmentReports);
 router.get("/student/assessments/:assessmentId", authorize("STUDENT"), controller.getStudentAssessment);
-router.post("/student/assessments/:assessmentId/submit", authorize("STUDENT"), assessmentScreenshotUpload.single("screenshot"), controller.submitAssessment);
+router.post("/student/assessments/:assessmentId/submit", authorize("STUDENT"), assessmentScreenshotUpload.array("screenshots", 20), controller.submitAssessment);
 router.get("/student/assessments/submissions/:fileName/screenshot", authorize("STUDENT", "FACULTY"), controller.getAssessmentScreenshot);
 router.get("/student/assessments/:assessmentId/submission", authorize("STUDENT"), controller.getStudentAssessmentSubmission);
 router.get("/branch-admin/report-shares", authorize("BRANCH_ADMIN"), controller.listBranchReportShares);

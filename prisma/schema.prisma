@@ -620,6 +620,7 @@ model BranchStudent {
   examAttempts                   ExamAttempt[]
   assessmentSubmissions          AssessmentSubmission[]
   retestExams                    Exam[]                       @relation("ExamRetestStudent")
+  reassessmentAssessments        Assessment[]                 @relation("AssessmentReassessmentStudent")
 
   @@unique([branchId, studentId])
   @@index([branchId])
@@ -1108,6 +1109,9 @@ model BranchInstallmentTemplate {
 }
 
 model Assessment {
+  isReassessment        Boolean              @default(false)
+  originalAssessmentId  String?
+  reassessmentStudentId String?
   id             String                 @id @default(cuid())
   assessmentName String
   branchCourseId String
@@ -1125,10 +1129,16 @@ model Assessment {
   branchBatch    BranchBatch            @relation(fields: [branchBatchId], references: [id], onDelete: Cascade)
   faculty        User                   @relation("AssessmentFaculty", fields: [facultyId], references: [id])
   submissions    AssessmentSubmission[]
+  originalAssessment Assessment? @relation("AssessmentReassessmentSource", fields: [originalAssessmentId], references: [id], onDelete: SetNull)
+  reassessments      Assessment[] @relation("AssessmentReassessmentSource")
+  reassessmentStudent BranchStudent? @relation("AssessmentReassessmentStudent", fields: [reassessmentStudentId], references: [id], onDelete: SetNull)
 
   @@index([facultyId, createdAt])
   @@index([branchBatchId, startDate, endDate])
   @@index([branchCourseId, moduleId])
+  @@index([originalAssessmentId])
+  @@index([reassessmentStudentId])
+  @@index([isReassessment, reassessmentStudentId])
 }
 
 model AssessmentSubmission {
@@ -1306,6 +1316,7 @@ enum NotificationKind {
   ASSESSMENT_AVAILABLE
   FACULTY_REPORT_SHARED
   EXAM_RETEST_ASSIGNED
+  ASSESSMENT_REASSESSMENT_ASSIGNED
 }
 
 model FacultyReportShare {

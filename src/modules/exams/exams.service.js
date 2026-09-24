@@ -9,6 +9,13 @@ const text = (value) => String(value ?? "").trim();
 const unwrap = (value) => value?.data ?? value;
 const notificationDateTime = (value) => new Intl.DateTimeFormat("en-IN", { dateStyle: "medium", timeStyle: "short" }).format(new Date(value));
 const assessmentUploadRoot = path.resolve(process.cwd(), "uploads", "assessments");
+const submissionAttachments = (submission) => {
+  if (Array.isArray(submission?.screenshotUrls)) return submission.screenshotUrls;
+  if (submission?.screenshotMimeType === "application/json") {
+    try { return JSON.parse(submission.screenshotFileName || "[]"); } catch { return []; }
+  }
+  return submission?.screenshotUrl ? [{ url: submission.screenshotUrl, fileName: submission.screenshotFileName, mimeType: submission.screenshotMimeType }] : [];
+};
 
 function parseTime(value) {
   const raw = text(value).toUpperCase();
@@ -104,7 +111,7 @@ export async function listFacultyModules(user, courseId) {
 }
 
 function examInclude(includeQuestions = false) {
-  return { branchCourse: { select: { id: true, name: true, courseCode: true } }, module: { select: { id: true, title: true } }, schedules: { include: { branchBatch: { select: { id: true, batchId: true, batchName: true, batchTiming: true } } }, orderBy: { testDate: "asc" } }, ...(includeQuestions ? { questions: { orderBy: { questionOrder: "asc" } } } : {}) };
+  return { branchCourse: { select: { id: true, name: true, courseCode: true } }, module: { select: { id: true, title: true } }, originalTest: { select: { id: true, title: true } }, schedules: { include: { branchBatch: { select: { id: true, batchId: true, batchName: true, batchTiming: true } } }, orderBy: { testDate: "asc" } }, ...(includeQuestions ? { questions: { orderBy: { questionOrder: "asc" } } } : {}) };
 }
 
 export async function listFacultyTests(user) {
@@ -168,6 +175,7 @@ export async function createTest(user, payload = {}) {
 export async function createRetest(user, testId, scheduleId, payload = {}) {
   const originalSchedule = await facultySchedule(user, testId, scheduleId);
   if (originalSchedule.exam.isRetest) throw new AppError("A retest cannot be used to create another retest.", 422);
+  if (statusForSchedule(originalSchedule) !== "EXPIRED") throw new AppError("Retest can be created only after the original test end time.", 409);
   const studentId = text(payload.studentId);
   const student = await prisma.branchStudent.findFirst({
     where: {
@@ -178,6 +186,8 @@ export async function createRetest(user, testId, scheduleId, payload = {}) {
     select: { id: true, studentId: true, studentName: true, emailAddress: true, batchId: true },
   });
   if (!student) throw new AppError("Selected student does not belong to this test batch.", 403);
+  const originalAttempt = await prisma.examAttempt.findUnique({ where: { scheduleId_branchStudentId: { scheduleId, branchStudentId: student.id } }, select: { status: true, submittedAt: true } });
+  if (originalAttempt?.status === "SUBMITTED" || originalAttempt?.submittedAt) throw new AppError("A retest cannot be created for a student who already submitted the original test.", 409);
   const courseId = originalSchedule.exam.branchCourseId;
   const moduleId = originalSchedule.exam.moduleId;
   const marksPerQuestion = Number(payload.marksPerQuestion || originalSchedule.exam.marksPerQuestion);
@@ -238,7 +248,7 @@ function studentScheduleWhere(student, scheduleId) {
 export async function listStudentTests(user) {
   const student = await assertStudent(user);
   const schedules = await prisma.examSchedule.findMany({ where: { OR: [{ branchBatchId: student.batchId }, { branchBatch: { batchId: student.batchId } }], exam: { OR: [{ isRetest: false }, { isRetest: true, retestStudentId: student.id }] } }, include: { exam: { include: examInclude() }, attempts: { where: { branchStudentId: student.id }, select: { id: true, status: true, submittedAt: true, obtainedMarks: true, totalMarks: true, percentage: true } } }, orderBy: [{ testDate: "asc" }, { startTime: "asc" }] });
-  return schedules.map((schedule) => ({ id: schedule.id, testId: schedule.examId, course: schedule.exam.branchCourse, module: schedule.exam.module, totalQuestions: schedule.exam.totalQuestions, marksPerQuestion: schedule.exam.marksPerQuestion, totalMarks: schedule.exam.totalMarks, isRetest: schedule.exam.isRetest, originalTestId: schedule.exam.originalTestId, ...publicSchedule(schedule), attempt: schedule.attempts[0] || null }));
+  return schedules.map((schedule) => ({ id: schedule.id, testId: schedule.examId, title: schedule.exam.title, course: schedule.exam.branchCourse, module: schedule.exam.module, totalQuestions: schedule.exam.totalQuestions, marksPerQuestion: schedule.exam.marksPerQuestion, totalMarks: schedule.exam.totalMarks, isRetest: schedule.exam.isRetest, originalTestId: schedule.exam.originalTestId, ...publicSchedule(schedule), attempt: schedule.attempts[0] || null }));
 }
 
 export async function getStudentTest(user, scheduleId) {
@@ -246,7 +256,7 @@ export async function getStudentTest(user, scheduleId) {
   const schedule = await prisma.examSchedule.findFirst({ where: studentScheduleWhere(student, scheduleId), include: { branchBatch: true, exam: { include: examInclude(true) } } });
   if (!schedule) throw new AppError("Test not found or you are not enrolled in its batch.", 404);
   const status = statusForSchedule(schedule);
-  return { id: schedule.id, testId: schedule.examId, course: schedule.exam.branchCourse, module: schedule.exam.module, batch: schedule.branchBatch, totalQuestions: schedule.exam.totalQuestions, marksPerQuestion: schedule.exam.marksPerQuestion, totalMarks: schedule.exam.totalMarks, ...publicSchedule(schedule), questions: status === "AVAILABLE" ? schedule.exam.questions.map(({ correctAnswer, ...question }) => question) : [] };
+  return { id: schedule.id, testId: schedule.examId, title: schedule.exam.title, course: schedule.exam.branchCourse, module: schedule.exam.module, batch: schedule.branchBatch, totalQuestions: schedule.exam.totalQuestions, marksPerQuestion: schedule.exam.marksPerQuestion, totalMarks: schedule.exam.totalMarks, ...publicSchedule(schedule), questions: status === "AVAILABLE" ? schedule.exam.questions.map(({ correctAnswer, ...question }) => question) : [] };
 }
 
 export async function startTest(user, scheduleId) {
@@ -307,9 +317,11 @@ export async function getSubmission(user, testId, scheduleId, attemptId) {
 }
 
 const assessmentInclude = {
+  originalAssessment: { select: { id: true, assessmentName: true } },
   branchCourse: { select: { id: true, name: true, courseCode: true } },
   module: { select: { id: true, title: true } },
   branchBatch: { select: { id: true, batchId: true, batchName: true, batchTiming: true } },
+  reassessmentStudent: { select: { id: true, studentId: true, studentName: true } },
 };
 
 function assessmentStatus(item, now = new Date()) {
@@ -394,9 +406,33 @@ export async function updateAssessment(user, assessmentId, payload = {}) {
   return assessmentPublic(await prisma.assessment.update({ where: { id: assessmentId }, data: { assessmentName: text(payload.assessmentName), branchCourseId: course.id, moduleId: module.id, branchBatchId: batch.id, totalMarks, startDate: dates.startDate, endDate: dates.endDate, details: text(payload.details) || null }, include: assessmentInclude }));
 }
 
+export async function createReassessment(user, assessmentId, payload = {}) {
+  const original = await facultyAssessment(user, assessmentId);
+  if (original.isReassessment) throw new AppError("A reassessment cannot be created from another reassessment.", 422);
+  if (assessmentStatus(original) !== "CLOSED") throw new AppError("Reassessment can be created only after the original assessment end time.", 409);
+  const student = await prisma.branchStudent.findFirst({ where: { id: text(payload.studentId), recordStatus: "ACTIVE", OR: [{ batchId: original.branchBatch.id }, { batchId: original.branchBatch.batchId }] }, select: { id: true, studentName: true, emailAddress: true, batchId: true } });
+  if (!student) throw new AppError("Selected student does not belong to this assessment batch.", 403);
+  const existingReassessment = await prisma.assessment.findFirst({ where: { originalAssessmentId: assessmentId, reassessmentStudentId: student.id } });
+  if (existingReassessment) throw new AppError("A reassessment has already been created for this student.", 409);
+  const originalSubmission = await prisma.assessmentSubmission.findUnique({ where: { assessmentId_branchStudentId: { assessmentId, branchStudentId: student.id } }, select: { status: true, submittedAt: true } });
+  if (originalSubmission?.status === "SUBMITTED" || originalSubmission?.status === "EVALUATED" || originalSubmission?.submittedAt) throw new AppError("A reassessment cannot be created for a student who already submitted the original assessment.", 409);
+  const dates = assessmentDates(payload);
+  const startDate = dates.startDate;
+  const endDate = dates.endDate;
+  const totalMarks = Number(payload.totalMarks || original.totalMarks);
+  if (!Number.isInteger(totalMarks) || totalMarks <= 0) throw new AppError("Total marks must be greater than zero.", 422);
+  const created = await prisma.$transaction(async (tx) => {
+    const item = await tx.assessment.create({ data: { assessmentName: text(payload.assessmentName) || `${original.assessmentName} - Reassessment`, branchCourseId: original.branchCourseId, moduleId: original.moduleId, branchBatchId: original.branchBatchId, totalMarks, startDate, endDate, details: text(payload.details) || original.details, facultyId: user.id, isReassessment: true, originalAssessmentId: assessmentId, reassessmentStudentId: student.id }, include: assessmentInclude });
+    const target = await tx.user.findFirst({ where: { role: "STUDENT", email: { equals: text(student.emailAddress).toLowerCase(), mode: "insensitive" } }, select: { id: true } });
+    if (target) await tx.notification.create({ data: { kind: "ASSESSMENT_REASSESSMENT_ASSIGNED", tone: "blue", title: "Reassessment Assigned", message: `A reassessment has been assigned for ${item.module.title}.`, actionLabel: "View assessment", targetUserId: target.id, assessmentId: item.id, batchId: student.batchId, branchCourseId: item.branchCourseId, moduleId: item.moduleId, createdBy: user.id } });
+    return item;
+  });
+  return assessmentPublic(created);
+}
+
 async function assessmentStudents(user, assessmentId) {
   const assessment = await facultyAssessment(user, assessmentId);
-  const students = await prisma.branchStudent.findMany({ where: { recordStatus: "ACTIVE", OR: [{ batchId: assessment.branchBatch.id }, { batchId: assessment.branchBatch.batchId }] }, select: { id: true, studentId: true, studentName: true, emailAddress: true }, orderBy: { studentName: "asc" } });
+  const students = await prisma.branchStudent.findMany({ where: { recordStatus: "ACTIVE", OR: [{ batchId: assessment.branchBatch.id }, { batchId: assessment.branchBatch.batchId }], ...(assessment.isReassessment && assessment.reassessmentStudentId ? { id: assessment.reassessmentStudentId } : {}) }, select: { id: true, studentId: true, studentName: true, emailAddress: true }, orderBy: { studentName: "asc" } });
   const submissions = await prisma.assessmentSubmission.findMany({ where: { assessmentId }, include: { evaluator: { select: { fullName: true } } } });
   const byStudent = new Map(submissions.map((row) => [row.branchStudentId, row]));
   return students.map((student) => { const submission = byStudent.get(student.id); return { student, ...(submission || { id: `pending-${student.id}`, status: "NOT_SUBMITTED", submittedAt: null, marksObtained: null, feedback: null, evaluatedAt: null, evaluatedBy: null }) }; });
@@ -424,35 +460,40 @@ export async function evaluateAssessmentSubmission(user, submissionId, payload =
 
 async function studentAssessment(user, assessmentId) {
   const student = await assertStudent(user);
-  const item = await prisma.assessment.findFirst({ where: { id: assessmentId, branchBatch: { OR: [{ id: student.batchId }, { batchId: student.batchId }] } }, include: assessmentInclude });
+  const item = await prisma.assessment.findFirst({ where: { id: assessmentId, branchBatch: { OR: [{ id: student.batchId }, { batchId: student.batchId }] }, OR: [{ isReassessment: false }, { isReassessment: true, reassessmentStudentId: student.id }] }, include: assessmentInclude });
   if (!item) throw new AppError("Assessment not found or you are not enrolled in its batch.", 404);
   return { student, item };
 }
 export async function listStudentAssessments(user) {
   const student = await assertStudent(user);
-  const rows = await prisma.assessment.findMany({ where: { branchBatch: { OR: [{ id: student.batchId }, { batchId: student.batchId }] } }, include: { ...assessmentInclude, submissions: { where: { branchStudentId: student.id } } }, orderBy: { startDate: "asc" } });
+  const rows = await prisma.assessment.findMany({ where: { branchBatch: { OR: [{ id: student.batchId }, { batchId: student.batchId }] }, OR: [{ isReassessment: false }, { isReassessment: true, reassessmentStudentId: student.id }] }, include: { ...assessmentInclude, submissions: { where: { branchStudentId: student.id } } }, orderBy: { startDate: "asc" } });
   return rows.map((row) => assessmentPublic(row, row.submissions[0] ? { ...row.submissions[0], percentage: row.totalMarks && row.submissions[0].marksObtained != null ? (row.submissions[0].marksObtained / row.totalMarks) * 100 : null } : null));
 }
 export async function getStudentAssessment(user, assessmentId) { const { item } = await studentAssessment(user, assessmentId); return assessmentPublic(item); }
-export async function submitAssessment(user, assessmentId, payload = {}, file = null) {
+export async function submitAssessment(user, assessmentId, payload = {}, files = []) {
   const { student, item } = await studentAssessment(user, assessmentId);
   if (assessmentStatus(item) !== "ACTIVE") throw new AppError("This assessment is outside its submission window.", 403);
   if (!text(payload.response)) throw new AppError("Assessment response is required.", 422);
-  if (!file) throw new AppError("Attached screenshot is required.", 422);
+  if (!files?.length) throw new AppError("Attached screenshot is required.", 422);
   const existing = await prisma.assessmentSubmission.findUnique({ where: { assessmentId_branchStudentId: { assessmentId, branchStudentId: student.id } } });
   if (existing?.submittedAt) throw new AppError("Duplicate submission is not allowed.", 409);
   await fs.mkdir(assessmentUploadRoot, { recursive: true });
-  const extension = file.mimetype === "image/png" ? "png" : file.mimetype === "image/webp" ? "webp" : "jpg";
-  const fileName = `${crypto.randomUUID()}.${extension}`;
-  await fs.writeFile(path.join(assessmentUploadRoot, fileName), file.buffer);
-  return prisma.assessmentSubmission.upsert({ where: { assessmentId_branchStudentId: { assessmentId, branchStudentId: student.id } }, create: { assessmentId, branchStudentId: student.id, response: text(payload.response), screenshotUrl: `/exams/student/assessments/submissions/${fileName}/screenshot`, screenshotFileName: file.originalname, screenshotMimeType: file.mimetype, submittedAt: new Date(), status: "SUBMITTED", evaluationStatus: "Pending" }, update: { response: text(payload.response), screenshotUrl: `/exams/student/assessments/submissions/${fileName}/screenshot`, screenshotFileName: file.originalname, screenshotMimeType: file.mimetype, submittedAt: new Date(), status: "SUBMITTED", evaluationStatus: "Pending" } });
+  const attachments = [];
+  for (const file of files) {
+    const extension = file.mimetype === "image/png" ? "png" : file.mimetype === "image/webp" ? "webp" : "jpg";
+    const fileName = `${crypto.randomUUID()}.${extension}`;
+    await fs.writeFile(path.join(assessmentUploadRoot, fileName), file.buffer);
+    attachments.push({ url: `/exams/student/assessments/submissions/${fileName}/screenshot`, fileName: file.originalname, mimeType: file.mimetype });
+  }
+  const first = attachments[0];
+  return prisma.assessmentSubmission.upsert({ where: { assessmentId_branchStudentId: { assessmentId, branchStudentId: student.id } }, create: { assessmentId, branchStudentId: student.id, response: text(payload.response), screenshotUrl: first.url, screenshotFileName: JSON.stringify(attachments), screenshotMimeType: "application/json", submittedAt: new Date(), status: "SUBMITTED", evaluationStatus: "Pending" }, update: { response: text(payload.response), screenshotUrl: first.url, screenshotFileName: JSON.stringify(attachments), screenshotMimeType: "application/json", submittedAt: new Date(), status: "SUBMITTED", evaluationStatus: "Pending" } });
 }
-export async function getStudentAssessmentSubmission(user, assessmentId) { const { student, item } = await studentAssessment(user, assessmentId); const row = await prisma.assessmentSubmission.findUnique({ where: { assessmentId_branchStudentId: { assessmentId, branchStudentId: student.id } } }); return row ? { ...row, percentage: row.marksObtained != null ? (row.marksObtained / item.totalMarks) * 100 : null } : null; }
+export async function getStudentAssessmentSubmission(user, assessmentId) { const { student, item } = await studentAssessment(user, assessmentId); const row = await prisma.assessmentSubmission.findUnique({ where: { assessmentId_branchStudentId: { assessmentId, branchStudentId: student.id } } }); return row ? { ...row, screenshotUrls: submissionAttachments(row), percentage: row.marksObtained != null ? (row.marksObtained / item.totalMarks) * 100 : null } : null; }
 
 export async function getStudentAssessmentReports(user) {
   const student = await assertStudent(user);
   const assessments = await prisma.assessment.findMany({
-    where: { branchBatch: { OR: [{ id: student.batchId }, { batchId: student.batchId }] } },
+    where: { branchBatch: { OR: [{ id: student.batchId }, { batchId: student.batchId }] }, OR: [{ isReassessment: false }, { isReassessment: true, reassessmentStudentId: student.id }] },
     include: {
       branchCourse: { select: { id: true, name: true } },
       module: { select: { id: true, title: true } },
@@ -478,12 +519,15 @@ export async function getStudentAssessmentReports(user) {
 }
 
 export async function getAssessmentScreenshot(user, fileName) {
-  const submission = await prisma.assessmentSubmission.findFirst({ where: { screenshotUrl: { endsWith: `/${text(fileName)}/screenshot` } }, include: { assessment: true } });
-  if (!submission?.screenshotUrl) throw new AppError("Screenshot not found.", 404);
+  const requested = text(fileName);
+  const submissions = await prisma.assessmentSubmission.findMany({ include: { assessment: true } });
+  const submission = submissions.find((item) => submissionAttachments(item).some((attachment) => attachment.url?.endsWith(`/${requested}/screenshot`)));
+  const attachment = submissionAttachments(submission).find((item) => item.url?.endsWith(`/${requested}/screenshot`));
+  if (!submission?.screenshotUrl && !attachment) throw new AppError("Screenshot not found.", 404);
   if (user.role === "FACULTY" && submission.assessment.facultyId !== user.id) throw new AppError("You are not authorized to view this screenshot.", 403);
-  if (user.role === "STUDENT") { const { student } = await assertStudent(user); if (student.id !== submission.branchStudentId) throw new AppError("You are not authorized to view this screenshot.", 403); }
+  if (user.role === "STUDENT") { const student = await assertStudent(user); if (student.id !== submission.branchStudentId) throw new AppError("You are not authorized to view this screenshot.", 403); }
   const filePath = path.join(assessmentUploadRoot, text(fileName));
-  try { return { buffer: await fs.readFile(filePath), mimeType: submission.screenshotMimeType || "image/jpeg", fileName: submission.screenshotFileName || text(fileName) }; } catch { throw new AppError("Screenshot file is missing.", 404); }
+  try { return { buffer: await fs.readFile(filePath), mimeType: attachment?.mimeType || submission.screenshotMimeType || "image/jpeg", fileName: attachment?.fileName || submission.screenshotFileName || requested }; } catch { throw new AppError("Screenshot file is missing.", 404); }
 }
 
 function pdfEscape(value) { return text(value).replace(/([\\()])/g, "\\$1").replace(/[^\x20-\x7e]/g, "?"); }
@@ -526,41 +570,42 @@ export async function listFacultyExamReports(user, filters = {}) {
   if (courseId) await assertFacultyCourse(user, courseId);
   if (batchId) await assertFacultyReportScope(user, moduleId || (await prisma.branchCourseModule.findFirst({ where: { branchCourseId: courseId, status: "ACTIVE" }, select: { id: true } }))?.id, batchId);
   const courseWhere = await facultyCourseWhere(user, courseId || null);
-  const tests = await prisma.exam.findMany({ where: { facultyId: user.id, ...(courseId ? { branchCourseId: courseId } : {}), ...(moduleId ? { moduleId } : {}), branchCourse: courseWhere, schedules: { some: { branchBatch: facultyBatchWhere(user, batchId || null) } } }, select: { id: true, totalQuestions: true, module: { select: { id: true, title: true } }, branchCourse: { select: { id: true, name: true } }, schedules: { where: { branchBatch: facultyBatchWhere(user, batchId || null) }, select: { branchBatch: { select: { id: true, batchId: true, batchName: true, batchTiming: true } } } }, questions: { select: { id: true } } }, orderBy: { createdAt: "desc" } });
+  const tests = await prisma.exam.findMany({ where: { facultyId: user.id, isRetest: false, ...(courseId ? { branchCourseId: courseId } : {}), ...(moduleId ? { moduleId } : {}), branchCourse: courseWhere, schedules: { some: { branchBatch: facultyBatchWhere(user, batchId || null) } } }, select: { id: true, totalQuestions: true, totalMarks: true, module: { select: { id: true, title: true } }, branchCourse: { select: { id: true, name: true } }, schedules: { where: { branchBatch: facultyBatchWhere(user, batchId || null) }, select: { branchBatch: { select: { id: true, batchId: true, batchName: true, batchTiming: true } } } }, questions: { select: { id: true } } }, orderBy: { createdAt: "desc" } });
   const grouped = new Map();
-  tests.forEach((test) => test.schedules.forEach((schedule) => { const batch = schedule.branchBatch; const key = `${test.module.id}:${batch.id}`; const row = grouped.get(key) || { course: test.branchCourse, module: test.module, batch: { id: batch.id, batchId: batch.batchId, name: batch.batchName, timing: batch.batchTiming }, testIds: new Set(), mcqCount: 0 }; if (!row.testIds.has(test.id)) { row.testIds.add(test.id); row.mcqCount += test.questions.length; } grouped.set(key, row); }));
+  tests.forEach((test) => test.schedules.forEach((schedule) => { const batch = schedule.branchBatch; const key = `${test.module.id}:${batch.id}`; const row = grouped.get(key) || { course: test.branchCourse, module: test.module, batch: { id: batch.id, batchId: batch.batchId, name: batch.batchName, timing: batch.batchTiming }, testIds: new Set(), totalMarks: 0 }; if (!row.testIds.has(test.id)) { row.testIds.add(test.id); row.totalMarks += test.totalMarks; } grouped.set(key, row); }));
   return Array.from(grouped.values()).map(({ testIds, ...row }) => ({ ...row, testCount: testIds.size })).sort((a, b) => `${a.module.title}:${a.batch.name}`.localeCompare(`${b.module.title}:${b.batch.name}`));
 }
 
 export async function getFacultyStudentExamReport(user, moduleId, batchId) {
   const { batch, module } = await assertFacultyReportScope(user, moduleId, batchId);
-  const tests = await prisma.exam.findMany({ where: { facultyId: user.id, branchCourseId: batch.branchCourseId, moduleId, schedules: { some: { branchBatchId: batch.id } } }, select: { id: true, title: true, totalMarks: true, totalQuestions: true, marksPerQuestion: true, schedules: { where: { branchBatchId: batch.id }, select: { id: true, testDate: true, startTime: true, endTime: true } } }, orderBy: { createdAt: "asc" } });
+  const tests = await prisma.exam.findMany({ where: { facultyId: user.id, branchCourseId: batch.branchCourseId, moduleId, schedules: { some: { branchBatchId: batch.id } } }, select: { id: true, title: true, totalMarks: true, totalQuestions: true, marksPerQuestion: true, isRetest: true, originalTestId: true, retestStudentId: true, schedules: { where: { branchBatchId: batch.id }, select: { id: true, testDate: true, startTime: true, endTime: true } } }, orderBy: { createdAt: "asc" } });
   const scheduleIds = tests.flatMap((test) => test.schedules.map((schedule) => schedule.id));
   const students = await prisma.branchStudent.findMany({ where: { recordStatus: "ACTIVE", OR: [{ batchId: batch.id }, { batchId: batch.batchId }] }, select: { id: true, studentId: true, studentName: true, emailAddress: true }, orderBy: { studentName: "asc" } });
   const attempts = scheduleIds.length && students.length ? await prisma.examAttempt.findMany({ where: { scheduleId: { in: scheduleIds }, branchStudentId: { in: students.map((student) => student.id) } }, select: { scheduleId: true, branchStudentId: true, status: true, startedAt: true, submittedAt: true, obtainedMarks: true, totalMarks: true, percentage: true, correctAnswers: true, wrongAnswers: true, unansweredQuestions: true } }) : [];
   const attemptMap = new Map(attempts.map((attempt) => [`${attempt.branchStudentId}:${attempt.scheduleId}`, attempt]));
-  const testRows = tests.map((test) => ({ id: test.id, name: test.title, maximumMarks: test.totalMarks, totalQuestions: test.totalQuestions, marksPerQuestion: test.marksPerQuestion, schedule: test.schedules[0] || null }));
-  const studentRows = students.map((student) => { let totalObtainedMarks = 0; let totalMaximumMarks = 0; const testResults = testRows.map((test) => { const attempt = test.schedule ? attemptMap.get(`${student.id}:${test.schedule.id}`) : null; if (attempt?.status === "SUBMITTED") { totalObtainedMarks += Number(attempt.obtainedMarks || 0); totalMaximumMarks += Number(attempt.totalMarks || test.maximumMarks || 0); } return { testId: test.id, obtainedMarks: attempt?.status === "SUBMITTED" ? attempt.obtainedMarks : null, maximumMarks: test.maximumMarks, percentage: attempt?.status === "SUBMITTED" ? Number(attempt.percentage || 0) : null, status: attempt?.status || "NOT_ATTEMPTED", correct: attempt?.correctAnswers ?? null, wrong: attempt?.wrongAnswers ?? null, unanswered: attempt?.unansweredQuestions ?? null, startedAt: attempt?.startedAt || null, submittedAt: attempt?.submittedAt || null }; }); return { studentId: student.studentId, studentName: student.studentName, emailAddress: student.emailAddress, tests: testResults, totalObtainedMarks, totalMaximumMarks, overallPercentage: totalMaximumMarks ? (totalObtainedMarks / totalMaximumMarks) * 100 : 0 }; });
+  const testRows = tests.map((test) => ({ id: test.id, name: test.title, maximumMarks: test.totalMarks, totalQuestions: test.totalQuestions, marksPerQuestion: test.marksPerQuestion, isRetest: test.isRetest, originalTestId: test.originalTestId, retestStudentId: test.retestStudentId, schedule: test.schedules[0] || null }));
+  const studentRows = students.map((student) => { let totalObtainedMarks = 0; let totalMaximumMarks = 0; const testResults = testRows.map((test) => { const assigned = !test.isRetest || test.retestStudentId === student.id; if (!assigned) return { testId: test.id, obtainedMarks: null, maximumMarks: test.maximumMarks, percentage: null, status: "NOT_APPLICABLE", correct: null, wrong: null, unanswered: null, startedAt: null, submittedAt: null }; const attempt = test.schedule ? attemptMap.get(`${student.id}:${test.schedule.id}`) : null; if (attempt?.status === "SUBMITTED") { totalObtainedMarks += Number(attempt.obtainedMarks || 0); totalMaximumMarks += Number(attempt.totalMarks || test.maximumMarks || 0); } return { testId: test.id, obtainedMarks: attempt?.status === "SUBMITTED" ? attempt.obtainedMarks : null, maximumMarks: test.maximumMarks, percentage: attempt?.status === "SUBMITTED" ? Number(attempt.percentage || 0) : null, status: attempt?.status || "NOT_ATTEMPTED", correct: attempt?.correctAnswers ?? null, wrong: attempt?.wrongAnswers ?? null, unanswered: attempt?.unansweredQuestions ?? null, startedAt: attempt?.startedAt || null, submittedAt: attempt?.submittedAt || null }; }); return { studentId: student.studentId, studentName: student.studentName, emailAddress: student.emailAddress, tests: testResults, totalObtainedMarks, totalMaximumMarks, overallPercentage: totalMaximumMarks ? (totalObtainedMarks / totalMaximumMarks) * 100 : 0 }; });
   return { course: batch.branchCourse, module: { id: module.id, name: module.title }, batch: { id: batch.id, batchId: batch.batchId, name: batch.batchName, timing: batch.batchTiming }, tests: testRows, totalTests: testRows.length, totalMcqs: testRows.reduce((sum, test) => sum + test.totalQuestions, 0), totalStudents: students.length, students: studentRows };
 }
 
 export async function listFacultyAssessmentReports(user) {
-  const assessments = await prisma.assessment.findMany({ where: { facultyId: user.id }, include: { branchCourse: { select: { id: true, name: true } }, module: { select: { id: true, title: true } }, branchBatch: { select: { id: true, batchId: true, batchName: true, batchTiming: true } } }, orderBy: [{ startDate: "asc" }, { createdAt: "asc" }] });
+  const assessments = await prisma.assessment.findMany({ where: { facultyId: user.id, isReassessment: false }, include: { branchCourse: { select: { id: true, name: true } }, module: { select: { id: true, title: true } }, branchBatch: { select: { id: true, batchId: true, batchName: true, batchTiming: true } } }, orderBy: [{ startDate: "asc" }, { createdAt: "asc" }] });
   const groups = new Map();
-  assessments.forEach((assessment) => { const key = `${assessment.branchCourseId}:${assessment.branchBatchId}:${assessment.moduleId}`; const row = groups.get(key) || { course: assessment.branchCourse, batch: { id: assessment.branchBatch.id, batchId: assessment.branchBatch.batchId, name: assessment.branchBatch.batchName, timing: assessment.branchBatch.batchTiming }, module: { id: assessment.module.id, name: assessment.module.title }, assessmentCount: 0 }; row.assessmentCount += 1; groups.set(key, row); });
+  assessments.forEach((assessment) => { const key = `${assessment.branchCourseId}:${assessment.branchBatchId}:${assessment.moduleId}`; const row = groups.get(key) || { course: assessment.branchCourse, batch: { id: assessment.branchBatch.id, batchId: assessment.branchBatch.batchId, name: assessment.branchBatch.batchName, timing: assessment.branchBatch.batchTiming }, module: { id: assessment.module.id, name: assessment.module.title }, assessmentCount: 0, totalMarks: 0 }; row.assessmentCount += 1; row.totalMarks += Number(assessment.totalMarks || 0); groups.set(key, row); });
   return Array.from(groups.values()).sort((a, b) => `${a.course.name}:${a.batch.name}:${a.module.name}`.localeCompare(`${b.course.name}:${b.batch.name}:${b.module.name}`));
 }
 
 export async function getFacultyAssessmentStudentReport(user, courseId, batchId, moduleId) {
   const { batch, module } = await assertFacultyReportScope(user, moduleId, batchId);
   if (batch.branchCourseId !== courseId) throw new AppError("Course does not match the selected batch.", 422);
-  const assessments = await prisma.assessment.findMany({ where: { facultyId: user.id, branchCourseId: courseId, branchBatchId: batch.id, moduleId }, select: { id: true, assessmentName: true, totalMarks: true, startDate: true, endDate: true, createdAt: true }, orderBy: [{ startDate: "asc" }, { createdAt: "asc" }] });
+  const assessments = await prisma.assessment.findMany({ where: { facultyId: user.id, branchCourseId: courseId, branchBatchId: batch.id, moduleId }, select: { id: true, assessmentName: true, totalMarks: true, startDate: true, endDate: true, createdAt: true, isReassessment: true, originalAssessmentId: true, reassessmentStudentId: true }, orderBy: [{ startDate: "asc" }, { createdAt: "asc" }] });
   const students = await prisma.branchStudent.findMany({ where: { recordStatus: "ACTIVE", OR: [{ batchId: batch.id }, { batchId: batch.batchId }] }, select: { id: true, studentId: true, studentName: true, emailAddress: true }, orderBy: { studentName: "asc" } });
   const submissions = assessments.length && students.length ? await prisma.assessmentSubmission.findMany({ where: { assessmentId: { in: assessments.map((assessment) => assessment.id) }, branchStudentId: { in: students.map((student) => student.id) } }, select: { assessmentId: true, branchStudentId: true, status: true, submittedAt: true, marksObtained: true, feedback: true } }) : [];
   const submissionMap = new Map(submissions.map((submission) => [`${submission.branchStudentId}:${submission.assessmentId}`, submission]));
-  const assessmentRows = assessments.map((assessment) => ({ id: assessment.id, assessmentName: assessment.assessmentName, totalMarks: assessment.totalMarks, startDate: assessment.startDate, endDate: assessment.endDate }));
-  const studentRows = students.map((student) => { let overallMarks = 0; let overallMaximum = 0; const results = {}; assessments.forEach((assessment) => { const submission = submissionMap.get(`${student.id}:${assessment.id}`); const evaluated = submission?.status === "EVALUATED" && submission.marksObtained != null; if (evaluated) { overallMarks += submission.marksObtained; overallMaximum += assessment.totalMarks; } results[assessment.id] = { status: submission?.status || "NOT_SUBMITTED", marksObtained: evaluated ? submission.marksObtained : null, totalMarks: assessment.totalMarks, percentage: evaluated ? (submission.marksObtained / assessment.totalMarks) * 100 : null, submittedAt: submission?.submittedAt || null, feedback: submission?.feedback || null }; }); return { studentId: student.studentId, studentName: student.studentName, emailAddress: student.emailAddress, assessments: results, overall: { marksObtained: overallMarks, totalMarks: overallMaximum, percentage: overallMaximum ? (overallMarks / overallMaximum) * 100 : null } }; });
-  return { course: batch.branchCourse, batch: { id: batch.id, batchId: batch.batchId, name: batch.batchName, timing: batch.batchTiming }, module: { id: module.id, name: module.title }, assessments: assessmentRows, totalAssessments: assessmentRows.length, totalStudents: studentRows.length, students: studentRows };
+  const assessmentRows = assessments.map((assessment) => ({ id: assessment.id, assessmentName: assessment.assessmentName, totalMarks: assessment.totalMarks, startDate: assessment.startDate, endDate: assessment.endDate, isReassessment: assessment.isReassessment, reassessmentStudentId: assessment.reassessmentStudentId }));
+  const studentRows = students.map((student) => { let overallMarks = 0; let overallMaximum = 0; let hasIncompleteAssessment = false; const results = {}; const replacements = new Set(assessments.filter((assessment) => assessment.isReassessment && assessment.reassessmentStudentId === student.id && assessment.originalAssessmentId).map((assessment) => assessment.originalAssessmentId)); assessments.forEach((assessment) => { const assigned = !assessment.isReassessment || assessment.reassessmentStudentId === student.id; if (!assigned) { results[assessment.id] = { status: "NOT_APPLICABLE", marksObtained: null, totalMarks: assessment.totalMarks, percentage: null, submittedAt: null, feedback: null }; return } const replaced = !assessment.isReassessment && replacements.has(assessment.id); const submission = submissionMap.get(`${student.id}:${assessment.id}`); const evaluated = submission?.status === "EVALUATED" && submission.marksObtained != null; results[assessment.id] = { status: replaced ? "REPLACED" : submission?.status || "NOT_SUBMITTED", marksObtained: evaluated ? submission.marksObtained : null, totalMarks: assessment.totalMarks, percentage: evaluated ? (submission.marksObtained / assessment.totalMarks) * 100 : null, submittedAt: submission?.submittedAt || null, feedback: submission?.feedback || null }; if (replaced) return; overallMaximum += assessment.totalMarks; if (evaluated) overallMarks += submission.marksObtained; else hasIncompleteAssessment = true; }); const finalOverallMarks = hasIncompleteAssessment ? 0 : overallMarks; return { studentId: student.studentId, studentName: student.studentName, emailAddress: student.emailAddress, assessments: results, overall: { marksObtained: finalOverallMarks, totalMarks: overallMaximum, percentage: overallMaximum ? (finalOverallMarks / overallMaximum) * 100 : null } }; });
+  const originalAssessments = assessmentRows.filter((assessment) => !assessment.isReassessment);
+  return { course: batch.branchCourse, batch: { id: batch.id, batchId: batch.batchId, name: batch.batchName, timing: batch.batchTiming }, module: { id: module.id, name: module.title }, assessments: assessmentRows, totalAssessments: originalAssessments.length, totalMarks: originalAssessments.reduce((sum, assessment) => sum + assessment.totalMarks, 0), totalStudents: studentRows.length, students: studentRows };
 }
 function createProfessionalPdf(pageLines) {
   const pages = pageLines.length ? pageLines : [[{ text: "No question data available." }]];

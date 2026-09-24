@@ -27,6 +27,7 @@ export const getStudentResult = asyncHandler(async (req, res) => res.json({ stat
 export const listFacultyAssessments = asyncHandler(async (req, res) => res.json({ status: "success", data: await service.listFacultyAssessments(req.user) }));
 export const getFacultyAssessment = asyncHandler(async (req, res) => res.json({ status: "success", data: await service.getFacultyAssessment(req.user, req.params.assessmentId) }));
 export const createAssessment = asyncHandler(async (req, res) => res.status(201).json({ status: "success", data: await service.createAssessment(req.user, req.body) }));
+export const createReassessment = asyncHandler(async (req, res) => res.status(201).json({ status: "success", data: await service.createReassessment(req.user, req.params.assessmentId, req.body) }));
 export const updateAssessment = asyncHandler(async (req, res) => res.json({ status: "success", data: await service.updateAssessment(req.user, req.params.assessmentId, req.body) }));
 export const listAssessmentStudents = asyncHandler(async (req, res) => res.json({ status: "success", data: await service.listAssessmentStudents(req.user, req.params.assessmentId) }));
 export const listAssessmentSubmissions = listAssessmentStudents;
@@ -34,7 +35,7 @@ export const evaluateAssessment = asyncHandler(async (req, res) => res.json({ st
 export const evaluateAssessmentSubmission = asyncHandler(async (req, res) => res.json({ status: "success", data: await service.evaluateAssessmentSubmission(req.user, req.params.submissionId, req.body) }));
 export const listStudentAssessments = asyncHandler(async (req, res) => res.json({ status: "success", data: await service.listStudentAssessments(req.user) }));
 export const getStudentAssessment = asyncHandler(async (req, res) => res.json({ status: "success", data: await service.getStudentAssessment(req.user, req.params.assessmentId) }));
-export const submitAssessment = asyncHandler(async (req, res) => res.json({ status: "success", message: "Assessment submitted successfully.", data: await service.submitAssessment(req.user, req.params.assessmentId, req.body, req.file) }));
+export const submitAssessment = asyncHandler(async (req, res) => res.json({ status: "success", message: "Assessment submitted successfully.", data: await service.submitAssessment(req.user, req.params.assessmentId, req.body, req.files) }));
 export const getStudentAssessmentSubmission = asyncHandler(async (req, res) => res.json({ status: "success", data: await service.getStudentAssessmentSubmission(req.user, req.params.assessmentId) }));
 export const getStudentAssessmentReports = asyncHandler(async (req, res) => res.json({ status: "success", data: await service.getStudentAssessmentReports(req.user) }));
 export const getAssessmentScreenshot = asyncHandler(async (req, res) => { const file = await service.getAssessmentScreenshot(req.user, req.params.fileName); res.type(file.mimeType).set("Content-Disposition", `inline; filename="${file.fileName}"`).send(file.buffer); });

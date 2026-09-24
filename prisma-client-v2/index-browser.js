@@ -918,6 +918,9 @@ exports.Prisma.BranchInstallmentTemplateScalarFieldEnum = {
 };
 
 exports.Prisma.AssessmentScalarFieldEnum = {
+  isReassessment: 'isReassessment',
+  originalAssessmentId: 'originalAssessmentId',
+  reassessmentStudentId: 'reassessmentStudentId',
   id: 'id',
   assessmentName: 'assessmentName',
   branchCourseId: 'branchCourseId',
@@ -1150,7 +1153,8 @@ exports.NotificationKind = exports.$Enums.NotificationKind = {
   EXAM_SCHEDULED: 'EXAM_SCHEDULED',
   ASSESSMENT_AVAILABLE: 'ASSESSMENT_AVAILABLE',
   FACULTY_REPORT_SHARED: 'FACULTY_REPORT_SHARED',
-  EXAM_RETEST_ASSIGNED: 'EXAM_RETEST_ASSIGNED'
+  EXAM_RETEST_ASSIGNED: 'EXAM_RETEST_ASSIGNED',
+  ASSESSMENT_REASSESSMENT_ASSIGNED: 'ASSESSMENT_REASSESSMENT_ASSIGNED'
 };
 
 exports.CourseEditRequestStatus = exports.$Enums.CourseEditRequestStatus = {
