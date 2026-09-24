@@ -187,7 +187,34 @@ async function login({ identifier, password, ipAddress, userAgent }) {
     throw new AppError("Invalid credentials", 401);
   }
 
+  const role = String(user.role || "").toUpperCase();
+
+  if (role === "BRANCH_ADMIN") {
+    const branch = await prisma.branch.findFirst({
+      where: {
+        OR: [
+          { adminUserId: user.id },
+          {
+            branchEmail: {
+              equals: user.email,
+              mode: "insensitive",
+            },
+          },
+        ],
+      },
+      select: { status: true },
+    });
+
+    if (String(branch?.status || "ACTIVE").toUpperCase() === "INACTIVE") {
+      throw new AppError("This branch is inactive. Branch admin login is not allowed.", 403);
+    }
+  }
+
   if (!user.active) {
+    if (role === "BRANCH_ADMIN") {
+      throw new AppError("This branch is inactive. Branch admin login is not allowed.", 403);
+    }
+
     throw new AppError("Account is inactive", 403);
   }
 
@@ -202,7 +229,6 @@ async function login({ identifier, password, ipAddress, userAgent }) {
     throw new AppError("Invalid credentials", 401);
   }
 
-  const role = String(user.role || "").toUpperCase();
   const isFirstLogin = !user.lastLoginAt;
   const isDashboardHeavyRole =
     role === "SUPER_ADMIN" || role === "BUSINESS_OWNER" || role === "OPERATION_MANAGER";
