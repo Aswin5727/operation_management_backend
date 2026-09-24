@@ -6,6 +6,11 @@ export const listBranchFacultyHandler = asyncHandler(async (req, res) => {
   res.json({ status: "success", data: result.data, meta: result.meta });
 });
 
+export const checkBranchFacultyPhoneHandler = asyncHandler(async (req, res) => {
+  const result = await branchFacultyService.checkBranchFacultyPhone(req.query.phone);
+  res.json({ status: "success", data: result });
+});
+
 export const createBranchFacultyHandler = asyncHandler(async (req, res) => {
   const result = await branchFacultyService.createBranchFaculty(req.user, req.body);
   res.status(201).json({ status: "success", data: result });

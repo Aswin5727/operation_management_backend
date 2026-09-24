@@ -14,6 +14,21 @@ function generateTemporaryPassword() {
 function normalizeString(value) {
   return String(value ?? "").trim();
 }
+
+export async function checkBranchFacultyPhone(phone) {
+  const normalizedPhone = normalizeString(phone);
+  if (!/^\d{10}$/.test(normalizedPhone)) {
+    return { exists: false };
+  }
+
+  const existingUser = await prisma.user.findFirst({
+    where: { phone: normalizedPhone },
+    select: { id: true },
+  });
+
+  return { exists: Boolean(existingUser) };
+}
+
 const FACULTY_WEEKLY_OFF_DAYS = new Set(["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY"]);
 async function ensureUniqueBranchFacultyUserIdentity(prisma, { email, phone }) {
   const existingEmail = await prisma.user.findFirst({
