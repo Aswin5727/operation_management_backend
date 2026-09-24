@@ -7,8 +7,12 @@ import crypto from "node:crypto";
 const active = { status: "ACTIVE" };
 const text = (value) => String(value ?? "").trim();
 const unwrap = (value) => value?.data ?? value;
-const notificationDateTime = (value) => new Intl.DateTimeFormat("en-IN", { dateStyle: "medium", timeStyle: "short" }).format(new Date(value));
+const applicationTimeZone = "Asia/Kolkata";
+const cancellationDate = (value) => new Intl.DateTimeFormat("en-US", { day: "numeric", month: "long", year: "numeric", timeZone: applicationTimeZone }).format(new Date(value));
+const cancellationTime = (value) => new Intl.DateTimeFormat("en-IN", { hour: "numeric", minute: "2-digit", hour12: true, timeZone: applicationTimeZone }).format(new Date(value)).replace(/\b(am|pm)\b/i, (period) => period.toUpperCase());
+const cancellationWindow = (start, end) => `${cancellationDate(start)}, from ${cancellationTime(start)} to ${cancellationTime(end)}`;
 const assessmentUploadRoot = path.resolve(process.cwd(), "uploads", "assessments");
+const isAssessmentCancelled = (item) => item?.status === "CANCELLED" || text(item?.details).startsWith("[CANCELLED]");
 const submissionAttachments = (submission) => {
   if (Array.isArray(submission?.screenshotUrls)) return submission.screenshotUrls;
   if (submission?.screenshotMimeType === "application/json") {
@@ -91,8 +95,9 @@ async function assertStudent(user) {
   return student;
 }
 
-function publicSchedule(schedule, now = new Date()) {
-  return { id: schedule.id, batchId: schedule.branchBatchId, batchName: schedule.branchBatch?.batchName, batchTiming: schedule.branchBatch?.batchTiming, testDate: schedule.testDate, startTime: schedule.startTime, endTime: schedule.endTime, status: statusForSchedule(schedule, now) };
+function publicSchedule(schedule, now = new Date(), exam = schedule.exam) {
+  const cancelled = exam?.status === "CANCELLED" || schedule.status === "CANCELLED";
+  return { id: schedule.id, batchId: schedule.branchBatchId, batchName: schedule.branchBatch?.batchName, batchTiming: schedule.branchBatch?.batchTiming, testDate: schedule.testDate, startTime: schedule.startTime, endTime: schedule.endTime, status: cancelled ? "CANCELLED" : statusForSchedule(schedule, now) };
 }
 
 export async function listFacultyCourses(user) {
@@ -116,13 +121,40 @@ function examInclude(includeQuestions = false) {
 
 export async function listFacultyTests(user) {
   const tests = await prisma.exam.findMany({ where: { facultyId: user.id }, include: examInclude(), orderBy: { createdAt: "desc" } });
-  return tests.map((test) => ({ ...test, schedules: test.schedules.map(publicSchedule) }));
+  return tests.map((test) => ({ ...test, schedules: test.schedules.map((schedule) => publicSchedule(schedule, new Date(), test)) }));
 }
 
 export async function getFacultyTest(user, testId) {
   const test = await prisma.exam.findFirst({ where: { id: testId, facultyId: user.id }, include: examInclude(true) });
   if (!test) throw new AppError("Test not found.", 404);
-  return { ...test, schedules: test.schedules.map(publicSchedule) };
+  return { ...test, schedules: test.schedules.map((schedule) => publicSchedule(schedule, new Date(), test)) };
+}
+
+export async function cancelTest(user, testId) {
+  const cancelled = await prisma.$transaction(async (tx) => {
+    const test = await tx.exam.findFirst({ where: { id: testId, facultyId: user.id }, include: { branchCourse: { select: { id: true, name: true } }, module: { select: { id: true, title: true } }, schedules: { include: { branchBatch: { select: { id: true, batchId: true, batchName: true, batchTiming: true } } } } } });
+    if (!test) throw new AppError("Test not found.", 404);
+    if (test.status === "CANCELLED") throw new AppError("Test has already been cancelled.", 409);
+    if (test.schedules.some((schedule) => { const start = scheduledDate(schedule.testDate, schedule.startTime); return start && start <= new Date(); })) throw new AppError("This test cannot be cancelled after its start date and time.", 409);
+    const batchIds = test.schedules.flatMap((schedule) => [schedule.branchBatchId, schedule.branchBatch?.batchId]).filter(Boolean);
+    const students = batchIds.length ? await tx.branchStudent.findMany({ where: { recordStatus: "ACTIVE", OR: [{ batchId: { in: batchIds } }] }, select: { batchId: true, emailAddress: true } }) : [];
+    const emails = students.map((student) => text(student.emailAddress).toLowerCase()).filter(Boolean);
+    const users = emails.length ? await tx.user.findMany({ where: { role: "STUDENT", OR: emails.map((email) => ({ email: { equals: email, mode: "insensitive" } })) }, select: { id: true, email: true } }) : [];
+    const userByEmail = new Map(users.map((item) => [text(item.email).toLowerCase(), item.id]));
+    const notificationRows = [];
+    for (const student of students) {
+      const targetUserId = userByEmail.get(text(student.emailAddress).toLowerCase());
+      if (!targetUserId) continue;
+      const schedule = test.schedules.find((item) => item.branchBatchId === student.batchId || item.branchBatch?.batchId === student.batchId) || test.schedules[0];
+      notificationRows.push({ kind: "EXAM_SCHEDULED", tone: "red", title: "Test Cancelled", message: `Your "${test.title}" for the "${test.module.title}" module, scheduled for ${cancellationWindow(scheduledDate(schedule.testDate, schedule.startTime), scheduledDate(schedule.testDate, schedule.endTime))}, has been cancelled.\n\nYou will no longer be able to start this test.`, targetUserId, examId: test.id, examScheduleId: schedule.id, batchId: student.batchId, moduleId: test.module.id, createdBy: user.id });
+    }
+    const existing = notificationRows.length ? await tx.notification.findMany({ where: { kind: "EXAM_SCHEDULED", title: "Test Cancelled", examId: test.id, targetUserId: { in: notificationRows.map((row) => row.targetUserId) } }, select: { targetUserId: true } }) : [];
+    const existingUsers = new Set(existing.map((row) => row.targetUserId));
+    const uniqueRows = notificationRows.filter((row, index, rows) => !existingUsers.has(row.targetUserId) && rows.findIndex((item) => item.targetUserId === row.targetUserId) === index);
+    if (uniqueRows.length) await tx.notification.createMany({ data: uniqueRows });
+    return tx.exam.update({ where: { id: test.id }, data: { status: "CANCELLED" }, include: examInclude() });
+  });
+  return { ...cancelled, schedules: cancelled.schedules.map((schedule) => publicSchedule(schedule, new Date(), cancelled)) };
 }
 
 export async function createTest(user, payload = {}) {
@@ -161,7 +193,7 @@ export async function createTest(user, payload = {}) {
     const users = studentEmails.length ? await tx.user.findMany({ where: { role: "STUDENT", OR: studentEmails.map((email) => ({ email: { equals: email, mode: "insensitive" } })) }, select: { id: true, email: true } }) : [];
     const userByEmail = new Map(users.map((item) => [text(item.email).toLowerCase(), item.id]));
     const schedulesByBatch = new Map(exam.schedules.flatMap((schedule) => [[schedule.branchBatchId, schedule], [schedule.branchBatch?.batchId, schedule]].filter(([batchKey]) => Boolean(batchKey))));
-    const candidateNotifications = students.map((student) => { const email = text(student.emailAddress).toLowerCase(); const schedule = schedulesByBatch.get(student.batchId); const targetUserId = userByEmail.get(email); return schedule && targetUserId ? { kind: "EXAM_SCHEDULED", tone: "blue", title: "New Test Scheduled", message: `You have a test scheduled for ${course.name} - ${module.title} on ${schedule.testDate} from ${schedule.startTime} to ${schedule.endTime}.`, targetUserId, examId: exam.id, examScheduleId: schedule.id, batchId: student.batchId, createdBy: user.id } : null; }).filter(Boolean);
+    const candidateNotifications = students.map((student) => { const email = text(student.emailAddress).toLowerCase(); const schedule = schedulesByBatch.get(student.batchId); const targetUserId = userByEmail.get(email); const start = schedule ? scheduledDate(schedule.testDate, schedule.startTime) : null; const end = schedule ? scheduledDate(schedule.testDate, schedule.endTime) : null; return schedule && targetUserId ? { kind: "EXAM_SCHEDULED", tone: "blue", title: "New Test Scheduled", message: `You have a new test scheduled for ${course.name} - ${module.title} on ${cancellationDate(start)}, from ${cancellationTime(start)} to ${cancellationTime(end)}.\n\nPlease make sure to complete the test within the scheduled time.`, targetUserId, examId: exam.id, examScheduleId: schedule.id, batchId: student.batchId, createdBy: user.id } : null; }).filter(Boolean);
     const existingNotifications = candidateNotifications.length ? await tx.notification.findMany({ where: { kind: "EXAM_SCHEDULED", examId: exam.id, examScheduleId: { in: candidateNotifications.map((item) => item.examScheduleId) }, targetUserId: { in: candidateNotifications.map((item) => item.targetUserId) } }, select: { targetUserId: true, examScheduleId: true } }) : [];
     const existingKeys = new Set(existingNotifications.map((item) => `${item.targetUserId}:${item.examScheduleId}`));
     const notificationRows = candidateNotifications.filter((item) => !existingKeys.has(`${item.targetUserId}:${item.examScheduleId}`));
@@ -205,7 +237,9 @@ export async function createRetest(user, testId, scheduleId, payload = {}) {
     const target = await tx.user.findFirst({ where: { role: "STUDENT", email: { equals: text(student.emailAddress).toLowerCase(), mode: "insensitive" } }, select: { id: true } });
     if (target) {
       const retestSchedule = exam.schedules[0];
-      await tx.notification.create({ data: { kind: "EXAM_RETEST_ASSIGNED", tone: "blue", title: "Retest Assigned", message: `A retest has been assigned for ${exam.module.title}.`, actionLabel: "View test", targetUserId: target.id, createdBy: user.id, examId: exam.id, examScheduleId: retestSchedule.id, batchId: student.batchId } });
+      const retestStart = scheduledDate(retestSchedule.testDate, retestSchedule.startTime);
+      const retestEnd = scheduledDate(retestSchedule.testDate, retestSchedule.endTime);
+      await tx.notification.create({ data: { kind: "EXAM_RETEST_ASSIGNED", tone: "blue", title: "Retest Assigned", message: `A retest has been assigned to you for the ${exam.branchCourse.name} - ${exam.module.title} module, scheduled for ${cancellationDate(retestStart)}, from ${cancellationTime(retestStart)} to ${cancellationTime(retestEnd)}.\n\nPlease complete the retest within the scheduled time.`, actionLabel: "View test", targetUserId: target.id, createdBy: user.id, examId: exam.id, examScheduleId: retestSchedule.id, batchId: student.batchId } });
     }
     return exam;
   });
@@ -223,6 +257,7 @@ export async function listFacultyRetests(user) {
 export async function updateTest(user, testId, payload = {}) {
   const existing = await prisma.exam.findFirst({ where: { id: testId, facultyId: user.id }, include: { schedules: true } });
   if (!existing) throw new AppError("Test not found.", 404);
+  if (existing.status === "CANCELLED") throw new AppError("Cancelled tests cannot be edited.", 409);
   if (existing.schedules.some((schedule) => { const start = scheduledDate(schedule.testDate, schedule.startTime); return start && new Date() >= start; })) throw new AppError("This test can no longer be edited because the scheduled start time has been reached.", 409);
   const courseId = text(payload.courseId); const moduleId = text(payload.moduleId); const marksPerQuestion = Number(payload.marksPerQuestion);
   const questions = (Array.isArray(payload.questions) ? payload.questions : []).map(normalizeQuestion); const schedules = Array.isArray(payload.schedules) ? payload.schedules : [];
@@ -234,7 +269,7 @@ export async function updateTest(user, testId, payload = {}) {
   const normalizedSchedules = schedules.map((item) => { const start = scheduledDate(text(item.testDate), text(item.startTime)); const end = scheduledDate(text(item.testDate), text(item.endTime)); if (!start || !end || end <= start) throw new AppError("Every schedule must have a valid date and end time after its start time.", 422); return { branchBatchId: text(item.batchId), testDate: text(item.testDate), startTime: text(item.startTime), endTime: text(item.endTime), status: "SCHEDULED" }; });
   const totalQuestions = questions.length;
   const updated = await prisma.$transaction(async (tx) => { await tx.examQuestion.deleteMany({ where: { examId: testId } }); await tx.examSchedule.deleteMany({ where: { examId: testId } }); return tx.exam.update({ where: { id: testId }, data: { title: text(payload.title) || "MCQ Test", branchCourseId: courseId, moduleId, marksPerQuestion, totalQuestions, totalMarks: totalQuestions * marksPerQuestion, questions: { create: questions }, schedules: { create: normalizedSchedules } }, include: examInclude(true) }); });
-  return { ...updated, schedules: updated.schedules.map(publicSchedule) };
+  return { ...updated, schedules: updated.schedules.map((schedule) => publicSchedule(schedule, new Date(), updated)) };
 }
 
 function studentScheduleWhere(student, scheduleId) {
@@ -248,21 +283,22 @@ function studentScheduleWhere(student, scheduleId) {
 export async function listStudentTests(user) {
   const student = await assertStudent(user);
   const schedules = await prisma.examSchedule.findMany({ where: { OR: [{ branchBatchId: student.batchId }, { branchBatch: { batchId: student.batchId } }], exam: { OR: [{ isRetest: false }, { isRetest: true, retestStudentId: student.id }] } }, include: { exam: { include: examInclude() }, attempts: { where: { branchStudentId: student.id }, select: { id: true, status: true, submittedAt: true, obtainedMarks: true, totalMarks: true, percentage: true } } }, orderBy: [{ testDate: "asc" }, { startTime: "asc" }] });
-  return schedules.map((schedule) => ({ id: schedule.id, testId: schedule.examId, title: schedule.exam.title, course: schedule.exam.branchCourse, module: schedule.exam.module, totalQuestions: schedule.exam.totalQuestions, marksPerQuestion: schedule.exam.marksPerQuestion, totalMarks: schedule.exam.totalMarks, isRetest: schedule.exam.isRetest, originalTestId: schedule.exam.originalTestId, ...publicSchedule(schedule), attempt: schedule.attempts[0] || null }));
+  return schedules.map((schedule) => ({ id: schedule.id, testId: schedule.examId, title: schedule.exam.title, course: schedule.exam.branchCourse, module: schedule.exam.module, totalQuestions: schedule.exam.totalQuestions, marksPerQuestion: schedule.exam.marksPerQuestion, totalMarks: schedule.exam.totalMarks, isRetest: schedule.exam.isRetest, originalTestId: schedule.exam.originalTestId, ...publicSchedule(schedule, new Date(), schedule.exam), attempt: schedule.attempts[0] || null }));
 }
 
 export async function getStudentTest(user, scheduleId) {
   const student = await assertStudent(user);
   const schedule = await prisma.examSchedule.findFirst({ where: studentScheduleWhere(student, scheduleId), include: { branchBatch: true, exam: { include: examInclude(true) } } });
   if (!schedule) throw new AppError("Test not found or you are not enrolled in its batch.", 404);
-  const status = statusForSchedule(schedule);
-  return { id: schedule.id, testId: schedule.examId, title: schedule.exam.title, course: schedule.exam.branchCourse, module: schedule.exam.module, batch: schedule.branchBatch, totalQuestions: schedule.exam.totalQuestions, marksPerQuestion: schedule.exam.marksPerQuestion, totalMarks: schedule.exam.totalMarks, ...publicSchedule(schedule), questions: status === "AVAILABLE" ? schedule.exam.questions.map(({ correctAnswer, ...question }) => question) : [] };
+  const status = publicSchedule(schedule, new Date(), schedule.exam).status;
+  return { id: schedule.id, testId: schedule.examId, title: schedule.exam.title, course: schedule.exam.branchCourse, module: schedule.exam.module, batch: schedule.branchBatch, totalQuestions: schedule.exam.totalQuestions, marksPerQuestion: schedule.exam.marksPerQuestion, totalMarks: schedule.exam.totalMarks, ...publicSchedule(schedule, new Date(), schedule.exam), questions: status === "AVAILABLE" ? schedule.exam.questions.map(({ correctAnswer, ...question }) => question) : [] };
 }
 
 export async function startTest(user, scheduleId) {
   const student = await assertStudent(user);
   const schedule = await prisma.examSchedule.findFirst({ where: studentScheduleWhere(student, scheduleId), include: { exam: true } });
   if (!schedule) throw new AppError("Test not found or you are not enrolled in its batch.", 404);
+  if (schedule.exam.status === "CANCELLED" || schedule.status === "CANCELLED") throw new AppError("This test has been cancelled and cannot be started.", 403);
   if (statusForSchedule(schedule) !== "AVAILABLE") throw new AppError("This test is not currently available.", 403);
   const attempt = await prisma.examAttempt.upsert({ where: { scheduleId_branchStudentId: { scheduleId, branchStudentId: student.id } }, update: {}, create: { examId: schedule.examId, scheduleId, branchStudentId: student.id, studentUserId: user.id, totalQuestions: schedule.exam.totalQuestions, totalMarks: schedule.exam.totalMarks } });
   return { id: attempt.id, scheduleId, startedAt: attempt.startedAt, status: attempt.status, totalQuestions: attempt.totalQuestions, totalMarks: attempt.totalMarks };
@@ -272,6 +308,7 @@ export async function submitTest(user, scheduleId, payload = {}) {
   const student = await assertStudent(user);
   const schedule = await prisma.examSchedule.findFirst({ where: studentScheduleWhere(student, scheduleId), include: { exam: { include: { questions: { orderBy: { questionOrder: "asc" } } } } } });
   if (!schedule) throw new AppError("Test not found or you are not enrolled in its batch.", 404);
+  if (schedule.exam.status === "CANCELLED" || schedule.status === "CANCELLED") throw new AppError("This test has been cancelled and cannot be submitted.", 403);
   if (statusForSchedule(schedule) === "EXPIRED") throw new AppError("Test time has expired.", 403);
   const attempt = await prisma.examAttempt.findUnique({ where: { scheduleId_branchStudentId: { scheduleId, branchStudentId: student.id } } });
   if (!attempt || attempt.status === "SUBMITTED") throw new AppError("This test attempt is not available for submission.", 409);
@@ -337,7 +374,7 @@ async function facultyAssessment(user, assessmentId) {
 }
 
 function assessmentPublic(item, submission = null) {
-  return { ...item, status: assessmentStatus(item), submission: submission || null };
+  return { ...item, status: isAssessmentCancelled(item) ? "CANCELLED" : assessmentStatus(item), submission: submission || null };
 }
 
 export async function listFacultyAssessments(user) {
@@ -346,6 +383,29 @@ export async function listFacultyAssessments(user) {
 }
 
 export async function getFacultyAssessment(user, assessmentId) { return assessmentPublic(await facultyAssessment(user, assessmentId)); }
+
+export async function cancelAssessment(user, assessmentId) {
+  const cancelled = await prisma.$transaction(async (tx) => {
+    const assessment = await tx.assessment.findFirst({ where: { id: assessmentId, facultyId: user.id }, include: assessmentInclude });
+    if (!assessment) throw new AppError("Assessment not found.", 404);
+    if (isAssessmentCancelled(assessment)) throw new AppError("Assessment has already been cancelled.", 409);
+    if (new Date(assessment.startDate) <= new Date()) throw new AppError("This assessment cannot be cancelled after its start date and time.", 409);
+    const students = await tx.branchStudent.findMany({ where: { recordStatus: "ACTIVE", OR: [{ batchId: assessment.branchBatch.id }, { batchId: assessment.branchBatch.batchId }] }, select: { batchId: true, emailAddress: true } });
+    const emails = students.map((student) => text(student.emailAddress).toLowerCase()).filter(Boolean);
+    const users = emails.length ? await tx.user.findMany({ where: { role: "STUDENT", OR: emails.map((email) => ({ email: { equals: email, mode: "insensitive" } })) }, select: { id: true, email: true } }) : [];
+    const userByEmail = new Map(users.map((item) => [text(item.email).toLowerCase(), item.id]));
+    const notificationRows = students.map((student) => {
+      const targetUserId = userByEmail.get(text(student.emailAddress).toLowerCase());
+      return targetUserId ? { kind: "ASSESSMENT_AVAILABLE", tone: "red", title: "Assessment Cancelled", message: `Your "${assessment.assessmentName}" for the "${assessment.module.title}" module, scheduled for ${cancellationWindow(assessment.startDate, assessment.endDate)}, has been cancelled.\n\nYou will no longer be able to start this assessment.`, targetUserId, assessmentId: assessment.id, batchId: student.batchId, branchCourseId: assessment.branchCourseId, moduleId: assessment.moduleId, createdBy: user.id } : null;
+    }).filter(Boolean);
+    const existing = notificationRows.length ? await tx.notification.findMany({ where: { kind: "ASSESSMENT_AVAILABLE", title: "Assessment Cancelled", assessmentId: assessment.id, targetUserId: { in: notificationRows.map((row) => row.targetUserId) } }, select: { targetUserId: true } }) : [];
+    const existingUsers = new Set(existing.map((row) => row.targetUserId));
+    const uniqueRows = notificationRows.filter((row, index, rows) => !existingUsers.has(row.targetUserId) && rows.findIndex((item) => item.targetUserId === row.targetUserId) === index);
+    if (uniqueRows.length) await tx.notification.createMany({ data: uniqueRows });
+    return tx.assessment.update({ where: { id: assessment.id }, data: { details: `[CANCELLED] ${text(assessment.details)}`.trim() }, include: assessmentInclude });
+  });
+  return assessmentPublic(cancelled);
+}
 
 function assessmentDates(payload) {
   const startValue = text(payload.startDate);
@@ -388,7 +448,7 @@ export async function createAssessment(user, payload = {}) {
     const emails = students.map((s) => text(s.emailAddress).toLowerCase()).filter(Boolean);
     const users = emails.length ? await tx.user.findMany({ where: { role: "STUDENT", OR: emails.map((email) => ({ email: { equals: email, mode: "insensitive" } })) }, select: { id: true, email: true } }) : [];
     const byEmail = new Map(users.map((item) => [text(item.email).toLowerCase(), item.id]));
-    const scheduleMessage = `A new assessment \"${assessmentName}\" is scheduled for ${course.name} - ${module.title}. Total marks: ${totalMarks}. Start: ${notificationDateTime(dates.startDate)}. End: ${notificationDateTime(dates.endDate)}.`;
+    const scheduleMessage = `A new assessment, \"${assessmentName}\", is available for ${course.name} - ${module.title}.\n\nTotal Marks: ${totalMarks}\nScheduled: ${cancellationDate(dates.startDate)}, ${cancellationTime(dates.startDate)} – ${cancellationTime(dates.endDate)}\n\nPlease complete the assessment within the scheduled time.`;
     const rows = students.map((student) => { const targetUserId = byEmail.get(text(student.emailAddress).toLowerCase()); return targetUserId ? { kind: "ASSESSMENT_AVAILABLE", tone: "blue", title: "New Assessment Available", message: scheduleMessage, targetUserId, assessmentId: assessment.id, batchId: batch.id, branchCourseId: course.id, moduleId: module.id, createdBy: user.id } : null; }).filter(Boolean);
     if (rows.length) await tx.notification.createMany({ data: rows });
     return assessment;
@@ -398,6 +458,7 @@ export async function createAssessment(user, payload = {}) {
 
 export async function updateAssessment(user, assessmentId, payload = {}) {
   const existing = await facultyAssessment(user, assessmentId);
+  if (isAssessmentCancelled(existing)) throw new AppError("Cancelled assessments cannot be edited.", 409);
   if (new Date() > new Date(existing.endDate)) throw new AppError("This assessment can no longer be edited after its end date and time.", 409);
   const dates = assessmentDates(payload);
   const { course, module, batch } = await validateAssessmentScope(user, payload);
@@ -424,7 +485,7 @@ export async function createReassessment(user, assessmentId, payload = {}) {
   const created = await prisma.$transaction(async (tx) => {
     const item = await tx.assessment.create({ data: { assessmentName: text(payload.assessmentName) || `${original.assessmentName} - Reassessment`, branchCourseId: original.branchCourseId, moduleId: original.moduleId, branchBatchId: original.branchBatchId, totalMarks, startDate, endDate, details: text(payload.details) || original.details, facultyId: user.id, isReassessment: true, originalAssessmentId: assessmentId, reassessmentStudentId: student.id }, include: assessmentInclude });
     const target = await tx.user.findFirst({ where: { role: "STUDENT", email: { equals: text(student.emailAddress).toLowerCase(), mode: "insensitive" } }, select: { id: true } });
-    if (target) await tx.notification.create({ data: { kind: "ASSESSMENT_REASSESSMENT_ASSIGNED", tone: "blue", title: "Reassessment Assigned", message: `A reassessment has been assigned for ${item.module.title}.`, actionLabel: "View assessment", targetUserId: target.id, assessmentId: item.id, batchId: student.batchId, branchCourseId: item.branchCourseId, moduleId: item.moduleId, createdBy: user.id } });
+    if (target) await tx.notification.create({ data: { kind: "ASSESSMENT_REASSESSMENT_ASSIGNED", tone: "blue", title: "Reassessment Assigned", message: `A reassessment has been assigned to you for the ${item.branchCourse.name} - ${item.module.title} module, scheduled for ${cancellationDate(item.startDate)}, from ${cancellationTime(item.startDate)} to ${cancellationTime(item.endDate)}.\n\nPlease complete the reassessment within the scheduled time.`, actionLabel: "View assessment", targetUserId: target.id, assessmentId: item.id, batchId: student.batchId, branchCourseId: item.branchCourseId, moduleId: item.moduleId, createdBy: user.id } });
     return item;
   });
   return assessmentPublic(created);
@@ -472,6 +533,7 @@ export async function listStudentAssessments(user) {
 export async function getStudentAssessment(user, assessmentId) { const { item } = await studentAssessment(user, assessmentId); return assessmentPublic(item); }
 export async function submitAssessment(user, assessmentId, payload = {}, files = []) {
   const { student, item } = await studentAssessment(user, assessmentId);
+  if (isAssessmentCancelled(item)) throw new AppError("This assessment has been cancelled and cannot be submitted.", 403);
   if (assessmentStatus(item) !== "ACTIVE") throw new AppError("This assessment is outside its submission window.", 403);
   if (!text(payload.response)) throw new AppError("Assessment response is required.", 422);
   if (!files?.length) throw new AppError("Attached screenshot is required.", 422);
