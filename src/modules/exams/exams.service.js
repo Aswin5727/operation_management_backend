@@ -254,6 +254,24 @@ export async function listFacultyRetests(user) {
   return rows.map((row) => ({ ...row, student: studentMap.get(row.retestStudentId) || null, schedules: row.schedules.map(publicSchedule) }));
 }
 
+export async function cancelRetest(user, retestId) {
+  const cancelled = await prisma.$transaction(async (tx) => {
+    const retest = await tx.exam.findFirst({ where: { id: retestId, facultyId: user.id, isRetest: true }, include: { branchCourse: { select: { id: true, name: true } }, module: { select: { id: true, title: true } }, retestStudent: { select: { id: true, batchId: true, emailAddress: true } }, schedules: { include: { branchBatch: { select: { id: true, batchId: true, batchName: true } } }, orderBy: { testDate: "asc" } } } });
+    if (!retest) throw new AppError("Retest not found.", 404);
+    if (retest.status === "CANCELLED") throw new AppError("Retest has already been cancelled.", 409);
+    const schedule = retest.schedules[0];
+    const start = schedule ? scheduledDate(schedule.testDate, schedule.startTime) : null;
+    if (!start || start <= new Date()) throw new AppError("This Retest cannot be cancelled because its scheduled start time has already passed.", 409);
+    const target = retest.retestStudent?.emailAddress ? await tx.user.findFirst({ where: { role: "STUDENT", email: { equals: text(retest.retestStudent.emailAddress).toLowerCase(), mode: "insensitive" } }, select: { id: true } }) : null;
+    if (target) {
+      const existing = await tx.notification.findFirst({ where: { kind: "EXAM_SCHEDULED", title: "Retest Cancelled", examId: retest.id, targetUserId: target.id }, select: { id: true } });
+      if (!existing) await tx.notification.create({ data: { kind: "EXAM_SCHEDULED", tone: "red", title: "Retest Cancelled", message: `Your Retest for the "${retest.module.title}" module, scheduled for ${cancellationWindow(start, scheduledDate(schedule.testDate, schedule.endTime))}, has been cancelled by the Faculty.`, targetUserId: target.id, examId: retest.id, examScheduleId: schedule.id, batchId: retest.retestStudent.batchId, moduleId: retest.module.id, createdBy: user.id } });
+    }
+    return tx.exam.update({ where: { id: retest.id }, data: { status: "CANCELLED" }, include: examInclude() });
+  });
+  return { ...cancelled, schedules: cancelled.schedules.map((schedule) => publicSchedule(schedule, new Date(), cancelled)) };
+}
+
 export async function updateTest(user, testId, payload = {}) {
   const existing = await prisma.exam.findFirst({ where: { id: testId, facultyId: user.id }, include: { schedules: true } });
   if (!existing) throw new AppError("Test not found.", 404);
@@ -407,6 +425,23 @@ export async function cancelAssessment(user, assessmentId) {
   return assessmentPublic(cancelled);
 }
 
+export async function cancelReassessment(user, reassessmentId) {
+  const cancelled = await prisma.$transaction(async (tx) => {
+    const reassessment = await tx.assessment.findFirst({ where: { id: reassessmentId, facultyId: user.id, isReassessment: true }, include: assessmentInclude });
+    if (!reassessment) throw new AppError("Reassessment not found.", 404);
+    if (isAssessmentCancelled(reassessment)) throw new AppError("Reassessment has already been cancelled.", 409);
+    if (new Date(reassessment.startDate) <= new Date()) throw new AppError("This Reassessment cannot be cancelled because its scheduled start time has already passed.", 409);
+    const target = reassessment.reassessmentStudent?.id ? await tx.branchStudent.findUnique({ where: { id: reassessment.reassessmentStudent.id }, select: { batchId: true, emailAddress: true } }) : null;
+    const targetUser = target?.emailAddress ? await tx.user.findFirst({ where: { role: "STUDENT", email: { equals: text(target.emailAddress).toLowerCase(), mode: "insensitive" } }, select: { id: true } }) : null;
+    if (targetUser) {
+      const existing = await tx.notification.findFirst({ where: { kind: "ASSESSMENT_AVAILABLE", title: "Reassessment Cancelled", assessmentId: reassessment.id, targetUserId: targetUser.id }, select: { id: true } });
+      if (!existing) await tx.notification.create({ data: { kind: "ASSESSMENT_AVAILABLE", tone: "red", title: "Reassessment Cancelled", message: `Your Reassessment for the "${reassessment.module.title}" module, scheduled for ${cancellationWindow(reassessment.startDate, reassessment.endDate)}, has been cancelled by the Faculty.`, targetUserId: targetUser.id, assessmentId: reassessment.id, batchId: target?.batchId, branchCourseId: reassessment.branchCourseId, moduleId: reassessment.moduleId, createdBy: user.id } });
+    }
+    return tx.assessment.update({ where: { id: reassessment.id }, data: { details: `[CANCELLED] ${text(reassessment.details)}`.trim() }, include: assessmentInclude });
+  });
+  return assessmentPublic(cancelled);
+}
+
 function assessmentDates(payload) {
   const startValue = text(payload.startDate);
   const endValue = text(payload.endDate);
@@ -459,7 +494,7 @@ export async function createAssessment(user, payload = {}) {
 export async function updateAssessment(user, assessmentId, payload = {}) {
   const existing = await facultyAssessment(user, assessmentId);
   if (isAssessmentCancelled(existing)) throw new AppError("Cancelled assessments cannot be edited.", 409);
-  if (new Date() > new Date(existing.endDate)) throw new AppError("This assessment can no longer be edited after its end date and time.", 409);
+  if (new Date() >= new Date(existing.startDate)) throw new AppError("This assessment can no longer be edited after its scheduled start date and time.", 409);
   const dates = assessmentDates(payload);
   const { course, module, batch } = await validateAssessmentScope(user, payload);
   const totalMarks = Number(payload.totalMarks);
