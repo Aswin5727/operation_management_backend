@@ -26,6 +26,7 @@ import {
   recordFacultyLogoutSession,
 } from "../attendance/attendance.service.js";
 import { requiresPasswordReset } from "../../common/utils/user.js";
+import { findBranchForAdmin, isInactiveBranch } from "../../common/utils/branchAccess.js";
 
 function normalizeIdentifier(identifier) {
   return String(identifier || "").trim().toLowerCase();
@@ -189,31 +190,10 @@ async function login({ identifier, password, ipAddress, userAgent }) {
 
   const role = String(user.role || "").toUpperCase();
 
-  if (role === "BRANCH_ADMIN") {
-    const branch = await prisma.branch.findFirst({
-      where: {
-        OR: [
-          { adminUserId: user.id },
-          {
-            branchEmail: {
-              equals: user.email,
-              mode: "insensitive",
-            },
-          },
-        ],
-      },
-      select: { status: true },
-    });
+  const branch = await findBranchForAdmin(user);
+  const inactiveBranchAdmin = isInactiveBranch(branch);
 
-    if (String(branch?.status || "ACTIVE").toUpperCase() === "INACTIVE") {
-      throw new AppError("This branch is inactive. Branch admin login is not allowed.", 403);
-    }
-  }
-
-  if (!user.active) {
-    if (role === "BRANCH_ADMIN") {
-      throw new AppError("This branch is inactive. Branch admin login is not allowed.", 403);
-    }
+  if (!user.active && !inactiveBranchAdmin) {
 
     throw new AppError("Account is inactive", 403);
   }
@@ -475,7 +455,10 @@ async function refreshSession({ refreshToken, ipAddress, userAgent }) {
     where: { id: userId },
   });
 
-  if (!user || !user.active || user.refreshTokenVersion !== payload.tokenVersion) {
+  const branch = await findBranchForAdmin(user);
+  const inactiveBranchAdmin = isInactiveBranch(branch);
+
+  if (!user || ((!user.active && !inactiveBranchAdmin) || user.refreshTokenVersion !== payload.tokenVersion)) {
     throw new AppError("Session expired", 401);
   }
 

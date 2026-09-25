@@ -2,6 +2,7 @@ import prisma from "../../config/prisma.js";
 import AppError from "../errors/AppError.js";
 import { verifyAccessToken } from "../utils/tokens.js";
 import { ACCESS_COOKIE_NAME } from "../constants/auth.js";
+import { findBranchForAdmin, isInactiveBranch } from "../utils/branchAccess.js";
 
 function getBearerToken(req) {
   const header = req.headers.authorization || "";
@@ -45,7 +46,10 @@ async function authenticate(req, _res, next) {
     const userId = payload.subject || payload.sub;
     const user = await findUserForAuthentication(userId);
 
-    if (!user || !user.active || user.refreshTokenVersion !== payload.tokenVersion) {
+    const branch = await findBranchForAdmin(user);
+    const inactiveBranchAdmin = isInactiveBranch(branch);
+
+    if (!user || ((!user.active && !inactiveBranchAdmin) || user.refreshTokenVersion !== payload.tokenVersion)) {
       throw new AppError("Session expired", 401);
     }
 
@@ -53,8 +57,15 @@ async function authenticate(req, _res, next) {
       userId: user.id,
       role: user.role,
       tokenVersion: user.refreshTokenVersion,
+      branchId: branch?.id || null,
+      branchStatus: branch?.status || null,
+      readOnly: inactiveBranchAdmin,
     };
     req.user = user;
+
+    if (inactiveBranchAdmin && !["GET", "HEAD", "OPTIONS"].includes(req.method)) {
+      throw new AppError("This branch is inactive. You can view data, but changes are not allowed.", 403);
+    }
 
     const userRole = String(user.role || '').trim().toUpperCase();
     if (userRole === 'SUPER_ADMIN') {

@@ -71,9 +71,9 @@ const loginHandler = asyncHandler(async (req, res) => {
 
 const refreshHandler = asyncHandler(async (req, res) => {
   const refreshToken =
-    req.cookies?.refreshToken ||
     req.body?.refreshToken ||
-    req.get("authorization")?.replace(/^Bearer\s+/i, "");
+    req.get("authorization")?.replace(/^Bearer\s+/i, "") ||
+    req.cookies?.refreshToken;
   const result = await refreshSession({
     refreshToken,
     ipAddress: req.ip,
@@ -98,9 +98,9 @@ const refreshHandler = asyncHandler(async (req, res) => {
 
 const logoutHandler = asyncHandler(async (req, res) => {
   const refreshToken =
-    req.cookies?.refreshToken ||
     req.body?.refreshToken ||
-    req.get("authorization")?.replace(/^Bearer\s+/i, "");
+    req.get("authorization")?.replace(/^Bearer\s+/i, "") ||
+    req.cookies?.refreshToken;
   const result = await logout({
     refreshToken,
     ipAddress: req.ip,

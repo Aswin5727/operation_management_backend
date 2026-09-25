@@ -91,8 +91,15 @@ const config = {
   rateLimitMax: toNumber(process.env.RATE_LIMIT_MAX, 100),
   loginAttemptMax: toNumber(process.env.LOGIN_ATTEMPT_MAX, 5),
   loginAttemptWindowMinutes: toNumber(process.env.LOGIN_ATTEMPT_WINDOW_MINUTES, 15),
-  cookieSecure: process.env.COOKIE_SECURE === "true",
-  cookieSameSite: process.env.COOKIE_SAME_SITE || "lax",
+  // The live frontend and API are hosted on different origins, so production
+  // auth cookies must be cross-site compatible unless explicitly overridden.
+  cookieSecure:
+    process.env.COOKIE_SECURE !== undefined
+      ? process.env.COOKIE_SECURE === "true"
+      : (process.env.NODE_ENV || "development") === "production",
+  cookieSameSite:
+    process.env.COOKIE_SAME_SITE ||
+    ((process.env.NODE_ENV || "development") === "production" ? "none" : "lax"),
   seedDefaultPassword: process.env.SEED_DEFAULT_PASSWORD || "ChangeMe123!",
 };
 
