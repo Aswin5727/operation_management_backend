@@ -12,6 +12,7 @@ router.get("/faculty/courses/:courseId/modules", authorize("FACULTY"), controlle
 router.get("/faculty/tests", authorize("FACULTY"), controller.listFacultyTests);
 router.post("/faculty/tests", authorize("FACULTY"), controller.createTest);
 router.get("/faculty/retests", authorize("FACULTY"), controller.listFacultyRetests);
+router.post("/faculty/retests/:retestId/cancel", authorize("FACULTY"), controller.cancelRetest);
 router.post("/faculty/tests/:testId/schedules/:scheduleId/retests", authorize("FACULTY"), controller.createRetest);
 router.put("/faculty/tests/:testId", authorize("FACULTY"), controller.updateTest);
 router.post("/faculty/tests/:testId/cancel", authorize("FACULTY"), controller.cancelTest);
@@ -28,6 +29,7 @@ router.get("/faculty/assessments", authorize("FACULTY"), controller.listFacultyA
 router.get("/faculty/assessments/:assessmentId", authorize("FACULTY"), controller.getFacultyAssessment);
 router.post("/faculty/assessments", authorize("FACULTY"), controller.createAssessment);
 router.post("/faculty/assessments/:assessmentId/reassessments", authorize("FACULTY"), controller.createReassessment);
+router.post("/faculty/reassessments/:reassessmentId/cancel", authorize("FACULTY"), controller.cancelReassessment);
 router.get("/faculty/assessments/:assessmentId/students", authorize("FACULTY"), controller.listAssessmentStudents);
 router.get("/faculty/assessments/:assessmentId/submissions", authorize("FACULTY"), controller.listAssessmentSubmissions);
 router.patch("/faculty/assessments/:assessmentId", authorize("FACULTY"), controller.updateAssessment);
