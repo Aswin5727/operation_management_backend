@@ -8,8 +8,10 @@
   },
   "scripts": {
     "start": "node server.js",
+    "prestart": "npm run prisma:generate && npm run prisma:deploy",
     "dev": "nodemon server.js",
     "prisma:generate": "prisma generate",
+    "prisma:deploy": "prisma migrate deploy",
     "prisma:push": "prisma db push",
     "backfill:faculty-courses": "node prisma/backfill-faculty-course-assignments.js",
     "seed": "node prisma/seed.js",

@@ -310,7 +310,9 @@ export const NotificationKind: {
   ASSESSMENT_AVAILABLE: 'ASSESSMENT_AVAILABLE',
   FACULTY_REPORT_SHARED: 'FACULTY_REPORT_SHARED',
   EXAM_RETEST_ASSIGNED: 'EXAM_RETEST_ASSIGNED',
-  ASSESSMENT_REASSESSMENT_ASSIGNED: 'ASSESSMENT_REASSESSMENT_ASSIGNED'
+  ASSESSMENT_REASSESSMENT_ASSIGNED: 'ASSESSMENT_REASSESSMENT_ASSIGNED',
+  EXAM_CANCELLED: 'EXAM_CANCELLED',
+  ASSESSMENT_CANCELLED: 'ASSESSMENT_CANCELLED'
 };
 
 export type NotificationKind = (typeof NotificationKind)[keyof typeof NotificationKind]
@@ -58295,6 +58297,9 @@ export namespace Prisma {
     startDate: Date | null
     endDate: Date | null
     details: string | null
+    status: string | null
+    cancelledAt: Date | null
+    cancelledBy: string | null
     facultyId: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -58313,6 +58318,9 @@ export namespace Prisma {
     startDate: Date | null
     endDate: Date | null
     details: string | null
+    status: string | null
+    cancelledAt: Date | null
+    cancelledBy: string | null
     facultyId: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -58331,6 +58339,9 @@ export namespace Prisma {
     startDate: number
     endDate: number
     details: number
+    status: number
+    cancelledAt: number
+    cancelledBy: number
     facultyId: number
     createdAt: number
     updatedAt: number
@@ -58359,6 +58370,9 @@ export namespace Prisma {
     startDate?: true
     endDate?: true
     details?: true
+    status?: true
+    cancelledAt?: true
+    cancelledBy?: true
     facultyId?: true
     createdAt?: true
     updatedAt?: true
@@ -58377,6 +58391,9 @@ export namespace Prisma {
     startDate?: true
     endDate?: true
     details?: true
+    status?: true
+    cancelledAt?: true
+    cancelledBy?: true
     facultyId?: true
     createdAt?: true
     updatedAt?: true
@@ -58395,6 +58412,9 @@ export namespace Prisma {
     startDate?: true
     endDate?: true
     details?: true
+    status?: true
+    cancelledAt?: true
+    cancelledBy?: true
     facultyId?: true
     createdAt?: true
     updatedAt?: true
@@ -58500,6 +58520,9 @@ export namespace Prisma {
     startDate: Date
     endDate: Date
     details: string | null
+    status: string
+    cancelledAt: Date | null
+    cancelledBy: string | null
     facultyId: string
     createdAt: Date
     updatedAt: Date
@@ -58537,6 +58560,9 @@ export namespace Prisma {
     startDate?: boolean
     endDate?: boolean
     details?: boolean
+    status?: boolean
+    cancelledAt?: boolean
+    cancelledBy?: boolean
     facultyId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -58564,6 +58590,9 @@ export namespace Prisma {
     startDate?: boolean
     endDate?: boolean
     details?: boolean
+    status?: boolean
+    cancelledAt?: boolean
+    cancelledBy?: boolean
     facultyId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -58588,6 +58617,9 @@ export namespace Prisma {
     startDate?: boolean
     endDate?: boolean
     details?: boolean
+    status?: boolean
+    cancelledAt?: boolean
+    cancelledBy?: boolean
     facultyId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -58612,12 +58644,15 @@ export namespace Prisma {
     startDate?: boolean
     endDate?: boolean
     details?: boolean
+    status?: boolean
+    cancelledAt?: boolean
+    cancelledBy?: boolean
     facultyId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type AssessmentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"isReassessment" | "originalAssessmentId" | "reassessmentStudentId" | "id" | "assessmentName" | "branchCourseId" | "moduleId" | "branchBatchId" | "totalMarks" | "startDate" | "endDate" | "details" | "facultyId" | "createdAt" | "updatedAt", ExtArgs["result"]["assessment"]>
+  export type AssessmentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"isReassessment" | "originalAssessmentId" | "reassessmentStudentId" | "id" | "assessmentName" | "branchCourseId" | "moduleId" | "branchBatchId" | "totalMarks" | "startDate" | "endDate" | "details" | "status" | "cancelledAt" | "cancelledBy" | "facultyId" | "createdAt" | "updatedAt", ExtArgs["result"]["assessment"]>
   export type AssessmentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     branchCourse?: boolean | BranchCourseDefaultArgs<ExtArgs>
     module?: boolean | BranchCourseModuleDefaultArgs<ExtArgs>
@@ -58671,6 +58706,9 @@ export namespace Prisma {
       startDate: Date
       endDate: Date
       details: string | null
+      status: string
+      cancelledAt: Date | null
+      cancelledBy: string | null
       facultyId: string
       createdAt: Date
       updatedAt: Date
@@ -59117,6 +59155,9 @@ export namespace Prisma {
     readonly startDate: FieldRef<"Assessment", 'DateTime'>
     readonly endDate: FieldRef<"Assessment", 'DateTime'>
     readonly details: FieldRef<"Assessment", 'String'>
+    readonly status: FieldRef<"Assessment", 'String'>
+    readonly cancelledAt: FieldRef<"Assessment", 'DateTime'>
+    readonly cancelledBy: FieldRef<"Assessment", 'String'>
     readonly facultyId: FieldRef<"Assessment", 'String'>
     readonly createdAt: FieldRef<"Assessment", 'DateTime'>
     readonly updatedAt: FieldRef<"Assessment", 'DateTime'>
@@ -60937,6 +60978,8 @@ export namespace Prisma {
     totalQuestions: number | null
     totalMarks: number | null
     status: string | null
+    cancelledAt: Date | null
+    cancelledBy: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -60954,6 +60997,8 @@ export namespace Prisma {
     totalQuestions: number | null
     totalMarks: number | null
     status: string | null
+    cancelledAt: Date | null
+    cancelledBy: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -60971,6 +61016,8 @@ export namespace Prisma {
     totalQuestions: number
     totalMarks: number
     status: number
+    cancelledAt: number
+    cancelledBy: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -61002,6 +61049,8 @@ export namespace Prisma {
     totalQuestions?: true
     totalMarks?: true
     status?: true
+    cancelledAt?: true
+    cancelledBy?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -61019,6 +61068,8 @@ export namespace Prisma {
     totalQuestions?: true
     totalMarks?: true
     status?: true
+    cancelledAt?: true
+    cancelledBy?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -61036,6 +61087,8 @@ export namespace Prisma {
     totalQuestions?: true
     totalMarks?: true
     status?: true
+    cancelledAt?: true
+    cancelledBy?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -61140,6 +61193,8 @@ export namespace Prisma {
     totalQuestions: number
     totalMarks: number
     status: string
+    cancelledAt: Date | null
+    cancelledBy: string | null
     createdAt: Date
     updatedAt: Date
     _count: ExamCountAggregateOutputType | null
@@ -61176,6 +61231,8 @@ export namespace Prisma {
     totalQuestions?: boolean
     totalMarks?: boolean
     status?: boolean
+    cancelledAt?: boolean
+    cancelledBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     branchCourse?: boolean | BranchCourseDefaultArgs<ExtArgs>
@@ -61203,6 +61260,8 @@ export namespace Prisma {
     totalQuestions?: boolean
     totalMarks?: boolean
     status?: boolean
+    cancelledAt?: boolean
+    cancelledBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     branchCourse?: boolean | BranchCourseDefaultArgs<ExtArgs>
@@ -61225,6 +61284,8 @@ export namespace Prisma {
     totalQuestions?: boolean
     totalMarks?: boolean
     status?: boolean
+    cancelledAt?: boolean
+    cancelledBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     branchCourse?: boolean | BranchCourseDefaultArgs<ExtArgs>
@@ -61247,11 +61308,13 @@ export namespace Prisma {
     totalQuestions?: boolean
     totalMarks?: boolean
     status?: boolean
+    cancelledAt?: boolean
+    cancelledBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type ExamOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"isRetest" | "originalTestId" | "retestStudentId" | "id" | "title" | "branchCourseId" | "moduleId" | "facultyId" | "marksPerQuestion" | "totalQuestions" | "totalMarks" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["exam"]>
+  export type ExamOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"isRetest" | "originalTestId" | "retestStudentId" | "id" | "title" | "branchCourseId" | "moduleId" | "facultyId" | "marksPerQuestion" | "totalQuestions" | "totalMarks" | "status" | "cancelledAt" | "cancelledBy" | "createdAt" | "updatedAt", ExtArgs["result"]["exam"]>
   export type ExamInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     branchCourse?: boolean | BranchCourseDefaultArgs<ExtArgs>
     module?: boolean | BranchCourseModuleDefaultArgs<ExtArgs>
@@ -61305,6 +61368,8 @@ export namespace Prisma {
       totalQuestions: number
       totalMarks: number
       status: string
+      cancelledAt: Date | null
+      cancelledBy: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["exam"]>
@@ -61751,6 +61816,8 @@ export namespace Prisma {
     readonly totalQuestions: FieldRef<"Exam", 'Int'>
     readonly totalMarks: FieldRef<"Exam", 'Int'>
     readonly status: FieldRef<"Exam", 'String'>
+    readonly cancelledAt: FieldRef<"Exam", 'DateTime'>
+    readonly cancelledBy: FieldRef<"Exam", 'String'>
     readonly createdAt: FieldRef<"Exam", 'DateTime'>
     readonly updatedAt: FieldRef<"Exam", 'DateTime'>
   }
@@ -71775,6 +71842,9 @@ export namespace Prisma {
     startDate: 'startDate',
     endDate: 'endDate',
     details: 'details',
+    status: 'status',
+    cancelledAt: 'cancelledAt',
+    cancelledBy: 'cancelledBy',
     facultyId: 'facultyId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
@@ -71818,6 +71888,8 @@ export namespace Prisma {
     totalQuestions: 'totalQuestions',
     totalMarks: 'totalMarks',
     status: 'status',
+    cancelledAt: 'cancelledAt',
+    cancelledBy: 'cancelledBy',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -77116,6 +77188,9 @@ export namespace Prisma {
     startDate?: DateTimeFilter<"Assessment"> | Date | string
     endDate?: DateTimeFilter<"Assessment"> | Date | string
     details?: StringNullableFilter<"Assessment"> | string | null
+    status?: StringFilter<"Assessment"> | string
+    cancelledAt?: DateTimeNullableFilter<"Assessment"> | Date | string | null
+    cancelledBy?: StringNullableFilter<"Assessment"> | string | null
     facultyId?: StringFilter<"Assessment"> | string
     createdAt?: DateTimeFilter<"Assessment"> | Date | string
     updatedAt?: DateTimeFilter<"Assessment"> | Date | string
@@ -77142,6 +77217,9 @@ export namespace Prisma {
     startDate?: SortOrder
     endDate?: SortOrder
     details?: SortOrderInput | SortOrder
+    status?: SortOrder
+    cancelledAt?: SortOrderInput | SortOrder
+    cancelledBy?: SortOrderInput | SortOrder
     facultyId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -77171,6 +77249,9 @@ export namespace Prisma {
     startDate?: DateTimeFilter<"Assessment"> | Date | string
     endDate?: DateTimeFilter<"Assessment"> | Date | string
     details?: StringNullableFilter<"Assessment"> | string | null
+    status?: StringFilter<"Assessment"> | string
+    cancelledAt?: DateTimeNullableFilter<"Assessment"> | Date | string | null
+    cancelledBy?: StringNullableFilter<"Assessment"> | string | null
     facultyId?: StringFilter<"Assessment"> | string
     createdAt?: DateTimeFilter<"Assessment"> | Date | string
     updatedAt?: DateTimeFilter<"Assessment"> | Date | string
@@ -77197,6 +77278,9 @@ export namespace Prisma {
     startDate?: SortOrder
     endDate?: SortOrder
     details?: SortOrderInput | SortOrder
+    status?: SortOrder
+    cancelledAt?: SortOrderInput | SortOrder
+    cancelledBy?: SortOrderInput | SortOrder
     facultyId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -77223,6 +77307,9 @@ export namespace Prisma {
     startDate?: DateTimeWithAggregatesFilter<"Assessment"> | Date | string
     endDate?: DateTimeWithAggregatesFilter<"Assessment"> | Date | string
     details?: StringNullableWithAggregatesFilter<"Assessment"> | string | null
+    status?: StringWithAggregatesFilter<"Assessment"> | string
+    cancelledAt?: DateTimeNullableWithAggregatesFilter<"Assessment"> | Date | string | null
+    cancelledBy?: StringNullableWithAggregatesFilter<"Assessment"> | string | null
     facultyId?: StringWithAggregatesFilter<"Assessment"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Assessment"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Assessment"> | Date | string
@@ -77363,6 +77450,8 @@ export namespace Prisma {
     totalQuestions?: IntFilter<"Exam"> | number
     totalMarks?: IntFilter<"Exam"> | number
     status?: StringFilter<"Exam"> | string
+    cancelledAt?: DateTimeNullableFilter<"Exam"> | Date | string | null
+    cancelledBy?: StringNullableFilter<"Exam"> | string | null
     createdAt?: DateTimeFilter<"Exam"> | Date | string
     updatedAt?: DateTimeFilter<"Exam"> | Date | string
     branchCourse?: XOR<BranchCourseScalarRelationFilter, BranchCourseWhereInput>
@@ -77389,6 +77478,8 @@ export namespace Prisma {
     totalQuestions?: SortOrder
     totalMarks?: SortOrder
     status?: SortOrder
+    cancelledAt?: SortOrderInput | SortOrder
+    cancelledBy?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     branchCourse?: BranchCourseOrderByWithRelationInput
@@ -77418,6 +77509,8 @@ export namespace Prisma {
     totalQuestions?: IntFilter<"Exam"> | number
     totalMarks?: IntFilter<"Exam"> | number
     status?: StringFilter<"Exam"> | string
+    cancelledAt?: DateTimeNullableFilter<"Exam"> | Date | string | null
+    cancelledBy?: StringNullableFilter<"Exam"> | string | null
     createdAt?: DateTimeFilter<"Exam"> | Date | string
     updatedAt?: DateTimeFilter<"Exam"> | Date | string
     branchCourse?: XOR<BranchCourseScalarRelationFilter, BranchCourseWhereInput>
@@ -77444,6 +77537,8 @@ export namespace Prisma {
     totalQuestions?: SortOrder
     totalMarks?: SortOrder
     status?: SortOrder
+    cancelledAt?: SortOrderInput | SortOrder
+    cancelledBy?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: ExamCountOrderByAggregateInput
@@ -77469,6 +77564,8 @@ export namespace Prisma {
     totalQuestions?: IntWithAggregatesFilter<"Exam"> | number
     totalMarks?: IntWithAggregatesFilter<"Exam"> | number
     status?: StringWithAggregatesFilter<"Exam"> | string
+    cancelledAt?: DateTimeNullableWithAggregatesFilter<"Exam"> | Date | string | null
+    cancelledBy?: StringNullableWithAggregatesFilter<"Exam"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Exam"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Exam"> | Date | string
   }
@@ -84009,6 +84106,9 @@ export namespace Prisma {
     startDate: Date | string
     endDate: Date | string
     details?: string | null
+    status?: string
+    cancelledAt?: Date | string | null
+    cancelledBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     branchCourse: BranchCourseCreateNestedOneWithoutAssessmentsInput
@@ -84034,6 +84134,9 @@ export namespace Prisma {
     startDate: Date | string
     endDate: Date | string
     details?: string | null
+    status?: string
+    cancelledAt?: Date | string | null
+    cancelledBy?: string | null
     facultyId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -84049,6 +84152,9 @@ export namespace Prisma {
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
     details?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     branchCourse?: BranchCourseUpdateOneRequiredWithoutAssessmentsNestedInput
@@ -84074,6 +84180,9 @@ export namespace Prisma {
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
     details?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
     facultyId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -84094,6 +84203,9 @@ export namespace Prisma {
     startDate: Date | string
     endDate: Date | string
     details?: string | null
+    status?: string
+    cancelledAt?: Date | string | null
+    cancelledBy?: string | null
     facultyId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -84107,6 +84219,9 @@ export namespace Prisma {
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
     details?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -84124,6 +84239,9 @@ export namespace Prisma {
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
     details?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
     facultyId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -84267,6 +84385,8 @@ export namespace Prisma {
     totalQuestions: number
     totalMarks: number
     status?: string
+    cancelledAt?: Date | string | null
+    cancelledBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     branchCourse: BranchCourseCreateNestedOneWithoutExamsInput
@@ -84293,6 +84413,8 @@ export namespace Prisma {
     totalQuestions: number
     totalMarks: number
     status?: string
+    cancelledAt?: Date | string | null
+    cancelledBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     schedules?: ExamScheduleUncheckedCreateNestedManyWithoutExamInput
@@ -84309,6 +84431,8 @@ export namespace Prisma {
     totalQuestions?: IntFieldUpdateOperationsInput | number
     totalMarks?: IntFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     branchCourse?: BranchCourseUpdateOneRequiredWithoutExamsNestedInput
@@ -84335,6 +84459,8 @@ export namespace Prisma {
     totalQuestions?: IntFieldUpdateOperationsInput | number
     totalMarks?: IntFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     schedules?: ExamScheduleUncheckedUpdateManyWithoutExamNestedInput
@@ -84356,6 +84482,8 @@ export namespace Prisma {
     totalQuestions: number
     totalMarks: number
     status?: string
+    cancelledAt?: Date | string | null
+    cancelledBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -84368,6 +84496,8 @@ export namespace Prisma {
     totalQuestions?: IntFieldUpdateOperationsInput | number
     totalMarks?: IntFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -84385,6 +84515,8 @@ export namespace Prisma {
     totalQuestions?: IntFieldUpdateOperationsInput | number
     totalMarks?: IntFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -88915,6 +89047,9 @@ export namespace Prisma {
     startDate?: SortOrder
     endDate?: SortOrder
     details?: SortOrder
+    status?: SortOrder
+    cancelledAt?: SortOrder
+    cancelledBy?: SortOrder
     facultyId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -88937,6 +89072,9 @@ export namespace Prisma {
     startDate?: SortOrder
     endDate?: SortOrder
     details?: SortOrder
+    status?: SortOrder
+    cancelledAt?: SortOrder
+    cancelledBy?: SortOrder
     facultyId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -88955,6 +89093,9 @@ export namespace Prisma {
     startDate?: SortOrder
     endDate?: SortOrder
     details?: SortOrder
+    status?: SortOrder
+    cancelledAt?: SortOrder
+    cancelledBy?: SortOrder
     facultyId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -89067,6 +89208,8 @@ export namespace Prisma {
     totalQuestions?: SortOrder
     totalMarks?: SortOrder
     status?: SortOrder
+    cancelledAt?: SortOrder
+    cancelledBy?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -89090,6 +89233,8 @@ export namespace Prisma {
     totalQuestions?: SortOrder
     totalMarks?: SortOrder
     status?: SortOrder
+    cancelledAt?: SortOrder
+    cancelledBy?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -89107,6 +89252,8 @@ export namespace Prisma {
     totalQuestions?: SortOrder
     totalMarks?: SortOrder
     status?: SortOrder
+    cancelledAt?: SortOrder
+    cancelledBy?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -95300,6 +95447,8 @@ export namespace Prisma {
     totalQuestions: number
     totalMarks: number
     status?: string
+    cancelledAt?: Date | string | null
+    cancelledBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     branchCourse: BranchCourseCreateNestedOneWithoutExamsInput
@@ -95324,6 +95473,8 @@ export namespace Prisma {
     totalQuestions: number
     totalMarks: number
     status?: string
+    cancelledAt?: Date | string | null
+    cancelledBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     schedules?: ExamScheduleUncheckedCreateNestedManyWithoutExamInput
@@ -95400,6 +95551,9 @@ export namespace Prisma {
     startDate: Date | string
     endDate: Date | string
     details?: string | null
+    status?: string
+    cancelledAt?: Date | string | null
+    cancelledBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     branchCourse: BranchCourseCreateNestedOneWithoutAssessmentsInput
@@ -95424,6 +95578,9 @@ export namespace Prisma {
     startDate: Date | string
     endDate: Date | string
     details?: string | null
+    status?: string
+    cancelledAt?: Date | string | null
+    cancelledBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     submissions?: AssessmentSubmissionUncheckedCreateNestedManyWithoutAssessmentInput
@@ -96041,6 +96198,8 @@ export namespace Prisma {
     totalQuestions?: IntFilter<"Exam"> | number
     totalMarks?: IntFilter<"Exam"> | number
     status?: StringFilter<"Exam"> | string
+    cancelledAt?: DateTimeNullableFilter<"Exam"> | Date | string | null
+    cancelledBy?: StringNullableFilter<"Exam"> | string | null
     createdAt?: DateTimeFilter<"Exam"> | Date | string
     updatedAt?: DateTimeFilter<"Exam"> | Date | string
   }
@@ -96116,6 +96275,9 @@ export namespace Prisma {
     startDate?: DateTimeFilter<"Assessment"> | Date | string
     endDate?: DateTimeFilter<"Assessment"> | Date | string
     details?: StringNullableFilter<"Assessment"> | string | null
+    status?: StringFilter<"Assessment"> | string
+    cancelledAt?: DateTimeNullableFilter<"Assessment"> | Date | string | null
+    cancelledBy?: StringNullableFilter<"Assessment"> | string | null
     facultyId?: StringFilter<"Assessment"> | string
     createdAt?: DateTimeFilter<"Assessment"> | Date | string
     updatedAt?: DateTimeFilter<"Assessment"> | Date | string
@@ -99925,6 +100087,8 @@ export namespace Prisma {
     totalQuestions: number
     totalMarks: number
     status?: string
+    cancelledAt?: Date | string | null
+    cancelledBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     module: BranchCourseModuleCreateNestedOneWithoutExamsInput
@@ -99949,6 +100113,8 @@ export namespace Prisma {
     totalQuestions: number
     totalMarks: number
     status?: string
+    cancelledAt?: Date | string | null
+    cancelledBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     schedules?: ExamScheduleUncheckedCreateNestedManyWithoutExamInput
@@ -99975,6 +100141,9 @@ export namespace Prisma {
     startDate: Date | string
     endDate: Date | string
     details?: string | null
+    status?: string
+    cancelledAt?: Date | string | null
+    cancelledBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     module: BranchCourseModuleCreateNestedOneWithoutAssessmentsInput
@@ -99998,6 +100167,9 @@ export namespace Prisma {
     startDate: Date | string
     endDate: Date | string
     details?: string | null
+    status?: string
+    cancelledAt?: Date | string | null
+    cancelledBy?: string | null
     facultyId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -100444,6 +100616,8 @@ export namespace Prisma {
     totalQuestions: number
     totalMarks: number
     status?: string
+    cancelledAt?: Date | string | null
+    cancelledBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     branchCourse: BranchCourseCreateNestedOneWithoutExamsInput
@@ -100468,6 +100642,8 @@ export namespace Prisma {
     totalQuestions: number
     totalMarks: number
     status?: string
+    cancelledAt?: Date | string | null
+    cancelledBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     schedules?: ExamScheduleUncheckedCreateNestedManyWithoutExamInput
@@ -100494,6 +100670,9 @@ export namespace Prisma {
     startDate: Date | string
     endDate: Date | string
     details?: string | null
+    status?: string
+    cancelledAt?: Date | string | null
+    cancelledBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     branchCourse: BranchCourseCreateNestedOneWithoutAssessmentsInput
@@ -100517,6 +100696,9 @@ export namespace Prisma {
     startDate: Date | string
     endDate: Date | string
     details?: string | null
+    status?: string
+    cancelledAt?: Date | string | null
+    cancelledBy?: string | null
     facultyId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -101702,6 +101884,9 @@ export namespace Prisma {
     startDate: Date | string
     endDate: Date | string
     details?: string | null
+    status?: string
+    cancelledAt?: Date | string | null
+    cancelledBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     branchCourse: BranchCourseCreateNestedOneWithoutAssessmentsInput
@@ -101725,6 +101910,9 @@ export namespace Prisma {
     startDate: Date | string
     endDate: Date | string
     details?: string | null
+    status?: string
+    cancelledAt?: Date | string | null
+    cancelledBy?: string | null
     facultyId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -102966,6 +103154,8 @@ export namespace Prisma {
     totalQuestions: number
     totalMarks: number
     status?: string
+    cancelledAt?: Date | string | null
+    cancelledBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     branchCourse: BranchCourseCreateNestedOneWithoutExamsInput
@@ -102990,6 +103180,8 @@ export namespace Prisma {
     totalQuestions: number
     totalMarks: number
     status?: string
+    cancelledAt?: Date | string | null
+    cancelledBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     schedules?: ExamScheduleUncheckedCreateNestedManyWithoutExamInput
@@ -103016,6 +103208,9 @@ export namespace Prisma {
     startDate: Date | string
     endDate: Date | string
     details?: string | null
+    status?: string
+    cancelledAt?: Date | string | null
+    cancelledBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     branchCourse: BranchCourseCreateNestedOneWithoutAssessmentsInput
@@ -103039,6 +103234,9 @@ export namespace Prisma {
     startDate: Date | string
     endDate: Date | string
     details?: string | null
+    status?: string
+    cancelledAt?: Date | string | null
+    cancelledBy?: string | null
     facultyId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -108893,6 +109091,9 @@ export namespace Prisma {
     startDate: Date | string
     endDate: Date | string
     details?: string | null
+    status?: string
+    cancelledAt?: Date | string | null
+    cancelledBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     branchCourse: BranchCourseCreateNestedOneWithoutAssessmentsInput
@@ -108917,6 +109118,9 @@ export namespace Prisma {
     startDate: Date | string
     endDate: Date | string
     details?: string | null
+    status?: string
+    cancelledAt?: Date | string | null
+    cancelledBy?: string | null
     facultyId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -108936,6 +109140,9 @@ export namespace Prisma {
     startDate: Date | string
     endDate: Date | string
     details?: string | null
+    status?: string
+    cancelledAt?: Date | string | null
+    cancelledBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     branchCourse: BranchCourseCreateNestedOneWithoutAssessmentsInput
@@ -108959,6 +109166,9 @@ export namespace Prisma {
     startDate: Date | string
     endDate: Date | string
     details?: string | null
+    status?: string
+    cancelledAt?: Date | string | null
+    cancelledBy?: string | null
     facultyId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -109432,6 +109642,9 @@ export namespace Prisma {
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
     details?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     branchCourse?: BranchCourseUpdateOneRequiredWithoutAssessmentsNestedInput
@@ -109456,6 +109669,9 @@ export namespace Prisma {
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
     details?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
     facultyId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -109625,6 +109841,9 @@ export namespace Prisma {
     startDate: Date | string
     endDate: Date | string
     details?: string | null
+    status?: string
+    cancelledAt?: Date | string | null
+    cancelledBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     branchCourse: BranchCourseCreateNestedOneWithoutAssessmentsInput
@@ -109649,6 +109868,9 @@ export namespace Prisma {
     startDate: Date | string
     endDate: Date | string
     details?: string | null
+    status?: string
+    cancelledAt?: Date | string | null
+    cancelledBy?: string | null
     facultyId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -109897,6 +110119,9 @@ export namespace Prisma {
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
     details?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     branchCourse?: BranchCourseUpdateOneRequiredWithoutAssessmentsNestedInput
@@ -109921,6 +110146,9 @@ export namespace Prisma {
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
     details?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
     facultyId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -110472,6 +110700,8 @@ export namespace Prisma {
     totalQuestions: number
     totalMarks: number
     status?: string
+    cancelledAt?: Date | string | null
+    cancelledBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     branchCourse: BranchCourseCreateNestedOneWithoutExamsInput
@@ -110497,6 +110727,8 @@ export namespace Prisma {
     totalQuestions: number
     totalMarks: number
     status?: string
+    cancelledAt?: Date | string | null
+    cancelledBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     schedules?: ExamScheduleUncheckedCreateNestedManyWithoutExamInput
@@ -110517,6 +110749,8 @@ export namespace Prisma {
     totalQuestions: number
     totalMarks: number
     status?: string
+    cancelledAt?: Date | string | null
+    cancelledBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     branchCourse: BranchCourseCreateNestedOneWithoutExamsInput
@@ -110541,6 +110775,8 @@ export namespace Prisma {
     totalQuestions: number
     totalMarks: number
     status?: string
+    cancelledAt?: Date | string | null
+    cancelledBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     schedules?: ExamScheduleUncheckedCreateNestedManyWithoutExamInput
@@ -110985,6 +111221,8 @@ export namespace Prisma {
     totalQuestions?: IntFieldUpdateOperationsInput | number
     totalMarks?: IntFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     branchCourse?: BranchCourseUpdateOneRequiredWithoutExamsNestedInput
@@ -111010,6 +111248,8 @@ export namespace Prisma {
     totalQuestions?: IntFieldUpdateOperationsInput | number
     totalMarks?: IntFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     schedules?: ExamScheduleUncheckedUpdateManyWithoutExamNestedInput
@@ -111180,6 +111420,8 @@ export namespace Prisma {
     totalQuestions: number
     totalMarks: number
     status?: string
+    cancelledAt?: Date | string | null
+    cancelledBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     branchCourse: BranchCourseCreateNestedOneWithoutExamsInput
@@ -111205,6 +111447,8 @@ export namespace Prisma {
     totalQuestions: number
     totalMarks: number
     status?: string
+    cancelledAt?: Date | string | null
+    cancelledBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     questions?: ExamQuestionUncheckedCreateNestedManyWithoutExamInput
@@ -111357,6 +111601,8 @@ export namespace Prisma {
     totalQuestions?: IntFieldUpdateOperationsInput | number
     totalMarks?: IntFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     branchCourse?: BranchCourseUpdateOneRequiredWithoutExamsNestedInput
@@ -111382,6 +111628,8 @@ export namespace Prisma {
     totalQuestions?: IntFieldUpdateOperationsInput | number
     totalMarks?: IntFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     questions?: ExamQuestionUncheckedUpdateManyWithoutExamNestedInput
@@ -111490,6 +111738,8 @@ export namespace Prisma {
     totalQuestions: number
     totalMarks: number
     status?: string
+    cancelledAt?: Date | string | null
+    cancelledBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     branchCourse: BranchCourseCreateNestedOneWithoutExamsInput
@@ -111515,6 +111765,8 @@ export namespace Prisma {
     totalQuestions: number
     totalMarks: number
     status?: string
+    cancelledAt?: Date | string | null
+    cancelledBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     schedules?: ExamScheduleUncheckedCreateNestedManyWithoutExamInput
@@ -111572,6 +111824,8 @@ export namespace Prisma {
     totalQuestions?: IntFieldUpdateOperationsInput | number
     totalMarks?: IntFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     branchCourse?: BranchCourseUpdateOneRequiredWithoutExamsNestedInput
@@ -111597,6 +111851,8 @@ export namespace Prisma {
     totalQuestions?: IntFieldUpdateOperationsInput | number
     totalMarks?: IntFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     schedules?: ExamScheduleUncheckedUpdateManyWithoutExamNestedInput
@@ -111640,6 +111896,8 @@ export namespace Prisma {
     totalQuestions: number
     totalMarks: number
     status?: string
+    cancelledAt?: Date | string | null
+    cancelledBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     branchCourse: BranchCourseCreateNestedOneWithoutExamsInput
@@ -111665,6 +111923,8 @@ export namespace Prisma {
     totalQuestions: number
     totalMarks: number
     status?: string
+    cancelledAt?: Date | string | null
+    cancelledBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     schedules?: ExamScheduleUncheckedCreateNestedManyWithoutExamInput
@@ -111965,6 +112225,8 @@ export namespace Prisma {
     totalQuestions?: IntFieldUpdateOperationsInput | number
     totalMarks?: IntFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     branchCourse?: BranchCourseUpdateOneRequiredWithoutExamsNestedInput
@@ -111990,6 +112252,8 @@ export namespace Prisma {
     totalQuestions?: IntFieldUpdateOperationsInput | number
     totalMarks?: IntFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     schedules?: ExamScheduleUncheckedUpdateManyWithoutExamNestedInput
@@ -113566,6 +113830,8 @@ export namespace Prisma {
     totalQuestions: number
     totalMarks: number
     status?: string
+    cancelledAt?: Date | string | null
+    cancelledBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -113602,6 +113868,9 @@ export namespace Prisma {
     startDate: Date | string
     endDate: Date | string
     details?: string | null
+    status?: string
+    cancelledAt?: Date | string | null
+    cancelledBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -114260,6 +114529,8 @@ export namespace Prisma {
     totalQuestions?: IntFieldUpdateOperationsInput | number
     totalMarks?: IntFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     branchCourse?: BranchCourseUpdateOneRequiredWithoutExamsNestedInput
@@ -114284,6 +114555,8 @@ export namespace Prisma {
     totalQuestions?: IntFieldUpdateOperationsInput | number
     totalMarks?: IntFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     schedules?: ExamScheduleUncheckedUpdateManyWithoutExamNestedInput
@@ -114304,6 +114577,8 @@ export namespace Prisma {
     totalQuestions?: IntFieldUpdateOperationsInput | number
     totalMarks?: IntFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -114375,6 +114650,9 @@ export namespace Prisma {
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
     details?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     branchCourse?: BranchCourseUpdateOneRequiredWithoutAssessmentsNestedInput
@@ -114399,6 +114677,9 @@ export namespace Prisma {
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
     details?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     submissions?: AssessmentSubmissionUncheckedUpdateManyWithoutAssessmentNestedInput
@@ -114418,6 +114699,9 @@ export namespace Prisma {
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
     details?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -116599,6 +116883,8 @@ export namespace Prisma {
     totalQuestions: number
     totalMarks: number
     status?: string
+    cancelledAt?: Date | string | null
+    cancelledBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -116615,6 +116901,9 @@ export namespace Prisma {
     startDate: Date | string
     endDate: Date | string
     details?: string | null
+    status?: string
+    cancelledAt?: Date | string | null
+    cancelledBy?: string | null
     facultyId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -117187,6 +117476,8 @@ export namespace Prisma {
     totalQuestions?: IntFieldUpdateOperationsInput | number
     totalMarks?: IntFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     module?: BranchCourseModuleUpdateOneRequiredWithoutExamsNestedInput
@@ -117211,6 +117502,8 @@ export namespace Prisma {
     totalQuestions?: IntFieldUpdateOperationsInput | number
     totalMarks?: IntFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     schedules?: ExamScheduleUncheckedUpdateManyWithoutExamNestedInput
@@ -117231,6 +117524,8 @@ export namespace Prisma {
     totalQuestions?: IntFieldUpdateOperationsInput | number
     totalMarks?: IntFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -117243,6 +117538,9 @@ export namespace Prisma {
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
     details?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     module?: BranchCourseModuleUpdateOneRequiredWithoutAssessmentsNestedInput
@@ -117266,6 +117564,9 @@ export namespace Prisma {
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
     details?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
     facultyId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -117285,6 +117586,9 @@ export namespace Prisma {
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
     details?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
     facultyId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -117315,6 +117619,8 @@ export namespace Prisma {
     totalQuestions: number
     totalMarks: number
     status?: string
+    cancelledAt?: Date | string | null
+    cancelledBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -117331,6 +117637,9 @@ export namespace Prisma {
     startDate: Date | string
     endDate: Date | string
     details?: string | null
+    status?: string
+    cancelledAt?: Date | string | null
+    cancelledBy?: string | null
     facultyId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -117383,6 +117692,8 @@ export namespace Prisma {
     totalQuestions?: IntFieldUpdateOperationsInput | number
     totalMarks?: IntFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     branchCourse?: BranchCourseUpdateOneRequiredWithoutExamsNestedInput
@@ -117407,6 +117718,8 @@ export namespace Prisma {
     totalQuestions?: IntFieldUpdateOperationsInput | number
     totalMarks?: IntFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     schedules?: ExamScheduleUncheckedUpdateManyWithoutExamNestedInput
@@ -117427,6 +117740,8 @@ export namespace Prisma {
     totalQuestions?: IntFieldUpdateOperationsInput | number
     totalMarks?: IntFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -117439,6 +117754,9 @@ export namespace Prisma {
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
     details?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     branchCourse?: BranchCourseUpdateOneRequiredWithoutAssessmentsNestedInput
@@ -117462,6 +117780,9 @@ export namespace Prisma {
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
     details?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
     facultyId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -117481,6 +117802,9 @@ export namespace Prisma {
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
     details?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
     facultyId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -117607,6 +117931,9 @@ export namespace Prisma {
     startDate: Date | string
     endDate: Date | string
     details?: string | null
+    status?: string
+    cancelledAt?: Date | string | null
+    cancelledBy?: string | null
     facultyId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -117649,6 +117976,9 @@ export namespace Prisma {
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
     details?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     branchCourse?: BranchCourseUpdateOneRequiredWithoutAssessmentsNestedInput
@@ -117672,6 +118002,9 @@ export namespace Prisma {
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
     details?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
     facultyId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -117691,6 +118024,9 @@ export namespace Prisma {
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
     details?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
     facultyId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -117901,6 +118237,8 @@ export namespace Prisma {
     totalQuestions: number
     totalMarks: number
     status?: string
+    cancelledAt?: Date | string | null
+    cancelledBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -117917,6 +118255,9 @@ export namespace Prisma {
     startDate: Date | string
     endDate: Date | string
     details?: string | null
+    status?: string
+    cancelledAt?: Date | string | null
+    cancelledBy?: string | null
     facultyId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -118333,6 +118674,8 @@ export namespace Prisma {
     totalQuestions?: IntFieldUpdateOperationsInput | number
     totalMarks?: IntFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     branchCourse?: BranchCourseUpdateOneRequiredWithoutExamsNestedInput
@@ -118357,6 +118700,8 @@ export namespace Prisma {
     totalQuestions?: IntFieldUpdateOperationsInput | number
     totalMarks?: IntFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     schedules?: ExamScheduleUncheckedUpdateManyWithoutExamNestedInput
@@ -118377,6 +118722,8 @@ export namespace Prisma {
     totalQuestions?: IntFieldUpdateOperationsInput | number
     totalMarks?: IntFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -118389,6 +118736,9 @@ export namespace Prisma {
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
     details?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     branchCourse?: BranchCourseUpdateOneRequiredWithoutAssessmentsNestedInput
@@ -118412,6 +118762,9 @@ export namespace Prisma {
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
     details?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
     facultyId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -118431,6 +118784,9 @@ export namespace Prisma {
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
     details?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
     facultyId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -118890,6 +119246,9 @@ export namespace Prisma {
     startDate: Date | string
     endDate: Date | string
     details?: string | null
+    status?: string
+    cancelledAt?: Date | string | null
+    cancelledBy?: string | null
     facultyId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -118957,6 +119316,9 @@ export namespace Prisma {
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
     details?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     branchCourse?: BranchCourseUpdateOneRequiredWithoutAssessmentsNestedInput
@@ -118980,6 +119342,9 @@ export namespace Prisma {
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
     details?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
     facultyId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -118999,6 +119364,9 @@ export namespace Prisma {
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
     details?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
     facultyId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -119055,6 +119423,8 @@ export namespace Prisma {
     totalQuestions: number
     totalMarks: number
     status?: string
+    cancelledAt?: Date | string | null
+    cancelledBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -119190,6 +119560,8 @@ export namespace Prisma {
     totalQuestions?: IntFieldUpdateOperationsInput | number
     totalMarks?: IntFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     branchCourse?: BranchCourseUpdateOneRequiredWithoutExamsNestedInput
@@ -119214,6 +119586,8 @@ export namespace Prisma {
     totalQuestions?: IntFieldUpdateOperationsInput | number
     totalMarks?: IntFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     schedules?: ExamScheduleUncheckedUpdateManyWithoutExamNestedInput
@@ -119234,6 +119608,8 @@ export namespace Prisma {
     totalQuestions?: IntFieldUpdateOperationsInput | number
     totalMarks?: IntFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

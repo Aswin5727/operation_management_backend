@@ -930,6 +930,9 @@ exports.Prisma.AssessmentScalarFieldEnum = {
   startDate: 'startDate',
   endDate: 'endDate',
   details: 'details',
+  status: 'status',
+  cancelledAt: 'cancelledAt',
+  cancelledBy: 'cancelledBy',
   facultyId: 'facultyId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -967,6 +970,8 @@ exports.Prisma.ExamScalarFieldEnum = {
   totalQuestions: 'totalQuestions',
   totalMarks: 'totalMarks',
   status: 'status',
+  cancelledAt: 'cancelledAt',
+  cancelledBy: 'cancelledBy',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -1154,7 +1159,9 @@ exports.NotificationKind = exports.$Enums.NotificationKind = {
   ASSESSMENT_AVAILABLE: 'ASSESSMENT_AVAILABLE',
   FACULTY_REPORT_SHARED: 'FACULTY_REPORT_SHARED',
   EXAM_RETEST_ASSIGNED: 'EXAM_RETEST_ASSIGNED',
-  ASSESSMENT_REASSESSMENT_ASSIGNED: 'ASSESSMENT_REASSESSMENT_ASSIGNED'
+  ASSESSMENT_REASSESSMENT_ASSIGNED: 'ASSESSMENT_REASSESSMENT_ASSIGNED',
+  EXAM_CANCELLED: 'EXAM_CANCELLED',
+  ASSESSMENT_CANCELLED: 'ASSESSMENT_CANCELLED'
 };
 
 exports.CourseEditRequestStatus = exports.$Enums.CourseEditRequestStatus = {

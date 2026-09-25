@@ -1121,6 +1121,9 @@ model Assessment {
   startDate             DateTime
   endDate               DateTime
   details               String?
+  status                String                 @default("ACTIVE")
+  cancelledAt           DateTime?
+  cancelledBy           String?
   facultyId             String
   createdAt             DateTime               @default(now())
   updatedAt             DateTime               @updatedAt
@@ -1180,6 +1183,8 @@ model Exam {
   totalQuestions   Int
   totalMarks       Int
   status           String             @default("SCHEDULED")
+  cancelledAt      DateTime?
+  cancelledBy      String?
   createdAt        DateTime           @default(now())
   updatedAt        DateTime           @updatedAt
   branchCourse     BranchCourse       @relation(fields: [branchCourseId], references: [id], onDelete: Cascade)
@@ -1317,6 +1322,8 @@ enum NotificationKind {
   FACULTY_REPORT_SHARED
   EXAM_RETEST_ASSIGNED
   ASSESSMENT_REASSESSMENT_ASSIGNED
+  EXAM_CANCELLED
+  ASSESSMENT_CANCELLED
 }
 
 model FacultyReportShare {
