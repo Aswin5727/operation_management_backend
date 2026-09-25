@@ -565,6 +565,76 @@ export async function deleteBranch(branchRecordId) {
           select: { id: true },
         });
 
+    // Remove branch-scoped records first. Some legacy relations do not use
+    // database-level cascade rules, so deleting the branch directly can fail
+    // with a foreign-key error.
+    const courseEditRequests = await tx.courseEditRequest.findMany({
+      where: { branchId: branchRecordId },
+      select: { id: true },
+    });
+    const requestIds = courseEditRequests.map((request) => request.id);
+
+    await tx.notification.deleteMany({
+      where: {
+        OR: [
+          { targetBranchId: existing.branchId },
+          { targetBranchEmail: existing.branchEmail },
+          { targetBranchName: existing.branchName },
+          ...(adminUser ? [{ targetUserId: adminUser.id }] : []),
+          ...(requestIds.length ? [{ requestId: { in: requestIds } }] : []),
+        ],
+      },
+    });
+
+    if (requestIds.length) {
+      await tx.courseEditRequest.deleteMany({
+        where: { id: { in: requestIds } },
+      });
+    }
+
+    await tx.branchStudentPayment.deleteMany({
+      where: { branchId: branchRecordId },
+    });
+    await tx.branchStudentLedgerEntry.deleteMany({
+      where: { branchId: branchRecordId },
+    });
+    await tx.facultyTodayWorkStudentEntry.deleteMany({
+      where: { branchId: branchRecordId },
+    });
+    await tx.facultyTodayWorkEntry.deleteMany({
+      where: { branchId: branchRecordId },
+    });
+    await tx.facultyAttendanceBatchWork.deleteMany({
+      where: { branchId: branchRecordId },
+    });
+    await tx.facultyLeaveAffectedSession.deleteMany({
+      where: { branchId: branchRecordId },
+    });
+    await tx.facultyLeaveCombinedSession.deleteMany({
+      where: { branchId: branchRecordId },
+    });
+    await tx.facultyWeekOffRequest.deleteMany({
+      where: { branchId: branchRecordId },
+    });
+    await tx.facultyReportShare.deleteMany({
+      where: { branchId: branchRecordId },
+    });
+    await tx.facultyLeaveRequest.deleteMany({
+      where: { branchId: branchRecordId },
+    });
+    await tx.branchCalendarHoliday.deleteMany({
+      where: { branchId: branchRecordId },
+    });
+    await tx.branchCalendarLeave.deleteMany({
+      where: { branchId: branchRecordId },
+    });
+    await tx.branchInstallmentTemplate.deleteMany({
+      where: { branchId: branchRecordId },
+    });
+    await tx.branchFacultyCourse.deleteMany({
+      where: { branchId: branchRecordId },
+    });
+
     if (adminUser) {
       await tx.passwordResetToken.deleteMany({
         where: { userId: adminUser.id },
