@@ -453,13 +453,57 @@ exports.Prisma.AcademicTestItemScalarFieldEnum = {
   id: 'id',
   academicTestId: 'academicTestId',
   sequence: 'sequence',
-  testType: 'testType'
+  testType: 'testType',
+  requiredProgress: 'requiredProgress'
 };
 
 exports.Prisma.AcademicTestBatchScalarFieldEnum = {
   id: 'id',
   academicTestId: 'academicTestId',
   branchBatchId: 'branchBatchId'
+};
+
+exports.Prisma.AcademicQuestionPaperScalarFieldEnum = {
+  id: 'id',
+  academicTestItemId: 'academicTestItemId',
+  branchCourseId: 'branchCourseId',
+  branchBatchId: 'branchBatchId',
+  createdBy: 'createdBy',
+  status: 'status',
+  marksPerQuestion: 'marksPerQuestion',
+  totalQuestions: 'totalQuestions',
+  totalMarks: 'totalMarks',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.AcademicQuestionScalarFieldEnum = {
+  id: 'id',
+  questionPaperId: 'questionPaperId',
+  questionNumber: 'questionNumber',
+  questionText: 'questionText',
+  optionA: 'optionA',
+  optionB: 'optionB',
+  optionC: 'optionC',
+  optionD: 'optionD',
+  correctAnswer: 'correctAnswer',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.AcademicTestProjectScalarFieldEnum = {
+  id: 'id',
+  academicTestItemId: 'academicTestItemId',
+  branchCourseId: 'branchCourseId',
+  branchBatchId: 'branchBatchId',
+  createdBy: 'createdBy',
+  status: 'status',
+  projectTitle: 'projectTitle',
+  projectDescription: 'projectDescription',
+  projectRequirements: 'projectRequirements',
+  projectMarks: 'projectMarks',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.CourseStatusHistoryScalarFieldEnum = {
@@ -1212,6 +1256,11 @@ exports.AcademicTestType = exports.$Enums.AcademicTestType = {
   TEST_AND_PROJECT: 'TEST_AND_PROJECT'
 };
 
+exports.AcademicPreparationStatus = exports.$Enums.AcademicPreparationStatus = {
+  DRAFT: 'DRAFT',
+  PREPARED: 'PREPARED'
+};
+
 exports.AttendanceStatus = exports.$Enums.AttendanceStatus = {
   PRESENT: 'PRESENT',
   ABSENT: 'ABSENT'
@@ -1237,6 +1286,9 @@ exports.Prisma.ModelName = {
   AcademicTest: 'AcademicTest',
   AcademicTestItem: 'AcademicTestItem',
   AcademicTestBatch: 'AcademicTestBatch',
+  AcademicQuestionPaper: 'AcademicQuestionPaper',
+  AcademicQuestion: 'AcademicQuestion',
+  AcademicTestProject: 'AcademicTestProject',
   CourseStatusHistory: 'CourseStatusHistory',
   BatchStatusHistory: 'BatchStatusHistory',
   StudentProfile: 'StudentProfile',

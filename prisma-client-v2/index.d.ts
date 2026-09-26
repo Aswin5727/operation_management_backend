@@ -109,6 +109,21 @@ export type AcademicTestItem = $Result.DefaultSelection<Prisma.$AcademicTestItem
  */
 export type AcademicTestBatch = $Result.DefaultSelection<Prisma.$AcademicTestBatchPayload>
 /**
+ * Model AcademicQuestionPaper
+ * 
+ */
+export type AcademicQuestionPaper = $Result.DefaultSelection<Prisma.$AcademicQuestionPaperPayload>
+/**
+ * Model AcademicQuestion
+ * 
+ */
+export type AcademicQuestion = $Result.DefaultSelection<Prisma.$AcademicQuestionPayload>
+/**
+ * Model AcademicTestProject
+ * 
+ */
+export type AcademicTestProject = $Result.DefaultSelection<Prisma.$AcademicTestProjectPayload>
+/**
  * Model CourseStatusHistory
  * 
  */
@@ -292,6 +307,14 @@ export namespace $Enums {
 export type AcademicTestType = (typeof AcademicTestType)[keyof typeof AcademicTestType]
 
 
+export const AcademicPreparationStatus: {
+  DRAFT: 'DRAFT',
+  PREPARED: 'PREPARED'
+};
+
+export type AcademicPreparationStatus = (typeof AcademicPreparationStatus)[keyof typeof AcademicPreparationStatus]
+
+
 export const UserRole: {
   BUSINESS_OWNER: 'BUSINESS_OWNER',
   OPERATION_MANAGER: 'OPERATION_MANAGER',
@@ -391,6 +414,10 @@ export type CourseEditRequestStatus = (typeof CourseEditRequestStatus)[keyof typ
 export type AcademicTestType = $Enums.AcademicTestType
 
 export const AcademicTestType: typeof $Enums.AcademicTestType
+
+export type AcademicPreparationStatus = $Enums.AcademicPreparationStatus
+
+export const AcademicPreparationStatus: typeof $Enums.AcademicPreparationStatus
 
 export type UserRole = $Enums.UserRole
 
@@ -734,6 +761,36 @@ export class PrismaClient<
     * ```
     */
   get academicTestBatch(): Prisma.AcademicTestBatchDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.academicQuestionPaper`: Exposes CRUD operations for the **AcademicQuestionPaper** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AcademicQuestionPapers
+    * const academicQuestionPapers = await prisma.academicQuestionPaper.findMany()
+    * ```
+    */
+  get academicQuestionPaper(): Prisma.AcademicQuestionPaperDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.academicQuestion`: Exposes CRUD operations for the **AcademicQuestion** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AcademicQuestions
+    * const academicQuestions = await prisma.academicQuestion.findMany()
+    * ```
+    */
+  get academicQuestion(): Prisma.AcademicQuestionDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.academicTestProject`: Exposes CRUD operations for the **AcademicTestProject** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AcademicTestProjects
+    * const academicTestProjects = await prisma.academicTestProject.findMany()
+    * ```
+    */
+  get academicTestProject(): Prisma.AcademicTestProjectDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.courseStatusHistory`: Exposes CRUD operations for the **CourseStatusHistory** model.
@@ -1527,6 +1584,9 @@ export namespace Prisma {
     AcademicTest: 'AcademicTest',
     AcademicTestItem: 'AcademicTestItem',
     AcademicTestBatch: 'AcademicTestBatch',
+    AcademicQuestionPaper: 'AcademicQuestionPaper',
+    AcademicQuestion: 'AcademicQuestion',
+    AcademicTestProject: 'AcademicTestProject',
     CourseStatusHistory: 'CourseStatusHistory',
     BatchStatusHistory: 'BatchStatusHistory',
     StudentProfile: 'StudentProfile',
@@ -1576,7 +1636,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "dashboardWidget" | "userDashboardWidget" | "branch" | "loginEvent" | "notification" | "courseEditRequest" | "passwordResetToken" | "course" | "branchCourse" | "branchCourseModule" | "branchCourseSubmodule" | "courseModule" | "batch" | "batchFacultyAssignment" | "branchBatch" | "academicTest" | "academicTestItem" | "academicTestBatch" | "courseStatusHistory" | "batchStatusHistory" | "studentProfile" | "branchStudent" | "branchStudentAttendance" | "branchCalendarHoliday" | "branchCalendarLeave" | "branchStudentInstallment" | "facultyProfile" | "facultyCourseAssignment" | "facultyBatchEntry" | "facultyAttendanceSession" | "facultyAttendanceDay" | "facultyAttendanceBatchWork" | "facultyTodayWorkEntry" | "facultyTodayWorkStudentEntry" | "studentAttendance" | "branchFaculty" | "facultyLeaveRequest" | "facultyWeekOffRequest" | "branchFacultyCourse" | "facultyLeaveAffectedSession" | "facultyLeaveCombinedSession" | "branchInstallmentTemplate" | "assessment" | "assessmentSubmission" | "exam" | "examSchedule" | "examQuestion" | "examAttempt" | "examAnswer" | "facultyReportShare" | "branchStudentPayment" | "branchStudentLedgerEntry"
+      modelProps: "user" | "dashboardWidget" | "userDashboardWidget" | "branch" | "loginEvent" | "notification" | "courseEditRequest" | "passwordResetToken" | "course" | "branchCourse" | "branchCourseModule" | "branchCourseSubmodule" | "courseModule" | "batch" | "batchFacultyAssignment" | "branchBatch" | "academicTest" | "academicTestItem" | "academicTestBatch" | "academicQuestionPaper" | "academicQuestion" | "academicTestProject" | "courseStatusHistory" | "batchStatusHistory" | "studentProfile" | "branchStudent" | "branchStudentAttendance" | "branchCalendarHoliday" | "branchCalendarLeave" | "branchStudentInstallment" | "facultyProfile" | "facultyCourseAssignment" | "facultyBatchEntry" | "facultyAttendanceSession" | "facultyAttendanceDay" | "facultyAttendanceBatchWork" | "facultyTodayWorkEntry" | "facultyTodayWorkStudentEntry" | "studentAttendance" | "branchFaculty" | "facultyLeaveRequest" | "facultyWeekOffRequest" | "branchFacultyCourse" | "facultyLeaveAffectedSession" | "facultyLeaveCombinedSession" | "branchInstallmentTemplate" | "assessment" | "assessmentSubmission" | "exam" | "examSchedule" | "examQuestion" | "examAttempt" | "examAnswer" | "facultyReportShare" | "branchStudentPayment" | "branchStudentLedgerEntry"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2983,6 +3043,228 @@ export namespace Prisma {
           count: {
             args: Prisma.AcademicTestBatchCountArgs<ExtArgs>
             result: $Utils.Optional<AcademicTestBatchCountAggregateOutputType> | number
+          }
+        }
+      }
+      AcademicQuestionPaper: {
+        payload: Prisma.$AcademicQuestionPaperPayload<ExtArgs>
+        fields: Prisma.AcademicQuestionPaperFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AcademicQuestionPaperFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicQuestionPaperPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AcademicQuestionPaperFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicQuestionPaperPayload>
+          }
+          findFirst: {
+            args: Prisma.AcademicQuestionPaperFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicQuestionPaperPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AcademicQuestionPaperFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicQuestionPaperPayload>
+          }
+          findMany: {
+            args: Prisma.AcademicQuestionPaperFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicQuestionPaperPayload>[]
+          }
+          create: {
+            args: Prisma.AcademicQuestionPaperCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicQuestionPaperPayload>
+          }
+          createMany: {
+            args: Prisma.AcademicQuestionPaperCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AcademicQuestionPaperCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicQuestionPaperPayload>[]
+          }
+          delete: {
+            args: Prisma.AcademicQuestionPaperDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicQuestionPaperPayload>
+          }
+          update: {
+            args: Prisma.AcademicQuestionPaperUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicQuestionPaperPayload>
+          }
+          deleteMany: {
+            args: Prisma.AcademicQuestionPaperDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AcademicQuestionPaperUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AcademicQuestionPaperUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicQuestionPaperPayload>[]
+          }
+          upsert: {
+            args: Prisma.AcademicQuestionPaperUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicQuestionPaperPayload>
+          }
+          aggregate: {
+            args: Prisma.AcademicQuestionPaperAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAcademicQuestionPaper>
+          }
+          groupBy: {
+            args: Prisma.AcademicQuestionPaperGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AcademicQuestionPaperGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AcademicQuestionPaperCountArgs<ExtArgs>
+            result: $Utils.Optional<AcademicQuestionPaperCountAggregateOutputType> | number
+          }
+        }
+      }
+      AcademicQuestion: {
+        payload: Prisma.$AcademicQuestionPayload<ExtArgs>
+        fields: Prisma.AcademicQuestionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AcademicQuestionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicQuestionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AcademicQuestionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicQuestionPayload>
+          }
+          findFirst: {
+            args: Prisma.AcademicQuestionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicQuestionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AcademicQuestionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicQuestionPayload>
+          }
+          findMany: {
+            args: Prisma.AcademicQuestionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicQuestionPayload>[]
+          }
+          create: {
+            args: Prisma.AcademicQuestionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicQuestionPayload>
+          }
+          createMany: {
+            args: Prisma.AcademicQuestionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AcademicQuestionCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicQuestionPayload>[]
+          }
+          delete: {
+            args: Prisma.AcademicQuestionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicQuestionPayload>
+          }
+          update: {
+            args: Prisma.AcademicQuestionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicQuestionPayload>
+          }
+          deleteMany: {
+            args: Prisma.AcademicQuestionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AcademicQuestionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AcademicQuestionUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicQuestionPayload>[]
+          }
+          upsert: {
+            args: Prisma.AcademicQuestionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicQuestionPayload>
+          }
+          aggregate: {
+            args: Prisma.AcademicQuestionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAcademicQuestion>
+          }
+          groupBy: {
+            args: Prisma.AcademicQuestionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AcademicQuestionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AcademicQuestionCountArgs<ExtArgs>
+            result: $Utils.Optional<AcademicQuestionCountAggregateOutputType> | number
+          }
+        }
+      }
+      AcademicTestProject: {
+        payload: Prisma.$AcademicTestProjectPayload<ExtArgs>
+        fields: Prisma.AcademicTestProjectFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AcademicTestProjectFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicTestProjectPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AcademicTestProjectFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicTestProjectPayload>
+          }
+          findFirst: {
+            args: Prisma.AcademicTestProjectFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicTestProjectPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AcademicTestProjectFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicTestProjectPayload>
+          }
+          findMany: {
+            args: Prisma.AcademicTestProjectFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicTestProjectPayload>[]
+          }
+          create: {
+            args: Prisma.AcademicTestProjectCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicTestProjectPayload>
+          }
+          createMany: {
+            args: Prisma.AcademicTestProjectCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AcademicTestProjectCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicTestProjectPayload>[]
+          }
+          delete: {
+            args: Prisma.AcademicTestProjectDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicTestProjectPayload>
+          }
+          update: {
+            args: Prisma.AcademicTestProjectUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicTestProjectPayload>
+          }
+          deleteMany: {
+            args: Prisma.AcademicTestProjectDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AcademicTestProjectUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AcademicTestProjectUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicTestProjectPayload>[]
+          }
+          upsert: {
+            args: Prisma.AcademicTestProjectUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicTestProjectPayload>
+          }
+          aggregate: {
+            args: Prisma.AcademicTestProjectAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAcademicTestProject>
+          }
+          groupBy: {
+            args: Prisma.AcademicTestProjectGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AcademicTestProjectGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AcademicTestProjectCountArgs<ExtArgs>
+            result: $Utils.Optional<AcademicTestProjectCountAggregateOutputType> | number
           }
         }
       }
@@ -5629,6 +5911,9 @@ export namespace Prisma {
     academicTest?: AcademicTestOmit
     academicTestItem?: AcademicTestItemOmit
     academicTestBatch?: AcademicTestBatchOmit
+    academicQuestionPaper?: AcademicQuestionPaperOmit
+    academicQuestion?: AcademicQuestionOmit
+    academicTestProject?: AcademicTestProjectOmit
     courseStatusHistory?: CourseStatusHistoryOmit
     batchStatusHistory?: BatchStatusHistoryOmit
     studentProfile?: StudentProfileOmit
@@ -6196,6 +6481,8 @@ export namespace Prisma {
     exams: number
     assessments: number
     academicTests: number
+    academicQuestionPapers: number
+    academicTestProjects: number
   }
 
   export type BranchCourseCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -6209,6 +6496,8 @@ export namespace Prisma {
     exams?: boolean | BranchCourseCountOutputTypeCountExamsArgs
     assessments?: boolean | BranchCourseCountOutputTypeCountAssessmentsArgs
     academicTests?: boolean | BranchCourseCountOutputTypeCountAcademicTestsArgs
+    academicQuestionPapers?: boolean | BranchCourseCountOutputTypeCountAcademicQuestionPapersArgs
+    academicTestProjects?: boolean | BranchCourseCountOutputTypeCountAcademicTestProjectsArgs
   }
 
   // Custom InputTypes
@@ -6290,6 +6579,20 @@ export namespace Prisma {
    */
   export type BranchCourseCountOutputTypeCountAcademicTestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: AcademicTestWhereInput
+  }
+
+  /**
+   * BranchCourseCountOutputType without action
+   */
+  export type BranchCourseCountOutputTypeCountAcademicQuestionPapersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AcademicQuestionPaperWhereInput
+  }
+
+  /**
+   * BranchCourseCountOutputType without action
+   */
+  export type BranchCourseCountOutputTypeCountAcademicTestProjectsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AcademicTestProjectWhereInput
   }
 
 
@@ -6390,12 +6693,16 @@ export namespace Prisma {
     examSchedules: number
     assessments: number
     academicTestBatches: number
+    academicQuestionPapers: number
+    academicTestProjects: number
   }
 
   export type BranchBatchCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     examSchedules?: boolean | BranchBatchCountOutputTypeCountExamSchedulesArgs
     assessments?: boolean | BranchBatchCountOutputTypeCountAssessmentsArgs
     academicTestBatches?: boolean | BranchBatchCountOutputTypeCountAcademicTestBatchesArgs
+    academicQuestionPapers?: boolean | BranchBatchCountOutputTypeCountAcademicQuestionPapersArgs
+    academicTestProjects?: boolean | BranchBatchCountOutputTypeCountAcademicTestProjectsArgs
   }
 
   // Custom InputTypes
@@ -6428,6 +6735,20 @@ export namespace Prisma {
    */
   export type BranchBatchCountOutputTypeCountAcademicTestBatchesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: AcademicTestBatchWhereInput
+  }
+
+  /**
+   * BranchBatchCountOutputType without action
+   */
+  export type BranchBatchCountOutputTypeCountAcademicQuestionPapersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AcademicQuestionPaperWhereInput
+  }
+
+  /**
+   * BranchBatchCountOutputType without action
+   */
+  export type BranchBatchCountOutputTypeCountAcademicTestProjectsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AcademicTestProjectWhereInput
   }
 
 
@@ -6468,6 +6789,77 @@ export namespace Prisma {
    */
   export type AcademicTestCountOutputTypeCountBatchesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: AcademicTestBatchWhereInput
+  }
+
+
+  /**
+   * Count Type AcademicTestItemCountOutputType
+   */
+
+  export type AcademicTestItemCountOutputType = {
+    questionPapers: number
+    projects: number
+  }
+
+  export type AcademicTestItemCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    questionPapers?: boolean | AcademicTestItemCountOutputTypeCountQuestionPapersArgs
+    projects?: boolean | AcademicTestItemCountOutputTypeCountProjectsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * AcademicTestItemCountOutputType without action
+   */
+  export type AcademicTestItemCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestItemCountOutputType
+     */
+    select?: AcademicTestItemCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * AcademicTestItemCountOutputType without action
+   */
+  export type AcademicTestItemCountOutputTypeCountQuestionPapersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AcademicQuestionPaperWhereInput
+  }
+
+  /**
+   * AcademicTestItemCountOutputType without action
+   */
+  export type AcademicTestItemCountOutputTypeCountProjectsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AcademicTestProjectWhereInput
+  }
+
+
+  /**
+   * Count Type AcademicQuestionPaperCountOutputType
+   */
+
+  export type AcademicQuestionPaperCountOutputType = {
+    questions: number
+  }
+
+  export type AcademicQuestionPaperCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    questions?: boolean | AcademicQuestionPaperCountOutputTypeCountQuestionsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * AcademicQuestionPaperCountOutputType without action
+   */
+  export type AcademicQuestionPaperCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicQuestionPaperCountOutputType
+     */
+    select?: AcademicQuestionPaperCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * AcademicQuestionPaperCountOutputType without action
+   */
+  export type AcademicQuestionPaperCountOutputTypeCountQuestionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AcademicQuestionWhereInput
   }
 
 
@@ -19580,6 +19972,8 @@ export namespace Prisma {
     exams?: boolean | BranchCourse$examsArgs<ExtArgs>
     assessments?: boolean | BranchCourse$assessmentsArgs<ExtArgs>
     academicTests?: boolean | BranchCourse$academicTestsArgs<ExtArgs>
+    academicQuestionPapers?: boolean | BranchCourse$academicQuestionPapersArgs<ExtArgs>
+    academicTestProjects?: boolean | BranchCourse$academicTestProjectsArgs<ExtArgs>
     _count?: boolean | BranchCourseCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["branchCourse"]>
 
@@ -19674,6 +20068,8 @@ export namespace Prisma {
     exams?: boolean | BranchCourse$examsArgs<ExtArgs>
     assessments?: boolean | BranchCourse$assessmentsArgs<ExtArgs>
     academicTests?: boolean | BranchCourse$academicTestsArgs<ExtArgs>
+    academicQuestionPapers?: boolean | BranchCourse$academicQuestionPapersArgs<ExtArgs>
+    academicTestProjects?: boolean | BranchCourse$academicTestProjectsArgs<ExtArgs>
     _count?: boolean | BranchCourseCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type BranchCourseIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -19698,6 +20094,8 @@ export namespace Prisma {
       exams: Prisma.$ExamPayload<ExtArgs>[]
       assessments: Prisma.$AssessmentPayload<ExtArgs>[]
       academicTests: Prisma.$AcademicTestPayload<ExtArgs>[]
+      academicQuestionPapers: Prisma.$AcademicQuestionPaperPayload<ExtArgs>[]
+      academicTestProjects: Prisma.$AcademicTestProjectPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -20128,6 +20526,8 @@ export namespace Prisma {
     exams<T extends BranchCourse$examsArgs<ExtArgs> = {}>(args?: Subset<T, BranchCourse$examsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ExamPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     assessments<T extends BranchCourse$assessmentsArgs<ExtArgs> = {}>(args?: Subset<T, BranchCourse$assessmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AssessmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     academicTests<T extends BranchCourse$academicTestsArgs<ExtArgs> = {}>(args?: Subset<T, BranchCourse$academicTestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcademicTestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    academicQuestionPapers<T extends BranchCourse$academicQuestionPapersArgs<ExtArgs> = {}>(args?: Subset<T, BranchCourse$academicQuestionPapersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcademicQuestionPaperPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    academicTestProjects<T extends BranchCourse$academicTestProjectsArgs<ExtArgs> = {}>(args?: Subset<T, BranchCourse$academicTestProjectsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcademicTestProjectPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -20836,6 +21236,54 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: AcademicTestScalarFieldEnum | AcademicTestScalarFieldEnum[]
+  }
+
+  /**
+   * BranchCourse.academicQuestionPapers
+   */
+  export type BranchCourse$academicQuestionPapersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicQuestionPaper
+     */
+    select?: AcademicQuestionPaperSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicQuestionPaper
+     */
+    omit?: AcademicQuestionPaperOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicQuestionPaperInclude<ExtArgs> | null
+    where?: AcademicQuestionPaperWhereInput
+    orderBy?: AcademicQuestionPaperOrderByWithRelationInput | AcademicQuestionPaperOrderByWithRelationInput[]
+    cursor?: AcademicQuestionPaperWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AcademicQuestionPaperScalarFieldEnum | AcademicQuestionPaperScalarFieldEnum[]
+  }
+
+  /**
+   * BranchCourse.academicTestProjects
+   */
+  export type BranchCourse$academicTestProjectsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestProject
+     */
+    select?: AcademicTestProjectSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicTestProject
+     */
+    omit?: AcademicTestProjectOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicTestProjectInclude<ExtArgs> | null
+    where?: AcademicTestProjectWhereInput
+    orderBy?: AcademicTestProjectOrderByWithRelationInput | AcademicTestProjectOrderByWithRelationInput[]
+    cursor?: AcademicTestProjectWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AcademicTestProjectScalarFieldEnum | AcademicTestProjectScalarFieldEnum[]
   }
 
   /**
@@ -27414,6 +27862,8 @@ export namespace Prisma {
     examSchedules?: boolean | BranchBatch$examSchedulesArgs<ExtArgs>
     assessments?: boolean | BranchBatch$assessmentsArgs<ExtArgs>
     academicTestBatches?: boolean | BranchBatch$academicTestBatchesArgs<ExtArgs>
+    academicQuestionPapers?: boolean | BranchBatch$academicQuestionPapersArgs<ExtArgs>
+    academicTestProjects?: boolean | BranchBatch$academicTestProjectsArgs<ExtArgs>
     _count?: boolean | BranchBatchCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["branchBatch"]>
 
@@ -27527,6 +27977,8 @@ export namespace Prisma {
     examSchedules?: boolean | BranchBatch$examSchedulesArgs<ExtArgs>
     assessments?: boolean | BranchBatch$assessmentsArgs<ExtArgs>
     academicTestBatches?: boolean | BranchBatch$academicTestBatchesArgs<ExtArgs>
+    academicQuestionPapers?: boolean | BranchBatch$academicQuestionPapersArgs<ExtArgs>
+    academicTestProjects?: boolean | BranchBatch$academicTestProjectsArgs<ExtArgs>
     _count?: boolean | BranchBatchCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type BranchBatchIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -27549,6 +28001,8 @@ export namespace Prisma {
       examSchedules: Prisma.$ExamSchedulePayload<ExtArgs>[]
       assessments: Prisma.$AssessmentPayload<ExtArgs>[]
       academicTestBatches: Prisma.$AcademicTestBatchPayload<ExtArgs>[]
+      academicQuestionPapers: Prisma.$AcademicQuestionPaperPayload<ExtArgs>[]
+      academicTestProjects: Prisma.$AcademicTestProjectPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -27980,6 +28434,8 @@ export namespace Prisma {
     examSchedules<T extends BranchBatch$examSchedulesArgs<ExtArgs> = {}>(args?: Subset<T, BranchBatch$examSchedulesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ExamSchedulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     assessments<T extends BranchBatch$assessmentsArgs<ExtArgs> = {}>(args?: Subset<T, BranchBatch$assessmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AssessmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     academicTestBatches<T extends BranchBatch$academicTestBatchesArgs<ExtArgs> = {}>(args?: Subset<T, BranchBatch$academicTestBatchesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcademicTestBatchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    academicQuestionPapers<T extends BranchBatch$academicQuestionPapersArgs<ExtArgs> = {}>(args?: Subset<T, BranchBatch$academicQuestionPapersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcademicQuestionPaperPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    academicTestProjects<T extends BranchBatch$academicTestProjectsArgs<ExtArgs> = {}>(args?: Subset<T, BranchBatch$academicTestProjectsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcademicTestProjectPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -28508,6 +28964,54 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: AcademicTestBatchScalarFieldEnum | AcademicTestBatchScalarFieldEnum[]
+  }
+
+  /**
+   * BranchBatch.academicQuestionPapers
+   */
+  export type BranchBatch$academicQuestionPapersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicQuestionPaper
+     */
+    select?: AcademicQuestionPaperSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicQuestionPaper
+     */
+    omit?: AcademicQuestionPaperOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicQuestionPaperInclude<ExtArgs> | null
+    where?: AcademicQuestionPaperWhereInput
+    orderBy?: AcademicQuestionPaperOrderByWithRelationInput | AcademicQuestionPaperOrderByWithRelationInput[]
+    cursor?: AcademicQuestionPaperWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AcademicQuestionPaperScalarFieldEnum | AcademicQuestionPaperScalarFieldEnum[]
+  }
+
+  /**
+   * BranchBatch.academicTestProjects
+   */
+  export type BranchBatch$academicTestProjectsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestProject
+     */
+    select?: AcademicTestProjectSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicTestProject
+     */
+    omit?: AcademicTestProjectOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicTestProjectInclude<ExtArgs> | null
+    where?: AcademicTestProjectWhereInput
+    orderBy?: AcademicTestProjectOrderByWithRelationInput | AcademicTestProjectOrderByWithRelationInput[]
+    cursor?: AcademicTestProjectWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AcademicTestProjectScalarFieldEnum | AcademicTestProjectScalarFieldEnum[]
   }
 
   /**
@@ -29664,10 +30168,12 @@ export namespace Prisma {
 
   export type AcademicTestItemAvgAggregateOutputType = {
     sequence: number | null
+    requiredProgress: number | null
   }
 
   export type AcademicTestItemSumAggregateOutputType = {
     sequence: number | null
+    requiredProgress: number | null
   }
 
   export type AcademicTestItemMinAggregateOutputType = {
@@ -29675,6 +30181,7 @@ export namespace Prisma {
     academicTestId: string | null
     sequence: number | null
     testType: $Enums.AcademicTestType | null
+    requiredProgress: number | null
   }
 
   export type AcademicTestItemMaxAggregateOutputType = {
@@ -29682,6 +30189,7 @@ export namespace Prisma {
     academicTestId: string | null
     sequence: number | null
     testType: $Enums.AcademicTestType | null
+    requiredProgress: number | null
   }
 
   export type AcademicTestItemCountAggregateOutputType = {
@@ -29689,16 +30197,19 @@ export namespace Prisma {
     academicTestId: number
     sequence: number
     testType: number
+    requiredProgress: number
     _all: number
   }
 
 
   export type AcademicTestItemAvgAggregateInputType = {
     sequence?: true
+    requiredProgress?: true
   }
 
   export type AcademicTestItemSumAggregateInputType = {
     sequence?: true
+    requiredProgress?: true
   }
 
   export type AcademicTestItemMinAggregateInputType = {
@@ -29706,6 +30217,7 @@ export namespace Prisma {
     academicTestId?: true
     sequence?: true
     testType?: true
+    requiredProgress?: true
   }
 
   export type AcademicTestItemMaxAggregateInputType = {
@@ -29713,6 +30225,7 @@ export namespace Prisma {
     academicTestId?: true
     sequence?: true
     testType?: true
+    requiredProgress?: true
   }
 
   export type AcademicTestItemCountAggregateInputType = {
@@ -29720,6 +30233,7 @@ export namespace Prisma {
     academicTestId?: true
     sequence?: true
     testType?: true
+    requiredProgress?: true
     _all?: true
   }
 
@@ -29814,6 +30328,7 @@ export namespace Prisma {
     academicTestId: string
     sequence: number
     testType: $Enums.AcademicTestType
+    requiredProgress: number
     _count: AcademicTestItemCountAggregateOutputType | null
     _avg: AcademicTestItemAvgAggregateOutputType | null
     _sum: AcademicTestItemSumAggregateOutputType | null
@@ -29840,7 +30355,11 @@ export namespace Prisma {
     academicTestId?: boolean
     sequence?: boolean
     testType?: boolean
+    requiredProgress?: boolean
     academicTest?: boolean | AcademicTestDefaultArgs<ExtArgs>
+    questionPapers?: boolean | AcademicTestItem$questionPapersArgs<ExtArgs>
+    projects?: boolean | AcademicTestItem$projectsArgs<ExtArgs>
+    _count?: boolean | AcademicTestItemCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["academicTestItem"]>
 
   export type AcademicTestItemSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -29848,6 +30367,7 @@ export namespace Prisma {
     academicTestId?: boolean
     sequence?: boolean
     testType?: boolean
+    requiredProgress?: boolean
     academicTest?: boolean | AcademicTestDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["academicTestItem"]>
 
@@ -29856,6 +30376,7 @@ export namespace Prisma {
     academicTestId?: boolean
     sequence?: boolean
     testType?: boolean
+    requiredProgress?: boolean
     academicTest?: boolean | AcademicTestDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["academicTestItem"]>
 
@@ -29864,11 +30385,15 @@ export namespace Prisma {
     academicTestId?: boolean
     sequence?: boolean
     testType?: boolean
+    requiredProgress?: boolean
   }
 
-  export type AcademicTestItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "academicTestId" | "sequence" | "testType", ExtArgs["result"]["academicTestItem"]>
+  export type AcademicTestItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "academicTestId" | "sequence" | "testType" | "requiredProgress", ExtArgs["result"]["academicTestItem"]>
   export type AcademicTestItemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     academicTest?: boolean | AcademicTestDefaultArgs<ExtArgs>
+    questionPapers?: boolean | AcademicTestItem$questionPapersArgs<ExtArgs>
+    projects?: boolean | AcademicTestItem$projectsArgs<ExtArgs>
+    _count?: boolean | AcademicTestItemCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type AcademicTestItemIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     academicTest?: boolean | AcademicTestDefaultArgs<ExtArgs>
@@ -29881,12 +30406,15 @@ export namespace Prisma {
     name: "AcademicTestItem"
     objects: {
       academicTest: Prisma.$AcademicTestPayload<ExtArgs>
+      questionPapers: Prisma.$AcademicQuestionPaperPayload<ExtArgs>[]
+      projects: Prisma.$AcademicTestProjectPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       academicTestId: string
       sequence: number
       testType: $Enums.AcademicTestType
+      requiredProgress: number
     }, ExtArgs["result"]["academicTestItem"]>
     composites: {}
   }
@@ -30282,6 +30810,8 @@ export namespace Prisma {
   export interface Prisma__AcademicTestItemClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     academicTest<T extends AcademicTestDefaultArgs<ExtArgs> = {}>(args?: Subset<T, AcademicTestDefaultArgs<ExtArgs>>): Prisma__AcademicTestClient<$Result.GetResult<Prisma.$AcademicTestPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    questionPapers<T extends AcademicTestItem$questionPapersArgs<ExtArgs> = {}>(args?: Subset<T, AcademicTestItem$questionPapersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcademicQuestionPaperPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    projects<T extends AcademicTestItem$projectsArgs<ExtArgs> = {}>(args?: Subset<T, AcademicTestItem$projectsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcademicTestProjectPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -30315,6 +30845,7 @@ export namespace Prisma {
     readonly academicTestId: FieldRef<"AcademicTestItem", 'String'>
     readonly sequence: FieldRef<"AcademicTestItem", 'Int'>
     readonly testType: FieldRef<"AcademicTestItem", 'AcademicTestType'>
+    readonly requiredProgress: FieldRef<"AcademicTestItem", 'Int'>
   }
     
 
@@ -30713,6 +31244,54 @@ export namespace Prisma {
      * Limit how many AcademicTestItems to delete.
      */
     limit?: number
+  }
+
+  /**
+   * AcademicTestItem.questionPapers
+   */
+  export type AcademicTestItem$questionPapersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicQuestionPaper
+     */
+    select?: AcademicQuestionPaperSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicQuestionPaper
+     */
+    omit?: AcademicQuestionPaperOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicQuestionPaperInclude<ExtArgs> | null
+    where?: AcademicQuestionPaperWhereInput
+    orderBy?: AcademicQuestionPaperOrderByWithRelationInput | AcademicQuestionPaperOrderByWithRelationInput[]
+    cursor?: AcademicQuestionPaperWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AcademicQuestionPaperScalarFieldEnum | AcademicQuestionPaperScalarFieldEnum[]
+  }
+
+  /**
+   * AcademicTestItem.projects
+   */
+  export type AcademicTestItem$projectsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestProject
+     */
+    select?: AcademicTestProjectSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicTestProject
+     */
+    omit?: AcademicTestProjectOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicTestProjectInclude<ExtArgs> | null
+    where?: AcademicTestProjectWhereInput
+    orderBy?: AcademicTestProjectOrderByWithRelationInput | AcademicTestProjectOrderByWithRelationInput[]
+    cursor?: AcademicTestProjectWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AcademicTestProjectScalarFieldEnum | AcademicTestProjectScalarFieldEnum[]
   }
 
   /**
@@ -31776,6 +32355,3614 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: AcademicTestBatchInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model AcademicQuestionPaper
+   */
+
+  export type AggregateAcademicQuestionPaper = {
+    _count: AcademicQuestionPaperCountAggregateOutputType | null
+    _avg: AcademicQuestionPaperAvgAggregateOutputType | null
+    _sum: AcademicQuestionPaperSumAggregateOutputType | null
+    _min: AcademicQuestionPaperMinAggregateOutputType | null
+    _max: AcademicQuestionPaperMaxAggregateOutputType | null
+  }
+
+  export type AcademicQuestionPaperAvgAggregateOutputType = {
+    marksPerQuestion: number | null
+    totalQuestions: number | null
+    totalMarks: number | null
+  }
+
+  export type AcademicQuestionPaperSumAggregateOutputType = {
+    marksPerQuestion: number | null
+    totalQuestions: number | null
+    totalMarks: number | null
+  }
+
+  export type AcademicQuestionPaperMinAggregateOutputType = {
+    id: string | null
+    academicTestItemId: string | null
+    branchCourseId: string | null
+    branchBatchId: string | null
+    createdBy: string | null
+    status: $Enums.AcademicPreparationStatus | null
+    marksPerQuestion: number | null
+    totalQuestions: number | null
+    totalMarks: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type AcademicQuestionPaperMaxAggregateOutputType = {
+    id: string | null
+    academicTestItemId: string | null
+    branchCourseId: string | null
+    branchBatchId: string | null
+    createdBy: string | null
+    status: $Enums.AcademicPreparationStatus | null
+    marksPerQuestion: number | null
+    totalQuestions: number | null
+    totalMarks: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type AcademicQuestionPaperCountAggregateOutputType = {
+    id: number
+    academicTestItemId: number
+    branchCourseId: number
+    branchBatchId: number
+    createdBy: number
+    status: number
+    marksPerQuestion: number
+    totalQuestions: number
+    totalMarks: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type AcademicQuestionPaperAvgAggregateInputType = {
+    marksPerQuestion?: true
+    totalQuestions?: true
+    totalMarks?: true
+  }
+
+  export type AcademicQuestionPaperSumAggregateInputType = {
+    marksPerQuestion?: true
+    totalQuestions?: true
+    totalMarks?: true
+  }
+
+  export type AcademicQuestionPaperMinAggregateInputType = {
+    id?: true
+    academicTestItemId?: true
+    branchCourseId?: true
+    branchBatchId?: true
+    createdBy?: true
+    status?: true
+    marksPerQuestion?: true
+    totalQuestions?: true
+    totalMarks?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type AcademicQuestionPaperMaxAggregateInputType = {
+    id?: true
+    academicTestItemId?: true
+    branchCourseId?: true
+    branchBatchId?: true
+    createdBy?: true
+    status?: true
+    marksPerQuestion?: true
+    totalQuestions?: true
+    totalMarks?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type AcademicQuestionPaperCountAggregateInputType = {
+    id?: true
+    academicTestItemId?: true
+    branchCourseId?: true
+    branchBatchId?: true
+    createdBy?: true
+    status?: true
+    marksPerQuestion?: true
+    totalQuestions?: true
+    totalMarks?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type AcademicQuestionPaperAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AcademicQuestionPaper to aggregate.
+     */
+    where?: AcademicQuestionPaperWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AcademicQuestionPapers to fetch.
+     */
+    orderBy?: AcademicQuestionPaperOrderByWithRelationInput | AcademicQuestionPaperOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AcademicQuestionPaperWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AcademicQuestionPapers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AcademicQuestionPapers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AcademicQuestionPapers
+    **/
+    _count?: true | AcademicQuestionPaperCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: AcademicQuestionPaperAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: AcademicQuestionPaperSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AcademicQuestionPaperMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AcademicQuestionPaperMaxAggregateInputType
+  }
+
+  export type GetAcademicQuestionPaperAggregateType<T extends AcademicQuestionPaperAggregateArgs> = {
+        [P in keyof T & keyof AggregateAcademicQuestionPaper]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAcademicQuestionPaper[P]>
+      : GetScalarType<T[P], AggregateAcademicQuestionPaper[P]>
+  }
+
+
+
+
+  export type AcademicQuestionPaperGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AcademicQuestionPaperWhereInput
+    orderBy?: AcademicQuestionPaperOrderByWithAggregationInput | AcademicQuestionPaperOrderByWithAggregationInput[]
+    by: AcademicQuestionPaperScalarFieldEnum[] | AcademicQuestionPaperScalarFieldEnum
+    having?: AcademicQuestionPaperScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AcademicQuestionPaperCountAggregateInputType | true
+    _avg?: AcademicQuestionPaperAvgAggregateInputType
+    _sum?: AcademicQuestionPaperSumAggregateInputType
+    _min?: AcademicQuestionPaperMinAggregateInputType
+    _max?: AcademicQuestionPaperMaxAggregateInputType
+  }
+
+  export type AcademicQuestionPaperGroupByOutputType = {
+    id: string
+    academicTestItemId: string
+    branchCourseId: string
+    branchBatchId: string
+    createdBy: string
+    status: $Enums.AcademicPreparationStatus
+    marksPerQuestion: number
+    totalQuestions: number
+    totalMarks: number
+    createdAt: Date
+    updatedAt: Date
+    _count: AcademicQuestionPaperCountAggregateOutputType | null
+    _avg: AcademicQuestionPaperAvgAggregateOutputType | null
+    _sum: AcademicQuestionPaperSumAggregateOutputType | null
+    _min: AcademicQuestionPaperMinAggregateOutputType | null
+    _max: AcademicQuestionPaperMaxAggregateOutputType | null
+  }
+
+  type GetAcademicQuestionPaperGroupByPayload<T extends AcademicQuestionPaperGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AcademicQuestionPaperGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AcademicQuestionPaperGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AcademicQuestionPaperGroupByOutputType[P]>
+            : GetScalarType<T[P], AcademicQuestionPaperGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AcademicQuestionPaperSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    academicTestItemId?: boolean
+    branchCourseId?: boolean
+    branchBatchId?: boolean
+    createdBy?: boolean
+    status?: boolean
+    marksPerQuestion?: boolean
+    totalQuestions?: boolean
+    totalMarks?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    academicTestItem?: boolean | AcademicTestItemDefaultArgs<ExtArgs>
+    branchCourse?: boolean | BranchCourseDefaultArgs<ExtArgs>
+    branchBatch?: boolean | BranchBatchDefaultArgs<ExtArgs>
+    questions?: boolean | AcademicQuestionPaper$questionsArgs<ExtArgs>
+    _count?: boolean | AcademicQuestionPaperCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["academicQuestionPaper"]>
+
+  export type AcademicQuestionPaperSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    academicTestItemId?: boolean
+    branchCourseId?: boolean
+    branchBatchId?: boolean
+    createdBy?: boolean
+    status?: boolean
+    marksPerQuestion?: boolean
+    totalQuestions?: boolean
+    totalMarks?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    academicTestItem?: boolean | AcademicTestItemDefaultArgs<ExtArgs>
+    branchCourse?: boolean | BranchCourseDefaultArgs<ExtArgs>
+    branchBatch?: boolean | BranchBatchDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["academicQuestionPaper"]>
+
+  export type AcademicQuestionPaperSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    academicTestItemId?: boolean
+    branchCourseId?: boolean
+    branchBatchId?: boolean
+    createdBy?: boolean
+    status?: boolean
+    marksPerQuestion?: boolean
+    totalQuestions?: boolean
+    totalMarks?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    academicTestItem?: boolean | AcademicTestItemDefaultArgs<ExtArgs>
+    branchCourse?: boolean | BranchCourseDefaultArgs<ExtArgs>
+    branchBatch?: boolean | BranchBatchDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["academicQuestionPaper"]>
+
+  export type AcademicQuestionPaperSelectScalar = {
+    id?: boolean
+    academicTestItemId?: boolean
+    branchCourseId?: boolean
+    branchBatchId?: boolean
+    createdBy?: boolean
+    status?: boolean
+    marksPerQuestion?: boolean
+    totalQuestions?: boolean
+    totalMarks?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type AcademicQuestionPaperOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "academicTestItemId" | "branchCourseId" | "branchBatchId" | "createdBy" | "status" | "marksPerQuestion" | "totalQuestions" | "totalMarks" | "createdAt" | "updatedAt", ExtArgs["result"]["academicQuestionPaper"]>
+  export type AcademicQuestionPaperInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    academicTestItem?: boolean | AcademicTestItemDefaultArgs<ExtArgs>
+    branchCourse?: boolean | BranchCourseDefaultArgs<ExtArgs>
+    branchBatch?: boolean | BranchBatchDefaultArgs<ExtArgs>
+    questions?: boolean | AcademicQuestionPaper$questionsArgs<ExtArgs>
+    _count?: boolean | AcademicQuestionPaperCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type AcademicQuestionPaperIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    academicTestItem?: boolean | AcademicTestItemDefaultArgs<ExtArgs>
+    branchCourse?: boolean | BranchCourseDefaultArgs<ExtArgs>
+    branchBatch?: boolean | BranchBatchDefaultArgs<ExtArgs>
+  }
+  export type AcademicQuestionPaperIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    academicTestItem?: boolean | AcademicTestItemDefaultArgs<ExtArgs>
+    branchCourse?: boolean | BranchCourseDefaultArgs<ExtArgs>
+    branchBatch?: boolean | BranchBatchDefaultArgs<ExtArgs>
+  }
+
+  export type $AcademicQuestionPaperPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AcademicQuestionPaper"
+    objects: {
+      academicTestItem: Prisma.$AcademicTestItemPayload<ExtArgs>
+      branchCourse: Prisma.$BranchCoursePayload<ExtArgs>
+      branchBatch: Prisma.$BranchBatchPayload<ExtArgs>
+      questions: Prisma.$AcademicQuestionPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      academicTestItemId: string
+      branchCourseId: string
+      branchBatchId: string
+      createdBy: string
+      status: $Enums.AcademicPreparationStatus
+      marksPerQuestion: number
+      totalQuestions: number
+      totalMarks: number
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["academicQuestionPaper"]>
+    composites: {}
+  }
+
+  type AcademicQuestionPaperGetPayload<S extends boolean | null | undefined | AcademicQuestionPaperDefaultArgs> = $Result.GetResult<Prisma.$AcademicQuestionPaperPayload, S>
+
+  type AcademicQuestionPaperCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AcademicQuestionPaperFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AcademicQuestionPaperCountAggregateInputType | true
+    }
+
+  export interface AcademicQuestionPaperDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AcademicQuestionPaper'], meta: { name: 'AcademicQuestionPaper' } }
+    /**
+     * Find zero or one AcademicQuestionPaper that matches the filter.
+     * @param {AcademicQuestionPaperFindUniqueArgs} args - Arguments to find a AcademicQuestionPaper
+     * @example
+     * // Get one AcademicQuestionPaper
+     * const academicQuestionPaper = await prisma.academicQuestionPaper.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AcademicQuestionPaperFindUniqueArgs>(args: SelectSubset<T, AcademicQuestionPaperFindUniqueArgs<ExtArgs>>): Prisma__AcademicQuestionPaperClient<$Result.GetResult<Prisma.$AcademicQuestionPaperPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one AcademicQuestionPaper that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AcademicQuestionPaperFindUniqueOrThrowArgs} args - Arguments to find a AcademicQuestionPaper
+     * @example
+     * // Get one AcademicQuestionPaper
+     * const academicQuestionPaper = await prisma.academicQuestionPaper.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AcademicQuestionPaperFindUniqueOrThrowArgs>(args: SelectSubset<T, AcademicQuestionPaperFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AcademicQuestionPaperClient<$Result.GetResult<Prisma.$AcademicQuestionPaperPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AcademicQuestionPaper that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcademicQuestionPaperFindFirstArgs} args - Arguments to find a AcademicQuestionPaper
+     * @example
+     * // Get one AcademicQuestionPaper
+     * const academicQuestionPaper = await prisma.academicQuestionPaper.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AcademicQuestionPaperFindFirstArgs>(args?: SelectSubset<T, AcademicQuestionPaperFindFirstArgs<ExtArgs>>): Prisma__AcademicQuestionPaperClient<$Result.GetResult<Prisma.$AcademicQuestionPaperPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AcademicQuestionPaper that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcademicQuestionPaperFindFirstOrThrowArgs} args - Arguments to find a AcademicQuestionPaper
+     * @example
+     * // Get one AcademicQuestionPaper
+     * const academicQuestionPaper = await prisma.academicQuestionPaper.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AcademicQuestionPaperFindFirstOrThrowArgs>(args?: SelectSubset<T, AcademicQuestionPaperFindFirstOrThrowArgs<ExtArgs>>): Prisma__AcademicQuestionPaperClient<$Result.GetResult<Prisma.$AcademicQuestionPaperPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more AcademicQuestionPapers that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcademicQuestionPaperFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AcademicQuestionPapers
+     * const academicQuestionPapers = await prisma.academicQuestionPaper.findMany()
+     * 
+     * // Get first 10 AcademicQuestionPapers
+     * const academicQuestionPapers = await prisma.academicQuestionPaper.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const academicQuestionPaperWithIdOnly = await prisma.academicQuestionPaper.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AcademicQuestionPaperFindManyArgs>(args?: SelectSubset<T, AcademicQuestionPaperFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcademicQuestionPaperPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a AcademicQuestionPaper.
+     * @param {AcademicQuestionPaperCreateArgs} args - Arguments to create a AcademicQuestionPaper.
+     * @example
+     * // Create one AcademicQuestionPaper
+     * const AcademicQuestionPaper = await prisma.academicQuestionPaper.create({
+     *   data: {
+     *     // ... data to create a AcademicQuestionPaper
+     *   }
+     * })
+     * 
+     */
+    create<T extends AcademicQuestionPaperCreateArgs>(args: SelectSubset<T, AcademicQuestionPaperCreateArgs<ExtArgs>>): Prisma__AcademicQuestionPaperClient<$Result.GetResult<Prisma.$AcademicQuestionPaperPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many AcademicQuestionPapers.
+     * @param {AcademicQuestionPaperCreateManyArgs} args - Arguments to create many AcademicQuestionPapers.
+     * @example
+     * // Create many AcademicQuestionPapers
+     * const academicQuestionPaper = await prisma.academicQuestionPaper.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AcademicQuestionPaperCreateManyArgs>(args?: SelectSubset<T, AcademicQuestionPaperCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many AcademicQuestionPapers and returns the data saved in the database.
+     * @param {AcademicQuestionPaperCreateManyAndReturnArgs} args - Arguments to create many AcademicQuestionPapers.
+     * @example
+     * // Create many AcademicQuestionPapers
+     * const academicQuestionPaper = await prisma.academicQuestionPaper.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many AcademicQuestionPapers and only return the `id`
+     * const academicQuestionPaperWithIdOnly = await prisma.academicQuestionPaper.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AcademicQuestionPaperCreateManyAndReturnArgs>(args?: SelectSubset<T, AcademicQuestionPaperCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcademicQuestionPaperPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a AcademicQuestionPaper.
+     * @param {AcademicQuestionPaperDeleteArgs} args - Arguments to delete one AcademicQuestionPaper.
+     * @example
+     * // Delete one AcademicQuestionPaper
+     * const AcademicQuestionPaper = await prisma.academicQuestionPaper.delete({
+     *   where: {
+     *     // ... filter to delete one AcademicQuestionPaper
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AcademicQuestionPaperDeleteArgs>(args: SelectSubset<T, AcademicQuestionPaperDeleteArgs<ExtArgs>>): Prisma__AcademicQuestionPaperClient<$Result.GetResult<Prisma.$AcademicQuestionPaperPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one AcademicQuestionPaper.
+     * @param {AcademicQuestionPaperUpdateArgs} args - Arguments to update one AcademicQuestionPaper.
+     * @example
+     * // Update one AcademicQuestionPaper
+     * const academicQuestionPaper = await prisma.academicQuestionPaper.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AcademicQuestionPaperUpdateArgs>(args: SelectSubset<T, AcademicQuestionPaperUpdateArgs<ExtArgs>>): Prisma__AcademicQuestionPaperClient<$Result.GetResult<Prisma.$AcademicQuestionPaperPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more AcademicQuestionPapers.
+     * @param {AcademicQuestionPaperDeleteManyArgs} args - Arguments to filter AcademicQuestionPapers to delete.
+     * @example
+     * // Delete a few AcademicQuestionPapers
+     * const { count } = await prisma.academicQuestionPaper.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AcademicQuestionPaperDeleteManyArgs>(args?: SelectSubset<T, AcademicQuestionPaperDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AcademicQuestionPapers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcademicQuestionPaperUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AcademicQuestionPapers
+     * const academicQuestionPaper = await prisma.academicQuestionPaper.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AcademicQuestionPaperUpdateManyArgs>(args: SelectSubset<T, AcademicQuestionPaperUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AcademicQuestionPapers and returns the data updated in the database.
+     * @param {AcademicQuestionPaperUpdateManyAndReturnArgs} args - Arguments to update many AcademicQuestionPapers.
+     * @example
+     * // Update many AcademicQuestionPapers
+     * const academicQuestionPaper = await prisma.academicQuestionPaper.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more AcademicQuestionPapers and only return the `id`
+     * const academicQuestionPaperWithIdOnly = await prisma.academicQuestionPaper.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AcademicQuestionPaperUpdateManyAndReturnArgs>(args: SelectSubset<T, AcademicQuestionPaperUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcademicQuestionPaperPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one AcademicQuestionPaper.
+     * @param {AcademicQuestionPaperUpsertArgs} args - Arguments to update or create a AcademicQuestionPaper.
+     * @example
+     * // Update or create a AcademicQuestionPaper
+     * const academicQuestionPaper = await prisma.academicQuestionPaper.upsert({
+     *   create: {
+     *     // ... data to create a AcademicQuestionPaper
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AcademicQuestionPaper we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AcademicQuestionPaperUpsertArgs>(args: SelectSubset<T, AcademicQuestionPaperUpsertArgs<ExtArgs>>): Prisma__AcademicQuestionPaperClient<$Result.GetResult<Prisma.$AcademicQuestionPaperPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of AcademicQuestionPapers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcademicQuestionPaperCountArgs} args - Arguments to filter AcademicQuestionPapers to count.
+     * @example
+     * // Count the number of AcademicQuestionPapers
+     * const count = await prisma.academicQuestionPaper.count({
+     *   where: {
+     *     // ... the filter for the AcademicQuestionPapers we want to count
+     *   }
+     * })
+    **/
+    count<T extends AcademicQuestionPaperCountArgs>(
+      args?: Subset<T, AcademicQuestionPaperCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AcademicQuestionPaperCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AcademicQuestionPaper.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcademicQuestionPaperAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AcademicQuestionPaperAggregateArgs>(args: Subset<T, AcademicQuestionPaperAggregateArgs>): Prisma.PrismaPromise<GetAcademicQuestionPaperAggregateType<T>>
+
+    /**
+     * Group by AcademicQuestionPaper.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcademicQuestionPaperGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AcademicQuestionPaperGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AcademicQuestionPaperGroupByArgs['orderBy'] }
+        : { orderBy?: AcademicQuestionPaperGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AcademicQuestionPaperGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAcademicQuestionPaperGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AcademicQuestionPaper model
+   */
+  readonly fields: AcademicQuestionPaperFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AcademicQuestionPaper.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AcademicQuestionPaperClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    academicTestItem<T extends AcademicTestItemDefaultArgs<ExtArgs> = {}>(args?: Subset<T, AcademicTestItemDefaultArgs<ExtArgs>>): Prisma__AcademicTestItemClient<$Result.GetResult<Prisma.$AcademicTestItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    branchCourse<T extends BranchCourseDefaultArgs<ExtArgs> = {}>(args?: Subset<T, BranchCourseDefaultArgs<ExtArgs>>): Prisma__BranchCourseClient<$Result.GetResult<Prisma.$BranchCoursePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    branchBatch<T extends BranchBatchDefaultArgs<ExtArgs> = {}>(args?: Subset<T, BranchBatchDefaultArgs<ExtArgs>>): Prisma__BranchBatchClient<$Result.GetResult<Prisma.$BranchBatchPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    questions<T extends AcademicQuestionPaper$questionsArgs<ExtArgs> = {}>(args?: Subset<T, AcademicQuestionPaper$questionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcademicQuestionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AcademicQuestionPaper model
+   */
+  interface AcademicQuestionPaperFieldRefs {
+    readonly id: FieldRef<"AcademicQuestionPaper", 'String'>
+    readonly academicTestItemId: FieldRef<"AcademicQuestionPaper", 'String'>
+    readonly branchCourseId: FieldRef<"AcademicQuestionPaper", 'String'>
+    readonly branchBatchId: FieldRef<"AcademicQuestionPaper", 'String'>
+    readonly createdBy: FieldRef<"AcademicQuestionPaper", 'String'>
+    readonly status: FieldRef<"AcademicQuestionPaper", 'AcademicPreparationStatus'>
+    readonly marksPerQuestion: FieldRef<"AcademicQuestionPaper", 'Int'>
+    readonly totalQuestions: FieldRef<"AcademicQuestionPaper", 'Int'>
+    readonly totalMarks: FieldRef<"AcademicQuestionPaper", 'Int'>
+    readonly createdAt: FieldRef<"AcademicQuestionPaper", 'DateTime'>
+    readonly updatedAt: FieldRef<"AcademicQuestionPaper", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AcademicQuestionPaper findUnique
+   */
+  export type AcademicQuestionPaperFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicQuestionPaper
+     */
+    select?: AcademicQuestionPaperSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicQuestionPaper
+     */
+    omit?: AcademicQuestionPaperOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicQuestionPaperInclude<ExtArgs> | null
+    /**
+     * Filter, which AcademicQuestionPaper to fetch.
+     */
+    where: AcademicQuestionPaperWhereUniqueInput
+  }
+
+  /**
+   * AcademicQuestionPaper findUniqueOrThrow
+   */
+  export type AcademicQuestionPaperFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicQuestionPaper
+     */
+    select?: AcademicQuestionPaperSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicQuestionPaper
+     */
+    omit?: AcademicQuestionPaperOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicQuestionPaperInclude<ExtArgs> | null
+    /**
+     * Filter, which AcademicQuestionPaper to fetch.
+     */
+    where: AcademicQuestionPaperWhereUniqueInput
+  }
+
+  /**
+   * AcademicQuestionPaper findFirst
+   */
+  export type AcademicQuestionPaperFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicQuestionPaper
+     */
+    select?: AcademicQuestionPaperSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicQuestionPaper
+     */
+    omit?: AcademicQuestionPaperOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicQuestionPaperInclude<ExtArgs> | null
+    /**
+     * Filter, which AcademicQuestionPaper to fetch.
+     */
+    where?: AcademicQuestionPaperWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AcademicQuestionPapers to fetch.
+     */
+    orderBy?: AcademicQuestionPaperOrderByWithRelationInput | AcademicQuestionPaperOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AcademicQuestionPapers.
+     */
+    cursor?: AcademicQuestionPaperWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AcademicQuestionPapers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AcademicQuestionPapers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AcademicQuestionPapers.
+     */
+    distinct?: AcademicQuestionPaperScalarFieldEnum | AcademicQuestionPaperScalarFieldEnum[]
+  }
+
+  /**
+   * AcademicQuestionPaper findFirstOrThrow
+   */
+  export type AcademicQuestionPaperFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicQuestionPaper
+     */
+    select?: AcademicQuestionPaperSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicQuestionPaper
+     */
+    omit?: AcademicQuestionPaperOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicQuestionPaperInclude<ExtArgs> | null
+    /**
+     * Filter, which AcademicQuestionPaper to fetch.
+     */
+    where?: AcademicQuestionPaperWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AcademicQuestionPapers to fetch.
+     */
+    orderBy?: AcademicQuestionPaperOrderByWithRelationInput | AcademicQuestionPaperOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AcademicQuestionPapers.
+     */
+    cursor?: AcademicQuestionPaperWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AcademicQuestionPapers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AcademicQuestionPapers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AcademicQuestionPapers.
+     */
+    distinct?: AcademicQuestionPaperScalarFieldEnum | AcademicQuestionPaperScalarFieldEnum[]
+  }
+
+  /**
+   * AcademicQuestionPaper findMany
+   */
+  export type AcademicQuestionPaperFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicQuestionPaper
+     */
+    select?: AcademicQuestionPaperSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicQuestionPaper
+     */
+    omit?: AcademicQuestionPaperOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicQuestionPaperInclude<ExtArgs> | null
+    /**
+     * Filter, which AcademicQuestionPapers to fetch.
+     */
+    where?: AcademicQuestionPaperWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AcademicQuestionPapers to fetch.
+     */
+    orderBy?: AcademicQuestionPaperOrderByWithRelationInput | AcademicQuestionPaperOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AcademicQuestionPapers.
+     */
+    cursor?: AcademicQuestionPaperWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AcademicQuestionPapers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AcademicQuestionPapers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AcademicQuestionPapers.
+     */
+    distinct?: AcademicQuestionPaperScalarFieldEnum | AcademicQuestionPaperScalarFieldEnum[]
+  }
+
+  /**
+   * AcademicQuestionPaper create
+   */
+  export type AcademicQuestionPaperCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicQuestionPaper
+     */
+    select?: AcademicQuestionPaperSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicQuestionPaper
+     */
+    omit?: AcademicQuestionPaperOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicQuestionPaperInclude<ExtArgs> | null
+    /**
+     * The data needed to create a AcademicQuestionPaper.
+     */
+    data: XOR<AcademicQuestionPaperCreateInput, AcademicQuestionPaperUncheckedCreateInput>
+  }
+
+  /**
+   * AcademicQuestionPaper createMany
+   */
+  export type AcademicQuestionPaperCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AcademicQuestionPapers.
+     */
+    data: AcademicQuestionPaperCreateManyInput | AcademicQuestionPaperCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AcademicQuestionPaper createManyAndReturn
+   */
+  export type AcademicQuestionPaperCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicQuestionPaper
+     */
+    select?: AcademicQuestionPaperSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicQuestionPaper
+     */
+    omit?: AcademicQuestionPaperOmit<ExtArgs> | null
+    /**
+     * The data used to create many AcademicQuestionPapers.
+     */
+    data: AcademicQuestionPaperCreateManyInput | AcademicQuestionPaperCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicQuestionPaperIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AcademicQuestionPaper update
+   */
+  export type AcademicQuestionPaperUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicQuestionPaper
+     */
+    select?: AcademicQuestionPaperSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicQuestionPaper
+     */
+    omit?: AcademicQuestionPaperOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicQuestionPaperInclude<ExtArgs> | null
+    /**
+     * The data needed to update a AcademicQuestionPaper.
+     */
+    data: XOR<AcademicQuestionPaperUpdateInput, AcademicQuestionPaperUncheckedUpdateInput>
+    /**
+     * Choose, which AcademicQuestionPaper to update.
+     */
+    where: AcademicQuestionPaperWhereUniqueInput
+  }
+
+  /**
+   * AcademicQuestionPaper updateMany
+   */
+  export type AcademicQuestionPaperUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AcademicQuestionPapers.
+     */
+    data: XOR<AcademicQuestionPaperUpdateManyMutationInput, AcademicQuestionPaperUncheckedUpdateManyInput>
+    /**
+     * Filter which AcademicQuestionPapers to update
+     */
+    where?: AcademicQuestionPaperWhereInput
+    /**
+     * Limit how many AcademicQuestionPapers to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AcademicQuestionPaper updateManyAndReturn
+   */
+  export type AcademicQuestionPaperUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicQuestionPaper
+     */
+    select?: AcademicQuestionPaperSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicQuestionPaper
+     */
+    omit?: AcademicQuestionPaperOmit<ExtArgs> | null
+    /**
+     * The data used to update AcademicQuestionPapers.
+     */
+    data: XOR<AcademicQuestionPaperUpdateManyMutationInput, AcademicQuestionPaperUncheckedUpdateManyInput>
+    /**
+     * Filter which AcademicQuestionPapers to update
+     */
+    where?: AcademicQuestionPaperWhereInput
+    /**
+     * Limit how many AcademicQuestionPapers to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicQuestionPaperIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AcademicQuestionPaper upsert
+   */
+  export type AcademicQuestionPaperUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicQuestionPaper
+     */
+    select?: AcademicQuestionPaperSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicQuestionPaper
+     */
+    omit?: AcademicQuestionPaperOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicQuestionPaperInclude<ExtArgs> | null
+    /**
+     * The filter to search for the AcademicQuestionPaper to update in case it exists.
+     */
+    where: AcademicQuestionPaperWhereUniqueInput
+    /**
+     * In case the AcademicQuestionPaper found by the `where` argument doesn't exist, create a new AcademicQuestionPaper with this data.
+     */
+    create: XOR<AcademicQuestionPaperCreateInput, AcademicQuestionPaperUncheckedCreateInput>
+    /**
+     * In case the AcademicQuestionPaper was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AcademicQuestionPaperUpdateInput, AcademicQuestionPaperUncheckedUpdateInput>
+  }
+
+  /**
+   * AcademicQuestionPaper delete
+   */
+  export type AcademicQuestionPaperDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicQuestionPaper
+     */
+    select?: AcademicQuestionPaperSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicQuestionPaper
+     */
+    omit?: AcademicQuestionPaperOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicQuestionPaperInclude<ExtArgs> | null
+    /**
+     * Filter which AcademicQuestionPaper to delete.
+     */
+    where: AcademicQuestionPaperWhereUniqueInput
+  }
+
+  /**
+   * AcademicQuestionPaper deleteMany
+   */
+  export type AcademicQuestionPaperDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AcademicQuestionPapers to delete
+     */
+    where?: AcademicQuestionPaperWhereInput
+    /**
+     * Limit how many AcademicQuestionPapers to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * AcademicQuestionPaper.questions
+   */
+  export type AcademicQuestionPaper$questionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicQuestion
+     */
+    select?: AcademicQuestionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicQuestion
+     */
+    omit?: AcademicQuestionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicQuestionInclude<ExtArgs> | null
+    where?: AcademicQuestionWhereInput
+    orderBy?: AcademicQuestionOrderByWithRelationInput | AcademicQuestionOrderByWithRelationInput[]
+    cursor?: AcademicQuestionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AcademicQuestionScalarFieldEnum | AcademicQuestionScalarFieldEnum[]
+  }
+
+  /**
+   * AcademicQuestionPaper without action
+   */
+  export type AcademicQuestionPaperDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicQuestionPaper
+     */
+    select?: AcademicQuestionPaperSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicQuestionPaper
+     */
+    omit?: AcademicQuestionPaperOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicQuestionPaperInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model AcademicQuestion
+   */
+
+  export type AggregateAcademicQuestion = {
+    _count: AcademicQuestionCountAggregateOutputType | null
+    _avg: AcademicQuestionAvgAggregateOutputType | null
+    _sum: AcademicQuestionSumAggregateOutputType | null
+    _min: AcademicQuestionMinAggregateOutputType | null
+    _max: AcademicQuestionMaxAggregateOutputType | null
+  }
+
+  export type AcademicQuestionAvgAggregateOutputType = {
+    questionNumber: number | null
+  }
+
+  export type AcademicQuestionSumAggregateOutputType = {
+    questionNumber: number | null
+  }
+
+  export type AcademicQuestionMinAggregateOutputType = {
+    id: string | null
+    questionPaperId: string | null
+    questionNumber: number | null
+    questionText: string | null
+    optionA: string | null
+    optionB: string | null
+    optionC: string | null
+    optionD: string | null
+    correctAnswer: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type AcademicQuestionMaxAggregateOutputType = {
+    id: string | null
+    questionPaperId: string | null
+    questionNumber: number | null
+    questionText: string | null
+    optionA: string | null
+    optionB: string | null
+    optionC: string | null
+    optionD: string | null
+    correctAnswer: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type AcademicQuestionCountAggregateOutputType = {
+    id: number
+    questionPaperId: number
+    questionNumber: number
+    questionText: number
+    optionA: number
+    optionB: number
+    optionC: number
+    optionD: number
+    correctAnswer: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type AcademicQuestionAvgAggregateInputType = {
+    questionNumber?: true
+  }
+
+  export type AcademicQuestionSumAggregateInputType = {
+    questionNumber?: true
+  }
+
+  export type AcademicQuestionMinAggregateInputType = {
+    id?: true
+    questionPaperId?: true
+    questionNumber?: true
+    questionText?: true
+    optionA?: true
+    optionB?: true
+    optionC?: true
+    optionD?: true
+    correctAnswer?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type AcademicQuestionMaxAggregateInputType = {
+    id?: true
+    questionPaperId?: true
+    questionNumber?: true
+    questionText?: true
+    optionA?: true
+    optionB?: true
+    optionC?: true
+    optionD?: true
+    correctAnswer?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type AcademicQuestionCountAggregateInputType = {
+    id?: true
+    questionPaperId?: true
+    questionNumber?: true
+    questionText?: true
+    optionA?: true
+    optionB?: true
+    optionC?: true
+    optionD?: true
+    correctAnswer?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type AcademicQuestionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AcademicQuestion to aggregate.
+     */
+    where?: AcademicQuestionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AcademicQuestions to fetch.
+     */
+    orderBy?: AcademicQuestionOrderByWithRelationInput | AcademicQuestionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AcademicQuestionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AcademicQuestions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AcademicQuestions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AcademicQuestions
+    **/
+    _count?: true | AcademicQuestionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: AcademicQuestionAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: AcademicQuestionSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AcademicQuestionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AcademicQuestionMaxAggregateInputType
+  }
+
+  export type GetAcademicQuestionAggregateType<T extends AcademicQuestionAggregateArgs> = {
+        [P in keyof T & keyof AggregateAcademicQuestion]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAcademicQuestion[P]>
+      : GetScalarType<T[P], AggregateAcademicQuestion[P]>
+  }
+
+
+
+
+  export type AcademicQuestionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AcademicQuestionWhereInput
+    orderBy?: AcademicQuestionOrderByWithAggregationInput | AcademicQuestionOrderByWithAggregationInput[]
+    by: AcademicQuestionScalarFieldEnum[] | AcademicQuestionScalarFieldEnum
+    having?: AcademicQuestionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AcademicQuestionCountAggregateInputType | true
+    _avg?: AcademicQuestionAvgAggregateInputType
+    _sum?: AcademicQuestionSumAggregateInputType
+    _min?: AcademicQuestionMinAggregateInputType
+    _max?: AcademicQuestionMaxAggregateInputType
+  }
+
+  export type AcademicQuestionGroupByOutputType = {
+    id: string
+    questionPaperId: string
+    questionNumber: number
+    questionText: string
+    optionA: string
+    optionB: string
+    optionC: string
+    optionD: string
+    correctAnswer: string
+    createdAt: Date
+    updatedAt: Date
+    _count: AcademicQuestionCountAggregateOutputType | null
+    _avg: AcademicQuestionAvgAggregateOutputType | null
+    _sum: AcademicQuestionSumAggregateOutputType | null
+    _min: AcademicQuestionMinAggregateOutputType | null
+    _max: AcademicQuestionMaxAggregateOutputType | null
+  }
+
+  type GetAcademicQuestionGroupByPayload<T extends AcademicQuestionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AcademicQuestionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AcademicQuestionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AcademicQuestionGroupByOutputType[P]>
+            : GetScalarType<T[P], AcademicQuestionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AcademicQuestionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    questionPaperId?: boolean
+    questionNumber?: boolean
+    questionText?: boolean
+    optionA?: boolean
+    optionB?: boolean
+    optionC?: boolean
+    optionD?: boolean
+    correctAnswer?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    questionPaper?: boolean | AcademicQuestionPaperDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["academicQuestion"]>
+
+  export type AcademicQuestionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    questionPaperId?: boolean
+    questionNumber?: boolean
+    questionText?: boolean
+    optionA?: boolean
+    optionB?: boolean
+    optionC?: boolean
+    optionD?: boolean
+    correctAnswer?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    questionPaper?: boolean | AcademicQuestionPaperDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["academicQuestion"]>
+
+  export type AcademicQuestionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    questionPaperId?: boolean
+    questionNumber?: boolean
+    questionText?: boolean
+    optionA?: boolean
+    optionB?: boolean
+    optionC?: boolean
+    optionD?: boolean
+    correctAnswer?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    questionPaper?: boolean | AcademicQuestionPaperDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["academicQuestion"]>
+
+  export type AcademicQuestionSelectScalar = {
+    id?: boolean
+    questionPaperId?: boolean
+    questionNumber?: boolean
+    questionText?: boolean
+    optionA?: boolean
+    optionB?: boolean
+    optionC?: boolean
+    optionD?: boolean
+    correctAnswer?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type AcademicQuestionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "questionPaperId" | "questionNumber" | "questionText" | "optionA" | "optionB" | "optionC" | "optionD" | "correctAnswer" | "createdAt" | "updatedAt", ExtArgs["result"]["academicQuestion"]>
+  export type AcademicQuestionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    questionPaper?: boolean | AcademicQuestionPaperDefaultArgs<ExtArgs>
+  }
+  export type AcademicQuestionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    questionPaper?: boolean | AcademicQuestionPaperDefaultArgs<ExtArgs>
+  }
+  export type AcademicQuestionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    questionPaper?: boolean | AcademicQuestionPaperDefaultArgs<ExtArgs>
+  }
+
+  export type $AcademicQuestionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AcademicQuestion"
+    objects: {
+      questionPaper: Prisma.$AcademicQuestionPaperPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      questionPaperId: string
+      questionNumber: number
+      questionText: string
+      optionA: string
+      optionB: string
+      optionC: string
+      optionD: string
+      correctAnswer: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["academicQuestion"]>
+    composites: {}
+  }
+
+  type AcademicQuestionGetPayload<S extends boolean | null | undefined | AcademicQuestionDefaultArgs> = $Result.GetResult<Prisma.$AcademicQuestionPayload, S>
+
+  type AcademicQuestionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AcademicQuestionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AcademicQuestionCountAggregateInputType | true
+    }
+
+  export interface AcademicQuestionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AcademicQuestion'], meta: { name: 'AcademicQuestion' } }
+    /**
+     * Find zero or one AcademicQuestion that matches the filter.
+     * @param {AcademicQuestionFindUniqueArgs} args - Arguments to find a AcademicQuestion
+     * @example
+     * // Get one AcademicQuestion
+     * const academicQuestion = await prisma.academicQuestion.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AcademicQuestionFindUniqueArgs>(args: SelectSubset<T, AcademicQuestionFindUniqueArgs<ExtArgs>>): Prisma__AcademicQuestionClient<$Result.GetResult<Prisma.$AcademicQuestionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one AcademicQuestion that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AcademicQuestionFindUniqueOrThrowArgs} args - Arguments to find a AcademicQuestion
+     * @example
+     * // Get one AcademicQuestion
+     * const academicQuestion = await prisma.academicQuestion.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AcademicQuestionFindUniqueOrThrowArgs>(args: SelectSubset<T, AcademicQuestionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AcademicQuestionClient<$Result.GetResult<Prisma.$AcademicQuestionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AcademicQuestion that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcademicQuestionFindFirstArgs} args - Arguments to find a AcademicQuestion
+     * @example
+     * // Get one AcademicQuestion
+     * const academicQuestion = await prisma.academicQuestion.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AcademicQuestionFindFirstArgs>(args?: SelectSubset<T, AcademicQuestionFindFirstArgs<ExtArgs>>): Prisma__AcademicQuestionClient<$Result.GetResult<Prisma.$AcademicQuestionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AcademicQuestion that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcademicQuestionFindFirstOrThrowArgs} args - Arguments to find a AcademicQuestion
+     * @example
+     * // Get one AcademicQuestion
+     * const academicQuestion = await prisma.academicQuestion.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AcademicQuestionFindFirstOrThrowArgs>(args?: SelectSubset<T, AcademicQuestionFindFirstOrThrowArgs<ExtArgs>>): Prisma__AcademicQuestionClient<$Result.GetResult<Prisma.$AcademicQuestionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more AcademicQuestions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcademicQuestionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AcademicQuestions
+     * const academicQuestions = await prisma.academicQuestion.findMany()
+     * 
+     * // Get first 10 AcademicQuestions
+     * const academicQuestions = await prisma.academicQuestion.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const academicQuestionWithIdOnly = await prisma.academicQuestion.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AcademicQuestionFindManyArgs>(args?: SelectSubset<T, AcademicQuestionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcademicQuestionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a AcademicQuestion.
+     * @param {AcademicQuestionCreateArgs} args - Arguments to create a AcademicQuestion.
+     * @example
+     * // Create one AcademicQuestion
+     * const AcademicQuestion = await prisma.academicQuestion.create({
+     *   data: {
+     *     // ... data to create a AcademicQuestion
+     *   }
+     * })
+     * 
+     */
+    create<T extends AcademicQuestionCreateArgs>(args: SelectSubset<T, AcademicQuestionCreateArgs<ExtArgs>>): Prisma__AcademicQuestionClient<$Result.GetResult<Prisma.$AcademicQuestionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many AcademicQuestions.
+     * @param {AcademicQuestionCreateManyArgs} args - Arguments to create many AcademicQuestions.
+     * @example
+     * // Create many AcademicQuestions
+     * const academicQuestion = await prisma.academicQuestion.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AcademicQuestionCreateManyArgs>(args?: SelectSubset<T, AcademicQuestionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many AcademicQuestions and returns the data saved in the database.
+     * @param {AcademicQuestionCreateManyAndReturnArgs} args - Arguments to create many AcademicQuestions.
+     * @example
+     * // Create many AcademicQuestions
+     * const academicQuestion = await prisma.academicQuestion.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many AcademicQuestions and only return the `id`
+     * const academicQuestionWithIdOnly = await prisma.academicQuestion.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AcademicQuestionCreateManyAndReturnArgs>(args?: SelectSubset<T, AcademicQuestionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcademicQuestionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a AcademicQuestion.
+     * @param {AcademicQuestionDeleteArgs} args - Arguments to delete one AcademicQuestion.
+     * @example
+     * // Delete one AcademicQuestion
+     * const AcademicQuestion = await prisma.academicQuestion.delete({
+     *   where: {
+     *     // ... filter to delete one AcademicQuestion
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AcademicQuestionDeleteArgs>(args: SelectSubset<T, AcademicQuestionDeleteArgs<ExtArgs>>): Prisma__AcademicQuestionClient<$Result.GetResult<Prisma.$AcademicQuestionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one AcademicQuestion.
+     * @param {AcademicQuestionUpdateArgs} args - Arguments to update one AcademicQuestion.
+     * @example
+     * // Update one AcademicQuestion
+     * const academicQuestion = await prisma.academicQuestion.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AcademicQuestionUpdateArgs>(args: SelectSubset<T, AcademicQuestionUpdateArgs<ExtArgs>>): Prisma__AcademicQuestionClient<$Result.GetResult<Prisma.$AcademicQuestionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more AcademicQuestions.
+     * @param {AcademicQuestionDeleteManyArgs} args - Arguments to filter AcademicQuestions to delete.
+     * @example
+     * // Delete a few AcademicQuestions
+     * const { count } = await prisma.academicQuestion.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AcademicQuestionDeleteManyArgs>(args?: SelectSubset<T, AcademicQuestionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AcademicQuestions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcademicQuestionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AcademicQuestions
+     * const academicQuestion = await prisma.academicQuestion.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AcademicQuestionUpdateManyArgs>(args: SelectSubset<T, AcademicQuestionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AcademicQuestions and returns the data updated in the database.
+     * @param {AcademicQuestionUpdateManyAndReturnArgs} args - Arguments to update many AcademicQuestions.
+     * @example
+     * // Update many AcademicQuestions
+     * const academicQuestion = await prisma.academicQuestion.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more AcademicQuestions and only return the `id`
+     * const academicQuestionWithIdOnly = await prisma.academicQuestion.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AcademicQuestionUpdateManyAndReturnArgs>(args: SelectSubset<T, AcademicQuestionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcademicQuestionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one AcademicQuestion.
+     * @param {AcademicQuestionUpsertArgs} args - Arguments to update or create a AcademicQuestion.
+     * @example
+     * // Update or create a AcademicQuestion
+     * const academicQuestion = await prisma.academicQuestion.upsert({
+     *   create: {
+     *     // ... data to create a AcademicQuestion
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AcademicQuestion we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AcademicQuestionUpsertArgs>(args: SelectSubset<T, AcademicQuestionUpsertArgs<ExtArgs>>): Prisma__AcademicQuestionClient<$Result.GetResult<Prisma.$AcademicQuestionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of AcademicQuestions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcademicQuestionCountArgs} args - Arguments to filter AcademicQuestions to count.
+     * @example
+     * // Count the number of AcademicQuestions
+     * const count = await prisma.academicQuestion.count({
+     *   where: {
+     *     // ... the filter for the AcademicQuestions we want to count
+     *   }
+     * })
+    **/
+    count<T extends AcademicQuestionCountArgs>(
+      args?: Subset<T, AcademicQuestionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AcademicQuestionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AcademicQuestion.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcademicQuestionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AcademicQuestionAggregateArgs>(args: Subset<T, AcademicQuestionAggregateArgs>): Prisma.PrismaPromise<GetAcademicQuestionAggregateType<T>>
+
+    /**
+     * Group by AcademicQuestion.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcademicQuestionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AcademicQuestionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AcademicQuestionGroupByArgs['orderBy'] }
+        : { orderBy?: AcademicQuestionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AcademicQuestionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAcademicQuestionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AcademicQuestion model
+   */
+  readonly fields: AcademicQuestionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AcademicQuestion.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AcademicQuestionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    questionPaper<T extends AcademicQuestionPaperDefaultArgs<ExtArgs> = {}>(args?: Subset<T, AcademicQuestionPaperDefaultArgs<ExtArgs>>): Prisma__AcademicQuestionPaperClient<$Result.GetResult<Prisma.$AcademicQuestionPaperPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AcademicQuestion model
+   */
+  interface AcademicQuestionFieldRefs {
+    readonly id: FieldRef<"AcademicQuestion", 'String'>
+    readonly questionPaperId: FieldRef<"AcademicQuestion", 'String'>
+    readonly questionNumber: FieldRef<"AcademicQuestion", 'Int'>
+    readonly questionText: FieldRef<"AcademicQuestion", 'String'>
+    readonly optionA: FieldRef<"AcademicQuestion", 'String'>
+    readonly optionB: FieldRef<"AcademicQuestion", 'String'>
+    readonly optionC: FieldRef<"AcademicQuestion", 'String'>
+    readonly optionD: FieldRef<"AcademicQuestion", 'String'>
+    readonly correctAnswer: FieldRef<"AcademicQuestion", 'String'>
+    readonly createdAt: FieldRef<"AcademicQuestion", 'DateTime'>
+    readonly updatedAt: FieldRef<"AcademicQuestion", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AcademicQuestion findUnique
+   */
+  export type AcademicQuestionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicQuestion
+     */
+    select?: AcademicQuestionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicQuestion
+     */
+    omit?: AcademicQuestionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicQuestionInclude<ExtArgs> | null
+    /**
+     * Filter, which AcademicQuestion to fetch.
+     */
+    where: AcademicQuestionWhereUniqueInput
+  }
+
+  /**
+   * AcademicQuestion findUniqueOrThrow
+   */
+  export type AcademicQuestionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicQuestion
+     */
+    select?: AcademicQuestionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicQuestion
+     */
+    omit?: AcademicQuestionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicQuestionInclude<ExtArgs> | null
+    /**
+     * Filter, which AcademicQuestion to fetch.
+     */
+    where: AcademicQuestionWhereUniqueInput
+  }
+
+  /**
+   * AcademicQuestion findFirst
+   */
+  export type AcademicQuestionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicQuestion
+     */
+    select?: AcademicQuestionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicQuestion
+     */
+    omit?: AcademicQuestionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicQuestionInclude<ExtArgs> | null
+    /**
+     * Filter, which AcademicQuestion to fetch.
+     */
+    where?: AcademicQuestionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AcademicQuestions to fetch.
+     */
+    orderBy?: AcademicQuestionOrderByWithRelationInput | AcademicQuestionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AcademicQuestions.
+     */
+    cursor?: AcademicQuestionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AcademicQuestions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AcademicQuestions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AcademicQuestions.
+     */
+    distinct?: AcademicQuestionScalarFieldEnum | AcademicQuestionScalarFieldEnum[]
+  }
+
+  /**
+   * AcademicQuestion findFirstOrThrow
+   */
+  export type AcademicQuestionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicQuestion
+     */
+    select?: AcademicQuestionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicQuestion
+     */
+    omit?: AcademicQuestionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicQuestionInclude<ExtArgs> | null
+    /**
+     * Filter, which AcademicQuestion to fetch.
+     */
+    where?: AcademicQuestionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AcademicQuestions to fetch.
+     */
+    orderBy?: AcademicQuestionOrderByWithRelationInput | AcademicQuestionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AcademicQuestions.
+     */
+    cursor?: AcademicQuestionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AcademicQuestions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AcademicQuestions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AcademicQuestions.
+     */
+    distinct?: AcademicQuestionScalarFieldEnum | AcademicQuestionScalarFieldEnum[]
+  }
+
+  /**
+   * AcademicQuestion findMany
+   */
+  export type AcademicQuestionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicQuestion
+     */
+    select?: AcademicQuestionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicQuestion
+     */
+    omit?: AcademicQuestionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicQuestionInclude<ExtArgs> | null
+    /**
+     * Filter, which AcademicQuestions to fetch.
+     */
+    where?: AcademicQuestionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AcademicQuestions to fetch.
+     */
+    orderBy?: AcademicQuestionOrderByWithRelationInput | AcademicQuestionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AcademicQuestions.
+     */
+    cursor?: AcademicQuestionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AcademicQuestions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AcademicQuestions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AcademicQuestions.
+     */
+    distinct?: AcademicQuestionScalarFieldEnum | AcademicQuestionScalarFieldEnum[]
+  }
+
+  /**
+   * AcademicQuestion create
+   */
+  export type AcademicQuestionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicQuestion
+     */
+    select?: AcademicQuestionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicQuestion
+     */
+    omit?: AcademicQuestionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicQuestionInclude<ExtArgs> | null
+    /**
+     * The data needed to create a AcademicQuestion.
+     */
+    data: XOR<AcademicQuestionCreateInput, AcademicQuestionUncheckedCreateInput>
+  }
+
+  /**
+   * AcademicQuestion createMany
+   */
+  export type AcademicQuestionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AcademicQuestions.
+     */
+    data: AcademicQuestionCreateManyInput | AcademicQuestionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AcademicQuestion createManyAndReturn
+   */
+  export type AcademicQuestionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicQuestion
+     */
+    select?: AcademicQuestionSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicQuestion
+     */
+    omit?: AcademicQuestionOmit<ExtArgs> | null
+    /**
+     * The data used to create many AcademicQuestions.
+     */
+    data: AcademicQuestionCreateManyInput | AcademicQuestionCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicQuestionIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AcademicQuestion update
+   */
+  export type AcademicQuestionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicQuestion
+     */
+    select?: AcademicQuestionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicQuestion
+     */
+    omit?: AcademicQuestionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicQuestionInclude<ExtArgs> | null
+    /**
+     * The data needed to update a AcademicQuestion.
+     */
+    data: XOR<AcademicQuestionUpdateInput, AcademicQuestionUncheckedUpdateInput>
+    /**
+     * Choose, which AcademicQuestion to update.
+     */
+    where: AcademicQuestionWhereUniqueInput
+  }
+
+  /**
+   * AcademicQuestion updateMany
+   */
+  export type AcademicQuestionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AcademicQuestions.
+     */
+    data: XOR<AcademicQuestionUpdateManyMutationInput, AcademicQuestionUncheckedUpdateManyInput>
+    /**
+     * Filter which AcademicQuestions to update
+     */
+    where?: AcademicQuestionWhereInput
+    /**
+     * Limit how many AcademicQuestions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AcademicQuestion updateManyAndReturn
+   */
+  export type AcademicQuestionUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicQuestion
+     */
+    select?: AcademicQuestionSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicQuestion
+     */
+    omit?: AcademicQuestionOmit<ExtArgs> | null
+    /**
+     * The data used to update AcademicQuestions.
+     */
+    data: XOR<AcademicQuestionUpdateManyMutationInput, AcademicQuestionUncheckedUpdateManyInput>
+    /**
+     * Filter which AcademicQuestions to update
+     */
+    where?: AcademicQuestionWhereInput
+    /**
+     * Limit how many AcademicQuestions to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicQuestionIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AcademicQuestion upsert
+   */
+  export type AcademicQuestionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicQuestion
+     */
+    select?: AcademicQuestionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicQuestion
+     */
+    omit?: AcademicQuestionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicQuestionInclude<ExtArgs> | null
+    /**
+     * The filter to search for the AcademicQuestion to update in case it exists.
+     */
+    where: AcademicQuestionWhereUniqueInput
+    /**
+     * In case the AcademicQuestion found by the `where` argument doesn't exist, create a new AcademicQuestion with this data.
+     */
+    create: XOR<AcademicQuestionCreateInput, AcademicQuestionUncheckedCreateInput>
+    /**
+     * In case the AcademicQuestion was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AcademicQuestionUpdateInput, AcademicQuestionUncheckedUpdateInput>
+  }
+
+  /**
+   * AcademicQuestion delete
+   */
+  export type AcademicQuestionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicQuestion
+     */
+    select?: AcademicQuestionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicQuestion
+     */
+    omit?: AcademicQuestionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicQuestionInclude<ExtArgs> | null
+    /**
+     * Filter which AcademicQuestion to delete.
+     */
+    where: AcademicQuestionWhereUniqueInput
+  }
+
+  /**
+   * AcademicQuestion deleteMany
+   */
+  export type AcademicQuestionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AcademicQuestions to delete
+     */
+    where?: AcademicQuestionWhereInput
+    /**
+     * Limit how many AcademicQuestions to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * AcademicQuestion without action
+   */
+  export type AcademicQuestionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicQuestion
+     */
+    select?: AcademicQuestionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicQuestion
+     */
+    omit?: AcademicQuestionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicQuestionInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model AcademicTestProject
+   */
+
+  export type AggregateAcademicTestProject = {
+    _count: AcademicTestProjectCountAggregateOutputType | null
+    _avg: AcademicTestProjectAvgAggregateOutputType | null
+    _sum: AcademicTestProjectSumAggregateOutputType | null
+    _min: AcademicTestProjectMinAggregateOutputType | null
+    _max: AcademicTestProjectMaxAggregateOutputType | null
+  }
+
+  export type AcademicTestProjectAvgAggregateOutputType = {
+    projectMarks: number | null
+  }
+
+  export type AcademicTestProjectSumAggregateOutputType = {
+    projectMarks: number | null
+  }
+
+  export type AcademicTestProjectMinAggregateOutputType = {
+    id: string | null
+    academicTestItemId: string | null
+    branchCourseId: string | null
+    branchBatchId: string | null
+    createdBy: string | null
+    status: $Enums.AcademicPreparationStatus | null
+    projectTitle: string | null
+    projectDescription: string | null
+    projectRequirements: string | null
+    projectMarks: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type AcademicTestProjectMaxAggregateOutputType = {
+    id: string | null
+    academicTestItemId: string | null
+    branchCourseId: string | null
+    branchBatchId: string | null
+    createdBy: string | null
+    status: $Enums.AcademicPreparationStatus | null
+    projectTitle: string | null
+    projectDescription: string | null
+    projectRequirements: string | null
+    projectMarks: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type AcademicTestProjectCountAggregateOutputType = {
+    id: number
+    academicTestItemId: number
+    branchCourseId: number
+    branchBatchId: number
+    createdBy: number
+    status: number
+    projectTitle: number
+    projectDescription: number
+    projectRequirements: number
+    projectMarks: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type AcademicTestProjectAvgAggregateInputType = {
+    projectMarks?: true
+  }
+
+  export type AcademicTestProjectSumAggregateInputType = {
+    projectMarks?: true
+  }
+
+  export type AcademicTestProjectMinAggregateInputType = {
+    id?: true
+    academicTestItemId?: true
+    branchCourseId?: true
+    branchBatchId?: true
+    createdBy?: true
+    status?: true
+    projectTitle?: true
+    projectDescription?: true
+    projectRequirements?: true
+    projectMarks?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type AcademicTestProjectMaxAggregateInputType = {
+    id?: true
+    academicTestItemId?: true
+    branchCourseId?: true
+    branchBatchId?: true
+    createdBy?: true
+    status?: true
+    projectTitle?: true
+    projectDescription?: true
+    projectRequirements?: true
+    projectMarks?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type AcademicTestProjectCountAggregateInputType = {
+    id?: true
+    academicTestItemId?: true
+    branchCourseId?: true
+    branchBatchId?: true
+    createdBy?: true
+    status?: true
+    projectTitle?: true
+    projectDescription?: true
+    projectRequirements?: true
+    projectMarks?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type AcademicTestProjectAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AcademicTestProject to aggregate.
+     */
+    where?: AcademicTestProjectWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AcademicTestProjects to fetch.
+     */
+    orderBy?: AcademicTestProjectOrderByWithRelationInput | AcademicTestProjectOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AcademicTestProjectWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AcademicTestProjects from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AcademicTestProjects.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AcademicTestProjects
+    **/
+    _count?: true | AcademicTestProjectCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: AcademicTestProjectAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: AcademicTestProjectSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AcademicTestProjectMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AcademicTestProjectMaxAggregateInputType
+  }
+
+  export type GetAcademicTestProjectAggregateType<T extends AcademicTestProjectAggregateArgs> = {
+        [P in keyof T & keyof AggregateAcademicTestProject]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAcademicTestProject[P]>
+      : GetScalarType<T[P], AggregateAcademicTestProject[P]>
+  }
+
+
+
+
+  export type AcademicTestProjectGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AcademicTestProjectWhereInput
+    orderBy?: AcademicTestProjectOrderByWithAggregationInput | AcademicTestProjectOrderByWithAggregationInput[]
+    by: AcademicTestProjectScalarFieldEnum[] | AcademicTestProjectScalarFieldEnum
+    having?: AcademicTestProjectScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AcademicTestProjectCountAggregateInputType | true
+    _avg?: AcademicTestProjectAvgAggregateInputType
+    _sum?: AcademicTestProjectSumAggregateInputType
+    _min?: AcademicTestProjectMinAggregateInputType
+    _max?: AcademicTestProjectMaxAggregateInputType
+  }
+
+  export type AcademicTestProjectGroupByOutputType = {
+    id: string
+    academicTestItemId: string
+    branchCourseId: string
+    branchBatchId: string
+    createdBy: string
+    status: $Enums.AcademicPreparationStatus
+    projectTitle: string
+    projectDescription: string
+    projectRequirements: string | null
+    projectMarks: number
+    createdAt: Date
+    updatedAt: Date
+    _count: AcademicTestProjectCountAggregateOutputType | null
+    _avg: AcademicTestProjectAvgAggregateOutputType | null
+    _sum: AcademicTestProjectSumAggregateOutputType | null
+    _min: AcademicTestProjectMinAggregateOutputType | null
+    _max: AcademicTestProjectMaxAggregateOutputType | null
+  }
+
+  type GetAcademicTestProjectGroupByPayload<T extends AcademicTestProjectGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AcademicTestProjectGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AcademicTestProjectGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AcademicTestProjectGroupByOutputType[P]>
+            : GetScalarType<T[P], AcademicTestProjectGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AcademicTestProjectSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    academicTestItemId?: boolean
+    branchCourseId?: boolean
+    branchBatchId?: boolean
+    createdBy?: boolean
+    status?: boolean
+    projectTitle?: boolean
+    projectDescription?: boolean
+    projectRequirements?: boolean
+    projectMarks?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    academicTestItem?: boolean | AcademicTestItemDefaultArgs<ExtArgs>
+    branchCourse?: boolean | BranchCourseDefaultArgs<ExtArgs>
+    branchBatch?: boolean | BranchBatchDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["academicTestProject"]>
+
+  export type AcademicTestProjectSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    academicTestItemId?: boolean
+    branchCourseId?: boolean
+    branchBatchId?: boolean
+    createdBy?: boolean
+    status?: boolean
+    projectTitle?: boolean
+    projectDescription?: boolean
+    projectRequirements?: boolean
+    projectMarks?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    academicTestItem?: boolean | AcademicTestItemDefaultArgs<ExtArgs>
+    branchCourse?: boolean | BranchCourseDefaultArgs<ExtArgs>
+    branchBatch?: boolean | BranchBatchDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["academicTestProject"]>
+
+  export type AcademicTestProjectSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    academicTestItemId?: boolean
+    branchCourseId?: boolean
+    branchBatchId?: boolean
+    createdBy?: boolean
+    status?: boolean
+    projectTitle?: boolean
+    projectDescription?: boolean
+    projectRequirements?: boolean
+    projectMarks?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    academicTestItem?: boolean | AcademicTestItemDefaultArgs<ExtArgs>
+    branchCourse?: boolean | BranchCourseDefaultArgs<ExtArgs>
+    branchBatch?: boolean | BranchBatchDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["academicTestProject"]>
+
+  export type AcademicTestProjectSelectScalar = {
+    id?: boolean
+    academicTestItemId?: boolean
+    branchCourseId?: boolean
+    branchBatchId?: boolean
+    createdBy?: boolean
+    status?: boolean
+    projectTitle?: boolean
+    projectDescription?: boolean
+    projectRequirements?: boolean
+    projectMarks?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type AcademicTestProjectOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "academicTestItemId" | "branchCourseId" | "branchBatchId" | "createdBy" | "status" | "projectTitle" | "projectDescription" | "projectRequirements" | "projectMarks" | "createdAt" | "updatedAt", ExtArgs["result"]["academicTestProject"]>
+  export type AcademicTestProjectInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    academicTestItem?: boolean | AcademicTestItemDefaultArgs<ExtArgs>
+    branchCourse?: boolean | BranchCourseDefaultArgs<ExtArgs>
+    branchBatch?: boolean | BranchBatchDefaultArgs<ExtArgs>
+  }
+  export type AcademicTestProjectIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    academicTestItem?: boolean | AcademicTestItemDefaultArgs<ExtArgs>
+    branchCourse?: boolean | BranchCourseDefaultArgs<ExtArgs>
+    branchBatch?: boolean | BranchBatchDefaultArgs<ExtArgs>
+  }
+  export type AcademicTestProjectIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    academicTestItem?: boolean | AcademicTestItemDefaultArgs<ExtArgs>
+    branchCourse?: boolean | BranchCourseDefaultArgs<ExtArgs>
+    branchBatch?: boolean | BranchBatchDefaultArgs<ExtArgs>
+  }
+
+  export type $AcademicTestProjectPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AcademicTestProject"
+    objects: {
+      academicTestItem: Prisma.$AcademicTestItemPayload<ExtArgs>
+      branchCourse: Prisma.$BranchCoursePayload<ExtArgs>
+      branchBatch: Prisma.$BranchBatchPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      academicTestItemId: string
+      branchCourseId: string
+      branchBatchId: string
+      createdBy: string
+      status: $Enums.AcademicPreparationStatus
+      projectTitle: string
+      projectDescription: string
+      projectRequirements: string | null
+      projectMarks: number
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["academicTestProject"]>
+    composites: {}
+  }
+
+  type AcademicTestProjectGetPayload<S extends boolean | null | undefined | AcademicTestProjectDefaultArgs> = $Result.GetResult<Prisma.$AcademicTestProjectPayload, S>
+
+  type AcademicTestProjectCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AcademicTestProjectFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AcademicTestProjectCountAggregateInputType | true
+    }
+
+  export interface AcademicTestProjectDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AcademicTestProject'], meta: { name: 'AcademicTestProject' } }
+    /**
+     * Find zero or one AcademicTestProject that matches the filter.
+     * @param {AcademicTestProjectFindUniqueArgs} args - Arguments to find a AcademicTestProject
+     * @example
+     * // Get one AcademicTestProject
+     * const academicTestProject = await prisma.academicTestProject.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AcademicTestProjectFindUniqueArgs>(args: SelectSubset<T, AcademicTestProjectFindUniqueArgs<ExtArgs>>): Prisma__AcademicTestProjectClient<$Result.GetResult<Prisma.$AcademicTestProjectPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one AcademicTestProject that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AcademicTestProjectFindUniqueOrThrowArgs} args - Arguments to find a AcademicTestProject
+     * @example
+     * // Get one AcademicTestProject
+     * const academicTestProject = await prisma.academicTestProject.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AcademicTestProjectFindUniqueOrThrowArgs>(args: SelectSubset<T, AcademicTestProjectFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AcademicTestProjectClient<$Result.GetResult<Prisma.$AcademicTestProjectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AcademicTestProject that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcademicTestProjectFindFirstArgs} args - Arguments to find a AcademicTestProject
+     * @example
+     * // Get one AcademicTestProject
+     * const academicTestProject = await prisma.academicTestProject.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AcademicTestProjectFindFirstArgs>(args?: SelectSubset<T, AcademicTestProjectFindFirstArgs<ExtArgs>>): Prisma__AcademicTestProjectClient<$Result.GetResult<Prisma.$AcademicTestProjectPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AcademicTestProject that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcademicTestProjectFindFirstOrThrowArgs} args - Arguments to find a AcademicTestProject
+     * @example
+     * // Get one AcademicTestProject
+     * const academicTestProject = await prisma.academicTestProject.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AcademicTestProjectFindFirstOrThrowArgs>(args?: SelectSubset<T, AcademicTestProjectFindFirstOrThrowArgs<ExtArgs>>): Prisma__AcademicTestProjectClient<$Result.GetResult<Prisma.$AcademicTestProjectPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more AcademicTestProjects that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcademicTestProjectFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AcademicTestProjects
+     * const academicTestProjects = await prisma.academicTestProject.findMany()
+     * 
+     * // Get first 10 AcademicTestProjects
+     * const academicTestProjects = await prisma.academicTestProject.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const academicTestProjectWithIdOnly = await prisma.academicTestProject.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AcademicTestProjectFindManyArgs>(args?: SelectSubset<T, AcademicTestProjectFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcademicTestProjectPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a AcademicTestProject.
+     * @param {AcademicTestProjectCreateArgs} args - Arguments to create a AcademicTestProject.
+     * @example
+     * // Create one AcademicTestProject
+     * const AcademicTestProject = await prisma.academicTestProject.create({
+     *   data: {
+     *     // ... data to create a AcademicTestProject
+     *   }
+     * })
+     * 
+     */
+    create<T extends AcademicTestProjectCreateArgs>(args: SelectSubset<T, AcademicTestProjectCreateArgs<ExtArgs>>): Prisma__AcademicTestProjectClient<$Result.GetResult<Prisma.$AcademicTestProjectPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many AcademicTestProjects.
+     * @param {AcademicTestProjectCreateManyArgs} args - Arguments to create many AcademicTestProjects.
+     * @example
+     * // Create many AcademicTestProjects
+     * const academicTestProject = await prisma.academicTestProject.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AcademicTestProjectCreateManyArgs>(args?: SelectSubset<T, AcademicTestProjectCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many AcademicTestProjects and returns the data saved in the database.
+     * @param {AcademicTestProjectCreateManyAndReturnArgs} args - Arguments to create many AcademicTestProjects.
+     * @example
+     * // Create many AcademicTestProjects
+     * const academicTestProject = await prisma.academicTestProject.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many AcademicTestProjects and only return the `id`
+     * const academicTestProjectWithIdOnly = await prisma.academicTestProject.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AcademicTestProjectCreateManyAndReturnArgs>(args?: SelectSubset<T, AcademicTestProjectCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcademicTestProjectPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a AcademicTestProject.
+     * @param {AcademicTestProjectDeleteArgs} args - Arguments to delete one AcademicTestProject.
+     * @example
+     * // Delete one AcademicTestProject
+     * const AcademicTestProject = await prisma.academicTestProject.delete({
+     *   where: {
+     *     // ... filter to delete one AcademicTestProject
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AcademicTestProjectDeleteArgs>(args: SelectSubset<T, AcademicTestProjectDeleteArgs<ExtArgs>>): Prisma__AcademicTestProjectClient<$Result.GetResult<Prisma.$AcademicTestProjectPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one AcademicTestProject.
+     * @param {AcademicTestProjectUpdateArgs} args - Arguments to update one AcademicTestProject.
+     * @example
+     * // Update one AcademicTestProject
+     * const academicTestProject = await prisma.academicTestProject.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AcademicTestProjectUpdateArgs>(args: SelectSubset<T, AcademicTestProjectUpdateArgs<ExtArgs>>): Prisma__AcademicTestProjectClient<$Result.GetResult<Prisma.$AcademicTestProjectPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more AcademicTestProjects.
+     * @param {AcademicTestProjectDeleteManyArgs} args - Arguments to filter AcademicTestProjects to delete.
+     * @example
+     * // Delete a few AcademicTestProjects
+     * const { count } = await prisma.academicTestProject.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AcademicTestProjectDeleteManyArgs>(args?: SelectSubset<T, AcademicTestProjectDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AcademicTestProjects.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcademicTestProjectUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AcademicTestProjects
+     * const academicTestProject = await prisma.academicTestProject.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AcademicTestProjectUpdateManyArgs>(args: SelectSubset<T, AcademicTestProjectUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AcademicTestProjects and returns the data updated in the database.
+     * @param {AcademicTestProjectUpdateManyAndReturnArgs} args - Arguments to update many AcademicTestProjects.
+     * @example
+     * // Update many AcademicTestProjects
+     * const academicTestProject = await prisma.academicTestProject.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more AcademicTestProjects and only return the `id`
+     * const academicTestProjectWithIdOnly = await prisma.academicTestProject.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AcademicTestProjectUpdateManyAndReturnArgs>(args: SelectSubset<T, AcademicTestProjectUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcademicTestProjectPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one AcademicTestProject.
+     * @param {AcademicTestProjectUpsertArgs} args - Arguments to update or create a AcademicTestProject.
+     * @example
+     * // Update or create a AcademicTestProject
+     * const academicTestProject = await prisma.academicTestProject.upsert({
+     *   create: {
+     *     // ... data to create a AcademicTestProject
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AcademicTestProject we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AcademicTestProjectUpsertArgs>(args: SelectSubset<T, AcademicTestProjectUpsertArgs<ExtArgs>>): Prisma__AcademicTestProjectClient<$Result.GetResult<Prisma.$AcademicTestProjectPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of AcademicTestProjects.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcademicTestProjectCountArgs} args - Arguments to filter AcademicTestProjects to count.
+     * @example
+     * // Count the number of AcademicTestProjects
+     * const count = await prisma.academicTestProject.count({
+     *   where: {
+     *     // ... the filter for the AcademicTestProjects we want to count
+     *   }
+     * })
+    **/
+    count<T extends AcademicTestProjectCountArgs>(
+      args?: Subset<T, AcademicTestProjectCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AcademicTestProjectCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AcademicTestProject.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcademicTestProjectAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AcademicTestProjectAggregateArgs>(args: Subset<T, AcademicTestProjectAggregateArgs>): Prisma.PrismaPromise<GetAcademicTestProjectAggregateType<T>>
+
+    /**
+     * Group by AcademicTestProject.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcademicTestProjectGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AcademicTestProjectGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AcademicTestProjectGroupByArgs['orderBy'] }
+        : { orderBy?: AcademicTestProjectGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AcademicTestProjectGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAcademicTestProjectGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AcademicTestProject model
+   */
+  readonly fields: AcademicTestProjectFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AcademicTestProject.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AcademicTestProjectClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    academicTestItem<T extends AcademicTestItemDefaultArgs<ExtArgs> = {}>(args?: Subset<T, AcademicTestItemDefaultArgs<ExtArgs>>): Prisma__AcademicTestItemClient<$Result.GetResult<Prisma.$AcademicTestItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    branchCourse<T extends BranchCourseDefaultArgs<ExtArgs> = {}>(args?: Subset<T, BranchCourseDefaultArgs<ExtArgs>>): Prisma__BranchCourseClient<$Result.GetResult<Prisma.$BranchCoursePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    branchBatch<T extends BranchBatchDefaultArgs<ExtArgs> = {}>(args?: Subset<T, BranchBatchDefaultArgs<ExtArgs>>): Prisma__BranchBatchClient<$Result.GetResult<Prisma.$BranchBatchPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AcademicTestProject model
+   */
+  interface AcademicTestProjectFieldRefs {
+    readonly id: FieldRef<"AcademicTestProject", 'String'>
+    readonly academicTestItemId: FieldRef<"AcademicTestProject", 'String'>
+    readonly branchCourseId: FieldRef<"AcademicTestProject", 'String'>
+    readonly branchBatchId: FieldRef<"AcademicTestProject", 'String'>
+    readonly createdBy: FieldRef<"AcademicTestProject", 'String'>
+    readonly status: FieldRef<"AcademicTestProject", 'AcademicPreparationStatus'>
+    readonly projectTitle: FieldRef<"AcademicTestProject", 'String'>
+    readonly projectDescription: FieldRef<"AcademicTestProject", 'String'>
+    readonly projectRequirements: FieldRef<"AcademicTestProject", 'String'>
+    readonly projectMarks: FieldRef<"AcademicTestProject", 'Int'>
+    readonly createdAt: FieldRef<"AcademicTestProject", 'DateTime'>
+    readonly updatedAt: FieldRef<"AcademicTestProject", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AcademicTestProject findUnique
+   */
+  export type AcademicTestProjectFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestProject
+     */
+    select?: AcademicTestProjectSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicTestProject
+     */
+    omit?: AcademicTestProjectOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicTestProjectInclude<ExtArgs> | null
+    /**
+     * Filter, which AcademicTestProject to fetch.
+     */
+    where: AcademicTestProjectWhereUniqueInput
+  }
+
+  /**
+   * AcademicTestProject findUniqueOrThrow
+   */
+  export type AcademicTestProjectFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestProject
+     */
+    select?: AcademicTestProjectSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicTestProject
+     */
+    omit?: AcademicTestProjectOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicTestProjectInclude<ExtArgs> | null
+    /**
+     * Filter, which AcademicTestProject to fetch.
+     */
+    where: AcademicTestProjectWhereUniqueInput
+  }
+
+  /**
+   * AcademicTestProject findFirst
+   */
+  export type AcademicTestProjectFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestProject
+     */
+    select?: AcademicTestProjectSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicTestProject
+     */
+    omit?: AcademicTestProjectOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicTestProjectInclude<ExtArgs> | null
+    /**
+     * Filter, which AcademicTestProject to fetch.
+     */
+    where?: AcademicTestProjectWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AcademicTestProjects to fetch.
+     */
+    orderBy?: AcademicTestProjectOrderByWithRelationInput | AcademicTestProjectOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AcademicTestProjects.
+     */
+    cursor?: AcademicTestProjectWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AcademicTestProjects from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AcademicTestProjects.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AcademicTestProjects.
+     */
+    distinct?: AcademicTestProjectScalarFieldEnum | AcademicTestProjectScalarFieldEnum[]
+  }
+
+  /**
+   * AcademicTestProject findFirstOrThrow
+   */
+  export type AcademicTestProjectFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestProject
+     */
+    select?: AcademicTestProjectSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicTestProject
+     */
+    omit?: AcademicTestProjectOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicTestProjectInclude<ExtArgs> | null
+    /**
+     * Filter, which AcademicTestProject to fetch.
+     */
+    where?: AcademicTestProjectWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AcademicTestProjects to fetch.
+     */
+    orderBy?: AcademicTestProjectOrderByWithRelationInput | AcademicTestProjectOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AcademicTestProjects.
+     */
+    cursor?: AcademicTestProjectWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AcademicTestProjects from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AcademicTestProjects.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AcademicTestProjects.
+     */
+    distinct?: AcademicTestProjectScalarFieldEnum | AcademicTestProjectScalarFieldEnum[]
+  }
+
+  /**
+   * AcademicTestProject findMany
+   */
+  export type AcademicTestProjectFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestProject
+     */
+    select?: AcademicTestProjectSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicTestProject
+     */
+    omit?: AcademicTestProjectOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicTestProjectInclude<ExtArgs> | null
+    /**
+     * Filter, which AcademicTestProjects to fetch.
+     */
+    where?: AcademicTestProjectWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AcademicTestProjects to fetch.
+     */
+    orderBy?: AcademicTestProjectOrderByWithRelationInput | AcademicTestProjectOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AcademicTestProjects.
+     */
+    cursor?: AcademicTestProjectWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AcademicTestProjects from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AcademicTestProjects.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AcademicTestProjects.
+     */
+    distinct?: AcademicTestProjectScalarFieldEnum | AcademicTestProjectScalarFieldEnum[]
+  }
+
+  /**
+   * AcademicTestProject create
+   */
+  export type AcademicTestProjectCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestProject
+     */
+    select?: AcademicTestProjectSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicTestProject
+     */
+    omit?: AcademicTestProjectOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicTestProjectInclude<ExtArgs> | null
+    /**
+     * The data needed to create a AcademicTestProject.
+     */
+    data: XOR<AcademicTestProjectCreateInput, AcademicTestProjectUncheckedCreateInput>
+  }
+
+  /**
+   * AcademicTestProject createMany
+   */
+  export type AcademicTestProjectCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AcademicTestProjects.
+     */
+    data: AcademicTestProjectCreateManyInput | AcademicTestProjectCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AcademicTestProject createManyAndReturn
+   */
+  export type AcademicTestProjectCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestProject
+     */
+    select?: AcademicTestProjectSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicTestProject
+     */
+    omit?: AcademicTestProjectOmit<ExtArgs> | null
+    /**
+     * The data used to create many AcademicTestProjects.
+     */
+    data: AcademicTestProjectCreateManyInput | AcademicTestProjectCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicTestProjectIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AcademicTestProject update
+   */
+  export type AcademicTestProjectUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestProject
+     */
+    select?: AcademicTestProjectSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicTestProject
+     */
+    omit?: AcademicTestProjectOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicTestProjectInclude<ExtArgs> | null
+    /**
+     * The data needed to update a AcademicTestProject.
+     */
+    data: XOR<AcademicTestProjectUpdateInput, AcademicTestProjectUncheckedUpdateInput>
+    /**
+     * Choose, which AcademicTestProject to update.
+     */
+    where: AcademicTestProjectWhereUniqueInput
+  }
+
+  /**
+   * AcademicTestProject updateMany
+   */
+  export type AcademicTestProjectUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AcademicTestProjects.
+     */
+    data: XOR<AcademicTestProjectUpdateManyMutationInput, AcademicTestProjectUncheckedUpdateManyInput>
+    /**
+     * Filter which AcademicTestProjects to update
+     */
+    where?: AcademicTestProjectWhereInput
+    /**
+     * Limit how many AcademicTestProjects to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AcademicTestProject updateManyAndReturn
+   */
+  export type AcademicTestProjectUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestProject
+     */
+    select?: AcademicTestProjectSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicTestProject
+     */
+    omit?: AcademicTestProjectOmit<ExtArgs> | null
+    /**
+     * The data used to update AcademicTestProjects.
+     */
+    data: XOR<AcademicTestProjectUpdateManyMutationInput, AcademicTestProjectUncheckedUpdateManyInput>
+    /**
+     * Filter which AcademicTestProjects to update
+     */
+    where?: AcademicTestProjectWhereInput
+    /**
+     * Limit how many AcademicTestProjects to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicTestProjectIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AcademicTestProject upsert
+   */
+  export type AcademicTestProjectUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestProject
+     */
+    select?: AcademicTestProjectSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicTestProject
+     */
+    omit?: AcademicTestProjectOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicTestProjectInclude<ExtArgs> | null
+    /**
+     * The filter to search for the AcademicTestProject to update in case it exists.
+     */
+    where: AcademicTestProjectWhereUniqueInput
+    /**
+     * In case the AcademicTestProject found by the `where` argument doesn't exist, create a new AcademicTestProject with this data.
+     */
+    create: XOR<AcademicTestProjectCreateInput, AcademicTestProjectUncheckedCreateInput>
+    /**
+     * In case the AcademicTestProject was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AcademicTestProjectUpdateInput, AcademicTestProjectUncheckedUpdateInput>
+  }
+
+  /**
+   * AcademicTestProject delete
+   */
+  export type AcademicTestProjectDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestProject
+     */
+    select?: AcademicTestProjectSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicTestProject
+     */
+    omit?: AcademicTestProjectOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicTestProjectInclude<ExtArgs> | null
+    /**
+     * Filter which AcademicTestProject to delete.
+     */
+    where: AcademicTestProjectWhereUniqueInput
+  }
+
+  /**
+   * AcademicTestProject deleteMany
+   */
+  export type AcademicTestProjectDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AcademicTestProjects to delete
+     */
+    where?: AcademicTestProjectWhereInput
+    /**
+     * Limit how many AcademicTestProjects to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * AcademicTestProject without action
+   */
+  export type AcademicTestProjectDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestProject
+     */
+    select?: AcademicTestProjectSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicTestProject
+     */
+    omit?: AcademicTestProjectOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicTestProjectInclude<ExtArgs> | null
   }
 
 
@@ -74963,7 +79150,8 @@ export namespace Prisma {
     id: 'id',
     academicTestId: 'academicTestId',
     sequence: 'sequence',
-    testType: 'testType'
+    testType: 'testType',
+    requiredProgress: 'requiredProgress'
   };
 
   export type AcademicTestItemScalarFieldEnum = (typeof AcademicTestItemScalarFieldEnum)[keyof typeof AcademicTestItemScalarFieldEnum]
@@ -74976,6 +79164,58 @@ export namespace Prisma {
   };
 
   export type AcademicTestBatchScalarFieldEnum = (typeof AcademicTestBatchScalarFieldEnum)[keyof typeof AcademicTestBatchScalarFieldEnum]
+
+
+  export const AcademicQuestionPaperScalarFieldEnum: {
+    id: 'id',
+    academicTestItemId: 'academicTestItemId',
+    branchCourseId: 'branchCourseId',
+    branchBatchId: 'branchBatchId',
+    createdBy: 'createdBy',
+    status: 'status',
+    marksPerQuestion: 'marksPerQuestion',
+    totalQuestions: 'totalQuestions',
+    totalMarks: 'totalMarks',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type AcademicQuestionPaperScalarFieldEnum = (typeof AcademicQuestionPaperScalarFieldEnum)[keyof typeof AcademicQuestionPaperScalarFieldEnum]
+
+
+  export const AcademicQuestionScalarFieldEnum: {
+    id: 'id',
+    questionPaperId: 'questionPaperId',
+    questionNumber: 'questionNumber',
+    questionText: 'questionText',
+    optionA: 'optionA',
+    optionB: 'optionB',
+    optionC: 'optionC',
+    optionD: 'optionD',
+    correctAnswer: 'correctAnswer',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type AcademicQuestionScalarFieldEnum = (typeof AcademicQuestionScalarFieldEnum)[keyof typeof AcademicQuestionScalarFieldEnum]
+
+
+  export const AcademicTestProjectScalarFieldEnum: {
+    id: 'id',
+    academicTestItemId: 'academicTestItemId',
+    branchCourseId: 'branchCourseId',
+    branchBatchId: 'branchBatchId',
+    createdBy: 'createdBy',
+    status: 'status',
+    projectTitle: 'projectTitle',
+    projectDescription: 'projectDescription',
+    projectRequirements: 'projectRequirements',
+    projectMarks: 'projectMarks',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type AcademicTestProjectScalarFieldEnum = (typeof AcademicTestProjectScalarFieldEnum)[keyof typeof AcademicTestProjectScalarFieldEnum]
 
 
   export const CourseStatusHistoryScalarFieldEnum: {
@@ -75954,6 +80194,20 @@ export namespace Prisma {
    * Reference to a field of type 'AcademicTestType[]'
    */
   export type ListEnumAcademicTestTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AcademicTestType[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'AcademicPreparationStatus'
+   */
+  export type EnumAcademicPreparationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AcademicPreparationStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'AcademicPreparationStatus[]'
+   */
+  export type ListEnumAcademicPreparationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AcademicPreparationStatus[]'>
     
 
 
@@ -77189,6 +81443,8 @@ export namespace Prisma {
     exams?: ExamListRelationFilter
     assessments?: AssessmentListRelationFilter
     academicTests?: AcademicTestListRelationFilter
+    academicQuestionPapers?: AcademicQuestionPaperListRelationFilter
+    academicTestProjects?: AcademicTestProjectListRelationFilter
   }
 
   export type BranchCourseOrderByWithRelationInput = {
@@ -77226,6 +81482,8 @@ export namespace Prisma {
     exams?: ExamOrderByRelationAggregateInput
     assessments?: AssessmentOrderByRelationAggregateInput
     academicTests?: AcademicTestOrderByRelationAggregateInput
+    academicQuestionPapers?: AcademicQuestionPaperOrderByRelationAggregateInput
+    academicTestProjects?: AcademicTestProjectOrderByRelationAggregateInput
   }
 
   export type BranchCourseWhereUniqueInput = Prisma.AtLeast<{
@@ -77268,6 +81526,8 @@ export namespace Prisma {
     exams?: ExamListRelationFilter
     assessments?: AssessmentListRelationFilter
     academicTests?: AcademicTestListRelationFilter
+    academicQuestionPapers?: AcademicQuestionPaperListRelationFilter
+    academicTestProjects?: AcademicTestProjectListRelationFilter
   }, "id" | "branchId_nameKey" | "branchId_courseCode">
 
   export type BranchCourseOrderByWithAggregationInput = {
@@ -77884,6 +82144,8 @@ export namespace Prisma {
     examSchedules?: ExamScheduleListRelationFilter
     assessments?: AssessmentListRelationFilter
     academicTestBatches?: AcademicTestBatchListRelationFilter
+    academicQuestionPapers?: AcademicQuestionPaperListRelationFilter
+    academicTestProjects?: AcademicTestProjectListRelationFilter
   }
 
   export type BranchBatchOrderByWithRelationInput = {
@@ -77922,6 +82184,8 @@ export namespace Prisma {
     examSchedules?: ExamScheduleOrderByRelationAggregateInput
     assessments?: AssessmentOrderByRelationAggregateInput
     academicTestBatches?: AcademicTestBatchOrderByRelationAggregateInput
+    academicQuestionPapers?: AcademicQuestionPaperOrderByRelationAggregateInput
+    academicTestProjects?: AcademicTestProjectOrderByRelationAggregateInput
   }
 
   export type BranchBatchWhereUniqueInput = Prisma.AtLeast<{
@@ -77964,6 +82228,8 @@ export namespace Prisma {
     examSchedules?: ExamScheduleListRelationFilter
     assessments?: AssessmentListRelationFilter
     academicTestBatches?: AcademicTestBatchListRelationFilter
+    academicQuestionPapers?: AcademicQuestionPaperListRelationFilter
+    academicTestProjects?: AcademicTestProjectListRelationFilter
   }, "id" | "branchId_courseId_facultyId_batchId">
 
   export type BranchBatchOrderByWithAggregationInput = {
@@ -78107,7 +82373,10 @@ export namespace Prisma {
     academicTestId?: StringFilter<"AcademicTestItem"> | string
     sequence?: IntFilter<"AcademicTestItem"> | number
     testType?: EnumAcademicTestTypeFilter<"AcademicTestItem"> | $Enums.AcademicTestType
+    requiredProgress?: IntFilter<"AcademicTestItem"> | number
     academicTest?: XOR<AcademicTestScalarRelationFilter, AcademicTestWhereInput>
+    questionPapers?: AcademicQuestionPaperListRelationFilter
+    projects?: AcademicTestProjectListRelationFilter
   }
 
   export type AcademicTestItemOrderByWithRelationInput = {
@@ -78115,7 +82384,10 @@ export namespace Prisma {
     academicTestId?: SortOrder
     sequence?: SortOrder
     testType?: SortOrder
+    requiredProgress?: SortOrder
     academicTest?: AcademicTestOrderByWithRelationInput
+    questionPapers?: AcademicQuestionPaperOrderByRelationAggregateInput
+    projects?: AcademicTestProjectOrderByRelationAggregateInput
   }
 
   export type AcademicTestItemWhereUniqueInput = Prisma.AtLeast<{
@@ -78127,7 +82399,10 @@ export namespace Prisma {
     academicTestId?: StringFilter<"AcademicTestItem"> | string
     sequence?: IntFilter<"AcademicTestItem"> | number
     testType?: EnumAcademicTestTypeFilter<"AcademicTestItem"> | $Enums.AcademicTestType
+    requiredProgress?: IntFilter<"AcademicTestItem"> | number
     academicTest?: XOR<AcademicTestScalarRelationFilter, AcademicTestWhereInput>
+    questionPapers?: AcademicQuestionPaperListRelationFilter
+    projects?: AcademicTestProjectListRelationFilter
   }, "id" | "academicTestId_sequence">
 
   export type AcademicTestItemOrderByWithAggregationInput = {
@@ -78135,6 +82410,7 @@ export namespace Prisma {
     academicTestId?: SortOrder
     sequence?: SortOrder
     testType?: SortOrder
+    requiredProgress?: SortOrder
     _count?: AcademicTestItemCountOrderByAggregateInput
     _avg?: AcademicTestItemAvgOrderByAggregateInput
     _max?: AcademicTestItemMaxOrderByAggregateInput
@@ -78150,6 +82426,7 @@ export namespace Prisma {
     academicTestId?: StringWithAggregatesFilter<"AcademicTestItem"> | string
     sequence?: IntWithAggregatesFilter<"AcademicTestItem"> | number
     testType?: EnumAcademicTestTypeWithAggregatesFilter<"AcademicTestItem"> | $Enums.AcademicTestType
+    requiredProgress?: IntWithAggregatesFilter<"AcademicTestItem"> | number
   }
 
   export type AcademicTestBatchWhereInput = {
@@ -78199,6 +82476,290 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"AcademicTestBatch"> | string
     academicTestId?: StringWithAggregatesFilter<"AcademicTestBatch"> | string
     branchBatchId?: StringWithAggregatesFilter<"AcademicTestBatch"> | string
+  }
+
+  export type AcademicQuestionPaperWhereInput = {
+    AND?: AcademicQuestionPaperWhereInput | AcademicQuestionPaperWhereInput[]
+    OR?: AcademicQuestionPaperWhereInput[]
+    NOT?: AcademicQuestionPaperWhereInput | AcademicQuestionPaperWhereInput[]
+    id?: StringFilter<"AcademicQuestionPaper"> | string
+    academicTestItemId?: StringFilter<"AcademicQuestionPaper"> | string
+    branchCourseId?: StringFilter<"AcademicQuestionPaper"> | string
+    branchBatchId?: StringFilter<"AcademicQuestionPaper"> | string
+    createdBy?: StringFilter<"AcademicQuestionPaper"> | string
+    status?: EnumAcademicPreparationStatusFilter<"AcademicQuestionPaper"> | $Enums.AcademicPreparationStatus
+    marksPerQuestion?: IntFilter<"AcademicQuestionPaper"> | number
+    totalQuestions?: IntFilter<"AcademicQuestionPaper"> | number
+    totalMarks?: IntFilter<"AcademicQuestionPaper"> | number
+    createdAt?: DateTimeFilter<"AcademicQuestionPaper"> | Date | string
+    updatedAt?: DateTimeFilter<"AcademicQuestionPaper"> | Date | string
+    academicTestItem?: XOR<AcademicTestItemScalarRelationFilter, AcademicTestItemWhereInput>
+    branchCourse?: XOR<BranchCourseScalarRelationFilter, BranchCourseWhereInput>
+    branchBatch?: XOR<BranchBatchScalarRelationFilter, BranchBatchWhereInput>
+    questions?: AcademicQuestionListRelationFilter
+  }
+
+  export type AcademicQuestionPaperOrderByWithRelationInput = {
+    id?: SortOrder
+    academicTestItemId?: SortOrder
+    branchCourseId?: SortOrder
+    branchBatchId?: SortOrder
+    createdBy?: SortOrder
+    status?: SortOrder
+    marksPerQuestion?: SortOrder
+    totalQuestions?: SortOrder
+    totalMarks?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    academicTestItem?: AcademicTestItemOrderByWithRelationInput
+    branchCourse?: BranchCourseOrderByWithRelationInput
+    branchBatch?: BranchBatchOrderByWithRelationInput
+    questions?: AcademicQuestionOrderByRelationAggregateInput
+  }
+
+  export type AcademicQuestionPaperWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    academicTestItemId_branchBatchId?: AcademicQuestionPaperAcademicTestItemIdBranchBatchIdCompoundUniqueInput
+    AND?: AcademicQuestionPaperWhereInput | AcademicQuestionPaperWhereInput[]
+    OR?: AcademicQuestionPaperWhereInput[]
+    NOT?: AcademicQuestionPaperWhereInput | AcademicQuestionPaperWhereInput[]
+    academicTestItemId?: StringFilter<"AcademicQuestionPaper"> | string
+    branchCourseId?: StringFilter<"AcademicQuestionPaper"> | string
+    branchBatchId?: StringFilter<"AcademicQuestionPaper"> | string
+    createdBy?: StringFilter<"AcademicQuestionPaper"> | string
+    status?: EnumAcademicPreparationStatusFilter<"AcademicQuestionPaper"> | $Enums.AcademicPreparationStatus
+    marksPerQuestion?: IntFilter<"AcademicQuestionPaper"> | number
+    totalQuestions?: IntFilter<"AcademicQuestionPaper"> | number
+    totalMarks?: IntFilter<"AcademicQuestionPaper"> | number
+    createdAt?: DateTimeFilter<"AcademicQuestionPaper"> | Date | string
+    updatedAt?: DateTimeFilter<"AcademicQuestionPaper"> | Date | string
+    academicTestItem?: XOR<AcademicTestItemScalarRelationFilter, AcademicTestItemWhereInput>
+    branchCourse?: XOR<BranchCourseScalarRelationFilter, BranchCourseWhereInput>
+    branchBatch?: XOR<BranchBatchScalarRelationFilter, BranchBatchWhereInput>
+    questions?: AcademicQuestionListRelationFilter
+  }, "id" | "academicTestItemId_branchBatchId">
+
+  export type AcademicQuestionPaperOrderByWithAggregationInput = {
+    id?: SortOrder
+    academicTestItemId?: SortOrder
+    branchCourseId?: SortOrder
+    branchBatchId?: SortOrder
+    createdBy?: SortOrder
+    status?: SortOrder
+    marksPerQuestion?: SortOrder
+    totalQuestions?: SortOrder
+    totalMarks?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: AcademicQuestionPaperCountOrderByAggregateInput
+    _avg?: AcademicQuestionPaperAvgOrderByAggregateInput
+    _max?: AcademicQuestionPaperMaxOrderByAggregateInput
+    _min?: AcademicQuestionPaperMinOrderByAggregateInput
+    _sum?: AcademicQuestionPaperSumOrderByAggregateInput
+  }
+
+  export type AcademicQuestionPaperScalarWhereWithAggregatesInput = {
+    AND?: AcademicQuestionPaperScalarWhereWithAggregatesInput | AcademicQuestionPaperScalarWhereWithAggregatesInput[]
+    OR?: AcademicQuestionPaperScalarWhereWithAggregatesInput[]
+    NOT?: AcademicQuestionPaperScalarWhereWithAggregatesInput | AcademicQuestionPaperScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"AcademicQuestionPaper"> | string
+    academicTestItemId?: StringWithAggregatesFilter<"AcademicQuestionPaper"> | string
+    branchCourseId?: StringWithAggregatesFilter<"AcademicQuestionPaper"> | string
+    branchBatchId?: StringWithAggregatesFilter<"AcademicQuestionPaper"> | string
+    createdBy?: StringWithAggregatesFilter<"AcademicQuestionPaper"> | string
+    status?: EnumAcademicPreparationStatusWithAggregatesFilter<"AcademicQuestionPaper"> | $Enums.AcademicPreparationStatus
+    marksPerQuestion?: IntWithAggregatesFilter<"AcademicQuestionPaper"> | number
+    totalQuestions?: IntWithAggregatesFilter<"AcademicQuestionPaper"> | number
+    totalMarks?: IntWithAggregatesFilter<"AcademicQuestionPaper"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"AcademicQuestionPaper"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"AcademicQuestionPaper"> | Date | string
+  }
+
+  export type AcademicQuestionWhereInput = {
+    AND?: AcademicQuestionWhereInput | AcademicQuestionWhereInput[]
+    OR?: AcademicQuestionWhereInput[]
+    NOT?: AcademicQuestionWhereInput | AcademicQuestionWhereInput[]
+    id?: StringFilter<"AcademicQuestion"> | string
+    questionPaperId?: StringFilter<"AcademicQuestion"> | string
+    questionNumber?: IntFilter<"AcademicQuestion"> | number
+    questionText?: StringFilter<"AcademicQuestion"> | string
+    optionA?: StringFilter<"AcademicQuestion"> | string
+    optionB?: StringFilter<"AcademicQuestion"> | string
+    optionC?: StringFilter<"AcademicQuestion"> | string
+    optionD?: StringFilter<"AcademicQuestion"> | string
+    correctAnswer?: StringFilter<"AcademicQuestion"> | string
+    createdAt?: DateTimeFilter<"AcademicQuestion"> | Date | string
+    updatedAt?: DateTimeFilter<"AcademicQuestion"> | Date | string
+    questionPaper?: XOR<AcademicQuestionPaperScalarRelationFilter, AcademicQuestionPaperWhereInput>
+  }
+
+  export type AcademicQuestionOrderByWithRelationInput = {
+    id?: SortOrder
+    questionPaperId?: SortOrder
+    questionNumber?: SortOrder
+    questionText?: SortOrder
+    optionA?: SortOrder
+    optionB?: SortOrder
+    optionC?: SortOrder
+    optionD?: SortOrder
+    correctAnswer?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    questionPaper?: AcademicQuestionPaperOrderByWithRelationInput
+  }
+
+  export type AcademicQuestionWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    questionPaperId_questionNumber?: AcademicQuestionQuestionPaperIdQuestionNumberCompoundUniqueInput
+    AND?: AcademicQuestionWhereInput | AcademicQuestionWhereInput[]
+    OR?: AcademicQuestionWhereInput[]
+    NOT?: AcademicQuestionWhereInput | AcademicQuestionWhereInput[]
+    questionPaperId?: StringFilter<"AcademicQuestion"> | string
+    questionNumber?: IntFilter<"AcademicQuestion"> | number
+    questionText?: StringFilter<"AcademicQuestion"> | string
+    optionA?: StringFilter<"AcademicQuestion"> | string
+    optionB?: StringFilter<"AcademicQuestion"> | string
+    optionC?: StringFilter<"AcademicQuestion"> | string
+    optionD?: StringFilter<"AcademicQuestion"> | string
+    correctAnswer?: StringFilter<"AcademicQuestion"> | string
+    createdAt?: DateTimeFilter<"AcademicQuestion"> | Date | string
+    updatedAt?: DateTimeFilter<"AcademicQuestion"> | Date | string
+    questionPaper?: XOR<AcademicQuestionPaperScalarRelationFilter, AcademicQuestionPaperWhereInput>
+  }, "id" | "questionPaperId_questionNumber">
+
+  export type AcademicQuestionOrderByWithAggregationInput = {
+    id?: SortOrder
+    questionPaperId?: SortOrder
+    questionNumber?: SortOrder
+    questionText?: SortOrder
+    optionA?: SortOrder
+    optionB?: SortOrder
+    optionC?: SortOrder
+    optionD?: SortOrder
+    correctAnswer?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: AcademicQuestionCountOrderByAggregateInput
+    _avg?: AcademicQuestionAvgOrderByAggregateInput
+    _max?: AcademicQuestionMaxOrderByAggregateInput
+    _min?: AcademicQuestionMinOrderByAggregateInput
+    _sum?: AcademicQuestionSumOrderByAggregateInput
+  }
+
+  export type AcademicQuestionScalarWhereWithAggregatesInput = {
+    AND?: AcademicQuestionScalarWhereWithAggregatesInput | AcademicQuestionScalarWhereWithAggregatesInput[]
+    OR?: AcademicQuestionScalarWhereWithAggregatesInput[]
+    NOT?: AcademicQuestionScalarWhereWithAggregatesInput | AcademicQuestionScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"AcademicQuestion"> | string
+    questionPaperId?: StringWithAggregatesFilter<"AcademicQuestion"> | string
+    questionNumber?: IntWithAggregatesFilter<"AcademicQuestion"> | number
+    questionText?: StringWithAggregatesFilter<"AcademicQuestion"> | string
+    optionA?: StringWithAggregatesFilter<"AcademicQuestion"> | string
+    optionB?: StringWithAggregatesFilter<"AcademicQuestion"> | string
+    optionC?: StringWithAggregatesFilter<"AcademicQuestion"> | string
+    optionD?: StringWithAggregatesFilter<"AcademicQuestion"> | string
+    correctAnswer?: StringWithAggregatesFilter<"AcademicQuestion"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"AcademicQuestion"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"AcademicQuestion"> | Date | string
+  }
+
+  export type AcademicTestProjectWhereInput = {
+    AND?: AcademicTestProjectWhereInput | AcademicTestProjectWhereInput[]
+    OR?: AcademicTestProjectWhereInput[]
+    NOT?: AcademicTestProjectWhereInput | AcademicTestProjectWhereInput[]
+    id?: StringFilter<"AcademicTestProject"> | string
+    academicTestItemId?: StringFilter<"AcademicTestProject"> | string
+    branchCourseId?: StringFilter<"AcademicTestProject"> | string
+    branchBatchId?: StringFilter<"AcademicTestProject"> | string
+    createdBy?: StringFilter<"AcademicTestProject"> | string
+    status?: EnumAcademicPreparationStatusFilter<"AcademicTestProject"> | $Enums.AcademicPreparationStatus
+    projectTitle?: StringFilter<"AcademicTestProject"> | string
+    projectDescription?: StringFilter<"AcademicTestProject"> | string
+    projectRequirements?: StringNullableFilter<"AcademicTestProject"> | string | null
+    projectMarks?: IntFilter<"AcademicTestProject"> | number
+    createdAt?: DateTimeFilter<"AcademicTestProject"> | Date | string
+    updatedAt?: DateTimeFilter<"AcademicTestProject"> | Date | string
+    academicTestItem?: XOR<AcademicTestItemScalarRelationFilter, AcademicTestItemWhereInput>
+    branchCourse?: XOR<BranchCourseScalarRelationFilter, BranchCourseWhereInput>
+    branchBatch?: XOR<BranchBatchScalarRelationFilter, BranchBatchWhereInput>
+  }
+
+  export type AcademicTestProjectOrderByWithRelationInput = {
+    id?: SortOrder
+    academicTestItemId?: SortOrder
+    branchCourseId?: SortOrder
+    branchBatchId?: SortOrder
+    createdBy?: SortOrder
+    status?: SortOrder
+    projectTitle?: SortOrder
+    projectDescription?: SortOrder
+    projectRequirements?: SortOrderInput | SortOrder
+    projectMarks?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    academicTestItem?: AcademicTestItemOrderByWithRelationInput
+    branchCourse?: BranchCourseOrderByWithRelationInput
+    branchBatch?: BranchBatchOrderByWithRelationInput
+  }
+
+  export type AcademicTestProjectWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    academicTestItemId_branchBatchId?: AcademicTestProjectAcademicTestItemIdBranchBatchIdCompoundUniqueInput
+    AND?: AcademicTestProjectWhereInput | AcademicTestProjectWhereInput[]
+    OR?: AcademicTestProjectWhereInput[]
+    NOT?: AcademicTestProjectWhereInput | AcademicTestProjectWhereInput[]
+    academicTestItemId?: StringFilter<"AcademicTestProject"> | string
+    branchCourseId?: StringFilter<"AcademicTestProject"> | string
+    branchBatchId?: StringFilter<"AcademicTestProject"> | string
+    createdBy?: StringFilter<"AcademicTestProject"> | string
+    status?: EnumAcademicPreparationStatusFilter<"AcademicTestProject"> | $Enums.AcademicPreparationStatus
+    projectTitle?: StringFilter<"AcademicTestProject"> | string
+    projectDescription?: StringFilter<"AcademicTestProject"> | string
+    projectRequirements?: StringNullableFilter<"AcademicTestProject"> | string | null
+    projectMarks?: IntFilter<"AcademicTestProject"> | number
+    createdAt?: DateTimeFilter<"AcademicTestProject"> | Date | string
+    updatedAt?: DateTimeFilter<"AcademicTestProject"> | Date | string
+    academicTestItem?: XOR<AcademicTestItemScalarRelationFilter, AcademicTestItemWhereInput>
+    branchCourse?: XOR<BranchCourseScalarRelationFilter, BranchCourseWhereInput>
+    branchBatch?: XOR<BranchBatchScalarRelationFilter, BranchBatchWhereInput>
+  }, "id" | "academicTestItemId_branchBatchId">
+
+  export type AcademicTestProjectOrderByWithAggregationInput = {
+    id?: SortOrder
+    academicTestItemId?: SortOrder
+    branchCourseId?: SortOrder
+    branchBatchId?: SortOrder
+    createdBy?: SortOrder
+    status?: SortOrder
+    projectTitle?: SortOrder
+    projectDescription?: SortOrder
+    projectRequirements?: SortOrderInput | SortOrder
+    projectMarks?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: AcademicTestProjectCountOrderByAggregateInput
+    _avg?: AcademicTestProjectAvgOrderByAggregateInput
+    _max?: AcademicTestProjectMaxOrderByAggregateInput
+    _min?: AcademicTestProjectMinOrderByAggregateInput
+    _sum?: AcademicTestProjectSumOrderByAggregateInput
+  }
+
+  export type AcademicTestProjectScalarWhereWithAggregatesInput = {
+    AND?: AcademicTestProjectScalarWhereWithAggregatesInput | AcademicTestProjectScalarWhereWithAggregatesInput[]
+    OR?: AcademicTestProjectScalarWhereWithAggregatesInput[]
+    NOT?: AcademicTestProjectScalarWhereWithAggregatesInput | AcademicTestProjectScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"AcademicTestProject"> | string
+    academicTestItemId?: StringWithAggregatesFilter<"AcademicTestProject"> | string
+    branchCourseId?: StringWithAggregatesFilter<"AcademicTestProject"> | string
+    branchBatchId?: StringWithAggregatesFilter<"AcademicTestProject"> | string
+    createdBy?: StringWithAggregatesFilter<"AcademicTestProject"> | string
+    status?: EnumAcademicPreparationStatusWithAggregatesFilter<"AcademicTestProject"> | $Enums.AcademicPreparationStatus
+    projectTitle?: StringWithAggregatesFilter<"AcademicTestProject"> | string
+    projectDescription?: StringWithAggregatesFilter<"AcademicTestProject"> | string
+    projectRequirements?: StringNullableWithAggregatesFilter<"AcademicTestProject"> | string | null
+    projectMarks?: IntWithAggregatesFilter<"AcademicTestProject"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"AcademicTestProject"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"AcademicTestProject"> | Date | string
   }
 
   export type CourseStatusHistoryWhereInput = {
@@ -83622,6 +88183,8 @@ export namespace Prisma {
     exams?: ExamCreateNestedManyWithoutBranchCourseInput
     assessments?: AssessmentCreateNestedManyWithoutBranchCourseInput
     academicTests?: AcademicTestCreateNestedManyWithoutBranchCourseInput
+    academicQuestionPapers?: AcademicQuestionPaperCreateNestedManyWithoutBranchCourseInput
+    academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchCourseInput
   }
 
   export type BranchCourseUncheckedCreateInput = {
@@ -83658,6 +88221,8 @@ export namespace Prisma {
     exams?: ExamUncheckedCreateNestedManyWithoutBranchCourseInput
     assessments?: AssessmentUncheckedCreateNestedManyWithoutBranchCourseInput
     academicTests?: AcademicTestUncheckedCreateNestedManyWithoutBranchCourseInput
+    academicQuestionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchCourseInput
+    academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchCourseInput
   }
 
   export type BranchCourseUpdateInput = {
@@ -83694,6 +88259,8 @@ export namespace Prisma {
     exams?: ExamUpdateManyWithoutBranchCourseNestedInput
     assessments?: AssessmentUpdateManyWithoutBranchCourseNestedInput
     academicTests?: AcademicTestUpdateManyWithoutBranchCourseNestedInput
+    academicQuestionPapers?: AcademicQuestionPaperUpdateManyWithoutBranchCourseNestedInput
+    academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchCourseNestedInput
   }
 
   export type BranchCourseUncheckedUpdateInput = {
@@ -83730,6 +88297,8 @@ export namespace Prisma {
     exams?: ExamUncheckedUpdateManyWithoutBranchCourseNestedInput
     assessments?: AssessmentUncheckedUpdateManyWithoutBranchCourseNestedInput
     academicTests?: AcademicTestUncheckedUpdateManyWithoutBranchCourseNestedInput
+    academicQuestionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutBranchCourseNestedInput
+    academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchCourseNestedInput
   }
 
   export type BranchCourseCreateManyInput = {
@@ -84427,6 +88996,8 @@ export namespace Prisma {
     examSchedules?: ExamScheduleCreateNestedManyWithoutBranchBatchInput
     assessments?: AssessmentCreateNestedManyWithoutBranchBatchInput
     academicTestBatches?: AcademicTestBatchCreateNestedManyWithoutBranchBatchInput
+    academicQuestionPapers?: AcademicQuestionPaperCreateNestedManyWithoutBranchBatchInput
+    academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchBatchInput
   }
 
   export type BranchBatchUncheckedCreateInput = {
@@ -84462,6 +89033,8 @@ export namespace Prisma {
     examSchedules?: ExamScheduleUncheckedCreateNestedManyWithoutBranchBatchInput
     assessments?: AssessmentUncheckedCreateNestedManyWithoutBranchBatchInput
     academicTestBatches?: AcademicTestBatchUncheckedCreateNestedManyWithoutBranchBatchInput
+    academicQuestionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchBatchInput
+    academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchBatchInput
   }
 
   export type BranchBatchUpdateInput = {
@@ -84497,6 +89070,8 @@ export namespace Prisma {
     examSchedules?: ExamScheduleUpdateManyWithoutBranchBatchNestedInput
     assessments?: AssessmentUpdateManyWithoutBranchBatchNestedInput
     academicTestBatches?: AcademicTestBatchUpdateManyWithoutBranchBatchNestedInput
+    academicQuestionPapers?: AcademicQuestionPaperUpdateManyWithoutBranchBatchNestedInput
+    academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchBatchNestedInput
   }
 
   export type BranchBatchUncheckedUpdateInput = {
@@ -84532,6 +89107,8 @@ export namespace Prisma {
     examSchedules?: ExamScheduleUncheckedUpdateManyWithoutBranchBatchNestedInput
     assessments?: AssessmentUncheckedUpdateManyWithoutBranchBatchNestedInput
     academicTestBatches?: AcademicTestBatchUncheckedUpdateManyWithoutBranchBatchNestedInput
+    academicQuestionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutBranchBatchNestedInput
+    academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchBatchNestedInput
   }
 
   export type BranchBatchCreateManyInput = {
@@ -84694,7 +89271,10 @@ export namespace Prisma {
     id?: string
     sequence: number
     testType: $Enums.AcademicTestType
+    requiredProgress?: number
     academicTest: AcademicTestCreateNestedOneWithoutItemsInput
+    questionPapers?: AcademicQuestionPaperCreateNestedManyWithoutAcademicTestItemInput
+    projects?: AcademicTestProjectCreateNestedManyWithoutAcademicTestItemInput
   }
 
   export type AcademicTestItemUncheckedCreateInput = {
@@ -84702,13 +89282,19 @@ export namespace Prisma {
     academicTestId: string
     sequence: number
     testType: $Enums.AcademicTestType
+    requiredProgress?: number
+    questionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutAcademicTestItemInput
+    projects?: AcademicTestProjectUncheckedCreateNestedManyWithoutAcademicTestItemInput
   }
 
   export type AcademicTestItemUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     sequence?: IntFieldUpdateOperationsInput | number
     testType?: EnumAcademicTestTypeFieldUpdateOperationsInput | $Enums.AcademicTestType
+    requiredProgress?: IntFieldUpdateOperationsInput | number
     academicTest?: AcademicTestUpdateOneRequiredWithoutItemsNestedInput
+    questionPapers?: AcademicQuestionPaperUpdateManyWithoutAcademicTestItemNestedInput
+    projects?: AcademicTestProjectUpdateManyWithoutAcademicTestItemNestedInput
   }
 
   export type AcademicTestItemUncheckedUpdateInput = {
@@ -84716,6 +89302,9 @@ export namespace Prisma {
     academicTestId?: StringFieldUpdateOperationsInput | string
     sequence?: IntFieldUpdateOperationsInput | number
     testType?: EnumAcademicTestTypeFieldUpdateOperationsInput | $Enums.AcademicTestType
+    requiredProgress?: IntFieldUpdateOperationsInput | number
+    questionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutAcademicTestItemNestedInput
+    projects?: AcademicTestProjectUncheckedUpdateManyWithoutAcademicTestItemNestedInput
   }
 
   export type AcademicTestItemCreateManyInput = {
@@ -84723,12 +89312,14 @@ export namespace Prisma {
     academicTestId: string
     sequence: number
     testType: $Enums.AcademicTestType
+    requiredProgress?: number
   }
 
   export type AcademicTestItemUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     sequence?: IntFieldUpdateOperationsInput | number
     testType?: EnumAcademicTestTypeFieldUpdateOperationsInput | $Enums.AcademicTestType
+    requiredProgress?: IntFieldUpdateOperationsInput | number
   }
 
   export type AcademicTestItemUncheckedUpdateManyInput = {
@@ -84736,6 +89327,7 @@ export namespace Prisma {
     academicTestId?: StringFieldUpdateOperationsInput | string
     sequence?: IntFieldUpdateOperationsInput | number
     testType?: EnumAcademicTestTypeFieldUpdateOperationsInput | $Enums.AcademicTestType
+    requiredProgress?: IntFieldUpdateOperationsInput | number
   }
 
   export type AcademicTestBatchCreateInput = {
@@ -84776,6 +89368,304 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     academicTestId?: StringFieldUpdateOperationsInput | string
     branchBatchId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type AcademicQuestionPaperCreateInput = {
+    id?: string
+    createdBy: string
+    status?: $Enums.AcademicPreparationStatus
+    marksPerQuestion?: number
+    totalQuestions?: number
+    totalMarks?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    academicTestItem: AcademicTestItemCreateNestedOneWithoutQuestionPapersInput
+    branchCourse: BranchCourseCreateNestedOneWithoutAcademicQuestionPapersInput
+    branchBatch: BranchBatchCreateNestedOneWithoutAcademicQuestionPapersInput
+    questions?: AcademicQuestionCreateNestedManyWithoutQuestionPaperInput
+  }
+
+  export type AcademicQuestionPaperUncheckedCreateInput = {
+    id?: string
+    academicTestItemId: string
+    branchCourseId: string
+    branchBatchId: string
+    createdBy: string
+    status?: $Enums.AcademicPreparationStatus
+    marksPerQuestion?: number
+    totalQuestions?: number
+    totalMarks?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    questions?: AcademicQuestionUncheckedCreateNestedManyWithoutQuestionPaperInput
+  }
+
+  export type AcademicQuestionPaperUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdBy?: StringFieldUpdateOperationsInput | string
+    status?: EnumAcademicPreparationStatusFieldUpdateOperationsInput | $Enums.AcademicPreparationStatus
+    marksPerQuestion?: IntFieldUpdateOperationsInput | number
+    totalQuestions?: IntFieldUpdateOperationsInput | number
+    totalMarks?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    academicTestItem?: AcademicTestItemUpdateOneRequiredWithoutQuestionPapersNestedInput
+    branchCourse?: BranchCourseUpdateOneRequiredWithoutAcademicQuestionPapersNestedInput
+    branchBatch?: BranchBatchUpdateOneRequiredWithoutAcademicQuestionPapersNestedInput
+    questions?: AcademicQuestionUpdateManyWithoutQuestionPaperNestedInput
+  }
+
+  export type AcademicQuestionPaperUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    academicTestItemId?: StringFieldUpdateOperationsInput | string
+    branchCourseId?: StringFieldUpdateOperationsInput | string
+    branchBatchId?: StringFieldUpdateOperationsInput | string
+    createdBy?: StringFieldUpdateOperationsInput | string
+    status?: EnumAcademicPreparationStatusFieldUpdateOperationsInput | $Enums.AcademicPreparationStatus
+    marksPerQuestion?: IntFieldUpdateOperationsInput | number
+    totalQuestions?: IntFieldUpdateOperationsInput | number
+    totalMarks?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    questions?: AcademicQuestionUncheckedUpdateManyWithoutQuestionPaperNestedInput
+  }
+
+  export type AcademicQuestionPaperCreateManyInput = {
+    id?: string
+    academicTestItemId: string
+    branchCourseId: string
+    branchBatchId: string
+    createdBy: string
+    status?: $Enums.AcademicPreparationStatus
+    marksPerQuestion?: number
+    totalQuestions?: number
+    totalMarks?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AcademicQuestionPaperUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdBy?: StringFieldUpdateOperationsInput | string
+    status?: EnumAcademicPreparationStatusFieldUpdateOperationsInput | $Enums.AcademicPreparationStatus
+    marksPerQuestion?: IntFieldUpdateOperationsInput | number
+    totalQuestions?: IntFieldUpdateOperationsInput | number
+    totalMarks?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AcademicQuestionPaperUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    academicTestItemId?: StringFieldUpdateOperationsInput | string
+    branchCourseId?: StringFieldUpdateOperationsInput | string
+    branchBatchId?: StringFieldUpdateOperationsInput | string
+    createdBy?: StringFieldUpdateOperationsInput | string
+    status?: EnumAcademicPreparationStatusFieldUpdateOperationsInput | $Enums.AcademicPreparationStatus
+    marksPerQuestion?: IntFieldUpdateOperationsInput | number
+    totalQuestions?: IntFieldUpdateOperationsInput | number
+    totalMarks?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AcademicQuestionCreateInput = {
+    id?: string
+    questionNumber: number
+    questionText: string
+    optionA: string
+    optionB: string
+    optionC: string
+    optionD: string
+    correctAnswer: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    questionPaper: AcademicQuestionPaperCreateNestedOneWithoutQuestionsInput
+  }
+
+  export type AcademicQuestionUncheckedCreateInput = {
+    id?: string
+    questionPaperId: string
+    questionNumber: number
+    questionText: string
+    optionA: string
+    optionB: string
+    optionC: string
+    optionD: string
+    correctAnswer: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AcademicQuestionUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    questionNumber?: IntFieldUpdateOperationsInput | number
+    questionText?: StringFieldUpdateOperationsInput | string
+    optionA?: StringFieldUpdateOperationsInput | string
+    optionB?: StringFieldUpdateOperationsInput | string
+    optionC?: StringFieldUpdateOperationsInput | string
+    optionD?: StringFieldUpdateOperationsInput | string
+    correctAnswer?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    questionPaper?: AcademicQuestionPaperUpdateOneRequiredWithoutQuestionsNestedInput
+  }
+
+  export type AcademicQuestionUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    questionPaperId?: StringFieldUpdateOperationsInput | string
+    questionNumber?: IntFieldUpdateOperationsInput | number
+    questionText?: StringFieldUpdateOperationsInput | string
+    optionA?: StringFieldUpdateOperationsInput | string
+    optionB?: StringFieldUpdateOperationsInput | string
+    optionC?: StringFieldUpdateOperationsInput | string
+    optionD?: StringFieldUpdateOperationsInput | string
+    correctAnswer?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AcademicQuestionCreateManyInput = {
+    id?: string
+    questionPaperId: string
+    questionNumber: number
+    questionText: string
+    optionA: string
+    optionB: string
+    optionC: string
+    optionD: string
+    correctAnswer: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AcademicQuestionUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    questionNumber?: IntFieldUpdateOperationsInput | number
+    questionText?: StringFieldUpdateOperationsInput | string
+    optionA?: StringFieldUpdateOperationsInput | string
+    optionB?: StringFieldUpdateOperationsInput | string
+    optionC?: StringFieldUpdateOperationsInput | string
+    optionD?: StringFieldUpdateOperationsInput | string
+    correctAnswer?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AcademicQuestionUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    questionPaperId?: StringFieldUpdateOperationsInput | string
+    questionNumber?: IntFieldUpdateOperationsInput | number
+    questionText?: StringFieldUpdateOperationsInput | string
+    optionA?: StringFieldUpdateOperationsInput | string
+    optionB?: StringFieldUpdateOperationsInput | string
+    optionC?: StringFieldUpdateOperationsInput | string
+    optionD?: StringFieldUpdateOperationsInput | string
+    correctAnswer?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AcademicTestProjectCreateInput = {
+    id?: string
+    createdBy: string
+    status?: $Enums.AcademicPreparationStatus
+    projectTitle?: string
+    projectDescription?: string
+    projectRequirements?: string | null
+    projectMarks?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    academicTestItem: AcademicTestItemCreateNestedOneWithoutProjectsInput
+    branchCourse: BranchCourseCreateNestedOneWithoutAcademicTestProjectsInput
+    branchBatch: BranchBatchCreateNestedOneWithoutAcademicTestProjectsInput
+  }
+
+  export type AcademicTestProjectUncheckedCreateInput = {
+    id?: string
+    academicTestItemId: string
+    branchCourseId: string
+    branchBatchId: string
+    createdBy: string
+    status?: $Enums.AcademicPreparationStatus
+    projectTitle?: string
+    projectDescription?: string
+    projectRequirements?: string | null
+    projectMarks?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AcademicTestProjectUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdBy?: StringFieldUpdateOperationsInput | string
+    status?: EnumAcademicPreparationStatusFieldUpdateOperationsInput | $Enums.AcademicPreparationStatus
+    projectTitle?: StringFieldUpdateOperationsInput | string
+    projectDescription?: StringFieldUpdateOperationsInput | string
+    projectRequirements?: NullableStringFieldUpdateOperationsInput | string | null
+    projectMarks?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    academicTestItem?: AcademicTestItemUpdateOneRequiredWithoutProjectsNestedInput
+    branchCourse?: BranchCourseUpdateOneRequiredWithoutAcademicTestProjectsNestedInput
+    branchBatch?: BranchBatchUpdateOneRequiredWithoutAcademicTestProjectsNestedInput
+  }
+
+  export type AcademicTestProjectUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    academicTestItemId?: StringFieldUpdateOperationsInput | string
+    branchCourseId?: StringFieldUpdateOperationsInput | string
+    branchBatchId?: StringFieldUpdateOperationsInput | string
+    createdBy?: StringFieldUpdateOperationsInput | string
+    status?: EnumAcademicPreparationStatusFieldUpdateOperationsInput | $Enums.AcademicPreparationStatus
+    projectTitle?: StringFieldUpdateOperationsInput | string
+    projectDescription?: StringFieldUpdateOperationsInput | string
+    projectRequirements?: NullableStringFieldUpdateOperationsInput | string | null
+    projectMarks?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AcademicTestProjectCreateManyInput = {
+    id?: string
+    academicTestItemId: string
+    branchCourseId: string
+    branchBatchId: string
+    createdBy: string
+    status?: $Enums.AcademicPreparationStatus
+    projectTitle?: string
+    projectDescription?: string
+    projectRequirements?: string | null
+    projectMarks?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AcademicTestProjectUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdBy?: StringFieldUpdateOperationsInput | string
+    status?: EnumAcademicPreparationStatusFieldUpdateOperationsInput | $Enums.AcademicPreparationStatus
+    projectTitle?: StringFieldUpdateOperationsInput | string
+    projectDescription?: StringFieldUpdateOperationsInput | string
+    projectRequirements?: NullableStringFieldUpdateOperationsInput | string | null
+    projectMarks?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AcademicTestProjectUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    academicTestItemId?: StringFieldUpdateOperationsInput | string
+    branchCourseId?: StringFieldUpdateOperationsInput | string
+    branchBatchId?: StringFieldUpdateOperationsInput | string
+    createdBy?: StringFieldUpdateOperationsInput | string
+    status?: EnumAcademicPreparationStatusFieldUpdateOperationsInput | $Enums.AcademicPreparationStatus
+    projectTitle?: StringFieldUpdateOperationsInput | string
+    projectDescription?: StringFieldUpdateOperationsInput | string
+    projectRequirements?: NullableStringFieldUpdateOperationsInput | string | null
+    projectMarks?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type CourseStatusHistoryCreateInput = {
@@ -90666,6 +95556,18 @@ export namespace Prisma {
     none?: AcademicTestWhereInput
   }
 
+  export type AcademicQuestionPaperListRelationFilter = {
+    every?: AcademicQuestionPaperWhereInput
+    some?: AcademicQuestionPaperWhereInput
+    none?: AcademicQuestionPaperWhereInput
+  }
+
+  export type AcademicTestProjectListRelationFilter = {
+    every?: AcademicTestProjectWhereInput
+    some?: AcademicTestProjectWhereInput
+    none?: AcademicTestProjectWhereInput
+  }
+
   export type BranchCourseModuleOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -90679,6 +95581,14 @@ export namespace Prisma {
   }
 
   export type AcademicTestOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type AcademicQuestionPaperOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type AcademicTestProjectOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -91363,10 +96273,12 @@ export namespace Prisma {
     academicTestId?: SortOrder
     sequence?: SortOrder
     testType?: SortOrder
+    requiredProgress?: SortOrder
   }
 
   export type AcademicTestItemAvgOrderByAggregateInput = {
     sequence?: SortOrder
+    requiredProgress?: SortOrder
   }
 
   export type AcademicTestItemMaxOrderByAggregateInput = {
@@ -91374,6 +96286,7 @@ export namespace Prisma {
     academicTestId?: SortOrder
     sequence?: SortOrder
     testType?: SortOrder
+    requiredProgress?: SortOrder
   }
 
   export type AcademicTestItemMinOrderByAggregateInput = {
@@ -91381,10 +96294,12 @@ export namespace Prisma {
     academicTestId?: SortOrder
     sequence?: SortOrder
     testType?: SortOrder
+    requiredProgress?: SortOrder
   }
 
   export type AcademicTestItemSumOrderByAggregateInput = {
     sequence?: SortOrder
+    requiredProgress?: SortOrder
   }
 
   export type EnumAcademicTestTypeWithAggregatesFilter<$PrismaModel = never> = {
@@ -91423,6 +96338,215 @@ export namespace Prisma {
     id?: SortOrder
     academicTestId?: SortOrder
     branchBatchId?: SortOrder
+  }
+
+  export type EnumAcademicPreparationStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.AcademicPreparationStatus | EnumAcademicPreparationStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.AcademicPreparationStatus[] | ListEnumAcademicPreparationStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AcademicPreparationStatus[] | ListEnumAcademicPreparationStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumAcademicPreparationStatusFilter<$PrismaModel> | $Enums.AcademicPreparationStatus
+  }
+
+  export type AcademicTestItemScalarRelationFilter = {
+    is?: AcademicTestItemWhereInput
+    isNot?: AcademicTestItemWhereInput
+  }
+
+  export type AcademicQuestionListRelationFilter = {
+    every?: AcademicQuestionWhereInput
+    some?: AcademicQuestionWhereInput
+    none?: AcademicQuestionWhereInput
+  }
+
+  export type AcademicQuestionOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type AcademicQuestionPaperAcademicTestItemIdBranchBatchIdCompoundUniqueInput = {
+    academicTestItemId: string
+    branchBatchId: string
+  }
+
+  export type AcademicQuestionPaperCountOrderByAggregateInput = {
+    id?: SortOrder
+    academicTestItemId?: SortOrder
+    branchCourseId?: SortOrder
+    branchBatchId?: SortOrder
+    createdBy?: SortOrder
+    status?: SortOrder
+    marksPerQuestion?: SortOrder
+    totalQuestions?: SortOrder
+    totalMarks?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AcademicQuestionPaperAvgOrderByAggregateInput = {
+    marksPerQuestion?: SortOrder
+    totalQuestions?: SortOrder
+    totalMarks?: SortOrder
+  }
+
+  export type AcademicQuestionPaperMaxOrderByAggregateInput = {
+    id?: SortOrder
+    academicTestItemId?: SortOrder
+    branchCourseId?: SortOrder
+    branchBatchId?: SortOrder
+    createdBy?: SortOrder
+    status?: SortOrder
+    marksPerQuestion?: SortOrder
+    totalQuestions?: SortOrder
+    totalMarks?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AcademicQuestionPaperMinOrderByAggregateInput = {
+    id?: SortOrder
+    academicTestItemId?: SortOrder
+    branchCourseId?: SortOrder
+    branchBatchId?: SortOrder
+    createdBy?: SortOrder
+    status?: SortOrder
+    marksPerQuestion?: SortOrder
+    totalQuestions?: SortOrder
+    totalMarks?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AcademicQuestionPaperSumOrderByAggregateInput = {
+    marksPerQuestion?: SortOrder
+    totalQuestions?: SortOrder
+    totalMarks?: SortOrder
+  }
+
+  export type EnumAcademicPreparationStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.AcademicPreparationStatus | EnumAcademicPreparationStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.AcademicPreparationStatus[] | ListEnumAcademicPreparationStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AcademicPreparationStatus[] | ListEnumAcademicPreparationStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumAcademicPreparationStatusWithAggregatesFilter<$PrismaModel> | $Enums.AcademicPreparationStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAcademicPreparationStatusFilter<$PrismaModel>
+    _max?: NestedEnumAcademicPreparationStatusFilter<$PrismaModel>
+  }
+
+  export type AcademicQuestionPaperScalarRelationFilter = {
+    is?: AcademicQuestionPaperWhereInput
+    isNot?: AcademicQuestionPaperWhereInput
+  }
+
+  export type AcademicQuestionQuestionPaperIdQuestionNumberCompoundUniqueInput = {
+    questionPaperId: string
+    questionNumber: number
+  }
+
+  export type AcademicQuestionCountOrderByAggregateInput = {
+    id?: SortOrder
+    questionPaperId?: SortOrder
+    questionNumber?: SortOrder
+    questionText?: SortOrder
+    optionA?: SortOrder
+    optionB?: SortOrder
+    optionC?: SortOrder
+    optionD?: SortOrder
+    correctAnswer?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AcademicQuestionAvgOrderByAggregateInput = {
+    questionNumber?: SortOrder
+  }
+
+  export type AcademicQuestionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    questionPaperId?: SortOrder
+    questionNumber?: SortOrder
+    questionText?: SortOrder
+    optionA?: SortOrder
+    optionB?: SortOrder
+    optionC?: SortOrder
+    optionD?: SortOrder
+    correctAnswer?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AcademicQuestionMinOrderByAggregateInput = {
+    id?: SortOrder
+    questionPaperId?: SortOrder
+    questionNumber?: SortOrder
+    questionText?: SortOrder
+    optionA?: SortOrder
+    optionB?: SortOrder
+    optionC?: SortOrder
+    optionD?: SortOrder
+    correctAnswer?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AcademicQuestionSumOrderByAggregateInput = {
+    questionNumber?: SortOrder
+  }
+
+  export type AcademicTestProjectAcademicTestItemIdBranchBatchIdCompoundUniqueInput = {
+    academicTestItemId: string
+    branchBatchId: string
+  }
+
+  export type AcademicTestProjectCountOrderByAggregateInput = {
+    id?: SortOrder
+    academicTestItemId?: SortOrder
+    branchCourseId?: SortOrder
+    branchBatchId?: SortOrder
+    createdBy?: SortOrder
+    status?: SortOrder
+    projectTitle?: SortOrder
+    projectDescription?: SortOrder
+    projectRequirements?: SortOrder
+    projectMarks?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AcademicTestProjectAvgOrderByAggregateInput = {
+    projectMarks?: SortOrder
+  }
+
+  export type AcademicTestProjectMaxOrderByAggregateInput = {
+    id?: SortOrder
+    academicTestItemId?: SortOrder
+    branchCourseId?: SortOrder
+    branchBatchId?: SortOrder
+    createdBy?: SortOrder
+    status?: SortOrder
+    projectTitle?: SortOrder
+    projectDescription?: SortOrder
+    projectRequirements?: SortOrder
+    projectMarks?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AcademicTestProjectMinOrderByAggregateInput = {
+    id?: SortOrder
+    academicTestItemId?: SortOrder
+    branchCourseId?: SortOrder
+    branchBatchId?: SortOrder
+    createdBy?: SortOrder
+    status?: SortOrder
+    projectTitle?: SortOrder
+    projectDescription?: SortOrder
+    projectRequirements?: SortOrder
+    projectMarks?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AcademicTestProjectSumOrderByAggregateInput = {
+    projectMarks?: SortOrder
   }
 
   export type EnumRecordStatusNullableFilter<$PrismaModel = never> = {
@@ -95765,6 +100889,20 @@ export namespace Prisma {
     connect?: AcademicTestWhereUniqueInput | AcademicTestWhereUniqueInput[]
   }
 
+  export type AcademicQuestionPaperCreateNestedManyWithoutBranchCourseInput = {
+    create?: XOR<AcademicQuestionPaperCreateWithoutBranchCourseInput, AcademicQuestionPaperUncheckedCreateWithoutBranchCourseInput> | AcademicQuestionPaperCreateWithoutBranchCourseInput[] | AcademicQuestionPaperUncheckedCreateWithoutBranchCourseInput[]
+    connectOrCreate?: AcademicQuestionPaperCreateOrConnectWithoutBranchCourseInput | AcademicQuestionPaperCreateOrConnectWithoutBranchCourseInput[]
+    createMany?: AcademicQuestionPaperCreateManyBranchCourseInputEnvelope
+    connect?: AcademicQuestionPaperWhereUniqueInput | AcademicQuestionPaperWhereUniqueInput[]
+  }
+
+  export type AcademicTestProjectCreateNestedManyWithoutBranchCourseInput = {
+    create?: XOR<AcademicTestProjectCreateWithoutBranchCourseInput, AcademicTestProjectUncheckedCreateWithoutBranchCourseInput> | AcademicTestProjectCreateWithoutBranchCourseInput[] | AcademicTestProjectUncheckedCreateWithoutBranchCourseInput[]
+    connectOrCreate?: AcademicTestProjectCreateOrConnectWithoutBranchCourseInput | AcademicTestProjectCreateOrConnectWithoutBranchCourseInput[]
+    createMany?: AcademicTestProjectCreateManyBranchCourseInputEnvelope
+    connect?: AcademicTestProjectWhereUniqueInput | AcademicTestProjectWhereUniqueInput[]
+  }
+
   export type BranchInstallmentTemplateUncheckedCreateNestedOneWithoutBranchCourseInput = {
     create?: XOR<BranchInstallmentTemplateCreateWithoutBranchCourseInput, BranchInstallmentTemplateUncheckedCreateWithoutBranchCourseInput>
     connectOrCreate?: BranchInstallmentTemplateCreateOrConnectWithoutBranchCourseInput
@@ -95839,6 +100977,20 @@ export namespace Prisma {
     connectOrCreate?: AcademicTestCreateOrConnectWithoutBranchCourseInput | AcademicTestCreateOrConnectWithoutBranchCourseInput[]
     createMany?: AcademicTestCreateManyBranchCourseInputEnvelope
     connect?: AcademicTestWhereUniqueInput | AcademicTestWhereUniqueInput[]
+  }
+
+  export type AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchCourseInput = {
+    create?: XOR<AcademicQuestionPaperCreateWithoutBranchCourseInput, AcademicQuestionPaperUncheckedCreateWithoutBranchCourseInput> | AcademicQuestionPaperCreateWithoutBranchCourseInput[] | AcademicQuestionPaperUncheckedCreateWithoutBranchCourseInput[]
+    connectOrCreate?: AcademicQuestionPaperCreateOrConnectWithoutBranchCourseInput | AcademicQuestionPaperCreateOrConnectWithoutBranchCourseInput[]
+    createMany?: AcademicQuestionPaperCreateManyBranchCourseInputEnvelope
+    connect?: AcademicQuestionPaperWhereUniqueInput | AcademicQuestionPaperWhereUniqueInput[]
+  }
+
+  export type AcademicTestProjectUncheckedCreateNestedManyWithoutBranchCourseInput = {
+    create?: XOR<AcademicTestProjectCreateWithoutBranchCourseInput, AcademicTestProjectUncheckedCreateWithoutBranchCourseInput> | AcademicTestProjectCreateWithoutBranchCourseInput[] | AcademicTestProjectUncheckedCreateWithoutBranchCourseInput[]
+    connectOrCreate?: AcademicTestProjectCreateOrConnectWithoutBranchCourseInput | AcademicTestProjectCreateOrConnectWithoutBranchCourseInput[]
+    createMany?: AcademicTestProjectCreateManyBranchCourseInputEnvelope
+    connect?: AcademicTestProjectWhereUniqueInput | AcademicTestProjectWhereUniqueInput[]
   }
 
   export type BranchUpdateOneRequiredWithoutBranchCoursesNestedInput = {
@@ -95999,6 +101151,34 @@ export namespace Prisma {
     deleteMany?: AcademicTestScalarWhereInput | AcademicTestScalarWhereInput[]
   }
 
+  export type AcademicQuestionPaperUpdateManyWithoutBranchCourseNestedInput = {
+    create?: XOR<AcademicQuestionPaperCreateWithoutBranchCourseInput, AcademicQuestionPaperUncheckedCreateWithoutBranchCourseInput> | AcademicQuestionPaperCreateWithoutBranchCourseInput[] | AcademicQuestionPaperUncheckedCreateWithoutBranchCourseInput[]
+    connectOrCreate?: AcademicQuestionPaperCreateOrConnectWithoutBranchCourseInput | AcademicQuestionPaperCreateOrConnectWithoutBranchCourseInput[]
+    upsert?: AcademicQuestionPaperUpsertWithWhereUniqueWithoutBranchCourseInput | AcademicQuestionPaperUpsertWithWhereUniqueWithoutBranchCourseInput[]
+    createMany?: AcademicQuestionPaperCreateManyBranchCourseInputEnvelope
+    set?: AcademicQuestionPaperWhereUniqueInput | AcademicQuestionPaperWhereUniqueInput[]
+    disconnect?: AcademicQuestionPaperWhereUniqueInput | AcademicQuestionPaperWhereUniqueInput[]
+    delete?: AcademicQuestionPaperWhereUniqueInput | AcademicQuestionPaperWhereUniqueInput[]
+    connect?: AcademicQuestionPaperWhereUniqueInput | AcademicQuestionPaperWhereUniqueInput[]
+    update?: AcademicQuestionPaperUpdateWithWhereUniqueWithoutBranchCourseInput | AcademicQuestionPaperUpdateWithWhereUniqueWithoutBranchCourseInput[]
+    updateMany?: AcademicQuestionPaperUpdateManyWithWhereWithoutBranchCourseInput | AcademicQuestionPaperUpdateManyWithWhereWithoutBranchCourseInput[]
+    deleteMany?: AcademicQuestionPaperScalarWhereInput | AcademicQuestionPaperScalarWhereInput[]
+  }
+
+  export type AcademicTestProjectUpdateManyWithoutBranchCourseNestedInput = {
+    create?: XOR<AcademicTestProjectCreateWithoutBranchCourseInput, AcademicTestProjectUncheckedCreateWithoutBranchCourseInput> | AcademicTestProjectCreateWithoutBranchCourseInput[] | AcademicTestProjectUncheckedCreateWithoutBranchCourseInput[]
+    connectOrCreate?: AcademicTestProjectCreateOrConnectWithoutBranchCourseInput | AcademicTestProjectCreateOrConnectWithoutBranchCourseInput[]
+    upsert?: AcademicTestProjectUpsertWithWhereUniqueWithoutBranchCourseInput | AcademicTestProjectUpsertWithWhereUniqueWithoutBranchCourseInput[]
+    createMany?: AcademicTestProjectCreateManyBranchCourseInputEnvelope
+    set?: AcademicTestProjectWhereUniqueInput | AcademicTestProjectWhereUniqueInput[]
+    disconnect?: AcademicTestProjectWhereUniqueInput | AcademicTestProjectWhereUniqueInput[]
+    delete?: AcademicTestProjectWhereUniqueInput | AcademicTestProjectWhereUniqueInput[]
+    connect?: AcademicTestProjectWhereUniqueInput | AcademicTestProjectWhereUniqueInput[]
+    update?: AcademicTestProjectUpdateWithWhereUniqueWithoutBranchCourseInput | AcademicTestProjectUpdateWithWhereUniqueWithoutBranchCourseInput[]
+    updateMany?: AcademicTestProjectUpdateManyWithWhereWithoutBranchCourseInput | AcademicTestProjectUpdateManyWithWhereWithoutBranchCourseInput[]
+    deleteMany?: AcademicTestProjectScalarWhereInput | AcademicTestProjectScalarWhereInput[]
+  }
+
   export type BranchInstallmentTemplateUncheckedUpdateOneWithoutBranchCourseNestedInput = {
     create?: XOR<BranchInstallmentTemplateCreateWithoutBranchCourseInput, BranchInstallmentTemplateUncheckedCreateWithoutBranchCourseInput>
     connectOrCreate?: BranchInstallmentTemplateCreateOrConnectWithoutBranchCourseInput
@@ -96147,6 +101327,34 @@ export namespace Prisma {
     update?: AcademicTestUpdateWithWhereUniqueWithoutBranchCourseInput | AcademicTestUpdateWithWhereUniqueWithoutBranchCourseInput[]
     updateMany?: AcademicTestUpdateManyWithWhereWithoutBranchCourseInput | AcademicTestUpdateManyWithWhereWithoutBranchCourseInput[]
     deleteMany?: AcademicTestScalarWhereInput | AcademicTestScalarWhereInput[]
+  }
+
+  export type AcademicQuestionPaperUncheckedUpdateManyWithoutBranchCourseNestedInput = {
+    create?: XOR<AcademicQuestionPaperCreateWithoutBranchCourseInput, AcademicQuestionPaperUncheckedCreateWithoutBranchCourseInput> | AcademicQuestionPaperCreateWithoutBranchCourseInput[] | AcademicQuestionPaperUncheckedCreateWithoutBranchCourseInput[]
+    connectOrCreate?: AcademicQuestionPaperCreateOrConnectWithoutBranchCourseInput | AcademicQuestionPaperCreateOrConnectWithoutBranchCourseInput[]
+    upsert?: AcademicQuestionPaperUpsertWithWhereUniqueWithoutBranchCourseInput | AcademicQuestionPaperUpsertWithWhereUniqueWithoutBranchCourseInput[]
+    createMany?: AcademicQuestionPaperCreateManyBranchCourseInputEnvelope
+    set?: AcademicQuestionPaperWhereUniqueInput | AcademicQuestionPaperWhereUniqueInput[]
+    disconnect?: AcademicQuestionPaperWhereUniqueInput | AcademicQuestionPaperWhereUniqueInput[]
+    delete?: AcademicQuestionPaperWhereUniqueInput | AcademicQuestionPaperWhereUniqueInput[]
+    connect?: AcademicQuestionPaperWhereUniqueInput | AcademicQuestionPaperWhereUniqueInput[]
+    update?: AcademicQuestionPaperUpdateWithWhereUniqueWithoutBranchCourseInput | AcademicQuestionPaperUpdateWithWhereUniqueWithoutBranchCourseInput[]
+    updateMany?: AcademicQuestionPaperUpdateManyWithWhereWithoutBranchCourseInput | AcademicQuestionPaperUpdateManyWithWhereWithoutBranchCourseInput[]
+    deleteMany?: AcademicQuestionPaperScalarWhereInput | AcademicQuestionPaperScalarWhereInput[]
+  }
+
+  export type AcademicTestProjectUncheckedUpdateManyWithoutBranchCourseNestedInput = {
+    create?: XOR<AcademicTestProjectCreateWithoutBranchCourseInput, AcademicTestProjectUncheckedCreateWithoutBranchCourseInput> | AcademicTestProjectCreateWithoutBranchCourseInput[] | AcademicTestProjectUncheckedCreateWithoutBranchCourseInput[]
+    connectOrCreate?: AcademicTestProjectCreateOrConnectWithoutBranchCourseInput | AcademicTestProjectCreateOrConnectWithoutBranchCourseInput[]
+    upsert?: AcademicTestProjectUpsertWithWhereUniqueWithoutBranchCourseInput | AcademicTestProjectUpsertWithWhereUniqueWithoutBranchCourseInput[]
+    createMany?: AcademicTestProjectCreateManyBranchCourseInputEnvelope
+    set?: AcademicTestProjectWhereUniqueInput | AcademicTestProjectWhereUniqueInput[]
+    disconnect?: AcademicTestProjectWhereUniqueInput | AcademicTestProjectWhereUniqueInput[]
+    delete?: AcademicTestProjectWhereUniqueInput | AcademicTestProjectWhereUniqueInput[]
+    connect?: AcademicTestProjectWhereUniqueInput | AcademicTestProjectWhereUniqueInput[]
+    update?: AcademicTestProjectUpdateWithWhereUniqueWithoutBranchCourseInput | AcademicTestProjectUpdateWithWhereUniqueWithoutBranchCourseInput[]
+    updateMany?: AcademicTestProjectUpdateManyWithWhereWithoutBranchCourseInput | AcademicTestProjectUpdateManyWithWhereWithoutBranchCourseInput[]
+    deleteMany?: AcademicTestProjectScalarWhereInput | AcademicTestProjectScalarWhereInput[]
   }
 
   export type BranchCourseCreateNestedOneWithoutModulesInput = {
@@ -96490,6 +101698,20 @@ export namespace Prisma {
     connect?: AcademicTestBatchWhereUniqueInput | AcademicTestBatchWhereUniqueInput[]
   }
 
+  export type AcademicQuestionPaperCreateNestedManyWithoutBranchBatchInput = {
+    create?: XOR<AcademicQuestionPaperCreateWithoutBranchBatchInput, AcademicQuestionPaperUncheckedCreateWithoutBranchBatchInput> | AcademicQuestionPaperCreateWithoutBranchBatchInput[] | AcademicQuestionPaperUncheckedCreateWithoutBranchBatchInput[]
+    connectOrCreate?: AcademicQuestionPaperCreateOrConnectWithoutBranchBatchInput | AcademicQuestionPaperCreateOrConnectWithoutBranchBatchInput[]
+    createMany?: AcademicQuestionPaperCreateManyBranchBatchInputEnvelope
+    connect?: AcademicQuestionPaperWhereUniqueInput | AcademicQuestionPaperWhereUniqueInput[]
+  }
+
+  export type AcademicTestProjectCreateNestedManyWithoutBranchBatchInput = {
+    create?: XOR<AcademicTestProjectCreateWithoutBranchBatchInput, AcademicTestProjectUncheckedCreateWithoutBranchBatchInput> | AcademicTestProjectCreateWithoutBranchBatchInput[] | AcademicTestProjectUncheckedCreateWithoutBranchBatchInput[]
+    connectOrCreate?: AcademicTestProjectCreateOrConnectWithoutBranchBatchInput | AcademicTestProjectCreateOrConnectWithoutBranchBatchInput[]
+    createMany?: AcademicTestProjectCreateManyBranchBatchInputEnvelope
+    connect?: AcademicTestProjectWhereUniqueInput | AcademicTestProjectWhereUniqueInput[]
+  }
+
   export type ExamScheduleUncheckedCreateNestedManyWithoutBranchBatchInput = {
     create?: XOR<ExamScheduleCreateWithoutBranchBatchInput, ExamScheduleUncheckedCreateWithoutBranchBatchInput> | ExamScheduleCreateWithoutBranchBatchInput[] | ExamScheduleUncheckedCreateWithoutBranchBatchInput[]
     connectOrCreate?: ExamScheduleCreateOrConnectWithoutBranchBatchInput | ExamScheduleCreateOrConnectWithoutBranchBatchInput[]
@@ -96509,6 +101731,20 @@ export namespace Prisma {
     connectOrCreate?: AcademicTestBatchCreateOrConnectWithoutBranchBatchInput | AcademicTestBatchCreateOrConnectWithoutBranchBatchInput[]
     createMany?: AcademicTestBatchCreateManyBranchBatchInputEnvelope
     connect?: AcademicTestBatchWhereUniqueInput | AcademicTestBatchWhereUniqueInput[]
+  }
+
+  export type AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchBatchInput = {
+    create?: XOR<AcademicQuestionPaperCreateWithoutBranchBatchInput, AcademicQuestionPaperUncheckedCreateWithoutBranchBatchInput> | AcademicQuestionPaperCreateWithoutBranchBatchInput[] | AcademicQuestionPaperUncheckedCreateWithoutBranchBatchInput[]
+    connectOrCreate?: AcademicQuestionPaperCreateOrConnectWithoutBranchBatchInput | AcademicQuestionPaperCreateOrConnectWithoutBranchBatchInput[]
+    createMany?: AcademicQuestionPaperCreateManyBranchBatchInputEnvelope
+    connect?: AcademicQuestionPaperWhereUniqueInput | AcademicQuestionPaperWhereUniqueInput[]
+  }
+
+  export type AcademicTestProjectUncheckedCreateNestedManyWithoutBranchBatchInput = {
+    create?: XOR<AcademicTestProjectCreateWithoutBranchBatchInput, AcademicTestProjectUncheckedCreateWithoutBranchBatchInput> | AcademicTestProjectCreateWithoutBranchBatchInput[] | AcademicTestProjectUncheckedCreateWithoutBranchBatchInput[]
+    connectOrCreate?: AcademicTestProjectCreateOrConnectWithoutBranchBatchInput | AcademicTestProjectCreateOrConnectWithoutBranchBatchInput[]
+    createMany?: AcademicTestProjectCreateManyBranchBatchInputEnvelope
+    connect?: AcademicTestProjectWhereUniqueInput | AcademicTestProjectWhereUniqueInput[]
   }
 
   export type BranchUpdateOneRequiredWithoutBranchBatchesNestedInput = {
@@ -96577,6 +101813,34 @@ export namespace Prisma {
     deleteMany?: AcademicTestBatchScalarWhereInput | AcademicTestBatchScalarWhereInput[]
   }
 
+  export type AcademicQuestionPaperUpdateManyWithoutBranchBatchNestedInput = {
+    create?: XOR<AcademicQuestionPaperCreateWithoutBranchBatchInput, AcademicQuestionPaperUncheckedCreateWithoutBranchBatchInput> | AcademicQuestionPaperCreateWithoutBranchBatchInput[] | AcademicQuestionPaperUncheckedCreateWithoutBranchBatchInput[]
+    connectOrCreate?: AcademicQuestionPaperCreateOrConnectWithoutBranchBatchInput | AcademicQuestionPaperCreateOrConnectWithoutBranchBatchInput[]
+    upsert?: AcademicQuestionPaperUpsertWithWhereUniqueWithoutBranchBatchInput | AcademicQuestionPaperUpsertWithWhereUniqueWithoutBranchBatchInput[]
+    createMany?: AcademicQuestionPaperCreateManyBranchBatchInputEnvelope
+    set?: AcademicQuestionPaperWhereUniqueInput | AcademicQuestionPaperWhereUniqueInput[]
+    disconnect?: AcademicQuestionPaperWhereUniqueInput | AcademicQuestionPaperWhereUniqueInput[]
+    delete?: AcademicQuestionPaperWhereUniqueInput | AcademicQuestionPaperWhereUniqueInput[]
+    connect?: AcademicQuestionPaperWhereUniqueInput | AcademicQuestionPaperWhereUniqueInput[]
+    update?: AcademicQuestionPaperUpdateWithWhereUniqueWithoutBranchBatchInput | AcademicQuestionPaperUpdateWithWhereUniqueWithoutBranchBatchInput[]
+    updateMany?: AcademicQuestionPaperUpdateManyWithWhereWithoutBranchBatchInput | AcademicQuestionPaperUpdateManyWithWhereWithoutBranchBatchInput[]
+    deleteMany?: AcademicQuestionPaperScalarWhereInput | AcademicQuestionPaperScalarWhereInput[]
+  }
+
+  export type AcademicTestProjectUpdateManyWithoutBranchBatchNestedInput = {
+    create?: XOR<AcademicTestProjectCreateWithoutBranchBatchInput, AcademicTestProjectUncheckedCreateWithoutBranchBatchInput> | AcademicTestProjectCreateWithoutBranchBatchInput[] | AcademicTestProjectUncheckedCreateWithoutBranchBatchInput[]
+    connectOrCreate?: AcademicTestProjectCreateOrConnectWithoutBranchBatchInput | AcademicTestProjectCreateOrConnectWithoutBranchBatchInput[]
+    upsert?: AcademicTestProjectUpsertWithWhereUniqueWithoutBranchBatchInput | AcademicTestProjectUpsertWithWhereUniqueWithoutBranchBatchInput[]
+    createMany?: AcademicTestProjectCreateManyBranchBatchInputEnvelope
+    set?: AcademicTestProjectWhereUniqueInput | AcademicTestProjectWhereUniqueInput[]
+    disconnect?: AcademicTestProjectWhereUniqueInput | AcademicTestProjectWhereUniqueInput[]
+    delete?: AcademicTestProjectWhereUniqueInput | AcademicTestProjectWhereUniqueInput[]
+    connect?: AcademicTestProjectWhereUniqueInput | AcademicTestProjectWhereUniqueInput[]
+    update?: AcademicTestProjectUpdateWithWhereUniqueWithoutBranchBatchInput | AcademicTestProjectUpdateWithWhereUniqueWithoutBranchBatchInput[]
+    updateMany?: AcademicTestProjectUpdateManyWithWhereWithoutBranchBatchInput | AcademicTestProjectUpdateManyWithWhereWithoutBranchBatchInput[]
+    deleteMany?: AcademicTestProjectScalarWhereInput | AcademicTestProjectScalarWhereInput[]
+  }
+
   export type ExamScheduleUncheckedUpdateManyWithoutBranchBatchNestedInput = {
     create?: XOR<ExamScheduleCreateWithoutBranchBatchInput, ExamScheduleUncheckedCreateWithoutBranchBatchInput> | ExamScheduleCreateWithoutBranchBatchInput[] | ExamScheduleUncheckedCreateWithoutBranchBatchInput[]
     connectOrCreate?: ExamScheduleCreateOrConnectWithoutBranchBatchInput | ExamScheduleCreateOrConnectWithoutBranchBatchInput[]
@@ -96617,6 +101881,34 @@ export namespace Prisma {
     update?: AcademicTestBatchUpdateWithWhereUniqueWithoutBranchBatchInput | AcademicTestBatchUpdateWithWhereUniqueWithoutBranchBatchInput[]
     updateMany?: AcademicTestBatchUpdateManyWithWhereWithoutBranchBatchInput | AcademicTestBatchUpdateManyWithWhereWithoutBranchBatchInput[]
     deleteMany?: AcademicTestBatchScalarWhereInput | AcademicTestBatchScalarWhereInput[]
+  }
+
+  export type AcademicQuestionPaperUncheckedUpdateManyWithoutBranchBatchNestedInput = {
+    create?: XOR<AcademicQuestionPaperCreateWithoutBranchBatchInput, AcademicQuestionPaperUncheckedCreateWithoutBranchBatchInput> | AcademicQuestionPaperCreateWithoutBranchBatchInput[] | AcademicQuestionPaperUncheckedCreateWithoutBranchBatchInput[]
+    connectOrCreate?: AcademicQuestionPaperCreateOrConnectWithoutBranchBatchInput | AcademicQuestionPaperCreateOrConnectWithoutBranchBatchInput[]
+    upsert?: AcademicQuestionPaperUpsertWithWhereUniqueWithoutBranchBatchInput | AcademicQuestionPaperUpsertWithWhereUniqueWithoutBranchBatchInput[]
+    createMany?: AcademicQuestionPaperCreateManyBranchBatchInputEnvelope
+    set?: AcademicQuestionPaperWhereUniqueInput | AcademicQuestionPaperWhereUniqueInput[]
+    disconnect?: AcademicQuestionPaperWhereUniqueInput | AcademicQuestionPaperWhereUniqueInput[]
+    delete?: AcademicQuestionPaperWhereUniqueInput | AcademicQuestionPaperWhereUniqueInput[]
+    connect?: AcademicQuestionPaperWhereUniqueInput | AcademicQuestionPaperWhereUniqueInput[]
+    update?: AcademicQuestionPaperUpdateWithWhereUniqueWithoutBranchBatchInput | AcademicQuestionPaperUpdateWithWhereUniqueWithoutBranchBatchInput[]
+    updateMany?: AcademicQuestionPaperUpdateManyWithWhereWithoutBranchBatchInput | AcademicQuestionPaperUpdateManyWithWhereWithoutBranchBatchInput[]
+    deleteMany?: AcademicQuestionPaperScalarWhereInput | AcademicQuestionPaperScalarWhereInput[]
+  }
+
+  export type AcademicTestProjectUncheckedUpdateManyWithoutBranchBatchNestedInput = {
+    create?: XOR<AcademicTestProjectCreateWithoutBranchBatchInput, AcademicTestProjectUncheckedCreateWithoutBranchBatchInput> | AcademicTestProjectCreateWithoutBranchBatchInput[] | AcademicTestProjectUncheckedCreateWithoutBranchBatchInput[]
+    connectOrCreate?: AcademicTestProjectCreateOrConnectWithoutBranchBatchInput | AcademicTestProjectCreateOrConnectWithoutBranchBatchInput[]
+    upsert?: AcademicTestProjectUpsertWithWhereUniqueWithoutBranchBatchInput | AcademicTestProjectUpsertWithWhereUniqueWithoutBranchBatchInput[]
+    createMany?: AcademicTestProjectCreateManyBranchBatchInputEnvelope
+    set?: AcademicTestProjectWhereUniqueInput | AcademicTestProjectWhereUniqueInput[]
+    disconnect?: AcademicTestProjectWhereUniqueInput | AcademicTestProjectWhereUniqueInput[]
+    delete?: AcademicTestProjectWhereUniqueInput | AcademicTestProjectWhereUniqueInput[]
+    connect?: AcademicTestProjectWhereUniqueInput | AcademicTestProjectWhereUniqueInput[]
+    update?: AcademicTestProjectUpdateWithWhereUniqueWithoutBranchBatchInput | AcademicTestProjectUpdateWithWhereUniqueWithoutBranchBatchInput[]
+    updateMany?: AcademicTestProjectUpdateManyWithWhereWithoutBranchBatchInput | AcademicTestProjectUpdateManyWithWhereWithoutBranchBatchInput[]
+    deleteMany?: AcademicTestProjectScalarWhereInput | AcademicTestProjectScalarWhereInput[]
   }
 
   export type BranchCourseCreateNestedOneWithoutAcademicTestsInput = {
@@ -96723,6 +102015,34 @@ export namespace Prisma {
     connect?: AcademicTestWhereUniqueInput
   }
 
+  export type AcademicQuestionPaperCreateNestedManyWithoutAcademicTestItemInput = {
+    create?: XOR<AcademicQuestionPaperCreateWithoutAcademicTestItemInput, AcademicQuestionPaperUncheckedCreateWithoutAcademicTestItemInput> | AcademicQuestionPaperCreateWithoutAcademicTestItemInput[] | AcademicQuestionPaperUncheckedCreateWithoutAcademicTestItemInput[]
+    connectOrCreate?: AcademicQuestionPaperCreateOrConnectWithoutAcademicTestItemInput | AcademicQuestionPaperCreateOrConnectWithoutAcademicTestItemInput[]
+    createMany?: AcademicQuestionPaperCreateManyAcademicTestItemInputEnvelope
+    connect?: AcademicQuestionPaperWhereUniqueInput | AcademicQuestionPaperWhereUniqueInput[]
+  }
+
+  export type AcademicTestProjectCreateNestedManyWithoutAcademicTestItemInput = {
+    create?: XOR<AcademicTestProjectCreateWithoutAcademicTestItemInput, AcademicTestProjectUncheckedCreateWithoutAcademicTestItemInput> | AcademicTestProjectCreateWithoutAcademicTestItemInput[] | AcademicTestProjectUncheckedCreateWithoutAcademicTestItemInput[]
+    connectOrCreate?: AcademicTestProjectCreateOrConnectWithoutAcademicTestItemInput | AcademicTestProjectCreateOrConnectWithoutAcademicTestItemInput[]
+    createMany?: AcademicTestProjectCreateManyAcademicTestItemInputEnvelope
+    connect?: AcademicTestProjectWhereUniqueInput | AcademicTestProjectWhereUniqueInput[]
+  }
+
+  export type AcademicQuestionPaperUncheckedCreateNestedManyWithoutAcademicTestItemInput = {
+    create?: XOR<AcademicQuestionPaperCreateWithoutAcademicTestItemInput, AcademicQuestionPaperUncheckedCreateWithoutAcademicTestItemInput> | AcademicQuestionPaperCreateWithoutAcademicTestItemInput[] | AcademicQuestionPaperUncheckedCreateWithoutAcademicTestItemInput[]
+    connectOrCreate?: AcademicQuestionPaperCreateOrConnectWithoutAcademicTestItemInput | AcademicQuestionPaperCreateOrConnectWithoutAcademicTestItemInput[]
+    createMany?: AcademicQuestionPaperCreateManyAcademicTestItemInputEnvelope
+    connect?: AcademicQuestionPaperWhereUniqueInput | AcademicQuestionPaperWhereUniqueInput[]
+  }
+
+  export type AcademicTestProjectUncheckedCreateNestedManyWithoutAcademicTestItemInput = {
+    create?: XOR<AcademicTestProjectCreateWithoutAcademicTestItemInput, AcademicTestProjectUncheckedCreateWithoutAcademicTestItemInput> | AcademicTestProjectCreateWithoutAcademicTestItemInput[] | AcademicTestProjectUncheckedCreateWithoutAcademicTestItemInput[]
+    connectOrCreate?: AcademicTestProjectCreateOrConnectWithoutAcademicTestItemInput | AcademicTestProjectCreateOrConnectWithoutAcademicTestItemInput[]
+    createMany?: AcademicTestProjectCreateManyAcademicTestItemInputEnvelope
+    connect?: AcademicTestProjectWhereUniqueInput | AcademicTestProjectWhereUniqueInput[]
+  }
+
   export type EnumAcademicTestTypeFieldUpdateOperationsInput = {
     set?: $Enums.AcademicTestType
   }
@@ -96733,6 +102053,62 @@ export namespace Prisma {
     upsert?: AcademicTestUpsertWithoutItemsInput
     connect?: AcademicTestWhereUniqueInput
     update?: XOR<XOR<AcademicTestUpdateToOneWithWhereWithoutItemsInput, AcademicTestUpdateWithoutItemsInput>, AcademicTestUncheckedUpdateWithoutItemsInput>
+  }
+
+  export type AcademicQuestionPaperUpdateManyWithoutAcademicTestItemNestedInput = {
+    create?: XOR<AcademicQuestionPaperCreateWithoutAcademicTestItemInput, AcademicQuestionPaperUncheckedCreateWithoutAcademicTestItemInput> | AcademicQuestionPaperCreateWithoutAcademicTestItemInput[] | AcademicQuestionPaperUncheckedCreateWithoutAcademicTestItemInput[]
+    connectOrCreate?: AcademicQuestionPaperCreateOrConnectWithoutAcademicTestItemInput | AcademicQuestionPaperCreateOrConnectWithoutAcademicTestItemInput[]
+    upsert?: AcademicQuestionPaperUpsertWithWhereUniqueWithoutAcademicTestItemInput | AcademicQuestionPaperUpsertWithWhereUniqueWithoutAcademicTestItemInput[]
+    createMany?: AcademicQuestionPaperCreateManyAcademicTestItemInputEnvelope
+    set?: AcademicQuestionPaperWhereUniqueInput | AcademicQuestionPaperWhereUniqueInput[]
+    disconnect?: AcademicQuestionPaperWhereUniqueInput | AcademicQuestionPaperWhereUniqueInput[]
+    delete?: AcademicQuestionPaperWhereUniqueInput | AcademicQuestionPaperWhereUniqueInput[]
+    connect?: AcademicQuestionPaperWhereUniqueInput | AcademicQuestionPaperWhereUniqueInput[]
+    update?: AcademicQuestionPaperUpdateWithWhereUniqueWithoutAcademicTestItemInput | AcademicQuestionPaperUpdateWithWhereUniqueWithoutAcademicTestItemInput[]
+    updateMany?: AcademicQuestionPaperUpdateManyWithWhereWithoutAcademicTestItemInput | AcademicQuestionPaperUpdateManyWithWhereWithoutAcademicTestItemInput[]
+    deleteMany?: AcademicQuestionPaperScalarWhereInput | AcademicQuestionPaperScalarWhereInput[]
+  }
+
+  export type AcademicTestProjectUpdateManyWithoutAcademicTestItemNestedInput = {
+    create?: XOR<AcademicTestProjectCreateWithoutAcademicTestItemInput, AcademicTestProjectUncheckedCreateWithoutAcademicTestItemInput> | AcademicTestProjectCreateWithoutAcademicTestItemInput[] | AcademicTestProjectUncheckedCreateWithoutAcademicTestItemInput[]
+    connectOrCreate?: AcademicTestProjectCreateOrConnectWithoutAcademicTestItemInput | AcademicTestProjectCreateOrConnectWithoutAcademicTestItemInput[]
+    upsert?: AcademicTestProjectUpsertWithWhereUniqueWithoutAcademicTestItemInput | AcademicTestProjectUpsertWithWhereUniqueWithoutAcademicTestItemInput[]
+    createMany?: AcademicTestProjectCreateManyAcademicTestItemInputEnvelope
+    set?: AcademicTestProjectWhereUniqueInput | AcademicTestProjectWhereUniqueInput[]
+    disconnect?: AcademicTestProjectWhereUniqueInput | AcademicTestProjectWhereUniqueInput[]
+    delete?: AcademicTestProjectWhereUniqueInput | AcademicTestProjectWhereUniqueInput[]
+    connect?: AcademicTestProjectWhereUniqueInput | AcademicTestProjectWhereUniqueInput[]
+    update?: AcademicTestProjectUpdateWithWhereUniqueWithoutAcademicTestItemInput | AcademicTestProjectUpdateWithWhereUniqueWithoutAcademicTestItemInput[]
+    updateMany?: AcademicTestProjectUpdateManyWithWhereWithoutAcademicTestItemInput | AcademicTestProjectUpdateManyWithWhereWithoutAcademicTestItemInput[]
+    deleteMany?: AcademicTestProjectScalarWhereInput | AcademicTestProjectScalarWhereInput[]
+  }
+
+  export type AcademicQuestionPaperUncheckedUpdateManyWithoutAcademicTestItemNestedInput = {
+    create?: XOR<AcademicQuestionPaperCreateWithoutAcademicTestItemInput, AcademicQuestionPaperUncheckedCreateWithoutAcademicTestItemInput> | AcademicQuestionPaperCreateWithoutAcademicTestItemInput[] | AcademicQuestionPaperUncheckedCreateWithoutAcademicTestItemInput[]
+    connectOrCreate?: AcademicQuestionPaperCreateOrConnectWithoutAcademicTestItemInput | AcademicQuestionPaperCreateOrConnectWithoutAcademicTestItemInput[]
+    upsert?: AcademicQuestionPaperUpsertWithWhereUniqueWithoutAcademicTestItemInput | AcademicQuestionPaperUpsertWithWhereUniqueWithoutAcademicTestItemInput[]
+    createMany?: AcademicQuestionPaperCreateManyAcademicTestItemInputEnvelope
+    set?: AcademicQuestionPaperWhereUniqueInput | AcademicQuestionPaperWhereUniqueInput[]
+    disconnect?: AcademicQuestionPaperWhereUniqueInput | AcademicQuestionPaperWhereUniqueInput[]
+    delete?: AcademicQuestionPaperWhereUniqueInput | AcademicQuestionPaperWhereUniqueInput[]
+    connect?: AcademicQuestionPaperWhereUniqueInput | AcademicQuestionPaperWhereUniqueInput[]
+    update?: AcademicQuestionPaperUpdateWithWhereUniqueWithoutAcademicTestItemInput | AcademicQuestionPaperUpdateWithWhereUniqueWithoutAcademicTestItemInput[]
+    updateMany?: AcademicQuestionPaperUpdateManyWithWhereWithoutAcademicTestItemInput | AcademicQuestionPaperUpdateManyWithWhereWithoutAcademicTestItemInput[]
+    deleteMany?: AcademicQuestionPaperScalarWhereInput | AcademicQuestionPaperScalarWhereInput[]
+  }
+
+  export type AcademicTestProjectUncheckedUpdateManyWithoutAcademicTestItemNestedInput = {
+    create?: XOR<AcademicTestProjectCreateWithoutAcademicTestItemInput, AcademicTestProjectUncheckedCreateWithoutAcademicTestItemInput> | AcademicTestProjectCreateWithoutAcademicTestItemInput[] | AcademicTestProjectUncheckedCreateWithoutAcademicTestItemInput[]
+    connectOrCreate?: AcademicTestProjectCreateOrConnectWithoutAcademicTestItemInput | AcademicTestProjectCreateOrConnectWithoutAcademicTestItemInput[]
+    upsert?: AcademicTestProjectUpsertWithWhereUniqueWithoutAcademicTestItemInput | AcademicTestProjectUpsertWithWhereUniqueWithoutAcademicTestItemInput[]
+    createMany?: AcademicTestProjectCreateManyAcademicTestItemInputEnvelope
+    set?: AcademicTestProjectWhereUniqueInput | AcademicTestProjectWhereUniqueInput[]
+    disconnect?: AcademicTestProjectWhereUniqueInput | AcademicTestProjectWhereUniqueInput[]
+    delete?: AcademicTestProjectWhereUniqueInput | AcademicTestProjectWhereUniqueInput[]
+    connect?: AcademicTestProjectWhereUniqueInput | AcademicTestProjectWhereUniqueInput[]
+    update?: AcademicTestProjectUpdateWithWhereUniqueWithoutAcademicTestItemInput | AcademicTestProjectUpdateWithWhereUniqueWithoutAcademicTestItemInput[]
+    updateMany?: AcademicTestProjectUpdateManyWithWhereWithoutAcademicTestItemInput | AcademicTestProjectUpdateManyWithWhereWithoutAcademicTestItemInput[]
+    deleteMany?: AcademicTestProjectScalarWhereInput | AcademicTestProjectScalarWhereInput[]
   }
 
   export type AcademicTestCreateNestedOneWithoutBatchesInput = {
@@ -96761,6 +102137,150 @@ export namespace Prisma {
     upsert?: BranchBatchUpsertWithoutAcademicTestBatchesInput
     connect?: BranchBatchWhereUniqueInput
     update?: XOR<XOR<BranchBatchUpdateToOneWithWhereWithoutAcademicTestBatchesInput, BranchBatchUpdateWithoutAcademicTestBatchesInput>, BranchBatchUncheckedUpdateWithoutAcademicTestBatchesInput>
+  }
+
+  export type AcademicTestItemCreateNestedOneWithoutQuestionPapersInput = {
+    create?: XOR<AcademicTestItemCreateWithoutQuestionPapersInput, AcademicTestItemUncheckedCreateWithoutQuestionPapersInput>
+    connectOrCreate?: AcademicTestItemCreateOrConnectWithoutQuestionPapersInput
+    connect?: AcademicTestItemWhereUniqueInput
+  }
+
+  export type BranchCourseCreateNestedOneWithoutAcademicQuestionPapersInput = {
+    create?: XOR<BranchCourseCreateWithoutAcademicQuestionPapersInput, BranchCourseUncheckedCreateWithoutAcademicQuestionPapersInput>
+    connectOrCreate?: BranchCourseCreateOrConnectWithoutAcademicQuestionPapersInput
+    connect?: BranchCourseWhereUniqueInput
+  }
+
+  export type BranchBatchCreateNestedOneWithoutAcademicQuestionPapersInput = {
+    create?: XOR<BranchBatchCreateWithoutAcademicQuestionPapersInput, BranchBatchUncheckedCreateWithoutAcademicQuestionPapersInput>
+    connectOrCreate?: BranchBatchCreateOrConnectWithoutAcademicQuestionPapersInput
+    connect?: BranchBatchWhereUniqueInput
+  }
+
+  export type AcademicQuestionCreateNestedManyWithoutQuestionPaperInput = {
+    create?: XOR<AcademicQuestionCreateWithoutQuestionPaperInput, AcademicQuestionUncheckedCreateWithoutQuestionPaperInput> | AcademicQuestionCreateWithoutQuestionPaperInput[] | AcademicQuestionUncheckedCreateWithoutQuestionPaperInput[]
+    connectOrCreate?: AcademicQuestionCreateOrConnectWithoutQuestionPaperInput | AcademicQuestionCreateOrConnectWithoutQuestionPaperInput[]
+    createMany?: AcademicQuestionCreateManyQuestionPaperInputEnvelope
+    connect?: AcademicQuestionWhereUniqueInput | AcademicQuestionWhereUniqueInput[]
+  }
+
+  export type AcademicQuestionUncheckedCreateNestedManyWithoutQuestionPaperInput = {
+    create?: XOR<AcademicQuestionCreateWithoutQuestionPaperInput, AcademicQuestionUncheckedCreateWithoutQuestionPaperInput> | AcademicQuestionCreateWithoutQuestionPaperInput[] | AcademicQuestionUncheckedCreateWithoutQuestionPaperInput[]
+    connectOrCreate?: AcademicQuestionCreateOrConnectWithoutQuestionPaperInput | AcademicQuestionCreateOrConnectWithoutQuestionPaperInput[]
+    createMany?: AcademicQuestionCreateManyQuestionPaperInputEnvelope
+    connect?: AcademicQuestionWhereUniqueInput | AcademicQuestionWhereUniqueInput[]
+  }
+
+  export type EnumAcademicPreparationStatusFieldUpdateOperationsInput = {
+    set?: $Enums.AcademicPreparationStatus
+  }
+
+  export type AcademicTestItemUpdateOneRequiredWithoutQuestionPapersNestedInput = {
+    create?: XOR<AcademicTestItemCreateWithoutQuestionPapersInput, AcademicTestItemUncheckedCreateWithoutQuestionPapersInput>
+    connectOrCreate?: AcademicTestItemCreateOrConnectWithoutQuestionPapersInput
+    upsert?: AcademicTestItemUpsertWithoutQuestionPapersInput
+    connect?: AcademicTestItemWhereUniqueInput
+    update?: XOR<XOR<AcademicTestItemUpdateToOneWithWhereWithoutQuestionPapersInput, AcademicTestItemUpdateWithoutQuestionPapersInput>, AcademicTestItemUncheckedUpdateWithoutQuestionPapersInput>
+  }
+
+  export type BranchCourseUpdateOneRequiredWithoutAcademicQuestionPapersNestedInput = {
+    create?: XOR<BranchCourseCreateWithoutAcademicQuestionPapersInput, BranchCourseUncheckedCreateWithoutAcademicQuestionPapersInput>
+    connectOrCreate?: BranchCourseCreateOrConnectWithoutAcademicQuestionPapersInput
+    upsert?: BranchCourseUpsertWithoutAcademicQuestionPapersInput
+    connect?: BranchCourseWhereUniqueInput
+    update?: XOR<XOR<BranchCourseUpdateToOneWithWhereWithoutAcademicQuestionPapersInput, BranchCourseUpdateWithoutAcademicQuestionPapersInput>, BranchCourseUncheckedUpdateWithoutAcademicQuestionPapersInput>
+  }
+
+  export type BranchBatchUpdateOneRequiredWithoutAcademicQuestionPapersNestedInput = {
+    create?: XOR<BranchBatchCreateWithoutAcademicQuestionPapersInput, BranchBatchUncheckedCreateWithoutAcademicQuestionPapersInput>
+    connectOrCreate?: BranchBatchCreateOrConnectWithoutAcademicQuestionPapersInput
+    upsert?: BranchBatchUpsertWithoutAcademicQuestionPapersInput
+    connect?: BranchBatchWhereUniqueInput
+    update?: XOR<XOR<BranchBatchUpdateToOneWithWhereWithoutAcademicQuestionPapersInput, BranchBatchUpdateWithoutAcademicQuestionPapersInput>, BranchBatchUncheckedUpdateWithoutAcademicQuestionPapersInput>
+  }
+
+  export type AcademicQuestionUpdateManyWithoutQuestionPaperNestedInput = {
+    create?: XOR<AcademicQuestionCreateWithoutQuestionPaperInput, AcademicQuestionUncheckedCreateWithoutQuestionPaperInput> | AcademicQuestionCreateWithoutQuestionPaperInput[] | AcademicQuestionUncheckedCreateWithoutQuestionPaperInput[]
+    connectOrCreate?: AcademicQuestionCreateOrConnectWithoutQuestionPaperInput | AcademicQuestionCreateOrConnectWithoutQuestionPaperInput[]
+    upsert?: AcademicQuestionUpsertWithWhereUniqueWithoutQuestionPaperInput | AcademicQuestionUpsertWithWhereUniqueWithoutQuestionPaperInput[]
+    createMany?: AcademicQuestionCreateManyQuestionPaperInputEnvelope
+    set?: AcademicQuestionWhereUniqueInput | AcademicQuestionWhereUniqueInput[]
+    disconnect?: AcademicQuestionWhereUniqueInput | AcademicQuestionWhereUniqueInput[]
+    delete?: AcademicQuestionWhereUniqueInput | AcademicQuestionWhereUniqueInput[]
+    connect?: AcademicQuestionWhereUniqueInput | AcademicQuestionWhereUniqueInput[]
+    update?: AcademicQuestionUpdateWithWhereUniqueWithoutQuestionPaperInput | AcademicQuestionUpdateWithWhereUniqueWithoutQuestionPaperInput[]
+    updateMany?: AcademicQuestionUpdateManyWithWhereWithoutQuestionPaperInput | AcademicQuestionUpdateManyWithWhereWithoutQuestionPaperInput[]
+    deleteMany?: AcademicQuestionScalarWhereInput | AcademicQuestionScalarWhereInput[]
+  }
+
+  export type AcademicQuestionUncheckedUpdateManyWithoutQuestionPaperNestedInput = {
+    create?: XOR<AcademicQuestionCreateWithoutQuestionPaperInput, AcademicQuestionUncheckedCreateWithoutQuestionPaperInput> | AcademicQuestionCreateWithoutQuestionPaperInput[] | AcademicQuestionUncheckedCreateWithoutQuestionPaperInput[]
+    connectOrCreate?: AcademicQuestionCreateOrConnectWithoutQuestionPaperInput | AcademicQuestionCreateOrConnectWithoutQuestionPaperInput[]
+    upsert?: AcademicQuestionUpsertWithWhereUniqueWithoutQuestionPaperInput | AcademicQuestionUpsertWithWhereUniqueWithoutQuestionPaperInput[]
+    createMany?: AcademicQuestionCreateManyQuestionPaperInputEnvelope
+    set?: AcademicQuestionWhereUniqueInput | AcademicQuestionWhereUniqueInput[]
+    disconnect?: AcademicQuestionWhereUniqueInput | AcademicQuestionWhereUniqueInput[]
+    delete?: AcademicQuestionWhereUniqueInput | AcademicQuestionWhereUniqueInput[]
+    connect?: AcademicQuestionWhereUniqueInput | AcademicQuestionWhereUniqueInput[]
+    update?: AcademicQuestionUpdateWithWhereUniqueWithoutQuestionPaperInput | AcademicQuestionUpdateWithWhereUniqueWithoutQuestionPaperInput[]
+    updateMany?: AcademicQuestionUpdateManyWithWhereWithoutQuestionPaperInput | AcademicQuestionUpdateManyWithWhereWithoutQuestionPaperInput[]
+    deleteMany?: AcademicQuestionScalarWhereInput | AcademicQuestionScalarWhereInput[]
+  }
+
+  export type AcademicQuestionPaperCreateNestedOneWithoutQuestionsInput = {
+    create?: XOR<AcademicQuestionPaperCreateWithoutQuestionsInput, AcademicQuestionPaperUncheckedCreateWithoutQuestionsInput>
+    connectOrCreate?: AcademicQuestionPaperCreateOrConnectWithoutQuestionsInput
+    connect?: AcademicQuestionPaperWhereUniqueInput
+  }
+
+  export type AcademicQuestionPaperUpdateOneRequiredWithoutQuestionsNestedInput = {
+    create?: XOR<AcademicQuestionPaperCreateWithoutQuestionsInput, AcademicQuestionPaperUncheckedCreateWithoutQuestionsInput>
+    connectOrCreate?: AcademicQuestionPaperCreateOrConnectWithoutQuestionsInput
+    upsert?: AcademicQuestionPaperUpsertWithoutQuestionsInput
+    connect?: AcademicQuestionPaperWhereUniqueInput
+    update?: XOR<XOR<AcademicQuestionPaperUpdateToOneWithWhereWithoutQuestionsInput, AcademicQuestionPaperUpdateWithoutQuestionsInput>, AcademicQuestionPaperUncheckedUpdateWithoutQuestionsInput>
+  }
+
+  export type AcademicTestItemCreateNestedOneWithoutProjectsInput = {
+    create?: XOR<AcademicTestItemCreateWithoutProjectsInput, AcademicTestItemUncheckedCreateWithoutProjectsInput>
+    connectOrCreate?: AcademicTestItemCreateOrConnectWithoutProjectsInput
+    connect?: AcademicTestItemWhereUniqueInput
+  }
+
+  export type BranchCourseCreateNestedOneWithoutAcademicTestProjectsInput = {
+    create?: XOR<BranchCourseCreateWithoutAcademicTestProjectsInput, BranchCourseUncheckedCreateWithoutAcademicTestProjectsInput>
+    connectOrCreate?: BranchCourseCreateOrConnectWithoutAcademicTestProjectsInput
+    connect?: BranchCourseWhereUniqueInput
+  }
+
+  export type BranchBatchCreateNestedOneWithoutAcademicTestProjectsInput = {
+    create?: XOR<BranchBatchCreateWithoutAcademicTestProjectsInput, BranchBatchUncheckedCreateWithoutAcademicTestProjectsInput>
+    connectOrCreate?: BranchBatchCreateOrConnectWithoutAcademicTestProjectsInput
+    connect?: BranchBatchWhereUniqueInput
+  }
+
+  export type AcademicTestItemUpdateOneRequiredWithoutProjectsNestedInput = {
+    create?: XOR<AcademicTestItemCreateWithoutProjectsInput, AcademicTestItemUncheckedCreateWithoutProjectsInput>
+    connectOrCreate?: AcademicTestItemCreateOrConnectWithoutProjectsInput
+    upsert?: AcademicTestItemUpsertWithoutProjectsInput
+    connect?: AcademicTestItemWhereUniqueInput
+    update?: XOR<XOR<AcademicTestItemUpdateToOneWithWhereWithoutProjectsInput, AcademicTestItemUpdateWithoutProjectsInput>, AcademicTestItemUncheckedUpdateWithoutProjectsInput>
+  }
+
+  export type BranchCourseUpdateOneRequiredWithoutAcademicTestProjectsNestedInput = {
+    create?: XOR<BranchCourseCreateWithoutAcademicTestProjectsInput, BranchCourseUncheckedCreateWithoutAcademicTestProjectsInput>
+    connectOrCreate?: BranchCourseCreateOrConnectWithoutAcademicTestProjectsInput
+    upsert?: BranchCourseUpsertWithoutAcademicTestProjectsInput
+    connect?: BranchCourseWhereUniqueInput
+    update?: XOR<XOR<BranchCourseUpdateToOneWithWhereWithoutAcademicTestProjectsInput, BranchCourseUpdateWithoutAcademicTestProjectsInput>, BranchCourseUncheckedUpdateWithoutAcademicTestProjectsInput>
+  }
+
+  export type BranchBatchUpdateOneRequiredWithoutAcademicTestProjectsNestedInput = {
+    create?: XOR<BranchBatchCreateWithoutAcademicTestProjectsInput, BranchBatchUncheckedCreateWithoutAcademicTestProjectsInput>
+    connectOrCreate?: BranchBatchCreateOrConnectWithoutAcademicTestProjectsInput
+    upsert?: BranchBatchUpsertWithoutAcademicTestProjectsInput
+    connect?: BranchBatchWhereUniqueInput
+    update?: XOR<XOR<BranchBatchUpdateToOneWithWhereWithoutAcademicTestProjectsInput, BranchBatchUpdateWithoutAcademicTestProjectsInput>, BranchBatchUncheckedUpdateWithoutAcademicTestProjectsInput>
   }
 
   export type CourseCreateNestedOneWithoutStatusHistoryInput = {
@@ -99159,6 +104679,23 @@ export namespace Prisma {
     _max?: NestedEnumAcademicTestTypeFilter<$PrismaModel>
   }
 
+  export type NestedEnumAcademicPreparationStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.AcademicPreparationStatus | EnumAcademicPreparationStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.AcademicPreparationStatus[] | ListEnumAcademicPreparationStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AcademicPreparationStatus[] | ListEnumAcademicPreparationStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumAcademicPreparationStatusFilter<$PrismaModel> | $Enums.AcademicPreparationStatus
+  }
+
+  export type NestedEnumAcademicPreparationStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.AcademicPreparationStatus | EnumAcademicPreparationStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.AcademicPreparationStatus[] | ListEnumAcademicPreparationStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AcademicPreparationStatus[] | ListEnumAcademicPreparationStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumAcademicPreparationStatusWithAggregatesFilter<$PrismaModel> | $Enums.AcademicPreparationStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAcademicPreparationStatusFilter<$PrismaModel>
+    _max?: NestedEnumAcademicPreparationStatusFilter<$PrismaModel>
+  }
+
   export type NestedEnumRecordStatusNullableFilter<$PrismaModel = never> = {
     equals?: $Enums.RecordStatus | EnumRecordStatusFieldRefInput<$PrismaModel> | null
     in?: $Enums.RecordStatus[] | ListEnumRecordStatusFieldRefInput<$PrismaModel> | null
@@ -101158,6 +106695,8 @@ export namespace Prisma {
     exams?: ExamCreateNestedManyWithoutBranchCourseInput
     assessments?: AssessmentCreateNestedManyWithoutBranchCourseInput
     academicTests?: AcademicTestCreateNestedManyWithoutBranchCourseInput
+    academicQuestionPapers?: AcademicQuestionPaperCreateNestedManyWithoutBranchCourseInput
+    academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchCourseInput
   }
 
   export type BranchCourseUncheckedCreateWithoutBranchInput = {
@@ -101193,6 +106732,8 @@ export namespace Prisma {
     exams?: ExamUncheckedCreateNestedManyWithoutBranchCourseInput
     assessments?: AssessmentUncheckedCreateNestedManyWithoutBranchCourseInput
     academicTests?: AcademicTestUncheckedCreateNestedManyWithoutBranchCourseInput
+    academicQuestionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchCourseInput
+    academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchCourseInput
   }
 
   export type BranchCourseCreateOrConnectWithoutBranchInput = {
@@ -101237,6 +106778,8 @@ export namespace Prisma {
     examSchedules?: ExamScheduleCreateNestedManyWithoutBranchBatchInput
     assessments?: AssessmentCreateNestedManyWithoutBranchBatchInput
     academicTestBatches?: AcademicTestBatchCreateNestedManyWithoutBranchBatchInput
+    academicQuestionPapers?: AcademicQuestionPaperCreateNestedManyWithoutBranchBatchInput
+    academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchBatchInput
   }
 
   export type BranchBatchUncheckedCreateWithoutBranchInput = {
@@ -101271,6 +106814,8 @@ export namespace Prisma {
     examSchedules?: ExamScheduleUncheckedCreateNestedManyWithoutBranchBatchInput
     assessments?: AssessmentUncheckedCreateNestedManyWithoutBranchBatchInput
     academicTestBatches?: AcademicTestBatchUncheckedCreateNestedManyWithoutBranchBatchInput
+    academicQuestionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchBatchInput
+    academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchBatchInput
   }
 
   export type BranchBatchCreateOrConnectWithoutBranchInput = {
@@ -104229,6 +109774,8 @@ export namespace Prisma {
     examSchedules?: ExamScheduleCreateNestedManyWithoutBranchBatchInput
     assessments?: AssessmentCreateNestedManyWithoutBranchBatchInput
     academicTestBatches?: AcademicTestBatchCreateNestedManyWithoutBranchBatchInput
+    academicQuestionPapers?: AcademicQuestionPaperCreateNestedManyWithoutBranchBatchInput
+    academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchBatchInput
   }
 
   export type BranchBatchUncheckedCreateWithoutBranchCourseInput = {
@@ -104263,6 +109810,8 @@ export namespace Prisma {
     examSchedules?: ExamScheduleUncheckedCreateNestedManyWithoutBranchBatchInput
     assessments?: AssessmentUncheckedCreateNestedManyWithoutBranchBatchInput
     academicTestBatches?: AcademicTestBatchUncheckedCreateNestedManyWithoutBranchBatchInput
+    academicQuestionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchBatchInput
+    academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchBatchInput
   }
 
   export type BranchBatchCreateOrConnectWithoutBranchCourseInput = {
@@ -104659,6 +110208,82 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type AcademicQuestionPaperCreateWithoutBranchCourseInput = {
+    id?: string
+    createdBy: string
+    status?: $Enums.AcademicPreparationStatus
+    marksPerQuestion?: number
+    totalQuestions?: number
+    totalMarks?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    academicTestItem: AcademicTestItemCreateNestedOneWithoutQuestionPapersInput
+    branchBatch: BranchBatchCreateNestedOneWithoutAcademicQuestionPapersInput
+    questions?: AcademicQuestionCreateNestedManyWithoutQuestionPaperInput
+  }
+
+  export type AcademicQuestionPaperUncheckedCreateWithoutBranchCourseInput = {
+    id?: string
+    academicTestItemId: string
+    branchBatchId: string
+    createdBy: string
+    status?: $Enums.AcademicPreparationStatus
+    marksPerQuestion?: number
+    totalQuestions?: number
+    totalMarks?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    questions?: AcademicQuestionUncheckedCreateNestedManyWithoutQuestionPaperInput
+  }
+
+  export type AcademicQuestionPaperCreateOrConnectWithoutBranchCourseInput = {
+    where: AcademicQuestionPaperWhereUniqueInput
+    create: XOR<AcademicQuestionPaperCreateWithoutBranchCourseInput, AcademicQuestionPaperUncheckedCreateWithoutBranchCourseInput>
+  }
+
+  export type AcademicQuestionPaperCreateManyBranchCourseInputEnvelope = {
+    data: AcademicQuestionPaperCreateManyBranchCourseInput | AcademicQuestionPaperCreateManyBranchCourseInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AcademicTestProjectCreateWithoutBranchCourseInput = {
+    id?: string
+    createdBy: string
+    status?: $Enums.AcademicPreparationStatus
+    projectTitle?: string
+    projectDescription?: string
+    projectRequirements?: string | null
+    projectMarks?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    academicTestItem: AcademicTestItemCreateNestedOneWithoutProjectsInput
+    branchBatch: BranchBatchCreateNestedOneWithoutAcademicTestProjectsInput
+  }
+
+  export type AcademicTestProjectUncheckedCreateWithoutBranchCourseInput = {
+    id?: string
+    academicTestItemId: string
+    branchBatchId: string
+    createdBy: string
+    status?: $Enums.AcademicPreparationStatus
+    projectTitle?: string
+    projectDescription?: string
+    projectRequirements?: string | null
+    projectMarks?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AcademicTestProjectCreateOrConnectWithoutBranchCourseInput = {
+    where: AcademicTestProjectWhereUniqueInput
+    create: XOR<AcademicTestProjectCreateWithoutBranchCourseInput, AcademicTestProjectUncheckedCreateWithoutBranchCourseInput>
+  }
+
+  export type AcademicTestProjectCreateManyBranchCourseInputEnvelope = {
+    data: AcademicTestProjectCreateManyBranchCourseInput | AcademicTestProjectCreateManyBranchCourseInput[]
+    skipDuplicates?: boolean
+  }
+
   export type BranchUpsertWithoutBranchCoursesInput = {
     update: XOR<BranchUpdateWithoutBranchCoursesInput, BranchUncheckedUpdateWithoutBranchCoursesInput>
     create: XOR<BranchCreateWithoutBranchCoursesInput, BranchUncheckedCreateWithoutBranchCoursesInput>
@@ -105000,6 +110625,73 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"AcademicTest"> | Date | string
   }
 
+  export type AcademicQuestionPaperUpsertWithWhereUniqueWithoutBranchCourseInput = {
+    where: AcademicQuestionPaperWhereUniqueInput
+    update: XOR<AcademicQuestionPaperUpdateWithoutBranchCourseInput, AcademicQuestionPaperUncheckedUpdateWithoutBranchCourseInput>
+    create: XOR<AcademicQuestionPaperCreateWithoutBranchCourseInput, AcademicQuestionPaperUncheckedCreateWithoutBranchCourseInput>
+  }
+
+  export type AcademicQuestionPaperUpdateWithWhereUniqueWithoutBranchCourseInput = {
+    where: AcademicQuestionPaperWhereUniqueInput
+    data: XOR<AcademicQuestionPaperUpdateWithoutBranchCourseInput, AcademicQuestionPaperUncheckedUpdateWithoutBranchCourseInput>
+  }
+
+  export type AcademicQuestionPaperUpdateManyWithWhereWithoutBranchCourseInput = {
+    where: AcademicQuestionPaperScalarWhereInput
+    data: XOR<AcademicQuestionPaperUpdateManyMutationInput, AcademicQuestionPaperUncheckedUpdateManyWithoutBranchCourseInput>
+  }
+
+  export type AcademicQuestionPaperScalarWhereInput = {
+    AND?: AcademicQuestionPaperScalarWhereInput | AcademicQuestionPaperScalarWhereInput[]
+    OR?: AcademicQuestionPaperScalarWhereInput[]
+    NOT?: AcademicQuestionPaperScalarWhereInput | AcademicQuestionPaperScalarWhereInput[]
+    id?: StringFilter<"AcademicQuestionPaper"> | string
+    academicTestItemId?: StringFilter<"AcademicQuestionPaper"> | string
+    branchCourseId?: StringFilter<"AcademicQuestionPaper"> | string
+    branchBatchId?: StringFilter<"AcademicQuestionPaper"> | string
+    createdBy?: StringFilter<"AcademicQuestionPaper"> | string
+    status?: EnumAcademicPreparationStatusFilter<"AcademicQuestionPaper"> | $Enums.AcademicPreparationStatus
+    marksPerQuestion?: IntFilter<"AcademicQuestionPaper"> | number
+    totalQuestions?: IntFilter<"AcademicQuestionPaper"> | number
+    totalMarks?: IntFilter<"AcademicQuestionPaper"> | number
+    createdAt?: DateTimeFilter<"AcademicQuestionPaper"> | Date | string
+    updatedAt?: DateTimeFilter<"AcademicQuestionPaper"> | Date | string
+  }
+
+  export type AcademicTestProjectUpsertWithWhereUniqueWithoutBranchCourseInput = {
+    where: AcademicTestProjectWhereUniqueInput
+    update: XOR<AcademicTestProjectUpdateWithoutBranchCourseInput, AcademicTestProjectUncheckedUpdateWithoutBranchCourseInput>
+    create: XOR<AcademicTestProjectCreateWithoutBranchCourseInput, AcademicTestProjectUncheckedCreateWithoutBranchCourseInput>
+  }
+
+  export type AcademicTestProjectUpdateWithWhereUniqueWithoutBranchCourseInput = {
+    where: AcademicTestProjectWhereUniqueInput
+    data: XOR<AcademicTestProjectUpdateWithoutBranchCourseInput, AcademicTestProjectUncheckedUpdateWithoutBranchCourseInput>
+  }
+
+  export type AcademicTestProjectUpdateManyWithWhereWithoutBranchCourseInput = {
+    where: AcademicTestProjectScalarWhereInput
+    data: XOR<AcademicTestProjectUpdateManyMutationInput, AcademicTestProjectUncheckedUpdateManyWithoutBranchCourseInput>
+  }
+
+  export type AcademicTestProjectScalarWhereInput = {
+    AND?: AcademicTestProjectScalarWhereInput | AcademicTestProjectScalarWhereInput[]
+    OR?: AcademicTestProjectScalarWhereInput[]
+    NOT?: AcademicTestProjectScalarWhereInput | AcademicTestProjectScalarWhereInput[]
+    id?: StringFilter<"AcademicTestProject"> | string
+    academicTestItemId?: StringFilter<"AcademicTestProject"> | string
+    branchCourseId?: StringFilter<"AcademicTestProject"> | string
+    branchBatchId?: StringFilter<"AcademicTestProject"> | string
+    createdBy?: StringFilter<"AcademicTestProject"> | string
+    status?: EnumAcademicPreparationStatusFilter<"AcademicTestProject"> | $Enums.AcademicPreparationStatus
+    projectTitle?: StringFilter<"AcademicTestProject"> | string
+    projectDescription?: StringFilter<"AcademicTestProject"> | string
+    projectRequirements?: StringNullableFilter<"AcademicTestProject"> | string | null
+    projectMarks?: IntFilter<"AcademicTestProject"> | number
+    createdAt?: DateTimeFilter<"AcademicTestProject"> | Date | string
+    updatedAt?: DateTimeFilter<"AcademicTestProject"> | Date | string
+  }
+
   export type BranchCourseCreateWithoutModulesInput = {
     id?: string
     courseCode: string
@@ -105033,6 +110725,8 @@ export namespace Prisma {
     exams?: ExamCreateNestedManyWithoutBranchCourseInput
     assessments?: AssessmentCreateNestedManyWithoutBranchCourseInput
     academicTests?: AcademicTestCreateNestedManyWithoutBranchCourseInput
+    academicQuestionPapers?: AcademicQuestionPaperCreateNestedManyWithoutBranchCourseInput
+    academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchCourseInput
   }
 
   export type BranchCourseUncheckedCreateWithoutModulesInput = {
@@ -105068,6 +110762,8 @@ export namespace Prisma {
     exams?: ExamUncheckedCreateNestedManyWithoutBranchCourseInput
     assessments?: AssessmentUncheckedCreateNestedManyWithoutBranchCourseInput
     academicTests?: AcademicTestUncheckedCreateNestedManyWithoutBranchCourseInput
+    academicQuestionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchCourseInput
+    academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchCourseInput
   }
 
   export type BranchCourseCreateOrConnectWithoutModulesInput = {
@@ -105263,6 +110959,8 @@ export namespace Prisma {
     exams?: ExamUpdateManyWithoutBranchCourseNestedInput
     assessments?: AssessmentUpdateManyWithoutBranchCourseNestedInput
     academicTests?: AcademicTestUpdateManyWithoutBranchCourseNestedInput
+    academicQuestionPapers?: AcademicQuestionPaperUpdateManyWithoutBranchCourseNestedInput
+    academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchCourseNestedInput
   }
 
   export type BranchCourseUncheckedUpdateWithoutModulesInput = {
@@ -105298,6 +110996,8 @@ export namespace Prisma {
     exams?: ExamUncheckedUpdateManyWithoutBranchCourseNestedInput
     assessments?: AssessmentUncheckedUpdateManyWithoutBranchCourseNestedInput
     academicTests?: AcademicTestUncheckedUpdateManyWithoutBranchCourseNestedInput
+    academicQuestionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutBranchCourseNestedInput
+    academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchCourseNestedInput
   }
 
   export type BranchCourseSubmoduleUpsertWithWhereUniqueWithoutBranchCourseModuleInput = {
@@ -106262,6 +111962,8 @@ export namespace Prisma {
     exams?: ExamCreateNestedManyWithoutBranchCourseInput
     assessments?: AssessmentCreateNestedManyWithoutBranchCourseInput
     academicTests?: AcademicTestCreateNestedManyWithoutBranchCourseInput
+    academicQuestionPapers?: AcademicQuestionPaperCreateNestedManyWithoutBranchCourseInput
+    academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchCourseInput
   }
 
   export type BranchCourseUncheckedCreateWithoutBranchBatchesInput = {
@@ -106297,6 +111999,8 @@ export namespace Prisma {
     exams?: ExamUncheckedCreateNestedManyWithoutBranchCourseInput
     assessments?: AssessmentUncheckedCreateNestedManyWithoutBranchCourseInput
     academicTests?: AcademicTestUncheckedCreateNestedManyWithoutBranchCourseInput
+    academicQuestionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchCourseInput
+    academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchCourseInput
   }
 
   export type BranchCourseCreateOrConnectWithoutBranchBatchesInput = {
@@ -106461,6 +112165,82 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type AcademicQuestionPaperCreateWithoutBranchBatchInput = {
+    id?: string
+    createdBy: string
+    status?: $Enums.AcademicPreparationStatus
+    marksPerQuestion?: number
+    totalQuestions?: number
+    totalMarks?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    academicTestItem: AcademicTestItemCreateNestedOneWithoutQuestionPapersInput
+    branchCourse: BranchCourseCreateNestedOneWithoutAcademicQuestionPapersInput
+    questions?: AcademicQuestionCreateNestedManyWithoutQuestionPaperInput
+  }
+
+  export type AcademicQuestionPaperUncheckedCreateWithoutBranchBatchInput = {
+    id?: string
+    academicTestItemId: string
+    branchCourseId: string
+    createdBy: string
+    status?: $Enums.AcademicPreparationStatus
+    marksPerQuestion?: number
+    totalQuestions?: number
+    totalMarks?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    questions?: AcademicQuestionUncheckedCreateNestedManyWithoutQuestionPaperInput
+  }
+
+  export type AcademicQuestionPaperCreateOrConnectWithoutBranchBatchInput = {
+    where: AcademicQuestionPaperWhereUniqueInput
+    create: XOR<AcademicQuestionPaperCreateWithoutBranchBatchInput, AcademicQuestionPaperUncheckedCreateWithoutBranchBatchInput>
+  }
+
+  export type AcademicQuestionPaperCreateManyBranchBatchInputEnvelope = {
+    data: AcademicQuestionPaperCreateManyBranchBatchInput | AcademicQuestionPaperCreateManyBranchBatchInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AcademicTestProjectCreateWithoutBranchBatchInput = {
+    id?: string
+    createdBy: string
+    status?: $Enums.AcademicPreparationStatus
+    projectTitle?: string
+    projectDescription?: string
+    projectRequirements?: string | null
+    projectMarks?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    academicTestItem: AcademicTestItemCreateNestedOneWithoutProjectsInput
+    branchCourse: BranchCourseCreateNestedOneWithoutAcademicTestProjectsInput
+  }
+
+  export type AcademicTestProjectUncheckedCreateWithoutBranchBatchInput = {
+    id?: string
+    academicTestItemId: string
+    branchCourseId: string
+    createdBy: string
+    status?: $Enums.AcademicPreparationStatus
+    projectTitle?: string
+    projectDescription?: string
+    projectRequirements?: string | null
+    projectMarks?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AcademicTestProjectCreateOrConnectWithoutBranchBatchInput = {
+    where: AcademicTestProjectWhereUniqueInput
+    create: XOR<AcademicTestProjectCreateWithoutBranchBatchInput, AcademicTestProjectUncheckedCreateWithoutBranchBatchInput>
+  }
+
+  export type AcademicTestProjectCreateManyBranchBatchInputEnvelope = {
+    data: AcademicTestProjectCreateManyBranchBatchInput | AcademicTestProjectCreateManyBranchBatchInput[]
+    skipDuplicates?: boolean
+  }
+
   export type BranchUpsertWithoutBranchBatchesInput = {
     update: XOR<BranchUpdateWithoutBranchBatchesInput, BranchUncheckedUpdateWithoutBranchBatchesInput>
     create: XOR<BranchCreateWithoutBranchBatchesInput, BranchUncheckedCreateWithoutBranchBatchesInput>
@@ -106580,6 +112360,8 @@ export namespace Prisma {
     exams?: ExamUpdateManyWithoutBranchCourseNestedInput
     assessments?: AssessmentUpdateManyWithoutBranchCourseNestedInput
     academicTests?: AcademicTestUpdateManyWithoutBranchCourseNestedInput
+    academicQuestionPapers?: AcademicQuestionPaperUpdateManyWithoutBranchCourseNestedInput
+    academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchCourseNestedInput
   }
 
   export type BranchCourseUncheckedUpdateWithoutBranchBatchesInput = {
@@ -106615,6 +112397,8 @@ export namespace Prisma {
     exams?: ExamUncheckedUpdateManyWithoutBranchCourseNestedInput
     assessments?: AssessmentUncheckedUpdateManyWithoutBranchCourseNestedInput
     academicTests?: AcademicTestUncheckedUpdateManyWithoutBranchCourseNestedInput
+    academicQuestionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutBranchCourseNestedInput
+    academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchCourseNestedInput
   }
 
   export type BranchFacultyUpsertWithoutBranchBatchesInput = {
@@ -106746,6 +112530,38 @@ export namespace Prisma {
     branchBatchId?: StringFilter<"AcademicTestBatch"> | string
   }
 
+  export type AcademicQuestionPaperUpsertWithWhereUniqueWithoutBranchBatchInput = {
+    where: AcademicQuestionPaperWhereUniqueInput
+    update: XOR<AcademicQuestionPaperUpdateWithoutBranchBatchInput, AcademicQuestionPaperUncheckedUpdateWithoutBranchBatchInput>
+    create: XOR<AcademicQuestionPaperCreateWithoutBranchBatchInput, AcademicQuestionPaperUncheckedCreateWithoutBranchBatchInput>
+  }
+
+  export type AcademicQuestionPaperUpdateWithWhereUniqueWithoutBranchBatchInput = {
+    where: AcademicQuestionPaperWhereUniqueInput
+    data: XOR<AcademicQuestionPaperUpdateWithoutBranchBatchInput, AcademicQuestionPaperUncheckedUpdateWithoutBranchBatchInput>
+  }
+
+  export type AcademicQuestionPaperUpdateManyWithWhereWithoutBranchBatchInput = {
+    where: AcademicQuestionPaperScalarWhereInput
+    data: XOR<AcademicQuestionPaperUpdateManyMutationInput, AcademicQuestionPaperUncheckedUpdateManyWithoutBranchBatchInput>
+  }
+
+  export type AcademicTestProjectUpsertWithWhereUniqueWithoutBranchBatchInput = {
+    where: AcademicTestProjectWhereUniqueInput
+    update: XOR<AcademicTestProjectUpdateWithoutBranchBatchInput, AcademicTestProjectUncheckedUpdateWithoutBranchBatchInput>
+    create: XOR<AcademicTestProjectCreateWithoutBranchBatchInput, AcademicTestProjectUncheckedCreateWithoutBranchBatchInput>
+  }
+
+  export type AcademicTestProjectUpdateWithWhereUniqueWithoutBranchBatchInput = {
+    where: AcademicTestProjectWhereUniqueInput
+    data: XOR<AcademicTestProjectUpdateWithoutBranchBatchInput, AcademicTestProjectUncheckedUpdateWithoutBranchBatchInput>
+  }
+
+  export type AcademicTestProjectUpdateManyWithWhereWithoutBranchBatchInput = {
+    where: AcademicTestProjectScalarWhereInput
+    data: XOR<AcademicTestProjectUpdateManyMutationInput, AcademicTestProjectUncheckedUpdateManyWithoutBranchBatchInput>
+  }
+
   export type BranchCourseCreateWithoutAcademicTestsInput = {
     id?: string
     courseCode: string
@@ -106779,6 +112595,8 @@ export namespace Prisma {
     facultyTodayWorkStudentEntries?: FacultyTodayWorkStudentEntryCreateNestedManyWithoutBranchCourseInput
     exams?: ExamCreateNestedManyWithoutBranchCourseInput
     assessments?: AssessmentCreateNestedManyWithoutBranchCourseInput
+    academicQuestionPapers?: AcademicQuestionPaperCreateNestedManyWithoutBranchCourseInput
+    academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchCourseInput
   }
 
   export type BranchCourseUncheckedCreateWithoutAcademicTestsInput = {
@@ -106814,6 +112632,8 @@ export namespace Prisma {
     facultyTodayWorkStudentEntries?: FacultyTodayWorkStudentEntryUncheckedCreateNestedManyWithoutBranchCourseInput
     exams?: ExamUncheckedCreateNestedManyWithoutBranchCourseInput
     assessments?: AssessmentUncheckedCreateNestedManyWithoutBranchCourseInput
+    academicQuestionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchCourseInput
+    academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchCourseInput
   }
 
   export type BranchCourseCreateOrConnectWithoutAcademicTestsInput = {
@@ -106825,12 +112645,18 @@ export namespace Prisma {
     id?: string
     sequence: number
     testType: $Enums.AcademicTestType
+    requiredProgress?: number
+    questionPapers?: AcademicQuestionPaperCreateNestedManyWithoutAcademicTestItemInput
+    projects?: AcademicTestProjectCreateNestedManyWithoutAcademicTestItemInput
   }
 
   export type AcademicTestItemUncheckedCreateWithoutAcademicTestInput = {
     id?: string
     sequence: number
     testType: $Enums.AcademicTestType
+    requiredProgress?: number
+    questionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutAcademicTestItemInput
+    projects?: AcademicTestProjectUncheckedCreateNestedManyWithoutAcademicTestItemInput
   }
 
   export type AcademicTestItemCreateOrConnectWithoutAcademicTestInput = {
@@ -106907,6 +112733,8 @@ export namespace Prisma {
     facultyTodayWorkStudentEntries?: FacultyTodayWorkStudentEntryUpdateManyWithoutBranchCourseNestedInput
     exams?: ExamUpdateManyWithoutBranchCourseNestedInput
     assessments?: AssessmentUpdateManyWithoutBranchCourseNestedInput
+    academicQuestionPapers?: AcademicQuestionPaperUpdateManyWithoutBranchCourseNestedInput
+    academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchCourseNestedInput
   }
 
   export type BranchCourseUncheckedUpdateWithoutAcademicTestsInput = {
@@ -106942,6 +112770,8 @@ export namespace Prisma {
     facultyTodayWorkStudentEntries?: FacultyTodayWorkStudentEntryUncheckedUpdateManyWithoutBranchCourseNestedInput
     exams?: ExamUncheckedUpdateManyWithoutBranchCourseNestedInput
     assessments?: AssessmentUncheckedUpdateManyWithoutBranchCourseNestedInput
+    academicQuestionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutBranchCourseNestedInput
+    academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchCourseNestedInput
   }
 
   export type AcademicTestItemUpsertWithWhereUniqueWithoutAcademicTestInput = {
@@ -106968,6 +112798,7 @@ export namespace Prisma {
     academicTestId?: StringFilter<"AcademicTestItem"> | string
     sequence?: IntFilter<"AcademicTestItem"> | number
     testType?: EnumAcademicTestTypeFilter<"AcademicTestItem"> | $Enums.AcademicTestType
+    requiredProgress?: IntFilter<"AcademicTestItem"> | number
   }
 
   export type AcademicTestBatchUpsertWithWhereUniqueWithoutAcademicTestInput = {
@@ -107009,6 +112840,82 @@ export namespace Prisma {
     create: XOR<AcademicTestCreateWithoutItemsInput, AcademicTestUncheckedCreateWithoutItemsInput>
   }
 
+  export type AcademicQuestionPaperCreateWithoutAcademicTestItemInput = {
+    id?: string
+    createdBy: string
+    status?: $Enums.AcademicPreparationStatus
+    marksPerQuestion?: number
+    totalQuestions?: number
+    totalMarks?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branchCourse: BranchCourseCreateNestedOneWithoutAcademicQuestionPapersInput
+    branchBatch: BranchBatchCreateNestedOneWithoutAcademicQuestionPapersInput
+    questions?: AcademicQuestionCreateNestedManyWithoutQuestionPaperInput
+  }
+
+  export type AcademicQuestionPaperUncheckedCreateWithoutAcademicTestItemInput = {
+    id?: string
+    branchCourseId: string
+    branchBatchId: string
+    createdBy: string
+    status?: $Enums.AcademicPreparationStatus
+    marksPerQuestion?: number
+    totalQuestions?: number
+    totalMarks?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    questions?: AcademicQuestionUncheckedCreateNestedManyWithoutQuestionPaperInput
+  }
+
+  export type AcademicQuestionPaperCreateOrConnectWithoutAcademicTestItemInput = {
+    where: AcademicQuestionPaperWhereUniqueInput
+    create: XOR<AcademicQuestionPaperCreateWithoutAcademicTestItemInput, AcademicQuestionPaperUncheckedCreateWithoutAcademicTestItemInput>
+  }
+
+  export type AcademicQuestionPaperCreateManyAcademicTestItemInputEnvelope = {
+    data: AcademicQuestionPaperCreateManyAcademicTestItemInput | AcademicQuestionPaperCreateManyAcademicTestItemInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AcademicTestProjectCreateWithoutAcademicTestItemInput = {
+    id?: string
+    createdBy: string
+    status?: $Enums.AcademicPreparationStatus
+    projectTitle?: string
+    projectDescription?: string
+    projectRequirements?: string | null
+    projectMarks?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branchCourse: BranchCourseCreateNestedOneWithoutAcademicTestProjectsInput
+    branchBatch: BranchBatchCreateNestedOneWithoutAcademicTestProjectsInput
+  }
+
+  export type AcademicTestProjectUncheckedCreateWithoutAcademicTestItemInput = {
+    id?: string
+    branchCourseId: string
+    branchBatchId: string
+    createdBy: string
+    status?: $Enums.AcademicPreparationStatus
+    projectTitle?: string
+    projectDescription?: string
+    projectRequirements?: string | null
+    projectMarks?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AcademicTestProjectCreateOrConnectWithoutAcademicTestItemInput = {
+    where: AcademicTestProjectWhereUniqueInput
+    create: XOR<AcademicTestProjectCreateWithoutAcademicTestItemInput, AcademicTestProjectUncheckedCreateWithoutAcademicTestItemInput>
+  }
+
+  export type AcademicTestProjectCreateManyAcademicTestItemInputEnvelope = {
+    data: AcademicTestProjectCreateManyAcademicTestItemInput | AcademicTestProjectCreateManyAcademicTestItemInput[]
+    skipDuplicates?: boolean
+  }
+
   export type AcademicTestUpsertWithoutItemsInput = {
     update: XOR<AcademicTestUpdateWithoutItemsInput, AcademicTestUncheckedUpdateWithoutItemsInput>
     create: XOR<AcademicTestCreateWithoutItemsInput, AcademicTestUncheckedCreateWithoutItemsInput>
@@ -107036,6 +112943,38 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     batches?: AcademicTestBatchUncheckedUpdateManyWithoutAcademicTestNestedInput
+  }
+
+  export type AcademicQuestionPaperUpsertWithWhereUniqueWithoutAcademicTestItemInput = {
+    where: AcademicQuestionPaperWhereUniqueInput
+    update: XOR<AcademicQuestionPaperUpdateWithoutAcademicTestItemInput, AcademicQuestionPaperUncheckedUpdateWithoutAcademicTestItemInput>
+    create: XOR<AcademicQuestionPaperCreateWithoutAcademicTestItemInput, AcademicQuestionPaperUncheckedCreateWithoutAcademicTestItemInput>
+  }
+
+  export type AcademicQuestionPaperUpdateWithWhereUniqueWithoutAcademicTestItemInput = {
+    where: AcademicQuestionPaperWhereUniqueInput
+    data: XOR<AcademicQuestionPaperUpdateWithoutAcademicTestItemInput, AcademicQuestionPaperUncheckedUpdateWithoutAcademicTestItemInput>
+  }
+
+  export type AcademicQuestionPaperUpdateManyWithWhereWithoutAcademicTestItemInput = {
+    where: AcademicQuestionPaperScalarWhereInput
+    data: XOR<AcademicQuestionPaperUpdateManyMutationInput, AcademicQuestionPaperUncheckedUpdateManyWithoutAcademicTestItemInput>
+  }
+
+  export type AcademicTestProjectUpsertWithWhereUniqueWithoutAcademicTestItemInput = {
+    where: AcademicTestProjectWhereUniqueInput
+    update: XOR<AcademicTestProjectUpdateWithoutAcademicTestItemInput, AcademicTestProjectUncheckedUpdateWithoutAcademicTestItemInput>
+    create: XOR<AcademicTestProjectCreateWithoutAcademicTestItemInput, AcademicTestProjectUncheckedCreateWithoutAcademicTestItemInput>
+  }
+
+  export type AcademicTestProjectUpdateWithWhereUniqueWithoutAcademicTestItemInput = {
+    where: AcademicTestProjectWhereUniqueInput
+    data: XOR<AcademicTestProjectUpdateWithoutAcademicTestItemInput, AcademicTestProjectUncheckedUpdateWithoutAcademicTestItemInput>
+  }
+
+  export type AcademicTestProjectUpdateManyWithWhereWithoutAcademicTestItemInput = {
+    where: AcademicTestProjectScalarWhereInput
+    data: XOR<AcademicTestProjectUpdateManyMutationInput, AcademicTestProjectUncheckedUpdateManyWithoutAcademicTestItemInput>
   }
 
   export type AcademicTestCreateWithoutBatchesInput = {
@@ -107093,6 +113032,8 @@ export namespace Prisma {
     branchFaculty: BranchFacultyCreateNestedOneWithoutBranchBatchesInput
     examSchedules?: ExamScheduleCreateNestedManyWithoutBranchBatchInput
     assessments?: AssessmentCreateNestedManyWithoutBranchBatchInput
+    academicQuestionPapers?: AcademicQuestionPaperCreateNestedManyWithoutBranchBatchInput
+    academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchBatchInput
   }
 
   export type BranchBatchUncheckedCreateWithoutAcademicTestBatchesInput = {
@@ -107127,6 +113068,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     examSchedules?: ExamScheduleUncheckedCreateNestedManyWithoutBranchBatchInput
     assessments?: AssessmentUncheckedCreateNestedManyWithoutBranchBatchInput
+    academicQuestionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchBatchInput
+    academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchBatchInput
   }
 
   export type BranchBatchCreateOrConnectWithoutAcademicTestBatchesInput = {
@@ -107206,6 +113149,8 @@ export namespace Prisma {
     branchFaculty?: BranchFacultyUpdateOneRequiredWithoutBranchBatchesNestedInput
     examSchedules?: ExamScheduleUpdateManyWithoutBranchBatchNestedInput
     assessments?: AssessmentUpdateManyWithoutBranchBatchNestedInput
+    academicQuestionPapers?: AcademicQuestionPaperUpdateManyWithoutBranchBatchNestedInput
+    academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchBatchNestedInput
   }
 
   export type BranchBatchUncheckedUpdateWithoutAcademicTestBatchesInput = {
@@ -107240,6 +113185,901 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     examSchedules?: ExamScheduleUncheckedUpdateManyWithoutBranchBatchNestedInput
     assessments?: AssessmentUncheckedUpdateManyWithoutBranchBatchNestedInput
+    academicQuestionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutBranchBatchNestedInput
+    academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchBatchNestedInput
+  }
+
+  export type AcademicTestItemCreateWithoutQuestionPapersInput = {
+    id?: string
+    sequence: number
+    testType: $Enums.AcademicTestType
+    requiredProgress?: number
+    academicTest: AcademicTestCreateNestedOneWithoutItemsInput
+    projects?: AcademicTestProjectCreateNestedManyWithoutAcademicTestItemInput
+  }
+
+  export type AcademicTestItemUncheckedCreateWithoutQuestionPapersInput = {
+    id?: string
+    academicTestId: string
+    sequence: number
+    testType: $Enums.AcademicTestType
+    requiredProgress?: number
+    projects?: AcademicTestProjectUncheckedCreateNestedManyWithoutAcademicTestItemInput
+  }
+
+  export type AcademicTestItemCreateOrConnectWithoutQuestionPapersInput = {
+    where: AcademicTestItemWhereUniqueInput
+    create: XOR<AcademicTestItemCreateWithoutQuestionPapersInput, AcademicTestItemUncheckedCreateWithoutQuestionPapersInput>
+  }
+
+  export type BranchCourseCreateWithoutAcademicQuestionPapersInput = {
+    id?: string
+    courseCode: string
+    name: string
+    nameKey: string
+    courseType?: string
+    academicTestCount?: number
+    description?: string | null
+    mode: string
+    duration?: number | null
+    hours?: number | null
+    actualFees?: number | null
+    registrationFees?: number | null
+    discount?: number | null
+    afterDiscount?: number | null
+    paymentPlans?: NullableJsonNullValueInput | InputJsonValue
+    paymentPlanSelections?: NullableJsonNullValueInput | InputJsonValue
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branch: BranchCreateNestedOneWithoutBranchCoursesInput
+    installmentTemplate?: BranchInstallmentTemplateCreateNestedOneWithoutBranchCourseInput
+    modules?: BranchCourseModuleCreateNestedManyWithoutBranchCourseInput
+    branchFaculties?: BranchFacultyCreateNestedManyWithoutBranchCourseInput
+    facultyAssignments?: BranchFacultyCourseCreateNestedManyWithoutBranchCourseInput
+    branchBatches?: BranchBatchCreateNestedManyWithoutBranchCourseInput
+    branchStudents?: BranchStudentCreateNestedManyWithoutCourseInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryCreateNestedManyWithoutBranchCourseInput
+    facultyTodayWorkStudentEntries?: FacultyTodayWorkStudentEntryCreateNestedManyWithoutBranchCourseInput
+    exams?: ExamCreateNestedManyWithoutBranchCourseInput
+    assessments?: AssessmentCreateNestedManyWithoutBranchCourseInput
+    academicTests?: AcademicTestCreateNestedManyWithoutBranchCourseInput
+    academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchCourseInput
+  }
+
+  export type BranchCourseUncheckedCreateWithoutAcademicQuestionPapersInput = {
+    id?: string
+    branchId: string
+    courseCode: string
+    name: string
+    nameKey: string
+    courseType?: string
+    academicTestCount?: number
+    description?: string | null
+    mode: string
+    duration?: number | null
+    hours?: number | null
+    actualFees?: number | null
+    registrationFees?: number | null
+    discount?: number | null
+    afterDiscount?: number | null
+    paymentPlans?: NullableJsonNullValueInput | InputJsonValue
+    paymentPlanSelections?: NullableJsonNullValueInput | InputJsonValue
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    installmentTemplate?: BranchInstallmentTemplateUncheckedCreateNestedOneWithoutBranchCourseInput
+    modules?: BranchCourseModuleUncheckedCreateNestedManyWithoutBranchCourseInput
+    branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutBranchCourseInput
+    facultyAssignments?: BranchFacultyCourseUncheckedCreateNestedManyWithoutBranchCourseInput
+    branchBatches?: BranchBatchUncheckedCreateNestedManyWithoutBranchCourseInput
+    branchStudents?: BranchStudentUncheckedCreateNestedManyWithoutCourseInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedCreateNestedManyWithoutBranchCourseInput
+    facultyTodayWorkStudentEntries?: FacultyTodayWorkStudentEntryUncheckedCreateNestedManyWithoutBranchCourseInput
+    exams?: ExamUncheckedCreateNestedManyWithoutBranchCourseInput
+    assessments?: AssessmentUncheckedCreateNestedManyWithoutBranchCourseInput
+    academicTests?: AcademicTestUncheckedCreateNestedManyWithoutBranchCourseInput
+    academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchCourseInput
+  }
+
+  export type BranchCourseCreateOrConnectWithoutAcademicQuestionPapersInput = {
+    where: BranchCourseWhereUniqueInput
+    create: XOR<BranchCourseCreateWithoutAcademicQuestionPapersInput, BranchCourseUncheckedCreateWithoutAcademicQuestionPapersInput>
+  }
+
+  export type BranchBatchCreateWithoutAcademicQuestionPapersInput = {
+    id?: string
+    batchId: string
+    courseId: string
+    courseName: string
+    facultyId: string
+    facultyName: string
+    facultyEmail: string
+    batchName: string
+    startTime: string
+    startPeriod: string
+    endTime: string
+    endPeriod: string
+    batchTiming: string
+    totalSeats: number
+    offlineSeats?: number
+    weekType?: string | null
+    mode?: string | null
+    courseStartDate?: string | null
+    courseEndDate?: string | null
+    weeklyOffDay?: string | null
+    sequenceNo?: number
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branch: BranchCreateNestedOneWithoutBranchBatchesInput
+    branchCourse: BranchCourseCreateNestedOneWithoutBranchBatchesInput
+    branchFaculty: BranchFacultyCreateNestedOneWithoutBranchBatchesInput
+    examSchedules?: ExamScheduleCreateNestedManyWithoutBranchBatchInput
+    assessments?: AssessmentCreateNestedManyWithoutBranchBatchInput
+    academicTestBatches?: AcademicTestBatchCreateNestedManyWithoutBranchBatchInput
+    academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchBatchInput
+  }
+
+  export type BranchBatchUncheckedCreateWithoutAcademicQuestionPapersInput = {
+    id?: string
+    branchId: string
+    branchCourseId: string
+    branchFacultyId: string
+    batchId: string
+    courseId: string
+    courseName: string
+    facultyId: string
+    facultyName: string
+    facultyEmail: string
+    batchName: string
+    startTime: string
+    startPeriod: string
+    endTime: string
+    endPeriod: string
+    batchTiming: string
+    totalSeats: number
+    offlineSeats?: number
+    weekType?: string | null
+    mode?: string | null
+    courseStartDate?: string | null
+    courseEndDate?: string | null
+    weeklyOffDay?: string | null
+    sequenceNo?: number
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    examSchedules?: ExamScheduleUncheckedCreateNestedManyWithoutBranchBatchInput
+    assessments?: AssessmentUncheckedCreateNestedManyWithoutBranchBatchInput
+    academicTestBatches?: AcademicTestBatchUncheckedCreateNestedManyWithoutBranchBatchInput
+    academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchBatchInput
+  }
+
+  export type BranchBatchCreateOrConnectWithoutAcademicQuestionPapersInput = {
+    where: BranchBatchWhereUniqueInput
+    create: XOR<BranchBatchCreateWithoutAcademicQuestionPapersInput, BranchBatchUncheckedCreateWithoutAcademicQuestionPapersInput>
+  }
+
+  export type AcademicQuestionCreateWithoutQuestionPaperInput = {
+    id?: string
+    questionNumber: number
+    questionText: string
+    optionA: string
+    optionB: string
+    optionC: string
+    optionD: string
+    correctAnswer: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AcademicQuestionUncheckedCreateWithoutQuestionPaperInput = {
+    id?: string
+    questionNumber: number
+    questionText: string
+    optionA: string
+    optionB: string
+    optionC: string
+    optionD: string
+    correctAnswer: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AcademicQuestionCreateOrConnectWithoutQuestionPaperInput = {
+    where: AcademicQuestionWhereUniqueInput
+    create: XOR<AcademicQuestionCreateWithoutQuestionPaperInput, AcademicQuestionUncheckedCreateWithoutQuestionPaperInput>
+  }
+
+  export type AcademicQuestionCreateManyQuestionPaperInputEnvelope = {
+    data: AcademicQuestionCreateManyQuestionPaperInput | AcademicQuestionCreateManyQuestionPaperInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AcademicTestItemUpsertWithoutQuestionPapersInput = {
+    update: XOR<AcademicTestItemUpdateWithoutQuestionPapersInput, AcademicTestItemUncheckedUpdateWithoutQuestionPapersInput>
+    create: XOR<AcademicTestItemCreateWithoutQuestionPapersInput, AcademicTestItemUncheckedCreateWithoutQuestionPapersInput>
+    where?: AcademicTestItemWhereInput
+  }
+
+  export type AcademicTestItemUpdateToOneWithWhereWithoutQuestionPapersInput = {
+    where?: AcademicTestItemWhereInput
+    data: XOR<AcademicTestItemUpdateWithoutQuestionPapersInput, AcademicTestItemUncheckedUpdateWithoutQuestionPapersInput>
+  }
+
+  export type AcademicTestItemUpdateWithoutQuestionPapersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sequence?: IntFieldUpdateOperationsInput | number
+    testType?: EnumAcademicTestTypeFieldUpdateOperationsInput | $Enums.AcademicTestType
+    requiredProgress?: IntFieldUpdateOperationsInput | number
+    academicTest?: AcademicTestUpdateOneRequiredWithoutItemsNestedInput
+    projects?: AcademicTestProjectUpdateManyWithoutAcademicTestItemNestedInput
+  }
+
+  export type AcademicTestItemUncheckedUpdateWithoutQuestionPapersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    academicTestId?: StringFieldUpdateOperationsInput | string
+    sequence?: IntFieldUpdateOperationsInput | number
+    testType?: EnumAcademicTestTypeFieldUpdateOperationsInput | $Enums.AcademicTestType
+    requiredProgress?: IntFieldUpdateOperationsInput | number
+    projects?: AcademicTestProjectUncheckedUpdateManyWithoutAcademicTestItemNestedInput
+  }
+
+  export type BranchCourseUpsertWithoutAcademicQuestionPapersInput = {
+    update: XOR<BranchCourseUpdateWithoutAcademicQuestionPapersInput, BranchCourseUncheckedUpdateWithoutAcademicQuestionPapersInput>
+    create: XOR<BranchCourseCreateWithoutAcademicQuestionPapersInput, BranchCourseUncheckedCreateWithoutAcademicQuestionPapersInput>
+    where?: BranchCourseWhereInput
+  }
+
+  export type BranchCourseUpdateToOneWithWhereWithoutAcademicQuestionPapersInput = {
+    where?: BranchCourseWhereInput
+    data: XOR<BranchCourseUpdateWithoutAcademicQuestionPapersInput, BranchCourseUncheckedUpdateWithoutAcademicQuestionPapersInput>
+  }
+
+  export type BranchCourseUpdateWithoutAcademicQuestionPapersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    courseCode?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameKey?: StringFieldUpdateOperationsInput | string
+    courseType?: StringFieldUpdateOperationsInput | string
+    academicTestCount?: IntFieldUpdateOperationsInput | number
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    mode?: StringFieldUpdateOperationsInput | string
+    duration?: NullableIntFieldUpdateOperationsInput | number | null
+    hours?: NullableIntFieldUpdateOperationsInput | number | null
+    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
+    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
+    discount?: NullableIntFieldUpdateOperationsInput | number | null
+    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
+    paymentPlans?: NullableJsonNullValueInput | InputJsonValue
+    paymentPlanSelections?: NullableJsonNullValueInput | InputJsonValue
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branch?: BranchUpdateOneRequiredWithoutBranchCoursesNestedInput
+    installmentTemplate?: BranchInstallmentTemplateUpdateOneWithoutBranchCourseNestedInput
+    modules?: BranchCourseModuleUpdateManyWithoutBranchCourseNestedInput
+    branchFaculties?: BranchFacultyUpdateManyWithoutBranchCourseNestedInput
+    facultyAssignments?: BranchFacultyCourseUpdateManyWithoutBranchCourseNestedInput
+    branchBatches?: BranchBatchUpdateManyWithoutBranchCourseNestedInput
+    branchStudents?: BranchStudentUpdateManyWithoutCourseNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUpdateManyWithoutBranchCourseNestedInput
+    facultyTodayWorkStudentEntries?: FacultyTodayWorkStudentEntryUpdateManyWithoutBranchCourseNestedInput
+    exams?: ExamUpdateManyWithoutBranchCourseNestedInput
+    assessments?: AssessmentUpdateManyWithoutBranchCourseNestedInput
+    academicTests?: AcademicTestUpdateManyWithoutBranchCourseNestedInput
+    academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchCourseNestedInput
+  }
+
+  export type BranchCourseUncheckedUpdateWithoutAcademicQuestionPapersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    courseCode?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameKey?: StringFieldUpdateOperationsInput | string
+    courseType?: StringFieldUpdateOperationsInput | string
+    academicTestCount?: IntFieldUpdateOperationsInput | number
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    mode?: StringFieldUpdateOperationsInput | string
+    duration?: NullableIntFieldUpdateOperationsInput | number | null
+    hours?: NullableIntFieldUpdateOperationsInput | number | null
+    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
+    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
+    discount?: NullableIntFieldUpdateOperationsInput | number | null
+    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
+    paymentPlans?: NullableJsonNullValueInput | InputJsonValue
+    paymentPlanSelections?: NullableJsonNullValueInput | InputJsonValue
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    installmentTemplate?: BranchInstallmentTemplateUncheckedUpdateOneWithoutBranchCourseNestedInput
+    modules?: BranchCourseModuleUncheckedUpdateManyWithoutBranchCourseNestedInput
+    branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutBranchCourseNestedInput
+    facultyAssignments?: BranchFacultyCourseUncheckedUpdateManyWithoutBranchCourseNestedInput
+    branchBatches?: BranchBatchUncheckedUpdateManyWithoutBranchCourseNestedInput
+    branchStudents?: BranchStudentUncheckedUpdateManyWithoutCourseNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedUpdateManyWithoutBranchCourseNestedInput
+    facultyTodayWorkStudentEntries?: FacultyTodayWorkStudentEntryUncheckedUpdateManyWithoutBranchCourseNestedInput
+    exams?: ExamUncheckedUpdateManyWithoutBranchCourseNestedInput
+    assessments?: AssessmentUncheckedUpdateManyWithoutBranchCourseNestedInput
+    academicTests?: AcademicTestUncheckedUpdateManyWithoutBranchCourseNestedInput
+    academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchCourseNestedInput
+  }
+
+  export type BranchBatchUpsertWithoutAcademicQuestionPapersInput = {
+    update: XOR<BranchBatchUpdateWithoutAcademicQuestionPapersInput, BranchBatchUncheckedUpdateWithoutAcademicQuestionPapersInput>
+    create: XOR<BranchBatchCreateWithoutAcademicQuestionPapersInput, BranchBatchUncheckedCreateWithoutAcademicQuestionPapersInput>
+    where?: BranchBatchWhereInput
+  }
+
+  export type BranchBatchUpdateToOneWithWhereWithoutAcademicQuestionPapersInput = {
+    where?: BranchBatchWhereInput
+    data: XOR<BranchBatchUpdateWithoutAcademicQuestionPapersInput, BranchBatchUncheckedUpdateWithoutAcademicQuestionPapersInput>
+  }
+
+  export type BranchBatchUpdateWithoutAcademicQuestionPapersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    batchId?: StringFieldUpdateOperationsInput | string
+    courseId?: StringFieldUpdateOperationsInput | string
+    courseName?: StringFieldUpdateOperationsInput | string
+    facultyId?: StringFieldUpdateOperationsInput | string
+    facultyName?: StringFieldUpdateOperationsInput | string
+    facultyEmail?: StringFieldUpdateOperationsInput | string
+    batchName?: StringFieldUpdateOperationsInput | string
+    startTime?: StringFieldUpdateOperationsInput | string
+    startPeriod?: StringFieldUpdateOperationsInput | string
+    endTime?: StringFieldUpdateOperationsInput | string
+    endPeriod?: StringFieldUpdateOperationsInput | string
+    batchTiming?: StringFieldUpdateOperationsInput | string
+    totalSeats?: IntFieldUpdateOperationsInput | number
+    offlineSeats?: IntFieldUpdateOperationsInput | number
+    weekType?: NullableStringFieldUpdateOperationsInput | string | null
+    mode?: NullableStringFieldUpdateOperationsInput | string | null
+    courseStartDate?: NullableStringFieldUpdateOperationsInput | string | null
+    courseEndDate?: NullableStringFieldUpdateOperationsInput | string | null
+    weeklyOffDay?: NullableStringFieldUpdateOperationsInput | string | null
+    sequenceNo?: IntFieldUpdateOperationsInput | number
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branch?: BranchUpdateOneRequiredWithoutBranchBatchesNestedInput
+    branchCourse?: BranchCourseUpdateOneRequiredWithoutBranchBatchesNestedInput
+    branchFaculty?: BranchFacultyUpdateOneRequiredWithoutBranchBatchesNestedInput
+    examSchedules?: ExamScheduleUpdateManyWithoutBranchBatchNestedInput
+    assessments?: AssessmentUpdateManyWithoutBranchBatchNestedInput
+    academicTestBatches?: AcademicTestBatchUpdateManyWithoutBranchBatchNestedInput
+    academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchBatchNestedInput
+  }
+
+  export type BranchBatchUncheckedUpdateWithoutAcademicQuestionPapersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    branchCourseId?: StringFieldUpdateOperationsInput | string
+    branchFacultyId?: StringFieldUpdateOperationsInput | string
+    batchId?: StringFieldUpdateOperationsInput | string
+    courseId?: StringFieldUpdateOperationsInput | string
+    courseName?: StringFieldUpdateOperationsInput | string
+    facultyId?: StringFieldUpdateOperationsInput | string
+    facultyName?: StringFieldUpdateOperationsInput | string
+    facultyEmail?: StringFieldUpdateOperationsInput | string
+    batchName?: StringFieldUpdateOperationsInput | string
+    startTime?: StringFieldUpdateOperationsInput | string
+    startPeriod?: StringFieldUpdateOperationsInput | string
+    endTime?: StringFieldUpdateOperationsInput | string
+    endPeriod?: StringFieldUpdateOperationsInput | string
+    batchTiming?: StringFieldUpdateOperationsInput | string
+    totalSeats?: IntFieldUpdateOperationsInput | number
+    offlineSeats?: IntFieldUpdateOperationsInput | number
+    weekType?: NullableStringFieldUpdateOperationsInput | string | null
+    mode?: NullableStringFieldUpdateOperationsInput | string | null
+    courseStartDate?: NullableStringFieldUpdateOperationsInput | string | null
+    courseEndDate?: NullableStringFieldUpdateOperationsInput | string | null
+    weeklyOffDay?: NullableStringFieldUpdateOperationsInput | string | null
+    sequenceNo?: IntFieldUpdateOperationsInput | number
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    examSchedules?: ExamScheduleUncheckedUpdateManyWithoutBranchBatchNestedInput
+    assessments?: AssessmentUncheckedUpdateManyWithoutBranchBatchNestedInput
+    academicTestBatches?: AcademicTestBatchUncheckedUpdateManyWithoutBranchBatchNestedInput
+    academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchBatchNestedInput
+  }
+
+  export type AcademicQuestionUpsertWithWhereUniqueWithoutQuestionPaperInput = {
+    where: AcademicQuestionWhereUniqueInput
+    update: XOR<AcademicQuestionUpdateWithoutQuestionPaperInput, AcademicQuestionUncheckedUpdateWithoutQuestionPaperInput>
+    create: XOR<AcademicQuestionCreateWithoutQuestionPaperInput, AcademicQuestionUncheckedCreateWithoutQuestionPaperInput>
+  }
+
+  export type AcademicQuestionUpdateWithWhereUniqueWithoutQuestionPaperInput = {
+    where: AcademicQuestionWhereUniqueInput
+    data: XOR<AcademicQuestionUpdateWithoutQuestionPaperInput, AcademicQuestionUncheckedUpdateWithoutQuestionPaperInput>
+  }
+
+  export type AcademicQuestionUpdateManyWithWhereWithoutQuestionPaperInput = {
+    where: AcademicQuestionScalarWhereInput
+    data: XOR<AcademicQuestionUpdateManyMutationInput, AcademicQuestionUncheckedUpdateManyWithoutQuestionPaperInput>
+  }
+
+  export type AcademicQuestionScalarWhereInput = {
+    AND?: AcademicQuestionScalarWhereInput | AcademicQuestionScalarWhereInput[]
+    OR?: AcademicQuestionScalarWhereInput[]
+    NOT?: AcademicQuestionScalarWhereInput | AcademicQuestionScalarWhereInput[]
+    id?: StringFilter<"AcademicQuestion"> | string
+    questionPaperId?: StringFilter<"AcademicQuestion"> | string
+    questionNumber?: IntFilter<"AcademicQuestion"> | number
+    questionText?: StringFilter<"AcademicQuestion"> | string
+    optionA?: StringFilter<"AcademicQuestion"> | string
+    optionB?: StringFilter<"AcademicQuestion"> | string
+    optionC?: StringFilter<"AcademicQuestion"> | string
+    optionD?: StringFilter<"AcademicQuestion"> | string
+    correctAnswer?: StringFilter<"AcademicQuestion"> | string
+    createdAt?: DateTimeFilter<"AcademicQuestion"> | Date | string
+    updatedAt?: DateTimeFilter<"AcademicQuestion"> | Date | string
+  }
+
+  export type AcademicQuestionPaperCreateWithoutQuestionsInput = {
+    id?: string
+    createdBy: string
+    status?: $Enums.AcademicPreparationStatus
+    marksPerQuestion?: number
+    totalQuestions?: number
+    totalMarks?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    academicTestItem: AcademicTestItemCreateNestedOneWithoutQuestionPapersInput
+    branchCourse: BranchCourseCreateNestedOneWithoutAcademicQuestionPapersInput
+    branchBatch: BranchBatchCreateNestedOneWithoutAcademicQuestionPapersInput
+  }
+
+  export type AcademicQuestionPaperUncheckedCreateWithoutQuestionsInput = {
+    id?: string
+    academicTestItemId: string
+    branchCourseId: string
+    branchBatchId: string
+    createdBy: string
+    status?: $Enums.AcademicPreparationStatus
+    marksPerQuestion?: number
+    totalQuestions?: number
+    totalMarks?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AcademicQuestionPaperCreateOrConnectWithoutQuestionsInput = {
+    where: AcademicQuestionPaperWhereUniqueInput
+    create: XOR<AcademicQuestionPaperCreateWithoutQuestionsInput, AcademicQuestionPaperUncheckedCreateWithoutQuestionsInput>
+  }
+
+  export type AcademicQuestionPaperUpsertWithoutQuestionsInput = {
+    update: XOR<AcademicQuestionPaperUpdateWithoutQuestionsInput, AcademicQuestionPaperUncheckedUpdateWithoutQuestionsInput>
+    create: XOR<AcademicQuestionPaperCreateWithoutQuestionsInput, AcademicQuestionPaperUncheckedCreateWithoutQuestionsInput>
+    where?: AcademicQuestionPaperWhereInput
+  }
+
+  export type AcademicQuestionPaperUpdateToOneWithWhereWithoutQuestionsInput = {
+    where?: AcademicQuestionPaperWhereInput
+    data: XOR<AcademicQuestionPaperUpdateWithoutQuestionsInput, AcademicQuestionPaperUncheckedUpdateWithoutQuestionsInput>
+  }
+
+  export type AcademicQuestionPaperUpdateWithoutQuestionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdBy?: StringFieldUpdateOperationsInput | string
+    status?: EnumAcademicPreparationStatusFieldUpdateOperationsInput | $Enums.AcademicPreparationStatus
+    marksPerQuestion?: IntFieldUpdateOperationsInput | number
+    totalQuestions?: IntFieldUpdateOperationsInput | number
+    totalMarks?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    academicTestItem?: AcademicTestItemUpdateOneRequiredWithoutQuestionPapersNestedInput
+    branchCourse?: BranchCourseUpdateOneRequiredWithoutAcademicQuestionPapersNestedInput
+    branchBatch?: BranchBatchUpdateOneRequiredWithoutAcademicQuestionPapersNestedInput
+  }
+
+  export type AcademicQuestionPaperUncheckedUpdateWithoutQuestionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    academicTestItemId?: StringFieldUpdateOperationsInput | string
+    branchCourseId?: StringFieldUpdateOperationsInput | string
+    branchBatchId?: StringFieldUpdateOperationsInput | string
+    createdBy?: StringFieldUpdateOperationsInput | string
+    status?: EnumAcademicPreparationStatusFieldUpdateOperationsInput | $Enums.AcademicPreparationStatus
+    marksPerQuestion?: IntFieldUpdateOperationsInput | number
+    totalQuestions?: IntFieldUpdateOperationsInput | number
+    totalMarks?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AcademicTestItemCreateWithoutProjectsInput = {
+    id?: string
+    sequence: number
+    testType: $Enums.AcademicTestType
+    requiredProgress?: number
+    academicTest: AcademicTestCreateNestedOneWithoutItemsInput
+    questionPapers?: AcademicQuestionPaperCreateNestedManyWithoutAcademicTestItemInput
+  }
+
+  export type AcademicTestItemUncheckedCreateWithoutProjectsInput = {
+    id?: string
+    academicTestId: string
+    sequence: number
+    testType: $Enums.AcademicTestType
+    requiredProgress?: number
+    questionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutAcademicTestItemInput
+  }
+
+  export type AcademicTestItemCreateOrConnectWithoutProjectsInput = {
+    where: AcademicTestItemWhereUniqueInput
+    create: XOR<AcademicTestItemCreateWithoutProjectsInput, AcademicTestItemUncheckedCreateWithoutProjectsInput>
+  }
+
+  export type BranchCourseCreateWithoutAcademicTestProjectsInput = {
+    id?: string
+    courseCode: string
+    name: string
+    nameKey: string
+    courseType?: string
+    academicTestCount?: number
+    description?: string | null
+    mode: string
+    duration?: number | null
+    hours?: number | null
+    actualFees?: number | null
+    registrationFees?: number | null
+    discount?: number | null
+    afterDiscount?: number | null
+    paymentPlans?: NullableJsonNullValueInput | InputJsonValue
+    paymentPlanSelections?: NullableJsonNullValueInput | InputJsonValue
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branch: BranchCreateNestedOneWithoutBranchCoursesInput
+    installmentTemplate?: BranchInstallmentTemplateCreateNestedOneWithoutBranchCourseInput
+    modules?: BranchCourseModuleCreateNestedManyWithoutBranchCourseInput
+    branchFaculties?: BranchFacultyCreateNestedManyWithoutBranchCourseInput
+    facultyAssignments?: BranchFacultyCourseCreateNestedManyWithoutBranchCourseInput
+    branchBatches?: BranchBatchCreateNestedManyWithoutBranchCourseInput
+    branchStudents?: BranchStudentCreateNestedManyWithoutCourseInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryCreateNestedManyWithoutBranchCourseInput
+    facultyTodayWorkStudentEntries?: FacultyTodayWorkStudentEntryCreateNestedManyWithoutBranchCourseInput
+    exams?: ExamCreateNestedManyWithoutBranchCourseInput
+    assessments?: AssessmentCreateNestedManyWithoutBranchCourseInput
+    academicTests?: AcademicTestCreateNestedManyWithoutBranchCourseInput
+    academicQuestionPapers?: AcademicQuestionPaperCreateNestedManyWithoutBranchCourseInput
+  }
+
+  export type BranchCourseUncheckedCreateWithoutAcademicTestProjectsInput = {
+    id?: string
+    branchId: string
+    courseCode: string
+    name: string
+    nameKey: string
+    courseType?: string
+    academicTestCount?: number
+    description?: string | null
+    mode: string
+    duration?: number | null
+    hours?: number | null
+    actualFees?: number | null
+    registrationFees?: number | null
+    discount?: number | null
+    afterDiscount?: number | null
+    paymentPlans?: NullableJsonNullValueInput | InputJsonValue
+    paymentPlanSelections?: NullableJsonNullValueInput | InputJsonValue
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    installmentTemplate?: BranchInstallmentTemplateUncheckedCreateNestedOneWithoutBranchCourseInput
+    modules?: BranchCourseModuleUncheckedCreateNestedManyWithoutBranchCourseInput
+    branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutBranchCourseInput
+    facultyAssignments?: BranchFacultyCourseUncheckedCreateNestedManyWithoutBranchCourseInput
+    branchBatches?: BranchBatchUncheckedCreateNestedManyWithoutBranchCourseInput
+    branchStudents?: BranchStudentUncheckedCreateNestedManyWithoutCourseInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedCreateNestedManyWithoutBranchCourseInput
+    facultyTodayWorkStudentEntries?: FacultyTodayWorkStudentEntryUncheckedCreateNestedManyWithoutBranchCourseInput
+    exams?: ExamUncheckedCreateNestedManyWithoutBranchCourseInput
+    assessments?: AssessmentUncheckedCreateNestedManyWithoutBranchCourseInput
+    academicTests?: AcademicTestUncheckedCreateNestedManyWithoutBranchCourseInput
+    academicQuestionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchCourseInput
+  }
+
+  export type BranchCourseCreateOrConnectWithoutAcademicTestProjectsInput = {
+    where: BranchCourseWhereUniqueInput
+    create: XOR<BranchCourseCreateWithoutAcademicTestProjectsInput, BranchCourseUncheckedCreateWithoutAcademicTestProjectsInput>
+  }
+
+  export type BranchBatchCreateWithoutAcademicTestProjectsInput = {
+    id?: string
+    batchId: string
+    courseId: string
+    courseName: string
+    facultyId: string
+    facultyName: string
+    facultyEmail: string
+    batchName: string
+    startTime: string
+    startPeriod: string
+    endTime: string
+    endPeriod: string
+    batchTiming: string
+    totalSeats: number
+    offlineSeats?: number
+    weekType?: string | null
+    mode?: string | null
+    courseStartDate?: string | null
+    courseEndDate?: string | null
+    weeklyOffDay?: string | null
+    sequenceNo?: number
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branch: BranchCreateNestedOneWithoutBranchBatchesInput
+    branchCourse: BranchCourseCreateNestedOneWithoutBranchBatchesInput
+    branchFaculty: BranchFacultyCreateNestedOneWithoutBranchBatchesInput
+    examSchedules?: ExamScheduleCreateNestedManyWithoutBranchBatchInput
+    assessments?: AssessmentCreateNestedManyWithoutBranchBatchInput
+    academicTestBatches?: AcademicTestBatchCreateNestedManyWithoutBranchBatchInput
+    academicQuestionPapers?: AcademicQuestionPaperCreateNestedManyWithoutBranchBatchInput
+  }
+
+  export type BranchBatchUncheckedCreateWithoutAcademicTestProjectsInput = {
+    id?: string
+    branchId: string
+    branchCourseId: string
+    branchFacultyId: string
+    batchId: string
+    courseId: string
+    courseName: string
+    facultyId: string
+    facultyName: string
+    facultyEmail: string
+    batchName: string
+    startTime: string
+    startPeriod: string
+    endTime: string
+    endPeriod: string
+    batchTiming: string
+    totalSeats: number
+    offlineSeats?: number
+    weekType?: string | null
+    mode?: string | null
+    courseStartDate?: string | null
+    courseEndDate?: string | null
+    weeklyOffDay?: string | null
+    sequenceNo?: number
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    examSchedules?: ExamScheduleUncheckedCreateNestedManyWithoutBranchBatchInput
+    assessments?: AssessmentUncheckedCreateNestedManyWithoutBranchBatchInput
+    academicTestBatches?: AcademicTestBatchUncheckedCreateNestedManyWithoutBranchBatchInput
+    academicQuestionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchBatchInput
+  }
+
+  export type BranchBatchCreateOrConnectWithoutAcademicTestProjectsInput = {
+    where: BranchBatchWhereUniqueInput
+    create: XOR<BranchBatchCreateWithoutAcademicTestProjectsInput, BranchBatchUncheckedCreateWithoutAcademicTestProjectsInput>
+  }
+
+  export type AcademicTestItemUpsertWithoutProjectsInput = {
+    update: XOR<AcademicTestItemUpdateWithoutProjectsInput, AcademicTestItemUncheckedUpdateWithoutProjectsInput>
+    create: XOR<AcademicTestItemCreateWithoutProjectsInput, AcademicTestItemUncheckedCreateWithoutProjectsInput>
+    where?: AcademicTestItemWhereInput
+  }
+
+  export type AcademicTestItemUpdateToOneWithWhereWithoutProjectsInput = {
+    where?: AcademicTestItemWhereInput
+    data: XOR<AcademicTestItemUpdateWithoutProjectsInput, AcademicTestItemUncheckedUpdateWithoutProjectsInput>
+  }
+
+  export type AcademicTestItemUpdateWithoutProjectsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sequence?: IntFieldUpdateOperationsInput | number
+    testType?: EnumAcademicTestTypeFieldUpdateOperationsInput | $Enums.AcademicTestType
+    requiredProgress?: IntFieldUpdateOperationsInput | number
+    academicTest?: AcademicTestUpdateOneRequiredWithoutItemsNestedInput
+    questionPapers?: AcademicQuestionPaperUpdateManyWithoutAcademicTestItemNestedInput
+  }
+
+  export type AcademicTestItemUncheckedUpdateWithoutProjectsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    academicTestId?: StringFieldUpdateOperationsInput | string
+    sequence?: IntFieldUpdateOperationsInput | number
+    testType?: EnumAcademicTestTypeFieldUpdateOperationsInput | $Enums.AcademicTestType
+    requiredProgress?: IntFieldUpdateOperationsInput | number
+    questionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutAcademicTestItemNestedInput
+  }
+
+  export type BranchCourseUpsertWithoutAcademicTestProjectsInput = {
+    update: XOR<BranchCourseUpdateWithoutAcademicTestProjectsInput, BranchCourseUncheckedUpdateWithoutAcademicTestProjectsInput>
+    create: XOR<BranchCourseCreateWithoutAcademicTestProjectsInput, BranchCourseUncheckedCreateWithoutAcademicTestProjectsInput>
+    where?: BranchCourseWhereInput
+  }
+
+  export type BranchCourseUpdateToOneWithWhereWithoutAcademicTestProjectsInput = {
+    where?: BranchCourseWhereInput
+    data: XOR<BranchCourseUpdateWithoutAcademicTestProjectsInput, BranchCourseUncheckedUpdateWithoutAcademicTestProjectsInput>
+  }
+
+  export type BranchCourseUpdateWithoutAcademicTestProjectsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    courseCode?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameKey?: StringFieldUpdateOperationsInput | string
+    courseType?: StringFieldUpdateOperationsInput | string
+    academicTestCount?: IntFieldUpdateOperationsInput | number
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    mode?: StringFieldUpdateOperationsInput | string
+    duration?: NullableIntFieldUpdateOperationsInput | number | null
+    hours?: NullableIntFieldUpdateOperationsInput | number | null
+    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
+    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
+    discount?: NullableIntFieldUpdateOperationsInput | number | null
+    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
+    paymentPlans?: NullableJsonNullValueInput | InputJsonValue
+    paymentPlanSelections?: NullableJsonNullValueInput | InputJsonValue
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branch?: BranchUpdateOneRequiredWithoutBranchCoursesNestedInput
+    installmentTemplate?: BranchInstallmentTemplateUpdateOneWithoutBranchCourseNestedInput
+    modules?: BranchCourseModuleUpdateManyWithoutBranchCourseNestedInput
+    branchFaculties?: BranchFacultyUpdateManyWithoutBranchCourseNestedInput
+    facultyAssignments?: BranchFacultyCourseUpdateManyWithoutBranchCourseNestedInput
+    branchBatches?: BranchBatchUpdateManyWithoutBranchCourseNestedInput
+    branchStudents?: BranchStudentUpdateManyWithoutCourseNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUpdateManyWithoutBranchCourseNestedInput
+    facultyTodayWorkStudentEntries?: FacultyTodayWorkStudentEntryUpdateManyWithoutBranchCourseNestedInput
+    exams?: ExamUpdateManyWithoutBranchCourseNestedInput
+    assessments?: AssessmentUpdateManyWithoutBranchCourseNestedInput
+    academicTests?: AcademicTestUpdateManyWithoutBranchCourseNestedInput
+    academicQuestionPapers?: AcademicQuestionPaperUpdateManyWithoutBranchCourseNestedInput
+  }
+
+  export type BranchCourseUncheckedUpdateWithoutAcademicTestProjectsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    courseCode?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameKey?: StringFieldUpdateOperationsInput | string
+    courseType?: StringFieldUpdateOperationsInput | string
+    academicTestCount?: IntFieldUpdateOperationsInput | number
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    mode?: StringFieldUpdateOperationsInput | string
+    duration?: NullableIntFieldUpdateOperationsInput | number | null
+    hours?: NullableIntFieldUpdateOperationsInput | number | null
+    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
+    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
+    discount?: NullableIntFieldUpdateOperationsInput | number | null
+    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
+    paymentPlans?: NullableJsonNullValueInput | InputJsonValue
+    paymentPlanSelections?: NullableJsonNullValueInput | InputJsonValue
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    installmentTemplate?: BranchInstallmentTemplateUncheckedUpdateOneWithoutBranchCourseNestedInput
+    modules?: BranchCourseModuleUncheckedUpdateManyWithoutBranchCourseNestedInput
+    branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutBranchCourseNestedInput
+    facultyAssignments?: BranchFacultyCourseUncheckedUpdateManyWithoutBranchCourseNestedInput
+    branchBatches?: BranchBatchUncheckedUpdateManyWithoutBranchCourseNestedInput
+    branchStudents?: BranchStudentUncheckedUpdateManyWithoutCourseNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedUpdateManyWithoutBranchCourseNestedInput
+    facultyTodayWorkStudentEntries?: FacultyTodayWorkStudentEntryUncheckedUpdateManyWithoutBranchCourseNestedInput
+    exams?: ExamUncheckedUpdateManyWithoutBranchCourseNestedInput
+    assessments?: AssessmentUncheckedUpdateManyWithoutBranchCourseNestedInput
+    academicTests?: AcademicTestUncheckedUpdateManyWithoutBranchCourseNestedInput
+    academicQuestionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutBranchCourseNestedInput
+  }
+
+  export type BranchBatchUpsertWithoutAcademicTestProjectsInput = {
+    update: XOR<BranchBatchUpdateWithoutAcademicTestProjectsInput, BranchBatchUncheckedUpdateWithoutAcademicTestProjectsInput>
+    create: XOR<BranchBatchCreateWithoutAcademicTestProjectsInput, BranchBatchUncheckedCreateWithoutAcademicTestProjectsInput>
+    where?: BranchBatchWhereInput
+  }
+
+  export type BranchBatchUpdateToOneWithWhereWithoutAcademicTestProjectsInput = {
+    where?: BranchBatchWhereInput
+    data: XOR<BranchBatchUpdateWithoutAcademicTestProjectsInput, BranchBatchUncheckedUpdateWithoutAcademicTestProjectsInput>
+  }
+
+  export type BranchBatchUpdateWithoutAcademicTestProjectsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    batchId?: StringFieldUpdateOperationsInput | string
+    courseId?: StringFieldUpdateOperationsInput | string
+    courseName?: StringFieldUpdateOperationsInput | string
+    facultyId?: StringFieldUpdateOperationsInput | string
+    facultyName?: StringFieldUpdateOperationsInput | string
+    facultyEmail?: StringFieldUpdateOperationsInput | string
+    batchName?: StringFieldUpdateOperationsInput | string
+    startTime?: StringFieldUpdateOperationsInput | string
+    startPeriod?: StringFieldUpdateOperationsInput | string
+    endTime?: StringFieldUpdateOperationsInput | string
+    endPeriod?: StringFieldUpdateOperationsInput | string
+    batchTiming?: StringFieldUpdateOperationsInput | string
+    totalSeats?: IntFieldUpdateOperationsInput | number
+    offlineSeats?: IntFieldUpdateOperationsInput | number
+    weekType?: NullableStringFieldUpdateOperationsInput | string | null
+    mode?: NullableStringFieldUpdateOperationsInput | string | null
+    courseStartDate?: NullableStringFieldUpdateOperationsInput | string | null
+    courseEndDate?: NullableStringFieldUpdateOperationsInput | string | null
+    weeklyOffDay?: NullableStringFieldUpdateOperationsInput | string | null
+    sequenceNo?: IntFieldUpdateOperationsInput | number
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branch?: BranchUpdateOneRequiredWithoutBranchBatchesNestedInput
+    branchCourse?: BranchCourseUpdateOneRequiredWithoutBranchBatchesNestedInput
+    branchFaculty?: BranchFacultyUpdateOneRequiredWithoutBranchBatchesNestedInput
+    examSchedules?: ExamScheduleUpdateManyWithoutBranchBatchNestedInput
+    assessments?: AssessmentUpdateManyWithoutBranchBatchNestedInput
+    academicTestBatches?: AcademicTestBatchUpdateManyWithoutBranchBatchNestedInput
+    academicQuestionPapers?: AcademicQuestionPaperUpdateManyWithoutBranchBatchNestedInput
+  }
+
+  export type BranchBatchUncheckedUpdateWithoutAcademicTestProjectsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    branchCourseId?: StringFieldUpdateOperationsInput | string
+    branchFacultyId?: StringFieldUpdateOperationsInput | string
+    batchId?: StringFieldUpdateOperationsInput | string
+    courseId?: StringFieldUpdateOperationsInput | string
+    courseName?: StringFieldUpdateOperationsInput | string
+    facultyId?: StringFieldUpdateOperationsInput | string
+    facultyName?: StringFieldUpdateOperationsInput | string
+    facultyEmail?: StringFieldUpdateOperationsInput | string
+    batchName?: StringFieldUpdateOperationsInput | string
+    startTime?: StringFieldUpdateOperationsInput | string
+    startPeriod?: StringFieldUpdateOperationsInput | string
+    endTime?: StringFieldUpdateOperationsInput | string
+    endPeriod?: StringFieldUpdateOperationsInput | string
+    batchTiming?: StringFieldUpdateOperationsInput | string
+    totalSeats?: IntFieldUpdateOperationsInput | number
+    offlineSeats?: IntFieldUpdateOperationsInput | number
+    weekType?: NullableStringFieldUpdateOperationsInput | string | null
+    mode?: NullableStringFieldUpdateOperationsInput | string | null
+    courseStartDate?: NullableStringFieldUpdateOperationsInput | string | null
+    courseEndDate?: NullableStringFieldUpdateOperationsInput | string | null
+    weeklyOffDay?: NullableStringFieldUpdateOperationsInput | string | null
+    sequenceNo?: IntFieldUpdateOperationsInput | number
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    examSchedules?: ExamScheduleUncheckedUpdateManyWithoutBranchBatchNestedInput
+    assessments?: AssessmentUncheckedUpdateManyWithoutBranchBatchNestedInput
+    academicTestBatches?: AcademicTestBatchUncheckedUpdateManyWithoutBranchBatchNestedInput
+    academicQuestionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutBranchBatchNestedInput
   }
 
   export type CourseCreateWithoutStatusHistoryInput = {
@@ -107824,6 +114664,8 @@ export namespace Prisma {
     exams?: ExamCreateNestedManyWithoutBranchCourseInput
     assessments?: AssessmentCreateNestedManyWithoutBranchCourseInput
     academicTests?: AcademicTestCreateNestedManyWithoutBranchCourseInput
+    academicQuestionPapers?: AcademicQuestionPaperCreateNestedManyWithoutBranchCourseInput
+    academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchCourseInput
   }
 
   export type BranchCourseUncheckedCreateWithoutBranchStudentsInput = {
@@ -107859,6 +114701,8 @@ export namespace Prisma {
     exams?: ExamUncheckedCreateNestedManyWithoutBranchCourseInput
     assessments?: AssessmentUncheckedCreateNestedManyWithoutBranchCourseInput
     academicTests?: AcademicTestUncheckedCreateNestedManyWithoutBranchCourseInput
+    academicQuestionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchCourseInput
+    academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchCourseInput
   }
 
   export type BranchCourseCreateOrConnectWithoutBranchStudentsInput = {
@@ -108433,6 +115277,8 @@ export namespace Prisma {
     exams?: ExamUpdateManyWithoutBranchCourseNestedInput
     assessments?: AssessmentUpdateManyWithoutBranchCourseNestedInput
     academicTests?: AcademicTestUpdateManyWithoutBranchCourseNestedInput
+    academicQuestionPapers?: AcademicQuestionPaperUpdateManyWithoutBranchCourseNestedInput
+    academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchCourseNestedInput
   }
 
   export type BranchCourseUncheckedUpdateWithoutBranchStudentsInput = {
@@ -108468,6 +115314,8 @@ export namespace Prisma {
     exams?: ExamUncheckedUpdateManyWithoutBranchCourseNestedInput
     assessments?: AssessmentUncheckedUpdateManyWithoutBranchCourseNestedInput
     academicTests?: AcademicTestUncheckedUpdateManyWithoutBranchCourseNestedInput
+    academicQuestionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutBranchCourseNestedInput
+    academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchCourseNestedInput
   }
 
   export type BranchStudentInstallmentUpsertWithWhereUniqueWithoutBranchStudentInput = {
@@ -111185,6 +118033,8 @@ export namespace Prisma {
     exams?: ExamCreateNestedManyWithoutBranchCourseInput
     assessments?: AssessmentCreateNestedManyWithoutBranchCourseInput
     academicTests?: AcademicTestCreateNestedManyWithoutBranchCourseInput
+    academicQuestionPapers?: AcademicQuestionPaperCreateNestedManyWithoutBranchCourseInput
+    academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchCourseInput
   }
 
   export type BranchCourseUncheckedCreateWithoutFacultyTodayWorkEntriesInput = {
@@ -111220,6 +118070,8 @@ export namespace Prisma {
     exams?: ExamUncheckedCreateNestedManyWithoutBranchCourseInput
     assessments?: AssessmentUncheckedCreateNestedManyWithoutBranchCourseInput
     academicTests?: AcademicTestUncheckedCreateNestedManyWithoutBranchCourseInput
+    academicQuestionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchCourseInput
+    academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchCourseInput
   }
 
   export type BranchCourseCreateOrConnectWithoutFacultyTodayWorkEntriesInput = {
@@ -111406,6 +118258,8 @@ export namespace Prisma {
     exams?: ExamUpdateManyWithoutBranchCourseNestedInput
     assessments?: AssessmentUpdateManyWithoutBranchCourseNestedInput
     academicTests?: AcademicTestUpdateManyWithoutBranchCourseNestedInput
+    academicQuestionPapers?: AcademicQuestionPaperUpdateManyWithoutBranchCourseNestedInput
+    academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchCourseNestedInput
   }
 
   export type BranchCourseUncheckedUpdateWithoutFacultyTodayWorkEntriesInput = {
@@ -111441,6 +118295,8 @@ export namespace Prisma {
     exams?: ExamUncheckedUpdateManyWithoutBranchCourseNestedInput
     assessments?: AssessmentUncheckedUpdateManyWithoutBranchCourseNestedInput
     academicTests?: AcademicTestUncheckedUpdateManyWithoutBranchCourseNestedInput
+    academicQuestionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutBranchCourseNestedInput
+    academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchCourseNestedInput
   }
 
   export type FacultyTodayWorkStudentEntryUpsertWithWhereUniqueWithoutFacultyTodayWorkEntryInput = {
@@ -111686,6 +118542,8 @@ export namespace Prisma {
     exams?: ExamCreateNestedManyWithoutBranchCourseInput
     assessments?: AssessmentCreateNestedManyWithoutBranchCourseInput
     academicTests?: AcademicTestCreateNestedManyWithoutBranchCourseInput
+    academicQuestionPapers?: AcademicQuestionPaperCreateNestedManyWithoutBranchCourseInput
+    academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchCourseInput
   }
 
   export type BranchCourseUncheckedCreateWithoutFacultyTodayWorkStudentEntriesInput = {
@@ -111721,6 +118579,8 @@ export namespace Prisma {
     exams?: ExamUncheckedCreateNestedManyWithoutBranchCourseInput
     assessments?: AssessmentUncheckedCreateNestedManyWithoutBranchCourseInput
     academicTests?: AcademicTestUncheckedCreateNestedManyWithoutBranchCourseInput
+    academicQuestionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchCourseInput
+    academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchCourseInput
   }
 
   export type BranchCourseCreateOrConnectWithoutFacultyTodayWorkStudentEntriesInput = {
@@ -111978,6 +118838,8 @@ export namespace Prisma {
     exams?: ExamUpdateManyWithoutBranchCourseNestedInput
     assessments?: AssessmentUpdateManyWithoutBranchCourseNestedInput
     academicTests?: AcademicTestUpdateManyWithoutBranchCourseNestedInput
+    academicQuestionPapers?: AcademicQuestionPaperUpdateManyWithoutBranchCourseNestedInput
+    academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchCourseNestedInput
   }
 
   export type BranchCourseUncheckedUpdateWithoutFacultyTodayWorkStudentEntriesInput = {
@@ -112013,6 +118875,8 @@ export namespace Prisma {
     exams?: ExamUncheckedUpdateManyWithoutBranchCourseNestedInput
     assessments?: AssessmentUncheckedUpdateManyWithoutBranchCourseNestedInput
     academicTests?: AcademicTestUncheckedUpdateManyWithoutBranchCourseNestedInput
+    academicQuestionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutBranchCourseNestedInput
+    academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchCourseNestedInput
   }
 
   export type UserCreateWithoutMarkedStudentAttendancesInput = {
@@ -112424,6 +119288,8 @@ export namespace Prisma {
     exams?: ExamCreateNestedManyWithoutBranchCourseInput
     assessments?: AssessmentCreateNestedManyWithoutBranchCourseInput
     academicTests?: AcademicTestCreateNestedManyWithoutBranchCourseInput
+    academicQuestionPapers?: AcademicQuestionPaperCreateNestedManyWithoutBranchCourseInput
+    academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchCourseInput
   }
 
   export type BranchCourseUncheckedCreateWithoutBranchFacultiesInput = {
@@ -112459,6 +119325,8 @@ export namespace Prisma {
     exams?: ExamUncheckedCreateNestedManyWithoutBranchCourseInput
     assessments?: AssessmentUncheckedCreateNestedManyWithoutBranchCourseInput
     academicTests?: AcademicTestUncheckedCreateNestedManyWithoutBranchCourseInput
+    academicQuestionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchCourseInput
+    academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchCourseInput
   }
 
   export type BranchCourseCreateOrConnectWithoutBranchFacultiesInput = {
@@ -112644,6 +119512,8 @@ export namespace Prisma {
     examSchedules?: ExamScheduleCreateNestedManyWithoutBranchBatchInput
     assessments?: AssessmentCreateNestedManyWithoutBranchBatchInput
     academicTestBatches?: AcademicTestBatchCreateNestedManyWithoutBranchBatchInput
+    academicQuestionPapers?: AcademicQuestionPaperCreateNestedManyWithoutBranchBatchInput
+    academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchBatchInput
   }
 
   export type BranchBatchUncheckedCreateWithoutBranchFacultyInput = {
@@ -112678,6 +119548,8 @@ export namespace Prisma {
     examSchedules?: ExamScheduleUncheckedCreateNestedManyWithoutBranchBatchInput
     assessments?: AssessmentUncheckedCreateNestedManyWithoutBranchBatchInput
     academicTestBatches?: AcademicTestBatchUncheckedCreateNestedManyWithoutBranchBatchInput
+    academicQuestionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchBatchInput
+    academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchBatchInput
   }
 
   export type BranchBatchCreateOrConnectWithoutBranchFacultyInput = {
@@ -112764,6 +119636,8 @@ export namespace Prisma {
     exams?: ExamUpdateManyWithoutBranchCourseNestedInput
     assessments?: AssessmentUpdateManyWithoutBranchCourseNestedInput
     academicTests?: AcademicTestUpdateManyWithoutBranchCourseNestedInput
+    academicQuestionPapers?: AcademicQuestionPaperUpdateManyWithoutBranchCourseNestedInput
+    academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchCourseNestedInput
   }
 
   export type BranchCourseUncheckedUpdateWithoutBranchFacultiesInput = {
@@ -112799,6 +119673,8 @@ export namespace Prisma {
     exams?: ExamUncheckedUpdateManyWithoutBranchCourseNestedInput
     assessments?: AssessmentUncheckedUpdateManyWithoutBranchCourseNestedInput
     academicTests?: AcademicTestUncheckedUpdateManyWithoutBranchCourseNestedInput
+    academicQuestionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutBranchCourseNestedInput
+    academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchCourseNestedInput
   }
 
   export type BranchUpsertWithoutBranchFacultiesInput = {
@@ -113397,6 +120273,8 @@ export namespace Prisma {
     exams?: ExamCreateNestedManyWithoutBranchCourseInput
     assessments?: AssessmentCreateNestedManyWithoutBranchCourseInput
     academicTests?: AcademicTestCreateNestedManyWithoutBranchCourseInput
+    academicQuestionPapers?: AcademicQuestionPaperCreateNestedManyWithoutBranchCourseInput
+    academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchCourseInput
   }
 
   export type BranchCourseUncheckedCreateWithoutFacultyAssignmentsInput = {
@@ -113432,6 +120310,8 @@ export namespace Prisma {
     exams?: ExamUncheckedCreateNestedManyWithoutBranchCourseInput
     assessments?: AssessmentUncheckedCreateNestedManyWithoutBranchCourseInput
     academicTests?: AcademicTestUncheckedCreateNestedManyWithoutBranchCourseInput
+    academicQuestionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchCourseInput
+    academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchCourseInput
   }
 
   export type BranchCourseCreateOrConnectWithoutFacultyAssignmentsInput = {
@@ -113542,6 +120422,8 @@ export namespace Prisma {
     exams?: ExamUpdateManyWithoutBranchCourseNestedInput
     assessments?: AssessmentUpdateManyWithoutBranchCourseNestedInput
     academicTests?: AcademicTestUpdateManyWithoutBranchCourseNestedInput
+    academicQuestionPapers?: AcademicQuestionPaperUpdateManyWithoutBranchCourseNestedInput
+    academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchCourseNestedInput
   }
 
   export type BranchCourseUncheckedUpdateWithoutFacultyAssignmentsInput = {
@@ -113577,6 +120459,8 @@ export namespace Prisma {
     exams?: ExamUncheckedUpdateManyWithoutBranchCourseNestedInput
     assessments?: AssessmentUncheckedUpdateManyWithoutBranchCourseNestedInput
     academicTests?: AcademicTestUncheckedUpdateManyWithoutBranchCourseNestedInput
+    academicQuestionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutBranchCourseNestedInput
+    academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchCourseNestedInput
   }
 
   export type BranchCreateWithoutBranchInstallmentTemplatesInput = {
@@ -113681,6 +120565,8 @@ export namespace Prisma {
     exams?: ExamCreateNestedManyWithoutBranchCourseInput
     assessments?: AssessmentCreateNestedManyWithoutBranchCourseInput
     academicTests?: AcademicTestCreateNestedManyWithoutBranchCourseInput
+    academicQuestionPapers?: AcademicQuestionPaperCreateNestedManyWithoutBranchCourseInput
+    academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchCourseInput
   }
 
   export type BranchCourseUncheckedCreateWithoutInstallmentTemplateInput = {
@@ -113716,6 +120602,8 @@ export namespace Prisma {
     exams?: ExamUncheckedCreateNestedManyWithoutBranchCourseInput
     assessments?: AssessmentUncheckedCreateNestedManyWithoutBranchCourseInput
     academicTests?: AcademicTestUncheckedCreateNestedManyWithoutBranchCourseInput
+    academicQuestionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchCourseInput
+    academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchCourseInput
   }
 
   export type BranchCourseCreateOrConnectWithoutInstallmentTemplateInput = {
@@ -113842,6 +120730,8 @@ export namespace Prisma {
     exams?: ExamUpdateManyWithoutBranchCourseNestedInput
     assessments?: AssessmentUpdateManyWithoutBranchCourseNestedInput
     academicTests?: AcademicTestUpdateManyWithoutBranchCourseNestedInput
+    academicQuestionPapers?: AcademicQuestionPaperUpdateManyWithoutBranchCourseNestedInput
+    academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchCourseNestedInput
   }
 
   export type BranchCourseUncheckedUpdateWithoutInstallmentTemplateInput = {
@@ -113877,6 +120767,8 @@ export namespace Prisma {
     exams?: ExamUncheckedUpdateManyWithoutBranchCourseNestedInput
     assessments?: AssessmentUncheckedUpdateManyWithoutBranchCourseNestedInput
     academicTests?: AcademicTestUncheckedUpdateManyWithoutBranchCourseNestedInput
+    academicQuestionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutBranchCourseNestedInput
+    academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchCourseNestedInput
   }
 
   export type BranchCourseCreateWithoutAssessmentsInput = {
@@ -113912,6 +120804,8 @@ export namespace Prisma {
     facultyTodayWorkStudentEntries?: FacultyTodayWorkStudentEntryCreateNestedManyWithoutBranchCourseInput
     exams?: ExamCreateNestedManyWithoutBranchCourseInput
     academicTests?: AcademicTestCreateNestedManyWithoutBranchCourseInput
+    academicQuestionPapers?: AcademicQuestionPaperCreateNestedManyWithoutBranchCourseInput
+    academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchCourseInput
   }
 
   export type BranchCourseUncheckedCreateWithoutAssessmentsInput = {
@@ -113947,6 +120841,8 @@ export namespace Prisma {
     facultyTodayWorkStudentEntries?: FacultyTodayWorkStudentEntryUncheckedCreateNestedManyWithoutBranchCourseInput
     exams?: ExamUncheckedCreateNestedManyWithoutBranchCourseInput
     academicTests?: AcademicTestUncheckedCreateNestedManyWithoutBranchCourseInput
+    academicQuestionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchCourseInput
+    academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchCourseInput
   }
 
   export type BranchCourseCreateOrConnectWithoutAssessmentsInput = {
@@ -114023,6 +120919,8 @@ export namespace Prisma {
     branchFaculty: BranchFacultyCreateNestedOneWithoutBranchBatchesInput
     examSchedules?: ExamScheduleCreateNestedManyWithoutBranchBatchInput
     academicTestBatches?: AcademicTestBatchCreateNestedManyWithoutBranchBatchInput
+    academicQuestionPapers?: AcademicQuestionPaperCreateNestedManyWithoutBranchBatchInput
+    academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchBatchInput
   }
 
   export type BranchBatchUncheckedCreateWithoutAssessmentsInput = {
@@ -114057,6 +120955,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     examSchedules?: ExamScheduleUncheckedCreateNestedManyWithoutBranchBatchInput
     academicTestBatches?: AcademicTestBatchUncheckedCreateNestedManyWithoutBranchBatchInput
+    academicQuestionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchBatchInput
+    academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchBatchInput
   }
 
   export type BranchBatchCreateOrConnectWithoutAssessmentsInput = {
@@ -114475,6 +121375,8 @@ export namespace Prisma {
     facultyTodayWorkStudentEntries?: FacultyTodayWorkStudentEntryUpdateManyWithoutBranchCourseNestedInput
     exams?: ExamUpdateManyWithoutBranchCourseNestedInput
     academicTests?: AcademicTestUpdateManyWithoutBranchCourseNestedInput
+    academicQuestionPapers?: AcademicQuestionPaperUpdateManyWithoutBranchCourseNestedInput
+    academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchCourseNestedInput
   }
 
   export type BranchCourseUncheckedUpdateWithoutAssessmentsInput = {
@@ -114510,6 +121412,8 @@ export namespace Prisma {
     facultyTodayWorkStudentEntries?: FacultyTodayWorkStudentEntryUncheckedUpdateManyWithoutBranchCourseNestedInput
     exams?: ExamUncheckedUpdateManyWithoutBranchCourseNestedInput
     academicTests?: AcademicTestUncheckedUpdateManyWithoutBranchCourseNestedInput
+    academicQuestionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutBranchCourseNestedInput
+    academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchCourseNestedInput
   }
 
   export type BranchCourseModuleUpsertWithoutAssessmentsInput = {
@@ -114598,6 +121502,8 @@ export namespace Prisma {
     branchFaculty?: BranchFacultyUpdateOneRequiredWithoutBranchBatchesNestedInput
     examSchedules?: ExamScheduleUpdateManyWithoutBranchBatchNestedInput
     academicTestBatches?: AcademicTestBatchUpdateManyWithoutBranchBatchNestedInput
+    academicQuestionPapers?: AcademicQuestionPaperUpdateManyWithoutBranchBatchNestedInput
+    academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchBatchNestedInput
   }
 
   export type BranchBatchUncheckedUpdateWithoutAssessmentsInput = {
@@ -114632,6 +121538,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     examSchedules?: ExamScheduleUncheckedUpdateManyWithoutBranchBatchNestedInput
     academicTestBatches?: AcademicTestBatchUncheckedUpdateManyWithoutBranchBatchNestedInput
+    academicQuestionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutBranchBatchNestedInput
+    academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchBatchNestedInput
   }
 
   export type UserUpsertWithoutCreatedAssessmentsInput = {
@@ -115536,6 +122444,8 @@ export namespace Prisma {
     facultyTodayWorkStudentEntries?: FacultyTodayWorkStudentEntryCreateNestedManyWithoutBranchCourseInput
     assessments?: AssessmentCreateNestedManyWithoutBranchCourseInput
     academicTests?: AcademicTestCreateNestedManyWithoutBranchCourseInput
+    academicQuestionPapers?: AcademicQuestionPaperCreateNestedManyWithoutBranchCourseInput
+    academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchCourseInput
   }
 
   export type BranchCourseUncheckedCreateWithoutExamsInput = {
@@ -115571,6 +122481,8 @@ export namespace Prisma {
     facultyTodayWorkStudentEntries?: FacultyTodayWorkStudentEntryUncheckedCreateNestedManyWithoutBranchCourseInput
     assessments?: AssessmentUncheckedCreateNestedManyWithoutBranchCourseInput
     academicTests?: AcademicTestUncheckedCreateNestedManyWithoutBranchCourseInput
+    academicQuestionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchCourseInput
+    academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchCourseInput
   }
 
   export type BranchCourseCreateOrConnectWithoutExamsInput = {
@@ -116094,6 +123006,8 @@ export namespace Prisma {
     facultyTodayWorkStudentEntries?: FacultyTodayWorkStudentEntryUpdateManyWithoutBranchCourseNestedInput
     assessments?: AssessmentUpdateManyWithoutBranchCourseNestedInput
     academicTests?: AcademicTestUpdateManyWithoutBranchCourseNestedInput
+    academicQuestionPapers?: AcademicQuestionPaperUpdateManyWithoutBranchCourseNestedInput
+    academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchCourseNestedInput
   }
 
   export type BranchCourseUncheckedUpdateWithoutExamsInput = {
@@ -116129,6 +123043,8 @@ export namespace Prisma {
     facultyTodayWorkStudentEntries?: FacultyTodayWorkStudentEntryUncheckedUpdateManyWithoutBranchCourseNestedInput
     assessments?: AssessmentUncheckedUpdateManyWithoutBranchCourseNestedInput
     academicTests?: AcademicTestUncheckedUpdateManyWithoutBranchCourseNestedInput
+    academicQuestionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutBranchCourseNestedInput
+    academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchCourseNestedInput
   }
 
   export type BranchCourseModuleUpsertWithoutExamsInput = {
@@ -116619,6 +123535,8 @@ export namespace Prisma {
     branchFaculty: BranchFacultyCreateNestedOneWithoutBranchBatchesInput
     assessments?: AssessmentCreateNestedManyWithoutBranchBatchInput
     academicTestBatches?: AcademicTestBatchCreateNestedManyWithoutBranchBatchInput
+    academicQuestionPapers?: AcademicQuestionPaperCreateNestedManyWithoutBranchBatchInput
+    academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchBatchInput
   }
 
   export type BranchBatchUncheckedCreateWithoutExamSchedulesInput = {
@@ -116653,6 +123571,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     assessments?: AssessmentUncheckedCreateNestedManyWithoutBranchBatchInput
     academicTestBatches?: AcademicTestBatchUncheckedCreateNestedManyWithoutBranchBatchInput
+    academicQuestionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchBatchInput
+    academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchBatchInput
   }
 
   export type BranchBatchCreateOrConnectWithoutExamSchedulesInput = {
@@ -116808,6 +123728,8 @@ export namespace Prisma {
     branchFaculty?: BranchFacultyUpdateOneRequiredWithoutBranchBatchesNestedInput
     assessments?: AssessmentUpdateManyWithoutBranchBatchNestedInput
     academicTestBatches?: AcademicTestBatchUpdateManyWithoutBranchBatchNestedInput
+    academicQuestionPapers?: AcademicQuestionPaperUpdateManyWithoutBranchBatchNestedInput
+    academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchBatchNestedInput
   }
 
   export type BranchBatchUncheckedUpdateWithoutExamSchedulesInput = {
@@ -116842,6 +123764,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     assessments?: AssessmentUncheckedUpdateManyWithoutBranchBatchNestedInput
     academicTestBatches?: AcademicTestBatchUncheckedUpdateManyWithoutBranchBatchNestedInput
+    academicQuestionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutBranchBatchNestedInput
+    academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchBatchNestedInput
   }
 
   export type ExamAttemptUpsertWithWhereUniqueWithoutScheduleInput = {
@@ -120239,6 +127163,8 @@ export namespace Prisma {
     exams?: ExamUpdateManyWithoutBranchCourseNestedInput
     assessments?: AssessmentUpdateManyWithoutBranchCourseNestedInput
     academicTests?: AcademicTestUpdateManyWithoutBranchCourseNestedInput
+    academicQuestionPapers?: AcademicQuestionPaperUpdateManyWithoutBranchCourseNestedInput
+    academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchCourseNestedInput
   }
 
   export type BranchCourseUncheckedUpdateWithoutBranchInput = {
@@ -120274,6 +127200,8 @@ export namespace Prisma {
     exams?: ExamUncheckedUpdateManyWithoutBranchCourseNestedInput
     assessments?: AssessmentUncheckedUpdateManyWithoutBranchCourseNestedInput
     academicTests?: AcademicTestUncheckedUpdateManyWithoutBranchCourseNestedInput
+    academicQuestionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutBranchCourseNestedInput
+    academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchCourseNestedInput
   }
 
   export type BranchCourseUncheckedUpdateManyWithoutBranchInput = {
@@ -120332,6 +127260,8 @@ export namespace Prisma {
     examSchedules?: ExamScheduleUpdateManyWithoutBranchBatchNestedInput
     assessments?: AssessmentUpdateManyWithoutBranchBatchNestedInput
     academicTestBatches?: AcademicTestBatchUpdateManyWithoutBranchBatchNestedInput
+    academicQuestionPapers?: AcademicQuestionPaperUpdateManyWithoutBranchBatchNestedInput
+    academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchBatchNestedInput
   }
 
   export type BranchBatchUncheckedUpdateWithoutBranchInput = {
@@ -120366,6 +127296,8 @@ export namespace Prisma {
     examSchedules?: ExamScheduleUncheckedUpdateManyWithoutBranchBatchNestedInput
     assessments?: AssessmentUncheckedUpdateManyWithoutBranchBatchNestedInput
     academicTestBatches?: AcademicTestBatchUncheckedUpdateManyWithoutBranchBatchNestedInput
+    academicQuestionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutBranchBatchNestedInput
+    academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchBatchNestedInput
   }
 
   export type BranchBatchUncheckedUpdateManyWithoutBranchInput = {
@@ -122054,6 +128986,33 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type AcademicQuestionPaperCreateManyBranchCourseInput = {
+    id?: string
+    academicTestItemId: string
+    branchBatchId: string
+    createdBy: string
+    status?: $Enums.AcademicPreparationStatus
+    marksPerQuestion?: number
+    totalQuestions?: number
+    totalMarks?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AcademicTestProjectCreateManyBranchCourseInput = {
+    id?: string
+    academicTestItemId: string
+    branchBatchId: string
+    createdBy: string
+    status?: $Enums.AcademicPreparationStatus
+    projectTitle?: string
+    projectDescription?: string
+    projectRequirements?: string | null
+    projectMarks?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type BranchCourseModuleUpdateWithoutBranchCourseInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
@@ -122231,6 +129190,8 @@ export namespace Prisma {
     examSchedules?: ExamScheduleUpdateManyWithoutBranchBatchNestedInput
     assessments?: AssessmentUpdateManyWithoutBranchBatchNestedInput
     academicTestBatches?: AcademicTestBatchUpdateManyWithoutBranchBatchNestedInput
+    academicQuestionPapers?: AcademicQuestionPaperUpdateManyWithoutBranchBatchNestedInput
+    academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchBatchNestedInput
   }
 
   export type BranchBatchUncheckedUpdateWithoutBranchCourseInput = {
@@ -122265,6 +129226,8 @@ export namespace Prisma {
     examSchedules?: ExamScheduleUncheckedUpdateManyWithoutBranchBatchNestedInput
     assessments?: AssessmentUncheckedUpdateManyWithoutBranchBatchNestedInput
     academicTestBatches?: AcademicTestBatchUncheckedUpdateManyWithoutBranchBatchNestedInput
+    academicQuestionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutBranchBatchNestedInput
+    academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchBatchNestedInput
   }
 
   export type BranchBatchUncheckedUpdateManyWithoutBranchCourseInput = {
@@ -122766,6 +129729,89 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type AcademicQuestionPaperUpdateWithoutBranchCourseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdBy?: StringFieldUpdateOperationsInput | string
+    status?: EnumAcademicPreparationStatusFieldUpdateOperationsInput | $Enums.AcademicPreparationStatus
+    marksPerQuestion?: IntFieldUpdateOperationsInput | number
+    totalQuestions?: IntFieldUpdateOperationsInput | number
+    totalMarks?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    academicTestItem?: AcademicTestItemUpdateOneRequiredWithoutQuestionPapersNestedInput
+    branchBatch?: BranchBatchUpdateOneRequiredWithoutAcademicQuestionPapersNestedInput
+    questions?: AcademicQuestionUpdateManyWithoutQuestionPaperNestedInput
+  }
+
+  export type AcademicQuestionPaperUncheckedUpdateWithoutBranchCourseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    academicTestItemId?: StringFieldUpdateOperationsInput | string
+    branchBatchId?: StringFieldUpdateOperationsInput | string
+    createdBy?: StringFieldUpdateOperationsInput | string
+    status?: EnumAcademicPreparationStatusFieldUpdateOperationsInput | $Enums.AcademicPreparationStatus
+    marksPerQuestion?: IntFieldUpdateOperationsInput | number
+    totalQuestions?: IntFieldUpdateOperationsInput | number
+    totalMarks?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    questions?: AcademicQuestionUncheckedUpdateManyWithoutQuestionPaperNestedInput
+  }
+
+  export type AcademicQuestionPaperUncheckedUpdateManyWithoutBranchCourseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    academicTestItemId?: StringFieldUpdateOperationsInput | string
+    branchBatchId?: StringFieldUpdateOperationsInput | string
+    createdBy?: StringFieldUpdateOperationsInput | string
+    status?: EnumAcademicPreparationStatusFieldUpdateOperationsInput | $Enums.AcademicPreparationStatus
+    marksPerQuestion?: IntFieldUpdateOperationsInput | number
+    totalQuestions?: IntFieldUpdateOperationsInput | number
+    totalMarks?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AcademicTestProjectUpdateWithoutBranchCourseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdBy?: StringFieldUpdateOperationsInput | string
+    status?: EnumAcademicPreparationStatusFieldUpdateOperationsInput | $Enums.AcademicPreparationStatus
+    projectTitle?: StringFieldUpdateOperationsInput | string
+    projectDescription?: StringFieldUpdateOperationsInput | string
+    projectRequirements?: NullableStringFieldUpdateOperationsInput | string | null
+    projectMarks?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    academicTestItem?: AcademicTestItemUpdateOneRequiredWithoutProjectsNestedInput
+    branchBatch?: BranchBatchUpdateOneRequiredWithoutAcademicTestProjectsNestedInput
+  }
+
+  export type AcademicTestProjectUncheckedUpdateWithoutBranchCourseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    academicTestItemId?: StringFieldUpdateOperationsInput | string
+    branchBatchId?: StringFieldUpdateOperationsInput | string
+    createdBy?: StringFieldUpdateOperationsInput | string
+    status?: EnumAcademicPreparationStatusFieldUpdateOperationsInput | $Enums.AcademicPreparationStatus
+    projectTitle?: StringFieldUpdateOperationsInput | string
+    projectDescription?: StringFieldUpdateOperationsInput | string
+    projectRequirements?: NullableStringFieldUpdateOperationsInput | string | null
+    projectMarks?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AcademicTestProjectUncheckedUpdateManyWithoutBranchCourseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    academicTestItemId?: StringFieldUpdateOperationsInput | string
+    branchBatchId?: StringFieldUpdateOperationsInput | string
+    createdBy?: StringFieldUpdateOperationsInput | string
+    status?: EnumAcademicPreparationStatusFieldUpdateOperationsInput | $Enums.AcademicPreparationStatus
+    projectTitle?: StringFieldUpdateOperationsInput | string
+    projectDescription?: StringFieldUpdateOperationsInput | string
+    projectRequirements?: NullableStringFieldUpdateOperationsInput | string | null
+    projectMarks?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type BranchCourseSubmoduleCreateManyBranchCourseModuleInput = {
     id?: string
     title: string
@@ -123116,6 +130162,33 @@ export namespace Prisma {
     academicTestId: string
   }
 
+  export type AcademicQuestionPaperCreateManyBranchBatchInput = {
+    id?: string
+    academicTestItemId: string
+    branchCourseId: string
+    createdBy: string
+    status?: $Enums.AcademicPreparationStatus
+    marksPerQuestion?: number
+    totalQuestions?: number
+    totalMarks?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AcademicTestProjectCreateManyBranchBatchInput = {
+    id?: string
+    academicTestItemId: string
+    branchCourseId: string
+    createdBy: string
+    status?: $Enums.AcademicPreparationStatus
+    projectTitle?: string
+    projectDescription?: string
+    projectRequirements?: string | null
+    projectMarks?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type ExamScheduleUpdateWithoutBranchBatchInput = {
     id?: StringFieldUpdateOperationsInput | string
     testDate?: StringFieldUpdateOperationsInput | string
@@ -123224,10 +130297,94 @@ export namespace Prisma {
     academicTestId?: StringFieldUpdateOperationsInput | string
   }
 
+  export type AcademicQuestionPaperUpdateWithoutBranchBatchInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdBy?: StringFieldUpdateOperationsInput | string
+    status?: EnumAcademicPreparationStatusFieldUpdateOperationsInput | $Enums.AcademicPreparationStatus
+    marksPerQuestion?: IntFieldUpdateOperationsInput | number
+    totalQuestions?: IntFieldUpdateOperationsInput | number
+    totalMarks?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    academicTestItem?: AcademicTestItemUpdateOneRequiredWithoutQuestionPapersNestedInput
+    branchCourse?: BranchCourseUpdateOneRequiredWithoutAcademicQuestionPapersNestedInput
+    questions?: AcademicQuestionUpdateManyWithoutQuestionPaperNestedInput
+  }
+
+  export type AcademicQuestionPaperUncheckedUpdateWithoutBranchBatchInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    academicTestItemId?: StringFieldUpdateOperationsInput | string
+    branchCourseId?: StringFieldUpdateOperationsInput | string
+    createdBy?: StringFieldUpdateOperationsInput | string
+    status?: EnumAcademicPreparationStatusFieldUpdateOperationsInput | $Enums.AcademicPreparationStatus
+    marksPerQuestion?: IntFieldUpdateOperationsInput | number
+    totalQuestions?: IntFieldUpdateOperationsInput | number
+    totalMarks?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    questions?: AcademicQuestionUncheckedUpdateManyWithoutQuestionPaperNestedInput
+  }
+
+  export type AcademicQuestionPaperUncheckedUpdateManyWithoutBranchBatchInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    academicTestItemId?: StringFieldUpdateOperationsInput | string
+    branchCourseId?: StringFieldUpdateOperationsInput | string
+    createdBy?: StringFieldUpdateOperationsInput | string
+    status?: EnumAcademicPreparationStatusFieldUpdateOperationsInput | $Enums.AcademicPreparationStatus
+    marksPerQuestion?: IntFieldUpdateOperationsInput | number
+    totalQuestions?: IntFieldUpdateOperationsInput | number
+    totalMarks?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AcademicTestProjectUpdateWithoutBranchBatchInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdBy?: StringFieldUpdateOperationsInput | string
+    status?: EnumAcademicPreparationStatusFieldUpdateOperationsInput | $Enums.AcademicPreparationStatus
+    projectTitle?: StringFieldUpdateOperationsInput | string
+    projectDescription?: StringFieldUpdateOperationsInput | string
+    projectRequirements?: NullableStringFieldUpdateOperationsInput | string | null
+    projectMarks?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    academicTestItem?: AcademicTestItemUpdateOneRequiredWithoutProjectsNestedInput
+    branchCourse?: BranchCourseUpdateOneRequiredWithoutAcademicTestProjectsNestedInput
+  }
+
+  export type AcademicTestProjectUncheckedUpdateWithoutBranchBatchInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    academicTestItemId?: StringFieldUpdateOperationsInput | string
+    branchCourseId?: StringFieldUpdateOperationsInput | string
+    createdBy?: StringFieldUpdateOperationsInput | string
+    status?: EnumAcademicPreparationStatusFieldUpdateOperationsInput | $Enums.AcademicPreparationStatus
+    projectTitle?: StringFieldUpdateOperationsInput | string
+    projectDescription?: StringFieldUpdateOperationsInput | string
+    projectRequirements?: NullableStringFieldUpdateOperationsInput | string | null
+    projectMarks?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AcademicTestProjectUncheckedUpdateManyWithoutBranchBatchInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    academicTestItemId?: StringFieldUpdateOperationsInput | string
+    branchCourseId?: StringFieldUpdateOperationsInput | string
+    createdBy?: StringFieldUpdateOperationsInput | string
+    status?: EnumAcademicPreparationStatusFieldUpdateOperationsInput | $Enums.AcademicPreparationStatus
+    projectTitle?: StringFieldUpdateOperationsInput | string
+    projectDescription?: StringFieldUpdateOperationsInput | string
+    projectRequirements?: NullableStringFieldUpdateOperationsInput | string | null
+    projectMarks?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type AcademicTestItemCreateManyAcademicTestInput = {
     id?: string
     sequence: number
     testType: $Enums.AcademicTestType
+    requiredProgress?: number
   }
 
   export type AcademicTestBatchCreateManyAcademicTestInput = {
@@ -123239,18 +130396,25 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     sequence?: IntFieldUpdateOperationsInput | number
     testType?: EnumAcademicTestTypeFieldUpdateOperationsInput | $Enums.AcademicTestType
+    requiredProgress?: IntFieldUpdateOperationsInput | number
+    questionPapers?: AcademicQuestionPaperUpdateManyWithoutAcademicTestItemNestedInput
+    projects?: AcademicTestProjectUpdateManyWithoutAcademicTestItemNestedInput
   }
 
   export type AcademicTestItemUncheckedUpdateWithoutAcademicTestInput = {
     id?: StringFieldUpdateOperationsInput | string
     sequence?: IntFieldUpdateOperationsInput | number
     testType?: EnumAcademicTestTypeFieldUpdateOperationsInput | $Enums.AcademicTestType
+    requiredProgress?: IntFieldUpdateOperationsInput | number
+    questionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutAcademicTestItemNestedInput
+    projects?: AcademicTestProjectUncheckedUpdateManyWithoutAcademicTestItemNestedInput
   }
 
   export type AcademicTestItemUncheckedUpdateManyWithoutAcademicTestInput = {
     id?: StringFieldUpdateOperationsInput | string
     sequence?: IntFieldUpdateOperationsInput | number
     testType?: EnumAcademicTestTypeFieldUpdateOperationsInput | $Enums.AcademicTestType
+    requiredProgress?: IntFieldUpdateOperationsInput | number
   }
 
   export type AcademicTestBatchUpdateWithoutAcademicTestInput = {
@@ -123266,6 +130430,168 @@ export namespace Prisma {
   export type AcademicTestBatchUncheckedUpdateManyWithoutAcademicTestInput = {
     id?: StringFieldUpdateOperationsInput | string
     branchBatchId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type AcademicQuestionPaperCreateManyAcademicTestItemInput = {
+    id?: string
+    branchCourseId: string
+    branchBatchId: string
+    createdBy: string
+    status?: $Enums.AcademicPreparationStatus
+    marksPerQuestion?: number
+    totalQuestions?: number
+    totalMarks?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AcademicTestProjectCreateManyAcademicTestItemInput = {
+    id?: string
+    branchCourseId: string
+    branchBatchId: string
+    createdBy: string
+    status?: $Enums.AcademicPreparationStatus
+    projectTitle?: string
+    projectDescription?: string
+    projectRequirements?: string | null
+    projectMarks?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AcademicQuestionPaperUpdateWithoutAcademicTestItemInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdBy?: StringFieldUpdateOperationsInput | string
+    status?: EnumAcademicPreparationStatusFieldUpdateOperationsInput | $Enums.AcademicPreparationStatus
+    marksPerQuestion?: IntFieldUpdateOperationsInput | number
+    totalQuestions?: IntFieldUpdateOperationsInput | number
+    totalMarks?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branchCourse?: BranchCourseUpdateOneRequiredWithoutAcademicQuestionPapersNestedInput
+    branchBatch?: BranchBatchUpdateOneRequiredWithoutAcademicQuestionPapersNestedInput
+    questions?: AcademicQuestionUpdateManyWithoutQuestionPaperNestedInput
+  }
+
+  export type AcademicQuestionPaperUncheckedUpdateWithoutAcademicTestItemInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchCourseId?: StringFieldUpdateOperationsInput | string
+    branchBatchId?: StringFieldUpdateOperationsInput | string
+    createdBy?: StringFieldUpdateOperationsInput | string
+    status?: EnumAcademicPreparationStatusFieldUpdateOperationsInput | $Enums.AcademicPreparationStatus
+    marksPerQuestion?: IntFieldUpdateOperationsInput | number
+    totalQuestions?: IntFieldUpdateOperationsInput | number
+    totalMarks?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    questions?: AcademicQuestionUncheckedUpdateManyWithoutQuestionPaperNestedInput
+  }
+
+  export type AcademicQuestionPaperUncheckedUpdateManyWithoutAcademicTestItemInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchCourseId?: StringFieldUpdateOperationsInput | string
+    branchBatchId?: StringFieldUpdateOperationsInput | string
+    createdBy?: StringFieldUpdateOperationsInput | string
+    status?: EnumAcademicPreparationStatusFieldUpdateOperationsInput | $Enums.AcademicPreparationStatus
+    marksPerQuestion?: IntFieldUpdateOperationsInput | number
+    totalQuestions?: IntFieldUpdateOperationsInput | number
+    totalMarks?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AcademicTestProjectUpdateWithoutAcademicTestItemInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdBy?: StringFieldUpdateOperationsInput | string
+    status?: EnumAcademicPreparationStatusFieldUpdateOperationsInput | $Enums.AcademicPreparationStatus
+    projectTitle?: StringFieldUpdateOperationsInput | string
+    projectDescription?: StringFieldUpdateOperationsInput | string
+    projectRequirements?: NullableStringFieldUpdateOperationsInput | string | null
+    projectMarks?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branchCourse?: BranchCourseUpdateOneRequiredWithoutAcademicTestProjectsNestedInput
+    branchBatch?: BranchBatchUpdateOneRequiredWithoutAcademicTestProjectsNestedInput
+  }
+
+  export type AcademicTestProjectUncheckedUpdateWithoutAcademicTestItemInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchCourseId?: StringFieldUpdateOperationsInput | string
+    branchBatchId?: StringFieldUpdateOperationsInput | string
+    createdBy?: StringFieldUpdateOperationsInput | string
+    status?: EnumAcademicPreparationStatusFieldUpdateOperationsInput | $Enums.AcademicPreparationStatus
+    projectTitle?: StringFieldUpdateOperationsInput | string
+    projectDescription?: StringFieldUpdateOperationsInput | string
+    projectRequirements?: NullableStringFieldUpdateOperationsInput | string | null
+    projectMarks?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AcademicTestProjectUncheckedUpdateManyWithoutAcademicTestItemInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchCourseId?: StringFieldUpdateOperationsInput | string
+    branchBatchId?: StringFieldUpdateOperationsInput | string
+    createdBy?: StringFieldUpdateOperationsInput | string
+    status?: EnumAcademicPreparationStatusFieldUpdateOperationsInput | $Enums.AcademicPreparationStatus
+    projectTitle?: StringFieldUpdateOperationsInput | string
+    projectDescription?: StringFieldUpdateOperationsInput | string
+    projectRequirements?: NullableStringFieldUpdateOperationsInput | string | null
+    projectMarks?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AcademicQuestionCreateManyQuestionPaperInput = {
+    id?: string
+    questionNumber: number
+    questionText: string
+    optionA: string
+    optionB: string
+    optionC: string
+    optionD: string
+    correctAnswer: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AcademicQuestionUpdateWithoutQuestionPaperInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    questionNumber?: IntFieldUpdateOperationsInput | number
+    questionText?: StringFieldUpdateOperationsInput | string
+    optionA?: StringFieldUpdateOperationsInput | string
+    optionB?: StringFieldUpdateOperationsInput | string
+    optionC?: StringFieldUpdateOperationsInput | string
+    optionD?: StringFieldUpdateOperationsInput | string
+    correctAnswer?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AcademicQuestionUncheckedUpdateWithoutQuestionPaperInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    questionNumber?: IntFieldUpdateOperationsInput | number
+    questionText?: StringFieldUpdateOperationsInput | string
+    optionA?: StringFieldUpdateOperationsInput | string
+    optionB?: StringFieldUpdateOperationsInput | string
+    optionC?: StringFieldUpdateOperationsInput | string
+    optionD?: StringFieldUpdateOperationsInput | string
+    correctAnswer?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AcademicQuestionUncheckedUpdateManyWithoutQuestionPaperInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    questionNumber?: IntFieldUpdateOperationsInput | number
+    questionText?: StringFieldUpdateOperationsInput | string
+    optionA?: StringFieldUpdateOperationsInput | string
+    optionB?: StringFieldUpdateOperationsInput | string
+    optionC?: StringFieldUpdateOperationsInput | string
+    optionD?: StringFieldUpdateOperationsInput | string
+    correctAnswer?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type StudentAttendanceCreateManyStudentInput = {
@@ -124357,6 +131683,8 @@ export namespace Prisma {
     examSchedules?: ExamScheduleUpdateManyWithoutBranchBatchNestedInput
     assessments?: AssessmentUpdateManyWithoutBranchBatchNestedInput
     academicTestBatches?: AcademicTestBatchUpdateManyWithoutBranchBatchNestedInput
+    academicQuestionPapers?: AcademicQuestionPaperUpdateManyWithoutBranchBatchNestedInput
+    academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchBatchNestedInput
   }
 
   export type BranchBatchUncheckedUpdateWithoutBranchFacultyInput = {
@@ -124391,6 +131719,8 @@ export namespace Prisma {
     examSchedules?: ExamScheduleUncheckedUpdateManyWithoutBranchBatchNestedInput
     assessments?: AssessmentUncheckedUpdateManyWithoutBranchBatchNestedInput
     academicTestBatches?: AcademicTestBatchUncheckedUpdateManyWithoutBranchBatchNestedInput
+    academicQuestionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutBranchBatchNestedInput
+    academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchBatchNestedInput
   }
 
   export type BranchBatchUncheckedUpdateManyWithoutBranchFacultyInput = {

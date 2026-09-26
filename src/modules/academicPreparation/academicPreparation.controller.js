@@ -1,0 +1,18 @@
+import asyncHandler from "../../common/utils/asyncHandler.js";
+import * as service from "./academicPreparation.service.js";
+
+const send = (res, data, status = 200) => res.status(status).json({ status: "success", data });
+const pdfEscape = (value) => String(value ?? "").replace(/\\/g, "\\\\").replace(/\(/g, "\\(").replace(/\)/g, "\\)").replace(/[\r\n]+/g, " ");
+function makePdf(lines) {
+  const content = ["BT", "/F1 11 Tf", "50 760 Td", ...lines.flatMap((line, index) => [index ? "0 -18 Td" : "", `(${pdfEscape(line).slice(0, 150)}) Tj`]), "ET"].filter(Boolean).join("\n");
+  const objects = [`<< /Type /Catalog /Pages 2 0 R >>`, `<< /Type /Pages /Kids [3 0 R] /Count 1 >>`, `<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 4 0 R >> >> /Contents 5 0 R >>`, `<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>`, `<< /Length ${Buffer.byteLength(content, "utf8")} >>\nstream\n${content}\nendstream`]; let pdf = "%PDF-1.4\n"; const offsets = [0]; for (let index = 0; index < objects.length; index += 1) { offsets.push(Buffer.byteLength(pdf, "utf8")); pdf += `${index + 1} 0 obj\n${objects[index]}\nendobj\n`; } const xref = Buffer.byteLength(pdf, "utf8"); pdf += `xref\n0 ${objects.length + 1}\n0000000000 65535 f \n${offsets.slice(1).map((offset) => `${String(offset).padStart(10, "0")} 00000 n `).join("\n")}\ntrailer\n<< /Size ${objects.length + 1} /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF`; return Buffer.from(pdf, "utf8");
+}
+export const list = asyncHandler(async (req, res) => send(res, await service.listPreparation(req.user, req.query)));
+export const get = asyncHandler(async (req, res) => send(res, await service.getPreparation(req.user, req.params.academicTestItemId, req.query.branchBatchId)));
+export const createPaper = asyncHandler(async (req, res) => send(res, await service.saveQuestionPaper(req.user, req.body), 201));
+export const updatePaper = asyncHandler(async (req, res) => send(res, await service.saveQuestionPaper(req.user, req.body, req.params.id)));
+export const removePaper = asyncHandler(async (req, res) => send(res, await service.deleteQuestionPaper(req.user, req.params.id)));
+export const createProject = asyncHandler(async (req, res) => send(res, await service.saveProject(req.user, req.body), 201));
+export const updateProject = asyncHandler(async (req, res) => send(res, await service.saveProject(req.user, req.body, req.params.id)));
+export const removeProject = asyncHandler(async (req, res) => send(res, await service.deleteProject(req.user, req.params.id)));
+export const pdf = asyncHandler(async (req, res) => { const { paper, project } = await service.getPaperForPdf(req.user, req.params.id); const lines = [`ACADEMIC TEST QUESTION PAPER`, `Course: ${paper.branchCourse.name} (${paper.branchCourse.courseCode})`, `Batch: ${paper.branchBatch.batchName}`, `Test ${paper.academicTestItem.sequence}`, `Marks per question: ${paper.marksPerQuestion}`, `Total questions: ${paper.totalQuestions}`, `Total marks: ${paper.totalMarks}`, "", ...paper.questions.flatMap((question) => [`${question.questionNumber}. ${question.questionText}`, `A. ${question.optionA}`, `B. ${question.optionB}`, `C. ${question.optionC}`, `D. ${question.optionD}`, `Answer: ${question.correctAnswer}`, ""]), ...(project ? ["PROJECT", `Title: ${project.projectTitle}`, `Description: ${project.projectDescription}`, `Requirements: ${project.projectRequirements || "-"}`, `Marks: ${project.projectMarks}`] : [])]; const buffer = makePdf(lines); res.setHeader("Content-Type", "application/pdf"); res.setHeader("Content-Disposition", `attachment; filename="academic-test-${paper.branchCourse.courseCode}-test-${paper.academicTestItem.sequence}.pdf"`); res.send(buffer); });
