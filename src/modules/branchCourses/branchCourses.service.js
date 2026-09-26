@@ -518,6 +518,7 @@ function toBranchCourseSummary(course) {
     name: course.name,
     nameKey: course.nameKey,
     courseType: course.courseType,
+    academicTestCount: course.academicTestCount ?? 0,
     description: course.description,
     mode: course.mode,
     duration: course.duration,
@@ -672,6 +673,11 @@ function buildBranchCoursePayload(payload = {}, existingCourse = null) {
       ? Math.max(actualFees + registrationFees - discount, 0)
       : existingCourse?.afterDiscount ?? null;
   const status = parseStatus(candidate.status ?? existingCourse?.status ?? "ACTIVE");
+  const academicTestCount = parseOptionalInt(
+    candidate.academicTestCount ?? existingCourse?.academicTestCount ?? 0,
+    "Academic Test count",
+    { allowZero: true },
+  ) ?? 0;
   const paymentPlans = parseBranchCoursePaymentPlans(candidate, afterDiscount ?? 0);
 
   return {
@@ -690,6 +696,7 @@ function buildBranchCoursePayload(payload = {}, existingCourse = null) {
     paymentPlans,
     paymentPlanSelections: paymentPlans,
     status,
+    academicTestCount,
   };
 }
 

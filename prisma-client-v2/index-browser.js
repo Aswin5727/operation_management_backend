@@ -309,6 +309,7 @@ exports.Prisma.BranchCourseScalarFieldEnum = {
   name: 'name',
   nameKey: 'nameKey',
   courseType: 'courseType',
+  academicTestCount: 'academicTestCount',
   description: 'description',
   mode: 'mode',
   duration: 'duration',
@@ -438,6 +439,27 @@ exports.Prisma.BranchBatchScalarFieldEnum = {
   updatedBy: 'updatedBy',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
+};
+
+exports.Prisma.AcademicTestScalarFieldEnum = {
+  id: 'id',
+  branchCourseId: 'branchCourseId',
+  createdBy: 'createdBy',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.AcademicTestItemScalarFieldEnum = {
+  id: 'id',
+  academicTestId: 'academicTestId',
+  sequence: 'sequence',
+  testType: 'testType'
+};
+
+exports.Prisma.AcademicTestBatchScalarFieldEnum = {
+  id: 'id',
+  academicTestId: 'academicTestId',
+  branchBatchId: 'branchBatchId'
 };
 
 exports.Prisma.CourseStatusHistoryScalarFieldEnum = {
@@ -1184,6 +1206,12 @@ exports.AssignmentStatus = exports.$Enums.AssignmentStatus = {
   INACTIVE: 'INACTIVE'
 };
 
+exports.AcademicTestType = exports.$Enums.AcademicTestType = {
+  TEST: 'TEST',
+  PROJECT: 'PROJECT',
+  TEST_AND_PROJECT: 'TEST_AND_PROJECT'
+};
+
 exports.AttendanceStatus = exports.$Enums.AttendanceStatus = {
   PRESENT: 'PRESENT',
   ABSENT: 'ABSENT'
@@ -1206,6 +1234,9 @@ exports.Prisma.ModelName = {
   Batch: 'Batch',
   BatchFacultyAssignment: 'BatchFacultyAssignment',
   BranchBatch: 'BranchBatch',
+  AcademicTest: 'AcademicTest',
+  AcademicTestItem: 'AcademicTestItem',
+  AcademicTestBatch: 'AcademicTestBatch',
   CourseStatusHistory: 'CourseStatusHistory',
   BatchStatusHistory: 'BatchStatusHistory',
   StudentProfile: 'StudentProfile',

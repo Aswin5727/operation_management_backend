@@ -280,6 +280,7 @@ model BranchCourse {
   name                           String
   nameKey                        String
   courseType                     String                         @default("")
+  academicTestCount              Int                            @default(0)
   description                    String?
   mode                           String
   duration                       Int?
@@ -306,6 +307,7 @@ model BranchCourse {
   facultyTodayWorkStudentEntries FacultyTodayWorkStudentEntry[]
   exams                          Exam[]
   assessments                    Assessment[]
+  academicTests                  AcademicTest[]
 
   @@unique([branchId, nameKey])
   @@unique([branchId, courseCode])
@@ -431,40 +433,41 @@ model BatchFacultyAssignment {
 }
 
 model BranchBatch {
-  id              String         @id @default(cuid())
-  branchId        String
-  branchCourseId  String
-  branchFacultyId String
-  batchId         String
-  courseId        String
-  courseName      String
-  facultyId       String
-  facultyName     String
-  facultyEmail    String
-  batchName       String
-  startTime       String
-  startPeriod     String
-  endTime         String
-  endPeriod       String
-  batchTiming     String
-  totalSeats      Int
-  offlineSeats    Int            @default(0)
-  weekType        String?
-  mode            String?
-  courseStartDate String?
-  courseEndDate   String?
-  weeklyOffDay    String?
-  sequenceNo      Int            @default(1)
-  status          RecordStatus   @default(ACTIVE)
-  createdBy       String?
-  updatedBy       String?
-  createdAt       DateTime       @default(now())
-  updatedAt       DateTime       @updatedAt
-  branch          Branch         @relation(fields: [branchId], references: [id], onDelete: Cascade)
-  branchCourse    BranchCourse   @relation(fields: [branchCourseId], references: [id], onDelete: Cascade)
-  branchFaculty   BranchFaculty  @relation(fields: [branchFacultyId], references: [id], onDelete: Cascade)
-  examSchedules   ExamSchedule[]
-  assessments     Assessment[]
+  id                  String              @id @default(cuid())
+  branchId            String
+  branchCourseId      String
+  branchFacultyId     String
+  batchId             String
+  courseId            String
+  courseName          String
+  facultyId           String
+  facultyName         String
+  facultyEmail        String
+  batchName           String
+  startTime           String
+  startPeriod         String
+  endTime             String
+  endPeriod           String
+  batchTiming         String
+  totalSeats          Int
+  offlineSeats        Int                 @default(0)
+  weekType            String?
+  mode                String?
+  courseStartDate     String?
+  courseEndDate       String?
+  weeklyOffDay        String?
+  sequenceNo          Int                 @default(1)
+  status              RecordStatus        @default(ACTIVE)
+  createdBy           String?
+  updatedBy           String?
+  createdAt           DateTime            @default(now())
+  updatedAt           DateTime            @updatedAt
+  branch              Branch              @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  branchCourse        BranchCourse        @relation(fields: [branchCourseId], references: [id], onDelete: Cascade)
+  branchFaculty       BranchFaculty       @relation(fields: [branchFacultyId], references: [id], onDelete: Cascade)
+  examSchedules       ExamSchedule[]
+  assessments         Assessment[]
+  academicTestBatches AcademicTestBatch[]
 
   @@unique([branchId, courseId, facultyId, batchId])
   @@index([branchId])
@@ -475,6 +478,48 @@ model BranchBatch {
   @@index([branchId, batchId])
   @@index([status])
   @@index([courseId, weekType, mode])
+}
+
+enum AcademicTestType {
+  TEST
+  PROJECT
+  TEST_AND_PROJECT
+}
+
+model AcademicTest {
+  id             String              @id @default(cuid())
+  branchCourseId String
+  createdBy      String
+  createdAt      DateTime            @default(now())
+  updatedAt      DateTime            @updatedAt
+  branchCourse   BranchCourse        @relation(fields: [branchCourseId], references: [id], onDelete: Cascade)
+  items          AcademicTestItem[]
+  batches        AcademicTestBatch[]
+
+  @@unique([branchCourseId])
+  @@index([createdBy])
+}
+
+model AcademicTestItem {
+  id             String           @id @default(cuid())
+  academicTestId String
+  sequence       Int
+  testType       AcademicTestType
+  academicTest   AcademicTest     @relation(fields: [academicTestId], references: [id], onDelete: Cascade)
+
+  @@unique([academicTestId, sequence])
+  @@index([academicTestId])
+}
+
+model AcademicTestBatch {
+  id             String       @id @default(cuid())
+  academicTestId String
+  branchBatchId  String
+  academicTest   AcademicTest @relation(fields: [academicTestId], references: [id], onDelete: Cascade)
+  branchBatch    BranchBatch  @relation(fields: [branchBatchId], references: [id], onDelete: Cascade)
+
+  @@unique([academicTestId, branchBatchId])
+  @@index([branchBatchId])
 }
 
 model CourseStatusHistory {

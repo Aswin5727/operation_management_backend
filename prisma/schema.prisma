@@ -280,6 +280,7 @@ model BranchCourse {
   name                           String
   nameKey                        String
   courseType                     String                         @default("")
+  academicTestCount              Int                            @default(0)
   description                    String?
   mode                           String
   duration                       Int?
@@ -306,6 +307,7 @@ model BranchCourse {
   facultyTodayWorkStudentEntries FacultyTodayWorkStudentEntry[]
   exams                          Exam[]
   assessments                    Assessment[]
+  academicTests                  AcademicTest[]
 
   @@unique([branchId, nameKey])
   @@unique([branchId, courseCode])
@@ -465,6 +467,7 @@ model BranchBatch {
   branchFaculty   BranchFaculty  @relation(fields: [branchFacultyId], references: [id], onDelete: Cascade)
   examSchedules   ExamSchedule[]
   assessments     Assessment[]
+  academicTestBatches AcademicTestBatch[]
 
   @@unique([branchId, courseId, facultyId, batchId])
   @@index([branchId])
@@ -475,6 +478,48 @@ model BranchBatch {
   @@index([branchId, batchId])
   @@index([status])
   @@index([courseId, weekType, mode])
+}
+
+enum AcademicTestType {
+  TEST
+  PROJECT
+  TEST_AND_PROJECT
+}
+
+model AcademicTest {
+  id              String              @id @default(cuid())
+  branchCourseId  String
+  createdBy       String
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @updatedAt
+  branchCourse    BranchCourse        @relation(fields: [branchCourseId], references: [id], onDelete: Cascade)
+  items           AcademicTestItem[]
+  batches         AcademicTestBatch[]
+
+  @@unique([branchCourseId])
+  @@index([createdBy])
+}
+
+model AcademicTestItem {
+  id             String           @id @default(cuid())
+  academicTestId String
+  sequence       Int
+  testType       AcademicTestType
+  academicTest   AcademicTest     @relation(fields: [academicTestId], references: [id], onDelete: Cascade)
+
+  @@unique([academicTestId, sequence])
+  @@index([academicTestId])
+}
+
+model AcademicTestBatch {
+  id             String       @id @default(cuid())
+  academicTestId String
+  branchBatchId  String
+  academicTest   AcademicTest @relation(fields: [academicTestId], references: [id], onDelete: Cascade)
+  branchBatch    BranchBatch  @relation(fields: [branchBatchId], references: [id], onDelete: Cascade)
+
+  @@unique([academicTestId, branchBatchId])
+  @@index([branchBatchId])
 }
 
 model CourseStatusHistory {
