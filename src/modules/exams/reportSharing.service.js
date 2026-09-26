@@ -32,7 +32,11 @@ export async function sendFacultyReport(user, payload = {}) {
 }
 
 async function branchAdminBranch(user) {
-  const branch = await prisma.branch.findFirst({ where: { OR: [{ adminUserId: user.id }, { branchEmail: user.email }] }, select: { id: true, branchName: true } });
+  const impersonatedBranchId = value(user?.impersonatedBranchId);
+  const where = impersonatedBranchId && String(user?.role || '').toUpperCase() === 'SUPER_ADMIN'
+    ? { OR: [{ id: impersonatedBranchId }, { branchId: impersonatedBranchId }] }
+    : { OR: [{ adminUserId: user.id }, { branchEmail: user.email }] };
+  const branch = await prisma.branch.findFirst({ where, select: { id: true, branchName: true } });
   if (!branch) throw new AppError("Branch scope not found.", 403);
   return branch;
 }
