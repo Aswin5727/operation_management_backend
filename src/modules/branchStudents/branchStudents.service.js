@@ -1821,6 +1821,11 @@ function buildBranchStudentWhere(query = {}, branchProfile = null) {
     where.facultyId = facultyId;
   }
 
+  const facultyName = normalizeString(query.facultyName);
+  if (facultyName) {
+    where.facultyName = { equals: facultyName, mode: "insensitive" };
+  }
+
   addCourseLifecycleFilter(where, query.lifecycle || query.courseStatus);
 
   return where;
@@ -2050,7 +2055,7 @@ export async function listBranchStudents(query = {}, actor = null) {
           ...(normalizeString(actor?.email) ? [{ email: { equals: normalizeString(actor.email), mode: "insensitive" } }] : []),
         ],
       },
-      select: { id: true, branchId: true, facultyId: true },
+      select: { id: true, branchId: true, facultyId: true, name: true },
     });
 
     if (!faculty?.branchId) {
@@ -2062,6 +2067,7 @@ export async function listBranchStudents(query = {}, actor = null) {
       ...query,
       branchId: faculty.branchId,
       facultyId: faculty.facultyId || faculty.id,
+      facultyName: faculty.name,
     };
   }
 

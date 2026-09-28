@@ -244,16 +244,19 @@ async function getFacultyMyBatchesSummary(user) {
             branchId: branchFaculty.branchId,
             recordStatus: "ACTIVE",
             batchId: { in: batchIds },
-            OR: [{ courseProgress: null }, { courseProgress: { lt: 100 } }],
+            facultyId: branchFaculty.facultyId || branchFaculty.id,
+            facultyName: { equals: branchFaculty.name, mode: "insensitive" },
           },
           select: {
             batchId: true,
             courseId: true,
             facultyId: true,
+            courseProgress: true,
           },
         })
       : [];
     const studentCountByBatch = new Map();
+    const progressByBatch = new Map();
 
     branchStudentRows.forEach((student) => {
       const key = [
@@ -262,6 +265,13 @@ async function getFacultyMyBatchesSummary(user) {
         normalizeFacultyKey(student.facultyId),
       ].join("|");
       studentCountByBatch.set(key, (studentCountByBatch.get(key) || 0) + 1);
+      const progress = Number(student.courseProgress);
+      const progressSummary = progressByBatch.get(key) || { total: 0, count: 0 };
+      if (Number.isFinite(progress)) {
+        progressSummary.total += Math.min(100, Math.max(0, progress));
+        progressSummary.count += 1;
+      }
+      progressByBatch.set(key, progressSummary);
     });
 
     const batchCounts = batchEntries.map((entry) => {
@@ -274,6 +284,9 @@ async function getFacultyMyBatchesSummary(user) {
       return {
         batchId: entry.id,
         studentCount: studentCountByBatch.get(key) || 0,
+        courseProgress: progressByBatch.has(key)
+          ? Math.round(progressByBatch.get(key).total / Math.max(1, progressByBatch.get(key).count))
+          : 0,
         studentRecords: [],
       };
     });
