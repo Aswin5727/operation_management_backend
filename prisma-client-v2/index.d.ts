@@ -124,6 +124,21 @@ export type AcademicQuestion = $Result.DefaultSelection<Prisma.$AcademicQuestion
  */
 export type AcademicTestProject = $Result.DefaultSelection<Prisma.$AcademicTestProjectPayload>
 /**
+ * Model AcademicScheduledTest
+ * 
+ */
+export type AcademicScheduledTest = $Result.DefaultSelection<Prisma.$AcademicScheduledTestPayload>
+/**
+ * Model AcademicTestSubmission
+ * 
+ */
+export type AcademicTestSubmission = $Result.DefaultSelection<Prisma.$AcademicTestSubmissionPayload>
+/**
+ * Model AcademicTestAnswer
+ * 
+ */
+export type AcademicTestAnswer = $Result.DefaultSelection<Prisma.$AcademicTestAnswerPayload>
+/**
  * Model CourseStatusHistory
  * 
  */
@@ -342,6 +357,7 @@ export type LoginEventType = (typeof LoginEventType)[keyof typeof LoginEventType
 
 
 export const NotificationKind: {
+  ACADEMIC_TEST_CREATED: 'ACADEMIC_TEST_CREATED',
   INSTITUTE_LEAVE: 'INSTITUTE_LEAVE',
   BRANCH_CREATED: 'BRANCH_CREATED',
   BRANCH_INVITATION_RESENT: 'BRANCH_INVITATION_RESENT',
@@ -791,6 +807,36 @@ export class PrismaClient<
     * ```
     */
   get academicTestProject(): Prisma.AcademicTestProjectDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.academicScheduledTest`: Exposes CRUD operations for the **AcademicScheduledTest** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AcademicScheduledTests
+    * const academicScheduledTests = await prisma.academicScheduledTest.findMany()
+    * ```
+    */
+  get academicScheduledTest(): Prisma.AcademicScheduledTestDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.academicTestSubmission`: Exposes CRUD operations for the **AcademicTestSubmission** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AcademicTestSubmissions
+    * const academicTestSubmissions = await prisma.academicTestSubmission.findMany()
+    * ```
+    */
+  get academicTestSubmission(): Prisma.AcademicTestSubmissionDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.academicTestAnswer`: Exposes CRUD operations for the **AcademicTestAnswer** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AcademicTestAnswers
+    * const academicTestAnswers = await prisma.academicTestAnswer.findMany()
+    * ```
+    */
+  get academicTestAnswer(): Prisma.AcademicTestAnswerDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.courseStatusHistory`: Exposes CRUD operations for the **CourseStatusHistory** model.
@@ -1587,6 +1633,9 @@ export namespace Prisma {
     AcademicQuestionPaper: 'AcademicQuestionPaper',
     AcademicQuestion: 'AcademicQuestion',
     AcademicTestProject: 'AcademicTestProject',
+    AcademicScheduledTest: 'AcademicScheduledTest',
+    AcademicTestSubmission: 'AcademicTestSubmission',
+    AcademicTestAnswer: 'AcademicTestAnswer',
     CourseStatusHistory: 'CourseStatusHistory',
     BatchStatusHistory: 'BatchStatusHistory',
     StudentProfile: 'StudentProfile',
@@ -1636,7 +1685,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "dashboardWidget" | "userDashboardWidget" | "branch" | "loginEvent" | "notification" | "courseEditRequest" | "passwordResetToken" | "course" | "branchCourse" | "branchCourseModule" | "branchCourseSubmodule" | "courseModule" | "batch" | "batchFacultyAssignment" | "branchBatch" | "academicTest" | "academicTestItem" | "academicTestBatch" | "academicQuestionPaper" | "academicQuestion" | "academicTestProject" | "courseStatusHistory" | "batchStatusHistory" | "studentProfile" | "branchStudent" | "branchStudentAttendance" | "branchCalendarHoliday" | "branchCalendarLeave" | "branchStudentInstallment" | "facultyProfile" | "facultyCourseAssignment" | "facultyBatchEntry" | "facultyAttendanceSession" | "facultyAttendanceDay" | "facultyAttendanceBatchWork" | "facultyTodayWorkEntry" | "facultyTodayWorkStudentEntry" | "studentAttendance" | "branchFaculty" | "facultyLeaveRequest" | "facultyWeekOffRequest" | "branchFacultyCourse" | "facultyLeaveAffectedSession" | "facultyLeaveCombinedSession" | "branchInstallmentTemplate" | "assessment" | "assessmentSubmission" | "exam" | "examSchedule" | "examQuestion" | "examAttempt" | "examAnswer" | "facultyReportShare" | "branchStudentPayment" | "branchStudentLedgerEntry"
+      modelProps: "user" | "dashboardWidget" | "userDashboardWidget" | "branch" | "loginEvent" | "notification" | "courseEditRequest" | "passwordResetToken" | "course" | "branchCourse" | "branchCourseModule" | "branchCourseSubmodule" | "courseModule" | "batch" | "batchFacultyAssignment" | "branchBatch" | "academicTest" | "academicTestItem" | "academicTestBatch" | "academicQuestionPaper" | "academicQuestion" | "academicTestProject" | "academicScheduledTest" | "academicTestSubmission" | "academicTestAnswer" | "courseStatusHistory" | "batchStatusHistory" | "studentProfile" | "branchStudent" | "branchStudentAttendance" | "branchCalendarHoliday" | "branchCalendarLeave" | "branchStudentInstallment" | "facultyProfile" | "facultyCourseAssignment" | "facultyBatchEntry" | "facultyAttendanceSession" | "facultyAttendanceDay" | "facultyAttendanceBatchWork" | "facultyTodayWorkEntry" | "facultyTodayWorkStudentEntry" | "studentAttendance" | "branchFaculty" | "facultyLeaveRequest" | "facultyWeekOffRequest" | "branchFacultyCourse" | "facultyLeaveAffectedSession" | "facultyLeaveCombinedSession" | "branchInstallmentTemplate" | "assessment" | "assessmentSubmission" | "exam" | "examSchedule" | "examQuestion" | "examAttempt" | "examAnswer" | "facultyReportShare" | "branchStudentPayment" | "branchStudentLedgerEntry"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -3265,6 +3314,228 @@ export namespace Prisma {
           count: {
             args: Prisma.AcademicTestProjectCountArgs<ExtArgs>
             result: $Utils.Optional<AcademicTestProjectCountAggregateOutputType> | number
+          }
+        }
+      }
+      AcademicScheduledTest: {
+        payload: Prisma.$AcademicScheduledTestPayload<ExtArgs>
+        fields: Prisma.AcademicScheduledTestFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AcademicScheduledTestFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicScheduledTestPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AcademicScheduledTestFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicScheduledTestPayload>
+          }
+          findFirst: {
+            args: Prisma.AcademicScheduledTestFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicScheduledTestPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AcademicScheduledTestFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicScheduledTestPayload>
+          }
+          findMany: {
+            args: Prisma.AcademicScheduledTestFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicScheduledTestPayload>[]
+          }
+          create: {
+            args: Prisma.AcademicScheduledTestCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicScheduledTestPayload>
+          }
+          createMany: {
+            args: Prisma.AcademicScheduledTestCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AcademicScheduledTestCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicScheduledTestPayload>[]
+          }
+          delete: {
+            args: Prisma.AcademicScheduledTestDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicScheduledTestPayload>
+          }
+          update: {
+            args: Prisma.AcademicScheduledTestUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicScheduledTestPayload>
+          }
+          deleteMany: {
+            args: Prisma.AcademicScheduledTestDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AcademicScheduledTestUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AcademicScheduledTestUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicScheduledTestPayload>[]
+          }
+          upsert: {
+            args: Prisma.AcademicScheduledTestUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicScheduledTestPayload>
+          }
+          aggregate: {
+            args: Prisma.AcademicScheduledTestAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAcademicScheduledTest>
+          }
+          groupBy: {
+            args: Prisma.AcademicScheduledTestGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AcademicScheduledTestGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AcademicScheduledTestCountArgs<ExtArgs>
+            result: $Utils.Optional<AcademicScheduledTestCountAggregateOutputType> | number
+          }
+        }
+      }
+      AcademicTestSubmission: {
+        payload: Prisma.$AcademicTestSubmissionPayload<ExtArgs>
+        fields: Prisma.AcademicTestSubmissionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AcademicTestSubmissionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicTestSubmissionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AcademicTestSubmissionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicTestSubmissionPayload>
+          }
+          findFirst: {
+            args: Prisma.AcademicTestSubmissionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicTestSubmissionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AcademicTestSubmissionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicTestSubmissionPayload>
+          }
+          findMany: {
+            args: Prisma.AcademicTestSubmissionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicTestSubmissionPayload>[]
+          }
+          create: {
+            args: Prisma.AcademicTestSubmissionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicTestSubmissionPayload>
+          }
+          createMany: {
+            args: Prisma.AcademicTestSubmissionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AcademicTestSubmissionCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicTestSubmissionPayload>[]
+          }
+          delete: {
+            args: Prisma.AcademicTestSubmissionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicTestSubmissionPayload>
+          }
+          update: {
+            args: Prisma.AcademicTestSubmissionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicTestSubmissionPayload>
+          }
+          deleteMany: {
+            args: Prisma.AcademicTestSubmissionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AcademicTestSubmissionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AcademicTestSubmissionUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicTestSubmissionPayload>[]
+          }
+          upsert: {
+            args: Prisma.AcademicTestSubmissionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicTestSubmissionPayload>
+          }
+          aggregate: {
+            args: Prisma.AcademicTestSubmissionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAcademicTestSubmission>
+          }
+          groupBy: {
+            args: Prisma.AcademicTestSubmissionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AcademicTestSubmissionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AcademicTestSubmissionCountArgs<ExtArgs>
+            result: $Utils.Optional<AcademicTestSubmissionCountAggregateOutputType> | number
+          }
+        }
+      }
+      AcademicTestAnswer: {
+        payload: Prisma.$AcademicTestAnswerPayload<ExtArgs>
+        fields: Prisma.AcademicTestAnswerFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AcademicTestAnswerFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicTestAnswerPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AcademicTestAnswerFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicTestAnswerPayload>
+          }
+          findFirst: {
+            args: Prisma.AcademicTestAnswerFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicTestAnswerPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AcademicTestAnswerFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicTestAnswerPayload>
+          }
+          findMany: {
+            args: Prisma.AcademicTestAnswerFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicTestAnswerPayload>[]
+          }
+          create: {
+            args: Prisma.AcademicTestAnswerCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicTestAnswerPayload>
+          }
+          createMany: {
+            args: Prisma.AcademicTestAnswerCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AcademicTestAnswerCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicTestAnswerPayload>[]
+          }
+          delete: {
+            args: Prisma.AcademicTestAnswerDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicTestAnswerPayload>
+          }
+          update: {
+            args: Prisma.AcademicTestAnswerUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicTestAnswerPayload>
+          }
+          deleteMany: {
+            args: Prisma.AcademicTestAnswerDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AcademicTestAnswerUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AcademicTestAnswerUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicTestAnswerPayload>[]
+          }
+          upsert: {
+            args: Prisma.AcademicTestAnswerUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicTestAnswerPayload>
+          }
+          aggregate: {
+            args: Prisma.AcademicTestAnswerAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAcademicTestAnswer>
+          }
+          groupBy: {
+            args: Prisma.AcademicTestAnswerGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AcademicTestAnswerGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AcademicTestAnswerCountArgs<ExtArgs>
+            result: $Utils.Optional<AcademicTestAnswerCountAggregateOutputType> | number
           }
         }
       }
@@ -5914,6 +6185,9 @@ export namespace Prisma {
     academicQuestionPaper?: AcademicQuestionPaperOmit
     academicQuestion?: AcademicQuestionOmit
     academicTestProject?: AcademicTestProjectOmit
+    academicScheduledTest?: AcademicScheduledTestOmit
+    academicTestSubmission?: AcademicTestSubmissionOmit
+    academicTestAnswer?: AcademicTestAnswerOmit
     courseStatusHistory?: CourseStatusHistoryOmit
     batchStatusHistory?: BatchStatusHistoryOmit
     studentProfile?: StudentProfileOmit
@@ -14127,6 +14401,7 @@ export namespace Prisma {
     requestTitle: string | null
     examId: string | null
     examScheduleId: string | null
+    academicTestId: string | null
     assessmentId: string | null
     batchId: string | null
     subModuleId: string | null
@@ -14163,6 +14438,7 @@ export namespace Prisma {
     requestTitle: string | null
     examId: string | null
     examScheduleId: string | null
+    academicTestId: string | null
     assessmentId: string | null
     batchId: string | null
     subModuleId: string | null
@@ -14199,6 +14475,7 @@ export namespace Prisma {
     requestTitle: number
     examId: number
     examScheduleId: number
+    academicTestId: number
     assessmentId: number
     batchId: number
     subModuleId: number
@@ -14237,6 +14514,7 @@ export namespace Prisma {
     requestTitle?: true
     examId?: true
     examScheduleId?: true
+    academicTestId?: true
     assessmentId?: true
     batchId?: true
     subModuleId?: true
@@ -14273,6 +14551,7 @@ export namespace Prisma {
     requestTitle?: true
     examId?: true
     examScheduleId?: true
+    academicTestId?: true
     assessmentId?: true
     batchId?: true
     subModuleId?: true
@@ -14309,6 +14588,7 @@ export namespace Prisma {
     requestTitle?: true
     examId?: true
     examScheduleId?: true
+    academicTestId?: true
     assessmentId?: true
     batchId?: true
     subModuleId?: true
@@ -14418,6 +14698,7 @@ export namespace Prisma {
     requestTitle: string | null
     examId: string | null
     examScheduleId: string | null
+    academicTestId: string | null
     assessmentId: string | null
     batchId: string | null
     subModuleId: string | null
@@ -14471,6 +14752,7 @@ export namespace Prisma {
     requestTitle?: boolean
     examId?: boolean
     examScheduleId?: boolean
+    academicTestId?: boolean
     assessmentId?: boolean
     batchId?: boolean
     subModuleId?: boolean
@@ -14509,6 +14791,7 @@ export namespace Prisma {
     requestTitle?: boolean
     examId?: boolean
     examScheduleId?: boolean
+    academicTestId?: boolean
     assessmentId?: boolean
     batchId?: boolean
     subModuleId?: boolean
@@ -14547,6 +14830,7 @@ export namespace Prisma {
     requestTitle?: boolean
     examId?: boolean
     examScheduleId?: boolean
+    academicTestId?: boolean
     assessmentId?: boolean
     batchId?: boolean
     subModuleId?: boolean
@@ -14585,13 +14869,14 @@ export namespace Prisma {
     requestTitle?: boolean
     examId?: boolean
     examScheduleId?: boolean
+    academicTestId?: boolean
     assessmentId?: boolean
     batchId?: boolean
     subModuleId?: boolean
     subModuleName?: boolean
   }
 
-  export type NotificationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "kind" | "tone" | "title" | "message" | "actionLabel" | "targetBranchId" | "targetBranchEmail" | "targetBranchName" | "read" | "readAt" | "createdBy" | "createdAt" | "updatedAt" | "targetUserId" | "branchCourseId" | "branchCourseName" | "facultyId" | "facultyName" | "moduleId" | "moduleName" | "requestDescription" | "requestId" | "leaveRequestId" | "requestReason" | "requestStatus" | "requestTitle" | "examId" | "examScheduleId" | "assessmentId" | "batchId" | "subModuleId" | "subModuleName", ExtArgs["result"]["notification"]>
+  export type NotificationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "kind" | "tone" | "title" | "message" | "actionLabel" | "targetBranchId" | "targetBranchEmail" | "targetBranchName" | "read" | "readAt" | "createdBy" | "createdAt" | "updatedAt" | "targetUserId" | "branchCourseId" | "branchCourseName" | "facultyId" | "facultyName" | "moduleId" | "moduleName" | "requestDescription" | "requestId" | "leaveRequestId" | "requestReason" | "requestStatus" | "requestTitle" | "examId" | "examScheduleId" | "academicTestId" | "assessmentId" | "batchId" | "subModuleId" | "subModuleName", ExtArgs["result"]["notification"]>
   export type NotificationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     request?: boolean | Notification$requestArgs<ExtArgs>
     targetUser?: boolean | Notification$targetUserArgs<ExtArgs>
@@ -14641,6 +14926,7 @@ export namespace Prisma {
       requestTitle: string | null
       examId: string | null
       examScheduleId: string | null
+      academicTestId: string | null
       assessmentId: string | null
       batchId: string | null
       subModuleId: string | null
@@ -15099,6 +15385,7 @@ export namespace Prisma {
     readonly requestTitle: FieldRef<"Notification", 'String'>
     readonly examId: FieldRef<"Notification", 'String'>
     readonly examScheduleId: FieldRef<"Notification", 'String'>
+    readonly academicTestId: FieldRef<"Notification", 'String'>
     readonly assessmentId: FieldRef<"Notification", 'String'>
     readonly batchId: FieldRef<"Notification", 'String'>
     readonly subModuleId: FieldRef<"Notification", 'String'>
@@ -35963,6 +36250,3396 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: AcademicTestProjectInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model AcademicScheduledTest
+   */
+
+  export type AggregateAcademicScheduledTest = {
+    _count: AcademicScheduledTestCountAggregateOutputType | null
+    _avg: AcademicScheduledTestAvgAggregateOutputType | null
+    _sum: AcademicScheduledTestSumAggregateOutputType | null
+    _min: AcademicScheduledTestMinAggregateOutputType | null
+    _max: AcademicScheduledTestMaxAggregateOutputType | null
+  }
+
+  export type AcademicScheduledTestAvgAggregateOutputType = {
+    testNumber: number | null
+  }
+
+  export type AcademicScheduledTestSumAggregateOutputType = {
+    testNumber: number | null
+  }
+
+  export type AcademicScheduledTestMinAggregateOutputType = {
+    id: string | null
+    academicTestItemId: string | null
+    branchCourseId: string | null
+    branchBatchId: string | null
+    facultyId: string | null
+    questionPaperId: string | null
+    testNumber: number | null
+    testDate: string | null
+    startTime: string | null
+    endTime: string | null
+    status: string | null
+    createdBy: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type AcademicScheduledTestMaxAggregateOutputType = {
+    id: string | null
+    academicTestItemId: string | null
+    branchCourseId: string | null
+    branchBatchId: string | null
+    facultyId: string | null
+    questionPaperId: string | null
+    testNumber: number | null
+    testDate: string | null
+    startTime: string | null
+    endTime: string | null
+    status: string | null
+    createdBy: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type AcademicScheduledTestCountAggregateOutputType = {
+    id: number
+    academicTestItemId: number
+    branchCourseId: number
+    branchBatchId: number
+    facultyId: number
+    questionPaperId: number
+    testNumber: number
+    testDate: number
+    startTime: number
+    endTime: number
+    status: number
+    createdBy: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type AcademicScheduledTestAvgAggregateInputType = {
+    testNumber?: true
+  }
+
+  export type AcademicScheduledTestSumAggregateInputType = {
+    testNumber?: true
+  }
+
+  export type AcademicScheduledTestMinAggregateInputType = {
+    id?: true
+    academicTestItemId?: true
+    branchCourseId?: true
+    branchBatchId?: true
+    facultyId?: true
+    questionPaperId?: true
+    testNumber?: true
+    testDate?: true
+    startTime?: true
+    endTime?: true
+    status?: true
+    createdBy?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type AcademicScheduledTestMaxAggregateInputType = {
+    id?: true
+    academicTestItemId?: true
+    branchCourseId?: true
+    branchBatchId?: true
+    facultyId?: true
+    questionPaperId?: true
+    testNumber?: true
+    testDate?: true
+    startTime?: true
+    endTime?: true
+    status?: true
+    createdBy?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type AcademicScheduledTestCountAggregateInputType = {
+    id?: true
+    academicTestItemId?: true
+    branchCourseId?: true
+    branchBatchId?: true
+    facultyId?: true
+    questionPaperId?: true
+    testNumber?: true
+    testDate?: true
+    startTime?: true
+    endTime?: true
+    status?: true
+    createdBy?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type AcademicScheduledTestAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AcademicScheduledTest to aggregate.
+     */
+    where?: AcademicScheduledTestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AcademicScheduledTests to fetch.
+     */
+    orderBy?: AcademicScheduledTestOrderByWithRelationInput | AcademicScheduledTestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AcademicScheduledTestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AcademicScheduledTests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AcademicScheduledTests.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AcademicScheduledTests
+    **/
+    _count?: true | AcademicScheduledTestCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: AcademicScheduledTestAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: AcademicScheduledTestSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AcademicScheduledTestMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AcademicScheduledTestMaxAggregateInputType
+  }
+
+  export type GetAcademicScheduledTestAggregateType<T extends AcademicScheduledTestAggregateArgs> = {
+        [P in keyof T & keyof AggregateAcademicScheduledTest]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAcademicScheduledTest[P]>
+      : GetScalarType<T[P], AggregateAcademicScheduledTest[P]>
+  }
+
+
+
+
+  export type AcademicScheduledTestGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AcademicScheduledTestWhereInput
+    orderBy?: AcademicScheduledTestOrderByWithAggregationInput | AcademicScheduledTestOrderByWithAggregationInput[]
+    by: AcademicScheduledTestScalarFieldEnum[] | AcademicScheduledTestScalarFieldEnum
+    having?: AcademicScheduledTestScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AcademicScheduledTestCountAggregateInputType | true
+    _avg?: AcademicScheduledTestAvgAggregateInputType
+    _sum?: AcademicScheduledTestSumAggregateInputType
+    _min?: AcademicScheduledTestMinAggregateInputType
+    _max?: AcademicScheduledTestMaxAggregateInputType
+  }
+
+  export type AcademicScheduledTestGroupByOutputType = {
+    id: string
+    academicTestItemId: string
+    branchCourseId: string
+    branchBatchId: string
+    facultyId: string
+    questionPaperId: string
+    testNumber: number
+    testDate: string
+    startTime: string
+    endTime: string
+    status: string
+    createdBy: string
+    createdAt: Date
+    updatedAt: Date
+    _count: AcademicScheduledTestCountAggregateOutputType | null
+    _avg: AcademicScheduledTestAvgAggregateOutputType | null
+    _sum: AcademicScheduledTestSumAggregateOutputType | null
+    _min: AcademicScheduledTestMinAggregateOutputType | null
+    _max: AcademicScheduledTestMaxAggregateOutputType | null
+  }
+
+  type GetAcademicScheduledTestGroupByPayload<T extends AcademicScheduledTestGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AcademicScheduledTestGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AcademicScheduledTestGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AcademicScheduledTestGroupByOutputType[P]>
+            : GetScalarType<T[P], AcademicScheduledTestGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AcademicScheduledTestSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    academicTestItemId?: boolean
+    branchCourseId?: boolean
+    branchBatchId?: boolean
+    facultyId?: boolean
+    questionPaperId?: boolean
+    testNumber?: boolean
+    testDate?: boolean
+    startTime?: boolean
+    endTime?: boolean
+    status?: boolean
+    createdBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["academicScheduledTest"]>
+
+  export type AcademicScheduledTestSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    academicTestItemId?: boolean
+    branchCourseId?: boolean
+    branchBatchId?: boolean
+    facultyId?: boolean
+    questionPaperId?: boolean
+    testNumber?: boolean
+    testDate?: boolean
+    startTime?: boolean
+    endTime?: boolean
+    status?: boolean
+    createdBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["academicScheduledTest"]>
+
+  export type AcademicScheduledTestSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    academicTestItemId?: boolean
+    branchCourseId?: boolean
+    branchBatchId?: boolean
+    facultyId?: boolean
+    questionPaperId?: boolean
+    testNumber?: boolean
+    testDate?: boolean
+    startTime?: boolean
+    endTime?: boolean
+    status?: boolean
+    createdBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["academicScheduledTest"]>
+
+  export type AcademicScheduledTestSelectScalar = {
+    id?: boolean
+    academicTestItemId?: boolean
+    branchCourseId?: boolean
+    branchBatchId?: boolean
+    facultyId?: boolean
+    questionPaperId?: boolean
+    testNumber?: boolean
+    testDate?: boolean
+    startTime?: boolean
+    endTime?: boolean
+    status?: boolean
+    createdBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type AcademicScheduledTestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "academicTestItemId" | "branchCourseId" | "branchBatchId" | "facultyId" | "questionPaperId" | "testNumber" | "testDate" | "startTime" | "endTime" | "status" | "createdBy" | "createdAt" | "updatedAt", ExtArgs["result"]["academicScheduledTest"]>
+
+  export type $AcademicScheduledTestPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AcademicScheduledTest"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      academicTestItemId: string
+      branchCourseId: string
+      branchBatchId: string
+      facultyId: string
+      questionPaperId: string
+      testNumber: number
+      testDate: string
+      startTime: string
+      endTime: string
+      status: string
+      createdBy: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["academicScheduledTest"]>
+    composites: {}
+  }
+
+  type AcademicScheduledTestGetPayload<S extends boolean | null | undefined | AcademicScheduledTestDefaultArgs> = $Result.GetResult<Prisma.$AcademicScheduledTestPayload, S>
+
+  type AcademicScheduledTestCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AcademicScheduledTestFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AcademicScheduledTestCountAggregateInputType | true
+    }
+
+  export interface AcademicScheduledTestDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AcademicScheduledTest'], meta: { name: 'AcademicScheduledTest' } }
+    /**
+     * Find zero or one AcademicScheduledTest that matches the filter.
+     * @param {AcademicScheduledTestFindUniqueArgs} args - Arguments to find a AcademicScheduledTest
+     * @example
+     * // Get one AcademicScheduledTest
+     * const academicScheduledTest = await prisma.academicScheduledTest.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AcademicScheduledTestFindUniqueArgs>(args: SelectSubset<T, AcademicScheduledTestFindUniqueArgs<ExtArgs>>): Prisma__AcademicScheduledTestClient<$Result.GetResult<Prisma.$AcademicScheduledTestPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one AcademicScheduledTest that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AcademicScheduledTestFindUniqueOrThrowArgs} args - Arguments to find a AcademicScheduledTest
+     * @example
+     * // Get one AcademicScheduledTest
+     * const academicScheduledTest = await prisma.academicScheduledTest.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AcademicScheduledTestFindUniqueOrThrowArgs>(args: SelectSubset<T, AcademicScheduledTestFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AcademicScheduledTestClient<$Result.GetResult<Prisma.$AcademicScheduledTestPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AcademicScheduledTest that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcademicScheduledTestFindFirstArgs} args - Arguments to find a AcademicScheduledTest
+     * @example
+     * // Get one AcademicScheduledTest
+     * const academicScheduledTest = await prisma.academicScheduledTest.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AcademicScheduledTestFindFirstArgs>(args?: SelectSubset<T, AcademicScheduledTestFindFirstArgs<ExtArgs>>): Prisma__AcademicScheduledTestClient<$Result.GetResult<Prisma.$AcademicScheduledTestPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AcademicScheduledTest that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcademicScheduledTestFindFirstOrThrowArgs} args - Arguments to find a AcademicScheduledTest
+     * @example
+     * // Get one AcademicScheduledTest
+     * const academicScheduledTest = await prisma.academicScheduledTest.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AcademicScheduledTestFindFirstOrThrowArgs>(args?: SelectSubset<T, AcademicScheduledTestFindFirstOrThrowArgs<ExtArgs>>): Prisma__AcademicScheduledTestClient<$Result.GetResult<Prisma.$AcademicScheduledTestPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more AcademicScheduledTests that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcademicScheduledTestFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AcademicScheduledTests
+     * const academicScheduledTests = await prisma.academicScheduledTest.findMany()
+     * 
+     * // Get first 10 AcademicScheduledTests
+     * const academicScheduledTests = await prisma.academicScheduledTest.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const academicScheduledTestWithIdOnly = await prisma.academicScheduledTest.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AcademicScheduledTestFindManyArgs>(args?: SelectSubset<T, AcademicScheduledTestFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcademicScheduledTestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a AcademicScheduledTest.
+     * @param {AcademicScheduledTestCreateArgs} args - Arguments to create a AcademicScheduledTest.
+     * @example
+     * // Create one AcademicScheduledTest
+     * const AcademicScheduledTest = await prisma.academicScheduledTest.create({
+     *   data: {
+     *     // ... data to create a AcademicScheduledTest
+     *   }
+     * })
+     * 
+     */
+    create<T extends AcademicScheduledTestCreateArgs>(args: SelectSubset<T, AcademicScheduledTestCreateArgs<ExtArgs>>): Prisma__AcademicScheduledTestClient<$Result.GetResult<Prisma.$AcademicScheduledTestPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many AcademicScheduledTests.
+     * @param {AcademicScheduledTestCreateManyArgs} args - Arguments to create many AcademicScheduledTests.
+     * @example
+     * // Create many AcademicScheduledTests
+     * const academicScheduledTest = await prisma.academicScheduledTest.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AcademicScheduledTestCreateManyArgs>(args?: SelectSubset<T, AcademicScheduledTestCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many AcademicScheduledTests and returns the data saved in the database.
+     * @param {AcademicScheduledTestCreateManyAndReturnArgs} args - Arguments to create many AcademicScheduledTests.
+     * @example
+     * // Create many AcademicScheduledTests
+     * const academicScheduledTest = await prisma.academicScheduledTest.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many AcademicScheduledTests and only return the `id`
+     * const academicScheduledTestWithIdOnly = await prisma.academicScheduledTest.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AcademicScheduledTestCreateManyAndReturnArgs>(args?: SelectSubset<T, AcademicScheduledTestCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcademicScheduledTestPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a AcademicScheduledTest.
+     * @param {AcademicScheduledTestDeleteArgs} args - Arguments to delete one AcademicScheduledTest.
+     * @example
+     * // Delete one AcademicScheduledTest
+     * const AcademicScheduledTest = await prisma.academicScheduledTest.delete({
+     *   where: {
+     *     // ... filter to delete one AcademicScheduledTest
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AcademicScheduledTestDeleteArgs>(args: SelectSubset<T, AcademicScheduledTestDeleteArgs<ExtArgs>>): Prisma__AcademicScheduledTestClient<$Result.GetResult<Prisma.$AcademicScheduledTestPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one AcademicScheduledTest.
+     * @param {AcademicScheduledTestUpdateArgs} args - Arguments to update one AcademicScheduledTest.
+     * @example
+     * // Update one AcademicScheduledTest
+     * const academicScheduledTest = await prisma.academicScheduledTest.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AcademicScheduledTestUpdateArgs>(args: SelectSubset<T, AcademicScheduledTestUpdateArgs<ExtArgs>>): Prisma__AcademicScheduledTestClient<$Result.GetResult<Prisma.$AcademicScheduledTestPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more AcademicScheduledTests.
+     * @param {AcademicScheduledTestDeleteManyArgs} args - Arguments to filter AcademicScheduledTests to delete.
+     * @example
+     * // Delete a few AcademicScheduledTests
+     * const { count } = await prisma.academicScheduledTest.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AcademicScheduledTestDeleteManyArgs>(args?: SelectSubset<T, AcademicScheduledTestDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AcademicScheduledTests.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcademicScheduledTestUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AcademicScheduledTests
+     * const academicScheduledTest = await prisma.academicScheduledTest.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AcademicScheduledTestUpdateManyArgs>(args: SelectSubset<T, AcademicScheduledTestUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AcademicScheduledTests and returns the data updated in the database.
+     * @param {AcademicScheduledTestUpdateManyAndReturnArgs} args - Arguments to update many AcademicScheduledTests.
+     * @example
+     * // Update many AcademicScheduledTests
+     * const academicScheduledTest = await prisma.academicScheduledTest.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more AcademicScheduledTests and only return the `id`
+     * const academicScheduledTestWithIdOnly = await prisma.academicScheduledTest.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AcademicScheduledTestUpdateManyAndReturnArgs>(args: SelectSubset<T, AcademicScheduledTestUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcademicScheduledTestPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one AcademicScheduledTest.
+     * @param {AcademicScheduledTestUpsertArgs} args - Arguments to update or create a AcademicScheduledTest.
+     * @example
+     * // Update or create a AcademicScheduledTest
+     * const academicScheduledTest = await prisma.academicScheduledTest.upsert({
+     *   create: {
+     *     // ... data to create a AcademicScheduledTest
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AcademicScheduledTest we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AcademicScheduledTestUpsertArgs>(args: SelectSubset<T, AcademicScheduledTestUpsertArgs<ExtArgs>>): Prisma__AcademicScheduledTestClient<$Result.GetResult<Prisma.$AcademicScheduledTestPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of AcademicScheduledTests.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcademicScheduledTestCountArgs} args - Arguments to filter AcademicScheduledTests to count.
+     * @example
+     * // Count the number of AcademicScheduledTests
+     * const count = await prisma.academicScheduledTest.count({
+     *   where: {
+     *     // ... the filter for the AcademicScheduledTests we want to count
+     *   }
+     * })
+    **/
+    count<T extends AcademicScheduledTestCountArgs>(
+      args?: Subset<T, AcademicScheduledTestCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AcademicScheduledTestCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AcademicScheduledTest.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcademicScheduledTestAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AcademicScheduledTestAggregateArgs>(args: Subset<T, AcademicScheduledTestAggregateArgs>): Prisma.PrismaPromise<GetAcademicScheduledTestAggregateType<T>>
+
+    /**
+     * Group by AcademicScheduledTest.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcademicScheduledTestGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AcademicScheduledTestGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AcademicScheduledTestGroupByArgs['orderBy'] }
+        : { orderBy?: AcademicScheduledTestGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AcademicScheduledTestGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAcademicScheduledTestGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AcademicScheduledTest model
+   */
+  readonly fields: AcademicScheduledTestFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AcademicScheduledTest.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AcademicScheduledTestClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AcademicScheduledTest model
+   */
+  interface AcademicScheduledTestFieldRefs {
+    readonly id: FieldRef<"AcademicScheduledTest", 'String'>
+    readonly academicTestItemId: FieldRef<"AcademicScheduledTest", 'String'>
+    readonly branchCourseId: FieldRef<"AcademicScheduledTest", 'String'>
+    readonly branchBatchId: FieldRef<"AcademicScheduledTest", 'String'>
+    readonly facultyId: FieldRef<"AcademicScheduledTest", 'String'>
+    readonly questionPaperId: FieldRef<"AcademicScheduledTest", 'String'>
+    readonly testNumber: FieldRef<"AcademicScheduledTest", 'Int'>
+    readonly testDate: FieldRef<"AcademicScheduledTest", 'String'>
+    readonly startTime: FieldRef<"AcademicScheduledTest", 'String'>
+    readonly endTime: FieldRef<"AcademicScheduledTest", 'String'>
+    readonly status: FieldRef<"AcademicScheduledTest", 'String'>
+    readonly createdBy: FieldRef<"AcademicScheduledTest", 'String'>
+    readonly createdAt: FieldRef<"AcademicScheduledTest", 'DateTime'>
+    readonly updatedAt: FieldRef<"AcademicScheduledTest", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AcademicScheduledTest findUnique
+   */
+  export type AcademicScheduledTestFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicScheduledTest
+     */
+    select?: AcademicScheduledTestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicScheduledTest
+     */
+    omit?: AcademicScheduledTestOmit<ExtArgs> | null
+    /**
+     * Filter, which AcademicScheduledTest to fetch.
+     */
+    where: AcademicScheduledTestWhereUniqueInput
+  }
+
+  /**
+   * AcademicScheduledTest findUniqueOrThrow
+   */
+  export type AcademicScheduledTestFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicScheduledTest
+     */
+    select?: AcademicScheduledTestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicScheduledTest
+     */
+    omit?: AcademicScheduledTestOmit<ExtArgs> | null
+    /**
+     * Filter, which AcademicScheduledTest to fetch.
+     */
+    where: AcademicScheduledTestWhereUniqueInput
+  }
+
+  /**
+   * AcademicScheduledTest findFirst
+   */
+  export type AcademicScheduledTestFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicScheduledTest
+     */
+    select?: AcademicScheduledTestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicScheduledTest
+     */
+    omit?: AcademicScheduledTestOmit<ExtArgs> | null
+    /**
+     * Filter, which AcademicScheduledTest to fetch.
+     */
+    where?: AcademicScheduledTestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AcademicScheduledTests to fetch.
+     */
+    orderBy?: AcademicScheduledTestOrderByWithRelationInput | AcademicScheduledTestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AcademicScheduledTests.
+     */
+    cursor?: AcademicScheduledTestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AcademicScheduledTests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AcademicScheduledTests.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AcademicScheduledTests.
+     */
+    distinct?: AcademicScheduledTestScalarFieldEnum | AcademicScheduledTestScalarFieldEnum[]
+  }
+
+  /**
+   * AcademicScheduledTest findFirstOrThrow
+   */
+  export type AcademicScheduledTestFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicScheduledTest
+     */
+    select?: AcademicScheduledTestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicScheduledTest
+     */
+    omit?: AcademicScheduledTestOmit<ExtArgs> | null
+    /**
+     * Filter, which AcademicScheduledTest to fetch.
+     */
+    where?: AcademicScheduledTestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AcademicScheduledTests to fetch.
+     */
+    orderBy?: AcademicScheduledTestOrderByWithRelationInput | AcademicScheduledTestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AcademicScheduledTests.
+     */
+    cursor?: AcademicScheduledTestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AcademicScheduledTests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AcademicScheduledTests.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AcademicScheduledTests.
+     */
+    distinct?: AcademicScheduledTestScalarFieldEnum | AcademicScheduledTestScalarFieldEnum[]
+  }
+
+  /**
+   * AcademicScheduledTest findMany
+   */
+  export type AcademicScheduledTestFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicScheduledTest
+     */
+    select?: AcademicScheduledTestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicScheduledTest
+     */
+    omit?: AcademicScheduledTestOmit<ExtArgs> | null
+    /**
+     * Filter, which AcademicScheduledTests to fetch.
+     */
+    where?: AcademicScheduledTestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AcademicScheduledTests to fetch.
+     */
+    orderBy?: AcademicScheduledTestOrderByWithRelationInput | AcademicScheduledTestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AcademicScheduledTests.
+     */
+    cursor?: AcademicScheduledTestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AcademicScheduledTests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AcademicScheduledTests.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AcademicScheduledTests.
+     */
+    distinct?: AcademicScheduledTestScalarFieldEnum | AcademicScheduledTestScalarFieldEnum[]
+  }
+
+  /**
+   * AcademicScheduledTest create
+   */
+  export type AcademicScheduledTestCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicScheduledTest
+     */
+    select?: AcademicScheduledTestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicScheduledTest
+     */
+    omit?: AcademicScheduledTestOmit<ExtArgs> | null
+    /**
+     * The data needed to create a AcademicScheduledTest.
+     */
+    data: XOR<AcademicScheduledTestCreateInput, AcademicScheduledTestUncheckedCreateInput>
+  }
+
+  /**
+   * AcademicScheduledTest createMany
+   */
+  export type AcademicScheduledTestCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AcademicScheduledTests.
+     */
+    data: AcademicScheduledTestCreateManyInput | AcademicScheduledTestCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AcademicScheduledTest createManyAndReturn
+   */
+  export type AcademicScheduledTestCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicScheduledTest
+     */
+    select?: AcademicScheduledTestSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicScheduledTest
+     */
+    omit?: AcademicScheduledTestOmit<ExtArgs> | null
+    /**
+     * The data used to create many AcademicScheduledTests.
+     */
+    data: AcademicScheduledTestCreateManyInput | AcademicScheduledTestCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AcademicScheduledTest update
+   */
+  export type AcademicScheduledTestUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicScheduledTest
+     */
+    select?: AcademicScheduledTestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicScheduledTest
+     */
+    omit?: AcademicScheduledTestOmit<ExtArgs> | null
+    /**
+     * The data needed to update a AcademicScheduledTest.
+     */
+    data: XOR<AcademicScheduledTestUpdateInput, AcademicScheduledTestUncheckedUpdateInput>
+    /**
+     * Choose, which AcademicScheduledTest to update.
+     */
+    where: AcademicScheduledTestWhereUniqueInput
+  }
+
+  /**
+   * AcademicScheduledTest updateMany
+   */
+  export type AcademicScheduledTestUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AcademicScheduledTests.
+     */
+    data: XOR<AcademicScheduledTestUpdateManyMutationInput, AcademicScheduledTestUncheckedUpdateManyInput>
+    /**
+     * Filter which AcademicScheduledTests to update
+     */
+    where?: AcademicScheduledTestWhereInput
+    /**
+     * Limit how many AcademicScheduledTests to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AcademicScheduledTest updateManyAndReturn
+   */
+  export type AcademicScheduledTestUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicScheduledTest
+     */
+    select?: AcademicScheduledTestSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicScheduledTest
+     */
+    omit?: AcademicScheduledTestOmit<ExtArgs> | null
+    /**
+     * The data used to update AcademicScheduledTests.
+     */
+    data: XOR<AcademicScheduledTestUpdateManyMutationInput, AcademicScheduledTestUncheckedUpdateManyInput>
+    /**
+     * Filter which AcademicScheduledTests to update
+     */
+    where?: AcademicScheduledTestWhereInput
+    /**
+     * Limit how many AcademicScheduledTests to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AcademicScheduledTest upsert
+   */
+  export type AcademicScheduledTestUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicScheduledTest
+     */
+    select?: AcademicScheduledTestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicScheduledTest
+     */
+    omit?: AcademicScheduledTestOmit<ExtArgs> | null
+    /**
+     * The filter to search for the AcademicScheduledTest to update in case it exists.
+     */
+    where: AcademicScheduledTestWhereUniqueInput
+    /**
+     * In case the AcademicScheduledTest found by the `where` argument doesn't exist, create a new AcademicScheduledTest with this data.
+     */
+    create: XOR<AcademicScheduledTestCreateInput, AcademicScheduledTestUncheckedCreateInput>
+    /**
+     * In case the AcademicScheduledTest was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AcademicScheduledTestUpdateInput, AcademicScheduledTestUncheckedUpdateInput>
+  }
+
+  /**
+   * AcademicScheduledTest delete
+   */
+  export type AcademicScheduledTestDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicScheduledTest
+     */
+    select?: AcademicScheduledTestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicScheduledTest
+     */
+    omit?: AcademicScheduledTestOmit<ExtArgs> | null
+    /**
+     * Filter which AcademicScheduledTest to delete.
+     */
+    where: AcademicScheduledTestWhereUniqueInput
+  }
+
+  /**
+   * AcademicScheduledTest deleteMany
+   */
+  export type AcademicScheduledTestDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AcademicScheduledTests to delete
+     */
+    where?: AcademicScheduledTestWhereInput
+    /**
+     * Limit how many AcademicScheduledTests to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * AcademicScheduledTest without action
+   */
+  export type AcademicScheduledTestDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicScheduledTest
+     */
+    select?: AcademicScheduledTestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicScheduledTest
+     */
+    omit?: AcademicScheduledTestOmit<ExtArgs> | null
+  }
+
+
+  /**
+   * Model AcademicTestSubmission
+   */
+
+  export type AggregateAcademicTestSubmission = {
+    _count: AcademicTestSubmissionCountAggregateOutputType | null
+    _avg: AcademicTestSubmissionAvgAggregateOutputType | null
+    _sum: AcademicTestSubmissionSumAggregateOutputType | null
+    _min: AcademicTestSubmissionMinAggregateOutputType | null
+    _max: AcademicTestSubmissionMaxAggregateOutputType | null
+  }
+
+  export type AcademicTestSubmissionAvgAggregateOutputType = {
+    totalQuestions: number | null
+    attemptedCount: number | null
+    correctCount: number | null
+    wrongCount: number | null
+    unmarkedCount: number | null
+    totalMarks: number | null
+    obtainedMarks: number | null
+    percentage: number | null
+  }
+
+  export type AcademicTestSubmissionSumAggregateOutputType = {
+    totalQuestions: number | null
+    attemptedCount: number | null
+    correctCount: number | null
+    wrongCount: number | null
+    unmarkedCount: number | null
+    totalMarks: number | null
+    obtainedMarks: number | null
+    percentage: number | null
+  }
+
+  export type AcademicTestSubmissionMinAggregateOutputType = {
+    id: string | null
+    academicTestId: string | null
+    branchStudentId: string | null
+    submittedAt: Date | null
+    status: string | null
+    totalQuestions: number | null
+    attemptedCount: number | null
+    correctCount: number | null
+    wrongCount: number | null
+    unmarkedCount: number | null
+    totalMarks: number | null
+    obtainedMarks: number | null
+    percentage: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type AcademicTestSubmissionMaxAggregateOutputType = {
+    id: string | null
+    academicTestId: string | null
+    branchStudentId: string | null
+    submittedAt: Date | null
+    status: string | null
+    totalQuestions: number | null
+    attemptedCount: number | null
+    correctCount: number | null
+    wrongCount: number | null
+    unmarkedCount: number | null
+    totalMarks: number | null
+    obtainedMarks: number | null
+    percentage: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type AcademicTestSubmissionCountAggregateOutputType = {
+    id: number
+    academicTestId: number
+    branchStudentId: number
+    submittedAt: number
+    status: number
+    totalQuestions: number
+    attemptedCount: number
+    correctCount: number
+    wrongCount: number
+    unmarkedCount: number
+    totalMarks: number
+    obtainedMarks: number
+    percentage: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type AcademicTestSubmissionAvgAggregateInputType = {
+    totalQuestions?: true
+    attemptedCount?: true
+    correctCount?: true
+    wrongCount?: true
+    unmarkedCount?: true
+    totalMarks?: true
+    obtainedMarks?: true
+    percentage?: true
+  }
+
+  export type AcademicTestSubmissionSumAggregateInputType = {
+    totalQuestions?: true
+    attemptedCount?: true
+    correctCount?: true
+    wrongCount?: true
+    unmarkedCount?: true
+    totalMarks?: true
+    obtainedMarks?: true
+    percentage?: true
+  }
+
+  export type AcademicTestSubmissionMinAggregateInputType = {
+    id?: true
+    academicTestId?: true
+    branchStudentId?: true
+    submittedAt?: true
+    status?: true
+    totalQuestions?: true
+    attemptedCount?: true
+    correctCount?: true
+    wrongCount?: true
+    unmarkedCount?: true
+    totalMarks?: true
+    obtainedMarks?: true
+    percentage?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type AcademicTestSubmissionMaxAggregateInputType = {
+    id?: true
+    academicTestId?: true
+    branchStudentId?: true
+    submittedAt?: true
+    status?: true
+    totalQuestions?: true
+    attemptedCount?: true
+    correctCount?: true
+    wrongCount?: true
+    unmarkedCount?: true
+    totalMarks?: true
+    obtainedMarks?: true
+    percentage?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type AcademicTestSubmissionCountAggregateInputType = {
+    id?: true
+    academicTestId?: true
+    branchStudentId?: true
+    submittedAt?: true
+    status?: true
+    totalQuestions?: true
+    attemptedCount?: true
+    correctCount?: true
+    wrongCount?: true
+    unmarkedCount?: true
+    totalMarks?: true
+    obtainedMarks?: true
+    percentage?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type AcademicTestSubmissionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AcademicTestSubmission to aggregate.
+     */
+    where?: AcademicTestSubmissionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AcademicTestSubmissions to fetch.
+     */
+    orderBy?: AcademicTestSubmissionOrderByWithRelationInput | AcademicTestSubmissionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AcademicTestSubmissionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AcademicTestSubmissions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AcademicTestSubmissions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AcademicTestSubmissions
+    **/
+    _count?: true | AcademicTestSubmissionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: AcademicTestSubmissionAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: AcademicTestSubmissionSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AcademicTestSubmissionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AcademicTestSubmissionMaxAggregateInputType
+  }
+
+  export type GetAcademicTestSubmissionAggregateType<T extends AcademicTestSubmissionAggregateArgs> = {
+        [P in keyof T & keyof AggregateAcademicTestSubmission]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAcademicTestSubmission[P]>
+      : GetScalarType<T[P], AggregateAcademicTestSubmission[P]>
+  }
+
+
+
+
+  export type AcademicTestSubmissionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AcademicTestSubmissionWhereInput
+    orderBy?: AcademicTestSubmissionOrderByWithAggregationInput | AcademicTestSubmissionOrderByWithAggregationInput[]
+    by: AcademicTestSubmissionScalarFieldEnum[] | AcademicTestSubmissionScalarFieldEnum
+    having?: AcademicTestSubmissionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AcademicTestSubmissionCountAggregateInputType | true
+    _avg?: AcademicTestSubmissionAvgAggregateInputType
+    _sum?: AcademicTestSubmissionSumAggregateInputType
+    _min?: AcademicTestSubmissionMinAggregateInputType
+    _max?: AcademicTestSubmissionMaxAggregateInputType
+  }
+
+  export type AcademicTestSubmissionGroupByOutputType = {
+    id: string
+    academicTestId: string
+    branchStudentId: string
+    submittedAt: Date | null
+    status: string
+    totalQuestions: number
+    attemptedCount: number
+    correctCount: number
+    wrongCount: number
+    unmarkedCount: number
+    totalMarks: number
+    obtainedMarks: number
+    percentage: number
+    createdAt: Date
+    updatedAt: Date
+    _count: AcademicTestSubmissionCountAggregateOutputType | null
+    _avg: AcademicTestSubmissionAvgAggregateOutputType | null
+    _sum: AcademicTestSubmissionSumAggregateOutputType | null
+    _min: AcademicTestSubmissionMinAggregateOutputType | null
+    _max: AcademicTestSubmissionMaxAggregateOutputType | null
+  }
+
+  type GetAcademicTestSubmissionGroupByPayload<T extends AcademicTestSubmissionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AcademicTestSubmissionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AcademicTestSubmissionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AcademicTestSubmissionGroupByOutputType[P]>
+            : GetScalarType<T[P], AcademicTestSubmissionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AcademicTestSubmissionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    academicTestId?: boolean
+    branchStudentId?: boolean
+    submittedAt?: boolean
+    status?: boolean
+    totalQuestions?: boolean
+    attemptedCount?: boolean
+    correctCount?: boolean
+    wrongCount?: boolean
+    unmarkedCount?: boolean
+    totalMarks?: boolean
+    obtainedMarks?: boolean
+    percentage?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["academicTestSubmission"]>
+
+  export type AcademicTestSubmissionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    academicTestId?: boolean
+    branchStudentId?: boolean
+    submittedAt?: boolean
+    status?: boolean
+    totalQuestions?: boolean
+    attemptedCount?: boolean
+    correctCount?: boolean
+    wrongCount?: boolean
+    unmarkedCount?: boolean
+    totalMarks?: boolean
+    obtainedMarks?: boolean
+    percentage?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["academicTestSubmission"]>
+
+  export type AcademicTestSubmissionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    academicTestId?: boolean
+    branchStudentId?: boolean
+    submittedAt?: boolean
+    status?: boolean
+    totalQuestions?: boolean
+    attemptedCount?: boolean
+    correctCount?: boolean
+    wrongCount?: boolean
+    unmarkedCount?: boolean
+    totalMarks?: boolean
+    obtainedMarks?: boolean
+    percentage?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["academicTestSubmission"]>
+
+  export type AcademicTestSubmissionSelectScalar = {
+    id?: boolean
+    academicTestId?: boolean
+    branchStudentId?: boolean
+    submittedAt?: boolean
+    status?: boolean
+    totalQuestions?: boolean
+    attemptedCount?: boolean
+    correctCount?: boolean
+    wrongCount?: boolean
+    unmarkedCount?: boolean
+    totalMarks?: boolean
+    obtainedMarks?: boolean
+    percentage?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type AcademicTestSubmissionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "academicTestId" | "branchStudentId" | "submittedAt" | "status" | "totalQuestions" | "attemptedCount" | "correctCount" | "wrongCount" | "unmarkedCount" | "totalMarks" | "obtainedMarks" | "percentage" | "createdAt" | "updatedAt", ExtArgs["result"]["academicTestSubmission"]>
+
+  export type $AcademicTestSubmissionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AcademicTestSubmission"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      academicTestId: string
+      branchStudentId: string
+      submittedAt: Date | null
+      status: string
+      totalQuestions: number
+      attemptedCount: number
+      correctCount: number
+      wrongCount: number
+      unmarkedCount: number
+      totalMarks: number
+      obtainedMarks: number
+      percentage: number
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["academicTestSubmission"]>
+    composites: {}
+  }
+
+  type AcademicTestSubmissionGetPayload<S extends boolean | null | undefined | AcademicTestSubmissionDefaultArgs> = $Result.GetResult<Prisma.$AcademicTestSubmissionPayload, S>
+
+  type AcademicTestSubmissionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AcademicTestSubmissionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AcademicTestSubmissionCountAggregateInputType | true
+    }
+
+  export interface AcademicTestSubmissionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AcademicTestSubmission'], meta: { name: 'AcademicTestSubmission' } }
+    /**
+     * Find zero or one AcademicTestSubmission that matches the filter.
+     * @param {AcademicTestSubmissionFindUniqueArgs} args - Arguments to find a AcademicTestSubmission
+     * @example
+     * // Get one AcademicTestSubmission
+     * const academicTestSubmission = await prisma.academicTestSubmission.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AcademicTestSubmissionFindUniqueArgs>(args: SelectSubset<T, AcademicTestSubmissionFindUniqueArgs<ExtArgs>>): Prisma__AcademicTestSubmissionClient<$Result.GetResult<Prisma.$AcademicTestSubmissionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one AcademicTestSubmission that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AcademicTestSubmissionFindUniqueOrThrowArgs} args - Arguments to find a AcademicTestSubmission
+     * @example
+     * // Get one AcademicTestSubmission
+     * const academicTestSubmission = await prisma.academicTestSubmission.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AcademicTestSubmissionFindUniqueOrThrowArgs>(args: SelectSubset<T, AcademicTestSubmissionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AcademicTestSubmissionClient<$Result.GetResult<Prisma.$AcademicTestSubmissionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AcademicTestSubmission that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcademicTestSubmissionFindFirstArgs} args - Arguments to find a AcademicTestSubmission
+     * @example
+     * // Get one AcademicTestSubmission
+     * const academicTestSubmission = await prisma.academicTestSubmission.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AcademicTestSubmissionFindFirstArgs>(args?: SelectSubset<T, AcademicTestSubmissionFindFirstArgs<ExtArgs>>): Prisma__AcademicTestSubmissionClient<$Result.GetResult<Prisma.$AcademicTestSubmissionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AcademicTestSubmission that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcademicTestSubmissionFindFirstOrThrowArgs} args - Arguments to find a AcademicTestSubmission
+     * @example
+     * // Get one AcademicTestSubmission
+     * const academicTestSubmission = await prisma.academicTestSubmission.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AcademicTestSubmissionFindFirstOrThrowArgs>(args?: SelectSubset<T, AcademicTestSubmissionFindFirstOrThrowArgs<ExtArgs>>): Prisma__AcademicTestSubmissionClient<$Result.GetResult<Prisma.$AcademicTestSubmissionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more AcademicTestSubmissions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcademicTestSubmissionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AcademicTestSubmissions
+     * const academicTestSubmissions = await prisma.academicTestSubmission.findMany()
+     * 
+     * // Get first 10 AcademicTestSubmissions
+     * const academicTestSubmissions = await prisma.academicTestSubmission.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const academicTestSubmissionWithIdOnly = await prisma.academicTestSubmission.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AcademicTestSubmissionFindManyArgs>(args?: SelectSubset<T, AcademicTestSubmissionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcademicTestSubmissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a AcademicTestSubmission.
+     * @param {AcademicTestSubmissionCreateArgs} args - Arguments to create a AcademicTestSubmission.
+     * @example
+     * // Create one AcademicTestSubmission
+     * const AcademicTestSubmission = await prisma.academicTestSubmission.create({
+     *   data: {
+     *     // ... data to create a AcademicTestSubmission
+     *   }
+     * })
+     * 
+     */
+    create<T extends AcademicTestSubmissionCreateArgs>(args: SelectSubset<T, AcademicTestSubmissionCreateArgs<ExtArgs>>): Prisma__AcademicTestSubmissionClient<$Result.GetResult<Prisma.$AcademicTestSubmissionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many AcademicTestSubmissions.
+     * @param {AcademicTestSubmissionCreateManyArgs} args - Arguments to create many AcademicTestSubmissions.
+     * @example
+     * // Create many AcademicTestSubmissions
+     * const academicTestSubmission = await prisma.academicTestSubmission.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AcademicTestSubmissionCreateManyArgs>(args?: SelectSubset<T, AcademicTestSubmissionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many AcademicTestSubmissions and returns the data saved in the database.
+     * @param {AcademicTestSubmissionCreateManyAndReturnArgs} args - Arguments to create many AcademicTestSubmissions.
+     * @example
+     * // Create many AcademicTestSubmissions
+     * const academicTestSubmission = await prisma.academicTestSubmission.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many AcademicTestSubmissions and only return the `id`
+     * const academicTestSubmissionWithIdOnly = await prisma.academicTestSubmission.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AcademicTestSubmissionCreateManyAndReturnArgs>(args?: SelectSubset<T, AcademicTestSubmissionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcademicTestSubmissionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a AcademicTestSubmission.
+     * @param {AcademicTestSubmissionDeleteArgs} args - Arguments to delete one AcademicTestSubmission.
+     * @example
+     * // Delete one AcademicTestSubmission
+     * const AcademicTestSubmission = await prisma.academicTestSubmission.delete({
+     *   where: {
+     *     // ... filter to delete one AcademicTestSubmission
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AcademicTestSubmissionDeleteArgs>(args: SelectSubset<T, AcademicTestSubmissionDeleteArgs<ExtArgs>>): Prisma__AcademicTestSubmissionClient<$Result.GetResult<Prisma.$AcademicTestSubmissionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one AcademicTestSubmission.
+     * @param {AcademicTestSubmissionUpdateArgs} args - Arguments to update one AcademicTestSubmission.
+     * @example
+     * // Update one AcademicTestSubmission
+     * const academicTestSubmission = await prisma.academicTestSubmission.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AcademicTestSubmissionUpdateArgs>(args: SelectSubset<T, AcademicTestSubmissionUpdateArgs<ExtArgs>>): Prisma__AcademicTestSubmissionClient<$Result.GetResult<Prisma.$AcademicTestSubmissionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more AcademicTestSubmissions.
+     * @param {AcademicTestSubmissionDeleteManyArgs} args - Arguments to filter AcademicTestSubmissions to delete.
+     * @example
+     * // Delete a few AcademicTestSubmissions
+     * const { count } = await prisma.academicTestSubmission.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AcademicTestSubmissionDeleteManyArgs>(args?: SelectSubset<T, AcademicTestSubmissionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AcademicTestSubmissions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcademicTestSubmissionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AcademicTestSubmissions
+     * const academicTestSubmission = await prisma.academicTestSubmission.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AcademicTestSubmissionUpdateManyArgs>(args: SelectSubset<T, AcademicTestSubmissionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AcademicTestSubmissions and returns the data updated in the database.
+     * @param {AcademicTestSubmissionUpdateManyAndReturnArgs} args - Arguments to update many AcademicTestSubmissions.
+     * @example
+     * // Update many AcademicTestSubmissions
+     * const academicTestSubmission = await prisma.academicTestSubmission.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more AcademicTestSubmissions and only return the `id`
+     * const academicTestSubmissionWithIdOnly = await prisma.academicTestSubmission.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AcademicTestSubmissionUpdateManyAndReturnArgs>(args: SelectSubset<T, AcademicTestSubmissionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcademicTestSubmissionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one AcademicTestSubmission.
+     * @param {AcademicTestSubmissionUpsertArgs} args - Arguments to update or create a AcademicTestSubmission.
+     * @example
+     * // Update or create a AcademicTestSubmission
+     * const academicTestSubmission = await prisma.academicTestSubmission.upsert({
+     *   create: {
+     *     // ... data to create a AcademicTestSubmission
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AcademicTestSubmission we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AcademicTestSubmissionUpsertArgs>(args: SelectSubset<T, AcademicTestSubmissionUpsertArgs<ExtArgs>>): Prisma__AcademicTestSubmissionClient<$Result.GetResult<Prisma.$AcademicTestSubmissionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of AcademicTestSubmissions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcademicTestSubmissionCountArgs} args - Arguments to filter AcademicTestSubmissions to count.
+     * @example
+     * // Count the number of AcademicTestSubmissions
+     * const count = await prisma.academicTestSubmission.count({
+     *   where: {
+     *     // ... the filter for the AcademicTestSubmissions we want to count
+     *   }
+     * })
+    **/
+    count<T extends AcademicTestSubmissionCountArgs>(
+      args?: Subset<T, AcademicTestSubmissionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AcademicTestSubmissionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AcademicTestSubmission.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcademicTestSubmissionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AcademicTestSubmissionAggregateArgs>(args: Subset<T, AcademicTestSubmissionAggregateArgs>): Prisma.PrismaPromise<GetAcademicTestSubmissionAggregateType<T>>
+
+    /**
+     * Group by AcademicTestSubmission.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcademicTestSubmissionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AcademicTestSubmissionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AcademicTestSubmissionGroupByArgs['orderBy'] }
+        : { orderBy?: AcademicTestSubmissionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AcademicTestSubmissionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAcademicTestSubmissionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AcademicTestSubmission model
+   */
+  readonly fields: AcademicTestSubmissionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AcademicTestSubmission.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AcademicTestSubmissionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AcademicTestSubmission model
+   */
+  interface AcademicTestSubmissionFieldRefs {
+    readonly id: FieldRef<"AcademicTestSubmission", 'String'>
+    readonly academicTestId: FieldRef<"AcademicTestSubmission", 'String'>
+    readonly branchStudentId: FieldRef<"AcademicTestSubmission", 'String'>
+    readonly submittedAt: FieldRef<"AcademicTestSubmission", 'DateTime'>
+    readonly status: FieldRef<"AcademicTestSubmission", 'String'>
+    readonly totalQuestions: FieldRef<"AcademicTestSubmission", 'Int'>
+    readonly attemptedCount: FieldRef<"AcademicTestSubmission", 'Int'>
+    readonly correctCount: FieldRef<"AcademicTestSubmission", 'Int'>
+    readonly wrongCount: FieldRef<"AcademicTestSubmission", 'Int'>
+    readonly unmarkedCount: FieldRef<"AcademicTestSubmission", 'Int'>
+    readonly totalMarks: FieldRef<"AcademicTestSubmission", 'Int'>
+    readonly obtainedMarks: FieldRef<"AcademicTestSubmission", 'Int'>
+    readonly percentage: FieldRef<"AcademicTestSubmission", 'Float'>
+    readonly createdAt: FieldRef<"AcademicTestSubmission", 'DateTime'>
+    readonly updatedAt: FieldRef<"AcademicTestSubmission", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AcademicTestSubmission findUnique
+   */
+  export type AcademicTestSubmissionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestSubmission
+     */
+    select?: AcademicTestSubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicTestSubmission
+     */
+    omit?: AcademicTestSubmissionOmit<ExtArgs> | null
+    /**
+     * Filter, which AcademicTestSubmission to fetch.
+     */
+    where: AcademicTestSubmissionWhereUniqueInput
+  }
+
+  /**
+   * AcademicTestSubmission findUniqueOrThrow
+   */
+  export type AcademicTestSubmissionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestSubmission
+     */
+    select?: AcademicTestSubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicTestSubmission
+     */
+    omit?: AcademicTestSubmissionOmit<ExtArgs> | null
+    /**
+     * Filter, which AcademicTestSubmission to fetch.
+     */
+    where: AcademicTestSubmissionWhereUniqueInput
+  }
+
+  /**
+   * AcademicTestSubmission findFirst
+   */
+  export type AcademicTestSubmissionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestSubmission
+     */
+    select?: AcademicTestSubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicTestSubmission
+     */
+    omit?: AcademicTestSubmissionOmit<ExtArgs> | null
+    /**
+     * Filter, which AcademicTestSubmission to fetch.
+     */
+    where?: AcademicTestSubmissionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AcademicTestSubmissions to fetch.
+     */
+    orderBy?: AcademicTestSubmissionOrderByWithRelationInput | AcademicTestSubmissionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AcademicTestSubmissions.
+     */
+    cursor?: AcademicTestSubmissionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AcademicTestSubmissions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AcademicTestSubmissions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AcademicTestSubmissions.
+     */
+    distinct?: AcademicTestSubmissionScalarFieldEnum | AcademicTestSubmissionScalarFieldEnum[]
+  }
+
+  /**
+   * AcademicTestSubmission findFirstOrThrow
+   */
+  export type AcademicTestSubmissionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestSubmission
+     */
+    select?: AcademicTestSubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicTestSubmission
+     */
+    omit?: AcademicTestSubmissionOmit<ExtArgs> | null
+    /**
+     * Filter, which AcademicTestSubmission to fetch.
+     */
+    where?: AcademicTestSubmissionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AcademicTestSubmissions to fetch.
+     */
+    orderBy?: AcademicTestSubmissionOrderByWithRelationInput | AcademicTestSubmissionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AcademicTestSubmissions.
+     */
+    cursor?: AcademicTestSubmissionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AcademicTestSubmissions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AcademicTestSubmissions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AcademicTestSubmissions.
+     */
+    distinct?: AcademicTestSubmissionScalarFieldEnum | AcademicTestSubmissionScalarFieldEnum[]
+  }
+
+  /**
+   * AcademicTestSubmission findMany
+   */
+  export type AcademicTestSubmissionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestSubmission
+     */
+    select?: AcademicTestSubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicTestSubmission
+     */
+    omit?: AcademicTestSubmissionOmit<ExtArgs> | null
+    /**
+     * Filter, which AcademicTestSubmissions to fetch.
+     */
+    where?: AcademicTestSubmissionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AcademicTestSubmissions to fetch.
+     */
+    orderBy?: AcademicTestSubmissionOrderByWithRelationInput | AcademicTestSubmissionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AcademicTestSubmissions.
+     */
+    cursor?: AcademicTestSubmissionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AcademicTestSubmissions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AcademicTestSubmissions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AcademicTestSubmissions.
+     */
+    distinct?: AcademicTestSubmissionScalarFieldEnum | AcademicTestSubmissionScalarFieldEnum[]
+  }
+
+  /**
+   * AcademicTestSubmission create
+   */
+  export type AcademicTestSubmissionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestSubmission
+     */
+    select?: AcademicTestSubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicTestSubmission
+     */
+    omit?: AcademicTestSubmissionOmit<ExtArgs> | null
+    /**
+     * The data needed to create a AcademicTestSubmission.
+     */
+    data: XOR<AcademicTestSubmissionCreateInput, AcademicTestSubmissionUncheckedCreateInput>
+  }
+
+  /**
+   * AcademicTestSubmission createMany
+   */
+  export type AcademicTestSubmissionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AcademicTestSubmissions.
+     */
+    data: AcademicTestSubmissionCreateManyInput | AcademicTestSubmissionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AcademicTestSubmission createManyAndReturn
+   */
+  export type AcademicTestSubmissionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestSubmission
+     */
+    select?: AcademicTestSubmissionSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicTestSubmission
+     */
+    omit?: AcademicTestSubmissionOmit<ExtArgs> | null
+    /**
+     * The data used to create many AcademicTestSubmissions.
+     */
+    data: AcademicTestSubmissionCreateManyInput | AcademicTestSubmissionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AcademicTestSubmission update
+   */
+  export type AcademicTestSubmissionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestSubmission
+     */
+    select?: AcademicTestSubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicTestSubmission
+     */
+    omit?: AcademicTestSubmissionOmit<ExtArgs> | null
+    /**
+     * The data needed to update a AcademicTestSubmission.
+     */
+    data: XOR<AcademicTestSubmissionUpdateInput, AcademicTestSubmissionUncheckedUpdateInput>
+    /**
+     * Choose, which AcademicTestSubmission to update.
+     */
+    where: AcademicTestSubmissionWhereUniqueInput
+  }
+
+  /**
+   * AcademicTestSubmission updateMany
+   */
+  export type AcademicTestSubmissionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AcademicTestSubmissions.
+     */
+    data: XOR<AcademicTestSubmissionUpdateManyMutationInput, AcademicTestSubmissionUncheckedUpdateManyInput>
+    /**
+     * Filter which AcademicTestSubmissions to update
+     */
+    where?: AcademicTestSubmissionWhereInput
+    /**
+     * Limit how many AcademicTestSubmissions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AcademicTestSubmission updateManyAndReturn
+   */
+  export type AcademicTestSubmissionUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestSubmission
+     */
+    select?: AcademicTestSubmissionSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicTestSubmission
+     */
+    omit?: AcademicTestSubmissionOmit<ExtArgs> | null
+    /**
+     * The data used to update AcademicTestSubmissions.
+     */
+    data: XOR<AcademicTestSubmissionUpdateManyMutationInput, AcademicTestSubmissionUncheckedUpdateManyInput>
+    /**
+     * Filter which AcademicTestSubmissions to update
+     */
+    where?: AcademicTestSubmissionWhereInput
+    /**
+     * Limit how many AcademicTestSubmissions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AcademicTestSubmission upsert
+   */
+  export type AcademicTestSubmissionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestSubmission
+     */
+    select?: AcademicTestSubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicTestSubmission
+     */
+    omit?: AcademicTestSubmissionOmit<ExtArgs> | null
+    /**
+     * The filter to search for the AcademicTestSubmission to update in case it exists.
+     */
+    where: AcademicTestSubmissionWhereUniqueInput
+    /**
+     * In case the AcademicTestSubmission found by the `where` argument doesn't exist, create a new AcademicTestSubmission with this data.
+     */
+    create: XOR<AcademicTestSubmissionCreateInput, AcademicTestSubmissionUncheckedCreateInput>
+    /**
+     * In case the AcademicTestSubmission was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AcademicTestSubmissionUpdateInput, AcademicTestSubmissionUncheckedUpdateInput>
+  }
+
+  /**
+   * AcademicTestSubmission delete
+   */
+  export type AcademicTestSubmissionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestSubmission
+     */
+    select?: AcademicTestSubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicTestSubmission
+     */
+    omit?: AcademicTestSubmissionOmit<ExtArgs> | null
+    /**
+     * Filter which AcademicTestSubmission to delete.
+     */
+    where: AcademicTestSubmissionWhereUniqueInput
+  }
+
+  /**
+   * AcademicTestSubmission deleteMany
+   */
+  export type AcademicTestSubmissionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AcademicTestSubmissions to delete
+     */
+    where?: AcademicTestSubmissionWhereInput
+    /**
+     * Limit how many AcademicTestSubmissions to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * AcademicTestSubmission without action
+   */
+  export type AcademicTestSubmissionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestSubmission
+     */
+    select?: AcademicTestSubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicTestSubmission
+     */
+    omit?: AcademicTestSubmissionOmit<ExtArgs> | null
+  }
+
+
+  /**
+   * Model AcademicTestAnswer
+   */
+
+  export type AggregateAcademicTestAnswer = {
+    _count: AcademicTestAnswerCountAggregateOutputType | null
+    _avg: AcademicTestAnswerAvgAggregateOutputType | null
+    _sum: AcademicTestAnswerSumAggregateOutputType | null
+    _min: AcademicTestAnswerMinAggregateOutputType | null
+    _max: AcademicTestAnswerMaxAggregateOutputType | null
+  }
+
+  export type AcademicTestAnswerAvgAggregateOutputType = {
+    marksAwarded: number | null
+  }
+
+  export type AcademicTestAnswerSumAggregateOutputType = {
+    marksAwarded: number | null
+  }
+
+  export type AcademicTestAnswerMinAggregateOutputType = {
+    id: string | null
+    submissionId: string | null
+    questionId: string | null
+    selectedAnswer: string | null
+    isCorrect: boolean | null
+    marksAwarded: number | null
+  }
+
+  export type AcademicTestAnswerMaxAggregateOutputType = {
+    id: string | null
+    submissionId: string | null
+    questionId: string | null
+    selectedAnswer: string | null
+    isCorrect: boolean | null
+    marksAwarded: number | null
+  }
+
+  export type AcademicTestAnswerCountAggregateOutputType = {
+    id: number
+    submissionId: number
+    questionId: number
+    selectedAnswer: number
+    isCorrect: number
+    marksAwarded: number
+    _all: number
+  }
+
+
+  export type AcademicTestAnswerAvgAggregateInputType = {
+    marksAwarded?: true
+  }
+
+  export type AcademicTestAnswerSumAggregateInputType = {
+    marksAwarded?: true
+  }
+
+  export type AcademicTestAnswerMinAggregateInputType = {
+    id?: true
+    submissionId?: true
+    questionId?: true
+    selectedAnswer?: true
+    isCorrect?: true
+    marksAwarded?: true
+  }
+
+  export type AcademicTestAnswerMaxAggregateInputType = {
+    id?: true
+    submissionId?: true
+    questionId?: true
+    selectedAnswer?: true
+    isCorrect?: true
+    marksAwarded?: true
+  }
+
+  export type AcademicTestAnswerCountAggregateInputType = {
+    id?: true
+    submissionId?: true
+    questionId?: true
+    selectedAnswer?: true
+    isCorrect?: true
+    marksAwarded?: true
+    _all?: true
+  }
+
+  export type AcademicTestAnswerAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AcademicTestAnswer to aggregate.
+     */
+    where?: AcademicTestAnswerWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AcademicTestAnswers to fetch.
+     */
+    orderBy?: AcademicTestAnswerOrderByWithRelationInput | AcademicTestAnswerOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AcademicTestAnswerWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AcademicTestAnswers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AcademicTestAnswers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AcademicTestAnswers
+    **/
+    _count?: true | AcademicTestAnswerCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: AcademicTestAnswerAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: AcademicTestAnswerSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AcademicTestAnswerMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AcademicTestAnswerMaxAggregateInputType
+  }
+
+  export type GetAcademicTestAnswerAggregateType<T extends AcademicTestAnswerAggregateArgs> = {
+        [P in keyof T & keyof AggregateAcademicTestAnswer]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAcademicTestAnswer[P]>
+      : GetScalarType<T[P], AggregateAcademicTestAnswer[P]>
+  }
+
+
+
+
+  export type AcademicTestAnswerGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AcademicTestAnswerWhereInput
+    orderBy?: AcademicTestAnswerOrderByWithAggregationInput | AcademicTestAnswerOrderByWithAggregationInput[]
+    by: AcademicTestAnswerScalarFieldEnum[] | AcademicTestAnswerScalarFieldEnum
+    having?: AcademicTestAnswerScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AcademicTestAnswerCountAggregateInputType | true
+    _avg?: AcademicTestAnswerAvgAggregateInputType
+    _sum?: AcademicTestAnswerSumAggregateInputType
+    _min?: AcademicTestAnswerMinAggregateInputType
+    _max?: AcademicTestAnswerMaxAggregateInputType
+  }
+
+  export type AcademicTestAnswerGroupByOutputType = {
+    id: string
+    submissionId: string
+    questionId: string
+    selectedAnswer: string | null
+    isCorrect: boolean
+    marksAwarded: number
+    _count: AcademicTestAnswerCountAggregateOutputType | null
+    _avg: AcademicTestAnswerAvgAggregateOutputType | null
+    _sum: AcademicTestAnswerSumAggregateOutputType | null
+    _min: AcademicTestAnswerMinAggregateOutputType | null
+    _max: AcademicTestAnswerMaxAggregateOutputType | null
+  }
+
+  type GetAcademicTestAnswerGroupByPayload<T extends AcademicTestAnswerGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AcademicTestAnswerGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AcademicTestAnswerGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AcademicTestAnswerGroupByOutputType[P]>
+            : GetScalarType<T[P], AcademicTestAnswerGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AcademicTestAnswerSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    submissionId?: boolean
+    questionId?: boolean
+    selectedAnswer?: boolean
+    isCorrect?: boolean
+    marksAwarded?: boolean
+  }, ExtArgs["result"]["academicTestAnswer"]>
+
+  export type AcademicTestAnswerSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    submissionId?: boolean
+    questionId?: boolean
+    selectedAnswer?: boolean
+    isCorrect?: boolean
+    marksAwarded?: boolean
+  }, ExtArgs["result"]["academicTestAnswer"]>
+
+  export type AcademicTestAnswerSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    submissionId?: boolean
+    questionId?: boolean
+    selectedAnswer?: boolean
+    isCorrect?: boolean
+    marksAwarded?: boolean
+  }, ExtArgs["result"]["academicTestAnswer"]>
+
+  export type AcademicTestAnswerSelectScalar = {
+    id?: boolean
+    submissionId?: boolean
+    questionId?: boolean
+    selectedAnswer?: boolean
+    isCorrect?: boolean
+    marksAwarded?: boolean
+  }
+
+  export type AcademicTestAnswerOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "submissionId" | "questionId" | "selectedAnswer" | "isCorrect" | "marksAwarded", ExtArgs["result"]["academicTestAnswer"]>
+
+  export type $AcademicTestAnswerPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AcademicTestAnswer"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      submissionId: string
+      questionId: string
+      selectedAnswer: string | null
+      isCorrect: boolean
+      marksAwarded: number
+    }, ExtArgs["result"]["academicTestAnswer"]>
+    composites: {}
+  }
+
+  type AcademicTestAnswerGetPayload<S extends boolean | null | undefined | AcademicTestAnswerDefaultArgs> = $Result.GetResult<Prisma.$AcademicTestAnswerPayload, S>
+
+  type AcademicTestAnswerCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AcademicTestAnswerFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AcademicTestAnswerCountAggregateInputType | true
+    }
+
+  export interface AcademicTestAnswerDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AcademicTestAnswer'], meta: { name: 'AcademicTestAnswer' } }
+    /**
+     * Find zero or one AcademicTestAnswer that matches the filter.
+     * @param {AcademicTestAnswerFindUniqueArgs} args - Arguments to find a AcademicTestAnswer
+     * @example
+     * // Get one AcademicTestAnswer
+     * const academicTestAnswer = await prisma.academicTestAnswer.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AcademicTestAnswerFindUniqueArgs>(args: SelectSubset<T, AcademicTestAnswerFindUniqueArgs<ExtArgs>>): Prisma__AcademicTestAnswerClient<$Result.GetResult<Prisma.$AcademicTestAnswerPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one AcademicTestAnswer that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AcademicTestAnswerFindUniqueOrThrowArgs} args - Arguments to find a AcademicTestAnswer
+     * @example
+     * // Get one AcademicTestAnswer
+     * const academicTestAnswer = await prisma.academicTestAnswer.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AcademicTestAnswerFindUniqueOrThrowArgs>(args: SelectSubset<T, AcademicTestAnswerFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AcademicTestAnswerClient<$Result.GetResult<Prisma.$AcademicTestAnswerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AcademicTestAnswer that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcademicTestAnswerFindFirstArgs} args - Arguments to find a AcademicTestAnswer
+     * @example
+     * // Get one AcademicTestAnswer
+     * const academicTestAnswer = await prisma.academicTestAnswer.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AcademicTestAnswerFindFirstArgs>(args?: SelectSubset<T, AcademicTestAnswerFindFirstArgs<ExtArgs>>): Prisma__AcademicTestAnswerClient<$Result.GetResult<Prisma.$AcademicTestAnswerPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AcademicTestAnswer that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcademicTestAnswerFindFirstOrThrowArgs} args - Arguments to find a AcademicTestAnswer
+     * @example
+     * // Get one AcademicTestAnswer
+     * const academicTestAnswer = await prisma.academicTestAnswer.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AcademicTestAnswerFindFirstOrThrowArgs>(args?: SelectSubset<T, AcademicTestAnswerFindFirstOrThrowArgs<ExtArgs>>): Prisma__AcademicTestAnswerClient<$Result.GetResult<Prisma.$AcademicTestAnswerPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more AcademicTestAnswers that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcademicTestAnswerFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AcademicTestAnswers
+     * const academicTestAnswers = await prisma.academicTestAnswer.findMany()
+     * 
+     * // Get first 10 AcademicTestAnswers
+     * const academicTestAnswers = await prisma.academicTestAnswer.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const academicTestAnswerWithIdOnly = await prisma.academicTestAnswer.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AcademicTestAnswerFindManyArgs>(args?: SelectSubset<T, AcademicTestAnswerFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcademicTestAnswerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a AcademicTestAnswer.
+     * @param {AcademicTestAnswerCreateArgs} args - Arguments to create a AcademicTestAnswer.
+     * @example
+     * // Create one AcademicTestAnswer
+     * const AcademicTestAnswer = await prisma.academicTestAnswer.create({
+     *   data: {
+     *     // ... data to create a AcademicTestAnswer
+     *   }
+     * })
+     * 
+     */
+    create<T extends AcademicTestAnswerCreateArgs>(args: SelectSubset<T, AcademicTestAnswerCreateArgs<ExtArgs>>): Prisma__AcademicTestAnswerClient<$Result.GetResult<Prisma.$AcademicTestAnswerPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many AcademicTestAnswers.
+     * @param {AcademicTestAnswerCreateManyArgs} args - Arguments to create many AcademicTestAnswers.
+     * @example
+     * // Create many AcademicTestAnswers
+     * const academicTestAnswer = await prisma.academicTestAnswer.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AcademicTestAnswerCreateManyArgs>(args?: SelectSubset<T, AcademicTestAnswerCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many AcademicTestAnswers and returns the data saved in the database.
+     * @param {AcademicTestAnswerCreateManyAndReturnArgs} args - Arguments to create many AcademicTestAnswers.
+     * @example
+     * // Create many AcademicTestAnswers
+     * const academicTestAnswer = await prisma.academicTestAnswer.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many AcademicTestAnswers and only return the `id`
+     * const academicTestAnswerWithIdOnly = await prisma.academicTestAnswer.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AcademicTestAnswerCreateManyAndReturnArgs>(args?: SelectSubset<T, AcademicTestAnswerCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcademicTestAnswerPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a AcademicTestAnswer.
+     * @param {AcademicTestAnswerDeleteArgs} args - Arguments to delete one AcademicTestAnswer.
+     * @example
+     * // Delete one AcademicTestAnswer
+     * const AcademicTestAnswer = await prisma.academicTestAnswer.delete({
+     *   where: {
+     *     // ... filter to delete one AcademicTestAnswer
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AcademicTestAnswerDeleteArgs>(args: SelectSubset<T, AcademicTestAnswerDeleteArgs<ExtArgs>>): Prisma__AcademicTestAnswerClient<$Result.GetResult<Prisma.$AcademicTestAnswerPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one AcademicTestAnswer.
+     * @param {AcademicTestAnswerUpdateArgs} args - Arguments to update one AcademicTestAnswer.
+     * @example
+     * // Update one AcademicTestAnswer
+     * const academicTestAnswer = await prisma.academicTestAnswer.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AcademicTestAnswerUpdateArgs>(args: SelectSubset<T, AcademicTestAnswerUpdateArgs<ExtArgs>>): Prisma__AcademicTestAnswerClient<$Result.GetResult<Prisma.$AcademicTestAnswerPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more AcademicTestAnswers.
+     * @param {AcademicTestAnswerDeleteManyArgs} args - Arguments to filter AcademicTestAnswers to delete.
+     * @example
+     * // Delete a few AcademicTestAnswers
+     * const { count } = await prisma.academicTestAnswer.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AcademicTestAnswerDeleteManyArgs>(args?: SelectSubset<T, AcademicTestAnswerDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AcademicTestAnswers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcademicTestAnswerUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AcademicTestAnswers
+     * const academicTestAnswer = await prisma.academicTestAnswer.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AcademicTestAnswerUpdateManyArgs>(args: SelectSubset<T, AcademicTestAnswerUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AcademicTestAnswers and returns the data updated in the database.
+     * @param {AcademicTestAnswerUpdateManyAndReturnArgs} args - Arguments to update many AcademicTestAnswers.
+     * @example
+     * // Update many AcademicTestAnswers
+     * const academicTestAnswer = await prisma.academicTestAnswer.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more AcademicTestAnswers and only return the `id`
+     * const academicTestAnswerWithIdOnly = await prisma.academicTestAnswer.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AcademicTestAnswerUpdateManyAndReturnArgs>(args: SelectSubset<T, AcademicTestAnswerUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcademicTestAnswerPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one AcademicTestAnswer.
+     * @param {AcademicTestAnswerUpsertArgs} args - Arguments to update or create a AcademicTestAnswer.
+     * @example
+     * // Update or create a AcademicTestAnswer
+     * const academicTestAnswer = await prisma.academicTestAnswer.upsert({
+     *   create: {
+     *     // ... data to create a AcademicTestAnswer
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AcademicTestAnswer we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AcademicTestAnswerUpsertArgs>(args: SelectSubset<T, AcademicTestAnswerUpsertArgs<ExtArgs>>): Prisma__AcademicTestAnswerClient<$Result.GetResult<Prisma.$AcademicTestAnswerPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of AcademicTestAnswers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcademicTestAnswerCountArgs} args - Arguments to filter AcademicTestAnswers to count.
+     * @example
+     * // Count the number of AcademicTestAnswers
+     * const count = await prisma.academicTestAnswer.count({
+     *   where: {
+     *     // ... the filter for the AcademicTestAnswers we want to count
+     *   }
+     * })
+    **/
+    count<T extends AcademicTestAnswerCountArgs>(
+      args?: Subset<T, AcademicTestAnswerCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AcademicTestAnswerCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AcademicTestAnswer.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcademicTestAnswerAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AcademicTestAnswerAggregateArgs>(args: Subset<T, AcademicTestAnswerAggregateArgs>): Prisma.PrismaPromise<GetAcademicTestAnswerAggregateType<T>>
+
+    /**
+     * Group by AcademicTestAnswer.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcademicTestAnswerGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AcademicTestAnswerGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AcademicTestAnswerGroupByArgs['orderBy'] }
+        : { orderBy?: AcademicTestAnswerGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AcademicTestAnswerGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAcademicTestAnswerGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AcademicTestAnswer model
+   */
+  readonly fields: AcademicTestAnswerFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AcademicTestAnswer.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AcademicTestAnswerClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AcademicTestAnswer model
+   */
+  interface AcademicTestAnswerFieldRefs {
+    readonly id: FieldRef<"AcademicTestAnswer", 'String'>
+    readonly submissionId: FieldRef<"AcademicTestAnswer", 'String'>
+    readonly questionId: FieldRef<"AcademicTestAnswer", 'String'>
+    readonly selectedAnswer: FieldRef<"AcademicTestAnswer", 'String'>
+    readonly isCorrect: FieldRef<"AcademicTestAnswer", 'Boolean'>
+    readonly marksAwarded: FieldRef<"AcademicTestAnswer", 'Int'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AcademicTestAnswer findUnique
+   */
+  export type AcademicTestAnswerFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestAnswer
+     */
+    select?: AcademicTestAnswerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicTestAnswer
+     */
+    omit?: AcademicTestAnswerOmit<ExtArgs> | null
+    /**
+     * Filter, which AcademicTestAnswer to fetch.
+     */
+    where: AcademicTestAnswerWhereUniqueInput
+  }
+
+  /**
+   * AcademicTestAnswer findUniqueOrThrow
+   */
+  export type AcademicTestAnswerFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestAnswer
+     */
+    select?: AcademicTestAnswerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicTestAnswer
+     */
+    omit?: AcademicTestAnswerOmit<ExtArgs> | null
+    /**
+     * Filter, which AcademicTestAnswer to fetch.
+     */
+    where: AcademicTestAnswerWhereUniqueInput
+  }
+
+  /**
+   * AcademicTestAnswer findFirst
+   */
+  export type AcademicTestAnswerFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestAnswer
+     */
+    select?: AcademicTestAnswerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicTestAnswer
+     */
+    omit?: AcademicTestAnswerOmit<ExtArgs> | null
+    /**
+     * Filter, which AcademicTestAnswer to fetch.
+     */
+    where?: AcademicTestAnswerWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AcademicTestAnswers to fetch.
+     */
+    orderBy?: AcademicTestAnswerOrderByWithRelationInput | AcademicTestAnswerOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AcademicTestAnswers.
+     */
+    cursor?: AcademicTestAnswerWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AcademicTestAnswers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AcademicTestAnswers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AcademicTestAnswers.
+     */
+    distinct?: AcademicTestAnswerScalarFieldEnum | AcademicTestAnswerScalarFieldEnum[]
+  }
+
+  /**
+   * AcademicTestAnswer findFirstOrThrow
+   */
+  export type AcademicTestAnswerFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestAnswer
+     */
+    select?: AcademicTestAnswerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicTestAnswer
+     */
+    omit?: AcademicTestAnswerOmit<ExtArgs> | null
+    /**
+     * Filter, which AcademicTestAnswer to fetch.
+     */
+    where?: AcademicTestAnswerWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AcademicTestAnswers to fetch.
+     */
+    orderBy?: AcademicTestAnswerOrderByWithRelationInput | AcademicTestAnswerOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AcademicTestAnswers.
+     */
+    cursor?: AcademicTestAnswerWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AcademicTestAnswers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AcademicTestAnswers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AcademicTestAnswers.
+     */
+    distinct?: AcademicTestAnswerScalarFieldEnum | AcademicTestAnswerScalarFieldEnum[]
+  }
+
+  /**
+   * AcademicTestAnswer findMany
+   */
+  export type AcademicTestAnswerFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestAnswer
+     */
+    select?: AcademicTestAnswerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicTestAnswer
+     */
+    omit?: AcademicTestAnswerOmit<ExtArgs> | null
+    /**
+     * Filter, which AcademicTestAnswers to fetch.
+     */
+    where?: AcademicTestAnswerWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AcademicTestAnswers to fetch.
+     */
+    orderBy?: AcademicTestAnswerOrderByWithRelationInput | AcademicTestAnswerOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AcademicTestAnswers.
+     */
+    cursor?: AcademicTestAnswerWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AcademicTestAnswers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AcademicTestAnswers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AcademicTestAnswers.
+     */
+    distinct?: AcademicTestAnswerScalarFieldEnum | AcademicTestAnswerScalarFieldEnum[]
+  }
+
+  /**
+   * AcademicTestAnswer create
+   */
+  export type AcademicTestAnswerCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestAnswer
+     */
+    select?: AcademicTestAnswerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicTestAnswer
+     */
+    omit?: AcademicTestAnswerOmit<ExtArgs> | null
+    /**
+     * The data needed to create a AcademicTestAnswer.
+     */
+    data: XOR<AcademicTestAnswerCreateInput, AcademicTestAnswerUncheckedCreateInput>
+  }
+
+  /**
+   * AcademicTestAnswer createMany
+   */
+  export type AcademicTestAnswerCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AcademicTestAnswers.
+     */
+    data: AcademicTestAnswerCreateManyInput | AcademicTestAnswerCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AcademicTestAnswer createManyAndReturn
+   */
+  export type AcademicTestAnswerCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestAnswer
+     */
+    select?: AcademicTestAnswerSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicTestAnswer
+     */
+    omit?: AcademicTestAnswerOmit<ExtArgs> | null
+    /**
+     * The data used to create many AcademicTestAnswers.
+     */
+    data: AcademicTestAnswerCreateManyInput | AcademicTestAnswerCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AcademicTestAnswer update
+   */
+  export type AcademicTestAnswerUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestAnswer
+     */
+    select?: AcademicTestAnswerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicTestAnswer
+     */
+    omit?: AcademicTestAnswerOmit<ExtArgs> | null
+    /**
+     * The data needed to update a AcademicTestAnswer.
+     */
+    data: XOR<AcademicTestAnswerUpdateInput, AcademicTestAnswerUncheckedUpdateInput>
+    /**
+     * Choose, which AcademicTestAnswer to update.
+     */
+    where: AcademicTestAnswerWhereUniqueInput
+  }
+
+  /**
+   * AcademicTestAnswer updateMany
+   */
+  export type AcademicTestAnswerUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AcademicTestAnswers.
+     */
+    data: XOR<AcademicTestAnswerUpdateManyMutationInput, AcademicTestAnswerUncheckedUpdateManyInput>
+    /**
+     * Filter which AcademicTestAnswers to update
+     */
+    where?: AcademicTestAnswerWhereInput
+    /**
+     * Limit how many AcademicTestAnswers to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AcademicTestAnswer updateManyAndReturn
+   */
+  export type AcademicTestAnswerUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestAnswer
+     */
+    select?: AcademicTestAnswerSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicTestAnswer
+     */
+    omit?: AcademicTestAnswerOmit<ExtArgs> | null
+    /**
+     * The data used to update AcademicTestAnswers.
+     */
+    data: XOR<AcademicTestAnswerUpdateManyMutationInput, AcademicTestAnswerUncheckedUpdateManyInput>
+    /**
+     * Filter which AcademicTestAnswers to update
+     */
+    where?: AcademicTestAnswerWhereInput
+    /**
+     * Limit how many AcademicTestAnswers to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AcademicTestAnswer upsert
+   */
+  export type AcademicTestAnswerUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestAnswer
+     */
+    select?: AcademicTestAnswerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicTestAnswer
+     */
+    omit?: AcademicTestAnswerOmit<ExtArgs> | null
+    /**
+     * The filter to search for the AcademicTestAnswer to update in case it exists.
+     */
+    where: AcademicTestAnswerWhereUniqueInput
+    /**
+     * In case the AcademicTestAnswer found by the `where` argument doesn't exist, create a new AcademicTestAnswer with this data.
+     */
+    create: XOR<AcademicTestAnswerCreateInput, AcademicTestAnswerUncheckedCreateInput>
+    /**
+     * In case the AcademicTestAnswer was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AcademicTestAnswerUpdateInput, AcademicTestAnswerUncheckedUpdateInput>
+  }
+
+  /**
+   * AcademicTestAnswer delete
+   */
+  export type AcademicTestAnswerDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestAnswer
+     */
+    select?: AcademicTestAnswerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicTestAnswer
+     */
+    omit?: AcademicTestAnswerOmit<ExtArgs> | null
+    /**
+     * Filter which AcademicTestAnswer to delete.
+     */
+    where: AcademicTestAnswerWhereUniqueInput
+  }
+
+  /**
+   * AcademicTestAnswer deleteMany
+   */
+  export type AcademicTestAnswerDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AcademicTestAnswers to delete
+     */
+    where?: AcademicTestAnswerWhereInput
+    /**
+     * Limit how many AcademicTestAnswers to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * AcademicTestAnswer without action
+   */
+  export type AcademicTestAnswerDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestAnswer
+     */
+    select?: AcademicTestAnswerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicTestAnswer
+     */
+    omit?: AcademicTestAnswerOmit<ExtArgs> | null
   }
 
 
@@ -78891,6 +82568,7 @@ export namespace Prisma {
     requestTitle: 'requestTitle',
     examId: 'examId',
     examScheduleId: 'examScheduleId',
+    academicTestId: 'academicTestId',
     assessmentId: 'assessmentId',
     batchId: 'batchId',
     subModuleId: 'subModuleId',
@@ -79216,6 +82894,59 @@ export namespace Prisma {
   };
 
   export type AcademicTestProjectScalarFieldEnum = (typeof AcademicTestProjectScalarFieldEnum)[keyof typeof AcademicTestProjectScalarFieldEnum]
+
+
+  export const AcademicScheduledTestScalarFieldEnum: {
+    id: 'id',
+    academicTestItemId: 'academicTestItemId',
+    branchCourseId: 'branchCourseId',
+    branchBatchId: 'branchBatchId',
+    facultyId: 'facultyId',
+    questionPaperId: 'questionPaperId',
+    testNumber: 'testNumber',
+    testDate: 'testDate',
+    startTime: 'startTime',
+    endTime: 'endTime',
+    status: 'status',
+    createdBy: 'createdBy',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type AcademicScheduledTestScalarFieldEnum = (typeof AcademicScheduledTestScalarFieldEnum)[keyof typeof AcademicScheduledTestScalarFieldEnum]
+
+
+  export const AcademicTestSubmissionScalarFieldEnum: {
+    id: 'id',
+    academicTestId: 'academicTestId',
+    branchStudentId: 'branchStudentId',
+    submittedAt: 'submittedAt',
+    status: 'status',
+    totalQuestions: 'totalQuestions',
+    attemptedCount: 'attemptedCount',
+    correctCount: 'correctCount',
+    wrongCount: 'wrongCount',
+    unmarkedCount: 'unmarkedCount',
+    totalMarks: 'totalMarks',
+    obtainedMarks: 'obtainedMarks',
+    percentage: 'percentage',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type AcademicTestSubmissionScalarFieldEnum = (typeof AcademicTestSubmissionScalarFieldEnum)[keyof typeof AcademicTestSubmissionScalarFieldEnum]
+
+
+  export const AcademicTestAnswerScalarFieldEnum: {
+    id: 'id',
+    submissionId: 'submissionId',
+    questionId: 'questionId',
+    selectedAnswer: 'selectedAnswer',
+    isCorrect: 'isCorrect',
+    marksAwarded: 'marksAwarded'
+  };
+
+  export type AcademicTestAnswerScalarFieldEnum = (typeof AcademicTestAnswerScalarFieldEnum)[keyof typeof AcademicTestAnswerScalarFieldEnum]
 
 
   export const CourseStatusHistoryScalarFieldEnum: {
@@ -80839,6 +84570,7 @@ export namespace Prisma {
     requestTitle?: StringNullableFilter<"Notification"> | string | null
     examId?: StringNullableFilter<"Notification"> | string | null
     examScheduleId?: StringNullableFilter<"Notification"> | string | null
+    academicTestId?: StringNullableFilter<"Notification"> | string | null
     assessmentId?: StringNullableFilter<"Notification"> | string | null
     batchId?: StringNullableFilter<"Notification"> | string | null
     subModuleId?: StringNullableFilter<"Notification"> | string | null
@@ -80877,6 +84609,7 @@ export namespace Prisma {
     requestTitle?: SortOrderInput | SortOrder
     examId?: SortOrderInput | SortOrder
     examScheduleId?: SortOrderInput | SortOrder
+    academicTestId?: SortOrderInput | SortOrder
     assessmentId?: SortOrderInput | SortOrder
     batchId?: SortOrderInput | SortOrder
     subModuleId?: SortOrderInput | SortOrder
@@ -80918,6 +84651,7 @@ export namespace Prisma {
     requestTitle?: StringNullableFilter<"Notification"> | string | null
     examId?: StringNullableFilter<"Notification"> | string | null
     examScheduleId?: StringNullableFilter<"Notification"> | string | null
+    academicTestId?: StringNullableFilter<"Notification"> | string | null
     assessmentId?: StringNullableFilter<"Notification"> | string | null
     batchId?: StringNullableFilter<"Notification"> | string | null
     subModuleId?: StringNullableFilter<"Notification"> | string | null
@@ -80956,6 +84690,7 @@ export namespace Prisma {
     requestTitle?: SortOrderInput | SortOrder
     examId?: SortOrderInput | SortOrder
     examScheduleId?: SortOrderInput | SortOrder
+    academicTestId?: SortOrderInput | SortOrder
     assessmentId?: SortOrderInput | SortOrder
     batchId?: SortOrderInput | SortOrder
     subModuleId?: SortOrderInput | SortOrder
@@ -80998,6 +84733,7 @@ export namespace Prisma {
     requestTitle?: StringNullableWithAggregatesFilter<"Notification"> | string | null
     examId?: StringNullableWithAggregatesFilter<"Notification"> | string | null
     examScheduleId?: StringNullableWithAggregatesFilter<"Notification"> | string | null
+    academicTestId?: StringNullableWithAggregatesFilter<"Notification"> | string | null
     assessmentId?: StringNullableWithAggregatesFilter<"Notification"> | string | null
     batchId?: StringNullableWithAggregatesFilter<"Notification"> | string | null
     subModuleId?: StringNullableWithAggregatesFilter<"Notification"> | string | null
@@ -82760,6 +86496,271 @@ export namespace Prisma {
     projectMarks?: IntWithAggregatesFilter<"AcademicTestProject"> | number
     createdAt?: DateTimeWithAggregatesFilter<"AcademicTestProject"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"AcademicTestProject"> | Date | string
+  }
+
+  export type AcademicScheduledTestWhereInput = {
+    AND?: AcademicScheduledTestWhereInput | AcademicScheduledTestWhereInput[]
+    OR?: AcademicScheduledTestWhereInput[]
+    NOT?: AcademicScheduledTestWhereInput | AcademicScheduledTestWhereInput[]
+    id?: StringFilter<"AcademicScheduledTest"> | string
+    academicTestItemId?: StringFilter<"AcademicScheduledTest"> | string
+    branchCourseId?: StringFilter<"AcademicScheduledTest"> | string
+    branchBatchId?: StringFilter<"AcademicScheduledTest"> | string
+    facultyId?: StringFilter<"AcademicScheduledTest"> | string
+    questionPaperId?: StringFilter<"AcademicScheduledTest"> | string
+    testNumber?: IntFilter<"AcademicScheduledTest"> | number
+    testDate?: StringFilter<"AcademicScheduledTest"> | string
+    startTime?: StringFilter<"AcademicScheduledTest"> | string
+    endTime?: StringFilter<"AcademicScheduledTest"> | string
+    status?: StringFilter<"AcademicScheduledTest"> | string
+    createdBy?: StringFilter<"AcademicScheduledTest"> | string
+    createdAt?: DateTimeFilter<"AcademicScheduledTest"> | Date | string
+    updatedAt?: DateTimeFilter<"AcademicScheduledTest"> | Date | string
+  }
+
+  export type AcademicScheduledTestOrderByWithRelationInput = {
+    id?: SortOrder
+    academicTestItemId?: SortOrder
+    branchCourseId?: SortOrder
+    branchBatchId?: SortOrder
+    facultyId?: SortOrder
+    questionPaperId?: SortOrder
+    testNumber?: SortOrder
+    testDate?: SortOrder
+    startTime?: SortOrder
+    endTime?: SortOrder
+    status?: SortOrder
+    createdBy?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AcademicScheduledTestWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    academicTestItemId_branchBatchId?: AcademicScheduledTestAcademicTestItemIdBranchBatchIdCompoundUniqueInput
+    AND?: AcademicScheduledTestWhereInput | AcademicScheduledTestWhereInput[]
+    OR?: AcademicScheduledTestWhereInput[]
+    NOT?: AcademicScheduledTestWhereInput | AcademicScheduledTestWhereInput[]
+    academicTestItemId?: StringFilter<"AcademicScheduledTest"> | string
+    branchCourseId?: StringFilter<"AcademicScheduledTest"> | string
+    branchBatchId?: StringFilter<"AcademicScheduledTest"> | string
+    facultyId?: StringFilter<"AcademicScheduledTest"> | string
+    questionPaperId?: StringFilter<"AcademicScheduledTest"> | string
+    testNumber?: IntFilter<"AcademicScheduledTest"> | number
+    testDate?: StringFilter<"AcademicScheduledTest"> | string
+    startTime?: StringFilter<"AcademicScheduledTest"> | string
+    endTime?: StringFilter<"AcademicScheduledTest"> | string
+    status?: StringFilter<"AcademicScheduledTest"> | string
+    createdBy?: StringFilter<"AcademicScheduledTest"> | string
+    createdAt?: DateTimeFilter<"AcademicScheduledTest"> | Date | string
+    updatedAt?: DateTimeFilter<"AcademicScheduledTest"> | Date | string
+  }, "id" | "academicTestItemId_branchBatchId">
+
+  export type AcademicScheduledTestOrderByWithAggregationInput = {
+    id?: SortOrder
+    academicTestItemId?: SortOrder
+    branchCourseId?: SortOrder
+    branchBatchId?: SortOrder
+    facultyId?: SortOrder
+    questionPaperId?: SortOrder
+    testNumber?: SortOrder
+    testDate?: SortOrder
+    startTime?: SortOrder
+    endTime?: SortOrder
+    status?: SortOrder
+    createdBy?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: AcademicScheduledTestCountOrderByAggregateInput
+    _avg?: AcademicScheduledTestAvgOrderByAggregateInput
+    _max?: AcademicScheduledTestMaxOrderByAggregateInput
+    _min?: AcademicScheduledTestMinOrderByAggregateInput
+    _sum?: AcademicScheduledTestSumOrderByAggregateInput
+  }
+
+  export type AcademicScheduledTestScalarWhereWithAggregatesInput = {
+    AND?: AcademicScheduledTestScalarWhereWithAggregatesInput | AcademicScheduledTestScalarWhereWithAggregatesInput[]
+    OR?: AcademicScheduledTestScalarWhereWithAggregatesInput[]
+    NOT?: AcademicScheduledTestScalarWhereWithAggregatesInput | AcademicScheduledTestScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"AcademicScheduledTest"> | string
+    academicTestItemId?: StringWithAggregatesFilter<"AcademicScheduledTest"> | string
+    branchCourseId?: StringWithAggregatesFilter<"AcademicScheduledTest"> | string
+    branchBatchId?: StringWithAggregatesFilter<"AcademicScheduledTest"> | string
+    facultyId?: StringWithAggregatesFilter<"AcademicScheduledTest"> | string
+    questionPaperId?: StringWithAggregatesFilter<"AcademicScheduledTest"> | string
+    testNumber?: IntWithAggregatesFilter<"AcademicScheduledTest"> | number
+    testDate?: StringWithAggregatesFilter<"AcademicScheduledTest"> | string
+    startTime?: StringWithAggregatesFilter<"AcademicScheduledTest"> | string
+    endTime?: StringWithAggregatesFilter<"AcademicScheduledTest"> | string
+    status?: StringWithAggregatesFilter<"AcademicScheduledTest"> | string
+    createdBy?: StringWithAggregatesFilter<"AcademicScheduledTest"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"AcademicScheduledTest"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"AcademicScheduledTest"> | Date | string
+  }
+
+  export type AcademicTestSubmissionWhereInput = {
+    AND?: AcademicTestSubmissionWhereInput | AcademicTestSubmissionWhereInput[]
+    OR?: AcademicTestSubmissionWhereInput[]
+    NOT?: AcademicTestSubmissionWhereInput | AcademicTestSubmissionWhereInput[]
+    id?: StringFilter<"AcademicTestSubmission"> | string
+    academicTestId?: StringFilter<"AcademicTestSubmission"> | string
+    branchStudentId?: StringFilter<"AcademicTestSubmission"> | string
+    submittedAt?: DateTimeNullableFilter<"AcademicTestSubmission"> | Date | string | null
+    status?: StringFilter<"AcademicTestSubmission"> | string
+    totalQuestions?: IntFilter<"AcademicTestSubmission"> | number
+    attemptedCount?: IntFilter<"AcademicTestSubmission"> | number
+    correctCount?: IntFilter<"AcademicTestSubmission"> | number
+    wrongCount?: IntFilter<"AcademicTestSubmission"> | number
+    unmarkedCount?: IntFilter<"AcademicTestSubmission"> | number
+    totalMarks?: IntFilter<"AcademicTestSubmission"> | number
+    obtainedMarks?: IntFilter<"AcademicTestSubmission"> | number
+    percentage?: FloatFilter<"AcademicTestSubmission"> | number
+    createdAt?: DateTimeFilter<"AcademicTestSubmission"> | Date | string
+    updatedAt?: DateTimeFilter<"AcademicTestSubmission"> | Date | string
+  }
+
+  export type AcademicTestSubmissionOrderByWithRelationInput = {
+    id?: SortOrder
+    academicTestId?: SortOrder
+    branchStudentId?: SortOrder
+    submittedAt?: SortOrderInput | SortOrder
+    status?: SortOrder
+    totalQuestions?: SortOrder
+    attemptedCount?: SortOrder
+    correctCount?: SortOrder
+    wrongCount?: SortOrder
+    unmarkedCount?: SortOrder
+    totalMarks?: SortOrder
+    obtainedMarks?: SortOrder
+    percentage?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AcademicTestSubmissionWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    academicTestId_branchStudentId?: AcademicTestSubmissionAcademicTestIdBranchStudentIdCompoundUniqueInput
+    AND?: AcademicTestSubmissionWhereInput | AcademicTestSubmissionWhereInput[]
+    OR?: AcademicTestSubmissionWhereInput[]
+    NOT?: AcademicTestSubmissionWhereInput | AcademicTestSubmissionWhereInput[]
+    academicTestId?: StringFilter<"AcademicTestSubmission"> | string
+    branchStudentId?: StringFilter<"AcademicTestSubmission"> | string
+    submittedAt?: DateTimeNullableFilter<"AcademicTestSubmission"> | Date | string | null
+    status?: StringFilter<"AcademicTestSubmission"> | string
+    totalQuestions?: IntFilter<"AcademicTestSubmission"> | number
+    attemptedCount?: IntFilter<"AcademicTestSubmission"> | number
+    correctCount?: IntFilter<"AcademicTestSubmission"> | number
+    wrongCount?: IntFilter<"AcademicTestSubmission"> | number
+    unmarkedCount?: IntFilter<"AcademicTestSubmission"> | number
+    totalMarks?: IntFilter<"AcademicTestSubmission"> | number
+    obtainedMarks?: IntFilter<"AcademicTestSubmission"> | number
+    percentage?: FloatFilter<"AcademicTestSubmission"> | number
+    createdAt?: DateTimeFilter<"AcademicTestSubmission"> | Date | string
+    updatedAt?: DateTimeFilter<"AcademicTestSubmission"> | Date | string
+  }, "id" | "academicTestId_branchStudentId">
+
+  export type AcademicTestSubmissionOrderByWithAggregationInput = {
+    id?: SortOrder
+    academicTestId?: SortOrder
+    branchStudentId?: SortOrder
+    submittedAt?: SortOrderInput | SortOrder
+    status?: SortOrder
+    totalQuestions?: SortOrder
+    attemptedCount?: SortOrder
+    correctCount?: SortOrder
+    wrongCount?: SortOrder
+    unmarkedCount?: SortOrder
+    totalMarks?: SortOrder
+    obtainedMarks?: SortOrder
+    percentage?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: AcademicTestSubmissionCountOrderByAggregateInput
+    _avg?: AcademicTestSubmissionAvgOrderByAggregateInput
+    _max?: AcademicTestSubmissionMaxOrderByAggregateInput
+    _min?: AcademicTestSubmissionMinOrderByAggregateInput
+    _sum?: AcademicTestSubmissionSumOrderByAggregateInput
+  }
+
+  export type AcademicTestSubmissionScalarWhereWithAggregatesInput = {
+    AND?: AcademicTestSubmissionScalarWhereWithAggregatesInput | AcademicTestSubmissionScalarWhereWithAggregatesInput[]
+    OR?: AcademicTestSubmissionScalarWhereWithAggregatesInput[]
+    NOT?: AcademicTestSubmissionScalarWhereWithAggregatesInput | AcademicTestSubmissionScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"AcademicTestSubmission"> | string
+    academicTestId?: StringWithAggregatesFilter<"AcademicTestSubmission"> | string
+    branchStudentId?: StringWithAggregatesFilter<"AcademicTestSubmission"> | string
+    submittedAt?: DateTimeNullableWithAggregatesFilter<"AcademicTestSubmission"> | Date | string | null
+    status?: StringWithAggregatesFilter<"AcademicTestSubmission"> | string
+    totalQuestions?: IntWithAggregatesFilter<"AcademicTestSubmission"> | number
+    attemptedCount?: IntWithAggregatesFilter<"AcademicTestSubmission"> | number
+    correctCount?: IntWithAggregatesFilter<"AcademicTestSubmission"> | number
+    wrongCount?: IntWithAggregatesFilter<"AcademicTestSubmission"> | number
+    unmarkedCount?: IntWithAggregatesFilter<"AcademicTestSubmission"> | number
+    totalMarks?: IntWithAggregatesFilter<"AcademicTestSubmission"> | number
+    obtainedMarks?: IntWithAggregatesFilter<"AcademicTestSubmission"> | number
+    percentage?: FloatWithAggregatesFilter<"AcademicTestSubmission"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"AcademicTestSubmission"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"AcademicTestSubmission"> | Date | string
+  }
+
+  export type AcademicTestAnswerWhereInput = {
+    AND?: AcademicTestAnswerWhereInput | AcademicTestAnswerWhereInput[]
+    OR?: AcademicTestAnswerWhereInput[]
+    NOT?: AcademicTestAnswerWhereInput | AcademicTestAnswerWhereInput[]
+    id?: StringFilter<"AcademicTestAnswer"> | string
+    submissionId?: StringFilter<"AcademicTestAnswer"> | string
+    questionId?: StringFilter<"AcademicTestAnswer"> | string
+    selectedAnswer?: StringNullableFilter<"AcademicTestAnswer"> | string | null
+    isCorrect?: BoolFilter<"AcademicTestAnswer"> | boolean
+    marksAwarded?: IntFilter<"AcademicTestAnswer"> | number
+  }
+
+  export type AcademicTestAnswerOrderByWithRelationInput = {
+    id?: SortOrder
+    submissionId?: SortOrder
+    questionId?: SortOrder
+    selectedAnswer?: SortOrderInput | SortOrder
+    isCorrect?: SortOrder
+    marksAwarded?: SortOrder
+  }
+
+  export type AcademicTestAnswerWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    submissionId_questionId?: AcademicTestAnswerSubmissionIdQuestionIdCompoundUniqueInput
+    AND?: AcademicTestAnswerWhereInput | AcademicTestAnswerWhereInput[]
+    OR?: AcademicTestAnswerWhereInput[]
+    NOT?: AcademicTestAnswerWhereInput | AcademicTestAnswerWhereInput[]
+    submissionId?: StringFilter<"AcademicTestAnswer"> | string
+    questionId?: StringFilter<"AcademicTestAnswer"> | string
+    selectedAnswer?: StringNullableFilter<"AcademicTestAnswer"> | string | null
+    isCorrect?: BoolFilter<"AcademicTestAnswer"> | boolean
+    marksAwarded?: IntFilter<"AcademicTestAnswer"> | number
+  }, "id" | "submissionId_questionId">
+
+  export type AcademicTestAnswerOrderByWithAggregationInput = {
+    id?: SortOrder
+    submissionId?: SortOrder
+    questionId?: SortOrder
+    selectedAnswer?: SortOrderInput | SortOrder
+    isCorrect?: SortOrder
+    marksAwarded?: SortOrder
+    _count?: AcademicTestAnswerCountOrderByAggregateInput
+    _avg?: AcademicTestAnswerAvgOrderByAggregateInput
+    _max?: AcademicTestAnswerMaxOrderByAggregateInput
+    _min?: AcademicTestAnswerMinOrderByAggregateInput
+    _sum?: AcademicTestAnswerSumOrderByAggregateInput
+  }
+
+  export type AcademicTestAnswerScalarWhereWithAggregatesInput = {
+    AND?: AcademicTestAnswerScalarWhereWithAggregatesInput | AcademicTestAnswerScalarWhereWithAggregatesInput[]
+    OR?: AcademicTestAnswerScalarWhereWithAggregatesInput[]
+    NOT?: AcademicTestAnswerScalarWhereWithAggregatesInput | AcademicTestAnswerScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"AcademicTestAnswer"> | string
+    submissionId?: StringWithAggregatesFilter<"AcademicTestAnswer"> | string
+    questionId?: StringWithAggregatesFilter<"AcademicTestAnswer"> | string
+    selectedAnswer?: StringNullableWithAggregatesFilter<"AcademicTestAnswer"> | string | null
+    isCorrect?: BoolWithAggregatesFilter<"AcademicTestAnswer"> | boolean
+    marksAwarded?: IntWithAggregatesFilter<"AcademicTestAnswer"> | number
   }
 
   export type CourseStatusHistoryWhereInput = {
@@ -87431,6 +91432,7 @@ export namespace Prisma {
     requestTitle?: string | null
     examId?: string | null
     examScheduleId?: string | null
+    academicTestId?: string | null
     assessmentId?: string | null
     batchId?: string | null
     subModuleId?: string | null
@@ -87469,6 +91471,7 @@ export namespace Prisma {
     requestTitle?: string | null
     examId?: string | null
     examScheduleId?: string | null
+    academicTestId?: string | null
     assessmentId?: string | null
     batchId?: string | null
     subModuleId?: string | null
@@ -87503,6 +91506,7 @@ export namespace Prisma {
     requestTitle?: NullableStringFieldUpdateOperationsInput | string | null
     examId?: NullableStringFieldUpdateOperationsInput | string | null
     examScheduleId?: NullableStringFieldUpdateOperationsInput | string | null
+    academicTestId?: NullableStringFieldUpdateOperationsInput | string | null
     assessmentId?: NullableStringFieldUpdateOperationsInput | string | null
     batchId?: NullableStringFieldUpdateOperationsInput | string | null
     subModuleId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -87541,6 +91545,7 @@ export namespace Prisma {
     requestTitle?: NullableStringFieldUpdateOperationsInput | string | null
     examId?: NullableStringFieldUpdateOperationsInput | string | null
     examScheduleId?: NullableStringFieldUpdateOperationsInput | string | null
+    academicTestId?: NullableStringFieldUpdateOperationsInput | string | null
     assessmentId?: NullableStringFieldUpdateOperationsInput | string | null
     batchId?: NullableStringFieldUpdateOperationsInput | string | null
     subModuleId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -87577,6 +91582,7 @@ export namespace Prisma {
     requestTitle?: string | null
     examId?: string | null
     examScheduleId?: string | null
+    academicTestId?: string | null
     assessmentId?: string | null
     batchId?: string | null
     subModuleId?: string | null
@@ -87611,6 +91617,7 @@ export namespace Prisma {
     requestTitle?: NullableStringFieldUpdateOperationsInput | string | null
     examId?: NullableStringFieldUpdateOperationsInput | string | null
     examScheduleId?: NullableStringFieldUpdateOperationsInput | string | null
+    academicTestId?: NullableStringFieldUpdateOperationsInput | string | null
     assessmentId?: NullableStringFieldUpdateOperationsInput | string | null
     batchId?: NullableStringFieldUpdateOperationsInput | string | null
     subModuleId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -87647,6 +91654,7 @@ export namespace Prisma {
     requestTitle?: NullableStringFieldUpdateOperationsInput | string | null
     examId?: NullableStringFieldUpdateOperationsInput | string | null
     examScheduleId?: NullableStringFieldUpdateOperationsInput | string | null
+    academicTestId?: NullableStringFieldUpdateOperationsInput | string | null
     assessmentId?: NullableStringFieldUpdateOperationsInput | string | null
     batchId?: NullableStringFieldUpdateOperationsInput | string | null
     subModuleId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -89666,6 +93674,314 @@ export namespace Prisma {
     projectMarks?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AcademicScheduledTestCreateInput = {
+    id?: string
+    academicTestItemId: string
+    branchCourseId: string
+    branchBatchId: string
+    facultyId: string
+    questionPaperId: string
+    testNumber: number
+    testDate: string
+    startTime: string
+    endTime: string
+    status?: string
+    createdBy: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AcademicScheduledTestUncheckedCreateInput = {
+    id?: string
+    academicTestItemId: string
+    branchCourseId: string
+    branchBatchId: string
+    facultyId: string
+    questionPaperId: string
+    testNumber: number
+    testDate: string
+    startTime: string
+    endTime: string
+    status?: string
+    createdBy: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AcademicScheduledTestUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    academicTestItemId?: StringFieldUpdateOperationsInput | string
+    branchCourseId?: StringFieldUpdateOperationsInput | string
+    branchBatchId?: StringFieldUpdateOperationsInput | string
+    facultyId?: StringFieldUpdateOperationsInput | string
+    questionPaperId?: StringFieldUpdateOperationsInput | string
+    testNumber?: IntFieldUpdateOperationsInput | number
+    testDate?: StringFieldUpdateOperationsInput | string
+    startTime?: StringFieldUpdateOperationsInput | string
+    endTime?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    createdBy?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AcademicScheduledTestUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    academicTestItemId?: StringFieldUpdateOperationsInput | string
+    branchCourseId?: StringFieldUpdateOperationsInput | string
+    branchBatchId?: StringFieldUpdateOperationsInput | string
+    facultyId?: StringFieldUpdateOperationsInput | string
+    questionPaperId?: StringFieldUpdateOperationsInput | string
+    testNumber?: IntFieldUpdateOperationsInput | number
+    testDate?: StringFieldUpdateOperationsInput | string
+    startTime?: StringFieldUpdateOperationsInput | string
+    endTime?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    createdBy?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AcademicScheduledTestCreateManyInput = {
+    id?: string
+    academicTestItemId: string
+    branchCourseId: string
+    branchBatchId: string
+    facultyId: string
+    questionPaperId: string
+    testNumber: number
+    testDate: string
+    startTime: string
+    endTime: string
+    status?: string
+    createdBy: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AcademicScheduledTestUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    academicTestItemId?: StringFieldUpdateOperationsInput | string
+    branchCourseId?: StringFieldUpdateOperationsInput | string
+    branchBatchId?: StringFieldUpdateOperationsInput | string
+    facultyId?: StringFieldUpdateOperationsInput | string
+    questionPaperId?: StringFieldUpdateOperationsInput | string
+    testNumber?: IntFieldUpdateOperationsInput | number
+    testDate?: StringFieldUpdateOperationsInput | string
+    startTime?: StringFieldUpdateOperationsInput | string
+    endTime?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    createdBy?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AcademicScheduledTestUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    academicTestItemId?: StringFieldUpdateOperationsInput | string
+    branchCourseId?: StringFieldUpdateOperationsInput | string
+    branchBatchId?: StringFieldUpdateOperationsInput | string
+    facultyId?: StringFieldUpdateOperationsInput | string
+    questionPaperId?: StringFieldUpdateOperationsInput | string
+    testNumber?: IntFieldUpdateOperationsInput | number
+    testDate?: StringFieldUpdateOperationsInput | string
+    startTime?: StringFieldUpdateOperationsInput | string
+    endTime?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    createdBy?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AcademicTestSubmissionCreateInput = {
+    id?: string
+    academicTestId: string
+    branchStudentId: string
+    submittedAt?: Date | string | null
+    status?: string
+    totalQuestions: number
+    attemptedCount?: number
+    correctCount?: number
+    wrongCount?: number
+    unmarkedCount?: number
+    totalMarks: number
+    obtainedMarks?: number
+    percentage?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AcademicTestSubmissionUncheckedCreateInput = {
+    id?: string
+    academicTestId: string
+    branchStudentId: string
+    submittedAt?: Date | string | null
+    status?: string
+    totalQuestions: number
+    attemptedCount?: number
+    correctCount?: number
+    wrongCount?: number
+    unmarkedCount?: number
+    totalMarks: number
+    obtainedMarks?: number
+    percentage?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AcademicTestSubmissionUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    academicTestId?: StringFieldUpdateOperationsInput | string
+    branchStudentId?: StringFieldUpdateOperationsInput | string
+    submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    totalQuestions?: IntFieldUpdateOperationsInput | number
+    attemptedCount?: IntFieldUpdateOperationsInput | number
+    correctCount?: IntFieldUpdateOperationsInput | number
+    wrongCount?: IntFieldUpdateOperationsInput | number
+    unmarkedCount?: IntFieldUpdateOperationsInput | number
+    totalMarks?: IntFieldUpdateOperationsInput | number
+    obtainedMarks?: IntFieldUpdateOperationsInput | number
+    percentage?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AcademicTestSubmissionUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    academicTestId?: StringFieldUpdateOperationsInput | string
+    branchStudentId?: StringFieldUpdateOperationsInput | string
+    submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    totalQuestions?: IntFieldUpdateOperationsInput | number
+    attemptedCount?: IntFieldUpdateOperationsInput | number
+    correctCount?: IntFieldUpdateOperationsInput | number
+    wrongCount?: IntFieldUpdateOperationsInput | number
+    unmarkedCount?: IntFieldUpdateOperationsInput | number
+    totalMarks?: IntFieldUpdateOperationsInput | number
+    obtainedMarks?: IntFieldUpdateOperationsInput | number
+    percentage?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AcademicTestSubmissionCreateManyInput = {
+    id?: string
+    academicTestId: string
+    branchStudentId: string
+    submittedAt?: Date | string | null
+    status?: string
+    totalQuestions: number
+    attemptedCount?: number
+    correctCount?: number
+    wrongCount?: number
+    unmarkedCount?: number
+    totalMarks: number
+    obtainedMarks?: number
+    percentage?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AcademicTestSubmissionUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    academicTestId?: StringFieldUpdateOperationsInput | string
+    branchStudentId?: StringFieldUpdateOperationsInput | string
+    submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    totalQuestions?: IntFieldUpdateOperationsInput | number
+    attemptedCount?: IntFieldUpdateOperationsInput | number
+    correctCount?: IntFieldUpdateOperationsInput | number
+    wrongCount?: IntFieldUpdateOperationsInput | number
+    unmarkedCount?: IntFieldUpdateOperationsInput | number
+    totalMarks?: IntFieldUpdateOperationsInput | number
+    obtainedMarks?: IntFieldUpdateOperationsInput | number
+    percentage?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AcademicTestSubmissionUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    academicTestId?: StringFieldUpdateOperationsInput | string
+    branchStudentId?: StringFieldUpdateOperationsInput | string
+    submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    totalQuestions?: IntFieldUpdateOperationsInput | number
+    attemptedCount?: IntFieldUpdateOperationsInput | number
+    correctCount?: IntFieldUpdateOperationsInput | number
+    wrongCount?: IntFieldUpdateOperationsInput | number
+    unmarkedCount?: IntFieldUpdateOperationsInput | number
+    totalMarks?: IntFieldUpdateOperationsInput | number
+    obtainedMarks?: IntFieldUpdateOperationsInput | number
+    percentage?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AcademicTestAnswerCreateInput = {
+    id?: string
+    submissionId: string
+    questionId: string
+    selectedAnswer?: string | null
+    isCorrect?: boolean
+    marksAwarded?: number
+  }
+
+  export type AcademicTestAnswerUncheckedCreateInput = {
+    id?: string
+    submissionId: string
+    questionId: string
+    selectedAnswer?: string | null
+    isCorrect?: boolean
+    marksAwarded?: number
+  }
+
+  export type AcademicTestAnswerUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    submissionId?: StringFieldUpdateOperationsInput | string
+    questionId?: StringFieldUpdateOperationsInput | string
+    selectedAnswer?: NullableStringFieldUpdateOperationsInput | string | null
+    isCorrect?: BoolFieldUpdateOperationsInput | boolean
+    marksAwarded?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type AcademicTestAnswerUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    submissionId?: StringFieldUpdateOperationsInput | string
+    questionId?: StringFieldUpdateOperationsInput | string
+    selectedAnswer?: NullableStringFieldUpdateOperationsInput | string | null
+    isCorrect?: BoolFieldUpdateOperationsInput | boolean
+    marksAwarded?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type AcademicTestAnswerCreateManyInput = {
+    id?: string
+    submissionId: string
+    questionId: string
+    selectedAnswer?: string | null
+    isCorrect?: boolean
+    marksAwarded?: number
+  }
+
+  export type AcademicTestAnswerUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    submissionId?: StringFieldUpdateOperationsInput | string
+    questionId?: StringFieldUpdateOperationsInput | string
+    selectedAnswer?: NullableStringFieldUpdateOperationsInput | string | null
+    isCorrect?: BoolFieldUpdateOperationsInput | boolean
+    marksAwarded?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type AcademicTestAnswerUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    submissionId?: StringFieldUpdateOperationsInput | string
+    questionId?: StringFieldUpdateOperationsInput | string
+    selectedAnswer?: NullableStringFieldUpdateOperationsInput | string | null
+    isCorrect?: BoolFieldUpdateOperationsInput | boolean
+    marksAwarded?: IntFieldUpdateOperationsInput | number
   }
 
   export type CourseStatusHistoryCreateInput = {
@@ -95102,6 +99418,7 @@ export namespace Prisma {
     requestTitle?: SortOrder
     examId?: SortOrder
     examScheduleId?: SortOrder
+    academicTestId?: SortOrder
     assessmentId?: SortOrder
     batchId?: SortOrder
     subModuleId?: SortOrder
@@ -95138,6 +99455,7 @@ export namespace Prisma {
     requestTitle?: SortOrder
     examId?: SortOrder
     examScheduleId?: SortOrder
+    academicTestId?: SortOrder
     assessmentId?: SortOrder
     batchId?: SortOrder
     subModuleId?: SortOrder
@@ -95174,6 +99492,7 @@ export namespace Prisma {
     requestTitle?: SortOrder
     examId?: SortOrder
     examScheduleId?: SortOrder
+    academicTestId?: SortOrder
     assessmentId?: SortOrder
     batchId?: SortOrder
     subModuleId?: SortOrder
@@ -96549,6 +100868,218 @@ export namespace Prisma {
     projectMarks?: SortOrder
   }
 
+  export type AcademicScheduledTestAcademicTestItemIdBranchBatchIdCompoundUniqueInput = {
+    academicTestItemId: string
+    branchBatchId: string
+  }
+
+  export type AcademicScheduledTestCountOrderByAggregateInput = {
+    id?: SortOrder
+    academicTestItemId?: SortOrder
+    branchCourseId?: SortOrder
+    branchBatchId?: SortOrder
+    facultyId?: SortOrder
+    questionPaperId?: SortOrder
+    testNumber?: SortOrder
+    testDate?: SortOrder
+    startTime?: SortOrder
+    endTime?: SortOrder
+    status?: SortOrder
+    createdBy?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AcademicScheduledTestAvgOrderByAggregateInput = {
+    testNumber?: SortOrder
+  }
+
+  export type AcademicScheduledTestMaxOrderByAggregateInput = {
+    id?: SortOrder
+    academicTestItemId?: SortOrder
+    branchCourseId?: SortOrder
+    branchBatchId?: SortOrder
+    facultyId?: SortOrder
+    questionPaperId?: SortOrder
+    testNumber?: SortOrder
+    testDate?: SortOrder
+    startTime?: SortOrder
+    endTime?: SortOrder
+    status?: SortOrder
+    createdBy?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AcademicScheduledTestMinOrderByAggregateInput = {
+    id?: SortOrder
+    academicTestItemId?: SortOrder
+    branchCourseId?: SortOrder
+    branchBatchId?: SortOrder
+    facultyId?: SortOrder
+    questionPaperId?: SortOrder
+    testNumber?: SortOrder
+    testDate?: SortOrder
+    startTime?: SortOrder
+    endTime?: SortOrder
+    status?: SortOrder
+    createdBy?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AcademicScheduledTestSumOrderByAggregateInput = {
+    testNumber?: SortOrder
+  }
+
+  export type FloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
+  export type AcademicTestSubmissionAcademicTestIdBranchStudentIdCompoundUniqueInput = {
+    academicTestId: string
+    branchStudentId: string
+  }
+
+  export type AcademicTestSubmissionCountOrderByAggregateInput = {
+    id?: SortOrder
+    academicTestId?: SortOrder
+    branchStudentId?: SortOrder
+    submittedAt?: SortOrder
+    status?: SortOrder
+    totalQuestions?: SortOrder
+    attemptedCount?: SortOrder
+    correctCount?: SortOrder
+    wrongCount?: SortOrder
+    unmarkedCount?: SortOrder
+    totalMarks?: SortOrder
+    obtainedMarks?: SortOrder
+    percentage?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AcademicTestSubmissionAvgOrderByAggregateInput = {
+    totalQuestions?: SortOrder
+    attemptedCount?: SortOrder
+    correctCount?: SortOrder
+    wrongCount?: SortOrder
+    unmarkedCount?: SortOrder
+    totalMarks?: SortOrder
+    obtainedMarks?: SortOrder
+    percentage?: SortOrder
+  }
+
+  export type AcademicTestSubmissionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    academicTestId?: SortOrder
+    branchStudentId?: SortOrder
+    submittedAt?: SortOrder
+    status?: SortOrder
+    totalQuestions?: SortOrder
+    attemptedCount?: SortOrder
+    correctCount?: SortOrder
+    wrongCount?: SortOrder
+    unmarkedCount?: SortOrder
+    totalMarks?: SortOrder
+    obtainedMarks?: SortOrder
+    percentage?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AcademicTestSubmissionMinOrderByAggregateInput = {
+    id?: SortOrder
+    academicTestId?: SortOrder
+    branchStudentId?: SortOrder
+    submittedAt?: SortOrder
+    status?: SortOrder
+    totalQuestions?: SortOrder
+    attemptedCount?: SortOrder
+    correctCount?: SortOrder
+    wrongCount?: SortOrder
+    unmarkedCount?: SortOrder
+    totalMarks?: SortOrder
+    obtainedMarks?: SortOrder
+    percentage?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AcademicTestSubmissionSumOrderByAggregateInput = {
+    totalQuestions?: SortOrder
+    attemptedCount?: SortOrder
+    correctCount?: SortOrder
+    wrongCount?: SortOrder
+    unmarkedCount?: SortOrder
+    totalMarks?: SortOrder
+    obtainedMarks?: SortOrder
+    percentage?: SortOrder
+  }
+
+  export type FloatWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedFloatFilter<$PrismaModel>
+    _min?: NestedFloatFilter<$PrismaModel>
+    _max?: NestedFloatFilter<$PrismaModel>
+  }
+
+  export type AcademicTestAnswerSubmissionIdQuestionIdCompoundUniqueInput = {
+    submissionId: string
+    questionId: string
+  }
+
+  export type AcademicTestAnswerCountOrderByAggregateInput = {
+    id?: SortOrder
+    submissionId?: SortOrder
+    questionId?: SortOrder
+    selectedAnswer?: SortOrder
+    isCorrect?: SortOrder
+    marksAwarded?: SortOrder
+  }
+
+  export type AcademicTestAnswerAvgOrderByAggregateInput = {
+    marksAwarded?: SortOrder
+  }
+
+  export type AcademicTestAnswerMaxOrderByAggregateInput = {
+    id?: SortOrder
+    submissionId?: SortOrder
+    questionId?: SortOrder
+    selectedAnswer?: SortOrder
+    isCorrect?: SortOrder
+    marksAwarded?: SortOrder
+  }
+
+  export type AcademicTestAnswerMinOrderByAggregateInput = {
+    id?: SortOrder
+    submissionId?: SortOrder
+    questionId?: SortOrder
+    selectedAnswer?: SortOrder
+    isCorrect?: SortOrder
+    marksAwarded?: SortOrder
+  }
+
+  export type AcademicTestAnswerSumOrderByAggregateInput = {
+    marksAwarded?: SortOrder
+  }
+
   export type EnumRecordStatusNullableFilter<$PrismaModel = never> = {
     equals?: $Enums.RecordStatus | EnumRecordStatusFieldRefInput<$PrismaModel> | null
     in?: $Enums.RecordStatus[] | ListEnumRecordStatusFieldRefInput<$PrismaModel> | null
@@ -97574,17 +102105,6 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
-  export type FloatFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatFilter<$PrismaModel> | number
-  }
-
   export type FacultyTodayWorkEntryCountOrderByAggregateInput = {
     id?: SortOrder
     facultyUserId?: SortOrder
@@ -97677,22 +102197,6 @@ export namespace Prisma {
     submoduleProgress?: SortOrder
     courseProgress?: SortOrder
     moduleWeight?: SortOrder
-  }
-
-  export type FloatWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedFloatFilter<$PrismaModel>
-    _min?: NestedFloatFilter<$PrismaModel>
-    _max?: NestedFloatFilter<$PrismaModel>
   }
 
   export type FacultyTodayWorkEntryScalarRelationFilter = {
@@ -102283,6 +106787,14 @@ export namespace Prisma {
     update?: XOR<XOR<BranchBatchUpdateToOneWithWhereWithoutAcademicTestProjectsInput, BranchBatchUpdateWithoutAcademicTestProjectsInput>, BranchBatchUncheckedUpdateWithoutAcademicTestProjectsInput>
   }
 
+  export type FloatFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
   export type CourseCreateNestedOneWithoutStatusHistoryInput = {
     create?: XOR<CourseCreateWithoutStatusHistoryInput, CourseUncheckedCreateWithoutStatusHistoryInput>
     connectOrCreate?: CourseCreateOrConnectWithoutStatusHistoryInput
@@ -103193,14 +107705,6 @@ export namespace Prisma {
     connectOrCreate?: FacultyTodayWorkStudentEntryCreateOrConnectWithoutFacultyTodayWorkEntryInput | FacultyTodayWorkStudentEntryCreateOrConnectWithoutFacultyTodayWorkEntryInput[]
     createMany?: FacultyTodayWorkStudentEntryCreateManyFacultyTodayWorkEntryInputEnvelope
     connect?: FacultyTodayWorkStudentEntryWhereUniqueInput | FacultyTodayWorkStudentEntryWhereUniqueInput[]
-  }
-
-  export type FloatFieldUpdateOperationsInput = {
-    set?: number
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
   }
 
   export type UserUpdateOneRequiredWithoutFacultyTodayWorkEntriesNestedInput = {
@@ -104696,6 +109200,22 @@ export namespace Prisma {
     _max?: NestedEnumAcademicPreparationStatusFilter<$PrismaModel>
   }
 
+  export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedFloatFilter<$PrismaModel>
+    _min?: NestedFloatFilter<$PrismaModel>
+    _max?: NestedFloatFilter<$PrismaModel>
+  }
+
   export type NestedEnumRecordStatusNullableFilter<$PrismaModel = never> = {
     equals?: $Enums.RecordStatus | EnumRecordStatusFieldRefInput<$PrismaModel> | null
     in?: $Enums.RecordStatus[] | ListEnumRecordStatusFieldRefInput<$PrismaModel> | null
@@ -104784,22 +109304,6 @@ export namespace Prisma {
     gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-  }
-
-  export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedFloatFilter<$PrismaModel>
-    _min?: NestedFloatFilter<$PrismaModel>
-    _max?: NestedFloatFilter<$PrismaModel>
   }
 
   export type BatchFacultyAssignmentCreateWithoutFacultyInput = {
@@ -105141,6 +109645,7 @@ export namespace Prisma {
     requestTitle?: string | null
     examId?: string | null
     examScheduleId?: string | null
+    academicTestId?: string | null
     assessmentId?: string | null
     batchId?: string | null
     subModuleId?: string | null
@@ -105177,6 +109682,7 @@ export namespace Prisma {
     requestTitle?: string | null
     examId?: string | null
     examScheduleId?: string | null
+    academicTestId?: string | null
     assessmentId?: string | null
     batchId?: string | null
     subModuleId?: string | null
@@ -105948,6 +110454,7 @@ export namespace Prisma {
     requestTitle?: StringNullableFilter<"Notification"> | string | null
     examId?: StringNullableFilter<"Notification"> | string | null
     examScheduleId?: StringNullableFilter<"Notification"> | string | null
+    academicTestId?: StringNullableFilter<"Notification"> | string | null
     assessmentId?: StringNullableFilter<"Notification"> | string | null
     batchId?: StringNullableFilter<"Notification"> | string | null
     subModuleId?: StringNullableFilter<"Notification"> | string | null
@@ -108464,6 +112971,7 @@ export namespace Prisma {
     requestTitle?: string | null
     examId?: string | null
     examScheduleId?: string | null
+    academicTestId?: string | null
     assessmentId?: string | null
     batchId?: string | null
     subModuleId?: string | null
@@ -108500,6 +113008,7 @@ export namespace Prisma {
     requestTitle?: string | null
     examId?: string | null
     examScheduleId?: string | null
+    academicTestId?: string | null
     assessmentId?: string | null
     batchId?: string | null
     subModuleId?: string | null
@@ -125782,6 +130291,7 @@ export namespace Prisma {
     requestTitle?: string | null
     examId?: string | null
     examScheduleId?: string | null
+    academicTestId?: string | null
     assessmentId?: string | null
     batchId?: string | null
     subModuleId?: string | null
@@ -126246,6 +130756,7 @@ export namespace Prisma {
     requestTitle?: NullableStringFieldUpdateOperationsInput | string | null
     examId?: NullableStringFieldUpdateOperationsInput | string | null
     examScheduleId?: NullableStringFieldUpdateOperationsInput | string | null
+    academicTestId?: NullableStringFieldUpdateOperationsInput | string | null
     assessmentId?: NullableStringFieldUpdateOperationsInput | string | null
     batchId?: NullableStringFieldUpdateOperationsInput | string | null
     subModuleId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -126282,6 +130793,7 @@ export namespace Prisma {
     requestTitle?: NullableStringFieldUpdateOperationsInput | string | null
     examId?: NullableStringFieldUpdateOperationsInput | string | null
     examScheduleId?: NullableStringFieldUpdateOperationsInput | string | null
+    academicTestId?: NullableStringFieldUpdateOperationsInput | string | null
     assessmentId?: NullableStringFieldUpdateOperationsInput | string | null
     batchId?: NullableStringFieldUpdateOperationsInput | string | null
     subModuleId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -126317,6 +130829,7 @@ export namespace Prisma {
     requestTitle?: NullableStringFieldUpdateOperationsInput | string | null
     examId?: NullableStringFieldUpdateOperationsInput | string | null
     examScheduleId?: NullableStringFieldUpdateOperationsInput | string | null
+    academicTestId?: NullableStringFieldUpdateOperationsInput | string | null
     assessmentId?: NullableStringFieldUpdateOperationsInput | string | null
     batchId?: NullableStringFieldUpdateOperationsInput | string | null
     subModuleId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -128073,6 +132586,7 @@ export namespace Prisma {
     requestTitle?: string | null
     examId?: string | null
     examScheduleId?: string | null
+    academicTestId?: string | null
     assessmentId?: string | null
     batchId?: string | null
     subModuleId?: string | null
@@ -128107,6 +132621,7 @@ export namespace Prisma {
     requestTitle?: NullableStringFieldUpdateOperationsInput | string | null
     examId?: NullableStringFieldUpdateOperationsInput | string | null
     examScheduleId?: NullableStringFieldUpdateOperationsInput | string | null
+    academicTestId?: NullableStringFieldUpdateOperationsInput | string | null
     assessmentId?: NullableStringFieldUpdateOperationsInput | string | null
     batchId?: NullableStringFieldUpdateOperationsInput | string | null
     subModuleId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -128143,6 +132658,7 @@ export namespace Prisma {
     requestTitle?: NullableStringFieldUpdateOperationsInput | string | null
     examId?: NullableStringFieldUpdateOperationsInput | string | null
     examScheduleId?: NullableStringFieldUpdateOperationsInput | string | null
+    academicTestId?: NullableStringFieldUpdateOperationsInput | string | null
     assessmentId?: NullableStringFieldUpdateOperationsInput | string | null
     batchId?: NullableStringFieldUpdateOperationsInput | string | null
     subModuleId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -128178,6 +132694,7 @@ export namespace Prisma {
     requestTitle?: NullableStringFieldUpdateOperationsInput | string | null
     examId?: NullableStringFieldUpdateOperationsInput | string | null
     examScheduleId?: NullableStringFieldUpdateOperationsInput | string | null
+    academicTestId?: NullableStringFieldUpdateOperationsInput | string | null
     assessmentId?: NullableStringFieldUpdateOperationsInput | string | null
     batchId?: NullableStringFieldUpdateOperationsInput | string | null
     subModuleId?: NullableStringFieldUpdateOperationsInput | string | null

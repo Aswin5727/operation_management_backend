@@ -7,3 +7,12 @@ export const getById = asyncHandler(async (req, res) => send(res, await service.
 export const create = asyncHandler(async (req, res) => send(res, await service.createAcademicTest(req.user, req.body), 201));
 export const update = asyncHandler(async (req, res) => send(res, await service.updateAcademicTest(req.user, req.params.id, req.body)));
 export const remove = asyncHandler(async (req, res) => send(res, await service.deleteAcademicTest(req.user, req.params.id)));
+export const createOptions = asyncHandler(async (req, res) => send(res, await service.getFacultyCreateOptions(req.user)));
+export const createScheduled = asyncHandler(async (req, res) => send(res, await service.createFacultyScheduledTest(req.user, req.body), 201));
+export const facultyScheduled = asyncHandler(async (req, res) => send(res, await service.listFacultyScheduledTests(req.user)));
+export const facultyResults = asyncHandler(async (req, res) => send(res, await service.getFacultyAcademicResults(req.user, req.params.id)));
+export const studentScheduled = asyncHandler(async (req, res) => send(res, await service.listStudentAcademicTests(req.user)));
+export const studentGet = asyncHandler(async (req, res) => send(res, await service.getStudentAcademicTest(req.user, req.params.id)));
+export const studentStart = asyncHandler(async (req, res) => send(res, await service.startStudentAcademicTest(req.user, req.params.id), 201));
+export const studentSubmit = asyncHandler(async (req, res) => send(res, await service.submitStudentAcademicTest(req.user, req.params.id, req.body)));
+export const studentResult = asyncHandler(async (req, res) => send(res, await service.getStudentAcademicResult(req.user, req.params.id)));

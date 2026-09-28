@@ -165,6 +165,7 @@ model Notification {
   requestTitle       String?
   examId             String?
   examScheduleId     String?
+  academicTestId     String?
   assessmentId       String?
   batchId            String?
   subModuleId        String?
@@ -594,6 +595,61 @@ model AcademicTestProject {
   @@unique([academicTestItemId, branchBatchId])
   @@index([branchCourseId, branchBatchId])
   @@index([createdBy])
+}
+
+model AcademicScheduledTest {
+  id                 String   @id @default(cuid())
+  academicTestItemId String
+  branchCourseId     String
+  branchBatchId      String
+  facultyId          String
+  questionPaperId    String
+  testNumber         Int
+  testDate           String
+  startTime          String
+  endTime            String
+  status             String   @default("SCHEDULED")
+  createdBy          String
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  @@unique([academicTestItemId, branchBatchId])
+  @@index([branchBatchId, testDate])
+  @@index([facultyId])
+  @@index([questionPaperId])
+}
+
+model AcademicTestSubmission {
+  id              String    @id @default(cuid())
+  academicTestId  String
+  branchStudentId String
+  submittedAt     DateTime?
+  status          String    @default("NOT_STARTED")
+  totalQuestions  Int
+  attemptedCount  Int       @default(0)
+  correctCount    Int       @default(0)
+  wrongCount      Int       @default(0)
+  unmarkedCount   Int       @default(0)
+  totalMarks      Int
+  obtainedMarks   Int       @default(0)
+  percentage      Float     @default(0)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@unique([academicTestId, branchStudentId])
+  @@index([branchStudentId, status])
+}
+
+model AcademicTestAnswer {
+  id             String  @id @default(cuid())
+  submissionId   String
+  questionId     String
+  selectedAnswer String?
+  isCorrect      Boolean @default(false)
+  marksAwarded   Int     @default(0)
+
+  @@unique([submissionId, questionId])
+  @@index([submissionId])
 }
 
 model CourseStatusHistory {
@@ -1425,6 +1481,7 @@ enum LoginEventType {
 }
 
 enum NotificationKind {
+  ACADEMIC_TEST_CREATED
   INSTITUTE_LEAVE
   BRANCH_CREATED
   BRANCH_INVITATION_RESENT

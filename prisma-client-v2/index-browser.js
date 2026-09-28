@@ -230,6 +230,7 @@ exports.Prisma.NotificationScalarFieldEnum = {
   requestTitle: 'requestTitle',
   examId: 'examId',
   examScheduleId: 'examScheduleId',
+  academicTestId: 'academicTestId',
   assessmentId: 'assessmentId',
   batchId: 'batchId',
   subModuleId: 'subModuleId',
@@ -504,6 +505,50 @@ exports.Prisma.AcademicTestProjectScalarFieldEnum = {
   projectMarks: 'projectMarks',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
+};
+
+exports.Prisma.AcademicScheduledTestScalarFieldEnum = {
+  id: 'id',
+  academicTestItemId: 'academicTestItemId',
+  branchCourseId: 'branchCourseId',
+  branchBatchId: 'branchBatchId',
+  facultyId: 'facultyId',
+  questionPaperId: 'questionPaperId',
+  testNumber: 'testNumber',
+  testDate: 'testDate',
+  startTime: 'startTime',
+  endTime: 'endTime',
+  status: 'status',
+  createdBy: 'createdBy',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.AcademicTestSubmissionScalarFieldEnum = {
+  id: 'id',
+  academicTestId: 'academicTestId',
+  branchStudentId: 'branchStudentId',
+  submittedAt: 'submittedAt',
+  status: 'status',
+  totalQuestions: 'totalQuestions',
+  attemptedCount: 'attemptedCount',
+  correctCount: 'correctCount',
+  wrongCount: 'wrongCount',
+  unmarkedCount: 'unmarkedCount',
+  totalMarks: 'totalMarks',
+  obtainedMarks: 'obtainedMarks',
+  percentage: 'percentage',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.AcademicTestAnswerScalarFieldEnum = {
+  id: 'id',
+  submissionId: 'submissionId',
+  questionId: 'questionId',
+  selectedAnswer: 'selectedAnswer',
+  isCorrect: 'isCorrect',
+  marksAwarded: 'marksAwarded'
 };
 
 exports.Prisma.CourseStatusHistoryScalarFieldEnum = {
@@ -1210,6 +1255,7 @@ exports.LoginEventType = exports.$Enums.LoginEventType = {
 };
 
 exports.NotificationKind = exports.$Enums.NotificationKind = {
+  ACADEMIC_TEST_CREATED: 'ACADEMIC_TEST_CREATED',
   INSTITUTE_LEAVE: 'INSTITUTE_LEAVE',
   BRANCH_CREATED: 'BRANCH_CREATED',
   BRANCH_INVITATION_RESENT: 'BRANCH_INVITATION_RESENT',
@@ -1289,6 +1335,9 @@ exports.Prisma.ModelName = {
   AcademicQuestionPaper: 'AcademicQuestionPaper',
   AcademicQuestion: 'AcademicQuestion',
   AcademicTestProject: 'AcademicTestProject',
+  AcademicScheduledTest: 'AcademicScheduledTest',
+  AcademicTestSubmission: 'AcademicTestSubmission',
+  AcademicTestAnswer: 'AcademicTestAnswer',
   CourseStatusHistory: 'CourseStatusHistory',
   BatchStatusHistory: 'BatchStatusHistory',
   StudentProfile: 'StudentProfile',
