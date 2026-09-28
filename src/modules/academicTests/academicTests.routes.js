@@ -11,6 +11,9 @@ router.get("/create-options", authorize(USER_ROLES.FACULTY), controller.createOp
 router.post("/scheduled", authorize(USER_ROLES.FACULTY), controller.createScheduled);
 router.get("/faculty/scheduled", authorize(USER_ROLES.FACULTY), controller.facultyScheduled);
 router.get("/faculty/scheduled/:id/results", authorize(USER_ROLES.FACULTY), controller.facultyResults);
+router.post("/faculty/scheduled/:id/retest", authorize(USER_ROLES.FACULTY), controller.scheduleRetest);
+router.put("/faculty/scheduled/:id", authorize(USER_ROLES.FACULTY), controller.updateFacultyScheduled);
+router.post("/faculty/scheduled/:id/cancel", authorize(USER_ROLES.FACULTY), controller.cancelFacultyScheduled);
 router.get("/student/scheduled", authorize(USER_ROLES.STUDENT), controller.studentScheduled);
 router.get("/student/scheduled/:id", authorize(USER_ROLES.STUDENT), controller.studentGet);
 router.post("/student/scheduled/:id/start", authorize(USER_ROLES.STUDENT), controller.studentStart);

@@ -829,6 +829,73 @@ export async function createFacultyLeaveRequestChangeNotification({ request = {}
   }), prismaClient);
 }
 
+function academicScheduleEndDate(schedule = {}) {
+  const date = normalizeString(schedule.testDate);
+  const match = normalizeString(schedule.endTime).toUpperCase().match(/^(\d{1,2}):(\d{2})\s*(AM|PM)?$/);
+  if (!date || !match) return null;
+
+  let hour = Number(match[1]);
+  const minute = Number(match[2]);
+  if (match[3] === "PM" && hour < 12) hour += 12;
+  if (match[3] === "AM" && hour === 12) hour = 0;
+  if (hour > 23 || minute > 59) return null;
+
+  const parsed = new Date(`${date}T${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}:00+05:30`);
+  return Number.isNaN(parsed.getTime()) ? null : parsed;
+}
+
+async function ensureFacultyAcademicTestCompletionNotifications(user = {}) {
+  const facultyIds = [user?.id, user?.userCode].map(normalizeString).filter(Boolean);
+  if (!facultyIds.length || !prisma?.academicScheduledTest?.findMany) return;
+
+  const schedules = await prisma.academicScheduledTest.findMany({
+    where: {
+      facultyId: { in: facultyIds },
+      status: { not: "CANCELLED" },
+    },
+    orderBy: { endTime: "asc" },
+  });
+  const completedSchedules = schedules.filter((schedule) => {
+    const end = academicScheduleEndDate(schedule);
+    return end && end.getTime() <= Date.now();
+  });
+  if (!completedSchedules.length) return;
+
+  const courseIds = [...new Set(completedSchedules.map((schedule) => schedule.branchCourseId).filter(Boolean))];
+  const courses = courseIds.length
+    ? await prisma.branchCourse.findMany({ where: { id: { in: courseIds } }, select: { id: true, name: true } })
+    : [];
+  const courseNames = new Map(courses.map((course) => [course.id, course.name]));
+
+  for (const schedule of completedSchedules) {
+    const existing = await prisma.notification.findFirst({
+      where: {
+        kind: "FACULTY_REPORT_SHARED",
+        academicTestId: schedule.id,
+        targetUserId: user.id,
+      },
+      select: { id: true },
+    });
+    if (existing) continue;
+
+    const courseName = courseNames.get(schedule.branchCourseId) || "the course";
+    await createNotification({
+      kind: "FACULTY_REPORT_SHARED",
+      tone: "green",
+      title: "Academic Test Completed",
+      message: `Test ${schedule.testNumber} for ${courseName} has ended. Student results are now available to view.`,
+      actionLabel: "View Result",
+      targetUserId: user.id,
+      academicTestId: schedule.id,
+      branchCourseId: schedule.branchCourseId,
+      branchCourseName: courseName,
+      batchId: schedule.branchBatchId,
+      facultyId: schedule.facultyId,
+      createdBy: user.id,
+    });
+  }
+}
+
 export async function listNotifications(query = {}, user = {}) {
   const page = Math.max(1, Number(query.page || 1));
   const limit = Math.min(100, Math.max(1, Number(query.limit || 10)));
@@ -836,6 +903,9 @@ export async function listNotifications(query = {}, user = {}) {
   const kind = normalizeString(query.kind).toUpperCase();
 
   const isFaculty = ["FACULTY", "STUDENT"].includes(String(user?.role || "").toUpperCase());
+  if (String(user?.role || "").toUpperCase() === "FACULTY") {
+    await ensureFacultyAcademicTestCompletionNotifications(user);
+  }
   const branchScope = await buildBranchAdminScope(user);
   const visibleKinds = getVisibleNotificationKindsForRole(user);
   const where = buildNotificationWhere({

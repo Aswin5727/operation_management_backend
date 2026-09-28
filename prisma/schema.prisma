@@ -609,6 +609,9 @@ model AcademicScheduledTest {
   startTime          String
   endTime            String
   status             String   @default("SCHEDULED")
+  isRetest           Boolean  @default(false)
+  originalScheduleId String?
+  retestStudentId    String?
   createdBy          String
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
@@ -617,6 +620,7 @@ model AcademicScheduledTest {
   @@index([branchBatchId, testDate])
   @@index([facultyId])
   @@index([questionPaperId])
+  @@index([originalScheduleId, retestStudentId])
 }
 
 model AcademicTestSubmission {

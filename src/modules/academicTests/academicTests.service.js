@@ -30,8 +30,9 @@ function includeDetails() {
   };
 }
 
-function toPublic(row) {
-  return { id: row.id, course: row.branchCourse, academicTestCount: row.items.length, items: row.items, batches: row.batches.map(({ branchBatch }) => branchBatch).filter(Boolean), createdAt: row.createdAt, updatedAt: row.updatedAt };
+function toPublic(row, retestItemIds = new Set()) {
+  const items = row.items.filter((item) => !retestItemIds.has(item.id));
+  return { id: row.id, course: row.branchCourse, academicTestCount: items.length, items, batches: row.batches.map(({ branchBatch }) => branchBatch).filter(Boolean), createdAt: row.createdAt, updatedAt: row.updatedAt };
 }
 
 async function resolveCourse(branchId, courseId) {
@@ -56,11 +57,13 @@ export async function listAcademicTests(actor) {
   if (String(actor?.role || "").toUpperCase() === "FACULTY") {
     const ids = [...new Set([actor.id, actor.userCode].map(text).filter(Boolean))];
     const rows = await prisma.academicTest.findMany({ where: { batches: { some: { branchBatch: { status: "ACTIVE", OR: [{ facultyId: { in: ids } }, { branchFaculty: { facultyId: { in: ids }, status: "ACTIVE" } }] } } } }, include: includeDetails(), orderBy: { createdAt: "desc" } });
-    return rows.map((row) => { const item = toPublic(row); return { ...item, batches: item.batches.filter((batch) => ids.includes(text(batch.facultyId))) }; });
+    const retestItemIds = new Set((await prisma.academicScheduledTest.findMany({ where: { isRetest: true, academicTestItemId: { in: rows.flatMap((row) => row.items.map((item) => item.id)) } }, select: { academicTestItemId: true } })).map((schedule) => schedule.academicTestItemId));
+    return rows.map((row) => { const item = toPublic(row, retestItemIds); return { ...item, batches: item.batches.filter((batch) => ids.includes(text(batch.facultyId))) }; });
   }
   const branch = await branchFor(actor);
   const rows = await prisma.academicTest.findMany({ where: { branchCourse: { branchId: branch.id } }, include: includeDetails(), orderBy: { createdAt: "desc" } });
-  return rows.map(toPublic);
+  const retestItemIds = new Set((await prisma.academicScheduledTest.findMany({ where: { isRetest: true, academicTestItemId: { in: rows.flatMap((row) => row.items.map((item) => item.id)) } }, select: { academicTestItemId: true } })).map((schedule) => schedule.academicTestItemId));
+  return rows.map((row) => toPublic(row, retestItemIds));
 }
 
 export async function getAcademicTest(actor, id) {
@@ -143,6 +146,23 @@ function scheduleTime(value, field) {
   return time;
 }
 
+function scheduleInstant(date, time) {
+  return new Date(`${date}T${time}:00+05:30`).getTime();
+}
+
+async function facultyScheduledForUpdate(actor, id) {
+  const ids = facultyIds(actor);
+  const schedule = await prisma.academicScheduledTest.findFirst({
+    where: { id: text(id), facultyId: { in: ids } },
+  });
+  if (!schedule) throw new AppError("Academic Test schedule not found.", 404);
+  if (schedule.status === "CANCELLED") throw new AppError("This Academic Test is already cancelled.", 409);
+  if (scheduleInstant(schedule.testDate, schedule.startTime) <= Date.now()) {
+    throw new AppError("This Academic Test cannot be changed after its start time.", 409);
+  }
+  return schedule;
+}
+
 export async function getFacultyCreateOptions(actor) {
   const ids = facultyIds(actor);
   const rows = await prisma.academicTest.findMany({
@@ -216,10 +236,42 @@ export async function createFacultyScheduledTest(actor, payload = {}) {
   return { ...created, course, batch, notificationCount: notificationRows.length };
 }
 
+export async function updateFacultyScheduledTest(actor, id, payload = {}) {
+  const schedule = await facultyScheduledForUpdate(actor, id);
+  const date = scheduleDate(payload.testDate);
+  const startTime = scheduleTime(payload.startTime, "Start time");
+  const endTime = scheduleTime(payload.endTime, "End time");
+  if (endTime <= startTime) throw new AppError("End time must be after start time.", 422);
+  if (scheduleInstant(date, startTime) <= Date.now()) throw new AppError("The new test date and time must be in the future.", 422);
+  const updated = await prisma.academicScheduledTest.update({
+    where: { id: schedule.id },
+    data: { testDate: date, startTime, endTime, status: "SCHEDULED" },
+  });
+  await prisma.notification.updateMany({
+    where: { academicTestId: schedule.id, kind: "ACADEMIC_TEST_CREATED" },
+    data: { message: `Your Academic Test has been rescheduled to ${date} from ${startTime} to ${endTime}.` },
+  });
+  return updated;
+}
+
+export async function cancelFacultyScheduledTest(actor, id) {
+  const schedule = await facultyScheduledForUpdate(actor, id);
+  const updated = await prisma.academicScheduledTest.update({
+    where: { id: schedule.id },
+    data: { status: "CANCELLED" },
+  });
+  await prisma.notification.updateMany({
+    where: { academicTestId: schedule.id, kind: "ACADEMIC_TEST_CREATED" },
+    data: { title: "Academic Test Cancelled", message: "This Academic Test has been cancelled and can no longer be started." },
+  });
+  return updated;
+}
+
 function academicScheduleStatus(schedule) {
   const now = Date.now();
   const start = new Date(`${schedule.testDate}T${schedule.startTime}:00+05:30`).getTime();
   const end = new Date(`${schedule.testDate}T${schedule.endTime}:00+05:30`).getTime();
+  if (schedule.status === "CANCELLED") return "CANCELLED";
   if (schedule.status === "COMPLETED") return "COMPLETED";
   if (now < start) return "UPCOMING";
   if (now <= end) return "AVAILABLE";
@@ -236,7 +288,7 @@ async function studentFor(actor) {
 async function academicScheduleForStudent(actor, id) {
   const student = await studentFor(actor);
   const batch = await prisma.branchBatch.findFirst({ where: { OR: [{ id: student.batchId }, { batchId: student.batchId }] }, select: { id: true, batchId: true, batchName: true } });
-  const schedule = batch && await prisma.academicScheduledTest.findFirst({ where: { id: text(id), branchBatchId: batch.id } });
+  const schedule = batch && await prisma.academicScheduledTest.findFirst({ where: { id: text(id), OR: [{ branchBatchId: batch.id }, { retestStudentId: student.id }] } });
   if (!schedule) throw new AppError("Academic Test not found or not assigned to your batch.", 404);
   return { student, schedule, batch };
 }
@@ -244,13 +296,13 @@ async function academicScheduleForStudent(actor, id) {
 async function academicPublicSchedule(schedule, includeQuestions = false) {
   const item = await prisma.academicTestItem.findUnique({ where: { id: schedule.academicTestItemId }, include: { academicTest: { include: { branchCourse: { select: { id: true, name: true, courseCode: true } } } } } });
   const paper = await prisma.academicQuestionPaper.findUnique({ where: { id: schedule.questionPaperId }, include: { questions: { orderBy: { questionNumber: "asc" } } } });
-  return { ...schedule, status: academicScheduleStatus(schedule), testName: `Test ${schedule.testNumber}`, course: item?.academicTest?.branchCourse, totalQuestions: paper?.totalQuestions || 0, totalMarks: paper?.totalMarks || 0, marksPerQuestion: paper?.marksPerQuestion || 0, questions: includeQuestions ? (paper?.questions || []).map(({ correctAnswer, ...question }) => question) : undefined };
+  return { ...schedule, status: academicScheduleStatus(schedule), testName: schedule.isRetest ? `Test ${schedule.testNumber} - Retest` : `Test ${schedule.testNumber}`, course: item?.academicTest?.branchCourse, totalQuestions: paper?.totalQuestions || 0, totalMarks: paper?.totalMarks || 0, marksPerQuestion: paper?.marksPerQuestion || 0, questions: includeQuestions ? (paper?.questions || []).map(({ correctAnswer, ...question }) => question) : undefined };
 }
 
 export async function listStudentAcademicTests(actor) {
   const student = await studentFor(actor);
   const batches = await prisma.branchBatch.findMany({ where: { OR: [{ id: student.batchId }, { batchId: student.batchId }] }, select: { id: true } });
-  const schedules = await prisma.academicScheduledTest.findMany({ where: { branchBatchId: { in: batches.map((batch) => batch.id) } }, orderBy: [{ testDate: "asc" }, { startTime: "asc" }] });
+  const schedules = await prisma.academicScheduledTest.findMany({ where: { OR: [{ branchBatchId: { in: batches.map((batch) => batch.id) } }, { retestStudentId: student.id }] }, orderBy: [{ testDate: "asc" }, { startTime: "asc" }] });
   const submissions = await prisma.academicTestSubmission.findMany({ where: { branchStudentId: student.id, academicTestId: { in: schedules.map((schedule) => schedule.id) } } });
   const byId = new Map(submissions.map((submission) => [submission.academicTestId, submission]));
   return Promise.all(schedules.map(async (schedule) => ({ ...(await academicPublicSchedule(schedule)), submission: byId.get(schedule.id) || null })));
@@ -296,5 +348,45 @@ export async function listFacultyScheduledTests(actor) {
 
 export async function getFacultyAcademicResults(actor, id) {
   const ids = facultyIds(actor); const schedule = await prisma.academicScheduledTest.findFirst({ where: { id: text(id), facultyId: { in: ids } } }); if (!schedule) throw new AppError("Academic Test not found.", 404);
-  const [students, submissions, info] = await Promise.all([prisma.branchStudent.findMany({ where: { recordStatus: "ACTIVE", OR: [{ batchId: schedule.branchBatchId }, { batchId: (await prisma.branchBatch.findUnique({ where: { id: schedule.branchBatchId }, select: { batchId: true } }))?.batchId || "__missing__" }] }, select: { id: true, studentId: true, studentName: true, emailAddress: true }, orderBy: { studentName: "asc" } }), prisma.academicTestSubmission.findMany({ where: { academicTestId: schedule.id } }), academicPublicSchedule(schedule)]); const byStudent = new Map(submissions.map((submission) => [submission.branchStudentId, submission])); return { test: info, students: students.map((student) => ({ student, ...(byStudent.get(student.id) || { status: "NOT_SUBMITTED", attemptedCount: 0, correctCount: 0, wrongCount: 0, unmarkedCount: info.totalQuestions, totalMarks: info.totalMarks, obtainedMarks: null, percentage: null, submittedAt: null }) })) };
+  const batch = await prisma.branchBatch.findUnique({ where: { id: schedule.branchBatchId }, select: { id: true, batchId: true } });
+  const [students, submissions, info] = await Promise.all([prisma.branchStudent.findMany({ where: { recordStatus: "ACTIVE", OR: [{ batchId: schedule.branchBatchId }, { batchId: batch?.batchId || "__missing__" }] }, select: { id: true, studentId: true, studentName: true, emailAddress: true }, orderBy: { studentName: "asc" } }), prisma.academicTestSubmission.findMany({ where: { academicTestId: schedule.id } }), academicPublicSchedule(schedule)]);
+  const studentIds = students.map((student) => student.id);
+  const retests = studentIds.length ? await prisma.academicScheduledTest.findMany({ where: { originalScheduleId: schedule.id, retestStudentId: { in: studentIds } }, orderBy: { createdAt: "desc" } }) : [];
+  const retestSubmissions = retests.length ? await prisma.academicTestSubmission.findMany({ where: { academicTestId: { in: retests.map((retest) => retest.id) } } }) : [];
+  const byStudent = new Map(submissions.map((submission) => [submission.branchStudentId, submission]));
+  const retestByStudent = new Map(retests.map((retest) => [retest.retestStudentId, { schedule: retest, submission: retestSubmissions.find((submission) => submission.academicTestId === retest.id) || null }]));
+  return { test: info, students: students.map((student) => ({ student, ...(byStudent.get(student.id) || { status: "NOT_SUBMITTED", attemptedCount: 0, correctCount: 0, wrongCount: 0, unmarkedCount: info.totalQuestions, totalMarks: info.totalMarks, obtainedMarks: null, percentage: null, submittedAt: null }), retest: retestByStudent.get(student.id) || null })) };
+}
+
+export async function scheduleFacultyAcademicRetest(actor, id, payload = {}) {
+  const ids = facultyIds(actor);
+  const original = await prisma.academicScheduledTest.findFirst({ where: { id: text(id), facultyId: { in: ids } } });
+  if (!original) throw new AppError("Academic Test schedule not found.", 404);
+  if (original.isRetest) throw new AppError("A retest cannot be scheduled again.", 422);
+  if (original.status === "CANCELLED" || scheduleInstant(original.testDate, original.endTime) > Date.now()) throw new AppError("Retest can be scheduled only after the original test has ended.", 409);
+
+  const studentId = text(payload.studentId);
+  const batch = await prisma.branchBatch.findUnique({ where: { id: original.branchBatchId }, select: { id: true, batchId: true } });
+  const student = await prisma.branchStudent.findFirst({ where: { id: studentId, recordStatus: "ACTIVE", OR: [{ batchId: original.branchBatchId }, { batchId: batch?.batchId || "__missing__" }] }, select: { id: true, studentId: true, studentName: true, emailAddress: true, batchId: true } });
+  if (!student) throw new AppError("Student is not assigned to this test batch.", 404);
+  const existingSubmission = await prisma.academicTestSubmission.findUnique({ where: { academicTestId_branchStudentId: { academicTestId: original.id, branchStudentId: student.id } }, select: { status: true } });
+  if (existingSubmission?.status === "SUBMITTED") throw new AppError("A submitted student cannot be assigned a retest.", 409);
+  const duplicate = await prisma.academicScheduledTest.findFirst({ where: { originalScheduleId: original.id, retestStudentId: student.id, status: { not: "CANCELLED" } }, select: { id: true } });
+  if (duplicate) throw new AppError("A retest is already scheduled for this student.", 409);
+
+  const date = scheduleDate(payload.testDate);
+  const startTime = scheduleTime(payload.startTime, "Retest start time");
+  const endTime = scheduleTime(payload.endTime, "Retest end time");
+  if (scheduleInstant(date, startTime) <= Date.now()) throw new AppError("Retest start date and time must be in the future.", 422);
+  if (endTime <= startTime) throw new AppError("Retest end time must be after start time.", 422);
+
+  const created = await prisma.$transaction(async (tx) => {
+    const sourceItem = await tx.academicTestItem.findUnique({ where: { id: original.academicTestItemId }, select: { academicTestId: true, testType: true, requiredProgress: true } });
+    if (!sourceItem) throw new AppError("Original Academic Test item not found.", 404);
+    const sequence = ((await tx.academicTestItem.aggregate({ where: { academicTestId: sourceItem.academicTestId }, _max: { sequence: true } }))._max.sequence || 0) + 1;
+    return tx.academicScheduledTest.create({ data: { academicTestItemId: (await tx.academicTestItem.create({ data: { academicTestId: sourceItem.academicTestId, sequence, testType: sourceItem.testType, requiredProgress: sourceItem.requiredProgress } })).id, branchCourseId: original.branchCourseId, branchBatchId: original.branchBatchId, facultyId: original.facultyId, questionPaperId: original.questionPaperId, testNumber: original.testNumber, testDate: date, startTime, endTime, status: "SCHEDULED", isRetest: true, originalScheduleId: original.id, retestStudentId: student.id, createdBy: actor.id } });
+  });
+  const target = student.emailAddress ? await prisma.user.findFirst({ where: { role: "STUDENT", email: { equals: student.emailAddress.toLowerCase(), mode: "insensitive" } }, select: { id: true } }) : null;
+  if (target) await prisma.notification.create({ data: { kind: "ACADEMIC_TEST_CREATED", tone: "blue", title: "Academic Test Retest Assigned", message: `A retest for Test ${original.testNumber} has been scheduled on ${date} from ${startTime} to ${endTime}.`, actionLabel: "View Retest", targetUserId: target.id, academicTestId: created.id, batchId: batch?.batchId || original.branchBatchId, branchCourseId: original.branchCourseId, createdBy: actor.id } });
+  return { ...created, isRetest: true, student };
 }
