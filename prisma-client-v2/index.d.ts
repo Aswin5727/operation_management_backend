@@ -36423,10 +36423,12 @@ export namespace Prisma {
 
   export type AcademicScheduledTestAvgAggregateOutputType = {
     testNumber: number | null
+    attemptNumber: number | null
   }
 
   export type AcademicScheduledTestSumAggregateOutputType = {
     testNumber: number | null
+    attemptNumber: number | null
   }
 
   export type AcademicScheduledTestMinAggregateOutputType = {
@@ -36445,6 +36447,8 @@ export namespace Prisma {
     status: string | null
     isRetest: boolean | null
     originalScheduleId: string | null
+    parentScheduleId: string | null
+    attemptNumber: number | null
     retestStudentId: string | null
     createdBy: string | null
     createdAt: Date | null
@@ -36467,6 +36471,8 @@ export namespace Prisma {
     status: string | null
     isRetest: boolean | null
     originalScheduleId: string | null
+    parentScheduleId: string | null
+    attemptNumber: number | null
     retestStudentId: string | null
     createdBy: string | null
     createdAt: Date | null
@@ -36489,6 +36495,8 @@ export namespace Prisma {
     status: number
     isRetest: number
     originalScheduleId: number
+    parentScheduleId: number
+    attemptNumber: number
     retestStudentId: number
     createdBy: number
     createdAt: number
@@ -36499,10 +36507,12 @@ export namespace Prisma {
 
   export type AcademicScheduledTestAvgAggregateInputType = {
     testNumber?: true
+    attemptNumber?: true
   }
 
   export type AcademicScheduledTestSumAggregateInputType = {
     testNumber?: true
+    attemptNumber?: true
   }
 
   export type AcademicScheduledTestMinAggregateInputType = {
@@ -36521,6 +36531,8 @@ export namespace Prisma {
     status?: true
     isRetest?: true
     originalScheduleId?: true
+    parentScheduleId?: true
+    attemptNumber?: true
     retestStudentId?: true
     createdBy?: true
     createdAt?: true
@@ -36543,6 +36555,8 @@ export namespace Prisma {
     status?: true
     isRetest?: true
     originalScheduleId?: true
+    parentScheduleId?: true
+    attemptNumber?: true
     retestStudentId?: true
     createdBy?: true
     createdAt?: true
@@ -36565,6 +36579,8 @@ export namespace Prisma {
     status?: true
     isRetest?: true
     originalScheduleId?: true
+    parentScheduleId?: true
+    attemptNumber?: true
     retestStudentId?: true
     createdBy?: true
     createdAt?: true
@@ -36674,6 +36690,8 @@ export namespace Prisma {
     status: string
     isRetest: boolean
     originalScheduleId: string | null
+    parentScheduleId: string | null
+    attemptNumber: number
     retestStudentId: string | null
     createdBy: string
     createdAt: Date
@@ -36715,6 +36733,8 @@ export namespace Prisma {
     status?: boolean
     isRetest?: boolean
     originalScheduleId?: boolean
+    parentScheduleId?: boolean
+    attemptNumber?: boolean
     retestStudentId?: boolean
     createdBy?: boolean
     createdAt?: boolean
@@ -36737,6 +36757,8 @@ export namespace Prisma {
     status?: boolean
     isRetest?: boolean
     originalScheduleId?: boolean
+    parentScheduleId?: boolean
+    attemptNumber?: boolean
     retestStudentId?: boolean
     createdBy?: boolean
     createdAt?: boolean
@@ -36759,6 +36781,8 @@ export namespace Prisma {
     status?: boolean
     isRetest?: boolean
     originalScheduleId?: boolean
+    parentScheduleId?: boolean
+    attemptNumber?: boolean
     retestStudentId?: boolean
     createdBy?: boolean
     createdAt?: boolean
@@ -36781,13 +36805,15 @@ export namespace Prisma {
     status?: boolean
     isRetest?: boolean
     originalScheduleId?: boolean
+    parentScheduleId?: boolean
+    attemptNumber?: boolean
     retestStudentId?: boolean
     createdBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type AcademicScheduledTestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "academicTestItemId" | "branchCourseId" | "branchBatchId" | "facultyId" | "questionPaperId" | "testNumber" | "testDate" | "startTime" | "endTime" | "projectStartDate" | "projectEndDate" | "status" | "isRetest" | "originalScheduleId" | "retestStudentId" | "createdBy" | "createdAt" | "updatedAt", ExtArgs["result"]["academicScheduledTest"]>
+  export type AcademicScheduledTestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "academicTestItemId" | "branchCourseId" | "branchBatchId" | "facultyId" | "questionPaperId" | "testNumber" | "testDate" | "startTime" | "endTime" | "projectStartDate" | "projectEndDate" | "status" | "isRetest" | "originalScheduleId" | "parentScheduleId" | "attemptNumber" | "retestStudentId" | "createdBy" | "createdAt" | "updatedAt", ExtArgs["result"]["academicScheduledTest"]>
 
   export type $AcademicScheduledTestPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "AcademicScheduledTest"
@@ -36808,6 +36834,8 @@ export namespace Prisma {
       status: string
       isRetest: boolean
       originalScheduleId: string | null
+      parentScheduleId: string | null
+      attemptNumber: number
       retestStudentId: string | null
       createdBy: string
       createdAt: Date
@@ -37250,6 +37278,8 @@ export namespace Prisma {
     readonly status: FieldRef<"AcademicScheduledTest", 'String'>
     readonly isRetest: FieldRef<"AcademicScheduledTest", 'Boolean'>
     readonly originalScheduleId: FieldRef<"AcademicScheduledTest", 'String'>
+    readonly parentScheduleId: FieldRef<"AcademicScheduledTest", 'String'>
+    readonly attemptNumber: FieldRef<"AcademicScheduledTest", 'Int'>
     readonly retestStudentId: FieldRef<"AcademicScheduledTest", 'String'>
     readonly createdBy: FieldRef<"AcademicScheduledTest", 'String'>
     readonly createdAt: FieldRef<"AcademicScheduledTest", 'DateTime'>
@@ -84276,6 +84306,8 @@ export namespace Prisma {
     status: 'status',
     isRetest: 'isRetest',
     originalScheduleId: 'originalScheduleId',
+    parentScheduleId: 'parentScheduleId',
+    attemptNumber: 'attemptNumber',
     retestStudentId: 'retestStudentId',
     createdBy: 'createdBy',
     createdAt: 'createdAt',
@@ -87930,6 +87962,8 @@ export namespace Prisma {
     status?: StringFilter<"AcademicScheduledTest"> | string
     isRetest?: BoolFilter<"AcademicScheduledTest"> | boolean
     originalScheduleId?: StringNullableFilter<"AcademicScheduledTest"> | string | null
+    parentScheduleId?: StringNullableFilter<"AcademicScheduledTest"> | string | null
+    attemptNumber?: IntFilter<"AcademicScheduledTest"> | number
     retestStudentId?: StringNullableFilter<"AcademicScheduledTest"> | string | null
     createdBy?: StringFilter<"AcademicScheduledTest"> | string
     createdAt?: DateTimeFilter<"AcademicScheduledTest"> | Date | string
@@ -87952,6 +87986,8 @@ export namespace Prisma {
     status?: SortOrder
     isRetest?: SortOrder
     originalScheduleId?: SortOrderInput | SortOrder
+    parentScheduleId?: SortOrderInput | SortOrder
+    attemptNumber?: SortOrder
     retestStudentId?: SortOrderInput | SortOrder
     createdBy?: SortOrder
     createdAt?: SortOrder
@@ -87978,6 +88014,8 @@ export namespace Prisma {
     status?: StringFilter<"AcademicScheduledTest"> | string
     isRetest?: BoolFilter<"AcademicScheduledTest"> | boolean
     originalScheduleId?: StringNullableFilter<"AcademicScheduledTest"> | string | null
+    parentScheduleId?: StringNullableFilter<"AcademicScheduledTest"> | string | null
+    attemptNumber?: IntFilter<"AcademicScheduledTest"> | number
     retestStudentId?: StringNullableFilter<"AcademicScheduledTest"> | string | null
     createdBy?: StringFilter<"AcademicScheduledTest"> | string
     createdAt?: DateTimeFilter<"AcademicScheduledTest"> | Date | string
@@ -88000,6 +88038,8 @@ export namespace Prisma {
     status?: SortOrder
     isRetest?: SortOrder
     originalScheduleId?: SortOrderInput | SortOrder
+    parentScheduleId?: SortOrderInput | SortOrder
+    attemptNumber?: SortOrder
     retestStudentId?: SortOrderInput | SortOrder
     createdBy?: SortOrder
     createdAt?: SortOrder
@@ -88030,6 +88070,8 @@ export namespace Prisma {
     status?: StringWithAggregatesFilter<"AcademicScheduledTest"> | string
     isRetest?: BoolWithAggregatesFilter<"AcademicScheduledTest"> | boolean
     originalScheduleId?: StringNullableWithAggregatesFilter<"AcademicScheduledTest"> | string | null
+    parentScheduleId?: StringNullableWithAggregatesFilter<"AcademicScheduledTest"> | string | null
+    attemptNumber?: IntWithAggregatesFilter<"AcademicScheduledTest"> | number
     retestStudentId?: StringNullableWithAggregatesFilter<"AcademicScheduledTest"> | string | null
     createdBy?: StringWithAggregatesFilter<"AcademicScheduledTest"> | string
     createdAt?: DateTimeWithAggregatesFilter<"AcademicScheduledTest"> | Date | string
@@ -95260,6 +95302,8 @@ export namespace Prisma {
     status?: string
     isRetest?: boolean
     originalScheduleId?: string | null
+    parentScheduleId?: string | null
+    attemptNumber?: number
     retestStudentId?: string | null
     createdBy: string
     createdAt?: Date | string
@@ -95282,6 +95326,8 @@ export namespace Prisma {
     status?: string
     isRetest?: boolean
     originalScheduleId?: string | null
+    parentScheduleId?: string | null
+    attemptNumber?: number
     retestStudentId?: string | null
     createdBy: string
     createdAt?: Date | string
@@ -95304,6 +95350,8 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     isRetest?: BoolFieldUpdateOperationsInput | boolean
     originalScheduleId?: NullableStringFieldUpdateOperationsInput | string | null
+    parentScheduleId?: NullableStringFieldUpdateOperationsInput | string | null
+    attemptNumber?: IntFieldUpdateOperationsInput | number
     retestStudentId?: NullableStringFieldUpdateOperationsInput | string | null
     createdBy?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -95326,6 +95374,8 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     isRetest?: BoolFieldUpdateOperationsInput | boolean
     originalScheduleId?: NullableStringFieldUpdateOperationsInput | string | null
+    parentScheduleId?: NullableStringFieldUpdateOperationsInput | string | null
+    attemptNumber?: IntFieldUpdateOperationsInput | number
     retestStudentId?: NullableStringFieldUpdateOperationsInput | string | null
     createdBy?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -95348,6 +95398,8 @@ export namespace Prisma {
     status?: string
     isRetest?: boolean
     originalScheduleId?: string | null
+    parentScheduleId?: string | null
+    attemptNumber?: number
     retestStudentId?: string | null
     createdBy: string
     createdAt?: Date | string
@@ -95370,6 +95422,8 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     isRetest?: BoolFieldUpdateOperationsInput | boolean
     originalScheduleId?: NullableStringFieldUpdateOperationsInput | string | null
+    parentScheduleId?: NullableStringFieldUpdateOperationsInput | string | null
+    attemptNumber?: IntFieldUpdateOperationsInput | number
     retestStudentId?: NullableStringFieldUpdateOperationsInput | string | null
     createdBy?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -95392,6 +95446,8 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     isRetest?: BoolFieldUpdateOperationsInput | boolean
     originalScheduleId?: NullableStringFieldUpdateOperationsInput | string | null
+    parentScheduleId?: NullableStringFieldUpdateOperationsInput | string | null
+    attemptNumber?: IntFieldUpdateOperationsInput | number
     retestStudentId?: NullableStringFieldUpdateOperationsInput | string | null
     createdBy?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -102619,6 +102675,8 @@ export namespace Prisma {
     status?: SortOrder
     isRetest?: SortOrder
     originalScheduleId?: SortOrder
+    parentScheduleId?: SortOrder
+    attemptNumber?: SortOrder
     retestStudentId?: SortOrder
     createdBy?: SortOrder
     createdAt?: SortOrder
@@ -102627,6 +102685,7 @@ export namespace Prisma {
 
   export type AcademicScheduledTestAvgOrderByAggregateInput = {
     testNumber?: SortOrder
+    attemptNumber?: SortOrder
   }
 
   export type AcademicScheduledTestMaxOrderByAggregateInput = {
@@ -102645,6 +102704,8 @@ export namespace Prisma {
     status?: SortOrder
     isRetest?: SortOrder
     originalScheduleId?: SortOrder
+    parentScheduleId?: SortOrder
+    attemptNumber?: SortOrder
     retestStudentId?: SortOrder
     createdBy?: SortOrder
     createdAt?: SortOrder
@@ -102667,6 +102728,8 @@ export namespace Prisma {
     status?: SortOrder
     isRetest?: SortOrder
     originalScheduleId?: SortOrder
+    parentScheduleId?: SortOrder
+    attemptNumber?: SortOrder
     retestStudentId?: SortOrder
     createdBy?: SortOrder
     createdAt?: SortOrder
@@ -102675,6 +102738,7 @@ export namespace Prisma {
 
   export type AcademicScheduledTestSumOrderByAggregateInput = {
     testNumber?: SortOrder
+    attemptNumber?: SortOrder
   }
 
   export type FloatFilter<$PrismaModel = never> = {

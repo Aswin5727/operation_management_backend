@@ -618,6 +618,8 @@ model AcademicScheduledTest {
   status             String   @default("SCHEDULED")
   isRetest           Boolean  @default(false)
   originalScheduleId String?
+  parentScheduleId   String?
+  attemptNumber      Int      @default(1)
   retestStudentId    String?
   createdBy          String
   createdAt          DateTime @default(now())
@@ -628,6 +630,7 @@ model AcademicScheduledTest {
   @@index([facultyId])
   @@index([questionPaperId])
   @@index([originalScheduleId, retestStudentId])
+  @@index([parentScheduleId])
 }
 
 model AcademicTestSubmission {

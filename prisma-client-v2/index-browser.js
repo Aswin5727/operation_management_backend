@@ -528,6 +528,8 @@ exports.Prisma.AcademicScheduledTestScalarFieldEnum = {
   status: 'status',
   isRetest: 'isRetest',
   originalScheduleId: 'originalScheduleId',
+  parentScheduleId: 'parentScheduleId',
+  attemptNumber: 'attemptNumber',
   retestStudentId: 'retestStudentId',
   createdBy: 'createdBy',
   createdAt: 'createdAt',
