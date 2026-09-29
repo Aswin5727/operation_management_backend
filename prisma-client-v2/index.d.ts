@@ -30469,6 +30469,11 @@ export namespace Prisma {
     sequence: number | null
     testType: $Enums.AcademicTestType | null
     requiredProgress: number | null
+    testDate: string | null
+    testStartTime: string | null
+    testEndTime: string | null
+    projectStartDate: string | null
+    projectEndDate: string | null
   }
 
   export type AcademicTestItemMaxAggregateOutputType = {
@@ -30477,6 +30482,11 @@ export namespace Prisma {
     sequence: number | null
     testType: $Enums.AcademicTestType | null
     requiredProgress: number | null
+    testDate: string | null
+    testStartTime: string | null
+    testEndTime: string | null
+    projectStartDate: string | null
+    projectEndDate: string | null
   }
 
   export type AcademicTestItemCountAggregateOutputType = {
@@ -30485,6 +30495,11 @@ export namespace Prisma {
     sequence: number
     testType: number
     requiredProgress: number
+    testDate: number
+    testStartTime: number
+    testEndTime: number
+    projectStartDate: number
+    projectEndDate: number
     _all: number
   }
 
@@ -30505,6 +30520,11 @@ export namespace Prisma {
     sequence?: true
     testType?: true
     requiredProgress?: true
+    testDate?: true
+    testStartTime?: true
+    testEndTime?: true
+    projectStartDate?: true
+    projectEndDate?: true
   }
 
   export type AcademicTestItemMaxAggregateInputType = {
@@ -30513,6 +30533,11 @@ export namespace Prisma {
     sequence?: true
     testType?: true
     requiredProgress?: true
+    testDate?: true
+    testStartTime?: true
+    testEndTime?: true
+    projectStartDate?: true
+    projectEndDate?: true
   }
 
   export type AcademicTestItemCountAggregateInputType = {
@@ -30521,6 +30546,11 @@ export namespace Prisma {
     sequence?: true
     testType?: true
     requiredProgress?: true
+    testDate?: true
+    testStartTime?: true
+    testEndTime?: true
+    projectStartDate?: true
+    projectEndDate?: true
     _all?: true
   }
 
@@ -30616,6 +30646,11 @@ export namespace Prisma {
     sequence: number
     testType: $Enums.AcademicTestType
     requiredProgress: number
+    testDate: string | null
+    testStartTime: string | null
+    testEndTime: string | null
+    projectStartDate: string | null
+    projectEndDate: string | null
     _count: AcademicTestItemCountAggregateOutputType | null
     _avg: AcademicTestItemAvgAggregateOutputType | null
     _sum: AcademicTestItemSumAggregateOutputType | null
@@ -30643,6 +30678,11 @@ export namespace Prisma {
     sequence?: boolean
     testType?: boolean
     requiredProgress?: boolean
+    testDate?: boolean
+    testStartTime?: boolean
+    testEndTime?: boolean
+    projectStartDate?: boolean
+    projectEndDate?: boolean
     academicTest?: boolean | AcademicTestDefaultArgs<ExtArgs>
     questionPapers?: boolean | AcademicTestItem$questionPapersArgs<ExtArgs>
     projects?: boolean | AcademicTestItem$projectsArgs<ExtArgs>
@@ -30655,6 +30695,11 @@ export namespace Prisma {
     sequence?: boolean
     testType?: boolean
     requiredProgress?: boolean
+    testDate?: boolean
+    testStartTime?: boolean
+    testEndTime?: boolean
+    projectStartDate?: boolean
+    projectEndDate?: boolean
     academicTest?: boolean | AcademicTestDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["academicTestItem"]>
 
@@ -30664,6 +30709,11 @@ export namespace Prisma {
     sequence?: boolean
     testType?: boolean
     requiredProgress?: boolean
+    testDate?: boolean
+    testStartTime?: boolean
+    testEndTime?: boolean
+    projectStartDate?: boolean
+    projectEndDate?: boolean
     academicTest?: boolean | AcademicTestDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["academicTestItem"]>
 
@@ -30673,9 +30723,14 @@ export namespace Prisma {
     sequence?: boolean
     testType?: boolean
     requiredProgress?: boolean
+    testDate?: boolean
+    testStartTime?: boolean
+    testEndTime?: boolean
+    projectStartDate?: boolean
+    projectEndDate?: boolean
   }
 
-  export type AcademicTestItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "academicTestId" | "sequence" | "testType" | "requiredProgress", ExtArgs["result"]["academicTestItem"]>
+  export type AcademicTestItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "academicTestId" | "sequence" | "testType" | "requiredProgress" | "testDate" | "testStartTime" | "testEndTime" | "projectStartDate" | "projectEndDate", ExtArgs["result"]["academicTestItem"]>
   export type AcademicTestItemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     academicTest?: boolean | AcademicTestDefaultArgs<ExtArgs>
     questionPapers?: boolean | AcademicTestItem$questionPapersArgs<ExtArgs>
@@ -30702,6 +30757,11 @@ export namespace Prisma {
       sequence: number
       testType: $Enums.AcademicTestType
       requiredProgress: number
+      testDate: string | null
+      testStartTime: string | null
+      testEndTime: string | null
+      projectStartDate: string | null
+      projectEndDate: string | null
     }, ExtArgs["result"]["academicTestItem"]>
     composites: {}
   }
@@ -31133,6 +31193,11 @@ export namespace Prisma {
     readonly sequence: FieldRef<"AcademicTestItem", 'Int'>
     readonly testType: FieldRef<"AcademicTestItem", 'AcademicTestType'>
     readonly requiredProgress: FieldRef<"AcademicTestItem", 'Int'>
+    readonly testDate: FieldRef<"AcademicTestItem", 'String'>
+    readonly testStartTime: FieldRef<"AcademicTestItem", 'String'>
+    readonly testEndTime: FieldRef<"AcademicTestItem", 'String'>
+    readonly projectStartDate: FieldRef<"AcademicTestItem", 'String'>
+    readonly projectEndDate: FieldRef<"AcademicTestItem", 'String'>
   }
     
 
@@ -36284,6 +36349,8 @@ export namespace Prisma {
     testDate: string | null
     startTime: string | null
     endTime: string | null
+    projectStartDate: string | null
+    projectEndDate: string | null
     status: string | null
     isRetest: boolean | null
     originalScheduleId: string | null
@@ -36304,6 +36371,8 @@ export namespace Prisma {
     testDate: string | null
     startTime: string | null
     endTime: string | null
+    projectStartDate: string | null
+    projectEndDate: string | null
     status: string | null
     isRetest: boolean | null
     originalScheduleId: string | null
@@ -36324,6 +36393,8 @@ export namespace Prisma {
     testDate: number
     startTime: number
     endTime: number
+    projectStartDate: number
+    projectEndDate: number
     status: number
     isRetest: number
     originalScheduleId: number
@@ -36354,6 +36425,8 @@ export namespace Prisma {
     testDate?: true
     startTime?: true
     endTime?: true
+    projectStartDate?: true
+    projectEndDate?: true
     status?: true
     isRetest?: true
     originalScheduleId?: true
@@ -36374,6 +36447,8 @@ export namespace Prisma {
     testDate?: true
     startTime?: true
     endTime?: true
+    projectStartDate?: true
+    projectEndDate?: true
     status?: true
     isRetest?: true
     originalScheduleId?: true
@@ -36394,6 +36469,8 @@ export namespace Prisma {
     testDate?: true
     startTime?: true
     endTime?: true
+    projectStartDate?: true
+    projectEndDate?: true
     status?: true
     isRetest?: true
     originalScheduleId?: true
@@ -36501,6 +36578,8 @@ export namespace Prisma {
     testDate: string
     startTime: string
     endTime: string
+    projectStartDate: string | null
+    projectEndDate: string | null
     status: string
     isRetest: boolean
     originalScheduleId: string | null
@@ -36540,6 +36619,8 @@ export namespace Prisma {
     testDate?: boolean
     startTime?: boolean
     endTime?: boolean
+    projectStartDate?: boolean
+    projectEndDate?: boolean
     status?: boolean
     isRetest?: boolean
     originalScheduleId?: boolean
@@ -36560,6 +36641,8 @@ export namespace Prisma {
     testDate?: boolean
     startTime?: boolean
     endTime?: boolean
+    projectStartDate?: boolean
+    projectEndDate?: boolean
     status?: boolean
     isRetest?: boolean
     originalScheduleId?: boolean
@@ -36580,6 +36663,8 @@ export namespace Prisma {
     testDate?: boolean
     startTime?: boolean
     endTime?: boolean
+    projectStartDate?: boolean
+    projectEndDate?: boolean
     status?: boolean
     isRetest?: boolean
     originalScheduleId?: boolean
@@ -36600,6 +36685,8 @@ export namespace Prisma {
     testDate?: boolean
     startTime?: boolean
     endTime?: boolean
+    projectStartDate?: boolean
+    projectEndDate?: boolean
     status?: boolean
     isRetest?: boolean
     originalScheduleId?: boolean
@@ -36609,7 +36696,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type AcademicScheduledTestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "academicTestItemId" | "branchCourseId" | "branchBatchId" | "facultyId" | "questionPaperId" | "testNumber" | "testDate" | "startTime" | "endTime" | "status" | "isRetest" | "originalScheduleId" | "retestStudentId" | "createdBy" | "createdAt" | "updatedAt", ExtArgs["result"]["academicScheduledTest"]>
+  export type AcademicScheduledTestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "academicTestItemId" | "branchCourseId" | "branchBatchId" | "facultyId" | "questionPaperId" | "testNumber" | "testDate" | "startTime" | "endTime" | "projectStartDate" | "projectEndDate" | "status" | "isRetest" | "originalScheduleId" | "retestStudentId" | "createdBy" | "createdAt" | "updatedAt", ExtArgs["result"]["academicScheduledTest"]>
 
   export type $AcademicScheduledTestPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "AcademicScheduledTest"
@@ -36625,6 +36712,8 @@ export namespace Prisma {
       testDate: string
       startTime: string
       endTime: string
+      projectStartDate: string | null
+      projectEndDate: string | null
       status: string
       isRetest: boolean
       originalScheduleId: string | null
@@ -37065,6 +37154,8 @@ export namespace Prisma {
     readonly testDate: FieldRef<"AcademicScheduledTest", 'String'>
     readonly startTime: FieldRef<"AcademicScheduledTest", 'String'>
     readonly endTime: FieldRef<"AcademicScheduledTest", 'String'>
+    readonly projectStartDate: FieldRef<"AcademicScheduledTest", 'String'>
+    readonly projectEndDate: FieldRef<"AcademicScheduledTest", 'String'>
     readonly status: FieldRef<"AcademicScheduledTest", 'String'>
     readonly isRetest: FieldRef<"AcademicScheduledTest", 'Boolean'>
     readonly originalScheduleId: FieldRef<"AcademicScheduledTest", 'String'>
@@ -82868,7 +82959,12 @@ export namespace Prisma {
     academicTestId: 'academicTestId',
     sequence: 'sequence',
     testType: 'testType',
-    requiredProgress: 'requiredProgress'
+    requiredProgress: 'requiredProgress',
+    testDate: 'testDate',
+    testStartTime: 'testStartTime',
+    testEndTime: 'testEndTime',
+    projectStartDate: 'projectStartDate',
+    projectEndDate: 'projectEndDate'
   };
 
   export type AcademicTestItemScalarFieldEnum = (typeof AcademicTestItemScalarFieldEnum)[keyof typeof AcademicTestItemScalarFieldEnum]
@@ -82946,6 +83042,8 @@ export namespace Prisma {
     testDate: 'testDate',
     startTime: 'startTime',
     endTime: 'endTime',
+    projectStartDate: 'projectStartDate',
+    projectEndDate: 'projectEndDate',
     status: 'status',
     isRetest: 'isRetest',
     originalScheduleId: 'originalScheduleId',
@@ -86152,6 +86250,11 @@ export namespace Prisma {
     sequence?: IntFilter<"AcademicTestItem"> | number
     testType?: EnumAcademicTestTypeFilter<"AcademicTestItem"> | $Enums.AcademicTestType
     requiredProgress?: IntFilter<"AcademicTestItem"> | number
+    testDate?: StringNullableFilter<"AcademicTestItem"> | string | null
+    testStartTime?: StringNullableFilter<"AcademicTestItem"> | string | null
+    testEndTime?: StringNullableFilter<"AcademicTestItem"> | string | null
+    projectStartDate?: StringNullableFilter<"AcademicTestItem"> | string | null
+    projectEndDate?: StringNullableFilter<"AcademicTestItem"> | string | null
     academicTest?: XOR<AcademicTestScalarRelationFilter, AcademicTestWhereInput>
     questionPapers?: AcademicQuestionPaperListRelationFilter
     projects?: AcademicTestProjectListRelationFilter
@@ -86163,6 +86266,11 @@ export namespace Prisma {
     sequence?: SortOrder
     testType?: SortOrder
     requiredProgress?: SortOrder
+    testDate?: SortOrderInput | SortOrder
+    testStartTime?: SortOrderInput | SortOrder
+    testEndTime?: SortOrderInput | SortOrder
+    projectStartDate?: SortOrderInput | SortOrder
+    projectEndDate?: SortOrderInput | SortOrder
     academicTest?: AcademicTestOrderByWithRelationInput
     questionPapers?: AcademicQuestionPaperOrderByRelationAggregateInput
     projects?: AcademicTestProjectOrderByRelationAggregateInput
@@ -86178,6 +86286,11 @@ export namespace Prisma {
     sequence?: IntFilter<"AcademicTestItem"> | number
     testType?: EnumAcademicTestTypeFilter<"AcademicTestItem"> | $Enums.AcademicTestType
     requiredProgress?: IntFilter<"AcademicTestItem"> | number
+    testDate?: StringNullableFilter<"AcademicTestItem"> | string | null
+    testStartTime?: StringNullableFilter<"AcademicTestItem"> | string | null
+    testEndTime?: StringNullableFilter<"AcademicTestItem"> | string | null
+    projectStartDate?: StringNullableFilter<"AcademicTestItem"> | string | null
+    projectEndDate?: StringNullableFilter<"AcademicTestItem"> | string | null
     academicTest?: XOR<AcademicTestScalarRelationFilter, AcademicTestWhereInput>
     questionPapers?: AcademicQuestionPaperListRelationFilter
     projects?: AcademicTestProjectListRelationFilter
@@ -86189,6 +86302,11 @@ export namespace Prisma {
     sequence?: SortOrder
     testType?: SortOrder
     requiredProgress?: SortOrder
+    testDate?: SortOrderInput | SortOrder
+    testStartTime?: SortOrderInput | SortOrder
+    testEndTime?: SortOrderInput | SortOrder
+    projectStartDate?: SortOrderInput | SortOrder
+    projectEndDate?: SortOrderInput | SortOrder
     _count?: AcademicTestItemCountOrderByAggregateInput
     _avg?: AcademicTestItemAvgOrderByAggregateInput
     _max?: AcademicTestItemMaxOrderByAggregateInput
@@ -86205,6 +86323,11 @@ export namespace Prisma {
     sequence?: IntWithAggregatesFilter<"AcademicTestItem"> | number
     testType?: EnumAcademicTestTypeWithAggregatesFilter<"AcademicTestItem"> | $Enums.AcademicTestType
     requiredProgress?: IntWithAggregatesFilter<"AcademicTestItem"> | number
+    testDate?: StringNullableWithAggregatesFilter<"AcademicTestItem"> | string | null
+    testStartTime?: StringNullableWithAggregatesFilter<"AcademicTestItem"> | string | null
+    testEndTime?: StringNullableWithAggregatesFilter<"AcademicTestItem"> | string | null
+    projectStartDate?: StringNullableWithAggregatesFilter<"AcademicTestItem"> | string | null
+    projectEndDate?: StringNullableWithAggregatesFilter<"AcademicTestItem"> | string | null
   }
 
   export type AcademicTestBatchWhereInput = {
@@ -86554,6 +86677,8 @@ export namespace Prisma {
     testDate?: StringFilter<"AcademicScheduledTest"> | string
     startTime?: StringFilter<"AcademicScheduledTest"> | string
     endTime?: StringFilter<"AcademicScheduledTest"> | string
+    projectStartDate?: StringNullableFilter<"AcademicScheduledTest"> | string | null
+    projectEndDate?: StringNullableFilter<"AcademicScheduledTest"> | string | null
     status?: StringFilter<"AcademicScheduledTest"> | string
     isRetest?: BoolFilter<"AcademicScheduledTest"> | boolean
     originalScheduleId?: StringNullableFilter<"AcademicScheduledTest"> | string | null
@@ -86574,6 +86699,8 @@ export namespace Prisma {
     testDate?: SortOrder
     startTime?: SortOrder
     endTime?: SortOrder
+    projectStartDate?: SortOrderInput | SortOrder
+    projectEndDate?: SortOrderInput | SortOrder
     status?: SortOrder
     isRetest?: SortOrder
     originalScheduleId?: SortOrderInput | SortOrder
@@ -86598,6 +86725,8 @@ export namespace Prisma {
     testDate?: StringFilter<"AcademicScheduledTest"> | string
     startTime?: StringFilter<"AcademicScheduledTest"> | string
     endTime?: StringFilter<"AcademicScheduledTest"> | string
+    projectStartDate?: StringNullableFilter<"AcademicScheduledTest"> | string | null
+    projectEndDate?: StringNullableFilter<"AcademicScheduledTest"> | string | null
     status?: StringFilter<"AcademicScheduledTest"> | string
     isRetest?: BoolFilter<"AcademicScheduledTest"> | boolean
     originalScheduleId?: StringNullableFilter<"AcademicScheduledTest"> | string | null
@@ -86618,6 +86747,8 @@ export namespace Prisma {
     testDate?: SortOrder
     startTime?: SortOrder
     endTime?: SortOrder
+    projectStartDate?: SortOrderInput | SortOrder
+    projectEndDate?: SortOrderInput | SortOrder
     status?: SortOrder
     isRetest?: SortOrder
     originalScheduleId?: SortOrderInput | SortOrder
@@ -86646,6 +86777,8 @@ export namespace Prisma {
     testDate?: StringWithAggregatesFilter<"AcademicScheduledTest"> | string
     startTime?: StringWithAggregatesFilter<"AcademicScheduledTest"> | string
     endTime?: StringWithAggregatesFilter<"AcademicScheduledTest"> | string
+    projectStartDate?: StringNullableWithAggregatesFilter<"AcademicScheduledTest"> | string | null
+    projectEndDate?: StringNullableWithAggregatesFilter<"AcademicScheduledTest"> | string | null
     status?: StringWithAggregatesFilter<"AcademicScheduledTest"> | string
     isRetest?: BoolWithAggregatesFilter<"AcademicScheduledTest"> | boolean
     originalScheduleId?: StringNullableWithAggregatesFilter<"AcademicScheduledTest"> | string | null
@@ -93337,6 +93470,11 @@ export namespace Prisma {
     sequence: number
     testType: $Enums.AcademicTestType
     requiredProgress?: number
+    testDate?: string | null
+    testStartTime?: string | null
+    testEndTime?: string | null
+    projectStartDate?: string | null
+    projectEndDate?: string | null
     academicTest: AcademicTestCreateNestedOneWithoutItemsInput
     questionPapers?: AcademicQuestionPaperCreateNestedManyWithoutAcademicTestItemInput
     projects?: AcademicTestProjectCreateNestedManyWithoutAcademicTestItemInput
@@ -93348,6 +93486,11 @@ export namespace Prisma {
     sequence: number
     testType: $Enums.AcademicTestType
     requiredProgress?: number
+    testDate?: string | null
+    testStartTime?: string | null
+    testEndTime?: string | null
+    projectStartDate?: string | null
+    projectEndDate?: string | null
     questionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutAcademicTestItemInput
     projects?: AcademicTestProjectUncheckedCreateNestedManyWithoutAcademicTestItemInput
   }
@@ -93357,6 +93500,11 @@ export namespace Prisma {
     sequence?: IntFieldUpdateOperationsInput | number
     testType?: EnumAcademicTestTypeFieldUpdateOperationsInput | $Enums.AcademicTestType
     requiredProgress?: IntFieldUpdateOperationsInput | number
+    testDate?: NullableStringFieldUpdateOperationsInput | string | null
+    testStartTime?: NullableStringFieldUpdateOperationsInput | string | null
+    testEndTime?: NullableStringFieldUpdateOperationsInput | string | null
+    projectStartDate?: NullableStringFieldUpdateOperationsInput | string | null
+    projectEndDate?: NullableStringFieldUpdateOperationsInput | string | null
     academicTest?: AcademicTestUpdateOneRequiredWithoutItemsNestedInput
     questionPapers?: AcademicQuestionPaperUpdateManyWithoutAcademicTestItemNestedInput
     projects?: AcademicTestProjectUpdateManyWithoutAcademicTestItemNestedInput
@@ -93368,6 +93516,11 @@ export namespace Prisma {
     sequence?: IntFieldUpdateOperationsInput | number
     testType?: EnumAcademicTestTypeFieldUpdateOperationsInput | $Enums.AcademicTestType
     requiredProgress?: IntFieldUpdateOperationsInput | number
+    testDate?: NullableStringFieldUpdateOperationsInput | string | null
+    testStartTime?: NullableStringFieldUpdateOperationsInput | string | null
+    testEndTime?: NullableStringFieldUpdateOperationsInput | string | null
+    projectStartDate?: NullableStringFieldUpdateOperationsInput | string | null
+    projectEndDate?: NullableStringFieldUpdateOperationsInput | string | null
     questionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutAcademicTestItemNestedInput
     projects?: AcademicTestProjectUncheckedUpdateManyWithoutAcademicTestItemNestedInput
   }
@@ -93378,6 +93531,11 @@ export namespace Prisma {
     sequence: number
     testType: $Enums.AcademicTestType
     requiredProgress?: number
+    testDate?: string | null
+    testStartTime?: string | null
+    testEndTime?: string | null
+    projectStartDate?: string | null
+    projectEndDate?: string | null
   }
 
   export type AcademicTestItemUpdateManyMutationInput = {
@@ -93385,6 +93543,11 @@ export namespace Prisma {
     sequence?: IntFieldUpdateOperationsInput | number
     testType?: EnumAcademicTestTypeFieldUpdateOperationsInput | $Enums.AcademicTestType
     requiredProgress?: IntFieldUpdateOperationsInput | number
+    testDate?: NullableStringFieldUpdateOperationsInput | string | null
+    testStartTime?: NullableStringFieldUpdateOperationsInput | string | null
+    testEndTime?: NullableStringFieldUpdateOperationsInput | string | null
+    projectStartDate?: NullableStringFieldUpdateOperationsInput | string | null
+    projectEndDate?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type AcademicTestItemUncheckedUpdateManyInput = {
@@ -93393,6 +93556,11 @@ export namespace Prisma {
     sequence?: IntFieldUpdateOperationsInput | number
     testType?: EnumAcademicTestTypeFieldUpdateOperationsInput | $Enums.AcademicTestType
     requiredProgress?: IntFieldUpdateOperationsInput | number
+    testDate?: NullableStringFieldUpdateOperationsInput | string | null
+    testStartTime?: NullableStringFieldUpdateOperationsInput | string | null
+    testEndTime?: NullableStringFieldUpdateOperationsInput | string | null
+    projectStartDate?: NullableStringFieldUpdateOperationsInput | string | null
+    projectEndDate?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type AcademicTestBatchCreateInput = {
@@ -93744,6 +93912,8 @@ export namespace Prisma {
     testDate: string
     startTime: string
     endTime: string
+    projectStartDate?: string | null
+    projectEndDate?: string | null
     status?: string
     isRetest?: boolean
     originalScheduleId?: string | null
@@ -93764,6 +93934,8 @@ export namespace Prisma {
     testDate: string
     startTime: string
     endTime: string
+    projectStartDate?: string | null
+    projectEndDate?: string | null
     status?: string
     isRetest?: boolean
     originalScheduleId?: string | null
@@ -93784,6 +93956,8 @@ export namespace Prisma {
     testDate?: StringFieldUpdateOperationsInput | string
     startTime?: StringFieldUpdateOperationsInput | string
     endTime?: StringFieldUpdateOperationsInput | string
+    projectStartDate?: NullableStringFieldUpdateOperationsInput | string | null
+    projectEndDate?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
     isRetest?: BoolFieldUpdateOperationsInput | boolean
     originalScheduleId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -93804,6 +93978,8 @@ export namespace Prisma {
     testDate?: StringFieldUpdateOperationsInput | string
     startTime?: StringFieldUpdateOperationsInput | string
     endTime?: StringFieldUpdateOperationsInput | string
+    projectStartDate?: NullableStringFieldUpdateOperationsInput | string | null
+    projectEndDate?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
     isRetest?: BoolFieldUpdateOperationsInput | boolean
     originalScheduleId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -93824,6 +94000,8 @@ export namespace Prisma {
     testDate: string
     startTime: string
     endTime: string
+    projectStartDate?: string | null
+    projectEndDate?: string | null
     status?: string
     isRetest?: boolean
     originalScheduleId?: string | null
@@ -93844,6 +94022,8 @@ export namespace Prisma {
     testDate?: StringFieldUpdateOperationsInput | string
     startTime?: StringFieldUpdateOperationsInput | string
     endTime?: StringFieldUpdateOperationsInput | string
+    projectStartDate?: NullableStringFieldUpdateOperationsInput | string | null
+    projectEndDate?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
     isRetest?: BoolFieldUpdateOperationsInput | boolean
     originalScheduleId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -93864,6 +94044,8 @@ export namespace Prisma {
     testDate?: StringFieldUpdateOperationsInput | string
     startTime?: StringFieldUpdateOperationsInput | string
     endTime?: StringFieldUpdateOperationsInput | string
+    projectStartDate?: NullableStringFieldUpdateOperationsInput | string | null
+    projectEndDate?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
     isRetest?: BoolFieldUpdateOperationsInput | boolean
     originalScheduleId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -100671,6 +100853,11 @@ export namespace Prisma {
     sequence?: SortOrder
     testType?: SortOrder
     requiredProgress?: SortOrder
+    testDate?: SortOrder
+    testStartTime?: SortOrder
+    testEndTime?: SortOrder
+    projectStartDate?: SortOrder
+    projectEndDate?: SortOrder
   }
 
   export type AcademicTestItemAvgOrderByAggregateInput = {
@@ -100684,6 +100871,11 @@ export namespace Prisma {
     sequence?: SortOrder
     testType?: SortOrder
     requiredProgress?: SortOrder
+    testDate?: SortOrder
+    testStartTime?: SortOrder
+    testEndTime?: SortOrder
+    projectStartDate?: SortOrder
+    projectEndDate?: SortOrder
   }
 
   export type AcademicTestItemMinOrderByAggregateInput = {
@@ -100692,6 +100884,11 @@ export namespace Prisma {
     sequence?: SortOrder
     testType?: SortOrder
     requiredProgress?: SortOrder
+    testDate?: SortOrder
+    testStartTime?: SortOrder
+    testEndTime?: SortOrder
+    projectStartDate?: SortOrder
+    projectEndDate?: SortOrder
   }
 
   export type AcademicTestItemSumOrderByAggregateInput = {
@@ -100962,6 +101159,8 @@ export namespace Prisma {
     testDate?: SortOrder
     startTime?: SortOrder
     endTime?: SortOrder
+    projectStartDate?: SortOrder
+    projectEndDate?: SortOrder
     status?: SortOrder
     isRetest?: SortOrder
     originalScheduleId?: SortOrder
@@ -100986,6 +101185,8 @@ export namespace Prisma {
     testDate?: SortOrder
     startTime?: SortOrder
     endTime?: SortOrder
+    projectStartDate?: SortOrder
+    projectEndDate?: SortOrder
     status?: SortOrder
     isRetest?: SortOrder
     originalScheduleId?: SortOrder
@@ -101006,6 +101207,8 @@ export namespace Prisma {
     testDate?: SortOrder
     startTime?: SortOrder
     endTime?: SortOrder
+    projectStartDate?: SortOrder
+    projectEndDate?: SortOrder
     status?: SortOrder
     isRetest?: SortOrder
     originalScheduleId?: SortOrder
@@ -117242,6 +117445,11 @@ export namespace Prisma {
     sequence: number
     testType: $Enums.AcademicTestType
     requiredProgress?: number
+    testDate?: string | null
+    testStartTime?: string | null
+    testEndTime?: string | null
+    projectStartDate?: string | null
+    projectEndDate?: string | null
     questionPapers?: AcademicQuestionPaperCreateNestedManyWithoutAcademicTestItemInput
     projects?: AcademicTestProjectCreateNestedManyWithoutAcademicTestItemInput
   }
@@ -117251,6 +117459,11 @@ export namespace Prisma {
     sequence: number
     testType: $Enums.AcademicTestType
     requiredProgress?: number
+    testDate?: string | null
+    testStartTime?: string | null
+    testEndTime?: string | null
+    projectStartDate?: string | null
+    projectEndDate?: string | null
     questionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutAcademicTestItemInput
     projects?: AcademicTestProjectUncheckedCreateNestedManyWithoutAcademicTestItemInput
   }
@@ -117395,6 +117608,11 @@ export namespace Prisma {
     sequence?: IntFilter<"AcademicTestItem"> | number
     testType?: EnumAcademicTestTypeFilter<"AcademicTestItem"> | $Enums.AcademicTestType
     requiredProgress?: IntFilter<"AcademicTestItem"> | number
+    testDate?: StringNullableFilter<"AcademicTestItem"> | string | null
+    testStartTime?: StringNullableFilter<"AcademicTestItem"> | string | null
+    testEndTime?: StringNullableFilter<"AcademicTestItem"> | string | null
+    projectStartDate?: StringNullableFilter<"AcademicTestItem"> | string | null
+    projectEndDate?: StringNullableFilter<"AcademicTestItem"> | string | null
   }
 
   export type AcademicTestBatchUpsertWithWhereUniqueWithoutAcademicTestInput = {
@@ -117790,6 +118008,11 @@ export namespace Prisma {
     sequence: number
     testType: $Enums.AcademicTestType
     requiredProgress?: number
+    testDate?: string | null
+    testStartTime?: string | null
+    testEndTime?: string | null
+    projectStartDate?: string | null
+    projectEndDate?: string | null
     academicTest: AcademicTestCreateNestedOneWithoutItemsInput
     projects?: AcademicTestProjectCreateNestedManyWithoutAcademicTestItemInput
   }
@@ -117800,6 +118023,11 @@ export namespace Prisma {
     sequence: number
     testType: $Enums.AcademicTestType
     requiredProgress?: number
+    testDate?: string | null
+    testStartTime?: string | null
+    testEndTime?: string | null
+    projectStartDate?: string | null
+    projectEndDate?: string | null
     projects?: AcademicTestProjectUncheckedCreateNestedManyWithoutAcademicTestItemInput
   }
 
@@ -118016,6 +118244,11 @@ export namespace Prisma {
     sequence?: IntFieldUpdateOperationsInput | number
     testType?: EnumAcademicTestTypeFieldUpdateOperationsInput | $Enums.AcademicTestType
     requiredProgress?: IntFieldUpdateOperationsInput | number
+    testDate?: NullableStringFieldUpdateOperationsInput | string | null
+    testStartTime?: NullableStringFieldUpdateOperationsInput | string | null
+    testEndTime?: NullableStringFieldUpdateOperationsInput | string | null
+    projectStartDate?: NullableStringFieldUpdateOperationsInput | string | null
+    projectEndDate?: NullableStringFieldUpdateOperationsInput | string | null
     academicTest?: AcademicTestUpdateOneRequiredWithoutItemsNestedInput
     projects?: AcademicTestProjectUpdateManyWithoutAcademicTestItemNestedInput
   }
@@ -118026,6 +118259,11 @@ export namespace Prisma {
     sequence?: IntFieldUpdateOperationsInput | number
     testType?: EnumAcademicTestTypeFieldUpdateOperationsInput | $Enums.AcademicTestType
     requiredProgress?: IntFieldUpdateOperationsInput | number
+    testDate?: NullableStringFieldUpdateOperationsInput | string | null
+    testStartTime?: NullableStringFieldUpdateOperationsInput | string | null
+    testEndTime?: NullableStringFieldUpdateOperationsInput | string | null
+    projectStartDate?: NullableStringFieldUpdateOperationsInput | string | null
+    projectEndDate?: NullableStringFieldUpdateOperationsInput | string | null
     projects?: AcademicTestProjectUncheckedUpdateManyWithoutAcademicTestItemNestedInput
   }
 
@@ -118307,6 +118545,11 @@ export namespace Prisma {
     sequence: number
     testType: $Enums.AcademicTestType
     requiredProgress?: number
+    testDate?: string | null
+    testStartTime?: string | null
+    testEndTime?: string | null
+    projectStartDate?: string | null
+    projectEndDate?: string | null
     academicTest: AcademicTestCreateNestedOneWithoutItemsInput
     questionPapers?: AcademicQuestionPaperCreateNestedManyWithoutAcademicTestItemInput
   }
@@ -118317,6 +118560,11 @@ export namespace Prisma {
     sequence: number
     testType: $Enums.AcademicTestType
     requiredProgress?: number
+    testDate?: string | null
+    testStartTime?: string | null
+    testEndTime?: string | null
+    projectStartDate?: string | null
+    projectEndDate?: string | null
     questionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutAcademicTestItemInput
   }
 
@@ -118497,6 +118745,11 @@ export namespace Prisma {
     sequence?: IntFieldUpdateOperationsInput | number
     testType?: EnumAcademicTestTypeFieldUpdateOperationsInput | $Enums.AcademicTestType
     requiredProgress?: IntFieldUpdateOperationsInput | number
+    testDate?: NullableStringFieldUpdateOperationsInput | string | null
+    testStartTime?: NullableStringFieldUpdateOperationsInput | string | null
+    testEndTime?: NullableStringFieldUpdateOperationsInput | string | null
+    projectStartDate?: NullableStringFieldUpdateOperationsInput | string | null
+    projectEndDate?: NullableStringFieldUpdateOperationsInput | string | null
     academicTest?: AcademicTestUpdateOneRequiredWithoutItemsNestedInput
     questionPapers?: AcademicQuestionPaperUpdateManyWithoutAcademicTestItemNestedInput
   }
@@ -118507,6 +118760,11 @@ export namespace Prisma {
     sequence?: IntFieldUpdateOperationsInput | number
     testType?: EnumAcademicTestTypeFieldUpdateOperationsInput | $Enums.AcademicTestType
     requiredProgress?: IntFieldUpdateOperationsInput | number
+    testDate?: NullableStringFieldUpdateOperationsInput | string | null
+    testStartTime?: NullableStringFieldUpdateOperationsInput | string | null
+    testEndTime?: NullableStringFieldUpdateOperationsInput | string | null
+    projectStartDate?: NullableStringFieldUpdateOperationsInput | string | null
+    projectEndDate?: NullableStringFieldUpdateOperationsInput | string | null
     questionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutAcademicTestItemNestedInput
   }
 
@@ -134989,6 +135247,11 @@ export namespace Prisma {
     sequence: number
     testType: $Enums.AcademicTestType
     requiredProgress?: number
+    testDate?: string | null
+    testStartTime?: string | null
+    testEndTime?: string | null
+    projectStartDate?: string | null
+    projectEndDate?: string | null
   }
 
   export type AcademicTestBatchCreateManyAcademicTestInput = {
@@ -135001,6 +135264,11 @@ export namespace Prisma {
     sequence?: IntFieldUpdateOperationsInput | number
     testType?: EnumAcademicTestTypeFieldUpdateOperationsInput | $Enums.AcademicTestType
     requiredProgress?: IntFieldUpdateOperationsInput | number
+    testDate?: NullableStringFieldUpdateOperationsInput | string | null
+    testStartTime?: NullableStringFieldUpdateOperationsInput | string | null
+    testEndTime?: NullableStringFieldUpdateOperationsInput | string | null
+    projectStartDate?: NullableStringFieldUpdateOperationsInput | string | null
+    projectEndDate?: NullableStringFieldUpdateOperationsInput | string | null
     questionPapers?: AcademicQuestionPaperUpdateManyWithoutAcademicTestItemNestedInput
     projects?: AcademicTestProjectUpdateManyWithoutAcademicTestItemNestedInput
   }
@@ -135010,6 +135278,11 @@ export namespace Prisma {
     sequence?: IntFieldUpdateOperationsInput | number
     testType?: EnumAcademicTestTypeFieldUpdateOperationsInput | $Enums.AcademicTestType
     requiredProgress?: IntFieldUpdateOperationsInput | number
+    testDate?: NullableStringFieldUpdateOperationsInput | string | null
+    testStartTime?: NullableStringFieldUpdateOperationsInput | string | null
+    testEndTime?: NullableStringFieldUpdateOperationsInput | string | null
+    projectStartDate?: NullableStringFieldUpdateOperationsInput | string | null
+    projectEndDate?: NullableStringFieldUpdateOperationsInput | string | null
     questionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutAcademicTestItemNestedInput
     projects?: AcademicTestProjectUncheckedUpdateManyWithoutAcademicTestItemNestedInput
   }
@@ -135019,6 +135292,11 @@ export namespace Prisma {
     sequence?: IntFieldUpdateOperationsInput | number
     testType?: EnumAcademicTestTypeFieldUpdateOperationsInput | $Enums.AcademicTestType
     requiredProgress?: IntFieldUpdateOperationsInput | number
+    testDate?: NullableStringFieldUpdateOperationsInput | string | null
+    testStartTime?: NullableStringFieldUpdateOperationsInput | string | null
+    testEndTime?: NullableStringFieldUpdateOperationsInput | string | null
+    projectStartDate?: NullableStringFieldUpdateOperationsInput | string | null
+    projectEndDate?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type AcademicTestBatchUpdateWithoutAcademicTestInput = {

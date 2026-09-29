@@ -12,7 +12,11 @@ function statusFor(item, paper, project) { const required = requiredParts(item.t
 
 async function scopeItem(actor, itemId, branchBatchId) {
   const facultyIds = idsFor(actor);
-  const item = await prisma.academicTestItem.findFirst({ where: { id: text(itemId), academicTest: { batches: { some: { branchBatchId: text(branchBatchId), branchBatch: { status: "ACTIVE", OR: [{ facultyId: { in: facultyIds } }, { branchFaculty: { facultyId: { in: facultyIds }, status: "ACTIVE" } }] } } } } }, include: { academicTest: { include: { branchCourse: true } } } });
+  let item = await prisma.academicTestItem.findFirst({ where: { id: text(itemId), academicTest: { batches: { some: { branchBatchId: text(branchBatchId), branchBatch: { status: "ACTIVE", OR: [{ facultyId: { in: facultyIds } }, { branchFaculty: { facultyId: { in: facultyIds }, status: "ACTIVE" } }] } } } } }, include: { academicTest: { include: { branchCourse: true } } } });
+  if (!item) {
+    const retest = await prisma.academicScheduledTest.findFirst({ where: { academicTestItemId: text(itemId), branchBatchId: text(branchBatchId), isRetest: true, facultyId: { in: facultyIds }, status: { not: "CANCELLED" } }, select: { academicTestItemId: true } });
+    if (retest) item = await prisma.academicTestItem.findUnique({ where: { id: retest.academicTestItemId }, include: { academicTest: { include: { branchCourse: true } } } });
+  }
   if (!item) throw new AppError("This Academic Test is not assigned to you.", 403);
   const batch = await prisma.branchBatch.findFirst({ where: { id: text(branchBatchId), status: "ACTIVE", branchCourseId: item.academicTest.branchCourseId } });
   if (!batch) throw new AppError("Academic Test batch not found.", 404);

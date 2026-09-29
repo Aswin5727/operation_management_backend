@@ -516,6 +516,11 @@ model AcademicTestItem {
   sequence         Int
   testType         AcademicTestType
   requiredProgress Int                     @default(0)
+  testDate         String?
+  testStartTime    String?
+  testEndTime      String?
+  projectStartDate String?
+  projectEndDate   String?
   academicTest     AcademicTest            @relation(fields: [academicTestId], references: [id], onDelete: Cascade)
   questionPapers   AcademicQuestionPaper[]
   projects         AcademicTestProject[]
@@ -608,6 +613,8 @@ model AcademicScheduledTest {
   testDate           String
   startTime          String
   endTime            String
+  projectStartDate   String?
+  projectEndDate     String?
   status             String   @default("SCHEDULED")
   isRetest           Boolean  @default(false)
   originalScheduleId String?

@@ -455,7 +455,12 @@ exports.Prisma.AcademicTestItemScalarFieldEnum = {
   academicTestId: 'academicTestId',
   sequence: 'sequence',
   testType: 'testType',
-  requiredProgress: 'requiredProgress'
+  requiredProgress: 'requiredProgress',
+  testDate: 'testDate',
+  testStartTime: 'testStartTime',
+  testEndTime: 'testEndTime',
+  projectStartDate: 'projectStartDate',
+  projectEndDate: 'projectEndDate'
 };
 
 exports.Prisma.AcademicTestBatchScalarFieldEnum = {
@@ -518,6 +523,8 @@ exports.Prisma.AcademicScheduledTestScalarFieldEnum = {
   testDate: 'testDate',
   startTime: 'startTime',
   endTime: 'endTime',
+  projectStartDate: 'projectStartDate',
+  projectEndDate: 'projectEndDate',
   status: 'status',
   isRetest: 'isRetest',
   originalScheduleId: 'originalScheduleId',
