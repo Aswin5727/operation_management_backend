@@ -32817,12 +32817,14 @@ export namespace Prisma {
     marksPerQuestion: number | null
     totalQuestions: number | null
     totalMarks: number | null
+    passMark: number | null
   }
 
   export type AcademicQuestionPaperSumAggregateOutputType = {
     marksPerQuestion: number | null
     totalQuestions: number | null
     totalMarks: number | null
+    passMark: number | null
   }
 
   export type AcademicQuestionPaperMinAggregateOutputType = {
@@ -32835,6 +32837,7 @@ export namespace Prisma {
     marksPerQuestion: number | null
     totalQuestions: number | null
     totalMarks: number | null
+    passMark: number | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -32849,6 +32852,7 @@ export namespace Prisma {
     marksPerQuestion: number | null
     totalQuestions: number | null
     totalMarks: number | null
+    passMark: number | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -32863,6 +32867,7 @@ export namespace Prisma {
     marksPerQuestion: number
     totalQuestions: number
     totalMarks: number
+    passMark: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -32873,12 +32878,14 @@ export namespace Prisma {
     marksPerQuestion?: true
     totalQuestions?: true
     totalMarks?: true
+    passMark?: true
   }
 
   export type AcademicQuestionPaperSumAggregateInputType = {
     marksPerQuestion?: true
     totalQuestions?: true
     totalMarks?: true
+    passMark?: true
   }
 
   export type AcademicQuestionPaperMinAggregateInputType = {
@@ -32891,6 +32898,7 @@ export namespace Prisma {
     marksPerQuestion?: true
     totalQuestions?: true
     totalMarks?: true
+    passMark?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -32905,6 +32913,7 @@ export namespace Prisma {
     marksPerQuestion?: true
     totalQuestions?: true
     totalMarks?: true
+    passMark?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -32919,6 +32928,7 @@ export namespace Prisma {
     marksPerQuestion?: true
     totalQuestions?: true
     totalMarks?: true
+    passMark?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -33020,6 +33030,7 @@ export namespace Prisma {
     marksPerQuestion: number
     totalQuestions: number
     totalMarks: number
+    passMark: number
     createdAt: Date
     updatedAt: Date
     _count: AcademicQuestionPaperCountAggregateOutputType | null
@@ -33053,6 +33064,7 @@ export namespace Prisma {
     marksPerQuestion?: boolean
     totalQuestions?: boolean
     totalMarks?: boolean
+    passMark?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     academicTestItem?: boolean | AcademicTestItemDefaultArgs<ExtArgs>
@@ -33072,6 +33084,7 @@ export namespace Prisma {
     marksPerQuestion?: boolean
     totalQuestions?: boolean
     totalMarks?: boolean
+    passMark?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     academicTestItem?: boolean | AcademicTestItemDefaultArgs<ExtArgs>
@@ -33089,6 +33102,7 @@ export namespace Prisma {
     marksPerQuestion?: boolean
     totalQuestions?: boolean
     totalMarks?: boolean
+    passMark?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     academicTestItem?: boolean | AcademicTestItemDefaultArgs<ExtArgs>
@@ -33106,11 +33120,12 @@ export namespace Prisma {
     marksPerQuestion?: boolean
     totalQuestions?: boolean
     totalMarks?: boolean
+    passMark?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type AcademicQuestionPaperOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "academicTestItemId" | "branchCourseId" | "branchBatchId" | "createdBy" | "status" | "marksPerQuestion" | "totalQuestions" | "totalMarks" | "createdAt" | "updatedAt", ExtArgs["result"]["academicQuestionPaper"]>
+  export type AcademicQuestionPaperOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "academicTestItemId" | "branchCourseId" | "branchBatchId" | "createdBy" | "status" | "marksPerQuestion" | "totalQuestions" | "totalMarks" | "passMark" | "createdAt" | "updatedAt", ExtArgs["result"]["academicQuestionPaper"]>
   export type AcademicQuestionPaperInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     academicTestItem?: boolean | AcademicTestItemDefaultArgs<ExtArgs>
     branchCourse?: boolean | BranchCourseDefaultArgs<ExtArgs>
@@ -33147,6 +33162,7 @@ export namespace Prisma {
       marksPerQuestion: number
       totalQuestions: number
       totalMarks: number
+      passMark: number
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["academicQuestionPaper"]>
@@ -33585,6 +33601,7 @@ export namespace Prisma {
     readonly marksPerQuestion: FieldRef<"AcademicQuestionPaper", 'Int'>
     readonly totalQuestions: FieldRef<"AcademicQuestionPaper", 'Int'>
     readonly totalMarks: FieldRef<"AcademicQuestionPaper", 'Int'>
+    readonly passMark: FieldRef<"AcademicQuestionPaper", 'Int'>
     readonly createdAt: FieldRef<"AcademicQuestionPaper", 'DateTime'>
     readonly updatedAt: FieldRef<"AcademicQuestionPaper", 'DateTime'>
   }
@@ -37703,6 +37720,7 @@ export namespace Prisma {
     totalMarks: number | null
     obtainedMarks: number | null
     percentage: number | null
+    resultStatus: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -37721,6 +37739,7 @@ export namespace Prisma {
     totalMarks: number | null
     obtainedMarks: number | null
     percentage: number | null
+    resultStatus: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -37739,6 +37758,7 @@ export namespace Prisma {
     totalMarks: number
     obtainedMarks: number
     percentage: number
+    resultStatus: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -37781,6 +37801,7 @@ export namespace Prisma {
     totalMarks?: true
     obtainedMarks?: true
     percentage?: true
+    resultStatus?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -37799,6 +37820,7 @@ export namespace Prisma {
     totalMarks?: true
     obtainedMarks?: true
     percentage?: true
+    resultStatus?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -37817,6 +37839,7 @@ export namespace Prisma {
     totalMarks?: true
     obtainedMarks?: true
     percentage?: true
+    resultStatus?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -37922,6 +37945,7 @@ export namespace Prisma {
     totalMarks: number
     obtainedMarks: number
     percentage: number
+    resultStatus: string | null
     createdAt: Date
     updatedAt: Date
     _count: AcademicTestSubmissionCountAggregateOutputType | null
@@ -37959,6 +37983,7 @@ export namespace Prisma {
     totalMarks?: boolean
     obtainedMarks?: boolean
     percentage?: boolean
+    resultStatus?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["academicTestSubmission"]>
@@ -37977,6 +38002,7 @@ export namespace Prisma {
     totalMarks?: boolean
     obtainedMarks?: boolean
     percentage?: boolean
+    resultStatus?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["academicTestSubmission"]>
@@ -37995,6 +38021,7 @@ export namespace Prisma {
     totalMarks?: boolean
     obtainedMarks?: boolean
     percentage?: boolean
+    resultStatus?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["academicTestSubmission"]>
@@ -38013,11 +38040,12 @@ export namespace Prisma {
     totalMarks?: boolean
     obtainedMarks?: boolean
     percentage?: boolean
+    resultStatus?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type AcademicTestSubmissionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "academicTestId" | "branchStudentId" | "submittedAt" | "status" | "totalQuestions" | "attemptedCount" | "correctCount" | "wrongCount" | "unmarkedCount" | "totalMarks" | "obtainedMarks" | "percentage" | "createdAt" | "updatedAt", ExtArgs["result"]["academicTestSubmission"]>
+  export type AcademicTestSubmissionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "academicTestId" | "branchStudentId" | "submittedAt" | "status" | "totalQuestions" | "attemptedCount" | "correctCount" | "wrongCount" | "unmarkedCount" | "totalMarks" | "obtainedMarks" | "percentage" | "resultStatus" | "createdAt" | "updatedAt", ExtArgs["result"]["academicTestSubmission"]>
 
   export type $AcademicTestSubmissionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "AcademicTestSubmission"
@@ -38036,6 +38064,7 @@ export namespace Prisma {
       totalMarks: number
       obtainedMarks: number
       percentage: number
+      resultStatus: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["academicTestSubmission"]>
@@ -38474,6 +38503,7 @@ export namespace Prisma {
     readonly totalMarks: FieldRef<"AcademicTestSubmission", 'Int'>
     readonly obtainedMarks: FieldRef<"AcademicTestSubmission", 'Int'>
     readonly percentage: FieldRef<"AcademicTestSubmission", 'Float'>
+    readonly resultStatus: FieldRef<"AcademicTestSubmission", 'String'>
     readonly createdAt: FieldRef<"AcademicTestSubmission", 'DateTime'>
     readonly updatedAt: FieldRef<"AcademicTestSubmission", 'DateTime'>
   }
@@ -84248,6 +84278,7 @@ export namespace Prisma {
     marksPerQuestion: 'marksPerQuestion',
     totalQuestions: 'totalQuestions',
     totalMarks: 'totalMarks',
+    passMark: 'passMark',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -84331,6 +84362,7 @@ export namespace Prisma {
     totalMarks: 'totalMarks',
     obtainedMarks: 'obtainedMarks',
     percentage: 'percentage',
+    resultStatus: 'resultStatus',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -87672,6 +87704,7 @@ export namespace Prisma {
     marksPerQuestion?: IntFilter<"AcademicQuestionPaper"> | number
     totalQuestions?: IntFilter<"AcademicQuestionPaper"> | number
     totalMarks?: IntFilter<"AcademicQuestionPaper"> | number
+    passMark?: IntFilter<"AcademicQuestionPaper"> | number
     createdAt?: DateTimeFilter<"AcademicQuestionPaper"> | Date | string
     updatedAt?: DateTimeFilter<"AcademicQuestionPaper"> | Date | string
     academicTestItem?: XOR<AcademicTestItemScalarRelationFilter, AcademicTestItemWhereInput>
@@ -87690,6 +87723,7 @@ export namespace Prisma {
     marksPerQuestion?: SortOrder
     totalQuestions?: SortOrder
     totalMarks?: SortOrder
+    passMark?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     academicTestItem?: AcademicTestItemOrderByWithRelationInput
@@ -87712,6 +87746,7 @@ export namespace Prisma {
     marksPerQuestion?: IntFilter<"AcademicQuestionPaper"> | number
     totalQuestions?: IntFilter<"AcademicQuestionPaper"> | number
     totalMarks?: IntFilter<"AcademicQuestionPaper"> | number
+    passMark?: IntFilter<"AcademicQuestionPaper"> | number
     createdAt?: DateTimeFilter<"AcademicQuestionPaper"> | Date | string
     updatedAt?: DateTimeFilter<"AcademicQuestionPaper"> | Date | string
     academicTestItem?: XOR<AcademicTestItemScalarRelationFilter, AcademicTestItemWhereInput>
@@ -87730,6 +87765,7 @@ export namespace Prisma {
     marksPerQuestion?: SortOrder
     totalQuestions?: SortOrder
     totalMarks?: SortOrder
+    passMark?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: AcademicQuestionPaperCountOrderByAggregateInput
@@ -87752,6 +87788,7 @@ export namespace Prisma {
     marksPerQuestion?: IntWithAggregatesFilter<"AcademicQuestionPaper"> | number
     totalQuestions?: IntWithAggregatesFilter<"AcademicQuestionPaper"> | number
     totalMarks?: IntWithAggregatesFilter<"AcademicQuestionPaper"> | number
+    passMark?: IntWithAggregatesFilter<"AcademicQuestionPaper"> | number
     createdAt?: DateTimeWithAggregatesFilter<"AcademicQuestionPaper"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"AcademicQuestionPaper"> | Date | string
   }
@@ -88095,6 +88132,7 @@ export namespace Prisma {
     totalMarks?: IntFilter<"AcademicTestSubmission"> | number
     obtainedMarks?: IntFilter<"AcademicTestSubmission"> | number
     percentage?: FloatFilter<"AcademicTestSubmission"> | number
+    resultStatus?: StringNullableFilter<"AcademicTestSubmission"> | string | null
     createdAt?: DateTimeFilter<"AcademicTestSubmission"> | Date | string
     updatedAt?: DateTimeFilter<"AcademicTestSubmission"> | Date | string
   }
@@ -88113,6 +88151,7 @@ export namespace Prisma {
     totalMarks?: SortOrder
     obtainedMarks?: SortOrder
     percentage?: SortOrder
+    resultStatus?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -88135,6 +88174,7 @@ export namespace Prisma {
     totalMarks?: IntFilter<"AcademicTestSubmission"> | number
     obtainedMarks?: IntFilter<"AcademicTestSubmission"> | number
     percentage?: FloatFilter<"AcademicTestSubmission"> | number
+    resultStatus?: StringNullableFilter<"AcademicTestSubmission"> | string | null
     createdAt?: DateTimeFilter<"AcademicTestSubmission"> | Date | string
     updatedAt?: DateTimeFilter<"AcademicTestSubmission"> | Date | string
   }, "id" | "academicTestId_branchStudentId">
@@ -88153,6 +88193,7 @@ export namespace Prisma {
     totalMarks?: SortOrder
     obtainedMarks?: SortOrder
     percentage?: SortOrder
+    resultStatus?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: AcademicTestSubmissionCountOrderByAggregateInput
@@ -88179,6 +88220,7 @@ export namespace Prisma {
     totalMarks?: IntWithAggregatesFilter<"AcademicTestSubmission"> | number
     obtainedMarks?: IntWithAggregatesFilter<"AcademicTestSubmission"> | number
     percentage?: FloatWithAggregatesFilter<"AcademicTestSubmission"> | number
+    resultStatus?: StringNullableWithAggregatesFilter<"AcademicTestSubmission"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"AcademicTestSubmission"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"AcademicTestSubmission"> | Date | string
   }
@@ -94995,6 +95037,7 @@ export namespace Prisma {
     marksPerQuestion?: number
     totalQuestions?: number
     totalMarks?: number
+    passMark?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     academicTestItem: AcademicTestItemCreateNestedOneWithoutQuestionPapersInput
@@ -95013,6 +95056,7 @@ export namespace Prisma {
     marksPerQuestion?: number
     totalQuestions?: number
     totalMarks?: number
+    passMark?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     questions?: AcademicQuestionUncheckedCreateNestedManyWithoutQuestionPaperInput
@@ -95025,6 +95069,7 @@ export namespace Prisma {
     marksPerQuestion?: IntFieldUpdateOperationsInput | number
     totalQuestions?: IntFieldUpdateOperationsInput | number
     totalMarks?: IntFieldUpdateOperationsInput | number
+    passMark?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     academicTestItem?: AcademicTestItemUpdateOneRequiredWithoutQuestionPapersNestedInput
@@ -95043,6 +95088,7 @@ export namespace Prisma {
     marksPerQuestion?: IntFieldUpdateOperationsInput | number
     totalQuestions?: IntFieldUpdateOperationsInput | number
     totalMarks?: IntFieldUpdateOperationsInput | number
+    passMark?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     questions?: AcademicQuestionUncheckedUpdateManyWithoutQuestionPaperNestedInput
@@ -95058,6 +95104,7 @@ export namespace Prisma {
     marksPerQuestion?: number
     totalQuestions?: number
     totalMarks?: number
+    passMark?: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -95069,6 +95116,7 @@ export namespace Prisma {
     marksPerQuestion?: IntFieldUpdateOperationsInput | number
     totalQuestions?: IntFieldUpdateOperationsInput | number
     totalMarks?: IntFieldUpdateOperationsInput | number
+    passMark?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -95083,6 +95131,7 @@ export namespace Prisma {
     marksPerQuestion?: IntFieldUpdateOperationsInput | number
     totalQuestions?: IntFieldUpdateOperationsInput | number
     totalMarks?: IntFieldUpdateOperationsInput | number
+    passMark?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -95468,6 +95517,7 @@ export namespace Prisma {
     totalMarks: number
     obtainedMarks?: number
     percentage?: number
+    resultStatus?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -95486,6 +95536,7 @@ export namespace Prisma {
     totalMarks: number
     obtainedMarks?: number
     percentage?: number
+    resultStatus?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -95504,6 +95555,7 @@ export namespace Prisma {
     totalMarks?: IntFieldUpdateOperationsInput | number
     obtainedMarks?: IntFieldUpdateOperationsInput | number
     percentage?: FloatFieldUpdateOperationsInput | number
+    resultStatus?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -95522,6 +95574,7 @@ export namespace Prisma {
     totalMarks?: IntFieldUpdateOperationsInput | number
     obtainedMarks?: IntFieldUpdateOperationsInput | number
     percentage?: FloatFieldUpdateOperationsInput | number
+    resultStatus?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -95540,6 +95593,7 @@ export namespace Prisma {
     totalMarks: number
     obtainedMarks?: number
     percentage?: number
+    resultStatus?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -95558,6 +95612,7 @@ export namespace Prisma {
     totalMarks?: IntFieldUpdateOperationsInput | number
     obtainedMarks?: IntFieldUpdateOperationsInput | number
     percentage?: FloatFieldUpdateOperationsInput | number
+    resultStatus?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -95576,6 +95631,7 @@ export namespace Prisma {
     totalMarks?: IntFieldUpdateOperationsInput | number
     obtainedMarks?: IntFieldUpdateOperationsInput | number
     percentage?: FloatFieldUpdateOperationsInput | number
+    resultStatus?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -102482,6 +102538,7 @@ export namespace Prisma {
     marksPerQuestion?: SortOrder
     totalQuestions?: SortOrder
     totalMarks?: SortOrder
+    passMark?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -102490,6 +102547,7 @@ export namespace Prisma {
     marksPerQuestion?: SortOrder
     totalQuestions?: SortOrder
     totalMarks?: SortOrder
+    passMark?: SortOrder
   }
 
   export type AcademicQuestionPaperMaxOrderByAggregateInput = {
@@ -102502,6 +102560,7 @@ export namespace Prisma {
     marksPerQuestion?: SortOrder
     totalQuestions?: SortOrder
     totalMarks?: SortOrder
+    passMark?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -102516,6 +102575,7 @@ export namespace Prisma {
     marksPerQuestion?: SortOrder
     totalQuestions?: SortOrder
     totalMarks?: SortOrder
+    passMark?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -102524,6 +102584,7 @@ export namespace Prisma {
     marksPerQuestion?: SortOrder
     totalQuestions?: SortOrder
     totalMarks?: SortOrder
+    passMark?: SortOrder
   }
 
   export type EnumAcademicPreparationStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -102771,6 +102832,7 @@ export namespace Prisma {
     totalMarks?: SortOrder
     obtainedMarks?: SortOrder
     percentage?: SortOrder
+    resultStatus?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -102800,6 +102862,7 @@ export namespace Prisma {
     totalMarks?: SortOrder
     obtainedMarks?: SortOrder
     percentage?: SortOrder
+    resultStatus?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -102818,6 +102881,7 @@ export namespace Prisma {
     totalMarks?: SortOrder
     obtainedMarks?: SortOrder
     percentage?: SortOrder
+    resultStatus?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -116594,6 +116658,7 @@ export namespace Prisma {
     marksPerQuestion?: number
     totalQuestions?: number
     totalMarks?: number
+    passMark?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     academicTestItem: AcademicTestItemCreateNestedOneWithoutQuestionPapersInput
@@ -116610,6 +116675,7 @@ export namespace Prisma {
     marksPerQuestion?: number
     totalQuestions?: number
     totalMarks?: number
+    passMark?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     questions?: AcademicQuestionUncheckedCreateNestedManyWithoutQuestionPaperInput
@@ -117033,6 +117099,7 @@ export namespace Prisma {
     marksPerQuestion?: IntFilter<"AcademicQuestionPaper"> | number
     totalQuestions?: IntFilter<"AcademicQuestionPaper"> | number
     totalMarks?: IntFilter<"AcademicQuestionPaper"> | number
+    passMark?: IntFilter<"AcademicQuestionPaper"> | number
     createdAt?: DateTimeFilter<"AcademicQuestionPaper"> | Date | string
     updatedAt?: DateTimeFilter<"AcademicQuestionPaper"> | Date | string
   }
@@ -118551,6 +118618,7 @@ export namespace Prisma {
     marksPerQuestion?: number
     totalQuestions?: number
     totalMarks?: number
+    passMark?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     academicTestItem: AcademicTestItemCreateNestedOneWithoutQuestionPapersInput
@@ -118567,6 +118635,7 @@ export namespace Prisma {
     marksPerQuestion?: number
     totalQuestions?: number
     totalMarks?: number
+    passMark?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     questions?: AcademicQuestionUncheckedCreateNestedManyWithoutQuestionPaperInput
@@ -119241,6 +119310,7 @@ export namespace Prisma {
     marksPerQuestion?: number
     totalQuestions?: number
     totalMarks?: number
+    passMark?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     branchCourse: BranchCourseCreateNestedOneWithoutAcademicQuestionPapersInput
@@ -119257,6 +119327,7 @@ export namespace Prisma {
     marksPerQuestion?: number
     totalQuestions?: number
     totalMarks?: number
+    passMark?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     questions?: AcademicQuestionUncheckedCreateNestedManyWithoutQuestionPaperInput
@@ -120055,6 +120126,7 @@ export namespace Prisma {
     marksPerQuestion?: number
     totalQuestions?: number
     totalMarks?: number
+    passMark?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     academicTestItem: AcademicTestItemCreateNestedOneWithoutQuestionPapersInput
@@ -120072,6 +120144,7 @@ export namespace Prisma {
     marksPerQuestion?: number
     totalQuestions?: number
     totalMarks?: number
+    passMark?: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -120099,6 +120172,7 @@ export namespace Prisma {
     marksPerQuestion?: IntFieldUpdateOperationsInput | number
     totalQuestions?: IntFieldUpdateOperationsInput | number
     totalMarks?: IntFieldUpdateOperationsInput | number
+    passMark?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     academicTestItem?: AcademicTestItemUpdateOneRequiredWithoutQuestionPapersNestedInput
@@ -120116,6 +120190,7 @@ export namespace Prisma {
     marksPerQuestion?: IntFieldUpdateOperationsInput | number
     totalQuestions?: IntFieldUpdateOperationsInput | number
     totalMarks?: IntFieldUpdateOperationsInput | number
+    passMark?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -135437,6 +135512,7 @@ export namespace Prisma {
     marksPerQuestion?: number
     totalQuestions?: number
     totalMarks?: number
+    passMark?: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -136178,6 +136254,7 @@ export namespace Prisma {
     marksPerQuestion?: IntFieldUpdateOperationsInput | number
     totalQuestions?: IntFieldUpdateOperationsInput | number
     totalMarks?: IntFieldUpdateOperationsInput | number
+    passMark?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     academicTestItem?: AcademicTestItemUpdateOneRequiredWithoutQuestionPapersNestedInput
@@ -136194,6 +136271,7 @@ export namespace Prisma {
     marksPerQuestion?: IntFieldUpdateOperationsInput | number
     totalQuestions?: IntFieldUpdateOperationsInput | number
     totalMarks?: IntFieldUpdateOperationsInput | number
+    passMark?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     questions?: AcademicQuestionUncheckedUpdateManyWithoutQuestionPaperNestedInput
@@ -136208,6 +136286,7 @@ export namespace Prisma {
     marksPerQuestion?: IntFieldUpdateOperationsInput | number
     totalQuestions?: IntFieldUpdateOperationsInput | number
     totalMarks?: IntFieldUpdateOperationsInput | number
+    passMark?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -136613,6 +136692,7 @@ export namespace Prisma {
     marksPerQuestion?: number
     totalQuestions?: number
     totalMarks?: number
+    passMark?: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -136746,6 +136826,7 @@ export namespace Prisma {
     marksPerQuestion?: IntFieldUpdateOperationsInput | number
     totalQuestions?: IntFieldUpdateOperationsInput | number
     totalMarks?: IntFieldUpdateOperationsInput | number
+    passMark?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     academicTestItem?: AcademicTestItemUpdateOneRequiredWithoutQuestionPapersNestedInput
@@ -136762,6 +136843,7 @@ export namespace Prisma {
     marksPerQuestion?: IntFieldUpdateOperationsInput | number
     totalQuestions?: IntFieldUpdateOperationsInput | number
     totalMarks?: IntFieldUpdateOperationsInput | number
+    passMark?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     questions?: AcademicQuestionUncheckedUpdateManyWithoutQuestionPaperNestedInput
@@ -136776,6 +136858,7 @@ export namespace Prisma {
     marksPerQuestion?: IntFieldUpdateOperationsInput | number
     totalQuestions?: IntFieldUpdateOperationsInput | number
     totalMarks?: IntFieldUpdateOperationsInput | number
+    passMark?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -136903,6 +136986,7 @@ export namespace Prisma {
     marksPerQuestion?: number
     totalQuestions?: number
     totalMarks?: number
+    passMark?: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -136928,6 +137012,7 @@ export namespace Prisma {
     marksPerQuestion?: IntFieldUpdateOperationsInput | number
     totalQuestions?: IntFieldUpdateOperationsInput | number
     totalMarks?: IntFieldUpdateOperationsInput | number
+    passMark?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     branchCourse?: BranchCourseUpdateOneRequiredWithoutAcademicQuestionPapersNestedInput
@@ -136944,6 +137029,7 @@ export namespace Prisma {
     marksPerQuestion?: IntFieldUpdateOperationsInput | number
     totalQuestions?: IntFieldUpdateOperationsInput | number
     totalMarks?: IntFieldUpdateOperationsInput | number
+    passMark?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     questions?: AcademicQuestionUncheckedUpdateManyWithoutQuestionPaperNestedInput
@@ -136958,6 +137044,7 @@ export namespace Prisma {
     marksPerQuestion?: IntFieldUpdateOperationsInput | number
     totalQuestions?: IntFieldUpdateOperationsInput | number
     totalMarks?: IntFieldUpdateOperationsInput | number
+    passMark?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

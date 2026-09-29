@@ -550,6 +550,7 @@ model AcademicQuestionPaper {
   marksPerQuestion   Int                       @default(1)
   totalQuestions     Int                       @default(0)
   totalMarks         Int                       @default(0)
+  passMark           Int                       @default(0)
   createdAt          DateTime                  @default(now())
   updatedAt          DateTime                  @updatedAt
   academicTestItem   AcademicTestItem          @relation(fields: [academicTestItemId], references: [id], onDelete: Cascade)
@@ -647,6 +648,7 @@ model AcademicTestSubmission {
   totalMarks      Int
   obtainedMarks   Int       @default(0)
   percentage      Float     @default(0)
+  resultStatus    String?
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
 

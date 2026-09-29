@@ -391,7 +391,17 @@ async function academicPublicSchedule(schedule, includeQuestions = false) {
   const item = await prisma.academicTestItem.findUnique({ where: { id: schedule.academicTestItemId }, include: { academicTest: { include: { branchCourse: { select: { id: true, name: true, courseCode: true } } } }, projects: { select: { branchBatchId: true, projectTitle: true, projectDescription: true, projectRequirements: true, projectMarks: true, status: true } } } });
   const paper = await prisma.academicQuestionPaper.findUnique({ where: { id: schedule.questionPaperId }, include: { questions: { orderBy: { questionNumber: "asc" } } } });
   const project = item?.projects?.find((entry) => entry.branchBatchId === schedule.branchBatchId) || item?.projects?.[0];
-  return { ...schedule, testType: item?.testType || "TEST", projectStartDate: schedule.projectStartDate || item?.projectStartDate || null, projectEndDate: schedule.projectEndDate || item?.projectEndDate || null, projectTitle: project?.projectTitle || "", projectDescription: project?.projectDescription || "", projectRequirements: project?.projectRequirements || "", projectMarks: project?.projectMarks || 0, projectStatus: project?.status || "NOT_PREPARED", status: academicScheduleStatus(schedule), testName: schedule.isRetest ? `Test ${schedule.testNumber} - Retest` : `Test ${schedule.testNumber}`, course: item?.academicTest?.branchCourse, totalQuestions: paper?.totalQuestions || 0, totalMarks: paper?.totalMarks || 0, marksPerQuestion: paper?.marksPerQuestion || 0, questions: includeQuestions ? (paper?.questions || []).map(({ correctAnswer, ...question }) => question) : undefined };
+  return { ...schedule, testType: item?.testType || "TEST", projectStartDate: schedule.projectStartDate || item?.projectStartDate || null, projectEndDate: schedule.projectEndDate || item?.projectEndDate || null, projectTitle: project?.projectTitle || "", projectDescription: project?.projectDescription || "", projectRequirements: project?.projectRequirements || "", projectMarks: project?.projectMarks || 0, projectStatus: project?.status || "NOT_PREPARED", status: academicScheduleStatus(schedule), testName: schedule.isRetest ? `Test ${schedule.testNumber} - Retest` : `Test ${schedule.testNumber}`, course: item?.academicTest?.branchCourse, totalQuestions: paper?.totalQuestions || 0, totalMarks: paper?.totalMarks || 0, passMark: paper?.passMark || 0, marksPerQuestion: paper?.marksPerQuestion || 0, questions: includeQuestions ? (paper?.questions || []).map(({ correctAnswer, ...question }) => question) : undefined };
+}
+
+async function academicPassMarkForSchedule(schedule, fallback = 0) {
+  if (Number(fallback || 0) > 0) return Number(fallback);
+  const paper = schedule.questionPaperId ? await prisma.academicQuestionPaper.findUnique({ where: { id: schedule.questionPaperId }, select: { passMark: true } }) : null;
+  if (Number(paper?.passMark || 0) > 0) return Number(paper.passMark);
+  if (!schedule.originalScheduleId) return 0;
+  const root = await prisma.academicScheduledTest.findUnique({ where: { id: schedule.originalScheduleId }, select: { questionPaperId: true } });
+  const rootPaper = root?.questionPaperId ? await prisma.academicQuestionPaper.findUnique({ where: { id: root.questionPaperId }, select: { passMark: true } }) : null;
+  return Number(rootPaper?.passMark || 0);
 }
 
 export async function listStudentAcademicTests(actor) {
@@ -406,7 +416,15 @@ export async function listStudentAcademicTests(actor) {
   ]);
   const byId = new Map(submissions.map((submission) => [submission.academicTestId, submission]));
   const projectById = new Map(projectSubmissions.map((submission) => [submission.academicTestId, submission]));
-  return Promise.all(schedules.map(async (schedule) => ({ ...(await academicPublicSchedule(schedule)), submission: byId.get(schedule.id) || null, projectSubmission: projectById.get(schedule.id) || null })));
+  return Promise.all(schedules.map(async (schedule) => {
+    const publicSchedule = await academicPublicSchedule(schedule);
+    const submission = byId.get(schedule.id) || null;
+    const passMark = await academicPassMarkForSchedule(schedule, publicSchedule.passMark);
+    const resultStatus = submission?.status === "SUBMITTED" && passMark > 0
+      ? Number(submission.obtainedMarks || 0) >= passMark ? "PASS" : "FAIL"
+      : submission?.resultStatus || null;
+    return { ...publicSchedule, passMark, submission: submission ? { ...submission, resultStatus } : null, projectSubmission: projectById.get(schedule.id) || null };
+  }));
 }
 
 function projectScheduleStatus(schedule) {
@@ -497,15 +515,20 @@ export async function submitStudentAcademicTest(actor, id, payload = {}) {
   if (!existing || existing.status === "SUBMITTED") throw new AppError("Start the test before submitting it, or it was already submitted.", 409);
   const selected = payload.answers && typeof payload.answers === "object" ? payload.answers : {};
   const answers = paper.questions.map((question) => { const choice = text(selected[question.id]).toUpperCase() || null; const correct = choice === question.correctAnswer; return { questionId: question.id, selectedAnswer: choice, isCorrect: correct, marksAwarded: correct ? paper.marksPerQuestion : 0 }; });
-  const attempted = answers.filter((answer) => answer.selectedAnswer).length; const correct = answers.filter((answer) => answer.isCorrect).length; const obtained = answers.reduce((total, answer) => total + answer.marksAwarded, 0); const submittedAt = new Date();
-  return prisma.$transaction(async (tx) => { await tx.academicTestAnswer.deleteMany({ where: { submissionId: existing.id } }); await tx.academicTestAnswer.createMany({ data: answers.map((answer) => ({ ...answer, submissionId: existing.id })) }); return tx.academicTestSubmission.update({ where: { id: existing.id }, data: { status: "SUBMITTED", submittedAt, attemptedCount: attempted, correctCount: correct, wrongCount: attempted - correct, unmarkedCount: answers.length - attempted, obtainedMarks: obtained, percentage: paper.totalMarks ? (obtained / paper.totalMarks) * 100 : 0 } }); });
+  const attempted = answers.filter((answer) => answer.selectedAnswer).length; const correct = answers.filter((answer) => answer.isCorrect).length; const obtained = answers.reduce((total, answer) => total + answer.marksAwarded, 0); const resultStatus = Number(paper.passMark || 0) > 0 ? obtained >= Number(paper.passMark) ? "PASS" : "FAIL" : null; const submittedAt = new Date();
+  return prisma.$transaction(async (tx) => { await tx.academicTestAnswer.deleteMany({ where: { submissionId: existing.id } }); await tx.academicTestAnswer.createMany({ data: answers.map((answer) => ({ ...answer, submissionId: existing.id })) }); return tx.academicTestSubmission.update({ where: { id: existing.id }, data: { status: "SUBMITTED", resultStatus, submittedAt, attemptedCount: attempted, correctCount: correct, wrongCount: attempted - correct, unmarkedCount: answers.length - attempted, obtainedMarks: obtained, percentage: paper.totalMarks ? (obtained / paper.totalMarks) * 100 : 0 } }); });
 }
 
 export async function getStudentAcademicResult(actor, id) {
-  const { student } = await academicScheduleForStudent(actor, id);
+  const { student, schedule } = await academicScheduleForStudent(actor, id);
   const result = await prisma.academicTestSubmission.findUnique({ where: { academicTestId_branchStudentId: { academicTestId: text(id), branchStudentId: student.id } } });
   if (!result || result.status !== "SUBMITTED") throw new AppError("Academic Test result not found.", 404);
-  return result;
+  const publicSchedule = await academicPublicSchedule(schedule);
+  const passMark = await academicPassMarkForSchedule(schedule, publicSchedule.passMark);
+  const resultStatus = passMark > 0
+    ? Number(result.obtainedMarks || 0) >= passMark ? "PASS" : "FAIL"
+    : result.resultStatus || null;
+  return { ...result, resultStatus, passMark };
 }
 
 export async function listFacultyScheduledTests(actor) {
@@ -530,10 +553,11 @@ export async function getFacultyAcademicResults(actor, id) {
   const refreshedSubmissions = await prisma.academicTestSubmission.findMany({ where: { academicTestId: schedule.id } });
   const retestSubmissions = retests.length ? await prisma.academicTestSubmission.findMany({ where: { academicTestId: { in: retests.map((retest) => retest.id) } } }) : [];
   const byStudent = new Map(refreshedSubmissions.map((submission) => [submission.branchStudentId, submission]));
+  for (const submission of [...byStudent.values(), ...retestSubmissions]) if (submission.status === "SUBMITTED" && !submission.resultStatus && Number(info.passMark || 0) > 0) submission.resultStatus = Number(submission.obtainedMarks || 0) >= Number(info.passMark) ? "PASS" : "FAIL";
   const projectByStudent = new Map(projectSubmissions.map((submission) => [submission.branchStudentId, submission]));
   const retestByStudent = new Map();
   for (const retest of retests) if (!retestByStudent.has(retest.retestStudentId)) retestByStudent.set(retest.retestStudentId, { schedule: retest, submission: retestSubmissions.find((submission) => submission.academicTestId === retest.id) || null });
-  return { test: info, students: students.map((student) => ({ student, ...(byStudent.get(student.id) || { status: "NOT_SUBMITTED", attemptedCount: 0, correctCount: 0, wrongCount: 0, unmarkedCount: info.totalQuestions, totalMarks: info.totalMarks, obtainedMarks: null, percentage: null, submittedAt: null }), projectSubmission: projectByStudent.get(student.id) || null, retest: retestByStudent.get(student.id) || null })) };
+  return { test: info, students: students.map((student) => ({ student, ...(byStudent.get(student.id) || { status: "NOT_SUBMITTED", resultStatus: null, attemptedCount: 0, correctCount: 0, wrongCount: 0, unmarkedCount: info.totalQuestions, totalMarks: info.totalMarks, obtainedMarks: null, percentage: null, submittedAt: null }), projectSubmission: projectByStudent.get(student.id) || null, retest: retestByStudent.get(student.id) || null })) };
 }
 
 export async function scheduleFacultyAcademicRetest(actor, id, payload = {}) {
@@ -546,8 +570,12 @@ export async function scheduleFacultyAcademicRetest(actor, id, payload = {}) {
   const batch = await prisma.branchBatch.findUnique({ where: { id: original.branchBatchId }, select: { id: true, batchId: true } });
   const student = await prisma.branchStudent.findFirst({ where: { id: studentId, recordStatus: "ACTIVE", OR: [{ batchId: original.branchBatchId }, { batchId: batch?.batchId || "__missing__" }] }, select: { id: true, studentId: true, studentName: true, emailAddress: true, batchId: true } });
   if (!student) throw new AppError("Student is not assigned to this test batch.", 404);
-  const existingSubmission = await prisma.academicTestSubmission.findUnique({ where: { academicTestId_branchStudentId: { academicTestId: original.id, branchStudentId: student.id } }, select: { status: true } });
-  if (existingSubmission?.status === "SUBMITTED") throw new AppError("A submitted student cannot be assigned a retest.", 409);
+  const existingSubmission = await prisma.academicTestSubmission.findUnique({ where: { academicTestId_branchStudentId: { academicTestId: original.id, branchStudentId: student.id } }, select: { status: true, resultStatus: true, obtainedMarks: true } });
+  const rootSchedule = original.originalScheduleId ? await prisma.academicScheduledTest.findUnique({ where: { id: original.originalScheduleId }, select: { academicTestItemId: true } }) : original;
+  const papers = await prisma.academicQuestionPaper.findMany({ where: { academicTestItemId: { in: [...new Set([original.academicTestItemId, rootSchedule?.academicTestItemId].filter(Boolean))] } }, select: { passMark: true } });
+  const passMark = papers.reduce((highest, paper) => Math.max(highest, Number(paper.passMark || 0)), 0);
+  const effectiveResultStatus = passMark > 0 ? Number(existingSubmission?.obtainedMarks || 0) >= passMark ? "PASS" : "FAIL" : existingSubmission?.resultStatus || null;
+  if (existingSubmission?.status === "SUBMITTED" && effectiveResultStatus !== "FAIL") throw new AppError("A passed student cannot be assigned a retest.", 409);
   const duplicate = await prisma.academicScheduledTest.findFirst({ where: { OR: [{ parentScheduleId: original.id }, { originalScheduleId: original.id, parentScheduleId: null }], retestStudentId: student.id, status: { not: "CANCELLED" } }, select: { id: true } });
   if (duplicate) throw new AppError("A retest is already scheduled for this student.", 409);
 
@@ -564,7 +592,7 @@ export async function scheduleFacultyAcademicRetest(actor, id, payload = {}) {
     if (!sourcePaper) throw new AppError("Original question paper not found.", 404);
     const sequence = ((await tx.academicTestItem.aggregate({ where: { academicTestId: sourceItem.academicTestId }, _max: { sequence: true } }))._max.sequence || 0) + 1;
     const retestItem = await tx.academicTestItem.create({ data: { academicTestId: sourceItem.academicTestId, sequence, testType: sourceItem.testType, requiredProgress: sourceItem.requiredProgress } });
-    const retestPaper = await tx.academicQuestionPaper.create({ data: { academicTestItemId: retestItem.id, branchCourseId: original.branchCourseId, branchBatchId: original.branchBatchId, createdBy: actor.id, status: sourcePaper.status, marksPerQuestion: sourcePaper.marksPerQuestion, totalQuestions: sourcePaper.totalQuestions, totalMarks: sourcePaper.totalMarks } });
+    const retestPaper = await tx.academicQuestionPaper.create({ data: { academicTestItemId: retestItem.id, branchCourseId: original.branchCourseId, branchBatchId: original.branchBatchId, createdBy: actor.id, status: sourcePaper.status, marksPerQuestion: sourcePaper.marksPerQuestion, totalQuestions: sourcePaper.totalQuestions, totalMarks: sourcePaper.totalMarks, passMark: sourcePaper.passMark } });
     if (sourcePaper.questions.length) await tx.academicQuestion.createMany({ data: sourcePaper.questions.map((question) => ({ questionPaperId: retestPaper.id, questionNumber: question.questionNumber, questionText: question.questionText, optionA: question.optionA, optionB: question.optionB, optionC: question.optionC, optionD: question.optionD, correctAnswer: question.correctAnswer })) });
     return tx.academicScheduledTest.create({ data: { academicTestItemId: retestItem.id, branchCourseId: original.branchCourseId, branchBatchId: original.branchBatchId, facultyId: original.facultyId, questionPaperId: retestPaper.id, testNumber: original.testNumber, testDate: date, startTime, endTime, status: "SCHEDULED", isRetest: true, originalScheduleId: original.originalScheduleId || original.id, parentScheduleId: original.id, attemptNumber: (original.attemptNumber || 1) + 1, retestStudentId: student.id, createdBy: actor.id } });
   });

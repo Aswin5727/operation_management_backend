@@ -479,6 +479,7 @@ exports.Prisma.AcademicQuestionPaperScalarFieldEnum = {
   marksPerQuestion: 'marksPerQuestion',
   totalQuestions: 'totalQuestions',
   totalMarks: 'totalMarks',
+  passMark: 'passMark',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -550,6 +551,7 @@ exports.Prisma.AcademicTestSubmissionScalarFieldEnum = {
   totalMarks: 'totalMarks',
   obtainedMarks: 'obtainedMarks',
   percentage: 'percentage',
+  resultStatus: 'resultStatus',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
