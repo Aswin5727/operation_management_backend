@@ -11,6 +11,9 @@ router.get("/", authorize(USER_ROLES.BRANCH_ADMIN, USER_ROLES.FACULTY), controll
 router.get("/create-options", authorize(USER_ROLES.FACULTY), controller.createOptions);
 router.post("/scheduled", authorize(USER_ROLES.FACULTY), controller.createScheduled);
 router.get("/faculty/scheduled", authorize(USER_ROLES.FACULTY), controller.facultyScheduled);
+router.get("/reports/batches", authorize(USER_ROLES.FACULTY), controller.reportBatches);
+router.get("/reports/batches/:batchId/students", authorize(USER_ROLES.FACULTY), controller.batchReport);
+router.get("/reports/my-report", authorize(USER_ROLES.STUDENT), controller.myReport);
 router.get("/faculty/scheduled/:id/results", authorize(USER_ROLES.FACULTY), controller.facultyResults);
 router.post("/faculty/scheduled/:id/retest", authorize(USER_ROLES.FACULTY), controller.scheduleRetest);
 router.put("/faculty/scheduled/:id", authorize(USER_ROLES.FACULTY), controller.updateFacultyScheduled);
