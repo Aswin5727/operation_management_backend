@@ -134,6 +134,11 @@ export type AcademicScheduledTest = $Result.DefaultSelection<Prisma.$AcademicSch
  */
 export type AcademicTestSubmission = $Result.DefaultSelection<Prisma.$AcademicTestSubmissionPayload>
 /**
+ * Model AcademicProjectSubmission
+ * 
+ */
+export type AcademicProjectSubmission = $Result.DefaultSelection<Prisma.$AcademicProjectSubmissionPayload>
+/**
  * Model AcademicTestAnswer
  * 
  */
@@ -827,6 +832,16 @@ export class PrismaClient<
     * ```
     */
   get academicTestSubmission(): Prisma.AcademicTestSubmissionDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.academicProjectSubmission`: Exposes CRUD operations for the **AcademicProjectSubmission** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AcademicProjectSubmissions
+    * const academicProjectSubmissions = await prisma.academicProjectSubmission.findMany()
+    * ```
+    */
+  get academicProjectSubmission(): Prisma.AcademicProjectSubmissionDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.academicTestAnswer`: Exposes CRUD operations for the **AcademicTestAnswer** model.
@@ -1635,6 +1650,7 @@ export namespace Prisma {
     AcademicTestProject: 'AcademicTestProject',
     AcademicScheduledTest: 'AcademicScheduledTest',
     AcademicTestSubmission: 'AcademicTestSubmission',
+    AcademicProjectSubmission: 'AcademicProjectSubmission',
     AcademicTestAnswer: 'AcademicTestAnswer',
     CourseStatusHistory: 'CourseStatusHistory',
     BatchStatusHistory: 'BatchStatusHistory',
@@ -1685,7 +1701,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "dashboardWidget" | "userDashboardWidget" | "branch" | "loginEvent" | "notification" | "courseEditRequest" | "passwordResetToken" | "course" | "branchCourse" | "branchCourseModule" | "branchCourseSubmodule" | "courseModule" | "batch" | "batchFacultyAssignment" | "branchBatch" | "academicTest" | "academicTestItem" | "academicTestBatch" | "academicQuestionPaper" | "academicQuestion" | "academicTestProject" | "academicScheduledTest" | "academicTestSubmission" | "academicTestAnswer" | "courseStatusHistory" | "batchStatusHistory" | "studentProfile" | "branchStudent" | "branchStudentAttendance" | "branchCalendarHoliday" | "branchCalendarLeave" | "branchStudentInstallment" | "facultyProfile" | "facultyCourseAssignment" | "facultyBatchEntry" | "facultyAttendanceSession" | "facultyAttendanceDay" | "facultyAttendanceBatchWork" | "facultyTodayWorkEntry" | "facultyTodayWorkStudentEntry" | "studentAttendance" | "branchFaculty" | "facultyLeaveRequest" | "facultyWeekOffRequest" | "branchFacultyCourse" | "facultyLeaveAffectedSession" | "facultyLeaveCombinedSession" | "branchInstallmentTemplate" | "assessment" | "assessmentSubmission" | "exam" | "examSchedule" | "examQuestion" | "examAttempt" | "examAnswer" | "facultyReportShare" | "branchStudentPayment" | "branchStudentLedgerEntry"
+      modelProps: "user" | "dashboardWidget" | "userDashboardWidget" | "branch" | "loginEvent" | "notification" | "courseEditRequest" | "passwordResetToken" | "course" | "branchCourse" | "branchCourseModule" | "branchCourseSubmodule" | "courseModule" | "batch" | "batchFacultyAssignment" | "branchBatch" | "academicTest" | "academicTestItem" | "academicTestBatch" | "academicQuestionPaper" | "academicQuestion" | "academicTestProject" | "academicScheduledTest" | "academicTestSubmission" | "academicProjectSubmission" | "academicTestAnswer" | "courseStatusHistory" | "batchStatusHistory" | "studentProfile" | "branchStudent" | "branchStudentAttendance" | "branchCalendarHoliday" | "branchCalendarLeave" | "branchStudentInstallment" | "facultyProfile" | "facultyCourseAssignment" | "facultyBatchEntry" | "facultyAttendanceSession" | "facultyAttendanceDay" | "facultyAttendanceBatchWork" | "facultyTodayWorkEntry" | "facultyTodayWorkStudentEntry" | "studentAttendance" | "branchFaculty" | "facultyLeaveRequest" | "facultyWeekOffRequest" | "branchFacultyCourse" | "facultyLeaveAffectedSession" | "facultyLeaveCombinedSession" | "branchInstallmentTemplate" | "assessment" | "assessmentSubmission" | "exam" | "examSchedule" | "examQuestion" | "examAttempt" | "examAnswer" | "facultyReportShare" | "branchStudentPayment" | "branchStudentLedgerEntry"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -3462,6 +3478,80 @@ export namespace Prisma {
           count: {
             args: Prisma.AcademicTestSubmissionCountArgs<ExtArgs>
             result: $Utils.Optional<AcademicTestSubmissionCountAggregateOutputType> | number
+          }
+        }
+      }
+      AcademicProjectSubmission: {
+        payload: Prisma.$AcademicProjectSubmissionPayload<ExtArgs>
+        fields: Prisma.AcademicProjectSubmissionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AcademicProjectSubmissionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicProjectSubmissionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AcademicProjectSubmissionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicProjectSubmissionPayload>
+          }
+          findFirst: {
+            args: Prisma.AcademicProjectSubmissionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicProjectSubmissionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AcademicProjectSubmissionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicProjectSubmissionPayload>
+          }
+          findMany: {
+            args: Prisma.AcademicProjectSubmissionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicProjectSubmissionPayload>[]
+          }
+          create: {
+            args: Prisma.AcademicProjectSubmissionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicProjectSubmissionPayload>
+          }
+          createMany: {
+            args: Prisma.AcademicProjectSubmissionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AcademicProjectSubmissionCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicProjectSubmissionPayload>[]
+          }
+          delete: {
+            args: Prisma.AcademicProjectSubmissionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicProjectSubmissionPayload>
+          }
+          update: {
+            args: Prisma.AcademicProjectSubmissionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicProjectSubmissionPayload>
+          }
+          deleteMany: {
+            args: Prisma.AcademicProjectSubmissionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AcademicProjectSubmissionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AcademicProjectSubmissionUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicProjectSubmissionPayload>[]
+          }
+          upsert: {
+            args: Prisma.AcademicProjectSubmissionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicProjectSubmissionPayload>
+          }
+          aggregate: {
+            args: Prisma.AcademicProjectSubmissionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAcademicProjectSubmission>
+          }
+          groupBy: {
+            args: Prisma.AcademicProjectSubmissionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AcademicProjectSubmissionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AcademicProjectSubmissionCountArgs<ExtArgs>
+            result: $Utils.Optional<AcademicProjectSubmissionCountAggregateOutputType> | number
           }
         }
       }
@@ -6187,6 +6277,7 @@ export namespace Prisma {
     academicTestProject?: AcademicTestProjectOmit
     academicScheduledTest?: AcademicScheduledTestOmit
     academicTestSubmission?: AcademicTestSubmissionOmit
+    academicProjectSubmission?: AcademicProjectSubmissionOmit
     academicTestAnswer?: AcademicTestAnswerOmit
     courseStatusHistory?: CourseStatusHistoryOmit
     batchStatusHistory?: BatchStatusHistoryOmit
@@ -36575,9 +36666,9 @@ export namespace Prisma {
     facultyId: string
     questionPaperId: string
     testNumber: number
-    testDate: string
-    startTime: string
-    endTime: string
+    testDate: string | null
+    startTime: string | null
+    endTime: string | null
     projectStartDate: string | null
     projectEndDate: string | null
     status: string
@@ -36709,9 +36800,9 @@ export namespace Prisma {
       facultyId: string
       questionPaperId: string
       testNumber: number
-      testDate: string
-      startTime: string
-      endTime: string
+      testDate: string | null
+      startTime: string | null
+      endTime: string | null
       projectStartDate: string | null
       projectEndDate: string | null
       status: string
@@ -38723,6 +38814,1144 @@ export namespace Prisma {
      * Omit specific fields from the AcademicTestSubmission
      */
     omit?: AcademicTestSubmissionOmit<ExtArgs> | null
+  }
+
+
+  /**
+   * Model AcademicProjectSubmission
+   */
+
+  export type AggregateAcademicProjectSubmission = {
+    _count: AcademicProjectSubmissionCountAggregateOutputType | null
+    _avg: AcademicProjectSubmissionAvgAggregateOutputType | null
+    _sum: AcademicProjectSubmissionSumAggregateOutputType | null
+    _min: AcademicProjectSubmissionMinAggregateOutputType | null
+    _max: AcademicProjectSubmissionMaxAggregateOutputType | null
+  }
+
+  export type AcademicProjectSubmissionAvgAggregateOutputType = {
+    marksAwarded: number | null
+  }
+
+  export type AcademicProjectSubmissionSumAggregateOutputType = {
+    marksAwarded: number | null
+  }
+
+  export type AcademicProjectSubmissionMinAggregateOutputType = {
+    id: string | null
+    academicTestId: string | null
+    branchStudentId: string | null
+    status: string | null
+    submissionText: string | null
+    fileName: string | null
+    fileMimeType: string | null
+    filePath: string | null
+    link: string | null
+    marksAwarded: number | null
+    submittedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type AcademicProjectSubmissionMaxAggregateOutputType = {
+    id: string | null
+    academicTestId: string | null
+    branchStudentId: string | null
+    status: string | null
+    submissionText: string | null
+    fileName: string | null
+    fileMimeType: string | null
+    filePath: string | null
+    link: string | null
+    marksAwarded: number | null
+    submittedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type AcademicProjectSubmissionCountAggregateOutputType = {
+    id: number
+    academicTestId: number
+    branchStudentId: number
+    status: number
+    submissionText: number
+    fileName: number
+    fileMimeType: number
+    filePath: number
+    link: number
+    marksAwarded: number
+    submittedAt: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type AcademicProjectSubmissionAvgAggregateInputType = {
+    marksAwarded?: true
+  }
+
+  export type AcademicProjectSubmissionSumAggregateInputType = {
+    marksAwarded?: true
+  }
+
+  export type AcademicProjectSubmissionMinAggregateInputType = {
+    id?: true
+    academicTestId?: true
+    branchStudentId?: true
+    status?: true
+    submissionText?: true
+    fileName?: true
+    fileMimeType?: true
+    filePath?: true
+    link?: true
+    marksAwarded?: true
+    submittedAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type AcademicProjectSubmissionMaxAggregateInputType = {
+    id?: true
+    academicTestId?: true
+    branchStudentId?: true
+    status?: true
+    submissionText?: true
+    fileName?: true
+    fileMimeType?: true
+    filePath?: true
+    link?: true
+    marksAwarded?: true
+    submittedAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type AcademicProjectSubmissionCountAggregateInputType = {
+    id?: true
+    academicTestId?: true
+    branchStudentId?: true
+    status?: true
+    submissionText?: true
+    fileName?: true
+    fileMimeType?: true
+    filePath?: true
+    link?: true
+    marksAwarded?: true
+    submittedAt?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type AcademicProjectSubmissionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AcademicProjectSubmission to aggregate.
+     */
+    where?: AcademicProjectSubmissionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AcademicProjectSubmissions to fetch.
+     */
+    orderBy?: AcademicProjectSubmissionOrderByWithRelationInput | AcademicProjectSubmissionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AcademicProjectSubmissionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AcademicProjectSubmissions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AcademicProjectSubmissions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AcademicProjectSubmissions
+    **/
+    _count?: true | AcademicProjectSubmissionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: AcademicProjectSubmissionAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: AcademicProjectSubmissionSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AcademicProjectSubmissionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AcademicProjectSubmissionMaxAggregateInputType
+  }
+
+  export type GetAcademicProjectSubmissionAggregateType<T extends AcademicProjectSubmissionAggregateArgs> = {
+        [P in keyof T & keyof AggregateAcademicProjectSubmission]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAcademicProjectSubmission[P]>
+      : GetScalarType<T[P], AggregateAcademicProjectSubmission[P]>
+  }
+
+
+
+
+  export type AcademicProjectSubmissionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AcademicProjectSubmissionWhereInput
+    orderBy?: AcademicProjectSubmissionOrderByWithAggregationInput | AcademicProjectSubmissionOrderByWithAggregationInput[]
+    by: AcademicProjectSubmissionScalarFieldEnum[] | AcademicProjectSubmissionScalarFieldEnum
+    having?: AcademicProjectSubmissionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AcademicProjectSubmissionCountAggregateInputType | true
+    _avg?: AcademicProjectSubmissionAvgAggregateInputType
+    _sum?: AcademicProjectSubmissionSumAggregateInputType
+    _min?: AcademicProjectSubmissionMinAggregateInputType
+    _max?: AcademicProjectSubmissionMaxAggregateInputType
+  }
+
+  export type AcademicProjectSubmissionGroupByOutputType = {
+    id: string
+    academicTestId: string
+    branchStudentId: string
+    status: string
+    submissionText: string | null
+    fileName: string | null
+    fileMimeType: string | null
+    filePath: string | null
+    link: string | null
+    marksAwarded: number | null
+    submittedAt: Date | null
+    createdAt: Date
+    updatedAt: Date
+    _count: AcademicProjectSubmissionCountAggregateOutputType | null
+    _avg: AcademicProjectSubmissionAvgAggregateOutputType | null
+    _sum: AcademicProjectSubmissionSumAggregateOutputType | null
+    _min: AcademicProjectSubmissionMinAggregateOutputType | null
+    _max: AcademicProjectSubmissionMaxAggregateOutputType | null
+  }
+
+  type GetAcademicProjectSubmissionGroupByPayload<T extends AcademicProjectSubmissionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AcademicProjectSubmissionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AcademicProjectSubmissionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AcademicProjectSubmissionGroupByOutputType[P]>
+            : GetScalarType<T[P], AcademicProjectSubmissionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AcademicProjectSubmissionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    academicTestId?: boolean
+    branchStudentId?: boolean
+    status?: boolean
+    submissionText?: boolean
+    fileName?: boolean
+    fileMimeType?: boolean
+    filePath?: boolean
+    link?: boolean
+    marksAwarded?: boolean
+    submittedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["academicProjectSubmission"]>
+
+  export type AcademicProjectSubmissionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    academicTestId?: boolean
+    branchStudentId?: boolean
+    status?: boolean
+    submissionText?: boolean
+    fileName?: boolean
+    fileMimeType?: boolean
+    filePath?: boolean
+    link?: boolean
+    marksAwarded?: boolean
+    submittedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["academicProjectSubmission"]>
+
+  export type AcademicProjectSubmissionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    academicTestId?: boolean
+    branchStudentId?: boolean
+    status?: boolean
+    submissionText?: boolean
+    fileName?: boolean
+    fileMimeType?: boolean
+    filePath?: boolean
+    link?: boolean
+    marksAwarded?: boolean
+    submittedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["academicProjectSubmission"]>
+
+  export type AcademicProjectSubmissionSelectScalar = {
+    id?: boolean
+    academicTestId?: boolean
+    branchStudentId?: boolean
+    status?: boolean
+    submissionText?: boolean
+    fileName?: boolean
+    fileMimeType?: boolean
+    filePath?: boolean
+    link?: boolean
+    marksAwarded?: boolean
+    submittedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type AcademicProjectSubmissionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "academicTestId" | "branchStudentId" | "status" | "submissionText" | "fileName" | "fileMimeType" | "filePath" | "link" | "marksAwarded" | "submittedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["academicProjectSubmission"]>
+
+  export type $AcademicProjectSubmissionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AcademicProjectSubmission"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      academicTestId: string
+      branchStudentId: string
+      status: string
+      submissionText: string | null
+      fileName: string | null
+      fileMimeType: string | null
+      filePath: string | null
+      link: string | null
+      marksAwarded: number | null
+      submittedAt: Date | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["academicProjectSubmission"]>
+    composites: {}
+  }
+
+  type AcademicProjectSubmissionGetPayload<S extends boolean | null | undefined | AcademicProjectSubmissionDefaultArgs> = $Result.GetResult<Prisma.$AcademicProjectSubmissionPayload, S>
+
+  type AcademicProjectSubmissionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AcademicProjectSubmissionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AcademicProjectSubmissionCountAggregateInputType | true
+    }
+
+  export interface AcademicProjectSubmissionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AcademicProjectSubmission'], meta: { name: 'AcademicProjectSubmission' } }
+    /**
+     * Find zero or one AcademicProjectSubmission that matches the filter.
+     * @param {AcademicProjectSubmissionFindUniqueArgs} args - Arguments to find a AcademicProjectSubmission
+     * @example
+     * // Get one AcademicProjectSubmission
+     * const academicProjectSubmission = await prisma.academicProjectSubmission.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AcademicProjectSubmissionFindUniqueArgs>(args: SelectSubset<T, AcademicProjectSubmissionFindUniqueArgs<ExtArgs>>): Prisma__AcademicProjectSubmissionClient<$Result.GetResult<Prisma.$AcademicProjectSubmissionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one AcademicProjectSubmission that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AcademicProjectSubmissionFindUniqueOrThrowArgs} args - Arguments to find a AcademicProjectSubmission
+     * @example
+     * // Get one AcademicProjectSubmission
+     * const academicProjectSubmission = await prisma.academicProjectSubmission.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AcademicProjectSubmissionFindUniqueOrThrowArgs>(args: SelectSubset<T, AcademicProjectSubmissionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AcademicProjectSubmissionClient<$Result.GetResult<Prisma.$AcademicProjectSubmissionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AcademicProjectSubmission that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcademicProjectSubmissionFindFirstArgs} args - Arguments to find a AcademicProjectSubmission
+     * @example
+     * // Get one AcademicProjectSubmission
+     * const academicProjectSubmission = await prisma.academicProjectSubmission.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AcademicProjectSubmissionFindFirstArgs>(args?: SelectSubset<T, AcademicProjectSubmissionFindFirstArgs<ExtArgs>>): Prisma__AcademicProjectSubmissionClient<$Result.GetResult<Prisma.$AcademicProjectSubmissionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AcademicProjectSubmission that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcademicProjectSubmissionFindFirstOrThrowArgs} args - Arguments to find a AcademicProjectSubmission
+     * @example
+     * // Get one AcademicProjectSubmission
+     * const academicProjectSubmission = await prisma.academicProjectSubmission.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AcademicProjectSubmissionFindFirstOrThrowArgs>(args?: SelectSubset<T, AcademicProjectSubmissionFindFirstOrThrowArgs<ExtArgs>>): Prisma__AcademicProjectSubmissionClient<$Result.GetResult<Prisma.$AcademicProjectSubmissionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more AcademicProjectSubmissions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcademicProjectSubmissionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AcademicProjectSubmissions
+     * const academicProjectSubmissions = await prisma.academicProjectSubmission.findMany()
+     * 
+     * // Get first 10 AcademicProjectSubmissions
+     * const academicProjectSubmissions = await prisma.academicProjectSubmission.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const academicProjectSubmissionWithIdOnly = await prisma.academicProjectSubmission.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AcademicProjectSubmissionFindManyArgs>(args?: SelectSubset<T, AcademicProjectSubmissionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcademicProjectSubmissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a AcademicProjectSubmission.
+     * @param {AcademicProjectSubmissionCreateArgs} args - Arguments to create a AcademicProjectSubmission.
+     * @example
+     * // Create one AcademicProjectSubmission
+     * const AcademicProjectSubmission = await prisma.academicProjectSubmission.create({
+     *   data: {
+     *     // ... data to create a AcademicProjectSubmission
+     *   }
+     * })
+     * 
+     */
+    create<T extends AcademicProjectSubmissionCreateArgs>(args: SelectSubset<T, AcademicProjectSubmissionCreateArgs<ExtArgs>>): Prisma__AcademicProjectSubmissionClient<$Result.GetResult<Prisma.$AcademicProjectSubmissionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many AcademicProjectSubmissions.
+     * @param {AcademicProjectSubmissionCreateManyArgs} args - Arguments to create many AcademicProjectSubmissions.
+     * @example
+     * // Create many AcademicProjectSubmissions
+     * const academicProjectSubmission = await prisma.academicProjectSubmission.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AcademicProjectSubmissionCreateManyArgs>(args?: SelectSubset<T, AcademicProjectSubmissionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many AcademicProjectSubmissions and returns the data saved in the database.
+     * @param {AcademicProjectSubmissionCreateManyAndReturnArgs} args - Arguments to create many AcademicProjectSubmissions.
+     * @example
+     * // Create many AcademicProjectSubmissions
+     * const academicProjectSubmission = await prisma.academicProjectSubmission.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many AcademicProjectSubmissions and only return the `id`
+     * const academicProjectSubmissionWithIdOnly = await prisma.academicProjectSubmission.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AcademicProjectSubmissionCreateManyAndReturnArgs>(args?: SelectSubset<T, AcademicProjectSubmissionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcademicProjectSubmissionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a AcademicProjectSubmission.
+     * @param {AcademicProjectSubmissionDeleteArgs} args - Arguments to delete one AcademicProjectSubmission.
+     * @example
+     * // Delete one AcademicProjectSubmission
+     * const AcademicProjectSubmission = await prisma.academicProjectSubmission.delete({
+     *   where: {
+     *     // ... filter to delete one AcademicProjectSubmission
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AcademicProjectSubmissionDeleteArgs>(args: SelectSubset<T, AcademicProjectSubmissionDeleteArgs<ExtArgs>>): Prisma__AcademicProjectSubmissionClient<$Result.GetResult<Prisma.$AcademicProjectSubmissionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one AcademicProjectSubmission.
+     * @param {AcademicProjectSubmissionUpdateArgs} args - Arguments to update one AcademicProjectSubmission.
+     * @example
+     * // Update one AcademicProjectSubmission
+     * const academicProjectSubmission = await prisma.academicProjectSubmission.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AcademicProjectSubmissionUpdateArgs>(args: SelectSubset<T, AcademicProjectSubmissionUpdateArgs<ExtArgs>>): Prisma__AcademicProjectSubmissionClient<$Result.GetResult<Prisma.$AcademicProjectSubmissionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more AcademicProjectSubmissions.
+     * @param {AcademicProjectSubmissionDeleteManyArgs} args - Arguments to filter AcademicProjectSubmissions to delete.
+     * @example
+     * // Delete a few AcademicProjectSubmissions
+     * const { count } = await prisma.academicProjectSubmission.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AcademicProjectSubmissionDeleteManyArgs>(args?: SelectSubset<T, AcademicProjectSubmissionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AcademicProjectSubmissions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcademicProjectSubmissionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AcademicProjectSubmissions
+     * const academicProjectSubmission = await prisma.academicProjectSubmission.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AcademicProjectSubmissionUpdateManyArgs>(args: SelectSubset<T, AcademicProjectSubmissionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AcademicProjectSubmissions and returns the data updated in the database.
+     * @param {AcademicProjectSubmissionUpdateManyAndReturnArgs} args - Arguments to update many AcademicProjectSubmissions.
+     * @example
+     * // Update many AcademicProjectSubmissions
+     * const academicProjectSubmission = await prisma.academicProjectSubmission.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more AcademicProjectSubmissions and only return the `id`
+     * const academicProjectSubmissionWithIdOnly = await prisma.academicProjectSubmission.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AcademicProjectSubmissionUpdateManyAndReturnArgs>(args: SelectSubset<T, AcademicProjectSubmissionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcademicProjectSubmissionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one AcademicProjectSubmission.
+     * @param {AcademicProjectSubmissionUpsertArgs} args - Arguments to update or create a AcademicProjectSubmission.
+     * @example
+     * // Update or create a AcademicProjectSubmission
+     * const academicProjectSubmission = await prisma.academicProjectSubmission.upsert({
+     *   create: {
+     *     // ... data to create a AcademicProjectSubmission
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AcademicProjectSubmission we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AcademicProjectSubmissionUpsertArgs>(args: SelectSubset<T, AcademicProjectSubmissionUpsertArgs<ExtArgs>>): Prisma__AcademicProjectSubmissionClient<$Result.GetResult<Prisma.$AcademicProjectSubmissionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of AcademicProjectSubmissions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcademicProjectSubmissionCountArgs} args - Arguments to filter AcademicProjectSubmissions to count.
+     * @example
+     * // Count the number of AcademicProjectSubmissions
+     * const count = await prisma.academicProjectSubmission.count({
+     *   where: {
+     *     // ... the filter for the AcademicProjectSubmissions we want to count
+     *   }
+     * })
+    **/
+    count<T extends AcademicProjectSubmissionCountArgs>(
+      args?: Subset<T, AcademicProjectSubmissionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AcademicProjectSubmissionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AcademicProjectSubmission.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcademicProjectSubmissionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AcademicProjectSubmissionAggregateArgs>(args: Subset<T, AcademicProjectSubmissionAggregateArgs>): Prisma.PrismaPromise<GetAcademicProjectSubmissionAggregateType<T>>
+
+    /**
+     * Group by AcademicProjectSubmission.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcademicProjectSubmissionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AcademicProjectSubmissionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AcademicProjectSubmissionGroupByArgs['orderBy'] }
+        : { orderBy?: AcademicProjectSubmissionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AcademicProjectSubmissionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAcademicProjectSubmissionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AcademicProjectSubmission model
+   */
+  readonly fields: AcademicProjectSubmissionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AcademicProjectSubmission.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AcademicProjectSubmissionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AcademicProjectSubmission model
+   */
+  interface AcademicProjectSubmissionFieldRefs {
+    readonly id: FieldRef<"AcademicProjectSubmission", 'String'>
+    readonly academicTestId: FieldRef<"AcademicProjectSubmission", 'String'>
+    readonly branchStudentId: FieldRef<"AcademicProjectSubmission", 'String'>
+    readonly status: FieldRef<"AcademicProjectSubmission", 'String'>
+    readonly submissionText: FieldRef<"AcademicProjectSubmission", 'String'>
+    readonly fileName: FieldRef<"AcademicProjectSubmission", 'String'>
+    readonly fileMimeType: FieldRef<"AcademicProjectSubmission", 'String'>
+    readonly filePath: FieldRef<"AcademicProjectSubmission", 'String'>
+    readonly link: FieldRef<"AcademicProjectSubmission", 'String'>
+    readonly marksAwarded: FieldRef<"AcademicProjectSubmission", 'Int'>
+    readonly submittedAt: FieldRef<"AcademicProjectSubmission", 'DateTime'>
+    readonly createdAt: FieldRef<"AcademicProjectSubmission", 'DateTime'>
+    readonly updatedAt: FieldRef<"AcademicProjectSubmission", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AcademicProjectSubmission findUnique
+   */
+  export type AcademicProjectSubmissionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicProjectSubmission
+     */
+    select?: AcademicProjectSubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicProjectSubmission
+     */
+    omit?: AcademicProjectSubmissionOmit<ExtArgs> | null
+    /**
+     * Filter, which AcademicProjectSubmission to fetch.
+     */
+    where: AcademicProjectSubmissionWhereUniqueInput
+  }
+
+  /**
+   * AcademicProjectSubmission findUniqueOrThrow
+   */
+  export type AcademicProjectSubmissionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicProjectSubmission
+     */
+    select?: AcademicProjectSubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicProjectSubmission
+     */
+    omit?: AcademicProjectSubmissionOmit<ExtArgs> | null
+    /**
+     * Filter, which AcademicProjectSubmission to fetch.
+     */
+    where: AcademicProjectSubmissionWhereUniqueInput
+  }
+
+  /**
+   * AcademicProjectSubmission findFirst
+   */
+  export type AcademicProjectSubmissionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicProjectSubmission
+     */
+    select?: AcademicProjectSubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicProjectSubmission
+     */
+    omit?: AcademicProjectSubmissionOmit<ExtArgs> | null
+    /**
+     * Filter, which AcademicProjectSubmission to fetch.
+     */
+    where?: AcademicProjectSubmissionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AcademicProjectSubmissions to fetch.
+     */
+    orderBy?: AcademicProjectSubmissionOrderByWithRelationInput | AcademicProjectSubmissionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AcademicProjectSubmissions.
+     */
+    cursor?: AcademicProjectSubmissionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AcademicProjectSubmissions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AcademicProjectSubmissions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AcademicProjectSubmissions.
+     */
+    distinct?: AcademicProjectSubmissionScalarFieldEnum | AcademicProjectSubmissionScalarFieldEnum[]
+  }
+
+  /**
+   * AcademicProjectSubmission findFirstOrThrow
+   */
+  export type AcademicProjectSubmissionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicProjectSubmission
+     */
+    select?: AcademicProjectSubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicProjectSubmission
+     */
+    omit?: AcademicProjectSubmissionOmit<ExtArgs> | null
+    /**
+     * Filter, which AcademicProjectSubmission to fetch.
+     */
+    where?: AcademicProjectSubmissionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AcademicProjectSubmissions to fetch.
+     */
+    orderBy?: AcademicProjectSubmissionOrderByWithRelationInput | AcademicProjectSubmissionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AcademicProjectSubmissions.
+     */
+    cursor?: AcademicProjectSubmissionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AcademicProjectSubmissions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AcademicProjectSubmissions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AcademicProjectSubmissions.
+     */
+    distinct?: AcademicProjectSubmissionScalarFieldEnum | AcademicProjectSubmissionScalarFieldEnum[]
+  }
+
+  /**
+   * AcademicProjectSubmission findMany
+   */
+  export type AcademicProjectSubmissionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicProjectSubmission
+     */
+    select?: AcademicProjectSubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicProjectSubmission
+     */
+    omit?: AcademicProjectSubmissionOmit<ExtArgs> | null
+    /**
+     * Filter, which AcademicProjectSubmissions to fetch.
+     */
+    where?: AcademicProjectSubmissionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AcademicProjectSubmissions to fetch.
+     */
+    orderBy?: AcademicProjectSubmissionOrderByWithRelationInput | AcademicProjectSubmissionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AcademicProjectSubmissions.
+     */
+    cursor?: AcademicProjectSubmissionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AcademicProjectSubmissions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AcademicProjectSubmissions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AcademicProjectSubmissions.
+     */
+    distinct?: AcademicProjectSubmissionScalarFieldEnum | AcademicProjectSubmissionScalarFieldEnum[]
+  }
+
+  /**
+   * AcademicProjectSubmission create
+   */
+  export type AcademicProjectSubmissionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicProjectSubmission
+     */
+    select?: AcademicProjectSubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicProjectSubmission
+     */
+    omit?: AcademicProjectSubmissionOmit<ExtArgs> | null
+    /**
+     * The data needed to create a AcademicProjectSubmission.
+     */
+    data: XOR<AcademicProjectSubmissionCreateInput, AcademicProjectSubmissionUncheckedCreateInput>
+  }
+
+  /**
+   * AcademicProjectSubmission createMany
+   */
+  export type AcademicProjectSubmissionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AcademicProjectSubmissions.
+     */
+    data: AcademicProjectSubmissionCreateManyInput | AcademicProjectSubmissionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AcademicProjectSubmission createManyAndReturn
+   */
+  export type AcademicProjectSubmissionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicProjectSubmission
+     */
+    select?: AcademicProjectSubmissionSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicProjectSubmission
+     */
+    omit?: AcademicProjectSubmissionOmit<ExtArgs> | null
+    /**
+     * The data used to create many AcademicProjectSubmissions.
+     */
+    data: AcademicProjectSubmissionCreateManyInput | AcademicProjectSubmissionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AcademicProjectSubmission update
+   */
+  export type AcademicProjectSubmissionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicProjectSubmission
+     */
+    select?: AcademicProjectSubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicProjectSubmission
+     */
+    omit?: AcademicProjectSubmissionOmit<ExtArgs> | null
+    /**
+     * The data needed to update a AcademicProjectSubmission.
+     */
+    data: XOR<AcademicProjectSubmissionUpdateInput, AcademicProjectSubmissionUncheckedUpdateInput>
+    /**
+     * Choose, which AcademicProjectSubmission to update.
+     */
+    where: AcademicProjectSubmissionWhereUniqueInput
+  }
+
+  /**
+   * AcademicProjectSubmission updateMany
+   */
+  export type AcademicProjectSubmissionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AcademicProjectSubmissions.
+     */
+    data: XOR<AcademicProjectSubmissionUpdateManyMutationInput, AcademicProjectSubmissionUncheckedUpdateManyInput>
+    /**
+     * Filter which AcademicProjectSubmissions to update
+     */
+    where?: AcademicProjectSubmissionWhereInput
+    /**
+     * Limit how many AcademicProjectSubmissions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AcademicProjectSubmission updateManyAndReturn
+   */
+  export type AcademicProjectSubmissionUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicProjectSubmission
+     */
+    select?: AcademicProjectSubmissionSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicProjectSubmission
+     */
+    omit?: AcademicProjectSubmissionOmit<ExtArgs> | null
+    /**
+     * The data used to update AcademicProjectSubmissions.
+     */
+    data: XOR<AcademicProjectSubmissionUpdateManyMutationInput, AcademicProjectSubmissionUncheckedUpdateManyInput>
+    /**
+     * Filter which AcademicProjectSubmissions to update
+     */
+    where?: AcademicProjectSubmissionWhereInput
+    /**
+     * Limit how many AcademicProjectSubmissions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AcademicProjectSubmission upsert
+   */
+  export type AcademicProjectSubmissionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicProjectSubmission
+     */
+    select?: AcademicProjectSubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicProjectSubmission
+     */
+    omit?: AcademicProjectSubmissionOmit<ExtArgs> | null
+    /**
+     * The filter to search for the AcademicProjectSubmission to update in case it exists.
+     */
+    where: AcademicProjectSubmissionWhereUniqueInput
+    /**
+     * In case the AcademicProjectSubmission found by the `where` argument doesn't exist, create a new AcademicProjectSubmission with this data.
+     */
+    create: XOR<AcademicProjectSubmissionCreateInput, AcademicProjectSubmissionUncheckedCreateInput>
+    /**
+     * In case the AcademicProjectSubmission was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AcademicProjectSubmissionUpdateInput, AcademicProjectSubmissionUncheckedUpdateInput>
+  }
+
+  /**
+   * AcademicProjectSubmission delete
+   */
+  export type AcademicProjectSubmissionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicProjectSubmission
+     */
+    select?: AcademicProjectSubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicProjectSubmission
+     */
+    omit?: AcademicProjectSubmissionOmit<ExtArgs> | null
+    /**
+     * Filter which AcademicProjectSubmission to delete.
+     */
+    where: AcademicProjectSubmissionWhereUniqueInput
+  }
+
+  /**
+   * AcademicProjectSubmission deleteMany
+   */
+  export type AcademicProjectSubmissionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AcademicProjectSubmissions to delete
+     */
+    where?: AcademicProjectSubmissionWhereInput
+    /**
+     * Limit how many AcademicProjectSubmissions to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * AcademicProjectSubmission without action
+   */
+  export type AcademicProjectSubmissionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicProjectSubmission
+     */
+    select?: AcademicProjectSubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicProjectSubmission
+     */
+    omit?: AcademicProjectSubmissionOmit<ExtArgs> | null
   }
 
 
@@ -83077,6 +84306,25 @@ export namespace Prisma {
   export type AcademicTestSubmissionScalarFieldEnum = (typeof AcademicTestSubmissionScalarFieldEnum)[keyof typeof AcademicTestSubmissionScalarFieldEnum]
 
 
+  export const AcademicProjectSubmissionScalarFieldEnum: {
+    id: 'id',
+    academicTestId: 'academicTestId',
+    branchStudentId: 'branchStudentId',
+    status: 'status',
+    submissionText: 'submissionText',
+    fileName: 'fileName',
+    fileMimeType: 'fileMimeType',
+    filePath: 'filePath',
+    link: 'link',
+    marksAwarded: 'marksAwarded',
+    submittedAt: 'submittedAt',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type AcademicProjectSubmissionScalarFieldEnum = (typeof AcademicProjectSubmissionScalarFieldEnum)[keyof typeof AcademicProjectSubmissionScalarFieldEnum]
+
+
   export const AcademicTestAnswerScalarFieldEnum: {
     id: 'id',
     submissionId: 'submissionId',
@@ -86674,9 +87922,9 @@ export namespace Prisma {
     facultyId?: StringFilter<"AcademicScheduledTest"> | string
     questionPaperId?: StringFilter<"AcademicScheduledTest"> | string
     testNumber?: IntFilter<"AcademicScheduledTest"> | number
-    testDate?: StringFilter<"AcademicScheduledTest"> | string
-    startTime?: StringFilter<"AcademicScheduledTest"> | string
-    endTime?: StringFilter<"AcademicScheduledTest"> | string
+    testDate?: StringNullableFilter<"AcademicScheduledTest"> | string | null
+    startTime?: StringNullableFilter<"AcademicScheduledTest"> | string | null
+    endTime?: StringNullableFilter<"AcademicScheduledTest"> | string | null
     projectStartDate?: StringNullableFilter<"AcademicScheduledTest"> | string | null
     projectEndDate?: StringNullableFilter<"AcademicScheduledTest"> | string | null
     status?: StringFilter<"AcademicScheduledTest"> | string
@@ -86696,9 +87944,9 @@ export namespace Prisma {
     facultyId?: SortOrder
     questionPaperId?: SortOrder
     testNumber?: SortOrder
-    testDate?: SortOrder
-    startTime?: SortOrder
-    endTime?: SortOrder
+    testDate?: SortOrderInput | SortOrder
+    startTime?: SortOrderInput | SortOrder
+    endTime?: SortOrderInput | SortOrder
     projectStartDate?: SortOrderInput | SortOrder
     projectEndDate?: SortOrderInput | SortOrder
     status?: SortOrder
@@ -86722,9 +87970,9 @@ export namespace Prisma {
     facultyId?: StringFilter<"AcademicScheduledTest"> | string
     questionPaperId?: StringFilter<"AcademicScheduledTest"> | string
     testNumber?: IntFilter<"AcademicScheduledTest"> | number
-    testDate?: StringFilter<"AcademicScheduledTest"> | string
-    startTime?: StringFilter<"AcademicScheduledTest"> | string
-    endTime?: StringFilter<"AcademicScheduledTest"> | string
+    testDate?: StringNullableFilter<"AcademicScheduledTest"> | string | null
+    startTime?: StringNullableFilter<"AcademicScheduledTest"> | string | null
+    endTime?: StringNullableFilter<"AcademicScheduledTest"> | string | null
     projectStartDate?: StringNullableFilter<"AcademicScheduledTest"> | string | null
     projectEndDate?: StringNullableFilter<"AcademicScheduledTest"> | string | null
     status?: StringFilter<"AcademicScheduledTest"> | string
@@ -86744,9 +87992,9 @@ export namespace Prisma {
     facultyId?: SortOrder
     questionPaperId?: SortOrder
     testNumber?: SortOrder
-    testDate?: SortOrder
-    startTime?: SortOrder
-    endTime?: SortOrder
+    testDate?: SortOrderInput | SortOrder
+    startTime?: SortOrderInput | SortOrder
+    endTime?: SortOrderInput | SortOrder
     projectStartDate?: SortOrderInput | SortOrder
     projectEndDate?: SortOrderInput | SortOrder
     status?: SortOrder
@@ -86774,9 +88022,9 @@ export namespace Prisma {
     facultyId?: StringWithAggregatesFilter<"AcademicScheduledTest"> | string
     questionPaperId?: StringWithAggregatesFilter<"AcademicScheduledTest"> | string
     testNumber?: IntWithAggregatesFilter<"AcademicScheduledTest"> | number
-    testDate?: StringWithAggregatesFilter<"AcademicScheduledTest"> | string
-    startTime?: StringWithAggregatesFilter<"AcademicScheduledTest"> | string
-    endTime?: StringWithAggregatesFilter<"AcademicScheduledTest"> | string
+    testDate?: StringNullableWithAggregatesFilter<"AcademicScheduledTest"> | string | null
+    startTime?: StringNullableWithAggregatesFilter<"AcademicScheduledTest"> | string | null
+    endTime?: StringNullableWithAggregatesFilter<"AcademicScheduledTest"> | string | null
     projectStartDate?: StringNullableWithAggregatesFilter<"AcademicScheduledTest"> | string | null
     projectEndDate?: StringNullableWithAggregatesFilter<"AcademicScheduledTest"> | string | null
     status?: StringWithAggregatesFilter<"AcademicScheduledTest"> | string
@@ -86891,6 +88139,101 @@ export namespace Prisma {
     percentage?: FloatWithAggregatesFilter<"AcademicTestSubmission"> | number
     createdAt?: DateTimeWithAggregatesFilter<"AcademicTestSubmission"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"AcademicTestSubmission"> | Date | string
+  }
+
+  export type AcademicProjectSubmissionWhereInput = {
+    AND?: AcademicProjectSubmissionWhereInput | AcademicProjectSubmissionWhereInput[]
+    OR?: AcademicProjectSubmissionWhereInput[]
+    NOT?: AcademicProjectSubmissionWhereInput | AcademicProjectSubmissionWhereInput[]
+    id?: StringFilter<"AcademicProjectSubmission"> | string
+    academicTestId?: StringFilter<"AcademicProjectSubmission"> | string
+    branchStudentId?: StringFilter<"AcademicProjectSubmission"> | string
+    status?: StringFilter<"AcademicProjectSubmission"> | string
+    submissionText?: StringNullableFilter<"AcademicProjectSubmission"> | string | null
+    fileName?: StringNullableFilter<"AcademicProjectSubmission"> | string | null
+    fileMimeType?: StringNullableFilter<"AcademicProjectSubmission"> | string | null
+    filePath?: StringNullableFilter<"AcademicProjectSubmission"> | string | null
+    link?: StringNullableFilter<"AcademicProjectSubmission"> | string | null
+    marksAwarded?: IntNullableFilter<"AcademicProjectSubmission"> | number | null
+    submittedAt?: DateTimeNullableFilter<"AcademicProjectSubmission"> | Date | string | null
+    createdAt?: DateTimeFilter<"AcademicProjectSubmission"> | Date | string
+    updatedAt?: DateTimeFilter<"AcademicProjectSubmission"> | Date | string
+  }
+
+  export type AcademicProjectSubmissionOrderByWithRelationInput = {
+    id?: SortOrder
+    academicTestId?: SortOrder
+    branchStudentId?: SortOrder
+    status?: SortOrder
+    submissionText?: SortOrderInput | SortOrder
+    fileName?: SortOrderInput | SortOrder
+    fileMimeType?: SortOrderInput | SortOrder
+    filePath?: SortOrderInput | SortOrder
+    link?: SortOrderInput | SortOrder
+    marksAwarded?: SortOrderInput | SortOrder
+    submittedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AcademicProjectSubmissionWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    academicTestId_branchStudentId?: AcademicProjectSubmissionAcademicTestIdBranchStudentIdCompoundUniqueInput
+    AND?: AcademicProjectSubmissionWhereInput | AcademicProjectSubmissionWhereInput[]
+    OR?: AcademicProjectSubmissionWhereInput[]
+    NOT?: AcademicProjectSubmissionWhereInput | AcademicProjectSubmissionWhereInput[]
+    academicTestId?: StringFilter<"AcademicProjectSubmission"> | string
+    branchStudentId?: StringFilter<"AcademicProjectSubmission"> | string
+    status?: StringFilter<"AcademicProjectSubmission"> | string
+    submissionText?: StringNullableFilter<"AcademicProjectSubmission"> | string | null
+    fileName?: StringNullableFilter<"AcademicProjectSubmission"> | string | null
+    fileMimeType?: StringNullableFilter<"AcademicProjectSubmission"> | string | null
+    filePath?: StringNullableFilter<"AcademicProjectSubmission"> | string | null
+    link?: StringNullableFilter<"AcademicProjectSubmission"> | string | null
+    marksAwarded?: IntNullableFilter<"AcademicProjectSubmission"> | number | null
+    submittedAt?: DateTimeNullableFilter<"AcademicProjectSubmission"> | Date | string | null
+    createdAt?: DateTimeFilter<"AcademicProjectSubmission"> | Date | string
+    updatedAt?: DateTimeFilter<"AcademicProjectSubmission"> | Date | string
+  }, "id" | "academicTestId_branchStudentId">
+
+  export type AcademicProjectSubmissionOrderByWithAggregationInput = {
+    id?: SortOrder
+    academicTestId?: SortOrder
+    branchStudentId?: SortOrder
+    status?: SortOrder
+    submissionText?: SortOrderInput | SortOrder
+    fileName?: SortOrderInput | SortOrder
+    fileMimeType?: SortOrderInput | SortOrder
+    filePath?: SortOrderInput | SortOrder
+    link?: SortOrderInput | SortOrder
+    marksAwarded?: SortOrderInput | SortOrder
+    submittedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: AcademicProjectSubmissionCountOrderByAggregateInput
+    _avg?: AcademicProjectSubmissionAvgOrderByAggregateInput
+    _max?: AcademicProjectSubmissionMaxOrderByAggregateInput
+    _min?: AcademicProjectSubmissionMinOrderByAggregateInput
+    _sum?: AcademicProjectSubmissionSumOrderByAggregateInput
+  }
+
+  export type AcademicProjectSubmissionScalarWhereWithAggregatesInput = {
+    AND?: AcademicProjectSubmissionScalarWhereWithAggregatesInput | AcademicProjectSubmissionScalarWhereWithAggregatesInput[]
+    OR?: AcademicProjectSubmissionScalarWhereWithAggregatesInput[]
+    NOT?: AcademicProjectSubmissionScalarWhereWithAggregatesInput | AcademicProjectSubmissionScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"AcademicProjectSubmission"> | string
+    academicTestId?: StringWithAggregatesFilter<"AcademicProjectSubmission"> | string
+    branchStudentId?: StringWithAggregatesFilter<"AcademicProjectSubmission"> | string
+    status?: StringWithAggregatesFilter<"AcademicProjectSubmission"> | string
+    submissionText?: StringNullableWithAggregatesFilter<"AcademicProjectSubmission"> | string | null
+    fileName?: StringNullableWithAggregatesFilter<"AcademicProjectSubmission"> | string | null
+    fileMimeType?: StringNullableWithAggregatesFilter<"AcademicProjectSubmission"> | string | null
+    filePath?: StringNullableWithAggregatesFilter<"AcademicProjectSubmission"> | string | null
+    link?: StringNullableWithAggregatesFilter<"AcademicProjectSubmission"> | string | null
+    marksAwarded?: IntNullableWithAggregatesFilter<"AcademicProjectSubmission"> | number | null
+    submittedAt?: DateTimeNullableWithAggregatesFilter<"AcademicProjectSubmission"> | Date | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"AcademicProjectSubmission"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"AcademicProjectSubmission"> | Date | string
   }
 
   export type AcademicTestAnswerWhereInput = {
@@ -93909,9 +95252,9 @@ export namespace Prisma {
     facultyId: string
     questionPaperId: string
     testNumber: number
-    testDate: string
-    startTime: string
-    endTime: string
+    testDate?: string | null
+    startTime?: string | null
+    endTime?: string | null
     projectStartDate?: string | null
     projectEndDate?: string | null
     status?: string
@@ -93931,9 +95274,9 @@ export namespace Prisma {
     facultyId: string
     questionPaperId: string
     testNumber: number
-    testDate: string
-    startTime: string
-    endTime: string
+    testDate?: string | null
+    startTime?: string | null
+    endTime?: string | null
     projectStartDate?: string | null
     projectEndDate?: string | null
     status?: string
@@ -93953,9 +95296,9 @@ export namespace Prisma {
     facultyId?: StringFieldUpdateOperationsInput | string
     questionPaperId?: StringFieldUpdateOperationsInput | string
     testNumber?: IntFieldUpdateOperationsInput | number
-    testDate?: StringFieldUpdateOperationsInput | string
-    startTime?: StringFieldUpdateOperationsInput | string
-    endTime?: StringFieldUpdateOperationsInput | string
+    testDate?: NullableStringFieldUpdateOperationsInput | string | null
+    startTime?: NullableStringFieldUpdateOperationsInput | string | null
+    endTime?: NullableStringFieldUpdateOperationsInput | string | null
     projectStartDate?: NullableStringFieldUpdateOperationsInput | string | null
     projectEndDate?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
@@ -93975,9 +95318,9 @@ export namespace Prisma {
     facultyId?: StringFieldUpdateOperationsInput | string
     questionPaperId?: StringFieldUpdateOperationsInput | string
     testNumber?: IntFieldUpdateOperationsInput | number
-    testDate?: StringFieldUpdateOperationsInput | string
-    startTime?: StringFieldUpdateOperationsInput | string
-    endTime?: StringFieldUpdateOperationsInput | string
+    testDate?: NullableStringFieldUpdateOperationsInput | string | null
+    startTime?: NullableStringFieldUpdateOperationsInput | string | null
+    endTime?: NullableStringFieldUpdateOperationsInput | string | null
     projectStartDate?: NullableStringFieldUpdateOperationsInput | string | null
     projectEndDate?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
@@ -93997,9 +95340,9 @@ export namespace Prisma {
     facultyId: string
     questionPaperId: string
     testNumber: number
-    testDate: string
-    startTime: string
-    endTime: string
+    testDate?: string | null
+    startTime?: string | null
+    endTime?: string | null
     projectStartDate?: string | null
     projectEndDate?: string | null
     status?: string
@@ -94019,9 +95362,9 @@ export namespace Prisma {
     facultyId?: StringFieldUpdateOperationsInput | string
     questionPaperId?: StringFieldUpdateOperationsInput | string
     testNumber?: IntFieldUpdateOperationsInput | number
-    testDate?: StringFieldUpdateOperationsInput | string
-    startTime?: StringFieldUpdateOperationsInput | string
-    endTime?: StringFieldUpdateOperationsInput | string
+    testDate?: NullableStringFieldUpdateOperationsInput | string | null
+    startTime?: NullableStringFieldUpdateOperationsInput | string | null
+    endTime?: NullableStringFieldUpdateOperationsInput | string | null
     projectStartDate?: NullableStringFieldUpdateOperationsInput | string | null
     projectEndDate?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
@@ -94041,9 +95384,9 @@ export namespace Prisma {
     facultyId?: StringFieldUpdateOperationsInput | string
     questionPaperId?: StringFieldUpdateOperationsInput | string
     testNumber?: IntFieldUpdateOperationsInput | number
-    testDate?: StringFieldUpdateOperationsInput | string
-    startTime?: StringFieldUpdateOperationsInput | string
-    endTime?: StringFieldUpdateOperationsInput | string
+    testDate?: NullableStringFieldUpdateOperationsInput | string | null
+    startTime?: NullableStringFieldUpdateOperationsInput | string | null
+    endTime?: NullableStringFieldUpdateOperationsInput | string | null
     projectStartDate?: NullableStringFieldUpdateOperationsInput | string | null
     projectEndDate?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
@@ -94177,6 +95520,118 @@ export namespace Prisma {
     totalMarks?: IntFieldUpdateOperationsInput | number
     obtainedMarks?: IntFieldUpdateOperationsInput | number
     percentage?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AcademicProjectSubmissionCreateInput = {
+    id?: string
+    academicTestId: string
+    branchStudentId: string
+    status?: string
+    submissionText?: string | null
+    fileName?: string | null
+    fileMimeType?: string | null
+    filePath?: string | null
+    link?: string | null
+    marksAwarded?: number | null
+    submittedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AcademicProjectSubmissionUncheckedCreateInput = {
+    id?: string
+    academicTestId: string
+    branchStudentId: string
+    status?: string
+    submissionText?: string | null
+    fileName?: string | null
+    fileMimeType?: string | null
+    filePath?: string | null
+    link?: string | null
+    marksAwarded?: number | null
+    submittedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AcademicProjectSubmissionUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    academicTestId?: StringFieldUpdateOperationsInput | string
+    branchStudentId?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    submissionText?: NullableStringFieldUpdateOperationsInput | string | null
+    fileName?: NullableStringFieldUpdateOperationsInput | string | null
+    fileMimeType?: NullableStringFieldUpdateOperationsInput | string | null
+    filePath?: NullableStringFieldUpdateOperationsInput | string | null
+    link?: NullableStringFieldUpdateOperationsInput | string | null
+    marksAwarded?: NullableIntFieldUpdateOperationsInput | number | null
+    submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AcademicProjectSubmissionUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    academicTestId?: StringFieldUpdateOperationsInput | string
+    branchStudentId?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    submissionText?: NullableStringFieldUpdateOperationsInput | string | null
+    fileName?: NullableStringFieldUpdateOperationsInput | string | null
+    fileMimeType?: NullableStringFieldUpdateOperationsInput | string | null
+    filePath?: NullableStringFieldUpdateOperationsInput | string | null
+    link?: NullableStringFieldUpdateOperationsInput | string | null
+    marksAwarded?: NullableIntFieldUpdateOperationsInput | number | null
+    submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AcademicProjectSubmissionCreateManyInput = {
+    id?: string
+    academicTestId: string
+    branchStudentId: string
+    status?: string
+    submissionText?: string | null
+    fileName?: string | null
+    fileMimeType?: string | null
+    filePath?: string | null
+    link?: string | null
+    marksAwarded?: number | null
+    submittedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AcademicProjectSubmissionUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    academicTestId?: StringFieldUpdateOperationsInput | string
+    branchStudentId?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    submissionText?: NullableStringFieldUpdateOperationsInput | string | null
+    fileName?: NullableStringFieldUpdateOperationsInput | string | null
+    fileMimeType?: NullableStringFieldUpdateOperationsInput | string | null
+    filePath?: NullableStringFieldUpdateOperationsInput | string | null
+    link?: NullableStringFieldUpdateOperationsInput | string | null
+    marksAwarded?: NullableIntFieldUpdateOperationsInput | number | null
+    submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AcademicProjectSubmissionUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    academicTestId?: StringFieldUpdateOperationsInput | string
+    branchStudentId?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    submissionText?: NullableStringFieldUpdateOperationsInput | string | null
+    fileName?: NullableStringFieldUpdateOperationsInput | string | null
+    fileMimeType?: NullableStringFieldUpdateOperationsInput | string | null
+    filePath?: NullableStringFieldUpdateOperationsInput | string | null
+    link?: NullableStringFieldUpdateOperationsInput | string | null
+    marksAwarded?: NullableIntFieldUpdateOperationsInput | number | null
+    submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -101328,6 +102783,67 @@ export namespace Prisma {
     _sum?: NestedFloatFilter<$PrismaModel>
     _min?: NestedFloatFilter<$PrismaModel>
     _max?: NestedFloatFilter<$PrismaModel>
+  }
+
+  export type AcademicProjectSubmissionAcademicTestIdBranchStudentIdCompoundUniqueInput = {
+    academicTestId: string
+    branchStudentId: string
+  }
+
+  export type AcademicProjectSubmissionCountOrderByAggregateInput = {
+    id?: SortOrder
+    academicTestId?: SortOrder
+    branchStudentId?: SortOrder
+    status?: SortOrder
+    submissionText?: SortOrder
+    fileName?: SortOrder
+    fileMimeType?: SortOrder
+    filePath?: SortOrder
+    link?: SortOrder
+    marksAwarded?: SortOrder
+    submittedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AcademicProjectSubmissionAvgOrderByAggregateInput = {
+    marksAwarded?: SortOrder
+  }
+
+  export type AcademicProjectSubmissionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    academicTestId?: SortOrder
+    branchStudentId?: SortOrder
+    status?: SortOrder
+    submissionText?: SortOrder
+    fileName?: SortOrder
+    fileMimeType?: SortOrder
+    filePath?: SortOrder
+    link?: SortOrder
+    marksAwarded?: SortOrder
+    submittedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AcademicProjectSubmissionMinOrderByAggregateInput = {
+    id?: SortOrder
+    academicTestId?: SortOrder
+    branchStudentId?: SortOrder
+    status?: SortOrder
+    submissionText?: SortOrder
+    fileName?: SortOrder
+    fileMimeType?: SortOrder
+    filePath?: SortOrder
+    link?: SortOrder
+    marksAwarded?: SortOrder
+    submittedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AcademicProjectSubmissionSumOrderByAggregateInput = {
+    marksAwarded?: SortOrder
   }
 
   export type AcademicTestAnswerSubmissionIdQuestionIdCompoundUniqueInput = {

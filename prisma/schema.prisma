@@ -610,9 +610,9 @@ model AcademicScheduledTest {
   facultyId          String
   questionPaperId    String
   testNumber         Int
-  testDate           String
-  startTime          String
-  endTime            String
+  testDate           String?
+  startTime          String?
+  endTime            String?
   projectStartDate   String?
   projectEndDate     String?
   status             String   @default("SCHEDULED")
@@ -646,6 +646,25 @@ model AcademicTestSubmission {
   percentage     Float    @default(0)
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
+
+  @@unique([academicTestId, branchStudentId])
+  @@index([branchStudentId, status])
+}
+
+model AcademicProjectSubmission {
+  id             String   @id @default(cuid())
+  academicTestId String
+  branchStudentId String
+  status         String   @default("NOT_SUBMITTED")
+  submissionText String?
+  fileName       String?
+  fileMimeType   String?
+  filePath       String?
+  link           String?
+  marksAwarded   Int?
+  submittedAt   DateTime?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
   @@unique([academicTestId, branchStudentId])
   @@index([branchStudentId, status])

@@ -3,6 +3,7 @@ import { authenticate } from "../../common/middlewares/authenticate.js";
 import { authorize } from "../../common/middlewares/authorize.js";
 import { USER_ROLES } from "../../common/constants/roles.js";
 import * as controller from "./academicTests.controller.js";
+import { academicProjectUpload } from "../../common/middlewares/academicProjectUpload.js";
 
 const router = express.Router();
 router.use(authenticate);
@@ -18,6 +19,10 @@ router.get("/student/scheduled", authorize(USER_ROLES.STUDENT), controller.stude
 router.get("/student/scheduled/:id", authorize(USER_ROLES.STUDENT), controller.studentGet);
 router.post("/student/scheduled/:id/start", authorize(USER_ROLES.STUDENT), controller.studentStart);
 router.post("/student/scheduled/:id/submit", authorize(USER_ROLES.STUDENT), controller.studentSubmit);
+router.post("/student/scheduled/:id/submit-project", authorize(USER_ROLES.STUDENT), academicProjectUpload.single("projectFile"), controller.studentProjectSubmit);
+router.get("/faculty/scheduled/:id/project-submissions/:studentId/file", authorize(USER_ROLES.FACULTY), controller.facultyProjectFile);
+router.get("/faculty/scheduled/:id/project-submissions/:studentId/preview", authorize(USER_ROLES.FACULTY), controller.facultyProjectPreview);
+router.put("/faculty/scheduled/:id/project-submissions/:studentId", authorize(USER_ROLES.FACULTY), controller.gradeFacultyProject);
 router.get("/student/scheduled/:id/result", authorize(USER_ROLES.STUDENT), controller.studentResult);
 router.get("/:id", authorize(USER_ROLES.BRANCH_ADMIN, USER_ROLES.FACULTY), controller.getById);
 router.post("/", authorize(USER_ROLES.BRANCH_ADMIN), controller.create);

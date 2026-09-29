@@ -552,6 +552,22 @@ exports.Prisma.AcademicTestSubmissionScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.AcademicProjectSubmissionScalarFieldEnum = {
+  id: 'id',
+  academicTestId: 'academicTestId',
+  branchStudentId: 'branchStudentId',
+  status: 'status',
+  submissionText: 'submissionText',
+  fileName: 'fileName',
+  fileMimeType: 'fileMimeType',
+  filePath: 'filePath',
+  link: 'link',
+  marksAwarded: 'marksAwarded',
+  submittedAt: 'submittedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.AcademicTestAnswerScalarFieldEnum = {
   id: 'id',
   submissionId: 'submissionId',
@@ -1347,6 +1363,7 @@ exports.Prisma.ModelName = {
   AcademicTestProject: 'AcademicTestProject',
   AcademicScheduledTest: 'AcademicScheduledTest',
   AcademicTestSubmission: 'AcademicTestSubmission',
+  AcademicProjectSubmission: 'AcademicProjectSubmission',
   AcademicTestAnswer: 'AcademicTestAnswer',
   CourseStatusHistory: 'CourseStatusHistory',
   BatchStatusHistory: 'BatchStatusHistory',

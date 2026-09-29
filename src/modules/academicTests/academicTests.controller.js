@@ -18,4 +18,8 @@ export const studentScheduled = asyncHandler(async (req, res) => send(res, await
 export const studentGet = asyncHandler(async (req, res) => send(res, await service.getStudentAcademicTest(req.user, req.params.id)));
 export const studentStart = asyncHandler(async (req, res) => send(res, await service.startStudentAcademicTest(req.user, req.params.id), 201));
 export const studentSubmit = asyncHandler(async (req, res) => send(res, await service.submitStudentAcademicTest(req.user, req.params.id, req.body)));
+export const studentProjectSubmit = asyncHandler(async (req, res) => send(res, await service.submitStudentAcademicProject(req.user, req.params.id, req.body, req.file), 201));
+export const facultyProjectFile = asyncHandler(async (req, res) => { const file = await service.getFacultyProjectFile(req.user, req.params.id, req.params.studentId); res.type(file.mimeType).set("Content-Disposition", `inline; filename="${file.fileName}"`).send(file.buffer); });
+export const facultyProjectPreview = asyncHandler(async (req, res) => res.type("html").send(await service.getFacultyProjectPreview(req.user, req.params.id, req.params.studentId)));
+export const gradeFacultyProject = asyncHandler(async (req, res) => send(res, await service.gradeFacultyProject(req.user, req.params.id, req.params.studentId, req.body)));
 export const studentResult = asyncHandler(async (req, res) => send(res, await service.getStudentAcademicResult(req.user, req.params.id)));
