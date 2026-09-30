@@ -1,6 +1,7 @@
 import prisma from "../../config/prisma.js";
 import AppError from "../../common/errors/AppError.js";
 import { getCurrentBranchProfile } from "../branches/branches.service.js";
+import { createNotification } from "../notifications/notifications.service.js";
 import fs from "node:fs/promises";
 import path from "node:path";
 import crypto from "node:crypto";
@@ -611,7 +612,7 @@ async function reportBatchForFaculty(actor, batchId) {
   const ids = facultyIds(actor);
   const batch = await prisma.branchBatch.findFirst({
     where: { OR: [{ id: text(batchId) }, { batchId: text(batchId) }], facultyId: { in: ids }, status: "ACTIVE" },
-    select: { id: true, batchId: true, batchName: true, batchTiming: true, courseName: true, branchCourseId: true, courseId: true },
+    select: { id: true, batchId: true, batchName: true, batchTiming: true, courseName: true, branchCourseId: true, courseId: true, branchId: true },
   });
   if (!batch) throw new AppError("Batch not found or not assigned to this faculty.", 404);
   return batch;
@@ -620,13 +621,15 @@ async function reportBatchForFaculty(actor, batchId) {
 async function reportConfiguredItems(batch) {
   const links = await prisma.academicTestBatch.findMany({
     where: { branchBatchId: batch.id },
-    include: { academicTest: { include: { branchCourse: { select: { id: true, name: true, courseCode: true } }, items: { orderBy: { sequence: "asc" } } } } },
+    include: { academicTest: { include: { branchCourse: { select: { id: true, name: true, courseCode: true, academicTestCount: true } }, items: { orderBy: { sequence: "asc" } } } } },
   });
   const configured = [];
   const seen = new Set();
   for (const link of links) {
     if (link.academicTest?.branchCourseId && ![batch.branchCourseId, batch.courseId].filter(Boolean).includes(link.academicTest.branchCourseId)) continue;
     for (const item of link.academicTest?.items || []) {
+      const configuredCount = Number(link.academicTest?.branchCourse?.academicTestCount || 0);
+      if (configuredCount > 0 && Number(item.sequence || 0) > configuredCount) continue;
       if (seen.has(item.id)) continue;
       seen.add(item.id);
       configured.push({ item, academicTest: link.academicTest });
@@ -656,8 +659,13 @@ function reportResult(submission, schedule, passMark) {
   };
 }
 
-async function buildAcademicReport(actor, batch, requestedStudentIds = null) {
-  const schedules = await prisma.academicScheduledTest.findMany({ where: { branchBatchId: batch.id }, orderBy: [{ testNumber: "asc" }, { attemptNumber: "asc" }, { createdAt: "asc" }] });
+async function buildAcademicReport(actor, batch, requestedStudentIds = null, selectedScheduleIds = null) {
+  let schedules = await prisma.academicScheduledTest.findMany({ where: { branchBatchId: batch.id }, orderBy: [{ testNumber: "asc" }, { attemptNumber: "asc" }, { createdAt: "asc" }] });
+  if (Array.isArray(selectedScheduleIds) && selectedScheduleIds.length) {
+    const selected = new Set(selectedScheduleIds.map(text));
+    const selectedNumbers = new Set(schedules.filter((schedule) => !schedule.isRetest && selected.has(schedule.id)).map((schedule) => schedule.testNumber));
+    schedules = schedules.filter((schedule) => selected.has(schedule.id) || selectedNumbers.has(schedule.testNumber));
+  }
   const retestItemIds = new Set(schedules.filter((schedule) => schedule.isRetest && schedule.status !== "CANCELLED").map((schedule) => schedule.academicTestItemId));
   const originalItemIds = new Set(schedules.filter((schedule) => !schedule.isRetest && schedule.status !== "CANCELLED").map((schedule) => schedule.academicTestItemId));
   const configuredItems = (await reportConfiguredItems(batch)).filter(({ item }) => !retestItemIds.has(item.id) && (!originalItemIds.size || originalItemIds.has(item.id)));
@@ -738,4 +746,57 @@ export async function getMyAcademicReport(actor) {
   if (!batch) throw new AppError("Student batch not found.", 404);
   const report = await buildAcademicReport(actor, batch, [student.id]);
   return { ...report, student: report.students[0] || null, students: undefined };
+}
+
+export async function listFacultyAcademicReportTests(actor, batchId) {
+  const batch = await reportBatchForFaculty(actor, batchId);
+  const schedules = await prisma.academicScheduledTest.findMany({
+    where: { branchBatchId: batch.id, isRetest: false, status: { not: "CANCELLED" } },
+    orderBy: [{ testNumber: "asc" }, { createdAt: "asc" }],
+    select: { id: true, testNumber: true, testDate: true, status: true, endTime: true, academicTestItemId: true },
+  });
+  return schedules.map((schedule) => ({ ...schedule, label: `Test ${schedule.testNumber}`, completed: schedule.status === "COMPLETED" || new Date(`${schedule.testDate}T${schedule.endTime || "23:59"}:00`) <= new Date() }));
+}
+
+export async function sendAcademicTestReport(actor, payload = {}) {
+  const batch = await reportBatchForFaculty(actor, payload.batchId);
+  const selectedIds = [...new Set((Array.isArray(payload.academicTestIds) ? payload.academicTestIds : []).map(text).filter(Boolean))];
+  if (!selectedIds.length) throw new AppError("Select at least one completed test to send.", 422);
+  const schedules = await prisma.academicScheduledTest.findMany({ where: { id: { in: selectedIds }, branchBatchId: batch.id, isRetest: false, status: { not: "CANCELLED" } }, select: { id: true, testNumber: true, testDate: true, status: true, endTime: true } });
+  if (schedules.length !== selectedIds.length) throw new AppError("One or more selected tests are not valid for this batch.", 422);
+  const incomplete = schedules.filter((schedule) => schedule.status !== "COMPLETED" && new Date(`${schedule.testDate}T${schedule.endTime || "23:59"}:00`) > new Date());
+  if (incomplete.length) throw new AppError("Only completed tests can be sent to the Branch Admin.", 422);
+  const share = await prisma.facultyReportShare.create({ data: { facultyId: actor.id, branchId: batch.branchId, batchId: batch.id, courseId: batch.branchCourseId, testModuleIds: [], assessmentModuleIds: [], academicTestIds: selectedIds, reportType: "ACADEMIC_TEST" } });
+  const branch = await prisma.branch.findUnique({ where: { id: batch.branchId }, select: { adminUserId: true, branchName: true, branchEmail: true } });
+  await createNotification({ kind: "FACULTY_REPORT_SHARED", tone: "blue", title: "Academic test report shared", message: `${actor.fullName || "Faculty"} shared an Academic Test report for ${batch.batchName}.`, actionLabel: "View report", targetBranchId: batch.branchId, targetBranchEmail: branch?.branchEmail, targetBranchName: branch?.branchName, targetUserId: branch?.adminUserId || null, createdBy: actor.id, batchId: batch.id, branchCourseId: batch.branchCourseId, facultyId: actor.id, facultyName: actor.fullName });
+  return { id: share.id, sentAt: share.sentAt, batch: { id: batch.id, batchId: batch.batchId, name: batch.batchName }, academicTestIds: selectedIds };
+}
+
+async function branchReportScope(actor) {
+  const branch = await branchFor(actor);
+  return branch.id;
+}
+
+export async function listBranchAcademicTestReports(actor) {
+  const branchId = await branchReportScope(actor);
+  const shares = await prisma.facultyReportShare.findMany({ where: { branchId, reportType: "ACADEMIC_TEST", status: "SENT" }, orderBy: { sentAt: "desc" } });
+  const batchIds = shares.map((share) => share.batchId);
+  const facultyIds = shares.map((share) => share.facultyId);
+  const [batches, faculties] = await Promise.all([
+    prisma.branchBatch.findMany({ where: { id: { in: batchIds } }, select: { id: true, batchId: true, batchName: true, batchTiming: true, courseName: true, branchCourseId: true, courseId: true } }),
+    prisma.user.findMany({ where: { id: { in: facultyIds } }, select: { id: true, fullName: true } }),
+  ]);
+  const batchMap = new Map(batches.map((batch) => [batch.id, batch]));
+  const facultyMap = new Map(faculties.map((faculty) => [faculty.id, faculty]));
+  return shares.map((share) => ({ ...share, academicTestIds: Array.isArray(share.academicTestIds) ? share.academicTestIds : [], batch: batchMap.get(share.batchId), faculty: facultyMap.get(share.facultyId) }));
+}
+
+export async function getBranchAcademicTestReport(actor, shareId) {
+  const branchId = await branchReportScope(actor);
+  const share = await prisma.facultyReportShare.findFirst({ where: { id: text(shareId), branchId, reportType: "ACADEMIC_TEST", status: "SENT" } });
+  if (!share) throw new AppError("Academic test report not found.", 404);
+  const batch = await prisma.branchBatch.findUnique({ where: { id: share.batchId }, select: { id: true, batchId: true, batchName: true, batchTiming: true, courseName: true, branchCourseId: true, courseId: true } });
+  if (!batch) throw new AppError("Report batch not found.", 404);
+  const report = await buildAcademicReport(actor, batch, null, Array.isArray(share.academicTestIds) ? share.academicTestIds : []);
+  return { ...report, share: { id: share.id, sentAt: share.sentAt, facultyId: share.facultyId } };
 }

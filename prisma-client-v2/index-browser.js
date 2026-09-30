@@ -1176,6 +1176,8 @@ exports.Prisma.FacultyReportShareScalarFieldEnum = {
   courseId: 'courseId',
   testModuleIds: 'testModuleIds',
   assessmentModuleIds: 'assessmentModuleIds',
+  academicTestIds: 'academicTestIds',
+  reportType: 'reportType',
   sentAt: 'sentAt',
   status: 'status',
   createdAt: 'createdAt',

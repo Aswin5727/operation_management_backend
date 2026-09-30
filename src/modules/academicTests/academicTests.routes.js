@@ -13,6 +13,10 @@ router.post("/scheduled", authorize(USER_ROLES.FACULTY), controller.createSchedu
 router.get("/faculty/scheduled", authorize(USER_ROLES.FACULTY), controller.facultyScheduled);
 router.get("/reports/batches", authorize(USER_ROLES.FACULTY), controller.reportBatches);
 router.get("/reports/batches/:batchId/students", authorize(USER_ROLES.FACULTY), controller.batchReport);
+router.get("/reports/faculty/batches/:batchId/completed-tests", authorize(USER_ROLES.FACULTY), controller.facultyReportTests);
+router.post("/reports/send", authorize(USER_ROLES.FACULTY), controller.sendAcademicReport);
+router.get("/reports/branch-admin", authorize(USER_ROLES.BRANCH_ADMIN), controller.branchReports);
+router.get("/reports/branch-admin/:reportId/students", authorize(USER_ROLES.BRANCH_ADMIN), controller.branchReportStudents);
 router.get("/reports/my-report", authorize(USER_ROLES.STUDENT), controller.myReport);
 router.get("/faculty/scheduled/:id/results", authorize(USER_ROLES.FACULTY), controller.facultyResults);
 router.post("/faculty/scheduled/:id/retest", authorize(USER_ROLES.FACULTY), controller.scheduleRetest);

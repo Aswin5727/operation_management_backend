@@ -1545,6 +1545,8 @@ model FacultyReportShare {
   courseId            String
   testModuleIds       Json     @default("[]")
   assessmentModuleIds Json     @default("[]")
+  academicTestIds    Json     @default("[]")
+  reportType         String   @default("MODULE")
   sentAt              DateTime @default(now())
   status              String   @default("SENT")
   createdAt           DateTime @default(now())
@@ -1553,6 +1555,7 @@ model FacultyReportShare {
   @@index([branchId, sentAt])
   @@index([facultyId, sentAt])
   @@index([batchId, courseId])
+  @@index([reportType, branchId, sentAt])
 }
 
 enum RecordStatus {

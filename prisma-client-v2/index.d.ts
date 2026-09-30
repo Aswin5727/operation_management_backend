@@ -80121,6 +80121,7 @@ export namespace Prisma {
     branchId: string | null
     batchId: string | null
     courseId: string | null
+    reportType: string | null
     sentAt: Date | null
     status: string | null
     createdAt: Date | null
@@ -80133,6 +80134,7 @@ export namespace Prisma {
     branchId: string | null
     batchId: string | null
     courseId: string | null
+    reportType: string | null
     sentAt: Date | null
     status: string | null
     createdAt: Date | null
@@ -80147,6 +80149,8 @@ export namespace Prisma {
     courseId: number
     testModuleIds: number
     assessmentModuleIds: number
+    academicTestIds: number
+    reportType: number
     sentAt: number
     status: number
     createdAt: number
@@ -80161,6 +80165,7 @@ export namespace Prisma {
     branchId?: true
     batchId?: true
     courseId?: true
+    reportType?: true
     sentAt?: true
     status?: true
     createdAt?: true
@@ -80173,6 +80178,7 @@ export namespace Prisma {
     branchId?: true
     batchId?: true
     courseId?: true
+    reportType?: true
     sentAt?: true
     status?: true
     createdAt?: true
@@ -80187,6 +80193,8 @@ export namespace Prisma {
     courseId?: true
     testModuleIds?: true
     assessmentModuleIds?: true
+    academicTestIds?: true
+    reportType?: true
     sentAt?: true
     status?: true
     createdAt?: true
@@ -80274,6 +80282,8 @@ export namespace Prisma {
     courseId: string
     testModuleIds: JsonValue
     assessmentModuleIds: JsonValue
+    academicTestIds: JsonValue
+    reportType: string
     sentAt: Date
     status: string
     createdAt: Date
@@ -80305,6 +80315,8 @@ export namespace Prisma {
     courseId?: boolean
     testModuleIds?: boolean
     assessmentModuleIds?: boolean
+    academicTestIds?: boolean
+    reportType?: boolean
     sentAt?: boolean
     status?: boolean
     createdAt?: boolean
@@ -80319,6 +80331,8 @@ export namespace Prisma {
     courseId?: boolean
     testModuleIds?: boolean
     assessmentModuleIds?: boolean
+    academicTestIds?: boolean
+    reportType?: boolean
     sentAt?: boolean
     status?: boolean
     createdAt?: boolean
@@ -80333,6 +80347,8 @@ export namespace Prisma {
     courseId?: boolean
     testModuleIds?: boolean
     assessmentModuleIds?: boolean
+    academicTestIds?: boolean
+    reportType?: boolean
     sentAt?: boolean
     status?: boolean
     createdAt?: boolean
@@ -80347,13 +80363,15 @@ export namespace Prisma {
     courseId?: boolean
     testModuleIds?: boolean
     assessmentModuleIds?: boolean
+    academicTestIds?: boolean
+    reportType?: boolean
     sentAt?: boolean
     status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type FacultyReportShareOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "facultyId" | "branchId" | "batchId" | "courseId" | "testModuleIds" | "assessmentModuleIds" | "sentAt" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["facultyReportShare"]>
+  export type FacultyReportShareOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "facultyId" | "branchId" | "batchId" | "courseId" | "testModuleIds" | "assessmentModuleIds" | "academicTestIds" | "reportType" | "sentAt" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["facultyReportShare"]>
 
   export type $FacultyReportSharePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "FacultyReportShare"
@@ -80366,6 +80384,8 @@ export namespace Prisma {
       courseId: string
       testModuleIds: Prisma.JsonValue
       assessmentModuleIds: Prisma.JsonValue
+      academicTestIds: Prisma.JsonValue
+      reportType: string
       sentAt: Date
       status: string
       createdAt: Date
@@ -80800,6 +80820,8 @@ export namespace Prisma {
     readonly courseId: FieldRef<"FacultyReportShare", 'String'>
     readonly testModuleIds: FieldRef<"FacultyReportShare", 'Json'>
     readonly assessmentModuleIds: FieldRef<"FacultyReportShare", 'Json'>
+    readonly academicTestIds: FieldRef<"FacultyReportShare", 'Json'>
+    readonly reportType: FieldRef<"FacultyReportShare", 'String'>
     readonly sentAt: FieldRef<"FacultyReportShare", 'DateTime'>
     readonly status: FieldRef<"FacultyReportShare", 'String'>
     readonly createdAt: FieldRef<"FacultyReportShare", 'DateTime'>
@@ -85089,6 +85111,8 @@ export namespace Prisma {
     courseId: 'courseId',
     testModuleIds: 'testModuleIds',
     assessmentModuleIds: 'assessmentModuleIds',
+    academicTestIds: 'academicTestIds',
+    reportType: 'reportType',
     sentAt: 'sentAt',
     status: 'status',
     createdAt: 'createdAt',
@@ -91995,6 +92019,8 @@ export namespace Prisma {
     courseId?: StringFilter<"FacultyReportShare"> | string
     testModuleIds?: JsonFilter<"FacultyReportShare">
     assessmentModuleIds?: JsonFilter<"FacultyReportShare">
+    academicTestIds?: JsonFilter<"FacultyReportShare">
+    reportType?: StringFilter<"FacultyReportShare"> | string
     sentAt?: DateTimeFilter<"FacultyReportShare"> | Date | string
     status?: StringFilter<"FacultyReportShare"> | string
     createdAt?: DateTimeFilter<"FacultyReportShare"> | Date | string
@@ -92009,6 +92035,8 @@ export namespace Prisma {
     courseId?: SortOrder
     testModuleIds?: SortOrder
     assessmentModuleIds?: SortOrder
+    academicTestIds?: SortOrder
+    reportType?: SortOrder
     sentAt?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
@@ -92026,6 +92054,8 @@ export namespace Prisma {
     courseId?: StringFilter<"FacultyReportShare"> | string
     testModuleIds?: JsonFilter<"FacultyReportShare">
     assessmentModuleIds?: JsonFilter<"FacultyReportShare">
+    academicTestIds?: JsonFilter<"FacultyReportShare">
+    reportType?: StringFilter<"FacultyReportShare"> | string
     sentAt?: DateTimeFilter<"FacultyReportShare"> | Date | string
     status?: StringFilter<"FacultyReportShare"> | string
     createdAt?: DateTimeFilter<"FacultyReportShare"> | Date | string
@@ -92040,6 +92070,8 @@ export namespace Prisma {
     courseId?: SortOrder
     testModuleIds?: SortOrder
     assessmentModuleIds?: SortOrder
+    academicTestIds?: SortOrder
+    reportType?: SortOrder
     sentAt?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
@@ -92060,6 +92092,8 @@ export namespace Prisma {
     courseId?: StringWithAggregatesFilter<"FacultyReportShare"> | string
     testModuleIds?: JsonWithAggregatesFilter<"FacultyReportShare">
     assessmentModuleIds?: JsonWithAggregatesFilter<"FacultyReportShare">
+    academicTestIds?: JsonWithAggregatesFilter<"FacultyReportShare">
+    reportType?: StringWithAggregatesFilter<"FacultyReportShare"> | string
     sentAt?: DateTimeWithAggregatesFilter<"FacultyReportShare"> | Date | string
     status?: StringWithAggregatesFilter<"FacultyReportShare"> | string
     createdAt?: DateTimeWithAggregatesFilter<"FacultyReportShare"> | Date | string
@@ -99974,6 +100008,8 @@ export namespace Prisma {
     courseId: string
     testModuleIds?: JsonNullValueInput | InputJsonValue
     assessmentModuleIds?: JsonNullValueInput | InputJsonValue
+    academicTestIds?: JsonNullValueInput | InputJsonValue
+    reportType?: string
     sentAt?: Date | string
     status?: string
     createdAt?: Date | string
@@ -99988,6 +100024,8 @@ export namespace Prisma {
     courseId: string
     testModuleIds?: JsonNullValueInput | InputJsonValue
     assessmentModuleIds?: JsonNullValueInput | InputJsonValue
+    academicTestIds?: JsonNullValueInput | InputJsonValue
+    reportType?: string
     sentAt?: Date | string
     status?: string
     createdAt?: Date | string
@@ -100002,6 +100040,8 @@ export namespace Prisma {
     courseId?: StringFieldUpdateOperationsInput | string
     testModuleIds?: JsonNullValueInput | InputJsonValue
     assessmentModuleIds?: JsonNullValueInput | InputJsonValue
+    academicTestIds?: JsonNullValueInput | InputJsonValue
+    reportType?: StringFieldUpdateOperationsInput | string
     sentAt?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -100016,6 +100056,8 @@ export namespace Prisma {
     courseId?: StringFieldUpdateOperationsInput | string
     testModuleIds?: JsonNullValueInput | InputJsonValue
     assessmentModuleIds?: JsonNullValueInput | InputJsonValue
+    academicTestIds?: JsonNullValueInput | InputJsonValue
+    reportType?: StringFieldUpdateOperationsInput | string
     sentAt?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -100030,6 +100072,8 @@ export namespace Prisma {
     courseId: string
     testModuleIds?: JsonNullValueInput | InputJsonValue
     assessmentModuleIds?: JsonNullValueInput | InputJsonValue
+    academicTestIds?: JsonNullValueInput | InputJsonValue
+    reportType?: string
     sentAt?: Date | string
     status?: string
     createdAt?: Date | string
@@ -100044,6 +100088,8 @@ export namespace Prisma {
     courseId?: StringFieldUpdateOperationsInput | string
     testModuleIds?: JsonNullValueInput | InputJsonValue
     assessmentModuleIds?: JsonNullValueInput | InputJsonValue
+    academicTestIds?: JsonNullValueInput | InputJsonValue
+    reportType?: StringFieldUpdateOperationsInput | string
     sentAt?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -100058,6 +100104,8 @@ export namespace Prisma {
     courseId?: StringFieldUpdateOperationsInput | string
     testModuleIds?: JsonNullValueInput | InputJsonValue
     assessmentModuleIds?: JsonNullValueInput | InputJsonValue
+    academicTestIds?: JsonNullValueInput | InputJsonValue
+    reportType?: StringFieldUpdateOperationsInput | string
     sentAt?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -105267,6 +105315,8 @@ export namespace Prisma {
     courseId?: SortOrder
     testModuleIds?: SortOrder
     assessmentModuleIds?: SortOrder
+    academicTestIds?: SortOrder
+    reportType?: SortOrder
     sentAt?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
@@ -105279,6 +105329,7 @@ export namespace Prisma {
     branchId?: SortOrder
     batchId?: SortOrder
     courseId?: SortOrder
+    reportType?: SortOrder
     sentAt?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
@@ -105291,6 +105342,7 @@ export namespace Prisma {
     branchId?: SortOrder
     batchId?: SortOrder
     courseId?: SortOrder
+    reportType?: SortOrder
     sentAt?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
