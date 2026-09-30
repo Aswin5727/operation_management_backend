@@ -598,7 +598,10 @@ async function resetPassword({ token, password, ipAddress, userAgent }) {
     include: { user: true },
   });
 
-  if (!resetToken || resetToken.usedAt || resetToken.expiresAt.getTime() <= Date.now()) {
+  const isCredentialEmailToken = resetToken?.createdBy === "CREDENTIAL_EMAIL";
+  const isExpired = resetToken?.expiresAt?.getTime() <= Date.now();
+
+  if (!resetToken || resetToken.usedAt || (!isCredentialEmailToken && isExpired)) {
     throw new AppError("Reset token is invalid or expired", 400);
   }
 

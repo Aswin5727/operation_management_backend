@@ -863,7 +863,8 @@ export async function createFacultyRecord(payload, actor) {
   const passwordHash = await hashPassword(temporaryPassword);
   const resetToken = crypto.randomBytes(32).toString("hex");
   const tokenHash = crypto.createHash("sha256").update(resetToken).digest("hex");
-  const expiresAt = new Date(Date.now() + config.credentialResetTokenExpiresMinutes * 60 * 1000);
+  // Credential links remain valid until the recipient uses the link to set a password.
+  const expiresAt = new Date("9999-12-31T23:59:59.999Z");
 
   const batchCourseIds = Array.from(new Set(batchEntries.map((entry) => normalizeString(entry.courseId)).filter(Boolean)));
   const effectiveCourseIds = selectedCourseIds.length ? selectedCourseIds : batchCourseIds;
@@ -922,7 +923,7 @@ export async function createFacultyRecord(payload, actor) {
           userId: user.id,
           tokenHash,
           expiresAt,
-          createdBy: actorId,
+          createdBy: "CREDENTIAL_EMAIL",
         },
       });
 

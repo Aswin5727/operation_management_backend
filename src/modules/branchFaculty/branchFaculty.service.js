@@ -107,7 +107,8 @@ export function parseBranchFacultyPayload(rawPayload = {}, defaults = {}) {
 function createResetTokenArtifacts() {
   const resetToken = crypto.randomBytes(32).toString("hex");
   const tokenHash = crypto.createHash("sha256").update(resetToken).digest("hex");
-  const expiresAt = new Date(Date.now() + config.credentialResetTokenExpiresMinutes * 60 * 1000);
+  // Credential links remain valid until the recipient uses the link to set a password.
+  const expiresAt = new Date("9999-12-31T23:59:59.999Z");
   return { resetToken, tokenHash, expiresAt };
 }
 
@@ -414,7 +415,7 @@ export async function createBranchFaculty(actorUser, payload) {
         userId: user.id,
         tokenHash,
         expiresAt,
-        createdBy: actorUser.id,
+        createdBy: "CREDENTIAL_EMAIL",
       },
     });
 

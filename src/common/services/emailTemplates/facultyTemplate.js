@@ -102,7 +102,7 @@ export function facultyTemplate({
         font-size:14px;
         color:#444;">
         <b>Important:</b><br>
-        Login using the temporary password and change it immediately after your first login. This reset password link is valid for 1 hour only.
+        Login using the temporary password and change it immediately after your first login. This reset password link remains valid until you use it to set your password.
       </div>
     `,
   });
