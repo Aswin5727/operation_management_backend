@@ -8,7 +8,8 @@
   },
   "scripts": {
     "start": "node server.js",
-    "prestart": "npm run prisma:generate && npm run prisma:deploy",
+    "prestart": "npm run prisma:generate",
+    "db:migrate": "npm run prisma:deploy",
     "dev": "nodemon server.js",
     "prisma:generate": "prisma generate",
     "prisma:deploy": "prisma migrate deploy",

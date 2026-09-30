@@ -4,7 +4,6 @@ import { getCurrentBranchProfile } from "../branches/branches.service.js";
 import fs from "node:fs/promises";
 import path from "node:path";
 import crypto from "node:crypto";
-import mammoth from "mammoth";
 
 const text = (value) => String(value ?? "").trim();
 const academicProjectUploadRoot = path.resolve(process.cwd(), "uploads", "academic-projects");
@@ -478,6 +477,7 @@ export async function getFacultyProjectPreview(actor, scheduleId, studentId) {
   if (!submission?.filePath) throw new AppError("Project file not found.", 404);
   if (!String(submission.fileName || "").toLowerCase().endsWith(".docx")) throw new AppError("Only DOCX files support text preview.", 422);
   try {
+    const { default: mammoth } = await import("mammoth");
     const converted = await mammoth.convertToHtml({ buffer: await fs.readFile(path.join(academicProjectUploadRoot, submission.filePath)) });
     return converted.value;
   } catch { throw new AppError("Unable to preview this project document.", 422); }
