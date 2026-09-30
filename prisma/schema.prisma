@@ -506,7 +506,7 @@ model AcademicTest {
   items           AcademicTestItem[]
   batches         AcademicTestBatch[]
 
-  @@unique([branchCourseId])
+  @@index([branchCourseId])
   @@index([createdBy])
 }
 

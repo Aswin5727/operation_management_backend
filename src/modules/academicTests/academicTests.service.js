@@ -124,17 +124,6 @@ export async function createAcademicTest(actor, payload = {}) {
   const course = await resolveCourse(branch.id, payload.courseId || payload.branchCourseId);
   const items = normalizeItems(payload.items, course.academicTestCount);
   const batches = await resolveBatches(branch.id, course, payload.batchIds || payload.batches);
-  const existing = await prisma.academicTest.findUnique({ where: { branchCourseId: course.id }, select: { id: true } });
-  if (existing) {
-    const updated = await prisma.$transaction(async (tx) => {
-      const current = await tx.academicTestBatch.findMany({ where: { academicTestId: existing.id }, select: { branchBatchId: true } });
-      const currentIds = new Set(current.map((row) => row.branchBatchId));
-      const missing = batches.filter((batch) => !currentIds.has(batch.id));
-      if (missing.length) await tx.academicTestBatch.createMany({ data: missing.map((batch) => ({ academicTestId: existing.id, branchBatchId: batch.id })), skipDuplicates: true });
-      return tx.academicTest.findUnique({ where: { id: existing.id }, include: includeDetails() });
-    });
-    return toPublic(updated);
-  }
   const created = await prisma.$transaction(async (tx) => tx.academicTest.create({ data: { branchCourseId: course.id, createdBy: actor.id, items: { create: items }, batches: { create: createBatchRows(batches) } }, include: includeDetails() }));
   return toPublic(created);
 }
