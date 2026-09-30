@@ -45,11 +45,6 @@ function normalizeItemSchedule(item, type) {
     result.testEndTime = normalizeTime(item?.testEndTime, "Test end time");
     if (result.testEndTime <= result.testStartTime) throw new AppError("Test end time must be after test start time.", 422);
   }
-  if (hasProject) {
-    result.projectStartDate = normalizeDate(item?.projectStartDate, "Project start date");
-    result.projectEndDate = normalizeDate(item?.projectEndDate, "Project end date");
-    if (result.projectEndDate < result.projectStartDate) throw new AppError("Project end date must be on or after project start date.", 422);
-  }
   return result;
 }
 
@@ -212,7 +207,7 @@ export async function getFacultyCreateOptions(actor) {
   const ids = facultyIds(actor);
   const rows = await prisma.academicTest.findMany({
     where: { batches: { some: { branchBatch: { status: "ACTIVE", OR: [{ facultyId: { in: ids } }, { branchFaculty: { facultyId: { in: ids }, status: "ACTIVE" } }] } } } },
-    include: { branchCourse: { select: { id: true, name: true, courseCode: true, academicTestCount: true } }, items: { orderBy: { sequence: "asc" }, select: { id: true, sequence: true, testType: true, projectStartDate: true, projectEndDate: true } }, batches: { include: { branchBatch: { select: { id: true, batchId: true, batchName: true, batchTiming: true, facultyId: true, status: true } } } } },
+    include: { branchCourse: { select: { id: true, name: true, courseCode: true, academicTestCount: true } }, items: { orderBy: { sequence: "asc" }, select: { id: true, sequence: true, testType: true } }, batches: { include: { branchBatch: { select: { id: true, batchId: true, batchName: true, batchTiming: true, facultyId: true, status: true } } } } },
     orderBy: { createdAt: "desc" },
   });
   const testItemIds = rows.flatMap((row) => row.items.map((item) => item.id));
@@ -241,7 +236,7 @@ export async function getFacultyCreateOptions(actor) {
       const studentCount = (studentCountByBatch.get(branchBatch.id) || 0) + (studentCountByBatch.get(branchBatch.batchId) || 0);
       const previousCompleted = !previous || (previousSchedule && (previousSchedule.status === "COMPLETED" || scheduleInstant(previousSchedule.testDate, previousSchedule.endTime) < Date.now()));
       const available = Boolean(nextItem && studentCount > 0 && previousCompleted && paper?.status === "PREPARED");
-      return { ...branchBatch, testType: nextItem?.testType || null, projectStartDate: nextItem?.projectStartDate || null, projectEndDate: nextItem?.projectEndDate || null, studentCount, nextTestNumber: nextItem?.sequence || null, academicTestItemId: nextItem?.id || null, questionPaperId: paper?.id || null, questionPaperStatus: paper?.status || "NOT_PREPARED", available, blocker: nextItem && studentCount === 0 ? `No active students are assigned to ${branchBatch.batchName || branchBatch.batchId}. Select the batch that contains the students.` : nextItem && !previousCompleted ? `Test ${previous.sequence} must be completed before creating Test ${nextItem.sequence}.` : nextItem && paper?.status !== "PREPARED" ? `Question paper has not been prepared for ${branchBatch.batchName || branchBatch.batchId}. Please prepare the question paper before creating Test ${nextItem.sequence}.` : null, schedules: batchSchedules };
+      return { ...branchBatch, testType: nextItem?.testType || null, studentCount, nextTestNumber: nextItem?.sequence || null, academicTestItemId: nextItem?.id || null, questionPaperId: paper?.id || null, questionPaperStatus: paper?.status || "NOT_PREPARED", available, blocker: nextItem && studentCount === 0 ? `No active students are assigned to ${branchBatch.batchName || branchBatch.batchId}. Select the batch that contains the students.` : nextItem && !previousCompleted ? `Test ${previous.sequence} must be completed before creating Test ${nextItem.sequence}.` : nextItem && paper?.status !== "PREPARED" ? `Question paper has not been prepared for ${branchBatch.batchName || branchBatch.batchId}. Please prepare the question paper before creating Test ${nextItem.sequence}.` : null, schedules: batchSchedules };
     }),
   })).filter((course) => course.batches.length);
   return { tomorrow: tomorrowDate(), courses };
@@ -269,12 +264,7 @@ export async function createFacultyScheduledTest(actor, payload = {}) {
   const startTime = needsTest ? scheduleTime(payload.startTime, "Start time") : null;
   const endTime = needsTest ? scheduleTime(payload.endTime, "End time") : null;
   if (needsTest && endTime <= startTime) throw new AppError("End time must be after start time.", 422);
-  const projectStartDate = text(payload.projectStartDate || item.projectStartDate) || null;
-  const projectEndDate = text(payload.projectEndDate || item.projectEndDate) || null;
-  const hasProject = item.testType === "PROJECT" || item.testType === "TEST_AND_PROJECT";
-  if (hasProject && (!projectStartDate || !projectEndDate)) throw new AppError("Project start date and project end date are required for this Academic Test.", 422);
-  if (hasProject && projectEndDate < projectStartDate) throw new AppError("Project end date must be on or after project start date.", 422);
-  const scheduleData = { academicTestItemId: item.id, branchCourseId: item.academicTest.branchCourseId, branchBatchId: batchId, facultyId: actor.id, questionPaperId: paper.id, testNumber: item.sequence, testDate: date, startTime, endTime, projectStartDate, projectEndDate, status: "SCHEDULED", createdBy: actor.id };
+  const scheduleData = { academicTestItemId: item.id, branchCourseId: item.academicTest.branchCourseId, branchBatchId: batchId, facultyId: actor.id, questionPaperId: paper.id, testNumber: item.sequence, testDate: date, startTime, endTime, projectStartDate: null, projectEndDate: null, status: "SCHEDULED", createdBy: actor.id };
   const created = existing?.status === "CANCELLED"
     ? await prisma.academicScheduledTest.update({ where: { id: existing.id }, data: scheduleData })
     : await prisma.academicScheduledTest.create({ data: scheduleData });
@@ -286,7 +276,7 @@ export async function createFacultyScheduledTest(actor, payload = {}) {
   const users = students.length ? await prisma.user.findMany({ where: { OR: [{ email: { in: students.map((student) => student.emailAddress).filter(Boolean) } }, { userCode: { in: students.map((student) => student.studentId).filter(Boolean) } }] }, select: { id: true, email: true, userCode: true } }) : [];
   const userByEmail = new Map(users.map((user) => [String(user.email || "").toLowerCase(), user.id]));
   const userByCode = new Map(users.map((user) => [String(user.userCode || "").toLowerCase(), user.id]));
-  const notificationMessage = needsTest ? `Test ${item.sequence} for ${course?.name || "your course"} has been scheduled on ${date} from ${startTime} to ${endTime}.` : `Project ${item.sequence} for ${course?.name || "your course"} is scheduled from ${projectStartDate} to ${projectEndDate}.`;
+  const notificationMessage = needsTest ? `Test ${item.sequence} for ${course?.name || "your course"} has been scheduled on ${date} from ${startTime} to ${endTime}.` : `Project ${item.sequence} for ${course?.name || "your course"} has been created.`;
   const notificationRows = students.map((student) => { const targetUserId = userByEmail.get(String(student.emailAddress || "").toLowerCase()) || userByCode.get(String(student.studentId || "").toLowerCase()); return targetUserId ? ({ kind: "ACADEMIC_TEST_CREATED", tone: "blue", title: "Academic Test Created", message: notificationMessage, targetUserId, academicTestId: created.id, batchId: batch?.batchId || batchId, branchCourseId: item.academicTest.branchCourseId, branchCourseName: course?.name, createdBy: actor.id }) : null }).filter(Boolean);
   if (existing?.status === "CANCELLED") await prisma.notification.deleteMany({ where: { academicTestId: created.id } });
   if (notificationRows.length) await prisma.notification.createMany({ data: notificationRows });
@@ -392,7 +382,7 @@ async function academicPublicSchedule(schedule, includeQuestions = false) {
   const item = await prisma.academicTestItem.findUnique({ where: { id: schedule.academicTestItemId }, include: { academicTest: { include: { branchCourse: { select: { id: true, name: true, courseCode: true } } } }, projects: { select: { branchBatchId: true, projectTitle: true, projectDescription: true, projectRequirements: true, projectMarks: true, status: true } } } });
   const paper = await prisma.academicQuestionPaper.findUnique({ where: { id: schedule.questionPaperId }, include: { questions: { orderBy: { questionNumber: "asc" } } } });
   const project = item?.projects?.find((entry) => entry.branchBatchId === schedule.branchBatchId) || item?.projects?.[0];
-  return { ...schedule, testType: item?.testType || "TEST", projectStartDate: schedule.projectStartDate || item?.projectStartDate || null, projectEndDate: schedule.projectEndDate || item?.projectEndDate || null, projectTitle: project?.projectTitle || "", projectDescription: project?.projectDescription || "", projectRequirements: project?.projectRequirements || "", projectMarks: project?.projectMarks || 0, projectStatus: project?.status || "NOT_PREPARED", status: academicScheduleStatus(schedule), testName: schedule.isRetest ? `Test ${schedule.testNumber} - Retest` : `Test ${schedule.testNumber}`, course: item?.academicTest?.branchCourse, totalQuestions: paper?.totalQuestions || 0, totalMarks: paper?.totalMarks || 0, passMark: paper?.passMark || 0, marksPerQuestion: paper?.marksPerQuestion || 0, questions: includeQuestions ? (paper?.questions || []).map(({ correctAnswer, ...question }) => question) : undefined };
+  return { ...schedule, testType: item?.testType || "TEST", projectTitle: project?.projectTitle || "", projectDescription: project?.projectDescription || "", projectRequirements: project?.projectRequirements || "", projectMarks: project?.projectMarks || 0, projectStatus: project?.status || "NOT_PREPARED", status: academicScheduleStatus(schedule), testName: schedule.isRetest ? `Test ${schedule.testNumber} - Retest` : `Test ${schedule.testNumber}`, course: item?.academicTest?.branchCourse, totalQuestions: paper?.totalQuestions || 0, totalMarks: paper?.totalMarks || 0, passMark: paper?.passMark || 0, marksPerQuestion: paper?.marksPerQuestion || 0, questions: includeQuestions ? (paper?.questions || []).map(({ correctAnswer, ...question }) => question) : undefined };
 }
 
 async function academicPassMarkForSchedule(schedule, fallback = 0) {
@@ -430,10 +420,6 @@ export async function listStudentAcademicTests(actor) {
 
 function projectScheduleStatus(schedule) {
   if (schedule.status === "CANCELLED") return "CANCELLED";
-  if (!schedule.projectStartDate || !schedule.projectEndDate) return "NOT_AVAILABLE";
-  const today = new Date().toISOString().slice(0, 10);
-  if (today < schedule.projectStartDate) return "UPCOMING";
-  if (today > schedule.projectEndDate) return "EXPIRED";
   return "AVAILABLE";
 }
 
@@ -721,7 +707,7 @@ async function buildAcademicReport(actor, batch, requestedStudentIds = null, sel
     return {
       student,
       tests,
-      project: projectTest ? { title: projectConfig?.projectTitle || "Project", totalMarks: projectTotal, marksAwarded: projectMarks, percentage: projectMarks != null && projectTotal > 0 ? Number(((projectMarks / projectTotal) * 100).toFixed(2)) : null, result: projectMarks != null && projectTotal > 0 ? (projectMarks >= projectTotal * 0.5 ? "PASS" : "FAIL") : null, status: projectSubmission?.status || "NOT_SUBMITTED", startDate: projectSchedule?.projectStartDate || projectTest.item.projectStartDate || null, endDate: projectSchedule?.projectEndDate || projectTest.item.projectEndDate || null } : null,
+      project: projectTest ? { title: projectConfig?.projectTitle || "Project", totalMarks: projectTotal, marksAwarded: projectMarks, percentage: projectMarks != null && projectTotal > 0 ? Number(((projectMarks / projectTotal) * 100).toFixed(2)) : null, result: projectMarks != null && projectTotal > 0 ? (projectMarks >= projectTotal * 0.5 ? "PASS" : "FAIL") : null, status: projectSubmission?.status || "NOT_SUBMITTED" } : null,
       overallTestPercentage: testMaximum > 0 ? Number(((testObtained / testMaximum) * 100).toFixed(2)) : null,
       overallProjectPercentage: projectMarks != null && projectTotal > 0 ? Number(((projectMarks / projectTotal) * 100).toFixed(2)) : null,
     };
