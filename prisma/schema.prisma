@@ -567,12 +567,14 @@ model AcademicQuestion {
   id             String                @id @default(cuid())
   questionPaperId String
   questionNumber Int
+  questionType   String                @default("MCQ")
   questionText   String
-  optionA        String
-  optionB        String
-  optionC        String
-  optionD        String
-  correctAnswer  String
+  optionA        String                @default("")
+  optionB        String                @default("")
+  optionC        String                @default("")
+  optionD        String                @default("")
+  correctAnswer  String                @default("")
+  marks          Int                   @default(1)
   createdAt      DateTime              @default(now())
   updatedAt      DateTime              @updatedAt
   questionPaper  AcademicQuestionPaper @relation(fields: [questionPaperId], references: [id], onDelete: Cascade)
@@ -679,9 +681,13 @@ model AcademicTestAnswer {
   id             String  @id @default(cuid())
   submissionId   String
   questionId     String
+  answerText     String?
   selectedAnswer String?
   isCorrect      Boolean @default(false)
   marksAwarded   Int     @default(0)
+  evaluationStatus String @default("PENDING")
+  evaluatedBy    String?
+  evaluatedAt    DateTime?
 
   @@unique([submissionId, questionId])
   @@index([submissionId])

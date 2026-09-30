@@ -34061,22 +34061,26 @@ export namespace Prisma {
 
   export type AcademicQuestionAvgAggregateOutputType = {
     questionNumber: number | null
+    marks: number | null
   }
 
   export type AcademicQuestionSumAggregateOutputType = {
     questionNumber: number | null
+    marks: number | null
   }
 
   export type AcademicQuestionMinAggregateOutputType = {
     id: string | null
     questionPaperId: string | null
     questionNumber: number | null
+    questionType: string | null
     questionText: string | null
     optionA: string | null
     optionB: string | null
     optionC: string | null
     optionD: string | null
     correctAnswer: string | null
+    marks: number | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -34085,12 +34089,14 @@ export namespace Prisma {
     id: string | null
     questionPaperId: string | null
     questionNumber: number | null
+    questionType: string | null
     questionText: string | null
     optionA: string | null
     optionB: string | null
     optionC: string | null
     optionD: string | null
     correctAnswer: string | null
+    marks: number | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -34099,12 +34105,14 @@ export namespace Prisma {
     id: number
     questionPaperId: number
     questionNumber: number
+    questionType: number
     questionText: number
     optionA: number
     optionB: number
     optionC: number
     optionD: number
     correctAnswer: number
+    marks: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -34113,22 +34121,26 @@ export namespace Prisma {
 
   export type AcademicQuestionAvgAggregateInputType = {
     questionNumber?: true
+    marks?: true
   }
 
   export type AcademicQuestionSumAggregateInputType = {
     questionNumber?: true
+    marks?: true
   }
 
   export type AcademicQuestionMinAggregateInputType = {
     id?: true
     questionPaperId?: true
     questionNumber?: true
+    questionType?: true
     questionText?: true
     optionA?: true
     optionB?: true
     optionC?: true
     optionD?: true
     correctAnswer?: true
+    marks?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -34137,12 +34149,14 @@ export namespace Prisma {
     id?: true
     questionPaperId?: true
     questionNumber?: true
+    questionType?: true
     questionText?: true
     optionA?: true
     optionB?: true
     optionC?: true
     optionD?: true
     correctAnswer?: true
+    marks?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -34151,12 +34165,14 @@ export namespace Prisma {
     id?: true
     questionPaperId?: true
     questionNumber?: true
+    questionType?: true
     questionText?: true
     optionA?: true
     optionB?: true
     optionC?: true
     optionD?: true
     correctAnswer?: true
+    marks?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -34252,12 +34268,14 @@ export namespace Prisma {
     id: string
     questionPaperId: string
     questionNumber: number
+    questionType: string
     questionText: string
     optionA: string
     optionB: string
     optionC: string
     optionD: string
     correctAnswer: string
+    marks: number
     createdAt: Date
     updatedAt: Date
     _count: AcademicQuestionCountAggregateOutputType | null
@@ -34285,12 +34303,14 @@ export namespace Prisma {
     id?: boolean
     questionPaperId?: boolean
     questionNumber?: boolean
+    questionType?: boolean
     questionText?: boolean
     optionA?: boolean
     optionB?: boolean
     optionC?: boolean
     optionD?: boolean
     correctAnswer?: boolean
+    marks?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     questionPaper?: boolean | AcademicQuestionPaperDefaultArgs<ExtArgs>
@@ -34300,12 +34320,14 @@ export namespace Prisma {
     id?: boolean
     questionPaperId?: boolean
     questionNumber?: boolean
+    questionType?: boolean
     questionText?: boolean
     optionA?: boolean
     optionB?: boolean
     optionC?: boolean
     optionD?: boolean
     correctAnswer?: boolean
+    marks?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     questionPaper?: boolean | AcademicQuestionPaperDefaultArgs<ExtArgs>
@@ -34315,12 +34337,14 @@ export namespace Prisma {
     id?: boolean
     questionPaperId?: boolean
     questionNumber?: boolean
+    questionType?: boolean
     questionText?: boolean
     optionA?: boolean
     optionB?: boolean
     optionC?: boolean
     optionD?: boolean
     correctAnswer?: boolean
+    marks?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     questionPaper?: boolean | AcademicQuestionPaperDefaultArgs<ExtArgs>
@@ -34330,17 +34354,19 @@ export namespace Prisma {
     id?: boolean
     questionPaperId?: boolean
     questionNumber?: boolean
+    questionType?: boolean
     questionText?: boolean
     optionA?: boolean
     optionB?: boolean
     optionC?: boolean
     optionD?: boolean
     correctAnswer?: boolean
+    marks?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type AcademicQuestionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "questionPaperId" | "questionNumber" | "questionText" | "optionA" | "optionB" | "optionC" | "optionD" | "correctAnswer" | "createdAt" | "updatedAt", ExtArgs["result"]["academicQuestion"]>
+  export type AcademicQuestionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "questionPaperId" | "questionNumber" | "questionType" | "questionText" | "optionA" | "optionB" | "optionC" | "optionD" | "correctAnswer" | "marks" | "createdAt" | "updatedAt", ExtArgs["result"]["academicQuestion"]>
   export type AcademicQuestionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     questionPaper?: boolean | AcademicQuestionPaperDefaultArgs<ExtArgs>
   }
@@ -34360,12 +34386,14 @@ export namespace Prisma {
       id: string
       questionPaperId: string
       questionNumber: number
+      questionType: string
       questionText: string
       optionA: string
       optionB: string
       optionC: string
       optionD: string
       correctAnswer: string
+      marks: number
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["academicQuestion"]>
@@ -34795,12 +34823,14 @@ export namespace Prisma {
     readonly id: FieldRef<"AcademicQuestion", 'String'>
     readonly questionPaperId: FieldRef<"AcademicQuestion", 'String'>
     readonly questionNumber: FieldRef<"AcademicQuestion", 'Int'>
+    readonly questionType: FieldRef<"AcademicQuestion", 'String'>
     readonly questionText: FieldRef<"AcademicQuestion", 'String'>
     readonly optionA: FieldRef<"AcademicQuestion", 'String'>
     readonly optionB: FieldRef<"AcademicQuestion", 'String'>
     readonly optionC: FieldRef<"AcademicQuestion", 'String'>
     readonly optionD: FieldRef<"AcademicQuestion", 'String'>
     readonly correctAnswer: FieldRef<"AcademicQuestion", 'String'>
+    readonly marks: FieldRef<"AcademicQuestion", 'Int'>
     readonly createdAt: FieldRef<"AcademicQuestion", 'DateTime'>
     readonly updatedAt: FieldRef<"AcademicQuestion", 'DateTime'>
   }
@@ -40039,27 +40069,39 @@ export namespace Prisma {
     id: string | null
     submissionId: string | null
     questionId: string | null
+    answerText: string | null
     selectedAnswer: string | null
     isCorrect: boolean | null
     marksAwarded: number | null
+    evaluationStatus: string | null
+    evaluatedBy: string | null
+    evaluatedAt: Date | null
   }
 
   export type AcademicTestAnswerMaxAggregateOutputType = {
     id: string | null
     submissionId: string | null
     questionId: string | null
+    answerText: string | null
     selectedAnswer: string | null
     isCorrect: boolean | null
     marksAwarded: number | null
+    evaluationStatus: string | null
+    evaluatedBy: string | null
+    evaluatedAt: Date | null
   }
 
   export type AcademicTestAnswerCountAggregateOutputType = {
     id: number
     submissionId: number
     questionId: number
+    answerText: number
     selectedAnswer: number
     isCorrect: number
     marksAwarded: number
+    evaluationStatus: number
+    evaluatedBy: number
+    evaluatedAt: number
     _all: number
   }
 
@@ -40076,27 +40118,39 @@ export namespace Prisma {
     id?: true
     submissionId?: true
     questionId?: true
+    answerText?: true
     selectedAnswer?: true
     isCorrect?: true
     marksAwarded?: true
+    evaluationStatus?: true
+    evaluatedBy?: true
+    evaluatedAt?: true
   }
 
   export type AcademicTestAnswerMaxAggregateInputType = {
     id?: true
     submissionId?: true
     questionId?: true
+    answerText?: true
     selectedAnswer?: true
     isCorrect?: true
     marksAwarded?: true
+    evaluationStatus?: true
+    evaluatedBy?: true
+    evaluatedAt?: true
   }
 
   export type AcademicTestAnswerCountAggregateInputType = {
     id?: true
     submissionId?: true
     questionId?: true
+    answerText?: true
     selectedAnswer?: true
     isCorrect?: true
     marksAwarded?: true
+    evaluationStatus?: true
+    evaluatedBy?: true
+    evaluatedAt?: true
     _all?: true
   }
 
@@ -40190,9 +40244,13 @@ export namespace Prisma {
     id: string
     submissionId: string
     questionId: string
+    answerText: string | null
     selectedAnswer: string | null
     isCorrect: boolean
     marksAwarded: number
+    evaluationStatus: string
+    evaluatedBy: string | null
+    evaluatedAt: Date | null
     _count: AcademicTestAnswerCountAggregateOutputType | null
     _avg: AcademicTestAnswerAvgAggregateOutputType | null
     _sum: AcademicTestAnswerSumAggregateOutputType | null
@@ -40218,39 +40276,55 @@ export namespace Prisma {
     id?: boolean
     submissionId?: boolean
     questionId?: boolean
+    answerText?: boolean
     selectedAnswer?: boolean
     isCorrect?: boolean
     marksAwarded?: boolean
+    evaluationStatus?: boolean
+    evaluatedBy?: boolean
+    evaluatedAt?: boolean
   }, ExtArgs["result"]["academicTestAnswer"]>
 
   export type AcademicTestAnswerSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     submissionId?: boolean
     questionId?: boolean
+    answerText?: boolean
     selectedAnswer?: boolean
     isCorrect?: boolean
     marksAwarded?: boolean
+    evaluationStatus?: boolean
+    evaluatedBy?: boolean
+    evaluatedAt?: boolean
   }, ExtArgs["result"]["academicTestAnswer"]>
 
   export type AcademicTestAnswerSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     submissionId?: boolean
     questionId?: boolean
+    answerText?: boolean
     selectedAnswer?: boolean
     isCorrect?: boolean
     marksAwarded?: boolean
+    evaluationStatus?: boolean
+    evaluatedBy?: boolean
+    evaluatedAt?: boolean
   }, ExtArgs["result"]["academicTestAnswer"]>
 
   export type AcademicTestAnswerSelectScalar = {
     id?: boolean
     submissionId?: boolean
     questionId?: boolean
+    answerText?: boolean
     selectedAnswer?: boolean
     isCorrect?: boolean
     marksAwarded?: boolean
+    evaluationStatus?: boolean
+    evaluatedBy?: boolean
+    evaluatedAt?: boolean
   }
 
-  export type AcademicTestAnswerOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "submissionId" | "questionId" | "selectedAnswer" | "isCorrect" | "marksAwarded", ExtArgs["result"]["academicTestAnswer"]>
+  export type AcademicTestAnswerOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "submissionId" | "questionId" | "answerText" | "selectedAnswer" | "isCorrect" | "marksAwarded" | "evaluationStatus" | "evaluatedBy" | "evaluatedAt", ExtArgs["result"]["academicTestAnswer"]>
 
   export type $AcademicTestAnswerPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "AcademicTestAnswer"
@@ -40259,9 +40333,13 @@ export namespace Prisma {
       id: string
       submissionId: string
       questionId: string
+      answerText: string | null
       selectedAnswer: string | null
       isCorrect: boolean
       marksAwarded: number
+      evaluationStatus: string
+      evaluatedBy: string | null
+      evaluatedAt: Date | null
     }, ExtArgs["result"]["academicTestAnswer"]>
     composites: {}
   }
@@ -40688,9 +40766,13 @@ export namespace Prisma {
     readonly id: FieldRef<"AcademicTestAnswer", 'String'>
     readonly submissionId: FieldRef<"AcademicTestAnswer", 'String'>
     readonly questionId: FieldRef<"AcademicTestAnswer", 'String'>
+    readonly answerText: FieldRef<"AcademicTestAnswer", 'String'>
     readonly selectedAnswer: FieldRef<"AcademicTestAnswer", 'String'>
     readonly isCorrect: FieldRef<"AcademicTestAnswer", 'Boolean'>
     readonly marksAwarded: FieldRef<"AcademicTestAnswer", 'Int'>
+    readonly evaluationStatus: FieldRef<"AcademicTestAnswer", 'String'>
+    readonly evaluatedBy: FieldRef<"AcademicTestAnswer", 'String'>
+    readonly evaluatedAt: FieldRef<"AcademicTestAnswer", 'DateTime'>
   }
     
 
@@ -84312,12 +84394,14 @@ export namespace Prisma {
     id: 'id',
     questionPaperId: 'questionPaperId',
     questionNumber: 'questionNumber',
+    questionType: 'questionType',
     questionText: 'questionText',
     optionA: 'optionA',
     optionB: 'optionB',
     optionC: 'optionC',
     optionD: 'optionD',
     correctAnswer: 'correctAnswer',
+    marks: 'marks',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -84415,9 +84499,13 @@ export namespace Prisma {
     id: 'id',
     submissionId: 'submissionId',
     questionId: 'questionId',
+    answerText: 'answerText',
     selectedAnswer: 'selectedAnswer',
     isCorrect: 'isCorrect',
-    marksAwarded: 'marksAwarded'
+    marksAwarded: 'marksAwarded',
+    evaluationStatus: 'evaluationStatus',
+    evaluatedBy: 'evaluatedBy',
+    evaluatedAt: 'evaluatedAt'
   };
 
   export type AcademicTestAnswerScalarFieldEnum = (typeof AcademicTestAnswerScalarFieldEnum)[keyof typeof AcademicTestAnswerScalarFieldEnum]
@@ -87543,17 +87631,17 @@ export namespace Prisma {
 
   export type AcademicTestWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    branchCourseId?: string
     AND?: AcademicTestWhereInput | AcademicTestWhereInput[]
     OR?: AcademicTestWhereInput[]
     NOT?: AcademicTestWhereInput | AcademicTestWhereInput[]
+    branchCourseId?: StringFilter<"AcademicTest"> | string
     createdBy?: StringFilter<"AcademicTest"> | string
     createdAt?: DateTimeFilter<"AcademicTest"> | Date | string
     updatedAt?: DateTimeFilter<"AcademicTest"> | Date | string
     branchCourse?: XOR<BranchCourseScalarRelationFilter, BranchCourseWhereInput>
     items?: AcademicTestItemListRelationFilter
     batches?: AcademicTestBatchListRelationFilter
-  }, "id" | "branchCourseId">
+  }, "id">
 
   export type AcademicTestOrderByWithAggregationInput = {
     id?: SortOrder
@@ -87824,12 +87912,14 @@ export namespace Prisma {
     id?: StringFilter<"AcademicQuestion"> | string
     questionPaperId?: StringFilter<"AcademicQuestion"> | string
     questionNumber?: IntFilter<"AcademicQuestion"> | number
+    questionType?: StringFilter<"AcademicQuestion"> | string
     questionText?: StringFilter<"AcademicQuestion"> | string
     optionA?: StringFilter<"AcademicQuestion"> | string
     optionB?: StringFilter<"AcademicQuestion"> | string
     optionC?: StringFilter<"AcademicQuestion"> | string
     optionD?: StringFilter<"AcademicQuestion"> | string
     correctAnswer?: StringFilter<"AcademicQuestion"> | string
+    marks?: IntFilter<"AcademicQuestion"> | number
     createdAt?: DateTimeFilter<"AcademicQuestion"> | Date | string
     updatedAt?: DateTimeFilter<"AcademicQuestion"> | Date | string
     questionPaper?: XOR<AcademicQuestionPaperScalarRelationFilter, AcademicQuestionPaperWhereInput>
@@ -87839,12 +87929,14 @@ export namespace Prisma {
     id?: SortOrder
     questionPaperId?: SortOrder
     questionNumber?: SortOrder
+    questionType?: SortOrder
     questionText?: SortOrder
     optionA?: SortOrder
     optionB?: SortOrder
     optionC?: SortOrder
     optionD?: SortOrder
     correctAnswer?: SortOrder
+    marks?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     questionPaper?: AcademicQuestionPaperOrderByWithRelationInput
@@ -87858,12 +87950,14 @@ export namespace Prisma {
     NOT?: AcademicQuestionWhereInput | AcademicQuestionWhereInput[]
     questionPaperId?: StringFilter<"AcademicQuestion"> | string
     questionNumber?: IntFilter<"AcademicQuestion"> | number
+    questionType?: StringFilter<"AcademicQuestion"> | string
     questionText?: StringFilter<"AcademicQuestion"> | string
     optionA?: StringFilter<"AcademicQuestion"> | string
     optionB?: StringFilter<"AcademicQuestion"> | string
     optionC?: StringFilter<"AcademicQuestion"> | string
     optionD?: StringFilter<"AcademicQuestion"> | string
     correctAnswer?: StringFilter<"AcademicQuestion"> | string
+    marks?: IntFilter<"AcademicQuestion"> | number
     createdAt?: DateTimeFilter<"AcademicQuestion"> | Date | string
     updatedAt?: DateTimeFilter<"AcademicQuestion"> | Date | string
     questionPaper?: XOR<AcademicQuestionPaperScalarRelationFilter, AcademicQuestionPaperWhereInput>
@@ -87873,12 +87967,14 @@ export namespace Prisma {
     id?: SortOrder
     questionPaperId?: SortOrder
     questionNumber?: SortOrder
+    questionType?: SortOrder
     questionText?: SortOrder
     optionA?: SortOrder
     optionB?: SortOrder
     optionC?: SortOrder
     optionD?: SortOrder
     correctAnswer?: SortOrder
+    marks?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: AcademicQuestionCountOrderByAggregateInput
@@ -87895,12 +87991,14 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"AcademicQuestion"> | string
     questionPaperId?: StringWithAggregatesFilter<"AcademicQuestion"> | string
     questionNumber?: IntWithAggregatesFilter<"AcademicQuestion"> | number
+    questionType?: StringWithAggregatesFilter<"AcademicQuestion"> | string
     questionText?: StringWithAggregatesFilter<"AcademicQuestion"> | string
     optionA?: StringWithAggregatesFilter<"AcademicQuestion"> | string
     optionB?: StringWithAggregatesFilter<"AcademicQuestion"> | string
     optionC?: StringWithAggregatesFilter<"AcademicQuestion"> | string
     optionD?: StringWithAggregatesFilter<"AcademicQuestion"> | string
     correctAnswer?: StringWithAggregatesFilter<"AcademicQuestion"> | string
+    marks?: IntWithAggregatesFilter<"AcademicQuestion"> | number
     createdAt?: DateTimeWithAggregatesFilter<"AcademicQuestion"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"AcademicQuestion"> | Date | string
   }
@@ -88351,18 +88449,26 @@ export namespace Prisma {
     id?: StringFilter<"AcademicTestAnswer"> | string
     submissionId?: StringFilter<"AcademicTestAnswer"> | string
     questionId?: StringFilter<"AcademicTestAnswer"> | string
+    answerText?: StringNullableFilter<"AcademicTestAnswer"> | string | null
     selectedAnswer?: StringNullableFilter<"AcademicTestAnswer"> | string | null
     isCorrect?: BoolFilter<"AcademicTestAnswer"> | boolean
     marksAwarded?: IntFilter<"AcademicTestAnswer"> | number
+    evaluationStatus?: StringFilter<"AcademicTestAnswer"> | string
+    evaluatedBy?: StringNullableFilter<"AcademicTestAnswer"> | string | null
+    evaluatedAt?: DateTimeNullableFilter<"AcademicTestAnswer"> | Date | string | null
   }
 
   export type AcademicTestAnswerOrderByWithRelationInput = {
     id?: SortOrder
     submissionId?: SortOrder
     questionId?: SortOrder
+    answerText?: SortOrderInput | SortOrder
     selectedAnswer?: SortOrderInput | SortOrder
     isCorrect?: SortOrder
     marksAwarded?: SortOrder
+    evaluationStatus?: SortOrder
+    evaluatedBy?: SortOrderInput | SortOrder
+    evaluatedAt?: SortOrderInput | SortOrder
   }
 
   export type AcademicTestAnswerWhereUniqueInput = Prisma.AtLeast<{
@@ -88373,18 +88479,26 @@ export namespace Prisma {
     NOT?: AcademicTestAnswerWhereInput | AcademicTestAnswerWhereInput[]
     submissionId?: StringFilter<"AcademicTestAnswer"> | string
     questionId?: StringFilter<"AcademicTestAnswer"> | string
+    answerText?: StringNullableFilter<"AcademicTestAnswer"> | string | null
     selectedAnswer?: StringNullableFilter<"AcademicTestAnswer"> | string | null
     isCorrect?: BoolFilter<"AcademicTestAnswer"> | boolean
     marksAwarded?: IntFilter<"AcademicTestAnswer"> | number
+    evaluationStatus?: StringFilter<"AcademicTestAnswer"> | string
+    evaluatedBy?: StringNullableFilter<"AcademicTestAnswer"> | string | null
+    evaluatedAt?: DateTimeNullableFilter<"AcademicTestAnswer"> | Date | string | null
   }, "id" | "submissionId_questionId">
 
   export type AcademicTestAnswerOrderByWithAggregationInput = {
     id?: SortOrder
     submissionId?: SortOrder
     questionId?: SortOrder
+    answerText?: SortOrderInput | SortOrder
     selectedAnswer?: SortOrderInput | SortOrder
     isCorrect?: SortOrder
     marksAwarded?: SortOrder
+    evaluationStatus?: SortOrder
+    evaluatedBy?: SortOrderInput | SortOrder
+    evaluatedAt?: SortOrderInput | SortOrder
     _count?: AcademicTestAnswerCountOrderByAggregateInput
     _avg?: AcademicTestAnswerAvgOrderByAggregateInput
     _max?: AcademicTestAnswerMaxOrderByAggregateInput
@@ -88399,9 +88513,13 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"AcademicTestAnswer"> | string
     submissionId?: StringWithAggregatesFilter<"AcademicTestAnswer"> | string
     questionId?: StringWithAggregatesFilter<"AcademicTestAnswer"> | string
+    answerText?: StringNullableWithAggregatesFilter<"AcademicTestAnswer"> | string | null
     selectedAnswer?: StringNullableWithAggregatesFilter<"AcademicTestAnswer"> | string | null
     isCorrect?: BoolWithAggregatesFilter<"AcademicTestAnswer"> | boolean
     marksAwarded?: IntWithAggregatesFilter<"AcademicTestAnswer"> | number
+    evaluationStatus?: StringWithAggregatesFilter<"AcademicTestAnswer"> | string
+    evaluatedBy?: StringNullableWithAggregatesFilter<"AcademicTestAnswer"> | string | null
+    evaluatedAt?: DateTimeNullableWithAggregatesFilter<"AcademicTestAnswer"> | Date | string | null
   }
 
   export type CourseStatusHistoryWhereInput = {
@@ -95173,12 +95291,14 @@ export namespace Prisma {
   export type AcademicQuestionCreateInput = {
     id?: string
     questionNumber: number
+    questionType?: string
     questionText: string
-    optionA: string
-    optionB: string
-    optionC: string
-    optionD: string
-    correctAnswer: string
+    optionA?: string
+    optionB?: string
+    optionC?: string
+    optionD?: string
+    correctAnswer?: string
+    marks?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     questionPaper: AcademicQuestionPaperCreateNestedOneWithoutQuestionsInput
@@ -95188,12 +95308,14 @@ export namespace Prisma {
     id?: string
     questionPaperId: string
     questionNumber: number
+    questionType?: string
     questionText: string
-    optionA: string
-    optionB: string
-    optionC: string
-    optionD: string
-    correctAnswer: string
+    optionA?: string
+    optionB?: string
+    optionC?: string
+    optionD?: string
+    correctAnswer?: string
+    marks?: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -95201,12 +95323,14 @@ export namespace Prisma {
   export type AcademicQuestionUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     questionNumber?: IntFieldUpdateOperationsInput | number
+    questionType?: StringFieldUpdateOperationsInput | string
     questionText?: StringFieldUpdateOperationsInput | string
     optionA?: StringFieldUpdateOperationsInput | string
     optionB?: StringFieldUpdateOperationsInput | string
     optionC?: StringFieldUpdateOperationsInput | string
     optionD?: StringFieldUpdateOperationsInput | string
     correctAnswer?: StringFieldUpdateOperationsInput | string
+    marks?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     questionPaper?: AcademicQuestionPaperUpdateOneRequiredWithoutQuestionsNestedInput
@@ -95216,12 +95340,14 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     questionPaperId?: StringFieldUpdateOperationsInput | string
     questionNumber?: IntFieldUpdateOperationsInput | number
+    questionType?: StringFieldUpdateOperationsInput | string
     questionText?: StringFieldUpdateOperationsInput | string
     optionA?: StringFieldUpdateOperationsInput | string
     optionB?: StringFieldUpdateOperationsInput | string
     optionC?: StringFieldUpdateOperationsInput | string
     optionD?: StringFieldUpdateOperationsInput | string
     correctAnswer?: StringFieldUpdateOperationsInput | string
+    marks?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -95230,12 +95356,14 @@ export namespace Prisma {
     id?: string
     questionPaperId: string
     questionNumber: number
+    questionType?: string
     questionText: string
-    optionA: string
-    optionB: string
-    optionC: string
-    optionD: string
-    correctAnswer: string
+    optionA?: string
+    optionB?: string
+    optionC?: string
+    optionD?: string
+    correctAnswer?: string
+    marks?: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -95243,12 +95371,14 @@ export namespace Prisma {
   export type AcademicQuestionUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     questionNumber?: IntFieldUpdateOperationsInput | number
+    questionType?: StringFieldUpdateOperationsInput | string
     questionText?: StringFieldUpdateOperationsInput | string
     optionA?: StringFieldUpdateOperationsInput | string
     optionB?: StringFieldUpdateOperationsInput | string
     optionC?: StringFieldUpdateOperationsInput | string
     optionD?: StringFieldUpdateOperationsInput | string
     correctAnswer?: StringFieldUpdateOperationsInput | string
+    marks?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -95257,12 +95387,14 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     questionPaperId?: StringFieldUpdateOperationsInput | string
     questionNumber?: IntFieldUpdateOperationsInput | number
+    questionType?: StringFieldUpdateOperationsInput | string
     questionText?: StringFieldUpdateOperationsInput | string
     optionA?: StringFieldUpdateOperationsInput | string
     optionB?: StringFieldUpdateOperationsInput | string
     optionC?: StringFieldUpdateOperationsInput | string
     optionD?: StringFieldUpdateOperationsInput | string
     correctAnswer?: StringFieldUpdateOperationsInput | string
+    marks?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -95786,63 +95918,91 @@ export namespace Prisma {
     id?: string
     submissionId: string
     questionId: string
+    answerText?: string | null
     selectedAnswer?: string | null
     isCorrect?: boolean
     marksAwarded?: number
+    evaluationStatus?: string
+    evaluatedBy?: string | null
+    evaluatedAt?: Date | string | null
   }
 
   export type AcademicTestAnswerUncheckedCreateInput = {
     id?: string
     submissionId: string
     questionId: string
+    answerText?: string | null
     selectedAnswer?: string | null
     isCorrect?: boolean
     marksAwarded?: number
+    evaluationStatus?: string
+    evaluatedBy?: string | null
+    evaluatedAt?: Date | string | null
   }
 
   export type AcademicTestAnswerUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     submissionId?: StringFieldUpdateOperationsInput | string
     questionId?: StringFieldUpdateOperationsInput | string
+    answerText?: NullableStringFieldUpdateOperationsInput | string | null
     selectedAnswer?: NullableStringFieldUpdateOperationsInput | string | null
     isCorrect?: BoolFieldUpdateOperationsInput | boolean
     marksAwarded?: IntFieldUpdateOperationsInput | number
+    evaluationStatus?: StringFieldUpdateOperationsInput | string
+    evaluatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    evaluatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type AcademicTestAnswerUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     submissionId?: StringFieldUpdateOperationsInput | string
     questionId?: StringFieldUpdateOperationsInput | string
+    answerText?: NullableStringFieldUpdateOperationsInput | string | null
     selectedAnswer?: NullableStringFieldUpdateOperationsInput | string | null
     isCorrect?: BoolFieldUpdateOperationsInput | boolean
     marksAwarded?: IntFieldUpdateOperationsInput | number
+    evaluationStatus?: StringFieldUpdateOperationsInput | string
+    evaluatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    evaluatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type AcademicTestAnswerCreateManyInput = {
     id?: string
     submissionId: string
     questionId: string
+    answerText?: string | null
     selectedAnswer?: string | null
     isCorrect?: boolean
     marksAwarded?: number
+    evaluationStatus?: string
+    evaluatedBy?: string | null
+    evaluatedAt?: Date | string | null
   }
 
   export type AcademicTestAnswerUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     submissionId?: StringFieldUpdateOperationsInput | string
     questionId?: StringFieldUpdateOperationsInput | string
+    answerText?: NullableStringFieldUpdateOperationsInput | string | null
     selectedAnswer?: NullableStringFieldUpdateOperationsInput | string | null
     isCorrect?: BoolFieldUpdateOperationsInput | boolean
     marksAwarded?: IntFieldUpdateOperationsInput | number
+    evaluationStatus?: StringFieldUpdateOperationsInput | string
+    evaluatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    evaluatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type AcademicTestAnswerUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     submissionId?: StringFieldUpdateOperationsInput | string
     questionId?: StringFieldUpdateOperationsInput | string
+    answerText?: NullableStringFieldUpdateOperationsInput | string | null
     selectedAnswer?: NullableStringFieldUpdateOperationsInput | string | null
     isCorrect?: BoolFieldUpdateOperationsInput | boolean
     marksAwarded?: IntFieldUpdateOperationsInput | number
+    evaluationStatus?: StringFieldUpdateOperationsInput | string
+    evaluatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    evaluatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type CourseStatusHistoryCreateInput = {
@@ -102659,30 +102819,35 @@ export namespace Prisma {
     id?: SortOrder
     questionPaperId?: SortOrder
     questionNumber?: SortOrder
+    questionType?: SortOrder
     questionText?: SortOrder
     optionA?: SortOrder
     optionB?: SortOrder
     optionC?: SortOrder
     optionD?: SortOrder
     correctAnswer?: SortOrder
+    marks?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
   export type AcademicQuestionAvgOrderByAggregateInput = {
     questionNumber?: SortOrder
+    marks?: SortOrder
   }
 
   export type AcademicQuestionMaxOrderByAggregateInput = {
     id?: SortOrder
     questionPaperId?: SortOrder
     questionNumber?: SortOrder
+    questionType?: SortOrder
     questionText?: SortOrder
     optionA?: SortOrder
     optionB?: SortOrder
     optionC?: SortOrder
     optionD?: SortOrder
     correctAnswer?: SortOrder
+    marks?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -102691,18 +102856,21 @@ export namespace Prisma {
     id?: SortOrder
     questionPaperId?: SortOrder
     questionNumber?: SortOrder
+    questionType?: SortOrder
     questionText?: SortOrder
     optionA?: SortOrder
     optionB?: SortOrder
     optionC?: SortOrder
     optionD?: SortOrder
     correctAnswer?: SortOrder
+    marks?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
   export type AcademicQuestionSumOrderByAggregateInput = {
     questionNumber?: SortOrder
+    marks?: SortOrder
   }
 
   export type AcademicTestProjectAcademicTestItemIdBranchBatchIdCompoundUniqueInput = {
@@ -103031,9 +103199,13 @@ export namespace Prisma {
     id?: SortOrder
     submissionId?: SortOrder
     questionId?: SortOrder
+    answerText?: SortOrder
     selectedAnswer?: SortOrder
     isCorrect?: SortOrder
     marksAwarded?: SortOrder
+    evaluationStatus?: SortOrder
+    evaluatedBy?: SortOrder
+    evaluatedAt?: SortOrder
   }
 
   export type AcademicTestAnswerAvgOrderByAggregateInput = {
@@ -103044,18 +103216,26 @@ export namespace Prisma {
     id?: SortOrder
     submissionId?: SortOrder
     questionId?: SortOrder
+    answerText?: SortOrder
     selectedAnswer?: SortOrder
     isCorrect?: SortOrder
     marksAwarded?: SortOrder
+    evaluationStatus?: SortOrder
+    evaluatedBy?: SortOrder
+    evaluatedAt?: SortOrder
   }
 
   export type AcademicTestAnswerMinOrderByAggregateInput = {
     id?: SortOrder
     submissionId?: SortOrder
     questionId?: SortOrder
+    answerText?: SortOrder
     selectedAnswer?: SortOrder
     isCorrect?: SortOrder
     marksAwarded?: SortOrder
+    evaluationStatus?: SortOrder
+    evaluatedBy?: SortOrder
+    evaluatedAt?: SortOrder
   }
 
   export type AcademicTestAnswerSumOrderByAggregateInput = {
@@ -119898,12 +120078,14 @@ export namespace Prisma {
   export type AcademicQuestionCreateWithoutQuestionPaperInput = {
     id?: string
     questionNumber: number
+    questionType?: string
     questionText: string
-    optionA: string
-    optionB: string
-    optionC: string
-    optionD: string
-    correctAnswer: string
+    optionA?: string
+    optionB?: string
+    optionC?: string
+    optionD?: string
+    correctAnswer?: string
+    marks?: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -119911,12 +120093,14 @@ export namespace Prisma {
   export type AcademicQuestionUncheckedCreateWithoutQuestionPaperInput = {
     id?: string
     questionNumber: number
+    questionType?: string
     questionText: string
-    optionA: string
-    optionB: string
-    optionC: string
-    optionD: string
-    correctAnswer: string
+    optionA?: string
+    optionB?: string
+    optionC?: string
+    optionD?: string
+    correctAnswer?: string
+    marks?: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -120161,12 +120345,14 @@ export namespace Prisma {
     id?: StringFilter<"AcademicQuestion"> | string
     questionPaperId?: StringFilter<"AcademicQuestion"> | string
     questionNumber?: IntFilter<"AcademicQuestion"> | number
+    questionType?: StringFilter<"AcademicQuestion"> | string
     questionText?: StringFilter<"AcademicQuestion"> | string
     optionA?: StringFilter<"AcademicQuestion"> | string
     optionB?: StringFilter<"AcademicQuestion"> | string
     optionC?: StringFilter<"AcademicQuestion"> | string
     optionD?: StringFilter<"AcademicQuestion"> | string
     correctAnswer?: StringFilter<"AcademicQuestion"> | string
+    marks?: IntFilter<"AcademicQuestion"> | number
     createdAt?: DateTimeFilter<"AcademicQuestion"> | Date | string
     updatedAt?: DateTimeFilter<"AcademicQuestion"> | Date | string
   }
@@ -137146,12 +137332,14 @@ export namespace Prisma {
   export type AcademicQuestionCreateManyQuestionPaperInput = {
     id?: string
     questionNumber: number
+    questionType?: string
     questionText: string
-    optionA: string
-    optionB: string
-    optionC: string
-    optionD: string
-    correctAnswer: string
+    optionA?: string
+    optionB?: string
+    optionC?: string
+    optionD?: string
+    correctAnswer?: string
+    marks?: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -137159,12 +137347,14 @@ export namespace Prisma {
   export type AcademicQuestionUpdateWithoutQuestionPaperInput = {
     id?: StringFieldUpdateOperationsInput | string
     questionNumber?: IntFieldUpdateOperationsInput | number
+    questionType?: StringFieldUpdateOperationsInput | string
     questionText?: StringFieldUpdateOperationsInput | string
     optionA?: StringFieldUpdateOperationsInput | string
     optionB?: StringFieldUpdateOperationsInput | string
     optionC?: StringFieldUpdateOperationsInput | string
     optionD?: StringFieldUpdateOperationsInput | string
     correctAnswer?: StringFieldUpdateOperationsInput | string
+    marks?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -137172,12 +137362,14 @@ export namespace Prisma {
   export type AcademicQuestionUncheckedUpdateWithoutQuestionPaperInput = {
     id?: StringFieldUpdateOperationsInput | string
     questionNumber?: IntFieldUpdateOperationsInput | number
+    questionType?: StringFieldUpdateOperationsInput | string
     questionText?: StringFieldUpdateOperationsInput | string
     optionA?: StringFieldUpdateOperationsInput | string
     optionB?: StringFieldUpdateOperationsInput | string
     optionC?: StringFieldUpdateOperationsInput | string
     optionD?: StringFieldUpdateOperationsInput | string
     correctAnswer?: StringFieldUpdateOperationsInput | string
+    marks?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -137185,12 +137377,14 @@ export namespace Prisma {
   export type AcademicQuestionUncheckedUpdateManyWithoutQuestionPaperInput = {
     id?: StringFieldUpdateOperationsInput | string
     questionNumber?: IntFieldUpdateOperationsInput | number
+    questionType?: StringFieldUpdateOperationsInput | string
     questionText?: StringFieldUpdateOperationsInput | string
     optionA?: StringFieldUpdateOperationsInput | string
     optionB?: StringFieldUpdateOperationsInput | string
     optionC?: StringFieldUpdateOperationsInput | string
     optionD?: StringFieldUpdateOperationsInput | string
     correctAnswer?: StringFieldUpdateOperationsInput | string
+    marks?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

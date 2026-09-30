@@ -19,6 +19,8 @@ router.get("/reports/branch-admin", authorize(USER_ROLES.BRANCH_ADMIN), controll
 router.get("/reports/branch-admin/:reportId/students", authorize(USER_ROLES.BRANCH_ADMIN), controller.branchReportStudents);
 router.get("/reports/my-report", authorize(USER_ROLES.STUDENT), controller.myReport);
 router.get("/faculty/scheduled/:id/results", authorize(USER_ROLES.FACULTY), controller.facultyResults);
+router.get("/faculty/scheduled/:id/assessment/:studentId", authorize(USER_ROLES.FACULTY), controller.facultyAssessment);
+router.post("/faculty/scheduled/:id/assessment/:studentId/evaluate", authorize(USER_ROLES.FACULTY), controller.evaluateFacultyAssessment);
 router.post("/faculty/scheduled/:id/retest", authorize(USER_ROLES.FACULTY), controller.scheduleRetest);
 router.put("/faculty/scheduled/:id", authorize(USER_ROLES.FACULTY), controller.updateFacultyScheduled);
 router.post("/faculty/scheduled/:id/cancel", authorize(USER_ROLES.FACULTY), controller.cancelFacultyScheduled);

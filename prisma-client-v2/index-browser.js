@@ -488,12 +488,14 @@ exports.Prisma.AcademicQuestionScalarFieldEnum = {
   id: 'id',
   questionPaperId: 'questionPaperId',
   questionNumber: 'questionNumber',
+  questionType: 'questionType',
   questionText: 'questionText',
   optionA: 'optionA',
   optionB: 'optionB',
   optionC: 'optionC',
   optionD: 'optionD',
   correctAnswer: 'correctAnswer',
+  marks: 'marks',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -576,9 +578,13 @@ exports.Prisma.AcademicTestAnswerScalarFieldEnum = {
   id: 'id',
   submissionId: 'submissionId',
   questionId: 'questionId',
+  answerText: 'answerText',
   selectedAnswer: 'selectedAnswer',
   isCorrect: 'isCorrect',
-  marksAwarded: 'marksAwarded'
+  marksAwarded: 'marksAwarded',
+  evaluationStatus: 'evaluationStatus',
+  evaluatedBy: 'evaluatedBy',
+  evaluatedAt: 'evaluatedAt'
 };
 
 exports.Prisma.CourseStatusHistoryScalarFieldEnum = {
