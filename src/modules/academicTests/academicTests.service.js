@@ -1,6 +1,7 @@
 import prisma from "../../config/prisma.js";
 import AppError from "../../common/errors/AppError.js";
 import { getCurrentBranchProfile } from "../branches/branches.service.js";
+import { getFacultyMyBatchesSummary } from "../dashboard/dashboard.service.js";
 import { createNotification } from "../notifications/notifications.service.js";
 import fs from "node:fs/promises";
 import path from "node:path";
@@ -11,6 +12,15 @@ const text = (value) => String(value ?? "").trim();
 const displayTime = (value) => { const [hourText, minute = "00"] = text(value).split(":"); const hour = Number(hourText); if (!Number.isFinite(hour)) return text(value); return `${String(hour % 12 || 12).padStart(2, "0")}:${minute} ${hour >= 12 ? "PM" : "AM"}`; };
 const academicProjectUploadRoot = path.resolve(process.cwd(), "uploads", "academic-projects");
 const VALID_TYPES = new Set(["TEST", "PROJECT", "TEST_AND_PROJECT"]);
+
+function courseProgressThreshold(testNumber, testCount) {
+  const number = Number(testNumber);
+  const count = Number(testCount);
+  if (!Number.isInteger(number) || !Number.isInteger(count) || number < 1 || count < 1) return 100;
+  // Keep the configured test-count examples at clean progress milestones:
+  // 3 tests => 30/60/90, 4 => 25/50/75/100, 5 => 20/40/60/80/100.
+  return Math.min(100, Math.max(0, Math.floor((number * 100) / count / 5) * 5));
+}
 
 function normalizeType(value) {
   const type = text(value).toUpperCase().replace(/\s*\+\s*/g, "_");
@@ -219,11 +229,13 @@ export async function getFacultyCreateOptions(actor) {
   const testItemIds = rows.flatMap((row) => row.items.map((item) => item.id));
   const batchIds = rows.flatMap((row) => row.batches.map(({ branchBatch }) => branchBatch?.id).filter(Boolean));
   const batchCodes = rows.flatMap((row) => row.batches.map(({ branchBatch }) => branchBatch?.batchId).filter(Boolean));
-  const [papers, schedules, batchStudents] = await Promise.all([
+  const [papers, schedules, batchStudents, facultySummary] = await Promise.all([
     testItemIds.length && batchIds.length ? prisma.academicQuestionPaper.findMany({ where: { academicTestItemId: { in: testItemIds }, branchBatchId: { in: batchIds } }, select: { id: true, academicTestItemId: true, branchBatchId: true, status: true } }) : [],
     testItemIds.length && batchIds.length ? prisma.academicScheduledTest.findMany({ where: { academicTestItemId: { in: testItemIds }, branchBatchId: { in: batchIds } }, select: { id: true, academicTestItemId: true, branchBatchId: true, testNumber: true, testDate: true, startTime: true, endTime: true, status: true } }) : [],
     batchCodes.length ? prisma.branchStudent.findMany({ where: { recordStatus: "ACTIVE", batchId: { in: [...new Set([...batchIds, ...batchCodes])] } }, select: { id: true, batchId: true } }) : [],
+    getFacultyMyBatchesSummary(actor),
   ]);
+  const progressByBatch = new Map((facultySummary?.batchCounts || []).map((entry) => [text(entry?.batchId || entry?.id).toLowerCase(), Number(entry?.courseProgress) || 0]));
   const paperByKey = new Map(papers.map((paper) => [`${paper.academicTestItemId}:${paper.branchBatchId}`, paper]));
   const schedulesByKey = new Map(schedules.map((schedule) => [`${schedule.academicTestItemId}:${schedule.branchBatchId}`, schedule]));
   const studentIdsByBatch = new Map();
@@ -241,8 +253,11 @@ export async function getFacultyCreateOptions(actor) {
       const paper = nextItem && paperByKey.get(`${nextItem.id}:${branchBatch.id}`);
       const studentCount = new Set([...(studentIdsByBatch.get(branchBatch.id) || []), ...(studentIdsByBatch.get(branchBatch.batchId) || [])]).size;
       const previousCompleted = !previous || (previousSchedule && (previousSchedule.status === "COMPLETED" || scheduleInstant(previousSchedule.testDate, previousSchedule.endTime) < Date.now()));
-      const available = Boolean(nextItem && studentCount > 0 && previousCompleted && paper?.status === "PREPARED");
-      return { ...branchBatch, testType: nextItem?.testType || null, studentCount, nextTestNumber: nextItem?.sequence || null, academicTestItemId: nextItem?.id || null, questionPaperId: paper?.id || null, questionPaperStatus: paper?.status || "NOT_PREPARED", available, blocker: nextItem && studentCount === 0 ? `No active students are assigned to ${branchBatch.batchName || branchBatch.batchId}. Select the batch that contains the students.` : nextItem && !previousCompleted ? `Test ${previous.sequence} must be completed before creating Test ${nextItem.sequence}.` : nextItem && paper?.status !== "PREPARED" ? `Question paper has not been prepared for ${branchBatch.batchName || branchBatch.batchId}. Please prepare the question paper before creating Test ${nextItem.sequence}.` : null, schedules: batchSchedules };
+      const currentCourseProgress = Math.max(0, Math.min(100, progressByBatch.get(text(branchBatch.batchId || branchBatch.id).toLowerCase()) || 0));
+      const requiredProgress = nextItem ? courseProgressThreshold(nextItem.sequence, row.branchCourse.academicTestCount || row.items.length) : null;
+      const eligible = Boolean(nextItem && currentCourseProgress >= requiredProgress);
+      const available = Boolean(nextItem && studentCount > 0 && previousCompleted && paper?.status === "PREPARED" && eligible);
+      return { ...branchBatch, testType: nextItem?.testType || null, studentCount, nextTestNumber: nextItem?.sequence || null, academicTestItemId: nextItem?.id || null, questionPaperId: paper?.id || null, questionPaperStatus: paper?.status || "NOT_PREPARED", currentCourseProgress, requiredProgress, eligible, available, blocker: nextItem && studentCount === 0 ? `No active students are assigned to ${branchBatch.batchName || branchBatch.batchId}. Select the batch that contains the students.` : nextItem && !eligible ? `Test ${nextItem.sequence} can be created only after the batch reaches ${requiredProgress}% course progress.` : nextItem && !previousCompleted ? `Test ${previous.sequence} must be completed before creating Test ${nextItem.sequence}.` : nextItem && paper?.status !== "PREPARED" ? `Question paper has not been prepared for ${branchBatch.batchName || branchBatch.batchId}. Please prepare the question paper before creating Test ${nextItem.sequence}.` : null, schedules: batchSchedules };
     }),
   })).filter((course) => course.batches.length);
   return { tomorrow: tomorrowDate(), courses };
@@ -252,8 +267,17 @@ export async function createFacultyScheduledTest(actor, payload = {}) {
   const ids = facultyIds(actor);
   const itemId = text(payload.academicTestItemId);
   const batchId = text(payload.branchBatchId || payload.batchId);
-  const item = await prisma.academicTestItem.findFirst({ where: { id: itemId, academicTest: { batches: { some: { branchBatchId: batchId, branchBatch: { status: "ACTIVE", OR: [{ facultyId: { in: ids } }, { branchFaculty: { facultyId: { in: ids }, status: "ACTIVE" } }] } } } } }, include: { academicTest: { select: { branchCourseId: true } } } });
+  const item = await prisma.academicTestItem.findFirst({ where: { id: itemId, academicTest: { batches: { some: { branchBatchId: batchId, branchBatch: { status: "ACTIVE", OR: [{ facultyId: { in: ids } }, { branchFaculty: { facultyId: { in: ids }, status: "ACTIVE" } }] } } } } }, include: { academicTest: { select: { branchCourseId: true, branchCourse: { select: { academicTestCount: true } } } } } });
   if (!item) throw new AppError("This Academic Test batch is not assigned to you.", 403);
+  const [selectedBatch, facultySummary] = await Promise.all([
+    prisma.branchBatch.findUnique({ where: { id: batchId }, select: { batchId: true } }),
+    getFacultyMyBatchesSummary(actor),
+  ]);
+  const progressKeys = [selectedBatch?.batchId, batchId].map((value) => text(value).toLowerCase()).filter(Boolean);
+  const progressEntry = (facultySummary?.batchCounts || []).find((entry) => progressKeys.includes(text(entry?.batchId || entry?.id).toLowerCase()));
+  const currentCourseProgress = Math.max(0, Math.min(100, Number(progressEntry?.courseProgress) || 0));
+  const requiredProgress = courseProgressThreshold(item.sequence, item.academicTest.branchCourse.academicTestCount || item.sequence);
+  if (currentCourseProgress < requiredProgress) throw new AppError(`Test ${item.sequence} can be created only after the batch reaches ${requiredProgress}% course progress.`, 422);
   const paper = await prisma.academicQuestionPaper.findUnique({ where: { academicTestItemId_branchBatchId: { academicTestItemId: item.id, branchBatchId: batchId } }, select: { id: true, status: true } });
   if (!paper || paper.status !== "PREPARED") throw new AppError(`Question Paper Not Prepared. The question paper for the selected batch has not been prepared yet. Please prepare and publish the question paper before creating Test ${item.sequence}.`, 422);
   const existing = await prisma.academicScheduledTest.findUnique({ where: { academicTestItemId_branchBatchId: { academicTestItemId: item.id, branchBatchId: batchId } }, select: { id: true, status: true } });
