@@ -7,6 +7,7 @@ import { authorize } from "../../common/middlewares/authorize.js";
 import {
   getCurrentStudentAttendanceOverviewHandler,
   getStudentAttendanceOverviewHandler,
+  getStudentAttendanceOverviewByIdHandler,
   getStudentCourseHandler,
   getFacultyAttendanceOverviewHandler,
   markFacultyStudentAttendanceHandler,
@@ -47,6 +48,7 @@ router.post(
 );
 router.get("/student/me", authenticate, authorize("STUDENT"), getCurrentStudentAttendanceOverviewHandler);
 router.get("/student/me/overview", authenticate, authorize("STUDENT"), getStudentAttendanceOverviewHandler);
+router.get("/student/:studentId/overview", authenticate, authorize("SUPER_ADMIN"), getStudentAttendanceOverviewByIdHandler);
 router.get("/student/me/course", authenticate, authorize("STUDENT"), getStudentCourseHandler);
 
 export default router;
