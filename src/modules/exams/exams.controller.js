@@ -46,3 +46,4 @@ export const getAssessmentScreenshot = asyncHandler(async (req, res) => { const 
 export const listBranchReportShares = asyncHandler(async (req, res) => res.json({ status: "success", data: await sharingService.listBranchReportShares(req.user) }));
 export const getBranchReportShare = asyncHandler(async (req, res) => res.json({ status: "success", data: await sharingService.getBranchReportShare(req.user, req.params.shareId) }));
 export const getBranchReportShareStudents = asyncHandler(async (req, res) => res.json({ status: "success", data: await sharingService.getBranchReportShareStudents(req.user, req.params.shareId) }));
+export const getBranchStudentReports = asyncHandler(async (req, res) => res.json({ status: "success", data: await sharingService.getBranchStudentReports(req.user, req.params.studentId) }));

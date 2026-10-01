@@ -83,3 +83,34 @@ export async function getBranchReportShareStudents(user, shareId) {
   }
   return result;
 }
+
+export async function getBranchStudentReports(user, studentId) {
+  const branch = await branchAdminBranch(user);
+  const student = await prisma.branchStudent.findFirst({
+    where: { branchId: branch.id, studentId: value(studentId), recordStatus: "ACTIVE" },
+    select: { id: true, studentId: true, studentName: true, emailAddress: true, courseName: true, batchName: true, batchId: true },
+  });
+  if (!student) throw new AppError("Student not found in this branch.", 404);
+
+  const batches = await prisma.branchBatch.findMany({ where: { branchId: branch.id, OR: [{ id: student.batchId }, { batchId: student.batchId }] }, select: { id: true, batchId: true } });
+  const batchIds = new Set(batches.flatMap((batch) => [batch.id, batch.batchId]).filter(Boolean));
+  const shares = await prisma.facultyReportShare.findMany({ where: { branchId: branch.id, status: "SENT", reportType: { not: "ACADEMIC_TEST" }, batchId: { in: [...batchIds] } }, orderBy: { sentAt: "asc" } });
+  const items = [];
+  for (const share of shares) {
+    const moduleIds = list(share.testModuleIds);
+    if (!moduleIds.length) continue;
+    const exams = await prisma.exam.findMany({
+      where: { branchCourseId: share.courseId, moduleId: { in: moduleIds }, status: { not: "CANCELLED" }, schedules: { some: { branchBatchId: share.batchId } } },
+      select: { id: true, title: true, totalMarks: true, module: { select: { title: true } }, schedules: { where: { branchBatchId: share.batchId }, select: { id: true, testDate: true } } },
+    });
+    const attempts = await prisma.examAttempt.findMany({ where: { branchStudentId: student.id, scheduleId: { in: exams.flatMap((exam) => exam.schedules.map((schedule) => schedule.id)) } }, orderBy: { submittedAt: "asc" }, select: { scheduleId: true, status: true, obtainedMarks: true, totalMarks: true, percentage: true, submittedAt: true } });
+    const attemptsBySchedule = new Map(attempts.map((attempt) => [attempt.scheduleId, attempt]));
+    for (const exam of exams) {
+      const schedule = exam.schedules[0];
+      const attempt = schedule ? attemptsBySchedule.get(schedule.id) : null;
+      if (!attempt || attempt.status !== "SUBMITTED") continue;
+      items.push({ id: `${share.id}:${exam.id}:${student.id}`, testName: exam.title, module: exam.module?.title || "-", status: "SUBMITTED", marksObtained: attempt.obtainedMarks, totalMarks: attempt.totalMarks || exam.totalMarks, percentage: attempt.percentage, testDate: schedule.testDate, courseName: student.courseName, batchName: student.batchName });
+    }
+  }
+  return { student, items };
+}

@@ -938,3 +938,28 @@ export async function getBranchAcademicTestReport(actor, shareId) {
   const report = await buildAcademicReport(actor, batch, null, Array.isArray(share.academicTestIds) ? share.academicTestIds : []);
   return { ...report, share: { id: share.id, sentAt: share.sentAt, facultyId: share.facultyId } };
 }
+
+export async function getBranchStudentAcademicReports(actor, studentId) {
+  const branchId = await branchReportScope(actor);
+  const student = await prisma.branchStudent.findFirst({ where: { branchId, studentId: text(studentId), recordStatus: "ACTIVE" }, select: { id: true, studentId: true, studentName: true, emailAddress: true, courseName: true, batchName: true, batchId: true } });
+  if (!student) throw new AppError("Student not found in this branch.", 404);
+  const batches = await prisma.branchBatch.findMany({ where: { branchId, OR: [{ id: student.batchId }, { batchId: student.batchId }] }, select: { id: true, batchId: true } });
+  const batchIds = new Set(batches.flatMap((batch) => [batch.id, batch.batchId]).filter(Boolean));
+  const shares = await prisma.facultyReportShare.findMany({ where: { branchId, reportType: "ACADEMIC_TEST", status: "SENT", batchId: { in: [...batchIds] } }, orderBy: { sentAt: "asc" } });
+  const items = [];
+  for (const share of shares) {
+    const batch = await prisma.branchBatch.findUnique({ where: { id: share.batchId }, select: { id: true, batchId: true, batchName: true, batchTiming: true, courseName: true, branchCourseId: true, courseId: true } });
+    if (!batch) continue;
+    const report = await buildAcademicReport(actor, batch, [student.id], Array.isArray(share.academicTestIds) ? share.academicTestIds : []);
+    const row = report.students?.[0];
+    const scheduleIds = (row?.tests || []).map((test) => test.scheduleId).filter(Boolean);
+    const schedules = await prisma.academicScheduledTest.findMany({ where: { id: { in: scheduleIds } }, select: { id: true, testDate: true } });
+    const scheduleById = new Map(schedules.map((schedule) => [schedule.id, schedule]));
+    for (const test of row?.tests || []) {
+      const final = test.final || {};
+      if (!["SUBMITTED", "EVALUATED"].includes(String(final.status || "").toUpperCase())) continue;
+      items.push({ id: `${share.id}:${test.testNumber}:${student.id}`, testName: `Test ${test.testNumber}`, courseName: batch.courseName, batchName: batch.batchName, testType: test.testType, testDate: scheduleById.get(test.scheduleId)?.testDate || null, marksObtained: final.marksObtained, totalMarks: final.totalMarks, percentage: final.percentage, result: final.result, validationStatus: "VALIDATED", projectPercentage: row.project?.percentage ?? null });
+    }
+  }
+  return { student, items };
+}
