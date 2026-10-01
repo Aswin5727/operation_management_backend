@@ -47,13 +47,12 @@ function rangeDays(start, end) {
 }
 
 function normalizedStatus(event, record, currentDate) {
-  if (event.date > currentDate) return "UPCOMING";
   const attendance = text(record?.status || event?.attendanceStatus).toUpperCase();
-  if (attendance === "PRESENT" || attendance === "ABSENT") return attendance;
+  if (["PRESENT", "ABSENT", "LEAVE"].includes(attendance)) return attendance;
   const scheduleStatus = text(event?.status).toUpperCase().replaceAll(" ", "_");
   if (scheduleStatus.includes("LEAVE")) return "LEAVE";
-  if (EXCLUDED_STATUSES.has(scheduleStatus) || !event?.isCourseDay) return "NO_CLASS";
-  return "NOT_RECORDED";
+  if (EXCLUDED_STATUSES.has(scheduleStatus) || !event?.isCourseDay) return "NOT_APPLICABLE";
+  return "UNMARKED";
 }
 
 function todayAttendanceStatus(event, record) {
@@ -88,7 +87,7 @@ function summarize(days) {
   const present = days.filter((day) => day.status === "PRESENT").length;
   const absent = days.filter((day) => day.status === "ABSENT").length;
   const leave = days.filter((day) => day.status === "LEAVE").length;
-  const scheduledStatuses = new Set(["PRESENT", "ABSENT", "UPCOMING", "NOT_RECORDED"]);
+  const scheduledStatuses = new Set(["PRESENT", "ABSENT", "UNMARKED"]);
   const scheduledSessions = days.filter((day) => day.isCourseDay && scheduledStatuses.has(day.status)).length;
   const futureDays = days.filter((day) => day.isCourseDay && day.status === "UPCOMING").length;
   const applicableSessions = present + absent;
@@ -224,8 +223,36 @@ export async function getStudentAttendanceOverview(user) {
     course: { id: student.courseId, name: student.courseName || student.course?.name || "", startDate: courseStart, endDate: courseEnd, schedule: text(student.classSchedule || calendar?.schedule || "") },
     overall: summarize(days),
     todayAttendance: { date: currentDate, sessions: todaySessions, summary: todaySummary },
+    attendance: days.map((day) => ({
+      date: day.date,
+      day: day.day,
+      status: day.status,
+      isCourseDay: day.isCourseDay,
+      attendanceTime: day.attendanceTime,
+    })),
     daily,
     weekly: buildWeekly(days, courseStart, courseEnd, currentDate),
     monthly: buildMonthly(days, courseStart, courseEnd),
   };
+}
+
+export async function getStudentAttendanceOverviewById(studentId) {
+  const id = text(studentId);
+  if (!id) throw new AppError("Student ID is required", 400);
+
+  const branchStudent = await prisma.branchStudent.findFirst({
+    where: { OR: [{ id }, { studentId: id }] },
+    select: { id: true, emailAddress: true, studentId: true },
+  });
+  if (branchStudent) {
+    return getStudentAttendanceOverview({ email: branchStudent.emailAddress, userCode: branchStudent.studentId || branchStudent.id });
+  }
+
+  const student = await prisma.studentProfile.findFirst({
+    where: { OR: [{ id }, { studentCode: id }] },
+    select: { id: true, emailAddress: true, studentCode: true },
+  });
+  if (!student) throw new AppError("Student profile not found", 404);
+
+  return getStudentAttendanceOverview({ email: student.emailAddress, userCode: student.studentCode || student.id });
 }

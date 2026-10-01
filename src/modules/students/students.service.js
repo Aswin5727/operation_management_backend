@@ -687,19 +687,32 @@ function buildStudentPayload(payload, existingStudent = null, course = null) {
   }
 
   const resolvedCourse = course || null;
+  const hasStudentDiscount = Object.prototype.hasOwnProperty.call(payload || {}, "discount");
+  const hasStudentAfterDiscount = Object.prototype.hasOwnProperty.call(payload || {}, "afterDiscount");
+  const hasStudentInstallmentSchedule = Object.prototype.hasOwnProperty.call(payload || {}, "installmentSchedule")
+    && Array.isArray(payload?.installmentSchedule)
+    && payload.installmentSchedule.length > 0;
   const actualFees = Number.isInteger(Number(resolvedCourse?.actualFees))
     ? Number(resolvedCourse.actualFees)
     : parsePositiveInt(candidate.actualFees, "Actual fees", { allowZero: true });
   const registrationFees = Number.isInteger(Number(resolvedCourse?.registrationFees))
     ? Number(resolvedCourse.registrationFees)
     : parsePositiveInt(candidate.registrationFees, "Registration fees", { allowZero: true });
-  const discount = Number.isInteger(Number(resolvedCourse?.discount))
+  const discount = hasStudentDiscount
+    ? parsePositiveInt(candidate.discount, "Discount", { allowZero: true })
+    : Number.isInteger(Number(resolvedCourse?.discount))
     ? Number(resolvedCourse.discount)
     : parsePositiveInt(candidate.discount, "Discount", { allowZero: true });
-  const afterDiscount = Number.isInteger(Number(resolvedCourse?.afterDiscount))
+  const afterDiscount = hasStudentAfterDiscount
+    ? parsePositiveInt(candidate.afterDiscount, "After discount", { allowZero: true })
+    : Number.isInteger(Number(resolvedCourse?.afterDiscount))
     ? Number(resolvedCourse.afterDiscount)
     : parsePositiveInt(candidate.afterDiscount, "After discount", { allowZero: true });
-  const resolvedInstallments = Array.isArray(resolvedCourse?.installments) && resolvedCourse.installments.length
+  const resolvedInstallments = hasStudentInstallmentSchedule
+    ? payload.installmentSchedule.map((installment, index) =>
+        parsePositiveInt(installment?.amount, `Installment ${index + 1}`, { allowZero: true }),
+      )
+    : Array.isArray(resolvedCourse?.installments) && resolvedCourse.installments.length
     ? resolvedCourse.installments.map((value, index) =>
         parsePositiveInt(value, `Installment ${index + 1}`, { allowZero: true }),
       )

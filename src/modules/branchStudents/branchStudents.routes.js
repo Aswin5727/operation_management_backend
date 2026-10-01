@@ -8,6 +8,7 @@ import {
   getBranchStudentHandler,
   getCurrentBranchStudentProfileHandler,
   getCurrentBranchStudentCalendarHandler,
+  getBranchStudentCalendarByIdHandler,
   getBranchStudentLedgerHandler,
   listBranchLedgerHandler,
   listBranchStudentsHandler,
@@ -43,6 +44,7 @@ router.use(
   authorize("BRANCH_ADMIN", "SUPER_ADMIN", "BUSINESS_OWNER", "OPERATION_MANAGER", "STUDENT"),
 );
 
+router.get("/:studentId/calendar", authorize("SUPER_ADMIN"), getBranchStudentCalendarByIdHandler);
 router.get("/ledger", listBranchLedgerHandler);
 router.post("/fee-plan-preview", previewBranchStudentFeePlanHandler);
 router.post("/", createBranchStudentHandler);

@@ -251,3 +251,20 @@ export async function getCurrentBranchStudentCalendar(user, query = {}) {
     events,
   };
 }
+
+export async function getBranchStudentCalendarById(studentId, query = {}) {
+  const id = text(studentId);
+  if (!id) throw new AppError("Student ID is required", 400);
+
+  const student = await prisma.branchStudent.findFirst({
+    where: { OR: [{ id }, { studentId: id }] },
+    select: { emailAddress: true, studentId: true },
+  });
+
+  if (!student) throw new AppError("Branch student profile not found", 404);
+
+  return getCurrentBranchStudentCalendar(
+    { email: student.emailAddress, userCode: student.studentId },
+    query,
+  );
+}
