@@ -11,7 +11,10 @@ import {
   createBranchStudentPayment,
   previewBranchStudentFeePlan,
 } from "./branchStudents.service.js";
-import { getCurrentBranchStudentCalendar } from "./branchStudentCalendar.service.js";
+import {
+  getCurrentBranchStudentCalendar,
+  getBranchStudentCalendarById,
+} from "./branchStudentCalendar.service.js";
 
 function sendSuccess(res, message, data, meta = undefined, statusCode = 200) {
   const payload = {
@@ -39,6 +42,11 @@ export const getCurrentBranchStudentProfileHandler = asyncHandler(async (req, re
 
 export const getCurrentBranchStudentCalendarHandler = asyncHandler(async (req, res) => {
   const calendar = await getCurrentBranchStudentCalendar(req.user, req.query || {});
+  return sendSuccess(res, "Branch student calendar fetched successfully", calendar);
+});
+
+export const getBranchStudentCalendarByIdHandler = asyncHandler(async (req, res) => {
+  const calendar = await getBranchStudentCalendarById(req.params.studentId, req.query || {});
   return sendSuccess(res, "Branch student calendar fetched successfully", calendar);
 });
 

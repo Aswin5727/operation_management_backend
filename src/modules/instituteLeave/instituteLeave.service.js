@@ -73,7 +73,15 @@ export function studentSchedule(student, context, now = new Date()) {
     || context.batches.find(batch => batchIdMatches(batch) && courseMatches(batch))
     || context.batches.find(batch => batchIdMatches(batch));
   if (!batch) throw new AppError(`Student ${student.studentId} has no valid assigned batch`, 409);
-  try { return generateSchedule({ student, batch, ...context, timezone: context.branch.timezone, now }); }
+  const scheduledStudent = batch.branchCourse
+    ? {
+        ...student,
+        courseId: batch.courseId || student.courseId,
+        courseName: batch.courseName || student.courseName,
+        course: batch.branchCourse,
+      }
+    : student;
+  try { return generateSchedule({ student: scheduledStudent, batch, ...context, timezone: context.branch.timezone, now }); }
   catch (error) { throw new AppError(error.message, 409); }
 }
 export async function studentCalendar(user, query = {}) {
