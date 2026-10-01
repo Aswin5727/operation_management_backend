@@ -39,8 +39,24 @@ export function timingFor(student, batch) {
   if (start === null || end === null || end <= start) throw new Error(`Configure valid same-day batch timing for ${student.studentId || student.id}`);
   return { start, end, hours: (end - start) / 60 };
 }
-export function isAffected(leave, date, batch) {
-  return leave.leaveDate === date && leaveOverlapsBatch(leave, batch);
+export function isAffected(leave, date, batch, timezone = 'Asia/Kolkata') {
+  if (leave.leaveDate !== date || !leaveOverlapsBatch(leave, batch)) return false;
+
+  // An institute leave declared during the day cannot cancel a class that
+  // has already started. A class beginning exactly at declaration time is
+  // also preserved; only later starts are affected.
+  if (leave.declaredAt) {
+    const declared = new Date(leave.declaredAt);
+    if (Number.isFinite(declared.getTime())) {
+      const declaredClock = localClock(declared, timezone);
+      if (declaredClock.date === date) {
+        const batchStart = timeMinutes(batch?.startTime, batch?.startPeriod);
+        if (batchStart !== null && batchStart <= Math.floor(declaredClock.seconds / 60)) return false;
+      }
+    }
+  }
+
+  return true;
 }
 const nextDay = date => new Date(Date.parse(`${date}T00:00:00Z`) + 86400000).toISOString().slice(0, 10);
 export function generateSchedule({ student, batch, holidays = [], leaves = [], weekOffOverrides = [], timezone = 'Asia/Kolkata', now = new Date() }) {
@@ -84,7 +100,7 @@ export function generateSchedule({ student, batch, holidays = [], leaves = [], w
       const mark = attendance.get(date);
       const scheduledHours = Math.min(configuredDailyHours, remaining);
       const legacy = activeLeaves.find(l => !l.isInstitute && l.leaveDate === date);
-      const leave = applyInstitute && activeLeaves.find(l => l.isInstitute && isAffected(l, date, batch));
+      const leave = applyInstitute && activeLeaves.find(l => l.isInstitute && isAffected(l, date, batch, timezone));
       const holiday = holidayMap.get(date);
       const isClassDay = eligible(date);
       // Attendance already recorded is immutable and takes precedence over a later declaration.
