@@ -1,6 +1,8 @@
 import crypto from "node:crypto";
 
-import { Prisma } from "@prisma/client";
+import prismaClientPackage from "../../../prisma-client-v2/index.js";
+
+const { Prisma } = prismaClientPackage;
 
 import {
   scheduleContext,
@@ -1992,7 +1994,8 @@ function createTemporaryPassword() {
 function createResetTokenArtifacts() {
   const resetToken = crypto.randomBytes(32).toString("hex");
   const tokenHash = crypto.createHash("sha256").update(resetToken).digest("hex");
-  const expiresAt = new Date(Date.now() + config.credentialResetTokenExpiresMinutes * 60 * 1000);
+  // Credential links remain valid until the recipient uses the link to set a password.
+  const expiresAt = new Date("9999-12-31T23:59:59.999Z");
 
   return { resetToken, tokenHash, expiresAt };
 }
@@ -2271,7 +2274,7 @@ export async function createBranchStudent(payload, actor) {
             userId: user.id,
             tokenHash,
             expiresAt,
-            createdBy: actorId,
+            createdBy: "CREDENTIAL_EMAIL",
           },
         });
 

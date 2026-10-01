@@ -93,7 +93,7 @@ export function studentTemplate({
       </div>
 
       <div style="margin-top:18px;padding:15px 18px;background:#eff6ff;border-left:4px solid #2563eb;border-radius:6px;font-size:14px;line-height:22px;color:#334155;">
-        Use the temporary password to sign in. Your student dashboard will remind you to reset it. The reset link is valid for a limited time.
+        Use the temporary password to sign in. Your student dashboard will remind you to reset it. This reset link remains valid until you use it to set your password.
       </div>
     </div>
   `;

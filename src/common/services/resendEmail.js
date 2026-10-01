@@ -486,7 +486,7 @@ export async function sendFacultyCredentialsEmail({
     `Temporary password: ${temporaryPassword}`,
     loginLink ? `Login link: ${loginLink}` : null,
     resetLink ? `Reset link: ${resetLink}` : null,
-    "This reset password link is valid for 1 hour only.",
+    "This reset password link remains valid until you use it to set your password.",
     "Use the temporary password to sign in, then change it using the reset link.",
   ].filter(Boolean);
 
