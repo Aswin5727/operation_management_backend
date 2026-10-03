@@ -150,6 +150,18 @@ export async function createAcademicTest(actor, payload = {}) {
   const course = await resolveCourse(branch.id, payload.courseId || payload.branchCourseId);
   const items = normalizeItems(payload.items, course.academicTestCount);
   const batches = await resolveBatches(branch.id, course, payload.batchIds || payload.batches);
+  const existingBatchLinks = await prisma.academicTestBatch.findMany({
+    where: {
+      branchBatchId: { in: batches.map((batch) => batch.id) },
+      academicTest: { branchCourseId: course.id },
+    },
+    select: { branchBatchId: true },
+  });
+  if (existingBatchLinks.length) {
+    const existingBatchIds = new Set(existingBatchLinks.map((link) => link.branchBatchId));
+    const duplicateBatches = batches.filter((batch) => existingBatchIds.has(batch.id));
+    throw new AppError(`Academic Test configuration already exists for: ${duplicateBatches.map((batch) => batch.batchName || batch.batchId).join(", ")}. Edit the existing configuration instead of creating another one.`, 409);
+  }
   const created = await prisma.$transaction(async (tx) => tx.academicTest.create({ data: { branchCourseId: course.id, createdBy: actor.id, items: { create: items }, batches: { create: createBatchRows(batches) } }, include: includeDetails() }));
   return toPublic(created);
 }
@@ -160,6 +172,19 @@ export async function updateAcademicTest(actor, id, payload = {}) {
   const course = await resolveCourse(branch.id, payload.courseId || existing.branchCourseId);
   const items = normalizeItems(payload.items, course.academicTestCount);
   const batches = await resolveBatches(branch.id, course, payload.batchIds || payload.batches);
+  const existingBatchLinks = await prisma.academicTestBatch.findMany({
+    where: {
+      branchBatchId: { in: batches.map((batch) => batch.id) },
+      academicTestId: { not: existing.id },
+      academicTest: { branchCourseId: course.id },
+    },
+    select: { branchBatchId: true },
+  });
+  if (existingBatchLinks.length) {
+    const existingBatchIds = new Set(existingBatchLinks.map((link) => link.branchBatchId));
+    const duplicateBatches = batches.filter((batch) => existingBatchIds.has(batch.id));
+    throw new AppError(`Academic Test configuration already exists for: ${duplicateBatches.map((batch) => batch.batchName || batch.batchId).join(", ")}. Edit that existing configuration instead.`, 409);
+  }
   const updated = await prisma.$transaction(async (tx) => {
     await tx.academicTestItem.deleteMany({ where: { academicTestId: existing.id } });
     await tx.academicTestBatch.deleteMany({ where: { academicTestId: existing.id } });
@@ -814,6 +839,81 @@ async function buildAcademicReport(actor, batch, requestedStudentIds = null, sel
     };
   }));
   return { batch: { id: batch.id, batchId: batch.batchId, batchName: batch.batchName, batchTiming: batch.batchTiming }, course: { id: batch.courseId, name: batch.courseName, courseCode: batch.branchCourseId }, totalTests: testRows.length, hasProject: configuredItems.some(({ item }) => ["PROJECT", "TEST_AND_PROJECT"].includes(item.testType)), tests: testRows, retestColumns, students: reportStudents };
+}
+
+// Student 360 uses the same report definition as the branch report screen.
+// A configured item is one test cycle; retest schedules are only attempts for
+// that cycle and must never increase the total count.
+export async function getAcademicTestProgressForStudent(student) {
+  const empty = { totalTests: 0, completedTests: 0, pendingTests: 0, percentage: 0 };
+  if (!student?.branchId || !student?.batchId || !student?.courseId) return empty;
+
+  const batch = await prisma.branchBatch.findFirst({
+    where: { branchId: student.branchId, OR: [{ id: student.batchId }, { batchId: student.batchId }], status: "ACTIVE" },
+    select: { id: true, batchId: true, branchCourseId: true },
+  });
+  if (!batch) return empty;
+  const courseId = student.courseId || batch.branchCourseId;
+  if (!courseId || (batch.branchCourseId && batch.branchCourseId !== courseId)) return empty;
+
+  const configuredRows = await prisma.academicTest.findMany({
+    where: { branchCourseId: courseId, batches: { some: { branchBatchId: batch.id } } },
+    select: {
+      branchCourse: { select: { academicTestCount: true } },
+      items: { orderBy: { sequence: "asc" }, select: { id: true, sequence: true, testType: true } },
+    },
+  });
+  const retestSchedules = await prisma.academicScheduledTest.findMany({
+    where: { branchBatchId: batch.id, isRetest: true, status: { not: "CANCELLED" } },
+    select: { academicTestItemId: true },
+  });
+  const retestItemIds = new Set(retestSchedules.map((schedule) => schedule.academicTestItemId));
+  const configuredItems = configuredRows
+    .flatMap((row) => {
+      const configuredCount = Number(row.branchCourse?.academicTestCount || 0);
+      return row.items.filter((item) => !configuredCount || Number(item.sequence) <= configuredCount);
+    })
+    .filter((item) => !retestItemIds.has(item.id) && ["TEST", "TEST_AND_PROJECT"].includes(item.testType));
+  if (!configuredItems.length) return empty;
+
+  const itemIds = configuredItems.map((item) => item.id);
+  const [schedules, shares] = await Promise.all([
+    prisma.academicScheduledTest.findMany({
+      where: { branchBatchId: batch.id, academicTestItemId: { in: itemIds }, status: { not: "CANCELLED" } },
+      orderBy: [{ testNumber: "asc" }, { attemptNumber: "asc" }, { createdAt: "asc" }],
+      select: { id: true, academicTestItemId: true, testNumber: true, status: true, isRetest: true, retestStudentId: true, questionPaperId: true, testDate: true, endTime: true },
+    }),
+    prisma.facultyReportShare.findMany({ where: { branchId: student.branchId, batchId: { in: [batch.id, batch.batchId].filter(Boolean) }, reportType: "ACADEMIC_TEST", status: "SENT" }, select: { academicTestIds: true } }),
+  ]);
+  await syncExpiredAcademicAttempts(schedules, [student.id]);
+
+  const sharedScheduleIds = new Set(shares.flatMap((share) => Array.isArray(share.academicTestIds) ? share.academicTestIds.map(text) : []));
+  const sharedTestNumbers = new Set(schedules.filter((schedule) => !schedule.isRetest && sharedScheduleIds.has(schedule.id)).map((schedule) => Number(schedule.testNumber)));
+  const relevantSchedules = schedules.filter((schedule) => sharedTestNumbers.has(Number(schedule.testNumber)));
+  const [papers, submissions] = await Promise.all([
+    prisma.academicQuestionPaper.findMany({ where: { id: { in: relevantSchedules.map((schedule) => schedule.questionPaperId).filter(Boolean) } }, select: { id: true, questions: { select: { questionType: true } } } }),
+    prisma.academicTestSubmission.findMany({ where: { academicTestId: { in: relevantSchedules.map((schedule) => schedule.id) }, branchStudentId: student.id } }),
+  ]);
+  const paperById = new Map(papers.map((paper) => [paper.id, paper]));
+  const submissionByScheduleId = new Map(submissions.map((submission) => [submission.academicTestId, submission]));
+  const completedItemIds = new Set();
+  const schedulesByItem = new Map();
+  relevantSchedules.forEach((schedule) => schedulesByItem.set(schedule.academicTestItemId, [...(schedulesByItem.get(schedule.academicTestItemId) || []), schedule]));
+  schedulesByItem.forEach((attempts, itemId) => {
+    const valid = attempts.filter((schedule) => !schedule.retestStudentId || schedule.retestStudentId === student.id).some((schedule) => {
+      if (!reportScheduleHasEnded(schedule)) return false;
+      const submission = submissionByScheduleId.get(schedule.id);
+      const status = text(submission?.status || "").toUpperCase();
+      const hasAssessment = (paperById.get(schedule.questionPaperId)?.questions || []).some((question) => question.questionType === "ASSESSMENT");
+      return reportSubmissionIsFinal(submission, hasAssessment) && (status === "NOT_ATTENDED" || status === "EVALUATED" || (status === "SUBMITTED" && !hasAssessment));
+    });
+    if (valid) completedItemIds.add(itemId);
+  });
+
+  const totalTests = configuredItems.length;
+  const completedTests = Math.min(totalTests, completedItemIds.size);
+  const pendingTests = totalTests - completedTests;
+  return { totalTests, completedTests, pendingTests, percentage: totalTests ? Math.round((completedTests / totalTests) * 100) : 0 };
 }
 
 export async function listAcademicReportBatches(actor) {

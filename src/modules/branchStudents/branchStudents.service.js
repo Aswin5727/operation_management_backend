@@ -28,6 +28,7 @@ import {
 import {
   createFeeProgressAlertNotification,
 } from "../notifications/notifications.service.js";
+import { getAcademicTestProgressForStudent } from "../academicTests/academicTests.service.js";
 
 const RECORD_STATUSES = new Set(["ACTIVE", "INACTIVE"]);
 const CURRENT_STATUSES = new Set(["Student", "Employee", "Other"]);
@@ -2423,7 +2424,14 @@ export async function getBranchStudent(studentId, actor = null) {
     throw new AppError("Branch student not found", 404);
   }
 
-  return toBranchStudentSummary(student);
+  const summary = toBranchStudentSummary(student);
+  try {
+    summary.academicTestProgress = await getAcademicTestProgressForStudent(student);
+  } catch (error) {
+    console.warn("Unable to calculate Student 360 academic test progress", error);
+    summary.academicTestProgress = { totalTests: 0, completedTests: 0, pendingTests: 0, percentage: 0 };
+  }
+  return summary;
 }
 
 export async function getCurrentBranchStudentProfile(user) {
