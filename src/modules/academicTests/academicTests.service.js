@@ -27,35 +27,16 @@ function normalizeType(value) {
   return type;
 }
 
-function normalizeDate(value, field) {
-  const date = text(value);
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) throw new AppError(`${field} must be in YYYY-MM-DD format.`, 422);
-  return date;
-}
-
-function normalizeTime(value, field) {
-  const time = text(value);
-  if (!/^([01]\d|2[0-3]):[0-5]\d$/.test(time)) throw new AppError(`${field} must be a valid time.`, 422);
-  return time;
-}
-
 function normalizeItemSchedule(item, type) {
-  const hasTest = type === "TEST" || type === "TEST_AND_PROJECT";
-  const hasProject = type === "PROJECT" || type === "TEST_AND_PROJECT";
-  const result = {
+  // Dates and times belong to the faculty's scheduled-test step. The branch
+  // admin Academic Test setup only defines the type of each test item.
+  return {
     testDate: null,
     testStartTime: null,
     testEndTime: null,
     projectStartDate: null,
     projectEndDate: null,
   };
-  if (hasTest) {
-    result.testDate = normalizeDate(item?.testDate, "Test date");
-    result.testStartTime = normalizeTime(item?.testStartTime, "Test start time");
-    result.testEndTime = normalizeTime(item?.testEndTime, "Test end time");
-    if (result.testEndTime <= result.testStartTime) throw new AppError("Test end time must be after test start time.", 422);
-  }
-  return result;
 }
 
 function normalizeItems(items, count) {
