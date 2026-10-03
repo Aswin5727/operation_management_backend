@@ -738,7 +738,7 @@ function reportResult(submission, schedule, passMark) {
   };
 }
 
-async function buildAcademicReport(actor, batch, requestedStudentIds = null, selectedScheduleIds = null) {
+async function buildAcademicReport(actor, batch, requestedStudentIds = null, selectedScheduleIds = null, includeIncomplete = false) {
   let schedules = await prisma.academicScheduledTest.findMany({ where: { branchBatchId: batch.id }, orderBy: [{ testNumber: "asc" }, { attemptNumber: "asc" }, { createdAt: "asc" }] });
   if (Array.isArray(selectedScheduleIds) && selectedScheduleIds.length) {
     const selected = new Set(selectedScheduleIds.map(text));
@@ -772,7 +772,7 @@ async function buildAcademicReport(actor, batch, requestedStudentIds = null, sel
     const hasAssessment = (paperById.get(schedule.questionPaperId)?.questions || []).some((question) => question.questionType === "ASSESSMENT");
     if (students.length && students.every((student) => reportSubmissionIsFinal(submissionByKey.get(`${schedule.id}:${student.id}`), hasAssessment))) completedConfiguredIds.add(configuredTest.item.id);
   });
-  configured = configured.filter(({ item }) => completedConfiguredIds.has(item.id));
+  if (!includeIncomplete) configured = configured.filter(({ item }) => completedConfiguredIds.has(item.id));
   const retestColumns = schedules.filter((schedule) => schedule.isRetest && schedule.status !== "CANCELLED").map((schedule) => { const attemptNumber = Math.max(1, Number(schedule.attemptNumber || 2) - 1); return { scheduleId: schedule.id, testNumber: schedule.testNumber, attemptNumber, label: attemptNumber === 1 ? `Test ${schedule.testNumber} Retest` : `Test ${schedule.testNumber} Retest ${attemptNumber}` }; });
   const testRows = await Promise.all(configured.map(async ({ item, academicTest }) => {
     const original = schedules.find((schedule) => !schedule.isRetest && schedule.academicTestItemId === item.id) || schedules.find((schedule) => !schedule.isRetest && schedule.testNumber === item.sequence);
@@ -947,19 +947,31 @@ export async function getBranchStudentAcademicReports(actor, studentId) {
   const batchIds = new Set(batches.flatMap((batch) => [batch.id, batch.batchId]).filter(Boolean));
   const shares = await prisma.facultyReportShare.findMany({ where: { branchId, reportType: "ACADEMIC_TEST", status: "SENT", batchId: { in: [...batchIds] } }, orderBy: { sentAt: "asc" } });
   const items = [];
-  for (const share of shares) {
+  const reportShares = shares.length ? shares : [{ id: "configured", academicTestIds: [] }];
+  for (const share of reportShares) {
     const batch = await prisma.branchBatch.findUnique({ where: { id: share.batchId }, select: { id: true, batchId: true, batchName: true, batchTiming: true, courseName: true, branchCourseId: true, courseId: true } });
     if (!batch) continue;
-    const report = await buildAcademicReport(actor, batch, [student.id], Array.isArray(share.academicTestIds) ? share.academicTestIds : []);
+    const report = await buildAcademicReport(actor, batch, [student.id], Array.isArray(share.academicTestIds) ? share.academicTestIds : [], true);
     const row = report.students?.[0];
     const scheduleIds = (row?.tests || []).map((test) => test.scheduleId).filter(Boolean);
     const schedules = await prisma.academicScheduledTest.findMany({ where: { id: { in: scheduleIds } }, select: { id: true, testDate: true } });
     const scheduleById = new Map(schedules.map((schedule) => [schedule.id, schedule]));
     for (const test of row?.tests || []) {
       const final = test.final || {};
-      if (!["SUBMITTED", "EVALUATED"].includes(String(final.status || "").toUpperCase())) continue;
-      items.push({ id: `${share.id}:${test.testNumber}:${student.id}`, testName: `Test ${test.testNumber}`, courseName: batch.courseName, batchName: batch.batchName, testType: test.testType, testDate: scheduleById.get(test.scheduleId)?.testDate || null, marksObtained: final.marksObtained, totalMarks: final.totalMarks, percentage: final.percentage, result: final.result, validationStatus: "VALIDATED", projectPercentage: row.project?.percentage ?? null });
+      const status = String(final.status || "").toUpperCase();
+      items.push({ id: `${share.id}:${test.testNumber}:${student.id}`, evaluationId: test.itemId || test.scheduleId, testName: `Test ${test.testNumber}`, courseName: batch.courseName, batchName: batch.batchName, testType: test.testType, testDate: scheduleById.get(test.scheduleId)?.testDate || null, marksObtained: ["SUBMITTED", "EVALUATED"].includes(status) ? final.marksObtained : null, totalMarks: ["SUBMITTED", "EVALUATED"].includes(status) ? final.totalMarks : null, percentage: ["SUBMITTED", "EVALUATED"].includes(status) ? final.percentage : null, result: final.result || null, validationStatus: ["SUBMITTED", "EVALUATED"].includes(status) ? "VALIDATED" : "NOT_EVALUATED", status: ["SUBMITTED", "EVALUATED"].includes(status) ? "SUBMITTED" : "NOT_EVALUATED", projectPercentage: row.project?.percentage ?? null });
+    }
+    if (row?.project && !row.tests?.some((test) => test.testType === "PROJECT")) {
+      items.push({ id: `${share.id}:project:${student.id}`, evaluationId: `${share.id}:project`, testName: "Project", courseName: batch.courseName, batchName: batch.batchName, testType: "PROJECT", percentage: row.project.percentage, status: row.project.status === "EVALUATED" ? "SUBMITTED" : "NOT_EVALUATED", result: row.project.result || null, validationStatus: row.project.percentage == null ? "NOT_EVALUATED" : "VALIDATED" });
     }
   }
-  return { student, items };
+  const evaluations = [];
+  const seen = new Set();
+  for (const item of items) {
+    const key = item.evaluationId || item.testName;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    evaluations.push({ evaluationId: item.evaluationId, name: item.testName, type: item.testType, percentage: item.percentage, status: item.status || "NOT_EVALUATED", result: item.result });
+  }
+  return { student, items, evaluations };
 }

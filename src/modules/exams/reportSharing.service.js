@@ -112,5 +112,20 @@ export async function getBranchStudentReports(user, studentId) {
       items.push({ id: `${share.id}:${exam.id}:${student.id}`, testName: exam.title, module: exam.module?.title || "-", status: "SUBMITTED", marksObtained: attempt.obtainedMarks, totalMarks: attempt.totalMarks || exam.totalMarks, percentage: attempt.percentage, testDate: schedule.testDate, courseName: student.courseName, batchName: student.batchName });
     }
   }
-  return { student, items };
+  const moduleResults = new Map();
+  for (const item of items) {
+    const key = String(item.module || item.moduleName || "").trim();
+    if (!key) continue;
+    const current = moduleResults.get(key) || { moduleName: item.module || item.moduleName || "-", obtained: 0, maximum: 0, testCount: 0 };
+    current.obtained += Number(item.marksObtained || 0);
+    current.maximum += Number(item.totalMarks || 0);
+    current.testCount += 1;
+    moduleResults.set(key, current);
+  }
+  const skills = [...moduleResults.values()].map((module) => ({
+    ...module,
+    overallPercentage: module.maximum > 0 ? Number(((module.obtained / module.maximum) * 100).toFixed(2)) : null,
+    reportStatus: "SUBMITTED",
+  }));
+  return { student, items, skills };
 }
