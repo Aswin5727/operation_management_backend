@@ -127,21 +127,18 @@ function buildWeekly(days, courseStart, courseEnd, currentDate) {
 }
 
 function buildMonthly(days, courseStart, courseEnd, currentDate, selectedMonth = "") {
-  const monthKey = /^\d{4}-\d{2}$/.test(selectedMonth) ? selectedMonth : currentDate.slice(0, 7);
-  const cursor = dateFromKey(`${monthKey}-01`);
-  const calendarMonthStart = keyFromDate(cursor);
-  const calendarMonthEnd = keyFromDate(new Date(cursor.getFullYear(), cursor.getMonth() + 1, 0));
-  const monthStart = calendarMonthStart < courseStart ? courseStart : calendarMonthStart;
-  const monthEnd = calendarMonthEnd > courseEnd ? courseEnd : calendarMonthEnd;
-  const boundedEnd = monthEnd;
-  const rows = monthStart <= boundedEnd ? days.filter((day) => day.date >= monthStart && day.date <= boundedEnd) : [];
-  return [{
-    month: new Intl.DateTimeFormat("en-GB", { month: "long", year: "numeric" }).format(cursor),
-    year: cursor.getFullYear(),
-    startDate: monthStart,
-    endDate: boundedEnd,
-    ...summarize(rows),
-  }];
+  const result = [];
+  let cursor = dateFromKey(`${courseStart.slice(0, 7)}-01`);
+  const last = dateFromKey(`${courseEnd.slice(0, 7)}-01`);
+  while (cursor <= last) {
+    const monthStart = keyFromDate(cursor) < courseStart ? courseStart : keyFromDate(cursor);
+    const monthEndDate = new Date(cursor.getFullYear(), cursor.getMonth() + 1, 0);
+    const monthEnd = keyFromDate(monthEndDate) > courseEnd ? courseEnd : keyFromDate(monthEndDate);
+    const rows = days.filter((day) => day.date >= monthStart && day.date <= monthEnd);
+    result.push({ month: new Intl.DateTimeFormat("en-GB", { month: "long", year: "numeric" }).format(cursor), year: cursor.getFullYear(), startDate: monthStart, endDate: monthEnd, ...summarize(rows) });
+    cursor = new Date(cursor.getFullYear(), cursor.getMonth() + 1, 1);
+  }
+  return result;
 }
 
 async function findStudent(user) {
@@ -199,6 +196,9 @@ export async function getStudentAttendanceOverview(user, options = {}) {
   // Weekly attendance is a calendar-week view, so it includes every
   // scheduled class in the selected week, including a class later this week.
   const weeklyDays = aggregateEvents(events, records, courseStart, courseEnd, currentDate);
+  const monthly = buildMonthly(weeklyDays, courseStart, courseEnd, currentDate, options.month);
+  const selectedMonth = /^\d{4}-\d{2}$/.test(options.month || "") ? options.month : currentDate.slice(0, 7);
+  const currentMonth = monthly.find((item) => item.startDate.slice(0, 7) === selectedMonth) || monthly[monthly.length - 1] || null;
   const dailyStart = currentWeekStart(currentDate);
   const daily = aggregateEvents(events, records, dailyStart, addDays(dailyStart, 6), currentDate);
   const recordMap = new Map(records.map((record) => [record.attendanceDate, record]));
@@ -240,7 +240,8 @@ export async function getStudentAttendanceOverview(user, options = {}) {
     })),
     daily,
     weekly: buildWeekly(weeklyDays, courseStart, courseEnd, currentDate),
-    monthly: buildMonthly(weeklyDays, courseStart, courseEnd, currentDate, options.month),
+    monthly,
+    currentMonth,
   };
 }
 
