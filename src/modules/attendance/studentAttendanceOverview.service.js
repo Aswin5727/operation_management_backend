@@ -1,5 +1,6 @@
 import prisma from "../../config/prisma.js";
 import AppError from "../../common/errors/AppError.js";
+import { findBranchForAdmin } from "../../common/utils/branchAccess.js";
 import { getCurrentBranchStudentCalendar } from "../branchStudents/branchStudentCalendar.service.js";
 
 const TIME_ZONE = "Asia/Calcutta";
@@ -37,7 +38,7 @@ function formatTime(value) {
 }
 
 function percentage(value, denominator) {
-  return denominator ? Math.round((value / denominator) * 100) : 0;
+  return denominator ? Number(((value / denominator) * 100).toFixed(2)) : 0;
 }
 
 function rangeDays(start, end) {
@@ -125,19 +126,22 @@ function buildWeekly(days, courseStart, courseEnd, currentDate) {
   });
 }
 
-function buildMonthly(days, courseStart, courseEnd) {
-  const result = [];
-  let cursor = dateFromKey(`${courseStart.slice(0, 7)}-01`);
-  const last = dateFromKey(`${courseEnd.slice(0, 7)}-01`);
-  while (cursor <= last) {
-    const monthStart = keyFromDate(cursor) < courseStart ? courseStart : keyFromDate(cursor);
-    const monthEndDate = new Date(cursor.getFullYear(), cursor.getMonth() + 1, 0);
-    const monthEndKey = keyFromDate(monthEndDate) > courseEnd ? courseEnd : keyFromDate(monthEndDate);
-    const rows = days.filter((day) => day.date >= monthStart && day.date <= monthEndKey);
-    result.push({ month: new Intl.DateTimeFormat("en-GB", { month: "long", year: "numeric" }).format(cursor), year: cursor.getFullYear(), startDate: monthStart, endDate: monthEndKey, ...summarize(rows) });
-    cursor = new Date(cursor.getFullYear(), cursor.getMonth() + 1, 1);
-  }
-  return result;
+function buildMonthly(days, courseStart, courseEnd, currentDate, selectedMonth = "") {
+  const monthKey = /^\d{4}-\d{2}$/.test(selectedMonth) ? selectedMonth : currentDate.slice(0, 7);
+  const cursor = dateFromKey(`${monthKey}-01`);
+  const calendarMonthStart = keyFromDate(cursor);
+  const calendarMonthEnd = keyFromDate(new Date(cursor.getFullYear(), cursor.getMonth() + 1, 0));
+  const monthStart = calendarMonthStart < courseStart ? courseStart : calendarMonthStart;
+  const monthEnd = calendarMonthEnd > courseEnd ? courseEnd : calendarMonthEnd;
+  const boundedEnd = monthEnd;
+  const rows = monthStart <= boundedEnd ? days.filter((day) => day.date >= monthStart && day.date <= boundedEnd) : [];
+  return [{
+    month: new Intl.DateTimeFormat("en-GB", { month: "long", year: "numeric" }).format(cursor),
+    year: cursor.getFullYear(),
+    startDate: monthStart,
+    endDate: boundedEnd,
+    ...summarize(rows),
+  }];
 }
 
 async function findStudent(user) {
@@ -151,7 +155,7 @@ async function findStudent(user) {
   throw new AppError("Student profile not found", 404);
 }
 
-export async function getStudentAttendanceOverview(user) {
+export async function getStudentAttendanceOverview(user, options = {}) {
   const identity = await findStudent(user);
   const student = identity.value;
   const currentDate = todayKey();
@@ -190,7 +194,11 @@ export async function getStudentAttendanceOverview(user) {
     });
   }
   if (!courseStart || !courseEnd) throw new AppError("Course period is not configured", 400);
-  const days = aggregateEvents(events, records, courseStart, courseEnd, currentDate);
+  const attendanceEnd = courseEnd < currentDate ? courseEnd : currentDate;
+  const days = aggregateEvents(events, records, courseStart, attendanceEnd, currentDate);
+  // Weekly attendance is a calendar-week view, so it includes every
+  // scheduled class in the selected week, including a class later this week.
+  const weeklyDays = aggregateEvents(events, records, courseStart, courseEnd, currentDate);
   const dailyStart = currentWeekStart(currentDate);
   const daily = aggregateEvents(events, records, dailyStart, addDays(dailyStart, 6), currentDate);
   const recordMap = new Map(records.map((record) => [record.attendanceDate, record]));
@@ -221,7 +229,7 @@ export async function getStudentAttendanceOverview(user) {
   return {
     student: { id: student.id, name: student.studentName },
     course: { id: student.courseId, name: student.courseName || student.course?.name || "", startDate: courseStart, endDate: courseEnd, schedule: text(student.classSchedule || calendar?.schedule || "") },
-    overall: summarize(days),
+    overall: summarize(weeklyDays),
     todayAttendance: { date: currentDate, sessions: todaySessions, summary: todaySummary },
     attendance: days.map((day) => ({
       date: day.date,
@@ -231,22 +239,35 @@ export async function getStudentAttendanceOverview(user) {
       attendanceTime: day.attendanceTime,
     })),
     daily,
-    weekly: buildWeekly(days, courseStart, courseEnd, currentDate),
-    monthly: buildMonthly(days, courseStart, courseEnd),
+    weekly: buildWeekly(weeklyDays, courseStart, courseEnd, currentDate),
+    monthly: buildMonthly(weeklyDays, courseStart, courseEnd, currentDate, options.month),
   };
 }
 
-export async function getStudentAttendanceOverviewById(studentId) {
+export async function getStudentAttendanceOverviewById(studentId, user = null, options = {}) {
   const id = text(studentId);
   if (!id) throw new AppError("Student ID is required", 400);
 
+  const isBranchAdmin = String(user?.role || "").toUpperCase() === "BRANCH_ADMIN";
+  const branch = isBranchAdmin ? await findBranchForAdmin(user) : null;
+  if (isBranchAdmin && (!branch || branch.status === "INACTIVE")) {
+    throw new AppError("Branch access is not available", 403);
+  }
+
   const branchStudent = await prisma.branchStudent.findFirst({
-    where: { OR: [{ id }, { studentId: id }] },
+    where: {
+      OR: [{ id }, { studentId: id }],
+      ...(isBranchAdmin ? { branchId: branch.id } : {}),
+    },
     select: { id: true, emailAddress: true, studentId: true },
   });
   if (branchStudent) {
-    return getStudentAttendanceOverview({ email: branchStudent.emailAddress, userCode: branchStudent.studentId || branchStudent.id });
+    return getStudentAttendanceOverview({ email: branchStudent.emailAddress, userCode: branchStudent.studentId || branchStudent.id }, options);
   }
+
+  // A branch administrator can never fall through to the global StudentProfile
+  // table; that table is outside branch scope.
+  if (isBranchAdmin) throw new AppError("You do not have access to this student", 403);
 
   const student = await prisma.studentProfile.findFirst({
     where: { OR: [{ id }, { studentCode: id }] },
