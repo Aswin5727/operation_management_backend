@@ -52,12 +52,12 @@ export const getCurrentStudentAttendanceOverviewHandler = asyncHandler(async (re
 });
 
 export const getStudentAttendanceOverviewHandler = asyncHandler(async (req, res) => {
-  const overview = await getStudentAttendanceOverview(req.user);
+  const overview = await getStudentAttendanceOverview(req.user, { month: req.query?.month });
   return sendSuccess(res, "Student attendance overview fetched successfully", overview);
 });
 
 export const getStudentAttendanceOverviewByIdHandler = asyncHandler(async (req, res) => {
-  const overview = await getStudentAttendanceOverviewById(req.params.studentId);
+  const overview = await getStudentAttendanceOverviewById(req.params.studentId, req.user, { month: req.query?.month });
   return sendSuccess(res, "Student attendance overview fetched successfully", overview);
 });
 

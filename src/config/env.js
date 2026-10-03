@@ -93,13 +93,20 @@ const config = {
   loginAttemptWindowMinutes: toNumber(process.env.LOGIN_ATTEMPT_WINDOW_MINUTES, 15),
   // The live frontend and API are hosted on different origins, so production
   // auth cookies must be cross-site compatible unless explicitly overridden.
+  // Render/live deployments use HTTPS even when NODE_ENV is not explicitly
+  // set. Infer secure cross-site cookies from the configured frontend URL so
+  // refresh cookies are still sent by a frontend hosted on another origin.
   cookieSecure:
     process.env.COOKIE_SECURE !== undefined
       ? process.env.COOKIE_SECURE === "true"
-      : (process.env.NODE_ENV || "development") === "production",
+      : ((process.env.NODE_ENV || "development") === "production" ||
+        /^https:\/\//i.test(process.env.FRONTEND_URL || process.env.CORS_ORIGIN || "")),
   cookieSameSite:
     process.env.COOKIE_SAME_SITE ||
-    ((process.env.NODE_ENV || "development") === "production" ? "none" : "lax"),
+    (((process.env.NODE_ENV || "development") === "production" ||
+      /^https:\/\//i.test(process.env.FRONTEND_URL || process.env.CORS_ORIGIN || ""))
+      ? "none"
+      : "lax"),
   seedDefaultPassword: process.env.SEED_DEFAULT_PASSWORD || "ChangeMe123!",
 };
 
