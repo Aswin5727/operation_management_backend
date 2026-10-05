@@ -108,6 +108,7 @@ model Branch {
   branchInstallmentTemplates BranchInstallmentTemplate[]
   branchFaculties            BranchFaculty[]
   branchStudents             BranchStudent[]
+  studentEnrollments         BranchStudentCourse[]
   calendarHolidays           BranchCalendarHoliday[]
   calendarLeaves             BranchCalendarLeave[]
   ledgerEntries              BranchStudentLedgerEntry[]
@@ -304,6 +305,7 @@ model BranchCourse {
   facultyAssignments             BranchFacultyCourse[]
   branchBatches                  BranchBatch[]
   branchStudents                 BranchStudent[]
+  studentEnrollments             BranchStudentCourse[]
   facultyTodayWorkEntries        FacultyTodayWorkEntry[]
   facultyTodayWorkStudentEntries FacultyTodayWorkStudentEntry[]
   exams                          Exam[]
@@ -826,6 +828,9 @@ model BranchStudent {
   feeComplianceStatus            String                         @default("PENDING")
   courseProgress                 Int?
   courseCompletedAt              DateTime?
+  enrollmentType                 String                         @default("SINGLE")
+  arrangementType                String                         @default("SINGLE")
+  firstCourseId                  String?
   branch                         Branch                         @relation(fields: [branchId], references: [id], onDelete: Cascade)
   course                         BranchCourse?                  @relation(fields: [courseId], references: [id])
   installments                   BranchStudentInstallment[]
@@ -837,6 +842,7 @@ model BranchStudent {
   assessmentSubmissions          AssessmentSubmission[]
   retestExams                    Exam[]                       @relation("ExamRetestStudent")
   reassessmentAssessments        Assessment[]                 @relation("AssessmentReassessmentStudent")
+  courseEnrollments              BranchStudentCourse[]
 
   @@unique([branchId, studentId])
   @@index([branchId])
@@ -847,6 +853,38 @@ model BranchStudent {
   @@index([courseId])
   @@index([branchId, batchId])
   @@index([branchId, courseId, facultyId, batchId])
+}
+
+model BranchStudentCourse {
+  id              String         @id @default(cuid())
+  branchStudentId String
+  branchId        String
+  courseId        String
+  courseName      String?
+  facultyId       String?
+  facultyName     String?
+  batchId         String?
+  batchName       String?
+  batchTiming     String?
+  scheduleType    String?
+  mode            String?
+  startDate       String?
+  endDate         String?
+  arrangementType String         @default("SINGLE")
+  sequenceOrder   Int            @default(1)
+  totalCourseAmount Int?
+  paymentPlanId   String?
+  paymentPlan     String?
+  status          RecordStatus   @default(ACTIVE)
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  branchStudent   BranchStudent @relation(fields: [branchStudentId], references: [id], onDelete: Cascade)
+  branch          Branch         @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  course          BranchCourse   @relation(fields: [courseId], references: [id], onDelete: Restrict)
+
+  @@unique([branchStudentId, courseId])
+  @@index([branchId, courseId])
+  @@index([branchStudentId])
 }
 
 model BranchStudentAttendance {

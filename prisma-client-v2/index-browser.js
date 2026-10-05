@@ -706,7 +706,35 @@ exports.Prisma.BranchStudentScalarFieldEnum = {
   feePaymentDeadline: 'feePaymentDeadline',
   feeComplianceStatus: 'feeComplianceStatus',
   courseProgress: 'courseProgress',
-  courseCompletedAt: 'courseCompletedAt'
+  courseCompletedAt: 'courseCompletedAt',
+  enrollmentType: 'enrollmentType',
+  arrangementType: 'arrangementType',
+  firstCourseId: 'firstCourseId'
+};
+
+exports.Prisma.BranchStudentCourseScalarFieldEnum = {
+  id: 'id',
+  branchStudentId: 'branchStudentId',
+  branchId: 'branchId',
+  courseId: 'courseId',
+  courseName: 'courseName',
+  facultyId: 'facultyId',
+  facultyName: 'facultyName',
+  batchId: 'batchId',
+  batchName: 'batchName',
+  batchTiming: 'batchTiming',
+  scheduleType: 'scheduleType',
+  mode: 'mode',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  arrangementType: 'arrangementType',
+  sequenceOrder: 'sequenceOrder',
+  totalCourseAmount: 'totalCourseAmount',
+  paymentPlanId: 'paymentPlanId',
+  paymentPlan: 'paymentPlan',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.BranchStudentAttendanceScalarFieldEnum = {
@@ -1381,6 +1409,7 @@ exports.Prisma.ModelName = {
   BatchStatusHistory: 'BatchStatusHistory',
   StudentProfile: 'StudentProfile',
   BranchStudent: 'BranchStudent',
+  BranchStudentCourse: 'BranchStudentCourse',
   BranchStudentAttendance: 'BranchStudentAttendance',
   BranchCalendarHoliday: 'BranchCalendarHoliday',
   BranchCalendarLeave: 'BranchCalendarLeave',

@@ -1690,6 +1690,8 @@ function buildBranchStudentPayload(payload = {}, existing = null) {
   const courseEndDate = parseOptionalText(candidate.courseEndDate);
   const recordStatus = parseStatus(candidate.recordStatus || candidate.status || "ACTIVE");
   const courseProgress = parseOptionalProgress(candidate.courseProgress);
+  const arrangementType = normalizeString(candidate.arrangementType || candidate.enrollmentType || 'SINGLE').toUpperCase() || 'SINGLE';
+  const firstCourseId = parseOptionalText(candidate.firstCourseId || candidate.firstCourse);
 
   if (currentStatus === "Employee" && !designation) {
     throw new AppError("Designation is required for employees", 400);
@@ -1722,6 +1724,8 @@ function buildBranchStudentPayload(payload = {}, existing = null) {
     courseStartDate,
     classSchedule,
     courseProgress,
+    arrangementType,
+    firstCourseId,
     recordStatus,
     courseId: parseOptionalText(candidate.courseId),
     courseName: parseOptionalText(candidate.courseName),
@@ -1763,6 +1767,114 @@ function buildBranchStudentPayload(payload = {}, existing = null) {
   }
 
   return { studentData, installmentSchedule };
+}
+
+function normalizeCourseEnrollments(payload = [], branchId) {
+  if (!Array.isArray(payload)) return [];
+  return payload.map((item, index) => ({
+    branchId,
+    courseId: normalizeString(item?.courseId),
+    courseName: parseOptionalText(item?.courseName),
+    facultyId: parseOptionalText(item?.facultyId),
+    facultyName: parseOptionalText(item?.facultyName),
+    batchId: parseOptionalText(item?.batchId || item?.batchEntryId),
+    batchName: parseOptionalText(item?.batchName || item?.batch),
+    batchTiming: parseOptionalText(item?.batchTiming || item?.batchTime),
+    scheduleType: parseOptionalText(item?.classSchedule || item?.scheduleType || item?.weekType),
+    mode: parseOptionalText(item?.courseMode || item?.mode),
+    startDate: parseOptionalText(item?.courseStartDate || item?.startDate),
+    endDate: parseOptionalText(item?.courseEndDate || item?.endDate),
+    arrangementType: normalizeString(item?.arrangementType || item?.arrangement || 'SINGLE').toUpperCase(),
+    sequenceOrder: Number(item?.sequenceOrder || index + 1),
+    totalCourseAmount: Number(String(item?.totalCourseAmount ?? item?.courseAmount ?? item?.totalAmount ?? 0).replace(/,/g, '')) || null,
+    paymentPlanId: parseOptionalText(item?.paymentPlanId),
+    paymentPlan: parseOptionalText(item?.paymentPlan),
+    status: normalizeString(item?.status || 'ACTIVE').toUpperCase(),
+  })).filter((item) => item.courseId);
+}
+
+function getCourseEnrollmentInput(payload = {}) {
+  return Array.isArray(payload.courses) ? payload.courses : payload.courseEnrollments;
+}
+
+function validateCourseEnrollmentInput(payload = {}, branchId) {
+  const raw = getCourseEnrollmentInput(payload);
+  if (!Array.isArray(raw) || !raw.length) return { arrangementType: 'SINGLE', firstCourseId: '', enrollments: [] };
+
+  const enrollments = normalizeCourseEnrollments(raw, branchId);
+  const ids = enrollments.map((item) => item.courseId);
+  if (new Set(ids).size !== ids.length) throw new AppError('The same course cannot be selected more than once.', 400);
+
+  const arrangementType = ids.length === 1
+    ? 'SINGLE'
+    : normalizeString(payload.arrangementType || payload.enrollmentType).toUpperCase();
+  if (!['SINGLE', 'PARALLEL', 'SEQUENTIAL'].includes(arrangementType)) {
+    throw new AppError('Arrangement type is required for multiple courses and must be PARALLEL or SEQUENTIAL.', 400);
+  }
+  if (arrangementType === 'SINGLE' && ids.length > 1) {
+    throw new AppError('Multiple courses require PARALLEL or SEQUENTIAL arrangement.', 400);
+  }
+
+  const firstCourseId = normalizeString(payload.firstCourseId || payload.firstCourse || (arrangementType === 'SEQUENTIAL' ? enrollments[0]?.courseId : ''));
+  if (arrangementType === 'SEQUENTIAL' && (!firstCourseId || !ids.includes(firstCourseId))) {
+    throw new AppError('A valid firstCourseId is required for sequential admission.', 400);
+  }
+
+  enrollments.forEach((item, index) => {
+    item.arrangementType = arrangementType;
+    item.sequenceOrder = arrangementType === 'SEQUENTIAL' ? Number(item.sequenceOrder || index + 1) : index + 1;
+    const isConfigured = arrangementType !== 'SEQUENTIAL' || item.courseId === firstCourseId;
+    if (isConfigured) {
+      for (const [field, label] of [['mode', 'course mode'], ['batchId', 'batch'], ['batchTiming', 'batch timing'], ['scheduleType', 'class schedule'], ['startDate', 'course start date']]) {
+        if (!String(item[field] || '').trim()) throw new AppError(`${label} is required for course ${item.courseId}.`, 400);
+      }
+      if (!(Number(item.totalCourseAmount) > 0)) throw new AppError(`Total course amount is required for course ${item.courseId}.`, 400);
+      item.status = 'ACTIVE';
+    } else {
+      item.status = 'PENDING';
+    }
+  });
+  return { arrangementType, firstCourseId, enrollments };
+}
+
+async function syncBranchStudentCourseEnrollments(tx, student, payload = {}) {
+  // Older clients do not send this field; preserve any existing enrollments.
+  if (!Array.isArray(getCourseEnrollmentInput(payload))) return;
+  const validated = validateCourseEnrollmentInput(payload, student.branchId);
+  const enrollments = validated.enrollments;
+  if (!enrollments.length && student.courseId) {
+    enrollments.push({
+      branchId: student.branchId,
+      courseId: student.courseId,
+      courseName: student.courseName,
+      facultyId: student.facultyId,
+      facultyName: student.facultyName,
+      batchId: student.batchId,
+      batchName: student.batchName,
+      batchTiming: student.batchTiming,
+      scheduleType: student.classSchedule,
+      mode: student.courseMode,
+      startDate: student.courseStartDate,
+      endDate: student.courseEndDate,
+    });
+  }
+  if (enrollments.length) {
+    for (const item of enrollments) {
+      await tx.branchStudentCourse.upsert({
+        where: { branchStudentId_courseId: { branchStudentId: student.id, courseId: item.courseId } },
+        create: { ...item, branchStudentId: student.id },
+        update: { ...item },
+      });
+    }
+  }
+  await tx.branchStudent.update({
+    where: { id: student.id },
+    data: {
+      enrollmentType: enrollments.length > 1 ? 'MULTIPLE' : 'SINGLE',
+      arrangementType: validated.arrangementType,
+      firstCourseId: validated.firstCourseId || null,
+    },
+  });
 }
 
 async function getBranchContext(actor) {
@@ -1884,6 +1996,10 @@ function toBranchStudentSummary(record) {
     courseStatus: courseStatusFromProgress(record.courseProgress),
     courseCompletedAt: record.courseCompletedAt || null,
     courseId: record.courseId,
+    enrollmentType: record.enrollmentType || 'SINGLE',
+    arrangementType: record.arrangementType || record.enrollmentType || 'SINGLE',
+    firstCourseId: record.firstCourseId || null,
+    courseEnrollments: Array.isArray(record.courseEnrollments) ? record.courseEnrollments : [],
     courseName: record.courseName,
     courseMode: record.courseMode,
     totalWorkingDays: record.totalWorkingDays,
@@ -2102,6 +2218,7 @@ export async function listBranchStudents(query = {}, actor = null) {
         installments: {
           orderBy: { installmentNumber: "asc" }
         },
+        courseEnrollments: { where: { status: "ACTIVE" }, orderBy: { createdAt: "asc" } },
         calendarAttendanceRecords: {
           where: {
             attendanceDate: {
@@ -2134,6 +2251,8 @@ export async function createBranchStudent(payload, actor) {
   if (!branchId) {
     throw new AppError("Branch ID is required", 400);
   }
+
+  validateCourseEnrollmentInput(payload, branchId);
 
   console.log("[createBranchStudent] incoming payload keys:", Object.keys(payload));
   let studentData, installmentSchedule;
@@ -2244,6 +2363,8 @@ export async function createBranchStudent(payload, actor) {
             updatedBy: actorId,
           },
         });
+
+        await syncBranchStudentCourseEnrollments(tx, student, payload);
 
         await syncStudentCourseEnd(tx, student);
 
@@ -2416,7 +2537,8 @@ export async function getBranchStudent(studentId, actor = null) {
           status: true,
         },
       },
-      installments: { orderBy: { installmentNumber: "asc" } }
+      installments: { orderBy: { installmentNumber: "asc" } },
+      courseEnrollments: { where: { status: "ACTIVE" }, orderBy: { createdAt: "asc" } },
     }
   });
 
@@ -2463,6 +2585,7 @@ export async function getCurrentBranchStudentProfile(user) {
         },
       },
       installments: { orderBy: { installmentNumber: "asc" } },
+      courseEnrollments: { where: { status: "ACTIVE" }, orderBy: { createdAt: "asc" } },
     },
   });
 
@@ -2480,6 +2603,7 @@ export async function updateBranchStudent(studentId, payload, actor = null) {
     include: {
       course: { select: { id: true, hours: true, duration: true, mode: true } },
       installments: { orderBy: { installmentNumber: "asc" } },
+      courseEnrollments: { where: { status: "ACTIVE" }, orderBy: { createdAt: "asc" } },
       calendarAttendanceRecords: true,
     },
   });
@@ -2487,6 +2611,8 @@ export async function updateBranchStudent(studentId, payload, actor = null) {
   if (!existing) {
     throw new AppError("Branch student not found", 404);
   }
+
+  validateCourseEnrollmentInput(payload, existing.branchId);
 
   let { studentData, installmentSchedule } = buildBranchStudentPayload(payload, existing);
   const selectedBatchId = normalizeString(studentData.batchId);
@@ -2564,13 +2690,18 @@ export async function updateBranchStudent(studentId, payload, actor = null) {
       data: studentUpdateData,
     });
 
+    await syncBranchStudentCourseEnrollments(tx, student, payload);
+
     await syncStudentCourseEnd(tx, student);
 
     await replaceStudentInstallmentSchedule(tx, student.id, installmentSchedule, existing.installments || []);
 
     const updatedStudent = await tx.branchStudent.findUnique({
       where: { id: student.id },
-      include: { installments: { orderBy: { installmentNumber: "asc" } } },
+      include: {
+        installments: { orderBy: { installmentNumber: "asc" } },
+        courseEnrollments: { where: { status: "ACTIVE" }, orderBy: { createdAt: "asc" } },
+      },
     });
 
     if (updatedStudent) {
