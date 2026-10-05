@@ -1174,6 +1174,51 @@ exports.Prisma.ExamAnswerScalarFieldEnum = {
   marksAwarded: 'marksAwarded'
 };
 
+exports.Prisma.MotivationMailHistoryScalarFieldEnum = {
+  id: 'id',
+  branchStudentId: 'branchStudentId',
+  branchId: 'branchId',
+  stage: 'stage',
+  absenceStartDate: 'absenceStartDate',
+  absenceWorkingDays: 'absenceWorkingDays',
+  status: 'status',
+  sentAt: 'sentAt',
+  failureReason: 'failureReason',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.StudentDiscontinuationRequestScalarFieldEnum = {
+  id: 'id',
+  branchStudentId: 'branchStudentId',
+  branchId: 'branchId',
+  requestedByUserId: 'requestedByUserId',
+  reason: 'reason',
+  details: 'details',
+  status: 'status',
+  contactOutcome: 'contactOutcome',
+  contactNotes: 'contactNotes',
+  contactedBy: 'contactedBy',
+  contactedAt: 'contactedAt',
+  nextFollowUpDate: 'nextFollowUpDate',
+  branchReviewedBy: 'branchReviewedBy',
+  branchReviewedAt: 'branchReviewedAt',
+  branchReviewNote: 'branchReviewNote',
+  superAdminReviewedBy: 'superAdminReviewedBy',
+  superAdminReviewedAt: 'superAdminReviewedAt',
+  superAdminReviewNote: 'superAdminReviewNote',
+  totalCourseFee: 'totalCourseFee',
+  totalPaid: 'totalPaid',
+  outstandingAmount: 'outstandingAmount',
+  refundEligibleAmount: 'refundEligibleAmount',
+  waiverAmount: 'waiverAmount',
+  finalOutstandingAmount: 'finalOutstandingAmount',
+  settlementStatus: 'settlementStatus',
+  financeNote: 'financeNote',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.FacultyReportShareScalarFieldEnum = {
   id: 'id',
   facultyId: 'facultyId',
@@ -1311,7 +1356,9 @@ exports.NotificationKind = exports.$Enums.NotificationKind = {
   EXAM_RETEST_ASSIGNED: 'EXAM_RETEST_ASSIGNED',
   ASSESSMENT_REASSESSMENT_ASSIGNED: 'ASSESSMENT_REASSESSMENT_ASSIGNED',
   EXAM_CANCELLED: 'EXAM_CANCELLED',
-  ASSESSMENT_CANCELLED: 'ASSESSMENT_CANCELLED'
+  ASSESSMENT_CANCELLED: 'ASSESSMENT_CANCELLED',
+  STUDENT_MOTIVATION: 'STUDENT_MOTIVATION',
+  STUDENT_DISCONTINUATION: 'STUDENT_DISCONTINUATION'
 };
 
 exports.CourseEditRequestStatus = exports.$Enums.CourseEditRequestStatus = {
@@ -1348,6 +1395,17 @@ exports.AcademicPreparationStatus = exports.$Enums.AcademicPreparationStatus = {
 exports.AttendanceStatus = exports.$Enums.AttendanceStatus = {
   PRESENT: 'PRESENT',
   ABSENT: 'ABSENT'
+};
+
+exports.DiscontinuationRequestStatus = exports.$Enums.DiscontinuationRequestStatus = {
+  PENDING: 'PENDING',
+  SUPER_ADMIN_REVIEW: 'SUPER_ADMIN_REVIEW',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED',
+  CANCELLED: 'CANCELLED',
+  CONTACTED_CONTINUE: 'CONTACTED_CONTINUE',
+  LEAVE_REQUESTED: 'LEAVE_REQUESTED',
+  UNABLE_TO_CONTACT: 'UNABLE_TO_CONTACT'
 };
 
 exports.Prisma.ModelName = {
@@ -1408,6 +1466,8 @@ exports.Prisma.ModelName = {
   ExamQuestion: 'ExamQuestion',
   ExamAttempt: 'ExamAttempt',
   ExamAnswer: 'ExamAnswer',
+  MotivationMailHistory: 'MotivationMailHistory',
+  StudentDiscontinuationRequest: 'StudentDiscontinuationRequest',
   FacultyReportShare: 'FacultyReportShare',
   BranchStudentPayment: 'BranchStudentPayment',
   BranchStudentLedgerEntry: 'BranchStudentLedgerEntry'

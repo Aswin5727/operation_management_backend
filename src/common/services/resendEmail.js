@@ -243,7 +243,7 @@ async function sendWithSendGrid({ to, subject, html, text, replyTo, attachments 
   };
 }
 
-async function sendEmail({ to, subject, html, text, replyTo, attachments }) {
+export async function sendEmail({ to, subject, html, text, replyTo, attachments }) {
   const recipient = String(to || "").trim();
   if (!recipient) {
     throw new AppError("Recipient email is required", 400);
@@ -298,6 +298,53 @@ async function sendEmail({ to, subject, html, text, replyTo, attachments }) {
   }
 
   throw new AppError("No email provider configured", 500);
+}
+
+export async function sendStudentMotivationEmail({
+  to,
+  fullName,
+  studentId,
+  courseName,
+  absenceWorkingDays,
+  stage,
+}) {
+  const loginLink = buildLoginLink();
+  const safeName = escapeHtml(fullName || "Student");
+  const safeStudentId = escapeHtml(studentId || "-");
+  const safeCourseName = escapeHtml(courseName || "-");
+  const safeDays = escapeHtml(absenceWorkingDays || "-");
+  const stageLabel = escapeHtml(stage || "Motivation Mail");
+  const html = alertTemplate({
+    eyebrow: "Student Support",
+    title: "We would like to see you back in class",
+    subtitle: "Hello " + safeName + ", we noticed that you have been away from your course recently.",
+    summary: "Please contact your branch or faculty team if you need support with attendance, health, travel, or any personal difficulty.",
+    details: [
+      { label: "Student ID", value: safeStudentId },
+      { label: "Course", value: safeCourseName },
+      { label: "Absence duration", value: safeDays + " working days" },
+      { label: "Follow-up", value: stageLabel },
+    ],
+    primaryActionLabel: "Open Student Dashboard",
+    primaryActionLink: loginLink,
+    note: "If you have already informed the branch or are on approved leave, no action is required from you.",
+  });
+  const text = [
+    "Hello " + (fullName || "Student") + ",",
+    "We noticed that you have been away from your course recently.",
+    "Student ID: " + (studentId || "-"),
+    "Course: " + (courseName || "-"),
+    "Absence duration: " + (absenceWorkingDays || "-") + " working days",
+    "Follow-up: " + (stage || "Motivation Mail"),
+    loginLink ? "Student Dashboard: " + loginLink : null,
+    "Please contact your branch or faculty team if you need support.",
+  ].filter(Boolean).join("\n");
+  return sendEmail({
+    to,
+    subject: "We are here to support your course attendance",
+    html,
+    text,
+  });
 }
 
 function buildResetLink(resetToken, temporaryPassword = "", extraSearchParams = {}) {

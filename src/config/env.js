@@ -15,6 +15,15 @@ const toNumber = (value, fallback) => {
   return Number.isFinite(parsed) ? parsed : fallback;
 };
 
+const parseMotivationMailThresholds = (value) => {
+  const thresholds = String(value || "3,5,8")
+    .split(",")
+    .map((item) => Number(item.trim()))
+    .filter((item) => Number.isInteger(item) && item > 0);
+  const unique = [...new Set(thresholds)].sort((left, right) => left - right);
+  return unique.length >= 3 ? unique.slice(0, 3) : [3, 5, 8];
+};
+
 const buildDatabaseUrl = () => {
   if (process.env.DATABASE_URL) {
     return process.env.DATABASE_URL;
@@ -108,6 +117,8 @@ const config = {
       ? "none"
       : "lax"),
   seedDefaultPassword: process.env.SEED_DEFAULT_PASSWORD || "ChangeMe123!",
+  motivationMailThresholds: parseMotivationMailThresholds(process.env.MOTIVATION_MAIL_THRESHOLDS),
+  motivationMailSweepIntervalMs: toNumber(process.env.MOTIVATION_MAIL_SWEEP_INTERVAL_MS, 24 * 60 * 60 * 1000),
 };
 
 export default config;
