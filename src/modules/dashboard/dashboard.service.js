@@ -1,12 +1,15 @@
 import prisma from "../../config/prisma.js";
 import AppError from "../../common/errors/AppError.js";
+import { calculateBranchStudentCourseProgress } from "../facultyTodayWork/facultyTodayWork.service.js";
 
 const IST_OFFSET_MINUTES = 330;
 const REVENUE_SUMMARY_CACHE_TTL_MS = 15000;
+const SUPER_ADMIN_OVERVIEW_CACHE_TTL_MS = 15000;
 
 let cachedRevenueSummary = null;
 let cachedRevenueSummaryExpiresAt = 0;
 let cachedRevenueSummaryPromise = null;
+const superAdminOverviewCache = new Map();
 
 function normalizeString(value) {
   return String(value ?? "").trim();
@@ -244,8 +247,6 @@ async function getFacultyMyBatchesSummary(user) {
             branchId: branchFaculty.branchId,
             recordStatus: "ACTIVE",
             batchId: { in: batchIds },
-            facultyId: branchFaculty.facultyId || branchFaculty.id,
-            facultyName: { equals: branchFaculty.name, mode: "insensitive" },
           },
           select: {
             batchId: true,
@@ -262,7 +263,6 @@ async function getFacultyMyBatchesSummary(user) {
       const key = [
         normalizeFacultyKey(student.batchId),
         normalizeFacultyKey(student.courseId),
-        normalizeFacultyKey(student.facultyId),
       ].join("|");
       studentCountByBatch.set(key, (studentCountByBatch.get(key) || 0) + 1);
       const progress = Number(student.courseProgress);
@@ -278,7 +278,6 @@ async function getFacultyMyBatchesSummary(user) {
       const key = [
         normalizeFacultyKey(entry.batchId || entry.id),
         normalizeFacultyKey(entry.courseId),
-        normalizeFacultyKey(entry.facultyId),
       ].join("|");
 
       return {
@@ -494,6 +493,81 @@ function dashboardMonthWeeks(year, month, students, records, weeklyOffDay, _requ
 function dashboardMonthlySummary(year, month, students, records, weeklyOffDay, todayValue) { const monthStart = `${year}-${String(month).padStart(2, "0")}-01`; const daysInMonth = new Date(Date.UTC(year, month, 0)).getUTCDate(); const dates = Array.from({ length: daysInMonth }, (_, index) => dashboardAddDays(monthStart, index)); const summary = dashboardWeeklyRangeSummary(dates, students, records, weeklyOffDay, todayValue); const recordedDays = new Set(records.filter((record) => dates.includes(record.attendanceDate)).map((record) => record.attendanceDate)).size; return { ...summary, recordedDays, status: summary.applicableStudentDays && recordedDays ? "MARKED" : "UNMARKED" }; }
 function dashboardYearMonths(year, students, records, weeklyOffDay = null, todayValue = "9999-12-31") { return Array.from({ length: 12 }, (_, index) => { const month = String(index + 1).padStart(2, "0"); const summary = dashboardMonthlySummary(year, index + 1, students, records, weeklyOffDay, todayValue); return { label: new Intl.DateTimeFormat("en-US", { month: "long", timeZone: "UTC" }).format(new Date(Date.UTC(year, index, 1))), month: `${year}-${month}`, totalStudents: students.length, ...summary }; }); }
 function dashboardCombinedMonthlySummary(year, month, groups, todayValue) { const totals = { present: 0, absent: 0, recorded: 0, applicableDays: 0, applicableStudentDays: 0, recordedDays: new Set() }; groups.forEach((group) => { const summary = dashboardMonthlySummary(year, month, group.students, group.records, group.weeklyOffDay, todayValue); totals.present += summary.present; totals.absent += summary.absent; totals.recorded += summary.recorded; totals.applicableDays = Math.max(totals.applicableDays, summary.applicableDays); totals.applicableStudentDays += summary.applicableStudentDays; group.records.filter((record) => record.attendanceDate.startsWith(`${year}-${String(month).padStart(2, "0")}`)).forEach((record) => totals.recordedDays.add(record.attendanceDate)); }); return { ...totals, recordedDays: totals.recordedDays.size, percentage: totals.applicableStudentDays ? Math.round((totals.present / totals.applicableStudentDays) * 10000) / 100 : null, status: totals.applicableStudentDays && totals.recorded ? "MARKED" : "UNMARKED" }; }
+async function hydrateFacultyTodayWorkProgress(students = [], branchId = "") {
+  if (!students.length) return students;
+
+  const courseIds = [...new Set(students.map((student) => student.courseId).filter(Boolean))];
+  const courseNames = [...new Set(students.map((student) => String(student.courseName || '').trim()).filter(Boolean))];
+  if (!courseIds.length && !courseNames.length) return students;
+
+  const courses = await prisma.branchCourse.findMany({
+    where: {
+      OR: [
+        ...(courseIds.length ? [{ id: { in: courseIds } }] : []),
+        ...courseNames.map((name) => ({ name: { equals: name, mode: "insensitive" } })),
+      ],
+    },
+    include: { modules: { include: { submodules: true } } },
+  });
+  const resolvedCourseIds = [...new Set([...courseIds, ...courses.map((course) => course.id)])];
+  const [workEntries, studentEntries] = await Promise.all([
+    prisma.facultyTodayWorkEntry.findMany({
+      where: {
+        branchId,
+        OR: [
+          { courseId: { in: resolvedCourseIds } },
+          ...courseNames.map((name) => ({ courseName: { equals: name, mode: "insensitive" } })),
+        ],
+      },
+      select: { courseId: true, courseName: true, batchId: true, batchName: true, studentIds: true, applyToAllStudents: true, submoduleIds: true, submodules: true },
+      orderBy: [{ createdAt: "asc" }, { updatedAt: "asc" }],
+    }),
+    prisma.facultyTodayWorkStudentEntry.findMany({
+      where: { branchId, courseId: { in: resolvedCourseIds } },
+      select: { branchStudentId: true, courseId: true, batchId: true, moduleId: true, submoduleId: true, completionStatus: true },
+      orderBy: [{ createdAt: "asc" }, { updatedAt: "asc" }],
+    }),
+  ]);
+
+  const courseById = new Map(courses.map((course) => [course.id, course]));
+  const courseByName = new Map(courses.map((course) => [String(course.name || '').trim().toLowerCase(), course]));
+  return students.map((student) => {
+    const studentCourseName = String(student.courseName || '').trim().toLowerCase();
+    const course = courseById.get(student.courseId) || courseByName.get(studentCourseName);
+    const normalizeKey = (value) => String(value ?? "").trim().toLowerCase();
+    const studentBatchId = normalizeKey(student.batchId);
+    const studentBatchName = normalizeKey(student.batchName);
+    const studentCourseId = normalizeKey(student.courseId);
+    const entries = workEntries
+      .filter((entry) => {
+        const entryCourseId = normalizeKey(entry.courseId);
+        const entryCourseName = normalizeKey(entry.courseName);
+        const courseMatches = entryCourseId === studentCourseId || Boolean(entryCourseName && studentCourseName && entryCourseName === studentCourseName);
+        if (!courseMatches) return false;
+        const entryBatchId = normalizeKey(entry.batchId);
+        const entryBatchName = normalizeKey(entry.batchName);
+        return !entryBatchId || !studentBatchId || entryBatchId === studentBatchId || Boolean(entryBatchName && studentBatchName && entryBatchName === studentBatchName);
+      })
+      .map((entry) => ({ ...entry, courseId: course?.id || entry.courseId, batchId: student.batchId || entry.batchId }));
+    if (!course || !entries.length) return student;
+    const attempts = studentEntries
+      .filter((entry) => entry.branchStudentId === student.id && (entry.courseId === student.courseId || entry.courseId === course?.id))
+      .map((entry) => ({ ...entry, courseId: course?.id || entry.courseId, batchId: student.batchId || entry.batchId }));
+    const storedProgress = Number(student.courseProgress);
+    const calculatedProgress = calculateBranchStudentCourseProgress(course, entries, student, attempts);
+    return {
+      ...student,
+      courseId: course?.id || student.courseId,
+      // Course progress is monotonic. Keep a persisted value when the
+      // reconstructed work-entry view is lower, while still surfacing newer
+      // live completion when it is higher than the stored snapshot.
+      courseProgress: Number.isFinite(storedProgress)
+        ? Math.max(storedProgress, calculatedProgress)
+        : calculatedProgress,
+    };
+  });
+}
+
 async function getFacultyDashboardOverview(user) {
   const email = normalizeFacultyText(user?.email).toLowerCase();
   if (!email) throw new AppError("Faculty profile not found", 404);
@@ -504,16 +578,17 @@ async function getFacultyDashboardOverview(user) {
   const uniqueBatches = Array.from(new Map(batches.map((batch) => [`${batch.branchId}:${batch.batchId}`, batch])).values());
   const todayValue = dashboardDate(); const [year, month, day] = dashboardParts(todayValue); const current = new Date(Date.UTC(year, month - 1, day)); const mondayOffset = current.getUTCDay() === 0 ? -6 : 1 - current.getUTCDay(); const weekDates = Array.from({ length: 7 }, (_, index) => dashboardAddDays(todayValue, mondayOffset + index)); const monthStart = `${year}-${String(month).padStart(2, "0")}-01`;
   if (!uniqueBatches.length) return { generatedAt: new Date().toISOString(), today: todayValue, month: monthStart.slice(0, 7), weekDates, batches: [], totalBatches: 0, totalStudents: 0, courseIds: branchFaculty.branchCourseId ? [branchFaculty.branchCourseId] : [] };
-  const students = await prisma.branchStudent.findMany({ where: { recordStatus: "ACTIVE", AND: [{ OR: [{ courseProgress: null }, { courseProgress: { lt: 100 } }] }, { OR: uniqueBatches.map((batch) => ({ branchId: batch.branchId, courseId: batch.courseId, batchId: batch.batchId })) }] }, select: { id: true, branchId: true, courseId: true, batchId: true, courseProgress: true } });
-  const yearStart = `${year}-01-01`; const attendanceStart = yearStart < weekDates[0] ? yearStart : weekDates[0]; const ids = students.map((student) => student.id); const attendance = ids.length ? await prisma.branchStudentAttendance.findMany({ where: { branchStudentId: { in: ids }, attendanceDate: { gte: attendanceStart, lte: todayValue } }, select: { branchStudentId: true, batchId: true, attendanceDate: true, status: true } }) : [];
-  const attendanceGroups = uniqueBatches.map((batch) => { const batchStudents = students.filter((student) => student.branchId === batch.branchId && student.courseId === batch.courseId && student.batchId === batch.batchId); const studentIds = new Set(batchStudents.map((student) => student.id)); const records = attendance.filter((record) => studentIds.has(record.branchStudentId) && (!record.batchId || record.batchId === batch.batchId)); return { batch, students: batchStudents, records }; });
+  const students = await prisma.branchStudent.findMany({ where: { recordStatus: "ACTIVE", OR: uniqueBatches.map((batch) => ({ branchId: batch.branchId, OR: [{ courseId: batch.courseId }, { courseName: { equals: batch.courseName, mode: "insensitive" } }], batchId: batch.batchId })) }, select: { id: true, studentId: true, branchId: true, courseId: true, courseName: true, batchId: true, batchName: true, courseProgress: true } });
+  const progressStudents = await hydrateFacultyTodayWorkProgress(students, branchFaculty.branchId);
+  const yearStart = `${year}-01-01`; const attendanceStart = yearStart < weekDates[0] ? yearStart : weekDates[0]; const ids = progressStudents.map((student) => student.id); const attendance = ids.length ? await prisma.branchStudentAttendance.findMany({ where: { branchStudentId: { in: ids }, attendanceDate: { gte: attendanceStart, lte: todayValue } }, select: { branchStudentId: true, batchId: true, attendanceDate: true, status: true } }) : [];
+  const attendanceGroups = uniqueBatches.map((batch) => { const batchStudents = progressStudents.filter((student) => student.branchId === batch.branchId && student.courseId === batch.courseId && student.batchId === batch.batchId); const studentIds = new Set(batchStudents.map((student) => student.id)); const records = attendance.filter((record) => studentIds.has(record.branchStudentId) && (!record.batchId || record.batchId === batch.batchId)); return { batch, students: batchStudents, records }; });
   const result = attendanceGroups.map(({ batch, students: batchStudents, records }) => { const values = batchStudents.map((student) => Number(student.courseProgress)); const progress = batchStudents.length && values.every(Number.isFinite) ? Math.round(values.reduce((sum, value) => sum + value, 0) / batchStudents.length * 10) / 10 : null; return { id: batch.id, courseId: batch.courseId, courseName: batch.courseName, batchId: batch.batchId, batchName: batch.batchName, timing: batch.batchTiming || `${batch.startTime || ""} ${batch.startPeriod || ""} - ${batch.endTime || ""} ${batch.endPeriod || ""}`.trim(), mode: batch.mode || null, weeklyOffDay: batch.weeklyOffDay || null, weekType: batch.weekType || null, studentCount: batchStudents.length, daily: dashboardDay(todayValue, batchStudents, records, batch.weeklyOffDay), weekly: weekDates.map((dateValue) => dashboardDay(dateValue, batchStudents, records, batch.weeklyOffDay)), weeklyByMonth: dashboardMonthWeeks(year, month, batchStudents, records, batch.weeklyOffDay, false, todayValue), monthlyYear: dashboardYearMonths(year, batchStudents, records, batch.weeklyOffDay, todayValue), monthly: dashboardMonthlySummary(year, month, batchStudents, records, batch.weeklyOffDay, todayValue), progress: progress == null ? null : { percentage: progress, studentsIncluded: batchStudents.length } }; });
-  const allProgressValues = students.map((student) => Number(student.courseProgress));
-  const allProgress = students.length && allProgressValues.every(Number.isFinite)
-    ? Math.round(allProgressValues.reduce((sum, value) => sum + value, 0) / students.length * 10) / 10
+  const allProgressValues = progressStudents.map((student) => Number(student.courseProgress));
+  const allProgress = progressStudents.length && allProgressValues.every(Number.isFinite)
+    ? Math.round(allProgressValues.reduce((sum, value) => sum + value, 0) / progressStudents.length * 10) / 10
     : null;
-  const allBatches = { id: "all", courseId: null, courseName: null, batchId: null, batchName: null, timing: null, mode: null, weeklyOffDay: null, weekType: null, studentCount: students.length, daily: dashboardDay(todayValue, students, attendance, null), weekly: weekDates.map((dateValue) => dashboardDay(dateValue, students, attendance, null)), weeklyByMonth: dashboardMonthWeeks(year, month, students, attendance, null, false, todayValue), monthlyYear: Array.from({ length: 12 }, (_, index) => ({ label: new Intl.DateTimeFormat("en-US", { month: "long", timeZone: "UTC" }).format(new Date(Date.UTC(year, index, 1))), month: `${year}-${String(index + 1).padStart(2, "0")}`, totalStudents: students.length, ...dashboardCombinedMonthlySummary(year, index + 1, attendanceGroups, todayValue) })), monthly: dashboardCombinedMonthlySummary(year, month, attendanceGroups, todayValue), batches: result, progress: allProgress == null ? null : { percentage: allProgress, studentsIncluded: students.length } };
-  return { generatedAt: new Date().toISOString(), today: todayValue, year, month: monthStart.slice(0, 7), weekDates, totalBatches: result.length, totalStudents: students.length, courseIds: Array.from(new Set(result.map((batch) => batch.courseId).filter(Boolean))), batches: result, allBatches };
+  const allBatches = { id: "all", courseId: null, courseName: null, batchId: null, batchName: null, timing: null, mode: null, weeklyOffDay: null, weekType: null, studentCount: progressStudents.length, daily: dashboardDay(todayValue, progressStudents, attendance, null), weekly: weekDates.map((dateValue) => dashboardDay(dateValue, progressStudents, attendance, null)), weeklyByMonth: dashboardMonthWeeks(year, month, progressStudents, attendance, null, false, todayValue), monthlyYear: Array.from({ length: 12 }, (_, index) => ({ label: new Intl.DateTimeFormat("en-US", { month: "long", timeZone: "UTC" }).format(new Date(Date.UTC(year, index, 1))), month: `${year}-${String(index + 1).padStart(2, "0")}`, totalStudents: progressStudents.length, ...dashboardCombinedMonthlySummary(year, index + 1, attendanceGroups, todayValue) })), monthly: dashboardCombinedMonthlySummary(year, month, attendanceGroups, todayValue), batches: result, progress: allProgress == null ? null : { percentage: allProgress, studentsIncluded: progressStudents.length } };
+  return { generatedAt: new Date().toISOString(), today: todayValue, year, month: monthStart.slice(0, 7), weekDates, totalBatches: result.length, totalStudents: progressStudents.length, courseIds: Array.from(new Set(result.map((batch) => batch.courseId).filter(Boolean))), batches: result, allBatches };
 }
 
 async function getRevenueSummary() {
@@ -736,15 +811,21 @@ function getPerformanceDateRange(options = {}) {
 
 async function getSuperAdminOverview(branchId = null, performanceOptions = {}) {
   const requested = normalizeString(branchId);
+  const cacheKey = JSON.stringify({ branchId: requested, performanceOptions });
+  const cached = superAdminOverviewCache.get(cacheKey);
+  if (cached && Date.now() - cached.timestamp <= SUPER_ADMIN_OVERVIEW_CACHE_TTL_MS) {
+    return cached.value;
+  }
+
   const branch = requested ? await prisma.branch.findFirst({ where: { OR: [{ id: requested }, { branchId: requested }], status: "ACTIVE" }, select: { id: true, branchId: true, branchName: true, branchCity: true, branchState: true, status: true } }) : null;
   if (requested && !branch) throw new AppError("Branch not found or inactive", 404);
   const branches = branch ? [branch] : await prisma.branch.findMany({ where: { status: "ACTIVE" }, orderBy: { branchName: "asc" }, select: { id: true, branchId: true, branchName: true, branchCity: true, branchState: true, status: true } });
   const branchIds = branches.map((item) => item.id);
-  const students = branchIds.length ? await prisma.branchStudent.findMany({ where: { branchId: { in: branchIds }, recordStatus: "ACTIVE" }, select: { id: true, branchId: true, studentName: true, admissionDate: true, courseName: true, courseAmount: true, installments: { select: { amount: true, amountPaid: true, dueDate: true } }, payments: { select: { amount: true, paymentDate: true } }, calendarAttendanceRecords: { select: { attendanceDate: true, status: true } } } }) : [];
   const todayParts = toIstDateParts();
   const today = toDateStringFromParts(todayParts.year, todayParts.month, todayParts.day);
   const currentMonth = monthKey(todayParts.year, todayParts.month);
   const performanceRange = getPerformanceDateRange(performanceOptions);
+  const students = branchIds.length ? await prisma.branchStudent.findMany({ where: { branchId: { in: branchIds }, recordStatus: "ACTIVE" }, select: { id: true, branchId: true, studentName: true, admissionDate: true, courseName: true, courseAmount: true, installments: { select: { amount: true, amountPaid: true, dueDate: true } }, payments: { select: { amount: true, paymentDate: true } }, calendarAttendanceRecords: { where: { attendanceDate: { gte: performanceRange.startDate, lte: performanceRange.endDate } }, select: { attendanceDate: true, status: true } } } }) : [];
   const previous = previousMonth(todayParts.year, todayParts.month);
   const admissionsByMonth = [previous, { year: todayParts.year, month: todayParts.month }].map((item) => ({ key: monthKey(item.year, item.month), label: new Intl.DateTimeFormat("en-US", { month: "short", timeZone: "UTC" }).format(new Date(Date.UTC(item.year, item.month - 1, 1))), value: students.filter((student) => dateIsInMonth(student.admissionDate, item.year, item.month)).length }));
   const payments = students.flatMap((student) => student.payments || []);
@@ -803,7 +884,9 @@ async function getSuperAdminOverview(branchId = null, performanceOptions = {}) {
     const admissions = branchStudents.filter((student) => { const date = String(student.admissionDate || "").slice(0, 10); return date >= performanceRange.startDate && date <= performanceRange.endDate; }).length;
     return { branchId: branchRecord.branchId, branchName: branchRecord.branchName, totalStudents: branchStudents.length, thisMonthAdmissions: admissions, collection, due, outstanding, attendance: recorded ? Math.round((present / recorded) * 1000) / 10 : null, hasPeriodData: Boolean(admissions || collection || due || branchAttendance.length), courses: [...new Set(branchStudents.map((student) => String(student.courseName || "").trim()).filter(Boolean))] };
   });
-  return { generatedAt: new Date().toISOString(), scope: branch ? { type: "branch", branchId: branch.branchId, branchName: branch.branchName } : { type: "all" }, ...summary, dueStudents: summary.dueStudents.size, paymentOverview, admissionsByMonth, dailyPaymentData: paymentOverview.daily, weeklyPaymentData: paymentOverview.weekly, monthlyPaymentChartData: paymentOverview.monthly, monthlyPaymentData: paymentOverview.monthly, trendingCourses, branchPerformance, branchPerformanceHasData: branchPerformance.some((item) => item.hasPeriodData), performancePeriod: performanceRange, trendingMonth: new Intl.DateTimeFormat("en-US", { month: "long", year: "numeric", timeZone: "Asia/Calcutta" }).format(new Date()) };
+  const result = { generatedAt: new Date().toISOString(), scope: branch ? { type: "branch", branchId: branch.branchId, branchName: branch.branchName } : { type: "all" }, ...summary, dueStudents: summary.dueStudents.size, paymentOverview, admissionsByMonth, dailyPaymentData: paymentOverview.daily, weeklyPaymentData: paymentOverview.weekly, monthlyPaymentChartData: paymentOverview.monthly, monthlyPaymentData: paymentOverview.monthly, trendingCourses, branchPerformance, branchPerformanceHasData: branchPerformance.some((item) => item.hasPeriodData), performancePeriod: performanceRange, trendingMonth: new Intl.DateTimeFormat("en-US", { month: "long", year: "numeric", timeZone: "Asia/Calcutta" }).format(new Date()) };
+  superAdminOverviewCache.set(cacheKey, { timestamp: Date.now(), value: result });
+  return result;
 }
 
 export { getRevenueSummary, getFacultyMyBatchesSummary, getFacultyDashboardOverview, getSuperAdminOverview, invalidateRevenueSummaryCache };

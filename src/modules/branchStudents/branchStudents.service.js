@@ -2045,6 +2045,7 @@ async function ensureBranchStudentAccess(actor, studentId) {
 
 export async function listBranchStudents(query = {}, actor = null) {
   const { page, limit, skip, take } = buildPagination(query);
+  const summaryOnly = ['1', 'true', 'yes'].includes(normalizeString(query.summary).toLowerCase());
   const sortBy = normalizeString(query.sortBy).toLowerCase() || "createdat";
   const sortOrder = parseSortOrder(query.sortOrder);
   let branchProfile = await getBranchContext(actor);
@@ -2086,7 +2087,23 @@ export async function listBranchStudents(query = {}, actor = null) {
       orderBy: buildBranchStudentOrderBy(sortBy, sortOrder),
       skip,
       take,
-      include: {
+      ...(summaryOnly ? {
+        select: {
+          id: true,
+          branchId: true,
+          studentId: true,
+          studentName: true,
+          emailAddress: true,
+          currentStatus: true,
+          courseId: true,
+          courseName: true,
+          batchId: true,
+          batchName: true,
+          recordStatus: true,
+          createdAt: true,
+          updatedAt: true,
+        },
+      } : { include: {
         course: {
           select: {
             id: true,
@@ -2117,7 +2134,7 @@ export async function listBranchStudents(query = {}, actor = null) {
             notes: true,
           },
         },
-      }
+      } }),
     }),
   ]);
 

@@ -559,14 +559,28 @@ async function syncBranchStudentCourseProgress(tx, { branchCourse, branchId, bat
     where: {
       branchId: normalizedBranchId,
       batchId: normalizeString(batchId),
-      OR: [
-        { id: { in: normalizedStudentIds } },
-        { studentId: { in: normalizedStudentIds } },
-      ],
+      courseId: normalizedCourseId,
+      recordStatus: "ACTIVE",
     },
-    include: {
-      installments: true,
-      payments: true,
+    select: {
+      id: true,
+      studentId: true,
+      courseProgress: true,
+      courseCompletedAt: true,
+      courseAmount: true,
+      feePaymentDeadline: true,
+      fee70ProgressDate: true,
+      installments: {
+        select: {
+          amount: true,
+          amountPaid: true,
+        },
+      },
+      payments: {
+        select: {
+          amount: true,
+        },
+      },
     },
   });
 
@@ -601,7 +615,14 @@ async function syncBranchStudentCourseProgress(tx, { branchCourse, branchId, bat
     ));
     const courseProgress = calculateBranchStudentCourseProgress(branchCourse, allWorkEntries, student, attemptsForStudent);
 
-    const normalizedCourseProgress = Math.max(0, Math.min(100, Math.round(courseProgress)));
+    const calculatedCourseProgress = Math.max(0, Math.min(100, Math.round(courseProgress)));
+    // Course progress is monotonic. A later partial/incomplete save must not
+    // reset a student's already persisted progress to a lower value.
+    const storedCourseProgress = Number(student.courseProgress);
+    const normalizedCourseProgress = Math.max(
+      Number.isFinite(storedCourseProgress) ? storedCourseProgress : 0,
+      calculatedCourseProgress,
+    );
     const progressData = {
       courseProgress: normalizedCourseProgress,
       updatedBy: actorId || null,
@@ -929,6 +950,9 @@ export async function createFacultyTodayWorkEntry(payload = {}, user = null) {
     });
 
     return workEntry;
+  }, {
+    maxWait: 10000,
+    timeout: 30000,
   });
 
   void createCourseEditModuleUpdatedNotification({
