@@ -12,7 +12,7 @@ export const createScheduled = asyncHandler(async (req, res) => send(res, await 
 export const facultyScheduled = asyncHandler(async (req, res) => send(res, await service.listFacultyScheduledTests(req.user)));
 export const reportBatches = asyncHandler(async (req, res) => send(res, await service.listAcademicReportBatches(req.user)));
 export const batchReport = asyncHandler(async (req, res) => send(res, await service.getAcademicBatchReport(req.user, req.params.batchId)));
-export const myReport = asyncHandler(async (req, res) => send(res, await service.getMyAcademicReport(req.user)));
+export const myReport = asyncHandler(async (req, res) => send(res, await service.getMyAcademicReport(req.user, req.query.courseId)));
 export const facultyReportTests = asyncHandler(async (req, res) => send(res, await service.listFacultyAcademicReportTests(req.user, req.params.batchId)));
 export const sendAcademicReport = asyncHandler(async (req, res) => send(res, await service.sendAcademicTestReport(req.user, req.body), 201));
 export const branchReports = asyncHandler(async (req, res) => send(res, await service.listBranchAcademicTestReports(req.user)));
@@ -24,7 +24,7 @@ export const evaluateFacultyAssessment = asyncHandler(async (req, res) => send(r
 export const scheduleRetest = asyncHandler(async (req, res) => send(res, await service.scheduleFacultyAcademicRetest(req.user, req.params.id, req.body), 201));
 export const updateFacultyScheduled = asyncHandler(async (req, res) => send(res, await service.updateFacultyScheduledTest(req.user, req.params.id, req.body)));
 export const cancelFacultyScheduled = asyncHandler(async (req, res) => send(res, await service.cancelFacultyScheduledTest(req.user, req.params.id)));
-export const studentScheduled = asyncHandler(async (req, res) => send(res, await service.listStudentAcademicTests(req.user)));
+export const studentScheduled = asyncHandler(async (req, res) => send(res, await service.listStudentAcademicTests(req.user, req.query.courseId)));
 export const studentGet = asyncHandler(async (req, res) => send(res, await service.getStudentAcademicTest(req.user, req.params.id)));
 export const studentStart = asyncHandler(async (req, res) => send(res, await service.startStudentAcademicTest(req.user, req.params.id), 201));
 export const studentSubmit = asyncHandler(async (req, res) => send(res, await service.submitStudentAcademicTest(req.user, req.params.id, req.body)));
