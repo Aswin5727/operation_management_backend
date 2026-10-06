@@ -318,9 +318,24 @@ async function buildStudentFeePlan({ studentData, installmentSchedule, payload, 
     };
   }
 
-  const totalFee = Number(String(
-    studentData.courseAmount ?? studentData.totalAmount ?? studentData.afterDiscount ?? 0,
-  ).replace(/,/g, "")) || 0;
+  const courseEnrollmentInput = getCourseEnrollmentInput(payload);
+  const combinedCourseFee = Array.isArray(courseEnrollmentInput) && courseEnrollmentInput.length > 1
+    ? courseEnrollmentInput.reduce((sum, enrollment) => {
+        const amount = Number(String(
+          enrollment?.totalCourseAmount ?? enrollment?.courseAmount ?? enrollment?.totalAmount ?? enrollment?.afterDiscount ?? 0,
+        ).replace(/,/g, "")) || 0;
+        return sum + amount;
+      }, 0)
+    : 0;
+  const totalFee = combinedCourseFee > 0
+    ? combinedCourseFee
+    : Number(String(
+        studentData.courseAmount ?? studentData.totalAmount ?? studentData.afterDiscount ?? 0,
+      ).replace(/,/g, "")) || 0;
+
+  // BranchStudent.courseAmount is the package fee used by the shared installment
+  // schedule. Each individual fee remains on its BranchStudentCourse enrollment.
+  if (combinedCourseFee > 0) studentData.courseAmount = Math.round(combinedCourseFee);
   const scheduledTotal = installmentSchedule.reduce((sum, installment) => sum + Number(installment.amount || 0), 0);
   if (totalFee > 0 && Math.abs(scheduledTotal - totalFee) > 0.01) {
     throw new AppError("Installment amounts must equal the total course fee", 400);
@@ -2218,7 +2233,7 @@ export async function listBranchStudents(query = {}, actor = null) {
         installments: {
           orderBy: { installmentNumber: "asc" }
         },
-        courseEnrollments: { where: { status: "ACTIVE" }, orderBy: { createdAt: "asc" } },
+        courseEnrollments: { orderBy: [{ sequenceOrder: "asc" }, { createdAt: "asc" }] },
         calendarAttendanceRecords: {
           where: {
             attendanceDate: {
@@ -2252,7 +2267,7 @@ export async function createBranchStudent(payload, actor) {
     throw new AppError("Branch ID is required", 400);
   }
 
-  validateCourseEnrollmentInput(payload, branchId);
+  const validatedEnrollmentInput = validateCourseEnrollmentInput(payload, branchId);
 
   console.log("[createBranchStudent] incoming payload keys:", Object.keys(payload));
   let studentData, installmentSchedule;
@@ -2439,6 +2454,25 @@ export async function createBranchStudent(payload, actor) {
     facultyName: studentData.facultyName || "",
     batchName: assignedBatch?.batchName || "",
     batchTiming: assignedBatch?.batchTiming || "",
+    courses: validatedEnrollmentInput.enrollments.map((enrollment) => {
+      const source = (getCourseEnrollmentInput(payload) || []).find((item) => (
+        normalizeString(item?.courseId) === enrollment.courseId
+      )) || {};
+      return {
+        courseName: enrollment.courseName || source.courseName || "",
+        courseMode: enrollment.mode || source.courseMode || source.mode || "",
+        facultyName: enrollment.facultyName || source.facultyName || "",
+        batchName: enrollment.batchName || source.batchName || source.batch || "",
+        batchTiming: enrollment.batchTiming || source.batchTiming || source.batchTime || "",
+        classSchedule: enrollment.scheduleType || source.classSchedule || source.weekType || "",
+        courseDuration: source.courseDuration || source.duration || "",
+        courseStartDate: enrollment.startDate || source.courseStartDate || source.startDate || "",
+        courseEndDate: enrollment.endDate || source.courseEndDate || source.endDate || "",
+        courseAmount: source.totalCourseAmount || source.courseAmount || source.totalAmount || source.afterDiscount || "",
+        paymentPlan: source.paymentPlan || source.paymentPlanName || "",
+        status: enrollment.status,
+      };
+    }),
   }).catch((error) => {
     console.warn("Branch student credentials email failed to send", error);
   });
@@ -2538,7 +2572,7 @@ export async function getBranchStudent(studentId, actor = null) {
         },
       },
       installments: { orderBy: { installmentNumber: "asc" } },
-      courseEnrollments: { where: { status: "ACTIVE" }, orderBy: { createdAt: "asc" } },
+      courseEnrollments: { orderBy: [{ sequenceOrder: "asc" }, { createdAt: "asc" }] },
     }
   });
 

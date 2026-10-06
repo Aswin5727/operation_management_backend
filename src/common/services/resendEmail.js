@@ -335,7 +335,7 @@ export async function sendPasswordResetEmail({ to, resetToken, expiryMinutes = 2
   });
 }
 
-export async function sendStudentCredentialsEmail({ to, fullName, studentCode, temporaryPassword, resetToken, courseName, facultyName, batchName, batchTiming }) {
+export async function sendStudentCredentialsEmail({ to, fullName, studentCode, temporaryPassword, resetToken, courseName, facultyName, batchName, batchTiming, courses = [] }) {
   const safeName = escapeHtml(fullName || "Student");
   const safeCode = escapeHtml(studentCode || "-");
   const loginLink = buildLoginLink();
@@ -351,6 +351,7 @@ export async function sendStudentCredentialsEmail({ to, fullName, studentCode, t
     facultyName: escapeHtml(facultyName || ""),
     batchName: escapeHtml(batchName || ""),
     batchTiming: escapeHtml(batchTiming || ""),
+    courses,
     temporaryPassword: safePassword,
     loginLink,
     resetLink,
@@ -361,10 +362,26 @@ export async function sendStudentCredentialsEmail({ to, fullName, studentCode, t
     `CISPRO Training registration completed for ${safeName}.`,
     safeCode ? `Student ID: ${safeCode}` : null,
     `Email: ${to}`,
-    courseName ? `Course: ${courseName}` : null,
-    facultyName ? `Faculty: ${facultyName}` : null,
-    batchName ? `Batch: ${batchName}` : null,
-    batchTiming ? `Batch timing: ${batchTiming}` : null,
+    ...(courses.length > 1
+      ? ["Course details:", ...courses.map((course, index) => [
+          `Course ${index + 1}: ${course.courseName || "Course"}${course.status ? ` (${course.status})` : ""}`,
+          course.courseMode ? `Mode: ${course.courseMode}` : null,
+          course.facultyName ? `Faculty: ${course.facultyName}` : null,
+          course.batchName ? `Batch: ${course.batchName}` : null,
+          course.batchTiming ? `Batch timing: ${course.batchTiming}` : null,
+          course.classSchedule ? `Class schedule: ${course.classSchedule}` : null,
+          course.courseDuration ? `Course duration: ${course.courseDuration}` : null,
+          course.courseStartDate ? `Course start date: ${course.courseStartDate}` : null,
+          course.courseEndDate ? `Course end date: ${course.courseEndDate}` : null,
+          course.courseAmount ? `Course fee: ${course.courseAmount}` : null,
+          course.paymentPlan ? `Payment plan: ${course.paymentPlan}` : null,
+        ].filter(Boolean).join("\n"))]
+      : [
+          courseName ? `Course: ${courseName}` : null,
+          facultyName ? `Faculty: ${facultyName}` : null,
+          batchName ? `Batch: ${batchName}` : null,
+          batchTiming ? `Batch timing: ${batchTiming}` : null,
+        ]),
     `Temporary password: ${temporaryPassword || ""}`,
     loginLink ? `Login link: ${loginLink}` : null,
     resetLink ? `Reset password link: ${resetLink}` : null,

@@ -145,7 +145,7 @@ async function findStudent(user) {
   const email = text(user?.email).toLowerCase();
   const userCode = text(user?.userCode);
   if (!email && !userCode) throw new AppError("Student session is required", 401);
-  const branchStudent = await prisma.branchStudent.findFirst({ where: { OR: [...(email ? [{ emailAddress: { equals: email, mode: "insensitive" } }] : []), ...(userCode ? [{ studentId: userCode }, { id: userCode }] : [])] }, include: { course: true } });
+  const branchStudent = await prisma.branchStudent.findFirst({ where: { OR: [...(email ? [{ emailAddress: { equals: email, mode: "insensitive" } }] : []), ...(userCode ? [{ studentId: userCode }, { id: userCode }] : [])] }, include: { course: true, courseEnrollments: { where: { status: "ACTIVE" }, include: { course: true } } } });
   if (branchStudent) return { type: "branch", value: branchStudent };
   const student = await prisma.studentProfile.findFirst({ where: { OR: [...(email ? [{ emailAddress: { equals: email, mode: "insensitive" } }] : []), ...(userCode ? [{ studentCode: userCode }, { id: userCode }] : [])] }, include: { course: true } });
   if (student) return { type: "student", value: student };
@@ -154,7 +154,27 @@ async function findStudent(user) {
 
 export async function getStudentAttendanceOverview(user, options = {}) {
   const identity = await findStudent(user);
-  const student = identity.value;
+  const baseStudent = identity.value;
+  const requestedCourseId = text(options.courseId);
+  const enrollment = identity.type === "branch" && requestedCourseId
+    ? (baseStudent.courseEnrollments || []).find((item) => item.courseId === requestedCourseId)
+    : null;
+  if (requestedCourseId && identity.type === "branch" && !enrollment) {
+    throw new AppError("Selected course enrollment was not found", 404);
+  }
+  const student = enrollment ? {
+    ...baseStudent,
+    courseId: enrollment.courseId,
+    courseName: enrollment.courseName || enrollment.course?.name || "",
+    batchId: enrollment.batchId || null,
+    batchName: enrollment.batchName || null,
+    facultyName: enrollment.facultyName || null,
+    classSchedule: enrollment.scheduleType || baseStudent.classSchedule,
+    courseMode: enrollment.mode || baseStudent.courseMode,
+    courseStartDate: enrollment.startDate || baseStudent.courseStartDate,
+    courseEndDate: enrollment.endDate || baseStudent.courseEndDate,
+    course: enrollment.course || baseStudent.course,
+  } : baseStudent;
   const currentDate = todayKey();
   let courseStart = dateOnly(student.courseStartDate || student.admissionDate);
   let courseEnd = dateOnly(student.courseEndDate);
@@ -163,7 +183,7 @@ export async function getStudentAttendanceOverview(user, options = {}) {
   let calendar = null;
 
   if (identity.type === "branch") {
-    calendar = await getCurrentBranchStudentCalendar(user);
+    calendar = await getCurrentBranchStudentCalendar(user, requestedCourseId ? { courseId: requestedCourseId } : {});
     courseStart = dateOnly(calendar.startDate || courseStart);
     courseEnd = dateOnly(calendar.endDate || courseEnd || courseStart);
     events = Array.isArray(calendar.events) ? calendar.events : [];

@@ -164,12 +164,13 @@ export async function getCurrentBranchStudentCalendar(user, query = {}) {
     include: {
       course: { select: { id: true, name: true, duration: true, hours: true, mode: true } },
       calendarAttendanceRecords: { orderBy: { attendanceDate: "asc" } },
+      courseEnrollments: { where: { status: "ACTIVE" }, include: { course: true } },
     },
   });
 
   if (!student) throw new AppError("Branch student profile not found", 404);
 
-  if (student.batchId && student.courseId && student.facultyId) return studentCalendar(user, query);
+  if (query.courseId || (student.batchId && student.courseId && student.facultyId)) return studentCalendar(user, query);
 
   const startDate = dateKey(student.courseStartDate || student.admissionDate);
   if (!startDate) throw new AppError("Course start date is not configured for this student", 400);
