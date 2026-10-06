@@ -101,6 +101,9 @@ export async function studentCalendar(user, query = {}) {
     batchId: enrollment.batchId || null,
     batchName: enrollment.batchName || null,
     batchTiming: enrollment.batchTiming || null,
+    // weeklyOffDay on BranchStudent is legacy and shared across enrollments.
+    // Let studentSchedule resolve each selected enrollment's own BranchBatch value.
+    weeklyOffDay: enrollment.weeklyOffDay || null,
     classSchedule: enrollment.scheduleType || student.classSchedule,
     courseMode: enrollment.mode || student.courseMode,
     courseStartDate: enrollment.startDate || student.courseStartDate,

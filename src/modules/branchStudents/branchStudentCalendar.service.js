@@ -170,6 +170,88 @@ export async function getCurrentBranchStudentCalendar(user, query = {}) {
 
   if (!student) throw new AppError("Branch student profile not found", 404);
 
+  if (!query.courseId && student.courseEnrollments.length > 1) {
+    const calendars = await Promise.all(student.courseEnrollments.map(async (enrollment) => {
+      const calendar = await studentCalendar(user, { ...query, courseId: enrollment.courseId });
+      return {
+        ...calendar,
+        courseId: enrollment.courseId,
+        courseName: enrollment.courseName || enrollment.course?.name || calendar.course?.name || "Course",
+        facultyName: enrollment.facultyName || "",
+        facultyId: enrollment.facultyId || null,
+      };
+    }));
+    const starts = calendars.map((calendar) => dateKey(calendar.startDate)).filter(Boolean).sort();
+    const ends = calendars.map((calendar) => dateKey(calendar.endDate)).filter(Boolean).sort();
+    const startDate = starts[0] || "";
+    const endDate = ends.at(-1) || "";
+    const events = calendars.flatMap((calendar) => calendar.events.map((event) => ({
+      ...event,
+      courseId: calendar.courseId,
+      courseName: calendar.courseName,
+      facultyId: event.facultyId || calendar.facultyId,
+      facultyName: event.facultyName || calendar.facultyName,
+      courseMode: calendar.courseMode,
+      schedule: calendar.schedule,
+    })));
+    const holidayDates = new Set(events
+      .filter((event) => ["GOVERNMENT_HOLIDAY", "HOLIDAY", "INSTITUTE_LEAVE", "LEAVE"].includes(String(event.code || event.status || "").toUpperCase().replace(/ /g, "_")))
+      .map((event) => event.date));
+    const summary = {
+      courseDays: calendars.reduce((total, calendar) => total + Number(calendar.actualTeachingDays || 0), 0),
+      noClassDays: events.filter((event) => event.code === "NO_CLASS").length,
+      holidays: holidayDates.size,
+      attendanceDays: events.filter((event) => ["PRESENT", "ABSENT"].includes(String(event.attendanceStatus || "").toUpperCase())).length,
+      presentDays: events.filter((event) => String(event.attendanceStatus || "").toUpperCase() === "PRESENT").length,
+      absentDays: events.filter((event) => String(event.attendanceStatus || "").toUpperCase() === "ABSENT").length,
+      facultyWeeklyOffDays: events.filter((event) => event.code === "FACULTY_WEEKLY_OFF").length,
+    };
+    const totalHours = calendars.reduce((total, calendar) => total + Number(calendar.totalHours || 0), 0);
+    const completedHours = calendars.reduce((total, calendar) => total + Number(calendar.completedHours || 0), 0);
+    const courseCards = calendars.map((calendar) => ({
+      course: calendar.course,
+      courseId: calendar.courseId,
+      courseName: calendar.courseName,
+      facultyId: calendar.facultyId,
+      facultyName: calendar.facultyName,
+      batch: calendar.batch,
+      courseMode: calendar.courseMode,
+      schedule: calendar.schedule,
+      weeklyOffDay: calendar.weeklyOffDay || null,
+      startDate: calendar.startDate,
+      endDate: calendar.endDate,
+      totalHours: calendar.totalHours,
+      completedHours: calendar.completedHours,
+      pendingHours: calendar.pendingHours,
+      hoursPerDay: calendar.hoursPerDay,
+      requiredTeachingDays: calendar.requiredTeachingDays,
+      actualTeachingDays: calendar.actualTeachingDays,
+      calendarDurationDays: calendar.calendarDurationDays,
+      replacementHours: calendar.replacementHours,
+      cancelledHours: calendar.cancelledHours,
+      events: calendar.events,
+    }));
+    return {
+      studentId: student.studentId,
+      isMultiCourse: true,
+      courses: courseCards,
+      course: { id: null, name: calendars.map((calendar) => calendar.courseName).join(" + "), totalHours },
+      batch: null,
+      startDate,
+      endDate,
+      totalHours,
+      completedHours,
+      pendingHours: Math.max(0, totalHours - completedHours),
+      courseMode: "Multiple",
+      schedule: "Multiple",
+      calendarDurationDays: startDate && endDate ? daysBetween(startDate, endDate) : 0,
+      replacementHours: calendars.reduce((total, calendar) => total + Number(calendar.replacementHours || 0), 0),
+      replacementSessionCount: calendars.reduce((total, calendar) => total + Number(calendar.replacementSessionCount || 0), 0),
+      summary,
+      events,
+    };
+  }
+
   if (query.courseId || (student.batchId && student.courseId && student.facultyId)) return studentCalendar(user, query);
 
   const startDate = dateKey(student.courseStartDate || student.admissionDate);
