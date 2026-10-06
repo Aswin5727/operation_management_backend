@@ -512,12 +512,16 @@ async function markBranchStudentAttendance(user, payload, date, batch) {
   const students = await prisma.branchStudent.findMany({
     where: {
       branchId: batch.branchId,
-      courseId: batch.courseId,
-      batchId: batch.batchId,
       recordStatus: "ACTIVE",
-      OR: [
-        { id: { in: submittedStudents.map((entry) => entry.studentId) } },
-        { studentId: { in: submittedStudents.map((entry) => entry.studentId) } },
+      AND: [
+        { OR: [
+          { courseId: batch.courseId, batchId: batch.batchId },
+          { courseEnrollments: { some: { status: "ACTIVE", courseId: batch.courseId, batchId: batch.batchId } } },
+        ] },
+        { OR: [
+          { id: { in: submittedStudents.map((entry) => entry.studentId) } },
+          { studentId: { in: submittedStudents.map((entry) => entry.studentId) } },
+        ] },
       ],
     },
     select: { id: true, studentId: true },
@@ -532,7 +536,7 @@ async function markBranchStudentAttendance(user, payload, date, batch) {
     await Promise.all(submittedStudents.map((entry) => {
       const student = studentByIdentifier.get(entry.studentId);
       return tx.branchStudentAttendance.upsert({
-        where: { branchStudentId_attendanceDate: { branchStudentId: student.id, attendanceDate: date } },
+        where: { branchStudentId_attendanceDate_courseId: { branchStudentId: student.id, attendanceDate: date, courseId: batch.courseId } },
         create: {
           branchStudentId: student.id,
           facultyUserId: normalizeString(user?.id) || null,
@@ -584,23 +588,31 @@ async function getBranchFacultyAttendanceOverview(user, date, facultyId = "") {
   const students = await prisma.branchStudent.findMany({
     where: {
       recordStatus: "ACTIVE",
-      OR: branchBatches.map((batch) => ({ branchId: batch.branchId, courseId: batch.courseId, batchId: batch.batchId })),
+      OR: branchBatches.flatMap((batch) => [
+        { branchId: batch.branchId, courseId: batch.courseId, batchId: batch.batchId },
+        { branchId: batch.branchId, courseEnrollments: { some: { status: "ACTIVE", courseId: batch.courseId, batchId: batch.batchId } } },
+      ]),
     },
-    select: { id: true, studentId: true, studentName: true, emailAddress: true, mobileNumber: true, city: true, state: true, country: true, qualification: true, passedOutYear: true, currentStatus: true, admissionDate: true, courseId: true, batchId: true, branchId: true, classSchedule: true, courseStartDate: true, courseEndDate: true, weeklyOffDay: true },
+    select: { id: true, studentId: true, studentName: true, emailAddress: true, mobileNumber: true, city: true, state: true, country: true, qualification: true, passedOutYear: true, currentStatus: true, admissionDate: true, courseId: true, batchId: true, branchId: true, classSchedule: true, courseStartDate: true, courseEndDate: true, weeklyOffDay: true, courseEnrollments: { where: { status: "ACTIVE" }, select: { courseId: true, courseName: true, batchId: true, batchName: true, batchTiming: true, scheduleType: true, startDate: true, endDate: true } } },
   });
   const studentIds = students.map((student) => student.id);
   const attendanceRecords = studentIds.length
     ? await prisma.branchStudentAttendance.findMany({
         where: { branchStudentId: { in: studentIds }, attendanceDate: { gte: getRecentMonths(6)[0]?.start || date } },
-        select: { branchStudentId: true, attendanceDate: true, status: true, markedAt: true, notes: true },
+        select: { branchStudentId: true, courseId: true, batchId: true, attendanceDate: true, status: true, markedAt: true, notes: true },
       })
     : [];
   const instituteExclusions = await attendanceExclusions(prisma, students, date);
-  const todayMap = new Map(attendanceRecords.filter((record) => record.attendanceDate === date).map((record) => [record.branchStudentId, record]));
+  const todayMap = new Map(attendanceRecords.filter((record) => record.attendanceDate === date).map((record) => [`${record.branchStudentId}|${record.courseId || ""}|${record.batchId || ""}`, record]));
   const batches = branchBatches.map((batch) => {
     const batchStudents = students
-      .filter((student) => student.branchId === batch.branchId && student.courseId === batch.courseId && student.batchId === batch.batchId)
-      .map((student) => ({ ...mapBranchAttendanceStudent(student, instituteExclusions.has(student.id) ? { status: "NOT_APPLICABLE" } : todayMap.get(student.id)), classSchedule: batch.weekType || student.classSchedule, weeklyOffDay: batch.weeklyOffDay || student.weeklyOffDay, courseStartDate: batch.courseStartDate || student.courseStartDate, courseEndDate: batch.courseEndDate || student.courseEndDate, records: attendanceRecords.filter((record) => record.branchStudentId === student.id).map(({ branchStudentId, ...record }) => record) }));
+      .filter((student) => student.branchId === batch.branchId && ((student.courseId === batch.courseId && student.batchId === batch.batchId) || (student.courseEnrollments || []).some((enrollment) => enrollment.courseId === batch.courseId && enrollment.batchId === batch.batchId)))
+      .map((student) => {
+        const enrollment = (student.courseEnrollments || []).find((item) => item.courseId === batch.courseId && item.batchId === batch.batchId);
+        const attendance = todayMap.get(`${student.id}|${batch.courseId}|${batch.batchId}`) || todayMap.get(`${student.id}||`);
+        const effectiveStudent = { ...student, courseId: batch.courseId, batchId: batch.batchId, classSchedule: enrollment?.scheduleType || student.classSchedule, courseStartDate: enrollment?.startDate || student.courseStartDate, courseEndDate: enrollment?.endDate || student.courseEndDate };
+        return { ...mapBranchAttendanceStudent(effectiveStudent, instituteExclusions.has(student.id) ? { status: "NOT_APPLICABLE" } : attendance), courseId: batch.courseId, courseName: enrollment?.courseName || batch.courseName, batchId: batch.batchId, batchName: enrollment?.batchName || batch.batchName, batchTiming: enrollment?.batchTiming || batch.batchTiming, classSchedule: batch.weekType || enrollment?.scheduleType || student.classSchedule, weeklyOffDay: batch.weeklyOffDay || student.weeklyOffDay, courseStartDate: enrollment?.startDate || batch.courseStartDate || student.courseStartDate, courseEndDate: enrollment?.endDate || batch.courseEndDate || student.courseEndDate, records: attendanceRecords.filter((record) => record.branchStudentId === student.id && record.courseId === batch.courseId && record.batchId === batch.batchId).map(({ branchStudentId, ...record }) => record) };
+      });
     const present = batchStudents.filter((student) => student.attendanceStatus === "PRESENT").length;
     const absent = batchStudents.filter((student) => student.attendanceStatus === "ABSENT").length;
     return { id: batch.id || batch.batchId, courseId: batch.courseId, courseName: batch.courseName, batchId: batch.batchId, batchName: batch.batchName, batchTiming: batch.batchTiming, sequenceNo: batch.sequenceNo, present, absent, notApplicable: batchStudents.filter(s => s.attendanceStatus === "NOT_APPLICABLE").length, unmarked: batchStudents.filter(s => s.attendanceStatus === "UNMARKED").length, totalStudents: batchStudents.length, students: batchStudents };

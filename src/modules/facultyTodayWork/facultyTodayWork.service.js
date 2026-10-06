@@ -343,20 +343,24 @@ async function validateFacultyBatchScope({ branchId, courseId, batchId, facultyP
   const students = await prisma.branchStudent.findMany({
     where: {
       branchId: normalizeString(branchId),
-      courseId: normalizeString(courseId),
-      batchId: normalizedBatchId,
       recordStatus: "ACTIVE",
-      OR: [
-        { id: { in: normalizedStudentIds } },
-        { studentId: { in: normalizedStudentIds } },
+      AND: [
+        { OR: [
+          { courseId: normalizeString(courseId), batchId: normalizedBatchId },
+          { courseEnrollments: { some: { status: "ACTIVE", courseId: normalizeString(courseId), batchId: normalizedBatchId } } },
+        ] },
+        { OR: [
+          { id: { in: normalizedStudentIds } },
+          { studentId: { in: normalizedStudentIds } },
+        ] },
       ],
     },
-    select: { id: true, studentId: true, facultyId: true },
+    select: { id: true, studentId: true, facultyId: true, courseEnrollments: { where: { status: "ACTIVE", courseId: normalizeString(courseId), batchId: normalizedBatchId }, select: { facultyId: true } } },
   });
 
   const expectedFacultyId = normalizeString(batch.facultyId);
   const validStudents = students.filter((student) => (
-    temporaryAssignment || !expectedFacultyId || normalizeString(student.facultyId) === expectedFacultyId
+    temporaryAssignment || !expectedFacultyId || [student.facultyId, ...(student.courseEnrollments || []).map((item) => item.facultyId)].some((id) => normalizeString(id) === expectedFacultyId)
   ));
 
   if (validStudents.length !== normalizedStudentIds.length) {
@@ -558,15 +562,22 @@ async function syncBranchStudentCourseProgress(tx, { branchCourse, branchId, bat
   const matchingBranchStudents = await tx.branchStudent.findMany({
     where: {
       branchId: normalizedBranchId,
-      batchId: normalizeString(batchId),
-      OR: [
-        { id: { in: normalizedStudentIds } },
-        { studentId: { in: normalizedStudentIds } },
+      recordStatus: "ACTIVE",
+      AND: [
+        { OR: [
+          { courseId: normalizedCourseId, batchId: normalizeString(batchId) },
+          { courseEnrollments: { some: { status: "ACTIVE", courseId: normalizedCourseId, batchId: normalizeString(batchId) } } },
+        ] },
+        { OR: [
+          { id: { in: normalizedStudentIds } },
+          { studentId: { in: normalizedStudentIds } },
+        ] },
       ],
     },
     include: {
       installments: true,
       payments: true,
+      courseEnrollments: { where: { status: "ACTIVE", courseId: normalizedCourseId, batchId: normalizeString(batchId) }, select: { id: true, courseProgress: true, courseCompletedAt: true } },
     },
   });
 
@@ -602,28 +613,29 @@ async function syncBranchStudentCourseProgress(tx, { branchCourse, branchId, bat
     const courseProgress = calculateBranchStudentCourseProgress(branchCourse, allWorkEntries, student, attemptsForStudent);
 
     const normalizedCourseProgress = Math.max(0, Math.min(100, Math.round(courseProgress)));
-    const progressData = {
-      courseProgress: normalizedCourseProgress,
-      updatedBy: actorId || null,
-    };
-
-    // Keep the first time the persisted course progress reached completion.
-    // The timestamp is lifecycle metadata; course status remains derived from
-    // the current courseProgress value.
-    if (normalizedCourseProgress >= 100 && !student.courseCompletedAt) {
-      progressData.courseCompletedAt = new Date();
-    }
-
-    await tx.branchStudent.update({
-      where: { id: student.id },
+    const enrollment = student.courseEnrollments?.[0];
+    const completedAt = enrollment?.courseCompletedAt || (student.courseId === normalizedCourseId ? student.courseCompletedAt : null);
+    await tx.branchStudentCourse.updateMany({
+      where: { branchStudentId: student.id, courseId: normalizedCourseId, status: "ACTIVE" },
       data: {
-        ...progressData,
-        feeComplianceStatus: calculateBranchStudentFeeComplianceStatus({
-          ...student,
-          courseProgress: normalizedCourseProgress,
-        }),
+        courseProgress: normalizedCourseProgress,
+        ...(normalizedCourseProgress >= 100 && !completedAt ? { courseCompletedAt: new Date() } : {}),
       },
     });
+
+    // Keep the legacy single-course columns synchronized only for the primary
+    // course; never let progress in another enrollment overwrite it.
+    if (student.courseId === normalizedCourseId) {
+      await tx.branchStudent.update({
+        where: { id: student.id },
+        data: {
+          courseProgress: normalizedCourseProgress,
+          updatedBy: actorId || null,
+          ...(normalizedCourseProgress >= 100 && !student.courseCompletedAt ? { courseCompletedAt: new Date() } : {}),
+          feeComplianceStatus: calculateBranchStudentFeeComplianceStatus({ ...student, courseProgress: normalizedCourseProgress }),
+        },
+      });
+    }
   }
 }
 

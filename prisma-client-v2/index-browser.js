@@ -730,6 +730,8 @@ exports.Prisma.BranchStudentCourseScalarFieldEnum = {
   arrangementType: 'arrangementType',
   sequenceOrder: 'sequenceOrder',
   totalCourseAmount: 'totalCourseAmount',
+  courseProgress: 'courseProgress',
+  courseCompletedAt: 'courseCompletedAt',
   paymentPlanId: 'paymentPlanId',
   paymentPlan: 'paymentPlan',
   status: 'status',

@@ -873,6 +873,8 @@ model BranchStudentCourse {
   arrangementType   String        @default("SINGLE")
   sequenceOrder     Int           @default(1)
   totalCourseAmount Int?
+  courseProgress    Int?
+  courseCompletedAt DateTime?
   paymentPlanId     String?
   paymentPlan       String?
   status            RecordStatus  @default(ACTIVE)
@@ -907,7 +909,7 @@ model BranchStudentAttendance {
   branchStudent   BranchStudent    @relation(fields: [branchStudentId], references: [id], onDelete: Cascade)
   facultyUser     User?            @relation(fields: [facultyUserId], references: [id])
 
-  @@unique([branchStudentId, attendanceDate])
+  @@unique([branchStudentId, attendanceDate, courseId])
   @@index([branchStudentId, attendanceDate])
   @@index([batchId, attendanceDate])
 }

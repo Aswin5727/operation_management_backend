@@ -237,7 +237,7 @@ export async function getFacultyCreateOptions(actor) {
   const [papers, schedules, batchStudents, facultySummary] = await Promise.all([
     testItemIds.length && batchIds.length ? prisma.academicQuestionPaper.findMany({ where: { academicTestItemId: { in: testItemIds }, branchBatchId: { in: batchIds } }, select: { id: true, academicTestItemId: true, branchBatchId: true, status: true } }) : [],
     testItemIds.length && batchIds.length ? prisma.academicScheduledTest.findMany({ where: { academicTestItemId: { in: testItemIds }, branchBatchId: { in: batchIds } }, select: { id: true, academicTestItemId: true, branchBatchId: true, testNumber: true, testDate: true, startTime: true, endTime: true, status: true } }) : [],
-    batchCodes.length ? prisma.branchStudent.findMany({ where: { recordStatus: "ACTIVE", batchId: { in: [...new Set([...batchIds, ...batchCodes])] } }, select: { id: true, batchId: true } }) : [],
+    batchCodes.length ? prisma.branchStudent.findMany({ where: { recordStatus: "ACTIVE", OR: [{ batchId: { in: [...new Set([...batchIds, ...batchCodes])] } }, { courseEnrollments: { some: { status: "ACTIVE", batchId: { in: [...new Set([...batchIds, ...batchCodes])] } } } }] }, select: { id: true, batchId: true } }) : [],
     getFacultyMyBatchesSummary(actor),
   ]);
   const progressByBatch = new Map((facultySummary?.batchCounts || []).map((entry) => [text(entry?.batchId || entry?.id).toLowerCase(), Number(entry?.courseProgress) || 0]));
@@ -306,7 +306,7 @@ export async function createFacultyScheduledTest(actor, payload = {}) {
   const [batch, course, students] = await Promise.all([
     prisma.branchBatch.findUnique({ where: { id: batchId }, select: { batchId: true, batchName: true } }),
     prisma.branchCourse.findUnique({ where: { id: item.academicTest.branchCourseId }, select: { name: true, courseCode: true } }),
-    prisma.branchStudent.findMany({ where: { recordStatus: "ACTIVE", OR: [{ batchId }, { batchId: (await prisma.branchBatch.findUnique({ where: { id: batchId }, select: { batchId: true } }))?.batchId || "__missing__" }] }, select: { id: true, studentId: true, emailAddress: true } }),
+    prisma.branchStudent.findMany({ where: { recordStatus: "ACTIVE", OR: [{ batchId }, { batchId: (await prisma.branchBatch.findUnique({ where: { id: batchId }, select: { batchId: true } }))?.batchId || "__missing__" }, { courseEnrollments: { some: { status: "ACTIVE", batchId: { in: [batchId, (await prisma.branchBatch.findUnique({ where: { id: batchId }, select: { batchId: true } }))?.batchId || "__missing__"] } } } }] }, select: { id: true, studentId: true, emailAddress: true } }),
   ]);
   const users = students.length ? await prisma.user.findMany({ where: { OR: [{ email: { in: students.map((student) => student.emailAddress).filter(Boolean) } }, { userCode: { in: students.map((student) => student.studentId).filter(Boolean) } }] }, select: { id: true, email: true, userCode: true } }) : [];
   const userByEmail = new Map(users.map((user) => [String(user.email || "").toLowerCase(), user.id]));
@@ -345,7 +345,7 @@ export async function cancelFacultyScheduledTest(actor, id) {
   const batch = await prisma.branchBatch.findUnique({ where: { id: schedule.branchBatchId }, select: { batchId: true, batchName: true } });
   const students = schedule.isRetest
     ? await prisma.branchStudent.findMany({ where: { id: schedule.retestStudentId || "__missing__", recordStatus: "ACTIVE" }, select: { id: true, studentId: true, emailAddress: true } })
-    : await prisma.branchStudent.findMany({ where: { recordStatus: "ACTIVE", OR: [{ batchId: schedule.branchBatchId }, { batchId: batch?.batchId || "__missing__" }] }, select: { id: true, studentId: true, emailAddress: true } });
+    : await prisma.branchStudent.findMany({ where: { recordStatus: "ACTIVE", OR: [{ batchId: schedule.branchBatchId }, { batchId: batch?.batchId || "__missing__" }, { courseEnrollments: { some: { status: "ACTIVE", batchId: { in: [schedule.branchBatchId, batch?.batchId || "__missing__"] } } } }] }, select: { id: true, studentId: true, emailAddress: true } });
   const users = students.length ? await prisma.user.findMany({ where: { OR: [{ email: { in: students.map((student) => student.emailAddress).filter(Boolean) } }, { userCode: { in: students.map((student) => student.studentId).filter(Boolean) } }] }, select: { id: true, email: true, userCode: true } }) : [];
   const userByEmail = new Map(users.map((user) => [String(user.email || "").toLowerCase(), user.id]));
   const userByCode = new Map(users.map((user) => [String(user.userCode || "").toLowerCase(), user.id]));
@@ -579,7 +579,7 @@ export async function listFacultyScheduledTests(actor) {
 export async function getFacultyAcademicResults(actor, id) {
   const ids = facultyIds(actor); const schedule = await prisma.academicScheduledTest.findFirst({ where: { id: text(id), facultyId: { in: ids } } }); if (!schedule) throw new AppError("Academic Test not found.", 404);
   const batch = await prisma.branchBatch.findUnique({ where: { id: schedule.branchBatchId }, select: { id: true, batchId: true } });
-  const [students, submissions, projectSubmissions, info] = await Promise.all([prisma.branchStudent.findMany({ where: { recordStatus: "ACTIVE", OR: [{ batchId: schedule.branchBatchId }, { batchId: batch?.batchId || "__missing__" }] }, select: { id: true, studentId: true, studentName: true, emailAddress: true }, orderBy: { studentName: "asc" } }), prisma.academicTestSubmission.findMany({ where: { academicTestId: schedule.id } }), prisma.academicProjectSubmission.findMany({ where: { academicTestId: schedule.id } }), academicPublicSchedule(schedule)]);
+  const [students, submissions, projectSubmissions, info] = await Promise.all([prisma.branchStudent.findMany({ where: { recordStatus: "ACTIVE", OR: [{ batchId: schedule.branchBatchId }, { batchId: batch?.batchId || "__missing__" }, { courseEnrollments: { some: { status: "ACTIVE", batchId: { in: [schedule.branchBatchId, batch?.batchId || "__missing__"] } } } }] }, select: { id: true, studentId: true, studentName: true, emailAddress: true }, orderBy: { studentName: "asc" } }), prisma.academicTestSubmission.findMany({ where: { academicTestId: schedule.id } }), prisma.academicProjectSubmission.findMany({ where: { academicTestId: schedule.id } }), academicPublicSchedule(schedule)]);
   const studentIds = students.map((student) => student.id);
   const retests = studentIds.length ? await prisma.academicScheduledTest.findMany({ where: { originalScheduleId: schedule.originalScheduleId || schedule.id, retestStudentId: { in: studentIds } }, orderBy: [{ attemptNumber: "desc" }, { createdAt: "desc" }] }) : [];
   if (academicAttemptExpired(schedule)) {
@@ -756,7 +756,7 @@ async function buildAcademicReport(actor, batch, requestedStudentIds = null, sel
   const configuredItems = (await reportConfiguredItems(batch)).filter(({ item }) => !retestItemIds.has(item.id) && (!originalItemIds.size || originalItemIds.has(item.id)));
   let configured = configuredItems.filter(({ item }) => ["TEST", "TEST_AND_PROJECT"].includes(item.testType));
   const students = await prisma.branchStudent.findMany({
-    where: { recordStatus: "ACTIVE", OR: [{ batchId: batch.id }, { batchId: batch.batchId }], ...(requestedStudentIds ? { id: { in: requestedStudentIds } } : {}) },
+    where: { recordStatus: "ACTIVE", OR: [{ batchId: batch.id }, { batchId: batch.batchId }, { courseEnrollments: { some: { status: "ACTIVE", batchId: { in: [batch.id, batch.batchId] } } } }], ...(requestedStudentIds ? { id: { in: requestedStudentIds } } : {}) },
     orderBy: { studentName: "asc" },
     select: { id: true, studentId: true, studentName: true, emailAddress: true, batchId: true, batchName: true, batchTiming: true, courseName: true },
   });
@@ -903,7 +903,7 @@ export async function listAcademicReportBatches(actor) {
   const reportBatches = await Promise.all(batches.map(async (batch) => {
     const [schedules, students, configuredItems] = await Promise.all([
       prisma.academicScheduledTest.findMany({ where: { branchBatchId: batch.id, isRetest: false, status: { not: "CANCELLED" } }, orderBy: [{ testNumber: "asc" }, { createdAt: "asc" }] }),
-      prisma.branchStudent.findMany({ where: { recordStatus: "ACTIVE", OR: [{ batchId: batch.id }, { batchId: batch.batchId }] }, select: { id: true } }),
+      prisma.branchStudent.findMany({ where: { recordStatus: "ACTIVE", OR: [{ batchId: batch.id }, { batchId: batch.batchId }, { courseEnrollments: { some: { status: "ACTIVE", batchId: { in: [batch.id, batch.batchId] } } } }] }, select: { id: true } }),
       reportConfiguredItems(batch),
     ]);
     if (!schedules.length || !students.length) return null;
@@ -951,7 +951,7 @@ export async function listFacultyAcademicReportTests(actor, batchId) {
       orderBy: [{ testNumber: "asc" }, { createdAt: "asc" }],
       select: { id: true, testNumber: true, testDate: true, status: true, endTime: true, academicTestItemId: true, questionPaperId: true },
     }),
-    prisma.branchStudent.findMany({ where: { recordStatus: "ACTIVE", OR: [{ batchId: batch.id }, { batchId: batch.batchId }] }, select: { id: true } }),
+    prisma.branchStudent.findMany({ where: { recordStatus: "ACTIVE", OR: [{ batchId: batch.id }, { batchId: batch.batchId }, { courseEnrollments: { some: { status: "ACTIVE", batchId: { in: [batch.id, batch.batchId] } } } }] }, select: { id: true } }),
     reportConfiguredTests(batch),
   ]);
   await syncExpiredAcademicAttempts(schedules, students.map((student) => student.id));
