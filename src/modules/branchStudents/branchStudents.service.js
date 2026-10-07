@@ -27,6 +27,7 @@ import {
 } from "../../common/utils/branchIdentifiers.js";
 import {
   createFeeProgressAlertNotification,
+  createNotification,
 } from "../notifications/notifications.service.js";
 import { getAcademicTestProgressForStudent } from "../academicTests/academicTests.service.js";
 
@@ -38,6 +39,30 @@ const DUE_REMINDER_SWEEP_INTERVAL_MS = 24 * 60 * 60 * 1000;
 
 function normalizeString(value) {
   return String(value ?? "").trim();
+}
+
+const DISCOUNT_TYPES = new Set(["FIXED", "PERCENTAGE"]);
+
+function calculateCourseDiscount(totalCourseAmount, discountType, discountValue) {
+  const total = Number(String(totalCourseAmount ?? 0).replace(/,/g, ""));
+  const value = discountValue === undefined || discountValue === null || discountValue === ""
+    ? 0
+    : Number(String(discountValue).replace(/,/g, ""));
+  const type = normalizeString(discountType || "FIXED").toUpperCase() || "FIXED";
+  if (!Number.isFinite(total) || total < 0) throw new AppError("Total course amount must be zero or greater", 400);
+  if (!DISCOUNT_TYPES.has(type)) throw new AppError("Discount type must be FIXED or PERCENTAGE", 400);
+  if (!Number.isFinite(value) || value < 0) throw new AppError("Discount value must be zero or greater", 400);
+  if (type === "PERCENTAGE" && value > 100) throw new AppError("Percentage discount must be between 0 and 100", 400);
+  if (type === "FIXED" && value > total) throw new AppError("Fixed discount cannot exceed the course amount", 400);
+  const discountAmount = type === "PERCENTAGE" ? total * value / 100 : value;
+  const roundedDiscount = Math.round(discountAmount * 100) / 100;
+  return {
+    discountType: type,
+    discountValue: value,
+    totalCourseAmount: Math.round(total),
+    discountAmount: roundedDiscount,
+    finalCourseAmount: Math.max(Math.round((total - roundedDiscount) * 100) / 100, 0),
+  };
 }
 
 function getCurrentMonthDateRange() {
@@ -321,16 +346,18 @@ async function buildStudentFeePlan({ studentData, installmentSchedule, payload, 
   const courseEnrollmentInput = getCourseEnrollmentInput(payload);
   const combinedCourseFee = Array.isArray(courseEnrollmentInput) && courseEnrollmentInput.length > 1
     ? courseEnrollmentInput.reduce((sum, enrollment) => {
-        const amount = Number(String(
-          enrollment?.totalCourseAmount ?? enrollment?.courseAmount ?? enrollment?.totalAmount ?? enrollment?.afterDiscount ?? 0,
-        ).replace(/,/g, "")) || 0;
-        return sum + amount;
+        const total = Number(String(enrollment?.totalCourseAmount ?? enrollment?.courseAmount ?? enrollment?.totalAmount ?? 0).replace(/,/g, "")) || 0;
+        return sum + calculateCourseDiscount(
+          total,
+          enrollment?.discountType,
+          enrollment?.discountValue ?? enrollment?.studentDiscountAmount ?? 0,
+        ).finalCourseAmount;
       }, 0)
     : 0;
   const totalFee = combinedCourseFee > 0
     ? combinedCourseFee
     : Number(String(
-        studentData.courseAmount ?? studentData.totalAmount ?? studentData.afterDiscount ?? 0,
+        studentData.finalCourseAmount ?? studentData.totalAmount ?? studentData.afterDiscount ?? studentData.courseAmount ?? 0,
       ).replace(/,/g, "")) || 0;
 
   // BranchStudent.courseAmount is the package fee used by the shared installment
@@ -1786,26 +1813,30 @@ function buildBranchStudentPayload(payload = {}, existing = null) {
 
 function normalizeCourseEnrollments(payload = [], branchId) {
   if (!Array.isArray(payload)) return [];
-  return payload.map((item, index) => ({
-    branchId,
-    courseId: normalizeString(item?.courseId),
-    courseName: parseOptionalText(item?.courseName),
-    facultyId: parseOptionalText(item?.facultyId),
-    facultyName: parseOptionalText(item?.facultyName),
-    batchId: parseOptionalText(item?.batchId || item?.batchEntryId),
-    batchName: parseOptionalText(item?.batchName || item?.batch),
-    batchTiming: parseOptionalText(item?.batchTiming || item?.batchTime),
-    scheduleType: parseOptionalText(item?.classSchedule || item?.scheduleType || item?.weekType),
-    mode: parseOptionalText(item?.courseMode || item?.mode),
-    startDate: parseOptionalText(item?.courseStartDate || item?.startDate),
-    endDate: parseOptionalText(item?.courseEndDate || item?.endDate),
-    arrangementType: normalizeString(item?.arrangementType || item?.arrangement || 'SINGLE').toUpperCase(),
-    sequenceOrder: Number(item?.sequenceOrder || index + 1),
-    totalCourseAmount: Number(String(item?.totalCourseAmount ?? item?.courseAmount ?? item?.totalAmount ?? 0).replace(/,/g, '')) || null,
-    paymentPlanId: parseOptionalText(item?.paymentPlanId),
-    paymentPlan: parseOptionalText(item?.paymentPlan),
-    status: normalizeString(item?.status || 'ACTIVE').toUpperCase(),
-  })).filter((item) => item.courseId);
+  return payload.map((item, index) => {
+    const totalCourseAmount = Number(String(item?.totalCourseAmount ?? item?.courseAmount ?? item?.totalAmount ?? 0).replace(/,/g, '')) || 0;
+    const discount = calculateCourseDiscount(totalCourseAmount, item?.discountType, item?.discountValue ?? item?.studentDiscountAmount ?? 0);
+    return {
+      branchId,
+      courseId: normalizeString(item?.courseId),
+      courseName: parseOptionalText(item?.courseName),
+      facultyId: parseOptionalText(item?.facultyId),
+      facultyName: parseOptionalText(item?.facultyName),
+      batchId: parseOptionalText(item?.batchId || item?.batchEntryId),
+      batchName: parseOptionalText(item?.batchName || item?.batch),
+      batchTiming: parseOptionalText(item?.batchTiming || item?.batchTime),
+      scheduleType: parseOptionalText(item?.classSchedule || item?.scheduleType || item?.weekType),
+      mode: parseOptionalText(item?.courseMode || item?.mode),
+      startDate: parseOptionalText(item?.courseStartDate || item?.startDate),
+      endDate: parseOptionalText(item?.courseEndDate || item?.endDate),
+      arrangementType: normalizeString(item?.arrangementType || item?.arrangement || 'SINGLE').toUpperCase(),
+      sequenceOrder: Number(item?.sequenceOrder || index + 1),
+      ...discount,
+      paymentPlanId: parseOptionalText(item?.paymentPlanId),
+      paymentPlan: parseOptionalText(item?.paymentPlan),
+      status: normalizeString(item?.status || 'ACTIVE').toUpperCase(),
+    };
+  }).filter((item) => item.courseId);
 }
 
 function getCourseEnrollmentInput(payload = {}) {
@@ -2386,6 +2417,19 @@ export async function createBranchStudent(payload, actor) {
     studentData.courseStartDate = studentData.courseStartDate || assignedBatch.courseStartDate;
     studentData.courseEndDate = studentData.courseEndDate || assignedBatch.courseEndDate;
   }
+  const primaryEnrollment = validatedEnrollmentInput.enrollments.find((item) => (
+    item.courseId === studentData.courseId
+  )) || validatedEnrollmentInput.enrollments[0];
+  if (primaryEnrollment) {
+    studentData.courseAmount = Math.round(primaryEnrollment.finalCourseAmount);
+  } else {
+    const singleCourseDiscount = calculateCourseDiscount(
+      studentData.courseAmount ?? payload.totalCourseAmount ?? payload.courseAmount ?? 0,
+      payload.discountType,
+      payload.discountValue ?? payload.studentDiscountAmount ?? 0,
+    );
+    studentData.courseAmount = Math.round(singleCourseDiscount.finalCourseAmount);
+  }
   const feeCourse = studentData.courseId
     ? await prisma.branchCourse.findFirst({
         where: { id: studentData.courseId, branchId },
@@ -2481,6 +2525,41 @@ export async function createBranchStudent(payload, actor) {
 
         if (createdStudent) {
           await materializeBranchStudentLedgerEntries(tx, createdStudent, { includePayments: false });
+          const discountedCourses = validatedEnrollmentInput.enrollments.filter((item) => item.discountAmount > 0);
+          if (discountedCourses.length) {
+            const formatMoney = (value) => `₹${Number(value || 0).toLocaleString("en-IN")}`;
+            const firstDiscount = discountedCourses[0];
+            const firstDiscountLabel = firstDiscount.discountType === "PERCENTAGE"
+              ? `${firstDiscount.discountValue}%`
+              : `${formatMoney(firstDiscount.discountValue)} fixed amount`;
+            const message = [
+              `A ${discountedCourses.length > 1 ? "course fee discount has been provided" : `${firstDiscountLabel} course fee discount has been provided`} to the following student for the selected course${discountedCourses.length > 1 ? "s" : ""}.`,
+              "",
+              `Branch: ${branchProfile?.branchName || branchProfile?.branchId || branchId}`,
+              `Student: ${studentData.studentName}`,
+              ...discountedCourses.flatMap((item, index) => [
+                "",
+                `${discountedCourses.length > 1 ? `Course ${index + 1}: ` : "Course: "}${item.courseName || item.courseId}`,
+                `Original Course Amount: ${formatMoney(item.totalCourseAmount)}`,
+                `Discount: ${item.discountType === "PERCENTAGE" ? `${item.discountValue}%` : `${formatMoney(item.discountValue)} (Fixed Amount)`}`,
+                `Discount Amount: ${formatMoney(item.discountAmount)}`,
+                `Final Course Amount: ${formatMoney(item.finalCourseAmount)}`,
+                "",
+                `Information: The student has been provided a ${formatMoney(item.discountAmount)} discount, reducing the course fee from ${formatMoney(item.totalCourseAmount)} to ${formatMoney(item.finalCourseAmount)}.`,
+              ]),
+            ].join("\n");
+            await createNotification({
+              kind: "STUDENT_DISCOUNT_APPLIED",
+              tone: "amber",
+              title: "Student Course Discount Information",
+              message,
+              actionLabel: "View Student",
+              targetBranchId: branchId,
+              targetBranchEmail: branchProfile?.branchEmail || null,
+              targetBranchName: branchProfile?.branchName || null,
+              createdBy: actorId,
+            }, tx);
+          }
         }
 
         return createdStudent;

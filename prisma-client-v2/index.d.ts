@@ -386,10 +386,19 @@ export const NotificationKind: {
   ASSESSMENT_REASSESSMENT_ASSIGNED: 'ASSESSMENT_REASSESSMENT_ASSIGNED',
   SEQUENTIAL_COURSE_SCHEDULING_REQUIRED: 'SEQUENTIAL_COURSE_SCHEDULING_REQUIRED',
   EXAM_CANCELLED: 'EXAM_CANCELLED',
-  ASSESSMENT_CANCELLED: 'ASSESSMENT_CANCELLED'
+  ASSESSMENT_CANCELLED: 'ASSESSMENT_CANCELLED',
+  STUDENT_DISCOUNT_APPLIED: 'STUDENT_DISCOUNT_APPLIED'
 };
 
 export type NotificationKind = (typeof NotificationKind)[keyof typeof NotificationKind]
+
+
+export const DiscountType: {
+  FIXED: 'FIXED',
+  PERCENTAGE: 'PERCENTAGE'
+};
+
+export type DiscountType = (typeof DiscountType)[keyof typeof DiscountType]
 
 
 export const RecordStatus: {
@@ -458,6 +467,10 @@ export const LoginEventType: typeof $Enums.LoginEventType
 export type NotificationKind = $Enums.NotificationKind
 
 export const NotificationKind: typeof $Enums.NotificationKind
+
+export type DiscountType = $Enums.DiscountType
+
+export const DiscountType: typeof $Enums.DiscountType
 
 export type RecordStatus = $Enums.RecordStatus
 
@@ -47278,12 +47291,18 @@ export namespace Prisma {
   export type BranchStudentCourseAvgAggregateOutputType = {
     sequenceOrder: number | null
     totalCourseAmount: number | null
+    discountValue: number | null
+    discountAmount: number | null
+    finalCourseAmount: number | null
     courseProgress: number | null
   }
 
   export type BranchStudentCourseSumAggregateOutputType = {
     sequenceOrder: number | null
     totalCourseAmount: number | null
+    discountValue: number | null
+    discountAmount: number | null
+    finalCourseAmount: number | null
     courseProgress: number | null
   }
 
@@ -47305,6 +47324,10 @@ export namespace Prisma {
     arrangementType: string | null
     sequenceOrder: number | null
     totalCourseAmount: number | null
+    discountType: $Enums.DiscountType | null
+    discountValue: number | null
+    discountAmount: number | null
+    finalCourseAmount: number | null
     courseProgress: number | null
     courseCompletedAt: Date | null
     paymentPlanId: string | null
@@ -47332,6 +47355,10 @@ export namespace Prisma {
     arrangementType: string | null
     sequenceOrder: number | null
     totalCourseAmount: number | null
+    discountType: $Enums.DiscountType | null
+    discountValue: number | null
+    discountAmount: number | null
+    finalCourseAmount: number | null
     courseProgress: number | null
     courseCompletedAt: Date | null
     paymentPlanId: string | null
@@ -47359,6 +47386,10 @@ export namespace Prisma {
     arrangementType: number
     sequenceOrder: number
     totalCourseAmount: number
+    discountType: number
+    discountValue: number
+    discountAmount: number
+    finalCourseAmount: number
     courseProgress: number
     courseCompletedAt: number
     paymentPlanId: number
@@ -47373,12 +47404,18 @@ export namespace Prisma {
   export type BranchStudentCourseAvgAggregateInputType = {
     sequenceOrder?: true
     totalCourseAmount?: true
+    discountValue?: true
+    discountAmount?: true
+    finalCourseAmount?: true
     courseProgress?: true
   }
 
   export type BranchStudentCourseSumAggregateInputType = {
     sequenceOrder?: true
     totalCourseAmount?: true
+    discountValue?: true
+    discountAmount?: true
+    finalCourseAmount?: true
     courseProgress?: true
   }
 
@@ -47400,6 +47437,10 @@ export namespace Prisma {
     arrangementType?: true
     sequenceOrder?: true
     totalCourseAmount?: true
+    discountType?: true
+    discountValue?: true
+    discountAmount?: true
+    finalCourseAmount?: true
     courseProgress?: true
     courseCompletedAt?: true
     paymentPlanId?: true
@@ -47427,6 +47468,10 @@ export namespace Prisma {
     arrangementType?: true
     sequenceOrder?: true
     totalCourseAmount?: true
+    discountType?: true
+    discountValue?: true
+    discountAmount?: true
+    finalCourseAmount?: true
     courseProgress?: true
     courseCompletedAt?: true
     paymentPlanId?: true
@@ -47454,6 +47499,10 @@ export namespace Prisma {
     arrangementType?: true
     sequenceOrder?: true
     totalCourseAmount?: true
+    discountType?: true
+    discountValue?: true
+    discountAmount?: true
+    finalCourseAmount?: true
     courseProgress?: true
     courseCompletedAt?: true
     paymentPlanId?: true
@@ -47568,6 +47617,10 @@ export namespace Prisma {
     arrangementType: string
     sequenceOrder: number
     totalCourseAmount: number | null
+    discountType: $Enums.DiscountType | null
+    discountValue: number | null
+    discountAmount: number | null
+    finalCourseAmount: number | null
     courseProgress: number | null
     courseCompletedAt: Date | null
     paymentPlanId: string | null
@@ -47614,6 +47667,10 @@ export namespace Prisma {
     arrangementType?: boolean
     sequenceOrder?: boolean
     totalCourseAmount?: boolean
+    discountType?: boolean
+    discountValue?: boolean
+    discountAmount?: boolean
+    finalCourseAmount?: boolean
     courseProgress?: boolean
     courseCompletedAt?: boolean
     paymentPlanId?: boolean
@@ -47644,6 +47701,10 @@ export namespace Prisma {
     arrangementType?: boolean
     sequenceOrder?: boolean
     totalCourseAmount?: boolean
+    discountType?: boolean
+    discountValue?: boolean
+    discountAmount?: boolean
+    finalCourseAmount?: boolean
     courseProgress?: boolean
     courseCompletedAt?: boolean
     paymentPlanId?: boolean
@@ -47674,6 +47735,10 @@ export namespace Prisma {
     arrangementType?: boolean
     sequenceOrder?: boolean
     totalCourseAmount?: boolean
+    discountType?: boolean
+    discountValue?: boolean
+    discountAmount?: boolean
+    finalCourseAmount?: boolean
     courseProgress?: boolean
     courseCompletedAt?: boolean
     paymentPlanId?: boolean
@@ -47704,6 +47769,10 @@ export namespace Prisma {
     arrangementType?: boolean
     sequenceOrder?: boolean
     totalCourseAmount?: boolean
+    discountType?: boolean
+    discountValue?: boolean
+    discountAmount?: boolean
+    finalCourseAmount?: boolean
     courseProgress?: boolean
     courseCompletedAt?: boolean
     paymentPlanId?: boolean
@@ -47713,7 +47782,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type BranchStudentCourseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "branchStudentId" | "branchId" | "courseId" | "courseName" | "facultyId" | "facultyName" | "batchId" | "batchName" | "batchTiming" | "scheduleType" | "mode" | "startDate" | "endDate" | "arrangementType" | "sequenceOrder" | "totalCourseAmount" | "courseProgress" | "courseCompletedAt" | "paymentPlanId" | "paymentPlan" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["branchStudentCourse"]>
+  export type BranchStudentCourseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "branchStudentId" | "branchId" | "courseId" | "courseName" | "facultyId" | "facultyName" | "batchId" | "batchName" | "batchTiming" | "scheduleType" | "mode" | "startDate" | "endDate" | "arrangementType" | "sequenceOrder" | "totalCourseAmount" | "discountType" | "discountValue" | "discountAmount" | "finalCourseAmount" | "courseProgress" | "courseCompletedAt" | "paymentPlanId" | "paymentPlan" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["branchStudentCourse"]>
   export type BranchStudentCourseInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     branchStudent?: boolean | BranchStudentDefaultArgs<ExtArgs>
     branch?: boolean | BranchDefaultArgs<ExtArgs>
@@ -47755,6 +47824,10 @@ export namespace Prisma {
       arrangementType: string
       sequenceOrder: number
       totalCourseAmount: number | null
+      discountType: $Enums.DiscountType | null
+      discountValue: number | null
+      discountAmount: number | null
+      finalCourseAmount: number | null
       courseProgress: number | null
       courseCompletedAt: Date | null
       paymentPlanId: string | null
@@ -48205,6 +48278,10 @@ export namespace Prisma {
     readonly arrangementType: FieldRef<"BranchStudentCourse", 'String'>
     readonly sequenceOrder: FieldRef<"BranchStudentCourse", 'Int'>
     readonly totalCourseAmount: FieldRef<"BranchStudentCourse", 'Int'>
+    readonly discountType: FieldRef<"BranchStudentCourse", 'DiscountType'>
+    readonly discountValue: FieldRef<"BranchStudentCourse", 'Float'>
+    readonly discountAmount: FieldRef<"BranchStudentCourse", 'Float'>
+    readonly finalCourseAmount: FieldRef<"BranchStudentCourse", 'Float'>
     readonly courseProgress: FieldRef<"BranchStudentCourse", 'Int'>
     readonly courseCompletedAt: FieldRef<"BranchStudentCourse", 'DateTime'>
     readonly paymentPlanId: FieldRef<"BranchStudentCourse", 'String'>
@@ -86277,6 +86354,10 @@ export namespace Prisma {
     arrangementType: 'arrangementType',
     sequenceOrder: 'sequenceOrder',
     totalCourseAmount: 'totalCourseAmount',
+    discountType: 'discountType',
+    discountValue: 'discountValue',
+    discountAmount: 'discountAmount',
+    finalCourseAmount: 'finalCourseAmount',
     courseProgress: 'courseProgress',
     courseCompletedAt: 'courseCompletedAt',
     paymentPlanId: 'paymentPlanId',
@@ -87161,6 +87242,20 @@ export namespace Prisma {
    * Reference to a field of type 'Float[]'
    */
   export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'DiscountType'
+   */
+  export type EnumDiscountTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DiscountType'>
+    
+
+
+  /**
+   * Reference to a field of type 'DiscountType[]'
+   */
+  export type ListEnumDiscountTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DiscountType[]'>
     
 
 
@@ -90919,6 +91014,10 @@ export namespace Prisma {
     arrangementType?: StringFilter<"BranchStudentCourse"> | string
     sequenceOrder?: IntFilter<"BranchStudentCourse"> | number
     totalCourseAmount?: IntNullableFilter<"BranchStudentCourse"> | number | null
+    discountType?: EnumDiscountTypeNullableFilter<"BranchStudentCourse"> | $Enums.DiscountType | null
+    discountValue?: FloatNullableFilter<"BranchStudentCourse"> | number | null
+    discountAmount?: FloatNullableFilter<"BranchStudentCourse"> | number | null
+    finalCourseAmount?: FloatNullableFilter<"BranchStudentCourse"> | number | null
     courseProgress?: IntNullableFilter<"BranchStudentCourse"> | number | null
     courseCompletedAt?: DateTimeNullableFilter<"BranchStudentCourse"> | Date | string | null
     paymentPlanId?: StringNullableFilter<"BranchStudentCourse"> | string | null
@@ -90949,6 +91048,10 @@ export namespace Prisma {
     arrangementType?: SortOrder
     sequenceOrder?: SortOrder
     totalCourseAmount?: SortOrderInput | SortOrder
+    discountType?: SortOrderInput | SortOrder
+    discountValue?: SortOrderInput | SortOrder
+    discountAmount?: SortOrderInput | SortOrder
+    finalCourseAmount?: SortOrderInput | SortOrder
     courseProgress?: SortOrderInput | SortOrder
     courseCompletedAt?: SortOrderInput | SortOrder
     paymentPlanId?: SortOrderInput | SortOrder
@@ -90983,6 +91086,10 @@ export namespace Prisma {
     arrangementType?: StringFilter<"BranchStudentCourse"> | string
     sequenceOrder?: IntFilter<"BranchStudentCourse"> | number
     totalCourseAmount?: IntNullableFilter<"BranchStudentCourse"> | number | null
+    discountType?: EnumDiscountTypeNullableFilter<"BranchStudentCourse"> | $Enums.DiscountType | null
+    discountValue?: FloatNullableFilter<"BranchStudentCourse"> | number | null
+    discountAmount?: FloatNullableFilter<"BranchStudentCourse"> | number | null
+    finalCourseAmount?: FloatNullableFilter<"BranchStudentCourse"> | number | null
     courseProgress?: IntNullableFilter<"BranchStudentCourse"> | number | null
     courseCompletedAt?: DateTimeNullableFilter<"BranchStudentCourse"> | Date | string | null
     paymentPlanId?: StringNullableFilter<"BranchStudentCourse"> | string | null
@@ -91013,6 +91120,10 @@ export namespace Prisma {
     arrangementType?: SortOrder
     sequenceOrder?: SortOrder
     totalCourseAmount?: SortOrderInput | SortOrder
+    discountType?: SortOrderInput | SortOrder
+    discountValue?: SortOrderInput | SortOrder
+    discountAmount?: SortOrderInput | SortOrder
+    finalCourseAmount?: SortOrderInput | SortOrder
     courseProgress?: SortOrderInput | SortOrder
     courseCompletedAt?: SortOrderInput | SortOrder
     paymentPlanId?: SortOrderInput | SortOrder
@@ -91048,6 +91159,10 @@ export namespace Prisma {
     arrangementType?: StringWithAggregatesFilter<"BranchStudentCourse"> | string
     sequenceOrder?: IntWithAggregatesFilter<"BranchStudentCourse"> | number
     totalCourseAmount?: IntNullableWithAggregatesFilter<"BranchStudentCourse"> | number | null
+    discountType?: EnumDiscountTypeNullableWithAggregatesFilter<"BranchStudentCourse"> | $Enums.DiscountType | null
+    discountValue?: FloatNullableWithAggregatesFilter<"BranchStudentCourse"> | number | null
+    discountAmount?: FloatNullableWithAggregatesFilter<"BranchStudentCourse"> | number | null
+    finalCourseAmount?: FloatNullableWithAggregatesFilter<"BranchStudentCourse"> | number | null
     courseProgress?: IntNullableWithAggregatesFilter<"BranchStudentCourse"> | number | null
     courseCompletedAt?: DateTimeNullableWithAggregatesFilter<"BranchStudentCourse"> | Date | string | null
     paymentPlanId?: StringNullableWithAggregatesFilter<"BranchStudentCourse"> | string | null
@@ -98769,6 +98884,10 @@ export namespace Prisma {
     arrangementType?: string
     sequenceOrder?: number
     totalCourseAmount?: number | null
+    discountType?: $Enums.DiscountType | null
+    discountValue?: number | null
+    discountAmount?: number | null
+    finalCourseAmount?: number | null
     courseProgress?: number | null
     courseCompletedAt?: Date | string | null
     paymentPlanId?: string | null
@@ -98799,6 +98918,10 @@ export namespace Prisma {
     arrangementType?: string
     sequenceOrder?: number
     totalCourseAmount?: number | null
+    discountType?: $Enums.DiscountType | null
+    discountValue?: number | null
+    discountAmount?: number | null
+    finalCourseAmount?: number | null
     courseProgress?: number | null
     courseCompletedAt?: Date | string | null
     paymentPlanId?: string | null
@@ -98823,6 +98946,10 @@ export namespace Prisma {
     arrangementType?: StringFieldUpdateOperationsInput | string
     sequenceOrder?: IntFieldUpdateOperationsInput | number
     totalCourseAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    discountType?: NullableEnumDiscountTypeFieldUpdateOperationsInput | $Enums.DiscountType | null
+    discountValue?: NullableFloatFieldUpdateOperationsInput | number | null
+    discountAmount?: NullableFloatFieldUpdateOperationsInput | number | null
+    finalCourseAmount?: NullableFloatFieldUpdateOperationsInput | number | null
     courseProgress?: NullableIntFieldUpdateOperationsInput | number | null
     courseCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -98853,6 +98980,10 @@ export namespace Prisma {
     arrangementType?: StringFieldUpdateOperationsInput | string
     sequenceOrder?: IntFieldUpdateOperationsInput | number
     totalCourseAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    discountType?: NullableEnumDiscountTypeFieldUpdateOperationsInput | $Enums.DiscountType | null
+    discountValue?: NullableFloatFieldUpdateOperationsInput | number | null
+    discountAmount?: NullableFloatFieldUpdateOperationsInput | number | null
+    finalCourseAmount?: NullableFloatFieldUpdateOperationsInput | number | null
     courseProgress?: NullableIntFieldUpdateOperationsInput | number | null
     courseCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -98880,6 +99011,10 @@ export namespace Prisma {
     arrangementType?: string
     sequenceOrder?: number
     totalCourseAmount?: number | null
+    discountType?: $Enums.DiscountType | null
+    discountValue?: number | null
+    discountAmount?: number | null
+    finalCourseAmount?: number | null
     courseProgress?: number | null
     courseCompletedAt?: Date | string | null
     paymentPlanId?: string | null
@@ -98904,6 +99039,10 @@ export namespace Prisma {
     arrangementType?: StringFieldUpdateOperationsInput | string
     sequenceOrder?: IntFieldUpdateOperationsInput | number
     totalCourseAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    discountType?: NullableEnumDiscountTypeFieldUpdateOperationsInput | $Enums.DiscountType | null
+    discountValue?: NullableFloatFieldUpdateOperationsInput | number | null
+    discountAmount?: NullableFloatFieldUpdateOperationsInput | number | null
+    finalCourseAmount?: NullableFloatFieldUpdateOperationsInput | number | null
     courseProgress?: NullableIntFieldUpdateOperationsInput | number | null
     courseCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -98931,6 +99070,10 @@ export namespace Prisma {
     arrangementType?: StringFieldUpdateOperationsInput | string
     sequenceOrder?: IntFieldUpdateOperationsInput | number
     totalCourseAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    discountType?: NullableEnumDiscountTypeFieldUpdateOperationsInput | $Enums.DiscountType | null
+    discountValue?: NullableFloatFieldUpdateOperationsInput | number | null
+    discountAmount?: NullableFloatFieldUpdateOperationsInput | number | null
+    finalCourseAmount?: NullableFloatFieldUpdateOperationsInput | number | null
     courseProgress?: NullableIntFieldUpdateOperationsInput | number | null
     courseCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -105803,6 +105946,13 @@ export namespace Prisma {
     _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
+  export type EnumDiscountTypeNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.DiscountType | EnumDiscountTypeFieldRefInput<$PrismaModel> | null
+    in?: $Enums.DiscountType[] | ListEnumDiscountTypeFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.DiscountType[] | ListEnumDiscountTypeFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumDiscountTypeNullableFilter<$PrismaModel> | $Enums.DiscountType | null
+  }
+
   export type BranchStudentScalarRelationFilter = {
     is?: BranchStudentWhereInput
     isNot?: BranchStudentWhereInput
@@ -105831,6 +105981,10 @@ export namespace Prisma {
     arrangementType?: SortOrder
     sequenceOrder?: SortOrder
     totalCourseAmount?: SortOrder
+    discountType?: SortOrder
+    discountValue?: SortOrder
+    discountAmount?: SortOrder
+    finalCourseAmount?: SortOrder
     courseProgress?: SortOrder
     courseCompletedAt?: SortOrder
     paymentPlanId?: SortOrder
@@ -105843,6 +105997,9 @@ export namespace Prisma {
   export type BranchStudentCourseAvgOrderByAggregateInput = {
     sequenceOrder?: SortOrder
     totalCourseAmount?: SortOrder
+    discountValue?: SortOrder
+    discountAmount?: SortOrder
+    finalCourseAmount?: SortOrder
     courseProgress?: SortOrder
   }
 
@@ -105864,6 +106021,10 @@ export namespace Prisma {
     arrangementType?: SortOrder
     sequenceOrder?: SortOrder
     totalCourseAmount?: SortOrder
+    discountType?: SortOrder
+    discountValue?: SortOrder
+    discountAmount?: SortOrder
+    finalCourseAmount?: SortOrder
     courseProgress?: SortOrder
     courseCompletedAt?: SortOrder
     paymentPlanId?: SortOrder
@@ -105891,6 +106052,10 @@ export namespace Prisma {
     arrangementType?: SortOrder
     sequenceOrder?: SortOrder
     totalCourseAmount?: SortOrder
+    discountType?: SortOrder
+    discountValue?: SortOrder
+    discountAmount?: SortOrder
+    finalCourseAmount?: SortOrder
     courseProgress?: SortOrder
     courseCompletedAt?: SortOrder
     paymentPlanId?: SortOrder
@@ -105903,7 +106068,20 @@ export namespace Prisma {
   export type BranchStudentCourseSumOrderByAggregateInput = {
     sequenceOrder?: SortOrder
     totalCourseAmount?: SortOrder
+    discountValue?: SortOrder
+    discountAmount?: SortOrder
+    finalCourseAmount?: SortOrder
     courseProgress?: SortOrder
+  }
+
+  export type EnumDiscountTypeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DiscountType | EnumDiscountTypeFieldRefInput<$PrismaModel> | null
+    in?: $Enums.DiscountType[] | ListEnumDiscountTypeFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.DiscountType[] | ListEnumDiscountTypeFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumDiscountTypeNullableWithAggregatesFilter<$PrismaModel> | $Enums.DiscountType | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedEnumDiscountTypeNullableFilter<$PrismaModel>
+    _max?: NestedEnumDiscountTypeNullableFilter<$PrismaModel>
   }
 
   export type EnumAttendanceStatusFilter<$PrismaModel = never> = {
@@ -111779,6 +111957,10 @@ export namespace Prisma {
     connect?: BranchCourseWhereUniqueInput
   }
 
+  export type NullableEnumDiscountTypeFieldUpdateOperationsInput = {
+    set?: $Enums.DiscountType | null
+  }
+
   export type BranchStudentUpdateOneRequiredWithoutCourseEnrollmentsNestedInput = {
     create?: XOR<BranchStudentCreateWithoutCourseEnrollmentsInput, BranchStudentUncheckedCreateWithoutCourseEnrollmentsInput>
     connectOrCreate?: BranchStudentCreateOrConnectWithoutCourseEnrollmentsInput
@@ -113762,6 +113944,23 @@ export namespace Prisma {
     _sum?: NestedFloatNullableFilter<$PrismaModel>
     _min?: NestedFloatNullableFilter<$PrismaModel>
     _max?: NestedFloatNullableFilter<$PrismaModel>
+  }
+
+  export type NestedEnumDiscountTypeNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.DiscountType | EnumDiscountTypeFieldRefInput<$PrismaModel> | null
+    in?: $Enums.DiscountType[] | ListEnumDiscountTypeFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.DiscountType[] | ListEnumDiscountTypeFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumDiscountTypeNullableFilter<$PrismaModel> | $Enums.DiscountType | null
+  }
+
+  export type NestedEnumDiscountTypeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DiscountType | EnumDiscountTypeFieldRefInput<$PrismaModel> | null
+    in?: $Enums.DiscountType[] | ListEnumDiscountTypeFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.DiscountType[] | ListEnumDiscountTypeFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumDiscountTypeNullableWithAggregatesFilter<$PrismaModel> | $Enums.DiscountType | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedEnumDiscountTypeNullableFilter<$PrismaModel>
+    _max?: NestedEnumDiscountTypeNullableFilter<$PrismaModel>
   }
 
   export type NestedEnumAttendanceStatusFilter<$PrismaModel = never> = {
@@ -116100,6 +116299,10 @@ export namespace Prisma {
     arrangementType?: string
     sequenceOrder?: number
     totalCourseAmount?: number | null
+    discountType?: $Enums.DiscountType | null
+    discountValue?: number | null
+    discountAmount?: number | null
+    finalCourseAmount?: number | null
     courseProgress?: number | null
     courseCompletedAt?: Date | string | null
     paymentPlanId?: string | null
@@ -116128,6 +116331,10 @@ export namespace Prisma {
     arrangementType?: string
     sequenceOrder?: number
     totalCourseAmount?: number | null
+    discountType?: $Enums.DiscountType | null
+    discountValue?: number | null
+    discountAmount?: number | null
+    finalCourseAmount?: number | null
     courseProgress?: number | null
     courseCompletedAt?: Date | string | null
     paymentPlanId?: string | null
@@ -116866,6 +117073,10 @@ export namespace Prisma {
     arrangementType?: StringFilter<"BranchStudentCourse"> | string
     sequenceOrder?: IntFilter<"BranchStudentCourse"> | number
     totalCourseAmount?: IntNullableFilter<"BranchStudentCourse"> | number | null
+    discountType?: EnumDiscountTypeNullableFilter<"BranchStudentCourse"> | $Enums.DiscountType | null
+    discountValue?: FloatNullableFilter<"BranchStudentCourse"> | number | null
+    discountAmount?: FloatNullableFilter<"BranchStudentCourse"> | number | null
+    finalCourseAmount?: FloatNullableFilter<"BranchStudentCourse"> | number | null
     courseProgress?: IntNullableFilter<"BranchStudentCourse"> | number | null
     courseCompletedAt?: DateTimeNullableFilter<"BranchStudentCourse"> | Date | string | null
     paymentPlanId?: StringNullableFilter<"BranchStudentCourse"> | string | null
@@ -119123,6 +119334,10 @@ export namespace Prisma {
     arrangementType?: string
     sequenceOrder?: number
     totalCourseAmount?: number | null
+    discountType?: $Enums.DiscountType | null
+    discountValue?: number | null
+    discountAmount?: number | null
+    finalCourseAmount?: number | null
     courseProgress?: number | null
     courseCompletedAt?: Date | string | null
     paymentPlanId?: string | null
@@ -119151,6 +119366,10 @@ export namespace Prisma {
     arrangementType?: string
     sequenceOrder?: number
     totalCourseAmount?: number | null
+    discountType?: $Enums.DiscountType | null
+    discountValue?: number | null
+    discountAmount?: number | null
+    finalCourseAmount?: number | null
     courseProgress?: number | null
     courseCompletedAt?: Date | string | null
     paymentPlanId?: string | null
@@ -124499,6 +124718,10 @@ export namespace Prisma {
     arrangementType?: string
     sequenceOrder?: number
     totalCourseAmount?: number | null
+    discountType?: $Enums.DiscountType | null
+    discountValue?: number | null
+    discountAmount?: number | null
+    finalCourseAmount?: number | null
     courseProgress?: number | null
     courseCompletedAt?: Date | string | null
     paymentPlanId?: string | null
@@ -124527,6 +124750,10 @@ export namespace Prisma {
     arrangementType?: string
     sequenceOrder?: number
     totalCourseAmount?: number | null
+    discountType?: $Enums.DiscountType | null
+    discountValue?: number | null
+    discountAmount?: number | null
+    finalCourseAmount?: number | null
     courseProgress?: number | null
     courseCompletedAt?: Date | string | null
     paymentPlanId?: string | null
@@ -137234,6 +137461,10 @@ export namespace Prisma {
     arrangementType?: string
     sequenceOrder?: number
     totalCourseAmount?: number | null
+    discountType?: $Enums.DiscountType | null
+    discountValue?: number | null
+    discountAmount?: number | null
+    finalCourseAmount?: number | null
     courseProgress?: number | null
     courseCompletedAt?: Date | string | null
     paymentPlanId?: string | null
@@ -137905,6 +138136,10 @@ export namespace Prisma {
     arrangementType?: StringFieldUpdateOperationsInput | string
     sequenceOrder?: IntFieldUpdateOperationsInput | number
     totalCourseAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    discountType?: NullableEnumDiscountTypeFieldUpdateOperationsInput | $Enums.DiscountType | null
+    discountValue?: NullableFloatFieldUpdateOperationsInput | number | null
+    discountAmount?: NullableFloatFieldUpdateOperationsInput | number | null
+    finalCourseAmount?: NullableFloatFieldUpdateOperationsInput | number | null
     courseProgress?: NullableIntFieldUpdateOperationsInput | number | null
     courseCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -137933,6 +138168,10 @@ export namespace Prisma {
     arrangementType?: StringFieldUpdateOperationsInput | string
     sequenceOrder?: IntFieldUpdateOperationsInput | number
     totalCourseAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    discountType?: NullableEnumDiscountTypeFieldUpdateOperationsInput | $Enums.DiscountType | null
+    discountValue?: NullableFloatFieldUpdateOperationsInput | number | null
+    discountAmount?: NullableFloatFieldUpdateOperationsInput | number | null
+    finalCourseAmount?: NullableFloatFieldUpdateOperationsInput | number | null
     courseProgress?: NullableIntFieldUpdateOperationsInput | number | null
     courseCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -137959,6 +138198,10 @@ export namespace Prisma {
     arrangementType?: StringFieldUpdateOperationsInput | string
     sequenceOrder?: IntFieldUpdateOperationsInput | number
     totalCourseAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    discountType?: NullableEnumDiscountTypeFieldUpdateOperationsInput | $Enums.DiscountType | null
+    discountValue?: NullableFloatFieldUpdateOperationsInput | number | null
+    discountAmount?: NullableFloatFieldUpdateOperationsInput | number | null
+    finalCourseAmount?: NullableFloatFieldUpdateOperationsInput | number | null
     courseProgress?: NullableIntFieldUpdateOperationsInput | number | null
     courseCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -139257,6 +139500,10 @@ export namespace Prisma {
     arrangementType?: string
     sequenceOrder?: number
     totalCourseAmount?: number | null
+    discountType?: $Enums.DiscountType | null
+    discountValue?: number | null
+    discountAmount?: number | null
+    finalCourseAmount?: number | null
     courseProgress?: number | null
     courseCompletedAt?: Date | string | null
     paymentPlanId?: string | null
@@ -139840,6 +140087,10 @@ export namespace Prisma {
     arrangementType?: StringFieldUpdateOperationsInput | string
     sequenceOrder?: IntFieldUpdateOperationsInput | number
     totalCourseAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    discountType?: NullableEnumDiscountTypeFieldUpdateOperationsInput | $Enums.DiscountType | null
+    discountValue?: NullableFloatFieldUpdateOperationsInput | number | null
+    discountAmount?: NullableFloatFieldUpdateOperationsInput | number | null
+    finalCourseAmount?: NullableFloatFieldUpdateOperationsInput | number | null
     courseProgress?: NullableIntFieldUpdateOperationsInput | number | null
     courseCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -139868,6 +140119,10 @@ export namespace Prisma {
     arrangementType?: StringFieldUpdateOperationsInput | string
     sequenceOrder?: IntFieldUpdateOperationsInput | number
     totalCourseAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    discountType?: NullableEnumDiscountTypeFieldUpdateOperationsInput | $Enums.DiscountType | null
+    discountValue?: NullableFloatFieldUpdateOperationsInput | number | null
+    discountAmount?: NullableFloatFieldUpdateOperationsInput | number | null
+    finalCourseAmount?: NullableFloatFieldUpdateOperationsInput | number | null
     courseProgress?: NullableIntFieldUpdateOperationsInput | number | null
     courseCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -139894,6 +140149,10 @@ export namespace Prisma {
     arrangementType?: StringFieldUpdateOperationsInput | string
     sequenceOrder?: IntFieldUpdateOperationsInput | number
     totalCourseAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    discountType?: NullableEnumDiscountTypeFieldUpdateOperationsInput | $Enums.DiscountType | null
+    discountValue?: NullableFloatFieldUpdateOperationsInput | number | null
+    discountAmount?: NullableFloatFieldUpdateOperationsInput | number | null
+    finalCourseAmount?: NullableFloatFieldUpdateOperationsInput | number | null
     courseProgress?: NullableIntFieldUpdateOperationsInput | number | null
     courseCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -141340,6 +141599,10 @@ export namespace Prisma {
     arrangementType?: string
     sequenceOrder?: number
     totalCourseAmount?: number | null
+    discountType?: $Enums.DiscountType | null
+    discountValue?: number | null
+    discountAmount?: number | null
+    finalCourseAmount?: number | null
     courseProgress?: number | null
     courseCompletedAt?: Date | string | null
     paymentPlanId?: string | null
@@ -141893,6 +142156,10 @@ export namespace Prisma {
     arrangementType?: StringFieldUpdateOperationsInput | string
     sequenceOrder?: IntFieldUpdateOperationsInput | number
     totalCourseAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    discountType?: NullableEnumDiscountTypeFieldUpdateOperationsInput | $Enums.DiscountType | null
+    discountValue?: NullableFloatFieldUpdateOperationsInput | number | null
+    discountAmount?: NullableFloatFieldUpdateOperationsInput | number | null
+    finalCourseAmount?: NullableFloatFieldUpdateOperationsInput | number | null
     courseProgress?: NullableIntFieldUpdateOperationsInput | number | null
     courseCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -141921,6 +142188,10 @@ export namespace Prisma {
     arrangementType?: StringFieldUpdateOperationsInput | string
     sequenceOrder?: IntFieldUpdateOperationsInput | number
     totalCourseAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    discountType?: NullableEnumDiscountTypeFieldUpdateOperationsInput | $Enums.DiscountType | null
+    discountValue?: NullableFloatFieldUpdateOperationsInput | number | null
+    discountAmount?: NullableFloatFieldUpdateOperationsInput | number | null
+    finalCourseAmount?: NullableFloatFieldUpdateOperationsInput | number | null
     courseProgress?: NullableIntFieldUpdateOperationsInput | number | null
     courseCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -141947,6 +142218,10 @@ export namespace Prisma {
     arrangementType?: StringFieldUpdateOperationsInput | string
     sequenceOrder?: IntFieldUpdateOperationsInput | number
     totalCourseAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    discountType?: NullableEnumDiscountTypeFieldUpdateOperationsInput | $Enums.DiscountType | null
+    discountValue?: NullableFloatFieldUpdateOperationsInput | number | null
+    discountAmount?: NullableFloatFieldUpdateOperationsInput | number | null
+    finalCourseAmount?: NullableFloatFieldUpdateOperationsInput | number | null
     courseProgress?: NullableIntFieldUpdateOperationsInput | number | null
     courseCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null

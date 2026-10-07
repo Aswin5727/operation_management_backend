@@ -873,6 +873,10 @@ model BranchStudentCourse {
   arrangementType   String        @default("SINGLE")
   sequenceOrder     Int           @default(1)
   totalCourseAmount Int?
+  discountType      DiscountType?
+  discountValue     Float?
+  discountAmount    Float?
+  finalCourseAmount Float?
   courseProgress    Int?
   courseCompletedAt DateTime?
   paymentPlanId     String?
@@ -1582,6 +1586,12 @@ enum NotificationKind {
   SEQUENTIAL_COURSE_SCHEDULING_REQUIRED
   EXAM_CANCELLED
   ASSESSMENT_CANCELLED
+  STUDENT_DISCOUNT_APPLIED
+}
+
+enum DiscountType {
+  FIXED
+  PERCENTAGE
 }
 
 model FacultyReportShare {
