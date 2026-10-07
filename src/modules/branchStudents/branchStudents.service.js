@@ -1884,6 +1884,36 @@ async function syncBranchStudentCourseEnrollments(tx, student, payload = {}, exi
   }
   if (enrollments.length) {
     for (const item of enrollments) {
+      if (item.status === 'ACTIVE' && item.batchId) {
+        const assignedBatch = await tx.branchBatch.findFirst({
+          where: {
+            branchId: student.branchId,
+            courseId: item.courseId,
+            batchId: item.batchId,
+            status: 'ACTIVE',
+          },
+          select: {
+            batchName: true,
+            batchTiming: true,
+            facultyId: true,
+            facultyName: true,
+            weekType: true,
+            mode: true,
+            courseStartDate: true,
+            courseEndDate: true,
+            weeklyOffDay: true,
+          },
+        });
+        if (!assignedBatch) throw new AppError(`Selected batch was not found for course ${item.courseName || item.courseId}.`, 400);
+        if (normalizeString(item.scheduleType).toUpperCase() !== normalizeString(assignedBatch.weekType).toUpperCase() || normalizeString(item.mode).toUpperCase() !== normalizeString(assignedBatch.mode).toUpperCase()) {
+          throw new AppError(`Selected batch does not match the schedule and mode for course ${item.courseName || item.courseId}.`, 400);
+        }
+        item.batchName = assignedBatch.batchName;
+        item.batchTiming = assignedBatch.batchTiming;
+        item.facultyId = assignedBatch.facultyId;
+        item.facultyName = assignedBatch.facultyName;
+        item.endDate = item.endDate || assignedBatch.courseEndDate;
+      }
       await tx.branchStudentCourse.upsert({
         where: { branchStudentId_courseId: { branchStudentId: student.id, courseId: item.courseId } },
         create: { ...item, branchStudentId: student.id },
@@ -2761,7 +2791,7 @@ export async function updateBranchStudent(studentId, payload, actor = null) {
       where: { id: student.id },
       include: {
         installments: { orderBy: { installmentNumber: "asc" } },
-        courseEnrollments: { where: { status: "ACTIVE" }, orderBy: { createdAt: "asc" } },
+        courseEnrollments: { orderBy: [{ sequenceOrder: "asc" }, { createdAt: "asc" }] },
       },
     });
 

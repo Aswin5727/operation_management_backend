@@ -930,15 +930,23 @@ async function ensureSequentialCourseSchedulingNotifications(user = {}) {
   for (const student of students) {
     const enrollments = Array.isArray(student.courseEnrollments) ? student.courseEnrollments : [];
     const firstCourse = enrollments.find((enrollment) => Number(enrollment.sequenceOrder) === 1);
-    const upcomingCourses = enrollments.filter((enrollment) => Number(enrollment.sequenceOrder) > 1 && enrollment.status === "PENDING");
-    if (!firstCourse || firstCourse.status !== "ACTIVE" || !upcomingCourses.length) continue;
-    // Sequential scheduling is unlocked by actual course completion, not by
-    // the planned end date. Progress updates are stored per enrollment; use
-    // legacy student fields only when this is the primary course.
-    const isPrimaryCourse = String(firstCourse.courseId || "") === String(student.courseId || "");
-    const firstCourseProgress = firstCourse.courseProgress ?? (isPrimaryCourse ? student.courseProgress : null);
-    const firstCourseCompletedAt = firstCourse.courseCompletedAt || (isPrimaryCourse ? student.courseCompletedAt : null);
-    if (!firstCourseCompletedAt && !(Number(firstCourseProgress) >= 100)) continue;
+    if (!firstCourse) continue;
+    // Notify only for the next pending course whose full sequence of earlier
+    // courses is complete. This prevents Course 3+ from being scheduled when
+    // only Course 1 has completed.
+    const upcomingCourse = enrollments.find((candidate) => {
+      const sequenceOrder = Number(candidate.sequenceOrder);
+      if (sequenceOrder <= 1 || candidate.status !== "PENDING") return false;
+      const precedingCourses = enrollments.filter((enrollment) => Number(enrollment.sequenceOrder) < sequenceOrder);
+      if (precedingCourses.length !== sequenceOrder - 1) return false;
+      return precedingCourses.every((enrollment) => {
+        const isPrimaryCourse = String(enrollment.courseId || "") === String(student.courseId || "");
+        const progress = enrollment.courseProgress ?? (isPrimaryCourse ? student.courseProgress : null);
+        const completedAt = enrollment.courseCompletedAt || (isPrimaryCourse ? student.courseCompletedAt : null);
+        return Boolean(completedAt) || Number(progress) >= 100;
+      });
+    });
+    if (!upcomingCourse) continue;
 
     const studentUser = await prisma.user.findFirst({
       where: { email: { equals: student.emailAddress, mode: "insensitive" }, role: "STUDENT", active: true },
@@ -955,38 +963,37 @@ async function ensureSequentialCourseSchedulingNotifications(user = {}) {
       ...(studentUser ? [{ targetUserId: studentUser.id, audience: "student" }] : []),
     ];
 
-    for (const upcomingCourse of upcomingCourses) {
-      for (const recipient of recipients) {
-        if (!recipient.targetUserId && !recipient.targetBranchId) continue;
-        const marker = `sequential-course-scheduling:${student.id}:${upcomingCourse.id}:${recipient.audience}`;
-        const existing = await prisma.notification.findFirst({
-          where: { kind: "SEQUENTIAL_COURSE_SCHEDULING_REQUIRED", requestDescription: marker },
-          select: { id: true },
-        });
-        if (existing) continue;
+    for (const recipient of recipients) {
+      if (!recipient.targetUserId && !recipient.targetBranchId) continue;
+      const marker = `sequential-course-scheduling:${student.id}:${upcomingCourse.id}:${recipient.audience}`;
+      const existing = await prisma.notification.findFirst({
+        where: { kind: "SEQUENTIAL_COURSE_SCHEDULING_REQUIRED", requestDescription: marker },
+        select: { id: true },
+      });
+      if (existing) continue;
 
-        const isBranch = recipient.audience === "branch";
-        await createNotification({
-          kind: "SEQUENTIAL_COURSE_SCHEDULING_REQUIRED",
-          tone: "amber",
-          title: isBranch ? "Schedule the student's next course" : "Your next course is ready to be scheduled",
-          message: isBranch
-            ? `${student.studentName} (${student.studentId}) has completed ${firstCourse.courseName || "Course 1"}. Please assign faculty, batch, and schedule for ${upcomingCourse.courseName || "the next course"}.`
-            : `You have completed ${firstCourse.courseName || "your first course"}. Your branch administrator will assign faculty, batch, and schedule for ${upcomingCourse.courseName || "your next course"}.`,
-          actionLabel: isBranch ? "Schedule next course" : "View course",
-          targetUserId: recipient.targetUserId,
-          targetBranchId: recipient.targetBranchId,
-          targetBranchEmail: recipient.targetBranchEmail,
-          targetBranchName: recipient.targetBranchName,
-          studentId: student.studentId,
-          studentName: student.studentName,
-          branchCourseId: upcomingCourse.courseId,
-          branchCourseName: upcomingCourse.courseName || "",
-          batchId: upcomingCourse.batchId || "",
-          requestDescription: marker,
-          createdBy: null,
-        });
-      }
+      const isBranch = recipient.audience === "branch";
+      const completedCourse = enrollments.filter((enrollment) => Number(enrollment.sequenceOrder) < Number(upcomingCourse.sequenceOrder)).at(-1) || firstCourse;
+      await createNotification({
+        kind: "SEQUENTIAL_COURSE_SCHEDULING_REQUIRED",
+        tone: "amber",
+        title: isBranch ? "Schedule the student's next course" : "Your next course is ready to be scheduled",
+        message: isBranch
+          ? `${student.studentName} (${student.studentId}) has completed ${completedCourse.courseName || "the previous course"}. Please assign faculty, batch, and schedule for ${upcomingCourse.courseName || "the next course"}.`
+          : `You have completed ${completedCourse.courseName || "your previous course"}. Your branch administrator will assign faculty, batch, and schedule for ${upcomingCourse.courseName || "your next course"}.`,
+        actionLabel: isBranch ? "Schedule next course" : "View course",
+        targetUserId: recipient.targetUserId,
+        targetBranchId: recipient.targetBranchId,
+        targetBranchEmail: recipient.targetBranchEmail,
+        targetBranchName: recipient.targetBranchName,
+        studentId: student.studentId,
+        studentName: student.studentName,
+        branchCourseId: upcomingCourse.courseId,
+        branchCourseName: upcomingCourse.courseName || "",
+        batchId: upcomingCourse.batchId || "",
+        requestDescription: marker,
+        createdBy: null,
+      });
     }
   }
 }

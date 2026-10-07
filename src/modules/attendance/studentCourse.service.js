@@ -43,7 +43,12 @@ export async function getStudentCourse(user, requestedCourseId = "") {
   const enrollment = identity.type === "branch" && courseId
     ? (baseStudent.courseEnrollments || []).find((item) => item.courseId === courseId)
     : null;
-  if (courseId && identity.type === "branch" && !enrollment) throw new AppError("Selected course enrollment was not found", 404);
+  const isPrimaryCourse = identity.type === "branch" && courseId && baseStudent.courseId === courseId;
+  // Legacy/single-course branch students may have the course on BranchStudent
+  // without a corresponding BranchStudentCourse row. Use that primary relation.
+  if (courseId && identity.type === "branch" && !enrollment && !isPrimaryCourse) {
+    throw new AppError("Selected course enrollment was not found", 404);
+  }
   const student = enrollment ? {
     ...baseStudent,
     courseId: enrollment.courseId,
