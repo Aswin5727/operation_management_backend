@@ -2230,17 +2230,29 @@ async function findBranchStudentLoginUser(student) {
 
 async function ensureBranchStudentAccess(actor, studentId) {
   const branchProfile = await getBranchContext(actor);
+  const requestedStudentId = normalizeString(studentId);
+
+  // Student IDs are the public identity used by the dashboard. Resolve them
+  // before falling back to the internal database id so two students with the
+  // same name (or overlapping identifiers) can never select the wrong record.
+  const publicStudentWhere = {
+    ...(branchProfile?.id ? { branchId: branchProfile.id } : {}),
+    studentId: requestedStudentId,
+  };
+  const publicStudent = requestedStudentId
+    ? await prisma.branchStudent.findFirst({ where: publicStudentWhere, select: { id: true } })
+    : null;
+  if (publicStudent?.id) {
+    return { branchProfile, where: { id: publicStudent.id } };
+  }
 
   if (!branchProfile?.id) {
-    return { branchProfile: null, where: { OR: [{ id: studentId }, { studentId }] } };
+    return { branchProfile: null, where: { id: requestedStudentId } };
   }
 
   return {
     branchProfile,
-    where: {
-      branchId: branchProfile.id,
-      OR: [{ id: studentId }, { studentId }],
-    },
+    where: { branchId: branchProfile.id, id: requestedStudentId },
   };
 }
 

@@ -131,14 +131,16 @@ function buildReport({ title, fileName, students, records, fromDate, toDate, sco
 export async function generateBranchStudentAttendanceReport(query, user) {
   const studentId = String(query?.studentId || "").trim();
   if (!studentId) throw new AppError("studentId is required", 400);
+  const courseId = String(query?.courseId || "").trim();
   const { fromDate, toDate } = parseDateRange(query);
   const branchId = await resolveBranchId(user, query?.branchId);
-  const { student, records } = await findBranchStudentAttendanceReportData({ studentId, branchId, fromDate, toDate });
+  const { student, records } = await findBranchStudentAttendanceReportData({ studentId, branchId, fromDate, toDate, courseId });
+  const courseLabel = String(student.courseName || "").trim();
   return buildReport({
     title: "Student Attendance Report",
-    fileName: buildReportFileName([student.studentName, "attendance-report", fromDate, toDate]),
+    fileName: buildReportFileName([student.studentName, courseLabel, "attendance-report", fromDate, toDate]),
     students: [student], records, fromDate, toDate,
-    scopeLabel: `${student.studentId} - ${student.studentName}`,
+    scopeLabel: `${student.studentId} - ${student.studentName}${courseLabel ? ` - ${courseLabel}` : ""}`,
     addDateGaps: false,
   });
 }

@@ -50,5 +50,5 @@ router.get("/student/assessments/:assessmentId/submission", authorize("STUDENT")
 router.get("/branch-admin/report-shares", authorize("BRANCH_ADMIN"), controller.listBranchReportShares);
 router.get("/branch-admin/report-shares/:shareId", authorize("BRANCH_ADMIN"), controller.getBranchReportShare);
 router.get("/branch-admin/report-shares/:shareId/students", authorize("BRANCH_ADMIN"), controller.getBranchReportShareStudents);
-router.get("/branch-admin/students/:studentId/reports", authorize("BRANCH_ADMIN"), controller.getBranchStudentReports);
+router.get("/branch-admin/students/:studentId/reports", authorize("BRANCH_ADMIN", "SUPER_ADMIN"), controller.getBranchStudentReports);
 export default router;

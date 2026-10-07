@@ -40,6 +40,10 @@ async function findBranchStudent(studentKey, branchId) {
       id: true, studentId: true, studentName: true, emailAddress: true,
       courseName: true, courseId: true, batchId: true, batchName: true,
       batchTiming: true, facultyName: true,
+      courseEnrollments: {
+        orderBy: [{ sequenceOrder: "asc" }, { createdAt: "asc" }],
+        select: { courseId: true, courseName: true, batchId: true, batchName: true, batchTiming: true, facultyName: true, status: true, sequenceOrder: true },
+      },
     },
   });
   if (!student) throw new AppError("Student not found in this branch", 404);
@@ -61,20 +65,35 @@ async function findBranchBatch(batchKey, branchId) {
   return batch;
 }
 
-async function recordsForStudents(students, fromDate, toDate) {
+async function recordsForStudents(students, fromDate, toDate, courseId = "") {
   const ids = students.map((student) => student.id);
   return prisma.branchStudentAttendance.findMany({
-    where: { branchStudentId: { in: ids }, ...dateFilter(fromDate, toDate) },
+    where: { branchStudentId: { in: ids }, ...(courseId ? { courseId } : {}), ...dateFilter(fromDate, toDate) },
     orderBy: [{ attendanceDate: "asc" }, { markedAt: "asc" }],
     include: { facultyUser: { select: userSelect } },
   });
 }
 
-export async function findBranchStudentAttendanceReportData({ studentId, branchId, fromDate, toDate }) {
+export async function findBranchStudentAttendanceReportData({ studentId, branchId, fromDate, toDate, courseId = "" }) {
   const student = await findBranchStudent(studentId, branchId);
-  const records = await recordsForStudents([student], fromDate, toDate);
+  let reportStudent = student;
+  if (courseId) {
+    const enrollment = (student.courseEnrollments || []).find((item) => String(item.courseId) === String(courseId));
+    const isPrimaryCourse = String(student.courseId || "") === String(courseId);
+    if (!enrollment && !isPrimaryCourse) throw new AppError("Selected course is not assigned to this student", 400);
+    reportStudent = {
+      ...student,
+      courseId,
+      courseName: enrollment?.courseName || (isPrimaryCourse ? student.courseName : "") || "",
+      batchId: enrollment?.batchId || (isPrimaryCourse ? student.batchId : null),
+      batchName: enrollment?.batchName || (isPrimaryCourse ? student.batchName : "") || "",
+      batchTiming: enrollment?.batchTiming || (isPrimaryCourse ? student.batchTiming : "") || "",
+      facultyName: enrollment?.facultyName || (isPrimaryCourse ? student.facultyName : "") || "",
+    };
+  }
+  const records = await recordsForStudents([student], fromDate, toDate, courseId);
   if (!records.length) throw new AppError("No attendance records found for the selected date range", 404);
-  return { student, records };
+  return { student: reportStudent, records };
 }
 
 export async function findBranchBatchAttendanceReportData({ batchId, branchId, fromDate, toDate }) {
