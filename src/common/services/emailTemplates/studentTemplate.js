@@ -34,24 +34,31 @@ export function studentTemplate({
   const courseDetailRow = (label, value) => value
     ? `<tr><td style="width:36%;padding:9px 12px;background:#f8fafc;color:#475569;font-size:12px;font-weight:700;border-bottom:1px solid #e2e8f0;">${escapeHtml(label)}</td><td style="padding:9px 12px;background:#ffffff;color:#0f172a;font-size:13px;font-weight:600;border-bottom:1px solid #e2e8f0;">${escapeHtml(value)}</td></tr>`
     : "";
-  const courseDetailsRows = safeCourses.map((course, index) => `
-    <tr>
-      <td colspan="2" style="padding:14px 18px;background:#eff6ff;color:#1e3a8a;font-size:14px;font-weight:700;border-bottom:1px solid #bfdbfe;">
-        Course ${index + 1}: ${escapeHtml(course.courseName || `Course ${index + 1}`)}${course.status ? ` <span style="font-size:12px;color:#475569;">(${escapeHtml(course.status)})</span>` : ""}
-        <table width="100%" cellpadding="0" cellspacing="0" style="margin-top:10px;border-collapse:collapse;background:#ffffff;font-weight:400;">
-          ${courseDetailRow("Course Mode", course.courseMode)}
-          ${courseDetailRow("Faculty Name", course.facultyName)}
-          ${courseDetailRow("Batch", course.batchName)}
-          ${courseDetailRow("Batch Timing", course.batchTiming)}
-          ${courseDetailRow("Class Schedule", course.classSchedule)}
-          ${courseDetailRow("Course Duration", course.courseDuration)}
-          ${courseDetailRow("Course Start Date", course.courseStartDate)}
-          ${courseDetailRow("Course End Date", course.courseEndDate)}
-          ${courseDetailRow("Course Fee", course.courseAmount)}
-          ${courseDetailRow("Payment Plan", course.paymentPlan)}
-        </table>
-      </td>
-    </tr>`).join("");
+  const courseDetailsRows = safeCourses.map((course, index) => {
+    const isUpcoming = String(course.status || "").trim().toUpperCase() === "PENDING";
+    return `
+      <tr>
+        <td colspan="2" style="padding:14px 18px;background:#eff6ff;color:#1e3a8a;font-size:14px;font-weight:700;border-bottom:1px solid #bfdbfe;">
+          Course ${index + 1}: ${escapeHtml(course.courseName || `Course ${index + 1}`)}${isUpcoming ? ` <span style="font-size:12px;color:#9a6700;">(Upcoming)</span>` : ""}
+          ${isUpcoming ? `
+            <div style="margin-top:8px;padding:11px 12px;border-radius:8px;background:#fffbeb;color:#854d0e;font-size:13px;line-height:20px;font-weight:400;">
+              Your faculty and batch will be scheduled after you complete your first course. Once the first course is completed, we will update the faculty and batch details for your second course.
+            </div>` : `
+            <table width="100%" cellpadding="0" cellspacing="0" style="margin-top:10px;border-collapse:collapse;background:#ffffff;font-weight:400;">
+              ${courseDetailRow("Course Mode", course.courseMode)}
+              ${courseDetailRow("Faculty Name", course.facultyName)}
+              ${courseDetailRow("Batch", course.batchName)}
+              ${courseDetailRow("Batch Timing", course.batchTiming)}
+              ${courseDetailRow("Class Schedule", course.classSchedule)}
+              ${courseDetailRow("Course Duration", course.courseDuration)}
+              ${courseDetailRow("Course Start Date", course.courseStartDate)}
+              ${courseDetailRow("Course End Date", course.courseEndDate)}
+              ${courseDetailRow("Course Fee", course.courseAmount)}
+              ${courseDetailRow("Payment Plan", course.paymentPlan)}
+            </table>`}
+        </td>
+      </tr>`;
+  }).join("");
 
   const content = `
     <div style="margin-top:10px;font-family:'Segoe UI',Tahoma,Arial,sans-serif;">

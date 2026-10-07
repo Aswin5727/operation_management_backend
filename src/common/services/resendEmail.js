@@ -363,19 +363,25 @@ export async function sendStudentCredentialsEmail({ to, fullName, studentCode, t
     safeCode ? `Student ID: ${safeCode}` : null,
     `Email: ${to}`,
     ...(courses.length > 1
-      ? ["Course details:", ...courses.map((course, index) => [
-          `Course ${index + 1}: ${course.courseName || "Course"}${course.status ? ` (${course.status})` : ""}`,
-          course.courseMode ? `Mode: ${course.courseMode}` : null,
-          course.facultyName ? `Faculty: ${course.facultyName}` : null,
-          course.batchName ? `Batch: ${course.batchName}` : null,
-          course.batchTiming ? `Batch timing: ${course.batchTiming}` : null,
-          course.classSchedule ? `Class schedule: ${course.classSchedule}` : null,
-          course.courseDuration ? `Course duration: ${course.courseDuration}` : null,
-          course.courseStartDate ? `Course start date: ${course.courseStartDate}` : null,
-          course.courseEndDate ? `Course end date: ${course.courseEndDate}` : null,
-          course.courseAmount ? `Course fee: ${course.courseAmount}` : null,
-          course.paymentPlan ? `Payment plan: ${course.paymentPlan}` : null,
-        ].filter(Boolean).join("\n"))]
+      ? ["Course details:", ...courses.map((course, index) => {
+          const header = `Course ${index + 1}: ${course.courseName || "Course"}${String(course.status || "").toUpperCase() === "PENDING" ? " (Upcoming)" : ""}`;
+          if (String(course.status || "").toUpperCase() === "PENDING") {
+            return `${header}\nYour faculty and batch will be scheduled after you complete your first course. Once the first course is completed, we will update the faculty and batch details for your second course.`;
+          }
+          return [
+            header,
+            course.courseMode ? `Mode: ${course.courseMode}` : null,
+            course.facultyName ? `Faculty: ${course.facultyName}` : null,
+            course.batchName ? `Batch: ${course.batchName}` : null,
+            course.batchTiming ? `Batch timing: ${course.batchTiming}` : null,
+            course.classSchedule ? `Class schedule: ${course.classSchedule}` : null,
+            course.courseDuration ? `Course duration: ${course.courseDuration}` : null,
+            course.courseStartDate ? `Course start date: ${course.courseStartDate}` : null,
+            course.courseEndDate ? `Course end date: ${course.courseEndDate}` : null,
+            course.courseAmount ? `Course fee: ${course.courseAmount}` : null,
+            course.paymentPlan ? `Payment plan: ${course.paymentPlan}` : null,
+          ].filter(Boolean).join("\n");
+        })]
       : [
           courseName ? `Course: ${courseName}` : null,
           facultyName ? `Faculty: ${facultyName}` : null,

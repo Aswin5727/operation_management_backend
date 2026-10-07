@@ -2277,7 +2277,25 @@ export async function createBranchStudent(payload, actor) {
     console.error("[createBranchStudent] validation error:", err.message);
     throw err;
   }
-  const selectedBatchId = normalizeString(payload.batchId || payload.batchEntryId);
+  const firstSequentialEnrollment = validatedEnrollmentInput.arrangementType === "SEQUENTIAL"
+    ? validatedEnrollmentInput.enrollments.find((item) => item.courseId === validatedEnrollmentInput.firstCourseId)
+    : null;
+  if (firstSequentialEnrollment) {
+    Object.assign(studentData, {
+      courseId: firstSequentialEnrollment.courseId,
+      courseName: firstSequentialEnrollment.courseName,
+      courseMode: firstSequentialEnrollment.mode,
+      classSchedule: firstSequentialEnrollment.scheduleType,
+      batchId: firstSequentialEnrollment.batchId,
+      batchName: firstSequentialEnrollment.batchName,
+      batchTiming: firstSequentialEnrollment.batchTiming,
+      facultyId: firstSequentialEnrollment.facultyId,
+      facultyName: firstSequentialEnrollment.facultyName,
+      courseStartDate: firstSequentialEnrollment.startDate,
+      courseEndDate: firstSequentialEnrollment.endDate,
+    });
+  }
+  const selectedBatchId = normalizeString(firstSequentialEnrollment?.batchId || payload.batchId || payload.batchEntryId);
   const assignedBatch = selectedBatchId
     ? await prisma.branchBatch.findFirst({
         where: {
@@ -2311,8 +2329,8 @@ export async function createBranchStudent(payload, actor) {
   }
 
   if (assignedBatch) {
-    const requestedWeekType = normalizeString(payload.weekType).toUpperCase();
-    const requestedMode = normalizeString(payload.mode || payload.courseMode).toUpperCase();
+    const requestedWeekType = normalizeString(firstSequentialEnrollment?.scheduleType || payload.weekType).toUpperCase();
+    const requestedMode = normalizeString(firstSequentialEnrollment?.mode || payload.mode || payload.courseMode).toUpperCase();
     if ((requestedWeekType && requestedWeekType !== assignedBatch.weekType) || (requestedMode && requestedMode !== assignedBatch.mode)) throw new AppError("Selected batch does not match the selected course, week type, or mode.", 400);
     await ensureAvailableBatchCapacity(assignedBatch);
   }
