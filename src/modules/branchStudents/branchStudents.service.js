@@ -390,12 +390,15 @@ async function buildStudentFeePlan({ studentData, installmentSchedule, payload, 
   }
 
   if (payload?.preserveInstallmentDates === true) {
+    const allowCourseSpecificDates = payload?.sequentialCourseActivation === true;
     const invalidInstallment = installmentSchedule.find((installment) => {
       const dueDate = normalizeString(installment.dueDate);
-      return !validIsoDate(dueDate) || dueDate > deadline.progressDate;
+      return !validIsoDate(dueDate) || (!allowCourseSpecificDates && dueDate > deadline.progressDate);
     });
     if (invalidInstallment) {
-      throw new AppError("Each installment date must be on or before the 70% payment deadline", 400);
+      throw new AppError(allowCourseSpecificDates
+        ? "Each installment must have a valid course-specific due date"
+        : "Each installment date must be on or before the 70% payment deadline", 400);
     }
     return {
       schedule: installmentSchedule,
@@ -1873,6 +1876,16 @@ function validateCourseEnrollmentInput(payload = {}, branchId, existingStudent =
     throw new AppError('A valid firstCourseId is required for sequential admission.', 400);
   }
 
+  if (arrangementType === 'SEQUENTIAL') {
+    const orderedEnrollments = [...enrollments].sort((left, right) => left.sequenceOrder - right.sequenceOrder);
+    if (orderedEnrollments.some((item, index) => item.sequenceOrder !== index + 1)) {
+      throw new AppError('Sequential course order must be continuous, starting at Course 1.', 400);
+    }
+    if (orderedEnrollments[0]?.courseId !== firstCourseId) {
+      throw new AppError('The first course must match the selected sequential course order.', 400);
+    }
+  }
+
   enrollments.forEach((item, index) => {
     item.arrangementType = arrangementType;
     item.sequenceOrder = arrangementType === 'SEQUENTIAL' ? Number(item.sequenceOrder || index + 1) : index + 1;
@@ -1884,9 +1897,21 @@ function validateCourseEnrollmentInput(payload = {}, branchId, existingStudent =
         if (!String(item[field] || '').trim()) throw new AppError(`${label} is required for course ${item.courseId}.`, 400);
       }
       if (!(Number(item.totalCourseAmount) > 0)) throw new AppError(`Total course amount is required for course ${item.courseId}.`, 400);
+      if (item.startDate && item.endDate && item.startDate > item.endDate) {
+        throw new AppError(`Course end date must be on or after its start date for course ${item.courseId}.`, 400);
+      }
       item.status = 'ACTIVE';
     } else {
       item.status = 'PENDING';
+      // A sequential course is only a placeholder until the prior course is
+      // completed. Do not persist or bill its course fee/payment plan early.
+      item.totalCourseAmount = null;
+      item.discountType = null;
+      item.discountValue = null;
+      item.discountAmount = null;
+      item.finalCourseAmount = null;
+      item.paymentPlanId = null;
+      item.paymentPlan = null;
     }
   });
   return { arrangementType, firstCourseId, enrollments };
@@ -1915,6 +1940,11 @@ async function syncBranchStudentCourseEnrollments(tx, student, payload = {}, exi
   }
   if (enrollments.length) {
     for (const item of enrollments) {
+      const previousEnrollment = (existingStudent?.courseEnrollments || []).find((enrollment) => String(enrollment.courseId) === String(item.courseId));
+      const isNewlyActivated = validated.arrangementType === 'SEQUENTIAL'
+        && Number(item.sequenceOrder) > 1
+        && String(previousEnrollment?.status || '').toUpperCase() === 'PENDING'
+        && item.status === 'ACTIVE';
       if (item.status === 'ACTIVE' && item.batchId) {
         const assignedBatch = await tx.branchBatch.findFirst({
           where: {
@@ -1939,11 +1969,31 @@ async function syncBranchStudentCourseEnrollments(tx, student, payload = {}, exi
         if (normalizeString(item.scheduleType).toUpperCase() !== normalizeString(assignedBatch.weekType).toUpperCase() || normalizeString(item.mode).toUpperCase() !== normalizeString(assignedBatch.mode).toUpperCase()) {
           throw new AppError(`Selected batch does not match the schedule and mode for course ${item.courseName || item.courseId}.`, 400);
         }
+        if (isNewlyActivated) await ensureAvailableBatchCapacity(assignedBatch, student.id);
         item.batchName = assignedBatch.batchName;
         item.batchTiming = assignedBatch.batchTiming;
         item.facultyId = assignedBatch.facultyId;
         item.facultyName = assignedBatch.facultyName;
         item.endDate = item.endDate || assignedBatch.courseEndDate;
+      }
+      if (isNewlyActivated) {
+        const courseRecord = await tx.branchCourse.findFirst({
+          where: { id: item.courseId, branchId: student.branchId, status: 'ACTIVE' },
+          select: { paymentPlans: true, paymentPlanSelections: true },
+        });
+        const configuredPlans = Array.isArray(courseRecord?.paymentPlans)
+          ? courseRecord.paymentPlans
+          : Array.isArray(courseRecord?.paymentPlanSelections)
+            ? courseRecord.paymentPlanSelections
+            : [];
+        if (configuredPlans.length && !item.paymentPlanId) {
+          throw new AppError(`Select a payment plan for course ${item.courseName || item.courseId}.`, 400);
+        }
+        if (item.paymentPlanId && configuredPlans.length) {
+          const matchingPlan = configuredPlans.some((plan) => [plan?.id, plan?.templateId, plan?.paymentPlanId]
+            .some((id) => normalizeString(id) === item.paymentPlanId));
+          if (!matchingPlan) throw new AppError(`Selected payment plan does not belong to course ${item.courseName || item.courseId}.`, 400);
+        }
       }
       await tx.branchStudentCourse.upsert({
         where: { branchStudentId_courseId: { branchStudentId: student.id, courseId: item.courseId } },
@@ -2138,9 +2188,24 @@ function toBranchStudentSummary(record) {
 async function ensureAvailableBatchCapacity(batch, excludeStudentId = null) {
   const studentWhere = {
     branchId: batch.branchId,
-    batchId: batch.batchId,
     recordStatus: 'ACTIVE',
-    OR: [{ courseProgress: null }, { courseProgress: { lt: 100 } }],
+    OR: [
+      {
+        courseId: batch.courseId,
+        batchId: batch.batchId,
+        OR: [{ courseProgress: null }, { courseProgress: { lt: 100 } }],
+      },
+      {
+        courseEnrollments: {
+          some: {
+            courseId: batch.courseId,
+            batchId: batch.batchId,
+            status: 'ACTIVE',
+            OR: [{ courseProgress: null }, { courseProgress: { lt: 100 } }],
+          },
+        },
+      },
+    ],
     ...(excludeStudentId ? { NOT: { id: excludeStudentId } } : {}),
   }
   const totalStudentCount = await prisma.branchStudent.count({ where: studentWhere })
@@ -2375,6 +2440,9 @@ export async function createBranchStudent(payload, actor) {
       facultyName: firstSequentialEnrollment.facultyName,
       courseStartDate: firstSequentialEnrollment.startDate,
       courseEndDate: firstSequentialEnrollment.endDate,
+      courseAmount: firstSequentialEnrollment.totalCourseAmount,
+      paymentPlanId: firstSequentialEnrollment.paymentPlanId,
+      paymentPlan: firstSequentialEnrollment.paymentPlan,
     });
   }
   const selectedBatchId = normalizeString(firstSequentialEnrollment?.batchId || payload.batchId || payload.batchEntryId);
@@ -2794,7 +2862,7 @@ export async function updateBranchStudent(studentId, payload, actor = null) {
     throw new AppError("Branch student not found", 404);
   }
 
-  validateCourseEnrollmentInput(payload, existing.branchId, existing);
+  const validatedCourseInput = validateCourseEnrollmentInput(payload, existing.branchId, existing);
 
   let { studentData, installmentSchedule } = buildBranchStudentPayload(payload, existing);
   const selectedBatchId = normalizeString(studentData.batchId);
@@ -2845,10 +2913,101 @@ export async function updateBranchStudent(studentId, payload, actor = null) {
     studentData.courseStartDate = studentData.courseStartDate || assignedBatch.courseStartDate;
     studentData.courseEndDate = studentData.courseEndDate || assignedBatch.courseEndDate;
   }
+  let sequentialCourseActivation = false;
+  if (validatedCourseInput.arrangementType === 'SEQUENTIAL') {
+    const newlyActivatedCourses = validatedCourseInput.enrollments.filter((enrollment) => {
+      const previous = (existing.courseEnrollments || []).find((item) => String(item.courseId) === String(enrollment.courseId));
+      return Number(enrollment.sequenceOrder) > 1
+        && String(previous?.status || '').toUpperCase() === 'PENDING'
+        && enrollment.status === 'ACTIVE';
+    });
+    if (newlyActivatedCourses.length > 1) {
+      throw new AppError('Assign one sequential course at a time so its batch and payment schedule stay course-specific.', 400);
+    }
+    if (newlyActivatedCourses.length === 1) {
+      const enrollment = newlyActivatedCourses[0];
+      if (!enrollment.batchId || !enrollment.startDate) {
+        throw new AppError('Select the active course batch and start date before assigning this sequential course.', 400);
+      }
+      const [courseRecord, batchRecord] = await Promise.all([
+        prisma.branchCourse.findFirst({
+          where: { id: enrollment.courseId, branchId: existing.branchId, status: 'ACTIVE' },
+          select: { id: true, name: true, hours: true, duration: true, mode: true, paymentPlans: true, paymentPlanSelections: true },
+        }),
+        prisma.branchBatch.findFirst({
+          where: { branchId: existing.branchId, courseId: enrollment.courseId, batchId: enrollment.batchId, status: 'ACTIVE' },
+          select: {
+            batchId: true,
+            batchName: true,
+            batchTiming: true,
+            courseId: true,
+            courseName: true,
+            facultyId: true,
+            facultyName: true,
+            weekType: true,
+            mode: true,
+            courseStartDate: true,
+            courseEndDate: true,
+            weeklyOffDay: true,
+          },
+        }),
+      ]);
+      if (!courseRecord || !batchRecord) {
+        throw new AppError('The selected sequential course or batch is no longer active.', 400);
+      }
+      const courseDeadline = await calculateStudentFeeDeadline({
+        branchId: existing.branchId,
+        courseId: enrollment.courseId,
+        courseName: enrollment.courseName || courseRecord.name,
+        courseMode: enrollment.mode || batchRecord.mode,
+        batchId: enrollment.batchId,
+        batchName: batchRecord.batchName,
+        batchTiming: batchRecord.batchTiming,
+        facultyId: batchRecord.facultyId,
+        facultyName: batchRecord.facultyName,
+        classSchedule: enrollment.scheduleType || batchRecord.weekType,
+        courseStartDate: enrollment.startDate,
+        courseEndDate: enrollment.endDate || batchRecord.courseEndDate,
+        admissionDate: enrollment.startDate,
+        weeklyOffDay: batchRecord.weeklyOffDay,
+        course: courseRecord,
+      }, existing.branchId);
+      if (!courseDeadline?.progressDate) {
+        throw new AppError('Unable to calculate the 70% payment deadline for the selected course batch.', 400);
+      }
+      const existingInstallmentCount = (existing.installments || []).length;
+      const addedInstallments = installmentSchedule.slice(existingInstallmentCount);
+      if (installmentSchedule.length < existingInstallmentCount || !addedInstallments.length) {
+        throw new AppError('The payment schedule must include existing installments and the selected course payment plan.', 400);
+      }
+      const coursePaymentPlans = Array.isArray(courseRecord.paymentPlans)
+        ? courseRecord.paymentPlans
+        : Array.isArray(courseRecord.paymentPlanSelections)
+          ? courseRecord.paymentPlanSelections
+          : [];
+      const selectedPaymentPlan = coursePaymentPlans.find((plan) => [plan?.id, plan?.templateId, plan?.paymentPlanId]
+        .some((id) => normalizeString(id) === normalizeString(enrollment.paymentPlanId)));
+      if (coursePaymentPlans.length && !selectedPaymentPlan) {
+        throw new AppError('Select a payment plan configured for the assigned course.', 400);
+      }
+      const expectedInstallmentCount = Number(selectedPaymentPlan?.installmentCount || selectedPaymentPlan?.installments?.length || 0);
+      if (expectedInstallmentCount > 0 && addedInstallments.length !== expectedInstallmentCount) {
+        throw new AppError('The number of new installments must match the selected course payment plan.', 400);
+      }
+      const firstCoursePaymentDate = normalizeString(enrollment.startDate);
+      const courseInstallmentDates = distributeFeeDueDates(firstCoursePaymentDate, courseDeadline.progressDate, addedInstallments.length);
+      addedInstallments.forEach((installment, index) => {
+        installment.dueDate = courseInstallmentDates[index];
+      });
+      sequentialCourseActivation = true;
+    }
+  }
   const feePlan = await buildStudentFeePlan({
     studentData,
     installmentSchedule,
-    payload,
+    payload: sequentialCourseActivation
+      ? { ...payload, preserveInstallmentDates: true, sequentialCourseActivation: true }
+      : payload,
     branchId: existing.branchId,
     course: existing.course,
     existingStudent: existing,
