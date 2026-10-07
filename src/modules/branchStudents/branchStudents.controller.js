@@ -46,7 +46,7 @@ export const getCurrentBranchStudentCalendarHandler = asyncHandler(async (req, r
 });
 
 export const getBranchStudentCalendarByIdHandler = asyncHandler(async (req, res) => {
-  const calendar = await getBranchStudentCalendarById(req.params.studentId, req.query || {});
+  const calendar = await getBranchStudentCalendarById(req.params.studentId, req.query || {}, req.user);
   return sendSuccess(res, "Branch student calendar fetched successfully", calendar);
 });
 

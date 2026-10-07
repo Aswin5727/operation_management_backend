@@ -335,16 +335,69 @@ export async function getCurrentBranchStudentCalendar(user, query = {}) {
   };
 }
 
-export async function getBranchStudentCalendarById(studentId, query = {}) {
+export async function getBranchStudentCalendarById(studentId, query = {}, requester = {}) {
   const id = text(studentId);
   if (!id) throw new AppError("Student ID is required", 400);
 
   const student = await prisma.branchStudent.findFirst({
     where: { OR: [{ id }, { studentId: id }] },
-    select: { emailAddress: true, studentId: true },
+    select: {
+      id: true,
+      emailAddress: true,
+      studentId: true,
+      branchId: true,
+      courseId: true,
+      facultyId: true,
+      batchId: true,
+      courseEnrollments: {
+        where: { status: "ACTIVE" },
+        select: { branchId: true, courseId: true, facultyId: true, batchId: true },
+      },
+    },
   });
 
   if (!student) throw new AppError("Branch student profile not found", 404);
+
+  const role = text(requester.role).toUpperCase();
+  if (role === "BRANCH_ADMIN") {
+    const branch = await prisma.branch.findFirst({
+      where: { adminUserId: requester.id, status: "ACTIVE" },
+      select: { id: true },
+    });
+    if (!branch || branch.id !== student.branchId) throw new AppError("Student calendar is outside your branch", 404);
+  } else if (role === "FACULTY") {
+    const facultyMatches = await prisma.branchFaculty.findMany({
+      where: {
+        status: "ACTIVE",
+        OR: [
+          ...(text(requester.email) ? [{ email: { equals: text(requester.email), mode: "insensitive" } }] : []),
+          ...(text(requester.userCode) ? [{ facultyId: text(requester.userCode) }] : []),
+        ],
+      },
+      select: { id: true, facultyId: true, branchId: true },
+    });
+    const facultyRecords = facultyMatches.filter((faculty) => faculty.branchId === student.branchId);
+    const facultyIds = new Set(facultyRecords.flatMap((faculty) => [faculty.id, faculty.facultyId]));
+    const enrollments = student.courseEnrollments.filter((enrollment) => enrollment.branchId === student.branchId);
+    const assignedByEnrollment = enrollments.some((enrollment) => facultyIds.has(enrollment.facultyId));
+    const batchIds = [...new Set([
+      ...enrollments.map((enrollment) => enrollment.batchId),
+      student.batchId,
+    ].filter(Boolean))];
+    const assignedBatches = batchIds.length && facultyIds.size
+      ? await prisma.branchBatch.findMany({
+        where: { branchId: student.branchId, batchId: { in: batchIds }, status: "ACTIVE" },
+        select: { facultyId: true, branchFacultyId: true },
+      })
+      : [];
+    const assignedByBatch = assignedBatches.some((batch) => facultyIds.has(batch.facultyId) || facultyIds.has(batch.branchFacultyId));
+    const assignedPrimaryCourse = facultyIds.has(student.facultyId) && (!student.courseId || enrollments.some((enrollment) => enrollment.courseId === student.courseId));
+    if (!facultyIds.size || (!assignedByEnrollment && !assignedByBatch && !assignedPrimaryCourse)) {
+      throw new AppError("Student is not assigned to your faculty account", 404);
+    }
+  } else if (role !== "SUPER_ADMIN") {
+    throw new AppError("You are not authorized to view this student calendar", 403);
+  }
 
   return getCurrentBranchStudentCalendar(
     { email: student.emailAddress, userCode: student.studentId },
