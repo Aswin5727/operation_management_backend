@@ -898,15 +898,6 @@ async function ensureFacultyAcademicTestCompletionNotifications(user = {}) {
   }
 }
 
-function notificationDateKey(value) {
-  const raw = normalizeString(value);
-  const isoDate = raw.match(/^(\d{4})-(\d{2})-(\d{2})/);
-  if (isoDate) return `${isoDate[1]}-${isoDate[2]}-${isoDate[3]}`;
-  const dayFirstDate = raw.match(/^(\d{2})[-/](\d{2})[-/](\d{4})$/);
-  if (dayFirstDate) return `${dayFirstDate[3]}-${dayFirstDate[2]}-${dayFirstDate[1]}`;
-  return "";
-}
-
 async function ensureSequentialCourseSchedulingNotifications(user = {}) {
   const role = normalizeString(user?.role).toUpperCase();
   if (!["BRANCH_ADMIN", "STUDENT"].includes(role)) return;
@@ -941,17 +932,13 @@ async function ensureSequentialCourseSchedulingNotifications(user = {}) {
     const firstCourse = enrollments.find((enrollment) => Number(enrollment.sequenceOrder) === 1);
     const upcomingCourses = enrollments.filter((enrollment) => Number(enrollment.sequenceOrder) > 1 && enrollment.status === "PENDING");
     if (!firstCourse || firstCourse.status !== "ACTIVE" || !upcomingCourses.length) continue;
-
-    const firstEndDate = notificationDateKey(firstCourse.endDate || student.courseEndDate);
-    if (!firstEndDate) continue;
-    const timezone = student.branch?.timezone || "Asia/Kolkata";
-    const today = new Intl.DateTimeFormat("en-CA", {
-      timeZone: timezone,
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-    }).format(new Date());
-    if (firstEndDate > today) continue;
+    // Sequential scheduling is unlocked by actual course completion, not by
+    // the planned end date. Progress updates are stored per enrollment; use
+    // legacy student fields only when this is the primary course.
+    const isPrimaryCourse = String(firstCourse.courseId || "") === String(student.courseId || "");
+    const firstCourseProgress = firstCourse.courseProgress ?? (isPrimaryCourse ? student.courseProgress : null);
+    const firstCourseCompletedAt = firstCourse.courseCompletedAt || (isPrimaryCourse ? student.courseCompletedAt : null);
+    if (!firstCourseCompletedAt && !(Number(firstCourseProgress) >= 100)) continue;
 
     const studentUser = await prisma.user.findFirst({
       where: { email: { equals: student.emailAddress, mode: "insensitive" }, role: "STUDENT", active: true },
@@ -984,8 +971,8 @@ async function ensureSequentialCourseSchedulingNotifications(user = {}) {
           tone: "amber",
           title: isBranch ? "Schedule the student's next course" : "Your next course is ready to be scheduled",
           message: isBranch
-            ? `${student.studentName} (${student.studentId}) has completed the scheduled period for ${firstCourse.courseName || "Course 1"}. Please assign faculty, batch, and schedule for ${upcomingCourse.courseName || "the next course"}.`
-            : `You have completed the scheduled period for ${firstCourse.courseName || "your first course"}. Your branch administrator will assign faculty, batch, and schedule for ${upcomingCourse.courseName || "your next course"}.`,
+            ? `${student.studentName} (${student.studentId}) has completed ${firstCourse.courseName || "Course 1"}. Please assign faculty, batch, and schedule for ${upcomingCourse.courseName || "the next course"}.`
+            : `You have completed ${firstCourse.courseName || "your first course"}. Your branch administrator will assign faculty, batch, and schedule for ${upcomingCourse.courseName || "your next course"}.`,
           actionLabel: isBranch ? "Schedule next course" : "View course",
           targetUserId: recipient.targetUserId,
           targetBranchId: recipient.targetBranchId,

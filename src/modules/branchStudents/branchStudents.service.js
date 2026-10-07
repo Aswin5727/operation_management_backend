@@ -1812,7 +1812,14 @@ function getCourseEnrollmentInput(payload = {}) {
   return Array.isArray(payload.courses) ? payload.courses : payload.courseEnrollments;
 }
 
-function validateCourseEnrollmentInput(payload = {}, branchId) {
+function isBranchStudentCourseCompleted(student, courseId) {
+  const enrollment = (student?.courseEnrollments || []).find((item) => String(item.courseId) === String(courseId));
+  const completedAt = enrollment?.courseCompletedAt || (String(student?.courseId || '') === String(courseId) ? student?.courseCompletedAt : null);
+  const progress = enrollment?.courseProgress ?? (String(student?.courseId || '') === String(courseId) ? student?.courseProgress : null);
+  return Boolean(completedAt) || Number(progress) >= 100;
+}
+
+function validateCourseEnrollmentInput(payload = {}, branchId, existingStudent = null) {
   const raw = getCourseEnrollmentInput(payload);
   if (!Array.isArray(raw) || !raw.length) return { arrangementType: 'SINGLE', firstCourseId: '', enrollments: [] };
 
@@ -1838,7 +1845,9 @@ function validateCourseEnrollmentInput(payload = {}, branchId) {
   enrollments.forEach((item, index) => {
     item.arrangementType = arrangementType;
     item.sequenceOrder = arrangementType === 'SEQUENTIAL' ? Number(item.sequenceOrder || index + 1) : index + 1;
-    const isConfigured = arrangementType !== 'SEQUENTIAL' || item.courseId === firstCourseId;
+    const priorCourses = enrollments.filter((course) => course.sequenceOrder < item.sequenceOrder);
+    const priorCoursesCompleted = priorCourses.length === item.sequenceOrder - 1 && priorCourses.every((course) => isBranchStudentCourseCompleted(existingStudent, course.courseId));
+    const isConfigured = arrangementType !== 'SEQUENTIAL' || item.courseId === firstCourseId || priorCoursesCompleted;
     if (isConfigured) {
       for (const [field, label] of [['mode', 'course mode'], ['batchId', 'batch'], ['batchTiming', 'batch timing'], ['scheduleType', 'class schedule'], ['startDate', 'course start date']]) {
         if (!String(item[field] || '').trim()) throw new AppError(`${label} is required for course ${item.courseId}.`, 400);
@@ -1852,10 +1861,10 @@ function validateCourseEnrollmentInput(payload = {}, branchId) {
   return { arrangementType, firstCourseId, enrollments };
 }
 
-async function syncBranchStudentCourseEnrollments(tx, student, payload = {}) {
+async function syncBranchStudentCourseEnrollments(tx, student, payload = {}, existingStudent = null) {
   // Older clients do not send this field; preserve any existing enrollments.
   if (!Array.isArray(getCourseEnrollmentInput(payload))) return;
-  const validated = validateCourseEnrollmentInput(payload, student.branchId);
+  const validated = validateCourseEnrollmentInput(payload, student.branchId, existingStudent);
   const enrollments = validated.enrollments;
   if (!enrollments.length && student.courseId) {
     enrollments.push({
@@ -2637,7 +2646,7 @@ export async function getCurrentBranchStudentProfile(user) {
         },
       },
       installments: { orderBy: { installmentNumber: "asc" } },
-      courseEnrollments: { where: { status: "ACTIVE" }, orderBy: { createdAt: "asc" } },
+      courseEnrollments: { orderBy: [{ sequenceOrder: "asc" }, { createdAt: "asc" }] },
     },
   });
 
@@ -2655,7 +2664,7 @@ export async function updateBranchStudent(studentId, payload, actor = null) {
     include: {
       course: { select: { id: true, hours: true, duration: true, mode: true } },
       installments: { orderBy: { installmentNumber: "asc" } },
-      courseEnrollments: { where: { status: "ACTIVE" }, orderBy: { createdAt: "asc" } },
+      courseEnrollments: { orderBy: [{ sequenceOrder: "asc" }, { createdAt: "asc" }] },
       calendarAttendanceRecords: true,
     },
   });
@@ -2664,7 +2673,7 @@ export async function updateBranchStudent(studentId, payload, actor = null) {
     throw new AppError("Branch student not found", 404);
   }
 
-  validateCourseEnrollmentInput(payload, existing.branchId);
+  validateCourseEnrollmentInput(payload, existing.branchId, existing);
 
   let { studentData, installmentSchedule } = buildBranchStudentPayload(payload, existing);
   const selectedBatchId = normalizeString(studentData.batchId);
@@ -2742,7 +2751,7 @@ export async function updateBranchStudent(studentId, payload, actor = null) {
       data: studentUpdateData,
     });
 
-    await syncBranchStudentCourseEnrollments(tx, student, payload);
+    await syncBranchStudentCourseEnrollments(tx, student, payload, existing);
 
     await syncStudentCourseEnd(tx, student);
 
