@@ -4,6 +4,7 @@ import {
   getDiscontinuationRequest,
   listDiscontinuationRequests,
   reviewDiscontinuationByBranch,
+  reviewMotivationFollowUpByBranch,
   reviewDiscontinuationBySuperAdmin,
 } from "./studentDiscontinuation.service.js";
 
@@ -29,6 +30,11 @@ export const getDiscontinuationRequestHandler = asyncHandler(async (req, res) =>
 export const reviewDiscontinuationByBranchHandler = asyncHandler(async (req, res) => {
   const result = await reviewDiscontinuationByBranch(req.params.requestId, req.user, req.body || {});
   return sendSuccess(res, "Branch review saved successfully", result);
+});
+
+export const reviewMotivationFollowUpByBranchHandler = asyncHandler(async (req, res) => {
+  const result = await reviewMotivationFollowUpByBranch(req.params.studentId, req.user, req.body || {});
+  return sendSuccess(res, "Motivation follow-up outcome saved successfully", result);
 });
 
 export const reviewDiscontinuationBySuperAdminHandler = asyncHandler(async (req, res) => {

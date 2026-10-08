@@ -6,6 +6,7 @@ import {
   getDiscontinuationRequestHandler,
   listDiscontinuationRequestsHandler,
   reviewDiscontinuationByBranchHandler,
+  reviewMotivationFollowUpByBranchHandler,
   reviewDiscontinuationBySuperAdminHandler,
 } from "./studentDiscontinuation.controller.js";
 
@@ -28,6 +29,12 @@ router.get(
   authenticate,
   authorize("STUDENT", "BRANCH_ADMIN", "SUPER_ADMIN"),
   getDiscontinuationRequestHandler,
+);
+router.patch(
+  "/motivation/:studentId/branch-review",
+  authenticate,
+  authorize("BRANCH_ADMIN"),
+  reviewMotivationFollowUpByBranchHandler,
 );
 router.patch(
   "/:requestId/branch-review",

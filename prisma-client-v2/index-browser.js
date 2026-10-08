@@ -1193,6 +1193,10 @@ exports.Prisma.StudentDiscontinuationRequestScalarFieldEnum = {
   branchStudentId: 'branchStudentId',
   branchId: 'branchId',
   requestedByUserId: 'requestedByUserId',
+  refundRequested: 'refundRequested',
+  courseProgress: 'courseProgress',
+  progressEarnedAmount: 'progressEarnedAmount',
+  balanceDue: 'balanceDue',
   reason: 'reason',
   details: 'details',
   status: 'status',
@@ -1207,6 +1211,7 @@ exports.Prisma.StudentDiscontinuationRequestScalarFieldEnum = {
   superAdminReviewedBy: 'superAdminReviewedBy',
   superAdminReviewedAt: 'superAdminReviewedAt',
   superAdminReviewNote: 'superAdminReviewNote',
+  accessDeactivationAt: 'accessDeactivationAt',
   totalCourseFee: 'totalCourseFee',
   totalPaid: 'totalPaid',
   outstandingAmount: 'outstandingAmount',
@@ -1358,7 +1363,9 @@ exports.NotificationKind = exports.$Enums.NotificationKind = {
   EXAM_CANCELLED: 'EXAM_CANCELLED',
   ASSESSMENT_CANCELLED: 'ASSESSMENT_CANCELLED',
   STUDENT_MOTIVATION: 'STUDENT_MOTIVATION',
-  STUDENT_DISCONTINUATION: 'STUDENT_DISCONTINUATION'
+  STUDENT_DISCONTINUATION: 'STUDENT_DISCONTINUATION',
+  STUDENT_DISCOUNT_APPLIED: 'STUDENT_DISCOUNT_APPLIED',
+  SEQUENTIAL_COURSE_SCHEDULING_REQUIRED: 'SEQUENTIAL_COURSE_SCHEDULING_REQUIRED'
 };
 
 exports.CourseEditRequestStatus = exports.$Enums.CourseEditRequestStatus = {

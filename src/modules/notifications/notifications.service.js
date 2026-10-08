@@ -261,6 +261,18 @@ function buildNotificationWhere({
 } = {}) {
   const isFaculty = ["FACULTY", "STUDENT"].includes(String(user?.role || "").toUpperCase());
   const normalizedKind = normalizeString(kind).toUpperCase();
+  const isSuperAdmin = normalizeString(user?.role).toUpperCase() === "SUPER_ADMIN";
+  const superAdminDiscontinuationScope = isSuperAdmin
+    ? {
+        OR: [
+          { kind: { not: "STUDENT_DISCONTINUATION" } },
+          {
+            kind: "STUDENT_DISCONTINUATION",
+            requestDescription: { startsWith: "DISCONTINUATION_SUPER_REVIEW:" },
+          },
+        ],
+      }
+    : {};
 
   if (isFaculty) {
     return {
@@ -302,6 +314,7 @@ function buildNotificationWhere({
             in: Array.from(visibleKinds),
           },
         }),
+    ...superAdminDiscontinuationScope,
   };
 }
 

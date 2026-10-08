@@ -1545,6 +1545,8 @@ enum NotificationKind {
   ASSESSMENT_CANCELLED
   STUDENT_MOTIVATION
   STUDENT_DISCONTINUATION
+  STUDENT_DISCOUNT_APPLIED
+  SEQUENTIAL_COURSE_SCHEDULING_REQUIRED
 }
 
 enum DiscontinuationRequestStatus {
@@ -1578,35 +1580,41 @@ model MotivationMailHistory {
 }
 
 model StudentDiscontinuationRequest {
-  id                     String                       @id @default(cuid())
-  branchStudentId        String
-  branchId               String
-  requestedByUserId      String?
-  reason                 String
-  details                String?
-  status                 DiscontinuationRequestStatus @default(PENDING)
-  contactOutcome         String?
-  contactNotes           String?
-  contactedBy            String?
-  contactedAt            DateTime?
-  nextFollowUpDate       String?
-  branchReviewedBy       String?
-  branchReviewedAt       DateTime?
-  branchReviewNote       String?
-  superAdminReviewedBy   String?
-  superAdminReviewedAt   DateTime?
-  superAdminReviewNote   String?
-  totalCourseFee         Int                          @default(0)
-  totalPaid              Int                          @default(0)
-  outstandingAmount      Int                          @default(0)
-  refundEligibleAmount   Int                          @default(0)
-  waiverAmount           Int                          @default(0)
+  id                   String                       @id @default(cuid())
+  branchStudentId      String
+  branchId             String
+  requestedByUserId    String?
+  refundRequested      Boolean                      @default(false)
+  courseProgress       Int                          @default(0)
+  progressEarnedAmount Int                          @default(0)
+  balanceDue           Int                          @default(0)
+  reason               String
+  details              String?
+  status               DiscontinuationRequestStatus @default(PENDING)
+  contactOutcome       String?
+  contactNotes         String?
+  contactedBy          String?
+  contactedAt          DateTime?
+  nextFollowUpDate     String?
+  branchReviewedBy     String?
+  branchReviewedAt     DateTime?
+  branchReviewNote     String?
+  superAdminReviewedBy String?
+  superAdminReviewedAt DateTime?
+  superAdminReviewNote String?
+
+  accessDeactivationAt   DateTime?
+  totalCourseFee         Int           @default(0)
+  totalPaid              Int           @default(0)
+  outstandingAmount      Int           @default(0)
+  refundEligibleAmount   Int           @default(0)
+  waiverAmount           Int           @default(0)
   finalOutstandingAmount Int?
-  settlementStatus       String                       @default("PENDING_REVIEW")
+  settlementStatus       String        @default("PENDING_REVIEW")
   financeNote            String?
-  createdAt              DateTime                     @default(now())
-  updatedAt              DateTime                     @updatedAt
-  branchStudent          BranchStudent                @relation(fields: [branchStudentId], references: [id], onDelete: Cascade)
+  createdAt              DateTime      @default(now())
+  updatedAt              DateTime      @updatedAt
+  branchStudent          BranchStudent @relation(fields: [branchStudentId], references: [id], onDelete: Cascade)
 
   @@index([branchId, status, createdAt])
   @@index([branchStudentId, status])

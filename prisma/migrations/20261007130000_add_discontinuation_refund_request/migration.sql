@@ -1,0 +1,1 @@
+ALTER TABLE "StudentDiscontinuationRequest" ADD COLUMN "refundRequested" BOOLEAN NOT NULL DEFAULT false;

@@ -44,18 +44,40 @@ function countWorkingDays(startDate, endDate, student, holidayDates, leaveDates)
   return count;
 }
 
-function getLatestAbsenceStreak(records = []) {
+function getLatestAbsenceStreak(records = [], student, holidayDates, leaveDates, todayValue) {
   const sorted = [...records]
     .filter((record) => parseDate(record.attendanceDate))
     .sort((left, right) => left.attendanceDate.localeCompare(right.attendanceDate));
-  if (!sorted.length || sorted[sorted.length - 1].status !== "ABSENT") return null;
+  if (!sorted.length) return null;
 
-  let first = sorted.length - 1;
-  while (first > 0 && sorted[first - 1].status === "ABSENT") first -= 1;
-  const streak = sorted.slice(first);
-  return { startDate: streak[0].attendanceDate };
+  const recordByDate = new Map(sorted.map((record) => [record.attendanceDate, record]));
+  let latest = sorted[sorted.length - 1];
+  const latestDate = parseDate(latest.attendanceDate);
+  const todayDate = parseDate(typeof todayValue === "string" ? todayValue : dateText(todayValue));
+
+  // A missing working-day record is unmarked, not absent. Stop the streak there.
+  if (latestDate && todayDate && latestDate < todayDate) {
+    for (let cursor = addDays(latestDate, 1); cursor <= todayDate; cursor = addDays(cursor, 1)) {
+      if (!isWorkingDay(cursor, student, holidayDates, leaveDates)) continue;
+      const record = recordByDate.get(dateText(cursor));
+      if (!record || String(record.status).toUpperCase() !== "ABSENT") return null;
+      latest = record;
+    }
+  }
+
+  if (String(latest.status).toUpperCase() !== "ABSENT") return null;
+
+  let startDate = latest.attendanceDate;
+  let cursor = parseDate(latest.attendanceDate);
+  while (cursor) {
+    cursor = addDays(cursor, -1);
+    if (!isWorkingDay(cursor, student, holidayDates, leaveDates)) continue;
+    const previous = recordByDate.get(dateText(cursor));
+    if (!previous || String(previous.status).toUpperCase() !== "ABSENT") break;
+    startDate = dateText(cursor);
+  }
+  return { startDate };
 }
-
 function buildHolidayDates(holidays = [], branchId) {
   return new Set(
     holidays
@@ -114,14 +136,95 @@ async function createBranchFollowUpNotification(student, branch, absenceStartDat
   return true;
 }
 
-async function processStudent(student, today, holidays, leaves) {
-  const streak = getLatestAbsenceStreak(student.calendarAttendanceRecords);
-  if (!streak) return { scanned: 1, sent: 0, failed: 0, notified: 0 };
+function amount(value) {
+  const parsed = Number(String(value ?? "").replaceAll(",", ""));
+  return Number.isFinite(parsed) ? Math.max(0, Math.round(parsed)) : 0;
+}
 
-  const startDate = parseDate(streak.startDate);
-  if (!startDate) return { scanned: 1, sent: 0, failed: 0, notified: 0 };
+function motivationFinancialSnapshot(student) {
+  const installmentTotal = (student.installments || []).reduce((sum, item) => sum + amount(item.amount), 0);
+  const installmentPaid = (student.installments || []).reduce((sum, item) => sum + amount(item.amountPaid), 0);
+  const paymentTotal = (student.payments || []).reduce((sum, item) => sum + amount(item.amount), 0);
+  const totalCourseFee = installmentTotal || amount(student.courseAmount);
+  const totalPaid = paymentTotal || installmentPaid;
+  const courseProgress = Math.min(Math.max(amount(student.courseProgress), 0), 100);
+  const progressEarnedAmount = Math.round(totalCourseFee * (courseProgress / 100));
+  const balanceDue = Math.max(totalCourseFee - totalPaid, 0);
+  return {
+    courseProgress,
+    progressEarnedAmount,
+    balanceDue,
+    totalCourseFee,
+    totalPaid,
+    outstandingAmount: balanceDue,
+    refundEligibleAmount: 0,
+    waiverAmount: 0,
+    finalOutstandingAmount: balanceDue,
+    settlementStatus: balanceDue > 0 ? "SETTLEMENT_PENDING" : "SETTLED",
+  };
+}
+async function ensureMotivationDiscontinuationRequest(student, absenceStartDate, absenceWorkingDays) {
+  const existing = await prisma.studentDiscontinuationRequest.findFirst({
+    where: {
+      branchStudentId: student.id,
+      reason: "Long absence follow-up after motivation email",
+      status: { in: ["PENDING", "SUPER_ADMIN_REVIEW"] },
+    },
+    select: { id: true },
+  });
+  const snapshot = motivationFinancialSnapshot(student);
+  if (existing) {
+    await prisma.studentDiscontinuationRequest.update({
+      where: { id: existing.id },
+      data: snapshot,
+    });
+    return false;
+  }
+
+  await prisma.studentDiscontinuationRequest.create({
+    data: {
+      branchStudentId: student.id,
+      branchId: student.branchId,
+      reason: "Long absence follow-up after motivation email",
+      details: "Motivation email follow-up started after " + absenceWorkingDays + " working days of consecutive absence (from " + absenceStartDate + ").",
+      ...snapshot,
+      status: "PENDING",
+    },
+  });
+  return true;
+}
+
+async function clearMotivationDiscontinuationRequest(studentId) {
+  const result = await prisma.studentDiscontinuationRequest.updateMany({
+    where: {
+      branchStudentId: studentId,
+      reason: "Long absence follow-up after motivation email",
+      status: "PENDING",
+    },
+    data: {
+      status: "CANCELLED",
+      contactNotes: "Automatically closed because the student was marked present.",
+      updatedAt: new Date(),
+    },
+  });
+  return result.count;
+}
+async function processStudent(student, today, holidays, leaves) {
   const holidayDates = buildHolidayDates(holidays, student.branchId);
   const leaveDates = buildLeaveDates(leaves, student.branchId);
+  const streak = getLatestAbsenceStreak(
+    student.calendarAttendanceRecords,
+    student,
+    holidayDates,
+    leaveDates,
+    today,
+  );
+  if (!streak) {
+    await clearMotivationDiscontinuationRequest(student.id);
+    return { scanned: 1, sent: 0, failed: 0, notified: 0 };
+  }
+  const startDate = parseDate(streak.startDate);
+  if (!startDate) return { scanned: 1, sent: 0, failed: 0, notified: 0 };
   const absenceWorkingDays = countWorkingDays(startDate, today, student, holidayDates, leaveDates);
   const stageData = stageForDays(absenceWorkingDays);
   if (!stageData) return { scanned: 1, sent: 0, failed: 0, notified: 0 };
@@ -139,7 +242,10 @@ async function processStudent(student, today, holidays, leaves) {
         },
       },
     });
-    if (existing?.status === "SENT") continue;
+    if (existing?.status === "SENT") {
+      if (stage === STAGES[0]) await ensureMotivationDiscontinuationRequest(student, streak.startDate, absenceWorkingDays);
+      continue;
+    }
 
     try {
       await sendStudentMotivationEmail({
@@ -169,6 +275,7 @@ async function processStudent(student, today, holidays, leaves) {
         update: { absenceWorkingDays, status: "SENT", sentAt: new Date(), failureReason: null },
       });
       sent += 1;
+      if (stage === STAGES[0]) await ensureMotivationDiscontinuationRequest(student, streak.startDate, absenceWorkingDays);
     } catch (error) {
       failed += 1;
       await prisma.motivationMailHistory.upsert({
@@ -221,6 +328,8 @@ export async function runStudentMotivationSweep({ today = dateText(new Date()) }
         orderBy: { attendanceDate: "asc" },
         select: { attendanceDate: true, status: true },
       },
+      installments: { select: { amount: true, amountPaid: true } },
+      payments: { select: { amount: true } },
     },
   });
   const branchIds = [...new Set(students.map((student) => student.branchId))];

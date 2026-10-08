@@ -392,7 +392,9 @@ export const NotificationKind: {
   EXAM_CANCELLED: 'EXAM_CANCELLED',
   ASSESSMENT_CANCELLED: 'ASSESSMENT_CANCELLED',
   STUDENT_MOTIVATION: 'STUDENT_MOTIVATION',
-  STUDENT_DISCONTINUATION: 'STUDENT_DISCONTINUATION'
+  STUDENT_DISCONTINUATION: 'STUDENT_DISCONTINUATION',
+  STUDENT_DISCOUNT_APPLIED: 'STUDENT_DISCOUNT_APPLIED',
+  SEQUENTIAL_COURSE_SCHEDULING_REQUIRED: 'SEQUENTIAL_COURSE_SCHEDULING_REQUIRED'
 };
 
 export type NotificationKind = (typeof NotificationKind)[keyof typeof NotificationKind]
@@ -81651,6 +81653,9 @@ export namespace Prisma {
   }
 
   export type StudentDiscontinuationRequestAvgAggregateOutputType = {
+    courseProgress: number | null
+    progressEarnedAmount: number | null
+    balanceDue: number | null
     totalCourseFee: number | null
     totalPaid: number | null
     outstandingAmount: number | null
@@ -81660,6 +81665,9 @@ export namespace Prisma {
   }
 
   export type StudentDiscontinuationRequestSumAggregateOutputType = {
+    courseProgress: number | null
+    progressEarnedAmount: number | null
+    balanceDue: number | null
     totalCourseFee: number | null
     totalPaid: number | null
     outstandingAmount: number | null
@@ -81673,6 +81681,10 @@ export namespace Prisma {
     branchStudentId: string | null
     branchId: string | null
     requestedByUserId: string | null
+    refundRequested: boolean | null
+    courseProgress: number | null
+    progressEarnedAmount: number | null
+    balanceDue: number | null
     reason: string | null
     details: string | null
     status: $Enums.DiscontinuationRequestStatus | null
@@ -81687,6 +81699,7 @@ export namespace Prisma {
     superAdminReviewedBy: string | null
     superAdminReviewedAt: Date | null
     superAdminReviewNote: string | null
+    accessDeactivationAt: Date | null
     totalCourseFee: number | null
     totalPaid: number | null
     outstandingAmount: number | null
@@ -81704,6 +81717,10 @@ export namespace Prisma {
     branchStudentId: string | null
     branchId: string | null
     requestedByUserId: string | null
+    refundRequested: boolean | null
+    courseProgress: number | null
+    progressEarnedAmount: number | null
+    balanceDue: number | null
     reason: string | null
     details: string | null
     status: $Enums.DiscontinuationRequestStatus | null
@@ -81718,6 +81735,7 @@ export namespace Prisma {
     superAdminReviewedBy: string | null
     superAdminReviewedAt: Date | null
     superAdminReviewNote: string | null
+    accessDeactivationAt: Date | null
     totalCourseFee: number | null
     totalPaid: number | null
     outstandingAmount: number | null
@@ -81735,6 +81753,10 @@ export namespace Prisma {
     branchStudentId: number
     branchId: number
     requestedByUserId: number
+    refundRequested: number
+    courseProgress: number
+    progressEarnedAmount: number
+    balanceDue: number
     reason: number
     details: number
     status: number
@@ -81749,6 +81771,7 @@ export namespace Prisma {
     superAdminReviewedBy: number
     superAdminReviewedAt: number
     superAdminReviewNote: number
+    accessDeactivationAt: number
     totalCourseFee: number
     totalPaid: number
     outstandingAmount: number
@@ -81764,6 +81787,9 @@ export namespace Prisma {
 
 
   export type StudentDiscontinuationRequestAvgAggregateInputType = {
+    courseProgress?: true
+    progressEarnedAmount?: true
+    balanceDue?: true
     totalCourseFee?: true
     totalPaid?: true
     outstandingAmount?: true
@@ -81773,6 +81799,9 @@ export namespace Prisma {
   }
 
   export type StudentDiscontinuationRequestSumAggregateInputType = {
+    courseProgress?: true
+    progressEarnedAmount?: true
+    balanceDue?: true
     totalCourseFee?: true
     totalPaid?: true
     outstandingAmount?: true
@@ -81786,6 +81815,10 @@ export namespace Prisma {
     branchStudentId?: true
     branchId?: true
     requestedByUserId?: true
+    refundRequested?: true
+    courseProgress?: true
+    progressEarnedAmount?: true
+    balanceDue?: true
     reason?: true
     details?: true
     status?: true
@@ -81800,6 +81833,7 @@ export namespace Prisma {
     superAdminReviewedBy?: true
     superAdminReviewedAt?: true
     superAdminReviewNote?: true
+    accessDeactivationAt?: true
     totalCourseFee?: true
     totalPaid?: true
     outstandingAmount?: true
@@ -81817,6 +81851,10 @@ export namespace Prisma {
     branchStudentId?: true
     branchId?: true
     requestedByUserId?: true
+    refundRequested?: true
+    courseProgress?: true
+    progressEarnedAmount?: true
+    balanceDue?: true
     reason?: true
     details?: true
     status?: true
@@ -81831,6 +81869,7 @@ export namespace Prisma {
     superAdminReviewedBy?: true
     superAdminReviewedAt?: true
     superAdminReviewNote?: true
+    accessDeactivationAt?: true
     totalCourseFee?: true
     totalPaid?: true
     outstandingAmount?: true
@@ -81848,6 +81887,10 @@ export namespace Prisma {
     branchStudentId?: true
     branchId?: true
     requestedByUserId?: true
+    refundRequested?: true
+    courseProgress?: true
+    progressEarnedAmount?: true
+    balanceDue?: true
     reason?: true
     details?: true
     status?: true
@@ -81862,6 +81905,7 @@ export namespace Prisma {
     superAdminReviewedBy?: true
     superAdminReviewedAt?: true
     superAdminReviewNote?: true
+    accessDeactivationAt?: true
     totalCourseFee?: true
     totalPaid?: true
     outstandingAmount?: true
@@ -81966,6 +82010,10 @@ export namespace Prisma {
     branchStudentId: string
     branchId: string
     requestedByUserId: string | null
+    refundRequested: boolean
+    courseProgress: number
+    progressEarnedAmount: number
+    balanceDue: number
     reason: string
     details: string | null
     status: $Enums.DiscontinuationRequestStatus
@@ -81980,6 +82028,7 @@ export namespace Prisma {
     superAdminReviewedBy: string | null
     superAdminReviewedAt: Date | null
     superAdminReviewNote: string | null
+    accessDeactivationAt: Date | null
     totalCourseFee: number
     totalPaid: number
     outstandingAmount: number
@@ -82016,6 +82065,10 @@ export namespace Prisma {
     branchStudentId?: boolean
     branchId?: boolean
     requestedByUserId?: boolean
+    refundRequested?: boolean
+    courseProgress?: boolean
+    progressEarnedAmount?: boolean
+    balanceDue?: boolean
     reason?: boolean
     details?: boolean
     status?: boolean
@@ -82030,6 +82083,7 @@ export namespace Prisma {
     superAdminReviewedBy?: boolean
     superAdminReviewedAt?: boolean
     superAdminReviewNote?: boolean
+    accessDeactivationAt?: boolean
     totalCourseFee?: boolean
     totalPaid?: boolean
     outstandingAmount?: boolean
@@ -82048,6 +82102,10 @@ export namespace Prisma {
     branchStudentId?: boolean
     branchId?: boolean
     requestedByUserId?: boolean
+    refundRequested?: boolean
+    courseProgress?: boolean
+    progressEarnedAmount?: boolean
+    balanceDue?: boolean
     reason?: boolean
     details?: boolean
     status?: boolean
@@ -82062,6 +82120,7 @@ export namespace Prisma {
     superAdminReviewedBy?: boolean
     superAdminReviewedAt?: boolean
     superAdminReviewNote?: boolean
+    accessDeactivationAt?: boolean
     totalCourseFee?: boolean
     totalPaid?: boolean
     outstandingAmount?: boolean
@@ -82080,6 +82139,10 @@ export namespace Prisma {
     branchStudentId?: boolean
     branchId?: boolean
     requestedByUserId?: boolean
+    refundRequested?: boolean
+    courseProgress?: boolean
+    progressEarnedAmount?: boolean
+    balanceDue?: boolean
     reason?: boolean
     details?: boolean
     status?: boolean
@@ -82094,6 +82157,7 @@ export namespace Prisma {
     superAdminReviewedBy?: boolean
     superAdminReviewedAt?: boolean
     superAdminReviewNote?: boolean
+    accessDeactivationAt?: boolean
     totalCourseFee?: boolean
     totalPaid?: boolean
     outstandingAmount?: boolean
@@ -82112,6 +82176,10 @@ export namespace Prisma {
     branchStudentId?: boolean
     branchId?: boolean
     requestedByUserId?: boolean
+    refundRequested?: boolean
+    courseProgress?: boolean
+    progressEarnedAmount?: boolean
+    balanceDue?: boolean
     reason?: boolean
     details?: boolean
     status?: boolean
@@ -82126,6 +82194,7 @@ export namespace Prisma {
     superAdminReviewedBy?: boolean
     superAdminReviewedAt?: boolean
     superAdminReviewNote?: boolean
+    accessDeactivationAt?: boolean
     totalCourseFee?: boolean
     totalPaid?: boolean
     outstandingAmount?: boolean
@@ -82138,7 +82207,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type StudentDiscontinuationRequestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "branchStudentId" | "branchId" | "requestedByUserId" | "reason" | "details" | "status" | "contactOutcome" | "contactNotes" | "contactedBy" | "contactedAt" | "nextFollowUpDate" | "branchReviewedBy" | "branchReviewedAt" | "branchReviewNote" | "superAdminReviewedBy" | "superAdminReviewedAt" | "superAdminReviewNote" | "totalCourseFee" | "totalPaid" | "outstandingAmount" | "refundEligibleAmount" | "waiverAmount" | "finalOutstandingAmount" | "settlementStatus" | "financeNote" | "createdAt" | "updatedAt", ExtArgs["result"]["studentDiscontinuationRequest"]>
+  export type StudentDiscontinuationRequestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "branchStudentId" | "branchId" | "requestedByUserId" | "refundRequested" | "courseProgress" | "progressEarnedAmount" | "balanceDue" | "reason" | "details" | "status" | "contactOutcome" | "contactNotes" | "contactedBy" | "contactedAt" | "nextFollowUpDate" | "branchReviewedBy" | "branchReviewedAt" | "branchReviewNote" | "superAdminReviewedBy" | "superAdminReviewedAt" | "superAdminReviewNote" | "accessDeactivationAt" | "totalCourseFee" | "totalPaid" | "outstandingAmount" | "refundEligibleAmount" | "waiverAmount" | "finalOutstandingAmount" | "settlementStatus" | "financeNote" | "createdAt" | "updatedAt", ExtArgs["result"]["studentDiscontinuationRequest"]>
   export type StudentDiscontinuationRequestInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     branchStudent?: boolean | BranchStudentDefaultArgs<ExtArgs>
   }
@@ -82159,6 +82228,10 @@ export namespace Prisma {
       branchStudentId: string
       branchId: string
       requestedByUserId: string | null
+      refundRequested: boolean
+      courseProgress: number
+      progressEarnedAmount: number
+      balanceDue: number
       reason: string
       details: string | null
       status: $Enums.DiscontinuationRequestStatus
@@ -82173,6 +82246,7 @@ export namespace Prisma {
       superAdminReviewedBy: string | null
       superAdminReviewedAt: Date | null
       superAdminReviewNote: string | null
+      accessDeactivationAt: Date | null
       totalCourseFee: number
       totalPaid: number
       outstandingAmount: number
@@ -82611,6 +82685,10 @@ export namespace Prisma {
     readonly branchStudentId: FieldRef<"StudentDiscontinuationRequest", 'String'>
     readonly branchId: FieldRef<"StudentDiscontinuationRequest", 'String'>
     readonly requestedByUserId: FieldRef<"StudentDiscontinuationRequest", 'String'>
+    readonly refundRequested: FieldRef<"StudentDiscontinuationRequest", 'Boolean'>
+    readonly courseProgress: FieldRef<"StudentDiscontinuationRequest", 'Int'>
+    readonly progressEarnedAmount: FieldRef<"StudentDiscontinuationRequest", 'Int'>
+    readonly balanceDue: FieldRef<"StudentDiscontinuationRequest", 'Int'>
     readonly reason: FieldRef<"StudentDiscontinuationRequest", 'String'>
     readonly details: FieldRef<"StudentDiscontinuationRequest", 'String'>
     readonly status: FieldRef<"StudentDiscontinuationRequest", 'DiscontinuationRequestStatus'>
@@ -82625,6 +82703,7 @@ export namespace Prisma {
     readonly superAdminReviewedBy: FieldRef<"StudentDiscontinuationRequest", 'String'>
     readonly superAdminReviewedAt: FieldRef<"StudentDiscontinuationRequest", 'DateTime'>
     readonly superAdminReviewNote: FieldRef<"StudentDiscontinuationRequest", 'String'>
+    readonly accessDeactivationAt: FieldRef<"StudentDiscontinuationRequest", 'DateTime'>
     readonly totalCourseFee: FieldRef<"StudentDiscontinuationRequest", 'Int'>
     readonly totalPaid: FieldRef<"StudentDiscontinuationRequest", 'Int'>
     readonly outstandingAmount: FieldRef<"StudentDiscontinuationRequest", 'Int'>
@@ -88080,6 +88159,10 @@ export namespace Prisma {
     branchStudentId: 'branchStudentId',
     branchId: 'branchId',
     requestedByUserId: 'requestedByUserId',
+    refundRequested: 'refundRequested',
+    courseProgress: 'courseProgress',
+    progressEarnedAmount: 'progressEarnedAmount',
+    balanceDue: 'balanceDue',
     reason: 'reason',
     details: 'details',
     status: 'status',
@@ -88094,6 +88177,7 @@ export namespace Prisma {
     superAdminReviewedBy: 'superAdminReviewedBy',
     superAdminReviewedAt: 'superAdminReviewedAt',
     superAdminReviewNote: 'superAdminReviewNote',
+    accessDeactivationAt: 'accessDeactivationAt',
     totalCourseFee: 'totalCourseFee',
     totalPaid: 'totalPaid',
     outstandingAmount: 'outstandingAmount',
@@ -95160,6 +95244,10 @@ export namespace Prisma {
     branchStudentId?: StringFilter<"StudentDiscontinuationRequest"> | string
     branchId?: StringFilter<"StudentDiscontinuationRequest"> | string
     requestedByUserId?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
+    refundRequested?: BoolFilter<"StudentDiscontinuationRequest"> | boolean
+    courseProgress?: IntFilter<"StudentDiscontinuationRequest"> | number
+    progressEarnedAmount?: IntFilter<"StudentDiscontinuationRequest"> | number
+    balanceDue?: IntFilter<"StudentDiscontinuationRequest"> | number
     reason?: StringFilter<"StudentDiscontinuationRequest"> | string
     details?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
     status?: EnumDiscontinuationRequestStatusFilter<"StudentDiscontinuationRequest"> | $Enums.DiscontinuationRequestStatus
@@ -95174,6 +95262,7 @@ export namespace Prisma {
     superAdminReviewedBy?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
     superAdminReviewedAt?: DateTimeNullableFilter<"StudentDiscontinuationRequest"> | Date | string | null
     superAdminReviewNote?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
+    accessDeactivationAt?: DateTimeNullableFilter<"StudentDiscontinuationRequest"> | Date | string | null
     totalCourseFee?: IntFilter<"StudentDiscontinuationRequest"> | number
     totalPaid?: IntFilter<"StudentDiscontinuationRequest"> | number
     outstandingAmount?: IntFilter<"StudentDiscontinuationRequest"> | number
@@ -95192,6 +95281,10 @@ export namespace Prisma {
     branchStudentId?: SortOrder
     branchId?: SortOrder
     requestedByUserId?: SortOrderInput | SortOrder
+    refundRequested?: SortOrder
+    courseProgress?: SortOrder
+    progressEarnedAmount?: SortOrder
+    balanceDue?: SortOrder
     reason?: SortOrder
     details?: SortOrderInput | SortOrder
     status?: SortOrder
@@ -95206,6 +95299,7 @@ export namespace Prisma {
     superAdminReviewedBy?: SortOrderInput | SortOrder
     superAdminReviewedAt?: SortOrderInput | SortOrder
     superAdminReviewNote?: SortOrderInput | SortOrder
+    accessDeactivationAt?: SortOrderInput | SortOrder
     totalCourseFee?: SortOrder
     totalPaid?: SortOrder
     outstandingAmount?: SortOrder
@@ -95227,6 +95321,10 @@ export namespace Prisma {
     branchStudentId?: StringFilter<"StudentDiscontinuationRequest"> | string
     branchId?: StringFilter<"StudentDiscontinuationRequest"> | string
     requestedByUserId?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
+    refundRequested?: BoolFilter<"StudentDiscontinuationRequest"> | boolean
+    courseProgress?: IntFilter<"StudentDiscontinuationRequest"> | number
+    progressEarnedAmount?: IntFilter<"StudentDiscontinuationRequest"> | number
+    balanceDue?: IntFilter<"StudentDiscontinuationRequest"> | number
     reason?: StringFilter<"StudentDiscontinuationRequest"> | string
     details?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
     status?: EnumDiscontinuationRequestStatusFilter<"StudentDiscontinuationRequest"> | $Enums.DiscontinuationRequestStatus
@@ -95241,6 +95339,7 @@ export namespace Prisma {
     superAdminReviewedBy?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
     superAdminReviewedAt?: DateTimeNullableFilter<"StudentDiscontinuationRequest"> | Date | string | null
     superAdminReviewNote?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
+    accessDeactivationAt?: DateTimeNullableFilter<"StudentDiscontinuationRequest"> | Date | string | null
     totalCourseFee?: IntFilter<"StudentDiscontinuationRequest"> | number
     totalPaid?: IntFilter<"StudentDiscontinuationRequest"> | number
     outstandingAmount?: IntFilter<"StudentDiscontinuationRequest"> | number
@@ -95259,6 +95358,10 @@ export namespace Prisma {
     branchStudentId?: SortOrder
     branchId?: SortOrder
     requestedByUserId?: SortOrderInput | SortOrder
+    refundRequested?: SortOrder
+    courseProgress?: SortOrder
+    progressEarnedAmount?: SortOrder
+    balanceDue?: SortOrder
     reason?: SortOrder
     details?: SortOrderInput | SortOrder
     status?: SortOrder
@@ -95273,6 +95376,7 @@ export namespace Prisma {
     superAdminReviewedBy?: SortOrderInput | SortOrder
     superAdminReviewedAt?: SortOrderInput | SortOrder
     superAdminReviewNote?: SortOrderInput | SortOrder
+    accessDeactivationAt?: SortOrderInput | SortOrder
     totalCourseFee?: SortOrder
     totalPaid?: SortOrder
     outstandingAmount?: SortOrder
@@ -95298,6 +95402,10 @@ export namespace Prisma {
     branchStudentId?: StringWithAggregatesFilter<"StudentDiscontinuationRequest"> | string
     branchId?: StringWithAggregatesFilter<"StudentDiscontinuationRequest"> | string
     requestedByUserId?: StringNullableWithAggregatesFilter<"StudentDiscontinuationRequest"> | string | null
+    refundRequested?: BoolWithAggregatesFilter<"StudentDiscontinuationRequest"> | boolean
+    courseProgress?: IntWithAggregatesFilter<"StudentDiscontinuationRequest"> | number
+    progressEarnedAmount?: IntWithAggregatesFilter<"StudentDiscontinuationRequest"> | number
+    balanceDue?: IntWithAggregatesFilter<"StudentDiscontinuationRequest"> | number
     reason?: StringWithAggregatesFilter<"StudentDiscontinuationRequest"> | string
     details?: StringNullableWithAggregatesFilter<"StudentDiscontinuationRequest"> | string | null
     status?: EnumDiscontinuationRequestStatusWithAggregatesFilter<"StudentDiscontinuationRequest"> | $Enums.DiscontinuationRequestStatus
@@ -95312,6 +95420,7 @@ export namespace Prisma {
     superAdminReviewedBy?: StringNullableWithAggregatesFilter<"StudentDiscontinuationRequest"> | string | null
     superAdminReviewedAt?: DateTimeNullableWithAggregatesFilter<"StudentDiscontinuationRequest"> | Date | string | null
     superAdminReviewNote?: StringNullableWithAggregatesFilter<"StudentDiscontinuationRequest"> | string | null
+    accessDeactivationAt?: DateTimeNullableWithAggregatesFilter<"StudentDiscontinuationRequest"> | Date | string | null
     totalCourseFee?: IntWithAggregatesFilter<"StudentDiscontinuationRequest"> | number
     totalPaid?: IntWithAggregatesFilter<"StudentDiscontinuationRequest"> | number
     outstandingAmount?: IntWithAggregatesFilter<"StudentDiscontinuationRequest"> | number
@@ -103467,6 +103576,10 @@ export namespace Prisma {
     id?: string
     branchId: string
     requestedByUserId?: string | null
+    refundRequested?: boolean
+    courseProgress?: number
+    progressEarnedAmount?: number
+    balanceDue?: number
     reason: string
     details?: string | null
     status?: $Enums.DiscontinuationRequestStatus
@@ -103481,6 +103594,7 @@ export namespace Prisma {
     superAdminReviewedBy?: string | null
     superAdminReviewedAt?: Date | string | null
     superAdminReviewNote?: string | null
+    accessDeactivationAt?: Date | string | null
     totalCourseFee?: number
     totalPaid?: number
     outstandingAmount?: number
@@ -103499,6 +103613,10 @@ export namespace Prisma {
     branchStudentId: string
     branchId: string
     requestedByUserId?: string | null
+    refundRequested?: boolean
+    courseProgress?: number
+    progressEarnedAmount?: number
+    balanceDue?: number
     reason: string
     details?: string | null
     status?: $Enums.DiscontinuationRequestStatus
@@ -103513,6 +103631,7 @@ export namespace Prisma {
     superAdminReviewedBy?: string | null
     superAdminReviewedAt?: Date | string | null
     superAdminReviewNote?: string | null
+    accessDeactivationAt?: Date | string | null
     totalCourseFee?: number
     totalPaid?: number
     outstandingAmount?: number
@@ -103529,6 +103648,10 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     branchId?: StringFieldUpdateOperationsInput | string
     requestedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    refundRequested?: BoolFieldUpdateOperationsInput | boolean
+    courseProgress?: IntFieldUpdateOperationsInput | number
+    progressEarnedAmount?: IntFieldUpdateOperationsInput | number
+    balanceDue?: IntFieldUpdateOperationsInput | number
     reason?: StringFieldUpdateOperationsInput | string
     details?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumDiscontinuationRequestStatusFieldUpdateOperationsInput | $Enums.DiscontinuationRequestStatus
@@ -103543,6 +103666,7 @@ export namespace Prisma {
     superAdminReviewedBy?: NullableStringFieldUpdateOperationsInput | string | null
     superAdminReviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     superAdminReviewNote?: NullableStringFieldUpdateOperationsInput | string | null
+    accessDeactivationAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     totalCourseFee?: IntFieldUpdateOperationsInput | number
     totalPaid?: IntFieldUpdateOperationsInput | number
     outstandingAmount?: IntFieldUpdateOperationsInput | number
@@ -103561,6 +103685,10 @@ export namespace Prisma {
     branchStudentId?: StringFieldUpdateOperationsInput | string
     branchId?: StringFieldUpdateOperationsInput | string
     requestedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    refundRequested?: BoolFieldUpdateOperationsInput | boolean
+    courseProgress?: IntFieldUpdateOperationsInput | number
+    progressEarnedAmount?: IntFieldUpdateOperationsInput | number
+    balanceDue?: IntFieldUpdateOperationsInput | number
     reason?: StringFieldUpdateOperationsInput | string
     details?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumDiscontinuationRequestStatusFieldUpdateOperationsInput | $Enums.DiscontinuationRequestStatus
@@ -103575,6 +103703,7 @@ export namespace Prisma {
     superAdminReviewedBy?: NullableStringFieldUpdateOperationsInput | string | null
     superAdminReviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     superAdminReviewNote?: NullableStringFieldUpdateOperationsInput | string | null
+    accessDeactivationAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     totalCourseFee?: IntFieldUpdateOperationsInput | number
     totalPaid?: IntFieldUpdateOperationsInput | number
     outstandingAmount?: IntFieldUpdateOperationsInput | number
@@ -103592,6 +103721,10 @@ export namespace Prisma {
     branchStudentId: string
     branchId: string
     requestedByUserId?: string | null
+    refundRequested?: boolean
+    courseProgress?: number
+    progressEarnedAmount?: number
+    balanceDue?: number
     reason: string
     details?: string | null
     status?: $Enums.DiscontinuationRequestStatus
@@ -103606,6 +103739,7 @@ export namespace Prisma {
     superAdminReviewedBy?: string | null
     superAdminReviewedAt?: Date | string | null
     superAdminReviewNote?: string | null
+    accessDeactivationAt?: Date | string | null
     totalCourseFee?: number
     totalPaid?: number
     outstandingAmount?: number
@@ -103622,6 +103756,10 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     branchId?: StringFieldUpdateOperationsInput | string
     requestedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    refundRequested?: BoolFieldUpdateOperationsInput | boolean
+    courseProgress?: IntFieldUpdateOperationsInput | number
+    progressEarnedAmount?: IntFieldUpdateOperationsInput | number
+    balanceDue?: IntFieldUpdateOperationsInput | number
     reason?: StringFieldUpdateOperationsInput | string
     details?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumDiscontinuationRequestStatusFieldUpdateOperationsInput | $Enums.DiscontinuationRequestStatus
@@ -103636,6 +103774,7 @@ export namespace Prisma {
     superAdminReviewedBy?: NullableStringFieldUpdateOperationsInput | string | null
     superAdminReviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     superAdminReviewNote?: NullableStringFieldUpdateOperationsInput | string | null
+    accessDeactivationAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     totalCourseFee?: IntFieldUpdateOperationsInput | number
     totalPaid?: IntFieldUpdateOperationsInput | number
     outstandingAmount?: IntFieldUpdateOperationsInput | number
@@ -103653,6 +103792,10 @@ export namespace Prisma {
     branchStudentId?: StringFieldUpdateOperationsInput | string
     branchId?: StringFieldUpdateOperationsInput | string
     requestedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    refundRequested?: BoolFieldUpdateOperationsInput | boolean
+    courseProgress?: IntFieldUpdateOperationsInput | number
+    progressEarnedAmount?: IntFieldUpdateOperationsInput | number
+    balanceDue?: IntFieldUpdateOperationsInput | number
     reason?: StringFieldUpdateOperationsInput | string
     details?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumDiscontinuationRequestStatusFieldUpdateOperationsInput | $Enums.DiscontinuationRequestStatus
@@ -103667,6 +103810,7 @@ export namespace Prisma {
     superAdminReviewedBy?: NullableStringFieldUpdateOperationsInput | string | null
     superAdminReviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     superAdminReviewNote?: NullableStringFieldUpdateOperationsInput | string | null
+    accessDeactivationAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     totalCourseFee?: IntFieldUpdateOperationsInput | number
     totalPaid?: IntFieldUpdateOperationsInput | number
     outstandingAmount?: IntFieldUpdateOperationsInput | number
@@ -109094,6 +109238,10 @@ export namespace Prisma {
     branchStudentId?: SortOrder
     branchId?: SortOrder
     requestedByUserId?: SortOrder
+    refundRequested?: SortOrder
+    courseProgress?: SortOrder
+    progressEarnedAmount?: SortOrder
+    balanceDue?: SortOrder
     reason?: SortOrder
     details?: SortOrder
     status?: SortOrder
@@ -109108,6 +109256,7 @@ export namespace Prisma {
     superAdminReviewedBy?: SortOrder
     superAdminReviewedAt?: SortOrder
     superAdminReviewNote?: SortOrder
+    accessDeactivationAt?: SortOrder
     totalCourseFee?: SortOrder
     totalPaid?: SortOrder
     outstandingAmount?: SortOrder
@@ -109121,6 +109270,9 @@ export namespace Prisma {
   }
 
   export type StudentDiscontinuationRequestAvgOrderByAggregateInput = {
+    courseProgress?: SortOrder
+    progressEarnedAmount?: SortOrder
+    balanceDue?: SortOrder
     totalCourseFee?: SortOrder
     totalPaid?: SortOrder
     outstandingAmount?: SortOrder
@@ -109134,6 +109286,10 @@ export namespace Prisma {
     branchStudentId?: SortOrder
     branchId?: SortOrder
     requestedByUserId?: SortOrder
+    refundRequested?: SortOrder
+    courseProgress?: SortOrder
+    progressEarnedAmount?: SortOrder
+    balanceDue?: SortOrder
     reason?: SortOrder
     details?: SortOrder
     status?: SortOrder
@@ -109148,6 +109304,7 @@ export namespace Prisma {
     superAdminReviewedBy?: SortOrder
     superAdminReviewedAt?: SortOrder
     superAdminReviewNote?: SortOrder
+    accessDeactivationAt?: SortOrder
     totalCourseFee?: SortOrder
     totalPaid?: SortOrder
     outstandingAmount?: SortOrder
@@ -109165,6 +109322,10 @@ export namespace Prisma {
     branchStudentId?: SortOrder
     branchId?: SortOrder
     requestedByUserId?: SortOrder
+    refundRequested?: SortOrder
+    courseProgress?: SortOrder
+    progressEarnedAmount?: SortOrder
+    balanceDue?: SortOrder
     reason?: SortOrder
     details?: SortOrder
     status?: SortOrder
@@ -109179,6 +109340,7 @@ export namespace Prisma {
     superAdminReviewedBy?: SortOrder
     superAdminReviewedAt?: SortOrder
     superAdminReviewNote?: SortOrder
+    accessDeactivationAt?: SortOrder
     totalCourseFee?: SortOrder
     totalPaid?: SortOrder
     outstandingAmount?: SortOrder
@@ -109192,6 +109354,9 @@ export namespace Prisma {
   }
 
   export type StudentDiscontinuationRequestSumOrderByAggregateInput = {
+    courseProgress?: SortOrder
+    progressEarnedAmount?: SortOrder
+    balanceDue?: SortOrder
     totalCourseFee?: SortOrder
     totalPaid?: SortOrder
     outstandingAmount?: SortOrder
@@ -125809,6 +125974,10 @@ export namespace Prisma {
     id?: string
     branchId: string
     requestedByUserId?: string | null
+    refundRequested?: boolean
+    courseProgress?: number
+    progressEarnedAmount?: number
+    balanceDue?: number
     reason: string
     details?: string | null
     status?: $Enums.DiscontinuationRequestStatus
@@ -125823,6 +125992,7 @@ export namespace Prisma {
     superAdminReviewedBy?: string | null
     superAdminReviewedAt?: Date | string | null
     superAdminReviewNote?: string | null
+    accessDeactivationAt?: Date | string | null
     totalCourseFee?: number
     totalPaid?: number
     outstandingAmount?: number
@@ -125839,6 +126009,10 @@ export namespace Prisma {
     id?: string
     branchId: string
     requestedByUserId?: string | null
+    refundRequested?: boolean
+    courseProgress?: number
+    progressEarnedAmount?: number
+    balanceDue?: number
     reason: string
     details?: string | null
     status?: $Enums.DiscontinuationRequestStatus
@@ -125853,6 +126027,7 @@ export namespace Prisma {
     superAdminReviewedBy?: string | null
     superAdminReviewedAt?: Date | string | null
     superAdminReviewNote?: string | null
+    accessDeactivationAt?: Date | string | null
     totalCourseFee?: number
     totalPaid?: number
     outstandingAmount?: number
@@ -126255,6 +126430,10 @@ export namespace Prisma {
     branchStudentId?: StringFilter<"StudentDiscontinuationRequest"> | string
     branchId?: StringFilter<"StudentDiscontinuationRequest"> | string
     requestedByUserId?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
+    refundRequested?: BoolFilter<"StudentDiscontinuationRequest"> | boolean
+    courseProgress?: IntFilter<"StudentDiscontinuationRequest"> | number
+    progressEarnedAmount?: IntFilter<"StudentDiscontinuationRequest"> | number
+    balanceDue?: IntFilter<"StudentDiscontinuationRequest"> | number
     reason?: StringFilter<"StudentDiscontinuationRequest"> | string
     details?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
     status?: EnumDiscontinuationRequestStatusFilter<"StudentDiscontinuationRequest"> | $Enums.DiscontinuationRequestStatus
@@ -126269,6 +126448,7 @@ export namespace Prisma {
     superAdminReviewedBy?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
     superAdminReviewedAt?: DateTimeNullableFilter<"StudentDiscontinuationRequest"> | Date | string | null
     superAdminReviewNote?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
+    accessDeactivationAt?: DateTimeNullableFilter<"StudentDiscontinuationRequest"> | Date | string | null
     totalCourseFee?: IntFilter<"StudentDiscontinuationRequest"> | number
     totalPaid?: IntFilter<"StudentDiscontinuationRequest"> | number
     outstandingAmount?: IntFilter<"StudentDiscontinuationRequest"> | number
@@ -142330,6 +142510,10 @@ export namespace Prisma {
     id?: string
     branchId: string
     requestedByUserId?: string | null
+    refundRequested?: boolean
+    courseProgress?: number
+    progressEarnedAmount?: number
+    balanceDue?: number
     reason: string
     details?: string | null
     status?: $Enums.DiscontinuationRequestStatus
@@ -142344,6 +142528,7 @@ export namespace Prisma {
     superAdminReviewedBy?: string | null
     superAdminReviewedAt?: Date | string | null
     superAdminReviewNote?: string | null
+    accessDeactivationAt?: Date | string | null
     totalCourseFee?: number
     totalPaid?: number
     outstandingAmount?: number
@@ -142928,6 +143113,10 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     branchId?: StringFieldUpdateOperationsInput | string
     requestedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    refundRequested?: BoolFieldUpdateOperationsInput | boolean
+    courseProgress?: IntFieldUpdateOperationsInput | number
+    progressEarnedAmount?: IntFieldUpdateOperationsInput | number
+    balanceDue?: IntFieldUpdateOperationsInput | number
     reason?: StringFieldUpdateOperationsInput | string
     details?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumDiscontinuationRequestStatusFieldUpdateOperationsInput | $Enums.DiscontinuationRequestStatus
@@ -142942,6 +143131,7 @@ export namespace Prisma {
     superAdminReviewedBy?: NullableStringFieldUpdateOperationsInput | string | null
     superAdminReviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     superAdminReviewNote?: NullableStringFieldUpdateOperationsInput | string | null
+    accessDeactivationAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     totalCourseFee?: IntFieldUpdateOperationsInput | number
     totalPaid?: IntFieldUpdateOperationsInput | number
     outstandingAmount?: IntFieldUpdateOperationsInput | number
@@ -142958,6 +143148,10 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     branchId?: StringFieldUpdateOperationsInput | string
     requestedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    refundRequested?: BoolFieldUpdateOperationsInput | boolean
+    courseProgress?: IntFieldUpdateOperationsInput | number
+    progressEarnedAmount?: IntFieldUpdateOperationsInput | number
+    balanceDue?: IntFieldUpdateOperationsInput | number
     reason?: StringFieldUpdateOperationsInput | string
     details?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumDiscontinuationRequestStatusFieldUpdateOperationsInput | $Enums.DiscontinuationRequestStatus
@@ -142972,6 +143166,7 @@ export namespace Prisma {
     superAdminReviewedBy?: NullableStringFieldUpdateOperationsInput | string | null
     superAdminReviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     superAdminReviewNote?: NullableStringFieldUpdateOperationsInput | string | null
+    accessDeactivationAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     totalCourseFee?: IntFieldUpdateOperationsInput | number
     totalPaid?: IntFieldUpdateOperationsInput | number
     outstandingAmount?: IntFieldUpdateOperationsInput | number
@@ -142988,6 +143183,10 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     branchId?: StringFieldUpdateOperationsInput | string
     requestedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    refundRequested?: BoolFieldUpdateOperationsInput | boolean
+    courseProgress?: IntFieldUpdateOperationsInput | number
+    progressEarnedAmount?: IntFieldUpdateOperationsInput | number
+    balanceDue?: IntFieldUpdateOperationsInput | number
     reason?: StringFieldUpdateOperationsInput | string
     details?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumDiscontinuationRequestStatusFieldUpdateOperationsInput | $Enums.DiscontinuationRequestStatus
@@ -143002,6 +143201,7 @@ export namespace Prisma {
     superAdminReviewedBy?: NullableStringFieldUpdateOperationsInput | string | null
     superAdminReviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     superAdminReviewNote?: NullableStringFieldUpdateOperationsInput | string | null
+    accessDeactivationAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     totalCourseFee?: IntFieldUpdateOperationsInput | number
     totalPaid?: IntFieldUpdateOperationsInput | number
     outstandingAmount?: IntFieldUpdateOperationsInput | number

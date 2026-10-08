@@ -1545,6 +1545,8 @@ enum NotificationKind {
   ASSESSMENT_CANCELLED
   STUDENT_MOTIVATION
   STUDENT_DISCONTINUATION
+  STUDENT_DISCOUNT_APPLIED
+  SEQUENTIAL_COURSE_SCHEDULING_REQUIRED
 }
 
 enum DiscontinuationRequestStatus {
@@ -1582,6 +1584,10 @@ model StudentDiscontinuationRequest {
   branchStudentId       String
   branchId              String
   requestedByUserId     String?
+  refundRequested      Boolean                        @default(false)
+  courseProgress       Int                            @default(0)
+  progressEarnedAmount Int                            @default(0)
+  balanceDue           Int                            @default(0)
   reason                String
   details               String?
   status                DiscontinuationRequestStatus   @default(PENDING)
@@ -1595,7 +1601,8 @@ model StudentDiscontinuationRequest {
   branchReviewNote     String?
   superAdminReviewedBy String?
   superAdminReviewedAt DateTime?
-  superAdminReviewNote String?
+  superAdminReviewNote String?
+  accessDeactivationAt DateTime?
   totalCourseFee       Int                            @default(0)
   totalPaid            Int                            @default(0)
   outstandingAmount    Int                            @default(0)
