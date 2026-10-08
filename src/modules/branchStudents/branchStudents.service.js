@@ -414,11 +414,102 @@ async function buildStudentFeePlan({ studentData, installmentSchedule, payload, 
         studentData.finalCourseAmount ?? studentData.totalAmount ?? studentData.afterDiscount ?? studentData.courseAmount ?? 0,
       ).replace(/,/g, "")) || 0;
 
+  // Sequential students share one installment ledger, but every active course
+  // contributes its own configured installment plan. Rebuild the amounts from
+  // those course plans on activation/edit so a stale or course-only frontend
+  // schedule cannot fail the package-total validation (or charge one course
+  // twice). Keep the supplied due dates and existing payment statuses.
+  if (
+    isSequentialPackage
+    && payload?.preserveInstallmentDates === true
+    && payload?.sequentialCourseActivation === true
+    && Array.isArray(courseEnrollmentInput)
+  ) {
+    const activeEnrollments = [...billableEnrollments]
+      .sort((left, right) => Number(left?.sequenceOrder || 0) - Number(right?.sequenceOrder || 0));
+    const courseIds = activeEnrollments.map((enrollment) => normalizeString(enrollment?.courseId)).filter(Boolean);
+    const courseRecords = courseIds.length
+      ? await prisma.branchCourse.findMany({
+          where: { branchId, id: { in: courseIds } },
+          select: { id: true, paymentPlans: true, paymentPlanSelections: true },
+        })
+      : [];
+    const courseById = new Map(courseRecords.map((record) => [String(record.id), record]));
+    const persistedInstallments = Array.isArray(existingStudent?.installments)
+      ? [...existingStudent.installments].sort((left, right) => Number(left.installmentNumber) - Number(right.installmentNumber))
+      : [];
+    const enrollmentPlans = activeEnrollments.map((enrollment, enrollmentIndex) => {
+      const courseRecord = courseById.get(normalizeString(enrollment?.courseId));
+      const configuredPlans = Array.isArray(courseRecord?.paymentPlans)
+        ? courseRecord.paymentPlans
+        : Array.isArray(courseRecord?.paymentPlanSelections)
+          ? courseRecord.paymentPlanSelections
+          : [];
+      const paymentPlanId = enrollment?.paymentPlanId
+        || (enrollmentIndex === 0 ? payload?.paymentPlanId || existingStudent?.paymentPlanId : "");
+      const selectedPlan = configuredPlans.find((plan) => [plan?.id, plan?.templateId, plan?.paymentPlanId]
+        .some((id) => normalizeString(id) === normalizeString(paymentPlanId)));
+      const planRows = Array.isArray(selectedPlan?.installments) ? selectedPlan.installments : [];
+      const count = Math.max(0, Number(selectedPlan?.installmentCount || planRows.length || 0));
+      const grossAmount = Number(String(enrollment?.totalCourseAmount ?? enrollment?.courseAmount ?? enrollment?.totalAmount ?? 0).replace(/,/g, "")) || 0;
+      const courseFee = calculateCourseDiscount(
+        grossAmount,
+        enrollment?.discountType,
+        enrollment?.discountValue ?? enrollment?.studentDiscountAmount ?? 0,
+      ).finalCourseAmount;
+      return { count, courseFee };
+    });
+    const expectedInstallmentCount = enrollmentPlans.reduce((sum, item) => sum + item.count, 0);
+    const incomingScheduleOffset = Math.max(0, expectedInstallmentCount - installmentSchedule.length);
+    const normalizedSchedule = [];
+    let canNormalizeSchedule = activeEnrollments.length > 0;
+
+    for (const { count, courseFee } of enrollmentPlans) {
+
+      if (!count || !(courseFee >= 0)) {
+        canNormalizeSchedule = false;
+        break;
+      }
+
+      const installmentCourseFee = Math.round(courseFee);
+      let balancedAmount = Math.round((installmentCourseFee / count) / 1000) * 1000;
+      while (balancedAmount > 0 && balancedAmount * (count - 1) > installmentCourseFee) balancedAmount -= 1000;
+      const balancedAmounts = [
+        ...Array.from({ length: count - 1 }, () => balancedAmount),
+        installmentCourseFee - balancedAmount * (count - 1),
+      ];
+      for (let index = 0; index < count; index += 1) {
+        const installmentIndex = normalizedSchedule.length;
+        const incomingIndex = installmentIndex - incomingScheduleOffset;
+        const incoming = incomingIndex >= 0 ? installmentSchedule[incomingIndex] || {} : {};
+        const persisted = persistedInstallments[installmentIndex] || {};
+        // Apply the rounded split consistently to every active sequential course
+        // (including Course 1); retain its dates and existing payment state.
+        const amount = balancedAmounts[index];
+        normalizedSchedule.push({
+          ...incoming,
+          installmentNumber: installmentIndex + 1,
+          amount,
+          dueDate: incoming.dueDate || persisted.dueDate || null,
+          status: persisted.status || incoming.status || "Pending",
+          paymentMethod: persisted.paymentMethod || incoming.paymentMethod || null,
+          remarks: incoming.remarks || persisted.remarks || null,
+          paidAt: persisted.paidAt || incoming.paidAt || null,
+        });
+      }
+    }
+
+    if (canNormalizeSchedule && normalizedSchedule.length) {
+      installmentSchedule = normalizedSchedule;
+    }
+  }
+
   // BranchStudent.courseAmount is the package fee used by the shared installment
   // schedule. Each individual fee remains on its BranchStudentCourse enrollment.
   if (combinedCourseFee > 0) studentData.courseAmount = Math.round(combinedCourseFee);
   const scheduledTotal = installmentSchedule.reduce((sum, installment) => sum + Number(installment.amount || 0), 0);
-  if (totalFee > 0 && Math.abs(scheduledTotal - totalFee) > 0.01) {
+  const expectedScheduledTotal = payload?.sequentialCourseActivation === true ? Math.round(totalFee) : totalFee;
+  if (totalFee > 0 && Math.abs(scheduledTotal - expectedScheduledTotal) > 0.01) {
     throw new AppError("Installment amounts must equal the total course fee", 400);
   }
 
