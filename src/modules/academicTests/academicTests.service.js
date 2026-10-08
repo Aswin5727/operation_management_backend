@@ -1035,14 +1035,17 @@ export async function getBranchAcademicTestReport(actor, shareId) {
 
 export async function getBranchStudentAcademicReports(actor, studentId) {
   const branchId = await branchReportScope(actor);
-  const student = await prisma.branchStudent.findFirst({ where: { branchId, studentId: text(studentId), recordStatus: "ACTIVE" }, select: { id: true, studentId: true, studentName: true, emailAddress: true, courseName: true, batchName: true, batchId: true } });
+  const student = await prisma.branchStudent.findFirst({ where: { branchId, studentId: text(studentId), recordStatus: "ACTIVE" }, select: { id: true, studentId: true, studentName: true, emailAddress: true, courseName: true, batchName: true, batchId: true, courseEnrollments: { select: { batchId: true } } } });
   if (!student) throw new AppError("Student not found in this branch.", 404);
-  const batches = await prisma.branchBatch.findMany({ where: { branchId, OR: [{ id: student.batchId }, { batchId: student.batchId }] }, select: { id: true, batchId: true } });
+  const studentBatchIds = [...new Set([student.batchId, ...(student.courseEnrollments || []).map((enrollment) => enrollment.batchId)].map(text).filter(Boolean))];
+  const batches = studentBatchIds.length
+    ? await prisma.branchBatch.findMany({ where: { branchId, OR: [{ id: { in: studentBatchIds } }, { batchId: { in: studentBatchIds } }] }, select: { id: true, batchId: true } })
+    : [];
   const batchIds = new Set(batches.flatMap((batch) => [batch.id, batch.batchId]).filter(Boolean));
   const shares = await prisma.facultyReportShare.findMany({ where: { branchId, reportType: "ACADEMIC_TEST", status: "SENT", batchId: { in: [...batchIds] } }, orderBy: { sentAt: "asc" } });
+  if (!shares.length) return { student, items: [], evaluations: [] };
   const items = [];
-  const reportShares = shares.length ? shares : [{ id: "configured", academicTestIds: [] }];
-  for (const share of reportShares) {
+  for (const share of shares) {
     const batch = await prisma.branchBatch.findUnique({ where: { id: share.batchId }, select: { id: true, batchId: true, batchName: true, batchTiming: true, courseName: true, branchCourseId: true, courseId: true } });
     if (!batch) continue;
     const report = await buildAcademicReport(actor, batch, [student.id], Array.isArray(share.academicTestIds) ? share.academicTestIds : [], true);

@@ -2004,8 +2004,11 @@ async function syncBranchStudentCourseEnrollments(tx, student, payload = {}, exi
             status: 'ACTIVE',
           },
           select: {
+            batchId: true,
+            courseId: true,
             batchName: true,
             batchTiming: true,
+            totalSeats: true,
             facultyId: true,
             facultyName: true,
             weekType: true,
@@ -2262,12 +2265,19 @@ async function ensureAvailableBatchCapacity(batch, excludeStudentId = null) {
   if (totalStudentCount >= Number(batch?.totalSeats || 0)) throw new AppError('This batch has reached its total seat capacity.', 400)
 }
 
-async function ensureUniqueBranchStudentIdentity({ emailAddress, mobileNumber }, branchId, excludeId = null, excludeUserId = null) {
+async function ensureUniqueBranchStudentIdentity({ emailAddress, mobileNumber }, branchId, excludeId = null, excludeUserId = null, excludeStudentId = null) {
   const existing = await prisma.branchStudent.findFirst({
     where: {
       branchId,
       OR: [{ emailAddress }, { mobileNumber }],
-      ...(excludeId ? { id: { not: excludeId } } : {}),
+      ...(excludeId || excludeStudentId ? {
+        NOT: {
+          OR: [
+            ...(excludeId ? [{ id: excludeId }] : []),
+            ...(excludeStudentId ? [{ studentId: excludeStudentId }] : []),
+          ],
+        },
+      } : {}),
     },
     select: { id: true, emailAddress: true, mobileNumber: true },
   });
@@ -2957,7 +2967,9 @@ export async function updateBranchStudent(studentId, payload, actor = null) {
     const requestedWeekType = normalizeString(payload.weekType).toUpperCase();
     const requestedMode = normalizeString(payload.mode || payload.courseMode).toUpperCase();
     if ((requestedWeekType && requestedWeekType !== assignedBatch.weekType) || (requestedMode && requestedMode !== assignedBatch.mode)) throw new AppError("Selected batch does not match the selected course, week type, or mode.", 400);
-    await ensureAvailableBatchCapacity(assignedBatch, existing.id);
+    const primaryBatchChanged = selectedBatchId !== normalizeString(existing.batchId)
+      || normalizeString(studentData.courseId) !== normalizeString(existing.courseId);
+    if (primaryBatchChanged) await ensureAvailableBatchCapacity(assignedBatch, existing.id);
 
     studentData.batchId = assignedBatch.batchId;
     studentData.batchName = assignedBatch.batchName;
@@ -3073,7 +3085,11 @@ export async function updateBranchStudent(studentId, payload, actor = null) {
   installmentSchedule = feePlan.schedule;
   const existingLoginUser = await findBranchStudentLoginUser(existing);
   const previousCourseProgress = Number(existing.courseProgress);
-  await ensureUniqueBranchStudentIdentity(studentData, existing.branchId, existing.id, existingLoginUser?.id);
+  const emailUnchanged = normalizeString(studentData.emailAddress).toLowerCase() === normalizeString(existing.emailAddress).toLowerCase();
+  const mobileUnchanged = normalizeString(studentData.mobileNumber) === normalizeString(existing.mobileNumber);
+  if (!emailUnchanged || !mobileUnchanged) {
+    await ensureUniqueBranchStudentIdentity(studentData, existing.branchId, existing.id, existingLoginUser?.id, existing.studentId);
+  }
   const updated = await prisma.$transaction(async (tx) => {
     await tx.$queryRaw`SELECT id FROM "Branch" WHERE id = ${existing.branchId} FOR UPDATE`;
     const studentUpdateData = {

@@ -984,12 +984,10 @@ async function ensureSequentialCourseSchedulingNotifications(user = {}) {
           ? `${student.studentName} (${student.studentId}) has completed ${completedCourse.courseName || "the previous course"}. Please assign faculty, batch, and schedule for ${upcomingCourse.courseName || "the next course"}.`
           : `You have completed ${completedCourse.courseName || "your previous course"}. Your branch administrator will assign faculty, batch, and schedule for ${upcomingCourse.courseName || "your next course"}.`,
         actionLabel: isBranch ? "Schedule next course" : "View course",
-        targetUserId: recipient.targetUserId,
+        ...(recipient.targetUserId ? { targetUser: { connect: { id: recipient.targetUserId } } } : {}),
         targetBranchId: recipient.targetBranchId,
         targetBranchEmail: recipient.targetBranchEmail,
         targetBranchName: recipient.targetBranchName,
-        studentId: student.studentId,
-        studentName: student.studentName,
         branchCourseId: upcomingCourse.courseId,
         branchCourseName: upcomingCourse.courseName || "",
         batchId: upcomingCourse.batchId || "",
