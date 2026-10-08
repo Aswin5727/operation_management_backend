@@ -1000,6 +1000,30 @@ async function ensureSequentialCourseSchedulingNotifications(user = {}) {
   }
 }
 
+export async function notifySequentialCourseSchedulingForStudent(studentId) {
+  const student = await prisma.branchStudent.findUnique({
+    where: { id: normalizeString(studentId) },
+    include: {
+      branch: { select: { id: true, branchId: true, branchName: true, branchEmail: true, adminUserId: true } },
+    },
+  });
+  if (!student || String(student.arrangementType || "").toUpperCase() !== "SEQUENTIAL") return;
+
+  if (student.branch?.adminUserId || student.branch?.branchEmail) {
+    await ensureSequentialCourseSchedulingNotifications({
+      id: student.branch.adminUserId || "",
+      email: student.branch.branchEmail || "",
+      role: "BRANCH_ADMIN",
+    });
+  }
+
+  const studentUser = await prisma.user.findFirst({
+    where: { email: { equals: student.emailAddress, mode: "insensitive" }, role: "STUDENT", active: true },
+    select: { id: true, email: true, role: true },
+  });
+  if (studentUser) await ensureSequentialCourseSchedulingNotifications(studentUser);
+}
+
 export async function listNotifications(query = {}, user = {}) {
   const page = Math.max(1, Number(query.page || 1));
   const limit = Math.min(100, Math.max(1, Number(query.limit || 10)));

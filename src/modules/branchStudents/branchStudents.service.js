@@ -28,6 +28,7 @@ import {
 import {
   createFeeProgressAlertNotification,
   createNotification,
+  notifySequentialCourseSchedulingForStudent,
 } from "../notifications/notifications.service.js";
 import { getAcademicTestProgressForStudent } from "../academicTests/academicTests.service.js";
 
@@ -63,6 +64,53 @@ function calculateCourseDiscount(totalCourseAmount, discountType, discountValue)
     discountAmount: roundedDiscount,
     finalCourseAmount: Math.max(Math.round((total - roundedDiscount) * 100) / 100, 0),
   };
+}
+
+async function notifyStudentCourseDiscount({ enrollments = [], student = {}, branch = {}, actorId = null, prismaClient = prisma } = {}) {
+  const discountedCourses = (Array.isArray(enrollments) ? enrollments : []).filter((item) => Number(item?.discountAmount) > 0);
+  if (!discountedCourses.length) return null;
+
+  const formatMoney = (value) => `₹${Number(value || 0).toLocaleString("en-IN")}`;
+  const firstDiscount = discountedCourses[0];
+  const hasCommonDiscount = discountedCourses.length > 1
+    && discountedCourses.every((item) => item.discountType === firstDiscount.discountType);
+  const commonDiscountValue = discountedCourses.reduce((sum, item) => sum + Number(item.discountValue || 0), 0);
+  const commonDiscountLabel = firstDiscount.discountType === "PERCENTAGE"
+    ? `${commonDiscountValue}% total (${discountedCourses.map((item) => `${item.discountValue}%`).join(" + ")} split)`
+    : `${formatMoney(commonDiscountValue)} total (${discountedCourses.map((item) => formatMoney(item.discountValue)).join(" + ")} split)`;
+  const firstDiscountLabel = firstDiscount.discountType === "PERCENTAGE"
+    ? `${firstDiscount.discountValue}%`
+    : `${formatMoney(firstDiscount.discountValue)} fixed amount`;
+  const message = [
+    hasCommonDiscount
+      ? `A common ${commonDiscountLabel} course-fee discount was applied across ${discountedCourses.length} courses.`
+      : `A ${discountedCourses.length > 1 ? "course fee discount has been provided" : `${firstDiscountLabel} course fee discount has been provided`} to the following student for the selected course${discountedCourses.length > 1 ? "s" : ""}.`,
+    "",
+    `Branch: ${branch.branchName || branch.branchId || branch.id || "-"}`,
+    `Student: ${student.studentName || student.name || "-"}`,
+    ...discountedCourses.flatMap((item, index) => [
+      "",
+      `${discountedCourses.length > 1 ? `Course ${index + 1}: ` : "Course: "}${item.courseName || item.courseId}`,
+      `Original Course Amount: ${formatMoney(item.totalCourseAmount)}`,
+      `Discount: ${item.discountType === "PERCENTAGE" ? `${item.discountValue}%` : `${formatMoney(item.discountValue)} (Fixed Amount)`}`,
+      `Discount Amount: ${formatMoney(item.discountAmount)}`,
+      `Final Course Amount: ${formatMoney(item.finalCourseAmount)}`,
+      "",
+      `Information: The student has been provided a ${formatMoney(item.discountAmount)} discount, reducing the course fee from ${formatMoney(item.totalCourseAmount)} to ${formatMoney(item.finalCourseAmount)}.`,
+    ]),
+  ].join("\n");
+
+  return createNotification({
+    kind: "STUDENT_DISCOUNT_APPLIED",
+    tone: "amber",
+    title: "Student Course Discount Information",
+    message,
+    actionLabel: "View Student",
+    targetBranchId: branch.id || branch.branchId || null,
+    targetBranchEmail: branch.branchEmail || null,
+    targetBranchName: branch.branchName || null,
+    createdBy: actorId,
+  }, prismaClient);
 }
 
 function getCurrentMonthDateRange() {
@@ -344,8 +392,14 @@ async function buildStudentFeePlan({ studentData, installmentSchedule, payload, 
   }
 
   const courseEnrollmentInput = getCourseEnrollmentInput(payload);
+  const isSequentialPackage = normalizeString(payload?.arrangementType || payload?.enrollmentType).toUpperCase() === "SEQUENTIAL";
+  const billableEnrollments = Array.isArray(courseEnrollmentInput)
+    ? (isSequentialPackage
+      ? courseEnrollmentInput.filter((enrollment) => normalizeString(enrollment?.status).toUpperCase() !== "PENDING")
+      : courseEnrollmentInput)
+    : [];
   const combinedCourseFee = Array.isArray(courseEnrollmentInput) && courseEnrollmentInput.length > 1
-    ? courseEnrollmentInput.reduce((sum, enrollment) => {
+    ? billableEnrollments.reduce((sum, enrollment) => {
         const total = Number(String(enrollment?.totalCourseAmount ?? enrollment?.courseAmount ?? enrollment?.totalAmount ?? 0).replace(/,/g, "")) || 0;
         return sum + calculateCourseDiscount(
           total,
@@ -1903,13 +1957,9 @@ function validateCourseEnrollmentInput(payload = {}, branchId, existingStudent =
       item.status = 'ACTIVE';
     } else {
       item.status = 'PENDING';
-      // A sequential course is only a placeholder until the prior course is
-      // completed. Do not persist or bill its course fee/payment plan early.
-      item.totalCourseAmount = null;
-      item.discountType = null;
-      item.discountValue = null;
-      item.discountAmount = null;
-      item.finalCourseAmount = null;
+      // Keep the catalog fee and its allocated common discount for the
+      // upcoming course, but don't create an installment plan or bill it
+      // until the preceding sequential course is completed.
       item.paymentPlanId = null;
       item.paymentPlan = null;
     }
@@ -2612,8 +2662,15 @@ export async function createBranchStudent(payload, actor) {
             const firstDiscountLabel = firstDiscount.discountType === "PERCENTAGE"
               ? `${firstDiscount.discountValue}%`
               : `${formatMoney(firstDiscount.discountValue)} fixed amount`;
+            const hasCommonDiscount = discountedCourses.length > 1
+              && discountedCourses.every((item) => item.discountType === firstDiscount.discountType);
+            const totalDiscountValue = discountedCourses.reduce((sum, item) => sum + Number(item.discountValue || 0), 0);
+            const commonDiscountNotice = hasCommonDiscount
+              ? `Common discount: ${firstDiscount.discountType === "PERCENTAGE" ? `${totalDiscountValue}%` : formatMoney(totalDiscountValue)} total, split across ${discountedCourses.length} courses.`
+              : "";
             const message = [
               `A ${discountedCourses.length > 1 ? "course fee discount has been provided" : `${firstDiscountLabel} course fee discount has been provided`} to the following student for the selected course${discountedCourses.length > 1 ? "s" : ""}.`,
+              ...(commonDiscountNotice ? [commonDiscountNotice] : []),
               "",
               `Branch: ${branchProfile?.branchName || branchProfile?.branchId || branchId}`,
               `Student: ${studentData.studentName}`,
@@ -3064,7 +3121,36 @@ export async function updateBranchStudent(studentId, payload, actor = null) {
     return updatedStudent;
   });
 
+  const discountedCourseChanged = validatedCourseInput.enrollments.some((enrollment) => {
+    if (!(Number(enrollment.discountAmount) > 0)) return false;
+    const previous = (existing.courseEnrollments || []).find((item) => String(item.courseId) === String(enrollment.courseId));
+    return !previous
+      || String(previous.discountType || "FIXED").toUpperCase() !== String(enrollment.discountType || "FIXED").toUpperCase()
+      || Math.abs((Number(previous.discountValue) || 0) - (Number(enrollment.discountValue) || 0)) > 0.001;
+  });
+  if (discountedCourseChanged) {
+    try {
+      const branch = await prisma.branch.findUnique({
+        where: { id: existing.branchId },
+        select: { id: true, branchId: true, branchName: true, branchEmail: true },
+      });
+      await notifyStudentCourseDiscount({
+        enrollments: validatedCourseInput.enrollments,
+        student: updated || studentData,
+        branch: branch || { id: existing.branchId, branchName: existing.branchName, branchEmail: existing.branchEmail },
+        actorId: actor?.id ?? null,
+      });
+    } catch (error) {
+      console.warn("Student course discount notification failed", error?.message || error);
+    }
+  }
+
   const updatedCourseProgress = Number(updated?.courseProgress);
+  if (validatedCourseInput.arrangementType === "SEQUENTIAL" && updated && updatedCourseProgress >= 100) {
+    void notifySequentialCourseSchedulingForStudent(updated.id).catch((error) => {
+      console.warn("Sequential course scheduling notification failed", error?.message || error);
+    });
+  }
   if (
     Number.isFinite(updatedCourseProgress) &&
     updatedCourseProgress !== previousCourseProgress &&

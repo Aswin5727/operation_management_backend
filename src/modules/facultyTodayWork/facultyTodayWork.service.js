@@ -3,6 +3,7 @@ import prisma from "../../config/prisma.js";
 import AppError from "../../common/errors/AppError.js";
 import {
   createCourseEditModuleUpdatedNotification,
+  notifySequentialCourseSchedulingForStudent,
 } from "../notifications/notifications.service.js";
 import {
   calculateBranchStudentFeeComplianceStatus,
@@ -942,6 +943,32 @@ export async function createFacultyTodayWorkEntry(payload = {}, user = null) {
 
     return workEntry;
   });
+
+  const completedStudentIds = dedupeIds(studentIds);
+  const completedSequentialStudents = await prisma.branchStudent.findMany({
+    where: {
+      branchId: branchCourse.branchId || branchId,
+      arrangementType: "SEQUENTIAL",
+      recordStatus: "ACTIVE",
+      OR: [
+        { id: { in: completedStudentIds } },
+        { studentId: { in: completedStudentIds } },
+      ],
+      courseEnrollments: {
+        some: {
+          courseId,
+          status: "ACTIVE",
+          courseProgress: { gte: 100 },
+        },
+      },
+    },
+    select: { id: true },
+  });
+  await Promise.all(completedSequentialStudents.map(({ id }) => (
+    notifySequentialCourseSchedulingForStudent(id).catch((error) => {
+      console.warn("Sequential course scheduling notification failed", error?.message || error);
+    })
+  )));
 
   void createCourseEditModuleUpdatedNotification({
     request: { branchId: branchCourse.branchId || branchId },
