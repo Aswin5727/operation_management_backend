@@ -715,6 +715,23 @@ export async function listFacultyTodayWorkEntries(query = {}, user = null) {
   const whereScopes = [ownWorkScope];
   let inheritedAssignments = [];
 
+  // Branch Admins need the work history for their branch to render course
+  // progress in the student table. Their own user ID is not the faculty user
+  // ID on those entries, so scope this read to the branch they administer.
+  if (role === "BRANCH_ADMIN") {
+    const branch = await prisma.branch.findFirst({
+      where: { adminUserId: normalizeString(user?.id) },
+      select: { id: true },
+    });
+    if (!branch?.id) {
+      throw new AppError("Branch profile not found", 404);
+    }
+    whereScopes.push({
+      branchId: branch.id,
+      ...(workDate ? { workDate: parseDateKey(workDate) } : {}),
+    });
+  }
+
   // Super Admin's embedded branch view must read the selected branch's work
   // log, not the Super Admin's own user-owned entries.
   const impersonatedBranchId = normalizeString(user?.impersonatedBranchId);
