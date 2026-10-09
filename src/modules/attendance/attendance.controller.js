@@ -52,7 +52,7 @@ export const getCurrentStudentAttendanceOverviewHandler = asyncHandler(async (re
 });
 
 export const getStudentAttendanceOverviewHandler = asyncHandler(async (req, res) => {
-  const overview = await getStudentAttendanceOverview(req.user, { month: req.query?.month });
+  const overview = await getStudentAttendanceOverview(req.user, { month: req.query?.month, courseId: req.query?.courseId });
   return sendSuccess(res, "Student attendance overview fetched successfully", overview);
 });
 
@@ -62,6 +62,6 @@ export const getStudentAttendanceOverviewByIdHandler = asyncHandler(async (req, 
 });
 
 export const getStudentCourseHandler = asyncHandler(async (req, res) => {
-  const course = await getStudentCourse(req.user);
+  const course = await getStudentCourse(req.user, req.query?.courseId);
   return sendSuccess(res, "Student course fetched successfully", course);
 });

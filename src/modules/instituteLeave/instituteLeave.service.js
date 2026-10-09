@@ -85,19 +85,44 @@ export function studentSchedule(student, context, now = new Date()) {
   catch (error) { throw new AppError(error.message, 409); }
 }
 export async function studentCalendar(user, query = {}) {
-  const student = await prisma.branchStudent.findFirst({ where: { emailAddress: { equals: user.email, mode: 'insensitive' } }, include: { course: true, calendarAttendanceRecords: true } });
+  const student = await prisma.branchStudent.findFirst({ where: { emailAddress: { equals: user.email, mode: 'insensitive' } }, include: { course: true, calendarAttendanceRecords: true, courseEnrollments: { where: { status: 'ACTIVE' }, include: { course: true } } } });
   if (!student) throw new AppError('Student profile not found', 404);
-  const calculation = studentSchedule(student, await scheduleContext(prisma, student.branchId));
-  const studentBatchRecord = student.batchId
-    ? await prisma.branchBatch.findFirst({ where: { branchId: student.branchId, OR: [{ id: student.batchId }, { batchId: student.batchId }], status: 'ACTIVE' }, select: { id: true, batchId: true } })
+  const requestedCourseId = String(query.courseId || '').trim();
+  const enrollment = requestedCourseId
+    ? student.courseEnrollments.find((item) => item.courseId === requestedCourseId)
+    : null;
+  if (requestedCourseId && !enrollment) throw new AppError('Selected course enrollment was not found', 404);
+  const selectedStudent = enrollment ? {
+    ...student,
+    courseId: enrollment.courseId,
+    courseName: enrollment.courseName || enrollment.course?.name || '',
+    facultyId: enrollment.facultyId || null,
+    facultyName: enrollment.facultyName || null,
+    batchId: enrollment.batchId || null,
+    batchName: enrollment.batchName || null,
+    batchTiming: enrollment.batchTiming || null,
+    // weeklyOffDay on BranchStudent is legacy and shared across enrollments.
+    // Let studentSchedule resolve each selected enrollment's own BranchBatch value.
+    weeklyOffDay: enrollment.weeklyOffDay || null,
+    classSchedule: enrollment.scheduleType || student.classSchedule,
+    courseMode: enrollment.mode || student.courseMode,
+    courseStartDate: enrollment.startDate || student.courseStartDate,
+    courseEndDate: enrollment.endDate || student.courseEndDate,
+    course: enrollment.course || student.course,
+    calendarAttendanceRecords: student.calendarAttendanceRecords.filter((record) => record.courseId === enrollment.courseId),
+  } : student;
+  const calculation = studentSchedule(selectedStudent, await scheduleContext(prisma, student.branchId));
+  const studentBatchRecord = selectedStudent.batchId
+    ? await prisma.branchBatch.findFirst({ where: { branchId: student.branchId, OR: [{ id: selectedStudent.batchId }, { batchId: selectedStudent.batchId }], status: 'ACTIVE' }, select: { id: true, batchId: true } })
     : null;
   const affectedSessions = await prisma.facultyLeaveAffectedSession.findMany({
     where: {
       branchId: student.branchId,
       OR: [
-        ...(student.batchId ? [{ batchId: student.batchId }] : []),
+        ...(selectedStudent.batchId ? [{ batchId: selectedStudent.batchId }] : []),
         ...(studentBatchRecord?.id ? [{ batchRecordId: studentBatchRecord.id }] : []),
       ],
+      ...(requestedCourseId ? { courseId: requestedCourseId } : {}),
     },
     select: { id: true, leaveRequestId: true, batchRecordId: true, batchId: true, batchName: true, courseId: true, courseName: true, originalFacultyId: true, originalFacultyName: true, sessionDate: true, originalStartTime: true, originalEndTime: true, resolutionStatus: true, replacementFacultyId: true, replacementFacultyName: true, replacementDate: true, replacementStartTime: true, replacementEndTime: true, rescheduledDate: true, rescheduledStartTime: true, rescheduledEndTime: true, combinedSessionId: true, resolutionReason: true },
   });
@@ -105,7 +130,7 @@ export async function studentCalendar(user, query = {}) {
   const combinedById = new Map(combinedRows.map(row => [row.id, row]));
   const assignmentEvents = affectedSessions.flatMap(session => {
     if (session.resolutionStatus === 'RESCHEDULED') {
-      const original = { id: `faculty-leave-session:${session.id}:original`, sessionId: session.id, leaveRequestId: session.leaveRequestId, date: session.sessionDate, code: 'RESCHEDULED_ORIGINAL', status: 'Rescheduled', courseId: session.courseId || student.courseId, courseName: session.courseName || student.courseName || student.course?.name || '', batchId: session.batchId, batchName: session.batchName || student.batchName, batchRecordId: session.batchRecordId || null, originalFacultyId: session.originalFacultyId, originalFacultyName: session.originalFacultyName, originalDate: session.sessionDate, originalStartTime: session.originalStartTime, originalEndTime: session.originalEndTime, rescheduledDate: session.rescheduledDate, rescheduledStartTime: session.rescheduledStartTime, rescheduledEndTime: session.rescheduledEndTime, assignmentType: 'RESCHEDULED', startTime: session.originalStartTime, endTime: session.originalEndTime, reason: session.resolutionReason || '' };
+      const original = { id: `faculty-leave-session:${session.id}:original`, sessionId: session.id, leaveRequestId: session.leaveRequestId, date: session.sessionDate, code: 'RESCHEDULED_ORIGINAL', status: 'Rescheduled', courseId: session.courseId || selectedStudent.courseId, courseName: session.courseName || selectedStudent.courseName || selectedStudent.course?.name || '', batchId: session.batchId, batchName: session.batchName || selectedStudent.batchName, batchRecordId: session.batchRecordId || null, originalFacultyId: session.originalFacultyId, originalFacultyName: session.originalFacultyName, originalDate: session.sessionDate, originalStartTime: session.originalStartTime, originalEndTime: session.originalEndTime, rescheduledDate: session.rescheduledDate, rescheduledStartTime: session.rescheduledStartTime, rescheduledEndTime: session.rescheduledEndTime, assignmentType: 'RESCHEDULED', startTime: session.originalStartTime, endTime: session.originalEndTime, reason: session.resolutionReason || '' };
       const moved = { ...original, id: `faculty-leave-session:${session.id}`, date: session.rescheduledDate, code: 'RESCHEDULED', status: 'Rescheduled', startTime: session.rescheduledStartTime, endTime: session.rescheduledEndTime };
       return [original, moved].filter(event => validDate(event.date) && (!validDate(query.from) || event.date >= query.from) && (!validDate(query.to) || event.date <= query.to));
     }
@@ -123,10 +148,10 @@ export async function studentCalendar(user, query = {}) {
       date,
       code: isCombined ? 'COMBINED' : isAssigned ? 'REASSIGNED' : 'LEAVE',
       status: isCombined ? 'Combined' : isAssigned ? 'Reassigned' : 'Leave',
-      courseId: session.courseId || student.courseId,
-      courseName: session.courseName || student.courseName || student.course?.name || '',
+      courseId: session.courseId || selectedStudent.courseId,
+      courseName: session.courseName || selectedStudent.courseName || selectedStudent.course?.name || '',
       batchId: session.batchId,
-      batchName: session.batchName || student.batchName,
+      batchName: session.batchName || selectedStudent.batchName,
       batchRecordId: session.batchRecordId || null,
       originalFacultyId: session.originalFacultyId,
       originalFacultyName: session.originalFacultyName,
@@ -143,9 +168,9 @@ export async function studentCalendar(user, query = {}) {
   const movedOriginals = new Set(affectedSessions.filter(session => session.resolutionStatus === 'RESCHEDULED').map(session => `${session.sessionDate}:${session.batchId}:${session.originalStartTime}`));
   const eventMap = new Map(calculation.events.filter(event => !movedOriginals.has(`${event.date}:${event.batchId || ''}:${event.startTime || ''}`)).map(event => [`${event.date}:${event.batchId || ''}:${event.startTime || ''}`, event]));
   assignmentEvents.forEach(event => eventMap.set(`assignment:${event.id}`, event));
-  return { ...calculation, studentId: student.studentId, course: { ...student.course, totalHours: calculation.totalHours },
-    batch: { id: student.batchId, name: student.batchName, timing: student.batchTiming },
-    courseMode: student.courseMode || student.course?.mode,
+  return { ...calculation, studentId: selectedStudent.studentId, course: { ...selectedStudent.course, id: selectedStudent.courseId, name: selectedStudent.courseName || selectedStudent.course?.name || '', totalHours: calculation.totalHours },
+    batch: { id: selectedStudent.batchId, name: selectedStudent.batchName, timing: selectedStudent.batchTiming },
+    courseMode: selectedStudent.courseMode || selectedStudent.course?.mode,
     events: [...eventMap.values()].filter(e => (!validDate(query.from) || e.date >= query.from) && (!validDate(query.to) || e.date <= query.to)) };
 }
 async function adminBranch(user, db = prisma) {

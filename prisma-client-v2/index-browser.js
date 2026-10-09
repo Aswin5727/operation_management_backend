@@ -706,7 +706,41 @@ exports.Prisma.BranchStudentScalarFieldEnum = {
   feePaymentDeadline: 'feePaymentDeadline',
   feeComplianceStatus: 'feeComplianceStatus',
   courseProgress: 'courseProgress',
-  courseCompletedAt: 'courseCompletedAt'
+  courseCompletedAt: 'courseCompletedAt',
+  enrollmentType: 'enrollmentType',
+  arrangementType: 'arrangementType',
+  firstCourseId: 'firstCourseId'
+};
+
+exports.Prisma.BranchStudentCourseScalarFieldEnum = {
+  id: 'id',
+  branchStudentId: 'branchStudentId',
+  branchId: 'branchId',
+  courseId: 'courseId',
+  courseName: 'courseName',
+  facultyId: 'facultyId',
+  facultyName: 'facultyName',
+  batchId: 'batchId',
+  batchName: 'batchName',
+  batchTiming: 'batchTiming',
+  scheduleType: 'scheduleType',
+  mode: 'mode',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  arrangementType: 'arrangementType',
+  sequenceOrder: 'sequenceOrder',
+  totalCourseAmount: 'totalCourseAmount',
+  discountType: 'discountType',
+  discountValue: 'discountValue',
+  discountAmount: 'discountAmount',
+  finalCourseAmount: 'finalCourseAmount',
+  courseProgress: 'courseProgress',
+  courseCompletedAt: 'courseCompletedAt',
+  paymentPlanId: 'paymentPlanId',
+  paymentPlan: 'paymentPlan',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.BranchStudentAttendanceScalarFieldEnum = {
@@ -1279,7 +1313,8 @@ exports.UserRole = exports.$Enums.UserRole = {
 
 exports.RecordStatus = exports.$Enums.RecordStatus = {
   ACTIVE: 'ACTIVE',
-  INACTIVE: 'INACTIVE'
+  INACTIVE: 'INACTIVE',
+  PENDING: 'PENDING'
 };
 
 exports.LoginEventType = exports.$Enums.LoginEventType = {
@@ -1310,8 +1345,10 @@ exports.NotificationKind = exports.$Enums.NotificationKind = {
   FACULTY_REPORT_SHARED: 'FACULTY_REPORT_SHARED',
   EXAM_RETEST_ASSIGNED: 'EXAM_RETEST_ASSIGNED',
   ASSESSMENT_REASSESSMENT_ASSIGNED: 'ASSESSMENT_REASSESSMENT_ASSIGNED',
+  SEQUENTIAL_COURSE_SCHEDULING_REQUIRED: 'SEQUENTIAL_COURSE_SCHEDULING_REQUIRED',
   EXAM_CANCELLED: 'EXAM_CANCELLED',
-  ASSESSMENT_CANCELLED: 'ASSESSMENT_CANCELLED'
+  ASSESSMENT_CANCELLED: 'ASSESSMENT_CANCELLED',
+  STUDENT_DISCOUNT_APPLIED: 'STUDENT_DISCOUNT_APPLIED'
 };
 
 exports.CourseEditRequestStatus = exports.$Enums.CourseEditRequestStatus = {
@@ -1343,6 +1380,11 @@ exports.AcademicTestType = exports.$Enums.AcademicTestType = {
 exports.AcademicPreparationStatus = exports.$Enums.AcademicPreparationStatus = {
   DRAFT: 'DRAFT',
   PREPARED: 'PREPARED'
+};
+
+exports.DiscountType = exports.$Enums.DiscountType = {
+  FIXED: 'FIXED',
+  PERCENTAGE: 'PERCENTAGE'
 };
 
 exports.AttendanceStatus = exports.$Enums.AttendanceStatus = {
@@ -1381,6 +1423,7 @@ exports.Prisma.ModelName = {
   BatchStatusHistory: 'BatchStatusHistory',
   StudentProfile: 'StudentProfile',
   BranchStudent: 'BranchStudent',
+  BranchStudentCourse: 'BranchStudentCourse',
   BranchStudentAttendance: 'BranchStudentAttendance',
   BranchCalendarHoliday: 'BranchCalendarHoliday',
   BranchCalendarLeave: 'BranchCalendarLeave',

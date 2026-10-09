@@ -14,6 +14,8 @@ const NOTIFICATION_KIND_MAP = {
   COURSE_EDIT_MODULE_UPDATED: "course-edit-module-updated",
   FACULTY_LEAVE_REQUEST: "faculty-leave-request",
   FACULTY_REPORT_SHARED: "faculty-report-shared",
+  SEQUENTIAL_COURSE_SCHEDULING_REQUIRED: "sequential-course-scheduling-required",
+  STUDENT_DISCOUNT_APPLIED: "student-discount-applied",
 };
 
 const BRANCH_ADMIN_VISIBLE_NOTIFICATION_KINDS = new Set([
@@ -24,6 +26,7 @@ const BRANCH_ADMIN_VISIBLE_NOTIFICATION_KINDS = new Set([
   "COURSE_EDIT_MODULE_UPDATED",
   "FACULTY_LEAVE_REQUEST",
   "FACULTY_REPORT_SHARED",
+  "SEQUENTIAL_COURSE_SCHEDULING_REQUIRED",
 ]);
 const DEFAULT_VISIBLE_NOTIFICATION_KINDS = new Set([
   "BRANCH_INVITATION_RESENT",
@@ -39,6 +42,7 @@ const SUPER_ADMIN_VISIBLE_NOTIFICATION_KINDS = new Set([
   "COURSE_EDIT_REQUEST_ACCEPTED",
   "COURSE_EDIT_REQUEST_REJECTED",
   "COURSE_EDIT_MODULE_UPDATED",
+  "STUDENT_DISCOUNT_APPLIED",
 ]);
 const FACULTY_VISIBLE_NOTIFICATION_KINDS = new Set([
   "INSTITUTE_LEAVE",
@@ -238,7 +242,7 @@ function getVisibleNotificationKindsForRole(user = {}) {
     return BRANCH_ADMIN_VISIBLE_NOTIFICATION_KINDS;
   }
 
-  if (role === "STUDENT") return new Set(["INSTITUTE_LEAVE", "EXAM_SCHEDULED", "EXAM_RETEST_ASSIGNED", "ASSESSMENT_AVAILABLE", "ASSESSMENT_REASSESSMENT_ASSIGNED", "ACADEMIC_TEST_CREATED"]);
+  if (role === "STUDENT") return new Set(["INSTITUTE_LEAVE", "EXAM_SCHEDULED", "EXAM_RETEST_ASSIGNED", "ASSESSMENT_AVAILABLE", "ASSESSMENT_REASSESSMENT_ASSIGNED", "ACADEMIC_TEST_CREATED", "SEQUENTIAL_COURSE_SCHEDULING_REQUIRED"]);
 
   if (role === "FACULTY") {
     return FACULTY_VISIBLE_NOTIFICATION_KINDS;
@@ -896,6 +900,128 @@ async function ensureFacultyAcademicTestCompletionNotifications(user = {}) {
   }
 }
 
+async function ensureSequentialCourseSchedulingNotifications(user = {}) {
+  const role = normalizeString(user?.role).toUpperCase();
+  if (!["BRANCH_ADMIN", "STUDENT"].includes(role)) return;
+
+  const branchScope = role === "BRANCH_ADMIN" ? await buildBranchAdminScope(user) : {};
+  let students = [];
+  if (role === "BRANCH_ADMIN") {
+    const branchId = normalizeString(branchScope.targetBranchId);
+    if (!branchId) return;
+    students = await prisma.branchStudent.findMany({
+      where: { branchId, arrangementType: "SEQUENTIAL", recordStatus: "ACTIVE" },
+      include: {
+        branch: { select: { id: true, branchId: true, branchName: true, branchEmail: true, adminUserId: true, timezone: true } },
+        courseEnrollments: { orderBy: { sequenceOrder: "asc" } },
+      },
+    });
+  } else {
+    const email = normalizeEmail(user?.email);
+    if (!email) return;
+    const student = await prisma.branchStudent.findFirst({
+      where: { emailAddress: { equals: email, mode: "insensitive" }, arrangementType: "SEQUENTIAL", recordStatus: "ACTIVE" },
+      include: {
+        branch: { select: { id: true, branchId: true, branchName: true, branchEmail: true, adminUserId: true, timezone: true } },
+        courseEnrollments: { orderBy: { sequenceOrder: "asc" } },
+      },
+    });
+    if (student) students = [student];
+  }
+
+  for (const student of students) {
+    const enrollments = Array.isArray(student.courseEnrollments) ? student.courseEnrollments : [];
+    const firstCourse = enrollments.find((enrollment) => Number(enrollment.sequenceOrder) === 1);
+    if (!firstCourse) continue;
+    // Notify only for the next pending course whose full sequence of earlier
+    // courses is complete. This prevents Course 3+ from being scheduled when
+    // only Course 1 has completed.
+    const upcomingCourse = enrollments.find((candidate) => {
+      const sequenceOrder = Number(candidate.sequenceOrder);
+      if (sequenceOrder <= 1 || candidate.status !== "PENDING") return false;
+      const precedingCourses = enrollments.filter((enrollment) => Number(enrollment.sequenceOrder) < sequenceOrder);
+      if (precedingCourses.length !== sequenceOrder - 1) return false;
+      return precedingCourses.every((enrollment) => {
+        const isPrimaryCourse = String(enrollment.courseId || "") === String(student.courseId || "");
+        const progress = enrollment.courseProgress ?? (isPrimaryCourse ? student.courseProgress : null);
+        const completedAt = enrollment.courseCompletedAt || (isPrimaryCourse ? student.courseCompletedAt : null);
+        return Boolean(completedAt) || Number(progress) >= 100;
+      });
+    });
+    if (!upcomingCourse) continue;
+
+    const studentUser = await prisma.user.findFirst({
+      where: { email: { equals: student.emailAddress, mode: "insensitive" }, role: "STUDENT", active: true },
+      select: { id: true },
+    });
+    const recipients = [
+      {
+        targetUserId: student.branch?.adminUserId || null,
+        targetBranchId: student.branchId,
+        targetBranchEmail: student.branch?.branchEmail || "",
+        targetBranchName: student.branch?.branchName || "",
+        audience: "branch",
+      },
+      ...(studentUser ? [{ targetUserId: studentUser.id, audience: "student" }] : []),
+    ];
+
+    for (const recipient of recipients) {
+      if (!recipient.targetUserId && !recipient.targetBranchId) continue;
+      const marker = `sequential-course-scheduling:${student.id}:${upcomingCourse.id}:${recipient.audience}`;
+      const existing = await prisma.notification.findFirst({
+        where: { kind: "SEQUENTIAL_COURSE_SCHEDULING_REQUIRED", requestDescription: marker },
+        select: { id: true },
+      });
+      if (existing) continue;
+
+      const isBranch = recipient.audience === "branch";
+      const completedCourse = enrollments.filter((enrollment) => Number(enrollment.sequenceOrder) < Number(upcomingCourse.sequenceOrder)).at(-1) || firstCourse;
+      await createNotification({
+        kind: "SEQUENTIAL_COURSE_SCHEDULING_REQUIRED",
+        tone: "amber",
+        title: isBranch ? "Schedule the student's next course" : "Your next course is ready to be scheduled",
+        message: isBranch
+          ? `${student.studentName} (${student.studentId}) has completed ${completedCourse.courseName || "the previous course"}. Please assign faculty, batch, and schedule for ${upcomingCourse.courseName || "the next course"}.`
+          : `You have completed ${completedCourse.courseName || "your previous course"}. Your branch administrator will assign faculty, batch, and schedule for ${upcomingCourse.courseName || "your next course"}.`,
+        actionLabel: isBranch ? "Schedule next course" : "View course",
+        ...(recipient.targetUserId ? { targetUser: { connect: { id: recipient.targetUserId } } } : {}),
+        targetBranchId: recipient.targetBranchId,
+        targetBranchEmail: recipient.targetBranchEmail,
+        targetBranchName: recipient.targetBranchName,
+        branchCourseId: upcomingCourse.courseId,
+        branchCourseName: upcomingCourse.courseName || "",
+        batchId: upcomingCourse.batchId || "",
+        requestDescription: marker,
+        createdBy: null,
+      });
+    }
+  }
+}
+
+export async function notifySequentialCourseSchedulingForStudent(studentId) {
+  const student = await prisma.branchStudent.findUnique({
+    where: { id: normalizeString(studentId) },
+    include: {
+      branch: { select: { id: true, branchId: true, branchName: true, branchEmail: true, adminUserId: true } },
+    },
+  });
+  if (!student || String(student.arrangementType || "").toUpperCase() !== "SEQUENTIAL") return;
+
+  if (student.branch?.adminUserId || student.branch?.branchEmail) {
+    await ensureSequentialCourseSchedulingNotifications({
+      id: student.branch.adminUserId || "",
+      email: student.branch.branchEmail || "",
+      role: "BRANCH_ADMIN",
+    });
+  }
+
+  const studentUser = await prisma.user.findFirst({
+    where: { email: { equals: student.emailAddress, mode: "insensitive" }, role: "STUDENT", active: true },
+    select: { id: true, email: true, role: true },
+  });
+  if (studentUser) await ensureSequentialCourseSchedulingNotifications(studentUser);
+}
+
 export async function listNotifications(query = {}, user = {}) {
   const page = Math.max(1, Number(query.page || 1));
   const limit = Math.min(100, Math.max(1, Number(query.limit || 10)));
@@ -906,6 +1032,7 @@ export async function listNotifications(query = {}, user = {}) {
   if (String(user?.role || "").toUpperCase() === "FACULTY") {
     await ensureFacultyAcademicTestCompletionNotifications(user);
   }
+  await ensureSequentialCourseSchedulingNotifications(user);
   const branchScope = await buildBranchAdminScope(user);
   const visibleKinds = getVisibleNotificationKindsForRole(user);
   const where = buildNotificationWhere({

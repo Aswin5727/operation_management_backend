@@ -98,6 +98,110 @@ function normalizeFacultyKey(value) {
   return normalizeFacultyText(value).toLowerCase();
 }
 
+function allocateCoursePaidAmounts(student) {
+  const enrollments = (student?.courseEnrollments || [])
+    .filter((item) => item.status === "ACTIVE")
+    .sort((left, right) => Number(left.sequenceOrder || 0) - Number(right.sequenceOrder || 0));
+  if (!enrollments.length && student?.courseId) {
+    enrollments.push({ courseId: student.courseId, totalCourseAmount: student.courseAmount, sequenceOrder: 1, status: "ACTIVE" });
+  }
+  // Sequential installment rows are appended using each enrollment's final
+  // (discounted) fee. Use that same amount as the allocation boundary; using
+  // the pre-discount total shifts payments across course boundaries.
+  const amounts = enrollments.map((item) => Math.max(0, Number(
+    item.finalCourseAmount ?? item.totalCourseAmount ?? 0,
+  )));
+  if (enrollments.length === 1 && !amounts[0]) amounts[0] = Math.max(0, Number(student?.courseAmount || 0));
+  const distribute = (amount, weights) => {
+    const totalWeight = weights.reduce((sum, weight) => sum + weight, 0);
+    let assigned = 0;
+    return weights.map((weight, index) => {
+      const share = index === weights.length - 1
+        ? Math.max(Number(amount) - assigned, 0)
+        : Math.round((Number(amount) * (totalWeight ? weight : 1)) / (totalWeight || weights.length));
+      assigned += share;
+      return share;
+    });
+  };
+  const allocateSequentially = (amount, capacities) => {
+    let remaining = Math.max(0, Number(amount) || 0);
+    return capacities.map((capacity) => {
+      const share = Math.min(remaining, Math.max(0, capacity));
+      remaining -= share;
+      return share;
+    });
+  };
+
+  const getPlanInstallmentCount = (enrollment) => {
+    const paymentPlans = Array.isArray(enrollment?.course?.paymentPlans)
+      ? enrollment.course.paymentPlans
+      : Array.isArray(enrollment?.course?.paymentPlanSelections)
+        ? enrollment.course.paymentPlanSelections
+        : [];
+    const planId = normalizeFacultyKey(enrollment?.paymentPlanId);
+    const planName = normalizeFacultyKey(enrollment?.paymentPlan);
+    const matchingPlan = paymentPlans.find((plan) => {
+      const ids = [plan?.id, plan?.templateId, plan?.paymentPlanId].map(normalizeFacultyKey);
+      const names = [plan?.templateName, plan?.name].map(normalizeFacultyKey);
+      return (planId && ids.includes(planId)) || (planName && names.includes(planName));
+    });
+    const rawCount = Number(
+      enrollment?.installmentCount ??
+      matchingPlan?.installmentCount ??
+      matchingPlan?.count ??
+      matchingPlan?.installments?.length ??
+      String(enrollment?.paymentPlan || '').match(/\d+/)?.[0] ??
+      0,
+    );
+    return Number.isInteger(rawCount) && rawCount > 0 ? rawCount : 0;
+  };
+
+  // Sequential plans are appended to one student-level installment ledger.
+  // Use the selected plan's count to identify the exact rows for each course;
+  // fee-based allocation is unreliable when discounts or custom schedules
+  // make installment totals differ from the course fee boundaries.
+  if (normalizeFacultyKey(student?.arrangementType) === 'sequential' && enrollments.length > 1) {
+    const installmentCounts = enrollments.map(getPlanInstallmentCount);
+    if (installmentCounts.every((count) => count > 0) && installmentCounts.reduce((sum, count) => sum + count, 0) <= (student?.installments || []).length) {
+      let installmentOffset = 0;
+      return new Map(enrollments.map((enrollment, index) => {
+        const courseInstallments = (student?.installments || []).slice(installmentOffset, installmentOffset + installmentCounts[index]);
+        installmentOffset += installmentCounts[index];
+        const paidAmount = courseInstallments.reduce((sum, installment) => {
+          const amount = Math.max(0, Number(installment?.amount || 0));
+          const paid = Math.min(amount, Math.max(0, Number(installment?.amountPaid || 0)));
+          return sum + paid;
+        }, 0);
+        return [
+          normalizeFacultyKey(enrollment.courseId),
+          { courseAmount: amounts[index], paidAmount: Math.min(amounts[index], paidAmount) },
+        ];
+      }));
+    }
+  }
+
+  const paidByCourse = amounts.map(() => 0);
+  const scheduledByCourse = amounts.map(() => 0);
+  const sequential = normalizeFacultyKey(student?.arrangementType) === "sequential";
+  for (const installment of student?.installments || []) {
+    const amount = Math.max(0, Number(installment.amount || 0));
+    const paid = Math.min(amount, Math.max(0, Number(installment.amountPaid || 0)));
+    const allocation = sequential
+      ? allocateSequentially(amount, amounts.map((courseAmount, index) => courseAmount - scheduledByCourse[index]))
+      : distribute(amount, amounts);
+    const paidAllocation = sequential ? allocateSequentially(paid, allocation) : distribute(paid, amounts);
+    allocation.forEach((courseAmount, index) => {
+      scheduledByCourse[index] += courseAmount;
+      paidByCourse[index] += Math.min(courseAmount, paidAllocation[index]);
+    });
+  }
+
+  return new Map(enrollments.map((enrollment, index) => [
+    normalizeFacultyKey(enrollment.courseId),
+    { courseAmount: amounts[index], paidAmount: Math.min(amounts[index], paidByCourse[index]) },
+  ]));
+}
+
 function batchMatchesStudent(student, faculty, entry) {
   const studentFacultyId = normalizeFacultyText(student?.facultyId);
   const studentBatchId = normalizeFacultyText(student?.batchId || student?.batchEntryId);
@@ -241,37 +345,123 @@ async function getFacultyMyBatchesSummary(user) {
     const batchIds = batchEntries
       .map((entry) => normalizeFacultyText(entry.batchId || entry.id))
       .filter(Boolean);
-    const branchStudentRows = batchIds.length
+    const branchStudentRows = batchEntries.length
       ? await prisma.branchStudent.findMany({
           where: {
             branchId: branchFaculty.branchId,
             recordStatus: "ACTIVE",
-            batchId: { in: batchIds },
+            OR: batchEntries.flatMap((entry) => {
+              const courseId = normalizeFacultyText(entry.courseId);
+              const batchId = normalizeFacultyText(entry.batchId || entry.id);
+              if (!courseId || !batchId) return [];
+              return [
+                { courseId, batchId },
+                { courseEnrollments: { some: { status: "ACTIVE", courseId, batchId } } },
+              ];
+            }),
           },
           select: {
-            batchId: true,
+            id: true,
+            studentId: true,
+            studentName: true,
+            emailAddress: true,
+            mobileNumber: true,
             courseId: true,
+            courseName: true,
+            batchId: true,
+            batchName: true,
             facultyId: true,
+            facultyName: true,
+            arrangementType: true,
             courseProgress: true,
+            installments: { select: { installmentNumber: true, amount: true, amountPaid: true, status: true } },
+            courseEnrollments: {
+              where: { status: "ACTIVE" },
+              select: {
+                courseId: true,
+                courseName: true,
+                batchId: true,
+                batchName: true,
+                facultyId: true,
+                facultyName: true,
+                batchTiming: true,
+                scheduleType: true,
+                mode: true,
+                startDate: true,
+                endDate: true,
+                sequenceOrder: true,
+                totalCourseAmount: true,
+                finalCourseAmount: true,
+                paymentPlanId: true,
+                paymentPlan: true,
+                course: {
+                  select: {
+                    paymentPlans: true,
+                    paymentPlanSelections: true,
+                  },
+                },
+                status: true,
+              },
+            },
           },
         })
       : [];
-    const studentCountByBatch = new Map();
     const progressByBatch = new Map();
 
+    const recordsByBatch = new Map();
     branchStudentRows.forEach((student) => {
-      const key = [
-        normalizeFacultyKey(student.batchId),
-        normalizeFacultyKey(student.courseId),
-      ].join("|");
-      studentCountByBatch.set(key, (studentCountByBatch.get(key) || 0) + 1);
-      const progress = Number(student.courseProgress);
-      const progressSummary = progressByBatch.get(key) || { total: 0, count: 0 };
-      if (Number.isFinite(progress)) {
-        progressSummary.total += Math.min(100, Math.max(0, progress));
-        progressSummary.count += 1;
-      }
-      progressByBatch.set(key, progressSummary);
+      batchEntries.forEach((entry) => {
+        const courseId = normalizeFacultyText(entry.courseId);
+        const batchId = normalizeFacultyText(entry.batchId || entry.id);
+        const enrollment = (student.courseEnrollments || []).find((item) =>
+          normalizeFacultyKey(item.courseId) === normalizeFacultyKey(courseId) &&
+          normalizeFacultyKey(item.batchId) === normalizeFacultyKey(batchId),
+        );
+        const legacyMatch = normalizeFacultyKey(student.courseId) === normalizeFacultyKey(courseId) &&
+          normalizeFacultyKey(student.batchId) === normalizeFacultyKey(batchId);
+        if (!enrollment && !legacyMatch) return;
+
+        const key = [normalizeFacultyKey(batchId), normalizeFacultyKey(courseId)].join("|");
+        const records = recordsByBatch.get(key) || [];
+        const coursePayment = allocateCoursePaidAmounts(student).get(normalizeFacultyKey(courseId)) || {
+          courseAmount: Math.max(0, Number(enrollment?.totalCourseAmount || (legacyMatch ? student.courseAmount : 0))),
+          paidAmount: 0,
+        };
+        if (!records.some((item) => item.id === student.id)) {
+          records.push({
+            id: student.id,
+            studentId: student.studentId,
+            studentName: student.studentName,
+            emailAddress: student.emailAddress,
+            mobileNumber: student.mobileNumber,
+            branchId: branchFaculty.branchId,
+            branchCode: branchFaculty.branch?.branchId || "",
+            courseId,
+            courseName: enrollment?.courseName || entry.courseName || student.courseName || "",
+            batchId,
+            batchName: enrollment?.batchName || entry.batchName || "",
+            facultyId: enrollment?.facultyId || entry.facultyId,
+            facultyName: enrollment?.facultyName || entry.facultyName,
+            batchTiming: enrollment?.batchTiming || entry.batchTiming || "",
+            classSchedule: enrollment?.scheduleType || "",
+            courseMode: enrollment?.mode || "",
+            courseStartDate: enrollment?.startDate || null,
+            courseEndDate: enrollment?.endDate || null,
+            courseProgress: enrollment?.courseProgress ?? (legacyMatch ? student.courseProgress : null),
+            courseAmount: coursePayment.courseAmount,
+            totalAmount: coursePayment.courseAmount,
+            paidAmount: coursePayment.paidAmount,
+          });
+          const progress = Number(enrollment?.courseProgress ?? (legacyMatch ? student.courseProgress : NaN));
+          if (Number.isFinite(progress)) {
+            const progressSummary = progressByBatch.get(key) || { total: 0, count: 0 };
+            progressSummary.total += Math.min(100, Math.max(0, progress));
+            progressSummary.count += 1;
+            progressByBatch.set(key, progressSummary);
+          }
+        }
+        recordsByBatch.set(key, records);
+      });
     });
 
     const batchCounts = batchEntries.map((entry) => {
@@ -280,13 +470,14 @@ async function getFacultyMyBatchesSummary(user) {
         normalizeFacultyKey(entry.courseId),
       ].join("|");
 
+      const studentRecords = recordsByBatch.get(key) || [];
       return {
         batchId: entry.id,
-        studentCount: studentCountByBatch.get(key) || 0,
+        studentCount: studentRecords.length,
         courseProgress: progressByBatch.has(key)
           ? Math.round(progressByBatch.get(key).total / Math.max(1, progressByBatch.get(key).count))
           : 0,
-        studentRecords: [],
+        studentRecords,
       };
     });
     const courseIds = Array.from(

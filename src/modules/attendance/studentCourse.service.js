@@ -18,6 +18,7 @@ async function findStudent(user) {
     },
     include: {
       course: { include: { modules: { where: { status: "ACTIVE" }, orderBy: { sequenceNo: "asc" }, include: { submodules: { where: { status: "ACTIVE" }, orderBy: { sequenceNo: "asc" } } } } } },
+      courseEnrollments: { where: { status: "ACTIVE" }, include: { course: { include: { modules: { where: { status: "ACTIVE" }, orderBy: { sequenceNo: "asc" }, include: { submodules: { where: { status: "ACTIVE" }, orderBy: { sequenceNo: "asc" } } } } } } } },
     },
   });
   if (branchStudent) return { type: "branch", value: branchStudent };
@@ -35,9 +36,30 @@ async function findStudent(user) {
   throw new AppError("Student profile not found", 404);
 }
 
-export async function getStudentCourse(user) {
+export async function getStudentCourse(user, requestedCourseId = "") {
   const identity = await findStudent(user);
-  const student = identity.value;
+  const baseStudent = identity.value;
+  const courseId = text(requestedCourseId);
+  const enrollment = identity.type === "branch" && courseId
+    ? (baseStudent.courseEnrollments || []).find((item) => item.courseId === courseId)
+    : null;
+  const isPrimaryCourse = identity.type === "branch" && courseId && baseStudent.courseId === courseId;
+  // Legacy/single-course branch students may have the course on BranchStudent
+  // without a corresponding BranchStudentCourse row. Use that primary relation.
+  if (courseId && identity.type === "branch" && !enrollment && !isPrimaryCourse) {
+    throw new AppError("Selected course enrollment was not found", 404);
+  }
+  const student = enrollment ? {
+    ...baseStudent,
+    courseId: enrollment.courseId,
+    courseName: enrollment.courseName || enrollment.course?.name || "",
+    batchId: enrollment.batchId || null,
+    batchName: enrollment.batchName || null,
+    batchTiming: enrollment.batchTiming || null,
+    facultyId: enrollment.facultyId || null,
+    facultyName: enrollment.facultyName || null,
+    course: enrollment.course || null,
+  } : baseStudent;
 
   if (identity.type === "branch") {
     const course = student.course;

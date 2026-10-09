@@ -27,6 +27,8 @@ import {
 } from "../../common/utils/branchIdentifiers.js";
 import {
   createFeeProgressAlertNotification,
+  createNotification,
+  notifySequentialCourseSchedulingForStudent,
 } from "../notifications/notifications.service.js";
 import { getAcademicTestProgressForStudent } from "../academicTests/academicTests.service.js";
 
@@ -38,6 +40,77 @@ const DUE_REMINDER_SWEEP_INTERVAL_MS = 24 * 60 * 60 * 1000;
 
 function normalizeString(value) {
   return String(value ?? "").trim();
+}
+
+const DISCOUNT_TYPES = new Set(["FIXED", "PERCENTAGE"]);
+
+function calculateCourseDiscount(totalCourseAmount, discountType, discountValue) {
+  const total = Number(String(totalCourseAmount ?? 0).replace(/,/g, ""));
+  const value = discountValue === undefined || discountValue === null || discountValue === ""
+    ? 0
+    : Number(String(discountValue).replace(/,/g, ""));
+  const type = normalizeString(discountType || "FIXED").toUpperCase() || "FIXED";
+  if (!Number.isFinite(total) || total < 0) throw new AppError("Total course amount must be zero or greater", 400);
+  if (!DISCOUNT_TYPES.has(type)) throw new AppError("Discount type must be FIXED or PERCENTAGE", 400);
+  if (!Number.isFinite(value) || value < 0) throw new AppError("Discount value must be zero or greater", 400);
+  if (type === "PERCENTAGE" && value > 100) throw new AppError("Percentage discount must be between 0 and 100", 400);
+  if (type === "FIXED" && value > total) throw new AppError("Fixed discount cannot exceed the course amount", 400);
+  const discountAmount = type === "PERCENTAGE" ? total * value / 100 : value;
+  const roundedDiscount = Math.round(discountAmount * 100) / 100;
+  return {
+    discountType: type,
+    discountValue: value,
+    totalCourseAmount: Math.round(total),
+    discountAmount: roundedDiscount,
+    finalCourseAmount: Math.max(Math.round((total - roundedDiscount) * 100) / 100, 0),
+  };
+}
+
+async function notifyStudentCourseDiscount({ enrollments = [], student = {}, branch = {}, actorId = null, prismaClient = prisma } = {}) {
+  const discountedCourses = (Array.isArray(enrollments) ? enrollments : []).filter((item) => Number(item?.discountAmount) > 0);
+  if (!discountedCourses.length) return null;
+
+  const formatMoney = (value) => `₹${Number(value || 0).toLocaleString("en-IN")}`;
+  const firstDiscount = discountedCourses[0];
+  const hasCommonDiscount = discountedCourses.length > 1
+    && discountedCourses.every((item) => item.discountType === firstDiscount.discountType);
+  const commonDiscountValue = discountedCourses.reduce((sum, item) => sum + Number(item.discountValue || 0), 0);
+  const commonDiscountLabel = firstDiscount.discountType === "PERCENTAGE"
+    ? `${commonDiscountValue}% total (${discountedCourses.map((item) => `${item.discountValue}%`).join(" + ")} split)`
+    : `${formatMoney(commonDiscountValue)} total (${discountedCourses.map((item) => formatMoney(item.discountValue)).join(" + ")} split)`;
+  const firstDiscountLabel = firstDiscount.discountType === "PERCENTAGE"
+    ? `${firstDiscount.discountValue}%`
+    : `${formatMoney(firstDiscount.discountValue)} fixed amount`;
+  const message = [
+    hasCommonDiscount
+      ? `A common ${commonDiscountLabel} course-fee discount was applied across ${discountedCourses.length} courses.`
+      : `A ${discountedCourses.length > 1 ? "course fee discount has been provided" : `${firstDiscountLabel} course fee discount has been provided`} to the following student for the selected course${discountedCourses.length > 1 ? "s" : ""}.`,
+    "",
+    `Branch: ${branch.branchName || branch.branchId || branch.id || "-"}`,
+    `Student: ${student.studentName || student.name || "-"}`,
+    ...discountedCourses.flatMap((item, index) => [
+      "",
+      `${discountedCourses.length > 1 ? `Course ${index + 1}: ` : "Course: "}${item.courseName || item.courseId}`,
+      `Original Course Amount: ${formatMoney(item.totalCourseAmount)}`,
+      `Discount: ${item.discountType === "PERCENTAGE" ? `${item.discountValue}%` : `${formatMoney(item.discountValue)} (Fixed Amount)`}`,
+      `Discount Amount: ${formatMoney(item.discountAmount)}`,
+      `Final Course Amount: ${formatMoney(item.finalCourseAmount)}`,
+      "",
+      `Information: The student has been provided a ${formatMoney(item.discountAmount)} discount, reducing the course fee from ${formatMoney(item.totalCourseAmount)} to ${formatMoney(item.finalCourseAmount)}.`,
+    ]),
+  ].join("\n");
+
+  return createNotification({
+    kind: "STUDENT_DISCOUNT_APPLIED",
+    tone: "amber",
+    title: "Student Course Discount Information",
+    message,
+    actionLabel: "View Student",
+    targetBranchId: branch.id || branch.branchId || null,
+    targetBranchEmail: branch.branchEmail || null,
+    targetBranchName: branch.branchName || null,
+    createdBy: actorId,
+  }, prismaClient);
 }
 
 function getCurrentMonthDateRange() {
@@ -318,11 +391,125 @@ async function buildStudentFeePlan({ studentData, installmentSchedule, payload, 
     };
   }
 
-  const totalFee = Number(String(
-    studentData.courseAmount ?? studentData.totalAmount ?? studentData.afterDiscount ?? 0,
-  ).replace(/,/g, "")) || 0;
+  const courseEnrollmentInput = getCourseEnrollmentInput(payload);
+  const isSequentialPackage = normalizeString(payload?.arrangementType || payload?.enrollmentType).toUpperCase() === "SEQUENTIAL";
+  const billableEnrollments = Array.isArray(courseEnrollmentInput)
+    ? (isSequentialPackage
+      ? courseEnrollmentInput.filter((enrollment) => normalizeString(enrollment?.status).toUpperCase() !== "PENDING")
+      : courseEnrollmentInput)
+    : [];
+  const combinedCourseFee = Array.isArray(courseEnrollmentInput) && courseEnrollmentInput.length > 1
+    ? billableEnrollments.reduce((sum, enrollment) => {
+        const total = Number(String(enrollment?.totalCourseAmount ?? enrollment?.courseAmount ?? enrollment?.totalAmount ?? 0).replace(/,/g, "")) || 0;
+        return sum + calculateCourseDiscount(
+          total,
+          enrollment?.discountType,
+          enrollment?.discountValue ?? enrollment?.studentDiscountAmount ?? 0,
+        ).finalCourseAmount;
+      }, 0)
+    : 0;
+  const totalFee = combinedCourseFee > 0
+    ? combinedCourseFee
+    : Number(String(
+        studentData.finalCourseAmount ?? studentData.totalAmount ?? studentData.afterDiscount ?? studentData.courseAmount ?? 0,
+      ).replace(/,/g, "")) || 0;
+
+  // Sequential students share one installment ledger, but every active course
+  // contributes its own configured installment plan. Rebuild the amounts from
+  // those course plans on activation/edit so a stale or course-only frontend
+  // schedule cannot fail the package-total validation (or charge one course
+  // twice). Keep the supplied due dates and existing payment statuses.
+  if (
+    isSequentialPackage
+    && payload?.preserveInstallmentDates === true
+    && payload?.sequentialCourseActivation === true
+    && Array.isArray(courseEnrollmentInput)
+  ) {
+    const activeEnrollments = [...billableEnrollments]
+      .sort((left, right) => Number(left?.sequenceOrder || 0) - Number(right?.sequenceOrder || 0));
+    const courseIds = activeEnrollments.map((enrollment) => normalizeString(enrollment?.courseId)).filter(Boolean);
+    const courseRecords = courseIds.length
+      ? await prisma.branchCourse.findMany({
+          where: { branchId, id: { in: courseIds } },
+          select: { id: true, paymentPlans: true, paymentPlanSelections: true },
+        })
+      : [];
+    const courseById = new Map(courseRecords.map((record) => [String(record.id), record]));
+    const persistedInstallments = Array.isArray(existingStudent?.installments)
+      ? [...existingStudent.installments].sort((left, right) => Number(left.installmentNumber) - Number(right.installmentNumber))
+      : [];
+    const enrollmentPlans = activeEnrollments.map((enrollment, enrollmentIndex) => {
+      const courseRecord = courseById.get(normalizeString(enrollment?.courseId));
+      const configuredPlans = Array.isArray(courseRecord?.paymentPlans)
+        ? courseRecord.paymentPlans
+        : Array.isArray(courseRecord?.paymentPlanSelections)
+          ? courseRecord.paymentPlanSelections
+          : [];
+      const paymentPlanId = enrollment?.paymentPlanId
+        || (enrollmentIndex === 0 ? payload?.paymentPlanId || existingStudent?.paymentPlanId : "");
+      const selectedPlan = configuredPlans.find((plan) => [plan?.id, plan?.templateId, plan?.paymentPlanId]
+        .some((id) => normalizeString(id) === normalizeString(paymentPlanId)));
+      const planRows = Array.isArray(selectedPlan?.installments) ? selectedPlan.installments : [];
+      const count = Math.max(0, Number(selectedPlan?.installmentCount || planRows.length || 0));
+      const grossAmount = Number(String(enrollment?.totalCourseAmount ?? enrollment?.courseAmount ?? enrollment?.totalAmount ?? 0).replace(/,/g, "")) || 0;
+      const courseFee = calculateCourseDiscount(
+        grossAmount,
+        enrollment?.discountType,
+        enrollment?.discountValue ?? enrollment?.studentDiscountAmount ?? 0,
+      ).finalCourseAmount;
+      return { count, courseFee };
+    });
+    const expectedInstallmentCount = enrollmentPlans.reduce((sum, item) => sum + item.count, 0);
+    const incomingScheduleOffset = Math.max(0, expectedInstallmentCount - installmentSchedule.length);
+    const normalizedSchedule = [];
+    let canNormalizeSchedule = activeEnrollments.length > 0;
+
+    for (const { count, courseFee } of enrollmentPlans) {
+
+      if (!count || !(courseFee >= 0)) {
+        canNormalizeSchedule = false;
+        break;
+      }
+
+      const installmentCourseFee = Math.round(courseFee);
+      let balancedAmount = Math.round((installmentCourseFee / count) / 1000) * 1000;
+      while (balancedAmount > 0 && balancedAmount * (count - 1) > installmentCourseFee) balancedAmount -= 1000;
+      const balancedAmounts = [
+        ...Array.from({ length: count - 1 }, () => balancedAmount),
+        installmentCourseFee - balancedAmount * (count - 1),
+      ];
+      for (let index = 0; index < count; index += 1) {
+        const installmentIndex = normalizedSchedule.length;
+        const incomingIndex = installmentIndex - incomingScheduleOffset;
+        const incoming = incomingIndex >= 0 ? installmentSchedule[incomingIndex] || {} : {};
+        const persisted = persistedInstallments[installmentIndex] || {};
+        // Apply the rounded split consistently to every active sequential course
+        // (including Course 1); retain its dates and existing payment state.
+        const amount = balancedAmounts[index];
+        normalizedSchedule.push({
+          ...incoming,
+          installmentNumber: installmentIndex + 1,
+          amount,
+          dueDate: incoming.dueDate || persisted.dueDate || null,
+          status: persisted.status || incoming.status || "Pending",
+          paymentMethod: persisted.paymentMethod || incoming.paymentMethod || null,
+          remarks: incoming.remarks || persisted.remarks || null,
+          paidAt: persisted.paidAt || incoming.paidAt || null,
+        });
+      }
+    }
+
+    if (canNormalizeSchedule && normalizedSchedule.length) {
+      installmentSchedule = normalizedSchedule;
+    }
+  }
+
+  // BranchStudent.courseAmount is the package fee used by the shared installment
+  // schedule. Each individual fee remains on its BranchStudentCourse enrollment.
+  if (combinedCourseFee > 0) studentData.courseAmount = Math.round(combinedCourseFee);
   const scheduledTotal = installmentSchedule.reduce((sum, installment) => sum + Number(installment.amount || 0), 0);
-  if (totalFee > 0 && Math.abs(scheduledTotal - totalFee) > 0.01) {
+  const expectedScheduledTotal = payload?.sequentialCourseActivation === true ? Math.round(totalFee) : totalFee;
+  if (totalFee > 0 && Math.abs(scheduledTotal - expectedScheduledTotal) > 0.01) {
     throw new AppError("Installment amounts must equal the total course fee", 400);
   }
 
@@ -348,12 +535,15 @@ async function buildStudentFeePlan({ studentData, installmentSchedule, payload, 
   }
 
   if (payload?.preserveInstallmentDates === true) {
+    const allowCourseSpecificDates = payload?.sequentialCourseActivation === true;
     const invalidInstallment = installmentSchedule.find((installment) => {
       const dueDate = normalizeString(installment.dueDate);
-      return !validIsoDate(dueDate) || dueDate > deadline.progressDate;
+      return !validIsoDate(dueDate) || (!allowCourseSpecificDates && dueDate > deadline.progressDate);
     });
     if (invalidInstallment) {
-      throw new AppError("Each installment date must be on or before the 70% payment deadline", 400);
+      throw new AppError(allowCourseSpecificDates
+        ? "Each installment must have a valid course-specific due date"
+        : "Each installment date must be on or before the 70% payment deadline", 400);
     }
     return {
       schedule: installmentSchedule,
@@ -1690,6 +1880,8 @@ function buildBranchStudentPayload(payload = {}, existing = null) {
   const courseEndDate = parseOptionalText(candidate.courseEndDate);
   const recordStatus = parseStatus(candidate.recordStatus || candidate.status || "ACTIVE");
   const courseProgress = parseOptionalProgress(candidate.courseProgress);
+  const arrangementType = normalizeString(candidate.arrangementType || candidate.enrollmentType || 'SINGLE').toUpperCase() || 'SINGLE';
+  const firstCourseId = parseOptionalText(candidate.firstCourseId || candidate.firstCourse);
 
   if (currentStatus === "Employee" && !designation) {
     throw new AppError("Designation is required for employees", 400);
@@ -1722,6 +1914,8 @@ function buildBranchStudentPayload(payload = {}, existing = null) {
     courseStartDate,
     classSchedule,
     courseProgress,
+    arrangementType,
+    firstCourseId,
     recordStatus,
     courseId: parseOptionalText(candidate.courseId),
     courseName: parseOptionalText(candidate.courseName),
@@ -1763,6 +1957,203 @@ function buildBranchStudentPayload(payload = {}, existing = null) {
   }
 
   return { studentData, installmentSchedule };
+}
+
+function normalizeCourseEnrollments(payload = [], branchId) {
+  if (!Array.isArray(payload)) return [];
+  return payload.map((item, index) => {
+    const totalCourseAmount = Number(String(item?.totalCourseAmount ?? item?.courseAmount ?? item?.totalAmount ?? 0).replace(/,/g, '')) || 0;
+    const discount = calculateCourseDiscount(totalCourseAmount, item?.discountType, item?.discountValue ?? item?.studentDiscountAmount ?? 0);
+    return {
+      branchId,
+      courseId: normalizeString(item?.courseId),
+      courseName: parseOptionalText(item?.courseName),
+      facultyId: parseOptionalText(item?.facultyId),
+      facultyName: parseOptionalText(item?.facultyName),
+      batchId: parseOptionalText(item?.batchId || item?.batchEntryId),
+      batchName: parseOptionalText(item?.batchName || item?.batch),
+      batchTiming: parseOptionalText(item?.batchTiming || item?.batchTime),
+      scheduleType: parseOptionalText(item?.classSchedule || item?.scheduleType || item?.weekType),
+      mode: parseOptionalText(item?.courseMode || item?.mode),
+      startDate: parseOptionalText(item?.courseStartDate || item?.startDate),
+      endDate: parseOptionalText(item?.courseEndDate || item?.endDate),
+      arrangementType: normalizeString(item?.arrangementType || item?.arrangement || 'SINGLE').toUpperCase(),
+      sequenceOrder: Number(item?.sequenceOrder || index + 1),
+      ...discount,
+      paymentPlanId: parseOptionalText(item?.paymentPlanId),
+      paymentPlan: parseOptionalText(item?.paymentPlan),
+      status: normalizeString(item?.status || 'ACTIVE').toUpperCase(),
+    };
+  }).filter((item) => item.courseId);
+}
+
+function getCourseEnrollmentInput(payload = {}) {
+  return Array.isArray(payload.courses) ? payload.courses : payload.courseEnrollments;
+}
+
+function isBranchStudentCourseCompleted(student, courseId) {
+  const enrollment = (student?.courseEnrollments || []).find((item) => String(item.courseId) === String(courseId));
+  const completedAt = enrollment?.courseCompletedAt || (String(student?.courseId || '') === String(courseId) ? student?.courseCompletedAt : null);
+  const progress = enrollment?.courseProgress ?? (String(student?.courseId || '') === String(courseId) ? student?.courseProgress : null);
+  return Boolean(completedAt) || Number(progress) >= 100;
+}
+
+function validateCourseEnrollmentInput(payload = {}, branchId, existingStudent = null) {
+  const raw = getCourseEnrollmentInput(payload);
+  if (!Array.isArray(raw) || !raw.length) return { arrangementType: 'SINGLE', firstCourseId: '', enrollments: [] };
+
+  const enrollments = normalizeCourseEnrollments(raw, branchId);
+  const ids = enrollments.map((item) => item.courseId);
+  if (new Set(ids).size !== ids.length) throw new AppError('The same course cannot be selected more than once.', 400);
+
+  const arrangementType = ids.length === 1
+    ? 'SINGLE'
+    : normalizeString(payload.arrangementType || payload.enrollmentType).toUpperCase();
+  if (!['SINGLE', 'PARALLEL', 'SEQUENTIAL'].includes(arrangementType)) {
+    throw new AppError('Arrangement type is required for multiple courses and must be PARALLEL or SEQUENTIAL.', 400);
+  }
+  if (arrangementType === 'SINGLE' && ids.length > 1) {
+    throw new AppError('Multiple courses require PARALLEL or SEQUENTIAL arrangement.', 400);
+  }
+
+  const firstCourseId = normalizeString(payload.firstCourseId || payload.firstCourse || (arrangementType === 'SEQUENTIAL' ? enrollments[0]?.courseId : ''));
+  if (arrangementType === 'SEQUENTIAL' && (!firstCourseId || !ids.includes(firstCourseId))) {
+    throw new AppError('A valid firstCourseId is required for sequential admission.', 400);
+  }
+
+  if (arrangementType === 'SEQUENTIAL') {
+    const orderedEnrollments = [...enrollments].sort((left, right) => left.sequenceOrder - right.sequenceOrder);
+    if (orderedEnrollments.some((item, index) => item.sequenceOrder !== index + 1)) {
+      throw new AppError('Sequential course order must be continuous, starting at Course 1.', 400);
+    }
+    if (orderedEnrollments[0]?.courseId !== firstCourseId) {
+      throw new AppError('The first course must match the selected sequential course order.', 400);
+    }
+  }
+
+  enrollments.forEach((item, index) => {
+    item.arrangementType = arrangementType;
+    item.sequenceOrder = arrangementType === 'SEQUENTIAL' ? Number(item.sequenceOrder || index + 1) : index + 1;
+    const priorCourses = enrollments.filter((course) => course.sequenceOrder < item.sequenceOrder);
+    const priorCoursesCompleted = priorCourses.length === item.sequenceOrder - 1 && priorCourses.every((course) => isBranchStudentCourseCompleted(existingStudent, course.courseId));
+    const isConfigured = arrangementType !== 'SEQUENTIAL' || item.courseId === firstCourseId || priorCoursesCompleted;
+    if (isConfigured) {
+      for (const [field, label] of [['mode', 'course mode'], ['batchId', 'batch'], ['batchTiming', 'batch timing'], ['scheduleType', 'class schedule'], ['startDate', 'course start date']]) {
+        if (!String(item[field] || '').trim()) throw new AppError(`${label} is required for course ${item.courseId}.`, 400);
+      }
+      if (!(Number(item.totalCourseAmount) > 0)) throw new AppError(`Total course amount is required for course ${item.courseId}.`, 400);
+      if (item.startDate && item.endDate && item.startDate > item.endDate) {
+        throw new AppError(`Course end date must be on or after its start date for course ${item.courseId}.`, 400);
+      }
+      item.status = 'ACTIVE';
+    } else {
+      item.status = 'PENDING';
+      // Keep the catalog fee and its allocated common discount for the
+      // upcoming course, but don't create an installment plan or bill it
+      // until the preceding sequential course is completed.
+      item.paymentPlanId = null;
+      item.paymentPlan = null;
+    }
+  });
+  return { arrangementType, firstCourseId, enrollments };
+}
+
+async function syncBranchStudentCourseEnrollments(tx, student, payload = {}, existingStudent = null) {
+  // Older clients do not send this field; preserve any existing enrollments.
+  if (!Array.isArray(getCourseEnrollmentInput(payload))) return;
+  const validated = validateCourseEnrollmentInput(payload, student.branchId, existingStudent);
+  const enrollments = validated.enrollments;
+  if (!enrollments.length && student.courseId) {
+    enrollments.push({
+      branchId: student.branchId,
+      courseId: student.courseId,
+      courseName: student.courseName,
+      facultyId: student.facultyId,
+      facultyName: student.facultyName,
+      batchId: student.batchId,
+      batchName: student.batchName,
+      batchTiming: student.batchTiming,
+      scheduleType: student.classSchedule,
+      mode: student.courseMode,
+      startDate: student.courseStartDate,
+      endDate: student.courseEndDate,
+    });
+  }
+  if (enrollments.length) {
+    for (const item of enrollments) {
+      const previousEnrollment = (existingStudent?.courseEnrollments || []).find((enrollment) => String(enrollment.courseId) === String(item.courseId));
+      const isNewlyActivated = validated.arrangementType === 'SEQUENTIAL'
+        && Number(item.sequenceOrder) > 1
+        && String(previousEnrollment?.status || '').toUpperCase() === 'PENDING'
+        && item.status === 'ACTIVE';
+      if (item.status === 'ACTIVE' && item.batchId) {
+        const assignedBatch = await tx.branchBatch.findFirst({
+          where: {
+            branchId: student.branchId,
+            courseId: item.courseId,
+            batchId: item.batchId,
+            status: 'ACTIVE',
+          },
+          select: {
+            batchId: true,
+            courseId: true,
+            batchName: true,
+            batchTiming: true,
+            totalSeats: true,
+            facultyId: true,
+            facultyName: true,
+            weekType: true,
+            mode: true,
+            courseStartDate: true,
+            courseEndDate: true,
+            weeklyOffDay: true,
+          },
+        });
+        if (!assignedBatch) throw new AppError(`Selected batch was not found for course ${item.courseName || item.courseId}.`, 400);
+        if (normalizeString(item.scheduleType).toUpperCase() !== normalizeString(assignedBatch.weekType).toUpperCase() || normalizeString(item.mode).toUpperCase() !== normalizeString(assignedBatch.mode).toUpperCase()) {
+          throw new AppError(`Selected batch does not match the schedule and mode for course ${item.courseName || item.courseId}.`, 400);
+        }
+        if (isNewlyActivated) await ensureAvailableBatchCapacity(assignedBatch, student.id);
+        item.batchName = assignedBatch.batchName;
+        item.batchTiming = assignedBatch.batchTiming;
+        item.facultyId = assignedBatch.facultyId;
+        item.facultyName = assignedBatch.facultyName;
+        item.endDate = item.endDate || assignedBatch.courseEndDate;
+      }
+      if (isNewlyActivated) {
+        const courseRecord = await tx.branchCourse.findFirst({
+          where: { id: item.courseId, branchId: student.branchId, status: 'ACTIVE' },
+          select: { paymentPlans: true, paymentPlanSelections: true },
+        });
+        const configuredPlans = Array.isArray(courseRecord?.paymentPlans)
+          ? courseRecord.paymentPlans
+          : Array.isArray(courseRecord?.paymentPlanSelections)
+            ? courseRecord.paymentPlanSelections
+            : [];
+        if (configuredPlans.length && !item.paymentPlanId) {
+          throw new AppError(`Select a payment plan for course ${item.courseName || item.courseId}.`, 400);
+        }
+        if (item.paymentPlanId && configuredPlans.length) {
+          const matchingPlan = configuredPlans.some((plan) => [plan?.id, plan?.templateId, plan?.paymentPlanId]
+            .some((id) => normalizeString(id) === item.paymentPlanId));
+          if (!matchingPlan) throw new AppError(`Selected payment plan does not belong to course ${item.courseName || item.courseId}.`, 400);
+        }
+      }
+      await tx.branchStudentCourse.upsert({
+        where: { branchStudentId_courseId: { branchStudentId: student.id, courseId: item.courseId } },
+        create: { ...item, branchStudentId: student.id },
+        update: { ...item },
+      });
+    }
+  }
+  await tx.branchStudent.update({
+    where: { id: student.id },
+    data: {
+      enrollmentType: enrollments.length > 1 ? 'MULTIPLE' : 'SINGLE',
+      arrangementType: validated.arrangementType,
+      firstCourseId: validated.firstCourseId || null,
+    },
+  });
 }
 
 async function getBranchContext(actor) {
@@ -1884,6 +2275,10 @@ function toBranchStudentSummary(record) {
     courseStatus: courseStatusFromProgress(record.courseProgress),
     courseCompletedAt: record.courseCompletedAt || null,
     courseId: record.courseId,
+    enrollmentType: record.enrollmentType || 'SINGLE',
+    arrangementType: record.arrangementType || record.enrollmentType || 'SINGLE',
+    firstCourseId: record.firstCourseId || null,
+    courseEnrollments: Array.isArray(record.courseEnrollments) ? record.courseEnrollments : [],
     courseName: record.courseName,
     courseMode: record.courseMode,
     totalWorkingDays: record.totalWorkingDays,
@@ -1937,21 +2332,43 @@ function toBranchStudentSummary(record) {
 async function ensureAvailableBatchCapacity(batch, excludeStudentId = null) {
   const studentWhere = {
     branchId: batch.branchId,
-    batchId: batch.batchId,
     recordStatus: 'ACTIVE',
-    OR: [{ courseProgress: null }, { courseProgress: { lt: 100 } }],
+    OR: [
+      {
+        courseId: batch.courseId,
+        batchId: batch.batchId,
+        OR: [{ courseProgress: null }, { courseProgress: { lt: 100 } }],
+      },
+      {
+        courseEnrollments: {
+          some: {
+            courseId: batch.courseId,
+            batchId: batch.batchId,
+            status: 'ACTIVE',
+            OR: [{ courseProgress: null }, { courseProgress: { lt: 100 } }],
+          },
+        },
+      },
+    ],
     ...(excludeStudentId ? { NOT: { id: excludeStudentId } } : {}),
   }
   const totalStudentCount = await prisma.branchStudent.count({ where: studentWhere })
   if (totalStudentCount >= Number(batch?.totalSeats || 0)) throw new AppError('This batch has reached its total seat capacity.', 400)
 }
 
-async function ensureUniqueBranchStudentIdentity({ emailAddress, mobileNumber }, branchId, excludeId = null, excludeUserId = null) {
+async function ensureUniqueBranchStudentIdentity({ emailAddress, mobileNumber }, branchId, excludeId = null, excludeUserId = null, excludeStudentId = null) {
   const existing = await prisma.branchStudent.findFirst({
     where: {
       branchId,
       OR: [{ emailAddress }, { mobileNumber }],
-      ...(excludeId ? { id: { not: excludeId } } : {}),
+      ...(excludeId || excludeStudentId ? {
+        NOT: {
+          OR: [
+            ...(excludeId ? [{ id: excludeId }] : []),
+            ...(excludeStudentId ? [{ studentId: excludeStudentId }] : []),
+          ],
+        },
+      } : {}),
     },
     select: { id: true, emailAddress: true, mobileNumber: true },
   });
@@ -2029,17 +2446,29 @@ async function findBranchStudentLoginUser(student) {
 
 async function ensureBranchStudentAccess(actor, studentId) {
   const branchProfile = await getBranchContext(actor);
+  const requestedStudentId = normalizeString(studentId);
+
+  // Student IDs are the public identity used by the dashboard. Resolve them
+  // before falling back to the internal database id so two students with the
+  // same name (or overlapping identifiers) can never select the wrong record.
+  const publicStudentWhere = {
+    ...(branchProfile?.id ? { branchId: branchProfile.id } : {}),
+    studentId: requestedStudentId,
+  };
+  const publicStudent = requestedStudentId
+    ? await prisma.branchStudent.findFirst({ where: publicStudentWhere, select: { id: true } })
+    : null;
+  if (publicStudent?.id) {
+    return { branchProfile, where: { id: publicStudent.id } };
+  }
 
   if (!branchProfile?.id) {
-    return { branchProfile: null, where: { OR: [{ id: studentId }, { studentId }] } };
+    return { branchProfile: null, where: { id: requestedStudentId } };
   }
 
   return {
     branchProfile,
-    where: {
-      branchId: branchProfile.id,
-      OR: [{ id: studentId }, { studentId }],
-    },
+    where: { branchId: branchProfile.id, id: requestedStudentId },
   };
 }
 
@@ -2119,6 +2548,7 @@ export async function listBranchStudents(query = {}, actor = null) {
         installments: {
           orderBy: { installmentNumber: "asc" }
         },
+        courseEnrollments: { orderBy: [{ sequenceOrder: "asc" }, { createdAt: "asc" }] },
         calendarAttendanceRecords: {
           where: {
             attendanceDate: {
@@ -2152,6 +2582,8 @@ export async function createBranchStudent(payload, actor) {
     throw new AppError("Branch ID is required", 400);
   }
 
+  const validatedEnrollmentInput = validateCourseEnrollmentInput(payload, branchId);
+
   console.log("[createBranchStudent] incoming payload keys:", Object.keys(payload));
   let studentData, installmentSchedule;
   try {
@@ -2160,7 +2592,28 @@ export async function createBranchStudent(payload, actor) {
     console.error("[createBranchStudent] validation error:", err.message);
     throw err;
   }
-  const selectedBatchId = normalizeString(payload.batchId || payload.batchEntryId);
+  const firstSequentialEnrollment = validatedEnrollmentInput.arrangementType === "SEQUENTIAL"
+    ? validatedEnrollmentInput.enrollments.find((item) => item.courseId === validatedEnrollmentInput.firstCourseId)
+    : null;
+  if (firstSequentialEnrollment) {
+    Object.assign(studentData, {
+      courseId: firstSequentialEnrollment.courseId,
+      courseName: firstSequentialEnrollment.courseName,
+      courseMode: firstSequentialEnrollment.mode,
+      classSchedule: firstSequentialEnrollment.scheduleType,
+      batchId: firstSequentialEnrollment.batchId,
+      batchName: firstSequentialEnrollment.batchName,
+      batchTiming: firstSequentialEnrollment.batchTiming,
+      facultyId: firstSequentialEnrollment.facultyId,
+      facultyName: firstSequentialEnrollment.facultyName,
+      courseStartDate: firstSequentialEnrollment.startDate,
+      courseEndDate: firstSequentialEnrollment.endDate,
+      courseAmount: firstSequentialEnrollment.totalCourseAmount,
+      paymentPlanId: firstSequentialEnrollment.paymentPlanId,
+      paymentPlan: firstSequentialEnrollment.paymentPlan,
+    });
+  }
+  const selectedBatchId = normalizeString(firstSequentialEnrollment?.batchId || payload.batchId || payload.batchEntryId);
   const assignedBatch = selectedBatchId
     ? await prisma.branchBatch.findFirst({
         where: {
@@ -2194,8 +2647,8 @@ export async function createBranchStudent(payload, actor) {
   }
 
   if (assignedBatch) {
-    const requestedWeekType = normalizeString(payload.weekType).toUpperCase();
-    const requestedMode = normalizeString(payload.mode || payload.courseMode).toUpperCase();
+    const requestedWeekType = normalizeString(firstSequentialEnrollment?.scheduleType || payload.weekType).toUpperCase();
+    const requestedMode = normalizeString(firstSequentialEnrollment?.mode || payload.mode || payload.courseMode).toUpperCase();
     if ((requestedWeekType && requestedWeekType !== assignedBatch.weekType) || (requestedMode && requestedMode !== assignedBatch.mode)) throw new AppError("Selected batch does not match the selected course, week type, or mode.", 400);
     await ensureAvailableBatchCapacity(assignedBatch);
   }
@@ -2211,6 +2664,19 @@ export async function createBranchStudent(payload, actor) {
     studentData.weeklyOffDay = assignedBatch.weeklyOffDay || null;
     studentData.courseStartDate = studentData.courseStartDate || assignedBatch.courseStartDate;
     studentData.courseEndDate = studentData.courseEndDate || assignedBatch.courseEndDate;
+  }
+  const primaryEnrollment = validatedEnrollmentInput.enrollments.find((item) => (
+    item.courseId === studentData.courseId
+  )) || validatedEnrollmentInput.enrollments[0];
+  if (primaryEnrollment) {
+    studentData.courseAmount = Math.round(primaryEnrollment.finalCourseAmount);
+  } else {
+    const singleCourseDiscount = calculateCourseDiscount(
+      studentData.courseAmount ?? payload.totalCourseAmount ?? payload.courseAmount ?? 0,
+      payload.discountType,
+      payload.discountValue ?? payload.studentDiscountAmount ?? 0,
+    );
+    studentData.courseAmount = Math.round(singleCourseDiscount.finalCourseAmount);
   }
   const feeCourse = studentData.courseId
     ? await prisma.branchCourse.findFirst({
@@ -2262,6 +2728,8 @@ export async function createBranchStudent(payload, actor) {
           },
         });
 
+        await syncBranchStudentCourseEnrollments(tx, student, payload);
+
         await syncStudentCourseEnd(tx, student);
 
         if (installmentSchedule.length > 0) {
@@ -2305,6 +2773,48 @@ export async function createBranchStudent(payload, actor) {
 
         if (createdStudent) {
           await materializeBranchStudentLedgerEntries(tx, createdStudent, { includePayments: false });
+          const discountedCourses = validatedEnrollmentInput.enrollments.filter((item) => item.discountAmount > 0);
+          if (discountedCourses.length) {
+            const formatMoney = (value) => `₹${Number(value || 0).toLocaleString("en-IN")}`;
+            const firstDiscount = discountedCourses[0];
+            const firstDiscountLabel = firstDiscount.discountType === "PERCENTAGE"
+              ? `${firstDiscount.discountValue}%`
+              : `${formatMoney(firstDiscount.discountValue)} fixed amount`;
+            const hasCommonDiscount = discountedCourses.length > 1
+              && discountedCourses.every((item) => item.discountType === firstDiscount.discountType);
+            const totalDiscountValue = discountedCourses.reduce((sum, item) => sum + Number(item.discountValue || 0), 0);
+            const commonDiscountNotice = hasCommonDiscount
+              ? `Common discount: ${firstDiscount.discountType === "PERCENTAGE" ? `${totalDiscountValue}%` : formatMoney(totalDiscountValue)} total, split across ${discountedCourses.length} courses.`
+              : "";
+            const message = [
+              `A ${discountedCourses.length > 1 ? "course fee discount has been provided" : `${firstDiscountLabel} course fee discount has been provided`} to the following student for the selected course${discountedCourses.length > 1 ? "s" : ""}.`,
+              ...(commonDiscountNotice ? [commonDiscountNotice] : []),
+              "",
+              `Branch: ${branchProfile?.branchName || branchProfile?.branchId || branchId}`,
+              `Student: ${studentData.studentName}`,
+              ...discountedCourses.flatMap((item, index) => [
+                "",
+                `${discountedCourses.length > 1 ? `Course ${index + 1}: ` : "Course: "}${item.courseName || item.courseId}`,
+                `Original Course Amount: ${formatMoney(item.totalCourseAmount)}`,
+                `Discount: ${item.discountType === "PERCENTAGE" ? `${item.discountValue}%` : `${formatMoney(item.discountValue)} (Fixed Amount)`}`,
+                `Discount Amount: ${formatMoney(item.discountAmount)}`,
+                `Final Course Amount: ${formatMoney(item.finalCourseAmount)}`,
+                "",
+                `Information: The student has been provided a ${formatMoney(item.discountAmount)} discount, reducing the course fee from ${formatMoney(item.totalCourseAmount)} to ${formatMoney(item.finalCourseAmount)}.`,
+              ]),
+            ].join("\n");
+            await createNotification({
+              kind: "STUDENT_DISCOUNT_APPLIED",
+              tone: "amber",
+              title: "Student Course Discount Information",
+              message,
+              actionLabel: "View Student",
+              targetBranchId: branchId,
+              targetBranchEmail: branchProfile?.branchEmail || null,
+              targetBranchName: branchProfile?.branchName || null,
+              createdBy: actorId,
+            }, tx);
+          }
         }
 
         return createdStudent;
@@ -2335,6 +2845,25 @@ export async function createBranchStudent(payload, actor) {
     facultyName: studentData.facultyName || "",
     batchName: assignedBatch?.batchName || "",
     batchTiming: assignedBatch?.batchTiming || "",
+    courses: validatedEnrollmentInput.enrollments.map((enrollment) => {
+      const source = (getCourseEnrollmentInput(payload) || []).find((item) => (
+        normalizeString(item?.courseId) === enrollment.courseId
+      )) || {};
+      return {
+        courseName: enrollment.courseName || source.courseName || "",
+        courseMode: enrollment.mode || source.courseMode || source.mode || "",
+        facultyName: enrollment.facultyName || source.facultyName || "",
+        batchName: enrollment.batchName || source.batchName || source.batch || "",
+        batchTiming: enrollment.batchTiming || source.batchTiming || source.batchTime || "",
+        classSchedule: enrollment.scheduleType || source.classSchedule || source.weekType || "",
+        courseDuration: source.courseDuration || source.duration || "",
+        courseStartDate: enrollment.startDate || source.courseStartDate || source.startDate || "",
+        courseEndDate: enrollment.endDate || source.courseEndDate || source.endDate || "",
+        courseAmount: source.totalCourseAmount || source.courseAmount || source.totalAmount || source.afterDiscount || "",
+        paymentPlan: source.paymentPlan || source.paymentPlanName || "",
+        status: enrollment.status,
+      };
+    }),
   }).catch((error) => {
     console.warn("Branch student credentials email failed to send", error);
   });
@@ -2433,7 +2962,8 @@ export async function getBranchStudent(studentId, actor = null) {
           status: true,
         },
       },
-      installments: { orderBy: { installmentNumber: "asc" } }
+      installments: { orderBy: { installmentNumber: "asc" } },
+      courseEnrollments: { orderBy: [{ sequenceOrder: "asc" }, { createdAt: "asc" }] },
     }
   });
 
@@ -2480,6 +3010,7 @@ export async function getCurrentBranchStudentProfile(user) {
         },
       },
       installments: { orderBy: { installmentNumber: "asc" } },
+      courseEnrollments: { orderBy: [{ sequenceOrder: "asc" }, { createdAt: "asc" }] },
     },
   });
 
@@ -2497,6 +3028,7 @@ export async function updateBranchStudent(studentId, payload, actor = null) {
     include: {
       course: { select: { id: true, hours: true, duration: true, mode: true } },
       installments: { orderBy: { installmentNumber: "asc" } },
+      courseEnrollments: { orderBy: [{ sequenceOrder: "asc" }, { createdAt: "asc" }] },
       calendarAttendanceRecords: true,
     },
   });
@@ -2504,6 +3036,8 @@ export async function updateBranchStudent(studentId, payload, actor = null) {
   if (!existing) {
     throw new AppError("Branch student not found", 404);
   }
+
+  const validatedCourseInput = validateCourseEnrollmentInput(payload, existing.branchId, existing);
 
   let { studentData, installmentSchedule } = buildBranchStudentPayload(payload, existing);
   const selectedBatchId = normalizeString(studentData.batchId);
@@ -2541,7 +3075,9 @@ export async function updateBranchStudent(studentId, payload, actor = null) {
     const requestedWeekType = normalizeString(payload.weekType).toUpperCase();
     const requestedMode = normalizeString(payload.mode || payload.courseMode).toUpperCase();
     if ((requestedWeekType && requestedWeekType !== assignedBatch.weekType) || (requestedMode && requestedMode !== assignedBatch.mode)) throw new AppError("Selected batch does not match the selected course, week type, or mode.", 400);
-    await ensureAvailableBatchCapacity(assignedBatch, existing.id);
+    const primaryBatchChanged = selectedBatchId !== normalizeString(existing.batchId)
+      || normalizeString(studentData.courseId) !== normalizeString(existing.courseId);
+    if (primaryBatchChanged) await ensureAvailableBatchCapacity(assignedBatch, existing.id);
 
     studentData.batchId = assignedBatch.batchId;
     studentData.batchName = assignedBatch.batchName;
@@ -2554,10 +3090,101 @@ export async function updateBranchStudent(studentId, payload, actor = null) {
     studentData.courseStartDate = studentData.courseStartDate || assignedBatch.courseStartDate;
     studentData.courseEndDate = studentData.courseEndDate || assignedBatch.courseEndDate;
   }
+  let sequentialCourseActivation = false;
+  if (validatedCourseInput.arrangementType === 'SEQUENTIAL') {
+    const newlyActivatedCourses = validatedCourseInput.enrollments.filter((enrollment) => {
+      const previous = (existing.courseEnrollments || []).find((item) => String(item.courseId) === String(enrollment.courseId));
+      return Number(enrollment.sequenceOrder) > 1
+        && String(previous?.status || '').toUpperCase() === 'PENDING'
+        && enrollment.status === 'ACTIVE';
+    });
+    if (newlyActivatedCourses.length > 1) {
+      throw new AppError('Assign one sequential course at a time so its batch and payment schedule stay course-specific.', 400);
+    }
+    if (newlyActivatedCourses.length === 1) {
+      const enrollment = newlyActivatedCourses[0];
+      if (!enrollment.batchId || !enrollment.startDate) {
+        throw new AppError('Select the active course batch and start date before assigning this sequential course.', 400);
+      }
+      const [courseRecord, batchRecord] = await Promise.all([
+        prisma.branchCourse.findFirst({
+          where: { id: enrollment.courseId, branchId: existing.branchId, status: 'ACTIVE' },
+          select: { id: true, name: true, hours: true, duration: true, mode: true, paymentPlans: true, paymentPlanSelections: true },
+        }),
+        prisma.branchBatch.findFirst({
+          where: { branchId: existing.branchId, courseId: enrollment.courseId, batchId: enrollment.batchId, status: 'ACTIVE' },
+          select: {
+            batchId: true,
+            batchName: true,
+            batchTiming: true,
+            courseId: true,
+            courseName: true,
+            facultyId: true,
+            facultyName: true,
+            weekType: true,
+            mode: true,
+            courseStartDate: true,
+            courseEndDate: true,
+            weeklyOffDay: true,
+          },
+        }),
+      ]);
+      if (!courseRecord || !batchRecord) {
+        throw new AppError('The selected sequential course or batch is no longer active.', 400);
+      }
+      const courseDeadline = await calculateStudentFeeDeadline({
+        branchId: existing.branchId,
+        courseId: enrollment.courseId,
+        courseName: enrollment.courseName || courseRecord.name,
+        courseMode: enrollment.mode || batchRecord.mode,
+        batchId: enrollment.batchId,
+        batchName: batchRecord.batchName,
+        batchTiming: batchRecord.batchTiming,
+        facultyId: batchRecord.facultyId,
+        facultyName: batchRecord.facultyName,
+        classSchedule: enrollment.scheduleType || batchRecord.weekType,
+        courseStartDate: enrollment.startDate,
+        courseEndDate: enrollment.endDate || batchRecord.courseEndDate,
+        admissionDate: enrollment.startDate,
+        weeklyOffDay: batchRecord.weeklyOffDay,
+        course: courseRecord,
+      }, existing.branchId);
+      if (!courseDeadline?.progressDate) {
+        throw new AppError('Unable to calculate the 70% payment deadline for the selected course batch.', 400);
+      }
+      const existingInstallmentCount = (existing.installments || []).length;
+      const addedInstallments = installmentSchedule.slice(existingInstallmentCount);
+      if (installmentSchedule.length < existingInstallmentCount || !addedInstallments.length) {
+        throw new AppError('The payment schedule must include existing installments and the selected course payment plan.', 400);
+      }
+      const coursePaymentPlans = Array.isArray(courseRecord.paymentPlans)
+        ? courseRecord.paymentPlans
+        : Array.isArray(courseRecord.paymentPlanSelections)
+          ? courseRecord.paymentPlanSelections
+          : [];
+      const selectedPaymentPlan = coursePaymentPlans.find((plan) => [plan?.id, plan?.templateId, plan?.paymentPlanId]
+        .some((id) => normalizeString(id) === normalizeString(enrollment.paymentPlanId)));
+      if (coursePaymentPlans.length && !selectedPaymentPlan) {
+        throw new AppError('Select a payment plan configured for the assigned course.', 400);
+      }
+      const expectedInstallmentCount = Number(selectedPaymentPlan?.installmentCount || selectedPaymentPlan?.installments?.length || 0);
+      if (expectedInstallmentCount > 0 && addedInstallments.length !== expectedInstallmentCount) {
+        throw new AppError('The number of new installments must match the selected course payment plan.', 400);
+      }
+      const firstCoursePaymentDate = normalizeString(enrollment.startDate);
+      const courseInstallmentDates = distributeFeeDueDates(firstCoursePaymentDate, courseDeadline.progressDate, addedInstallments.length);
+      addedInstallments.forEach((installment, index) => {
+        installment.dueDate = courseInstallmentDates[index];
+      });
+      sequentialCourseActivation = true;
+    }
+  }
   const feePlan = await buildStudentFeePlan({
     studentData,
     installmentSchedule,
-    payload,
+    payload: sequentialCourseActivation
+      ? { ...payload, preserveInstallmentDates: true, sequentialCourseActivation: true }
+      : payload,
     branchId: existing.branchId,
     course: existing.course,
     existingStudent: existing,
@@ -2566,7 +3193,11 @@ export async function updateBranchStudent(studentId, payload, actor = null) {
   installmentSchedule = feePlan.schedule;
   const existingLoginUser = await findBranchStudentLoginUser(existing);
   const previousCourseProgress = Number(existing.courseProgress);
-  await ensureUniqueBranchStudentIdentity(studentData, existing.branchId, existing.id, existingLoginUser?.id);
+  const emailUnchanged = normalizeString(studentData.emailAddress).toLowerCase() === normalizeString(existing.emailAddress).toLowerCase();
+  const mobileUnchanged = normalizeString(studentData.mobileNumber) === normalizeString(existing.mobileNumber);
+  if (!emailUnchanged || !mobileUnchanged) {
+    await ensureUniqueBranchStudentIdentity(studentData, existing.branchId, existing.id, existingLoginUser?.id, existing.studentId);
+  }
   const updated = await prisma.$transaction(async (tx) => {
     await tx.$queryRaw`SELECT id FROM "Branch" WHERE id = ${existing.branchId} FOR UPDATE`;
     const studentUpdateData = {
@@ -2581,13 +3212,18 @@ export async function updateBranchStudent(studentId, payload, actor = null) {
       data: studentUpdateData,
     });
 
+    await syncBranchStudentCourseEnrollments(tx, student, payload, existing);
+
     await syncStudentCourseEnd(tx, student);
 
     await replaceStudentInstallmentSchedule(tx, student.id, installmentSchedule, existing.installments || []);
 
     const updatedStudent = await tx.branchStudent.findUnique({
       where: { id: student.id },
-      include: { installments: { orderBy: { installmentNumber: "asc" } } },
+      include: {
+        installments: { orderBy: { installmentNumber: "asc" } },
+        courseEnrollments: { orderBy: [{ sequenceOrder: "asc" }, { createdAt: "asc" }] },
+      },
     });
 
     if (updatedStudent) {
@@ -2609,7 +3245,36 @@ export async function updateBranchStudent(studentId, payload, actor = null) {
     return updatedStudent;
   });
 
+  const discountedCourseChanged = validatedCourseInput.enrollments.some((enrollment) => {
+    if (!(Number(enrollment.discountAmount) > 0)) return false;
+    const previous = (existing.courseEnrollments || []).find((item) => String(item.courseId) === String(enrollment.courseId));
+    return !previous
+      || String(previous.discountType || "FIXED").toUpperCase() !== String(enrollment.discountType || "FIXED").toUpperCase()
+      || Math.abs((Number(previous.discountValue) || 0) - (Number(enrollment.discountValue) || 0)) > 0.001;
+  });
+  if (discountedCourseChanged) {
+    try {
+      const branch = await prisma.branch.findUnique({
+        where: { id: existing.branchId },
+        select: { id: true, branchId: true, branchName: true, branchEmail: true },
+      });
+      await notifyStudentCourseDiscount({
+        enrollments: validatedCourseInput.enrollments,
+        student: updated || studentData,
+        branch: branch || { id: existing.branchId, branchName: existing.branchName, branchEmail: existing.branchEmail },
+        actorId: actor?.id ?? null,
+      });
+    } catch (error) {
+      console.warn("Student course discount notification failed", error?.message || error);
+    }
+  }
+
   const updatedCourseProgress = Number(updated?.courseProgress);
+  if (validatedCourseInput.arrangementType === "SEQUENTIAL" && updated && updatedCourseProgress >= 100) {
+    void notifySequentialCourseSchedulingForStudent(updated.id).catch((error) => {
+      console.warn("Sequential course scheduling notification failed", error?.message || error);
+    });
+  }
   if (
     Number.isFinite(updatedCourseProgress) &&
     updatedCourseProgress !== previousCourseProgress &&

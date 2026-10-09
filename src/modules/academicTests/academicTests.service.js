@@ -237,7 +237,7 @@ export async function getFacultyCreateOptions(actor) {
   const [papers, schedules, batchStudents, facultySummary] = await Promise.all([
     testItemIds.length && batchIds.length ? prisma.academicQuestionPaper.findMany({ where: { academicTestItemId: { in: testItemIds }, branchBatchId: { in: batchIds } }, select: { id: true, academicTestItemId: true, branchBatchId: true, status: true } }) : [],
     testItemIds.length && batchIds.length ? prisma.academicScheduledTest.findMany({ where: { academicTestItemId: { in: testItemIds }, branchBatchId: { in: batchIds } }, select: { id: true, academicTestItemId: true, branchBatchId: true, testNumber: true, testDate: true, startTime: true, endTime: true, status: true } }) : [],
-    batchCodes.length ? prisma.branchStudent.findMany({ where: { recordStatus: "ACTIVE", batchId: { in: [...new Set([...batchIds, ...batchCodes])] } }, select: { id: true, batchId: true } }) : [],
+    batchCodes.length ? prisma.branchStudent.findMany({ where: { recordStatus: "ACTIVE", OR: [{ batchId: { in: [...new Set([...batchIds, ...batchCodes])] } }, { courseEnrollments: { some: { status: "ACTIVE", batchId: { in: [...new Set([...batchIds, ...batchCodes])] } } } }] }, select: { id: true, batchId: true } }) : [],
     getFacultyMyBatchesSummary(actor),
   ]);
   const progressByBatch = new Map((facultySummary?.batchCounts || []).map((entry) => [text(entry?.batchId || entry?.id).toLowerCase(), Number(entry?.courseProgress) || 0]));
@@ -306,7 +306,7 @@ export async function createFacultyScheduledTest(actor, payload = {}) {
   const [batch, course, students] = await Promise.all([
     prisma.branchBatch.findUnique({ where: { id: batchId }, select: { batchId: true, batchName: true } }),
     prisma.branchCourse.findUnique({ where: { id: item.academicTest.branchCourseId }, select: { name: true, courseCode: true } }),
-    prisma.branchStudent.findMany({ where: { recordStatus: "ACTIVE", OR: [{ batchId }, { batchId: (await prisma.branchBatch.findUnique({ where: { id: batchId }, select: { batchId: true } }))?.batchId || "__missing__" }] }, select: { id: true, studentId: true, emailAddress: true } }),
+    prisma.branchStudent.findMany({ where: { recordStatus: "ACTIVE", OR: [{ batchId: { in: [batchId, selectedBatch?.batchId].filter(Boolean) } }, { courseEnrollments: { some: { status: "ACTIVE", courseId: item.academicTest.branchCourseId, batchId: { in: [batchId, selectedBatch?.batchId].filter(Boolean) } } } }] }, select: { id: true, studentId: true, emailAddress: true } }),
   ]);
   const users = students.length ? await prisma.user.findMany({ where: { OR: [{ email: { in: students.map((student) => student.emailAddress).filter(Boolean) } }, { userCode: { in: students.map((student) => student.studentId).filter(Boolean) } }] }, select: { id: true, email: true, userCode: true } }) : [];
   const userByEmail = new Map(users.map((user) => [String(user.email || "").toLowerCase(), user.id]));
@@ -345,7 +345,7 @@ export async function cancelFacultyScheduledTest(actor, id) {
   const batch = await prisma.branchBatch.findUnique({ where: { id: schedule.branchBatchId }, select: { batchId: true, batchName: true } });
   const students = schedule.isRetest
     ? await prisma.branchStudent.findMany({ where: { id: schedule.retestStudentId || "__missing__", recordStatus: "ACTIVE" }, select: { id: true, studentId: true, emailAddress: true } })
-    : await prisma.branchStudent.findMany({ where: { recordStatus: "ACTIVE", OR: [{ batchId: schedule.branchBatchId }, { batchId: batch?.batchId || "__missing__" }] }, select: { id: true, studentId: true, emailAddress: true } });
+    : await prisma.branchStudent.findMany({ where: { recordStatus: "ACTIVE", OR: [{ batchId: schedule.branchBatchId }, { batchId: batch?.batchId || "__missing__" }, { courseEnrollments: { some: { status: "ACTIVE", batchId: { in: [schedule.branchBatchId, batch?.batchId || "__missing__"] } } } }] }, select: { id: true, studentId: true, emailAddress: true } });
   const users = students.length ? await prisma.user.findMany({ where: { OR: [{ email: { in: students.map((student) => student.emailAddress).filter(Boolean) } }, { userCode: { in: students.map((student) => student.studentId).filter(Boolean) } }] }, select: { id: true, email: true, userCode: true } }) : [];
   const userByEmail = new Map(users.map((user) => [String(user.email || "").toLowerCase(), user.id]));
   const userByCode = new Map(users.map((user) => [String(user.userCode || "").toLowerCase(), user.id]));
@@ -407,17 +407,28 @@ async function syncExpiredAcademicAttempts(schedules = [], originalStudentIds = 
 
 async function studentFor(actor) {
   const email = text(actor?.email || actor?.emailAddress).toLowerCase();
-  const student = await prisma.branchStudent.findFirst({ where: { emailAddress: { equals: email, mode: "insensitive" }, recordStatus: "ACTIVE" } });
+  const student = await prisma.branchStudent.findFirst({ where: { emailAddress: { equals: email, mode: "insensitive" }, recordStatus: "ACTIVE" }, include: { courseEnrollments: { where: { status: "ACTIVE" }, select: { courseId: true, batchId: true } } } });
   if (!student) throw new AppError("Student profile not found.", 403);
   return student;
 }
 
+async function studentAcademicBatches(student, courseId = "") {
+  const enrollments = (student.courseEnrollments || []).filter((item) => !courseId || item.courseId === courseId);
+  if (student.courseEnrollments?.length) {
+    if (!enrollments.length) return [];
+    return prisma.branchBatch.findMany({ where: { branchId: student.branchId, OR: enrollments.map((item) => ({ branchCourseId: item.courseId, ...(item.batchId ? { OR: [{ id: item.batchId }, { batchId: item.batchId }] } : {}) })) }, select: { id: true, batchId: true, branchCourseId: true } });
+  }
+  if (courseId && courseId !== student.courseId) return [];
+  return prisma.branchBatch.findMany({ where: { OR: [{ id: student.batchId }, { batchId: student.batchId }] }, select: { id: true, batchId: true, branchCourseId: true } });
+}
+
 async function academicScheduleForStudent(actor, id) {
   const student = await studentFor(actor);
-  const batch = await prisma.branchBatch.findFirst({ where: { OR: [{ id: student.batchId }, { batchId: student.batchId }] }, select: { id: true, batchId: true, batchName: true } });
-  const schedule = batch && await prisma.academicScheduledTest.findFirst({ where: { id: text(id), OR: [{ branchBatchId: batch.id }, { retestStudentId: student.id }] } });
+  const batches = await studentAcademicBatches(student);
+  const batchIds = batches.map((batch) => batch.id);
+  const schedule = await prisma.academicScheduledTest.findFirst({ where: { id: text(id), OR: [{ branchBatchId: { in: batchIds } }, { retestStudentId: student.id, branchCourseId: { in: batches.map((batch) => batch.branchCourseId) } }] } });
   if (!schedule) throw new AppError("Academic Test not found or not assigned to your batch.", 404);
-  return { student, schedule, batch };
+  return { student, schedule, batch: batches.find((item) => item.id === schedule.branchBatchId) || null };
 }
 
 async function academicPublicSchedule(schedule, includeQuestions = false) {
@@ -438,10 +449,11 @@ async function academicPassMarkForSchedule(schedule, fallback = 0) {
   return Number(rootPaper?.passMark || 0);
 }
 
-export async function listStudentAcademicTests(actor) {
+export async function listStudentAcademicTests(actor, courseId = "") {
   const student = await studentFor(actor);
-  const batches = await prisma.branchBatch.findMany({ where: { OR: [{ id: student.batchId }, { batchId: student.batchId }] }, select: { id: true } });
-  const schedules = await prisma.academicScheduledTest.findMany({ where: { OR: [{ branchBatchId: { in: batches.map((batch) => batch.id) } }, { retestStudentId: student.id }] }, orderBy: [{ testDate: "asc" }, { startTime: "asc" }] });
+  const batches = await studentAcademicBatches(student, courseId);
+  const batchIds = batches.map((batch) => batch.id);
+  const schedules = await prisma.academicScheduledTest.findMany({ where: { OR: [{ branchBatchId: { in: batchIds } }, { retestStudentId: student.id, ...(courseId ? { branchCourseId: courseId } : { branchCourseId: { in: batches.map((batch) => batch.branchCourseId) } }) }] }, orderBy: [{ testDate: "asc" }, { startTime: "asc" }] });
   await syncExpiredAcademicAttempts(schedules, [student.id]);
   const scheduleIds = schedules.map((schedule) => schedule.id);
   const [submissions, projectSubmissions] = await Promise.all([
@@ -579,7 +591,7 @@ export async function listFacultyScheduledTests(actor) {
 export async function getFacultyAcademicResults(actor, id) {
   const ids = facultyIds(actor); const schedule = await prisma.academicScheduledTest.findFirst({ where: { id: text(id), facultyId: { in: ids } } }); if (!schedule) throw new AppError("Academic Test not found.", 404);
   const batch = await prisma.branchBatch.findUnique({ where: { id: schedule.branchBatchId }, select: { id: true, batchId: true } });
-  const [students, submissions, projectSubmissions, info] = await Promise.all([prisma.branchStudent.findMany({ where: { recordStatus: "ACTIVE", OR: [{ batchId: schedule.branchBatchId }, { batchId: batch?.batchId || "__missing__" }] }, select: { id: true, studentId: true, studentName: true, emailAddress: true }, orderBy: { studentName: "asc" } }), prisma.academicTestSubmission.findMany({ where: { academicTestId: schedule.id } }), prisma.academicProjectSubmission.findMany({ where: { academicTestId: schedule.id } }), academicPublicSchedule(schedule)]);
+  const [students, submissions, projectSubmissions, info] = await Promise.all([prisma.branchStudent.findMany({ where: { recordStatus: "ACTIVE", OR: [{ batchId: schedule.branchBatchId }, { batchId: batch?.batchId || "__missing__" }, { courseEnrollments: { some: { status: "ACTIVE", batchId: { in: [schedule.branchBatchId, batch?.batchId || "__missing__"] } } } }] }, select: { id: true, studentId: true, studentName: true, emailAddress: true }, orderBy: { studentName: "asc" } }), prisma.academicTestSubmission.findMany({ where: { academicTestId: schedule.id } }), prisma.academicProjectSubmission.findMany({ where: { academicTestId: schedule.id } }), academicPublicSchedule(schedule)]);
   const studentIds = students.map((student) => student.id);
   const retests = studentIds.length ? await prisma.academicScheduledTest.findMany({ where: { originalScheduleId: schedule.originalScheduleId || schedule.id, retestStudentId: { in: studentIds } }, orderBy: [{ attemptNumber: "desc" }, { createdAt: "desc" }] }) : [];
   if (academicAttemptExpired(schedule)) {
@@ -756,7 +768,7 @@ async function buildAcademicReport(actor, batch, requestedStudentIds = null, sel
   const configuredItems = (await reportConfiguredItems(batch)).filter(({ item }) => !retestItemIds.has(item.id) && (!originalItemIds.size || originalItemIds.has(item.id)));
   let configured = configuredItems.filter(({ item }) => ["TEST", "TEST_AND_PROJECT"].includes(item.testType));
   const students = await prisma.branchStudent.findMany({
-    where: { recordStatus: "ACTIVE", OR: [{ batchId: batch.id }, { batchId: batch.batchId }], ...(requestedStudentIds ? { id: { in: requestedStudentIds } } : {}) },
+    where: { recordStatus: "ACTIVE", OR: [{ batchId: batch.id }, { batchId: batch.batchId }, { courseEnrollments: { some: { status: "ACTIVE", batchId: { in: [batch.id, batch.batchId] } } } }], ...(requestedStudentIds ? { id: { in: requestedStudentIds } } : {}) },
     orderBy: { studentName: "asc" },
     select: { id: true, studentId: true, studentName: true, emailAddress: true, batchId: true, batchName: true, batchTiming: true, courseName: true },
   });
@@ -903,7 +915,7 @@ export async function listAcademicReportBatches(actor) {
   const reportBatches = await Promise.all(batches.map(async (batch) => {
     const [schedules, students, configuredItems] = await Promise.all([
       prisma.academicScheduledTest.findMany({ where: { branchBatchId: batch.id, isRetest: false, status: { not: "CANCELLED" } }, orderBy: [{ testNumber: "asc" }, { createdAt: "asc" }] }),
-      prisma.branchStudent.findMany({ where: { recordStatus: "ACTIVE", OR: [{ batchId: batch.id }, { batchId: batch.batchId }] }, select: { id: true } }),
+      prisma.branchStudent.findMany({ where: { recordStatus: "ACTIVE", OR: [{ batchId: batch.id }, { batchId: batch.batchId }, { courseEnrollments: { some: { status: "ACTIVE", batchId: { in: [batch.id, batch.batchId] } } } }] }, select: { id: true } }),
       reportConfiguredItems(batch),
     ]);
     if (!schedules.length || !students.length) return null;
@@ -935,9 +947,10 @@ export async function getAcademicBatchReport(actor, batchId) {
   return buildAcademicReport(actor, batch);
 }
 
-export async function getMyAcademicReport(actor) {
+export async function getMyAcademicReport(actor, courseId = "") {
   const student = await studentFor(actor);
-  const batch = await prisma.branchBatch.findFirst({ where: { OR: [{ id: student.batchId }, { batchId: student.batchId }] }, select: { id: true, batchId: true, batchName: true, batchTiming: true, courseName: true, branchCourseId: true, courseId: true } });
+  const batches = await studentAcademicBatches(student, courseId);
+  const batch = batches[0] ? await prisma.branchBatch.findUnique({ where: { id: batches[0].id }, select: { id: true, batchId: true, batchName: true, batchTiming: true, courseName: true, branchCourseId: true, courseId: true } }) : null;
   if (!batch) throw new AppError("Student batch not found.", 404);
   const report = await buildAcademicReport(actor, batch, [student.id]);
   return { ...report, student: report.students[0] || null, students: undefined };
@@ -951,7 +964,7 @@ export async function listFacultyAcademicReportTests(actor, batchId) {
       orderBy: [{ testNumber: "asc" }, { createdAt: "asc" }],
       select: { id: true, testNumber: true, testDate: true, status: true, endTime: true, academicTestItemId: true, questionPaperId: true },
     }),
-    prisma.branchStudent.findMany({ where: { recordStatus: "ACTIVE", OR: [{ batchId: batch.id }, { batchId: batch.batchId }] }, select: { id: true } }),
+    prisma.branchStudent.findMany({ where: { recordStatus: "ACTIVE", OR: [{ batchId: batch.id }, { batchId: batch.batchId }, { courseEnrollments: { some: { status: "ACTIVE", batchId: { in: [batch.id, batch.batchId] } } } }] }, select: { id: true } }),
     reportConfiguredTests(batch),
   ]);
   await syncExpiredAcademicAttempts(schedules, students.map((student) => student.id));
@@ -1022,14 +1035,17 @@ export async function getBranchAcademicTestReport(actor, shareId) {
 
 export async function getBranchStudentAcademicReports(actor, studentId) {
   const branchId = await branchReportScope(actor);
-  const student = await prisma.branchStudent.findFirst({ where: { branchId, studentId: text(studentId), recordStatus: "ACTIVE" }, select: { id: true, studentId: true, studentName: true, emailAddress: true, courseName: true, batchName: true, batchId: true } });
+  const student = await prisma.branchStudent.findFirst({ where: { branchId, studentId: text(studentId), recordStatus: "ACTIVE" }, select: { id: true, studentId: true, studentName: true, emailAddress: true, courseName: true, batchName: true, batchId: true, courseEnrollments: { select: { batchId: true } } } });
   if (!student) throw new AppError("Student not found in this branch.", 404);
-  const batches = await prisma.branchBatch.findMany({ where: { branchId, OR: [{ id: student.batchId }, { batchId: student.batchId }] }, select: { id: true, batchId: true } });
+  const studentBatchIds = [...new Set([student.batchId, ...(student.courseEnrollments || []).map((enrollment) => enrollment.batchId)].map(text).filter(Boolean))];
+  const batches = studentBatchIds.length
+    ? await prisma.branchBatch.findMany({ where: { branchId, OR: [{ id: { in: studentBatchIds } }, { batchId: { in: studentBatchIds } }] }, select: { id: true, batchId: true } })
+    : [];
   const batchIds = new Set(batches.flatMap((batch) => [batch.id, batch.batchId]).filter(Boolean));
   const shares = await prisma.facultyReportShare.findMany({ where: { branchId, reportType: "ACADEMIC_TEST", status: "SENT", batchId: { in: [...batchIds] } }, orderBy: { sentAt: "asc" } });
+  if (!shares.length) return { student, items: [], evaluations: [] };
   const items = [];
-  const reportShares = shares.length ? shares : [{ id: "configured", academicTestIds: [] }];
-  for (const share of reportShares) {
+  for (const share of shares) {
     const batch = await prisma.branchBatch.findUnique({ where: { id: share.batchId }, select: { id: true, batchId: true, batchName: true, batchTiming: true, courseName: true, branchCourseId: true, courseId: true } });
     if (!batch) continue;
     const report = await buildAcademicReport(actor, batch, [student.id], Array.isArray(share.academicTestIds) ? share.academicTestIds : [], true);
