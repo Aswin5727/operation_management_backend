@@ -281,6 +281,17 @@ function buildNotificationWhere({
         branchScope,
         ...(user?.id ? [{ targetUserId: user.id }] : []),
       ],
+      ...(String(user?.role || "").toUpperCase() === "BRANCH_ADMIN" && !normalizedKind
+        ? {
+            NOT: {
+              kind: "COURSE_EDIT_MODULE_UPDATED",
+              message: {
+                contains: "module progress",
+                mode: "insensitive",
+              },
+            },
+          }
+        : {}),
       ...(unreadOnly ? { read: false } : {}),
       ...(normalizedKind
         ? { kind: normalizedKind }
@@ -723,8 +734,24 @@ export async function createCourseEditModuleUpdatedNotification({
   if (existing) return existing;
 
   const moduleLabel = module?.title || "a module";
-  const subModuleLabel = subModule?.title ? ` / ${subModule.title}` : "";
-  const fieldLabel = Array.isArray(updatedFields) && updatedFields.length ? ` (${updatedFields.join(", ")})` : "";
+  const facultyLabel = faculty?.facultyName || faculty?.name || request?.facultyName || actor?.fullName || "Faculty";
+  const courseLabel = branchCourse?.name || "the course";
+  const normalizedFields = Array.isArray(updatedFields) ? updatedFields.filter(Boolean) : [];
+  const hasSubModuleAdded = normalizedFields.includes("sub-module added");
+  const hasSubModuleRemoved = normalizedFields.includes("sub-module removed");
+  const changeLine = hasSubModuleAdded && subModule?.title
+    ? `Added: Sub-module - ${subModule.title}`
+    : hasSubModuleRemoved && subModule?.title
+      ? `Removed: Sub-module - ${subModule.title}`
+      : normalizedFields.length
+        ? `Updated: ${normalizedFields.join(", ")}`
+        : "Updated: Course module content";
+  const notificationMessage = [
+    `Faculty Name: ${facultyLabel}`,
+    `Course Name: ${courseLabel}`,
+    `Module Name: ${moduleLabel}`,
+    changeLine,
+  ].join("\n");
   const branchReference = request?.branchId || branchCourse?.branchId || "";
   let persistedBranch = branchCourse?.branch || branchContext || null;
 
@@ -755,7 +782,7 @@ export async function createCourseEditModuleUpdatedNotification({
       kind: "COURSE_EDIT_MODULE_UPDATED",
       tone: "blue",
       title: "Course Module Updated",
-      message: `Faculty updated ${moduleLabel}${subModuleLabel} in ${branchCourse?.name || "the course"}${fieldLabel}.`,
+      message: notificationMessage,
       actionLabel: "View update",
       branch,
       createdBy: actor?.userId || actor?.id || null,

@@ -2,7 +2,6 @@ import { assertAttendanceAllowed } from "../instituteLeave/instituteLeave.servic
 import prisma from "../../config/prisma.js";
 import AppError from "../../common/errors/AppError.js";
 import {
-  createCourseEditModuleUpdatedNotification,
   notifySequentialCourseSchedulingForStudent,
 } from "../notifications/notifications.service.js";
 import {
@@ -849,18 +848,6 @@ export async function createFacultyTodayWorkEntry(payload = {}, user = null) {
     throw new AppError("Selected course does not belong to the current branch", 400);
   }
 
-  const branchRecord = branchCourse?.branchId
-    ? await prisma.branch.findUnique({
-        where: { id: normalizeString(branchCourse.branchId) },
-        select: {
-          id: true,
-          branchId: true,
-          branchName: true,
-          branchEmail: true,
-        },
-      })
-    : null;
-
   const selectedModule = resolveSelectedModule(branchCourse, moduleId);
   const selectedSubmodules = Array.isArray(selectedModule.submodules) ? selectedModule.submodules : [];
   const selectedSubmoduleLookup = new Map(
@@ -996,45 +983,6 @@ export async function createFacultyTodayWorkEntry(payload = {}, user = null) {
       console.warn("Sequential course scheduling notification failed", error?.message || error);
     })
   )));
-
-  void createCourseEditModuleUpdatedNotification({
-    request: { branchId: branchCourse.branchId || branchId },
-    branch: branchRecord || {
-      id: normalizeString(branchCourse.branchId || branchId || ""),
-      branchId: normalizeString(branchCourse.branchId || branchId || ""),
-      branchName: normalizeString(branchCourse?.branchName || branchCourse.name || "Branch"),
-      branchEmail: normalizeString(branchCourse?.branchEmail || ""),
-    },
-    branchCourse: {
-      id: branchCourse.id || courseId,
-      branchId: branchCourse.branchId || branchId || "",
-      name: normalizeString(branchCourse.name || payload.courseName || "Course"),
-    },
-    faculty: {
-      facultyId: facultyProfileId || facultyUserId,
-      userId: facultyUserId,
-      facultyName: normalizeString(user?.fullName || user?.name || user?.email || "Faculty"),
-      name: normalizeString(user?.fullName || user?.name || user?.email || "Faculty"),
-      facultyEmail: normalizeString(user?.email || ""),
-    },
-    module: {
-      id: selectedModule.id || moduleId,
-      title: normalizeString(selectedModule.title || payload.moduleName || "Module"),
-    },
-    subModule: selectedSubmodulePayload[0]
-      ? {
-          id: selectedSubmodulePayload[0].id,
-          title: selectedSubmodulePayload[0].name,
-        }
-      : null,
-    actor: {
-      id: normalizeString(user?.id) || null,
-      userId: normalizeString(user?.id) || null,
-    },
-    updatedFields: ["module progress", "sub-module progress", "course progress"],
-  }).catch((error) => {
-    console.warn("Faculty work notification failed to send", error);
-  });
 
   return mapWorkEntry(created);
 }

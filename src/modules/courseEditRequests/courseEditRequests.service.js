@@ -844,6 +844,18 @@ export async function saveCourseEditRequestModules(requestId, payload = {}, acto
   const changeSummary = findHierarchyChange(beforeModules, afterModules);
   const actorId = normalizeString(actor?.id) || null;
   const now = new Date();
+  const formattedCourseModuleUpdateMessage = [
+    `Faculty Name: ${request.facultyName || facultyUser?.fullName || actor?.fullName || "Faculty"}`,
+    `Course Name: ${course.name || "the course"}`,
+    `Module Name: ${changeSummary.module?.title || "a module"}`,
+    changeSummary.updatedFields?.includes("sub-module added") && changeSummary.subModule?.title
+      ? `Added: Sub-module - ${changeSummary.subModule.title}`
+      : changeSummary.updatedFields?.includes("sub-module removed") && changeSummary.subModule?.title
+        ? `Removed: Sub-module - ${changeSummary.subModule.title}`
+        : changeSummary.updatedFields?.length
+          ? `Updated: ${changeSummary.updatedFields.join(", ")}`
+          : "Updated: Course module content",
+  ].join("\n");
 
   let updatedCourse;
 
@@ -881,10 +893,11 @@ try {
     });
 
     await syncRequestNotification(tx, record, {
+      kind: "COURSE_EDIT_MODULE_UPDATED",
       requestStatus: "COMPLETED",
       tone: "blue",
       title: "Course Module Updated",
-      message: `Faculty updated modules and sub-modules for ${course.name || "the course"}.`,
+      message: formattedCourseModuleUpdateMessage,
       actionLabel: "Updated",
     });
 
