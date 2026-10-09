@@ -1,4 +1,4 @@
-import prisma from "../../config/prisma.js";
+﻿import prisma from "../../config/prisma.js";
 import AppError from "../../common/errors/AppError.js";
 
 const IST_OFFSET_MINUTES = 330;
@@ -60,7 +60,7 @@ function getIstWeekEnd() {
 
 function buildRevenueWhere({ from, to, monthPrefix } = {}) {
   const where = {
-    recordStatus: "ACTIVE",
+    recordStatus: "ACTIVE", discontinuationRequests: { none: { status: "APPROVED" } },
   };
 
   if (monthPrefix) {
@@ -242,7 +242,7 @@ async function getFacultyMyBatchesSummary(user) {
       ? await prisma.branchStudent.findMany({
           where: {
             branchId: branchFaculty.branchId,
-            recordStatus: "ACTIVE",
+            recordStatus: "ACTIVE", discontinuationRequests: { none: { status: "APPROVED" } },
             batchId: { in: batchIds },
             facultyId: branchFaculty.facultyId || branchFaculty.id,
             facultyName: { equals: branchFaculty.name, mode: "insensitive" },
@@ -355,7 +355,7 @@ async function getFacultyMyBatchesSummary(user) {
 
   const candidateStudents = await prisma.studentProfile.findMany({
     where: {
-      recordStatus: "ACTIVE",
+      recordStatus: "ACTIVE", discontinuationRequests: { none: { status: "APPROVED" } },
       OR: batchEntries.flatMap((entry) => {
         const conditions = [];
         const batchName = normalizeFacultyText(entry?.batchName);
@@ -504,7 +504,7 @@ async function getFacultyDashboardOverview(user) {
   const uniqueBatches = Array.from(new Map(batches.map((batch) => [`${batch.branchId}:${batch.batchId}`, batch])).values());
   const todayValue = dashboardDate(); const [year, month, day] = dashboardParts(todayValue); const current = new Date(Date.UTC(year, month - 1, day)); const mondayOffset = current.getUTCDay() === 0 ? -6 : 1 - current.getUTCDay(); const weekDates = Array.from({ length: 7 }, (_, index) => dashboardAddDays(todayValue, mondayOffset + index)); const monthStart = `${year}-${String(month).padStart(2, "0")}-01`;
   if (!uniqueBatches.length) return { generatedAt: new Date().toISOString(), today: todayValue, month: monthStart.slice(0, 7), weekDates, batches: [], totalBatches: 0, totalStudents: 0, courseIds: branchFaculty.branchCourseId ? [branchFaculty.branchCourseId] : [] };
-  const students = await prisma.branchStudent.findMany({ where: { recordStatus: "ACTIVE", AND: [{ OR: [{ courseProgress: null }, { courseProgress: { lt: 100 } }] }, { OR: uniqueBatches.map((batch) => ({ branchId: batch.branchId, courseId: batch.courseId, batchId: batch.batchId })) }] }, select: { id: true, branchId: true, courseId: true, batchId: true, courseProgress: true } });
+  const students = await prisma.branchStudent.findMany({ where: { recordStatus: "ACTIVE", discontinuationRequests: { none: { status: "APPROVED" } }, AND: [{ OR: [{ courseProgress: null }, { courseProgress: { lt: 100 } }] }, { OR: uniqueBatches.map((batch) => ({ branchId: batch.branchId, courseId: batch.courseId, batchId: batch.batchId })) }] }, select: { id: true, branchId: true, courseId: true, batchId: true, courseProgress: true } });
   const yearStart = `${year}-01-01`; const attendanceStart = yearStart < weekDates[0] ? yearStart : weekDates[0]; const ids = students.map((student) => student.id); const attendance = ids.length ? await prisma.branchStudentAttendance.findMany({ where: { branchStudentId: { in: ids }, attendanceDate: { gte: attendanceStart, lte: todayValue } }, select: { branchStudentId: true, batchId: true, attendanceDate: true, status: true } }) : [];
   const attendanceGroups = uniqueBatches.map((batch) => { const batchStudents = students.filter((student) => student.branchId === batch.branchId && student.courseId === batch.courseId && student.batchId === batch.batchId); const studentIds = new Set(batchStudents.map((student) => student.id)); const records = attendance.filter((record) => studentIds.has(record.branchStudentId) && (!record.batchId || record.batchId === batch.batchId)); return { batch, students: batchStudents, records }; });
   const result = attendanceGroups.map(({ batch, students: batchStudents, records }) => { const values = batchStudents.map((student) => Number(student.courseProgress)); const progress = batchStudents.length && values.every(Number.isFinite) ? Math.round(values.reduce((sum, value) => sum + value, 0) / batchStudents.length * 10) / 10 : null; return { id: batch.id, courseId: batch.courseId, courseName: batch.courseName, batchId: batch.batchId, batchName: batch.batchName, timing: batch.batchTiming || `${batch.startTime || ""} ${batch.startPeriod || ""} - ${batch.endTime || ""} ${batch.endPeriod || ""}`.trim(), mode: batch.mode || null, weeklyOffDay: batch.weeklyOffDay || null, weekType: batch.weekType || null, studentCount: batchStudents.length, daily: dashboardDay(todayValue, batchStudents, records, batch.weeklyOffDay), weekly: weekDates.map((dateValue) => dashboardDay(dateValue, batchStudents, records, batch.weeklyOffDay)), weeklyByMonth: dashboardMonthWeeks(year, month, batchStudents, records, batch.weeklyOffDay, false, todayValue), monthlyYear: dashboardYearMonths(year, batchStudents, records, batch.weeklyOffDay, todayValue), monthly: dashboardMonthlySummary(year, month, batchStudents, records, batch.weeklyOffDay, todayValue), progress: progress == null ? null : { percentage: progress, studentsIncluded: batchStudents.length } }; });
@@ -677,7 +677,7 @@ function buildAccuratePaymentOverview(today, payments, students) {
     const saturday = addDays(sunday, 6);
     const start = cursor > sunday ? cursor : sunday;
     const end = monthEnd < saturday ? monthEnd : saturday;
-    weekly.push({ key: monthKeyValue + "-" + weekNumber, label: "Week " + weekNumber, fullLabel: paymentOverviewDate(start, { day: "numeric", month: "short" }) + " – " + paymentOverviewDate(end, { day: "numeric", month: "short" }), expected: 0, actual: 0, start, end });
+    weekly.push({ key: monthKeyValue + "-" + weekNumber, label: "Week " + weekNumber, fullLabel: paymentOverviewDate(start, { day: "numeric", month: "short" }) + " â€“ " + paymentOverviewDate(end, { day: "numeric", month: "short" }), expected: 0, actual: 0, start, end });
     cursor = addDays(end, 1);
     weekNumber += 1;
   }
@@ -741,7 +741,13 @@ async function getSuperAdminOverview(branchId = null, performanceOptions = {}) {
   const branches = branch ? [branch] : await prisma.branch.findMany({ where: { status: "ACTIVE" }, orderBy: { branchName: "asc" }, select: { id: true, branchId: true, branchName: true, branchCity: true, branchState: true, status: true } });
   const branchIds = branches.map((item) => item.id);
   const students = branchIds.length ? await prisma.branchStudent.findMany({ where: { branchId: { in: branchIds }, recordStatus: "ACTIVE" }, select: { id: true, branchId: true, studentName: true, admissionDate: true, courseName: true, courseAmount: true, installments: { select: { amount: true, amountPaid: true, dueDate: true } }, payments: { select: { amount: true, paymentDate: true } }, calendarAttendanceRecords: { select: { attendanceDate: true, status: true } } } }) : [];
-  const todayParts = toIstDateParts();
+  const approvedDiscontinuationRows = branchIds.length
+    ? await prisma.studentDiscontinuationRequest.findMany({
+        where: { branchId: { in: branchIds }, status: "APPROVED" },
+        select: { branchStudentId: true },
+      })
+    : [];
+  const approvedDiscontinuationStudentIds = new Set(approvedDiscontinuationRows.map((item) => String(item.branchStudentId || "").trim()).filter(Boolean));  const todayParts = toIstDateParts();
   const today = toDateStringFromParts(todayParts.year, todayParts.month, todayParts.day);
   const currentMonth = monthKey(todayParts.year, todayParts.month);
   const performanceRange = getPerformanceDateRange(performanceOptions);
@@ -753,6 +759,7 @@ async function getSuperAdminOverview(branchId = null, performanceOptions = {}) {
   const summary = { totalBranches: branches.length, totalStudents: students.length, thisMonthAdmissions: admissionsByMonth.at(-1).value, totalPayment: payments.reduce((sum, payment) => sum + money(payment.amount), 0), thisMonthPayment: payments.filter((payment) => new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Calcutta" }).format(new Date(payment.paymentDate)).startsWith(currentMonth)).reduce((sum, payment) => sum + money(payment.amount), 0), totalOutstanding: 0, thisMonthDue: 0, todayDue: 0, yesterdayDue: 0, overdueAmount: 0, dueStudents: new Set(), todayCollection: 0, yesterdayCollection: 0 };
   const yesterday = addDays(today, -1);
   students.forEach((student) => {
+    if (approvedDiscontinuationStudentIds.has(String(student.id || "").trim())) return;
     const paid = (student.installments || []).reduce((sum, item) => sum + money(item.amountPaid), 0);
     const planned = money(student.courseAmount) || (student.installments || []).reduce((sum, item) => sum + money(item.amount), 0);
     summary.totalOutstanding += Math.max(planned - paid, 0);
@@ -807,3 +814,5 @@ async function getSuperAdminOverview(branchId = null, performanceOptions = {}) {
 }
 
 export { getRevenueSummary, getFacultyMyBatchesSummary, getFacultyDashboardOverview, getSuperAdminOverview, invalidateRevenueSummaryCache };
+
+

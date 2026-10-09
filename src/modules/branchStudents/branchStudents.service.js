@@ -1854,6 +1854,7 @@ function buildBranchStudentOrderBy(sortBy, sortOrder) {
 }
 
 function toBranchStudentSummary(record) {
+  const isDiscontinued = Array.isArray(record.discontinuationRequests) && record.discontinuationRequests.some((request) => request?.status === "APPROVED");
   return {
     id: record.id,
     branchId: record.branchId,
@@ -1916,7 +1917,9 @@ function toBranchStudentSummary(record) {
     fee70TargetHours: record.fee70TargetHours,
     feePaymentDeadline: record.feePaymentDeadline,
     feeComplianceStatus: record.feeComplianceStatus,
-    status: displayStatus(record.recordStatus),
+    status: isDiscontinued ? "Discontinued" : displayStatus(record.recordStatus),
+    isDiscontinued,
+    discontinuationStatus: isDiscontinued ? "APPROVED" : null,
     recordStatus: record.recordStatus,
     createdBy: record.createdBy,
     updatedBy: record.updatedBy,
@@ -2102,6 +2105,11 @@ export async function listBranchStudents(query = {}, actor = null) {
         installments: {
           orderBy: { installmentNumber: "asc" }
         },
+        discontinuationRequests: {
+          where: { status: "APPROVED" },
+          select: { status: true, accessDeactivationAt: true, superAdminReviewedAt: true },
+          take: 1,
+        },
         calendarAttendanceRecords: {
           where: {
             attendanceDate: {
@@ -2283,6 +2291,11 @@ export async function createBranchStudent(payload, actor) {
           where: { id: student.id },
           include: {
             installments: { orderBy: { installmentNumber: "asc" } },
+      discontinuationRequests: {
+        where: { status: "APPROVED" },
+        select: { status: true, accessDeactivationAt: true, superAdminReviewedAt: true },
+        take: 1,
+      },
           },
         });
 

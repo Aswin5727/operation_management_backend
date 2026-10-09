@@ -3,6 +3,7 @@ import { authenticate } from "../../common/middlewares/authenticate.js";
 import { authorize } from "../../common/middlewares/authorize.js";
 import {
   createDiscontinuationRequestHandler,
+  getDiscontinuationFinancePreviewHandler,
   getDiscontinuationRequestHandler,
   listDiscontinuationRequestsHandler,
   reviewDiscontinuationByBranchHandler,
@@ -17,6 +18,12 @@ router.post(
   authenticate,
   authorize("STUDENT"),
   createDiscontinuationRequestHandler,
+);
+router.get(
+  "/me/preview",
+  authenticate,
+  authorize("STUDENT"),
+  getDiscontinuationFinancePreviewHandler,
 );
 router.get(
   "/",

@@ -141,26 +141,44 @@ function amount(value) {
   return Number.isFinite(parsed) ? Math.max(0, Math.round(parsed)) : 0;
 }
 
-function motivationFinancialSnapshot(student) {
+async function motivationFinancialSnapshot(student) {
+  const course = student.courseId ? await prisma.branchCourse.findUnique({
+    where: { id: student.courseId },
+    select: { actualFees: true, registrationFees: true, discount: true, afterDiscount: true },
+  }) : null;
   const installmentTotal = (student.installments || []).reduce((sum, item) => sum + amount(item.amount), 0);
   const installmentPaid = (student.installments || []).reduce((sum, item) => sum + amount(item.amountPaid), 0);
   const paymentTotal = (student.payments || []).reduce((sum, item) => sum + amount(item.amount), 0);
-  const totalCourseFee = installmentTotal || amount(student.courseAmount);
+  const actualCourseAmount = amount(course?.actualFees || student.courseAmount);
+  const registrationFee = amount(course?.registrationFees);
+  const discount = Math.min(amount(course?.discount), actualCourseAmount);
+  const finalCourseFee = Math.max(amount(course?.afterDiscount) || actualCourseAmount - discount, 0);
+  const gstAmount = Math.round((actualCourseAmount * 18) / 118);
+  const totalCourseFee = installmentTotal || finalCourseFee;
   const totalPaid = paymentTotal || installmentPaid;
   const courseProgress = Math.min(Math.max(amount(student.courseProgress), 0), 100);
-  const progressEarnedAmount = Math.round(totalCourseFee * (courseProgress / 100));
+  const completedCourseAmount = Math.round(finalCourseFee * (courseProgress / 100));
+  const payableBeforeDiscontinuation = gstAmount + registrationFee + completedCourseAmount;
   const balanceDue = Math.max(totalCourseFee - totalPaid, 0);
+  const eligibleAmount = Math.max(payableBeforeDiscontinuation - totalPaid, 0);
+  const refundEligibleAmount = Math.max(totalPaid - payableBeforeDiscontinuation, 0);
   return {
     courseProgress,
-    progressEarnedAmount,
+    progressEarnedAmount: completedCourseAmount,
     balanceDue,
     totalCourseFee,
+    actualCourseAmount,
+    gstAmount,
+    registrationFee,
+    discountAmount: discount,
+    finalCourseFee,
+    completedCourseAmount,
     totalPaid,
-    outstandingAmount: balanceDue,
-    refundEligibleAmount: 0,
+    outstandingAmount: eligibleAmount,
+    refundEligibleAmount,
     waiverAmount: 0,
-    finalOutstandingAmount: balanceDue,
-    settlementStatus: balanceDue > 0 ? "SETTLEMENT_PENDING" : "SETTLED",
+    finalOutstandingAmount: eligibleAmount,
+    settlementStatus: refundEligibleAmount > 0 ? "REFUND_PENDING" : eligibleAmount > 0 ? "SETTLEMENT_PENDING" : "SETTLED",
   };
 }
 async function ensureMotivationDiscontinuationRequest(student, absenceStartDate, absenceWorkingDays) {
@@ -172,7 +190,7 @@ async function ensureMotivationDiscontinuationRequest(student, absenceStartDate,
     },
     select: { id: true },
   });
-  const snapshot = motivationFinancialSnapshot(student);
+  const snapshot = await motivationFinancialSnapshot(student);
   if (existing) {
     await prisma.studentDiscontinuationRequest.update({
       where: { id: existing.id },
@@ -318,7 +336,7 @@ export async function runStudentMotivationSweep({ today = dateText(new Date()) }
 
   const students = await prisma.branchStudent.findMany({
     where: {
-      recordStatus: "ACTIVE",
+      recordStatus: "ACTIVE", discontinuationRequests: { none: { status: "APPROVED" } },
       emailAddress: { not: "" },
       calendarAttendanceRecords: { some: { status: "ABSENT" } },
     },

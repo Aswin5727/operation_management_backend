@@ -403,6 +403,7 @@ export type NotificationKind = (typeof NotificationKind)[keyof typeof Notificati
 export const DiscontinuationRequestStatus: {
   PENDING: 'PENDING',
   SUPER_ADMIN_REVIEW: 'SUPER_ADMIN_REVIEW',
+  SUPER_ADMIN_WAIT: 'SUPER_ADMIN_WAIT',
   APPROVED: 'APPROVED',
   REJECTED: 'REJECTED',
   CANCELLED: 'CANCELLED',
@@ -81656,7 +81657,18 @@ export namespace Prisma {
     courseProgress: number | null
     progressEarnedAmount: number | null
     balanceDue: number | null
+    contactAttemptCount: number | null
+    installmentOverdueCount: number | null
     totalCourseFee: number | null
+    actualCourseAmount: number | null
+    gstAmount: number | null
+    registrationFee: number | null
+    discountAmount: number | null
+    finalCourseFee: number | null
+    totalCourseHours: number | null
+    conductedDays: number | null
+    conductedHours: number | null
+    completedCourseAmount: number | null
     totalPaid: number | null
     outstandingAmount: number | null
     refundEligibleAmount: number | null
@@ -81668,7 +81680,18 @@ export namespace Prisma {
     courseProgress: number | null
     progressEarnedAmount: number | null
     balanceDue: number | null
+    contactAttemptCount: number | null
+    installmentOverdueCount: number | null
     totalCourseFee: number | null
+    actualCourseAmount: number | null
+    gstAmount: number | null
+    registrationFee: number | null
+    discountAmount: number | null
+    finalCourseFee: number | null
+    totalCourseHours: number | null
+    conductedDays: number | null
+    conductedHours: number | null
+    completedCourseAmount: number | null
     totalPaid: number | null
     outstandingAmount: number | null
     refundEligibleAmount: number | null
@@ -81692,6 +81715,10 @@ export namespace Prisma {
     contactNotes: string | null
     contactedBy: string | null
     contactedAt: Date | null
+    contactAttemptCount: number | null
+    installmentOverdueCount: number | null
+    nextInstallmentDueDate: string | null
+    escalationReason: string | null
     nextFollowUpDate: string | null
     branchReviewedBy: string | null
     branchReviewedAt: Date | null
@@ -81701,6 +81728,15 @@ export namespace Prisma {
     superAdminReviewNote: string | null
     accessDeactivationAt: Date | null
     totalCourseFee: number | null
+    actualCourseAmount: number | null
+    gstAmount: number | null
+    registrationFee: number | null
+    discountAmount: number | null
+    finalCourseFee: number | null
+    totalCourseHours: number | null
+    conductedDays: number | null
+    conductedHours: number | null
+    completedCourseAmount: number | null
     totalPaid: number | null
     outstandingAmount: number | null
     refundEligibleAmount: number | null
@@ -81728,6 +81764,10 @@ export namespace Prisma {
     contactNotes: string | null
     contactedBy: string | null
     contactedAt: Date | null
+    contactAttemptCount: number | null
+    installmentOverdueCount: number | null
+    nextInstallmentDueDate: string | null
+    escalationReason: string | null
     nextFollowUpDate: string | null
     branchReviewedBy: string | null
     branchReviewedAt: Date | null
@@ -81737,6 +81777,15 @@ export namespace Prisma {
     superAdminReviewNote: string | null
     accessDeactivationAt: Date | null
     totalCourseFee: number | null
+    actualCourseAmount: number | null
+    gstAmount: number | null
+    registrationFee: number | null
+    discountAmount: number | null
+    finalCourseFee: number | null
+    totalCourseHours: number | null
+    conductedDays: number | null
+    conductedHours: number | null
+    completedCourseAmount: number | null
     totalPaid: number | null
     outstandingAmount: number | null
     refundEligibleAmount: number | null
@@ -81764,6 +81813,11 @@ export namespace Prisma {
     contactNotes: number
     contactedBy: number
     contactedAt: number
+    contactAttemptCount: number
+    installmentOverdueCount: number
+    nextInstallmentDueDate: number
+    contactHistory: number
+    escalationReason: number
     nextFollowUpDate: number
     branchReviewedBy: number
     branchReviewedAt: number
@@ -81773,6 +81827,15 @@ export namespace Prisma {
     superAdminReviewNote: number
     accessDeactivationAt: number
     totalCourseFee: number
+    actualCourseAmount: number
+    gstAmount: number
+    registrationFee: number
+    discountAmount: number
+    finalCourseFee: number
+    totalCourseHours: number
+    conductedDays: number
+    conductedHours: number
+    completedCourseAmount: number
     totalPaid: number
     outstandingAmount: number
     refundEligibleAmount: number
@@ -81790,7 +81853,18 @@ export namespace Prisma {
     courseProgress?: true
     progressEarnedAmount?: true
     balanceDue?: true
+    contactAttemptCount?: true
+    installmentOverdueCount?: true
     totalCourseFee?: true
+    actualCourseAmount?: true
+    gstAmount?: true
+    registrationFee?: true
+    discountAmount?: true
+    finalCourseFee?: true
+    totalCourseHours?: true
+    conductedDays?: true
+    conductedHours?: true
+    completedCourseAmount?: true
     totalPaid?: true
     outstandingAmount?: true
     refundEligibleAmount?: true
@@ -81802,7 +81876,18 @@ export namespace Prisma {
     courseProgress?: true
     progressEarnedAmount?: true
     balanceDue?: true
+    contactAttemptCount?: true
+    installmentOverdueCount?: true
     totalCourseFee?: true
+    actualCourseAmount?: true
+    gstAmount?: true
+    registrationFee?: true
+    discountAmount?: true
+    finalCourseFee?: true
+    totalCourseHours?: true
+    conductedDays?: true
+    conductedHours?: true
+    completedCourseAmount?: true
     totalPaid?: true
     outstandingAmount?: true
     refundEligibleAmount?: true
@@ -81826,6 +81911,10 @@ export namespace Prisma {
     contactNotes?: true
     contactedBy?: true
     contactedAt?: true
+    contactAttemptCount?: true
+    installmentOverdueCount?: true
+    nextInstallmentDueDate?: true
+    escalationReason?: true
     nextFollowUpDate?: true
     branchReviewedBy?: true
     branchReviewedAt?: true
@@ -81835,6 +81924,15 @@ export namespace Prisma {
     superAdminReviewNote?: true
     accessDeactivationAt?: true
     totalCourseFee?: true
+    actualCourseAmount?: true
+    gstAmount?: true
+    registrationFee?: true
+    discountAmount?: true
+    finalCourseFee?: true
+    totalCourseHours?: true
+    conductedDays?: true
+    conductedHours?: true
+    completedCourseAmount?: true
     totalPaid?: true
     outstandingAmount?: true
     refundEligibleAmount?: true
@@ -81862,6 +81960,10 @@ export namespace Prisma {
     contactNotes?: true
     contactedBy?: true
     contactedAt?: true
+    contactAttemptCount?: true
+    installmentOverdueCount?: true
+    nextInstallmentDueDate?: true
+    escalationReason?: true
     nextFollowUpDate?: true
     branchReviewedBy?: true
     branchReviewedAt?: true
@@ -81871,6 +81973,15 @@ export namespace Prisma {
     superAdminReviewNote?: true
     accessDeactivationAt?: true
     totalCourseFee?: true
+    actualCourseAmount?: true
+    gstAmount?: true
+    registrationFee?: true
+    discountAmount?: true
+    finalCourseFee?: true
+    totalCourseHours?: true
+    conductedDays?: true
+    conductedHours?: true
+    completedCourseAmount?: true
     totalPaid?: true
     outstandingAmount?: true
     refundEligibleAmount?: true
@@ -81898,6 +82009,11 @@ export namespace Prisma {
     contactNotes?: true
     contactedBy?: true
     contactedAt?: true
+    contactAttemptCount?: true
+    installmentOverdueCount?: true
+    nextInstallmentDueDate?: true
+    contactHistory?: true
+    escalationReason?: true
     nextFollowUpDate?: true
     branchReviewedBy?: true
     branchReviewedAt?: true
@@ -81907,6 +82023,15 @@ export namespace Prisma {
     superAdminReviewNote?: true
     accessDeactivationAt?: true
     totalCourseFee?: true
+    actualCourseAmount?: true
+    gstAmount?: true
+    registrationFee?: true
+    discountAmount?: true
+    finalCourseFee?: true
+    totalCourseHours?: true
+    conductedDays?: true
+    conductedHours?: true
+    completedCourseAmount?: true
     totalPaid?: true
     outstandingAmount?: true
     refundEligibleAmount?: true
@@ -82021,6 +82146,11 @@ export namespace Prisma {
     contactNotes: string | null
     contactedBy: string | null
     contactedAt: Date | null
+    contactAttemptCount: number
+    installmentOverdueCount: number
+    nextInstallmentDueDate: string | null
+    contactHistory: JsonValue
+    escalationReason: string | null
     nextFollowUpDate: string | null
     branchReviewedBy: string | null
     branchReviewedAt: Date | null
@@ -82030,6 +82160,15 @@ export namespace Prisma {
     superAdminReviewNote: string | null
     accessDeactivationAt: Date | null
     totalCourseFee: number
+    actualCourseAmount: number
+    gstAmount: number
+    registrationFee: number
+    discountAmount: number
+    finalCourseFee: number
+    totalCourseHours: number
+    conductedDays: number
+    conductedHours: number
+    completedCourseAmount: number
     totalPaid: number
     outstandingAmount: number
     refundEligibleAmount: number
@@ -82076,6 +82215,11 @@ export namespace Prisma {
     contactNotes?: boolean
     contactedBy?: boolean
     contactedAt?: boolean
+    contactAttemptCount?: boolean
+    installmentOverdueCount?: boolean
+    nextInstallmentDueDate?: boolean
+    contactHistory?: boolean
+    escalationReason?: boolean
     nextFollowUpDate?: boolean
     branchReviewedBy?: boolean
     branchReviewedAt?: boolean
@@ -82085,6 +82229,15 @@ export namespace Prisma {
     superAdminReviewNote?: boolean
     accessDeactivationAt?: boolean
     totalCourseFee?: boolean
+    actualCourseAmount?: boolean
+    gstAmount?: boolean
+    registrationFee?: boolean
+    discountAmount?: boolean
+    finalCourseFee?: boolean
+    totalCourseHours?: boolean
+    conductedDays?: boolean
+    conductedHours?: boolean
+    completedCourseAmount?: boolean
     totalPaid?: boolean
     outstandingAmount?: boolean
     refundEligibleAmount?: boolean
@@ -82113,6 +82266,11 @@ export namespace Prisma {
     contactNotes?: boolean
     contactedBy?: boolean
     contactedAt?: boolean
+    contactAttemptCount?: boolean
+    installmentOverdueCount?: boolean
+    nextInstallmentDueDate?: boolean
+    contactHistory?: boolean
+    escalationReason?: boolean
     nextFollowUpDate?: boolean
     branchReviewedBy?: boolean
     branchReviewedAt?: boolean
@@ -82122,6 +82280,15 @@ export namespace Prisma {
     superAdminReviewNote?: boolean
     accessDeactivationAt?: boolean
     totalCourseFee?: boolean
+    actualCourseAmount?: boolean
+    gstAmount?: boolean
+    registrationFee?: boolean
+    discountAmount?: boolean
+    finalCourseFee?: boolean
+    totalCourseHours?: boolean
+    conductedDays?: boolean
+    conductedHours?: boolean
+    completedCourseAmount?: boolean
     totalPaid?: boolean
     outstandingAmount?: boolean
     refundEligibleAmount?: boolean
@@ -82150,6 +82317,11 @@ export namespace Prisma {
     contactNotes?: boolean
     contactedBy?: boolean
     contactedAt?: boolean
+    contactAttemptCount?: boolean
+    installmentOverdueCount?: boolean
+    nextInstallmentDueDate?: boolean
+    contactHistory?: boolean
+    escalationReason?: boolean
     nextFollowUpDate?: boolean
     branchReviewedBy?: boolean
     branchReviewedAt?: boolean
@@ -82159,6 +82331,15 @@ export namespace Prisma {
     superAdminReviewNote?: boolean
     accessDeactivationAt?: boolean
     totalCourseFee?: boolean
+    actualCourseAmount?: boolean
+    gstAmount?: boolean
+    registrationFee?: boolean
+    discountAmount?: boolean
+    finalCourseFee?: boolean
+    totalCourseHours?: boolean
+    conductedDays?: boolean
+    conductedHours?: boolean
+    completedCourseAmount?: boolean
     totalPaid?: boolean
     outstandingAmount?: boolean
     refundEligibleAmount?: boolean
@@ -82187,6 +82368,11 @@ export namespace Prisma {
     contactNotes?: boolean
     contactedBy?: boolean
     contactedAt?: boolean
+    contactAttemptCount?: boolean
+    installmentOverdueCount?: boolean
+    nextInstallmentDueDate?: boolean
+    contactHistory?: boolean
+    escalationReason?: boolean
     nextFollowUpDate?: boolean
     branchReviewedBy?: boolean
     branchReviewedAt?: boolean
@@ -82196,6 +82382,15 @@ export namespace Prisma {
     superAdminReviewNote?: boolean
     accessDeactivationAt?: boolean
     totalCourseFee?: boolean
+    actualCourseAmount?: boolean
+    gstAmount?: boolean
+    registrationFee?: boolean
+    discountAmount?: boolean
+    finalCourseFee?: boolean
+    totalCourseHours?: boolean
+    conductedDays?: boolean
+    conductedHours?: boolean
+    completedCourseAmount?: boolean
     totalPaid?: boolean
     outstandingAmount?: boolean
     refundEligibleAmount?: boolean
@@ -82207,7 +82402,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type StudentDiscontinuationRequestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "branchStudentId" | "branchId" | "requestedByUserId" | "refundRequested" | "courseProgress" | "progressEarnedAmount" | "balanceDue" | "reason" | "details" | "status" | "contactOutcome" | "contactNotes" | "contactedBy" | "contactedAt" | "nextFollowUpDate" | "branchReviewedBy" | "branchReviewedAt" | "branchReviewNote" | "superAdminReviewedBy" | "superAdminReviewedAt" | "superAdminReviewNote" | "accessDeactivationAt" | "totalCourseFee" | "totalPaid" | "outstandingAmount" | "refundEligibleAmount" | "waiverAmount" | "finalOutstandingAmount" | "settlementStatus" | "financeNote" | "createdAt" | "updatedAt", ExtArgs["result"]["studentDiscontinuationRequest"]>
+  export type StudentDiscontinuationRequestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "branchStudentId" | "branchId" | "requestedByUserId" | "refundRequested" | "courseProgress" | "progressEarnedAmount" | "balanceDue" | "reason" | "details" | "status" | "contactOutcome" | "contactNotes" | "contactedBy" | "contactedAt" | "contactAttemptCount" | "installmentOverdueCount" | "nextInstallmentDueDate" | "contactHistory" | "escalationReason" | "nextFollowUpDate" | "branchReviewedBy" | "branchReviewedAt" | "branchReviewNote" | "superAdminReviewedBy" | "superAdminReviewedAt" | "superAdminReviewNote" | "accessDeactivationAt" | "totalCourseFee" | "actualCourseAmount" | "gstAmount" | "registrationFee" | "discountAmount" | "finalCourseFee" | "totalCourseHours" | "conductedDays" | "conductedHours" | "completedCourseAmount" | "totalPaid" | "outstandingAmount" | "refundEligibleAmount" | "waiverAmount" | "finalOutstandingAmount" | "settlementStatus" | "financeNote" | "createdAt" | "updatedAt", ExtArgs["result"]["studentDiscontinuationRequest"]>
   export type StudentDiscontinuationRequestInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     branchStudent?: boolean | BranchStudentDefaultArgs<ExtArgs>
   }
@@ -82239,6 +82434,11 @@ export namespace Prisma {
       contactNotes: string | null
       contactedBy: string | null
       contactedAt: Date | null
+      contactAttemptCount: number
+      installmentOverdueCount: number
+      nextInstallmentDueDate: string | null
+      contactHistory: Prisma.JsonValue
+      escalationReason: string | null
       nextFollowUpDate: string | null
       branchReviewedBy: string | null
       branchReviewedAt: Date | null
@@ -82248,6 +82448,15 @@ export namespace Prisma {
       superAdminReviewNote: string | null
       accessDeactivationAt: Date | null
       totalCourseFee: number
+      actualCourseAmount: number
+      gstAmount: number
+      registrationFee: number
+      discountAmount: number
+      finalCourseFee: number
+      totalCourseHours: number
+      conductedDays: number
+      conductedHours: number
+      completedCourseAmount: number
       totalPaid: number
       outstandingAmount: number
       refundEligibleAmount: number
@@ -82696,6 +82905,11 @@ export namespace Prisma {
     readonly contactNotes: FieldRef<"StudentDiscontinuationRequest", 'String'>
     readonly contactedBy: FieldRef<"StudentDiscontinuationRequest", 'String'>
     readonly contactedAt: FieldRef<"StudentDiscontinuationRequest", 'DateTime'>
+    readonly contactAttemptCount: FieldRef<"StudentDiscontinuationRequest", 'Int'>
+    readonly installmentOverdueCount: FieldRef<"StudentDiscontinuationRequest", 'Int'>
+    readonly nextInstallmentDueDate: FieldRef<"StudentDiscontinuationRequest", 'String'>
+    readonly contactHistory: FieldRef<"StudentDiscontinuationRequest", 'Json'>
+    readonly escalationReason: FieldRef<"StudentDiscontinuationRequest", 'String'>
     readonly nextFollowUpDate: FieldRef<"StudentDiscontinuationRequest", 'String'>
     readonly branchReviewedBy: FieldRef<"StudentDiscontinuationRequest", 'String'>
     readonly branchReviewedAt: FieldRef<"StudentDiscontinuationRequest", 'DateTime'>
@@ -82705,6 +82919,15 @@ export namespace Prisma {
     readonly superAdminReviewNote: FieldRef<"StudentDiscontinuationRequest", 'String'>
     readonly accessDeactivationAt: FieldRef<"StudentDiscontinuationRequest", 'DateTime'>
     readonly totalCourseFee: FieldRef<"StudentDiscontinuationRequest", 'Int'>
+    readonly actualCourseAmount: FieldRef<"StudentDiscontinuationRequest", 'Int'>
+    readonly gstAmount: FieldRef<"StudentDiscontinuationRequest", 'Int'>
+    readonly registrationFee: FieldRef<"StudentDiscontinuationRequest", 'Int'>
+    readonly discountAmount: FieldRef<"StudentDiscontinuationRequest", 'Int'>
+    readonly finalCourseFee: FieldRef<"StudentDiscontinuationRequest", 'Int'>
+    readonly totalCourseHours: FieldRef<"StudentDiscontinuationRequest", 'Int'>
+    readonly conductedDays: FieldRef<"StudentDiscontinuationRequest", 'Int'>
+    readonly conductedHours: FieldRef<"StudentDiscontinuationRequest", 'Int'>
+    readonly completedCourseAmount: FieldRef<"StudentDiscontinuationRequest", 'Int'>
     readonly totalPaid: FieldRef<"StudentDiscontinuationRequest", 'Int'>
     readonly outstandingAmount: FieldRef<"StudentDiscontinuationRequest", 'Int'>
     readonly refundEligibleAmount: FieldRef<"StudentDiscontinuationRequest", 'Int'>
@@ -88170,6 +88393,11 @@ export namespace Prisma {
     contactNotes: 'contactNotes',
     contactedBy: 'contactedBy',
     contactedAt: 'contactedAt',
+    contactAttemptCount: 'contactAttemptCount',
+    installmentOverdueCount: 'installmentOverdueCount',
+    nextInstallmentDueDate: 'nextInstallmentDueDate',
+    contactHistory: 'contactHistory',
+    escalationReason: 'escalationReason',
     nextFollowUpDate: 'nextFollowUpDate',
     branchReviewedBy: 'branchReviewedBy',
     branchReviewedAt: 'branchReviewedAt',
@@ -88179,6 +88407,15 @@ export namespace Prisma {
     superAdminReviewNote: 'superAdminReviewNote',
     accessDeactivationAt: 'accessDeactivationAt',
     totalCourseFee: 'totalCourseFee',
+    actualCourseAmount: 'actualCourseAmount',
+    gstAmount: 'gstAmount',
+    registrationFee: 'registrationFee',
+    discountAmount: 'discountAmount',
+    finalCourseFee: 'finalCourseFee',
+    totalCourseHours: 'totalCourseHours',
+    conductedDays: 'conductedDays',
+    conductedHours: 'conductedHours',
+    completedCourseAmount: 'completedCourseAmount',
     totalPaid: 'totalPaid',
     outstandingAmount: 'outstandingAmount',
     refundEligibleAmount: 'refundEligibleAmount',
@@ -95255,6 +95492,11 @@ export namespace Prisma {
     contactNotes?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
     contactedBy?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
     contactedAt?: DateTimeNullableFilter<"StudentDiscontinuationRequest"> | Date | string | null
+    contactAttemptCount?: IntFilter<"StudentDiscontinuationRequest"> | number
+    installmentOverdueCount?: IntFilter<"StudentDiscontinuationRequest"> | number
+    nextInstallmentDueDate?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
+    contactHistory?: JsonFilter<"StudentDiscontinuationRequest">
+    escalationReason?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
     nextFollowUpDate?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
     branchReviewedBy?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
     branchReviewedAt?: DateTimeNullableFilter<"StudentDiscontinuationRequest"> | Date | string | null
@@ -95264,6 +95506,15 @@ export namespace Prisma {
     superAdminReviewNote?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
     accessDeactivationAt?: DateTimeNullableFilter<"StudentDiscontinuationRequest"> | Date | string | null
     totalCourseFee?: IntFilter<"StudentDiscontinuationRequest"> | number
+    actualCourseAmount?: IntFilter<"StudentDiscontinuationRequest"> | number
+    gstAmount?: IntFilter<"StudentDiscontinuationRequest"> | number
+    registrationFee?: IntFilter<"StudentDiscontinuationRequest"> | number
+    discountAmount?: IntFilter<"StudentDiscontinuationRequest"> | number
+    finalCourseFee?: IntFilter<"StudentDiscontinuationRequest"> | number
+    totalCourseHours?: IntFilter<"StudentDiscontinuationRequest"> | number
+    conductedDays?: IntFilter<"StudentDiscontinuationRequest"> | number
+    conductedHours?: IntFilter<"StudentDiscontinuationRequest"> | number
+    completedCourseAmount?: IntFilter<"StudentDiscontinuationRequest"> | number
     totalPaid?: IntFilter<"StudentDiscontinuationRequest"> | number
     outstandingAmount?: IntFilter<"StudentDiscontinuationRequest"> | number
     refundEligibleAmount?: IntFilter<"StudentDiscontinuationRequest"> | number
@@ -95292,6 +95543,11 @@ export namespace Prisma {
     contactNotes?: SortOrderInput | SortOrder
     contactedBy?: SortOrderInput | SortOrder
     contactedAt?: SortOrderInput | SortOrder
+    contactAttemptCount?: SortOrder
+    installmentOverdueCount?: SortOrder
+    nextInstallmentDueDate?: SortOrderInput | SortOrder
+    contactHistory?: SortOrder
+    escalationReason?: SortOrderInput | SortOrder
     nextFollowUpDate?: SortOrderInput | SortOrder
     branchReviewedBy?: SortOrderInput | SortOrder
     branchReviewedAt?: SortOrderInput | SortOrder
@@ -95301,6 +95557,15 @@ export namespace Prisma {
     superAdminReviewNote?: SortOrderInput | SortOrder
     accessDeactivationAt?: SortOrderInput | SortOrder
     totalCourseFee?: SortOrder
+    actualCourseAmount?: SortOrder
+    gstAmount?: SortOrder
+    registrationFee?: SortOrder
+    discountAmount?: SortOrder
+    finalCourseFee?: SortOrder
+    totalCourseHours?: SortOrder
+    conductedDays?: SortOrder
+    conductedHours?: SortOrder
+    completedCourseAmount?: SortOrder
     totalPaid?: SortOrder
     outstandingAmount?: SortOrder
     refundEligibleAmount?: SortOrder
@@ -95332,6 +95597,11 @@ export namespace Prisma {
     contactNotes?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
     contactedBy?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
     contactedAt?: DateTimeNullableFilter<"StudentDiscontinuationRequest"> | Date | string | null
+    contactAttemptCount?: IntFilter<"StudentDiscontinuationRequest"> | number
+    installmentOverdueCount?: IntFilter<"StudentDiscontinuationRequest"> | number
+    nextInstallmentDueDate?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
+    contactHistory?: JsonFilter<"StudentDiscontinuationRequest">
+    escalationReason?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
     nextFollowUpDate?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
     branchReviewedBy?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
     branchReviewedAt?: DateTimeNullableFilter<"StudentDiscontinuationRequest"> | Date | string | null
@@ -95341,6 +95611,15 @@ export namespace Prisma {
     superAdminReviewNote?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
     accessDeactivationAt?: DateTimeNullableFilter<"StudentDiscontinuationRequest"> | Date | string | null
     totalCourseFee?: IntFilter<"StudentDiscontinuationRequest"> | number
+    actualCourseAmount?: IntFilter<"StudentDiscontinuationRequest"> | number
+    gstAmount?: IntFilter<"StudentDiscontinuationRequest"> | number
+    registrationFee?: IntFilter<"StudentDiscontinuationRequest"> | number
+    discountAmount?: IntFilter<"StudentDiscontinuationRequest"> | number
+    finalCourseFee?: IntFilter<"StudentDiscontinuationRequest"> | number
+    totalCourseHours?: IntFilter<"StudentDiscontinuationRequest"> | number
+    conductedDays?: IntFilter<"StudentDiscontinuationRequest"> | number
+    conductedHours?: IntFilter<"StudentDiscontinuationRequest"> | number
+    completedCourseAmount?: IntFilter<"StudentDiscontinuationRequest"> | number
     totalPaid?: IntFilter<"StudentDiscontinuationRequest"> | number
     outstandingAmount?: IntFilter<"StudentDiscontinuationRequest"> | number
     refundEligibleAmount?: IntFilter<"StudentDiscontinuationRequest"> | number
@@ -95369,6 +95648,11 @@ export namespace Prisma {
     contactNotes?: SortOrderInput | SortOrder
     contactedBy?: SortOrderInput | SortOrder
     contactedAt?: SortOrderInput | SortOrder
+    contactAttemptCount?: SortOrder
+    installmentOverdueCount?: SortOrder
+    nextInstallmentDueDate?: SortOrderInput | SortOrder
+    contactHistory?: SortOrder
+    escalationReason?: SortOrderInput | SortOrder
     nextFollowUpDate?: SortOrderInput | SortOrder
     branchReviewedBy?: SortOrderInput | SortOrder
     branchReviewedAt?: SortOrderInput | SortOrder
@@ -95378,6 +95662,15 @@ export namespace Prisma {
     superAdminReviewNote?: SortOrderInput | SortOrder
     accessDeactivationAt?: SortOrderInput | SortOrder
     totalCourseFee?: SortOrder
+    actualCourseAmount?: SortOrder
+    gstAmount?: SortOrder
+    registrationFee?: SortOrder
+    discountAmount?: SortOrder
+    finalCourseFee?: SortOrder
+    totalCourseHours?: SortOrder
+    conductedDays?: SortOrder
+    conductedHours?: SortOrder
+    completedCourseAmount?: SortOrder
     totalPaid?: SortOrder
     outstandingAmount?: SortOrder
     refundEligibleAmount?: SortOrder
@@ -95413,6 +95706,11 @@ export namespace Prisma {
     contactNotes?: StringNullableWithAggregatesFilter<"StudentDiscontinuationRequest"> | string | null
     contactedBy?: StringNullableWithAggregatesFilter<"StudentDiscontinuationRequest"> | string | null
     contactedAt?: DateTimeNullableWithAggregatesFilter<"StudentDiscontinuationRequest"> | Date | string | null
+    contactAttemptCount?: IntWithAggregatesFilter<"StudentDiscontinuationRequest"> | number
+    installmentOverdueCount?: IntWithAggregatesFilter<"StudentDiscontinuationRequest"> | number
+    nextInstallmentDueDate?: StringNullableWithAggregatesFilter<"StudentDiscontinuationRequest"> | string | null
+    contactHistory?: JsonWithAggregatesFilter<"StudentDiscontinuationRequest">
+    escalationReason?: StringNullableWithAggregatesFilter<"StudentDiscontinuationRequest"> | string | null
     nextFollowUpDate?: StringNullableWithAggregatesFilter<"StudentDiscontinuationRequest"> | string | null
     branchReviewedBy?: StringNullableWithAggregatesFilter<"StudentDiscontinuationRequest"> | string | null
     branchReviewedAt?: DateTimeNullableWithAggregatesFilter<"StudentDiscontinuationRequest"> | Date | string | null
@@ -95422,6 +95720,15 @@ export namespace Prisma {
     superAdminReviewNote?: StringNullableWithAggregatesFilter<"StudentDiscontinuationRequest"> | string | null
     accessDeactivationAt?: DateTimeNullableWithAggregatesFilter<"StudentDiscontinuationRequest"> | Date | string | null
     totalCourseFee?: IntWithAggregatesFilter<"StudentDiscontinuationRequest"> | number
+    actualCourseAmount?: IntWithAggregatesFilter<"StudentDiscontinuationRequest"> | number
+    gstAmount?: IntWithAggregatesFilter<"StudentDiscontinuationRequest"> | number
+    registrationFee?: IntWithAggregatesFilter<"StudentDiscontinuationRequest"> | number
+    discountAmount?: IntWithAggregatesFilter<"StudentDiscontinuationRequest"> | number
+    finalCourseFee?: IntWithAggregatesFilter<"StudentDiscontinuationRequest"> | number
+    totalCourseHours?: IntWithAggregatesFilter<"StudentDiscontinuationRequest"> | number
+    conductedDays?: IntWithAggregatesFilter<"StudentDiscontinuationRequest"> | number
+    conductedHours?: IntWithAggregatesFilter<"StudentDiscontinuationRequest"> | number
+    completedCourseAmount?: IntWithAggregatesFilter<"StudentDiscontinuationRequest"> | number
     totalPaid?: IntWithAggregatesFilter<"StudentDiscontinuationRequest"> | number
     outstandingAmount?: IntWithAggregatesFilter<"StudentDiscontinuationRequest"> | number
     refundEligibleAmount?: IntWithAggregatesFilter<"StudentDiscontinuationRequest"> | number
@@ -103587,6 +103894,11 @@ export namespace Prisma {
     contactNotes?: string | null
     contactedBy?: string | null
     contactedAt?: Date | string | null
+    contactAttemptCount?: number
+    installmentOverdueCount?: number
+    nextInstallmentDueDate?: string | null
+    contactHistory?: JsonNullValueInput | InputJsonValue
+    escalationReason?: string | null
     nextFollowUpDate?: string | null
     branchReviewedBy?: string | null
     branchReviewedAt?: Date | string | null
@@ -103596,6 +103908,15 @@ export namespace Prisma {
     superAdminReviewNote?: string | null
     accessDeactivationAt?: Date | string | null
     totalCourseFee?: number
+    actualCourseAmount?: number
+    gstAmount?: number
+    registrationFee?: number
+    discountAmount?: number
+    finalCourseFee?: number
+    totalCourseHours?: number
+    conductedDays?: number
+    conductedHours?: number
+    completedCourseAmount?: number
     totalPaid?: number
     outstandingAmount?: number
     refundEligibleAmount?: number
@@ -103624,6 +103945,11 @@ export namespace Prisma {
     contactNotes?: string | null
     contactedBy?: string | null
     contactedAt?: Date | string | null
+    contactAttemptCount?: number
+    installmentOverdueCount?: number
+    nextInstallmentDueDate?: string | null
+    contactHistory?: JsonNullValueInput | InputJsonValue
+    escalationReason?: string | null
     nextFollowUpDate?: string | null
     branchReviewedBy?: string | null
     branchReviewedAt?: Date | string | null
@@ -103633,6 +103959,15 @@ export namespace Prisma {
     superAdminReviewNote?: string | null
     accessDeactivationAt?: Date | string | null
     totalCourseFee?: number
+    actualCourseAmount?: number
+    gstAmount?: number
+    registrationFee?: number
+    discountAmount?: number
+    finalCourseFee?: number
+    totalCourseHours?: number
+    conductedDays?: number
+    conductedHours?: number
+    completedCourseAmount?: number
     totalPaid?: number
     outstandingAmount?: number
     refundEligibleAmount?: number
@@ -103659,6 +103994,11 @@ export namespace Prisma {
     contactNotes?: NullableStringFieldUpdateOperationsInput | string | null
     contactedBy?: NullableStringFieldUpdateOperationsInput | string | null
     contactedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    contactAttemptCount?: IntFieldUpdateOperationsInput | number
+    installmentOverdueCount?: IntFieldUpdateOperationsInput | number
+    nextInstallmentDueDate?: NullableStringFieldUpdateOperationsInput | string | null
+    contactHistory?: JsonNullValueInput | InputJsonValue
+    escalationReason?: NullableStringFieldUpdateOperationsInput | string | null
     nextFollowUpDate?: NullableStringFieldUpdateOperationsInput | string | null
     branchReviewedBy?: NullableStringFieldUpdateOperationsInput | string | null
     branchReviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -103668,6 +104008,15 @@ export namespace Prisma {
     superAdminReviewNote?: NullableStringFieldUpdateOperationsInput | string | null
     accessDeactivationAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     totalCourseFee?: IntFieldUpdateOperationsInput | number
+    actualCourseAmount?: IntFieldUpdateOperationsInput | number
+    gstAmount?: IntFieldUpdateOperationsInput | number
+    registrationFee?: IntFieldUpdateOperationsInput | number
+    discountAmount?: IntFieldUpdateOperationsInput | number
+    finalCourseFee?: IntFieldUpdateOperationsInput | number
+    totalCourseHours?: IntFieldUpdateOperationsInput | number
+    conductedDays?: IntFieldUpdateOperationsInput | number
+    conductedHours?: IntFieldUpdateOperationsInput | number
+    completedCourseAmount?: IntFieldUpdateOperationsInput | number
     totalPaid?: IntFieldUpdateOperationsInput | number
     outstandingAmount?: IntFieldUpdateOperationsInput | number
     refundEligibleAmount?: IntFieldUpdateOperationsInput | number
@@ -103696,6 +104045,11 @@ export namespace Prisma {
     contactNotes?: NullableStringFieldUpdateOperationsInput | string | null
     contactedBy?: NullableStringFieldUpdateOperationsInput | string | null
     contactedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    contactAttemptCount?: IntFieldUpdateOperationsInput | number
+    installmentOverdueCount?: IntFieldUpdateOperationsInput | number
+    nextInstallmentDueDate?: NullableStringFieldUpdateOperationsInput | string | null
+    contactHistory?: JsonNullValueInput | InputJsonValue
+    escalationReason?: NullableStringFieldUpdateOperationsInput | string | null
     nextFollowUpDate?: NullableStringFieldUpdateOperationsInput | string | null
     branchReviewedBy?: NullableStringFieldUpdateOperationsInput | string | null
     branchReviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -103705,6 +104059,15 @@ export namespace Prisma {
     superAdminReviewNote?: NullableStringFieldUpdateOperationsInput | string | null
     accessDeactivationAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     totalCourseFee?: IntFieldUpdateOperationsInput | number
+    actualCourseAmount?: IntFieldUpdateOperationsInput | number
+    gstAmount?: IntFieldUpdateOperationsInput | number
+    registrationFee?: IntFieldUpdateOperationsInput | number
+    discountAmount?: IntFieldUpdateOperationsInput | number
+    finalCourseFee?: IntFieldUpdateOperationsInput | number
+    totalCourseHours?: IntFieldUpdateOperationsInput | number
+    conductedDays?: IntFieldUpdateOperationsInput | number
+    conductedHours?: IntFieldUpdateOperationsInput | number
+    completedCourseAmount?: IntFieldUpdateOperationsInput | number
     totalPaid?: IntFieldUpdateOperationsInput | number
     outstandingAmount?: IntFieldUpdateOperationsInput | number
     refundEligibleAmount?: IntFieldUpdateOperationsInput | number
@@ -103732,6 +104095,11 @@ export namespace Prisma {
     contactNotes?: string | null
     contactedBy?: string | null
     contactedAt?: Date | string | null
+    contactAttemptCount?: number
+    installmentOverdueCount?: number
+    nextInstallmentDueDate?: string | null
+    contactHistory?: JsonNullValueInput | InputJsonValue
+    escalationReason?: string | null
     nextFollowUpDate?: string | null
     branchReviewedBy?: string | null
     branchReviewedAt?: Date | string | null
@@ -103741,6 +104109,15 @@ export namespace Prisma {
     superAdminReviewNote?: string | null
     accessDeactivationAt?: Date | string | null
     totalCourseFee?: number
+    actualCourseAmount?: number
+    gstAmount?: number
+    registrationFee?: number
+    discountAmount?: number
+    finalCourseFee?: number
+    totalCourseHours?: number
+    conductedDays?: number
+    conductedHours?: number
+    completedCourseAmount?: number
     totalPaid?: number
     outstandingAmount?: number
     refundEligibleAmount?: number
@@ -103767,6 +104144,11 @@ export namespace Prisma {
     contactNotes?: NullableStringFieldUpdateOperationsInput | string | null
     contactedBy?: NullableStringFieldUpdateOperationsInput | string | null
     contactedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    contactAttemptCount?: IntFieldUpdateOperationsInput | number
+    installmentOverdueCount?: IntFieldUpdateOperationsInput | number
+    nextInstallmentDueDate?: NullableStringFieldUpdateOperationsInput | string | null
+    contactHistory?: JsonNullValueInput | InputJsonValue
+    escalationReason?: NullableStringFieldUpdateOperationsInput | string | null
     nextFollowUpDate?: NullableStringFieldUpdateOperationsInput | string | null
     branchReviewedBy?: NullableStringFieldUpdateOperationsInput | string | null
     branchReviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -103776,6 +104158,15 @@ export namespace Prisma {
     superAdminReviewNote?: NullableStringFieldUpdateOperationsInput | string | null
     accessDeactivationAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     totalCourseFee?: IntFieldUpdateOperationsInput | number
+    actualCourseAmount?: IntFieldUpdateOperationsInput | number
+    gstAmount?: IntFieldUpdateOperationsInput | number
+    registrationFee?: IntFieldUpdateOperationsInput | number
+    discountAmount?: IntFieldUpdateOperationsInput | number
+    finalCourseFee?: IntFieldUpdateOperationsInput | number
+    totalCourseHours?: IntFieldUpdateOperationsInput | number
+    conductedDays?: IntFieldUpdateOperationsInput | number
+    conductedHours?: IntFieldUpdateOperationsInput | number
+    completedCourseAmount?: IntFieldUpdateOperationsInput | number
     totalPaid?: IntFieldUpdateOperationsInput | number
     outstandingAmount?: IntFieldUpdateOperationsInput | number
     refundEligibleAmount?: IntFieldUpdateOperationsInput | number
@@ -103803,6 +104194,11 @@ export namespace Prisma {
     contactNotes?: NullableStringFieldUpdateOperationsInput | string | null
     contactedBy?: NullableStringFieldUpdateOperationsInput | string | null
     contactedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    contactAttemptCount?: IntFieldUpdateOperationsInput | number
+    installmentOverdueCount?: IntFieldUpdateOperationsInput | number
+    nextInstallmentDueDate?: NullableStringFieldUpdateOperationsInput | string | null
+    contactHistory?: JsonNullValueInput | InputJsonValue
+    escalationReason?: NullableStringFieldUpdateOperationsInput | string | null
     nextFollowUpDate?: NullableStringFieldUpdateOperationsInput | string | null
     branchReviewedBy?: NullableStringFieldUpdateOperationsInput | string | null
     branchReviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -103812,6 +104208,15 @@ export namespace Prisma {
     superAdminReviewNote?: NullableStringFieldUpdateOperationsInput | string | null
     accessDeactivationAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     totalCourseFee?: IntFieldUpdateOperationsInput | number
+    actualCourseAmount?: IntFieldUpdateOperationsInput | number
+    gstAmount?: IntFieldUpdateOperationsInput | number
+    registrationFee?: IntFieldUpdateOperationsInput | number
+    discountAmount?: IntFieldUpdateOperationsInput | number
+    finalCourseFee?: IntFieldUpdateOperationsInput | number
+    totalCourseHours?: IntFieldUpdateOperationsInput | number
+    conductedDays?: IntFieldUpdateOperationsInput | number
+    conductedHours?: IntFieldUpdateOperationsInput | number
+    completedCourseAmount?: IntFieldUpdateOperationsInput | number
     totalPaid?: IntFieldUpdateOperationsInput | number
     outstandingAmount?: IntFieldUpdateOperationsInput | number
     refundEligibleAmount?: IntFieldUpdateOperationsInput | number
@@ -109249,6 +109654,11 @@ export namespace Prisma {
     contactNotes?: SortOrder
     contactedBy?: SortOrder
     contactedAt?: SortOrder
+    contactAttemptCount?: SortOrder
+    installmentOverdueCount?: SortOrder
+    nextInstallmentDueDate?: SortOrder
+    contactHistory?: SortOrder
+    escalationReason?: SortOrder
     nextFollowUpDate?: SortOrder
     branchReviewedBy?: SortOrder
     branchReviewedAt?: SortOrder
@@ -109258,6 +109668,15 @@ export namespace Prisma {
     superAdminReviewNote?: SortOrder
     accessDeactivationAt?: SortOrder
     totalCourseFee?: SortOrder
+    actualCourseAmount?: SortOrder
+    gstAmount?: SortOrder
+    registrationFee?: SortOrder
+    discountAmount?: SortOrder
+    finalCourseFee?: SortOrder
+    totalCourseHours?: SortOrder
+    conductedDays?: SortOrder
+    conductedHours?: SortOrder
+    completedCourseAmount?: SortOrder
     totalPaid?: SortOrder
     outstandingAmount?: SortOrder
     refundEligibleAmount?: SortOrder
@@ -109273,7 +109692,18 @@ export namespace Prisma {
     courseProgress?: SortOrder
     progressEarnedAmount?: SortOrder
     balanceDue?: SortOrder
+    contactAttemptCount?: SortOrder
+    installmentOverdueCount?: SortOrder
     totalCourseFee?: SortOrder
+    actualCourseAmount?: SortOrder
+    gstAmount?: SortOrder
+    registrationFee?: SortOrder
+    discountAmount?: SortOrder
+    finalCourseFee?: SortOrder
+    totalCourseHours?: SortOrder
+    conductedDays?: SortOrder
+    conductedHours?: SortOrder
+    completedCourseAmount?: SortOrder
     totalPaid?: SortOrder
     outstandingAmount?: SortOrder
     refundEligibleAmount?: SortOrder
@@ -109297,6 +109727,10 @@ export namespace Prisma {
     contactNotes?: SortOrder
     contactedBy?: SortOrder
     contactedAt?: SortOrder
+    contactAttemptCount?: SortOrder
+    installmentOverdueCount?: SortOrder
+    nextInstallmentDueDate?: SortOrder
+    escalationReason?: SortOrder
     nextFollowUpDate?: SortOrder
     branchReviewedBy?: SortOrder
     branchReviewedAt?: SortOrder
@@ -109306,6 +109740,15 @@ export namespace Prisma {
     superAdminReviewNote?: SortOrder
     accessDeactivationAt?: SortOrder
     totalCourseFee?: SortOrder
+    actualCourseAmount?: SortOrder
+    gstAmount?: SortOrder
+    registrationFee?: SortOrder
+    discountAmount?: SortOrder
+    finalCourseFee?: SortOrder
+    totalCourseHours?: SortOrder
+    conductedDays?: SortOrder
+    conductedHours?: SortOrder
+    completedCourseAmount?: SortOrder
     totalPaid?: SortOrder
     outstandingAmount?: SortOrder
     refundEligibleAmount?: SortOrder
@@ -109333,6 +109776,10 @@ export namespace Prisma {
     contactNotes?: SortOrder
     contactedBy?: SortOrder
     contactedAt?: SortOrder
+    contactAttemptCount?: SortOrder
+    installmentOverdueCount?: SortOrder
+    nextInstallmentDueDate?: SortOrder
+    escalationReason?: SortOrder
     nextFollowUpDate?: SortOrder
     branchReviewedBy?: SortOrder
     branchReviewedAt?: SortOrder
@@ -109342,6 +109789,15 @@ export namespace Prisma {
     superAdminReviewNote?: SortOrder
     accessDeactivationAt?: SortOrder
     totalCourseFee?: SortOrder
+    actualCourseAmount?: SortOrder
+    gstAmount?: SortOrder
+    registrationFee?: SortOrder
+    discountAmount?: SortOrder
+    finalCourseFee?: SortOrder
+    totalCourseHours?: SortOrder
+    conductedDays?: SortOrder
+    conductedHours?: SortOrder
+    completedCourseAmount?: SortOrder
     totalPaid?: SortOrder
     outstandingAmount?: SortOrder
     refundEligibleAmount?: SortOrder
@@ -109357,7 +109813,18 @@ export namespace Prisma {
     courseProgress?: SortOrder
     progressEarnedAmount?: SortOrder
     balanceDue?: SortOrder
+    contactAttemptCount?: SortOrder
+    installmentOverdueCount?: SortOrder
     totalCourseFee?: SortOrder
+    actualCourseAmount?: SortOrder
+    gstAmount?: SortOrder
+    registrationFee?: SortOrder
+    discountAmount?: SortOrder
+    finalCourseFee?: SortOrder
+    totalCourseHours?: SortOrder
+    conductedDays?: SortOrder
+    conductedHours?: SortOrder
+    completedCourseAmount?: SortOrder
     totalPaid?: SortOrder
     outstandingAmount?: SortOrder
     refundEligibleAmount?: SortOrder
@@ -125985,6 +126452,11 @@ export namespace Prisma {
     contactNotes?: string | null
     contactedBy?: string | null
     contactedAt?: Date | string | null
+    contactAttemptCount?: number
+    installmentOverdueCount?: number
+    nextInstallmentDueDate?: string | null
+    contactHistory?: JsonNullValueInput | InputJsonValue
+    escalationReason?: string | null
     nextFollowUpDate?: string | null
     branchReviewedBy?: string | null
     branchReviewedAt?: Date | string | null
@@ -125994,6 +126466,15 @@ export namespace Prisma {
     superAdminReviewNote?: string | null
     accessDeactivationAt?: Date | string | null
     totalCourseFee?: number
+    actualCourseAmount?: number
+    gstAmount?: number
+    registrationFee?: number
+    discountAmount?: number
+    finalCourseFee?: number
+    totalCourseHours?: number
+    conductedDays?: number
+    conductedHours?: number
+    completedCourseAmount?: number
     totalPaid?: number
     outstandingAmount?: number
     refundEligibleAmount?: number
@@ -126020,6 +126501,11 @@ export namespace Prisma {
     contactNotes?: string | null
     contactedBy?: string | null
     contactedAt?: Date | string | null
+    contactAttemptCount?: number
+    installmentOverdueCount?: number
+    nextInstallmentDueDate?: string | null
+    contactHistory?: JsonNullValueInput | InputJsonValue
+    escalationReason?: string | null
     nextFollowUpDate?: string | null
     branchReviewedBy?: string | null
     branchReviewedAt?: Date | string | null
@@ -126029,6 +126515,15 @@ export namespace Prisma {
     superAdminReviewNote?: string | null
     accessDeactivationAt?: Date | string | null
     totalCourseFee?: number
+    actualCourseAmount?: number
+    gstAmount?: number
+    registrationFee?: number
+    discountAmount?: number
+    finalCourseFee?: number
+    totalCourseHours?: number
+    conductedDays?: number
+    conductedHours?: number
+    completedCourseAmount?: number
     totalPaid?: number
     outstandingAmount?: number
     refundEligibleAmount?: number
@@ -126441,6 +126936,11 @@ export namespace Prisma {
     contactNotes?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
     contactedBy?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
     contactedAt?: DateTimeNullableFilter<"StudentDiscontinuationRequest"> | Date | string | null
+    contactAttemptCount?: IntFilter<"StudentDiscontinuationRequest"> | number
+    installmentOverdueCount?: IntFilter<"StudentDiscontinuationRequest"> | number
+    nextInstallmentDueDate?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
+    contactHistory?: JsonFilter<"StudentDiscontinuationRequest">
+    escalationReason?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
     nextFollowUpDate?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
     branchReviewedBy?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
     branchReviewedAt?: DateTimeNullableFilter<"StudentDiscontinuationRequest"> | Date | string | null
@@ -126450,6 +126950,15 @@ export namespace Prisma {
     superAdminReviewNote?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
     accessDeactivationAt?: DateTimeNullableFilter<"StudentDiscontinuationRequest"> | Date | string | null
     totalCourseFee?: IntFilter<"StudentDiscontinuationRequest"> | number
+    actualCourseAmount?: IntFilter<"StudentDiscontinuationRequest"> | number
+    gstAmount?: IntFilter<"StudentDiscontinuationRequest"> | number
+    registrationFee?: IntFilter<"StudentDiscontinuationRequest"> | number
+    discountAmount?: IntFilter<"StudentDiscontinuationRequest"> | number
+    finalCourseFee?: IntFilter<"StudentDiscontinuationRequest"> | number
+    totalCourseHours?: IntFilter<"StudentDiscontinuationRequest"> | number
+    conductedDays?: IntFilter<"StudentDiscontinuationRequest"> | number
+    conductedHours?: IntFilter<"StudentDiscontinuationRequest"> | number
+    completedCourseAmount?: IntFilter<"StudentDiscontinuationRequest"> | number
     totalPaid?: IntFilter<"StudentDiscontinuationRequest"> | number
     outstandingAmount?: IntFilter<"StudentDiscontinuationRequest"> | number
     refundEligibleAmount?: IntFilter<"StudentDiscontinuationRequest"> | number
@@ -142521,6 +143030,11 @@ export namespace Prisma {
     contactNotes?: string | null
     contactedBy?: string | null
     contactedAt?: Date | string | null
+    contactAttemptCount?: number
+    installmentOverdueCount?: number
+    nextInstallmentDueDate?: string | null
+    contactHistory?: JsonNullValueInput | InputJsonValue
+    escalationReason?: string | null
     nextFollowUpDate?: string | null
     branchReviewedBy?: string | null
     branchReviewedAt?: Date | string | null
@@ -142530,6 +143044,15 @@ export namespace Prisma {
     superAdminReviewNote?: string | null
     accessDeactivationAt?: Date | string | null
     totalCourseFee?: number
+    actualCourseAmount?: number
+    gstAmount?: number
+    registrationFee?: number
+    discountAmount?: number
+    finalCourseFee?: number
+    totalCourseHours?: number
+    conductedDays?: number
+    conductedHours?: number
+    completedCourseAmount?: number
     totalPaid?: number
     outstandingAmount?: number
     refundEligibleAmount?: number
@@ -143124,6 +143647,11 @@ export namespace Prisma {
     contactNotes?: NullableStringFieldUpdateOperationsInput | string | null
     contactedBy?: NullableStringFieldUpdateOperationsInput | string | null
     contactedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    contactAttemptCount?: IntFieldUpdateOperationsInput | number
+    installmentOverdueCount?: IntFieldUpdateOperationsInput | number
+    nextInstallmentDueDate?: NullableStringFieldUpdateOperationsInput | string | null
+    contactHistory?: JsonNullValueInput | InputJsonValue
+    escalationReason?: NullableStringFieldUpdateOperationsInput | string | null
     nextFollowUpDate?: NullableStringFieldUpdateOperationsInput | string | null
     branchReviewedBy?: NullableStringFieldUpdateOperationsInput | string | null
     branchReviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -143133,6 +143661,15 @@ export namespace Prisma {
     superAdminReviewNote?: NullableStringFieldUpdateOperationsInput | string | null
     accessDeactivationAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     totalCourseFee?: IntFieldUpdateOperationsInput | number
+    actualCourseAmount?: IntFieldUpdateOperationsInput | number
+    gstAmount?: IntFieldUpdateOperationsInput | number
+    registrationFee?: IntFieldUpdateOperationsInput | number
+    discountAmount?: IntFieldUpdateOperationsInput | number
+    finalCourseFee?: IntFieldUpdateOperationsInput | number
+    totalCourseHours?: IntFieldUpdateOperationsInput | number
+    conductedDays?: IntFieldUpdateOperationsInput | number
+    conductedHours?: IntFieldUpdateOperationsInput | number
+    completedCourseAmount?: IntFieldUpdateOperationsInput | number
     totalPaid?: IntFieldUpdateOperationsInput | number
     outstandingAmount?: IntFieldUpdateOperationsInput | number
     refundEligibleAmount?: IntFieldUpdateOperationsInput | number
@@ -143159,6 +143696,11 @@ export namespace Prisma {
     contactNotes?: NullableStringFieldUpdateOperationsInput | string | null
     contactedBy?: NullableStringFieldUpdateOperationsInput | string | null
     contactedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    contactAttemptCount?: IntFieldUpdateOperationsInput | number
+    installmentOverdueCount?: IntFieldUpdateOperationsInput | number
+    nextInstallmentDueDate?: NullableStringFieldUpdateOperationsInput | string | null
+    contactHistory?: JsonNullValueInput | InputJsonValue
+    escalationReason?: NullableStringFieldUpdateOperationsInput | string | null
     nextFollowUpDate?: NullableStringFieldUpdateOperationsInput | string | null
     branchReviewedBy?: NullableStringFieldUpdateOperationsInput | string | null
     branchReviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -143168,6 +143710,15 @@ export namespace Prisma {
     superAdminReviewNote?: NullableStringFieldUpdateOperationsInput | string | null
     accessDeactivationAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     totalCourseFee?: IntFieldUpdateOperationsInput | number
+    actualCourseAmount?: IntFieldUpdateOperationsInput | number
+    gstAmount?: IntFieldUpdateOperationsInput | number
+    registrationFee?: IntFieldUpdateOperationsInput | number
+    discountAmount?: IntFieldUpdateOperationsInput | number
+    finalCourseFee?: IntFieldUpdateOperationsInput | number
+    totalCourseHours?: IntFieldUpdateOperationsInput | number
+    conductedDays?: IntFieldUpdateOperationsInput | number
+    conductedHours?: IntFieldUpdateOperationsInput | number
+    completedCourseAmount?: IntFieldUpdateOperationsInput | number
     totalPaid?: IntFieldUpdateOperationsInput | number
     outstandingAmount?: IntFieldUpdateOperationsInput | number
     refundEligibleAmount?: IntFieldUpdateOperationsInput | number
@@ -143194,6 +143745,11 @@ export namespace Prisma {
     contactNotes?: NullableStringFieldUpdateOperationsInput | string | null
     contactedBy?: NullableStringFieldUpdateOperationsInput | string | null
     contactedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    contactAttemptCount?: IntFieldUpdateOperationsInput | number
+    installmentOverdueCount?: IntFieldUpdateOperationsInput | number
+    nextInstallmentDueDate?: NullableStringFieldUpdateOperationsInput | string | null
+    contactHistory?: JsonNullValueInput | InputJsonValue
+    escalationReason?: NullableStringFieldUpdateOperationsInput | string | null
     nextFollowUpDate?: NullableStringFieldUpdateOperationsInput | string | null
     branchReviewedBy?: NullableStringFieldUpdateOperationsInput | string | null
     branchReviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -143203,6 +143759,15 @@ export namespace Prisma {
     superAdminReviewNote?: NullableStringFieldUpdateOperationsInput | string | null
     accessDeactivationAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     totalCourseFee?: IntFieldUpdateOperationsInput | number
+    actualCourseAmount?: IntFieldUpdateOperationsInput | number
+    gstAmount?: IntFieldUpdateOperationsInput | number
+    registrationFee?: IntFieldUpdateOperationsInput | number
+    discountAmount?: IntFieldUpdateOperationsInput | number
+    finalCourseFee?: IntFieldUpdateOperationsInput | number
+    totalCourseHours?: IntFieldUpdateOperationsInput | number
+    conductedDays?: IntFieldUpdateOperationsInput | number
+    conductedHours?: IntFieldUpdateOperationsInput | number
+    completedCourseAmount?: IntFieldUpdateOperationsInput | number
     totalPaid?: IntFieldUpdateOperationsInput | number
     outstandingAmount?: IntFieldUpdateOperationsInput | number
     refundEligibleAmount?: IntFieldUpdateOperationsInput | number

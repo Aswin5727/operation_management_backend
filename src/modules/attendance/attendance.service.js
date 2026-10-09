@@ -1,7 +1,8 @@
-import { assertAttendanceAllowed, attendanceExclusions } from "../instituteLeave/instituteLeave.service.js";
+﻿import { assertAttendanceAllowed, attendanceExclusions } from "../instituteLeave/instituteLeave.service.js";
 import prisma from "../../config/prisma.js";
 import AppError from "../../common/errors/AppError.js";
 import { createNotification } from "../notifications/notifications.service.js";
+import { assertStudentsNotDiscontinued } from "../../common/utils/studentDiscontinuationGuard.js";
 
 const ATTENDANCE_STATUSES = new Set(["PRESENT", "ABSENT"]);
 const LOCAL_TIME_ZONE = "Asia/Calcutta";
@@ -523,6 +524,7 @@ async function markBranchStudentAttendance(user, payload, date, batch) {
     },
     select: { id: true, studentId: true },
   });
+  await assertStudentsNotDiscontinued(students.map((student) => student.id));
   const studentByIdentifier = new Map(students.flatMap((student) => [[student.id, student], [student.studentId, student]]));
   if (students.length !== submittedStudents.length) throw new AppError("One or more students do not belong to this batch", 400);
 
@@ -530,37 +532,32 @@ async function markBranchStudentAttendance(user, payload, date, batch) {
   await prisma.$transaction(async (tx) => {
     await tx.$queryRaw`SELECT id FROM "Branch" WHERE id = ${batch.branchId} FOR UPDATE`;
     await assertAttendanceAllowed(tx, students, date, batch.branchId);
-    await Promise.all(submittedStudents.map((entry) => {
+    for (const entry of submittedStudents) {
       const student = studentByIdentifier.get(entry.studentId);
-      return tx.branchStudentAttendance.upsert({
-        where: { branchStudentId_attendanceDate: { branchStudentId: student.id, attendanceDate: date } },
-        create: {
-          branchStudentId: student.id,
-          facultyUserId: normalizeString(user?.id) || null,
-          courseId: batch.courseId,
-          batchId: batch.batchId,
-          moduleId: normalizeString(payload.moduleId) || null,
-          moduleName: normalizeString(payload.moduleName) || null,
-          submoduleId: normalizeString(payload.submoduleId || firstSubmodule?.id) || null,
-          submoduleName: normalizeString(payload.submoduleName || firstSubmodule?.name) || null,
-          attendanceDate: date,
-          status: entry.status,
-          notes: entry.notes || null,
-        },
-        update: {
-          facultyUserId: normalizeString(user?.id) || null,
-          courseId: batch.courseId,
-          batchId: batch.batchId,
-          moduleId: normalizeString(payload.moduleId) || null,
-          moduleName: normalizeString(payload.moduleName) || null,
-          submoduleId: normalizeString(payload.submoduleId || firstSubmodule?.id) || null,
-          submoduleName: normalizeString(payload.submoduleName || firstSubmodule?.name) || null,
-          status: entry.status,
-          notes: entry.notes || null,
-          markedAt: new Date(),
-        },
+      const attendanceData = {
+        facultyUserId: normalizeString(user?.id) || null,
+        courseId: batch.courseId,
+        batchId: batch.batchId,
+        moduleId: normalizeString(payload.moduleId) || null,
+        moduleName: normalizeString(payload.moduleName) || null,
+        submoduleId: normalizeString(payload.submoduleId || firstSubmodule?.id) || null,
+        submoduleName: normalizeString(payload.submoduleName || firstSubmodule?.name) || null,
+        status: entry.status,
+        notes: entry.notes || null,
+        markedAt: new Date(),
+      };
+      const existing = await tx.branchStudentAttendance.findFirst({
+        where: { branchStudentId: student.id, attendanceDate: date },
+        select: { id: true },
       });
-    }));
+      if (existing) {
+        await tx.branchStudentAttendance.update({ where: { id: existing.id }, data: attendanceData });
+      } else {
+        await tx.branchStudentAttendance.create({
+          data: { branchStudentId: student.id, attendanceDate: date, ...attendanceData },
+        });
+      }
+    }
   });
 
   const presentStudentIds = submittedStudents
@@ -668,7 +665,7 @@ async function getBranchFacultyAttendanceOverview(user, date, facultyId = "") {
       recordStatus: "ACTIVE",
       OR: branchBatches.map((batch) => ({ branchId: batch.branchId, courseId: batch.courseId, batchId: batch.batchId })),
     },
-    select: { id: true, studentId: true, studentName: true, emailAddress: true, mobileNumber: true, city: true, state: true, country: true, qualification: true, passedOutYear: true, currentStatus: true, admissionDate: true, courseId: true, batchId: true, branchId: true, classSchedule: true, courseStartDate: true, courseEndDate: true, weeklyOffDay: true },
+    select: { id: true, studentId: true, studentName: true, emailAddress: true, mobileNumber: true, city: true, state: true, country: true, qualification: true, passedOutYear: true, currentStatus: true, admissionDate: true, courseId: true, batchId: true, branchId: true, classSchedule: true, courseStartDate: true, courseEndDate: true, weeklyOffDay: true, discontinuationRequests: { where: { status: "APPROVED" }, select: { status: true }, take: 1 } },
   });
   const studentIds = students.map((student) => student.id);
   const attendanceRecords = studentIds.length

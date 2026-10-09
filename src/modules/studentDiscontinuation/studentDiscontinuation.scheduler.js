@@ -61,6 +61,44 @@ export async function runDiscontinuationFollowUpSweep(today = dateText()) {
   return { scanned: requests.length, notified };
 }
 
+
+export async function runSuperAdminWaitSweep(today = dateText()) {
+  const requests = await prisma.studentDiscontinuationRequest.findMany({
+    where: { status: 'SUPER_ADMIN_WAIT', nextFollowUpDate: { lte: today } },
+    include: { branchStudent: { select: { studentName: true, studentId: true, courseName: true, batchName: true } } },
+  });
+  let notified = 0;
+  for (const request of requests) {
+    const branch = await prisma.branch.findUnique({
+      where: { id: request.branchId },
+      select: { id: true, branchName: true, branchEmail: true, adminUserId: true },
+    });
+    if (!branch?.adminUserId) continue;
+    const requestDescription = `DISCONTINUATION_WAIT_DUE:${request.id}:${request.nextFollowUpDate}`;
+    const existing = await prisma.notification.findFirst({
+      where: { kind: 'STUDENT_DISCONTINUATION', targetUserId: branch.adminUserId, requestDescription },
+      select: { id: true },
+    });
+    if (existing) continue;
+    await createNotification({
+      kind: 'STUDENT_DISCONTINUATION',
+      tone: 'amber',
+      title: 'Super Admin wait period ended',
+      message: `Contact ${request.branchStudent?.studentName || 'the student'} again. The installment due date ${request.nextFollowUpDate} has passed and another outcome is required.`,
+      actionLabel: 'Open Discontinuation',
+      targetUserId: branch.adminUserId,
+      targetBranchId: branch.id,
+      targetBranchEmail: branch.branchEmail,
+      targetBranchName: branch.branchName,
+      requestDescription,
+      requestTitle: 'Discontinuation follow-up required',
+      requestStatus: request.status,
+      createdBy: 'SYSTEM',
+    });
+    notified += 1;
+  }
+  return { scanned: requests.length, notified };
+}
 export async function runMotivationContinuationSweep(today = dateText()) {
   const requests = await prisma.studentDiscontinuationRequest.findMany({
     where: {
@@ -160,6 +198,7 @@ export function startDiscontinuationFollowUpScheduler() {
   const runSweep = () => {
     void (async () => {
       await runDiscontinuationFollowUpSweep();
+      await runSuperAdminWaitSweep();
       await runMotivationContinuationSweep();
       await runDiscontinuationAccessDeactivationSweep();
     })().catch((error) => {

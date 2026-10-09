@@ -80,7 +80,7 @@ export async function createAssessment(user, payload = {}) {
   const { course, module, batch } = await assertFacultyAssignment(user, courseId, moduleId, batchId);
   const created = await prisma.$transaction(async (tx) => {
     const assessment = await tx.assessment.create({ data: { assessmentName, branchCourseId: course.id, moduleId: module.id, branchBatchId: batch.id, totalMarks, startDate, endDate, details: text(payload.details || payload.instructions) || null, facultyId: user.id }, include });
-    const students = await tx.branchStudent.findMany({ where: { recordStatus: "ACTIVE", OR: [{ batchId: batch.id }, { batchId: batch.batchId }] }, select: { emailAddress: true, studentName: true, batchId: true } });
+    const students = await tx.branchStudent.findMany({ where: { recordStatus: "ACTIVE", discontinuationRequests: { none: { status: "APPROVED" } }, OR: [{ batchId: batch.id }, { batchId: batch.batchId }] }, select: { emailAddress: true, studentName: true, batchId: true } });
     const emails = students.map((student) => text(student.emailAddress).toLowerCase()).filter(Boolean);
     const users = emails.length ? await tx.user.findMany({ where: { role: "STUDENT", OR: emails.map((email) => ({ email: { equals: email, mode: "insensitive" } })) }, select: { id: true, email: true } }) : [];
     const userByEmail = new Map(users.map((item) => [text(item.email).toLowerCase(), item.id]));
@@ -95,7 +95,7 @@ export async function createAssessment(user, payload = {}) {
 export async function listAssessmentStudents(user, id) {
   const assessment = await prisma.assessment.findFirst({ where: { id, facultyId: user.id }, include });
   if (!assessment) throw new AppError("Assessment not found.", 404);
-  const students = await prisma.branchStudent.findMany({ where: { recordStatus: "ACTIVE", OR: [{ batchId: assessment.branchBatchId }, { batchId: assessment.branchBatch.batchId }] }, select: { id: true, studentName: true, emailAddress: true } });
+  const students = await prisma.branchStudent.findMany({ where: { recordStatus: "ACTIVE", discontinuationRequests: { none: { status: "APPROVED" } }, OR: [{ batchId: assessment.branchBatchId }, { batchId: assessment.branchBatch.batchId }] }, select: { id: true, studentName: true, emailAddress: true } });
   const submissions = await prisma.assessmentSubmission.findMany({ where: { assessmentId: id }, include: { evaluator: { select: { fullName: true, userCode: true } } } });
   const byStudent = new Map(submissions.map((item) => [item.branchStudentId, item]));
   return students.map((student) => { const submission = byStudent.get(student.id); const status = submission?.status || "NOT_SUBMITTED"; let screenshotUrls = []; if (submission?.screenshotMimeType === "application/json") { try { screenshotUrls = JSON.parse(submission.screenshotFileName || "[]"); } catch {} } else if (submission?.screenshotUrl) screenshotUrls = [{ url: submission.screenshotUrl, fileName: submission.screenshotFileName, mimeType: submission.screenshotMimeType }]; return { student, ...(submission || {}), screenshotUrls, status, marksObtained: submission?.marksObtained ?? null, percentage: submission?.marksObtained == null ? null : (submission.marksObtained / assessment.totalMarks) * 100, submittedAt: submission?.submittedAt || null, feedback: submission?.feedback || null }; });

@@ -17,6 +17,11 @@ export const createDiscontinuationRequestHandler = asyncHandler(async (req, res)
   return sendSuccess(res, "Discontinuation request submitted successfully", result, 201);
 });
 
+export const getDiscontinuationFinancePreviewHandler = asyncHandler(async (req, res) => {
+  const result = await getDiscontinuationFinancePreview(req.user);
+  return sendSuccess(res, "Discontinuation finance preview fetched successfully", result);
+});
+
 export const listDiscontinuationRequestsHandler = asyncHandler(async (req, res) => {
   const result = await listDiscontinuationRequests(req.user, req.query || {});
   return sendSuccess(res, "Discontinuation requests fetched successfully", result);
