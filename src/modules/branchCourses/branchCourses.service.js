@@ -732,42 +732,35 @@ async function replaceBranchCourseHierarchy(tx, branchCourseId, modules = [], ac
     return [];
   }
 
-  const createdModules = [];
-
-  for (const [moduleIndex, module] of modules.entries()) {
-    const createdModule = await tx.branchCourseModule.create({
-      data: {
-        branchCourseId,
-        title: module.title,
-        titleKey: module.titleKey,
-        description: module.description,
-        sequenceNo: module.sequenceNo ?? moduleIndex + 1,
-        status: module.status ?? "ACTIVE",
-        createdBy: actorId,
-        updatedBy: actorId,
-      },
-    });
-
-    if (Array.isArray(module.submodules) && module.submodules.length) {
-      for (const [submoduleIndex, submodule] of module.submodules.entries()) {
-        await tx.branchCourseSubmodule.create({
-          data: {
-            branchCourseModuleId: createdModule.id,
-            title: submodule.title,
-            titleKey: submodule.titleKey,
-            description: submodule.description,
-            sequenceNo: submodule.sequenceNo ?? submoduleIndex + 1,
-            status: submodule.status ?? "ACTIVE",
-            createdBy: actorId,
-            updatedBy: actorId,
-          },
-        });
-      }
-    }
-
-    createdModules.push(createdModule);
-  }
-
+  await tx.branchCourseModule.createMany({
+    data: modules.map((module, moduleIndex) => ({
+      branchCourseId,
+      title: module.title,
+      titleKey: module.titleKey,
+      description: module.description,
+      sequenceNo: module.sequenceNo ?? moduleIndex + 1,
+      status: module.status ?? "ACTIVE",
+      createdBy: actorId,
+      updatedBy: actorId,
+    })),
+  });
+  const createdModules = await tx.branchCourseModule.findMany({ where: { branchCourseId }, orderBy: { sequenceNo: "asc" }, select: { id: true, titleKey: true } });
+  const moduleByTitleKey = new Map(createdModules.map((module) => [module.titleKey, module.id]));
+  const submoduleRows = modules.flatMap((module) => {
+    const branchCourseModuleId = moduleByTitleKey.get(module.titleKey);
+    if (!branchCourseModuleId || !Array.isArray(module.submodules)) return [];
+    return module.submodules.map((submodule, submoduleIndex) => ({
+      branchCourseModuleId,
+      title: submodule.title,
+      titleKey: submodule.titleKey,
+      description: submodule.description,
+      sequenceNo: submodule.sequenceNo ?? submoduleIndex + 1,
+      status: submodule.status ?? "ACTIVE",
+      createdBy: actorId,
+      updatedBy: actorId,
+    }));
+  });
+  if (submoduleRows.length) await tx.branchCourseSubmodule.createMany({ data: submoduleRows });
   return createdModules;
 }
 
@@ -958,7 +951,7 @@ export async function createBranchCourse(payload, actor) {
       include: getBranchCourseInclude(),
     });
     },
-    { maxWait: 10000, timeout: 15000 },
+    { maxWait: 10000, timeout: 30000 },
   );
 
   return toBranchCourseDetail(created);
@@ -1067,7 +1060,7 @@ export async function updateBranchCourse(courseId, payload, actor) {
       include: getBranchCourseInclude(),
     });
     },
-    { maxWait: 10000, timeout: 15000 },
+    { maxWait: 10000, timeout: 30000 },
   );
 
   return toBranchCourseDetail(updated);
@@ -1108,7 +1101,7 @@ export async function updateBranchCourseModulesOnly(courseId, payload, actor, op
       include: getBranchCourseInclude(),
     });
     },
-    { maxWait: 10000, timeout: 15000 },
+    { maxWait: 10000, timeout: 30000 },
   );
 
   return toBranchCourseDetail(updated);
