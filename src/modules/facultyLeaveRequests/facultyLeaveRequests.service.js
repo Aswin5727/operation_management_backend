@@ -968,6 +968,38 @@ async function notifyFacultyLeaveApproval(request, branchId, actor) {
   }
 }
 
+async function notifyFacultyLeaveRejection(request, branchId, actor) {
+  const facultyUserId = request.facultyUserId || null;
+  if (!facultyUserId) return;
+
+  const facultyName = request.facultyName || "Faculty";
+  const rejectionReason = request.rejectionReason || "Rejected by Branch Admin";
+  const notificationKey = `faculty-leave-rejection:${request.id}`;
+  const existing = await prisma.notification.findFirst({
+    where: { kind: "INSTITUTE_LEAVE", targetUserId: facultyUserId, requestDescription: notificationKey },
+    select: { id: true },
+  });
+
+  if (existing) return;
+
+  await createNotification({
+    kind: "INSTITUTE_LEAVE",
+    tone: "red",
+    title: "Leave Request Rejected",
+    message: `${facultyName}, your leave request for ${displayDate(request.fromDate)} was rejected. Reason: ${rejectionReason}`,
+    actionLabel: "View Leave Request",
+    targetUserId: facultyUserId,
+    targetBranchId: branchId,
+    leaveRequestId: request.id,
+    facultyId: request.facultyId || "",
+    facultyName,
+    requestStatus: "REJECTED",
+    requestReason: rejectionReason,
+    requestDescription: notificationKey,
+    createdBy: actor?.id || null,
+  });
+}
+
 async function notifyRescheduledClass(session, branchId, combinedBatch = null) {
   const originalDate = session.sessionDate;
   const newDate = session.rescheduledDate;
@@ -1037,6 +1069,7 @@ export async function rejectBranchFacultyLeave(user, leaveId, reason) {
   if (!["PENDING", "UNDER_REVIEW"].includes(request.status)) throw new AppError("Only pending leave requests can be rejected", 409);
   const rejected = await prisma.facultyLeaveRequest.update({ where: { id: leaveId }, data: { status: "REJECTED", rejectedBy: user.id, rejectedAt: new Date(), rejectionReason: text(reason) || "Rejected by Branch Admin" , reviewedBy: user.id, reviewedAt: new Date() } });
   await notifyLeaveReview(rejected, branchId, user, "Leave request rejected", "REJECTED");
+  await notifyFacultyLeaveRejection(rejected, branchId, user);
   return mapRequest(rejected);
 }
 

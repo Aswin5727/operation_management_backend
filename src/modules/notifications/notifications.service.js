@@ -932,12 +932,20 @@ async function ensureSequentialCourseSchedulingNotifications(user = {}) {
   if (!["BRANCH_ADMIN", "STUDENT"].includes(role)) return;
 
   const branchScope = role === "BRANCH_ADMIN" ? await buildBranchAdminScope(user) : {};
+  let branchRecord = null;
+  let branchLookupIds = [];
   let students = [];
   if (role === "BRANCH_ADMIN") {
-    const branchId = normalizeString(branchScope.targetBranchId);
-    if (!branchId) return;
+    const scopedBranchId = normalizeString(branchScope.targetBranchId);
+    if (!scopedBranchId) return;
+    branchRecord = await prisma.branch.findFirst({
+      where: { OR: [{ id: scopedBranchId }, { branchId: scopedBranchId }] },
+      select: { id: true, branchId: true },
+    });
+    branchLookupIds = [...new Set([branchRecord?.id, branchRecord?.branchId, scopedBranchId].map(normalizeString).filter(Boolean))];
+    if (!branchLookupIds.length) return;
     students = await prisma.branchStudent.findMany({
-      where: { branchId, arrangementType: "SEQUENTIAL", recordStatus: "ACTIVE" },
+      where: { branchId: { in: branchLookupIds }, arrangementType: "SEQUENTIAL", recordStatus: "ACTIVE" },
       include: {
         branch: { select: { id: true, branchId: true, branchName: true, branchEmail: true, adminUserId: true, timezone: true } },
         courseEnrollments: { orderBy: { sequenceOrder: "asc" } },
@@ -984,7 +992,9 @@ async function ensureSequentialCourseSchedulingNotifications(user = {}) {
     const recipients = [
       {
         targetUserId: student.branch?.adminUserId || null,
-        targetBranchId: student.branchId,
+        // Use the canonical Branch primary key for notification scoping.
+        // Some legacy student records keep the branch code in branchId.
+        targetBranchId: student.branch?.id || student.branchId,
         targetBranchEmail: student.branch?.branchEmail || "",
         targetBranchName: student.branch?.branchName || "",
         audience: "branch",
@@ -995,23 +1005,32 @@ async function ensureSequentialCourseSchedulingNotifications(user = {}) {
     for (const recipient of recipients) {
       if (!recipient.targetUserId && !recipient.targetBranchId) continue;
       const marker = `sequential-course-scheduling:${student.id}:${upcomingCourse.id}:${recipient.audience}`;
+      const isBranch = recipient.audience === "branch";
       const existing = await prisma.notification.findFirst({
         where: { kind: "SEQUENTIAL_COURSE_SCHEDULING_REQUIRED", requestDescription: marker },
-        select: { id: true },
+        select: { id: true, targetBranchId: true },
       });
-      if (existing) continue;
+      if (existing) {
+        if (isBranch && String(existing.targetBranchId || "") !== String(recipient.targetBranchId || "")) {
+          await prisma.notification.update({ where: { id: existing.id }, data: { targetBranchId: recipient.targetBranchId } });
+        }
+        continue;
+      }
 
-      const isBranch = recipient.audience === "branch";
       const completedCourse = enrollments.filter((enrollment) => Number(enrollment.sequenceOrder) < Number(upcomingCourse.sequenceOrder)).at(-1) || firstCourse;
       await createNotification({
         kind: "SEQUENTIAL_COURSE_SCHEDULING_REQUIRED",
         tone: "amber",
         title: isBranch ? "Schedule the student's next course" : "Your next course is ready to be scheduled",
         message: isBranch
-          ? `${student.studentName} (${student.studentId}) has completed ${completedCourse.courseName || "the previous course"}. Please assign faculty, batch, and schedule for ${upcomingCourse.courseName || "the next course"}.`
-          : `You have completed ${completedCourse.courseName || "your previous course"}. Your branch administrator will assign faculty, batch, and schedule for ${upcomingCourse.courseName || "your next course"}.`,
+          ? `${student.studentName} (${student.studentId}) has completed ${completedCourse.courseName || "the previous course"}. Please assign faculty, batch, payment plan, and schedule for ${upcomingCourse.courseName || "the next course"}.`
+          : `You have completed ${completedCourse.courseName || "your previous course"}. Your branch administrator will assign faculty, batch, payment plan, and schedule for ${upcomingCourse.courseName || "your next course"}.`,
         actionLabel: isBranch ? "Schedule next course" : "View course",
-        ...(recipient.targetUserId ? { targetUser: { connect: { id: recipient.targetUserId } } } : {}),
+        // Branch notifications are scoped by targetBranchId. Do not require
+        // a branch-admin user relation here because older branch records may
+        // have a missing/stale adminUserId mapping. Student notifications
+        // still target the student's user account directly.
+        ...(recipient.targetUserId && !isBranch ? { targetUser: { connect: { id: recipient.targetUserId } } } : {}),
         targetBranchId: recipient.targetBranchId,
         targetBranchEmail: recipient.targetBranchEmail,
         targetBranchName: recipient.targetBranchName,
