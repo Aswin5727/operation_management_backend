@@ -9,6 +9,7 @@ import {
   sendBranchCredentialsEmail,
 } from "../../common/services/resendEmail.js";
 import {
+  createBranchCreatedNotification,
   createBranchInvitationResentNotification,
 } from "../notifications/notifications.service.js";
 
@@ -493,6 +494,9 @@ export async function createBranch(payload, actor) {
   });
 
   const createdBranch = await loadBranch(created.id);
+  void createBranchCreatedNotification(createdBranch, actor).catch((error) => {
+    console.warn("Branch created notification failed to save", error);
+  });
   return toBranchSummary(createdBranch, { tempPassword: temporaryPassword });
 }
 
