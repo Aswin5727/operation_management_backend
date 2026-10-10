@@ -793,6 +793,7 @@ async function buildAcademicReport(actor, batch, requestedStudentIds = null, sel
   const originalItemIds = new Set(schedules.filter((schedule) => !schedule.isRetest && schedule.status !== "CANCELLED").map((schedule) => schedule.academicTestItemId));
   const configuredItems = (await reportConfiguredItems(batch)).filter(({ item }) => !retestItemIds.has(item.id) && (!originalItemIds.size || originalItemIds.has(item.id)));
   let configured = configuredItems.filter(({ item }) => ["TEST", "TEST_AND_PROJECT"].includes(item.testType));
+  const projectItems = configuredItems.filter(({ item }) => ["PROJECT", "TEST_AND_PROJECT"].includes(item.testType));
   const students = await prisma.branchStudent.findMany({
     where: { recordStatus: "ACTIVE", OR: [{ batchId: batch.id }, { batchId: batch.batchId }, { courseEnrollments: { some: { status: "ACTIVE", batchId: { in: [batch.id, batch.batchId] } } } }], ...(requestedStudentIds ? { id: { in: requestedStudentIds } } : {}) },
     orderBy: { studentName: "asc" },
@@ -843,21 +844,26 @@ async function buildAcademicReport(actor, batch, requestedStudentIds = null, sel
       if (["SUBMITTED", "EVALUATED"].includes(final.status)) { testObtained += Number(final.marksObtained || 0); testMaximum += Number(final.totalMarks || test.totalMarks || 0); }
       return { ...test, final, originalFinal, retestAttempts, attempts: attemptRows };
     });
-    const projectTest = configuredItems.find(({ item }) => ["PROJECT", "TEST_AND_PROJECT"].includes(item.testType));
-    const projectSchedule = projectTest && schedules.find((schedule) => !schedule.isRetest && schedule.academicTestItemId === projectTest.item.id);
-    const projectSubmission = projectSchedule ? projectByKey.get(`${projectSchedule.id}:${student.id}`) : null;
-    const projectConfig = projectTest ? await prisma.academicTestProject.findUnique({ where: { academicTestItemId_branchBatchId: { academicTestItemId: projectTest.item.id, branchBatchId: batch.id } }, select: { projectTitle: true, projectMarks: true } }).catch(() => null) : null;
-    const projectTotal = Number(projectConfig?.projectMarks || 0);
-    const projectMarks = projectSubmission?.marksAwarded == null ? null : Number(projectSubmission.marksAwarded);
+    const projects = await Promise.all(projectItems.map(async ({ item: projectItem }) => {
+      const projectSchedule = schedules.find((schedule) => !schedule.isRetest && schedule.academicTestItemId === projectItem.id);
+      const projectSubmission = projectSchedule ? projectByKey.get(`${projectSchedule.id}:${student.id}`) : null;
+      const projectConfig = await prisma.academicTestProject.findUnique({ where: { academicTestItemId_branchBatchId: { academicTestItemId: projectItem.id, branchBatchId: batch.id } }, select: { projectTitle: true, projectMarks: true } }).catch(() => null);
+      const projectTotal = Number(projectConfig?.projectMarks || 0);
+      const projectMarks = projectSubmission?.marksAwarded == null ? null : Number(projectSubmission.marksAwarded);
+      return { testNumber: projectItem.sequence, title: projectConfig?.projectTitle || "Project", totalMarks: projectTotal, marksAwarded: projectMarks, percentage: projectMarks != null && projectTotal > 0 ? Number(((projectMarks / projectTotal) * 100).toFixed(2)) : null, result: projectMarks != null && projectTotal > 0 ? (projectMarks >= projectTotal * 0.5 ? "PASS" : "FAIL") : null, status: projectSubmission?.status || "NOT_SUBMITTED" };
+    }));
+    const project = projects[0] || null;
+    const projectMarks = project?.marksAwarded;
     return {
       student,
       tests,
-      project: projectTest ? { title: projectConfig?.projectTitle || "Project", totalMarks: projectTotal, marksAwarded: projectMarks, percentage: projectMarks != null && projectTotal > 0 ? Number(((projectMarks / projectTotal) * 100).toFixed(2)) : null, result: projectMarks != null && projectTotal > 0 ? (projectMarks >= projectTotal * 0.5 ? "PASS" : "FAIL") : null, status: projectSubmission?.status || "NOT_SUBMITTED" } : null,
+      project,
+      projects,
       overallTestPercentage: testMaximum > 0 ? Number(((testObtained / testMaximum) * 100).toFixed(2)) : null,
-      overallProjectPercentage: projectMarks != null && projectTotal > 0 ? Number(((projectMarks / projectTotal) * 100).toFixed(2)) : null,
+      overallProjectPercentage: projectMarks != null && project?.totalMarks > 0 ? Number(((projectMarks / project.totalMarks) * 100).toFixed(2)) : null,
     };
   }));
-  return { batch: { id: batch.id, batchId: batch.batchId, batchName: batch.batchName, batchTiming: batch.batchTiming }, course: { id: batch.courseId, name: batch.courseName, courseCode: batch.branchCourseId }, totalTests: testRows.length, hasProject: configuredItems.some(({ item }) => ["PROJECT", "TEST_AND_PROJECT"].includes(item.testType)), tests: testRows, retestColumns, students: reportStudents };
+  return { batch: { id: batch.id, batchId: batch.batchId, batchName: batch.batchName, batchTiming: batch.batchTiming }, course: { id: batch.courseId, name: batch.courseName, courseCode: batch.branchCourseId }, totalTests: testRows.length, hasProject: projectItems.length > 0, projectTestNumber: projectItems[0]?.item.sequence || null, projectItems: projectItems.map(({ item }) => ({ testNumber: item.sequence })), tests: testRows, retestColumns, students: reportStudents };
 }
 
 // Student 360 uses the same report definition as the branch report screen.
@@ -947,9 +953,10 @@ export async function listAcademicReportBatches(actor) {
     if (!schedules.length || !students.length) return null;
     await syncExpiredAcademicAttempts(schedules, students.map((student) => student.id));
     const paperIds = schedules.map((schedule) => schedule.questionPaperId).filter(Boolean);
-    const [papers, submissions] = await Promise.all([
+    const [papers, submissions, projectSubmissions] = await Promise.all([
       prisma.academicQuestionPaper.findMany({ where: { id: { in: paperIds } }, select: { id: true, questions: { select: { questionType: true } } } }),
       prisma.academicTestSubmission.findMany({ where: { academicTestId: { in: schedules.map((schedule) => schedule.id) }, branchStudentId: { in: students.map((student) => student.id) } }, select: { academicTestId: true, branchStudentId: true, status: true } }),
+      prisma.academicProjectSubmission.findMany({ where: { academicTestId: { in: schedules.map((schedule) => schedule.id) }, branchStudentId: { in: students.map((student) => student.id) } }, select: { academicTestId: true, branchStudentId: true, status: true, marksAwarded: true } }),
     ]);
     const paperById = new Map(papers.map((paper) => [paper.id, paper]));
     const submissionByKey = new Map(submissions.map((submission) => [`${submission.academicTestId}:${submission.branchStudentId}`, submission]));
@@ -962,8 +969,12 @@ export async function listAcademicReportBatches(actor) {
       if (finalizedForAllStudents) completedTestNumbers.add(Number(schedule.testNumber));
     });
     const completedTestCount = completedTestNumbers.size;
-    if (!completedTestCount) return null;
-    return { ...batch, course: { id: batch.courseId, name: batch.courseName, courseCode: batch.branchCourseId }, totalTests: completedTestCount, completedTestCount, hasProject: configuredItems.some(({ item }) => ["PROJECT", "TEST_AND_PROJECT"].includes(item.testType)) };
+    const projectItem = configuredItems.find(({ item }) => ["PROJECT", "TEST_AND_PROJECT"].includes(item.testType))?.item;
+    const projectSchedule = projectItem ? schedules.find((schedule) => schedule.academicTestItemId === projectItem.id) : null;
+    const hasCompletedProject = Boolean(projectSchedule && projectSubmissions.some((submission) => submission.academicTestId === projectSchedule.id && ["SUBMITTED", "EVALUATED", "GRADED"].includes(String(submission.status || "").toUpperCase()) && submission.marksAwarded != null));
+    const totalEvaluationCount = completedTestCount + (hasCompletedProject ? 1 : 0);
+    if (!totalEvaluationCount) return null;
+    return { ...batch, course: { id: batch.courseId, name: batch.courseName, courseCode: batch.branchCourseId }, totalTests: totalEvaluationCount, completedTestCount: totalEvaluationCount, hasProject: Boolean(projectItem) };
   }));
   return reportBatches.filter(Boolean);
 }
@@ -991,15 +1002,17 @@ export async function listFacultyAcademicReportTests(actor, batchId) {
       select: { id: true, testNumber: true, testDate: true, status: true, endTime: true, academicTestItemId: true, questionPaperId: true },
     }),
     prisma.branchStudent.findMany({ where: { recordStatus: "ACTIVE", OR: [{ batchId: batch.id }, { batchId: batch.batchId }, { courseEnrollments: { some: { status: "ACTIVE", batchId: { in: [batch.id, batch.batchId] } } } }] }, select: { id: true } }),
-    reportConfiguredTests(batch),
+    reportConfiguredItems(batch),
   ]);
   await syncExpiredAcademicAttempts(schedules, students.map((student) => student.id));
   const paperIds = schedules.map((schedule) => schedule.questionPaperId).filter(Boolean);
-  const [papers, submissions] = await Promise.all([
+  const [papers, submissions, projectSubmissions] = await Promise.all([
     prisma.academicQuestionPaper.findMany({ where: { id: { in: paperIds } }, select: { id: true, questions: { select: { questionType: true } } } }),
     prisma.academicTestSubmission.findMany({ where: { academicTestId: { in: schedules.map((schedule) => schedule.id) }, branchStudentId: { in: students.map((student) => student.id) } }, select: { academicTestId: true, branchStudentId: true, status: true } }),
+    prisma.academicProjectSubmission.findMany({ where: { academicTestId: { in: schedules.map((schedule) => schedule.id) }, branchStudentId: { in: students.map((student) => student.id) } }, select: { academicTestId: true, branchStudentId: true, status: true, marksAwarded: true } }),
   ]);
   const configuredIds = new Set(configuredItems.map(({ item }) => item.id));
+  const projectIds = new Set(configuredItems.filter(({ item }) => ["PROJECT", "TEST_AND_PROJECT"].includes(item.testType)).map(({ item }) => item.id));
   const paperById = new Map(papers.map((paper) => [paper.id, paper]));
   const submissionByKey = new Map(submissions.map((submission) => [`${submission.academicTestId}:${submission.branchStudentId}`, submission]));
   const completedNumbers = new Set();
@@ -1007,13 +1020,17 @@ export async function listFacultyAcademicReportTests(actor, batchId) {
   for (const schedule of schedules) {
     if (!configuredIds.has(schedule.academicTestItemId) || !reportScheduleHasEnded(schedule)) continue;
     const hasAssessment = (paperById.get(schedule.questionPaperId)?.questions || []).some((question) => question.questionType === "ASSESSMENT");
-    if (!students.length || !students.every((student) => reportSubmissionIsFinal(submissionByKey.get(`${schedule.id}:${student.id}`), hasAssessment))) continue;
+    const isProject = projectIds.has(schedule.academicTestItemId);
+    if (!students.length || (isProject
+      ? !projectSubmissions.some((submission) => submission.academicTestId === schedule.id && submission.marksAwarded != null)
+      : !students.every((student) => reportSubmissionIsFinal(submissionByKey.get(`${schedule.id}:${student.id}`), hasAssessment)))) continue;
     const number = Number(schedule.testNumber);
-    if (completedNumbers.has(number)) continue;
-    completedNumbers.add(number);
-    completedSchedules.push(schedule);
+    const key = `${number}:${isProject ? "PROJECT" : "TEST"}`;
+    if (completedNumbers.has(key)) continue;
+    completedNumbers.add(key);
+    completedSchedules.push({ ...schedule, label: isProject ? `Test ${schedule.testNumber} (Project)` : `Test ${schedule.testNumber}` });
   }
-  return completedSchedules.map((schedule) => ({ ...schedule, label: `Test ${schedule.testNumber}`, completed: true }));
+  return completedSchedules.map((schedule) => ({ ...schedule, completed: true }));
 }
 
 export async function sendAcademicTestReport(actor, payload = {}) {
