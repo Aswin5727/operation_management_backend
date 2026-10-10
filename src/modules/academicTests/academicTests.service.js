@@ -898,7 +898,7 @@ export async function getAcademicTestProgressForStudent(student) {
       const submission = submissionByScheduleId.get(schedule.id);
       const status = text(submission?.status || "").toUpperCase();
       const hasAssessment = (paperById.get(schedule.questionPaperId)?.questions || []).some((question) => question.questionType === "ASSESSMENT");
-      return reportSubmissionIsFinal(submission, hasAssessment) && (status === "NOT_ATTENDED" || status === "EVALUATED" || (status === "SUBMITTED" && !hasAssessment));
+      return reportSubmissionIsFinal(submission, hasAssessment) && (status === "EVALUATED" || (status === "SUBMITTED" && !hasAssessment));
     });
     if (valid) completedItemIds.add(itemId);
   });
