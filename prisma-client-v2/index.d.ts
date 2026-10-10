@@ -56438,10 +56438,12 @@ export namespace Prisma {
 
   export type FacultySkillTopicAvgAggregateOutputType = {
     displayOrder: number | null
+    studyHours: Decimal | null
   }
 
   export type FacultySkillTopicSumAggregateOutputType = {
     displayOrder: number | null
+    studyHours: Decimal | null
   }
 
   export type FacultySkillTopicMinAggregateOutputType = {
@@ -56452,6 +56454,7 @@ export namespace Prisma {
     active: boolean | null
     status: string | null
     startDate: string | null
+    studyHours: Decimal | null
     expectedDate: string | null
     completedDate: string | null
     learningSummary: string | null
@@ -56470,6 +56473,7 @@ export namespace Prisma {
     active: boolean | null
     status: string | null
     startDate: string | null
+    studyHours: Decimal | null
     expectedDate: string | null
     completedDate: string | null
     learningSummary: string | null
@@ -56488,6 +56492,7 @@ export namespace Prisma {
     active: number
     status: number
     startDate: number
+    studyHours: number
     expectedDate: number
     completedDate: number
     learningSummary: number
@@ -56502,10 +56507,12 @@ export namespace Prisma {
 
   export type FacultySkillTopicAvgAggregateInputType = {
     displayOrder?: true
+    studyHours?: true
   }
 
   export type FacultySkillTopicSumAggregateInputType = {
     displayOrder?: true
+    studyHours?: true
   }
 
   export type FacultySkillTopicMinAggregateInputType = {
@@ -56516,6 +56523,7 @@ export namespace Prisma {
     active?: true
     status?: true
     startDate?: true
+    studyHours?: true
     expectedDate?: true
     completedDate?: true
     learningSummary?: true
@@ -56534,6 +56542,7 @@ export namespace Prisma {
     active?: true
     status?: true
     startDate?: true
+    studyHours?: true
     expectedDate?: true
     completedDate?: true
     learningSummary?: true
@@ -56552,6 +56561,7 @@ export namespace Prisma {
     active?: true
     status?: true
     startDate?: true
+    studyHours?: true
     expectedDate?: true
     completedDate?: true
     learningSummary?: true
@@ -56657,6 +56667,7 @@ export namespace Prisma {
     active: boolean
     status: string
     startDate: string | null
+    studyHours: Decimal | null
     expectedDate: string | null
     completedDate: string | null
     learningSummary: string | null
@@ -56694,6 +56705,7 @@ export namespace Prisma {
     active?: boolean
     status?: boolean
     startDate?: boolean
+    studyHours?: boolean
     expectedDate?: boolean
     completedDate?: boolean
     learningSummary?: boolean
@@ -56713,6 +56725,7 @@ export namespace Prisma {
     active?: boolean
     status?: boolean
     startDate?: boolean
+    studyHours?: boolean
     expectedDate?: boolean
     completedDate?: boolean
     learningSummary?: boolean
@@ -56732,6 +56745,7 @@ export namespace Prisma {
     active?: boolean
     status?: boolean
     startDate?: boolean
+    studyHours?: boolean
     expectedDate?: boolean
     completedDate?: boolean
     learningSummary?: boolean
@@ -56751,6 +56765,7 @@ export namespace Prisma {
     active?: boolean
     status?: boolean
     startDate?: boolean
+    studyHours?: boolean
     expectedDate?: boolean
     completedDate?: boolean
     learningSummary?: boolean
@@ -56761,7 +56776,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type FacultySkillTopicOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "assignmentId" | "topicName" | "displayOrder" | "active" | "status" | "startDate" | "expectedDate" | "completedDate" | "learningSummary" | "referenceType" | "referenceName" | "referenceUrl" | "createdAt" | "updatedAt", ExtArgs["result"]["facultySkillTopic"]>
+  export type FacultySkillTopicOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "assignmentId" | "topicName" | "displayOrder" | "active" | "status" | "startDate" | "studyHours" | "expectedDate" | "completedDate" | "learningSummary" | "referenceType" | "referenceName" | "referenceUrl" | "createdAt" | "updatedAt", ExtArgs["result"]["facultySkillTopic"]>
   export type FacultySkillTopicInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     assignment?: boolean | FacultySkillAssignmentDefaultArgs<ExtArgs>
   }
@@ -56785,6 +56800,7 @@ export namespace Prisma {
       active: boolean
       status: string
       startDate: string | null
+      studyHours: Prisma.Decimal | null
       expectedDate: string | null
       completedDate: string | null
       learningSummary: string | null
@@ -57224,6 +57240,7 @@ export namespace Prisma {
     readonly active: FieldRef<"FacultySkillTopic", 'Boolean'>
     readonly status: FieldRef<"FacultySkillTopic", 'String'>
     readonly startDate: FieldRef<"FacultySkillTopic", 'String'>
+    readonly studyHours: FieldRef<"FacultySkillTopic", 'Decimal'>
     readonly expectedDate: FieldRef<"FacultySkillTopic", 'String'>
     readonly completedDate: FieldRef<"FacultySkillTopic", 'String'>
     readonly learningSummary: FieldRef<"FacultySkillTopic", 'String'>
@@ -91746,6 +91763,7 @@ export namespace Prisma {
     active: 'active',
     status: 'status',
     startDate: 'startDate',
+    studyHours: 'studyHours',
     expectedDate: 'expectedDate',
     completedDate: 'completedDate',
     learningSummary: 'learningSummary',
@@ -92602,6 +92620,20 @@ export namespace Prisma {
    * Reference to a field of type 'AttendanceStatus[]'
    */
   export type ListEnumAttendanceStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AttendanceStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Decimal'
+   */
+  export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
+    
+
+
+  /**
+   * Reference to a field of type 'Decimal[]'
+   */
+  export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
     
   /**
    * Deep Input Types
@@ -97006,7 +97038,6 @@ export namespace Prisma {
 
   export type FacultySkillAssignmentWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    branchFacultyId_skillName_startDate?: FacultySkillAssignmentBranchFacultyIdSkillNameStartDateCompoundUniqueInput
     AND?: FacultySkillAssignmentWhereInput | FacultySkillAssignmentWhereInput[]
     OR?: FacultySkillAssignmentWhereInput[]
     NOT?: FacultySkillAssignmentWhereInput | FacultySkillAssignmentWhereInput[]
@@ -97031,7 +97062,7 @@ export namespace Prisma {
     facultyUser?: XOR<UserScalarRelationFilter, UserWhereInput>
     skill?: XOR<FacultySkillNullableScalarRelationFilter, FacultySkillWhereInput> | null
     topics?: FacultySkillTopicListRelationFilter
-  }, "id" | "branchFacultyId_skillName_startDate">
+  }, "id">
 
   export type FacultySkillAssignmentOrderByWithAggregationInput = {
     id?: SortOrder
@@ -97092,6 +97123,7 @@ export namespace Prisma {
     active?: BoolFilter<"FacultySkillTopic"> | boolean
     status?: StringFilter<"FacultySkillTopic"> | string
     startDate?: StringNullableFilter<"FacultySkillTopic"> | string | null
+    studyHours?: DecimalNullableFilter<"FacultySkillTopic"> | Decimal | DecimalJsLike | number | string | null
     expectedDate?: StringNullableFilter<"FacultySkillTopic"> | string | null
     completedDate?: StringNullableFilter<"FacultySkillTopic"> | string | null
     learningSummary?: StringNullableFilter<"FacultySkillTopic"> | string | null
@@ -97111,6 +97143,7 @@ export namespace Prisma {
     active?: SortOrder
     status?: SortOrder
     startDate?: SortOrderInput | SortOrder
+    studyHours?: SortOrderInput | SortOrder
     expectedDate?: SortOrderInput | SortOrder
     completedDate?: SortOrderInput | SortOrder
     learningSummary?: SortOrderInput | SortOrder
@@ -97135,6 +97168,7 @@ export namespace Prisma {
     active?: BoolFilter<"FacultySkillTopic"> | boolean
     status?: StringFilter<"FacultySkillTopic"> | string
     startDate?: StringNullableFilter<"FacultySkillTopic"> | string | null
+    studyHours?: DecimalNullableFilter<"FacultySkillTopic"> | Decimal | DecimalJsLike | number | string | null
     expectedDate?: StringNullableFilter<"FacultySkillTopic"> | string | null
     completedDate?: StringNullableFilter<"FacultySkillTopic"> | string | null
     learningSummary?: StringNullableFilter<"FacultySkillTopic"> | string | null
@@ -97154,6 +97188,7 @@ export namespace Prisma {
     active?: SortOrder
     status?: SortOrder
     startDate?: SortOrderInput | SortOrder
+    studyHours?: SortOrderInput | SortOrder
     expectedDate?: SortOrderInput | SortOrder
     completedDate?: SortOrderInput | SortOrder
     learningSummary?: SortOrderInput | SortOrder
@@ -97180,6 +97215,7 @@ export namespace Prisma {
     active?: BoolWithAggregatesFilter<"FacultySkillTopic"> | boolean
     status?: StringWithAggregatesFilter<"FacultySkillTopic"> | string
     startDate?: StringNullableWithAggregatesFilter<"FacultySkillTopic"> | string | null
+    studyHours?: DecimalNullableWithAggregatesFilter<"FacultySkillTopic"> | Decimal | DecimalJsLike | number | string | null
     expectedDate?: StringNullableWithAggregatesFilter<"FacultySkillTopic"> | string | null
     completedDate?: StringNullableWithAggregatesFilter<"FacultySkillTopic"> | string | null
     learningSummary?: StringNullableWithAggregatesFilter<"FacultySkillTopic"> | string | null
@@ -105460,6 +105496,7 @@ export namespace Prisma {
     active?: boolean
     status?: string
     startDate?: string | null
+    studyHours?: Decimal | DecimalJsLike | number | string | null
     expectedDate?: string | null
     completedDate?: string | null
     learningSummary?: string | null
@@ -105479,6 +105516,7 @@ export namespace Prisma {
     active?: boolean
     status?: string
     startDate?: string | null
+    studyHours?: Decimal | DecimalJsLike | number | string | null
     expectedDate?: string | null
     completedDate?: string | null
     learningSummary?: string | null
@@ -105496,6 +105534,7 @@ export namespace Prisma {
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     startDate?: NullableStringFieldUpdateOperationsInput | string | null
+    studyHours?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     expectedDate?: NullableStringFieldUpdateOperationsInput | string | null
     completedDate?: NullableStringFieldUpdateOperationsInput | string | null
     learningSummary?: NullableStringFieldUpdateOperationsInput | string | null
@@ -105515,6 +105554,7 @@ export namespace Prisma {
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     startDate?: NullableStringFieldUpdateOperationsInput | string | null
+    studyHours?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     expectedDate?: NullableStringFieldUpdateOperationsInput | string | null
     completedDate?: NullableStringFieldUpdateOperationsInput | string | null
     learningSummary?: NullableStringFieldUpdateOperationsInput | string | null
@@ -105533,6 +105573,7 @@ export namespace Prisma {
     active?: boolean
     status?: string
     startDate?: string | null
+    studyHours?: Decimal | DecimalJsLike | number | string | null
     expectedDate?: string | null
     completedDate?: string | null
     learningSummary?: string | null
@@ -105550,6 +105591,7 @@ export namespace Prisma {
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     startDate?: NullableStringFieldUpdateOperationsInput | string | null
+    studyHours?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     expectedDate?: NullableStringFieldUpdateOperationsInput | string | null
     completedDate?: NullableStringFieldUpdateOperationsInput | string | null
     learningSummary?: NullableStringFieldUpdateOperationsInput | string | null
@@ -105568,6 +105610,7 @@ export namespace Prisma {
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     startDate?: NullableStringFieldUpdateOperationsInput | string | null
+    studyHours?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     expectedDate?: NullableStringFieldUpdateOperationsInput | string | null
     completedDate?: NullableStringFieldUpdateOperationsInput | string | null
     learningSummary?: NullableStringFieldUpdateOperationsInput | string | null
@@ -112576,12 +112619,6 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
-  export type FacultySkillAssignmentBranchFacultyIdSkillNameStartDateCompoundUniqueInput = {
-    branchFacultyId: string
-    skillName: string
-    startDate: string
-  }
-
   export type FacultySkillAssignmentCountOrderByAggregateInput = {
     id?: SortOrder
     branchId?: SortOrder
@@ -112650,6 +112687,17 @@ export namespace Prisma {
     durationValue?: SortOrder
   }
 
+  export type DecimalNullableFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalNullableFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
+  }
+
   export type FacultySkillAssignmentScalarRelationFilter = {
     is?: FacultySkillAssignmentWhereInput
     isNot?: FacultySkillAssignmentWhereInput
@@ -112673,6 +112721,7 @@ export namespace Prisma {
     active?: SortOrder
     status?: SortOrder
     startDate?: SortOrder
+    studyHours?: SortOrder
     expectedDate?: SortOrder
     completedDate?: SortOrder
     learningSummary?: SortOrder
@@ -112685,6 +112734,7 @@ export namespace Prisma {
 
   export type FacultySkillTopicAvgOrderByAggregateInput = {
     displayOrder?: SortOrder
+    studyHours?: SortOrder
   }
 
   export type FacultySkillTopicMaxOrderByAggregateInput = {
@@ -112695,6 +112745,7 @@ export namespace Prisma {
     active?: SortOrder
     status?: SortOrder
     startDate?: SortOrder
+    studyHours?: SortOrder
     expectedDate?: SortOrder
     completedDate?: SortOrder
     learningSummary?: SortOrder
@@ -112713,6 +112764,7 @@ export namespace Prisma {
     active?: SortOrder
     status?: SortOrder
     startDate?: SortOrder
+    studyHours?: SortOrder
     expectedDate?: SortOrder
     completedDate?: SortOrder
     learningSummary?: SortOrder
@@ -112725,6 +112777,23 @@ export namespace Prisma {
 
   export type FacultySkillTopicSumOrderByAggregateInput = {
     displayOrder?: SortOrder
+    studyHours?: SortOrder
+  }
+
+  export type DecimalNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalNullableWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedDecimalNullableFilter<$PrismaModel>
+    _sum?: NestedDecimalNullableFilter<$PrismaModel>
+    _min?: NestedDecimalNullableFilter<$PrismaModel>
+    _max?: NestedDecimalNullableFilter<$PrismaModel>
   }
 
   export type FacultySkillAssignmentAuditCountOrderByAggregateInput = {
@@ -118746,6 +118815,14 @@ export namespace Prisma {
     connect?: FacultySkillAssignmentWhereUniqueInput
   }
 
+  export type NullableDecimalFieldUpdateOperationsInput = {
+    set?: Decimal | DecimalJsLike | number | string | null
+    increment?: Decimal | DecimalJsLike | number | string
+    decrement?: Decimal | DecimalJsLike | number | string
+    multiply?: Decimal | DecimalJsLike | number | string
+    divide?: Decimal | DecimalJsLike | number | string
+  }
+
   export type FacultySkillAssignmentUpdateOneRequiredWithoutTopicsNestedInput = {
     create?: XOR<FacultySkillAssignmentCreateWithoutTopicsInput, FacultySkillAssignmentUncheckedCreateWithoutTopicsInput>
     connectOrCreate?: FacultySkillAssignmentCreateOrConnectWithoutTopicsInput
@@ -120692,6 +120769,33 @@ export namespace Prisma {
     gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
+  export type NestedDecimalNullableFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalNullableFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
+  }
+
+  export type NestedDecimalNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalNullableWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedDecimalNullableFilter<$PrismaModel>
+    _sum?: NestedDecimalNullableFilter<$PrismaModel>
+    _min?: NestedDecimalNullableFilter<$PrismaModel>
+    _max?: NestedDecimalNullableFilter<$PrismaModel>
   }
 
   export type BatchFacultyAssignmentCreateWithoutFacultyInput = {
@@ -134058,6 +134162,7 @@ export namespace Prisma {
     active?: boolean
     status?: string
     startDate?: string | null
+    studyHours?: Decimal | DecimalJsLike | number | string | null
     expectedDate?: string | null
     completedDate?: string | null
     learningSummary?: string | null
@@ -134075,6 +134180,7 @@ export namespace Prisma {
     active?: boolean
     status?: string
     startDate?: string | null
+    studyHours?: Decimal | DecimalJsLike | number | string | null
     expectedDate?: string | null
     completedDate?: string | null
     learningSummary?: string | null
@@ -134382,6 +134488,7 @@ export namespace Prisma {
     active?: BoolFilter<"FacultySkillTopic"> | boolean
     status?: StringFilter<"FacultySkillTopic"> | string
     startDate?: StringNullableFilter<"FacultySkillTopic"> | string | null
+    studyHours?: DecimalNullableFilter<"FacultySkillTopic"> | Decimal | DecimalJsLike | number | string | null
     expectedDate?: StringNullableFilter<"FacultySkillTopic"> | string | null
     completedDate?: StringNullableFilter<"FacultySkillTopic"> | string | null
     learningSummary?: StringNullableFilter<"FacultySkillTopic"> | string | null
@@ -150344,6 +150451,7 @@ export namespace Prisma {
     active?: boolean
     status?: string
     startDate?: string | null
+    studyHours?: Decimal | DecimalJsLike | number | string | null
     expectedDate?: string | null
     completedDate?: string | null
     learningSummary?: string | null
@@ -150361,6 +150469,7 @@ export namespace Prisma {
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     startDate?: NullableStringFieldUpdateOperationsInput | string | null
+    studyHours?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     expectedDate?: NullableStringFieldUpdateOperationsInput | string | null
     completedDate?: NullableStringFieldUpdateOperationsInput | string | null
     learningSummary?: NullableStringFieldUpdateOperationsInput | string | null
@@ -150378,6 +150487,7 @@ export namespace Prisma {
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     startDate?: NullableStringFieldUpdateOperationsInput | string | null
+    studyHours?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     expectedDate?: NullableStringFieldUpdateOperationsInput | string | null
     completedDate?: NullableStringFieldUpdateOperationsInput | string | null
     learningSummary?: NullableStringFieldUpdateOperationsInput | string | null
@@ -150395,6 +150505,7 @@ export namespace Prisma {
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     startDate?: NullableStringFieldUpdateOperationsInput | string | null
+    studyHours?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     expectedDate?: NullableStringFieldUpdateOperationsInput | string | null
     completedDate?: NullableStringFieldUpdateOperationsInput | string | null
     learningSummary?: NullableStringFieldUpdateOperationsInput | string | null

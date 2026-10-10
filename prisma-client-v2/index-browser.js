@@ -842,6 +842,7 @@ exports.Prisma.FacultySkillTopicScalarFieldEnum = {
   active: 'active',
   status: 'status',
   startDate: 'startDate',
+  studyHours: 'studyHours',
   expectedDate: 'expectedDate',
   completedDate: 'completedDate',
   learningSummary: 'learningSummary',

@@ -1014,7 +1014,6 @@ model FacultySkillAssignment {
   skill           FacultySkill?       @relation(fields: [skillId], references: [id])
   topics          FacultySkillTopic[]
 
-  @@unique([branchFacultyId, skillName, startDate])
   @@index([branchId, status, endDate])
   @@index([facultyUserId, status])
   @@index([branchFacultyId, createdAt])
@@ -1028,6 +1027,7 @@ model FacultySkillTopic {
   active          Boolean                @default(true)
   status          String                 @default("NOT_STARTED")
   startDate       String?
+  studyHours      Decimal?
   expectedDate    String?
   completedDate   String?
   learningSummary String?
