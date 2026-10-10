@@ -46,6 +46,7 @@ model User {
   examAttempts                   ExamAttempt[]
   createdAssessments             Assessment[]                 @relation("AssessmentFaculty")
   evaluatedSubmissions           AssessmentSubmission[]       @relation("AssessmentEvaluator")
+  facultySkillAssignments        FacultySkillAssignment[]     @relation("FacultySkillUserAssignments")
 
   @@index([role])
   @@index([active])
@@ -114,6 +115,7 @@ model Branch {
   ledgerEntries              BranchStudentLedgerEntry[]
   payments                   BranchStudentPayment[]
   courses                    Course[]
+  facultySkillAssignments    FacultySkillAssignment[]    @relation("FacultySkillBranchAssignments")
   facultyLeaveRequests       FacultyLeaveRequest[]
 
   @@index([status])
@@ -137,42 +139,43 @@ model LoginEvent {
 }
 
 model Notification {
-  id                 String             @id @default(cuid())
-  kind               NotificationKind
-  tone               String             @default("blue")
-  title              String
-  message            String
-  actionLabel        String?
-  targetBranchId     String?
-  targetBranchEmail  String?
-  targetBranchName   String?
-  read               Boolean            @default(false)
-  readAt             DateTime?
-  createdBy          String?
-  createdAt          DateTime           @default(now())
-  updatedAt          DateTime           @updatedAt
-  targetUserId       String?
-  branchCourseId     String?
-  branchCourseName   String?
-  facultyId          String?
-  facultyName        String?
-  moduleId           String?
-  moduleName         String?
-  requestDescription String?
-  requestId          String?
-  leaveRequestId     String?
-  requestReason      String?
-  requestStatus      String?
-  requestTitle       String?
-  examId             String?
-  examScheduleId     String?
-  academicTestId     String?
-  assessmentId       String?
-  batchId            String?
-  subModuleId        String?
-  subModuleName      String?
-  request            CourseEditRequest? @relation("CourseEditRequestNotifications", fields: [requestId], references: [id])
-  targetUser         User?              @relation("NotificationTargetUser", fields: [targetUserId], references: [id])
+  id                       String             @id @default(cuid())
+  kind                     NotificationKind
+  tone                     String             @default("blue")
+  title                    String
+  message                  String
+  actionLabel              String?
+  targetBranchId           String?
+  targetBranchEmail        String?
+  targetBranchName         String?
+  read                     Boolean            @default(false)
+  readAt                   DateTime?
+  createdBy                String?
+  createdAt                DateTime           @default(now())
+  updatedAt                DateTime           @updatedAt
+  targetUserId             String?
+  branchCourseId           String?
+  branchCourseName         String?
+  facultyId                String?
+  facultyName              String?
+  moduleId                 String?
+  moduleName               String?
+  requestDescription       String?
+  requestId                String?
+  leaveRequestId           String?
+  requestReason            String?
+  requestStatus            String?
+  requestTitle             String?
+  examId                   String?
+  examScheduleId           String?
+  academicTestId           String?
+  assessmentId             String?
+  batchId                  String?
+  facultySkillAssignmentId String?
+  subModuleId              String?
+  subModuleName            String?
+  request                  CourseEditRequest? @relation("CourseEditRequestNotifications", fields: [requestId], references: [id])
+  targetUser               User?              @relation("NotificationTargetUser", fields: [targetUserId], references: [id])
 
   @@index([kind, createdAt])
   @@index([read, createdAt])
@@ -183,6 +186,7 @@ model Notification {
   @@index([targetBranchName])
   @@index([targetUserId, examId, examScheduleId])
   @@index([targetUserId, assessmentId])
+  @@index([facultySkillAssignmentId])
 }
 
 model CourseEditRequest {
@@ -847,6 +851,7 @@ model BranchStudent {
   @@unique([branchId, studentId])
   @@index([branchId])
   @@index([recordStatus])
+  @@index([branchId, recordStatus])
   @@index([studentName])
   @@index([emailAddress])
   @@index([admissionDate])
@@ -972,6 +977,88 @@ model BranchStudentInstallment {
 
   @@index([branchStudentId, status])
   @@index([dueDate])
+}
+
+model FacultySkill {
+  id          String                   @id @default(cuid())
+  name        String                   @unique
+  active      Boolean                  @default(true)
+  createdAt   DateTime                 @default(now())
+  updatedAt   DateTime                 @updatedAt
+  assignments FacultySkillAssignment[]
+
+  @@index([active, name])
+}
+
+model FacultySkillAssignment {
+  id              String              @id @default(cuid())
+  branchId        String
+  branchFacultyId String
+  facultyUserId   String
+  skillId         String?
+  skillName       String
+  durationValue   Int
+  durationUnit    String              @default("MONTH")
+  startDate       String
+  endDate         String
+  status          String              @default("NOT_STARTED")
+  completedAt     DateTime?
+  overdueMarkedAt DateTime?
+  createdBy       String
+  updatedBy       String?
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @updatedAt
+  branch          Branch              @relation("FacultySkillBranchAssignments", fields: [branchId], references: [id], onDelete: Cascade)
+  faculty         BranchFaculty       @relation(fields: [branchFacultyId], references: [id], onDelete: Cascade)
+  facultyUser     User                @relation("FacultySkillUserAssignments", fields: [facultyUserId], references: [id], onDelete: Cascade)
+  skill           FacultySkill?       @relation(fields: [skillId], references: [id])
+  topics          FacultySkillTopic[]
+
+  @@unique([branchFacultyId, skillName, startDate])
+  @@index([branchId, status, endDate])
+  @@index([facultyUserId, status])
+  @@index([branchFacultyId, createdAt])
+}
+
+model FacultySkillTopic {
+  id              String                 @id @default(cuid())
+  assignmentId    String
+  topicName       String
+  displayOrder    Int
+  active          Boolean                @default(true)
+  status          String                 @default("NOT_STARTED")
+  startDate       String?
+  expectedDate    String?
+  completedDate   String?
+  learningSummary String?
+  referenceType   String?
+  referenceName   String?
+  referenceUrl    String?
+  createdAt       DateTime               @default(now())
+  updatedAt       DateTime               @updatedAt
+  assignment      FacultySkillAssignment @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
+
+  @@unique([assignmentId, displayOrder])
+  @@unique([assignmentId, topicName])
+  @@index([assignmentId, status])
+}
+
+model FacultySkillAssignmentAudit {
+  id           String   @id @default(cuid())
+  assignmentId String
+  branchId     String
+  facultyId    String
+  editedBy     String
+  changeType   String
+  fieldName    String
+  oldValue     String?
+  newValue     String?
+  topicId      String?
+  createdAt    DateTime @default(now())
+
+  @@index([assignmentId, createdAt])
+  @@index([branchId, createdAt])
+  @@index([facultyId, createdAt])
 }
 
 model FacultyProfile {
@@ -1166,31 +1253,32 @@ model StudentAttendance {
 }
 
 model BranchFaculty {
-  id                String                @id @default(cuid())
+  id                String                   @id @default(cuid())
   facultyId         String
   branchId          String
   name              String
   email             String
   phone             String
-  country           String?               @default("")
-  countryCode       String?               @default("")
-  state             String?               @default("")
-  stateCode         String?               @default("")
-  city              String?               @default("")
+  country           String?                  @default("")
+  countryCode       String?                  @default("")
+  state             String?                  @default("")
+  stateCode         String?                  @default("")
+  city              String?                  @default("")
   address           String?
   weeklyOffDay      String?
-  status            RecordStatus          @default(ACTIVE)
+  status            RecordStatus             @default(ACTIVE)
   createdBy         String?
   updatedBy         String?
-  createdAt         DateTime              @default(now())
-  updatedAt         DateTime              @updatedAt
+  createdAt         DateTime                 @default(now())
+  updatedAt         DateTime                 @updatedAt
   courseId          String?
   branchCourseId    String?
-  branchCourse      BranchCourse?         @relation(fields: [branchCourseId], references: [id])
-  branch            Branch                @relation(fields: [branchId], references: [id], onDelete: Cascade)
-  course            Course?               @relation(fields: [courseId], references: [id])
+  branchCourse      BranchCourse?            @relation(fields: [branchCourseId], references: [id])
+  branch            Branch                   @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  course            Course?                  @relation(fields: [courseId], references: [id])
   branchBatches     BranchBatch[]
   courseAssignments BranchFacultyCourse[]
+  skillAssignments  FacultySkillAssignment[]
 
   @@unique([branchId, facultyId])
   @@unique([branchId, email])
@@ -1587,6 +1675,9 @@ enum NotificationKind {
   EXAM_CANCELLED
   ASSESSMENT_CANCELLED
   STUDENT_DISCOUNT_APPLIED
+  FACULTY_SKILL_ASSIGNED
+  FACULTY_SKILL_COMPLETED
+  FACULTY_SKILL_OVERDUE
 }
 
 enum DiscountType {

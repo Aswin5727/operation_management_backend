@@ -46,6 +46,7 @@ model User {
   examAttempts                   ExamAttempt[]
   createdAssessments             Assessment[]                 @relation("AssessmentFaculty")
   evaluatedSubmissions           AssessmentSubmission[]       @relation("AssessmentEvaluator")
+  facultySkillAssignments        FacultySkillAssignment[]    @relation("FacultySkillUserAssignments")
 
   @@index([role])
   @@index([active])
@@ -114,6 +115,7 @@ model Branch {
   ledgerEntries              BranchStudentLedgerEntry[]
   payments                   BranchStudentPayment[]
   courses                    Course[]
+  facultySkillAssignments   FacultySkillAssignment[]    @relation("FacultySkillBranchAssignments")
   facultyLeaveRequests       FacultyLeaveRequest[]
 
   @@index([status])
@@ -169,6 +171,7 @@ model Notification {
   academicTestId     String?
   assessmentId       String?
   batchId            String?
+  facultySkillAssignmentId String?
   subModuleId        String?
   subModuleName      String?
   request            CourseEditRequest? @relation("CourseEditRequestNotifications", fields: [requestId], references: [id])
@@ -183,6 +186,7 @@ model Notification {
   @@index([targetBranchName])
   @@index([targetUserId, examId, examScheduleId])
   @@index([targetUserId, assessmentId])
+  @@index([facultySkillAssignmentId])
 }
 
 model CourseEditRequest {
@@ -975,6 +979,88 @@ model BranchStudentInstallment {
   @@index([dueDate])
 }
 
+model FacultySkill {
+  id          String                   @id @default(cuid())
+  name        String                   @unique
+  active      Boolean                  @default(true)
+  createdAt   DateTime                 @default(now())
+  updatedAt   DateTime                 @updatedAt
+  assignments FacultySkillAssignment[]
+
+  @@index([active, name])
+}
+
+model FacultySkillAssignment {
+  id              String              @id @default(cuid())
+  branchId        String
+  branchFacultyId String
+  facultyUserId   String
+  skillId         String?
+  skillName       String
+  durationValue   Int
+  durationUnit    String              @default("MONTH")
+  startDate       String
+  endDate         String
+  status          String              @default("NOT_STARTED")
+  completedAt     DateTime?
+  overdueMarkedAt DateTime?
+  createdBy       String
+  updatedBy       String?
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @updatedAt
+  branch          Branch              @relation("FacultySkillBranchAssignments", fields: [branchId], references: [id], onDelete: Cascade)
+  faculty         BranchFaculty       @relation(fields: [branchFacultyId], references: [id], onDelete: Cascade)
+  facultyUser     User                @relation("FacultySkillUserAssignments", fields: [facultyUserId], references: [id], onDelete: Cascade)
+  skill           FacultySkill?       @relation(fields: [skillId], references: [id])
+  topics          FacultySkillTopic[]
+
+  @@index([branchId, status, endDate])
+  @@index([facultyUserId, status])
+  @@index([branchFacultyId, createdAt])
+  @@unique([branchFacultyId, skillName, startDate])
+}
+
+model FacultySkillTopic {
+  id              String                 @id @default(cuid())
+  assignmentId    String
+  topicName       String
+  displayOrder    Int
+  active          Boolean                @default(true)
+  status          String                 @default("NOT_STARTED")
+  startDate       String?
+  expectedDate    String?
+  completedDate   String?
+  learningSummary String?
+  referenceType   String?
+  referenceName   String?
+  referenceUrl    String?
+  createdAt       DateTime               @default(now())
+  updatedAt       DateTime               @updatedAt
+  assignment      FacultySkillAssignment @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
+
+  @@unique([assignmentId, displayOrder])
+  @@unique([assignmentId, topicName])
+  @@index([assignmentId, status])
+}
+
+model FacultySkillAssignmentAudit {
+  id            String   @id @default(cuid())
+  assignmentId  String
+  branchId      String
+  facultyId     String
+  editedBy      String
+  changeType    String
+  fieldName     String
+  oldValue      String?
+  newValue      String?
+  topicId       String?
+  createdAt     DateTime @default(now())
+
+  @@index([assignmentId, createdAt])
+  @@index([branchId, createdAt])
+  @@index([facultyId, createdAt])
+}
+
 model FacultyProfile {
   id                String                    @id @default(cuid())
   facultyName       String
@@ -1192,6 +1278,7 @@ model BranchFaculty {
   course            Course?               @relation(fields: [courseId], references: [id])
   branchBatches     BranchBatch[]
   courseAssignments BranchFacultyCourse[]
+  skillAssignments  FacultySkillAssignment[]
 
   @@unique([branchId, facultyId])
   @@unique([branchId, email])
@@ -1588,6 +1675,9 @@ enum NotificationKind {
   EXAM_CANCELLED
   ASSESSMENT_CANCELLED
   STUDENT_DISCOUNT_APPLIED
+  FACULTY_SKILL_ASSIGNED
+  FACULTY_SKILL_COMPLETED
+  FACULTY_SKILL_OVERDUE
 }
 
 enum DiscountType {

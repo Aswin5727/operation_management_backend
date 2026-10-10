@@ -27,6 +27,8 @@ const BRANCH_ADMIN_VISIBLE_NOTIFICATION_KINDS = new Set([
   "FACULTY_LEAVE_REQUEST",
   "FACULTY_REPORT_SHARED",
   "SEQUENTIAL_COURSE_SCHEDULING_REQUIRED",
+  "FACULTY_SKILL_COMPLETED",
+  "FACULTY_SKILL_OVERDUE",
 ]);
 const DEFAULT_VISIBLE_NOTIFICATION_KINDS = new Set([
   "BRANCH_INVITATION_RESENT",
@@ -42,12 +44,16 @@ const SUPER_ADMIN_VISIBLE_NOTIFICATION_KINDS = new Set([
   "COURSE_EDIT_REQUEST_ACCEPTED",
   "COURSE_EDIT_REQUEST_REJECTED",
   "COURSE_EDIT_MODULE_UPDATED",
+  "FACULTY_SKILL_ASSIGNED",
+  "FACULTY_SKILL_COMPLETED",
+  "FACULTY_SKILL_OVERDUE",
   "STUDENT_DISCOUNT_APPLIED",
 ]);
 const FACULTY_VISIBLE_NOTIFICATION_KINDS = new Set([
   "INSTITUTE_LEAVE",
   "FACULTY_LEAVE_REQUEST",
   "FACULTY_COURSE_ASSIGNED",
+  "FACULTY_SKILL_ASSIGNED",
   "COURSE_EDIT_REQUEST_ACCEPTED",
   "COURSE_EDIT_REQUEST_REJECTED",
   "COURSE_EDIT_MODULE_UPDATED",
@@ -133,6 +139,7 @@ function normalizeNotificationRow(row) {
     targetUserId: normalizeString(
       row.targetUserId,
     ),
+    facultySkillAssignmentId: normalizeString(row.facultySkillAssignmentId),
     read: Boolean(row.read),
     readAt: row.readAt || null,
       createdAt: row.createdAt,
@@ -494,6 +501,7 @@ export async function createNotification(data, prismaClient = prisma) {
   // Other workflows (such as temporary week-off requests) use the same
   // notification payload shape but have their own request table.
   const safeData = { ...data };
+  if (safeData.kind === "FACULTY_SKILL_ASSIGNED") safeData.message = String(safeData.message || "").replace(/\.(?=\s*(?:\n|$))/g, "");
   if (safeData.requestId) {
     const linkedRequest = await prismaClient.courseEditRequest.findUnique({
       where: { id: safeData.requestId },

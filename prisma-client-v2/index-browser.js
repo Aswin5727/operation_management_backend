@@ -233,6 +233,7 @@ exports.Prisma.NotificationScalarFieldEnum = {
   academicTestId: 'academicTestId',
   assessmentId: 'assessmentId',
   batchId: 'batchId',
+  facultySkillAssignmentId: 'facultySkillAssignmentId',
   subModuleId: 'subModuleId',
   subModuleName: 'subModuleName'
 };
@@ -805,6 +806,66 @@ exports.Prisma.BranchStudentInstallmentScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.FacultySkillScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  active: 'active',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.FacultySkillAssignmentScalarFieldEnum = {
+  id: 'id',
+  branchId: 'branchId',
+  branchFacultyId: 'branchFacultyId',
+  facultyUserId: 'facultyUserId',
+  skillId: 'skillId',
+  skillName: 'skillName',
+  durationValue: 'durationValue',
+  durationUnit: 'durationUnit',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  status: 'status',
+  completedAt: 'completedAt',
+  overdueMarkedAt: 'overdueMarkedAt',
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.FacultySkillTopicScalarFieldEnum = {
+  id: 'id',
+  assignmentId: 'assignmentId',
+  topicName: 'topicName',
+  displayOrder: 'displayOrder',
+  active: 'active',
+  status: 'status',
+  startDate: 'startDate',
+  expectedDate: 'expectedDate',
+  completedDate: 'completedDate',
+  learningSummary: 'learningSummary',
+  referenceType: 'referenceType',
+  referenceName: 'referenceName',
+  referenceUrl: 'referenceUrl',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.FacultySkillAssignmentAuditScalarFieldEnum = {
+  id: 'id',
+  assignmentId: 'assignmentId',
+  branchId: 'branchId',
+  facultyId: 'facultyId',
+  editedBy: 'editedBy',
+  changeType: 'changeType',
+  fieldName: 'fieldName',
+  oldValue: 'oldValue',
+  newValue: 'newValue',
+  topicId: 'topicId',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.FacultyProfileScalarFieldEnum = {
   id: 'id',
   facultyName: 'facultyName',
@@ -1348,7 +1409,10 @@ exports.NotificationKind = exports.$Enums.NotificationKind = {
   SEQUENTIAL_COURSE_SCHEDULING_REQUIRED: 'SEQUENTIAL_COURSE_SCHEDULING_REQUIRED',
   EXAM_CANCELLED: 'EXAM_CANCELLED',
   ASSESSMENT_CANCELLED: 'ASSESSMENT_CANCELLED',
-  STUDENT_DISCOUNT_APPLIED: 'STUDENT_DISCOUNT_APPLIED'
+  STUDENT_DISCOUNT_APPLIED: 'STUDENT_DISCOUNT_APPLIED',
+  FACULTY_SKILL_ASSIGNED: 'FACULTY_SKILL_ASSIGNED',
+  FACULTY_SKILL_COMPLETED: 'FACULTY_SKILL_COMPLETED',
+  FACULTY_SKILL_OVERDUE: 'FACULTY_SKILL_OVERDUE'
 };
 
 exports.CourseEditRequestStatus = exports.$Enums.CourseEditRequestStatus = {
@@ -1428,6 +1492,10 @@ exports.Prisma.ModelName = {
   BranchCalendarHoliday: 'BranchCalendarHoliday',
   BranchCalendarLeave: 'BranchCalendarLeave',
   BranchStudentInstallment: 'BranchStudentInstallment',
+  FacultySkill: 'FacultySkill',
+  FacultySkillAssignment: 'FacultySkillAssignment',
+  FacultySkillTopic: 'FacultySkillTopic',
+  FacultySkillAssignmentAudit: 'FacultySkillAssignmentAudit',
   FacultyProfile: 'FacultyProfile',
   FacultyCourseAssignment: 'FacultyCourseAssignment',
   FacultyBatchEntry: 'FacultyBatchEntry',
