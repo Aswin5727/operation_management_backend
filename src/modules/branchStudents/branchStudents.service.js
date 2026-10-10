@@ -398,7 +398,7 @@ async function buildStudentFeePlan({ studentData, installmentSchedule, payload, 
       ? courseEnrollmentInput.filter((enrollment) => normalizeString(enrollment?.status).toUpperCase() !== "PENDING")
       : courseEnrollmentInput)
     : [];
-  const combinedCourseFee = Array.isArray(courseEnrollmentInput) && courseEnrollmentInput.length > 1
+  const enrollmentCourseFee = Array.isArray(courseEnrollmentInput) && billableEnrollments.length
     ? billableEnrollments.reduce((sum, enrollment) => {
         const total = Number(String(enrollment?.totalCourseAmount ?? enrollment?.courseAmount ?? enrollment?.totalAmount ?? 0).replace(/,/g, "")) || 0;
         return sum + calculateCourseDiscount(
@@ -408,8 +408,8 @@ async function buildStudentFeePlan({ studentData, installmentSchedule, payload, 
         ).finalCourseAmount;
       }, 0)
     : 0;
-  const totalFee = combinedCourseFee > 0
-    ? combinedCourseFee
+  const totalFee = enrollmentCourseFee > 0
+    ? enrollmentCourseFee
     : Number(String(
         studentData.finalCourseAmount ?? studentData.totalAmount ?? studentData.afterDiscount ?? studentData.courseAmount ?? 0,
       ).replace(/,/g, "")) || 0;
@@ -506,7 +506,7 @@ async function buildStudentFeePlan({ studentData, installmentSchedule, payload, 
 
   // BranchStudent.courseAmount is the package fee used by the shared installment
   // schedule. Each individual fee remains on its BranchStudentCourse enrollment.
-  if (combinedCourseFee > 0) studentData.courseAmount = Math.round(combinedCourseFee);
+  if (enrollmentCourseFee > 0) studentData.courseAmount = Math.round(enrollmentCourseFee);
   const scheduledTotal = installmentSchedule.reduce((sum, installment) => sum + Number(installment.amount || 0), 0);
   const expectedScheduledTotal = payload?.sequentialCourseActivation === true ? Math.round(totalFee) : totalFee;
   if (totalFee > 0 && Math.abs(scheduledTotal - expectedScheduledTotal) > 0.01) {
