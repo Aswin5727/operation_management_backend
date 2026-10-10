@@ -1,6 +1,8 @@
 import prisma from "../../config/prisma.js";
 import AppError from "../../common/errors/AppError.js";
 import { calculateBranchStudentCourseProgress } from "../facultyTodayWork/facultyTodayWork.service.js";
+import { calculateCoursePaidProgress, courseCompletionFromProgressAndTests } from "../branchStudents/branchStudents.service.js";
+import { getAcademicTestProgressForStudent } from "../academicTests/academicTests.service.js";
 
 const IST_OFFSET_MINUTES = 330;
 const REVENUE_SUMMARY_CACHE_TTL_MS = 15000;
@@ -374,6 +376,7 @@ async function getFacultyMyBatchesSummary(user) {
             facultyName: true,
             arrangementType: true,
             courseProgress: true,
+            courseAmount: true,
             installments: { select: { installmentNumber: true, amount: true, amountPaid: true, status: true } },
             courseEnrollments: {
               where: { status: "ACTIVE" },
@@ -406,6 +409,30 @@ async function getFacultyMyBatchesSummary(user) {
           },
         })
       : [];
+    const completionByStudentCourse = new Map();
+    await Promise.all(branchStudentRows.flatMap((student) => batchEntries.map(async (entry) => {
+      const courseId = normalizeFacultyText(entry.courseId);
+      const batchId = normalizeFacultyText(entry.batchId || entry.id);
+      const enrollment = (student.courseEnrollments || []).find((item) =>
+        normalizeFacultyKey(item.courseId) === normalizeFacultyKey(courseId) &&
+        normalizeFacultyKey(item.batchId) === normalizeFacultyKey(batchId),
+      );
+      const legacyMatch = normalizeFacultyKey(student.courseId) === normalizeFacultyKey(courseId) &&
+        normalizeFacultyKey(student.batchId) === normalizeFacultyKey(batchId);
+      if (!enrollment && !legacyMatch) return;
+      const courseProgress = enrollment?.courseProgress ?? (legacyMatch ? student.courseProgress : null);
+      const progress = await getAcademicTestProgressForStudent({
+        ...student,
+        courseId,
+        batchId,
+        courseProgress,
+      });
+      const paidProgress = calculateCoursePaidProgress(student, courseId);
+      completionByStudentCourse.set(`${student.id}:${courseId}`, {
+        courseCompletion: courseCompletionFromProgressAndTests(courseProgress, progress, paidProgress),
+        paidProgress,
+      });
+    })));
     const progressByBatch = new Map();
 
     const recordsByBatch = new Map();
@@ -451,6 +478,8 @@ async function getFacultyMyBatchesSummary(user) {
             courseAmount: coursePayment.courseAmount,
             totalAmount: coursePayment.courseAmount,
             paidAmount: coursePayment.paidAmount,
+            courseCompletion: completionByStudentCourse.get(`${student.id}:${courseId}`)?.courseCompletion || "IN_PROGRESS",
+            paidProgress: completionByStudentCourse.get(`${student.id}:${courseId}`)?.paidProgress || null,
           });
           const progress = Number(enrollment?.courseProgress ?? (legacyMatch ? student.courseProgress : NaN));
           if (Number.isFinite(progress)) {

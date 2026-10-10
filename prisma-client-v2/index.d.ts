@@ -36916,7 +36916,7 @@ export namespace Prisma {
     branchCourseId: string
     branchBatchId: string
     facultyId: string
-    questionPaperId: string
+    questionPaperId: string | null
     testNumber: number
     testDate: string | null
     startTime: string | null
@@ -37060,7 +37060,7 @@ export namespace Prisma {
       branchCourseId: string
       branchBatchId: string
       facultyId: string
-      questionPaperId: string
+      questionPaperId: string | null
       testNumber: number
       testDate: string | null
       startTime: string | null
@@ -89856,7 +89856,7 @@ export namespace Prisma {
     branchCourseId?: StringFilter<"AcademicScheduledTest"> | string
     branchBatchId?: StringFilter<"AcademicScheduledTest"> | string
     facultyId?: StringFilter<"AcademicScheduledTest"> | string
-    questionPaperId?: StringFilter<"AcademicScheduledTest"> | string
+    questionPaperId?: StringNullableFilter<"AcademicScheduledTest"> | string | null
     testNumber?: IntFilter<"AcademicScheduledTest"> | number
     testDate?: StringNullableFilter<"AcademicScheduledTest"> | string | null
     startTime?: StringNullableFilter<"AcademicScheduledTest"> | string | null
@@ -89880,7 +89880,7 @@ export namespace Prisma {
     branchCourseId?: SortOrder
     branchBatchId?: SortOrder
     facultyId?: SortOrder
-    questionPaperId?: SortOrder
+    questionPaperId?: SortOrderInput | SortOrder
     testNumber?: SortOrder
     testDate?: SortOrderInput | SortOrder
     startTime?: SortOrderInput | SortOrder
@@ -89908,7 +89908,7 @@ export namespace Prisma {
     branchCourseId?: StringFilter<"AcademicScheduledTest"> | string
     branchBatchId?: StringFilter<"AcademicScheduledTest"> | string
     facultyId?: StringFilter<"AcademicScheduledTest"> | string
-    questionPaperId?: StringFilter<"AcademicScheduledTest"> | string
+    questionPaperId?: StringNullableFilter<"AcademicScheduledTest"> | string | null
     testNumber?: IntFilter<"AcademicScheduledTest"> | number
     testDate?: StringNullableFilter<"AcademicScheduledTest"> | string | null
     startTime?: StringNullableFilter<"AcademicScheduledTest"> | string | null
@@ -89932,7 +89932,7 @@ export namespace Prisma {
     branchCourseId?: SortOrder
     branchBatchId?: SortOrder
     facultyId?: SortOrder
-    questionPaperId?: SortOrder
+    questionPaperId?: SortOrderInput | SortOrder
     testNumber?: SortOrder
     testDate?: SortOrderInput | SortOrder
     startTime?: SortOrderInput | SortOrder
@@ -89964,7 +89964,7 @@ export namespace Prisma {
     branchCourseId?: StringWithAggregatesFilter<"AcademicScheduledTest"> | string
     branchBatchId?: StringWithAggregatesFilter<"AcademicScheduledTest"> | string
     facultyId?: StringWithAggregatesFilter<"AcademicScheduledTest"> | string
-    questionPaperId?: StringWithAggregatesFilter<"AcademicScheduledTest"> | string
+    questionPaperId?: StringNullableWithAggregatesFilter<"AcademicScheduledTest"> | string | null
     testNumber?: IntWithAggregatesFilter<"AcademicScheduledTest"> | number
     testDate?: StringNullableWithAggregatesFilter<"AcademicScheduledTest"> | string | null
     startTime?: StringNullableWithAggregatesFilter<"AcademicScheduledTest"> | string | null
@@ -97457,7 +97457,7 @@ export namespace Prisma {
     branchCourseId: string
     branchBatchId: string
     facultyId: string
-    questionPaperId: string
+    questionPaperId?: string | null
     testNumber: number
     testDate?: string | null
     startTime?: string | null
@@ -97481,7 +97481,7 @@ export namespace Prisma {
     branchCourseId: string
     branchBatchId: string
     facultyId: string
-    questionPaperId: string
+    questionPaperId?: string | null
     testNumber: number
     testDate?: string | null
     startTime?: string | null
@@ -97505,7 +97505,7 @@ export namespace Prisma {
     branchCourseId?: StringFieldUpdateOperationsInput | string
     branchBatchId?: StringFieldUpdateOperationsInput | string
     facultyId?: StringFieldUpdateOperationsInput | string
-    questionPaperId?: StringFieldUpdateOperationsInput | string
+    questionPaperId?: NullableStringFieldUpdateOperationsInput | string | null
     testNumber?: IntFieldUpdateOperationsInput | number
     testDate?: NullableStringFieldUpdateOperationsInput | string | null
     startTime?: NullableStringFieldUpdateOperationsInput | string | null
@@ -97529,7 +97529,7 @@ export namespace Prisma {
     branchCourseId?: StringFieldUpdateOperationsInput | string
     branchBatchId?: StringFieldUpdateOperationsInput | string
     facultyId?: StringFieldUpdateOperationsInput | string
-    questionPaperId?: StringFieldUpdateOperationsInput | string
+    questionPaperId?: NullableStringFieldUpdateOperationsInput | string | null
     testNumber?: IntFieldUpdateOperationsInput | number
     testDate?: NullableStringFieldUpdateOperationsInput | string | null
     startTime?: NullableStringFieldUpdateOperationsInput | string | null
@@ -97553,7 +97553,7 @@ export namespace Prisma {
     branchCourseId: string
     branchBatchId: string
     facultyId: string
-    questionPaperId: string
+    questionPaperId?: string | null
     testNumber: number
     testDate?: string | null
     startTime?: string | null
@@ -97577,7 +97577,7 @@ export namespace Prisma {
     branchCourseId?: StringFieldUpdateOperationsInput | string
     branchBatchId?: StringFieldUpdateOperationsInput | string
     facultyId?: StringFieldUpdateOperationsInput | string
-    questionPaperId?: StringFieldUpdateOperationsInput | string
+    questionPaperId?: NullableStringFieldUpdateOperationsInput | string | null
     testNumber?: IntFieldUpdateOperationsInput | number
     testDate?: NullableStringFieldUpdateOperationsInput | string | null
     startTime?: NullableStringFieldUpdateOperationsInput | string | null
@@ -97601,7 +97601,7 @@ export namespace Prisma {
     branchCourseId?: StringFieldUpdateOperationsInput | string
     branchBatchId?: StringFieldUpdateOperationsInput | string
     facultyId?: StringFieldUpdateOperationsInput | string
-    questionPaperId?: StringFieldUpdateOperationsInput | string
+    questionPaperId?: NullableStringFieldUpdateOperationsInput | string | null
     testNumber?: IntFieldUpdateOperationsInput | number
     testDate?: NullableStringFieldUpdateOperationsInput | string | null
     startTime?: NullableStringFieldUpdateOperationsInput | string | null

@@ -613,7 +613,7 @@ model AcademicScheduledTest {
   branchCourseId     String
   branchBatchId      String
   facultyId          String
-  questionPaperId    String
+  questionPaperId    String?
   testNumber         Int
   testDate           String?
   startTime          String?
@@ -847,6 +847,7 @@ model BranchStudent {
   @@unique([branchId, studentId])
   @@index([branchId])
   @@index([recordStatus])
+  @@index([branchId, recordStatus])
   @@index([studentName])
   @@index([emailAddress])
   @@index([admissionDate])

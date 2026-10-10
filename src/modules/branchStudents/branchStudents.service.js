@@ -667,10 +667,35 @@ function courseStatusFromProgress(value) {
   return "IN_PROGRESS";
 }
 
-function courseCompletionFromProgressAndTests(courseProgress, academicTestProgress) {
+export function calculateCoursePaidProgress(student = {}, courseId = null) {
+  const normalizedCourseId = normalizeString(courseId);
+  const enrollment = normalizedCourseId
+    ? (student.courseEnrollments || []).find((item) => normalizeString(item?.courseId) === normalizedCourseId)
+    : null;
+  const totalAmount = Number(String(
+    enrollment?.finalCourseAmount
+      ?? enrollment?.totalCourseAmount
+      ?? (normalizedCourseId ? 0 : student.courseAmount ?? student.totalAmount ?? student.afterDiscount ?? 0),
+  ).replace(/,/g, "")) || 0;
+  const installments = Array.isArray(student.installments) ? student.installments : [];
+  const paidAmount = installments.reduce((sum, installment) => {
+    const amount = Math.max(0, Number(installment?.amount || 0));
+    const paid = Math.max(0, Number(installment?.amountPaid || 0));
+    return sum + Math.min(amount || paid, paid);
+  }, 0);
+
+  return {
+    totalAmount,
+    paidAmount,
+    percentage: totalAmount > 0 ? Math.min(100, Math.round((paidAmount / totalAmount) * 100)) : 0,
+  };
+}
+
+export function courseCompletionFromProgressAndTests(courseProgress, academicTestProgress, paidProgress) {
   const isCourseProgressCompleted = Number(courseProgress) >= 100;
   const areAllAcademicTestsCompleted = Number(academicTestProgress?.pendingTests || 0) === 0;
-  return isCourseProgressCompleted && areAllAcademicTestsCompleted
+  const isPaidProgressCompleted = Number(paidProgress?.percentage) >= 100;
+  return isCourseProgressCompleted && isPaidProgressCompleted && areAllAcademicTestsCompleted
     ? "COMPLETED"
     : "IN_PROGRESS";
 }
@@ -2281,8 +2306,11 @@ function toBranchStudentSummary(record) {
     classSchedule: record.classSchedule,
     courseProgress: record.courseProgress,
     courseStatus: courseStatusFromProgress(record.courseProgress),
-    courseCompletion: record.courseCompletion || courseCompletionFromProgressAndTests(record.courseProgress, record.academicTestProgress),
-    courseCompletionStatus: record.courseCompletion || courseCompletionFromProgressAndTests(record.courseProgress, record.academicTestProgress),
+    paidProgress: record.paidProgress || calculateCoursePaidProgress(record, record.courseId),
+    courseCompletion: record.courseCompletion || courseCompletionFromProgressAndTests(record.courseProgress, record.academicTestProgress, record.paidProgress || calculateCoursePaidProgress(record, record.courseId)),
+    courseCompletionStatus: record.courseCompletion || courseCompletionFromProgressAndTests(record.courseProgress, record.academicTestProgress, record.paidProgress || calculateCoursePaidProgress(record, record.courseId)),
+    academicTestProgress: record.academicTestProgress || null,
+    academicTestProgressByCourse: record.academicTestProgressByCourse || {},
     courseCompletionByCourse: record.courseCompletionByCourse || {},
     courseCompletedAt: record.courseCompletedAt || null,
     courseId: record.courseId,
@@ -2538,6 +2566,8 @@ export async function listBranchStudents(query = {}, actor = null) {
           courseId: true,
           courseName: true,
           courseProgress: true,
+          courseAmount: true,
+          installments: { select: { amount: true, amountPaid: true } },
           batchId: true,
           batchName: true,
           recordStatus: true,
@@ -2597,18 +2627,31 @@ export async function listBranchStudents(query = {}, actor = null) {
           batchId: entry.batchId || student.batchId,
           courseProgress: entry.courseProgress,
         });
+        const paidProgress = calculateCoursePaidProgress(student, entry.courseId);
         return [entry.courseId, {
           academicTestProgress: progress,
-          status: courseCompletionFromProgressAndTests(entry.courseProgress, progress),
+          paidProgress,
+          status: courseCompletionFromProgressAndTests(entry.courseProgress, progress, paidProgress),
         }];
       }));
       const byCourse = Object.fromEntries(entries);
-      const primary = byCourse[student.courseId] || { academicTestProgress: { totalTests: 0, completedTests: 0, pendingTests: 0, percentage: 0 }, status: courseCompletionFromProgressAndTests(student.courseProgress, null) };
+      const primaryPaidProgress = calculateCoursePaidProgress(student, student.courseId);
+      const primary = byCourse[student.courseId] || {
+        academicTestProgress: { totalTests: 0, completedTests: 0, pendingTests: 0, percentage: 0 },
+        paidProgress: primaryPaidProgress,
+        status: courseCompletionFromProgressAndTests(student.courseProgress, null, primaryPaidProgress),
+      };
       return [student.id, { ...primary, byCourse }];
     } catch (error) {
       console.warn("Unable to calculate branch student academic test progress", error);
       const fallback = { totalTests: 0, completedTests: 0, pendingTests: 0, percentage: 0 };
-      return [student.id, { academicTestProgress: fallback, status: courseCompletionFromProgressAndTests(student.courseProgress, fallback), byCourse: {} }];
+      const paidProgress = calculateCoursePaidProgress(student, student.courseId);
+      return [student.id, {
+        academicTestProgress: fallback,
+        paidProgress,
+        status: courseCompletionFromProgressAndTests(student.courseProgress, fallback, paidProgress),
+        byCourse: {},
+      }];
     }
   })));
 
@@ -2616,6 +2659,8 @@ export async function listBranchStudents(query = {}, actor = null) {
     data: rows.map((student) => toBranchStudentSummary({
       ...student,
       academicTestProgress: completionByStudentId.get(student.id)?.academicTestProgress,
+      academicTestProgressByCourse: Object.fromEntries(Object.entries(completionByStudentId.get(student.id)?.byCourse || {}).map(([courseId, value]) => [courseId, value.academicTestProgress])),
+      paidProgress: completionByStudentId.get(student.id)?.paidProgress,
       courseCompletion: completionByStudentId.get(student.id)?.status,
       courseCompletionByCourse: Object.fromEntries(Object.entries(completionByStudentId.get(student.id)?.byCourse || {}).map(([courseId, value]) => [courseId, value.status])),
     })),
@@ -3023,7 +3068,8 @@ export async function getBranchStudent(studentId, actor = null) {
   const summary = toBranchStudentSummary(student);
   try {
     summary.academicTestProgress = await getAcademicTestProgressForStudent(student);
-    summary.courseCompletion = courseCompletionFromProgressAndTests(student.courseProgress, summary.academicTestProgress);
+    summary.paidProgress = calculateCoursePaidProgress(student, student.courseId);
+    summary.courseCompletion = courseCompletionFromProgressAndTests(student.courseProgress, summary.academicTestProgress, summary.paidProgress);
     summary.courseCompletionStatus = summary.courseCompletion;
   } catch (error) {
     console.warn("Unable to calculate Student 360 academic test progress", error);
