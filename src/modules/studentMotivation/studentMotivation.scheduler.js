@@ -50,33 +50,27 @@ function getLatestAbsenceStreak(records = [], student, holidayDates, leaveDates,
     .sort((left, right) => left.attendanceDate.localeCompare(right.attendanceDate));
   if (!sorted.length) return null;
 
-  const recordByDate = new Map(sorted.map((record) => [record.attendanceDate, record]));
-  let latest = sorted[sorted.length - 1];
-  const latestDate = parseDate(latest.attendanceDate);
-  const todayDate = parseDate(typeof todayValue === "string" ? todayValue : dateText(todayValue));
-
-  // A missing working-day record is unmarked, not absent. Stop the streak there.
-  if (latestDate && todayDate && latestDate < todayDate) {
-    for (let cursor = addDays(latestDate, 1); cursor <= todayDate; cursor = addDays(cursor, 1)) {
-      if (!isWorkingDay(cursor, student, holidayDates, leaveDates)) continue;
-      const record = recordByDate.get(dateText(cursor));
-      if (!record || String(record.status).toUpperCase() !== "ABSENT") return null;
-      latest = record;
-    }
-  }
-
+  const latest = sorted[sorted.length - 1];
   if (String(latest.status).toUpperCase() !== "ABSENT") return null;
 
-  let startDate = latest.attendanceDate;
-  let cursor = parseDate(latest.attendanceDate);
-  while (cursor) {
-    cursor = addDays(cursor, -1);
-    if (!isWorkingDay(cursor, student, holidayDates, leaveDates)) continue;
-    const previous = recordByDate.get(dateText(cursor));
-    if (!previous || String(previous.status).toUpperCase() !== "ABSENT") break;
-    startDate = dateText(cursor);
+  // Unmarked dates are ignored. A present record is the only event that
+  // resets the absence run, so total absent records drive the mail stages.
+  let lastPresentIndex = -1;
+  for (let index = sorted.length - 2; index >= 0; index -= 1) {
+    if (String(sorted[index].status).toUpperCase() === "PRESENT") {
+      lastPresentIndex = index;
+      break;
+    }
   }
-  return { startDate };
+  const absenceRecords = sorted
+    .slice(lastPresentIndex + 1)
+    .filter((record) => String(record.status).toUpperCase() === "ABSENT");
+  if (!absenceRecords.length) return null;
+  return {
+    startDate: absenceRecords[0].attendanceDate,
+    endDate: latest.attendanceDate,
+    absenceCount: absenceRecords.length,
+  };
 }
 function buildHolidayDates(holidays = [], branchId) {
   return new Set(
@@ -108,6 +102,9 @@ function stageForDays(days) {
 
 async function createBranchFollowUpNotification(student, branch, absenceStartDate, absenceWorkingDays) {
   if (!branch?.id) return false;
+  // Repair the request if an earlier motivation-mail run sent the mail but
+  // failed before the discontinuation request was persisted.
+  await ensureMotivationDiscontinuationRequest(student, absenceStartDate, absenceWorkingDays);
   const requestDescription = "MOTIVATION_FOLLOW_UP:" + student.id + ":" + absenceStartDate;
   const existing = await prisma.notification.findFirst({
     where: {
@@ -243,7 +240,7 @@ async function processStudent(student, today, holidays, leaves) {
   }
   const startDate = parseDate(streak.startDate);
   if (!startDate) return { scanned: 1, sent: 0, failed: 0, notified: 0 };
-  const absenceWorkingDays = countWorkingDays(startDate, today, student, holidayDates, leaveDates);
+  const absenceWorkingDays = streak.absenceCount;
   const stageData = stageForDays(absenceWorkingDays);
   if (!stageData) return { scanned: 1, sent: 0, failed: 0, notified: 0 };
 
