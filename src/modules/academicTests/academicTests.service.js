@@ -62,8 +62,11 @@ function includeDetails() {
 }
 
 function toPublic(row, retestItemIds = new Set()) {
-  const items = row.items.filter((item) => !retestItemIds.has(item.id));
-  return { id: row.id, course: row.branchCourse, academicTestCount: items.length, items, batches: row.batches.map(({ branchBatch }) => branchBatch).filter(Boolean), createdAt: row.createdAt, updatedAt: row.updatedAt };
+  const configuredCount = Number(row.branchCourse?.academicTestCount || 0);
+  const items = row.items
+    .filter((item) => !retestItemIds.has(item.id))
+    .filter((item) => configuredCount <= 0 || Number(item.sequence) <= configuredCount);
+  return { id: row.id, course: row.branchCourse, academicTestCount: configuredCount || items.length, items, batches: row.batches.map(({ branchBatch }) => branchBatch).filter(Boolean), createdAt: row.createdAt, updatedAt: row.updatedAt };
 }
 
 async function resolveCourse(branchId, courseId) {
@@ -1121,21 +1124,38 @@ export async function getBranchStudentAcademicReports(actor, studentId) {
   if (!student) throw new AppError("Student not found in this branch.", 404);
   const studentBatchIds = [...new Set([student.batchId, ...(student.courseEnrollments || []).map((enrollment) => enrollment.batchId)].map(text).filter(Boolean))];
   const batches = studentBatchIds.length
-    ? await prisma.branchBatch.findMany({ where: { branchId, OR: [{ id: { in: studentBatchIds } }, { batchId: { in: studentBatchIds } }] }, select: { id: true, batchId: true } })
+    ? await prisma.branchBatch.findMany({ where: { branchId, OR: [{ id: { in: studentBatchIds } }, { batchId: { in: studentBatchIds } }] }, select: { id: true, batchId: true, branchCourseId: true, courseId: true, courseName: true } })
     : [];
   const batchIds = new Set(batches.flatMap((batch) => [batch.id, batch.batchId]).filter(Boolean));
-  const shares = await prisma.facultyReportShare.findMany({ where: { branchId, reportType: "ACADEMIC_TEST", status: "SENT", batchId: { in: [...batchIds] } }, orderBy: { sentAt: "asc" } });
-  if (!shares.length) return { student, items: [], evaluations: [] };
-  const items = [];
+  const configuredTests = batches.length
+    ? await prisma.academicTest.findMany({
+      where: { batches: { some: { branchBatchId: { in: batches.map((batch) => batch.id) } } } },
+      select: { branchCourseId: true, branchCourse: { select: { academicTestCount: true } }, items: { select: { id: true, sequence: true } } },
+    })
+    : [];
   const courseTotals = {};
+  const courseTotalsByName = {};
+  configuredTests.forEach((test) => {
+    if (test.branchCourseId) {
+      const configuredCount = Number(test.branchCourse?.academicTestCount || 0);
+      courseTotals[test.branchCourseId] = configuredCount || test.items.length;
+    }
+  });
+  batches.forEach((batch) => {
+    const total = courseTotals[batch.branchCourseId || batch.courseId];
+    if (batch.courseName && total) courseTotalsByName[String(batch.courseName).trim().toLowerCase()] = total;
+  });
+  const shares = await prisma.facultyReportShare.findMany({ where: { branchId, reportType: "ACADEMIC_TEST", status: "SENT", batchId: { in: [...batchIds] } }, orderBy: { sentAt: "asc" } });
+  if (!shares.length) return { student, items: [], evaluations: [], courseTotals, courseTotalsByName };
+  const items = [];
   for (const share of shares) {
     const batch = await prisma.branchBatch.findUnique({ where: { id: share.batchId }, select: { id: true, batchId: true, batchName: true, batchTiming: true, courseName: true, branchCourseId: true, courseId: true } });
     if (!batch) continue;
     const configuredAcademicTest = await prisma.academicTest.findFirst({
       where: { branchCourseId: batch.branchCourseId, batches: { some: { branchBatchId: batch.id } } },
-      select: { items: { select: { id: true } } },
+      select: { branchCourse: { select: { academicTestCount: true } }, items: { select: { id: true, sequence: true } } },
     });
-    const totalForCourse = configuredAcademicTest?.items?.length || 0;
+    const totalForCourse = Number(configuredAcademicTest?.branchCourse?.academicTestCount || 0) || configuredAcademicTest?.items?.length || 0;
     if (totalForCourse) {
       courseTotals[batch.branchCourseId || batch.courseId] = totalForCourse;
     }
@@ -1161,5 +1181,5 @@ export async function getBranchStudentAcademicReports(actor, studentId) {
     seen.add(key);
     evaluations.push({ evaluationId: item.evaluationId, courseId: item.courseId || null, courseName: item.courseName || null, batchName: item.batchName || null, name: item.testName, type: item.testType, percentage: item.percentage, status: item.status || "NOT_EVALUATED", result: item.result });
   }
-  return { student, items, evaluations, courseTotals };
+  return { student, items, evaluations, courseTotals, courseTotalsByName };
 }
