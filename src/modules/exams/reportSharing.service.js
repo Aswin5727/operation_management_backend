@@ -88,11 +88,12 @@ export async function getBranchStudentReports(user, studentId) {
   const branch = await branchAdminBranch(user);
   const student = await prisma.branchStudent.findFirst({
     where: { branchId: branch.id, studentId: value(studentId), recordStatus: "ACTIVE" },
-    select: { id: true, studentId: true, studentName: true, emailAddress: true, courseName: true, batchName: true, batchId: true },
+    select: { id: true, studentId: true, studentName: true, emailAddress: true, courseName: true, batchName: true, batchId: true, courseEnrollments: { where: { status: "ACTIVE" }, select: { courseId: true, batchId: true } } },
   });
   if (!student) throw new AppError("Student not found in this branch.", 404);
 
-  const batches = await prisma.branchBatch.findMany({ where: { branchId: branch.id, OR: [{ id: student.batchId }, { batchId: student.batchId }] }, select: { id: true, batchId: true } });
+  const studentBatchKeys = [...new Set([student.batchId, ...(student.courseEnrollments || []).map((enrollment) => enrollment.batchId)].map(value).filter(Boolean))];
+  const batches = await prisma.branchBatch.findMany({ where: { branchId: branch.id, OR: [{ id: { in: studentBatchKeys } }, { batchId: { in: studentBatchKeys } }] }, select: { id: true, batchId: true } });
   const batchIds = new Set(batches.flatMap((batch) => [batch.id, batch.batchId]).filter(Boolean));
   const shares = await prisma.facultyReportShare.findMany({ where: { branchId: branch.id, status: "SENT", reportType: { not: "ACADEMIC_TEST" }, batchId: { in: [...batchIds] } }, orderBy: { sentAt: "asc" } });
   const items = [];
@@ -109,7 +110,7 @@ export async function getBranchStudentReports(user, studentId) {
       const schedule = exam.schedules[0];
       const attempt = schedule ? attemptsBySchedule.get(schedule.id) : null;
       if (!attempt || attempt.status !== "SUBMITTED") continue;
-      items.push({ id: `${share.id}:${exam.id}:${student.id}`, testName: exam.title, module: exam.module?.title || "-", status: "SUBMITTED", marksObtained: attempt.obtainedMarks, totalMarks: attempt.totalMarks || exam.totalMarks, percentage: attempt.percentage, testDate: schedule.testDate, courseName: student.courseName, batchName: student.batchName });
+      items.push({ id: `${share.id}:${exam.id}:${student.id}`, testName: exam.title, module: exam.module?.title || "-", status: "SUBMITTED", marksObtained: attempt.obtainedMarks, totalMarks: attempt.totalMarks || exam.totalMarks, percentage: attempt.percentage, testDate: schedule.testDate, courseId: share.courseId, courseName: student.courseName, batchName: student.batchName });
     }
   }
   const moduleResults = new Map();
