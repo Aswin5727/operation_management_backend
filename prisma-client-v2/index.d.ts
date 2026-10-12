@@ -324,6 +324,16 @@ export type ExamAttempt = $Result.DefaultSelection<Prisma.$ExamAttemptPayload>
  */
 export type ExamAnswer = $Result.DefaultSelection<Prisma.$ExamAnswerPayload>
 /**
+ * Model MotivationMailHistory
+ * 
+ */
+export type MotivationMailHistory = $Result.DefaultSelection<Prisma.$MotivationMailHistoryPayload>
+/**
+ * Model StudentDiscontinuationRequest
+ * 
+ */
+export type StudentDiscontinuationRequest = $Result.DefaultSelection<Prisma.$StudentDiscontinuationRequestPayload>
+/**
  * Model FacultyReportShare
  * 
  */
@@ -410,7 +420,9 @@ export const NotificationKind: {
   STUDENT_DISCOUNT_APPLIED: 'STUDENT_DISCOUNT_APPLIED',
   FACULTY_SKILL_ASSIGNED: 'FACULTY_SKILL_ASSIGNED',
   FACULTY_SKILL_COMPLETED: 'FACULTY_SKILL_COMPLETED',
-  FACULTY_SKILL_OVERDUE: 'FACULTY_SKILL_OVERDUE'
+  FACULTY_SKILL_OVERDUE: 'FACULTY_SKILL_OVERDUE',
+  STUDENT_MOTIVATION: 'STUDENT_MOTIVATION',
+  STUDENT_DISCONTINUATION: 'STUDENT_DISCONTINUATION'
 };
 
 export type NotificationKind = (typeof NotificationKind)[keyof typeof NotificationKind]
@@ -422,6 +434,21 @@ export const DiscountType: {
 };
 
 export type DiscountType = (typeof DiscountType)[keyof typeof DiscountType]
+
+
+export const DiscontinuationRequestStatus: {
+  PENDING: 'PENDING',
+  SUPER_ADMIN_REVIEW: 'SUPER_ADMIN_REVIEW',
+  SUPER_ADMIN_WAIT: 'SUPER_ADMIN_WAIT',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED',
+  CANCELLED: 'CANCELLED',
+  CONTACTED_CONTINUE: 'CONTACTED_CONTINUE',
+  LEAVE_REQUESTED: 'LEAVE_REQUESTED',
+  UNABLE_TO_CONTACT: 'UNABLE_TO_CONTACT'
+};
+
+export type DiscontinuationRequestStatus = (typeof DiscontinuationRequestStatus)[keyof typeof DiscontinuationRequestStatus]
 
 
 export const RecordStatus: {
@@ -494,6 +521,10 @@ export const NotificationKind: typeof $Enums.NotificationKind
 export type DiscountType = $Enums.DiscountType
 
 export const DiscountType: typeof $Enums.DiscountType
+
+export type DiscontinuationRequestStatus = $Enums.DiscontinuationRequestStatus
+
+export const DiscontinuationRequestStatus: typeof $Enums.DiscontinuationRequestStatus
 
 export type RecordStatus = $Enums.RecordStatus
 
@@ -1257,6 +1288,26 @@ export class PrismaClient<
   get examAnswer(): Prisma.ExamAnswerDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.motivationMailHistory`: Exposes CRUD operations for the **MotivationMailHistory** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more MotivationMailHistories
+    * const motivationMailHistories = await prisma.motivationMailHistory.findMany()
+    * ```
+    */
+  get motivationMailHistory(): Prisma.MotivationMailHistoryDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.studentDiscontinuationRequest`: Exposes CRUD operations for the **StudentDiscontinuationRequest** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more StudentDiscontinuationRequests
+    * const studentDiscontinuationRequests = await prisma.studentDiscontinuationRequest.findMany()
+    * ```
+    */
+  get studentDiscontinuationRequest(): Prisma.StudentDiscontinuationRequestDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.facultyReportShare`: Exposes CRUD operations for the **FacultyReportShare** model.
     * Example usage:
     * ```ts
@@ -1781,6 +1832,8 @@ export namespace Prisma {
     ExamQuestion: 'ExamQuestion',
     ExamAttempt: 'ExamAttempt',
     ExamAnswer: 'ExamAnswer',
+    MotivationMailHistory: 'MotivationMailHistory',
+    StudentDiscontinuationRequest: 'StudentDiscontinuationRequest',
     FacultyReportShare: 'FacultyReportShare',
     BranchStudentPayment: 'BranchStudentPayment',
     BranchStudentLedgerEntry: 'BranchStudentLedgerEntry'
@@ -1799,7 +1852,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "dashboardWidget" | "userDashboardWidget" | "branch" | "loginEvent" | "notification" | "courseEditRequest" | "passwordResetToken" | "course" | "branchCourse" | "branchCourseModule" | "branchCourseSubmodule" | "courseModule" | "batch" | "batchFacultyAssignment" | "branchBatch" | "academicTest" | "academicTestItem" | "academicTestBatch" | "academicQuestionPaper" | "academicQuestion" | "academicTestProject" | "academicScheduledTest" | "academicTestSubmission" | "academicProjectSubmission" | "academicTestAnswer" | "courseStatusHistory" | "batchStatusHistory" | "studentProfile" | "branchStudent" | "branchStudentCourse" | "branchStudentAttendance" | "branchCalendarHoliday" | "branchCalendarLeave" | "branchStudentInstallment" | "facultySkill" | "facultySkillAssignment" | "facultySkillTopic" | "facultySkillAssignmentAudit" | "facultyProfile" | "facultyCourseAssignment" | "facultyBatchEntry" | "facultyAttendanceSession" | "facultyAttendanceDay" | "facultyAttendanceBatchWork" | "facultyTodayWorkEntry" | "facultyTodayWorkStudentEntry" | "studentAttendance" | "branchFaculty" | "facultyLeaveRequest" | "facultyWeekOffRequest" | "branchFacultyCourse" | "facultyLeaveAffectedSession" | "facultyLeaveCombinedSession" | "branchInstallmentTemplate" | "assessment" | "assessmentSubmission" | "exam" | "examSchedule" | "examQuestion" | "examAttempt" | "examAnswer" | "facultyReportShare" | "branchStudentPayment" | "branchStudentLedgerEntry"
+      modelProps: "user" | "dashboardWidget" | "userDashboardWidget" | "branch" | "loginEvent" | "notification" | "courseEditRequest" | "passwordResetToken" | "course" | "branchCourse" | "branchCourseModule" | "branchCourseSubmodule" | "courseModule" | "batch" | "batchFacultyAssignment" | "branchBatch" | "academicTest" | "academicTestItem" | "academicTestBatch" | "academicQuestionPaper" | "academicQuestion" | "academicTestProject" | "academicScheduledTest" | "academicTestSubmission" | "academicProjectSubmission" | "academicTestAnswer" | "courseStatusHistory" | "batchStatusHistory" | "studentProfile" | "branchStudent" | "branchStudentCourse" | "branchStudentAttendance" | "branchCalendarHoliday" | "branchCalendarLeave" | "branchStudentInstallment" | "facultySkill" | "facultySkillAssignment" | "facultySkillTopic" | "facultySkillAssignmentAudit" | "facultyProfile" | "facultyCourseAssignment" | "facultyBatchEntry" | "facultyAttendanceSession" | "facultyAttendanceDay" | "facultyAttendanceBatchWork" | "facultyTodayWorkEntry" | "facultyTodayWorkStudentEntry" | "studentAttendance" | "branchFaculty" | "facultyLeaveRequest" | "facultyWeekOffRequest" | "branchFacultyCourse" | "facultyLeaveAffectedSession" | "facultyLeaveCombinedSession" | "branchInstallmentTemplate" | "assessment" | "assessmentSubmission" | "exam" | "examSchedule" | "examQuestion" | "examAttempt" | "examAnswer" | "motivationMailHistory" | "studentDiscontinuationRequest" | "facultyReportShare" | "branchStudentPayment" | "branchStudentLedgerEntry"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -6391,6 +6444,154 @@ export namespace Prisma {
           }
         }
       }
+      MotivationMailHistory: {
+        payload: Prisma.$MotivationMailHistoryPayload<ExtArgs>
+        fields: Prisma.MotivationMailHistoryFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.MotivationMailHistoryFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MotivationMailHistoryPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.MotivationMailHistoryFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MotivationMailHistoryPayload>
+          }
+          findFirst: {
+            args: Prisma.MotivationMailHistoryFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MotivationMailHistoryPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.MotivationMailHistoryFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MotivationMailHistoryPayload>
+          }
+          findMany: {
+            args: Prisma.MotivationMailHistoryFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MotivationMailHistoryPayload>[]
+          }
+          create: {
+            args: Prisma.MotivationMailHistoryCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MotivationMailHistoryPayload>
+          }
+          createMany: {
+            args: Prisma.MotivationMailHistoryCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.MotivationMailHistoryCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MotivationMailHistoryPayload>[]
+          }
+          delete: {
+            args: Prisma.MotivationMailHistoryDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MotivationMailHistoryPayload>
+          }
+          update: {
+            args: Prisma.MotivationMailHistoryUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MotivationMailHistoryPayload>
+          }
+          deleteMany: {
+            args: Prisma.MotivationMailHistoryDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.MotivationMailHistoryUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.MotivationMailHistoryUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MotivationMailHistoryPayload>[]
+          }
+          upsert: {
+            args: Prisma.MotivationMailHistoryUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MotivationMailHistoryPayload>
+          }
+          aggregate: {
+            args: Prisma.MotivationMailHistoryAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateMotivationMailHistory>
+          }
+          groupBy: {
+            args: Prisma.MotivationMailHistoryGroupByArgs<ExtArgs>
+            result: $Utils.Optional<MotivationMailHistoryGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.MotivationMailHistoryCountArgs<ExtArgs>
+            result: $Utils.Optional<MotivationMailHistoryCountAggregateOutputType> | number
+          }
+        }
+      }
+      StudentDiscontinuationRequest: {
+        payload: Prisma.$StudentDiscontinuationRequestPayload<ExtArgs>
+        fields: Prisma.StudentDiscontinuationRequestFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.StudentDiscontinuationRequestFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StudentDiscontinuationRequestPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.StudentDiscontinuationRequestFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StudentDiscontinuationRequestPayload>
+          }
+          findFirst: {
+            args: Prisma.StudentDiscontinuationRequestFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StudentDiscontinuationRequestPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.StudentDiscontinuationRequestFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StudentDiscontinuationRequestPayload>
+          }
+          findMany: {
+            args: Prisma.StudentDiscontinuationRequestFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StudentDiscontinuationRequestPayload>[]
+          }
+          create: {
+            args: Prisma.StudentDiscontinuationRequestCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StudentDiscontinuationRequestPayload>
+          }
+          createMany: {
+            args: Prisma.StudentDiscontinuationRequestCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.StudentDiscontinuationRequestCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StudentDiscontinuationRequestPayload>[]
+          }
+          delete: {
+            args: Prisma.StudentDiscontinuationRequestDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StudentDiscontinuationRequestPayload>
+          }
+          update: {
+            args: Prisma.StudentDiscontinuationRequestUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StudentDiscontinuationRequestPayload>
+          }
+          deleteMany: {
+            args: Prisma.StudentDiscontinuationRequestDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.StudentDiscontinuationRequestUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.StudentDiscontinuationRequestUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StudentDiscontinuationRequestPayload>[]
+          }
+          upsert: {
+            args: Prisma.StudentDiscontinuationRequestUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StudentDiscontinuationRequestPayload>
+          }
+          aggregate: {
+            args: Prisma.StudentDiscontinuationRequestAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateStudentDiscontinuationRequest>
+          }
+          groupBy: {
+            args: Prisma.StudentDiscontinuationRequestGroupByArgs<ExtArgs>
+            result: $Utils.Optional<StudentDiscontinuationRequestGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.StudentDiscontinuationRequestCountArgs<ExtArgs>
+            result: $Utils.Optional<StudentDiscontinuationRequestCountAggregateOutputType> | number
+          }
+        }
+      }
       FacultyReportShare: {
         payload: Prisma.$FacultyReportSharePayload<ExtArgs>
         fields: Prisma.FacultyReportShareFieldRefs
@@ -6783,6 +6984,8 @@ export namespace Prisma {
     examQuestion?: ExamQuestionOmit
     examAttempt?: ExamAttemptOmit
     examAnswer?: ExamAnswerOmit
+    motivationMailHistory?: MotivationMailHistoryOmit
+    studentDiscontinuationRequest?: StudentDiscontinuationRequestOmit
     facultyReportShare?: FacultyReportShareOmit
     branchStudentPayment?: BranchStudentPaymentOmit
     branchStudentLedgerEntry?: BranchStudentLedgerEntryOmit
@@ -7783,6 +7986,8 @@ export namespace Prisma {
     retestExams: number
     reassessmentAssessments: number
     courseEnrollments: number
+    motivationMailHistory: number
+    discontinuationRequests: number
   }
 
   export type BranchStudentCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -7796,6 +8001,8 @@ export namespace Prisma {
     retestExams?: boolean | BranchStudentCountOutputTypeCountRetestExamsArgs
     reassessmentAssessments?: boolean | BranchStudentCountOutputTypeCountReassessmentAssessmentsArgs
     courseEnrollments?: boolean | BranchStudentCountOutputTypeCountCourseEnrollmentsArgs
+    motivationMailHistory?: boolean | BranchStudentCountOutputTypeCountMotivationMailHistoryArgs
+    discontinuationRequests?: boolean | BranchStudentCountOutputTypeCountDiscontinuationRequestsArgs
   }
 
   // Custom InputTypes
@@ -7877,6 +8084,20 @@ export namespace Prisma {
    */
   export type BranchStudentCountOutputTypeCountCourseEnrollmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: BranchStudentCourseWhereInput
+  }
+
+  /**
+   * BranchStudentCountOutputType without action
+   */
+  export type BranchStudentCountOutputTypeCountMotivationMailHistoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MotivationMailHistoryWhereInput
+  }
+
+  /**
+   * BranchStudentCountOutputType without action
+   */
+  export type BranchStudentCountOutputTypeCountDiscontinuationRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: StudentDiscontinuationRequestWhereInput
   }
 
 
@@ -46350,6 +46571,8 @@ export namespace Prisma {
     retestExams?: boolean | BranchStudent$retestExamsArgs<ExtArgs>
     reassessmentAssessments?: boolean | BranchStudent$reassessmentAssessmentsArgs<ExtArgs>
     courseEnrollments?: boolean | BranchStudent$courseEnrollmentsArgs<ExtArgs>
+    motivationMailHistory?: boolean | BranchStudent$motivationMailHistoryArgs<ExtArgs>
+    discontinuationRequests?: boolean | BranchStudent$discontinuationRequestsArgs<ExtArgs>
     _count?: boolean | BranchStudentCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["branchStudent"]>
 
@@ -46548,6 +46771,8 @@ export namespace Prisma {
     retestExams?: boolean | BranchStudent$retestExamsArgs<ExtArgs>
     reassessmentAssessments?: boolean | BranchStudent$reassessmentAssessmentsArgs<ExtArgs>
     courseEnrollments?: boolean | BranchStudent$courseEnrollmentsArgs<ExtArgs>
+    motivationMailHistory?: boolean | BranchStudent$motivationMailHistoryArgs<ExtArgs>
+    discontinuationRequests?: boolean | BranchStudent$discontinuationRequestsArgs<ExtArgs>
     _count?: boolean | BranchStudentCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type BranchStudentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -46574,6 +46799,8 @@ export namespace Prisma {
       retestExams: Prisma.$ExamPayload<ExtArgs>[]
       reassessmentAssessments: Prisma.$AssessmentPayload<ExtArgs>[]
       courseEnrollments: Prisma.$BranchStudentCoursePayload<ExtArgs>[]
+      motivationMailHistory: Prisma.$MotivationMailHistoryPayload<ExtArgs>[]
+      discontinuationRequests: Prisma.$StudentDiscontinuationRequestPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -47038,6 +47265,8 @@ export namespace Prisma {
     retestExams<T extends BranchStudent$retestExamsArgs<ExtArgs> = {}>(args?: Subset<T, BranchStudent$retestExamsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ExamPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     reassessmentAssessments<T extends BranchStudent$reassessmentAssessmentsArgs<ExtArgs> = {}>(args?: Subset<T, BranchStudent$reassessmentAssessmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AssessmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     courseEnrollments<T extends BranchStudent$courseEnrollmentsArgs<ExtArgs> = {}>(args?: Subset<T, BranchStudent$courseEnrollmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchStudentCoursePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    motivationMailHistory<T extends BranchStudent$motivationMailHistoryArgs<ExtArgs> = {}>(args?: Subset<T, BranchStudent$motivationMailHistoryArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MotivationMailHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    discontinuationRequests<T extends BranchStudent$discontinuationRequestsArgs<ExtArgs> = {}>(args?: Subset<T, BranchStudent$discontinuationRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StudentDiscontinuationRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -47780,6 +48009,54 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: BranchStudentCourseScalarFieldEnum | BranchStudentCourseScalarFieldEnum[]
+  }
+
+  /**
+   * BranchStudent.motivationMailHistory
+   */
+  export type BranchStudent$motivationMailHistoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MotivationMailHistory
+     */
+    select?: MotivationMailHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MotivationMailHistory
+     */
+    omit?: MotivationMailHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MotivationMailHistoryInclude<ExtArgs> | null
+    where?: MotivationMailHistoryWhereInput
+    orderBy?: MotivationMailHistoryOrderByWithRelationInput | MotivationMailHistoryOrderByWithRelationInput[]
+    cursor?: MotivationMailHistoryWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MotivationMailHistoryScalarFieldEnum | MotivationMailHistoryScalarFieldEnum[]
+  }
+
+  /**
+   * BranchStudent.discontinuationRequests
+   */
+  export type BranchStudent$discontinuationRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentDiscontinuationRequest
+     */
+    select?: StudentDiscontinuationRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StudentDiscontinuationRequest
+     */
+    omit?: StudentDiscontinuationRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentDiscontinuationRequestInclude<ExtArgs> | null
+    where?: StudentDiscontinuationRequestWhereInput
+    orderBy?: StudentDiscontinuationRequestOrderByWithRelationInput | StudentDiscontinuationRequestOrderByWithRelationInput[]
+    cursor?: StudentDiscontinuationRequestWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: StudentDiscontinuationRequestScalarFieldEnum | StudentDiscontinuationRequestScalarFieldEnum[]
   }
 
   /**
@@ -87152,6 +87429,2896 @@ export namespace Prisma {
 
 
   /**
+   * Model MotivationMailHistory
+   */
+
+  export type AggregateMotivationMailHistory = {
+    _count: MotivationMailHistoryCountAggregateOutputType | null
+    _avg: MotivationMailHistoryAvgAggregateOutputType | null
+    _sum: MotivationMailHistorySumAggregateOutputType | null
+    _min: MotivationMailHistoryMinAggregateOutputType | null
+    _max: MotivationMailHistoryMaxAggregateOutputType | null
+  }
+
+  export type MotivationMailHistoryAvgAggregateOutputType = {
+    absenceWorkingDays: number | null
+  }
+
+  export type MotivationMailHistorySumAggregateOutputType = {
+    absenceWorkingDays: number | null
+  }
+
+  export type MotivationMailHistoryMinAggregateOutputType = {
+    id: string | null
+    branchStudentId: string | null
+    branchId: string | null
+    stage: string | null
+    absenceStartDate: string | null
+    absenceWorkingDays: number | null
+    status: string | null
+    sentAt: Date | null
+    failureReason: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type MotivationMailHistoryMaxAggregateOutputType = {
+    id: string | null
+    branchStudentId: string | null
+    branchId: string | null
+    stage: string | null
+    absenceStartDate: string | null
+    absenceWorkingDays: number | null
+    status: string | null
+    sentAt: Date | null
+    failureReason: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type MotivationMailHistoryCountAggregateOutputType = {
+    id: number
+    branchStudentId: number
+    branchId: number
+    stage: number
+    absenceStartDate: number
+    absenceWorkingDays: number
+    status: number
+    sentAt: number
+    failureReason: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type MotivationMailHistoryAvgAggregateInputType = {
+    absenceWorkingDays?: true
+  }
+
+  export type MotivationMailHistorySumAggregateInputType = {
+    absenceWorkingDays?: true
+  }
+
+  export type MotivationMailHistoryMinAggregateInputType = {
+    id?: true
+    branchStudentId?: true
+    branchId?: true
+    stage?: true
+    absenceStartDate?: true
+    absenceWorkingDays?: true
+    status?: true
+    sentAt?: true
+    failureReason?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type MotivationMailHistoryMaxAggregateInputType = {
+    id?: true
+    branchStudentId?: true
+    branchId?: true
+    stage?: true
+    absenceStartDate?: true
+    absenceWorkingDays?: true
+    status?: true
+    sentAt?: true
+    failureReason?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type MotivationMailHistoryCountAggregateInputType = {
+    id?: true
+    branchStudentId?: true
+    branchId?: true
+    stage?: true
+    absenceStartDate?: true
+    absenceWorkingDays?: true
+    status?: true
+    sentAt?: true
+    failureReason?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type MotivationMailHistoryAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MotivationMailHistory to aggregate.
+     */
+    where?: MotivationMailHistoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MotivationMailHistories to fetch.
+     */
+    orderBy?: MotivationMailHistoryOrderByWithRelationInput | MotivationMailHistoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: MotivationMailHistoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MotivationMailHistories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MotivationMailHistories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned MotivationMailHistories
+    **/
+    _count?: true | MotivationMailHistoryCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: MotivationMailHistoryAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: MotivationMailHistorySumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: MotivationMailHistoryMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: MotivationMailHistoryMaxAggregateInputType
+  }
+
+  export type GetMotivationMailHistoryAggregateType<T extends MotivationMailHistoryAggregateArgs> = {
+        [P in keyof T & keyof AggregateMotivationMailHistory]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateMotivationMailHistory[P]>
+      : GetScalarType<T[P], AggregateMotivationMailHistory[P]>
+  }
+
+
+
+
+  export type MotivationMailHistoryGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MotivationMailHistoryWhereInput
+    orderBy?: MotivationMailHistoryOrderByWithAggregationInput | MotivationMailHistoryOrderByWithAggregationInput[]
+    by: MotivationMailHistoryScalarFieldEnum[] | MotivationMailHistoryScalarFieldEnum
+    having?: MotivationMailHistoryScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: MotivationMailHistoryCountAggregateInputType | true
+    _avg?: MotivationMailHistoryAvgAggregateInputType
+    _sum?: MotivationMailHistorySumAggregateInputType
+    _min?: MotivationMailHistoryMinAggregateInputType
+    _max?: MotivationMailHistoryMaxAggregateInputType
+  }
+
+  export type MotivationMailHistoryGroupByOutputType = {
+    id: string
+    branchStudentId: string
+    branchId: string
+    stage: string
+    absenceStartDate: string
+    absenceWorkingDays: number
+    status: string
+    sentAt: Date
+    failureReason: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: MotivationMailHistoryCountAggregateOutputType | null
+    _avg: MotivationMailHistoryAvgAggregateOutputType | null
+    _sum: MotivationMailHistorySumAggregateOutputType | null
+    _min: MotivationMailHistoryMinAggregateOutputType | null
+    _max: MotivationMailHistoryMaxAggregateOutputType | null
+  }
+
+  type GetMotivationMailHistoryGroupByPayload<T extends MotivationMailHistoryGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<MotivationMailHistoryGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof MotivationMailHistoryGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], MotivationMailHistoryGroupByOutputType[P]>
+            : GetScalarType<T[P], MotivationMailHistoryGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type MotivationMailHistorySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    branchStudentId?: boolean
+    branchId?: boolean
+    stage?: boolean
+    absenceStartDate?: boolean
+    absenceWorkingDays?: boolean
+    status?: boolean
+    sentAt?: boolean
+    failureReason?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    branchStudent?: boolean | BranchStudentDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["motivationMailHistory"]>
+
+  export type MotivationMailHistorySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    branchStudentId?: boolean
+    branchId?: boolean
+    stage?: boolean
+    absenceStartDate?: boolean
+    absenceWorkingDays?: boolean
+    status?: boolean
+    sentAt?: boolean
+    failureReason?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    branchStudent?: boolean | BranchStudentDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["motivationMailHistory"]>
+
+  export type MotivationMailHistorySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    branchStudentId?: boolean
+    branchId?: boolean
+    stage?: boolean
+    absenceStartDate?: boolean
+    absenceWorkingDays?: boolean
+    status?: boolean
+    sentAt?: boolean
+    failureReason?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    branchStudent?: boolean | BranchStudentDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["motivationMailHistory"]>
+
+  export type MotivationMailHistorySelectScalar = {
+    id?: boolean
+    branchStudentId?: boolean
+    branchId?: boolean
+    stage?: boolean
+    absenceStartDate?: boolean
+    absenceWorkingDays?: boolean
+    status?: boolean
+    sentAt?: boolean
+    failureReason?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type MotivationMailHistoryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "branchStudentId" | "branchId" | "stage" | "absenceStartDate" | "absenceWorkingDays" | "status" | "sentAt" | "failureReason" | "createdAt" | "updatedAt", ExtArgs["result"]["motivationMailHistory"]>
+  export type MotivationMailHistoryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    branchStudent?: boolean | BranchStudentDefaultArgs<ExtArgs>
+  }
+  export type MotivationMailHistoryIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    branchStudent?: boolean | BranchStudentDefaultArgs<ExtArgs>
+  }
+  export type MotivationMailHistoryIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    branchStudent?: boolean | BranchStudentDefaultArgs<ExtArgs>
+  }
+
+  export type $MotivationMailHistoryPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "MotivationMailHistory"
+    objects: {
+      branchStudent: Prisma.$BranchStudentPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      branchStudentId: string
+      branchId: string
+      stage: string
+      absenceStartDate: string
+      absenceWorkingDays: number
+      status: string
+      sentAt: Date
+      failureReason: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["motivationMailHistory"]>
+    composites: {}
+  }
+
+  type MotivationMailHistoryGetPayload<S extends boolean | null | undefined | MotivationMailHistoryDefaultArgs> = $Result.GetResult<Prisma.$MotivationMailHistoryPayload, S>
+
+  type MotivationMailHistoryCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<MotivationMailHistoryFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: MotivationMailHistoryCountAggregateInputType | true
+    }
+
+  export interface MotivationMailHistoryDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['MotivationMailHistory'], meta: { name: 'MotivationMailHistory' } }
+    /**
+     * Find zero or one MotivationMailHistory that matches the filter.
+     * @param {MotivationMailHistoryFindUniqueArgs} args - Arguments to find a MotivationMailHistory
+     * @example
+     * // Get one MotivationMailHistory
+     * const motivationMailHistory = await prisma.motivationMailHistory.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends MotivationMailHistoryFindUniqueArgs>(args: SelectSubset<T, MotivationMailHistoryFindUniqueArgs<ExtArgs>>): Prisma__MotivationMailHistoryClient<$Result.GetResult<Prisma.$MotivationMailHistoryPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one MotivationMailHistory that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {MotivationMailHistoryFindUniqueOrThrowArgs} args - Arguments to find a MotivationMailHistory
+     * @example
+     * // Get one MotivationMailHistory
+     * const motivationMailHistory = await prisma.motivationMailHistory.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends MotivationMailHistoryFindUniqueOrThrowArgs>(args: SelectSubset<T, MotivationMailHistoryFindUniqueOrThrowArgs<ExtArgs>>): Prisma__MotivationMailHistoryClient<$Result.GetResult<Prisma.$MotivationMailHistoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first MotivationMailHistory that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MotivationMailHistoryFindFirstArgs} args - Arguments to find a MotivationMailHistory
+     * @example
+     * // Get one MotivationMailHistory
+     * const motivationMailHistory = await prisma.motivationMailHistory.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends MotivationMailHistoryFindFirstArgs>(args?: SelectSubset<T, MotivationMailHistoryFindFirstArgs<ExtArgs>>): Prisma__MotivationMailHistoryClient<$Result.GetResult<Prisma.$MotivationMailHistoryPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first MotivationMailHistory that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MotivationMailHistoryFindFirstOrThrowArgs} args - Arguments to find a MotivationMailHistory
+     * @example
+     * // Get one MotivationMailHistory
+     * const motivationMailHistory = await prisma.motivationMailHistory.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends MotivationMailHistoryFindFirstOrThrowArgs>(args?: SelectSubset<T, MotivationMailHistoryFindFirstOrThrowArgs<ExtArgs>>): Prisma__MotivationMailHistoryClient<$Result.GetResult<Prisma.$MotivationMailHistoryPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more MotivationMailHistories that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MotivationMailHistoryFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all MotivationMailHistories
+     * const motivationMailHistories = await prisma.motivationMailHistory.findMany()
+     * 
+     * // Get first 10 MotivationMailHistories
+     * const motivationMailHistories = await prisma.motivationMailHistory.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const motivationMailHistoryWithIdOnly = await prisma.motivationMailHistory.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends MotivationMailHistoryFindManyArgs>(args?: SelectSubset<T, MotivationMailHistoryFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MotivationMailHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a MotivationMailHistory.
+     * @param {MotivationMailHistoryCreateArgs} args - Arguments to create a MotivationMailHistory.
+     * @example
+     * // Create one MotivationMailHistory
+     * const MotivationMailHistory = await prisma.motivationMailHistory.create({
+     *   data: {
+     *     // ... data to create a MotivationMailHistory
+     *   }
+     * })
+     * 
+     */
+    create<T extends MotivationMailHistoryCreateArgs>(args: SelectSubset<T, MotivationMailHistoryCreateArgs<ExtArgs>>): Prisma__MotivationMailHistoryClient<$Result.GetResult<Prisma.$MotivationMailHistoryPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many MotivationMailHistories.
+     * @param {MotivationMailHistoryCreateManyArgs} args - Arguments to create many MotivationMailHistories.
+     * @example
+     * // Create many MotivationMailHistories
+     * const motivationMailHistory = await prisma.motivationMailHistory.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends MotivationMailHistoryCreateManyArgs>(args?: SelectSubset<T, MotivationMailHistoryCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many MotivationMailHistories and returns the data saved in the database.
+     * @param {MotivationMailHistoryCreateManyAndReturnArgs} args - Arguments to create many MotivationMailHistories.
+     * @example
+     * // Create many MotivationMailHistories
+     * const motivationMailHistory = await prisma.motivationMailHistory.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many MotivationMailHistories and only return the `id`
+     * const motivationMailHistoryWithIdOnly = await prisma.motivationMailHistory.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends MotivationMailHistoryCreateManyAndReturnArgs>(args?: SelectSubset<T, MotivationMailHistoryCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MotivationMailHistoryPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a MotivationMailHistory.
+     * @param {MotivationMailHistoryDeleteArgs} args - Arguments to delete one MotivationMailHistory.
+     * @example
+     * // Delete one MotivationMailHistory
+     * const MotivationMailHistory = await prisma.motivationMailHistory.delete({
+     *   where: {
+     *     // ... filter to delete one MotivationMailHistory
+     *   }
+     * })
+     * 
+     */
+    delete<T extends MotivationMailHistoryDeleteArgs>(args: SelectSubset<T, MotivationMailHistoryDeleteArgs<ExtArgs>>): Prisma__MotivationMailHistoryClient<$Result.GetResult<Prisma.$MotivationMailHistoryPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one MotivationMailHistory.
+     * @param {MotivationMailHistoryUpdateArgs} args - Arguments to update one MotivationMailHistory.
+     * @example
+     * // Update one MotivationMailHistory
+     * const motivationMailHistory = await prisma.motivationMailHistory.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends MotivationMailHistoryUpdateArgs>(args: SelectSubset<T, MotivationMailHistoryUpdateArgs<ExtArgs>>): Prisma__MotivationMailHistoryClient<$Result.GetResult<Prisma.$MotivationMailHistoryPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more MotivationMailHistories.
+     * @param {MotivationMailHistoryDeleteManyArgs} args - Arguments to filter MotivationMailHistories to delete.
+     * @example
+     * // Delete a few MotivationMailHistories
+     * const { count } = await prisma.motivationMailHistory.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends MotivationMailHistoryDeleteManyArgs>(args?: SelectSubset<T, MotivationMailHistoryDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more MotivationMailHistories.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MotivationMailHistoryUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many MotivationMailHistories
+     * const motivationMailHistory = await prisma.motivationMailHistory.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends MotivationMailHistoryUpdateManyArgs>(args: SelectSubset<T, MotivationMailHistoryUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more MotivationMailHistories and returns the data updated in the database.
+     * @param {MotivationMailHistoryUpdateManyAndReturnArgs} args - Arguments to update many MotivationMailHistories.
+     * @example
+     * // Update many MotivationMailHistories
+     * const motivationMailHistory = await prisma.motivationMailHistory.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more MotivationMailHistories and only return the `id`
+     * const motivationMailHistoryWithIdOnly = await prisma.motivationMailHistory.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends MotivationMailHistoryUpdateManyAndReturnArgs>(args: SelectSubset<T, MotivationMailHistoryUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MotivationMailHistoryPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one MotivationMailHistory.
+     * @param {MotivationMailHistoryUpsertArgs} args - Arguments to update or create a MotivationMailHistory.
+     * @example
+     * // Update or create a MotivationMailHistory
+     * const motivationMailHistory = await prisma.motivationMailHistory.upsert({
+     *   create: {
+     *     // ... data to create a MotivationMailHistory
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the MotivationMailHistory we want to update
+     *   }
+     * })
+     */
+    upsert<T extends MotivationMailHistoryUpsertArgs>(args: SelectSubset<T, MotivationMailHistoryUpsertArgs<ExtArgs>>): Prisma__MotivationMailHistoryClient<$Result.GetResult<Prisma.$MotivationMailHistoryPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of MotivationMailHistories.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MotivationMailHistoryCountArgs} args - Arguments to filter MotivationMailHistories to count.
+     * @example
+     * // Count the number of MotivationMailHistories
+     * const count = await prisma.motivationMailHistory.count({
+     *   where: {
+     *     // ... the filter for the MotivationMailHistories we want to count
+     *   }
+     * })
+    **/
+    count<T extends MotivationMailHistoryCountArgs>(
+      args?: Subset<T, MotivationMailHistoryCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], MotivationMailHistoryCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a MotivationMailHistory.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MotivationMailHistoryAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends MotivationMailHistoryAggregateArgs>(args: Subset<T, MotivationMailHistoryAggregateArgs>): Prisma.PrismaPromise<GetMotivationMailHistoryAggregateType<T>>
+
+    /**
+     * Group by MotivationMailHistory.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MotivationMailHistoryGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends MotivationMailHistoryGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: MotivationMailHistoryGroupByArgs['orderBy'] }
+        : { orderBy?: MotivationMailHistoryGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, MotivationMailHistoryGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMotivationMailHistoryGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the MotivationMailHistory model
+   */
+  readonly fields: MotivationMailHistoryFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for MotivationMailHistory.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__MotivationMailHistoryClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    branchStudent<T extends BranchStudentDefaultArgs<ExtArgs> = {}>(args?: Subset<T, BranchStudentDefaultArgs<ExtArgs>>): Prisma__BranchStudentClient<$Result.GetResult<Prisma.$BranchStudentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the MotivationMailHistory model
+   */
+  interface MotivationMailHistoryFieldRefs {
+    readonly id: FieldRef<"MotivationMailHistory", 'String'>
+    readonly branchStudentId: FieldRef<"MotivationMailHistory", 'String'>
+    readonly branchId: FieldRef<"MotivationMailHistory", 'String'>
+    readonly stage: FieldRef<"MotivationMailHistory", 'String'>
+    readonly absenceStartDate: FieldRef<"MotivationMailHistory", 'String'>
+    readonly absenceWorkingDays: FieldRef<"MotivationMailHistory", 'Int'>
+    readonly status: FieldRef<"MotivationMailHistory", 'String'>
+    readonly sentAt: FieldRef<"MotivationMailHistory", 'DateTime'>
+    readonly failureReason: FieldRef<"MotivationMailHistory", 'String'>
+    readonly createdAt: FieldRef<"MotivationMailHistory", 'DateTime'>
+    readonly updatedAt: FieldRef<"MotivationMailHistory", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * MotivationMailHistory findUnique
+   */
+  export type MotivationMailHistoryFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MotivationMailHistory
+     */
+    select?: MotivationMailHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MotivationMailHistory
+     */
+    omit?: MotivationMailHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MotivationMailHistoryInclude<ExtArgs> | null
+    /**
+     * Filter, which MotivationMailHistory to fetch.
+     */
+    where: MotivationMailHistoryWhereUniqueInput
+  }
+
+  /**
+   * MotivationMailHistory findUniqueOrThrow
+   */
+  export type MotivationMailHistoryFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MotivationMailHistory
+     */
+    select?: MotivationMailHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MotivationMailHistory
+     */
+    omit?: MotivationMailHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MotivationMailHistoryInclude<ExtArgs> | null
+    /**
+     * Filter, which MotivationMailHistory to fetch.
+     */
+    where: MotivationMailHistoryWhereUniqueInput
+  }
+
+  /**
+   * MotivationMailHistory findFirst
+   */
+  export type MotivationMailHistoryFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MotivationMailHistory
+     */
+    select?: MotivationMailHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MotivationMailHistory
+     */
+    omit?: MotivationMailHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MotivationMailHistoryInclude<ExtArgs> | null
+    /**
+     * Filter, which MotivationMailHistory to fetch.
+     */
+    where?: MotivationMailHistoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MotivationMailHistories to fetch.
+     */
+    orderBy?: MotivationMailHistoryOrderByWithRelationInput | MotivationMailHistoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MotivationMailHistories.
+     */
+    cursor?: MotivationMailHistoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MotivationMailHistories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MotivationMailHistories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MotivationMailHistories.
+     */
+    distinct?: MotivationMailHistoryScalarFieldEnum | MotivationMailHistoryScalarFieldEnum[]
+  }
+
+  /**
+   * MotivationMailHistory findFirstOrThrow
+   */
+  export type MotivationMailHistoryFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MotivationMailHistory
+     */
+    select?: MotivationMailHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MotivationMailHistory
+     */
+    omit?: MotivationMailHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MotivationMailHistoryInclude<ExtArgs> | null
+    /**
+     * Filter, which MotivationMailHistory to fetch.
+     */
+    where?: MotivationMailHistoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MotivationMailHistories to fetch.
+     */
+    orderBy?: MotivationMailHistoryOrderByWithRelationInput | MotivationMailHistoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MotivationMailHistories.
+     */
+    cursor?: MotivationMailHistoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MotivationMailHistories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MotivationMailHistories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MotivationMailHistories.
+     */
+    distinct?: MotivationMailHistoryScalarFieldEnum | MotivationMailHistoryScalarFieldEnum[]
+  }
+
+  /**
+   * MotivationMailHistory findMany
+   */
+  export type MotivationMailHistoryFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MotivationMailHistory
+     */
+    select?: MotivationMailHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MotivationMailHistory
+     */
+    omit?: MotivationMailHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MotivationMailHistoryInclude<ExtArgs> | null
+    /**
+     * Filter, which MotivationMailHistories to fetch.
+     */
+    where?: MotivationMailHistoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MotivationMailHistories to fetch.
+     */
+    orderBy?: MotivationMailHistoryOrderByWithRelationInput | MotivationMailHistoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing MotivationMailHistories.
+     */
+    cursor?: MotivationMailHistoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MotivationMailHistories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MotivationMailHistories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MotivationMailHistories.
+     */
+    distinct?: MotivationMailHistoryScalarFieldEnum | MotivationMailHistoryScalarFieldEnum[]
+  }
+
+  /**
+   * MotivationMailHistory create
+   */
+  export type MotivationMailHistoryCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MotivationMailHistory
+     */
+    select?: MotivationMailHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MotivationMailHistory
+     */
+    omit?: MotivationMailHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MotivationMailHistoryInclude<ExtArgs> | null
+    /**
+     * The data needed to create a MotivationMailHistory.
+     */
+    data: XOR<MotivationMailHistoryCreateInput, MotivationMailHistoryUncheckedCreateInput>
+  }
+
+  /**
+   * MotivationMailHistory createMany
+   */
+  export type MotivationMailHistoryCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many MotivationMailHistories.
+     */
+    data: MotivationMailHistoryCreateManyInput | MotivationMailHistoryCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * MotivationMailHistory createManyAndReturn
+   */
+  export type MotivationMailHistoryCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MotivationMailHistory
+     */
+    select?: MotivationMailHistorySelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the MotivationMailHistory
+     */
+    omit?: MotivationMailHistoryOmit<ExtArgs> | null
+    /**
+     * The data used to create many MotivationMailHistories.
+     */
+    data: MotivationMailHistoryCreateManyInput | MotivationMailHistoryCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MotivationMailHistoryIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * MotivationMailHistory update
+   */
+  export type MotivationMailHistoryUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MotivationMailHistory
+     */
+    select?: MotivationMailHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MotivationMailHistory
+     */
+    omit?: MotivationMailHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MotivationMailHistoryInclude<ExtArgs> | null
+    /**
+     * The data needed to update a MotivationMailHistory.
+     */
+    data: XOR<MotivationMailHistoryUpdateInput, MotivationMailHistoryUncheckedUpdateInput>
+    /**
+     * Choose, which MotivationMailHistory to update.
+     */
+    where: MotivationMailHistoryWhereUniqueInput
+  }
+
+  /**
+   * MotivationMailHistory updateMany
+   */
+  export type MotivationMailHistoryUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update MotivationMailHistories.
+     */
+    data: XOR<MotivationMailHistoryUpdateManyMutationInput, MotivationMailHistoryUncheckedUpdateManyInput>
+    /**
+     * Filter which MotivationMailHistories to update
+     */
+    where?: MotivationMailHistoryWhereInput
+    /**
+     * Limit how many MotivationMailHistories to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * MotivationMailHistory updateManyAndReturn
+   */
+  export type MotivationMailHistoryUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MotivationMailHistory
+     */
+    select?: MotivationMailHistorySelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the MotivationMailHistory
+     */
+    omit?: MotivationMailHistoryOmit<ExtArgs> | null
+    /**
+     * The data used to update MotivationMailHistories.
+     */
+    data: XOR<MotivationMailHistoryUpdateManyMutationInput, MotivationMailHistoryUncheckedUpdateManyInput>
+    /**
+     * Filter which MotivationMailHistories to update
+     */
+    where?: MotivationMailHistoryWhereInput
+    /**
+     * Limit how many MotivationMailHistories to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MotivationMailHistoryIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * MotivationMailHistory upsert
+   */
+  export type MotivationMailHistoryUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MotivationMailHistory
+     */
+    select?: MotivationMailHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MotivationMailHistory
+     */
+    omit?: MotivationMailHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MotivationMailHistoryInclude<ExtArgs> | null
+    /**
+     * The filter to search for the MotivationMailHistory to update in case it exists.
+     */
+    where: MotivationMailHistoryWhereUniqueInput
+    /**
+     * In case the MotivationMailHistory found by the `where` argument doesn't exist, create a new MotivationMailHistory with this data.
+     */
+    create: XOR<MotivationMailHistoryCreateInput, MotivationMailHistoryUncheckedCreateInput>
+    /**
+     * In case the MotivationMailHistory was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<MotivationMailHistoryUpdateInput, MotivationMailHistoryUncheckedUpdateInput>
+  }
+
+  /**
+   * MotivationMailHistory delete
+   */
+  export type MotivationMailHistoryDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MotivationMailHistory
+     */
+    select?: MotivationMailHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MotivationMailHistory
+     */
+    omit?: MotivationMailHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MotivationMailHistoryInclude<ExtArgs> | null
+    /**
+     * Filter which MotivationMailHistory to delete.
+     */
+    where: MotivationMailHistoryWhereUniqueInput
+  }
+
+  /**
+   * MotivationMailHistory deleteMany
+   */
+  export type MotivationMailHistoryDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MotivationMailHistories to delete
+     */
+    where?: MotivationMailHistoryWhereInput
+    /**
+     * Limit how many MotivationMailHistories to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * MotivationMailHistory without action
+   */
+  export type MotivationMailHistoryDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MotivationMailHistory
+     */
+    select?: MotivationMailHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MotivationMailHistory
+     */
+    omit?: MotivationMailHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MotivationMailHistoryInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model StudentDiscontinuationRequest
+   */
+
+  export type AggregateStudentDiscontinuationRequest = {
+    _count: StudentDiscontinuationRequestCountAggregateOutputType | null
+    _avg: StudentDiscontinuationRequestAvgAggregateOutputType | null
+    _sum: StudentDiscontinuationRequestSumAggregateOutputType | null
+    _min: StudentDiscontinuationRequestMinAggregateOutputType | null
+    _max: StudentDiscontinuationRequestMaxAggregateOutputType | null
+  }
+
+  export type StudentDiscontinuationRequestAvgAggregateOutputType = {
+    courseProgress: number | null
+    progressEarnedAmount: number | null
+    balanceDue: number | null
+    contactAttemptCount: number | null
+    installmentOverdueCount: number | null
+    totalCourseFee: number | null
+    actualCourseAmount: number | null
+    gstAmount: number | null
+    registrationFee: number | null
+    discountAmount: number | null
+    finalCourseFee: number | null
+    totalCourseHours: number | null
+    conductedDays: number | null
+    conductedHours: number | null
+    completedCourseAmount: number | null
+    totalPaid: number | null
+    outstandingAmount: number | null
+    refundEligibleAmount: number | null
+    waiverAmount: number | null
+    finalOutstandingAmount: number | null
+  }
+
+  export type StudentDiscontinuationRequestSumAggregateOutputType = {
+    courseProgress: number | null
+    progressEarnedAmount: number | null
+    balanceDue: number | null
+    contactAttemptCount: number | null
+    installmentOverdueCount: number | null
+    totalCourseFee: number | null
+    actualCourseAmount: number | null
+    gstAmount: number | null
+    registrationFee: number | null
+    discountAmount: number | null
+    finalCourseFee: number | null
+    totalCourseHours: number | null
+    conductedDays: number | null
+    conductedHours: number | null
+    completedCourseAmount: number | null
+    totalPaid: number | null
+    outstandingAmount: number | null
+    refundEligibleAmount: number | null
+    waiverAmount: number | null
+    finalOutstandingAmount: number | null
+  }
+
+  export type StudentDiscontinuationRequestMinAggregateOutputType = {
+    id: string | null
+    branchStudentId: string | null
+    branchId: string | null
+    requestedByUserId: string | null
+    refundRequested: boolean | null
+    courseProgress: number | null
+    progressEarnedAmount: number | null
+    balanceDue: number | null
+    reason: string | null
+    details: string | null
+    status: $Enums.DiscontinuationRequestStatus | null
+    contactOutcome: string | null
+    contactNotes: string | null
+    contactedBy: string | null
+    contactedAt: Date | null
+    contactAttemptCount: number | null
+    installmentOverdueCount: number | null
+    nextInstallmentDueDate: string | null
+    escalationReason: string | null
+    nextFollowUpDate: string | null
+    branchReviewedBy: string | null
+    branchReviewedAt: Date | null
+    branchReviewNote: string | null
+    superAdminReviewedBy: string | null
+    superAdminReviewedAt: Date | null
+    superAdminReviewNote: string | null
+    accessDeactivationAt: Date | null
+    totalCourseFee: number | null
+    actualCourseAmount: number | null
+    gstAmount: number | null
+    registrationFee: number | null
+    discountAmount: number | null
+    finalCourseFee: number | null
+    totalCourseHours: number | null
+    conductedDays: number | null
+    conductedHours: number | null
+    completedCourseAmount: number | null
+    totalPaid: number | null
+    outstandingAmount: number | null
+    refundEligibleAmount: number | null
+    waiverAmount: number | null
+    finalOutstandingAmount: number | null
+    settlementStatus: string | null
+    financeNote: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type StudentDiscontinuationRequestMaxAggregateOutputType = {
+    id: string | null
+    branchStudentId: string | null
+    branchId: string | null
+    requestedByUserId: string | null
+    refundRequested: boolean | null
+    courseProgress: number | null
+    progressEarnedAmount: number | null
+    balanceDue: number | null
+    reason: string | null
+    details: string | null
+    status: $Enums.DiscontinuationRequestStatus | null
+    contactOutcome: string | null
+    contactNotes: string | null
+    contactedBy: string | null
+    contactedAt: Date | null
+    contactAttemptCount: number | null
+    installmentOverdueCount: number | null
+    nextInstallmentDueDate: string | null
+    escalationReason: string | null
+    nextFollowUpDate: string | null
+    branchReviewedBy: string | null
+    branchReviewedAt: Date | null
+    branchReviewNote: string | null
+    superAdminReviewedBy: string | null
+    superAdminReviewedAt: Date | null
+    superAdminReviewNote: string | null
+    accessDeactivationAt: Date | null
+    totalCourseFee: number | null
+    actualCourseAmount: number | null
+    gstAmount: number | null
+    registrationFee: number | null
+    discountAmount: number | null
+    finalCourseFee: number | null
+    totalCourseHours: number | null
+    conductedDays: number | null
+    conductedHours: number | null
+    completedCourseAmount: number | null
+    totalPaid: number | null
+    outstandingAmount: number | null
+    refundEligibleAmount: number | null
+    waiverAmount: number | null
+    finalOutstandingAmount: number | null
+    settlementStatus: string | null
+    financeNote: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type StudentDiscontinuationRequestCountAggregateOutputType = {
+    id: number
+    branchStudentId: number
+    branchId: number
+    requestedByUserId: number
+    refundRequested: number
+    courseProgress: number
+    progressEarnedAmount: number
+    balanceDue: number
+    reason: number
+    details: number
+    status: number
+    contactOutcome: number
+    contactNotes: number
+    contactedBy: number
+    contactedAt: number
+    contactAttemptCount: number
+    installmentOverdueCount: number
+    nextInstallmentDueDate: number
+    contactHistory: number
+    escalationReason: number
+    nextFollowUpDate: number
+    branchReviewedBy: number
+    branchReviewedAt: number
+    branchReviewNote: number
+    superAdminReviewedBy: number
+    superAdminReviewedAt: number
+    superAdminReviewNote: number
+    accessDeactivationAt: number
+    totalCourseFee: number
+    actualCourseAmount: number
+    gstAmount: number
+    registrationFee: number
+    discountAmount: number
+    finalCourseFee: number
+    totalCourseHours: number
+    conductedDays: number
+    conductedHours: number
+    completedCourseAmount: number
+    totalPaid: number
+    outstandingAmount: number
+    refundEligibleAmount: number
+    waiverAmount: number
+    finalOutstandingAmount: number
+    settlementStatus: number
+    financeNote: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type StudentDiscontinuationRequestAvgAggregateInputType = {
+    courseProgress?: true
+    progressEarnedAmount?: true
+    balanceDue?: true
+    contactAttemptCount?: true
+    installmentOverdueCount?: true
+    totalCourseFee?: true
+    actualCourseAmount?: true
+    gstAmount?: true
+    registrationFee?: true
+    discountAmount?: true
+    finalCourseFee?: true
+    totalCourseHours?: true
+    conductedDays?: true
+    conductedHours?: true
+    completedCourseAmount?: true
+    totalPaid?: true
+    outstandingAmount?: true
+    refundEligibleAmount?: true
+    waiverAmount?: true
+    finalOutstandingAmount?: true
+  }
+
+  export type StudentDiscontinuationRequestSumAggregateInputType = {
+    courseProgress?: true
+    progressEarnedAmount?: true
+    balanceDue?: true
+    contactAttemptCount?: true
+    installmentOverdueCount?: true
+    totalCourseFee?: true
+    actualCourseAmount?: true
+    gstAmount?: true
+    registrationFee?: true
+    discountAmount?: true
+    finalCourseFee?: true
+    totalCourseHours?: true
+    conductedDays?: true
+    conductedHours?: true
+    completedCourseAmount?: true
+    totalPaid?: true
+    outstandingAmount?: true
+    refundEligibleAmount?: true
+    waiverAmount?: true
+    finalOutstandingAmount?: true
+  }
+
+  export type StudentDiscontinuationRequestMinAggregateInputType = {
+    id?: true
+    branchStudentId?: true
+    branchId?: true
+    requestedByUserId?: true
+    refundRequested?: true
+    courseProgress?: true
+    progressEarnedAmount?: true
+    balanceDue?: true
+    reason?: true
+    details?: true
+    status?: true
+    contactOutcome?: true
+    contactNotes?: true
+    contactedBy?: true
+    contactedAt?: true
+    contactAttemptCount?: true
+    installmentOverdueCount?: true
+    nextInstallmentDueDate?: true
+    escalationReason?: true
+    nextFollowUpDate?: true
+    branchReviewedBy?: true
+    branchReviewedAt?: true
+    branchReviewNote?: true
+    superAdminReviewedBy?: true
+    superAdminReviewedAt?: true
+    superAdminReviewNote?: true
+    accessDeactivationAt?: true
+    totalCourseFee?: true
+    actualCourseAmount?: true
+    gstAmount?: true
+    registrationFee?: true
+    discountAmount?: true
+    finalCourseFee?: true
+    totalCourseHours?: true
+    conductedDays?: true
+    conductedHours?: true
+    completedCourseAmount?: true
+    totalPaid?: true
+    outstandingAmount?: true
+    refundEligibleAmount?: true
+    waiverAmount?: true
+    finalOutstandingAmount?: true
+    settlementStatus?: true
+    financeNote?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type StudentDiscontinuationRequestMaxAggregateInputType = {
+    id?: true
+    branchStudentId?: true
+    branchId?: true
+    requestedByUserId?: true
+    refundRequested?: true
+    courseProgress?: true
+    progressEarnedAmount?: true
+    balanceDue?: true
+    reason?: true
+    details?: true
+    status?: true
+    contactOutcome?: true
+    contactNotes?: true
+    contactedBy?: true
+    contactedAt?: true
+    contactAttemptCount?: true
+    installmentOverdueCount?: true
+    nextInstallmentDueDate?: true
+    escalationReason?: true
+    nextFollowUpDate?: true
+    branchReviewedBy?: true
+    branchReviewedAt?: true
+    branchReviewNote?: true
+    superAdminReviewedBy?: true
+    superAdminReviewedAt?: true
+    superAdminReviewNote?: true
+    accessDeactivationAt?: true
+    totalCourseFee?: true
+    actualCourseAmount?: true
+    gstAmount?: true
+    registrationFee?: true
+    discountAmount?: true
+    finalCourseFee?: true
+    totalCourseHours?: true
+    conductedDays?: true
+    conductedHours?: true
+    completedCourseAmount?: true
+    totalPaid?: true
+    outstandingAmount?: true
+    refundEligibleAmount?: true
+    waiverAmount?: true
+    finalOutstandingAmount?: true
+    settlementStatus?: true
+    financeNote?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type StudentDiscontinuationRequestCountAggregateInputType = {
+    id?: true
+    branchStudentId?: true
+    branchId?: true
+    requestedByUserId?: true
+    refundRequested?: true
+    courseProgress?: true
+    progressEarnedAmount?: true
+    balanceDue?: true
+    reason?: true
+    details?: true
+    status?: true
+    contactOutcome?: true
+    contactNotes?: true
+    contactedBy?: true
+    contactedAt?: true
+    contactAttemptCount?: true
+    installmentOverdueCount?: true
+    nextInstallmentDueDate?: true
+    contactHistory?: true
+    escalationReason?: true
+    nextFollowUpDate?: true
+    branchReviewedBy?: true
+    branchReviewedAt?: true
+    branchReviewNote?: true
+    superAdminReviewedBy?: true
+    superAdminReviewedAt?: true
+    superAdminReviewNote?: true
+    accessDeactivationAt?: true
+    totalCourseFee?: true
+    actualCourseAmount?: true
+    gstAmount?: true
+    registrationFee?: true
+    discountAmount?: true
+    finalCourseFee?: true
+    totalCourseHours?: true
+    conductedDays?: true
+    conductedHours?: true
+    completedCourseAmount?: true
+    totalPaid?: true
+    outstandingAmount?: true
+    refundEligibleAmount?: true
+    waiverAmount?: true
+    finalOutstandingAmount?: true
+    settlementStatus?: true
+    financeNote?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type StudentDiscontinuationRequestAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which StudentDiscontinuationRequest to aggregate.
+     */
+    where?: StudentDiscontinuationRequestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of StudentDiscontinuationRequests to fetch.
+     */
+    orderBy?: StudentDiscontinuationRequestOrderByWithRelationInput | StudentDiscontinuationRequestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: StudentDiscontinuationRequestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` StudentDiscontinuationRequests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` StudentDiscontinuationRequests.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned StudentDiscontinuationRequests
+    **/
+    _count?: true | StudentDiscontinuationRequestCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: StudentDiscontinuationRequestAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: StudentDiscontinuationRequestSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: StudentDiscontinuationRequestMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: StudentDiscontinuationRequestMaxAggregateInputType
+  }
+
+  export type GetStudentDiscontinuationRequestAggregateType<T extends StudentDiscontinuationRequestAggregateArgs> = {
+        [P in keyof T & keyof AggregateStudentDiscontinuationRequest]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateStudentDiscontinuationRequest[P]>
+      : GetScalarType<T[P], AggregateStudentDiscontinuationRequest[P]>
+  }
+
+
+
+
+  export type StudentDiscontinuationRequestGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: StudentDiscontinuationRequestWhereInput
+    orderBy?: StudentDiscontinuationRequestOrderByWithAggregationInput | StudentDiscontinuationRequestOrderByWithAggregationInput[]
+    by: StudentDiscontinuationRequestScalarFieldEnum[] | StudentDiscontinuationRequestScalarFieldEnum
+    having?: StudentDiscontinuationRequestScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: StudentDiscontinuationRequestCountAggregateInputType | true
+    _avg?: StudentDiscontinuationRequestAvgAggregateInputType
+    _sum?: StudentDiscontinuationRequestSumAggregateInputType
+    _min?: StudentDiscontinuationRequestMinAggregateInputType
+    _max?: StudentDiscontinuationRequestMaxAggregateInputType
+  }
+
+  export type StudentDiscontinuationRequestGroupByOutputType = {
+    id: string
+    branchStudentId: string
+    branchId: string
+    requestedByUserId: string | null
+    refundRequested: boolean
+    courseProgress: number
+    progressEarnedAmount: number
+    balanceDue: number
+    reason: string
+    details: string | null
+    status: $Enums.DiscontinuationRequestStatus
+    contactOutcome: string | null
+    contactNotes: string | null
+    contactedBy: string | null
+    contactedAt: Date | null
+    contactAttemptCount: number
+    installmentOverdueCount: number
+    nextInstallmentDueDate: string | null
+    contactHistory: JsonValue
+    escalationReason: string | null
+    nextFollowUpDate: string | null
+    branchReviewedBy: string | null
+    branchReviewedAt: Date | null
+    branchReviewNote: string | null
+    superAdminReviewedBy: string | null
+    superAdminReviewedAt: Date | null
+    superAdminReviewNote: string | null
+    accessDeactivationAt: Date | null
+    totalCourseFee: number
+    actualCourseAmount: number
+    gstAmount: number
+    registrationFee: number
+    discountAmount: number
+    finalCourseFee: number
+    totalCourseHours: number
+    conductedDays: number
+    conductedHours: number
+    completedCourseAmount: number
+    totalPaid: number
+    outstandingAmount: number
+    refundEligibleAmount: number
+    waiverAmount: number
+    finalOutstandingAmount: number | null
+    settlementStatus: string
+    financeNote: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: StudentDiscontinuationRequestCountAggregateOutputType | null
+    _avg: StudentDiscontinuationRequestAvgAggregateOutputType | null
+    _sum: StudentDiscontinuationRequestSumAggregateOutputType | null
+    _min: StudentDiscontinuationRequestMinAggregateOutputType | null
+    _max: StudentDiscontinuationRequestMaxAggregateOutputType | null
+  }
+
+  type GetStudentDiscontinuationRequestGroupByPayload<T extends StudentDiscontinuationRequestGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<StudentDiscontinuationRequestGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof StudentDiscontinuationRequestGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], StudentDiscontinuationRequestGroupByOutputType[P]>
+            : GetScalarType<T[P], StudentDiscontinuationRequestGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type StudentDiscontinuationRequestSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    branchStudentId?: boolean
+    branchId?: boolean
+    requestedByUserId?: boolean
+    refundRequested?: boolean
+    courseProgress?: boolean
+    progressEarnedAmount?: boolean
+    balanceDue?: boolean
+    reason?: boolean
+    details?: boolean
+    status?: boolean
+    contactOutcome?: boolean
+    contactNotes?: boolean
+    contactedBy?: boolean
+    contactedAt?: boolean
+    contactAttemptCount?: boolean
+    installmentOverdueCount?: boolean
+    nextInstallmentDueDate?: boolean
+    contactHistory?: boolean
+    escalationReason?: boolean
+    nextFollowUpDate?: boolean
+    branchReviewedBy?: boolean
+    branchReviewedAt?: boolean
+    branchReviewNote?: boolean
+    superAdminReviewedBy?: boolean
+    superAdminReviewedAt?: boolean
+    superAdminReviewNote?: boolean
+    accessDeactivationAt?: boolean
+    totalCourseFee?: boolean
+    actualCourseAmount?: boolean
+    gstAmount?: boolean
+    registrationFee?: boolean
+    discountAmount?: boolean
+    finalCourseFee?: boolean
+    totalCourseHours?: boolean
+    conductedDays?: boolean
+    conductedHours?: boolean
+    completedCourseAmount?: boolean
+    totalPaid?: boolean
+    outstandingAmount?: boolean
+    refundEligibleAmount?: boolean
+    waiverAmount?: boolean
+    finalOutstandingAmount?: boolean
+    settlementStatus?: boolean
+    financeNote?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    branchStudent?: boolean | BranchStudentDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["studentDiscontinuationRequest"]>
+
+  export type StudentDiscontinuationRequestSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    branchStudentId?: boolean
+    branchId?: boolean
+    requestedByUserId?: boolean
+    refundRequested?: boolean
+    courseProgress?: boolean
+    progressEarnedAmount?: boolean
+    balanceDue?: boolean
+    reason?: boolean
+    details?: boolean
+    status?: boolean
+    contactOutcome?: boolean
+    contactNotes?: boolean
+    contactedBy?: boolean
+    contactedAt?: boolean
+    contactAttemptCount?: boolean
+    installmentOverdueCount?: boolean
+    nextInstallmentDueDate?: boolean
+    contactHistory?: boolean
+    escalationReason?: boolean
+    nextFollowUpDate?: boolean
+    branchReviewedBy?: boolean
+    branchReviewedAt?: boolean
+    branchReviewNote?: boolean
+    superAdminReviewedBy?: boolean
+    superAdminReviewedAt?: boolean
+    superAdminReviewNote?: boolean
+    accessDeactivationAt?: boolean
+    totalCourseFee?: boolean
+    actualCourseAmount?: boolean
+    gstAmount?: boolean
+    registrationFee?: boolean
+    discountAmount?: boolean
+    finalCourseFee?: boolean
+    totalCourseHours?: boolean
+    conductedDays?: boolean
+    conductedHours?: boolean
+    completedCourseAmount?: boolean
+    totalPaid?: boolean
+    outstandingAmount?: boolean
+    refundEligibleAmount?: boolean
+    waiverAmount?: boolean
+    finalOutstandingAmount?: boolean
+    settlementStatus?: boolean
+    financeNote?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    branchStudent?: boolean | BranchStudentDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["studentDiscontinuationRequest"]>
+
+  export type StudentDiscontinuationRequestSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    branchStudentId?: boolean
+    branchId?: boolean
+    requestedByUserId?: boolean
+    refundRequested?: boolean
+    courseProgress?: boolean
+    progressEarnedAmount?: boolean
+    balanceDue?: boolean
+    reason?: boolean
+    details?: boolean
+    status?: boolean
+    contactOutcome?: boolean
+    contactNotes?: boolean
+    contactedBy?: boolean
+    contactedAt?: boolean
+    contactAttemptCount?: boolean
+    installmentOverdueCount?: boolean
+    nextInstallmentDueDate?: boolean
+    contactHistory?: boolean
+    escalationReason?: boolean
+    nextFollowUpDate?: boolean
+    branchReviewedBy?: boolean
+    branchReviewedAt?: boolean
+    branchReviewNote?: boolean
+    superAdminReviewedBy?: boolean
+    superAdminReviewedAt?: boolean
+    superAdminReviewNote?: boolean
+    accessDeactivationAt?: boolean
+    totalCourseFee?: boolean
+    actualCourseAmount?: boolean
+    gstAmount?: boolean
+    registrationFee?: boolean
+    discountAmount?: boolean
+    finalCourseFee?: boolean
+    totalCourseHours?: boolean
+    conductedDays?: boolean
+    conductedHours?: boolean
+    completedCourseAmount?: boolean
+    totalPaid?: boolean
+    outstandingAmount?: boolean
+    refundEligibleAmount?: boolean
+    waiverAmount?: boolean
+    finalOutstandingAmount?: boolean
+    settlementStatus?: boolean
+    financeNote?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    branchStudent?: boolean | BranchStudentDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["studentDiscontinuationRequest"]>
+
+  export type StudentDiscontinuationRequestSelectScalar = {
+    id?: boolean
+    branchStudentId?: boolean
+    branchId?: boolean
+    requestedByUserId?: boolean
+    refundRequested?: boolean
+    courseProgress?: boolean
+    progressEarnedAmount?: boolean
+    balanceDue?: boolean
+    reason?: boolean
+    details?: boolean
+    status?: boolean
+    contactOutcome?: boolean
+    contactNotes?: boolean
+    contactedBy?: boolean
+    contactedAt?: boolean
+    contactAttemptCount?: boolean
+    installmentOverdueCount?: boolean
+    nextInstallmentDueDate?: boolean
+    contactHistory?: boolean
+    escalationReason?: boolean
+    nextFollowUpDate?: boolean
+    branchReviewedBy?: boolean
+    branchReviewedAt?: boolean
+    branchReviewNote?: boolean
+    superAdminReviewedBy?: boolean
+    superAdminReviewedAt?: boolean
+    superAdminReviewNote?: boolean
+    accessDeactivationAt?: boolean
+    totalCourseFee?: boolean
+    actualCourseAmount?: boolean
+    gstAmount?: boolean
+    registrationFee?: boolean
+    discountAmount?: boolean
+    finalCourseFee?: boolean
+    totalCourseHours?: boolean
+    conductedDays?: boolean
+    conductedHours?: boolean
+    completedCourseAmount?: boolean
+    totalPaid?: boolean
+    outstandingAmount?: boolean
+    refundEligibleAmount?: boolean
+    waiverAmount?: boolean
+    finalOutstandingAmount?: boolean
+    settlementStatus?: boolean
+    financeNote?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type StudentDiscontinuationRequestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "branchStudentId" | "branchId" | "requestedByUserId" | "refundRequested" | "courseProgress" | "progressEarnedAmount" | "balanceDue" | "reason" | "details" | "status" | "contactOutcome" | "contactNotes" | "contactedBy" | "contactedAt" | "contactAttemptCount" | "installmentOverdueCount" | "nextInstallmentDueDate" | "contactHistory" | "escalationReason" | "nextFollowUpDate" | "branchReviewedBy" | "branchReviewedAt" | "branchReviewNote" | "superAdminReviewedBy" | "superAdminReviewedAt" | "superAdminReviewNote" | "accessDeactivationAt" | "totalCourseFee" | "actualCourseAmount" | "gstAmount" | "registrationFee" | "discountAmount" | "finalCourseFee" | "totalCourseHours" | "conductedDays" | "conductedHours" | "completedCourseAmount" | "totalPaid" | "outstandingAmount" | "refundEligibleAmount" | "waiverAmount" | "finalOutstandingAmount" | "settlementStatus" | "financeNote" | "createdAt" | "updatedAt", ExtArgs["result"]["studentDiscontinuationRequest"]>
+  export type StudentDiscontinuationRequestInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    branchStudent?: boolean | BranchStudentDefaultArgs<ExtArgs>
+  }
+  export type StudentDiscontinuationRequestIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    branchStudent?: boolean | BranchStudentDefaultArgs<ExtArgs>
+  }
+  export type StudentDiscontinuationRequestIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    branchStudent?: boolean | BranchStudentDefaultArgs<ExtArgs>
+  }
+
+  export type $StudentDiscontinuationRequestPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "StudentDiscontinuationRequest"
+    objects: {
+      branchStudent: Prisma.$BranchStudentPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      branchStudentId: string
+      branchId: string
+      requestedByUserId: string | null
+      refundRequested: boolean
+      courseProgress: number
+      progressEarnedAmount: number
+      balanceDue: number
+      reason: string
+      details: string | null
+      status: $Enums.DiscontinuationRequestStatus
+      contactOutcome: string | null
+      contactNotes: string | null
+      contactedBy: string | null
+      contactedAt: Date | null
+      contactAttemptCount: number
+      installmentOverdueCount: number
+      nextInstallmentDueDate: string | null
+      contactHistory: Prisma.JsonValue
+      escalationReason: string | null
+      nextFollowUpDate: string | null
+      branchReviewedBy: string | null
+      branchReviewedAt: Date | null
+      branchReviewNote: string | null
+      superAdminReviewedBy: string | null
+      superAdminReviewedAt: Date | null
+      superAdminReviewNote: string | null
+      accessDeactivationAt: Date | null
+      totalCourseFee: number
+      actualCourseAmount: number
+      gstAmount: number
+      registrationFee: number
+      discountAmount: number
+      finalCourseFee: number
+      totalCourseHours: number
+      conductedDays: number
+      conductedHours: number
+      completedCourseAmount: number
+      totalPaid: number
+      outstandingAmount: number
+      refundEligibleAmount: number
+      waiverAmount: number
+      finalOutstandingAmount: number | null
+      settlementStatus: string
+      financeNote: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["studentDiscontinuationRequest"]>
+    composites: {}
+  }
+
+  type StudentDiscontinuationRequestGetPayload<S extends boolean | null | undefined | StudentDiscontinuationRequestDefaultArgs> = $Result.GetResult<Prisma.$StudentDiscontinuationRequestPayload, S>
+
+  type StudentDiscontinuationRequestCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<StudentDiscontinuationRequestFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: StudentDiscontinuationRequestCountAggregateInputType | true
+    }
+
+  export interface StudentDiscontinuationRequestDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['StudentDiscontinuationRequest'], meta: { name: 'StudentDiscontinuationRequest' } }
+    /**
+     * Find zero or one StudentDiscontinuationRequest that matches the filter.
+     * @param {StudentDiscontinuationRequestFindUniqueArgs} args - Arguments to find a StudentDiscontinuationRequest
+     * @example
+     * // Get one StudentDiscontinuationRequest
+     * const studentDiscontinuationRequest = await prisma.studentDiscontinuationRequest.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends StudentDiscontinuationRequestFindUniqueArgs>(args: SelectSubset<T, StudentDiscontinuationRequestFindUniqueArgs<ExtArgs>>): Prisma__StudentDiscontinuationRequestClient<$Result.GetResult<Prisma.$StudentDiscontinuationRequestPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one StudentDiscontinuationRequest that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {StudentDiscontinuationRequestFindUniqueOrThrowArgs} args - Arguments to find a StudentDiscontinuationRequest
+     * @example
+     * // Get one StudentDiscontinuationRequest
+     * const studentDiscontinuationRequest = await prisma.studentDiscontinuationRequest.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends StudentDiscontinuationRequestFindUniqueOrThrowArgs>(args: SelectSubset<T, StudentDiscontinuationRequestFindUniqueOrThrowArgs<ExtArgs>>): Prisma__StudentDiscontinuationRequestClient<$Result.GetResult<Prisma.$StudentDiscontinuationRequestPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first StudentDiscontinuationRequest that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StudentDiscontinuationRequestFindFirstArgs} args - Arguments to find a StudentDiscontinuationRequest
+     * @example
+     * // Get one StudentDiscontinuationRequest
+     * const studentDiscontinuationRequest = await prisma.studentDiscontinuationRequest.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends StudentDiscontinuationRequestFindFirstArgs>(args?: SelectSubset<T, StudentDiscontinuationRequestFindFirstArgs<ExtArgs>>): Prisma__StudentDiscontinuationRequestClient<$Result.GetResult<Prisma.$StudentDiscontinuationRequestPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first StudentDiscontinuationRequest that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StudentDiscontinuationRequestFindFirstOrThrowArgs} args - Arguments to find a StudentDiscontinuationRequest
+     * @example
+     * // Get one StudentDiscontinuationRequest
+     * const studentDiscontinuationRequest = await prisma.studentDiscontinuationRequest.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends StudentDiscontinuationRequestFindFirstOrThrowArgs>(args?: SelectSubset<T, StudentDiscontinuationRequestFindFirstOrThrowArgs<ExtArgs>>): Prisma__StudentDiscontinuationRequestClient<$Result.GetResult<Prisma.$StudentDiscontinuationRequestPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more StudentDiscontinuationRequests that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StudentDiscontinuationRequestFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all StudentDiscontinuationRequests
+     * const studentDiscontinuationRequests = await prisma.studentDiscontinuationRequest.findMany()
+     * 
+     * // Get first 10 StudentDiscontinuationRequests
+     * const studentDiscontinuationRequests = await prisma.studentDiscontinuationRequest.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const studentDiscontinuationRequestWithIdOnly = await prisma.studentDiscontinuationRequest.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends StudentDiscontinuationRequestFindManyArgs>(args?: SelectSubset<T, StudentDiscontinuationRequestFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StudentDiscontinuationRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a StudentDiscontinuationRequest.
+     * @param {StudentDiscontinuationRequestCreateArgs} args - Arguments to create a StudentDiscontinuationRequest.
+     * @example
+     * // Create one StudentDiscontinuationRequest
+     * const StudentDiscontinuationRequest = await prisma.studentDiscontinuationRequest.create({
+     *   data: {
+     *     // ... data to create a StudentDiscontinuationRequest
+     *   }
+     * })
+     * 
+     */
+    create<T extends StudentDiscontinuationRequestCreateArgs>(args: SelectSubset<T, StudentDiscontinuationRequestCreateArgs<ExtArgs>>): Prisma__StudentDiscontinuationRequestClient<$Result.GetResult<Prisma.$StudentDiscontinuationRequestPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many StudentDiscontinuationRequests.
+     * @param {StudentDiscontinuationRequestCreateManyArgs} args - Arguments to create many StudentDiscontinuationRequests.
+     * @example
+     * // Create many StudentDiscontinuationRequests
+     * const studentDiscontinuationRequest = await prisma.studentDiscontinuationRequest.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends StudentDiscontinuationRequestCreateManyArgs>(args?: SelectSubset<T, StudentDiscontinuationRequestCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many StudentDiscontinuationRequests and returns the data saved in the database.
+     * @param {StudentDiscontinuationRequestCreateManyAndReturnArgs} args - Arguments to create many StudentDiscontinuationRequests.
+     * @example
+     * // Create many StudentDiscontinuationRequests
+     * const studentDiscontinuationRequest = await prisma.studentDiscontinuationRequest.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many StudentDiscontinuationRequests and only return the `id`
+     * const studentDiscontinuationRequestWithIdOnly = await prisma.studentDiscontinuationRequest.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends StudentDiscontinuationRequestCreateManyAndReturnArgs>(args?: SelectSubset<T, StudentDiscontinuationRequestCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StudentDiscontinuationRequestPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a StudentDiscontinuationRequest.
+     * @param {StudentDiscontinuationRequestDeleteArgs} args - Arguments to delete one StudentDiscontinuationRequest.
+     * @example
+     * // Delete one StudentDiscontinuationRequest
+     * const StudentDiscontinuationRequest = await prisma.studentDiscontinuationRequest.delete({
+     *   where: {
+     *     // ... filter to delete one StudentDiscontinuationRequest
+     *   }
+     * })
+     * 
+     */
+    delete<T extends StudentDiscontinuationRequestDeleteArgs>(args: SelectSubset<T, StudentDiscontinuationRequestDeleteArgs<ExtArgs>>): Prisma__StudentDiscontinuationRequestClient<$Result.GetResult<Prisma.$StudentDiscontinuationRequestPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one StudentDiscontinuationRequest.
+     * @param {StudentDiscontinuationRequestUpdateArgs} args - Arguments to update one StudentDiscontinuationRequest.
+     * @example
+     * // Update one StudentDiscontinuationRequest
+     * const studentDiscontinuationRequest = await prisma.studentDiscontinuationRequest.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends StudentDiscontinuationRequestUpdateArgs>(args: SelectSubset<T, StudentDiscontinuationRequestUpdateArgs<ExtArgs>>): Prisma__StudentDiscontinuationRequestClient<$Result.GetResult<Prisma.$StudentDiscontinuationRequestPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more StudentDiscontinuationRequests.
+     * @param {StudentDiscontinuationRequestDeleteManyArgs} args - Arguments to filter StudentDiscontinuationRequests to delete.
+     * @example
+     * // Delete a few StudentDiscontinuationRequests
+     * const { count } = await prisma.studentDiscontinuationRequest.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends StudentDiscontinuationRequestDeleteManyArgs>(args?: SelectSubset<T, StudentDiscontinuationRequestDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more StudentDiscontinuationRequests.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StudentDiscontinuationRequestUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many StudentDiscontinuationRequests
+     * const studentDiscontinuationRequest = await prisma.studentDiscontinuationRequest.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends StudentDiscontinuationRequestUpdateManyArgs>(args: SelectSubset<T, StudentDiscontinuationRequestUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more StudentDiscontinuationRequests and returns the data updated in the database.
+     * @param {StudentDiscontinuationRequestUpdateManyAndReturnArgs} args - Arguments to update many StudentDiscontinuationRequests.
+     * @example
+     * // Update many StudentDiscontinuationRequests
+     * const studentDiscontinuationRequest = await prisma.studentDiscontinuationRequest.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more StudentDiscontinuationRequests and only return the `id`
+     * const studentDiscontinuationRequestWithIdOnly = await prisma.studentDiscontinuationRequest.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends StudentDiscontinuationRequestUpdateManyAndReturnArgs>(args: SelectSubset<T, StudentDiscontinuationRequestUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StudentDiscontinuationRequestPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one StudentDiscontinuationRequest.
+     * @param {StudentDiscontinuationRequestUpsertArgs} args - Arguments to update or create a StudentDiscontinuationRequest.
+     * @example
+     * // Update or create a StudentDiscontinuationRequest
+     * const studentDiscontinuationRequest = await prisma.studentDiscontinuationRequest.upsert({
+     *   create: {
+     *     // ... data to create a StudentDiscontinuationRequest
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the StudentDiscontinuationRequest we want to update
+     *   }
+     * })
+     */
+    upsert<T extends StudentDiscontinuationRequestUpsertArgs>(args: SelectSubset<T, StudentDiscontinuationRequestUpsertArgs<ExtArgs>>): Prisma__StudentDiscontinuationRequestClient<$Result.GetResult<Prisma.$StudentDiscontinuationRequestPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of StudentDiscontinuationRequests.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StudentDiscontinuationRequestCountArgs} args - Arguments to filter StudentDiscontinuationRequests to count.
+     * @example
+     * // Count the number of StudentDiscontinuationRequests
+     * const count = await prisma.studentDiscontinuationRequest.count({
+     *   where: {
+     *     // ... the filter for the StudentDiscontinuationRequests we want to count
+     *   }
+     * })
+    **/
+    count<T extends StudentDiscontinuationRequestCountArgs>(
+      args?: Subset<T, StudentDiscontinuationRequestCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], StudentDiscontinuationRequestCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a StudentDiscontinuationRequest.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StudentDiscontinuationRequestAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends StudentDiscontinuationRequestAggregateArgs>(args: Subset<T, StudentDiscontinuationRequestAggregateArgs>): Prisma.PrismaPromise<GetStudentDiscontinuationRequestAggregateType<T>>
+
+    /**
+     * Group by StudentDiscontinuationRequest.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StudentDiscontinuationRequestGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends StudentDiscontinuationRequestGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: StudentDiscontinuationRequestGroupByArgs['orderBy'] }
+        : { orderBy?: StudentDiscontinuationRequestGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, StudentDiscontinuationRequestGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetStudentDiscontinuationRequestGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the StudentDiscontinuationRequest model
+   */
+  readonly fields: StudentDiscontinuationRequestFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for StudentDiscontinuationRequest.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__StudentDiscontinuationRequestClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    branchStudent<T extends BranchStudentDefaultArgs<ExtArgs> = {}>(args?: Subset<T, BranchStudentDefaultArgs<ExtArgs>>): Prisma__BranchStudentClient<$Result.GetResult<Prisma.$BranchStudentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the StudentDiscontinuationRequest model
+   */
+  interface StudentDiscontinuationRequestFieldRefs {
+    readonly id: FieldRef<"StudentDiscontinuationRequest", 'String'>
+    readonly branchStudentId: FieldRef<"StudentDiscontinuationRequest", 'String'>
+    readonly branchId: FieldRef<"StudentDiscontinuationRequest", 'String'>
+    readonly requestedByUserId: FieldRef<"StudentDiscontinuationRequest", 'String'>
+    readonly refundRequested: FieldRef<"StudentDiscontinuationRequest", 'Boolean'>
+    readonly courseProgress: FieldRef<"StudentDiscontinuationRequest", 'Int'>
+    readonly progressEarnedAmount: FieldRef<"StudentDiscontinuationRequest", 'Int'>
+    readonly balanceDue: FieldRef<"StudentDiscontinuationRequest", 'Int'>
+    readonly reason: FieldRef<"StudentDiscontinuationRequest", 'String'>
+    readonly details: FieldRef<"StudentDiscontinuationRequest", 'String'>
+    readonly status: FieldRef<"StudentDiscontinuationRequest", 'DiscontinuationRequestStatus'>
+    readonly contactOutcome: FieldRef<"StudentDiscontinuationRequest", 'String'>
+    readonly contactNotes: FieldRef<"StudentDiscontinuationRequest", 'String'>
+    readonly contactedBy: FieldRef<"StudentDiscontinuationRequest", 'String'>
+    readonly contactedAt: FieldRef<"StudentDiscontinuationRequest", 'DateTime'>
+    readonly contactAttemptCount: FieldRef<"StudentDiscontinuationRequest", 'Int'>
+    readonly installmentOverdueCount: FieldRef<"StudentDiscontinuationRequest", 'Int'>
+    readonly nextInstallmentDueDate: FieldRef<"StudentDiscontinuationRequest", 'String'>
+    readonly contactHistory: FieldRef<"StudentDiscontinuationRequest", 'Json'>
+    readonly escalationReason: FieldRef<"StudentDiscontinuationRequest", 'String'>
+    readonly nextFollowUpDate: FieldRef<"StudentDiscontinuationRequest", 'String'>
+    readonly branchReviewedBy: FieldRef<"StudentDiscontinuationRequest", 'String'>
+    readonly branchReviewedAt: FieldRef<"StudentDiscontinuationRequest", 'DateTime'>
+    readonly branchReviewNote: FieldRef<"StudentDiscontinuationRequest", 'String'>
+    readonly superAdminReviewedBy: FieldRef<"StudentDiscontinuationRequest", 'String'>
+    readonly superAdminReviewedAt: FieldRef<"StudentDiscontinuationRequest", 'DateTime'>
+    readonly superAdminReviewNote: FieldRef<"StudentDiscontinuationRequest", 'String'>
+    readonly accessDeactivationAt: FieldRef<"StudentDiscontinuationRequest", 'DateTime'>
+    readonly totalCourseFee: FieldRef<"StudentDiscontinuationRequest", 'Int'>
+    readonly actualCourseAmount: FieldRef<"StudentDiscontinuationRequest", 'Int'>
+    readonly gstAmount: FieldRef<"StudentDiscontinuationRequest", 'Int'>
+    readonly registrationFee: FieldRef<"StudentDiscontinuationRequest", 'Int'>
+    readonly discountAmount: FieldRef<"StudentDiscontinuationRequest", 'Int'>
+    readonly finalCourseFee: FieldRef<"StudentDiscontinuationRequest", 'Int'>
+    readonly totalCourseHours: FieldRef<"StudentDiscontinuationRequest", 'Int'>
+    readonly conductedDays: FieldRef<"StudentDiscontinuationRequest", 'Int'>
+    readonly conductedHours: FieldRef<"StudentDiscontinuationRequest", 'Int'>
+    readonly completedCourseAmount: FieldRef<"StudentDiscontinuationRequest", 'Int'>
+    readonly totalPaid: FieldRef<"StudentDiscontinuationRequest", 'Int'>
+    readonly outstandingAmount: FieldRef<"StudentDiscontinuationRequest", 'Int'>
+    readonly refundEligibleAmount: FieldRef<"StudentDiscontinuationRequest", 'Int'>
+    readonly waiverAmount: FieldRef<"StudentDiscontinuationRequest", 'Int'>
+    readonly finalOutstandingAmount: FieldRef<"StudentDiscontinuationRequest", 'Int'>
+    readonly settlementStatus: FieldRef<"StudentDiscontinuationRequest", 'String'>
+    readonly financeNote: FieldRef<"StudentDiscontinuationRequest", 'String'>
+    readonly createdAt: FieldRef<"StudentDiscontinuationRequest", 'DateTime'>
+    readonly updatedAt: FieldRef<"StudentDiscontinuationRequest", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * StudentDiscontinuationRequest findUnique
+   */
+  export type StudentDiscontinuationRequestFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentDiscontinuationRequest
+     */
+    select?: StudentDiscontinuationRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StudentDiscontinuationRequest
+     */
+    omit?: StudentDiscontinuationRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentDiscontinuationRequestInclude<ExtArgs> | null
+    /**
+     * Filter, which StudentDiscontinuationRequest to fetch.
+     */
+    where: StudentDiscontinuationRequestWhereUniqueInput
+  }
+
+  /**
+   * StudentDiscontinuationRequest findUniqueOrThrow
+   */
+  export type StudentDiscontinuationRequestFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentDiscontinuationRequest
+     */
+    select?: StudentDiscontinuationRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StudentDiscontinuationRequest
+     */
+    omit?: StudentDiscontinuationRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentDiscontinuationRequestInclude<ExtArgs> | null
+    /**
+     * Filter, which StudentDiscontinuationRequest to fetch.
+     */
+    where: StudentDiscontinuationRequestWhereUniqueInput
+  }
+
+  /**
+   * StudentDiscontinuationRequest findFirst
+   */
+  export type StudentDiscontinuationRequestFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentDiscontinuationRequest
+     */
+    select?: StudentDiscontinuationRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StudentDiscontinuationRequest
+     */
+    omit?: StudentDiscontinuationRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentDiscontinuationRequestInclude<ExtArgs> | null
+    /**
+     * Filter, which StudentDiscontinuationRequest to fetch.
+     */
+    where?: StudentDiscontinuationRequestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of StudentDiscontinuationRequests to fetch.
+     */
+    orderBy?: StudentDiscontinuationRequestOrderByWithRelationInput | StudentDiscontinuationRequestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for StudentDiscontinuationRequests.
+     */
+    cursor?: StudentDiscontinuationRequestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` StudentDiscontinuationRequests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` StudentDiscontinuationRequests.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of StudentDiscontinuationRequests.
+     */
+    distinct?: StudentDiscontinuationRequestScalarFieldEnum | StudentDiscontinuationRequestScalarFieldEnum[]
+  }
+
+  /**
+   * StudentDiscontinuationRequest findFirstOrThrow
+   */
+  export type StudentDiscontinuationRequestFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentDiscontinuationRequest
+     */
+    select?: StudentDiscontinuationRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StudentDiscontinuationRequest
+     */
+    omit?: StudentDiscontinuationRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentDiscontinuationRequestInclude<ExtArgs> | null
+    /**
+     * Filter, which StudentDiscontinuationRequest to fetch.
+     */
+    where?: StudentDiscontinuationRequestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of StudentDiscontinuationRequests to fetch.
+     */
+    orderBy?: StudentDiscontinuationRequestOrderByWithRelationInput | StudentDiscontinuationRequestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for StudentDiscontinuationRequests.
+     */
+    cursor?: StudentDiscontinuationRequestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` StudentDiscontinuationRequests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` StudentDiscontinuationRequests.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of StudentDiscontinuationRequests.
+     */
+    distinct?: StudentDiscontinuationRequestScalarFieldEnum | StudentDiscontinuationRequestScalarFieldEnum[]
+  }
+
+  /**
+   * StudentDiscontinuationRequest findMany
+   */
+  export type StudentDiscontinuationRequestFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentDiscontinuationRequest
+     */
+    select?: StudentDiscontinuationRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StudentDiscontinuationRequest
+     */
+    omit?: StudentDiscontinuationRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentDiscontinuationRequestInclude<ExtArgs> | null
+    /**
+     * Filter, which StudentDiscontinuationRequests to fetch.
+     */
+    where?: StudentDiscontinuationRequestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of StudentDiscontinuationRequests to fetch.
+     */
+    orderBy?: StudentDiscontinuationRequestOrderByWithRelationInput | StudentDiscontinuationRequestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing StudentDiscontinuationRequests.
+     */
+    cursor?: StudentDiscontinuationRequestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` StudentDiscontinuationRequests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` StudentDiscontinuationRequests.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of StudentDiscontinuationRequests.
+     */
+    distinct?: StudentDiscontinuationRequestScalarFieldEnum | StudentDiscontinuationRequestScalarFieldEnum[]
+  }
+
+  /**
+   * StudentDiscontinuationRequest create
+   */
+  export type StudentDiscontinuationRequestCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentDiscontinuationRequest
+     */
+    select?: StudentDiscontinuationRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StudentDiscontinuationRequest
+     */
+    omit?: StudentDiscontinuationRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentDiscontinuationRequestInclude<ExtArgs> | null
+    /**
+     * The data needed to create a StudentDiscontinuationRequest.
+     */
+    data: XOR<StudentDiscontinuationRequestCreateInput, StudentDiscontinuationRequestUncheckedCreateInput>
+  }
+
+  /**
+   * StudentDiscontinuationRequest createMany
+   */
+  export type StudentDiscontinuationRequestCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many StudentDiscontinuationRequests.
+     */
+    data: StudentDiscontinuationRequestCreateManyInput | StudentDiscontinuationRequestCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * StudentDiscontinuationRequest createManyAndReturn
+   */
+  export type StudentDiscontinuationRequestCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentDiscontinuationRequest
+     */
+    select?: StudentDiscontinuationRequestSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the StudentDiscontinuationRequest
+     */
+    omit?: StudentDiscontinuationRequestOmit<ExtArgs> | null
+    /**
+     * The data used to create many StudentDiscontinuationRequests.
+     */
+    data: StudentDiscontinuationRequestCreateManyInput | StudentDiscontinuationRequestCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentDiscontinuationRequestIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * StudentDiscontinuationRequest update
+   */
+  export type StudentDiscontinuationRequestUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentDiscontinuationRequest
+     */
+    select?: StudentDiscontinuationRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StudentDiscontinuationRequest
+     */
+    omit?: StudentDiscontinuationRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentDiscontinuationRequestInclude<ExtArgs> | null
+    /**
+     * The data needed to update a StudentDiscontinuationRequest.
+     */
+    data: XOR<StudentDiscontinuationRequestUpdateInput, StudentDiscontinuationRequestUncheckedUpdateInput>
+    /**
+     * Choose, which StudentDiscontinuationRequest to update.
+     */
+    where: StudentDiscontinuationRequestWhereUniqueInput
+  }
+
+  /**
+   * StudentDiscontinuationRequest updateMany
+   */
+  export type StudentDiscontinuationRequestUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update StudentDiscontinuationRequests.
+     */
+    data: XOR<StudentDiscontinuationRequestUpdateManyMutationInput, StudentDiscontinuationRequestUncheckedUpdateManyInput>
+    /**
+     * Filter which StudentDiscontinuationRequests to update
+     */
+    where?: StudentDiscontinuationRequestWhereInput
+    /**
+     * Limit how many StudentDiscontinuationRequests to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * StudentDiscontinuationRequest updateManyAndReturn
+   */
+  export type StudentDiscontinuationRequestUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentDiscontinuationRequest
+     */
+    select?: StudentDiscontinuationRequestSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the StudentDiscontinuationRequest
+     */
+    omit?: StudentDiscontinuationRequestOmit<ExtArgs> | null
+    /**
+     * The data used to update StudentDiscontinuationRequests.
+     */
+    data: XOR<StudentDiscontinuationRequestUpdateManyMutationInput, StudentDiscontinuationRequestUncheckedUpdateManyInput>
+    /**
+     * Filter which StudentDiscontinuationRequests to update
+     */
+    where?: StudentDiscontinuationRequestWhereInput
+    /**
+     * Limit how many StudentDiscontinuationRequests to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentDiscontinuationRequestIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * StudentDiscontinuationRequest upsert
+   */
+  export type StudentDiscontinuationRequestUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentDiscontinuationRequest
+     */
+    select?: StudentDiscontinuationRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StudentDiscontinuationRequest
+     */
+    omit?: StudentDiscontinuationRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentDiscontinuationRequestInclude<ExtArgs> | null
+    /**
+     * The filter to search for the StudentDiscontinuationRequest to update in case it exists.
+     */
+    where: StudentDiscontinuationRequestWhereUniqueInput
+    /**
+     * In case the StudentDiscontinuationRequest found by the `where` argument doesn't exist, create a new StudentDiscontinuationRequest with this data.
+     */
+    create: XOR<StudentDiscontinuationRequestCreateInput, StudentDiscontinuationRequestUncheckedCreateInput>
+    /**
+     * In case the StudentDiscontinuationRequest was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<StudentDiscontinuationRequestUpdateInput, StudentDiscontinuationRequestUncheckedUpdateInput>
+  }
+
+  /**
+   * StudentDiscontinuationRequest delete
+   */
+  export type StudentDiscontinuationRequestDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentDiscontinuationRequest
+     */
+    select?: StudentDiscontinuationRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StudentDiscontinuationRequest
+     */
+    omit?: StudentDiscontinuationRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentDiscontinuationRequestInclude<ExtArgs> | null
+    /**
+     * Filter which StudentDiscontinuationRequest to delete.
+     */
+    where: StudentDiscontinuationRequestWhereUniqueInput
+  }
+
+  /**
+   * StudentDiscontinuationRequest deleteMany
+   */
+  export type StudentDiscontinuationRequestDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which StudentDiscontinuationRequests to delete
+     */
+    where?: StudentDiscontinuationRequestWhereInput
+    /**
+     * Limit how many StudentDiscontinuationRequests to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * StudentDiscontinuationRequest without action
+   */
+  export type StudentDiscontinuationRequestDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudentDiscontinuationRequest
+     */
+    select?: StudentDiscontinuationRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StudentDiscontinuationRequest
+     */
+    omit?: StudentDiscontinuationRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StudentDiscontinuationRequestInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model FacultyReportShare
    */
 
@@ -92266,6 +95433,76 @@ export namespace Prisma {
   export type ExamAnswerScalarFieldEnum = (typeof ExamAnswerScalarFieldEnum)[keyof typeof ExamAnswerScalarFieldEnum]
 
 
+  export const MotivationMailHistoryScalarFieldEnum: {
+    id: 'id',
+    branchStudentId: 'branchStudentId',
+    branchId: 'branchId',
+    stage: 'stage',
+    absenceStartDate: 'absenceStartDate',
+    absenceWorkingDays: 'absenceWorkingDays',
+    status: 'status',
+    sentAt: 'sentAt',
+    failureReason: 'failureReason',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type MotivationMailHistoryScalarFieldEnum = (typeof MotivationMailHistoryScalarFieldEnum)[keyof typeof MotivationMailHistoryScalarFieldEnum]
+
+
+  export const StudentDiscontinuationRequestScalarFieldEnum: {
+    id: 'id',
+    branchStudentId: 'branchStudentId',
+    branchId: 'branchId',
+    requestedByUserId: 'requestedByUserId',
+    refundRequested: 'refundRequested',
+    courseProgress: 'courseProgress',
+    progressEarnedAmount: 'progressEarnedAmount',
+    balanceDue: 'balanceDue',
+    reason: 'reason',
+    details: 'details',
+    status: 'status',
+    contactOutcome: 'contactOutcome',
+    contactNotes: 'contactNotes',
+    contactedBy: 'contactedBy',
+    contactedAt: 'contactedAt',
+    contactAttemptCount: 'contactAttemptCount',
+    installmentOverdueCount: 'installmentOverdueCount',
+    nextInstallmentDueDate: 'nextInstallmentDueDate',
+    contactHistory: 'contactHistory',
+    escalationReason: 'escalationReason',
+    nextFollowUpDate: 'nextFollowUpDate',
+    branchReviewedBy: 'branchReviewedBy',
+    branchReviewedAt: 'branchReviewedAt',
+    branchReviewNote: 'branchReviewNote',
+    superAdminReviewedBy: 'superAdminReviewedBy',
+    superAdminReviewedAt: 'superAdminReviewedAt',
+    superAdminReviewNote: 'superAdminReviewNote',
+    accessDeactivationAt: 'accessDeactivationAt',
+    totalCourseFee: 'totalCourseFee',
+    actualCourseAmount: 'actualCourseAmount',
+    gstAmount: 'gstAmount',
+    registrationFee: 'registrationFee',
+    discountAmount: 'discountAmount',
+    finalCourseFee: 'finalCourseFee',
+    totalCourseHours: 'totalCourseHours',
+    conductedDays: 'conductedDays',
+    conductedHours: 'conductedHours',
+    completedCourseAmount: 'completedCourseAmount',
+    totalPaid: 'totalPaid',
+    outstandingAmount: 'outstandingAmount',
+    refundEligibleAmount: 'refundEligibleAmount',
+    waiverAmount: 'waiverAmount',
+    finalOutstandingAmount: 'finalOutstandingAmount',
+    settlementStatus: 'settlementStatus',
+    financeNote: 'financeNote',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type StudentDiscontinuationRequestScalarFieldEnum = (typeof StudentDiscontinuationRequestScalarFieldEnum)[keyof typeof StudentDiscontinuationRequestScalarFieldEnum]
+
+
   export const FacultyReportShareScalarFieldEnum: {
     id: 'id',
     facultyId: 'facultyId',
@@ -92634,6 +95871,20 @@ export namespace Prisma {
    * Reference to a field of type 'Decimal[]'
    */
   export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'DiscontinuationRequestStatus'
+   */
+  export type EnumDiscontinuationRequestStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DiscontinuationRequestStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'DiscontinuationRequestStatus[]'
+   */
+  export type ListEnumDiscontinuationRequestStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DiscontinuationRequestStatus[]'>
     
   /**
    * Deep Input Types
@@ -96094,6 +99345,8 @@ export namespace Prisma {
     retestExams?: ExamListRelationFilter
     reassessmentAssessments?: AssessmentListRelationFilter
     courseEnrollments?: BranchStudentCourseListRelationFilter
+    motivationMailHistory?: MotivationMailHistoryListRelationFilter
+    discontinuationRequests?: StudentDiscontinuationRequestListRelationFilter
   }
 
   export type BranchStudentOrderByWithRelationInput = {
@@ -96165,6 +99418,8 @@ export namespace Prisma {
     retestExams?: ExamOrderByRelationAggregateInput
     reassessmentAssessments?: AssessmentOrderByRelationAggregateInput
     courseEnrollments?: BranchStudentCourseOrderByRelationAggregateInput
+    motivationMailHistory?: MotivationMailHistoryOrderByRelationAggregateInput
+    discontinuationRequests?: StudentDiscontinuationRequestOrderByRelationAggregateInput
   }
 
   export type BranchStudentWhereUniqueInput = Prisma.AtLeast<{
@@ -96240,6 +99495,8 @@ export namespace Prisma {
     retestExams?: ExamListRelationFilter
     reassessmentAssessments?: AssessmentListRelationFilter
     courseEnrollments?: BranchStudentCourseListRelationFilter
+    motivationMailHistory?: MotivationMailHistoryListRelationFilter
+    discontinuationRequests?: StudentDiscontinuationRequestListRelationFilter
   }, "id" | "mobileNumber" | "emailAddress" | "branchId_studentId">
 
   export type BranchStudentOrderByWithAggregationInput = {
@@ -99824,6 +103081,361 @@ export namespace Prisma {
     selectedAnswer?: StringNullableWithAggregatesFilter<"ExamAnswer"> | string | null
     isCorrect?: BoolWithAggregatesFilter<"ExamAnswer"> | boolean
     marksAwarded?: IntWithAggregatesFilter<"ExamAnswer"> | number
+  }
+
+  export type MotivationMailHistoryWhereInput = {
+    AND?: MotivationMailHistoryWhereInput | MotivationMailHistoryWhereInput[]
+    OR?: MotivationMailHistoryWhereInput[]
+    NOT?: MotivationMailHistoryWhereInput | MotivationMailHistoryWhereInput[]
+    id?: StringFilter<"MotivationMailHistory"> | string
+    branchStudentId?: StringFilter<"MotivationMailHistory"> | string
+    branchId?: StringFilter<"MotivationMailHistory"> | string
+    stage?: StringFilter<"MotivationMailHistory"> | string
+    absenceStartDate?: StringFilter<"MotivationMailHistory"> | string
+    absenceWorkingDays?: IntFilter<"MotivationMailHistory"> | number
+    status?: StringFilter<"MotivationMailHistory"> | string
+    sentAt?: DateTimeFilter<"MotivationMailHistory"> | Date | string
+    failureReason?: StringNullableFilter<"MotivationMailHistory"> | string | null
+    createdAt?: DateTimeFilter<"MotivationMailHistory"> | Date | string
+    updatedAt?: DateTimeFilter<"MotivationMailHistory"> | Date | string
+    branchStudent?: XOR<BranchStudentScalarRelationFilter, BranchStudentWhereInput>
+  }
+
+  export type MotivationMailHistoryOrderByWithRelationInput = {
+    id?: SortOrder
+    branchStudentId?: SortOrder
+    branchId?: SortOrder
+    stage?: SortOrder
+    absenceStartDate?: SortOrder
+    absenceWorkingDays?: SortOrder
+    status?: SortOrder
+    sentAt?: SortOrder
+    failureReason?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    branchStudent?: BranchStudentOrderByWithRelationInput
+  }
+
+  export type MotivationMailHistoryWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    branchStudentId_absenceStartDate_stage?: MotivationMailHistoryBranchStudentIdAbsenceStartDateStageCompoundUniqueInput
+    AND?: MotivationMailHistoryWhereInput | MotivationMailHistoryWhereInput[]
+    OR?: MotivationMailHistoryWhereInput[]
+    NOT?: MotivationMailHistoryWhereInput | MotivationMailHistoryWhereInput[]
+    branchStudentId?: StringFilter<"MotivationMailHistory"> | string
+    branchId?: StringFilter<"MotivationMailHistory"> | string
+    stage?: StringFilter<"MotivationMailHistory"> | string
+    absenceStartDate?: StringFilter<"MotivationMailHistory"> | string
+    absenceWorkingDays?: IntFilter<"MotivationMailHistory"> | number
+    status?: StringFilter<"MotivationMailHistory"> | string
+    sentAt?: DateTimeFilter<"MotivationMailHistory"> | Date | string
+    failureReason?: StringNullableFilter<"MotivationMailHistory"> | string | null
+    createdAt?: DateTimeFilter<"MotivationMailHistory"> | Date | string
+    updatedAt?: DateTimeFilter<"MotivationMailHistory"> | Date | string
+    branchStudent?: XOR<BranchStudentScalarRelationFilter, BranchStudentWhereInput>
+  }, "id" | "branchStudentId_absenceStartDate_stage">
+
+  export type MotivationMailHistoryOrderByWithAggregationInput = {
+    id?: SortOrder
+    branchStudentId?: SortOrder
+    branchId?: SortOrder
+    stage?: SortOrder
+    absenceStartDate?: SortOrder
+    absenceWorkingDays?: SortOrder
+    status?: SortOrder
+    sentAt?: SortOrder
+    failureReason?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: MotivationMailHistoryCountOrderByAggregateInput
+    _avg?: MotivationMailHistoryAvgOrderByAggregateInput
+    _max?: MotivationMailHistoryMaxOrderByAggregateInput
+    _min?: MotivationMailHistoryMinOrderByAggregateInput
+    _sum?: MotivationMailHistorySumOrderByAggregateInput
+  }
+
+  export type MotivationMailHistoryScalarWhereWithAggregatesInput = {
+    AND?: MotivationMailHistoryScalarWhereWithAggregatesInput | MotivationMailHistoryScalarWhereWithAggregatesInput[]
+    OR?: MotivationMailHistoryScalarWhereWithAggregatesInput[]
+    NOT?: MotivationMailHistoryScalarWhereWithAggregatesInput | MotivationMailHistoryScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"MotivationMailHistory"> | string
+    branchStudentId?: StringWithAggregatesFilter<"MotivationMailHistory"> | string
+    branchId?: StringWithAggregatesFilter<"MotivationMailHistory"> | string
+    stage?: StringWithAggregatesFilter<"MotivationMailHistory"> | string
+    absenceStartDate?: StringWithAggregatesFilter<"MotivationMailHistory"> | string
+    absenceWorkingDays?: IntWithAggregatesFilter<"MotivationMailHistory"> | number
+    status?: StringWithAggregatesFilter<"MotivationMailHistory"> | string
+    sentAt?: DateTimeWithAggregatesFilter<"MotivationMailHistory"> | Date | string
+    failureReason?: StringNullableWithAggregatesFilter<"MotivationMailHistory"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"MotivationMailHistory"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"MotivationMailHistory"> | Date | string
+  }
+
+  export type StudentDiscontinuationRequestWhereInput = {
+    AND?: StudentDiscontinuationRequestWhereInput | StudentDiscontinuationRequestWhereInput[]
+    OR?: StudentDiscontinuationRequestWhereInput[]
+    NOT?: StudentDiscontinuationRequestWhereInput | StudentDiscontinuationRequestWhereInput[]
+    id?: StringFilter<"StudentDiscontinuationRequest"> | string
+    branchStudentId?: StringFilter<"StudentDiscontinuationRequest"> | string
+    branchId?: StringFilter<"StudentDiscontinuationRequest"> | string
+    requestedByUserId?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
+    refundRequested?: BoolFilter<"StudentDiscontinuationRequest"> | boolean
+    courseProgress?: IntFilter<"StudentDiscontinuationRequest"> | number
+    progressEarnedAmount?: IntFilter<"StudentDiscontinuationRequest"> | number
+    balanceDue?: IntFilter<"StudentDiscontinuationRequest"> | number
+    reason?: StringFilter<"StudentDiscontinuationRequest"> | string
+    details?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
+    status?: EnumDiscontinuationRequestStatusFilter<"StudentDiscontinuationRequest"> | $Enums.DiscontinuationRequestStatus
+    contactOutcome?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
+    contactNotes?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
+    contactedBy?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
+    contactedAt?: DateTimeNullableFilter<"StudentDiscontinuationRequest"> | Date | string | null
+    contactAttemptCount?: IntFilter<"StudentDiscontinuationRequest"> | number
+    installmentOverdueCount?: IntFilter<"StudentDiscontinuationRequest"> | number
+    nextInstallmentDueDate?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
+    contactHistory?: JsonFilter<"StudentDiscontinuationRequest">
+    escalationReason?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
+    nextFollowUpDate?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
+    branchReviewedBy?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
+    branchReviewedAt?: DateTimeNullableFilter<"StudentDiscontinuationRequest"> | Date | string | null
+    branchReviewNote?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
+    superAdminReviewedBy?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
+    superAdminReviewedAt?: DateTimeNullableFilter<"StudentDiscontinuationRequest"> | Date | string | null
+    superAdminReviewNote?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
+    accessDeactivationAt?: DateTimeNullableFilter<"StudentDiscontinuationRequest"> | Date | string | null
+    totalCourseFee?: IntFilter<"StudentDiscontinuationRequest"> | number
+    actualCourseAmount?: IntFilter<"StudentDiscontinuationRequest"> | number
+    gstAmount?: IntFilter<"StudentDiscontinuationRequest"> | number
+    registrationFee?: IntFilter<"StudentDiscontinuationRequest"> | number
+    discountAmount?: IntFilter<"StudentDiscontinuationRequest"> | number
+    finalCourseFee?: IntFilter<"StudentDiscontinuationRequest"> | number
+    totalCourseHours?: IntFilter<"StudentDiscontinuationRequest"> | number
+    conductedDays?: IntFilter<"StudentDiscontinuationRequest"> | number
+    conductedHours?: IntFilter<"StudentDiscontinuationRequest"> | number
+    completedCourseAmount?: IntFilter<"StudentDiscontinuationRequest"> | number
+    totalPaid?: IntFilter<"StudentDiscontinuationRequest"> | number
+    outstandingAmount?: IntFilter<"StudentDiscontinuationRequest"> | number
+    refundEligibleAmount?: IntFilter<"StudentDiscontinuationRequest"> | number
+    waiverAmount?: IntFilter<"StudentDiscontinuationRequest"> | number
+    finalOutstandingAmount?: IntNullableFilter<"StudentDiscontinuationRequest"> | number | null
+    settlementStatus?: StringFilter<"StudentDiscontinuationRequest"> | string
+    financeNote?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
+    createdAt?: DateTimeFilter<"StudentDiscontinuationRequest"> | Date | string
+    updatedAt?: DateTimeFilter<"StudentDiscontinuationRequest"> | Date | string
+    branchStudent?: XOR<BranchStudentScalarRelationFilter, BranchStudentWhereInput>
+  }
+
+  export type StudentDiscontinuationRequestOrderByWithRelationInput = {
+    id?: SortOrder
+    branchStudentId?: SortOrder
+    branchId?: SortOrder
+    requestedByUserId?: SortOrderInput | SortOrder
+    refundRequested?: SortOrder
+    courseProgress?: SortOrder
+    progressEarnedAmount?: SortOrder
+    balanceDue?: SortOrder
+    reason?: SortOrder
+    details?: SortOrderInput | SortOrder
+    status?: SortOrder
+    contactOutcome?: SortOrderInput | SortOrder
+    contactNotes?: SortOrderInput | SortOrder
+    contactedBy?: SortOrderInput | SortOrder
+    contactedAt?: SortOrderInput | SortOrder
+    contactAttemptCount?: SortOrder
+    installmentOverdueCount?: SortOrder
+    nextInstallmentDueDate?: SortOrderInput | SortOrder
+    contactHistory?: SortOrder
+    escalationReason?: SortOrderInput | SortOrder
+    nextFollowUpDate?: SortOrderInput | SortOrder
+    branchReviewedBy?: SortOrderInput | SortOrder
+    branchReviewedAt?: SortOrderInput | SortOrder
+    branchReviewNote?: SortOrderInput | SortOrder
+    superAdminReviewedBy?: SortOrderInput | SortOrder
+    superAdminReviewedAt?: SortOrderInput | SortOrder
+    superAdminReviewNote?: SortOrderInput | SortOrder
+    accessDeactivationAt?: SortOrderInput | SortOrder
+    totalCourseFee?: SortOrder
+    actualCourseAmount?: SortOrder
+    gstAmount?: SortOrder
+    registrationFee?: SortOrder
+    discountAmount?: SortOrder
+    finalCourseFee?: SortOrder
+    totalCourseHours?: SortOrder
+    conductedDays?: SortOrder
+    conductedHours?: SortOrder
+    completedCourseAmount?: SortOrder
+    totalPaid?: SortOrder
+    outstandingAmount?: SortOrder
+    refundEligibleAmount?: SortOrder
+    waiverAmount?: SortOrder
+    finalOutstandingAmount?: SortOrderInput | SortOrder
+    settlementStatus?: SortOrder
+    financeNote?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    branchStudent?: BranchStudentOrderByWithRelationInput
+  }
+
+  export type StudentDiscontinuationRequestWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: StudentDiscontinuationRequestWhereInput | StudentDiscontinuationRequestWhereInput[]
+    OR?: StudentDiscontinuationRequestWhereInput[]
+    NOT?: StudentDiscontinuationRequestWhereInput | StudentDiscontinuationRequestWhereInput[]
+    branchStudentId?: StringFilter<"StudentDiscontinuationRequest"> | string
+    branchId?: StringFilter<"StudentDiscontinuationRequest"> | string
+    requestedByUserId?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
+    refundRequested?: BoolFilter<"StudentDiscontinuationRequest"> | boolean
+    courseProgress?: IntFilter<"StudentDiscontinuationRequest"> | number
+    progressEarnedAmount?: IntFilter<"StudentDiscontinuationRequest"> | number
+    balanceDue?: IntFilter<"StudentDiscontinuationRequest"> | number
+    reason?: StringFilter<"StudentDiscontinuationRequest"> | string
+    details?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
+    status?: EnumDiscontinuationRequestStatusFilter<"StudentDiscontinuationRequest"> | $Enums.DiscontinuationRequestStatus
+    contactOutcome?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
+    contactNotes?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
+    contactedBy?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
+    contactedAt?: DateTimeNullableFilter<"StudentDiscontinuationRequest"> | Date | string | null
+    contactAttemptCount?: IntFilter<"StudentDiscontinuationRequest"> | number
+    installmentOverdueCount?: IntFilter<"StudentDiscontinuationRequest"> | number
+    nextInstallmentDueDate?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
+    contactHistory?: JsonFilter<"StudentDiscontinuationRequest">
+    escalationReason?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
+    nextFollowUpDate?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
+    branchReviewedBy?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
+    branchReviewedAt?: DateTimeNullableFilter<"StudentDiscontinuationRequest"> | Date | string | null
+    branchReviewNote?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
+    superAdminReviewedBy?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
+    superAdminReviewedAt?: DateTimeNullableFilter<"StudentDiscontinuationRequest"> | Date | string | null
+    superAdminReviewNote?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
+    accessDeactivationAt?: DateTimeNullableFilter<"StudentDiscontinuationRequest"> | Date | string | null
+    totalCourseFee?: IntFilter<"StudentDiscontinuationRequest"> | number
+    actualCourseAmount?: IntFilter<"StudentDiscontinuationRequest"> | number
+    gstAmount?: IntFilter<"StudentDiscontinuationRequest"> | number
+    registrationFee?: IntFilter<"StudentDiscontinuationRequest"> | number
+    discountAmount?: IntFilter<"StudentDiscontinuationRequest"> | number
+    finalCourseFee?: IntFilter<"StudentDiscontinuationRequest"> | number
+    totalCourseHours?: IntFilter<"StudentDiscontinuationRequest"> | number
+    conductedDays?: IntFilter<"StudentDiscontinuationRequest"> | number
+    conductedHours?: IntFilter<"StudentDiscontinuationRequest"> | number
+    completedCourseAmount?: IntFilter<"StudentDiscontinuationRequest"> | number
+    totalPaid?: IntFilter<"StudentDiscontinuationRequest"> | number
+    outstandingAmount?: IntFilter<"StudentDiscontinuationRequest"> | number
+    refundEligibleAmount?: IntFilter<"StudentDiscontinuationRequest"> | number
+    waiverAmount?: IntFilter<"StudentDiscontinuationRequest"> | number
+    finalOutstandingAmount?: IntNullableFilter<"StudentDiscontinuationRequest"> | number | null
+    settlementStatus?: StringFilter<"StudentDiscontinuationRequest"> | string
+    financeNote?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
+    createdAt?: DateTimeFilter<"StudentDiscontinuationRequest"> | Date | string
+    updatedAt?: DateTimeFilter<"StudentDiscontinuationRequest"> | Date | string
+    branchStudent?: XOR<BranchStudentScalarRelationFilter, BranchStudentWhereInput>
+  }, "id">
+
+  export type StudentDiscontinuationRequestOrderByWithAggregationInput = {
+    id?: SortOrder
+    branchStudentId?: SortOrder
+    branchId?: SortOrder
+    requestedByUserId?: SortOrderInput | SortOrder
+    refundRequested?: SortOrder
+    courseProgress?: SortOrder
+    progressEarnedAmount?: SortOrder
+    balanceDue?: SortOrder
+    reason?: SortOrder
+    details?: SortOrderInput | SortOrder
+    status?: SortOrder
+    contactOutcome?: SortOrderInput | SortOrder
+    contactNotes?: SortOrderInput | SortOrder
+    contactedBy?: SortOrderInput | SortOrder
+    contactedAt?: SortOrderInput | SortOrder
+    contactAttemptCount?: SortOrder
+    installmentOverdueCount?: SortOrder
+    nextInstallmentDueDate?: SortOrderInput | SortOrder
+    contactHistory?: SortOrder
+    escalationReason?: SortOrderInput | SortOrder
+    nextFollowUpDate?: SortOrderInput | SortOrder
+    branchReviewedBy?: SortOrderInput | SortOrder
+    branchReviewedAt?: SortOrderInput | SortOrder
+    branchReviewNote?: SortOrderInput | SortOrder
+    superAdminReviewedBy?: SortOrderInput | SortOrder
+    superAdminReviewedAt?: SortOrderInput | SortOrder
+    superAdminReviewNote?: SortOrderInput | SortOrder
+    accessDeactivationAt?: SortOrderInput | SortOrder
+    totalCourseFee?: SortOrder
+    actualCourseAmount?: SortOrder
+    gstAmount?: SortOrder
+    registrationFee?: SortOrder
+    discountAmount?: SortOrder
+    finalCourseFee?: SortOrder
+    totalCourseHours?: SortOrder
+    conductedDays?: SortOrder
+    conductedHours?: SortOrder
+    completedCourseAmount?: SortOrder
+    totalPaid?: SortOrder
+    outstandingAmount?: SortOrder
+    refundEligibleAmount?: SortOrder
+    waiverAmount?: SortOrder
+    finalOutstandingAmount?: SortOrderInput | SortOrder
+    settlementStatus?: SortOrder
+    financeNote?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: StudentDiscontinuationRequestCountOrderByAggregateInput
+    _avg?: StudentDiscontinuationRequestAvgOrderByAggregateInput
+    _max?: StudentDiscontinuationRequestMaxOrderByAggregateInput
+    _min?: StudentDiscontinuationRequestMinOrderByAggregateInput
+    _sum?: StudentDiscontinuationRequestSumOrderByAggregateInput
+  }
+
+  export type StudentDiscontinuationRequestScalarWhereWithAggregatesInput = {
+    AND?: StudentDiscontinuationRequestScalarWhereWithAggregatesInput | StudentDiscontinuationRequestScalarWhereWithAggregatesInput[]
+    OR?: StudentDiscontinuationRequestScalarWhereWithAggregatesInput[]
+    NOT?: StudentDiscontinuationRequestScalarWhereWithAggregatesInput | StudentDiscontinuationRequestScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"StudentDiscontinuationRequest"> | string
+    branchStudentId?: StringWithAggregatesFilter<"StudentDiscontinuationRequest"> | string
+    branchId?: StringWithAggregatesFilter<"StudentDiscontinuationRequest"> | string
+    requestedByUserId?: StringNullableWithAggregatesFilter<"StudentDiscontinuationRequest"> | string | null
+    refundRequested?: BoolWithAggregatesFilter<"StudentDiscontinuationRequest"> | boolean
+    courseProgress?: IntWithAggregatesFilter<"StudentDiscontinuationRequest"> | number
+    progressEarnedAmount?: IntWithAggregatesFilter<"StudentDiscontinuationRequest"> | number
+    balanceDue?: IntWithAggregatesFilter<"StudentDiscontinuationRequest"> | number
+    reason?: StringWithAggregatesFilter<"StudentDiscontinuationRequest"> | string
+    details?: StringNullableWithAggregatesFilter<"StudentDiscontinuationRequest"> | string | null
+    status?: EnumDiscontinuationRequestStatusWithAggregatesFilter<"StudentDiscontinuationRequest"> | $Enums.DiscontinuationRequestStatus
+    contactOutcome?: StringNullableWithAggregatesFilter<"StudentDiscontinuationRequest"> | string | null
+    contactNotes?: StringNullableWithAggregatesFilter<"StudentDiscontinuationRequest"> | string | null
+    contactedBy?: StringNullableWithAggregatesFilter<"StudentDiscontinuationRequest"> | string | null
+    contactedAt?: DateTimeNullableWithAggregatesFilter<"StudentDiscontinuationRequest"> | Date | string | null
+    contactAttemptCount?: IntWithAggregatesFilter<"StudentDiscontinuationRequest"> | number
+    installmentOverdueCount?: IntWithAggregatesFilter<"StudentDiscontinuationRequest"> | number
+    nextInstallmentDueDate?: StringNullableWithAggregatesFilter<"StudentDiscontinuationRequest"> | string | null
+    contactHistory?: JsonWithAggregatesFilter<"StudentDiscontinuationRequest">
+    escalationReason?: StringNullableWithAggregatesFilter<"StudentDiscontinuationRequest"> | string | null
+    nextFollowUpDate?: StringNullableWithAggregatesFilter<"StudentDiscontinuationRequest"> | string | null
+    branchReviewedBy?: StringNullableWithAggregatesFilter<"StudentDiscontinuationRequest"> | string | null
+    branchReviewedAt?: DateTimeNullableWithAggregatesFilter<"StudentDiscontinuationRequest"> | Date | string | null
+    branchReviewNote?: StringNullableWithAggregatesFilter<"StudentDiscontinuationRequest"> | string | null
+    superAdminReviewedBy?: StringNullableWithAggregatesFilter<"StudentDiscontinuationRequest"> | string | null
+    superAdminReviewedAt?: DateTimeNullableWithAggregatesFilter<"StudentDiscontinuationRequest"> | Date | string | null
+    superAdminReviewNote?: StringNullableWithAggregatesFilter<"StudentDiscontinuationRequest"> | string | null
+    accessDeactivationAt?: DateTimeNullableWithAggregatesFilter<"StudentDiscontinuationRequest"> | Date | string | null
+    totalCourseFee?: IntWithAggregatesFilter<"StudentDiscontinuationRequest"> | number
+    actualCourseAmount?: IntWithAggregatesFilter<"StudentDiscontinuationRequest"> | number
+    gstAmount?: IntWithAggregatesFilter<"StudentDiscontinuationRequest"> | number
+    registrationFee?: IntWithAggregatesFilter<"StudentDiscontinuationRequest"> | number
+    discountAmount?: IntWithAggregatesFilter<"StudentDiscontinuationRequest"> | number
+    finalCourseFee?: IntWithAggregatesFilter<"StudentDiscontinuationRequest"> | number
+    totalCourseHours?: IntWithAggregatesFilter<"StudentDiscontinuationRequest"> | number
+    conductedDays?: IntWithAggregatesFilter<"StudentDiscontinuationRequest"> | number
+    conductedHours?: IntWithAggregatesFilter<"StudentDiscontinuationRequest"> | number
+    completedCourseAmount?: IntWithAggregatesFilter<"StudentDiscontinuationRequest"> | number
+    totalPaid?: IntWithAggregatesFilter<"StudentDiscontinuationRequest"> | number
+    outstandingAmount?: IntWithAggregatesFilter<"StudentDiscontinuationRequest"> | number
+    refundEligibleAmount?: IntWithAggregatesFilter<"StudentDiscontinuationRequest"> | number
+    waiverAmount?: IntWithAggregatesFilter<"StudentDiscontinuationRequest"> | number
+    finalOutstandingAmount?: IntNullableWithAggregatesFilter<"StudentDiscontinuationRequest"> | number | null
+    settlementStatus?: StringWithAggregatesFilter<"StudentDiscontinuationRequest"> | string
+    financeNote?: StringNullableWithAggregatesFilter<"StudentDiscontinuationRequest"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"StudentDiscontinuationRequest"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"StudentDiscontinuationRequest"> | Date | string
   }
 
   export type FacultyReportShareWhereInput = {
@@ -104258,6 +107870,8 @@ export namespace Prisma {
     retestExams?: ExamCreateNestedManyWithoutRetestStudentInput
     reassessmentAssessments?: AssessmentCreateNestedManyWithoutReassessmentStudentInput
     courseEnrollments?: BranchStudentCourseCreateNestedManyWithoutBranchStudentInput
+    motivationMailHistory?: MotivationMailHistoryCreateNestedManyWithoutBranchStudentInput
+    discontinuationRequests?: StudentDiscontinuationRequestCreateNestedManyWithoutBranchStudentInput
   }
 
   export type BranchStudentUncheckedCreateInput = {
@@ -104327,6 +107941,8 @@ export namespace Prisma {
     retestExams?: ExamUncheckedCreateNestedManyWithoutRetestStudentInput
     reassessmentAssessments?: AssessmentUncheckedCreateNestedManyWithoutReassessmentStudentInput
     courseEnrollments?: BranchStudentCourseUncheckedCreateNestedManyWithoutBranchStudentInput
+    motivationMailHistory?: MotivationMailHistoryUncheckedCreateNestedManyWithoutBranchStudentInput
+    discontinuationRequests?: StudentDiscontinuationRequestUncheckedCreateNestedManyWithoutBranchStudentInput
   }
 
   export type BranchStudentUpdateInput = {
@@ -104396,6 +108012,8 @@ export namespace Prisma {
     retestExams?: ExamUpdateManyWithoutRetestStudentNestedInput
     reassessmentAssessments?: AssessmentUpdateManyWithoutReassessmentStudentNestedInput
     courseEnrollments?: BranchStudentCourseUpdateManyWithoutBranchStudentNestedInput
+    motivationMailHistory?: MotivationMailHistoryUpdateManyWithoutBranchStudentNestedInput
+    discontinuationRequests?: StudentDiscontinuationRequestUpdateManyWithoutBranchStudentNestedInput
   }
 
   export type BranchStudentUncheckedUpdateInput = {
@@ -104465,6 +108083,8 @@ export namespace Prisma {
     retestExams?: ExamUncheckedUpdateManyWithoutRetestStudentNestedInput
     reassessmentAssessments?: AssessmentUncheckedUpdateManyWithoutReassessmentStudentNestedInput
     courseEnrollments?: BranchStudentCourseUncheckedUpdateManyWithoutBranchStudentNestedInput
+    motivationMailHistory?: MotivationMailHistoryUncheckedUpdateManyWithoutBranchStudentNestedInput
+    discontinuationRequests?: StudentDiscontinuationRequestUncheckedUpdateManyWithoutBranchStudentNestedInput
   }
 
   export type BranchStudentCreateManyInput = {
@@ -108556,6 +112176,452 @@ export namespace Prisma {
     marksAwarded?: IntFieldUpdateOperationsInput | number
   }
 
+  export type MotivationMailHistoryCreateInput = {
+    id?: string
+    branchId: string
+    stage: string
+    absenceStartDate: string
+    absenceWorkingDays: number
+    status?: string
+    sentAt?: Date | string
+    failureReason?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branchStudent: BranchStudentCreateNestedOneWithoutMotivationMailHistoryInput
+  }
+
+  export type MotivationMailHistoryUncheckedCreateInput = {
+    id?: string
+    branchStudentId: string
+    branchId: string
+    stage: string
+    absenceStartDate: string
+    absenceWorkingDays: number
+    status?: string
+    sentAt?: Date | string
+    failureReason?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MotivationMailHistoryUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    stage?: StringFieldUpdateOperationsInput | string
+    absenceStartDate?: StringFieldUpdateOperationsInput | string
+    absenceWorkingDays?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    sentAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    failureReason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branchStudent?: BranchStudentUpdateOneRequiredWithoutMotivationMailHistoryNestedInput
+  }
+
+  export type MotivationMailHistoryUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchStudentId?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    stage?: StringFieldUpdateOperationsInput | string
+    absenceStartDate?: StringFieldUpdateOperationsInput | string
+    absenceWorkingDays?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    sentAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    failureReason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MotivationMailHistoryCreateManyInput = {
+    id?: string
+    branchStudentId: string
+    branchId: string
+    stage: string
+    absenceStartDate: string
+    absenceWorkingDays: number
+    status?: string
+    sentAt?: Date | string
+    failureReason?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MotivationMailHistoryUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    stage?: StringFieldUpdateOperationsInput | string
+    absenceStartDate?: StringFieldUpdateOperationsInput | string
+    absenceWorkingDays?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    sentAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    failureReason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MotivationMailHistoryUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchStudentId?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    stage?: StringFieldUpdateOperationsInput | string
+    absenceStartDate?: StringFieldUpdateOperationsInput | string
+    absenceWorkingDays?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    sentAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    failureReason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type StudentDiscontinuationRequestCreateInput = {
+    id?: string
+    branchId: string
+    requestedByUserId?: string | null
+    refundRequested?: boolean
+    courseProgress?: number
+    progressEarnedAmount?: number
+    balanceDue?: number
+    reason: string
+    details?: string | null
+    status?: $Enums.DiscontinuationRequestStatus
+    contactOutcome?: string | null
+    contactNotes?: string | null
+    contactedBy?: string | null
+    contactedAt?: Date | string | null
+    contactAttemptCount?: number
+    installmentOverdueCount?: number
+    nextInstallmentDueDate?: string | null
+    contactHistory?: JsonNullValueInput | InputJsonValue
+    escalationReason?: string | null
+    nextFollowUpDate?: string | null
+    branchReviewedBy?: string | null
+    branchReviewedAt?: Date | string | null
+    branchReviewNote?: string | null
+    superAdminReviewedBy?: string | null
+    superAdminReviewedAt?: Date | string | null
+    superAdminReviewNote?: string | null
+    accessDeactivationAt?: Date | string | null
+    totalCourseFee?: number
+    actualCourseAmount?: number
+    gstAmount?: number
+    registrationFee?: number
+    discountAmount?: number
+    finalCourseFee?: number
+    totalCourseHours?: number
+    conductedDays?: number
+    conductedHours?: number
+    completedCourseAmount?: number
+    totalPaid?: number
+    outstandingAmount?: number
+    refundEligibleAmount?: number
+    waiverAmount?: number
+    finalOutstandingAmount?: number | null
+    settlementStatus?: string
+    financeNote?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branchStudent: BranchStudentCreateNestedOneWithoutDiscontinuationRequestsInput
+  }
+
+  export type StudentDiscontinuationRequestUncheckedCreateInput = {
+    id?: string
+    branchStudentId: string
+    branchId: string
+    requestedByUserId?: string | null
+    refundRequested?: boolean
+    courseProgress?: number
+    progressEarnedAmount?: number
+    balanceDue?: number
+    reason: string
+    details?: string | null
+    status?: $Enums.DiscontinuationRequestStatus
+    contactOutcome?: string | null
+    contactNotes?: string | null
+    contactedBy?: string | null
+    contactedAt?: Date | string | null
+    contactAttemptCount?: number
+    installmentOverdueCount?: number
+    nextInstallmentDueDate?: string | null
+    contactHistory?: JsonNullValueInput | InputJsonValue
+    escalationReason?: string | null
+    nextFollowUpDate?: string | null
+    branchReviewedBy?: string | null
+    branchReviewedAt?: Date | string | null
+    branchReviewNote?: string | null
+    superAdminReviewedBy?: string | null
+    superAdminReviewedAt?: Date | string | null
+    superAdminReviewNote?: string | null
+    accessDeactivationAt?: Date | string | null
+    totalCourseFee?: number
+    actualCourseAmount?: number
+    gstAmount?: number
+    registrationFee?: number
+    discountAmount?: number
+    finalCourseFee?: number
+    totalCourseHours?: number
+    conductedDays?: number
+    conductedHours?: number
+    completedCourseAmount?: number
+    totalPaid?: number
+    outstandingAmount?: number
+    refundEligibleAmount?: number
+    waiverAmount?: number
+    finalOutstandingAmount?: number | null
+    settlementStatus?: string
+    financeNote?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type StudentDiscontinuationRequestUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    requestedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    refundRequested?: BoolFieldUpdateOperationsInput | boolean
+    courseProgress?: IntFieldUpdateOperationsInput | number
+    progressEarnedAmount?: IntFieldUpdateOperationsInput | number
+    balanceDue?: IntFieldUpdateOperationsInput | number
+    reason?: StringFieldUpdateOperationsInput | string
+    details?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumDiscontinuationRequestStatusFieldUpdateOperationsInput | $Enums.DiscontinuationRequestStatus
+    contactOutcome?: NullableStringFieldUpdateOperationsInput | string | null
+    contactNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    contactedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    contactedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    contactAttemptCount?: IntFieldUpdateOperationsInput | number
+    installmentOverdueCount?: IntFieldUpdateOperationsInput | number
+    nextInstallmentDueDate?: NullableStringFieldUpdateOperationsInput | string | null
+    contactHistory?: JsonNullValueInput | InputJsonValue
+    escalationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    nextFollowUpDate?: NullableStringFieldUpdateOperationsInput | string | null
+    branchReviewedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    branchReviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    branchReviewNote?: NullableStringFieldUpdateOperationsInput | string | null
+    superAdminReviewedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    superAdminReviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    superAdminReviewNote?: NullableStringFieldUpdateOperationsInput | string | null
+    accessDeactivationAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalCourseFee?: IntFieldUpdateOperationsInput | number
+    actualCourseAmount?: IntFieldUpdateOperationsInput | number
+    gstAmount?: IntFieldUpdateOperationsInput | number
+    registrationFee?: IntFieldUpdateOperationsInput | number
+    discountAmount?: IntFieldUpdateOperationsInput | number
+    finalCourseFee?: IntFieldUpdateOperationsInput | number
+    totalCourseHours?: IntFieldUpdateOperationsInput | number
+    conductedDays?: IntFieldUpdateOperationsInput | number
+    conductedHours?: IntFieldUpdateOperationsInput | number
+    completedCourseAmount?: IntFieldUpdateOperationsInput | number
+    totalPaid?: IntFieldUpdateOperationsInput | number
+    outstandingAmount?: IntFieldUpdateOperationsInput | number
+    refundEligibleAmount?: IntFieldUpdateOperationsInput | number
+    waiverAmount?: IntFieldUpdateOperationsInput | number
+    finalOutstandingAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    settlementStatus?: StringFieldUpdateOperationsInput | string
+    financeNote?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branchStudent?: BranchStudentUpdateOneRequiredWithoutDiscontinuationRequestsNestedInput
+  }
+
+  export type StudentDiscontinuationRequestUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchStudentId?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    requestedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    refundRequested?: BoolFieldUpdateOperationsInput | boolean
+    courseProgress?: IntFieldUpdateOperationsInput | number
+    progressEarnedAmount?: IntFieldUpdateOperationsInput | number
+    balanceDue?: IntFieldUpdateOperationsInput | number
+    reason?: StringFieldUpdateOperationsInput | string
+    details?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumDiscontinuationRequestStatusFieldUpdateOperationsInput | $Enums.DiscontinuationRequestStatus
+    contactOutcome?: NullableStringFieldUpdateOperationsInput | string | null
+    contactNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    contactedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    contactedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    contactAttemptCount?: IntFieldUpdateOperationsInput | number
+    installmentOverdueCount?: IntFieldUpdateOperationsInput | number
+    nextInstallmentDueDate?: NullableStringFieldUpdateOperationsInput | string | null
+    contactHistory?: JsonNullValueInput | InputJsonValue
+    escalationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    nextFollowUpDate?: NullableStringFieldUpdateOperationsInput | string | null
+    branchReviewedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    branchReviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    branchReviewNote?: NullableStringFieldUpdateOperationsInput | string | null
+    superAdminReviewedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    superAdminReviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    superAdminReviewNote?: NullableStringFieldUpdateOperationsInput | string | null
+    accessDeactivationAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalCourseFee?: IntFieldUpdateOperationsInput | number
+    actualCourseAmount?: IntFieldUpdateOperationsInput | number
+    gstAmount?: IntFieldUpdateOperationsInput | number
+    registrationFee?: IntFieldUpdateOperationsInput | number
+    discountAmount?: IntFieldUpdateOperationsInput | number
+    finalCourseFee?: IntFieldUpdateOperationsInput | number
+    totalCourseHours?: IntFieldUpdateOperationsInput | number
+    conductedDays?: IntFieldUpdateOperationsInput | number
+    conductedHours?: IntFieldUpdateOperationsInput | number
+    completedCourseAmount?: IntFieldUpdateOperationsInput | number
+    totalPaid?: IntFieldUpdateOperationsInput | number
+    outstandingAmount?: IntFieldUpdateOperationsInput | number
+    refundEligibleAmount?: IntFieldUpdateOperationsInput | number
+    waiverAmount?: IntFieldUpdateOperationsInput | number
+    finalOutstandingAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    settlementStatus?: StringFieldUpdateOperationsInput | string
+    financeNote?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type StudentDiscontinuationRequestCreateManyInput = {
+    id?: string
+    branchStudentId: string
+    branchId: string
+    requestedByUserId?: string | null
+    refundRequested?: boolean
+    courseProgress?: number
+    progressEarnedAmount?: number
+    balanceDue?: number
+    reason: string
+    details?: string | null
+    status?: $Enums.DiscontinuationRequestStatus
+    contactOutcome?: string | null
+    contactNotes?: string | null
+    contactedBy?: string | null
+    contactedAt?: Date | string | null
+    contactAttemptCount?: number
+    installmentOverdueCount?: number
+    nextInstallmentDueDate?: string | null
+    contactHistory?: JsonNullValueInput | InputJsonValue
+    escalationReason?: string | null
+    nextFollowUpDate?: string | null
+    branchReviewedBy?: string | null
+    branchReviewedAt?: Date | string | null
+    branchReviewNote?: string | null
+    superAdminReviewedBy?: string | null
+    superAdminReviewedAt?: Date | string | null
+    superAdminReviewNote?: string | null
+    accessDeactivationAt?: Date | string | null
+    totalCourseFee?: number
+    actualCourseAmount?: number
+    gstAmount?: number
+    registrationFee?: number
+    discountAmount?: number
+    finalCourseFee?: number
+    totalCourseHours?: number
+    conductedDays?: number
+    conductedHours?: number
+    completedCourseAmount?: number
+    totalPaid?: number
+    outstandingAmount?: number
+    refundEligibleAmount?: number
+    waiverAmount?: number
+    finalOutstandingAmount?: number | null
+    settlementStatus?: string
+    financeNote?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type StudentDiscontinuationRequestUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    requestedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    refundRequested?: BoolFieldUpdateOperationsInput | boolean
+    courseProgress?: IntFieldUpdateOperationsInput | number
+    progressEarnedAmount?: IntFieldUpdateOperationsInput | number
+    balanceDue?: IntFieldUpdateOperationsInput | number
+    reason?: StringFieldUpdateOperationsInput | string
+    details?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumDiscontinuationRequestStatusFieldUpdateOperationsInput | $Enums.DiscontinuationRequestStatus
+    contactOutcome?: NullableStringFieldUpdateOperationsInput | string | null
+    contactNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    contactedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    contactedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    contactAttemptCount?: IntFieldUpdateOperationsInput | number
+    installmentOverdueCount?: IntFieldUpdateOperationsInput | number
+    nextInstallmentDueDate?: NullableStringFieldUpdateOperationsInput | string | null
+    contactHistory?: JsonNullValueInput | InputJsonValue
+    escalationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    nextFollowUpDate?: NullableStringFieldUpdateOperationsInput | string | null
+    branchReviewedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    branchReviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    branchReviewNote?: NullableStringFieldUpdateOperationsInput | string | null
+    superAdminReviewedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    superAdminReviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    superAdminReviewNote?: NullableStringFieldUpdateOperationsInput | string | null
+    accessDeactivationAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalCourseFee?: IntFieldUpdateOperationsInput | number
+    actualCourseAmount?: IntFieldUpdateOperationsInput | number
+    gstAmount?: IntFieldUpdateOperationsInput | number
+    registrationFee?: IntFieldUpdateOperationsInput | number
+    discountAmount?: IntFieldUpdateOperationsInput | number
+    finalCourseFee?: IntFieldUpdateOperationsInput | number
+    totalCourseHours?: IntFieldUpdateOperationsInput | number
+    conductedDays?: IntFieldUpdateOperationsInput | number
+    conductedHours?: IntFieldUpdateOperationsInput | number
+    completedCourseAmount?: IntFieldUpdateOperationsInput | number
+    totalPaid?: IntFieldUpdateOperationsInput | number
+    outstandingAmount?: IntFieldUpdateOperationsInput | number
+    refundEligibleAmount?: IntFieldUpdateOperationsInput | number
+    waiverAmount?: IntFieldUpdateOperationsInput | number
+    finalOutstandingAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    settlementStatus?: StringFieldUpdateOperationsInput | string
+    financeNote?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type StudentDiscontinuationRequestUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchStudentId?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    requestedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    refundRequested?: BoolFieldUpdateOperationsInput | boolean
+    courseProgress?: IntFieldUpdateOperationsInput | number
+    progressEarnedAmount?: IntFieldUpdateOperationsInput | number
+    balanceDue?: IntFieldUpdateOperationsInput | number
+    reason?: StringFieldUpdateOperationsInput | string
+    details?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumDiscontinuationRequestStatusFieldUpdateOperationsInput | $Enums.DiscontinuationRequestStatus
+    contactOutcome?: NullableStringFieldUpdateOperationsInput | string | null
+    contactNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    contactedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    contactedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    contactAttemptCount?: IntFieldUpdateOperationsInput | number
+    installmentOverdueCount?: IntFieldUpdateOperationsInput | number
+    nextInstallmentDueDate?: NullableStringFieldUpdateOperationsInput | string | null
+    contactHistory?: JsonNullValueInput | InputJsonValue
+    escalationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    nextFollowUpDate?: NullableStringFieldUpdateOperationsInput | string | null
+    branchReviewedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    branchReviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    branchReviewNote?: NullableStringFieldUpdateOperationsInput | string | null
+    superAdminReviewedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    superAdminReviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    superAdminReviewNote?: NullableStringFieldUpdateOperationsInput | string | null
+    accessDeactivationAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalCourseFee?: IntFieldUpdateOperationsInput | number
+    actualCourseAmount?: IntFieldUpdateOperationsInput | number
+    gstAmount?: IntFieldUpdateOperationsInput | number
+    registrationFee?: IntFieldUpdateOperationsInput | number
+    discountAmount?: IntFieldUpdateOperationsInput | number
+    finalCourseFee?: IntFieldUpdateOperationsInput | number
+    totalCourseHours?: IntFieldUpdateOperationsInput | number
+    conductedDays?: IntFieldUpdateOperationsInput | number
+    conductedHours?: IntFieldUpdateOperationsInput | number
+    completedCourseAmount?: IntFieldUpdateOperationsInput | number
+    totalPaid?: IntFieldUpdateOperationsInput | number
+    outstandingAmount?: IntFieldUpdateOperationsInput | number
+    refundEligibleAmount?: IntFieldUpdateOperationsInput | number
+    waiverAmount?: IntFieldUpdateOperationsInput | number
+    finalOutstandingAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    settlementStatus?: StringFieldUpdateOperationsInput | string
+    financeNote?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type FacultyReportShareCreateInput = {
     id?: string
     facultyId: string
@@ -111950,7 +116016,27 @@ export namespace Prisma {
     none?: BranchStudentInstallmentWhereInput
   }
 
+  export type MotivationMailHistoryListRelationFilter = {
+    every?: MotivationMailHistoryWhereInput
+    some?: MotivationMailHistoryWhereInput
+    none?: MotivationMailHistoryWhereInput
+  }
+
+  export type StudentDiscontinuationRequestListRelationFilter = {
+    every?: StudentDiscontinuationRequestWhereInput
+    some?: StudentDiscontinuationRequestWhereInput
+    none?: StudentDiscontinuationRequestWhereInput
+  }
+
   export type BranchStudentInstallmentOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type MotivationMailHistoryOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type StudentDiscontinuationRequestOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -114305,6 +118391,273 @@ export namespace Prisma {
 
   export type ExamAnswerSumOrderByAggregateInput = {
     marksAwarded?: SortOrder
+  }
+
+  export type MotivationMailHistoryBranchStudentIdAbsenceStartDateStageCompoundUniqueInput = {
+    branchStudentId: string
+    absenceStartDate: string
+    stage: string
+  }
+
+  export type MotivationMailHistoryCountOrderByAggregateInput = {
+    id?: SortOrder
+    branchStudentId?: SortOrder
+    branchId?: SortOrder
+    stage?: SortOrder
+    absenceStartDate?: SortOrder
+    absenceWorkingDays?: SortOrder
+    status?: SortOrder
+    sentAt?: SortOrder
+    failureReason?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MotivationMailHistoryAvgOrderByAggregateInput = {
+    absenceWorkingDays?: SortOrder
+  }
+
+  export type MotivationMailHistoryMaxOrderByAggregateInput = {
+    id?: SortOrder
+    branchStudentId?: SortOrder
+    branchId?: SortOrder
+    stage?: SortOrder
+    absenceStartDate?: SortOrder
+    absenceWorkingDays?: SortOrder
+    status?: SortOrder
+    sentAt?: SortOrder
+    failureReason?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MotivationMailHistoryMinOrderByAggregateInput = {
+    id?: SortOrder
+    branchStudentId?: SortOrder
+    branchId?: SortOrder
+    stage?: SortOrder
+    absenceStartDate?: SortOrder
+    absenceWorkingDays?: SortOrder
+    status?: SortOrder
+    sentAt?: SortOrder
+    failureReason?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MotivationMailHistorySumOrderByAggregateInput = {
+    absenceWorkingDays?: SortOrder
+  }
+
+  export type EnumDiscontinuationRequestStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.DiscontinuationRequestStatus | EnumDiscontinuationRequestStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DiscontinuationRequestStatus[] | ListEnumDiscontinuationRequestStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DiscontinuationRequestStatus[] | ListEnumDiscontinuationRequestStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDiscontinuationRequestStatusFilter<$PrismaModel> | $Enums.DiscontinuationRequestStatus
+  }
+
+  export type StudentDiscontinuationRequestCountOrderByAggregateInput = {
+    id?: SortOrder
+    branchStudentId?: SortOrder
+    branchId?: SortOrder
+    requestedByUserId?: SortOrder
+    refundRequested?: SortOrder
+    courseProgress?: SortOrder
+    progressEarnedAmount?: SortOrder
+    balanceDue?: SortOrder
+    reason?: SortOrder
+    details?: SortOrder
+    status?: SortOrder
+    contactOutcome?: SortOrder
+    contactNotes?: SortOrder
+    contactedBy?: SortOrder
+    contactedAt?: SortOrder
+    contactAttemptCount?: SortOrder
+    installmentOverdueCount?: SortOrder
+    nextInstallmentDueDate?: SortOrder
+    contactHistory?: SortOrder
+    escalationReason?: SortOrder
+    nextFollowUpDate?: SortOrder
+    branchReviewedBy?: SortOrder
+    branchReviewedAt?: SortOrder
+    branchReviewNote?: SortOrder
+    superAdminReviewedBy?: SortOrder
+    superAdminReviewedAt?: SortOrder
+    superAdminReviewNote?: SortOrder
+    accessDeactivationAt?: SortOrder
+    totalCourseFee?: SortOrder
+    actualCourseAmount?: SortOrder
+    gstAmount?: SortOrder
+    registrationFee?: SortOrder
+    discountAmount?: SortOrder
+    finalCourseFee?: SortOrder
+    totalCourseHours?: SortOrder
+    conductedDays?: SortOrder
+    conductedHours?: SortOrder
+    completedCourseAmount?: SortOrder
+    totalPaid?: SortOrder
+    outstandingAmount?: SortOrder
+    refundEligibleAmount?: SortOrder
+    waiverAmount?: SortOrder
+    finalOutstandingAmount?: SortOrder
+    settlementStatus?: SortOrder
+    financeNote?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type StudentDiscontinuationRequestAvgOrderByAggregateInput = {
+    courseProgress?: SortOrder
+    progressEarnedAmount?: SortOrder
+    balanceDue?: SortOrder
+    contactAttemptCount?: SortOrder
+    installmentOverdueCount?: SortOrder
+    totalCourseFee?: SortOrder
+    actualCourseAmount?: SortOrder
+    gstAmount?: SortOrder
+    registrationFee?: SortOrder
+    discountAmount?: SortOrder
+    finalCourseFee?: SortOrder
+    totalCourseHours?: SortOrder
+    conductedDays?: SortOrder
+    conductedHours?: SortOrder
+    completedCourseAmount?: SortOrder
+    totalPaid?: SortOrder
+    outstandingAmount?: SortOrder
+    refundEligibleAmount?: SortOrder
+    waiverAmount?: SortOrder
+    finalOutstandingAmount?: SortOrder
+  }
+
+  export type StudentDiscontinuationRequestMaxOrderByAggregateInput = {
+    id?: SortOrder
+    branchStudentId?: SortOrder
+    branchId?: SortOrder
+    requestedByUserId?: SortOrder
+    refundRequested?: SortOrder
+    courseProgress?: SortOrder
+    progressEarnedAmount?: SortOrder
+    balanceDue?: SortOrder
+    reason?: SortOrder
+    details?: SortOrder
+    status?: SortOrder
+    contactOutcome?: SortOrder
+    contactNotes?: SortOrder
+    contactedBy?: SortOrder
+    contactedAt?: SortOrder
+    contactAttemptCount?: SortOrder
+    installmentOverdueCount?: SortOrder
+    nextInstallmentDueDate?: SortOrder
+    escalationReason?: SortOrder
+    nextFollowUpDate?: SortOrder
+    branchReviewedBy?: SortOrder
+    branchReviewedAt?: SortOrder
+    branchReviewNote?: SortOrder
+    superAdminReviewedBy?: SortOrder
+    superAdminReviewedAt?: SortOrder
+    superAdminReviewNote?: SortOrder
+    accessDeactivationAt?: SortOrder
+    totalCourseFee?: SortOrder
+    actualCourseAmount?: SortOrder
+    gstAmount?: SortOrder
+    registrationFee?: SortOrder
+    discountAmount?: SortOrder
+    finalCourseFee?: SortOrder
+    totalCourseHours?: SortOrder
+    conductedDays?: SortOrder
+    conductedHours?: SortOrder
+    completedCourseAmount?: SortOrder
+    totalPaid?: SortOrder
+    outstandingAmount?: SortOrder
+    refundEligibleAmount?: SortOrder
+    waiverAmount?: SortOrder
+    finalOutstandingAmount?: SortOrder
+    settlementStatus?: SortOrder
+    financeNote?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type StudentDiscontinuationRequestMinOrderByAggregateInput = {
+    id?: SortOrder
+    branchStudentId?: SortOrder
+    branchId?: SortOrder
+    requestedByUserId?: SortOrder
+    refundRequested?: SortOrder
+    courseProgress?: SortOrder
+    progressEarnedAmount?: SortOrder
+    balanceDue?: SortOrder
+    reason?: SortOrder
+    details?: SortOrder
+    status?: SortOrder
+    contactOutcome?: SortOrder
+    contactNotes?: SortOrder
+    contactedBy?: SortOrder
+    contactedAt?: SortOrder
+    contactAttemptCount?: SortOrder
+    installmentOverdueCount?: SortOrder
+    nextInstallmentDueDate?: SortOrder
+    escalationReason?: SortOrder
+    nextFollowUpDate?: SortOrder
+    branchReviewedBy?: SortOrder
+    branchReviewedAt?: SortOrder
+    branchReviewNote?: SortOrder
+    superAdminReviewedBy?: SortOrder
+    superAdminReviewedAt?: SortOrder
+    superAdminReviewNote?: SortOrder
+    accessDeactivationAt?: SortOrder
+    totalCourseFee?: SortOrder
+    actualCourseAmount?: SortOrder
+    gstAmount?: SortOrder
+    registrationFee?: SortOrder
+    discountAmount?: SortOrder
+    finalCourseFee?: SortOrder
+    totalCourseHours?: SortOrder
+    conductedDays?: SortOrder
+    conductedHours?: SortOrder
+    completedCourseAmount?: SortOrder
+    totalPaid?: SortOrder
+    outstandingAmount?: SortOrder
+    refundEligibleAmount?: SortOrder
+    waiverAmount?: SortOrder
+    finalOutstandingAmount?: SortOrder
+    settlementStatus?: SortOrder
+    financeNote?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type StudentDiscontinuationRequestSumOrderByAggregateInput = {
+    courseProgress?: SortOrder
+    progressEarnedAmount?: SortOrder
+    balanceDue?: SortOrder
+    contactAttemptCount?: SortOrder
+    installmentOverdueCount?: SortOrder
+    totalCourseFee?: SortOrder
+    actualCourseAmount?: SortOrder
+    gstAmount?: SortOrder
+    registrationFee?: SortOrder
+    discountAmount?: SortOrder
+    finalCourseFee?: SortOrder
+    totalCourseHours?: SortOrder
+    conductedDays?: SortOrder
+    conductedHours?: SortOrder
+    completedCourseAmount?: SortOrder
+    totalPaid?: SortOrder
+    outstandingAmount?: SortOrder
+    refundEligibleAmount?: SortOrder
+    waiverAmount?: SortOrder
+    finalOutstandingAmount?: SortOrder
+  }
+
+  export type EnumDiscontinuationRequestStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DiscontinuationRequestStatus | EnumDiscontinuationRequestStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DiscontinuationRequestStatus[] | ListEnumDiscontinuationRequestStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DiscontinuationRequestStatus[] | ListEnumDiscontinuationRequestStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDiscontinuationRequestStatusWithAggregatesFilter<$PrismaModel> | $Enums.DiscontinuationRequestStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDiscontinuationRequestStatusFilter<$PrismaModel>
+    _max?: NestedEnumDiscontinuationRequestStatusFilter<$PrismaModel>
   }
 
   export type FacultyReportShareCountOrderByAggregateInput = {
@@ -118125,6 +122478,20 @@ export namespace Prisma {
     connect?: BranchStudentCourseWhereUniqueInput | BranchStudentCourseWhereUniqueInput[]
   }
 
+  export type MotivationMailHistoryCreateNestedManyWithoutBranchStudentInput = {
+    create?: XOR<MotivationMailHistoryCreateWithoutBranchStudentInput, MotivationMailHistoryUncheckedCreateWithoutBranchStudentInput> | MotivationMailHistoryCreateWithoutBranchStudentInput[] | MotivationMailHistoryUncheckedCreateWithoutBranchStudentInput[]
+    connectOrCreate?: MotivationMailHistoryCreateOrConnectWithoutBranchStudentInput | MotivationMailHistoryCreateOrConnectWithoutBranchStudentInput[]
+    createMany?: MotivationMailHistoryCreateManyBranchStudentInputEnvelope
+    connect?: MotivationMailHistoryWhereUniqueInput | MotivationMailHistoryWhereUniqueInput[]
+  }
+
+  export type StudentDiscontinuationRequestCreateNestedManyWithoutBranchStudentInput = {
+    create?: XOR<StudentDiscontinuationRequestCreateWithoutBranchStudentInput, StudentDiscontinuationRequestUncheckedCreateWithoutBranchStudentInput> | StudentDiscontinuationRequestCreateWithoutBranchStudentInput[] | StudentDiscontinuationRequestUncheckedCreateWithoutBranchStudentInput[]
+    connectOrCreate?: StudentDiscontinuationRequestCreateOrConnectWithoutBranchStudentInput | StudentDiscontinuationRequestCreateOrConnectWithoutBranchStudentInput[]
+    createMany?: StudentDiscontinuationRequestCreateManyBranchStudentInputEnvelope
+    connect?: StudentDiscontinuationRequestWhereUniqueInput | StudentDiscontinuationRequestWhereUniqueInput[]
+  }
+
   export type BranchStudentInstallmentUncheckedCreateNestedManyWithoutBranchStudentInput = {
     create?: XOR<BranchStudentInstallmentCreateWithoutBranchStudentInput, BranchStudentInstallmentUncheckedCreateWithoutBranchStudentInput> | BranchStudentInstallmentCreateWithoutBranchStudentInput[] | BranchStudentInstallmentUncheckedCreateWithoutBranchStudentInput[]
     connectOrCreate?: BranchStudentInstallmentCreateOrConnectWithoutBranchStudentInput | BranchStudentInstallmentCreateOrConnectWithoutBranchStudentInput[]
@@ -118193,6 +122560,20 @@ export namespace Prisma {
     connectOrCreate?: BranchStudentCourseCreateOrConnectWithoutBranchStudentInput | BranchStudentCourseCreateOrConnectWithoutBranchStudentInput[]
     createMany?: BranchStudentCourseCreateManyBranchStudentInputEnvelope
     connect?: BranchStudentCourseWhereUniqueInput | BranchStudentCourseWhereUniqueInput[]
+  }
+
+  export type MotivationMailHistoryUncheckedCreateNestedManyWithoutBranchStudentInput = {
+    create?: XOR<MotivationMailHistoryCreateWithoutBranchStudentInput, MotivationMailHistoryUncheckedCreateWithoutBranchStudentInput> | MotivationMailHistoryCreateWithoutBranchStudentInput[] | MotivationMailHistoryUncheckedCreateWithoutBranchStudentInput[]
+    connectOrCreate?: MotivationMailHistoryCreateOrConnectWithoutBranchStudentInput | MotivationMailHistoryCreateOrConnectWithoutBranchStudentInput[]
+    createMany?: MotivationMailHistoryCreateManyBranchStudentInputEnvelope
+    connect?: MotivationMailHistoryWhereUniqueInput | MotivationMailHistoryWhereUniqueInput[]
+  }
+
+  export type StudentDiscontinuationRequestUncheckedCreateNestedManyWithoutBranchStudentInput = {
+    create?: XOR<StudentDiscontinuationRequestCreateWithoutBranchStudentInput, StudentDiscontinuationRequestUncheckedCreateWithoutBranchStudentInput> | StudentDiscontinuationRequestCreateWithoutBranchStudentInput[] | StudentDiscontinuationRequestUncheckedCreateWithoutBranchStudentInput[]
+    connectOrCreate?: StudentDiscontinuationRequestCreateOrConnectWithoutBranchStudentInput | StudentDiscontinuationRequestCreateOrConnectWithoutBranchStudentInput[]
+    createMany?: StudentDiscontinuationRequestCreateManyBranchStudentInputEnvelope
+    connect?: StudentDiscontinuationRequestWhereUniqueInput | StudentDiscontinuationRequestWhereUniqueInput[]
   }
 
   export type NullableFloatFieldUpdateOperationsInput = {
@@ -118361,6 +122742,34 @@ export namespace Prisma {
     deleteMany?: BranchStudentCourseScalarWhereInput | BranchStudentCourseScalarWhereInput[]
   }
 
+  export type MotivationMailHistoryUpdateManyWithoutBranchStudentNestedInput = {
+    create?: XOR<MotivationMailHistoryCreateWithoutBranchStudentInput, MotivationMailHistoryUncheckedCreateWithoutBranchStudentInput> | MotivationMailHistoryCreateWithoutBranchStudentInput[] | MotivationMailHistoryUncheckedCreateWithoutBranchStudentInput[]
+    connectOrCreate?: MotivationMailHistoryCreateOrConnectWithoutBranchStudentInput | MotivationMailHistoryCreateOrConnectWithoutBranchStudentInput[]
+    upsert?: MotivationMailHistoryUpsertWithWhereUniqueWithoutBranchStudentInput | MotivationMailHistoryUpsertWithWhereUniqueWithoutBranchStudentInput[]
+    createMany?: MotivationMailHistoryCreateManyBranchStudentInputEnvelope
+    set?: MotivationMailHistoryWhereUniqueInput | MotivationMailHistoryWhereUniqueInput[]
+    disconnect?: MotivationMailHistoryWhereUniqueInput | MotivationMailHistoryWhereUniqueInput[]
+    delete?: MotivationMailHistoryWhereUniqueInput | MotivationMailHistoryWhereUniqueInput[]
+    connect?: MotivationMailHistoryWhereUniqueInput | MotivationMailHistoryWhereUniqueInput[]
+    update?: MotivationMailHistoryUpdateWithWhereUniqueWithoutBranchStudentInput | MotivationMailHistoryUpdateWithWhereUniqueWithoutBranchStudentInput[]
+    updateMany?: MotivationMailHistoryUpdateManyWithWhereWithoutBranchStudentInput | MotivationMailHistoryUpdateManyWithWhereWithoutBranchStudentInput[]
+    deleteMany?: MotivationMailHistoryScalarWhereInput | MotivationMailHistoryScalarWhereInput[]
+  }
+
+  export type StudentDiscontinuationRequestUpdateManyWithoutBranchStudentNestedInput = {
+    create?: XOR<StudentDiscontinuationRequestCreateWithoutBranchStudentInput, StudentDiscontinuationRequestUncheckedCreateWithoutBranchStudentInput> | StudentDiscontinuationRequestCreateWithoutBranchStudentInput[] | StudentDiscontinuationRequestUncheckedCreateWithoutBranchStudentInput[]
+    connectOrCreate?: StudentDiscontinuationRequestCreateOrConnectWithoutBranchStudentInput | StudentDiscontinuationRequestCreateOrConnectWithoutBranchStudentInput[]
+    upsert?: StudentDiscontinuationRequestUpsertWithWhereUniqueWithoutBranchStudentInput | StudentDiscontinuationRequestUpsertWithWhereUniqueWithoutBranchStudentInput[]
+    createMany?: StudentDiscontinuationRequestCreateManyBranchStudentInputEnvelope
+    set?: StudentDiscontinuationRequestWhereUniqueInput | StudentDiscontinuationRequestWhereUniqueInput[]
+    disconnect?: StudentDiscontinuationRequestWhereUniqueInput | StudentDiscontinuationRequestWhereUniqueInput[]
+    delete?: StudentDiscontinuationRequestWhereUniqueInput | StudentDiscontinuationRequestWhereUniqueInput[]
+    connect?: StudentDiscontinuationRequestWhereUniqueInput | StudentDiscontinuationRequestWhereUniqueInput[]
+    update?: StudentDiscontinuationRequestUpdateWithWhereUniqueWithoutBranchStudentInput | StudentDiscontinuationRequestUpdateWithWhereUniqueWithoutBranchStudentInput[]
+    updateMany?: StudentDiscontinuationRequestUpdateManyWithWhereWithoutBranchStudentInput | StudentDiscontinuationRequestUpdateManyWithWhereWithoutBranchStudentInput[]
+    deleteMany?: StudentDiscontinuationRequestScalarWhereInput | StudentDiscontinuationRequestScalarWhereInput[]
+  }
+
   export type BranchStudentInstallmentUncheckedUpdateManyWithoutBranchStudentNestedInput = {
     create?: XOR<BranchStudentInstallmentCreateWithoutBranchStudentInput, BranchStudentInstallmentUncheckedCreateWithoutBranchStudentInput> | BranchStudentInstallmentCreateWithoutBranchStudentInput[] | BranchStudentInstallmentUncheckedCreateWithoutBranchStudentInput[]
     connectOrCreate?: BranchStudentInstallmentCreateOrConnectWithoutBranchStudentInput | BranchStudentInstallmentCreateOrConnectWithoutBranchStudentInput[]
@@ -118499,6 +122908,34 @@ export namespace Prisma {
     update?: BranchStudentCourseUpdateWithWhereUniqueWithoutBranchStudentInput | BranchStudentCourseUpdateWithWhereUniqueWithoutBranchStudentInput[]
     updateMany?: BranchStudentCourseUpdateManyWithWhereWithoutBranchStudentInput | BranchStudentCourseUpdateManyWithWhereWithoutBranchStudentInput[]
     deleteMany?: BranchStudentCourseScalarWhereInput | BranchStudentCourseScalarWhereInput[]
+  }
+
+  export type MotivationMailHistoryUncheckedUpdateManyWithoutBranchStudentNestedInput = {
+    create?: XOR<MotivationMailHistoryCreateWithoutBranchStudentInput, MotivationMailHistoryUncheckedCreateWithoutBranchStudentInput> | MotivationMailHistoryCreateWithoutBranchStudentInput[] | MotivationMailHistoryUncheckedCreateWithoutBranchStudentInput[]
+    connectOrCreate?: MotivationMailHistoryCreateOrConnectWithoutBranchStudentInput | MotivationMailHistoryCreateOrConnectWithoutBranchStudentInput[]
+    upsert?: MotivationMailHistoryUpsertWithWhereUniqueWithoutBranchStudentInput | MotivationMailHistoryUpsertWithWhereUniqueWithoutBranchStudentInput[]
+    createMany?: MotivationMailHistoryCreateManyBranchStudentInputEnvelope
+    set?: MotivationMailHistoryWhereUniqueInput | MotivationMailHistoryWhereUniqueInput[]
+    disconnect?: MotivationMailHistoryWhereUniqueInput | MotivationMailHistoryWhereUniqueInput[]
+    delete?: MotivationMailHistoryWhereUniqueInput | MotivationMailHistoryWhereUniqueInput[]
+    connect?: MotivationMailHistoryWhereUniqueInput | MotivationMailHistoryWhereUniqueInput[]
+    update?: MotivationMailHistoryUpdateWithWhereUniqueWithoutBranchStudentInput | MotivationMailHistoryUpdateWithWhereUniqueWithoutBranchStudentInput[]
+    updateMany?: MotivationMailHistoryUpdateManyWithWhereWithoutBranchStudentInput | MotivationMailHistoryUpdateManyWithWhereWithoutBranchStudentInput[]
+    deleteMany?: MotivationMailHistoryScalarWhereInput | MotivationMailHistoryScalarWhereInput[]
+  }
+
+  export type StudentDiscontinuationRequestUncheckedUpdateManyWithoutBranchStudentNestedInput = {
+    create?: XOR<StudentDiscontinuationRequestCreateWithoutBranchStudentInput, StudentDiscontinuationRequestUncheckedCreateWithoutBranchStudentInput> | StudentDiscontinuationRequestCreateWithoutBranchStudentInput[] | StudentDiscontinuationRequestUncheckedCreateWithoutBranchStudentInput[]
+    connectOrCreate?: StudentDiscontinuationRequestCreateOrConnectWithoutBranchStudentInput | StudentDiscontinuationRequestCreateOrConnectWithoutBranchStudentInput[]
+    upsert?: StudentDiscontinuationRequestUpsertWithWhereUniqueWithoutBranchStudentInput | StudentDiscontinuationRequestUpsertWithWhereUniqueWithoutBranchStudentInput[]
+    createMany?: StudentDiscontinuationRequestCreateManyBranchStudentInputEnvelope
+    set?: StudentDiscontinuationRequestWhereUniqueInput | StudentDiscontinuationRequestWhereUniqueInput[]
+    disconnect?: StudentDiscontinuationRequestWhereUniqueInput | StudentDiscontinuationRequestWhereUniqueInput[]
+    delete?: StudentDiscontinuationRequestWhereUniqueInput | StudentDiscontinuationRequestWhereUniqueInput[]
+    connect?: StudentDiscontinuationRequestWhereUniqueInput | StudentDiscontinuationRequestWhereUniqueInput[]
+    update?: StudentDiscontinuationRequestUpdateWithWhereUniqueWithoutBranchStudentInput | StudentDiscontinuationRequestUpdateWithWhereUniqueWithoutBranchStudentInput[]
+    updateMany?: StudentDiscontinuationRequestUpdateManyWithWhereWithoutBranchStudentInput | StudentDiscontinuationRequestUpdateManyWithWhereWithoutBranchStudentInput[]
+    deleteMany?: StudentDiscontinuationRequestScalarWhereInput | StudentDiscontinuationRequestScalarWhereInput[]
   }
 
   export type BranchStudentCreateNestedOneWithoutCourseEnrollmentsInput = {
@@ -120199,6 +124636,38 @@ export namespace Prisma {
     update?: XOR<XOR<ExamQuestionUpdateToOneWithWhereWithoutAnswersInput, ExamQuestionUpdateWithoutAnswersInput>, ExamQuestionUncheckedUpdateWithoutAnswersInput>
   }
 
+  export type BranchStudentCreateNestedOneWithoutMotivationMailHistoryInput = {
+    create?: XOR<BranchStudentCreateWithoutMotivationMailHistoryInput, BranchStudentUncheckedCreateWithoutMotivationMailHistoryInput>
+    connectOrCreate?: BranchStudentCreateOrConnectWithoutMotivationMailHistoryInput
+    connect?: BranchStudentWhereUniqueInput
+  }
+
+  export type BranchStudentUpdateOneRequiredWithoutMotivationMailHistoryNestedInput = {
+    create?: XOR<BranchStudentCreateWithoutMotivationMailHistoryInput, BranchStudentUncheckedCreateWithoutMotivationMailHistoryInput>
+    connectOrCreate?: BranchStudentCreateOrConnectWithoutMotivationMailHistoryInput
+    upsert?: BranchStudentUpsertWithoutMotivationMailHistoryInput
+    connect?: BranchStudentWhereUniqueInput
+    update?: XOR<XOR<BranchStudentUpdateToOneWithWhereWithoutMotivationMailHistoryInput, BranchStudentUpdateWithoutMotivationMailHistoryInput>, BranchStudentUncheckedUpdateWithoutMotivationMailHistoryInput>
+  }
+
+  export type BranchStudentCreateNestedOneWithoutDiscontinuationRequestsInput = {
+    create?: XOR<BranchStudentCreateWithoutDiscontinuationRequestsInput, BranchStudentUncheckedCreateWithoutDiscontinuationRequestsInput>
+    connectOrCreate?: BranchStudentCreateOrConnectWithoutDiscontinuationRequestsInput
+    connect?: BranchStudentWhereUniqueInput
+  }
+
+  export type EnumDiscontinuationRequestStatusFieldUpdateOperationsInput = {
+    set?: $Enums.DiscontinuationRequestStatus
+  }
+
+  export type BranchStudentUpdateOneRequiredWithoutDiscontinuationRequestsNestedInput = {
+    create?: XOR<BranchStudentCreateWithoutDiscontinuationRequestsInput, BranchStudentUncheckedCreateWithoutDiscontinuationRequestsInput>
+    connectOrCreate?: BranchStudentCreateOrConnectWithoutDiscontinuationRequestsInput
+    upsert?: BranchStudentUpsertWithoutDiscontinuationRequestsInput
+    connect?: BranchStudentWhereUniqueInput
+    update?: XOR<XOR<BranchStudentUpdateToOneWithWhereWithoutDiscontinuationRequestsInput, BranchStudentUpdateWithoutDiscontinuationRequestsInput>, BranchStudentUncheckedUpdateWithoutDiscontinuationRequestsInput>
+  }
+
   export type BranchStudentCreateNestedOneWithoutPaymentsInput = {
     create?: XOR<BranchStudentCreateWithoutPaymentsInput, BranchStudentUncheckedCreateWithoutPaymentsInput>
     connectOrCreate?: BranchStudentCreateOrConnectWithoutPaymentsInput
@@ -120796,6 +125265,23 @@ export namespace Prisma {
     _sum?: NestedDecimalNullableFilter<$PrismaModel>
     _min?: NestedDecimalNullableFilter<$PrismaModel>
     _max?: NestedDecimalNullableFilter<$PrismaModel>
+  }
+
+  export type NestedEnumDiscontinuationRequestStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.DiscontinuationRequestStatus | EnumDiscontinuationRequestStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DiscontinuationRequestStatus[] | ListEnumDiscontinuationRequestStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DiscontinuationRequestStatus[] | ListEnumDiscontinuationRequestStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDiscontinuationRequestStatusFilter<$PrismaModel> | $Enums.DiscontinuationRequestStatus
+  }
+
+  export type NestedEnumDiscontinuationRequestStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DiscontinuationRequestStatus | EnumDiscontinuationRequestStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DiscontinuationRequestStatus[] | ListEnumDiscontinuationRequestStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DiscontinuationRequestStatus[] | ListEnumDiscontinuationRequestStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDiscontinuationRequestStatusWithAggregatesFilter<$PrismaModel> | $Enums.DiscontinuationRequestStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDiscontinuationRequestStatusFilter<$PrismaModel>
+    _max?: NestedEnumDiscontinuationRequestStatusFilter<$PrismaModel>
   }
 
   export type BatchFacultyAssignmentCreateWithoutFacultyInput = {
@@ -123103,6 +127589,8 @@ export namespace Prisma {
     retestExams?: ExamCreateNestedManyWithoutRetestStudentInput
     reassessmentAssessments?: AssessmentCreateNestedManyWithoutReassessmentStudentInput
     courseEnrollments?: BranchStudentCourseCreateNestedManyWithoutBranchStudentInput
+    motivationMailHistory?: MotivationMailHistoryCreateNestedManyWithoutBranchStudentInput
+    discontinuationRequests?: StudentDiscontinuationRequestCreateNestedManyWithoutBranchStudentInput
   }
 
   export type BranchStudentUncheckedCreateWithoutBranchInput = {
@@ -123171,6 +127659,8 @@ export namespace Prisma {
     retestExams?: ExamUncheckedCreateNestedManyWithoutRetestStudentInput
     reassessmentAssessments?: AssessmentUncheckedCreateNestedManyWithoutReassessmentStudentInput
     courseEnrollments?: BranchStudentCourseUncheckedCreateNestedManyWithoutBranchStudentInput
+    motivationMailHistory?: MotivationMailHistoryUncheckedCreateNestedManyWithoutBranchStudentInput
+    discontinuationRequests?: StudentDiscontinuationRequestUncheckedCreateNestedManyWithoutBranchStudentInput
   }
 
   export type BranchStudentCreateOrConnectWithoutBranchInput = {
@@ -126230,6 +130720,8 @@ export namespace Prisma {
     retestExams?: ExamCreateNestedManyWithoutRetestStudentInput
     reassessmentAssessments?: AssessmentCreateNestedManyWithoutReassessmentStudentInput
     courseEnrollments?: BranchStudentCourseCreateNestedManyWithoutBranchStudentInput
+    motivationMailHistory?: MotivationMailHistoryCreateNestedManyWithoutBranchStudentInput
+    discontinuationRequests?: StudentDiscontinuationRequestCreateNestedManyWithoutBranchStudentInput
   }
 
   export type BranchStudentUncheckedCreateWithoutCourseInput = {
@@ -126298,6 +130790,8 @@ export namespace Prisma {
     retestExams?: ExamUncheckedCreateNestedManyWithoutRetestStudentInput
     reassessmentAssessments?: AssessmentUncheckedCreateNestedManyWithoutReassessmentStudentInput
     courseEnrollments?: BranchStudentCourseUncheckedCreateNestedManyWithoutBranchStudentInput
+    motivationMailHistory?: MotivationMailHistoryUncheckedCreateNestedManyWithoutBranchStudentInput
+    discontinuationRequests?: StudentDiscontinuationRequestUncheckedCreateNestedManyWithoutBranchStudentInput
   }
 
   export type BranchStudentCreateOrConnectWithoutCourseInput = {
@@ -131780,6 +136274,150 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type MotivationMailHistoryCreateWithoutBranchStudentInput = {
+    id?: string
+    branchId: string
+    stage: string
+    absenceStartDate: string
+    absenceWorkingDays: number
+    status?: string
+    sentAt?: Date | string
+    failureReason?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MotivationMailHistoryUncheckedCreateWithoutBranchStudentInput = {
+    id?: string
+    branchId: string
+    stage: string
+    absenceStartDate: string
+    absenceWorkingDays: number
+    status?: string
+    sentAt?: Date | string
+    failureReason?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MotivationMailHistoryCreateOrConnectWithoutBranchStudentInput = {
+    where: MotivationMailHistoryWhereUniqueInput
+    create: XOR<MotivationMailHistoryCreateWithoutBranchStudentInput, MotivationMailHistoryUncheckedCreateWithoutBranchStudentInput>
+  }
+
+  export type MotivationMailHistoryCreateManyBranchStudentInputEnvelope = {
+    data: MotivationMailHistoryCreateManyBranchStudentInput | MotivationMailHistoryCreateManyBranchStudentInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type StudentDiscontinuationRequestCreateWithoutBranchStudentInput = {
+    id?: string
+    branchId: string
+    requestedByUserId?: string | null
+    refundRequested?: boolean
+    courseProgress?: number
+    progressEarnedAmount?: number
+    balanceDue?: number
+    reason: string
+    details?: string | null
+    status?: $Enums.DiscontinuationRequestStatus
+    contactOutcome?: string | null
+    contactNotes?: string | null
+    contactedBy?: string | null
+    contactedAt?: Date | string | null
+    contactAttemptCount?: number
+    installmentOverdueCount?: number
+    nextInstallmentDueDate?: string | null
+    contactHistory?: JsonNullValueInput | InputJsonValue
+    escalationReason?: string | null
+    nextFollowUpDate?: string | null
+    branchReviewedBy?: string | null
+    branchReviewedAt?: Date | string | null
+    branchReviewNote?: string | null
+    superAdminReviewedBy?: string | null
+    superAdminReviewedAt?: Date | string | null
+    superAdminReviewNote?: string | null
+    accessDeactivationAt?: Date | string | null
+    totalCourseFee?: number
+    actualCourseAmount?: number
+    gstAmount?: number
+    registrationFee?: number
+    discountAmount?: number
+    finalCourseFee?: number
+    totalCourseHours?: number
+    conductedDays?: number
+    conductedHours?: number
+    completedCourseAmount?: number
+    totalPaid?: number
+    outstandingAmount?: number
+    refundEligibleAmount?: number
+    waiverAmount?: number
+    finalOutstandingAmount?: number | null
+    settlementStatus?: string
+    financeNote?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type StudentDiscontinuationRequestUncheckedCreateWithoutBranchStudentInput = {
+    id?: string
+    branchId: string
+    requestedByUserId?: string | null
+    refundRequested?: boolean
+    courseProgress?: number
+    progressEarnedAmount?: number
+    balanceDue?: number
+    reason: string
+    details?: string | null
+    status?: $Enums.DiscontinuationRequestStatus
+    contactOutcome?: string | null
+    contactNotes?: string | null
+    contactedBy?: string | null
+    contactedAt?: Date | string | null
+    contactAttemptCount?: number
+    installmentOverdueCount?: number
+    nextInstallmentDueDate?: string | null
+    contactHistory?: JsonNullValueInput | InputJsonValue
+    escalationReason?: string | null
+    nextFollowUpDate?: string | null
+    branchReviewedBy?: string | null
+    branchReviewedAt?: Date | string | null
+    branchReviewNote?: string | null
+    superAdminReviewedBy?: string | null
+    superAdminReviewedAt?: Date | string | null
+    superAdminReviewNote?: string | null
+    accessDeactivationAt?: Date | string | null
+    totalCourseFee?: number
+    actualCourseAmount?: number
+    gstAmount?: number
+    registrationFee?: number
+    discountAmount?: number
+    finalCourseFee?: number
+    totalCourseHours?: number
+    conductedDays?: number
+    conductedHours?: number
+    completedCourseAmount?: number
+    totalPaid?: number
+    outstandingAmount?: number
+    refundEligibleAmount?: number
+    waiverAmount?: number
+    finalOutstandingAmount?: number | null
+    settlementStatus?: string
+    financeNote?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type StudentDiscontinuationRequestCreateOrConnectWithoutBranchStudentInput = {
+    where: StudentDiscontinuationRequestWhereUniqueInput
+    create: XOR<StudentDiscontinuationRequestCreateWithoutBranchStudentInput, StudentDiscontinuationRequestUncheckedCreateWithoutBranchStudentInput>
+  }
+
+  export type StudentDiscontinuationRequestCreateManyBranchStudentInputEnvelope = {
+    data: StudentDiscontinuationRequestCreateManyBranchStudentInput | StudentDiscontinuationRequestCreateManyBranchStudentInput[]
+    skipDuplicates?: boolean
+  }
+
   export type BranchUpsertWithoutBranchStudentsInput = {
     update: XOR<BranchUpdateWithoutBranchStudentsInput, BranchUncheckedUpdateWithoutBranchStudentsInput>
     create: XOR<BranchCreateWithoutBranchStudentsInput, BranchUncheckedCreateWithoutBranchStudentsInput>
@@ -132125,6 +136763,108 @@ export namespace Prisma {
     data: XOR<BranchStudentCourseUpdateManyMutationInput, BranchStudentCourseUncheckedUpdateManyWithoutBranchStudentInput>
   }
 
+  export type MotivationMailHistoryUpsertWithWhereUniqueWithoutBranchStudentInput = {
+    where: MotivationMailHistoryWhereUniqueInput
+    update: XOR<MotivationMailHistoryUpdateWithoutBranchStudentInput, MotivationMailHistoryUncheckedUpdateWithoutBranchStudentInput>
+    create: XOR<MotivationMailHistoryCreateWithoutBranchStudentInput, MotivationMailHistoryUncheckedCreateWithoutBranchStudentInput>
+  }
+
+  export type MotivationMailHistoryUpdateWithWhereUniqueWithoutBranchStudentInput = {
+    where: MotivationMailHistoryWhereUniqueInput
+    data: XOR<MotivationMailHistoryUpdateWithoutBranchStudentInput, MotivationMailHistoryUncheckedUpdateWithoutBranchStudentInput>
+  }
+
+  export type MotivationMailHistoryUpdateManyWithWhereWithoutBranchStudentInput = {
+    where: MotivationMailHistoryScalarWhereInput
+    data: XOR<MotivationMailHistoryUpdateManyMutationInput, MotivationMailHistoryUncheckedUpdateManyWithoutBranchStudentInput>
+  }
+
+  export type MotivationMailHistoryScalarWhereInput = {
+    AND?: MotivationMailHistoryScalarWhereInput | MotivationMailHistoryScalarWhereInput[]
+    OR?: MotivationMailHistoryScalarWhereInput[]
+    NOT?: MotivationMailHistoryScalarWhereInput | MotivationMailHistoryScalarWhereInput[]
+    id?: StringFilter<"MotivationMailHistory"> | string
+    branchStudentId?: StringFilter<"MotivationMailHistory"> | string
+    branchId?: StringFilter<"MotivationMailHistory"> | string
+    stage?: StringFilter<"MotivationMailHistory"> | string
+    absenceStartDate?: StringFilter<"MotivationMailHistory"> | string
+    absenceWorkingDays?: IntFilter<"MotivationMailHistory"> | number
+    status?: StringFilter<"MotivationMailHistory"> | string
+    sentAt?: DateTimeFilter<"MotivationMailHistory"> | Date | string
+    failureReason?: StringNullableFilter<"MotivationMailHistory"> | string | null
+    createdAt?: DateTimeFilter<"MotivationMailHistory"> | Date | string
+    updatedAt?: DateTimeFilter<"MotivationMailHistory"> | Date | string
+  }
+
+  export type StudentDiscontinuationRequestUpsertWithWhereUniqueWithoutBranchStudentInput = {
+    where: StudentDiscontinuationRequestWhereUniqueInput
+    update: XOR<StudentDiscontinuationRequestUpdateWithoutBranchStudentInput, StudentDiscontinuationRequestUncheckedUpdateWithoutBranchStudentInput>
+    create: XOR<StudentDiscontinuationRequestCreateWithoutBranchStudentInput, StudentDiscontinuationRequestUncheckedCreateWithoutBranchStudentInput>
+  }
+
+  export type StudentDiscontinuationRequestUpdateWithWhereUniqueWithoutBranchStudentInput = {
+    where: StudentDiscontinuationRequestWhereUniqueInput
+    data: XOR<StudentDiscontinuationRequestUpdateWithoutBranchStudentInput, StudentDiscontinuationRequestUncheckedUpdateWithoutBranchStudentInput>
+  }
+
+  export type StudentDiscontinuationRequestUpdateManyWithWhereWithoutBranchStudentInput = {
+    where: StudentDiscontinuationRequestScalarWhereInput
+    data: XOR<StudentDiscontinuationRequestUpdateManyMutationInput, StudentDiscontinuationRequestUncheckedUpdateManyWithoutBranchStudentInput>
+  }
+
+  export type StudentDiscontinuationRequestScalarWhereInput = {
+    AND?: StudentDiscontinuationRequestScalarWhereInput | StudentDiscontinuationRequestScalarWhereInput[]
+    OR?: StudentDiscontinuationRequestScalarWhereInput[]
+    NOT?: StudentDiscontinuationRequestScalarWhereInput | StudentDiscontinuationRequestScalarWhereInput[]
+    id?: StringFilter<"StudentDiscontinuationRequest"> | string
+    branchStudentId?: StringFilter<"StudentDiscontinuationRequest"> | string
+    branchId?: StringFilter<"StudentDiscontinuationRequest"> | string
+    requestedByUserId?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
+    refundRequested?: BoolFilter<"StudentDiscontinuationRequest"> | boolean
+    courseProgress?: IntFilter<"StudentDiscontinuationRequest"> | number
+    progressEarnedAmount?: IntFilter<"StudentDiscontinuationRequest"> | number
+    balanceDue?: IntFilter<"StudentDiscontinuationRequest"> | number
+    reason?: StringFilter<"StudentDiscontinuationRequest"> | string
+    details?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
+    status?: EnumDiscontinuationRequestStatusFilter<"StudentDiscontinuationRequest"> | $Enums.DiscontinuationRequestStatus
+    contactOutcome?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
+    contactNotes?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
+    contactedBy?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
+    contactedAt?: DateTimeNullableFilter<"StudentDiscontinuationRequest"> | Date | string | null
+    contactAttemptCount?: IntFilter<"StudentDiscontinuationRequest"> | number
+    installmentOverdueCount?: IntFilter<"StudentDiscontinuationRequest"> | number
+    nextInstallmentDueDate?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
+    contactHistory?: JsonFilter<"StudentDiscontinuationRequest">
+    escalationReason?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
+    nextFollowUpDate?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
+    branchReviewedBy?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
+    branchReviewedAt?: DateTimeNullableFilter<"StudentDiscontinuationRequest"> | Date | string | null
+    branchReviewNote?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
+    superAdminReviewedBy?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
+    superAdminReviewedAt?: DateTimeNullableFilter<"StudentDiscontinuationRequest"> | Date | string | null
+    superAdminReviewNote?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
+    accessDeactivationAt?: DateTimeNullableFilter<"StudentDiscontinuationRequest"> | Date | string | null
+    totalCourseFee?: IntFilter<"StudentDiscontinuationRequest"> | number
+    actualCourseAmount?: IntFilter<"StudentDiscontinuationRequest"> | number
+    gstAmount?: IntFilter<"StudentDiscontinuationRequest"> | number
+    registrationFee?: IntFilter<"StudentDiscontinuationRequest"> | number
+    discountAmount?: IntFilter<"StudentDiscontinuationRequest"> | number
+    finalCourseFee?: IntFilter<"StudentDiscontinuationRequest"> | number
+    totalCourseHours?: IntFilter<"StudentDiscontinuationRequest"> | number
+    conductedDays?: IntFilter<"StudentDiscontinuationRequest"> | number
+    conductedHours?: IntFilter<"StudentDiscontinuationRequest"> | number
+    completedCourseAmount?: IntFilter<"StudentDiscontinuationRequest"> | number
+    totalPaid?: IntFilter<"StudentDiscontinuationRequest"> | number
+    outstandingAmount?: IntFilter<"StudentDiscontinuationRequest"> | number
+    refundEligibleAmount?: IntFilter<"StudentDiscontinuationRequest"> | number
+    waiverAmount?: IntFilter<"StudentDiscontinuationRequest"> | number
+    finalOutstandingAmount?: IntNullableFilter<"StudentDiscontinuationRequest"> | number | null
+    settlementStatus?: StringFilter<"StudentDiscontinuationRequest"> | string
+    financeNote?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
+    createdAt?: DateTimeFilter<"StudentDiscontinuationRequest"> | Date | string
+    updatedAt?: DateTimeFilter<"StudentDiscontinuationRequest"> | Date | string
+  }
+
   export type BranchStudentCreateWithoutCourseEnrollmentsInput = {
     id?: string
     studentId: string
@@ -132191,6 +136931,8 @@ export namespace Prisma {
     assessmentSubmissions?: AssessmentSubmissionCreateNestedManyWithoutBranchStudentInput
     retestExams?: ExamCreateNestedManyWithoutRetestStudentInput
     reassessmentAssessments?: AssessmentCreateNestedManyWithoutReassessmentStudentInput
+    motivationMailHistory?: MotivationMailHistoryCreateNestedManyWithoutBranchStudentInput
+    discontinuationRequests?: StudentDiscontinuationRequestCreateNestedManyWithoutBranchStudentInput
   }
 
   export type BranchStudentUncheckedCreateWithoutCourseEnrollmentsInput = {
@@ -132259,6 +137001,8 @@ export namespace Prisma {
     assessmentSubmissions?: AssessmentSubmissionUncheckedCreateNestedManyWithoutBranchStudentInput
     retestExams?: ExamUncheckedCreateNestedManyWithoutRetestStudentInput
     reassessmentAssessments?: AssessmentUncheckedCreateNestedManyWithoutReassessmentStudentInput
+    motivationMailHistory?: MotivationMailHistoryUncheckedCreateNestedManyWithoutBranchStudentInput
+    discontinuationRequests?: StudentDiscontinuationRequestUncheckedCreateNestedManyWithoutBranchStudentInput
   }
 
   export type BranchStudentCreateOrConnectWithoutCourseEnrollmentsInput = {
@@ -132497,6 +137241,8 @@ export namespace Prisma {
     assessmentSubmissions?: AssessmentSubmissionUpdateManyWithoutBranchStudentNestedInput
     retestExams?: ExamUpdateManyWithoutRetestStudentNestedInput
     reassessmentAssessments?: AssessmentUpdateManyWithoutReassessmentStudentNestedInput
+    motivationMailHistory?: MotivationMailHistoryUpdateManyWithoutBranchStudentNestedInput
+    discontinuationRequests?: StudentDiscontinuationRequestUpdateManyWithoutBranchStudentNestedInput
   }
 
   export type BranchStudentUncheckedUpdateWithoutCourseEnrollmentsInput = {
@@ -132565,6 +137311,8 @@ export namespace Prisma {
     assessmentSubmissions?: AssessmentSubmissionUncheckedUpdateManyWithoutBranchStudentNestedInput
     retestExams?: ExamUncheckedUpdateManyWithoutRetestStudentNestedInput
     reassessmentAssessments?: AssessmentUncheckedUpdateManyWithoutReassessmentStudentNestedInput
+    motivationMailHistory?: MotivationMailHistoryUncheckedUpdateManyWithoutBranchStudentNestedInput
+    discontinuationRequests?: StudentDiscontinuationRequestUncheckedUpdateManyWithoutBranchStudentNestedInput
   }
 
   export type BranchUpsertWithoutStudentEnrollmentsInput = {
@@ -132799,6 +137547,8 @@ export namespace Prisma {
     retestExams?: ExamCreateNestedManyWithoutRetestStudentInput
     reassessmentAssessments?: AssessmentCreateNestedManyWithoutReassessmentStudentInput
     courseEnrollments?: BranchStudentCourseCreateNestedManyWithoutBranchStudentInput
+    motivationMailHistory?: MotivationMailHistoryCreateNestedManyWithoutBranchStudentInput
+    discontinuationRequests?: StudentDiscontinuationRequestCreateNestedManyWithoutBranchStudentInput
   }
 
   export type BranchStudentUncheckedCreateWithoutCalendarAttendanceRecordsInput = {
@@ -132867,6 +137617,8 @@ export namespace Prisma {
     retestExams?: ExamUncheckedCreateNestedManyWithoutRetestStudentInput
     reassessmentAssessments?: AssessmentUncheckedCreateNestedManyWithoutReassessmentStudentInput
     courseEnrollments?: BranchStudentCourseUncheckedCreateNestedManyWithoutBranchStudentInput
+    motivationMailHistory?: MotivationMailHistoryUncheckedCreateNestedManyWithoutBranchStudentInput
+    discontinuationRequests?: StudentDiscontinuationRequestUncheckedCreateNestedManyWithoutBranchStudentInput
   }
 
   export type BranchStudentCreateOrConnectWithoutCalendarAttendanceRecordsInput = {
@@ -133038,6 +137790,8 @@ export namespace Prisma {
     retestExams?: ExamUpdateManyWithoutRetestStudentNestedInput
     reassessmentAssessments?: AssessmentUpdateManyWithoutReassessmentStudentNestedInput
     courseEnrollments?: BranchStudentCourseUpdateManyWithoutBranchStudentNestedInput
+    motivationMailHistory?: MotivationMailHistoryUpdateManyWithoutBranchStudentNestedInput
+    discontinuationRequests?: StudentDiscontinuationRequestUpdateManyWithoutBranchStudentNestedInput
   }
 
   export type BranchStudentUncheckedUpdateWithoutCalendarAttendanceRecordsInput = {
@@ -133106,6 +137860,8 @@ export namespace Prisma {
     retestExams?: ExamUncheckedUpdateManyWithoutRetestStudentNestedInput
     reassessmentAssessments?: AssessmentUncheckedUpdateManyWithoutReassessmentStudentNestedInput
     courseEnrollments?: BranchStudentCourseUncheckedUpdateManyWithoutBranchStudentNestedInput
+    motivationMailHistory?: MotivationMailHistoryUncheckedUpdateManyWithoutBranchStudentNestedInput
+    discontinuationRequests?: StudentDiscontinuationRequestUncheckedUpdateManyWithoutBranchStudentNestedInput
   }
 
   export type UserUpsertWithoutMarkedBranchStudentAttendancesInput = {
@@ -133571,6 +138327,8 @@ export namespace Prisma {
     retestExams?: ExamCreateNestedManyWithoutRetestStudentInput
     reassessmentAssessments?: AssessmentCreateNestedManyWithoutReassessmentStudentInput
     courseEnrollments?: BranchStudentCourseCreateNestedManyWithoutBranchStudentInput
+    motivationMailHistory?: MotivationMailHistoryCreateNestedManyWithoutBranchStudentInput
+    discontinuationRequests?: StudentDiscontinuationRequestCreateNestedManyWithoutBranchStudentInput
   }
 
   export type BranchStudentUncheckedCreateWithoutInstallmentsInput = {
@@ -133639,6 +138397,8 @@ export namespace Prisma {
     retestExams?: ExamUncheckedCreateNestedManyWithoutRetestStudentInput
     reassessmentAssessments?: AssessmentUncheckedCreateNestedManyWithoutReassessmentStudentInput
     courseEnrollments?: BranchStudentCourseUncheckedCreateNestedManyWithoutBranchStudentInput
+    motivationMailHistory?: MotivationMailHistoryUncheckedCreateNestedManyWithoutBranchStudentInput
+    discontinuationRequests?: StudentDiscontinuationRequestUncheckedCreateNestedManyWithoutBranchStudentInput
   }
 
   export type BranchStudentCreateOrConnectWithoutInstallmentsInput = {
@@ -133767,6 +138527,8 @@ export namespace Prisma {
     retestExams?: ExamUpdateManyWithoutRetestStudentNestedInput
     reassessmentAssessments?: AssessmentUpdateManyWithoutReassessmentStudentNestedInput
     courseEnrollments?: BranchStudentCourseUpdateManyWithoutBranchStudentNestedInput
+    motivationMailHistory?: MotivationMailHistoryUpdateManyWithoutBranchStudentNestedInput
+    discontinuationRequests?: StudentDiscontinuationRequestUpdateManyWithoutBranchStudentNestedInput
   }
 
   export type BranchStudentUncheckedUpdateWithoutInstallmentsInput = {
@@ -133835,6 +138597,8 @@ export namespace Prisma {
     retestExams?: ExamUncheckedUpdateManyWithoutRetestStudentNestedInput
     reassessmentAssessments?: AssessmentUncheckedUpdateManyWithoutReassessmentStudentNestedInput
     courseEnrollments?: BranchStudentCourseUncheckedUpdateManyWithoutBranchStudentNestedInput
+    motivationMailHistory?: MotivationMailHistoryUncheckedUpdateManyWithoutBranchStudentNestedInput
+    discontinuationRequests?: StudentDiscontinuationRequestUncheckedUpdateManyWithoutBranchStudentNestedInput
   }
 
   export type BranchStudentPaymentUpsertWithWhereUniqueWithoutInstallmentInput = {
@@ -136508,6 +141272,8 @@ export namespace Prisma {
     retestExams?: ExamCreateNestedManyWithoutRetestStudentInput
     reassessmentAssessments?: AssessmentCreateNestedManyWithoutReassessmentStudentInput
     courseEnrollments?: BranchStudentCourseCreateNestedManyWithoutBranchStudentInput
+    motivationMailHistory?: MotivationMailHistoryCreateNestedManyWithoutBranchStudentInput
+    discontinuationRequests?: StudentDiscontinuationRequestCreateNestedManyWithoutBranchStudentInput
   }
 
   export type BranchStudentUncheckedCreateWithoutFacultyTodayWorkStudentEntriesInput = {
@@ -136576,6 +141342,8 @@ export namespace Prisma {
     retestExams?: ExamUncheckedCreateNestedManyWithoutRetestStudentInput
     reassessmentAssessments?: AssessmentUncheckedCreateNestedManyWithoutReassessmentStudentInput
     courseEnrollments?: BranchStudentCourseUncheckedCreateNestedManyWithoutBranchStudentInput
+    motivationMailHistory?: MotivationMailHistoryUncheckedCreateNestedManyWithoutBranchStudentInput
+    discontinuationRequests?: StudentDiscontinuationRequestUncheckedCreateNestedManyWithoutBranchStudentInput
   }
 
   export type BranchStudentCreateOrConnectWithoutFacultyTodayWorkStudentEntriesInput = {
@@ -136808,6 +141576,8 @@ export namespace Prisma {
     retestExams?: ExamUpdateManyWithoutRetestStudentNestedInput
     reassessmentAssessments?: AssessmentUpdateManyWithoutReassessmentStudentNestedInput
     courseEnrollments?: BranchStudentCourseUpdateManyWithoutBranchStudentNestedInput
+    motivationMailHistory?: MotivationMailHistoryUpdateManyWithoutBranchStudentNestedInput
+    discontinuationRequests?: StudentDiscontinuationRequestUpdateManyWithoutBranchStudentNestedInput
   }
 
   export type BranchStudentUncheckedUpdateWithoutFacultyTodayWorkStudentEntriesInput = {
@@ -136876,6 +141646,8 @@ export namespace Prisma {
     retestExams?: ExamUncheckedUpdateManyWithoutRetestStudentNestedInput
     reassessmentAssessments?: AssessmentUncheckedUpdateManyWithoutReassessmentStudentNestedInput
     courseEnrollments?: BranchStudentCourseUncheckedUpdateManyWithoutBranchStudentNestedInput
+    motivationMailHistory?: MotivationMailHistoryUncheckedUpdateManyWithoutBranchStudentNestedInput
+    discontinuationRequests?: StudentDiscontinuationRequestUncheckedUpdateManyWithoutBranchStudentNestedInput
   }
 
   export type BranchCourseUpsertWithoutFacultyTodayWorkStudentEntriesInput = {
@@ -139468,6 +144240,8 @@ export namespace Prisma {
     assessmentSubmissions?: AssessmentSubmissionCreateNestedManyWithoutBranchStudentInput
     retestExams?: ExamCreateNestedManyWithoutRetestStudentInput
     courseEnrollments?: BranchStudentCourseCreateNestedManyWithoutBranchStudentInput
+    motivationMailHistory?: MotivationMailHistoryCreateNestedManyWithoutBranchStudentInput
+    discontinuationRequests?: StudentDiscontinuationRequestCreateNestedManyWithoutBranchStudentInput
   }
 
   export type BranchStudentUncheckedCreateWithoutReassessmentAssessmentsInput = {
@@ -139536,6 +144310,8 @@ export namespace Prisma {
     assessmentSubmissions?: AssessmentSubmissionUncheckedCreateNestedManyWithoutBranchStudentInput
     retestExams?: ExamUncheckedCreateNestedManyWithoutRetestStudentInput
     courseEnrollments?: BranchStudentCourseUncheckedCreateNestedManyWithoutBranchStudentInput
+    motivationMailHistory?: MotivationMailHistoryUncheckedCreateNestedManyWithoutBranchStudentInput
+    discontinuationRequests?: StudentDiscontinuationRequestUncheckedCreateNestedManyWithoutBranchStudentInput
   }
 
   export type BranchStudentCreateOrConnectWithoutReassessmentAssessmentsInput = {
@@ -140013,6 +144789,8 @@ export namespace Prisma {
     assessmentSubmissions?: AssessmentSubmissionUpdateManyWithoutBranchStudentNestedInput
     retestExams?: ExamUpdateManyWithoutRetestStudentNestedInput
     courseEnrollments?: BranchStudentCourseUpdateManyWithoutBranchStudentNestedInput
+    motivationMailHistory?: MotivationMailHistoryUpdateManyWithoutBranchStudentNestedInput
+    discontinuationRequests?: StudentDiscontinuationRequestUpdateManyWithoutBranchStudentNestedInput
   }
 
   export type BranchStudentUncheckedUpdateWithoutReassessmentAssessmentsInput = {
@@ -140081,6 +144859,8 @@ export namespace Prisma {
     assessmentSubmissions?: AssessmentSubmissionUncheckedUpdateManyWithoutBranchStudentNestedInput
     retestExams?: ExamUncheckedUpdateManyWithoutRetestStudentNestedInput
     courseEnrollments?: BranchStudentCourseUncheckedUpdateManyWithoutBranchStudentNestedInput
+    motivationMailHistory?: MotivationMailHistoryUncheckedUpdateManyWithoutBranchStudentNestedInput
+    discontinuationRequests?: StudentDiscontinuationRequestUncheckedUpdateManyWithoutBranchStudentNestedInput
   }
 
   export type AssessmentCreateWithoutSubmissionsInput = {
@@ -140198,6 +144978,8 @@ export namespace Prisma {
     retestExams?: ExamCreateNestedManyWithoutRetestStudentInput
     reassessmentAssessments?: AssessmentCreateNestedManyWithoutReassessmentStudentInput
     courseEnrollments?: BranchStudentCourseCreateNestedManyWithoutBranchStudentInput
+    motivationMailHistory?: MotivationMailHistoryCreateNestedManyWithoutBranchStudentInput
+    discontinuationRequests?: StudentDiscontinuationRequestCreateNestedManyWithoutBranchStudentInput
   }
 
   export type BranchStudentUncheckedCreateWithoutAssessmentSubmissionsInput = {
@@ -140266,6 +145048,8 @@ export namespace Prisma {
     retestExams?: ExamUncheckedCreateNestedManyWithoutRetestStudentInput
     reassessmentAssessments?: AssessmentUncheckedCreateNestedManyWithoutReassessmentStudentInput
     courseEnrollments?: BranchStudentCourseUncheckedCreateNestedManyWithoutBranchStudentInput
+    motivationMailHistory?: MotivationMailHistoryUncheckedCreateNestedManyWithoutBranchStudentInput
+    discontinuationRequests?: StudentDiscontinuationRequestUncheckedCreateNestedManyWithoutBranchStudentInput
   }
 
   export type BranchStudentCreateOrConnectWithoutAssessmentSubmissionsInput = {
@@ -140492,6 +145276,8 @@ export namespace Prisma {
     retestExams?: ExamUpdateManyWithoutRetestStudentNestedInput
     reassessmentAssessments?: AssessmentUpdateManyWithoutReassessmentStudentNestedInput
     courseEnrollments?: BranchStudentCourseUpdateManyWithoutBranchStudentNestedInput
+    motivationMailHistory?: MotivationMailHistoryUpdateManyWithoutBranchStudentNestedInput
+    discontinuationRequests?: StudentDiscontinuationRequestUpdateManyWithoutBranchStudentNestedInput
   }
 
   export type BranchStudentUncheckedUpdateWithoutAssessmentSubmissionsInput = {
@@ -140560,6 +145346,8 @@ export namespace Prisma {
     retestExams?: ExamUncheckedUpdateManyWithoutRetestStudentNestedInput
     reassessmentAssessments?: AssessmentUncheckedUpdateManyWithoutReassessmentStudentNestedInput
     courseEnrollments?: BranchStudentCourseUncheckedUpdateManyWithoutBranchStudentNestedInput
+    motivationMailHistory?: MotivationMailHistoryUncheckedUpdateManyWithoutBranchStudentNestedInput
+    discontinuationRequests?: StudentDiscontinuationRequestUncheckedUpdateManyWithoutBranchStudentNestedInput
   }
 
   export type UserUpsertWithoutEvaluatedSubmissionsInput = {
@@ -141143,6 +145931,8 @@ export namespace Prisma {
     assessmentSubmissions?: AssessmentSubmissionCreateNestedManyWithoutBranchStudentInput
     reassessmentAssessments?: AssessmentCreateNestedManyWithoutReassessmentStudentInput
     courseEnrollments?: BranchStudentCourseCreateNestedManyWithoutBranchStudentInput
+    motivationMailHistory?: MotivationMailHistoryCreateNestedManyWithoutBranchStudentInput
+    discontinuationRequests?: StudentDiscontinuationRequestCreateNestedManyWithoutBranchStudentInput
   }
 
   export type BranchStudentUncheckedCreateWithoutRetestExamsInput = {
@@ -141211,6 +146001,8 @@ export namespace Prisma {
     assessmentSubmissions?: AssessmentSubmissionUncheckedCreateNestedManyWithoutBranchStudentInput
     reassessmentAssessments?: AssessmentUncheckedCreateNestedManyWithoutReassessmentStudentInput
     courseEnrollments?: BranchStudentCourseUncheckedCreateNestedManyWithoutBranchStudentInput
+    motivationMailHistory?: MotivationMailHistoryUncheckedCreateNestedManyWithoutBranchStudentInput
+    discontinuationRequests?: StudentDiscontinuationRequestUncheckedCreateNestedManyWithoutBranchStudentInput
   }
 
   export type BranchStudentCreateOrConnectWithoutRetestExamsInput = {
@@ -141652,6 +146444,8 @@ export namespace Prisma {
     assessmentSubmissions?: AssessmentSubmissionUpdateManyWithoutBranchStudentNestedInput
     reassessmentAssessments?: AssessmentUpdateManyWithoutReassessmentStudentNestedInput
     courseEnrollments?: BranchStudentCourseUpdateManyWithoutBranchStudentNestedInput
+    motivationMailHistory?: MotivationMailHistoryUpdateManyWithoutBranchStudentNestedInput
+    discontinuationRequests?: StudentDiscontinuationRequestUpdateManyWithoutBranchStudentNestedInput
   }
 
   export type BranchStudentUncheckedUpdateWithoutRetestExamsInput = {
@@ -141720,6 +146514,8 @@ export namespace Prisma {
     assessmentSubmissions?: AssessmentSubmissionUncheckedUpdateManyWithoutBranchStudentNestedInput
     reassessmentAssessments?: AssessmentUncheckedUpdateManyWithoutReassessmentStudentNestedInput
     courseEnrollments?: BranchStudentCourseUncheckedUpdateManyWithoutBranchStudentNestedInput
+    motivationMailHistory?: MotivationMailHistoryUncheckedUpdateManyWithoutBranchStudentNestedInput
+    discontinuationRequests?: StudentDiscontinuationRequestUncheckedUpdateManyWithoutBranchStudentNestedInput
   }
 
   export type ExamCreateWithoutSchedulesInput = {
@@ -142350,6 +147146,8 @@ export namespace Prisma {
     retestExams?: ExamCreateNestedManyWithoutRetestStudentInput
     reassessmentAssessments?: AssessmentCreateNestedManyWithoutReassessmentStudentInput
     courseEnrollments?: BranchStudentCourseCreateNestedManyWithoutBranchStudentInput
+    motivationMailHistory?: MotivationMailHistoryCreateNestedManyWithoutBranchStudentInput
+    discontinuationRequests?: StudentDiscontinuationRequestCreateNestedManyWithoutBranchStudentInput
   }
 
   export type BranchStudentUncheckedCreateWithoutExamAttemptsInput = {
@@ -142418,6 +147216,8 @@ export namespace Prisma {
     retestExams?: ExamUncheckedCreateNestedManyWithoutRetestStudentInput
     reassessmentAssessments?: AssessmentUncheckedCreateNestedManyWithoutReassessmentStudentInput
     courseEnrollments?: BranchStudentCourseUncheckedCreateNestedManyWithoutBranchStudentInput
+    motivationMailHistory?: MotivationMailHistoryUncheckedCreateNestedManyWithoutBranchStudentInput
+    discontinuationRequests?: StudentDiscontinuationRequestUncheckedCreateNestedManyWithoutBranchStudentInput
   }
 
   export type BranchStudentCreateOrConnectWithoutExamAttemptsInput = {
@@ -142701,6 +147501,8 @@ export namespace Prisma {
     retestExams?: ExamUpdateManyWithoutRetestStudentNestedInput
     reassessmentAssessments?: AssessmentUpdateManyWithoutReassessmentStudentNestedInput
     courseEnrollments?: BranchStudentCourseUpdateManyWithoutBranchStudentNestedInput
+    motivationMailHistory?: MotivationMailHistoryUpdateManyWithoutBranchStudentNestedInput
+    discontinuationRequests?: StudentDiscontinuationRequestUpdateManyWithoutBranchStudentNestedInput
   }
 
   export type BranchStudentUncheckedUpdateWithoutExamAttemptsInput = {
@@ -142769,6 +147571,8 @@ export namespace Prisma {
     retestExams?: ExamUncheckedUpdateManyWithoutRetestStudentNestedInput
     reassessmentAssessments?: AssessmentUncheckedUpdateManyWithoutReassessmentStudentNestedInput
     courseEnrollments?: BranchStudentCourseUncheckedUpdateManyWithoutBranchStudentNestedInput
+    motivationMailHistory?: MotivationMailHistoryUncheckedUpdateManyWithoutBranchStudentNestedInput
+    discontinuationRequests?: StudentDiscontinuationRequestUncheckedUpdateManyWithoutBranchStudentNestedInput
   }
 
   export type UserUpsertWithoutExamAttemptsInput = {
@@ -143040,6 +147844,598 @@ export namespace Prisma {
     questionOrder?: IntFieldUpdateOperationsInput | number
   }
 
+  export type BranchStudentCreateWithoutMotivationMailHistoryInput = {
+    id?: string
+    studentId: string
+    studentName: string
+    parentName?: string | null
+    mobileNumber: string
+    emailAddress: string
+    parentSpouseNumber?: string | null
+    countryCode?: string | null
+    country?: string | null
+    stateCode?: string | null
+    state?: string | null
+    city?: string | null
+    address?: string | null
+    qualification?: string | null
+    passedOutYear?: string | null
+    currentStatus?: string | null
+    designation?: string | null
+    source?: string | null
+    sourceOther?: string | null
+    admissionDate: string
+    courseStartDate?: string | null
+    classSchedule?: string | null
+    recordStatus?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    linkedInUrl?: string | null
+    remarks?: string | null
+    courseName?: string | null
+    courseMode?: string | null
+    totalWorkingDays?: number | null
+    courseEndDate?: string | null
+    batchId?: string | null
+    batchName?: string | null
+    batchTiming?: string | null
+    facultyId?: string | null
+    facultyName?: string | null
+    weeklyOffDay?: string | null
+    courseAmount?: number | null
+    paymentMode?: string
+    paymentPlanId?: string | null
+    paymentPlan?: string | null
+    feeScheduleMode?: string
+    feeFirstPaymentDate?: string | null
+    fee70ProgressDate?: string | null
+    fee70TargetHours?: number | null
+    feePaymentDeadline?: string | null
+    feeComplianceStatus?: string
+    courseProgress?: number | null
+    courseCompletedAt?: Date | string | null
+    enrollmentType?: string
+    arrangementType?: string
+    firstCourseId?: string | null
+    branch: BranchCreateNestedOneWithoutBranchStudentsInput
+    course?: BranchCourseCreateNestedOneWithoutBranchStudentsInput
+    installments?: BranchStudentInstallmentCreateNestedManyWithoutBranchStudentInput
+    payments?: BranchStudentPaymentCreateNestedManyWithoutBranchStudentInput
+    ledgerEntries?: BranchStudentLedgerEntryCreateNestedManyWithoutBranchStudentInput
+    calendarAttendanceRecords?: BranchStudentAttendanceCreateNestedManyWithoutBranchStudentInput
+    facultyTodayWorkStudentEntries?: FacultyTodayWorkStudentEntryCreateNestedManyWithoutBranchStudentInput
+    examAttempts?: ExamAttemptCreateNestedManyWithoutBranchStudentInput
+    assessmentSubmissions?: AssessmentSubmissionCreateNestedManyWithoutBranchStudentInput
+    retestExams?: ExamCreateNestedManyWithoutRetestStudentInput
+    reassessmentAssessments?: AssessmentCreateNestedManyWithoutReassessmentStudentInput
+    courseEnrollments?: BranchStudentCourseCreateNestedManyWithoutBranchStudentInput
+    discontinuationRequests?: StudentDiscontinuationRequestCreateNestedManyWithoutBranchStudentInput
+  }
+
+  export type BranchStudentUncheckedCreateWithoutMotivationMailHistoryInput = {
+    id?: string
+    branchId: string
+    studentId: string
+    studentName: string
+    parentName?: string | null
+    mobileNumber: string
+    emailAddress: string
+    parentSpouseNumber?: string | null
+    countryCode?: string | null
+    country?: string | null
+    stateCode?: string | null
+    state?: string | null
+    city?: string | null
+    address?: string | null
+    qualification?: string | null
+    passedOutYear?: string | null
+    currentStatus?: string | null
+    designation?: string | null
+    source?: string | null
+    sourceOther?: string | null
+    admissionDate: string
+    courseStartDate?: string | null
+    classSchedule?: string | null
+    recordStatus?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    linkedInUrl?: string | null
+    remarks?: string | null
+    courseId?: string | null
+    courseName?: string | null
+    courseMode?: string | null
+    totalWorkingDays?: number | null
+    courseEndDate?: string | null
+    batchId?: string | null
+    batchName?: string | null
+    batchTiming?: string | null
+    facultyId?: string | null
+    facultyName?: string | null
+    weeklyOffDay?: string | null
+    courseAmount?: number | null
+    paymentMode?: string
+    paymentPlanId?: string | null
+    paymentPlan?: string | null
+    feeScheduleMode?: string
+    feeFirstPaymentDate?: string | null
+    fee70ProgressDate?: string | null
+    fee70TargetHours?: number | null
+    feePaymentDeadline?: string | null
+    feeComplianceStatus?: string
+    courseProgress?: number | null
+    courseCompletedAt?: Date | string | null
+    enrollmentType?: string
+    arrangementType?: string
+    firstCourseId?: string | null
+    installments?: BranchStudentInstallmentUncheckedCreateNestedManyWithoutBranchStudentInput
+    payments?: BranchStudentPaymentUncheckedCreateNestedManyWithoutBranchStudentInput
+    ledgerEntries?: BranchStudentLedgerEntryUncheckedCreateNestedManyWithoutBranchStudentInput
+    calendarAttendanceRecords?: BranchStudentAttendanceUncheckedCreateNestedManyWithoutBranchStudentInput
+    facultyTodayWorkStudentEntries?: FacultyTodayWorkStudentEntryUncheckedCreateNestedManyWithoutBranchStudentInput
+    examAttempts?: ExamAttemptUncheckedCreateNestedManyWithoutBranchStudentInput
+    assessmentSubmissions?: AssessmentSubmissionUncheckedCreateNestedManyWithoutBranchStudentInput
+    retestExams?: ExamUncheckedCreateNestedManyWithoutRetestStudentInput
+    reassessmentAssessments?: AssessmentUncheckedCreateNestedManyWithoutReassessmentStudentInput
+    courseEnrollments?: BranchStudentCourseUncheckedCreateNestedManyWithoutBranchStudentInput
+    discontinuationRequests?: StudentDiscontinuationRequestUncheckedCreateNestedManyWithoutBranchStudentInput
+  }
+
+  export type BranchStudentCreateOrConnectWithoutMotivationMailHistoryInput = {
+    where: BranchStudentWhereUniqueInput
+    create: XOR<BranchStudentCreateWithoutMotivationMailHistoryInput, BranchStudentUncheckedCreateWithoutMotivationMailHistoryInput>
+  }
+
+  export type BranchStudentUpsertWithoutMotivationMailHistoryInput = {
+    update: XOR<BranchStudentUpdateWithoutMotivationMailHistoryInput, BranchStudentUncheckedUpdateWithoutMotivationMailHistoryInput>
+    create: XOR<BranchStudentCreateWithoutMotivationMailHistoryInput, BranchStudentUncheckedCreateWithoutMotivationMailHistoryInput>
+    where?: BranchStudentWhereInput
+  }
+
+  export type BranchStudentUpdateToOneWithWhereWithoutMotivationMailHistoryInput = {
+    where?: BranchStudentWhereInput
+    data: XOR<BranchStudentUpdateWithoutMotivationMailHistoryInput, BranchStudentUncheckedUpdateWithoutMotivationMailHistoryInput>
+  }
+
+  export type BranchStudentUpdateWithoutMotivationMailHistoryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    studentId?: StringFieldUpdateOperationsInput | string
+    studentName?: StringFieldUpdateOperationsInput | string
+    parentName?: NullableStringFieldUpdateOperationsInput | string | null
+    mobileNumber?: StringFieldUpdateOperationsInput | string
+    emailAddress?: StringFieldUpdateOperationsInput | string
+    parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    countryCode?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    stateCode?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    qualification?: NullableStringFieldUpdateOperationsInput | string | null
+    passedOutYear?: NullableStringFieldUpdateOperationsInput | string | null
+    currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    designation?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
+    admissionDate?: StringFieldUpdateOperationsInput | string
+    courseStartDate?: NullableStringFieldUpdateOperationsInput | string | null
+    classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
+    recordStatus?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    linkedInUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    remarks?: NullableStringFieldUpdateOperationsInput | string | null
+    courseName?: NullableStringFieldUpdateOperationsInput | string | null
+    courseMode?: NullableStringFieldUpdateOperationsInput | string | null
+    totalWorkingDays?: NullableIntFieldUpdateOperationsInput | number | null
+    courseEndDate?: NullableStringFieldUpdateOperationsInput | string | null
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
+    batchName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchTiming?: NullableStringFieldUpdateOperationsInput | string | null
+    facultyId?: NullableStringFieldUpdateOperationsInput | string | null
+    facultyName?: NullableStringFieldUpdateOperationsInput | string | null
+    weeklyOffDay?: NullableStringFieldUpdateOperationsInput | string | null
+    courseAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    paymentMode?: StringFieldUpdateOperationsInput | string
+    paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    feeScheduleMode?: StringFieldUpdateOperationsInput | string
+    feeFirstPaymentDate?: NullableStringFieldUpdateOperationsInput | string | null
+    fee70ProgressDate?: NullableStringFieldUpdateOperationsInput | string | null
+    fee70TargetHours?: NullableFloatFieldUpdateOperationsInput | number | null
+    feePaymentDeadline?: NullableStringFieldUpdateOperationsInput | string | null
+    feeComplianceStatus?: StringFieldUpdateOperationsInput | string
+    courseProgress?: NullableIntFieldUpdateOperationsInput | number | null
+    courseCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    enrollmentType?: StringFieldUpdateOperationsInput | string
+    arrangementType?: StringFieldUpdateOperationsInput | string
+    firstCourseId?: NullableStringFieldUpdateOperationsInput | string | null
+    branch?: BranchUpdateOneRequiredWithoutBranchStudentsNestedInput
+    course?: BranchCourseUpdateOneWithoutBranchStudentsNestedInput
+    installments?: BranchStudentInstallmentUpdateManyWithoutBranchStudentNestedInput
+    payments?: BranchStudentPaymentUpdateManyWithoutBranchStudentNestedInput
+    ledgerEntries?: BranchStudentLedgerEntryUpdateManyWithoutBranchStudentNestedInput
+    calendarAttendanceRecords?: BranchStudentAttendanceUpdateManyWithoutBranchStudentNestedInput
+    facultyTodayWorkStudentEntries?: FacultyTodayWorkStudentEntryUpdateManyWithoutBranchStudentNestedInput
+    examAttempts?: ExamAttemptUpdateManyWithoutBranchStudentNestedInput
+    assessmentSubmissions?: AssessmentSubmissionUpdateManyWithoutBranchStudentNestedInput
+    retestExams?: ExamUpdateManyWithoutRetestStudentNestedInput
+    reassessmentAssessments?: AssessmentUpdateManyWithoutReassessmentStudentNestedInput
+    courseEnrollments?: BranchStudentCourseUpdateManyWithoutBranchStudentNestedInput
+    discontinuationRequests?: StudentDiscontinuationRequestUpdateManyWithoutBranchStudentNestedInput
+  }
+
+  export type BranchStudentUncheckedUpdateWithoutMotivationMailHistoryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    studentId?: StringFieldUpdateOperationsInput | string
+    studentName?: StringFieldUpdateOperationsInput | string
+    parentName?: NullableStringFieldUpdateOperationsInput | string | null
+    mobileNumber?: StringFieldUpdateOperationsInput | string
+    emailAddress?: StringFieldUpdateOperationsInput | string
+    parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    countryCode?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    stateCode?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    qualification?: NullableStringFieldUpdateOperationsInput | string | null
+    passedOutYear?: NullableStringFieldUpdateOperationsInput | string | null
+    currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    designation?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
+    admissionDate?: StringFieldUpdateOperationsInput | string
+    courseStartDate?: NullableStringFieldUpdateOperationsInput | string | null
+    classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
+    recordStatus?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    linkedInUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    remarks?: NullableStringFieldUpdateOperationsInput | string | null
+    courseId?: NullableStringFieldUpdateOperationsInput | string | null
+    courseName?: NullableStringFieldUpdateOperationsInput | string | null
+    courseMode?: NullableStringFieldUpdateOperationsInput | string | null
+    totalWorkingDays?: NullableIntFieldUpdateOperationsInput | number | null
+    courseEndDate?: NullableStringFieldUpdateOperationsInput | string | null
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
+    batchName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchTiming?: NullableStringFieldUpdateOperationsInput | string | null
+    facultyId?: NullableStringFieldUpdateOperationsInput | string | null
+    facultyName?: NullableStringFieldUpdateOperationsInput | string | null
+    weeklyOffDay?: NullableStringFieldUpdateOperationsInput | string | null
+    courseAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    paymentMode?: StringFieldUpdateOperationsInput | string
+    paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    feeScheduleMode?: StringFieldUpdateOperationsInput | string
+    feeFirstPaymentDate?: NullableStringFieldUpdateOperationsInput | string | null
+    fee70ProgressDate?: NullableStringFieldUpdateOperationsInput | string | null
+    fee70TargetHours?: NullableFloatFieldUpdateOperationsInput | number | null
+    feePaymentDeadline?: NullableStringFieldUpdateOperationsInput | string | null
+    feeComplianceStatus?: StringFieldUpdateOperationsInput | string
+    courseProgress?: NullableIntFieldUpdateOperationsInput | number | null
+    courseCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    enrollmentType?: StringFieldUpdateOperationsInput | string
+    arrangementType?: StringFieldUpdateOperationsInput | string
+    firstCourseId?: NullableStringFieldUpdateOperationsInput | string | null
+    installments?: BranchStudentInstallmentUncheckedUpdateManyWithoutBranchStudentNestedInput
+    payments?: BranchStudentPaymentUncheckedUpdateManyWithoutBranchStudentNestedInput
+    ledgerEntries?: BranchStudentLedgerEntryUncheckedUpdateManyWithoutBranchStudentNestedInput
+    calendarAttendanceRecords?: BranchStudentAttendanceUncheckedUpdateManyWithoutBranchStudentNestedInput
+    facultyTodayWorkStudentEntries?: FacultyTodayWorkStudentEntryUncheckedUpdateManyWithoutBranchStudentNestedInput
+    examAttempts?: ExamAttemptUncheckedUpdateManyWithoutBranchStudentNestedInput
+    assessmentSubmissions?: AssessmentSubmissionUncheckedUpdateManyWithoutBranchStudentNestedInput
+    retestExams?: ExamUncheckedUpdateManyWithoutRetestStudentNestedInput
+    reassessmentAssessments?: AssessmentUncheckedUpdateManyWithoutReassessmentStudentNestedInput
+    courseEnrollments?: BranchStudentCourseUncheckedUpdateManyWithoutBranchStudentNestedInput
+    discontinuationRequests?: StudentDiscontinuationRequestUncheckedUpdateManyWithoutBranchStudentNestedInput
+  }
+
+  export type BranchStudentCreateWithoutDiscontinuationRequestsInput = {
+    id?: string
+    studentId: string
+    studentName: string
+    parentName?: string | null
+    mobileNumber: string
+    emailAddress: string
+    parentSpouseNumber?: string | null
+    countryCode?: string | null
+    country?: string | null
+    stateCode?: string | null
+    state?: string | null
+    city?: string | null
+    address?: string | null
+    qualification?: string | null
+    passedOutYear?: string | null
+    currentStatus?: string | null
+    designation?: string | null
+    source?: string | null
+    sourceOther?: string | null
+    admissionDate: string
+    courseStartDate?: string | null
+    classSchedule?: string | null
+    recordStatus?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    linkedInUrl?: string | null
+    remarks?: string | null
+    courseName?: string | null
+    courseMode?: string | null
+    totalWorkingDays?: number | null
+    courseEndDate?: string | null
+    batchId?: string | null
+    batchName?: string | null
+    batchTiming?: string | null
+    facultyId?: string | null
+    facultyName?: string | null
+    weeklyOffDay?: string | null
+    courseAmount?: number | null
+    paymentMode?: string
+    paymentPlanId?: string | null
+    paymentPlan?: string | null
+    feeScheduleMode?: string
+    feeFirstPaymentDate?: string | null
+    fee70ProgressDate?: string | null
+    fee70TargetHours?: number | null
+    feePaymentDeadline?: string | null
+    feeComplianceStatus?: string
+    courseProgress?: number | null
+    courseCompletedAt?: Date | string | null
+    enrollmentType?: string
+    arrangementType?: string
+    firstCourseId?: string | null
+    branch: BranchCreateNestedOneWithoutBranchStudentsInput
+    course?: BranchCourseCreateNestedOneWithoutBranchStudentsInput
+    installments?: BranchStudentInstallmentCreateNestedManyWithoutBranchStudentInput
+    payments?: BranchStudentPaymentCreateNestedManyWithoutBranchStudentInput
+    ledgerEntries?: BranchStudentLedgerEntryCreateNestedManyWithoutBranchStudentInput
+    calendarAttendanceRecords?: BranchStudentAttendanceCreateNestedManyWithoutBranchStudentInput
+    facultyTodayWorkStudentEntries?: FacultyTodayWorkStudentEntryCreateNestedManyWithoutBranchStudentInput
+    examAttempts?: ExamAttemptCreateNestedManyWithoutBranchStudentInput
+    assessmentSubmissions?: AssessmentSubmissionCreateNestedManyWithoutBranchStudentInput
+    retestExams?: ExamCreateNestedManyWithoutRetestStudentInput
+    reassessmentAssessments?: AssessmentCreateNestedManyWithoutReassessmentStudentInput
+    courseEnrollments?: BranchStudentCourseCreateNestedManyWithoutBranchStudentInput
+    motivationMailHistory?: MotivationMailHistoryCreateNestedManyWithoutBranchStudentInput
+  }
+
+  export type BranchStudentUncheckedCreateWithoutDiscontinuationRequestsInput = {
+    id?: string
+    branchId: string
+    studentId: string
+    studentName: string
+    parentName?: string | null
+    mobileNumber: string
+    emailAddress: string
+    parentSpouseNumber?: string | null
+    countryCode?: string | null
+    country?: string | null
+    stateCode?: string | null
+    state?: string | null
+    city?: string | null
+    address?: string | null
+    qualification?: string | null
+    passedOutYear?: string | null
+    currentStatus?: string | null
+    designation?: string | null
+    source?: string | null
+    sourceOther?: string | null
+    admissionDate: string
+    courseStartDate?: string | null
+    classSchedule?: string | null
+    recordStatus?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    linkedInUrl?: string | null
+    remarks?: string | null
+    courseId?: string | null
+    courseName?: string | null
+    courseMode?: string | null
+    totalWorkingDays?: number | null
+    courseEndDate?: string | null
+    batchId?: string | null
+    batchName?: string | null
+    batchTiming?: string | null
+    facultyId?: string | null
+    facultyName?: string | null
+    weeklyOffDay?: string | null
+    courseAmount?: number | null
+    paymentMode?: string
+    paymentPlanId?: string | null
+    paymentPlan?: string | null
+    feeScheduleMode?: string
+    feeFirstPaymentDate?: string | null
+    fee70ProgressDate?: string | null
+    fee70TargetHours?: number | null
+    feePaymentDeadline?: string | null
+    feeComplianceStatus?: string
+    courseProgress?: number | null
+    courseCompletedAt?: Date | string | null
+    enrollmentType?: string
+    arrangementType?: string
+    firstCourseId?: string | null
+    installments?: BranchStudentInstallmentUncheckedCreateNestedManyWithoutBranchStudentInput
+    payments?: BranchStudentPaymentUncheckedCreateNestedManyWithoutBranchStudentInput
+    ledgerEntries?: BranchStudentLedgerEntryUncheckedCreateNestedManyWithoutBranchStudentInput
+    calendarAttendanceRecords?: BranchStudentAttendanceUncheckedCreateNestedManyWithoutBranchStudentInput
+    facultyTodayWorkStudentEntries?: FacultyTodayWorkStudentEntryUncheckedCreateNestedManyWithoutBranchStudentInput
+    examAttempts?: ExamAttemptUncheckedCreateNestedManyWithoutBranchStudentInput
+    assessmentSubmissions?: AssessmentSubmissionUncheckedCreateNestedManyWithoutBranchStudentInput
+    retestExams?: ExamUncheckedCreateNestedManyWithoutRetestStudentInput
+    reassessmentAssessments?: AssessmentUncheckedCreateNestedManyWithoutReassessmentStudentInput
+    courseEnrollments?: BranchStudentCourseUncheckedCreateNestedManyWithoutBranchStudentInput
+    motivationMailHistory?: MotivationMailHistoryUncheckedCreateNestedManyWithoutBranchStudentInput
+  }
+
+  export type BranchStudentCreateOrConnectWithoutDiscontinuationRequestsInput = {
+    where: BranchStudentWhereUniqueInput
+    create: XOR<BranchStudentCreateWithoutDiscontinuationRequestsInput, BranchStudentUncheckedCreateWithoutDiscontinuationRequestsInput>
+  }
+
+  export type BranchStudentUpsertWithoutDiscontinuationRequestsInput = {
+    update: XOR<BranchStudentUpdateWithoutDiscontinuationRequestsInput, BranchStudentUncheckedUpdateWithoutDiscontinuationRequestsInput>
+    create: XOR<BranchStudentCreateWithoutDiscontinuationRequestsInput, BranchStudentUncheckedCreateWithoutDiscontinuationRequestsInput>
+    where?: BranchStudentWhereInput
+  }
+
+  export type BranchStudentUpdateToOneWithWhereWithoutDiscontinuationRequestsInput = {
+    where?: BranchStudentWhereInput
+    data: XOR<BranchStudentUpdateWithoutDiscontinuationRequestsInput, BranchStudentUncheckedUpdateWithoutDiscontinuationRequestsInput>
+  }
+
+  export type BranchStudentUpdateWithoutDiscontinuationRequestsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    studentId?: StringFieldUpdateOperationsInput | string
+    studentName?: StringFieldUpdateOperationsInput | string
+    parentName?: NullableStringFieldUpdateOperationsInput | string | null
+    mobileNumber?: StringFieldUpdateOperationsInput | string
+    emailAddress?: StringFieldUpdateOperationsInput | string
+    parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    countryCode?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    stateCode?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    qualification?: NullableStringFieldUpdateOperationsInput | string | null
+    passedOutYear?: NullableStringFieldUpdateOperationsInput | string | null
+    currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    designation?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
+    admissionDate?: StringFieldUpdateOperationsInput | string
+    courseStartDate?: NullableStringFieldUpdateOperationsInput | string | null
+    classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
+    recordStatus?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    linkedInUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    remarks?: NullableStringFieldUpdateOperationsInput | string | null
+    courseName?: NullableStringFieldUpdateOperationsInput | string | null
+    courseMode?: NullableStringFieldUpdateOperationsInput | string | null
+    totalWorkingDays?: NullableIntFieldUpdateOperationsInput | number | null
+    courseEndDate?: NullableStringFieldUpdateOperationsInput | string | null
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
+    batchName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchTiming?: NullableStringFieldUpdateOperationsInput | string | null
+    facultyId?: NullableStringFieldUpdateOperationsInput | string | null
+    facultyName?: NullableStringFieldUpdateOperationsInput | string | null
+    weeklyOffDay?: NullableStringFieldUpdateOperationsInput | string | null
+    courseAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    paymentMode?: StringFieldUpdateOperationsInput | string
+    paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    feeScheduleMode?: StringFieldUpdateOperationsInput | string
+    feeFirstPaymentDate?: NullableStringFieldUpdateOperationsInput | string | null
+    fee70ProgressDate?: NullableStringFieldUpdateOperationsInput | string | null
+    fee70TargetHours?: NullableFloatFieldUpdateOperationsInput | number | null
+    feePaymentDeadline?: NullableStringFieldUpdateOperationsInput | string | null
+    feeComplianceStatus?: StringFieldUpdateOperationsInput | string
+    courseProgress?: NullableIntFieldUpdateOperationsInput | number | null
+    courseCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    enrollmentType?: StringFieldUpdateOperationsInput | string
+    arrangementType?: StringFieldUpdateOperationsInput | string
+    firstCourseId?: NullableStringFieldUpdateOperationsInput | string | null
+    branch?: BranchUpdateOneRequiredWithoutBranchStudentsNestedInput
+    course?: BranchCourseUpdateOneWithoutBranchStudentsNestedInput
+    installments?: BranchStudentInstallmentUpdateManyWithoutBranchStudentNestedInput
+    payments?: BranchStudentPaymentUpdateManyWithoutBranchStudentNestedInput
+    ledgerEntries?: BranchStudentLedgerEntryUpdateManyWithoutBranchStudentNestedInput
+    calendarAttendanceRecords?: BranchStudentAttendanceUpdateManyWithoutBranchStudentNestedInput
+    facultyTodayWorkStudentEntries?: FacultyTodayWorkStudentEntryUpdateManyWithoutBranchStudentNestedInput
+    examAttempts?: ExamAttemptUpdateManyWithoutBranchStudentNestedInput
+    assessmentSubmissions?: AssessmentSubmissionUpdateManyWithoutBranchStudentNestedInput
+    retestExams?: ExamUpdateManyWithoutRetestStudentNestedInput
+    reassessmentAssessments?: AssessmentUpdateManyWithoutReassessmentStudentNestedInput
+    courseEnrollments?: BranchStudentCourseUpdateManyWithoutBranchStudentNestedInput
+    motivationMailHistory?: MotivationMailHistoryUpdateManyWithoutBranchStudentNestedInput
+  }
+
+  export type BranchStudentUncheckedUpdateWithoutDiscontinuationRequestsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    studentId?: StringFieldUpdateOperationsInput | string
+    studentName?: StringFieldUpdateOperationsInput | string
+    parentName?: NullableStringFieldUpdateOperationsInput | string | null
+    mobileNumber?: StringFieldUpdateOperationsInput | string
+    emailAddress?: StringFieldUpdateOperationsInput | string
+    parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    countryCode?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    stateCode?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    qualification?: NullableStringFieldUpdateOperationsInput | string | null
+    passedOutYear?: NullableStringFieldUpdateOperationsInput | string | null
+    currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    designation?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
+    admissionDate?: StringFieldUpdateOperationsInput | string
+    courseStartDate?: NullableStringFieldUpdateOperationsInput | string | null
+    classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
+    recordStatus?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    linkedInUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    remarks?: NullableStringFieldUpdateOperationsInput | string | null
+    courseId?: NullableStringFieldUpdateOperationsInput | string | null
+    courseName?: NullableStringFieldUpdateOperationsInput | string | null
+    courseMode?: NullableStringFieldUpdateOperationsInput | string | null
+    totalWorkingDays?: NullableIntFieldUpdateOperationsInput | number | null
+    courseEndDate?: NullableStringFieldUpdateOperationsInput | string | null
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
+    batchName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchTiming?: NullableStringFieldUpdateOperationsInput | string | null
+    facultyId?: NullableStringFieldUpdateOperationsInput | string | null
+    facultyName?: NullableStringFieldUpdateOperationsInput | string | null
+    weeklyOffDay?: NullableStringFieldUpdateOperationsInput | string | null
+    courseAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    paymentMode?: StringFieldUpdateOperationsInput | string
+    paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    feeScheduleMode?: StringFieldUpdateOperationsInput | string
+    feeFirstPaymentDate?: NullableStringFieldUpdateOperationsInput | string | null
+    fee70ProgressDate?: NullableStringFieldUpdateOperationsInput | string | null
+    fee70TargetHours?: NullableFloatFieldUpdateOperationsInput | number | null
+    feePaymentDeadline?: NullableStringFieldUpdateOperationsInput | string | null
+    feeComplianceStatus?: StringFieldUpdateOperationsInput | string
+    courseProgress?: NullableIntFieldUpdateOperationsInput | number | null
+    courseCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    enrollmentType?: StringFieldUpdateOperationsInput | string
+    arrangementType?: StringFieldUpdateOperationsInput | string
+    firstCourseId?: NullableStringFieldUpdateOperationsInput | string | null
+    installments?: BranchStudentInstallmentUncheckedUpdateManyWithoutBranchStudentNestedInput
+    payments?: BranchStudentPaymentUncheckedUpdateManyWithoutBranchStudentNestedInput
+    ledgerEntries?: BranchStudentLedgerEntryUncheckedUpdateManyWithoutBranchStudentNestedInput
+    calendarAttendanceRecords?: BranchStudentAttendanceUncheckedUpdateManyWithoutBranchStudentNestedInput
+    facultyTodayWorkStudentEntries?: FacultyTodayWorkStudentEntryUncheckedUpdateManyWithoutBranchStudentNestedInput
+    examAttempts?: ExamAttemptUncheckedUpdateManyWithoutBranchStudentNestedInput
+    assessmentSubmissions?: AssessmentSubmissionUncheckedUpdateManyWithoutBranchStudentNestedInput
+    retestExams?: ExamUncheckedUpdateManyWithoutRetestStudentNestedInput
+    reassessmentAssessments?: AssessmentUncheckedUpdateManyWithoutReassessmentStudentNestedInput
+    courseEnrollments?: BranchStudentCourseUncheckedUpdateManyWithoutBranchStudentNestedInput
+    motivationMailHistory?: MotivationMailHistoryUncheckedUpdateManyWithoutBranchStudentNestedInput
+  }
+
   export type BranchStudentCreateWithoutPaymentsInput = {
     id?: string
     studentId: string
@@ -143106,6 +148502,8 @@ export namespace Prisma {
     retestExams?: ExamCreateNestedManyWithoutRetestStudentInput
     reassessmentAssessments?: AssessmentCreateNestedManyWithoutReassessmentStudentInput
     courseEnrollments?: BranchStudentCourseCreateNestedManyWithoutBranchStudentInput
+    motivationMailHistory?: MotivationMailHistoryCreateNestedManyWithoutBranchStudentInput
+    discontinuationRequests?: StudentDiscontinuationRequestCreateNestedManyWithoutBranchStudentInput
   }
 
   export type BranchStudentUncheckedCreateWithoutPaymentsInput = {
@@ -143174,6 +148572,8 @@ export namespace Prisma {
     retestExams?: ExamUncheckedCreateNestedManyWithoutRetestStudentInput
     reassessmentAssessments?: AssessmentUncheckedCreateNestedManyWithoutReassessmentStudentInput
     courseEnrollments?: BranchStudentCourseUncheckedCreateNestedManyWithoutBranchStudentInput
+    motivationMailHistory?: MotivationMailHistoryUncheckedCreateNestedManyWithoutBranchStudentInput
+    discontinuationRequests?: StudentDiscontinuationRequestUncheckedCreateNestedManyWithoutBranchStudentInput
   }
 
   export type BranchStudentCreateOrConnectWithoutPaymentsInput = {
@@ -143368,6 +148768,8 @@ export namespace Prisma {
     retestExams?: ExamUpdateManyWithoutRetestStudentNestedInput
     reassessmentAssessments?: AssessmentUpdateManyWithoutReassessmentStudentNestedInput
     courseEnrollments?: BranchStudentCourseUpdateManyWithoutBranchStudentNestedInput
+    motivationMailHistory?: MotivationMailHistoryUpdateManyWithoutBranchStudentNestedInput
+    discontinuationRequests?: StudentDiscontinuationRequestUpdateManyWithoutBranchStudentNestedInput
   }
 
   export type BranchStudentUncheckedUpdateWithoutPaymentsInput = {
@@ -143436,6 +148838,8 @@ export namespace Prisma {
     retestExams?: ExamUncheckedUpdateManyWithoutRetestStudentNestedInput
     reassessmentAssessments?: AssessmentUncheckedUpdateManyWithoutReassessmentStudentNestedInput
     courseEnrollments?: BranchStudentCourseUncheckedUpdateManyWithoutBranchStudentNestedInput
+    motivationMailHistory?: MotivationMailHistoryUncheckedUpdateManyWithoutBranchStudentNestedInput
+    discontinuationRequests?: StudentDiscontinuationRequestUncheckedUpdateManyWithoutBranchStudentNestedInput
   }
 
   export type BranchUpsertWithoutPaymentsInput = {
@@ -143699,6 +149103,8 @@ export namespace Prisma {
     retestExams?: ExamCreateNestedManyWithoutRetestStudentInput
     reassessmentAssessments?: AssessmentCreateNestedManyWithoutReassessmentStudentInput
     courseEnrollments?: BranchStudentCourseCreateNestedManyWithoutBranchStudentInput
+    motivationMailHistory?: MotivationMailHistoryCreateNestedManyWithoutBranchStudentInput
+    discontinuationRequests?: StudentDiscontinuationRequestCreateNestedManyWithoutBranchStudentInput
   }
 
   export type BranchStudentUncheckedCreateWithoutLedgerEntriesInput = {
@@ -143767,6 +149173,8 @@ export namespace Prisma {
     retestExams?: ExamUncheckedCreateNestedManyWithoutRetestStudentInput
     reassessmentAssessments?: AssessmentUncheckedCreateNestedManyWithoutReassessmentStudentInput
     courseEnrollments?: BranchStudentCourseUncheckedCreateNestedManyWithoutBranchStudentInput
+    motivationMailHistory?: MotivationMailHistoryUncheckedCreateNestedManyWithoutBranchStudentInput
+    discontinuationRequests?: StudentDiscontinuationRequestUncheckedCreateNestedManyWithoutBranchStudentInput
   }
 
   export type BranchStudentCreateOrConnectWithoutLedgerEntriesInput = {
@@ -143930,6 +149338,8 @@ export namespace Prisma {
     retestExams?: ExamUpdateManyWithoutRetestStudentNestedInput
     reassessmentAssessments?: AssessmentUpdateManyWithoutReassessmentStudentNestedInput
     courseEnrollments?: BranchStudentCourseUpdateManyWithoutBranchStudentNestedInput
+    motivationMailHistory?: MotivationMailHistoryUpdateManyWithoutBranchStudentNestedInput
+    discontinuationRequests?: StudentDiscontinuationRequestUpdateManyWithoutBranchStudentNestedInput
   }
 
   export type BranchStudentUncheckedUpdateWithoutLedgerEntriesInput = {
@@ -143998,6 +149408,8 @@ export namespace Prisma {
     retestExams?: ExamUncheckedUpdateManyWithoutRetestStudentNestedInput
     reassessmentAssessments?: AssessmentUncheckedUpdateManyWithoutReassessmentStudentNestedInput
     courseEnrollments?: BranchStudentCourseUncheckedUpdateManyWithoutBranchStudentNestedInput
+    motivationMailHistory?: MotivationMailHistoryUncheckedUpdateManyWithoutBranchStudentNestedInput
+    discontinuationRequests?: StudentDiscontinuationRequestUncheckedUpdateManyWithoutBranchStudentNestedInput
   }
 
   export type BatchFacultyAssignmentCreateManyFacultyInput = {
@@ -145993,6 +151405,8 @@ export namespace Prisma {
     retestExams?: ExamUpdateManyWithoutRetestStudentNestedInput
     reassessmentAssessments?: AssessmentUpdateManyWithoutReassessmentStudentNestedInput
     courseEnrollments?: BranchStudentCourseUpdateManyWithoutBranchStudentNestedInput
+    motivationMailHistory?: MotivationMailHistoryUpdateManyWithoutBranchStudentNestedInput
+    discontinuationRequests?: StudentDiscontinuationRequestUpdateManyWithoutBranchStudentNestedInput
   }
 
   export type BranchStudentUncheckedUpdateWithoutBranchInput = {
@@ -146061,6 +151475,8 @@ export namespace Prisma {
     retestExams?: ExamUncheckedUpdateManyWithoutRetestStudentNestedInput
     reassessmentAssessments?: AssessmentUncheckedUpdateManyWithoutReassessmentStudentNestedInput
     courseEnrollments?: BranchStudentCourseUncheckedUpdateManyWithoutBranchStudentNestedInput
+    motivationMailHistory?: MotivationMailHistoryUncheckedUpdateManyWithoutBranchStudentNestedInput
+    discontinuationRequests?: StudentDiscontinuationRequestUncheckedUpdateManyWithoutBranchStudentNestedInput
   }
 
   export type BranchStudentUncheckedUpdateManyWithoutBranchInput = {
@@ -148011,6 +153427,8 @@ export namespace Prisma {
     retestExams?: ExamUpdateManyWithoutRetestStudentNestedInput
     reassessmentAssessments?: AssessmentUpdateManyWithoutReassessmentStudentNestedInput
     courseEnrollments?: BranchStudentCourseUpdateManyWithoutBranchStudentNestedInput
+    motivationMailHistory?: MotivationMailHistoryUpdateManyWithoutBranchStudentNestedInput
+    discontinuationRequests?: StudentDiscontinuationRequestUpdateManyWithoutBranchStudentNestedInput
   }
 
   export type BranchStudentUncheckedUpdateWithoutCourseInput = {
@@ -148079,6 +153497,8 @@ export namespace Prisma {
     retestExams?: ExamUncheckedUpdateManyWithoutRetestStudentNestedInput
     reassessmentAssessments?: AssessmentUncheckedUpdateManyWithoutReassessmentStudentNestedInput
     courseEnrollments?: BranchStudentCourseUncheckedUpdateManyWithoutBranchStudentNestedInput
+    motivationMailHistory?: MotivationMailHistoryUncheckedUpdateManyWithoutBranchStudentNestedInput
+    discontinuationRequests?: StudentDiscontinuationRequestUncheckedUpdateManyWithoutBranchStudentNestedInput
   }
 
   export type BranchStudentUncheckedUpdateManyWithoutCourseInput = {
@@ -149679,6 +155099,68 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type MotivationMailHistoryCreateManyBranchStudentInput = {
+    id?: string
+    branchId: string
+    stage: string
+    absenceStartDate: string
+    absenceWorkingDays: number
+    status?: string
+    sentAt?: Date | string
+    failureReason?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type StudentDiscontinuationRequestCreateManyBranchStudentInput = {
+    id?: string
+    branchId: string
+    requestedByUserId?: string | null
+    refundRequested?: boolean
+    courseProgress?: number
+    progressEarnedAmount?: number
+    balanceDue?: number
+    reason: string
+    details?: string | null
+    status?: $Enums.DiscontinuationRequestStatus
+    contactOutcome?: string | null
+    contactNotes?: string | null
+    contactedBy?: string | null
+    contactedAt?: Date | string | null
+    contactAttemptCount?: number
+    installmentOverdueCount?: number
+    nextInstallmentDueDate?: string | null
+    contactHistory?: JsonNullValueInput | InputJsonValue
+    escalationReason?: string | null
+    nextFollowUpDate?: string | null
+    branchReviewedBy?: string | null
+    branchReviewedAt?: Date | string | null
+    branchReviewNote?: string | null
+    superAdminReviewedBy?: string | null
+    superAdminReviewedAt?: Date | string | null
+    superAdminReviewNote?: string | null
+    accessDeactivationAt?: Date | string | null
+    totalCourseFee?: number
+    actualCourseAmount?: number
+    gstAmount?: number
+    registrationFee?: number
+    discountAmount?: number
+    finalCourseFee?: number
+    totalCourseHours?: number
+    conductedDays?: number
+    conductedHours?: number
+    completedCourseAmount?: number
+    totalPaid?: number
+    outstandingAmount?: number
+    refundEligibleAmount?: number
+    waiverAmount?: number
+    finalOutstandingAmount?: number | null
+    settlementStatus?: string
+    financeNote?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type BranchStudentInstallmentUpdateWithoutBranchStudentInput = {
     id?: StringFieldUpdateOperationsInput | string
     installmentNumber?: IntFieldUpdateOperationsInput | number
@@ -150294,6 +155776,192 @@ export namespace Prisma {
     paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
     paymentPlan?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MotivationMailHistoryUpdateWithoutBranchStudentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    stage?: StringFieldUpdateOperationsInput | string
+    absenceStartDate?: StringFieldUpdateOperationsInput | string
+    absenceWorkingDays?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    sentAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    failureReason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MotivationMailHistoryUncheckedUpdateWithoutBranchStudentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    stage?: StringFieldUpdateOperationsInput | string
+    absenceStartDate?: StringFieldUpdateOperationsInput | string
+    absenceWorkingDays?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    sentAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    failureReason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MotivationMailHistoryUncheckedUpdateManyWithoutBranchStudentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    stage?: StringFieldUpdateOperationsInput | string
+    absenceStartDate?: StringFieldUpdateOperationsInput | string
+    absenceWorkingDays?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    sentAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    failureReason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type StudentDiscontinuationRequestUpdateWithoutBranchStudentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    requestedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    refundRequested?: BoolFieldUpdateOperationsInput | boolean
+    courseProgress?: IntFieldUpdateOperationsInput | number
+    progressEarnedAmount?: IntFieldUpdateOperationsInput | number
+    balanceDue?: IntFieldUpdateOperationsInput | number
+    reason?: StringFieldUpdateOperationsInput | string
+    details?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumDiscontinuationRequestStatusFieldUpdateOperationsInput | $Enums.DiscontinuationRequestStatus
+    contactOutcome?: NullableStringFieldUpdateOperationsInput | string | null
+    contactNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    contactedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    contactedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    contactAttemptCount?: IntFieldUpdateOperationsInput | number
+    installmentOverdueCount?: IntFieldUpdateOperationsInput | number
+    nextInstallmentDueDate?: NullableStringFieldUpdateOperationsInput | string | null
+    contactHistory?: JsonNullValueInput | InputJsonValue
+    escalationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    nextFollowUpDate?: NullableStringFieldUpdateOperationsInput | string | null
+    branchReviewedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    branchReviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    branchReviewNote?: NullableStringFieldUpdateOperationsInput | string | null
+    superAdminReviewedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    superAdminReviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    superAdminReviewNote?: NullableStringFieldUpdateOperationsInput | string | null
+    accessDeactivationAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalCourseFee?: IntFieldUpdateOperationsInput | number
+    actualCourseAmount?: IntFieldUpdateOperationsInput | number
+    gstAmount?: IntFieldUpdateOperationsInput | number
+    registrationFee?: IntFieldUpdateOperationsInput | number
+    discountAmount?: IntFieldUpdateOperationsInput | number
+    finalCourseFee?: IntFieldUpdateOperationsInput | number
+    totalCourseHours?: IntFieldUpdateOperationsInput | number
+    conductedDays?: IntFieldUpdateOperationsInput | number
+    conductedHours?: IntFieldUpdateOperationsInput | number
+    completedCourseAmount?: IntFieldUpdateOperationsInput | number
+    totalPaid?: IntFieldUpdateOperationsInput | number
+    outstandingAmount?: IntFieldUpdateOperationsInput | number
+    refundEligibleAmount?: IntFieldUpdateOperationsInput | number
+    waiverAmount?: IntFieldUpdateOperationsInput | number
+    finalOutstandingAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    settlementStatus?: StringFieldUpdateOperationsInput | string
+    financeNote?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type StudentDiscontinuationRequestUncheckedUpdateWithoutBranchStudentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    requestedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    refundRequested?: BoolFieldUpdateOperationsInput | boolean
+    courseProgress?: IntFieldUpdateOperationsInput | number
+    progressEarnedAmount?: IntFieldUpdateOperationsInput | number
+    balanceDue?: IntFieldUpdateOperationsInput | number
+    reason?: StringFieldUpdateOperationsInput | string
+    details?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumDiscontinuationRequestStatusFieldUpdateOperationsInput | $Enums.DiscontinuationRequestStatus
+    contactOutcome?: NullableStringFieldUpdateOperationsInput | string | null
+    contactNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    contactedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    contactedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    contactAttemptCount?: IntFieldUpdateOperationsInput | number
+    installmentOverdueCount?: IntFieldUpdateOperationsInput | number
+    nextInstallmentDueDate?: NullableStringFieldUpdateOperationsInput | string | null
+    contactHistory?: JsonNullValueInput | InputJsonValue
+    escalationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    nextFollowUpDate?: NullableStringFieldUpdateOperationsInput | string | null
+    branchReviewedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    branchReviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    branchReviewNote?: NullableStringFieldUpdateOperationsInput | string | null
+    superAdminReviewedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    superAdminReviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    superAdminReviewNote?: NullableStringFieldUpdateOperationsInput | string | null
+    accessDeactivationAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalCourseFee?: IntFieldUpdateOperationsInput | number
+    actualCourseAmount?: IntFieldUpdateOperationsInput | number
+    gstAmount?: IntFieldUpdateOperationsInput | number
+    registrationFee?: IntFieldUpdateOperationsInput | number
+    discountAmount?: IntFieldUpdateOperationsInput | number
+    finalCourseFee?: IntFieldUpdateOperationsInput | number
+    totalCourseHours?: IntFieldUpdateOperationsInput | number
+    conductedDays?: IntFieldUpdateOperationsInput | number
+    conductedHours?: IntFieldUpdateOperationsInput | number
+    completedCourseAmount?: IntFieldUpdateOperationsInput | number
+    totalPaid?: IntFieldUpdateOperationsInput | number
+    outstandingAmount?: IntFieldUpdateOperationsInput | number
+    refundEligibleAmount?: IntFieldUpdateOperationsInput | number
+    waiverAmount?: IntFieldUpdateOperationsInput | number
+    finalOutstandingAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    settlementStatus?: StringFieldUpdateOperationsInput | string
+    financeNote?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type StudentDiscontinuationRequestUncheckedUpdateManyWithoutBranchStudentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    requestedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    refundRequested?: BoolFieldUpdateOperationsInput | boolean
+    courseProgress?: IntFieldUpdateOperationsInput | number
+    progressEarnedAmount?: IntFieldUpdateOperationsInput | number
+    balanceDue?: IntFieldUpdateOperationsInput | number
+    reason?: StringFieldUpdateOperationsInput | string
+    details?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumDiscontinuationRequestStatusFieldUpdateOperationsInput | $Enums.DiscontinuationRequestStatus
+    contactOutcome?: NullableStringFieldUpdateOperationsInput | string | null
+    contactNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    contactedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    contactedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    contactAttemptCount?: IntFieldUpdateOperationsInput | number
+    installmentOverdueCount?: IntFieldUpdateOperationsInput | number
+    nextInstallmentDueDate?: NullableStringFieldUpdateOperationsInput | string | null
+    contactHistory?: JsonNullValueInput | InputJsonValue
+    escalationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    nextFollowUpDate?: NullableStringFieldUpdateOperationsInput | string | null
+    branchReviewedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    branchReviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    branchReviewNote?: NullableStringFieldUpdateOperationsInput | string | null
+    superAdminReviewedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    superAdminReviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    superAdminReviewNote?: NullableStringFieldUpdateOperationsInput | string | null
+    accessDeactivationAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalCourseFee?: IntFieldUpdateOperationsInput | number
+    actualCourseAmount?: IntFieldUpdateOperationsInput | number
+    gstAmount?: IntFieldUpdateOperationsInput | number
+    registrationFee?: IntFieldUpdateOperationsInput | number
+    discountAmount?: IntFieldUpdateOperationsInput | number
+    finalCourseFee?: IntFieldUpdateOperationsInput | number
+    totalCourseHours?: IntFieldUpdateOperationsInput | number
+    conductedDays?: IntFieldUpdateOperationsInput | number
+    conductedHours?: IntFieldUpdateOperationsInput | number
+    completedCourseAmount?: IntFieldUpdateOperationsInput | number
+    totalPaid?: IntFieldUpdateOperationsInput | number
+    outstandingAmount?: IntFieldUpdateOperationsInput | number
+    refundEligibleAmount?: IntFieldUpdateOperationsInput | number
+    waiverAmount?: IntFieldUpdateOperationsInput | number
+    finalOutstandingAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    settlementStatus?: StringFieldUpdateOperationsInput | string
+    financeNote?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

@@ -779,13 +779,13 @@ model StudentProfile {
 }
 
 model BranchStudent {
-  id                             String                         @id @default(cuid())
+  id                             String                          @id @default(cuid())
   branchId                       String
   studentId                      String
   studentName                    String
   parentName                     String?
-  mobileNumber                   String                         @unique
-  emailAddress                   String                         @unique
+  mobileNumber                   String                          @unique
+  emailAddress                   String                          @unique
   parentSpouseNumber             String?
   countryCode                    String?
   country                        String?
@@ -802,11 +802,11 @@ model BranchStudent {
   admissionDate                  String
   courseStartDate                String?
   classSchedule                  String?
-  recordStatus                   RecordStatus                   @default(ACTIVE)
+  recordStatus                   RecordStatus                    @default(ACTIVE)
   createdBy                      String?
   updatedBy                      String?
-  createdAt                      DateTime                       @default(now())
-  updatedAt                      DateTime                       @updatedAt
+  createdAt                      DateTime                        @default(now())
+  updatedAt                      DateTime                        @updatedAt
   linkedInUrl                    String?
   remarks                        String?
   courseId                       String?
@@ -821,22 +821,22 @@ model BranchStudent {
   facultyName                    String?
   weeklyOffDay                   String?
   courseAmount                   Int?
-  paymentMode                    String                         @default("Installment")
+  paymentMode                    String                          @default("Installment")
   paymentPlanId                  String?
   paymentPlan                    String?
-  feeScheduleMode                String                         @default("BEFORE_70_PERCENT")
+  feeScheduleMode                String                          @default("BEFORE_70_PERCENT")
   feeFirstPaymentDate            String?
   fee70ProgressDate              String?
   fee70TargetHours               Float?
   feePaymentDeadline             String?
-  feeComplianceStatus            String                         @default("PENDING")
+  feeComplianceStatus            String                          @default("PENDING")
   courseProgress                 Int?
   courseCompletedAt              DateTime?
-  enrollmentType                 String                         @default("SINGLE")
-  arrangementType                String                         @default("SINGLE")
+  enrollmentType                 String                          @default("SINGLE")
+  arrangementType                String                          @default("SINGLE")
   firstCourseId                  String?
-  branch                         Branch                         @relation(fields: [branchId], references: [id], onDelete: Cascade)
-  course                         BranchCourse?                  @relation(fields: [courseId], references: [id])
+  branch                         Branch                          @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  course                         BranchCourse?                   @relation(fields: [courseId], references: [id])
   installments                   BranchStudentInstallment[]
   payments                       BranchStudentPayment[]
   ledgerEntries                  BranchStudentLedgerEntry[]
@@ -844,9 +844,11 @@ model BranchStudent {
   facultyTodayWorkStudentEntries FacultyTodayWorkStudentEntry[]
   examAttempts                   ExamAttempt[]
   assessmentSubmissions          AssessmentSubmission[]
-  retestExams                    Exam[]                         @relation("ExamRetestStudent")
-  reassessmentAssessments        Assessment[]                   @relation("AssessmentReassessmentStudent")
+  retestExams                    Exam[]                          @relation("ExamRetestStudent")
+  reassessmentAssessments        Assessment[]                    @relation("AssessmentReassessmentStudent")
   courseEnrollments              BranchStudentCourse[]
+  motivationMailHistory          MotivationMailHistory[]
+  discontinuationRequests        StudentDiscontinuationRequest[]
 
   @@unique([branchId, studentId])
   @@index([branchId])
@@ -1678,11 +1680,100 @@ enum NotificationKind {
   FACULTY_SKILL_ASSIGNED
   FACULTY_SKILL_COMPLETED
   FACULTY_SKILL_OVERDUE
+  STUDENT_MOTIVATION
+  STUDENT_DISCONTINUATION
 }
 
 enum DiscountType {
   FIXED
   PERCENTAGE
+}
+
+enum DiscontinuationRequestStatus {
+  PENDING
+  SUPER_ADMIN_REVIEW
+
+  SUPER_ADMIN_WAIT
+  APPROVED
+  REJECTED
+  CANCELLED
+  CONTACTED_CONTINUE
+  LEAVE_REQUESTED
+  UNABLE_TO_CONTACT
+}
+
+model MotivationMailHistory {
+  id                 String        @id @default(cuid())
+  branchStudentId    String
+  branchId           String
+  stage              String
+  absenceStartDate   String
+  absenceWorkingDays Int
+  status             String        @default("SENT")
+  sentAt             DateTime      @default(now())
+  failureReason      String?
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+  branchStudent      BranchStudent @relation(fields: [branchStudentId], references: [id], onDelete: Cascade)
+
+  @@unique([branchStudentId, absenceStartDate, stage])
+  @@index([branchId, status, sentAt])
+  @@index([branchStudentId, absenceStartDate])
+}
+
+model StudentDiscontinuationRequest {
+  id                      String                       @id @default(cuid())
+  branchStudentId         String
+  branchId                String
+  requestedByUserId       String?
+  refundRequested         Boolean                      @default(false)
+  courseProgress          Int                          @default(0)
+  progressEarnedAmount    Int                          @default(0)
+  balanceDue              Int                          @default(0)
+  reason                  String
+  details                 String?
+  status                  DiscontinuationRequestStatus @default(PENDING)
+  contactOutcome          String?
+  contactNotes            String?
+  contactedBy             String?
+  contactedAt             DateTime?
+  contactAttemptCount     Int                          @default(0)
+  installmentOverdueCount Int                          @default(0)
+  nextInstallmentDueDate  String?
+  contactHistory          Json                         @default("[]")
+  escalationReason        String?
+  nextFollowUpDate        String?
+  branchReviewedBy        String?
+  branchReviewedAt        DateTime?
+  branchReviewNote        String?
+  superAdminReviewedBy    String?
+  superAdminReviewedAt    DateTime?
+  superAdminReviewNote    String?
+  accessDeactivationAt    DateTime?
+  totalCourseFee          Int                          @default(0)
+  actualCourseAmount      Int                          @default(0)
+  gstAmount               Int                          @default(0)
+  registrationFee         Int                          @default(0)
+  discountAmount          Int                          @default(0)
+  finalCourseFee          Int                          @default(0)
+  totalCourseHours        Int                          @default(0)
+  conductedDays           Int                          @default(0)
+  conductedHours          Int                          @default(0)
+  completedCourseAmount   Int                          @default(0)
+  totalPaid               Int                          @default(0)
+  outstandingAmount       Int                          @default(0)
+  refundEligibleAmount    Int                          @default(0)
+  waiverAmount            Int                          @default(0)
+  finalOutstandingAmount  Int?
+  settlementStatus        String                       @default("PENDING_REVIEW")
+  financeNote             String?
+  createdAt               DateTime                     @default(now())
+  updatedAt               DateTime                     @updatedAt
+  branchStudent           BranchStudent                @relation(fields: [branchStudentId], references: [id], onDelete: Cascade)
+
+  @@index([branchId, status, createdAt])
+  @@index([branchStudentId, status])
+  @@index([requestedByUserId, status])
 }
 
 model FacultyReportShare {

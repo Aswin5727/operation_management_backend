@@ -66,7 +66,7 @@ export async function getBranchReportShare(user, shareId) {
 export async function getBranchReportShareStudents(user, shareId) {
   const share = await getBranchReportShare(user, shareId);
   const testModuleIds = list(share.testModuleIds); const assessmentModuleIds = list(share.assessmentModuleIds);
-  const students = await prisma.branchStudent.findMany({ where: { recordStatus: "ACTIVE", OR: [{ batchId: share.batchId }, { batchId: (await prisma.branchBatch.findUnique({ where: { id: share.batchId }, select: { batchId: true } }))?.batchId }] }, select: { id: true, studentId: true, studentName: true, emailAddress: true }, orderBy: { studentName: "asc" } });
+  const students = await prisma.branchStudent.findMany({ where: { recordStatus: "ACTIVE", discontinuationRequests: { none: { status: "APPROVED" } }, OR: [{ batchId: share.batchId }, { batchId: (await prisma.branchBatch.findUnique({ where: { id: share.batchId }, select: { batchId: true } }))?.batchId }] }, select: { id: true, studentId: true, studentName: true, emailAddress: true }, orderBy: { studentName: "asc" } });
   const result = { shareId, students: students.map((student) => ({ studentId: student.studentId, studentName: student.studentName, emailAddress: student.emailAddress, tests: [], assessments: [] })) };
   const studentMap = new Map(result.students.map((student) => [student.studentId, student]));
   if (testModuleIds.length) {

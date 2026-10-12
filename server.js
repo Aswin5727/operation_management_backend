@@ -9,6 +9,8 @@ import {
 } from "./src/modules/branchStudents/branchStudents.service.js";
 import { startTamilNaduHolidaySyncScheduler } from "./src/modules/branchHolidays/holidaySync.scheduler.js";
 import { startFacultySkillOverdueScheduler } from "./src/modules/facultySkills/facultySkills.scheduler.js";
+import { startStudentMotivationScheduler } from "./src/modules/studentMotivation/studentMotivation.scheduler.js";
+import { startDiscontinuationFollowUpScheduler } from "./src/modules/studentDiscontinuation/studentDiscontinuation.scheduler.js";
 
 const DATABASE_WARMUP_MAX_ATTEMPTS = 3;
 const DATABASE_WARMUP_RETRY_MS = 1500;
@@ -79,6 +81,8 @@ async function startServer() {
   const dueReminderTimer = startDueReminderScheduler();
   const holidaySyncTimer = startTamilNaduHolidaySyncScheduler();
   const facultySkillOverdueTimer = startFacultySkillOverdueScheduler();
+  const studentMotivationTimer = startStudentMotivationScheduler();
+  const discontinuationFollowUpTimer = startDiscontinuationFollowUpScheduler();
   const server = app.listen(config.port, "0.0.0.0", () => {
     console.log(`Backend server running on port ${config.port}`);
   });
@@ -98,6 +102,14 @@ async function startServer() {
 
     if (facultySkillOverdueTimer) {
       clearInterval(facultySkillOverdueTimer);
+    }
+
+    if (studentMotivationTimer) {
+      clearInterval(studentMotivationTimer);
+    }
+
+    if (discontinuationFollowUpTimer) {
+      clearInterval(discontinuationFollowUpTimer);
     }
 
     void prisma.$disconnect().catch((error) => {

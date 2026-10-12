@@ -1,6 +1,8 @@
-import { assertAttendanceAllowed, attendanceExclusions } from "../instituteLeave/instituteLeave.service.js";
+﻿import { assertAttendanceAllowed, attendanceExclusions } from "../instituteLeave/instituteLeave.service.js";
 import prisma from "../../config/prisma.js";
 import AppError from "../../common/errors/AppError.js";
+import { createNotification } from "../notifications/notifications.service.js";
+import { assertStudentsNotDiscontinued } from "../../common/utils/studentDiscontinuationGuard.js";
 
 const ATTENDANCE_STATUSES = new Set(["PRESENT", "ABSENT"]);
 const LOCAL_TIME_ZONE = "Asia/Calcutta";
@@ -526,6 +528,7 @@ async function markBranchStudentAttendance(user, payload, date, batch) {
     },
     select: { id: true, studentId: true },
   });
+  await assertStudentsNotDiscontinued(students.map((student) => student.id));
   const studentByIdentifier = new Map(students.flatMap((student) => [[student.id, student], [student.studentId, student]]));
   if (students.length !== submittedStudents.length) throw new AppError("One or more students do not belong to this batch", 400);
 
@@ -533,7 +536,7 @@ async function markBranchStudentAttendance(user, payload, date, batch) {
   await prisma.$transaction(async (tx) => {
     await tx.$queryRaw`SELECT id FROM "Branch" WHERE id = ${batch.branchId} FOR UPDATE`;
     await assertAttendanceAllowed(tx, students, date, batch.branchId);
-    await Promise.all(submittedStudents.map((entry) => {
+    for (const entry of submittedStudents) {
       const student = studentByIdentifier.get(entry.studentId);
       return tx.branchStudentAttendance.upsert({
         where: { branchStudentId_attendanceDate_courseId: { branchStudentId: student.id, attendanceDate: date, courseId: batch.courseId } },
@@ -563,9 +566,90 @@ async function markBranchStudentAttendance(user, payload, date, batch) {
           markedAt: new Date(),
         },
       });
-    }));
+    }
   });
 
+  const presentStudentIds = submittedStudents
+    .filter((entry) => entry.status === "PRESENT")
+    .map((entry) => studentByIdentifier.get(entry.studentId)?.id)
+    .filter(Boolean);
+  if (presentStudentIds.length) {
+    await prisma.studentDiscontinuationRequest.updateMany({
+      where: {
+        branchStudentId: { in: presentStudentIds },
+        reason: "Long absence follow-up after motivation email",
+        status: { in: ["PENDING", "CONTACTED_CONTINUE"] },
+      },
+      data: {
+        status: "CANCELLED",
+        contactNotes: "Automatically closed because the student was marked present.",
+        updatedAt: new Date(),
+      },
+    });
+  }
+  const absentStudentIds = submittedStudents
+    .filter((entry) => entry.status === "ABSENT")
+    .map((entry) => studentByIdentifier.get(entry.studentId)?.id)
+    .filter(Boolean);
+  if (absentStudentIds.length) {
+    const continueRequests = await prisma.studentDiscontinuationRequest.findMany({
+      where: {
+        branchStudentId: { in: absentStudentIds },
+        reason: "Long absence follow-up after motivation email",
+        status: "CONTACTED_CONTINUE",
+        nextFollowUpDate: { lte: date },
+      },
+      include: {
+        branchStudent: {
+          select: { id: true, studentName: true, studentId: true, courseName: true },
+        },
+      },
+    });
+
+    for (const request of continueRequests) {
+      const updated = await prisma.studentDiscontinuationRequest.updateMany({
+        where: { id: request.id, status: "CONTACTED_CONTINUE" },
+        data: {
+          status: "PENDING",
+          contactOutcome: null,
+          nextFollowUpDate: null,
+          contactNotes: "Student was marked absent on the planned continuation date.",
+          updatedAt: new Date(),
+        },
+      });
+      if (!updated.count) continue;
+
+      const branch = await prisma.branch.findUnique({
+        where: { id: batch.branchId },
+        select: { id: true, branchName: true, branchEmail: true, adminUserId: true },
+      });
+      if (!branch?.adminUserId) continue;
+
+      const requestDescription = "MOTIVATION_CONTINUE_ABSENT:" + request.branchStudentId + ":" + date;
+      const existingNotification = await prisma.notification.findFirst({
+        where: { requestDescription },
+        select: { id: true },
+      });
+      if (existingNotification) continue;
+
+      await createNotification({
+        kind: "STUDENT_MOTIVATION",
+        tone: "red",
+        title: "Student absent after continuation date",
+        message: (request.branchStudent?.studentName || "Student") + " was absent on " + date + " after confirming course continuation. Please contact the student and record the next outcome.",
+        actionLabel: "Review student",
+        targetUserId: branch.adminUserId,
+        targetBranchId: branch.id,
+        targetBranchEmail: branch.branchEmail,
+        targetBranchName: branch.branchName,
+        batchId: batch.batchId || null,
+        requestDescription,
+        requestTitle: "Continuation attendance follow-up",
+        requestStatus: "PENDING",
+        createdBy: "SYSTEM",
+      });
+    }
+  }
   return getCurrentFacultyAttendanceOverview(user, date, "");
 }
 
@@ -593,6 +677,7 @@ async function getBranchFacultyAttendanceOverview(user, date, facultyId = "") {
         { branchId: batch.branchId, courseEnrollments: { some: { status: "ACTIVE", courseId: batch.courseId, batchId: batch.batchId } } },
       ]),
     },
+    select: { id: true, studentId: true, studentName: true, emailAddress: true, mobileNumber: true, city: true, state: true, country: true, qualification: true, passedOutYear: true, currentStatus: true, admissionDate: true, courseId: true, batchId: true, branchId: true, classSchedule: true, courseStartDate: true, courseEndDate: true, weeklyOffDay: true, courseEnrollments: { where: { status: "ACTIVE" }, select: { courseId: true, courseName: true, batchId: true, batchName: true, batchTiming: true, scheduleType: true, startDate: true, endDate: true } } },
     select: { id: true, studentId: true, studentName: true, emailAddress: true, mobileNumber: true, city: true, state: true, country: true, qualification: true, passedOutYear: true, currentStatus: true, admissionDate: true, courseId: true, batchId: true, branchId: true, classSchedule: true, courseStartDate: true, courseEndDate: true, weeklyOffDay: true, courseEnrollments: { where: { status: "ACTIVE" }, select: { courseId: true, courseName: true, batchId: true, batchName: true, batchTiming: true, scheduleType: true, startDate: true, endDate: true } } },
   });
   const studentIds = students.map((student) => student.id);

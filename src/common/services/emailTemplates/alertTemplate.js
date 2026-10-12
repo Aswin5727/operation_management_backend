@@ -55,12 +55,14 @@ export function alertTemplate({
   primaryActionLink = "",
   secondaryActionLabel = "",
   secondaryActionLink = "",
+  detailsFooter = "",
   note = "",
 }) {
   const safeEyebrow = escapeHtml(eyebrow);
   const safeTitle = escapeHtml(title);
   const safeSubtitle = escapeHtml(subtitle);
   const safeSummary = escapeHtml(summary);
+  const safeDetailsFooter = escapeHtml(detailsFooter);
   const safeNote = escapeHtml(note);
 
   const content = `
@@ -82,6 +84,11 @@ export function alertTemplate({
           ${buildDetailRows(details)}
         </table>
       </div>
+      ${safeDetailsFooter ? `
+        <div style="margin-top:18px;color:#475569;font-size:14px;line-height:24px;font-weight:600;">
+          ${safeDetailsFooter}
+        </div>
+      ` : ""}
 
       <div style="margin-top:24px;">
         ${buildButton(primaryActionLabel, primaryActionLink, true)}

@@ -243,7 +243,7 @@ async function sendWithSendGrid({ to, subject, html, text, replyTo, attachments 
   };
 }
 
-async function sendEmail({ to, subject, html, text, replyTo, attachments }) {
+export async function sendEmail({ to, subject, html, text, replyTo, attachments }) {
   const recipient = String(to || "").trim();
   if (!recipient) {
     throw new AppError("Recipient email is required", 400);
@@ -298,6 +298,132 @@ async function sendEmail({ to, subject, html, text, replyTo, attachments }) {
   }
 
   throw new AppError("No email provider configured", 500);
+}
+
+export async function sendStudentMotivationEmail({
+  to,
+  fullName,
+  studentId,
+  courseName,
+  absenceWorkingDays,
+  stage,
+}) {
+  const loginLink = buildLoginLink();
+  const safeName = escapeHtml(fullName || "Student");
+  const safeStudentId = escapeHtml(studentId || "-");
+  const safeCourseName = escapeHtml(courseName || "-");
+  const safeDays = escapeHtml(absenceWorkingDays || "-");
+  const stageLabel = escapeHtml(stage || "Motivation Mail");
+  const html = alertTemplate({
+    eyebrow: "Student Support",
+    title: "We would like to see you back in class",
+    subtitle: "Hello " + safeName + ", we noticed that you have been away from your course recently.",
+    summary: "",
+    details: [
+      { label: "Student ID", value: safeStudentId },
+      { label: "Course", value: safeCourseName },
+      { label: "Absence duration", value: safeDays + " days" },
+    ],
+    detailsFooter: "Please contact your branch or faculty team if you need support with attendance, health, travel, or any personal difficulty.",
+    primaryActionLabel: "Open Student Dashboard",
+    primaryActionLink: loginLink,
+    note: "If you have already informed the branch or are on approved leave, no action is required from you.",
+  });
+  const text = [
+    "Hello " + (fullName || "Student") + ",",
+    "We noticed that you have been away from your course recently.",
+    "Student ID: " + (studentId || "-"),
+    "Course: " + (courseName || "-"),
+    "Absence duration: " + (absenceWorkingDays || "-") + " days",
+    loginLink ? "Student Dashboard: " + loginLink : null,
+    "Please contact your branch or faculty team if you need support with attendance, health, travel, or any personal difficulty.",
+  ].filter(Boolean).join("\n");
+  return sendEmail({
+    to,
+    subject: "We are here to support your course attendance",
+    html,
+    text,
+  });
+}
+
+export async function sendStudentContinuationReminderEmail({
+  to,
+  fullName,
+  studentId,
+  courseName,
+  continuationDate,
+}) {
+  const loginLink = buildLoginLink();
+  const safeName = escapeHtml(fullName || "Student");
+  const safeStudentId = escapeHtml(studentId || "-");
+  const safeCourseName = escapeHtml(courseName || "-");
+  const safeDate = escapeHtml(continuationDate || "-");
+  const html = alertTemplate({
+    eyebrow: "Course Support",
+    title: "Your course continuation date is here",
+    subtitle: "Hello " + safeName + ", please attend your course from the scheduled continuation date.",
+    summary: "",
+    details: [
+      { label: "Student ID", value: safeStudentId },
+      { label: "Course", value: safeCourseName },
+      { label: "Continue date", value: safeDate },
+    ],
+    detailsFooter: "If you need any support, please contact your branch or faculty team.",
+    primaryActionLabel: "Open Student Dashboard",
+    primaryActionLink: loginLink,
+    note: "If you are unable to attend, please inform your branch as soon as possible.",
+  });
+  const text = [
+    "Hello " + (fullName || "Student") + ",",
+    "Please attend your course from the scheduled continuation date.",
+    "Student ID: " + (studentId || "-"),
+    "Course: " + (courseName || "-"),
+    "Continue date: " + (continuationDate || "-"),
+    loginLink ? "Student Dashboard: " + loginLink : null,
+    "If you need support, please contact your branch or faculty team.",
+  ].filter(Boolean).join("\n");
+  return sendEmail({
+    to,
+    subject: "Your course continuation date is here",
+    html,
+    text,
+  });
+}
+export async function sendStudentDiscontinuationApprovalEmail({
+  to,
+  fullName,
+  courseName,
+  batchName,
+  deactivationAt,
+  finalOutstandingAmount,
+}) {
+  const safeName = escapeHtml(fullName || "Student");
+  const safeCourse = escapeHtml(courseName || "-");
+  const safeBatch = escapeHtml(batchName || "-");
+  const deadline = deactivationAt ? new Intl.DateTimeFormat("en-IN", { dateStyle: "medium", timeStyle: "short", timeZone: "Asia/Calcutta" }).format(deactivationAt) : "within 2 hours";
+  const safeDeadline = escapeHtml(deadline);
+  const amount = Number(finalOutstandingAmount || 0).toLocaleString("en-IN");
+  const html = alertTemplate({
+    eyebrow: "Discontinuation Update",
+    title: "Your discontinuation request was approved",
+    subtitle: "Hello " + safeName + ", Super Admin has approved your discontinuation request.",
+    summary: "Your student account will remain available for 2 hours so you can review your course information and download anything you need. After the access window ends, login will be disabled.",
+    details: [
+      { label: "Course", value: safeCourse },
+      { label: "Batch", value: safeBatch },
+      { label: "Access ends", value: safeDeadline },
+      { label: "Final outstanding amount", value: "INR " + amount },
+    ],
+    primaryActionLabel: "Open Student Dashboard",
+    primaryActionLink: buildLoginLink(),
+    note: "Please contact your branch before the access window ends if you need clarification.",
+  });
+  return sendEmail({
+    to,
+    subject: "Discontinuation approved - your account access window",
+    html,
+    text: ["Hello " + (fullName || "Student") + ",", "", "Your discontinuation request was approved by Super Admin.", "Your account will remain available until " + deadline + ".", "Course: " + (courseName || "-"), "Batch: " + (batchName || "-"), "Final outstanding amount: INR " + amount, "", "Please contact your branch if you need clarification before access is disabled."].join("\\n"),
+  });
 }
 
 function buildResetLink(resetToken, temporaryPassword = "", extraSearchParams = {}) {

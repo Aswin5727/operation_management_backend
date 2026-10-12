@@ -148,7 +148,7 @@ export async function cancelTest(user, testId) {
     if (test.status === "CANCELLED") throw new AppError("Test has already been cancelled.", 409);
     if (test.schedules.some((schedule) => { const start = scheduledDate(schedule.testDate, schedule.startTime); return start && start <= new Date(); })) throw new AppError("This test cannot be cancelled after its start date and time.", 409);
     const batchIds = test.schedules.flatMap((schedule) => [schedule.branchBatchId, schedule.branchBatch?.batchId]).filter(Boolean);
-    const students = batchIds.length ? await tx.branchStudent.findMany({ where: { recordStatus: "ACTIVE", OR: [{ batchId: { in: batchIds } }] }, select: { batchId: true, emailAddress: true } }) : [];
+    const students = batchIds.length ? await tx.branchStudent.findMany({ where: { recordStatus: "ACTIVE", discontinuationRequests: { none: { status: "APPROVED" } }, OR: [{ batchId: { in: batchIds } }] }, select: { batchId: true, emailAddress: true } }) : [];
     const emails = students.map((student) => text(student.emailAddress).toLowerCase()).filter(Boolean);
     const users = emails.length ? await tx.user.findMany({ where: { role: "STUDENT", OR: emails.map((email) => ({ email: { equals: email, mode: "insensitive" } })) }, select: { id: true, email: true } }) : [];
     const userByEmail = new Map(users.map((item) => [text(item.email).toLowerCase(), item.id]));
@@ -200,7 +200,7 @@ export async function createTest(user, payload = {}) {
     const exam = await tx.exam.create({ data: { title: text(payload.title) || "MCQ Test", branchCourseId: courseId, moduleId, facultyId: user.id, marksPerQuestion, totalQuestions, totalMarks: totalQuestions * marksPerQuestion, status: "SCHEDULED", questions: { create: questions }, schedules: { create: normalizedSchedules.map(({ batch, ...schedule }) => schedule) } }, include: examInclude(true) });
     const batchCodes = batches.map((batch) => text(batch.batchId)).filter(Boolean);
     const scopedBatchKeys = [...new Set([...batchIds, ...batchCodes])];
-    const students = await tx.branchStudent.findMany({ where: { recordStatus: "ACTIVE", OR: [{ batchId: { in: scopedBatchKeys } }, { courseEnrollments: { some: { status: "ACTIVE", courseId, batchId: { in: scopedBatchKeys } } } }] }, select: { id: true, batchId: true, emailAddress: true, studentName: true, courseEnrollments: { where: { status: "ACTIVE", courseId }, select: { batchId: true } } } });
+    const students = await tx.branchStudent.findMany({ where: { recordStatus: "ACTIVE", discontinuationRequests: { none: { status: "APPROVED" } }, OR: [{ batchId: { in: scopedBatchKeys } }, { courseEnrollments: { some: { status: "ACTIVE", courseId, batchId: { in: scopedBatchKeys } } } }] }, select: { id: true, batchId: true, emailAddress: true, studentName: true, courseEnrollments: { where: { status: "ACTIVE", courseId }, select: { batchId: true } } } });
     const studentEmails = students.map((student) => text(student.emailAddress).toLowerCase()).filter(Boolean);
     const users = studentEmails.length ? await tx.user.findMany({ where: { role: "STUDENT", OR: studentEmails.map((email) => ({ email: { equals: email, mode: "insensitive" } })) }, select: { id: true, email: true } }) : [];
     const userByEmail = new Map(users.map((item) => [text(item.email).toLowerCase(), item.id]));
@@ -223,7 +223,7 @@ export async function createRetest(user, testId, scheduleId, payload = {}) {
   const student = await prisma.branchStudent.findFirst({
     where: {
       id: studentId,
-      recordStatus: "ACTIVE",
+      recordStatus: "ACTIVE", discontinuationRequests: { none: { status: "APPROVED" } },
       OR: [{ batchId: originalSchedule.branchBatchId }, { batchId: originalSchedule.branchBatch.batchId }],
     },
     select: { id: true, studentId: true, studentName: true, emailAddress: true, batchId: true },
@@ -373,7 +373,7 @@ async function facultySchedule(user, testId, scheduleId) {
 
 export async function listSubmissions(user, testId, scheduleId) {
   const schedule = await facultySchedule(user, testId, scheduleId);
-  const studentWhere = { recordStatus: "ACTIVE", OR: [{ batchId: schedule.branchBatchId }, { batchId: schedule.branchBatch.batchId }, { courseEnrollments: { some: { status: "ACTIVE", batchId: { in: [schedule.branchBatchId, schedule.branchBatch.batchId] } } } }], ...(schedule.exam.isRetest && schedule.exam.retestStudentId ? { id: schedule.exam.retestStudentId } : {}) };
+  const studentWhere = { recordStatus: "ACTIVE", discontinuationRequests: { none: { status: "APPROVED" } }, OR: [{ batchId: schedule.branchBatchId }, { batchId: schedule.branchBatch.batchId }, { courseEnrollments: { some: { status: "ACTIVE", batchId: { in: [schedule.branchBatchId, schedule.branchBatch.batchId] } } } }], ...(schedule.exam.isRetest && schedule.exam.retestStudentId ? { id: schedule.exam.retestStudentId } : {}) };
   const [students, attempts] = await Promise.all([
     prisma.branchStudent.findMany({ where: studentWhere, select: { id: true, studentId: true, studentName: true, emailAddress: true }, orderBy: { studentName: "asc" } }),
     prisma.examAttempt.findMany({ where: { scheduleId: schedule.id }, include: { branchStudent: { select: { id: true, studentId: true, studentName: true, emailAddress: true } } }, orderBy: { submittedAt: "desc" } }),
@@ -426,7 +426,7 @@ export async function cancelAssessment(user, assessmentId) {
     if (!assessment) throw new AppError("Assessment not found.", 404);
     if (isAssessmentCancelled(assessment)) throw new AppError("Assessment has already been cancelled.", 409);
     if (new Date(assessment.startDate) <= new Date()) throw new AppError("This assessment cannot be cancelled after its start date and time.", 409);
-    const students = await tx.branchStudent.findMany({ where: { recordStatus: "ACTIVE", OR: [{ batchId: assessment.branchBatch.id }, { batchId: assessment.branchBatch.batchId }, { courseEnrollments: { some: { status: "ACTIVE", batchId: { in: [assessment.branchBatch.id, assessment.branchBatch.batchId] } } } }] }, select: { batchId: true, emailAddress: true } });
+    const students = await tx.branchStudent.findMany({ where: { recordStatus: "ACTIVE", discontinuationRequests: { none: { status: "APPROVED" } }, OR: [{ batchId: assessment.branchBatch.id }, { batchId: assessment.branchBatch.batchId }, { courseEnrollments: { some: { status: "ACTIVE", batchId: { in: [assessment.branchBatch.id, assessment.branchBatch.batchId] } } } }] }, select: { batchId: true, emailAddress: true } });
     const emails = students.map((student) => text(student.emailAddress).toLowerCase()).filter(Boolean);
     const users = emails.length ? await tx.user.findMany({ where: { role: "STUDENT", OR: emails.map((email) => ({ email: { equals: email, mode: "insensitive" } })) }, select: { id: true, email: true } }) : [];
     const userByEmail = new Map(users.map((item) => [text(item.email).toLowerCase(), item.id]));
@@ -497,7 +497,7 @@ export async function createAssessment(user, payload = {}) {
   const { course, module, batch } = await validateAssessmentScope(user, payload);
   const created = await prisma.$transaction(async (tx) => {
     const assessment = await tx.assessment.create({ data: { assessmentName, branchCourseId: course.id, moduleId: module.id, branchBatchId: batch.id, totalMarks, startDate: dates.startDate, endDate: dates.endDate, details: text(payload.details) || null, facultyId: user.id }, include: assessmentInclude });
-    const students = await tx.branchStudent.findMany({ where: { recordStatus: "ACTIVE", OR: [{ batchId: batch.id }, { batchId: batch.batchId }, { courseEnrollments: { some: { status: "ACTIVE", batchId: { in: [batch.id, batch.batchId] } } } }] }, select: { id: true, emailAddress: true } });
+    const students = await tx.branchStudent.findMany({ where: { recordStatus: "ACTIVE", discontinuationRequests: { none: { status: "APPROVED" } }, OR: [{ batchId: batch.id }, { batchId: batch.batchId }, { courseEnrollments: { some: { status: "ACTIVE", batchId: { in: [batch.id, batch.batchId] } } } }] }, select: { id: true, emailAddress: true } });
     const emails = students.map((s) => text(s.emailAddress).toLowerCase()).filter(Boolean);
     const users = emails.length ? await tx.user.findMany({ where: { role: "STUDENT", OR: emails.map((email) => ({ email: { equals: email, mode: "insensitive" } })) }, select: { id: true, email: true } }) : [];
     const byEmail = new Map(users.map((item) => [text(item.email).toLowerCase(), item.id]));
@@ -524,7 +524,7 @@ export async function createReassessment(user, assessmentId, payload = {}) {
   const original = await facultyAssessment(user, assessmentId);
   if (original.isReassessment) throw new AppError("A reassessment cannot be created from another reassessment.", 422);
   if (assessmentStatus(original) !== "CLOSED") throw new AppError("Reassessment can be created only after the original assessment end time.", 409);
-  const student = await prisma.branchStudent.findFirst({ where: { id: text(payload.studentId), recordStatus: "ACTIVE", OR: [{ batchId: original.branchBatch.id }, { batchId: original.branchBatch.batchId }] }, select: { id: true, studentName: true, emailAddress: true, batchId: true } });
+  const student = await prisma.branchStudent.findFirst({ where: { id: text(payload.studentId), recordStatus: "ACTIVE", discontinuationRequests: { none: { status: "APPROVED" } }, OR: [{ batchId: original.branchBatch.id }, { batchId: original.branchBatch.batchId }] }, select: { id: true, studentName: true, emailAddress: true, batchId: true } });
   if (!student) throw new AppError("Selected student does not belong to this assessment batch.", 403);
   const existingReassessment = await prisma.assessment.findFirst({ where: { originalAssessmentId: assessmentId, reassessmentStudentId: student.id } });
   if (existingReassessment) throw new AppError("A reassessment has already been created for this student.", 409);
@@ -546,7 +546,7 @@ export async function createReassessment(user, assessmentId, payload = {}) {
 
 async function assessmentStudents(user, assessmentId) {
   const assessment = await facultyAssessment(user, assessmentId);
-  const students = await prisma.branchStudent.findMany({ where: { recordStatus: "ACTIVE", OR: [{ batchId: assessment.branchBatch.id }, { batchId: assessment.branchBatch.batchId }, { courseEnrollments: { some: { status: "ACTIVE", batchId: { in: [assessment.branchBatch.id, assessment.branchBatch.batchId] } } } }], ...(assessment.isReassessment && assessment.reassessmentStudentId ? { id: assessment.reassessmentStudentId } : {}) }, select: { id: true, studentId: true, studentName: true, emailAddress: true }, orderBy: { studentName: "asc" } });
+  const students = await prisma.branchStudent.findMany({ where: { recordStatus: "ACTIVE", discontinuationRequests: { none: { status: "APPROVED" } }, OR: [{ batchId: assessment.branchBatch.id }, { batchId: assessment.branchBatch.batchId }, { courseEnrollments: { some: { status: "ACTIVE", batchId: { in: [assessment.branchBatch.id, assessment.branchBatch.batchId] } } } }], ...(assessment.isReassessment && assessment.reassessmentStudentId ? { id: assessment.reassessmentStudentId } : {}) }, select: { id: true, studentId: true, studentName: true, emailAddress: true }, orderBy: { studentName: "asc" } });
   const submissions = await prisma.assessmentSubmission.findMany({ where: { assessmentId }, include: { evaluator: { select: { fullName: true } } } });
   const byStudent = new Map(submissions.map((row) => [row.branchStudentId, row]));
   return students.map((student) => { const submission = byStudent.get(student.id); return { student, ...(submission || { id: `pending-${student.id}`, status: "NOT_SUBMITTED", submittedAt: null, marksObtained: null, feedback: null, evaluatedAt: null, evaluatedBy: null }) }; });
@@ -698,7 +698,7 @@ export async function getFacultyStudentExamReport(user, moduleId, batchId) {
   const { batch, module } = await assertFacultyReportScope(user, moduleId, batchId);
   const tests = await prisma.exam.findMany({ where: { facultyId: user.id, branchCourseId: batch.branchCourseId, moduleId, schedules: { some: { branchBatchId: batch.id } } }, select: { id: true, title: true, totalMarks: true, totalQuestions: true, marksPerQuestion: true, isRetest: true, originalTestId: true, retestStudentId: true, schedules: { where: { branchBatchId: batch.id }, select: { id: true, testDate: true, startTime: true, endTime: true } } }, orderBy: { createdAt: "asc" } });
   const scheduleIds = tests.flatMap((test) => test.schedules.map((schedule) => schedule.id));
-  const students = await prisma.branchStudent.findMany({ where: { recordStatus: "ACTIVE", OR: [{ batchId: batch.id }, { batchId: batch.batchId }, { courseEnrollments: { some: { status: "ACTIVE", batchId: { in: [batch.id, batch.batchId] } } } }] }, select: { id: true, studentId: true, studentName: true, emailAddress: true }, orderBy: { studentName: "asc" } });
+  const students = await prisma.branchStudent.findMany({ where: { recordStatus: "ACTIVE", discontinuationRequests: { none: { status: "APPROVED" } }, OR: [{ batchId: batch.id }, { batchId: batch.batchId }, { courseEnrollments: { some: { status: "ACTIVE", batchId: { in: [batch.id, batch.batchId] } } } }] }, select: { id: true, studentId: true, studentName: true, emailAddress: true }, orderBy: { studentName: "asc" } });
   const attempts = scheduleIds.length && students.length ? await prisma.examAttempt.findMany({ where: { scheduleId: { in: scheduleIds }, branchStudentId: { in: students.map((student) => student.id) } }, select: { scheduleId: true, branchStudentId: true, status: true, startedAt: true, submittedAt: true, obtainedMarks: true, totalMarks: true, percentage: true, correctAnswers: true, wrongAnswers: true, unansweredQuestions: true } }) : [];
   const attemptMap = new Map(attempts.map((attempt) => [`${attempt.branchStudentId}:${attempt.scheduleId}`, attempt]));
   const testRows = tests.map((test) => ({ id: test.id, name: test.title, maximumMarks: test.totalMarks, totalQuestions: test.totalQuestions, marksPerQuestion: test.marksPerQuestion, isRetest: test.isRetest, originalTestId: test.originalTestId, retestStudentId: test.retestStudentId, schedule: test.schedules[0] || null }));
@@ -717,7 +717,7 @@ export async function getFacultyAssessmentStudentReport(user, courseId, batchId,
   const { batch, module } = await assertFacultyReportScope(user, moduleId, batchId);
   if (batch.branchCourseId !== courseId) throw new AppError("Course does not match the selected batch.", 422);
   const assessments = await prisma.assessment.findMany({ where: { facultyId: user.id, branchCourseId: courseId, branchBatchId: batch.id, moduleId }, select: { id: true, assessmentName: true, totalMarks: true, startDate: true, endDate: true, createdAt: true, isReassessment: true, originalAssessmentId: true, reassessmentStudentId: true }, orderBy: [{ startDate: "asc" }, { createdAt: "asc" }] });
-  const students = await prisma.branchStudent.findMany({ where: { recordStatus: "ACTIVE", OR: [{ batchId: batch.id }, { batchId: batch.batchId }, { courseEnrollments: { some: { status: "ACTIVE", batchId: { in: [batch.id, batch.batchId] } } } }] }, select: { id: true, studentId: true, studentName: true, emailAddress: true }, orderBy: { studentName: "asc" } });
+  const students = await prisma.branchStudent.findMany({ where: { recordStatus: "ACTIVE", discontinuationRequests: { none: { status: "APPROVED" } }, OR: [{ batchId: batch.id }, { batchId: batch.batchId }, { courseEnrollments: { some: { status: "ACTIVE", batchId: { in: [batch.id, batch.batchId] } } } }] }, select: { id: true, studentId: true, studentName: true, emailAddress: true }, orderBy: { studentName: "asc" } });
   const submissions = assessments.length && students.length ? await prisma.assessmentSubmission.findMany({ where: { assessmentId: { in: assessments.map((assessment) => assessment.id) }, branchStudentId: { in: students.map((student) => student.id) } }, select: { assessmentId: true, branchStudentId: true, status: true, submittedAt: true, marksObtained: true, feedback: true } }) : [];
   const submissionMap = new Map(submissions.map((submission) => [`${submission.branchStudentId}:${submission.assessmentId}`, submission]));
   const assessmentRows = assessments.map((assessment) => ({ id: assessment.id, assessmentName: assessment.assessmentName, totalMarks: assessment.totalMarks, startDate: assessment.startDate, endDate: assessment.endDate, isReassessment: assessment.isReassessment, reassessmentStudentId: assessment.reassessmentStudentId }));

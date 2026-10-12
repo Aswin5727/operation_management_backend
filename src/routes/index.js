@@ -26,6 +26,7 @@ import examsRoutes from "../modules/exams/exams.routes.js";
 import academicTestsRoutes from "../modules/academicTests/academicTests.routes.js";
 import academicPreparationRoutes from "../modules/academicPreparation/academicPreparation.routes.js";
 import facultySkillsRoutes from "../modules/facultySkills/facultySkills.routes.js";
+import studentDiscontinuationRoutes from "../modules/studentDiscontinuation/studentDiscontinuation.routes.js";
 const router = express.Router();
 router.use("/branch-holidays", branchHolidaysRoutes);
 router.use("/institute-leaves", instituteLeaveRoutes);
@@ -60,5 +61,6 @@ router.use("/exams", examsRoutes);
 router.use("/academic-tests", academicTestsRoutes);
 router.use("/academic-test-preparation", academicPreparationRoutes);
 router.use("/faculty-skills", facultySkillsRoutes);
+router.use("/student-discontinuation", studentDiscontinuationRoutes);
 
 export default router;

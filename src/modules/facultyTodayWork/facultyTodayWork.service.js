@@ -356,7 +356,10 @@ async function validateFacultyBatchScope({ branchId, courseId, batchId, facultyP
       ],
     },
     select: { id: true, studentId: true, facultyId: true, courseEnrollments: { where: { status: "ACTIVE", courseId: normalizeString(courseId), batchId: normalizedBatchId }, select: { facultyId: true } } },
+    select: { id: true, studentId: true, facultyId: true, courseEnrollments: { where: { status: "ACTIVE", courseId: normalizeString(courseId), batchId: normalizedBatchId }, select: { facultyId: true } }, discontinuationRequests: { where: { status: "APPROVED" }, select: { status: true }, take: 1 } },
   });
+
+  await assertStudentsNotDiscontinued(students.map((student) => student.id));
 
   const expectedFacultyId = normalizeString(batch.facultyId);
   const validStudents = students.filter((student) => (

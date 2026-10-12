@@ -16,6 +16,8 @@ const NOTIFICATION_KIND_MAP = {
   FACULTY_REPORT_SHARED: "faculty-report-shared",
   SEQUENTIAL_COURSE_SCHEDULING_REQUIRED: "sequential-course-scheduling-required",
   STUDENT_DISCOUNT_APPLIED: "student-discount-applied",
+  STUDENT_MOTIVATION: "student-motivation",
+  STUDENT_DISCONTINUATION: "student-discontinuation",
 };
 
 const BRANCH_ADMIN_VISIBLE_NOTIFICATION_KINDS = new Set([
@@ -29,6 +31,8 @@ const BRANCH_ADMIN_VISIBLE_NOTIFICATION_KINDS = new Set([
   "SEQUENTIAL_COURSE_SCHEDULING_REQUIRED",
   "FACULTY_SKILL_COMPLETED",
   "FACULTY_SKILL_OVERDUE",
+  "STUDENT_MOTIVATION",
+  "STUDENT_DISCONTINUATION",
 ]);
 const DEFAULT_VISIBLE_NOTIFICATION_KINDS = new Set([
   "BRANCH_INVITATION_RESENT",
@@ -48,6 +52,7 @@ const SUPER_ADMIN_VISIBLE_NOTIFICATION_KINDS = new Set([
   "FACULTY_SKILL_COMPLETED",
   "FACULTY_SKILL_OVERDUE",
   "STUDENT_DISCOUNT_APPLIED",
+  "STUDENT_DISCONTINUATION",
 ]);
 const FACULTY_VISIBLE_NOTIFICATION_KINDS = new Set([
   "INSTITUTE_LEAVE",
@@ -249,7 +254,7 @@ function getVisibleNotificationKindsForRole(user = {}) {
     return BRANCH_ADMIN_VISIBLE_NOTIFICATION_KINDS;
   }
 
-  if (role === "STUDENT") return new Set(["INSTITUTE_LEAVE", "EXAM_SCHEDULED", "EXAM_RETEST_ASSIGNED", "ASSESSMENT_AVAILABLE", "ASSESSMENT_REASSESSMENT_ASSIGNED", "ACADEMIC_TEST_CREATED", "SEQUENTIAL_COURSE_SCHEDULING_REQUIRED"]);
+  if (role === "STUDENT") return new Set(["INSTITUTE_LEAVE", "EXAM_SCHEDULED", "EXAM_RETEST_ASSIGNED", "ASSESSMENT_AVAILABLE", "ASSESSMENT_REASSESSMENT_ASSIGNED", "ACADEMIC_TEST_CREATED", "SEQUENTIAL_COURSE_SCHEDULING_REQUIRED", "STUDENT_DISCONTINUATION"]);
 
   if (role === "FACULTY") {
     return FACULTY_VISIBLE_NOTIFICATION_KINDS;
@@ -267,6 +272,18 @@ function buildNotificationWhere({
 } = {}) {
   const isFaculty = ["FACULTY", "STUDENT"].includes(String(user?.role || "").toUpperCase());
   const normalizedKind = normalizeString(kind).toUpperCase();
+  const isSuperAdmin = normalizeString(user?.role).toUpperCase() === "SUPER_ADMIN";
+  const superAdminDiscontinuationScope = isSuperAdmin
+    ? {
+        OR: [
+          { kind: { not: "STUDENT_DISCONTINUATION" } },
+          {
+            kind: "STUDENT_DISCONTINUATION",
+            requestDescription: { startsWith: "DISCONTINUATION_SUPER_REVIEW:" },
+          },
+        ],
+      }
+    : {};
 
   if (isFaculty) {
     return {
@@ -319,6 +336,7 @@ function buildNotificationWhere({
             in: Array.from(visibleKinds),
           },
         }),
+    ...superAdminDiscontinuationScope,
   };
 }
 

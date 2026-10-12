@@ -1270,6 +1270,70 @@ exports.Prisma.ExamAnswerScalarFieldEnum = {
   marksAwarded: 'marksAwarded'
 };
 
+exports.Prisma.MotivationMailHistoryScalarFieldEnum = {
+  id: 'id',
+  branchStudentId: 'branchStudentId',
+  branchId: 'branchId',
+  stage: 'stage',
+  absenceStartDate: 'absenceStartDate',
+  absenceWorkingDays: 'absenceWorkingDays',
+  status: 'status',
+  sentAt: 'sentAt',
+  failureReason: 'failureReason',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.StudentDiscontinuationRequestScalarFieldEnum = {
+  id: 'id',
+  branchStudentId: 'branchStudentId',
+  branchId: 'branchId',
+  requestedByUserId: 'requestedByUserId',
+  refundRequested: 'refundRequested',
+  courseProgress: 'courseProgress',
+  progressEarnedAmount: 'progressEarnedAmount',
+  balanceDue: 'balanceDue',
+  reason: 'reason',
+  details: 'details',
+  status: 'status',
+  contactOutcome: 'contactOutcome',
+  contactNotes: 'contactNotes',
+  contactedBy: 'contactedBy',
+  contactedAt: 'contactedAt',
+  contactAttemptCount: 'contactAttemptCount',
+  installmentOverdueCount: 'installmentOverdueCount',
+  nextInstallmentDueDate: 'nextInstallmentDueDate',
+  contactHistory: 'contactHistory',
+  escalationReason: 'escalationReason',
+  nextFollowUpDate: 'nextFollowUpDate',
+  branchReviewedBy: 'branchReviewedBy',
+  branchReviewedAt: 'branchReviewedAt',
+  branchReviewNote: 'branchReviewNote',
+  superAdminReviewedBy: 'superAdminReviewedBy',
+  superAdminReviewedAt: 'superAdminReviewedAt',
+  superAdminReviewNote: 'superAdminReviewNote',
+  accessDeactivationAt: 'accessDeactivationAt',
+  totalCourseFee: 'totalCourseFee',
+  actualCourseAmount: 'actualCourseAmount',
+  gstAmount: 'gstAmount',
+  registrationFee: 'registrationFee',
+  discountAmount: 'discountAmount',
+  finalCourseFee: 'finalCourseFee',
+  totalCourseHours: 'totalCourseHours',
+  conductedDays: 'conductedDays',
+  conductedHours: 'conductedHours',
+  completedCourseAmount: 'completedCourseAmount',
+  totalPaid: 'totalPaid',
+  outstandingAmount: 'outstandingAmount',
+  refundEligibleAmount: 'refundEligibleAmount',
+  waiverAmount: 'waiverAmount',
+  finalOutstandingAmount: 'finalOutstandingAmount',
+  settlementStatus: 'settlementStatus',
+  financeNote: 'financeNote',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.FacultyReportShareScalarFieldEnum = {
   id: 'id',
   facultyId: 'facultyId',
@@ -1413,7 +1477,9 @@ exports.NotificationKind = exports.$Enums.NotificationKind = {
   STUDENT_DISCOUNT_APPLIED: 'STUDENT_DISCOUNT_APPLIED',
   FACULTY_SKILL_ASSIGNED: 'FACULTY_SKILL_ASSIGNED',
   FACULTY_SKILL_COMPLETED: 'FACULTY_SKILL_COMPLETED',
-  FACULTY_SKILL_OVERDUE: 'FACULTY_SKILL_OVERDUE'
+  FACULTY_SKILL_OVERDUE: 'FACULTY_SKILL_OVERDUE',
+  STUDENT_MOTIVATION: 'STUDENT_MOTIVATION',
+  STUDENT_DISCONTINUATION: 'STUDENT_DISCONTINUATION'
 };
 
 exports.CourseEditRequestStatus = exports.$Enums.CourseEditRequestStatus = {
@@ -1455,6 +1521,18 @@ exports.DiscountType = exports.$Enums.DiscountType = {
 exports.AttendanceStatus = exports.$Enums.AttendanceStatus = {
   PRESENT: 'PRESENT',
   ABSENT: 'ABSENT'
+};
+
+exports.DiscontinuationRequestStatus = exports.$Enums.DiscontinuationRequestStatus = {
+  PENDING: 'PENDING',
+  SUPER_ADMIN_REVIEW: 'SUPER_ADMIN_REVIEW',
+  SUPER_ADMIN_WAIT: 'SUPER_ADMIN_WAIT',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED',
+  CANCELLED: 'CANCELLED',
+  CONTACTED_CONTINUE: 'CONTACTED_CONTINUE',
+  LEAVE_REQUESTED: 'LEAVE_REQUESTED',
+  UNABLE_TO_CONTACT: 'UNABLE_TO_CONTACT'
 };
 
 exports.Prisma.ModelName = {
@@ -1520,6 +1598,8 @@ exports.Prisma.ModelName = {
   ExamQuestion: 'ExamQuestion',
   ExamAttempt: 'ExamAttempt',
   ExamAnswer: 'ExamAnswer',
+  MotivationMailHistory: 'MotivationMailHistory',
+  StudentDiscontinuationRequest: 'StudentDiscontinuationRequest',
   FacultyReportShare: 'FacultyReportShare',
   BranchStudentPayment: 'BranchStudentPayment',
   BranchStudentLedgerEntry: 'BranchStudentLedgerEntry'
