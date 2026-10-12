@@ -7,6 +7,7 @@ import {
 import {
   calculateBranchStudentFeeComplianceStatus,
 } from "../branchStudents/branchStudents.service.js";
+import { assertStudentsNotDiscontinued } from "../../common/utils/studentDiscontinuationGuard.js";
 
 const LOCAL_TIME_ZONE = "Asia/Calcutta";
 const FACULTY_ROLES = new Set([

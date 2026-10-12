@@ -491,7 +491,7 @@ async function academicScheduleForStudent(actor, id) {
   const student = await studentFor(actor);
   const batches = await studentAcademicBatches(student);
   const batchIds = batches.map((batch) => batch.id);
-  const schedule = await prisma.academicScheduledTest.findFirst({ where: { id: text(id), OR: [{ branchBatchId: { in: batchIds } }, { retestStudentId: student.id, branchCourseId: { in: batches.map((batch) => batch.branchCourseId) } }] } });
+  const schedule = await prisma.academicScheduledTest.findFirst({ where: { id: text(id), OR: [{ branchBatchId: { in: batchIds }, isRetest: false }, { isRetest: true, retestStudentId: student.id, branchCourseId: { in: batches.map((batch) => batch.branchCourseId) } }] } });
   if (!schedule) throw new AppError("Academic Test not found or not assigned to your batch.", 404);
   return { student, schedule, batch: batches.find((item) => item.id === schedule.branchBatchId) || null };
 }
@@ -521,7 +521,7 @@ export async function listStudentAcademicTests(actor, courseId = "") {
   const student = await studentFor(actor);
   const batches = await studentAcademicBatches(student, courseId);
   const batchIds = batches.map((batch) => batch.id);
-  const schedules = await prisma.academicScheduledTest.findMany({ where: { OR: [{ branchBatchId: { in: batchIds } }, { retestStudentId: student.id, ...(courseId ? { branchCourseId: courseId } : { branchCourseId: { in: batches.map((batch) => batch.branchCourseId) } }) }] }, orderBy: [{ testDate: "asc" }, { startTime: "asc" }] });
+  const schedules = await prisma.academicScheduledTest.findMany({ where: { OR: [{ branchBatchId: { in: batchIds }, isRetest: false }, { isRetest: true, retestStudentId: student.id, ...(courseId ? { branchCourseId: courseId } : { branchCourseId: { in: batches.map((batch) => batch.branchCourseId) } }) }] }, orderBy: [{ testDate: "asc" }, { startTime: "asc" }] });
   await syncExpiredAcademicAttempts(schedules, [student.id]);
   const scheduleIds = schedules.map((schedule) => schedule.id);
   const [submissions, projectSubmissions] = await Promise.all([
@@ -572,7 +572,8 @@ async function facultyProjectContext(actor, scheduleId, studentId) {
   const ids = facultyIds(actor);
   const schedule = await prisma.academicScheduledTest.findFirst({ where: { id: text(scheduleId), facultyId: { in: ids } } });
   if (!schedule) throw new AppError("Academic Test schedule not found.", 404);
-  const student = await prisma.branchStudent.findFirst({ where: { id: text(studentId), recordStatus: "ACTIVE", discontinuationRequests: { none: { status: "APPROVED" } }, OR: [{ batchId: schedule.branchBatchId }, { batchId: (await prisma.branchBatch.findUnique({ where: { id: schedule.branchBatchId }, select: { batchId: true } }))?.batchId || "__missing__" }] } });
+  const batch = await prisma.branchBatch.findUnique({ where: { id: schedule.branchBatchId }, select: { batchId: true } });
+  const student = await prisma.branchStudent.findFirst({ where: { id: text(studentId), recordStatus: "ACTIVE", discontinuationRequests: { none: { status: "APPROVED" } }, OR: [{ batchId: schedule.branchBatchId }, { batchId: batch?.batchId || "__missing__" }, { courseEnrollments: { some: { status: "ACTIVE", courseId: schedule.branchCourseId, batchId: { in: [schedule.branchBatchId, batch?.batchId || "__missing__"] } } } }] } });
   if (!student) throw new AppError("Student is not assigned to this test batch.", 404);
   return { schedule, student };
 }
@@ -695,7 +696,7 @@ export async function getFacultyAssessment(actor, scheduleId, studentId) {
   const schedule = await prisma.academicScheduledTest.findFirst({ where: { id: text(scheduleId), facultyId: { in: ids } } });
   if (!schedule) throw new AppError("Academic Test schedule not found.", 404);
   const batch = await prisma.branchBatch.findUnique({ where: { id: schedule.branchBatchId }, select: { id: true, batchId: true } });
-  const student = await prisma.branchStudent.findFirst({ where: { id: text(studentId), recordStatus: "ACTIVE", discontinuationRequests: { none: { status: "APPROVED" } }, OR: [{ batchId: schedule.branchBatchId }, { batchId: batch?.batchId || "__missing__" }] }, select: { id: true, studentId: true, studentName: true, emailAddress: true } });
+  const student = await prisma.branchStudent.findFirst({ where: { id: text(studentId), recordStatus: "ACTIVE", discontinuationRequests: { none: { status: "APPROVED" } }, OR: [{ batchId: schedule.branchBatchId }, { batchId: batch?.batchId || "__missing__" }, { courseEnrollments: { some: { status: "ACTIVE", courseId: schedule.branchCourseId, batchId: { in: [schedule.branchBatchId, batch?.batchId || "__missing__"] } } } }] }, select: { id: true, studentId: true, studentName: true, emailAddress: true } });
   if (!student) throw new AppError("Student is not assigned to this test batch.", 403);
   const paper = await prisma.academicQuestionPaper.findUnique({ where: { id: schedule.questionPaperId }, include: { questions: { orderBy: { questionNumber: "asc" } } } });
   if (!paper?.questions.some((question) => question.questionType === "ASSESSMENT")) throw new AppError("This question paper has no Assessment questions.", 422);
@@ -723,7 +724,7 @@ export async function scheduleFacultyAcademicRetest(actor, id, payload = {}) {
 
   const studentId = text(payload.studentId);
   const batch = await prisma.branchBatch.findUnique({ where: { id: original.branchBatchId }, select: { id: true, batchId: true } });
-  const student = await prisma.branchStudent.findFirst({ where: { id: studentId, recordStatus: "ACTIVE", discontinuationRequests: { none: { status: "APPROVED" } }, OR: [{ batchId: original.branchBatchId }, { batchId: batch?.batchId || "__missing__" }] }, select: { id: true, studentId: true, studentName: true, emailAddress: true, batchId: true } });
+  const student = await prisma.branchStudent.findFirst({ where: { id: studentId, recordStatus: "ACTIVE", discontinuationRequests: { none: { status: "APPROVED" } }, OR: [{ batchId: original.branchBatchId }, { batchId: batch?.batchId || "__missing__" }, { courseEnrollments: { some: { status: "ACTIVE", courseId: original.branchCourseId, batchId: { in: [original.branchBatchId, batch?.batchId || "__missing__"] } } } }] }, select: { id: true, studentId: true, studentName: true, emailAddress: true, batchId: true } });
   if (!student) throw new AppError("Student is not assigned to this test batch.", 404);
   const existingSubmission = await prisma.academicTestSubmission.findUnique({ where: { academicTestId_branchStudentId: { academicTestId: original.id, branchStudentId: student.id } }, select: { status: true, resultStatus: true, obtainedMarks: true } });
   const rootSchedule = original.originalScheduleId ? await prisma.academicScheduledTest.findUnique({ where: { id: original.originalScheduleId }, select: { academicTestItemId: true } }) : original;
@@ -883,7 +884,11 @@ async function buildAcademicReport(actor, batch, requestedStudentIds = null, sel
       const final = completed.length ? completed[completed.length - 1] : (attemptRows[attemptRows.length - 1] || { status: "NOT_ATTENDED", marksObtained: null, totalMarks: test.totalMarks, percentage: null, result: null, passMark: test.passMark });
       const originalFinal = attemptRows.find((attempt) => attempt.attemptType === "ORIGINAL") || null;
       const retestAttempts = attemptRows.filter((attempt) => attempt.attemptType === "RETEST");
-      if (["SUBMITTED", "EVALUATED"].includes(final.status)) { testObtained += Number(final.marksObtained || 0); testMaximum += Number(final.totalMarks || test.totalMarks || 0); }
+      // Overall percentage is based on every configured test. A student who
+      // did not attend a test contributes zero marks, but that test still
+      // remains part of the denominator.
+      testMaximum += Number(final.totalMarks || test.totalMarks || 0);
+      if (["SUBMITTED", "EVALUATED"].includes(final.status)) testObtained += Number(final.marksObtained || 0);
       return { ...test, final, originalFinal, retestAttempts, attempts: attemptRows };
     });
     const projects = await Promise.all(projectItems.map(async ({ item: projectItem }) => {
