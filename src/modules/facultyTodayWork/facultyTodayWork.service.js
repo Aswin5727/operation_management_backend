@@ -614,17 +614,25 @@ async function syncBranchStudentCourseProgress(tx, { branchCourse, branchId, bat
     const attemptsForStudent = studentAttempts.filter((attempt) => (
       normalizeString(attempt.branchStudentId) === normalizeString(student.id)
     ));
-    const courseProgress = calculateBranchStudentCourseProgress(branchCourse, allWorkEntries, student, attemptsForStudent);
+    const enrollment = student.courseEnrollments?.[0];
+    // A student can have parallel courses with different batches. Calculate
+    // work against the selected enrollment, never the primary student row.
+    const scopedStudent = {
+      ...student,
+      courseId: normalizedCourseId,
+      batchId: normalizeString(batchId),
+      courseProgress: enrollment?.courseProgress ?? student.courseProgress,
+    };
+    const courseProgress = calculateBranchStudentCourseProgress(branchCourse, allWorkEntries, scopedStudent, attemptsForStudent);
 
     const calculatedCourseProgress = Math.max(0, Math.min(100, Math.round(courseProgress)));
-    // Course progress is monotonic. A later partial/incomplete save must not
-    // reset a student's already persisted progress to a lower value.
-    const storedCourseProgress = Number(student.courseProgress);
+    // Course progress is monotonic for this enrollment only. A parallel
+    // course''s primary progress must never cap or overwrite this value.
+    const storedCourseProgress = Number(enrollment?.courseProgress);
     const normalizedCourseProgress = Math.max(
       Number.isFinite(storedCourseProgress) ? storedCourseProgress : 0,
       calculatedCourseProgress,
     );
-    const enrollment = student.courseEnrollments?.[0];
     const completedAt = enrollment?.courseCompletedAt || (student.courseId === normalizedCourseId ? student.courseCompletedAt : null);
     await tx.branchStudentCourse.updateMany({
       where: { branchStudentId: student.id, courseId: normalizedCourseId, status: "ACTIVE" },

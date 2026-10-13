@@ -694,8 +694,10 @@ export function calculateCoursePaidProgress(student = {}, courseId = null) {
 export function courseCompletionFromProgressAndTests(courseProgress, academicTestProgress, paidProgress) {
   const isCourseProgressCompleted = Number(courseProgress) >= 100;
   const areAllAcademicTestsCompleted = Number(academicTestProgress?.pendingTests || 0) === 0;
-  const isPaidProgressCompleted = Number(paidProgress?.percentage) >= 100;
-  return isCourseProgressCompleted && isPaidProgressCompleted && areAllAcademicTestsCompleted
+  const areAllProjectsCompleted = Number(academicTestProgress?.pendingProjects || 0) === 0;
+  // Payment is tracked independently. Learning completion depends only on the
+  // course work and academic tests for this specific enrollment.
+  return isCourseProgressCompleted && areAllAcademicTestsCompleted && areAllProjectsCompleted
     ? "COMPLETED"
     : "IN_PROGRESS";
 }
@@ -2244,13 +2246,22 @@ function buildBranchStudentWhere(query = {}, branchProfile = null) {
   }
 
   const facultyId = normalizeString(query.facultyId);
-  if (facultyId) {
-    where.facultyId = facultyId;
-  }
-
   const facultyName = normalizeString(query.facultyName);
+  const facultyConditions = [];
+  if (facultyId) {
+    facultyConditions.push(
+      { facultyId },
+      { courseEnrollments: { some: { facultyId, status: "ACTIVE" } } },
+    );
+  }
   if (facultyName) {
-    where.facultyName = { equals: facultyName, mode: "insensitive" };
+    facultyConditions.push(
+      { facultyName: { equals: facultyName, mode: "insensitive" } },
+      { courseEnrollments: { some: { facultyName: { equals: facultyName, mode: "insensitive" }, status: "ACTIVE" } } },
+    );
+  }
+  if (facultyConditions.length) {
+    where.AND = [...(Array.isArray(where.AND) ? where.AND : []), { OR: facultyConditions }];
   }
 
   addCourseLifecycleFilter(where, query.lifecycle || query.courseStatus);
@@ -2664,14 +2675,32 @@ export async function listBranchStudents(query = {}, actor = null) {
   })));
 
   return {
-    data: rows.map((student) => toBranchStudentSummary({
-      ...student,
-      academicTestProgress: completionByStudentId.get(student.id)?.academicTestProgress,
-      academicTestProgressByCourse: Object.fromEntries(Object.entries(completionByStudentId.get(student.id)?.byCourse || {}).map(([courseId, value]) => [courseId, value.academicTestProgress])),
-      paidProgress: completionByStudentId.get(student.id)?.paidProgress,
-      courseCompletion: completionByStudentId.get(student.id)?.status,
-      courseCompletionByCourse: Object.fromEntries(Object.entries(completionByStudentId.get(student.id)?.byCourse || {}).map(([courseId, value]) => [courseId, value.status])),
-    })),
+    data: rows.map((student) => {
+      const computed = completionByStudentId.get(student.id) || {};
+      const byCourse = computed.byCourse || {};
+      const courseEnrollments = Array.isArray(student.courseEnrollments)
+        ? student.courseEnrollments.map((enrollment) => {
+          const courseResult = byCourse[enrollment.courseId] || {};
+          return {
+            ...enrollment,
+            academicTestProgress: courseResult.academicTestProgress || null,
+            paidProgress: courseResult.paidProgress || null,
+            courseCompletion: courseResult.status || null,
+            courseCompletionStatus: courseResult.status || null,
+          };
+        })
+        : student.courseEnrollments;
+
+      return toBranchStudentSummary({
+        ...student,
+        courseEnrollments,
+        academicTestProgress: computed.academicTestProgress,
+        academicTestProgressByCourse: Object.fromEntries(Object.entries(byCourse).map(([courseId, value]) => [courseId, value.academicTestProgress])),
+        paidProgress: computed.paidProgress,
+        courseCompletion: computed.status,
+        courseCompletionByCourse: Object.fromEntries(Object.entries(byCourse).map(([courseId, value]) => [courseId, value.status])),
+      });
+    }),
     meta: buildPaginationMeta(total, page, limit),
   };
 }
