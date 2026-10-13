@@ -691,11 +691,10 @@ export function calculateCoursePaidProgress(student = {}, courseId = null) {
   };
 }
 
-export function courseCompletionFromProgressAndTests(courseProgress, academicTestProgress, paidProgress) {
+export function courseCompletionFromProgressAndTests(courseProgress, academicTestProgress) {
   const isCourseProgressCompleted = Number(courseProgress) >= 100;
   const areAllAcademicTestsCompleted = Number(academicTestProgress?.pendingTests || 0) === 0;
-  const isPaidProgressCompleted = Number(paidProgress?.percentage) >= 100;
-  return isCourseProgressCompleted && isPaidProgressCompleted && areAllAcademicTestsCompleted
+  return isCourseProgressCompleted && areAllAcademicTestsCompleted
     ? "COMPLETED"
     : "IN_PROGRESS";
 }
@@ -2674,6 +2673,224 @@ export async function listBranchStudents(query = {}, actor = null) {
     })),
     meta: buildPaginationMeta(total, page, limit),
   };
+}
+
+function lifecycleSearchMatch(row, search) {
+  const needle = normalizeSearchKey(search)
+  if (!needle) return true
+  return [row.studentId, row.studentName, row.mobileNumber, row.emailAddress, row.courseName, row.batchName, row.facultyName]
+    .some((value) => normalizeSearchKey(value).includes(needle))
+}
+
+async function getCompletedCourseAcademicTests(student, enrollment) {
+  const batchKey = normalizeString(enrollment.batchId || student.batchId)
+  if (!batchKey || !enrollment.courseId) return []
+  const batch = await prisma.branchBatch.findFirst({
+    where: { branchId: student.branchId, OR: [{ id: batchKey }, { batchId: batchKey }] },
+    select: { id: true },
+  })
+  if (!batch) return []
+
+  const configuredTests = await prisma.academicTest.findMany({
+    where: { branchCourseId: enrollment.courseId, batches: { some: { branchBatchId: batch.id } } },
+    select: { items: { orderBy: { sequence: "asc" }, select: { id: true, sequence: true, testType: true } } },
+  })
+  const items = configuredTests.flatMap((test) => test.items || []).sort((left, right) => left.sequence - right.sequence)
+  if (!items.length) return []
+
+  const schedules = await prisma.academicScheduledTest.findMany({
+    where: { branchBatchId: batch.id, academicTestItemId: { in: items.map((item) => item.id) }, status: { not: "CANCELLED" }, isRetest: false },
+    orderBy: [{ testNumber: "asc" }, { createdAt: "asc" }],
+    select: { id: true, academicTestItemId: true, testNumber: true, testDate: true, status: true },
+  })
+  const submissions = await prisma.academicTestSubmission.findMany({
+    where: { branchStudentId: student.id, academicTestId: { in: schedules.map((schedule) => schedule.id) } },
+    select: { academicTestId: true, status: true, resultStatus: true, percentage: true, obtainedMarks: true, totalMarks: true },
+  })
+  const submissionByTestId = new Map(submissions.map((submission) => [submission.academicTestId, submission]))
+  const itemById = new Map(items.map((item) => [item.id, item]))
+  return schedules.map((schedule) => {
+    const submission = submissionByTestId.get(schedule.id)
+    const item = itemById.get(schedule.academicTestItemId)
+    const status = String(submission?.status || "NOT_STARTED").toUpperCase()
+    const result = submission?.resultStatus ? ` ${submission.resultStatus}` : ""
+    const marks = submission && submission.totalMarks > 0 ? ` (${submission.obtainedMarks}/${submission.totalMarks})` : ""
+    const percentage = submission && Number.isFinite(Number(submission.percentage)) && (status === "EVALUATED" || status === "SUBMITTED")
+      ? ` - ${Number(submission.percentage).toFixed(2).replace(/\.00$/, "")}%`
+      : ""
+    return {
+      label: `Academic Test ${schedule.testNumber || item?.sequence || ""}`.trim(),
+      value: `${status === "EVALUATED" || status === "SUBMITTED" ? "Completed" : "Pending"}${result}${marks}${percentage}`,
+      testType: item?.testType || null,
+      testDate: schedule.testDate || null,
+    }
+  })
+}
+
+export async function listBranchStudentLifecycle(query = {}, actor = null) {
+  const lifecycle = normalizeString(query.lifecycle || "COMPLETED").toUpperCase()
+  if (!['COMPLETED', 'DISCONTINUED'].includes(lifecycle)) throw new AppError("Invalid student lifecycle", 400)
+  const branchProfile = await getBranchContext(actor)
+  const branchId = branchProfile?.id || normalizeString(query.branchId)
+  const lifecycleWhere = {
+    ...(branchId ? { branchId } : {}),
+    ...(lifecycle === "DISCONTINUED"
+      ? { discontinuationRequests: { some: { status: "APPROVED" } } }
+      : {}),
+  }
+  const students = await prisma.branchStudent.findMany({
+    where: lifecycleWhere,
+    include: {
+      branch: { select: { branchId: true, branchName: true, branchAdminName: true } },
+      course: { select: { id: true, name: true, actualFees: true, registrationFees: true, afterDiscount: true, mode: true } },
+      installments: { orderBy: { installmentNumber: "asc" } },
+      payments: { orderBy: [{ paymentDate: "asc" }, { createdAt: "asc" }], select: { amount: true, paymentMode: true, receiptNumber: true } },
+      calendarAttendanceRecords: { select: { courseId: true, status: true } },
+      facultyTodayWorkStudentEntries: {
+        include: {
+          facultyTodayWorkEntry: {
+            include: {
+              branchCourse: { include: { modules: { include: { submodules: true } } } },
+            },
+          },
+        },
+      },
+      courseEnrollments: { orderBy: [{ sequenceOrder: "asc" }, { createdAt: "asc" }], include: { course: { select: { id: true, name: true, actualFees: true, registrationFees: true, afterDiscount: true, mode: true } } } },
+      discontinuationRequests: { where: { status: "APPROVED" }, orderBy: { updatedAt: "desc" }, select: { id: true, status: true, courseId: true, reason: true, updatedAt: true } },
+    },
+  })
+
+  const records = []
+  for (const student of students) {
+    const enrollments = student.courseEnrollments.length ? student.courseEnrollments : [{
+      id: null, courseId: student.courseId, courseName: student.courseName, facultyName: student.facultyName, batchId: student.batchId, batchName: student.batchName,
+      batchTiming: student.batchTiming, scheduleType: student.classSchedule, mode: student.courseMode, startDate: student.courseStartDate, endDate: student.courseEndDate,
+      courseProgress: student.courseProgress, courseCompletedAt: student.courseCompletedAt, totalCourseAmount: student.courseAmount, finalCourseAmount: student.courseAmount, status: student.recordStatus, course: student.course,
+    }]
+    const courseAmounts = enrollments.map((item) => Math.max(Number(item.finalCourseAmount ?? item.totalCourseAmount ?? item.courseAmount ?? item.course?.afterDiscount ?? student.courseAmount ?? 0), 0))
+    const paidByCourse = courseAmounts.map(() => 0)
+    const scheduledByCourse = courseAmounts.map(() => 0)
+    const distributeAmount = (amount, weights) => {
+      const totalWeight = weights.reduce((sum, weight) => sum + weight, 0)
+      let assigned = 0
+      return weights.map((weight, index) => {
+        const allocation = index === weights.length - 1
+          ? Math.max(Number(amount) - assigned, 0)
+          : Math.round((Number(amount) * weight) / Math.max(totalWeight, 1))
+        assigned += allocation
+        return allocation
+      })
+    }
+    const allocateSequentially = (amount, capacities) => {
+      let remaining = Math.max(Number(amount) || 0, 0)
+      return capacities.map((capacity) => {
+        const allocation = Math.min(remaining, Math.max(Number(capacity) || 0, 0))
+        remaining -= allocation
+        return allocation
+      })
+    }
+    for (const installment of student.installments || []) {
+      const amount = Math.max(Number(installment.amount || 0), 0)
+      const paid = Math.min(amount, Math.max(Number(installment.amountPaid || 0), 0))
+      const isSequential = String(student.arrangementType || '').toUpperCase() === 'SEQUENTIAL'
+      const allocations = isSequential
+        ? allocateSequentially(amount, courseAmounts.map((total, index) => total - scheduledByCourse[index]))
+        : distributeAmount(amount, courseAmounts)
+      const paidAllocations = isSequential
+        ? allocateSequentially(paid, allocations)
+        : distributeAmount(paid, allocations)
+      allocations.forEach((allocation, index) => {
+        scheduledByCourse[index] += allocation
+        paidByCourse[index] += Math.min(allocation, paidAllocations[index])
+      })
+    }
+    for (const enrollment of enrollments) {
+      if (!enrollment.courseId) continue
+      const request = student.discontinuationRequests.find((item) => item.courseId === enrollment.courseId)
+        || student.discontinuationRequests.find((item) => !item.courseId)
+        || (student.discontinuationRequests.length && enrollments.length === 1 ? student.discontinuationRequests[0] : null)
+      const isDiscontinued = Boolean(request)
+      if (lifecycle === "DISCONTINUED" && !isDiscontinued) continue
+      const paidProgress = calculateCoursePaidProgress(student, enrollment.courseId)
+      const studentKeyValues = new Set([student.id, student.studentId].map((value) => String(value || "").trim().toLowerCase()).filter(Boolean))
+      const matchingWorkEntries = (student.facultyTodayWorkStudentEntries || [])
+        .map((entry) => entry.facultyTodayWorkEntry)
+        .filter((entry) => String(entry?.courseId || "") === String(enrollment.courseId))
+        .filter((entry) => {
+          if (entry?.applyToAllStudents) return true
+          const ids = Array.isArray(entry?.studentIds)
+            ? entry.studentIds
+            : typeof entry?.studentIds === "string"
+              ? (() => { try { const parsed = JSON.parse(entry.studentIds); return Array.isArray(parsed) ? parsed : [] } catch { return [] } })()
+              : []
+          return ids.some((value) => studentKeyValues.has(String(value || "").trim().toLowerCase()))
+        })
+      const facultyProgressValues = matchingWorkEntries
+        .map((entry) => Number(entry?.courseProgress))
+        .filter(Number.isFinite)
+      const facultyModuleTotals = matchingWorkEntries[0]?.branchCourse?.modules || []
+      const completedSubmodulesByModule = new Map()
+      matchingWorkEntries.forEach((entry) => {
+        const moduleId = String(entry?.moduleId || "")
+        if (!moduleId) return
+        const selectedSubmodules = Array.isArray(entry?.submoduleIds)
+          ? entry.submoduleIds
+          : typeof entry?.submoduleIds === "string"
+            ? (() => { try { const parsed = JSON.parse(entry.submoduleIds); return Array.isArray(parsed) ? parsed : [] } catch { return [] } })()
+            : []
+        const completed = completedSubmodulesByModule.get(moduleId) || new Set()
+        selectedSubmodules.forEach((value) => completed.add(String(value || "").trim()))
+        completedSubmodulesByModule.set(moduleId, completed)
+      })
+      const totalSubmodules = facultyModuleTotals.reduce((sum, module) => sum + (module.submodules?.length || 0), 0)
+      const completedSubmodules = facultyModuleTotals.reduce((sum, module) => sum + (completedSubmodulesByModule.get(module.id)?.size || 0), 0)
+      if (totalSubmodules > 0) facultyProgressValues.push((completedSubmodules / totalSubmodules) * 100)
+      const effectiveCourseProgress = Math.min(100, Math.max(
+        0,
+        Number(enrollment.courseProgress) || 0,
+        ...facultyProgressValues,
+      ))
+      if (lifecycle === "COMPLETED" && (isDiscontinued || effectiveCourseProgress < 100)) continue
+      const academicProgress = lifecycle === "COMPLETED"
+        ? await getAcademicTestProgressForStudent({ ...student, courseId: enrollment.courseId, batchId: enrollment.batchId || student.batchId, courseProgress: effectiveCourseProgress })
+        : null
+      const completionStatus = lifecycle === "COMPLETED"
+        ? courseCompletionFromProgressAndTests(effectiveCourseProgress, academicProgress)
+        : "DISCONTINUED"
+      if (lifecycle === "COMPLETED" && completionStatus !== "COMPLETED") continue
+      const attendance = student.calendarAttendanceRecords.filter((item) => !item.courseId || item.courseId === enrollment.courseId)
+      const present = attendance.filter((item) => item.status === "PRESENT").length
+      const attendancePercentage = attendance.length ? Math.round((present / attendance.length) * 1000) / 10 : null
+      const totalFees = Number(enrollment.finalCourseAmount ?? enrollment.totalCourseAmount ?? enrollment.course?.afterDiscount ?? student.courseAmount ?? 0)
+      const enrollmentIndex = enrollments.findIndex((item) => String(item.courseId || '') === String(enrollment.courseId || ''))
+      const paidAmount = Math.min(totalFees, Math.round(paidByCourse[Math.max(enrollmentIndex, 0)] || 0))
+      const academicTests = lifecycle === "COMPLETED"
+        ? await getCompletedCourseAcademicTests(student, enrollment)
+        : []
+      records.push({
+        recordId: enrollment.id || `${student.id}:${enrollment.courseId}`, branchId: student.branchId, branchName: student.branch?.branchName, branchAdminName: student.branch?.branchAdminName,
+        studentId: student.studentId, studentName: student.studentName, mobileNumber: student.mobileNumber, emailAddress: student.emailAddress, source: student.source || null,
+        courseId: enrollment.courseId, courseName: enrollment.courseName || enrollment.course?.name || student.courseName, courseStartDate: enrollment.startDate || student.courseStartDate, courseEndDate: enrollment.endDate || student.courseEndDate,
+        scheduleType: enrollment.scheduleType || student.classSchedule, classSchedule: enrollment.scheduleType || student.classSchedule, mode: enrollment.mode || enrollment.course?.mode || student.courseMode, courseMode: enrollment.mode || enrollment.course?.mode || student.courseMode,
+        batchName: enrollment.batchName || student.batchName, batchTiming: enrollment.batchTiming || student.batchTiming, facultyName: enrollment.facultyName || student.facultyName, attendancePercentage,
+        courseFees: enrollment.totalCourseAmount ?? enrollment.course?.actualFees ?? student.courseAmount, registrationFees: enrollment.course?.registrationFees ?? null, totalFees,
+        installment1: student.installments[0]?.amount ?? null,
+        installment2: student.installments[1]?.amount ?? null,
+        installment3: student.installments[2]?.amount ?? null,
+        paidAmount, pendingAmount: Math.max(totalFees - paidAmount, 0), paymentMode: student.payments.length === 1 ? student.payments[0].paymentMode : student.payments.length > 1 ? "Multiple" : null, receiptNumber: student.payments.length === 1 ? student.payments[0].receiptNumber : null,
+        studentStatus: isDiscontinued ? "Discontinued" : completionStatus, lifecycleStatus: isDiscontinued ? "DISCONTINUED" : completionStatus, courseProgress: effectiveCourseProgress, courseCompletedAt: enrollment.courseCompletedAt || null, remarks: request?.reason || student.remarks || null,
+        academicTests, discontinuationRequestId: request?.id || null,
+      })
+    }
+  }
+  const filtered = records.filter((row) => lifecycleSearchMatch(row, query.search))
+  const sortBy = ['studentName', 'courseName', 'courseStartDate', 'courseEndDate'].includes(normalizeString(query.sortBy)) ? normalizeString(query.sortBy) : 'studentName'
+  const sortOrder = normalizeString(query.sortOrder).toLowerCase() === 'desc' ? -1 : 1
+  filtered.sort((left, right) => String(left[sortBy] || '').localeCompare(String(right[sortBy] || ''), undefined, { numeric: true }) * sortOrder)
+  const page = Math.max(1, Number.parseInt(query.page, 10) || 1)
+  const limit = Math.min(100, Math.max(1, Number.parseInt(query.limit, 10) || 20))
+  const total = filtered.length
+  return { data: filtered.slice((page - 1) * limit, page * limit), meta: { page, limit, total, totalPages: Math.max(1, Math.ceil(total / limit)) } }
 }
 
 export async function createBranchStudent(payload, actor) {
