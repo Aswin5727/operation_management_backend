@@ -33,6 +33,7 @@ function normalizeRequest(request) {
   return {
     id: request.id,
     branchStudentId: request.branchStudentId,
+    courseId: request.courseId || null,
     branchId: request.branchId,
     branchName: student?.branch?.branchName || "",
     branchCode: student?.branch?.branchId || "",
@@ -457,7 +458,26 @@ export async function createDiscontinuationRequest(actor, payload = {}) {
   if (!reason) throw new AppError("Discontinuation reason is required", 400);
 
   const refundRequested = payload.refundRequested === true || String(payload.refundRequested || "").toLowerCase() === "true";
-  const snapshot = await financialSnapshot(student, refundRequested);
+  const requestedCourseId = text(payload.courseId);
+  const courseId = requestedCourseId && student.courseEnrollments.some((item) => item.courseId === requestedCourseId)
+    ? requestedCourseId
+    : student.courseId || null;
+  const selectedEnrollment = courseId
+    ? student.courseEnrollments.find((item) => item.courseId === courseId)
+    : null;
+  const financeStudent = selectedEnrollment && student.courseEnrollments.length > 1
+    ? {
+        ...student,
+        ...selectedEnrollment,
+        courseId: selectedEnrollment.courseId,
+        batchId: selectedEnrollment.batchId || student.batchId,
+        courseName: selectedEnrollment.courseName || selectedEnrollment.course?.name || student.courseName,
+        courseAmount: selectedEnrollment.finalCourseAmount ?? selectedEnrollment.totalCourseAmount ?? student.courseAmount,
+        calendarAttendanceRecords: student.calendarAttendanceRecords.filter((record) => !record.courseId || record.courseId === selectedEnrollment.courseId),
+        courseEnrollments: [selectedEnrollment],
+      }
+    : student;
+  const snapshot = await financialSnapshot(financeStudent, refundRequested);
   const existing = await prisma.studentDiscontinuationRequest.findFirst({
     where: { branchStudentId: student.id },
     orderBy: { createdAt: "desc" },
@@ -474,6 +494,7 @@ export async function createDiscontinuationRequest(actor, payload = {}) {
       branchStudentId: student.id,
       branchId: student.branchId,
       requestedByUserId: actor.id,
+      courseId,
       reason,
       details: text(payload.details) || null,
       ...snapshot,

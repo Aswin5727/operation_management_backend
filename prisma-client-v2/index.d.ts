@@ -88665,6 +88665,7 @@ export namespace Prisma {
     id: string | null
     branchStudentId: string | null
     branchId: string | null
+    courseId: string | null
     requestedByUserId: string | null
     refundRequested: boolean | null
     courseProgress: number | null
@@ -88714,6 +88715,7 @@ export namespace Prisma {
     id: string | null
     branchStudentId: string | null
     branchId: string | null
+    courseId: string | null
     requestedByUserId: string | null
     refundRequested: boolean | null
     courseProgress: number | null
@@ -88763,6 +88765,7 @@ export namespace Prisma {
     id: number
     branchStudentId: number
     branchId: number
+    courseId: number
     requestedByUserId: number
     refundRequested: number
     courseProgress: number
@@ -88861,6 +88864,7 @@ export namespace Prisma {
     id?: true
     branchStudentId?: true
     branchId?: true
+    courseId?: true
     requestedByUserId?: true
     refundRequested?: true
     courseProgress?: true
@@ -88910,6 +88914,7 @@ export namespace Prisma {
     id?: true
     branchStudentId?: true
     branchId?: true
+    courseId?: true
     requestedByUserId?: true
     refundRequested?: true
     courseProgress?: true
@@ -88959,6 +88964,7 @@ export namespace Prisma {
     id?: true
     branchStudentId?: true
     branchId?: true
+    courseId?: true
     requestedByUserId?: true
     refundRequested?: true
     courseProgress?: true
@@ -89096,6 +89102,7 @@ export namespace Prisma {
     id: string
     branchStudentId: string
     branchId: string
+    courseId: string | null
     requestedByUserId: string | null
     refundRequested: boolean
     courseProgress: number
@@ -89165,6 +89172,7 @@ export namespace Prisma {
     id?: boolean
     branchStudentId?: boolean
     branchId?: boolean
+    courseId?: boolean
     requestedByUserId?: boolean
     refundRequested?: boolean
     courseProgress?: boolean
@@ -89216,6 +89224,7 @@ export namespace Prisma {
     id?: boolean
     branchStudentId?: boolean
     branchId?: boolean
+    courseId?: boolean
     requestedByUserId?: boolean
     refundRequested?: boolean
     courseProgress?: boolean
@@ -89267,6 +89276,7 @@ export namespace Prisma {
     id?: boolean
     branchStudentId?: boolean
     branchId?: boolean
+    courseId?: boolean
     requestedByUserId?: boolean
     refundRequested?: boolean
     courseProgress?: boolean
@@ -89318,6 +89328,7 @@ export namespace Prisma {
     id?: boolean
     branchStudentId?: boolean
     branchId?: boolean
+    courseId?: boolean
     requestedByUserId?: boolean
     refundRequested?: boolean
     courseProgress?: boolean
@@ -89364,7 +89375,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type StudentDiscontinuationRequestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "branchStudentId" | "branchId" | "requestedByUserId" | "refundRequested" | "courseProgress" | "progressEarnedAmount" | "balanceDue" | "reason" | "details" | "status" | "contactOutcome" | "contactNotes" | "contactedBy" | "contactedAt" | "contactAttemptCount" | "installmentOverdueCount" | "nextInstallmentDueDate" | "contactHistory" | "escalationReason" | "nextFollowUpDate" | "branchReviewedBy" | "branchReviewedAt" | "branchReviewNote" | "superAdminReviewedBy" | "superAdminReviewedAt" | "superAdminReviewNote" | "accessDeactivationAt" | "totalCourseFee" | "actualCourseAmount" | "gstAmount" | "registrationFee" | "discountAmount" | "finalCourseFee" | "totalCourseHours" | "conductedDays" | "conductedHours" | "completedCourseAmount" | "totalPaid" | "outstandingAmount" | "refundEligibleAmount" | "waiverAmount" | "finalOutstandingAmount" | "settlementStatus" | "financeNote" | "createdAt" | "updatedAt", ExtArgs["result"]["studentDiscontinuationRequest"]>
+  export type StudentDiscontinuationRequestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "branchStudentId" | "branchId" | "courseId" | "requestedByUserId" | "refundRequested" | "courseProgress" | "progressEarnedAmount" | "balanceDue" | "reason" | "details" | "status" | "contactOutcome" | "contactNotes" | "contactedBy" | "contactedAt" | "contactAttemptCount" | "installmentOverdueCount" | "nextInstallmentDueDate" | "contactHistory" | "escalationReason" | "nextFollowUpDate" | "branchReviewedBy" | "branchReviewedAt" | "branchReviewNote" | "superAdminReviewedBy" | "superAdminReviewedAt" | "superAdminReviewNote" | "accessDeactivationAt" | "totalCourseFee" | "actualCourseAmount" | "gstAmount" | "registrationFee" | "discountAmount" | "finalCourseFee" | "totalCourseHours" | "conductedDays" | "conductedHours" | "completedCourseAmount" | "totalPaid" | "outstandingAmount" | "refundEligibleAmount" | "waiverAmount" | "finalOutstandingAmount" | "settlementStatus" | "financeNote" | "createdAt" | "updatedAt", ExtArgs["result"]["studentDiscontinuationRequest"]>
   export type StudentDiscontinuationRequestInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     branchStudent?: boolean | BranchStudentDefaultArgs<ExtArgs>
   }
@@ -89384,6 +89395,7 @@ export namespace Prisma {
       id: string
       branchStudentId: string
       branchId: string
+      courseId: string | null
       requestedByUserId: string | null
       refundRequested: boolean
       courseProgress: number
@@ -89855,6 +89867,7 @@ export namespace Prisma {
     readonly id: FieldRef<"StudentDiscontinuationRequest", 'String'>
     readonly branchStudentId: FieldRef<"StudentDiscontinuationRequest", 'String'>
     readonly branchId: FieldRef<"StudentDiscontinuationRequest", 'String'>
+    readonly courseId: FieldRef<"StudentDiscontinuationRequest", 'String'>
     readonly requestedByUserId: FieldRef<"StudentDiscontinuationRequest", 'String'>
     readonly refundRequested: FieldRef<"StudentDiscontinuationRequest", 'Boolean'>
     readonly courseProgress: FieldRef<"StudentDiscontinuationRequest", 'Int'>
@@ -95454,6 +95467,7 @@ export namespace Prisma {
     id: 'id',
     branchStudentId: 'branchStudentId',
     branchId: 'branchId',
+    courseId: 'courseId',
     requestedByUserId: 'requestedByUserId',
     refundRequested: 'refundRequested',
     courseProgress: 'courseProgress',
@@ -103178,6 +103192,7 @@ export namespace Prisma {
     id?: StringFilter<"StudentDiscontinuationRequest"> | string
     branchStudentId?: StringFilter<"StudentDiscontinuationRequest"> | string
     branchId?: StringFilter<"StudentDiscontinuationRequest"> | string
+    courseId?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
     requestedByUserId?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
     refundRequested?: BoolFilter<"StudentDiscontinuationRequest"> | boolean
     courseProgress?: IntFilter<"StudentDiscontinuationRequest"> | number
@@ -103229,6 +103244,7 @@ export namespace Prisma {
     id?: SortOrder
     branchStudentId?: SortOrder
     branchId?: SortOrder
+    courseId?: SortOrderInput | SortOrder
     requestedByUserId?: SortOrderInput | SortOrder
     refundRequested?: SortOrder
     courseProgress?: SortOrder
@@ -103283,6 +103299,7 @@ export namespace Prisma {
     NOT?: StudentDiscontinuationRequestWhereInput | StudentDiscontinuationRequestWhereInput[]
     branchStudentId?: StringFilter<"StudentDiscontinuationRequest"> | string
     branchId?: StringFilter<"StudentDiscontinuationRequest"> | string
+    courseId?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
     requestedByUserId?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
     refundRequested?: BoolFilter<"StudentDiscontinuationRequest"> | boolean
     courseProgress?: IntFilter<"StudentDiscontinuationRequest"> | number
@@ -103334,6 +103351,7 @@ export namespace Prisma {
     id?: SortOrder
     branchStudentId?: SortOrder
     branchId?: SortOrder
+    courseId?: SortOrderInput | SortOrder
     requestedByUserId?: SortOrderInput | SortOrder
     refundRequested?: SortOrder
     courseProgress?: SortOrder
@@ -103392,6 +103410,7 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"StudentDiscontinuationRequest"> | string
     branchStudentId?: StringWithAggregatesFilter<"StudentDiscontinuationRequest"> | string
     branchId?: StringWithAggregatesFilter<"StudentDiscontinuationRequest"> | string
+    courseId?: StringNullableWithAggregatesFilter<"StudentDiscontinuationRequest"> | string | null
     requestedByUserId?: StringNullableWithAggregatesFilter<"StudentDiscontinuationRequest"> | string | null
     refundRequested?: BoolWithAggregatesFilter<"StudentDiscontinuationRequest"> | boolean
     courseProgress?: IntWithAggregatesFilter<"StudentDiscontinuationRequest"> | number
@@ -112276,6 +112295,7 @@ export namespace Prisma {
   export type StudentDiscontinuationRequestCreateInput = {
     id?: string
     branchId: string
+    courseId?: string | null
     requestedByUserId?: string | null
     refundRequested?: boolean
     courseProgress?: number
@@ -112327,6 +112347,7 @@ export namespace Prisma {
     id?: string
     branchStudentId: string
     branchId: string
+    courseId?: string | null
     requestedByUserId?: string | null
     refundRequested?: boolean
     courseProgress?: number
@@ -112376,6 +112397,7 @@ export namespace Prisma {
   export type StudentDiscontinuationRequestUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     branchId?: StringFieldUpdateOperationsInput | string
+    courseId?: NullableStringFieldUpdateOperationsInput | string | null
     requestedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
     refundRequested?: BoolFieldUpdateOperationsInput | boolean
     courseProgress?: IntFieldUpdateOperationsInput | number
@@ -112427,6 +112449,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     branchStudentId?: StringFieldUpdateOperationsInput | string
     branchId?: StringFieldUpdateOperationsInput | string
+    courseId?: NullableStringFieldUpdateOperationsInput | string | null
     requestedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
     refundRequested?: BoolFieldUpdateOperationsInput | boolean
     courseProgress?: IntFieldUpdateOperationsInput | number
@@ -112477,6 +112500,7 @@ export namespace Prisma {
     id?: string
     branchStudentId: string
     branchId: string
+    courseId?: string | null
     requestedByUserId?: string | null
     refundRequested?: boolean
     courseProgress?: number
@@ -112526,6 +112550,7 @@ export namespace Prisma {
   export type StudentDiscontinuationRequestUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     branchId?: StringFieldUpdateOperationsInput | string
+    courseId?: NullableStringFieldUpdateOperationsInput | string | null
     requestedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
     refundRequested?: BoolFieldUpdateOperationsInput | boolean
     courseProgress?: IntFieldUpdateOperationsInput | number
@@ -112576,6 +112601,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     branchStudentId?: StringFieldUpdateOperationsInput | string
     branchId?: StringFieldUpdateOperationsInput | string
+    courseId?: NullableStringFieldUpdateOperationsInput | string | null
     requestedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
     refundRequested?: BoolFieldUpdateOperationsInput | boolean
     courseProgress?: IntFieldUpdateOperationsInput | number
@@ -118460,6 +118486,7 @@ export namespace Prisma {
     id?: SortOrder
     branchStudentId?: SortOrder
     branchId?: SortOrder
+    courseId?: SortOrder
     requestedByUserId?: SortOrder
     refundRequested?: SortOrder
     courseProgress?: SortOrder
@@ -118533,6 +118560,7 @@ export namespace Prisma {
     id?: SortOrder
     branchStudentId?: SortOrder
     branchId?: SortOrder
+    courseId?: SortOrder
     requestedByUserId?: SortOrder
     refundRequested?: SortOrder
     courseProgress?: SortOrder
@@ -118582,6 +118610,7 @@ export namespace Prisma {
     id?: SortOrder
     branchStudentId?: SortOrder
     branchId?: SortOrder
+    courseId?: SortOrder
     requestedByUserId?: SortOrder
     refundRequested?: SortOrder
     courseProgress?: SortOrder
@@ -136313,6 +136342,7 @@ export namespace Prisma {
   export type StudentDiscontinuationRequestCreateWithoutBranchStudentInput = {
     id?: string
     branchId: string
+    courseId?: string | null
     requestedByUserId?: string | null
     refundRequested?: boolean
     courseProgress?: number
@@ -136362,6 +136392,7 @@ export namespace Prisma {
   export type StudentDiscontinuationRequestUncheckedCreateWithoutBranchStudentInput = {
     id?: string
     branchId: string
+    courseId?: string | null
     requestedByUserId?: string | null
     refundRequested?: boolean
     courseProgress?: number
@@ -136819,6 +136850,7 @@ export namespace Prisma {
     id?: StringFilter<"StudentDiscontinuationRequest"> | string
     branchStudentId?: StringFilter<"StudentDiscontinuationRequest"> | string
     branchId?: StringFilter<"StudentDiscontinuationRequest"> | string
+    courseId?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
     requestedByUserId?: StringNullableFilter<"StudentDiscontinuationRequest"> | string | null
     refundRequested?: BoolFilter<"StudentDiscontinuationRequest"> | boolean
     courseProgress?: IntFilter<"StudentDiscontinuationRequest"> | number
@@ -155115,6 +155147,7 @@ export namespace Prisma {
   export type StudentDiscontinuationRequestCreateManyBranchStudentInput = {
     id?: string
     branchId: string
+    courseId?: string | null
     requestedByUserId?: string | null
     refundRequested?: boolean
     courseProgress?: number
@@ -155822,6 +155855,7 @@ export namespace Prisma {
   export type StudentDiscontinuationRequestUpdateWithoutBranchStudentInput = {
     id?: StringFieldUpdateOperationsInput | string
     branchId?: StringFieldUpdateOperationsInput | string
+    courseId?: NullableStringFieldUpdateOperationsInput | string | null
     requestedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
     refundRequested?: BoolFieldUpdateOperationsInput | boolean
     courseProgress?: IntFieldUpdateOperationsInput | number
@@ -155871,6 +155905,7 @@ export namespace Prisma {
   export type StudentDiscontinuationRequestUncheckedUpdateWithoutBranchStudentInput = {
     id?: StringFieldUpdateOperationsInput | string
     branchId?: StringFieldUpdateOperationsInput | string
+    courseId?: NullableStringFieldUpdateOperationsInput | string | null
     requestedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
     refundRequested?: BoolFieldUpdateOperationsInput | boolean
     courseProgress?: IntFieldUpdateOperationsInput | number
@@ -155920,6 +155955,7 @@ export namespace Prisma {
   export type StudentDiscontinuationRequestUncheckedUpdateManyWithoutBranchStudentInput = {
     id?: StringFieldUpdateOperationsInput | string
     branchId?: StringFieldUpdateOperationsInput | string
+    courseId?: NullableStringFieldUpdateOperationsInput | string | null
     requestedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
     refundRequested?: BoolFieldUpdateOperationsInput | boolean
     courseProgress?: IntFieldUpdateOperationsInput | number

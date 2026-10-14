@@ -58,7 +58,10 @@ async function main() {
         updatedBy: "seed",
       },
       create: {
-        ...user,
+        userCode: user.userCode,
+        fullName: user.fullName,
+        email: user.email,
+        role: user.role,
         passwordHash,
         createdBy: "seed",
         updatedBy: "seed",

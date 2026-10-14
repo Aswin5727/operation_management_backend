@@ -1724,6 +1724,7 @@ model StudentDiscontinuationRequest {
   id                      String                       @id @default(cuid())
   branchStudentId         String
   branchId                String
+  courseId                String?
   requestedByUserId       String?
   refundRequested         Boolean                      @default(false)
   courseProgress          Int                          @default(0)
@@ -1772,6 +1773,7 @@ model StudentDiscontinuationRequest {
 
   @@index([branchId, status, createdAt])
   @@index([branchStudentId, status])
+  @@index([branchStudentId, courseId, status])
   @@index([requestedByUserId, status])
 }
 

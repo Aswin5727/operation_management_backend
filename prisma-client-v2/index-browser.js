@@ -1288,6 +1288,7 @@ exports.Prisma.StudentDiscontinuationRequestScalarFieldEnum = {
   id: 'id',
   branchStudentId: 'branchStudentId',
   branchId: 'branchId',
+  courseId: 'courseId',
   requestedByUserId: 'requestedByUserId',
   refundRequested: 'refundRequested',
   courseProgress: 'courseProgress',

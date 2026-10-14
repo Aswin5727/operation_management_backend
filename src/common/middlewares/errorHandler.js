@@ -7,6 +7,20 @@ function errorHandler(err, _req, res, _next) {
   const status = err.status || "error";
   const errorCode = String(err?.code || "").toUpperCase();
   const errorMessage = String(err?.message || "");
+  const databaseCauseCode = String(err?.cause?.code || err?.cause?.originalCode || "").toUpperCase();
+  const databaseCauseMessage = String(err?.cause?.message || err?.cause?.originalMessage || "");
+
+  if (
+    databaseCauseCode === "53000" ||
+    errorMessage.includes("exceeded the quota") ||
+    databaseCauseMessage.includes("exceeded the quota")
+  ) {
+    return res.status(503).json({
+      status: "error",
+      code: "DATABASE_QUOTA_EXCEEDED",
+      message: "Database quota exceeded. Please upgrade or reset the Neon project quota, then try again.",
+    });
+  }
 
   if (
     errorCode === "EACCES" ||

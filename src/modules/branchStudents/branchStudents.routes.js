@@ -12,6 +12,7 @@ import {
   getBranchStudentLedgerHandler,
   listBranchLedgerHandler,
   listBranchStudentsHandler,
+  listBranchStudentLifecycleHandler,
   updateBranchStudentHandler,
   createBranchStudentPaymentHandler,
   previewBranchStudentFeePlanHandler,
@@ -24,6 +25,13 @@ router.get(
   authenticate,
   authorize("BRANCH_ADMIN", "SUPER_ADMIN", "BUSINESS_OWNER", "OPERATION_MANAGER", "STUDENT", "FACULTY"),
   listBranchStudentsHandler,
+);
+
+router.get(
+  "/lifecycle",
+  authenticate,
+  authorize("BRANCH_ADMIN", "SUPER_ADMIN", "BUSINESS_OWNER", "OPERATION_MANAGER"),
+  listBranchStudentLifecycleHandler,
 );
 
 router.get(
