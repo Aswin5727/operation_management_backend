@@ -1,0 +1,15 @@
+ALTER TABLE "BranchStudent"
+  ADD COLUMN IF NOT EXISTS "customCurrentStatus" TEXT,
+  ADD COLUMN IF NOT EXISTS "purpose" TEXT,
+  ADD COLUMN IF NOT EXISTS "customPurpose" TEXT,
+  ADD COLUMN IF NOT EXISTS "educationLevel" TEXT,
+  ADD COLUMN IF NOT EXISTS "educationStatus" TEXT,
+  ADD COLUMN IF NOT EXISTS "companyName" TEXT;
+
+ALTER TABLE "StudentProfile"
+  ADD COLUMN IF NOT EXISTS "customCurrentStatus" TEXT,
+  ADD COLUMN IF NOT EXISTS "purpose" TEXT,
+  ADD COLUMN IF NOT EXISTS "customPurpose" TEXT,
+  ADD COLUMN IF NOT EXISTS "educationLevel" TEXT,
+  ADD COLUMN IF NOT EXISTS "educationStatus" TEXT,
+  ADD COLUMN IF NOT EXISTS "companyName" TEXT;
