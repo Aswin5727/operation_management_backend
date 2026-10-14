@@ -693,11 +693,15 @@ export function calculateCoursePaidProgress(student = {}, courseId = null) {
 
 export function courseCompletionFromProgressAndTests(courseProgress, academicTestProgress) {
   const isCourseProgressCompleted = Number(courseProgress) >= 100;
+  const hasAcademicRequirements = Boolean(academicTestProgress) && (
+    Number(academicTestProgress.totalTests || 0) > 0 ||
+    Number(academicTestProgress.totalProjects || 0) > 0
+  );
   const areAllAcademicTestsCompleted = Number(academicTestProgress?.pendingTests || 0) === 0;
   const areAllProjectsCompleted = Number(academicTestProgress?.pendingProjects || 0) === 0;
   // Payment is tracked independently. Learning completion depends only on the
   // course work and academic tests for this specific enrollment.
-  return isCourseProgressCompleted && areAllAcademicTestsCompleted && areAllProjectsCompleted
+  return isCourseProgressCompleted && hasAcademicRequirements && academicTestProgress?.academicComplete === true && areAllAcademicTestsCompleted && areAllProjectsCompleted
     ? "COMPLETED"
     : "IN_PROGRESS";
 }

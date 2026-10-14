@@ -963,19 +963,17 @@ export async function getAcademicTestProgressForStudent(student) {
   if (!configuredItems.length) return empty;
 
   const itemIds = configuredItems.map((item) => item.id);
-  const [schedules, shares] = await Promise.all([
-    prisma.academicScheduledTest.findMany({
-      where: { branchBatchId: batch.id, academicTestItemId: { in: itemIds }, status: { not: "CANCELLED" } },
-      orderBy: [{ testNumber: "asc" }, { attemptNumber: "asc" }, { createdAt: "asc" }],
-      select: { id: true, academicTestItemId: true, testNumber: true, status: true, isRetest: true, retestStudentId: true, questionPaperId: true, testDate: true, endTime: true },
-    }),
-    prisma.facultyReportShare.findMany({ where: { branchId: student.branchId, batchId: { in: [batch.id, batch.batchId].filter(Boolean) }, reportType: "ACADEMIC_TEST", status: "SENT" }, select: { academicTestIds: true } }),
-  ]);
+  const schedules = await prisma.academicScheduledTest.findMany({
+    where: { branchBatchId: batch.id, academicTestItemId: { in: itemIds }, status: { not: "CANCELLED" } },
+    orderBy: [{ testNumber: "asc" }, { attemptNumber: "asc" }, { createdAt: "asc" }],
+    select: { id: true, academicTestItemId: true, testNumber: true, status: true, isRetest: true, retestStudentId: true, questionPaperId: true, testDate: true, endTime: true },
+  });
   await syncExpiredAcademicAttempts(schedules, [student.id]);
 
-  const sharedScheduleIds = new Set(shares.flatMap((share) => Array.isArray(share.academicTestIds) ? share.academicTestIds.map(text) : []));
-  const sharedTestNumbers = new Set(schedules.filter((schedule) => !schedule.isRetest && sharedScheduleIds.has(schedule.id)).map((schedule) => Number(schedule.testNumber)));
-  const relevantSchedules = schedules.filter((schedule) => sharedTestNumbers.has(Number(schedule.testNumber)));
+  // Student lifecycle completion must use the actual batch evaluations. A
+  // faculty report share is a delivery/audit action and must not hide a
+  // completed test or project from the active-student progress count.
+  const relevantSchedules = schedules;
   const [papers, submissions, projectSubmissions] = await Promise.all([
     prisma.academicQuestionPaper.findMany({ where: { id: { in: relevantSchedules.map((schedule) => schedule.questionPaperId).filter(Boolean) } }, select: { id: true, questions: { select: { questionType: true } } } }),
     prisma.academicTestSubmission.findMany({ where: { academicTestId: { in: relevantSchedules.map((schedule) => schedule.id) }, branchStudentId: student.id } }),
@@ -987,6 +985,7 @@ export async function getAcademicTestProgressForStudent(student) {
   const completedItemIds = new Set();
   const projectItemIds = new Set(configuredItems.filter((item) => ["PROJECT", "TEST_AND_PROJECT"].includes(item.testType)).map((item) => item.id));
   const completedProjectItemIds = new Set();
+  const completedEvaluationItemIds = new Set();
   const schedulesByItem = new Map();
   relevantSchedules.forEach((schedule) => schedulesByItem.set(schedule.academicTestItemId, [...(schedulesByItem.get(schedule.academicTestItemId) || []), schedule]));
   schedulesByItem.forEach((attempts, itemId) => {
@@ -1003,10 +1002,19 @@ export async function getAcademicTestProgressForStudent(student) {
     const projectComplete = needsProject && validAttempts.some((schedule) => {
       // A graded project is complete even when its schedule remains SCHEDULED.
       const project = projectSubmissionByScheduleId.get(schedule.id);
-      return reportProjectSubmissionIsFinal(project) && project?.marksAwarded != null;
+      // The report screen treats a project with awarded marks as complete;
+      // keep student lifecycle progress consistent even if an older record
+      // still carries a non-final submission status.
+      return project?.marksAwarded != null;
     });
     if (projectComplete) completedProjectItemIds.add(itemId);
     if (valid && (!needsProject || projectComplete)) completedItemIds.add(itemId);
+    if (
+      (configuredItem?.testType === "PROJECT" && projectComplete) ||
+      (configuredItem?.testType !== "PROJECT" && valid && (!needsProject || projectComplete))
+    ) {
+      completedEvaluationItemIds.add(itemId);
+    }
   });
 
   const totalTests = configuredItems.filter((item) => ["TEST", "TEST_AND_PROJECT"].includes(item.testType)).length;
@@ -1016,7 +1024,10 @@ export async function getAcademicTestProgressForStudent(student) {
   const completedProjects = Math.min(totalProjects, completedProjectItemIds.size);
   const pendingProjects = totalProjects - completedProjects;
   const projectPercentage = totalProjects ? Math.round((completedProjects / totalProjects) * 100) : 100;
-  return { totalTests, completedTests, pendingTests, percentage: totalTests ? Math.round((completedTests / totalTests) * 100) : 100, totalProjects, completedProjects, pendingProjects, projectPercentage, projectsComplete: pendingProjects === 0, academicComplete: pendingTests === 0 && pendingProjects === 0 && (totalTests > 0 || totalProjects > 0) };
+  const totalEvaluations = configuredItems.length;
+  const completedEvaluations = Math.min(totalEvaluations, completedEvaluationItemIds.size);
+  const pendingEvaluations = totalEvaluations - completedEvaluations;
+  return { totalTests, completedTests, pendingTests, percentage: totalTests ? Math.round((completedTests / totalTests) * 100) : 100, totalProjects, completedProjects, pendingProjects, projectPercentage, totalEvaluations, completedEvaluations, pendingEvaluations, evaluationPercentage: totalEvaluations ? Math.round((completedEvaluations / totalEvaluations) * 100) : 0, projectsComplete: pendingProjects === 0, academicComplete: pendingEvaluations === 0 && totalEvaluations > 0 };
 }
 export async function listAcademicReportBatches(actor) {
   const ids = facultyIds(actor);
@@ -1045,13 +1056,29 @@ export async function listAcademicReportBatches(actor) {
       const finalizedForAllStudents = students.every((student) => reportSubmissionIsFinal(submissionByKey.get(`${schedule.id}:${student.id}`), hasAssessment));
       if (finalizedForAllStudents) completedTestNumbers.add(Number(schedule.testNumber));
     });
-    const completedTestCount = completedTestNumbers.size;
-    const projectItem = configuredItems.find(({ item }) => ["PROJECT", "TEST_AND_PROJECT"].includes(item.testType))?.item;
-    const projectSchedule = projectItem ? schedules.find((schedule) => schedule.academicTestItemId === projectItem.id) : null;
-    const hasCompletedProject = Boolean(projectSchedule && projectSubmissions.some((submission) => submission.academicTestId === projectSchedule.id && ["SUBMITTED", "EVALUATED", "GRADED"].includes(String(submission.status || "").toUpperCase()) && submission.marksAwarded != null));
-    const totalEvaluationCount = completedTestCount + (hasCompletedProject ? 1 : 0);
-    if (!totalEvaluationCount) return null;
-    return { ...batch, course: { id: batch.courseId, name: batch.courseName, courseCode: batch.branchCourseId }, totalTests: totalEvaluationCount, completedTestCount: totalEvaluationCount, hasProject: Boolean(projectItem) };
+    const completedProjectItemIds = new Set();
+    configuredItems.filter(({ item }) => ["PROJECT", "TEST_AND_PROJECT"].includes(item.testType)).forEach(({ item }) => {
+      const projectSchedule = schedules.find((schedule) => !schedule.isRetest && schedule.academicTestItemId === item.id);
+      const completedForAllStudents = Boolean(projectSchedule && students.every((student) => {
+        const submission = projectSubmissions.find((entry) => entry.academicTestId === projectSchedule.id && entry.branchStudentId === student.id);
+        return submission && submission.marksAwarded != null;
+      }));
+      if (completedForAllStudents) completedProjectItemIds.add(item.id);
+    });
+    const completedEvaluationCount = configuredItems.filter(({ item }) => {
+      if (item.testType === "PROJECT") return completedProjectItemIds.has(item.id);
+      const testCompleted = completedTestNumbers.has(Number(item.sequence));
+      return item.testType === "TEST_AND_PROJECT"
+        ? testCompleted && completedProjectItemIds.has(item.id)
+        : testCompleted;
+    }).length;
+    // Show a batch as soon as at least one configured test is final for every
+    // active student. The report itself contains only those completed tests;
+    // the count remains completed/total (for example, 1/2). Retests do not
+    // increase the configured test count.
+    if (!completedEvaluationCount) return null;
+    const totalEvaluationCount = configuredItems.length;
+    return { ...batch, course: { id: batch.courseId, name: batch.courseName, courseCode: batch.branchCourseId }, totalTests: totalEvaluationCount, completedTestCount: completedEvaluationCount, hasProject: configuredItems.some(({ item }) => ["PROJECT", "TEST_AND_PROJECT"].includes(item.testType)) };
   }));
   return reportBatches.filter(Boolean);
 }
