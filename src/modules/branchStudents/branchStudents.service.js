@@ -1924,8 +1924,9 @@ function buildBranchStudentPayload(payload = {}, existing = null) {
   const educationStatus = isCollegeStudent ? parseRequiredText(candidate.educationStatus, "Education status") : null;
   if (isCollegeStudent && !new Set(["UG", "PG"]).has(educationLevel)) throw new AppError("Education level must be UG or PG", 400);
   if (isCollegeStudent && !new Set(["Currently Pursuing", "Passed Out"]).has(educationStatus)) throw new AppError("Education status is invalid", 400);
-  const passedOutYear = isCollegeStudent && educationStatus === "Passed Out" ? parseOptionalYear(candidate.passedOutYear) : null;
-  if (isCollegeStudent && educationStatus === "Passed Out" && !passedOutYear) throw new AppError("Passed out year is required", 400);
+  const requiresPassedOutYear = currentStatus === "Fresher" || (isCollegeStudent && educationStatus === "Passed Out");
+  const passedOutYear = parseOptionalYear(candidate.passedOutYear);
+  if (requiresPassedOutYear && !passedOutYear) throw new AppError("Passed out year is required", 400);
   const customCurrentStatus = currentStatus === "Custom" ? parseRequiredText(candidate.customCurrentStatus, "Custom current status") : null;
   const purpose = parseOptionalText(candidate.purpose);
   if (purpose && !PURPOSES.has(purpose)) throw new AppError("Invalid purpose", 400);

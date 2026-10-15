@@ -674,8 +674,11 @@ function buildStudentPayload(payload, existingStudent = null, course = null) {
   const educationStatus = isCollegeStudent ? parseRequiredText(candidate.educationStatus, "Education status") : null;
   if (isCollegeStudent && !["UG", "PG"].includes(educationLevel)) throw new AppError("Education level must be UG or PG", 400);
   if (isCollegeStudent && !["Currently Pursuing", "Passed Out"].includes(educationStatus)) throw new AppError("Education status is invalid", 400);
-  const passedOutYear = isCollegeStudent && educationStatus === "Passed Out" ? parsePositiveInt(candidate.passedOutYear, "Passed out year") : null;
-  if (isCollegeStudent && educationStatus === "Passed Out" && !passedOutYear) throw new AppError("Passed out year is required", 400);
+  const requiresPassedOutYear = currentStatus === "Fresher" || (isCollegeStudent && educationStatus === "Passed Out");
+  const passedOutYear = candidate.passedOutYear === undefined || candidate.passedOutYear === null || candidate.passedOutYear === ""
+    ? null
+    : parsePositiveInt(candidate.passedOutYear, "Passed out year");
+  if (requiresPassedOutYear && !passedOutYear) throw new AppError("Passed out year is required", 400);
   const customCurrentStatus = currentStatus === "Custom" ? parseRequiredText(candidate.customCurrentStatus, "Custom current status") : null;
   const purpose = parseOptionalText(candidate.purpose);
   if (purpose && !PURPOSES.has(purpose)) throw new AppError("Invalid purpose", 400);
