@@ -2413,6 +2413,7 @@ function toBranchStudentSummary(record) {
     createdAt: record.createdAt,
     updatedAt: record.updatedAt,
     installmentSchedule: Array.isArray(record.installments) ? record.installments : [],
+    payments: Array.isArray(record.payments) ? record.payments : [],
     attendanceRecords: Array.isArray(record.calendarAttendanceRecords)
       ? record.calendarAttendanceRecords.map((attendance) => ({
           attendanceDate: attendance.attendanceDate,
@@ -2631,7 +2632,11 @@ export async function listBranchStudents(query = {}, actor = null) {
           courseName: true,
           courseProgress: true,
           courseAmount: true,
-          installments: { select: { amount: true, amountPaid: true } },
+          arrangementType: true,
+          enrollmentType: true,
+          firstCourseId: true,
+          installments: { select: { id: true, installmentNumber: true, amount: true, amountPaid: true, dueDate: true } },
+          payments: { orderBy: [{ paymentDate: "asc" }, { createdAt: "asc" }], select: { id: true, amount: true, paymentDate: true, paymentMode: true, receiptNumber: true } },
           batchId: true,
           batchName: true,
           recordStatus: true,
