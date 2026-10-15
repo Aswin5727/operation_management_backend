@@ -33,7 +33,9 @@ import {
 import { getAcademicTestProgressForStudent } from "../academicTests/academicTests.service.js";
 
 const RECORD_STATUSES = new Set(["ACTIVE", "INACTIVE"]);
-const CURRENT_STATUSES = new Set(["Student", "Employee", "Other"]);
+const CURRENT_STATUSES = new Set(["House Holder", "College Student", "Fresher", "School", "Business", "Employee", "Other", "Custom", "Student", "Others"]);
+const FORM_CURRENT_STATUSES = new Set(["House Holder", "College Student", "Fresher", "School", "Business", "Employee", "Other", "Custom"]);
+const PURPOSES = new Set(["Project", "Internship", "Learning", "Job / Placement", "Up Skilling", "Career Change", "Certification", "Custom"]);
 const PROGRESS_ALERT_TOLERANCE = 5;
 const DUE_REMINDER_WINDOW_DAYS = 7;
 const DUE_REMINDER_SWEEP_INTERVAL_MS = 24 * 60 * 60 * 1000;
@@ -186,6 +188,22 @@ function parseCurrentStatus(value) {
   const text = normalizeString(value);
   if (!CURRENT_STATUSES.has(text)) {
     throw new AppError("Invalid current status", 400);
+  }
+  return text;
+}
+
+function parseFormCurrentStatus(value, allowLegacy = false) {
+  const text = normalizeString(value);
+  if (allowLegacy && (text === "Student" || text === "Others")) return text;
+  if (!FORM_CURRENT_STATUSES.has(text)) throw new AppError("Invalid current status", 400);
+  return text;
+}
+
+function parseOptionalYear(value, fieldName = "Passed out year") {
+  const text = parseOptionalText(value);
+  if (!text) return null;
+  if (!/^\d{4}$/.test(text) || Number(text) < 1950 || Number(text) > new Date().getFullYear() + 10) {
+    throw new AppError(`${fieldName} must be a valid year`, 400);
   }
   return text;
 }
@@ -1899,9 +1917,21 @@ function buildBranchStudentPayload(payload = {}, existing = null) {
   const address = parseRequiredText(candidate.address, "Address");
   const linkedInUrl = parseOptionalUrl(candidate.linkedInUrl);
   const qualification = parseRequiredText(candidate.qualification, "Qualification");
-  const passedOutYear = parseRequiredText(candidate.passedOutYear, "Passed out year");
-  const currentStatus = parseCurrentStatus(candidate.currentStatus);
-  const designation = currentStatus === "Employee" ? parseRequiredText(candidate.designation, "Designation") : parseOptionalText(candidate.designation);
+  const currentStatus = parseFormCurrentStatus(candidate.currentStatus, Boolean(existing));
+  const isCollegeStudent = currentStatus === "College Student";
+  const isEmployee = currentStatus === "Employee";
+  const educationLevel = isCollegeStudent ? parseRequiredText(candidate.educationLevel, "Education level") : null;
+  const educationStatus = isCollegeStudent ? parseRequiredText(candidate.educationStatus, "Education status") : null;
+  if (isCollegeStudent && !new Set(["UG", "PG"]).has(educationLevel)) throw new AppError("Education level must be UG or PG", 400);
+  if (isCollegeStudent && !new Set(["Currently Pursuing", "Passed Out"]).has(educationStatus)) throw new AppError("Education status is invalid", 400);
+  const passedOutYear = isCollegeStudent && educationStatus === "Passed Out" ? parseOptionalYear(candidate.passedOutYear) : null;
+  if (isCollegeStudent && educationStatus === "Passed Out" && !passedOutYear) throw new AppError("Passed out year is required", 400);
+  const customCurrentStatus = currentStatus === "Custom" ? parseRequiredText(candidate.customCurrentStatus, "Custom current status") : null;
+  const purpose = parseOptionalText(candidate.purpose);
+  if (purpose && !PURPOSES.has(purpose)) throw new AppError("Invalid purpose", 400);
+  const customPurpose = purpose === "Custom" ? parseRequiredText(candidate.customPurpose, "Custom purpose") : null;
+  const designation = isEmployee ? parseRequiredText(candidate.designation, "Designation") : null;
+  const companyName = isEmployee ? parseRequiredText(candidate.companyName, "Company name") : null;
   const source = parseRequiredText(candidate.source, "Source");
   const sourceOther = source === "Others" ? parseRequiredText(candidate.sourceOther, "Source details") : parseOptionalText(candidate.sourceOther);
   const remarks = parseOptionalText(candidate.remarks);
@@ -1920,10 +1950,6 @@ function buildBranchStudentPayload(payload = {}, existing = null) {
   const courseProgress = parseOptionalProgress(candidate.courseProgress);
   const arrangementType = normalizeString(candidate.arrangementType || candidate.enrollmentType || 'SINGLE').toUpperCase() || 'SINGLE';
   const firstCourseId = parseOptionalText(candidate.firstCourseId || candidate.firstCourse);
-
-  if (currentStatus === "Employee" && !designation) {
-    throw new AppError("Designation is required for employees", 400);
-  }
 
   if (source === "Others" && !sourceOther) {
     throw new AppError("Source details are required when source is Others", 400);
@@ -1944,7 +1970,13 @@ function buildBranchStudentPayload(payload = {}, existing = null) {
     qualification,
     passedOutYear,
     currentStatus,
+    customCurrentStatus,
+    purpose,
+    customPurpose,
+    educationLevel,
+    educationStatus,
     designation,
+    companyName,
     source,
     sourceOther,
     remarks,
@@ -2312,7 +2344,13 @@ function toBranchStudentSummary(record) {
     qualification: record.qualification,
     passedOutYear: record.passedOutYear,
     currentStatus: record.currentStatus,
+    customCurrentStatus: record.customCurrentStatus,
+    purpose: record.purpose,
+    customPurpose: record.customPurpose,
+    educationLevel: record.educationLevel,
+    educationStatus: record.educationStatus,
     designation: record.designation,
+    companyName: record.companyName,
     source: record.source,
     sourceOther: record.sourceOther,
     remarks: record.remarks,
@@ -2580,6 +2618,14 @@ export async function listBranchStudents(query = {}, actor = null) {
           studentName: true,
           emailAddress: true,
           currentStatus: true,
+          customCurrentStatus: true,
+          purpose: true,
+          customPurpose: true,
+          educationLevel: true,
+          educationStatus: true,
+          passedOutYear: true,
+          designation: true,
+          companyName: true,
           courseId: true,
           courseName: true,
           courseProgress: true,

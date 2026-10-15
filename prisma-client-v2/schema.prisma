@@ -741,6 +741,12 @@ model StudentProfile {
   passedOutYear           Int?
   currentStatus           String?
   designation             String?
+  customCurrentStatus     String?
+  purpose                 String?
+  customPurpose           String?
+  educationLevel          String?
+  educationStatus         String?
+  companyName             String?
   source                  String?
   actualFees              Int?
   registrationFees        Int?
@@ -797,6 +803,12 @@ model BranchStudent {
   passedOutYear                  String?
   currentStatus                  String?
   designation                    String?
+  customCurrentStatus            String?
+  purpose                        String?
+  customPurpose                  String?
+  educationLevel                 String?
+  educationStatus                String?
+  companyName                    String?
   source                         String?
   sourceOther                    String?
   admissionDate                  String

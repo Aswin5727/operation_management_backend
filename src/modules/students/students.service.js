@@ -14,7 +14,9 @@ import {
 import { invalidateRevenueSummaryCache } from "../dashboard/dashboard.service.js";
 
 const RECORD_STATUSES = new Set(["ACTIVE", "INACTIVE"]);
-const CURRENT_STATUSES = new Set(["Student", "Employee", "Other"]);
+const CURRENT_STATUSES = new Set(["House Holder", "College Student", "Fresher", "School", "Business", "Employee", "Other", "Custom", "Student", "Others"]);
+const FORM_CURRENT_STATUSES = new Set(["House Holder", "College Student", "Fresher", "School", "Business", "Employee", "Other", "Custom"]);
+const PURPOSES = new Set(["Project", "Internship", "Learning", "Job / Placement", "Up Skilling", "Career Change", "Certification", "Custom"]);
 const PAYMENT_STATUSES = new Set(["Paid", "Pending"]);
 
 function normalizeString(value) {
@@ -198,7 +200,13 @@ function toStudentSummary(student) {
     qualification: student.qualification,
     passedOutYear: student.passedOutYear,
     currentStatus: student.currentStatus,
+    customCurrentStatus: student.customCurrentStatus,
+    purpose: student.purpose,
+    customPurpose: student.customPurpose,
+    educationLevel: student.educationLevel,
+    educationStatus: student.educationStatus,
     designation: student.designation,
+    companyName: student.companyName,
     source: student.source,
     actualFees: student.actualFees,
     registrationFees: student.registrationFees,
@@ -658,9 +666,22 @@ function buildStudentPayload(payload, existingStudent = null, course = null) {
   const batchName = parseRequiredText(candidate.batchName || candidate.batch, "Batch");
   const batchId = parseOptionalText(candidate.batchId || candidate.batchEntryId);
   const qualification = parseRequiredText(candidate.qualification, "Qualification");
-  const passedOutYear = parsePositiveInt(candidate.passedOutYear, "Passed out year");
-  const currentStatus = parseCurrentStatus(candidate.currentStatus);
-  const designation = parseOptionalText(candidate.designation);
+  const currentStatus = normalizeString(candidate.currentStatus);
+  if (!FORM_CURRENT_STATUSES.has(currentStatus) && !(existingStudent && ["Student", "Others"].includes(currentStatus))) throw new AppError("Invalid current status", 400);
+  const isCollegeStudent = currentStatus === "College Student";
+  const isEmployee = currentStatus === "Employee";
+  const educationLevel = isCollegeStudent ? parseRequiredText(candidate.educationLevel, "Education level") : null;
+  const educationStatus = isCollegeStudent ? parseRequiredText(candidate.educationStatus, "Education status") : null;
+  if (isCollegeStudent && !["UG", "PG"].includes(educationLevel)) throw new AppError("Education level must be UG or PG", 400);
+  if (isCollegeStudent && !["Currently Pursuing", "Passed Out"].includes(educationStatus)) throw new AppError("Education status is invalid", 400);
+  const passedOutYear = isCollegeStudent && educationStatus === "Passed Out" ? parsePositiveInt(candidate.passedOutYear, "Passed out year") : null;
+  if (isCollegeStudent && educationStatus === "Passed Out" && !passedOutYear) throw new AppError("Passed out year is required", 400);
+  const customCurrentStatus = currentStatus === "Custom" ? parseRequiredText(candidate.customCurrentStatus, "Custom current status") : null;
+  const purpose = parseOptionalText(candidate.purpose);
+  if (purpose && !PURPOSES.has(purpose)) throw new AppError("Invalid purpose", 400);
+  const customPurpose = purpose === "Custom" ? parseRequiredText(candidate.customPurpose, "Custom purpose") : null;
+  const designation = isEmployee ? parseRequiredText(candidate.designation, "Designation") : null;
+  const companyName = isEmployee ? parseRequiredText(candidate.companyName, "Company name") : null;
   const source = parseRequiredText(candidate.source, "Source");
   const admissionDate = parseDateString(candidate.admissionDate, "Admission date");
   const remarks = parseOptionalText(candidate.remarks);
@@ -671,10 +692,6 @@ function buildStudentPayload(payload, existingStudent = null, course = null) {
 
   if (!/^\d{10}$/.test(parentSpouseNumber || "")) {
     throw new AppError("Parent / spouse number must be a 10-digit number", 400);
-  }
-
-  if (currentStatus === "Employee" && !designation) {
-    throw new AppError("Designation is required when current status is Employee", 400);
   }
 
   if (remarks && remarks.length < 5) {
@@ -755,7 +772,13 @@ function buildStudentPayload(payload, existingStudent = null, course = null) {
     qualification,
     passedOutYear,
     currentStatus,
+    customCurrentStatus,
+    purpose,
+    customPurpose,
+    educationLevel,
+    educationStatus,
     designation,
+    companyName,
     source,
     actualFees,
     registrationFees,

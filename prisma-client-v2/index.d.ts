@@ -44315,6 +44315,12 @@ export namespace Prisma {
     passedOutYear: number | null
     currentStatus: string | null
     designation: string | null
+    customCurrentStatus: string | null
+    purpose: string | null
+    customPurpose: string | null
+    educationLevel: string | null
+    educationStatus: string | null
+    companyName: string | null
     source: string | null
     actualFees: number | null
     registrationFees: number | null
@@ -44361,6 +44367,12 @@ export namespace Prisma {
     passedOutYear: number | null
     currentStatus: string | null
     designation: string | null
+    customCurrentStatus: string | null
+    purpose: string | null
+    customPurpose: string | null
+    educationLevel: string | null
+    educationStatus: string | null
+    companyName: string | null
     source: string | null
     actualFees: number | null
     registrationFees: number | null
@@ -44407,6 +44419,12 @@ export namespace Prisma {
     passedOutYear: number
     currentStatus: number
     designation: number
+    customCurrentStatus: number
+    purpose: number
+    customPurpose: number
+    educationLevel: number
+    educationStatus: number
+    companyName: number
     source: number
     actualFees: number
     registrationFees: number
@@ -44485,6 +44503,12 @@ export namespace Prisma {
     passedOutYear?: true
     currentStatus?: true
     designation?: true
+    customCurrentStatus?: true
+    purpose?: true
+    customPurpose?: true
+    educationLevel?: true
+    educationStatus?: true
+    companyName?: true
     source?: true
     actualFees?: true
     registrationFees?: true
@@ -44531,6 +44555,12 @@ export namespace Prisma {
     passedOutYear?: true
     currentStatus?: true
     designation?: true
+    customCurrentStatus?: true
+    purpose?: true
+    customPurpose?: true
+    educationLevel?: true
+    educationStatus?: true
+    companyName?: true
     source?: true
     actualFees?: true
     registrationFees?: true
@@ -44577,6 +44607,12 @@ export namespace Prisma {
     passedOutYear?: true
     currentStatus?: true
     designation?: true
+    customCurrentStatus?: true
+    purpose?: true
+    customPurpose?: true
+    educationLevel?: true
+    educationStatus?: true
+    companyName?: true
     source?: true
     actualFees?: true
     registrationFees?: true
@@ -44710,6 +44746,12 @@ export namespace Prisma {
     passedOutYear: number | null
     currentStatus: string | null
     designation: string | null
+    customCurrentStatus: string | null
+    purpose: string | null
+    customPurpose: string | null
+    educationLevel: string | null
+    educationStatus: string | null
+    companyName: string | null
     source: string | null
     actualFees: number | null
     registrationFees: number | null
@@ -44775,6 +44817,12 @@ export namespace Prisma {
     passedOutYear?: boolean
     currentStatus?: boolean
     designation?: boolean
+    customCurrentStatus?: boolean
+    purpose?: boolean
+    customPurpose?: boolean
+    educationLevel?: boolean
+    educationStatus?: boolean
+    companyName?: boolean
     source?: boolean
     actualFees?: boolean
     registrationFees?: boolean
@@ -44824,6 +44872,12 @@ export namespace Prisma {
     passedOutYear?: boolean
     currentStatus?: boolean
     designation?: boolean
+    customCurrentStatus?: boolean
+    purpose?: boolean
+    customPurpose?: boolean
+    educationLevel?: boolean
+    educationStatus?: boolean
+    companyName?: boolean
     source?: boolean
     actualFees?: boolean
     registrationFees?: boolean
@@ -44871,6 +44925,12 @@ export namespace Prisma {
     passedOutYear?: boolean
     currentStatus?: boolean
     designation?: boolean
+    customCurrentStatus?: boolean
+    purpose?: boolean
+    customPurpose?: boolean
+    educationLevel?: boolean
+    educationStatus?: boolean
+    companyName?: boolean
     source?: boolean
     actualFees?: boolean
     registrationFees?: boolean
@@ -44918,6 +44978,12 @@ export namespace Prisma {
     passedOutYear?: boolean
     currentStatus?: boolean
     designation?: boolean
+    customCurrentStatus?: boolean
+    purpose?: boolean
+    customPurpose?: boolean
+    educationLevel?: boolean
+    educationStatus?: boolean
+    companyName?: boolean
     source?: boolean
     actualFees?: boolean
     registrationFees?: boolean
@@ -44948,7 +45014,7 @@ export namespace Prisma {
     linkedInUrl?: boolean
   }
 
-  export type StudentProfileOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "studentCode" | "studentName" | "mobileNumber" | "emailAddress" | "parentSpouseNumber" | "location" | "courseId" | "courseInterested" | "facultyName" | "batchName" | "qualification" | "passedOutYear" | "currentStatus" | "designation" | "source" | "actualFees" | "registrationFees" | "discount" | "afterDiscount" | "installment1" | "installment2" | "installment3" | "totalAmount" | "admissionDate" | "firstInstallmentAmount" | "firstInstallmentDate" | "firstInstallmentStatus" | "firstInstallmentPaidAt" | "secondInstallmentAmount" | "secondDueDate" | "secondInstallmentStatus" | "secondInstallmentPaidAt" | "remarks" | "recordStatus" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt" | "installment4" | "batchId" | "facultyId" | "linkedInUrl", ExtArgs["result"]["studentProfile"]>
+  export type StudentProfileOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "studentCode" | "studentName" | "mobileNumber" | "emailAddress" | "parentSpouseNumber" | "location" | "courseId" | "courseInterested" | "facultyName" | "batchName" | "qualification" | "passedOutYear" | "currentStatus" | "designation" | "customCurrentStatus" | "purpose" | "customPurpose" | "educationLevel" | "educationStatus" | "companyName" | "source" | "actualFees" | "registrationFees" | "discount" | "afterDiscount" | "installment1" | "installment2" | "installment3" | "totalAmount" | "admissionDate" | "firstInstallmentAmount" | "firstInstallmentDate" | "firstInstallmentStatus" | "firstInstallmentPaidAt" | "secondInstallmentAmount" | "secondDueDate" | "secondInstallmentStatus" | "secondInstallmentPaidAt" | "remarks" | "recordStatus" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt" | "installment4" | "batchId" | "facultyId" | "linkedInUrl", ExtArgs["result"]["studentProfile"]>
   export type StudentProfileInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     attendanceRecords?: boolean | StudentProfile$attendanceRecordsArgs<ExtArgs>
     course?: boolean | StudentProfile$courseArgs<ExtArgs>
@@ -44983,6 +45049,12 @@ export namespace Prisma {
       passedOutYear: number | null
       currentStatus: string | null
       designation: string | null
+      customCurrentStatus: string | null
+      purpose: string | null
+      customPurpose: string | null
+      educationLevel: string | null
+      educationStatus: string | null
+      companyName: string | null
       source: string | null
       actualFees: number | null
       registrationFees: number | null
@@ -45451,6 +45523,12 @@ export namespace Prisma {
     readonly passedOutYear: FieldRef<"StudentProfile", 'Int'>
     readonly currentStatus: FieldRef<"StudentProfile", 'String'>
     readonly designation: FieldRef<"StudentProfile", 'String'>
+    readonly customCurrentStatus: FieldRef<"StudentProfile", 'String'>
+    readonly purpose: FieldRef<"StudentProfile", 'String'>
+    readonly customPurpose: FieldRef<"StudentProfile", 'String'>
+    readonly educationLevel: FieldRef<"StudentProfile", 'String'>
+    readonly educationStatus: FieldRef<"StudentProfile", 'String'>
+    readonly companyName: FieldRef<"StudentProfile", 'String'>
     readonly source: FieldRef<"StudentProfile", 'String'>
     readonly actualFees: FieldRef<"StudentProfile", 'Int'>
     readonly registrationFees: FieldRef<"StudentProfile", 'Int'>
@@ -45986,6 +46064,12 @@ export namespace Prisma {
     passedOutYear: string | null
     currentStatus: string | null
     designation: string | null
+    customCurrentStatus: string | null
+    purpose: string | null
+    customPurpose: string | null
+    educationLevel: string | null
+    educationStatus: string | null
+    companyName: string | null
     source: string | null
     sourceOther: string | null
     admissionDate: string | null
@@ -46045,6 +46129,12 @@ export namespace Prisma {
     passedOutYear: string | null
     currentStatus: string | null
     designation: string | null
+    customCurrentStatus: string | null
+    purpose: string | null
+    customPurpose: string | null
+    educationLevel: string | null
+    educationStatus: string | null
+    companyName: string | null
     source: string | null
     sourceOther: string | null
     admissionDate: string | null
@@ -46104,6 +46194,12 @@ export namespace Prisma {
     passedOutYear: number
     currentStatus: number
     designation: number
+    customCurrentStatus: number
+    purpose: number
+    customPurpose: number
+    educationLevel: number
+    educationStatus: number
+    companyName: number
     source: number
     sourceOther: number
     admissionDate: number
@@ -46179,6 +46275,12 @@ export namespace Prisma {
     passedOutYear?: true
     currentStatus?: true
     designation?: true
+    customCurrentStatus?: true
+    purpose?: true
+    customPurpose?: true
+    educationLevel?: true
+    educationStatus?: true
+    companyName?: true
     source?: true
     sourceOther?: true
     admissionDate?: true
@@ -46238,6 +46340,12 @@ export namespace Prisma {
     passedOutYear?: true
     currentStatus?: true
     designation?: true
+    customCurrentStatus?: true
+    purpose?: true
+    customPurpose?: true
+    educationLevel?: true
+    educationStatus?: true
+    companyName?: true
     source?: true
     sourceOther?: true
     admissionDate?: true
@@ -46297,6 +46405,12 @@ export namespace Prisma {
     passedOutYear?: true
     currentStatus?: true
     designation?: true
+    customCurrentStatus?: true
+    purpose?: true
+    customPurpose?: true
+    educationLevel?: true
+    educationStatus?: true
+    companyName?: true
     source?: true
     sourceOther?: true
     admissionDate?: true
@@ -46443,6 +46557,12 @@ export namespace Prisma {
     passedOutYear: string | null
     currentStatus: string | null
     designation: string | null
+    customCurrentStatus: string | null
+    purpose: string | null
+    customPurpose: string | null
+    educationLevel: string | null
+    educationStatus: string | null
+    companyName: string | null
     source: string | null
     sourceOther: string | null
     admissionDate: string
@@ -46521,6 +46641,12 @@ export namespace Prisma {
     passedOutYear?: boolean
     currentStatus?: boolean
     designation?: boolean
+    customCurrentStatus?: boolean
+    purpose?: boolean
+    customPurpose?: boolean
+    educationLevel?: boolean
+    educationStatus?: boolean
+    companyName?: boolean
     source?: boolean
     sourceOther?: boolean
     admissionDate?: boolean
@@ -46595,6 +46721,12 @@ export namespace Prisma {
     passedOutYear?: boolean
     currentStatus?: boolean
     designation?: boolean
+    customCurrentStatus?: boolean
+    purpose?: boolean
+    customPurpose?: boolean
+    educationLevel?: boolean
+    educationStatus?: boolean
+    companyName?: boolean
     source?: boolean
     sourceOther?: boolean
     admissionDate?: boolean
@@ -46656,6 +46788,12 @@ export namespace Prisma {
     passedOutYear?: boolean
     currentStatus?: boolean
     designation?: boolean
+    customCurrentStatus?: boolean
+    purpose?: boolean
+    customPurpose?: boolean
+    educationLevel?: boolean
+    educationStatus?: boolean
+    companyName?: boolean
     source?: boolean
     sourceOther?: boolean
     admissionDate?: boolean
@@ -46717,6 +46855,12 @@ export namespace Prisma {
     passedOutYear?: boolean
     currentStatus?: boolean
     designation?: boolean
+    customCurrentStatus?: boolean
+    purpose?: boolean
+    customPurpose?: boolean
+    educationLevel?: boolean
+    educationStatus?: boolean
+    companyName?: boolean
     source?: boolean
     sourceOther?: boolean
     admissionDate?: boolean
@@ -46757,7 +46901,7 @@ export namespace Prisma {
     firstCourseId?: boolean
   }
 
-  export type BranchStudentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "branchId" | "studentId" | "studentName" | "parentName" | "mobileNumber" | "emailAddress" | "parentSpouseNumber" | "countryCode" | "country" | "stateCode" | "state" | "city" | "address" | "qualification" | "passedOutYear" | "currentStatus" | "designation" | "source" | "sourceOther" | "admissionDate" | "courseStartDate" | "classSchedule" | "recordStatus" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt" | "linkedInUrl" | "remarks" | "courseId" | "courseName" | "courseMode" | "totalWorkingDays" | "courseEndDate" | "batchId" | "batchName" | "batchTiming" | "facultyId" | "facultyName" | "weeklyOffDay" | "courseAmount" | "paymentMode" | "paymentPlanId" | "paymentPlan" | "feeScheduleMode" | "feeFirstPaymentDate" | "fee70ProgressDate" | "fee70TargetHours" | "feePaymentDeadline" | "feeComplianceStatus" | "courseProgress" | "courseCompletedAt" | "enrollmentType" | "arrangementType" | "firstCourseId", ExtArgs["result"]["branchStudent"]>
+  export type BranchStudentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "branchId" | "studentId" | "studentName" | "parentName" | "mobileNumber" | "emailAddress" | "parentSpouseNumber" | "countryCode" | "country" | "stateCode" | "state" | "city" | "address" | "qualification" | "passedOutYear" | "currentStatus" | "designation" | "customCurrentStatus" | "purpose" | "customPurpose" | "educationLevel" | "educationStatus" | "companyName" | "source" | "sourceOther" | "admissionDate" | "courseStartDate" | "classSchedule" | "recordStatus" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt" | "linkedInUrl" | "remarks" | "courseId" | "courseName" | "courseMode" | "totalWorkingDays" | "courseEndDate" | "batchId" | "batchName" | "batchTiming" | "facultyId" | "facultyName" | "weeklyOffDay" | "courseAmount" | "paymentMode" | "paymentPlanId" | "paymentPlan" | "feeScheduleMode" | "feeFirstPaymentDate" | "fee70ProgressDate" | "fee70TargetHours" | "feePaymentDeadline" | "feeComplianceStatus" | "courseProgress" | "courseCompletedAt" | "enrollmentType" | "arrangementType" | "firstCourseId", ExtArgs["result"]["branchStudent"]>
   export type BranchStudentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     branch?: boolean | BranchDefaultArgs<ExtArgs>
     course?: boolean | BranchStudent$courseArgs<ExtArgs>
@@ -46821,6 +46965,12 @@ export namespace Prisma {
       passedOutYear: string | null
       currentStatus: string | null
       designation: string | null
+      customCurrentStatus: string | null
+      purpose: string | null
+      customPurpose: string | null
+      educationLevel: string | null
+      educationStatus: string | null
+      companyName: string | null
       source: string | null
       sourceOther: string | null
       admissionDate: string
@@ -47314,6 +47464,12 @@ export namespace Prisma {
     readonly passedOutYear: FieldRef<"BranchStudent", 'String'>
     readonly currentStatus: FieldRef<"BranchStudent", 'String'>
     readonly designation: FieldRef<"BranchStudent", 'String'>
+    readonly customCurrentStatus: FieldRef<"BranchStudent", 'String'>
+    readonly purpose: FieldRef<"BranchStudent", 'String'>
+    readonly customPurpose: FieldRef<"BranchStudent", 'String'>
+    readonly educationLevel: FieldRef<"BranchStudent", 'String'>
+    readonly educationStatus: FieldRef<"BranchStudent", 'String'>
+    readonly companyName: FieldRef<"BranchStudent", 'String'>
     readonly source: FieldRef<"BranchStudent", 'String'>
     readonly sourceOther: FieldRef<"BranchStudent", 'String'>
     readonly admissionDate: FieldRef<"BranchStudent", 'String'>
@@ -94698,6 +94854,12 @@ export namespace Prisma {
     passedOutYear: 'passedOutYear',
     currentStatus: 'currentStatus',
     designation: 'designation',
+    customCurrentStatus: 'customCurrentStatus',
+    purpose: 'purpose',
+    customPurpose: 'customPurpose',
+    educationLevel: 'educationLevel',
+    educationStatus: 'educationStatus',
+    companyName: 'companyName',
     source: 'source',
     actualFees: 'actualFees',
     registrationFees: 'registrationFees',
@@ -94750,6 +94912,12 @@ export namespace Prisma {
     passedOutYear: 'passedOutYear',
     currentStatus: 'currentStatus',
     designation: 'designation',
+    customCurrentStatus: 'customCurrentStatus',
+    purpose: 'purpose',
+    customPurpose: 'customPurpose',
+    educationLevel: 'educationLevel',
+    educationStatus: 'educationStatus',
+    companyName: 'companyName',
     source: 'source',
     sourceOther: 'sourceOther',
     admissionDate: 'admissionDate',
@@ -99056,6 +99224,12 @@ export namespace Prisma {
     passedOutYear?: IntNullableFilter<"StudentProfile"> | number | null
     currentStatus?: StringNullableFilter<"StudentProfile"> | string | null
     designation?: StringNullableFilter<"StudentProfile"> | string | null
+    customCurrentStatus?: StringNullableFilter<"StudentProfile"> | string | null
+    purpose?: StringNullableFilter<"StudentProfile"> | string | null
+    customPurpose?: StringNullableFilter<"StudentProfile"> | string | null
+    educationLevel?: StringNullableFilter<"StudentProfile"> | string | null
+    educationStatus?: StringNullableFilter<"StudentProfile"> | string | null
+    companyName?: StringNullableFilter<"StudentProfile"> | string | null
     source?: StringNullableFilter<"StudentProfile"> | string | null
     actualFees?: IntNullableFilter<"StudentProfile"> | number | null
     registrationFees?: IntNullableFilter<"StudentProfile"> | number | null
@@ -99104,6 +99278,12 @@ export namespace Prisma {
     passedOutYear?: SortOrderInput | SortOrder
     currentStatus?: SortOrderInput | SortOrder
     designation?: SortOrderInput | SortOrder
+    customCurrentStatus?: SortOrderInput | SortOrder
+    purpose?: SortOrderInput | SortOrder
+    customPurpose?: SortOrderInput | SortOrder
+    educationLevel?: SortOrderInput | SortOrder
+    educationStatus?: SortOrderInput | SortOrder
+    companyName?: SortOrderInput | SortOrder
     source?: SortOrderInput | SortOrder
     actualFees?: SortOrderInput | SortOrder
     registrationFees?: SortOrderInput | SortOrder
@@ -99155,6 +99335,12 @@ export namespace Prisma {
     passedOutYear?: IntNullableFilter<"StudentProfile"> | number | null
     currentStatus?: StringNullableFilter<"StudentProfile"> | string | null
     designation?: StringNullableFilter<"StudentProfile"> | string | null
+    customCurrentStatus?: StringNullableFilter<"StudentProfile"> | string | null
+    purpose?: StringNullableFilter<"StudentProfile"> | string | null
+    customPurpose?: StringNullableFilter<"StudentProfile"> | string | null
+    educationLevel?: StringNullableFilter<"StudentProfile"> | string | null
+    educationStatus?: StringNullableFilter<"StudentProfile"> | string | null
+    companyName?: StringNullableFilter<"StudentProfile"> | string | null
     source?: StringNullableFilter<"StudentProfile"> | string | null
     actualFees?: IntNullableFilter<"StudentProfile"> | number | null
     registrationFees?: IntNullableFilter<"StudentProfile"> | number | null
@@ -99203,6 +99389,12 @@ export namespace Prisma {
     passedOutYear?: SortOrderInput | SortOrder
     currentStatus?: SortOrderInput | SortOrder
     designation?: SortOrderInput | SortOrder
+    customCurrentStatus?: SortOrderInput | SortOrder
+    purpose?: SortOrderInput | SortOrder
+    customPurpose?: SortOrderInput | SortOrder
+    educationLevel?: SortOrderInput | SortOrder
+    educationStatus?: SortOrderInput | SortOrder
+    companyName?: SortOrderInput | SortOrder
     source?: SortOrderInput | SortOrder
     actualFees?: SortOrderInput | SortOrder
     registrationFees?: SortOrderInput | SortOrder
@@ -99257,6 +99449,12 @@ export namespace Prisma {
     passedOutYear?: IntNullableWithAggregatesFilter<"StudentProfile"> | number | null
     currentStatus?: StringNullableWithAggregatesFilter<"StudentProfile"> | string | null
     designation?: StringNullableWithAggregatesFilter<"StudentProfile"> | string | null
+    customCurrentStatus?: StringNullableWithAggregatesFilter<"StudentProfile"> | string | null
+    purpose?: StringNullableWithAggregatesFilter<"StudentProfile"> | string | null
+    customPurpose?: StringNullableWithAggregatesFilter<"StudentProfile"> | string | null
+    educationLevel?: StringNullableWithAggregatesFilter<"StudentProfile"> | string | null
+    educationStatus?: StringNullableWithAggregatesFilter<"StudentProfile"> | string | null
+    companyName?: StringNullableWithAggregatesFilter<"StudentProfile"> | string | null
     source?: StringNullableWithAggregatesFilter<"StudentProfile"> | string | null
     actualFees?: IntNullableWithAggregatesFilter<"StudentProfile"> | number | null
     registrationFees?: IntNullableWithAggregatesFilter<"StudentProfile"> | number | null
@@ -99309,6 +99507,12 @@ export namespace Prisma {
     passedOutYear?: StringNullableFilter<"BranchStudent"> | string | null
     currentStatus?: StringNullableFilter<"BranchStudent"> | string | null
     designation?: StringNullableFilter<"BranchStudent"> | string | null
+    customCurrentStatus?: StringNullableFilter<"BranchStudent"> | string | null
+    purpose?: StringNullableFilter<"BranchStudent"> | string | null
+    customPurpose?: StringNullableFilter<"BranchStudent"> | string | null
+    educationLevel?: StringNullableFilter<"BranchStudent"> | string | null
+    educationStatus?: StringNullableFilter<"BranchStudent"> | string | null
+    companyName?: StringNullableFilter<"BranchStudent"> | string | null
     source?: StringNullableFilter<"BranchStudent"> | string | null
     sourceOther?: StringNullableFilter<"BranchStudent"> | string | null
     admissionDate?: StringFilter<"BranchStudent"> | string
@@ -99382,6 +99586,12 @@ export namespace Prisma {
     passedOutYear?: SortOrderInput | SortOrder
     currentStatus?: SortOrderInput | SortOrder
     designation?: SortOrderInput | SortOrder
+    customCurrentStatus?: SortOrderInput | SortOrder
+    purpose?: SortOrderInput | SortOrder
+    customPurpose?: SortOrderInput | SortOrder
+    educationLevel?: SortOrderInput | SortOrder
+    educationStatus?: SortOrderInput | SortOrder
+    companyName?: SortOrderInput | SortOrder
     source?: SortOrderInput | SortOrder
     sourceOther?: SortOrderInput | SortOrder
     admissionDate?: SortOrder
@@ -99459,6 +99669,12 @@ export namespace Prisma {
     passedOutYear?: StringNullableFilter<"BranchStudent"> | string | null
     currentStatus?: StringNullableFilter<"BranchStudent"> | string | null
     designation?: StringNullableFilter<"BranchStudent"> | string | null
+    customCurrentStatus?: StringNullableFilter<"BranchStudent"> | string | null
+    purpose?: StringNullableFilter<"BranchStudent"> | string | null
+    customPurpose?: StringNullableFilter<"BranchStudent"> | string | null
+    educationLevel?: StringNullableFilter<"BranchStudent"> | string | null
+    educationStatus?: StringNullableFilter<"BranchStudent"> | string | null
+    companyName?: StringNullableFilter<"BranchStudent"> | string | null
     source?: StringNullableFilter<"BranchStudent"> | string | null
     sourceOther?: StringNullableFilter<"BranchStudent"> | string | null
     admissionDate?: StringFilter<"BranchStudent"> | string
@@ -99532,6 +99748,12 @@ export namespace Prisma {
     passedOutYear?: SortOrderInput | SortOrder
     currentStatus?: SortOrderInput | SortOrder
     designation?: SortOrderInput | SortOrder
+    customCurrentStatus?: SortOrderInput | SortOrder
+    purpose?: SortOrderInput | SortOrder
+    customPurpose?: SortOrderInput | SortOrder
+    educationLevel?: SortOrderInput | SortOrder
+    educationStatus?: SortOrderInput | SortOrder
+    companyName?: SortOrderInput | SortOrder
     source?: SortOrderInput | SortOrder
     sourceOther?: SortOrderInput | SortOrder
     admissionDate?: SortOrder
@@ -99599,6 +99821,12 @@ export namespace Prisma {
     passedOutYear?: StringNullableWithAggregatesFilter<"BranchStudent"> | string | null
     currentStatus?: StringNullableWithAggregatesFilter<"BranchStudent"> | string | null
     designation?: StringNullableWithAggregatesFilter<"BranchStudent"> | string | null
+    customCurrentStatus?: StringNullableWithAggregatesFilter<"BranchStudent"> | string | null
+    purpose?: StringNullableWithAggregatesFilter<"BranchStudent"> | string | null
+    customPurpose?: StringNullableWithAggregatesFilter<"BranchStudent"> | string | null
+    educationLevel?: StringNullableWithAggregatesFilter<"BranchStudent"> | string | null
+    educationStatus?: StringNullableWithAggregatesFilter<"BranchStudent"> | string | null
+    companyName?: StringNullableWithAggregatesFilter<"BranchStudent"> | string | null
     source?: StringNullableWithAggregatesFilter<"BranchStudent"> | string | null
     sourceOther?: StringNullableWithAggregatesFilter<"BranchStudent"> | string | null
     admissionDate?: StringWithAggregatesFilter<"BranchStudent"> | string
@@ -107512,6 +107740,12 @@ export namespace Prisma {
     passedOutYear?: number | null
     currentStatus?: string | null
     designation?: string | null
+    customCurrentStatus?: string | null
+    purpose?: string | null
+    customPurpose?: string | null
+    educationLevel?: string | null
+    educationStatus?: string | null
+    companyName?: string | null
     source?: string | null
     actualFees?: number | null
     registrationFees?: number | null
@@ -107560,6 +107794,12 @@ export namespace Prisma {
     passedOutYear?: number | null
     currentStatus?: string | null
     designation?: string | null
+    customCurrentStatus?: string | null
+    purpose?: string | null
+    customPurpose?: string | null
+    educationLevel?: string | null
+    educationStatus?: string | null
+    companyName?: string | null
     source?: string | null
     actualFees?: number | null
     registrationFees?: number | null
@@ -107606,6 +107846,12 @@ export namespace Prisma {
     passedOutYear?: NullableIntFieldUpdateOperationsInput | number | null
     currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     designation?: NullableStringFieldUpdateOperationsInput | string | null
+    customCurrentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    purpose?: NullableStringFieldUpdateOperationsInput | string | null
+    customPurpose?: NullableStringFieldUpdateOperationsInput | string | null
+    educationLevel?: NullableStringFieldUpdateOperationsInput | string | null
+    educationStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    companyName?: NullableStringFieldUpdateOperationsInput | string | null
     source?: NullableStringFieldUpdateOperationsInput | string | null
     actualFees?: NullableIntFieldUpdateOperationsInput | number | null
     registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
@@ -107654,6 +107900,12 @@ export namespace Prisma {
     passedOutYear?: NullableIntFieldUpdateOperationsInput | number | null
     currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     designation?: NullableStringFieldUpdateOperationsInput | string | null
+    customCurrentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    purpose?: NullableStringFieldUpdateOperationsInput | string | null
+    customPurpose?: NullableStringFieldUpdateOperationsInput | string | null
+    educationLevel?: NullableStringFieldUpdateOperationsInput | string | null
+    educationStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    companyName?: NullableStringFieldUpdateOperationsInput | string | null
     source?: NullableStringFieldUpdateOperationsInput | string | null
     actualFees?: NullableIntFieldUpdateOperationsInput | number | null
     registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
@@ -107701,6 +107953,12 @@ export namespace Prisma {
     passedOutYear?: number | null
     currentStatus?: string | null
     designation?: string | null
+    customCurrentStatus?: string | null
+    purpose?: string | null
+    customPurpose?: string | null
+    educationLevel?: string | null
+    educationStatus?: string | null
+    companyName?: string | null
     source?: string | null
     actualFees?: number | null
     registrationFees?: number | null
@@ -107746,6 +108004,12 @@ export namespace Prisma {
     passedOutYear?: NullableIntFieldUpdateOperationsInput | number | null
     currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     designation?: NullableStringFieldUpdateOperationsInput | string | null
+    customCurrentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    purpose?: NullableStringFieldUpdateOperationsInput | string | null
+    customPurpose?: NullableStringFieldUpdateOperationsInput | string | null
+    educationLevel?: NullableStringFieldUpdateOperationsInput | string | null
+    educationStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    companyName?: NullableStringFieldUpdateOperationsInput | string | null
     source?: NullableStringFieldUpdateOperationsInput | string | null
     actualFees?: NullableIntFieldUpdateOperationsInput | number | null
     registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
@@ -107792,6 +108056,12 @@ export namespace Prisma {
     passedOutYear?: NullableIntFieldUpdateOperationsInput | number | null
     currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     designation?: NullableStringFieldUpdateOperationsInput | string | null
+    customCurrentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    purpose?: NullableStringFieldUpdateOperationsInput | string | null
+    customPurpose?: NullableStringFieldUpdateOperationsInput | string | null
+    educationLevel?: NullableStringFieldUpdateOperationsInput | string | null
+    educationStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    companyName?: NullableStringFieldUpdateOperationsInput | string | null
     source?: NullableStringFieldUpdateOperationsInput | string | null
     actualFees?: NullableIntFieldUpdateOperationsInput | number | null
     registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
@@ -107840,6 +108110,12 @@ export namespace Prisma {
     passedOutYear?: string | null
     currentStatus?: string | null
     designation?: string | null
+    customCurrentStatus?: string | null
+    purpose?: string | null
+    customPurpose?: string | null
+    educationLevel?: string | null
+    educationStatus?: string | null
+    companyName?: string | null
     source?: string | null
     sourceOther?: string | null
     admissionDate: string
@@ -107912,6 +108188,12 @@ export namespace Prisma {
     passedOutYear?: string | null
     currentStatus?: string | null
     designation?: string | null
+    customCurrentStatus?: string | null
+    purpose?: string | null
+    customPurpose?: string | null
+    educationLevel?: string | null
+    educationStatus?: string | null
+    companyName?: string | null
     source?: string | null
     sourceOther?: string | null
     admissionDate: string
@@ -107982,6 +108264,12 @@ export namespace Prisma {
     passedOutYear?: NullableStringFieldUpdateOperationsInput | string | null
     currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     designation?: NullableStringFieldUpdateOperationsInput | string | null
+    customCurrentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    purpose?: NullableStringFieldUpdateOperationsInput | string | null
+    customPurpose?: NullableStringFieldUpdateOperationsInput | string | null
+    educationLevel?: NullableStringFieldUpdateOperationsInput | string | null
+    educationStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    companyName?: NullableStringFieldUpdateOperationsInput | string | null
     source?: NullableStringFieldUpdateOperationsInput | string | null
     sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
     admissionDate?: StringFieldUpdateOperationsInput | string
@@ -108054,6 +108342,12 @@ export namespace Prisma {
     passedOutYear?: NullableStringFieldUpdateOperationsInput | string | null
     currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     designation?: NullableStringFieldUpdateOperationsInput | string | null
+    customCurrentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    purpose?: NullableStringFieldUpdateOperationsInput | string | null
+    customPurpose?: NullableStringFieldUpdateOperationsInput | string | null
+    educationLevel?: NullableStringFieldUpdateOperationsInput | string | null
+    educationStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    companyName?: NullableStringFieldUpdateOperationsInput | string | null
     source?: NullableStringFieldUpdateOperationsInput | string | null
     sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
     admissionDate?: StringFieldUpdateOperationsInput | string
@@ -108125,6 +108419,12 @@ export namespace Prisma {
     passedOutYear?: string | null
     currentStatus?: string | null
     designation?: string | null
+    customCurrentStatus?: string | null
+    purpose?: string | null
+    customPurpose?: string | null
+    educationLevel?: string | null
+    educationStatus?: string | null
+    companyName?: string | null
     source?: string | null
     sourceOther?: string | null
     admissionDate: string
@@ -108183,6 +108483,12 @@ export namespace Prisma {
     passedOutYear?: NullableStringFieldUpdateOperationsInput | string | null
     currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     designation?: NullableStringFieldUpdateOperationsInput | string | null
+    customCurrentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    purpose?: NullableStringFieldUpdateOperationsInput | string | null
+    customPurpose?: NullableStringFieldUpdateOperationsInput | string | null
+    educationLevel?: NullableStringFieldUpdateOperationsInput | string | null
+    educationStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    companyName?: NullableStringFieldUpdateOperationsInput | string | null
     source?: NullableStringFieldUpdateOperationsInput | string | null
     sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
     admissionDate?: StringFieldUpdateOperationsInput | string
@@ -108241,6 +108547,12 @@ export namespace Prisma {
     passedOutYear?: NullableStringFieldUpdateOperationsInput | string | null
     currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     designation?: NullableStringFieldUpdateOperationsInput | string | null
+    customCurrentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    purpose?: NullableStringFieldUpdateOperationsInput | string | null
+    customPurpose?: NullableStringFieldUpdateOperationsInput | string | null
+    educationLevel?: NullableStringFieldUpdateOperationsInput | string | null
+    educationStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    companyName?: NullableStringFieldUpdateOperationsInput | string | null
     source?: NullableStringFieldUpdateOperationsInput | string | null
     sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
     admissionDate?: StringFieldUpdateOperationsInput | string
@@ -115868,6 +116180,12 @@ export namespace Prisma {
     passedOutYear?: SortOrder
     currentStatus?: SortOrder
     designation?: SortOrder
+    customCurrentStatus?: SortOrder
+    purpose?: SortOrder
+    customPurpose?: SortOrder
+    educationLevel?: SortOrder
+    educationStatus?: SortOrder
+    companyName?: SortOrder
     source?: SortOrder
     actualFees?: SortOrder
     registrationFees?: SortOrder
@@ -115929,6 +116247,12 @@ export namespace Prisma {
     passedOutYear?: SortOrder
     currentStatus?: SortOrder
     designation?: SortOrder
+    customCurrentStatus?: SortOrder
+    purpose?: SortOrder
+    customPurpose?: SortOrder
+    educationLevel?: SortOrder
+    educationStatus?: SortOrder
+    companyName?: SortOrder
     source?: SortOrder
     actualFees?: SortOrder
     registrationFees?: SortOrder
@@ -115975,6 +116299,12 @@ export namespace Prisma {
     passedOutYear?: SortOrder
     currentStatus?: SortOrder
     designation?: SortOrder
+    customCurrentStatus?: SortOrder
+    purpose?: SortOrder
+    customPurpose?: SortOrder
+    educationLevel?: SortOrder
+    educationStatus?: SortOrder
+    companyName?: SortOrder
     source?: SortOrder
     actualFees?: SortOrder
     registrationFees?: SortOrder
@@ -116090,6 +116420,12 @@ export namespace Prisma {
     passedOutYear?: SortOrder
     currentStatus?: SortOrder
     designation?: SortOrder
+    customCurrentStatus?: SortOrder
+    purpose?: SortOrder
+    customPurpose?: SortOrder
+    educationLevel?: SortOrder
+    educationStatus?: SortOrder
+    companyName?: SortOrder
     source?: SortOrder
     sourceOther?: SortOrder
     admissionDate?: SortOrder
@@ -116156,6 +116492,12 @@ export namespace Prisma {
     passedOutYear?: SortOrder
     currentStatus?: SortOrder
     designation?: SortOrder
+    customCurrentStatus?: SortOrder
+    purpose?: SortOrder
+    customPurpose?: SortOrder
+    educationLevel?: SortOrder
+    educationStatus?: SortOrder
+    companyName?: SortOrder
     source?: SortOrder
     sourceOther?: SortOrder
     admissionDate?: SortOrder
@@ -116215,6 +116557,12 @@ export namespace Prisma {
     passedOutYear?: SortOrder
     currentStatus?: SortOrder
     designation?: SortOrder
+    customCurrentStatus?: SortOrder
+    purpose?: SortOrder
+    customPurpose?: SortOrder
+    educationLevel?: SortOrder
+    educationStatus?: SortOrder
+    companyName?: SortOrder
     source?: SortOrder
     sourceOther?: SortOrder
     admissionDate?: SortOrder
@@ -127570,6 +127918,12 @@ export namespace Prisma {
     passedOutYear?: string | null
     currentStatus?: string | null
     designation?: string | null
+    customCurrentStatus?: string | null
+    purpose?: string | null
+    customPurpose?: string | null
+    educationLevel?: string | null
+    educationStatus?: string | null
+    companyName?: string | null
     source?: string | null
     sourceOther?: string | null
     admissionDate: string
@@ -127640,6 +127994,12 @@ export namespace Prisma {
     passedOutYear?: string | null
     currentStatus?: string | null
     designation?: string | null
+    customCurrentStatus?: string | null
+    purpose?: string | null
+    customPurpose?: string | null
+    educationLevel?: string | null
+    educationStatus?: string | null
+    companyName?: string | null
     source?: string | null
     sourceOther?: string | null
     admissionDate: string
@@ -128466,6 +128826,12 @@ export namespace Prisma {
     passedOutYear?: StringNullableFilter<"BranchStudent"> | string | null
     currentStatus?: StringNullableFilter<"BranchStudent"> | string | null
     designation?: StringNullableFilter<"BranchStudent"> | string | null
+    customCurrentStatus?: StringNullableFilter<"BranchStudent"> | string | null
+    purpose?: StringNullableFilter<"BranchStudent"> | string | null
+    customPurpose?: StringNullableFilter<"BranchStudent"> | string | null
+    educationLevel?: StringNullableFilter<"BranchStudent"> | string | null
+    educationStatus?: StringNullableFilter<"BranchStudent"> | string | null
+    companyName?: StringNullableFilter<"BranchStudent"> | string | null
     source?: StringNullableFilter<"BranchStudent"> | string | null
     sourceOther?: StringNullableFilter<"BranchStudent"> | string | null
     admissionDate?: StringFilter<"BranchStudent"> | string
@@ -129917,6 +130283,12 @@ export namespace Prisma {
     passedOutYear?: number | null
     currentStatus?: string | null
     designation?: string | null
+    customCurrentStatus?: string | null
+    purpose?: string | null
+    customPurpose?: string | null
+    educationLevel?: string | null
+    educationStatus?: string | null
+    companyName?: string | null
     source?: string | null
     actualFees?: number | null
     registrationFees?: number | null
@@ -129963,6 +130335,12 @@ export namespace Prisma {
     passedOutYear?: number | null
     currentStatus?: string | null
     designation?: string | null
+    customCurrentStatus?: string | null
+    purpose?: string | null
+    customPurpose?: string | null
+    educationLevel?: string | null
+    educationStatus?: string | null
+    companyName?: string | null
     source?: string | null
     actualFees?: number | null
     registrationFees?: number | null
@@ -130329,6 +130707,12 @@ export namespace Prisma {
     passedOutYear?: IntNullableFilter<"StudentProfile"> | number | null
     currentStatus?: StringNullableFilter<"StudentProfile"> | string | null
     designation?: StringNullableFilter<"StudentProfile"> | string | null
+    customCurrentStatus?: StringNullableFilter<"StudentProfile"> | string | null
+    purpose?: StringNullableFilter<"StudentProfile"> | string | null
+    customPurpose?: StringNullableFilter<"StudentProfile"> | string | null
+    educationLevel?: StringNullableFilter<"StudentProfile"> | string | null
+    educationStatus?: StringNullableFilter<"StudentProfile"> | string | null
+    companyName?: StringNullableFilter<"StudentProfile"> | string | null
     source?: StringNullableFilter<"StudentProfile"> | string | null
     actualFees?: IntNullableFilter<"StudentProfile"> | number | null
     registrationFees?: IntNullableFilter<"StudentProfile"> | number | null
@@ -130701,6 +131085,12 @@ export namespace Prisma {
     passedOutYear?: string | null
     currentStatus?: string | null
     designation?: string | null
+    customCurrentStatus?: string | null
+    purpose?: string | null
+    customPurpose?: string | null
+    educationLevel?: string | null
+    educationStatus?: string | null
+    companyName?: string | null
     source?: string | null
     sourceOther?: string | null
     admissionDate: string
@@ -130772,6 +131162,12 @@ export namespace Prisma {
     passedOutYear?: string | null
     currentStatus?: string | null
     designation?: string | null
+    customCurrentStatus?: string | null
+    purpose?: string | null
+    customPurpose?: string | null
+    educationLevel?: string | null
+    educationStatus?: string | null
+    companyName?: string | null
     source?: string | null
     sourceOther?: string | null
     admissionDate: string
@@ -136915,6 +137311,12 @@ export namespace Prisma {
     passedOutYear?: string | null
     currentStatus?: string | null
     designation?: string | null
+    customCurrentStatus?: string | null
+    purpose?: string | null
+    customPurpose?: string | null
+    educationLevel?: string | null
+    educationStatus?: string | null
+    companyName?: string | null
     source?: string | null
     sourceOther?: string | null
     admissionDate: string
@@ -136986,6 +137388,12 @@ export namespace Prisma {
     passedOutYear?: string | null
     currentStatus?: string | null
     designation?: string | null
+    customCurrentStatus?: string | null
+    purpose?: string | null
+    customPurpose?: string | null
+    educationLevel?: string | null
+    educationStatus?: string | null
+    companyName?: string | null
     source?: string | null
     sourceOther?: string | null
     admissionDate: string
@@ -137225,6 +137633,12 @@ export namespace Prisma {
     passedOutYear?: NullableStringFieldUpdateOperationsInput | string | null
     currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     designation?: NullableStringFieldUpdateOperationsInput | string | null
+    customCurrentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    purpose?: NullableStringFieldUpdateOperationsInput | string | null
+    customPurpose?: NullableStringFieldUpdateOperationsInput | string | null
+    educationLevel?: NullableStringFieldUpdateOperationsInput | string | null
+    educationStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    companyName?: NullableStringFieldUpdateOperationsInput | string | null
     source?: NullableStringFieldUpdateOperationsInput | string | null
     sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
     admissionDate?: StringFieldUpdateOperationsInput | string
@@ -137296,6 +137710,12 @@ export namespace Prisma {
     passedOutYear?: NullableStringFieldUpdateOperationsInput | string | null
     currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     designation?: NullableStringFieldUpdateOperationsInput | string | null
+    customCurrentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    purpose?: NullableStringFieldUpdateOperationsInput | string | null
+    customPurpose?: NullableStringFieldUpdateOperationsInput | string | null
+    educationLevel?: NullableStringFieldUpdateOperationsInput | string | null
+    educationStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    companyName?: NullableStringFieldUpdateOperationsInput | string | null
     source?: NullableStringFieldUpdateOperationsInput | string | null
     sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
     admissionDate?: StringFieldUpdateOperationsInput | string
@@ -137531,6 +137951,12 @@ export namespace Prisma {
     passedOutYear?: string | null
     currentStatus?: string | null
     designation?: string | null
+    customCurrentStatus?: string | null
+    purpose?: string | null
+    customPurpose?: string | null
+    educationLevel?: string | null
+    educationStatus?: string | null
+    companyName?: string | null
     source?: string | null
     sourceOther?: string | null
     admissionDate: string
@@ -137602,6 +138028,12 @@ export namespace Prisma {
     passedOutYear?: string | null
     currentStatus?: string | null
     designation?: string | null
+    customCurrentStatus?: string | null
+    purpose?: string | null
+    customPurpose?: string | null
+    educationLevel?: string | null
+    educationStatus?: string | null
+    companyName?: string | null
     source?: string | null
     sourceOther?: string | null
     admissionDate: string
@@ -137774,6 +138206,12 @@ export namespace Prisma {
     passedOutYear?: NullableStringFieldUpdateOperationsInput | string | null
     currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     designation?: NullableStringFieldUpdateOperationsInput | string | null
+    customCurrentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    purpose?: NullableStringFieldUpdateOperationsInput | string | null
+    customPurpose?: NullableStringFieldUpdateOperationsInput | string | null
+    educationLevel?: NullableStringFieldUpdateOperationsInput | string | null
+    educationStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    companyName?: NullableStringFieldUpdateOperationsInput | string | null
     source?: NullableStringFieldUpdateOperationsInput | string | null
     sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
     admissionDate?: StringFieldUpdateOperationsInput | string
@@ -137845,6 +138283,12 @@ export namespace Prisma {
     passedOutYear?: NullableStringFieldUpdateOperationsInput | string | null
     currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     designation?: NullableStringFieldUpdateOperationsInput | string | null
+    customCurrentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    purpose?: NullableStringFieldUpdateOperationsInput | string | null
+    customPurpose?: NullableStringFieldUpdateOperationsInput | string | null
+    educationLevel?: NullableStringFieldUpdateOperationsInput | string | null
+    educationStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    companyName?: NullableStringFieldUpdateOperationsInput | string | null
     source?: NullableStringFieldUpdateOperationsInput | string | null
     sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
     admissionDate?: StringFieldUpdateOperationsInput | string
@@ -138311,6 +138755,12 @@ export namespace Prisma {
     passedOutYear?: string | null
     currentStatus?: string | null
     designation?: string | null
+    customCurrentStatus?: string | null
+    purpose?: string | null
+    customPurpose?: string | null
+    educationLevel?: string | null
+    educationStatus?: string | null
+    companyName?: string | null
     source?: string | null
     sourceOther?: string | null
     admissionDate: string
@@ -138382,6 +138832,12 @@ export namespace Prisma {
     passedOutYear?: string | null
     currentStatus?: string | null
     designation?: string | null
+    customCurrentStatus?: string | null
+    purpose?: string | null
+    customPurpose?: string | null
+    educationLevel?: string | null
+    educationStatus?: string | null
+    companyName?: string | null
     source?: string | null
     sourceOther?: string | null
     admissionDate: string
@@ -138511,6 +138967,12 @@ export namespace Prisma {
     passedOutYear?: NullableStringFieldUpdateOperationsInput | string | null
     currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     designation?: NullableStringFieldUpdateOperationsInput | string | null
+    customCurrentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    purpose?: NullableStringFieldUpdateOperationsInput | string | null
+    customPurpose?: NullableStringFieldUpdateOperationsInput | string | null
+    educationLevel?: NullableStringFieldUpdateOperationsInput | string | null
+    educationStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    companyName?: NullableStringFieldUpdateOperationsInput | string | null
     source?: NullableStringFieldUpdateOperationsInput | string | null
     sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
     admissionDate?: StringFieldUpdateOperationsInput | string
@@ -138582,6 +139044,12 @@ export namespace Prisma {
     passedOutYear?: NullableStringFieldUpdateOperationsInput | string | null
     currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     designation?: NullableStringFieldUpdateOperationsInput | string | null
+    customCurrentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    purpose?: NullableStringFieldUpdateOperationsInput | string | null
+    customPurpose?: NullableStringFieldUpdateOperationsInput | string | null
+    educationLevel?: NullableStringFieldUpdateOperationsInput | string | null
+    educationStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    companyName?: NullableStringFieldUpdateOperationsInput | string | null
     source?: NullableStringFieldUpdateOperationsInput | string | null
     sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
     admissionDate?: StringFieldUpdateOperationsInput | string
@@ -141256,6 +141724,12 @@ export namespace Prisma {
     passedOutYear?: string | null
     currentStatus?: string | null
     designation?: string | null
+    customCurrentStatus?: string | null
+    purpose?: string | null
+    customPurpose?: string | null
+    educationLevel?: string | null
+    educationStatus?: string | null
+    companyName?: string | null
     source?: string | null
     sourceOther?: string | null
     admissionDate: string
@@ -141327,6 +141801,12 @@ export namespace Prisma {
     passedOutYear?: string | null
     currentStatus?: string | null
     designation?: string | null
+    customCurrentStatus?: string | null
+    purpose?: string | null
+    customPurpose?: string | null
+    educationLevel?: string | null
+    educationStatus?: string | null
+    companyName?: string | null
     source?: string | null
     sourceOther?: string | null
     admissionDate: string
@@ -141560,6 +142040,12 @@ export namespace Prisma {
     passedOutYear?: NullableStringFieldUpdateOperationsInput | string | null
     currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     designation?: NullableStringFieldUpdateOperationsInput | string | null
+    customCurrentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    purpose?: NullableStringFieldUpdateOperationsInput | string | null
+    customPurpose?: NullableStringFieldUpdateOperationsInput | string | null
+    educationLevel?: NullableStringFieldUpdateOperationsInput | string | null
+    educationStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    companyName?: NullableStringFieldUpdateOperationsInput | string | null
     source?: NullableStringFieldUpdateOperationsInput | string | null
     sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
     admissionDate?: StringFieldUpdateOperationsInput | string
@@ -141631,6 +142117,12 @@ export namespace Prisma {
     passedOutYear?: NullableStringFieldUpdateOperationsInput | string | null
     currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     designation?: NullableStringFieldUpdateOperationsInput | string | null
+    customCurrentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    purpose?: NullableStringFieldUpdateOperationsInput | string | null
+    customPurpose?: NullableStringFieldUpdateOperationsInput | string | null
+    educationLevel?: NullableStringFieldUpdateOperationsInput | string | null
+    educationStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    companyName?: NullableStringFieldUpdateOperationsInput | string | null
     source?: NullableStringFieldUpdateOperationsInput | string | null
     sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
     admissionDate?: StringFieldUpdateOperationsInput | string
@@ -141871,6 +142363,12 @@ export namespace Prisma {
     passedOutYear?: number | null
     currentStatus?: string | null
     designation?: string | null
+    customCurrentStatus?: string | null
+    purpose?: string | null
+    customPurpose?: string | null
+    educationLevel?: string | null
+    educationStatus?: string | null
+    companyName?: string | null
     source?: string | null
     actualFees?: number | null
     registrationFees?: number | null
@@ -141918,6 +142416,12 @@ export namespace Prisma {
     passedOutYear?: number | null
     currentStatus?: string | null
     designation?: string | null
+    customCurrentStatus?: string | null
+    purpose?: string | null
+    customPurpose?: string | null
+    educationLevel?: string | null
+    educationStatus?: string | null
+    companyName?: string | null
     source?: string | null
     actualFees?: number | null
     registrationFees?: number | null
@@ -142072,6 +142576,12 @@ export namespace Prisma {
     passedOutYear?: NullableIntFieldUpdateOperationsInput | number | null
     currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     designation?: NullableStringFieldUpdateOperationsInput | string | null
+    customCurrentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    purpose?: NullableStringFieldUpdateOperationsInput | string | null
+    customPurpose?: NullableStringFieldUpdateOperationsInput | string | null
+    educationLevel?: NullableStringFieldUpdateOperationsInput | string | null
+    educationStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    companyName?: NullableStringFieldUpdateOperationsInput | string | null
     source?: NullableStringFieldUpdateOperationsInput | string | null
     actualFees?: NullableIntFieldUpdateOperationsInput | number | null
     registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
@@ -142119,6 +142629,12 @@ export namespace Prisma {
     passedOutYear?: NullableIntFieldUpdateOperationsInput | number | null
     currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     designation?: NullableStringFieldUpdateOperationsInput | string | null
+    customCurrentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    purpose?: NullableStringFieldUpdateOperationsInput | string | null
+    customPurpose?: NullableStringFieldUpdateOperationsInput | string | null
+    educationLevel?: NullableStringFieldUpdateOperationsInput | string | null
+    educationStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    companyName?: NullableStringFieldUpdateOperationsInput | string | null
     source?: NullableStringFieldUpdateOperationsInput | string | null
     actualFees?: NullableIntFieldUpdateOperationsInput | number | null
     registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
@@ -144224,6 +144740,12 @@ export namespace Prisma {
     passedOutYear?: string | null
     currentStatus?: string | null
     designation?: string | null
+    customCurrentStatus?: string | null
+    purpose?: string | null
+    customPurpose?: string | null
+    educationLevel?: string | null
+    educationStatus?: string | null
+    companyName?: string | null
     source?: string | null
     sourceOther?: string | null
     admissionDate: string
@@ -144295,6 +144817,12 @@ export namespace Prisma {
     passedOutYear?: string | null
     currentStatus?: string | null
     designation?: string | null
+    customCurrentStatus?: string | null
+    purpose?: string | null
+    customPurpose?: string | null
+    educationLevel?: string | null
+    educationStatus?: string | null
+    companyName?: string | null
     source?: string | null
     sourceOther?: string | null
     admissionDate: string
@@ -144773,6 +145301,12 @@ export namespace Prisma {
     passedOutYear?: NullableStringFieldUpdateOperationsInput | string | null
     currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     designation?: NullableStringFieldUpdateOperationsInput | string | null
+    customCurrentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    purpose?: NullableStringFieldUpdateOperationsInput | string | null
+    customPurpose?: NullableStringFieldUpdateOperationsInput | string | null
+    educationLevel?: NullableStringFieldUpdateOperationsInput | string | null
+    educationStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    companyName?: NullableStringFieldUpdateOperationsInput | string | null
     source?: NullableStringFieldUpdateOperationsInput | string | null
     sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
     admissionDate?: StringFieldUpdateOperationsInput | string
@@ -144844,6 +145378,12 @@ export namespace Prisma {
     passedOutYear?: NullableStringFieldUpdateOperationsInput | string | null
     currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     designation?: NullableStringFieldUpdateOperationsInput | string | null
+    customCurrentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    purpose?: NullableStringFieldUpdateOperationsInput | string | null
+    customPurpose?: NullableStringFieldUpdateOperationsInput | string | null
+    educationLevel?: NullableStringFieldUpdateOperationsInput | string | null
+    educationStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    companyName?: NullableStringFieldUpdateOperationsInput | string | null
     source?: NullableStringFieldUpdateOperationsInput | string | null
     sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
     admissionDate?: StringFieldUpdateOperationsInput | string
@@ -144962,6 +145502,12 @@ export namespace Prisma {
     passedOutYear?: string | null
     currentStatus?: string | null
     designation?: string | null
+    customCurrentStatus?: string | null
+    purpose?: string | null
+    customPurpose?: string | null
+    educationLevel?: string | null
+    educationStatus?: string | null
+    companyName?: string | null
     source?: string | null
     sourceOther?: string | null
     admissionDate: string
@@ -145033,6 +145579,12 @@ export namespace Prisma {
     passedOutYear?: string | null
     currentStatus?: string | null
     designation?: string | null
+    customCurrentStatus?: string | null
+    purpose?: string | null
+    customPurpose?: string | null
+    educationLevel?: string | null
+    educationStatus?: string | null
+    companyName?: string | null
     source?: string | null
     sourceOther?: string | null
     admissionDate: string
@@ -145260,6 +145812,12 @@ export namespace Prisma {
     passedOutYear?: NullableStringFieldUpdateOperationsInput | string | null
     currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     designation?: NullableStringFieldUpdateOperationsInput | string | null
+    customCurrentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    purpose?: NullableStringFieldUpdateOperationsInput | string | null
+    customPurpose?: NullableStringFieldUpdateOperationsInput | string | null
+    educationLevel?: NullableStringFieldUpdateOperationsInput | string | null
+    educationStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    companyName?: NullableStringFieldUpdateOperationsInput | string | null
     source?: NullableStringFieldUpdateOperationsInput | string | null
     sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
     admissionDate?: StringFieldUpdateOperationsInput | string
@@ -145331,6 +145889,12 @@ export namespace Prisma {
     passedOutYear?: NullableStringFieldUpdateOperationsInput | string | null
     currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     designation?: NullableStringFieldUpdateOperationsInput | string | null
+    customCurrentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    purpose?: NullableStringFieldUpdateOperationsInput | string | null
+    customPurpose?: NullableStringFieldUpdateOperationsInput | string | null
+    educationLevel?: NullableStringFieldUpdateOperationsInput | string | null
+    educationStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    companyName?: NullableStringFieldUpdateOperationsInput | string | null
     source?: NullableStringFieldUpdateOperationsInput | string | null
     sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
     admissionDate?: StringFieldUpdateOperationsInput | string
@@ -145915,6 +146479,12 @@ export namespace Prisma {
     passedOutYear?: string | null
     currentStatus?: string | null
     designation?: string | null
+    customCurrentStatus?: string | null
+    purpose?: string | null
+    customPurpose?: string | null
+    educationLevel?: string | null
+    educationStatus?: string | null
+    companyName?: string | null
     source?: string | null
     sourceOther?: string | null
     admissionDate: string
@@ -145986,6 +146556,12 @@ export namespace Prisma {
     passedOutYear?: string | null
     currentStatus?: string | null
     designation?: string | null
+    customCurrentStatus?: string | null
+    purpose?: string | null
+    customPurpose?: string | null
+    educationLevel?: string | null
+    educationStatus?: string | null
+    companyName?: string | null
     source?: string | null
     sourceOther?: string | null
     admissionDate: string
@@ -146428,6 +147004,12 @@ export namespace Prisma {
     passedOutYear?: NullableStringFieldUpdateOperationsInput | string | null
     currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     designation?: NullableStringFieldUpdateOperationsInput | string | null
+    customCurrentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    purpose?: NullableStringFieldUpdateOperationsInput | string | null
+    customPurpose?: NullableStringFieldUpdateOperationsInput | string | null
+    educationLevel?: NullableStringFieldUpdateOperationsInput | string | null
+    educationStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    companyName?: NullableStringFieldUpdateOperationsInput | string | null
     source?: NullableStringFieldUpdateOperationsInput | string | null
     sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
     admissionDate?: StringFieldUpdateOperationsInput | string
@@ -146499,6 +147081,12 @@ export namespace Prisma {
     passedOutYear?: NullableStringFieldUpdateOperationsInput | string | null
     currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     designation?: NullableStringFieldUpdateOperationsInput | string | null
+    customCurrentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    purpose?: NullableStringFieldUpdateOperationsInput | string | null
+    customPurpose?: NullableStringFieldUpdateOperationsInput | string | null
+    educationLevel?: NullableStringFieldUpdateOperationsInput | string | null
+    educationStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    companyName?: NullableStringFieldUpdateOperationsInput | string | null
     source?: NullableStringFieldUpdateOperationsInput | string | null
     sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
     admissionDate?: StringFieldUpdateOperationsInput | string
@@ -147130,6 +147718,12 @@ export namespace Prisma {
     passedOutYear?: string | null
     currentStatus?: string | null
     designation?: string | null
+    customCurrentStatus?: string | null
+    purpose?: string | null
+    customPurpose?: string | null
+    educationLevel?: string | null
+    educationStatus?: string | null
+    companyName?: string | null
     source?: string | null
     sourceOther?: string | null
     admissionDate: string
@@ -147201,6 +147795,12 @@ export namespace Prisma {
     passedOutYear?: string | null
     currentStatus?: string | null
     designation?: string | null
+    customCurrentStatus?: string | null
+    purpose?: string | null
+    customPurpose?: string | null
+    educationLevel?: string | null
+    educationStatus?: string | null
+    companyName?: string | null
     source?: string | null
     sourceOther?: string | null
     admissionDate: string
@@ -147485,6 +148085,12 @@ export namespace Prisma {
     passedOutYear?: NullableStringFieldUpdateOperationsInput | string | null
     currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     designation?: NullableStringFieldUpdateOperationsInput | string | null
+    customCurrentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    purpose?: NullableStringFieldUpdateOperationsInput | string | null
+    customPurpose?: NullableStringFieldUpdateOperationsInput | string | null
+    educationLevel?: NullableStringFieldUpdateOperationsInput | string | null
+    educationStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    companyName?: NullableStringFieldUpdateOperationsInput | string | null
     source?: NullableStringFieldUpdateOperationsInput | string | null
     sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
     admissionDate?: StringFieldUpdateOperationsInput | string
@@ -147556,6 +148162,12 @@ export namespace Prisma {
     passedOutYear?: NullableStringFieldUpdateOperationsInput | string | null
     currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     designation?: NullableStringFieldUpdateOperationsInput | string | null
+    customCurrentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    purpose?: NullableStringFieldUpdateOperationsInput | string | null
+    customPurpose?: NullableStringFieldUpdateOperationsInput | string | null
+    educationLevel?: NullableStringFieldUpdateOperationsInput | string | null
+    educationStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    companyName?: NullableStringFieldUpdateOperationsInput | string | null
     source?: NullableStringFieldUpdateOperationsInput | string | null
     sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
     admissionDate?: StringFieldUpdateOperationsInput | string
@@ -147894,6 +148506,12 @@ export namespace Prisma {
     passedOutYear?: string | null
     currentStatus?: string | null
     designation?: string | null
+    customCurrentStatus?: string | null
+    purpose?: string | null
+    customPurpose?: string | null
+    educationLevel?: string | null
+    educationStatus?: string | null
+    companyName?: string | null
     source?: string | null
     sourceOther?: string | null
     admissionDate: string
@@ -147965,6 +148583,12 @@ export namespace Prisma {
     passedOutYear?: string | null
     currentStatus?: string | null
     designation?: string | null
+    customCurrentStatus?: string | null
+    purpose?: string | null
+    customPurpose?: string | null
+    educationLevel?: string | null
+    educationStatus?: string | null
+    companyName?: string | null
     source?: string | null
     sourceOther?: string | null
     admissionDate: string
@@ -148050,6 +148674,12 @@ export namespace Prisma {
     passedOutYear?: NullableStringFieldUpdateOperationsInput | string | null
     currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     designation?: NullableStringFieldUpdateOperationsInput | string | null
+    customCurrentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    purpose?: NullableStringFieldUpdateOperationsInput | string | null
+    customPurpose?: NullableStringFieldUpdateOperationsInput | string | null
+    educationLevel?: NullableStringFieldUpdateOperationsInput | string | null
+    educationStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    companyName?: NullableStringFieldUpdateOperationsInput | string | null
     source?: NullableStringFieldUpdateOperationsInput | string | null
     sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
     admissionDate?: StringFieldUpdateOperationsInput | string
@@ -148121,6 +148751,12 @@ export namespace Prisma {
     passedOutYear?: NullableStringFieldUpdateOperationsInput | string | null
     currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     designation?: NullableStringFieldUpdateOperationsInput | string | null
+    customCurrentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    purpose?: NullableStringFieldUpdateOperationsInput | string | null
+    customPurpose?: NullableStringFieldUpdateOperationsInput | string | null
+    educationLevel?: NullableStringFieldUpdateOperationsInput | string | null
+    educationStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    companyName?: NullableStringFieldUpdateOperationsInput | string | null
     source?: NullableStringFieldUpdateOperationsInput | string | null
     sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
     admissionDate?: StringFieldUpdateOperationsInput | string
@@ -148190,6 +148826,12 @@ export namespace Prisma {
     passedOutYear?: string | null
     currentStatus?: string | null
     designation?: string | null
+    customCurrentStatus?: string | null
+    purpose?: string | null
+    customPurpose?: string | null
+    educationLevel?: string | null
+    educationStatus?: string | null
+    companyName?: string | null
     source?: string | null
     sourceOther?: string | null
     admissionDate: string
@@ -148261,6 +148903,12 @@ export namespace Prisma {
     passedOutYear?: string | null
     currentStatus?: string | null
     designation?: string | null
+    customCurrentStatus?: string | null
+    purpose?: string | null
+    customPurpose?: string | null
+    educationLevel?: string | null
+    educationStatus?: string | null
+    companyName?: string | null
     source?: string | null
     sourceOther?: string | null
     admissionDate: string
@@ -148346,6 +148994,12 @@ export namespace Prisma {
     passedOutYear?: NullableStringFieldUpdateOperationsInput | string | null
     currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     designation?: NullableStringFieldUpdateOperationsInput | string | null
+    customCurrentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    purpose?: NullableStringFieldUpdateOperationsInput | string | null
+    customPurpose?: NullableStringFieldUpdateOperationsInput | string | null
+    educationLevel?: NullableStringFieldUpdateOperationsInput | string | null
+    educationStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    companyName?: NullableStringFieldUpdateOperationsInput | string | null
     source?: NullableStringFieldUpdateOperationsInput | string | null
     sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
     admissionDate?: StringFieldUpdateOperationsInput | string
@@ -148417,6 +149071,12 @@ export namespace Prisma {
     passedOutYear?: NullableStringFieldUpdateOperationsInput | string | null
     currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     designation?: NullableStringFieldUpdateOperationsInput | string | null
+    customCurrentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    purpose?: NullableStringFieldUpdateOperationsInput | string | null
+    customPurpose?: NullableStringFieldUpdateOperationsInput | string | null
+    educationLevel?: NullableStringFieldUpdateOperationsInput | string | null
+    educationStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    companyName?: NullableStringFieldUpdateOperationsInput | string | null
     source?: NullableStringFieldUpdateOperationsInput | string | null
     sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
     admissionDate?: StringFieldUpdateOperationsInput | string
@@ -148486,6 +149146,12 @@ export namespace Prisma {
     passedOutYear?: string | null
     currentStatus?: string | null
     designation?: string | null
+    customCurrentStatus?: string | null
+    purpose?: string | null
+    customPurpose?: string | null
+    educationLevel?: string | null
+    educationStatus?: string | null
+    companyName?: string | null
     source?: string | null
     sourceOther?: string | null
     admissionDate: string
@@ -148557,6 +149223,12 @@ export namespace Prisma {
     passedOutYear?: string | null
     currentStatus?: string | null
     designation?: string | null
+    customCurrentStatus?: string | null
+    purpose?: string | null
+    customPurpose?: string | null
+    educationLevel?: string | null
+    educationStatus?: string | null
+    companyName?: string | null
     source?: string | null
     sourceOther?: string | null
     admissionDate: string
@@ -148752,6 +149424,12 @@ export namespace Prisma {
     passedOutYear?: NullableStringFieldUpdateOperationsInput | string | null
     currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     designation?: NullableStringFieldUpdateOperationsInput | string | null
+    customCurrentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    purpose?: NullableStringFieldUpdateOperationsInput | string | null
+    customPurpose?: NullableStringFieldUpdateOperationsInput | string | null
+    educationLevel?: NullableStringFieldUpdateOperationsInput | string | null
+    educationStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    companyName?: NullableStringFieldUpdateOperationsInput | string | null
     source?: NullableStringFieldUpdateOperationsInput | string | null
     sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
     admissionDate?: StringFieldUpdateOperationsInput | string
@@ -148823,6 +149501,12 @@ export namespace Prisma {
     passedOutYear?: NullableStringFieldUpdateOperationsInput | string | null
     currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     designation?: NullableStringFieldUpdateOperationsInput | string | null
+    customCurrentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    purpose?: NullableStringFieldUpdateOperationsInput | string | null
+    customPurpose?: NullableStringFieldUpdateOperationsInput | string | null
+    educationLevel?: NullableStringFieldUpdateOperationsInput | string | null
+    educationStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    companyName?: NullableStringFieldUpdateOperationsInput | string | null
     source?: NullableStringFieldUpdateOperationsInput | string | null
     sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
     admissionDate?: StringFieldUpdateOperationsInput | string
@@ -149087,6 +149771,12 @@ export namespace Prisma {
     passedOutYear?: string | null
     currentStatus?: string | null
     designation?: string | null
+    customCurrentStatus?: string | null
+    purpose?: string | null
+    customPurpose?: string | null
+    educationLevel?: string | null
+    educationStatus?: string | null
+    companyName?: string | null
     source?: string | null
     sourceOther?: string | null
     admissionDate: string
@@ -149158,6 +149848,12 @@ export namespace Prisma {
     passedOutYear?: string | null
     currentStatus?: string | null
     designation?: string | null
+    customCurrentStatus?: string | null
+    purpose?: string | null
+    customPurpose?: string | null
+    educationLevel?: string | null
+    educationStatus?: string | null
+    companyName?: string | null
     source?: string | null
     sourceOther?: string | null
     admissionDate: string
@@ -149322,6 +150018,12 @@ export namespace Prisma {
     passedOutYear?: NullableStringFieldUpdateOperationsInput | string | null
     currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     designation?: NullableStringFieldUpdateOperationsInput | string | null
+    customCurrentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    purpose?: NullableStringFieldUpdateOperationsInput | string | null
+    customPurpose?: NullableStringFieldUpdateOperationsInput | string | null
+    educationLevel?: NullableStringFieldUpdateOperationsInput | string | null
+    educationStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    companyName?: NullableStringFieldUpdateOperationsInput | string | null
     source?: NullableStringFieldUpdateOperationsInput | string | null
     sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
     admissionDate?: StringFieldUpdateOperationsInput | string
@@ -149393,6 +150095,12 @@ export namespace Prisma {
     passedOutYear?: NullableStringFieldUpdateOperationsInput | string | null
     currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     designation?: NullableStringFieldUpdateOperationsInput | string | null
+    customCurrentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    purpose?: NullableStringFieldUpdateOperationsInput | string | null
+    customPurpose?: NullableStringFieldUpdateOperationsInput | string | null
+    educationLevel?: NullableStringFieldUpdateOperationsInput | string | null
+    educationStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    companyName?: NullableStringFieldUpdateOperationsInput | string | null
     source?: NullableStringFieldUpdateOperationsInput | string | null
     sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
     admissionDate?: StringFieldUpdateOperationsInput | string
@@ -150827,6 +151535,12 @@ export namespace Prisma {
     passedOutYear?: string | null
     currentStatus?: string | null
     designation?: string | null
+    customCurrentStatus?: string | null
+    purpose?: string | null
+    customPurpose?: string | null
+    educationLevel?: string | null
+    educationStatus?: string | null
+    companyName?: string | null
     source?: string | null
     sourceOther?: string | null
     admissionDate: string
@@ -151389,6 +152103,12 @@ export namespace Prisma {
     passedOutYear?: NullableStringFieldUpdateOperationsInput | string | null
     currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     designation?: NullableStringFieldUpdateOperationsInput | string | null
+    customCurrentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    purpose?: NullableStringFieldUpdateOperationsInput | string | null
+    customPurpose?: NullableStringFieldUpdateOperationsInput | string | null
+    educationLevel?: NullableStringFieldUpdateOperationsInput | string | null
+    educationStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    companyName?: NullableStringFieldUpdateOperationsInput | string | null
     source?: NullableStringFieldUpdateOperationsInput | string | null
     sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
     admissionDate?: StringFieldUpdateOperationsInput | string
@@ -151459,6 +152179,12 @@ export namespace Prisma {
     passedOutYear?: NullableStringFieldUpdateOperationsInput | string | null
     currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     designation?: NullableStringFieldUpdateOperationsInput | string | null
+    customCurrentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    purpose?: NullableStringFieldUpdateOperationsInput | string | null
+    customPurpose?: NullableStringFieldUpdateOperationsInput | string | null
+    educationLevel?: NullableStringFieldUpdateOperationsInput | string | null
+    educationStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    companyName?: NullableStringFieldUpdateOperationsInput | string | null
     source?: NullableStringFieldUpdateOperationsInput | string | null
     sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
     admissionDate?: StringFieldUpdateOperationsInput | string
@@ -151529,6 +152255,12 @@ export namespace Prisma {
     passedOutYear?: NullableStringFieldUpdateOperationsInput | string | null
     currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     designation?: NullableStringFieldUpdateOperationsInput | string | null
+    customCurrentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    purpose?: NullableStringFieldUpdateOperationsInput | string | null
+    customPurpose?: NullableStringFieldUpdateOperationsInput | string | null
+    educationLevel?: NullableStringFieldUpdateOperationsInput | string | null
+    educationStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    companyName?: NullableStringFieldUpdateOperationsInput | string | null
     source?: NullableStringFieldUpdateOperationsInput | string | null
     sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
     admissionDate?: StringFieldUpdateOperationsInput | string
@@ -152390,6 +153122,12 @@ export namespace Prisma {
     passedOutYear?: number | null
     currentStatus?: string | null
     designation?: string | null
+    customCurrentStatus?: string | null
+    purpose?: string | null
+    customPurpose?: string | null
+    educationLevel?: string | null
+    educationStatus?: string | null
+    companyName?: string | null
     source?: string | null
     actualFees?: number | null
     registrationFees?: number | null
@@ -152740,6 +153478,12 @@ export namespace Prisma {
     passedOutYear?: NullableIntFieldUpdateOperationsInput | number | null
     currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     designation?: NullableStringFieldUpdateOperationsInput | string | null
+    customCurrentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    purpose?: NullableStringFieldUpdateOperationsInput | string | null
+    customPurpose?: NullableStringFieldUpdateOperationsInput | string | null
+    educationLevel?: NullableStringFieldUpdateOperationsInput | string | null
+    educationStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    companyName?: NullableStringFieldUpdateOperationsInput | string | null
     source?: NullableStringFieldUpdateOperationsInput | string | null
     actualFees?: NullableIntFieldUpdateOperationsInput | number | null
     registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
@@ -152786,6 +153530,12 @@ export namespace Prisma {
     passedOutYear?: NullableIntFieldUpdateOperationsInput | number | null
     currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     designation?: NullableStringFieldUpdateOperationsInput | string | null
+    customCurrentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    purpose?: NullableStringFieldUpdateOperationsInput | string | null
+    customPurpose?: NullableStringFieldUpdateOperationsInput | string | null
+    educationLevel?: NullableStringFieldUpdateOperationsInput | string | null
+    educationStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    companyName?: NullableStringFieldUpdateOperationsInput | string | null
     source?: NullableStringFieldUpdateOperationsInput | string | null
     actualFees?: NullableIntFieldUpdateOperationsInput | number | null
     registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
@@ -152832,6 +153582,12 @@ export namespace Prisma {
     passedOutYear?: NullableIntFieldUpdateOperationsInput | number | null
     currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     designation?: NullableStringFieldUpdateOperationsInput | string | null
+    customCurrentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    purpose?: NullableStringFieldUpdateOperationsInput | string | null
+    customPurpose?: NullableStringFieldUpdateOperationsInput | string | null
+    educationLevel?: NullableStringFieldUpdateOperationsInput | string | null
+    educationStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    companyName?: NullableStringFieldUpdateOperationsInput | string | null
     source?: NullableStringFieldUpdateOperationsInput | string | null
     actualFees?: NullableIntFieldUpdateOperationsInput | number | null
     registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
@@ -152957,6 +153713,12 @@ export namespace Prisma {
     passedOutYear?: string | null
     currentStatus?: string | null
     designation?: string | null
+    customCurrentStatus?: string | null
+    purpose?: string | null
+    customPurpose?: string | null
+    educationLevel?: string | null
+    educationStatus?: string | null
+    companyName?: string | null
     source?: string | null
     sourceOther?: string | null
     admissionDate: string
@@ -153411,6 +154173,12 @@ export namespace Prisma {
     passedOutYear?: NullableStringFieldUpdateOperationsInput | string | null
     currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     designation?: NullableStringFieldUpdateOperationsInput | string | null
+    customCurrentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    purpose?: NullableStringFieldUpdateOperationsInput | string | null
+    customPurpose?: NullableStringFieldUpdateOperationsInput | string | null
+    educationLevel?: NullableStringFieldUpdateOperationsInput | string | null
+    educationStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    companyName?: NullableStringFieldUpdateOperationsInput | string | null
     source?: NullableStringFieldUpdateOperationsInput | string | null
     sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
     admissionDate?: StringFieldUpdateOperationsInput | string
@@ -153482,6 +154250,12 @@ export namespace Prisma {
     passedOutYear?: NullableStringFieldUpdateOperationsInput | string | null
     currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     designation?: NullableStringFieldUpdateOperationsInput | string | null
+    customCurrentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    purpose?: NullableStringFieldUpdateOperationsInput | string | null
+    customPurpose?: NullableStringFieldUpdateOperationsInput | string | null
+    educationLevel?: NullableStringFieldUpdateOperationsInput | string | null
+    educationStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    companyName?: NullableStringFieldUpdateOperationsInput | string | null
     source?: NullableStringFieldUpdateOperationsInput | string | null
     sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
     admissionDate?: StringFieldUpdateOperationsInput | string
@@ -153552,6 +154326,12 @@ export namespace Prisma {
     passedOutYear?: NullableStringFieldUpdateOperationsInput | string | null
     currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     designation?: NullableStringFieldUpdateOperationsInput | string | null
+    customCurrentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    purpose?: NullableStringFieldUpdateOperationsInput | string | null
+    customPurpose?: NullableStringFieldUpdateOperationsInput | string | null
+    educationLevel?: NullableStringFieldUpdateOperationsInput | string | null
+    educationStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    companyName?: NullableStringFieldUpdateOperationsInput | string | null
     source?: NullableStringFieldUpdateOperationsInput | string | null
     sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
     admissionDate?: StringFieldUpdateOperationsInput | string
