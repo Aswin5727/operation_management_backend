@@ -9,7 +9,7 @@ import {
   getStudentAttendanceReportHandler,
   getBranchBatchAttendanceReportHandler,
   getBranchStudentAttendanceReportHandler,
-  getBranchMonthlyReportHandler,
+  getBranchMonthlyReportHandler
 } from "./reports.controller.js";
 
 const router = express.Router();

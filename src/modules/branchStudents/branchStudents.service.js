@@ -2762,7 +2762,7 @@ function lifecycleSearchMatch(row, search) {
     .some((value) => normalizeSearchKey(value).includes(needle))
 }
 
-async function getCompletedCourseAcademicTests(student, enrollment) {
+export async function getCompletedCourseAcademicTests(student, enrollment) {
   const batchKey = normalizeString(enrollment.batchId || student.batchId)
   if (!batchKey || !enrollment.courseId) return []
   const batch = await prisma.branchBatch.findFirst({
@@ -2779,34 +2779,95 @@ async function getCompletedCourseAcademicTests(student, enrollment) {
   if (!items.length) return []
 
   const schedules = await prisma.academicScheduledTest.findMany({
-    where: { branchBatchId: batch.id, academicTestItemId: { in: items.map((item) => item.id) }, status: { not: "CANCELLED" }, isRetest: false },
-    orderBy: [{ testNumber: "asc" }, { createdAt: "asc" }],
-    select: { id: true, academicTestItemId: true, testNumber: true, testDate: true, status: true },
+    where: { branchBatchId: batch.id, academicTestItemId: { in: items.map((item) => item.id) }, status: { not: "CANCELLED" } },
+    orderBy: [{ academicTestItemId: "asc" }, { isRetest: "asc" }, { attemptNumber: "asc" }, { createdAt: "asc" }],
+    select: { id: true, academicTestItemId: true, testNumber: true, testDate: true, status: true, isRetest: true, retestStudentId: true, originalScheduleId: true, parentScheduleId: true, attemptNumber: true, createdAt: true },
   })
-  const submissions = await prisma.academicTestSubmission.findMany({
-    where: { branchStudentId: student.id, academicTestId: { in: schedules.map((schedule) => schedule.id) } },
-    select: { academicTestId: true, status: true, resultStatus: true, percentage: true, obtainedMarks: true, totalMarks: true },
-  })
+  const [submissions, projectSubmissions, projectConfigs] = await Promise.all([
+    prisma.academicTestSubmission.findMany({
+      where: { branchStudentId: student.id, academicTestId: { in: schedules.map((schedule) => schedule.id) } },
+      select: { academicTestId: true, status: true, resultStatus: true, percentage: true, obtainedMarks: true, totalMarks: true, submittedAt: true },
+    }),
+    prisma.academicProjectSubmission.findMany({
+      where: { branchStudentId: student.id, academicTestId: { in: schedules.map((schedule) => schedule.id) } },
+      select: { academicTestId: true, status: true, marksAwarded: true },
+    }),
+    prisma.academicTestProject.findMany({
+      where: { academicTestItemId: { in: items.map((item) => item.id) }, branchBatchId: batch.id },
+      select: { academicTestItemId: true, projectMarks: true },
+    }),
+  ])
   const submissionByTestId = new Map(submissions.map((submission) => [submission.academicTestId, submission]))
+  const projectSubmissionByTestId = new Map(projectSubmissions.map((submission) => [submission.academicTestId, submission]))
+  const projectConfigByItemId = new Map(projectConfigs.map((config) => [config.academicTestItemId, config]))
   const itemById = new Map(items.map((item) => [item.id, item]))
-  return schedules.map((schedule) => {
-    const submission = submissionByTestId.get(schedule.id)
-    const item = itemById.get(schedule.academicTestItemId)
-    const status = String(submission?.status || "NOT_STARTED").toUpperCase()
-    const result = submission?.resultStatus ? ` ${submission.resultStatus}` : ""
-    const marks = submission && submission.totalMarks > 0 ? ` (${submission.obtainedMarks}/${submission.totalMarks})` : ""
-    const percentage = submission && Number.isFinite(Number(submission.percentage)) && (status === "EVALUATED" || status === "SUBMITTED")
-      ? ` - ${Number(submission.percentage).toFixed(2).replace(/\.00$/, "")}%`
-      : ""
-    return {
-      label: `Academic Test ${schedule.testNumber || item?.sequence || ""}`.trim(),
-      value: `${status === "EVALUATED" || status === "SUBMITTED" ? "Completed" : "Pending"}${result}${marks}${percentage}`,
-      testType: item?.testType || null,
-      testDate: schedule.testDate || null,
-    }
-  })
-}
+  const scheduleById = new Map(schedules.map((schedule) => [schedule.id, schedule]))
 
+  const latestScheduleForItem = (itemId) => {
+    const original = schedules.find((schedule) => schedule.academicTestItemId === itemId && !schedule.isRetest)
+    if (!original) return null
+
+    const belongsToOriginal = (schedule) => {
+      if (!schedule.isRetest) return false
+      if (schedule.academicTestItemId === itemId && !schedule.originalScheduleId && !schedule.parentScheduleId) return true
+      let parentId = schedule.originalScheduleId || schedule.parentScheduleId
+      const visited = new Set()
+      while (parentId && !visited.has(parentId)) {
+        if (parentId === original.id) return true
+        visited.add(parentId)
+        const parent = scheduleById.get(parentId)
+        parentId = parent?.originalScheduleId || parent?.parentScheduleId
+      }
+      return false
+    }
+
+    const retests = schedules
+      .filter((schedule) => belongsToOriginal(schedule) && (!schedule.retestStudentId || schedule.retestStudentId === student.id))
+      .sort((left, right) => {
+        const attemptDifference = Number(right.attemptNumber || 0) - Number(left.attemptNumber || 0)
+        if (attemptDifference) return attemptDifference
+        return new Date(right.createdAt || 0).getTime() - new Date(left.createdAt || 0).getTime()
+      })
+    const conductedRetest = retests.find((schedule) => {
+      const submission = submissionByTestId.get(schedule.id)
+      const status = String(submission?.status || "").toUpperCase()
+      const hasTestResult = Boolean(submission?.submittedAt) || ["EVALUATED", "SUBMITTED"].includes(status)
+      const hasProjectResult = projectSubmissionByTestId.get(schedule.id)?.marksAwarded != null
+      return hasTestResult || hasProjectResult
+    })
+    return conductedRetest || retests[0] || original
+  }
+
+
+  return items.map((item) => {
+    const schedule = latestScheduleForItem(item.id)
+    if (!schedule) return null
+    const submission = submissionByTestId.get(schedule.id)
+    const originalSchedule = schedules.find((candidate) => candidate.academicTestItemId === item.id && !candidate.isRetest)
+    const projectSchedule = item.testType === "TEST_AND_PROJECT" ? originalSchedule : schedule
+    const projectSubmission = projectSubmissionByTestId.get(schedule.id) || (projectSchedule ? projectSubmissionByTestId.get(projectSchedule.id) : null)
+    const status = String(submission?.status || "NOT_STARTED").toUpperCase()
+    const projectTotal = Number(projectConfigByItemId.get(item.id)?.projectMarks || 0)
+    const marksAwarded = projectSubmission?.marksAwarded == null ? null : Number(projectSubmission.marksAwarded)
+    const percentage = submission?.percentage == null ? null : Number(submission.percentage)
+    return {
+      label: `Academic Test ${schedule.testNumber || item.sequence || ""}`.trim(),
+      value: (status === "EVALUATED" || status === "SUBMITTED" ? "Completed" : "Pending") + (submission?.resultStatus ? " " + submission.resultStatus : "") + (submission && submission.totalMarks > 0 ? " (" + submission.obtainedMarks + "/" + submission.totalMarks + ")" : "") + (submission && Number.isFinite(Number(submission.percentage)) && (status === "EVALUATED" || status === "SUBMITTED") ? " - " + Number(submission.percentage).toFixed(2).replace(/\.00$/, "") + "%" : ""),
+      testNumber: Number(schedule.testNumber || item.sequence),
+      testType: item.testType || null,
+      testDate: schedule.testDate || null,
+      status,
+      resultStatus: submission?.resultStatus || null,
+      percentage: Number.isFinite(percentage) ? percentage : null,
+      obtainedMarks: submission?.obtainedMarks == null ? null : Number(submission.obtainedMarks),
+      totalMarks: submission?.totalMarks == null ? null : Number(submission.totalMarks),
+      submittedAt: submission?.submittedAt || null,
+      marksAwarded,
+      projectTotalMarks: projectTotal,
+      projectPercentage: marksAwarded != null && projectTotal > 0 ? Number(((marksAwarded / projectTotal) * 100).toFixed(2)) : null,
+    }
+  }).filter(Boolean)
+}
 export async function listBranchStudentLifecycle(query = {}, actor = null) {
   const lifecycle = normalizeString(query.lifecycle || "COMPLETED").toUpperCase()
   if (!['COMPLETED', 'DISCONTINUED'].includes(lifecycle)) throw new AppError("Invalid student lifecycle", 400)
