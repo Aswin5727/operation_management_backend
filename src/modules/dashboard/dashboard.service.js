@@ -1106,7 +1106,12 @@ async function getSuperAdminOverview(branchId = null, performanceOptions = {}) {
   const approvedDiscontinuationRows = branchIds.length
     ? await prisma.studentDiscontinuationRequest.findMany({
         where: { branchId: { in: branchIds }, status: "APPROVED" },
-        select: { branchStudentId: true },
+        select: {
+          branchStudentId: true,
+          finalOutstandingAmount: true,
+          outstandingAmount: true,
+          branchStudent: { select: { studentName: true, studentId: true, branch: { select: { branchName: true, branchId: true } } } },
+        },
       })
     : [];
   const approvedDiscontinuationStudentIds = new Set(approvedDiscontinuationRows.map((item) => String(item.branchStudentId || "").trim()).filter(Boolean));
@@ -1120,13 +1125,25 @@ async function getSuperAdminOverview(branchId = null, performanceOptions = {}) {
   const payments = students.flatMap((student) => student.payments || []);
   const buckets = buildSuperAdminPaymentBuckets(today, payments, students);
   const paymentOverview = buildAccuratePaymentOverview(today, payments, students);
-  const summary = { totalBranches: branches.length, totalStudents: students.length, thisMonthAdmissions: admissionsByMonth.at(-1).value, totalPayment: payments.reduce((sum, payment) => sum + money(payment.amount), 0), thisMonthPayment: payments.filter((payment) => new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Calcutta" }).format(new Date(payment.paymentDate)).startsWith(currentMonth)).reduce((sum, payment) => sum + money(payment.amount), 0), totalOutstanding: 0, thisMonthDue: 0, todayDue: 0, yesterdayDue: 0, overdueAmount: 0, dueStudents: new Set(), todayCollection: 0, yesterdayCollection: 0 };
+  const discontinuedOutstandingDetails = approvedDiscontinuationRows.map((item) => ({
+    studentName: item.branchStudent?.studentName || item.branchStudent?.studentId || item.branchStudentId,
+    branchName: item.branchStudent?.branch?.branchName || item.branchStudent?.branch?.branchId || 'Branch',
+    amount: money(item.finalOutstandingAmount ?? item.outstandingAmount),
+  })).filter((item) => item.amount > 0);
+  const summary = { totalBranches: branches.length, totalStudents: students.length, thisMonthAdmissions: admissionsByMonth.at(-1).value, totalPayment: payments.reduce((sum, payment) => sum + money(payment.amount), 0), thisMonthPayment: payments.filter((payment) => new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Calcutta" }).format(new Date(payment.paymentDate)).startsWith(currentMonth)).reduce((sum, payment) => sum + money(payment.amount), 0), totalOutstanding: 0, discontinuedOutstandingDetails, thisMonthDue: 0, todayDue: 0, yesterdayDue: 0, overdueAmount: 0, dueStudents: new Set(), todayCollection: 0, yesterdayCollection: 0 };
   const yesterday = addDays(today, -1);
   students.forEach((student) => {
     if (approvedDiscontinuationStudentIds.has(String(student.id || "").trim())) return;
-    const paid = (student.installments || []).reduce((sum, item) => sum + money(item.amountPaid), 0);
-    const planned = money(student.courseAmount) || (student.installments || []).reduce((sum, item) => sum + money(item.amount), 0);
-    summary.totalOutstanding += Math.max(planned - paid, 0);
+    const hasInstallments = (student.installments || []).length > 0;
+    const planned = hasInstallments
+      ? (student.installments || []).reduce((sum, item) => sum + money(item.amount), 0)
+      : money(student.courseAmount);
+    const paid = hasInstallments
+      ? (student.installments || []).reduce((sum, item) => sum + money(item.amountPaid), 0)
+      : (student.payments || []).reduce((sum, item) => sum + money(item.amount), 0);
+    // Keep outstanding aligned with the Branch Admin dashboard: aggregate
+    // the branch totals first so overpayments can offset underpayments.
+    summary.totalOutstanding += planned - paid;
     (student.installments || []).forEach((installment) => {
       const due = String(installment.dueDate || "").slice(0, 10); const unpaid = Math.max(money(installment.amount) - money(installment.amountPaid), 0); if (!due || !unpaid) return;
       if (due.startsWith(currentMonth)) summary.thisMonthDue += unpaid;
@@ -1136,6 +1153,7 @@ async function getSuperAdminOverview(branchId = null, performanceOptions = {}) {
       if (due.startsWith(currentMonth)) summary.dueStudents.add(student.id);
     });
   });
+  summary.totalOutstanding = Math.max(summary.totalOutstanding, 0);
   payments.forEach((payment) => { const date = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Calcutta" }).format(new Date(payment.paymentDate)); if (date === today) summary.todayCollection += money(payment.amount); if (date === yesterday) summary.yesterdayCollection += money(payment.amount); });
   const courseCounts = new Map();
   students.forEach((student) => {
@@ -1163,11 +1181,16 @@ async function getSuperAdminOverview(branchId = null, performanceOptions = {}) {
       const date = String(installment.dueDate || "").slice(0, 10);
       return date >= performanceRange.startDate && date <= performanceRange.endDate ? total + Math.max(money(installment.amount) - money(installment.amountPaid), 0) : total;
     }, 0);
-    const outstanding = branchStudents.reduce((total, student) => {
-      const planned = money(student.courseAmount) || (student.installments || []).reduce((sum, installment) => sum + money(installment.amount), 0);
-      const paid = (student.installments || []).reduce((sum, installment) => sum + money(installment.amountPaid), 0);
-      return total + Math.max(planned - paid, 0);
-    }, 0);
+    const outstanding = Math.max(branchStudents.reduce((total, student) => {
+      const hasInstallments = (student.installments || []).length > 0;
+      const planned = hasInstallments
+        ? (student.installments || []).reduce((sum, installment) => sum + money(installment.amount), 0)
+        : money(student.courseAmount);
+      const paid = hasInstallments
+        ? (student.installments || []).reduce((sum, installment) => sum + money(installment.amountPaid), 0)
+        : (student.payments || []).reduce((sum, payment) => sum + money(payment.amount), 0);
+      return total + planned - paid;
+    }, 0), 0);
     const present = branchAttendance.filter((record) => record.status === "PRESENT").length;
     const recorded = branchAttendance.filter((record) => record.status === "PRESENT" || record.status === "ABSENT").length;
     const collection = branchPayments.filter((payment) => { const date = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Calcutta" }).format(new Date(payment.paymentDate)); return date >= performanceRange.startDate && date <= performanceRange.endDate; }).reduce((total, payment) => total + money(payment.amount), 0);
