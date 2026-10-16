@@ -951,7 +951,7 @@ export async function getAcademicTestProgressForStudent(student) {
   });
   const retestSchedules = await prisma.academicScheduledTest.findMany({
     where: { branchBatchId: batch.id, isRetest: true, status: { not: "CANCELLED" } },
-    select: { academicTestItemId: true },
+    select: { id: true, academicTestItemId: true, testNumber: true, status: true, isRetest: true, retestStudentId: true, originalScheduleId: true, parentScheduleId: true, questionPaperId: true, testDate: true, endTime: true, attemptNumber: true },
   });
   const retestItemIds = new Set(retestSchedules.map((schedule) => schedule.academicTestItemId));
   const configuredItems = configuredRows
@@ -973,19 +973,34 @@ export async function getAcademicTestProgressForStudent(student) {
   // Student lifecycle completion must use the actual batch evaluations. A
   // faculty report share is a delivery/audit action and must not hide a
   // completed test or project from the active-student progress count.
-  const relevantSchedules = schedules;
-  const [papers, submissions, projectSubmissions] = await Promise.all([
+  const originalScheduleById = new Map(schedules.map((schedule) => [schedule.id, schedule]));
+  const relevantRetests = retestSchedules.flatMap((schedule) => {
+    let parentId = schedule.originalScheduleId || schedule.parentScheduleId;
+    const visited = new Set();
+    while (parentId && !originalScheduleById.has(parentId) && !visited.has(parentId)) {
+      visited.add(parentId);
+      const parent = retestSchedules.find((entry) => entry.id === parentId);
+      parentId = parent?.originalScheduleId || parent?.parentScheduleId || null;
+    }
+    const original = parentId ? originalScheduleById.get(parentId) : null;
+    return original ? [{ ...schedule, academicTestItemId: original.academicTestItemId, testNumber: original.testNumber }] : [];
+  });
+  const relevantSchedules = [...schedules, ...relevantRetests];
+  const [papers, submissions, projectSubmissions, projectConfigs] = await Promise.all([
     prisma.academicQuestionPaper.findMany({ where: { id: { in: relevantSchedules.map((schedule) => schedule.questionPaperId).filter(Boolean) } }, select: { id: true, questions: { select: { questionType: true } } } }),
     prisma.academicTestSubmission.findMany({ where: { academicTestId: { in: relevantSchedules.map((schedule) => schedule.id) }, branchStudentId: student.id } }),
     prisma.academicProjectSubmission.findMany({ where: { academicTestId: { in: relevantSchedules.map((schedule) => schedule.id) }, branchStudentId: student.id }, select: { academicTestId: true, status: true, marksAwarded: true } }),
+    prisma.academicTestProject.findMany({ where: { academicTestItemId: { in: itemIds }, branchBatchId: batch.id }, select: { academicTestItemId: true, projectMarks: true } }).catch(() => []),
   ]);
   const paperById = new Map(papers.map((paper) => [paper.id, paper]));
   const submissionByScheduleId = new Map(submissions.map((submission) => [submission.academicTestId, submission]));
   const projectSubmissionByScheduleId = new Map(projectSubmissions.map((submission) => [submission.academicTestId, submission]));
+  const projectConfigByItemId = new Map(projectConfigs.map((config) => [config.academicTestItemId, config]));
   const completedItemIds = new Set();
   const projectItemIds = new Set(configuredItems.filter((item) => ["PROJECT", "TEST_AND_PROJECT"].includes(item.testType)).map((item) => item.id));
   const completedProjectItemIds = new Set();
   const completedEvaluationItemIds = new Set();
+  const academicResults = [];
   const schedulesByItem = new Map();
   relevantSchedules.forEach((schedule) => schedulesByItem.set(schedule.academicTestItemId, [...(schedulesByItem.get(schedule.academicTestItemId) || []), schedule]));
   schedulesByItem.forEach((attempts, itemId) => {
@@ -1017,6 +1032,44 @@ export async function getAcademicTestProgressForStudent(student) {
     }
   });
 
+  configuredItems.forEach((item) => {
+    const attempts = schedulesByItem.get(item.id) || [];
+    const validAttempts = attempts.filter((schedule) => !schedule.retestStudentId || schedule.retestStudentId === student.id);
+    const testSchedule = validAttempts.findLast((schedule) => {
+      if (!reportScheduleHasEnded(schedule)) return false;
+      const submission = submissionByScheduleId.get(schedule.id);
+      const hasAssessment = (paperById.get(schedule.questionPaperId)?.questions || []).some((question) => question.questionType === "ASSESSMENT");
+      const status = text(submission?.status || "").toUpperCase();
+      return reportSubmissionIsFinal(submission, hasAssessment) && (status === "EVALUATED" || (status === "SUBMITTED" && !hasAssessment));
+    });
+    const submission = testSchedule ? submissionByScheduleId.get(testSchedule.id) : null;
+    const projectSchedule = validAttempts.find((schedule) => !schedule.isRetest);
+    const projectSubmission = projectSchedule ? projectSubmissionByScheduleId.get(projectSchedule.id) : null;
+    const projectTotal = Number(projectConfigByItemId.get(item.id)?.projectMarks || 0);
+    const hasTest = ["TEST", "TEST_AND_PROJECT"].includes(item.testType);
+    const hasProject = ["PROJECT", "TEST_AND_PROJECT"].includes(item.testType);
+    const testObtained = hasTest && submission?.obtainedMarks != null ? Number(submission.obtainedMarks) : 0;
+    const testTotal = hasTest && submission?.totalMarks != null ? Number(submission.totalMarks) : 0;
+    const projectObtained = hasProject && projectSubmission?.marksAwarded != null ? Number(projectSubmission.marksAwarded) : 0;
+    const totalMarks = testTotal + (hasProject ? projectTotal : 0);
+    const obtainedMarks = testObtained + projectObtained;
+    academicResults.push({
+      testNumber: Number(item.sequence),
+      testType: item.testType,
+      obtainedMarks,
+      totalMarks,
+      percentage: totalMarks > 0 ? Number(((obtainedMarks / totalMarks) * 100).toFixed(2)) : null,
+      testMarks: hasTest && submission?.obtainedMarks != null ? Number(submission.obtainedMarks) : null,
+      testTotalMarks: hasTest && submission?.totalMarks != null ? Number(submission.totalMarks) : null,
+      testResult: hasTest ? submission?.resultStatus || null : null,
+      projectMarks: hasProject && projectSubmission?.marksAwarded != null ? Number(projectSubmission.marksAwarded) : null,
+      projectTotalMarks: hasProject ? projectTotal : null,
+      projectResult: hasProject && projectSubmission?.marksAwarded != null && projectTotal > 0
+        ? (Number(projectSubmission.marksAwarded) >= projectTotal * 0.5 ? "PASS" : "FAIL")
+        : null,
+    });
+  });
+
   const totalTests = configuredItems.filter((item) => ["TEST", "TEST_AND_PROJECT"].includes(item.testType)).length;
   const completedTests = Math.min(totalTests, completedItemIds.size);
   const pendingTests = totalTests - completedTests;
@@ -1027,7 +1080,9 @@ export async function getAcademicTestProgressForStudent(student) {
   const totalEvaluations = configuredItems.length;
   const completedEvaluations = Math.min(totalEvaluations, completedEvaluationItemIds.size);
   const pendingEvaluations = totalEvaluations - completedEvaluations;
-  return { totalTests, completedTests, pendingTests, percentage: totalTests ? Math.round((completedTests / totalTests) * 100) : 100, totalProjects, completedProjects, pendingProjects, projectPercentage, totalEvaluations, completedEvaluations, pendingEvaluations, evaluationPercentage: totalEvaluations ? Math.round((completedEvaluations / totalEvaluations) * 100) : 0, projectsComplete: pendingProjects === 0, academicComplete: pendingEvaluations === 0 && totalEvaluations > 0 };
+  const marksTotal = academicResults.reduce((sum, result) => sum + Number(result.totalMarks || 0), 0);
+  const marksObtained = academicResults.reduce((sum, result) => sum + Number(result.obtainedMarks || 0), 0);
+  return { totalTests, completedTests, pendingTests, percentage: totalTests ? Math.round((completedTests / totalTests) * 100) : 100, totalProjects, completedProjects, pendingProjects, projectPercentage, totalEvaluations, completedEvaluations, pendingEvaluations, evaluationPercentage: totalEvaluations ? Math.round((completedEvaluations / totalEvaluations) * 100) : 0, projectsComplete: pendingProjects === 0, academicComplete: pendingEvaluations === 0 && totalEvaluations > 0, academicResults, marksObtained, marksTotal, marksPercentage: marksTotal > 0 ? Number(((marksObtained / marksTotal) * 100).toFixed(2)) : null };
 }
 export async function listAcademicReportBatches(actor) {
   const ids = facultyIds(actor);
@@ -1230,10 +1285,15 @@ export async function getBranchStudentAcademicReports(actor, studentId) {
     for (const test of row?.tests || []) {
       const final = test.final || {};
       const status = String(final.status || "").toUpperCase();
-      items.push({ id: `${share.id}:${test.testNumber}:${student.id}`, evaluationId: test.itemId || test.scheduleId, courseId: batch.branchCourseId || batch.courseId || null, courseName: batch.courseName, batchName: batch.batchName, testName: `Test ${test.testNumber}`, testType: test.testType, testDate: scheduleById.get(test.scheduleId)?.testDate || null, marksObtained: ["SUBMITTED", "EVALUATED"].includes(status) ? final.marksObtained : null, totalMarks: ["SUBMITTED", "EVALUATED"].includes(status) ? final.totalMarks : null, percentage: ["SUBMITTED", "EVALUATED"].includes(status) ? final.percentage : null, result: final.result || null, validationStatus: ["SUBMITTED", "EVALUATED"].includes(status) ? "VALIDATED" : "NOT_EVALUATED", status: ["SUBMITTED", "EVALUATED"].includes(status) ? "SUBMITTED" : "NOT_EVALUATED", projectPercentage: row.project?.percentage ?? null });
+      const testCompleted = ["SUBMITTED", "EVALUATED"].includes(status);
+      const projectRequired = String(test.testType || "").toUpperCase() === "TEST_AND_PROJECT";
+      const projectCompleted = !projectRequired || row.project?.percentage != null;
+      const evaluationCompleted = testCompleted && projectCompleted;
+      items.push({ id: `${share.id}:${test.testNumber}:${student.id}`, evaluationId: test.itemId || test.scheduleId, courseId: batch.branchCourseId || batch.courseId || null, courseName: batch.courseName, batchName: batch.batchName, testName: `Test ${test.testNumber}`, testType: test.testType, testDate: scheduleById.get(test.scheduleId)?.testDate || null, marksObtained: evaluationCompleted ? final.marksObtained : null, totalMarks: evaluationCompleted ? final.totalMarks : null, percentage: evaluationCompleted ? final.percentage : null, result: evaluationCompleted ? (final.result || null) : null, validationStatus: evaluationCompleted ? "VALIDATED" : "NOT_EVALUATED", status: evaluationCompleted ? "SUBMITTED" : "NOT_EVALUATED", projectPercentage: row.project?.percentage ?? null });
     }
     if (row?.project && !row.tests?.some((test) => test.testType === "PROJECT")) {
-      items.push({ id: `${share.id}:project:${student.id}`, evaluationId: `${share.id}:project`, courseId: batch.branchCourseId || batch.courseId || null, courseName: batch.courseName, batchName: batch.batchName, testName: "Project", testType: "PROJECT", percentage: row.project.percentage, status: row.project.status === "EVALUATED" ? "SUBMITTED" : "NOT_EVALUATED", result: row.project.result || null, validationStatus: row.project.percentage == null ? "NOT_EVALUATED" : "VALIDATED" });
+      const projectCompleted = row.project.percentage != null && ["SUBMITTED", "GRADED", "EVALUATED"].includes(String(row.project.status || "").toUpperCase());
+      items.push({ id: `${share.id}:project:${student.id}`, evaluationId: `${share.id}:project`, courseId: batch.branchCourseId || batch.courseId || null, courseName: batch.courseName, batchName: batch.batchName, testName: "Project", testType: "PROJECT", percentage: row.project.percentage, status: projectCompleted ? "SUBMITTED" : "NOT_EVALUATED", result: projectCompleted ? row.project.result || null : null, validationStatus: projectCompleted ? "VALIDATED" : "NOT_EVALUATED" });
     }
   }
   const evaluations = [];

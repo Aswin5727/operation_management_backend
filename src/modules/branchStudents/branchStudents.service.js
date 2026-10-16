@@ -2964,7 +2964,7 @@ export async function listBranchStudentLifecycle(query = {}, actor = null) {
         installment3: student.installments[2]?.amount ?? null,
         paidAmount, pendingAmount: Math.max(totalFees - paidAmount, 0), paymentMode: student.payments.length === 1 ? student.payments[0].paymentMode : student.payments.length > 1 ? "Multiple" : null, receiptNumber: student.payments.length === 1 ? student.payments[0].receiptNumber : null,
         studentStatus: isDiscontinued ? "Discontinued" : completionStatus, lifecycleStatus: isDiscontinued ? "DISCONTINUED" : completionStatus, courseProgress: effectiveCourseProgress, courseCompletedAt: enrollment.courseCompletedAt || null, remarks: request?.reason || student.remarks || null,
-        academicTests, discontinuationRequestId: request?.id || null,
+        academicTests, academicTestProgress: academicProgress, discontinuationRequestId: request?.id || null,
       })
     }
   }
