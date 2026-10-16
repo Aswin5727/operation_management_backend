@@ -1133,7 +1133,7 @@ async function getSuperAdminOverview(branchId = null, performanceOptions = {}) {
       if (due === today) summary.todayDue += unpaid;
       if (due === yesterday) summary.yesterdayDue += unpaid;
       if (due < today) summary.overdueAmount += unpaid;
-      if (due <= today) summary.dueStudents.add(student.id);
+      if (due.startsWith(currentMonth)) summary.dueStudents.add(student.id);
     });
   });
   payments.forEach((payment) => { const date = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Calcutta" }).format(new Date(payment.paymentDate)); if (date === today) summary.todayCollection += money(payment.amount); if (date === yesterday) summary.yesterdayCollection += money(payment.amount); });
