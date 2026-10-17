@@ -854,7 +854,7 @@ function reportResult(submission, schedule, passMark) {
   };
 }
 
-async function buildAcademicReport(actor, batch, requestedStudentIds = null, selectedScheduleIds = null, includeIncomplete = false) {
+async function buildAcademicReport(actor, batch, requestedStudentIds = null, selectedScheduleIds = null, includeIncomplete = false, excludeCompletedStudents = false) {
   let schedules = await prisma.academicScheduledTest.findMany({ where: { branchBatchId: batch.id }, orderBy: [{ testNumber: "asc" }, { attemptNumber: "asc" }, { createdAt: "asc" }] });
   if (Array.isArray(selectedScheduleIds) && selectedScheduleIds.length) {
     const selected = new Set(selectedScheduleIds.map(text));
@@ -866,11 +866,23 @@ async function buildAcademicReport(actor, batch, requestedStudentIds = null, sel
   const configuredItems = (await reportItemsForSchedules(batch, schedules.filter((schedule) => !schedule.isRetest && schedule.status !== "CANCELLED"))).filter(({ item }) => !retestItemIds.has(item.id) && (!originalItemIds.size || originalItemIds.has(item.id)));
   let configured = configuredItems.filter(({ item }) => ["TEST", "TEST_AND_PROJECT"].includes(item.testType));
   const projectItems = configuredItems.filter(({ item }) => ["PROJECT", "TEST_AND_PROJECT"].includes(item.testType));
-  const students = await prisma.branchStudent.findMany({
+  const allStudents = await prisma.branchStudent.findMany({
     where: { recordStatus: "ACTIVE", discontinuationRequests: { none: { status: "APPROVED" } }, OR: [{ batchId: batch.id }, { batchId: batch.batchId }, { courseEnrollments: { some: { status: "ACTIVE", batchId: { in: [batch.id, batch.batchId] } } } }], ...(requestedStudentIds ? { id: { in: requestedStudentIds } } : {}) },
     orderBy: { studentName: "asc" },
-    select: { id: true, studentId: true, studentName: true, emailAddress: true, batchId: true, batchName: true, batchTiming: true, courseName: true },
+    select: { id: true, studentId: true, studentName: true, emailAddress: true, batchId: true, batchName: true, batchTiming: true, courseName: true, branchId: true, courseId: true, courseProgress: true, courseEnrollments: { where: { status: "ACTIVE", batchId: { in: [batch.id, batch.batchId] } }, select: { batchId: true, courseId: true, courseProgress: true, courseCompletedAt: true } } },
   });
+  const completedStudentIds = new Set((await Promise.all(allStudents.map(async (student) => {
+    const enrollment = student.courseEnrollments?.[0];
+    const courseProgress = Number(enrollment?.courseProgress ?? student.courseProgress ?? 0);
+    const academicProgress = await getAcademicTestProgressForStudent({ ...student, batchId: enrollment?.batchId || student.batchId, courseId: enrollment?.courseId || student.courseId || batch.branchCourseId, courseProgress });
+    const isCourseCompleted = courseProgress >= 100
+      && Number(academicProgress.totalTests || 0) + Number(academicProgress.totalProjects || 0) > 0
+      && academicProgress.academicComplete === true
+      && Number(academicProgress.pendingTests || 0) === 0
+      && Number(academicProgress.pendingProjects || 0) === 0;
+    return isCourseCompleted ? student.id : null;
+  }))).filter(Boolean));
+  const students = excludeCompletedStudents ? allStudents.filter((student) => !completedStudentIds.has(student.id)) : allStudents;
   const studentIds = students.map((student) => student.id);
   await syncExpiredAcademicAttempts(schedules, studentIds);
   const scheduleIds = schedules.map((schedule) => schedule.id);
@@ -1155,7 +1167,9 @@ export async function listAcademicReportBatches(actor) {
 
 export async function getAcademicBatchReport(actor, batchId) {
   const batch = await reportBatchForFaculty(actor, batchId);
-  return buildAcademicReport(actor, batch);
+  const sentShare = await prisma.facultyReportShare.findFirst({ where: { batchId: batch.id, reportType: "ACADEMIC_TEST", status: "SENT" }, orderBy: { sentAt: "desc" }, select: { id: true, sentAt: true, academicTestIds: true } });
+  const report = await buildAcademicReport(actor, batch, null, null, false, Boolean(sentShare));
+  return { ...report, sentReport: sentShare ? { id: sentShare.id, sentAt: sentShare.sentAt, academicTestIds: Array.isArray(sentShare.academicTestIds) ? sentShare.academicTestIds : [] } : null };
 }
 
 export async function getMyAcademicReport(actor, courseId = "") {
