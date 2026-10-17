@@ -2533,7 +2533,7 @@ async function findBranchStudentLoginUser(student) {
       OR: [
         { userCode: student.studentId },
         ...(branchUserCode ? [{ userCode: branchUserCode }] : []),
-        { email: student.emailAddress },
+        ...(student.emailAddress ? [{ email: student.emailAddress }] : []),
       ],
     },
   });
@@ -2700,7 +2700,9 @@ export async function listBranchStudents(query = {}, actor = null) {
         return [entry.courseId, {
           academicTestProgress: progress,
           paidProgress,
-          status: courseCompletionFromProgressAndTests(entry.courseProgress, progress, paidProgress),
+          status: entry.courseCompletedAt
+            ? "COMPLETED"
+            : courseCompletionFromProgressAndTests(entry.courseProgress, progress, paidProgress),
         }];
       }));
       const byCourse = Object.fromEntries(entries);
@@ -2708,7 +2710,9 @@ export async function listBranchStudents(query = {}, actor = null) {
       const primary = byCourse[student.courseId] || {
         academicTestProgress: { totalTests: 0, completedTests: 0, pendingTests: 0, percentage: 0 },
         paidProgress: primaryPaidProgress,
-        status: courseCompletionFromProgressAndTests(student.courseProgress, null, primaryPaidProgress),
+        status: student.courseCompletedAt
+          ? "COMPLETED"
+          : courseCompletionFromProgressAndTests(student.courseProgress, null, primaryPaidProgress),
       };
       return [student.id, { ...primary, byCourse }];
     } catch (error) {
@@ -2996,7 +3000,9 @@ export async function listBranchStudentLifecycle(query = {}, actor = null) {
         ? await getAcademicTestProgressForStudent({ ...student, courseId: enrollment.courseId, batchId: enrollment.batchId || student.batchId, courseProgress: effectiveCourseProgress })
         : null
       const completionStatus = lifecycle === "COMPLETED"
-        ? courseCompletionFromProgressAndTests(effectiveCourseProgress, academicProgress)
+        ? (enrollment.courseCompletedAt
+          ? "COMPLETED"
+          : courseCompletionFromProgressAndTests(effectiveCourseProgress, academicProgress))
         : "DISCONTINUED"
       if (lifecycle === "COMPLETED" && completionStatus !== "COMPLETED") continue
       const attendance = student.calendarAttendanceRecords.filter((item) => !item.courseId || item.courseId === enrollment.courseId)
@@ -3774,22 +3780,35 @@ export async function deleteBranchStudent(studentId, actor = null) {
   const existingLoginUser = await findBranchStudentLoginUser(existing);
 
   await prisma.$transaction(async (tx) => {
-    await tx.branchStudentPayment.deleteMany({
+    // These submissions do not have a Prisma relation to BranchStudent, so
+    // they must be removed explicitly before the cascaded branch record.
+    const testSubmissions = await tx.academicTestSubmission.findMany({
       where: { branchStudentId: existing.id },
+      select: { id: true },
     });
+    await tx.academicTestAnswer.deleteMany({
+      where: { submissionId: { in: testSubmissions.map((item) => item.id) } },
+    });
+    await tx.academicTestSubmission.deleteMany({ where: { branchStudentId: existing.id } });
+    await tx.academicProjectSubmission.deleteMany({ where: { branchStudentId: existing.id } });
 
-    await tx.branchStudent.delete({
-      where: { id: existing.id },
-    });
+    // Payments reference installments, so remove them before the installment
+    // cascade. Ledger entries are also deleted explicitly for clarity.
+    await tx.branchStudentPayment.deleteMany({ where: { branchStudentId: existing.id } });
+    await tx.branchStudentLedgerEntry.deleteMany({ where: { branchStudentId: existing.id } });
+    await tx.branchStudentInstallment.deleteMany({ where: { branchStudentId: existing.id } });
+
+    // A retest/reassessment belongs to this student but is not deleted by the
+    // nullable SetNull relation on the parent academic configuration.
+    await tx.exam.deleteMany({ where: { retestStudentId: existing.id } });
+    await tx.assessment.deleteMany({ where: { reassessmentStudentId: existing.id } });
+
+    // Remaining branch-student relations use Cascade in the Prisma schema.
+    await tx.branchStudent.delete({ where: { id: existing.id } });
 
     if (existingLoginUser) {
-      await tx.passwordResetToken.deleteMany({
-        where: { userId: existingLoginUser.id },
-      });
-
-      await tx.user.delete({
-        where: { id: existingLoginUser.id },
-      });
+      await tx.passwordResetToken.deleteMany({ where: { userId: existingLoginUser.id } });
+      await tx.user.delete({ where: { id: existingLoginUser.id } });
     }
   });
 
