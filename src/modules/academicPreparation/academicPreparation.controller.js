@@ -9,6 +9,7 @@ function makePdf(lines) {
 }
 export const list = asyncHandler(async (req, res) => send(res, await service.listPreparation(req.user, req.query)));
 export const get = asyncHandler(async (req, res) => send(res, await service.getPreparation(req.user, req.params.academicTestItemId, req.query.branchBatchId)));
+export const createCycle = asyncHandler(async (req, res) => send(res, await service.startNewCycle(req.user, req.body), 201));
 export const createPaper = asyncHandler(async (req, res) => send(res, await service.saveQuestionPaper(req.user, req.body), 201));
 export const updatePaper = asyncHandler(async (req, res) => send(res, await service.saveQuestionPaper(req.user, req.body, req.params.id)));
 export const removePaper = asyncHandler(async (req, res) => send(res, await service.deleteQuestionPaper(req.user, req.params.id)));

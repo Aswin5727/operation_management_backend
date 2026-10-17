@@ -3615,9 +3615,6 @@ export async function updateBranchStudent(studentId, payload, actor = null) {
     const studentUpdateData = {
       ...studentData,
       updatedBy: actor?.id ?? null,
-      ...(Number(studentData.courseProgress) >= 100 && !existing.courseCompletedAt
-        ? { courseCompletedAt: new Date() }
-        : {}),
     };
     const student = await tx.branchStudent.update({
       where: { id: existing.id },

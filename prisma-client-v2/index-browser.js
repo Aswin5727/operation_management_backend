@@ -475,6 +475,7 @@ exports.Prisma.AcademicQuestionPaperScalarFieldEnum = {
   academicTestItemId: 'academicTestItemId',
   branchCourseId: 'branchCourseId',
   branchBatchId: 'branchBatchId',
+  cycleId: 'cycleId',
   createdBy: 'createdBy',
   status: 'status',
   marksPerQuestion: 'marksPerQuestion',
@@ -506,6 +507,7 @@ exports.Prisma.AcademicTestProjectScalarFieldEnum = {
   academicTestItemId: 'academicTestItemId',
   branchCourseId: 'branchCourseId',
   branchBatchId: 'branchBatchId',
+  cycleId: 'cycleId',
   createdBy: 'createdBy',
   status: 'status',
   projectTitle: 'projectTitle',
@@ -521,6 +523,7 @@ exports.Prisma.AcademicScheduledTestScalarFieldEnum = {
   academicTestItemId: 'academicTestItemId',
   branchCourseId: 'branchCourseId',
   branchBatchId: 'branchBatchId',
+  cycleId: 'cycleId',
   facultyId: 'facultyId',
   questionPaperId: 'questionPaperId',
   testNumber: 'testNumber',
@@ -538,6 +541,16 @@ exports.Prisma.AcademicScheduledTestScalarFieldEnum = {
   createdBy: 'createdBy',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
+};
+
+exports.Prisma.AcademicTestCycleScalarFieldEnum = {
+  id: 'id',
+  academicTestItemId: 'academicTestItemId',
+  branchBatchId: 'branchBatchId',
+  cycleNumber: 'cycleNumber',
+  status: 'status',
+  createdBy: 'createdBy',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.AcademicTestSubmissionScalarFieldEnum = {
@@ -1572,6 +1585,7 @@ exports.Prisma.ModelName = {
   AcademicQuestion: 'AcademicQuestion',
   AcademicTestProject: 'AcademicTestProject',
   AcademicScheduledTest: 'AcademicScheduledTest',
+  AcademicTestCycle: 'AcademicTestCycle',
   AcademicTestSubmission: 'AcademicTestSubmission',
   AcademicProjectSubmission: 'AcademicProjectSubmission',
   AcademicTestAnswer: 'AcademicTestAnswer',

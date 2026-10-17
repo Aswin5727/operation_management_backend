@@ -8,6 +8,7 @@ const router = express.Router();
 router.use(authenticate, authorize(USER_ROLES.FACULTY));
 router.get("/", controller.list);
 router.get("/items/:academicTestItemId", controller.get);
+router.post("/cycles", controller.createCycle);
 router.post("/question-papers", controller.createPaper);
 router.put("/question-papers/:id", controller.updatePaper);
 router.delete("/question-papers/:id", controller.removePaper);

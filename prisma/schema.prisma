@@ -479,6 +479,7 @@ model BranchBatch {
   academicTestBatches    AcademicTestBatch[]
   academicQuestionPapers AcademicQuestionPaper[]
   academicTestProjects   AcademicTestProject[]
+  academicTestCycles      AcademicTestCycle[]
 
   @@unique([branchId, courseId, facultyId, batchId])
   @@index([branchId])
@@ -530,6 +531,7 @@ model AcademicTestItem {
   academicTest     AcademicTest            @relation(fields: [academicTestId], references: [id], onDelete: Cascade)
   questionPapers   AcademicQuestionPaper[]
   projects         AcademicTestProject[]
+  cycles           AcademicTestCycle[]
 
   @@unique([academicTestId, sequence])
   @@index([academicTestId])
@@ -551,6 +553,7 @@ model AcademicQuestionPaper {
   academicTestItemId String
   branchCourseId     String
   branchBatchId      String
+  cycleId            String
   createdBy          String
   status             AcademicPreparationStatus @default(DRAFT)
   marksPerQuestion   Int                       @default(1)
@@ -563,8 +566,9 @@ model AcademicQuestionPaper {
   branchCourse       BranchCourse              @relation(fields: [branchCourseId], references: [id], onDelete: Cascade)
   branchBatch        BranchBatch               @relation(fields: [branchBatchId], references: [id], onDelete: Cascade)
   questions          AcademicQuestion[]
+  cycle              AcademicTestCycle       @relation(fields: [cycleId], references: [id], onDelete: Cascade)
 
-  @@unique([academicTestItemId, branchBatchId])
+  @@unique([academicTestItemId, branchBatchId, cycleId])
   @@index([branchCourseId, branchBatchId])
   @@index([createdBy])
 }
@@ -594,6 +598,7 @@ model AcademicTestProject {
   academicTestItemId  String
   branchCourseId      String
   branchBatchId       String
+  cycleId             String
   createdBy           String
   status              AcademicPreparationStatus @default(DRAFT)
   projectTitle        String                    @default("")
@@ -605,8 +610,9 @@ model AcademicTestProject {
   academicTestItem    AcademicTestItem          @relation(fields: [academicTestItemId], references: [id], onDelete: Cascade)
   branchCourse        BranchCourse              @relation(fields: [branchCourseId], references: [id], onDelete: Cascade)
   branchBatch         BranchBatch               @relation(fields: [branchBatchId], references: [id], onDelete: Cascade)
+  cycle               AcademicTestCycle          @relation(fields: [cycleId], references: [id], onDelete: Cascade)
 
-  @@unique([academicTestItemId, branchBatchId])
+  @@unique([academicTestItemId, branchBatchId, cycleId])
   @@index([branchCourseId, branchBatchId])
   @@index([createdBy])
 }
@@ -616,6 +622,7 @@ model AcademicScheduledTest {
   academicTestItemId String
   branchCourseId     String
   branchBatchId      String
+  cycleId            String
   facultyId          String
   questionPaperId    String?
   testNumber         Int
@@ -633,13 +640,32 @@ model AcademicScheduledTest {
   createdBy          String
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
+  cycle              AcademicTestCycle @relation(fields: [cycleId], references: [id], onDelete: Cascade)
 
-  @@unique([academicTestItemId, branchBatchId])
+  @@unique([academicTestItemId, branchBatchId, cycleId])
   @@index([branchBatchId, testDate])
   @@index([facultyId])
   @@index([questionPaperId])
   @@index([originalScheduleId, retestStudentId])
   @@index([parentScheduleId])
+}
+
+model AcademicTestCycle {
+  id               String                 @id @default(cuid())
+  academicTestItemId String
+  branchBatchId    String
+  cycleNumber      Int
+  status           String                 @default("ACTIVE")
+  createdBy        String
+  createdAt        DateTime               @default(now())
+  academicTestItem AcademicTestItem       @relation(fields: [academicTestItemId], references: [id], onDelete: Cascade)
+  branchBatch      BranchBatch             @relation(fields: [branchBatchId], references: [id], onDelete: Cascade)
+  questionPapers   AcademicQuestionPaper[]
+  projects         AcademicTestProject[]
+  schedules        AcademicScheduledTest[]
+
+  @@unique([academicTestItemId, branchBatchId, cycleNumber])
+  @@index([academicTestItemId, branchBatchId, status])
 }
 
 model AcademicTestSubmission {
