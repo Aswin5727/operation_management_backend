@@ -732,7 +732,7 @@ export async function evaluateFacultyAssessment(actor, scheduleId, studentId, pa
 
 export async function scheduleFacultyAcademicRetest(actor, id, payload = {}) {
   const ids = facultyIds(actor);
-  const original = await prisma.academicScheduledTest.findFirst({ where: { id: text(id), facultyId: { in: ids } } });
+  const original = await prisma.academicScheduledTest.findFirst({ where: { id: text(id), facultyId: { in: ids } }, include: { cycle: { select: { batchCycleId: true } } } });
   if (!original) throw new AppError("Academic Test schedule not found.", 404);
   if (original.status === "CANCELLED" || scheduleInstant(original.testDate, original.endTime) > Date.now()) throw new AppError("Retest can be scheduled only after the original test has ended.", 409);
 
@@ -762,7 +762,7 @@ export async function scheduleFacultyAcademicRetest(actor, id, payload = {}) {
     if (!sourcePaper) throw new AppError("Original question paper not found.", 404);
     const sequence = ((await tx.academicTestItem.aggregate({ where: { academicTestId: sourceItem.academicTestId }, _max: { sequence: true } }))._max.sequence || 0) + 1;
     const retestItem = await tx.academicTestItem.create({ data: { academicTestId: sourceItem.academicTestId, sequence, testType: sourceItem.testType, requiredProgress: sourceItem.requiredProgress } });
-    const retestCycle = await tx.academicTestCycle.create({ data: { academicTestItemId: retestItem.id, branchBatchId: original.branchBatchId, cycleNumber: 1, createdBy: actor.id } });
+    const retestCycle = await tx.academicTestCycle.create({ data: { academicTestItemId: retestItem.id, branchBatchId: original.branchBatchId, cycleNumber: 1, batchCycleId: original.cycle.batchCycleId, createdBy: actor.id } });
     const retestPaper = await tx.academicQuestionPaper.create({ data: { academicTestItemId: retestItem.id, branchCourseId: original.branchCourseId, branchBatchId: original.branchBatchId, cycleId: retestCycle.id, createdBy: actor.id, status: sourcePaper.status, marksPerQuestion: sourcePaper.marksPerQuestion, totalQuestions: sourcePaper.totalQuestions, totalMarks: sourcePaper.totalMarks, passMark: sourcePaper.passMark } });
     if (sourcePaper.questions.length) await tx.academicQuestion.createMany({ data: sourcePaper.questions.map((question) => ({ questionPaperId: retestPaper.id, questionNumber: question.questionNumber, questionType: question.questionType, questionText: question.questionText, optionA: question.optionA, optionB: question.optionB, optionC: question.optionC, optionD: question.optionD, correctAnswer: question.correctAnswer, marks: question.marks })) });
     return tx.academicScheduledTest.create({ data: { academicTestItemId: retestItem.id, branchCourseId: original.branchCourseId, branchBatchId: original.branchBatchId, cycleId: retestCycle.id, facultyId: original.facultyId, questionPaperId: retestPaper.id, testNumber: original.testNumber, testDate: date, startTime, endTime, status: "SCHEDULED", isRetest: true, originalScheduleId: original.originalScheduleId || original.id, parentScheduleId: original.id, attemptNumber: (original.attemptNumber || 1) + 1, retestStudentId: student.id, createdBy: actor.id } });
@@ -854,22 +854,32 @@ function reportResult(submission, schedule, passMark) {
   };
 }
 
-async function buildAcademicReport(actor, batch, requestedStudentIds = null, selectedScheduleIds = null, includeIncomplete = false, excludeCompletedStudents = false) {
+async function buildAcademicReport(actor, batch, requestedStudentIds = null, selectedScheduleIds = null, includeIncomplete = false, excludeCompletedStudents = false, exactSelectedSchedules = false) {
   let schedules = await prisma.academicScheduledTest.findMany({ where: { branchBatchId: batch.id }, orderBy: [{ testNumber: "asc" }, { attemptNumber: "asc" }, { createdAt: "asc" }] });
   if (Array.isArray(selectedScheduleIds) && selectedScheduleIds.length) {
     const selected = new Set(selectedScheduleIds.map(text));
-    const selectedNumbers = new Set(schedules.filter((schedule) => !schedule.isRetest && selected.has(schedule.id)).map((schedule) => schedule.testNumber));
+    const selectedNumbers = exactSelectedSchedules
+      ? new Set()
+      : new Set(schedules.filter((schedule) => !schedule.isRetest && selected.has(schedule.id)).map((schedule) => schedule.testNumber));
     schedules = schedules.filter((schedule) => selected.has(schedule.id) || selectedNumbers.has(schedule.testNumber));
   }
   const retestItemIds = new Set(schedules.filter((schedule) => schedule.isRetest && schedule.status !== "CANCELLED").map((schedule) => schedule.academicTestItemId));
   const originalItemIds = new Set(schedules.filter((schedule) => !schedule.isRetest && schedule.status !== "CANCELLED").map((schedule) => schedule.academicTestItemId));
+  const cycleIds = [...new Set(schedules.filter((schedule) => !schedule.isRetest && schedule.status !== "CANCELLED").map((schedule) => schedule.cycleId).filter(Boolean))];
   const configuredItems = (await reportItemsForSchedules(batch, schedules.filter((schedule) => !schedule.isRetest && schedule.status !== "CANCELLED"))).filter(({ item }) => !retestItemIds.has(item.id) && (!originalItemIds.size || originalItemIds.has(item.id)));
   let configured = configuredItems.filter(({ item }) => ["TEST", "TEST_AND_PROJECT"].includes(item.testType));
   const projectItems = configuredItems.filter(({ item }) => ["PROJECT", "TEST_AND_PROJECT"].includes(item.testType));
+  const cycleEnrollmentFilter = cycleIds.length
+    ? { status: "ACTIVE", batchId: { in: [batch.id, batch.batchId] }, batchCycleId: { in: cycleIds } }
+    : { status: "ACTIVE", batchId: { in: [batch.id, batch.batchId] } };
   const allStudents = await prisma.branchStudent.findMany({
-    where: { recordStatus: "ACTIVE", discontinuationRequests: { none: { status: "APPROVED" } }, OR: [{ batchId: batch.id }, { batchId: batch.batchId }, { courseEnrollments: { some: { status: "ACTIVE", batchId: { in: [batch.id, batch.batchId] } } } }], ...(requestedStudentIds ? { id: { in: requestedStudentIds } } : {}) },
+    // Keep the current batch relationship as a valid source even when the
+    // schedules have a cycleId. Some existing enrollments are linked to the
+    // batch directly and do not carry the cycle id, which otherwise makes the
+    // report detail page show the batch with zero students.
+    where: { recordStatus: "ACTIVE", discontinuationRequests: { none: { status: "APPROVED" } }, OR: [{ batchId: batch.id }, { batchId: batch.batchId }, { courseEnrollments: { some: cycleEnrollmentFilter } }], ...(requestedStudentIds ? { id: { in: requestedStudentIds } } : {}) },
     orderBy: { studentName: "asc" },
-    select: { id: true, studentId: true, studentName: true, emailAddress: true, batchId: true, batchName: true, batchTiming: true, courseName: true, branchId: true, courseId: true, courseProgress: true, courseEnrollments: { where: { status: "ACTIVE", batchId: { in: [batch.id, batch.batchId] } }, select: { batchId: true, courseId: true, courseProgress: true, courseCompletedAt: true } } },
+    select: { id: true, studentId: true, studentName: true, emailAddress: true, batchId: true, batchName: true, batchTiming: true, courseName: true, branchId: true, courseId: true, courseProgress: true, courseEnrollments: { where: cycleEnrollmentFilter, select: { batchId: true, batchCycleId: true, courseId: true, courseProgress: true, courseCompletedAt: true } } },
   });
   const completedStudentIds = new Set((await Promise.all(allStudents.map(async (student) => {
     const enrollment = student.courseEnrollments?.[0];
@@ -968,6 +978,8 @@ export async function getAcademicTestProgressForStudent(student) {
   if (!batch) return empty;
   const courseId = student.courseId || batch.branchCourseId;
   if (!courseId || (batch.branchCourseId && batch.branchCourseId !== courseId)) return empty;
+  const activeBatchCycle = await prisma.batchCycle.findFirst({ where: { batchId: batch.id, status: "ACTIVE" }, orderBy: { cycleNumber: "desc" }, select: { id: true } });
+  const cycleScope = activeBatchCycle ? { cycle: { batchCycleId: activeBatchCycle.id } } : {};
 
   const configuredRows = await prisma.academicTest.findMany({
     where: { branchCourseId: courseId, batches: { some: { branchBatchId: batch.id } } },
@@ -977,7 +989,7 @@ export async function getAcademicTestProgressForStudent(student) {
     },
   });
   const retestSchedules = await prisma.academicScheduledTest.findMany({
-    where: { branchBatchId: batch.id, isRetest: true, status: { not: "CANCELLED" } },
+    where: { branchBatchId: batch.id, ...cycleScope, isRetest: true, status: { not: "CANCELLED" } },
     select: { id: true, academicTestItemId: true, testNumber: true, status: true, isRetest: true, retestStudentId: true, originalScheduleId: true, parentScheduleId: true, questionPaperId: true, testDate: true, endTime: true, attemptNumber: true },
   });
   const retestItemIds = new Set(retestSchedules.map((schedule) => schedule.academicTestItemId));
@@ -991,7 +1003,7 @@ export async function getAcademicTestProgressForStudent(student) {
 
   const itemIds = configuredItems.map((item) => item.id);
   const schedules = await prisma.academicScheduledTest.findMany({
-    where: { branchBatchId: batch.id, academicTestItemId: { in: itemIds }, status: { not: "CANCELLED" } },
+    where: { branchBatchId: batch.id, academicTestItemId: { in: itemIds }, ...cycleScope, status: { not: "CANCELLED" } },
     orderBy: [{ testNumber: "asc" }, { attemptNumber: "asc" }, { createdAt: "asc" }],
     select: { id: true, academicTestItemId: true, testNumber: true, status: true, isRetest: true, retestStudentId: true, questionPaperId: true, testDate: true, endTime: true },
   });
@@ -1017,7 +1029,7 @@ export async function getAcademicTestProgressForStudent(student) {
     prisma.academicQuestionPaper.findMany({ where: { id: { in: relevantSchedules.map((schedule) => schedule.questionPaperId).filter(Boolean) } }, select: { id: true, questions: { select: { questionType: true } } } }),
     prisma.academicTestSubmission.findMany({ where: { academicTestId: { in: relevantSchedules.map((schedule) => schedule.id) }, branchStudentId: student.id } }),
     prisma.academicProjectSubmission.findMany({ where: { academicTestId: { in: relevantSchedules.map((schedule) => schedule.id) }, branchStudentId: student.id }, select: { academicTestId: true, status: true, marksAwarded: true } }),
-    prisma.academicTestProject.findMany({ where: { academicTestItemId: { in: itemIds }, branchBatchId: batch.id }, select: { academicTestItemId: true, projectMarks: true } }).catch(() => []),
+    prisma.academicTestProject.findMany({ where: { academicTestItemId: { in: itemIds }, branchBatchId: batch.id, ...cycleScope }, select: { academicTestItemId: true, projectMarks: true } }).catch(() => []),
   ]);
   const paperById = new Map(papers.map((paper) => [paper.id, paper]));
   const submissionByScheduleId = new Map(submissions.map((submission) => [submission.academicTestId, submission]));
@@ -1226,11 +1238,47 @@ export async function sendAcademicTestReport(actor, payload = {}) {
   const batch = await reportBatchForFaculty(actor, payload.batchId);
   const selectedIds = [...new Set((Array.isArray(payload.academicTestIds) ? payload.academicTestIds : []).map(text).filter(Boolean))];
   if (!selectedIds.length) throw new AppError("Select at least one completed test to send.", 422);
-  const schedules = await prisma.academicScheduledTest.findMany({ where: { id: { in: selectedIds }, branchBatchId: batch.id, isRetest: false, status: { not: "CANCELLED" } }, select: { id: true, testNumber: true, testDate: true, status: true, endTime: true } });
+  const schedules = await prisma.academicScheduledTest.findMany({ where: { id: { in: selectedIds }, branchBatchId: batch.id, isRetest: false, status: { not: "CANCELLED" } }, select: { id: true, academicTestItemId: true, testNumber: true, testDate: true, status: true, endTime: true, cycle: { select: { batchCycleId: true } } } });
   if (schedules.length !== selectedIds.length) throw new AppError("One or more selected tests are not valid for this batch.", 422);
   const incomplete = schedules.filter((schedule) => schedule.status !== "COMPLETED" && new Date(`${schedule.testDate}T${schedule.endTime || "23:59"}:00`) > new Date());
   if (incomplete.length) throw new AppError("Only completed tests can be sent to the Branch Admin.", 422);
-  const share = await prisma.facultyReportShare.create({ data: { facultyId: actor.id, branchId: batch.branchId, batchId: batch.id, courseId: batch.branchCourseId, testModuleIds: [], assessmentModuleIds: [], academicTestIds: selectedIds, reportType: "ACADEMIC_TEST" } });
+  const snapshots = await Promise.all(schedules.map(async (schedule) => {
+      // Include retest schedules for the selected original test so the sent
+      // snapshot uses the same final attempt/marks shown in the faculty report.
+      const report = await buildAcademicReport(actor, batch, null, [schedule.id], true, false, false);
+    const tests = (report.tests || []).filter((test) => test.scheduleId === schedule.id);
+    return {
+      schedule,
+      reportData: {
+        batch: report.batch,
+        course: report.course,
+        tests,
+        hasProject: Boolean(report.hasProject),
+        projectItems: report.projectItems || [],
+        students: (report.students || []).map((row) => ({
+          student: row.student,
+          tests: (row.tests || []).filter((test) => test.scheduleId === schedule.id),
+          projects: row.projects || [],
+          overallTestPercentage: row.overallTestPercentage,
+          overallProjectPercentage: row.overallProjectPercentage,
+        })),
+      },
+    };
+  }));
+  const share = await prisma.$transaction(async (tx) => {
+    const createdShare = await tx.facultyReportShare.create({ data: { facultyId: actor.id, branchId: batch.branchId, batchId: batch.id, courseId: batch.branchCourseId, testModuleIds: [], assessmentModuleIds: [], academicTestIds: selectedIds, reportType: "ACADEMIC_TEST" } });
+    for (const snapshot of snapshots) {
+      const history = await tx.academicTestReportHistory.upsert({
+        where: { batchCycleId_academicTestId: { batchCycleId: snapshot.schedule.cycle.batchCycleId, academicTestId: snapshot.schedule.academicTestItemId } },
+        create: { batchId: batch.id, batchCycleId: snapshot.schedule.cycle.batchCycleId, academicTestId: snapshot.schedule.academicTestItemId },
+        update: {},
+      });
+      await tx.academicTestReportSubmission.create({
+        data: { historyId: history.id, facultyId: actor.id, sourceShareId: createdShare.id, scheduleId: snapshot.schedule.id, reportData: snapshot.reportData, submittedAt: createdShare.sentAt },
+      });
+    }
+    return createdShare;
+  });
   const branch = await prisma.branch.findUnique({ where: { id: batch.branchId }, select: { adminUserId: true, branchName: true, branchEmail: true } });
   await createNotification({ kind: "FACULTY_REPORT_SHARED", tone: "blue", title: "Academic test report shared", message: `${actor.fullName || "Faculty"} shared an Academic Test report for ${batch.batchName}.`, actionLabel: "View report", targetBranchId: batch.branchId, targetBranchEmail: branch?.branchEmail, targetBranchName: branch?.branchName, targetUserId: branch?.adminUserId || null, createdBy: actor.id, batchId: batch.id, branchCourseId: batch.branchCourseId, facultyId: actor.id, facultyName: actor.fullName });
   return { id: share.id, sentAt: share.sentAt, batch: { id: batch.id, batchId: batch.batchId, name: batch.batchName }, academicTestIds: selectedIds };
@@ -1243,16 +1291,56 @@ async function branchReportScope(actor) {
 
 export async function listBranchAcademicTestReports(actor) {
   const branchId = await branchReportScope(actor);
-  const shares = await prisma.facultyReportShare.findMany({ where: { branchId, reportType: "ACADEMIC_TEST", status: "SENT" }, orderBy: { sentAt: "desc" } });
-  const batchIds = shares.map((share) => share.batchId);
-  const facultyIds = shares.map((share) => share.facultyId);
+  const histories = await prisma.academicTestReportHistory.findMany({ where: { batch: { branchId }, submissions: { some: {} } }, orderBy: { updatedAt: "desc" }, include: { batch: { select: { id: true, batchId: true, batchName: true, batchTiming: true, courseName: true, branchCourseId: true, courseId: true } }, batchCycle: { select: { id: true, cycleNumber: true, cycleName: true, status: true, startDate: true, endDate: true } }, academicTest: { select: { id: true, sequence: true, testType: true } }, submissions: { orderBy: { submittedAt: "desc" }, select: { id: true, facultyId: true, sourceShareId: true, submittedAt: true } } } });
+  const batchIds = histories.map((history) => history.batchId);
+  const facultyIds = histories.flatMap((history) => history.submissions.map((submission) => submission.facultyId).filter(Boolean));
   const [batches, faculties] = await Promise.all([
     prisma.branchBatch.findMany({ where: { id: { in: batchIds } }, select: { id: true, batchId: true, batchName: true, batchTiming: true, courseName: true, branchCourseId: true, courseId: true } }),
     prisma.user.findMany({ where: { id: { in: facultyIds } }, select: { id: true, fullName: true } }),
   ]);
   const batchMap = new Map(batches.map((batch) => [batch.id, batch]));
   const facultyMap = new Map(faculties.map((faculty) => [faculty.id, faculty]));
-  return shares.map((share) => ({ ...share, academicTestIds: Array.isArray(share.academicTestIds) ? share.academicTestIds : [], batch: batchMap.get(share.batchId), faculty: facultyMap.get(share.facultyId) }));
+  return histories.map((history) => {
+    const latest = history.submissions[0] || null;
+    return { id: history.id, historyId: history.id, batchId: history.batchId, batchCycleId: history.batchCycleId, academicTestId: history.academicTestId, academicTestIds: [history.academicTestId], testNumber: history.academicTest.sequence, testType: history.academicTest.testType, submissionCount: history.submissions.length, latestSubmittedAt: latest?.submittedAt || history.updatedAt, sentAt: latest?.submittedAt || history.updatedAt, batch: history.batch, cycle: history.batchCycle, faculty: facultyMap.get(latest?.facultyId), latestSubmissionId: latest?.id || null };
+  });
+}
+
+export async function getBranchAcademicTestReportHistory(actor, historyId) {
+  const branchId = await branchReportScope(actor);
+  const history = await prisma.academicTestReportHistory.findFirst({
+    where: { id: text(historyId), batch: { branchId } },
+    include: {
+      batch: { select: { id: true, batchId: true, batchName: true, batchTiming: true, courseName: true, branchCourseId: true, courseId: true } },
+      batchCycle: { select: { id: true, cycleNumber: true, cycleName: true, status: true, startDate: true, endDate: true } },
+      academicTest: { select: { id: true, sequence: true, testType: true } },
+      submissions: { orderBy: { submittedAt: "desc" }, select: { id: true, facultyId: true, sourceShareId: true, scheduleId: true, reportData: true, submittedAt: true, createdAt: true } },
+    },
+  });
+  if (!history) throw new AppError("Academic test report history not found.", 404);
+  const facultyIds = [...new Set(history.submissions.map((submission) => submission.facultyId).filter(Boolean))];
+  const faculties = facultyIds.length ? await prisma.user.findMany({ where: { id: { in: facultyIds } }, select: { id: true, fullName: true, email: true } }) : [];
+  const facultyMap = new Map(faculties.map((faculty) => [faculty.id, faculty]));
+  const refreshedSubmissions = await Promise.all(history.submissions.map(async (submission) => {
+    if (!submission.scheduleId) return submission;
+    const snapshotStudents = Array.isArray(submission.reportData?.students)
+      ? submission.reportData.students.map((row) => row?.student?.id).filter(Boolean)
+      : [];
+    try {
+      const currentReport = await buildAcademicReport(actor, history.batch, snapshotStudents.length ? snapshotStudents : null, [submission.scheduleId], true, false, false);
+      return { ...submission, reportData: { ...(submission.reportData || {}), ...currentReport } };
+    } catch {
+      return submission;
+    }
+  }));
+  return {
+    id: history.id,
+    historyId: history.id,
+    batch: history.batch,
+    cycle: history.batchCycle,
+    academicTest: history.academicTest,
+    submissions: refreshedSubmissions.map((submission) => ({ ...submission, faculty: facultyMap.get(submission.facultyId) || null })),
+  };
 }
 
 export async function getBranchAcademicTestReport(actor, shareId) {
@@ -1261,7 +1349,31 @@ export async function getBranchAcademicTestReport(actor, shareId) {
   if (!share) throw new AppError("Academic test report not found.", 404);
   const batch = await prisma.branchBatch.findUnique({ where: { id: share.batchId }, select: { id: true, batchId: true, batchName: true, batchTiming: true, courseName: true, branchCourseId: true, courseId: true } });
   if (!batch) throw new AppError("Report batch not found.", 404);
-  const report = await buildAcademicReport(actor, batch, null, Array.isArray(share.academicTestIds) ? share.academicTestIds : []);
+  // A Branch Admin report is a sent snapshot. Use the students that actually
+  // have a submission in this sent report, rather than the current active
+  // students in the batch (which may belong to a later course cycle).
+  const selectedScheduleIds = Array.isArray(share.academicTestIds) ? share.academicTestIds : [];
+  const [testSubmissionStudents, projectSubmissionStudents] = await Promise.all([
+    selectedScheduleIds.length
+      ? prisma.academicTestSubmission.findMany({ where: { academicTestId: { in: selectedScheduleIds } }, select: { branchStudentId: true } })
+      : [],
+    selectedScheduleIds.length
+      ? prisma.academicProjectSubmission.findMany({ where: { academicTestId: { in: selectedScheduleIds } }, select: { branchStudentId: true } })
+      : [],
+  ]);
+  const snapshotStudentIds = [...new Set([
+    ...testSubmissionStudents.map((submission) => submission.branchStudentId),
+    ...projectSubmissionStudents.map((submission) => submission.branchStudentId),
+  ].filter(Boolean))];
+  const report = await buildAcademicReport(
+    actor,
+    batch,
+    snapshotStudentIds.length ? snapshotStudentIds : null,
+    selectedScheduleIds,
+    true,
+    false,
+    true,
+  );
   return { ...report, share: { id: share.id, sentAt: share.sentAt, facultyId: share.facultyId } };
 }
 

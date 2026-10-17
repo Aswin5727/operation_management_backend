@@ -35,8 +35,23 @@ function getItemPublic(item, course, batch, paper, project) { return { academicT
 async function activeCycle(itemId, batchId, actorId = "system", tx = prisma) {
   const current = await tx.academicTestCycle.findFirst({ where: { academicTestItemId: itemId, branchBatchId: batchId, status: "ACTIVE" }, orderBy: { cycleNumber: "desc" } });
   if (current) return current;
+  let batchCycle = await tx.batchCycle.findFirst({ where: { batchId, status: "ACTIVE" }, orderBy: { cycleNumber: "desc" } });
+  if (!batchCycle) {
+    const latestBatchCycle = await tx.batchCycle.findFirst({ where: { batchId }, orderBy: { cycleNumber: "desc" }, select: { cycleNumber: true } });
+    if (latestBatchCycle) throw new AppError("This batch has no active intake cycle. Start a new intake before preparing tests.", 409);
+    batchCycle = await tx.batchCycle.upsert({
+      where: { batchId_cycleNumber: { batchId, cycleNumber: 1 } },
+      update: { status: "ACTIVE" },
+      create: { batchId, cycleNumber: 1, cycleName: "Cycle 1", status: "ACTIVE" },
+    });
+  }
   const latest = await tx.academicTestCycle.findFirst({ where: { academicTestItemId: itemId, branchBatchId: batchId }, orderBy: { cycleNumber: "desc" }, select: { cycleNumber: true } });
-  return tx.academicTestCycle.create({ data: { academicTestItemId: itemId, branchBatchId: batchId, cycleNumber: Number(latest?.cycleNumber || 0) + 1, createdBy: actorId } });
+  const cycleNumber = Number(latest?.cycleNumber || 0) + 1;
+  return tx.academicTestCycle.upsert({
+    where: { academicTestItemId_branchBatchId_cycleNumber: { academicTestItemId: itemId, branchBatchId: batchId, cycleNumber } },
+    update: { status: "ACTIVE", batchCycleId: batchCycle.id },
+    create: { academicTestItemId: itemId, branchBatchId: batchId, cycleNumber, batchCycleId: batchCycle.id, createdBy: actorId },
+  });
 }
 
 async function cycleProgress(item, batchId) {
@@ -49,35 +64,54 @@ async function cycleProgress(item, batchId) {
 
 async function courseProgressForBatch(batch) {
   const batchKeys = [batch.id, batch.batchId].map(text).filter(Boolean);
+  const activeBatchCycle = await prisma.batchCycle.findFirst({ where: { batchId: batch.id, status: "ACTIVE" }, orderBy: { cycleNumber: "desc" }, select: { id: true } });
+  const enrollmentWhere = activeBatchCycle
+    ? { status: "ACTIVE", batchId: { in: batchKeys }, batchCycleId: activeBatchCycle.id }
+    : { status: "ACTIVE", batchId: { in: batchKeys } };
   const [students, schedules] = await Promise.all([prisma.branchStudent.findMany({
     where: {
       recordStatus: "ACTIVE",
       discontinuationRequests: { none: { status: "APPROVED" } },
-      OR: [
-        { batchId: { in: batchKeys } },
-        { courseEnrollments: { some: { status: "ACTIVE", batchId: { in: batchKeys } } } },
-      ],
+      OR: activeBatchCycle ? [{ courseEnrollments: { some: enrollmentWhere } }] : [{ batchId: { in: batchKeys } }, { courseEnrollments: { some: enrollmentWhere } }],
     },
     select: {
       courseProgress: true,
-      courseEnrollments: { where: { status: "ACTIVE", batchId: { in: batchKeys } }, select: { courseProgress: true } },
+      courseEnrollments: { where: enrollmentWhere, select: { courseProgress: true } },
     },
-  }), prisma.academicScheduledTest.findMany({ where: { branchBatchId: batch.id, isRetest: false, status: { not: "CANCELLED" } }, select: { status: true } })]);
+  }), prisma.academicScheduledTest.findMany({ where: { branchBatchId: batch.id, ...(activeBatchCycle ? { cycle: { batchCycleId: activeBatchCycle.id } } : {}), isRetest: false, status: { not: "CANCELLED" } }, select: { status: true } })]);
   const academicComplete = schedules.length > 0 && schedules.every((schedule) => schedule.status === "COMPLETED");
   const values = students.map((student) => student.courseEnrollments[0]?.courseProgress ?? student.courseProgress).map(Number).filter((value) => Number.isFinite(value) && (value < 100 || !academicComplete));
   return values.length ? Math.round(values.reduce((sum, value) => sum + value, 0) / values.length) : 0;
+}
+
+async function isBatchAcademicCycleComplete(batch, course) {
+  const cycle = await prisma.batchCycle.findFirst({ where: { batchId: batch.id, status: "ACTIVE" }, orderBy: { cycleNumber: "desc" }, select: { id: true } });
+  if (!cycle) return false;
+  const [students, schedules] = await Promise.all([
+    prisma.branchStudent.findMany({ where: { recordStatus: "ACTIVE", discontinuationRequests: { none: { status: "APPROVED" } }, courseEnrollments: { some: { status: "ACTIVE", batchId: { in: [batch.id, batch.batchId] }, batchCycleId: cycle.id } } }, select: { courseEnrollments: { where: { status: "ACTIVE", batchId: { in: [batch.id, batch.batchId] }, batchCycleId: cycle.id }, select: { courseProgress: true } } } }),
+    prisma.academicScheduledTest.findMany({ where: { branchBatchId: batch.id, cycle: { batchCycleId: cycle.id }, isRetest: false, status: { not: "CANCELLED" } }, select: { status: true } }),
+  ]);
+  const requiredTests = Number(course.academicTestCount || 0);
+  return students.length > 0 && students.every((student) => Number(student.courseEnrollments[0]?.courseProgress || 0) >= 100) && schedules.length >= requiredTests && schedules.length > 0 && schedules.every((schedule) => schedule.status === "COMPLETED");
 }
 
 export async function startNewCycle(actor, payload = {}) {
   const context = await scopeItem(actor, payload.academicTestItemId || payload.itemId, payload.branchBatchId || payload.batchId);
   const cycle = await prisma.$transaction(async (tx) => {
     const items = await tx.academicTestItem.findMany({ where: { academicTestId: context.item.academicTestId, sequence: { lte: Number(context.course.academicTestCount || 0) } }, orderBy: { sequence: "asc" }, select: { id: true } });
+    const currentBatchCycle = await tx.batchCycle.findFirst({ where: { batchId: context.batch.id, status: "ACTIVE" }, orderBy: { cycleNumber: "desc" } });
+    if (currentBatchCycle) await tx.batchCycle.update({ where: { id: currentBatchCycle.id }, data: { status: "COMPLETED", endDate: new Date().toISOString().slice(0, 10) } });
+    const latestBatchCycle = await tx.batchCycle.findFirst({ where: { batchId: context.batch.id }, orderBy: { cycleNumber: "desc" }, select: { cycleNumber: true, status: true, freezeUntil: true } });
+    if (!currentBatchCycle && latestBatchCycle?.status === "COMPLETED" && latestBatchCycle.freezeUntil && latestBatchCycle.freezeUntil > new Date()) {
+      throw new AppError("This batch is frozen for 15 minutes after completion. Please try again after the freeze ends.", 409);
+    }
+    const nextBatchCycle = await tx.batchCycle.create({ data: { batchId: context.batch.id, cycleNumber: Number(latestBatchCycle?.cycleNumber || 0) + 1, cycleName: `Cycle ${Number(latestBatchCycle?.cycleNumber || 0) + 1}`, status: "ACTIVE", startDate: new Date().toISOString().slice(0, 10) } });
     let selectedCycle = null;
     for (const item of items) {
       const current = await tx.academicTestCycle.findFirst({ where: { academicTestItemId: item.id, branchBatchId: context.batch.id, status: "ACTIVE" }, orderBy: { cycleNumber: "desc" } });
       if (current) await tx.academicTestCycle.update({ where: { id: current.id }, data: { status: "COMPLETED" } });
       const latest = await tx.academicTestCycle.findFirst({ where: { academicTestItemId: item.id, branchBatchId: context.batch.id }, orderBy: { cycleNumber: "desc" }, select: { cycleNumber: true } });
-      const nextCycle = await tx.academicTestCycle.create({ data: { academicTestItemId: item.id, branchBatchId: context.batch.id, cycleNumber: Number(latest?.cycleNumber || 0) + 1, createdBy: actor.id } });
+      const nextCycle = await tx.academicTestCycle.create({ data: { academicTestItemId: item.id, branchBatchId: context.batch.id, cycleNumber: Number(latest?.cycleNumber || 0) + 1, batchCycleId: nextBatchCycle.id, createdBy: actor.id } });
       if (item.id === context.item.id) selectedCycle = nextCycle;
     }
     return selectedCycle;
@@ -85,7 +119,7 @@ export async function startNewCycle(actor, payload = {}) {
   return { cycle, progress: 0, academicTestItemId: context.item.id, branchBatchId: context.batch.id };
 }
 
-export async function getPreparation(actor, itemId, batchId) { const { item, batch, course } = await scopeItem(actor, itemId, batchId); const cycle = await activeCycle(item.id, batch.id, actor.id); const [paper, project, siblings, progress, courseProgress] = await Promise.all([prisma.academicQuestionPaper.findUnique({ where: { academicTestItemId_branchBatchId_cycleId: { academicTestItemId: item.id, branchBatchId: batch.id, cycleId: cycle.id } }, include: paperInclude() }), prisma.academicTestProject.findUnique({ where: { academicTestItemId_branchBatchId_cycleId: { academicTestItemId: item.id, branchBatchId: batch.id, cycleId: cycle.id } } }), prisma.academicTestItem.findMany({ where: { academicTestId: item.academicTestId }, orderBy: { sequence: "asc" }, include: { academicTest: { include: { branchCourse: true } }, questionPapers: { where: { branchBatchId: batch.id, cycleId: cycle.id }, include: paperInclude() }, projects: { where: { branchBatchId: batch.id, cycleId: cycle.id } } } }), cycleProgress(item, batch.id), courseProgressForBatch(batch)]); const current = getItemPublic(item, course, batch, paper, project); const configuredSiblings = siblings.filter((sibling) => sibling.sequence <= Number(course.academicTestCount || 0)); return { ...current, cycle, progress, courseProgress, tests: configuredSiblings.map((sibling) => getItemPublic(sibling, course, batch, sibling.questionPapers[0], sibling.projects[0])) }; }
+export async function getPreparation(actor, itemId, batchId) { const { item, batch, course } = await scopeItem(actor, itemId, batchId); const cycle = await activeCycle(item.id, batch.id, actor.id); const [paper, project, siblings, schedules, progress, courseProgress, batchComplete] = await Promise.all([prisma.academicQuestionPaper.findUnique({ where: { academicTestItemId_branchBatchId_cycleId: { academicTestItemId: item.id, branchBatchId: batch.id, cycleId: cycle.id } }, include: paperInclude() }), prisma.academicTestProject.findUnique({ where: { academicTestItemId_branchBatchId_cycleId: { academicTestItemId: item.id, branchBatchId: batch.id, cycleId: cycle.id } } }), prisma.academicTestItem.findMany({ where: { academicTestId: item.academicTestId }, orderBy: { sequence: "asc" }, include: { academicTest: { include: { branchCourse: true } }, questionPapers: { where: { branchBatchId: batch.id, cycleId: cycle.id }, include: paperInclude() }, projects: { where: { branchBatchId: batch.id, cycleId: cycle.id } } } }), prisma.academicScheduledTest.findMany({ where: { branchBatchId: batch.id, cycleId: cycle.id, isRetest: false, status: { not: "CANCELLED" } }, orderBy: { createdAt: "desc" } }), cycleProgress(item, batch.id), courseProgressForBatch(batch), isBatchAcademicCycleComplete(batch, course)]); const current = getItemPublic(item, course, batch, paper, project); const configuredSiblings = siblings.filter((sibling) => sibling.sequence <= Number(course.academicTestCount || 0)); const scheduleForItem = (itemId) => schedules.find((schedule) => schedule.academicTestItemId === itemId) || null; return { ...current, cycle, progress, courseProgress, batchComplete, schedule: scheduleForItem(item.id), tests: configuredSiblings.map((sibling) => ({ ...getItemPublic(sibling, course, batch, sibling.questionPapers[0], sibling.projects[0]), schedule: scheduleForItem(sibling.id) })) }; }
 export async function listPreparation(actor, query = {}) { const itemId = text(query.academicTestItemId || query.itemId); const batchId = text(query.branchBatchId || query.batchId); if (itemId && batchId) return [await getPreparation(actor, itemId, batchId)]; const ids = idsFor(actor); const items = await prisma.academicTestItem.findMany({ where: { academicTest: { batches: { some: { branchBatch: { status: "ACTIVE", OR: [{ facultyId: { in: ids } }, { branchFaculty: { facultyId: { in: ids }, status: "ACTIVE" } }] } } } } }, include: { academicTest: { include: { branchCourse: true, batches: { include: { branchBatch: true } } } }, questionPapers: { include: paperInclude() }, projects: true }, orderBy: [{ academicTestId: "asc" }, { sequence: "asc" }] }); const configuredItems = items.filter((item) => item.sequence <= Number(item.academicTest.branchCourse.academicTestCount || 0)); return configuredItems.flatMap((item) => item.academicTest.batches.filter(({ branchBatch }) => branchBatch?.status === "ACTIVE" && ids.includes(text(branchBatch.facultyId))).map(({ branchBatch }) => { const paper = item.questionPapers.find((entry) => entry.branchBatchId === branchBatch.id); const project = item.projects.find((entry) => entry.branchBatchId === branchBatch.id); return getItemPublic(item, item.academicTest.branchCourse, branchBatch, paper, project); })); }
 
 export async function saveQuestionPaper(actor, payload = {}, paperId = null) { const context = paperId ? await (async () => { const existing = await scopePaper(actor, paperId); return scopeItem(actor, existing.academicTestItemId, existing.branchBatchId); })() : await scopeItem(actor, payload.academicTestItemId || payload.itemId, payload.branchBatchId || payload.batchId); if (!requiredParts(context.item.testType).paper) throw new AppError("This test type does not require a question paper.", 422); const cycle = await activeCycle(context.item.id, context.batch.id, actor.id); const questions = normalizeQuestions(payload.questions); const status = String(payload.status || "").toUpperCase() === "PREPARED" ? "PREPARED" : "DRAFT"; if (status === "PREPARED") validateQuestions(questions); const marksPerQuestion = positiveInt(payload.marksPerQuestion, 1) || 1; const totalMarks = questions.reduce((sum, question) => sum + Number(question.marks || marksPerQuestion), 0); const passMark = normalizePassMark(payload.passMark, totalMarks, status); const data = { academicTestItemId: context.item.id, branchCourseId: context.course.id, branchBatchId: context.batch.id, cycleId: cycle.id, createdBy: actor.id, status, marksPerQuestion, totalQuestions: questions.length, totalMarks, passMark }; const paper = await prisma.$transaction(async (tx) => { const saved = paperId ? await tx.academicQuestionPaper.update({ where: { id: paperId }, data }) : await tx.academicQuestionPaper.upsert({ where: { academicTestItemId_branchBatchId_cycleId: { academicTestItemId: context.item.id, branchBatchId: context.batch.id, cycleId: cycle.id } }, create: data, update: data }); await tx.academicQuestion.deleteMany({ where: { questionPaperId: saved.id } }); if (questions.length) await tx.academicQuestion.createMany({ data: questions.map((question) => ({ ...question, questionPaperId: saved.id })) }); return tx.academicQuestionPaper.findUnique({ where: { id: saved.id }, include: paperInclude() }); }); return { ...(await getPreparation(actor, context.item.id, context.batch.id)), paper: paperPublic(paper) }; }

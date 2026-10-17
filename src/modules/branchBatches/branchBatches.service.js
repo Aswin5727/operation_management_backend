@@ -6,6 +6,7 @@ import { buildBranchEntityId, normalizeBranchEntityId, extractEntitySequence } f
 import { calculateBatchCourseEndDate } from "./batchAllocation.js";
 import { generateSchedule } from "../instituteLeave/instituteSchedule.js";
 import { syncStudentCourseEnd } from "../instituteLeave/instituteLeave.service.js";
+import { reconcileBatchLifecycle } from "../batchCycles/batchCycleLifecycle.service.js";
 
 const STATUSES = new Set(["ACTIVE", "INACTIVE"]);
 const WEEK_TYPES = new Set(["WEEKDAY", "WEEKEND"]);
@@ -112,6 +113,13 @@ function toBatch(record = {}) {
     startPeriod: record.startPeriod || "AM", endTime: record.endTime || "", endPeriod: record.endPeriod || "AM", batchTiming: record.batchTiming || buildTiming(record),
     totalSeats: Number(record.totalSeats || 0), weekType: text(record.weekType).toUpperCase(), mode: text(record.mode).toUpperCase(), courseStartDate: record.courseStartDate || null, courseEndDate: record.courseEndDate || null, weeklyOffDay: record.weeklyOffDay || record.branchFaculty?.weeklyOffDay || null, sequenceNo: Number(record.sequenceNo || 1), status: text(record.status || "ACTIVE").toUpperCase(),
     completionStatus: text(record.completionStatus || "AVAILABLE").toUpperCase(),
+    currentCycleId: record.currentCycleId || null,
+    currentCycleNumber: Number(record.currentCycleNumber || 0) || null,
+    currentCycleName: record.currentCycleName || null,
+    currentCycleStatus: text(record.currentCycleStatus || "ACTIVE").toUpperCase(),
+    completedAt: record.completedAt || null,
+    freezeUntil: record.freezeUntil || null,
+    freezeRemainingSeconds: record.freezeUntil ? Math.max(0, Math.ceil((new Date(record.freezeUntil).getTime() - Date.now()) / 1000)) : 0,
     activeStudentCount: Number(record.activeStudentCount || 0),
     completedStudentCount: Number(record.completedStudentCount || 0),
     createdAt: record.createdAt || null, updatedAt: record.updatedAt || null,
@@ -119,30 +127,23 @@ function toBatch(record = {}) {
 }
 
 async function addBatchCompletionMetadata(records = []) {
-  const batchIds = records.map((record) => text(record.batchId)).filter(Boolean);
+  const batchIds = records.map((record) => text(record.id)).filter(Boolean);
   if (!batchIds.length) return records;
-
-  const students = await prisma.branchStudent.findMany({
-    where: { batchId: { in: batchIds }, recordStatus: "ACTIVE" },
-    select: { batchId: true, courseProgress: true },
-  });
+  await Promise.all(batchIds.map((batchId) => reconcileBatchLifecycle(batchId)));
+  const cycles = await prisma.batchCycle.findMany({ where: { batchId: { in: batchIds } }, orderBy: { cycleNumber: "desc" }, include: { enrollments: { where: { status: "ACTIVE", branchStudent: { recordStatus: "ACTIVE", discontinuationRequests: { none: { status: "APPROVED" } } }, }, select: { courseProgress: true } } } });
   const byBatch = new Map();
-
-  students.forEach((student) => {
-    const key = text(student.batchId);
-    const current = byBatch.get(key) || { activeStudentCount: 0, completedStudentCount: 0 };
-    current.activeStudentCount += 1;
-    if (Number(student.courseProgress) >= 100) current.completedStudentCount += 1;
-    byBatch.set(key, current);
+  cycles.forEach((cycle) => {
+    const current = byBatch.get(cycle.batchId);
+    if (current) return;
+    const activeStudentCount = cycle.enrollments.length;
+    const completedStudentCount = cycle.enrollments.filter((enrollment) => Number(enrollment.courseProgress || 0) >= 100).length;
+    byBatch.set(cycle.batchId, { currentCycleId: cycle.id, currentCycleNumber: cycle.cycleNumber, currentCycleName: cycle.cycleName, currentCycleStatus: cycle.status, completedAt: cycle.completedAt, freezeUntil: cycle.freezeUntil, activeStudentCount, completedStudentCount, completionStatus: cycle.status === "COMPLETED" ? "COMPLETED" : "AVAILABLE" });
   });
 
   return records.map((record) => {
-    const summary = byBatch.get(text(record.batchId)) || { activeStudentCount: 0, completedStudentCount: 0 };
+    const summary = byBatch.get(text(record.id)) || { activeStudentCount: 0, completedStudentCount: 0, completionStatus: "AVAILABLE" };
     return {
       ...record,
-      completionStatus: summary.activeStudentCount > 0 && summary.activeStudentCount === summary.completedStudentCount
-        ? "COMPLETED"
-        : "AVAILABLE",
       ...summary,
     };
   });
@@ -198,7 +199,9 @@ export async function listBranchBatches(query = {}, actor = null) {
 
 export async function getBranchBatch(batchId, actor = null) {
   const branch = await getCurrentBranchProfile(actor); const record = await prisma.branchBatch.findFirst({ where: { branchId: branch.id, OR: [{ id: text(batchId) }, { batchId: text(batchId) }] }, include: relations() });
-  if (!record) throw new AppError("Batch not found", 404); return toBatch(record);
+  if (!record) throw new AppError("Batch not found", 404);
+  const [withCompletion] = await addBatchCompletionMetadata([record]);
+  return toBatch(withCompletion);
 }
 
 export async function createBranchBatch(payload = {}, actor = null) {
@@ -209,7 +212,9 @@ export async function createBranchBatch(payload = {}, actor = null) {
     let batchId = input.batchId ? normalizeBranchEntityId(input.batchId, branch.branchId, "BAT") : "";
     if (batchId && await tx.branchBatch.findFirst({ where: { branchId: branch.id, batchId }, select: { id: true } })) batchId = "";
     while (!batchId || await tx.branchBatch.findFirst({ where: { branchId: branch.id, batchId }, select: { id: true } })) batchId = makeBatchId(branch.branchId, sequence++);
-    const record = await tx.branchBatch.create({ data: { branchId: branch.id, branchCourseId: course.id, branchFacultyId: faculty.id, courseId: course.id, courseName: course.name, facultyId: faculty.facultyId || faculty.id, facultyName: faculty.name, facultyEmail: faculty.email, ...input, batchId, createdBy: actorId, updatedBy: actorId }, include: relations() }); records.push(record); }
+    const record = await tx.branchBatch.create({ data: { branchId: branch.id, branchCourseId: course.id, branchFacultyId: faculty.id, courseId: course.id, courseName: course.name, facultyId: faculty.facultyId || faculty.id, facultyName: faculty.name, facultyEmail: faculty.email, ...input, batchId, createdBy: actorId, updatedBy: actorId }, include: relations() });
+    await tx.batchCycle.create({ data: { batchId: record.id, cycleNumber: 1, cycleName: "Cycle 1", status: "ACTIVE", startDate: input.courseStartDate } });
+    records.push(record); }
     await tx.branchFacultyCourse.upsert({ where: { branchFacultyId_branchCourseId: { branchFacultyId: faculty.id, branchCourseId: course.id } }, create: { branchId: branch.id, branchFacultyId: faculty.id, branchCourseId: course.id, createdBy: actorId, updatedBy: actorId }, update: { updatedBy: actorId } });
     return records; });
   await prisma.branchFaculty.update({ where: { id: faculty.id }, data: { branchCourseId: course.id, updatedBy: actorId } }); created.forEach(queueFacultyEmail); return toBatch(created[0]);

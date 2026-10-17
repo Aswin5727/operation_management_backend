@@ -134,6 +134,11 @@ export type AcademicScheduledTest = $Result.DefaultSelection<Prisma.$AcademicSch
  */
 export type AcademicTestCycle = $Result.DefaultSelection<Prisma.$AcademicTestCyclePayload>
 /**
+ * Model BatchCycle
+ * 
+ */
+export type BatchCycle = $Result.DefaultSelection<Prisma.$BatchCyclePayload>
+/**
  * Model AcademicTestSubmission
  * 
  */
@@ -343,6 +348,16 @@ export type StudentDiscontinuationRequest = $Result.DefaultSelection<Prisma.$Stu
  * 
  */
 export type FacultyReportShare = $Result.DefaultSelection<Prisma.$FacultyReportSharePayload>
+/**
+ * Model AcademicTestReportHistory
+ * 
+ */
+export type AcademicTestReportHistory = $Result.DefaultSelection<Prisma.$AcademicTestReportHistoryPayload>
+/**
+ * Model AcademicTestReportSubmission
+ * 
+ */
+export type AcademicTestReportSubmission = $Result.DefaultSelection<Prisma.$AcademicTestReportSubmissionPayload>
 /**
  * Model BranchStudentPayment
  * 
@@ -913,6 +928,16 @@ export class PrismaClient<
   get academicTestCycle(): Prisma.AcademicTestCycleDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.batchCycle`: Exposes CRUD operations for the **BatchCycle** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more BatchCycles
+    * const batchCycles = await prisma.batchCycle.findMany()
+    * ```
+    */
+  get batchCycle(): Prisma.BatchCycleDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.academicTestSubmission`: Exposes CRUD operations for the **AcademicTestSubmission** model.
     * Example usage:
     * ```ts
@@ -1331,6 +1356,26 @@ export class PrismaClient<
     * ```
     */
   get facultyReportShare(): Prisma.FacultyReportShareDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.academicTestReportHistory`: Exposes CRUD operations for the **AcademicTestReportHistory** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AcademicTestReportHistories
+    * const academicTestReportHistories = await prisma.academicTestReportHistory.findMany()
+    * ```
+    */
+  get academicTestReportHistory(): Prisma.AcademicTestReportHistoryDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.academicTestReportSubmission`: Exposes CRUD operations for the **AcademicTestReportSubmission** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AcademicTestReportSubmissions
+    * const academicTestReportSubmissions = await prisma.academicTestReportSubmission.findMany()
+    * ```
+    */
+  get academicTestReportSubmission(): Prisma.AcademicTestReportSubmissionDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.branchStudentPayment`: Exposes CRUD operations for the **BranchStudentPayment** model.
@@ -1809,6 +1854,7 @@ export namespace Prisma {
     AcademicTestProject: 'AcademicTestProject',
     AcademicScheduledTest: 'AcademicScheduledTest',
     AcademicTestCycle: 'AcademicTestCycle',
+    BatchCycle: 'BatchCycle',
     AcademicTestSubmission: 'AcademicTestSubmission',
     AcademicProjectSubmission: 'AcademicProjectSubmission',
     AcademicTestAnswer: 'AcademicTestAnswer',
@@ -1851,6 +1897,8 @@ export namespace Prisma {
     MotivationMailHistory: 'MotivationMailHistory',
     StudentDiscontinuationRequest: 'StudentDiscontinuationRequest',
     FacultyReportShare: 'FacultyReportShare',
+    AcademicTestReportHistory: 'AcademicTestReportHistory',
+    AcademicTestReportSubmission: 'AcademicTestReportSubmission',
     BranchStudentPayment: 'BranchStudentPayment',
     BranchStudentLedgerEntry: 'BranchStudentLedgerEntry'
   };
@@ -1868,7 +1916,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "dashboardWidget" | "userDashboardWidget" | "branch" | "loginEvent" | "notification" | "courseEditRequest" | "passwordResetToken" | "course" | "branchCourse" | "branchCourseModule" | "branchCourseSubmodule" | "courseModule" | "batch" | "batchFacultyAssignment" | "branchBatch" | "academicTest" | "academicTestItem" | "academicTestBatch" | "academicQuestionPaper" | "academicQuestion" | "academicTestProject" | "academicScheduledTest" | "academicTestCycle" | "academicTestSubmission" | "academicProjectSubmission" | "academicTestAnswer" | "courseStatusHistory" | "batchStatusHistory" | "studentProfile" | "branchStudent" | "branchStudentCourse" | "branchStudentAttendance" | "branchCalendarHoliday" | "branchCalendarLeave" | "branchStudentInstallment" | "facultySkill" | "facultySkillAssignment" | "facultySkillTopic" | "facultySkillAssignmentAudit" | "facultyProfile" | "facultyCourseAssignment" | "facultyBatchEntry" | "facultyAttendanceSession" | "facultyAttendanceDay" | "facultyAttendanceBatchWork" | "facultyTodayWorkEntry" | "facultyTodayWorkStudentEntry" | "studentAttendance" | "branchFaculty" | "facultyLeaveRequest" | "facultyWeekOffRequest" | "branchFacultyCourse" | "facultyLeaveAffectedSession" | "facultyLeaveCombinedSession" | "branchInstallmentTemplate" | "assessment" | "assessmentSubmission" | "exam" | "examSchedule" | "examQuestion" | "examAttempt" | "examAnswer" | "motivationMailHistory" | "studentDiscontinuationRequest" | "facultyReportShare" | "branchStudentPayment" | "branchStudentLedgerEntry"
+      modelProps: "user" | "dashboardWidget" | "userDashboardWidget" | "branch" | "loginEvent" | "notification" | "courseEditRequest" | "passwordResetToken" | "course" | "branchCourse" | "branchCourseModule" | "branchCourseSubmodule" | "courseModule" | "batch" | "batchFacultyAssignment" | "branchBatch" | "academicTest" | "academicTestItem" | "academicTestBatch" | "academicQuestionPaper" | "academicQuestion" | "academicTestProject" | "academicScheduledTest" | "academicTestCycle" | "batchCycle" | "academicTestSubmission" | "academicProjectSubmission" | "academicTestAnswer" | "courseStatusHistory" | "batchStatusHistory" | "studentProfile" | "branchStudent" | "branchStudentCourse" | "branchStudentAttendance" | "branchCalendarHoliday" | "branchCalendarLeave" | "branchStudentInstallment" | "facultySkill" | "facultySkillAssignment" | "facultySkillTopic" | "facultySkillAssignmentAudit" | "facultyProfile" | "facultyCourseAssignment" | "facultyBatchEntry" | "facultyAttendanceSession" | "facultyAttendanceDay" | "facultyAttendanceBatchWork" | "facultyTodayWorkEntry" | "facultyTodayWorkStudentEntry" | "studentAttendance" | "branchFaculty" | "facultyLeaveRequest" | "facultyWeekOffRequest" | "branchFacultyCourse" | "facultyLeaveAffectedSession" | "facultyLeaveCombinedSession" | "branchInstallmentTemplate" | "assessment" | "assessmentSubmission" | "exam" | "examSchedule" | "examQuestion" | "examAttempt" | "examAnswer" | "motivationMailHistory" | "studentDiscontinuationRequest" | "facultyReportShare" | "academicTestReportHistory" | "academicTestReportSubmission" | "branchStudentPayment" | "branchStudentLedgerEntry"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -3645,6 +3693,80 @@ export namespace Prisma {
           count: {
             args: Prisma.AcademicTestCycleCountArgs<ExtArgs>
             result: $Utils.Optional<AcademicTestCycleCountAggregateOutputType> | number
+          }
+        }
+      }
+      BatchCycle: {
+        payload: Prisma.$BatchCyclePayload<ExtArgs>
+        fields: Prisma.BatchCycleFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.BatchCycleFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BatchCyclePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.BatchCycleFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BatchCyclePayload>
+          }
+          findFirst: {
+            args: Prisma.BatchCycleFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BatchCyclePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.BatchCycleFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BatchCyclePayload>
+          }
+          findMany: {
+            args: Prisma.BatchCycleFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BatchCyclePayload>[]
+          }
+          create: {
+            args: Prisma.BatchCycleCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BatchCyclePayload>
+          }
+          createMany: {
+            args: Prisma.BatchCycleCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.BatchCycleCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BatchCyclePayload>[]
+          }
+          delete: {
+            args: Prisma.BatchCycleDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BatchCyclePayload>
+          }
+          update: {
+            args: Prisma.BatchCycleUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BatchCyclePayload>
+          }
+          deleteMany: {
+            args: Prisma.BatchCycleDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.BatchCycleUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.BatchCycleUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BatchCyclePayload>[]
+          }
+          upsert: {
+            args: Prisma.BatchCycleUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BatchCyclePayload>
+          }
+          aggregate: {
+            args: Prisma.BatchCycleAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateBatchCycle>
+          }
+          groupBy: {
+            args: Prisma.BatchCycleGroupByArgs<ExtArgs>
+            result: $Utils.Optional<BatchCycleGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.BatchCycleCountArgs<ExtArgs>
+            result: $Utils.Optional<BatchCycleCountAggregateOutputType> | number
           }
         }
       }
@@ -6756,6 +6878,154 @@ export namespace Prisma {
           }
         }
       }
+      AcademicTestReportHistory: {
+        payload: Prisma.$AcademicTestReportHistoryPayload<ExtArgs>
+        fields: Prisma.AcademicTestReportHistoryFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AcademicTestReportHistoryFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicTestReportHistoryPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AcademicTestReportHistoryFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicTestReportHistoryPayload>
+          }
+          findFirst: {
+            args: Prisma.AcademicTestReportHistoryFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicTestReportHistoryPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AcademicTestReportHistoryFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicTestReportHistoryPayload>
+          }
+          findMany: {
+            args: Prisma.AcademicTestReportHistoryFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicTestReportHistoryPayload>[]
+          }
+          create: {
+            args: Prisma.AcademicTestReportHistoryCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicTestReportHistoryPayload>
+          }
+          createMany: {
+            args: Prisma.AcademicTestReportHistoryCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AcademicTestReportHistoryCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicTestReportHistoryPayload>[]
+          }
+          delete: {
+            args: Prisma.AcademicTestReportHistoryDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicTestReportHistoryPayload>
+          }
+          update: {
+            args: Prisma.AcademicTestReportHistoryUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicTestReportHistoryPayload>
+          }
+          deleteMany: {
+            args: Prisma.AcademicTestReportHistoryDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AcademicTestReportHistoryUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AcademicTestReportHistoryUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicTestReportHistoryPayload>[]
+          }
+          upsert: {
+            args: Prisma.AcademicTestReportHistoryUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicTestReportHistoryPayload>
+          }
+          aggregate: {
+            args: Prisma.AcademicTestReportHistoryAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAcademicTestReportHistory>
+          }
+          groupBy: {
+            args: Prisma.AcademicTestReportHistoryGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AcademicTestReportHistoryGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AcademicTestReportHistoryCountArgs<ExtArgs>
+            result: $Utils.Optional<AcademicTestReportHistoryCountAggregateOutputType> | number
+          }
+        }
+      }
+      AcademicTestReportSubmission: {
+        payload: Prisma.$AcademicTestReportSubmissionPayload<ExtArgs>
+        fields: Prisma.AcademicTestReportSubmissionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AcademicTestReportSubmissionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicTestReportSubmissionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AcademicTestReportSubmissionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicTestReportSubmissionPayload>
+          }
+          findFirst: {
+            args: Prisma.AcademicTestReportSubmissionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicTestReportSubmissionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AcademicTestReportSubmissionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicTestReportSubmissionPayload>
+          }
+          findMany: {
+            args: Prisma.AcademicTestReportSubmissionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicTestReportSubmissionPayload>[]
+          }
+          create: {
+            args: Prisma.AcademicTestReportSubmissionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicTestReportSubmissionPayload>
+          }
+          createMany: {
+            args: Prisma.AcademicTestReportSubmissionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AcademicTestReportSubmissionCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicTestReportSubmissionPayload>[]
+          }
+          delete: {
+            args: Prisma.AcademicTestReportSubmissionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicTestReportSubmissionPayload>
+          }
+          update: {
+            args: Prisma.AcademicTestReportSubmissionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicTestReportSubmissionPayload>
+          }
+          deleteMany: {
+            args: Prisma.AcademicTestReportSubmissionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AcademicTestReportSubmissionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AcademicTestReportSubmissionUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicTestReportSubmissionPayload>[]
+          }
+          upsert: {
+            args: Prisma.AcademicTestReportSubmissionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AcademicTestReportSubmissionPayload>
+          }
+          aggregate: {
+            args: Prisma.AcademicTestReportSubmissionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAcademicTestReportSubmission>
+          }
+          groupBy: {
+            args: Prisma.AcademicTestReportSubmissionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AcademicTestReportSubmissionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AcademicTestReportSubmissionCountArgs<ExtArgs>
+            result: $Utils.Optional<AcademicTestReportSubmissionCountAggregateOutputType> | number
+          }
+        }
+      }
       BranchStudentPayment: {
         payload: Prisma.$BranchStudentPaymentPayload<ExtArgs>
         fields: Prisma.BranchStudentPaymentFieldRefs
@@ -7036,6 +7306,7 @@ export namespace Prisma {
     academicTestProject?: AcademicTestProjectOmit
     academicScheduledTest?: AcademicScheduledTestOmit
     academicTestCycle?: AcademicTestCycleOmit
+    batchCycle?: BatchCycleOmit
     academicTestSubmission?: AcademicTestSubmissionOmit
     academicProjectSubmission?: AcademicProjectSubmissionOmit
     academicTestAnswer?: AcademicTestAnswerOmit
@@ -7078,6 +7349,8 @@ export namespace Prisma {
     motivationMailHistory?: MotivationMailHistoryOmit
     studentDiscontinuationRequest?: StudentDiscontinuationRequestOmit
     facultyReportShare?: FacultyReportShareOmit
+    academicTestReportHistory?: AcademicTestReportHistoryOmit
+    academicTestReportSubmission?: AcademicTestReportSubmissionOmit
     branchStudentPayment?: BranchStudentPaymentOmit
     branchStudentLedgerEntry?: BranchStudentLedgerEntryOmit
   }
@@ -7177,6 +7450,7 @@ export namespace Prisma {
     createdAssessments: number
     evaluatedSubmissions: number
     facultySkillAssignments: number
+    academicTestReportSubmissions: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -7197,6 +7471,7 @@ export namespace Prisma {
     createdAssessments?: boolean | UserCountOutputTypeCountCreatedAssessmentsArgs
     evaluatedSubmissions?: boolean | UserCountOutputTypeCountEvaluatedSubmissionsArgs
     facultySkillAssignments?: boolean | UserCountOutputTypeCountFacultySkillAssignmentsArgs
+    academicTestReportSubmissions?: boolean | UserCountOutputTypeCountAcademicTestReportSubmissionsArgs
   }
 
   // Custom InputTypes
@@ -7327,6 +7602,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountFacultySkillAssignmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: FacultySkillAssignmentWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountAcademicTestReportSubmissionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AcademicTestReportSubmissionWhereInput
   }
 
 
@@ -7864,6 +8146,8 @@ export namespace Prisma {
     academicQuestionPapers: number
     academicTestProjects: number
     academicTestCycles: number
+    cycles: number
+    academicTestReportHistories: number
   }
 
   export type BranchBatchCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -7873,6 +8157,8 @@ export namespace Prisma {
     academicQuestionPapers?: boolean | BranchBatchCountOutputTypeCountAcademicQuestionPapersArgs
     academicTestProjects?: boolean | BranchBatchCountOutputTypeCountAcademicTestProjectsArgs
     academicTestCycles?: boolean | BranchBatchCountOutputTypeCountAcademicTestCyclesArgs
+    cycles?: boolean | BranchBatchCountOutputTypeCountCyclesArgs
+    academicTestReportHistories?: boolean | BranchBatchCountOutputTypeCountAcademicTestReportHistoriesArgs
   }
 
   // Custom InputTypes
@@ -7928,6 +8214,20 @@ export namespace Prisma {
     where?: AcademicTestCycleWhereInput
   }
 
+  /**
+   * BranchBatchCountOutputType without action
+   */
+  export type BranchBatchCountOutputTypeCountCyclesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BatchCycleWhereInput
+  }
+
+  /**
+   * BranchBatchCountOutputType without action
+   */
+  export type BranchBatchCountOutputTypeCountAcademicTestReportHistoriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AcademicTestReportHistoryWhereInput
+  }
+
 
   /**
    * Count Type AcademicTestCountOutputType
@@ -7977,12 +8277,14 @@ export namespace Prisma {
     questionPapers: number
     projects: number
     cycles: number
+    academicTestReportHistories: number
   }
 
   export type AcademicTestItemCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     questionPapers?: boolean | AcademicTestItemCountOutputTypeCountQuestionPapersArgs
     projects?: boolean | AcademicTestItemCountOutputTypeCountProjectsArgs
     cycles?: boolean | AcademicTestItemCountOutputTypeCountCyclesArgs
+    academicTestReportHistories?: boolean | AcademicTestItemCountOutputTypeCountAcademicTestReportHistoriesArgs
   }
 
   // Custom InputTypes
@@ -8015,6 +8317,13 @@ export namespace Prisma {
    */
   export type AcademicTestItemCountOutputTypeCountCyclesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: AcademicTestCycleWhereInput
+  }
+
+  /**
+   * AcademicTestItemCountOutputType without action
+   */
+  export type AcademicTestItemCountOutputTypeCountAcademicTestReportHistoriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AcademicTestReportHistoryWhereInput
   }
 
 
@@ -8095,6 +8404,82 @@ export namespace Prisma {
    */
   export type AcademicTestCycleCountOutputTypeCountSchedulesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: AcademicScheduledTestWhereInput
+  }
+
+
+  /**
+   * Count Type BatchCycleCountOutputType
+   */
+
+  export type BatchCycleCountOutputType = {
+    enrollments: number
+    academicTestCycles: number
+    reportHistories: number
+    examSchedules: number
+    assessments: number
+    reportShares: number
+  }
+
+  export type BatchCycleCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    enrollments?: boolean | BatchCycleCountOutputTypeCountEnrollmentsArgs
+    academicTestCycles?: boolean | BatchCycleCountOutputTypeCountAcademicTestCyclesArgs
+    reportHistories?: boolean | BatchCycleCountOutputTypeCountReportHistoriesArgs
+    examSchedules?: boolean | BatchCycleCountOutputTypeCountExamSchedulesArgs
+    assessments?: boolean | BatchCycleCountOutputTypeCountAssessmentsArgs
+    reportShares?: boolean | BatchCycleCountOutputTypeCountReportSharesArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * BatchCycleCountOutputType without action
+   */
+  export type BatchCycleCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BatchCycleCountOutputType
+     */
+    select?: BatchCycleCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * BatchCycleCountOutputType without action
+   */
+  export type BatchCycleCountOutputTypeCountEnrollmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BranchStudentCourseWhereInput
+  }
+
+  /**
+   * BatchCycleCountOutputType without action
+   */
+  export type BatchCycleCountOutputTypeCountAcademicTestCyclesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AcademicTestCycleWhereInput
+  }
+
+  /**
+   * BatchCycleCountOutputType without action
+   */
+  export type BatchCycleCountOutputTypeCountReportHistoriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AcademicTestReportHistoryWhereInput
+  }
+
+  /**
+   * BatchCycleCountOutputType without action
+   */
+  export type BatchCycleCountOutputTypeCountExamSchedulesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ExamScheduleWhereInput
+  }
+
+  /**
+   * BatchCycleCountOutputType without action
+   */
+  export type BatchCycleCountOutputTypeCountAssessmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AssessmentWhereInput
+  }
+
+  /**
+   * BatchCycleCountOutputType without action
+   */
+  export type BatchCycleCountOutputTypeCountReportSharesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FacultyReportShareWhereInput
   }
 
 
@@ -8695,6 +9080,37 @@ export namespace Prisma {
 
 
   /**
+   * Count Type AcademicTestReportHistoryCountOutputType
+   */
+
+  export type AcademicTestReportHistoryCountOutputType = {
+    submissions: number
+  }
+
+  export type AcademicTestReportHistoryCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    submissions?: boolean | AcademicTestReportHistoryCountOutputTypeCountSubmissionsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * AcademicTestReportHistoryCountOutputType without action
+   */
+  export type AcademicTestReportHistoryCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestReportHistoryCountOutputType
+     */
+    select?: AcademicTestReportHistoryCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * AcademicTestReportHistoryCountOutputType without action
+   */
+  export type AcademicTestReportHistoryCountOutputTypeCountSubmissionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AcademicTestReportSubmissionWhereInput
+  }
+
+
+  /**
    * Models
    */
 
@@ -9046,6 +9462,7 @@ export namespace Prisma {
     createdAssessments?: boolean | User$createdAssessmentsArgs<ExtArgs>
     evaluatedSubmissions?: boolean | User$evaluatedSubmissionsArgs<ExtArgs>
     facultySkillAssignments?: boolean | User$facultySkillAssignmentsArgs<ExtArgs>
+    academicTestReportSubmissions?: boolean | User$academicTestReportSubmissionsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -9141,6 +9558,7 @@ export namespace Prisma {
     createdAssessments?: boolean | User$createdAssessmentsArgs<ExtArgs>
     evaluatedSubmissions?: boolean | User$evaluatedSubmissionsArgs<ExtArgs>
     facultySkillAssignments?: boolean | User$facultySkillAssignmentsArgs<ExtArgs>
+    academicTestReportSubmissions?: boolean | User$academicTestReportSubmissionsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -9167,6 +9585,7 @@ export namespace Prisma {
       createdAssessments: Prisma.$AssessmentPayload<ExtArgs>[]
       evaluatedSubmissions: Prisma.$AssessmentSubmissionPayload<ExtArgs>[]
       facultySkillAssignments: Prisma.$FacultySkillAssignmentPayload<ExtArgs>[]
+      academicTestReportSubmissions: Prisma.$AcademicTestReportSubmissionPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -9602,6 +10021,7 @@ export namespace Prisma {
     createdAssessments<T extends User$createdAssessmentsArgs<ExtArgs> = {}>(args?: Subset<T, User$createdAssessmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AssessmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     evaluatedSubmissions<T extends User$evaluatedSubmissionsArgs<ExtArgs> = {}>(args?: Subset<T, User$evaluatedSubmissionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AssessmentSubmissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     facultySkillAssignments<T extends User$facultySkillAssignmentsArgs<ExtArgs> = {}>(args?: Subset<T, User$facultySkillAssignmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FacultySkillAssignmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    academicTestReportSubmissions<T extends User$academicTestReportSubmissionsArgs<ExtArgs> = {}>(args?: Subset<T, User$academicTestReportSubmissionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcademicTestReportSubmissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -10469,6 +10889,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: FacultySkillAssignmentScalarFieldEnum | FacultySkillAssignmentScalarFieldEnum[]
+  }
+
+  /**
+   * User.academicTestReportSubmissions
+   */
+  export type User$academicTestReportSubmissionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestReportSubmission
+     */
+    select?: AcademicTestReportSubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicTestReportSubmission
+     */
+    omit?: AcademicTestReportSubmissionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicTestReportSubmissionInclude<ExtArgs> | null
+    where?: AcademicTestReportSubmissionWhereInput
+    orderBy?: AcademicTestReportSubmissionOrderByWithRelationInput | AcademicTestReportSubmissionOrderByWithRelationInput[]
+    cursor?: AcademicTestReportSubmissionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AcademicTestReportSubmissionScalarFieldEnum | AcademicTestReportSubmissionScalarFieldEnum[]
   }
 
   /**
@@ -29336,6 +29780,8 @@ export namespace Prisma {
     academicQuestionPapers?: boolean | BranchBatch$academicQuestionPapersArgs<ExtArgs>
     academicTestProjects?: boolean | BranchBatch$academicTestProjectsArgs<ExtArgs>
     academicTestCycles?: boolean | BranchBatch$academicTestCyclesArgs<ExtArgs>
+    cycles?: boolean | BranchBatch$cyclesArgs<ExtArgs>
+    academicTestReportHistories?: boolean | BranchBatch$academicTestReportHistoriesArgs<ExtArgs>
     _count?: boolean | BranchBatchCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["branchBatch"]>
 
@@ -29452,6 +29898,8 @@ export namespace Prisma {
     academicQuestionPapers?: boolean | BranchBatch$academicQuestionPapersArgs<ExtArgs>
     academicTestProjects?: boolean | BranchBatch$academicTestProjectsArgs<ExtArgs>
     academicTestCycles?: boolean | BranchBatch$academicTestCyclesArgs<ExtArgs>
+    cycles?: boolean | BranchBatch$cyclesArgs<ExtArgs>
+    academicTestReportHistories?: boolean | BranchBatch$academicTestReportHistoriesArgs<ExtArgs>
     _count?: boolean | BranchBatchCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type BranchBatchIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -29477,6 +29925,8 @@ export namespace Prisma {
       academicQuestionPapers: Prisma.$AcademicQuestionPaperPayload<ExtArgs>[]
       academicTestProjects: Prisma.$AcademicTestProjectPayload<ExtArgs>[]
       academicTestCycles: Prisma.$AcademicTestCyclePayload<ExtArgs>[]
+      cycles: Prisma.$BatchCyclePayload<ExtArgs>[]
+      academicTestReportHistories: Prisma.$AcademicTestReportHistoryPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -29911,6 +30361,8 @@ export namespace Prisma {
     academicQuestionPapers<T extends BranchBatch$academicQuestionPapersArgs<ExtArgs> = {}>(args?: Subset<T, BranchBatch$academicQuestionPapersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcademicQuestionPaperPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     academicTestProjects<T extends BranchBatch$academicTestProjectsArgs<ExtArgs> = {}>(args?: Subset<T, BranchBatch$academicTestProjectsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcademicTestProjectPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     academicTestCycles<T extends BranchBatch$academicTestCyclesArgs<ExtArgs> = {}>(args?: Subset<T, BranchBatch$academicTestCyclesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcademicTestCyclePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    cycles<T extends BranchBatch$cyclesArgs<ExtArgs> = {}>(args?: Subset<T, BranchBatch$cyclesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BatchCyclePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    academicTestReportHistories<T extends BranchBatch$academicTestReportHistoriesArgs<ExtArgs> = {}>(args?: Subset<T, BranchBatch$academicTestReportHistoriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcademicTestReportHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -30511,6 +30963,54 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: AcademicTestCycleScalarFieldEnum | AcademicTestCycleScalarFieldEnum[]
+  }
+
+  /**
+   * BranchBatch.cycles
+   */
+  export type BranchBatch$cyclesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BatchCycle
+     */
+    select?: BatchCycleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BatchCycle
+     */
+    omit?: BatchCycleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BatchCycleInclude<ExtArgs> | null
+    where?: BatchCycleWhereInput
+    orderBy?: BatchCycleOrderByWithRelationInput | BatchCycleOrderByWithRelationInput[]
+    cursor?: BatchCycleWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: BatchCycleScalarFieldEnum | BatchCycleScalarFieldEnum[]
+  }
+
+  /**
+   * BranchBatch.academicTestReportHistories
+   */
+  export type BranchBatch$academicTestReportHistoriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestReportHistory
+     */
+    select?: AcademicTestReportHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicTestReportHistory
+     */
+    omit?: AcademicTestReportHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicTestReportHistoryInclude<ExtArgs> | null
+    where?: AcademicTestReportHistoryWhereInput
+    orderBy?: AcademicTestReportHistoryOrderByWithRelationInput | AcademicTestReportHistoryOrderByWithRelationInput[]
+    cursor?: AcademicTestReportHistoryWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AcademicTestReportHistoryScalarFieldEnum | AcademicTestReportHistoryScalarFieldEnum[]
   }
 
   /**
@@ -31899,6 +32399,7 @@ export namespace Prisma {
     questionPapers?: boolean | AcademicTestItem$questionPapersArgs<ExtArgs>
     projects?: boolean | AcademicTestItem$projectsArgs<ExtArgs>
     cycles?: boolean | AcademicTestItem$cyclesArgs<ExtArgs>
+    academicTestReportHistories?: boolean | AcademicTestItem$academicTestReportHistoriesArgs<ExtArgs>
     _count?: boolean | AcademicTestItemCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["academicTestItem"]>
 
@@ -31949,6 +32450,7 @@ export namespace Prisma {
     questionPapers?: boolean | AcademicTestItem$questionPapersArgs<ExtArgs>
     projects?: boolean | AcademicTestItem$projectsArgs<ExtArgs>
     cycles?: boolean | AcademicTestItem$cyclesArgs<ExtArgs>
+    academicTestReportHistories?: boolean | AcademicTestItem$academicTestReportHistoriesArgs<ExtArgs>
     _count?: boolean | AcademicTestItemCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type AcademicTestItemIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -31965,6 +32467,7 @@ export namespace Prisma {
       questionPapers: Prisma.$AcademicQuestionPaperPayload<ExtArgs>[]
       projects: Prisma.$AcademicTestProjectPayload<ExtArgs>[]
       cycles: Prisma.$AcademicTestCyclePayload<ExtArgs>[]
+      academicTestReportHistories: Prisma.$AcademicTestReportHistoryPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -32375,6 +32878,7 @@ export namespace Prisma {
     questionPapers<T extends AcademicTestItem$questionPapersArgs<ExtArgs> = {}>(args?: Subset<T, AcademicTestItem$questionPapersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcademicQuestionPaperPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     projects<T extends AcademicTestItem$projectsArgs<ExtArgs> = {}>(args?: Subset<T, AcademicTestItem$projectsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcademicTestProjectPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     cycles<T extends AcademicTestItem$cyclesArgs<ExtArgs> = {}>(args?: Subset<T, AcademicTestItem$cyclesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcademicTestCyclePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    academicTestReportHistories<T extends AcademicTestItem$academicTestReportHistoriesArgs<ExtArgs> = {}>(args?: Subset<T, AcademicTestItem$academicTestReportHistoriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcademicTestReportHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -32884,6 +33388,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: AcademicTestCycleScalarFieldEnum | AcademicTestCycleScalarFieldEnum[]
+  }
+
+  /**
+   * AcademicTestItem.academicTestReportHistories
+   */
+  export type AcademicTestItem$academicTestReportHistoriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestReportHistory
+     */
+    select?: AcademicTestReportHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicTestReportHistory
+     */
+    omit?: AcademicTestReportHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicTestReportHistoryInclude<ExtArgs> | null
+    where?: AcademicTestReportHistoryWhereInput
+    orderBy?: AcademicTestReportHistoryOrderByWithRelationInput | AcademicTestReportHistoryOrderByWithRelationInput[]
+    cursor?: AcademicTestReportHistoryWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AcademicTestReportHistoryScalarFieldEnum | AcademicTestReportHistoryScalarFieldEnum[]
   }
 
   /**
@@ -38994,6 +39522,7 @@ export namespace Prisma {
     academicTestItemId: string | null
     branchBatchId: string | null
     cycleNumber: number | null
+    batchCycleId: string | null
     status: string | null
     createdBy: string | null
     createdAt: Date | null
@@ -39004,6 +39533,7 @@ export namespace Prisma {
     academicTestItemId: string | null
     branchBatchId: string | null
     cycleNumber: number | null
+    batchCycleId: string | null
     status: string | null
     createdBy: string | null
     createdAt: Date | null
@@ -39014,6 +39544,7 @@ export namespace Prisma {
     academicTestItemId: number
     branchBatchId: number
     cycleNumber: number
+    batchCycleId: number
     status: number
     createdBy: number
     createdAt: number
@@ -39034,6 +39565,7 @@ export namespace Prisma {
     academicTestItemId?: true
     branchBatchId?: true
     cycleNumber?: true
+    batchCycleId?: true
     status?: true
     createdBy?: true
     createdAt?: true
@@ -39044,6 +39576,7 @@ export namespace Prisma {
     academicTestItemId?: true
     branchBatchId?: true
     cycleNumber?: true
+    batchCycleId?: true
     status?: true
     createdBy?: true
     createdAt?: true
@@ -39054,6 +39587,7 @@ export namespace Prisma {
     academicTestItemId?: true
     branchBatchId?: true
     cycleNumber?: true
+    batchCycleId?: true
     status?: true
     createdBy?: true
     createdAt?: true
@@ -39151,6 +39685,7 @@ export namespace Prisma {
     academicTestItemId: string
     branchBatchId: string
     cycleNumber: number
+    batchCycleId: string
     status: string
     createdBy: string
     createdAt: Date
@@ -39180,11 +39715,13 @@ export namespace Prisma {
     academicTestItemId?: boolean
     branchBatchId?: boolean
     cycleNumber?: boolean
+    batchCycleId?: boolean
     status?: boolean
     createdBy?: boolean
     createdAt?: boolean
     academicTestItem?: boolean | AcademicTestItemDefaultArgs<ExtArgs>
     branchBatch?: boolean | BranchBatchDefaultArgs<ExtArgs>
+    batchCycle?: boolean | BatchCycleDefaultArgs<ExtArgs>
     questionPapers?: boolean | AcademicTestCycle$questionPapersArgs<ExtArgs>
     projects?: boolean | AcademicTestCycle$projectsArgs<ExtArgs>
     schedules?: boolean | AcademicTestCycle$schedulesArgs<ExtArgs>
@@ -39196,11 +39733,13 @@ export namespace Prisma {
     academicTestItemId?: boolean
     branchBatchId?: boolean
     cycleNumber?: boolean
+    batchCycleId?: boolean
     status?: boolean
     createdBy?: boolean
     createdAt?: boolean
     academicTestItem?: boolean | AcademicTestItemDefaultArgs<ExtArgs>
     branchBatch?: boolean | BranchBatchDefaultArgs<ExtArgs>
+    batchCycle?: boolean | BatchCycleDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["academicTestCycle"]>
 
   export type AcademicTestCycleSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -39208,11 +39747,13 @@ export namespace Prisma {
     academicTestItemId?: boolean
     branchBatchId?: boolean
     cycleNumber?: boolean
+    batchCycleId?: boolean
     status?: boolean
     createdBy?: boolean
     createdAt?: boolean
     academicTestItem?: boolean | AcademicTestItemDefaultArgs<ExtArgs>
     branchBatch?: boolean | BranchBatchDefaultArgs<ExtArgs>
+    batchCycle?: boolean | BatchCycleDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["academicTestCycle"]>
 
   export type AcademicTestCycleSelectScalar = {
@@ -39220,15 +39761,17 @@ export namespace Prisma {
     academicTestItemId?: boolean
     branchBatchId?: boolean
     cycleNumber?: boolean
+    batchCycleId?: boolean
     status?: boolean
     createdBy?: boolean
     createdAt?: boolean
   }
 
-  export type AcademicTestCycleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "academicTestItemId" | "branchBatchId" | "cycleNumber" | "status" | "createdBy" | "createdAt", ExtArgs["result"]["academicTestCycle"]>
+  export type AcademicTestCycleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "academicTestItemId" | "branchBatchId" | "cycleNumber" | "batchCycleId" | "status" | "createdBy" | "createdAt", ExtArgs["result"]["academicTestCycle"]>
   export type AcademicTestCycleInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     academicTestItem?: boolean | AcademicTestItemDefaultArgs<ExtArgs>
     branchBatch?: boolean | BranchBatchDefaultArgs<ExtArgs>
+    batchCycle?: boolean | BatchCycleDefaultArgs<ExtArgs>
     questionPapers?: boolean | AcademicTestCycle$questionPapersArgs<ExtArgs>
     projects?: boolean | AcademicTestCycle$projectsArgs<ExtArgs>
     schedules?: boolean | AcademicTestCycle$schedulesArgs<ExtArgs>
@@ -39237,10 +39780,12 @@ export namespace Prisma {
   export type AcademicTestCycleIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     academicTestItem?: boolean | AcademicTestItemDefaultArgs<ExtArgs>
     branchBatch?: boolean | BranchBatchDefaultArgs<ExtArgs>
+    batchCycle?: boolean | BatchCycleDefaultArgs<ExtArgs>
   }
   export type AcademicTestCycleIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     academicTestItem?: boolean | AcademicTestItemDefaultArgs<ExtArgs>
     branchBatch?: boolean | BranchBatchDefaultArgs<ExtArgs>
+    batchCycle?: boolean | BatchCycleDefaultArgs<ExtArgs>
   }
 
   export type $AcademicTestCyclePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -39248,6 +39793,7 @@ export namespace Prisma {
     objects: {
       academicTestItem: Prisma.$AcademicTestItemPayload<ExtArgs>
       branchBatch: Prisma.$BranchBatchPayload<ExtArgs>
+      batchCycle: Prisma.$BatchCyclePayload<ExtArgs>
       questionPapers: Prisma.$AcademicQuestionPaperPayload<ExtArgs>[]
       projects: Prisma.$AcademicTestProjectPayload<ExtArgs>[]
       schedules: Prisma.$AcademicScheduledTestPayload<ExtArgs>[]
@@ -39257,6 +39803,7 @@ export namespace Prisma {
       academicTestItemId: string
       branchBatchId: string
       cycleNumber: number
+      batchCycleId: string
       status: string
       createdBy: string
       createdAt: Date
@@ -39656,6 +40203,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     academicTestItem<T extends AcademicTestItemDefaultArgs<ExtArgs> = {}>(args?: Subset<T, AcademicTestItemDefaultArgs<ExtArgs>>): Prisma__AcademicTestItemClient<$Result.GetResult<Prisma.$AcademicTestItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     branchBatch<T extends BranchBatchDefaultArgs<ExtArgs> = {}>(args?: Subset<T, BranchBatchDefaultArgs<ExtArgs>>): Prisma__BranchBatchClient<$Result.GetResult<Prisma.$BranchBatchPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    batchCycle<T extends BatchCycleDefaultArgs<ExtArgs> = {}>(args?: Subset<T, BatchCycleDefaultArgs<ExtArgs>>): Prisma__BatchCycleClient<$Result.GetResult<Prisma.$BatchCyclePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     questionPapers<T extends AcademicTestCycle$questionPapersArgs<ExtArgs> = {}>(args?: Subset<T, AcademicTestCycle$questionPapersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcademicQuestionPaperPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     projects<T extends AcademicTestCycle$projectsArgs<ExtArgs> = {}>(args?: Subset<T, AcademicTestCycle$projectsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcademicTestProjectPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     schedules<T extends AcademicTestCycle$schedulesArgs<ExtArgs> = {}>(args?: Subset<T, AcademicTestCycle$schedulesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcademicScheduledTestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -39692,6 +40240,7 @@ export namespace Prisma {
     readonly academicTestItemId: FieldRef<"AcademicTestCycle", 'String'>
     readonly branchBatchId: FieldRef<"AcademicTestCycle", 'String'>
     readonly cycleNumber: FieldRef<"AcademicTestCycle", 'Int'>
+    readonly batchCycleId: FieldRef<"AcademicTestCycle", 'String'>
     readonly status: FieldRef<"AcademicTestCycle", 'String'>
     readonly createdBy: FieldRef<"AcademicTestCycle", 'String'>
     readonly createdAt: FieldRef<"AcademicTestCycle", 'DateTime'>
@@ -40183,6 +40732,1351 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: AcademicTestCycleInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model BatchCycle
+   */
+
+  export type AggregateBatchCycle = {
+    _count: BatchCycleCountAggregateOutputType | null
+    _avg: BatchCycleAvgAggregateOutputType | null
+    _sum: BatchCycleSumAggregateOutputType | null
+    _min: BatchCycleMinAggregateOutputType | null
+    _max: BatchCycleMaxAggregateOutputType | null
+  }
+
+  export type BatchCycleAvgAggregateOutputType = {
+    cycleNumber: number | null
+  }
+
+  export type BatchCycleSumAggregateOutputType = {
+    cycleNumber: number | null
+  }
+
+  export type BatchCycleMinAggregateOutputType = {
+    id: string | null
+    batchId: string | null
+    cycleNumber: number | null
+    cycleName: string | null
+    status: string | null
+    startDate: string | null
+    endDate: string | null
+    completedAt: Date | null
+    freezeUntil: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type BatchCycleMaxAggregateOutputType = {
+    id: string | null
+    batchId: string | null
+    cycleNumber: number | null
+    cycleName: string | null
+    status: string | null
+    startDate: string | null
+    endDate: string | null
+    completedAt: Date | null
+    freezeUntil: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type BatchCycleCountAggregateOutputType = {
+    id: number
+    batchId: number
+    cycleNumber: number
+    cycleName: number
+    status: number
+    startDate: number
+    endDate: number
+    completedAt: number
+    freezeUntil: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type BatchCycleAvgAggregateInputType = {
+    cycleNumber?: true
+  }
+
+  export type BatchCycleSumAggregateInputType = {
+    cycleNumber?: true
+  }
+
+  export type BatchCycleMinAggregateInputType = {
+    id?: true
+    batchId?: true
+    cycleNumber?: true
+    cycleName?: true
+    status?: true
+    startDate?: true
+    endDate?: true
+    completedAt?: true
+    freezeUntil?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type BatchCycleMaxAggregateInputType = {
+    id?: true
+    batchId?: true
+    cycleNumber?: true
+    cycleName?: true
+    status?: true
+    startDate?: true
+    endDate?: true
+    completedAt?: true
+    freezeUntil?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type BatchCycleCountAggregateInputType = {
+    id?: true
+    batchId?: true
+    cycleNumber?: true
+    cycleName?: true
+    status?: true
+    startDate?: true
+    endDate?: true
+    completedAt?: true
+    freezeUntil?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type BatchCycleAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which BatchCycle to aggregate.
+     */
+    where?: BatchCycleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of BatchCycles to fetch.
+     */
+    orderBy?: BatchCycleOrderByWithRelationInput | BatchCycleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: BatchCycleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` BatchCycles from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` BatchCycles.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned BatchCycles
+    **/
+    _count?: true | BatchCycleCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: BatchCycleAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: BatchCycleSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: BatchCycleMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: BatchCycleMaxAggregateInputType
+  }
+
+  export type GetBatchCycleAggregateType<T extends BatchCycleAggregateArgs> = {
+        [P in keyof T & keyof AggregateBatchCycle]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateBatchCycle[P]>
+      : GetScalarType<T[P], AggregateBatchCycle[P]>
+  }
+
+
+
+
+  export type BatchCycleGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BatchCycleWhereInput
+    orderBy?: BatchCycleOrderByWithAggregationInput | BatchCycleOrderByWithAggregationInput[]
+    by: BatchCycleScalarFieldEnum[] | BatchCycleScalarFieldEnum
+    having?: BatchCycleScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: BatchCycleCountAggregateInputType | true
+    _avg?: BatchCycleAvgAggregateInputType
+    _sum?: BatchCycleSumAggregateInputType
+    _min?: BatchCycleMinAggregateInputType
+    _max?: BatchCycleMaxAggregateInputType
+  }
+
+  export type BatchCycleGroupByOutputType = {
+    id: string
+    batchId: string
+    cycleNumber: number
+    cycleName: string
+    status: string
+    startDate: string | null
+    endDate: string | null
+    completedAt: Date | null
+    freezeUntil: Date | null
+    createdAt: Date
+    updatedAt: Date
+    _count: BatchCycleCountAggregateOutputType | null
+    _avg: BatchCycleAvgAggregateOutputType | null
+    _sum: BatchCycleSumAggregateOutputType | null
+    _min: BatchCycleMinAggregateOutputType | null
+    _max: BatchCycleMaxAggregateOutputType | null
+  }
+
+  type GetBatchCycleGroupByPayload<T extends BatchCycleGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<BatchCycleGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof BatchCycleGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], BatchCycleGroupByOutputType[P]>
+            : GetScalarType<T[P], BatchCycleGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type BatchCycleSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    batchId?: boolean
+    cycleNumber?: boolean
+    cycleName?: boolean
+    status?: boolean
+    startDate?: boolean
+    endDate?: boolean
+    completedAt?: boolean
+    freezeUntil?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    batch?: boolean | BranchBatchDefaultArgs<ExtArgs>
+    enrollments?: boolean | BatchCycle$enrollmentsArgs<ExtArgs>
+    academicTestCycles?: boolean | BatchCycle$academicTestCyclesArgs<ExtArgs>
+    reportHistories?: boolean | BatchCycle$reportHistoriesArgs<ExtArgs>
+    examSchedules?: boolean | BatchCycle$examSchedulesArgs<ExtArgs>
+    assessments?: boolean | BatchCycle$assessmentsArgs<ExtArgs>
+    reportShares?: boolean | BatchCycle$reportSharesArgs<ExtArgs>
+    _count?: boolean | BatchCycleCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["batchCycle"]>
+
+  export type BatchCycleSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    batchId?: boolean
+    cycleNumber?: boolean
+    cycleName?: boolean
+    status?: boolean
+    startDate?: boolean
+    endDate?: boolean
+    completedAt?: boolean
+    freezeUntil?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    batch?: boolean | BranchBatchDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["batchCycle"]>
+
+  export type BatchCycleSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    batchId?: boolean
+    cycleNumber?: boolean
+    cycleName?: boolean
+    status?: boolean
+    startDate?: boolean
+    endDate?: boolean
+    completedAt?: boolean
+    freezeUntil?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    batch?: boolean | BranchBatchDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["batchCycle"]>
+
+  export type BatchCycleSelectScalar = {
+    id?: boolean
+    batchId?: boolean
+    cycleNumber?: boolean
+    cycleName?: boolean
+    status?: boolean
+    startDate?: boolean
+    endDate?: boolean
+    completedAt?: boolean
+    freezeUntil?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type BatchCycleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "batchId" | "cycleNumber" | "cycleName" | "status" | "startDate" | "endDate" | "completedAt" | "freezeUntil" | "createdAt" | "updatedAt", ExtArgs["result"]["batchCycle"]>
+  export type BatchCycleInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    batch?: boolean | BranchBatchDefaultArgs<ExtArgs>
+    enrollments?: boolean | BatchCycle$enrollmentsArgs<ExtArgs>
+    academicTestCycles?: boolean | BatchCycle$academicTestCyclesArgs<ExtArgs>
+    reportHistories?: boolean | BatchCycle$reportHistoriesArgs<ExtArgs>
+    examSchedules?: boolean | BatchCycle$examSchedulesArgs<ExtArgs>
+    assessments?: boolean | BatchCycle$assessmentsArgs<ExtArgs>
+    reportShares?: boolean | BatchCycle$reportSharesArgs<ExtArgs>
+    _count?: boolean | BatchCycleCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type BatchCycleIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    batch?: boolean | BranchBatchDefaultArgs<ExtArgs>
+  }
+  export type BatchCycleIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    batch?: boolean | BranchBatchDefaultArgs<ExtArgs>
+  }
+
+  export type $BatchCyclePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "BatchCycle"
+    objects: {
+      batch: Prisma.$BranchBatchPayload<ExtArgs>
+      enrollments: Prisma.$BranchStudentCoursePayload<ExtArgs>[]
+      academicTestCycles: Prisma.$AcademicTestCyclePayload<ExtArgs>[]
+      reportHistories: Prisma.$AcademicTestReportHistoryPayload<ExtArgs>[]
+      examSchedules: Prisma.$ExamSchedulePayload<ExtArgs>[]
+      assessments: Prisma.$AssessmentPayload<ExtArgs>[]
+      reportShares: Prisma.$FacultyReportSharePayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      batchId: string
+      cycleNumber: number
+      cycleName: string
+      status: string
+      startDate: string | null
+      endDate: string | null
+      completedAt: Date | null
+      freezeUntil: Date | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["batchCycle"]>
+    composites: {}
+  }
+
+  type BatchCycleGetPayload<S extends boolean | null | undefined | BatchCycleDefaultArgs> = $Result.GetResult<Prisma.$BatchCyclePayload, S>
+
+  type BatchCycleCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<BatchCycleFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: BatchCycleCountAggregateInputType | true
+    }
+
+  export interface BatchCycleDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['BatchCycle'], meta: { name: 'BatchCycle' } }
+    /**
+     * Find zero or one BatchCycle that matches the filter.
+     * @param {BatchCycleFindUniqueArgs} args - Arguments to find a BatchCycle
+     * @example
+     * // Get one BatchCycle
+     * const batchCycle = await prisma.batchCycle.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends BatchCycleFindUniqueArgs>(args: SelectSubset<T, BatchCycleFindUniqueArgs<ExtArgs>>): Prisma__BatchCycleClient<$Result.GetResult<Prisma.$BatchCyclePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one BatchCycle that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {BatchCycleFindUniqueOrThrowArgs} args - Arguments to find a BatchCycle
+     * @example
+     * // Get one BatchCycle
+     * const batchCycle = await prisma.batchCycle.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends BatchCycleFindUniqueOrThrowArgs>(args: SelectSubset<T, BatchCycleFindUniqueOrThrowArgs<ExtArgs>>): Prisma__BatchCycleClient<$Result.GetResult<Prisma.$BatchCyclePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first BatchCycle that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BatchCycleFindFirstArgs} args - Arguments to find a BatchCycle
+     * @example
+     * // Get one BatchCycle
+     * const batchCycle = await prisma.batchCycle.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends BatchCycleFindFirstArgs>(args?: SelectSubset<T, BatchCycleFindFirstArgs<ExtArgs>>): Prisma__BatchCycleClient<$Result.GetResult<Prisma.$BatchCyclePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first BatchCycle that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BatchCycleFindFirstOrThrowArgs} args - Arguments to find a BatchCycle
+     * @example
+     * // Get one BatchCycle
+     * const batchCycle = await prisma.batchCycle.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends BatchCycleFindFirstOrThrowArgs>(args?: SelectSubset<T, BatchCycleFindFirstOrThrowArgs<ExtArgs>>): Prisma__BatchCycleClient<$Result.GetResult<Prisma.$BatchCyclePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more BatchCycles that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BatchCycleFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all BatchCycles
+     * const batchCycles = await prisma.batchCycle.findMany()
+     * 
+     * // Get first 10 BatchCycles
+     * const batchCycles = await prisma.batchCycle.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const batchCycleWithIdOnly = await prisma.batchCycle.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends BatchCycleFindManyArgs>(args?: SelectSubset<T, BatchCycleFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BatchCyclePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a BatchCycle.
+     * @param {BatchCycleCreateArgs} args - Arguments to create a BatchCycle.
+     * @example
+     * // Create one BatchCycle
+     * const BatchCycle = await prisma.batchCycle.create({
+     *   data: {
+     *     // ... data to create a BatchCycle
+     *   }
+     * })
+     * 
+     */
+    create<T extends BatchCycleCreateArgs>(args: SelectSubset<T, BatchCycleCreateArgs<ExtArgs>>): Prisma__BatchCycleClient<$Result.GetResult<Prisma.$BatchCyclePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many BatchCycles.
+     * @param {BatchCycleCreateManyArgs} args - Arguments to create many BatchCycles.
+     * @example
+     * // Create many BatchCycles
+     * const batchCycle = await prisma.batchCycle.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends BatchCycleCreateManyArgs>(args?: SelectSubset<T, BatchCycleCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many BatchCycles and returns the data saved in the database.
+     * @param {BatchCycleCreateManyAndReturnArgs} args - Arguments to create many BatchCycles.
+     * @example
+     * // Create many BatchCycles
+     * const batchCycle = await prisma.batchCycle.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many BatchCycles and only return the `id`
+     * const batchCycleWithIdOnly = await prisma.batchCycle.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends BatchCycleCreateManyAndReturnArgs>(args?: SelectSubset<T, BatchCycleCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BatchCyclePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a BatchCycle.
+     * @param {BatchCycleDeleteArgs} args - Arguments to delete one BatchCycle.
+     * @example
+     * // Delete one BatchCycle
+     * const BatchCycle = await prisma.batchCycle.delete({
+     *   where: {
+     *     // ... filter to delete one BatchCycle
+     *   }
+     * })
+     * 
+     */
+    delete<T extends BatchCycleDeleteArgs>(args: SelectSubset<T, BatchCycleDeleteArgs<ExtArgs>>): Prisma__BatchCycleClient<$Result.GetResult<Prisma.$BatchCyclePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one BatchCycle.
+     * @param {BatchCycleUpdateArgs} args - Arguments to update one BatchCycle.
+     * @example
+     * // Update one BatchCycle
+     * const batchCycle = await prisma.batchCycle.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends BatchCycleUpdateArgs>(args: SelectSubset<T, BatchCycleUpdateArgs<ExtArgs>>): Prisma__BatchCycleClient<$Result.GetResult<Prisma.$BatchCyclePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more BatchCycles.
+     * @param {BatchCycleDeleteManyArgs} args - Arguments to filter BatchCycles to delete.
+     * @example
+     * // Delete a few BatchCycles
+     * const { count } = await prisma.batchCycle.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends BatchCycleDeleteManyArgs>(args?: SelectSubset<T, BatchCycleDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more BatchCycles.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BatchCycleUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many BatchCycles
+     * const batchCycle = await prisma.batchCycle.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends BatchCycleUpdateManyArgs>(args: SelectSubset<T, BatchCycleUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more BatchCycles and returns the data updated in the database.
+     * @param {BatchCycleUpdateManyAndReturnArgs} args - Arguments to update many BatchCycles.
+     * @example
+     * // Update many BatchCycles
+     * const batchCycle = await prisma.batchCycle.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more BatchCycles and only return the `id`
+     * const batchCycleWithIdOnly = await prisma.batchCycle.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends BatchCycleUpdateManyAndReturnArgs>(args: SelectSubset<T, BatchCycleUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BatchCyclePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one BatchCycle.
+     * @param {BatchCycleUpsertArgs} args - Arguments to update or create a BatchCycle.
+     * @example
+     * // Update or create a BatchCycle
+     * const batchCycle = await prisma.batchCycle.upsert({
+     *   create: {
+     *     // ... data to create a BatchCycle
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the BatchCycle we want to update
+     *   }
+     * })
+     */
+    upsert<T extends BatchCycleUpsertArgs>(args: SelectSubset<T, BatchCycleUpsertArgs<ExtArgs>>): Prisma__BatchCycleClient<$Result.GetResult<Prisma.$BatchCyclePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of BatchCycles.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BatchCycleCountArgs} args - Arguments to filter BatchCycles to count.
+     * @example
+     * // Count the number of BatchCycles
+     * const count = await prisma.batchCycle.count({
+     *   where: {
+     *     // ... the filter for the BatchCycles we want to count
+     *   }
+     * })
+    **/
+    count<T extends BatchCycleCountArgs>(
+      args?: Subset<T, BatchCycleCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], BatchCycleCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a BatchCycle.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BatchCycleAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends BatchCycleAggregateArgs>(args: Subset<T, BatchCycleAggregateArgs>): Prisma.PrismaPromise<GetBatchCycleAggregateType<T>>
+
+    /**
+     * Group by BatchCycle.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BatchCycleGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends BatchCycleGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: BatchCycleGroupByArgs['orderBy'] }
+        : { orderBy?: BatchCycleGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, BatchCycleGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetBatchCycleGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the BatchCycle model
+   */
+  readonly fields: BatchCycleFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for BatchCycle.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__BatchCycleClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    batch<T extends BranchBatchDefaultArgs<ExtArgs> = {}>(args?: Subset<T, BranchBatchDefaultArgs<ExtArgs>>): Prisma__BranchBatchClient<$Result.GetResult<Prisma.$BranchBatchPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    enrollments<T extends BatchCycle$enrollmentsArgs<ExtArgs> = {}>(args?: Subset<T, BatchCycle$enrollmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchStudentCoursePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    academicTestCycles<T extends BatchCycle$academicTestCyclesArgs<ExtArgs> = {}>(args?: Subset<T, BatchCycle$academicTestCyclesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcademicTestCyclePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    reportHistories<T extends BatchCycle$reportHistoriesArgs<ExtArgs> = {}>(args?: Subset<T, BatchCycle$reportHistoriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcademicTestReportHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    examSchedules<T extends BatchCycle$examSchedulesArgs<ExtArgs> = {}>(args?: Subset<T, BatchCycle$examSchedulesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ExamSchedulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    assessments<T extends BatchCycle$assessmentsArgs<ExtArgs> = {}>(args?: Subset<T, BatchCycle$assessmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AssessmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    reportShares<T extends BatchCycle$reportSharesArgs<ExtArgs> = {}>(args?: Subset<T, BatchCycle$reportSharesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FacultyReportSharePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the BatchCycle model
+   */
+  interface BatchCycleFieldRefs {
+    readonly id: FieldRef<"BatchCycle", 'String'>
+    readonly batchId: FieldRef<"BatchCycle", 'String'>
+    readonly cycleNumber: FieldRef<"BatchCycle", 'Int'>
+    readonly cycleName: FieldRef<"BatchCycle", 'String'>
+    readonly status: FieldRef<"BatchCycle", 'String'>
+    readonly startDate: FieldRef<"BatchCycle", 'String'>
+    readonly endDate: FieldRef<"BatchCycle", 'String'>
+    readonly completedAt: FieldRef<"BatchCycle", 'DateTime'>
+    readonly freezeUntil: FieldRef<"BatchCycle", 'DateTime'>
+    readonly createdAt: FieldRef<"BatchCycle", 'DateTime'>
+    readonly updatedAt: FieldRef<"BatchCycle", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * BatchCycle findUnique
+   */
+  export type BatchCycleFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BatchCycle
+     */
+    select?: BatchCycleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BatchCycle
+     */
+    omit?: BatchCycleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BatchCycleInclude<ExtArgs> | null
+    /**
+     * Filter, which BatchCycle to fetch.
+     */
+    where: BatchCycleWhereUniqueInput
+  }
+
+  /**
+   * BatchCycle findUniqueOrThrow
+   */
+  export type BatchCycleFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BatchCycle
+     */
+    select?: BatchCycleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BatchCycle
+     */
+    omit?: BatchCycleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BatchCycleInclude<ExtArgs> | null
+    /**
+     * Filter, which BatchCycle to fetch.
+     */
+    where: BatchCycleWhereUniqueInput
+  }
+
+  /**
+   * BatchCycle findFirst
+   */
+  export type BatchCycleFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BatchCycle
+     */
+    select?: BatchCycleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BatchCycle
+     */
+    omit?: BatchCycleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BatchCycleInclude<ExtArgs> | null
+    /**
+     * Filter, which BatchCycle to fetch.
+     */
+    where?: BatchCycleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of BatchCycles to fetch.
+     */
+    orderBy?: BatchCycleOrderByWithRelationInput | BatchCycleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for BatchCycles.
+     */
+    cursor?: BatchCycleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` BatchCycles from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` BatchCycles.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of BatchCycles.
+     */
+    distinct?: BatchCycleScalarFieldEnum | BatchCycleScalarFieldEnum[]
+  }
+
+  /**
+   * BatchCycle findFirstOrThrow
+   */
+  export type BatchCycleFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BatchCycle
+     */
+    select?: BatchCycleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BatchCycle
+     */
+    omit?: BatchCycleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BatchCycleInclude<ExtArgs> | null
+    /**
+     * Filter, which BatchCycle to fetch.
+     */
+    where?: BatchCycleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of BatchCycles to fetch.
+     */
+    orderBy?: BatchCycleOrderByWithRelationInput | BatchCycleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for BatchCycles.
+     */
+    cursor?: BatchCycleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` BatchCycles from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` BatchCycles.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of BatchCycles.
+     */
+    distinct?: BatchCycleScalarFieldEnum | BatchCycleScalarFieldEnum[]
+  }
+
+  /**
+   * BatchCycle findMany
+   */
+  export type BatchCycleFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BatchCycle
+     */
+    select?: BatchCycleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BatchCycle
+     */
+    omit?: BatchCycleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BatchCycleInclude<ExtArgs> | null
+    /**
+     * Filter, which BatchCycles to fetch.
+     */
+    where?: BatchCycleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of BatchCycles to fetch.
+     */
+    orderBy?: BatchCycleOrderByWithRelationInput | BatchCycleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing BatchCycles.
+     */
+    cursor?: BatchCycleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` BatchCycles from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` BatchCycles.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of BatchCycles.
+     */
+    distinct?: BatchCycleScalarFieldEnum | BatchCycleScalarFieldEnum[]
+  }
+
+  /**
+   * BatchCycle create
+   */
+  export type BatchCycleCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BatchCycle
+     */
+    select?: BatchCycleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BatchCycle
+     */
+    omit?: BatchCycleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BatchCycleInclude<ExtArgs> | null
+    /**
+     * The data needed to create a BatchCycle.
+     */
+    data: XOR<BatchCycleCreateInput, BatchCycleUncheckedCreateInput>
+  }
+
+  /**
+   * BatchCycle createMany
+   */
+  export type BatchCycleCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many BatchCycles.
+     */
+    data: BatchCycleCreateManyInput | BatchCycleCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * BatchCycle createManyAndReturn
+   */
+  export type BatchCycleCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BatchCycle
+     */
+    select?: BatchCycleSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the BatchCycle
+     */
+    omit?: BatchCycleOmit<ExtArgs> | null
+    /**
+     * The data used to create many BatchCycles.
+     */
+    data: BatchCycleCreateManyInput | BatchCycleCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BatchCycleIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * BatchCycle update
+   */
+  export type BatchCycleUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BatchCycle
+     */
+    select?: BatchCycleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BatchCycle
+     */
+    omit?: BatchCycleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BatchCycleInclude<ExtArgs> | null
+    /**
+     * The data needed to update a BatchCycle.
+     */
+    data: XOR<BatchCycleUpdateInput, BatchCycleUncheckedUpdateInput>
+    /**
+     * Choose, which BatchCycle to update.
+     */
+    where: BatchCycleWhereUniqueInput
+  }
+
+  /**
+   * BatchCycle updateMany
+   */
+  export type BatchCycleUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update BatchCycles.
+     */
+    data: XOR<BatchCycleUpdateManyMutationInput, BatchCycleUncheckedUpdateManyInput>
+    /**
+     * Filter which BatchCycles to update
+     */
+    where?: BatchCycleWhereInput
+    /**
+     * Limit how many BatchCycles to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * BatchCycle updateManyAndReturn
+   */
+  export type BatchCycleUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BatchCycle
+     */
+    select?: BatchCycleSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the BatchCycle
+     */
+    omit?: BatchCycleOmit<ExtArgs> | null
+    /**
+     * The data used to update BatchCycles.
+     */
+    data: XOR<BatchCycleUpdateManyMutationInput, BatchCycleUncheckedUpdateManyInput>
+    /**
+     * Filter which BatchCycles to update
+     */
+    where?: BatchCycleWhereInput
+    /**
+     * Limit how many BatchCycles to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BatchCycleIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * BatchCycle upsert
+   */
+  export type BatchCycleUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BatchCycle
+     */
+    select?: BatchCycleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BatchCycle
+     */
+    omit?: BatchCycleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BatchCycleInclude<ExtArgs> | null
+    /**
+     * The filter to search for the BatchCycle to update in case it exists.
+     */
+    where: BatchCycleWhereUniqueInput
+    /**
+     * In case the BatchCycle found by the `where` argument doesn't exist, create a new BatchCycle with this data.
+     */
+    create: XOR<BatchCycleCreateInput, BatchCycleUncheckedCreateInput>
+    /**
+     * In case the BatchCycle was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<BatchCycleUpdateInput, BatchCycleUncheckedUpdateInput>
+  }
+
+  /**
+   * BatchCycle delete
+   */
+  export type BatchCycleDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BatchCycle
+     */
+    select?: BatchCycleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BatchCycle
+     */
+    omit?: BatchCycleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BatchCycleInclude<ExtArgs> | null
+    /**
+     * Filter which BatchCycle to delete.
+     */
+    where: BatchCycleWhereUniqueInput
+  }
+
+  /**
+   * BatchCycle deleteMany
+   */
+  export type BatchCycleDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which BatchCycles to delete
+     */
+    where?: BatchCycleWhereInput
+    /**
+     * Limit how many BatchCycles to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * BatchCycle.enrollments
+   */
+  export type BatchCycle$enrollmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchStudentCourse
+     */
+    select?: BranchStudentCourseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchStudentCourse
+     */
+    omit?: BranchStudentCourseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchStudentCourseInclude<ExtArgs> | null
+    where?: BranchStudentCourseWhereInput
+    orderBy?: BranchStudentCourseOrderByWithRelationInput | BranchStudentCourseOrderByWithRelationInput[]
+    cursor?: BranchStudentCourseWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: BranchStudentCourseScalarFieldEnum | BranchStudentCourseScalarFieldEnum[]
+  }
+
+  /**
+   * BatchCycle.academicTestCycles
+   */
+  export type BatchCycle$academicTestCyclesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestCycle
+     */
+    select?: AcademicTestCycleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicTestCycle
+     */
+    omit?: AcademicTestCycleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicTestCycleInclude<ExtArgs> | null
+    where?: AcademicTestCycleWhereInput
+    orderBy?: AcademicTestCycleOrderByWithRelationInput | AcademicTestCycleOrderByWithRelationInput[]
+    cursor?: AcademicTestCycleWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AcademicTestCycleScalarFieldEnum | AcademicTestCycleScalarFieldEnum[]
+  }
+
+  /**
+   * BatchCycle.reportHistories
+   */
+  export type BatchCycle$reportHistoriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestReportHistory
+     */
+    select?: AcademicTestReportHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicTestReportHistory
+     */
+    omit?: AcademicTestReportHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicTestReportHistoryInclude<ExtArgs> | null
+    where?: AcademicTestReportHistoryWhereInput
+    orderBy?: AcademicTestReportHistoryOrderByWithRelationInput | AcademicTestReportHistoryOrderByWithRelationInput[]
+    cursor?: AcademicTestReportHistoryWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AcademicTestReportHistoryScalarFieldEnum | AcademicTestReportHistoryScalarFieldEnum[]
+  }
+
+  /**
+   * BatchCycle.examSchedules
+   */
+  export type BatchCycle$examSchedulesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ExamSchedule
+     */
+    select?: ExamScheduleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ExamSchedule
+     */
+    omit?: ExamScheduleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExamScheduleInclude<ExtArgs> | null
+    where?: ExamScheduleWhereInput
+    orderBy?: ExamScheduleOrderByWithRelationInput | ExamScheduleOrderByWithRelationInput[]
+    cursor?: ExamScheduleWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ExamScheduleScalarFieldEnum | ExamScheduleScalarFieldEnum[]
+  }
+
+  /**
+   * BatchCycle.assessments
+   */
+  export type BatchCycle$assessmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Assessment
+     */
+    select?: AssessmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Assessment
+     */
+    omit?: AssessmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AssessmentInclude<ExtArgs> | null
+    where?: AssessmentWhereInput
+    orderBy?: AssessmentOrderByWithRelationInput | AssessmentOrderByWithRelationInput[]
+    cursor?: AssessmentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AssessmentScalarFieldEnum | AssessmentScalarFieldEnum[]
+  }
+
+  /**
+   * BatchCycle.reportShares
+   */
+  export type BatchCycle$reportSharesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FacultyReportShare
+     */
+    select?: FacultyReportShareSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FacultyReportShare
+     */
+    omit?: FacultyReportShareOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyReportShareInclude<ExtArgs> | null
+    where?: FacultyReportShareWhereInput
+    orderBy?: FacultyReportShareOrderByWithRelationInput | FacultyReportShareOrderByWithRelationInput[]
+    cursor?: FacultyReportShareWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: FacultyReportShareScalarFieldEnum | FacultyReportShareScalarFieldEnum[]
+  }
+
+  /**
+   * BatchCycle without action
+   */
+  export type BatchCycleDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BatchCycle
+     */
+    select?: BatchCycleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BatchCycle
+     */
+    omit?: BatchCycleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BatchCycleInclude<ExtArgs> | null
   }
 
 
@@ -49822,6 +51716,7 @@ export namespace Prisma {
     facultyId: string | null
     facultyName: string | null
     batchId: string | null
+    batchCycleId: string | null
     batchName: string | null
     batchTiming: string | null
     scheduleType: string | null
@@ -49853,6 +51748,7 @@ export namespace Prisma {
     facultyId: string | null
     facultyName: string | null
     batchId: string | null
+    batchCycleId: string | null
     batchName: string | null
     batchTiming: string | null
     scheduleType: string | null
@@ -49884,6 +51780,7 @@ export namespace Prisma {
     facultyId: number
     facultyName: number
     batchId: number
+    batchCycleId: number
     batchName: number
     batchTiming: number
     scheduleType: number
@@ -49935,6 +51832,7 @@ export namespace Prisma {
     facultyId?: true
     facultyName?: true
     batchId?: true
+    batchCycleId?: true
     batchName?: true
     batchTiming?: true
     scheduleType?: true
@@ -49966,6 +51864,7 @@ export namespace Prisma {
     facultyId?: true
     facultyName?: true
     batchId?: true
+    batchCycleId?: true
     batchName?: true
     batchTiming?: true
     scheduleType?: true
@@ -49997,6 +51896,7 @@ export namespace Prisma {
     facultyId?: true
     facultyName?: true
     batchId?: true
+    batchCycleId?: true
     batchName?: true
     batchTiming?: true
     scheduleType?: true
@@ -50115,6 +52015,7 @@ export namespace Prisma {
     facultyId: string | null
     facultyName: string | null
     batchId: string | null
+    batchCycleId: string | null
     batchName: string | null
     batchTiming: string | null
     scheduleType: string | null
@@ -50165,6 +52066,7 @@ export namespace Prisma {
     facultyId?: boolean
     facultyName?: boolean
     batchId?: boolean
+    batchCycleId?: boolean
     batchName?: boolean
     batchTiming?: boolean
     scheduleType?: boolean
@@ -50186,6 +52088,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     branchStudent?: boolean | BranchStudentDefaultArgs<ExtArgs>
+    batchCycle?: boolean | BranchStudentCourse$batchCycleArgs<ExtArgs>
     branch?: boolean | BranchDefaultArgs<ExtArgs>
     course?: boolean | BranchCourseDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["branchStudentCourse"]>
@@ -50199,6 +52102,7 @@ export namespace Prisma {
     facultyId?: boolean
     facultyName?: boolean
     batchId?: boolean
+    batchCycleId?: boolean
     batchName?: boolean
     batchTiming?: boolean
     scheduleType?: boolean
@@ -50220,6 +52124,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     branchStudent?: boolean | BranchStudentDefaultArgs<ExtArgs>
+    batchCycle?: boolean | BranchStudentCourse$batchCycleArgs<ExtArgs>
     branch?: boolean | BranchDefaultArgs<ExtArgs>
     course?: boolean | BranchCourseDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["branchStudentCourse"]>
@@ -50233,6 +52138,7 @@ export namespace Prisma {
     facultyId?: boolean
     facultyName?: boolean
     batchId?: boolean
+    batchCycleId?: boolean
     batchName?: boolean
     batchTiming?: boolean
     scheduleType?: boolean
@@ -50254,6 +52160,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     branchStudent?: boolean | BranchStudentDefaultArgs<ExtArgs>
+    batchCycle?: boolean | BranchStudentCourse$batchCycleArgs<ExtArgs>
     branch?: boolean | BranchDefaultArgs<ExtArgs>
     course?: boolean | BranchCourseDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["branchStudentCourse"]>
@@ -50267,6 +52174,7 @@ export namespace Prisma {
     facultyId?: boolean
     facultyName?: boolean
     batchId?: boolean
+    batchCycleId?: boolean
     batchName?: boolean
     batchTiming?: boolean
     scheduleType?: boolean
@@ -50289,19 +52197,22 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type BranchStudentCourseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "branchStudentId" | "branchId" | "courseId" | "courseName" | "facultyId" | "facultyName" | "batchId" | "batchName" | "batchTiming" | "scheduleType" | "mode" | "startDate" | "endDate" | "arrangementType" | "sequenceOrder" | "totalCourseAmount" | "discountType" | "discountValue" | "discountAmount" | "finalCourseAmount" | "courseProgress" | "courseCompletedAt" | "paymentPlanId" | "paymentPlan" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["branchStudentCourse"]>
+  export type BranchStudentCourseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "branchStudentId" | "branchId" | "courseId" | "courseName" | "facultyId" | "facultyName" | "batchId" | "batchCycleId" | "batchName" | "batchTiming" | "scheduleType" | "mode" | "startDate" | "endDate" | "arrangementType" | "sequenceOrder" | "totalCourseAmount" | "discountType" | "discountValue" | "discountAmount" | "finalCourseAmount" | "courseProgress" | "courseCompletedAt" | "paymentPlanId" | "paymentPlan" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["branchStudentCourse"]>
   export type BranchStudentCourseInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     branchStudent?: boolean | BranchStudentDefaultArgs<ExtArgs>
+    batchCycle?: boolean | BranchStudentCourse$batchCycleArgs<ExtArgs>
     branch?: boolean | BranchDefaultArgs<ExtArgs>
     course?: boolean | BranchCourseDefaultArgs<ExtArgs>
   }
   export type BranchStudentCourseIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     branchStudent?: boolean | BranchStudentDefaultArgs<ExtArgs>
+    batchCycle?: boolean | BranchStudentCourse$batchCycleArgs<ExtArgs>
     branch?: boolean | BranchDefaultArgs<ExtArgs>
     course?: boolean | BranchCourseDefaultArgs<ExtArgs>
   }
   export type BranchStudentCourseIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     branchStudent?: boolean | BranchStudentDefaultArgs<ExtArgs>
+    batchCycle?: boolean | BranchStudentCourse$batchCycleArgs<ExtArgs>
     branch?: boolean | BranchDefaultArgs<ExtArgs>
     course?: boolean | BranchCourseDefaultArgs<ExtArgs>
   }
@@ -50310,6 +52221,7 @@ export namespace Prisma {
     name: "BranchStudentCourse"
     objects: {
       branchStudent: Prisma.$BranchStudentPayload<ExtArgs>
+      batchCycle: Prisma.$BatchCyclePayload<ExtArgs> | null
       branch: Prisma.$BranchPayload<ExtArgs>
       course: Prisma.$BranchCoursePayload<ExtArgs>
     }
@@ -50322,6 +52234,7 @@ export namespace Prisma {
       facultyId: string | null
       facultyName: string | null
       batchId: string | null
+      batchCycleId: string | null
       batchName: string | null
       batchTiming: string | null
       scheduleType: string | null
@@ -50737,6 +52650,7 @@ export namespace Prisma {
   export interface Prisma__BranchStudentCourseClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     branchStudent<T extends BranchStudentDefaultArgs<ExtArgs> = {}>(args?: Subset<T, BranchStudentDefaultArgs<ExtArgs>>): Prisma__BranchStudentClient<$Result.GetResult<Prisma.$BranchStudentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    batchCycle<T extends BranchStudentCourse$batchCycleArgs<ExtArgs> = {}>(args?: Subset<T, BranchStudentCourse$batchCycleArgs<ExtArgs>>): Prisma__BatchCycleClient<$Result.GetResult<Prisma.$BatchCyclePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     branch<T extends BranchDefaultArgs<ExtArgs> = {}>(args?: Subset<T, BranchDefaultArgs<ExtArgs>>): Prisma__BranchClient<$Result.GetResult<Prisma.$BranchPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     course<T extends BranchCourseDefaultArgs<ExtArgs> = {}>(args?: Subset<T, BranchCourseDefaultArgs<ExtArgs>>): Prisma__BranchCourseClient<$Result.GetResult<Prisma.$BranchCoursePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
@@ -50776,6 +52690,7 @@ export namespace Prisma {
     readonly facultyId: FieldRef<"BranchStudentCourse", 'String'>
     readonly facultyName: FieldRef<"BranchStudentCourse", 'String'>
     readonly batchId: FieldRef<"BranchStudentCourse", 'String'>
+    readonly batchCycleId: FieldRef<"BranchStudentCourse", 'String'>
     readonly batchName: FieldRef<"BranchStudentCourse", 'String'>
     readonly batchTiming: FieldRef<"BranchStudentCourse", 'String'>
     readonly scheduleType: FieldRef<"BranchStudentCourse", 'String'>
@@ -51194,6 +53109,25 @@ export namespace Prisma {
      * Limit how many BranchStudentCourses to delete.
      */
     limit?: number
+  }
+
+  /**
+   * BranchStudentCourse.batchCycle
+   */
+  export type BranchStudentCourse$batchCycleArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BatchCycle
+     */
+    select?: BatchCycleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BatchCycle
+     */
+    omit?: BatchCycleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BatchCycleInclude<ExtArgs> | null
+    where?: BatchCycleWhereInput
   }
 
   /**
@@ -80271,6 +82205,7 @@ export namespace Prisma {
     branchCourseId: string | null
     moduleId: string | null
     branchBatchId: string | null
+    batchCycleId: string | null
     totalMarks: number | null
     startDate: Date | null
     endDate: Date | null
@@ -80292,6 +82227,7 @@ export namespace Prisma {
     branchCourseId: string | null
     moduleId: string | null
     branchBatchId: string | null
+    batchCycleId: string | null
     totalMarks: number | null
     startDate: Date | null
     endDate: Date | null
@@ -80313,6 +82249,7 @@ export namespace Prisma {
     branchCourseId: number
     moduleId: number
     branchBatchId: number
+    batchCycleId: number
     totalMarks: number
     startDate: number
     endDate: number
@@ -80344,6 +82281,7 @@ export namespace Prisma {
     branchCourseId?: true
     moduleId?: true
     branchBatchId?: true
+    batchCycleId?: true
     totalMarks?: true
     startDate?: true
     endDate?: true
@@ -80365,6 +82303,7 @@ export namespace Prisma {
     branchCourseId?: true
     moduleId?: true
     branchBatchId?: true
+    batchCycleId?: true
     totalMarks?: true
     startDate?: true
     endDate?: true
@@ -80386,6 +82325,7 @@ export namespace Prisma {
     branchCourseId?: true
     moduleId?: true
     branchBatchId?: true
+    batchCycleId?: true
     totalMarks?: true
     startDate?: true
     endDate?: true
@@ -80494,6 +82434,7 @@ export namespace Prisma {
     branchCourseId: string
     moduleId: string
     branchBatchId: string
+    batchCycleId: string | null
     totalMarks: number
     startDate: Date
     endDate: Date
@@ -80534,6 +82475,7 @@ export namespace Prisma {
     branchCourseId?: boolean
     moduleId?: boolean
     branchBatchId?: boolean
+    batchCycleId?: boolean
     totalMarks?: boolean
     startDate?: boolean
     endDate?: boolean
@@ -80547,6 +82489,7 @@ export namespace Prisma {
     branchCourse?: boolean | BranchCourseDefaultArgs<ExtArgs>
     module?: boolean | BranchCourseModuleDefaultArgs<ExtArgs>
     branchBatch?: boolean | BranchBatchDefaultArgs<ExtArgs>
+    batchCycle?: boolean | Assessment$batchCycleArgs<ExtArgs>
     faculty?: boolean | UserDefaultArgs<ExtArgs>
     submissions?: boolean | Assessment$submissionsArgs<ExtArgs>
     originalAssessment?: boolean | Assessment$originalAssessmentArgs<ExtArgs>
@@ -80564,6 +82507,7 @@ export namespace Prisma {
     branchCourseId?: boolean
     moduleId?: boolean
     branchBatchId?: boolean
+    batchCycleId?: boolean
     totalMarks?: boolean
     startDate?: boolean
     endDate?: boolean
@@ -80577,6 +82521,7 @@ export namespace Prisma {
     branchCourse?: boolean | BranchCourseDefaultArgs<ExtArgs>
     module?: boolean | BranchCourseModuleDefaultArgs<ExtArgs>
     branchBatch?: boolean | BranchBatchDefaultArgs<ExtArgs>
+    batchCycle?: boolean | Assessment$batchCycleArgs<ExtArgs>
     faculty?: boolean | UserDefaultArgs<ExtArgs>
     originalAssessment?: boolean | Assessment$originalAssessmentArgs<ExtArgs>
     reassessmentStudent?: boolean | Assessment$reassessmentStudentArgs<ExtArgs>
@@ -80591,6 +82536,7 @@ export namespace Prisma {
     branchCourseId?: boolean
     moduleId?: boolean
     branchBatchId?: boolean
+    batchCycleId?: boolean
     totalMarks?: boolean
     startDate?: boolean
     endDate?: boolean
@@ -80604,6 +82550,7 @@ export namespace Prisma {
     branchCourse?: boolean | BranchCourseDefaultArgs<ExtArgs>
     module?: boolean | BranchCourseModuleDefaultArgs<ExtArgs>
     branchBatch?: boolean | BranchBatchDefaultArgs<ExtArgs>
+    batchCycle?: boolean | Assessment$batchCycleArgs<ExtArgs>
     faculty?: boolean | UserDefaultArgs<ExtArgs>
     originalAssessment?: boolean | Assessment$originalAssessmentArgs<ExtArgs>
     reassessmentStudent?: boolean | Assessment$reassessmentStudentArgs<ExtArgs>
@@ -80618,6 +82565,7 @@ export namespace Prisma {
     branchCourseId?: boolean
     moduleId?: boolean
     branchBatchId?: boolean
+    batchCycleId?: boolean
     totalMarks?: boolean
     startDate?: boolean
     endDate?: boolean
@@ -80630,11 +82578,12 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type AssessmentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"isReassessment" | "originalAssessmentId" | "reassessmentStudentId" | "id" | "assessmentName" | "branchCourseId" | "moduleId" | "branchBatchId" | "totalMarks" | "startDate" | "endDate" | "details" | "status" | "cancelledAt" | "cancelledBy" | "facultyId" | "createdAt" | "updatedAt", ExtArgs["result"]["assessment"]>
+  export type AssessmentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"isReassessment" | "originalAssessmentId" | "reassessmentStudentId" | "id" | "assessmentName" | "branchCourseId" | "moduleId" | "branchBatchId" | "batchCycleId" | "totalMarks" | "startDate" | "endDate" | "details" | "status" | "cancelledAt" | "cancelledBy" | "facultyId" | "createdAt" | "updatedAt", ExtArgs["result"]["assessment"]>
   export type AssessmentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     branchCourse?: boolean | BranchCourseDefaultArgs<ExtArgs>
     module?: boolean | BranchCourseModuleDefaultArgs<ExtArgs>
     branchBatch?: boolean | BranchBatchDefaultArgs<ExtArgs>
+    batchCycle?: boolean | Assessment$batchCycleArgs<ExtArgs>
     faculty?: boolean | UserDefaultArgs<ExtArgs>
     submissions?: boolean | Assessment$submissionsArgs<ExtArgs>
     originalAssessment?: boolean | Assessment$originalAssessmentArgs<ExtArgs>
@@ -80646,6 +82595,7 @@ export namespace Prisma {
     branchCourse?: boolean | BranchCourseDefaultArgs<ExtArgs>
     module?: boolean | BranchCourseModuleDefaultArgs<ExtArgs>
     branchBatch?: boolean | BranchBatchDefaultArgs<ExtArgs>
+    batchCycle?: boolean | Assessment$batchCycleArgs<ExtArgs>
     faculty?: boolean | UserDefaultArgs<ExtArgs>
     originalAssessment?: boolean | Assessment$originalAssessmentArgs<ExtArgs>
     reassessmentStudent?: boolean | Assessment$reassessmentStudentArgs<ExtArgs>
@@ -80654,6 +82604,7 @@ export namespace Prisma {
     branchCourse?: boolean | BranchCourseDefaultArgs<ExtArgs>
     module?: boolean | BranchCourseModuleDefaultArgs<ExtArgs>
     branchBatch?: boolean | BranchBatchDefaultArgs<ExtArgs>
+    batchCycle?: boolean | Assessment$batchCycleArgs<ExtArgs>
     faculty?: boolean | UserDefaultArgs<ExtArgs>
     originalAssessment?: boolean | Assessment$originalAssessmentArgs<ExtArgs>
     reassessmentStudent?: boolean | Assessment$reassessmentStudentArgs<ExtArgs>
@@ -80665,6 +82616,7 @@ export namespace Prisma {
       branchCourse: Prisma.$BranchCoursePayload<ExtArgs>
       module: Prisma.$BranchCourseModulePayload<ExtArgs>
       branchBatch: Prisma.$BranchBatchPayload<ExtArgs>
+      batchCycle: Prisma.$BatchCyclePayload<ExtArgs> | null
       faculty: Prisma.$UserPayload<ExtArgs>
       submissions: Prisma.$AssessmentSubmissionPayload<ExtArgs>[]
       originalAssessment: Prisma.$AssessmentPayload<ExtArgs> | null
@@ -80680,6 +82632,7 @@ export namespace Prisma {
       branchCourseId: string
       moduleId: string
       branchBatchId: string
+      batchCycleId: string | null
       totalMarks: number
       startDate: Date
       endDate: Date
@@ -81087,6 +83040,7 @@ export namespace Prisma {
     branchCourse<T extends BranchCourseDefaultArgs<ExtArgs> = {}>(args?: Subset<T, BranchCourseDefaultArgs<ExtArgs>>): Prisma__BranchCourseClient<$Result.GetResult<Prisma.$BranchCoursePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     module<T extends BranchCourseModuleDefaultArgs<ExtArgs> = {}>(args?: Subset<T, BranchCourseModuleDefaultArgs<ExtArgs>>): Prisma__BranchCourseModuleClient<$Result.GetResult<Prisma.$BranchCourseModulePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     branchBatch<T extends BranchBatchDefaultArgs<ExtArgs> = {}>(args?: Subset<T, BranchBatchDefaultArgs<ExtArgs>>): Prisma__BranchBatchClient<$Result.GetResult<Prisma.$BranchBatchPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    batchCycle<T extends Assessment$batchCycleArgs<ExtArgs> = {}>(args?: Subset<T, Assessment$batchCycleArgs<ExtArgs>>): Prisma__BatchCycleClient<$Result.GetResult<Prisma.$BatchCyclePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     faculty<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     submissions<T extends Assessment$submissionsArgs<ExtArgs> = {}>(args?: Subset<T, Assessment$submissionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AssessmentSubmissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     originalAssessment<T extends Assessment$originalAssessmentArgs<ExtArgs> = {}>(args?: Subset<T, Assessment$originalAssessmentArgs<ExtArgs>>): Prisma__AssessmentClient<$Result.GetResult<Prisma.$AssessmentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
@@ -81129,6 +83083,7 @@ export namespace Prisma {
     readonly branchCourseId: FieldRef<"Assessment", 'String'>
     readonly moduleId: FieldRef<"Assessment", 'String'>
     readonly branchBatchId: FieldRef<"Assessment", 'String'>
+    readonly batchCycleId: FieldRef<"Assessment", 'String'>
     readonly totalMarks: FieldRef<"Assessment", 'Int'>
     readonly startDate: FieldRef<"Assessment", 'DateTime'>
     readonly endDate: FieldRef<"Assessment", 'DateTime'>
@@ -81537,6 +83492,25 @@ export namespace Prisma {
      * Limit how many Assessments to delete.
      */
     limit?: number
+  }
+
+  /**
+   * Assessment.batchCycle
+   */
+  export type Assessment$batchCycleArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BatchCycle
+     */
+    select?: BatchCycleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BatchCycle
+     */
+    omit?: BatchCycleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BatchCycleInclude<ExtArgs> | null
+    where?: BatchCycleWhereInput
   }
 
   /**
@@ -84365,6 +86339,7 @@ export namespace Prisma {
     id: string | null
     examId: string | null
     branchBatchId: string | null
+    batchCycleId: string | null
     testDate: string | null
     startTime: string | null
     endTime: string | null
@@ -84375,6 +86350,7 @@ export namespace Prisma {
     id: string | null
     examId: string | null
     branchBatchId: string | null
+    batchCycleId: string | null
     testDate: string | null
     startTime: string | null
     endTime: string | null
@@ -84385,6 +86361,7 @@ export namespace Prisma {
     id: number
     examId: number
     branchBatchId: number
+    batchCycleId: number
     testDate: number
     startTime: number
     endTime: number
@@ -84397,6 +86374,7 @@ export namespace Prisma {
     id?: true
     examId?: true
     branchBatchId?: true
+    batchCycleId?: true
     testDate?: true
     startTime?: true
     endTime?: true
@@ -84407,6 +86385,7 @@ export namespace Prisma {
     id?: true
     examId?: true
     branchBatchId?: true
+    batchCycleId?: true
     testDate?: true
     startTime?: true
     endTime?: true
@@ -84417,6 +86396,7 @@ export namespace Prisma {
     id?: true
     examId?: true
     branchBatchId?: true
+    batchCycleId?: true
     testDate?: true
     startTime?: true
     endTime?: true
@@ -84500,6 +86480,7 @@ export namespace Prisma {
     id: string
     examId: string
     branchBatchId: string
+    batchCycleId: string | null
     testDate: string
     startTime: string
     endTime: string
@@ -84527,12 +86508,14 @@ export namespace Prisma {
     id?: boolean
     examId?: boolean
     branchBatchId?: boolean
+    batchCycleId?: boolean
     testDate?: boolean
     startTime?: boolean
     endTime?: boolean
     status?: boolean
     exam?: boolean | ExamDefaultArgs<ExtArgs>
     branchBatch?: boolean | BranchBatchDefaultArgs<ExtArgs>
+    batchCycle?: boolean | ExamSchedule$batchCycleArgs<ExtArgs>
     attempts?: boolean | ExamSchedule$attemptsArgs<ExtArgs>
     _count?: boolean | ExamScheduleCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["examSchedule"]>
@@ -84541,50 +86524,58 @@ export namespace Prisma {
     id?: boolean
     examId?: boolean
     branchBatchId?: boolean
+    batchCycleId?: boolean
     testDate?: boolean
     startTime?: boolean
     endTime?: boolean
     status?: boolean
     exam?: boolean | ExamDefaultArgs<ExtArgs>
     branchBatch?: boolean | BranchBatchDefaultArgs<ExtArgs>
+    batchCycle?: boolean | ExamSchedule$batchCycleArgs<ExtArgs>
   }, ExtArgs["result"]["examSchedule"]>
 
   export type ExamScheduleSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     examId?: boolean
     branchBatchId?: boolean
+    batchCycleId?: boolean
     testDate?: boolean
     startTime?: boolean
     endTime?: boolean
     status?: boolean
     exam?: boolean | ExamDefaultArgs<ExtArgs>
     branchBatch?: boolean | BranchBatchDefaultArgs<ExtArgs>
+    batchCycle?: boolean | ExamSchedule$batchCycleArgs<ExtArgs>
   }, ExtArgs["result"]["examSchedule"]>
 
   export type ExamScheduleSelectScalar = {
     id?: boolean
     examId?: boolean
     branchBatchId?: boolean
+    batchCycleId?: boolean
     testDate?: boolean
     startTime?: boolean
     endTime?: boolean
     status?: boolean
   }
 
-  export type ExamScheduleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "examId" | "branchBatchId" | "testDate" | "startTime" | "endTime" | "status", ExtArgs["result"]["examSchedule"]>
+  export type ExamScheduleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "examId" | "branchBatchId" | "batchCycleId" | "testDate" | "startTime" | "endTime" | "status", ExtArgs["result"]["examSchedule"]>
   export type ExamScheduleInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     exam?: boolean | ExamDefaultArgs<ExtArgs>
     branchBatch?: boolean | BranchBatchDefaultArgs<ExtArgs>
+    batchCycle?: boolean | ExamSchedule$batchCycleArgs<ExtArgs>
     attempts?: boolean | ExamSchedule$attemptsArgs<ExtArgs>
     _count?: boolean | ExamScheduleCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ExamScheduleIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     exam?: boolean | ExamDefaultArgs<ExtArgs>
     branchBatch?: boolean | BranchBatchDefaultArgs<ExtArgs>
+    batchCycle?: boolean | ExamSchedule$batchCycleArgs<ExtArgs>
   }
   export type ExamScheduleIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     exam?: boolean | ExamDefaultArgs<ExtArgs>
     branchBatch?: boolean | BranchBatchDefaultArgs<ExtArgs>
+    batchCycle?: boolean | ExamSchedule$batchCycleArgs<ExtArgs>
   }
 
   export type $ExamSchedulePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -84592,12 +86583,14 @@ export namespace Prisma {
     objects: {
       exam: Prisma.$ExamPayload<ExtArgs>
       branchBatch: Prisma.$BranchBatchPayload<ExtArgs>
+      batchCycle: Prisma.$BatchCyclePayload<ExtArgs> | null
       attempts: Prisma.$ExamAttemptPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       examId: string
       branchBatchId: string
+      batchCycleId: string | null
       testDate: string
       startTime: string
       endTime: string
@@ -84998,6 +86991,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     exam<T extends ExamDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ExamDefaultArgs<ExtArgs>>): Prisma__ExamClient<$Result.GetResult<Prisma.$ExamPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     branchBatch<T extends BranchBatchDefaultArgs<ExtArgs> = {}>(args?: Subset<T, BranchBatchDefaultArgs<ExtArgs>>): Prisma__BranchBatchClient<$Result.GetResult<Prisma.$BranchBatchPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    batchCycle<T extends ExamSchedule$batchCycleArgs<ExtArgs> = {}>(args?: Subset<T, ExamSchedule$batchCycleArgs<ExtArgs>>): Prisma__BatchCycleClient<$Result.GetResult<Prisma.$BatchCyclePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     attempts<T extends ExamSchedule$attemptsArgs<ExtArgs> = {}>(args?: Subset<T, ExamSchedule$attemptsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ExamAttemptPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -85031,6 +87025,7 @@ export namespace Prisma {
     readonly id: FieldRef<"ExamSchedule", 'String'>
     readonly examId: FieldRef<"ExamSchedule", 'String'>
     readonly branchBatchId: FieldRef<"ExamSchedule", 'String'>
+    readonly batchCycleId: FieldRef<"ExamSchedule", 'String'>
     readonly testDate: FieldRef<"ExamSchedule", 'String'>
     readonly startTime: FieldRef<"ExamSchedule", 'String'>
     readonly endTime: FieldRef<"ExamSchedule", 'String'>
@@ -85433,6 +87428,25 @@ export namespace Prisma {
      * Limit how many ExamSchedules to delete.
      */
     limit?: number
+  }
+
+  /**
+   * ExamSchedule.batchCycle
+   */
+  export type ExamSchedule$batchCycleArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BatchCycle
+     */
+    select?: BatchCycleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BatchCycle
+     */
+    omit?: BatchCycleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BatchCycleInclude<ExtArgs> | null
+    where?: BatchCycleWhereInput
   }
 
   /**
@@ -92051,6 +94065,7 @@ export namespace Prisma {
     facultyId: string | null
     branchId: string | null
     batchId: string | null
+    batchCycleId: string | null
     courseId: string | null
     reportType: string | null
     sentAt: Date | null
@@ -92064,6 +94079,7 @@ export namespace Prisma {
     facultyId: string | null
     branchId: string | null
     batchId: string | null
+    batchCycleId: string | null
     courseId: string | null
     reportType: string | null
     sentAt: Date | null
@@ -92077,6 +94093,7 @@ export namespace Prisma {
     facultyId: number
     branchId: number
     batchId: number
+    batchCycleId: number
     courseId: number
     testModuleIds: number
     assessmentModuleIds: number
@@ -92095,6 +94112,7 @@ export namespace Prisma {
     facultyId?: true
     branchId?: true
     batchId?: true
+    batchCycleId?: true
     courseId?: true
     reportType?: true
     sentAt?: true
@@ -92108,6 +94126,7 @@ export namespace Prisma {
     facultyId?: true
     branchId?: true
     batchId?: true
+    batchCycleId?: true
     courseId?: true
     reportType?: true
     sentAt?: true
@@ -92121,6 +94140,7 @@ export namespace Prisma {
     facultyId?: true
     branchId?: true
     batchId?: true
+    batchCycleId?: true
     courseId?: true
     testModuleIds?: true
     assessmentModuleIds?: true
@@ -92210,6 +94230,7 @@ export namespace Prisma {
     facultyId: string
     branchId: string
     batchId: string
+    batchCycleId: string | null
     courseId: string
     testModuleIds: JsonValue
     assessmentModuleIds: JsonValue
@@ -92243,6 +94264,7 @@ export namespace Prisma {
     facultyId?: boolean
     branchId?: boolean
     batchId?: boolean
+    batchCycleId?: boolean
     courseId?: boolean
     testModuleIds?: boolean
     assessmentModuleIds?: boolean
@@ -92252,6 +94274,7 @@ export namespace Prisma {
     status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    batchCycle?: boolean | FacultyReportShare$batchCycleArgs<ExtArgs>
   }, ExtArgs["result"]["facultyReportShare"]>
 
   export type FacultyReportShareSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -92259,6 +94282,7 @@ export namespace Prisma {
     facultyId?: boolean
     branchId?: boolean
     batchId?: boolean
+    batchCycleId?: boolean
     courseId?: boolean
     testModuleIds?: boolean
     assessmentModuleIds?: boolean
@@ -92268,6 +94292,7 @@ export namespace Prisma {
     status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    batchCycle?: boolean | FacultyReportShare$batchCycleArgs<ExtArgs>
   }, ExtArgs["result"]["facultyReportShare"]>
 
   export type FacultyReportShareSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -92275,6 +94300,7 @@ export namespace Prisma {
     facultyId?: boolean
     branchId?: boolean
     batchId?: boolean
+    batchCycleId?: boolean
     courseId?: boolean
     testModuleIds?: boolean
     assessmentModuleIds?: boolean
@@ -92284,6 +94310,7 @@ export namespace Prisma {
     status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    batchCycle?: boolean | FacultyReportShare$batchCycleArgs<ExtArgs>
   }, ExtArgs["result"]["facultyReportShare"]>
 
   export type FacultyReportShareSelectScalar = {
@@ -92291,6 +94318,7 @@ export namespace Prisma {
     facultyId?: boolean
     branchId?: boolean
     batchId?: boolean
+    batchCycleId?: boolean
     courseId?: boolean
     testModuleIds?: boolean
     assessmentModuleIds?: boolean
@@ -92302,16 +94330,28 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type FacultyReportShareOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "facultyId" | "branchId" | "batchId" | "courseId" | "testModuleIds" | "assessmentModuleIds" | "academicTestIds" | "reportType" | "sentAt" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["facultyReportShare"]>
+  export type FacultyReportShareOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "facultyId" | "branchId" | "batchId" | "batchCycleId" | "courseId" | "testModuleIds" | "assessmentModuleIds" | "academicTestIds" | "reportType" | "sentAt" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["facultyReportShare"]>
+  export type FacultyReportShareInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    batchCycle?: boolean | FacultyReportShare$batchCycleArgs<ExtArgs>
+  }
+  export type FacultyReportShareIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    batchCycle?: boolean | FacultyReportShare$batchCycleArgs<ExtArgs>
+  }
+  export type FacultyReportShareIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    batchCycle?: boolean | FacultyReportShare$batchCycleArgs<ExtArgs>
+  }
 
   export type $FacultyReportSharePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "FacultyReportShare"
-    objects: {}
+    objects: {
+      batchCycle: Prisma.$BatchCyclePayload<ExtArgs> | null
+    }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       facultyId: string
       branchId: string
       batchId: string
+      batchCycleId: string | null
       courseId: string
       testModuleIds: Prisma.JsonValue
       assessmentModuleIds: Prisma.JsonValue
@@ -92715,6 +94755,7 @@ export namespace Prisma {
    */
   export interface Prisma__FacultyReportShareClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    batchCycle<T extends FacultyReportShare$batchCycleArgs<ExtArgs> = {}>(args?: Subset<T, FacultyReportShare$batchCycleArgs<ExtArgs>>): Prisma__BatchCycleClient<$Result.GetResult<Prisma.$BatchCyclePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -92748,6 +94789,7 @@ export namespace Prisma {
     readonly facultyId: FieldRef<"FacultyReportShare", 'String'>
     readonly branchId: FieldRef<"FacultyReportShare", 'String'>
     readonly batchId: FieldRef<"FacultyReportShare", 'String'>
+    readonly batchCycleId: FieldRef<"FacultyReportShare", 'String'>
     readonly courseId: FieldRef<"FacultyReportShare", 'String'>
     readonly testModuleIds: FieldRef<"FacultyReportShare", 'Json'>
     readonly assessmentModuleIds: FieldRef<"FacultyReportShare", 'Json'>
@@ -92774,6 +94816,10 @@ export namespace Prisma {
      */
     omit?: FacultyReportShareOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyReportShareInclude<ExtArgs> | null
+    /**
      * Filter, which FacultyReportShare to fetch.
      */
     where: FacultyReportShareWhereUniqueInput
@@ -92792,6 +94838,10 @@ export namespace Prisma {
      */
     omit?: FacultyReportShareOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyReportShareInclude<ExtArgs> | null
+    /**
      * Filter, which FacultyReportShare to fetch.
      */
     where: FacultyReportShareWhereUniqueInput
@@ -92809,6 +94859,10 @@ export namespace Prisma {
      * Omit specific fields from the FacultyReportShare
      */
     omit?: FacultyReportShareOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyReportShareInclude<ExtArgs> | null
     /**
      * Filter, which FacultyReportShare to fetch.
      */
@@ -92858,6 +94912,10 @@ export namespace Prisma {
      */
     omit?: FacultyReportShareOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyReportShareInclude<ExtArgs> | null
+    /**
      * Filter, which FacultyReportShare to fetch.
      */
     where?: FacultyReportShareWhereInput
@@ -92905,6 +94963,10 @@ export namespace Prisma {
      * Omit specific fields from the FacultyReportShare
      */
     omit?: FacultyReportShareOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyReportShareInclude<ExtArgs> | null
     /**
      * Filter, which FacultyReportShares to fetch.
      */
@@ -92954,6 +95016,10 @@ export namespace Prisma {
      */
     omit?: FacultyReportShareOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyReportShareInclude<ExtArgs> | null
+    /**
      * The data needed to create a FacultyReportShare.
      */
     data: XOR<FacultyReportShareCreateInput, FacultyReportShareUncheckedCreateInput>
@@ -92987,6 +95053,10 @@ export namespace Prisma {
      */
     data: FacultyReportShareCreateManyInput | FacultyReportShareCreateManyInput[]
     skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyReportShareIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -93001,6 +95071,10 @@ export namespace Prisma {
      * Omit specific fields from the FacultyReportShare
      */
     omit?: FacultyReportShareOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyReportShareInclude<ExtArgs> | null
     /**
      * The data needed to update a FacultyReportShare.
      */
@@ -93053,6 +95127,10 @@ export namespace Prisma {
      * Limit how many FacultyReportShares to update.
      */
     limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyReportShareIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -93067,6 +95145,10 @@ export namespace Prisma {
      * Omit specific fields from the FacultyReportShare
      */
     omit?: FacultyReportShareOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyReportShareInclude<ExtArgs> | null
     /**
      * The filter to search for the FacultyReportShare to update in case it exists.
      */
@@ -93094,6 +95176,10 @@ export namespace Prisma {
      */
     omit?: FacultyReportShareOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyReportShareInclude<ExtArgs> | null
+    /**
      * Filter which FacultyReportShare to delete.
      */
     where: FacultyReportShareWhereUniqueInput
@@ -93114,6 +95200,25 @@ export namespace Prisma {
   }
 
   /**
+   * FacultyReportShare.batchCycle
+   */
+  export type FacultyReportShare$batchCycleArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BatchCycle
+     */
+    select?: BatchCycleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BatchCycle
+     */
+    omit?: BatchCycleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BatchCycleInclude<ExtArgs> | null
+    where?: BatchCycleWhereInput
+  }
+
+  /**
    * FacultyReportShare without action
    */
   export type FacultyReportShareDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -93125,6 +95230,2270 @@ export namespace Prisma {
      * Omit specific fields from the FacultyReportShare
      */
     omit?: FacultyReportShareOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FacultyReportShareInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model AcademicTestReportHistory
+   */
+
+  export type AggregateAcademicTestReportHistory = {
+    _count: AcademicTestReportHistoryCountAggregateOutputType | null
+    _min: AcademicTestReportHistoryMinAggregateOutputType | null
+    _max: AcademicTestReportHistoryMaxAggregateOutputType | null
+  }
+
+  export type AcademicTestReportHistoryMinAggregateOutputType = {
+    id: string | null
+    batchId: string | null
+    batchCycleId: string | null
+    academicTestId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type AcademicTestReportHistoryMaxAggregateOutputType = {
+    id: string | null
+    batchId: string | null
+    batchCycleId: string | null
+    academicTestId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type AcademicTestReportHistoryCountAggregateOutputType = {
+    id: number
+    batchId: number
+    batchCycleId: number
+    academicTestId: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type AcademicTestReportHistoryMinAggregateInputType = {
+    id?: true
+    batchId?: true
+    batchCycleId?: true
+    academicTestId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type AcademicTestReportHistoryMaxAggregateInputType = {
+    id?: true
+    batchId?: true
+    batchCycleId?: true
+    academicTestId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type AcademicTestReportHistoryCountAggregateInputType = {
+    id?: true
+    batchId?: true
+    batchCycleId?: true
+    academicTestId?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type AcademicTestReportHistoryAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AcademicTestReportHistory to aggregate.
+     */
+    where?: AcademicTestReportHistoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AcademicTestReportHistories to fetch.
+     */
+    orderBy?: AcademicTestReportHistoryOrderByWithRelationInput | AcademicTestReportHistoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AcademicTestReportHistoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AcademicTestReportHistories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AcademicTestReportHistories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AcademicTestReportHistories
+    **/
+    _count?: true | AcademicTestReportHistoryCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AcademicTestReportHistoryMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AcademicTestReportHistoryMaxAggregateInputType
+  }
+
+  export type GetAcademicTestReportHistoryAggregateType<T extends AcademicTestReportHistoryAggregateArgs> = {
+        [P in keyof T & keyof AggregateAcademicTestReportHistory]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAcademicTestReportHistory[P]>
+      : GetScalarType<T[P], AggregateAcademicTestReportHistory[P]>
+  }
+
+
+
+
+  export type AcademicTestReportHistoryGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AcademicTestReportHistoryWhereInput
+    orderBy?: AcademicTestReportHistoryOrderByWithAggregationInput | AcademicTestReportHistoryOrderByWithAggregationInput[]
+    by: AcademicTestReportHistoryScalarFieldEnum[] | AcademicTestReportHistoryScalarFieldEnum
+    having?: AcademicTestReportHistoryScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AcademicTestReportHistoryCountAggregateInputType | true
+    _min?: AcademicTestReportHistoryMinAggregateInputType
+    _max?: AcademicTestReportHistoryMaxAggregateInputType
+  }
+
+  export type AcademicTestReportHistoryGroupByOutputType = {
+    id: string
+    batchId: string
+    batchCycleId: string
+    academicTestId: string
+    createdAt: Date
+    updatedAt: Date
+    _count: AcademicTestReportHistoryCountAggregateOutputType | null
+    _min: AcademicTestReportHistoryMinAggregateOutputType | null
+    _max: AcademicTestReportHistoryMaxAggregateOutputType | null
+  }
+
+  type GetAcademicTestReportHistoryGroupByPayload<T extends AcademicTestReportHistoryGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AcademicTestReportHistoryGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AcademicTestReportHistoryGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AcademicTestReportHistoryGroupByOutputType[P]>
+            : GetScalarType<T[P], AcademicTestReportHistoryGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AcademicTestReportHistorySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    batchId?: boolean
+    batchCycleId?: boolean
+    academicTestId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    batch?: boolean | BranchBatchDefaultArgs<ExtArgs>
+    batchCycle?: boolean | BatchCycleDefaultArgs<ExtArgs>
+    academicTest?: boolean | AcademicTestItemDefaultArgs<ExtArgs>
+    submissions?: boolean | AcademicTestReportHistory$submissionsArgs<ExtArgs>
+    _count?: boolean | AcademicTestReportHistoryCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["academicTestReportHistory"]>
+
+  export type AcademicTestReportHistorySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    batchId?: boolean
+    batchCycleId?: boolean
+    academicTestId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    batch?: boolean | BranchBatchDefaultArgs<ExtArgs>
+    batchCycle?: boolean | BatchCycleDefaultArgs<ExtArgs>
+    academicTest?: boolean | AcademicTestItemDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["academicTestReportHistory"]>
+
+  export type AcademicTestReportHistorySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    batchId?: boolean
+    batchCycleId?: boolean
+    academicTestId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    batch?: boolean | BranchBatchDefaultArgs<ExtArgs>
+    batchCycle?: boolean | BatchCycleDefaultArgs<ExtArgs>
+    academicTest?: boolean | AcademicTestItemDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["academicTestReportHistory"]>
+
+  export type AcademicTestReportHistorySelectScalar = {
+    id?: boolean
+    batchId?: boolean
+    batchCycleId?: boolean
+    academicTestId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type AcademicTestReportHistoryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "batchId" | "batchCycleId" | "academicTestId" | "createdAt" | "updatedAt", ExtArgs["result"]["academicTestReportHistory"]>
+  export type AcademicTestReportHistoryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    batch?: boolean | BranchBatchDefaultArgs<ExtArgs>
+    batchCycle?: boolean | BatchCycleDefaultArgs<ExtArgs>
+    academicTest?: boolean | AcademicTestItemDefaultArgs<ExtArgs>
+    submissions?: boolean | AcademicTestReportHistory$submissionsArgs<ExtArgs>
+    _count?: boolean | AcademicTestReportHistoryCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type AcademicTestReportHistoryIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    batch?: boolean | BranchBatchDefaultArgs<ExtArgs>
+    batchCycle?: boolean | BatchCycleDefaultArgs<ExtArgs>
+    academicTest?: boolean | AcademicTestItemDefaultArgs<ExtArgs>
+  }
+  export type AcademicTestReportHistoryIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    batch?: boolean | BranchBatchDefaultArgs<ExtArgs>
+    batchCycle?: boolean | BatchCycleDefaultArgs<ExtArgs>
+    academicTest?: boolean | AcademicTestItemDefaultArgs<ExtArgs>
+  }
+
+  export type $AcademicTestReportHistoryPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AcademicTestReportHistory"
+    objects: {
+      batch: Prisma.$BranchBatchPayload<ExtArgs>
+      batchCycle: Prisma.$BatchCyclePayload<ExtArgs>
+      academicTest: Prisma.$AcademicTestItemPayload<ExtArgs>
+      submissions: Prisma.$AcademicTestReportSubmissionPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      batchId: string
+      batchCycleId: string
+      academicTestId: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["academicTestReportHistory"]>
+    composites: {}
+  }
+
+  type AcademicTestReportHistoryGetPayload<S extends boolean | null | undefined | AcademicTestReportHistoryDefaultArgs> = $Result.GetResult<Prisma.$AcademicTestReportHistoryPayload, S>
+
+  type AcademicTestReportHistoryCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AcademicTestReportHistoryFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AcademicTestReportHistoryCountAggregateInputType | true
+    }
+
+  export interface AcademicTestReportHistoryDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AcademicTestReportHistory'], meta: { name: 'AcademicTestReportHistory' } }
+    /**
+     * Find zero or one AcademicTestReportHistory that matches the filter.
+     * @param {AcademicTestReportHistoryFindUniqueArgs} args - Arguments to find a AcademicTestReportHistory
+     * @example
+     * // Get one AcademicTestReportHistory
+     * const academicTestReportHistory = await prisma.academicTestReportHistory.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AcademicTestReportHistoryFindUniqueArgs>(args: SelectSubset<T, AcademicTestReportHistoryFindUniqueArgs<ExtArgs>>): Prisma__AcademicTestReportHistoryClient<$Result.GetResult<Prisma.$AcademicTestReportHistoryPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one AcademicTestReportHistory that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AcademicTestReportHistoryFindUniqueOrThrowArgs} args - Arguments to find a AcademicTestReportHistory
+     * @example
+     * // Get one AcademicTestReportHistory
+     * const academicTestReportHistory = await prisma.academicTestReportHistory.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AcademicTestReportHistoryFindUniqueOrThrowArgs>(args: SelectSubset<T, AcademicTestReportHistoryFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AcademicTestReportHistoryClient<$Result.GetResult<Prisma.$AcademicTestReportHistoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AcademicTestReportHistory that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcademicTestReportHistoryFindFirstArgs} args - Arguments to find a AcademicTestReportHistory
+     * @example
+     * // Get one AcademicTestReportHistory
+     * const academicTestReportHistory = await prisma.academicTestReportHistory.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AcademicTestReportHistoryFindFirstArgs>(args?: SelectSubset<T, AcademicTestReportHistoryFindFirstArgs<ExtArgs>>): Prisma__AcademicTestReportHistoryClient<$Result.GetResult<Prisma.$AcademicTestReportHistoryPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AcademicTestReportHistory that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcademicTestReportHistoryFindFirstOrThrowArgs} args - Arguments to find a AcademicTestReportHistory
+     * @example
+     * // Get one AcademicTestReportHistory
+     * const academicTestReportHistory = await prisma.academicTestReportHistory.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AcademicTestReportHistoryFindFirstOrThrowArgs>(args?: SelectSubset<T, AcademicTestReportHistoryFindFirstOrThrowArgs<ExtArgs>>): Prisma__AcademicTestReportHistoryClient<$Result.GetResult<Prisma.$AcademicTestReportHistoryPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more AcademicTestReportHistories that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcademicTestReportHistoryFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AcademicTestReportHistories
+     * const academicTestReportHistories = await prisma.academicTestReportHistory.findMany()
+     * 
+     * // Get first 10 AcademicTestReportHistories
+     * const academicTestReportHistories = await prisma.academicTestReportHistory.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const academicTestReportHistoryWithIdOnly = await prisma.academicTestReportHistory.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AcademicTestReportHistoryFindManyArgs>(args?: SelectSubset<T, AcademicTestReportHistoryFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcademicTestReportHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a AcademicTestReportHistory.
+     * @param {AcademicTestReportHistoryCreateArgs} args - Arguments to create a AcademicTestReportHistory.
+     * @example
+     * // Create one AcademicTestReportHistory
+     * const AcademicTestReportHistory = await prisma.academicTestReportHistory.create({
+     *   data: {
+     *     // ... data to create a AcademicTestReportHistory
+     *   }
+     * })
+     * 
+     */
+    create<T extends AcademicTestReportHistoryCreateArgs>(args: SelectSubset<T, AcademicTestReportHistoryCreateArgs<ExtArgs>>): Prisma__AcademicTestReportHistoryClient<$Result.GetResult<Prisma.$AcademicTestReportHistoryPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many AcademicTestReportHistories.
+     * @param {AcademicTestReportHistoryCreateManyArgs} args - Arguments to create many AcademicTestReportHistories.
+     * @example
+     * // Create many AcademicTestReportHistories
+     * const academicTestReportHistory = await prisma.academicTestReportHistory.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AcademicTestReportHistoryCreateManyArgs>(args?: SelectSubset<T, AcademicTestReportHistoryCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many AcademicTestReportHistories and returns the data saved in the database.
+     * @param {AcademicTestReportHistoryCreateManyAndReturnArgs} args - Arguments to create many AcademicTestReportHistories.
+     * @example
+     * // Create many AcademicTestReportHistories
+     * const academicTestReportHistory = await prisma.academicTestReportHistory.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many AcademicTestReportHistories and only return the `id`
+     * const academicTestReportHistoryWithIdOnly = await prisma.academicTestReportHistory.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AcademicTestReportHistoryCreateManyAndReturnArgs>(args?: SelectSubset<T, AcademicTestReportHistoryCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcademicTestReportHistoryPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a AcademicTestReportHistory.
+     * @param {AcademicTestReportHistoryDeleteArgs} args - Arguments to delete one AcademicTestReportHistory.
+     * @example
+     * // Delete one AcademicTestReportHistory
+     * const AcademicTestReportHistory = await prisma.academicTestReportHistory.delete({
+     *   where: {
+     *     // ... filter to delete one AcademicTestReportHistory
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AcademicTestReportHistoryDeleteArgs>(args: SelectSubset<T, AcademicTestReportHistoryDeleteArgs<ExtArgs>>): Prisma__AcademicTestReportHistoryClient<$Result.GetResult<Prisma.$AcademicTestReportHistoryPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one AcademicTestReportHistory.
+     * @param {AcademicTestReportHistoryUpdateArgs} args - Arguments to update one AcademicTestReportHistory.
+     * @example
+     * // Update one AcademicTestReportHistory
+     * const academicTestReportHistory = await prisma.academicTestReportHistory.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AcademicTestReportHistoryUpdateArgs>(args: SelectSubset<T, AcademicTestReportHistoryUpdateArgs<ExtArgs>>): Prisma__AcademicTestReportHistoryClient<$Result.GetResult<Prisma.$AcademicTestReportHistoryPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more AcademicTestReportHistories.
+     * @param {AcademicTestReportHistoryDeleteManyArgs} args - Arguments to filter AcademicTestReportHistories to delete.
+     * @example
+     * // Delete a few AcademicTestReportHistories
+     * const { count } = await prisma.academicTestReportHistory.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AcademicTestReportHistoryDeleteManyArgs>(args?: SelectSubset<T, AcademicTestReportHistoryDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AcademicTestReportHistories.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcademicTestReportHistoryUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AcademicTestReportHistories
+     * const academicTestReportHistory = await prisma.academicTestReportHistory.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AcademicTestReportHistoryUpdateManyArgs>(args: SelectSubset<T, AcademicTestReportHistoryUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AcademicTestReportHistories and returns the data updated in the database.
+     * @param {AcademicTestReportHistoryUpdateManyAndReturnArgs} args - Arguments to update many AcademicTestReportHistories.
+     * @example
+     * // Update many AcademicTestReportHistories
+     * const academicTestReportHistory = await prisma.academicTestReportHistory.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more AcademicTestReportHistories and only return the `id`
+     * const academicTestReportHistoryWithIdOnly = await prisma.academicTestReportHistory.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AcademicTestReportHistoryUpdateManyAndReturnArgs>(args: SelectSubset<T, AcademicTestReportHistoryUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcademicTestReportHistoryPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one AcademicTestReportHistory.
+     * @param {AcademicTestReportHistoryUpsertArgs} args - Arguments to update or create a AcademicTestReportHistory.
+     * @example
+     * // Update or create a AcademicTestReportHistory
+     * const academicTestReportHistory = await prisma.academicTestReportHistory.upsert({
+     *   create: {
+     *     // ... data to create a AcademicTestReportHistory
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AcademicTestReportHistory we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AcademicTestReportHistoryUpsertArgs>(args: SelectSubset<T, AcademicTestReportHistoryUpsertArgs<ExtArgs>>): Prisma__AcademicTestReportHistoryClient<$Result.GetResult<Prisma.$AcademicTestReportHistoryPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of AcademicTestReportHistories.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcademicTestReportHistoryCountArgs} args - Arguments to filter AcademicTestReportHistories to count.
+     * @example
+     * // Count the number of AcademicTestReportHistories
+     * const count = await prisma.academicTestReportHistory.count({
+     *   where: {
+     *     // ... the filter for the AcademicTestReportHistories we want to count
+     *   }
+     * })
+    **/
+    count<T extends AcademicTestReportHistoryCountArgs>(
+      args?: Subset<T, AcademicTestReportHistoryCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AcademicTestReportHistoryCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AcademicTestReportHistory.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcademicTestReportHistoryAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AcademicTestReportHistoryAggregateArgs>(args: Subset<T, AcademicTestReportHistoryAggregateArgs>): Prisma.PrismaPromise<GetAcademicTestReportHistoryAggregateType<T>>
+
+    /**
+     * Group by AcademicTestReportHistory.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcademicTestReportHistoryGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AcademicTestReportHistoryGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AcademicTestReportHistoryGroupByArgs['orderBy'] }
+        : { orderBy?: AcademicTestReportHistoryGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AcademicTestReportHistoryGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAcademicTestReportHistoryGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AcademicTestReportHistory model
+   */
+  readonly fields: AcademicTestReportHistoryFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AcademicTestReportHistory.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AcademicTestReportHistoryClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    batch<T extends BranchBatchDefaultArgs<ExtArgs> = {}>(args?: Subset<T, BranchBatchDefaultArgs<ExtArgs>>): Prisma__BranchBatchClient<$Result.GetResult<Prisma.$BranchBatchPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    batchCycle<T extends BatchCycleDefaultArgs<ExtArgs> = {}>(args?: Subset<T, BatchCycleDefaultArgs<ExtArgs>>): Prisma__BatchCycleClient<$Result.GetResult<Prisma.$BatchCyclePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    academicTest<T extends AcademicTestItemDefaultArgs<ExtArgs> = {}>(args?: Subset<T, AcademicTestItemDefaultArgs<ExtArgs>>): Prisma__AcademicTestItemClient<$Result.GetResult<Prisma.$AcademicTestItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    submissions<T extends AcademicTestReportHistory$submissionsArgs<ExtArgs> = {}>(args?: Subset<T, AcademicTestReportHistory$submissionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcademicTestReportSubmissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AcademicTestReportHistory model
+   */
+  interface AcademicTestReportHistoryFieldRefs {
+    readonly id: FieldRef<"AcademicTestReportHistory", 'String'>
+    readonly batchId: FieldRef<"AcademicTestReportHistory", 'String'>
+    readonly batchCycleId: FieldRef<"AcademicTestReportHistory", 'String'>
+    readonly academicTestId: FieldRef<"AcademicTestReportHistory", 'String'>
+    readonly createdAt: FieldRef<"AcademicTestReportHistory", 'DateTime'>
+    readonly updatedAt: FieldRef<"AcademicTestReportHistory", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AcademicTestReportHistory findUnique
+   */
+  export type AcademicTestReportHistoryFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestReportHistory
+     */
+    select?: AcademicTestReportHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicTestReportHistory
+     */
+    omit?: AcademicTestReportHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicTestReportHistoryInclude<ExtArgs> | null
+    /**
+     * Filter, which AcademicTestReportHistory to fetch.
+     */
+    where: AcademicTestReportHistoryWhereUniqueInput
+  }
+
+  /**
+   * AcademicTestReportHistory findUniqueOrThrow
+   */
+  export type AcademicTestReportHistoryFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestReportHistory
+     */
+    select?: AcademicTestReportHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicTestReportHistory
+     */
+    omit?: AcademicTestReportHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicTestReportHistoryInclude<ExtArgs> | null
+    /**
+     * Filter, which AcademicTestReportHistory to fetch.
+     */
+    where: AcademicTestReportHistoryWhereUniqueInput
+  }
+
+  /**
+   * AcademicTestReportHistory findFirst
+   */
+  export type AcademicTestReportHistoryFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestReportHistory
+     */
+    select?: AcademicTestReportHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicTestReportHistory
+     */
+    omit?: AcademicTestReportHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicTestReportHistoryInclude<ExtArgs> | null
+    /**
+     * Filter, which AcademicTestReportHistory to fetch.
+     */
+    where?: AcademicTestReportHistoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AcademicTestReportHistories to fetch.
+     */
+    orderBy?: AcademicTestReportHistoryOrderByWithRelationInput | AcademicTestReportHistoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AcademicTestReportHistories.
+     */
+    cursor?: AcademicTestReportHistoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AcademicTestReportHistories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AcademicTestReportHistories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AcademicTestReportHistories.
+     */
+    distinct?: AcademicTestReportHistoryScalarFieldEnum | AcademicTestReportHistoryScalarFieldEnum[]
+  }
+
+  /**
+   * AcademicTestReportHistory findFirstOrThrow
+   */
+  export type AcademicTestReportHistoryFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestReportHistory
+     */
+    select?: AcademicTestReportHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicTestReportHistory
+     */
+    omit?: AcademicTestReportHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicTestReportHistoryInclude<ExtArgs> | null
+    /**
+     * Filter, which AcademicTestReportHistory to fetch.
+     */
+    where?: AcademicTestReportHistoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AcademicTestReportHistories to fetch.
+     */
+    orderBy?: AcademicTestReportHistoryOrderByWithRelationInput | AcademicTestReportHistoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AcademicTestReportHistories.
+     */
+    cursor?: AcademicTestReportHistoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AcademicTestReportHistories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AcademicTestReportHistories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AcademicTestReportHistories.
+     */
+    distinct?: AcademicTestReportHistoryScalarFieldEnum | AcademicTestReportHistoryScalarFieldEnum[]
+  }
+
+  /**
+   * AcademicTestReportHistory findMany
+   */
+  export type AcademicTestReportHistoryFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestReportHistory
+     */
+    select?: AcademicTestReportHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicTestReportHistory
+     */
+    omit?: AcademicTestReportHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicTestReportHistoryInclude<ExtArgs> | null
+    /**
+     * Filter, which AcademicTestReportHistories to fetch.
+     */
+    where?: AcademicTestReportHistoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AcademicTestReportHistories to fetch.
+     */
+    orderBy?: AcademicTestReportHistoryOrderByWithRelationInput | AcademicTestReportHistoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AcademicTestReportHistories.
+     */
+    cursor?: AcademicTestReportHistoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AcademicTestReportHistories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AcademicTestReportHistories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AcademicTestReportHistories.
+     */
+    distinct?: AcademicTestReportHistoryScalarFieldEnum | AcademicTestReportHistoryScalarFieldEnum[]
+  }
+
+  /**
+   * AcademicTestReportHistory create
+   */
+  export type AcademicTestReportHistoryCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestReportHistory
+     */
+    select?: AcademicTestReportHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicTestReportHistory
+     */
+    omit?: AcademicTestReportHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicTestReportHistoryInclude<ExtArgs> | null
+    /**
+     * The data needed to create a AcademicTestReportHistory.
+     */
+    data: XOR<AcademicTestReportHistoryCreateInput, AcademicTestReportHistoryUncheckedCreateInput>
+  }
+
+  /**
+   * AcademicTestReportHistory createMany
+   */
+  export type AcademicTestReportHistoryCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AcademicTestReportHistories.
+     */
+    data: AcademicTestReportHistoryCreateManyInput | AcademicTestReportHistoryCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AcademicTestReportHistory createManyAndReturn
+   */
+  export type AcademicTestReportHistoryCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestReportHistory
+     */
+    select?: AcademicTestReportHistorySelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicTestReportHistory
+     */
+    omit?: AcademicTestReportHistoryOmit<ExtArgs> | null
+    /**
+     * The data used to create many AcademicTestReportHistories.
+     */
+    data: AcademicTestReportHistoryCreateManyInput | AcademicTestReportHistoryCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicTestReportHistoryIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AcademicTestReportHistory update
+   */
+  export type AcademicTestReportHistoryUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestReportHistory
+     */
+    select?: AcademicTestReportHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicTestReportHistory
+     */
+    omit?: AcademicTestReportHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicTestReportHistoryInclude<ExtArgs> | null
+    /**
+     * The data needed to update a AcademicTestReportHistory.
+     */
+    data: XOR<AcademicTestReportHistoryUpdateInput, AcademicTestReportHistoryUncheckedUpdateInput>
+    /**
+     * Choose, which AcademicTestReportHistory to update.
+     */
+    where: AcademicTestReportHistoryWhereUniqueInput
+  }
+
+  /**
+   * AcademicTestReportHistory updateMany
+   */
+  export type AcademicTestReportHistoryUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AcademicTestReportHistories.
+     */
+    data: XOR<AcademicTestReportHistoryUpdateManyMutationInput, AcademicTestReportHistoryUncheckedUpdateManyInput>
+    /**
+     * Filter which AcademicTestReportHistories to update
+     */
+    where?: AcademicTestReportHistoryWhereInput
+    /**
+     * Limit how many AcademicTestReportHistories to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AcademicTestReportHistory updateManyAndReturn
+   */
+  export type AcademicTestReportHistoryUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestReportHistory
+     */
+    select?: AcademicTestReportHistorySelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicTestReportHistory
+     */
+    omit?: AcademicTestReportHistoryOmit<ExtArgs> | null
+    /**
+     * The data used to update AcademicTestReportHistories.
+     */
+    data: XOR<AcademicTestReportHistoryUpdateManyMutationInput, AcademicTestReportHistoryUncheckedUpdateManyInput>
+    /**
+     * Filter which AcademicTestReportHistories to update
+     */
+    where?: AcademicTestReportHistoryWhereInput
+    /**
+     * Limit how many AcademicTestReportHistories to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicTestReportHistoryIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AcademicTestReportHistory upsert
+   */
+  export type AcademicTestReportHistoryUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestReportHistory
+     */
+    select?: AcademicTestReportHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicTestReportHistory
+     */
+    omit?: AcademicTestReportHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicTestReportHistoryInclude<ExtArgs> | null
+    /**
+     * The filter to search for the AcademicTestReportHistory to update in case it exists.
+     */
+    where: AcademicTestReportHistoryWhereUniqueInput
+    /**
+     * In case the AcademicTestReportHistory found by the `where` argument doesn't exist, create a new AcademicTestReportHistory with this data.
+     */
+    create: XOR<AcademicTestReportHistoryCreateInput, AcademicTestReportHistoryUncheckedCreateInput>
+    /**
+     * In case the AcademicTestReportHistory was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AcademicTestReportHistoryUpdateInput, AcademicTestReportHistoryUncheckedUpdateInput>
+  }
+
+  /**
+   * AcademicTestReportHistory delete
+   */
+  export type AcademicTestReportHistoryDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestReportHistory
+     */
+    select?: AcademicTestReportHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicTestReportHistory
+     */
+    omit?: AcademicTestReportHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicTestReportHistoryInclude<ExtArgs> | null
+    /**
+     * Filter which AcademicTestReportHistory to delete.
+     */
+    where: AcademicTestReportHistoryWhereUniqueInput
+  }
+
+  /**
+   * AcademicTestReportHistory deleteMany
+   */
+  export type AcademicTestReportHistoryDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AcademicTestReportHistories to delete
+     */
+    where?: AcademicTestReportHistoryWhereInput
+    /**
+     * Limit how many AcademicTestReportHistories to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * AcademicTestReportHistory.submissions
+   */
+  export type AcademicTestReportHistory$submissionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestReportSubmission
+     */
+    select?: AcademicTestReportSubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicTestReportSubmission
+     */
+    omit?: AcademicTestReportSubmissionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicTestReportSubmissionInclude<ExtArgs> | null
+    where?: AcademicTestReportSubmissionWhereInput
+    orderBy?: AcademicTestReportSubmissionOrderByWithRelationInput | AcademicTestReportSubmissionOrderByWithRelationInput[]
+    cursor?: AcademicTestReportSubmissionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AcademicTestReportSubmissionScalarFieldEnum | AcademicTestReportSubmissionScalarFieldEnum[]
+  }
+
+  /**
+   * AcademicTestReportHistory without action
+   */
+  export type AcademicTestReportHistoryDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestReportHistory
+     */
+    select?: AcademicTestReportHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicTestReportHistory
+     */
+    omit?: AcademicTestReportHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicTestReportHistoryInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model AcademicTestReportSubmission
+   */
+
+  export type AggregateAcademicTestReportSubmission = {
+    _count: AcademicTestReportSubmissionCountAggregateOutputType | null
+    _min: AcademicTestReportSubmissionMinAggregateOutputType | null
+    _max: AcademicTestReportSubmissionMaxAggregateOutputType | null
+  }
+
+  export type AcademicTestReportSubmissionMinAggregateOutputType = {
+    id: string | null
+    historyId: string | null
+    facultyId: string | null
+    sourceShareId: string | null
+    scheduleId: string | null
+    submittedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type AcademicTestReportSubmissionMaxAggregateOutputType = {
+    id: string | null
+    historyId: string | null
+    facultyId: string | null
+    sourceShareId: string | null
+    scheduleId: string | null
+    submittedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type AcademicTestReportSubmissionCountAggregateOutputType = {
+    id: number
+    historyId: number
+    facultyId: number
+    sourceShareId: number
+    scheduleId: number
+    reportData: number
+    submittedAt: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type AcademicTestReportSubmissionMinAggregateInputType = {
+    id?: true
+    historyId?: true
+    facultyId?: true
+    sourceShareId?: true
+    scheduleId?: true
+    submittedAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type AcademicTestReportSubmissionMaxAggregateInputType = {
+    id?: true
+    historyId?: true
+    facultyId?: true
+    sourceShareId?: true
+    scheduleId?: true
+    submittedAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type AcademicTestReportSubmissionCountAggregateInputType = {
+    id?: true
+    historyId?: true
+    facultyId?: true
+    sourceShareId?: true
+    scheduleId?: true
+    reportData?: true
+    submittedAt?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type AcademicTestReportSubmissionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AcademicTestReportSubmission to aggregate.
+     */
+    where?: AcademicTestReportSubmissionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AcademicTestReportSubmissions to fetch.
+     */
+    orderBy?: AcademicTestReportSubmissionOrderByWithRelationInput | AcademicTestReportSubmissionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AcademicTestReportSubmissionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AcademicTestReportSubmissions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AcademicTestReportSubmissions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AcademicTestReportSubmissions
+    **/
+    _count?: true | AcademicTestReportSubmissionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AcademicTestReportSubmissionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AcademicTestReportSubmissionMaxAggregateInputType
+  }
+
+  export type GetAcademicTestReportSubmissionAggregateType<T extends AcademicTestReportSubmissionAggregateArgs> = {
+        [P in keyof T & keyof AggregateAcademicTestReportSubmission]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAcademicTestReportSubmission[P]>
+      : GetScalarType<T[P], AggregateAcademicTestReportSubmission[P]>
+  }
+
+
+
+
+  export type AcademicTestReportSubmissionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AcademicTestReportSubmissionWhereInput
+    orderBy?: AcademicTestReportSubmissionOrderByWithAggregationInput | AcademicTestReportSubmissionOrderByWithAggregationInput[]
+    by: AcademicTestReportSubmissionScalarFieldEnum[] | AcademicTestReportSubmissionScalarFieldEnum
+    having?: AcademicTestReportSubmissionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AcademicTestReportSubmissionCountAggregateInputType | true
+    _min?: AcademicTestReportSubmissionMinAggregateInputType
+    _max?: AcademicTestReportSubmissionMaxAggregateInputType
+  }
+
+  export type AcademicTestReportSubmissionGroupByOutputType = {
+    id: string
+    historyId: string
+    facultyId: string | null
+    sourceShareId: string | null
+    scheduleId: string | null
+    reportData: JsonValue
+    submittedAt: Date
+    createdAt: Date
+    updatedAt: Date
+    _count: AcademicTestReportSubmissionCountAggregateOutputType | null
+    _min: AcademicTestReportSubmissionMinAggregateOutputType | null
+    _max: AcademicTestReportSubmissionMaxAggregateOutputType | null
+  }
+
+  type GetAcademicTestReportSubmissionGroupByPayload<T extends AcademicTestReportSubmissionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AcademicTestReportSubmissionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AcademicTestReportSubmissionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AcademicTestReportSubmissionGroupByOutputType[P]>
+            : GetScalarType<T[P], AcademicTestReportSubmissionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AcademicTestReportSubmissionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    historyId?: boolean
+    facultyId?: boolean
+    sourceShareId?: boolean
+    scheduleId?: boolean
+    reportData?: boolean
+    submittedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    history?: boolean | AcademicTestReportHistoryDefaultArgs<ExtArgs>
+    faculty?: boolean | AcademicTestReportSubmission$facultyArgs<ExtArgs>
+  }, ExtArgs["result"]["academicTestReportSubmission"]>
+
+  export type AcademicTestReportSubmissionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    historyId?: boolean
+    facultyId?: boolean
+    sourceShareId?: boolean
+    scheduleId?: boolean
+    reportData?: boolean
+    submittedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    history?: boolean | AcademicTestReportHistoryDefaultArgs<ExtArgs>
+    faculty?: boolean | AcademicTestReportSubmission$facultyArgs<ExtArgs>
+  }, ExtArgs["result"]["academicTestReportSubmission"]>
+
+  export type AcademicTestReportSubmissionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    historyId?: boolean
+    facultyId?: boolean
+    sourceShareId?: boolean
+    scheduleId?: boolean
+    reportData?: boolean
+    submittedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    history?: boolean | AcademicTestReportHistoryDefaultArgs<ExtArgs>
+    faculty?: boolean | AcademicTestReportSubmission$facultyArgs<ExtArgs>
+  }, ExtArgs["result"]["academicTestReportSubmission"]>
+
+  export type AcademicTestReportSubmissionSelectScalar = {
+    id?: boolean
+    historyId?: boolean
+    facultyId?: boolean
+    sourceShareId?: boolean
+    scheduleId?: boolean
+    reportData?: boolean
+    submittedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type AcademicTestReportSubmissionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "historyId" | "facultyId" | "sourceShareId" | "scheduleId" | "reportData" | "submittedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["academicTestReportSubmission"]>
+  export type AcademicTestReportSubmissionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    history?: boolean | AcademicTestReportHistoryDefaultArgs<ExtArgs>
+    faculty?: boolean | AcademicTestReportSubmission$facultyArgs<ExtArgs>
+  }
+  export type AcademicTestReportSubmissionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    history?: boolean | AcademicTestReportHistoryDefaultArgs<ExtArgs>
+    faculty?: boolean | AcademicTestReportSubmission$facultyArgs<ExtArgs>
+  }
+  export type AcademicTestReportSubmissionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    history?: boolean | AcademicTestReportHistoryDefaultArgs<ExtArgs>
+    faculty?: boolean | AcademicTestReportSubmission$facultyArgs<ExtArgs>
+  }
+
+  export type $AcademicTestReportSubmissionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AcademicTestReportSubmission"
+    objects: {
+      history: Prisma.$AcademicTestReportHistoryPayload<ExtArgs>
+      faculty: Prisma.$UserPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      historyId: string
+      facultyId: string | null
+      sourceShareId: string | null
+      scheduleId: string | null
+      reportData: Prisma.JsonValue
+      submittedAt: Date
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["academicTestReportSubmission"]>
+    composites: {}
+  }
+
+  type AcademicTestReportSubmissionGetPayload<S extends boolean | null | undefined | AcademicTestReportSubmissionDefaultArgs> = $Result.GetResult<Prisma.$AcademicTestReportSubmissionPayload, S>
+
+  type AcademicTestReportSubmissionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AcademicTestReportSubmissionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AcademicTestReportSubmissionCountAggregateInputType | true
+    }
+
+  export interface AcademicTestReportSubmissionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AcademicTestReportSubmission'], meta: { name: 'AcademicTestReportSubmission' } }
+    /**
+     * Find zero or one AcademicTestReportSubmission that matches the filter.
+     * @param {AcademicTestReportSubmissionFindUniqueArgs} args - Arguments to find a AcademicTestReportSubmission
+     * @example
+     * // Get one AcademicTestReportSubmission
+     * const academicTestReportSubmission = await prisma.academicTestReportSubmission.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AcademicTestReportSubmissionFindUniqueArgs>(args: SelectSubset<T, AcademicTestReportSubmissionFindUniqueArgs<ExtArgs>>): Prisma__AcademicTestReportSubmissionClient<$Result.GetResult<Prisma.$AcademicTestReportSubmissionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one AcademicTestReportSubmission that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AcademicTestReportSubmissionFindUniqueOrThrowArgs} args - Arguments to find a AcademicTestReportSubmission
+     * @example
+     * // Get one AcademicTestReportSubmission
+     * const academicTestReportSubmission = await prisma.academicTestReportSubmission.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AcademicTestReportSubmissionFindUniqueOrThrowArgs>(args: SelectSubset<T, AcademicTestReportSubmissionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AcademicTestReportSubmissionClient<$Result.GetResult<Prisma.$AcademicTestReportSubmissionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AcademicTestReportSubmission that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcademicTestReportSubmissionFindFirstArgs} args - Arguments to find a AcademicTestReportSubmission
+     * @example
+     * // Get one AcademicTestReportSubmission
+     * const academicTestReportSubmission = await prisma.academicTestReportSubmission.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AcademicTestReportSubmissionFindFirstArgs>(args?: SelectSubset<T, AcademicTestReportSubmissionFindFirstArgs<ExtArgs>>): Prisma__AcademicTestReportSubmissionClient<$Result.GetResult<Prisma.$AcademicTestReportSubmissionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AcademicTestReportSubmission that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcademicTestReportSubmissionFindFirstOrThrowArgs} args - Arguments to find a AcademicTestReportSubmission
+     * @example
+     * // Get one AcademicTestReportSubmission
+     * const academicTestReportSubmission = await prisma.academicTestReportSubmission.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AcademicTestReportSubmissionFindFirstOrThrowArgs>(args?: SelectSubset<T, AcademicTestReportSubmissionFindFirstOrThrowArgs<ExtArgs>>): Prisma__AcademicTestReportSubmissionClient<$Result.GetResult<Prisma.$AcademicTestReportSubmissionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more AcademicTestReportSubmissions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcademicTestReportSubmissionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AcademicTestReportSubmissions
+     * const academicTestReportSubmissions = await prisma.academicTestReportSubmission.findMany()
+     * 
+     * // Get first 10 AcademicTestReportSubmissions
+     * const academicTestReportSubmissions = await prisma.academicTestReportSubmission.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const academicTestReportSubmissionWithIdOnly = await prisma.academicTestReportSubmission.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AcademicTestReportSubmissionFindManyArgs>(args?: SelectSubset<T, AcademicTestReportSubmissionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcademicTestReportSubmissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a AcademicTestReportSubmission.
+     * @param {AcademicTestReportSubmissionCreateArgs} args - Arguments to create a AcademicTestReportSubmission.
+     * @example
+     * // Create one AcademicTestReportSubmission
+     * const AcademicTestReportSubmission = await prisma.academicTestReportSubmission.create({
+     *   data: {
+     *     // ... data to create a AcademicTestReportSubmission
+     *   }
+     * })
+     * 
+     */
+    create<T extends AcademicTestReportSubmissionCreateArgs>(args: SelectSubset<T, AcademicTestReportSubmissionCreateArgs<ExtArgs>>): Prisma__AcademicTestReportSubmissionClient<$Result.GetResult<Prisma.$AcademicTestReportSubmissionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many AcademicTestReportSubmissions.
+     * @param {AcademicTestReportSubmissionCreateManyArgs} args - Arguments to create many AcademicTestReportSubmissions.
+     * @example
+     * // Create many AcademicTestReportSubmissions
+     * const academicTestReportSubmission = await prisma.academicTestReportSubmission.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AcademicTestReportSubmissionCreateManyArgs>(args?: SelectSubset<T, AcademicTestReportSubmissionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many AcademicTestReportSubmissions and returns the data saved in the database.
+     * @param {AcademicTestReportSubmissionCreateManyAndReturnArgs} args - Arguments to create many AcademicTestReportSubmissions.
+     * @example
+     * // Create many AcademicTestReportSubmissions
+     * const academicTestReportSubmission = await prisma.academicTestReportSubmission.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many AcademicTestReportSubmissions and only return the `id`
+     * const academicTestReportSubmissionWithIdOnly = await prisma.academicTestReportSubmission.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AcademicTestReportSubmissionCreateManyAndReturnArgs>(args?: SelectSubset<T, AcademicTestReportSubmissionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcademicTestReportSubmissionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a AcademicTestReportSubmission.
+     * @param {AcademicTestReportSubmissionDeleteArgs} args - Arguments to delete one AcademicTestReportSubmission.
+     * @example
+     * // Delete one AcademicTestReportSubmission
+     * const AcademicTestReportSubmission = await prisma.academicTestReportSubmission.delete({
+     *   where: {
+     *     // ... filter to delete one AcademicTestReportSubmission
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AcademicTestReportSubmissionDeleteArgs>(args: SelectSubset<T, AcademicTestReportSubmissionDeleteArgs<ExtArgs>>): Prisma__AcademicTestReportSubmissionClient<$Result.GetResult<Prisma.$AcademicTestReportSubmissionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one AcademicTestReportSubmission.
+     * @param {AcademicTestReportSubmissionUpdateArgs} args - Arguments to update one AcademicTestReportSubmission.
+     * @example
+     * // Update one AcademicTestReportSubmission
+     * const academicTestReportSubmission = await prisma.academicTestReportSubmission.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AcademicTestReportSubmissionUpdateArgs>(args: SelectSubset<T, AcademicTestReportSubmissionUpdateArgs<ExtArgs>>): Prisma__AcademicTestReportSubmissionClient<$Result.GetResult<Prisma.$AcademicTestReportSubmissionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more AcademicTestReportSubmissions.
+     * @param {AcademicTestReportSubmissionDeleteManyArgs} args - Arguments to filter AcademicTestReportSubmissions to delete.
+     * @example
+     * // Delete a few AcademicTestReportSubmissions
+     * const { count } = await prisma.academicTestReportSubmission.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AcademicTestReportSubmissionDeleteManyArgs>(args?: SelectSubset<T, AcademicTestReportSubmissionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AcademicTestReportSubmissions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcademicTestReportSubmissionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AcademicTestReportSubmissions
+     * const academicTestReportSubmission = await prisma.academicTestReportSubmission.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AcademicTestReportSubmissionUpdateManyArgs>(args: SelectSubset<T, AcademicTestReportSubmissionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AcademicTestReportSubmissions and returns the data updated in the database.
+     * @param {AcademicTestReportSubmissionUpdateManyAndReturnArgs} args - Arguments to update many AcademicTestReportSubmissions.
+     * @example
+     * // Update many AcademicTestReportSubmissions
+     * const academicTestReportSubmission = await prisma.academicTestReportSubmission.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more AcademicTestReportSubmissions and only return the `id`
+     * const academicTestReportSubmissionWithIdOnly = await prisma.academicTestReportSubmission.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AcademicTestReportSubmissionUpdateManyAndReturnArgs>(args: SelectSubset<T, AcademicTestReportSubmissionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcademicTestReportSubmissionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one AcademicTestReportSubmission.
+     * @param {AcademicTestReportSubmissionUpsertArgs} args - Arguments to update or create a AcademicTestReportSubmission.
+     * @example
+     * // Update or create a AcademicTestReportSubmission
+     * const academicTestReportSubmission = await prisma.academicTestReportSubmission.upsert({
+     *   create: {
+     *     // ... data to create a AcademicTestReportSubmission
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AcademicTestReportSubmission we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AcademicTestReportSubmissionUpsertArgs>(args: SelectSubset<T, AcademicTestReportSubmissionUpsertArgs<ExtArgs>>): Prisma__AcademicTestReportSubmissionClient<$Result.GetResult<Prisma.$AcademicTestReportSubmissionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of AcademicTestReportSubmissions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcademicTestReportSubmissionCountArgs} args - Arguments to filter AcademicTestReportSubmissions to count.
+     * @example
+     * // Count the number of AcademicTestReportSubmissions
+     * const count = await prisma.academicTestReportSubmission.count({
+     *   where: {
+     *     // ... the filter for the AcademicTestReportSubmissions we want to count
+     *   }
+     * })
+    **/
+    count<T extends AcademicTestReportSubmissionCountArgs>(
+      args?: Subset<T, AcademicTestReportSubmissionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AcademicTestReportSubmissionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AcademicTestReportSubmission.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcademicTestReportSubmissionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AcademicTestReportSubmissionAggregateArgs>(args: Subset<T, AcademicTestReportSubmissionAggregateArgs>): Prisma.PrismaPromise<GetAcademicTestReportSubmissionAggregateType<T>>
+
+    /**
+     * Group by AcademicTestReportSubmission.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AcademicTestReportSubmissionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AcademicTestReportSubmissionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AcademicTestReportSubmissionGroupByArgs['orderBy'] }
+        : { orderBy?: AcademicTestReportSubmissionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AcademicTestReportSubmissionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAcademicTestReportSubmissionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AcademicTestReportSubmission model
+   */
+  readonly fields: AcademicTestReportSubmissionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AcademicTestReportSubmission.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AcademicTestReportSubmissionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    history<T extends AcademicTestReportHistoryDefaultArgs<ExtArgs> = {}>(args?: Subset<T, AcademicTestReportHistoryDefaultArgs<ExtArgs>>): Prisma__AcademicTestReportHistoryClient<$Result.GetResult<Prisma.$AcademicTestReportHistoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    faculty<T extends AcademicTestReportSubmission$facultyArgs<ExtArgs> = {}>(args?: Subset<T, AcademicTestReportSubmission$facultyArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AcademicTestReportSubmission model
+   */
+  interface AcademicTestReportSubmissionFieldRefs {
+    readonly id: FieldRef<"AcademicTestReportSubmission", 'String'>
+    readonly historyId: FieldRef<"AcademicTestReportSubmission", 'String'>
+    readonly facultyId: FieldRef<"AcademicTestReportSubmission", 'String'>
+    readonly sourceShareId: FieldRef<"AcademicTestReportSubmission", 'String'>
+    readonly scheduleId: FieldRef<"AcademicTestReportSubmission", 'String'>
+    readonly reportData: FieldRef<"AcademicTestReportSubmission", 'Json'>
+    readonly submittedAt: FieldRef<"AcademicTestReportSubmission", 'DateTime'>
+    readonly createdAt: FieldRef<"AcademicTestReportSubmission", 'DateTime'>
+    readonly updatedAt: FieldRef<"AcademicTestReportSubmission", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AcademicTestReportSubmission findUnique
+   */
+  export type AcademicTestReportSubmissionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestReportSubmission
+     */
+    select?: AcademicTestReportSubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicTestReportSubmission
+     */
+    omit?: AcademicTestReportSubmissionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicTestReportSubmissionInclude<ExtArgs> | null
+    /**
+     * Filter, which AcademicTestReportSubmission to fetch.
+     */
+    where: AcademicTestReportSubmissionWhereUniqueInput
+  }
+
+  /**
+   * AcademicTestReportSubmission findUniqueOrThrow
+   */
+  export type AcademicTestReportSubmissionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestReportSubmission
+     */
+    select?: AcademicTestReportSubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicTestReportSubmission
+     */
+    omit?: AcademicTestReportSubmissionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicTestReportSubmissionInclude<ExtArgs> | null
+    /**
+     * Filter, which AcademicTestReportSubmission to fetch.
+     */
+    where: AcademicTestReportSubmissionWhereUniqueInput
+  }
+
+  /**
+   * AcademicTestReportSubmission findFirst
+   */
+  export type AcademicTestReportSubmissionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestReportSubmission
+     */
+    select?: AcademicTestReportSubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicTestReportSubmission
+     */
+    omit?: AcademicTestReportSubmissionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicTestReportSubmissionInclude<ExtArgs> | null
+    /**
+     * Filter, which AcademicTestReportSubmission to fetch.
+     */
+    where?: AcademicTestReportSubmissionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AcademicTestReportSubmissions to fetch.
+     */
+    orderBy?: AcademicTestReportSubmissionOrderByWithRelationInput | AcademicTestReportSubmissionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AcademicTestReportSubmissions.
+     */
+    cursor?: AcademicTestReportSubmissionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AcademicTestReportSubmissions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AcademicTestReportSubmissions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AcademicTestReportSubmissions.
+     */
+    distinct?: AcademicTestReportSubmissionScalarFieldEnum | AcademicTestReportSubmissionScalarFieldEnum[]
+  }
+
+  /**
+   * AcademicTestReportSubmission findFirstOrThrow
+   */
+  export type AcademicTestReportSubmissionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestReportSubmission
+     */
+    select?: AcademicTestReportSubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicTestReportSubmission
+     */
+    omit?: AcademicTestReportSubmissionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicTestReportSubmissionInclude<ExtArgs> | null
+    /**
+     * Filter, which AcademicTestReportSubmission to fetch.
+     */
+    where?: AcademicTestReportSubmissionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AcademicTestReportSubmissions to fetch.
+     */
+    orderBy?: AcademicTestReportSubmissionOrderByWithRelationInput | AcademicTestReportSubmissionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AcademicTestReportSubmissions.
+     */
+    cursor?: AcademicTestReportSubmissionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AcademicTestReportSubmissions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AcademicTestReportSubmissions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AcademicTestReportSubmissions.
+     */
+    distinct?: AcademicTestReportSubmissionScalarFieldEnum | AcademicTestReportSubmissionScalarFieldEnum[]
+  }
+
+  /**
+   * AcademicTestReportSubmission findMany
+   */
+  export type AcademicTestReportSubmissionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestReportSubmission
+     */
+    select?: AcademicTestReportSubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicTestReportSubmission
+     */
+    omit?: AcademicTestReportSubmissionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicTestReportSubmissionInclude<ExtArgs> | null
+    /**
+     * Filter, which AcademicTestReportSubmissions to fetch.
+     */
+    where?: AcademicTestReportSubmissionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AcademicTestReportSubmissions to fetch.
+     */
+    orderBy?: AcademicTestReportSubmissionOrderByWithRelationInput | AcademicTestReportSubmissionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AcademicTestReportSubmissions.
+     */
+    cursor?: AcademicTestReportSubmissionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AcademicTestReportSubmissions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AcademicTestReportSubmissions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AcademicTestReportSubmissions.
+     */
+    distinct?: AcademicTestReportSubmissionScalarFieldEnum | AcademicTestReportSubmissionScalarFieldEnum[]
+  }
+
+  /**
+   * AcademicTestReportSubmission create
+   */
+  export type AcademicTestReportSubmissionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestReportSubmission
+     */
+    select?: AcademicTestReportSubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicTestReportSubmission
+     */
+    omit?: AcademicTestReportSubmissionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicTestReportSubmissionInclude<ExtArgs> | null
+    /**
+     * The data needed to create a AcademicTestReportSubmission.
+     */
+    data: XOR<AcademicTestReportSubmissionCreateInput, AcademicTestReportSubmissionUncheckedCreateInput>
+  }
+
+  /**
+   * AcademicTestReportSubmission createMany
+   */
+  export type AcademicTestReportSubmissionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AcademicTestReportSubmissions.
+     */
+    data: AcademicTestReportSubmissionCreateManyInput | AcademicTestReportSubmissionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AcademicTestReportSubmission createManyAndReturn
+   */
+  export type AcademicTestReportSubmissionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestReportSubmission
+     */
+    select?: AcademicTestReportSubmissionSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicTestReportSubmission
+     */
+    omit?: AcademicTestReportSubmissionOmit<ExtArgs> | null
+    /**
+     * The data used to create many AcademicTestReportSubmissions.
+     */
+    data: AcademicTestReportSubmissionCreateManyInput | AcademicTestReportSubmissionCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicTestReportSubmissionIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AcademicTestReportSubmission update
+   */
+  export type AcademicTestReportSubmissionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestReportSubmission
+     */
+    select?: AcademicTestReportSubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicTestReportSubmission
+     */
+    omit?: AcademicTestReportSubmissionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicTestReportSubmissionInclude<ExtArgs> | null
+    /**
+     * The data needed to update a AcademicTestReportSubmission.
+     */
+    data: XOR<AcademicTestReportSubmissionUpdateInput, AcademicTestReportSubmissionUncheckedUpdateInput>
+    /**
+     * Choose, which AcademicTestReportSubmission to update.
+     */
+    where: AcademicTestReportSubmissionWhereUniqueInput
+  }
+
+  /**
+   * AcademicTestReportSubmission updateMany
+   */
+  export type AcademicTestReportSubmissionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AcademicTestReportSubmissions.
+     */
+    data: XOR<AcademicTestReportSubmissionUpdateManyMutationInput, AcademicTestReportSubmissionUncheckedUpdateManyInput>
+    /**
+     * Filter which AcademicTestReportSubmissions to update
+     */
+    where?: AcademicTestReportSubmissionWhereInput
+    /**
+     * Limit how many AcademicTestReportSubmissions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AcademicTestReportSubmission updateManyAndReturn
+   */
+  export type AcademicTestReportSubmissionUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestReportSubmission
+     */
+    select?: AcademicTestReportSubmissionSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicTestReportSubmission
+     */
+    omit?: AcademicTestReportSubmissionOmit<ExtArgs> | null
+    /**
+     * The data used to update AcademicTestReportSubmissions.
+     */
+    data: XOR<AcademicTestReportSubmissionUpdateManyMutationInput, AcademicTestReportSubmissionUncheckedUpdateManyInput>
+    /**
+     * Filter which AcademicTestReportSubmissions to update
+     */
+    where?: AcademicTestReportSubmissionWhereInput
+    /**
+     * Limit how many AcademicTestReportSubmissions to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicTestReportSubmissionIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AcademicTestReportSubmission upsert
+   */
+  export type AcademicTestReportSubmissionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestReportSubmission
+     */
+    select?: AcademicTestReportSubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicTestReportSubmission
+     */
+    omit?: AcademicTestReportSubmissionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicTestReportSubmissionInclude<ExtArgs> | null
+    /**
+     * The filter to search for the AcademicTestReportSubmission to update in case it exists.
+     */
+    where: AcademicTestReportSubmissionWhereUniqueInput
+    /**
+     * In case the AcademicTestReportSubmission found by the `where` argument doesn't exist, create a new AcademicTestReportSubmission with this data.
+     */
+    create: XOR<AcademicTestReportSubmissionCreateInput, AcademicTestReportSubmissionUncheckedCreateInput>
+    /**
+     * In case the AcademicTestReportSubmission was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AcademicTestReportSubmissionUpdateInput, AcademicTestReportSubmissionUncheckedUpdateInput>
+  }
+
+  /**
+   * AcademicTestReportSubmission delete
+   */
+  export type AcademicTestReportSubmissionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestReportSubmission
+     */
+    select?: AcademicTestReportSubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicTestReportSubmission
+     */
+    omit?: AcademicTestReportSubmissionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicTestReportSubmissionInclude<ExtArgs> | null
+    /**
+     * Filter which AcademicTestReportSubmission to delete.
+     */
+    where: AcademicTestReportSubmissionWhereUniqueInput
+  }
+
+  /**
+   * AcademicTestReportSubmission deleteMany
+   */
+  export type AcademicTestReportSubmissionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AcademicTestReportSubmissions to delete
+     */
+    where?: AcademicTestReportSubmissionWhereInput
+    /**
+     * Limit how many AcademicTestReportSubmissions to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * AcademicTestReportSubmission.faculty
+   */
+  export type AcademicTestReportSubmission$facultyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * AcademicTestReportSubmission without action
+   */
+  export type AcademicTestReportSubmissionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AcademicTestReportSubmission
+     */
+    select?: AcademicTestReportSubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AcademicTestReportSubmission
+     */
+    omit?: AcademicTestReportSubmissionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AcademicTestReportSubmissionInclude<ExtArgs> | null
   }
 
 
@@ -96312,12 +100681,30 @@ export namespace Prisma {
     academicTestItemId: 'academicTestItemId',
     branchBatchId: 'branchBatchId',
     cycleNumber: 'cycleNumber',
+    batchCycleId: 'batchCycleId',
     status: 'status',
     createdBy: 'createdBy',
     createdAt: 'createdAt'
   };
 
   export type AcademicTestCycleScalarFieldEnum = (typeof AcademicTestCycleScalarFieldEnum)[keyof typeof AcademicTestCycleScalarFieldEnum]
+
+
+  export const BatchCycleScalarFieldEnum: {
+    id: 'id',
+    batchId: 'batchId',
+    cycleNumber: 'cycleNumber',
+    cycleName: 'cycleName',
+    status: 'status',
+    startDate: 'startDate',
+    endDate: 'endDate',
+    completedAt: 'completedAt',
+    freezeUntil: 'freezeUntil',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type BatchCycleScalarFieldEnum = (typeof BatchCycleScalarFieldEnum)[keyof typeof BatchCycleScalarFieldEnum]
 
 
   export const AcademicTestSubmissionScalarFieldEnum: {
@@ -96535,6 +100922,7 @@ export namespace Prisma {
     facultyId: 'facultyId',
     facultyName: 'facultyName',
     batchId: 'batchId',
+    batchCycleId: 'batchCycleId',
     batchName: 'batchName',
     batchTiming: 'batchTiming',
     scheduleType: 'scheduleType',
@@ -97057,6 +101445,7 @@ export namespace Prisma {
     branchCourseId: 'branchCourseId',
     moduleId: 'moduleId',
     branchBatchId: 'branchBatchId',
+    batchCycleId: 'batchCycleId',
     totalMarks: 'totalMarks',
     startDate: 'startDate',
     endDate: 'endDate',
@@ -97120,6 +101509,7 @@ export namespace Prisma {
     id: 'id',
     examId: 'examId',
     branchBatchId: 'branchBatchId',
+    batchCycleId: 'batchCycleId',
     testDate: 'testDate',
     startTime: 'startTime',
     endTime: 'endTime',
@@ -97255,6 +101645,7 @@ export namespace Prisma {
     facultyId: 'facultyId',
     branchId: 'branchId',
     batchId: 'batchId',
+    batchCycleId: 'batchCycleId',
     courseId: 'courseId',
     testModuleIds: 'testModuleIds',
     assessmentModuleIds: 'assessmentModuleIds',
@@ -97267,6 +101658,33 @@ export namespace Prisma {
   };
 
   export type FacultyReportShareScalarFieldEnum = (typeof FacultyReportShareScalarFieldEnum)[keyof typeof FacultyReportShareScalarFieldEnum]
+
+
+  export const AcademicTestReportHistoryScalarFieldEnum: {
+    id: 'id',
+    batchId: 'batchId',
+    batchCycleId: 'batchCycleId',
+    academicTestId: 'academicTestId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type AcademicTestReportHistoryScalarFieldEnum = (typeof AcademicTestReportHistoryScalarFieldEnum)[keyof typeof AcademicTestReportHistoryScalarFieldEnum]
+
+
+  export const AcademicTestReportSubmissionScalarFieldEnum: {
+    id: 'id',
+    historyId: 'historyId',
+    facultyId: 'facultyId',
+    sourceShareId: 'sourceShareId',
+    scheduleId: 'scheduleId',
+    reportData: 'reportData',
+    submittedAt: 'submittedAt',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type AcademicTestReportSubmissionScalarFieldEnum = (typeof AcademicTestReportSubmissionScalarFieldEnum)[keyof typeof AcademicTestReportSubmissionScalarFieldEnum]
 
 
   export const BranchStudentPaymentScalarFieldEnum: {
@@ -97681,6 +102099,7 @@ export namespace Prisma {
     createdAssessments?: AssessmentListRelationFilter
     evaluatedSubmissions?: AssessmentSubmissionListRelationFilter
     facultySkillAssignments?: FacultySkillAssignmentListRelationFilter
+    academicTestReportSubmissions?: AcademicTestReportSubmissionListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -97723,6 +102142,7 @@ export namespace Prisma {
     createdAssessments?: AssessmentOrderByRelationAggregateInput
     evaluatedSubmissions?: AssessmentSubmissionOrderByRelationAggregateInput
     facultySkillAssignments?: FacultySkillAssignmentOrderByRelationAggregateInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -97768,6 +102188,7 @@ export namespace Prisma {
     createdAssessments?: AssessmentListRelationFilter
     evaluatedSubmissions?: AssessmentSubmissionListRelationFilter
     facultySkillAssignments?: FacultySkillAssignmentListRelationFilter
+    academicTestReportSubmissions?: AcademicTestReportSubmissionListRelationFilter
   }, "id" | "userCode" | "email" | "phone">
 
   export type UserOrderByWithAggregationInput = {
@@ -99565,6 +103986,8 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperListRelationFilter
     academicTestProjects?: AcademicTestProjectListRelationFilter
     academicTestCycles?: AcademicTestCycleListRelationFilter
+    cycles?: BatchCycleListRelationFilter
+    academicTestReportHistories?: AcademicTestReportHistoryListRelationFilter
   }
 
   export type BranchBatchOrderByWithRelationInput = {
@@ -99606,6 +104029,8 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperOrderByRelationAggregateInput
     academicTestProjects?: AcademicTestProjectOrderByRelationAggregateInput
     academicTestCycles?: AcademicTestCycleOrderByRelationAggregateInput
+    cycles?: BatchCycleOrderByRelationAggregateInput
+    academicTestReportHistories?: AcademicTestReportHistoryOrderByRelationAggregateInput
   }
 
   export type BranchBatchWhereUniqueInput = Prisma.AtLeast<{
@@ -99651,6 +104076,8 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperListRelationFilter
     academicTestProjects?: AcademicTestProjectListRelationFilter
     academicTestCycles?: AcademicTestCycleListRelationFilter
+    cycles?: BatchCycleListRelationFilter
+    academicTestReportHistories?: AcademicTestReportHistoryListRelationFilter
   }, "id" | "branchId_courseId_facultyId_batchId">
 
   export type BranchBatchOrderByWithAggregationInput = {
@@ -99804,6 +104231,7 @@ export namespace Prisma {
     questionPapers?: AcademicQuestionPaperListRelationFilter
     projects?: AcademicTestProjectListRelationFilter
     cycles?: AcademicTestCycleListRelationFilter
+    academicTestReportHistories?: AcademicTestReportHistoryListRelationFilter
   }
 
   export type AcademicTestItemOrderByWithRelationInput = {
@@ -99821,6 +104249,7 @@ export namespace Prisma {
     questionPapers?: AcademicQuestionPaperOrderByRelationAggregateInput
     projects?: AcademicTestProjectOrderByRelationAggregateInput
     cycles?: AcademicTestCycleOrderByRelationAggregateInput
+    academicTestReportHistories?: AcademicTestReportHistoryOrderByRelationAggregateInput
   }
 
   export type AcademicTestItemWhereUniqueInput = Prisma.AtLeast<{
@@ -99842,6 +104271,7 @@ export namespace Prisma {
     questionPapers?: AcademicQuestionPaperListRelationFilter
     projects?: AcademicTestProjectListRelationFilter
     cycles?: AcademicTestCycleListRelationFilter
+    academicTestReportHistories?: AcademicTestReportHistoryListRelationFilter
   }, "id" | "academicTestId_sequence">
 
   export type AcademicTestItemOrderByWithAggregationInput = {
@@ -100393,11 +104823,13 @@ export namespace Prisma {
     academicTestItemId?: StringFilter<"AcademicTestCycle"> | string
     branchBatchId?: StringFilter<"AcademicTestCycle"> | string
     cycleNumber?: IntFilter<"AcademicTestCycle"> | number
+    batchCycleId?: StringFilter<"AcademicTestCycle"> | string
     status?: StringFilter<"AcademicTestCycle"> | string
     createdBy?: StringFilter<"AcademicTestCycle"> | string
     createdAt?: DateTimeFilter<"AcademicTestCycle"> | Date | string
     academicTestItem?: XOR<AcademicTestItemScalarRelationFilter, AcademicTestItemWhereInput>
     branchBatch?: XOR<BranchBatchScalarRelationFilter, BranchBatchWhereInput>
+    batchCycle?: XOR<BatchCycleScalarRelationFilter, BatchCycleWhereInput>
     questionPapers?: AcademicQuestionPaperListRelationFilter
     projects?: AcademicTestProjectListRelationFilter
     schedules?: AcademicScheduledTestListRelationFilter
@@ -100408,11 +104840,13 @@ export namespace Prisma {
     academicTestItemId?: SortOrder
     branchBatchId?: SortOrder
     cycleNumber?: SortOrder
+    batchCycleId?: SortOrder
     status?: SortOrder
     createdBy?: SortOrder
     createdAt?: SortOrder
     academicTestItem?: AcademicTestItemOrderByWithRelationInput
     branchBatch?: BranchBatchOrderByWithRelationInput
+    batchCycle?: BatchCycleOrderByWithRelationInput
     questionPapers?: AcademicQuestionPaperOrderByRelationAggregateInput
     projects?: AcademicTestProjectOrderByRelationAggregateInput
     schedules?: AcademicScheduledTestOrderByRelationAggregateInput
@@ -100427,11 +104861,13 @@ export namespace Prisma {
     academicTestItemId?: StringFilter<"AcademicTestCycle"> | string
     branchBatchId?: StringFilter<"AcademicTestCycle"> | string
     cycleNumber?: IntFilter<"AcademicTestCycle"> | number
+    batchCycleId?: StringFilter<"AcademicTestCycle"> | string
     status?: StringFilter<"AcademicTestCycle"> | string
     createdBy?: StringFilter<"AcademicTestCycle"> | string
     createdAt?: DateTimeFilter<"AcademicTestCycle"> | Date | string
     academicTestItem?: XOR<AcademicTestItemScalarRelationFilter, AcademicTestItemWhereInput>
     branchBatch?: XOR<BranchBatchScalarRelationFilter, BranchBatchWhereInput>
+    batchCycle?: XOR<BatchCycleScalarRelationFilter, BatchCycleWhereInput>
     questionPapers?: AcademicQuestionPaperListRelationFilter
     projects?: AcademicTestProjectListRelationFilter
     schedules?: AcademicScheduledTestListRelationFilter
@@ -100442,6 +104878,7 @@ export namespace Prisma {
     academicTestItemId?: SortOrder
     branchBatchId?: SortOrder
     cycleNumber?: SortOrder
+    batchCycleId?: SortOrder
     status?: SortOrder
     createdBy?: SortOrder
     createdAt?: SortOrder
@@ -100460,9 +104897,116 @@ export namespace Prisma {
     academicTestItemId?: StringWithAggregatesFilter<"AcademicTestCycle"> | string
     branchBatchId?: StringWithAggregatesFilter<"AcademicTestCycle"> | string
     cycleNumber?: IntWithAggregatesFilter<"AcademicTestCycle"> | number
+    batchCycleId?: StringWithAggregatesFilter<"AcademicTestCycle"> | string
     status?: StringWithAggregatesFilter<"AcademicTestCycle"> | string
     createdBy?: StringWithAggregatesFilter<"AcademicTestCycle"> | string
     createdAt?: DateTimeWithAggregatesFilter<"AcademicTestCycle"> | Date | string
+  }
+
+  export type BatchCycleWhereInput = {
+    AND?: BatchCycleWhereInput | BatchCycleWhereInput[]
+    OR?: BatchCycleWhereInput[]
+    NOT?: BatchCycleWhereInput | BatchCycleWhereInput[]
+    id?: StringFilter<"BatchCycle"> | string
+    batchId?: StringFilter<"BatchCycle"> | string
+    cycleNumber?: IntFilter<"BatchCycle"> | number
+    cycleName?: StringFilter<"BatchCycle"> | string
+    status?: StringFilter<"BatchCycle"> | string
+    startDate?: StringNullableFilter<"BatchCycle"> | string | null
+    endDate?: StringNullableFilter<"BatchCycle"> | string | null
+    completedAt?: DateTimeNullableFilter<"BatchCycle"> | Date | string | null
+    freezeUntil?: DateTimeNullableFilter<"BatchCycle"> | Date | string | null
+    createdAt?: DateTimeFilter<"BatchCycle"> | Date | string
+    updatedAt?: DateTimeFilter<"BatchCycle"> | Date | string
+    batch?: XOR<BranchBatchScalarRelationFilter, BranchBatchWhereInput>
+    enrollments?: BranchStudentCourseListRelationFilter
+    academicTestCycles?: AcademicTestCycleListRelationFilter
+    reportHistories?: AcademicTestReportHistoryListRelationFilter
+    examSchedules?: ExamScheduleListRelationFilter
+    assessments?: AssessmentListRelationFilter
+    reportShares?: FacultyReportShareListRelationFilter
+  }
+
+  export type BatchCycleOrderByWithRelationInput = {
+    id?: SortOrder
+    batchId?: SortOrder
+    cycleNumber?: SortOrder
+    cycleName?: SortOrder
+    status?: SortOrder
+    startDate?: SortOrderInput | SortOrder
+    endDate?: SortOrderInput | SortOrder
+    completedAt?: SortOrderInput | SortOrder
+    freezeUntil?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    batch?: BranchBatchOrderByWithRelationInput
+    enrollments?: BranchStudentCourseOrderByRelationAggregateInput
+    academicTestCycles?: AcademicTestCycleOrderByRelationAggregateInput
+    reportHistories?: AcademicTestReportHistoryOrderByRelationAggregateInput
+    examSchedules?: ExamScheduleOrderByRelationAggregateInput
+    assessments?: AssessmentOrderByRelationAggregateInput
+    reportShares?: FacultyReportShareOrderByRelationAggregateInput
+  }
+
+  export type BatchCycleWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    batchId_cycleNumber?: BatchCycleBatchIdCycleNumberCompoundUniqueInput
+    AND?: BatchCycleWhereInput | BatchCycleWhereInput[]
+    OR?: BatchCycleWhereInput[]
+    NOT?: BatchCycleWhereInput | BatchCycleWhereInput[]
+    batchId?: StringFilter<"BatchCycle"> | string
+    cycleNumber?: IntFilter<"BatchCycle"> | number
+    cycleName?: StringFilter<"BatchCycle"> | string
+    status?: StringFilter<"BatchCycle"> | string
+    startDate?: StringNullableFilter<"BatchCycle"> | string | null
+    endDate?: StringNullableFilter<"BatchCycle"> | string | null
+    completedAt?: DateTimeNullableFilter<"BatchCycle"> | Date | string | null
+    freezeUntil?: DateTimeNullableFilter<"BatchCycle"> | Date | string | null
+    createdAt?: DateTimeFilter<"BatchCycle"> | Date | string
+    updatedAt?: DateTimeFilter<"BatchCycle"> | Date | string
+    batch?: XOR<BranchBatchScalarRelationFilter, BranchBatchWhereInput>
+    enrollments?: BranchStudentCourseListRelationFilter
+    academicTestCycles?: AcademicTestCycleListRelationFilter
+    reportHistories?: AcademicTestReportHistoryListRelationFilter
+    examSchedules?: ExamScheduleListRelationFilter
+    assessments?: AssessmentListRelationFilter
+    reportShares?: FacultyReportShareListRelationFilter
+  }, "id" | "batchId_cycleNumber">
+
+  export type BatchCycleOrderByWithAggregationInput = {
+    id?: SortOrder
+    batchId?: SortOrder
+    cycleNumber?: SortOrder
+    cycleName?: SortOrder
+    status?: SortOrder
+    startDate?: SortOrderInput | SortOrder
+    endDate?: SortOrderInput | SortOrder
+    completedAt?: SortOrderInput | SortOrder
+    freezeUntil?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: BatchCycleCountOrderByAggregateInput
+    _avg?: BatchCycleAvgOrderByAggregateInput
+    _max?: BatchCycleMaxOrderByAggregateInput
+    _min?: BatchCycleMinOrderByAggregateInput
+    _sum?: BatchCycleSumOrderByAggregateInput
+  }
+
+  export type BatchCycleScalarWhereWithAggregatesInput = {
+    AND?: BatchCycleScalarWhereWithAggregatesInput | BatchCycleScalarWhereWithAggregatesInput[]
+    OR?: BatchCycleScalarWhereWithAggregatesInput[]
+    NOT?: BatchCycleScalarWhereWithAggregatesInput | BatchCycleScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"BatchCycle"> | string
+    batchId?: StringWithAggregatesFilter<"BatchCycle"> | string
+    cycleNumber?: IntWithAggregatesFilter<"BatchCycle"> | number
+    cycleName?: StringWithAggregatesFilter<"BatchCycle"> | string
+    status?: StringWithAggregatesFilter<"BatchCycle"> | string
+    startDate?: StringNullableWithAggregatesFilter<"BatchCycle"> | string | null
+    endDate?: StringNullableWithAggregatesFilter<"BatchCycle"> | string | null
+    completedAt?: DateTimeNullableWithAggregatesFilter<"BatchCycle"> | Date | string | null
+    freezeUntil?: DateTimeNullableWithAggregatesFilter<"BatchCycle"> | Date | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"BatchCycle"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"BatchCycle"> | Date | string
   }
 
   export type AcademicTestSubmissionWhereInput = {
@@ -101554,6 +106098,7 @@ export namespace Prisma {
     facultyId?: StringNullableFilter<"BranchStudentCourse"> | string | null
     facultyName?: StringNullableFilter<"BranchStudentCourse"> | string | null
     batchId?: StringNullableFilter<"BranchStudentCourse"> | string | null
+    batchCycleId?: StringNullableFilter<"BranchStudentCourse"> | string | null
     batchName?: StringNullableFilter<"BranchStudentCourse"> | string | null
     batchTiming?: StringNullableFilter<"BranchStudentCourse"> | string | null
     scheduleType?: StringNullableFilter<"BranchStudentCourse"> | string | null
@@ -101575,6 +106120,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"BranchStudentCourse"> | Date | string
     updatedAt?: DateTimeFilter<"BranchStudentCourse"> | Date | string
     branchStudent?: XOR<BranchStudentScalarRelationFilter, BranchStudentWhereInput>
+    batchCycle?: XOR<BatchCycleNullableScalarRelationFilter, BatchCycleWhereInput> | null
     branch?: XOR<BranchScalarRelationFilter, BranchWhereInput>
     course?: XOR<BranchCourseScalarRelationFilter, BranchCourseWhereInput>
   }
@@ -101588,6 +106134,7 @@ export namespace Prisma {
     facultyId?: SortOrderInput | SortOrder
     facultyName?: SortOrderInput | SortOrder
     batchId?: SortOrderInput | SortOrder
+    batchCycleId?: SortOrderInput | SortOrder
     batchName?: SortOrderInput | SortOrder
     batchTiming?: SortOrderInput | SortOrder
     scheduleType?: SortOrderInput | SortOrder
@@ -101609,6 +106156,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     branchStudent?: BranchStudentOrderByWithRelationInput
+    batchCycle?: BatchCycleOrderByWithRelationInput
     branch?: BranchOrderByWithRelationInput
     course?: BranchCourseOrderByWithRelationInput
   }
@@ -101626,6 +106174,7 @@ export namespace Prisma {
     facultyId?: StringNullableFilter<"BranchStudentCourse"> | string | null
     facultyName?: StringNullableFilter<"BranchStudentCourse"> | string | null
     batchId?: StringNullableFilter<"BranchStudentCourse"> | string | null
+    batchCycleId?: StringNullableFilter<"BranchStudentCourse"> | string | null
     batchName?: StringNullableFilter<"BranchStudentCourse"> | string | null
     batchTiming?: StringNullableFilter<"BranchStudentCourse"> | string | null
     scheduleType?: StringNullableFilter<"BranchStudentCourse"> | string | null
@@ -101647,6 +106196,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"BranchStudentCourse"> | Date | string
     updatedAt?: DateTimeFilter<"BranchStudentCourse"> | Date | string
     branchStudent?: XOR<BranchStudentScalarRelationFilter, BranchStudentWhereInput>
+    batchCycle?: XOR<BatchCycleNullableScalarRelationFilter, BatchCycleWhereInput> | null
     branch?: XOR<BranchScalarRelationFilter, BranchWhereInput>
     course?: XOR<BranchCourseScalarRelationFilter, BranchCourseWhereInput>
   }, "id" | "branchStudentId_courseId">
@@ -101660,6 +106210,7 @@ export namespace Prisma {
     facultyId?: SortOrderInput | SortOrder
     facultyName?: SortOrderInput | SortOrder
     batchId?: SortOrderInput | SortOrder
+    batchCycleId?: SortOrderInput | SortOrder
     batchName?: SortOrderInput | SortOrder
     batchTiming?: SortOrderInput | SortOrder
     scheduleType?: SortOrderInput | SortOrder
@@ -101699,6 +106250,7 @@ export namespace Prisma {
     facultyId?: StringNullableWithAggregatesFilter<"BranchStudentCourse"> | string | null
     facultyName?: StringNullableWithAggregatesFilter<"BranchStudentCourse"> | string | null
     batchId?: StringNullableWithAggregatesFilter<"BranchStudentCourse"> | string | null
+    batchCycleId?: StringNullableWithAggregatesFilter<"BranchStudentCourse"> | string | null
     batchName?: StringNullableWithAggregatesFilter<"BranchStudentCourse"> | string | null
     batchTiming?: StringNullableWithAggregatesFilter<"BranchStudentCourse"> | string | null
     scheduleType?: StringNullableWithAggregatesFilter<"BranchStudentCourse"> | string | null
@@ -104265,6 +108817,7 @@ export namespace Prisma {
     branchCourseId?: StringFilter<"Assessment"> | string
     moduleId?: StringFilter<"Assessment"> | string
     branchBatchId?: StringFilter<"Assessment"> | string
+    batchCycleId?: StringNullableFilter<"Assessment"> | string | null
     totalMarks?: IntFilter<"Assessment"> | number
     startDate?: DateTimeFilter<"Assessment"> | Date | string
     endDate?: DateTimeFilter<"Assessment"> | Date | string
@@ -104278,6 +108831,7 @@ export namespace Prisma {
     branchCourse?: XOR<BranchCourseScalarRelationFilter, BranchCourseWhereInput>
     module?: XOR<BranchCourseModuleScalarRelationFilter, BranchCourseModuleWhereInput>
     branchBatch?: XOR<BranchBatchScalarRelationFilter, BranchBatchWhereInput>
+    batchCycle?: XOR<BatchCycleNullableScalarRelationFilter, BatchCycleWhereInput> | null
     faculty?: XOR<UserScalarRelationFilter, UserWhereInput>
     submissions?: AssessmentSubmissionListRelationFilter
     originalAssessment?: XOR<AssessmentNullableScalarRelationFilter, AssessmentWhereInput> | null
@@ -104294,6 +108848,7 @@ export namespace Prisma {
     branchCourseId?: SortOrder
     moduleId?: SortOrder
     branchBatchId?: SortOrder
+    batchCycleId?: SortOrderInput | SortOrder
     totalMarks?: SortOrder
     startDate?: SortOrder
     endDate?: SortOrder
@@ -104307,6 +108862,7 @@ export namespace Prisma {
     branchCourse?: BranchCourseOrderByWithRelationInput
     module?: BranchCourseModuleOrderByWithRelationInput
     branchBatch?: BranchBatchOrderByWithRelationInput
+    batchCycle?: BatchCycleOrderByWithRelationInput
     faculty?: UserOrderByWithRelationInput
     submissions?: AssessmentSubmissionOrderByRelationAggregateInput
     originalAssessment?: AssessmentOrderByWithRelationInput
@@ -104326,6 +108882,7 @@ export namespace Prisma {
     branchCourseId?: StringFilter<"Assessment"> | string
     moduleId?: StringFilter<"Assessment"> | string
     branchBatchId?: StringFilter<"Assessment"> | string
+    batchCycleId?: StringNullableFilter<"Assessment"> | string | null
     totalMarks?: IntFilter<"Assessment"> | number
     startDate?: DateTimeFilter<"Assessment"> | Date | string
     endDate?: DateTimeFilter<"Assessment"> | Date | string
@@ -104339,6 +108896,7 @@ export namespace Prisma {
     branchCourse?: XOR<BranchCourseScalarRelationFilter, BranchCourseWhereInput>
     module?: XOR<BranchCourseModuleScalarRelationFilter, BranchCourseModuleWhereInput>
     branchBatch?: XOR<BranchBatchScalarRelationFilter, BranchBatchWhereInput>
+    batchCycle?: XOR<BatchCycleNullableScalarRelationFilter, BatchCycleWhereInput> | null
     faculty?: XOR<UserScalarRelationFilter, UserWhereInput>
     submissions?: AssessmentSubmissionListRelationFilter
     originalAssessment?: XOR<AssessmentNullableScalarRelationFilter, AssessmentWhereInput> | null
@@ -104355,6 +108913,7 @@ export namespace Prisma {
     branchCourseId?: SortOrder
     moduleId?: SortOrder
     branchBatchId?: SortOrder
+    batchCycleId?: SortOrderInput | SortOrder
     totalMarks?: SortOrder
     startDate?: SortOrder
     endDate?: SortOrder
@@ -104384,6 +108943,7 @@ export namespace Prisma {
     branchCourseId?: StringWithAggregatesFilter<"Assessment"> | string
     moduleId?: StringWithAggregatesFilter<"Assessment"> | string
     branchBatchId?: StringWithAggregatesFilter<"Assessment"> | string
+    batchCycleId?: StringNullableWithAggregatesFilter<"Assessment"> | string | null
     totalMarks?: IntWithAggregatesFilter<"Assessment"> | number
     startDate?: DateTimeWithAggregatesFilter<"Assessment"> | Date | string
     endDate?: DateTimeWithAggregatesFilter<"Assessment"> | Date | string
@@ -104658,12 +109218,14 @@ export namespace Prisma {
     id?: StringFilter<"ExamSchedule"> | string
     examId?: StringFilter<"ExamSchedule"> | string
     branchBatchId?: StringFilter<"ExamSchedule"> | string
+    batchCycleId?: StringNullableFilter<"ExamSchedule"> | string | null
     testDate?: StringFilter<"ExamSchedule"> | string
     startTime?: StringFilter<"ExamSchedule"> | string
     endTime?: StringFilter<"ExamSchedule"> | string
     status?: StringFilter<"ExamSchedule"> | string
     exam?: XOR<ExamScalarRelationFilter, ExamWhereInput>
     branchBatch?: XOR<BranchBatchScalarRelationFilter, BranchBatchWhereInput>
+    batchCycle?: XOR<BatchCycleNullableScalarRelationFilter, BatchCycleWhereInput> | null
     attempts?: ExamAttemptListRelationFilter
   }
 
@@ -104671,12 +109233,14 @@ export namespace Prisma {
     id?: SortOrder
     examId?: SortOrder
     branchBatchId?: SortOrder
+    batchCycleId?: SortOrderInput | SortOrder
     testDate?: SortOrder
     startTime?: SortOrder
     endTime?: SortOrder
     status?: SortOrder
     exam?: ExamOrderByWithRelationInput
     branchBatch?: BranchBatchOrderByWithRelationInput
+    batchCycle?: BatchCycleOrderByWithRelationInput
     attempts?: ExamAttemptOrderByRelationAggregateInput
   }
 
@@ -104688,12 +109252,14 @@ export namespace Prisma {
     NOT?: ExamScheduleWhereInput | ExamScheduleWhereInput[]
     examId?: StringFilter<"ExamSchedule"> | string
     branchBatchId?: StringFilter<"ExamSchedule"> | string
+    batchCycleId?: StringNullableFilter<"ExamSchedule"> | string | null
     testDate?: StringFilter<"ExamSchedule"> | string
     startTime?: StringFilter<"ExamSchedule"> | string
     endTime?: StringFilter<"ExamSchedule"> | string
     status?: StringFilter<"ExamSchedule"> | string
     exam?: XOR<ExamScalarRelationFilter, ExamWhereInput>
     branchBatch?: XOR<BranchBatchScalarRelationFilter, BranchBatchWhereInput>
+    batchCycle?: XOR<BatchCycleNullableScalarRelationFilter, BatchCycleWhereInput> | null
     attempts?: ExamAttemptListRelationFilter
   }, "id" | "examId_branchBatchId">
 
@@ -104701,6 +109267,7 @@ export namespace Prisma {
     id?: SortOrder
     examId?: SortOrder
     branchBatchId?: SortOrder
+    batchCycleId?: SortOrderInput | SortOrder
     testDate?: SortOrder
     startTime?: SortOrder
     endTime?: SortOrder
@@ -104717,6 +109284,7 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"ExamSchedule"> | string
     examId?: StringWithAggregatesFilter<"ExamSchedule"> | string
     branchBatchId?: StringWithAggregatesFilter<"ExamSchedule"> | string
+    batchCycleId?: StringNullableWithAggregatesFilter<"ExamSchedule"> | string | null
     testDate?: StringWithAggregatesFilter<"ExamSchedule"> | string
     startTime?: StringWithAggregatesFilter<"ExamSchedule"> | string
     endTime?: StringWithAggregatesFilter<"ExamSchedule"> | string
@@ -105368,6 +109936,7 @@ export namespace Prisma {
     facultyId?: StringFilter<"FacultyReportShare"> | string
     branchId?: StringFilter<"FacultyReportShare"> | string
     batchId?: StringFilter<"FacultyReportShare"> | string
+    batchCycleId?: StringNullableFilter<"FacultyReportShare"> | string | null
     courseId?: StringFilter<"FacultyReportShare"> | string
     testModuleIds?: JsonFilter<"FacultyReportShare">
     assessmentModuleIds?: JsonFilter<"FacultyReportShare">
@@ -105377,6 +109946,7 @@ export namespace Prisma {
     status?: StringFilter<"FacultyReportShare"> | string
     createdAt?: DateTimeFilter<"FacultyReportShare"> | Date | string
     updatedAt?: DateTimeFilter<"FacultyReportShare"> | Date | string
+    batchCycle?: XOR<BatchCycleNullableScalarRelationFilter, BatchCycleWhereInput> | null
   }
 
   export type FacultyReportShareOrderByWithRelationInput = {
@@ -105384,6 +109954,7 @@ export namespace Prisma {
     facultyId?: SortOrder
     branchId?: SortOrder
     batchId?: SortOrder
+    batchCycleId?: SortOrderInput | SortOrder
     courseId?: SortOrder
     testModuleIds?: SortOrder
     assessmentModuleIds?: SortOrder
@@ -105393,6 +109964,7 @@ export namespace Prisma {
     status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    batchCycle?: BatchCycleOrderByWithRelationInput
   }
 
   export type FacultyReportShareWhereUniqueInput = Prisma.AtLeast<{
@@ -105403,6 +109975,7 @@ export namespace Prisma {
     facultyId?: StringFilter<"FacultyReportShare"> | string
     branchId?: StringFilter<"FacultyReportShare"> | string
     batchId?: StringFilter<"FacultyReportShare"> | string
+    batchCycleId?: StringNullableFilter<"FacultyReportShare"> | string | null
     courseId?: StringFilter<"FacultyReportShare"> | string
     testModuleIds?: JsonFilter<"FacultyReportShare">
     assessmentModuleIds?: JsonFilter<"FacultyReportShare">
@@ -105412,6 +109985,7 @@ export namespace Prisma {
     status?: StringFilter<"FacultyReportShare"> | string
     createdAt?: DateTimeFilter<"FacultyReportShare"> | Date | string
     updatedAt?: DateTimeFilter<"FacultyReportShare"> | Date | string
+    batchCycle?: XOR<BatchCycleNullableScalarRelationFilter, BatchCycleWhereInput> | null
   }, "id">
 
   export type FacultyReportShareOrderByWithAggregationInput = {
@@ -105419,6 +109993,7 @@ export namespace Prisma {
     facultyId?: SortOrder
     branchId?: SortOrder
     batchId?: SortOrder
+    batchCycleId?: SortOrderInput | SortOrder
     courseId?: SortOrder
     testModuleIds?: SortOrder
     assessmentModuleIds?: SortOrder
@@ -105441,6 +110016,7 @@ export namespace Prisma {
     facultyId?: StringWithAggregatesFilter<"FacultyReportShare"> | string
     branchId?: StringWithAggregatesFilter<"FacultyReportShare"> | string
     batchId?: StringWithAggregatesFilter<"FacultyReportShare"> | string
+    batchCycleId?: StringNullableWithAggregatesFilter<"FacultyReportShare"> | string | null
     courseId?: StringWithAggregatesFilter<"FacultyReportShare"> | string
     testModuleIds?: JsonWithAggregatesFilter<"FacultyReportShare">
     assessmentModuleIds?: JsonWithAggregatesFilter<"FacultyReportShare">
@@ -105450,6 +110026,154 @@ export namespace Prisma {
     status?: StringWithAggregatesFilter<"FacultyReportShare"> | string
     createdAt?: DateTimeWithAggregatesFilter<"FacultyReportShare"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"FacultyReportShare"> | Date | string
+  }
+
+  export type AcademicTestReportHistoryWhereInput = {
+    AND?: AcademicTestReportHistoryWhereInput | AcademicTestReportHistoryWhereInput[]
+    OR?: AcademicTestReportHistoryWhereInput[]
+    NOT?: AcademicTestReportHistoryWhereInput | AcademicTestReportHistoryWhereInput[]
+    id?: StringFilter<"AcademicTestReportHistory"> | string
+    batchId?: StringFilter<"AcademicTestReportHistory"> | string
+    batchCycleId?: StringFilter<"AcademicTestReportHistory"> | string
+    academicTestId?: StringFilter<"AcademicTestReportHistory"> | string
+    createdAt?: DateTimeFilter<"AcademicTestReportHistory"> | Date | string
+    updatedAt?: DateTimeFilter<"AcademicTestReportHistory"> | Date | string
+    batch?: XOR<BranchBatchScalarRelationFilter, BranchBatchWhereInput>
+    batchCycle?: XOR<BatchCycleScalarRelationFilter, BatchCycleWhereInput>
+    academicTest?: XOR<AcademicTestItemScalarRelationFilter, AcademicTestItemWhereInput>
+    submissions?: AcademicTestReportSubmissionListRelationFilter
+  }
+
+  export type AcademicTestReportHistoryOrderByWithRelationInput = {
+    id?: SortOrder
+    batchId?: SortOrder
+    batchCycleId?: SortOrder
+    academicTestId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    batch?: BranchBatchOrderByWithRelationInput
+    batchCycle?: BatchCycleOrderByWithRelationInput
+    academicTest?: AcademicTestItemOrderByWithRelationInput
+    submissions?: AcademicTestReportSubmissionOrderByRelationAggregateInput
+  }
+
+  export type AcademicTestReportHistoryWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    batchCycleId_academicTestId?: AcademicTestReportHistoryBatchCycleIdAcademicTestIdCompoundUniqueInput
+    AND?: AcademicTestReportHistoryWhereInput | AcademicTestReportHistoryWhereInput[]
+    OR?: AcademicTestReportHistoryWhereInput[]
+    NOT?: AcademicTestReportHistoryWhereInput | AcademicTestReportHistoryWhereInput[]
+    batchId?: StringFilter<"AcademicTestReportHistory"> | string
+    batchCycleId?: StringFilter<"AcademicTestReportHistory"> | string
+    academicTestId?: StringFilter<"AcademicTestReportHistory"> | string
+    createdAt?: DateTimeFilter<"AcademicTestReportHistory"> | Date | string
+    updatedAt?: DateTimeFilter<"AcademicTestReportHistory"> | Date | string
+    batch?: XOR<BranchBatchScalarRelationFilter, BranchBatchWhereInput>
+    batchCycle?: XOR<BatchCycleScalarRelationFilter, BatchCycleWhereInput>
+    academicTest?: XOR<AcademicTestItemScalarRelationFilter, AcademicTestItemWhereInput>
+    submissions?: AcademicTestReportSubmissionListRelationFilter
+  }, "id" | "batchCycleId_academicTestId">
+
+  export type AcademicTestReportHistoryOrderByWithAggregationInput = {
+    id?: SortOrder
+    batchId?: SortOrder
+    batchCycleId?: SortOrder
+    academicTestId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: AcademicTestReportHistoryCountOrderByAggregateInput
+    _max?: AcademicTestReportHistoryMaxOrderByAggregateInput
+    _min?: AcademicTestReportHistoryMinOrderByAggregateInput
+  }
+
+  export type AcademicTestReportHistoryScalarWhereWithAggregatesInput = {
+    AND?: AcademicTestReportHistoryScalarWhereWithAggregatesInput | AcademicTestReportHistoryScalarWhereWithAggregatesInput[]
+    OR?: AcademicTestReportHistoryScalarWhereWithAggregatesInput[]
+    NOT?: AcademicTestReportHistoryScalarWhereWithAggregatesInput | AcademicTestReportHistoryScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"AcademicTestReportHistory"> | string
+    batchId?: StringWithAggregatesFilter<"AcademicTestReportHistory"> | string
+    batchCycleId?: StringWithAggregatesFilter<"AcademicTestReportHistory"> | string
+    academicTestId?: StringWithAggregatesFilter<"AcademicTestReportHistory"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"AcademicTestReportHistory"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"AcademicTestReportHistory"> | Date | string
+  }
+
+  export type AcademicTestReportSubmissionWhereInput = {
+    AND?: AcademicTestReportSubmissionWhereInput | AcademicTestReportSubmissionWhereInput[]
+    OR?: AcademicTestReportSubmissionWhereInput[]
+    NOT?: AcademicTestReportSubmissionWhereInput | AcademicTestReportSubmissionWhereInput[]
+    id?: StringFilter<"AcademicTestReportSubmission"> | string
+    historyId?: StringFilter<"AcademicTestReportSubmission"> | string
+    facultyId?: StringNullableFilter<"AcademicTestReportSubmission"> | string | null
+    sourceShareId?: StringNullableFilter<"AcademicTestReportSubmission"> | string | null
+    scheduleId?: StringNullableFilter<"AcademicTestReportSubmission"> | string | null
+    reportData?: JsonFilter<"AcademicTestReportSubmission">
+    submittedAt?: DateTimeFilter<"AcademicTestReportSubmission"> | Date | string
+    createdAt?: DateTimeFilter<"AcademicTestReportSubmission"> | Date | string
+    updatedAt?: DateTimeFilter<"AcademicTestReportSubmission"> | Date | string
+    history?: XOR<AcademicTestReportHistoryScalarRelationFilter, AcademicTestReportHistoryWhereInput>
+    faculty?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+  }
+
+  export type AcademicTestReportSubmissionOrderByWithRelationInput = {
+    id?: SortOrder
+    historyId?: SortOrder
+    facultyId?: SortOrderInput | SortOrder
+    sourceShareId?: SortOrderInput | SortOrder
+    scheduleId?: SortOrderInput | SortOrder
+    reportData?: SortOrder
+    submittedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    history?: AcademicTestReportHistoryOrderByWithRelationInput
+    faculty?: UserOrderByWithRelationInput
+  }
+
+  export type AcademicTestReportSubmissionWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: AcademicTestReportSubmissionWhereInput | AcademicTestReportSubmissionWhereInput[]
+    OR?: AcademicTestReportSubmissionWhereInput[]
+    NOT?: AcademicTestReportSubmissionWhereInput | AcademicTestReportSubmissionWhereInput[]
+    historyId?: StringFilter<"AcademicTestReportSubmission"> | string
+    facultyId?: StringNullableFilter<"AcademicTestReportSubmission"> | string | null
+    sourceShareId?: StringNullableFilter<"AcademicTestReportSubmission"> | string | null
+    scheduleId?: StringNullableFilter<"AcademicTestReportSubmission"> | string | null
+    reportData?: JsonFilter<"AcademicTestReportSubmission">
+    submittedAt?: DateTimeFilter<"AcademicTestReportSubmission"> | Date | string
+    createdAt?: DateTimeFilter<"AcademicTestReportSubmission"> | Date | string
+    updatedAt?: DateTimeFilter<"AcademicTestReportSubmission"> | Date | string
+    history?: XOR<AcademicTestReportHistoryScalarRelationFilter, AcademicTestReportHistoryWhereInput>
+    faculty?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+  }, "id">
+
+  export type AcademicTestReportSubmissionOrderByWithAggregationInput = {
+    id?: SortOrder
+    historyId?: SortOrder
+    facultyId?: SortOrderInput | SortOrder
+    sourceShareId?: SortOrderInput | SortOrder
+    scheduleId?: SortOrderInput | SortOrder
+    reportData?: SortOrder
+    submittedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: AcademicTestReportSubmissionCountOrderByAggregateInput
+    _max?: AcademicTestReportSubmissionMaxOrderByAggregateInput
+    _min?: AcademicTestReportSubmissionMinOrderByAggregateInput
+  }
+
+  export type AcademicTestReportSubmissionScalarWhereWithAggregatesInput = {
+    AND?: AcademicTestReportSubmissionScalarWhereWithAggregatesInput | AcademicTestReportSubmissionScalarWhereWithAggregatesInput[]
+    OR?: AcademicTestReportSubmissionScalarWhereWithAggregatesInput[]
+    NOT?: AcademicTestReportSubmissionScalarWhereWithAggregatesInput | AcademicTestReportSubmissionScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"AcademicTestReportSubmission"> | string
+    historyId?: StringWithAggregatesFilter<"AcademicTestReportSubmission"> | string
+    facultyId?: StringNullableWithAggregatesFilter<"AcademicTestReportSubmission"> | string | null
+    sourceShareId?: StringNullableWithAggregatesFilter<"AcademicTestReportSubmission"> | string | null
+    scheduleId?: StringNullableWithAggregatesFilter<"AcademicTestReportSubmission"> | string | null
+    reportData?: JsonWithAggregatesFilter<"AcademicTestReportSubmission">
+    submittedAt?: DateTimeWithAggregatesFilter<"AcademicTestReportSubmission"> | Date | string
+    createdAt?: DateTimeWithAggregatesFilter<"AcademicTestReportSubmission"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"AcademicTestReportSubmission"> | Date | string
   }
 
   export type BranchStudentPaymentWhereInput = {
@@ -105775,6 +110499,7 @@ export namespace Prisma {
     createdAssessments?: AssessmentCreateNestedManyWithoutFacultyInput
     evaluatedSubmissions?: AssessmentSubmissionCreateNestedManyWithoutEvaluatorInput
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutFacultyUserInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -105817,6 +110542,7 @@ export namespace Prisma {
     createdAssessments?: AssessmentUncheckedCreateNestedManyWithoutFacultyInput
     evaluatedSubmissions?: AssessmentSubmissionUncheckedCreateNestedManyWithoutEvaluatorInput
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutFacultyUserInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
   }
 
   export type UserUpdateInput = {
@@ -105859,6 +110585,7 @@ export namespace Prisma {
     createdAssessments?: AssessmentUpdateManyWithoutFacultyNestedInput
     evaluatedSubmissions?: AssessmentSubmissionUpdateManyWithoutEvaluatorNestedInput
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutFacultyUserNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -105901,6 +110628,7 @@ export namespace Prisma {
     createdAssessments?: AssessmentUncheckedUpdateManyWithoutFacultyNestedInput
     evaluatedSubmissions?: AssessmentSubmissionUncheckedUpdateManyWithoutEvaluatorNestedInput
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutFacultyUserNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -108033,6 +112761,8 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperCreateNestedManyWithoutBranchBatchInput
     academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchBatchInput
     academicTestCycles?: AcademicTestCycleCreateNestedManyWithoutBranchBatchInput
+    cycles?: BatchCycleCreateNestedManyWithoutBatchInput
+    academicTestReportHistories?: AcademicTestReportHistoryCreateNestedManyWithoutBatchInput
   }
 
   export type BranchBatchUncheckedCreateInput = {
@@ -108071,6 +112801,8 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchBatchInput
     academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchBatchInput
     academicTestCycles?: AcademicTestCycleUncheckedCreateNestedManyWithoutBranchBatchInput
+    cycles?: BatchCycleUncheckedCreateNestedManyWithoutBatchInput
+    academicTestReportHistories?: AcademicTestReportHistoryUncheckedCreateNestedManyWithoutBatchInput
   }
 
   export type BranchBatchUpdateInput = {
@@ -108109,6 +112841,8 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUpdateManyWithoutBranchBatchNestedInput
     academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchBatchNestedInput
     academicTestCycles?: AcademicTestCycleUpdateManyWithoutBranchBatchNestedInput
+    cycles?: BatchCycleUpdateManyWithoutBatchNestedInput
+    academicTestReportHistories?: AcademicTestReportHistoryUpdateManyWithoutBatchNestedInput
   }
 
   export type BranchBatchUncheckedUpdateInput = {
@@ -108147,6 +112881,8 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutBranchBatchNestedInput
     academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchBatchNestedInput
     academicTestCycles?: AcademicTestCycleUncheckedUpdateManyWithoutBranchBatchNestedInput
+    cycles?: BatchCycleUncheckedUpdateManyWithoutBatchNestedInput
+    academicTestReportHistories?: AcademicTestReportHistoryUncheckedUpdateManyWithoutBatchNestedInput
   }
 
   export type BranchBatchCreateManyInput = {
@@ -108319,6 +113055,7 @@ export namespace Prisma {
     questionPapers?: AcademicQuestionPaperCreateNestedManyWithoutAcademicTestItemInput
     projects?: AcademicTestProjectCreateNestedManyWithoutAcademicTestItemInput
     cycles?: AcademicTestCycleCreateNestedManyWithoutAcademicTestItemInput
+    academicTestReportHistories?: AcademicTestReportHistoryCreateNestedManyWithoutAcademicTestInput
   }
 
   export type AcademicTestItemUncheckedCreateInput = {
@@ -108335,6 +113072,7 @@ export namespace Prisma {
     questionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutAcademicTestItemInput
     projects?: AcademicTestProjectUncheckedCreateNestedManyWithoutAcademicTestItemInput
     cycles?: AcademicTestCycleUncheckedCreateNestedManyWithoutAcademicTestItemInput
+    academicTestReportHistories?: AcademicTestReportHistoryUncheckedCreateNestedManyWithoutAcademicTestInput
   }
 
   export type AcademicTestItemUpdateInput = {
@@ -108351,6 +113089,7 @@ export namespace Prisma {
     questionPapers?: AcademicQuestionPaperUpdateManyWithoutAcademicTestItemNestedInput
     projects?: AcademicTestProjectUpdateManyWithoutAcademicTestItemNestedInput
     cycles?: AcademicTestCycleUpdateManyWithoutAcademicTestItemNestedInput
+    academicTestReportHistories?: AcademicTestReportHistoryUpdateManyWithoutAcademicTestNestedInput
   }
 
   export type AcademicTestItemUncheckedUpdateInput = {
@@ -108367,6 +113106,7 @@ export namespace Prisma {
     questionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutAcademicTestItemNestedInput
     projects?: AcademicTestProjectUncheckedUpdateManyWithoutAcademicTestItemNestedInput
     cycles?: AcademicTestCycleUncheckedUpdateManyWithoutAcademicTestItemNestedInput
+    academicTestReportHistories?: AcademicTestReportHistoryUncheckedUpdateManyWithoutAcademicTestNestedInput
   }
 
   export type AcademicTestItemCreateManyInput = {
@@ -108960,6 +113700,7 @@ export namespace Prisma {
     createdAt?: Date | string
     academicTestItem: AcademicTestItemCreateNestedOneWithoutCyclesInput
     branchBatch: BranchBatchCreateNestedOneWithoutAcademicTestCyclesInput
+    batchCycle: BatchCycleCreateNestedOneWithoutAcademicTestCyclesInput
     questionPapers?: AcademicQuestionPaperCreateNestedManyWithoutCycleInput
     projects?: AcademicTestProjectCreateNestedManyWithoutCycleInput
     schedules?: AcademicScheduledTestCreateNestedManyWithoutCycleInput
@@ -108970,6 +113711,7 @@ export namespace Prisma {
     academicTestItemId: string
     branchBatchId: string
     cycleNumber: number
+    batchCycleId: string
     status?: string
     createdBy: string
     createdAt?: Date | string
@@ -108986,6 +113728,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     academicTestItem?: AcademicTestItemUpdateOneRequiredWithoutCyclesNestedInput
     branchBatch?: BranchBatchUpdateOneRequiredWithoutAcademicTestCyclesNestedInput
+    batchCycle?: BatchCycleUpdateOneRequiredWithoutAcademicTestCyclesNestedInput
     questionPapers?: AcademicQuestionPaperUpdateManyWithoutCycleNestedInput
     projects?: AcademicTestProjectUpdateManyWithoutCycleNestedInput
     schedules?: AcademicScheduledTestUpdateManyWithoutCycleNestedInput
@@ -108996,6 +113739,7 @@ export namespace Prisma {
     academicTestItemId?: StringFieldUpdateOperationsInput | string
     branchBatchId?: StringFieldUpdateOperationsInput | string
     cycleNumber?: IntFieldUpdateOperationsInput | number
+    batchCycleId?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     createdBy?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -109009,6 +113753,7 @@ export namespace Prisma {
     academicTestItemId: string
     branchBatchId: string
     cycleNumber: number
+    batchCycleId: string
     status?: string
     createdBy: string
     createdAt?: Date | string
@@ -109027,9 +113772,131 @@ export namespace Prisma {
     academicTestItemId?: StringFieldUpdateOperationsInput | string
     branchBatchId?: StringFieldUpdateOperationsInput | string
     cycleNumber?: IntFieldUpdateOperationsInput | number
+    batchCycleId?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     createdBy?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BatchCycleCreateInput = {
+    id?: string
+    cycleNumber: number
+    cycleName: string
+    status?: string
+    startDate?: string | null
+    endDate?: string | null
+    completedAt?: Date | string | null
+    freezeUntil?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    batch: BranchBatchCreateNestedOneWithoutCyclesInput
+    enrollments?: BranchStudentCourseCreateNestedManyWithoutBatchCycleInput
+    academicTestCycles?: AcademicTestCycleCreateNestedManyWithoutBatchCycleInput
+    reportHistories?: AcademicTestReportHistoryCreateNestedManyWithoutBatchCycleInput
+    examSchedules?: ExamScheduleCreateNestedManyWithoutBatchCycleInput
+    assessments?: AssessmentCreateNestedManyWithoutBatchCycleInput
+    reportShares?: FacultyReportShareCreateNestedManyWithoutBatchCycleInput
+  }
+
+  export type BatchCycleUncheckedCreateInput = {
+    id?: string
+    batchId: string
+    cycleNumber: number
+    cycleName: string
+    status?: string
+    startDate?: string | null
+    endDate?: string | null
+    completedAt?: Date | string | null
+    freezeUntil?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    enrollments?: BranchStudentCourseUncheckedCreateNestedManyWithoutBatchCycleInput
+    academicTestCycles?: AcademicTestCycleUncheckedCreateNestedManyWithoutBatchCycleInput
+    reportHistories?: AcademicTestReportHistoryUncheckedCreateNestedManyWithoutBatchCycleInput
+    examSchedules?: ExamScheduleUncheckedCreateNestedManyWithoutBatchCycleInput
+    assessments?: AssessmentUncheckedCreateNestedManyWithoutBatchCycleInput
+    reportShares?: FacultyReportShareUncheckedCreateNestedManyWithoutBatchCycleInput
+  }
+
+  export type BatchCycleUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    cycleNumber?: IntFieldUpdateOperationsInput | number
+    cycleName?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    startDate?: NullableStringFieldUpdateOperationsInput | string | null
+    endDate?: NullableStringFieldUpdateOperationsInput | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    freezeUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    batch?: BranchBatchUpdateOneRequiredWithoutCyclesNestedInput
+    enrollments?: BranchStudentCourseUpdateManyWithoutBatchCycleNestedInput
+    academicTestCycles?: AcademicTestCycleUpdateManyWithoutBatchCycleNestedInput
+    reportHistories?: AcademicTestReportHistoryUpdateManyWithoutBatchCycleNestedInput
+    examSchedules?: ExamScheduleUpdateManyWithoutBatchCycleNestedInput
+    assessments?: AssessmentUpdateManyWithoutBatchCycleNestedInput
+    reportShares?: FacultyReportShareUpdateManyWithoutBatchCycleNestedInput
+  }
+
+  export type BatchCycleUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    batchId?: StringFieldUpdateOperationsInput | string
+    cycleNumber?: IntFieldUpdateOperationsInput | number
+    cycleName?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    startDate?: NullableStringFieldUpdateOperationsInput | string | null
+    endDate?: NullableStringFieldUpdateOperationsInput | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    freezeUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    enrollments?: BranchStudentCourseUncheckedUpdateManyWithoutBatchCycleNestedInput
+    academicTestCycles?: AcademicTestCycleUncheckedUpdateManyWithoutBatchCycleNestedInput
+    reportHistories?: AcademicTestReportHistoryUncheckedUpdateManyWithoutBatchCycleNestedInput
+    examSchedules?: ExamScheduleUncheckedUpdateManyWithoutBatchCycleNestedInput
+    assessments?: AssessmentUncheckedUpdateManyWithoutBatchCycleNestedInput
+    reportShares?: FacultyReportShareUncheckedUpdateManyWithoutBatchCycleNestedInput
+  }
+
+  export type BatchCycleCreateManyInput = {
+    id?: string
+    batchId: string
+    cycleNumber: number
+    cycleName: string
+    status?: string
+    startDate?: string | null
+    endDate?: string | null
+    completedAt?: Date | string | null
+    freezeUntil?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type BatchCycleUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    cycleNumber?: IntFieldUpdateOperationsInput | number
+    cycleName?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    startDate?: NullableStringFieldUpdateOperationsInput | string | null
+    endDate?: NullableStringFieldUpdateOperationsInput | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    freezeUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BatchCycleUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    batchId?: StringFieldUpdateOperationsInput | string
+    cycleNumber?: IntFieldUpdateOperationsInput | number
+    cycleName?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    startDate?: NullableStringFieldUpdateOperationsInput | string | null
+    endDate?: NullableStringFieldUpdateOperationsInput | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    freezeUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type AcademicTestSubmissionCreateInput = {
@@ -110401,6 +115268,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     branchStudent: BranchStudentCreateNestedOneWithoutCourseEnrollmentsInput
+    batchCycle?: BatchCycleCreateNestedOneWithoutEnrollmentsInput
     branch: BranchCreateNestedOneWithoutStudentEnrollmentsInput
     course: BranchCourseCreateNestedOneWithoutStudentEnrollmentsInput
   }
@@ -110414,6 +115282,7 @@ export namespace Prisma {
     facultyId?: string | null
     facultyName?: string | null
     batchId?: string | null
+    batchCycleId?: string | null
     batchName?: string | null
     batchTiming?: string | null
     scheduleType?: string | null
@@ -110463,6 +115332,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     branchStudent?: BranchStudentUpdateOneRequiredWithoutCourseEnrollmentsNestedInput
+    batchCycle?: BatchCycleUpdateOneWithoutEnrollmentsNestedInput
     branch?: BranchUpdateOneRequiredWithoutStudentEnrollmentsNestedInput
     course?: BranchCourseUpdateOneRequiredWithoutStudentEnrollmentsNestedInput
   }
@@ -110476,6 +115346,7 @@ export namespace Prisma {
     facultyId?: NullableStringFieldUpdateOperationsInput | string | null
     facultyName?: NullableStringFieldUpdateOperationsInput | string | null
     batchId?: NullableStringFieldUpdateOperationsInput | string | null
+    batchCycleId?: NullableStringFieldUpdateOperationsInput | string | null
     batchName?: NullableStringFieldUpdateOperationsInput | string | null
     batchTiming?: NullableStringFieldUpdateOperationsInput | string | null
     scheduleType?: NullableStringFieldUpdateOperationsInput | string | null
@@ -110507,6 +115378,7 @@ export namespace Prisma {
     facultyId?: string | null
     facultyName?: string | null
     batchId?: string | null
+    batchCycleId?: string | null
     batchName?: string | null
     batchTiming?: string | null
     scheduleType?: string | null
@@ -110566,6 +115438,7 @@ export namespace Prisma {
     facultyId?: NullableStringFieldUpdateOperationsInput | string | null
     facultyName?: NullableStringFieldUpdateOperationsInput | string | null
     batchId?: NullableStringFieldUpdateOperationsInput | string | null
+    batchCycleId?: NullableStringFieldUpdateOperationsInput | string | null
     batchName?: NullableStringFieldUpdateOperationsInput | string | null
     batchTiming?: NullableStringFieldUpdateOperationsInput | string | null
     scheduleType?: NullableStringFieldUpdateOperationsInput | string | null
@@ -113521,6 +118394,7 @@ export namespace Prisma {
     branchCourse: BranchCourseCreateNestedOneWithoutAssessmentsInput
     module: BranchCourseModuleCreateNestedOneWithoutAssessmentsInput
     branchBatch: BranchBatchCreateNestedOneWithoutAssessmentsInput
+    batchCycle?: BatchCycleCreateNestedOneWithoutAssessmentsInput
     faculty: UserCreateNestedOneWithoutCreatedAssessmentsInput
     submissions?: AssessmentSubmissionCreateNestedManyWithoutAssessmentInput
     originalAssessment?: AssessmentCreateNestedOneWithoutReassessmentsInput
@@ -113537,6 +118411,7 @@ export namespace Prisma {
     branchCourseId: string
     moduleId: string
     branchBatchId: string
+    batchCycleId?: string | null
     totalMarks: number
     startDate: Date | string
     endDate: Date | string
@@ -113567,6 +118442,7 @@ export namespace Prisma {
     branchCourse?: BranchCourseUpdateOneRequiredWithoutAssessmentsNestedInput
     module?: BranchCourseModuleUpdateOneRequiredWithoutAssessmentsNestedInput
     branchBatch?: BranchBatchUpdateOneRequiredWithoutAssessmentsNestedInput
+    batchCycle?: BatchCycleUpdateOneWithoutAssessmentsNestedInput
     faculty?: UserUpdateOneRequiredWithoutCreatedAssessmentsNestedInput
     submissions?: AssessmentSubmissionUpdateManyWithoutAssessmentNestedInput
     originalAssessment?: AssessmentUpdateOneWithoutReassessmentsNestedInput
@@ -113583,6 +118459,7 @@ export namespace Prisma {
     branchCourseId?: StringFieldUpdateOperationsInput | string
     moduleId?: StringFieldUpdateOperationsInput | string
     branchBatchId?: StringFieldUpdateOperationsInput | string
+    batchCycleId?: NullableStringFieldUpdateOperationsInput | string | null
     totalMarks?: IntFieldUpdateOperationsInput | number
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -113606,6 +118483,7 @@ export namespace Prisma {
     branchCourseId: string
     moduleId: string
     branchBatchId: string
+    batchCycleId?: string | null
     totalMarks: number
     startDate: Date | string
     endDate: Date | string
@@ -113642,6 +118520,7 @@ export namespace Prisma {
     branchCourseId?: StringFieldUpdateOperationsInput | string
     moduleId?: StringFieldUpdateOperationsInput | string
     branchBatchId?: StringFieldUpdateOperationsInput | string
+    batchCycleId?: NullableStringFieldUpdateOperationsInput | string | null
     totalMarks?: IntFieldUpdateOperationsInput | number
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -113936,6 +118815,7 @@ export namespace Prisma {
     status?: string
     exam: ExamCreateNestedOneWithoutSchedulesInput
     branchBatch: BranchBatchCreateNestedOneWithoutExamSchedulesInput
+    batchCycle?: BatchCycleCreateNestedOneWithoutExamSchedulesInput
     attempts?: ExamAttemptCreateNestedManyWithoutScheduleInput
   }
 
@@ -113943,6 +118823,7 @@ export namespace Prisma {
     id?: string
     examId: string
     branchBatchId: string
+    batchCycleId?: string | null
     testDate: string
     startTime: string
     endTime: string
@@ -113958,6 +118839,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     exam?: ExamUpdateOneRequiredWithoutSchedulesNestedInput
     branchBatch?: BranchBatchUpdateOneRequiredWithoutExamSchedulesNestedInput
+    batchCycle?: BatchCycleUpdateOneWithoutExamSchedulesNestedInput
     attempts?: ExamAttemptUpdateManyWithoutScheduleNestedInput
   }
 
@@ -113965,6 +118847,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     examId?: StringFieldUpdateOperationsInput | string
     branchBatchId?: StringFieldUpdateOperationsInput | string
+    batchCycleId?: NullableStringFieldUpdateOperationsInput | string | null
     testDate?: StringFieldUpdateOperationsInput | string
     startTime?: StringFieldUpdateOperationsInput | string
     endTime?: StringFieldUpdateOperationsInput | string
@@ -113976,6 +118859,7 @@ export namespace Prisma {
     id?: string
     examId: string
     branchBatchId: string
+    batchCycleId?: string | null
     testDate: string
     startTime: string
     endTime: string
@@ -113994,6 +118878,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     examId?: StringFieldUpdateOperationsInput | string
     branchBatchId?: StringFieldUpdateOperationsInput | string
+    batchCycleId?: NullableStringFieldUpdateOperationsInput | string | null
     testDate?: StringFieldUpdateOperationsInput | string
     startTime?: StringFieldUpdateOperationsInput | string
     endTime?: StringFieldUpdateOperationsInput | string
@@ -114755,6 +119640,7 @@ export namespace Prisma {
     status?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    batchCycle?: BatchCycleCreateNestedOneWithoutReportSharesInput
   }
 
   export type FacultyReportShareUncheckedCreateInput = {
@@ -114762,6 +119648,7 @@ export namespace Prisma {
     facultyId: string
     branchId: string
     batchId: string
+    batchCycleId?: string | null
     courseId: string
     testModuleIds?: JsonNullValueInput | InputJsonValue
     assessmentModuleIds?: JsonNullValueInput | InputJsonValue
@@ -114787,6 +119674,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    batchCycle?: BatchCycleUpdateOneWithoutReportSharesNestedInput
   }
 
   export type FacultyReportShareUncheckedUpdateInput = {
@@ -114794,6 +119682,7 @@ export namespace Prisma {
     facultyId?: StringFieldUpdateOperationsInput | string
     branchId?: StringFieldUpdateOperationsInput | string
     batchId?: StringFieldUpdateOperationsInput | string
+    batchCycleId?: NullableStringFieldUpdateOperationsInput | string | null
     courseId?: StringFieldUpdateOperationsInput | string
     testModuleIds?: JsonNullValueInput | InputJsonValue
     assessmentModuleIds?: JsonNullValueInput | InputJsonValue
@@ -114810,6 +119699,7 @@ export namespace Prisma {
     facultyId: string
     branchId: string
     batchId: string
+    batchCycleId?: string | null
     courseId: string
     testModuleIds?: JsonNullValueInput | InputJsonValue
     assessmentModuleIds?: JsonNullValueInput | InputJsonValue
@@ -114842,6 +119732,7 @@ export namespace Prisma {
     facultyId?: StringFieldUpdateOperationsInput | string
     branchId?: StringFieldUpdateOperationsInput | string
     batchId?: StringFieldUpdateOperationsInput | string
+    batchCycleId?: NullableStringFieldUpdateOperationsInput | string | null
     courseId?: StringFieldUpdateOperationsInput | string
     testModuleIds?: JsonNullValueInput | InputJsonValue
     assessmentModuleIds?: JsonNullValueInput | InputJsonValue
@@ -114849,6 +119740,152 @@ export namespace Prisma {
     reportType?: StringFieldUpdateOperationsInput | string
     sentAt?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AcademicTestReportHistoryCreateInput = {
+    id?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    batch: BranchBatchCreateNestedOneWithoutAcademicTestReportHistoriesInput
+    batchCycle: BatchCycleCreateNestedOneWithoutReportHistoriesInput
+    academicTest: AcademicTestItemCreateNestedOneWithoutAcademicTestReportHistoriesInput
+    submissions?: AcademicTestReportSubmissionCreateNestedManyWithoutHistoryInput
+  }
+
+  export type AcademicTestReportHistoryUncheckedCreateInput = {
+    id?: string
+    batchId: string
+    batchCycleId: string
+    academicTestId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    submissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutHistoryInput
+  }
+
+  export type AcademicTestReportHistoryUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    batch?: BranchBatchUpdateOneRequiredWithoutAcademicTestReportHistoriesNestedInput
+    batchCycle?: BatchCycleUpdateOneRequiredWithoutReportHistoriesNestedInput
+    academicTest?: AcademicTestItemUpdateOneRequiredWithoutAcademicTestReportHistoriesNestedInput
+    submissions?: AcademicTestReportSubmissionUpdateManyWithoutHistoryNestedInput
+  }
+
+  export type AcademicTestReportHistoryUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    batchId?: StringFieldUpdateOperationsInput | string
+    batchCycleId?: StringFieldUpdateOperationsInput | string
+    academicTestId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutHistoryNestedInput
+  }
+
+  export type AcademicTestReportHistoryCreateManyInput = {
+    id?: string
+    batchId: string
+    batchCycleId: string
+    academicTestId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AcademicTestReportHistoryUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AcademicTestReportHistoryUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    batchId?: StringFieldUpdateOperationsInput | string
+    batchCycleId?: StringFieldUpdateOperationsInput | string
+    academicTestId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AcademicTestReportSubmissionCreateInput = {
+    id?: string
+    sourceShareId?: string | null
+    scheduleId?: string | null
+    reportData: JsonNullValueInput | InputJsonValue
+    submittedAt?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    history: AcademicTestReportHistoryCreateNestedOneWithoutSubmissionsInput
+    faculty?: UserCreateNestedOneWithoutAcademicTestReportSubmissionsInput
+  }
+
+  export type AcademicTestReportSubmissionUncheckedCreateInput = {
+    id?: string
+    historyId: string
+    facultyId?: string | null
+    sourceShareId?: string | null
+    scheduleId?: string | null
+    reportData: JsonNullValueInput | InputJsonValue
+    submittedAt?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AcademicTestReportSubmissionUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sourceShareId?: NullableStringFieldUpdateOperationsInput | string | null
+    scheduleId?: NullableStringFieldUpdateOperationsInput | string | null
+    reportData?: JsonNullValueInput | InputJsonValue
+    submittedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    history?: AcademicTestReportHistoryUpdateOneRequiredWithoutSubmissionsNestedInput
+    faculty?: UserUpdateOneWithoutAcademicTestReportSubmissionsNestedInput
+  }
+
+  export type AcademicTestReportSubmissionUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    historyId?: StringFieldUpdateOperationsInput | string
+    facultyId?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceShareId?: NullableStringFieldUpdateOperationsInput | string | null
+    scheduleId?: NullableStringFieldUpdateOperationsInput | string | null
+    reportData?: JsonNullValueInput | InputJsonValue
+    submittedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AcademicTestReportSubmissionCreateManyInput = {
+    id?: string
+    historyId: string
+    facultyId?: string | null
+    sourceShareId?: string | null
+    scheduleId?: string | null
+    reportData: JsonNullValueInput | InputJsonValue
+    submittedAt?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AcademicTestReportSubmissionUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sourceShareId?: NullableStringFieldUpdateOperationsInput | string | null
+    scheduleId?: NullableStringFieldUpdateOperationsInput | string | null
+    reportData?: JsonNullValueInput | InputJsonValue
+    submittedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AcademicTestReportSubmissionUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    historyId?: StringFieldUpdateOperationsInput | string
+    facultyId?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceShareId?: NullableStringFieldUpdateOperationsInput | string | null
+    scheduleId?: NullableStringFieldUpdateOperationsInput | string | null
+    reportData?: JsonNullValueInput | InputJsonValue
+    submittedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -115366,6 +120403,12 @@ export namespace Prisma {
     none?: FacultySkillAssignmentWhereInput
   }
 
+  export type AcademicTestReportSubmissionListRelationFilter = {
+    every?: AcademicTestReportSubmissionWhereInput
+    some?: AcademicTestReportSubmissionWhereInput
+    none?: AcademicTestReportSubmissionWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -115436,6 +120479,10 @@ export namespace Prisma {
   }
 
   export type FacultySkillAssignmentOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type AcademicTestReportSubmissionOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -117058,6 +122105,18 @@ export namespace Prisma {
     none?: AcademicTestCycleWhereInput
   }
 
+  export type BatchCycleListRelationFilter = {
+    every?: BatchCycleWhereInput
+    some?: BatchCycleWhereInput
+    none?: BatchCycleWhereInput
+  }
+
+  export type AcademicTestReportHistoryListRelationFilter = {
+    every?: AcademicTestReportHistoryWhereInput
+    some?: AcademicTestReportHistoryWhereInput
+    none?: AcademicTestReportHistoryWhereInput
+  }
+
   export type ExamScheduleOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -117067,6 +122126,14 @@ export namespace Prisma {
   }
 
   export type AcademicTestCycleOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type BatchCycleOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type AcademicTestReportHistoryOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -117649,6 +122716,11 @@ export namespace Prisma {
     attemptNumber?: SortOrder
   }
 
+  export type BatchCycleScalarRelationFilter = {
+    is?: BatchCycleWhereInput
+    isNot?: BatchCycleWhereInput
+  }
+
   export type AcademicScheduledTestListRelationFilter = {
     every?: AcademicScheduledTestWhereInput
     some?: AcademicScheduledTestWhereInput
@@ -117670,6 +122742,7 @@ export namespace Prisma {
     academicTestItemId?: SortOrder
     branchBatchId?: SortOrder
     cycleNumber?: SortOrder
+    batchCycleId?: SortOrder
     status?: SortOrder
     createdBy?: SortOrder
     createdAt?: SortOrder
@@ -117684,6 +122757,7 @@ export namespace Prisma {
     academicTestItemId?: SortOrder
     branchBatchId?: SortOrder
     cycleNumber?: SortOrder
+    batchCycleId?: SortOrder
     status?: SortOrder
     createdBy?: SortOrder
     createdAt?: SortOrder
@@ -117694,12 +122768,78 @@ export namespace Prisma {
     academicTestItemId?: SortOrder
     branchBatchId?: SortOrder
     cycleNumber?: SortOrder
+    batchCycleId?: SortOrder
     status?: SortOrder
     createdBy?: SortOrder
     createdAt?: SortOrder
   }
 
   export type AcademicTestCycleSumOrderByAggregateInput = {
+    cycleNumber?: SortOrder
+  }
+
+  export type FacultyReportShareListRelationFilter = {
+    every?: FacultyReportShareWhereInput
+    some?: FacultyReportShareWhereInput
+    none?: FacultyReportShareWhereInput
+  }
+
+  export type FacultyReportShareOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type BatchCycleBatchIdCycleNumberCompoundUniqueInput = {
+    batchId: string
+    cycleNumber: number
+  }
+
+  export type BatchCycleCountOrderByAggregateInput = {
+    id?: SortOrder
+    batchId?: SortOrder
+    cycleNumber?: SortOrder
+    cycleName?: SortOrder
+    status?: SortOrder
+    startDate?: SortOrder
+    endDate?: SortOrder
+    completedAt?: SortOrder
+    freezeUntil?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type BatchCycleAvgOrderByAggregateInput = {
+    cycleNumber?: SortOrder
+  }
+
+  export type BatchCycleMaxOrderByAggregateInput = {
+    id?: SortOrder
+    batchId?: SortOrder
+    cycleNumber?: SortOrder
+    cycleName?: SortOrder
+    status?: SortOrder
+    startDate?: SortOrder
+    endDate?: SortOrder
+    completedAt?: SortOrder
+    freezeUntil?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type BatchCycleMinOrderByAggregateInput = {
+    id?: SortOrder
+    batchId?: SortOrder
+    cycleNumber?: SortOrder
+    cycleName?: SortOrder
+    status?: SortOrder
+    startDate?: SortOrder
+    endDate?: SortOrder
+    completedAt?: SortOrder
+    freezeUntil?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type BatchCycleSumOrderByAggregateInput = {
     cycleNumber?: SortOrder
   }
 
@@ -118500,6 +123640,11 @@ export namespace Prisma {
     isNot?: BranchStudentWhereInput
   }
 
+  export type BatchCycleNullableScalarRelationFilter = {
+    is?: BatchCycleWhereInput | null
+    isNot?: BatchCycleWhereInput | null
+  }
+
   export type BranchStudentCourseBranchStudentIdCourseIdCompoundUniqueInput = {
     branchStudentId: string
     courseId: string
@@ -118514,6 +123659,7 @@ export namespace Prisma {
     facultyId?: SortOrder
     facultyName?: SortOrder
     batchId?: SortOrder
+    batchCycleId?: SortOrder
     batchName?: SortOrder
     batchTiming?: SortOrder
     scheduleType?: SortOrder
@@ -118554,6 +123700,7 @@ export namespace Prisma {
     facultyId?: SortOrder
     facultyName?: SortOrder
     batchId?: SortOrder
+    batchCycleId?: SortOrder
     batchName?: SortOrder
     batchTiming?: SortOrder
     scheduleType?: SortOrder
@@ -118585,6 +123732,7 @@ export namespace Prisma {
     facultyId?: SortOrder
     facultyName?: SortOrder
     batchId?: SortOrder
+    batchCycleId?: SortOrder
     batchName?: SortOrder
     batchTiming?: SortOrder
     scheduleType?: SortOrder
@@ -120165,6 +125313,7 @@ export namespace Prisma {
     branchCourseId?: SortOrder
     moduleId?: SortOrder
     branchBatchId?: SortOrder
+    batchCycleId?: SortOrder
     totalMarks?: SortOrder
     startDate?: SortOrder
     endDate?: SortOrder
@@ -120190,6 +125339,7 @@ export namespace Prisma {
     branchCourseId?: SortOrder
     moduleId?: SortOrder
     branchBatchId?: SortOrder
+    batchCycleId?: SortOrder
     totalMarks?: SortOrder
     startDate?: SortOrder
     endDate?: SortOrder
@@ -120211,6 +125361,7 @@ export namespace Prisma {
     branchCourseId?: SortOrder
     moduleId?: SortOrder
     branchBatchId?: SortOrder
+    batchCycleId?: SortOrder
     totalMarks?: SortOrder
     startDate?: SortOrder
     endDate?: SortOrder
@@ -120400,6 +125551,7 @@ export namespace Prisma {
     id?: SortOrder
     examId?: SortOrder
     branchBatchId?: SortOrder
+    batchCycleId?: SortOrder
     testDate?: SortOrder
     startTime?: SortOrder
     endTime?: SortOrder
@@ -120410,6 +125562,7 @@ export namespace Prisma {
     id?: SortOrder
     examId?: SortOrder
     branchBatchId?: SortOrder
+    batchCycleId?: SortOrder
     testDate?: SortOrder
     startTime?: SortOrder
     endTime?: SortOrder
@@ -120420,6 +125573,7 @@ export namespace Prisma {
     id?: SortOrder
     examId?: SortOrder
     branchBatchId?: SortOrder
+    batchCycleId?: SortOrder
     testDate?: SortOrder
     startTime?: SortOrder
     endTime?: SortOrder
@@ -120904,6 +126058,7 @@ export namespace Prisma {
     facultyId?: SortOrder
     branchId?: SortOrder
     batchId?: SortOrder
+    batchCycleId?: SortOrder
     courseId?: SortOrder
     testModuleIds?: SortOrder
     assessmentModuleIds?: SortOrder
@@ -120920,6 +126075,7 @@ export namespace Prisma {
     facultyId?: SortOrder
     branchId?: SortOrder
     batchId?: SortOrder
+    batchCycleId?: SortOrder
     courseId?: SortOrder
     reportType?: SortOrder
     sentAt?: SortOrder
@@ -120933,10 +126089,82 @@ export namespace Prisma {
     facultyId?: SortOrder
     branchId?: SortOrder
     batchId?: SortOrder
+    batchCycleId?: SortOrder
     courseId?: SortOrder
     reportType?: SortOrder
     sentAt?: SortOrder
     status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AcademicTestReportHistoryBatchCycleIdAcademicTestIdCompoundUniqueInput = {
+    batchCycleId: string
+    academicTestId: string
+  }
+
+  export type AcademicTestReportHistoryCountOrderByAggregateInput = {
+    id?: SortOrder
+    batchId?: SortOrder
+    batchCycleId?: SortOrder
+    academicTestId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AcademicTestReportHistoryMaxOrderByAggregateInput = {
+    id?: SortOrder
+    batchId?: SortOrder
+    batchCycleId?: SortOrder
+    academicTestId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AcademicTestReportHistoryMinOrderByAggregateInput = {
+    id?: SortOrder
+    batchId?: SortOrder
+    batchCycleId?: SortOrder
+    academicTestId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AcademicTestReportHistoryScalarRelationFilter = {
+    is?: AcademicTestReportHistoryWhereInput
+    isNot?: AcademicTestReportHistoryWhereInput
+  }
+
+  export type AcademicTestReportSubmissionCountOrderByAggregateInput = {
+    id?: SortOrder
+    historyId?: SortOrder
+    facultyId?: SortOrder
+    sourceShareId?: SortOrder
+    scheduleId?: SortOrder
+    reportData?: SortOrder
+    submittedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AcademicTestReportSubmissionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    historyId?: SortOrder
+    facultyId?: SortOrder
+    sourceShareId?: SortOrder
+    scheduleId?: SortOrder
+    submittedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AcademicTestReportSubmissionMinOrderByAggregateInput = {
+    id?: SortOrder
+    historyId?: SortOrder
+    facultyId?: SortOrder
+    sourceShareId?: SortOrder
+    scheduleId?: SortOrder
+    submittedAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -121241,6 +126469,13 @@ export namespace Prisma {
     connect?: FacultySkillAssignmentWhereUniqueInput | FacultySkillAssignmentWhereUniqueInput[]
   }
 
+  export type AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput = {
+    create?: XOR<AcademicTestReportSubmissionCreateWithoutFacultyInput, AcademicTestReportSubmissionUncheckedCreateWithoutFacultyInput> | AcademicTestReportSubmissionCreateWithoutFacultyInput[] | AcademicTestReportSubmissionUncheckedCreateWithoutFacultyInput[]
+    connectOrCreate?: AcademicTestReportSubmissionCreateOrConnectWithoutFacultyInput | AcademicTestReportSubmissionCreateOrConnectWithoutFacultyInput[]
+    createMany?: AcademicTestReportSubmissionCreateManyFacultyInputEnvelope
+    connect?: AcademicTestReportSubmissionWhereUniqueInput | AcademicTestReportSubmissionWhereUniqueInput[]
+  }
+
   export type BatchFacultyAssignmentUncheckedCreateNestedManyWithoutFacultyInput = {
     create?: XOR<BatchFacultyAssignmentCreateWithoutFacultyInput, BatchFacultyAssignmentUncheckedCreateWithoutFacultyInput> | BatchFacultyAssignmentCreateWithoutFacultyInput[] | BatchFacultyAssignmentUncheckedCreateWithoutFacultyInput[]
     connectOrCreate?: BatchFacultyAssignmentCreateOrConnectWithoutFacultyInput | BatchFacultyAssignmentCreateOrConnectWithoutFacultyInput[]
@@ -121364,6 +126599,13 @@ export namespace Prisma {
     connectOrCreate?: FacultySkillAssignmentCreateOrConnectWithoutFacultyUserInput | FacultySkillAssignmentCreateOrConnectWithoutFacultyUserInput[]
     createMany?: FacultySkillAssignmentCreateManyFacultyUserInputEnvelope
     connect?: FacultySkillAssignmentWhereUniqueInput | FacultySkillAssignmentWhereUniqueInput[]
+  }
+
+  export type AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput = {
+    create?: XOR<AcademicTestReportSubmissionCreateWithoutFacultyInput, AcademicTestReportSubmissionUncheckedCreateWithoutFacultyInput> | AcademicTestReportSubmissionCreateWithoutFacultyInput[] | AcademicTestReportSubmissionUncheckedCreateWithoutFacultyInput[]
+    connectOrCreate?: AcademicTestReportSubmissionCreateOrConnectWithoutFacultyInput | AcademicTestReportSubmissionCreateOrConnectWithoutFacultyInput[]
+    createMany?: AcademicTestReportSubmissionCreateManyFacultyInputEnvelope
+    connect?: AcademicTestReportSubmissionWhereUniqueInput | AcademicTestReportSubmissionWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -121646,6 +126888,20 @@ export namespace Prisma {
     deleteMany?: FacultySkillAssignmentScalarWhereInput | FacultySkillAssignmentScalarWhereInput[]
   }
 
+  export type AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput = {
+    create?: XOR<AcademicTestReportSubmissionCreateWithoutFacultyInput, AcademicTestReportSubmissionUncheckedCreateWithoutFacultyInput> | AcademicTestReportSubmissionCreateWithoutFacultyInput[] | AcademicTestReportSubmissionUncheckedCreateWithoutFacultyInput[]
+    connectOrCreate?: AcademicTestReportSubmissionCreateOrConnectWithoutFacultyInput | AcademicTestReportSubmissionCreateOrConnectWithoutFacultyInput[]
+    upsert?: AcademicTestReportSubmissionUpsertWithWhereUniqueWithoutFacultyInput | AcademicTestReportSubmissionUpsertWithWhereUniqueWithoutFacultyInput[]
+    createMany?: AcademicTestReportSubmissionCreateManyFacultyInputEnvelope
+    set?: AcademicTestReportSubmissionWhereUniqueInput | AcademicTestReportSubmissionWhereUniqueInput[]
+    disconnect?: AcademicTestReportSubmissionWhereUniqueInput | AcademicTestReportSubmissionWhereUniqueInput[]
+    delete?: AcademicTestReportSubmissionWhereUniqueInput | AcademicTestReportSubmissionWhereUniqueInput[]
+    connect?: AcademicTestReportSubmissionWhereUniqueInput | AcademicTestReportSubmissionWhereUniqueInput[]
+    update?: AcademicTestReportSubmissionUpdateWithWhereUniqueWithoutFacultyInput | AcademicTestReportSubmissionUpdateWithWhereUniqueWithoutFacultyInput[]
+    updateMany?: AcademicTestReportSubmissionUpdateManyWithWhereWithoutFacultyInput | AcademicTestReportSubmissionUpdateManyWithWhereWithoutFacultyInput[]
+    deleteMany?: AcademicTestReportSubmissionScalarWhereInput | AcademicTestReportSubmissionScalarWhereInput[]
+  }
+
   export type BatchFacultyAssignmentUncheckedUpdateManyWithoutFacultyNestedInput = {
     create?: XOR<BatchFacultyAssignmentCreateWithoutFacultyInput, BatchFacultyAssignmentUncheckedCreateWithoutFacultyInput> | BatchFacultyAssignmentCreateWithoutFacultyInput[] | BatchFacultyAssignmentUncheckedCreateWithoutFacultyInput[]
     connectOrCreate?: BatchFacultyAssignmentCreateOrConnectWithoutFacultyInput | BatchFacultyAssignmentCreateOrConnectWithoutFacultyInput[]
@@ -121892,6 +127148,20 @@ export namespace Prisma {
     update?: FacultySkillAssignmentUpdateWithWhereUniqueWithoutFacultyUserInput | FacultySkillAssignmentUpdateWithWhereUniqueWithoutFacultyUserInput[]
     updateMany?: FacultySkillAssignmentUpdateManyWithWhereWithoutFacultyUserInput | FacultySkillAssignmentUpdateManyWithWhereWithoutFacultyUserInput[]
     deleteMany?: FacultySkillAssignmentScalarWhereInput | FacultySkillAssignmentScalarWhereInput[]
+  }
+
+  export type AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput = {
+    create?: XOR<AcademicTestReportSubmissionCreateWithoutFacultyInput, AcademicTestReportSubmissionUncheckedCreateWithoutFacultyInput> | AcademicTestReportSubmissionCreateWithoutFacultyInput[] | AcademicTestReportSubmissionUncheckedCreateWithoutFacultyInput[]
+    connectOrCreate?: AcademicTestReportSubmissionCreateOrConnectWithoutFacultyInput | AcademicTestReportSubmissionCreateOrConnectWithoutFacultyInput[]
+    upsert?: AcademicTestReportSubmissionUpsertWithWhereUniqueWithoutFacultyInput | AcademicTestReportSubmissionUpsertWithWhereUniqueWithoutFacultyInput[]
+    createMany?: AcademicTestReportSubmissionCreateManyFacultyInputEnvelope
+    set?: AcademicTestReportSubmissionWhereUniqueInput | AcademicTestReportSubmissionWhereUniqueInput[]
+    disconnect?: AcademicTestReportSubmissionWhereUniqueInput | AcademicTestReportSubmissionWhereUniqueInput[]
+    delete?: AcademicTestReportSubmissionWhereUniqueInput | AcademicTestReportSubmissionWhereUniqueInput[]
+    connect?: AcademicTestReportSubmissionWhereUniqueInput | AcademicTestReportSubmissionWhereUniqueInput[]
+    update?: AcademicTestReportSubmissionUpdateWithWhereUniqueWithoutFacultyInput | AcademicTestReportSubmissionUpdateWithWhereUniqueWithoutFacultyInput[]
+    updateMany?: AcademicTestReportSubmissionUpdateManyWithWhereWithoutFacultyInput | AcademicTestReportSubmissionUpdateManyWithWhereWithoutFacultyInput[]
+    deleteMany?: AcademicTestReportSubmissionScalarWhereInput | AcademicTestReportSubmissionScalarWhereInput[]
   }
 
   export type DashboardWidgetCreateallowedRolesInput = {
@@ -123969,6 +129239,20 @@ export namespace Prisma {
     connect?: AcademicTestCycleWhereUniqueInput | AcademicTestCycleWhereUniqueInput[]
   }
 
+  export type BatchCycleCreateNestedManyWithoutBatchInput = {
+    create?: XOR<BatchCycleCreateWithoutBatchInput, BatchCycleUncheckedCreateWithoutBatchInput> | BatchCycleCreateWithoutBatchInput[] | BatchCycleUncheckedCreateWithoutBatchInput[]
+    connectOrCreate?: BatchCycleCreateOrConnectWithoutBatchInput | BatchCycleCreateOrConnectWithoutBatchInput[]
+    createMany?: BatchCycleCreateManyBatchInputEnvelope
+    connect?: BatchCycleWhereUniqueInput | BatchCycleWhereUniqueInput[]
+  }
+
+  export type AcademicTestReportHistoryCreateNestedManyWithoutBatchInput = {
+    create?: XOR<AcademicTestReportHistoryCreateWithoutBatchInput, AcademicTestReportHistoryUncheckedCreateWithoutBatchInput> | AcademicTestReportHistoryCreateWithoutBatchInput[] | AcademicTestReportHistoryUncheckedCreateWithoutBatchInput[]
+    connectOrCreate?: AcademicTestReportHistoryCreateOrConnectWithoutBatchInput | AcademicTestReportHistoryCreateOrConnectWithoutBatchInput[]
+    createMany?: AcademicTestReportHistoryCreateManyBatchInputEnvelope
+    connect?: AcademicTestReportHistoryWhereUniqueInput | AcademicTestReportHistoryWhereUniqueInput[]
+  }
+
   export type ExamScheduleUncheckedCreateNestedManyWithoutBranchBatchInput = {
     create?: XOR<ExamScheduleCreateWithoutBranchBatchInput, ExamScheduleUncheckedCreateWithoutBranchBatchInput> | ExamScheduleCreateWithoutBranchBatchInput[] | ExamScheduleUncheckedCreateWithoutBranchBatchInput[]
     connectOrCreate?: ExamScheduleCreateOrConnectWithoutBranchBatchInput | ExamScheduleCreateOrConnectWithoutBranchBatchInput[]
@@ -124009,6 +129293,20 @@ export namespace Prisma {
     connectOrCreate?: AcademicTestCycleCreateOrConnectWithoutBranchBatchInput | AcademicTestCycleCreateOrConnectWithoutBranchBatchInput[]
     createMany?: AcademicTestCycleCreateManyBranchBatchInputEnvelope
     connect?: AcademicTestCycleWhereUniqueInput | AcademicTestCycleWhereUniqueInput[]
+  }
+
+  export type BatchCycleUncheckedCreateNestedManyWithoutBatchInput = {
+    create?: XOR<BatchCycleCreateWithoutBatchInput, BatchCycleUncheckedCreateWithoutBatchInput> | BatchCycleCreateWithoutBatchInput[] | BatchCycleUncheckedCreateWithoutBatchInput[]
+    connectOrCreate?: BatchCycleCreateOrConnectWithoutBatchInput | BatchCycleCreateOrConnectWithoutBatchInput[]
+    createMany?: BatchCycleCreateManyBatchInputEnvelope
+    connect?: BatchCycleWhereUniqueInput | BatchCycleWhereUniqueInput[]
+  }
+
+  export type AcademicTestReportHistoryUncheckedCreateNestedManyWithoutBatchInput = {
+    create?: XOR<AcademicTestReportHistoryCreateWithoutBatchInput, AcademicTestReportHistoryUncheckedCreateWithoutBatchInput> | AcademicTestReportHistoryCreateWithoutBatchInput[] | AcademicTestReportHistoryUncheckedCreateWithoutBatchInput[]
+    connectOrCreate?: AcademicTestReportHistoryCreateOrConnectWithoutBatchInput | AcademicTestReportHistoryCreateOrConnectWithoutBatchInput[]
+    createMany?: AcademicTestReportHistoryCreateManyBatchInputEnvelope
+    connect?: AcademicTestReportHistoryWhereUniqueInput | AcademicTestReportHistoryWhereUniqueInput[]
   }
 
   export type BranchUpdateOneRequiredWithoutBranchBatchesNestedInput = {
@@ -124119,6 +129417,34 @@ export namespace Prisma {
     deleteMany?: AcademicTestCycleScalarWhereInput | AcademicTestCycleScalarWhereInput[]
   }
 
+  export type BatchCycleUpdateManyWithoutBatchNestedInput = {
+    create?: XOR<BatchCycleCreateWithoutBatchInput, BatchCycleUncheckedCreateWithoutBatchInput> | BatchCycleCreateWithoutBatchInput[] | BatchCycleUncheckedCreateWithoutBatchInput[]
+    connectOrCreate?: BatchCycleCreateOrConnectWithoutBatchInput | BatchCycleCreateOrConnectWithoutBatchInput[]
+    upsert?: BatchCycleUpsertWithWhereUniqueWithoutBatchInput | BatchCycleUpsertWithWhereUniqueWithoutBatchInput[]
+    createMany?: BatchCycleCreateManyBatchInputEnvelope
+    set?: BatchCycleWhereUniqueInput | BatchCycleWhereUniqueInput[]
+    disconnect?: BatchCycleWhereUniqueInput | BatchCycleWhereUniqueInput[]
+    delete?: BatchCycleWhereUniqueInput | BatchCycleWhereUniqueInput[]
+    connect?: BatchCycleWhereUniqueInput | BatchCycleWhereUniqueInput[]
+    update?: BatchCycleUpdateWithWhereUniqueWithoutBatchInput | BatchCycleUpdateWithWhereUniqueWithoutBatchInput[]
+    updateMany?: BatchCycleUpdateManyWithWhereWithoutBatchInput | BatchCycleUpdateManyWithWhereWithoutBatchInput[]
+    deleteMany?: BatchCycleScalarWhereInput | BatchCycleScalarWhereInput[]
+  }
+
+  export type AcademicTestReportHistoryUpdateManyWithoutBatchNestedInput = {
+    create?: XOR<AcademicTestReportHistoryCreateWithoutBatchInput, AcademicTestReportHistoryUncheckedCreateWithoutBatchInput> | AcademicTestReportHistoryCreateWithoutBatchInput[] | AcademicTestReportHistoryUncheckedCreateWithoutBatchInput[]
+    connectOrCreate?: AcademicTestReportHistoryCreateOrConnectWithoutBatchInput | AcademicTestReportHistoryCreateOrConnectWithoutBatchInput[]
+    upsert?: AcademicTestReportHistoryUpsertWithWhereUniqueWithoutBatchInput | AcademicTestReportHistoryUpsertWithWhereUniqueWithoutBatchInput[]
+    createMany?: AcademicTestReportHistoryCreateManyBatchInputEnvelope
+    set?: AcademicTestReportHistoryWhereUniqueInput | AcademicTestReportHistoryWhereUniqueInput[]
+    disconnect?: AcademicTestReportHistoryWhereUniqueInput | AcademicTestReportHistoryWhereUniqueInput[]
+    delete?: AcademicTestReportHistoryWhereUniqueInput | AcademicTestReportHistoryWhereUniqueInput[]
+    connect?: AcademicTestReportHistoryWhereUniqueInput | AcademicTestReportHistoryWhereUniqueInput[]
+    update?: AcademicTestReportHistoryUpdateWithWhereUniqueWithoutBatchInput | AcademicTestReportHistoryUpdateWithWhereUniqueWithoutBatchInput[]
+    updateMany?: AcademicTestReportHistoryUpdateManyWithWhereWithoutBatchInput | AcademicTestReportHistoryUpdateManyWithWhereWithoutBatchInput[]
+    deleteMany?: AcademicTestReportHistoryScalarWhereInput | AcademicTestReportHistoryScalarWhereInput[]
+  }
+
   export type ExamScheduleUncheckedUpdateManyWithoutBranchBatchNestedInput = {
     create?: XOR<ExamScheduleCreateWithoutBranchBatchInput, ExamScheduleUncheckedCreateWithoutBranchBatchInput> | ExamScheduleCreateWithoutBranchBatchInput[] | ExamScheduleUncheckedCreateWithoutBranchBatchInput[]
     connectOrCreate?: ExamScheduleCreateOrConnectWithoutBranchBatchInput | ExamScheduleCreateOrConnectWithoutBranchBatchInput[]
@@ -124201,6 +129527,34 @@ export namespace Prisma {
     update?: AcademicTestCycleUpdateWithWhereUniqueWithoutBranchBatchInput | AcademicTestCycleUpdateWithWhereUniqueWithoutBranchBatchInput[]
     updateMany?: AcademicTestCycleUpdateManyWithWhereWithoutBranchBatchInput | AcademicTestCycleUpdateManyWithWhereWithoutBranchBatchInput[]
     deleteMany?: AcademicTestCycleScalarWhereInput | AcademicTestCycleScalarWhereInput[]
+  }
+
+  export type BatchCycleUncheckedUpdateManyWithoutBatchNestedInput = {
+    create?: XOR<BatchCycleCreateWithoutBatchInput, BatchCycleUncheckedCreateWithoutBatchInput> | BatchCycleCreateWithoutBatchInput[] | BatchCycleUncheckedCreateWithoutBatchInput[]
+    connectOrCreate?: BatchCycleCreateOrConnectWithoutBatchInput | BatchCycleCreateOrConnectWithoutBatchInput[]
+    upsert?: BatchCycleUpsertWithWhereUniqueWithoutBatchInput | BatchCycleUpsertWithWhereUniqueWithoutBatchInput[]
+    createMany?: BatchCycleCreateManyBatchInputEnvelope
+    set?: BatchCycleWhereUniqueInput | BatchCycleWhereUniqueInput[]
+    disconnect?: BatchCycleWhereUniqueInput | BatchCycleWhereUniqueInput[]
+    delete?: BatchCycleWhereUniqueInput | BatchCycleWhereUniqueInput[]
+    connect?: BatchCycleWhereUniqueInput | BatchCycleWhereUniqueInput[]
+    update?: BatchCycleUpdateWithWhereUniqueWithoutBatchInput | BatchCycleUpdateWithWhereUniqueWithoutBatchInput[]
+    updateMany?: BatchCycleUpdateManyWithWhereWithoutBatchInput | BatchCycleUpdateManyWithWhereWithoutBatchInput[]
+    deleteMany?: BatchCycleScalarWhereInput | BatchCycleScalarWhereInput[]
+  }
+
+  export type AcademicTestReportHistoryUncheckedUpdateManyWithoutBatchNestedInput = {
+    create?: XOR<AcademicTestReportHistoryCreateWithoutBatchInput, AcademicTestReportHistoryUncheckedCreateWithoutBatchInput> | AcademicTestReportHistoryCreateWithoutBatchInput[] | AcademicTestReportHistoryUncheckedCreateWithoutBatchInput[]
+    connectOrCreate?: AcademicTestReportHistoryCreateOrConnectWithoutBatchInput | AcademicTestReportHistoryCreateOrConnectWithoutBatchInput[]
+    upsert?: AcademicTestReportHistoryUpsertWithWhereUniqueWithoutBatchInput | AcademicTestReportHistoryUpsertWithWhereUniqueWithoutBatchInput[]
+    createMany?: AcademicTestReportHistoryCreateManyBatchInputEnvelope
+    set?: AcademicTestReportHistoryWhereUniqueInput | AcademicTestReportHistoryWhereUniqueInput[]
+    disconnect?: AcademicTestReportHistoryWhereUniqueInput | AcademicTestReportHistoryWhereUniqueInput[]
+    delete?: AcademicTestReportHistoryWhereUniqueInput | AcademicTestReportHistoryWhereUniqueInput[]
+    connect?: AcademicTestReportHistoryWhereUniqueInput | AcademicTestReportHistoryWhereUniqueInput[]
+    update?: AcademicTestReportHistoryUpdateWithWhereUniqueWithoutBatchInput | AcademicTestReportHistoryUpdateWithWhereUniqueWithoutBatchInput[]
+    updateMany?: AcademicTestReportHistoryUpdateManyWithWhereWithoutBatchInput | AcademicTestReportHistoryUpdateManyWithWhereWithoutBatchInput[]
+    deleteMany?: AcademicTestReportHistoryScalarWhereInput | AcademicTestReportHistoryScalarWhereInput[]
   }
 
   export type BranchCourseCreateNestedOneWithoutAcademicTestsInput = {
@@ -124328,6 +129682,13 @@ export namespace Prisma {
     connect?: AcademicTestCycleWhereUniqueInput | AcademicTestCycleWhereUniqueInput[]
   }
 
+  export type AcademicTestReportHistoryCreateNestedManyWithoutAcademicTestInput = {
+    create?: XOR<AcademicTestReportHistoryCreateWithoutAcademicTestInput, AcademicTestReportHistoryUncheckedCreateWithoutAcademicTestInput> | AcademicTestReportHistoryCreateWithoutAcademicTestInput[] | AcademicTestReportHistoryUncheckedCreateWithoutAcademicTestInput[]
+    connectOrCreate?: AcademicTestReportHistoryCreateOrConnectWithoutAcademicTestInput | AcademicTestReportHistoryCreateOrConnectWithoutAcademicTestInput[]
+    createMany?: AcademicTestReportHistoryCreateManyAcademicTestInputEnvelope
+    connect?: AcademicTestReportHistoryWhereUniqueInput | AcademicTestReportHistoryWhereUniqueInput[]
+  }
+
   export type AcademicQuestionPaperUncheckedCreateNestedManyWithoutAcademicTestItemInput = {
     create?: XOR<AcademicQuestionPaperCreateWithoutAcademicTestItemInput, AcademicQuestionPaperUncheckedCreateWithoutAcademicTestItemInput> | AcademicQuestionPaperCreateWithoutAcademicTestItemInput[] | AcademicQuestionPaperUncheckedCreateWithoutAcademicTestItemInput[]
     connectOrCreate?: AcademicQuestionPaperCreateOrConnectWithoutAcademicTestItemInput | AcademicQuestionPaperCreateOrConnectWithoutAcademicTestItemInput[]
@@ -124347,6 +129708,13 @@ export namespace Prisma {
     connectOrCreate?: AcademicTestCycleCreateOrConnectWithoutAcademicTestItemInput | AcademicTestCycleCreateOrConnectWithoutAcademicTestItemInput[]
     createMany?: AcademicTestCycleCreateManyAcademicTestItemInputEnvelope
     connect?: AcademicTestCycleWhereUniqueInput | AcademicTestCycleWhereUniqueInput[]
+  }
+
+  export type AcademicTestReportHistoryUncheckedCreateNestedManyWithoutAcademicTestInput = {
+    create?: XOR<AcademicTestReportHistoryCreateWithoutAcademicTestInput, AcademicTestReportHistoryUncheckedCreateWithoutAcademicTestInput> | AcademicTestReportHistoryCreateWithoutAcademicTestInput[] | AcademicTestReportHistoryUncheckedCreateWithoutAcademicTestInput[]
+    connectOrCreate?: AcademicTestReportHistoryCreateOrConnectWithoutAcademicTestInput | AcademicTestReportHistoryCreateOrConnectWithoutAcademicTestInput[]
+    createMany?: AcademicTestReportHistoryCreateManyAcademicTestInputEnvelope
+    connect?: AcademicTestReportHistoryWhereUniqueInput | AcademicTestReportHistoryWhereUniqueInput[]
   }
 
   export type EnumAcademicTestTypeFieldUpdateOperationsInput = {
@@ -124403,6 +129771,20 @@ export namespace Prisma {
     deleteMany?: AcademicTestCycleScalarWhereInput | AcademicTestCycleScalarWhereInput[]
   }
 
+  export type AcademicTestReportHistoryUpdateManyWithoutAcademicTestNestedInput = {
+    create?: XOR<AcademicTestReportHistoryCreateWithoutAcademicTestInput, AcademicTestReportHistoryUncheckedCreateWithoutAcademicTestInput> | AcademicTestReportHistoryCreateWithoutAcademicTestInput[] | AcademicTestReportHistoryUncheckedCreateWithoutAcademicTestInput[]
+    connectOrCreate?: AcademicTestReportHistoryCreateOrConnectWithoutAcademicTestInput | AcademicTestReportHistoryCreateOrConnectWithoutAcademicTestInput[]
+    upsert?: AcademicTestReportHistoryUpsertWithWhereUniqueWithoutAcademicTestInput | AcademicTestReportHistoryUpsertWithWhereUniqueWithoutAcademicTestInput[]
+    createMany?: AcademicTestReportHistoryCreateManyAcademicTestInputEnvelope
+    set?: AcademicTestReportHistoryWhereUniqueInput | AcademicTestReportHistoryWhereUniqueInput[]
+    disconnect?: AcademicTestReportHistoryWhereUniqueInput | AcademicTestReportHistoryWhereUniqueInput[]
+    delete?: AcademicTestReportHistoryWhereUniqueInput | AcademicTestReportHistoryWhereUniqueInput[]
+    connect?: AcademicTestReportHistoryWhereUniqueInput | AcademicTestReportHistoryWhereUniqueInput[]
+    update?: AcademicTestReportHistoryUpdateWithWhereUniqueWithoutAcademicTestInput | AcademicTestReportHistoryUpdateWithWhereUniqueWithoutAcademicTestInput[]
+    updateMany?: AcademicTestReportHistoryUpdateManyWithWhereWithoutAcademicTestInput | AcademicTestReportHistoryUpdateManyWithWhereWithoutAcademicTestInput[]
+    deleteMany?: AcademicTestReportHistoryScalarWhereInput | AcademicTestReportHistoryScalarWhereInput[]
+  }
+
   export type AcademicQuestionPaperUncheckedUpdateManyWithoutAcademicTestItemNestedInput = {
     create?: XOR<AcademicQuestionPaperCreateWithoutAcademicTestItemInput, AcademicQuestionPaperUncheckedCreateWithoutAcademicTestItemInput> | AcademicQuestionPaperCreateWithoutAcademicTestItemInput[] | AcademicQuestionPaperUncheckedCreateWithoutAcademicTestItemInput[]
     connectOrCreate?: AcademicQuestionPaperCreateOrConnectWithoutAcademicTestItemInput | AcademicQuestionPaperCreateOrConnectWithoutAcademicTestItemInput[]
@@ -124443,6 +129825,20 @@ export namespace Prisma {
     update?: AcademicTestCycleUpdateWithWhereUniqueWithoutAcademicTestItemInput | AcademicTestCycleUpdateWithWhereUniqueWithoutAcademicTestItemInput[]
     updateMany?: AcademicTestCycleUpdateManyWithWhereWithoutAcademicTestItemInput | AcademicTestCycleUpdateManyWithWhereWithoutAcademicTestItemInput[]
     deleteMany?: AcademicTestCycleScalarWhereInput | AcademicTestCycleScalarWhereInput[]
+  }
+
+  export type AcademicTestReportHistoryUncheckedUpdateManyWithoutAcademicTestNestedInput = {
+    create?: XOR<AcademicTestReportHistoryCreateWithoutAcademicTestInput, AcademicTestReportHistoryUncheckedCreateWithoutAcademicTestInput> | AcademicTestReportHistoryCreateWithoutAcademicTestInput[] | AcademicTestReportHistoryUncheckedCreateWithoutAcademicTestInput[]
+    connectOrCreate?: AcademicTestReportHistoryCreateOrConnectWithoutAcademicTestInput | AcademicTestReportHistoryCreateOrConnectWithoutAcademicTestInput[]
+    upsert?: AcademicTestReportHistoryUpsertWithWhereUniqueWithoutAcademicTestInput | AcademicTestReportHistoryUpsertWithWhereUniqueWithoutAcademicTestInput[]
+    createMany?: AcademicTestReportHistoryCreateManyAcademicTestInputEnvelope
+    set?: AcademicTestReportHistoryWhereUniqueInput | AcademicTestReportHistoryWhereUniqueInput[]
+    disconnect?: AcademicTestReportHistoryWhereUniqueInput | AcademicTestReportHistoryWhereUniqueInput[]
+    delete?: AcademicTestReportHistoryWhereUniqueInput | AcademicTestReportHistoryWhereUniqueInput[]
+    connect?: AcademicTestReportHistoryWhereUniqueInput | AcademicTestReportHistoryWhereUniqueInput[]
+    update?: AcademicTestReportHistoryUpdateWithWhereUniqueWithoutAcademicTestInput | AcademicTestReportHistoryUpdateWithWhereUniqueWithoutAcademicTestInput[]
+    updateMany?: AcademicTestReportHistoryUpdateManyWithWhereWithoutAcademicTestInput | AcademicTestReportHistoryUpdateManyWithWhereWithoutAcademicTestInput[]
+    deleteMany?: AcademicTestReportHistoryScalarWhereInput | AcademicTestReportHistoryScalarWhereInput[]
   }
 
   export type AcademicTestCreateNestedOneWithoutBatchesInput = {
@@ -124671,6 +130067,12 @@ export namespace Prisma {
     connect?: BranchBatchWhereUniqueInput
   }
 
+  export type BatchCycleCreateNestedOneWithoutAcademicTestCyclesInput = {
+    create?: XOR<BatchCycleCreateWithoutAcademicTestCyclesInput, BatchCycleUncheckedCreateWithoutAcademicTestCyclesInput>
+    connectOrCreate?: BatchCycleCreateOrConnectWithoutAcademicTestCyclesInput
+    connect?: BatchCycleWhereUniqueInput
+  }
+
   export type AcademicQuestionPaperCreateNestedManyWithoutCycleInput = {
     create?: XOR<AcademicQuestionPaperCreateWithoutCycleInput, AcademicQuestionPaperUncheckedCreateWithoutCycleInput> | AcademicQuestionPaperCreateWithoutCycleInput[] | AcademicQuestionPaperUncheckedCreateWithoutCycleInput[]
     connectOrCreate?: AcademicQuestionPaperCreateOrConnectWithoutCycleInput | AcademicQuestionPaperCreateOrConnectWithoutCycleInput[]
@@ -124727,6 +130129,14 @@ export namespace Prisma {
     upsert?: BranchBatchUpsertWithoutAcademicTestCyclesInput
     connect?: BranchBatchWhereUniqueInput
     update?: XOR<XOR<BranchBatchUpdateToOneWithWhereWithoutAcademicTestCyclesInput, BranchBatchUpdateWithoutAcademicTestCyclesInput>, BranchBatchUncheckedUpdateWithoutAcademicTestCyclesInput>
+  }
+
+  export type BatchCycleUpdateOneRequiredWithoutAcademicTestCyclesNestedInput = {
+    create?: XOR<BatchCycleCreateWithoutAcademicTestCyclesInput, BatchCycleUncheckedCreateWithoutAcademicTestCyclesInput>
+    connectOrCreate?: BatchCycleCreateOrConnectWithoutAcademicTestCyclesInput
+    upsert?: BatchCycleUpsertWithoutAcademicTestCyclesInput
+    connect?: BatchCycleWhereUniqueInput
+    update?: XOR<XOR<BatchCycleUpdateToOneWithWhereWithoutAcademicTestCyclesInput, BatchCycleUpdateWithoutAcademicTestCyclesInput>, BatchCycleUncheckedUpdateWithoutAcademicTestCyclesInput>
   }
 
   export type AcademicQuestionPaperUpdateManyWithoutCycleNestedInput = {
@@ -124811,6 +130221,272 @@ export namespace Prisma {
     update?: AcademicScheduledTestUpdateWithWhereUniqueWithoutCycleInput | AcademicScheduledTestUpdateWithWhereUniqueWithoutCycleInput[]
     updateMany?: AcademicScheduledTestUpdateManyWithWhereWithoutCycleInput | AcademicScheduledTestUpdateManyWithWhereWithoutCycleInput[]
     deleteMany?: AcademicScheduledTestScalarWhereInput | AcademicScheduledTestScalarWhereInput[]
+  }
+
+  export type BranchBatchCreateNestedOneWithoutCyclesInput = {
+    create?: XOR<BranchBatchCreateWithoutCyclesInput, BranchBatchUncheckedCreateWithoutCyclesInput>
+    connectOrCreate?: BranchBatchCreateOrConnectWithoutCyclesInput
+    connect?: BranchBatchWhereUniqueInput
+  }
+
+  export type BranchStudentCourseCreateNestedManyWithoutBatchCycleInput = {
+    create?: XOR<BranchStudentCourseCreateWithoutBatchCycleInput, BranchStudentCourseUncheckedCreateWithoutBatchCycleInput> | BranchStudentCourseCreateWithoutBatchCycleInput[] | BranchStudentCourseUncheckedCreateWithoutBatchCycleInput[]
+    connectOrCreate?: BranchStudentCourseCreateOrConnectWithoutBatchCycleInput | BranchStudentCourseCreateOrConnectWithoutBatchCycleInput[]
+    createMany?: BranchStudentCourseCreateManyBatchCycleInputEnvelope
+    connect?: BranchStudentCourseWhereUniqueInput | BranchStudentCourseWhereUniqueInput[]
+  }
+
+  export type AcademicTestCycleCreateNestedManyWithoutBatchCycleInput = {
+    create?: XOR<AcademicTestCycleCreateWithoutBatchCycleInput, AcademicTestCycleUncheckedCreateWithoutBatchCycleInput> | AcademicTestCycleCreateWithoutBatchCycleInput[] | AcademicTestCycleUncheckedCreateWithoutBatchCycleInput[]
+    connectOrCreate?: AcademicTestCycleCreateOrConnectWithoutBatchCycleInput | AcademicTestCycleCreateOrConnectWithoutBatchCycleInput[]
+    createMany?: AcademicTestCycleCreateManyBatchCycleInputEnvelope
+    connect?: AcademicTestCycleWhereUniqueInput | AcademicTestCycleWhereUniqueInput[]
+  }
+
+  export type AcademicTestReportHistoryCreateNestedManyWithoutBatchCycleInput = {
+    create?: XOR<AcademicTestReportHistoryCreateWithoutBatchCycleInput, AcademicTestReportHistoryUncheckedCreateWithoutBatchCycleInput> | AcademicTestReportHistoryCreateWithoutBatchCycleInput[] | AcademicTestReportHistoryUncheckedCreateWithoutBatchCycleInput[]
+    connectOrCreate?: AcademicTestReportHistoryCreateOrConnectWithoutBatchCycleInput | AcademicTestReportHistoryCreateOrConnectWithoutBatchCycleInput[]
+    createMany?: AcademicTestReportHistoryCreateManyBatchCycleInputEnvelope
+    connect?: AcademicTestReportHistoryWhereUniqueInput | AcademicTestReportHistoryWhereUniqueInput[]
+  }
+
+  export type ExamScheduleCreateNestedManyWithoutBatchCycleInput = {
+    create?: XOR<ExamScheduleCreateWithoutBatchCycleInput, ExamScheduleUncheckedCreateWithoutBatchCycleInput> | ExamScheduleCreateWithoutBatchCycleInput[] | ExamScheduleUncheckedCreateWithoutBatchCycleInput[]
+    connectOrCreate?: ExamScheduleCreateOrConnectWithoutBatchCycleInput | ExamScheduleCreateOrConnectWithoutBatchCycleInput[]
+    createMany?: ExamScheduleCreateManyBatchCycleInputEnvelope
+    connect?: ExamScheduleWhereUniqueInput | ExamScheduleWhereUniqueInput[]
+  }
+
+  export type AssessmentCreateNestedManyWithoutBatchCycleInput = {
+    create?: XOR<AssessmentCreateWithoutBatchCycleInput, AssessmentUncheckedCreateWithoutBatchCycleInput> | AssessmentCreateWithoutBatchCycleInput[] | AssessmentUncheckedCreateWithoutBatchCycleInput[]
+    connectOrCreate?: AssessmentCreateOrConnectWithoutBatchCycleInput | AssessmentCreateOrConnectWithoutBatchCycleInput[]
+    createMany?: AssessmentCreateManyBatchCycleInputEnvelope
+    connect?: AssessmentWhereUniqueInput | AssessmentWhereUniqueInput[]
+  }
+
+  export type FacultyReportShareCreateNestedManyWithoutBatchCycleInput = {
+    create?: XOR<FacultyReportShareCreateWithoutBatchCycleInput, FacultyReportShareUncheckedCreateWithoutBatchCycleInput> | FacultyReportShareCreateWithoutBatchCycleInput[] | FacultyReportShareUncheckedCreateWithoutBatchCycleInput[]
+    connectOrCreate?: FacultyReportShareCreateOrConnectWithoutBatchCycleInput | FacultyReportShareCreateOrConnectWithoutBatchCycleInput[]
+    createMany?: FacultyReportShareCreateManyBatchCycleInputEnvelope
+    connect?: FacultyReportShareWhereUniqueInput | FacultyReportShareWhereUniqueInput[]
+  }
+
+  export type BranchStudentCourseUncheckedCreateNestedManyWithoutBatchCycleInput = {
+    create?: XOR<BranchStudentCourseCreateWithoutBatchCycleInput, BranchStudentCourseUncheckedCreateWithoutBatchCycleInput> | BranchStudentCourseCreateWithoutBatchCycleInput[] | BranchStudentCourseUncheckedCreateWithoutBatchCycleInput[]
+    connectOrCreate?: BranchStudentCourseCreateOrConnectWithoutBatchCycleInput | BranchStudentCourseCreateOrConnectWithoutBatchCycleInput[]
+    createMany?: BranchStudentCourseCreateManyBatchCycleInputEnvelope
+    connect?: BranchStudentCourseWhereUniqueInput | BranchStudentCourseWhereUniqueInput[]
+  }
+
+  export type AcademicTestCycleUncheckedCreateNestedManyWithoutBatchCycleInput = {
+    create?: XOR<AcademicTestCycleCreateWithoutBatchCycleInput, AcademicTestCycleUncheckedCreateWithoutBatchCycleInput> | AcademicTestCycleCreateWithoutBatchCycleInput[] | AcademicTestCycleUncheckedCreateWithoutBatchCycleInput[]
+    connectOrCreate?: AcademicTestCycleCreateOrConnectWithoutBatchCycleInput | AcademicTestCycleCreateOrConnectWithoutBatchCycleInput[]
+    createMany?: AcademicTestCycleCreateManyBatchCycleInputEnvelope
+    connect?: AcademicTestCycleWhereUniqueInput | AcademicTestCycleWhereUniqueInput[]
+  }
+
+  export type AcademicTestReportHistoryUncheckedCreateNestedManyWithoutBatchCycleInput = {
+    create?: XOR<AcademicTestReportHistoryCreateWithoutBatchCycleInput, AcademicTestReportHistoryUncheckedCreateWithoutBatchCycleInput> | AcademicTestReportHistoryCreateWithoutBatchCycleInput[] | AcademicTestReportHistoryUncheckedCreateWithoutBatchCycleInput[]
+    connectOrCreate?: AcademicTestReportHistoryCreateOrConnectWithoutBatchCycleInput | AcademicTestReportHistoryCreateOrConnectWithoutBatchCycleInput[]
+    createMany?: AcademicTestReportHistoryCreateManyBatchCycleInputEnvelope
+    connect?: AcademicTestReportHistoryWhereUniqueInput | AcademicTestReportHistoryWhereUniqueInput[]
+  }
+
+  export type ExamScheduleUncheckedCreateNestedManyWithoutBatchCycleInput = {
+    create?: XOR<ExamScheduleCreateWithoutBatchCycleInput, ExamScheduleUncheckedCreateWithoutBatchCycleInput> | ExamScheduleCreateWithoutBatchCycleInput[] | ExamScheduleUncheckedCreateWithoutBatchCycleInput[]
+    connectOrCreate?: ExamScheduleCreateOrConnectWithoutBatchCycleInput | ExamScheduleCreateOrConnectWithoutBatchCycleInput[]
+    createMany?: ExamScheduleCreateManyBatchCycleInputEnvelope
+    connect?: ExamScheduleWhereUniqueInput | ExamScheduleWhereUniqueInput[]
+  }
+
+  export type AssessmentUncheckedCreateNestedManyWithoutBatchCycleInput = {
+    create?: XOR<AssessmentCreateWithoutBatchCycleInput, AssessmentUncheckedCreateWithoutBatchCycleInput> | AssessmentCreateWithoutBatchCycleInput[] | AssessmentUncheckedCreateWithoutBatchCycleInput[]
+    connectOrCreate?: AssessmentCreateOrConnectWithoutBatchCycleInput | AssessmentCreateOrConnectWithoutBatchCycleInput[]
+    createMany?: AssessmentCreateManyBatchCycleInputEnvelope
+    connect?: AssessmentWhereUniqueInput | AssessmentWhereUniqueInput[]
+  }
+
+  export type FacultyReportShareUncheckedCreateNestedManyWithoutBatchCycleInput = {
+    create?: XOR<FacultyReportShareCreateWithoutBatchCycleInput, FacultyReportShareUncheckedCreateWithoutBatchCycleInput> | FacultyReportShareCreateWithoutBatchCycleInput[] | FacultyReportShareUncheckedCreateWithoutBatchCycleInput[]
+    connectOrCreate?: FacultyReportShareCreateOrConnectWithoutBatchCycleInput | FacultyReportShareCreateOrConnectWithoutBatchCycleInput[]
+    createMany?: FacultyReportShareCreateManyBatchCycleInputEnvelope
+    connect?: FacultyReportShareWhereUniqueInput | FacultyReportShareWhereUniqueInput[]
+  }
+
+  export type BranchBatchUpdateOneRequiredWithoutCyclesNestedInput = {
+    create?: XOR<BranchBatchCreateWithoutCyclesInput, BranchBatchUncheckedCreateWithoutCyclesInput>
+    connectOrCreate?: BranchBatchCreateOrConnectWithoutCyclesInput
+    upsert?: BranchBatchUpsertWithoutCyclesInput
+    connect?: BranchBatchWhereUniqueInput
+    update?: XOR<XOR<BranchBatchUpdateToOneWithWhereWithoutCyclesInput, BranchBatchUpdateWithoutCyclesInput>, BranchBatchUncheckedUpdateWithoutCyclesInput>
+  }
+
+  export type BranchStudentCourseUpdateManyWithoutBatchCycleNestedInput = {
+    create?: XOR<BranchStudentCourseCreateWithoutBatchCycleInput, BranchStudentCourseUncheckedCreateWithoutBatchCycleInput> | BranchStudentCourseCreateWithoutBatchCycleInput[] | BranchStudentCourseUncheckedCreateWithoutBatchCycleInput[]
+    connectOrCreate?: BranchStudentCourseCreateOrConnectWithoutBatchCycleInput | BranchStudentCourseCreateOrConnectWithoutBatchCycleInput[]
+    upsert?: BranchStudentCourseUpsertWithWhereUniqueWithoutBatchCycleInput | BranchStudentCourseUpsertWithWhereUniqueWithoutBatchCycleInput[]
+    createMany?: BranchStudentCourseCreateManyBatchCycleInputEnvelope
+    set?: BranchStudentCourseWhereUniqueInput | BranchStudentCourseWhereUniqueInput[]
+    disconnect?: BranchStudentCourseWhereUniqueInput | BranchStudentCourseWhereUniqueInput[]
+    delete?: BranchStudentCourseWhereUniqueInput | BranchStudentCourseWhereUniqueInput[]
+    connect?: BranchStudentCourseWhereUniqueInput | BranchStudentCourseWhereUniqueInput[]
+    update?: BranchStudentCourseUpdateWithWhereUniqueWithoutBatchCycleInput | BranchStudentCourseUpdateWithWhereUniqueWithoutBatchCycleInput[]
+    updateMany?: BranchStudentCourseUpdateManyWithWhereWithoutBatchCycleInput | BranchStudentCourseUpdateManyWithWhereWithoutBatchCycleInput[]
+    deleteMany?: BranchStudentCourseScalarWhereInput | BranchStudentCourseScalarWhereInput[]
+  }
+
+  export type AcademicTestCycleUpdateManyWithoutBatchCycleNestedInput = {
+    create?: XOR<AcademicTestCycleCreateWithoutBatchCycleInput, AcademicTestCycleUncheckedCreateWithoutBatchCycleInput> | AcademicTestCycleCreateWithoutBatchCycleInput[] | AcademicTestCycleUncheckedCreateWithoutBatchCycleInput[]
+    connectOrCreate?: AcademicTestCycleCreateOrConnectWithoutBatchCycleInput | AcademicTestCycleCreateOrConnectWithoutBatchCycleInput[]
+    upsert?: AcademicTestCycleUpsertWithWhereUniqueWithoutBatchCycleInput | AcademicTestCycleUpsertWithWhereUniqueWithoutBatchCycleInput[]
+    createMany?: AcademicTestCycleCreateManyBatchCycleInputEnvelope
+    set?: AcademicTestCycleWhereUniqueInput | AcademicTestCycleWhereUniqueInput[]
+    disconnect?: AcademicTestCycleWhereUniqueInput | AcademicTestCycleWhereUniqueInput[]
+    delete?: AcademicTestCycleWhereUniqueInput | AcademicTestCycleWhereUniqueInput[]
+    connect?: AcademicTestCycleWhereUniqueInput | AcademicTestCycleWhereUniqueInput[]
+    update?: AcademicTestCycleUpdateWithWhereUniqueWithoutBatchCycleInput | AcademicTestCycleUpdateWithWhereUniqueWithoutBatchCycleInput[]
+    updateMany?: AcademicTestCycleUpdateManyWithWhereWithoutBatchCycleInput | AcademicTestCycleUpdateManyWithWhereWithoutBatchCycleInput[]
+    deleteMany?: AcademicTestCycleScalarWhereInput | AcademicTestCycleScalarWhereInput[]
+  }
+
+  export type AcademicTestReportHistoryUpdateManyWithoutBatchCycleNestedInput = {
+    create?: XOR<AcademicTestReportHistoryCreateWithoutBatchCycleInput, AcademicTestReportHistoryUncheckedCreateWithoutBatchCycleInput> | AcademicTestReportHistoryCreateWithoutBatchCycleInput[] | AcademicTestReportHistoryUncheckedCreateWithoutBatchCycleInput[]
+    connectOrCreate?: AcademicTestReportHistoryCreateOrConnectWithoutBatchCycleInput | AcademicTestReportHistoryCreateOrConnectWithoutBatchCycleInput[]
+    upsert?: AcademicTestReportHistoryUpsertWithWhereUniqueWithoutBatchCycleInput | AcademicTestReportHistoryUpsertWithWhereUniqueWithoutBatchCycleInput[]
+    createMany?: AcademicTestReportHistoryCreateManyBatchCycleInputEnvelope
+    set?: AcademicTestReportHistoryWhereUniqueInput | AcademicTestReportHistoryWhereUniqueInput[]
+    disconnect?: AcademicTestReportHistoryWhereUniqueInput | AcademicTestReportHistoryWhereUniqueInput[]
+    delete?: AcademicTestReportHistoryWhereUniqueInput | AcademicTestReportHistoryWhereUniqueInput[]
+    connect?: AcademicTestReportHistoryWhereUniqueInput | AcademicTestReportHistoryWhereUniqueInput[]
+    update?: AcademicTestReportHistoryUpdateWithWhereUniqueWithoutBatchCycleInput | AcademicTestReportHistoryUpdateWithWhereUniqueWithoutBatchCycleInput[]
+    updateMany?: AcademicTestReportHistoryUpdateManyWithWhereWithoutBatchCycleInput | AcademicTestReportHistoryUpdateManyWithWhereWithoutBatchCycleInput[]
+    deleteMany?: AcademicTestReportHistoryScalarWhereInput | AcademicTestReportHistoryScalarWhereInput[]
+  }
+
+  export type ExamScheduleUpdateManyWithoutBatchCycleNestedInput = {
+    create?: XOR<ExamScheduleCreateWithoutBatchCycleInput, ExamScheduleUncheckedCreateWithoutBatchCycleInput> | ExamScheduleCreateWithoutBatchCycleInput[] | ExamScheduleUncheckedCreateWithoutBatchCycleInput[]
+    connectOrCreate?: ExamScheduleCreateOrConnectWithoutBatchCycleInput | ExamScheduleCreateOrConnectWithoutBatchCycleInput[]
+    upsert?: ExamScheduleUpsertWithWhereUniqueWithoutBatchCycleInput | ExamScheduleUpsertWithWhereUniqueWithoutBatchCycleInput[]
+    createMany?: ExamScheduleCreateManyBatchCycleInputEnvelope
+    set?: ExamScheduleWhereUniqueInput | ExamScheduleWhereUniqueInput[]
+    disconnect?: ExamScheduleWhereUniqueInput | ExamScheduleWhereUniqueInput[]
+    delete?: ExamScheduleWhereUniqueInput | ExamScheduleWhereUniqueInput[]
+    connect?: ExamScheduleWhereUniqueInput | ExamScheduleWhereUniqueInput[]
+    update?: ExamScheduleUpdateWithWhereUniqueWithoutBatchCycleInput | ExamScheduleUpdateWithWhereUniqueWithoutBatchCycleInput[]
+    updateMany?: ExamScheduleUpdateManyWithWhereWithoutBatchCycleInput | ExamScheduleUpdateManyWithWhereWithoutBatchCycleInput[]
+    deleteMany?: ExamScheduleScalarWhereInput | ExamScheduleScalarWhereInput[]
+  }
+
+  export type AssessmentUpdateManyWithoutBatchCycleNestedInput = {
+    create?: XOR<AssessmentCreateWithoutBatchCycleInput, AssessmentUncheckedCreateWithoutBatchCycleInput> | AssessmentCreateWithoutBatchCycleInput[] | AssessmentUncheckedCreateWithoutBatchCycleInput[]
+    connectOrCreate?: AssessmentCreateOrConnectWithoutBatchCycleInput | AssessmentCreateOrConnectWithoutBatchCycleInput[]
+    upsert?: AssessmentUpsertWithWhereUniqueWithoutBatchCycleInput | AssessmentUpsertWithWhereUniqueWithoutBatchCycleInput[]
+    createMany?: AssessmentCreateManyBatchCycleInputEnvelope
+    set?: AssessmentWhereUniqueInput | AssessmentWhereUniqueInput[]
+    disconnect?: AssessmentWhereUniqueInput | AssessmentWhereUniqueInput[]
+    delete?: AssessmentWhereUniqueInput | AssessmentWhereUniqueInput[]
+    connect?: AssessmentWhereUniqueInput | AssessmentWhereUniqueInput[]
+    update?: AssessmentUpdateWithWhereUniqueWithoutBatchCycleInput | AssessmentUpdateWithWhereUniqueWithoutBatchCycleInput[]
+    updateMany?: AssessmentUpdateManyWithWhereWithoutBatchCycleInput | AssessmentUpdateManyWithWhereWithoutBatchCycleInput[]
+    deleteMany?: AssessmentScalarWhereInput | AssessmentScalarWhereInput[]
+  }
+
+  export type FacultyReportShareUpdateManyWithoutBatchCycleNestedInput = {
+    create?: XOR<FacultyReportShareCreateWithoutBatchCycleInput, FacultyReportShareUncheckedCreateWithoutBatchCycleInput> | FacultyReportShareCreateWithoutBatchCycleInput[] | FacultyReportShareUncheckedCreateWithoutBatchCycleInput[]
+    connectOrCreate?: FacultyReportShareCreateOrConnectWithoutBatchCycleInput | FacultyReportShareCreateOrConnectWithoutBatchCycleInput[]
+    upsert?: FacultyReportShareUpsertWithWhereUniqueWithoutBatchCycleInput | FacultyReportShareUpsertWithWhereUniqueWithoutBatchCycleInput[]
+    createMany?: FacultyReportShareCreateManyBatchCycleInputEnvelope
+    set?: FacultyReportShareWhereUniqueInput | FacultyReportShareWhereUniqueInput[]
+    disconnect?: FacultyReportShareWhereUniqueInput | FacultyReportShareWhereUniqueInput[]
+    delete?: FacultyReportShareWhereUniqueInput | FacultyReportShareWhereUniqueInput[]
+    connect?: FacultyReportShareWhereUniqueInput | FacultyReportShareWhereUniqueInput[]
+    update?: FacultyReportShareUpdateWithWhereUniqueWithoutBatchCycleInput | FacultyReportShareUpdateWithWhereUniqueWithoutBatchCycleInput[]
+    updateMany?: FacultyReportShareUpdateManyWithWhereWithoutBatchCycleInput | FacultyReportShareUpdateManyWithWhereWithoutBatchCycleInput[]
+    deleteMany?: FacultyReportShareScalarWhereInput | FacultyReportShareScalarWhereInput[]
+  }
+
+  export type BranchStudentCourseUncheckedUpdateManyWithoutBatchCycleNestedInput = {
+    create?: XOR<BranchStudentCourseCreateWithoutBatchCycleInput, BranchStudentCourseUncheckedCreateWithoutBatchCycleInput> | BranchStudentCourseCreateWithoutBatchCycleInput[] | BranchStudentCourseUncheckedCreateWithoutBatchCycleInput[]
+    connectOrCreate?: BranchStudentCourseCreateOrConnectWithoutBatchCycleInput | BranchStudentCourseCreateOrConnectWithoutBatchCycleInput[]
+    upsert?: BranchStudentCourseUpsertWithWhereUniqueWithoutBatchCycleInput | BranchStudentCourseUpsertWithWhereUniqueWithoutBatchCycleInput[]
+    createMany?: BranchStudentCourseCreateManyBatchCycleInputEnvelope
+    set?: BranchStudentCourseWhereUniqueInput | BranchStudentCourseWhereUniqueInput[]
+    disconnect?: BranchStudentCourseWhereUniqueInput | BranchStudentCourseWhereUniqueInput[]
+    delete?: BranchStudentCourseWhereUniqueInput | BranchStudentCourseWhereUniqueInput[]
+    connect?: BranchStudentCourseWhereUniqueInput | BranchStudentCourseWhereUniqueInput[]
+    update?: BranchStudentCourseUpdateWithWhereUniqueWithoutBatchCycleInput | BranchStudentCourseUpdateWithWhereUniqueWithoutBatchCycleInput[]
+    updateMany?: BranchStudentCourseUpdateManyWithWhereWithoutBatchCycleInput | BranchStudentCourseUpdateManyWithWhereWithoutBatchCycleInput[]
+    deleteMany?: BranchStudentCourseScalarWhereInput | BranchStudentCourseScalarWhereInput[]
+  }
+
+  export type AcademicTestCycleUncheckedUpdateManyWithoutBatchCycleNestedInput = {
+    create?: XOR<AcademicTestCycleCreateWithoutBatchCycleInput, AcademicTestCycleUncheckedCreateWithoutBatchCycleInput> | AcademicTestCycleCreateWithoutBatchCycleInput[] | AcademicTestCycleUncheckedCreateWithoutBatchCycleInput[]
+    connectOrCreate?: AcademicTestCycleCreateOrConnectWithoutBatchCycleInput | AcademicTestCycleCreateOrConnectWithoutBatchCycleInput[]
+    upsert?: AcademicTestCycleUpsertWithWhereUniqueWithoutBatchCycleInput | AcademicTestCycleUpsertWithWhereUniqueWithoutBatchCycleInput[]
+    createMany?: AcademicTestCycleCreateManyBatchCycleInputEnvelope
+    set?: AcademicTestCycleWhereUniqueInput | AcademicTestCycleWhereUniqueInput[]
+    disconnect?: AcademicTestCycleWhereUniqueInput | AcademicTestCycleWhereUniqueInput[]
+    delete?: AcademicTestCycleWhereUniqueInput | AcademicTestCycleWhereUniqueInput[]
+    connect?: AcademicTestCycleWhereUniqueInput | AcademicTestCycleWhereUniqueInput[]
+    update?: AcademicTestCycleUpdateWithWhereUniqueWithoutBatchCycleInput | AcademicTestCycleUpdateWithWhereUniqueWithoutBatchCycleInput[]
+    updateMany?: AcademicTestCycleUpdateManyWithWhereWithoutBatchCycleInput | AcademicTestCycleUpdateManyWithWhereWithoutBatchCycleInput[]
+    deleteMany?: AcademicTestCycleScalarWhereInput | AcademicTestCycleScalarWhereInput[]
+  }
+
+  export type AcademicTestReportHistoryUncheckedUpdateManyWithoutBatchCycleNestedInput = {
+    create?: XOR<AcademicTestReportHistoryCreateWithoutBatchCycleInput, AcademicTestReportHistoryUncheckedCreateWithoutBatchCycleInput> | AcademicTestReportHistoryCreateWithoutBatchCycleInput[] | AcademicTestReportHistoryUncheckedCreateWithoutBatchCycleInput[]
+    connectOrCreate?: AcademicTestReportHistoryCreateOrConnectWithoutBatchCycleInput | AcademicTestReportHistoryCreateOrConnectWithoutBatchCycleInput[]
+    upsert?: AcademicTestReportHistoryUpsertWithWhereUniqueWithoutBatchCycleInput | AcademicTestReportHistoryUpsertWithWhereUniqueWithoutBatchCycleInput[]
+    createMany?: AcademicTestReportHistoryCreateManyBatchCycleInputEnvelope
+    set?: AcademicTestReportHistoryWhereUniqueInput | AcademicTestReportHistoryWhereUniqueInput[]
+    disconnect?: AcademicTestReportHistoryWhereUniqueInput | AcademicTestReportHistoryWhereUniqueInput[]
+    delete?: AcademicTestReportHistoryWhereUniqueInput | AcademicTestReportHistoryWhereUniqueInput[]
+    connect?: AcademicTestReportHistoryWhereUniqueInput | AcademicTestReportHistoryWhereUniqueInput[]
+    update?: AcademicTestReportHistoryUpdateWithWhereUniqueWithoutBatchCycleInput | AcademicTestReportHistoryUpdateWithWhereUniqueWithoutBatchCycleInput[]
+    updateMany?: AcademicTestReportHistoryUpdateManyWithWhereWithoutBatchCycleInput | AcademicTestReportHistoryUpdateManyWithWhereWithoutBatchCycleInput[]
+    deleteMany?: AcademicTestReportHistoryScalarWhereInput | AcademicTestReportHistoryScalarWhereInput[]
+  }
+
+  export type ExamScheduleUncheckedUpdateManyWithoutBatchCycleNestedInput = {
+    create?: XOR<ExamScheduleCreateWithoutBatchCycleInput, ExamScheduleUncheckedCreateWithoutBatchCycleInput> | ExamScheduleCreateWithoutBatchCycleInput[] | ExamScheduleUncheckedCreateWithoutBatchCycleInput[]
+    connectOrCreate?: ExamScheduleCreateOrConnectWithoutBatchCycleInput | ExamScheduleCreateOrConnectWithoutBatchCycleInput[]
+    upsert?: ExamScheduleUpsertWithWhereUniqueWithoutBatchCycleInput | ExamScheduleUpsertWithWhereUniqueWithoutBatchCycleInput[]
+    createMany?: ExamScheduleCreateManyBatchCycleInputEnvelope
+    set?: ExamScheduleWhereUniqueInput | ExamScheduleWhereUniqueInput[]
+    disconnect?: ExamScheduleWhereUniqueInput | ExamScheduleWhereUniqueInput[]
+    delete?: ExamScheduleWhereUniqueInput | ExamScheduleWhereUniqueInput[]
+    connect?: ExamScheduleWhereUniqueInput | ExamScheduleWhereUniqueInput[]
+    update?: ExamScheduleUpdateWithWhereUniqueWithoutBatchCycleInput | ExamScheduleUpdateWithWhereUniqueWithoutBatchCycleInput[]
+    updateMany?: ExamScheduleUpdateManyWithWhereWithoutBatchCycleInput | ExamScheduleUpdateManyWithWhereWithoutBatchCycleInput[]
+    deleteMany?: ExamScheduleScalarWhereInput | ExamScheduleScalarWhereInput[]
+  }
+
+  export type AssessmentUncheckedUpdateManyWithoutBatchCycleNestedInput = {
+    create?: XOR<AssessmentCreateWithoutBatchCycleInput, AssessmentUncheckedCreateWithoutBatchCycleInput> | AssessmentCreateWithoutBatchCycleInput[] | AssessmentUncheckedCreateWithoutBatchCycleInput[]
+    connectOrCreate?: AssessmentCreateOrConnectWithoutBatchCycleInput | AssessmentCreateOrConnectWithoutBatchCycleInput[]
+    upsert?: AssessmentUpsertWithWhereUniqueWithoutBatchCycleInput | AssessmentUpsertWithWhereUniqueWithoutBatchCycleInput[]
+    createMany?: AssessmentCreateManyBatchCycleInputEnvelope
+    set?: AssessmentWhereUniqueInput | AssessmentWhereUniqueInput[]
+    disconnect?: AssessmentWhereUniqueInput | AssessmentWhereUniqueInput[]
+    delete?: AssessmentWhereUniqueInput | AssessmentWhereUniqueInput[]
+    connect?: AssessmentWhereUniqueInput | AssessmentWhereUniqueInput[]
+    update?: AssessmentUpdateWithWhereUniqueWithoutBatchCycleInput | AssessmentUpdateWithWhereUniqueWithoutBatchCycleInput[]
+    updateMany?: AssessmentUpdateManyWithWhereWithoutBatchCycleInput | AssessmentUpdateManyWithWhereWithoutBatchCycleInput[]
+    deleteMany?: AssessmentScalarWhereInput | AssessmentScalarWhereInput[]
+  }
+
+  export type FacultyReportShareUncheckedUpdateManyWithoutBatchCycleNestedInput = {
+    create?: XOR<FacultyReportShareCreateWithoutBatchCycleInput, FacultyReportShareUncheckedCreateWithoutBatchCycleInput> | FacultyReportShareCreateWithoutBatchCycleInput[] | FacultyReportShareUncheckedCreateWithoutBatchCycleInput[]
+    connectOrCreate?: FacultyReportShareCreateOrConnectWithoutBatchCycleInput | FacultyReportShareCreateOrConnectWithoutBatchCycleInput[]
+    upsert?: FacultyReportShareUpsertWithWhereUniqueWithoutBatchCycleInput | FacultyReportShareUpsertWithWhereUniqueWithoutBatchCycleInput[]
+    createMany?: FacultyReportShareCreateManyBatchCycleInputEnvelope
+    set?: FacultyReportShareWhereUniqueInput | FacultyReportShareWhereUniqueInput[]
+    disconnect?: FacultyReportShareWhereUniqueInput | FacultyReportShareWhereUniqueInput[]
+    delete?: FacultyReportShareWhereUniqueInput | FacultyReportShareWhereUniqueInput[]
+    connect?: FacultyReportShareWhereUniqueInput | FacultyReportShareWhereUniqueInput[]
+    update?: FacultyReportShareUpdateWithWhereUniqueWithoutBatchCycleInput | FacultyReportShareUpdateWithWhereUniqueWithoutBatchCycleInput[]
+    updateMany?: FacultyReportShareUpdateManyWithWhereWithoutBatchCycleInput | FacultyReportShareUpdateManyWithWhereWithoutBatchCycleInput[]
+    deleteMany?: FacultyReportShareScalarWhereInput | FacultyReportShareScalarWhereInput[]
   }
 
   export type FloatFieldUpdateOperationsInput = {
@@ -125463,6 +131139,12 @@ export namespace Prisma {
     connect?: BranchStudentWhereUniqueInput
   }
 
+  export type BatchCycleCreateNestedOneWithoutEnrollmentsInput = {
+    create?: XOR<BatchCycleCreateWithoutEnrollmentsInput, BatchCycleUncheckedCreateWithoutEnrollmentsInput>
+    connectOrCreate?: BatchCycleCreateOrConnectWithoutEnrollmentsInput
+    connect?: BatchCycleWhereUniqueInput
+  }
+
   export type BranchCreateNestedOneWithoutStudentEnrollmentsInput = {
     create?: XOR<BranchCreateWithoutStudentEnrollmentsInput, BranchUncheckedCreateWithoutStudentEnrollmentsInput>
     connectOrCreate?: BranchCreateOrConnectWithoutStudentEnrollmentsInput
@@ -125485,6 +131167,16 @@ export namespace Prisma {
     upsert?: BranchStudentUpsertWithoutCourseEnrollmentsInput
     connect?: BranchStudentWhereUniqueInput
     update?: XOR<XOR<BranchStudentUpdateToOneWithWhereWithoutCourseEnrollmentsInput, BranchStudentUpdateWithoutCourseEnrollmentsInput>, BranchStudentUncheckedUpdateWithoutCourseEnrollmentsInput>
+  }
+
+  export type BatchCycleUpdateOneWithoutEnrollmentsNestedInput = {
+    create?: XOR<BatchCycleCreateWithoutEnrollmentsInput, BatchCycleUncheckedCreateWithoutEnrollmentsInput>
+    connectOrCreate?: BatchCycleCreateOrConnectWithoutEnrollmentsInput
+    upsert?: BatchCycleUpsertWithoutEnrollmentsInput
+    disconnect?: BatchCycleWhereInput | boolean
+    delete?: BatchCycleWhereInput | boolean
+    connect?: BatchCycleWhereUniqueInput
+    update?: XOR<XOR<BatchCycleUpdateToOneWithWhereWithoutEnrollmentsInput, BatchCycleUpdateWithoutEnrollmentsInput>, BatchCycleUncheckedUpdateWithoutEnrollmentsInput>
   }
 
   export type BranchUpdateOneRequiredWithoutStudentEnrollmentsNestedInput = {
@@ -126461,6 +132153,12 @@ export namespace Prisma {
     connect?: BranchBatchWhereUniqueInput
   }
 
+  export type BatchCycleCreateNestedOneWithoutAssessmentsInput = {
+    create?: XOR<BatchCycleCreateWithoutAssessmentsInput, BatchCycleUncheckedCreateWithoutAssessmentsInput>
+    connectOrCreate?: BatchCycleCreateOrConnectWithoutAssessmentsInput
+    connect?: BatchCycleWhereUniqueInput
+  }
+
   export type UserCreateNestedOneWithoutCreatedAssessmentsInput = {
     create?: XOR<UserCreateWithoutCreatedAssessmentsInput, UserUncheckedCreateWithoutCreatedAssessmentsInput>
     connectOrCreate?: UserCreateOrConnectWithoutCreatedAssessmentsInput
@@ -126529,6 +132227,16 @@ export namespace Prisma {
     upsert?: BranchBatchUpsertWithoutAssessmentsInput
     connect?: BranchBatchWhereUniqueInput
     update?: XOR<XOR<BranchBatchUpdateToOneWithWhereWithoutAssessmentsInput, BranchBatchUpdateWithoutAssessmentsInput>, BranchBatchUncheckedUpdateWithoutAssessmentsInput>
+  }
+
+  export type BatchCycleUpdateOneWithoutAssessmentsNestedInput = {
+    create?: XOR<BatchCycleCreateWithoutAssessmentsInput, BatchCycleUncheckedCreateWithoutAssessmentsInput>
+    connectOrCreate?: BatchCycleCreateOrConnectWithoutAssessmentsInput
+    upsert?: BatchCycleUpsertWithoutAssessmentsInput
+    disconnect?: BatchCycleWhereInput | boolean
+    delete?: BatchCycleWhereInput | boolean
+    connect?: BatchCycleWhereUniqueInput
+    update?: XOR<XOR<BatchCycleUpdateToOneWithWhereWithoutAssessmentsInput, BatchCycleUpdateWithoutAssessmentsInput>, BatchCycleUncheckedUpdateWithoutAssessmentsInput>
   }
 
   export type UserUpdateOneRequiredWithoutCreatedAssessmentsNestedInput = {
@@ -126913,6 +132621,12 @@ export namespace Prisma {
     connect?: BranchBatchWhereUniqueInput
   }
 
+  export type BatchCycleCreateNestedOneWithoutExamSchedulesInput = {
+    create?: XOR<BatchCycleCreateWithoutExamSchedulesInput, BatchCycleUncheckedCreateWithoutExamSchedulesInput>
+    connectOrCreate?: BatchCycleCreateOrConnectWithoutExamSchedulesInput
+    connect?: BatchCycleWhereUniqueInput
+  }
+
   export type ExamAttemptCreateNestedManyWithoutScheduleInput = {
     create?: XOR<ExamAttemptCreateWithoutScheduleInput, ExamAttemptUncheckedCreateWithoutScheduleInput> | ExamAttemptCreateWithoutScheduleInput[] | ExamAttemptUncheckedCreateWithoutScheduleInput[]
     connectOrCreate?: ExamAttemptCreateOrConnectWithoutScheduleInput | ExamAttemptCreateOrConnectWithoutScheduleInput[]
@@ -126941,6 +132655,16 @@ export namespace Prisma {
     upsert?: BranchBatchUpsertWithoutExamSchedulesInput
     connect?: BranchBatchWhereUniqueInput
     update?: XOR<XOR<BranchBatchUpdateToOneWithWhereWithoutExamSchedulesInput, BranchBatchUpdateWithoutExamSchedulesInput>, BranchBatchUncheckedUpdateWithoutExamSchedulesInput>
+  }
+
+  export type BatchCycleUpdateOneWithoutExamSchedulesNestedInput = {
+    create?: XOR<BatchCycleCreateWithoutExamSchedulesInput, BatchCycleUncheckedCreateWithoutExamSchedulesInput>
+    connectOrCreate?: BatchCycleCreateOrConnectWithoutExamSchedulesInput
+    upsert?: BatchCycleUpsertWithoutExamSchedulesInput
+    disconnect?: BatchCycleWhereInput | boolean
+    delete?: BatchCycleWhereInput | boolean
+    connect?: BatchCycleWhereUniqueInput
+    update?: XOR<XOR<BatchCycleUpdateToOneWithWhereWithoutExamSchedulesInput, BatchCycleUpdateWithoutExamSchedulesInput>, BatchCycleUncheckedUpdateWithoutExamSchedulesInput>
   }
 
   export type ExamAttemptUpdateManyWithoutScheduleNestedInput = {
@@ -127185,6 +132909,136 @@ export namespace Prisma {
     upsert?: BranchStudentUpsertWithoutDiscontinuationRequestsInput
     connect?: BranchStudentWhereUniqueInput
     update?: XOR<XOR<BranchStudentUpdateToOneWithWhereWithoutDiscontinuationRequestsInput, BranchStudentUpdateWithoutDiscontinuationRequestsInput>, BranchStudentUncheckedUpdateWithoutDiscontinuationRequestsInput>
+  }
+
+  export type BatchCycleCreateNestedOneWithoutReportSharesInput = {
+    create?: XOR<BatchCycleCreateWithoutReportSharesInput, BatchCycleUncheckedCreateWithoutReportSharesInput>
+    connectOrCreate?: BatchCycleCreateOrConnectWithoutReportSharesInput
+    connect?: BatchCycleWhereUniqueInput
+  }
+
+  export type BatchCycleUpdateOneWithoutReportSharesNestedInput = {
+    create?: XOR<BatchCycleCreateWithoutReportSharesInput, BatchCycleUncheckedCreateWithoutReportSharesInput>
+    connectOrCreate?: BatchCycleCreateOrConnectWithoutReportSharesInput
+    upsert?: BatchCycleUpsertWithoutReportSharesInput
+    disconnect?: BatchCycleWhereInput | boolean
+    delete?: BatchCycleWhereInput | boolean
+    connect?: BatchCycleWhereUniqueInput
+    update?: XOR<XOR<BatchCycleUpdateToOneWithWhereWithoutReportSharesInput, BatchCycleUpdateWithoutReportSharesInput>, BatchCycleUncheckedUpdateWithoutReportSharesInput>
+  }
+
+  export type BranchBatchCreateNestedOneWithoutAcademicTestReportHistoriesInput = {
+    create?: XOR<BranchBatchCreateWithoutAcademicTestReportHistoriesInput, BranchBatchUncheckedCreateWithoutAcademicTestReportHistoriesInput>
+    connectOrCreate?: BranchBatchCreateOrConnectWithoutAcademicTestReportHistoriesInput
+    connect?: BranchBatchWhereUniqueInput
+  }
+
+  export type BatchCycleCreateNestedOneWithoutReportHistoriesInput = {
+    create?: XOR<BatchCycleCreateWithoutReportHistoriesInput, BatchCycleUncheckedCreateWithoutReportHistoriesInput>
+    connectOrCreate?: BatchCycleCreateOrConnectWithoutReportHistoriesInput
+    connect?: BatchCycleWhereUniqueInput
+  }
+
+  export type AcademicTestItemCreateNestedOneWithoutAcademicTestReportHistoriesInput = {
+    create?: XOR<AcademicTestItemCreateWithoutAcademicTestReportHistoriesInput, AcademicTestItemUncheckedCreateWithoutAcademicTestReportHistoriesInput>
+    connectOrCreate?: AcademicTestItemCreateOrConnectWithoutAcademicTestReportHistoriesInput
+    connect?: AcademicTestItemWhereUniqueInput
+  }
+
+  export type AcademicTestReportSubmissionCreateNestedManyWithoutHistoryInput = {
+    create?: XOR<AcademicTestReportSubmissionCreateWithoutHistoryInput, AcademicTestReportSubmissionUncheckedCreateWithoutHistoryInput> | AcademicTestReportSubmissionCreateWithoutHistoryInput[] | AcademicTestReportSubmissionUncheckedCreateWithoutHistoryInput[]
+    connectOrCreate?: AcademicTestReportSubmissionCreateOrConnectWithoutHistoryInput | AcademicTestReportSubmissionCreateOrConnectWithoutHistoryInput[]
+    createMany?: AcademicTestReportSubmissionCreateManyHistoryInputEnvelope
+    connect?: AcademicTestReportSubmissionWhereUniqueInput | AcademicTestReportSubmissionWhereUniqueInput[]
+  }
+
+  export type AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutHistoryInput = {
+    create?: XOR<AcademicTestReportSubmissionCreateWithoutHistoryInput, AcademicTestReportSubmissionUncheckedCreateWithoutHistoryInput> | AcademicTestReportSubmissionCreateWithoutHistoryInput[] | AcademicTestReportSubmissionUncheckedCreateWithoutHistoryInput[]
+    connectOrCreate?: AcademicTestReportSubmissionCreateOrConnectWithoutHistoryInput | AcademicTestReportSubmissionCreateOrConnectWithoutHistoryInput[]
+    createMany?: AcademicTestReportSubmissionCreateManyHistoryInputEnvelope
+    connect?: AcademicTestReportSubmissionWhereUniqueInput | AcademicTestReportSubmissionWhereUniqueInput[]
+  }
+
+  export type BranchBatchUpdateOneRequiredWithoutAcademicTestReportHistoriesNestedInput = {
+    create?: XOR<BranchBatchCreateWithoutAcademicTestReportHistoriesInput, BranchBatchUncheckedCreateWithoutAcademicTestReportHistoriesInput>
+    connectOrCreate?: BranchBatchCreateOrConnectWithoutAcademicTestReportHistoriesInput
+    upsert?: BranchBatchUpsertWithoutAcademicTestReportHistoriesInput
+    connect?: BranchBatchWhereUniqueInput
+    update?: XOR<XOR<BranchBatchUpdateToOneWithWhereWithoutAcademicTestReportHistoriesInput, BranchBatchUpdateWithoutAcademicTestReportHistoriesInput>, BranchBatchUncheckedUpdateWithoutAcademicTestReportHistoriesInput>
+  }
+
+  export type BatchCycleUpdateOneRequiredWithoutReportHistoriesNestedInput = {
+    create?: XOR<BatchCycleCreateWithoutReportHistoriesInput, BatchCycleUncheckedCreateWithoutReportHistoriesInput>
+    connectOrCreate?: BatchCycleCreateOrConnectWithoutReportHistoriesInput
+    upsert?: BatchCycleUpsertWithoutReportHistoriesInput
+    connect?: BatchCycleWhereUniqueInput
+    update?: XOR<XOR<BatchCycleUpdateToOneWithWhereWithoutReportHistoriesInput, BatchCycleUpdateWithoutReportHistoriesInput>, BatchCycleUncheckedUpdateWithoutReportHistoriesInput>
+  }
+
+  export type AcademicTestItemUpdateOneRequiredWithoutAcademicTestReportHistoriesNestedInput = {
+    create?: XOR<AcademicTestItemCreateWithoutAcademicTestReportHistoriesInput, AcademicTestItemUncheckedCreateWithoutAcademicTestReportHistoriesInput>
+    connectOrCreate?: AcademicTestItemCreateOrConnectWithoutAcademicTestReportHistoriesInput
+    upsert?: AcademicTestItemUpsertWithoutAcademicTestReportHistoriesInput
+    connect?: AcademicTestItemWhereUniqueInput
+    update?: XOR<XOR<AcademicTestItemUpdateToOneWithWhereWithoutAcademicTestReportHistoriesInput, AcademicTestItemUpdateWithoutAcademicTestReportHistoriesInput>, AcademicTestItemUncheckedUpdateWithoutAcademicTestReportHistoriesInput>
+  }
+
+  export type AcademicTestReportSubmissionUpdateManyWithoutHistoryNestedInput = {
+    create?: XOR<AcademicTestReportSubmissionCreateWithoutHistoryInput, AcademicTestReportSubmissionUncheckedCreateWithoutHistoryInput> | AcademicTestReportSubmissionCreateWithoutHistoryInput[] | AcademicTestReportSubmissionUncheckedCreateWithoutHistoryInput[]
+    connectOrCreate?: AcademicTestReportSubmissionCreateOrConnectWithoutHistoryInput | AcademicTestReportSubmissionCreateOrConnectWithoutHistoryInput[]
+    upsert?: AcademicTestReportSubmissionUpsertWithWhereUniqueWithoutHistoryInput | AcademicTestReportSubmissionUpsertWithWhereUniqueWithoutHistoryInput[]
+    createMany?: AcademicTestReportSubmissionCreateManyHistoryInputEnvelope
+    set?: AcademicTestReportSubmissionWhereUniqueInput | AcademicTestReportSubmissionWhereUniqueInput[]
+    disconnect?: AcademicTestReportSubmissionWhereUniqueInput | AcademicTestReportSubmissionWhereUniqueInput[]
+    delete?: AcademicTestReportSubmissionWhereUniqueInput | AcademicTestReportSubmissionWhereUniqueInput[]
+    connect?: AcademicTestReportSubmissionWhereUniqueInput | AcademicTestReportSubmissionWhereUniqueInput[]
+    update?: AcademicTestReportSubmissionUpdateWithWhereUniqueWithoutHistoryInput | AcademicTestReportSubmissionUpdateWithWhereUniqueWithoutHistoryInput[]
+    updateMany?: AcademicTestReportSubmissionUpdateManyWithWhereWithoutHistoryInput | AcademicTestReportSubmissionUpdateManyWithWhereWithoutHistoryInput[]
+    deleteMany?: AcademicTestReportSubmissionScalarWhereInput | AcademicTestReportSubmissionScalarWhereInput[]
+  }
+
+  export type AcademicTestReportSubmissionUncheckedUpdateManyWithoutHistoryNestedInput = {
+    create?: XOR<AcademicTestReportSubmissionCreateWithoutHistoryInput, AcademicTestReportSubmissionUncheckedCreateWithoutHistoryInput> | AcademicTestReportSubmissionCreateWithoutHistoryInput[] | AcademicTestReportSubmissionUncheckedCreateWithoutHistoryInput[]
+    connectOrCreate?: AcademicTestReportSubmissionCreateOrConnectWithoutHistoryInput | AcademicTestReportSubmissionCreateOrConnectWithoutHistoryInput[]
+    upsert?: AcademicTestReportSubmissionUpsertWithWhereUniqueWithoutHistoryInput | AcademicTestReportSubmissionUpsertWithWhereUniqueWithoutHistoryInput[]
+    createMany?: AcademicTestReportSubmissionCreateManyHistoryInputEnvelope
+    set?: AcademicTestReportSubmissionWhereUniqueInput | AcademicTestReportSubmissionWhereUniqueInput[]
+    disconnect?: AcademicTestReportSubmissionWhereUniqueInput | AcademicTestReportSubmissionWhereUniqueInput[]
+    delete?: AcademicTestReportSubmissionWhereUniqueInput | AcademicTestReportSubmissionWhereUniqueInput[]
+    connect?: AcademicTestReportSubmissionWhereUniqueInput | AcademicTestReportSubmissionWhereUniqueInput[]
+    update?: AcademicTestReportSubmissionUpdateWithWhereUniqueWithoutHistoryInput | AcademicTestReportSubmissionUpdateWithWhereUniqueWithoutHistoryInput[]
+    updateMany?: AcademicTestReportSubmissionUpdateManyWithWhereWithoutHistoryInput | AcademicTestReportSubmissionUpdateManyWithWhereWithoutHistoryInput[]
+    deleteMany?: AcademicTestReportSubmissionScalarWhereInput | AcademicTestReportSubmissionScalarWhereInput[]
+  }
+
+  export type AcademicTestReportHistoryCreateNestedOneWithoutSubmissionsInput = {
+    create?: XOR<AcademicTestReportHistoryCreateWithoutSubmissionsInput, AcademicTestReportHistoryUncheckedCreateWithoutSubmissionsInput>
+    connectOrCreate?: AcademicTestReportHistoryCreateOrConnectWithoutSubmissionsInput
+    connect?: AcademicTestReportHistoryWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutAcademicTestReportSubmissionsInput = {
+    create?: XOR<UserCreateWithoutAcademicTestReportSubmissionsInput, UserUncheckedCreateWithoutAcademicTestReportSubmissionsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAcademicTestReportSubmissionsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type AcademicTestReportHistoryUpdateOneRequiredWithoutSubmissionsNestedInput = {
+    create?: XOR<AcademicTestReportHistoryCreateWithoutSubmissionsInput, AcademicTestReportHistoryUncheckedCreateWithoutSubmissionsInput>
+    connectOrCreate?: AcademicTestReportHistoryCreateOrConnectWithoutSubmissionsInput
+    upsert?: AcademicTestReportHistoryUpsertWithoutSubmissionsInput
+    connect?: AcademicTestReportHistoryWhereUniqueInput
+    update?: XOR<XOR<AcademicTestReportHistoryUpdateToOneWithWhereWithoutSubmissionsInput, AcademicTestReportHistoryUpdateWithoutSubmissionsInput>, AcademicTestReportHistoryUncheckedUpdateWithoutSubmissionsInput>
+  }
+
+  export type UserUpdateOneWithoutAcademicTestReportSubmissionsNestedInput = {
+    create?: XOR<UserCreateWithoutAcademicTestReportSubmissionsInput, UserUncheckedCreateWithoutAcademicTestReportSubmissionsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAcademicTestReportSubmissionsInput
+    upsert?: UserUpsertWithoutAcademicTestReportSubmissionsInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAcademicTestReportSubmissionsInput, UserUpdateWithoutAcademicTestReportSubmissionsInput>, UserUncheckedUpdateWithoutAcademicTestReportSubmissionsInput>
   }
 
   export type BranchStudentCreateNestedOneWithoutPaymentsInput = {
@@ -128540,6 +134394,7 @@ export namespace Prisma {
     branchCourse: BranchCourseCreateNestedOneWithoutAssessmentsInput
     module: BranchCourseModuleCreateNestedOneWithoutAssessmentsInput
     branchBatch: BranchBatchCreateNestedOneWithoutAssessmentsInput
+    batchCycle?: BatchCycleCreateNestedOneWithoutAssessmentsInput
     submissions?: AssessmentSubmissionCreateNestedManyWithoutAssessmentInput
     originalAssessment?: AssessmentCreateNestedOneWithoutReassessmentsInput
     reassessments?: AssessmentCreateNestedManyWithoutOriginalAssessmentInput
@@ -128555,6 +134410,7 @@ export namespace Prisma {
     branchCourseId: string
     moduleId: string
     branchBatchId: string
+    batchCycleId?: string | null
     totalMarks: number
     startDate: Date | string
     endDate: Date | string
@@ -128671,6 +134527,38 @@ export namespace Prisma {
 
   export type FacultySkillAssignmentCreateManyFacultyUserInputEnvelope = {
     data: FacultySkillAssignmentCreateManyFacultyUserInput | FacultySkillAssignmentCreateManyFacultyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AcademicTestReportSubmissionCreateWithoutFacultyInput = {
+    id?: string
+    sourceShareId?: string | null
+    scheduleId?: string | null
+    reportData: JsonNullValueInput | InputJsonValue
+    submittedAt?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    history: AcademicTestReportHistoryCreateNestedOneWithoutSubmissionsInput
+  }
+
+  export type AcademicTestReportSubmissionUncheckedCreateWithoutFacultyInput = {
+    id?: string
+    historyId: string
+    sourceShareId?: string | null
+    scheduleId?: string | null
+    reportData: JsonNullValueInput | InputJsonValue
+    submittedAt?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AcademicTestReportSubmissionCreateOrConnectWithoutFacultyInput = {
+    where: AcademicTestReportSubmissionWhereUniqueInput
+    create: XOR<AcademicTestReportSubmissionCreateWithoutFacultyInput, AcademicTestReportSubmissionUncheckedCreateWithoutFacultyInput>
+  }
+
+  export type AcademicTestReportSubmissionCreateManyFacultyInputEnvelope = {
+    data: AcademicTestReportSubmissionCreateManyFacultyInput | AcademicTestReportSubmissionCreateManyFacultyInput[]
     skipDuplicates?: boolean
   }
 
@@ -129308,6 +135196,7 @@ export namespace Prisma {
     branchCourseId?: StringFilter<"Assessment"> | string
     moduleId?: StringFilter<"Assessment"> | string
     branchBatchId?: StringFilter<"Assessment"> | string
+    batchCycleId?: StringNullableFilter<"Assessment"> | string | null
     totalMarks?: IntFilter<"Assessment"> | number
     startDate?: DateTimeFilter<"Assessment"> | Date | string
     endDate?: DateTimeFilter<"Assessment"> | Date | string
@@ -129397,6 +135286,37 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"FacultySkillAssignment"> | Date | string
   }
 
+  export type AcademicTestReportSubmissionUpsertWithWhereUniqueWithoutFacultyInput = {
+    where: AcademicTestReportSubmissionWhereUniqueInput
+    update: XOR<AcademicTestReportSubmissionUpdateWithoutFacultyInput, AcademicTestReportSubmissionUncheckedUpdateWithoutFacultyInput>
+    create: XOR<AcademicTestReportSubmissionCreateWithoutFacultyInput, AcademicTestReportSubmissionUncheckedCreateWithoutFacultyInput>
+  }
+
+  export type AcademicTestReportSubmissionUpdateWithWhereUniqueWithoutFacultyInput = {
+    where: AcademicTestReportSubmissionWhereUniqueInput
+    data: XOR<AcademicTestReportSubmissionUpdateWithoutFacultyInput, AcademicTestReportSubmissionUncheckedUpdateWithoutFacultyInput>
+  }
+
+  export type AcademicTestReportSubmissionUpdateManyWithWhereWithoutFacultyInput = {
+    where: AcademicTestReportSubmissionScalarWhereInput
+    data: XOR<AcademicTestReportSubmissionUpdateManyMutationInput, AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyInput>
+  }
+
+  export type AcademicTestReportSubmissionScalarWhereInput = {
+    AND?: AcademicTestReportSubmissionScalarWhereInput | AcademicTestReportSubmissionScalarWhereInput[]
+    OR?: AcademicTestReportSubmissionScalarWhereInput[]
+    NOT?: AcademicTestReportSubmissionScalarWhereInput | AcademicTestReportSubmissionScalarWhereInput[]
+    id?: StringFilter<"AcademicTestReportSubmission"> | string
+    historyId?: StringFilter<"AcademicTestReportSubmission"> | string
+    facultyId?: StringNullableFilter<"AcademicTestReportSubmission"> | string | null
+    sourceShareId?: StringNullableFilter<"AcademicTestReportSubmission"> | string | null
+    scheduleId?: StringNullableFilter<"AcademicTestReportSubmission"> | string | null
+    reportData?: JsonFilter<"AcademicTestReportSubmission">
+    submittedAt?: DateTimeFilter<"AcademicTestReportSubmission"> | Date | string
+    createdAt?: DateTimeFilter<"AcademicTestReportSubmission"> | Date | string
+    updatedAt?: DateTimeFilter<"AcademicTestReportSubmission"> | Date | string
+  }
+
   export type UserDashboardWidgetCreateWithoutWidgetInput = {
     id?: string
     isVisible?: boolean
@@ -129480,6 +135400,7 @@ export namespace Prisma {
     createdAssessments?: AssessmentCreateNestedManyWithoutFacultyInput
     evaluatedSubmissions?: AssessmentSubmissionCreateNestedManyWithoutEvaluatorInput
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutFacultyUserInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
   }
 
   export type UserUncheckedCreateWithoutDashboardWidgetPreferencesInput = {
@@ -129521,6 +135442,7 @@ export namespace Prisma {
     createdAssessments?: AssessmentUncheckedCreateNestedManyWithoutFacultyInput
     evaluatedSubmissions?: AssessmentSubmissionUncheckedCreateNestedManyWithoutEvaluatorInput
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutFacultyUserInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
   }
 
   export type UserCreateOrConnectWithoutDashboardWidgetPreferencesInput = {
@@ -129607,6 +135529,7 @@ export namespace Prisma {
     createdAssessments?: AssessmentUpdateManyWithoutFacultyNestedInput
     evaluatedSubmissions?: AssessmentSubmissionUpdateManyWithoutEvaluatorNestedInput
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutFacultyUserNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDashboardWidgetPreferencesInput = {
@@ -129648,6 +135571,7 @@ export namespace Prisma {
     createdAssessments?: AssessmentUncheckedUpdateManyWithoutFacultyNestedInput
     evaluatedSubmissions?: AssessmentSubmissionUncheckedUpdateManyWithoutEvaluatorNestedInput
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutFacultyUserNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
   }
 
   export type DashboardWidgetUpsertWithoutPreferencesInput = {
@@ -129724,6 +135648,7 @@ export namespace Prisma {
     createdAssessments?: AssessmentCreateNestedManyWithoutFacultyInput
     evaluatedSubmissions?: AssessmentSubmissionCreateNestedManyWithoutEvaluatorInput
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutFacultyUserInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
   }
 
   export type UserUncheckedCreateWithoutManagedBranchInput = {
@@ -129765,6 +135690,7 @@ export namespace Prisma {
     createdAssessments?: AssessmentUncheckedCreateNestedManyWithoutFacultyInput
     evaluatedSubmissions?: AssessmentSubmissionUncheckedCreateNestedManyWithoutEvaluatorInput
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutFacultyUserInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
   }
 
   export type UserCreateOrConnectWithoutManagedBranchInput = {
@@ -129893,6 +135819,8 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperCreateNestedManyWithoutBranchBatchInput
     academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchBatchInput
     academicTestCycles?: AcademicTestCycleCreateNestedManyWithoutBranchBatchInput
+    cycles?: BatchCycleCreateNestedManyWithoutBatchInput
+    academicTestReportHistories?: AcademicTestReportHistoryCreateNestedManyWithoutBatchInput
   }
 
   export type BranchBatchUncheckedCreateWithoutBranchInput = {
@@ -129930,6 +135858,8 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchBatchInput
     academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchBatchInput
     academicTestCycles?: AcademicTestCycleUncheckedCreateNestedManyWithoutBranchBatchInput
+    cycles?: BatchCycleUncheckedCreateNestedManyWithoutBatchInput
+    academicTestReportHistories?: AcademicTestReportHistoryUncheckedCreateNestedManyWithoutBatchInput
   }
 
   export type BranchBatchCreateOrConnectWithoutBranchInput = {
@@ -130233,6 +136163,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     branchStudent: BranchStudentCreateNestedOneWithoutCourseEnrollmentsInput
+    batchCycle?: BatchCycleCreateNestedOneWithoutEnrollmentsInput
     course: BranchCourseCreateNestedOneWithoutStudentEnrollmentsInput
   }
 
@@ -130244,6 +136175,7 @@ export namespace Prisma {
     facultyId?: string | null
     facultyName?: string | null
     batchId?: string | null
+    batchCycleId?: string | null
     batchName?: string | null
     batchTiming?: string | null
     scheduleType?: string | null
@@ -130716,6 +136648,7 @@ export namespace Prisma {
     createdAssessments?: AssessmentUpdateManyWithoutFacultyNestedInput
     evaluatedSubmissions?: AssessmentSubmissionUpdateManyWithoutEvaluatorNestedInput
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutFacultyUserNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
   }
 
   export type UserUncheckedUpdateWithoutManagedBranchInput = {
@@ -130757,6 +136690,7 @@ export namespace Prisma {
     createdAssessments?: AssessmentUncheckedUpdateManyWithoutFacultyNestedInput
     evaluatedSubmissions?: AssessmentSubmissionUncheckedUpdateManyWithoutEvaluatorNestedInput
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutFacultyUserNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
   }
 
   export type BranchCourseUpsertWithWhereUniqueWithoutBranchInput = {
@@ -131044,6 +136978,7 @@ export namespace Prisma {
     facultyId?: StringNullableFilter<"BranchStudentCourse"> | string | null
     facultyName?: StringNullableFilter<"BranchStudentCourse"> | string | null
     batchId?: StringNullableFilter<"BranchStudentCourse"> | string | null
+    batchCycleId?: StringNullableFilter<"BranchStudentCourse"> | string | null
     batchName?: StringNullableFilter<"BranchStudentCourse"> | string | null
     batchTiming?: StringNullableFilter<"BranchStudentCourse"> | string | null
     scheduleType?: StringNullableFilter<"BranchStudentCourse"> | string | null
@@ -131336,6 +137271,7 @@ export namespace Prisma {
     createdAssessments?: AssessmentCreateNestedManyWithoutFacultyInput
     evaluatedSubmissions?: AssessmentSubmissionCreateNestedManyWithoutEvaluatorInput
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutFacultyUserInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
   }
 
   export type UserUncheckedCreateWithoutLoginEventsInput = {
@@ -131377,6 +137313,7 @@ export namespace Prisma {
     createdAssessments?: AssessmentUncheckedCreateNestedManyWithoutFacultyInput
     evaluatedSubmissions?: AssessmentSubmissionUncheckedCreateNestedManyWithoutEvaluatorInput
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutFacultyUserInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
   }
 
   export type UserCreateOrConnectWithoutLoginEventsInput = {
@@ -131434,6 +137371,7 @@ export namespace Prisma {
     createdAssessments?: AssessmentUpdateManyWithoutFacultyNestedInput
     evaluatedSubmissions?: AssessmentSubmissionUpdateManyWithoutEvaluatorNestedInput
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutFacultyUserNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLoginEventsInput = {
@@ -131475,6 +137413,7 @@ export namespace Prisma {
     createdAssessments?: AssessmentUncheckedUpdateManyWithoutFacultyNestedInput
     evaluatedSubmissions?: AssessmentSubmissionUncheckedUpdateManyWithoutEvaluatorNestedInput
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutFacultyUserNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
   }
 
   export type CourseEditRequestCreateWithoutNotificationsInput = {
@@ -131575,6 +137514,7 @@ export namespace Prisma {
     createdAssessments?: AssessmentCreateNestedManyWithoutFacultyInput
     evaluatedSubmissions?: AssessmentSubmissionCreateNestedManyWithoutEvaluatorInput
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutFacultyUserInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
   }
 
   export type UserUncheckedCreateWithoutTargetedNotificationsInput = {
@@ -131616,6 +137556,7 @@ export namespace Prisma {
     createdAssessments?: AssessmentUncheckedCreateNestedManyWithoutFacultyInput
     evaluatedSubmissions?: AssessmentSubmissionUncheckedCreateNestedManyWithoutEvaluatorInput
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutFacultyUserInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
   }
 
   export type UserCreateOrConnectWithoutTargetedNotificationsInput = {
@@ -131738,6 +137679,7 @@ export namespace Prisma {
     createdAssessments?: AssessmentUpdateManyWithoutFacultyNestedInput
     evaluatedSubmissions?: AssessmentSubmissionUpdateManyWithoutEvaluatorNestedInput
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutFacultyUserNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTargetedNotificationsInput = {
@@ -131779,6 +137721,7 @@ export namespace Prisma {
     createdAssessments?: AssessmentUncheckedUpdateManyWithoutFacultyNestedInput
     evaluatedSubmissions?: AssessmentSubmissionUncheckedUpdateManyWithoutEvaluatorNestedInput
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutFacultyUserNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
   }
 
   export type NotificationCreateWithoutRequestInput = {
@@ -131920,6 +137863,7 @@ export namespace Prisma {
     createdAssessments?: AssessmentCreateNestedManyWithoutFacultyInput
     evaluatedSubmissions?: AssessmentSubmissionCreateNestedManyWithoutEvaluatorInput
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutFacultyUserInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
   }
 
   export type UserUncheckedCreateWithoutPasswordResetTokensInput = {
@@ -131961,6 +137905,7 @@ export namespace Prisma {
     createdAssessments?: AssessmentUncheckedCreateNestedManyWithoutFacultyInput
     evaluatedSubmissions?: AssessmentSubmissionUncheckedCreateNestedManyWithoutEvaluatorInput
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutFacultyUserInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
   }
 
   export type UserCreateOrConnectWithoutPasswordResetTokensInput = {
@@ -132018,6 +137963,7 @@ export namespace Prisma {
     createdAssessments?: AssessmentUpdateManyWithoutFacultyNestedInput
     evaluatedSubmissions?: AssessmentSubmissionUpdateManyWithoutEvaluatorNestedInput
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutFacultyUserNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPasswordResetTokensInput = {
@@ -132059,6 +138005,7 @@ export namespace Prisma {
     createdAssessments?: AssessmentUncheckedUpdateManyWithoutFacultyNestedInput
     evaluatedSubmissions?: AssessmentSubmissionUncheckedUpdateManyWithoutEvaluatorNestedInput
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutFacultyUserNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
   }
 
   export type BatchCreateWithoutCourseInput = {
@@ -133164,6 +139111,8 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperCreateNestedManyWithoutBranchBatchInput
     academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchBatchInput
     academicTestCycles?: AcademicTestCycleCreateNestedManyWithoutBranchBatchInput
+    cycles?: BatchCycleCreateNestedManyWithoutBatchInput
+    academicTestReportHistories?: AcademicTestReportHistoryCreateNestedManyWithoutBatchInput
   }
 
   export type BranchBatchUncheckedCreateWithoutBranchCourseInput = {
@@ -133201,6 +139150,8 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchBatchInput
     academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchBatchInput
     academicTestCycles?: AcademicTestCycleUncheckedCreateNestedManyWithoutBranchBatchInput
+    cycles?: BatchCycleUncheckedCreateNestedManyWithoutBatchInput
+    academicTestReportHistories?: AcademicTestReportHistoryUncheckedCreateNestedManyWithoutBatchInput
   }
 
   export type BranchBatchCreateOrConnectWithoutBranchCourseInput = {
@@ -133402,6 +139353,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     branchStudent: BranchStudentCreateNestedOneWithoutCourseEnrollmentsInput
+    batchCycle?: BatchCycleCreateNestedOneWithoutEnrollmentsInput
     branch: BranchCreateNestedOneWithoutStudentEnrollmentsInput
   }
 
@@ -133413,6 +139365,7 @@ export namespace Prisma {
     facultyId?: string | null
     facultyName?: string | null
     batchId?: string | null
+    batchCycleId?: string | null
     batchName?: string | null
     batchTiming?: string | null
     scheduleType?: string | null
@@ -133624,6 +139577,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     module: BranchCourseModuleCreateNestedOneWithoutAssessmentsInput
     branchBatch: BranchBatchCreateNestedOneWithoutAssessmentsInput
+    batchCycle?: BatchCycleCreateNestedOneWithoutAssessmentsInput
     faculty: UserCreateNestedOneWithoutCreatedAssessmentsInput
     submissions?: AssessmentSubmissionCreateNestedManyWithoutAssessmentInput
     originalAssessment?: AssessmentCreateNestedOneWithoutReassessmentsInput
@@ -133639,6 +139593,7 @@ export namespace Prisma {
     assessmentName: string
     moduleId: string
     branchBatchId: string
+    batchCycleId?: string | null
     totalMarks: number
     startDate: Date | string
     endDate: Date | string
@@ -134390,6 +140345,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     branchCourse: BranchCourseCreateNestedOneWithoutAssessmentsInput
     branchBatch: BranchBatchCreateNestedOneWithoutAssessmentsInput
+    batchCycle?: BatchCycleCreateNestedOneWithoutAssessmentsInput
     faculty: UserCreateNestedOneWithoutCreatedAssessmentsInput
     submissions?: AssessmentSubmissionCreateNestedManyWithoutAssessmentInput
     originalAssessment?: AssessmentCreateNestedOneWithoutReassessmentsInput
@@ -134405,6 +140361,7 @@ export namespace Prisma {
     assessmentName: string
     branchCourseId: string
     branchBatchId: string
+    batchCycleId?: string | null
     totalMarks: number
     startDate: Date | string
     endDate: Date | string
@@ -135184,6 +141141,7 @@ export namespace Prisma {
     createdAssessments?: AssessmentCreateNestedManyWithoutFacultyInput
     evaluatedSubmissions?: AssessmentSubmissionCreateNestedManyWithoutEvaluatorInput
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutFacultyUserInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
   }
 
   export type UserUncheckedCreateWithoutBatchFacultyAssignmentsInput = {
@@ -135225,6 +141183,7 @@ export namespace Prisma {
     createdAssessments?: AssessmentUncheckedCreateNestedManyWithoutFacultyInput
     evaluatedSubmissions?: AssessmentSubmissionUncheckedCreateNestedManyWithoutEvaluatorInput
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutFacultyUserInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
   }
 
   export type UserCreateOrConnectWithoutBatchFacultyAssignmentsInput = {
@@ -135337,6 +141296,7 @@ export namespace Prisma {
     createdAssessments?: AssessmentUpdateManyWithoutFacultyNestedInput
     evaluatedSubmissions?: AssessmentSubmissionUpdateManyWithoutEvaluatorNestedInput
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutFacultyUserNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
   }
 
   export type UserUncheckedUpdateWithoutBatchFacultyAssignmentsInput = {
@@ -135378,6 +141338,7 @@ export namespace Prisma {
     createdAssessments?: AssessmentUncheckedUpdateManyWithoutFacultyNestedInput
     evaluatedSubmissions?: AssessmentSubmissionUncheckedUpdateManyWithoutEvaluatorNestedInput
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutFacultyUserNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
   }
 
   export type BranchCreateWithoutBranchBatchesInput = {
@@ -135596,12 +141557,14 @@ export namespace Prisma {
     endTime: string
     status?: string
     exam: ExamCreateNestedOneWithoutSchedulesInput
+    batchCycle?: BatchCycleCreateNestedOneWithoutExamSchedulesInput
     attempts?: ExamAttemptCreateNestedManyWithoutScheduleInput
   }
 
   export type ExamScheduleUncheckedCreateWithoutBranchBatchInput = {
     id?: string
     examId: string
+    batchCycleId?: string | null
     testDate: string
     startTime: string
     endTime: string
@@ -135634,6 +141597,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     branchCourse: BranchCourseCreateNestedOneWithoutAssessmentsInput
     module: BranchCourseModuleCreateNestedOneWithoutAssessmentsInput
+    batchCycle?: BatchCycleCreateNestedOneWithoutAssessmentsInput
     faculty: UserCreateNestedOneWithoutCreatedAssessmentsInput
     submissions?: AssessmentSubmissionCreateNestedManyWithoutAssessmentInput
     originalAssessment?: AssessmentCreateNestedOneWithoutReassessmentsInput
@@ -135649,6 +141613,7 @@ export namespace Prisma {
     assessmentName: string
     branchCourseId: string
     moduleId: string
+    batchCycleId?: string | null
     totalMarks: number
     startDate: Date | string
     endDate: Date | string
@@ -135782,6 +141747,7 @@ export namespace Prisma {
     createdBy: string
     createdAt?: Date | string
     academicTestItem: AcademicTestItemCreateNestedOneWithoutCyclesInput
+    batchCycle: BatchCycleCreateNestedOneWithoutAcademicTestCyclesInput
     questionPapers?: AcademicQuestionPaperCreateNestedManyWithoutCycleInput
     projects?: AcademicTestProjectCreateNestedManyWithoutCycleInput
     schedules?: AcademicScheduledTestCreateNestedManyWithoutCycleInput
@@ -135791,6 +141757,7 @@ export namespace Prisma {
     id?: string
     academicTestItemId: string
     cycleNumber: number
+    batchCycleId: string
     status?: string
     createdBy: string
     createdAt?: Date | string
@@ -135806,6 +141773,82 @@ export namespace Prisma {
 
   export type AcademicTestCycleCreateManyBranchBatchInputEnvelope = {
     data: AcademicTestCycleCreateManyBranchBatchInput | AcademicTestCycleCreateManyBranchBatchInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type BatchCycleCreateWithoutBatchInput = {
+    id?: string
+    cycleNumber: number
+    cycleName: string
+    status?: string
+    startDate?: string | null
+    endDate?: string | null
+    completedAt?: Date | string | null
+    freezeUntil?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    enrollments?: BranchStudentCourseCreateNestedManyWithoutBatchCycleInput
+    academicTestCycles?: AcademicTestCycleCreateNestedManyWithoutBatchCycleInput
+    reportHistories?: AcademicTestReportHistoryCreateNestedManyWithoutBatchCycleInput
+    examSchedules?: ExamScheduleCreateNestedManyWithoutBatchCycleInput
+    assessments?: AssessmentCreateNestedManyWithoutBatchCycleInput
+    reportShares?: FacultyReportShareCreateNestedManyWithoutBatchCycleInput
+  }
+
+  export type BatchCycleUncheckedCreateWithoutBatchInput = {
+    id?: string
+    cycleNumber: number
+    cycleName: string
+    status?: string
+    startDate?: string | null
+    endDate?: string | null
+    completedAt?: Date | string | null
+    freezeUntil?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    enrollments?: BranchStudentCourseUncheckedCreateNestedManyWithoutBatchCycleInput
+    academicTestCycles?: AcademicTestCycleUncheckedCreateNestedManyWithoutBatchCycleInput
+    reportHistories?: AcademicTestReportHistoryUncheckedCreateNestedManyWithoutBatchCycleInput
+    examSchedules?: ExamScheduleUncheckedCreateNestedManyWithoutBatchCycleInput
+    assessments?: AssessmentUncheckedCreateNestedManyWithoutBatchCycleInput
+    reportShares?: FacultyReportShareUncheckedCreateNestedManyWithoutBatchCycleInput
+  }
+
+  export type BatchCycleCreateOrConnectWithoutBatchInput = {
+    where: BatchCycleWhereUniqueInput
+    create: XOR<BatchCycleCreateWithoutBatchInput, BatchCycleUncheckedCreateWithoutBatchInput>
+  }
+
+  export type BatchCycleCreateManyBatchInputEnvelope = {
+    data: BatchCycleCreateManyBatchInput | BatchCycleCreateManyBatchInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AcademicTestReportHistoryCreateWithoutBatchInput = {
+    id?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    batchCycle: BatchCycleCreateNestedOneWithoutReportHistoriesInput
+    academicTest: AcademicTestItemCreateNestedOneWithoutAcademicTestReportHistoriesInput
+    submissions?: AcademicTestReportSubmissionCreateNestedManyWithoutHistoryInput
+  }
+
+  export type AcademicTestReportHistoryUncheckedCreateWithoutBatchInput = {
+    id?: string
+    batchCycleId: string
+    academicTestId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    submissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutHistoryInput
+  }
+
+  export type AcademicTestReportHistoryCreateOrConnectWithoutBatchInput = {
+    where: AcademicTestReportHistoryWhereUniqueInput
+    create: XOR<AcademicTestReportHistoryCreateWithoutBatchInput, AcademicTestReportHistoryUncheckedCreateWithoutBatchInput>
+  }
+
+  export type AcademicTestReportHistoryCreateManyBatchInputEnvelope = {
+    data: AcademicTestReportHistoryCreateManyBatchInput | AcademicTestReportHistoryCreateManyBatchInput[]
     skipDuplicates?: boolean
   }
 
@@ -136059,6 +142102,7 @@ export namespace Prisma {
     id?: StringFilter<"ExamSchedule"> | string
     examId?: StringFilter<"ExamSchedule"> | string
     branchBatchId?: StringFilter<"ExamSchedule"> | string
+    batchCycleId?: StringNullableFilter<"ExamSchedule"> | string | null
     testDate?: StringFilter<"ExamSchedule"> | string
     startTime?: StringFilter<"ExamSchedule"> | string
     endTime?: StringFilter<"ExamSchedule"> | string
@@ -136162,9 +142206,71 @@ export namespace Prisma {
     academicTestItemId?: StringFilter<"AcademicTestCycle"> | string
     branchBatchId?: StringFilter<"AcademicTestCycle"> | string
     cycleNumber?: IntFilter<"AcademicTestCycle"> | number
+    batchCycleId?: StringFilter<"AcademicTestCycle"> | string
     status?: StringFilter<"AcademicTestCycle"> | string
     createdBy?: StringFilter<"AcademicTestCycle"> | string
     createdAt?: DateTimeFilter<"AcademicTestCycle"> | Date | string
+  }
+
+  export type BatchCycleUpsertWithWhereUniqueWithoutBatchInput = {
+    where: BatchCycleWhereUniqueInput
+    update: XOR<BatchCycleUpdateWithoutBatchInput, BatchCycleUncheckedUpdateWithoutBatchInput>
+    create: XOR<BatchCycleCreateWithoutBatchInput, BatchCycleUncheckedCreateWithoutBatchInput>
+  }
+
+  export type BatchCycleUpdateWithWhereUniqueWithoutBatchInput = {
+    where: BatchCycleWhereUniqueInput
+    data: XOR<BatchCycleUpdateWithoutBatchInput, BatchCycleUncheckedUpdateWithoutBatchInput>
+  }
+
+  export type BatchCycleUpdateManyWithWhereWithoutBatchInput = {
+    where: BatchCycleScalarWhereInput
+    data: XOR<BatchCycleUpdateManyMutationInput, BatchCycleUncheckedUpdateManyWithoutBatchInput>
+  }
+
+  export type BatchCycleScalarWhereInput = {
+    AND?: BatchCycleScalarWhereInput | BatchCycleScalarWhereInput[]
+    OR?: BatchCycleScalarWhereInput[]
+    NOT?: BatchCycleScalarWhereInput | BatchCycleScalarWhereInput[]
+    id?: StringFilter<"BatchCycle"> | string
+    batchId?: StringFilter<"BatchCycle"> | string
+    cycleNumber?: IntFilter<"BatchCycle"> | number
+    cycleName?: StringFilter<"BatchCycle"> | string
+    status?: StringFilter<"BatchCycle"> | string
+    startDate?: StringNullableFilter<"BatchCycle"> | string | null
+    endDate?: StringNullableFilter<"BatchCycle"> | string | null
+    completedAt?: DateTimeNullableFilter<"BatchCycle"> | Date | string | null
+    freezeUntil?: DateTimeNullableFilter<"BatchCycle"> | Date | string | null
+    createdAt?: DateTimeFilter<"BatchCycle"> | Date | string
+    updatedAt?: DateTimeFilter<"BatchCycle"> | Date | string
+  }
+
+  export type AcademicTestReportHistoryUpsertWithWhereUniqueWithoutBatchInput = {
+    where: AcademicTestReportHistoryWhereUniqueInput
+    update: XOR<AcademicTestReportHistoryUpdateWithoutBatchInput, AcademicTestReportHistoryUncheckedUpdateWithoutBatchInput>
+    create: XOR<AcademicTestReportHistoryCreateWithoutBatchInput, AcademicTestReportHistoryUncheckedCreateWithoutBatchInput>
+  }
+
+  export type AcademicTestReportHistoryUpdateWithWhereUniqueWithoutBatchInput = {
+    where: AcademicTestReportHistoryWhereUniqueInput
+    data: XOR<AcademicTestReportHistoryUpdateWithoutBatchInput, AcademicTestReportHistoryUncheckedUpdateWithoutBatchInput>
+  }
+
+  export type AcademicTestReportHistoryUpdateManyWithWhereWithoutBatchInput = {
+    where: AcademicTestReportHistoryScalarWhereInput
+    data: XOR<AcademicTestReportHistoryUpdateManyMutationInput, AcademicTestReportHistoryUncheckedUpdateManyWithoutBatchInput>
+  }
+
+  export type AcademicTestReportHistoryScalarWhereInput = {
+    AND?: AcademicTestReportHistoryScalarWhereInput | AcademicTestReportHistoryScalarWhereInput[]
+    OR?: AcademicTestReportHistoryScalarWhereInput[]
+    NOT?: AcademicTestReportHistoryScalarWhereInput | AcademicTestReportHistoryScalarWhereInput[]
+    id?: StringFilter<"AcademicTestReportHistory"> | string
+    batchId?: StringFilter<"AcademicTestReportHistory"> | string
+    batchCycleId?: StringFilter<"AcademicTestReportHistory"> | string
+    academicTestId?: StringFilter<"AcademicTestReportHistory"> | string
+    createdAt?: DateTimeFilter<"AcademicTestReportHistory"> | Date | string
+    updatedAt?: DateTimeFilter<"AcademicTestReportHistory"> | Date | string
   }
 
   export type BranchCourseCreateWithoutAcademicTestsInput = {
@@ -136261,6 +142367,7 @@ export namespace Prisma {
     questionPapers?: AcademicQuestionPaperCreateNestedManyWithoutAcademicTestItemInput
     projects?: AcademicTestProjectCreateNestedManyWithoutAcademicTestItemInput
     cycles?: AcademicTestCycleCreateNestedManyWithoutAcademicTestItemInput
+    academicTestReportHistories?: AcademicTestReportHistoryCreateNestedManyWithoutAcademicTestInput
   }
 
   export type AcademicTestItemUncheckedCreateWithoutAcademicTestInput = {
@@ -136276,6 +142383,7 @@ export namespace Prisma {
     questionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutAcademicTestItemInput
     projects?: AcademicTestProjectUncheckedCreateNestedManyWithoutAcademicTestItemInput
     cycles?: AcademicTestCycleUncheckedCreateNestedManyWithoutAcademicTestItemInput
+    academicTestReportHistories?: AcademicTestReportHistoryUncheckedCreateNestedManyWithoutAcademicTestInput
   }
 
   export type AcademicTestItemCreateOrConnectWithoutAcademicTestInput = {
@@ -136555,6 +142663,7 @@ export namespace Prisma {
     createdBy: string
     createdAt?: Date | string
     branchBatch: BranchBatchCreateNestedOneWithoutAcademicTestCyclesInput
+    batchCycle: BatchCycleCreateNestedOneWithoutAcademicTestCyclesInput
     questionPapers?: AcademicQuestionPaperCreateNestedManyWithoutCycleInput
     projects?: AcademicTestProjectCreateNestedManyWithoutCycleInput
     schedules?: AcademicScheduledTestCreateNestedManyWithoutCycleInput
@@ -136564,6 +142673,7 @@ export namespace Prisma {
     id?: string
     branchBatchId: string
     cycleNumber: number
+    batchCycleId: string
     status?: string
     createdBy: string
     createdAt?: Date | string
@@ -136579,6 +142689,34 @@ export namespace Prisma {
 
   export type AcademicTestCycleCreateManyAcademicTestItemInputEnvelope = {
     data: AcademicTestCycleCreateManyAcademicTestItemInput | AcademicTestCycleCreateManyAcademicTestItemInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AcademicTestReportHistoryCreateWithoutAcademicTestInput = {
+    id?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    batch: BranchBatchCreateNestedOneWithoutAcademicTestReportHistoriesInput
+    batchCycle: BatchCycleCreateNestedOneWithoutReportHistoriesInput
+    submissions?: AcademicTestReportSubmissionCreateNestedManyWithoutHistoryInput
+  }
+
+  export type AcademicTestReportHistoryUncheckedCreateWithoutAcademicTestInput = {
+    id?: string
+    batchId: string
+    batchCycleId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    submissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutHistoryInput
+  }
+
+  export type AcademicTestReportHistoryCreateOrConnectWithoutAcademicTestInput = {
+    where: AcademicTestReportHistoryWhereUniqueInput
+    create: XOR<AcademicTestReportHistoryCreateWithoutAcademicTestInput, AcademicTestReportHistoryUncheckedCreateWithoutAcademicTestInput>
+  }
+
+  export type AcademicTestReportHistoryCreateManyAcademicTestInputEnvelope = {
+    data: AcademicTestReportHistoryCreateManyAcademicTestInput | AcademicTestReportHistoryCreateManyAcademicTestInput[]
     skipDuplicates?: boolean
   }
 
@@ -136659,6 +142797,22 @@ export namespace Prisma {
     data: XOR<AcademicTestCycleUpdateManyMutationInput, AcademicTestCycleUncheckedUpdateManyWithoutAcademicTestItemInput>
   }
 
+  export type AcademicTestReportHistoryUpsertWithWhereUniqueWithoutAcademicTestInput = {
+    where: AcademicTestReportHistoryWhereUniqueInput
+    update: XOR<AcademicTestReportHistoryUpdateWithoutAcademicTestInput, AcademicTestReportHistoryUncheckedUpdateWithoutAcademicTestInput>
+    create: XOR<AcademicTestReportHistoryCreateWithoutAcademicTestInput, AcademicTestReportHistoryUncheckedCreateWithoutAcademicTestInput>
+  }
+
+  export type AcademicTestReportHistoryUpdateWithWhereUniqueWithoutAcademicTestInput = {
+    where: AcademicTestReportHistoryWhereUniqueInput
+    data: XOR<AcademicTestReportHistoryUpdateWithoutAcademicTestInput, AcademicTestReportHistoryUncheckedUpdateWithoutAcademicTestInput>
+  }
+
+  export type AcademicTestReportHistoryUpdateManyWithWhereWithoutAcademicTestInput = {
+    where: AcademicTestReportHistoryScalarWhereInput
+    data: XOR<AcademicTestReportHistoryUpdateManyMutationInput, AcademicTestReportHistoryUncheckedUpdateManyWithoutAcademicTestInput>
+  }
+
   export type AcademicTestCreateWithoutBatchesInput = {
     id?: string
     createdBy: string
@@ -136717,6 +142871,8 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperCreateNestedManyWithoutBranchBatchInput
     academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchBatchInput
     academicTestCycles?: AcademicTestCycleCreateNestedManyWithoutBranchBatchInput
+    cycles?: BatchCycleCreateNestedManyWithoutBatchInput
+    academicTestReportHistories?: AcademicTestReportHistoryCreateNestedManyWithoutBatchInput
   }
 
   export type BranchBatchUncheckedCreateWithoutAcademicTestBatchesInput = {
@@ -136754,6 +142910,8 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchBatchInput
     academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchBatchInput
     academicTestCycles?: AcademicTestCycleUncheckedCreateNestedManyWithoutBranchBatchInput
+    cycles?: BatchCycleUncheckedCreateNestedManyWithoutBatchInput
+    academicTestReportHistories?: AcademicTestReportHistoryUncheckedCreateNestedManyWithoutBatchInput
   }
 
   export type BranchBatchCreateOrConnectWithoutAcademicTestBatchesInput = {
@@ -136836,6 +142994,8 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUpdateManyWithoutBranchBatchNestedInput
     academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchBatchNestedInput
     academicTestCycles?: AcademicTestCycleUpdateManyWithoutBranchBatchNestedInput
+    cycles?: BatchCycleUpdateManyWithoutBatchNestedInput
+    academicTestReportHistories?: AcademicTestReportHistoryUpdateManyWithoutBatchNestedInput
   }
 
   export type BranchBatchUncheckedUpdateWithoutAcademicTestBatchesInput = {
@@ -136873,6 +143033,8 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutBranchBatchNestedInput
     academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchBatchNestedInput
     academicTestCycles?: AcademicTestCycleUncheckedUpdateManyWithoutBranchBatchNestedInput
+    cycles?: BatchCycleUncheckedUpdateManyWithoutBatchNestedInput
+    academicTestReportHistories?: AcademicTestReportHistoryUncheckedUpdateManyWithoutBatchNestedInput
   }
 
   export type AcademicTestItemCreateWithoutQuestionPapersInput = {
@@ -136888,6 +143050,7 @@ export namespace Prisma {
     academicTest: AcademicTestCreateNestedOneWithoutItemsInput
     projects?: AcademicTestProjectCreateNestedManyWithoutAcademicTestItemInput
     cycles?: AcademicTestCycleCreateNestedManyWithoutAcademicTestItemInput
+    academicTestReportHistories?: AcademicTestReportHistoryCreateNestedManyWithoutAcademicTestInput
   }
 
   export type AcademicTestItemUncheckedCreateWithoutQuestionPapersInput = {
@@ -136903,6 +143066,7 @@ export namespace Prisma {
     projectEndDate?: string | null
     projects?: AcademicTestProjectUncheckedCreateNestedManyWithoutAcademicTestItemInput
     cycles?: AcademicTestCycleUncheckedCreateNestedManyWithoutAcademicTestItemInput
+    academicTestReportHistories?: AcademicTestReportHistoryUncheckedCreateNestedManyWithoutAcademicTestInput
   }
 
   export type AcademicTestItemCreateOrConnectWithoutQuestionPapersInput = {
@@ -137026,6 +143190,8 @@ export namespace Prisma {
     academicTestBatches?: AcademicTestBatchCreateNestedManyWithoutBranchBatchInput
     academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchBatchInput
     academicTestCycles?: AcademicTestCycleCreateNestedManyWithoutBranchBatchInput
+    cycles?: BatchCycleCreateNestedManyWithoutBatchInput
+    academicTestReportHistories?: AcademicTestReportHistoryCreateNestedManyWithoutBatchInput
   }
 
   export type BranchBatchUncheckedCreateWithoutAcademicQuestionPapersInput = {
@@ -137063,6 +143229,8 @@ export namespace Prisma {
     academicTestBatches?: AcademicTestBatchUncheckedCreateNestedManyWithoutBranchBatchInput
     academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchBatchInput
     academicTestCycles?: AcademicTestCycleUncheckedCreateNestedManyWithoutBranchBatchInput
+    cycles?: BatchCycleUncheckedCreateNestedManyWithoutBatchInput
+    academicTestReportHistories?: AcademicTestReportHistoryUncheckedCreateNestedManyWithoutBatchInput
   }
 
   export type BranchBatchCreateOrConnectWithoutAcademicQuestionPapersInput = {
@@ -137118,6 +143286,7 @@ export namespace Prisma {
     createdAt?: Date | string
     academicTestItem: AcademicTestItemCreateNestedOneWithoutCyclesInput
     branchBatch: BranchBatchCreateNestedOneWithoutAcademicTestCyclesInput
+    batchCycle: BatchCycleCreateNestedOneWithoutAcademicTestCyclesInput
     projects?: AcademicTestProjectCreateNestedManyWithoutCycleInput
     schedules?: AcademicScheduledTestCreateNestedManyWithoutCycleInput
   }
@@ -137127,6 +143296,7 @@ export namespace Prisma {
     academicTestItemId: string
     branchBatchId: string
     cycleNumber: number
+    batchCycleId: string
     status?: string
     createdBy: string
     createdAt?: Date | string
@@ -137163,6 +143333,7 @@ export namespace Prisma {
     academicTest?: AcademicTestUpdateOneRequiredWithoutItemsNestedInput
     projects?: AcademicTestProjectUpdateManyWithoutAcademicTestItemNestedInput
     cycles?: AcademicTestCycleUpdateManyWithoutAcademicTestItemNestedInput
+    academicTestReportHistories?: AcademicTestReportHistoryUpdateManyWithoutAcademicTestNestedInput
   }
 
   export type AcademicTestItemUncheckedUpdateWithoutQuestionPapersInput = {
@@ -137178,6 +143349,7 @@ export namespace Prisma {
     projectEndDate?: NullableStringFieldUpdateOperationsInput | string | null
     projects?: AcademicTestProjectUncheckedUpdateManyWithoutAcademicTestItemNestedInput
     cycles?: AcademicTestCycleUncheckedUpdateManyWithoutAcademicTestItemNestedInput
+    academicTestReportHistories?: AcademicTestReportHistoryUncheckedUpdateManyWithoutAcademicTestNestedInput
   }
 
   export type BranchCourseUpsertWithoutAcademicQuestionPapersInput = {
@@ -137313,6 +143485,8 @@ export namespace Prisma {
     academicTestBatches?: AcademicTestBatchUpdateManyWithoutBranchBatchNestedInput
     academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchBatchNestedInput
     academicTestCycles?: AcademicTestCycleUpdateManyWithoutBranchBatchNestedInput
+    cycles?: BatchCycleUpdateManyWithoutBatchNestedInput
+    academicTestReportHistories?: AcademicTestReportHistoryUpdateManyWithoutBatchNestedInput
   }
 
   export type BranchBatchUncheckedUpdateWithoutAcademicQuestionPapersInput = {
@@ -137350,6 +143524,8 @@ export namespace Prisma {
     academicTestBatches?: AcademicTestBatchUncheckedUpdateManyWithoutBranchBatchNestedInput
     academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchBatchNestedInput
     academicTestCycles?: AcademicTestCycleUncheckedUpdateManyWithoutBranchBatchNestedInput
+    cycles?: BatchCycleUncheckedUpdateManyWithoutBatchNestedInput
+    academicTestReportHistories?: AcademicTestReportHistoryUncheckedUpdateManyWithoutBatchNestedInput
   }
 
   export type AcademicQuestionUpsertWithWhereUniqueWithoutQuestionPaperInput = {
@@ -137406,6 +143582,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     academicTestItem?: AcademicTestItemUpdateOneRequiredWithoutCyclesNestedInput
     branchBatch?: BranchBatchUpdateOneRequiredWithoutAcademicTestCyclesNestedInput
+    batchCycle?: BatchCycleUpdateOneRequiredWithoutAcademicTestCyclesNestedInput
     projects?: AcademicTestProjectUpdateManyWithoutCycleNestedInput
     schedules?: AcademicScheduledTestUpdateManyWithoutCycleNestedInput
   }
@@ -137415,6 +143592,7 @@ export namespace Prisma {
     academicTestItemId?: StringFieldUpdateOperationsInput | string
     branchBatchId?: StringFieldUpdateOperationsInput | string
     cycleNumber?: IntFieldUpdateOperationsInput | number
+    batchCycleId?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     createdBy?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -137515,6 +143693,7 @@ export namespace Prisma {
     academicTest: AcademicTestCreateNestedOneWithoutItemsInput
     questionPapers?: AcademicQuestionPaperCreateNestedManyWithoutAcademicTestItemInput
     cycles?: AcademicTestCycleCreateNestedManyWithoutAcademicTestItemInput
+    academicTestReportHistories?: AcademicTestReportHistoryCreateNestedManyWithoutAcademicTestInput
   }
 
   export type AcademicTestItemUncheckedCreateWithoutProjectsInput = {
@@ -137530,6 +143709,7 @@ export namespace Prisma {
     projectEndDate?: string | null
     questionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutAcademicTestItemInput
     cycles?: AcademicTestCycleUncheckedCreateNestedManyWithoutAcademicTestItemInput
+    academicTestReportHistories?: AcademicTestReportHistoryUncheckedCreateNestedManyWithoutAcademicTestInput
   }
 
   export type AcademicTestItemCreateOrConnectWithoutProjectsInput = {
@@ -137653,6 +143833,8 @@ export namespace Prisma {
     academicTestBatches?: AcademicTestBatchCreateNestedManyWithoutBranchBatchInput
     academicQuestionPapers?: AcademicQuestionPaperCreateNestedManyWithoutBranchBatchInput
     academicTestCycles?: AcademicTestCycleCreateNestedManyWithoutBranchBatchInput
+    cycles?: BatchCycleCreateNestedManyWithoutBatchInput
+    academicTestReportHistories?: AcademicTestReportHistoryCreateNestedManyWithoutBatchInput
   }
 
   export type BranchBatchUncheckedCreateWithoutAcademicTestProjectsInput = {
@@ -137690,6 +143872,8 @@ export namespace Prisma {
     academicTestBatches?: AcademicTestBatchUncheckedCreateNestedManyWithoutBranchBatchInput
     academicQuestionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchBatchInput
     academicTestCycles?: AcademicTestCycleUncheckedCreateNestedManyWithoutBranchBatchInput
+    cycles?: BatchCycleUncheckedCreateNestedManyWithoutBatchInput
+    academicTestReportHistories?: AcademicTestReportHistoryUncheckedCreateNestedManyWithoutBatchInput
   }
 
   export type BranchBatchCreateOrConnectWithoutAcademicTestProjectsInput = {
@@ -137705,6 +143889,7 @@ export namespace Prisma {
     createdAt?: Date | string
     academicTestItem: AcademicTestItemCreateNestedOneWithoutCyclesInput
     branchBatch: BranchBatchCreateNestedOneWithoutAcademicTestCyclesInput
+    batchCycle: BatchCycleCreateNestedOneWithoutAcademicTestCyclesInput
     questionPapers?: AcademicQuestionPaperCreateNestedManyWithoutCycleInput
     schedules?: AcademicScheduledTestCreateNestedManyWithoutCycleInput
   }
@@ -137714,6 +143899,7 @@ export namespace Prisma {
     academicTestItemId: string
     branchBatchId: string
     cycleNumber: number
+    batchCycleId: string
     status?: string
     createdBy: string
     createdAt?: Date | string
@@ -137750,6 +143936,7 @@ export namespace Prisma {
     academicTest?: AcademicTestUpdateOneRequiredWithoutItemsNestedInput
     questionPapers?: AcademicQuestionPaperUpdateManyWithoutAcademicTestItemNestedInput
     cycles?: AcademicTestCycleUpdateManyWithoutAcademicTestItemNestedInput
+    academicTestReportHistories?: AcademicTestReportHistoryUpdateManyWithoutAcademicTestNestedInput
   }
 
   export type AcademicTestItemUncheckedUpdateWithoutProjectsInput = {
@@ -137765,6 +143952,7 @@ export namespace Prisma {
     projectEndDate?: NullableStringFieldUpdateOperationsInput | string | null
     questionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutAcademicTestItemNestedInput
     cycles?: AcademicTestCycleUncheckedUpdateManyWithoutAcademicTestItemNestedInput
+    academicTestReportHistories?: AcademicTestReportHistoryUncheckedUpdateManyWithoutAcademicTestNestedInput
   }
 
   export type BranchCourseUpsertWithoutAcademicTestProjectsInput = {
@@ -137900,6 +144088,8 @@ export namespace Prisma {
     academicTestBatches?: AcademicTestBatchUpdateManyWithoutBranchBatchNestedInput
     academicQuestionPapers?: AcademicQuestionPaperUpdateManyWithoutBranchBatchNestedInput
     academicTestCycles?: AcademicTestCycleUpdateManyWithoutBranchBatchNestedInput
+    cycles?: BatchCycleUpdateManyWithoutBatchNestedInput
+    academicTestReportHistories?: AcademicTestReportHistoryUpdateManyWithoutBatchNestedInput
   }
 
   export type BranchBatchUncheckedUpdateWithoutAcademicTestProjectsInput = {
@@ -137937,6 +144127,8 @@ export namespace Prisma {
     academicTestBatches?: AcademicTestBatchUncheckedUpdateManyWithoutBranchBatchNestedInput
     academicQuestionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutBranchBatchNestedInput
     academicTestCycles?: AcademicTestCycleUncheckedUpdateManyWithoutBranchBatchNestedInput
+    cycles?: BatchCycleUncheckedUpdateManyWithoutBatchNestedInput
+    academicTestReportHistories?: AcademicTestReportHistoryUncheckedUpdateManyWithoutBatchNestedInput
   }
 
   export type AcademicTestCycleUpsertWithoutProjectsInput = {
@@ -137958,6 +144150,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     academicTestItem?: AcademicTestItemUpdateOneRequiredWithoutCyclesNestedInput
     branchBatch?: BranchBatchUpdateOneRequiredWithoutAcademicTestCyclesNestedInput
+    batchCycle?: BatchCycleUpdateOneRequiredWithoutAcademicTestCyclesNestedInput
     questionPapers?: AcademicQuestionPaperUpdateManyWithoutCycleNestedInput
     schedules?: AcademicScheduledTestUpdateManyWithoutCycleNestedInput
   }
@@ -137967,6 +144160,7 @@ export namespace Prisma {
     academicTestItemId?: StringFieldUpdateOperationsInput | string
     branchBatchId?: StringFieldUpdateOperationsInput | string
     cycleNumber?: IntFieldUpdateOperationsInput | number
+    batchCycleId?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     createdBy?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -137982,6 +144176,7 @@ export namespace Prisma {
     createdAt?: Date | string
     academicTestItem: AcademicTestItemCreateNestedOneWithoutCyclesInput
     branchBatch: BranchBatchCreateNestedOneWithoutAcademicTestCyclesInput
+    batchCycle: BatchCycleCreateNestedOneWithoutAcademicTestCyclesInput
     questionPapers?: AcademicQuestionPaperCreateNestedManyWithoutCycleInput
     projects?: AcademicTestProjectCreateNestedManyWithoutCycleInput
   }
@@ -137991,6 +144186,7 @@ export namespace Prisma {
     academicTestItemId: string
     branchBatchId: string
     cycleNumber: number
+    batchCycleId: string
     status?: string
     createdBy: string
     createdAt?: Date | string
@@ -138022,6 +144218,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     academicTestItem?: AcademicTestItemUpdateOneRequiredWithoutCyclesNestedInput
     branchBatch?: BranchBatchUpdateOneRequiredWithoutAcademicTestCyclesNestedInput
+    batchCycle?: BatchCycleUpdateOneRequiredWithoutAcademicTestCyclesNestedInput
     questionPapers?: AcademicQuestionPaperUpdateManyWithoutCycleNestedInput
     projects?: AcademicTestProjectUpdateManyWithoutCycleNestedInput
   }
@@ -138031,6 +144228,7 @@ export namespace Prisma {
     academicTestItemId?: StringFieldUpdateOperationsInput | string
     branchBatchId?: StringFieldUpdateOperationsInput | string
     cycleNumber?: IntFieldUpdateOperationsInput | number
+    batchCycleId?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     createdBy?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -138051,6 +144249,7 @@ export namespace Prisma {
     academicTest: AcademicTestCreateNestedOneWithoutItemsInput
     questionPapers?: AcademicQuestionPaperCreateNestedManyWithoutAcademicTestItemInput
     projects?: AcademicTestProjectCreateNestedManyWithoutAcademicTestItemInput
+    academicTestReportHistories?: AcademicTestReportHistoryCreateNestedManyWithoutAcademicTestInput
   }
 
   export type AcademicTestItemUncheckedCreateWithoutCyclesInput = {
@@ -138066,6 +144265,7 @@ export namespace Prisma {
     projectEndDate?: string | null
     questionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutAcademicTestItemInput
     projects?: AcademicTestProjectUncheckedCreateNestedManyWithoutAcademicTestItemInput
+    academicTestReportHistories?: AcademicTestReportHistoryUncheckedCreateNestedManyWithoutAcademicTestInput
   }
 
   export type AcademicTestItemCreateOrConnectWithoutCyclesInput = {
@@ -138108,6 +144308,8 @@ export namespace Prisma {
     academicTestBatches?: AcademicTestBatchCreateNestedManyWithoutBranchBatchInput
     academicQuestionPapers?: AcademicQuestionPaperCreateNestedManyWithoutBranchBatchInput
     academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchBatchInput
+    cycles?: BatchCycleCreateNestedManyWithoutBatchInput
+    academicTestReportHistories?: AcademicTestReportHistoryCreateNestedManyWithoutBatchInput
   }
 
   export type BranchBatchUncheckedCreateWithoutAcademicTestCyclesInput = {
@@ -138145,11 +144347,56 @@ export namespace Prisma {
     academicTestBatches?: AcademicTestBatchUncheckedCreateNestedManyWithoutBranchBatchInput
     academicQuestionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchBatchInput
     academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchBatchInput
+    cycles?: BatchCycleUncheckedCreateNestedManyWithoutBatchInput
+    academicTestReportHistories?: AcademicTestReportHistoryUncheckedCreateNestedManyWithoutBatchInput
   }
 
   export type BranchBatchCreateOrConnectWithoutAcademicTestCyclesInput = {
     where: BranchBatchWhereUniqueInput
     create: XOR<BranchBatchCreateWithoutAcademicTestCyclesInput, BranchBatchUncheckedCreateWithoutAcademicTestCyclesInput>
+  }
+
+  export type BatchCycleCreateWithoutAcademicTestCyclesInput = {
+    id?: string
+    cycleNumber: number
+    cycleName: string
+    status?: string
+    startDate?: string | null
+    endDate?: string | null
+    completedAt?: Date | string | null
+    freezeUntil?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    batch: BranchBatchCreateNestedOneWithoutCyclesInput
+    enrollments?: BranchStudentCourseCreateNestedManyWithoutBatchCycleInput
+    reportHistories?: AcademicTestReportHistoryCreateNestedManyWithoutBatchCycleInput
+    examSchedules?: ExamScheduleCreateNestedManyWithoutBatchCycleInput
+    assessments?: AssessmentCreateNestedManyWithoutBatchCycleInput
+    reportShares?: FacultyReportShareCreateNestedManyWithoutBatchCycleInput
+  }
+
+  export type BatchCycleUncheckedCreateWithoutAcademicTestCyclesInput = {
+    id?: string
+    batchId: string
+    cycleNumber: number
+    cycleName: string
+    status?: string
+    startDate?: string | null
+    endDate?: string | null
+    completedAt?: Date | string | null
+    freezeUntil?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    enrollments?: BranchStudentCourseUncheckedCreateNestedManyWithoutBatchCycleInput
+    reportHistories?: AcademicTestReportHistoryUncheckedCreateNestedManyWithoutBatchCycleInput
+    examSchedules?: ExamScheduleUncheckedCreateNestedManyWithoutBatchCycleInput
+    assessments?: AssessmentUncheckedCreateNestedManyWithoutBatchCycleInput
+    reportShares?: FacultyReportShareUncheckedCreateNestedManyWithoutBatchCycleInput
+  }
+
+  export type BatchCycleCreateOrConnectWithoutAcademicTestCyclesInput = {
+    where: BatchCycleWhereUniqueInput
+    create: XOR<BatchCycleCreateWithoutAcademicTestCyclesInput, BatchCycleUncheckedCreateWithoutAcademicTestCyclesInput>
   }
 
   export type AcademicQuestionPaperCreateWithoutCycleInput = {
@@ -138316,6 +144563,7 @@ export namespace Prisma {
     academicTest?: AcademicTestUpdateOneRequiredWithoutItemsNestedInput
     questionPapers?: AcademicQuestionPaperUpdateManyWithoutAcademicTestItemNestedInput
     projects?: AcademicTestProjectUpdateManyWithoutAcademicTestItemNestedInput
+    academicTestReportHistories?: AcademicTestReportHistoryUpdateManyWithoutAcademicTestNestedInput
   }
 
   export type AcademicTestItemUncheckedUpdateWithoutCyclesInput = {
@@ -138331,6 +144579,7 @@ export namespace Prisma {
     projectEndDate?: NullableStringFieldUpdateOperationsInput | string | null
     questionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutAcademicTestItemNestedInput
     projects?: AcademicTestProjectUncheckedUpdateManyWithoutAcademicTestItemNestedInput
+    academicTestReportHistories?: AcademicTestReportHistoryUncheckedUpdateManyWithoutAcademicTestNestedInput
   }
 
   export type BranchBatchUpsertWithoutAcademicTestCyclesInput = {
@@ -138379,6 +144628,8 @@ export namespace Prisma {
     academicTestBatches?: AcademicTestBatchUpdateManyWithoutBranchBatchNestedInput
     academicQuestionPapers?: AcademicQuestionPaperUpdateManyWithoutBranchBatchNestedInput
     academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchBatchNestedInput
+    cycles?: BatchCycleUpdateManyWithoutBatchNestedInput
+    academicTestReportHistories?: AcademicTestReportHistoryUpdateManyWithoutBatchNestedInput
   }
 
   export type BranchBatchUncheckedUpdateWithoutAcademicTestCyclesInput = {
@@ -138416,6 +144667,57 @@ export namespace Prisma {
     academicTestBatches?: AcademicTestBatchUncheckedUpdateManyWithoutBranchBatchNestedInput
     academicQuestionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutBranchBatchNestedInput
     academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchBatchNestedInput
+    cycles?: BatchCycleUncheckedUpdateManyWithoutBatchNestedInput
+    academicTestReportHistories?: AcademicTestReportHistoryUncheckedUpdateManyWithoutBatchNestedInput
+  }
+
+  export type BatchCycleUpsertWithoutAcademicTestCyclesInput = {
+    update: XOR<BatchCycleUpdateWithoutAcademicTestCyclesInput, BatchCycleUncheckedUpdateWithoutAcademicTestCyclesInput>
+    create: XOR<BatchCycleCreateWithoutAcademicTestCyclesInput, BatchCycleUncheckedCreateWithoutAcademicTestCyclesInput>
+    where?: BatchCycleWhereInput
+  }
+
+  export type BatchCycleUpdateToOneWithWhereWithoutAcademicTestCyclesInput = {
+    where?: BatchCycleWhereInput
+    data: XOR<BatchCycleUpdateWithoutAcademicTestCyclesInput, BatchCycleUncheckedUpdateWithoutAcademicTestCyclesInput>
+  }
+
+  export type BatchCycleUpdateWithoutAcademicTestCyclesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    cycleNumber?: IntFieldUpdateOperationsInput | number
+    cycleName?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    startDate?: NullableStringFieldUpdateOperationsInput | string | null
+    endDate?: NullableStringFieldUpdateOperationsInput | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    freezeUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    batch?: BranchBatchUpdateOneRequiredWithoutCyclesNestedInput
+    enrollments?: BranchStudentCourseUpdateManyWithoutBatchCycleNestedInput
+    reportHistories?: AcademicTestReportHistoryUpdateManyWithoutBatchCycleNestedInput
+    examSchedules?: ExamScheduleUpdateManyWithoutBatchCycleNestedInput
+    assessments?: AssessmentUpdateManyWithoutBatchCycleNestedInput
+    reportShares?: FacultyReportShareUpdateManyWithoutBatchCycleNestedInput
+  }
+
+  export type BatchCycleUncheckedUpdateWithoutAcademicTestCyclesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    batchId?: StringFieldUpdateOperationsInput | string
+    cycleNumber?: IntFieldUpdateOperationsInput | number
+    cycleName?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    startDate?: NullableStringFieldUpdateOperationsInput | string | null
+    endDate?: NullableStringFieldUpdateOperationsInput | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    freezeUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    enrollments?: BranchStudentCourseUncheckedUpdateManyWithoutBatchCycleNestedInput
+    reportHistories?: AcademicTestReportHistoryUncheckedUpdateManyWithoutBatchCycleNestedInput
+    examSchedules?: ExamScheduleUncheckedUpdateManyWithoutBatchCycleNestedInput
+    assessments?: AssessmentUncheckedUpdateManyWithoutBatchCycleNestedInput
+    reportShares?: FacultyReportShareUncheckedUpdateManyWithoutBatchCycleNestedInput
   }
 
   export type AcademicQuestionPaperUpsertWithWhereUniqueWithoutCycleInput = {
@@ -138492,6 +144794,560 @@ export namespace Prisma {
     createdBy?: StringFilter<"AcademicScheduledTest"> | string
     createdAt?: DateTimeFilter<"AcademicScheduledTest"> | Date | string
     updatedAt?: DateTimeFilter<"AcademicScheduledTest"> | Date | string
+  }
+
+  export type BranchBatchCreateWithoutCyclesInput = {
+    id?: string
+    batchId: string
+    courseId: string
+    courseName: string
+    facultyId: string
+    facultyName: string
+    facultyEmail: string
+    batchName: string
+    startTime: string
+    startPeriod: string
+    endTime: string
+    endPeriod: string
+    batchTiming: string
+    totalSeats: number
+    offlineSeats?: number
+    weekType?: string | null
+    mode?: string | null
+    courseStartDate?: string | null
+    courseEndDate?: string | null
+    weeklyOffDay?: string | null
+    sequenceNo?: number
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branch: BranchCreateNestedOneWithoutBranchBatchesInput
+    branchCourse: BranchCourseCreateNestedOneWithoutBranchBatchesInput
+    branchFaculty: BranchFacultyCreateNestedOneWithoutBranchBatchesInput
+    examSchedules?: ExamScheduleCreateNestedManyWithoutBranchBatchInput
+    assessments?: AssessmentCreateNestedManyWithoutBranchBatchInput
+    academicTestBatches?: AcademicTestBatchCreateNestedManyWithoutBranchBatchInput
+    academicQuestionPapers?: AcademicQuestionPaperCreateNestedManyWithoutBranchBatchInput
+    academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchBatchInput
+    academicTestCycles?: AcademicTestCycleCreateNestedManyWithoutBranchBatchInput
+    academicTestReportHistories?: AcademicTestReportHistoryCreateNestedManyWithoutBatchInput
+  }
+
+  export type BranchBatchUncheckedCreateWithoutCyclesInput = {
+    id?: string
+    branchId: string
+    branchCourseId: string
+    branchFacultyId: string
+    batchId: string
+    courseId: string
+    courseName: string
+    facultyId: string
+    facultyName: string
+    facultyEmail: string
+    batchName: string
+    startTime: string
+    startPeriod: string
+    endTime: string
+    endPeriod: string
+    batchTiming: string
+    totalSeats: number
+    offlineSeats?: number
+    weekType?: string | null
+    mode?: string | null
+    courseStartDate?: string | null
+    courseEndDate?: string | null
+    weeklyOffDay?: string | null
+    sequenceNo?: number
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    examSchedules?: ExamScheduleUncheckedCreateNestedManyWithoutBranchBatchInput
+    assessments?: AssessmentUncheckedCreateNestedManyWithoutBranchBatchInput
+    academicTestBatches?: AcademicTestBatchUncheckedCreateNestedManyWithoutBranchBatchInput
+    academicQuestionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchBatchInput
+    academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchBatchInput
+    academicTestCycles?: AcademicTestCycleUncheckedCreateNestedManyWithoutBranchBatchInput
+    academicTestReportHistories?: AcademicTestReportHistoryUncheckedCreateNestedManyWithoutBatchInput
+  }
+
+  export type BranchBatchCreateOrConnectWithoutCyclesInput = {
+    where: BranchBatchWhereUniqueInput
+    create: XOR<BranchBatchCreateWithoutCyclesInput, BranchBatchUncheckedCreateWithoutCyclesInput>
+  }
+
+  export type BranchStudentCourseCreateWithoutBatchCycleInput = {
+    id?: string
+    courseName?: string | null
+    facultyId?: string | null
+    facultyName?: string | null
+    batchId?: string | null
+    batchName?: string | null
+    batchTiming?: string | null
+    scheduleType?: string | null
+    mode?: string | null
+    startDate?: string | null
+    endDate?: string | null
+    arrangementType?: string
+    sequenceOrder?: number
+    totalCourseAmount?: number | null
+    discountType?: $Enums.DiscountType | null
+    discountValue?: number | null
+    discountAmount?: number | null
+    finalCourseAmount?: number | null
+    courseProgress?: number | null
+    courseCompletedAt?: Date | string | null
+    paymentPlanId?: string | null
+    paymentPlan?: string | null
+    status?: $Enums.RecordStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branchStudent: BranchStudentCreateNestedOneWithoutCourseEnrollmentsInput
+    branch: BranchCreateNestedOneWithoutStudentEnrollmentsInput
+    course: BranchCourseCreateNestedOneWithoutStudentEnrollmentsInput
+  }
+
+  export type BranchStudentCourseUncheckedCreateWithoutBatchCycleInput = {
+    id?: string
+    branchStudentId: string
+    branchId: string
+    courseId: string
+    courseName?: string | null
+    facultyId?: string | null
+    facultyName?: string | null
+    batchId?: string | null
+    batchName?: string | null
+    batchTiming?: string | null
+    scheduleType?: string | null
+    mode?: string | null
+    startDate?: string | null
+    endDate?: string | null
+    arrangementType?: string
+    sequenceOrder?: number
+    totalCourseAmount?: number | null
+    discountType?: $Enums.DiscountType | null
+    discountValue?: number | null
+    discountAmount?: number | null
+    finalCourseAmount?: number | null
+    courseProgress?: number | null
+    courseCompletedAt?: Date | string | null
+    paymentPlanId?: string | null
+    paymentPlan?: string | null
+    status?: $Enums.RecordStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type BranchStudentCourseCreateOrConnectWithoutBatchCycleInput = {
+    where: BranchStudentCourseWhereUniqueInput
+    create: XOR<BranchStudentCourseCreateWithoutBatchCycleInput, BranchStudentCourseUncheckedCreateWithoutBatchCycleInput>
+  }
+
+  export type BranchStudentCourseCreateManyBatchCycleInputEnvelope = {
+    data: BranchStudentCourseCreateManyBatchCycleInput | BranchStudentCourseCreateManyBatchCycleInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AcademicTestCycleCreateWithoutBatchCycleInput = {
+    id?: string
+    cycleNumber: number
+    status?: string
+    createdBy: string
+    createdAt?: Date | string
+    academicTestItem: AcademicTestItemCreateNestedOneWithoutCyclesInput
+    branchBatch: BranchBatchCreateNestedOneWithoutAcademicTestCyclesInput
+    questionPapers?: AcademicQuestionPaperCreateNestedManyWithoutCycleInput
+    projects?: AcademicTestProjectCreateNestedManyWithoutCycleInput
+    schedules?: AcademicScheduledTestCreateNestedManyWithoutCycleInput
+  }
+
+  export type AcademicTestCycleUncheckedCreateWithoutBatchCycleInput = {
+    id?: string
+    academicTestItemId: string
+    branchBatchId: string
+    cycleNumber: number
+    status?: string
+    createdBy: string
+    createdAt?: Date | string
+    questionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutCycleInput
+    projects?: AcademicTestProjectUncheckedCreateNestedManyWithoutCycleInput
+    schedules?: AcademicScheduledTestUncheckedCreateNestedManyWithoutCycleInput
+  }
+
+  export type AcademicTestCycleCreateOrConnectWithoutBatchCycleInput = {
+    where: AcademicTestCycleWhereUniqueInput
+    create: XOR<AcademicTestCycleCreateWithoutBatchCycleInput, AcademicTestCycleUncheckedCreateWithoutBatchCycleInput>
+  }
+
+  export type AcademicTestCycleCreateManyBatchCycleInputEnvelope = {
+    data: AcademicTestCycleCreateManyBatchCycleInput | AcademicTestCycleCreateManyBatchCycleInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AcademicTestReportHistoryCreateWithoutBatchCycleInput = {
+    id?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    batch: BranchBatchCreateNestedOneWithoutAcademicTestReportHistoriesInput
+    academicTest: AcademicTestItemCreateNestedOneWithoutAcademicTestReportHistoriesInput
+    submissions?: AcademicTestReportSubmissionCreateNestedManyWithoutHistoryInput
+  }
+
+  export type AcademicTestReportHistoryUncheckedCreateWithoutBatchCycleInput = {
+    id?: string
+    batchId: string
+    academicTestId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    submissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutHistoryInput
+  }
+
+  export type AcademicTestReportHistoryCreateOrConnectWithoutBatchCycleInput = {
+    where: AcademicTestReportHistoryWhereUniqueInput
+    create: XOR<AcademicTestReportHistoryCreateWithoutBatchCycleInput, AcademicTestReportHistoryUncheckedCreateWithoutBatchCycleInput>
+  }
+
+  export type AcademicTestReportHistoryCreateManyBatchCycleInputEnvelope = {
+    data: AcademicTestReportHistoryCreateManyBatchCycleInput | AcademicTestReportHistoryCreateManyBatchCycleInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ExamScheduleCreateWithoutBatchCycleInput = {
+    id?: string
+    testDate: string
+    startTime: string
+    endTime: string
+    status?: string
+    exam: ExamCreateNestedOneWithoutSchedulesInput
+    branchBatch: BranchBatchCreateNestedOneWithoutExamSchedulesInput
+    attempts?: ExamAttemptCreateNestedManyWithoutScheduleInput
+  }
+
+  export type ExamScheduleUncheckedCreateWithoutBatchCycleInput = {
+    id?: string
+    examId: string
+    branchBatchId: string
+    testDate: string
+    startTime: string
+    endTime: string
+    status?: string
+    attempts?: ExamAttemptUncheckedCreateNestedManyWithoutScheduleInput
+  }
+
+  export type ExamScheduleCreateOrConnectWithoutBatchCycleInput = {
+    where: ExamScheduleWhereUniqueInput
+    create: XOR<ExamScheduleCreateWithoutBatchCycleInput, ExamScheduleUncheckedCreateWithoutBatchCycleInput>
+  }
+
+  export type ExamScheduleCreateManyBatchCycleInputEnvelope = {
+    data: ExamScheduleCreateManyBatchCycleInput | ExamScheduleCreateManyBatchCycleInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AssessmentCreateWithoutBatchCycleInput = {
+    isReassessment?: boolean
+    id?: string
+    assessmentName: string
+    totalMarks: number
+    startDate: Date | string
+    endDate: Date | string
+    details?: string | null
+    status?: string
+    cancelledAt?: Date | string | null
+    cancelledBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branchCourse: BranchCourseCreateNestedOneWithoutAssessmentsInput
+    module: BranchCourseModuleCreateNestedOneWithoutAssessmentsInput
+    branchBatch: BranchBatchCreateNestedOneWithoutAssessmentsInput
+    faculty: UserCreateNestedOneWithoutCreatedAssessmentsInput
+    submissions?: AssessmentSubmissionCreateNestedManyWithoutAssessmentInput
+    originalAssessment?: AssessmentCreateNestedOneWithoutReassessmentsInput
+    reassessments?: AssessmentCreateNestedManyWithoutOriginalAssessmentInput
+    reassessmentStudent?: BranchStudentCreateNestedOneWithoutReassessmentAssessmentsInput
+  }
+
+  export type AssessmentUncheckedCreateWithoutBatchCycleInput = {
+    isReassessment?: boolean
+    originalAssessmentId?: string | null
+    reassessmentStudentId?: string | null
+    id?: string
+    assessmentName: string
+    branchCourseId: string
+    moduleId: string
+    branchBatchId: string
+    totalMarks: number
+    startDate: Date | string
+    endDate: Date | string
+    details?: string | null
+    status?: string
+    cancelledAt?: Date | string | null
+    cancelledBy?: string | null
+    facultyId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    submissions?: AssessmentSubmissionUncheckedCreateNestedManyWithoutAssessmentInput
+    reassessments?: AssessmentUncheckedCreateNestedManyWithoutOriginalAssessmentInput
+  }
+
+  export type AssessmentCreateOrConnectWithoutBatchCycleInput = {
+    where: AssessmentWhereUniqueInput
+    create: XOR<AssessmentCreateWithoutBatchCycleInput, AssessmentUncheckedCreateWithoutBatchCycleInput>
+  }
+
+  export type AssessmentCreateManyBatchCycleInputEnvelope = {
+    data: AssessmentCreateManyBatchCycleInput | AssessmentCreateManyBatchCycleInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type FacultyReportShareCreateWithoutBatchCycleInput = {
+    id?: string
+    facultyId: string
+    branchId: string
+    batchId: string
+    courseId: string
+    testModuleIds?: JsonNullValueInput | InputJsonValue
+    assessmentModuleIds?: JsonNullValueInput | InputJsonValue
+    academicTestIds?: JsonNullValueInput | InputJsonValue
+    reportType?: string
+    sentAt?: Date | string
+    status?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FacultyReportShareUncheckedCreateWithoutBatchCycleInput = {
+    id?: string
+    facultyId: string
+    branchId: string
+    batchId: string
+    courseId: string
+    testModuleIds?: JsonNullValueInput | InputJsonValue
+    assessmentModuleIds?: JsonNullValueInput | InputJsonValue
+    academicTestIds?: JsonNullValueInput | InputJsonValue
+    reportType?: string
+    sentAt?: Date | string
+    status?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FacultyReportShareCreateOrConnectWithoutBatchCycleInput = {
+    where: FacultyReportShareWhereUniqueInput
+    create: XOR<FacultyReportShareCreateWithoutBatchCycleInput, FacultyReportShareUncheckedCreateWithoutBatchCycleInput>
+  }
+
+  export type FacultyReportShareCreateManyBatchCycleInputEnvelope = {
+    data: FacultyReportShareCreateManyBatchCycleInput | FacultyReportShareCreateManyBatchCycleInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type BranchBatchUpsertWithoutCyclesInput = {
+    update: XOR<BranchBatchUpdateWithoutCyclesInput, BranchBatchUncheckedUpdateWithoutCyclesInput>
+    create: XOR<BranchBatchCreateWithoutCyclesInput, BranchBatchUncheckedCreateWithoutCyclesInput>
+    where?: BranchBatchWhereInput
+  }
+
+  export type BranchBatchUpdateToOneWithWhereWithoutCyclesInput = {
+    where?: BranchBatchWhereInput
+    data: XOR<BranchBatchUpdateWithoutCyclesInput, BranchBatchUncheckedUpdateWithoutCyclesInput>
+  }
+
+  export type BranchBatchUpdateWithoutCyclesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    batchId?: StringFieldUpdateOperationsInput | string
+    courseId?: StringFieldUpdateOperationsInput | string
+    courseName?: StringFieldUpdateOperationsInput | string
+    facultyId?: StringFieldUpdateOperationsInput | string
+    facultyName?: StringFieldUpdateOperationsInput | string
+    facultyEmail?: StringFieldUpdateOperationsInput | string
+    batchName?: StringFieldUpdateOperationsInput | string
+    startTime?: StringFieldUpdateOperationsInput | string
+    startPeriod?: StringFieldUpdateOperationsInput | string
+    endTime?: StringFieldUpdateOperationsInput | string
+    endPeriod?: StringFieldUpdateOperationsInput | string
+    batchTiming?: StringFieldUpdateOperationsInput | string
+    totalSeats?: IntFieldUpdateOperationsInput | number
+    offlineSeats?: IntFieldUpdateOperationsInput | number
+    weekType?: NullableStringFieldUpdateOperationsInput | string | null
+    mode?: NullableStringFieldUpdateOperationsInput | string | null
+    courseStartDate?: NullableStringFieldUpdateOperationsInput | string | null
+    courseEndDate?: NullableStringFieldUpdateOperationsInput | string | null
+    weeklyOffDay?: NullableStringFieldUpdateOperationsInput | string | null
+    sequenceNo?: IntFieldUpdateOperationsInput | number
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branch?: BranchUpdateOneRequiredWithoutBranchBatchesNestedInput
+    branchCourse?: BranchCourseUpdateOneRequiredWithoutBranchBatchesNestedInput
+    branchFaculty?: BranchFacultyUpdateOneRequiredWithoutBranchBatchesNestedInput
+    examSchedules?: ExamScheduleUpdateManyWithoutBranchBatchNestedInput
+    assessments?: AssessmentUpdateManyWithoutBranchBatchNestedInput
+    academicTestBatches?: AcademicTestBatchUpdateManyWithoutBranchBatchNestedInput
+    academicQuestionPapers?: AcademicQuestionPaperUpdateManyWithoutBranchBatchNestedInput
+    academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchBatchNestedInput
+    academicTestCycles?: AcademicTestCycleUpdateManyWithoutBranchBatchNestedInput
+    academicTestReportHistories?: AcademicTestReportHistoryUpdateManyWithoutBatchNestedInput
+  }
+
+  export type BranchBatchUncheckedUpdateWithoutCyclesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    branchCourseId?: StringFieldUpdateOperationsInput | string
+    branchFacultyId?: StringFieldUpdateOperationsInput | string
+    batchId?: StringFieldUpdateOperationsInput | string
+    courseId?: StringFieldUpdateOperationsInput | string
+    courseName?: StringFieldUpdateOperationsInput | string
+    facultyId?: StringFieldUpdateOperationsInput | string
+    facultyName?: StringFieldUpdateOperationsInput | string
+    facultyEmail?: StringFieldUpdateOperationsInput | string
+    batchName?: StringFieldUpdateOperationsInput | string
+    startTime?: StringFieldUpdateOperationsInput | string
+    startPeriod?: StringFieldUpdateOperationsInput | string
+    endTime?: StringFieldUpdateOperationsInput | string
+    endPeriod?: StringFieldUpdateOperationsInput | string
+    batchTiming?: StringFieldUpdateOperationsInput | string
+    totalSeats?: IntFieldUpdateOperationsInput | number
+    offlineSeats?: IntFieldUpdateOperationsInput | number
+    weekType?: NullableStringFieldUpdateOperationsInput | string | null
+    mode?: NullableStringFieldUpdateOperationsInput | string | null
+    courseStartDate?: NullableStringFieldUpdateOperationsInput | string | null
+    courseEndDate?: NullableStringFieldUpdateOperationsInput | string | null
+    weeklyOffDay?: NullableStringFieldUpdateOperationsInput | string | null
+    sequenceNo?: IntFieldUpdateOperationsInput | number
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    examSchedules?: ExamScheduleUncheckedUpdateManyWithoutBranchBatchNestedInput
+    assessments?: AssessmentUncheckedUpdateManyWithoutBranchBatchNestedInput
+    academicTestBatches?: AcademicTestBatchUncheckedUpdateManyWithoutBranchBatchNestedInput
+    academicQuestionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutBranchBatchNestedInput
+    academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchBatchNestedInput
+    academicTestCycles?: AcademicTestCycleUncheckedUpdateManyWithoutBranchBatchNestedInput
+    academicTestReportHistories?: AcademicTestReportHistoryUncheckedUpdateManyWithoutBatchNestedInput
+  }
+
+  export type BranchStudentCourseUpsertWithWhereUniqueWithoutBatchCycleInput = {
+    where: BranchStudentCourseWhereUniqueInput
+    update: XOR<BranchStudentCourseUpdateWithoutBatchCycleInput, BranchStudentCourseUncheckedUpdateWithoutBatchCycleInput>
+    create: XOR<BranchStudentCourseCreateWithoutBatchCycleInput, BranchStudentCourseUncheckedCreateWithoutBatchCycleInput>
+  }
+
+  export type BranchStudentCourseUpdateWithWhereUniqueWithoutBatchCycleInput = {
+    where: BranchStudentCourseWhereUniqueInput
+    data: XOR<BranchStudentCourseUpdateWithoutBatchCycleInput, BranchStudentCourseUncheckedUpdateWithoutBatchCycleInput>
+  }
+
+  export type BranchStudentCourseUpdateManyWithWhereWithoutBatchCycleInput = {
+    where: BranchStudentCourseScalarWhereInput
+    data: XOR<BranchStudentCourseUpdateManyMutationInput, BranchStudentCourseUncheckedUpdateManyWithoutBatchCycleInput>
+  }
+
+  export type AcademicTestCycleUpsertWithWhereUniqueWithoutBatchCycleInput = {
+    where: AcademicTestCycleWhereUniqueInput
+    update: XOR<AcademicTestCycleUpdateWithoutBatchCycleInput, AcademicTestCycleUncheckedUpdateWithoutBatchCycleInput>
+    create: XOR<AcademicTestCycleCreateWithoutBatchCycleInput, AcademicTestCycleUncheckedCreateWithoutBatchCycleInput>
+  }
+
+  export type AcademicTestCycleUpdateWithWhereUniqueWithoutBatchCycleInput = {
+    where: AcademicTestCycleWhereUniqueInput
+    data: XOR<AcademicTestCycleUpdateWithoutBatchCycleInput, AcademicTestCycleUncheckedUpdateWithoutBatchCycleInput>
+  }
+
+  export type AcademicTestCycleUpdateManyWithWhereWithoutBatchCycleInput = {
+    where: AcademicTestCycleScalarWhereInput
+    data: XOR<AcademicTestCycleUpdateManyMutationInput, AcademicTestCycleUncheckedUpdateManyWithoutBatchCycleInput>
+  }
+
+  export type AcademicTestReportHistoryUpsertWithWhereUniqueWithoutBatchCycleInput = {
+    where: AcademicTestReportHistoryWhereUniqueInput
+    update: XOR<AcademicTestReportHistoryUpdateWithoutBatchCycleInput, AcademicTestReportHistoryUncheckedUpdateWithoutBatchCycleInput>
+    create: XOR<AcademicTestReportHistoryCreateWithoutBatchCycleInput, AcademicTestReportHistoryUncheckedCreateWithoutBatchCycleInput>
+  }
+
+  export type AcademicTestReportHistoryUpdateWithWhereUniqueWithoutBatchCycleInput = {
+    where: AcademicTestReportHistoryWhereUniqueInput
+    data: XOR<AcademicTestReportHistoryUpdateWithoutBatchCycleInput, AcademicTestReportHistoryUncheckedUpdateWithoutBatchCycleInput>
+  }
+
+  export type AcademicTestReportHistoryUpdateManyWithWhereWithoutBatchCycleInput = {
+    where: AcademicTestReportHistoryScalarWhereInput
+    data: XOR<AcademicTestReportHistoryUpdateManyMutationInput, AcademicTestReportHistoryUncheckedUpdateManyWithoutBatchCycleInput>
+  }
+
+  export type ExamScheduleUpsertWithWhereUniqueWithoutBatchCycleInput = {
+    where: ExamScheduleWhereUniqueInput
+    update: XOR<ExamScheduleUpdateWithoutBatchCycleInput, ExamScheduleUncheckedUpdateWithoutBatchCycleInput>
+    create: XOR<ExamScheduleCreateWithoutBatchCycleInput, ExamScheduleUncheckedCreateWithoutBatchCycleInput>
+  }
+
+  export type ExamScheduleUpdateWithWhereUniqueWithoutBatchCycleInput = {
+    where: ExamScheduleWhereUniqueInput
+    data: XOR<ExamScheduleUpdateWithoutBatchCycleInput, ExamScheduleUncheckedUpdateWithoutBatchCycleInput>
+  }
+
+  export type ExamScheduleUpdateManyWithWhereWithoutBatchCycleInput = {
+    where: ExamScheduleScalarWhereInput
+    data: XOR<ExamScheduleUpdateManyMutationInput, ExamScheduleUncheckedUpdateManyWithoutBatchCycleInput>
+  }
+
+  export type AssessmentUpsertWithWhereUniqueWithoutBatchCycleInput = {
+    where: AssessmentWhereUniqueInput
+    update: XOR<AssessmentUpdateWithoutBatchCycleInput, AssessmentUncheckedUpdateWithoutBatchCycleInput>
+    create: XOR<AssessmentCreateWithoutBatchCycleInput, AssessmentUncheckedCreateWithoutBatchCycleInput>
+  }
+
+  export type AssessmentUpdateWithWhereUniqueWithoutBatchCycleInput = {
+    where: AssessmentWhereUniqueInput
+    data: XOR<AssessmentUpdateWithoutBatchCycleInput, AssessmentUncheckedUpdateWithoutBatchCycleInput>
+  }
+
+  export type AssessmentUpdateManyWithWhereWithoutBatchCycleInput = {
+    where: AssessmentScalarWhereInput
+    data: XOR<AssessmentUpdateManyMutationInput, AssessmentUncheckedUpdateManyWithoutBatchCycleInput>
+  }
+
+  export type FacultyReportShareUpsertWithWhereUniqueWithoutBatchCycleInput = {
+    where: FacultyReportShareWhereUniqueInput
+    update: XOR<FacultyReportShareUpdateWithoutBatchCycleInput, FacultyReportShareUncheckedUpdateWithoutBatchCycleInput>
+    create: XOR<FacultyReportShareCreateWithoutBatchCycleInput, FacultyReportShareUncheckedCreateWithoutBatchCycleInput>
+  }
+
+  export type FacultyReportShareUpdateWithWhereUniqueWithoutBatchCycleInput = {
+    where: FacultyReportShareWhereUniqueInput
+    data: XOR<FacultyReportShareUpdateWithoutBatchCycleInput, FacultyReportShareUncheckedUpdateWithoutBatchCycleInput>
+  }
+
+  export type FacultyReportShareUpdateManyWithWhereWithoutBatchCycleInput = {
+    where: FacultyReportShareScalarWhereInput
+    data: XOR<FacultyReportShareUpdateManyMutationInput, FacultyReportShareUncheckedUpdateManyWithoutBatchCycleInput>
+  }
+
+  export type FacultyReportShareScalarWhereInput = {
+    AND?: FacultyReportShareScalarWhereInput | FacultyReportShareScalarWhereInput[]
+    OR?: FacultyReportShareScalarWhereInput[]
+    NOT?: FacultyReportShareScalarWhereInput | FacultyReportShareScalarWhereInput[]
+    id?: StringFilter<"FacultyReportShare"> | string
+    facultyId?: StringFilter<"FacultyReportShare"> | string
+    branchId?: StringFilter<"FacultyReportShare"> | string
+    batchId?: StringFilter<"FacultyReportShare"> | string
+    batchCycleId?: StringNullableFilter<"FacultyReportShare"> | string | null
+    courseId?: StringFilter<"FacultyReportShare"> | string
+    testModuleIds?: JsonFilter<"FacultyReportShare">
+    assessmentModuleIds?: JsonFilter<"FacultyReportShare">
+    academicTestIds?: JsonFilter<"FacultyReportShare">
+    reportType?: StringFilter<"FacultyReportShare"> | string
+    sentAt?: DateTimeFilter<"FacultyReportShare"> | Date | string
+    status?: StringFilter<"FacultyReportShare"> | string
+    createdAt?: DateTimeFilter<"FacultyReportShare"> | Date | string
+    updatedAt?: DateTimeFilter<"FacultyReportShare"> | Date | string
   }
 
   export type CourseCreateWithoutStatusHistoryInput = {
@@ -139538,6 +146394,7 @@ export namespace Prisma {
     branchCourse: BranchCourseCreateNestedOneWithoutAssessmentsInput
     module: BranchCourseModuleCreateNestedOneWithoutAssessmentsInput
     branchBatch: BranchBatchCreateNestedOneWithoutAssessmentsInput
+    batchCycle?: BatchCycleCreateNestedOneWithoutAssessmentsInput
     faculty: UserCreateNestedOneWithoutCreatedAssessmentsInput
     submissions?: AssessmentSubmissionCreateNestedManyWithoutAssessmentInput
     originalAssessment?: AssessmentCreateNestedOneWithoutReassessmentsInput
@@ -139552,6 +146409,7 @@ export namespace Prisma {
     branchCourseId: string
     moduleId: string
     branchBatchId: string
+    batchCycleId?: string | null
     totalMarks: number
     startDate: Date | string
     endDate: Date | string
@@ -139602,6 +146460,7 @@ export namespace Prisma {
     status?: $Enums.RecordStatus
     createdAt?: Date | string
     updatedAt?: Date | string
+    batchCycle?: BatchCycleCreateNestedOneWithoutEnrollmentsInput
     branch: BranchCreateNestedOneWithoutStudentEnrollmentsInput
     course: BranchCourseCreateNestedOneWithoutStudentEnrollmentsInput
   }
@@ -139614,6 +146473,7 @@ export namespace Prisma {
     facultyId?: string | null
     facultyName?: string | null
     batchId?: string | null
+    batchCycleId?: string | null
     batchName?: string | null
     batchTiming?: string | null
     scheduleType?: string | null
@@ -140397,6 +147257,49 @@ export namespace Prisma {
     create: XOR<BranchStudentCreateWithoutCourseEnrollmentsInput, BranchStudentUncheckedCreateWithoutCourseEnrollmentsInput>
   }
 
+  export type BatchCycleCreateWithoutEnrollmentsInput = {
+    id?: string
+    cycleNumber: number
+    cycleName: string
+    status?: string
+    startDate?: string | null
+    endDate?: string | null
+    completedAt?: Date | string | null
+    freezeUntil?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    batch: BranchBatchCreateNestedOneWithoutCyclesInput
+    academicTestCycles?: AcademicTestCycleCreateNestedManyWithoutBatchCycleInput
+    reportHistories?: AcademicTestReportHistoryCreateNestedManyWithoutBatchCycleInput
+    examSchedules?: ExamScheduleCreateNestedManyWithoutBatchCycleInput
+    assessments?: AssessmentCreateNestedManyWithoutBatchCycleInput
+    reportShares?: FacultyReportShareCreateNestedManyWithoutBatchCycleInput
+  }
+
+  export type BatchCycleUncheckedCreateWithoutEnrollmentsInput = {
+    id?: string
+    batchId: string
+    cycleNumber: number
+    cycleName: string
+    status?: string
+    startDate?: string | null
+    endDate?: string | null
+    completedAt?: Date | string | null
+    freezeUntil?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    academicTestCycles?: AcademicTestCycleUncheckedCreateNestedManyWithoutBatchCycleInput
+    reportHistories?: AcademicTestReportHistoryUncheckedCreateNestedManyWithoutBatchCycleInput
+    examSchedules?: ExamScheduleUncheckedCreateNestedManyWithoutBatchCycleInput
+    assessments?: AssessmentUncheckedCreateNestedManyWithoutBatchCycleInput
+    reportShares?: FacultyReportShareUncheckedCreateNestedManyWithoutBatchCycleInput
+  }
+
+  export type BatchCycleCreateOrConnectWithoutEnrollmentsInput = {
+    where: BatchCycleWhereUniqueInput
+    create: XOR<BatchCycleCreateWithoutEnrollmentsInput, BatchCycleUncheckedCreateWithoutEnrollmentsInput>
+  }
+
   export type BranchCreateWithoutStudentEnrollmentsInput = {
     id?: string
     branchId: string
@@ -140712,6 +147615,55 @@ export namespace Prisma {
     reassessmentAssessments?: AssessmentUncheckedUpdateManyWithoutReassessmentStudentNestedInput
     motivationMailHistory?: MotivationMailHistoryUncheckedUpdateManyWithoutBranchStudentNestedInput
     discontinuationRequests?: StudentDiscontinuationRequestUncheckedUpdateManyWithoutBranchStudentNestedInput
+  }
+
+  export type BatchCycleUpsertWithoutEnrollmentsInput = {
+    update: XOR<BatchCycleUpdateWithoutEnrollmentsInput, BatchCycleUncheckedUpdateWithoutEnrollmentsInput>
+    create: XOR<BatchCycleCreateWithoutEnrollmentsInput, BatchCycleUncheckedCreateWithoutEnrollmentsInput>
+    where?: BatchCycleWhereInput
+  }
+
+  export type BatchCycleUpdateToOneWithWhereWithoutEnrollmentsInput = {
+    where?: BatchCycleWhereInput
+    data: XOR<BatchCycleUpdateWithoutEnrollmentsInput, BatchCycleUncheckedUpdateWithoutEnrollmentsInput>
+  }
+
+  export type BatchCycleUpdateWithoutEnrollmentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    cycleNumber?: IntFieldUpdateOperationsInput | number
+    cycleName?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    startDate?: NullableStringFieldUpdateOperationsInput | string | null
+    endDate?: NullableStringFieldUpdateOperationsInput | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    freezeUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    batch?: BranchBatchUpdateOneRequiredWithoutCyclesNestedInput
+    academicTestCycles?: AcademicTestCycleUpdateManyWithoutBatchCycleNestedInput
+    reportHistories?: AcademicTestReportHistoryUpdateManyWithoutBatchCycleNestedInput
+    examSchedules?: ExamScheduleUpdateManyWithoutBatchCycleNestedInput
+    assessments?: AssessmentUpdateManyWithoutBatchCycleNestedInput
+    reportShares?: FacultyReportShareUpdateManyWithoutBatchCycleNestedInput
+  }
+
+  export type BatchCycleUncheckedUpdateWithoutEnrollmentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    batchId?: StringFieldUpdateOperationsInput | string
+    cycleNumber?: IntFieldUpdateOperationsInput | number
+    cycleName?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    startDate?: NullableStringFieldUpdateOperationsInput | string | null
+    endDate?: NullableStringFieldUpdateOperationsInput | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    freezeUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    academicTestCycles?: AcademicTestCycleUncheckedUpdateManyWithoutBatchCycleNestedInput
+    reportHistories?: AcademicTestReportHistoryUncheckedUpdateManyWithoutBatchCycleNestedInput
+    examSchedules?: ExamScheduleUncheckedUpdateManyWithoutBatchCycleNestedInput
+    assessments?: AssessmentUncheckedUpdateManyWithoutBatchCycleNestedInput
+    reportShares?: FacultyReportShareUncheckedUpdateManyWithoutBatchCycleNestedInput
   }
 
   export type BranchUpsertWithoutStudentEnrollmentsInput = {
@@ -141076,6 +148028,7 @@ export namespace Prisma {
     createdAssessments?: AssessmentCreateNestedManyWithoutFacultyInput
     evaluatedSubmissions?: AssessmentSubmissionCreateNestedManyWithoutEvaluatorInput
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutFacultyUserInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
   }
 
   export type UserUncheckedCreateWithoutMarkedBranchStudentAttendancesInput = {
@@ -141117,6 +148070,7 @@ export namespace Prisma {
     createdAssessments?: AssessmentUncheckedCreateNestedManyWithoutFacultyInput
     evaluatedSubmissions?: AssessmentSubmissionUncheckedCreateNestedManyWithoutEvaluatorInput
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutFacultyUserInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
   }
 
   export type UserCreateOrConnectWithoutMarkedBranchStudentAttendancesInput = {
@@ -141337,6 +148291,7 @@ export namespace Prisma {
     createdAssessments?: AssessmentUpdateManyWithoutFacultyNestedInput
     evaluatedSubmissions?: AssessmentSubmissionUpdateManyWithoutEvaluatorNestedInput
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutFacultyUserNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMarkedBranchStudentAttendancesInput = {
@@ -141378,6 +148333,7 @@ export namespace Prisma {
     createdAssessments?: AssessmentUncheckedUpdateManyWithoutFacultyNestedInput
     evaluatedSubmissions?: AssessmentSubmissionUncheckedUpdateManyWithoutEvaluatorNestedInput
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutFacultyUserNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
   }
 
   export type BranchCreateWithoutCalendarHolidaysInput = {
@@ -142297,6 +149253,7 @@ export namespace Prisma {
     examAttempts?: ExamAttemptCreateNestedManyWithoutStudentUserInput
     createdAssessments?: AssessmentCreateNestedManyWithoutFacultyInput
     evaluatedSubmissions?: AssessmentSubmissionCreateNestedManyWithoutEvaluatorInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
   }
 
   export type UserUncheckedCreateWithoutFacultySkillAssignmentsInput = {
@@ -142338,6 +149295,7 @@ export namespace Prisma {
     examAttempts?: ExamAttemptUncheckedCreateNestedManyWithoutStudentUserInput
     createdAssessments?: AssessmentUncheckedCreateNestedManyWithoutFacultyInput
     evaluatedSubmissions?: AssessmentSubmissionUncheckedCreateNestedManyWithoutEvaluatorInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
   }
 
   export type UserCreateOrConnectWithoutFacultySkillAssignmentsInput = {
@@ -142602,6 +149560,7 @@ export namespace Prisma {
     examAttempts?: ExamAttemptUpdateManyWithoutStudentUserNestedInput
     createdAssessments?: AssessmentUpdateManyWithoutFacultyNestedInput
     evaluatedSubmissions?: AssessmentSubmissionUpdateManyWithoutEvaluatorNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFacultySkillAssignmentsInput = {
@@ -142643,6 +149602,7 @@ export namespace Prisma {
     examAttempts?: ExamAttemptUncheckedUpdateManyWithoutStudentUserNestedInput
     createdAssessments?: AssessmentUncheckedUpdateManyWithoutFacultyNestedInput
     evaluatedSubmissions?: AssessmentSubmissionUncheckedUpdateManyWithoutEvaluatorNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
   }
 
   export type FacultySkillUpsertWithoutAssignmentsInput = {
@@ -143559,6 +150519,7 @@ export namespace Prisma {
     createdAssessments?: AssessmentCreateNestedManyWithoutFacultyInput
     evaluatedSubmissions?: AssessmentSubmissionCreateNestedManyWithoutEvaluatorInput
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutFacultyUserInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
   }
 
   export type UserUncheckedCreateWithoutFacultyAttendanceSessionsInput = {
@@ -143600,6 +150561,7 @@ export namespace Prisma {
     createdAssessments?: AssessmentUncheckedCreateNestedManyWithoutFacultyInput
     evaluatedSubmissions?: AssessmentSubmissionUncheckedCreateNestedManyWithoutEvaluatorInput
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutFacultyUserInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
   }
 
   export type UserCreateOrConnectWithoutFacultyAttendanceSessionsInput = {
@@ -143689,6 +150651,7 @@ export namespace Prisma {
     createdAssessments?: AssessmentUpdateManyWithoutFacultyNestedInput
     evaluatedSubmissions?: AssessmentSubmissionUpdateManyWithoutEvaluatorNestedInput
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutFacultyUserNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFacultyAttendanceSessionsInput = {
@@ -143730,6 +150693,7 @@ export namespace Prisma {
     createdAssessments?: AssessmentUncheckedUpdateManyWithoutFacultyNestedInput
     evaluatedSubmissions?: AssessmentSubmissionUncheckedUpdateManyWithoutEvaluatorNestedInput
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutFacultyUserNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
   }
 
   export type FacultyAttendanceBatchWorkUpsertWithWhereUniqueWithoutSessionInput = {
@@ -143787,6 +150751,7 @@ export namespace Prisma {
     createdAssessments?: AssessmentCreateNestedManyWithoutFacultyInput
     evaluatedSubmissions?: AssessmentSubmissionCreateNestedManyWithoutEvaluatorInput
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutFacultyUserInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
   }
 
   export type UserUncheckedCreateWithoutFacultyAttendanceDaysInput = {
@@ -143828,6 +150793,7 @@ export namespace Prisma {
     createdAssessments?: AssessmentUncheckedCreateNestedManyWithoutFacultyInput
     evaluatedSubmissions?: AssessmentSubmissionUncheckedCreateNestedManyWithoutEvaluatorInput
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutFacultyUserInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
   }
 
   export type UserCreateOrConnectWithoutFacultyAttendanceDaysInput = {
@@ -143885,6 +150851,7 @@ export namespace Prisma {
     createdAssessments?: AssessmentUpdateManyWithoutFacultyNestedInput
     evaluatedSubmissions?: AssessmentSubmissionUpdateManyWithoutEvaluatorNestedInput
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutFacultyUserNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFacultyAttendanceDaysInput = {
@@ -143926,6 +150893,7 @@ export namespace Prisma {
     createdAssessments?: AssessmentUncheckedUpdateManyWithoutFacultyNestedInput
     evaluatedSubmissions?: AssessmentSubmissionUncheckedUpdateManyWithoutEvaluatorNestedInput
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutFacultyUserNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
   }
 
   export type FacultyAttendanceSessionCreateWithoutBatchWorkInput = {
@@ -144002,6 +150970,7 @@ export namespace Prisma {
     createdAssessments?: AssessmentCreateNestedManyWithoutFacultyInput
     evaluatedSubmissions?: AssessmentSubmissionCreateNestedManyWithoutEvaluatorInput
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutFacultyUserInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
   }
 
   export type UserUncheckedCreateWithoutFacultyAttendanceBatchWorkInput = {
@@ -144043,6 +151012,7 @@ export namespace Prisma {
     createdAssessments?: AssessmentUncheckedCreateNestedManyWithoutFacultyInput
     evaluatedSubmissions?: AssessmentSubmissionUncheckedCreateNestedManyWithoutEvaluatorInput
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutFacultyUserInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
   }
 
   export type UserCreateOrConnectWithoutFacultyAttendanceBatchWorkInput = {
@@ -144141,6 +151111,7 @@ export namespace Prisma {
     createdAssessments?: AssessmentUpdateManyWithoutFacultyNestedInput
     evaluatedSubmissions?: AssessmentSubmissionUpdateManyWithoutEvaluatorNestedInput
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutFacultyUserNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFacultyAttendanceBatchWorkInput = {
@@ -144182,6 +151153,7 @@ export namespace Prisma {
     createdAssessments?: AssessmentUncheckedUpdateManyWithoutFacultyNestedInput
     evaluatedSubmissions?: AssessmentSubmissionUncheckedUpdateManyWithoutEvaluatorNestedInput
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutFacultyUserNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
   }
 
   export type UserCreateWithoutFacultyTodayWorkEntriesInput = {
@@ -144223,6 +151195,7 @@ export namespace Prisma {
     createdAssessments?: AssessmentCreateNestedManyWithoutFacultyInput
     evaluatedSubmissions?: AssessmentSubmissionCreateNestedManyWithoutEvaluatorInput
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutFacultyUserInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
   }
 
   export type UserUncheckedCreateWithoutFacultyTodayWorkEntriesInput = {
@@ -144264,6 +151237,7 @@ export namespace Prisma {
     createdAssessments?: AssessmentUncheckedCreateNestedManyWithoutFacultyInput
     evaluatedSubmissions?: AssessmentSubmissionUncheckedCreateNestedManyWithoutEvaluatorInput
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutFacultyUserInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
   }
 
   export type UserCreateOrConnectWithoutFacultyTodayWorkEntriesInput = {
@@ -144446,6 +151420,7 @@ export namespace Prisma {
     createdAssessments?: AssessmentUpdateManyWithoutFacultyNestedInput
     evaluatedSubmissions?: AssessmentSubmissionUpdateManyWithoutEvaluatorNestedInput
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutFacultyUserNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFacultyTodayWorkEntriesInput = {
@@ -144487,6 +151462,7 @@ export namespace Prisma {
     createdAssessments?: AssessmentUncheckedUpdateManyWithoutFacultyNestedInput
     evaluatedSubmissions?: AssessmentSubmissionUncheckedUpdateManyWithoutEvaluatorNestedInput
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutFacultyUserNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
   }
 
   export type BranchCourseUpsertWithoutFacultyTodayWorkEntriesInput = {
@@ -145247,6 +152223,7 @@ export namespace Prisma {
     createdAssessments?: AssessmentCreateNestedManyWithoutFacultyInput
     evaluatedSubmissions?: AssessmentSubmissionCreateNestedManyWithoutEvaluatorInput
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutFacultyUserInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
   }
 
   export type UserUncheckedCreateWithoutMarkedStudentAttendancesInput = {
@@ -145288,6 +152265,7 @@ export namespace Prisma {
     createdAssessments?: AssessmentUncheckedCreateNestedManyWithoutFacultyInput
     evaluatedSubmissions?: AssessmentSubmissionUncheckedCreateNestedManyWithoutEvaluatorInput
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutFacultyUserInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
   }
 
   export type UserCreateOrConnectWithoutMarkedStudentAttendancesInput = {
@@ -145454,6 +152432,7 @@ export namespace Prisma {
     createdAssessments?: AssessmentUpdateManyWithoutFacultyNestedInput
     evaluatedSubmissions?: AssessmentSubmissionUpdateManyWithoutEvaluatorNestedInput
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutFacultyUserNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMarkedStudentAttendancesInput = {
@@ -145495,6 +152474,7 @@ export namespace Prisma {
     createdAssessments?: AssessmentUncheckedUpdateManyWithoutFacultyNestedInput
     evaluatedSubmissions?: AssessmentSubmissionUncheckedUpdateManyWithoutEvaluatorNestedInput
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutFacultyUserNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
   }
 
   export type StudentProfileUpsertWithoutAttendanceRecordsInput = {
@@ -145878,6 +152858,8 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperCreateNestedManyWithoutBranchBatchInput
     academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchBatchInput
     academicTestCycles?: AcademicTestCycleCreateNestedManyWithoutBranchBatchInput
+    cycles?: BatchCycleCreateNestedManyWithoutBatchInput
+    academicTestReportHistories?: AcademicTestReportHistoryCreateNestedManyWithoutBatchInput
   }
 
   export type BranchBatchUncheckedCreateWithoutBranchFacultyInput = {
@@ -145915,6 +152897,8 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchBatchInput
     academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchBatchInput
     academicTestCycles?: AcademicTestCycleUncheckedCreateNestedManyWithoutBranchBatchInput
+    cycles?: BatchCycleUncheckedCreateNestedManyWithoutBatchInput
+    academicTestReportHistories?: AcademicTestReportHistoryUncheckedCreateNestedManyWithoutBatchInput
   }
 
   export type BranchBatchCreateOrConnectWithoutBranchFacultyInput = {
@@ -146343,6 +153327,7 @@ export namespace Prisma {
     createdAssessments?: AssessmentCreateNestedManyWithoutFacultyInput
     evaluatedSubmissions?: AssessmentSubmissionCreateNestedManyWithoutEvaluatorInput
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutFacultyUserInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
   }
 
   export type UserUncheckedCreateWithoutFacultyLeaveRequestsInput = {
@@ -146384,6 +153369,7 @@ export namespace Prisma {
     createdAssessments?: AssessmentUncheckedCreateNestedManyWithoutFacultyInput
     evaluatedSubmissions?: AssessmentSubmissionUncheckedCreateNestedManyWithoutEvaluatorInput
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutFacultyUserInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
   }
 
   export type UserCreateOrConnectWithoutFacultyLeaveRequestsInput = {
@@ -146514,6 +153500,7 @@ export namespace Prisma {
     createdAssessments?: AssessmentUpdateManyWithoutFacultyNestedInput
     evaluatedSubmissions?: AssessmentSubmissionUpdateManyWithoutEvaluatorNestedInput
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutFacultyUserNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFacultyLeaveRequestsInput = {
@@ -146555,6 +153542,7 @@ export namespace Prisma {
     createdAssessments?: AssessmentUncheckedUpdateManyWithoutFacultyNestedInput
     evaluatedSubmissions?: AssessmentSubmissionUncheckedUpdateManyWithoutEvaluatorNestedInput
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutFacultyUserNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
   }
 
   export type BranchUpsertWithoutFacultyLeaveRequestsInput = {
@@ -147393,6 +154381,8 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperCreateNestedManyWithoutBranchBatchInput
     academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchBatchInput
     academicTestCycles?: AcademicTestCycleCreateNestedManyWithoutBranchBatchInput
+    cycles?: BatchCycleCreateNestedManyWithoutBatchInput
+    academicTestReportHistories?: AcademicTestReportHistoryCreateNestedManyWithoutBatchInput
   }
 
   export type BranchBatchUncheckedCreateWithoutAssessmentsInput = {
@@ -147430,11 +154420,56 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchBatchInput
     academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchBatchInput
     academicTestCycles?: AcademicTestCycleUncheckedCreateNestedManyWithoutBranchBatchInput
+    cycles?: BatchCycleUncheckedCreateNestedManyWithoutBatchInput
+    academicTestReportHistories?: AcademicTestReportHistoryUncheckedCreateNestedManyWithoutBatchInput
   }
 
   export type BranchBatchCreateOrConnectWithoutAssessmentsInput = {
     where: BranchBatchWhereUniqueInput
     create: XOR<BranchBatchCreateWithoutAssessmentsInput, BranchBatchUncheckedCreateWithoutAssessmentsInput>
+  }
+
+  export type BatchCycleCreateWithoutAssessmentsInput = {
+    id?: string
+    cycleNumber: number
+    cycleName: string
+    status?: string
+    startDate?: string | null
+    endDate?: string | null
+    completedAt?: Date | string | null
+    freezeUntil?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    batch: BranchBatchCreateNestedOneWithoutCyclesInput
+    enrollments?: BranchStudentCourseCreateNestedManyWithoutBatchCycleInput
+    academicTestCycles?: AcademicTestCycleCreateNestedManyWithoutBatchCycleInput
+    reportHistories?: AcademicTestReportHistoryCreateNestedManyWithoutBatchCycleInput
+    examSchedules?: ExamScheduleCreateNestedManyWithoutBatchCycleInput
+    reportShares?: FacultyReportShareCreateNestedManyWithoutBatchCycleInput
+  }
+
+  export type BatchCycleUncheckedCreateWithoutAssessmentsInput = {
+    id?: string
+    batchId: string
+    cycleNumber: number
+    cycleName: string
+    status?: string
+    startDate?: string | null
+    endDate?: string | null
+    completedAt?: Date | string | null
+    freezeUntil?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    enrollments?: BranchStudentCourseUncheckedCreateNestedManyWithoutBatchCycleInput
+    academicTestCycles?: AcademicTestCycleUncheckedCreateNestedManyWithoutBatchCycleInput
+    reportHistories?: AcademicTestReportHistoryUncheckedCreateNestedManyWithoutBatchCycleInput
+    examSchedules?: ExamScheduleUncheckedCreateNestedManyWithoutBatchCycleInput
+    reportShares?: FacultyReportShareUncheckedCreateNestedManyWithoutBatchCycleInput
+  }
+
+  export type BatchCycleCreateOrConnectWithoutAssessmentsInput = {
+    where: BatchCycleWhereUniqueInput
+    create: XOR<BatchCycleCreateWithoutAssessmentsInput, BatchCycleUncheckedCreateWithoutAssessmentsInput>
   }
 
   export type UserCreateWithoutCreatedAssessmentsInput = {
@@ -147476,6 +154511,7 @@ export namespace Prisma {
     examAttempts?: ExamAttemptCreateNestedManyWithoutStudentUserInput
     evaluatedSubmissions?: AssessmentSubmissionCreateNestedManyWithoutEvaluatorInput
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutFacultyUserInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
   }
 
   export type UserUncheckedCreateWithoutCreatedAssessmentsInput = {
@@ -147517,6 +154553,7 @@ export namespace Prisma {
     examAttempts?: ExamAttemptUncheckedCreateNestedManyWithoutStudentUserInput
     evaluatedSubmissions?: AssessmentSubmissionUncheckedCreateNestedManyWithoutEvaluatorInput
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutFacultyUserInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
   }
 
   export type UserCreateOrConnectWithoutCreatedAssessmentsInput = {
@@ -147586,6 +154623,7 @@ export namespace Prisma {
     branchCourse: BranchCourseCreateNestedOneWithoutAssessmentsInput
     module: BranchCourseModuleCreateNestedOneWithoutAssessmentsInput
     branchBatch: BranchBatchCreateNestedOneWithoutAssessmentsInput
+    batchCycle?: BatchCycleCreateNestedOneWithoutAssessmentsInput
     faculty: UserCreateNestedOneWithoutCreatedAssessmentsInput
     submissions?: AssessmentSubmissionCreateNestedManyWithoutAssessmentInput
     originalAssessment?: AssessmentCreateNestedOneWithoutReassessmentsInput
@@ -147601,6 +154639,7 @@ export namespace Prisma {
     branchCourseId: string
     moduleId: string
     branchBatchId: string
+    batchCycleId?: string | null
     totalMarks: number
     startDate: Date | string
     endDate: Date | string
@@ -147635,6 +154674,7 @@ export namespace Prisma {
     branchCourse: BranchCourseCreateNestedOneWithoutAssessmentsInput
     module: BranchCourseModuleCreateNestedOneWithoutAssessmentsInput
     branchBatch: BranchBatchCreateNestedOneWithoutAssessmentsInput
+    batchCycle?: BatchCycleCreateNestedOneWithoutAssessmentsInput
     faculty: UserCreateNestedOneWithoutCreatedAssessmentsInput
     submissions?: AssessmentSubmissionCreateNestedManyWithoutAssessmentInput
     reassessments?: AssessmentCreateNestedManyWithoutOriginalAssessmentInput
@@ -147649,6 +154689,7 @@ export namespace Prisma {
     branchCourseId: string
     moduleId: string
     branchBatchId: string
+    batchCycleId?: string | null
     totalMarks: number
     startDate: Date | string
     endDate: Date | string
@@ -148006,6 +155047,8 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUpdateManyWithoutBranchBatchNestedInput
     academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchBatchNestedInput
     academicTestCycles?: AcademicTestCycleUpdateManyWithoutBranchBatchNestedInput
+    cycles?: BatchCycleUpdateManyWithoutBatchNestedInput
+    academicTestReportHistories?: AcademicTestReportHistoryUpdateManyWithoutBatchNestedInput
   }
 
   export type BranchBatchUncheckedUpdateWithoutAssessmentsInput = {
@@ -148043,6 +155086,57 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutBranchBatchNestedInput
     academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchBatchNestedInput
     academicTestCycles?: AcademicTestCycleUncheckedUpdateManyWithoutBranchBatchNestedInput
+    cycles?: BatchCycleUncheckedUpdateManyWithoutBatchNestedInput
+    academicTestReportHistories?: AcademicTestReportHistoryUncheckedUpdateManyWithoutBatchNestedInput
+  }
+
+  export type BatchCycleUpsertWithoutAssessmentsInput = {
+    update: XOR<BatchCycleUpdateWithoutAssessmentsInput, BatchCycleUncheckedUpdateWithoutAssessmentsInput>
+    create: XOR<BatchCycleCreateWithoutAssessmentsInput, BatchCycleUncheckedCreateWithoutAssessmentsInput>
+    where?: BatchCycleWhereInput
+  }
+
+  export type BatchCycleUpdateToOneWithWhereWithoutAssessmentsInput = {
+    where?: BatchCycleWhereInput
+    data: XOR<BatchCycleUpdateWithoutAssessmentsInput, BatchCycleUncheckedUpdateWithoutAssessmentsInput>
+  }
+
+  export type BatchCycleUpdateWithoutAssessmentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    cycleNumber?: IntFieldUpdateOperationsInput | number
+    cycleName?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    startDate?: NullableStringFieldUpdateOperationsInput | string | null
+    endDate?: NullableStringFieldUpdateOperationsInput | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    freezeUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    batch?: BranchBatchUpdateOneRequiredWithoutCyclesNestedInput
+    enrollments?: BranchStudentCourseUpdateManyWithoutBatchCycleNestedInput
+    academicTestCycles?: AcademicTestCycleUpdateManyWithoutBatchCycleNestedInput
+    reportHistories?: AcademicTestReportHistoryUpdateManyWithoutBatchCycleNestedInput
+    examSchedules?: ExamScheduleUpdateManyWithoutBatchCycleNestedInput
+    reportShares?: FacultyReportShareUpdateManyWithoutBatchCycleNestedInput
+  }
+
+  export type BatchCycleUncheckedUpdateWithoutAssessmentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    batchId?: StringFieldUpdateOperationsInput | string
+    cycleNumber?: IntFieldUpdateOperationsInput | number
+    cycleName?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    startDate?: NullableStringFieldUpdateOperationsInput | string | null
+    endDate?: NullableStringFieldUpdateOperationsInput | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    freezeUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    enrollments?: BranchStudentCourseUncheckedUpdateManyWithoutBatchCycleNestedInput
+    academicTestCycles?: AcademicTestCycleUncheckedUpdateManyWithoutBatchCycleNestedInput
+    reportHistories?: AcademicTestReportHistoryUncheckedUpdateManyWithoutBatchCycleNestedInput
+    examSchedules?: ExamScheduleUncheckedUpdateManyWithoutBatchCycleNestedInput
+    reportShares?: FacultyReportShareUncheckedUpdateManyWithoutBatchCycleNestedInput
   }
 
   export type UserUpsertWithoutCreatedAssessmentsInput = {
@@ -148095,6 +155189,7 @@ export namespace Prisma {
     examAttempts?: ExamAttemptUpdateManyWithoutStudentUserNestedInput
     evaluatedSubmissions?: AssessmentSubmissionUpdateManyWithoutEvaluatorNestedInput
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutFacultyUserNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCreatedAssessmentsInput = {
@@ -148136,6 +155231,7 @@ export namespace Prisma {
     examAttempts?: ExamAttemptUncheckedUpdateManyWithoutStudentUserNestedInput
     evaluatedSubmissions?: AssessmentSubmissionUncheckedUpdateManyWithoutEvaluatorNestedInput
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutFacultyUserNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
   }
 
   export type AssessmentSubmissionUpsertWithWhereUniqueWithoutAssessmentInput = {
@@ -148181,6 +155277,7 @@ export namespace Prisma {
     branchCourse?: BranchCourseUpdateOneRequiredWithoutAssessmentsNestedInput
     module?: BranchCourseModuleUpdateOneRequiredWithoutAssessmentsNestedInput
     branchBatch?: BranchBatchUpdateOneRequiredWithoutAssessmentsNestedInput
+    batchCycle?: BatchCycleUpdateOneWithoutAssessmentsNestedInput
     faculty?: UserUpdateOneRequiredWithoutCreatedAssessmentsNestedInput
     submissions?: AssessmentSubmissionUpdateManyWithoutAssessmentNestedInput
     originalAssessment?: AssessmentUpdateOneWithoutReassessmentsNestedInput
@@ -148196,6 +155293,7 @@ export namespace Prisma {
     branchCourseId?: StringFieldUpdateOperationsInput | string
     moduleId?: StringFieldUpdateOperationsInput | string
     branchBatchId?: StringFieldUpdateOperationsInput | string
+    batchCycleId?: NullableStringFieldUpdateOperationsInput | string | null
     totalMarks?: IntFieldUpdateOperationsInput | number
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -148404,6 +155502,7 @@ export namespace Prisma {
     branchCourse: BranchCourseCreateNestedOneWithoutAssessmentsInput
     module: BranchCourseModuleCreateNestedOneWithoutAssessmentsInput
     branchBatch: BranchBatchCreateNestedOneWithoutAssessmentsInput
+    batchCycle?: BatchCycleCreateNestedOneWithoutAssessmentsInput
     faculty: UserCreateNestedOneWithoutCreatedAssessmentsInput
     originalAssessment?: AssessmentCreateNestedOneWithoutReassessmentsInput
     reassessments?: AssessmentCreateNestedManyWithoutOriginalAssessmentInput
@@ -148419,6 +155518,7 @@ export namespace Prisma {
     branchCourseId: string
     moduleId: string
     branchBatchId: string
+    batchCycleId?: string | null
     totalMarks: number
     startDate: Date | string
     endDate: Date | string
@@ -148633,6 +155733,7 @@ export namespace Prisma {
     examAttempts?: ExamAttemptCreateNestedManyWithoutStudentUserInput
     createdAssessments?: AssessmentCreateNestedManyWithoutFacultyInput
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutFacultyUserInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
   }
 
   export type UserUncheckedCreateWithoutEvaluatedSubmissionsInput = {
@@ -148674,6 +155775,7 @@ export namespace Prisma {
     examAttempts?: ExamAttemptUncheckedCreateNestedManyWithoutStudentUserInput
     createdAssessments?: AssessmentUncheckedCreateNestedManyWithoutFacultyInput
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutFacultyUserInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
   }
 
   export type UserCreateOrConnectWithoutEvaluatedSubmissionsInput = {
@@ -148708,6 +155810,7 @@ export namespace Prisma {
     branchCourse?: BranchCourseUpdateOneRequiredWithoutAssessmentsNestedInput
     module?: BranchCourseModuleUpdateOneRequiredWithoutAssessmentsNestedInput
     branchBatch?: BranchBatchUpdateOneRequiredWithoutAssessmentsNestedInput
+    batchCycle?: BatchCycleUpdateOneWithoutAssessmentsNestedInput
     faculty?: UserUpdateOneRequiredWithoutCreatedAssessmentsNestedInput
     originalAssessment?: AssessmentUpdateOneWithoutReassessmentsNestedInput
     reassessments?: AssessmentUpdateManyWithoutOriginalAssessmentNestedInput
@@ -148723,6 +155826,7 @@ export namespace Prisma {
     branchCourseId?: StringFieldUpdateOperationsInput | string
     moduleId?: StringFieldUpdateOperationsInput | string
     branchBatchId?: StringFieldUpdateOperationsInput | string
+    batchCycleId?: NullableStringFieldUpdateOperationsInput | string | null
     totalMarks?: IntFieldUpdateOperationsInput | number
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -148949,6 +156053,7 @@ export namespace Prisma {
     examAttempts?: ExamAttemptUpdateManyWithoutStudentUserNestedInput
     createdAssessments?: AssessmentUpdateManyWithoutFacultyNestedInput
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutFacultyUserNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
   }
 
   export type UserUncheckedUpdateWithoutEvaluatedSubmissionsInput = {
@@ -148990,6 +156095,7 @@ export namespace Prisma {
     examAttempts?: ExamAttemptUncheckedUpdateManyWithoutStudentUserNestedInput
     createdAssessments?: AssessmentUncheckedUpdateManyWithoutFacultyNestedInput
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutFacultyUserNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
   }
 
   export type BranchCourseCreateWithoutExamsInput = {
@@ -149149,6 +156255,7 @@ export namespace Prisma {
     createdAssessments?: AssessmentCreateNestedManyWithoutFacultyInput
     evaluatedSubmissions?: AssessmentSubmissionCreateNestedManyWithoutEvaluatorInput
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutFacultyUserInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
   }
 
   export type UserUncheckedCreateWithoutCreatedExamsInput = {
@@ -149190,6 +156297,7 @@ export namespace Prisma {
     createdAssessments?: AssessmentUncheckedCreateNestedManyWithoutFacultyInput
     evaluatedSubmissions?: AssessmentSubmissionUncheckedCreateNestedManyWithoutEvaluatorInput
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutFacultyUserInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
   }
 
   export type UserCreateOrConnectWithoutCreatedExamsInput = {
@@ -149204,12 +156312,14 @@ export namespace Prisma {
     endTime: string
     status?: string
     branchBatch: BranchBatchCreateNestedOneWithoutExamSchedulesInput
+    batchCycle?: BatchCycleCreateNestedOneWithoutExamSchedulesInput
     attempts?: ExamAttemptCreateNestedManyWithoutScheduleInput
   }
 
   export type ExamScheduleUncheckedCreateWithoutExamInput = {
     id?: string
     branchBatchId: string
+    batchCycleId?: string | null
     testDate: string
     startTime: string
     endTime: string
@@ -149751,6 +156861,7 @@ export namespace Prisma {
     createdAssessments?: AssessmentUpdateManyWithoutFacultyNestedInput
     evaluatedSubmissions?: AssessmentSubmissionUpdateManyWithoutEvaluatorNestedInput
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutFacultyUserNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCreatedExamsInput = {
@@ -149792,6 +156903,7 @@ export namespace Prisma {
     createdAssessments?: AssessmentUncheckedUpdateManyWithoutFacultyNestedInput
     evaluatedSubmissions?: AssessmentSubmissionUncheckedUpdateManyWithoutEvaluatorNestedInput
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutFacultyUserNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
   }
 
   export type ExamScheduleUpsertWithWhereUniqueWithoutExamInput = {
@@ -150175,6 +157287,8 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperCreateNestedManyWithoutBranchBatchInput
     academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchBatchInput
     academicTestCycles?: AcademicTestCycleCreateNestedManyWithoutBranchBatchInput
+    cycles?: BatchCycleCreateNestedManyWithoutBatchInput
+    academicTestReportHistories?: AcademicTestReportHistoryCreateNestedManyWithoutBatchInput
   }
 
   export type BranchBatchUncheckedCreateWithoutExamSchedulesInput = {
@@ -150212,11 +157326,56 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchBatchInput
     academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchBatchInput
     academicTestCycles?: AcademicTestCycleUncheckedCreateNestedManyWithoutBranchBatchInput
+    cycles?: BatchCycleUncheckedCreateNestedManyWithoutBatchInput
+    academicTestReportHistories?: AcademicTestReportHistoryUncheckedCreateNestedManyWithoutBatchInput
   }
 
   export type BranchBatchCreateOrConnectWithoutExamSchedulesInput = {
     where: BranchBatchWhereUniqueInput
     create: XOR<BranchBatchCreateWithoutExamSchedulesInput, BranchBatchUncheckedCreateWithoutExamSchedulesInput>
+  }
+
+  export type BatchCycleCreateWithoutExamSchedulesInput = {
+    id?: string
+    cycleNumber: number
+    cycleName: string
+    status?: string
+    startDate?: string | null
+    endDate?: string | null
+    completedAt?: Date | string | null
+    freezeUntil?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    batch: BranchBatchCreateNestedOneWithoutCyclesInput
+    enrollments?: BranchStudentCourseCreateNestedManyWithoutBatchCycleInput
+    academicTestCycles?: AcademicTestCycleCreateNestedManyWithoutBatchCycleInput
+    reportHistories?: AcademicTestReportHistoryCreateNestedManyWithoutBatchCycleInput
+    assessments?: AssessmentCreateNestedManyWithoutBatchCycleInput
+    reportShares?: FacultyReportShareCreateNestedManyWithoutBatchCycleInput
+  }
+
+  export type BatchCycleUncheckedCreateWithoutExamSchedulesInput = {
+    id?: string
+    batchId: string
+    cycleNumber: number
+    cycleName: string
+    status?: string
+    startDate?: string | null
+    endDate?: string | null
+    completedAt?: Date | string | null
+    freezeUntil?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    enrollments?: BranchStudentCourseUncheckedCreateNestedManyWithoutBatchCycleInput
+    academicTestCycles?: AcademicTestCycleUncheckedCreateNestedManyWithoutBatchCycleInput
+    reportHistories?: AcademicTestReportHistoryUncheckedCreateNestedManyWithoutBatchCycleInput
+    assessments?: AssessmentUncheckedCreateNestedManyWithoutBatchCycleInput
+    reportShares?: FacultyReportShareUncheckedCreateNestedManyWithoutBatchCycleInput
+  }
+
+  export type BatchCycleCreateOrConnectWithoutExamSchedulesInput = {
+    where: BatchCycleWhereUniqueInput
+    create: XOR<BatchCycleCreateWithoutExamSchedulesInput, BatchCycleUncheckedCreateWithoutExamSchedulesInput>
   }
 
   export type ExamAttemptCreateWithoutScheduleInput = {
@@ -150370,6 +157529,8 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUpdateManyWithoutBranchBatchNestedInput
     academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchBatchNestedInput
     academicTestCycles?: AcademicTestCycleUpdateManyWithoutBranchBatchNestedInput
+    cycles?: BatchCycleUpdateManyWithoutBatchNestedInput
+    academicTestReportHistories?: AcademicTestReportHistoryUpdateManyWithoutBatchNestedInput
   }
 
   export type BranchBatchUncheckedUpdateWithoutExamSchedulesInput = {
@@ -150407,6 +157568,57 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutBranchBatchNestedInput
     academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchBatchNestedInput
     academicTestCycles?: AcademicTestCycleUncheckedUpdateManyWithoutBranchBatchNestedInput
+    cycles?: BatchCycleUncheckedUpdateManyWithoutBatchNestedInput
+    academicTestReportHistories?: AcademicTestReportHistoryUncheckedUpdateManyWithoutBatchNestedInput
+  }
+
+  export type BatchCycleUpsertWithoutExamSchedulesInput = {
+    update: XOR<BatchCycleUpdateWithoutExamSchedulesInput, BatchCycleUncheckedUpdateWithoutExamSchedulesInput>
+    create: XOR<BatchCycleCreateWithoutExamSchedulesInput, BatchCycleUncheckedCreateWithoutExamSchedulesInput>
+    where?: BatchCycleWhereInput
+  }
+
+  export type BatchCycleUpdateToOneWithWhereWithoutExamSchedulesInput = {
+    where?: BatchCycleWhereInput
+    data: XOR<BatchCycleUpdateWithoutExamSchedulesInput, BatchCycleUncheckedUpdateWithoutExamSchedulesInput>
+  }
+
+  export type BatchCycleUpdateWithoutExamSchedulesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    cycleNumber?: IntFieldUpdateOperationsInput | number
+    cycleName?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    startDate?: NullableStringFieldUpdateOperationsInput | string | null
+    endDate?: NullableStringFieldUpdateOperationsInput | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    freezeUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    batch?: BranchBatchUpdateOneRequiredWithoutCyclesNestedInput
+    enrollments?: BranchStudentCourseUpdateManyWithoutBatchCycleNestedInput
+    academicTestCycles?: AcademicTestCycleUpdateManyWithoutBatchCycleNestedInput
+    reportHistories?: AcademicTestReportHistoryUpdateManyWithoutBatchCycleNestedInput
+    assessments?: AssessmentUpdateManyWithoutBatchCycleNestedInput
+    reportShares?: FacultyReportShareUpdateManyWithoutBatchCycleNestedInput
+  }
+
+  export type BatchCycleUncheckedUpdateWithoutExamSchedulesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    batchId?: StringFieldUpdateOperationsInput | string
+    cycleNumber?: IntFieldUpdateOperationsInput | number
+    cycleName?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    startDate?: NullableStringFieldUpdateOperationsInput | string | null
+    endDate?: NullableStringFieldUpdateOperationsInput | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    freezeUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    enrollments?: BranchStudentCourseUncheckedUpdateManyWithoutBatchCycleNestedInput
+    academicTestCycles?: AcademicTestCycleUncheckedUpdateManyWithoutBatchCycleNestedInput
+    reportHistories?: AcademicTestReportHistoryUncheckedUpdateManyWithoutBatchCycleNestedInput
+    assessments?: AssessmentUncheckedUpdateManyWithoutBatchCycleNestedInput
+    reportShares?: FacultyReportShareUncheckedUpdateManyWithoutBatchCycleNestedInput
   }
 
   export type ExamAttemptUpsertWithWhereUniqueWithoutScheduleInput = {
@@ -150640,12 +157852,14 @@ export namespace Prisma {
     status?: string
     exam: ExamCreateNestedOneWithoutSchedulesInput
     branchBatch: BranchBatchCreateNestedOneWithoutExamSchedulesInput
+    batchCycle?: BatchCycleCreateNestedOneWithoutExamSchedulesInput
   }
 
   export type ExamScheduleUncheckedCreateWithoutAttemptsInput = {
     id?: string
     examId: string
     branchBatchId: string
+    batchCycleId?: string | null
     testDate: string
     startTime: string
     endTime: string
@@ -150853,6 +158067,7 @@ export namespace Prisma {
     createdAssessments?: AssessmentCreateNestedManyWithoutFacultyInput
     evaluatedSubmissions?: AssessmentSubmissionCreateNestedManyWithoutEvaluatorInput
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutFacultyUserInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
   }
 
   export type UserUncheckedCreateWithoutExamAttemptsInput = {
@@ -150894,6 +158109,7 @@ export namespace Prisma {
     createdAssessments?: AssessmentUncheckedCreateNestedManyWithoutFacultyInput
     evaluatedSubmissions?: AssessmentSubmissionUncheckedCreateNestedManyWithoutEvaluatorInput
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutFacultyUserInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
   }
 
   export type UserCreateOrConnectWithoutExamAttemptsInput = {
@@ -151001,12 +158217,14 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     exam?: ExamUpdateOneRequiredWithoutSchedulesNestedInput
     branchBatch?: BranchBatchUpdateOneRequiredWithoutExamSchedulesNestedInput
+    batchCycle?: BatchCycleUpdateOneWithoutExamSchedulesNestedInput
   }
 
   export type ExamScheduleUncheckedUpdateWithoutAttemptsInput = {
     id?: StringFieldUpdateOperationsInput | string
     examId?: StringFieldUpdateOperationsInput | string
     branchBatchId?: StringFieldUpdateOperationsInput | string
+    batchCycleId?: NullableStringFieldUpdateOperationsInput | string | null
     testDate?: StringFieldUpdateOperationsInput | string
     startTime?: StringFieldUpdateOperationsInput | string
     endTime?: StringFieldUpdateOperationsInput | string
@@ -151226,6 +158444,7 @@ export namespace Prisma {
     createdAssessments?: AssessmentUpdateManyWithoutFacultyNestedInput
     evaluatedSubmissions?: AssessmentSubmissionUpdateManyWithoutEvaluatorNestedInput
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutFacultyUserNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
   }
 
   export type UserUncheckedUpdateWithoutExamAttemptsInput = {
@@ -151267,6 +158486,7 @@ export namespace Prisma {
     createdAssessments?: AssessmentUncheckedUpdateManyWithoutFacultyNestedInput
     evaluatedSubmissions?: AssessmentSubmissionUncheckedUpdateManyWithoutEvaluatorNestedInput
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutFacultyUserNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
   }
 
   export type ExamAnswerUpsertWithWhereUniqueWithoutAttemptInput = {
@@ -152083,6 +159303,726 @@ export namespace Prisma {
     reassessmentAssessments?: AssessmentUncheckedUpdateManyWithoutReassessmentStudentNestedInput
     courseEnrollments?: BranchStudentCourseUncheckedUpdateManyWithoutBranchStudentNestedInput
     motivationMailHistory?: MotivationMailHistoryUncheckedUpdateManyWithoutBranchStudentNestedInput
+  }
+
+  export type BatchCycleCreateWithoutReportSharesInput = {
+    id?: string
+    cycleNumber: number
+    cycleName: string
+    status?: string
+    startDate?: string | null
+    endDate?: string | null
+    completedAt?: Date | string | null
+    freezeUntil?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    batch: BranchBatchCreateNestedOneWithoutCyclesInput
+    enrollments?: BranchStudentCourseCreateNestedManyWithoutBatchCycleInput
+    academicTestCycles?: AcademicTestCycleCreateNestedManyWithoutBatchCycleInput
+    reportHistories?: AcademicTestReportHistoryCreateNestedManyWithoutBatchCycleInput
+    examSchedules?: ExamScheduleCreateNestedManyWithoutBatchCycleInput
+    assessments?: AssessmentCreateNestedManyWithoutBatchCycleInput
+  }
+
+  export type BatchCycleUncheckedCreateWithoutReportSharesInput = {
+    id?: string
+    batchId: string
+    cycleNumber: number
+    cycleName: string
+    status?: string
+    startDate?: string | null
+    endDate?: string | null
+    completedAt?: Date | string | null
+    freezeUntil?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    enrollments?: BranchStudentCourseUncheckedCreateNestedManyWithoutBatchCycleInput
+    academicTestCycles?: AcademicTestCycleUncheckedCreateNestedManyWithoutBatchCycleInput
+    reportHistories?: AcademicTestReportHistoryUncheckedCreateNestedManyWithoutBatchCycleInput
+    examSchedules?: ExamScheduleUncheckedCreateNestedManyWithoutBatchCycleInput
+    assessments?: AssessmentUncheckedCreateNestedManyWithoutBatchCycleInput
+  }
+
+  export type BatchCycleCreateOrConnectWithoutReportSharesInput = {
+    where: BatchCycleWhereUniqueInput
+    create: XOR<BatchCycleCreateWithoutReportSharesInput, BatchCycleUncheckedCreateWithoutReportSharesInput>
+  }
+
+  export type BatchCycleUpsertWithoutReportSharesInput = {
+    update: XOR<BatchCycleUpdateWithoutReportSharesInput, BatchCycleUncheckedUpdateWithoutReportSharesInput>
+    create: XOR<BatchCycleCreateWithoutReportSharesInput, BatchCycleUncheckedCreateWithoutReportSharesInput>
+    where?: BatchCycleWhereInput
+  }
+
+  export type BatchCycleUpdateToOneWithWhereWithoutReportSharesInput = {
+    where?: BatchCycleWhereInput
+    data: XOR<BatchCycleUpdateWithoutReportSharesInput, BatchCycleUncheckedUpdateWithoutReportSharesInput>
+  }
+
+  export type BatchCycleUpdateWithoutReportSharesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    cycleNumber?: IntFieldUpdateOperationsInput | number
+    cycleName?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    startDate?: NullableStringFieldUpdateOperationsInput | string | null
+    endDate?: NullableStringFieldUpdateOperationsInput | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    freezeUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    batch?: BranchBatchUpdateOneRequiredWithoutCyclesNestedInput
+    enrollments?: BranchStudentCourseUpdateManyWithoutBatchCycleNestedInput
+    academicTestCycles?: AcademicTestCycleUpdateManyWithoutBatchCycleNestedInput
+    reportHistories?: AcademicTestReportHistoryUpdateManyWithoutBatchCycleNestedInput
+    examSchedules?: ExamScheduleUpdateManyWithoutBatchCycleNestedInput
+    assessments?: AssessmentUpdateManyWithoutBatchCycleNestedInput
+  }
+
+  export type BatchCycleUncheckedUpdateWithoutReportSharesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    batchId?: StringFieldUpdateOperationsInput | string
+    cycleNumber?: IntFieldUpdateOperationsInput | number
+    cycleName?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    startDate?: NullableStringFieldUpdateOperationsInput | string | null
+    endDate?: NullableStringFieldUpdateOperationsInput | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    freezeUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    enrollments?: BranchStudentCourseUncheckedUpdateManyWithoutBatchCycleNestedInput
+    academicTestCycles?: AcademicTestCycleUncheckedUpdateManyWithoutBatchCycleNestedInput
+    reportHistories?: AcademicTestReportHistoryUncheckedUpdateManyWithoutBatchCycleNestedInput
+    examSchedules?: ExamScheduleUncheckedUpdateManyWithoutBatchCycleNestedInput
+    assessments?: AssessmentUncheckedUpdateManyWithoutBatchCycleNestedInput
+  }
+
+  export type BranchBatchCreateWithoutAcademicTestReportHistoriesInput = {
+    id?: string
+    batchId: string
+    courseId: string
+    courseName: string
+    facultyId: string
+    facultyName: string
+    facultyEmail: string
+    batchName: string
+    startTime: string
+    startPeriod: string
+    endTime: string
+    endPeriod: string
+    batchTiming: string
+    totalSeats: number
+    offlineSeats?: number
+    weekType?: string | null
+    mode?: string | null
+    courseStartDate?: string | null
+    courseEndDate?: string | null
+    weeklyOffDay?: string | null
+    sequenceNo?: number
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branch: BranchCreateNestedOneWithoutBranchBatchesInput
+    branchCourse: BranchCourseCreateNestedOneWithoutBranchBatchesInput
+    branchFaculty: BranchFacultyCreateNestedOneWithoutBranchBatchesInput
+    examSchedules?: ExamScheduleCreateNestedManyWithoutBranchBatchInput
+    assessments?: AssessmentCreateNestedManyWithoutBranchBatchInput
+    academicTestBatches?: AcademicTestBatchCreateNestedManyWithoutBranchBatchInput
+    academicQuestionPapers?: AcademicQuestionPaperCreateNestedManyWithoutBranchBatchInput
+    academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchBatchInput
+    academicTestCycles?: AcademicTestCycleCreateNestedManyWithoutBranchBatchInput
+    cycles?: BatchCycleCreateNestedManyWithoutBatchInput
+  }
+
+  export type BranchBatchUncheckedCreateWithoutAcademicTestReportHistoriesInput = {
+    id?: string
+    branchId: string
+    branchCourseId: string
+    branchFacultyId: string
+    batchId: string
+    courseId: string
+    courseName: string
+    facultyId: string
+    facultyName: string
+    facultyEmail: string
+    batchName: string
+    startTime: string
+    startPeriod: string
+    endTime: string
+    endPeriod: string
+    batchTiming: string
+    totalSeats: number
+    offlineSeats?: number
+    weekType?: string | null
+    mode?: string | null
+    courseStartDate?: string | null
+    courseEndDate?: string | null
+    weeklyOffDay?: string | null
+    sequenceNo?: number
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    examSchedules?: ExamScheduleUncheckedCreateNestedManyWithoutBranchBatchInput
+    assessments?: AssessmentUncheckedCreateNestedManyWithoutBranchBatchInput
+    academicTestBatches?: AcademicTestBatchUncheckedCreateNestedManyWithoutBranchBatchInput
+    academicQuestionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchBatchInput
+    academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchBatchInput
+    academicTestCycles?: AcademicTestCycleUncheckedCreateNestedManyWithoutBranchBatchInput
+    cycles?: BatchCycleUncheckedCreateNestedManyWithoutBatchInput
+  }
+
+  export type BranchBatchCreateOrConnectWithoutAcademicTestReportHistoriesInput = {
+    where: BranchBatchWhereUniqueInput
+    create: XOR<BranchBatchCreateWithoutAcademicTestReportHistoriesInput, BranchBatchUncheckedCreateWithoutAcademicTestReportHistoriesInput>
+  }
+
+  export type BatchCycleCreateWithoutReportHistoriesInput = {
+    id?: string
+    cycleNumber: number
+    cycleName: string
+    status?: string
+    startDate?: string | null
+    endDate?: string | null
+    completedAt?: Date | string | null
+    freezeUntil?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    batch: BranchBatchCreateNestedOneWithoutCyclesInput
+    enrollments?: BranchStudentCourseCreateNestedManyWithoutBatchCycleInput
+    academicTestCycles?: AcademicTestCycleCreateNestedManyWithoutBatchCycleInput
+    examSchedules?: ExamScheduleCreateNestedManyWithoutBatchCycleInput
+    assessments?: AssessmentCreateNestedManyWithoutBatchCycleInput
+    reportShares?: FacultyReportShareCreateNestedManyWithoutBatchCycleInput
+  }
+
+  export type BatchCycleUncheckedCreateWithoutReportHistoriesInput = {
+    id?: string
+    batchId: string
+    cycleNumber: number
+    cycleName: string
+    status?: string
+    startDate?: string | null
+    endDate?: string | null
+    completedAt?: Date | string | null
+    freezeUntil?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    enrollments?: BranchStudentCourseUncheckedCreateNestedManyWithoutBatchCycleInput
+    academicTestCycles?: AcademicTestCycleUncheckedCreateNestedManyWithoutBatchCycleInput
+    examSchedules?: ExamScheduleUncheckedCreateNestedManyWithoutBatchCycleInput
+    assessments?: AssessmentUncheckedCreateNestedManyWithoutBatchCycleInput
+    reportShares?: FacultyReportShareUncheckedCreateNestedManyWithoutBatchCycleInput
+  }
+
+  export type BatchCycleCreateOrConnectWithoutReportHistoriesInput = {
+    where: BatchCycleWhereUniqueInput
+    create: XOR<BatchCycleCreateWithoutReportHistoriesInput, BatchCycleUncheckedCreateWithoutReportHistoriesInput>
+  }
+
+  export type AcademicTestItemCreateWithoutAcademicTestReportHistoriesInput = {
+    id?: string
+    sequence: number
+    testType: $Enums.AcademicTestType
+    requiredProgress?: number
+    testDate?: string | null
+    testStartTime?: string | null
+    testEndTime?: string | null
+    projectStartDate?: string | null
+    projectEndDate?: string | null
+    academicTest: AcademicTestCreateNestedOneWithoutItemsInput
+    questionPapers?: AcademicQuestionPaperCreateNestedManyWithoutAcademicTestItemInput
+    projects?: AcademicTestProjectCreateNestedManyWithoutAcademicTestItemInput
+    cycles?: AcademicTestCycleCreateNestedManyWithoutAcademicTestItemInput
+  }
+
+  export type AcademicTestItemUncheckedCreateWithoutAcademicTestReportHistoriesInput = {
+    id?: string
+    academicTestId: string
+    sequence: number
+    testType: $Enums.AcademicTestType
+    requiredProgress?: number
+    testDate?: string | null
+    testStartTime?: string | null
+    testEndTime?: string | null
+    projectStartDate?: string | null
+    projectEndDate?: string | null
+    questionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutAcademicTestItemInput
+    projects?: AcademicTestProjectUncheckedCreateNestedManyWithoutAcademicTestItemInput
+    cycles?: AcademicTestCycleUncheckedCreateNestedManyWithoutAcademicTestItemInput
+  }
+
+  export type AcademicTestItemCreateOrConnectWithoutAcademicTestReportHistoriesInput = {
+    where: AcademicTestItemWhereUniqueInput
+    create: XOR<AcademicTestItemCreateWithoutAcademicTestReportHistoriesInput, AcademicTestItemUncheckedCreateWithoutAcademicTestReportHistoriesInput>
+  }
+
+  export type AcademicTestReportSubmissionCreateWithoutHistoryInput = {
+    id?: string
+    sourceShareId?: string | null
+    scheduleId?: string | null
+    reportData: JsonNullValueInput | InputJsonValue
+    submittedAt?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    faculty?: UserCreateNestedOneWithoutAcademicTestReportSubmissionsInput
+  }
+
+  export type AcademicTestReportSubmissionUncheckedCreateWithoutHistoryInput = {
+    id?: string
+    facultyId?: string | null
+    sourceShareId?: string | null
+    scheduleId?: string | null
+    reportData: JsonNullValueInput | InputJsonValue
+    submittedAt?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AcademicTestReportSubmissionCreateOrConnectWithoutHistoryInput = {
+    where: AcademicTestReportSubmissionWhereUniqueInput
+    create: XOR<AcademicTestReportSubmissionCreateWithoutHistoryInput, AcademicTestReportSubmissionUncheckedCreateWithoutHistoryInput>
+  }
+
+  export type AcademicTestReportSubmissionCreateManyHistoryInputEnvelope = {
+    data: AcademicTestReportSubmissionCreateManyHistoryInput | AcademicTestReportSubmissionCreateManyHistoryInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type BranchBatchUpsertWithoutAcademicTestReportHistoriesInput = {
+    update: XOR<BranchBatchUpdateWithoutAcademicTestReportHistoriesInput, BranchBatchUncheckedUpdateWithoutAcademicTestReportHistoriesInput>
+    create: XOR<BranchBatchCreateWithoutAcademicTestReportHistoriesInput, BranchBatchUncheckedCreateWithoutAcademicTestReportHistoriesInput>
+    where?: BranchBatchWhereInput
+  }
+
+  export type BranchBatchUpdateToOneWithWhereWithoutAcademicTestReportHistoriesInput = {
+    where?: BranchBatchWhereInput
+    data: XOR<BranchBatchUpdateWithoutAcademicTestReportHistoriesInput, BranchBatchUncheckedUpdateWithoutAcademicTestReportHistoriesInput>
+  }
+
+  export type BranchBatchUpdateWithoutAcademicTestReportHistoriesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    batchId?: StringFieldUpdateOperationsInput | string
+    courseId?: StringFieldUpdateOperationsInput | string
+    courseName?: StringFieldUpdateOperationsInput | string
+    facultyId?: StringFieldUpdateOperationsInput | string
+    facultyName?: StringFieldUpdateOperationsInput | string
+    facultyEmail?: StringFieldUpdateOperationsInput | string
+    batchName?: StringFieldUpdateOperationsInput | string
+    startTime?: StringFieldUpdateOperationsInput | string
+    startPeriod?: StringFieldUpdateOperationsInput | string
+    endTime?: StringFieldUpdateOperationsInput | string
+    endPeriod?: StringFieldUpdateOperationsInput | string
+    batchTiming?: StringFieldUpdateOperationsInput | string
+    totalSeats?: IntFieldUpdateOperationsInput | number
+    offlineSeats?: IntFieldUpdateOperationsInput | number
+    weekType?: NullableStringFieldUpdateOperationsInput | string | null
+    mode?: NullableStringFieldUpdateOperationsInput | string | null
+    courseStartDate?: NullableStringFieldUpdateOperationsInput | string | null
+    courseEndDate?: NullableStringFieldUpdateOperationsInput | string | null
+    weeklyOffDay?: NullableStringFieldUpdateOperationsInput | string | null
+    sequenceNo?: IntFieldUpdateOperationsInput | number
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branch?: BranchUpdateOneRequiredWithoutBranchBatchesNestedInput
+    branchCourse?: BranchCourseUpdateOneRequiredWithoutBranchBatchesNestedInput
+    branchFaculty?: BranchFacultyUpdateOneRequiredWithoutBranchBatchesNestedInput
+    examSchedules?: ExamScheduleUpdateManyWithoutBranchBatchNestedInput
+    assessments?: AssessmentUpdateManyWithoutBranchBatchNestedInput
+    academicTestBatches?: AcademicTestBatchUpdateManyWithoutBranchBatchNestedInput
+    academicQuestionPapers?: AcademicQuestionPaperUpdateManyWithoutBranchBatchNestedInput
+    academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchBatchNestedInput
+    academicTestCycles?: AcademicTestCycleUpdateManyWithoutBranchBatchNestedInput
+    cycles?: BatchCycleUpdateManyWithoutBatchNestedInput
+  }
+
+  export type BranchBatchUncheckedUpdateWithoutAcademicTestReportHistoriesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    branchCourseId?: StringFieldUpdateOperationsInput | string
+    branchFacultyId?: StringFieldUpdateOperationsInput | string
+    batchId?: StringFieldUpdateOperationsInput | string
+    courseId?: StringFieldUpdateOperationsInput | string
+    courseName?: StringFieldUpdateOperationsInput | string
+    facultyId?: StringFieldUpdateOperationsInput | string
+    facultyName?: StringFieldUpdateOperationsInput | string
+    facultyEmail?: StringFieldUpdateOperationsInput | string
+    batchName?: StringFieldUpdateOperationsInput | string
+    startTime?: StringFieldUpdateOperationsInput | string
+    startPeriod?: StringFieldUpdateOperationsInput | string
+    endTime?: StringFieldUpdateOperationsInput | string
+    endPeriod?: StringFieldUpdateOperationsInput | string
+    batchTiming?: StringFieldUpdateOperationsInput | string
+    totalSeats?: IntFieldUpdateOperationsInput | number
+    offlineSeats?: IntFieldUpdateOperationsInput | number
+    weekType?: NullableStringFieldUpdateOperationsInput | string | null
+    mode?: NullableStringFieldUpdateOperationsInput | string | null
+    courseStartDate?: NullableStringFieldUpdateOperationsInput | string | null
+    courseEndDate?: NullableStringFieldUpdateOperationsInput | string | null
+    weeklyOffDay?: NullableStringFieldUpdateOperationsInput | string | null
+    sequenceNo?: IntFieldUpdateOperationsInput | number
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    examSchedules?: ExamScheduleUncheckedUpdateManyWithoutBranchBatchNestedInput
+    assessments?: AssessmentUncheckedUpdateManyWithoutBranchBatchNestedInput
+    academicTestBatches?: AcademicTestBatchUncheckedUpdateManyWithoutBranchBatchNestedInput
+    academicQuestionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutBranchBatchNestedInput
+    academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchBatchNestedInput
+    academicTestCycles?: AcademicTestCycleUncheckedUpdateManyWithoutBranchBatchNestedInput
+    cycles?: BatchCycleUncheckedUpdateManyWithoutBatchNestedInput
+  }
+
+  export type BatchCycleUpsertWithoutReportHistoriesInput = {
+    update: XOR<BatchCycleUpdateWithoutReportHistoriesInput, BatchCycleUncheckedUpdateWithoutReportHistoriesInput>
+    create: XOR<BatchCycleCreateWithoutReportHistoriesInput, BatchCycleUncheckedCreateWithoutReportHistoriesInput>
+    where?: BatchCycleWhereInput
+  }
+
+  export type BatchCycleUpdateToOneWithWhereWithoutReportHistoriesInput = {
+    where?: BatchCycleWhereInput
+    data: XOR<BatchCycleUpdateWithoutReportHistoriesInput, BatchCycleUncheckedUpdateWithoutReportHistoriesInput>
+  }
+
+  export type BatchCycleUpdateWithoutReportHistoriesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    cycleNumber?: IntFieldUpdateOperationsInput | number
+    cycleName?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    startDate?: NullableStringFieldUpdateOperationsInput | string | null
+    endDate?: NullableStringFieldUpdateOperationsInput | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    freezeUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    batch?: BranchBatchUpdateOneRequiredWithoutCyclesNestedInput
+    enrollments?: BranchStudentCourseUpdateManyWithoutBatchCycleNestedInput
+    academicTestCycles?: AcademicTestCycleUpdateManyWithoutBatchCycleNestedInput
+    examSchedules?: ExamScheduleUpdateManyWithoutBatchCycleNestedInput
+    assessments?: AssessmentUpdateManyWithoutBatchCycleNestedInput
+    reportShares?: FacultyReportShareUpdateManyWithoutBatchCycleNestedInput
+  }
+
+  export type BatchCycleUncheckedUpdateWithoutReportHistoriesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    batchId?: StringFieldUpdateOperationsInput | string
+    cycleNumber?: IntFieldUpdateOperationsInput | number
+    cycleName?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    startDate?: NullableStringFieldUpdateOperationsInput | string | null
+    endDate?: NullableStringFieldUpdateOperationsInput | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    freezeUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    enrollments?: BranchStudentCourseUncheckedUpdateManyWithoutBatchCycleNestedInput
+    academicTestCycles?: AcademicTestCycleUncheckedUpdateManyWithoutBatchCycleNestedInput
+    examSchedules?: ExamScheduleUncheckedUpdateManyWithoutBatchCycleNestedInput
+    assessments?: AssessmentUncheckedUpdateManyWithoutBatchCycleNestedInput
+    reportShares?: FacultyReportShareUncheckedUpdateManyWithoutBatchCycleNestedInput
+  }
+
+  export type AcademicTestItemUpsertWithoutAcademicTestReportHistoriesInput = {
+    update: XOR<AcademicTestItemUpdateWithoutAcademicTestReportHistoriesInput, AcademicTestItemUncheckedUpdateWithoutAcademicTestReportHistoriesInput>
+    create: XOR<AcademicTestItemCreateWithoutAcademicTestReportHistoriesInput, AcademicTestItemUncheckedCreateWithoutAcademicTestReportHistoriesInput>
+    where?: AcademicTestItemWhereInput
+  }
+
+  export type AcademicTestItemUpdateToOneWithWhereWithoutAcademicTestReportHistoriesInput = {
+    where?: AcademicTestItemWhereInput
+    data: XOR<AcademicTestItemUpdateWithoutAcademicTestReportHistoriesInput, AcademicTestItemUncheckedUpdateWithoutAcademicTestReportHistoriesInput>
+  }
+
+  export type AcademicTestItemUpdateWithoutAcademicTestReportHistoriesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sequence?: IntFieldUpdateOperationsInput | number
+    testType?: EnumAcademicTestTypeFieldUpdateOperationsInput | $Enums.AcademicTestType
+    requiredProgress?: IntFieldUpdateOperationsInput | number
+    testDate?: NullableStringFieldUpdateOperationsInput | string | null
+    testStartTime?: NullableStringFieldUpdateOperationsInput | string | null
+    testEndTime?: NullableStringFieldUpdateOperationsInput | string | null
+    projectStartDate?: NullableStringFieldUpdateOperationsInput | string | null
+    projectEndDate?: NullableStringFieldUpdateOperationsInput | string | null
+    academicTest?: AcademicTestUpdateOneRequiredWithoutItemsNestedInput
+    questionPapers?: AcademicQuestionPaperUpdateManyWithoutAcademicTestItemNestedInput
+    projects?: AcademicTestProjectUpdateManyWithoutAcademicTestItemNestedInput
+    cycles?: AcademicTestCycleUpdateManyWithoutAcademicTestItemNestedInput
+  }
+
+  export type AcademicTestItemUncheckedUpdateWithoutAcademicTestReportHistoriesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    academicTestId?: StringFieldUpdateOperationsInput | string
+    sequence?: IntFieldUpdateOperationsInput | number
+    testType?: EnumAcademicTestTypeFieldUpdateOperationsInput | $Enums.AcademicTestType
+    requiredProgress?: IntFieldUpdateOperationsInput | number
+    testDate?: NullableStringFieldUpdateOperationsInput | string | null
+    testStartTime?: NullableStringFieldUpdateOperationsInput | string | null
+    testEndTime?: NullableStringFieldUpdateOperationsInput | string | null
+    projectStartDate?: NullableStringFieldUpdateOperationsInput | string | null
+    projectEndDate?: NullableStringFieldUpdateOperationsInput | string | null
+    questionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutAcademicTestItemNestedInput
+    projects?: AcademicTestProjectUncheckedUpdateManyWithoutAcademicTestItemNestedInput
+    cycles?: AcademicTestCycleUncheckedUpdateManyWithoutAcademicTestItemNestedInput
+  }
+
+  export type AcademicTestReportSubmissionUpsertWithWhereUniqueWithoutHistoryInput = {
+    where: AcademicTestReportSubmissionWhereUniqueInput
+    update: XOR<AcademicTestReportSubmissionUpdateWithoutHistoryInput, AcademicTestReportSubmissionUncheckedUpdateWithoutHistoryInput>
+    create: XOR<AcademicTestReportSubmissionCreateWithoutHistoryInput, AcademicTestReportSubmissionUncheckedCreateWithoutHistoryInput>
+  }
+
+  export type AcademicTestReportSubmissionUpdateWithWhereUniqueWithoutHistoryInput = {
+    where: AcademicTestReportSubmissionWhereUniqueInput
+    data: XOR<AcademicTestReportSubmissionUpdateWithoutHistoryInput, AcademicTestReportSubmissionUncheckedUpdateWithoutHistoryInput>
+  }
+
+  export type AcademicTestReportSubmissionUpdateManyWithWhereWithoutHistoryInput = {
+    where: AcademicTestReportSubmissionScalarWhereInput
+    data: XOR<AcademicTestReportSubmissionUpdateManyMutationInput, AcademicTestReportSubmissionUncheckedUpdateManyWithoutHistoryInput>
+  }
+
+  export type AcademicTestReportHistoryCreateWithoutSubmissionsInput = {
+    id?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    batch: BranchBatchCreateNestedOneWithoutAcademicTestReportHistoriesInput
+    batchCycle: BatchCycleCreateNestedOneWithoutReportHistoriesInput
+    academicTest: AcademicTestItemCreateNestedOneWithoutAcademicTestReportHistoriesInput
+  }
+
+  export type AcademicTestReportHistoryUncheckedCreateWithoutSubmissionsInput = {
+    id?: string
+    batchId: string
+    batchCycleId: string
+    academicTestId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AcademicTestReportHistoryCreateOrConnectWithoutSubmissionsInput = {
+    where: AcademicTestReportHistoryWhereUniqueInput
+    create: XOR<AcademicTestReportHistoryCreateWithoutSubmissionsInput, AcademicTestReportHistoryUncheckedCreateWithoutSubmissionsInput>
+  }
+
+  export type UserCreateWithoutAcademicTestReportSubmissionsInput = {
+    id?: string
+    userCode: string
+    fullName: string
+    email: string
+    phone?: string | null
+    role: $Enums.UserRole
+    active?: boolean
+    passwordHash: string
+    passwordChangedAt?: Date | string | null
+    refreshTokenVersion?: number
+    failedLoginCount?: number
+    failedLoginWindowExpiresAt?: Date | string | null
+    lockedUntil?: Date | string | null
+    lastLoginAt?: Date | string | null
+    lastLogoutAt?: Date | string | null
+    lastLoginIp?: string | null
+    lastLoginUserAgent?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentCreateNestedManyWithoutFacultyInput
+    managedBranch?: BranchCreateNestedOneWithoutAdminUserInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceDays?: FacultyAttendanceDayCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkCreateNestedManyWithoutFacultyUserInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryCreateNestedManyWithoutFacultyUserInput
+    loginEvents?: LoginEventCreateNestedManyWithoutUserInput
+    targetedNotifications?: NotificationCreateNestedManyWithoutTargetUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    markedStudentAttendances?: StudentAttendanceCreateNestedManyWithoutFacultyUserInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceCreateNestedManyWithoutFacultyUserInput
+    dashboardWidgetPreferences?: UserDashboardWidgetCreateNestedManyWithoutUserInput
+    facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutFacultyUserInput
+    createdExams?: ExamCreateNestedManyWithoutFacultyInput
+    examAttempts?: ExamAttemptCreateNestedManyWithoutStudentUserInput
+    createdAssessments?: AssessmentCreateNestedManyWithoutFacultyInput
+    evaluatedSubmissions?: AssessmentSubmissionCreateNestedManyWithoutEvaluatorInput
+    facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutFacultyUserInput
+  }
+
+  export type UserUncheckedCreateWithoutAcademicTestReportSubmissionsInput = {
+    id?: string
+    userCode: string
+    fullName: string
+    email: string
+    phone?: string | null
+    role: $Enums.UserRole
+    active?: boolean
+    passwordHash: string
+    passwordChangedAt?: Date | string | null
+    refreshTokenVersion?: number
+    failedLoginCount?: number
+    failedLoginWindowExpiresAt?: Date | string | null
+    lockedUntil?: Date | string | null
+    lastLoginAt?: Date | string | null
+    lastLogoutAt?: Date | string | null
+    lastLoginIp?: string | null
+    lastLoginUserAgent?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentUncheckedCreateNestedManyWithoutFacultyInput
+    managedBranch?: BranchUncheckedCreateNestedOneWithoutAdminUserInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceDays?: FacultyAttendanceDayUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedCreateNestedManyWithoutFacultyUserInput
+    loginEvents?: LoginEventUncheckedCreateNestedManyWithoutUserInput
+    targetedNotifications?: NotificationUncheckedCreateNestedManyWithoutTargetUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    markedStudentAttendances?: StudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
+    dashboardWidgetPreferences?: UserDashboardWidgetUncheckedCreateNestedManyWithoutUserInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutFacultyUserInput
+    createdExams?: ExamUncheckedCreateNestedManyWithoutFacultyInput
+    examAttempts?: ExamAttemptUncheckedCreateNestedManyWithoutStudentUserInput
+    createdAssessments?: AssessmentUncheckedCreateNestedManyWithoutFacultyInput
+    evaluatedSubmissions?: AssessmentSubmissionUncheckedCreateNestedManyWithoutEvaluatorInput
+    facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutFacultyUserInput
+  }
+
+  export type UserCreateOrConnectWithoutAcademicTestReportSubmissionsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutAcademicTestReportSubmissionsInput, UserUncheckedCreateWithoutAcademicTestReportSubmissionsInput>
+  }
+
+  export type AcademicTestReportHistoryUpsertWithoutSubmissionsInput = {
+    update: XOR<AcademicTestReportHistoryUpdateWithoutSubmissionsInput, AcademicTestReportHistoryUncheckedUpdateWithoutSubmissionsInput>
+    create: XOR<AcademicTestReportHistoryCreateWithoutSubmissionsInput, AcademicTestReportHistoryUncheckedCreateWithoutSubmissionsInput>
+    where?: AcademicTestReportHistoryWhereInput
+  }
+
+  export type AcademicTestReportHistoryUpdateToOneWithWhereWithoutSubmissionsInput = {
+    where?: AcademicTestReportHistoryWhereInput
+    data: XOR<AcademicTestReportHistoryUpdateWithoutSubmissionsInput, AcademicTestReportHistoryUncheckedUpdateWithoutSubmissionsInput>
+  }
+
+  export type AcademicTestReportHistoryUpdateWithoutSubmissionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    batch?: BranchBatchUpdateOneRequiredWithoutAcademicTestReportHistoriesNestedInput
+    batchCycle?: BatchCycleUpdateOneRequiredWithoutReportHistoriesNestedInput
+    academicTest?: AcademicTestItemUpdateOneRequiredWithoutAcademicTestReportHistoriesNestedInput
+  }
+
+  export type AcademicTestReportHistoryUncheckedUpdateWithoutSubmissionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    batchId?: StringFieldUpdateOperationsInput | string
+    batchCycleId?: StringFieldUpdateOperationsInput | string
+    academicTestId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserUpsertWithoutAcademicTestReportSubmissionsInput = {
+    update: XOR<UserUpdateWithoutAcademicTestReportSubmissionsInput, UserUncheckedUpdateWithoutAcademicTestReportSubmissionsInput>
+    create: XOR<UserCreateWithoutAcademicTestReportSubmissionsInput, UserUncheckedCreateWithoutAcademicTestReportSubmissionsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutAcademicTestReportSubmissionsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutAcademicTestReportSubmissionsInput, UserUncheckedUpdateWithoutAcademicTestReportSubmissionsInput>
+  }
+
+  export type UserUpdateWithoutAcademicTestReportSubmissionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userCode?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refreshTokenVersion?: IntFieldUpdateOperationsInput | number
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    failedLoginWindowExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLogoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginUserAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentUpdateManyWithoutFacultyNestedInput
+    managedBranch?: BranchUpdateOneWithoutAdminUserNestedInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceDays?: FacultyAttendanceDayUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUpdateManyWithoutFacultyUserNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUpdateManyWithoutFacultyUserNestedInput
+    loginEvents?: LoginEventUpdateManyWithoutUserNestedInput
+    targetedNotifications?: NotificationUpdateManyWithoutTargetUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    markedStudentAttendances?: StudentAttendanceUpdateManyWithoutFacultyUserNestedInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceUpdateManyWithoutFacultyUserNestedInput
+    dashboardWidgetPreferences?: UserDashboardWidgetUpdateManyWithoutUserNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutFacultyUserNestedInput
+    createdExams?: ExamUpdateManyWithoutFacultyNestedInput
+    examAttempts?: ExamAttemptUpdateManyWithoutStudentUserNestedInput
+    createdAssessments?: AssessmentUpdateManyWithoutFacultyNestedInput
+    evaluatedSubmissions?: AssessmentSubmissionUpdateManyWithoutEvaluatorNestedInput
+    facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutFacultyUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutAcademicTestReportSubmissionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userCode?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refreshTokenVersion?: IntFieldUpdateOperationsInput | number
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    failedLoginWindowExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLogoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginUserAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentUncheckedUpdateManyWithoutFacultyNestedInput
+    managedBranch?: BranchUncheckedUpdateOneWithoutAdminUserNestedInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceDays?: FacultyAttendanceDayUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedUpdateManyWithoutFacultyUserNestedInput
+    loginEvents?: LoginEventUncheckedUpdateManyWithoutUserNestedInput
+    targetedNotifications?: NotificationUncheckedUpdateManyWithoutTargetUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    markedStudentAttendances?: StudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
+    dashboardWidgetPreferences?: UserDashboardWidgetUncheckedUpdateManyWithoutUserNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutFacultyUserNestedInput
+    createdExams?: ExamUncheckedUpdateManyWithoutFacultyNestedInput
+    examAttempts?: ExamAttemptUncheckedUpdateManyWithoutStudentUserNestedInput
+    createdAssessments?: AssessmentUncheckedUpdateManyWithoutFacultyNestedInput
+    evaluatedSubmissions?: AssessmentSubmissionUncheckedUpdateManyWithoutEvaluatorNestedInput
+    facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutFacultyUserNestedInput
   }
 
   export type BranchStudentCreateWithoutPaymentsInput = {
@@ -153365,6 +161305,7 @@ export namespace Prisma {
     branchCourseId: string
     moduleId: string
     branchBatchId: string
+    batchCycleId?: string | null
     totalMarks: number
     startDate: Date | string
     endDate: Date | string
@@ -153409,6 +161350,17 @@ export namespace Prisma {
     overdueMarkedAt?: Date | string | null
     createdBy: string
     updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AcademicTestReportSubmissionCreateManyFacultyInput = {
+    id?: string
+    historyId: string
+    sourceShareId?: string | null
+    scheduleId?: string | null
+    reportData: JsonNullValueInput | InputJsonValue
+    submittedAt?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -154184,6 +162136,7 @@ export namespace Prisma {
     branchCourse?: BranchCourseUpdateOneRequiredWithoutAssessmentsNestedInput
     module?: BranchCourseModuleUpdateOneRequiredWithoutAssessmentsNestedInput
     branchBatch?: BranchBatchUpdateOneRequiredWithoutAssessmentsNestedInput
+    batchCycle?: BatchCycleUpdateOneWithoutAssessmentsNestedInput
     submissions?: AssessmentSubmissionUpdateManyWithoutAssessmentNestedInput
     originalAssessment?: AssessmentUpdateOneWithoutReassessmentsNestedInput
     reassessments?: AssessmentUpdateManyWithoutOriginalAssessmentNestedInput
@@ -154199,6 +162152,7 @@ export namespace Prisma {
     branchCourseId?: StringFieldUpdateOperationsInput | string
     moduleId?: StringFieldUpdateOperationsInput | string
     branchBatchId?: StringFieldUpdateOperationsInput | string
+    batchCycleId?: NullableStringFieldUpdateOperationsInput | string | null
     totalMarks?: IntFieldUpdateOperationsInput | number
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -154221,6 +162175,7 @@ export namespace Prisma {
     branchCourseId?: StringFieldUpdateOperationsInput | string
     moduleId?: StringFieldUpdateOperationsInput | string
     branchBatchId?: StringFieldUpdateOperationsInput | string
+    batchCycleId?: NullableStringFieldUpdateOperationsInput | string | null
     totalMarks?: IntFieldUpdateOperationsInput | number
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -154341,6 +162296,39 @@ export namespace Prisma {
     overdueMarkedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdBy?: StringFieldUpdateOperationsInput | string
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AcademicTestReportSubmissionUpdateWithoutFacultyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sourceShareId?: NullableStringFieldUpdateOperationsInput | string | null
+    scheduleId?: NullableStringFieldUpdateOperationsInput | string | null
+    reportData?: JsonNullValueInput | InputJsonValue
+    submittedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    history?: AcademicTestReportHistoryUpdateOneRequiredWithoutSubmissionsNestedInput
+  }
+
+  export type AcademicTestReportSubmissionUncheckedUpdateWithoutFacultyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    historyId?: StringFieldUpdateOperationsInput | string
+    sourceShareId?: NullableStringFieldUpdateOperationsInput | string | null
+    scheduleId?: NullableStringFieldUpdateOperationsInput | string | null
+    reportData?: JsonNullValueInput | InputJsonValue
+    submittedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    historyId?: StringFieldUpdateOperationsInput | string
+    sourceShareId?: NullableStringFieldUpdateOperationsInput | string | null
+    scheduleId?: NullableStringFieldUpdateOperationsInput | string | null
+    reportData?: JsonNullValueInput | InputJsonValue
+    submittedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -154546,6 +162534,7 @@ export namespace Prisma {
     facultyId?: string | null
     facultyName?: string | null
     batchId?: string | null
+    batchCycleId?: string | null
     batchName?: string | null
     batchTiming?: string | null
     scheduleType?: string | null
@@ -154854,6 +162843,8 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUpdateManyWithoutBranchBatchNestedInput
     academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchBatchNestedInput
     academicTestCycles?: AcademicTestCycleUpdateManyWithoutBranchBatchNestedInput
+    cycles?: BatchCycleUpdateManyWithoutBatchNestedInput
+    academicTestReportHistories?: AcademicTestReportHistoryUpdateManyWithoutBatchNestedInput
   }
 
   export type BranchBatchUncheckedUpdateWithoutBranchInput = {
@@ -154891,6 +162882,8 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutBranchBatchNestedInput
     academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchBatchNestedInput
     academicTestCycles?: AcademicTestCycleUncheckedUpdateManyWithoutBranchBatchNestedInput
+    cycles?: BatchCycleUncheckedUpdateManyWithoutBatchNestedInput
+    academicTestReportHistories?: AcademicTestReportHistoryUncheckedUpdateManyWithoutBatchNestedInput
   }
 
   export type BranchBatchUncheckedUpdateManyWithoutBranchInput = {
@@ -155287,6 +163280,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     branchStudent?: BranchStudentUpdateOneRequiredWithoutCourseEnrollmentsNestedInput
+    batchCycle?: BatchCycleUpdateOneWithoutEnrollmentsNestedInput
     course?: BranchCourseUpdateOneRequiredWithoutStudentEnrollmentsNestedInput
   }
 
@@ -155298,6 +163292,7 @@ export namespace Prisma {
     facultyId?: NullableStringFieldUpdateOperationsInput | string | null
     facultyName?: NullableStringFieldUpdateOperationsInput | string | null
     batchId?: NullableStringFieldUpdateOperationsInput | string | null
+    batchCycleId?: NullableStringFieldUpdateOperationsInput | string | null
     batchName?: NullableStringFieldUpdateOperationsInput | string | null
     batchTiming?: NullableStringFieldUpdateOperationsInput | string | null
     scheduleType?: NullableStringFieldUpdateOperationsInput | string | null
@@ -155328,6 +163323,7 @@ export namespace Prisma {
     facultyId?: NullableStringFieldUpdateOperationsInput | string | null
     facultyName?: NullableStringFieldUpdateOperationsInput | string | null
     batchId?: NullableStringFieldUpdateOperationsInput | string | null
+    batchCycleId?: NullableStringFieldUpdateOperationsInput | string | null
     batchName?: NullableStringFieldUpdateOperationsInput | string | null
     batchTiming?: NullableStringFieldUpdateOperationsInput | string | null
     scheduleType?: NullableStringFieldUpdateOperationsInput | string | null
@@ -156725,6 +164721,7 @@ export namespace Prisma {
     facultyId?: string | null
     facultyName?: string | null
     batchId?: string | null
+    batchCycleId?: string | null
     batchName?: string | null
     batchTiming?: string | null
     scheduleType?: string | null
@@ -156817,6 +164814,7 @@ export namespace Prisma {
     assessmentName: string
     moduleId: string
     branchBatchId: string
+    batchCycleId?: string | null
     totalMarks: number
     startDate: Date | string
     endDate: Date | string
@@ -157048,6 +165046,8 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUpdateManyWithoutBranchBatchNestedInput
     academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchBatchNestedInput
     academicTestCycles?: AcademicTestCycleUpdateManyWithoutBranchBatchNestedInput
+    cycles?: BatchCycleUpdateManyWithoutBatchNestedInput
+    academicTestReportHistories?: AcademicTestReportHistoryUpdateManyWithoutBatchNestedInput
   }
 
   export type BranchBatchUncheckedUpdateWithoutBranchCourseInput = {
@@ -157085,6 +165085,8 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutBranchBatchNestedInput
     academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchBatchNestedInput
     academicTestCycles?: AcademicTestCycleUncheckedUpdateManyWithoutBranchBatchNestedInput
+    cycles?: BatchCycleUncheckedUpdateManyWithoutBatchNestedInput
+    academicTestReportHistories?: AcademicTestReportHistoryUncheckedUpdateManyWithoutBatchNestedInput
   }
 
   export type BranchBatchUncheckedUpdateManyWithoutBranchCourseInput = {
@@ -157361,6 +165363,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     branchStudent?: BranchStudentUpdateOneRequiredWithoutCourseEnrollmentsNestedInput
+    batchCycle?: BatchCycleUpdateOneWithoutEnrollmentsNestedInput
     branch?: BranchUpdateOneRequiredWithoutStudentEnrollmentsNestedInput
   }
 
@@ -157372,6 +165375,7 @@ export namespace Prisma {
     facultyId?: NullableStringFieldUpdateOperationsInput | string | null
     facultyName?: NullableStringFieldUpdateOperationsInput | string | null
     batchId?: NullableStringFieldUpdateOperationsInput | string | null
+    batchCycleId?: NullableStringFieldUpdateOperationsInput | string | null
     batchName?: NullableStringFieldUpdateOperationsInput | string | null
     batchTiming?: NullableStringFieldUpdateOperationsInput | string | null
     scheduleType?: NullableStringFieldUpdateOperationsInput | string | null
@@ -157402,6 +165406,7 @@ export namespace Prisma {
     facultyId?: NullableStringFieldUpdateOperationsInput | string | null
     facultyName?: NullableStringFieldUpdateOperationsInput | string | null
     batchId?: NullableStringFieldUpdateOperationsInput | string | null
+    batchCycleId?: NullableStringFieldUpdateOperationsInput | string | null
     batchName?: NullableStringFieldUpdateOperationsInput | string | null
     batchTiming?: NullableStringFieldUpdateOperationsInput | string | null
     scheduleType?: NullableStringFieldUpdateOperationsInput | string | null
@@ -157635,6 +165640,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     module?: BranchCourseModuleUpdateOneRequiredWithoutAssessmentsNestedInput
     branchBatch?: BranchBatchUpdateOneRequiredWithoutAssessmentsNestedInput
+    batchCycle?: BatchCycleUpdateOneWithoutAssessmentsNestedInput
     faculty?: UserUpdateOneRequiredWithoutCreatedAssessmentsNestedInput
     submissions?: AssessmentSubmissionUpdateManyWithoutAssessmentNestedInput
     originalAssessment?: AssessmentUpdateOneWithoutReassessmentsNestedInput
@@ -157650,6 +165656,7 @@ export namespace Prisma {
     assessmentName?: StringFieldUpdateOperationsInput | string
     moduleId?: StringFieldUpdateOperationsInput | string
     branchBatchId?: StringFieldUpdateOperationsInput | string
+    batchCycleId?: NullableStringFieldUpdateOperationsInput | string | null
     totalMarks?: IntFieldUpdateOperationsInput | number
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -157672,6 +165679,7 @@ export namespace Prisma {
     assessmentName?: StringFieldUpdateOperationsInput | string
     moduleId?: StringFieldUpdateOperationsInput | string
     branchBatchId?: StringFieldUpdateOperationsInput | string
+    batchCycleId?: NullableStringFieldUpdateOperationsInput | string | null
     totalMarks?: IntFieldUpdateOperationsInput | number
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -157840,6 +165848,7 @@ export namespace Prisma {
     assessmentName: string
     branchCourseId: string
     branchBatchId: string
+    batchCycleId?: string | null
     totalMarks: number
     startDate: Date | string
     endDate: Date | string
@@ -157968,6 +165977,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     branchCourse?: BranchCourseUpdateOneRequiredWithoutAssessmentsNestedInput
     branchBatch?: BranchBatchUpdateOneRequiredWithoutAssessmentsNestedInput
+    batchCycle?: BatchCycleUpdateOneWithoutAssessmentsNestedInput
     faculty?: UserUpdateOneRequiredWithoutCreatedAssessmentsNestedInput
     submissions?: AssessmentSubmissionUpdateManyWithoutAssessmentNestedInput
     originalAssessment?: AssessmentUpdateOneWithoutReassessmentsNestedInput
@@ -157983,6 +165993,7 @@ export namespace Prisma {
     assessmentName?: StringFieldUpdateOperationsInput | string
     branchCourseId?: StringFieldUpdateOperationsInput | string
     branchBatchId?: StringFieldUpdateOperationsInput | string
+    batchCycleId?: NullableStringFieldUpdateOperationsInput | string | null
     totalMarks?: IntFieldUpdateOperationsInput | number
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -158005,6 +166016,7 @@ export namespace Prisma {
     assessmentName?: StringFieldUpdateOperationsInput | string
     branchCourseId?: StringFieldUpdateOperationsInput | string
     branchBatchId?: StringFieldUpdateOperationsInput | string
+    batchCycleId?: NullableStringFieldUpdateOperationsInput | string | null
     totalMarks?: IntFieldUpdateOperationsInput | number
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -158120,6 +166132,7 @@ export namespace Prisma {
   export type ExamScheduleCreateManyBranchBatchInput = {
     id?: string
     examId: string
+    batchCycleId?: string | null
     testDate: string
     startTime: string
     endTime: string
@@ -158134,6 +166147,7 @@ export namespace Prisma {
     assessmentName: string
     branchCourseId: string
     moduleId: string
+    batchCycleId?: string | null
     totalMarks: number
     startDate: Date | string
     endDate: Date | string
@@ -158185,9 +166199,31 @@ export namespace Prisma {
     id?: string
     academicTestItemId: string
     cycleNumber: number
+    batchCycleId: string
     status?: string
     createdBy: string
     createdAt?: Date | string
+  }
+
+  export type BatchCycleCreateManyBatchInput = {
+    id?: string
+    cycleNumber: number
+    cycleName: string
+    status?: string
+    startDate?: string | null
+    endDate?: string | null
+    completedAt?: Date | string | null
+    freezeUntil?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AcademicTestReportHistoryCreateManyBatchInput = {
+    id?: string
+    batchCycleId: string
+    academicTestId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type ExamScheduleUpdateWithoutBranchBatchInput = {
@@ -158197,12 +166233,14 @@ export namespace Prisma {
     endTime?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     exam?: ExamUpdateOneRequiredWithoutSchedulesNestedInput
+    batchCycle?: BatchCycleUpdateOneWithoutExamSchedulesNestedInput
     attempts?: ExamAttemptUpdateManyWithoutScheduleNestedInput
   }
 
   export type ExamScheduleUncheckedUpdateWithoutBranchBatchInput = {
     id?: StringFieldUpdateOperationsInput | string
     examId?: StringFieldUpdateOperationsInput | string
+    batchCycleId?: NullableStringFieldUpdateOperationsInput | string | null
     testDate?: StringFieldUpdateOperationsInput | string
     startTime?: StringFieldUpdateOperationsInput | string
     endTime?: StringFieldUpdateOperationsInput | string
@@ -158213,6 +166251,7 @@ export namespace Prisma {
   export type ExamScheduleUncheckedUpdateManyWithoutBranchBatchInput = {
     id?: StringFieldUpdateOperationsInput | string
     examId?: StringFieldUpdateOperationsInput | string
+    batchCycleId?: NullableStringFieldUpdateOperationsInput | string | null
     testDate?: StringFieldUpdateOperationsInput | string
     startTime?: StringFieldUpdateOperationsInput | string
     endTime?: StringFieldUpdateOperationsInput | string
@@ -158234,6 +166273,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     branchCourse?: BranchCourseUpdateOneRequiredWithoutAssessmentsNestedInput
     module?: BranchCourseModuleUpdateOneRequiredWithoutAssessmentsNestedInput
+    batchCycle?: BatchCycleUpdateOneWithoutAssessmentsNestedInput
     faculty?: UserUpdateOneRequiredWithoutCreatedAssessmentsNestedInput
     submissions?: AssessmentSubmissionUpdateManyWithoutAssessmentNestedInput
     originalAssessment?: AssessmentUpdateOneWithoutReassessmentsNestedInput
@@ -158249,6 +166289,7 @@ export namespace Prisma {
     assessmentName?: StringFieldUpdateOperationsInput | string
     branchCourseId?: StringFieldUpdateOperationsInput | string
     moduleId?: StringFieldUpdateOperationsInput | string
+    batchCycleId?: NullableStringFieldUpdateOperationsInput | string | null
     totalMarks?: IntFieldUpdateOperationsInput | number
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -158271,6 +166312,7 @@ export namespace Prisma {
     assessmentName?: StringFieldUpdateOperationsInput | string
     branchCourseId?: StringFieldUpdateOperationsInput | string
     moduleId?: StringFieldUpdateOperationsInput | string
+    batchCycleId?: NullableStringFieldUpdateOperationsInput | string | null
     totalMarks?: IntFieldUpdateOperationsInput | number
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -158397,6 +166439,7 @@ export namespace Prisma {
     createdBy?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     academicTestItem?: AcademicTestItemUpdateOneRequiredWithoutCyclesNestedInput
+    batchCycle?: BatchCycleUpdateOneRequiredWithoutAcademicTestCyclesNestedInput
     questionPapers?: AcademicQuestionPaperUpdateManyWithoutCycleNestedInput
     projects?: AcademicTestProjectUpdateManyWithoutCycleNestedInput
     schedules?: AcademicScheduledTestUpdateManyWithoutCycleNestedInput
@@ -158406,6 +166449,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     academicTestItemId?: StringFieldUpdateOperationsInput | string
     cycleNumber?: IntFieldUpdateOperationsInput | number
+    batchCycleId?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     createdBy?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -158418,9 +166462,87 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     academicTestItemId?: StringFieldUpdateOperationsInput | string
     cycleNumber?: IntFieldUpdateOperationsInput | number
+    batchCycleId?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     createdBy?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BatchCycleUpdateWithoutBatchInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    cycleNumber?: IntFieldUpdateOperationsInput | number
+    cycleName?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    startDate?: NullableStringFieldUpdateOperationsInput | string | null
+    endDate?: NullableStringFieldUpdateOperationsInput | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    freezeUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    enrollments?: BranchStudentCourseUpdateManyWithoutBatchCycleNestedInput
+    academicTestCycles?: AcademicTestCycleUpdateManyWithoutBatchCycleNestedInput
+    reportHistories?: AcademicTestReportHistoryUpdateManyWithoutBatchCycleNestedInput
+    examSchedules?: ExamScheduleUpdateManyWithoutBatchCycleNestedInput
+    assessments?: AssessmentUpdateManyWithoutBatchCycleNestedInput
+    reportShares?: FacultyReportShareUpdateManyWithoutBatchCycleNestedInput
+  }
+
+  export type BatchCycleUncheckedUpdateWithoutBatchInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    cycleNumber?: IntFieldUpdateOperationsInput | number
+    cycleName?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    startDate?: NullableStringFieldUpdateOperationsInput | string | null
+    endDate?: NullableStringFieldUpdateOperationsInput | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    freezeUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    enrollments?: BranchStudentCourseUncheckedUpdateManyWithoutBatchCycleNestedInput
+    academicTestCycles?: AcademicTestCycleUncheckedUpdateManyWithoutBatchCycleNestedInput
+    reportHistories?: AcademicTestReportHistoryUncheckedUpdateManyWithoutBatchCycleNestedInput
+    examSchedules?: ExamScheduleUncheckedUpdateManyWithoutBatchCycleNestedInput
+    assessments?: AssessmentUncheckedUpdateManyWithoutBatchCycleNestedInput
+    reportShares?: FacultyReportShareUncheckedUpdateManyWithoutBatchCycleNestedInput
+  }
+
+  export type BatchCycleUncheckedUpdateManyWithoutBatchInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    cycleNumber?: IntFieldUpdateOperationsInput | number
+    cycleName?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    startDate?: NullableStringFieldUpdateOperationsInput | string | null
+    endDate?: NullableStringFieldUpdateOperationsInput | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    freezeUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AcademicTestReportHistoryUpdateWithoutBatchInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    batchCycle?: BatchCycleUpdateOneRequiredWithoutReportHistoriesNestedInput
+    academicTest?: AcademicTestItemUpdateOneRequiredWithoutAcademicTestReportHistoriesNestedInput
+    submissions?: AcademicTestReportSubmissionUpdateManyWithoutHistoryNestedInput
+  }
+
+  export type AcademicTestReportHistoryUncheckedUpdateWithoutBatchInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    batchCycleId?: StringFieldUpdateOperationsInput | string
+    academicTestId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutHistoryNestedInput
+  }
+
+  export type AcademicTestReportHistoryUncheckedUpdateManyWithoutBatchInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    batchCycleId?: StringFieldUpdateOperationsInput | string
+    academicTestId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type AcademicTestItemCreateManyAcademicTestInput = {
@@ -158453,6 +166575,7 @@ export namespace Prisma {
     questionPapers?: AcademicQuestionPaperUpdateManyWithoutAcademicTestItemNestedInput
     projects?: AcademicTestProjectUpdateManyWithoutAcademicTestItemNestedInput
     cycles?: AcademicTestCycleUpdateManyWithoutAcademicTestItemNestedInput
+    academicTestReportHistories?: AcademicTestReportHistoryUpdateManyWithoutAcademicTestNestedInput
   }
 
   export type AcademicTestItemUncheckedUpdateWithoutAcademicTestInput = {
@@ -158468,6 +166591,7 @@ export namespace Prisma {
     questionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutAcademicTestItemNestedInput
     projects?: AcademicTestProjectUncheckedUpdateManyWithoutAcademicTestItemNestedInput
     cycles?: AcademicTestCycleUncheckedUpdateManyWithoutAcademicTestItemNestedInput
+    academicTestReportHistories?: AcademicTestReportHistoryUncheckedUpdateManyWithoutAcademicTestNestedInput
   }
 
   export type AcademicTestItemUncheckedUpdateManyWithoutAcademicTestInput = {
@@ -158531,9 +166655,18 @@ export namespace Prisma {
     id?: string
     branchBatchId: string
     cycleNumber: number
+    batchCycleId: string
     status?: string
     createdBy: string
     createdAt?: Date | string
+  }
+
+  export type AcademicTestReportHistoryCreateManyAcademicTestInput = {
+    id?: string
+    batchId: string
+    batchCycleId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type AcademicQuestionPaperUpdateWithoutAcademicTestItemInput = {
@@ -158635,6 +166768,7 @@ export namespace Prisma {
     createdBy?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     branchBatch?: BranchBatchUpdateOneRequiredWithoutAcademicTestCyclesNestedInput
+    batchCycle?: BatchCycleUpdateOneRequiredWithoutAcademicTestCyclesNestedInput
     questionPapers?: AcademicQuestionPaperUpdateManyWithoutCycleNestedInput
     projects?: AcademicTestProjectUpdateManyWithoutCycleNestedInput
     schedules?: AcademicScheduledTestUpdateManyWithoutCycleNestedInput
@@ -158644,6 +166778,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     branchBatchId?: StringFieldUpdateOperationsInput | string
     cycleNumber?: IntFieldUpdateOperationsInput | number
+    batchCycleId?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     createdBy?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -158656,9 +166791,36 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     branchBatchId?: StringFieldUpdateOperationsInput | string
     cycleNumber?: IntFieldUpdateOperationsInput | number
+    batchCycleId?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     createdBy?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AcademicTestReportHistoryUpdateWithoutAcademicTestInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    batch?: BranchBatchUpdateOneRequiredWithoutAcademicTestReportHistoriesNestedInput
+    batchCycle?: BatchCycleUpdateOneRequiredWithoutReportHistoriesNestedInput
+    submissions?: AcademicTestReportSubmissionUpdateManyWithoutHistoryNestedInput
+  }
+
+  export type AcademicTestReportHistoryUncheckedUpdateWithoutAcademicTestInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    batchId?: StringFieldUpdateOperationsInput | string
+    batchCycleId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutHistoryNestedInput
+  }
+
+  export type AcademicTestReportHistoryUncheckedUpdateManyWithoutAcademicTestInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    batchId?: StringFieldUpdateOperationsInput | string
+    batchCycleId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type AcademicQuestionCreateManyQuestionPaperInput = {
@@ -158939,6 +167101,404 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type BranchStudentCourseCreateManyBatchCycleInput = {
+    id?: string
+    branchStudentId: string
+    branchId: string
+    courseId: string
+    courseName?: string | null
+    facultyId?: string | null
+    facultyName?: string | null
+    batchId?: string | null
+    batchName?: string | null
+    batchTiming?: string | null
+    scheduleType?: string | null
+    mode?: string | null
+    startDate?: string | null
+    endDate?: string | null
+    arrangementType?: string
+    sequenceOrder?: number
+    totalCourseAmount?: number | null
+    discountType?: $Enums.DiscountType | null
+    discountValue?: number | null
+    discountAmount?: number | null
+    finalCourseAmount?: number | null
+    courseProgress?: number | null
+    courseCompletedAt?: Date | string | null
+    paymentPlanId?: string | null
+    paymentPlan?: string | null
+    status?: $Enums.RecordStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AcademicTestCycleCreateManyBatchCycleInput = {
+    id?: string
+    academicTestItemId: string
+    branchBatchId: string
+    cycleNumber: number
+    status?: string
+    createdBy: string
+    createdAt?: Date | string
+  }
+
+  export type AcademicTestReportHistoryCreateManyBatchCycleInput = {
+    id?: string
+    batchId: string
+    academicTestId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ExamScheduleCreateManyBatchCycleInput = {
+    id?: string
+    examId: string
+    branchBatchId: string
+    testDate: string
+    startTime: string
+    endTime: string
+    status?: string
+  }
+
+  export type AssessmentCreateManyBatchCycleInput = {
+    isReassessment?: boolean
+    originalAssessmentId?: string | null
+    reassessmentStudentId?: string | null
+    id?: string
+    assessmentName: string
+    branchCourseId: string
+    moduleId: string
+    branchBatchId: string
+    totalMarks: number
+    startDate: Date | string
+    endDate: Date | string
+    details?: string | null
+    status?: string
+    cancelledAt?: Date | string | null
+    cancelledBy?: string | null
+    facultyId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FacultyReportShareCreateManyBatchCycleInput = {
+    id?: string
+    facultyId: string
+    branchId: string
+    batchId: string
+    courseId: string
+    testModuleIds?: JsonNullValueInput | InputJsonValue
+    assessmentModuleIds?: JsonNullValueInput | InputJsonValue
+    academicTestIds?: JsonNullValueInput | InputJsonValue
+    reportType?: string
+    sentAt?: Date | string
+    status?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type BranchStudentCourseUpdateWithoutBatchCycleInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    courseName?: NullableStringFieldUpdateOperationsInput | string | null
+    facultyId?: NullableStringFieldUpdateOperationsInput | string | null
+    facultyName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
+    batchName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchTiming?: NullableStringFieldUpdateOperationsInput | string | null
+    scheduleType?: NullableStringFieldUpdateOperationsInput | string | null
+    mode?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: NullableStringFieldUpdateOperationsInput | string | null
+    endDate?: NullableStringFieldUpdateOperationsInput | string | null
+    arrangementType?: StringFieldUpdateOperationsInput | string
+    sequenceOrder?: IntFieldUpdateOperationsInput | number
+    totalCourseAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    discountType?: NullableEnumDiscountTypeFieldUpdateOperationsInput | $Enums.DiscountType | null
+    discountValue?: NullableFloatFieldUpdateOperationsInput | number | null
+    discountAmount?: NullableFloatFieldUpdateOperationsInput | number | null
+    finalCourseAmount?: NullableFloatFieldUpdateOperationsInput | number | null
+    courseProgress?: NullableIntFieldUpdateOperationsInput | number | null
+    courseCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branchStudent?: BranchStudentUpdateOneRequiredWithoutCourseEnrollmentsNestedInput
+    branch?: BranchUpdateOneRequiredWithoutStudentEnrollmentsNestedInput
+    course?: BranchCourseUpdateOneRequiredWithoutStudentEnrollmentsNestedInput
+  }
+
+  export type BranchStudentCourseUncheckedUpdateWithoutBatchCycleInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchStudentId?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    courseId?: StringFieldUpdateOperationsInput | string
+    courseName?: NullableStringFieldUpdateOperationsInput | string | null
+    facultyId?: NullableStringFieldUpdateOperationsInput | string | null
+    facultyName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
+    batchName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchTiming?: NullableStringFieldUpdateOperationsInput | string | null
+    scheduleType?: NullableStringFieldUpdateOperationsInput | string | null
+    mode?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: NullableStringFieldUpdateOperationsInput | string | null
+    endDate?: NullableStringFieldUpdateOperationsInput | string | null
+    arrangementType?: StringFieldUpdateOperationsInput | string
+    sequenceOrder?: IntFieldUpdateOperationsInput | number
+    totalCourseAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    discountType?: NullableEnumDiscountTypeFieldUpdateOperationsInput | $Enums.DiscountType | null
+    discountValue?: NullableFloatFieldUpdateOperationsInput | number | null
+    discountAmount?: NullableFloatFieldUpdateOperationsInput | number | null
+    finalCourseAmount?: NullableFloatFieldUpdateOperationsInput | number | null
+    courseProgress?: NullableIntFieldUpdateOperationsInput | number | null
+    courseCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BranchStudentCourseUncheckedUpdateManyWithoutBatchCycleInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchStudentId?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    courseId?: StringFieldUpdateOperationsInput | string
+    courseName?: NullableStringFieldUpdateOperationsInput | string | null
+    facultyId?: NullableStringFieldUpdateOperationsInput | string | null
+    facultyName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
+    batchName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchTiming?: NullableStringFieldUpdateOperationsInput | string | null
+    scheduleType?: NullableStringFieldUpdateOperationsInput | string | null
+    mode?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: NullableStringFieldUpdateOperationsInput | string | null
+    endDate?: NullableStringFieldUpdateOperationsInput | string | null
+    arrangementType?: StringFieldUpdateOperationsInput | string
+    sequenceOrder?: IntFieldUpdateOperationsInput | number
+    totalCourseAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    discountType?: NullableEnumDiscountTypeFieldUpdateOperationsInput | $Enums.DiscountType | null
+    discountValue?: NullableFloatFieldUpdateOperationsInput | number | null
+    discountAmount?: NullableFloatFieldUpdateOperationsInput | number | null
+    finalCourseAmount?: NullableFloatFieldUpdateOperationsInput | number | null
+    courseProgress?: NullableIntFieldUpdateOperationsInput | number | null
+    courseCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AcademicTestCycleUpdateWithoutBatchCycleInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    cycleNumber?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    createdBy?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    academicTestItem?: AcademicTestItemUpdateOneRequiredWithoutCyclesNestedInput
+    branchBatch?: BranchBatchUpdateOneRequiredWithoutAcademicTestCyclesNestedInput
+    questionPapers?: AcademicQuestionPaperUpdateManyWithoutCycleNestedInput
+    projects?: AcademicTestProjectUpdateManyWithoutCycleNestedInput
+    schedules?: AcademicScheduledTestUpdateManyWithoutCycleNestedInput
+  }
+
+  export type AcademicTestCycleUncheckedUpdateWithoutBatchCycleInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    academicTestItemId?: StringFieldUpdateOperationsInput | string
+    branchBatchId?: StringFieldUpdateOperationsInput | string
+    cycleNumber?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    createdBy?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    questionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutCycleNestedInput
+    projects?: AcademicTestProjectUncheckedUpdateManyWithoutCycleNestedInput
+    schedules?: AcademicScheduledTestUncheckedUpdateManyWithoutCycleNestedInput
+  }
+
+  export type AcademicTestCycleUncheckedUpdateManyWithoutBatchCycleInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    academicTestItemId?: StringFieldUpdateOperationsInput | string
+    branchBatchId?: StringFieldUpdateOperationsInput | string
+    cycleNumber?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    createdBy?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AcademicTestReportHistoryUpdateWithoutBatchCycleInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    batch?: BranchBatchUpdateOneRequiredWithoutAcademicTestReportHistoriesNestedInput
+    academicTest?: AcademicTestItemUpdateOneRequiredWithoutAcademicTestReportHistoriesNestedInput
+    submissions?: AcademicTestReportSubmissionUpdateManyWithoutHistoryNestedInput
+  }
+
+  export type AcademicTestReportHistoryUncheckedUpdateWithoutBatchCycleInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    batchId?: StringFieldUpdateOperationsInput | string
+    academicTestId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutHistoryNestedInput
+  }
+
+  export type AcademicTestReportHistoryUncheckedUpdateManyWithoutBatchCycleInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    batchId?: StringFieldUpdateOperationsInput | string
+    academicTestId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ExamScheduleUpdateWithoutBatchCycleInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    testDate?: StringFieldUpdateOperationsInput | string
+    startTime?: StringFieldUpdateOperationsInput | string
+    endTime?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    exam?: ExamUpdateOneRequiredWithoutSchedulesNestedInput
+    branchBatch?: BranchBatchUpdateOneRequiredWithoutExamSchedulesNestedInput
+    attempts?: ExamAttemptUpdateManyWithoutScheduleNestedInput
+  }
+
+  export type ExamScheduleUncheckedUpdateWithoutBatchCycleInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    examId?: StringFieldUpdateOperationsInput | string
+    branchBatchId?: StringFieldUpdateOperationsInput | string
+    testDate?: StringFieldUpdateOperationsInput | string
+    startTime?: StringFieldUpdateOperationsInput | string
+    endTime?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    attempts?: ExamAttemptUncheckedUpdateManyWithoutScheduleNestedInput
+  }
+
+  export type ExamScheduleUncheckedUpdateManyWithoutBatchCycleInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    examId?: StringFieldUpdateOperationsInput | string
+    branchBatchId?: StringFieldUpdateOperationsInput | string
+    testDate?: StringFieldUpdateOperationsInput | string
+    startTime?: StringFieldUpdateOperationsInput | string
+    endTime?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type AssessmentUpdateWithoutBatchCycleInput = {
+    isReassessment?: BoolFieldUpdateOperationsInput | boolean
+    id?: StringFieldUpdateOperationsInput | string
+    assessmentName?: StringFieldUpdateOperationsInput | string
+    totalMarks?: IntFieldUpdateOperationsInput | number
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    details?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branchCourse?: BranchCourseUpdateOneRequiredWithoutAssessmentsNestedInput
+    module?: BranchCourseModuleUpdateOneRequiredWithoutAssessmentsNestedInput
+    branchBatch?: BranchBatchUpdateOneRequiredWithoutAssessmentsNestedInput
+    faculty?: UserUpdateOneRequiredWithoutCreatedAssessmentsNestedInput
+    submissions?: AssessmentSubmissionUpdateManyWithoutAssessmentNestedInput
+    originalAssessment?: AssessmentUpdateOneWithoutReassessmentsNestedInput
+    reassessments?: AssessmentUpdateManyWithoutOriginalAssessmentNestedInput
+    reassessmentStudent?: BranchStudentUpdateOneWithoutReassessmentAssessmentsNestedInput
+  }
+
+  export type AssessmentUncheckedUpdateWithoutBatchCycleInput = {
+    isReassessment?: BoolFieldUpdateOperationsInput | boolean
+    originalAssessmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    reassessmentStudentId?: NullableStringFieldUpdateOperationsInput | string | null
+    id?: StringFieldUpdateOperationsInput | string
+    assessmentName?: StringFieldUpdateOperationsInput | string
+    branchCourseId?: StringFieldUpdateOperationsInput | string
+    moduleId?: StringFieldUpdateOperationsInput | string
+    branchBatchId?: StringFieldUpdateOperationsInput | string
+    totalMarks?: IntFieldUpdateOperationsInput | number
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    details?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
+    facultyId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submissions?: AssessmentSubmissionUncheckedUpdateManyWithoutAssessmentNestedInput
+    reassessments?: AssessmentUncheckedUpdateManyWithoutOriginalAssessmentNestedInput
+  }
+
+  export type AssessmentUncheckedUpdateManyWithoutBatchCycleInput = {
+    isReassessment?: BoolFieldUpdateOperationsInput | boolean
+    originalAssessmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    reassessmentStudentId?: NullableStringFieldUpdateOperationsInput | string | null
+    id?: StringFieldUpdateOperationsInput | string
+    assessmentName?: StringFieldUpdateOperationsInput | string
+    branchCourseId?: StringFieldUpdateOperationsInput | string
+    moduleId?: StringFieldUpdateOperationsInput | string
+    branchBatchId?: StringFieldUpdateOperationsInput | string
+    totalMarks?: IntFieldUpdateOperationsInput | number
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    details?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
+    facultyId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FacultyReportShareUpdateWithoutBatchCycleInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    facultyId?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    batchId?: StringFieldUpdateOperationsInput | string
+    courseId?: StringFieldUpdateOperationsInput | string
+    testModuleIds?: JsonNullValueInput | InputJsonValue
+    assessmentModuleIds?: JsonNullValueInput | InputJsonValue
+    academicTestIds?: JsonNullValueInput | InputJsonValue
+    reportType?: StringFieldUpdateOperationsInput | string
+    sentAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FacultyReportShareUncheckedUpdateWithoutBatchCycleInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    facultyId?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    batchId?: StringFieldUpdateOperationsInput | string
+    courseId?: StringFieldUpdateOperationsInput | string
+    testModuleIds?: JsonNullValueInput | InputJsonValue
+    assessmentModuleIds?: JsonNullValueInput | InputJsonValue
+    academicTestIds?: JsonNullValueInput | InputJsonValue
+    reportType?: StringFieldUpdateOperationsInput | string
+    sentAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FacultyReportShareUncheckedUpdateManyWithoutBatchCycleInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    facultyId?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    batchId?: StringFieldUpdateOperationsInput | string
+    courseId?: StringFieldUpdateOperationsInput | string
+    testModuleIds?: JsonNullValueInput | InputJsonValue
+    assessmentModuleIds?: JsonNullValueInput | InputJsonValue
+    academicTestIds?: JsonNullValueInput | InputJsonValue
+    reportType?: StringFieldUpdateOperationsInput | string
+    sentAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StudentAttendanceCreateManyStudentInput = {
     id?: string
     facultyUserId?: string | null
@@ -159158,6 +167718,7 @@ export namespace Prisma {
     branchCourseId: string
     moduleId: string
     branchBatchId: string
+    batchCycleId?: string | null
     totalMarks: number
     startDate: Date | string
     endDate: Date | string
@@ -159178,6 +167739,7 @@ export namespace Prisma {
     facultyId?: string | null
     facultyName?: string | null
     batchId?: string | null
+    batchCycleId?: string | null
     batchName?: string | null
     batchTiming?: string | null
     scheduleType?: string | null
@@ -159744,6 +168306,7 @@ export namespace Prisma {
     branchCourse?: BranchCourseUpdateOneRequiredWithoutAssessmentsNestedInput
     module?: BranchCourseModuleUpdateOneRequiredWithoutAssessmentsNestedInput
     branchBatch?: BranchBatchUpdateOneRequiredWithoutAssessmentsNestedInput
+    batchCycle?: BatchCycleUpdateOneWithoutAssessmentsNestedInput
     faculty?: UserUpdateOneRequiredWithoutCreatedAssessmentsNestedInput
     submissions?: AssessmentSubmissionUpdateManyWithoutAssessmentNestedInput
     originalAssessment?: AssessmentUpdateOneWithoutReassessmentsNestedInput
@@ -159758,6 +168321,7 @@ export namespace Prisma {
     branchCourseId?: StringFieldUpdateOperationsInput | string
     moduleId?: StringFieldUpdateOperationsInput | string
     branchBatchId?: StringFieldUpdateOperationsInput | string
+    batchCycleId?: NullableStringFieldUpdateOperationsInput | string | null
     totalMarks?: IntFieldUpdateOperationsInput | number
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -159780,6 +168344,7 @@ export namespace Prisma {
     branchCourseId?: StringFieldUpdateOperationsInput | string
     moduleId?: StringFieldUpdateOperationsInput | string
     branchBatchId?: StringFieldUpdateOperationsInput | string
+    batchCycleId?: NullableStringFieldUpdateOperationsInput | string | null
     totalMarks?: IntFieldUpdateOperationsInput | number
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -159818,6 +168383,7 @@ export namespace Prisma {
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    batchCycle?: BatchCycleUpdateOneWithoutEnrollmentsNestedInput
     branch?: BranchUpdateOneRequiredWithoutStudentEnrollmentsNestedInput
     course?: BranchCourseUpdateOneRequiredWithoutStudentEnrollmentsNestedInput
   }
@@ -159830,6 +168396,7 @@ export namespace Prisma {
     facultyId?: NullableStringFieldUpdateOperationsInput | string | null
     facultyName?: NullableStringFieldUpdateOperationsInput | string | null
     batchId?: NullableStringFieldUpdateOperationsInput | string | null
+    batchCycleId?: NullableStringFieldUpdateOperationsInput | string | null
     batchName?: NullableStringFieldUpdateOperationsInput | string | null
     batchTiming?: NullableStringFieldUpdateOperationsInput | string | null
     scheduleType?: NullableStringFieldUpdateOperationsInput | string | null
@@ -159860,6 +168427,7 @@ export namespace Prisma {
     facultyId?: NullableStringFieldUpdateOperationsInput | string | null
     facultyName?: NullableStringFieldUpdateOperationsInput | string | null
     batchId?: NullableStringFieldUpdateOperationsInput | string | null
+    batchCycleId?: NullableStringFieldUpdateOperationsInput | string | null
     batchName?: NullableStringFieldUpdateOperationsInput | string | null
     batchTiming?: NullableStringFieldUpdateOperationsInput | string | null
     scheduleType?: NullableStringFieldUpdateOperationsInput | string | null
@@ -160572,6 +169140,8 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUpdateManyWithoutBranchBatchNestedInput
     academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchBatchNestedInput
     academicTestCycles?: AcademicTestCycleUpdateManyWithoutBranchBatchNestedInput
+    cycles?: BatchCycleUpdateManyWithoutBatchNestedInput
+    academicTestReportHistories?: AcademicTestReportHistoryUpdateManyWithoutBatchNestedInput
   }
 
   export type BranchBatchUncheckedUpdateWithoutBranchFacultyInput = {
@@ -160609,6 +169179,8 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutBranchBatchNestedInput
     academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchBatchNestedInput
     academicTestCycles?: AcademicTestCycleUncheckedUpdateManyWithoutBranchBatchNestedInput
+    cycles?: BatchCycleUncheckedUpdateManyWithoutBatchNestedInput
+    academicTestReportHistories?: AcademicTestReportHistoryUncheckedUpdateManyWithoutBatchNestedInput
   }
 
   export type BranchBatchUncheckedUpdateManyWithoutBranchFacultyInput = {
@@ -160757,6 +169329,7 @@ export namespace Prisma {
     branchCourseId: string
     moduleId: string
     branchBatchId: string
+    batchCycleId?: string | null
     totalMarks: number
     startDate: Date | string
     endDate: Date | string
@@ -160839,6 +169412,7 @@ export namespace Prisma {
     branchCourse?: BranchCourseUpdateOneRequiredWithoutAssessmentsNestedInput
     module?: BranchCourseModuleUpdateOneRequiredWithoutAssessmentsNestedInput
     branchBatch?: BranchBatchUpdateOneRequiredWithoutAssessmentsNestedInput
+    batchCycle?: BatchCycleUpdateOneWithoutAssessmentsNestedInput
     faculty?: UserUpdateOneRequiredWithoutCreatedAssessmentsNestedInput
     submissions?: AssessmentSubmissionUpdateManyWithoutAssessmentNestedInput
     reassessments?: AssessmentUpdateManyWithoutOriginalAssessmentNestedInput
@@ -160853,6 +169427,7 @@ export namespace Prisma {
     branchCourseId?: StringFieldUpdateOperationsInput | string
     moduleId?: StringFieldUpdateOperationsInput | string
     branchBatchId?: StringFieldUpdateOperationsInput | string
+    batchCycleId?: NullableStringFieldUpdateOperationsInput | string | null
     totalMarks?: IntFieldUpdateOperationsInput | number
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -160875,6 +169450,7 @@ export namespace Prisma {
     branchCourseId?: StringFieldUpdateOperationsInput | string
     moduleId?: StringFieldUpdateOperationsInput | string
     branchBatchId?: StringFieldUpdateOperationsInput | string
+    batchCycleId?: NullableStringFieldUpdateOperationsInput | string | null
     totalMarks?: IntFieldUpdateOperationsInput | number
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -160890,6 +169466,7 @@ export namespace Prisma {
   export type ExamScheduleCreateManyExamInput = {
     id?: string
     branchBatchId: string
+    batchCycleId?: string | null
     testDate: string
     startTime: string
     endTime: string
@@ -160951,12 +169528,14 @@ export namespace Prisma {
     endTime?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     branchBatch?: BranchBatchUpdateOneRequiredWithoutExamSchedulesNestedInput
+    batchCycle?: BatchCycleUpdateOneWithoutExamSchedulesNestedInput
     attempts?: ExamAttemptUpdateManyWithoutScheduleNestedInput
   }
 
   export type ExamScheduleUncheckedUpdateWithoutExamInput = {
     id?: StringFieldUpdateOperationsInput | string
     branchBatchId?: StringFieldUpdateOperationsInput | string
+    batchCycleId?: NullableStringFieldUpdateOperationsInput | string | null
     testDate?: StringFieldUpdateOperationsInput | string
     startTime?: StringFieldUpdateOperationsInput | string
     endTime?: StringFieldUpdateOperationsInput | string
@@ -160967,6 +169546,7 @@ export namespace Prisma {
   export type ExamScheduleUncheckedUpdateManyWithoutExamInput = {
     id?: StringFieldUpdateOperationsInput | string
     branchBatchId?: StringFieldUpdateOperationsInput | string
+    batchCycleId?: NullableStringFieldUpdateOperationsInput | string | null
     testDate?: StringFieldUpdateOperationsInput | string
     startTime?: StringFieldUpdateOperationsInput | string
     endTime?: StringFieldUpdateOperationsInput | string
@@ -161269,6 +169849,50 @@ export namespace Prisma {
     selectedAnswer?: NullableStringFieldUpdateOperationsInput | string | null
     isCorrect?: BoolFieldUpdateOperationsInput | boolean
     marksAwarded?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type AcademicTestReportSubmissionCreateManyHistoryInput = {
+    id?: string
+    facultyId?: string | null
+    sourceShareId?: string | null
+    scheduleId?: string | null
+    reportData: JsonNullValueInput | InputJsonValue
+    submittedAt?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AcademicTestReportSubmissionUpdateWithoutHistoryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sourceShareId?: NullableStringFieldUpdateOperationsInput | string | null
+    scheduleId?: NullableStringFieldUpdateOperationsInput | string | null
+    reportData?: JsonNullValueInput | InputJsonValue
+    submittedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    faculty?: UserUpdateOneWithoutAcademicTestReportSubmissionsNestedInput
+  }
+
+  export type AcademicTestReportSubmissionUncheckedUpdateWithoutHistoryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    facultyId?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceShareId?: NullableStringFieldUpdateOperationsInput | string | null
+    scheduleId?: NullableStringFieldUpdateOperationsInput | string | null
+    reportData?: JsonNullValueInput | InputJsonValue
+    submittedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AcademicTestReportSubmissionUncheckedUpdateManyWithoutHistoryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    facultyId?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceShareId?: NullableStringFieldUpdateOperationsInput | string | null
+    scheduleId?: NullableStringFieldUpdateOperationsInput | string | null
+    reportData?: JsonNullValueInput | InputJsonValue
+    submittedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

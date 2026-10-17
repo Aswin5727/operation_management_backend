@@ -47,6 +47,7 @@ model User {
   createdAssessments             Assessment[]                 @relation("AssessmentFaculty")
   evaluatedSubmissions           AssessmentSubmission[]       @relation("AssessmentEvaluator")
   facultySkillAssignments        FacultySkillAssignment[]    @relation("FacultySkillUserAssignments")
+  academicTestReportSubmissions  AcademicTestReportSubmission[]
 
   @@index([role])
   @@index([active])
@@ -480,6 +481,8 @@ model BranchBatch {
   academicQuestionPapers AcademicQuestionPaper[]
   academicTestProjects   AcademicTestProject[]
   academicTestCycles      AcademicTestCycle[]
+  cycles                  BatchCycle[]
+  academicTestReportHistories AcademicTestReportHistory[]
 
   @@unique([branchId, courseId, facultyId, batchId])
   @@index([branchId])
@@ -532,6 +535,7 @@ model AcademicTestItem {
   questionPapers   AcademicQuestionPaper[]
   projects         AcademicTestProject[]
   cycles           AcademicTestCycle[]
+  academicTestReportHistories AcademicTestReportHistory[]
 
   @@unique([academicTestId, sequence])
   @@index([academicTestId])
@@ -655,17 +659,43 @@ model AcademicTestCycle {
   academicTestItemId String
   branchBatchId    String
   cycleNumber      Int
+  batchCycleId     String
   status           String                 @default("ACTIVE")
   createdBy        String
   createdAt        DateTime               @default(now())
   academicTestItem AcademicTestItem       @relation(fields: [academicTestItemId], references: [id], onDelete: Cascade)
   branchBatch      BranchBatch             @relation(fields: [branchBatchId], references: [id], onDelete: Cascade)
+  batchCycle       BatchCycle              @relation(fields: [batchCycleId], references: [id], onDelete: Cascade)
   questionPapers   AcademicQuestionPaper[]
   projects         AcademicTestProject[]
   schedules        AcademicScheduledTest[]
 
   @@unique([academicTestItemId, branchBatchId, cycleNumber])
   @@index([academicTestItemId, branchBatchId, status])
+}
+
+model BatchCycle {
+  id                  String                         @id @default(cuid())
+  batchId             String
+  cycleNumber         Int
+  cycleName           String
+  status              String                         @default("ACTIVE")
+  startDate           String?
+  endDate             String?
+  completedAt         DateTime?
+  freezeUntil         DateTime?
+  createdAt           DateTime                       @default(now())
+  updatedAt           DateTime                       @updatedAt
+  batch               BranchBatch                    @relation(fields: [batchId], references: [id], onDelete: Cascade)
+  enrollments         BranchStudentCourse[]
+  academicTestCycles  AcademicTestCycle[]
+  reportHistories     AcademicTestReportHistory[]
+  examSchedules       ExamSchedule[]
+  assessments         Assessment[]
+  reportShares        FacultyReportShare[]
+
+  @@unique([batchId, cycleNumber])
+  @@index([batchId, status])
 }
 
 model AcademicTestSubmission {
@@ -909,6 +939,7 @@ model BranchStudentCourse {
   facultyId       String?
   facultyName     String?
   batchId         String?
+  batchCycleId    String?
   batchName       String?
   batchTiming     String?
   scheduleType    String?
@@ -930,6 +961,7 @@ model BranchStudentCourse {
   createdAt       DateTime       @default(now())
   updatedAt       DateTime       @updatedAt
   branchStudent   BranchStudent @relation(fields: [branchStudentId], references: [id], onDelete: Cascade)
+  batchCycle      BatchCycle?   @relation(fields: [batchCycleId], references: [id], onDelete: SetNull)
   branch          Branch         @relation(fields: [branchId], references: [id], onDelete: Cascade)
   course          BranchCourse   @relation(fields: [courseId], references: [id], onDelete: Restrict)
 
@@ -1505,6 +1537,7 @@ model Assessment {
   branchCourseId        String
   moduleId              String
   branchBatchId         String
+  batchCycleId          String?
   totalMarks            Int
   startDate             DateTime
   endDate               DateTime
@@ -1518,6 +1551,7 @@ model Assessment {
   branchCourse          BranchCourse           @relation(fields: [branchCourseId], references: [id], onDelete: Cascade)
   module                BranchCourseModule     @relation(fields: [moduleId], references: [id], onDelete: Cascade)
   branchBatch           BranchBatch            @relation(fields: [branchBatchId], references: [id], onDelete: Cascade)
+  batchCycle            BatchCycle?            @relation(fields: [batchCycleId], references: [id], onDelete: SetNull)
   faculty               User                   @relation("AssessmentFaculty", fields: [facultyId], references: [id])
   submissions           AssessmentSubmission[]
   originalAssessment    Assessment?            @relation("AssessmentReassessmentSource", fields: [originalAssessmentId], references: [id], onDelete: SetNull)
@@ -1526,6 +1560,7 @@ model Assessment {
 
   @@index([facultyId, createdAt])
   @@index([branchBatchId, startDate, endDate])
+  @@index([batchCycleId])
   @@index([branchCourseId, moduleId])
   @@index([originalAssessmentId])
   @@index([reassessmentStudentId])
@@ -1597,16 +1632,19 @@ model ExamSchedule {
   id            String        @id @default(cuid())
   examId        String
   branchBatchId String
+  batchCycleId  String?
   testDate      String
   startTime     String
   endTime       String
   status        String        @default("SCHEDULED")
   exam          Exam          @relation(fields: [examId], references: [id], onDelete: Cascade)
   branchBatch   BranchBatch   @relation(fields: [branchBatchId], references: [id], onDelete: Cascade)
+  batchCycle    BatchCycle?   @relation(fields: [batchCycleId], references: [id], onDelete: SetNull)
   attempts      ExamAttempt[]
 
   @@unique([examId, branchBatchId])
   @@index([branchBatchId, testDate])
+  @@index([batchCycleId])
   @@index([examId])
 }
 
@@ -1820,6 +1858,7 @@ model FacultyReportShare {
   facultyId           String
   branchId            String
   batchId             String
+  batchCycleId        String?
   courseId            String
   testModuleIds       Json     @default("[]")
   assessmentModuleIds Json     @default("[]")
@@ -1829,11 +1868,47 @@ model FacultyReportShare {
   status              String   @default("SENT")
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt
+  batchCycle          BatchCycle? @relation(fields: [batchCycleId], references: [id], onDelete: SetNull)
 
   @@index([branchId, sentAt])
   @@index([facultyId, sentAt])
   @@index([batchId, courseId])
+  @@index([batchCycleId])
   @@index([reportType, branchId, sentAt])
+}
+
+model AcademicTestReportHistory {
+  id              String                         @id @default(cuid())
+  batchId         String
+  batchCycleId    String
+  academicTestId String
+  createdAt       DateTime                       @default(now())
+  updatedAt       DateTime                       @updatedAt
+  batch           BranchBatch                    @relation(fields: [batchId], references: [id], onDelete: Cascade)
+  batchCycle      BatchCycle                     @relation(fields: [batchCycleId], references: [id], onDelete: Cascade)
+  academicTest    AcademicTestItem               @relation(fields: [academicTestId], references: [id], onDelete: Cascade)
+  submissions     AcademicTestReportSubmission[]
+
+  @@unique([batchCycleId, academicTestId])
+  @@index([batchId, updatedAt])
+}
+
+model AcademicTestReportSubmission {
+  id           String                    @id @default(cuid())
+  historyId    String
+  facultyId    String?
+  sourceShareId String?
+  scheduleId   String?
+  reportData   Json
+  submittedAt  DateTime                  @default(now())
+  createdAt    DateTime                  @default(now())
+  updatedAt    DateTime                  @updatedAt
+  history      AcademicTestReportHistory @relation(fields: [historyId], references: [id], onDelete: Cascade)
+  faculty      User?                     @relation(fields: [facultyId], references: [id], onDelete: SetNull)
+
+  @@index([historyId, submittedAt])
+  @@index([facultyId, submittedAt])
+  @@index([sourceShareId])
 }
 
 enum RecordStatus {

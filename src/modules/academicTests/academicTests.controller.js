@@ -16,6 +16,7 @@ export const myReport = asyncHandler(async (req, res) => send(res, await service
 export const facultyReportTests = asyncHandler(async (req, res) => send(res, await service.listFacultyAcademicReportTests(req.user, req.params.batchId)));
 export const sendAcademicReport = asyncHandler(async (req, res) => send(res, await service.sendAcademicTestReport(req.user, req.body), 201));
 export const branchReports = asyncHandler(async (req, res) => send(res, await service.listBranchAcademicTestReports(req.user)));
+export const branchReportHistory = asyncHandler(async (req, res) => send(res, await service.getBranchAcademicTestReportHistory(req.user, req.params.historyId)));
 export const branchReportStudents = asyncHandler(async (req, res) => send(res, await service.getBranchAcademicTestReport(req.user, req.params.reportId)));
 export const branchStudentReports = asyncHandler(async (req, res) => send(res, await service.getBranchStudentAcademicReports(req.user, req.params.studentId)));
 export const facultyResults = asyncHandler(async (req, res) => send(res, await service.getFacultyAcademicResults(req.user, req.params.id)));

@@ -548,9 +548,24 @@ exports.Prisma.AcademicTestCycleScalarFieldEnum = {
   academicTestItemId: 'academicTestItemId',
   branchBatchId: 'branchBatchId',
   cycleNumber: 'cycleNumber',
+  batchCycleId: 'batchCycleId',
   status: 'status',
   createdBy: 'createdBy',
   createdAt: 'createdAt'
+};
+
+exports.Prisma.BatchCycleScalarFieldEnum = {
+  id: 'id',
+  batchId: 'batchId',
+  cycleNumber: 'cycleNumber',
+  cycleName: 'cycleName',
+  status: 'status',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  completedAt: 'completedAt',
+  freezeUntil: 'freezeUntil',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.AcademicTestSubmissionScalarFieldEnum = {
@@ -747,6 +762,7 @@ exports.Prisma.BranchStudentCourseScalarFieldEnum = {
   facultyId: 'facultyId',
   facultyName: 'facultyName',
   batchId: 'batchId',
+  batchCycleId: 'batchCycleId',
   batchName: 'batchName',
   batchTiming: 'batchTiming',
   scheduleType: 'scheduleType',
@@ -1194,6 +1210,7 @@ exports.Prisma.AssessmentScalarFieldEnum = {
   branchCourseId: 'branchCourseId',
   moduleId: 'moduleId',
   branchBatchId: 'branchBatchId',
+  batchCycleId: 'batchCycleId',
   totalMarks: 'totalMarks',
   startDate: 'startDate',
   endDate: 'endDate',
@@ -1248,6 +1265,7 @@ exports.Prisma.ExamScheduleScalarFieldEnum = {
   id: 'id',
   examId: 'examId',
   branchBatchId: 'branchBatchId',
+  batchCycleId: 'batchCycleId',
   testDate: 'testDate',
   startTime: 'startTime',
   endTime: 'endTime',
@@ -1365,6 +1383,7 @@ exports.Prisma.FacultyReportShareScalarFieldEnum = {
   facultyId: 'facultyId',
   branchId: 'branchId',
   batchId: 'batchId',
+  batchCycleId: 'batchCycleId',
   courseId: 'courseId',
   testModuleIds: 'testModuleIds',
   assessmentModuleIds: 'assessmentModuleIds',
@@ -1372,6 +1391,27 @@ exports.Prisma.FacultyReportShareScalarFieldEnum = {
   reportType: 'reportType',
   sentAt: 'sentAt',
   status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.AcademicTestReportHistoryScalarFieldEnum = {
+  id: 'id',
+  batchId: 'batchId',
+  batchCycleId: 'batchCycleId',
+  academicTestId: 'academicTestId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.AcademicTestReportSubmissionScalarFieldEnum = {
+  id: 'id',
+  historyId: 'historyId',
+  facultyId: 'facultyId',
+  sourceShareId: 'sourceShareId',
+  scheduleId: 'scheduleId',
+  reportData: 'reportData',
+  submittedAt: 'submittedAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -1586,6 +1626,7 @@ exports.Prisma.ModelName = {
   AcademicTestProject: 'AcademicTestProject',
   AcademicScheduledTest: 'AcademicScheduledTest',
   AcademicTestCycle: 'AcademicTestCycle',
+  BatchCycle: 'BatchCycle',
   AcademicTestSubmission: 'AcademicTestSubmission',
   AcademicProjectSubmission: 'AcademicProjectSubmission',
   AcademicTestAnswer: 'AcademicTestAnswer',
@@ -1628,6 +1669,8 @@ exports.Prisma.ModelName = {
   MotivationMailHistory: 'MotivationMailHistory',
   StudentDiscontinuationRequest: 'StudentDiscontinuationRequest',
   FacultyReportShare: 'FacultyReportShare',
+  AcademicTestReportHistory: 'AcademicTestReportHistory',
+  AcademicTestReportSubmission: 'AcademicTestReportSubmission',
   BranchStudentPayment: 'BranchStudentPayment',
   BranchStudentLedgerEntry: 'BranchStudentLedgerEntry'
 };

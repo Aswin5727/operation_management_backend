@@ -2166,6 +2166,8 @@ async function syncBranchStudentCourseEnrollments(tx, student, payload = {}, exi
             status: 'ACTIVE',
           },
           select: {
+            id: true,
+            branchId: true,
             batchId: true,
             courseId: true,
             batchName: true,
@@ -2184,12 +2186,33 @@ async function syncBranchStudentCourseEnrollments(tx, student, payload = {}, exi
         if (normalizeString(item.scheduleType).toUpperCase() !== normalizeString(assignedBatch.weekType).toUpperCase() || normalizeString(item.mode).toUpperCase() !== normalizeString(assignedBatch.mode).toUpperCase()) {
           throw new AppError(`Selected batch does not match the schedule and mode for course ${item.courseName || item.courseId}.`, 400);
         }
-        if (isNewlyActivated) await ensureAvailableBatchCapacity(assignedBatch, student.id);
+        if (isNewlyActivated) await ensureAvailableBatchCapacity(assignedBatch, student.id, tx);
         item.batchName = assignedBatch.batchName;
         item.batchTiming = assignedBatch.batchTiming;
         item.facultyId = assignedBatch.facultyId;
         item.facultyName = assignedBatch.facultyName;
         item.endDate = item.endDate || assignedBatch.courseEndDate;
+        // Every new enrollment belongs to the batch's current intake cycle.
+        // Existing enrollments keep their original cycle so completing an
+        // intake never moves its historical students into a later intake.
+        if (!previousEnrollment?.batchCycleId || String(previousEnrollment.batchId || '') !== String(item.batchId || '')) {
+          let batchCycle = await tx.batchCycle.findFirst({
+            where: { batchId: assignedBatch.id, status: 'ACTIVE' },
+            orderBy: { cycleNumber: 'desc' },
+            select: { id: true },
+          });
+          if (!batchCycle) {
+            batchCycle = await tx.batchCycle.upsert({
+              where: { batchId_cycleNumber: { batchId: assignedBatch.id, cycleNumber: 1 } },
+              update: { status: 'ACTIVE' },
+              create: { batchId: assignedBatch.id, cycleNumber: 1, cycleName: 'Cycle 1', status: 'ACTIVE' },
+              select: { id: true },
+            });
+          }
+          item.batchCycleId = batchCycle.id;
+        } else {
+          item.batchCycleId = previousEnrollment.batchCycleId;
+        }
       }
       if (isNewlyActivated) {
         const courseRecord = await tx.branchCourse.findFirst({
@@ -2425,30 +2448,17 @@ function toBranchStudentSummary(record) {
   };
 }
 
-async function ensureAvailableBatchCapacity(batch, excludeStudentId = null) {
+async function ensureAvailableBatchCapacity(batch, excludeStudentId = null, tx = prisma) {
+  const activeCycle = await tx.batchCycle.findFirst({ where: { batchId: batch.id, status: 'ACTIVE' }, orderBy: { cycleNumber: 'desc' }, select: { id: true, status: true, freezeUntil: true } });
+  if (!activeCycle || (activeCycle.freezeUntil && activeCycle.freezeUntil > new Date())) throw new AppError('This batch is frozen until the current intake cycle is released.', 409);
+  await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext(${batch.id}))`;
   const studentWhere = {
     branchId: batch.branchId,
     recordStatus: 'ACTIVE',
-    OR: [
-      {
-        courseId: batch.courseId,
-        batchId: batch.batchId,
-        OR: [{ courseProgress: null }, { courseProgress: { lt: 100 } }],
-      },
-      {
-        courseEnrollments: {
-          some: {
-            courseId: batch.courseId,
-            batchId: batch.batchId,
-            status: 'ACTIVE',
-            OR: [{ courseProgress: null }, { courseProgress: { lt: 100 } }],
-          },
-        },
-      },
-    ],
+    courseEnrollments: { some: { courseId: batch.courseId, batchId: batch.batchId, batchCycleId: activeCycle.id, status: 'ACTIVE' } },
     ...(excludeStudentId ? { NOT: { id: excludeStudentId } } : {}),
   }
-  const totalStudentCount = await prisma.branchStudent.count({ where: studentWhere })
+  const totalStudentCount = await tx.branchStudent.count({ where: studentWhere })
   if (totalStudentCount >= Number(batch?.totalSeats || 0)) throw new AppError('This batch has reached its total seat capacity.', 400)
 }
 
