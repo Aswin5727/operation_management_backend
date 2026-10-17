@@ -538,7 +538,7 @@ async function markBranchStudentAttendance(user, payload, date, batch) {
     await assertAttendanceAllowed(tx, students, date, batch.branchId);
     for (const entry of submittedStudents) {
       const student = studentByIdentifier.get(entry.studentId);
-      return tx.branchStudentAttendance.upsert({
+      await tx.branchStudentAttendance.upsert({
         where: { branchStudentId_attendanceDate_courseId: { branchStudentId: student.id, attendanceDate: date, courseId: batch.courseId } },
         create: {
           branchStudentId: student.id,

@@ -828,7 +828,7 @@ function reportScheduleHasEnded(schedule) {
 
 function reportSubmissionIsFinal(submission, hasAssessment) {
   const status = text(submission?.status || "").toUpperCase();
-  if (status === "NOT_ATTENDED" || status === "EVALUATED") return true;
+  if (status === "EVALUATED") return true;
   return status === "SUBMITTED" && !hasAssessment;
 }
 
@@ -866,7 +866,10 @@ async function buildAcademicReport(actor, batch, requestedStudentIds = null, sel
   const retestItemIds = new Set(schedules.filter((schedule) => schedule.isRetest && schedule.status !== "CANCELLED").map((schedule) => schedule.academicTestItemId));
   const originalItemIds = new Set(schedules.filter((schedule) => !schedule.isRetest && schedule.status !== "CANCELLED").map((schedule) => schedule.academicTestItemId));
   const cycleIds = [...new Set(schedules.filter((schedule) => !schedule.isRetest && schedule.status !== "CANCELLED").map((schedule) => schedule.cycleId).filter(Boolean))];
-  const configuredItems = (await reportItemsForSchedules(batch, schedules.filter((schedule) => !schedule.isRetest && schedule.status !== "CANCELLED"))).filter(({ item }) => !retestItemIds.has(item.id) && (!originalItemIds.size || originalItemIds.has(item.id)));
+  // A retest points to the same configured test item. Keep that original item
+  // in the report; the retest is only the latest attempt for that item and
+  // must contribute its final marks to the send-time snapshot.
+  const configuredItems = (await reportItemsForSchedules(batch, schedules.filter((schedule) => !schedule.isRetest && schedule.status !== "CANCELLED"))).filter(({ item }) => (!originalItemIds.size || originalItemIds.has(item.id)));
   let configured = configuredItems.filter(({ item }) => ["TEST", "TEST_AND_PROJECT"].includes(item.testType));
   const projectItems = configuredItems.filter(({ item }) => ["PROJECT", "TEST_AND_PROJECT"].includes(item.testType));
   const cycleEnrollmentFilter = cycleIds.length
@@ -1051,7 +1054,7 @@ export async function getAcademicTestProgressForStudent(student) {
       const submission = submissionByScheduleId.get(schedule.id);
       const status = text(submission?.status || "").toUpperCase();
       const hasAssessment = (paperById.get(schedule.questionPaperId)?.questions || []).some((question) => question.questionType === "ASSESSMENT");
-      return reportSubmissionIsFinal(submission, hasAssessment) && (status === "EVALUATED" || (status === "SUBMITTED" && !hasAssessment));
+      return reportSubmissionIsFinal(submission, hasAssessment) && (status === "EVALUATED" || (status === "SUBMITTED" && !hasAssessment)) && (String(submission?.resultStatus || "").toUpperCase() !== "FAIL" || schedule.isRetest);
     });
     const configuredItem = configuredItems.find((item) => item.id === itemId);
     const needsProject = configuredItem && ["PROJECT", "TEST_AND_PROJECT"].includes(configuredItem.testType);
@@ -1081,7 +1084,7 @@ export async function getAcademicTestProgressForStudent(student) {
       const submission = submissionByScheduleId.get(schedule.id);
       const hasAssessment = (paperById.get(schedule.questionPaperId)?.questions || []).some((question) => question.questionType === "ASSESSMENT");
       const status = text(submission?.status || "").toUpperCase();
-      return reportSubmissionIsFinal(submission, hasAssessment) && (status === "EVALUATED" || (status === "SUBMITTED" && !hasAssessment));
+      return reportSubmissionIsFinal(submission, hasAssessment) && (status === "EVALUATED" || (status === "SUBMITTED" && !hasAssessment)) && (String(submission?.resultStatus || "").toUpperCase() !== "FAIL" || schedule.isRetest);
     });
     const submission = testSchedule ? submissionByScheduleId.get(testSchedule.id) : null;
     const projectSchedule = validAttempts.find((schedule) => !schedule.isRetest);
@@ -1172,7 +1175,8 @@ export async function listAcademicReportBatches(actor) {
     // active student. The report itself contains only those completed tests;
     // the count remains completed/total (for example, 1/2). Retests do not
     // increase the configured test count.
-    if (!completedEvaluationCount) return null;
+    const sentShare = await prisma.facultyReportShare.findFirst({ where: { batchId: batch.id, reportType: "ACADEMIC_TEST", status: "SENT" }, select: { id: true } });
+    if (!completedEvaluationCount && !sentShare) return null;
     const totalEvaluationCount = configuredItems.length;
     return { ...batch, course: { id: batch.courseId, name: batch.courseName, courseCode: batch.branchCourseId }, totalTests: totalEvaluationCount, completedTestCount: completedEvaluationCount, hasProject: configuredItems.some(({ item }) => ["PROJECT", "TEST_AND_PROJECT"].includes(item.testType)) };
   }));
@@ -1182,8 +1186,20 @@ export async function listAcademicReportBatches(actor) {
 export async function getAcademicBatchReport(actor, batchId) {
   const batch = await reportBatchForFaculty(actor, batchId);
   const sentShare = await prisma.facultyReportShare.findFirst({ where: { batchId: batch.id, reportType: "ACADEMIC_TEST", status: "SENT" }, orderBy: { sentAt: "desc" }, select: { id: true, sentAt: true, academicTestIds: true } });
-  const report = await buildAcademicReport(actor, batch, null, null, false, Boolean(sentShare));
-  return { ...report, sentReport: sentShare ? { id: sentShare.id, sentAt: sentShare.sentAt, academicTestIds: Array.isArray(sentShare.academicTestIds) ? sentShare.academicTestIds : [] } : null };
+  const report = await buildAcademicReport(actor, batch, null, null, true, false);
+  const sentTestIds = sentShare && Array.isArray(sentShare.academicTestIds) ? sentShare.academicTestIds : [];
+  const testProgress = report.tests.map((test) => {
+    const pendingStudents = report.students.filter((row) => {
+      const current = row.tests?.find((item) => Number(item.testNumber) === Number(test.testNumber));
+      const final = current?.final || {};
+      const attended = ["SUBMITTED", "EVALUATED"].includes(String(final.status || "").toUpperCase());
+      const completedRetest = (current?.retestAttempts || []).some((attempt) => ["SUBMITTED", "EVALUATED"].includes(String(attempt.status || "").toUpperCase()));
+      const latestResultNeedsResend = sentShare && final.submittedAt && new Date(final.submittedAt) > new Date(sentShare.sentAt);
+      return !attended || (String(final.result || "").toUpperCase() === "FAIL" && !completedRetest) || Boolean(latestResultNeedsResend);
+    });
+    return { testNumber: test.testNumber, scheduleId: test.scheduleId, totalStudents: report.students.length, completedCount: report.students.length - pendingStudents.length, pendingCount: pendingStudents.length, allStudentsCompleted: pendingStudents.length === 0 };
+  }).filter((item) => !sentTestIds.length || sentTestIds.includes(item.scheduleId));
+  return { ...report, testProgress, sentReport: sentShare ? { id: sentShare.id, sentAt: sentShare.sentAt, academicTestIds: sentTestIds } : null };
 }
 
 export async function getMyAcademicReport(actor, courseId = "") {
@@ -1195,7 +1211,7 @@ export async function getMyAcademicReport(actor, courseId = "") {
   return { ...report, student: report.students[0] || null, students: undefined };
 }
 
-export async function listFacultyAcademicReportTests(actor, batchId) {
+async function legacyListFacultyAcademicReportTests(actor, batchId) {
   const batch = await reportBatchForFaculty(actor, batchId);
   const [schedules, students] = await Promise.all([
     prisma.academicScheduledTest.findMany({
@@ -1234,6 +1250,26 @@ export async function listFacultyAcademicReportTests(actor, batchId) {
     completedSchedules.push({ ...schedule, testType: itemType, label });
   }
   return completedSchedules.map((schedule) => ({ ...schedule, completed: true }));
+}
+
+export async function listFacultyAcademicReportTests(actor, batchId) {
+  const batch = await reportBatchForFaculty(actor, batchId);
+  const report = await buildAcademicReport(actor, batch, null, null, true, false, false);
+  const schedules = await prisma.academicScheduledTest.findMany({ where: { branchBatchId: batch.id, isRetest: false, status: { not: "CANCELLED" } }, orderBy: [{ testNumber: "asc" }, { createdAt: "asc" }], select: { id: true, academicTestItemId: true, testNumber: true, testDate: true, status: true, endTime: true, questionPaperId: true } });
+  const scheduleById = new Map(schedules.map((schedule) => [schedule.id, schedule]));
+  return (report.tests || []).filter((test) => {
+    const schedule = scheduleById.get(test.scheduleId);
+    if (!schedule || !report.students.length || !reportScheduleHasEnded(schedule)) return false;
+    return report.students.every((row) => {
+      const current = row.tests?.find((item) => Number(item.testNumber) === Number(test.testNumber));
+      const final = current?.final || {};
+      const attended = ["SUBMITTED", "EVALUATED"].includes(String(final.status || "").toUpperCase());
+      const completedRetest = (current?.retestAttempts || []).some((attempt) => ["SUBMITTED", "EVALUATED"].includes(String(attempt.status || "").toUpperCase()));
+      const testComplete = attended && (String(final.result || "").toUpperCase() !== "FAIL" || completedRetest);
+      const projectComplete = !["PROJECT", "TEST_AND_PROJECT"].includes(test.testType) || row.projects?.some((project) => Number(project.testNumber) === Number(test.testNumber) && project.marksAwarded != null);
+      return testComplete && projectComplete;
+    });
+  }).map((test) => ({ ...scheduleById.get(test.scheduleId), testType: test.testType, label: test.testType === "PROJECT" ? `Project (Test ${test.testNumber})` : test.testType === "TEST_AND_PROJECT" ? `Test ${test.testNumber} (Test + Project)` : `Test ${test.testNumber}`, completed: true }));
 }
 
 export async function sendAcademicTestReport(actor, payload = {}) {
@@ -1333,29 +1369,15 @@ export async function getBranchAcademicTestReportHistory(actor, historyId) {
   const facultyIds = [...new Set(history.submissions.map((submission) => submission.facultyId).filter(Boolean))];
   const faculties = facultyIds.length ? await prisma.user.findMany({ where: { id: { in: facultyIds } }, select: { id: true, fullName: true, email: true } }) : [];
   const facultyMap = new Map(faculties.map((faculty) => [faculty.id, faculty]));
-  const cycleSchedules = await prisma.academicScheduledTest.findMany({ where: { branchBatchId: history.batch.id, cycle: { batchCycleId: history.batchCycleId }, isRetest: false, status: { not: "CANCELLED" } }, select: { id: true, testNumber: true } });
-  const refreshedSubmissions = await Promise.all(history.submissions.map(async (submission) => {
-    if (!submission.scheduleId) return submission;
-    const snapshotStudents = Array.isArray(submission.reportData?.students)
-      ? submission.reportData.students.map((row) => row?.student?.id).filter(Boolean)
-      : [];
-    try {
-      const currentSchedule = cycleSchedules.find((schedule) => schedule.id === submission.scheduleId);
-      const progressScheduleIds = cycleSchedules.filter((schedule) => !currentSchedule || Number(schedule.testNumber) <= Number(currentSchedule.testNumber)).map((schedule) => schedule.id);
-      const currentReport = await buildAcademicReport(actor, history.batch, snapshotStudents.length ? snapshotStudents : null, progressScheduleIds.length ? progressScheduleIds : [submission.scheduleId], true, false, false);
-      const visibleTest = currentReport.tests?.find((test) => test.scheduleId === submission.scheduleId);
-      return { ...submission, reportData: { ...(submission.reportData || {}), ...currentReport, tests: visibleTest ? [visibleTest] : currentReport.tests, students: (currentReport.students || []).map((row) => ({ ...row, tests: visibleTest ? (row.tests || []).filter((test) => test.scheduleId === submission.scheduleId) : row.tests })) } };
-    } catch {
-      return submission;
-    }
-  }));
   return {
     id: history.id,
     historyId: history.id,
     batch: history.batch,
     cycle: history.batchCycle,
     academicTest: history.academicTest,
-    submissions: refreshedSubmissions.map((submission) => ({ ...submission, faculty: facultyMap.get(submission.facultyId) || null })),
+    // History is an immutable snapshot. A later retest must create a new
+    // submission; it must never rewrite the old Not Attended/old marks view.
+    submissions: history.submissions.map((submission) => ({ ...submission, faculty: facultyMap.get(submission.facultyId) || null })),
   };
 }
 

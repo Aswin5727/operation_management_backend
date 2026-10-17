@@ -52,7 +52,9 @@ async function branchAdminBranch(user) {
 
 export async function listBranchReportShares(user) {
   const branch = await branchAdminBranch(user);
-  const rows = await prisma.facultyReportShare.findMany({ where: { branchId: branch.id, status: "SENT" }, orderBy: { sentAt: "desc" } });
+  // Academic Test reports have their own Branch Admin screen and must not be
+  // mixed into the Syllabus Test / module report list.
+  const rows = await prisma.facultyReportShare.findMany({ where: { branchId: branch.id, status: "SENT", reportType: { not: "ACADEMIC_TEST" } }, orderBy: { sentAt: "desc" } });
   const ids = (key) => rows.map((row) => row[key]);
   const moduleIds = [...new Set(rows.flatMap((row) => [...list(row.testModuleIds), ...list(row.assessmentModuleIds)]))];
   const [batches, courses, faculties, modules] = await Promise.all([
