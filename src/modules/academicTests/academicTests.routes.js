@@ -17,7 +17,7 @@ router.get("/reports/faculty/batches/:batchId/completed-tests", authorize(USER_R
 router.post("/reports/send", authorize(USER_ROLES.FACULTY), controller.sendAcademicReport);
 router.get("/reports/branch-admin", authorize(USER_ROLES.BRANCH_ADMIN), controller.branchReports);
 router.get("/reports/branch-admin/history/:historyId", authorize(USER_ROLES.BRANCH_ADMIN), controller.branchReportHistory);
-router.get("/reports/branch-admin/students/:studentId", authorize(USER_ROLES.BRANCH_ADMIN, USER_ROLES.SUPER_ADMIN), controller.branchStudentReports);
+router.get("/reports/branch-admin/students/:studentId", authorize(USER_ROLES.BRANCH_ADMIN, USER_ROLES.FACULTY, USER_ROLES.SUPER_ADMIN), controller.branchStudentReports);
 router.get("/reports/branch-admin/:reportId/students", authorize(USER_ROLES.BRANCH_ADMIN), controller.branchReportStudents);
 router.get("/reports/my-report", authorize(USER_ROLES.STUDENT), controller.myReport);
 router.get("/faculty/scheduled/:id/results", authorize(USER_ROLES.FACULTY), controller.facultyResults);

@@ -1,6 +1,7 @@
 import prisma from "../../config/prisma.js";
 import AppError from "../../common/errors/AppError.js";
 import { createNotification } from "../notifications/notifications.service.js";
+import { getCurrentBranchProfile } from "../branches/branches.service.js";
 
 const value = (input) => String(input ?? "").trim();
 const list = (input) => Array.isArray(input) ? [...new Set(input.map(value).filter(Boolean))] : [];
@@ -50,11 +51,20 @@ async function branchAdminBranch(user) {
   return branch;
 }
 
+async function studentReportBranch(user) {
+  if (String(user?.role || "").toUpperCase() === "FACULTY") {
+    const branch = await getCurrentBranchProfile(user);
+    if (!branch?.id) throw new AppError("Branch profile not found.", 403);
+    return branch;
+  }
+  return branchAdminBranch(user);
+}
+
 export async function listBranchReportShares(user) {
   const branch = await branchAdminBranch(user);
   // Academic Test reports have their own Branch Admin screen and must not be
   // mixed into the Syllabus Test / module report list.
-  const rows = await prisma.facultyReportShare.findMany({ where: { branchId: branch.id, status: "SENT", reportType: { not: "ACADEMIC_TEST" } }, orderBy: { sentAt: "desc" } });
+  const rows = await prisma.facultyReportShare.findMany({ where: { branchId: branch.id, status: { in: ["SENT", "ARCHIVED"] }, reportType: { not: "ACADEMIC_TEST" } }, orderBy: { sentAt: "desc" } });
   const ids = (key) => rows.map((row) => row[key]);
   const moduleIds = [...new Set(rows.flatMap((row) => [...list(row.testModuleIds), ...list(row.assessmentModuleIds)]))];
   const [batches, courses, faculties, modules] = await Promise.all([
@@ -72,7 +82,7 @@ export async function listBranchReportShares(user) {
 
 export async function getBranchReportShare(user, shareId) {
   const branch = await branchAdminBranch(user);
-  const share = await prisma.facultyReportShare.findFirst({ where: { id: shareId, branchId: branch.id, status: "SENT" } });
+  const share = await prisma.facultyReportShare.findFirst({ where: { id: shareId, branchId: branch.id, status: { in: ["SENT", "ARCHIVED"] } } });
   if (!share) throw new AppError("Report share not found.", 404);
   return share;
 }
@@ -101,17 +111,23 @@ export async function getBranchReportShareStudents(user, shareId) {
 }
 
 export async function getBranchStudentReports(user, studentId) {
-  const branch = await branchAdminBranch(user);
+  // This endpoint is also used by the Faculty Dashboard Course Completion
+  // modal. Faculty may read marks, but cannot change report history here.
+  const branch = await studentReportBranch(user);
   const student = await prisma.branchStudent.findFirst({
     where: { branchId: branch.id, studentId: value(studentId), recordStatus: "ACTIVE" },
-    select: { id: true, studentId: true, studentName: true, emailAddress: true, courseName: true, batchName: true, batchId: true, courseEnrollments: { where: { status: "ACTIVE" }, select: { courseId: true, batchId: true, batchCycleId: true } } },
+    // Completed students are moved to a new intake cycle after the final
+    // report is sent. Keep their historical enrollment cycles in scope so
+    // the Course Completion details modal can still show the marks from the
+    // cycle in which the reports were submitted.
+    select: { id: true, studentId: true, studentName: true, emailAddress: true, courseName: true, batchName: true, batchId: true, courseEnrollments: { select: { courseId: true, batchId: true, batchCycleId: true } } },
   });
   if (!student) throw new AppError("Student not found in this branch.", 404);
 
   const studentBatchKeys = [...new Set([student.batchId, ...(student.courseEnrollments || []).map((enrollment) => enrollment.batchId)].map(value).filter(Boolean))];
   const batches = await prisma.branchBatch.findMany({ where: { branchId: branch.id, OR: [{ id: { in: studentBatchKeys } }, { batchId: { in: studentBatchKeys } }] }, select: { id: true, batchId: true } });
   const batchIds = new Set(batches.flatMap((batch) => [batch.id, batch.batchId]).filter(Boolean));
-  const shares = await prisma.facultyReportShare.findMany({ where: { branchId: branch.id, status: "SENT", reportType: { not: "ACADEMIC_TEST" }, batchId: { in: [...batchIds] } }, orderBy: { sentAt: "asc" } });
+  const shares = await prisma.facultyReportShare.findMany({ where: { branchId: branch.id, status: { in: ["SENT", "ARCHIVED"] }, reportType: { not: "ACADEMIC_TEST" }, batchId: { in: [...batchIds] } }, orderBy: { sentAt: "asc" } });
   const items = [];
   for (const share of shares) {
     if (share.batchCycleId && !(student.courseEnrollments || []).some((enrollment) => enrollment.batchCycleId === share.batchCycleId)) continue;
@@ -130,14 +146,18 @@ export async function getBranchStudentReports(user, studentId) {
       items.push({ id: `${share.id}:${exam.id}:${student.id}`, testName: exam.title, module: exam.module?.title || "-", status: "SUBMITTED", marksObtained: attempt.obtainedMarks, totalMarks: attempt.totalMarks || exam.totalMarks, percentage: attempt.percentage, testDate: schedule.testDate, courseId: share.courseId, courseName: student.courseName, batchName: student.batchName });
     }
   }
+  // The same syllabus test can be included in multiple sent submissions.
+  // Keep one latest row per module/test instead of displaying duplicates.
+  const uniqueItems = [...new Map(items.map((item) => [`${item.module}:${item.testName}`, item])).values()];
   const moduleResults = new Map();
-  for (const item of items) {
+  for (const item of uniqueItems) {
     const key = String(item.module || item.moduleName || "").trim();
     if (!key) continue;
-    const current = moduleResults.get(key) || { moduleName: item.module || item.moduleName || "-", obtained: 0, maximum: 0, testCount: 0 };
+    const current = moduleResults.get(key) || { moduleName: item.module || item.moduleName || "-", obtained: 0, maximum: 0, testCount: 0, tests: [] };
     current.obtained += Number(item.marksObtained || 0);
     current.maximum += Number(item.totalMarks || 0);
     current.testCount += 1;
+    current.tests.push({ testName: item.testName, marksObtained: item.marksObtained, totalMarks: item.totalMarks, percentage: item.percentage });
     moduleResults.set(key, current);
   }
   const skills = [...moduleResults.values()].map((module) => ({
@@ -145,5 +165,5 @@ export async function getBranchStudentReports(user, studentId) {
     overallPercentage: module.maximum > 0 ? Number(((module.obtained / module.maximum) * 100).toFixed(2)) : null,
     reportStatus: "SUBMITTED",
   }));
-  return { student, items, skills };
+  return { student, items: uniqueItems, skills };
 }

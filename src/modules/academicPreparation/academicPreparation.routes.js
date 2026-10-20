@@ -7,6 +7,10 @@ import * as controller from "./academicPreparation.controller.js";
 const router = express.Router();
 router.use(authenticate, authorize(USER_ROLES.FACULTY));
 router.get("/", controller.list);
+// Keep the legacy project-list request compatible with older faculty bundles.
+// The current builder uses /items/:academicTestItemId, but older clients call
+// GET /projects while opening the same preparation screen.
+router.get("/projects", controller.list);
 router.get("/items/:academicTestItemId", controller.get);
 router.post("/cycles", controller.createCycle);
 router.post("/question-papers", controller.createPaper);
