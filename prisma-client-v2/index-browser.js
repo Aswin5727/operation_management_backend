@@ -748,6 +748,7 @@ exports.Prisma.BranchStudentScalarFieldEnum = {
   feeComplianceStatus: 'feeComplianceStatus',
   courseProgress: 'courseProgress',
   courseCompletedAt: 'courseCompletedAt',
+  importedAcademicResults: 'importedAcademicResults',
   enrollmentType: 'enrollmentType',
   arrangementType: 'arrangementType',
   firstCourseId: 'firstCourseId'
@@ -778,6 +779,8 @@ exports.Prisma.BranchStudentCourseScalarFieldEnum = {
   finalCourseAmount: 'finalCourseAmount',
   courseProgress: 'courseProgress',
   courseCompletedAt: 'courseCompletedAt',
+  importedLifecycleStatus: 'importedLifecycleStatus',
+  importedAcademicResults: 'importedAcademicResults',
   paymentPlanId: 'paymentPlanId',
   paymentPlan: 'paymentPlan',
   status: 'status',

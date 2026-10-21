@@ -900,6 +900,7 @@ model BranchStudent {
   feeComplianceStatus            String                          @default("PENDING")
   courseProgress                 Int?
   courseCompletedAt              DateTime?
+  importedAcademicResults        Json?
   enrollmentType                 String                          @default("SINGLE")
   arrangementType                String                          @default("SINGLE")
   firstCourseId                  String?
@@ -931,39 +932,41 @@ model BranchStudent {
 }
 
 model BranchStudentCourse {
-  id                String        @id @default(cuid())
-  branchStudentId   String
-  branchId          String
-  courseId          String
-  courseName        String?
-  facultyId         String?
-  facultyName       String?
-  batchId           String?
-  batchCycleId      String?
-  batchName         String?
-  batchTiming       String?
-  scheduleType      String?
-  mode              String?
-  startDate         String?
-  endDate           String?
-  arrangementType   String        @default("SINGLE")
-  sequenceOrder     Int           @default(1)
-  totalCourseAmount Int?
-  discountType      DiscountType?
-  discountValue     Float?
-  discountAmount    Float?
-  finalCourseAmount Float?
-  courseProgress    Int?
-  courseCompletedAt DateTime?
-  paymentPlanId     String?
-  paymentPlan       String?
-  status            RecordStatus  @default(ACTIVE)
-  createdAt         DateTime      @default(now())
-  updatedAt         DateTime      @updatedAt
-  branchStudent     BranchStudent @relation(fields: [branchStudentId], references: [id], onDelete: Cascade)
-  batchCycle        BatchCycle?   @relation(fields: [batchCycleId], references: [id], onDelete: SetNull)
-  branch            Branch        @relation(fields: [branchId], references: [id], onDelete: Cascade)
-  course            BranchCourse  @relation(fields: [courseId], references: [id], onDelete: Restrict)
+  id                      String        @id @default(cuid())
+  branchStudentId         String
+  branchId                String
+  courseId                String
+  courseName              String?
+  facultyId               String?
+  facultyName             String?
+  batchId                 String?
+  batchCycleId            String?
+  batchName               String?
+  batchTiming             String?
+  scheduleType            String?
+  mode                    String?
+  startDate               String?
+  endDate                 String?
+  arrangementType         String        @default("SINGLE")
+  sequenceOrder           Int           @default(1)
+  totalCourseAmount       Int?
+  discountType            DiscountType?
+  discountValue           Float?
+  discountAmount          Float?
+  finalCourseAmount       Float?
+  courseProgress          Int?
+  courseCompletedAt       DateTime?
+  importedLifecycleStatus String?
+  importedAcademicResults Json?
+  paymentPlanId           String?
+  paymentPlan             String?
+  status                  RecordStatus  @default(ACTIVE)
+  createdAt               DateTime      @default(now())
+  updatedAt               DateTime      @updatedAt
+  branchStudent           BranchStudent @relation(fields: [branchStudentId], references: [id], onDelete: Cascade)
+  batchCycle              BatchCycle?   @relation(fields: [batchCycleId], references: [id], onDelete: SetNull)
+  branch                  Branch        @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  course                  BranchCourse  @relation(fields: [courseId], references: [id], onDelete: Restrict)
 
   @@unique([branchStudentId, courseId])
   @@index([branchId, courseId])

@@ -1451,14 +1451,19 @@ export async function getBranchStudentAcademicReports(actor, studentId) {
   const student = await prisma.branchStudent.findFirst({ where: { branchId, studentId: text(studentId), recordStatus: "ACTIVE" }, select: { id: true, studentId: true, studentName: true, emailAddress: true, courseName: true, batchName: true, batchId: true, courseEnrollments: { select: { batchId: true } } } });
   if (!student) throw new AppError("Student not found in this branch.", 404);
   const studentBatchIds = [...new Set([student.batchId, ...(student.courseEnrollments || []).map((enrollment) => enrollment.batchId)].map(text).filter(Boolean))];
-  const batches = studentBatchIds.length
+  let batches = studentBatchIds.length
     ? await prisma.branchBatch.findMany({ where: { branchId, OR: [{ id: { in: studentBatchIds } }, { batchId: { in: studentBatchIds } }] }, select: { id: true, batchId: true, branchCourseId: true, courseId: true, courseName: true } })
     : [];
+  if (!batches.length && student.courseName) {
+    const courseKey = String(student.courseName).toLowerCase().replace(/[^a-z0-9]/g, "");
+    const courseBatches = await prisma.branchBatch.findMany({ where: { branchId }, select: { id: true, batchId: true, branchCourseId: true, courseId: true, courseName: true } });
+    batches = courseBatches.filter((batch) => String(batch.courseName || "").toLowerCase().replace(/[^a-z0-9]/g, "") === courseKey);
+  }
   const batchIds = new Set(batches.flatMap((batch) => [batch.id, batch.batchId]).filter(Boolean));
   const configuredTests = batches.length
     ? await prisma.academicTest.findMany({
       where: { batches: { some: { branchBatchId: { in: batches.map((batch) => batch.id) } } } },
-      select: { branchCourseId: true, branchCourse: { select: { academicTestCount: true } }, items: { select: { id: true, sequence: true } } },
+      select: { branchCourseId: true, branchCourse: { select: { academicTestCount: true } }, items: { select: { id: true, sequence: true, testType: true } } },
     })
     : [];
   const courseTotals = {};
@@ -1503,7 +1508,7 @@ export async function getBranchStudentAcademicReports(actor, studentId) {
     }
   }
   if (historyItems.length) {
-    return { student, items: historyItems, evaluations: historyItems.map((item) => ({ evaluationId: item.evaluationId, courseId: item.courseId, courseName: item.courseName, batchName: item.batchName, name: item.testName, type: item.testType, marksObtained: item.marksObtained, totalMarks: item.totalMarks, percentage: item.percentage, status: item.status, result: item.result })), courseTotals, courseTotalsByName };
+    return { student, items: historyItems, evaluations: historyItems.map((item) => ({ evaluationId: item.evaluationId, courseId: item.courseId, courseName: item.courseName, batchName: item.batchName, name: item.testName, type: item.testType, testType: item.testType, testNumber: item.testNumber, marksObtained: item.marksObtained, totalMarks: item.totalMarks, percentage: item.percentage, status: item.status, result: item.result, projectMarks: item.projectMarks, projectTotalMarks: item.projectTotalMarks, projectPercentage: item.projectPercentage, projectResult: item.projectResult })), courseTotals, courseTotalsByName };
   }
   // Completed cycles archive their sent snapshots when the next cycle starts.
   // Course-completion views must read both live and archived snapshots.
@@ -1515,7 +1520,7 @@ export async function getBranchStudentAcademicReports(actor, studentId) {
     if (!batch) continue;
     const configuredAcademicTest = await prisma.academicTest.findFirst({
       where: { branchCourseId: batch.branchCourseId, batches: { some: { branchBatchId: batch.id } } },
-      select: { branchCourse: { select: { academicTestCount: true } }, items: { select: { id: true, sequence: true } } },
+      select: { branchCourse: { select: { academicTestCount: true } }, items: { select: { id: true, sequence: true, testType: true } } },
     });
     const totalForCourse = Number(configuredAcademicTest?.branchCourse?.academicTestCount || 0) || configuredAcademicTest?.items?.length || 0;
     if (totalForCourse) {
@@ -1546,7 +1551,7 @@ export async function getBranchStudentAcademicReports(actor, studentId) {
     const key = item.evaluationId || item.testName;
     if (seen.has(key)) continue;
     seen.add(key);
-    evaluations.push({ evaluationId: item.evaluationId, courseId: item.courseId || null, courseName: item.courseName || null, batchName: item.batchName || null, name: item.testName, type: item.testType, percentage: item.percentage, status: item.status || "NOT_EVALUATED", result: item.result });
+    evaluations.push({ evaluationId: item.evaluationId, courseId: item.courseId || null, courseName: item.courseName || null, batchName: item.batchName || null, name: item.testName, type: item.testType, testType: item.testType, testNumber: item.testNumber, marksObtained: item.marksObtained, totalMarks: item.totalMarks, percentage: item.percentage, status: item.status || "NOT_EVALUATED", result: item.result, projectMarks: item.projectMarks, projectTotalMarks: item.projectTotalMarks, projectPercentage: item.projectPercentage, projectResult: item.projectResult });
   }
   return { student, items, evaluations, courseTotals, courseTotalsByName };
 }

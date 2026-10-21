@@ -900,6 +900,7 @@ model BranchStudent {
   feeComplianceStatus            String                          @default("PENDING")
   courseProgress                 Int?
   courseCompletedAt              DateTime?
+  importedAcademicResults        Json?
   enrollmentType                 String                         @default("SINGLE")
   arrangementType                String                         @default("SINGLE")
   firstCourseId                  String?
@@ -955,6 +956,8 @@ model BranchStudentCourse {
   finalCourseAmount Float?
   courseProgress   Int?
   courseCompletedAt DateTime?
+  importedLifecycleStatus String?
+  importedAcademicResults Json?
   paymentPlanId   String?
   paymentPlan     String?
   status          RecordStatus   @default(ACTIVE)

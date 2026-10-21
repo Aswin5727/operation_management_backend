@@ -8,7 +8,7 @@ import { COMPLETED_STUDENT_COLUMNS } from "./completedStudentReportColumns.js";
 const MAX_ROWS = 100;
 const CONTENT_TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 const FIELDS = COMPLETED_STUDENT_COLUMNS;
-const ALIASES = { admissionfees: "registrationFees", registrationfees: "registrationFees", registrationfee: "registrationFees", contact: "contactNumber", mobilenumber: "contactNumber", email: "emailId", parentname: "parentGuardian", parentguardian: "parentGuardian", project: "academicProject", academicproject: "academicProject", studentstatus: "studentStatus" };
+const ALIASES = { admissionfees: "registrationFees", registrationfees: "registrationFees", registrationfee: "registrationFees", contact: "contactNumber", mobilenumber: "contactNumber", email: "emailId", parentname: "parentGuardian", parentguardian: "parentGuardian", parentspousenumber: "parentSpouseNumber", parentspouseno: "parentSpouseNumber", source: "databaseSource", project: "academicProject", academicproject: "academicProject", studentstatus: "studentStatus" };
 const clean = (value) => value === null || value === undefined ? "" : String(value instanceof Date ? value.toISOString().slice(0, 10) : value).trim();
 const key = (value) => clean(value).toLowerCase().replace(/[^a-z0-9]/g, "");
 const courseKey = (value) => clean(value).toLowerCase().replace(/[^a-z0-9]+/g, " ").split(/\s+/).filter(Boolean).sort().join(" ");
@@ -102,7 +102,11 @@ async function validate(raw, branchId, seen, { allowMissingContact = false } = {
     }
   }
   await validatePaymentImportValues(prisma, student, data, errors, course?.id);
-  const sameCourseAlreadyExists = Boolean(student && ((course && (student.courseId === course.id || student.courseEnrollments.some((item) => item.courseId === course.id))) || (!course && courseKey(student.courseName) === courseKey(data.course))));
+  // Allow re-uploading historical rows that were previously stored only on
+  // the student record without a catalog course. This refreshes missing
+  // source, batch, installment and academic values instead of blocking them
+  // as duplicates. Catalog-linked duplicate courses remain protected.
+  const sameCourseAlreadyExists = Boolean(student && ((course && (student.courseId === course.id || student.courseEnrollments.some((item) => item.courseId === course.id))) || (!course && student.courseId && courseKey(student.courseName) === courseKey(data.course))));
   if (sameCourseAlreadyExists) errors.push("Duplicate completed student-course record already exists.");
   if (allowMissingContact) {
     for (let index = errors.length - 1; index >= 0; index -= 1) {
@@ -116,6 +120,7 @@ export async function previewCompletedStudentImport({ buffer, user }) { if (!buf
 function optional(data, field, current) { return missing(data[field]) ? current : clean(data[field]); }
 async function apply(tx, row, branchId, user) {
   const data = row.data;
+  const isDiscontinued = ["discontinued", "discontinuedstudent", "discontinuedstudents"].includes(key(data.studentStatus));
   let student = await tx.branchStudent.findFirst({ where: { branchId, studentId: clean(data.studentId) }, include: { courseEnrollments: true } });
   const course = !missing(data.course) ? await tx.branchCourse.findFirst({ where: { branchId, nameKey: courseKey(data.course) } }) : null;
   const existingEnrollment = student && course ? student.courseEnrollments.find((item) => item.courseId === course.id) : null;
@@ -125,6 +130,7 @@ async function apply(tx, row, branchId, user) {
   const sharedStudentData = {
     studentName: optional(data, 'studentName', student?.studentName || clean(data.studentName)),
     parentName: optional(data, 'parentGuardian', student?.parentName),
+    parentSpouseNumber: optional(data, 'parentSpouseNumber', student?.parentSpouseNumber),
     mobileNumber: clean(data.contactNumber).replace(/\D/g, '') || student?.mobileNumber,
     emailAddress: optional(data, 'emailId', student?.emailAddress) || null,
     qualification: optional(data, 'qualification', student?.qualification),
@@ -136,11 +142,14 @@ async function apply(tx, row, branchId, user) {
     educationLevel: optional(data, 'educationLevel', student?.educationLevel),
     educationStatus: optional(data, 'educationStatus', student?.educationStatus),
     linkedInUrl: optional(data, 'linkedInUrl', student?.linkedInUrl),
+    source: optional(data, 'databaseSource', optional(data, 'source', student?.source)),
+    importedAcademicResults: Object.fromEntries(Object.entries(data).filter(([field, value]) => (/^assessment\d+$/.test(field) || field === "academicProject") && !missing(value)).map(([field, value]) => [field, percentageInfo(value).value])),
     remarks: optional(data, 'remarks', student?.remarks),
     updatedBy: user?.id || null,
   };
   const courseData = {
     courseName: course?.name || clean(data.course),
+    batchName: optional(data, 'batchName', existingEnrollment?.batchName || student?.batchName),
     startDate: start || existingEnrollment?.startDate || null,
     endDate: end || existingEnrollment?.endDate || null,
     scheduleType: optional(data, 'scheduleMode', existingEnrollment?.scheduleType),
@@ -150,6 +159,7 @@ async function apply(tx, row, branchId, user) {
     totalCourseAmount: Number(number(data.totalFees) ?? number(data.courseFees) ?? existingEnrollment?.totalCourseAmount ?? 0) || null,
     courseProgress: 100,
     courseCompletedAt: end ? new Date(`${end}T00:00:00.000Z`) : existingEnrollment?.courseCompletedAt || null,
+    importedLifecycleStatus: isDiscontinued ? "DISCONTINUED" : "COMPLETED",
   };
 
   if (!student) {
@@ -163,6 +173,7 @@ async function apply(tx, row, branchId, user) {
         courseStartDate: courseData.startDate,
         courseEndDate: courseData.endDate,
         courseMode: courseData.mode,
+        batchName: courseData.batchName,
         batchTiming: courseData.batchTiming,
         facultyName: courseData.facultyName,
         courseAmount: courseData.totalCourseAmount,
@@ -177,6 +188,7 @@ async function apply(tx, row, branchId, user) {
       ...sharedStudentData,
       courseStartDate: courseData.startDate,
       courseEndDate: courseData.endDate,
+      batchName: courseData.batchName,
       courseProgress: courseData.courseProgress,
       courseCompletedAt: courseData.courseCompletedAt,
     } });
