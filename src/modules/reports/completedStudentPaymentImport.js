@@ -39,6 +39,11 @@ export async function validatePaymentImportValues(prisma, student, data, errors,
     if (value.paid !== null && value.paid > 0 && !value.receipt) errors.push(`Installment ${installmentNumber} Receipt Number is required when Paid Amount is entered.`);
     if (value.paid !== null && value.paid > 0 && !value.paymentDate) errors.push(`Installment ${installmentNumber} Payment Date is required when Paid Amount is entered.`);
     if (value.paid !== null && value.paid > 0 && !value.mode) errors.push(`Installment ${installmentNumber} Mode of Collection is required when Paid Amount is entered.`);
+    if (value.receipt) {
+      const existingPayment = await prisma.branchStudentPayment.findUnique({ where: { receiptNumber: value.receipt } });
+      const belongsToCurrentRecord = Boolean(student && existingPayment && existingPayment.branchStudentId === student.id && (!existingPayment.courseId || String(existingPayment.courseId) === String(courseId || "")));
+      if (existingPayment && !belongsToCurrentRecord) errors.push(`Receipt Number ${value.receipt} already belongs to another student or course.`);
+    }
   }
   if (!hasAnyInstallment) errors.push("At least one installment payment is required.");
 }

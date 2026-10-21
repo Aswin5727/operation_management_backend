@@ -17,7 +17,14 @@ const number = (value) => { if (missing(value)) return null; const parsed = Numb
 const dateInfo = (value) => { const raw = clean(value); if (missing(raw)) return { value: "", invalid: false }; const match = raw.match(/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{2,4})$/); const year = Number(match ? (match[3].length === 2 ? `20${match[3]}` : match[3]) : 0); const parsed = match ? new Date(Date.UTC(year, Number(match[2]) - 1, Number(match[1]))) : new Date(raw); if (Number.isNaN(parsed.getTime())) return { value: "", invalid: true }; if (match && (parsed.getUTCFullYear() !== year || parsed.getUTCMonth() !== Number(match[2]) - 1 || parsed.getUTCDate() !== Number(match[1]))) return { value: "", invalid: true }; return { value: parsed.toISOString().slice(0, 10), invalid: false }; };
 const date = (value) => dateInfo(value).value;
 const numberInfo = (value) => { if (missing(value)) return { value: null, invalid: false }; const parsed = Number(clean(value).replace(/[Ã¢â€šÂ¹,]/g, "")); return { value: Number.isFinite(parsed) ? parsed : null, invalid: !Number.isFinite(parsed) }; };
+const percentageInfo = (value) => { if (missing(value)) return { value: null, invalid: false }; const parsed = Number(clean(value).replace(/%/g, "").replace(/,/g, "")); return { value: Number.isFinite(parsed) ? parsed : null, invalid: !Number.isFinite(parsed) }; };
 
+function normalizeStudentStatus(value) {
+  const normalized = key(value);
+  if (["completed", "completedstudent", "completedstudents"].includes(normalized)) return "Completed Student";
+  if (["discontinued", "discontinuedstudent", "discontinuedstudents"].includes(normalized)) return "Discontinued Student";
+  return clean(value);
+}
 function canonicalHeader(value) {
   const normalized = key(value); if (ALIASES[normalized]) return ALIASES[normalized];
   const direct = FIELDS.find(([name, label]) => name === normalized || key(label) === normalized); if (direct) return direct[0];
@@ -31,7 +38,7 @@ function readRows(workbook) {
   const unknownHeaders = []; let validationParent = ""; firstHeader.forEach((value, index) => { if (value) validationParent = value; const child = secondHeader[index]; const source = hasGroupedHeader && child && key(validationParent).match(/(?:installment|instalment)\d+/) ? `${validationParent} ${child}` : value; if (source && !headers[index]) unknownHeaders.push(clean(source)); }); if (unknownHeaders.length) throw new AppError(`Unknown column(s): ${[...new Set(unknownHeaders)].join(", ")}. Download the latest template and keep the column names unchanged.`, 400); const duplicates = headers.filter((header, index) => header && headers.indexOf(header) !== index); if (duplicates.length) throw new AppError(`Duplicate columns: ${[...new Set(duplicates)].join(", ")}`, 400); const rows = [];
   for (let rowNumber = dataStart; rowNumber <= sheet.rowCount; rowNumber += 1) { const row = sheet.getRow(rowNumber); if (!Array.from({ length: sheet.columnCount }, (_, index) => row.getCell(index + 1).value).some((value) => !missing(value))) continue; const data = { __rowNumber: rowNumber }; headers.forEach((header, index) => { if (header) data[header] = clean(row.getCell(index + 1).value); }); rows.push(data); } return rows;
 }
-function templateColumns() { const columns = FIELDS.map(([, label]) => label).concat(["Assessment-01", "Assessment-02", "Assessment-03"]); for (let index = 1; index <= 3; index += 1) columns.push(`Installment ${index} - Paid Amount`, `Installment ${index} - Pending Amount`, `Installment ${index} - Payment Date`, `Installment ${index} - Mode of Collection`, `Installment ${index} - Receipt Number`); return columns; }
+function templateColumns() { const columns = FIELDS.map(([, label]) => label).concat(["Assessment-01 Percentage", "Assessment-02 Percentage", "Assessment-03 Percentage"]); for (let index = 1; index <= 3; index += 1) columns.push(`Installment ${index} - Paid Amount`, `Installment ${index} - Pending Amount`, `Installment ${index} - Payment Date`, `Installment ${index} - Mode of Collection`, `Installment ${index} - Receipt Number`); return columns; }
 
 export async function completedStudentTemplate() { const workbook = new ExcelJS.Workbook(); const sheet = workbook.addWorksheet("Completed Student Upload"); const columns = templateColumns(); sheet.addRow(["Completed Student Import Template"]); sheet.addRow(["Use one row per student-course record. Keep header names unchanged; use - only for optional unavailable values."]); sheet.addRow(columns); sheet.mergeCells(1, 1, 1, columns.length); sheet.mergeCells(2, 1, 2, columns.length); sheet.getRow(1).font = { bold: true, size: 16, color: { argb: "FF17345F" } }; sheet.getRow(2).font = { italic: true, color: { argb: "FF64748B" } }; sheet.getRow(3).eachCell((cell) => { cell.font = { bold: true, color: { argb: "FFFFFFFF" } }; cell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FF24527A" } }; cell.alignment = { wrapText: true, vertical: "middle" }; }); columns.forEach((column, index) => { sheet.getColumn(index + 1).width = Math.min(28, Math.max(16, column.length + 3)); }); sheet.views = [{ state: "frozen", ySplit: 3 }]; const buffer = await workbook.xlsx.writeBuffer(); return { fileName: "completed-student-upload-template.xlsx", contentType: CONTENT_TYPE, buffer: Buffer.from(buffer) }; }
 
@@ -40,12 +47,13 @@ async function context(row, branchId) {
   const course = !missing(row.course) ? await prisma.branchCourse.findFirst({ where: { branchId, nameKey: courseKey(row.course) } }) : null;
   return { student, course };
 }
-function columnLabelForError(field) { const match = field.match(/^assessment(\d+)$/); return match ? `Assessment-${String(Number(match[1])).padStart(2, "0")}` : field; }
+function columnLabelForError(field) { const match = field.match(/^assessment(\d+)$/); return match ? `Assessment-${String(Number(match[1])).padStart(2, "0")} Percentage` : field; }
 function conditional(data, errors) { const status = key(data.currentStatus); if (status === "collegestudent") { if (missing(data.educationLevel)) errors.push("Education Level is required for College Student."); if (missing(data.educationStatus)) errors.push("Education Status is required for College Student."); if (key(data.educationStatus) === "passedout" && missing(data.passedOutYear)) errors.push("Passed Out Year is required when Education Status is Passed Out."); } if (status === "fresher" && missing(data.passedOutYear)) errors.push("Passed Out Year is required for Fresher."); if (status === "employee" && missing(data.designation)) errors.push("Designation is required for Employee."); if (status === "employee" && missing(data.companyName)) errors.push("Company Name is required for Employee."); }
 async function validate(raw, branchId, seen, { allowMissingContact = false } = {}) {
   const data = { ...raw };
   const rowNumber = data.__rowNumber;
   delete data.__rowNumber;
+  data.studentStatus = normalizeStudentStatus(data.studentStatus);
   const errors = [];
   const warnings = [];
   const requiredFields = ["studentId", "studentName", "parentGuardian", "qualification", "currentStatus", "course", "courseStartingDate", "courseEndingDate", "studentStatus"];
@@ -54,7 +62,7 @@ async function validate(raw, branchId, seen, { allowMissingContact = false } = {
   if (missing(data.emailId)) errors.push("Email ID is missing. Confirm before importing with an empty value.");
   if (!missing(data.contactNumber) && !/^\d{10}$/.test(clean(data.contactNumber).replace(/\D/g, ""))) errors.push("Contact Number must contain exactly 10 digits.");
   if (!missing(data.emailId) && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(clean(data.emailId))) errors.push("Email ID is invalid.");
-  if (key(data.studentStatus) !== "completedstudent") errors.push("Student Status must be Completed Student.");
+  if (!["completedstudent", "discontinuedstudent"].includes(key(data.studentStatus))) errors.push("Student Status must be Completed Student or Discontinued Student.");
   const startInfo = dateInfo(data.courseStartingDate);
   const endInfo = dateInfo(data.courseEndingDate);
   if (startInfo.invalid) errors.push("Course Starting Date is invalid.");
@@ -68,9 +76,9 @@ async function validate(raw, branchId, seen, { allowMissingContact = false } = {
     ["registrationFees", 0, null, "Registration Fees"],
     ["totalFees", 0, null, "Total Fees"],
   ];
-  numericRules.forEach(([field, min, max, label]) => { const parsed = numberInfo(data[field]); if (parsed.invalid) errors.push(`${label} must be a valid number.`); else if (parsed.value !== null && (parsed.value < min || (max !== null && parsed.value > max))) errors.push(`${label} must be between ${min}${max === null ? " or above" : ` and ${max}`}.`); });
+  numericRules.forEach(([field, min, max, label]) => { const parsed = field === "attendance" ? percentageInfo(data[field]) : numberInfo(data[field]); if (parsed.invalid) errors.push(`${label} must be a valid number.`); else if (parsed.value !== null && (parsed.value < min || (max !== null && parsed.value > max))) errors.push(`${label} must be between ${min}${max === null ? " or above" : ` and ${max}`}.`); });
   if (!missing(data.passedOutYear) && !/^(19|20)\d{2}$/.test(clean(data.passedOutYear))) errors.push("Passed Out Year must be a valid four-digit year.");
-  Object.keys(data).filter((field) => /^assessment\d+$/.test(field) || field === "academicProject").forEach((field) => { const parsed = numberInfo(data[field]); if (parsed.invalid) errors.push(`${field === "academicProject" ? "Academic Project" : columnLabelForError(field)} must be a valid number.`); else if (parsed.value !== null && (parsed.value < 0 || parsed.value > 100)) errors.push(`${field === "academicProject" ? "Academic Project" : columnLabelForError(field)} must be between 0 and 100.`); });
+  Object.keys(data).filter((field) => /^assessment\d+$/.test(field) || field === "academicProject").forEach((field) => { const parsed = percentageInfo(data[field]); if (parsed.invalid) errors.push(`${field === "academicProject" ? "Academic Project" : columnLabelForError(field)} must be a valid number.`); else if (parsed.value !== null && (parsed.value < 0 || parsed.value > 100)) errors.push(`${field === "academicProject" ? "Academic Project" : columnLabelForError(field)} must be between 0 and 100.`); });
   conditional(data, errors);
   const hasAcademicValue = Object.entries(data).some(([field, value]) => (/^assessment\d+$/.test(field) || field === "academicProject") && !missing(value));
   // Academic values are optional for historical completed rows; no warning is needed when absent.
@@ -82,6 +90,17 @@ async function validate(raw, branchId, seen, { allowMissingContact = false } = {
   // Completed uploads are historical snapshots. Do not reject a row because
   // its student, course, batch, or academic setup is no longer in this branch.
   const { student, course } = await context(data, branchId);
+  const uniqueContactValues = [
+    !missing(data.contactNumber) ? { mobileNumber: clean(data.contactNumber).replace(/\D/g, "") } : null,
+    !missing(data.emailId) ? { emailAddress: clean(data.emailId).toLowerCase() } : null,
+  ].filter(Boolean);
+  if (uniqueContactValues.length) {
+    const conflictingStudent = await prisma.branchStudent.findFirst({ where: { OR: uniqueContactValues } });
+    if (conflictingStudent && conflictingStudent.id !== student?.id) {
+      if (uniqueContactValues.some((item) => item.mobileNumber && item.mobileNumber === conflictingStudent.mobileNumber)) errors.push("Contact Number already belongs to another student.");
+      if (uniqueContactValues.some((item) => item.emailAddress && item.emailAddress === String(conflictingStudent.emailAddress || "").toLowerCase())) errors.push("Email ID already belongs to another student.");
+    }
+  }
   await validatePaymentImportValues(prisma, student, data, errors, course?.id);
   const sameCourseAlreadyExists = Boolean(student && ((course && (student.courseId === course.id || student.courseEnrollments.some((item) => item.courseId === course.id))) || (!course && courseKey(student.courseName) === courseKey(data.course))));
   if (sameCourseAlreadyExists) errors.push("Duplicate completed student-course record already exists.");
