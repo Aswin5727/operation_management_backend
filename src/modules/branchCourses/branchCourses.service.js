@@ -4,7 +4,10 @@ import { getCurrentBranchProfile } from "../branches/branches.service.js";
 import {
   sendFacultyCourseAssignmentEmail,
 } from "../../common/services/resendEmail.js";
-import { normalizeBranchEntityId } from "../../common/utils/branchIdentifiers.js";
+
+import { buildCourseInstallments as buildBalancedInstallments, distributePercentages } from "./courseCalculations.js";
+import { syncCourseHierarchy } from "./courseHierarchy.js";
+import { courseFieldErrors, normalizeCourseCode } from "./courseValidation.js";
 
 const RECORD_STATUSES = new Set(["ACTIVE", "INACTIVE"]);
 const BRANCH_COURSE_HIERARCHY_KEYS = ["models", "modules", "courseModels"];
@@ -105,7 +108,7 @@ function parseOptionalInt(value, fieldName, { allowZero = true } = {}) {
   }
 
   const parsed = Number(value);
-  if (!Number.isInteger(parsed)) {
+  if (!Number.isSafeInteger(parsed) || parsed > 2147483647) {
     throw new AppError(`${fieldName} must be an integer`, 400);
   }
 
@@ -123,20 +126,7 @@ function parseOptionalInt(value, fieldName, { allowZero = true } = {}) {
   return parsed;
 }
 
-function buildBalancedInstallments(totalAmount, installmentCount) {
-  const count = Math.max(1, Number(installmentCount) || 1);
-  const safeTotal = Math.max(0, Number(totalAmount) || 0);
-  const baseAmount = Math.floor(safeTotal / count);
-  let remainder = safeTotal - baseAmount * count;
 
-  return Array.from({ length: count }, () => {
-    const nextAmount = baseAmount + (remainder > 0 ? 1 : 0);
-    if (remainder > 0) {
-      remainder -= 1;
-    }
-    return nextAmount;
-  });
-}
 
 function parseStatus(value) {
   const status = normalizeString(value).toUpperCase() || "ACTIVE";
@@ -158,22 +148,8 @@ function normalizeBranchCoursePaymentPlanType(value = "") {
   return normalizeString(value).toLowerCase() === "custom" ? "custom" : "template";
 }
 
-function normalizeBranchCoursePaymentPlanInstallments(values = [], finalFee = 0, installmentCount = 1) {
-  const parsedInstallments = Array.isArray(values)
-    ? values
-        .map((value, index) =>
-          parseOptionalInt(value, `Payment plan installment ${index + 1}`, { allowZero: false }),
-        )
-        .filter((value) => value !== null)
-    : [];
-
-  const safeInstallmentCount = Math.max(1, Number(installmentCount) || 1);
-
-  if (parsedInstallments.length === safeInstallmentCount) {
-    return parsedInstallments;
-  }
-
-  return buildBalancedInstallments(finalFee, safeInstallmentCount);
+function normalizeBranchCoursePaymentPlanInstallments(_values = [], finalFee = 0, installmentCount = 1) {
+  return buildBalancedInstallments(finalFee, installmentCount);
 }
 
 function normalizeBranchCoursePaymentPlanSelection(plan = {}, finalFee = 0, index = 0) {
@@ -227,28 +203,7 @@ function parseBranchCoursePaymentPlans(payload = {}, finalFee = 0) {
   );
 }
 
-function distributePercentages(totalItems = 0) {
-  const count = Math.max(0, Number(totalItems) || 0);
-  if (!count) return [];
-  if (count === 1) return [100];
 
-  const precision = 2;
-  const scale = 10 ** precision;
-  const base = Math.floor((100 / count) * scale) / scale;
-  const percentages = [];
-  let remaining = 100;
-
-  for (let index = 0; index < count; index += 1) {
-    if (index === count - 1) {
-      percentages.push(Number(remaining.toFixed(precision)));
-    } else {
-      percentages.push(Number(base.toFixed(precision)));
-      remaining -= base;
-    }
-  }
-
-  return percentages;
-}
 
 function hasInstallmentTemplatePayload(payload = {}) {
   const template = payload?.installmentTemplate;
@@ -288,7 +243,7 @@ function parseBranchInstallmentValues(candidate = {}) {
 
   return sourceValues
     .map((value, index) =>
-      parseOptionalInt(value, `Installment ${index + 1}`, { allowZero: false }),
+      parseOptionalInt(value, `Installment ${index + 1}`, { allowZero: true }),
     )
     .filter((value) => value !== null);
 }
@@ -390,6 +345,7 @@ function normalizeBranchCourseSubmodules(submodules = []) {
         );
 
         return {
+          id: parseOptionalText(submodule?.id),
           title,
           titleKey: normalizeKey(title),
           description: parseOptionalText(submodule?.description),
@@ -409,6 +365,8 @@ function normalizeBranchCourseModules(modules = []) {
         );
 
         const submodules = normalizeBranchCourseSubmodules(module?.submodules ?? module?.submodels ?? []);
+        if (submodules.length > 10000) throw new AppError("A module supports at most 10,000 submodules", 400);
+        if (!submodules.length) throw new AppError("Every module requires at least one submodule", 400);
         const seenSubmoduleKeys = new Set();
 
         for (const submodule of submodules) {
@@ -419,6 +377,7 @@ function normalizeBranchCourseModules(modules = []) {
         }
 
         return {
+          id: parseOptionalText(module?.id),
           title,
           titleKey: normalizeKey(title),
           description: parseOptionalText(module?.description),
@@ -449,6 +408,7 @@ function extractBranchCourseHierarchy(payload = {}) {
     [];
 
   const modules = normalizeBranchCourseModules(rawModules);
+  if (modules.length > 1000) throw new AppError("A course supports at most 1,000 modules", 400);
   const seenModuleKeys = new Set();
 
   for (const module of modules) {
@@ -475,7 +435,7 @@ function toBranchCourseSubmodule(submodule = {}, percentage = 0) {
     description: submodule.description,
     sequenceNo: submodule.sequenceNo,
     status: submodule.status,
-    percentage,
+    percentage: Number.isInteger(submodule.percentageBasisPoints) ? submodule.percentageBasisPoints / 100 : percentage,
     createdAt: submodule.createdAt,
     updatedAt: submodule.updatedAt,
   };
@@ -491,7 +451,7 @@ function toBranchCourseModule(module = {}, percentage = 0) {
     description: module.description,
     sequenceNo: module.sequenceNo,
     status: module.status,
-    percentage,
+    percentage: Number.isInteger(module.percentageBasisPoints) ? module.percentageBasisPoints / 100 : percentage,
     submodules: submodules.map((submodule, submoduleIndex) =>
       toBranchCourseSubmodule(submodule, submodulePercentages[submoduleIndex] ?? 0),
     ),
@@ -613,8 +573,8 @@ function buildBranchCourseOrderBy(sortBy, sortOrder) {
   }
 }
 
-async function ensureUniqueCourseName(nameKey, branchId, excludeId = null) {
-  const existingCourses = await prisma.branchCourse.findMany({
+async function ensureUniqueCourseName(nameKey, branchId, excludeId = null, db = prisma) {
+  const existingCourses = await db.branchCourse.findMany({
     where: {
       branchId,
       ...(excludeId ? { id: { not: excludeId } } : {}),
@@ -630,34 +590,29 @@ async function ensureUniqueCourseName(nameKey, branchId, excludeId = null) {
   }
 }
 
-async function ensureUniqueCourseCode(courseCode, branchId, excludeId = null) {
-  const normalizedCourseCode = normalizeString(courseCode);
-
-  if (!normalizedCourseCode) {
-    throw new AppError("Course code is required", 400);
-  }
-
-  const existing = await prisma.branchCourse.findFirst({
-    where: {
-      branchId,
-      courseCode: normalizedCourseCode,
-      ...(excludeId ? { id: { not: excludeId } } : {}),
-    },
-    select: { id: true },
+async function ensureUniqueCourseCode(courseCode, branchId, excludeId = null, db = prisma, publicBranchId = null) {
+  const normalized = normalizeString(courseCode);
+  if (!normalized) throw new AppError("Course code is required", 400);
+  const courses = await db.branchCourse.findMany({
+    where: { branchId, ...(excludeId ? { id: { not: excludeId } } : {}) }, select: { courseCode: true },
   });
-
-  if (existing) {
-    throw new AppError("Course code already exists", 409);
-  }
+  const exists = courses.some((course) => {
+    try { return normalizeCourseCode(course.courseCode, publicBranchId) === normalized; }
+    catch { return normalizeString(course.courseCode).toUpperCase() === normalized.toUpperCase(); }
+  });
+  if (exists) throw new AppError("Course code already exists", 409);
 }
 
 function buildBranchCoursePayload(payload = {}, existingCourse = null) {
-  const candidate = payload || {};
+  const candidate = { ...existingCourse, ...payload };
+  const fieldErrors = courseFieldErrors(payload, { partial: Boolean(existingCourse), existing: existingCourse || {} });
+  if (fieldErrors.length) throw new AppError(fieldErrors[0].message, 400);
   const courseCode = parseRequiredText(candidate.courseCode ?? existingCourse?.courseCode, "Course code");
   const courseType = parseRequiredText(candidate.courseType ?? existingCourse?.courseType, "Course type");
   const name = parseRequiredText(candidate.name ?? candidate.courseName ?? existingCourse?.name, "Course name");
   const description = parseOptionalText(candidate.description ?? existingCourse?.description);
-  const mode = parseRequiredText(candidate.mode ?? existingCourse?.mode, "Mode");
+  const modeText = parseRequiredText(candidate.mode ?? existingCourse?.mode, "Mode");
+  const mode = modeText.charAt(0).toUpperCase() + modeText.slice(1).toLowerCase();
   const duration = parseOptionalInt(candidate.duration ?? existingCourse?.duration, "Duration");
   const hours = parseOptionalInt(candidate.hours ?? existingCourse?.hours, "Hours");
   const actualFees = parseOptionalInt(candidate.actualFees ?? existingCourse?.actualFees, "Actual fees");
@@ -678,7 +633,8 @@ function buildBranchCoursePayload(payload = {}, existingCourse = null) {
     "Academic Test count",
     { allowZero: true },
   ) ?? 0;
-  const paymentPlans = parseBranchCoursePaymentPlans(candidate, afterDiscount ?? 0);
+  const hasPlans = ["paymentPlans", "paymentPlanSelections", "installmentPlans", "installmentTemplate"].some((key) => Object.hasOwn(payload, key));
+  const paymentPlans = parseBranchCoursePaymentPlans(hasPlans ? payload : candidate, afterDiscount ?? 0);
 
   return {
     courseCode,
@@ -708,12 +664,14 @@ export function buildBranchCourseHierarchyPayload(payload = {}) {
   }
 
   return modules.map((module, moduleIndex) => ({
+    id: module.id,
     title: module.title,
     titleKey: module.titleKey,
     description: module.description,
     sequenceNo: module.sequenceNo ?? moduleIndex + 1,
     status: module.status,
     submodules: module.submodules.map((submodule, subIndex) => ({
+      id: submodule.id,
       title: submodule.title,
       titleKey: submodule.titleKey,
       description: submodule.description,
@@ -723,46 +681,7 @@ export function buildBranchCourseHierarchyPayload(payload = {}) {
   }));
 }
 
-async function replaceBranchCourseHierarchy(tx, branchCourseId, modules = [], actorId = null) {
-  await tx.branchCourseModule.deleteMany({
-    where: { branchCourseId },
-  });
-
-  if (!Array.isArray(modules) || !modules.length) {
-    return [];
-  }
-
-  await tx.branchCourseModule.createMany({
-    data: modules.map((module, moduleIndex) => ({
-      branchCourseId,
-      title: module.title,
-      titleKey: module.titleKey,
-      description: module.description,
-      sequenceNo: module.sequenceNo ?? moduleIndex + 1,
-      status: module.status ?? "ACTIVE",
-      createdBy: actorId,
-      updatedBy: actorId,
-    })),
-  });
-  const createdModules = await tx.branchCourseModule.findMany({ where: { branchCourseId }, orderBy: { sequenceNo: "asc" }, select: { id: true, titleKey: true } });
-  const moduleByTitleKey = new Map(createdModules.map((module) => [module.titleKey, module.id]));
-  const submoduleRows = modules.flatMap((module) => {
-    const branchCourseModuleId = moduleByTitleKey.get(module.titleKey);
-    if (!branchCourseModuleId || !Array.isArray(module.submodules)) return [];
-    return module.submodules.map((submodule, submoduleIndex) => ({
-      branchCourseModuleId,
-      title: submodule.title,
-      titleKey: submodule.titleKey,
-      description: submodule.description,
-      sequenceNo: submodule.sequenceNo ?? submoduleIndex + 1,
-      status: submodule.status ?? "ACTIVE",
-      createdBy: actorId,
-      updatedBy: actorId,
-    }));
-  });
-  if (submoduleRows.length) await tx.branchCourseSubmodule.createMany({ data: submoduleRows });
-  return createdModules;
-}
+const replaceBranchCourseHierarchy = syncCourseHierarchy;
 
 function getBranchCourseInclude() {
   return {
@@ -881,80 +800,71 @@ export async function listBranchCourses(query, actor) {
   };
 }
 
-export async function createBranchCourse(payload, actor) {
-  const branchProfile = await resolveBranchProfile(actor);
-  const branchId = branchProfile.id;
-  const parsed = buildBranchCoursePayload(payload);
-  parsed.courseCode = normalizeBranchEntityId(parsed.courseCode, branchProfile.branchId, "COU");
+
+export async function lockCourseBranch(tx, branchId) {
+  await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtextextended(${branchId}, 0))`;
+}
+
+export async function resolveCoursePaymentPlans(db, branchId, plans, finalFee, existingPlans = []) {
+  if (!Array.isArray(plans) || !plans.length) throw new AppError("Select at least one payment plan", 400);
+  const seen = new Set();
+  const normalized = [];
+  for (const [index, plan] of plans.entries()) {
+    let source = plan;
+    if (normalizeString(plan.type).toLowerCase() !== "custom") {
+      const templateId = normalizeString(plan.templateId || plan.id);
+      const template = await db.branchInstallmentTemplate.findFirst({ where: { id: templateId, branchId, status: "ACTIVE" } });
+      const historical = existingPlans.find((item) => (item.templateId || item.id) === templateId);
+      if (!template && !historical) throw new AppError("Payment plan is unavailable. Select an active plan from this branch.", 400);
+      const resolved = template || historical;
+      source = { ...resolved, id: plan.id || resolved.id, templateId, type: "template" };
+    }
+    const count = Number(source.installmentCount);
+    const result = normalizeBranchCoursePaymentPlanSelection({ ...source, installments: buildBalancedInstallments(finalFee, count) }, finalFee, index);
+    const key = result.type === "custom" ? "custom:" + count : result.templateId;
+    if (seen.has(key)) throw new AppError("Duplicate payment plan", 400);
+    seen.add(key);
+    normalized.push(result);
+  }
+  return normalized;
+}
+
+export async function prepareBranchCourse(payload, branchProfile, db = prisma, existingCourse = null) {
+  const parsed = buildBranchCoursePayload(payload, existingCourse);
+  parsed.courseCode = normalizeCourseCode(parsed.courseCode, branchProfile.branchId);
   const hierarchy = buildBranchCourseHierarchyPayload(payload);
-  const installmentTemplate = parseBranchInstallmentTemplate(
-    payload?.installmentTemplate ? payload.installmentTemplate : payload,
-    parsed,
-  );
-  const actorId = actor?.id ?? null;
+  if (!existingCourse && !hierarchy) throw new AppError("At least one module is required", 400);
+  const historicalPlans = existingCourse?.paymentPlans || existingCourse?.paymentPlanSelections || [];
+  const hasExplicitPlans = ["paymentPlans", "paymentPlanSelections", "installmentPlans", "installmentTemplate"].some((key) => Object.hasOwn(payload, key));
+  parsed.paymentPlans = existingCourse && !hasExplicitPlans && !parsed.paymentPlans.length ? [] :
+    await resolveCoursePaymentPlans(db, branchProfile.id, parsed.paymentPlans, parsed.afterDiscount ?? 0, historicalPlans);
+  parsed.paymentPlanSelections = parsed.paymentPlans;
+  const installmentTemplate = parsed.paymentPlans.length ? parseBranchInstallmentTemplate({ installmentTemplate: parsed.paymentPlans[0] }, parsed) : null;
+  return { parsed, hierarchy, installmentTemplate };
+}
 
-  await ensureUniqueCourseName(parsed.nameKey, branchId);
-  await ensureUniqueCourseCode(parsed.courseCode, branchId);
+export async function createBranchCourseInTransaction(tx, payload, branchProfile, actorId = null) {
+  const { parsed, hierarchy, installmentTemplate } = await prepareBranchCourse(payload, branchProfile, tx);
+  const branchId = branchProfile.id;
+  await ensureUniqueCourseName(parsed.nameKey, branchId, null, tx);
+  await ensureUniqueCourseCode(parsed.courseCode, branchId, null, tx, branchProfile.branchId);
+  const course = await tx.branchCourse.create({ data: { ...parsed, branchId, createdBy: actorId, updatedBy: actorId } });
+  await syncCourseHierarchy(tx, course.id, hierarchy, actorId);
+  await tx.branchInstallmentTemplate.create({ data: { ...installmentTemplate, branchId, branchCourseId: course.id, createdBy: actorId, updatedBy: actorId } });
+  return toBranchCourseDetail(await tx.branchCourse.findFirst({ where: { id: course.id, branchId }, include: getBranchCourseInclude() }));
+}
 
-  const created = await prisma.$transaction(
-    async (tx) => {
-    const course = await tx.branchCourse.create({
-      data: {
-        ...parsed,
-        branchId,
-        createdBy: actorId,
-        updatedBy: actorId,
-      },
-    });
-
-    if (hierarchy) {
-      await replaceBranchCourseHierarchy(tx, course.id, hierarchy, actorId);
-    }
-
-    if (installmentTemplate) {
-      await tx.branchInstallmentTemplate.upsert({
-        where: {
-          branchCourseId: course.id,
-        },
-        create: {
-          branchId,
-          branchCourseId: course.id,
-          templateName: installmentTemplate.templateName,
-          planType: installmentTemplate.planType,
-          installmentCount: installmentTemplate.installmentCount,
-          installments: installmentTemplate.installments,
-          dueRule: installmentTemplate.dueRule,
-          allowCustomization: installmentTemplate.allowCustomization,
-          status: installmentTemplate.status,
-          createdBy: actorId,
-          updatedBy: actorId,
-        },
-        update: {
-          branchId,
-          templateName: installmentTemplate.templateName,
-          planType: installmentTemplate.planType,
-          installmentCount: installmentTemplate.installmentCount,
-          installments: installmentTemplate.installments,
-          dueRule: installmentTemplate.dueRule,
-          allowCustomization: installmentTemplate.allowCustomization,
-          status: installmentTemplate.status,
-          updatedBy: actorId,
-        },
-      });
-    }
-
-    return tx.branchCourse.findFirst({
-      where: {
-        id: course.id,
-        branchId,
-      },
-      include: getBranchCourseInclude(),
-    });
-    },
-    { maxWait: 10000, timeout: 30000 },
-  );
-
-  return toBranchCourseDetail(created);
+export async function createBranchCourse(payload, actor) {
+  const profile = await resolveBranchProfile(actor);
+  try {
+    return await prisma.$transaction(async (tx) => {
+      await lockCourseBranch(tx, profile.id);
+      return createBranchCourseInTransaction(tx, payload, profile, actor?.id ?? null);
+    }, { maxWait: 10000, timeout: 30000 });
+  } catch (error) {
+    if (error.code === "P2002") throw new AppError("Course code or name already exists in this branch", 409);
+    throw error;
+  }
 }
 
 export async function getBranchCourse(courseId, actor) {
@@ -974,96 +884,37 @@ export async function getBranchCourse(courseId, actor) {
   return toBranchCourseDetail(course);
 }
 
-export async function updateBranchCourse(courseId, payload, actor) {
-  const branchProfile = await resolveBranchProfile(actor);
-  const existingCourse = await prisma.branchCourse.findFirst({
-    where: {
-      id: courseId,
-      branchId: branchProfile.id,
-    },
-  });
-
-  if (!existingCourse) {
-    throw new AppError("Course not found", 404);
+export async function updateBranchCourseInTransaction(tx, courseId, payload, profile, actorId = null) {
+  const existingCourse = await tx.branchCourse.findFirst({ where: { id: courseId, branchId: profile.id } });
+  if (!existingCourse) throw new AppError("Course not found", 404);
+  if (payload.expectedUpdatedAt && new Date(payload.expectedUpdatedAt).getTime() !== existingCourse.updatedAt.getTime()) {
+    throw new AppError("This course changed since it was opened. Reopen it before saving.", 409);
   }
-
-  const parsed = buildBranchCoursePayload(payload, existingCourse);
-  parsed.courseCode = normalizeBranchEntityId(parsed.courseCode, branchProfile.branchId, "COU");
-  const hierarchy = buildBranchCourseHierarchyPayload(payload);
-  const existingTemplate = await prisma.branchInstallmentTemplate.findUnique({
-    where: {
-      branchCourseId: courseId,
-    },
-  });
-  const installmentTemplate = parseBranchInstallmentTemplate(
-    payload?.installmentTemplate ? payload.installmentTemplate : payload,
-    parsed,
-    existingTemplate,
-  );
-  const actorId = actor?.id ?? null;
-
-  await ensureUniqueCourseName(parsed.nameKey, branchProfile.id, courseId);
-  await ensureUniqueCourseCode(parsed.courseCode, branchProfile.id, courseId);
-
-  const updated = await prisma.$transaction(
-    async (tx) => {
-    const course = await tx.branchCourse.update({
-      where: { id: courseId },
-      data: {
-        ...parsed,
-        branchId: branchProfile.id,
-        updatedBy: actorId,
-      },
+  const { parsed, hierarchy, installmentTemplate } = await prepareBranchCourse(payload, profile, tx, existingCourse);
+  await ensureUniqueCourseName(parsed.nameKey, profile.id, courseId, tx);
+  await ensureUniqueCourseCode(parsed.courseCode, profile.id, courseId, tx, profile.branchId);
+  const course = await tx.branchCourse.update({ where: { id: courseId }, data: { ...parsed, updatedBy: actorId } });
+  if (hierarchy) await syncCourseHierarchy(tx, course.id, hierarchy, actorId);
+  if (installmentTemplate) {
+    await tx.branchInstallmentTemplate.upsert({
+      where: { branchCourseId: course.id },
+      create: { ...installmentTemplate, branchId: profile.id, branchCourseId: course.id, createdBy: actorId, updatedBy: actorId },
+      update: { ...installmentTemplate, updatedBy: actorId },
     });
-
-    if (hierarchy) {
-      await replaceBranchCourseHierarchy(tx, course.id, hierarchy, actorId);
-    }
-
-    if (installmentTemplate) {
-      await tx.branchInstallmentTemplate.upsert({
-        where: {
-          branchCourseId: course.id,
-        },
-        create: {
-          branchId: branchProfile.id,
-          branchCourseId: course.id,
-          templateName: installmentTemplate.templateName,
-          planType: installmentTemplate.planType,
-          installmentCount: installmentTemplate.installmentCount,
-          installments: installmentTemplate.installments,
-          dueRule: installmentTemplate.dueRule,
-          allowCustomization: installmentTemplate.allowCustomization,
-          status: installmentTemplate.status,
-          createdBy: actorId,
-          updatedBy: actorId,
-        },
-        update: {
-          branchId: branchProfile.id,
-          templateName: installmentTemplate.templateName,
-          planType: installmentTemplate.planType,
-          installmentCount: installmentTemplate.installmentCount,
-          installments: installmentTemplate.installments,
-          dueRule: installmentTemplate.dueRule,
-          allowCustomization: installmentTemplate.allowCustomization,
-          status: installmentTemplate.status,
-          updatedBy: actorId,
-        },
-      });
-    }
-
-    return tx.branchCourse.findFirst({
-      where: {
-        id: courseId,
-        branchId: branchProfile.id,
-      },
-      include: getBranchCourseInclude(),
-    });
-    },
-    { maxWait: 10000, timeout: 30000 },
-  );
-
-  return toBranchCourseDetail(updated);
+  }
+  return toBranchCourseDetail(await tx.branchCourse.findFirst({ where: { id: course.id, branchId: profile.id }, include: getBranchCourseInclude() }));
+}
+export async function updateBranchCourse(courseId, payload, actor) {
+  const profile = await resolveBranchProfile(actor);
+  try {
+    return await prisma.$transaction(async (tx) => {
+      await lockCourseBranch(tx, profile.id);
+      return updateBranchCourseInTransaction(tx, courseId, payload, profile, actor?.id ?? null);
+    }, { maxWait: 10000, timeout: 30000 });
+  } catch (error) {
+    if (error.code === "P2002") throw new AppError("Course code or name already exists in this branch", 409);
+    throw error;
+  }
 }
 
 export async function updateBranchCourseModulesOnly(courseId, payload, actor, options = {}) {
@@ -1091,7 +942,9 @@ export async function updateBranchCourseModulesOnly(courseId, payload, actor, op
 
   const updated = await prisma.$transaction(
     async (tx) => {
+    await lockCourseBranch(tx, branchProfile.id);
     await replaceBranchCourseHierarchy(tx, courseId, hierarchy, actorId);
+    await tx.branchCourse.update({ where: { id: courseId }, data: { updatedBy: actorId } });
 
     return tx.branchCourse.findFirst({
       where: {

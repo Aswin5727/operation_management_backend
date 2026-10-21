@@ -1,3 +1,4 @@
+import courseImportRoutes from "../modules/branchCourses/courseImport.routes.js";
 import express from "express";
 
 import attendanceRoutes from "../modules/attendance/attendance.routes.js";
@@ -44,6 +45,7 @@ router.use("/auth", authRoutes);
 router.use("/attendance", attendanceRoutes);
 router.use("/faculty/attendance", facultyAttendanceRoutes);
 router.use("/branches", branchesRoutes);
+router.use("/branch-courses/import", courseImportRoutes);
 router.use("/branch-courses", branchCoursesRoutes);
 router.use("/branch-batches", branchBatchesRoutes);
 router.use("/branch-installment-templates", branchInstallmentTemplatesRoutes);

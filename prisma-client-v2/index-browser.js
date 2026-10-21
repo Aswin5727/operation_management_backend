@@ -336,6 +336,7 @@ exports.Prisma.BranchCourseModuleScalarFieldEnum = {
   titleKey: 'titleKey',
   description: 'description',
   sequenceNo: 'sequenceNo',
+  percentageBasisPoints: 'percentageBasisPoints',
   status: 'status',
   createdBy: 'createdBy',
   updatedBy: 'updatedBy',
@@ -350,6 +351,7 @@ exports.Prisma.BranchCourseSubmoduleScalarFieldEnum = {
   titleKey: 'titleKey',
   description: 'description',
   sequenceNo: 'sequenceNo',
+  percentageBasisPoints: 'percentageBasisPoints',
   status: 'status',
   createdBy: 'createdBy',
   updatedBy: 'updatedBy',
@@ -1469,6 +1471,15 @@ exports.Prisma.BranchStudentLedgerEntryScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.BranchCourseImportReceiptScalarFieldEnum = {
+  id: 'id',
+  branchId: 'branchId',
+  uploadHash: 'uploadHash',
+  summary: 'summary',
+  createdBy: 'createdBy',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -1677,7 +1688,8 @@ exports.Prisma.ModelName = {
   AcademicTestReportHistory: 'AcademicTestReportHistory',
   AcademicTestReportSubmission: 'AcademicTestReportSubmission',
   BranchStudentPayment: 'BranchStudentPayment',
-  BranchStudentLedgerEntry: 'BranchStudentLedgerEntry'
+  BranchStudentLedgerEntry: 'BranchStudentLedgerEntry',
+  BranchCourseImportReceipt: 'BranchCourseImportReceipt'
 };
 
 /**
