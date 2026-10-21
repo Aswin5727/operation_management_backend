@@ -2613,6 +2613,34 @@ export async function listBranchStudents(query = {}, actor = null) {
 
   // Listing students must remain read-only; identifier migration belongs in an explicit admin flow.
   const where = buildBranchStudentWhere(scopedQuery, branchProfile);
+  // The Students page is the active-enrollment list. Completed report imports
+  // are stored as branch students for lifecycle/history screens, but they
+  // must not be returned here. Keep a parent student when at least one of its
+  // courses is still active/in progress so multi-course students continue to
+  // appear with their active course.
+  where.AND = [
+    ...(Array.isArray(where.AND) ? where.AND : []),
+    { discontinuationRequests: { none: { status: "APPROVED" } } },
+    {
+      OR: [
+        {
+          AND: [
+            { courseCompletedAt: null },
+            { OR: [{ courseProgress: null }, { courseProgress: { lt: 100 } }] },
+          ],
+        },
+        {
+          courseEnrollments: {
+            some: {
+              status: "ACTIVE",
+              courseCompletedAt: null,
+              OR: [{ courseProgress: null }, { courseProgress: { lt: 100 } }],
+            },
+          },
+        },
+      ],
+    },
+  ];
   const currentMonth = getCurrentMonthDateRange();
 
   const [total, rows] = await prisma.$transaction([
