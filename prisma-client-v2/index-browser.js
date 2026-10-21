@@ -805,6 +805,7 @@ exports.Prisma.BranchCalendarLeaveScalarFieldEnum = {
 exports.Prisma.BranchStudentInstallmentScalarFieldEnum = {
   id: 'id',
   branchStudentId: 'branchStudentId',
+  courseId: 'courseId',
   installmentNumber: 'installmentNumber',
   amount: 'amount',
   amountPaid: 'amountPaid',
@@ -1367,6 +1368,7 @@ exports.Prisma.BranchStudentPaymentScalarFieldEnum = {
   id: 'id',
   receiptNumber: 'receiptNumber',
   branchStudentId: 'branchStudentId',
+  courseId: 'courseId',
   branchId: 'branchId',
   amount: 'amount',
   paymentMode: 'paymentMode',

@@ -790,8 +790,8 @@ model BranchStudent {
   studentId                      String
   studentName                    String
   parentName                     String?
-  mobileNumber                   String                          @unique
-  emailAddress                   String                          @unique
+  mobileNumber                   String?                         @unique
+  emailAddress                   String?                         @unique
   parentSpouseNumber             String?
   countryCode                    String?
   country                        String?
@@ -909,7 +909,7 @@ model BranchStudentCourse {
 
   @@unique([branchStudentId, courseId])
   @@index([branchId, courseId])
-  @@index([branchStudentId])
+  @@index([branchStudentId, courseId])
 }
 
 model BranchStudentAttendance {
@@ -975,6 +975,7 @@ model BranchCalendarLeave {
 model BranchStudentInstallment {
   id                String                 @id @default(cuid())
   branchStudentId   String
+  courseId          String?
   installmentNumber Int
   amount            Int
   amountPaid        Int                    @default(0)
@@ -989,7 +990,7 @@ model BranchStudentInstallment {
   branchStudent     BranchStudent          @relation(fields: [branchStudentId], references: [id], onDelete: Cascade)
   payments          BranchStudentPayment[]
 
-  @@index([branchStudentId, status])
+  @@index([branchStudentId, courseId, status])
   @@index([dueDate])
 }
 
@@ -1846,6 +1847,7 @@ model BranchStudentPayment {
   id                   String   @id @default(cuid())
   receiptNumber        String   @unique
   branchStudentId      String
+  courseId             String?
   branchId             String
   amount               Int
   paymentMode          String
@@ -1866,7 +1868,7 @@ model BranchStudentPayment {
   installment   BranchStudentInstallment? @relation(fields: [installmentId], references: [id])
 
   @@index([branchId])
-  @@index([branchStudentId])
+  @@index([branchStudentId, courseId])
 }
 
 model BranchStudentLedgerEntry {

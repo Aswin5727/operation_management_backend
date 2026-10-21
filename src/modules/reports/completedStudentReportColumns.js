@@ -1,0 +1,6 @@
+export const COMPLETED_STUDENT_COLUMNS = [
+  ["studentId", "Student ID"], ["studentName", "Student Name"], ["contactNumber", "Contact Number"], ["emailId", "Email ID"], ["parentGuardian", "Parent / Guardian"], ["qualification", "Qualification"], ["educationLevel", "Education Level"], ["educationStatus", "Education Status"], ["passedOutYear", "Passed Out Year"], ["currentStatus", "Current Status"], ["designation", "Designation"], ["companyName", "Company Name"], ["purpose", "Purpose"], ["linkedInUrl", "LinkedIn URL"], ["course", "Course"], ["databaseSource", "Database Source"], ["branchAdminName", "Branch Admin Name"], ["courseStartingDate", "Course Starting Date"], ["courseEndingDate", "Course Ending Date"], ["scheduleMode", "Weekday / Weekend / Online / Offline"], ["batchTiming", "Batch Timing"], ["facultyName", "Faculty Name"], ["attendance", "Attendance"], ["courseFees", "Course Fees"], ["registrationFees", "Registration Fees"], ["totalFees", "Total Fees"], ["studentStatus", "Student Status"], ["remarks", "Remarks"], ["academicProject", "Academic Project"], ["placement", "Placement"], ["certificationStatus", "Certification Status"], ["certificateIssuedDate", "Certificate Issued Date"],
+];
+
+export const COMPLETED_STUDENT_ASSESSMENT_PREFIX = "assessment";
+export const COMPLETED_STUDENT_INSTALLMENT_PREFIX = "installment";
