@@ -9,6 +9,7 @@ import {
   generateBranchBatchAttendanceReport,
   generateBranchStudentAttendanceReport,
 } from "./branchAttendanceReports.service.js";
+import { generateBranchMonthlyReport } from "./branchMonthlyReport.service.js";
 
 function sendExcelResponse(res, report) {
   res.setHeader("Content-Type", report.contentType);
@@ -47,3 +48,7 @@ export const getBranchBatchAttendanceReportHandler = asyncHandler(async (req, re
   const report = await generateBranchBatchAttendanceReport(req.query, req.user);
   return sendExcelResponse(res, report);
 });
+
+export const getBranchMonthlyReportHandler = asyncHandler(async (req, res) => { const report = await generateBranchMonthlyReport(req.query, req.user); return sendExcelResponse(res, report); });
+
+
