@@ -2715,9 +2715,10 @@ export async function listBranchStudents(query = {}, actor = null) {
         return [entry.courseId, {
           academicTestProgress: progress,
           paidProgress,
-          status: entry.courseCompletedAt
-            ? "COMPLETED"
-            : courseCompletionFromProgressAndTests(entry.courseProgress, progress, paidProgress),
+          // Do not trust a stale courseCompletedAt from a previous batch cycle.
+          // The current enrollment is complete only when its own course progress
+          // and academic-test/project progress are complete.
+          status: courseCompletionFromProgressAndTests(entry.courseProgress, progress, paidProgress),
         }];
       }));
       const byCourse = Object.fromEntries(entries);
@@ -2725,9 +2726,7 @@ export async function listBranchStudents(query = {}, actor = null) {
       const primary = byCourse[student.courseId] || {
         academicTestProgress: { totalTests: 0, completedTests: 0, pendingTests: 0, percentage: 0 },
         paidProgress: primaryPaidProgress,
-        status: student.courseCompletedAt
-          ? "COMPLETED"
-          : courseCompletionFromProgressAndTests(student.courseProgress, null, primaryPaidProgress),
+        status: courseCompletionFromProgressAndTests(student.courseProgress, null, primaryPaidProgress),
       };
       return [student.id, { ...primary, byCourse }];
     } catch (error) {

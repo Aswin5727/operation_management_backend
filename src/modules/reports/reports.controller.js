@@ -9,7 +9,7 @@ import {
   generateBranchBatchAttendanceReport,
   generateBranchStudentAttendanceReport,
 } from "./branchAttendanceReports.service.js";
-import { generateBranchMonthlyReport } from "./branchMonthlyReport.service.js";
+import { generateBranchMonthlyReport } from "./branchMonthlyReportPresentation.service.js";
 
 function sendExcelResponse(res, report) {
   res.setHeader("Content-Type", report.contentType);
