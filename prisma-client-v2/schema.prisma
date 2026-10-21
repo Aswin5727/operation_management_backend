@@ -327,21 +327,22 @@ model BranchCourse {
 }
 
 model BranchCourseModule {
-  id             String                  @id @default(cuid())
-  branchCourseId String
-  title          String
-  titleKey       String
-  description    String?
-  sequenceNo     Int
-  status         RecordStatus            @default(ACTIVE)
-  createdBy      String?
-  updatedBy      String?
-  createdAt      DateTime                @default(now())
-  updatedAt      DateTime                @updatedAt
-  branchCourse   BranchCourse            @relation(fields: [branchCourseId], references: [id], onDelete: Cascade)
-  submodules     BranchCourseSubmodule[]
-  exams          Exam[]
-  assessments    Assessment[]
+  id                    String                  @id @default(cuid())
+  branchCourseId        String
+  title                 String
+  titleKey              String
+  description           String?
+  sequenceNo            Int
+  percentageBasisPoints Int                     @default(0)
+  status                RecordStatus            @default(ACTIVE)
+  createdBy             String?
+  updatedBy             String?
+  createdAt             DateTime                @default(now())
+  updatedAt             DateTime                @updatedAt
+  branchCourse          BranchCourse            @relation(fields: [branchCourseId], references: [id], onDelete: Cascade)
+  submodules            BranchCourseSubmodule[]
+  exams                 Exam[]
+  assessments           Assessment[]
 
   @@unique([branchCourseId, sequenceNo])
   @@unique([branchCourseId, titleKey])
@@ -350,18 +351,19 @@ model BranchCourseModule {
 }
 
 model BranchCourseSubmodule {
-  id                   String             @id @default(cuid())
-  branchCourseModuleId String
-  title                String
-  titleKey             String
-  description          String?
-  sequenceNo           Int
-  status               RecordStatus       @default(ACTIVE)
-  createdBy            String?
-  updatedBy            String?
-  createdAt            DateTime           @default(now())
-  updatedAt            DateTime           @updatedAt
-  branchCourseModule   BranchCourseModule @relation(fields: [branchCourseModuleId], references: [id], onDelete: Cascade)
+  id                    String             @id @default(cuid())
+  branchCourseModuleId  String
+  title                 String
+  titleKey              String
+  description           String?
+  sequenceNo            Int
+  percentageBasisPoints Int                @default(0)
+  status                RecordStatus       @default(ACTIVE)
+  createdBy             String?
+  updatedBy             String?
+  createdAt             DateTime           @default(now())
+  updatedAt             DateTime           @updatedAt
+  branchCourseModule    BranchCourseModule @relation(fields: [branchCourseModuleId], references: [id], onDelete: Cascade)
 
   @@unique([branchCourseModuleId, sequenceNo])
   @@unique([branchCourseModuleId, titleKey])
@@ -1905,4 +1907,15 @@ model BranchStudentLedgerEntry {
   @@index([branchId])
   @@index([branchStudentId, entryDate, entryNo])
   @@index([branchStudentId, createdAt])
+}
+
+model BranchCourseImportReceipt {
+  id         String   @id @default(cuid())
+  branchId   String
+  uploadHash String
+  summary    Json
+  createdBy  String?
+  createdAt  DateTime @default(now())
+
+  @@unique([branchId, uploadHash])
 }

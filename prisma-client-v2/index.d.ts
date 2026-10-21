@@ -348,6 +348,11 @@ export type BranchStudentPayment = $Result.DefaultSelection<Prisma.$BranchStuden
  * 
  */
 export type BranchStudentLedgerEntry = $Result.DefaultSelection<Prisma.$BranchStudentLedgerEntryPayload>
+/**
+ * Model BranchCourseImportReceipt
+ * 
+ */
+export type BranchCourseImportReceipt = $Result.DefaultSelection<Prisma.$BranchCourseImportReceiptPayload>
 
 /**
  * Enums
@@ -1336,6 +1341,16 @@ export class PrismaClient<
     * ```
     */
   get branchStudentLedgerEntry(): Prisma.BranchStudentLedgerEntryDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.branchCourseImportReceipt`: Exposes CRUD operations for the **BranchCourseImportReceipt** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more BranchCourseImportReceipts
+    * const branchCourseImportReceipts = await prisma.branchCourseImportReceipt.findMany()
+    * ```
+    */
+  get branchCourseImportReceipt(): Prisma.BranchCourseImportReceiptDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -1836,7 +1851,8 @@ export namespace Prisma {
     StudentDiscontinuationRequest: 'StudentDiscontinuationRequest',
     FacultyReportShare: 'FacultyReportShare',
     BranchStudentPayment: 'BranchStudentPayment',
-    BranchStudentLedgerEntry: 'BranchStudentLedgerEntry'
+    BranchStudentLedgerEntry: 'BranchStudentLedgerEntry',
+    BranchCourseImportReceipt: 'BranchCourseImportReceipt'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1852,7 +1868,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "dashboardWidget" | "userDashboardWidget" | "branch" | "loginEvent" | "notification" | "courseEditRequest" | "passwordResetToken" | "course" | "branchCourse" | "branchCourseModule" | "branchCourseSubmodule" | "courseModule" | "batch" | "batchFacultyAssignment" | "branchBatch" | "academicTest" | "academicTestItem" | "academicTestBatch" | "academicQuestionPaper" | "academicQuestion" | "academicTestProject" | "academicScheduledTest" | "academicTestSubmission" | "academicProjectSubmission" | "academicTestAnswer" | "courseStatusHistory" | "batchStatusHistory" | "studentProfile" | "branchStudent" | "branchStudentCourse" | "branchStudentAttendance" | "branchCalendarHoliday" | "branchCalendarLeave" | "branchStudentInstallment" | "facultySkill" | "facultySkillAssignment" | "facultySkillTopic" | "facultySkillAssignmentAudit" | "facultyProfile" | "facultyCourseAssignment" | "facultyBatchEntry" | "facultyAttendanceSession" | "facultyAttendanceDay" | "facultyAttendanceBatchWork" | "facultyTodayWorkEntry" | "facultyTodayWorkStudentEntry" | "studentAttendance" | "branchFaculty" | "facultyLeaveRequest" | "facultyWeekOffRequest" | "branchFacultyCourse" | "facultyLeaveAffectedSession" | "facultyLeaveCombinedSession" | "branchInstallmentTemplate" | "assessment" | "assessmentSubmission" | "exam" | "examSchedule" | "examQuestion" | "examAttempt" | "examAnswer" | "motivationMailHistory" | "studentDiscontinuationRequest" | "facultyReportShare" | "branchStudentPayment" | "branchStudentLedgerEntry"
+      modelProps: "user" | "dashboardWidget" | "userDashboardWidget" | "branch" | "loginEvent" | "notification" | "courseEditRequest" | "passwordResetToken" | "course" | "branchCourse" | "branchCourseModule" | "branchCourseSubmodule" | "courseModule" | "batch" | "batchFacultyAssignment" | "branchBatch" | "academicTest" | "academicTestItem" | "academicTestBatch" | "academicQuestionPaper" | "academicQuestion" | "academicTestProject" | "academicScheduledTest" | "academicTestSubmission" | "academicProjectSubmission" | "academicTestAnswer" | "courseStatusHistory" | "batchStatusHistory" | "studentProfile" | "branchStudent" | "branchStudentCourse" | "branchStudentAttendance" | "branchCalendarHoliday" | "branchCalendarLeave" | "branchStudentInstallment" | "facultySkill" | "facultySkillAssignment" | "facultySkillTopic" | "facultySkillAssignmentAudit" | "facultyProfile" | "facultyCourseAssignment" | "facultyBatchEntry" | "facultyAttendanceSession" | "facultyAttendanceDay" | "facultyAttendanceBatchWork" | "facultyTodayWorkEntry" | "facultyTodayWorkStudentEntry" | "studentAttendance" | "branchFaculty" | "facultyLeaveRequest" | "facultyWeekOffRequest" | "branchFacultyCourse" | "facultyLeaveAffectedSession" | "facultyLeaveCombinedSession" | "branchInstallmentTemplate" | "assessment" | "assessmentSubmission" | "exam" | "examSchedule" | "examQuestion" | "examAttempt" | "examAnswer" | "motivationMailHistory" | "studentDiscontinuationRequest" | "facultyReportShare" | "branchStudentPayment" | "branchStudentLedgerEntry" | "branchCourseImportReceipt"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -6814,6 +6830,80 @@ export namespace Prisma {
           }
         }
       }
+      BranchCourseImportReceipt: {
+        payload: Prisma.$BranchCourseImportReceiptPayload<ExtArgs>
+        fields: Prisma.BranchCourseImportReceiptFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.BranchCourseImportReceiptFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BranchCourseImportReceiptPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.BranchCourseImportReceiptFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BranchCourseImportReceiptPayload>
+          }
+          findFirst: {
+            args: Prisma.BranchCourseImportReceiptFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BranchCourseImportReceiptPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.BranchCourseImportReceiptFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BranchCourseImportReceiptPayload>
+          }
+          findMany: {
+            args: Prisma.BranchCourseImportReceiptFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BranchCourseImportReceiptPayload>[]
+          }
+          create: {
+            args: Prisma.BranchCourseImportReceiptCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BranchCourseImportReceiptPayload>
+          }
+          createMany: {
+            args: Prisma.BranchCourseImportReceiptCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.BranchCourseImportReceiptCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BranchCourseImportReceiptPayload>[]
+          }
+          delete: {
+            args: Prisma.BranchCourseImportReceiptDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BranchCourseImportReceiptPayload>
+          }
+          update: {
+            args: Prisma.BranchCourseImportReceiptUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BranchCourseImportReceiptPayload>
+          }
+          deleteMany: {
+            args: Prisma.BranchCourseImportReceiptDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.BranchCourseImportReceiptUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.BranchCourseImportReceiptUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BranchCourseImportReceiptPayload>[]
+          }
+          upsert: {
+            args: Prisma.BranchCourseImportReceiptUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BranchCourseImportReceiptPayload>
+          }
+          aggregate: {
+            args: Prisma.BranchCourseImportReceiptAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateBranchCourseImportReceipt>
+          }
+          groupBy: {
+            args: Prisma.BranchCourseImportReceiptGroupByArgs<ExtArgs>
+            result: $Utils.Optional<BranchCourseImportReceiptGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.BranchCourseImportReceiptCountArgs<ExtArgs>
+            result: $Utils.Optional<BranchCourseImportReceiptCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -6989,6 +7079,7 @@ export namespace Prisma {
     facultyReportShare?: FacultyReportShareOmit
     branchStudentPayment?: BranchStudentPaymentOmit
     branchStudentLedgerEntry?: BranchStudentLedgerEntryOmit
+    branchCourseImportReceipt?: BranchCourseImportReceiptOmit
   }
 
   /* Types for Logging */
@@ -22632,10 +22723,12 @@ export namespace Prisma {
 
   export type BranchCourseModuleAvgAggregateOutputType = {
     sequenceNo: number | null
+    percentageBasisPoints: number | null
   }
 
   export type BranchCourseModuleSumAggregateOutputType = {
     sequenceNo: number | null
+    percentageBasisPoints: number | null
   }
 
   export type BranchCourseModuleMinAggregateOutputType = {
@@ -22645,6 +22738,7 @@ export namespace Prisma {
     titleKey: string | null
     description: string | null
     sequenceNo: number | null
+    percentageBasisPoints: number | null
     status: $Enums.RecordStatus | null
     createdBy: string | null
     updatedBy: string | null
@@ -22659,6 +22753,7 @@ export namespace Prisma {
     titleKey: string | null
     description: string | null
     sequenceNo: number | null
+    percentageBasisPoints: number | null
     status: $Enums.RecordStatus | null
     createdBy: string | null
     updatedBy: string | null
@@ -22673,6 +22768,7 @@ export namespace Prisma {
     titleKey: number
     description: number
     sequenceNo: number
+    percentageBasisPoints: number
     status: number
     createdBy: number
     updatedBy: number
@@ -22684,10 +22780,12 @@ export namespace Prisma {
 
   export type BranchCourseModuleAvgAggregateInputType = {
     sequenceNo?: true
+    percentageBasisPoints?: true
   }
 
   export type BranchCourseModuleSumAggregateInputType = {
     sequenceNo?: true
+    percentageBasisPoints?: true
   }
 
   export type BranchCourseModuleMinAggregateInputType = {
@@ -22697,6 +22795,7 @@ export namespace Prisma {
     titleKey?: true
     description?: true
     sequenceNo?: true
+    percentageBasisPoints?: true
     status?: true
     createdBy?: true
     updatedBy?: true
@@ -22711,6 +22810,7 @@ export namespace Prisma {
     titleKey?: true
     description?: true
     sequenceNo?: true
+    percentageBasisPoints?: true
     status?: true
     createdBy?: true
     updatedBy?: true
@@ -22725,6 +22825,7 @@ export namespace Prisma {
     titleKey?: true
     description?: true
     sequenceNo?: true
+    percentageBasisPoints?: true
     status?: true
     createdBy?: true
     updatedBy?: true
@@ -22826,6 +22927,7 @@ export namespace Prisma {
     titleKey: string
     description: string | null
     sequenceNo: number
+    percentageBasisPoints: number
     status: $Enums.RecordStatus
     createdBy: string | null
     updatedBy: string | null
@@ -22859,6 +22961,7 @@ export namespace Prisma {
     titleKey?: boolean
     description?: boolean
     sequenceNo?: boolean
+    percentageBasisPoints?: boolean
     status?: boolean
     createdBy?: boolean
     updatedBy?: boolean
@@ -22878,6 +22981,7 @@ export namespace Prisma {
     titleKey?: boolean
     description?: boolean
     sequenceNo?: boolean
+    percentageBasisPoints?: boolean
     status?: boolean
     createdBy?: boolean
     updatedBy?: boolean
@@ -22893,6 +22997,7 @@ export namespace Prisma {
     titleKey?: boolean
     description?: boolean
     sequenceNo?: boolean
+    percentageBasisPoints?: boolean
     status?: boolean
     createdBy?: boolean
     updatedBy?: boolean
@@ -22908,6 +23013,7 @@ export namespace Prisma {
     titleKey?: boolean
     description?: boolean
     sequenceNo?: boolean
+    percentageBasisPoints?: boolean
     status?: boolean
     createdBy?: boolean
     updatedBy?: boolean
@@ -22915,7 +23021,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type BranchCourseModuleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "branchCourseId" | "title" | "titleKey" | "description" | "sequenceNo" | "status" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["branchCourseModule"]>
+  export type BranchCourseModuleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "branchCourseId" | "title" | "titleKey" | "description" | "sequenceNo" | "percentageBasisPoints" | "status" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["branchCourseModule"]>
   export type BranchCourseModuleInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     branchCourse?: boolean | BranchCourseDefaultArgs<ExtArgs>
     submodules?: boolean | BranchCourseModule$submodulesArgs<ExtArgs>
@@ -22945,6 +23051,7 @@ export namespace Prisma {
       titleKey: string
       description: string | null
       sequenceNo: number
+      percentageBasisPoints: number
       status: $Enums.RecordStatus
       createdBy: string | null
       updatedBy: string | null
@@ -23383,6 +23490,7 @@ export namespace Prisma {
     readonly titleKey: FieldRef<"BranchCourseModule", 'String'>
     readonly description: FieldRef<"BranchCourseModule", 'String'>
     readonly sequenceNo: FieldRef<"BranchCourseModule", 'Int'>
+    readonly percentageBasisPoints: FieldRef<"BranchCourseModule", 'Int'>
     readonly status: FieldRef<"BranchCourseModule", 'RecordStatus'>
     readonly createdBy: FieldRef<"BranchCourseModule", 'String'>
     readonly updatedBy: FieldRef<"BranchCourseModule", 'String'>
@@ -23893,10 +24001,12 @@ export namespace Prisma {
 
   export type BranchCourseSubmoduleAvgAggregateOutputType = {
     sequenceNo: number | null
+    percentageBasisPoints: number | null
   }
 
   export type BranchCourseSubmoduleSumAggregateOutputType = {
     sequenceNo: number | null
+    percentageBasisPoints: number | null
   }
 
   export type BranchCourseSubmoduleMinAggregateOutputType = {
@@ -23906,6 +24016,7 @@ export namespace Prisma {
     titleKey: string | null
     description: string | null
     sequenceNo: number | null
+    percentageBasisPoints: number | null
     status: $Enums.RecordStatus | null
     createdBy: string | null
     updatedBy: string | null
@@ -23920,6 +24031,7 @@ export namespace Prisma {
     titleKey: string | null
     description: string | null
     sequenceNo: number | null
+    percentageBasisPoints: number | null
     status: $Enums.RecordStatus | null
     createdBy: string | null
     updatedBy: string | null
@@ -23934,6 +24046,7 @@ export namespace Prisma {
     titleKey: number
     description: number
     sequenceNo: number
+    percentageBasisPoints: number
     status: number
     createdBy: number
     updatedBy: number
@@ -23945,10 +24058,12 @@ export namespace Prisma {
 
   export type BranchCourseSubmoduleAvgAggregateInputType = {
     sequenceNo?: true
+    percentageBasisPoints?: true
   }
 
   export type BranchCourseSubmoduleSumAggregateInputType = {
     sequenceNo?: true
+    percentageBasisPoints?: true
   }
 
   export type BranchCourseSubmoduleMinAggregateInputType = {
@@ -23958,6 +24073,7 @@ export namespace Prisma {
     titleKey?: true
     description?: true
     sequenceNo?: true
+    percentageBasisPoints?: true
     status?: true
     createdBy?: true
     updatedBy?: true
@@ -23972,6 +24088,7 @@ export namespace Prisma {
     titleKey?: true
     description?: true
     sequenceNo?: true
+    percentageBasisPoints?: true
     status?: true
     createdBy?: true
     updatedBy?: true
@@ -23986,6 +24103,7 @@ export namespace Prisma {
     titleKey?: true
     description?: true
     sequenceNo?: true
+    percentageBasisPoints?: true
     status?: true
     createdBy?: true
     updatedBy?: true
@@ -24087,6 +24205,7 @@ export namespace Prisma {
     titleKey: string
     description: string | null
     sequenceNo: number
+    percentageBasisPoints: number
     status: $Enums.RecordStatus
     createdBy: string | null
     updatedBy: string | null
@@ -24120,6 +24239,7 @@ export namespace Prisma {
     titleKey?: boolean
     description?: boolean
     sequenceNo?: boolean
+    percentageBasisPoints?: boolean
     status?: boolean
     createdBy?: boolean
     updatedBy?: boolean
@@ -24135,6 +24255,7 @@ export namespace Prisma {
     titleKey?: boolean
     description?: boolean
     sequenceNo?: boolean
+    percentageBasisPoints?: boolean
     status?: boolean
     createdBy?: boolean
     updatedBy?: boolean
@@ -24150,6 +24271,7 @@ export namespace Prisma {
     titleKey?: boolean
     description?: boolean
     sequenceNo?: boolean
+    percentageBasisPoints?: boolean
     status?: boolean
     createdBy?: boolean
     updatedBy?: boolean
@@ -24165,6 +24287,7 @@ export namespace Prisma {
     titleKey?: boolean
     description?: boolean
     sequenceNo?: boolean
+    percentageBasisPoints?: boolean
     status?: boolean
     createdBy?: boolean
     updatedBy?: boolean
@@ -24172,7 +24295,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type BranchCourseSubmoduleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "branchCourseModuleId" | "title" | "titleKey" | "description" | "sequenceNo" | "status" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["branchCourseSubmodule"]>
+  export type BranchCourseSubmoduleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "branchCourseModuleId" | "title" | "titleKey" | "description" | "sequenceNo" | "percentageBasisPoints" | "status" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["branchCourseSubmodule"]>
   export type BranchCourseSubmoduleInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     branchCourseModule?: boolean | BranchCourseModuleDefaultArgs<ExtArgs>
   }
@@ -24195,6 +24318,7 @@ export namespace Prisma {
       titleKey: string
       description: string | null
       sequenceNo: number
+      percentageBasisPoints: number
       status: $Enums.RecordStatus
       createdBy: string | null
       updatedBy: string | null
@@ -24630,6 +24754,7 @@ export namespace Prisma {
     readonly titleKey: FieldRef<"BranchCourseSubmodule", 'String'>
     readonly description: FieldRef<"BranchCourseSubmodule", 'String'>
     readonly sequenceNo: FieldRef<"BranchCourseSubmodule", 'Int'>
+    readonly percentageBasisPoints: FieldRef<"BranchCourseSubmodule", 'Int'>
     readonly status: FieldRef<"BranchCourseSubmodule", 'RecordStatus'>
     readonly createdBy: FieldRef<"BranchCourseSubmodule", 'String'>
     readonly updatedBy: FieldRef<"BranchCourseSubmodule", 'String'>
@@ -94279,6 +94404,1015 @@ export namespace Prisma {
 
 
   /**
+   * Model BranchCourseImportReceipt
+   */
+
+  export type AggregateBranchCourseImportReceipt = {
+    _count: BranchCourseImportReceiptCountAggregateOutputType | null
+    _min: BranchCourseImportReceiptMinAggregateOutputType | null
+    _max: BranchCourseImportReceiptMaxAggregateOutputType | null
+  }
+
+  export type BranchCourseImportReceiptMinAggregateOutputType = {
+    id: string | null
+    branchId: string | null
+    uploadHash: string | null
+    createdBy: string | null
+    createdAt: Date | null
+  }
+
+  export type BranchCourseImportReceiptMaxAggregateOutputType = {
+    id: string | null
+    branchId: string | null
+    uploadHash: string | null
+    createdBy: string | null
+    createdAt: Date | null
+  }
+
+  export type BranchCourseImportReceiptCountAggregateOutputType = {
+    id: number
+    branchId: number
+    uploadHash: number
+    summary: number
+    createdBy: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type BranchCourseImportReceiptMinAggregateInputType = {
+    id?: true
+    branchId?: true
+    uploadHash?: true
+    createdBy?: true
+    createdAt?: true
+  }
+
+  export type BranchCourseImportReceiptMaxAggregateInputType = {
+    id?: true
+    branchId?: true
+    uploadHash?: true
+    createdBy?: true
+    createdAt?: true
+  }
+
+  export type BranchCourseImportReceiptCountAggregateInputType = {
+    id?: true
+    branchId?: true
+    uploadHash?: true
+    summary?: true
+    createdBy?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type BranchCourseImportReceiptAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which BranchCourseImportReceipt to aggregate.
+     */
+    where?: BranchCourseImportReceiptWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of BranchCourseImportReceipts to fetch.
+     */
+    orderBy?: BranchCourseImportReceiptOrderByWithRelationInput | BranchCourseImportReceiptOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: BranchCourseImportReceiptWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` BranchCourseImportReceipts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` BranchCourseImportReceipts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned BranchCourseImportReceipts
+    **/
+    _count?: true | BranchCourseImportReceiptCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: BranchCourseImportReceiptMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: BranchCourseImportReceiptMaxAggregateInputType
+  }
+
+  export type GetBranchCourseImportReceiptAggregateType<T extends BranchCourseImportReceiptAggregateArgs> = {
+        [P in keyof T & keyof AggregateBranchCourseImportReceipt]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateBranchCourseImportReceipt[P]>
+      : GetScalarType<T[P], AggregateBranchCourseImportReceipt[P]>
+  }
+
+
+
+
+  export type BranchCourseImportReceiptGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BranchCourseImportReceiptWhereInput
+    orderBy?: BranchCourseImportReceiptOrderByWithAggregationInput | BranchCourseImportReceiptOrderByWithAggregationInput[]
+    by: BranchCourseImportReceiptScalarFieldEnum[] | BranchCourseImportReceiptScalarFieldEnum
+    having?: BranchCourseImportReceiptScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: BranchCourseImportReceiptCountAggregateInputType | true
+    _min?: BranchCourseImportReceiptMinAggregateInputType
+    _max?: BranchCourseImportReceiptMaxAggregateInputType
+  }
+
+  export type BranchCourseImportReceiptGroupByOutputType = {
+    id: string
+    branchId: string
+    uploadHash: string
+    summary: JsonValue
+    createdBy: string | null
+    createdAt: Date
+    _count: BranchCourseImportReceiptCountAggregateOutputType | null
+    _min: BranchCourseImportReceiptMinAggregateOutputType | null
+    _max: BranchCourseImportReceiptMaxAggregateOutputType | null
+  }
+
+  type GetBranchCourseImportReceiptGroupByPayload<T extends BranchCourseImportReceiptGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<BranchCourseImportReceiptGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof BranchCourseImportReceiptGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], BranchCourseImportReceiptGroupByOutputType[P]>
+            : GetScalarType<T[P], BranchCourseImportReceiptGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type BranchCourseImportReceiptSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    branchId?: boolean
+    uploadHash?: boolean
+    summary?: boolean
+    createdBy?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["branchCourseImportReceipt"]>
+
+  export type BranchCourseImportReceiptSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    branchId?: boolean
+    uploadHash?: boolean
+    summary?: boolean
+    createdBy?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["branchCourseImportReceipt"]>
+
+  export type BranchCourseImportReceiptSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    branchId?: boolean
+    uploadHash?: boolean
+    summary?: boolean
+    createdBy?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["branchCourseImportReceipt"]>
+
+  export type BranchCourseImportReceiptSelectScalar = {
+    id?: boolean
+    branchId?: boolean
+    uploadHash?: boolean
+    summary?: boolean
+    createdBy?: boolean
+    createdAt?: boolean
+  }
+
+  export type BranchCourseImportReceiptOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "branchId" | "uploadHash" | "summary" | "createdBy" | "createdAt", ExtArgs["result"]["branchCourseImportReceipt"]>
+
+  export type $BranchCourseImportReceiptPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "BranchCourseImportReceipt"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      branchId: string
+      uploadHash: string
+      summary: Prisma.JsonValue
+      createdBy: string | null
+      createdAt: Date
+    }, ExtArgs["result"]["branchCourseImportReceipt"]>
+    composites: {}
+  }
+
+  type BranchCourseImportReceiptGetPayload<S extends boolean | null | undefined | BranchCourseImportReceiptDefaultArgs> = $Result.GetResult<Prisma.$BranchCourseImportReceiptPayload, S>
+
+  type BranchCourseImportReceiptCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<BranchCourseImportReceiptFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: BranchCourseImportReceiptCountAggregateInputType | true
+    }
+
+  export interface BranchCourseImportReceiptDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['BranchCourseImportReceipt'], meta: { name: 'BranchCourseImportReceipt' } }
+    /**
+     * Find zero or one BranchCourseImportReceipt that matches the filter.
+     * @param {BranchCourseImportReceiptFindUniqueArgs} args - Arguments to find a BranchCourseImportReceipt
+     * @example
+     * // Get one BranchCourseImportReceipt
+     * const branchCourseImportReceipt = await prisma.branchCourseImportReceipt.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends BranchCourseImportReceiptFindUniqueArgs>(args: SelectSubset<T, BranchCourseImportReceiptFindUniqueArgs<ExtArgs>>): Prisma__BranchCourseImportReceiptClient<$Result.GetResult<Prisma.$BranchCourseImportReceiptPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one BranchCourseImportReceipt that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {BranchCourseImportReceiptFindUniqueOrThrowArgs} args - Arguments to find a BranchCourseImportReceipt
+     * @example
+     * // Get one BranchCourseImportReceipt
+     * const branchCourseImportReceipt = await prisma.branchCourseImportReceipt.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends BranchCourseImportReceiptFindUniqueOrThrowArgs>(args: SelectSubset<T, BranchCourseImportReceiptFindUniqueOrThrowArgs<ExtArgs>>): Prisma__BranchCourseImportReceiptClient<$Result.GetResult<Prisma.$BranchCourseImportReceiptPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first BranchCourseImportReceipt that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BranchCourseImportReceiptFindFirstArgs} args - Arguments to find a BranchCourseImportReceipt
+     * @example
+     * // Get one BranchCourseImportReceipt
+     * const branchCourseImportReceipt = await prisma.branchCourseImportReceipt.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends BranchCourseImportReceiptFindFirstArgs>(args?: SelectSubset<T, BranchCourseImportReceiptFindFirstArgs<ExtArgs>>): Prisma__BranchCourseImportReceiptClient<$Result.GetResult<Prisma.$BranchCourseImportReceiptPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first BranchCourseImportReceipt that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BranchCourseImportReceiptFindFirstOrThrowArgs} args - Arguments to find a BranchCourseImportReceipt
+     * @example
+     * // Get one BranchCourseImportReceipt
+     * const branchCourseImportReceipt = await prisma.branchCourseImportReceipt.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends BranchCourseImportReceiptFindFirstOrThrowArgs>(args?: SelectSubset<T, BranchCourseImportReceiptFindFirstOrThrowArgs<ExtArgs>>): Prisma__BranchCourseImportReceiptClient<$Result.GetResult<Prisma.$BranchCourseImportReceiptPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more BranchCourseImportReceipts that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BranchCourseImportReceiptFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all BranchCourseImportReceipts
+     * const branchCourseImportReceipts = await prisma.branchCourseImportReceipt.findMany()
+     * 
+     * // Get first 10 BranchCourseImportReceipts
+     * const branchCourseImportReceipts = await prisma.branchCourseImportReceipt.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const branchCourseImportReceiptWithIdOnly = await prisma.branchCourseImportReceipt.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends BranchCourseImportReceiptFindManyArgs>(args?: SelectSubset<T, BranchCourseImportReceiptFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchCourseImportReceiptPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a BranchCourseImportReceipt.
+     * @param {BranchCourseImportReceiptCreateArgs} args - Arguments to create a BranchCourseImportReceipt.
+     * @example
+     * // Create one BranchCourseImportReceipt
+     * const BranchCourseImportReceipt = await prisma.branchCourseImportReceipt.create({
+     *   data: {
+     *     // ... data to create a BranchCourseImportReceipt
+     *   }
+     * })
+     * 
+     */
+    create<T extends BranchCourseImportReceiptCreateArgs>(args: SelectSubset<T, BranchCourseImportReceiptCreateArgs<ExtArgs>>): Prisma__BranchCourseImportReceiptClient<$Result.GetResult<Prisma.$BranchCourseImportReceiptPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many BranchCourseImportReceipts.
+     * @param {BranchCourseImportReceiptCreateManyArgs} args - Arguments to create many BranchCourseImportReceipts.
+     * @example
+     * // Create many BranchCourseImportReceipts
+     * const branchCourseImportReceipt = await prisma.branchCourseImportReceipt.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends BranchCourseImportReceiptCreateManyArgs>(args?: SelectSubset<T, BranchCourseImportReceiptCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many BranchCourseImportReceipts and returns the data saved in the database.
+     * @param {BranchCourseImportReceiptCreateManyAndReturnArgs} args - Arguments to create many BranchCourseImportReceipts.
+     * @example
+     * // Create many BranchCourseImportReceipts
+     * const branchCourseImportReceipt = await prisma.branchCourseImportReceipt.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many BranchCourseImportReceipts and only return the `id`
+     * const branchCourseImportReceiptWithIdOnly = await prisma.branchCourseImportReceipt.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends BranchCourseImportReceiptCreateManyAndReturnArgs>(args?: SelectSubset<T, BranchCourseImportReceiptCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchCourseImportReceiptPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a BranchCourseImportReceipt.
+     * @param {BranchCourseImportReceiptDeleteArgs} args - Arguments to delete one BranchCourseImportReceipt.
+     * @example
+     * // Delete one BranchCourseImportReceipt
+     * const BranchCourseImportReceipt = await prisma.branchCourseImportReceipt.delete({
+     *   where: {
+     *     // ... filter to delete one BranchCourseImportReceipt
+     *   }
+     * })
+     * 
+     */
+    delete<T extends BranchCourseImportReceiptDeleteArgs>(args: SelectSubset<T, BranchCourseImportReceiptDeleteArgs<ExtArgs>>): Prisma__BranchCourseImportReceiptClient<$Result.GetResult<Prisma.$BranchCourseImportReceiptPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one BranchCourseImportReceipt.
+     * @param {BranchCourseImportReceiptUpdateArgs} args - Arguments to update one BranchCourseImportReceipt.
+     * @example
+     * // Update one BranchCourseImportReceipt
+     * const branchCourseImportReceipt = await prisma.branchCourseImportReceipt.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends BranchCourseImportReceiptUpdateArgs>(args: SelectSubset<T, BranchCourseImportReceiptUpdateArgs<ExtArgs>>): Prisma__BranchCourseImportReceiptClient<$Result.GetResult<Prisma.$BranchCourseImportReceiptPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more BranchCourseImportReceipts.
+     * @param {BranchCourseImportReceiptDeleteManyArgs} args - Arguments to filter BranchCourseImportReceipts to delete.
+     * @example
+     * // Delete a few BranchCourseImportReceipts
+     * const { count } = await prisma.branchCourseImportReceipt.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends BranchCourseImportReceiptDeleteManyArgs>(args?: SelectSubset<T, BranchCourseImportReceiptDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more BranchCourseImportReceipts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BranchCourseImportReceiptUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many BranchCourseImportReceipts
+     * const branchCourseImportReceipt = await prisma.branchCourseImportReceipt.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends BranchCourseImportReceiptUpdateManyArgs>(args: SelectSubset<T, BranchCourseImportReceiptUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more BranchCourseImportReceipts and returns the data updated in the database.
+     * @param {BranchCourseImportReceiptUpdateManyAndReturnArgs} args - Arguments to update many BranchCourseImportReceipts.
+     * @example
+     * // Update many BranchCourseImportReceipts
+     * const branchCourseImportReceipt = await prisma.branchCourseImportReceipt.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more BranchCourseImportReceipts and only return the `id`
+     * const branchCourseImportReceiptWithIdOnly = await prisma.branchCourseImportReceipt.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends BranchCourseImportReceiptUpdateManyAndReturnArgs>(args: SelectSubset<T, BranchCourseImportReceiptUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchCourseImportReceiptPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one BranchCourseImportReceipt.
+     * @param {BranchCourseImportReceiptUpsertArgs} args - Arguments to update or create a BranchCourseImportReceipt.
+     * @example
+     * // Update or create a BranchCourseImportReceipt
+     * const branchCourseImportReceipt = await prisma.branchCourseImportReceipt.upsert({
+     *   create: {
+     *     // ... data to create a BranchCourseImportReceipt
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the BranchCourseImportReceipt we want to update
+     *   }
+     * })
+     */
+    upsert<T extends BranchCourseImportReceiptUpsertArgs>(args: SelectSubset<T, BranchCourseImportReceiptUpsertArgs<ExtArgs>>): Prisma__BranchCourseImportReceiptClient<$Result.GetResult<Prisma.$BranchCourseImportReceiptPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of BranchCourseImportReceipts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BranchCourseImportReceiptCountArgs} args - Arguments to filter BranchCourseImportReceipts to count.
+     * @example
+     * // Count the number of BranchCourseImportReceipts
+     * const count = await prisma.branchCourseImportReceipt.count({
+     *   where: {
+     *     // ... the filter for the BranchCourseImportReceipts we want to count
+     *   }
+     * })
+    **/
+    count<T extends BranchCourseImportReceiptCountArgs>(
+      args?: Subset<T, BranchCourseImportReceiptCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], BranchCourseImportReceiptCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a BranchCourseImportReceipt.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BranchCourseImportReceiptAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends BranchCourseImportReceiptAggregateArgs>(args: Subset<T, BranchCourseImportReceiptAggregateArgs>): Prisma.PrismaPromise<GetBranchCourseImportReceiptAggregateType<T>>
+
+    /**
+     * Group by BranchCourseImportReceipt.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BranchCourseImportReceiptGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends BranchCourseImportReceiptGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: BranchCourseImportReceiptGroupByArgs['orderBy'] }
+        : { orderBy?: BranchCourseImportReceiptGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, BranchCourseImportReceiptGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetBranchCourseImportReceiptGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the BranchCourseImportReceipt model
+   */
+  readonly fields: BranchCourseImportReceiptFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for BranchCourseImportReceipt.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__BranchCourseImportReceiptClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the BranchCourseImportReceipt model
+   */
+  interface BranchCourseImportReceiptFieldRefs {
+    readonly id: FieldRef<"BranchCourseImportReceipt", 'String'>
+    readonly branchId: FieldRef<"BranchCourseImportReceipt", 'String'>
+    readonly uploadHash: FieldRef<"BranchCourseImportReceipt", 'String'>
+    readonly summary: FieldRef<"BranchCourseImportReceipt", 'Json'>
+    readonly createdBy: FieldRef<"BranchCourseImportReceipt", 'String'>
+    readonly createdAt: FieldRef<"BranchCourseImportReceipt", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * BranchCourseImportReceipt findUnique
+   */
+  export type BranchCourseImportReceiptFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchCourseImportReceipt
+     */
+    select?: BranchCourseImportReceiptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchCourseImportReceipt
+     */
+    omit?: BranchCourseImportReceiptOmit<ExtArgs> | null
+    /**
+     * Filter, which BranchCourseImportReceipt to fetch.
+     */
+    where: BranchCourseImportReceiptWhereUniqueInput
+  }
+
+  /**
+   * BranchCourseImportReceipt findUniqueOrThrow
+   */
+  export type BranchCourseImportReceiptFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchCourseImportReceipt
+     */
+    select?: BranchCourseImportReceiptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchCourseImportReceipt
+     */
+    omit?: BranchCourseImportReceiptOmit<ExtArgs> | null
+    /**
+     * Filter, which BranchCourseImportReceipt to fetch.
+     */
+    where: BranchCourseImportReceiptWhereUniqueInput
+  }
+
+  /**
+   * BranchCourseImportReceipt findFirst
+   */
+  export type BranchCourseImportReceiptFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchCourseImportReceipt
+     */
+    select?: BranchCourseImportReceiptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchCourseImportReceipt
+     */
+    omit?: BranchCourseImportReceiptOmit<ExtArgs> | null
+    /**
+     * Filter, which BranchCourseImportReceipt to fetch.
+     */
+    where?: BranchCourseImportReceiptWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of BranchCourseImportReceipts to fetch.
+     */
+    orderBy?: BranchCourseImportReceiptOrderByWithRelationInput | BranchCourseImportReceiptOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for BranchCourseImportReceipts.
+     */
+    cursor?: BranchCourseImportReceiptWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` BranchCourseImportReceipts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` BranchCourseImportReceipts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of BranchCourseImportReceipts.
+     */
+    distinct?: BranchCourseImportReceiptScalarFieldEnum | BranchCourseImportReceiptScalarFieldEnum[]
+  }
+
+  /**
+   * BranchCourseImportReceipt findFirstOrThrow
+   */
+  export type BranchCourseImportReceiptFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchCourseImportReceipt
+     */
+    select?: BranchCourseImportReceiptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchCourseImportReceipt
+     */
+    omit?: BranchCourseImportReceiptOmit<ExtArgs> | null
+    /**
+     * Filter, which BranchCourseImportReceipt to fetch.
+     */
+    where?: BranchCourseImportReceiptWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of BranchCourseImportReceipts to fetch.
+     */
+    orderBy?: BranchCourseImportReceiptOrderByWithRelationInput | BranchCourseImportReceiptOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for BranchCourseImportReceipts.
+     */
+    cursor?: BranchCourseImportReceiptWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` BranchCourseImportReceipts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` BranchCourseImportReceipts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of BranchCourseImportReceipts.
+     */
+    distinct?: BranchCourseImportReceiptScalarFieldEnum | BranchCourseImportReceiptScalarFieldEnum[]
+  }
+
+  /**
+   * BranchCourseImportReceipt findMany
+   */
+  export type BranchCourseImportReceiptFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchCourseImportReceipt
+     */
+    select?: BranchCourseImportReceiptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchCourseImportReceipt
+     */
+    omit?: BranchCourseImportReceiptOmit<ExtArgs> | null
+    /**
+     * Filter, which BranchCourseImportReceipts to fetch.
+     */
+    where?: BranchCourseImportReceiptWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of BranchCourseImportReceipts to fetch.
+     */
+    orderBy?: BranchCourseImportReceiptOrderByWithRelationInput | BranchCourseImportReceiptOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing BranchCourseImportReceipts.
+     */
+    cursor?: BranchCourseImportReceiptWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` BranchCourseImportReceipts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` BranchCourseImportReceipts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of BranchCourseImportReceipts.
+     */
+    distinct?: BranchCourseImportReceiptScalarFieldEnum | BranchCourseImportReceiptScalarFieldEnum[]
+  }
+
+  /**
+   * BranchCourseImportReceipt create
+   */
+  export type BranchCourseImportReceiptCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchCourseImportReceipt
+     */
+    select?: BranchCourseImportReceiptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchCourseImportReceipt
+     */
+    omit?: BranchCourseImportReceiptOmit<ExtArgs> | null
+    /**
+     * The data needed to create a BranchCourseImportReceipt.
+     */
+    data: XOR<BranchCourseImportReceiptCreateInput, BranchCourseImportReceiptUncheckedCreateInput>
+  }
+
+  /**
+   * BranchCourseImportReceipt createMany
+   */
+  export type BranchCourseImportReceiptCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many BranchCourseImportReceipts.
+     */
+    data: BranchCourseImportReceiptCreateManyInput | BranchCourseImportReceiptCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * BranchCourseImportReceipt createManyAndReturn
+   */
+  export type BranchCourseImportReceiptCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchCourseImportReceipt
+     */
+    select?: BranchCourseImportReceiptSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchCourseImportReceipt
+     */
+    omit?: BranchCourseImportReceiptOmit<ExtArgs> | null
+    /**
+     * The data used to create many BranchCourseImportReceipts.
+     */
+    data: BranchCourseImportReceiptCreateManyInput | BranchCourseImportReceiptCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * BranchCourseImportReceipt update
+   */
+  export type BranchCourseImportReceiptUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchCourseImportReceipt
+     */
+    select?: BranchCourseImportReceiptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchCourseImportReceipt
+     */
+    omit?: BranchCourseImportReceiptOmit<ExtArgs> | null
+    /**
+     * The data needed to update a BranchCourseImportReceipt.
+     */
+    data: XOR<BranchCourseImportReceiptUpdateInput, BranchCourseImportReceiptUncheckedUpdateInput>
+    /**
+     * Choose, which BranchCourseImportReceipt to update.
+     */
+    where: BranchCourseImportReceiptWhereUniqueInput
+  }
+
+  /**
+   * BranchCourseImportReceipt updateMany
+   */
+  export type BranchCourseImportReceiptUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update BranchCourseImportReceipts.
+     */
+    data: XOR<BranchCourseImportReceiptUpdateManyMutationInput, BranchCourseImportReceiptUncheckedUpdateManyInput>
+    /**
+     * Filter which BranchCourseImportReceipts to update
+     */
+    where?: BranchCourseImportReceiptWhereInput
+    /**
+     * Limit how many BranchCourseImportReceipts to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * BranchCourseImportReceipt updateManyAndReturn
+   */
+  export type BranchCourseImportReceiptUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchCourseImportReceipt
+     */
+    select?: BranchCourseImportReceiptSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchCourseImportReceipt
+     */
+    omit?: BranchCourseImportReceiptOmit<ExtArgs> | null
+    /**
+     * The data used to update BranchCourseImportReceipts.
+     */
+    data: XOR<BranchCourseImportReceiptUpdateManyMutationInput, BranchCourseImportReceiptUncheckedUpdateManyInput>
+    /**
+     * Filter which BranchCourseImportReceipts to update
+     */
+    where?: BranchCourseImportReceiptWhereInput
+    /**
+     * Limit how many BranchCourseImportReceipts to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * BranchCourseImportReceipt upsert
+   */
+  export type BranchCourseImportReceiptUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchCourseImportReceipt
+     */
+    select?: BranchCourseImportReceiptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchCourseImportReceipt
+     */
+    omit?: BranchCourseImportReceiptOmit<ExtArgs> | null
+    /**
+     * The filter to search for the BranchCourseImportReceipt to update in case it exists.
+     */
+    where: BranchCourseImportReceiptWhereUniqueInput
+    /**
+     * In case the BranchCourseImportReceipt found by the `where` argument doesn't exist, create a new BranchCourseImportReceipt with this data.
+     */
+    create: XOR<BranchCourseImportReceiptCreateInput, BranchCourseImportReceiptUncheckedCreateInput>
+    /**
+     * In case the BranchCourseImportReceipt was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<BranchCourseImportReceiptUpdateInput, BranchCourseImportReceiptUncheckedUpdateInput>
+  }
+
+  /**
+   * BranchCourseImportReceipt delete
+   */
+  export type BranchCourseImportReceiptDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchCourseImportReceipt
+     */
+    select?: BranchCourseImportReceiptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchCourseImportReceipt
+     */
+    omit?: BranchCourseImportReceiptOmit<ExtArgs> | null
+    /**
+     * Filter which BranchCourseImportReceipt to delete.
+     */
+    where: BranchCourseImportReceiptWhereUniqueInput
+  }
+
+  /**
+   * BranchCourseImportReceipt deleteMany
+   */
+  export type BranchCourseImportReceiptDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which BranchCourseImportReceipts to delete
+     */
+    where?: BranchCourseImportReceiptWhereInput
+    /**
+     * Limit how many BranchCourseImportReceipts to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * BranchCourseImportReceipt without action
+   */
+  export type BranchCourseImportReceiptDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchCourseImportReceipt
+     */
+    select?: BranchCourseImportReceiptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchCourseImportReceipt
+     */
+    omit?: BranchCourseImportReceiptOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -94538,6 +95672,7 @@ export namespace Prisma {
     titleKey: 'titleKey',
     description: 'description',
     sequenceNo: 'sequenceNo',
+    percentageBasisPoints: 'percentageBasisPoints',
     status: 'status',
     createdBy: 'createdBy',
     updatedBy: 'updatedBy',
@@ -94555,6 +95690,7 @@ export namespace Prisma {
     titleKey: 'titleKey',
     description: 'description',
     sequenceNo: 'sequenceNo',
+    percentageBasisPoints: 'percentageBasisPoints',
     status: 'status',
     createdBy: 'createdBy',
     updatedBy: 'updatedBy',
@@ -95784,6 +96920,18 @@ export namespace Prisma {
   };
 
   export type BranchStudentLedgerEntryScalarFieldEnum = (typeof BranchStudentLedgerEntryScalarFieldEnum)[keyof typeof BranchStudentLedgerEntryScalarFieldEnum]
+
+
+  export const BranchCourseImportReceiptScalarFieldEnum: {
+    id: 'id',
+    branchId: 'branchId',
+    uploadHash: 'uploadHash',
+    summary: 'summary',
+    createdBy: 'createdBy',
+    createdAt: 'createdAt'
+  };
+
+  export type BranchCourseImportReceiptScalarFieldEnum = (typeof BranchCourseImportReceiptScalarFieldEnum)[keyof typeof BranchCourseImportReceiptScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -97479,6 +98627,7 @@ export namespace Prisma {
     titleKey?: StringFilter<"BranchCourseModule"> | string
     description?: StringNullableFilter<"BranchCourseModule"> | string | null
     sequenceNo?: IntFilter<"BranchCourseModule"> | number
+    percentageBasisPoints?: IntFilter<"BranchCourseModule"> | number
     status?: EnumRecordStatusFilter<"BranchCourseModule"> | $Enums.RecordStatus
     createdBy?: StringNullableFilter<"BranchCourseModule"> | string | null
     updatedBy?: StringNullableFilter<"BranchCourseModule"> | string | null
@@ -97497,6 +98646,7 @@ export namespace Prisma {
     titleKey?: SortOrder
     description?: SortOrderInput | SortOrder
     sequenceNo?: SortOrder
+    percentageBasisPoints?: SortOrder
     status?: SortOrder
     createdBy?: SortOrderInput | SortOrder
     updatedBy?: SortOrderInput | SortOrder
@@ -97520,6 +98670,7 @@ export namespace Prisma {
     titleKey?: StringFilter<"BranchCourseModule"> | string
     description?: StringNullableFilter<"BranchCourseModule"> | string | null
     sequenceNo?: IntFilter<"BranchCourseModule"> | number
+    percentageBasisPoints?: IntFilter<"BranchCourseModule"> | number
     status?: EnumRecordStatusFilter<"BranchCourseModule"> | $Enums.RecordStatus
     createdBy?: StringNullableFilter<"BranchCourseModule"> | string | null
     updatedBy?: StringNullableFilter<"BranchCourseModule"> | string | null
@@ -97538,6 +98689,7 @@ export namespace Prisma {
     titleKey?: SortOrder
     description?: SortOrderInput | SortOrder
     sequenceNo?: SortOrder
+    percentageBasisPoints?: SortOrder
     status?: SortOrder
     createdBy?: SortOrderInput | SortOrder
     updatedBy?: SortOrderInput | SortOrder
@@ -97560,6 +98712,7 @@ export namespace Prisma {
     titleKey?: StringWithAggregatesFilter<"BranchCourseModule"> | string
     description?: StringNullableWithAggregatesFilter<"BranchCourseModule"> | string | null
     sequenceNo?: IntWithAggregatesFilter<"BranchCourseModule"> | number
+    percentageBasisPoints?: IntWithAggregatesFilter<"BranchCourseModule"> | number
     status?: EnumRecordStatusWithAggregatesFilter<"BranchCourseModule"> | $Enums.RecordStatus
     createdBy?: StringNullableWithAggregatesFilter<"BranchCourseModule"> | string | null
     updatedBy?: StringNullableWithAggregatesFilter<"BranchCourseModule"> | string | null
@@ -97577,6 +98730,7 @@ export namespace Prisma {
     titleKey?: StringFilter<"BranchCourseSubmodule"> | string
     description?: StringNullableFilter<"BranchCourseSubmodule"> | string | null
     sequenceNo?: IntFilter<"BranchCourseSubmodule"> | number
+    percentageBasisPoints?: IntFilter<"BranchCourseSubmodule"> | number
     status?: EnumRecordStatusFilter<"BranchCourseSubmodule"> | $Enums.RecordStatus
     createdBy?: StringNullableFilter<"BranchCourseSubmodule"> | string | null
     updatedBy?: StringNullableFilter<"BranchCourseSubmodule"> | string | null
@@ -97592,6 +98746,7 @@ export namespace Prisma {
     titleKey?: SortOrder
     description?: SortOrderInput | SortOrder
     sequenceNo?: SortOrder
+    percentageBasisPoints?: SortOrder
     status?: SortOrder
     createdBy?: SortOrderInput | SortOrder
     updatedBy?: SortOrderInput | SortOrder
@@ -97612,6 +98767,7 @@ export namespace Prisma {
     titleKey?: StringFilter<"BranchCourseSubmodule"> | string
     description?: StringNullableFilter<"BranchCourseSubmodule"> | string | null
     sequenceNo?: IntFilter<"BranchCourseSubmodule"> | number
+    percentageBasisPoints?: IntFilter<"BranchCourseSubmodule"> | number
     status?: EnumRecordStatusFilter<"BranchCourseSubmodule"> | $Enums.RecordStatus
     createdBy?: StringNullableFilter<"BranchCourseSubmodule"> | string | null
     updatedBy?: StringNullableFilter<"BranchCourseSubmodule"> | string | null
@@ -97627,6 +98783,7 @@ export namespace Prisma {
     titleKey?: SortOrder
     description?: SortOrderInput | SortOrder
     sequenceNo?: SortOrder
+    percentageBasisPoints?: SortOrder
     status?: SortOrder
     createdBy?: SortOrderInput | SortOrder
     updatedBy?: SortOrderInput | SortOrder
@@ -97649,6 +98806,7 @@ export namespace Prisma {
     titleKey?: StringWithAggregatesFilter<"BranchCourseSubmodule"> | string
     description?: StringNullableWithAggregatesFilter<"BranchCourseSubmodule"> | string | null
     sequenceNo?: IntWithAggregatesFilter<"BranchCourseSubmodule"> | number
+    percentageBasisPoints?: IntWithAggregatesFilter<"BranchCourseSubmodule"> | number
     status?: EnumRecordStatusWithAggregatesFilter<"BranchCourseSubmodule"> | $Enums.RecordStatus
     createdBy?: StringNullableWithAggregatesFilter<"BranchCourseSubmodule"> | string | null
     updatedBy?: StringNullableWithAggregatesFilter<"BranchCourseSubmodule"> | string | null
@@ -104098,6 +105256,64 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"BranchStudentLedgerEntry"> | Date | string
   }
 
+  export type BranchCourseImportReceiptWhereInput = {
+    AND?: BranchCourseImportReceiptWhereInput | BranchCourseImportReceiptWhereInput[]
+    OR?: BranchCourseImportReceiptWhereInput[]
+    NOT?: BranchCourseImportReceiptWhereInput | BranchCourseImportReceiptWhereInput[]
+    id?: StringFilter<"BranchCourseImportReceipt"> | string
+    branchId?: StringFilter<"BranchCourseImportReceipt"> | string
+    uploadHash?: StringFilter<"BranchCourseImportReceipt"> | string
+    summary?: JsonFilter<"BranchCourseImportReceipt">
+    createdBy?: StringNullableFilter<"BranchCourseImportReceipt"> | string | null
+    createdAt?: DateTimeFilter<"BranchCourseImportReceipt"> | Date | string
+  }
+
+  export type BranchCourseImportReceiptOrderByWithRelationInput = {
+    id?: SortOrder
+    branchId?: SortOrder
+    uploadHash?: SortOrder
+    summary?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type BranchCourseImportReceiptWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    branchId_uploadHash?: BranchCourseImportReceiptBranchIdUploadHashCompoundUniqueInput
+    AND?: BranchCourseImportReceiptWhereInput | BranchCourseImportReceiptWhereInput[]
+    OR?: BranchCourseImportReceiptWhereInput[]
+    NOT?: BranchCourseImportReceiptWhereInput | BranchCourseImportReceiptWhereInput[]
+    branchId?: StringFilter<"BranchCourseImportReceipt"> | string
+    uploadHash?: StringFilter<"BranchCourseImportReceipt"> | string
+    summary?: JsonFilter<"BranchCourseImportReceipt">
+    createdBy?: StringNullableFilter<"BranchCourseImportReceipt"> | string | null
+    createdAt?: DateTimeFilter<"BranchCourseImportReceipt"> | Date | string
+  }, "id" | "branchId_uploadHash">
+
+  export type BranchCourseImportReceiptOrderByWithAggregationInput = {
+    id?: SortOrder
+    branchId?: SortOrder
+    uploadHash?: SortOrder
+    summary?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: BranchCourseImportReceiptCountOrderByAggregateInput
+    _max?: BranchCourseImportReceiptMaxOrderByAggregateInput
+    _min?: BranchCourseImportReceiptMinOrderByAggregateInput
+  }
+
+  export type BranchCourseImportReceiptScalarWhereWithAggregatesInput = {
+    AND?: BranchCourseImportReceiptScalarWhereWithAggregatesInput | BranchCourseImportReceiptScalarWhereWithAggregatesInput[]
+    OR?: BranchCourseImportReceiptScalarWhereWithAggregatesInput[]
+    NOT?: BranchCourseImportReceiptScalarWhereWithAggregatesInput | BranchCourseImportReceiptScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"BranchCourseImportReceipt"> | string
+    branchId?: StringWithAggregatesFilter<"BranchCourseImportReceipt"> | string
+    uploadHash?: StringWithAggregatesFilter<"BranchCourseImportReceipt"> | string
+    summary?: JsonWithAggregatesFilter<"BranchCourseImportReceipt">
+    createdBy?: StringNullableWithAggregatesFilter<"BranchCourseImportReceipt"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"BranchCourseImportReceipt"> | Date | string
+  }
+
   export type UserCreateInput = {
     id?: string
     userCode: string
@@ -105778,6 +106994,7 @@ export namespace Prisma {
     titleKey: string
     description?: string | null
     sequenceNo: number
+    percentageBasisPoints?: number
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -105796,6 +107013,7 @@ export namespace Prisma {
     titleKey: string
     description?: string | null
     sequenceNo: number
+    percentageBasisPoints?: number
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -105812,6 +107030,7 @@ export namespace Prisma {
     titleKey?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     sequenceNo?: IntFieldUpdateOperationsInput | number
+    percentageBasisPoints?: IntFieldUpdateOperationsInput | number
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -105830,6 +107049,7 @@ export namespace Prisma {
     titleKey?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     sequenceNo?: IntFieldUpdateOperationsInput | number
+    percentageBasisPoints?: IntFieldUpdateOperationsInput | number
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -105847,6 +107067,7 @@ export namespace Prisma {
     titleKey: string
     description?: string | null
     sequenceNo: number
+    percentageBasisPoints?: number
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -105860,6 +107081,7 @@ export namespace Prisma {
     titleKey?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     sequenceNo?: IntFieldUpdateOperationsInput | number
+    percentageBasisPoints?: IntFieldUpdateOperationsInput | number
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -105874,6 +107096,7 @@ export namespace Prisma {
     titleKey?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     sequenceNo?: IntFieldUpdateOperationsInput | number
+    percentageBasisPoints?: IntFieldUpdateOperationsInput | number
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -105887,6 +107110,7 @@ export namespace Prisma {
     titleKey: string
     description?: string | null
     sequenceNo: number
+    percentageBasisPoints?: number
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -105902,6 +107126,7 @@ export namespace Prisma {
     titleKey: string
     description?: string | null
     sequenceNo: number
+    percentageBasisPoints?: number
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -105915,6 +107140,7 @@ export namespace Prisma {
     titleKey?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     sequenceNo?: IntFieldUpdateOperationsInput | number
+    percentageBasisPoints?: IntFieldUpdateOperationsInput | number
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -105930,6 +107156,7 @@ export namespace Prisma {
     titleKey?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     sequenceNo?: IntFieldUpdateOperationsInput | number
+    percentageBasisPoints?: IntFieldUpdateOperationsInput | number
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -105944,6 +107171,7 @@ export namespace Prisma {
     titleKey: string
     description?: string | null
     sequenceNo: number
+    percentageBasisPoints?: number
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -105957,6 +107185,7 @@ export namespace Prisma {
     titleKey?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     sequenceNo?: IntFieldUpdateOperationsInput | number
+    percentageBasisPoints?: IntFieldUpdateOperationsInput | number
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -105971,6 +107200,7 @@ export namespace Prisma {
     titleKey?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     sequenceNo?: IntFieldUpdateOperationsInput | number
+    percentageBasisPoints?: IntFieldUpdateOperationsInput | number
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -113455,6 +114685,69 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type BranchCourseImportReceiptCreateInput = {
+    id?: string
+    branchId: string
+    uploadHash: string
+    summary: JsonNullValueInput | InputJsonValue
+    createdBy?: string | null
+    createdAt?: Date | string
+  }
+
+  export type BranchCourseImportReceiptUncheckedCreateInput = {
+    id?: string
+    branchId: string
+    uploadHash: string
+    summary: JsonNullValueInput | InputJsonValue
+    createdBy?: string | null
+    createdAt?: Date | string
+  }
+
+  export type BranchCourseImportReceiptUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    uploadHash?: StringFieldUpdateOperationsInput | string
+    summary?: JsonNullValueInput | InputJsonValue
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BranchCourseImportReceiptUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    uploadHash?: StringFieldUpdateOperationsInput | string
+    summary?: JsonNullValueInput | InputJsonValue
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BranchCourseImportReceiptCreateManyInput = {
+    id?: string
+    branchId: string
+    uploadHash: string
+    summary: JsonNullValueInput | InputJsonValue
+    createdBy?: string | null
+    createdAt?: Date | string
+  }
+
+  export type BranchCourseImportReceiptUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    uploadHash?: StringFieldUpdateOperationsInput | string
+    summary?: JsonNullValueInput | InputJsonValue
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BranchCourseImportReceiptUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    uploadHash?: StringFieldUpdateOperationsInput | string
+    summary?: JsonNullValueInput | InputJsonValue
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -114954,6 +116247,7 @@ export namespace Prisma {
     titleKey?: SortOrder
     description?: SortOrder
     sequenceNo?: SortOrder
+    percentageBasisPoints?: SortOrder
     status?: SortOrder
     createdBy?: SortOrder
     updatedBy?: SortOrder
@@ -114963,6 +116257,7 @@ export namespace Prisma {
 
   export type BranchCourseModuleAvgOrderByAggregateInput = {
     sequenceNo?: SortOrder
+    percentageBasisPoints?: SortOrder
   }
 
   export type BranchCourseModuleMaxOrderByAggregateInput = {
@@ -114972,6 +116267,7 @@ export namespace Prisma {
     titleKey?: SortOrder
     description?: SortOrder
     sequenceNo?: SortOrder
+    percentageBasisPoints?: SortOrder
     status?: SortOrder
     createdBy?: SortOrder
     updatedBy?: SortOrder
@@ -114986,6 +116282,7 @@ export namespace Prisma {
     titleKey?: SortOrder
     description?: SortOrder
     sequenceNo?: SortOrder
+    percentageBasisPoints?: SortOrder
     status?: SortOrder
     createdBy?: SortOrder
     updatedBy?: SortOrder
@@ -114995,6 +116292,7 @@ export namespace Prisma {
 
   export type BranchCourseModuleSumOrderByAggregateInput = {
     sequenceNo?: SortOrder
+    percentageBasisPoints?: SortOrder
   }
 
   export type BranchCourseModuleScalarRelationFilter = {
@@ -115019,6 +116317,7 @@ export namespace Prisma {
     titleKey?: SortOrder
     description?: SortOrder
     sequenceNo?: SortOrder
+    percentageBasisPoints?: SortOrder
     status?: SortOrder
     createdBy?: SortOrder
     updatedBy?: SortOrder
@@ -115028,6 +116327,7 @@ export namespace Prisma {
 
   export type BranchCourseSubmoduleAvgOrderByAggregateInput = {
     sequenceNo?: SortOrder
+    percentageBasisPoints?: SortOrder
   }
 
   export type BranchCourseSubmoduleMaxOrderByAggregateInput = {
@@ -115037,6 +116337,7 @@ export namespace Prisma {
     titleKey?: SortOrder
     description?: SortOrder
     sequenceNo?: SortOrder
+    percentageBasisPoints?: SortOrder
     status?: SortOrder
     createdBy?: SortOrder
     updatedBy?: SortOrder
@@ -115051,6 +116352,7 @@ export namespace Prisma {
     titleKey?: SortOrder
     description?: SortOrder
     sequenceNo?: SortOrder
+    percentageBasisPoints?: SortOrder
     status?: SortOrder
     createdBy?: SortOrder
     updatedBy?: SortOrder
@@ -115060,6 +116362,7 @@ export namespace Prisma {
 
   export type BranchCourseSubmoduleSumOrderByAggregateInput = {
     sequenceNo?: SortOrder
+    percentageBasisPoints?: SortOrder
   }
 
   export type CourseScalarRelationFilter = {
@@ -119310,6 +120613,36 @@ export namespace Prisma {
     amount?: SortOrder
     runningBalance?: SortOrder
     studentBalanceAfter?: SortOrder
+  }
+
+  export type BranchCourseImportReceiptBranchIdUploadHashCompoundUniqueInput = {
+    branchId: string
+    uploadHash: string
+  }
+
+  export type BranchCourseImportReceiptCountOrderByAggregateInput = {
+    id?: SortOrder
+    branchId?: SortOrder
+    uploadHash?: SortOrder
+    summary?: SortOrder
+    createdBy?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type BranchCourseImportReceiptMaxOrderByAggregateInput = {
+    id?: SortOrder
+    branchId?: SortOrder
+    uploadHash?: SortOrder
+    createdBy?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type BranchCourseImportReceiptMinOrderByAggregateInput = {
+    id?: SortOrder
+    branchId?: SortOrder
+    uploadHash?: SortOrder
+    createdBy?: SortOrder
+    createdAt?: SortOrder
   }
 
   export type BatchFacultyAssignmentCreateNestedManyWithoutFacultyInput = {
@@ -130920,6 +132253,7 @@ export namespace Prisma {
     titleKey: string
     description?: string | null
     sequenceNo: number
+    percentageBasisPoints?: number
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -130936,6 +132270,7 @@ export namespace Prisma {
     titleKey: string
     description?: string | null
     sequenceNo: number
+    percentageBasisPoints?: number
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -131832,6 +133167,7 @@ export namespace Prisma {
     titleKey?: StringFilter<"BranchCourseModule"> | string
     description?: StringNullableFilter<"BranchCourseModule"> | string | null
     sequenceNo?: IntFilter<"BranchCourseModule"> | number
+    percentageBasisPoints?: IntFilter<"BranchCourseModule"> | number
     status?: EnumRecordStatusFilter<"BranchCourseModule"> | $Enums.RecordStatus
     createdBy?: StringNullableFilter<"BranchCourseModule"> | string | null
     updatedBy?: StringNullableFilter<"BranchCourseModule"> | string | null
@@ -132200,6 +133536,7 @@ export namespace Prisma {
     titleKey: string
     description?: string | null
     sequenceNo: number
+    percentageBasisPoints?: number
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -132213,6 +133550,7 @@ export namespace Prisma {
     titleKey: string
     description?: string | null
     sequenceNo: number
+    percentageBasisPoints?: number
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -132451,6 +133789,7 @@ export namespace Prisma {
     titleKey?: StringFilter<"BranchCourseSubmodule"> | string
     description?: StringNullableFilter<"BranchCourseSubmodule"> | string | null
     sequenceNo?: IntFilter<"BranchCourseSubmodule"> | number
+    percentageBasisPoints?: IntFilter<"BranchCourseSubmodule"> | number
     status?: EnumRecordStatusFilter<"BranchCourseSubmodule"> | $Enums.RecordStatus
     createdBy?: StringNullableFilter<"BranchCourseSubmodule"> | string | null
     updatedBy?: StringNullableFilter<"BranchCourseSubmodule"> | string | null
@@ -132496,6 +133835,7 @@ export namespace Prisma {
     titleKey: string
     description?: string | null
     sequenceNo: number
+    percentageBasisPoints?: number
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -132513,6 +133853,7 @@ export namespace Prisma {
     titleKey: string
     description?: string | null
     sequenceNo: number
+    percentageBasisPoints?: number
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -132544,6 +133885,7 @@ export namespace Prisma {
     titleKey?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     sequenceNo?: IntFieldUpdateOperationsInput | number
+    percentageBasisPoints?: IntFieldUpdateOperationsInput | number
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -132561,6 +133903,7 @@ export namespace Prisma {
     titleKey?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     sequenceNo?: IntFieldUpdateOperationsInput | number
+    percentageBasisPoints?: IntFieldUpdateOperationsInput | number
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -144446,6 +145789,7 @@ export namespace Prisma {
     titleKey: string
     description?: string | null
     sequenceNo: number
+    percentageBasisPoints?: number
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -144463,6 +145807,7 @@ export namespace Prisma {
     titleKey: string
     description?: string | null
     sequenceNo: number
+    percentageBasisPoints?: number
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -145051,6 +146396,7 @@ export namespace Prisma {
     titleKey?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     sequenceNo?: IntFieldUpdateOperationsInput | number
+    percentageBasisPoints?: IntFieldUpdateOperationsInput | number
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -145068,6 +146414,7 @@ export namespace Prisma {
     titleKey?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     sequenceNo?: IntFieldUpdateOperationsInput | number
+    percentageBasisPoints?: IntFieldUpdateOperationsInput | number
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -146194,6 +147541,7 @@ export namespace Prisma {
     titleKey: string
     description?: string | null
     sequenceNo: number
+    percentageBasisPoints?: number
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -146211,6 +147559,7 @@ export namespace Prisma {
     titleKey: string
     description?: string | null
     sequenceNo: number
+    percentageBasisPoints?: number
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -146790,6 +148139,7 @@ export namespace Prisma {
     titleKey?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     sequenceNo?: IntFieldUpdateOperationsInput | number
+    percentageBasisPoints?: IntFieldUpdateOperationsInput | number
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -146807,6 +148157,7 @@ export namespace Prisma {
     titleKey?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     sequenceNo?: IntFieldUpdateOperationsInput | number
+    percentageBasisPoints?: IntFieldUpdateOperationsInput | number
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -153700,6 +155051,7 @@ export namespace Prisma {
     titleKey: string
     description?: string | null
     sequenceNo: number
+    percentageBasisPoints?: number
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -153987,6 +155339,7 @@ export namespace Prisma {
     titleKey?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     sequenceNo?: IntFieldUpdateOperationsInput | number
+    percentageBasisPoints?: IntFieldUpdateOperationsInput | number
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -154003,6 +155356,7 @@ export namespace Prisma {
     titleKey?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     sequenceNo?: IntFieldUpdateOperationsInput | number
+    percentageBasisPoints?: IntFieldUpdateOperationsInput | number
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -154019,6 +155373,7 @@ export namespace Prisma {
     titleKey?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     sequenceNo?: IntFieldUpdateOperationsInput | number
+    percentageBasisPoints?: IntFieldUpdateOperationsInput | number
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -154914,6 +156269,7 @@ export namespace Prisma {
     titleKey: string
     description?: string | null
     sequenceNo: number
+    percentageBasisPoints?: number
     status?: $Enums.RecordStatus
     createdBy?: string | null
     updatedBy?: string | null
@@ -154965,6 +156321,7 @@ export namespace Prisma {
     titleKey?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     sequenceNo?: IntFieldUpdateOperationsInput | number
+    percentageBasisPoints?: IntFieldUpdateOperationsInput | number
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -154978,6 +156335,7 @@ export namespace Prisma {
     titleKey?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     sequenceNo?: IntFieldUpdateOperationsInput | number
+    percentageBasisPoints?: IntFieldUpdateOperationsInput | number
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -154991,6 +156349,7 @@ export namespace Prisma {
     titleKey?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     sequenceNo?: IntFieldUpdateOperationsInput | number
+    percentageBasisPoints?: IntFieldUpdateOperationsInput | number
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null

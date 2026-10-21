@@ -333,6 +333,7 @@ model BranchCourseModule {
   titleKey       String
   description    String?
   sequenceNo     Int
+  percentageBasisPoints Int @default(0)
   status         RecordStatus            @default(ACTIVE)
   createdBy      String?
   updatedBy      String?
@@ -356,6 +357,7 @@ model BranchCourseSubmodule {
   titleKey             String
   description          String?
   sequenceNo           Int
+  percentageBasisPoints Int @default(0)
   status               RecordStatus       @default(ACTIVE)
   createdBy            String?
   updatedBy            String?
@@ -1904,4 +1906,14 @@ model BranchStudentLedgerEntry {
   @@index([branchId])
   @@index([branchStudentId, entryDate, entryNo])
   @@index([branchStudentId, createdAt])
+}
+
+model BranchCourseImportReceipt {
+  id String @id @default(cuid())
+  branchId String
+  uploadHash String
+  summary Json
+  createdBy String?
+  createdAt DateTime @default(now())
+  @@unique([branchId, uploadHash])
 }
