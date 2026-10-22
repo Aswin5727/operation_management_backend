@@ -2878,17 +2878,34 @@ export async function getCompletedCourseAcademicTests(student, enrollment) {
     const projectTotal = Number(projectConfigByItemId.get(item.id)?.projectMarks || 0)
     const marksAwarded = projectSubmission?.marksAwarded == null ? null : Number(projectSubmission.marksAwarded)
     const percentage = submission?.percentage == null ? null : Number(submission.percentage)
+    const hasTest = ["TEST", "TEST_AND_PROJECT"].includes(item.testType)
+    const hasProject = ["PROJECT", "TEST_AND_PROJECT"].includes(item.testType)
+    const testCompleted = !hasTest || ["EVALUATED", "SUBMITTED"].includes(status)
+    const projectCompleted = !hasProject || marksAwarded != null
+    const completed = testCompleted && projectCompleted
+    const testObtained = hasTest && submission?.obtainedMarks != null ? Number(submission.obtainedMarks) : 0
+    const testTotal = hasTest && submission?.totalMarks != null ? Number(submission.totalMarks) : 0
+    const totalMarks = testTotal + (hasProject ? projectTotal : 0)
+    const obtainedMarks = testObtained + (hasProject && marksAwarded != null ? marksAwarded : 0)
+    const combinedPercentage = totalMarks > 0 ? Number(((obtainedMarks / totalMarks) * 100).toFixed(2)) : null
+    const testPercentage = testTotal > 0 ? Number(((testObtained / testTotal) * 100).toFixed(2)) : null
+    const projectPercentage = projectTotal > 0 && marksAwarded != null ? Number(((marksAwarded / projectTotal) * 100).toFixed(2)) : null
+    const displayValue = item.testType === "TEST_AND_PROJECT"
+      ? `Test: ${testObtained}/${testTotal} - ${testPercentage ?? 0}%\nProject: ${marksAwarded == null ? "-" : `${marksAwarded}/${projectTotal} - ${projectPercentage}%`}`
+      : item.testType === "PROJECT"
+        ? `Project: ${marksAwarded == null ? "-" : `${marksAwarded}/${projectTotal} - ${projectPercentage}%`}`
+        : `${totalMarks > 0 ? `${obtainedMarks}/${totalMarks}` : "-"}${completed && Number.isFinite(combinedPercentage) ? ` - ${Number(combinedPercentage).toFixed(2).replace(/\.00$/, "")}%` : ""}`
     return {
       label: `Academic Test ${schedule.testNumber || item.sequence || ""}`.trim(),
-      value: (status === "EVALUATED" || status === "SUBMITTED" ? "Completed" : "Pending") + (submission?.resultStatus ? " " + submission.resultStatus : "") + (submission && submission.totalMarks > 0 ? " (" + submission.obtainedMarks + "/" + submission.totalMarks + ")" : "") + (submission && Number.isFinite(Number(submission.percentage)) && (status === "EVALUATED" || status === "SUBMITTED") ? " - " + Number(submission.percentage).toFixed(2).replace(/\.00$/, "") + "%" : ""),
+      value: displayValue,
       testNumber: Number(schedule.testNumber || item.sequence),
       testType: item.testType || null,
       testDate: schedule.testDate || null,
       status,
       resultStatus: submission?.resultStatus || null,
-      percentage: Number.isFinite(percentage) ? percentage : null,
-      obtainedMarks: submission?.obtainedMarks == null ? null : Number(submission.obtainedMarks),
-      totalMarks: submission?.totalMarks == null ? null : Number(submission.totalMarks),
+      percentage: Number.isFinite(combinedPercentage) ? combinedPercentage : (Number.isFinite(percentage) ? percentage : null),
+      obtainedMarks: totalMarks > 0 ? obtainedMarks : null,
+      totalMarks: totalMarks > 0 ? totalMarks : null,
       submittedAt: submission?.submittedAt || null,
       marksAwarded,
       projectTotalMarks: projectTotal,
