@@ -299,7 +299,19 @@ export async function createRetest(user, testId, scheduleId, payload = {}) {
     where: {
       id: studentId,
       recordStatus: "ACTIVE", discontinuationRequests: { none: { status: "APPROVED" } },
-      OR: [{ batchId: originalSchedule.branchBatchId }, { batchId: originalSchedule.branchBatch.batchId }],
+      OR: [
+        { batchId: originalSchedule.branchBatchId },
+        { batchId: originalSchedule.branchBatch.batchId },
+        {
+          courseEnrollments: {
+            some: {
+              status: "ACTIVE",
+              batchId: { in: [originalSchedule.branchBatchId, originalSchedule.branchBatch.batchId] },
+              ...(originalSchedule.batchCycleId ? { batchCycleId: originalSchedule.batchCycleId } : {}),
+            },
+          },
+        },
+      ],
     },
     select: { id: true, studentId: true, studentName: true, emailAddress: true, batchId: true },
   });
