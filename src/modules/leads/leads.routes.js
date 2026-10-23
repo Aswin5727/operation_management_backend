@@ -1,0 +1,20 @@
+import express from "express";
+import { authenticate } from "../../common/middlewares/authenticate.js";
+import { authorize } from "../../common/middlewares/authorize.js";
+import { USER_ROLES } from "../../common/constants/roles.js";
+import { leadRecordingUpload } from "../../common/middlewares/leadRecordingUpload.js";
+import { addFollowUpHandler, addLeadRecordingHandler, createLeadHandler, deleteLeadHandler, getLeadHandler, getLeadRecordingHandler, leadOptionsHandler, listLeadActivitiesHandler, listLeadsHandler, updateLeadHandler } from "./leads.controller.js";
+
+const router = express.Router();
+router.use(authenticate, authorize(USER_ROLES.SALES_ADMIN, USER_ROLES.BRANCH_ADMIN, USER_ROLES.SUPER_ADMIN));
+router.get("/", listLeadsHandler);
+router.get("/options", leadOptionsHandler);
+router.post("/", createLeadHandler);
+router.get("/:id/activities", listLeadActivitiesHandler);
+router.post("/:id/follow-ups", addFollowUpHandler);
+router.post("/:id/recordings", leadRecordingUpload.single("recording"), addLeadRecordingHandler);
+router.get("/:id/recordings/:recordingId", getLeadRecordingHandler);
+router.get("/:id", getLeadHandler);
+router.patch("/:id", updateLeadHandler);
+router.delete("/:id", deleteLeadHandler);
+export default router;

@@ -1327,6 +1327,79 @@ exports.Prisma.ExamAnswerScalarFieldEnum = {
   marksAwarded: 'marksAwarded'
 };
 
+exports.Prisma.LeadScalarFieldEnum = {
+  id: 'id',
+  leadId: 'leadId',
+  studentName: 'studentName',
+  phoneNumber: 'phoneNumber',
+  alternativeNumber: 'alternativeNumber',
+  email: 'email',
+  qualification: 'qualification',
+  location: 'location',
+  callType: 'callType',
+  status: 'status',
+  stage: 'stage',
+  courseId: 'courseId',
+  branchId: 'branchId',
+  leadSource: 'leadSource',
+  referredBy: 'referredBy',
+  paymentStatus: 'paymentStatus',
+  trainingMode: 'trainingMode',
+  classSchedule: 'classSchedule',
+  courseMode: 'courseMode',
+  locationDistance: 'locationDistance',
+  leadDate: 'leadDate',
+  assignedToId: 'assignedToId',
+  createdById: 'createdById',
+  updatedById: 'updatedById',
+  deletedAt: 'deletedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.LeadFollowUpScalarFieldEnum = {
+  id: 'id',
+  leadId: 'leadId',
+  followUpDate: 'followUpDate',
+  followUpType: 'followUpType',
+  notes: 'notes',
+  nextFollowUpDate: 'nextFollowUpDate',
+  createdById: 'createdById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.LeadStageHistoryScalarFieldEnum = {
+  id: 'id',
+  leadId: 'leadId',
+  fromStage: 'fromStage',
+  toStage: 'toStage',
+  createdById: 'createdById',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.LeadActivityScalarFieldEnum = {
+  id: 'id',
+  leadId: 'leadId',
+  action: 'action',
+  previousValue: 'previousValue',
+  newValue: 'newValue',
+  createdById: 'createdById',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.LeadRecordingScalarFieldEnum = {
+  id: 'id',
+  leadId: 'leadId',
+  followUpId: 'followUpId',
+  originalName: 'originalName',
+  storageKey: 'storageKey',
+  mimeType: 'mimeType',
+  sizeBytes: 'sizeBytes',
+  createdById: 'createdById',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.MotivationMailHistoryScalarFieldEnum = {
   id: 'id',
   branchStudentId: 'branchStudentId',
@@ -1551,6 +1624,7 @@ exports.NotificationKind = exports.$Enums.NotificationKind = {
   BRANCH_INVITATION_RESENT: 'BRANCH_INVITATION_RESENT',
   BRANCH_LOGIN: 'BRANCH_LOGIN',
   BRANCH_FACULTY_LOGIN: 'BRANCH_FACULTY_LOGIN',
+  SALES_ADMIN_LOGIN: 'SALES_ADMIN_LOGIN',
   FACULTY_COURSE_ASSIGNED: 'FACULTY_COURSE_ASSIGNED',
   COURSE_EDIT_REQUEST: 'COURSE_EDIT_REQUEST',
   COURSE_EDIT_REQUEST_ACCEPTED: 'COURSE_EDIT_REQUEST_ACCEPTED',
@@ -1612,6 +1686,21 @@ exports.DiscountType = exports.$Enums.DiscountType = {
 exports.AttendanceStatus = exports.$Enums.AttendanceStatus = {
   PRESENT: 'PRESENT',
   ABSENT: 'ABSENT'
+};
+
+exports.LeadStatus = exports.$Enums.LeadStatus = {
+  DRAFT: 'DRAFT',
+  ACTIVE: 'ACTIVE',
+  FOLLOW_UP: 'FOLLOW_UP',
+  CONVERTED: 'CONVERTED',
+  CLOSED: 'CLOSED'
+};
+
+exports.LeadStage = exports.$Enums.LeadStage = {
+  COLD: 'COLD',
+  WARM: 'WARM',
+  HOT: 'HOT',
+  CLOSED: 'CLOSED'
 };
 
 exports.DiscontinuationRequestStatus = exports.$Enums.DiscontinuationRequestStatus = {
@@ -1692,6 +1781,11 @@ exports.Prisma.ModelName = {
   ExamQuestion: 'ExamQuestion',
   ExamAttempt: 'ExamAttempt',
   ExamAnswer: 'ExamAnswer',
+  Lead: 'Lead',
+  LeadFollowUp: 'LeadFollowUp',
+  LeadStageHistory: 'LeadStageHistory',
+  LeadActivity: 'LeadActivity',
+  LeadRecording: 'LeadRecording',
   MotivationMailHistory: 'MotivationMailHistory',
   StudentDiscontinuationRequest: 'StudentDiscontinuationRequest',
   FacultyReportShare: 'FacultyReportShare',

@@ -339,6 +339,31 @@ export type ExamAttempt = $Result.DefaultSelection<Prisma.$ExamAttemptPayload>
  */
 export type ExamAnswer = $Result.DefaultSelection<Prisma.$ExamAnswerPayload>
 /**
+ * Model Lead
+ * 
+ */
+export type Lead = $Result.DefaultSelection<Prisma.$LeadPayload>
+/**
+ * Model LeadFollowUp
+ * 
+ */
+export type LeadFollowUp = $Result.DefaultSelection<Prisma.$LeadFollowUpPayload>
+/**
+ * Model LeadStageHistory
+ * 
+ */
+export type LeadStageHistory = $Result.DefaultSelection<Prisma.$LeadStageHistoryPayload>
+/**
+ * Model LeadActivity
+ * 
+ */
+export type LeadActivity = $Result.DefaultSelection<Prisma.$LeadActivityPayload>
+/**
+ * Model LeadRecording
+ * 
+ */
+export type LeadRecording = $Result.DefaultSelection<Prisma.$LeadRecordingPayload>
+/**
  * Model MotivationMailHistory
  * 
  */
@@ -400,6 +425,27 @@ export const AcademicPreparationStatus: {
 export type AcademicPreparationStatus = (typeof AcademicPreparationStatus)[keyof typeof AcademicPreparationStatus]
 
 
+export const LeadStatus: {
+  DRAFT: 'DRAFT',
+  ACTIVE: 'ACTIVE',
+  FOLLOW_UP: 'FOLLOW_UP',
+  CONVERTED: 'CONVERTED',
+  CLOSED: 'CLOSED'
+};
+
+export type LeadStatus = (typeof LeadStatus)[keyof typeof LeadStatus]
+
+
+export const LeadStage: {
+  COLD: 'COLD',
+  WARM: 'WARM',
+  HOT: 'HOT',
+  CLOSED: 'CLOSED'
+};
+
+export type LeadStage = (typeof LeadStage)[keyof typeof LeadStage]
+
+
 export const UserRole: {
   BUSINESS_OWNER: 'BUSINESS_OWNER',
   OPERATION_MANAGER: 'OPERATION_MANAGER',
@@ -434,6 +480,7 @@ export const NotificationKind: {
   BRANCH_INVITATION_RESENT: 'BRANCH_INVITATION_RESENT',
   BRANCH_LOGIN: 'BRANCH_LOGIN',
   BRANCH_FACULTY_LOGIN: 'BRANCH_FACULTY_LOGIN',
+  SALES_ADMIN_LOGIN: 'SALES_ADMIN_LOGIN',
   FACULTY_COURSE_ASSIGNED: 'FACULTY_COURSE_ASSIGNED',
   COURSE_EDIT_REQUEST: 'COURSE_EDIT_REQUEST',
   COURSE_EDIT_REQUEST_ACCEPTED: 'COURSE_EDIT_REQUEST_ACCEPTED',
@@ -536,6 +583,14 @@ export const AcademicTestType: typeof $Enums.AcademicTestType
 export type AcademicPreparationStatus = $Enums.AcademicPreparationStatus
 
 export const AcademicPreparationStatus: typeof $Enums.AcademicPreparationStatus
+
+export type LeadStatus = $Enums.LeadStatus
+
+export const LeadStatus: typeof $Enums.LeadStatus
+
+export type LeadStage = $Enums.LeadStage
+
+export const LeadStage: typeof $Enums.LeadStage
 
 export type UserRole = $Enums.UserRole
 
@@ -1349,6 +1404,56 @@ export class PrismaClient<
   get examAnswer(): Prisma.ExamAnswerDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.lead`: Exposes CRUD operations for the **Lead** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Leads
+    * const leads = await prisma.lead.findMany()
+    * ```
+    */
+  get lead(): Prisma.LeadDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.leadFollowUp`: Exposes CRUD operations for the **LeadFollowUp** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more LeadFollowUps
+    * const leadFollowUps = await prisma.leadFollowUp.findMany()
+    * ```
+    */
+  get leadFollowUp(): Prisma.LeadFollowUpDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.leadStageHistory`: Exposes CRUD operations for the **LeadStageHistory** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more LeadStageHistories
+    * const leadStageHistories = await prisma.leadStageHistory.findMany()
+    * ```
+    */
+  get leadStageHistory(): Prisma.LeadStageHistoryDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.leadActivity`: Exposes CRUD operations for the **LeadActivity** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more LeadActivities
+    * const leadActivities = await prisma.leadActivity.findMany()
+    * ```
+    */
+  get leadActivity(): Prisma.LeadActivityDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.leadRecording`: Exposes CRUD operations for the **LeadRecording** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more LeadRecordings
+    * const leadRecordings = await prisma.leadRecording.findMany()
+    * ```
+    */
+  get leadRecording(): Prisma.LeadRecordingDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.motivationMailHistory`: Exposes CRUD operations for the **MotivationMailHistory** model.
     * Example usage:
     * ```ts
@@ -1926,6 +2031,11 @@ export namespace Prisma {
     ExamQuestion: 'ExamQuestion',
     ExamAttempt: 'ExamAttempt',
     ExamAnswer: 'ExamAnswer',
+    Lead: 'Lead',
+    LeadFollowUp: 'LeadFollowUp',
+    LeadStageHistory: 'LeadStageHistory',
+    LeadActivity: 'LeadActivity',
+    LeadRecording: 'LeadRecording',
     MotivationMailHistory: 'MotivationMailHistory',
     StudentDiscontinuationRequest: 'StudentDiscontinuationRequest',
     FacultyReportShare: 'FacultyReportShare',
@@ -1949,7 +2059,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "dashboardWidget" | "userDashboardWidget" | "branch" | "salesAdminBranch" | "loginEvent" | "notification" | "courseEditRequest" | "passwordResetToken" | "course" | "branchCourse" | "branchCourseModule" | "branchCourseSubmodule" | "courseModule" | "batch" | "batchFacultyAssignment" | "branchBatch" | "academicTest" | "academicTestItem" | "academicTestBatch" | "academicQuestionPaper" | "academicQuestion" | "academicTestProject" | "academicScheduledTest" | "academicTestCycle" | "batchCycle" | "academicTestSubmission" | "academicProjectSubmission" | "academicTestAnswer" | "courseStatusHistory" | "batchStatusHistory" | "studentProfile" | "branchStudent" | "branchStudentCourse" | "branchStudentAttendance" | "branchCalendarHoliday" | "branchCalendarLeave" | "branchStudentInstallment" | "facultySkill" | "facultySkillAssignment" | "facultySkillTopic" | "facultySkillAssignmentAudit" | "facultyProfile" | "facultyCourseAssignment" | "facultyBatchEntry" | "facultyAttendanceSession" | "facultyAttendanceDay" | "facultyAttendanceBatchWork" | "facultyTodayWorkEntry" | "facultyTodayWorkStudentEntry" | "studentAttendance" | "branchFaculty" | "facultyLeaveRequest" | "facultyWeekOffRequest" | "branchFacultyCourse" | "facultyLeaveAffectedSession" | "facultyLeaveCombinedSession" | "branchInstallmentTemplate" | "assessment" | "assessmentSubmission" | "exam" | "examSchedule" | "examQuestion" | "examAttempt" | "examAnswer" | "motivationMailHistory" | "studentDiscontinuationRequest" | "facultyReportShare" | "academicTestReportHistory" | "academicTestReportSubmission" | "branchStudentPayment" | "branchStudentLedgerEntry" | "branchCourseImportReceipt"
+      modelProps: "user" | "dashboardWidget" | "userDashboardWidget" | "branch" | "salesAdminBranch" | "loginEvent" | "notification" | "courseEditRequest" | "passwordResetToken" | "course" | "branchCourse" | "branchCourseModule" | "branchCourseSubmodule" | "courseModule" | "batch" | "batchFacultyAssignment" | "branchBatch" | "academicTest" | "academicTestItem" | "academicTestBatch" | "academicQuestionPaper" | "academicQuestion" | "academicTestProject" | "academicScheduledTest" | "academicTestCycle" | "batchCycle" | "academicTestSubmission" | "academicProjectSubmission" | "academicTestAnswer" | "courseStatusHistory" | "batchStatusHistory" | "studentProfile" | "branchStudent" | "branchStudentCourse" | "branchStudentAttendance" | "branchCalendarHoliday" | "branchCalendarLeave" | "branchStudentInstallment" | "facultySkill" | "facultySkillAssignment" | "facultySkillTopic" | "facultySkillAssignmentAudit" | "facultyProfile" | "facultyCourseAssignment" | "facultyBatchEntry" | "facultyAttendanceSession" | "facultyAttendanceDay" | "facultyAttendanceBatchWork" | "facultyTodayWorkEntry" | "facultyTodayWorkStudentEntry" | "studentAttendance" | "branchFaculty" | "facultyLeaveRequest" | "facultyWeekOffRequest" | "branchFacultyCourse" | "facultyLeaveAffectedSession" | "facultyLeaveCombinedSession" | "branchInstallmentTemplate" | "assessment" | "assessmentSubmission" | "exam" | "examSchedule" | "examQuestion" | "examAttempt" | "examAnswer" | "lead" | "leadFollowUp" | "leadStageHistory" | "leadActivity" | "leadRecording" | "motivationMailHistory" | "studentDiscontinuationRequest" | "facultyReportShare" | "academicTestReportHistory" | "academicTestReportSubmission" | "branchStudentPayment" | "branchStudentLedgerEntry" | "branchCourseImportReceipt"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -6763,6 +6873,376 @@ export namespace Prisma {
           }
         }
       }
+      Lead: {
+        payload: Prisma.$LeadPayload<ExtArgs>
+        fields: Prisma.LeadFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.LeadFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.LeadFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadPayload>
+          }
+          findFirst: {
+            args: Prisma.LeadFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.LeadFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadPayload>
+          }
+          findMany: {
+            args: Prisma.LeadFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadPayload>[]
+          }
+          create: {
+            args: Prisma.LeadCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadPayload>
+          }
+          createMany: {
+            args: Prisma.LeadCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.LeadCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadPayload>[]
+          }
+          delete: {
+            args: Prisma.LeadDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadPayload>
+          }
+          update: {
+            args: Prisma.LeadUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadPayload>
+          }
+          deleteMany: {
+            args: Prisma.LeadDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.LeadUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.LeadUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadPayload>[]
+          }
+          upsert: {
+            args: Prisma.LeadUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadPayload>
+          }
+          aggregate: {
+            args: Prisma.LeadAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateLead>
+          }
+          groupBy: {
+            args: Prisma.LeadGroupByArgs<ExtArgs>
+            result: $Utils.Optional<LeadGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.LeadCountArgs<ExtArgs>
+            result: $Utils.Optional<LeadCountAggregateOutputType> | number
+          }
+        }
+      }
+      LeadFollowUp: {
+        payload: Prisma.$LeadFollowUpPayload<ExtArgs>
+        fields: Prisma.LeadFollowUpFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.LeadFollowUpFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadFollowUpPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.LeadFollowUpFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadFollowUpPayload>
+          }
+          findFirst: {
+            args: Prisma.LeadFollowUpFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadFollowUpPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.LeadFollowUpFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadFollowUpPayload>
+          }
+          findMany: {
+            args: Prisma.LeadFollowUpFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadFollowUpPayload>[]
+          }
+          create: {
+            args: Prisma.LeadFollowUpCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadFollowUpPayload>
+          }
+          createMany: {
+            args: Prisma.LeadFollowUpCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.LeadFollowUpCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadFollowUpPayload>[]
+          }
+          delete: {
+            args: Prisma.LeadFollowUpDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadFollowUpPayload>
+          }
+          update: {
+            args: Prisma.LeadFollowUpUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadFollowUpPayload>
+          }
+          deleteMany: {
+            args: Prisma.LeadFollowUpDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.LeadFollowUpUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.LeadFollowUpUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadFollowUpPayload>[]
+          }
+          upsert: {
+            args: Prisma.LeadFollowUpUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadFollowUpPayload>
+          }
+          aggregate: {
+            args: Prisma.LeadFollowUpAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateLeadFollowUp>
+          }
+          groupBy: {
+            args: Prisma.LeadFollowUpGroupByArgs<ExtArgs>
+            result: $Utils.Optional<LeadFollowUpGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.LeadFollowUpCountArgs<ExtArgs>
+            result: $Utils.Optional<LeadFollowUpCountAggregateOutputType> | number
+          }
+        }
+      }
+      LeadStageHistory: {
+        payload: Prisma.$LeadStageHistoryPayload<ExtArgs>
+        fields: Prisma.LeadStageHistoryFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.LeadStageHistoryFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadStageHistoryPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.LeadStageHistoryFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadStageHistoryPayload>
+          }
+          findFirst: {
+            args: Prisma.LeadStageHistoryFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadStageHistoryPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.LeadStageHistoryFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadStageHistoryPayload>
+          }
+          findMany: {
+            args: Prisma.LeadStageHistoryFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadStageHistoryPayload>[]
+          }
+          create: {
+            args: Prisma.LeadStageHistoryCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadStageHistoryPayload>
+          }
+          createMany: {
+            args: Prisma.LeadStageHistoryCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.LeadStageHistoryCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadStageHistoryPayload>[]
+          }
+          delete: {
+            args: Prisma.LeadStageHistoryDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadStageHistoryPayload>
+          }
+          update: {
+            args: Prisma.LeadStageHistoryUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadStageHistoryPayload>
+          }
+          deleteMany: {
+            args: Prisma.LeadStageHistoryDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.LeadStageHistoryUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.LeadStageHistoryUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadStageHistoryPayload>[]
+          }
+          upsert: {
+            args: Prisma.LeadStageHistoryUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadStageHistoryPayload>
+          }
+          aggregate: {
+            args: Prisma.LeadStageHistoryAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateLeadStageHistory>
+          }
+          groupBy: {
+            args: Prisma.LeadStageHistoryGroupByArgs<ExtArgs>
+            result: $Utils.Optional<LeadStageHistoryGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.LeadStageHistoryCountArgs<ExtArgs>
+            result: $Utils.Optional<LeadStageHistoryCountAggregateOutputType> | number
+          }
+        }
+      }
+      LeadActivity: {
+        payload: Prisma.$LeadActivityPayload<ExtArgs>
+        fields: Prisma.LeadActivityFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.LeadActivityFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadActivityPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.LeadActivityFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadActivityPayload>
+          }
+          findFirst: {
+            args: Prisma.LeadActivityFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadActivityPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.LeadActivityFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadActivityPayload>
+          }
+          findMany: {
+            args: Prisma.LeadActivityFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadActivityPayload>[]
+          }
+          create: {
+            args: Prisma.LeadActivityCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadActivityPayload>
+          }
+          createMany: {
+            args: Prisma.LeadActivityCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.LeadActivityCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadActivityPayload>[]
+          }
+          delete: {
+            args: Prisma.LeadActivityDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadActivityPayload>
+          }
+          update: {
+            args: Prisma.LeadActivityUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadActivityPayload>
+          }
+          deleteMany: {
+            args: Prisma.LeadActivityDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.LeadActivityUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.LeadActivityUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadActivityPayload>[]
+          }
+          upsert: {
+            args: Prisma.LeadActivityUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadActivityPayload>
+          }
+          aggregate: {
+            args: Prisma.LeadActivityAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateLeadActivity>
+          }
+          groupBy: {
+            args: Prisma.LeadActivityGroupByArgs<ExtArgs>
+            result: $Utils.Optional<LeadActivityGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.LeadActivityCountArgs<ExtArgs>
+            result: $Utils.Optional<LeadActivityCountAggregateOutputType> | number
+          }
+        }
+      }
+      LeadRecording: {
+        payload: Prisma.$LeadRecordingPayload<ExtArgs>
+        fields: Prisma.LeadRecordingFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.LeadRecordingFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadRecordingPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.LeadRecordingFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadRecordingPayload>
+          }
+          findFirst: {
+            args: Prisma.LeadRecordingFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadRecordingPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.LeadRecordingFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadRecordingPayload>
+          }
+          findMany: {
+            args: Prisma.LeadRecordingFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadRecordingPayload>[]
+          }
+          create: {
+            args: Prisma.LeadRecordingCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadRecordingPayload>
+          }
+          createMany: {
+            args: Prisma.LeadRecordingCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.LeadRecordingCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadRecordingPayload>[]
+          }
+          delete: {
+            args: Prisma.LeadRecordingDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadRecordingPayload>
+          }
+          update: {
+            args: Prisma.LeadRecordingUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadRecordingPayload>
+          }
+          deleteMany: {
+            args: Prisma.LeadRecordingDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.LeadRecordingUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.LeadRecordingUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadRecordingPayload>[]
+          }
+          upsert: {
+            args: Prisma.LeadRecordingUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadRecordingPayload>
+          }
+          aggregate: {
+            args: Prisma.LeadRecordingAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateLeadRecording>
+          }
+          groupBy: {
+            args: Prisma.LeadRecordingGroupByArgs<ExtArgs>
+            result: $Utils.Optional<LeadRecordingGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.LeadRecordingCountArgs<ExtArgs>
+            result: $Utils.Optional<LeadRecordingCountAggregateOutputType> | number
+          }
+        }
+      }
       MotivationMailHistory: {
         payload: Prisma.$MotivationMailHistoryPayload<ExtArgs>
         fields: Prisma.MotivationMailHistoryFieldRefs
@@ -7528,6 +8008,11 @@ export namespace Prisma {
     examQuestion?: ExamQuestionOmit
     examAttempt?: ExamAttemptOmit
     examAnswer?: ExamAnswerOmit
+    lead?: LeadOmit
+    leadFollowUp?: LeadFollowUpOmit
+    leadStageHistory?: LeadStageHistoryOmit
+    leadActivity?: LeadActivityOmit
+    leadRecording?: LeadRecordingOmit
     motivationMailHistory?: MotivationMailHistoryOmit
     studentDiscontinuationRequest?: StudentDiscontinuationRequestOmit
     facultyReportShare?: FacultyReportShareOmit
@@ -7635,6 +8120,13 @@ export namespace Prisma {
     facultySkillAssignments: number
     academicTestReportSubmissions: number
     salesAdminBranches: number
+    assignedLeads: number
+    createdLeads: number
+    updatedLeads: number
+    leadFollowUps: number
+    leadActivities: number
+    leadStageChanges: number
+    leadRecordings: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -7657,6 +8149,13 @@ export namespace Prisma {
     facultySkillAssignments?: boolean | UserCountOutputTypeCountFacultySkillAssignmentsArgs
     academicTestReportSubmissions?: boolean | UserCountOutputTypeCountAcademicTestReportSubmissionsArgs
     salesAdminBranches?: boolean | UserCountOutputTypeCountSalesAdminBranchesArgs
+    assignedLeads?: boolean | UserCountOutputTypeCountAssignedLeadsArgs
+    createdLeads?: boolean | UserCountOutputTypeCountCreatedLeadsArgs
+    updatedLeads?: boolean | UserCountOutputTypeCountUpdatedLeadsArgs
+    leadFollowUps?: boolean | UserCountOutputTypeCountLeadFollowUpsArgs
+    leadActivities?: boolean | UserCountOutputTypeCountLeadActivitiesArgs
+    leadStageChanges?: boolean | UserCountOutputTypeCountLeadStageChangesArgs
+    leadRecordings?: boolean | UserCountOutputTypeCountLeadRecordingsArgs
   }
 
   // Custom InputTypes
@@ -7803,6 +8302,55 @@ export namespace Prisma {
     where?: SalesAdminBranchWhereInput
   }
 
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountAssignedLeadsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LeadWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountCreatedLeadsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LeadWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountUpdatedLeadsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LeadWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountLeadFollowUpsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LeadFollowUpWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountLeadActivitiesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LeadActivityWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountLeadStageChangesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LeadStageHistoryWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountLeadRecordingsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LeadRecordingWhereInput
+  }
+
 
   /**
    * Count Type DashboardWidgetCountOutputType
@@ -7854,6 +8402,7 @@ export namespace Prisma {
     facultySkillAssignments: number
     facultyLeaveRequests: number
     salesAdminBranches: number
+    leads: number
   }
 
   export type BranchCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -7871,6 +8420,7 @@ export namespace Prisma {
     facultySkillAssignments?: boolean | BranchCountOutputTypeCountFacultySkillAssignmentsArgs
     facultyLeaveRequests?: boolean | BranchCountOutputTypeCountFacultyLeaveRequestsArgs
     salesAdminBranches?: boolean | BranchCountOutputTypeCountSalesAdminBranchesArgs
+    leads?: boolean | BranchCountOutputTypeCountLeadsArgs
   }
 
   // Custom InputTypes
@@ -7980,6 +8530,13 @@ export namespace Prisma {
    */
   export type BranchCountOutputTypeCountSalesAdminBranchesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: SalesAdminBranchWhereInput
+  }
+
+  /**
+   * BranchCountOutputType without action
+   */
+  export type BranchCountOutputTypeCountLeadsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LeadWhereInput
   }
 
 
@@ -8126,6 +8683,7 @@ export namespace Prisma {
     academicTests: number
     academicQuestionPapers: number
     academicTestProjects: number
+    leads: number
   }
 
   export type BranchCourseCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -8142,6 +8700,7 @@ export namespace Prisma {
     academicTests?: boolean | BranchCourseCountOutputTypeCountAcademicTestsArgs
     academicQuestionPapers?: boolean | BranchCourseCountOutputTypeCountAcademicQuestionPapersArgs
     academicTestProjects?: boolean | BranchCourseCountOutputTypeCountAcademicTestProjectsArgs
+    leads?: boolean | BranchCourseCountOutputTypeCountLeadsArgs
   }
 
   // Custom InputTypes
@@ -8244,6 +8803,13 @@ export namespace Prisma {
    */
   export type BranchCourseCountOutputTypeCountAcademicTestProjectsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: AcademicTestProjectWhereInput
+  }
+
+  /**
+   * BranchCourseCountOutputType without action
+   */
+  export type BranchCourseCountOutputTypeCountLeadsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LeadWhereInput
   }
 
 
@@ -9281,6 +9847,64 @@ export namespace Prisma {
 
 
   /**
+   * Count Type LeadCountOutputType
+   */
+
+  export type LeadCountOutputType = {
+    followUps: number
+    stageHistory: number
+    activities: number
+    recordings: number
+  }
+
+  export type LeadCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    followUps?: boolean | LeadCountOutputTypeCountFollowUpsArgs
+    stageHistory?: boolean | LeadCountOutputTypeCountStageHistoryArgs
+    activities?: boolean | LeadCountOutputTypeCountActivitiesArgs
+    recordings?: boolean | LeadCountOutputTypeCountRecordingsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * LeadCountOutputType without action
+   */
+  export type LeadCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadCountOutputType
+     */
+    select?: LeadCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * LeadCountOutputType without action
+   */
+  export type LeadCountOutputTypeCountFollowUpsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LeadFollowUpWhereInput
+  }
+
+  /**
+   * LeadCountOutputType without action
+   */
+  export type LeadCountOutputTypeCountStageHistoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LeadStageHistoryWhereInput
+  }
+
+  /**
+   * LeadCountOutputType without action
+   */
+  export type LeadCountOutputTypeCountActivitiesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LeadActivityWhereInput
+  }
+
+  /**
+   * LeadCountOutputType without action
+   */
+  export type LeadCountOutputTypeCountRecordingsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LeadRecordingWhereInput
+  }
+
+
+  /**
    * Count Type AcademicTestReportHistoryCountOutputType
    */
 
@@ -9673,6 +10297,13 @@ export namespace Prisma {
     facultySkillAssignments?: boolean | User$facultySkillAssignmentsArgs<ExtArgs>
     academicTestReportSubmissions?: boolean | User$academicTestReportSubmissionsArgs<ExtArgs>
     salesAdminBranches?: boolean | User$salesAdminBranchesArgs<ExtArgs>
+    assignedLeads?: boolean | User$assignedLeadsArgs<ExtArgs>
+    createdLeads?: boolean | User$createdLeadsArgs<ExtArgs>
+    updatedLeads?: boolean | User$updatedLeadsArgs<ExtArgs>
+    leadFollowUps?: boolean | User$leadFollowUpsArgs<ExtArgs>
+    leadActivities?: boolean | User$leadActivitiesArgs<ExtArgs>
+    leadStageChanges?: boolean | User$leadStageChangesArgs<ExtArgs>
+    leadRecordings?: boolean | User$leadRecordingsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -9773,6 +10404,13 @@ export namespace Prisma {
     facultySkillAssignments?: boolean | User$facultySkillAssignmentsArgs<ExtArgs>
     academicTestReportSubmissions?: boolean | User$academicTestReportSubmissionsArgs<ExtArgs>
     salesAdminBranches?: boolean | User$salesAdminBranchesArgs<ExtArgs>
+    assignedLeads?: boolean | User$assignedLeadsArgs<ExtArgs>
+    createdLeads?: boolean | User$createdLeadsArgs<ExtArgs>
+    updatedLeads?: boolean | User$updatedLeadsArgs<ExtArgs>
+    leadFollowUps?: boolean | User$leadFollowUpsArgs<ExtArgs>
+    leadActivities?: boolean | User$leadActivitiesArgs<ExtArgs>
+    leadStageChanges?: boolean | User$leadStageChangesArgs<ExtArgs>
+    leadRecordings?: boolean | User$leadRecordingsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -9801,6 +10439,13 @@ export namespace Prisma {
       facultySkillAssignments: Prisma.$FacultySkillAssignmentPayload<ExtArgs>[]
       academicTestReportSubmissions: Prisma.$AcademicTestReportSubmissionPayload<ExtArgs>[]
       salesAdminBranches: Prisma.$SalesAdminBranchPayload<ExtArgs>[]
+      assignedLeads: Prisma.$LeadPayload<ExtArgs>[]
+      createdLeads: Prisma.$LeadPayload<ExtArgs>[]
+      updatedLeads: Prisma.$LeadPayload<ExtArgs>[]
+      leadFollowUps: Prisma.$LeadFollowUpPayload<ExtArgs>[]
+      leadActivities: Prisma.$LeadActivityPayload<ExtArgs>[]
+      leadStageChanges: Prisma.$LeadStageHistoryPayload<ExtArgs>[]
+      leadRecordings: Prisma.$LeadRecordingPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -10239,6 +10884,13 @@ export namespace Prisma {
     facultySkillAssignments<T extends User$facultySkillAssignmentsArgs<ExtArgs> = {}>(args?: Subset<T, User$facultySkillAssignmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FacultySkillAssignmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     academicTestReportSubmissions<T extends User$academicTestReportSubmissionsArgs<ExtArgs> = {}>(args?: Subset<T, User$academicTestReportSubmissionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcademicTestReportSubmissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     salesAdminBranches<T extends User$salesAdminBranchesArgs<ExtArgs> = {}>(args?: Subset<T, User$salesAdminBranchesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SalesAdminBranchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    assignedLeads<T extends User$assignedLeadsArgs<ExtArgs> = {}>(args?: Subset<T, User$assignedLeadsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    createdLeads<T extends User$createdLeadsArgs<ExtArgs> = {}>(args?: Subset<T, User$createdLeadsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    updatedLeads<T extends User$updatedLeadsArgs<ExtArgs> = {}>(args?: Subset<T, User$updatedLeadsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    leadFollowUps<T extends User$leadFollowUpsArgs<ExtArgs> = {}>(args?: Subset<T, User$leadFollowUpsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadFollowUpPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    leadActivities<T extends User$leadActivitiesArgs<ExtArgs> = {}>(args?: Subset<T, User$leadActivitiesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadActivityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    leadStageChanges<T extends User$leadStageChangesArgs<ExtArgs> = {}>(args?: Subset<T, User$leadStageChangesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadStageHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    leadRecordings<T extends User$leadRecordingsArgs<ExtArgs> = {}>(args?: Subset<T, User$leadRecordingsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadRecordingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -11155,6 +11807,174 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: SalesAdminBranchScalarFieldEnum | SalesAdminBranchScalarFieldEnum[]
+  }
+
+  /**
+   * User.assignedLeads
+   */
+  export type User$assignedLeadsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Lead
+     */
+    select?: LeadSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Lead
+     */
+    omit?: LeadOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadInclude<ExtArgs> | null
+    where?: LeadWhereInput
+    orderBy?: LeadOrderByWithRelationInput | LeadOrderByWithRelationInput[]
+    cursor?: LeadWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: LeadScalarFieldEnum | LeadScalarFieldEnum[]
+  }
+
+  /**
+   * User.createdLeads
+   */
+  export type User$createdLeadsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Lead
+     */
+    select?: LeadSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Lead
+     */
+    omit?: LeadOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadInclude<ExtArgs> | null
+    where?: LeadWhereInput
+    orderBy?: LeadOrderByWithRelationInput | LeadOrderByWithRelationInput[]
+    cursor?: LeadWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: LeadScalarFieldEnum | LeadScalarFieldEnum[]
+  }
+
+  /**
+   * User.updatedLeads
+   */
+  export type User$updatedLeadsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Lead
+     */
+    select?: LeadSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Lead
+     */
+    omit?: LeadOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadInclude<ExtArgs> | null
+    where?: LeadWhereInput
+    orderBy?: LeadOrderByWithRelationInput | LeadOrderByWithRelationInput[]
+    cursor?: LeadWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: LeadScalarFieldEnum | LeadScalarFieldEnum[]
+  }
+
+  /**
+   * User.leadFollowUps
+   */
+  export type User$leadFollowUpsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadFollowUp
+     */
+    select?: LeadFollowUpSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadFollowUp
+     */
+    omit?: LeadFollowUpOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadFollowUpInclude<ExtArgs> | null
+    where?: LeadFollowUpWhereInput
+    orderBy?: LeadFollowUpOrderByWithRelationInput | LeadFollowUpOrderByWithRelationInput[]
+    cursor?: LeadFollowUpWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: LeadFollowUpScalarFieldEnum | LeadFollowUpScalarFieldEnum[]
+  }
+
+  /**
+   * User.leadActivities
+   */
+  export type User$leadActivitiesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadActivity
+     */
+    select?: LeadActivitySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadActivity
+     */
+    omit?: LeadActivityOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadActivityInclude<ExtArgs> | null
+    where?: LeadActivityWhereInput
+    orderBy?: LeadActivityOrderByWithRelationInput | LeadActivityOrderByWithRelationInput[]
+    cursor?: LeadActivityWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: LeadActivityScalarFieldEnum | LeadActivityScalarFieldEnum[]
+  }
+
+  /**
+   * User.leadStageChanges
+   */
+  export type User$leadStageChangesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadStageHistory
+     */
+    select?: LeadStageHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadStageHistory
+     */
+    omit?: LeadStageHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadStageHistoryInclude<ExtArgs> | null
+    where?: LeadStageHistoryWhereInput
+    orderBy?: LeadStageHistoryOrderByWithRelationInput | LeadStageHistoryOrderByWithRelationInput[]
+    cursor?: LeadStageHistoryWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: LeadStageHistoryScalarFieldEnum | LeadStageHistoryScalarFieldEnum[]
+  }
+
+  /**
+   * User.leadRecordings
+   */
+  export type User$leadRecordingsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadRecording
+     */
+    select?: LeadRecordingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadRecording
+     */
+    omit?: LeadRecordingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadRecordingInclude<ExtArgs> | null
+    where?: LeadRecordingWhereInput
+    orderBy?: LeadRecordingOrderByWithRelationInput | LeadRecordingOrderByWithRelationInput[]
+    cursor?: LeadRecordingWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: LeadRecordingScalarFieldEnum | LeadRecordingScalarFieldEnum[]
   }
 
   /**
@@ -13721,6 +14541,7 @@ export namespace Prisma {
     facultySkillAssignments?: boolean | Branch$facultySkillAssignmentsArgs<ExtArgs>
     facultyLeaveRequests?: boolean | Branch$facultyLeaveRequestsArgs<ExtArgs>
     salesAdminBranches?: boolean | Branch$salesAdminBranchesArgs<ExtArgs>
+    leads?: boolean | Branch$leadsArgs<ExtArgs>
     _count?: boolean | BranchCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["branch"]>
 
@@ -13809,6 +14630,7 @@ export namespace Prisma {
     facultySkillAssignments?: boolean | Branch$facultySkillAssignmentsArgs<ExtArgs>
     facultyLeaveRequests?: boolean | Branch$facultyLeaveRequestsArgs<ExtArgs>
     salesAdminBranches?: boolean | Branch$salesAdminBranchesArgs<ExtArgs>
+    leads?: boolean | Branch$leadsArgs<ExtArgs>
     _count?: boolean | BranchCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type BranchIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -13836,6 +14658,7 @@ export namespace Prisma {
       facultySkillAssignments: Prisma.$FacultySkillAssignmentPayload<ExtArgs>[]
       facultyLeaveRequests: Prisma.$FacultyLeaveRequestPayload<ExtArgs>[]
       salesAdminBranches: Prisma.$SalesAdminBranchPayload<ExtArgs>[]
+      leads: Prisma.$LeadPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -14266,6 +15089,7 @@ export namespace Prisma {
     facultySkillAssignments<T extends Branch$facultySkillAssignmentsArgs<ExtArgs> = {}>(args?: Subset<T, Branch$facultySkillAssignmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FacultySkillAssignmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     facultyLeaveRequests<T extends Branch$facultyLeaveRequestsArgs<ExtArgs> = {}>(args?: Subset<T, Branch$facultyLeaveRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FacultyLeaveRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     salesAdminBranches<T extends Branch$salesAdminBranchesArgs<ExtArgs> = {}>(args?: Subset<T, Branch$salesAdminBranchesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SalesAdminBranchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    leads<T extends Branch$leadsArgs<ExtArgs> = {}>(args?: Subset<T, Branch$leadsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -15067,6 +15891,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: SalesAdminBranchScalarFieldEnum | SalesAdminBranchScalarFieldEnum[]
+  }
+
+  /**
+   * Branch.leads
+   */
+  export type Branch$leadsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Lead
+     */
+    select?: LeadSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Lead
+     */
+    omit?: LeadOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadInclude<ExtArgs> | null
+    where?: LeadWhereInput
+    orderBy?: LeadOrderByWithRelationInput | LeadOrderByWithRelationInput[]
+    cursor?: LeadWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: LeadScalarFieldEnum | LeadScalarFieldEnum[]
   }
 
   /**
@@ -23190,6 +24038,7 @@ export namespace Prisma {
     academicTests?: boolean | BranchCourse$academicTestsArgs<ExtArgs>
     academicQuestionPapers?: boolean | BranchCourse$academicQuestionPapersArgs<ExtArgs>
     academicTestProjects?: boolean | BranchCourse$academicTestProjectsArgs<ExtArgs>
+    leads?: boolean | BranchCourse$leadsArgs<ExtArgs>
     _count?: boolean | BranchCourseCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["branchCourse"]>
 
@@ -23287,6 +24136,7 @@ export namespace Prisma {
     academicTests?: boolean | BranchCourse$academicTestsArgs<ExtArgs>
     academicQuestionPapers?: boolean | BranchCourse$academicQuestionPapersArgs<ExtArgs>
     academicTestProjects?: boolean | BranchCourse$academicTestProjectsArgs<ExtArgs>
+    leads?: boolean | BranchCourse$leadsArgs<ExtArgs>
     _count?: boolean | BranchCourseCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type BranchCourseIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -23314,6 +24164,7 @@ export namespace Prisma {
       academicTests: Prisma.$AcademicTestPayload<ExtArgs>[]
       academicQuestionPapers: Prisma.$AcademicQuestionPaperPayload<ExtArgs>[]
       academicTestProjects: Prisma.$AcademicTestProjectPayload<ExtArgs>[]
+      leads: Prisma.$LeadPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -23747,6 +24598,7 @@ export namespace Prisma {
     academicTests<T extends BranchCourse$academicTestsArgs<ExtArgs> = {}>(args?: Subset<T, BranchCourse$academicTestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcademicTestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     academicQuestionPapers<T extends BranchCourse$academicQuestionPapersArgs<ExtArgs> = {}>(args?: Subset<T, BranchCourse$academicQuestionPapersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcademicQuestionPaperPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     academicTestProjects<T extends BranchCourse$academicTestProjectsArgs<ExtArgs> = {}>(args?: Subset<T, BranchCourse$academicTestProjectsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcademicTestProjectPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    leads<T extends BranchCourse$leadsArgs<ExtArgs> = {}>(args?: Subset<T, BranchCourse$leadsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -24527,6 +25379,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: AcademicTestProjectScalarFieldEnum | AcademicTestProjectScalarFieldEnum[]
+  }
+
+  /**
+   * BranchCourse.leads
+   */
+  export type BranchCourse$leadsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Lead
+     */
+    select?: LeadSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Lead
+     */
+    omit?: LeadOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadInclude<ExtArgs> | null
+    where?: LeadWhereInput
+    orderBy?: LeadOrderByWithRelationInput | LeadOrderByWithRelationInput[]
+    cursor?: LeadWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: LeadScalarFieldEnum | LeadScalarFieldEnum[]
   }
 
   /**
@@ -92554,6 +93430,5992 @@ export namespace Prisma {
 
 
   /**
+   * Model Lead
+   */
+
+  export type AggregateLead = {
+    _count: LeadCountAggregateOutputType | null
+    _min: LeadMinAggregateOutputType | null
+    _max: LeadMaxAggregateOutputType | null
+  }
+
+  export type LeadMinAggregateOutputType = {
+    id: string | null
+    leadId: string | null
+    studentName: string | null
+    phoneNumber: string | null
+    alternativeNumber: string | null
+    email: string | null
+    qualification: string | null
+    location: string | null
+    callType: string | null
+    status: $Enums.LeadStatus | null
+    stage: $Enums.LeadStage | null
+    courseId: string | null
+    branchId: string | null
+    leadSource: string | null
+    referredBy: string | null
+    paymentStatus: string | null
+    trainingMode: string | null
+    classSchedule: string | null
+    courseMode: string | null
+    locationDistance: string | null
+    leadDate: Date | null
+    assignedToId: string | null
+    createdById: string | null
+    updatedById: string | null
+    deletedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type LeadMaxAggregateOutputType = {
+    id: string | null
+    leadId: string | null
+    studentName: string | null
+    phoneNumber: string | null
+    alternativeNumber: string | null
+    email: string | null
+    qualification: string | null
+    location: string | null
+    callType: string | null
+    status: $Enums.LeadStatus | null
+    stage: $Enums.LeadStage | null
+    courseId: string | null
+    branchId: string | null
+    leadSource: string | null
+    referredBy: string | null
+    paymentStatus: string | null
+    trainingMode: string | null
+    classSchedule: string | null
+    courseMode: string | null
+    locationDistance: string | null
+    leadDate: Date | null
+    assignedToId: string | null
+    createdById: string | null
+    updatedById: string | null
+    deletedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type LeadCountAggregateOutputType = {
+    id: number
+    leadId: number
+    studentName: number
+    phoneNumber: number
+    alternativeNumber: number
+    email: number
+    qualification: number
+    location: number
+    callType: number
+    status: number
+    stage: number
+    courseId: number
+    branchId: number
+    leadSource: number
+    referredBy: number
+    paymentStatus: number
+    trainingMode: number
+    classSchedule: number
+    courseMode: number
+    locationDistance: number
+    leadDate: number
+    assignedToId: number
+    createdById: number
+    updatedById: number
+    deletedAt: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type LeadMinAggregateInputType = {
+    id?: true
+    leadId?: true
+    studentName?: true
+    phoneNumber?: true
+    alternativeNumber?: true
+    email?: true
+    qualification?: true
+    location?: true
+    callType?: true
+    status?: true
+    stage?: true
+    courseId?: true
+    branchId?: true
+    leadSource?: true
+    referredBy?: true
+    paymentStatus?: true
+    trainingMode?: true
+    classSchedule?: true
+    courseMode?: true
+    locationDistance?: true
+    leadDate?: true
+    assignedToId?: true
+    createdById?: true
+    updatedById?: true
+    deletedAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type LeadMaxAggregateInputType = {
+    id?: true
+    leadId?: true
+    studentName?: true
+    phoneNumber?: true
+    alternativeNumber?: true
+    email?: true
+    qualification?: true
+    location?: true
+    callType?: true
+    status?: true
+    stage?: true
+    courseId?: true
+    branchId?: true
+    leadSource?: true
+    referredBy?: true
+    paymentStatus?: true
+    trainingMode?: true
+    classSchedule?: true
+    courseMode?: true
+    locationDistance?: true
+    leadDate?: true
+    assignedToId?: true
+    createdById?: true
+    updatedById?: true
+    deletedAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type LeadCountAggregateInputType = {
+    id?: true
+    leadId?: true
+    studentName?: true
+    phoneNumber?: true
+    alternativeNumber?: true
+    email?: true
+    qualification?: true
+    location?: true
+    callType?: true
+    status?: true
+    stage?: true
+    courseId?: true
+    branchId?: true
+    leadSource?: true
+    referredBy?: true
+    paymentStatus?: true
+    trainingMode?: true
+    classSchedule?: true
+    courseMode?: true
+    locationDistance?: true
+    leadDate?: true
+    assignedToId?: true
+    createdById?: true
+    updatedById?: true
+    deletedAt?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type LeadAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Lead to aggregate.
+     */
+    where?: LeadWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Leads to fetch.
+     */
+    orderBy?: LeadOrderByWithRelationInput | LeadOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: LeadWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Leads from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Leads.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Leads
+    **/
+    _count?: true | LeadCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: LeadMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: LeadMaxAggregateInputType
+  }
+
+  export type GetLeadAggregateType<T extends LeadAggregateArgs> = {
+        [P in keyof T & keyof AggregateLead]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateLead[P]>
+      : GetScalarType<T[P], AggregateLead[P]>
+  }
+
+
+
+
+  export type LeadGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LeadWhereInput
+    orderBy?: LeadOrderByWithAggregationInput | LeadOrderByWithAggregationInput[]
+    by: LeadScalarFieldEnum[] | LeadScalarFieldEnum
+    having?: LeadScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: LeadCountAggregateInputType | true
+    _min?: LeadMinAggregateInputType
+    _max?: LeadMaxAggregateInputType
+  }
+
+  export type LeadGroupByOutputType = {
+    id: string
+    leadId: string
+    studentName: string
+    phoneNumber: string
+    alternativeNumber: string | null
+    email: string | null
+    qualification: string | null
+    location: string | null
+    callType: string
+    status: $Enums.LeadStatus
+    stage: $Enums.LeadStage
+    courseId: string
+    branchId: string
+    leadSource: string
+    referredBy: string | null
+    paymentStatus: string
+    trainingMode: string | null
+    classSchedule: string | null
+    courseMode: string | null
+    locationDistance: string | null
+    leadDate: Date
+    assignedToId: string | null
+    createdById: string
+    updatedById: string | null
+    deletedAt: Date | null
+    createdAt: Date
+    updatedAt: Date
+    _count: LeadCountAggregateOutputType | null
+    _min: LeadMinAggregateOutputType | null
+    _max: LeadMaxAggregateOutputType | null
+  }
+
+  type GetLeadGroupByPayload<T extends LeadGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<LeadGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof LeadGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], LeadGroupByOutputType[P]>
+            : GetScalarType<T[P], LeadGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type LeadSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    leadId?: boolean
+    studentName?: boolean
+    phoneNumber?: boolean
+    alternativeNumber?: boolean
+    email?: boolean
+    qualification?: boolean
+    location?: boolean
+    callType?: boolean
+    status?: boolean
+    stage?: boolean
+    courseId?: boolean
+    branchId?: boolean
+    leadSource?: boolean
+    referredBy?: boolean
+    paymentStatus?: boolean
+    trainingMode?: boolean
+    classSchedule?: boolean
+    courseMode?: boolean
+    locationDistance?: boolean
+    leadDate?: boolean
+    assignedToId?: boolean
+    createdById?: boolean
+    updatedById?: boolean
+    deletedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    branch?: boolean | BranchDefaultArgs<ExtArgs>
+    course?: boolean | BranchCourseDefaultArgs<ExtArgs>
+    assignedTo?: boolean | Lead$assignedToArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+    updatedBy?: boolean | Lead$updatedByArgs<ExtArgs>
+    followUps?: boolean | Lead$followUpsArgs<ExtArgs>
+    stageHistory?: boolean | Lead$stageHistoryArgs<ExtArgs>
+    activities?: boolean | Lead$activitiesArgs<ExtArgs>
+    recordings?: boolean | Lead$recordingsArgs<ExtArgs>
+    _count?: boolean | LeadCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["lead"]>
+
+  export type LeadSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    leadId?: boolean
+    studentName?: boolean
+    phoneNumber?: boolean
+    alternativeNumber?: boolean
+    email?: boolean
+    qualification?: boolean
+    location?: boolean
+    callType?: boolean
+    status?: boolean
+    stage?: boolean
+    courseId?: boolean
+    branchId?: boolean
+    leadSource?: boolean
+    referredBy?: boolean
+    paymentStatus?: boolean
+    trainingMode?: boolean
+    classSchedule?: boolean
+    courseMode?: boolean
+    locationDistance?: boolean
+    leadDate?: boolean
+    assignedToId?: boolean
+    createdById?: boolean
+    updatedById?: boolean
+    deletedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    branch?: boolean | BranchDefaultArgs<ExtArgs>
+    course?: boolean | BranchCourseDefaultArgs<ExtArgs>
+    assignedTo?: boolean | Lead$assignedToArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+    updatedBy?: boolean | Lead$updatedByArgs<ExtArgs>
+  }, ExtArgs["result"]["lead"]>
+
+  export type LeadSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    leadId?: boolean
+    studentName?: boolean
+    phoneNumber?: boolean
+    alternativeNumber?: boolean
+    email?: boolean
+    qualification?: boolean
+    location?: boolean
+    callType?: boolean
+    status?: boolean
+    stage?: boolean
+    courseId?: boolean
+    branchId?: boolean
+    leadSource?: boolean
+    referredBy?: boolean
+    paymentStatus?: boolean
+    trainingMode?: boolean
+    classSchedule?: boolean
+    courseMode?: boolean
+    locationDistance?: boolean
+    leadDate?: boolean
+    assignedToId?: boolean
+    createdById?: boolean
+    updatedById?: boolean
+    deletedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    branch?: boolean | BranchDefaultArgs<ExtArgs>
+    course?: boolean | BranchCourseDefaultArgs<ExtArgs>
+    assignedTo?: boolean | Lead$assignedToArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+    updatedBy?: boolean | Lead$updatedByArgs<ExtArgs>
+  }, ExtArgs["result"]["lead"]>
+
+  export type LeadSelectScalar = {
+    id?: boolean
+    leadId?: boolean
+    studentName?: boolean
+    phoneNumber?: boolean
+    alternativeNumber?: boolean
+    email?: boolean
+    qualification?: boolean
+    location?: boolean
+    callType?: boolean
+    status?: boolean
+    stage?: boolean
+    courseId?: boolean
+    branchId?: boolean
+    leadSource?: boolean
+    referredBy?: boolean
+    paymentStatus?: boolean
+    trainingMode?: boolean
+    classSchedule?: boolean
+    courseMode?: boolean
+    locationDistance?: boolean
+    leadDate?: boolean
+    assignedToId?: boolean
+    createdById?: boolean
+    updatedById?: boolean
+    deletedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type LeadOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "leadId" | "studentName" | "phoneNumber" | "alternativeNumber" | "email" | "qualification" | "location" | "callType" | "status" | "stage" | "courseId" | "branchId" | "leadSource" | "referredBy" | "paymentStatus" | "trainingMode" | "classSchedule" | "courseMode" | "locationDistance" | "leadDate" | "assignedToId" | "createdById" | "updatedById" | "deletedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["lead"]>
+  export type LeadInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    branch?: boolean | BranchDefaultArgs<ExtArgs>
+    course?: boolean | BranchCourseDefaultArgs<ExtArgs>
+    assignedTo?: boolean | Lead$assignedToArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+    updatedBy?: boolean | Lead$updatedByArgs<ExtArgs>
+    followUps?: boolean | Lead$followUpsArgs<ExtArgs>
+    stageHistory?: boolean | Lead$stageHistoryArgs<ExtArgs>
+    activities?: boolean | Lead$activitiesArgs<ExtArgs>
+    recordings?: boolean | Lead$recordingsArgs<ExtArgs>
+    _count?: boolean | LeadCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type LeadIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    branch?: boolean | BranchDefaultArgs<ExtArgs>
+    course?: boolean | BranchCourseDefaultArgs<ExtArgs>
+    assignedTo?: boolean | Lead$assignedToArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+    updatedBy?: boolean | Lead$updatedByArgs<ExtArgs>
+  }
+  export type LeadIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    branch?: boolean | BranchDefaultArgs<ExtArgs>
+    course?: boolean | BranchCourseDefaultArgs<ExtArgs>
+    assignedTo?: boolean | Lead$assignedToArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+    updatedBy?: boolean | Lead$updatedByArgs<ExtArgs>
+  }
+
+  export type $LeadPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Lead"
+    objects: {
+      branch: Prisma.$BranchPayload<ExtArgs>
+      course: Prisma.$BranchCoursePayload<ExtArgs>
+      assignedTo: Prisma.$UserPayload<ExtArgs> | null
+      createdBy: Prisma.$UserPayload<ExtArgs>
+      updatedBy: Prisma.$UserPayload<ExtArgs> | null
+      followUps: Prisma.$LeadFollowUpPayload<ExtArgs>[]
+      stageHistory: Prisma.$LeadStageHistoryPayload<ExtArgs>[]
+      activities: Prisma.$LeadActivityPayload<ExtArgs>[]
+      recordings: Prisma.$LeadRecordingPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      leadId: string
+      studentName: string
+      phoneNumber: string
+      alternativeNumber: string | null
+      email: string | null
+      qualification: string | null
+      location: string | null
+      callType: string
+      status: $Enums.LeadStatus
+      stage: $Enums.LeadStage
+      courseId: string
+      branchId: string
+      leadSource: string
+      referredBy: string | null
+      paymentStatus: string
+      trainingMode: string | null
+      classSchedule: string | null
+      courseMode: string | null
+      locationDistance: string | null
+      leadDate: Date
+      assignedToId: string | null
+      createdById: string
+      updatedById: string | null
+      deletedAt: Date | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["lead"]>
+    composites: {}
+  }
+
+  type LeadGetPayload<S extends boolean | null | undefined | LeadDefaultArgs> = $Result.GetResult<Prisma.$LeadPayload, S>
+
+  type LeadCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<LeadFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: LeadCountAggregateInputType | true
+    }
+
+  export interface LeadDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Lead'], meta: { name: 'Lead' } }
+    /**
+     * Find zero or one Lead that matches the filter.
+     * @param {LeadFindUniqueArgs} args - Arguments to find a Lead
+     * @example
+     * // Get one Lead
+     * const lead = await prisma.lead.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends LeadFindUniqueArgs>(args: SelectSubset<T, LeadFindUniqueArgs<ExtArgs>>): Prisma__LeadClient<$Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Lead that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {LeadFindUniqueOrThrowArgs} args - Arguments to find a Lead
+     * @example
+     * // Get one Lead
+     * const lead = await prisma.lead.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends LeadFindUniqueOrThrowArgs>(args: SelectSubset<T, LeadFindUniqueOrThrowArgs<ExtArgs>>): Prisma__LeadClient<$Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Lead that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LeadFindFirstArgs} args - Arguments to find a Lead
+     * @example
+     * // Get one Lead
+     * const lead = await prisma.lead.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends LeadFindFirstArgs>(args?: SelectSubset<T, LeadFindFirstArgs<ExtArgs>>): Prisma__LeadClient<$Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Lead that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LeadFindFirstOrThrowArgs} args - Arguments to find a Lead
+     * @example
+     * // Get one Lead
+     * const lead = await prisma.lead.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends LeadFindFirstOrThrowArgs>(args?: SelectSubset<T, LeadFindFirstOrThrowArgs<ExtArgs>>): Prisma__LeadClient<$Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Leads that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LeadFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Leads
+     * const leads = await prisma.lead.findMany()
+     * 
+     * // Get first 10 Leads
+     * const leads = await prisma.lead.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const leadWithIdOnly = await prisma.lead.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends LeadFindManyArgs>(args?: SelectSubset<T, LeadFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Lead.
+     * @param {LeadCreateArgs} args - Arguments to create a Lead.
+     * @example
+     * // Create one Lead
+     * const Lead = await prisma.lead.create({
+     *   data: {
+     *     // ... data to create a Lead
+     *   }
+     * })
+     * 
+     */
+    create<T extends LeadCreateArgs>(args: SelectSubset<T, LeadCreateArgs<ExtArgs>>): Prisma__LeadClient<$Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Leads.
+     * @param {LeadCreateManyArgs} args - Arguments to create many Leads.
+     * @example
+     * // Create many Leads
+     * const lead = await prisma.lead.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends LeadCreateManyArgs>(args?: SelectSubset<T, LeadCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Leads and returns the data saved in the database.
+     * @param {LeadCreateManyAndReturnArgs} args - Arguments to create many Leads.
+     * @example
+     * // Create many Leads
+     * const lead = await prisma.lead.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Leads and only return the `id`
+     * const leadWithIdOnly = await prisma.lead.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends LeadCreateManyAndReturnArgs>(args?: SelectSubset<T, LeadCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Lead.
+     * @param {LeadDeleteArgs} args - Arguments to delete one Lead.
+     * @example
+     * // Delete one Lead
+     * const Lead = await prisma.lead.delete({
+     *   where: {
+     *     // ... filter to delete one Lead
+     *   }
+     * })
+     * 
+     */
+    delete<T extends LeadDeleteArgs>(args: SelectSubset<T, LeadDeleteArgs<ExtArgs>>): Prisma__LeadClient<$Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Lead.
+     * @param {LeadUpdateArgs} args - Arguments to update one Lead.
+     * @example
+     * // Update one Lead
+     * const lead = await prisma.lead.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends LeadUpdateArgs>(args: SelectSubset<T, LeadUpdateArgs<ExtArgs>>): Prisma__LeadClient<$Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Leads.
+     * @param {LeadDeleteManyArgs} args - Arguments to filter Leads to delete.
+     * @example
+     * // Delete a few Leads
+     * const { count } = await prisma.lead.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends LeadDeleteManyArgs>(args?: SelectSubset<T, LeadDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Leads.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LeadUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Leads
+     * const lead = await prisma.lead.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends LeadUpdateManyArgs>(args: SelectSubset<T, LeadUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Leads and returns the data updated in the database.
+     * @param {LeadUpdateManyAndReturnArgs} args - Arguments to update many Leads.
+     * @example
+     * // Update many Leads
+     * const lead = await prisma.lead.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Leads and only return the `id`
+     * const leadWithIdOnly = await prisma.lead.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends LeadUpdateManyAndReturnArgs>(args: SelectSubset<T, LeadUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Lead.
+     * @param {LeadUpsertArgs} args - Arguments to update or create a Lead.
+     * @example
+     * // Update or create a Lead
+     * const lead = await prisma.lead.upsert({
+     *   create: {
+     *     // ... data to create a Lead
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Lead we want to update
+     *   }
+     * })
+     */
+    upsert<T extends LeadUpsertArgs>(args: SelectSubset<T, LeadUpsertArgs<ExtArgs>>): Prisma__LeadClient<$Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Leads.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LeadCountArgs} args - Arguments to filter Leads to count.
+     * @example
+     * // Count the number of Leads
+     * const count = await prisma.lead.count({
+     *   where: {
+     *     // ... the filter for the Leads we want to count
+     *   }
+     * })
+    **/
+    count<T extends LeadCountArgs>(
+      args?: Subset<T, LeadCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], LeadCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Lead.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LeadAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends LeadAggregateArgs>(args: Subset<T, LeadAggregateArgs>): Prisma.PrismaPromise<GetLeadAggregateType<T>>
+
+    /**
+     * Group by Lead.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LeadGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends LeadGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: LeadGroupByArgs['orderBy'] }
+        : { orderBy?: LeadGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, LeadGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetLeadGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Lead model
+   */
+  readonly fields: LeadFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Lead.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__LeadClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    branch<T extends BranchDefaultArgs<ExtArgs> = {}>(args?: Subset<T, BranchDefaultArgs<ExtArgs>>): Prisma__BranchClient<$Result.GetResult<Prisma.$BranchPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    course<T extends BranchCourseDefaultArgs<ExtArgs> = {}>(args?: Subset<T, BranchCourseDefaultArgs<ExtArgs>>): Prisma__BranchCourseClient<$Result.GetResult<Prisma.$BranchCoursePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    assignedTo<T extends Lead$assignedToArgs<ExtArgs> = {}>(args?: Subset<T, Lead$assignedToArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    createdBy<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    updatedBy<T extends Lead$updatedByArgs<ExtArgs> = {}>(args?: Subset<T, Lead$updatedByArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    followUps<T extends Lead$followUpsArgs<ExtArgs> = {}>(args?: Subset<T, Lead$followUpsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadFollowUpPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    stageHistory<T extends Lead$stageHistoryArgs<ExtArgs> = {}>(args?: Subset<T, Lead$stageHistoryArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadStageHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    activities<T extends Lead$activitiesArgs<ExtArgs> = {}>(args?: Subset<T, Lead$activitiesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadActivityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    recordings<T extends Lead$recordingsArgs<ExtArgs> = {}>(args?: Subset<T, Lead$recordingsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadRecordingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Lead model
+   */
+  interface LeadFieldRefs {
+    readonly id: FieldRef<"Lead", 'String'>
+    readonly leadId: FieldRef<"Lead", 'String'>
+    readonly studentName: FieldRef<"Lead", 'String'>
+    readonly phoneNumber: FieldRef<"Lead", 'String'>
+    readonly alternativeNumber: FieldRef<"Lead", 'String'>
+    readonly email: FieldRef<"Lead", 'String'>
+    readonly qualification: FieldRef<"Lead", 'String'>
+    readonly location: FieldRef<"Lead", 'String'>
+    readonly callType: FieldRef<"Lead", 'String'>
+    readonly status: FieldRef<"Lead", 'LeadStatus'>
+    readonly stage: FieldRef<"Lead", 'LeadStage'>
+    readonly courseId: FieldRef<"Lead", 'String'>
+    readonly branchId: FieldRef<"Lead", 'String'>
+    readonly leadSource: FieldRef<"Lead", 'String'>
+    readonly referredBy: FieldRef<"Lead", 'String'>
+    readonly paymentStatus: FieldRef<"Lead", 'String'>
+    readonly trainingMode: FieldRef<"Lead", 'String'>
+    readonly classSchedule: FieldRef<"Lead", 'String'>
+    readonly courseMode: FieldRef<"Lead", 'String'>
+    readonly locationDistance: FieldRef<"Lead", 'String'>
+    readonly leadDate: FieldRef<"Lead", 'DateTime'>
+    readonly assignedToId: FieldRef<"Lead", 'String'>
+    readonly createdById: FieldRef<"Lead", 'String'>
+    readonly updatedById: FieldRef<"Lead", 'String'>
+    readonly deletedAt: FieldRef<"Lead", 'DateTime'>
+    readonly createdAt: FieldRef<"Lead", 'DateTime'>
+    readonly updatedAt: FieldRef<"Lead", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Lead findUnique
+   */
+  export type LeadFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Lead
+     */
+    select?: LeadSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Lead
+     */
+    omit?: LeadOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadInclude<ExtArgs> | null
+    /**
+     * Filter, which Lead to fetch.
+     */
+    where: LeadWhereUniqueInput
+  }
+
+  /**
+   * Lead findUniqueOrThrow
+   */
+  export type LeadFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Lead
+     */
+    select?: LeadSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Lead
+     */
+    omit?: LeadOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadInclude<ExtArgs> | null
+    /**
+     * Filter, which Lead to fetch.
+     */
+    where: LeadWhereUniqueInput
+  }
+
+  /**
+   * Lead findFirst
+   */
+  export type LeadFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Lead
+     */
+    select?: LeadSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Lead
+     */
+    omit?: LeadOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadInclude<ExtArgs> | null
+    /**
+     * Filter, which Lead to fetch.
+     */
+    where?: LeadWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Leads to fetch.
+     */
+    orderBy?: LeadOrderByWithRelationInput | LeadOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Leads.
+     */
+    cursor?: LeadWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Leads from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Leads.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Leads.
+     */
+    distinct?: LeadScalarFieldEnum | LeadScalarFieldEnum[]
+  }
+
+  /**
+   * Lead findFirstOrThrow
+   */
+  export type LeadFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Lead
+     */
+    select?: LeadSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Lead
+     */
+    omit?: LeadOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadInclude<ExtArgs> | null
+    /**
+     * Filter, which Lead to fetch.
+     */
+    where?: LeadWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Leads to fetch.
+     */
+    orderBy?: LeadOrderByWithRelationInput | LeadOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Leads.
+     */
+    cursor?: LeadWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Leads from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Leads.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Leads.
+     */
+    distinct?: LeadScalarFieldEnum | LeadScalarFieldEnum[]
+  }
+
+  /**
+   * Lead findMany
+   */
+  export type LeadFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Lead
+     */
+    select?: LeadSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Lead
+     */
+    omit?: LeadOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadInclude<ExtArgs> | null
+    /**
+     * Filter, which Leads to fetch.
+     */
+    where?: LeadWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Leads to fetch.
+     */
+    orderBy?: LeadOrderByWithRelationInput | LeadOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Leads.
+     */
+    cursor?: LeadWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Leads from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Leads.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Leads.
+     */
+    distinct?: LeadScalarFieldEnum | LeadScalarFieldEnum[]
+  }
+
+  /**
+   * Lead create
+   */
+  export type LeadCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Lead
+     */
+    select?: LeadSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Lead
+     */
+    omit?: LeadOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Lead.
+     */
+    data: XOR<LeadCreateInput, LeadUncheckedCreateInput>
+  }
+
+  /**
+   * Lead createMany
+   */
+  export type LeadCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Leads.
+     */
+    data: LeadCreateManyInput | LeadCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Lead createManyAndReturn
+   */
+  export type LeadCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Lead
+     */
+    select?: LeadSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Lead
+     */
+    omit?: LeadOmit<ExtArgs> | null
+    /**
+     * The data used to create many Leads.
+     */
+    data: LeadCreateManyInput | LeadCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Lead update
+   */
+  export type LeadUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Lead
+     */
+    select?: LeadSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Lead
+     */
+    omit?: LeadOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Lead.
+     */
+    data: XOR<LeadUpdateInput, LeadUncheckedUpdateInput>
+    /**
+     * Choose, which Lead to update.
+     */
+    where: LeadWhereUniqueInput
+  }
+
+  /**
+   * Lead updateMany
+   */
+  export type LeadUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Leads.
+     */
+    data: XOR<LeadUpdateManyMutationInput, LeadUncheckedUpdateManyInput>
+    /**
+     * Filter which Leads to update
+     */
+    where?: LeadWhereInput
+    /**
+     * Limit how many Leads to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Lead updateManyAndReturn
+   */
+  export type LeadUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Lead
+     */
+    select?: LeadSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Lead
+     */
+    omit?: LeadOmit<ExtArgs> | null
+    /**
+     * The data used to update Leads.
+     */
+    data: XOR<LeadUpdateManyMutationInput, LeadUncheckedUpdateManyInput>
+    /**
+     * Filter which Leads to update
+     */
+    where?: LeadWhereInput
+    /**
+     * Limit how many Leads to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Lead upsert
+   */
+  export type LeadUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Lead
+     */
+    select?: LeadSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Lead
+     */
+    omit?: LeadOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Lead to update in case it exists.
+     */
+    where: LeadWhereUniqueInput
+    /**
+     * In case the Lead found by the `where` argument doesn't exist, create a new Lead with this data.
+     */
+    create: XOR<LeadCreateInput, LeadUncheckedCreateInput>
+    /**
+     * In case the Lead was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<LeadUpdateInput, LeadUncheckedUpdateInput>
+  }
+
+  /**
+   * Lead delete
+   */
+  export type LeadDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Lead
+     */
+    select?: LeadSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Lead
+     */
+    omit?: LeadOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadInclude<ExtArgs> | null
+    /**
+     * Filter which Lead to delete.
+     */
+    where: LeadWhereUniqueInput
+  }
+
+  /**
+   * Lead deleteMany
+   */
+  export type LeadDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Leads to delete
+     */
+    where?: LeadWhereInput
+    /**
+     * Limit how many Leads to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Lead.assignedTo
+   */
+  export type Lead$assignedToArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * Lead.updatedBy
+   */
+  export type Lead$updatedByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * Lead.followUps
+   */
+  export type Lead$followUpsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadFollowUp
+     */
+    select?: LeadFollowUpSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadFollowUp
+     */
+    omit?: LeadFollowUpOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadFollowUpInclude<ExtArgs> | null
+    where?: LeadFollowUpWhereInput
+    orderBy?: LeadFollowUpOrderByWithRelationInput | LeadFollowUpOrderByWithRelationInput[]
+    cursor?: LeadFollowUpWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: LeadFollowUpScalarFieldEnum | LeadFollowUpScalarFieldEnum[]
+  }
+
+  /**
+   * Lead.stageHistory
+   */
+  export type Lead$stageHistoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadStageHistory
+     */
+    select?: LeadStageHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadStageHistory
+     */
+    omit?: LeadStageHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadStageHistoryInclude<ExtArgs> | null
+    where?: LeadStageHistoryWhereInput
+    orderBy?: LeadStageHistoryOrderByWithRelationInput | LeadStageHistoryOrderByWithRelationInput[]
+    cursor?: LeadStageHistoryWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: LeadStageHistoryScalarFieldEnum | LeadStageHistoryScalarFieldEnum[]
+  }
+
+  /**
+   * Lead.activities
+   */
+  export type Lead$activitiesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadActivity
+     */
+    select?: LeadActivitySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadActivity
+     */
+    omit?: LeadActivityOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadActivityInclude<ExtArgs> | null
+    where?: LeadActivityWhereInput
+    orderBy?: LeadActivityOrderByWithRelationInput | LeadActivityOrderByWithRelationInput[]
+    cursor?: LeadActivityWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: LeadActivityScalarFieldEnum | LeadActivityScalarFieldEnum[]
+  }
+
+  /**
+   * Lead.recordings
+   */
+  export type Lead$recordingsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadRecording
+     */
+    select?: LeadRecordingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadRecording
+     */
+    omit?: LeadRecordingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadRecordingInclude<ExtArgs> | null
+    where?: LeadRecordingWhereInput
+    orderBy?: LeadRecordingOrderByWithRelationInput | LeadRecordingOrderByWithRelationInput[]
+    cursor?: LeadRecordingWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: LeadRecordingScalarFieldEnum | LeadRecordingScalarFieldEnum[]
+  }
+
+  /**
+   * Lead without action
+   */
+  export type LeadDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Lead
+     */
+    select?: LeadSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Lead
+     */
+    omit?: LeadOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model LeadFollowUp
+   */
+
+  export type AggregateLeadFollowUp = {
+    _count: LeadFollowUpCountAggregateOutputType | null
+    _min: LeadFollowUpMinAggregateOutputType | null
+    _max: LeadFollowUpMaxAggregateOutputType | null
+  }
+
+  export type LeadFollowUpMinAggregateOutputType = {
+    id: string | null
+    leadId: string | null
+    followUpDate: Date | null
+    followUpType: string | null
+    notes: string | null
+    nextFollowUpDate: Date | null
+    createdById: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type LeadFollowUpMaxAggregateOutputType = {
+    id: string | null
+    leadId: string | null
+    followUpDate: Date | null
+    followUpType: string | null
+    notes: string | null
+    nextFollowUpDate: Date | null
+    createdById: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type LeadFollowUpCountAggregateOutputType = {
+    id: number
+    leadId: number
+    followUpDate: number
+    followUpType: number
+    notes: number
+    nextFollowUpDate: number
+    createdById: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type LeadFollowUpMinAggregateInputType = {
+    id?: true
+    leadId?: true
+    followUpDate?: true
+    followUpType?: true
+    notes?: true
+    nextFollowUpDate?: true
+    createdById?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type LeadFollowUpMaxAggregateInputType = {
+    id?: true
+    leadId?: true
+    followUpDate?: true
+    followUpType?: true
+    notes?: true
+    nextFollowUpDate?: true
+    createdById?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type LeadFollowUpCountAggregateInputType = {
+    id?: true
+    leadId?: true
+    followUpDate?: true
+    followUpType?: true
+    notes?: true
+    nextFollowUpDate?: true
+    createdById?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type LeadFollowUpAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which LeadFollowUp to aggregate.
+     */
+    where?: LeadFollowUpWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LeadFollowUps to fetch.
+     */
+    orderBy?: LeadFollowUpOrderByWithRelationInput | LeadFollowUpOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: LeadFollowUpWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LeadFollowUps from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LeadFollowUps.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned LeadFollowUps
+    **/
+    _count?: true | LeadFollowUpCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: LeadFollowUpMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: LeadFollowUpMaxAggregateInputType
+  }
+
+  export type GetLeadFollowUpAggregateType<T extends LeadFollowUpAggregateArgs> = {
+        [P in keyof T & keyof AggregateLeadFollowUp]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateLeadFollowUp[P]>
+      : GetScalarType<T[P], AggregateLeadFollowUp[P]>
+  }
+
+
+
+
+  export type LeadFollowUpGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LeadFollowUpWhereInput
+    orderBy?: LeadFollowUpOrderByWithAggregationInput | LeadFollowUpOrderByWithAggregationInput[]
+    by: LeadFollowUpScalarFieldEnum[] | LeadFollowUpScalarFieldEnum
+    having?: LeadFollowUpScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: LeadFollowUpCountAggregateInputType | true
+    _min?: LeadFollowUpMinAggregateInputType
+    _max?: LeadFollowUpMaxAggregateInputType
+  }
+
+  export type LeadFollowUpGroupByOutputType = {
+    id: string
+    leadId: string
+    followUpDate: Date
+    followUpType: string
+    notes: string
+    nextFollowUpDate: Date | null
+    createdById: string
+    createdAt: Date
+    updatedAt: Date
+    _count: LeadFollowUpCountAggregateOutputType | null
+    _min: LeadFollowUpMinAggregateOutputType | null
+    _max: LeadFollowUpMaxAggregateOutputType | null
+  }
+
+  type GetLeadFollowUpGroupByPayload<T extends LeadFollowUpGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<LeadFollowUpGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof LeadFollowUpGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], LeadFollowUpGroupByOutputType[P]>
+            : GetScalarType<T[P], LeadFollowUpGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type LeadFollowUpSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    leadId?: boolean
+    followUpDate?: boolean
+    followUpType?: boolean
+    notes?: boolean
+    nextFollowUpDate?: boolean
+    createdById?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["leadFollowUp"]>
+
+  export type LeadFollowUpSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    leadId?: boolean
+    followUpDate?: boolean
+    followUpType?: boolean
+    notes?: boolean
+    nextFollowUpDate?: boolean
+    createdById?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["leadFollowUp"]>
+
+  export type LeadFollowUpSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    leadId?: boolean
+    followUpDate?: boolean
+    followUpType?: boolean
+    notes?: boolean
+    nextFollowUpDate?: boolean
+    createdById?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["leadFollowUp"]>
+
+  export type LeadFollowUpSelectScalar = {
+    id?: boolean
+    leadId?: boolean
+    followUpDate?: boolean
+    followUpType?: boolean
+    notes?: boolean
+    nextFollowUpDate?: boolean
+    createdById?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type LeadFollowUpOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "leadId" | "followUpDate" | "followUpType" | "notes" | "nextFollowUpDate" | "createdById" | "createdAt" | "updatedAt", ExtArgs["result"]["leadFollowUp"]>
+  export type LeadFollowUpInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type LeadFollowUpIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type LeadFollowUpIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $LeadFollowUpPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "LeadFollowUp"
+    objects: {
+      lead: Prisma.$LeadPayload<ExtArgs>
+      createdBy: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      leadId: string
+      followUpDate: Date
+      followUpType: string
+      notes: string
+      nextFollowUpDate: Date | null
+      createdById: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["leadFollowUp"]>
+    composites: {}
+  }
+
+  type LeadFollowUpGetPayload<S extends boolean | null | undefined | LeadFollowUpDefaultArgs> = $Result.GetResult<Prisma.$LeadFollowUpPayload, S>
+
+  type LeadFollowUpCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<LeadFollowUpFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: LeadFollowUpCountAggregateInputType | true
+    }
+
+  export interface LeadFollowUpDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['LeadFollowUp'], meta: { name: 'LeadFollowUp' } }
+    /**
+     * Find zero or one LeadFollowUp that matches the filter.
+     * @param {LeadFollowUpFindUniqueArgs} args - Arguments to find a LeadFollowUp
+     * @example
+     * // Get one LeadFollowUp
+     * const leadFollowUp = await prisma.leadFollowUp.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends LeadFollowUpFindUniqueArgs>(args: SelectSubset<T, LeadFollowUpFindUniqueArgs<ExtArgs>>): Prisma__LeadFollowUpClient<$Result.GetResult<Prisma.$LeadFollowUpPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one LeadFollowUp that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {LeadFollowUpFindUniqueOrThrowArgs} args - Arguments to find a LeadFollowUp
+     * @example
+     * // Get one LeadFollowUp
+     * const leadFollowUp = await prisma.leadFollowUp.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends LeadFollowUpFindUniqueOrThrowArgs>(args: SelectSubset<T, LeadFollowUpFindUniqueOrThrowArgs<ExtArgs>>): Prisma__LeadFollowUpClient<$Result.GetResult<Prisma.$LeadFollowUpPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first LeadFollowUp that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LeadFollowUpFindFirstArgs} args - Arguments to find a LeadFollowUp
+     * @example
+     * // Get one LeadFollowUp
+     * const leadFollowUp = await prisma.leadFollowUp.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends LeadFollowUpFindFirstArgs>(args?: SelectSubset<T, LeadFollowUpFindFirstArgs<ExtArgs>>): Prisma__LeadFollowUpClient<$Result.GetResult<Prisma.$LeadFollowUpPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first LeadFollowUp that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LeadFollowUpFindFirstOrThrowArgs} args - Arguments to find a LeadFollowUp
+     * @example
+     * // Get one LeadFollowUp
+     * const leadFollowUp = await prisma.leadFollowUp.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends LeadFollowUpFindFirstOrThrowArgs>(args?: SelectSubset<T, LeadFollowUpFindFirstOrThrowArgs<ExtArgs>>): Prisma__LeadFollowUpClient<$Result.GetResult<Prisma.$LeadFollowUpPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more LeadFollowUps that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LeadFollowUpFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all LeadFollowUps
+     * const leadFollowUps = await prisma.leadFollowUp.findMany()
+     * 
+     * // Get first 10 LeadFollowUps
+     * const leadFollowUps = await prisma.leadFollowUp.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const leadFollowUpWithIdOnly = await prisma.leadFollowUp.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends LeadFollowUpFindManyArgs>(args?: SelectSubset<T, LeadFollowUpFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadFollowUpPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a LeadFollowUp.
+     * @param {LeadFollowUpCreateArgs} args - Arguments to create a LeadFollowUp.
+     * @example
+     * // Create one LeadFollowUp
+     * const LeadFollowUp = await prisma.leadFollowUp.create({
+     *   data: {
+     *     // ... data to create a LeadFollowUp
+     *   }
+     * })
+     * 
+     */
+    create<T extends LeadFollowUpCreateArgs>(args: SelectSubset<T, LeadFollowUpCreateArgs<ExtArgs>>): Prisma__LeadFollowUpClient<$Result.GetResult<Prisma.$LeadFollowUpPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many LeadFollowUps.
+     * @param {LeadFollowUpCreateManyArgs} args - Arguments to create many LeadFollowUps.
+     * @example
+     * // Create many LeadFollowUps
+     * const leadFollowUp = await prisma.leadFollowUp.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends LeadFollowUpCreateManyArgs>(args?: SelectSubset<T, LeadFollowUpCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many LeadFollowUps and returns the data saved in the database.
+     * @param {LeadFollowUpCreateManyAndReturnArgs} args - Arguments to create many LeadFollowUps.
+     * @example
+     * // Create many LeadFollowUps
+     * const leadFollowUp = await prisma.leadFollowUp.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many LeadFollowUps and only return the `id`
+     * const leadFollowUpWithIdOnly = await prisma.leadFollowUp.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends LeadFollowUpCreateManyAndReturnArgs>(args?: SelectSubset<T, LeadFollowUpCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadFollowUpPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a LeadFollowUp.
+     * @param {LeadFollowUpDeleteArgs} args - Arguments to delete one LeadFollowUp.
+     * @example
+     * // Delete one LeadFollowUp
+     * const LeadFollowUp = await prisma.leadFollowUp.delete({
+     *   where: {
+     *     // ... filter to delete one LeadFollowUp
+     *   }
+     * })
+     * 
+     */
+    delete<T extends LeadFollowUpDeleteArgs>(args: SelectSubset<T, LeadFollowUpDeleteArgs<ExtArgs>>): Prisma__LeadFollowUpClient<$Result.GetResult<Prisma.$LeadFollowUpPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one LeadFollowUp.
+     * @param {LeadFollowUpUpdateArgs} args - Arguments to update one LeadFollowUp.
+     * @example
+     * // Update one LeadFollowUp
+     * const leadFollowUp = await prisma.leadFollowUp.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends LeadFollowUpUpdateArgs>(args: SelectSubset<T, LeadFollowUpUpdateArgs<ExtArgs>>): Prisma__LeadFollowUpClient<$Result.GetResult<Prisma.$LeadFollowUpPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more LeadFollowUps.
+     * @param {LeadFollowUpDeleteManyArgs} args - Arguments to filter LeadFollowUps to delete.
+     * @example
+     * // Delete a few LeadFollowUps
+     * const { count } = await prisma.leadFollowUp.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends LeadFollowUpDeleteManyArgs>(args?: SelectSubset<T, LeadFollowUpDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more LeadFollowUps.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LeadFollowUpUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many LeadFollowUps
+     * const leadFollowUp = await prisma.leadFollowUp.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends LeadFollowUpUpdateManyArgs>(args: SelectSubset<T, LeadFollowUpUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more LeadFollowUps and returns the data updated in the database.
+     * @param {LeadFollowUpUpdateManyAndReturnArgs} args - Arguments to update many LeadFollowUps.
+     * @example
+     * // Update many LeadFollowUps
+     * const leadFollowUp = await prisma.leadFollowUp.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more LeadFollowUps and only return the `id`
+     * const leadFollowUpWithIdOnly = await prisma.leadFollowUp.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends LeadFollowUpUpdateManyAndReturnArgs>(args: SelectSubset<T, LeadFollowUpUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadFollowUpPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one LeadFollowUp.
+     * @param {LeadFollowUpUpsertArgs} args - Arguments to update or create a LeadFollowUp.
+     * @example
+     * // Update or create a LeadFollowUp
+     * const leadFollowUp = await prisma.leadFollowUp.upsert({
+     *   create: {
+     *     // ... data to create a LeadFollowUp
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the LeadFollowUp we want to update
+     *   }
+     * })
+     */
+    upsert<T extends LeadFollowUpUpsertArgs>(args: SelectSubset<T, LeadFollowUpUpsertArgs<ExtArgs>>): Prisma__LeadFollowUpClient<$Result.GetResult<Prisma.$LeadFollowUpPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of LeadFollowUps.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LeadFollowUpCountArgs} args - Arguments to filter LeadFollowUps to count.
+     * @example
+     * // Count the number of LeadFollowUps
+     * const count = await prisma.leadFollowUp.count({
+     *   where: {
+     *     // ... the filter for the LeadFollowUps we want to count
+     *   }
+     * })
+    **/
+    count<T extends LeadFollowUpCountArgs>(
+      args?: Subset<T, LeadFollowUpCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], LeadFollowUpCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a LeadFollowUp.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LeadFollowUpAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends LeadFollowUpAggregateArgs>(args: Subset<T, LeadFollowUpAggregateArgs>): Prisma.PrismaPromise<GetLeadFollowUpAggregateType<T>>
+
+    /**
+     * Group by LeadFollowUp.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LeadFollowUpGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends LeadFollowUpGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: LeadFollowUpGroupByArgs['orderBy'] }
+        : { orderBy?: LeadFollowUpGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, LeadFollowUpGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetLeadFollowUpGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the LeadFollowUp model
+   */
+  readonly fields: LeadFollowUpFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for LeadFollowUp.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__LeadFollowUpClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    lead<T extends LeadDefaultArgs<ExtArgs> = {}>(args?: Subset<T, LeadDefaultArgs<ExtArgs>>): Prisma__LeadClient<$Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    createdBy<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the LeadFollowUp model
+   */
+  interface LeadFollowUpFieldRefs {
+    readonly id: FieldRef<"LeadFollowUp", 'String'>
+    readonly leadId: FieldRef<"LeadFollowUp", 'String'>
+    readonly followUpDate: FieldRef<"LeadFollowUp", 'DateTime'>
+    readonly followUpType: FieldRef<"LeadFollowUp", 'String'>
+    readonly notes: FieldRef<"LeadFollowUp", 'String'>
+    readonly nextFollowUpDate: FieldRef<"LeadFollowUp", 'DateTime'>
+    readonly createdById: FieldRef<"LeadFollowUp", 'String'>
+    readonly createdAt: FieldRef<"LeadFollowUp", 'DateTime'>
+    readonly updatedAt: FieldRef<"LeadFollowUp", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * LeadFollowUp findUnique
+   */
+  export type LeadFollowUpFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadFollowUp
+     */
+    select?: LeadFollowUpSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadFollowUp
+     */
+    omit?: LeadFollowUpOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadFollowUpInclude<ExtArgs> | null
+    /**
+     * Filter, which LeadFollowUp to fetch.
+     */
+    where: LeadFollowUpWhereUniqueInput
+  }
+
+  /**
+   * LeadFollowUp findUniqueOrThrow
+   */
+  export type LeadFollowUpFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadFollowUp
+     */
+    select?: LeadFollowUpSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadFollowUp
+     */
+    omit?: LeadFollowUpOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadFollowUpInclude<ExtArgs> | null
+    /**
+     * Filter, which LeadFollowUp to fetch.
+     */
+    where: LeadFollowUpWhereUniqueInput
+  }
+
+  /**
+   * LeadFollowUp findFirst
+   */
+  export type LeadFollowUpFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadFollowUp
+     */
+    select?: LeadFollowUpSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadFollowUp
+     */
+    omit?: LeadFollowUpOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadFollowUpInclude<ExtArgs> | null
+    /**
+     * Filter, which LeadFollowUp to fetch.
+     */
+    where?: LeadFollowUpWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LeadFollowUps to fetch.
+     */
+    orderBy?: LeadFollowUpOrderByWithRelationInput | LeadFollowUpOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for LeadFollowUps.
+     */
+    cursor?: LeadFollowUpWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LeadFollowUps from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LeadFollowUps.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of LeadFollowUps.
+     */
+    distinct?: LeadFollowUpScalarFieldEnum | LeadFollowUpScalarFieldEnum[]
+  }
+
+  /**
+   * LeadFollowUp findFirstOrThrow
+   */
+  export type LeadFollowUpFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadFollowUp
+     */
+    select?: LeadFollowUpSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadFollowUp
+     */
+    omit?: LeadFollowUpOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadFollowUpInclude<ExtArgs> | null
+    /**
+     * Filter, which LeadFollowUp to fetch.
+     */
+    where?: LeadFollowUpWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LeadFollowUps to fetch.
+     */
+    orderBy?: LeadFollowUpOrderByWithRelationInput | LeadFollowUpOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for LeadFollowUps.
+     */
+    cursor?: LeadFollowUpWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LeadFollowUps from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LeadFollowUps.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of LeadFollowUps.
+     */
+    distinct?: LeadFollowUpScalarFieldEnum | LeadFollowUpScalarFieldEnum[]
+  }
+
+  /**
+   * LeadFollowUp findMany
+   */
+  export type LeadFollowUpFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadFollowUp
+     */
+    select?: LeadFollowUpSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadFollowUp
+     */
+    omit?: LeadFollowUpOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadFollowUpInclude<ExtArgs> | null
+    /**
+     * Filter, which LeadFollowUps to fetch.
+     */
+    where?: LeadFollowUpWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LeadFollowUps to fetch.
+     */
+    orderBy?: LeadFollowUpOrderByWithRelationInput | LeadFollowUpOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing LeadFollowUps.
+     */
+    cursor?: LeadFollowUpWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LeadFollowUps from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LeadFollowUps.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of LeadFollowUps.
+     */
+    distinct?: LeadFollowUpScalarFieldEnum | LeadFollowUpScalarFieldEnum[]
+  }
+
+  /**
+   * LeadFollowUp create
+   */
+  export type LeadFollowUpCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadFollowUp
+     */
+    select?: LeadFollowUpSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadFollowUp
+     */
+    omit?: LeadFollowUpOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadFollowUpInclude<ExtArgs> | null
+    /**
+     * The data needed to create a LeadFollowUp.
+     */
+    data: XOR<LeadFollowUpCreateInput, LeadFollowUpUncheckedCreateInput>
+  }
+
+  /**
+   * LeadFollowUp createMany
+   */
+  export type LeadFollowUpCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many LeadFollowUps.
+     */
+    data: LeadFollowUpCreateManyInput | LeadFollowUpCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * LeadFollowUp createManyAndReturn
+   */
+  export type LeadFollowUpCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadFollowUp
+     */
+    select?: LeadFollowUpSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadFollowUp
+     */
+    omit?: LeadFollowUpOmit<ExtArgs> | null
+    /**
+     * The data used to create many LeadFollowUps.
+     */
+    data: LeadFollowUpCreateManyInput | LeadFollowUpCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadFollowUpIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * LeadFollowUp update
+   */
+  export type LeadFollowUpUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadFollowUp
+     */
+    select?: LeadFollowUpSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadFollowUp
+     */
+    omit?: LeadFollowUpOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadFollowUpInclude<ExtArgs> | null
+    /**
+     * The data needed to update a LeadFollowUp.
+     */
+    data: XOR<LeadFollowUpUpdateInput, LeadFollowUpUncheckedUpdateInput>
+    /**
+     * Choose, which LeadFollowUp to update.
+     */
+    where: LeadFollowUpWhereUniqueInput
+  }
+
+  /**
+   * LeadFollowUp updateMany
+   */
+  export type LeadFollowUpUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update LeadFollowUps.
+     */
+    data: XOR<LeadFollowUpUpdateManyMutationInput, LeadFollowUpUncheckedUpdateManyInput>
+    /**
+     * Filter which LeadFollowUps to update
+     */
+    where?: LeadFollowUpWhereInput
+    /**
+     * Limit how many LeadFollowUps to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * LeadFollowUp updateManyAndReturn
+   */
+  export type LeadFollowUpUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadFollowUp
+     */
+    select?: LeadFollowUpSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadFollowUp
+     */
+    omit?: LeadFollowUpOmit<ExtArgs> | null
+    /**
+     * The data used to update LeadFollowUps.
+     */
+    data: XOR<LeadFollowUpUpdateManyMutationInput, LeadFollowUpUncheckedUpdateManyInput>
+    /**
+     * Filter which LeadFollowUps to update
+     */
+    where?: LeadFollowUpWhereInput
+    /**
+     * Limit how many LeadFollowUps to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadFollowUpIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * LeadFollowUp upsert
+   */
+  export type LeadFollowUpUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadFollowUp
+     */
+    select?: LeadFollowUpSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadFollowUp
+     */
+    omit?: LeadFollowUpOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadFollowUpInclude<ExtArgs> | null
+    /**
+     * The filter to search for the LeadFollowUp to update in case it exists.
+     */
+    where: LeadFollowUpWhereUniqueInput
+    /**
+     * In case the LeadFollowUp found by the `where` argument doesn't exist, create a new LeadFollowUp with this data.
+     */
+    create: XOR<LeadFollowUpCreateInput, LeadFollowUpUncheckedCreateInput>
+    /**
+     * In case the LeadFollowUp was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<LeadFollowUpUpdateInput, LeadFollowUpUncheckedUpdateInput>
+  }
+
+  /**
+   * LeadFollowUp delete
+   */
+  export type LeadFollowUpDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadFollowUp
+     */
+    select?: LeadFollowUpSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadFollowUp
+     */
+    omit?: LeadFollowUpOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadFollowUpInclude<ExtArgs> | null
+    /**
+     * Filter which LeadFollowUp to delete.
+     */
+    where: LeadFollowUpWhereUniqueInput
+  }
+
+  /**
+   * LeadFollowUp deleteMany
+   */
+  export type LeadFollowUpDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which LeadFollowUps to delete
+     */
+    where?: LeadFollowUpWhereInput
+    /**
+     * Limit how many LeadFollowUps to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * LeadFollowUp without action
+   */
+  export type LeadFollowUpDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadFollowUp
+     */
+    select?: LeadFollowUpSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadFollowUp
+     */
+    omit?: LeadFollowUpOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadFollowUpInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model LeadStageHistory
+   */
+
+  export type AggregateLeadStageHistory = {
+    _count: LeadStageHistoryCountAggregateOutputType | null
+    _min: LeadStageHistoryMinAggregateOutputType | null
+    _max: LeadStageHistoryMaxAggregateOutputType | null
+  }
+
+  export type LeadStageHistoryMinAggregateOutputType = {
+    id: string | null
+    leadId: string | null
+    fromStage: $Enums.LeadStage | null
+    toStage: $Enums.LeadStage | null
+    createdById: string | null
+    createdAt: Date | null
+  }
+
+  export type LeadStageHistoryMaxAggregateOutputType = {
+    id: string | null
+    leadId: string | null
+    fromStage: $Enums.LeadStage | null
+    toStage: $Enums.LeadStage | null
+    createdById: string | null
+    createdAt: Date | null
+  }
+
+  export type LeadStageHistoryCountAggregateOutputType = {
+    id: number
+    leadId: number
+    fromStage: number
+    toStage: number
+    createdById: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type LeadStageHistoryMinAggregateInputType = {
+    id?: true
+    leadId?: true
+    fromStage?: true
+    toStage?: true
+    createdById?: true
+    createdAt?: true
+  }
+
+  export type LeadStageHistoryMaxAggregateInputType = {
+    id?: true
+    leadId?: true
+    fromStage?: true
+    toStage?: true
+    createdById?: true
+    createdAt?: true
+  }
+
+  export type LeadStageHistoryCountAggregateInputType = {
+    id?: true
+    leadId?: true
+    fromStage?: true
+    toStage?: true
+    createdById?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type LeadStageHistoryAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which LeadStageHistory to aggregate.
+     */
+    where?: LeadStageHistoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LeadStageHistories to fetch.
+     */
+    orderBy?: LeadStageHistoryOrderByWithRelationInput | LeadStageHistoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: LeadStageHistoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LeadStageHistories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LeadStageHistories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned LeadStageHistories
+    **/
+    _count?: true | LeadStageHistoryCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: LeadStageHistoryMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: LeadStageHistoryMaxAggregateInputType
+  }
+
+  export type GetLeadStageHistoryAggregateType<T extends LeadStageHistoryAggregateArgs> = {
+        [P in keyof T & keyof AggregateLeadStageHistory]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateLeadStageHistory[P]>
+      : GetScalarType<T[P], AggregateLeadStageHistory[P]>
+  }
+
+
+
+
+  export type LeadStageHistoryGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LeadStageHistoryWhereInput
+    orderBy?: LeadStageHistoryOrderByWithAggregationInput | LeadStageHistoryOrderByWithAggregationInput[]
+    by: LeadStageHistoryScalarFieldEnum[] | LeadStageHistoryScalarFieldEnum
+    having?: LeadStageHistoryScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: LeadStageHistoryCountAggregateInputType | true
+    _min?: LeadStageHistoryMinAggregateInputType
+    _max?: LeadStageHistoryMaxAggregateInputType
+  }
+
+  export type LeadStageHistoryGroupByOutputType = {
+    id: string
+    leadId: string
+    fromStage: $Enums.LeadStage | null
+    toStage: $Enums.LeadStage
+    createdById: string
+    createdAt: Date
+    _count: LeadStageHistoryCountAggregateOutputType | null
+    _min: LeadStageHistoryMinAggregateOutputType | null
+    _max: LeadStageHistoryMaxAggregateOutputType | null
+  }
+
+  type GetLeadStageHistoryGroupByPayload<T extends LeadStageHistoryGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<LeadStageHistoryGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof LeadStageHistoryGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], LeadStageHistoryGroupByOutputType[P]>
+            : GetScalarType<T[P], LeadStageHistoryGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type LeadStageHistorySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    leadId?: boolean
+    fromStage?: boolean
+    toStage?: boolean
+    createdById?: boolean
+    createdAt?: boolean
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["leadStageHistory"]>
+
+  export type LeadStageHistorySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    leadId?: boolean
+    fromStage?: boolean
+    toStage?: boolean
+    createdById?: boolean
+    createdAt?: boolean
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["leadStageHistory"]>
+
+  export type LeadStageHistorySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    leadId?: boolean
+    fromStage?: boolean
+    toStage?: boolean
+    createdById?: boolean
+    createdAt?: boolean
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["leadStageHistory"]>
+
+  export type LeadStageHistorySelectScalar = {
+    id?: boolean
+    leadId?: boolean
+    fromStage?: boolean
+    toStage?: boolean
+    createdById?: boolean
+    createdAt?: boolean
+  }
+
+  export type LeadStageHistoryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "leadId" | "fromStage" | "toStage" | "createdById" | "createdAt", ExtArgs["result"]["leadStageHistory"]>
+  export type LeadStageHistoryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type LeadStageHistoryIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type LeadStageHistoryIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $LeadStageHistoryPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "LeadStageHistory"
+    objects: {
+      lead: Prisma.$LeadPayload<ExtArgs>
+      createdBy: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      leadId: string
+      fromStage: $Enums.LeadStage | null
+      toStage: $Enums.LeadStage
+      createdById: string
+      createdAt: Date
+    }, ExtArgs["result"]["leadStageHistory"]>
+    composites: {}
+  }
+
+  type LeadStageHistoryGetPayload<S extends boolean | null | undefined | LeadStageHistoryDefaultArgs> = $Result.GetResult<Prisma.$LeadStageHistoryPayload, S>
+
+  type LeadStageHistoryCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<LeadStageHistoryFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: LeadStageHistoryCountAggregateInputType | true
+    }
+
+  export interface LeadStageHistoryDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['LeadStageHistory'], meta: { name: 'LeadStageHistory' } }
+    /**
+     * Find zero or one LeadStageHistory that matches the filter.
+     * @param {LeadStageHistoryFindUniqueArgs} args - Arguments to find a LeadStageHistory
+     * @example
+     * // Get one LeadStageHistory
+     * const leadStageHistory = await prisma.leadStageHistory.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends LeadStageHistoryFindUniqueArgs>(args: SelectSubset<T, LeadStageHistoryFindUniqueArgs<ExtArgs>>): Prisma__LeadStageHistoryClient<$Result.GetResult<Prisma.$LeadStageHistoryPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one LeadStageHistory that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {LeadStageHistoryFindUniqueOrThrowArgs} args - Arguments to find a LeadStageHistory
+     * @example
+     * // Get one LeadStageHistory
+     * const leadStageHistory = await prisma.leadStageHistory.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends LeadStageHistoryFindUniqueOrThrowArgs>(args: SelectSubset<T, LeadStageHistoryFindUniqueOrThrowArgs<ExtArgs>>): Prisma__LeadStageHistoryClient<$Result.GetResult<Prisma.$LeadStageHistoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first LeadStageHistory that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LeadStageHistoryFindFirstArgs} args - Arguments to find a LeadStageHistory
+     * @example
+     * // Get one LeadStageHistory
+     * const leadStageHistory = await prisma.leadStageHistory.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends LeadStageHistoryFindFirstArgs>(args?: SelectSubset<T, LeadStageHistoryFindFirstArgs<ExtArgs>>): Prisma__LeadStageHistoryClient<$Result.GetResult<Prisma.$LeadStageHistoryPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first LeadStageHistory that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LeadStageHistoryFindFirstOrThrowArgs} args - Arguments to find a LeadStageHistory
+     * @example
+     * // Get one LeadStageHistory
+     * const leadStageHistory = await prisma.leadStageHistory.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends LeadStageHistoryFindFirstOrThrowArgs>(args?: SelectSubset<T, LeadStageHistoryFindFirstOrThrowArgs<ExtArgs>>): Prisma__LeadStageHistoryClient<$Result.GetResult<Prisma.$LeadStageHistoryPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more LeadStageHistories that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LeadStageHistoryFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all LeadStageHistories
+     * const leadStageHistories = await prisma.leadStageHistory.findMany()
+     * 
+     * // Get first 10 LeadStageHistories
+     * const leadStageHistories = await prisma.leadStageHistory.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const leadStageHistoryWithIdOnly = await prisma.leadStageHistory.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends LeadStageHistoryFindManyArgs>(args?: SelectSubset<T, LeadStageHistoryFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadStageHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a LeadStageHistory.
+     * @param {LeadStageHistoryCreateArgs} args - Arguments to create a LeadStageHistory.
+     * @example
+     * // Create one LeadStageHistory
+     * const LeadStageHistory = await prisma.leadStageHistory.create({
+     *   data: {
+     *     // ... data to create a LeadStageHistory
+     *   }
+     * })
+     * 
+     */
+    create<T extends LeadStageHistoryCreateArgs>(args: SelectSubset<T, LeadStageHistoryCreateArgs<ExtArgs>>): Prisma__LeadStageHistoryClient<$Result.GetResult<Prisma.$LeadStageHistoryPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many LeadStageHistories.
+     * @param {LeadStageHistoryCreateManyArgs} args - Arguments to create many LeadStageHistories.
+     * @example
+     * // Create many LeadStageHistories
+     * const leadStageHistory = await prisma.leadStageHistory.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends LeadStageHistoryCreateManyArgs>(args?: SelectSubset<T, LeadStageHistoryCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many LeadStageHistories and returns the data saved in the database.
+     * @param {LeadStageHistoryCreateManyAndReturnArgs} args - Arguments to create many LeadStageHistories.
+     * @example
+     * // Create many LeadStageHistories
+     * const leadStageHistory = await prisma.leadStageHistory.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many LeadStageHistories and only return the `id`
+     * const leadStageHistoryWithIdOnly = await prisma.leadStageHistory.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends LeadStageHistoryCreateManyAndReturnArgs>(args?: SelectSubset<T, LeadStageHistoryCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadStageHistoryPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a LeadStageHistory.
+     * @param {LeadStageHistoryDeleteArgs} args - Arguments to delete one LeadStageHistory.
+     * @example
+     * // Delete one LeadStageHistory
+     * const LeadStageHistory = await prisma.leadStageHistory.delete({
+     *   where: {
+     *     // ... filter to delete one LeadStageHistory
+     *   }
+     * })
+     * 
+     */
+    delete<T extends LeadStageHistoryDeleteArgs>(args: SelectSubset<T, LeadStageHistoryDeleteArgs<ExtArgs>>): Prisma__LeadStageHistoryClient<$Result.GetResult<Prisma.$LeadStageHistoryPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one LeadStageHistory.
+     * @param {LeadStageHistoryUpdateArgs} args - Arguments to update one LeadStageHistory.
+     * @example
+     * // Update one LeadStageHistory
+     * const leadStageHistory = await prisma.leadStageHistory.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends LeadStageHistoryUpdateArgs>(args: SelectSubset<T, LeadStageHistoryUpdateArgs<ExtArgs>>): Prisma__LeadStageHistoryClient<$Result.GetResult<Prisma.$LeadStageHistoryPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more LeadStageHistories.
+     * @param {LeadStageHistoryDeleteManyArgs} args - Arguments to filter LeadStageHistories to delete.
+     * @example
+     * // Delete a few LeadStageHistories
+     * const { count } = await prisma.leadStageHistory.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends LeadStageHistoryDeleteManyArgs>(args?: SelectSubset<T, LeadStageHistoryDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more LeadStageHistories.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LeadStageHistoryUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many LeadStageHistories
+     * const leadStageHistory = await prisma.leadStageHistory.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends LeadStageHistoryUpdateManyArgs>(args: SelectSubset<T, LeadStageHistoryUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more LeadStageHistories and returns the data updated in the database.
+     * @param {LeadStageHistoryUpdateManyAndReturnArgs} args - Arguments to update many LeadStageHistories.
+     * @example
+     * // Update many LeadStageHistories
+     * const leadStageHistory = await prisma.leadStageHistory.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more LeadStageHistories and only return the `id`
+     * const leadStageHistoryWithIdOnly = await prisma.leadStageHistory.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends LeadStageHistoryUpdateManyAndReturnArgs>(args: SelectSubset<T, LeadStageHistoryUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadStageHistoryPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one LeadStageHistory.
+     * @param {LeadStageHistoryUpsertArgs} args - Arguments to update or create a LeadStageHistory.
+     * @example
+     * // Update or create a LeadStageHistory
+     * const leadStageHistory = await prisma.leadStageHistory.upsert({
+     *   create: {
+     *     // ... data to create a LeadStageHistory
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the LeadStageHistory we want to update
+     *   }
+     * })
+     */
+    upsert<T extends LeadStageHistoryUpsertArgs>(args: SelectSubset<T, LeadStageHistoryUpsertArgs<ExtArgs>>): Prisma__LeadStageHistoryClient<$Result.GetResult<Prisma.$LeadStageHistoryPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of LeadStageHistories.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LeadStageHistoryCountArgs} args - Arguments to filter LeadStageHistories to count.
+     * @example
+     * // Count the number of LeadStageHistories
+     * const count = await prisma.leadStageHistory.count({
+     *   where: {
+     *     // ... the filter for the LeadStageHistories we want to count
+     *   }
+     * })
+    **/
+    count<T extends LeadStageHistoryCountArgs>(
+      args?: Subset<T, LeadStageHistoryCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], LeadStageHistoryCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a LeadStageHistory.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LeadStageHistoryAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends LeadStageHistoryAggregateArgs>(args: Subset<T, LeadStageHistoryAggregateArgs>): Prisma.PrismaPromise<GetLeadStageHistoryAggregateType<T>>
+
+    /**
+     * Group by LeadStageHistory.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LeadStageHistoryGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends LeadStageHistoryGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: LeadStageHistoryGroupByArgs['orderBy'] }
+        : { orderBy?: LeadStageHistoryGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, LeadStageHistoryGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetLeadStageHistoryGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the LeadStageHistory model
+   */
+  readonly fields: LeadStageHistoryFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for LeadStageHistory.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__LeadStageHistoryClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    lead<T extends LeadDefaultArgs<ExtArgs> = {}>(args?: Subset<T, LeadDefaultArgs<ExtArgs>>): Prisma__LeadClient<$Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    createdBy<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the LeadStageHistory model
+   */
+  interface LeadStageHistoryFieldRefs {
+    readonly id: FieldRef<"LeadStageHistory", 'String'>
+    readonly leadId: FieldRef<"LeadStageHistory", 'String'>
+    readonly fromStage: FieldRef<"LeadStageHistory", 'LeadStage'>
+    readonly toStage: FieldRef<"LeadStageHistory", 'LeadStage'>
+    readonly createdById: FieldRef<"LeadStageHistory", 'String'>
+    readonly createdAt: FieldRef<"LeadStageHistory", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * LeadStageHistory findUnique
+   */
+  export type LeadStageHistoryFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadStageHistory
+     */
+    select?: LeadStageHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadStageHistory
+     */
+    omit?: LeadStageHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadStageHistoryInclude<ExtArgs> | null
+    /**
+     * Filter, which LeadStageHistory to fetch.
+     */
+    where: LeadStageHistoryWhereUniqueInput
+  }
+
+  /**
+   * LeadStageHistory findUniqueOrThrow
+   */
+  export type LeadStageHistoryFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadStageHistory
+     */
+    select?: LeadStageHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadStageHistory
+     */
+    omit?: LeadStageHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadStageHistoryInclude<ExtArgs> | null
+    /**
+     * Filter, which LeadStageHistory to fetch.
+     */
+    where: LeadStageHistoryWhereUniqueInput
+  }
+
+  /**
+   * LeadStageHistory findFirst
+   */
+  export type LeadStageHistoryFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadStageHistory
+     */
+    select?: LeadStageHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadStageHistory
+     */
+    omit?: LeadStageHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadStageHistoryInclude<ExtArgs> | null
+    /**
+     * Filter, which LeadStageHistory to fetch.
+     */
+    where?: LeadStageHistoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LeadStageHistories to fetch.
+     */
+    orderBy?: LeadStageHistoryOrderByWithRelationInput | LeadStageHistoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for LeadStageHistories.
+     */
+    cursor?: LeadStageHistoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LeadStageHistories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LeadStageHistories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of LeadStageHistories.
+     */
+    distinct?: LeadStageHistoryScalarFieldEnum | LeadStageHistoryScalarFieldEnum[]
+  }
+
+  /**
+   * LeadStageHistory findFirstOrThrow
+   */
+  export type LeadStageHistoryFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadStageHistory
+     */
+    select?: LeadStageHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadStageHistory
+     */
+    omit?: LeadStageHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadStageHistoryInclude<ExtArgs> | null
+    /**
+     * Filter, which LeadStageHistory to fetch.
+     */
+    where?: LeadStageHistoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LeadStageHistories to fetch.
+     */
+    orderBy?: LeadStageHistoryOrderByWithRelationInput | LeadStageHistoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for LeadStageHistories.
+     */
+    cursor?: LeadStageHistoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LeadStageHistories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LeadStageHistories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of LeadStageHistories.
+     */
+    distinct?: LeadStageHistoryScalarFieldEnum | LeadStageHistoryScalarFieldEnum[]
+  }
+
+  /**
+   * LeadStageHistory findMany
+   */
+  export type LeadStageHistoryFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadStageHistory
+     */
+    select?: LeadStageHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadStageHistory
+     */
+    omit?: LeadStageHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadStageHistoryInclude<ExtArgs> | null
+    /**
+     * Filter, which LeadStageHistories to fetch.
+     */
+    where?: LeadStageHistoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LeadStageHistories to fetch.
+     */
+    orderBy?: LeadStageHistoryOrderByWithRelationInput | LeadStageHistoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing LeadStageHistories.
+     */
+    cursor?: LeadStageHistoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LeadStageHistories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LeadStageHistories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of LeadStageHistories.
+     */
+    distinct?: LeadStageHistoryScalarFieldEnum | LeadStageHistoryScalarFieldEnum[]
+  }
+
+  /**
+   * LeadStageHistory create
+   */
+  export type LeadStageHistoryCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadStageHistory
+     */
+    select?: LeadStageHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadStageHistory
+     */
+    omit?: LeadStageHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadStageHistoryInclude<ExtArgs> | null
+    /**
+     * The data needed to create a LeadStageHistory.
+     */
+    data: XOR<LeadStageHistoryCreateInput, LeadStageHistoryUncheckedCreateInput>
+  }
+
+  /**
+   * LeadStageHistory createMany
+   */
+  export type LeadStageHistoryCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many LeadStageHistories.
+     */
+    data: LeadStageHistoryCreateManyInput | LeadStageHistoryCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * LeadStageHistory createManyAndReturn
+   */
+  export type LeadStageHistoryCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadStageHistory
+     */
+    select?: LeadStageHistorySelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadStageHistory
+     */
+    omit?: LeadStageHistoryOmit<ExtArgs> | null
+    /**
+     * The data used to create many LeadStageHistories.
+     */
+    data: LeadStageHistoryCreateManyInput | LeadStageHistoryCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadStageHistoryIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * LeadStageHistory update
+   */
+  export type LeadStageHistoryUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadStageHistory
+     */
+    select?: LeadStageHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadStageHistory
+     */
+    omit?: LeadStageHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadStageHistoryInclude<ExtArgs> | null
+    /**
+     * The data needed to update a LeadStageHistory.
+     */
+    data: XOR<LeadStageHistoryUpdateInput, LeadStageHistoryUncheckedUpdateInput>
+    /**
+     * Choose, which LeadStageHistory to update.
+     */
+    where: LeadStageHistoryWhereUniqueInput
+  }
+
+  /**
+   * LeadStageHistory updateMany
+   */
+  export type LeadStageHistoryUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update LeadStageHistories.
+     */
+    data: XOR<LeadStageHistoryUpdateManyMutationInput, LeadStageHistoryUncheckedUpdateManyInput>
+    /**
+     * Filter which LeadStageHistories to update
+     */
+    where?: LeadStageHistoryWhereInput
+    /**
+     * Limit how many LeadStageHistories to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * LeadStageHistory updateManyAndReturn
+   */
+  export type LeadStageHistoryUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadStageHistory
+     */
+    select?: LeadStageHistorySelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadStageHistory
+     */
+    omit?: LeadStageHistoryOmit<ExtArgs> | null
+    /**
+     * The data used to update LeadStageHistories.
+     */
+    data: XOR<LeadStageHistoryUpdateManyMutationInput, LeadStageHistoryUncheckedUpdateManyInput>
+    /**
+     * Filter which LeadStageHistories to update
+     */
+    where?: LeadStageHistoryWhereInput
+    /**
+     * Limit how many LeadStageHistories to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadStageHistoryIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * LeadStageHistory upsert
+   */
+  export type LeadStageHistoryUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadStageHistory
+     */
+    select?: LeadStageHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadStageHistory
+     */
+    omit?: LeadStageHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadStageHistoryInclude<ExtArgs> | null
+    /**
+     * The filter to search for the LeadStageHistory to update in case it exists.
+     */
+    where: LeadStageHistoryWhereUniqueInput
+    /**
+     * In case the LeadStageHistory found by the `where` argument doesn't exist, create a new LeadStageHistory with this data.
+     */
+    create: XOR<LeadStageHistoryCreateInput, LeadStageHistoryUncheckedCreateInput>
+    /**
+     * In case the LeadStageHistory was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<LeadStageHistoryUpdateInput, LeadStageHistoryUncheckedUpdateInput>
+  }
+
+  /**
+   * LeadStageHistory delete
+   */
+  export type LeadStageHistoryDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadStageHistory
+     */
+    select?: LeadStageHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadStageHistory
+     */
+    omit?: LeadStageHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadStageHistoryInclude<ExtArgs> | null
+    /**
+     * Filter which LeadStageHistory to delete.
+     */
+    where: LeadStageHistoryWhereUniqueInput
+  }
+
+  /**
+   * LeadStageHistory deleteMany
+   */
+  export type LeadStageHistoryDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which LeadStageHistories to delete
+     */
+    where?: LeadStageHistoryWhereInput
+    /**
+     * Limit how many LeadStageHistories to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * LeadStageHistory without action
+   */
+  export type LeadStageHistoryDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadStageHistory
+     */
+    select?: LeadStageHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadStageHistory
+     */
+    omit?: LeadStageHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadStageHistoryInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model LeadActivity
+   */
+
+  export type AggregateLeadActivity = {
+    _count: LeadActivityCountAggregateOutputType | null
+    _min: LeadActivityMinAggregateOutputType | null
+    _max: LeadActivityMaxAggregateOutputType | null
+  }
+
+  export type LeadActivityMinAggregateOutputType = {
+    id: string | null
+    leadId: string | null
+    action: string | null
+    createdById: string | null
+    createdAt: Date | null
+  }
+
+  export type LeadActivityMaxAggregateOutputType = {
+    id: string | null
+    leadId: string | null
+    action: string | null
+    createdById: string | null
+    createdAt: Date | null
+  }
+
+  export type LeadActivityCountAggregateOutputType = {
+    id: number
+    leadId: number
+    action: number
+    previousValue: number
+    newValue: number
+    createdById: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type LeadActivityMinAggregateInputType = {
+    id?: true
+    leadId?: true
+    action?: true
+    createdById?: true
+    createdAt?: true
+  }
+
+  export type LeadActivityMaxAggregateInputType = {
+    id?: true
+    leadId?: true
+    action?: true
+    createdById?: true
+    createdAt?: true
+  }
+
+  export type LeadActivityCountAggregateInputType = {
+    id?: true
+    leadId?: true
+    action?: true
+    previousValue?: true
+    newValue?: true
+    createdById?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type LeadActivityAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which LeadActivity to aggregate.
+     */
+    where?: LeadActivityWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LeadActivities to fetch.
+     */
+    orderBy?: LeadActivityOrderByWithRelationInput | LeadActivityOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: LeadActivityWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LeadActivities from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LeadActivities.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned LeadActivities
+    **/
+    _count?: true | LeadActivityCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: LeadActivityMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: LeadActivityMaxAggregateInputType
+  }
+
+  export type GetLeadActivityAggregateType<T extends LeadActivityAggregateArgs> = {
+        [P in keyof T & keyof AggregateLeadActivity]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateLeadActivity[P]>
+      : GetScalarType<T[P], AggregateLeadActivity[P]>
+  }
+
+
+
+
+  export type LeadActivityGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LeadActivityWhereInput
+    orderBy?: LeadActivityOrderByWithAggregationInput | LeadActivityOrderByWithAggregationInput[]
+    by: LeadActivityScalarFieldEnum[] | LeadActivityScalarFieldEnum
+    having?: LeadActivityScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: LeadActivityCountAggregateInputType | true
+    _min?: LeadActivityMinAggregateInputType
+    _max?: LeadActivityMaxAggregateInputType
+  }
+
+  export type LeadActivityGroupByOutputType = {
+    id: string
+    leadId: string
+    action: string
+    previousValue: JsonValue | null
+    newValue: JsonValue | null
+    createdById: string
+    createdAt: Date
+    _count: LeadActivityCountAggregateOutputType | null
+    _min: LeadActivityMinAggregateOutputType | null
+    _max: LeadActivityMaxAggregateOutputType | null
+  }
+
+  type GetLeadActivityGroupByPayload<T extends LeadActivityGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<LeadActivityGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof LeadActivityGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], LeadActivityGroupByOutputType[P]>
+            : GetScalarType<T[P], LeadActivityGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type LeadActivitySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    leadId?: boolean
+    action?: boolean
+    previousValue?: boolean
+    newValue?: boolean
+    createdById?: boolean
+    createdAt?: boolean
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["leadActivity"]>
+
+  export type LeadActivitySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    leadId?: boolean
+    action?: boolean
+    previousValue?: boolean
+    newValue?: boolean
+    createdById?: boolean
+    createdAt?: boolean
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["leadActivity"]>
+
+  export type LeadActivitySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    leadId?: boolean
+    action?: boolean
+    previousValue?: boolean
+    newValue?: boolean
+    createdById?: boolean
+    createdAt?: boolean
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["leadActivity"]>
+
+  export type LeadActivitySelectScalar = {
+    id?: boolean
+    leadId?: boolean
+    action?: boolean
+    previousValue?: boolean
+    newValue?: boolean
+    createdById?: boolean
+    createdAt?: boolean
+  }
+
+  export type LeadActivityOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "leadId" | "action" | "previousValue" | "newValue" | "createdById" | "createdAt", ExtArgs["result"]["leadActivity"]>
+  export type LeadActivityInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type LeadActivityIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type LeadActivityIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $LeadActivityPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "LeadActivity"
+    objects: {
+      lead: Prisma.$LeadPayload<ExtArgs>
+      createdBy: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      leadId: string
+      action: string
+      previousValue: Prisma.JsonValue | null
+      newValue: Prisma.JsonValue | null
+      createdById: string
+      createdAt: Date
+    }, ExtArgs["result"]["leadActivity"]>
+    composites: {}
+  }
+
+  type LeadActivityGetPayload<S extends boolean | null | undefined | LeadActivityDefaultArgs> = $Result.GetResult<Prisma.$LeadActivityPayload, S>
+
+  type LeadActivityCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<LeadActivityFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: LeadActivityCountAggregateInputType | true
+    }
+
+  export interface LeadActivityDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['LeadActivity'], meta: { name: 'LeadActivity' } }
+    /**
+     * Find zero or one LeadActivity that matches the filter.
+     * @param {LeadActivityFindUniqueArgs} args - Arguments to find a LeadActivity
+     * @example
+     * // Get one LeadActivity
+     * const leadActivity = await prisma.leadActivity.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends LeadActivityFindUniqueArgs>(args: SelectSubset<T, LeadActivityFindUniqueArgs<ExtArgs>>): Prisma__LeadActivityClient<$Result.GetResult<Prisma.$LeadActivityPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one LeadActivity that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {LeadActivityFindUniqueOrThrowArgs} args - Arguments to find a LeadActivity
+     * @example
+     * // Get one LeadActivity
+     * const leadActivity = await prisma.leadActivity.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends LeadActivityFindUniqueOrThrowArgs>(args: SelectSubset<T, LeadActivityFindUniqueOrThrowArgs<ExtArgs>>): Prisma__LeadActivityClient<$Result.GetResult<Prisma.$LeadActivityPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first LeadActivity that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LeadActivityFindFirstArgs} args - Arguments to find a LeadActivity
+     * @example
+     * // Get one LeadActivity
+     * const leadActivity = await prisma.leadActivity.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends LeadActivityFindFirstArgs>(args?: SelectSubset<T, LeadActivityFindFirstArgs<ExtArgs>>): Prisma__LeadActivityClient<$Result.GetResult<Prisma.$LeadActivityPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first LeadActivity that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LeadActivityFindFirstOrThrowArgs} args - Arguments to find a LeadActivity
+     * @example
+     * // Get one LeadActivity
+     * const leadActivity = await prisma.leadActivity.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends LeadActivityFindFirstOrThrowArgs>(args?: SelectSubset<T, LeadActivityFindFirstOrThrowArgs<ExtArgs>>): Prisma__LeadActivityClient<$Result.GetResult<Prisma.$LeadActivityPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more LeadActivities that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LeadActivityFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all LeadActivities
+     * const leadActivities = await prisma.leadActivity.findMany()
+     * 
+     * // Get first 10 LeadActivities
+     * const leadActivities = await prisma.leadActivity.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const leadActivityWithIdOnly = await prisma.leadActivity.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends LeadActivityFindManyArgs>(args?: SelectSubset<T, LeadActivityFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadActivityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a LeadActivity.
+     * @param {LeadActivityCreateArgs} args - Arguments to create a LeadActivity.
+     * @example
+     * // Create one LeadActivity
+     * const LeadActivity = await prisma.leadActivity.create({
+     *   data: {
+     *     // ... data to create a LeadActivity
+     *   }
+     * })
+     * 
+     */
+    create<T extends LeadActivityCreateArgs>(args: SelectSubset<T, LeadActivityCreateArgs<ExtArgs>>): Prisma__LeadActivityClient<$Result.GetResult<Prisma.$LeadActivityPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many LeadActivities.
+     * @param {LeadActivityCreateManyArgs} args - Arguments to create many LeadActivities.
+     * @example
+     * // Create many LeadActivities
+     * const leadActivity = await prisma.leadActivity.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends LeadActivityCreateManyArgs>(args?: SelectSubset<T, LeadActivityCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many LeadActivities and returns the data saved in the database.
+     * @param {LeadActivityCreateManyAndReturnArgs} args - Arguments to create many LeadActivities.
+     * @example
+     * // Create many LeadActivities
+     * const leadActivity = await prisma.leadActivity.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many LeadActivities and only return the `id`
+     * const leadActivityWithIdOnly = await prisma.leadActivity.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends LeadActivityCreateManyAndReturnArgs>(args?: SelectSubset<T, LeadActivityCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadActivityPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a LeadActivity.
+     * @param {LeadActivityDeleteArgs} args - Arguments to delete one LeadActivity.
+     * @example
+     * // Delete one LeadActivity
+     * const LeadActivity = await prisma.leadActivity.delete({
+     *   where: {
+     *     // ... filter to delete one LeadActivity
+     *   }
+     * })
+     * 
+     */
+    delete<T extends LeadActivityDeleteArgs>(args: SelectSubset<T, LeadActivityDeleteArgs<ExtArgs>>): Prisma__LeadActivityClient<$Result.GetResult<Prisma.$LeadActivityPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one LeadActivity.
+     * @param {LeadActivityUpdateArgs} args - Arguments to update one LeadActivity.
+     * @example
+     * // Update one LeadActivity
+     * const leadActivity = await prisma.leadActivity.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends LeadActivityUpdateArgs>(args: SelectSubset<T, LeadActivityUpdateArgs<ExtArgs>>): Prisma__LeadActivityClient<$Result.GetResult<Prisma.$LeadActivityPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more LeadActivities.
+     * @param {LeadActivityDeleteManyArgs} args - Arguments to filter LeadActivities to delete.
+     * @example
+     * // Delete a few LeadActivities
+     * const { count } = await prisma.leadActivity.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends LeadActivityDeleteManyArgs>(args?: SelectSubset<T, LeadActivityDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more LeadActivities.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LeadActivityUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many LeadActivities
+     * const leadActivity = await prisma.leadActivity.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends LeadActivityUpdateManyArgs>(args: SelectSubset<T, LeadActivityUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more LeadActivities and returns the data updated in the database.
+     * @param {LeadActivityUpdateManyAndReturnArgs} args - Arguments to update many LeadActivities.
+     * @example
+     * // Update many LeadActivities
+     * const leadActivity = await prisma.leadActivity.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more LeadActivities and only return the `id`
+     * const leadActivityWithIdOnly = await prisma.leadActivity.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends LeadActivityUpdateManyAndReturnArgs>(args: SelectSubset<T, LeadActivityUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadActivityPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one LeadActivity.
+     * @param {LeadActivityUpsertArgs} args - Arguments to update or create a LeadActivity.
+     * @example
+     * // Update or create a LeadActivity
+     * const leadActivity = await prisma.leadActivity.upsert({
+     *   create: {
+     *     // ... data to create a LeadActivity
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the LeadActivity we want to update
+     *   }
+     * })
+     */
+    upsert<T extends LeadActivityUpsertArgs>(args: SelectSubset<T, LeadActivityUpsertArgs<ExtArgs>>): Prisma__LeadActivityClient<$Result.GetResult<Prisma.$LeadActivityPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of LeadActivities.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LeadActivityCountArgs} args - Arguments to filter LeadActivities to count.
+     * @example
+     * // Count the number of LeadActivities
+     * const count = await prisma.leadActivity.count({
+     *   where: {
+     *     // ... the filter for the LeadActivities we want to count
+     *   }
+     * })
+    **/
+    count<T extends LeadActivityCountArgs>(
+      args?: Subset<T, LeadActivityCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], LeadActivityCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a LeadActivity.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LeadActivityAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends LeadActivityAggregateArgs>(args: Subset<T, LeadActivityAggregateArgs>): Prisma.PrismaPromise<GetLeadActivityAggregateType<T>>
+
+    /**
+     * Group by LeadActivity.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LeadActivityGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends LeadActivityGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: LeadActivityGroupByArgs['orderBy'] }
+        : { orderBy?: LeadActivityGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, LeadActivityGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetLeadActivityGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the LeadActivity model
+   */
+  readonly fields: LeadActivityFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for LeadActivity.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__LeadActivityClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    lead<T extends LeadDefaultArgs<ExtArgs> = {}>(args?: Subset<T, LeadDefaultArgs<ExtArgs>>): Prisma__LeadClient<$Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    createdBy<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the LeadActivity model
+   */
+  interface LeadActivityFieldRefs {
+    readonly id: FieldRef<"LeadActivity", 'String'>
+    readonly leadId: FieldRef<"LeadActivity", 'String'>
+    readonly action: FieldRef<"LeadActivity", 'String'>
+    readonly previousValue: FieldRef<"LeadActivity", 'Json'>
+    readonly newValue: FieldRef<"LeadActivity", 'Json'>
+    readonly createdById: FieldRef<"LeadActivity", 'String'>
+    readonly createdAt: FieldRef<"LeadActivity", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * LeadActivity findUnique
+   */
+  export type LeadActivityFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadActivity
+     */
+    select?: LeadActivitySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadActivity
+     */
+    omit?: LeadActivityOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadActivityInclude<ExtArgs> | null
+    /**
+     * Filter, which LeadActivity to fetch.
+     */
+    where: LeadActivityWhereUniqueInput
+  }
+
+  /**
+   * LeadActivity findUniqueOrThrow
+   */
+  export type LeadActivityFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadActivity
+     */
+    select?: LeadActivitySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadActivity
+     */
+    omit?: LeadActivityOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadActivityInclude<ExtArgs> | null
+    /**
+     * Filter, which LeadActivity to fetch.
+     */
+    where: LeadActivityWhereUniqueInput
+  }
+
+  /**
+   * LeadActivity findFirst
+   */
+  export type LeadActivityFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadActivity
+     */
+    select?: LeadActivitySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadActivity
+     */
+    omit?: LeadActivityOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadActivityInclude<ExtArgs> | null
+    /**
+     * Filter, which LeadActivity to fetch.
+     */
+    where?: LeadActivityWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LeadActivities to fetch.
+     */
+    orderBy?: LeadActivityOrderByWithRelationInput | LeadActivityOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for LeadActivities.
+     */
+    cursor?: LeadActivityWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LeadActivities from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LeadActivities.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of LeadActivities.
+     */
+    distinct?: LeadActivityScalarFieldEnum | LeadActivityScalarFieldEnum[]
+  }
+
+  /**
+   * LeadActivity findFirstOrThrow
+   */
+  export type LeadActivityFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadActivity
+     */
+    select?: LeadActivitySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadActivity
+     */
+    omit?: LeadActivityOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadActivityInclude<ExtArgs> | null
+    /**
+     * Filter, which LeadActivity to fetch.
+     */
+    where?: LeadActivityWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LeadActivities to fetch.
+     */
+    orderBy?: LeadActivityOrderByWithRelationInput | LeadActivityOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for LeadActivities.
+     */
+    cursor?: LeadActivityWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LeadActivities from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LeadActivities.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of LeadActivities.
+     */
+    distinct?: LeadActivityScalarFieldEnum | LeadActivityScalarFieldEnum[]
+  }
+
+  /**
+   * LeadActivity findMany
+   */
+  export type LeadActivityFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadActivity
+     */
+    select?: LeadActivitySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadActivity
+     */
+    omit?: LeadActivityOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadActivityInclude<ExtArgs> | null
+    /**
+     * Filter, which LeadActivities to fetch.
+     */
+    where?: LeadActivityWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LeadActivities to fetch.
+     */
+    orderBy?: LeadActivityOrderByWithRelationInput | LeadActivityOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing LeadActivities.
+     */
+    cursor?: LeadActivityWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LeadActivities from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LeadActivities.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of LeadActivities.
+     */
+    distinct?: LeadActivityScalarFieldEnum | LeadActivityScalarFieldEnum[]
+  }
+
+  /**
+   * LeadActivity create
+   */
+  export type LeadActivityCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadActivity
+     */
+    select?: LeadActivitySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadActivity
+     */
+    omit?: LeadActivityOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadActivityInclude<ExtArgs> | null
+    /**
+     * The data needed to create a LeadActivity.
+     */
+    data: XOR<LeadActivityCreateInput, LeadActivityUncheckedCreateInput>
+  }
+
+  /**
+   * LeadActivity createMany
+   */
+  export type LeadActivityCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many LeadActivities.
+     */
+    data: LeadActivityCreateManyInput | LeadActivityCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * LeadActivity createManyAndReturn
+   */
+  export type LeadActivityCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadActivity
+     */
+    select?: LeadActivitySelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadActivity
+     */
+    omit?: LeadActivityOmit<ExtArgs> | null
+    /**
+     * The data used to create many LeadActivities.
+     */
+    data: LeadActivityCreateManyInput | LeadActivityCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadActivityIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * LeadActivity update
+   */
+  export type LeadActivityUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadActivity
+     */
+    select?: LeadActivitySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadActivity
+     */
+    omit?: LeadActivityOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadActivityInclude<ExtArgs> | null
+    /**
+     * The data needed to update a LeadActivity.
+     */
+    data: XOR<LeadActivityUpdateInput, LeadActivityUncheckedUpdateInput>
+    /**
+     * Choose, which LeadActivity to update.
+     */
+    where: LeadActivityWhereUniqueInput
+  }
+
+  /**
+   * LeadActivity updateMany
+   */
+  export type LeadActivityUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update LeadActivities.
+     */
+    data: XOR<LeadActivityUpdateManyMutationInput, LeadActivityUncheckedUpdateManyInput>
+    /**
+     * Filter which LeadActivities to update
+     */
+    where?: LeadActivityWhereInput
+    /**
+     * Limit how many LeadActivities to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * LeadActivity updateManyAndReturn
+   */
+  export type LeadActivityUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadActivity
+     */
+    select?: LeadActivitySelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadActivity
+     */
+    omit?: LeadActivityOmit<ExtArgs> | null
+    /**
+     * The data used to update LeadActivities.
+     */
+    data: XOR<LeadActivityUpdateManyMutationInput, LeadActivityUncheckedUpdateManyInput>
+    /**
+     * Filter which LeadActivities to update
+     */
+    where?: LeadActivityWhereInput
+    /**
+     * Limit how many LeadActivities to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadActivityIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * LeadActivity upsert
+   */
+  export type LeadActivityUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadActivity
+     */
+    select?: LeadActivitySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadActivity
+     */
+    omit?: LeadActivityOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadActivityInclude<ExtArgs> | null
+    /**
+     * The filter to search for the LeadActivity to update in case it exists.
+     */
+    where: LeadActivityWhereUniqueInput
+    /**
+     * In case the LeadActivity found by the `where` argument doesn't exist, create a new LeadActivity with this data.
+     */
+    create: XOR<LeadActivityCreateInput, LeadActivityUncheckedCreateInput>
+    /**
+     * In case the LeadActivity was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<LeadActivityUpdateInput, LeadActivityUncheckedUpdateInput>
+  }
+
+  /**
+   * LeadActivity delete
+   */
+  export type LeadActivityDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadActivity
+     */
+    select?: LeadActivitySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadActivity
+     */
+    omit?: LeadActivityOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadActivityInclude<ExtArgs> | null
+    /**
+     * Filter which LeadActivity to delete.
+     */
+    where: LeadActivityWhereUniqueInput
+  }
+
+  /**
+   * LeadActivity deleteMany
+   */
+  export type LeadActivityDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which LeadActivities to delete
+     */
+    where?: LeadActivityWhereInput
+    /**
+     * Limit how many LeadActivities to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * LeadActivity without action
+   */
+  export type LeadActivityDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadActivity
+     */
+    select?: LeadActivitySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadActivity
+     */
+    omit?: LeadActivityOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadActivityInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model LeadRecording
+   */
+
+  export type AggregateLeadRecording = {
+    _count: LeadRecordingCountAggregateOutputType | null
+    _avg: LeadRecordingAvgAggregateOutputType | null
+    _sum: LeadRecordingSumAggregateOutputType | null
+    _min: LeadRecordingMinAggregateOutputType | null
+    _max: LeadRecordingMaxAggregateOutputType | null
+  }
+
+  export type LeadRecordingAvgAggregateOutputType = {
+    sizeBytes: number | null
+  }
+
+  export type LeadRecordingSumAggregateOutputType = {
+    sizeBytes: number | null
+  }
+
+  export type LeadRecordingMinAggregateOutputType = {
+    id: string | null
+    leadId: string | null
+    followUpId: string | null
+    originalName: string | null
+    storageKey: string | null
+    mimeType: string | null
+    sizeBytes: number | null
+    createdById: string | null
+    createdAt: Date | null
+  }
+
+  export type LeadRecordingMaxAggregateOutputType = {
+    id: string | null
+    leadId: string | null
+    followUpId: string | null
+    originalName: string | null
+    storageKey: string | null
+    mimeType: string | null
+    sizeBytes: number | null
+    createdById: string | null
+    createdAt: Date | null
+  }
+
+  export type LeadRecordingCountAggregateOutputType = {
+    id: number
+    leadId: number
+    followUpId: number
+    originalName: number
+    storageKey: number
+    mimeType: number
+    sizeBytes: number
+    createdById: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type LeadRecordingAvgAggregateInputType = {
+    sizeBytes?: true
+  }
+
+  export type LeadRecordingSumAggregateInputType = {
+    sizeBytes?: true
+  }
+
+  export type LeadRecordingMinAggregateInputType = {
+    id?: true
+    leadId?: true
+    followUpId?: true
+    originalName?: true
+    storageKey?: true
+    mimeType?: true
+    sizeBytes?: true
+    createdById?: true
+    createdAt?: true
+  }
+
+  export type LeadRecordingMaxAggregateInputType = {
+    id?: true
+    leadId?: true
+    followUpId?: true
+    originalName?: true
+    storageKey?: true
+    mimeType?: true
+    sizeBytes?: true
+    createdById?: true
+    createdAt?: true
+  }
+
+  export type LeadRecordingCountAggregateInputType = {
+    id?: true
+    leadId?: true
+    followUpId?: true
+    originalName?: true
+    storageKey?: true
+    mimeType?: true
+    sizeBytes?: true
+    createdById?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type LeadRecordingAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which LeadRecording to aggregate.
+     */
+    where?: LeadRecordingWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LeadRecordings to fetch.
+     */
+    orderBy?: LeadRecordingOrderByWithRelationInput | LeadRecordingOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: LeadRecordingWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LeadRecordings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LeadRecordings.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned LeadRecordings
+    **/
+    _count?: true | LeadRecordingCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: LeadRecordingAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: LeadRecordingSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: LeadRecordingMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: LeadRecordingMaxAggregateInputType
+  }
+
+  export type GetLeadRecordingAggregateType<T extends LeadRecordingAggregateArgs> = {
+        [P in keyof T & keyof AggregateLeadRecording]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateLeadRecording[P]>
+      : GetScalarType<T[P], AggregateLeadRecording[P]>
+  }
+
+
+
+
+  export type LeadRecordingGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LeadRecordingWhereInput
+    orderBy?: LeadRecordingOrderByWithAggregationInput | LeadRecordingOrderByWithAggregationInput[]
+    by: LeadRecordingScalarFieldEnum[] | LeadRecordingScalarFieldEnum
+    having?: LeadRecordingScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: LeadRecordingCountAggregateInputType | true
+    _avg?: LeadRecordingAvgAggregateInputType
+    _sum?: LeadRecordingSumAggregateInputType
+    _min?: LeadRecordingMinAggregateInputType
+    _max?: LeadRecordingMaxAggregateInputType
+  }
+
+  export type LeadRecordingGroupByOutputType = {
+    id: string
+    leadId: string
+    followUpId: string | null
+    originalName: string
+    storageKey: string
+    mimeType: string
+    sizeBytes: number
+    createdById: string
+    createdAt: Date
+    _count: LeadRecordingCountAggregateOutputType | null
+    _avg: LeadRecordingAvgAggregateOutputType | null
+    _sum: LeadRecordingSumAggregateOutputType | null
+    _min: LeadRecordingMinAggregateOutputType | null
+    _max: LeadRecordingMaxAggregateOutputType | null
+  }
+
+  type GetLeadRecordingGroupByPayload<T extends LeadRecordingGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<LeadRecordingGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof LeadRecordingGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], LeadRecordingGroupByOutputType[P]>
+            : GetScalarType<T[P], LeadRecordingGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type LeadRecordingSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    leadId?: boolean
+    followUpId?: boolean
+    originalName?: boolean
+    storageKey?: boolean
+    mimeType?: boolean
+    sizeBytes?: boolean
+    createdById?: boolean
+    createdAt?: boolean
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["leadRecording"]>
+
+  export type LeadRecordingSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    leadId?: boolean
+    followUpId?: boolean
+    originalName?: boolean
+    storageKey?: boolean
+    mimeType?: boolean
+    sizeBytes?: boolean
+    createdById?: boolean
+    createdAt?: boolean
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["leadRecording"]>
+
+  export type LeadRecordingSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    leadId?: boolean
+    followUpId?: boolean
+    originalName?: boolean
+    storageKey?: boolean
+    mimeType?: boolean
+    sizeBytes?: boolean
+    createdById?: boolean
+    createdAt?: boolean
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["leadRecording"]>
+
+  export type LeadRecordingSelectScalar = {
+    id?: boolean
+    leadId?: boolean
+    followUpId?: boolean
+    originalName?: boolean
+    storageKey?: boolean
+    mimeType?: boolean
+    sizeBytes?: boolean
+    createdById?: boolean
+    createdAt?: boolean
+  }
+
+  export type LeadRecordingOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "leadId" | "followUpId" | "originalName" | "storageKey" | "mimeType" | "sizeBytes" | "createdById" | "createdAt", ExtArgs["result"]["leadRecording"]>
+  export type LeadRecordingInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type LeadRecordingIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type LeadRecordingIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $LeadRecordingPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "LeadRecording"
+    objects: {
+      lead: Prisma.$LeadPayload<ExtArgs>
+      createdBy: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      leadId: string
+      followUpId: string | null
+      originalName: string
+      storageKey: string
+      mimeType: string
+      sizeBytes: number
+      createdById: string
+      createdAt: Date
+    }, ExtArgs["result"]["leadRecording"]>
+    composites: {}
+  }
+
+  type LeadRecordingGetPayload<S extends boolean | null | undefined | LeadRecordingDefaultArgs> = $Result.GetResult<Prisma.$LeadRecordingPayload, S>
+
+  type LeadRecordingCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<LeadRecordingFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: LeadRecordingCountAggregateInputType | true
+    }
+
+  export interface LeadRecordingDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['LeadRecording'], meta: { name: 'LeadRecording' } }
+    /**
+     * Find zero or one LeadRecording that matches the filter.
+     * @param {LeadRecordingFindUniqueArgs} args - Arguments to find a LeadRecording
+     * @example
+     * // Get one LeadRecording
+     * const leadRecording = await prisma.leadRecording.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends LeadRecordingFindUniqueArgs>(args: SelectSubset<T, LeadRecordingFindUniqueArgs<ExtArgs>>): Prisma__LeadRecordingClient<$Result.GetResult<Prisma.$LeadRecordingPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one LeadRecording that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {LeadRecordingFindUniqueOrThrowArgs} args - Arguments to find a LeadRecording
+     * @example
+     * // Get one LeadRecording
+     * const leadRecording = await prisma.leadRecording.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends LeadRecordingFindUniqueOrThrowArgs>(args: SelectSubset<T, LeadRecordingFindUniqueOrThrowArgs<ExtArgs>>): Prisma__LeadRecordingClient<$Result.GetResult<Prisma.$LeadRecordingPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first LeadRecording that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LeadRecordingFindFirstArgs} args - Arguments to find a LeadRecording
+     * @example
+     * // Get one LeadRecording
+     * const leadRecording = await prisma.leadRecording.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends LeadRecordingFindFirstArgs>(args?: SelectSubset<T, LeadRecordingFindFirstArgs<ExtArgs>>): Prisma__LeadRecordingClient<$Result.GetResult<Prisma.$LeadRecordingPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first LeadRecording that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LeadRecordingFindFirstOrThrowArgs} args - Arguments to find a LeadRecording
+     * @example
+     * // Get one LeadRecording
+     * const leadRecording = await prisma.leadRecording.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends LeadRecordingFindFirstOrThrowArgs>(args?: SelectSubset<T, LeadRecordingFindFirstOrThrowArgs<ExtArgs>>): Prisma__LeadRecordingClient<$Result.GetResult<Prisma.$LeadRecordingPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more LeadRecordings that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LeadRecordingFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all LeadRecordings
+     * const leadRecordings = await prisma.leadRecording.findMany()
+     * 
+     * // Get first 10 LeadRecordings
+     * const leadRecordings = await prisma.leadRecording.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const leadRecordingWithIdOnly = await prisma.leadRecording.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends LeadRecordingFindManyArgs>(args?: SelectSubset<T, LeadRecordingFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadRecordingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a LeadRecording.
+     * @param {LeadRecordingCreateArgs} args - Arguments to create a LeadRecording.
+     * @example
+     * // Create one LeadRecording
+     * const LeadRecording = await prisma.leadRecording.create({
+     *   data: {
+     *     // ... data to create a LeadRecording
+     *   }
+     * })
+     * 
+     */
+    create<T extends LeadRecordingCreateArgs>(args: SelectSubset<T, LeadRecordingCreateArgs<ExtArgs>>): Prisma__LeadRecordingClient<$Result.GetResult<Prisma.$LeadRecordingPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many LeadRecordings.
+     * @param {LeadRecordingCreateManyArgs} args - Arguments to create many LeadRecordings.
+     * @example
+     * // Create many LeadRecordings
+     * const leadRecording = await prisma.leadRecording.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends LeadRecordingCreateManyArgs>(args?: SelectSubset<T, LeadRecordingCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many LeadRecordings and returns the data saved in the database.
+     * @param {LeadRecordingCreateManyAndReturnArgs} args - Arguments to create many LeadRecordings.
+     * @example
+     * // Create many LeadRecordings
+     * const leadRecording = await prisma.leadRecording.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many LeadRecordings and only return the `id`
+     * const leadRecordingWithIdOnly = await prisma.leadRecording.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends LeadRecordingCreateManyAndReturnArgs>(args?: SelectSubset<T, LeadRecordingCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadRecordingPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a LeadRecording.
+     * @param {LeadRecordingDeleteArgs} args - Arguments to delete one LeadRecording.
+     * @example
+     * // Delete one LeadRecording
+     * const LeadRecording = await prisma.leadRecording.delete({
+     *   where: {
+     *     // ... filter to delete one LeadRecording
+     *   }
+     * })
+     * 
+     */
+    delete<T extends LeadRecordingDeleteArgs>(args: SelectSubset<T, LeadRecordingDeleteArgs<ExtArgs>>): Prisma__LeadRecordingClient<$Result.GetResult<Prisma.$LeadRecordingPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one LeadRecording.
+     * @param {LeadRecordingUpdateArgs} args - Arguments to update one LeadRecording.
+     * @example
+     * // Update one LeadRecording
+     * const leadRecording = await prisma.leadRecording.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends LeadRecordingUpdateArgs>(args: SelectSubset<T, LeadRecordingUpdateArgs<ExtArgs>>): Prisma__LeadRecordingClient<$Result.GetResult<Prisma.$LeadRecordingPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more LeadRecordings.
+     * @param {LeadRecordingDeleteManyArgs} args - Arguments to filter LeadRecordings to delete.
+     * @example
+     * // Delete a few LeadRecordings
+     * const { count } = await prisma.leadRecording.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends LeadRecordingDeleteManyArgs>(args?: SelectSubset<T, LeadRecordingDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more LeadRecordings.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LeadRecordingUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many LeadRecordings
+     * const leadRecording = await prisma.leadRecording.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends LeadRecordingUpdateManyArgs>(args: SelectSubset<T, LeadRecordingUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more LeadRecordings and returns the data updated in the database.
+     * @param {LeadRecordingUpdateManyAndReturnArgs} args - Arguments to update many LeadRecordings.
+     * @example
+     * // Update many LeadRecordings
+     * const leadRecording = await prisma.leadRecording.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more LeadRecordings and only return the `id`
+     * const leadRecordingWithIdOnly = await prisma.leadRecording.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends LeadRecordingUpdateManyAndReturnArgs>(args: SelectSubset<T, LeadRecordingUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadRecordingPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one LeadRecording.
+     * @param {LeadRecordingUpsertArgs} args - Arguments to update or create a LeadRecording.
+     * @example
+     * // Update or create a LeadRecording
+     * const leadRecording = await prisma.leadRecording.upsert({
+     *   create: {
+     *     // ... data to create a LeadRecording
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the LeadRecording we want to update
+     *   }
+     * })
+     */
+    upsert<T extends LeadRecordingUpsertArgs>(args: SelectSubset<T, LeadRecordingUpsertArgs<ExtArgs>>): Prisma__LeadRecordingClient<$Result.GetResult<Prisma.$LeadRecordingPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of LeadRecordings.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LeadRecordingCountArgs} args - Arguments to filter LeadRecordings to count.
+     * @example
+     * // Count the number of LeadRecordings
+     * const count = await prisma.leadRecording.count({
+     *   where: {
+     *     // ... the filter for the LeadRecordings we want to count
+     *   }
+     * })
+    **/
+    count<T extends LeadRecordingCountArgs>(
+      args?: Subset<T, LeadRecordingCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], LeadRecordingCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a LeadRecording.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LeadRecordingAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends LeadRecordingAggregateArgs>(args: Subset<T, LeadRecordingAggregateArgs>): Prisma.PrismaPromise<GetLeadRecordingAggregateType<T>>
+
+    /**
+     * Group by LeadRecording.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LeadRecordingGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends LeadRecordingGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: LeadRecordingGroupByArgs['orderBy'] }
+        : { orderBy?: LeadRecordingGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, LeadRecordingGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetLeadRecordingGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the LeadRecording model
+   */
+  readonly fields: LeadRecordingFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for LeadRecording.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__LeadRecordingClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    lead<T extends LeadDefaultArgs<ExtArgs> = {}>(args?: Subset<T, LeadDefaultArgs<ExtArgs>>): Prisma__LeadClient<$Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    createdBy<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the LeadRecording model
+   */
+  interface LeadRecordingFieldRefs {
+    readonly id: FieldRef<"LeadRecording", 'String'>
+    readonly leadId: FieldRef<"LeadRecording", 'String'>
+    readonly followUpId: FieldRef<"LeadRecording", 'String'>
+    readonly originalName: FieldRef<"LeadRecording", 'String'>
+    readonly storageKey: FieldRef<"LeadRecording", 'String'>
+    readonly mimeType: FieldRef<"LeadRecording", 'String'>
+    readonly sizeBytes: FieldRef<"LeadRecording", 'Int'>
+    readonly createdById: FieldRef<"LeadRecording", 'String'>
+    readonly createdAt: FieldRef<"LeadRecording", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * LeadRecording findUnique
+   */
+  export type LeadRecordingFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadRecording
+     */
+    select?: LeadRecordingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadRecording
+     */
+    omit?: LeadRecordingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadRecordingInclude<ExtArgs> | null
+    /**
+     * Filter, which LeadRecording to fetch.
+     */
+    where: LeadRecordingWhereUniqueInput
+  }
+
+  /**
+   * LeadRecording findUniqueOrThrow
+   */
+  export type LeadRecordingFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadRecording
+     */
+    select?: LeadRecordingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadRecording
+     */
+    omit?: LeadRecordingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadRecordingInclude<ExtArgs> | null
+    /**
+     * Filter, which LeadRecording to fetch.
+     */
+    where: LeadRecordingWhereUniqueInput
+  }
+
+  /**
+   * LeadRecording findFirst
+   */
+  export type LeadRecordingFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadRecording
+     */
+    select?: LeadRecordingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadRecording
+     */
+    omit?: LeadRecordingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadRecordingInclude<ExtArgs> | null
+    /**
+     * Filter, which LeadRecording to fetch.
+     */
+    where?: LeadRecordingWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LeadRecordings to fetch.
+     */
+    orderBy?: LeadRecordingOrderByWithRelationInput | LeadRecordingOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for LeadRecordings.
+     */
+    cursor?: LeadRecordingWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LeadRecordings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LeadRecordings.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of LeadRecordings.
+     */
+    distinct?: LeadRecordingScalarFieldEnum | LeadRecordingScalarFieldEnum[]
+  }
+
+  /**
+   * LeadRecording findFirstOrThrow
+   */
+  export type LeadRecordingFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadRecording
+     */
+    select?: LeadRecordingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadRecording
+     */
+    omit?: LeadRecordingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadRecordingInclude<ExtArgs> | null
+    /**
+     * Filter, which LeadRecording to fetch.
+     */
+    where?: LeadRecordingWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LeadRecordings to fetch.
+     */
+    orderBy?: LeadRecordingOrderByWithRelationInput | LeadRecordingOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for LeadRecordings.
+     */
+    cursor?: LeadRecordingWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LeadRecordings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LeadRecordings.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of LeadRecordings.
+     */
+    distinct?: LeadRecordingScalarFieldEnum | LeadRecordingScalarFieldEnum[]
+  }
+
+  /**
+   * LeadRecording findMany
+   */
+  export type LeadRecordingFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadRecording
+     */
+    select?: LeadRecordingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadRecording
+     */
+    omit?: LeadRecordingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadRecordingInclude<ExtArgs> | null
+    /**
+     * Filter, which LeadRecordings to fetch.
+     */
+    where?: LeadRecordingWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LeadRecordings to fetch.
+     */
+    orderBy?: LeadRecordingOrderByWithRelationInput | LeadRecordingOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing LeadRecordings.
+     */
+    cursor?: LeadRecordingWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LeadRecordings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LeadRecordings.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of LeadRecordings.
+     */
+    distinct?: LeadRecordingScalarFieldEnum | LeadRecordingScalarFieldEnum[]
+  }
+
+  /**
+   * LeadRecording create
+   */
+  export type LeadRecordingCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadRecording
+     */
+    select?: LeadRecordingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadRecording
+     */
+    omit?: LeadRecordingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadRecordingInclude<ExtArgs> | null
+    /**
+     * The data needed to create a LeadRecording.
+     */
+    data: XOR<LeadRecordingCreateInput, LeadRecordingUncheckedCreateInput>
+  }
+
+  /**
+   * LeadRecording createMany
+   */
+  export type LeadRecordingCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many LeadRecordings.
+     */
+    data: LeadRecordingCreateManyInput | LeadRecordingCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * LeadRecording createManyAndReturn
+   */
+  export type LeadRecordingCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadRecording
+     */
+    select?: LeadRecordingSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadRecording
+     */
+    omit?: LeadRecordingOmit<ExtArgs> | null
+    /**
+     * The data used to create many LeadRecordings.
+     */
+    data: LeadRecordingCreateManyInput | LeadRecordingCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadRecordingIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * LeadRecording update
+   */
+  export type LeadRecordingUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadRecording
+     */
+    select?: LeadRecordingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadRecording
+     */
+    omit?: LeadRecordingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadRecordingInclude<ExtArgs> | null
+    /**
+     * The data needed to update a LeadRecording.
+     */
+    data: XOR<LeadRecordingUpdateInput, LeadRecordingUncheckedUpdateInput>
+    /**
+     * Choose, which LeadRecording to update.
+     */
+    where: LeadRecordingWhereUniqueInput
+  }
+
+  /**
+   * LeadRecording updateMany
+   */
+  export type LeadRecordingUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update LeadRecordings.
+     */
+    data: XOR<LeadRecordingUpdateManyMutationInput, LeadRecordingUncheckedUpdateManyInput>
+    /**
+     * Filter which LeadRecordings to update
+     */
+    where?: LeadRecordingWhereInput
+    /**
+     * Limit how many LeadRecordings to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * LeadRecording updateManyAndReturn
+   */
+  export type LeadRecordingUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadRecording
+     */
+    select?: LeadRecordingSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadRecording
+     */
+    omit?: LeadRecordingOmit<ExtArgs> | null
+    /**
+     * The data used to update LeadRecordings.
+     */
+    data: XOR<LeadRecordingUpdateManyMutationInput, LeadRecordingUncheckedUpdateManyInput>
+    /**
+     * Filter which LeadRecordings to update
+     */
+    where?: LeadRecordingWhereInput
+    /**
+     * Limit how many LeadRecordings to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadRecordingIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * LeadRecording upsert
+   */
+  export type LeadRecordingUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadRecording
+     */
+    select?: LeadRecordingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadRecording
+     */
+    omit?: LeadRecordingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadRecordingInclude<ExtArgs> | null
+    /**
+     * The filter to search for the LeadRecording to update in case it exists.
+     */
+    where: LeadRecordingWhereUniqueInput
+    /**
+     * In case the LeadRecording found by the `where` argument doesn't exist, create a new LeadRecording with this data.
+     */
+    create: XOR<LeadRecordingCreateInput, LeadRecordingUncheckedCreateInput>
+    /**
+     * In case the LeadRecording was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<LeadRecordingUpdateInput, LeadRecordingUncheckedUpdateInput>
+  }
+
+  /**
+   * LeadRecording delete
+   */
+  export type LeadRecordingDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadRecording
+     */
+    select?: LeadRecordingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadRecording
+     */
+    omit?: LeadRecordingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadRecordingInclude<ExtArgs> | null
+    /**
+     * Filter which LeadRecording to delete.
+     */
+    where: LeadRecordingWhereUniqueInput
+  }
+
+  /**
+   * LeadRecording deleteMany
+   */
+  export type LeadRecordingDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which LeadRecordings to delete
+     */
+    where?: LeadRecordingWhereInput
+    /**
+     * Limit how many LeadRecordings to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * LeadRecording without action
+   */
+  export type LeadRecordingDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadRecording
+     */
+    select?: LeadRecordingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadRecording
+     */
+    omit?: LeadRecordingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadRecordingInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model MotivationMailHistory
    */
 
@@ -104014,6 +110876,94 @@ export namespace Prisma {
   export type ExamAnswerScalarFieldEnum = (typeof ExamAnswerScalarFieldEnum)[keyof typeof ExamAnswerScalarFieldEnum]
 
 
+  export const LeadScalarFieldEnum: {
+    id: 'id',
+    leadId: 'leadId',
+    studentName: 'studentName',
+    phoneNumber: 'phoneNumber',
+    alternativeNumber: 'alternativeNumber',
+    email: 'email',
+    qualification: 'qualification',
+    location: 'location',
+    callType: 'callType',
+    status: 'status',
+    stage: 'stage',
+    courseId: 'courseId',
+    branchId: 'branchId',
+    leadSource: 'leadSource',
+    referredBy: 'referredBy',
+    paymentStatus: 'paymentStatus',
+    trainingMode: 'trainingMode',
+    classSchedule: 'classSchedule',
+    courseMode: 'courseMode',
+    locationDistance: 'locationDistance',
+    leadDate: 'leadDate',
+    assignedToId: 'assignedToId',
+    createdById: 'createdById',
+    updatedById: 'updatedById',
+    deletedAt: 'deletedAt',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type LeadScalarFieldEnum = (typeof LeadScalarFieldEnum)[keyof typeof LeadScalarFieldEnum]
+
+
+  export const LeadFollowUpScalarFieldEnum: {
+    id: 'id',
+    leadId: 'leadId',
+    followUpDate: 'followUpDate',
+    followUpType: 'followUpType',
+    notes: 'notes',
+    nextFollowUpDate: 'nextFollowUpDate',
+    createdById: 'createdById',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type LeadFollowUpScalarFieldEnum = (typeof LeadFollowUpScalarFieldEnum)[keyof typeof LeadFollowUpScalarFieldEnum]
+
+
+  export const LeadStageHistoryScalarFieldEnum: {
+    id: 'id',
+    leadId: 'leadId',
+    fromStage: 'fromStage',
+    toStage: 'toStage',
+    createdById: 'createdById',
+    createdAt: 'createdAt'
+  };
+
+  export type LeadStageHistoryScalarFieldEnum = (typeof LeadStageHistoryScalarFieldEnum)[keyof typeof LeadStageHistoryScalarFieldEnum]
+
+
+  export const LeadActivityScalarFieldEnum: {
+    id: 'id',
+    leadId: 'leadId',
+    action: 'action',
+    previousValue: 'previousValue',
+    newValue: 'newValue',
+    createdById: 'createdById',
+    createdAt: 'createdAt'
+  };
+
+  export type LeadActivityScalarFieldEnum = (typeof LeadActivityScalarFieldEnum)[keyof typeof LeadActivityScalarFieldEnum]
+
+
+  export const LeadRecordingScalarFieldEnum: {
+    id: 'id',
+    leadId: 'leadId',
+    followUpId: 'followUpId',
+    originalName: 'originalName',
+    storageKey: 'storageKey',
+    mimeType: 'mimeType',
+    sizeBytes: 'sizeBytes',
+    createdById: 'createdById',
+    createdAt: 'createdAt'
+  };
+
+  export type LeadRecordingScalarFieldEnum = (typeof LeadRecordingScalarFieldEnum)[keyof typeof LeadRecordingScalarFieldEnum]
+
+
   export const MotivationMailHistoryScalarFieldEnum: {
     id: 'id',
     branchStudentId: 'branchStudentId',
@@ -104498,6 +111448,34 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'LeadStatus'
+   */
+  export type EnumLeadStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LeadStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'LeadStatus[]'
+   */
+  export type ListEnumLeadStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LeadStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'LeadStage'
+   */
+  export type EnumLeadStageFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LeadStage'>
+    
+
+
+  /**
+   * Reference to a field of type 'LeadStage[]'
+   */
+  export type ListEnumLeadStageFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LeadStage[]'>
+    
+
+
+  /**
    * Reference to a field of type 'DiscontinuationRequestStatus'
    */
   export type EnumDiscontinuationRequestStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DiscontinuationRequestStatus'>
@@ -104560,6 +111538,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentListRelationFilter
     academicTestReportSubmissions?: AcademicTestReportSubmissionListRelationFilter
     salesAdminBranches?: SalesAdminBranchListRelationFilter
+    assignedLeads?: LeadListRelationFilter
+    createdLeads?: LeadListRelationFilter
+    updatedLeads?: LeadListRelationFilter
+    leadFollowUps?: LeadFollowUpListRelationFilter
+    leadActivities?: LeadActivityListRelationFilter
+    leadStageChanges?: LeadStageHistoryListRelationFilter
+    leadRecordings?: LeadRecordingListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -104605,6 +111590,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentOrderByRelationAggregateInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionOrderByRelationAggregateInput
     salesAdminBranches?: SalesAdminBranchOrderByRelationAggregateInput
+    assignedLeads?: LeadOrderByRelationAggregateInput
+    createdLeads?: LeadOrderByRelationAggregateInput
+    updatedLeads?: LeadOrderByRelationAggregateInput
+    leadFollowUps?: LeadFollowUpOrderByRelationAggregateInput
+    leadActivities?: LeadActivityOrderByRelationAggregateInput
+    leadStageChanges?: LeadStageHistoryOrderByRelationAggregateInput
+    leadRecordings?: LeadRecordingOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -104653,6 +111645,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentListRelationFilter
     academicTestReportSubmissions?: AcademicTestReportSubmissionListRelationFilter
     salesAdminBranches?: SalesAdminBranchListRelationFilter
+    assignedLeads?: LeadListRelationFilter
+    createdLeads?: LeadListRelationFilter
+    updatedLeads?: LeadListRelationFilter
+    leadFollowUps?: LeadFollowUpListRelationFilter
+    leadActivities?: LeadActivityListRelationFilter
+    leadStageChanges?: LeadStageHistoryListRelationFilter
+    leadRecordings?: LeadRecordingListRelationFilter
   }, "id" | "userCode" | "email" | "phone">
 
   export type UserOrderByWithAggregationInput = {
@@ -104897,6 +111896,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentListRelationFilter
     facultyLeaveRequests?: FacultyLeaveRequestListRelationFilter
     salesAdminBranches?: SalesAdminBranchListRelationFilter
+    leads?: LeadListRelationFilter
   }
 
   export type BranchOrderByWithRelationInput = {
@@ -104934,6 +111934,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentOrderByRelationAggregateInput
     facultyLeaveRequests?: FacultyLeaveRequestOrderByRelationAggregateInput
     salesAdminBranches?: SalesAdminBranchOrderByRelationAggregateInput
+    leads?: LeadOrderByRelationAggregateInput
   }
 
   export type BranchWhereUniqueInput = Prisma.AtLeast<{
@@ -104974,6 +111975,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentListRelationFilter
     facultyLeaveRequests?: FacultyLeaveRequestListRelationFilter
     salesAdminBranches?: SalesAdminBranchListRelationFilter
+    leads?: LeadListRelationFilter
   }, "id" | "branchId" | "branchEmail" | "branchPhone" | "adminUserId">
 
   export type BranchOrderByWithAggregationInput = {
@@ -105805,6 +112807,7 @@ export namespace Prisma {
     academicTests?: AcademicTestListRelationFilter
     academicQuestionPapers?: AcademicQuestionPaperListRelationFilter
     academicTestProjects?: AcademicTestProjectListRelationFilter
+    leads?: LeadListRelationFilter
   }
 
   export type BranchCourseOrderByWithRelationInput = {
@@ -105845,6 +112848,7 @@ export namespace Prisma {
     academicTests?: AcademicTestOrderByRelationAggregateInput
     academicQuestionPapers?: AcademicQuestionPaperOrderByRelationAggregateInput
     academicTestProjects?: AcademicTestProjectOrderByRelationAggregateInput
+    leads?: LeadOrderByRelationAggregateInput
   }
 
   export type BranchCourseWhereUniqueInput = Prisma.AtLeast<{
@@ -105890,6 +112894,7 @@ export namespace Prisma {
     academicTests?: AcademicTestListRelationFilter
     academicQuestionPapers?: AcademicQuestionPaperListRelationFilter
     academicTestProjects?: AcademicTestProjectListRelationFilter
+    leads?: LeadListRelationFilter
   }, "id" | "branchId_nameKey" | "branchId_courseCode">
 
   export type BranchCourseOrderByWithAggregationInput = {
@@ -112121,6 +119126,484 @@ export namespace Prisma {
     marksAwarded?: IntWithAggregatesFilter<"ExamAnswer"> | number
   }
 
+  export type LeadWhereInput = {
+    AND?: LeadWhereInput | LeadWhereInput[]
+    OR?: LeadWhereInput[]
+    NOT?: LeadWhereInput | LeadWhereInput[]
+    id?: StringFilter<"Lead"> | string
+    leadId?: StringFilter<"Lead"> | string
+    studentName?: StringFilter<"Lead"> | string
+    phoneNumber?: StringFilter<"Lead"> | string
+    alternativeNumber?: StringNullableFilter<"Lead"> | string | null
+    email?: StringNullableFilter<"Lead"> | string | null
+    qualification?: StringNullableFilter<"Lead"> | string | null
+    location?: StringNullableFilter<"Lead"> | string | null
+    callType?: StringFilter<"Lead"> | string
+    status?: EnumLeadStatusFilter<"Lead"> | $Enums.LeadStatus
+    stage?: EnumLeadStageFilter<"Lead"> | $Enums.LeadStage
+    courseId?: StringFilter<"Lead"> | string
+    branchId?: StringFilter<"Lead"> | string
+    leadSource?: StringFilter<"Lead"> | string
+    referredBy?: StringNullableFilter<"Lead"> | string | null
+    paymentStatus?: StringFilter<"Lead"> | string
+    trainingMode?: StringNullableFilter<"Lead"> | string | null
+    classSchedule?: StringNullableFilter<"Lead"> | string | null
+    courseMode?: StringNullableFilter<"Lead"> | string | null
+    locationDistance?: StringNullableFilter<"Lead"> | string | null
+    leadDate?: DateTimeFilter<"Lead"> | Date | string
+    assignedToId?: StringNullableFilter<"Lead"> | string | null
+    createdById?: StringFilter<"Lead"> | string
+    updatedById?: StringNullableFilter<"Lead"> | string | null
+    deletedAt?: DateTimeNullableFilter<"Lead"> | Date | string | null
+    createdAt?: DateTimeFilter<"Lead"> | Date | string
+    updatedAt?: DateTimeFilter<"Lead"> | Date | string
+    branch?: XOR<BranchScalarRelationFilter, BranchWhereInput>
+    course?: XOR<BranchCourseScalarRelationFilter, BranchCourseWhereInput>
+    assignedTo?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    createdBy?: XOR<UserScalarRelationFilter, UserWhereInput>
+    updatedBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    followUps?: LeadFollowUpListRelationFilter
+    stageHistory?: LeadStageHistoryListRelationFilter
+    activities?: LeadActivityListRelationFilter
+    recordings?: LeadRecordingListRelationFilter
+  }
+
+  export type LeadOrderByWithRelationInput = {
+    id?: SortOrder
+    leadId?: SortOrder
+    studentName?: SortOrder
+    phoneNumber?: SortOrder
+    alternativeNumber?: SortOrderInput | SortOrder
+    email?: SortOrderInput | SortOrder
+    qualification?: SortOrderInput | SortOrder
+    location?: SortOrderInput | SortOrder
+    callType?: SortOrder
+    status?: SortOrder
+    stage?: SortOrder
+    courseId?: SortOrder
+    branchId?: SortOrder
+    leadSource?: SortOrder
+    referredBy?: SortOrderInput | SortOrder
+    paymentStatus?: SortOrder
+    trainingMode?: SortOrderInput | SortOrder
+    classSchedule?: SortOrderInput | SortOrder
+    courseMode?: SortOrderInput | SortOrder
+    locationDistance?: SortOrderInput | SortOrder
+    leadDate?: SortOrder
+    assignedToId?: SortOrderInput | SortOrder
+    createdById?: SortOrder
+    updatedById?: SortOrderInput | SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    branch?: BranchOrderByWithRelationInput
+    course?: BranchCourseOrderByWithRelationInput
+    assignedTo?: UserOrderByWithRelationInput
+    createdBy?: UserOrderByWithRelationInput
+    updatedBy?: UserOrderByWithRelationInput
+    followUps?: LeadFollowUpOrderByRelationAggregateInput
+    stageHistory?: LeadStageHistoryOrderByRelationAggregateInput
+    activities?: LeadActivityOrderByRelationAggregateInput
+    recordings?: LeadRecordingOrderByRelationAggregateInput
+  }
+
+  export type LeadWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    leadId?: string
+    AND?: LeadWhereInput | LeadWhereInput[]
+    OR?: LeadWhereInput[]
+    NOT?: LeadWhereInput | LeadWhereInput[]
+    studentName?: StringFilter<"Lead"> | string
+    phoneNumber?: StringFilter<"Lead"> | string
+    alternativeNumber?: StringNullableFilter<"Lead"> | string | null
+    email?: StringNullableFilter<"Lead"> | string | null
+    qualification?: StringNullableFilter<"Lead"> | string | null
+    location?: StringNullableFilter<"Lead"> | string | null
+    callType?: StringFilter<"Lead"> | string
+    status?: EnumLeadStatusFilter<"Lead"> | $Enums.LeadStatus
+    stage?: EnumLeadStageFilter<"Lead"> | $Enums.LeadStage
+    courseId?: StringFilter<"Lead"> | string
+    branchId?: StringFilter<"Lead"> | string
+    leadSource?: StringFilter<"Lead"> | string
+    referredBy?: StringNullableFilter<"Lead"> | string | null
+    paymentStatus?: StringFilter<"Lead"> | string
+    trainingMode?: StringNullableFilter<"Lead"> | string | null
+    classSchedule?: StringNullableFilter<"Lead"> | string | null
+    courseMode?: StringNullableFilter<"Lead"> | string | null
+    locationDistance?: StringNullableFilter<"Lead"> | string | null
+    leadDate?: DateTimeFilter<"Lead"> | Date | string
+    assignedToId?: StringNullableFilter<"Lead"> | string | null
+    createdById?: StringFilter<"Lead"> | string
+    updatedById?: StringNullableFilter<"Lead"> | string | null
+    deletedAt?: DateTimeNullableFilter<"Lead"> | Date | string | null
+    createdAt?: DateTimeFilter<"Lead"> | Date | string
+    updatedAt?: DateTimeFilter<"Lead"> | Date | string
+    branch?: XOR<BranchScalarRelationFilter, BranchWhereInput>
+    course?: XOR<BranchCourseScalarRelationFilter, BranchCourseWhereInput>
+    assignedTo?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    createdBy?: XOR<UserScalarRelationFilter, UserWhereInput>
+    updatedBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    followUps?: LeadFollowUpListRelationFilter
+    stageHistory?: LeadStageHistoryListRelationFilter
+    activities?: LeadActivityListRelationFilter
+    recordings?: LeadRecordingListRelationFilter
+  }, "id" | "leadId">
+
+  export type LeadOrderByWithAggregationInput = {
+    id?: SortOrder
+    leadId?: SortOrder
+    studentName?: SortOrder
+    phoneNumber?: SortOrder
+    alternativeNumber?: SortOrderInput | SortOrder
+    email?: SortOrderInput | SortOrder
+    qualification?: SortOrderInput | SortOrder
+    location?: SortOrderInput | SortOrder
+    callType?: SortOrder
+    status?: SortOrder
+    stage?: SortOrder
+    courseId?: SortOrder
+    branchId?: SortOrder
+    leadSource?: SortOrder
+    referredBy?: SortOrderInput | SortOrder
+    paymentStatus?: SortOrder
+    trainingMode?: SortOrderInput | SortOrder
+    classSchedule?: SortOrderInput | SortOrder
+    courseMode?: SortOrderInput | SortOrder
+    locationDistance?: SortOrderInput | SortOrder
+    leadDate?: SortOrder
+    assignedToId?: SortOrderInput | SortOrder
+    createdById?: SortOrder
+    updatedById?: SortOrderInput | SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: LeadCountOrderByAggregateInput
+    _max?: LeadMaxOrderByAggregateInput
+    _min?: LeadMinOrderByAggregateInput
+  }
+
+  export type LeadScalarWhereWithAggregatesInput = {
+    AND?: LeadScalarWhereWithAggregatesInput | LeadScalarWhereWithAggregatesInput[]
+    OR?: LeadScalarWhereWithAggregatesInput[]
+    NOT?: LeadScalarWhereWithAggregatesInput | LeadScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Lead"> | string
+    leadId?: StringWithAggregatesFilter<"Lead"> | string
+    studentName?: StringWithAggregatesFilter<"Lead"> | string
+    phoneNumber?: StringWithAggregatesFilter<"Lead"> | string
+    alternativeNumber?: StringNullableWithAggregatesFilter<"Lead"> | string | null
+    email?: StringNullableWithAggregatesFilter<"Lead"> | string | null
+    qualification?: StringNullableWithAggregatesFilter<"Lead"> | string | null
+    location?: StringNullableWithAggregatesFilter<"Lead"> | string | null
+    callType?: StringWithAggregatesFilter<"Lead"> | string
+    status?: EnumLeadStatusWithAggregatesFilter<"Lead"> | $Enums.LeadStatus
+    stage?: EnumLeadStageWithAggregatesFilter<"Lead"> | $Enums.LeadStage
+    courseId?: StringWithAggregatesFilter<"Lead"> | string
+    branchId?: StringWithAggregatesFilter<"Lead"> | string
+    leadSource?: StringWithAggregatesFilter<"Lead"> | string
+    referredBy?: StringNullableWithAggregatesFilter<"Lead"> | string | null
+    paymentStatus?: StringWithAggregatesFilter<"Lead"> | string
+    trainingMode?: StringNullableWithAggregatesFilter<"Lead"> | string | null
+    classSchedule?: StringNullableWithAggregatesFilter<"Lead"> | string | null
+    courseMode?: StringNullableWithAggregatesFilter<"Lead"> | string | null
+    locationDistance?: StringNullableWithAggregatesFilter<"Lead"> | string | null
+    leadDate?: DateTimeWithAggregatesFilter<"Lead"> | Date | string
+    assignedToId?: StringNullableWithAggregatesFilter<"Lead"> | string | null
+    createdById?: StringWithAggregatesFilter<"Lead"> | string
+    updatedById?: StringNullableWithAggregatesFilter<"Lead"> | string | null
+    deletedAt?: DateTimeNullableWithAggregatesFilter<"Lead"> | Date | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"Lead"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Lead"> | Date | string
+  }
+
+  export type LeadFollowUpWhereInput = {
+    AND?: LeadFollowUpWhereInput | LeadFollowUpWhereInput[]
+    OR?: LeadFollowUpWhereInput[]
+    NOT?: LeadFollowUpWhereInput | LeadFollowUpWhereInput[]
+    id?: StringFilter<"LeadFollowUp"> | string
+    leadId?: StringFilter<"LeadFollowUp"> | string
+    followUpDate?: DateTimeFilter<"LeadFollowUp"> | Date | string
+    followUpType?: StringFilter<"LeadFollowUp"> | string
+    notes?: StringFilter<"LeadFollowUp"> | string
+    nextFollowUpDate?: DateTimeNullableFilter<"LeadFollowUp"> | Date | string | null
+    createdById?: StringFilter<"LeadFollowUp"> | string
+    createdAt?: DateTimeFilter<"LeadFollowUp"> | Date | string
+    updatedAt?: DateTimeFilter<"LeadFollowUp"> | Date | string
+    lead?: XOR<LeadScalarRelationFilter, LeadWhereInput>
+    createdBy?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type LeadFollowUpOrderByWithRelationInput = {
+    id?: SortOrder
+    leadId?: SortOrder
+    followUpDate?: SortOrder
+    followUpType?: SortOrder
+    notes?: SortOrder
+    nextFollowUpDate?: SortOrderInput | SortOrder
+    createdById?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    lead?: LeadOrderByWithRelationInput
+    createdBy?: UserOrderByWithRelationInput
+  }
+
+  export type LeadFollowUpWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: LeadFollowUpWhereInput | LeadFollowUpWhereInput[]
+    OR?: LeadFollowUpWhereInput[]
+    NOT?: LeadFollowUpWhereInput | LeadFollowUpWhereInput[]
+    leadId?: StringFilter<"LeadFollowUp"> | string
+    followUpDate?: DateTimeFilter<"LeadFollowUp"> | Date | string
+    followUpType?: StringFilter<"LeadFollowUp"> | string
+    notes?: StringFilter<"LeadFollowUp"> | string
+    nextFollowUpDate?: DateTimeNullableFilter<"LeadFollowUp"> | Date | string | null
+    createdById?: StringFilter<"LeadFollowUp"> | string
+    createdAt?: DateTimeFilter<"LeadFollowUp"> | Date | string
+    updatedAt?: DateTimeFilter<"LeadFollowUp"> | Date | string
+    lead?: XOR<LeadScalarRelationFilter, LeadWhereInput>
+    createdBy?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type LeadFollowUpOrderByWithAggregationInput = {
+    id?: SortOrder
+    leadId?: SortOrder
+    followUpDate?: SortOrder
+    followUpType?: SortOrder
+    notes?: SortOrder
+    nextFollowUpDate?: SortOrderInput | SortOrder
+    createdById?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: LeadFollowUpCountOrderByAggregateInput
+    _max?: LeadFollowUpMaxOrderByAggregateInput
+    _min?: LeadFollowUpMinOrderByAggregateInput
+  }
+
+  export type LeadFollowUpScalarWhereWithAggregatesInput = {
+    AND?: LeadFollowUpScalarWhereWithAggregatesInput | LeadFollowUpScalarWhereWithAggregatesInput[]
+    OR?: LeadFollowUpScalarWhereWithAggregatesInput[]
+    NOT?: LeadFollowUpScalarWhereWithAggregatesInput | LeadFollowUpScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"LeadFollowUp"> | string
+    leadId?: StringWithAggregatesFilter<"LeadFollowUp"> | string
+    followUpDate?: DateTimeWithAggregatesFilter<"LeadFollowUp"> | Date | string
+    followUpType?: StringWithAggregatesFilter<"LeadFollowUp"> | string
+    notes?: StringWithAggregatesFilter<"LeadFollowUp"> | string
+    nextFollowUpDate?: DateTimeNullableWithAggregatesFilter<"LeadFollowUp"> | Date | string | null
+    createdById?: StringWithAggregatesFilter<"LeadFollowUp"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"LeadFollowUp"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"LeadFollowUp"> | Date | string
+  }
+
+  export type LeadStageHistoryWhereInput = {
+    AND?: LeadStageHistoryWhereInput | LeadStageHistoryWhereInput[]
+    OR?: LeadStageHistoryWhereInput[]
+    NOT?: LeadStageHistoryWhereInput | LeadStageHistoryWhereInput[]
+    id?: StringFilter<"LeadStageHistory"> | string
+    leadId?: StringFilter<"LeadStageHistory"> | string
+    fromStage?: EnumLeadStageNullableFilter<"LeadStageHistory"> | $Enums.LeadStage | null
+    toStage?: EnumLeadStageFilter<"LeadStageHistory"> | $Enums.LeadStage
+    createdById?: StringFilter<"LeadStageHistory"> | string
+    createdAt?: DateTimeFilter<"LeadStageHistory"> | Date | string
+    lead?: XOR<LeadScalarRelationFilter, LeadWhereInput>
+    createdBy?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type LeadStageHistoryOrderByWithRelationInput = {
+    id?: SortOrder
+    leadId?: SortOrder
+    fromStage?: SortOrderInput | SortOrder
+    toStage?: SortOrder
+    createdById?: SortOrder
+    createdAt?: SortOrder
+    lead?: LeadOrderByWithRelationInput
+    createdBy?: UserOrderByWithRelationInput
+  }
+
+  export type LeadStageHistoryWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: LeadStageHistoryWhereInput | LeadStageHistoryWhereInput[]
+    OR?: LeadStageHistoryWhereInput[]
+    NOT?: LeadStageHistoryWhereInput | LeadStageHistoryWhereInput[]
+    leadId?: StringFilter<"LeadStageHistory"> | string
+    fromStage?: EnumLeadStageNullableFilter<"LeadStageHistory"> | $Enums.LeadStage | null
+    toStage?: EnumLeadStageFilter<"LeadStageHistory"> | $Enums.LeadStage
+    createdById?: StringFilter<"LeadStageHistory"> | string
+    createdAt?: DateTimeFilter<"LeadStageHistory"> | Date | string
+    lead?: XOR<LeadScalarRelationFilter, LeadWhereInput>
+    createdBy?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type LeadStageHistoryOrderByWithAggregationInput = {
+    id?: SortOrder
+    leadId?: SortOrder
+    fromStage?: SortOrderInput | SortOrder
+    toStage?: SortOrder
+    createdById?: SortOrder
+    createdAt?: SortOrder
+    _count?: LeadStageHistoryCountOrderByAggregateInput
+    _max?: LeadStageHistoryMaxOrderByAggregateInput
+    _min?: LeadStageHistoryMinOrderByAggregateInput
+  }
+
+  export type LeadStageHistoryScalarWhereWithAggregatesInput = {
+    AND?: LeadStageHistoryScalarWhereWithAggregatesInput | LeadStageHistoryScalarWhereWithAggregatesInput[]
+    OR?: LeadStageHistoryScalarWhereWithAggregatesInput[]
+    NOT?: LeadStageHistoryScalarWhereWithAggregatesInput | LeadStageHistoryScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"LeadStageHistory"> | string
+    leadId?: StringWithAggregatesFilter<"LeadStageHistory"> | string
+    fromStage?: EnumLeadStageNullableWithAggregatesFilter<"LeadStageHistory"> | $Enums.LeadStage | null
+    toStage?: EnumLeadStageWithAggregatesFilter<"LeadStageHistory"> | $Enums.LeadStage
+    createdById?: StringWithAggregatesFilter<"LeadStageHistory"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"LeadStageHistory"> | Date | string
+  }
+
+  export type LeadActivityWhereInput = {
+    AND?: LeadActivityWhereInput | LeadActivityWhereInput[]
+    OR?: LeadActivityWhereInput[]
+    NOT?: LeadActivityWhereInput | LeadActivityWhereInput[]
+    id?: StringFilter<"LeadActivity"> | string
+    leadId?: StringFilter<"LeadActivity"> | string
+    action?: StringFilter<"LeadActivity"> | string
+    previousValue?: JsonNullableFilter<"LeadActivity">
+    newValue?: JsonNullableFilter<"LeadActivity">
+    createdById?: StringFilter<"LeadActivity"> | string
+    createdAt?: DateTimeFilter<"LeadActivity"> | Date | string
+    lead?: XOR<LeadScalarRelationFilter, LeadWhereInput>
+    createdBy?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type LeadActivityOrderByWithRelationInput = {
+    id?: SortOrder
+    leadId?: SortOrder
+    action?: SortOrder
+    previousValue?: SortOrderInput | SortOrder
+    newValue?: SortOrderInput | SortOrder
+    createdById?: SortOrder
+    createdAt?: SortOrder
+    lead?: LeadOrderByWithRelationInput
+    createdBy?: UserOrderByWithRelationInput
+  }
+
+  export type LeadActivityWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: LeadActivityWhereInput | LeadActivityWhereInput[]
+    OR?: LeadActivityWhereInput[]
+    NOT?: LeadActivityWhereInput | LeadActivityWhereInput[]
+    leadId?: StringFilter<"LeadActivity"> | string
+    action?: StringFilter<"LeadActivity"> | string
+    previousValue?: JsonNullableFilter<"LeadActivity">
+    newValue?: JsonNullableFilter<"LeadActivity">
+    createdById?: StringFilter<"LeadActivity"> | string
+    createdAt?: DateTimeFilter<"LeadActivity"> | Date | string
+    lead?: XOR<LeadScalarRelationFilter, LeadWhereInput>
+    createdBy?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type LeadActivityOrderByWithAggregationInput = {
+    id?: SortOrder
+    leadId?: SortOrder
+    action?: SortOrder
+    previousValue?: SortOrderInput | SortOrder
+    newValue?: SortOrderInput | SortOrder
+    createdById?: SortOrder
+    createdAt?: SortOrder
+    _count?: LeadActivityCountOrderByAggregateInput
+    _max?: LeadActivityMaxOrderByAggregateInput
+    _min?: LeadActivityMinOrderByAggregateInput
+  }
+
+  export type LeadActivityScalarWhereWithAggregatesInput = {
+    AND?: LeadActivityScalarWhereWithAggregatesInput | LeadActivityScalarWhereWithAggregatesInput[]
+    OR?: LeadActivityScalarWhereWithAggregatesInput[]
+    NOT?: LeadActivityScalarWhereWithAggregatesInput | LeadActivityScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"LeadActivity"> | string
+    leadId?: StringWithAggregatesFilter<"LeadActivity"> | string
+    action?: StringWithAggregatesFilter<"LeadActivity"> | string
+    previousValue?: JsonNullableWithAggregatesFilter<"LeadActivity">
+    newValue?: JsonNullableWithAggregatesFilter<"LeadActivity">
+    createdById?: StringWithAggregatesFilter<"LeadActivity"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"LeadActivity"> | Date | string
+  }
+
+  export type LeadRecordingWhereInput = {
+    AND?: LeadRecordingWhereInput | LeadRecordingWhereInput[]
+    OR?: LeadRecordingWhereInput[]
+    NOT?: LeadRecordingWhereInput | LeadRecordingWhereInput[]
+    id?: StringFilter<"LeadRecording"> | string
+    leadId?: StringFilter<"LeadRecording"> | string
+    followUpId?: StringNullableFilter<"LeadRecording"> | string | null
+    originalName?: StringFilter<"LeadRecording"> | string
+    storageKey?: StringFilter<"LeadRecording"> | string
+    mimeType?: StringFilter<"LeadRecording"> | string
+    sizeBytes?: IntFilter<"LeadRecording"> | number
+    createdById?: StringFilter<"LeadRecording"> | string
+    createdAt?: DateTimeFilter<"LeadRecording"> | Date | string
+    lead?: XOR<LeadScalarRelationFilter, LeadWhereInput>
+    createdBy?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type LeadRecordingOrderByWithRelationInput = {
+    id?: SortOrder
+    leadId?: SortOrder
+    followUpId?: SortOrderInput | SortOrder
+    originalName?: SortOrder
+    storageKey?: SortOrder
+    mimeType?: SortOrder
+    sizeBytes?: SortOrder
+    createdById?: SortOrder
+    createdAt?: SortOrder
+    lead?: LeadOrderByWithRelationInput
+    createdBy?: UserOrderByWithRelationInput
+  }
+
+  export type LeadRecordingWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    storageKey?: string
+    AND?: LeadRecordingWhereInput | LeadRecordingWhereInput[]
+    OR?: LeadRecordingWhereInput[]
+    NOT?: LeadRecordingWhereInput | LeadRecordingWhereInput[]
+    leadId?: StringFilter<"LeadRecording"> | string
+    followUpId?: StringNullableFilter<"LeadRecording"> | string | null
+    originalName?: StringFilter<"LeadRecording"> | string
+    mimeType?: StringFilter<"LeadRecording"> | string
+    sizeBytes?: IntFilter<"LeadRecording"> | number
+    createdById?: StringFilter<"LeadRecording"> | string
+    createdAt?: DateTimeFilter<"LeadRecording"> | Date | string
+    lead?: XOR<LeadScalarRelationFilter, LeadWhereInput>
+    createdBy?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id" | "storageKey">
+
+  export type LeadRecordingOrderByWithAggregationInput = {
+    id?: SortOrder
+    leadId?: SortOrder
+    followUpId?: SortOrderInput | SortOrder
+    originalName?: SortOrder
+    storageKey?: SortOrder
+    mimeType?: SortOrder
+    sizeBytes?: SortOrder
+    createdById?: SortOrder
+    createdAt?: SortOrder
+    _count?: LeadRecordingCountOrderByAggregateInput
+    _avg?: LeadRecordingAvgOrderByAggregateInput
+    _max?: LeadRecordingMaxOrderByAggregateInput
+    _min?: LeadRecordingMinOrderByAggregateInput
+    _sum?: LeadRecordingSumOrderByAggregateInput
+  }
+
+  export type LeadRecordingScalarWhereWithAggregatesInput = {
+    AND?: LeadRecordingScalarWhereWithAggregatesInput | LeadRecordingScalarWhereWithAggregatesInput[]
+    OR?: LeadRecordingScalarWhereWithAggregatesInput[]
+    NOT?: LeadRecordingScalarWhereWithAggregatesInput | LeadRecordingScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"LeadRecording"> | string
+    leadId?: StringWithAggregatesFilter<"LeadRecording"> | string
+    followUpId?: StringNullableWithAggregatesFilter<"LeadRecording"> | string | null
+    originalName?: StringWithAggregatesFilter<"LeadRecording"> | string
+    storageKey?: StringWithAggregatesFilter<"LeadRecording"> | string
+    mimeType?: StringWithAggregatesFilter<"LeadRecording"> | string
+    sizeBytes?: IntWithAggregatesFilter<"LeadRecording"> | number
+    createdById?: StringWithAggregatesFilter<"LeadRecording"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"LeadRecording"> | Date | string
+  }
+
   export type MotivationMailHistoryWhereInput = {
     AND?: MotivationMailHistoryWhereInput | MotivationMailHistoryWhereInput[]
     OR?: MotivationMailHistoryWhereInput[]
@@ -113118,6 +120601,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutFacultyUserInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadCreateNestedManyWithoutAssignedToInput
+    createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
+    leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -113163,6 +120653,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutFacultyUserInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssignedToInput
+    createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
+    leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUpdateInput = {
@@ -113208,6 +120705,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutFacultyUserNestedInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUpdateManyWithoutAssignedToNestedInput
+    createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
+    leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -113253,6 +120757,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutFacultyUserNestedInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
+    leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -113520,6 +121031,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutBranchInput
     facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutBranchInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutBranchInput
+    leads?: LeadCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateInput = {
@@ -113556,6 +121068,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutBranchInput
     facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutBranchInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutBranchInput
+    leads?: LeadUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUpdateInput = {
@@ -113592,6 +121105,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutBranchNestedInput
     facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutBranchNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutBranchNestedInput
+    leads?: LeadUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateInput = {
@@ -113628,6 +121142,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutBranchNestedInput
     facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutBranchNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutBranchNestedInput
+    leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchCreateManyInput = {
@@ -114622,6 +122137,7 @@ export namespace Prisma {
     academicTests?: AcademicTestCreateNestedManyWithoutBranchCourseInput
     academicQuestionPapers?: AcademicQuestionPaperCreateNestedManyWithoutBranchCourseInput
     academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchCourseInput
+    leads?: LeadCreateNestedManyWithoutCourseInput
   }
 
   export type BranchCourseUncheckedCreateInput = {
@@ -114661,6 +122177,7 @@ export namespace Prisma {
     academicTests?: AcademicTestUncheckedCreateNestedManyWithoutBranchCourseInput
     academicQuestionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchCourseInput
     academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchCourseInput
+    leads?: LeadUncheckedCreateNestedManyWithoutCourseInput
   }
 
   export type BranchCourseUpdateInput = {
@@ -114700,6 +122217,7 @@ export namespace Prisma {
     academicTests?: AcademicTestUpdateManyWithoutBranchCourseNestedInput
     academicQuestionPapers?: AcademicQuestionPaperUpdateManyWithoutBranchCourseNestedInput
     academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchCourseNestedInput
+    leads?: LeadUpdateManyWithoutCourseNestedInput
   }
 
   export type BranchCourseUncheckedUpdateInput = {
@@ -114739,6 +122257,7 @@ export namespace Prisma {
     academicTests?: AcademicTestUncheckedUpdateManyWithoutBranchCourseNestedInput
     academicQuestionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutBranchCourseNestedInput
     academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchCourseNestedInput
+    leads?: LeadUncheckedUpdateManyWithoutCourseNestedInput
   }
 
   export type BranchCourseCreateManyInput = {
@@ -121893,6 +129412,520 @@ export namespace Prisma {
     marksAwarded?: IntFieldUpdateOperationsInput | number
   }
 
+  export type LeadCreateInput = {
+    id?: string
+    leadId: string
+    studentName: string
+    phoneNumber: string
+    alternativeNumber?: string | null
+    email?: string | null
+    qualification?: string | null
+    location?: string | null
+    callType: string
+    status?: $Enums.LeadStatus
+    stage?: $Enums.LeadStage
+    leadSource: string
+    referredBy?: string | null
+    paymentStatus?: string
+    trainingMode?: string | null
+    classSchedule?: string | null
+    courseMode?: string | null
+    locationDistance?: string | null
+    leadDate: Date | string
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branch: BranchCreateNestedOneWithoutLeadsInput
+    course: BranchCourseCreateNestedOneWithoutLeadsInput
+    assignedTo?: UserCreateNestedOneWithoutAssignedLeadsInput
+    createdBy: UserCreateNestedOneWithoutCreatedLeadsInput
+    updatedBy?: UserCreateNestedOneWithoutUpdatedLeadsInput
+    followUps?: LeadFollowUpCreateNestedManyWithoutLeadInput
+    stageHistory?: LeadStageHistoryCreateNestedManyWithoutLeadInput
+    activities?: LeadActivityCreateNestedManyWithoutLeadInput
+    recordings?: LeadRecordingCreateNestedManyWithoutLeadInput
+  }
+
+  export type LeadUncheckedCreateInput = {
+    id?: string
+    leadId: string
+    studentName: string
+    phoneNumber: string
+    alternativeNumber?: string | null
+    email?: string | null
+    qualification?: string | null
+    location?: string | null
+    callType: string
+    status?: $Enums.LeadStatus
+    stage?: $Enums.LeadStage
+    courseId: string
+    branchId: string
+    leadSource: string
+    referredBy?: string | null
+    paymentStatus?: string
+    trainingMode?: string | null
+    classSchedule?: string | null
+    courseMode?: string | null
+    locationDistance?: string | null
+    leadDate: Date | string
+    assignedToId?: string | null
+    createdById: string
+    updatedById?: string | null
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    followUps?: LeadFollowUpUncheckedCreateNestedManyWithoutLeadInput
+    stageHistory?: LeadStageHistoryUncheckedCreateNestedManyWithoutLeadInput
+    activities?: LeadActivityUncheckedCreateNestedManyWithoutLeadInput
+    recordings?: LeadRecordingUncheckedCreateNestedManyWithoutLeadInput
+  }
+
+  export type LeadUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    studentName?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    alternativeNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    qualification?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    callType?: StringFieldUpdateOperationsInput | string
+    status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    stage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    leadSource?: StringFieldUpdateOperationsInput | string
+    referredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: StringFieldUpdateOperationsInput | string
+    trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
+    classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
+    courseMode?: NullableStringFieldUpdateOperationsInput | string | null
+    locationDistance?: NullableStringFieldUpdateOperationsInput | string | null
+    leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branch?: BranchUpdateOneRequiredWithoutLeadsNestedInput
+    course?: BranchCourseUpdateOneRequiredWithoutLeadsNestedInput
+    assignedTo?: UserUpdateOneWithoutAssignedLeadsNestedInput
+    createdBy?: UserUpdateOneRequiredWithoutCreatedLeadsNestedInput
+    updatedBy?: UserUpdateOneWithoutUpdatedLeadsNestedInput
+    followUps?: LeadFollowUpUpdateManyWithoutLeadNestedInput
+    stageHistory?: LeadStageHistoryUpdateManyWithoutLeadNestedInput
+    activities?: LeadActivityUpdateManyWithoutLeadNestedInput
+    recordings?: LeadRecordingUpdateManyWithoutLeadNestedInput
+  }
+
+  export type LeadUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    studentName?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    alternativeNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    qualification?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    callType?: StringFieldUpdateOperationsInput | string
+    status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    stage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    courseId?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    leadSource?: StringFieldUpdateOperationsInput | string
+    referredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: StringFieldUpdateOperationsInput | string
+    trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
+    classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
+    courseMode?: NullableStringFieldUpdateOperationsInput | string | null
+    locationDistance?: NullableStringFieldUpdateOperationsInput | string | null
+    leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: StringFieldUpdateOperationsInput | string
+    updatedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    followUps?: LeadFollowUpUncheckedUpdateManyWithoutLeadNestedInput
+    stageHistory?: LeadStageHistoryUncheckedUpdateManyWithoutLeadNestedInput
+    activities?: LeadActivityUncheckedUpdateManyWithoutLeadNestedInput
+    recordings?: LeadRecordingUncheckedUpdateManyWithoutLeadNestedInput
+  }
+
+  export type LeadCreateManyInput = {
+    id?: string
+    leadId: string
+    studentName: string
+    phoneNumber: string
+    alternativeNumber?: string | null
+    email?: string | null
+    qualification?: string | null
+    location?: string | null
+    callType: string
+    status?: $Enums.LeadStatus
+    stage?: $Enums.LeadStage
+    courseId: string
+    branchId: string
+    leadSource: string
+    referredBy?: string | null
+    paymentStatus?: string
+    trainingMode?: string | null
+    classSchedule?: string | null
+    courseMode?: string | null
+    locationDistance?: string | null
+    leadDate: Date | string
+    assignedToId?: string | null
+    createdById: string
+    updatedById?: string | null
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type LeadUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    studentName?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    alternativeNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    qualification?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    callType?: StringFieldUpdateOperationsInput | string
+    status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    stage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    leadSource?: StringFieldUpdateOperationsInput | string
+    referredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: StringFieldUpdateOperationsInput | string
+    trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
+    classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
+    courseMode?: NullableStringFieldUpdateOperationsInput | string | null
+    locationDistance?: NullableStringFieldUpdateOperationsInput | string | null
+    leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LeadUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    studentName?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    alternativeNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    qualification?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    callType?: StringFieldUpdateOperationsInput | string
+    status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    stage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    courseId?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    leadSource?: StringFieldUpdateOperationsInput | string
+    referredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: StringFieldUpdateOperationsInput | string
+    trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
+    classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
+    courseMode?: NullableStringFieldUpdateOperationsInput | string | null
+    locationDistance?: NullableStringFieldUpdateOperationsInput | string | null
+    leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: StringFieldUpdateOperationsInput | string
+    updatedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LeadFollowUpCreateInput = {
+    id?: string
+    followUpDate: Date | string
+    followUpType: string
+    notes: string
+    nextFollowUpDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lead: LeadCreateNestedOneWithoutFollowUpsInput
+    createdBy: UserCreateNestedOneWithoutLeadFollowUpsInput
+  }
+
+  export type LeadFollowUpUncheckedCreateInput = {
+    id?: string
+    leadId: string
+    followUpDate: Date | string
+    followUpType: string
+    notes: string
+    nextFollowUpDate?: Date | string | null
+    createdById: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type LeadFollowUpUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    followUpDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    followUpType?: StringFieldUpdateOperationsInput | string
+    notes?: StringFieldUpdateOperationsInput | string
+    nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lead?: LeadUpdateOneRequiredWithoutFollowUpsNestedInput
+    createdBy?: UserUpdateOneRequiredWithoutLeadFollowUpsNestedInput
+  }
+
+  export type LeadFollowUpUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    followUpDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    followUpType?: StringFieldUpdateOperationsInput | string
+    notes?: StringFieldUpdateOperationsInput | string
+    nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdById?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LeadFollowUpCreateManyInput = {
+    id?: string
+    leadId: string
+    followUpDate: Date | string
+    followUpType: string
+    notes: string
+    nextFollowUpDate?: Date | string | null
+    createdById: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type LeadFollowUpUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    followUpDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    followUpType?: StringFieldUpdateOperationsInput | string
+    notes?: StringFieldUpdateOperationsInput | string
+    nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LeadFollowUpUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    followUpDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    followUpType?: StringFieldUpdateOperationsInput | string
+    notes?: StringFieldUpdateOperationsInput | string
+    nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdById?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LeadStageHistoryCreateInput = {
+    id?: string
+    fromStage?: $Enums.LeadStage | null
+    toStage: $Enums.LeadStage
+    createdAt?: Date | string
+    lead: LeadCreateNestedOneWithoutStageHistoryInput
+    createdBy: UserCreateNestedOneWithoutLeadStageChangesInput
+  }
+
+  export type LeadStageHistoryUncheckedCreateInput = {
+    id?: string
+    leadId: string
+    fromStage?: $Enums.LeadStage | null
+    toStage: $Enums.LeadStage
+    createdById: string
+    createdAt?: Date | string
+  }
+
+  export type LeadStageHistoryUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fromStage?: NullableEnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage | null
+    toStage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lead?: LeadUpdateOneRequiredWithoutStageHistoryNestedInput
+    createdBy?: UserUpdateOneRequiredWithoutLeadStageChangesNestedInput
+  }
+
+  export type LeadStageHistoryUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    fromStage?: NullableEnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage | null
+    toStage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    createdById?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LeadStageHistoryCreateManyInput = {
+    id?: string
+    leadId: string
+    fromStage?: $Enums.LeadStage | null
+    toStage: $Enums.LeadStage
+    createdById: string
+    createdAt?: Date | string
+  }
+
+  export type LeadStageHistoryUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fromStage?: NullableEnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage | null
+    toStage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LeadStageHistoryUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    fromStage?: NullableEnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage | null
+    toStage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    createdById?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LeadActivityCreateInput = {
+    id?: string
+    action: string
+    previousValue?: NullableJsonNullValueInput | InputJsonValue
+    newValue?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    lead: LeadCreateNestedOneWithoutActivitiesInput
+    createdBy: UserCreateNestedOneWithoutLeadActivitiesInput
+  }
+
+  export type LeadActivityUncheckedCreateInput = {
+    id?: string
+    leadId: string
+    action: string
+    previousValue?: NullableJsonNullValueInput | InputJsonValue
+    newValue?: NullableJsonNullValueInput | InputJsonValue
+    createdById: string
+    createdAt?: Date | string
+  }
+
+  export type LeadActivityUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    previousValue?: NullableJsonNullValueInput | InputJsonValue
+    newValue?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lead?: LeadUpdateOneRequiredWithoutActivitiesNestedInput
+    createdBy?: UserUpdateOneRequiredWithoutLeadActivitiesNestedInput
+  }
+
+  export type LeadActivityUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    previousValue?: NullableJsonNullValueInput | InputJsonValue
+    newValue?: NullableJsonNullValueInput | InputJsonValue
+    createdById?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LeadActivityCreateManyInput = {
+    id?: string
+    leadId: string
+    action: string
+    previousValue?: NullableJsonNullValueInput | InputJsonValue
+    newValue?: NullableJsonNullValueInput | InputJsonValue
+    createdById: string
+    createdAt?: Date | string
+  }
+
+  export type LeadActivityUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    previousValue?: NullableJsonNullValueInput | InputJsonValue
+    newValue?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LeadActivityUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    previousValue?: NullableJsonNullValueInput | InputJsonValue
+    newValue?: NullableJsonNullValueInput | InputJsonValue
+    createdById?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LeadRecordingCreateInput = {
+    id?: string
+    followUpId?: string | null
+    originalName: string
+    storageKey: string
+    mimeType: string
+    sizeBytes: number
+    createdAt?: Date | string
+    lead: LeadCreateNestedOneWithoutRecordingsInput
+    createdBy: UserCreateNestedOneWithoutLeadRecordingsInput
+  }
+
+  export type LeadRecordingUncheckedCreateInput = {
+    id?: string
+    leadId: string
+    followUpId?: string | null
+    originalName: string
+    storageKey: string
+    mimeType: string
+    sizeBytes: number
+    createdById: string
+    createdAt?: Date | string
+  }
+
+  export type LeadRecordingUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    followUpId?: NullableStringFieldUpdateOperationsInput | string | null
+    originalName?: StringFieldUpdateOperationsInput | string
+    storageKey?: StringFieldUpdateOperationsInput | string
+    mimeType?: StringFieldUpdateOperationsInput | string
+    sizeBytes?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lead?: LeadUpdateOneRequiredWithoutRecordingsNestedInput
+    createdBy?: UserUpdateOneRequiredWithoutLeadRecordingsNestedInput
+  }
+
+  export type LeadRecordingUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    followUpId?: NullableStringFieldUpdateOperationsInput | string | null
+    originalName?: StringFieldUpdateOperationsInput | string
+    storageKey?: StringFieldUpdateOperationsInput | string
+    mimeType?: StringFieldUpdateOperationsInput | string
+    sizeBytes?: IntFieldUpdateOperationsInput | number
+    createdById?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LeadRecordingCreateManyInput = {
+    id?: string
+    leadId: string
+    followUpId?: string | null
+    originalName: string
+    storageKey: string
+    mimeType: string
+    sizeBytes: number
+    createdById: string
+    createdAt?: Date | string
+  }
+
+  export type LeadRecordingUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    followUpId?: NullableStringFieldUpdateOperationsInput | string | null
+    originalName?: StringFieldUpdateOperationsInput | string
+    storageKey?: StringFieldUpdateOperationsInput | string
+    mimeType?: StringFieldUpdateOperationsInput | string
+    sizeBytes?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LeadRecordingUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    followUpId?: NullableStringFieldUpdateOperationsInput | string | null
+    originalName?: StringFieldUpdateOperationsInput | string
+    storageKey?: StringFieldUpdateOperationsInput | string
+    mimeType?: StringFieldUpdateOperationsInput | string
+    sizeBytes?: IntFieldUpdateOperationsInput | number
+    createdById?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type MotivationMailHistoryCreateInput = {
     id?: string
     branchId: string
@@ -123205,6 +131238,36 @@ export namespace Prisma {
     none?: SalesAdminBranchWhereInput
   }
 
+  export type LeadListRelationFilter = {
+    every?: LeadWhereInput
+    some?: LeadWhereInput
+    none?: LeadWhereInput
+  }
+
+  export type LeadFollowUpListRelationFilter = {
+    every?: LeadFollowUpWhereInput
+    some?: LeadFollowUpWhereInput
+    none?: LeadFollowUpWhereInput
+  }
+
+  export type LeadActivityListRelationFilter = {
+    every?: LeadActivityWhereInput
+    some?: LeadActivityWhereInput
+    none?: LeadActivityWhereInput
+  }
+
+  export type LeadStageHistoryListRelationFilter = {
+    every?: LeadStageHistoryWhereInput
+    some?: LeadStageHistoryWhereInput
+    none?: LeadStageHistoryWhereInput
+  }
+
+  export type LeadRecordingListRelationFilter = {
+    every?: LeadRecordingWhereInput
+    some?: LeadRecordingWhereInput
+    none?: LeadRecordingWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -123283,6 +131346,26 @@ export namespace Prisma {
   }
 
   export type SalesAdminBranchOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type LeadOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type LeadFollowUpOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type LeadActivityOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type LeadStageHistoryOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type LeadRecordingOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -128630,6 +136713,285 @@ export namespace Prisma {
     marksAwarded?: SortOrder
   }
 
+  export type EnumLeadStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.LeadStatus | EnumLeadStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.LeadStatus[] | ListEnumLeadStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.LeadStatus[] | ListEnumLeadStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumLeadStatusFilter<$PrismaModel> | $Enums.LeadStatus
+  }
+
+  export type EnumLeadStageFilter<$PrismaModel = never> = {
+    equals?: $Enums.LeadStage | EnumLeadStageFieldRefInput<$PrismaModel>
+    in?: $Enums.LeadStage[] | ListEnumLeadStageFieldRefInput<$PrismaModel>
+    notIn?: $Enums.LeadStage[] | ListEnumLeadStageFieldRefInput<$PrismaModel>
+    not?: NestedEnumLeadStageFilter<$PrismaModel> | $Enums.LeadStage
+  }
+
+  export type LeadCountOrderByAggregateInput = {
+    id?: SortOrder
+    leadId?: SortOrder
+    studentName?: SortOrder
+    phoneNumber?: SortOrder
+    alternativeNumber?: SortOrder
+    email?: SortOrder
+    qualification?: SortOrder
+    location?: SortOrder
+    callType?: SortOrder
+    status?: SortOrder
+    stage?: SortOrder
+    courseId?: SortOrder
+    branchId?: SortOrder
+    leadSource?: SortOrder
+    referredBy?: SortOrder
+    paymentStatus?: SortOrder
+    trainingMode?: SortOrder
+    classSchedule?: SortOrder
+    courseMode?: SortOrder
+    locationDistance?: SortOrder
+    leadDate?: SortOrder
+    assignedToId?: SortOrder
+    createdById?: SortOrder
+    updatedById?: SortOrder
+    deletedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type LeadMaxOrderByAggregateInput = {
+    id?: SortOrder
+    leadId?: SortOrder
+    studentName?: SortOrder
+    phoneNumber?: SortOrder
+    alternativeNumber?: SortOrder
+    email?: SortOrder
+    qualification?: SortOrder
+    location?: SortOrder
+    callType?: SortOrder
+    status?: SortOrder
+    stage?: SortOrder
+    courseId?: SortOrder
+    branchId?: SortOrder
+    leadSource?: SortOrder
+    referredBy?: SortOrder
+    paymentStatus?: SortOrder
+    trainingMode?: SortOrder
+    classSchedule?: SortOrder
+    courseMode?: SortOrder
+    locationDistance?: SortOrder
+    leadDate?: SortOrder
+    assignedToId?: SortOrder
+    createdById?: SortOrder
+    updatedById?: SortOrder
+    deletedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type LeadMinOrderByAggregateInput = {
+    id?: SortOrder
+    leadId?: SortOrder
+    studentName?: SortOrder
+    phoneNumber?: SortOrder
+    alternativeNumber?: SortOrder
+    email?: SortOrder
+    qualification?: SortOrder
+    location?: SortOrder
+    callType?: SortOrder
+    status?: SortOrder
+    stage?: SortOrder
+    courseId?: SortOrder
+    branchId?: SortOrder
+    leadSource?: SortOrder
+    referredBy?: SortOrder
+    paymentStatus?: SortOrder
+    trainingMode?: SortOrder
+    classSchedule?: SortOrder
+    courseMode?: SortOrder
+    locationDistance?: SortOrder
+    leadDate?: SortOrder
+    assignedToId?: SortOrder
+    createdById?: SortOrder
+    updatedById?: SortOrder
+    deletedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EnumLeadStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.LeadStatus | EnumLeadStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.LeadStatus[] | ListEnumLeadStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.LeadStatus[] | ListEnumLeadStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumLeadStatusWithAggregatesFilter<$PrismaModel> | $Enums.LeadStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumLeadStatusFilter<$PrismaModel>
+    _max?: NestedEnumLeadStatusFilter<$PrismaModel>
+  }
+
+  export type EnumLeadStageWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.LeadStage | EnumLeadStageFieldRefInput<$PrismaModel>
+    in?: $Enums.LeadStage[] | ListEnumLeadStageFieldRefInput<$PrismaModel>
+    notIn?: $Enums.LeadStage[] | ListEnumLeadStageFieldRefInput<$PrismaModel>
+    not?: NestedEnumLeadStageWithAggregatesFilter<$PrismaModel> | $Enums.LeadStage
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumLeadStageFilter<$PrismaModel>
+    _max?: NestedEnumLeadStageFilter<$PrismaModel>
+  }
+
+  export type LeadScalarRelationFilter = {
+    is?: LeadWhereInput
+    isNot?: LeadWhereInput
+  }
+
+  export type LeadFollowUpCountOrderByAggregateInput = {
+    id?: SortOrder
+    leadId?: SortOrder
+    followUpDate?: SortOrder
+    followUpType?: SortOrder
+    notes?: SortOrder
+    nextFollowUpDate?: SortOrder
+    createdById?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type LeadFollowUpMaxOrderByAggregateInput = {
+    id?: SortOrder
+    leadId?: SortOrder
+    followUpDate?: SortOrder
+    followUpType?: SortOrder
+    notes?: SortOrder
+    nextFollowUpDate?: SortOrder
+    createdById?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type LeadFollowUpMinOrderByAggregateInput = {
+    id?: SortOrder
+    leadId?: SortOrder
+    followUpDate?: SortOrder
+    followUpType?: SortOrder
+    notes?: SortOrder
+    nextFollowUpDate?: SortOrder
+    createdById?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EnumLeadStageNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.LeadStage | EnumLeadStageFieldRefInput<$PrismaModel> | null
+    in?: $Enums.LeadStage[] | ListEnumLeadStageFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.LeadStage[] | ListEnumLeadStageFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumLeadStageNullableFilter<$PrismaModel> | $Enums.LeadStage | null
+  }
+
+  export type LeadStageHistoryCountOrderByAggregateInput = {
+    id?: SortOrder
+    leadId?: SortOrder
+    fromStage?: SortOrder
+    toStage?: SortOrder
+    createdById?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type LeadStageHistoryMaxOrderByAggregateInput = {
+    id?: SortOrder
+    leadId?: SortOrder
+    fromStage?: SortOrder
+    toStage?: SortOrder
+    createdById?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type LeadStageHistoryMinOrderByAggregateInput = {
+    id?: SortOrder
+    leadId?: SortOrder
+    fromStage?: SortOrder
+    toStage?: SortOrder
+    createdById?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type EnumLeadStageNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.LeadStage | EnumLeadStageFieldRefInput<$PrismaModel> | null
+    in?: $Enums.LeadStage[] | ListEnumLeadStageFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.LeadStage[] | ListEnumLeadStageFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumLeadStageNullableWithAggregatesFilter<$PrismaModel> | $Enums.LeadStage | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedEnumLeadStageNullableFilter<$PrismaModel>
+    _max?: NestedEnumLeadStageNullableFilter<$PrismaModel>
+  }
+
+  export type LeadActivityCountOrderByAggregateInput = {
+    id?: SortOrder
+    leadId?: SortOrder
+    action?: SortOrder
+    previousValue?: SortOrder
+    newValue?: SortOrder
+    createdById?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type LeadActivityMaxOrderByAggregateInput = {
+    id?: SortOrder
+    leadId?: SortOrder
+    action?: SortOrder
+    createdById?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type LeadActivityMinOrderByAggregateInput = {
+    id?: SortOrder
+    leadId?: SortOrder
+    action?: SortOrder
+    createdById?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type LeadRecordingCountOrderByAggregateInput = {
+    id?: SortOrder
+    leadId?: SortOrder
+    followUpId?: SortOrder
+    originalName?: SortOrder
+    storageKey?: SortOrder
+    mimeType?: SortOrder
+    sizeBytes?: SortOrder
+    createdById?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type LeadRecordingAvgOrderByAggregateInput = {
+    sizeBytes?: SortOrder
+  }
+
+  export type LeadRecordingMaxOrderByAggregateInput = {
+    id?: SortOrder
+    leadId?: SortOrder
+    followUpId?: SortOrder
+    originalName?: SortOrder
+    storageKey?: SortOrder
+    mimeType?: SortOrder
+    sizeBytes?: SortOrder
+    createdById?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type LeadRecordingMinOrderByAggregateInput = {
+    id?: SortOrder
+    leadId?: SortOrder
+    followUpId?: SortOrder
+    originalName?: SortOrder
+    storageKey?: SortOrder
+    mimeType?: SortOrder
+    sizeBytes?: SortOrder
+    createdById?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type LeadRecordingSumOrderByAggregateInput = {
+    sizeBytes?: SortOrder
+  }
+
   export type MotivationMailHistoryBranchStudentIdAbsenceStartDateStageCompoundUniqueInput = {
     branchStudentId: string
     absenceStartDate: string
@@ -129363,6 +137725,55 @@ export namespace Prisma {
     connect?: SalesAdminBranchWhereUniqueInput | SalesAdminBranchWhereUniqueInput[]
   }
 
+  export type LeadCreateNestedManyWithoutAssignedToInput = {
+    create?: XOR<LeadCreateWithoutAssignedToInput, LeadUncheckedCreateWithoutAssignedToInput> | LeadCreateWithoutAssignedToInput[] | LeadUncheckedCreateWithoutAssignedToInput[]
+    connectOrCreate?: LeadCreateOrConnectWithoutAssignedToInput | LeadCreateOrConnectWithoutAssignedToInput[]
+    createMany?: LeadCreateManyAssignedToInputEnvelope
+    connect?: LeadWhereUniqueInput | LeadWhereUniqueInput[]
+  }
+
+  export type LeadCreateNestedManyWithoutCreatedByInput = {
+    create?: XOR<LeadCreateWithoutCreatedByInput, LeadUncheckedCreateWithoutCreatedByInput> | LeadCreateWithoutCreatedByInput[] | LeadUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: LeadCreateOrConnectWithoutCreatedByInput | LeadCreateOrConnectWithoutCreatedByInput[]
+    createMany?: LeadCreateManyCreatedByInputEnvelope
+    connect?: LeadWhereUniqueInput | LeadWhereUniqueInput[]
+  }
+
+  export type LeadCreateNestedManyWithoutUpdatedByInput = {
+    create?: XOR<LeadCreateWithoutUpdatedByInput, LeadUncheckedCreateWithoutUpdatedByInput> | LeadCreateWithoutUpdatedByInput[] | LeadUncheckedCreateWithoutUpdatedByInput[]
+    connectOrCreate?: LeadCreateOrConnectWithoutUpdatedByInput | LeadCreateOrConnectWithoutUpdatedByInput[]
+    createMany?: LeadCreateManyUpdatedByInputEnvelope
+    connect?: LeadWhereUniqueInput | LeadWhereUniqueInput[]
+  }
+
+  export type LeadFollowUpCreateNestedManyWithoutCreatedByInput = {
+    create?: XOR<LeadFollowUpCreateWithoutCreatedByInput, LeadFollowUpUncheckedCreateWithoutCreatedByInput> | LeadFollowUpCreateWithoutCreatedByInput[] | LeadFollowUpUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: LeadFollowUpCreateOrConnectWithoutCreatedByInput | LeadFollowUpCreateOrConnectWithoutCreatedByInput[]
+    createMany?: LeadFollowUpCreateManyCreatedByInputEnvelope
+    connect?: LeadFollowUpWhereUniqueInput | LeadFollowUpWhereUniqueInput[]
+  }
+
+  export type LeadActivityCreateNestedManyWithoutCreatedByInput = {
+    create?: XOR<LeadActivityCreateWithoutCreatedByInput, LeadActivityUncheckedCreateWithoutCreatedByInput> | LeadActivityCreateWithoutCreatedByInput[] | LeadActivityUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: LeadActivityCreateOrConnectWithoutCreatedByInput | LeadActivityCreateOrConnectWithoutCreatedByInput[]
+    createMany?: LeadActivityCreateManyCreatedByInputEnvelope
+    connect?: LeadActivityWhereUniqueInput | LeadActivityWhereUniqueInput[]
+  }
+
+  export type LeadStageHistoryCreateNestedManyWithoutCreatedByInput = {
+    create?: XOR<LeadStageHistoryCreateWithoutCreatedByInput, LeadStageHistoryUncheckedCreateWithoutCreatedByInput> | LeadStageHistoryCreateWithoutCreatedByInput[] | LeadStageHistoryUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: LeadStageHistoryCreateOrConnectWithoutCreatedByInput | LeadStageHistoryCreateOrConnectWithoutCreatedByInput[]
+    createMany?: LeadStageHistoryCreateManyCreatedByInputEnvelope
+    connect?: LeadStageHistoryWhereUniqueInput | LeadStageHistoryWhereUniqueInput[]
+  }
+
+  export type LeadRecordingCreateNestedManyWithoutCreatedByInput = {
+    create?: XOR<LeadRecordingCreateWithoutCreatedByInput, LeadRecordingUncheckedCreateWithoutCreatedByInput> | LeadRecordingCreateWithoutCreatedByInput[] | LeadRecordingUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: LeadRecordingCreateOrConnectWithoutCreatedByInput | LeadRecordingCreateOrConnectWithoutCreatedByInput[]
+    createMany?: LeadRecordingCreateManyCreatedByInputEnvelope
+    connect?: LeadRecordingWhereUniqueInput | LeadRecordingWhereUniqueInput[]
+  }
+
   export type BatchFacultyAssignmentUncheckedCreateNestedManyWithoutFacultyInput = {
     create?: XOR<BatchFacultyAssignmentCreateWithoutFacultyInput, BatchFacultyAssignmentUncheckedCreateWithoutFacultyInput> | BatchFacultyAssignmentCreateWithoutFacultyInput[] | BatchFacultyAssignmentUncheckedCreateWithoutFacultyInput[]
     connectOrCreate?: BatchFacultyAssignmentCreateOrConnectWithoutFacultyInput | BatchFacultyAssignmentCreateOrConnectWithoutFacultyInput[]
@@ -129500,6 +137911,55 @@ export namespace Prisma {
     connectOrCreate?: SalesAdminBranchCreateOrConnectWithoutSalesAdminInput | SalesAdminBranchCreateOrConnectWithoutSalesAdminInput[]
     createMany?: SalesAdminBranchCreateManySalesAdminInputEnvelope
     connect?: SalesAdminBranchWhereUniqueInput | SalesAdminBranchWhereUniqueInput[]
+  }
+
+  export type LeadUncheckedCreateNestedManyWithoutAssignedToInput = {
+    create?: XOR<LeadCreateWithoutAssignedToInput, LeadUncheckedCreateWithoutAssignedToInput> | LeadCreateWithoutAssignedToInput[] | LeadUncheckedCreateWithoutAssignedToInput[]
+    connectOrCreate?: LeadCreateOrConnectWithoutAssignedToInput | LeadCreateOrConnectWithoutAssignedToInput[]
+    createMany?: LeadCreateManyAssignedToInputEnvelope
+    connect?: LeadWhereUniqueInput | LeadWhereUniqueInput[]
+  }
+
+  export type LeadUncheckedCreateNestedManyWithoutCreatedByInput = {
+    create?: XOR<LeadCreateWithoutCreatedByInput, LeadUncheckedCreateWithoutCreatedByInput> | LeadCreateWithoutCreatedByInput[] | LeadUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: LeadCreateOrConnectWithoutCreatedByInput | LeadCreateOrConnectWithoutCreatedByInput[]
+    createMany?: LeadCreateManyCreatedByInputEnvelope
+    connect?: LeadWhereUniqueInput | LeadWhereUniqueInput[]
+  }
+
+  export type LeadUncheckedCreateNestedManyWithoutUpdatedByInput = {
+    create?: XOR<LeadCreateWithoutUpdatedByInput, LeadUncheckedCreateWithoutUpdatedByInput> | LeadCreateWithoutUpdatedByInput[] | LeadUncheckedCreateWithoutUpdatedByInput[]
+    connectOrCreate?: LeadCreateOrConnectWithoutUpdatedByInput | LeadCreateOrConnectWithoutUpdatedByInput[]
+    createMany?: LeadCreateManyUpdatedByInputEnvelope
+    connect?: LeadWhereUniqueInput | LeadWhereUniqueInput[]
+  }
+
+  export type LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput = {
+    create?: XOR<LeadFollowUpCreateWithoutCreatedByInput, LeadFollowUpUncheckedCreateWithoutCreatedByInput> | LeadFollowUpCreateWithoutCreatedByInput[] | LeadFollowUpUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: LeadFollowUpCreateOrConnectWithoutCreatedByInput | LeadFollowUpCreateOrConnectWithoutCreatedByInput[]
+    createMany?: LeadFollowUpCreateManyCreatedByInputEnvelope
+    connect?: LeadFollowUpWhereUniqueInput | LeadFollowUpWhereUniqueInput[]
+  }
+
+  export type LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput = {
+    create?: XOR<LeadActivityCreateWithoutCreatedByInput, LeadActivityUncheckedCreateWithoutCreatedByInput> | LeadActivityCreateWithoutCreatedByInput[] | LeadActivityUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: LeadActivityCreateOrConnectWithoutCreatedByInput | LeadActivityCreateOrConnectWithoutCreatedByInput[]
+    createMany?: LeadActivityCreateManyCreatedByInputEnvelope
+    connect?: LeadActivityWhereUniqueInput | LeadActivityWhereUniqueInput[]
+  }
+
+  export type LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput = {
+    create?: XOR<LeadStageHistoryCreateWithoutCreatedByInput, LeadStageHistoryUncheckedCreateWithoutCreatedByInput> | LeadStageHistoryCreateWithoutCreatedByInput[] | LeadStageHistoryUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: LeadStageHistoryCreateOrConnectWithoutCreatedByInput | LeadStageHistoryCreateOrConnectWithoutCreatedByInput[]
+    createMany?: LeadStageHistoryCreateManyCreatedByInputEnvelope
+    connect?: LeadStageHistoryWhereUniqueInput | LeadStageHistoryWhereUniqueInput[]
+  }
+
+  export type LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput = {
+    create?: XOR<LeadRecordingCreateWithoutCreatedByInput, LeadRecordingUncheckedCreateWithoutCreatedByInput> | LeadRecordingCreateWithoutCreatedByInput[] | LeadRecordingUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: LeadRecordingCreateOrConnectWithoutCreatedByInput | LeadRecordingCreateOrConnectWithoutCreatedByInput[]
+    createMany?: LeadRecordingCreateManyCreatedByInputEnvelope
+    connect?: LeadRecordingWhereUniqueInput | LeadRecordingWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -129810,6 +138270,104 @@ export namespace Prisma {
     deleteMany?: SalesAdminBranchScalarWhereInput | SalesAdminBranchScalarWhereInput[]
   }
 
+  export type LeadUpdateManyWithoutAssignedToNestedInput = {
+    create?: XOR<LeadCreateWithoutAssignedToInput, LeadUncheckedCreateWithoutAssignedToInput> | LeadCreateWithoutAssignedToInput[] | LeadUncheckedCreateWithoutAssignedToInput[]
+    connectOrCreate?: LeadCreateOrConnectWithoutAssignedToInput | LeadCreateOrConnectWithoutAssignedToInput[]
+    upsert?: LeadUpsertWithWhereUniqueWithoutAssignedToInput | LeadUpsertWithWhereUniqueWithoutAssignedToInput[]
+    createMany?: LeadCreateManyAssignedToInputEnvelope
+    set?: LeadWhereUniqueInput | LeadWhereUniqueInput[]
+    disconnect?: LeadWhereUniqueInput | LeadWhereUniqueInput[]
+    delete?: LeadWhereUniqueInput | LeadWhereUniqueInput[]
+    connect?: LeadWhereUniqueInput | LeadWhereUniqueInput[]
+    update?: LeadUpdateWithWhereUniqueWithoutAssignedToInput | LeadUpdateWithWhereUniqueWithoutAssignedToInput[]
+    updateMany?: LeadUpdateManyWithWhereWithoutAssignedToInput | LeadUpdateManyWithWhereWithoutAssignedToInput[]
+    deleteMany?: LeadScalarWhereInput | LeadScalarWhereInput[]
+  }
+
+  export type LeadUpdateManyWithoutCreatedByNestedInput = {
+    create?: XOR<LeadCreateWithoutCreatedByInput, LeadUncheckedCreateWithoutCreatedByInput> | LeadCreateWithoutCreatedByInput[] | LeadUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: LeadCreateOrConnectWithoutCreatedByInput | LeadCreateOrConnectWithoutCreatedByInput[]
+    upsert?: LeadUpsertWithWhereUniqueWithoutCreatedByInput | LeadUpsertWithWhereUniqueWithoutCreatedByInput[]
+    createMany?: LeadCreateManyCreatedByInputEnvelope
+    set?: LeadWhereUniqueInput | LeadWhereUniqueInput[]
+    disconnect?: LeadWhereUniqueInput | LeadWhereUniqueInput[]
+    delete?: LeadWhereUniqueInput | LeadWhereUniqueInput[]
+    connect?: LeadWhereUniqueInput | LeadWhereUniqueInput[]
+    update?: LeadUpdateWithWhereUniqueWithoutCreatedByInput | LeadUpdateWithWhereUniqueWithoutCreatedByInput[]
+    updateMany?: LeadUpdateManyWithWhereWithoutCreatedByInput | LeadUpdateManyWithWhereWithoutCreatedByInput[]
+    deleteMany?: LeadScalarWhereInput | LeadScalarWhereInput[]
+  }
+
+  export type LeadUpdateManyWithoutUpdatedByNestedInput = {
+    create?: XOR<LeadCreateWithoutUpdatedByInput, LeadUncheckedCreateWithoutUpdatedByInput> | LeadCreateWithoutUpdatedByInput[] | LeadUncheckedCreateWithoutUpdatedByInput[]
+    connectOrCreate?: LeadCreateOrConnectWithoutUpdatedByInput | LeadCreateOrConnectWithoutUpdatedByInput[]
+    upsert?: LeadUpsertWithWhereUniqueWithoutUpdatedByInput | LeadUpsertWithWhereUniqueWithoutUpdatedByInput[]
+    createMany?: LeadCreateManyUpdatedByInputEnvelope
+    set?: LeadWhereUniqueInput | LeadWhereUniqueInput[]
+    disconnect?: LeadWhereUniqueInput | LeadWhereUniqueInput[]
+    delete?: LeadWhereUniqueInput | LeadWhereUniqueInput[]
+    connect?: LeadWhereUniqueInput | LeadWhereUniqueInput[]
+    update?: LeadUpdateWithWhereUniqueWithoutUpdatedByInput | LeadUpdateWithWhereUniqueWithoutUpdatedByInput[]
+    updateMany?: LeadUpdateManyWithWhereWithoutUpdatedByInput | LeadUpdateManyWithWhereWithoutUpdatedByInput[]
+    deleteMany?: LeadScalarWhereInput | LeadScalarWhereInput[]
+  }
+
+  export type LeadFollowUpUpdateManyWithoutCreatedByNestedInput = {
+    create?: XOR<LeadFollowUpCreateWithoutCreatedByInput, LeadFollowUpUncheckedCreateWithoutCreatedByInput> | LeadFollowUpCreateWithoutCreatedByInput[] | LeadFollowUpUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: LeadFollowUpCreateOrConnectWithoutCreatedByInput | LeadFollowUpCreateOrConnectWithoutCreatedByInput[]
+    upsert?: LeadFollowUpUpsertWithWhereUniqueWithoutCreatedByInput | LeadFollowUpUpsertWithWhereUniqueWithoutCreatedByInput[]
+    createMany?: LeadFollowUpCreateManyCreatedByInputEnvelope
+    set?: LeadFollowUpWhereUniqueInput | LeadFollowUpWhereUniqueInput[]
+    disconnect?: LeadFollowUpWhereUniqueInput | LeadFollowUpWhereUniqueInput[]
+    delete?: LeadFollowUpWhereUniqueInput | LeadFollowUpWhereUniqueInput[]
+    connect?: LeadFollowUpWhereUniqueInput | LeadFollowUpWhereUniqueInput[]
+    update?: LeadFollowUpUpdateWithWhereUniqueWithoutCreatedByInput | LeadFollowUpUpdateWithWhereUniqueWithoutCreatedByInput[]
+    updateMany?: LeadFollowUpUpdateManyWithWhereWithoutCreatedByInput | LeadFollowUpUpdateManyWithWhereWithoutCreatedByInput[]
+    deleteMany?: LeadFollowUpScalarWhereInput | LeadFollowUpScalarWhereInput[]
+  }
+
+  export type LeadActivityUpdateManyWithoutCreatedByNestedInput = {
+    create?: XOR<LeadActivityCreateWithoutCreatedByInput, LeadActivityUncheckedCreateWithoutCreatedByInput> | LeadActivityCreateWithoutCreatedByInput[] | LeadActivityUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: LeadActivityCreateOrConnectWithoutCreatedByInput | LeadActivityCreateOrConnectWithoutCreatedByInput[]
+    upsert?: LeadActivityUpsertWithWhereUniqueWithoutCreatedByInput | LeadActivityUpsertWithWhereUniqueWithoutCreatedByInput[]
+    createMany?: LeadActivityCreateManyCreatedByInputEnvelope
+    set?: LeadActivityWhereUniqueInput | LeadActivityWhereUniqueInput[]
+    disconnect?: LeadActivityWhereUniqueInput | LeadActivityWhereUniqueInput[]
+    delete?: LeadActivityWhereUniqueInput | LeadActivityWhereUniqueInput[]
+    connect?: LeadActivityWhereUniqueInput | LeadActivityWhereUniqueInput[]
+    update?: LeadActivityUpdateWithWhereUniqueWithoutCreatedByInput | LeadActivityUpdateWithWhereUniqueWithoutCreatedByInput[]
+    updateMany?: LeadActivityUpdateManyWithWhereWithoutCreatedByInput | LeadActivityUpdateManyWithWhereWithoutCreatedByInput[]
+    deleteMany?: LeadActivityScalarWhereInput | LeadActivityScalarWhereInput[]
+  }
+
+  export type LeadStageHistoryUpdateManyWithoutCreatedByNestedInput = {
+    create?: XOR<LeadStageHistoryCreateWithoutCreatedByInput, LeadStageHistoryUncheckedCreateWithoutCreatedByInput> | LeadStageHistoryCreateWithoutCreatedByInput[] | LeadStageHistoryUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: LeadStageHistoryCreateOrConnectWithoutCreatedByInput | LeadStageHistoryCreateOrConnectWithoutCreatedByInput[]
+    upsert?: LeadStageHistoryUpsertWithWhereUniqueWithoutCreatedByInput | LeadStageHistoryUpsertWithWhereUniqueWithoutCreatedByInput[]
+    createMany?: LeadStageHistoryCreateManyCreatedByInputEnvelope
+    set?: LeadStageHistoryWhereUniqueInput | LeadStageHistoryWhereUniqueInput[]
+    disconnect?: LeadStageHistoryWhereUniqueInput | LeadStageHistoryWhereUniqueInput[]
+    delete?: LeadStageHistoryWhereUniqueInput | LeadStageHistoryWhereUniqueInput[]
+    connect?: LeadStageHistoryWhereUniqueInput | LeadStageHistoryWhereUniqueInput[]
+    update?: LeadStageHistoryUpdateWithWhereUniqueWithoutCreatedByInput | LeadStageHistoryUpdateWithWhereUniqueWithoutCreatedByInput[]
+    updateMany?: LeadStageHistoryUpdateManyWithWhereWithoutCreatedByInput | LeadStageHistoryUpdateManyWithWhereWithoutCreatedByInput[]
+    deleteMany?: LeadStageHistoryScalarWhereInput | LeadStageHistoryScalarWhereInput[]
+  }
+
+  export type LeadRecordingUpdateManyWithoutCreatedByNestedInput = {
+    create?: XOR<LeadRecordingCreateWithoutCreatedByInput, LeadRecordingUncheckedCreateWithoutCreatedByInput> | LeadRecordingCreateWithoutCreatedByInput[] | LeadRecordingUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: LeadRecordingCreateOrConnectWithoutCreatedByInput | LeadRecordingCreateOrConnectWithoutCreatedByInput[]
+    upsert?: LeadRecordingUpsertWithWhereUniqueWithoutCreatedByInput | LeadRecordingUpsertWithWhereUniqueWithoutCreatedByInput[]
+    createMany?: LeadRecordingCreateManyCreatedByInputEnvelope
+    set?: LeadRecordingWhereUniqueInput | LeadRecordingWhereUniqueInput[]
+    disconnect?: LeadRecordingWhereUniqueInput | LeadRecordingWhereUniqueInput[]
+    delete?: LeadRecordingWhereUniqueInput | LeadRecordingWhereUniqueInput[]
+    connect?: LeadRecordingWhereUniqueInput | LeadRecordingWhereUniqueInput[]
+    update?: LeadRecordingUpdateWithWhereUniqueWithoutCreatedByInput | LeadRecordingUpdateWithWhereUniqueWithoutCreatedByInput[]
+    updateMany?: LeadRecordingUpdateManyWithWhereWithoutCreatedByInput | LeadRecordingUpdateManyWithWhereWithoutCreatedByInput[]
+    deleteMany?: LeadRecordingScalarWhereInput | LeadRecordingScalarWhereInput[]
+  }
+
   export type BatchFacultyAssignmentUncheckedUpdateManyWithoutFacultyNestedInput = {
     create?: XOR<BatchFacultyAssignmentCreateWithoutFacultyInput, BatchFacultyAssignmentUncheckedCreateWithoutFacultyInput> | BatchFacultyAssignmentCreateWithoutFacultyInput[] | BatchFacultyAssignmentUncheckedCreateWithoutFacultyInput[]
     connectOrCreate?: BatchFacultyAssignmentCreateOrConnectWithoutFacultyInput | BatchFacultyAssignmentCreateOrConnectWithoutFacultyInput[]
@@ -130086,6 +138644,104 @@ export namespace Prisma {
     deleteMany?: SalesAdminBranchScalarWhereInput | SalesAdminBranchScalarWhereInput[]
   }
 
+  export type LeadUncheckedUpdateManyWithoutAssignedToNestedInput = {
+    create?: XOR<LeadCreateWithoutAssignedToInput, LeadUncheckedCreateWithoutAssignedToInput> | LeadCreateWithoutAssignedToInput[] | LeadUncheckedCreateWithoutAssignedToInput[]
+    connectOrCreate?: LeadCreateOrConnectWithoutAssignedToInput | LeadCreateOrConnectWithoutAssignedToInput[]
+    upsert?: LeadUpsertWithWhereUniqueWithoutAssignedToInput | LeadUpsertWithWhereUniqueWithoutAssignedToInput[]
+    createMany?: LeadCreateManyAssignedToInputEnvelope
+    set?: LeadWhereUniqueInput | LeadWhereUniqueInput[]
+    disconnect?: LeadWhereUniqueInput | LeadWhereUniqueInput[]
+    delete?: LeadWhereUniqueInput | LeadWhereUniqueInput[]
+    connect?: LeadWhereUniqueInput | LeadWhereUniqueInput[]
+    update?: LeadUpdateWithWhereUniqueWithoutAssignedToInput | LeadUpdateWithWhereUniqueWithoutAssignedToInput[]
+    updateMany?: LeadUpdateManyWithWhereWithoutAssignedToInput | LeadUpdateManyWithWhereWithoutAssignedToInput[]
+    deleteMany?: LeadScalarWhereInput | LeadScalarWhereInput[]
+  }
+
+  export type LeadUncheckedUpdateManyWithoutCreatedByNestedInput = {
+    create?: XOR<LeadCreateWithoutCreatedByInput, LeadUncheckedCreateWithoutCreatedByInput> | LeadCreateWithoutCreatedByInput[] | LeadUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: LeadCreateOrConnectWithoutCreatedByInput | LeadCreateOrConnectWithoutCreatedByInput[]
+    upsert?: LeadUpsertWithWhereUniqueWithoutCreatedByInput | LeadUpsertWithWhereUniqueWithoutCreatedByInput[]
+    createMany?: LeadCreateManyCreatedByInputEnvelope
+    set?: LeadWhereUniqueInput | LeadWhereUniqueInput[]
+    disconnect?: LeadWhereUniqueInput | LeadWhereUniqueInput[]
+    delete?: LeadWhereUniqueInput | LeadWhereUniqueInput[]
+    connect?: LeadWhereUniqueInput | LeadWhereUniqueInput[]
+    update?: LeadUpdateWithWhereUniqueWithoutCreatedByInput | LeadUpdateWithWhereUniqueWithoutCreatedByInput[]
+    updateMany?: LeadUpdateManyWithWhereWithoutCreatedByInput | LeadUpdateManyWithWhereWithoutCreatedByInput[]
+    deleteMany?: LeadScalarWhereInput | LeadScalarWhereInput[]
+  }
+
+  export type LeadUncheckedUpdateManyWithoutUpdatedByNestedInput = {
+    create?: XOR<LeadCreateWithoutUpdatedByInput, LeadUncheckedCreateWithoutUpdatedByInput> | LeadCreateWithoutUpdatedByInput[] | LeadUncheckedCreateWithoutUpdatedByInput[]
+    connectOrCreate?: LeadCreateOrConnectWithoutUpdatedByInput | LeadCreateOrConnectWithoutUpdatedByInput[]
+    upsert?: LeadUpsertWithWhereUniqueWithoutUpdatedByInput | LeadUpsertWithWhereUniqueWithoutUpdatedByInput[]
+    createMany?: LeadCreateManyUpdatedByInputEnvelope
+    set?: LeadWhereUniqueInput | LeadWhereUniqueInput[]
+    disconnect?: LeadWhereUniqueInput | LeadWhereUniqueInput[]
+    delete?: LeadWhereUniqueInput | LeadWhereUniqueInput[]
+    connect?: LeadWhereUniqueInput | LeadWhereUniqueInput[]
+    update?: LeadUpdateWithWhereUniqueWithoutUpdatedByInput | LeadUpdateWithWhereUniqueWithoutUpdatedByInput[]
+    updateMany?: LeadUpdateManyWithWhereWithoutUpdatedByInput | LeadUpdateManyWithWhereWithoutUpdatedByInput[]
+    deleteMany?: LeadScalarWhereInput | LeadScalarWhereInput[]
+  }
+
+  export type LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput = {
+    create?: XOR<LeadFollowUpCreateWithoutCreatedByInput, LeadFollowUpUncheckedCreateWithoutCreatedByInput> | LeadFollowUpCreateWithoutCreatedByInput[] | LeadFollowUpUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: LeadFollowUpCreateOrConnectWithoutCreatedByInput | LeadFollowUpCreateOrConnectWithoutCreatedByInput[]
+    upsert?: LeadFollowUpUpsertWithWhereUniqueWithoutCreatedByInput | LeadFollowUpUpsertWithWhereUniqueWithoutCreatedByInput[]
+    createMany?: LeadFollowUpCreateManyCreatedByInputEnvelope
+    set?: LeadFollowUpWhereUniqueInput | LeadFollowUpWhereUniqueInput[]
+    disconnect?: LeadFollowUpWhereUniqueInput | LeadFollowUpWhereUniqueInput[]
+    delete?: LeadFollowUpWhereUniqueInput | LeadFollowUpWhereUniqueInput[]
+    connect?: LeadFollowUpWhereUniqueInput | LeadFollowUpWhereUniqueInput[]
+    update?: LeadFollowUpUpdateWithWhereUniqueWithoutCreatedByInput | LeadFollowUpUpdateWithWhereUniqueWithoutCreatedByInput[]
+    updateMany?: LeadFollowUpUpdateManyWithWhereWithoutCreatedByInput | LeadFollowUpUpdateManyWithWhereWithoutCreatedByInput[]
+    deleteMany?: LeadFollowUpScalarWhereInput | LeadFollowUpScalarWhereInput[]
+  }
+
+  export type LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput = {
+    create?: XOR<LeadActivityCreateWithoutCreatedByInput, LeadActivityUncheckedCreateWithoutCreatedByInput> | LeadActivityCreateWithoutCreatedByInput[] | LeadActivityUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: LeadActivityCreateOrConnectWithoutCreatedByInput | LeadActivityCreateOrConnectWithoutCreatedByInput[]
+    upsert?: LeadActivityUpsertWithWhereUniqueWithoutCreatedByInput | LeadActivityUpsertWithWhereUniqueWithoutCreatedByInput[]
+    createMany?: LeadActivityCreateManyCreatedByInputEnvelope
+    set?: LeadActivityWhereUniqueInput | LeadActivityWhereUniqueInput[]
+    disconnect?: LeadActivityWhereUniqueInput | LeadActivityWhereUniqueInput[]
+    delete?: LeadActivityWhereUniqueInput | LeadActivityWhereUniqueInput[]
+    connect?: LeadActivityWhereUniqueInput | LeadActivityWhereUniqueInput[]
+    update?: LeadActivityUpdateWithWhereUniqueWithoutCreatedByInput | LeadActivityUpdateWithWhereUniqueWithoutCreatedByInput[]
+    updateMany?: LeadActivityUpdateManyWithWhereWithoutCreatedByInput | LeadActivityUpdateManyWithWhereWithoutCreatedByInput[]
+    deleteMany?: LeadActivityScalarWhereInput | LeadActivityScalarWhereInput[]
+  }
+
+  export type LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput = {
+    create?: XOR<LeadStageHistoryCreateWithoutCreatedByInput, LeadStageHistoryUncheckedCreateWithoutCreatedByInput> | LeadStageHistoryCreateWithoutCreatedByInput[] | LeadStageHistoryUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: LeadStageHistoryCreateOrConnectWithoutCreatedByInput | LeadStageHistoryCreateOrConnectWithoutCreatedByInput[]
+    upsert?: LeadStageHistoryUpsertWithWhereUniqueWithoutCreatedByInput | LeadStageHistoryUpsertWithWhereUniqueWithoutCreatedByInput[]
+    createMany?: LeadStageHistoryCreateManyCreatedByInputEnvelope
+    set?: LeadStageHistoryWhereUniqueInput | LeadStageHistoryWhereUniqueInput[]
+    disconnect?: LeadStageHistoryWhereUniqueInput | LeadStageHistoryWhereUniqueInput[]
+    delete?: LeadStageHistoryWhereUniqueInput | LeadStageHistoryWhereUniqueInput[]
+    connect?: LeadStageHistoryWhereUniqueInput | LeadStageHistoryWhereUniqueInput[]
+    update?: LeadStageHistoryUpdateWithWhereUniqueWithoutCreatedByInput | LeadStageHistoryUpdateWithWhereUniqueWithoutCreatedByInput[]
+    updateMany?: LeadStageHistoryUpdateManyWithWhereWithoutCreatedByInput | LeadStageHistoryUpdateManyWithWhereWithoutCreatedByInput[]
+    deleteMany?: LeadStageHistoryScalarWhereInput | LeadStageHistoryScalarWhereInput[]
+  }
+
+  export type LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput = {
+    create?: XOR<LeadRecordingCreateWithoutCreatedByInput, LeadRecordingUncheckedCreateWithoutCreatedByInput> | LeadRecordingCreateWithoutCreatedByInput[] | LeadRecordingUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: LeadRecordingCreateOrConnectWithoutCreatedByInput | LeadRecordingCreateOrConnectWithoutCreatedByInput[]
+    upsert?: LeadRecordingUpsertWithWhereUniqueWithoutCreatedByInput | LeadRecordingUpsertWithWhereUniqueWithoutCreatedByInput[]
+    createMany?: LeadRecordingCreateManyCreatedByInputEnvelope
+    set?: LeadRecordingWhereUniqueInput | LeadRecordingWhereUniqueInput[]
+    disconnect?: LeadRecordingWhereUniqueInput | LeadRecordingWhereUniqueInput[]
+    delete?: LeadRecordingWhereUniqueInput | LeadRecordingWhereUniqueInput[]
+    connect?: LeadRecordingWhereUniqueInput | LeadRecordingWhereUniqueInput[]
+    update?: LeadRecordingUpdateWithWhereUniqueWithoutCreatedByInput | LeadRecordingUpdateWithWhereUniqueWithoutCreatedByInput[]
+    updateMany?: LeadRecordingUpdateManyWithWhereWithoutCreatedByInput | LeadRecordingUpdateManyWithWhereWithoutCreatedByInput[]
+    deleteMany?: LeadRecordingScalarWhereInput | LeadRecordingScalarWhereInput[]
+  }
+
   export type DashboardWidgetCreateallowedRolesInput = {
     set: string[]
   }
@@ -130269,6 +138925,13 @@ export namespace Prisma {
     connect?: SalesAdminBranchWhereUniqueInput | SalesAdminBranchWhereUniqueInput[]
   }
 
+  export type LeadCreateNestedManyWithoutBranchInput = {
+    create?: XOR<LeadCreateWithoutBranchInput, LeadUncheckedCreateWithoutBranchInput> | LeadCreateWithoutBranchInput[] | LeadUncheckedCreateWithoutBranchInput[]
+    connectOrCreate?: LeadCreateOrConnectWithoutBranchInput | LeadCreateOrConnectWithoutBranchInput[]
+    createMany?: LeadCreateManyBranchInputEnvelope
+    connect?: LeadWhereUniqueInput | LeadWhereUniqueInput[]
+  }
+
   export type BranchCourseUncheckedCreateNestedManyWithoutBranchInput = {
     create?: XOR<BranchCourseCreateWithoutBranchInput, BranchCourseUncheckedCreateWithoutBranchInput> | BranchCourseCreateWithoutBranchInput[] | BranchCourseUncheckedCreateWithoutBranchInput[]
     connectOrCreate?: BranchCourseCreateOrConnectWithoutBranchInput | BranchCourseCreateOrConnectWithoutBranchInput[]
@@ -130365,6 +139028,13 @@ export namespace Prisma {
     connectOrCreate?: SalesAdminBranchCreateOrConnectWithoutBranchInput | SalesAdminBranchCreateOrConnectWithoutBranchInput[]
     createMany?: SalesAdminBranchCreateManyBranchInputEnvelope
     connect?: SalesAdminBranchWhereUniqueInput | SalesAdminBranchWhereUniqueInput[]
+  }
+
+  export type LeadUncheckedCreateNestedManyWithoutBranchInput = {
+    create?: XOR<LeadCreateWithoutBranchInput, LeadUncheckedCreateWithoutBranchInput> | LeadCreateWithoutBranchInput[] | LeadUncheckedCreateWithoutBranchInput[]
+    connectOrCreate?: LeadCreateOrConnectWithoutBranchInput | LeadCreateOrConnectWithoutBranchInput[]
+    createMany?: LeadCreateManyBranchInputEnvelope
+    connect?: LeadWhereUniqueInput | LeadWhereUniqueInput[]
   }
 
   export type EnumRecordStatusFieldUpdateOperationsInput = {
@@ -130577,6 +139247,20 @@ export namespace Prisma {
     deleteMany?: SalesAdminBranchScalarWhereInput | SalesAdminBranchScalarWhereInput[]
   }
 
+  export type LeadUpdateManyWithoutBranchNestedInput = {
+    create?: XOR<LeadCreateWithoutBranchInput, LeadUncheckedCreateWithoutBranchInput> | LeadCreateWithoutBranchInput[] | LeadUncheckedCreateWithoutBranchInput[]
+    connectOrCreate?: LeadCreateOrConnectWithoutBranchInput | LeadCreateOrConnectWithoutBranchInput[]
+    upsert?: LeadUpsertWithWhereUniqueWithoutBranchInput | LeadUpsertWithWhereUniqueWithoutBranchInput[]
+    createMany?: LeadCreateManyBranchInputEnvelope
+    set?: LeadWhereUniqueInput | LeadWhereUniqueInput[]
+    disconnect?: LeadWhereUniqueInput | LeadWhereUniqueInput[]
+    delete?: LeadWhereUniqueInput | LeadWhereUniqueInput[]
+    connect?: LeadWhereUniqueInput | LeadWhereUniqueInput[]
+    update?: LeadUpdateWithWhereUniqueWithoutBranchInput | LeadUpdateWithWhereUniqueWithoutBranchInput[]
+    updateMany?: LeadUpdateManyWithWhereWithoutBranchInput | LeadUpdateManyWithWhereWithoutBranchInput[]
+    deleteMany?: LeadScalarWhereInput | LeadScalarWhereInput[]
+  }
+
   export type BranchCourseUncheckedUpdateManyWithoutBranchNestedInput = {
     create?: XOR<BranchCourseCreateWithoutBranchInput, BranchCourseUncheckedCreateWithoutBranchInput> | BranchCourseCreateWithoutBranchInput[] | BranchCourseUncheckedCreateWithoutBranchInput[]
     connectOrCreate?: BranchCourseCreateOrConnectWithoutBranchInput | BranchCourseCreateOrConnectWithoutBranchInput[]
@@ -130771,6 +139455,20 @@ export namespace Prisma {
     update?: SalesAdminBranchUpdateWithWhereUniqueWithoutBranchInput | SalesAdminBranchUpdateWithWhereUniqueWithoutBranchInput[]
     updateMany?: SalesAdminBranchUpdateManyWithWhereWithoutBranchInput | SalesAdminBranchUpdateManyWithWhereWithoutBranchInput[]
     deleteMany?: SalesAdminBranchScalarWhereInput | SalesAdminBranchScalarWhereInput[]
+  }
+
+  export type LeadUncheckedUpdateManyWithoutBranchNestedInput = {
+    create?: XOR<LeadCreateWithoutBranchInput, LeadUncheckedCreateWithoutBranchInput> | LeadCreateWithoutBranchInput[] | LeadUncheckedCreateWithoutBranchInput[]
+    connectOrCreate?: LeadCreateOrConnectWithoutBranchInput | LeadCreateOrConnectWithoutBranchInput[]
+    upsert?: LeadUpsertWithWhereUniqueWithoutBranchInput | LeadUpsertWithWhereUniqueWithoutBranchInput[]
+    createMany?: LeadCreateManyBranchInputEnvelope
+    set?: LeadWhereUniqueInput | LeadWhereUniqueInput[]
+    disconnect?: LeadWhereUniqueInput | LeadWhereUniqueInput[]
+    delete?: LeadWhereUniqueInput | LeadWhereUniqueInput[]
+    connect?: LeadWhereUniqueInput | LeadWhereUniqueInput[]
+    update?: LeadUpdateWithWhereUniqueWithoutBranchInput | LeadUpdateWithWhereUniqueWithoutBranchInput[]
+    updateMany?: LeadUpdateManyWithWhereWithoutBranchInput | LeadUpdateManyWithWhereWithoutBranchInput[]
+    deleteMany?: LeadScalarWhereInput | LeadScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutSalesAdminBranchesInput = {
@@ -131380,6 +140078,13 @@ export namespace Prisma {
     connect?: AcademicTestProjectWhereUniqueInput | AcademicTestProjectWhereUniqueInput[]
   }
 
+  export type LeadCreateNestedManyWithoutCourseInput = {
+    create?: XOR<LeadCreateWithoutCourseInput, LeadUncheckedCreateWithoutCourseInput> | LeadCreateWithoutCourseInput[] | LeadUncheckedCreateWithoutCourseInput[]
+    connectOrCreate?: LeadCreateOrConnectWithoutCourseInput | LeadCreateOrConnectWithoutCourseInput[]
+    createMany?: LeadCreateManyCourseInputEnvelope
+    connect?: LeadWhereUniqueInput | LeadWhereUniqueInput[]
+  }
+
   export type BranchInstallmentTemplateUncheckedCreateNestedOneWithoutBranchCourseInput = {
     create?: XOR<BranchInstallmentTemplateCreateWithoutBranchCourseInput, BranchInstallmentTemplateUncheckedCreateWithoutBranchCourseInput>
     connectOrCreate?: BranchInstallmentTemplateCreateOrConnectWithoutBranchCourseInput
@@ -131475,6 +140180,13 @@ export namespace Prisma {
     connectOrCreate?: AcademicTestProjectCreateOrConnectWithoutBranchCourseInput | AcademicTestProjectCreateOrConnectWithoutBranchCourseInput[]
     createMany?: AcademicTestProjectCreateManyBranchCourseInputEnvelope
     connect?: AcademicTestProjectWhereUniqueInput | AcademicTestProjectWhereUniqueInput[]
+  }
+
+  export type LeadUncheckedCreateNestedManyWithoutCourseInput = {
+    create?: XOR<LeadCreateWithoutCourseInput, LeadUncheckedCreateWithoutCourseInput> | LeadCreateWithoutCourseInput[] | LeadUncheckedCreateWithoutCourseInput[]
+    connectOrCreate?: LeadCreateOrConnectWithoutCourseInput | LeadCreateOrConnectWithoutCourseInput[]
+    createMany?: LeadCreateManyCourseInputEnvelope
+    connect?: LeadWhereUniqueInput | LeadWhereUniqueInput[]
   }
 
   export type BranchUpdateOneRequiredWithoutBranchCoursesNestedInput = {
@@ -131677,6 +140389,20 @@ export namespace Prisma {
     deleteMany?: AcademicTestProjectScalarWhereInput | AcademicTestProjectScalarWhereInput[]
   }
 
+  export type LeadUpdateManyWithoutCourseNestedInput = {
+    create?: XOR<LeadCreateWithoutCourseInput, LeadUncheckedCreateWithoutCourseInput> | LeadCreateWithoutCourseInput[] | LeadUncheckedCreateWithoutCourseInput[]
+    connectOrCreate?: LeadCreateOrConnectWithoutCourseInput | LeadCreateOrConnectWithoutCourseInput[]
+    upsert?: LeadUpsertWithWhereUniqueWithoutCourseInput | LeadUpsertWithWhereUniqueWithoutCourseInput[]
+    createMany?: LeadCreateManyCourseInputEnvelope
+    set?: LeadWhereUniqueInput | LeadWhereUniqueInput[]
+    disconnect?: LeadWhereUniqueInput | LeadWhereUniqueInput[]
+    delete?: LeadWhereUniqueInput | LeadWhereUniqueInput[]
+    connect?: LeadWhereUniqueInput | LeadWhereUniqueInput[]
+    update?: LeadUpdateWithWhereUniqueWithoutCourseInput | LeadUpdateWithWhereUniqueWithoutCourseInput[]
+    updateMany?: LeadUpdateManyWithWhereWithoutCourseInput | LeadUpdateManyWithWhereWithoutCourseInput[]
+    deleteMany?: LeadScalarWhereInput | LeadScalarWhereInput[]
+  }
+
   export type BranchInstallmentTemplateUncheckedUpdateOneWithoutBranchCourseNestedInput = {
     create?: XOR<BranchInstallmentTemplateCreateWithoutBranchCourseInput, BranchInstallmentTemplateUncheckedCreateWithoutBranchCourseInput>
     connectOrCreate?: BranchInstallmentTemplateCreateOrConnectWithoutBranchCourseInput
@@ -131867,6 +140593,20 @@ export namespace Prisma {
     update?: AcademicTestProjectUpdateWithWhereUniqueWithoutBranchCourseInput | AcademicTestProjectUpdateWithWhereUniqueWithoutBranchCourseInput[]
     updateMany?: AcademicTestProjectUpdateManyWithWhereWithoutBranchCourseInput | AcademicTestProjectUpdateManyWithWhereWithoutBranchCourseInput[]
     deleteMany?: AcademicTestProjectScalarWhereInput | AcademicTestProjectScalarWhereInput[]
+  }
+
+  export type LeadUncheckedUpdateManyWithoutCourseNestedInput = {
+    create?: XOR<LeadCreateWithoutCourseInput, LeadUncheckedCreateWithoutCourseInput> | LeadCreateWithoutCourseInput[] | LeadUncheckedCreateWithoutCourseInput[]
+    connectOrCreate?: LeadCreateOrConnectWithoutCourseInput | LeadCreateOrConnectWithoutCourseInput[]
+    upsert?: LeadUpsertWithWhereUniqueWithoutCourseInput | LeadUpsertWithWhereUniqueWithoutCourseInput[]
+    createMany?: LeadCreateManyCourseInputEnvelope
+    set?: LeadWhereUniqueInput | LeadWhereUniqueInput[]
+    disconnect?: LeadWhereUniqueInput | LeadWhereUniqueInput[]
+    delete?: LeadWhereUniqueInput | LeadWhereUniqueInput[]
+    connect?: LeadWhereUniqueInput | LeadWhereUniqueInput[]
+    update?: LeadUpdateWithWhereUniqueWithoutCourseInput | LeadUpdateWithWhereUniqueWithoutCourseInput[]
+    updateMany?: LeadUpdateManyWithWhereWithoutCourseInput | LeadUpdateManyWithWhereWithoutCourseInput[]
+    deleteMany?: LeadScalarWhereInput | LeadScalarWhereInput[]
   }
 
   export type BranchCourseCreateNestedOneWithoutModulesInput = {
@@ -135871,6 +144611,372 @@ export namespace Prisma {
     update?: XOR<XOR<ExamQuestionUpdateToOneWithWhereWithoutAnswersInput, ExamQuestionUpdateWithoutAnswersInput>, ExamQuestionUncheckedUpdateWithoutAnswersInput>
   }
 
+  export type BranchCreateNestedOneWithoutLeadsInput = {
+    create?: XOR<BranchCreateWithoutLeadsInput, BranchUncheckedCreateWithoutLeadsInput>
+    connectOrCreate?: BranchCreateOrConnectWithoutLeadsInput
+    connect?: BranchWhereUniqueInput
+  }
+
+  export type BranchCourseCreateNestedOneWithoutLeadsInput = {
+    create?: XOR<BranchCourseCreateWithoutLeadsInput, BranchCourseUncheckedCreateWithoutLeadsInput>
+    connectOrCreate?: BranchCourseCreateOrConnectWithoutLeadsInput
+    connect?: BranchCourseWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutAssignedLeadsInput = {
+    create?: XOR<UserCreateWithoutAssignedLeadsInput, UserUncheckedCreateWithoutAssignedLeadsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAssignedLeadsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutCreatedLeadsInput = {
+    create?: XOR<UserCreateWithoutCreatedLeadsInput, UserUncheckedCreateWithoutCreatedLeadsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCreatedLeadsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutUpdatedLeadsInput = {
+    create?: XOR<UserCreateWithoutUpdatedLeadsInput, UserUncheckedCreateWithoutUpdatedLeadsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutUpdatedLeadsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type LeadFollowUpCreateNestedManyWithoutLeadInput = {
+    create?: XOR<LeadFollowUpCreateWithoutLeadInput, LeadFollowUpUncheckedCreateWithoutLeadInput> | LeadFollowUpCreateWithoutLeadInput[] | LeadFollowUpUncheckedCreateWithoutLeadInput[]
+    connectOrCreate?: LeadFollowUpCreateOrConnectWithoutLeadInput | LeadFollowUpCreateOrConnectWithoutLeadInput[]
+    createMany?: LeadFollowUpCreateManyLeadInputEnvelope
+    connect?: LeadFollowUpWhereUniqueInput | LeadFollowUpWhereUniqueInput[]
+  }
+
+  export type LeadStageHistoryCreateNestedManyWithoutLeadInput = {
+    create?: XOR<LeadStageHistoryCreateWithoutLeadInput, LeadStageHistoryUncheckedCreateWithoutLeadInput> | LeadStageHistoryCreateWithoutLeadInput[] | LeadStageHistoryUncheckedCreateWithoutLeadInput[]
+    connectOrCreate?: LeadStageHistoryCreateOrConnectWithoutLeadInput | LeadStageHistoryCreateOrConnectWithoutLeadInput[]
+    createMany?: LeadStageHistoryCreateManyLeadInputEnvelope
+    connect?: LeadStageHistoryWhereUniqueInput | LeadStageHistoryWhereUniqueInput[]
+  }
+
+  export type LeadActivityCreateNestedManyWithoutLeadInput = {
+    create?: XOR<LeadActivityCreateWithoutLeadInput, LeadActivityUncheckedCreateWithoutLeadInput> | LeadActivityCreateWithoutLeadInput[] | LeadActivityUncheckedCreateWithoutLeadInput[]
+    connectOrCreate?: LeadActivityCreateOrConnectWithoutLeadInput | LeadActivityCreateOrConnectWithoutLeadInput[]
+    createMany?: LeadActivityCreateManyLeadInputEnvelope
+    connect?: LeadActivityWhereUniqueInput | LeadActivityWhereUniqueInput[]
+  }
+
+  export type LeadRecordingCreateNestedManyWithoutLeadInput = {
+    create?: XOR<LeadRecordingCreateWithoutLeadInput, LeadRecordingUncheckedCreateWithoutLeadInput> | LeadRecordingCreateWithoutLeadInput[] | LeadRecordingUncheckedCreateWithoutLeadInput[]
+    connectOrCreate?: LeadRecordingCreateOrConnectWithoutLeadInput | LeadRecordingCreateOrConnectWithoutLeadInput[]
+    createMany?: LeadRecordingCreateManyLeadInputEnvelope
+    connect?: LeadRecordingWhereUniqueInput | LeadRecordingWhereUniqueInput[]
+  }
+
+  export type LeadFollowUpUncheckedCreateNestedManyWithoutLeadInput = {
+    create?: XOR<LeadFollowUpCreateWithoutLeadInput, LeadFollowUpUncheckedCreateWithoutLeadInput> | LeadFollowUpCreateWithoutLeadInput[] | LeadFollowUpUncheckedCreateWithoutLeadInput[]
+    connectOrCreate?: LeadFollowUpCreateOrConnectWithoutLeadInput | LeadFollowUpCreateOrConnectWithoutLeadInput[]
+    createMany?: LeadFollowUpCreateManyLeadInputEnvelope
+    connect?: LeadFollowUpWhereUniqueInput | LeadFollowUpWhereUniqueInput[]
+  }
+
+  export type LeadStageHistoryUncheckedCreateNestedManyWithoutLeadInput = {
+    create?: XOR<LeadStageHistoryCreateWithoutLeadInput, LeadStageHistoryUncheckedCreateWithoutLeadInput> | LeadStageHistoryCreateWithoutLeadInput[] | LeadStageHistoryUncheckedCreateWithoutLeadInput[]
+    connectOrCreate?: LeadStageHistoryCreateOrConnectWithoutLeadInput | LeadStageHistoryCreateOrConnectWithoutLeadInput[]
+    createMany?: LeadStageHistoryCreateManyLeadInputEnvelope
+    connect?: LeadStageHistoryWhereUniqueInput | LeadStageHistoryWhereUniqueInput[]
+  }
+
+  export type LeadActivityUncheckedCreateNestedManyWithoutLeadInput = {
+    create?: XOR<LeadActivityCreateWithoutLeadInput, LeadActivityUncheckedCreateWithoutLeadInput> | LeadActivityCreateWithoutLeadInput[] | LeadActivityUncheckedCreateWithoutLeadInput[]
+    connectOrCreate?: LeadActivityCreateOrConnectWithoutLeadInput | LeadActivityCreateOrConnectWithoutLeadInput[]
+    createMany?: LeadActivityCreateManyLeadInputEnvelope
+    connect?: LeadActivityWhereUniqueInput | LeadActivityWhereUniqueInput[]
+  }
+
+  export type LeadRecordingUncheckedCreateNestedManyWithoutLeadInput = {
+    create?: XOR<LeadRecordingCreateWithoutLeadInput, LeadRecordingUncheckedCreateWithoutLeadInput> | LeadRecordingCreateWithoutLeadInput[] | LeadRecordingUncheckedCreateWithoutLeadInput[]
+    connectOrCreate?: LeadRecordingCreateOrConnectWithoutLeadInput | LeadRecordingCreateOrConnectWithoutLeadInput[]
+    createMany?: LeadRecordingCreateManyLeadInputEnvelope
+    connect?: LeadRecordingWhereUniqueInput | LeadRecordingWhereUniqueInput[]
+  }
+
+  export type EnumLeadStatusFieldUpdateOperationsInput = {
+    set?: $Enums.LeadStatus
+  }
+
+  export type EnumLeadStageFieldUpdateOperationsInput = {
+    set?: $Enums.LeadStage
+  }
+
+  export type BranchUpdateOneRequiredWithoutLeadsNestedInput = {
+    create?: XOR<BranchCreateWithoutLeadsInput, BranchUncheckedCreateWithoutLeadsInput>
+    connectOrCreate?: BranchCreateOrConnectWithoutLeadsInput
+    upsert?: BranchUpsertWithoutLeadsInput
+    connect?: BranchWhereUniqueInput
+    update?: XOR<XOR<BranchUpdateToOneWithWhereWithoutLeadsInput, BranchUpdateWithoutLeadsInput>, BranchUncheckedUpdateWithoutLeadsInput>
+  }
+
+  export type BranchCourseUpdateOneRequiredWithoutLeadsNestedInput = {
+    create?: XOR<BranchCourseCreateWithoutLeadsInput, BranchCourseUncheckedCreateWithoutLeadsInput>
+    connectOrCreate?: BranchCourseCreateOrConnectWithoutLeadsInput
+    upsert?: BranchCourseUpsertWithoutLeadsInput
+    connect?: BranchCourseWhereUniqueInput
+    update?: XOR<XOR<BranchCourseUpdateToOneWithWhereWithoutLeadsInput, BranchCourseUpdateWithoutLeadsInput>, BranchCourseUncheckedUpdateWithoutLeadsInput>
+  }
+
+  export type UserUpdateOneWithoutAssignedLeadsNestedInput = {
+    create?: XOR<UserCreateWithoutAssignedLeadsInput, UserUncheckedCreateWithoutAssignedLeadsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAssignedLeadsInput
+    upsert?: UserUpsertWithoutAssignedLeadsInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAssignedLeadsInput, UserUpdateWithoutAssignedLeadsInput>, UserUncheckedUpdateWithoutAssignedLeadsInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutCreatedLeadsNestedInput = {
+    create?: XOR<UserCreateWithoutCreatedLeadsInput, UserUncheckedCreateWithoutCreatedLeadsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCreatedLeadsInput
+    upsert?: UserUpsertWithoutCreatedLeadsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCreatedLeadsInput, UserUpdateWithoutCreatedLeadsInput>, UserUncheckedUpdateWithoutCreatedLeadsInput>
+  }
+
+  export type UserUpdateOneWithoutUpdatedLeadsNestedInput = {
+    create?: XOR<UserCreateWithoutUpdatedLeadsInput, UserUncheckedCreateWithoutUpdatedLeadsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutUpdatedLeadsInput
+    upsert?: UserUpsertWithoutUpdatedLeadsInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutUpdatedLeadsInput, UserUpdateWithoutUpdatedLeadsInput>, UserUncheckedUpdateWithoutUpdatedLeadsInput>
+  }
+
+  export type LeadFollowUpUpdateManyWithoutLeadNestedInput = {
+    create?: XOR<LeadFollowUpCreateWithoutLeadInput, LeadFollowUpUncheckedCreateWithoutLeadInput> | LeadFollowUpCreateWithoutLeadInput[] | LeadFollowUpUncheckedCreateWithoutLeadInput[]
+    connectOrCreate?: LeadFollowUpCreateOrConnectWithoutLeadInput | LeadFollowUpCreateOrConnectWithoutLeadInput[]
+    upsert?: LeadFollowUpUpsertWithWhereUniqueWithoutLeadInput | LeadFollowUpUpsertWithWhereUniqueWithoutLeadInput[]
+    createMany?: LeadFollowUpCreateManyLeadInputEnvelope
+    set?: LeadFollowUpWhereUniqueInput | LeadFollowUpWhereUniqueInput[]
+    disconnect?: LeadFollowUpWhereUniqueInput | LeadFollowUpWhereUniqueInput[]
+    delete?: LeadFollowUpWhereUniqueInput | LeadFollowUpWhereUniqueInput[]
+    connect?: LeadFollowUpWhereUniqueInput | LeadFollowUpWhereUniqueInput[]
+    update?: LeadFollowUpUpdateWithWhereUniqueWithoutLeadInput | LeadFollowUpUpdateWithWhereUniqueWithoutLeadInput[]
+    updateMany?: LeadFollowUpUpdateManyWithWhereWithoutLeadInput | LeadFollowUpUpdateManyWithWhereWithoutLeadInput[]
+    deleteMany?: LeadFollowUpScalarWhereInput | LeadFollowUpScalarWhereInput[]
+  }
+
+  export type LeadStageHistoryUpdateManyWithoutLeadNestedInput = {
+    create?: XOR<LeadStageHistoryCreateWithoutLeadInput, LeadStageHistoryUncheckedCreateWithoutLeadInput> | LeadStageHistoryCreateWithoutLeadInput[] | LeadStageHistoryUncheckedCreateWithoutLeadInput[]
+    connectOrCreate?: LeadStageHistoryCreateOrConnectWithoutLeadInput | LeadStageHistoryCreateOrConnectWithoutLeadInput[]
+    upsert?: LeadStageHistoryUpsertWithWhereUniqueWithoutLeadInput | LeadStageHistoryUpsertWithWhereUniqueWithoutLeadInput[]
+    createMany?: LeadStageHistoryCreateManyLeadInputEnvelope
+    set?: LeadStageHistoryWhereUniqueInput | LeadStageHistoryWhereUniqueInput[]
+    disconnect?: LeadStageHistoryWhereUniqueInput | LeadStageHistoryWhereUniqueInput[]
+    delete?: LeadStageHistoryWhereUniqueInput | LeadStageHistoryWhereUniqueInput[]
+    connect?: LeadStageHistoryWhereUniqueInput | LeadStageHistoryWhereUniqueInput[]
+    update?: LeadStageHistoryUpdateWithWhereUniqueWithoutLeadInput | LeadStageHistoryUpdateWithWhereUniqueWithoutLeadInput[]
+    updateMany?: LeadStageHistoryUpdateManyWithWhereWithoutLeadInput | LeadStageHistoryUpdateManyWithWhereWithoutLeadInput[]
+    deleteMany?: LeadStageHistoryScalarWhereInput | LeadStageHistoryScalarWhereInput[]
+  }
+
+  export type LeadActivityUpdateManyWithoutLeadNestedInput = {
+    create?: XOR<LeadActivityCreateWithoutLeadInput, LeadActivityUncheckedCreateWithoutLeadInput> | LeadActivityCreateWithoutLeadInput[] | LeadActivityUncheckedCreateWithoutLeadInput[]
+    connectOrCreate?: LeadActivityCreateOrConnectWithoutLeadInput | LeadActivityCreateOrConnectWithoutLeadInput[]
+    upsert?: LeadActivityUpsertWithWhereUniqueWithoutLeadInput | LeadActivityUpsertWithWhereUniqueWithoutLeadInput[]
+    createMany?: LeadActivityCreateManyLeadInputEnvelope
+    set?: LeadActivityWhereUniqueInput | LeadActivityWhereUniqueInput[]
+    disconnect?: LeadActivityWhereUniqueInput | LeadActivityWhereUniqueInput[]
+    delete?: LeadActivityWhereUniqueInput | LeadActivityWhereUniqueInput[]
+    connect?: LeadActivityWhereUniqueInput | LeadActivityWhereUniqueInput[]
+    update?: LeadActivityUpdateWithWhereUniqueWithoutLeadInput | LeadActivityUpdateWithWhereUniqueWithoutLeadInput[]
+    updateMany?: LeadActivityUpdateManyWithWhereWithoutLeadInput | LeadActivityUpdateManyWithWhereWithoutLeadInput[]
+    deleteMany?: LeadActivityScalarWhereInput | LeadActivityScalarWhereInput[]
+  }
+
+  export type LeadRecordingUpdateManyWithoutLeadNestedInput = {
+    create?: XOR<LeadRecordingCreateWithoutLeadInput, LeadRecordingUncheckedCreateWithoutLeadInput> | LeadRecordingCreateWithoutLeadInput[] | LeadRecordingUncheckedCreateWithoutLeadInput[]
+    connectOrCreate?: LeadRecordingCreateOrConnectWithoutLeadInput | LeadRecordingCreateOrConnectWithoutLeadInput[]
+    upsert?: LeadRecordingUpsertWithWhereUniqueWithoutLeadInput | LeadRecordingUpsertWithWhereUniqueWithoutLeadInput[]
+    createMany?: LeadRecordingCreateManyLeadInputEnvelope
+    set?: LeadRecordingWhereUniqueInput | LeadRecordingWhereUniqueInput[]
+    disconnect?: LeadRecordingWhereUniqueInput | LeadRecordingWhereUniqueInput[]
+    delete?: LeadRecordingWhereUniqueInput | LeadRecordingWhereUniqueInput[]
+    connect?: LeadRecordingWhereUniqueInput | LeadRecordingWhereUniqueInput[]
+    update?: LeadRecordingUpdateWithWhereUniqueWithoutLeadInput | LeadRecordingUpdateWithWhereUniqueWithoutLeadInput[]
+    updateMany?: LeadRecordingUpdateManyWithWhereWithoutLeadInput | LeadRecordingUpdateManyWithWhereWithoutLeadInput[]
+    deleteMany?: LeadRecordingScalarWhereInput | LeadRecordingScalarWhereInput[]
+  }
+
+  export type LeadFollowUpUncheckedUpdateManyWithoutLeadNestedInput = {
+    create?: XOR<LeadFollowUpCreateWithoutLeadInput, LeadFollowUpUncheckedCreateWithoutLeadInput> | LeadFollowUpCreateWithoutLeadInput[] | LeadFollowUpUncheckedCreateWithoutLeadInput[]
+    connectOrCreate?: LeadFollowUpCreateOrConnectWithoutLeadInput | LeadFollowUpCreateOrConnectWithoutLeadInput[]
+    upsert?: LeadFollowUpUpsertWithWhereUniqueWithoutLeadInput | LeadFollowUpUpsertWithWhereUniqueWithoutLeadInput[]
+    createMany?: LeadFollowUpCreateManyLeadInputEnvelope
+    set?: LeadFollowUpWhereUniqueInput | LeadFollowUpWhereUniqueInput[]
+    disconnect?: LeadFollowUpWhereUniqueInput | LeadFollowUpWhereUniqueInput[]
+    delete?: LeadFollowUpWhereUniqueInput | LeadFollowUpWhereUniqueInput[]
+    connect?: LeadFollowUpWhereUniqueInput | LeadFollowUpWhereUniqueInput[]
+    update?: LeadFollowUpUpdateWithWhereUniqueWithoutLeadInput | LeadFollowUpUpdateWithWhereUniqueWithoutLeadInput[]
+    updateMany?: LeadFollowUpUpdateManyWithWhereWithoutLeadInput | LeadFollowUpUpdateManyWithWhereWithoutLeadInput[]
+    deleteMany?: LeadFollowUpScalarWhereInput | LeadFollowUpScalarWhereInput[]
+  }
+
+  export type LeadStageHistoryUncheckedUpdateManyWithoutLeadNestedInput = {
+    create?: XOR<LeadStageHistoryCreateWithoutLeadInput, LeadStageHistoryUncheckedCreateWithoutLeadInput> | LeadStageHistoryCreateWithoutLeadInput[] | LeadStageHistoryUncheckedCreateWithoutLeadInput[]
+    connectOrCreate?: LeadStageHistoryCreateOrConnectWithoutLeadInput | LeadStageHistoryCreateOrConnectWithoutLeadInput[]
+    upsert?: LeadStageHistoryUpsertWithWhereUniqueWithoutLeadInput | LeadStageHistoryUpsertWithWhereUniqueWithoutLeadInput[]
+    createMany?: LeadStageHistoryCreateManyLeadInputEnvelope
+    set?: LeadStageHistoryWhereUniqueInput | LeadStageHistoryWhereUniqueInput[]
+    disconnect?: LeadStageHistoryWhereUniqueInput | LeadStageHistoryWhereUniqueInput[]
+    delete?: LeadStageHistoryWhereUniqueInput | LeadStageHistoryWhereUniqueInput[]
+    connect?: LeadStageHistoryWhereUniqueInput | LeadStageHistoryWhereUniqueInput[]
+    update?: LeadStageHistoryUpdateWithWhereUniqueWithoutLeadInput | LeadStageHistoryUpdateWithWhereUniqueWithoutLeadInput[]
+    updateMany?: LeadStageHistoryUpdateManyWithWhereWithoutLeadInput | LeadStageHistoryUpdateManyWithWhereWithoutLeadInput[]
+    deleteMany?: LeadStageHistoryScalarWhereInput | LeadStageHistoryScalarWhereInput[]
+  }
+
+  export type LeadActivityUncheckedUpdateManyWithoutLeadNestedInput = {
+    create?: XOR<LeadActivityCreateWithoutLeadInput, LeadActivityUncheckedCreateWithoutLeadInput> | LeadActivityCreateWithoutLeadInput[] | LeadActivityUncheckedCreateWithoutLeadInput[]
+    connectOrCreate?: LeadActivityCreateOrConnectWithoutLeadInput | LeadActivityCreateOrConnectWithoutLeadInput[]
+    upsert?: LeadActivityUpsertWithWhereUniqueWithoutLeadInput | LeadActivityUpsertWithWhereUniqueWithoutLeadInput[]
+    createMany?: LeadActivityCreateManyLeadInputEnvelope
+    set?: LeadActivityWhereUniqueInput | LeadActivityWhereUniqueInput[]
+    disconnect?: LeadActivityWhereUniqueInput | LeadActivityWhereUniqueInput[]
+    delete?: LeadActivityWhereUniqueInput | LeadActivityWhereUniqueInput[]
+    connect?: LeadActivityWhereUniqueInput | LeadActivityWhereUniqueInput[]
+    update?: LeadActivityUpdateWithWhereUniqueWithoutLeadInput | LeadActivityUpdateWithWhereUniqueWithoutLeadInput[]
+    updateMany?: LeadActivityUpdateManyWithWhereWithoutLeadInput | LeadActivityUpdateManyWithWhereWithoutLeadInput[]
+    deleteMany?: LeadActivityScalarWhereInput | LeadActivityScalarWhereInput[]
+  }
+
+  export type LeadRecordingUncheckedUpdateManyWithoutLeadNestedInput = {
+    create?: XOR<LeadRecordingCreateWithoutLeadInput, LeadRecordingUncheckedCreateWithoutLeadInput> | LeadRecordingCreateWithoutLeadInput[] | LeadRecordingUncheckedCreateWithoutLeadInput[]
+    connectOrCreate?: LeadRecordingCreateOrConnectWithoutLeadInput | LeadRecordingCreateOrConnectWithoutLeadInput[]
+    upsert?: LeadRecordingUpsertWithWhereUniqueWithoutLeadInput | LeadRecordingUpsertWithWhereUniqueWithoutLeadInput[]
+    createMany?: LeadRecordingCreateManyLeadInputEnvelope
+    set?: LeadRecordingWhereUniqueInput | LeadRecordingWhereUniqueInput[]
+    disconnect?: LeadRecordingWhereUniqueInput | LeadRecordingWhereUniqueInput[]
+    delete?: LeadRecordingWhereUniqueInput | LeadRecordingWhereUniqueInput[]
+    connect?: LeadRecordingWhereUniqueInput | LeadRecordingWhereUniqueInput[]
+    update?: LeadRecordingUpdateWithWhereUniqueWithoutLeadInput | LeadRecordingUpdateWithWhereUniqueWithoutLeadInput[]
+    updateMany?: LeadRecordingUpdateManyWithWhereWithoutLeadInput | LeadRecordingUpdateManyWithWhereWithoutLeadInput[]
+    deleteMany?: LeadRecordingScalarWhereInput | LeadRecordingScalarWhereInput[]
+  }
+
+  export type LeadCreateNestedOneWithoutFollowUpsInput = {
+    create?: XOR<LeadCreateWithoutFollowUpsInput, LeadUncheckedCreateWithoutFollowUpsInput>
+    connectOrCreate?: LeadCreateOrConnectWithoutFollowUpsInput
+    connect?: LeadWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutLeadFollowUpsInput = {
+    create?: XOR<UserCreateWithoutLeadFollowUpsInput, UserUncheckedCreateWithoutLeadFollowUpsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutLeadFollowUpsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type LeadUpdateOneRequiredWithoutFollowUpsNestedInput = {
+    create?: XOR<LeadCreateWithoutFollowUpsInput, LeadUncheckedCreateWithoutFollowUpsInput>
+    connectOrCreate?: LeadCreateOrConnectWithoutFollowUpsInput
+    upsert?: LeadUpsertWithoutFollowUpsInput
+    connect?: LeadWhereUniqueInput
+    update?: XOR<XOR<LeadUpdateToOneWithWhereWithoutFollowUpsInput, LeadUpdateWithoutFollowUpsInput>, LeadUncheckedUpdateWithoutFollowUpsInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutLeadFollowUpsNestedInput = {
+    create?: XOR<UserCreateWithoutLeadFollowUpsInput, UserUncheckedCreateWithoutLeadFollowUpsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutLeadFollowUpsInput
+    upsert?: UserUpsertWithoutLeadFollowUpsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutLeadFollowUpsInput, UserUpdateWithoutLeadFollowUpsInput>, UserUncheckedUpdateWithoutLeadFollowUpsInput>
+  }
+
+  export type LeadCreateNestedOneWithoutStageHistoryInput = {
+    create?: XOR<LeadCreateWithoutStageHistoryInput, LeadUncheckedCreateWithoutStageHistoryInput>
+    connectOrCreate?: LeadCreateOrConnectWithoutStageHistoryInput
+    connect?: LeadWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutLeadStageChangesInput = {
+    create?: XOR<UserCreateWithoutLeadStageChangesInput, UserUncheckedCreateWithoutLeadStageChangesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutLeadStageChangesInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type NullableEnumLeadStageFieldUpdateOperationsInput = {
+    set?: $Enums.LeadStage | null
+  }
+
+  export type LeadUpdateOneRequiredWithoutStageHistoryNestedInput = {
+    create?: XOR<LeadCreateWithoutStageHistoryInput, LeadUncheckedCreateWithoutStageHistoryInput>
+    connectOrCreate?: LeadCreateOrConnectWithoutStageHistoryInput
+    upsert?: LeadUpsertWithoutStageHistoryInput
+    connect?: LeadWhereUniqueInput
+    update?: XOR<XOR<LeadUpdateToOneWithWhereWithoutStageHistoryInput, LeadUpdateWithoutStageHistoryInput>, LeadUncheckedUpdateWithoutStageHistoryInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutLeadStageChangesNestedInput = {
+    create?: XOR<UserCreateWithoutLeadStageChangesInput, UserUncheckedCreateWithoutLeadStageChangesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutLeadStageChangesInput
+    upsert?: UserUpsertWithoutLeadStageChangesInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutLeadStageChangesInput, UserUpdateWithoutLeadStageChangesInput>, UserUncheckedUpdateWithoutLeadStageChangesInput>
+  }
+
+  export type LeadCreateNestedOneWithoutActivitiesInput = {
+    create?: XOR<LeadCreateWithoutActivitiesInput, LeadUncheckedCreateWithoutActivitiesInput>
+    connectOrCreate?: LeadCreateOrConnectWithoutActivitiesInput
+    connect?: LeadWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutLeadActivitiesInput = {
+    create?: XOR<UserCreateWithoutLeadActivitiesInput, UserUncheckedCreateWithoutLeadActivitiesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutLeadActivitiesInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type LeadUpdateOneRequiredWithoutActivitiesNestedInput = {
+    create?: XOR<LeadCreateWithoutActivitiesInput, LeadUncheckedCreateWithoutActivitiesInput>
+    connectOrCreate?: LeadCreateOrConnectWithoutActivitiesInput
+    upsert?: LeadUpsertWithoutActivitiesInput
+    connect?: LeadWhereUniqueInput
+    update?: XOR<XOR<LeadUpdateToOneWithWhereWithoutActivitiesInput, LeadUpdateWithoutActivitiesInput>, LeadUncheckedUpdateWithoutActivitiesInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutLeadActivitiesNestedInput = {
+    create?: XOR<UserCreateWithoutLeadActivitiesInput, UserUncheckedCreateWithoutLeadActivitiesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutLeadActivitiesInput
+    upsert?: UserUpsertWithoutLeadActivitiesInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutLeadActivitiesInput, UserUpdateWithoutLeadActivitiesInput>, UserUncheckedUpdateWithoutLeadActivitiesInput>
+  }
+
+  export type LeadCreateNestedOneWithoutRecordingsInput = {
+    create?: XOR<LeadCreateWithoutRecordingsInput, LeadUncheckedCreateWithoutRecordingsInput>
+    connectOrCreate?: LeadCreateOrConnectWithoutRecordingsInput
+    connect?: LeadWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutLeadRecordingsInput = {
+    create?: XOR<UserCreateWithoutLeadRecordingsInput, UserUncheckedCreateWithoutLeadRecordingsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutLeadRecordingsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type LeadUpdateOneRequiredWithoutRecordingsNestedInput = {
+    create?: XOR<LeadCreateWithoutRecordingsInput, LeadUncheckedCreateWithoutRecordingsInput>
+    connectOrCreate?: LeadCreateOrConnectWithoutRecordingsInput
+    upsert?: LeadUpsertWithoutRecordingsInput
+    connect?: LeadWhereUniqueInput
+    update?: XOR<XOR<LeadUpdateToOneWithWhereWithoutRecordingsInput, LeadUpdateWithoutRecordingsInput>, LeadUncheckedUpdateWithoutRecordingsInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutLeadRecordingsNestedInput = {
+    create?: XOR<UserCreateWithoutLeadRecordingsInput, UserUncheckedCreateWithoutLeadRecordingsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutLeadRecordingsInput
+    upsert?: UserUpsertWithoutLeadRecordingsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutLeadRecordingsInput, UserUpdateWithoutLeadRecordingsInput>, UserUncheckedUpdateWithoutLeadRecordingsInput>
+  }
+
   export type BranchStudentCreateNestedOneWithoutMotivationMailHistoryInput = {
     create?: XOR<BranchStudentCreateWithoutMotivationMailHistoryInput, BranchStudentUncheckedCreateWithoutMotivationMailHistoryInput>
     connectOrCreate?: BranchStudentCreateOrConnectWithoutMotivationMailHistoryInput
@@ -136632,6 +145738,57 @@ export namespace Prisma {
     _max?: NestedDecimalNullableFilter<$PrismaModel>
   }
 
+  export type NestedEnumLeadStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.LeadStatus | EnumLeadStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.LeadStatus[] | ListEnumLeadStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.LeadStatus[] | ListEnumLeadStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumLeadStatusFilter<$PrismaModel> | $Enums.LeadStatus
+  }
+
+  export type NestedEnumLeadStageFilter<$PrismaModel = never> = {
+    equals?: $Enums.LeadStage | EnumLeadStageFieldRefInput<$PrismaModel>
+    in?: $Enums.LeadStage[] | ListEnumLeadStageFieldRefInput<$PrismaModel>
+    notIn?: $Enums.LeadStage[] | ListEnumLeadStageFieldRefInput<$PrismaModel>
+    not?: NestedEnumLeadStageFilter<$PrismaModel> | $Enums.LeadStage
+  }
+
+  export type NestedEnumLeadStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.LeadStatus | EnumLeadStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.LeadStatus[] | ListEnumLeadStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.LeadStatus[] | ListEnumLeadStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumLeadStatusWithAggregatesFilter<$PrismaModel> | $Enums.LeadStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumLeadStatusFilter<$PrismaModel>
+    _max?: NestedEnumLeadStatusFilter<$PrismaModel>
+  }
+
+  export type NestedEnumLeadStageWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.LeadStage | EnumLeadStageFieldRefInput<$PrismaModel>
+    in?: $Enums.LeadStage[] | ListEnumLeadStageFieldRefInput<$PrismaModel>
+    notIn?: $Enums.LeadStage[] | ListEnumLeadStageFieldRefInput<$PrismaModel>
+    not?: NestedEnumLeadStageWithAggregatesFilter<$PrismaModel> | $Enums.LeadStage
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumLeadStageFilter<$PrismaModel>
+    _max?: NestedEnumLeadStageFilter<$PrismaModel>
+  }
+
+  export type NestedEnumLeadStageNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.LeadStage | EnumLeadStageFieldRefInput<$PrismaModel> | null
+    in?: $Enums.LeadStage[] | ListEnumLeadStageFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.LeadStage[] | ListEnumLeadStageFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumLeadStageNullableFilter<$PrismaModel> | $Enums.LeadStage | null
+  }
+
+  export type NestedEnumLeadStageNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.LeadStage | EnumLeadStageFieldRefInput<$PrismaModel> | null
+    in?: $Enums.LeadStage[] | ListEnumLeadStageFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.LeadStage[] | ListEnumLeadStageFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumLeadStageNullableWithAggregatesFilter<$PrismaModel> | $Enums.LeadStage | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedEnumLeadStageNullableFilter<$PrismaModel>
+    _max?: NestedEnumLeadStageNullableFilter<$PrismaModel>
+  }
+
   export type NestedEnumDiscontinuationRequestStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.DiscontinuationRequestStatus | EnumDiscontinuationRequestStatusFieldRefInput<$PrismaModel>
     in?: $Enums.DiscontinuationRequestStatus[] | ListEnumDiscontinuationRequestStatusFieldRefInput<$PrismaModel>
@@ -136724,6 +145881,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutBranchInput
     facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutBranchInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutBranchInput
+    leads?: LeadCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutAdminUserInput = {
@@ -136759,6 +145917,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutBranchInput
     facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutBranchInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutBranchInput
+    leads?: LeadUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutAdminUserInput = {
@@ -137578,6 +146737,352 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type LeadCreateWithoutAssignedToInput = {
+    id?: string
+    leadId: string
+    studentName: string
+    phoneNumber: string
+    alternativeNumber?: string | null
+    email?: string | null
+    qualification?: string | null
+    location?: string | null
+    callType: string
+    status?: $Enums.LeadStatus
+    stage?: $Enums.LeadStage
+    leadSource: string
+    referredBy?: string | null
+    paymentStatus?: string
+    trainingMode?: string | null
+    classSchedule?: string | null
+    courseMode?: string | null
+    locationDistance?: string | null
+    leadDate: Date | string
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branch: BranchCreateNestedOneWithoutLeadsInput
+    course: BranchCourseCreateNestedOneWithoutLeadsInput
+    createdBy: UserCreateNestedOneWithoutCreatedLeadsInput
+    updatedBy?: UserCreateNestedOneWithoutUpdatedLeadsInput
+    followUps?: LeadFollowUpCreateNestedManyWithoutLeadInput
+    stageHistory?: LeadStageHistoryCreateNestedManyWithoutLeadInput
+    activities?: LeadActivityCreateNestedManyWithoutLeadInput
+    recordings?: LeadRecordingCreateNestedManyWithoutLeadInput
+  }
+
+  export type LeadUncheckedCreateWithoutAssignedToInput = {
+    id?: string
+    leadId: string
+    studentName: string
+    phoneNumber: string
+    alternativeNumber?: string | null
+    email?: string | null
+    qualification?: string | null
+    location?: string | null
+    callType: string
+    status?: $Enums.LeadStatus
+    stage?: $Enums.LeadStage
+    courseId: string
+    branchId: string
+    leadSource: string
+    referredBy?: string | null
+    paymentStatus?: string
+    trainingMode?: string | null
+    classSchedule?: string | null
+    courseMode?: string | null
+    locationDistance?: string | null
+    leadDate: Date | string
+    createdById: string
+    updatedById?: string | null
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    followUps?: LeadFollowUpUncheckedCreateNestedManyWithoutLeadInput
+    stageHistory?: LeadStageHistoryUncheckedCreateNestedManyWithoutLeadInput
+    activities?: LeadActivityUncheckedCreateNestedManyWithoutLeadInput
+    recordings?: LeadRecordingUncheckedCreateNestedManyWithoutLeadInput
+  }
+
+  export type LeadCreateOrConnectWithoutAssignedToInput = {
+    where: LeadWhereUniqueInput
+    create: XOR<LeadCreateWithoutAssignedToInput, LeadUncheckedCreateWithoutAssignedToInput>
+  }
+
+  export type LeadCreateManyAssignedToInputEnvelope = {
+    data: LeadCreateManyAssignedToInput | LeadCreateManyAssignedToInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type LeadCreateWithoutCreatedByInput = {
+    id?: string
+    leadId: string
+    studentName: string
+    phoneNumber: string
+    alternativeNumber?: string | null
+    email?: string | null
+    qualification?: string | null
+    location?: string | null
+    callType: string
+    status?: $Enums.LeadStatus
+    stage?: $Enums.LeadStage
+    leadSource: string
+    referredBy?: string | null
+    paymentStatus?: string
+    trainingMode?: string | null
+    classSchedule?: string | null
+    courseMode?: string | null
+    locationDistance?: string | null
+    leadDate: Date | string
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branch: BranchCreateNestedOneWithoutLeadsInput
+    course: BranchCourseCreateNestedOneWithoutLeadsInput
+    assignedTo?: UserCreateNestedOneWithoutAssignedLeadsInput
+    updatedBy?: UserCreateNestedOneWithoutUpdatedLeadsInput
+    followUps?: LeadFollowUpCreateNestedManyWithoutLeadInput
+    stageHistory?: LeadStageHistoryCreateNestedManyWithoutLeadInput
+    activities?: LeadActivityCreateNestedManyWithoutLeadInput
+    recordings?: LeadRecordingCreateNestedManyWithoutLeadInput
+  }
+
+  export type LeadUncheckedCreateWithoutCreatedByInput = {
+    id?: string
+    leadId: string
+    studentName: string
+    phoneNumber: string
+    alternativeNumber?: string | null
+    email?: string | null
+    qualification?: string | null
+    location?: string | null
+    callType: string
+    status?: $Enums.LeadStatus
+    stage?: $Enums.LeadStage
+    courseId: string
+    branchId: string
+    leadSource: string
+    referredBy?: string | null
+    paymentStatus?: string
+    trainingMode?: string | null
+    classSchedule?: string | null
+    courseMode?: string | null
+    locationDistance?: string | null
+    leadDate: Date | string
+    assignedToId?: string | null
+    updatedById?: string | null
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    followUps?: LeadFollowUpUncheckedCreateNestedManyWithoutLeadInput
+    stageHistory?: LeadStageHistoryUncheckedCreateNestedManyWithoutLeadInput
+    activities?: LeadActivityUncheckedCreateNestedManyWithoutLeadInput
+    recordings?: LeadRecordingUncheckedCreateNestedManyWithoutLeadInput
+  }
+
+  export type LeadCreateOrConnectWithoutCreatedByInput = {
+    where: LeadWhereUniqueInput
+    create: XOR<LeadCreateWithoutCreatedByInput, LeadUncheckedCreateWithoutCreatedByInput>
+  }
+
+  export type LeadCreateManyCreatedByInputEnvelope = {
+    data: LeadCreateManyCreatedByInput | LeadCreateManyCreatedByInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type LeadCreateWithoutUpdatedByInput = {
+    id?: string
+    leadId: string
+    studentName: string
+    phoneNumber: string
+    alternativeNumber?: string | null
+    email?: string | null
+    qualification?: string | null
+    location?: string | null
+    callType: string
+    status?: $Enums.LeadStatus
+    stage?: $Enums.LeadStage
+    leadSource: string
+    referredBy?: string | null
+    paymentStatus?: string
+    trainingMode?: string | null
+    classSchedule?: string | null
+    courseMode?: string | null
+    locationDistance?: string | null
+    leadDate: Date | string
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branch: BranchCreateNestedOneWithoutLeadsInput
+    course: BranchCourseCreateNestedOneWithoutLeadsInput
+    assignedTo?: UserCreateNestedOneWithoutAssignedLeadsInput
+    createdBy: UserCreateNestedOneWithoutCreatedLeadsInput
+    followUps?: LeadFollowUpCreateNestedManyWithoutLeadInput
+    stageHistory?: LeadStageHistoryCreateNestedManyWithoutLeadInput
+    activities?: LeadActivityCreateNestedManyWithoutLeadInput
+    recordings?: LeadRecordingCreateNestedManyWithoutLeadInput
+  }
+
+  export type LeadUncheckedCreateWithoutUpdatedByInput = {
+    id?: string
+    leadId: string
+    studentName: string
+    phoneNumber: string
+    alternativeNumber?: string | null
+    email?: string | null
+    qualification?: string | null
+    location?: string | null
+    callType: string
+    status?: $Enums.LeadStatus
+    stage?: $Enums.LeadStage
+    courseId: string
+    branchId: string
+    leadSource: string
+    referredBy?: string | null
+    paymentStatus?: string
+    trainingMode?: string | null
+    classSchedule?: string | null
+    courseMode?: string | null
+    locationDistance?: string | null
+    leadDate: Date | string
+    assignedToId?: string | null
+    createdById: string
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    followUps?: LeadFollowUpUncheckedCreateNestedManyWithoutLeadInput
+    stageHistory?: LeadStageHistoryUncheckedCreateNestedManyWithoutLeadInput
+    activities?: LeadActivityUncheckedCreateNestedManyWithoutLeadInput
+    recordings?: LeadRecordingUncheckedCreateNestedManyWithoutLeadInput
+  }
+
+  export type LeadCreateOrConnectWithoutUpdatedByInput = {
+    where: LeadWhereUniqueInput
+    create: XOR<LeadCreateWithoutUpdatedByInput, LeadUncheckedCreateWithoutUpdatedByInput>
+  }
+
+  export type LeadCreateManyUpdatedByInputEnvelope = {
+    data: LeadCreateManyUpdatedByInput | LeadCreateManyUpdatedByInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type LeadFollowUpCreateWithoutCreatedByInput = {
+    id?: string
+    followUpDate: Date | string
+    followUpType: string
+    notes: string
+    nextFollowUpDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lead: LeadCreateNestedOneWithoutFollowUpsInput
+  }
+
+  export type LeadFollowUpUncheckedCreateWithoutCreatedByInput = {
+    id?: string
+    leadId: string
+    followUpDate: Date | string
+    followUpType: string
+    notes: string
+    nextFollowUpDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type LeadFollowUpCreateOrConnectWithoutCreatedByInput = {
+    where: LeadFollowUpWhereUniqueInput
+    create: XOR<LeadFollowUpCreateWithoutCreatedByInput, LeadFollowUpUncheckedCreateWithoutCreatedByInput>
+  }
+
+  export type LeadFollowUpCreateManyCreatedByInputEnvelope = {
+    data: LeadFollowUpCreateManyCreatedByInput | LeadFollowUpCreateManyCreatedByInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type LeadActivityCreateWithoutCreatedByInput = {
+    id?: string
+    action: string
+    previousValue?: NullableJsonNullValueInput | InputJsonValue
+    newValue?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    lead: LeadCreateNestedOneWithoutActivitiesInput
+  }
+
+  export type LeadActivityUncheckedCreateWithoutCreatedByInput = {
+    id?: string
+    leadId: string
+    action: string
+    previousValue?: NullableJsonNullValueInput | InputJsonValue
+    newValue?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+  }
+
+  export type LeadActivityCreateOrConnectWithoutCreatedByInput = {
+    where: LeadActivityWhereUniqueInput
+    create: XOR<LeadActivityCreateWithoutCreatedByInput, LeadActivityUncheckedCreateWithoutCreatedByInput>
+  }
+
+  export type LeadActivityCreateManyCreatedByInputEnvelope = {
+    data: LeadActivityCreateManyCreatedByInput | LeadActivityCreateManyCreatedByInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type LeadStageHistoryCreateWithoutCreatedByInput = {
+    id?: string
+    fromStage?: $Enums.LeadStage | null
+    toStage: $Enums.LeadStage
+    createdAt?: Date | string
+    lead: LeadCreateNestedOneWithoutStageHistoryInput
+  }
+
+  export type LeadStageHistoryUncheckedCreateWithoutCreatedByInput = {
+    id?: string
+    leadId: string
+    fromStage?: $Enums.LeadStage | null
+    toStage: $Enums.LeadStage
+    createdAt?: Date | string
+  }
+
+  export type LeadStageHistoryCreateOrConnectWithoutCreatedByInput = {
+    where: LeadStageHistoryWhereUniqueInput
+    create: XOR<LeadStageHistoryCreateWithoutCreatedByInput, LeadStageHistoryUncheckedCreateWithoutCreatedByInput>
+  }
+
+  export type LeadStageHistoryCreateManyCreatedByInputEnvelope = {
+    data: LeadStageHistoryCreateManyCreatedByInput | LeadStageHistoryCreateManyCreatedByInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type LeadRecordingCreateWithoutCreatedByInput = {
+    id?: string
+    followUpId?: string | null
+    originalName: string
+    storageKey: string
+    mimeType: string
+    sizeBytes: number
+    createdAt?: Date | string
+    lead: LeadCreateNestedOneWithoutRecordingsInput
+  }
+
+  export type LeadRecordingUncheckedCreateWithoutCreatedByInput = {
+    id?: string
+    leadId: string
+    followUpId?: string | null
+    originalName: string
+    storageKey: string
+    mimeType: string
+    sizeBytes: number
+    createdAt?: Date | string
+  }
+
+  export type LeadRecordingCreateOrConnectWithoutCreatedByInput = {
+    where: LeadRecordingWhereUniqueInput
+    create: XOR<LeadRecordingCreateWithoutCreatedByInput, LeadRecordingUncheckedCreateWithoutCreatedByInput>
+  }
+
+  export type LeadRecordingCreateManyCreatedByInputEnvelope = {
+    data: LeadRecordingCreateManyCreatedByInput | LeadRecordingCreateManyCreatedByInput[]
+    skipDuplicates?: boolean
+  }
+
   export type BatchFacultyAssignmentUpsertWithWhereUniqueWithoutFacultyInput = {
     where: BatchFacultyAssignmentWhereUniqueInput
     update: XOR<BatchFacultyAssignmentUpdateWithoutFacultyInput, BatchFacultyAssignmentUncheckedUpdateWithoutFacultyInput>
@@ -137658,6 +147163,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutBranchNestedInput
     facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutBranchNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutBranchNestedInput
+    leads?: LeadUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutAdminUserInput = {
@@ -137693,6 +147199,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutBranchNestedInput
     facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutBranchNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutBranchNestedInput
+    leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type FacultyAttendanceSessionUpsertWithWhereUniqueWithoutFacultyUserInput = {
@@ -138361,6 +147868,206 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"SalesAdminBranch"> | Date | string
   }
 
+  export type LeadUpsertWithWhereUniqueWithoutAssignedToInput = {
+    where: LeadWhereUniqueInput
+    update: XOR<LeadUpdateWithoutAssignedToInput, LeadUncheckedUpdateWithoutAssignedToInput>
+    create: XOR<LeadCreateWithoutAssignedToInput, LeadUncheckedCreateWithoutAssignedToInput>
+  }
+
+  export type LeadUpdateWithWhereUniqueWithoutAssignedToInput = {
+    where: LeadWhereUniqueInput
+    data: XOR<LeadUpdateWithoutAssignedToInput, LeadUncheckedUpdateWithoutAssignedToInput>
+  }
+
+  export type LeadUpdateManyWithWhereWithoutAssignedToInput = {
+    where: LeadScalarWhereInput
+    data: XOR<LeadUpdateManyMutationInput, LeadUncheckedUpdateManyWithoutAssignedToInput>
+  }
+
+  export type LeadScalarWhereInput = {
+    AND?: LeadScalarWhereInput | LeadScalarWhereInput[]
+    OR?: LeadScalarWhereInput[]
+    NOT?: LeadScalarWhereInput | LeadScalarWhereInput[]
+    id?: StringFilter<"Lead"> | string
+    leadId?: StringFilter<"Lead"> | string
+    studentName?: StringFilter<"Lead"> | string
+    phoneNumber?: StringFilter<"Lead"> | string
+    alternativeNumber?: StringNullableFilter<"Lead"> | string | null
+    email?: StringNullableFilter<"Lead"> | string | null
+    qualification?: StringNullableFilter<"Lead"> | string | null
+    location?: StringNullableFilter<"Lead"> | string | null
+    callType?: StringFilter<"Lead"> | string
+    status?: EnumLeadStatusFilter<"Lead"> | $Enums.LeadStatus
+    stage?: EnumLeadStageFilter<"Lead"> | $Enums.LeadStage
+    courseId?: StringFilter<"Lead"> | string
+    branchId?: StringFilter<"Lead"> | string
+    leadSource?: StringFilter<"Lead"> | string
+    referredBy?: StringNullableFilter<"Lead"> | string | null
+    paymentStatus?: StringFilter<"Lead"> | string
+    trainingMode?: StringNullableFilter<"Lead"> | string | null
+    classSchedule?: StringNullableFilter<"Lead"> | string | null
+    courseMode?: StringNullableFilter<"Lead"> | string | null
+    locationDistance?: StringNullableFilter<"Lead"> | string | null
+    leadDate?: DateTimeFilter<"Lead"> | Date | string
+    assignedToId?: StringNullableFilter<"Lead"> | string | null
+    createdById?: StringFilter<"Lead"> | string
+    updatedById?: StringNullableFilter<"Lead"> | string | null
+    deletedAt?: DateTimeNullableFilter<"Lead"> | Date | string | null
+    createdAt?: DateTimeFilter<"Lead"> | Date | string
+    updatedAt?: DateTimeFilter<"Lead"> | Date | string
+  }
+
+  export type LeadUpsertWithWhereUniqueWithoutCreatedByInput = {
+    where: LeadWhereUniqueInput
+    update: XOR<LeadUpdateWithoutCreatedByInput, LeadUncheckedUpdateWithoutCreatedByInput>
+    create: XOR<LeadCreateWithoutCreatedByInput, LeadUncheckedCreateWithoutCreatedByInput>
+  }
+
+  export type LeadUpdateWithWhereUniqueWithoutCreatedByInput = {
+    where: LeadWhereUniqueInput
+    data: XOR<LeadUpdateWithoutCreatedByInput, LeadUncheckedUpdateWithoutCreatedByInput>
+  }
+
+  export type LeadUpdateManyWithWhereWithoutCreatedByInput = {
+    where: LeadScalarWhereInput
+    data: XOR<LeadUpdateManyMutationInput, LeadUncheckedUpdateManyWithoutCreatedByInput>
+  }
+
+  export type LeadUpsertWithWhereUniqueWithoutUpdatedByInput = {
+    where: LeadWhereUniqueInput
+    update: XOR<LeadUpdateWithoutUpdatedByInput, LeadUncheckedUpdateWithoutUpdatedByInput>
+    create: XOR<LeadCreateWithoutUpdatedByInput, LeadUncheckedCreateWithoutUpdatedByInput>
+  }
+
+  export type LeadUpdateWithWhereUniqueWithoutUpdatedByInput = {
+    where: LeadWhereUniqueInput
+    data: XOR<LeadUpdateWithoutUpdatedByInput, LeadUncheckedUpdateWithoutUpdatedByInput>
+  }
+
+  export type LeadUpdateManyWithWhereWithoutUpdatedByInput = {
+    where: LeadScalarWhereInput
+    data: XOR<LeadUpdateManyMutationInput, LeadUncheckedUpdateManyWithoutUpdatedByInput>
+  }
+
+  export type LeadFollowUpUpsertWithWhereUniqueWithoutCreatedByInput = {
+    where: LeadFollowUpWhereUniqueInput
+    update: XOR<LeadFollowUpUpdateWithoutCreatedByInput, LeadFollowUpUncheckedUpdateWithoutCreatedByInput>
+    create: XOR<LeadFollowUpCreateWithoutCreatedByInput, LeadFollowUpUncheckedCreateWithoutCreatedByInput>
+  }
+
+  export type LeadFollowUpUpdateWithWhereUniqueWithoutCreatedByInput = {
+    where: LeadFollowUpWhereUniqueInput
+    data: XOR<LeadFollowUpUpdateWithoutCreatedByInput, LeadFollowUpUncheckedUpdateWithoutCreatedByInput>
+  }
+
+  export type LeadFollowUpUpdateManyWithWhereWithoutCreatedByInput = {
+    where: LeadFollowUpScalarWhereInput
+    data: XOR<LeadFollowUpUpdateManyMutationInput, LeadFollowUpUncheckedUpdateManyWithoutCreatedByInput>
+  }
+
+  export type LeadFollowUpScalarWhereInput = {
+    AND?: LeadFollowUpScalarWhereInput | LeadFollowUpScalarWhereInput[]
+    OR?: LeadFollowUpScalarWhereInput[]
+    NOT?: LeadFollowUpScalarWhereInput | LeadFollowUpScalarWhereInput[]
+    id?: StringFilter<"LeadFollowUp"> | string
+    leadId?: StringFilter<"LeadFollowUp"> | string
+    followUpDate?: DateTimeFilter<"LeadFollowUp"> | Date | string
+    followUpType?: StringFilter<"LeadFollowUp"> | string
+    notes?: StringFilter<"LeadFollowUp"> | string
+    nextFollowUpDate?: DateTimeNullableFilter<"LeadFollowUp"> | Date | string | null
+    createdById?: StringFilter<"LeadFollowUp"> | string
+    createdAt?: DateTimeFilter<"LeadFollowUp"> | Date | string
+    updatedAt?: DateTimeFilter<"LeadFollowUp"> | Date | string
+  }
+
+  export type LeadActivityUpsertWithWhereUniqueWithoutCreatedByInput = {
+    where: LeadActivityWhereUniqueInput
+    update: XOR<LeadActivityUpdateWithoutCreatedByInput, LeadActivityUncheckedUpdateWithoutCreatedByInput>
+    create: XOR<LeadActivityCreateWithoutCreatedByInput, LeadActivityUncheckedCreateWithoutCreatedByInput>
+  }
+
+  export type LeadActivityUpdateWithWhereUniqueWithoutCreatedByInput = {
+    where: LeadActivityWhereUniqueInput
+    data: XOR<LeadActivityUpdateWithoutCreatedByInput, LeadActivityUncheckedUpdateWithoutCreatedByInput>
+  }
+
+  export type LeadActivityUpdateManyWithWhereWithoutCreatedByInput = {
+    where: LeadActivityScalarWhereInput
+    data: XOR<LeadActivityUpdateManyMutationInput, LeadActivityUncheckedUpdateManyWithoutCreatedByInput>
+  }
+
+  export type LeadActivityScalarWhereInput = {
+    AND?: LeadActivityScalarWhereInput | LeadActivityScalarWhereInput[]
+    OR?: LeadActivityScalarWhereInput[]
+    NOT?: LeadActivityScalarWhereInput | LeadActivityScalarWhereInput[]
+    id?: StringFilter<"LeadActivity"> | string
+    leadId?: StringFilter<"LeadActivity"> | string
+    action?: StringFilter<"LeadActivity"> | string
+    previousValue?: JsonNullableFilter<"LeadActivity">
+    newValue?: JsonNullableFilter<"LeadActivity">
+    createdById?: StringFilter<"LeadActivity"> | string
+    createdAt?: DateTimeFilter<"LeadActivity"> | Date | string
+  }
+
+  export type LeadStageHistoryUpsertWithWhereUniqueWithoutCreatedByInput = {
+    where: LeadStageHistoryWhereUniqueInput
+    update: XOR<LeadStageHistoryUpdateWithoutCreatedByInput, LeadStageHistoryUncheckedUpdateWithoutCreatedByInput>
+    create: XOR<LeadStageHistoryCreateWithoutCreatedByInput, LeadStageHistoryUncheckedCreateWithoutCreatedByInput>
+  }
+
+  export type LeadStageHistoryUpdateWithWhereUniqueWithoutCreatedByInput = {
+    where: LeadStageHistoryWhereUniqueInput
+    data: XOR<LeadStageHistoryUpdateWithoutCreatedByInput, LeadStageHistoryUncheckedUpdateWithoutCreatedByInput>
+  }
+
+  export type LeadStageHistoryUpdateManyWithWhereWithoutCreatedByInput = {
+    where: LeadStageHistoryScalarWhereInput
+    data: XOR<LeadStageHistoryUpdateManyMutationInput, LeadStageHistoryUncheckedUpdateManyWithoutCreatedByInput>
+  }
+
+  export type LeadStageHistoryScalarWhereInput = {
+    AND?: LeadStageHistoryScalarWhereInput | LeadStageHistoryScalarWhereInput[]
+    OR?: LeadStageHistoryScalarWhereInput[]
+    NOT?: LeadStageHistoryScalarWhereInput | LeadStageHistoryScalarWhereInput[]
+    id?: StringFilter<"LeadStageHistory"> | string
+    leadId?: StringFilter<"LeadStageHistory"> | string
+    fromStage?: EnumLeadStageNullableFilter<"LeadStageHistory"> | $Enums.LeadStage | null
+    toStage?: EnumLeadStageFilter<"LeadStageHistory"> | $Enums.LeadStage
+    createdById?: StringFilter<"LeadStageHistory"> | string
+    createdAt?: DateTimeFilter<"LeadStageHistory"> | Date | string
+  }
+
+  export type LeadRecordingUpsertWithWhereUniqueWithoutCreatedByInput = {
+    where: LeadRecordingWhereUniqueInput
+    update: XOR<LeadRecordingUpdateWithoutCreatedByInput, LeadRecordingUncheckedUpdateWithoutCreatedByInput>
+    create: XOR<LeadRecordingCreateWithoutCreatedByInput, LeadRecordingUncheckedCreateWithoutCreatedByInput>
+  }
+
+  export type LeadRecordingUpdateWithWhereUniqueWithoutCreatedByInput = {
+    where: LeadRecordingWhereUniqueInput
+    data: XOR<LeadRecordingUpdateWithoutCreatedByInput, LeadRecordingUncheckedUpdateWithoutCreatedByInput>
+  }
+
+  export type LeadRecordingUpdateManyWithWhereWithoutCreatedByInput = {
+    where: LeadRecordingScalarWhereInput
+    data: XOR<LeadRecordingUpdateManyMutationInput, LeadRecordingUncheckedUpdateManyWithoutCreatedByInput>
+  }
+
+  export type LeadRecordingScalarWhereInput = {
+    AND?: LeadRecordingScalarWhereInput | LeadRecordingScalarWhereInput[]
+    OR?: LeadRecordingScalarWhereInput[]
+    NOT?: LeadRecordingScalarWhereInput | LeadRecordingScalarWhereInput[]
+    id?: StringFilter<"LeadRecording"> | string
+    leadId?: StringFilter<"LeadRecording"> | string
+    followUpId?: StringNullableFilter<"LeadRecording"> | string | null
+    originalName?: StringFilter<"LeadRecording"> | string
+    storageKey?: StringFilter<"LeadRecording"> | string
+    mimeType?: StringFilter<"LeadRecording"> | string
+    sizeBytes?: IntFilter<"LeadRecording"> | number
+    createdById?: StringFilter<"LeadRecording"> | string
+    createdAt?: DateTimeFilter<"LeadRecording"> | Date | string
+  }
+
   export type UserDashboardWidgetCreateWithoutWidgetInput = {
     id?: string
     isVisible?: boolean
@@ -138447,6 +148154,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutFacultyUserInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadCreateNestedManyWithoutAssignedToInput
+    createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
+    leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutDashboardWidgetPreferencesInput = {
@@ -138491,6 +148205,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutFacultyUserInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssignedToInput
+    createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
+    leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutDashboardWidgetPreferencesInput = {
@@ -138580,6 +148301,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutFacultyUserNestedInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUpdateManyWithoutAssignedToNestedInput
+    createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
+    leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDashboardWidgetPreferencesInput = {
@@ -138624,6 +148352,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutFacultyUserNestedInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
+    leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type DashboardWidgetUpsertWithoutPreferencesInput = {
@@ -138703,6 +148438,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutFacultyUserInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadCreateNestedManyWithoutAssignedToInput
+    createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
+    leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutManagedBranchInput = {
@@ -138747,6 +148489,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutFacultyUserInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssignedToInput
+    createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
+    leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutManagedBranchInput = {
@@ -138790,6 +148539,7 @@ export namespace Prisma {
     academicTests?: AcademicTestCreateNestedManyWithoutBranchCourseInput
     academicQuestionPapers?: AcademicQuestionPaperCreateNestedManyWithoutBranchCourseInput
     academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchCourseInput
+    leads?: LeadCreateNestedManyWithoutCourseInput
   }
 
   export type BranchCourseUncheckedCreateWithoutBranchInput = {
@@ -138828,6 +148578,7 @@ export namespace Prisma {
     academicTests?: AcademicTestUncheckedCreateNestedManyWithoutBranchCourseInput
     academicQuestionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchCourseInput
     academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchCourseInput
+    leads?: LeadUncheckedCreateNestedManyWithoutCourseInput
   }
 
   export type BranchCourseCreateOrConnectWithoutBranchInput = {
@@ -139684,6 +149435,82 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type LeadCreateWithoutBranchInput = {
+    id?: string
+    leadId: string
+    studentName: string
+    phoneNumber: string
+    alternativeNumber?: string | null
+    email?: string | null
+    qualification?: string | null
+    location?: string | null
+    callType: string
+    status?: $Enums.LeadStatus
+    stage?: $Enums.LeadStage
+    leadSource: string
+    referredBy?: string | null
+    paymentStatus?: string
+    trainingMode?: string | null
+    classSchedule?: string | null
+    courseMode?: string | null
+    locationDistance?: string | null
+    leadDate: Date | string
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    course: BranchCourseCreateNestedOneWithoutLeadsInput
+    assignedTo?: UserCreateNestedOneWithoutAssignedLeadsInput
+    createdBy: UserCreateNestedOneWithoutCreatedLeadsInput
+    updatedBy?: UserCreateNestedOneWithoutUpdatedLeadsInput
+    followUps?: LeadFollowUpCreateNestedManyWithoutLeadInput
+    stageHistory?: LeadStageHistoryCreateNestedManyWithoutLeadInput
+    activities?: LeadActivityCreateNestedManyWithoutLeadInput
+    recordings?: LeadRecordingCreateNestedManyWithoutLeadInput
+  }
+
+  export type LeadUncheckedCreateWithoutBranchInput = {
+    id?: string
+    leadId: string
+    studentName: string
+    phoneNumber: string
+    alternativeNumber?: string | null
+    email?: string | null
+    qualification?: string | null
+    location?: string | null
+    callType: string
+    status?: $Enums.LeadStatus
+    stage?: $Enums.LeadStage
+    courseId: string
+    leadSource: string
+    referredBy?: string | null
+    paymentStatus?: string
+    trainingMode?: string | null
+    classSchedule?: string | null
+    courseMode?: string | null
+    locationDistance?: string | null
+    leadDate: Date | string
+    assignedToId?: string | null
+    createdById: string
+    updatedById?: string | null
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    followUps?: LeadFollowUpUncheckedCreateNestedManyWithoutLeadInput
+    stageHistory?: LeadStageHistoryUncheckedCreateNestedManyWithoutLeadInput
+    activities?: LeadActivityUncheckedCreateNestedManyWithoutLeadInput
+    recordings?: LeadRecordingUncheckedCreateNestedManyWithoutLeadInput
+  }
+
+  export type LeadCreateOrConnectWithoutBranchInput = {
+    where: LeadWhereUniqueInput
+    create: XOR<LeadCreateWithoutBranchInput, LeadUncheckedCreateWithoutBranchInput>
+  }
+
+  export type LeadCreateManyBranchInputEnvelope = {
+    data: LeadCreateManyBranchInput | LeadCreateManyBranchInput[]
+    skipDuplicates?: boolean
+  }
+
   export type UserUpsertWithoutManagedBranchInput = {
     update: XOR<UserUpdateWithoutManagedBranchInput, UserUncheckedUpdateWithoutManagedBranchInput>
     create: XOR<UserCreateWithoutManagedBranchInput, UserUncheckedCreateWithoutManagedBranchInput>
@@ -139737,6 +149564,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutFacultyUserNestedInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUpdateManyWithoutAssignedToNestedInput
+    createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
+    leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutManagedBranchInput = {
@@ -139781,6 +149615,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutFacultyUserNestedInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
+    leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type BranchCourseUpsertWithWhereUniqueWithoutBranchInput = {
@@ -140342,6 +150183,22 @@ export namespace Prisma {
     data: XOR<SalesAdminBranchUpdateManyMutationInput, SalesAdminBranchUncheckedUpdateManyWithoutBranchInput>
   }
 
+  export type LeadUpsertWithWhereUniqueWithoutBranchInput = {
+    where: LeadWhereUniqueInput
+    update: XOR<LeadUpdateWithoutBranchInput, LeadUncheckedUpdateWithoutBranchInput>
+    create: XOR<LeadCreateWithoutBranchInput, LeadUncheckedCreateWithoutBranchInput>
+  }
+
+  export type LeadUpdateWithWhereUniqueWithoutBranchInput = {
+    where: LeadWhereUniqueInput
+    data: XOR<LeadUpdateWithoutBranchInput, LeadUncheckedUpdateWithoutBranchInput>
+  }
+
+  export type LeadUpdateManyWithWhereWithoutBranchInput = {
+    where: LeadScalarWhereInput
+    data: XOR<LeadUpdateManyMutationInput, LeadUncheckedUpdateManyWithoutBranchInput>
+  }
+
   export type UserCreateWithoutSalesAdminBranchesInput = {
     id?: string
     userCode: string
@@ -140384,6 +150241,13 @@ export namespace Prisma {
     evaluatedSubmissions?: AssessmentSubmissionCreateNestedManyWithoutEvaluatorInput
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutFacultyUserInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
+    assignedLeads?: LeadCreateNestedManyWithoutAssignedToInput
+    createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
+    leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutSalesAdminBranchesInput = {
@@ -140428,6 +150292,13 @@ export namespace Prisma {
     evaluatedSubmissions?: AssessmentSubmissionUncheckedCreateNestedManyWithoutEvaluatorInput
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutFacultyUserInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
+    assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssignedToInput
+    createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
+    leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutSalesAdminBranchesInput = {
@@ -140468,6 +150339,7 @@ export namespace Prisma {
     courses?: CourseCreateNestedManyWithoutBranchInput
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutBranchInput
     facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutBranchInput
+    leads?: LeadCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutSalesAdminBranchesInput = {
@@ -140503,6 +150375,7 @@ export namespace Prisma {
     courses?: CourseUncheckedCreateNestedManyWithoutBranchInput
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutBranchInput
     facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutBranchInput
+    leads?: LeadUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutSalesAdminBranchesInput = {
@@ -140563,6 +150436,13 @@ export namespace Prisma {
     evaluatedSubmissions?: AssessmentSubmissionUpdateManyWithoutEvaluatorNestedInput
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutFacultyUserNestedInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
+    assignedLeads?: LeadUpdateManyWithoutAssignedToNestedInput
+    createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
+    leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSalesAdminBranchesInput = {
@@ -140607,6 +150487,13 @@ export namespace Prisma {
     evaluatedSubmissions?: AssessmentSubmissionUncheckedUpdateManyWithoutEvaluatorNestedInput
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutFacultyUserNestedInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
+    assignedLeads?: LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
+    leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type BranchUpsertWithoutSalesAdminBranchesInput = {
@@ -140653,6 +150540,7 @@ export namespace Prisma {
     courses?: CourseUpdateManyWithoutBranchNestedInput
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutBranchNestedInput
     facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutBranchNestedInput
+    leads?: LeadUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutSalesAdminBranchesInput = {
@@ -140688,6 +150576,7 @@ export namespace Prisma {
     courses?: CourseUncheckedUpdateManyWithoutBranchNestedInput
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutBranchNestedInput
     facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutBranchNestedInput
+    leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type UserCreateWithoutLoginEventsInput = {
@@ -140732,6 +150621,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutFacultyUserInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadCreateNestedManyWithoutAssignedToInput
+    createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
+    leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutLoginEventsInput = {
@@ -140776,6 +150672,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutFacultyUserInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssignedToInput
+    createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
+    leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutLoginEventsInput = {
@@ -140836,6 +150739,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutFacultyUserNestedInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUpdateManyWithoutAssignedToNestedInput
+    createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
+    leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLoginEventsInput = {
@@ -140880,6 +150790,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutFacultyUserNestedInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
+    leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type CourseEditRequestCreateWithoutNotificationsInput = {
@@ -140983,6 +150900,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutFacultyUserInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadCreateNestedManyWithoutAssignedToInput
+    createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
+    leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutTargetedNotificationsInput = {
@@ -141027,6 +150951,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutFacultyUserInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssignedToInput
+    createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
+    leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutTargetedNotificationsInput = {
@@ -141152,6 +151083,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutFacultyUserNestedInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUpdateManyWithoutAssignedToNestedInput
+    createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
+    leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTargetedNotificationsInput = {
@@ -141196,6 +151134,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutFacultyUserNestedInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
+    leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type NotificationCreateWithoutRequestInput = {
@@ -141340,6 +151285,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutFacultyUserInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadCreateNestedManyWithoutAssignedToInput
+    createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
+    leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutPasswordResetTokensInput = {
@@ -141384,6 +151336,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutFacultyUserInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssignedToInput
+    createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
+    leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutPasswordResetTokensInput = {
@@ -141444,6 +151403,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutFacultyUserNestedInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUpdateManyWithoutAssignedToNestedInput
+    createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
+    leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPasswordResetTokensInput = {
@@ -141488,6 +151454,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutFacultyUserNestedInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
+    leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type BatchCreateWithoutCourseInput = {
@@ -141637,6 +151610,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutBranchInput
     facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutBranchInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutBranchInput
+    leads?: LeadCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutCoursesInput = {
@@ -141672,6 +151646,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutBranchInput
     facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutBranchInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutBranchInput
+    leads?: LeadUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutCoursesInput = {
@@ -142057,6 +152032,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutBranchNestedInput
     facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutBranchNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutBranchNestedInput
+    leads?: LeadUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutCoursesInput = {
@@ -142092,6 +152068,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutBranchNestedInput
     facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutBranchNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutBranchNestedInput
+    leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type CourseModuleUpsertWithWhereUniqueWithoutCourseInput = {
@@ -142353,6 +152330,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutBranchInput
     facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutBranchInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutBranchInput
+    leads?: LeadCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutBranchCoursesInput = {
@@ -142388,6 +152366,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutBranchInput
     facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutBranchInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutBranchInput
+    leads?: LeadUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutBranchCoursesInput = {
@@ -143224,6 +153203,82 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type LeadCreateWithoutCourseInput = {
+    id?: string
+    leadId: string
+    studentName: string
+    phoneNumber: string
+    alternativeNumber?: string | null
+    email?: string | null
+    qualification?: string | null
+    location?: string | null
+    callType: string
+    status?: $Enums.LeadStatus
+    stage?: $Enums.LeadStage
+    leadSource: string
+    referredBy?: string | null
+    paymentStatus?: string
+    trainingMode?: string | null
+    classSchedule?: string | null
+    courseMode?: string | null
+    locationDistance?: string | null
+    leadDate: Date | string
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branch: BranchCreateNestedOneWithoutLeadsInput
+    assignedTo?: UserCreateNestedOneWithoutAssignedLeadsInput
+    createdBy: UserCreateNestedOneWithoutCreatedLeadsInput
+    updatedBy?: UserCreateNestedOneWithoutUpdatedLeadsInput
+    followUps?: LeadFollowUpCreateNestedManyWithoutLeadInput
+    stageHistory?: LeadStageHistoryCreateNestedManyWithoutLeadInput
+    activities?: LeadActivityCreateNestedManyWithoutLeadInput
+    recordings?: LeadRecordingCreateNestedManyWithoutLeadInput
+  }
+
+  export type LeadUncheckedCreateWithoutCourseInput = {
+    id?: string
+    leadId: string
+    studentName: string
+    phoneNumber: string
+    alternativeNumber?: string | null
+    email?: string | null
+    qualification?: string | null
+    location?: string | null
+    callType: string
+    status?: $Enums.LeadStatus
+    stage?: $Enums.LeadStage
+    branchId: string
+    leadSource: string
+    referredBy?: string | null
+    paymentStatus?: string
+    trainingMode?: string | null
+    classSchedule?: string | null
+    courseMode?: string | null
+    locationDistance?: string | null
+    leadDate: Date | string
+    assignedToId?: string | null
+    createdById: string
+    updatedById?: string | null
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    followUps?: LeadFollowUpUncheckedCreateNestedManyWithoutLeadInput
+    stageHistory?: LeadStageHistoryUncheckedCreateNestedManyWithoutLeadInput
+    activities?: LeadActivityUncheckedCreateNestedManyWithoutLeadInput
+    recordings?: LeadRecordingUncheckedCreateNestedManyWithoutLeadInput
+  }
+
+  export type LeadCreateOrConnectWithoutCourseInput = {
+    where: LeadWhereUniqueInput
+    create: XOR<LeadCreateWithoutCourseInput, LeadUncheckedCreateWithoutCourseInput>
+  }
+
+  export type LeadCreateManyCourseInputEnvelope = {
+    data: LeadCreateManyCourseInput | LeadCreateManyCourseInput[]
+    skipDuplicates?: boolean
+  }
+
   export type BranchUpsertWithoutBranchCoursesInput = {
     update: XOR<BranchUpdateWithoutBranchCoursesInput, BranchUncheckedUpdateWithoutBranchCoursesInput>
     create: XOR<BranchCreateWithoutBranchCoursesInput, BranchUncheckedCreateWithoutBranchCoursesInput>
@@ -143268,6 +153323,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutBranchNestedInput
     facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutBranchNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutBranchNestedInput
+    leads?: LeadUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutBranchCoursesInput = {
@@ -143303,6 +153359,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutBranchNestedInput
     facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutBranchNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutBranchNestedInput
+    leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchInstallmentTemplateUpsertWithoutBranchCourseInput = {
@@ -143658,6 +153715,22 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"AcademicTestProject"> | Date | string
   }
 
+  export type LeadUpsertWithWhereUniqueWithoutCourseInput = {
+    where: LeadWhereUniqueInput
+    update: XOR<LeadUpdateWithoutCourseInput, LeadUncheckedUpdateWithoutCourseInput>
+    create: XOR<LeadCreateWithoutCourseInput, LeadUncheckedCreateWithoutCourseInput>
+  }
+
+  export type LeadUpdateWithWhereUniqueWithoutCourseInput = {
+    where: LeadWhereUniqueInput
+    data: XOR<LeadUpdateWithoutCourseInput, LeadUncheckedUpdateWithoutCourseInput>
+  }
+
+  export type LeadUpdateManyWithWhereWithoutCourseInput = {
+    where: LeadScalarWhereInput
+    data: XOR<LeadUpdateManyMutationInput, LeadUncheckedUpdateManyWithoutCourseInput>
+  }
+
   export type BranchCourseCreateWithoutModulesInput = {
     id?: string
     courseCode: string
@@ -143694,6 +153767,7 @@ export namespace Prisma {
     academicTests?: AcademicTestCreateNestedManyWithoutBranchCourseInput
     academicQuestionPapers?: AcademicQuestionPaperCreateNestedManyWithoutBranchCourseInput
     academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchCourseInput
+    leads?: LeadCreateNestedManyWithoutCourseInput
   }
 
   export type BranchCourseUncheckedCreateWithoutModulesInput = {
@@ -143732,6 +153806,7 @@ export namespace Prisma {
     academicTests?: AcademicTestUncheckedCreateNestedManyWithoutBranchCourseInput
     academicQuestionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchCourseInput
     academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchCourseInput
+    leads?: LeadUncheckedCreateNestedManyWithoutCourseInput
   }
 
   export type BranchCourseCreateOrConnectWithoutModulesInput = {
@@ -143934,6 +154009,7 @@ export namespace Prisma {
     academicTests?: AcademicTestUpdateManyWithoutBranchCourseNestedInput
     academicQuestionPapers?: AcademicQuestionPaperUpdateManyWithoutBranchCourseNestedInput
     academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchCourseNestedInput
+    leads?: LeadUpdateManyWithoutCourseNestedInput
   }
 
   export type BranchCourseUncheckedUpdateWithoutModulesInput = {
@@ -143972,6 +154048,7 @@ export namespace Prisma {
     academicTests?: AcademicTestUncheckedUpdateManyWithoutBranchCourseNestedInput
     academicQuestionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutBranchCourseNestedInput
     academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchCourseNestedInput
+    leads?: LeadUncheckedUpdateManyWithoutCourseNestedInput
   }
 
   export type BranchCourseSubmoduleUpsertWithWhereUniqueWithoutBranchCourseModuleInput = {
@@ -144650,6 +154727,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutFacultyUserInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadCreateNestedManyWithoutAssignedToInput
+    createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
+    leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutBatchFacultyAssignmentsInput = {
@@ -144694,6 +154778,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutFacultyUserInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssignedToInput
+    createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
+    leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutBatchFacultyAssignmentsInput = {
@@ -144809,6 +154900,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutFacultyUserNestedInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUpdateManyWithoutAssignedToNestedInput
+    createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
+    leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutBatchFacultyAssignmentsInput = {
@@ -144853,6 +154951,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutFacultyUserNestedInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
+    leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type BranchCreateWithoutBranchBatchesInput = {
@@ -144888,6 +154993,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutBranchInput
     facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutBranchInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutBranchInput
+    leads?: LeadCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutBranchBatchesInput = {
@@ -144923,6 +155029,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutBranchInput
     facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutBranchInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutBranchInput
+    leads?: LeadUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutBranchBatchesInput = {
@@ -144966,6 +155073,7 @@ export namespace Prisma {
     academicTests?: AcademicTestCreateNestedManyWithoutBranchCourseInput
     academicQuestionPapers?: AcademicQuestionPaperCreateNestedManyWithoutBranchCourseInput
     academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchCourseInput
+    leads?: LeadCreateNestedManyWithoutCourseInput
   }
 
   export type BranchCourseUncheckedCreateWithoutBranchBatchesInput = {
@@ -145004,6 +155112,7 @@ export namespace Prisma {
     academicTests?: AcademicTestUncheckedCreateNestedManyWithoutBranchCourseInput
     academicQuestionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchCourseInput
     academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchCourseInput
+    leads?: LeadUncheckedCreateNestedManyWithoutCourseInput
   }
 
   export type BranchCourseCreateOrConnectWithoutBranchBatchesInput = {
@@ -145412,6 +155521,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutBranchNestedInput
     facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutBranchNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutBranchNestedInput
+    leads?: LeadUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutBranchBatchesInput = {
@@ -145447,6 +155557,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutBranchNestedInput
     facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutBranchNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutBranchNestedInput
+    leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchCourseUpsertWithoutBranchBatchesInput = {
@@ -145496,6 +155607,7 @@ export namespace Prisma {
     academicTests?: AcademicTestUpdateManyWithoutBranchCourseNestedInput
     academicQuestionPapers?: AcademicQuestionPaperUpdateManyWithoutBranchCourseNestedInput
     academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchCourseNestedInput
+    leads?: LeadUpdateManyWithoutCourseNestedInput
   }
 
   export type BranchCourseUncheckedUpdateWithoutBranchBatchesInput = {
@@ -145534,6 +155646,7 @@ export namespace Prisma {
     academicTests?: AcademicTestUncheckedUpdateManyWithoutBranchCourseNestedInput
     academicQuestionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutBranchCourseNestedInput
     academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchCourseNestedInput
+    leads?: LeadUncheckedUpdateManyWithoutCourseNestedInput
   }
 
   export type BranchFacultyUpsertWithoutBranchBatchesInput = {
@@ -145827,6 +155940,7 @@ export namespace Prisma {
     assessments?: AssessmentCreateNestedManyWithoutBranchCourseInput
     academicQuestionPapers?: AcademicQuestionPaperCreateNestedManyWithoutBranchCourseInput
     academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchCourseInput
+    leads?: LeadCreateNestedManyWithoutCourseInput
   }
 
   export type BranchCourseUncheckedCreateWithoutAcademicTestsInput = {
@@ -145865,6 +155979,7 @@ export namespace Prisma {
     assessments?: AssessmentUncheckedCreateNestedManyWithoutBranchCourseInput
     academicQuestionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchCourseInput
     academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchCourseInput
+    leads?: LeadUncheckedCreateNestedManyWithoutCourseInput
   }
 
   export type BranchCourseCreateOrConnectWithoutAcademicTestsInput = {
@@ -145981,6 +156096,7 @@ export namespace Prisma {
     assessments?: AssessmentUpdateManyWithoutBranchCourseNestedInput
     academicQuestionPapers?: AcademicQuestionPaperUpdateManyWithoutBranchCourseNestedInput
     academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchCourseNestedInput
+    leads?: LeadUpdateManyWithoutCourseNestedInput
   }
 
   export type BranchCourseUncheckedUpdateWithoutAcademicTestsInput = {
@@ -146019,6 +156135,7 @@ export namespace Prisma {
     assessments?: AssessmentUncheckedUpdateManyWithoutBranchCourseNestedInput
     academicQuestionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutBranchCourseNestedInput
     academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchCourseNestedInput
+    leads?: LeadUncheckedUpdateManyWithoutCourseNestedInput
   }
 
   export type AcademicTestItemUpsertWithWhereUniqueWithoutAcademicTestInput = {
@@ -146628,6 +156745,7 @@ export namespace Prisma {
     assessments?: AssessmentCreateNestedManyWithoutBranchCourseInput
     academicTests?: AcademicTestCreateNestedManyWithoutBranchCourseInput
     academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchCourseInput
+    leads?: LeadCreateNestedManyWithoutCourseInput
   }
 
   export type BranchCourseUncheckedCreateWithoutAcademicQuestionPapersInput = {
@@ -146666,6 +156784,7 @@ export namespace Prisma {
     assessments?: AssessmentUncheckedCreateNestedManyWithoutBranchCourseInput
     academicTests?: AcademicTestUncheckedCreateNestedManyWithoutBranchCourseInput
     academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchCourseInput
+    leads?: LeadUncheckedCreateNestedManyWithoutCourseInput
   }
 
   export type BranchCourseCreateOrConnectWithoutAcademicQuestionPapersInput = {
@@ -146917,6 +157036,7 @@ export namespace Prisma {
     assessments?: AssessmentUpdateManyWithoutBranchCourseNestedInput
     academicTests?: AcademicTestUpdateManyWithoutBranchCourseNestedInput
     academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchCourseNestedInput
+    leads?: LeadUpdateManyWithoutCourseNestedInput
   }
 
   export type BranchCourseUncheckedUpdateWithoutAcademicQuestionPapersInput = {
@@ -146955,6 +157075,7 @@ export namespace Prisma {
     assessments?: AssessmentUncheckedUpdateManyWithoutBranchCourseNestedInput
     academicTests?: AcademicTestUncheckedUpdateManyWithoutBranchCourseNestedInput
     academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchCourseNestedInput
+    leads?: LeadUncheckedUpdateManyWithoutCourseNestedInput
   }
 
   export type BranchBatchUpsertWithoutAcademicQuestionPapersInput = {
@@ -147271,6 +157392,7 @@ export namespace Prisma {
     assessments?: AssessmentCreateNestedManyWithoutBranchCourseInput
     academicTests?: AcademicTestCreateNestedManyWithoutBranchCourseInput
     academicQuestionPapers?: AcademicQuestionPaperCreateNestedManyWithoutBranchCourseInput
+    leads?: LeadCreateNestedManyWithoutCourseInput
   }
 
   export type BranchCourseUncheckedCreateWithoutAcademicTestProjectsInput = {
@@ -147309,6 +157431,7 @@ export namespace Prisma {
     assessments?: AssessmentUncheckedCreateNestedManyWithoutBranchCourseInput
     academicTests?: AcademicTestUncheckedCreateNestedManyWithoutBranchCourseInput
     academicQuestionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchCourseInput
+    leads?: LeadUncheckedCreateNestedManyWithoutCourseInput
   }
 
   export type BranchCourseCreateOrConnectWithoutAcademicTestProjectsInput = {
@@ -147520,6 +157643,7 @@ export namespace Prisma {
     assessments?: AssessmentUpdateManyWithoutBranchCourseNestedInput
     academicTests?: AcademicTestUpdateManyWithoutBranchCourseNestedInput
     academicQuestionPapers?: AcademicQuestionPaperUpdateManyWithoutBranchCourseNestedInput
+    leads?: LeadUpdateManyWithoutCourseNestedInput
   }
 
   export type BranchCourseUncheckedUpdateWithoutAcademicTestProjectsInput = {
@@ -147558,6 +157682,7 @@ export namespace Prisma {
     assessments?: AssessmentUncheckedUpdateManyWithoutBranchCourseNestedInput
     academicTests?: AcademicTestUncheckedUpdateManyWithoutBranchCourseNestedInput
     academicQuestionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutBranchCourseNestedInput
+    leads?: LeadUncheckedUpdateManyWithoutCourseNestedInput
   }
 
   export type BranchBatchUpsertWithoutAcademicTestProjectsInput = {
@@ -149385,6 +159510,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutBranchInput
     facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutBranchInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutBranchInput
+    leads?: LeadCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutBranchStudentsInput = {
@@ -149420,6 +159546,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutBranchInput
     facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutBranchInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutBranchInput
+    leads?: LeadUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutBranchStudentsInput = {
@@ -149463,6 +159590,7 @@ export namespace Prisma {
     academicTests?: AcademicTestCreateNestedManyWithoutBranchCourseInput
     academicQuestionPapers?: AcademicQuestionPaperCreateNestedManyWithoutBranchCourseInput
     academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchCourseInput
+    leads?: LeadCreateNestedManyWithoutCourseInput
   }
 
   export type BranchCourseUncheckedCreateWithoutBranchStudentsInput = {
@@ -149501,6 +159629,7 @@ export namespace Prisma {
     academicTests?: AcademicTestUncheckedCreateNestedManyWithoutBranchCourseInput
     academicQuestionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchCourseInput
     academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchCourseInput
+    leads?: LeadUncheckedCreateNestedManyWithoutCourseInput
   }
 
   export type BranchCourseCreateOrConnectWithoutBranchStudentsInput = {
@@ -150228,6 +160357,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutBranchNestedInput
     facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutBranchNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutBranchNestedInput
+    leads?: LeadUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutBranchStudentsInput = {
@@ -150263,6 +160393,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutBranchNestedInput
     facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutBranchNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutBranchNestedInput
+    leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchCourseUpsertWithoutBranchStudentsInput = {
@@ -150312,6 +160443,7 @@ export namespace Prisma {
     academicTests?: AcademicTestUpdateManyWithoutBranchCourseNestedInput
     academicQuestionPapers?: AcademicQuestionPaperUpdateManyWithoutBranchCourseNestedInput
     academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchCourseNestedInput
+    leads?: LeadUpdateManyWithoutCourseNestedInput
   }
 
   export type BranchCourseUncheckedUpdateWithoutBranchStudentsInput = {
@@ -150350,6 +160482,7 @@ export namespace Prisma {
     academicTests?: AcademicTestUncheckedUpdateManyWithoutBranchCourseNestedInput
     academicQuestionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutBranchCourseNestedInput
     academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchCourseNestedInput
+    leads?: LeadUncheckedUpdateManyWithoutCourseNestedInput
   }
 
   export type BranchStudentInstallmentUpsertWithWhereUniqueWithoutBranchStudentInput = {
@@ -150870,6 +161003,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutBranchInput
     facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutBranchInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutBranchInput
+    leads?: LeadCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutStudentEnrollmentsInput = {
@@ -150905,6 +161039,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutBranchInput
     facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutBranchInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutBranchInput
+    leads?: LeadUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutStudentEnrollmentsInput = {
@@ -150948,6 +161083,7 @@ export namespace Prisma {
     academicTests?: AcademicTestCreateNestedManyWithoutBranchCourseInput
     academicQuestionPapers?: AcademicQuestionPaperCreateNestedManyWithoutBranchCourseInput
     academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchCourseInput
+    leads?: LeadCreateNestedManyWithoutCourseInput
   }
 
   export type BranchCourseUncheckedCreateWithoutStudentEnrollmentsInput = {
@@ -150986,6 +161122,7 @@ export namespace Prisma {
     academicTests?: AcademicTestUncheckedCreateNestedManyWithoutBranchCourseInput
     academicQuestionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchCourseInput
     academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchCourseInput
+    leads?: LeadUncheckedCreateNestedManyWithoutCourseInput
   }
 
   export type BranchCourseCreateOrConnectWithoutStudentEnrollmentsInput = {
@@ -151251,6 +161388,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutBranchNestedInput
     facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutBranchNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutBranchNestedInput
+    leads?: LeadUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutStudentEnrollmentsInput = {
@@ -151286,6 +161424,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutBranchNestedInput
     facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutBranchNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutBranchNestedInput
+    leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchCourseUpsertWithoutStudentEnrollmentsInput = {
@@ -151335,6 +161474,7 @@ export namespace Prisma {
     academicTests?: AcademicTestUpdateManyWithoutBranchCourseNestedInput
     academicQuestionPapers?: AcademicQuestionPaperUpdateManyWithoutBranchCourseNestedInput
     academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchCourseNestedInput
+    leads?: LeadUpdateManyWithoutCourseNestedInput
   }
 
   export type BranchCourseUncheckedUpdateWithoutStudentEnrollmentsInput = {
@@ -151373,6 +161513,7 @@ export namespace Prisma {
     academicTests?: AcademicTestUncheckedUpdateManyWithoutBranchCourseNestedInput
     academicQuestionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutBranchCourseNestedInput
     academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchCourseNestedInput
+    leads?: LeadUncheckedUpdateManyWithoutCourseNestedInput
   }
 
   export type BranchStudentCreateWithoutCalendarAttendanceRecordsInput = {
@@ -151576,6 +161717,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutFacultyUserInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadCreateNestedManyWithoutAssignedToInput
+    createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
+    leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutMarkedBranchStudentAttendancesInput = {
@@ -151620,6 +161768,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutFacultyUserInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssignedToInput
+    createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
+    leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutMarkedBranchStudentAttendancesInput = {
@@ -151845,6 +162000,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutFacultyUserNestedInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUpdateManyWithoutAssignedToNestedInput
+    createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
+    leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMarkedBranchStudentAttendancesInput = {
@@ -151889,6 +162051,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutFacultyUserNestedInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
+    leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type BranchCreateWithoutCalendarHolidaysInput = {
@@ -151924,6 +162093,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutBranchInput
     facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutBranchInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutBranchInput
+    leads?: LeadCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutCalendarHolidaysInput = {
@@ -151959,6 +162129,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutBranchInput
     facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutBranchInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutBranchInput
+    leads?: LeadUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutCalendarHolidaysInput = {
@@ -152010,6 +162181,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutBranchNestedInput
     facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutBranchNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutBranchNestedInput
+    leads?: LeadUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutCalendarHolidaysInput = {
@@ -152045,6 +162217,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutBranchNestedInput
     facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutBranchNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutBranchNestedInput
+    leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchCreateWithoutCalendarLeavesInput = {
@@ -152080,6 +162253,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutBranchInput
     facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutBranchInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutBranchInput
+    leads?: LeadCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutCalendarLeavesInput = {
@@ -152115,6 +162289,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutBranchInput
     facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutBranchInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutBranchInput
+    leads?: LeadUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutCalendarLeavesInput = {
@@ -152166,6 +162341,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutBranchNestedInput
     facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutBranchNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutBranchNestedInput
+    leads?: LeadUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutCalendarLeavesInput = {
@@ -152201,6 +162377,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutBranchNestedInput
     facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutBranchNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutBranchNestedInput
+    leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchStudentCreateWithoutInstallmentsInput = {
@@ -152688,6 +162865,7 @@ export namespace Prisma {
     courses?: CourseCreateNestedManyWithoutBranchInput
     facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutBranchInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutBranchInput
+    leads?: LeadCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutFacultySkillAssignmentsInput = {
@@ -152723,6 +162901,7 @@ export namespace Prisma {
     courses?: CourseUncheckedCreateNestedManyWithoutBranchInput
     facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutBranchInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutBranchInput
+    leads?: LeadUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutFacultySkillAssignmentsInput = {
@@ -152827,6 +163006,13 @@ export namespace Prisma {
     evaluatedSubmissions?: AssessmentSubmissionCreateNestedManyWithoutEvaluatorInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadCreateNestedManyWithoutAssignedToInput
+    createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
+    leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutFacultySkillAssignmentsInput = {
@@ -152871,6 +163057,13 @@ export namespace Prisma {
     evaluatedSubmissions?: AssessmentSubmissionUncheckedCreateNestedManyWithoutEvaluatorInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssignedToInput
+    createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
+    leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutFacultySkillAssignmentsInput = {
@@ -152989,6 +163182,7 @@ export namespace Prisma {
     courses?: CourseUpdateManyWithoutBranchNestedInput
     facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutBranchNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutBranchNestedInput
+    leads?: LeadUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutFacultySkillAssignmentsInput = {
@@ -153024,6 +163218,7 @@ export namespace Prisma {
     courses?: CourseUncheckedUpdateManyWithoutBranchNestedInput
     facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutBranchNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutBranchNestedInput
+    leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchFacultyUpsertWithoutSkillAssignmentsInput = {
@@ -153140,6 +163335,13 @@ export namespace Prisma {
     evaluatedSubmissions?: AssessmentSubmissionUpdateManyWithoutEvaluatorNestedInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUpdateManyWithoutAssignedToNestedInput
+    createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
+    leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFacultySkillAssignmentsInput = {
@@ -153184,6 +163386,13 @@ export namespace Prisma {
     evaluatedSubmissions?: AssessmentSubmissionUncheckedUpdateManyWithoutEvaluatorNestedInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
+    leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type FacultySkillUpsertWithoutAssignmentsInput = {
@@ -154103,6 +164312,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutFacultyUserInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadCreateNestedManyWithoutAssignedToInput
+    createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
+    leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutFacultyAttendanceSessionsInput = {
@@ -154147,6 +164363,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutFacultyUserInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssignedToInput
+    createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
+    leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutFacultyAttendanceSessionsInput = {
@@ -154239,6 +164462,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutFacultyUserNestedInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUpdateManyWithoutAssignedToNestedInput
+    createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
+    leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFacultyAttendanceSessionsInput = {
@@ -154283,6 +164513,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutFacultyUserNestedInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
+    leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type FacultyAttendanceBatchWorkUpsertWithWhereUniqueWithoutSessionInput = {
@@ -154343,6 +164580,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutFacultyUserInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadCreateNestedManyWithoutAssignedToInput
+    createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
+    leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutFacultyAttendanceDaysInput = {
@@ -154387,6 +164631,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutFacultyUserInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssignedToInput
+    createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
+    leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutFacultyAttendanceDaysInput = {
@@ -154447,6 +164698,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutFacultyUserNestedInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUpdateManyWithoutAssignedToNestedInput
+    createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
+    leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFacultyAttendanceDaysInput = {
@@ -154491,6 +164749,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutFacultyUserNestedInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
+    leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type FacultyAttendanceSessionCreateWithoutBatchWorkInput = {
@@ -154570,6 +164835,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutFacultyUserInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadCreateNestedManyWithoutAssignedToInput
+    createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
+    leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutFacultyAttendanceBatchWorkInput = {
@@ -154614,6 +164886,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutFacultyUserInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssignedToInput
+    createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
+    leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutFacultyAttendanceBatchWorkInput = {
@@ -154715,6 +164994,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutFacultyUserNestedInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUpdateManyWithoutAssignedToNestedInput
+    createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
+    leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFacultyAttendanceBatchWorkInput = {
@@ -154759,6 +165045,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutFacultyUserNestedInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
+    leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserCreateWithoutFacultyTodayWorkEntriesInput = {
@@ -154803,6 +165096,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutFacultyUserInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadCreateNestedManyWithoutAssignedToInput
+    createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
+    leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutFacultyTodayWorkEntriesInput = {
@@ -154847,6 +165147,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutFacultyUserInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssignedToInput
+    createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
+    leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutFacultyTodayWorkEntriesInput = {
@@ -154890,6 +165197,7 @@ export namespace Prisma {
     academicTests?: AcademicTestCreateNestedManyWithoutBranchCourseInput
     academicQuestionPapers?: AcademicQuestionPaperCreateNestedManyWithoutBranchCourseInput
     academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchCourseInput
+    leads?: LeadCreateNestedManyWithoutCourseInput
   }
 
   export type BranchCourseUncheckedCreateWithoutFacultyTodayWorkEntriesInput = {
@@ -154928,6 +165236,7 @@ export namespace Prisma {
     academicTests?: AcademicTestUncheckedCreateNestedManyWithoutBranchCourseInput
     academicQuestionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchCourseInput
     academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchCourseInput
+    leads?: LeadUncheckedCreateNestedManyWithoutCourseInput
   }
 
   export type BranchCourseCreateOrConnectWithoutFacultyTodayWorkEntriesInput = {
@@ -155032,6 +165341,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutFacultyUserNestedInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUpdateManyWithoutAssignedToNestedInput
+    createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
+    leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFacultyTodayWorkEntriesInput = {
@@ -155076,6 +165392,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutFacultyUserNestedInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
+    leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type BranchCourseUpsertWithoutFacultyTodayWorkEntriesInput = {
@@ -155125,6 +165448,7 @@ export namespace Prisma {
     academicTests?: AcademicTestUpdateManyWithoutBranchCourseNestedInput
     academicQuestionPapers?: AcademicQuestionPaperUpdateManyWithoutBranchCourseNestedInput
     academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchCourseNestedInput
+    leads?: LeadUpdateManyWithoutCourseNestedInput
   }
 
   export type BranchCourseUncheckedUpdateWithoutFacultyTodayWorkEntriesInput = {
@@ -155163,6 +165487,7 @@ export namespace Prisma {
     academicTests?: AcademicTestUncheckedUpdateManyWithoutBranchCourseNestedInput
     academicQuestionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutBranchCourseNestedInput
     academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchCourseNestedInput
+    leads?: LeadUncheckedUpdateManyWithoutCourseNestedInput
   }
 
   export type FacultyTodayWorkStudentEntryUpsertWithWhereUniqueWithoutFacultyTodayWorkEntryInput = {
@@ -155437,6 +165762,7 @@ export namespace Prisma {
     academicTests?: AcademicTestCreateNestedManyWithoutBranchCourseInput
     academicQuestionPapers?: AcademicQuestionPaperCreateNestedManyWithoutBranchCourseInput
     academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchCourseInput
+    leads?: LeadCreateNestedManyWithoutCourseInput
   }
 
   export type BranchCourseUncheckedCreateWithoutFacultyTodayWorkStudentEntriesInput = {
@@ -155475,6 +165801,7 @@ export namespace Prisma {
     academicTests?: AcademicTestUncheckedCreateNestedManyWithoutBranchCourseInput
     academicQuestionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchCourseInput
     academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchCourseInput
+    leads?: LeadUncheckedCreateNestedManyWithoutCourseInput
   }
 
   export type BranchCourseCreateOrConnectWithoutFacultyTodayWorkStudentEntriesInput = {
@@ -155761,6 +166088,7 @@ export namespace Prisma {
     academicTests?: AcademicTestUpdateManyWithoutBranchCourseNestedInput
     academicQuestionPapers?: AcademicQuestionPaperUpdateManyWithoutBranchCourseNestedInput
     academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchCourseNestedInput
+    leads?: LeadUpdateManyWithoutCourseNestedInput
   }
 
   export type BranchCourseUncheckedUpdateWithoutFacultyTodayWorkStudentEntriesInput = {
@@ -155799,6 +166127,7 @@ export namespace Prisma {
     academicTests?: AcademicTestUncheckedUpdateManyWithoutBranchCourseNestedInput
     academicQuestionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutBranchCourseNestedInput
     academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchCourseNestedInput
+    leads?: LeadUncheckedUpdateManyWithoutCourseNestedInput
   }
 
   export type UserCreateWithoutMarkedStudentAttendancesInput = {
@@ -155843,6 +166172,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutFacultyUserInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadCreateNestedManyWithoutAssignedToInput
+    createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
+    leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutMarkedStudentAttendancesInput = {
@@ -155887,6 +166223,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutFacultyUserInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssignedToInput
+    createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
+    leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutMarkedStudentAttendancesInput = {
@@ -156056,6 +166399,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutFacultyUserNestedInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUpdateManyWithoutAssignedToNestedInput
+    createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
+    leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMarkedStudentAttendancesInput = {
@@ -156100,6 +166450,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutFacultyUserNestedInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
+    leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type StudentProfileUpsertWithoutAttendanceRecordsInput = {
@@ -156253,6 +166610,7 @@ export namespace Prisma {
     academicTests?: AcademicTestCreateNestedManyWithoutBranchCourseInput
     academicQuestionPapers?: AcademicQuestionPaperCreateNestedManyWithoutBranchCourseInput
     academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchCourseInput
+    leads?: LeadCreateNestedManyWithoutCourseInput
   }
 
   export type BranchCourseUncheckedCreateWithoutBranchFacultiesInput = {
@@ -156291,6 +166649,7 @@ export namespace Prisma {
     academicTests?: AcademicTestUncheckedCreateNestedManyWithoutBranchCourseInput
     academicQuestionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchCourseInput
     academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchCourseInput
+    leads?: LeadUncheckedCreateNestedManyWithoutCourseInput
   }
 
   export type BranchCourseCreateOrConnectWithoutBranchFacultiesInput = {
@@ -156331,6 +166690,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutBranchInput
     facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutBranchInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutBranchInput
+    leads?: LeadCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutBranchFacultiesInput = {
@@ -156366,6 +166726,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutBranchInput
     facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutBranchInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutBranchInput
+    leads?: LeadUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutBranchFacultiesInput = {
@@ -156665,6 +167026,7 @@ export namespace Prisma {
     academicTests?: AcademicTestUpdateManyWithoutBranchCourseNestedInput
     academicQuestionPapers?: AcademicQuestionPaperUpdateManyWithoutBranchCourseNestedInput
     academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchCourseNestedInput
+    leads?: LeadUpdateManyWithoutCourseNestedInput
   }
 
   export type BranchCourseUncheckedUpdateWithoutBranchFacultiesInput = {
@@ -156703,6 +167065,7 @@ export namespace Prisma {
     academicTests?: AcademicTestUncheckedUpdateManyWithoutBranchCourseNestedInput
     academicQuestionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutBranchCourseNestedInput
     academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchCourseNestedInput
+    leads?: LeadUncheckedUpdateManyWithoutCourseNestedInput
   }
 
   export type BranchUpsertWithoutBranchFacultiesInput = {
@@ -156749,6 +167112,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutBranchNestedInput
     facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutBranchNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutBranchNestedInput
+    leads?: LeadUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutBranchFacultiesInput = {
@@ -156784,6 +167148,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutBranchNestedInput
     facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutBranchNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutBranchNestedInput
+    leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type CourseUpsertWithoutBranchFacultiesInput = {
@@ -156959,6 +167324,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutFacultyUserInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadCreateNestedManyWithoutAssignedToInput
+    createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
+    leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutFacultyLeaveRequestsInput = {
@@ -157003,6 +167375,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutFacultyUserInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssignedToInput
+    createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
+    leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutFacultyLeaveRequestsInput = {
@@ -157043,6 +167422,7 @@ export namespace Prisma {
     courses?: CourseCreateNestedManyWithoutBranchInput
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutBranchInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutBranchInput
+    leads?: LeadCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutFacultyLeaveRequestsInput = {
@@ -157078,6 +167458,7 @@ export namespace Prisma {
     courses?: CourseUncheckedCreateNestedManyWithoutBranchInput
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutBranchInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutBranchInput
+    leads?: LeadUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutFacultyLeaveRequestsInput = {
@@ -157138,6 +167519,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutFacultyUserNestedInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUpdateManyWithoutAssignedToNestedInput
+    createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
+    leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFacultyLeaveRequestsInput = {
@@ -157182,6 +167570,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutFacultyUserNestedInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
+    leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type BranchUpsertWithoutFacultyLeaveRequestsInput = {
@@ -157228,6 +167623,7 @@ export namespace Prisma {
     courses?: CourseUpdateManyWithoutBranchNestedInput
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutBranchNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutBranchNestedInput
+    leads?: LeadUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutFacultyLeaveRequestsInput = {
@@ -157263,6 +167659,7 @@ export namespace Prisma {
     courses?: CourseUncheckedUpdateManyWithoutBranchNestedInput
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutBranchNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutBranchNestedInput
+    leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchFacultyCreateWithoutCourseAssignmentsInput = {
@@ -157356,6 +167753,7 @@ export namespace Prisma {
     academicTests?: AcademicTestCreateNestedManyWithoutBranchCourseInput
     academicQuestionPapers?: AcademicQuestionPaperCreateNestedManyWithoutBranchCourseInput
     academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchCourseInput
+    leads?: LeadCreateNestedManyWithoutCourseInput
   }
 
   export type BranchCourseUncheckedCreateWithoutFacultyAssignmentsInput = {
@@ -157394,6 +167792,7 @@ export namespace Prisma {
     academicTests?: AcademicTestUncheckedCreateNestedManyWithoutBranchCourseInput
     academicQuestionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchCourseInput
     academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchCourseInput
+    leads?: LeadUncheckedCreateNestedManyWithoutCourseInput
   }
 
   export type BranchCourseCreateOrConnectWithoutFacultyAssignmentsInput = {
@@ -157509,6 +167908,7 @@ export namespace Prisma {
     academicTests?: AcademicTestUpdateManyWithoutBranchCourseNestedInput
     academicQuestionPapers?: AcademicQuestionPaperUpdateManyWithoutBranchCourseNestedInput
     academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchCourseNestedInput
+    leads?: LeadUpdateManyWithoutCourseNestedInput
   }
 
   export type BranchCourseUncheckedUpdateWithoutFacultyAssignmentsInput = {
@@ -157547,6 +167947,7 @@ export namespace Prisma {
     academicTests?: AcademicTestUncheckedUpdateManyWithoutBranchCourseNestedInput
     academicQuestionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutBranchCourseNestedInput
     academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchCourseNestedInput
+    leads?: LeadUncheckedUpdateManyWithoutCourseNestedInput
   }
 
   export type BranchCreateWithoutBranchInstallmentTemplatesInput = {
@@ -157582,6 +167983,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutBranchInput
     facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutBranchInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutBranchInput
+    leads?: LeadCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutBranchInstallmentTemplatesInput = {
@@ -157617,6 +168019,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutBranchInput
     facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutBranchInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutBranchInput
+    leads?: LeadUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutBranchInstallmentTemplatesInput = {
@@ -157660,6 +168063,7 @@ export namespace Prisma {
     academicTests?: AcademicTestCreateNestedManyWithoutBranchCourseInput
     academicQuestionPapers?: AcademicQuestionPaperCreateNestedManyWithoutBranchCourseInput
     academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchCourseInput
+    leads?: LeadCreateNestedManyWithoutCourseInput
   }
 
   export type BranchCourseUncheckedCreateWithoutInstallmentTemplateInput = {
@@ -157698,6 +168102,7 @@ export namespace Prisma {
     academicTests?: AcademicTestUncheckedCreateNestedManyWithoutBranchCourseInput
     academicQuestionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchCourseInput
     academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchCourseInput
+    leads?: LeadUncheckedCreateNestedManyWithoutCourseInput
   }
 
   export type BranchCourseCreateOrConnectWithoutInstallmentTemplateInput = {
@@ -157749,6 +168154,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutBranchNestedInput
     facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutBranchNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutBranchNestedInput
+    leads?: LeadUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutBranchInstallmentTemplatesInput = {
@@ -157784,6 +168190,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutBranchNestedInput
     facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutBranchNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutBranchNestedInput
+    leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchCourseUpsertWithoutInstallmentTemplateInput = {
@@ -157833,6 +168240,7 @@ export namespace Prisma {
     academicTests?: AcademicTestUpdateManyWithoutBranchCourseNestedInput
     academicQuestionPapers?: AcademicQuestionPaperUpdateManyWithoutBranchCourseNestedInput
     academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchCourseNestedInput
+    leads?: LeadUpdateManyWithoutCourseNestedInput
   }
 
   export type BranchCourseUncheckedUpdateWithoutInstallmentTemplateInput = {
@@ -157871,6 +168279,7 @@ export namespace Prisma {
     academicTests?: AcademicTestUncheckedUpdateManyWithoutBranchCourseNestedInput
     academicQuestionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutBranchCourseNestedInput
     academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchCourseNestedInput
+    leads?: LeadUncheckedUpdateManyWithoutCourseNestedInput
   }
 
   export type BranchCourseCreateWithoutAssessmentsInput = {
@@ -157909,6 +168318,7 @@ export namespace Prisma {
     academicTests?: AcademicTestCreateNestedManyWithoutBranchCourseInput
     academicQuestionPapers?: AcademicQuestionPaperCreateNestedManyWithoutBranchCourseInput
     academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchCourseInput
+    leads?: LeadCreateNestedManyWithoutCourseInput
   }
 
   export type BranchCourseUncheckedCreateWithoutAssessmentsInput = {
@@ -157947,6 +168357,7 @@ export namespace Prisma {
     academicTests?: AcademicTestUncheckedCreateNestedManyWithoutBranchCourseInput
     academicQuestionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchCourseInput
     academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchCourseInput
+    leads?: LeadUncheckedCreateNestedManyWithoutCourseInput
   }
 
   export type BranchCourseCreateOrConnectWithoutAssessmentsInput = {
@@ -158161,6 +168572,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutFacultyUserInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadCreateNestedManyWithoutAssignedToInput
+    createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
+    leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutCreatedAssessmentsInput = {
@@ -158205,6 +168623,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutFacultyUserInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssignedToInput
+    createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
+    leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutCreatedAssessmentsInput = {
@@ -158571,6 +168996,7 @@ export namespace Prisma {
     academicTests?: AcademicTestUpdateManyWithoutBranchCourseNestedInput
     academicQuestionPapers?: AcademicQuestionPaperUpdateManyWithoutBranchCourseNestedInput
     academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchCourseNestedInput
+    leads?: LeadUpdateManyWithoutCourseNestedInput
   }
 
   export type BranchCourseUncheckedUpdateWithoutAssessmentsInput = {
@@ -158609,6 +169035,7 @@ export namespace Prisma {
     academicTests?: AcademicTestUncheckedUpdateManyWithoutBranchCourseNestedInput
     academicQuestionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutBranchCourseNestedInput
     academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchCourseNestedInput
+    leads?: LeadUncheckedUpdateManyWithoutCourseNestedInput
   }
 
   export type BranchCourseModuleUpsertWithoutAssessmentsInput = {
@@ -158847,6 +169274,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutFacultyUserNestedInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUpdateManyWithoutAssignedToNestedInput
+    createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
+    leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCreatedAssessmentsInput = {
@@ -158891,6 +169325,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutFacultyUserNestedInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
+    leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type AssessmentSubmissionUpsertWithWhereUniqueWithoutAssessmentInput = {
@@ -159399,6 +169840,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutFacultyUserInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadCreateNestedManyWithoutAssignedToInput
+    createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
+    leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutEvaluatedSubmissionsInput = {
@@ -159443,6 +169891,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutFacultyUserInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssignedToInput
+    createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
+    leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutEvaluatedSubmissionsInput = {
@@ -159725,6 +170180,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutFacultyUserNestedInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUpdateManyWithoutAssignedToNestedInput
+    createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
+    leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutEvaluatedSubmissionsInput = {
@@ -159769,6 +170231,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutFacultyUserNestedInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
+    leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type BranchCourseCreateWithoutExamsInput = {
@@ -159807,6 +170276,7 @@ export namespace Prisma {
     academicTests?: AcademicTestCreateNestedManyWithoutBranchCourseInput
     academicQuestionPapers?: AcademicQuestionPaperCreateNestedManyWithoutBranchCourseInput
     academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchCourseInput
+    leads?: LeadCreateNestedManyWithoutCourseInput
   }
 
   export type BranchCourseUncheckedCreateWithoutExamsInput = {
@@ -159845,6 +170315,7 @@ export namespace Prisma {
     academicTests?: AcademicTestUncheckedCreateNestedManyWithoutBranchCourseInput
     academicQuestionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchCourseInput
     academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchCourseInput
+    leads?: LeadUncheckedCreateNestedManyWithoutCourseInput
   }
 
   export type BranchCourseCreateOrConnectWithoutExamsInput = {
@@ -159933,6 +170404,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutFacultyUserInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadCreateNestedManyWithoutAssignedToInput
+    createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
+    leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutCreatedExamsInput = {
@@ -159977,6 +170455,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutFacultyUserInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssignedToInput
+    createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
+    leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutCreatedExamsInput = {
@@ -160409,6 +170894,7 @@ export namespace Prisma {
     academicTests?: AcademicTestUpdateManyWithoutBranchCourseNestedInput
     academicQuestionPapers?: AcademicQuestionPaperUpdateManyWithoutBranchCourseNestedInput
     academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchCourseNestedInput
+    leads?: LeadUpdateManyWithoutCourseNestedInput
   }
 
   export type BranchCourseUncheckedUpdateWithoutExamsInput = {
@@ -160447,6 +170933,7 @@ export namespace Prisma {
     academicTests?: AcademicTestUncheckedUpdateManyWithoutBranchCourseNestedInput
     academicQuestionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutBranchCourseNestedInput
     academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchCourseNestedInput
+    leads?: LeadUncheckedUpdateManyWithoutCourseNestedInput
   }
 
   export type BranchCourseModuleUpsertWithoutExamsInput = {
@@ -160547,6 +171034,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutFacultyUserNestedInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUpdateManyWithoutAssignedToNestedInput
+    createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
+    leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCreatedExamsInput = {
@@ -160591,6 +171085,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutFacultyUserNestedInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
+    leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type ExamScheduleUpsertWithWhereUniqueWithoutExamInput = {
@@ -161761,6 +172262,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutFacultyUserInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadCreateNestedManyWithoutAssignedToInput
+    createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
+    leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutExamAttemptsInput = {
@@ -161805,6 +172313,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutFacultyUserInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssignedToInput
+    createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
+    leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutExamAttemptsInput = {
@@ -162144,6 +172659,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutFacultyUserNestedInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUpdateManyWithoutAssignedToNestedInput
+    createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
+    leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutExamAttemptsInput = {
@@ -162188,6 +172710,13 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutFacultyUserNestedInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
+    leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type ExamAnswerUpsertWithWhereUniqueWithoutAttemptInput = {
@@ -162364,6 +172893,2652 @@ export namespace Prisma {
     optionD?: StringFieldUpdateOperationsInput | string
     correctAnswer?: StringFieldUpdateOperationsInput | string
     questionOrder?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type BranchCreateWithoutLeadsInput = {
+    id?: string
+    branchId: string
+    branchName: string
+    branchAdminName: string
+    branchEmail: string
+    branchPhone: string
+    branchAddress: string
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    timezone?: string
+    branchCity?: string
+    branchCountry?: string
+    branchCountryCode?: string
+    branchState?: string
+    branchStateCode?: string
+    adminUser?: UserCreateNestedOneWithoutManagedBranchInput
+    branchCourses?: BranchCourseCreateNestedManyWithoutBranchInput
+    branchBatches?: BranchBatchCreateNestedManyWithoutBranchInput
+    branchInstallmentTemplates?: BranchInstallmentTemplateCreateNestedManyWithoutBranchInput
+    branchFaculties?: BranchFacultyCreateNestedManyWithoutBranchInput
+    branchStudents?: BranchStudentCreateNestedManyWithoutBranchInput
+    studentEnrollments?: BranchStudentCourseCreateNestedManyWithoutBranchInput
+    calendarHolidays?: BranchCalendarHolidayCreateNestedManyWithoutBranchInput
+    calendarLeaves?: BranchCalendarLeaveCreateNestedManyWithoutBranchInput
+    ledgerEntries?: BranchStudentLedgerEntryCreateNestedManyWithoutBranchInput
+    payments?: BranchStudentPaymentCreateNestedManyWithoutBranchInput
+    courses?: CourseCreateNestedManyWithoutBranchInput
+    facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutBranchInput
+    facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutBranchInput
+    salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutBranchInput
+  }
+
+  export type BranchUncheckedCreateWithoutLeadsInput = {
+    id?: string
+    branchId: string
+    branchName: string
+    branchAdminName: string
+    branchEmail: string
+    branchPhone: string
+    branchAddress: string
+    status?: $Enums.RecordStatus
+    adminUserId?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    timezone?: string
+    branchCity?: string
+    branchCountry?: string
+    branchCountryCode?: string
+    branchState?: string
+    branchStateCode?: string
+    branchCourses?: BranchCourseUncheckedCreateNestedManyWithoutBranchInput
+    branchBatches?: BranchBatchUncheckedCreateNestedManyWithoutBranchInput
+    branchInstallmentTemplates?: BranchInstallmentTemplateUncheckedCreateNestedManyWithoutBranchInput
+    branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutBranchInput
+    branchStudents?: BranchStudentUncheckedCreateNestedManyWithoutBranchInput
+    studentEnrollments?: BranchStudentCourseUncheckedCreateNestedManyWithoutBranchInput
+    calendarHolidays?: BranchCalendarHolidayUncheckedCreateNestedManyWithoutBranchInput
+    calendarLeaves?: BranchCalendarLeaveUncheckedCreateNestedManyWithoutBranchInput
+    ledgerEntries?: BranchStudentLedgerEntryUncheckedCreateNestedManyWithoutBranchInput
+    payments?: BranchStudentPaymentUncheckedCreateNestedManyWithoutBranchInput
+    courses?: CourseUncheckedCreateNestedManyWithoutBranchInput
+    facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutBranchInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutBranchInput
+    salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutBranchInput
+  }
+
+  export type BranchCreateOrConnectWithoutLeadsInput = {
+    where: BranchWhereUniqueInput
+    create: XOR<BranchCreateWithoutLeadsInput, BranchUncheckedCreateWithoutLeadsInput>
+  }
+
+  export type BranchCourseCreateWithoutLeadsInput = {
+    id?: string
+    courseCode: string
+    name: string
+    nameKey: string
+    courseType?: string
+    academicTestCount?: number
+    description?: string | null
+    mode: string
+    duration?: number | null
+    hours?: number | null
+    actualFees?: number | null
+    registrationFees?: number | null
+    discount?: number | null
+    afterDiscount?: number | null
+    paymentPlans?: NullableJsonNullValueInput | InputJsonValue
+    paymentPlanSelections?: NullableJsonNullValueInput | InputJsonValue
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branch: BranchCreateNestedOneWithoutBranchCoursesInput
+    installmentTemplate?: BranchInstallmentTemplateCreateNestedOneWithoutBranchCourseInput
+    modules?: BranchCourseModuleCreateNestedManyWithoutBranchCourseInput
+    branchFaculties?: BranchFacultyCreateNestedManyWithoutBranchCourseInput
+    facultyAssignments?: BranchFacultyCourseCreateNestedManyWithoutBranchCourseInput
+    branchBatches?: BranchBatchCreateNestedManyWithoutBranchCourseInput
+    branchStudents?: BranchStudentCreateNestedManyWithoutCourseInput
+    studentEnrollments?: BranchStudentCourseCreateNestedManyWithoutCourseInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryCreateNestedManyWithoutBranchCourseInput
+    facultyTodayWorkStudentEntries?: FacultyTodayWorkStudentEntryCreateNestedManyWithoutBranchCourseInput
+    exams?: ExamCreateNestedManyWithoutBranchCourseInput
+    assessments?: AssessmentCreateNestedManyWithoutBranchCourseInput
+    academicTests?: AcademicTestCreateNestedManyWithoutBranchCourseInput
+    academicQuestionPapers?: AcademicQuestionPaperCreateNestedManyWithoutBranchCourseInput
+    academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchCourseInput
+  }
+
+  export type BranchCourseUncheckedCreateWithoutLeadsInput = {
+    id?: string
+    branchId: string
+    courseCode: string
+    name: string
+    nameKey: string
+    courseType?: string
+    academicTestCount?: number
+    description?: string | null
+    mode: string
+    duration?: number | null
+    hours?: number | null
+    actualFees?: number | null
+    registrationFees?: number | null
+    discount?: number | null
+    afterDiscount?: number | null
+    paymentPlans?: NullableJsonNullValueInput | InputJsonValue
+    paymentPlanSelections?: NullableJsonNullValueInput | InputJsonValue
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    installmentTemplate?: BranchInstallmentTemplateUncheckedCreateNestedOneWithoutBranchCourseInput
+    modules?: BranchCourseModuleUncheckedCreateNestedManyWithoutBranchCourseInput
+    branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutBranchCourseInput
+    facultyAssignments?: BranchFacultyCourseUncheckedCreateNestedManyWithoutBranchCourseInput
+    branchBatches?: BranchBatchUncheckedCreateNestedManyWithoutBranchCourseInput
+    branchStudents?: BranchStudentUncheckedCreateNestedManyWithoutCourseInput
+    studentEnrollments?: BranchStudentCourseUncheckedCreateNestedManyWithoutCourseInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedCreateNestedManyWithoutBranchCourseInput
+    facultyTodayWorkStudentEntries?: FacultyTodayWorkStudentEntryUncheckedCreateNestedManyWithoutBranchCourseInput
+    exams?: ExamUncheckedCreateNestedManyWithoutBranchCourseInput
+    assessments?: AssessmentUncheckedCreateNestedManyWithoutBranchCourseInput
+    academicTests?: AcademicTestUncheckedCreateNestedManyWithoutBranchCourseInput
+    academicQuestionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchCourseInput
+    academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchCourseInput
+  }
+
+  export type BranchCourseCreateOrConnectWithoutLeadsInput = {
+    where: BranchCourseWhereUniqueInput
+    create: XOR<BranchCourseCreateWithoutLeadsInput, BranchCourseUncheckedCreateWithoutLeadsInput>
+  }
+
+  export type UserCreateWithoutAssignedLeadsInput = {
+    id?: string
+    userCode: string
+    fullName: string
+    email: string
+    phone?: string | null
+    address?: string | null
+    role: $Enums.UserRole
+    active?: boolean
+    passwordHash: string
+    passwordChangedAt?: Date | string | null
+    refreshTokenVersion?: number
+    failedLoginCount?: number
+    failedLoginWindowExpiresAt?: Date | string | null
+    lockedUntil?: Date | string | null
+    lastLoginAt?: Date | string | null
+    lastLogoutAt?: Date | string | null
+    lastLoginIp?: string | null
+    lastLoginUserAgent?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentCreateNestedManyWithoutFacultyInput
+    managedBranch?: BranchCreateNestedOneWithoutAdminUserInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceDays?: FacultyAttendanceDayCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkCreateNestedManyWithoutFacultyUserInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryCreateNestedManyWithoutFacultyUserInput
+    loginEvents?: LoginEventCreateNestedManyWithoutUserInput
+    targetedNotifications?: NotificationCreateNestedManyWithoutTargetUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    markedStudentAttendances?: StudentAttendanceCreateNestedManyWithoutFacultyUserInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceCreateNestedManyWithoutFacultyUserInput
+    dashboardWidgetPreferences?: UserDashboardWidgetCreateNestedManyWithoutUserInput
+    facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutFacultyUserInput
+    createdExams?: ExamCreateNestedManyWithoutFacultyInput
+    examAttempts?: ExamAttemptCreateNestedManyWithoutStudentUserInput
+    createdAssessments?: AssessmentCreateNestedManyWithoutFacultyInput
+    evaluatedSubmissions?: AssessmentSubmissionCreateNestedManyWithoutEvaluatorInput
+    facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutFacultyUserInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
+    salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutSalesAdminInput
+    createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
+    leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
+  }
+
+  export type UserUncheckedCreateWithoutAssignedLeadsInput = {
+    id?: string
+    userCode: string
+    fullName: string
+    email: string
+    phone?: string | null
+    address?: string | null
+    role: $Enums.UserRole
+    active?: boolean
+    passwordHash: string
+    passwordChangedAt?: Date | string | null
+    refreshTokenVersion?: number
+    failedLoginCount?: number
+    failedLoginWindowExpiresAt?: Date | string | null
+    lockedUntil?: Date | string | null
+    lastLoginAt?: Date | string | null
+    lastLogoutAt?: Date | string | null
+    lastLoginIp?: string | null
+    lastLoginUserAgent?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentUncheckedCreateNestedManyWithoutFacultyInput
+    managedBranch?: BranchUncheckedCreateNestedOneWithoutAdminUserInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceDays?: FacultyAttendanceDayUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedCreateNestedManyWithoutFacultyUserInput
+    loginEvents?: LoginEventUncheckedCreateNestedManyWithoutUserInput
+    targetedNotifications?: NotificationUncheckedCreateNestedManyWithoutTargetUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    markedStudentAttendances?: StudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
+    dashboardWidgetPreferences?: UserDashboardWidgetUncheckedCreateNestedManyWithoutUserInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutFacultyUserInput
+    createdExams?: ExamUncheckedCreateNestedManyWithoutFacultyInput
+    examAttempts?: ExamAttemptUncheckedCreateNestedManyWithoutStudentUserInput
+    createdAssessments?: AssessmentUncheckedCreateNestedManyWithoutFacultyInput
+    evaluatedSubmissions?: AssessmentSubmissionUncheckedCreateNestedManyWithoutEvaluatorInput
+    facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutFacultyUserInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
+    salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutSalesAdminInput
+    createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
+    leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
+  }
+
+  export type UserCreateOrConnectWithoutAssignedLeadsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutAssignedLeadsInput, UserUncheckedCreateWithoutAssignedLeadsInput>
+  }
+
+  export type UserCreateWithoutCreatedLeadsInput = {
+    id?: string
+    userCode: string
+    fullName: string
+    email: string
+    phone?: string | null
+    address?: string | null
+    role: $Enums.UserRole
+    active?: boolean
+    passwordHash: string
+    passwordChangedAt?: Date | string | null
+    refreshTokenVersion?: number
+    failedLoginCount?: number
+    failedLoginWindowExpiresAt?: Date | string | null
+    lockedUntil?: Date | string | null
+    lastLoginAt?: Date | string | null
+    lastLogoutAt?: Date | string | null
+    lastLoginIp?: string | null
+    lastLoginUserAgent?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentCreateNestedManyWithoutFacultyInput
+    managedBranch?: BranchCreateNestedOneWithoutAdminUserInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceDays?: FacultyAttendanceDayCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkCreateNestedManyWithoutFacultyUserInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryCreateNestedManyWithoutFacultyUserInput
+    loginEvents?: LoginEventCreateNestedManyWithoutUserInput
+    targetedNotifications?: NotificationCreateNestedManyWithoutTargetUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    markedStudentAttendances?: StudentAttendanceCreateNestedManyWithoutFacultyUserInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceCreateNestedManyWithoutFacultyUserInput
+    dashboardWidgetPreferences?: UserDashboardWidgetCreateNestedManyWithoutUserInput
+    facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutFacultyUserInput
+    createdExams?: ExamCreateNestedManyWithoutFacultyInput
+    examAttempts?: ExamAttemptCreateNestedManyWithoutStudentUserInput
+    createdAssessments?: AssessmentCreateNestedManyWithoutFacultyInput
+    evaluatedSubmissions?: AssessmentSubmissionCreateNestedManyWithoutEvaluatorInput
+    facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutFacultyUserInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
+    salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadCreateNestedManyWithoutAssignedToInput
+    updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
+    leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
+  }
+
+  export type UserUncheckedCreateWithoutCreatedLeadsInput = {
+    id?: string
+    userCode: string
+    fullName: string
+    email: string
+    phone?: string | null
+    address?: string | null
+    role: $Enums.UserRole
+    active?: boolean
+    passwordHash: string
+    passwordChangedAt?: Date | string | null
+    refreshTokenVersion?: number
+    failedLoginCount?: number
+    failedLoginWindowExpiresAt?: Date | string | null
+    lockedUntil?: Date | string | null
+    lastLoginAt?: Date | string | null
+    lastLogoutAt?: Date | string | null
+    lastLoginIp?: string | null
+    lastLoginUserAgent?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentUncheckedCreateNestedManyWithoutFacultyInput
+    managedBranch?: BranchUncheckedCreateNestedOneWithoutAdminUserInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceDays?: FacultyAttendanceDayUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedCreateNestedManyWithoutFacultyUserInput
+    loginEvents?: LoginEventUncheckedCreateNestedManyWithoutUserInput
+    targetedNotifications?: NotificationUncheckedCreateNestedManyWithoutTargetUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    markedStudentAttendances?: StudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
+    dashboardWidgetPreferences?: UserDashboardWidgetUncheckedCreateNestedManyWithoutUserInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutFacultyUserInput
+    createdExams?: ExamUncheckedCreateNestedManyWithoutFacultyInput
+    examAttempts?: ExamAttemptUncheckedCreateNestedManyWithoutStudentUserInput
+    createdAssessments?: AssessmentUncheckedCreateNestedManyWithoutFacultyInput
+    evaluatedSubmissions?: AssessmentSubmissionUncheckedCreateNestedManyWithoutEvaluatorInput
+    facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutFacultyUserInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
+    salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssignedToInput
+    updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
+    leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
+  }
+
+  export type UserCreateOrConnectWithoutCreatedLeadsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutCreatedLeadsInput, UserUncheckedCreateWithoutCreatedLeadsInput>
+  }
+
+  export type UserCreateWithoutUpdatedLeadsInput = {
+    id?: string
+    userCode: string
+    fullName: string
+    email: string
+    phone?: string | null
+    address?: string | null
+    role: $Enums.UserRole
+    active?: boolean
+    passwordHash: string
+    passwordChangedAt?: Date | string | null
+    refreshTokenVersion?: number
+    failedLoginCount?: number
+    failedLoginWindowExpiresAt?: Date | string | null
+    lockedUntil?: Date | string | null
+    lastLoginAt?: Date | string | null
+    lastLogoutAt?: Date | string | null
+    lastLoginIp?: string | null
+    lastLoginUserAgent?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentCreateNestedManyWithoutFacultyInput
+    managedBranch?: BranchCreateNestedOneWithoutAdminUserInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceDays?: FacultyAttendanceDayCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkCreateNestedManyWithoutFacultyUserInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryCreateNestedManyWithoutFacultyUserInput
+    loginEvents?: LoginEventCreateNestedManyWithoutUserInput
+    targetedNotifications?: NotificationCreateNestedManyWithoutTargetUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    markedStudentAttendances?: StudentAttendanceCreateNestedManyWithoutFacultyUserInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceCreateNestedManyWithoutFacultyUserInput
+    dashboardWidgetPreferences?: UserDashboardWidgetCreateNestedManyWithoutUserInput
+    facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutFacultyUserInput
+    createdExams?: ExamCreateNestedManyWithoutFacultyInput
+    examAttempts?: ExamAttemptCreateNestedManyWithoutStudentUserInput
+    createdAssessments?: AssessmentCreateNestedManyWithoutFacultyInput
+    evaluatedSubmissions?: AssessmentSubmissionCreateNestedManyWithoutEvaluatorInput
+    facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutFacultyUserInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
+    salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadCreateNestedManyWithoutAssignedToInput
+    createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
+    leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
+  }
+
+  export type UserUncheckedCreateWithoutUpdatedLeadsInput = {
+    id?: string
+    userCode: string
+    fullName: string
+    email: string
+    phone?: string | null
+    address?: string | null
+    role: $Enums.UserRole
+    active?: boolean
+    passwordHash: string
+    passwordChangedAt?: Date | string | null
+    refreshTokenVersion?: number
+    failedLoginCount?: number
+    failedLoginWindowExpiresAt?: Date | string | null
+    lockedUntil?: Date | string | null
+    lastLoginAt?: Date | string | null
+    lastLogoutAt?: Date | string | null
+    lastLoginIp?: string | null
+    lastLoginUserAgent?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentUncheckedCreateNestedManyWithoutFacultyInput
+    managedBranch?: BranchUncheckedCreateNestedOneWithoutAdminUserInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceDays?: FacultyAttendanceDayUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedCreateNestedManyWithoutFacultyUserInput
+    loginEvents?: LoginEventUncheckedCreateNestedManyWithoutUserInput
+    targetedNotifications?: NotificationUncheckedCreateNestedManyWithoutTargetUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    markedStudentAttendances?: StudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
+    dashboardWidgetPreferences?: UserDashboardWidgetUncheckedCreateNestedManyWithoutUserInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutFacultyUserInput
+    createdExams?: ExamUncheckedCreateNestedManyWithoutFacultyInput
+    examAttempts?: ExamAttemptUncheckedCreateNestedManyWithoutStudentUserInput
+    createdAssessments?: AssessmentUncheckedCreateNestedManyWithoutFacultyInput
+    evaluatedSubmissions?: AssessmentSubmissionUncheckedCreateNestedManyWithoutEvaluatorInput
+    facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutFacultyUserInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
+    salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssignedToInput
+    createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
+    leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
+  }
+
+  export type UserCreateOrConnectWithoutUpdatedLeadsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutUpdatedLeadsInput, UserUncheckedCreateWithoutUpdatedLeadsInput>
+  }
+
+  export type LeadFollowUpCreateWithoutLeadInput = {
+    id?: string
+    followUpDate: Date | string
+    followUpType: string
+    notes: string
+    nextFollowUpDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    createdBy: UserCreateNestedOneWithoutLeadFollowUpsInput
+  }
+
+  export type LeadFollowUpUncheckedCreateWithoutLeadInput = {
+    id?: string
+    followUpDate: Date | string
+    followUpType: string
+    notes: string
+    nextFollowUpDate?: Date | string | null
+    createdById: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type LeadFollowUpCreateOrConnectWithoutLeadInput = {
+    where: LeadFollowUpWhereUniqueInput
+    create: XOR<LeadFollowUpCreateWithoutLeadInput, LeadFollowUpUncheckedCreateWithoutLeadInput>
+  }
+
+  export type LeadFollowUpCreateManyLeadInputEnvelope = {
+    data: LeadFollowUpCreateManyLeadInput | LeadFollowUpCreateManyLeadInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type LeadStageHistoryCreateWithoutLeadInput = {
+    id?: string
+    fromStage?: $Enums.LeadStage | null
+    toStage: $Enums.LeadStage
+    createdAt?: Date | string
+    createdBy: UserCreateNestedOneWithoutLeadStageChangesInput
+  }
+
+  export type LeadStageHistoryUncheckedCreateWithoutLeadInput = {
+    id?: string
+    fromStage?: $Enums.LeadStage | null
+    toStage: $Enums.LeadStage
+    createdById: string
+    createdAt?: Date | string
+  }
+
+  export type LeadStageHistoryCreateOrConnectWithoutLeadInput = {
+    where: LeadStageHistoryWhereUniqueInput
+    create: XOR<LeadStageHistoryCreateWithoutLeadInput, LeadStageHistoryUncheckedCreateWithoutLeadInput>
+  }
+
+  export type LeadStageHistoryCreateManyLeadInputEnvelope = {
+    data: LeadStageHistoryCreateManyLeadInput | LeadStageHistoryCreateManyLeadInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type LeadActivityCreateWithoutLeadInput = {
+    id?: string
+    action: string
+    previousValue?: NullableJsonNullValueInput | InputJsonValue
+    newValue?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    createdBy: UserCreateNestedOneWithoutLeadActivitiesInput
+  }
+
+  export type LeadActivityUncheckedCreateWithoutLeadInput = {
+    id?: string
+    action: string
+    previousValue?: NullableJsonNullValueInput | InputJsonValue
+    newValue?: NullableJsonNullValueInput | InputJsonValue
+    createdById: string
+    createdAt?: Date | string
+  }
+
+  export type LeadActivityCreateOrConnectWithoutLeadInput = {
+    where: LeadActivityWhereUniqueInput
+    create: XOR<LeadActivityCreateWithoutLeadInput, LeadActivityUncheckedCreateWithoutLeadInput>
+  }
+
+  export type LeadActivityCreateManyLeadInputEnvelope = {
+    data: LeadActivityCreateManyLeadInput | LeadActivityCreateManyLeadInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type LeadRecordingCreateWithoutLeadInput = {
+    id?: string
+    followUpId?: string | null
+    originalName: string
+    storageKey: string
+    mimeType: string
+    sizeBytes: number
+    createdAt?: Date | string
+    createdBy: UserCreateNestedOneWithoutLeadRecordingsInput
+  }
+
+  export type LeadRecordingUncheckedCreateWithoutLeadInput = {
+    id?: string
+    followUpId?: string | null
+    originalName: string
+    storageKey: string
+    mimeType: string
+    sizeBytes: number
+    createdById: string
+    createdAt?: Date | string
+  }
+
+  export type LeadRecordingCreateOrConnectWithoutLeadInput = {
+    where: LeadRecordingWhereUniqueInput
+    create: XOR<LeadRecordingCreateWithoutLeadInput, LeadRecordingUncheckedCreateWithoutLeadInput>
+  }
+
+  export type LeadRecordingCreateManyLeadInputEnvelope = {
+    data: LeadRecordingCreateManyLeadInput | LeadRecordingCreateManyLeadInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type BranchUpsertWithoutLeadsInput = {
+    update: XOR<BranchUpdateWithoutLeadsInput, BranchUncheckedUpdateWithoutLeadsInput>
+    create: XOR<BranchCreateWithoutLeadsInput, BranchUncheckedCreateWithoutLeadsInput>
+    where?: BranchWhereInput
+  }
+
+  export type BranchUpdateToOneWithWhereWithoutLeadsInput = {
+    where?: BranchWhereInput
+    data: XOR<BranchUpdateWithoutLeadsInput, BranchUncheckedUpdateWithoutLeadsInput>
+  }
+
+  export type BranchUpdateWithoutLeadsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    branchName?: StringFieldUpdateOperationsInput | string
+    branchAdminName?: StringFieldUpdateOperationsInput | string
+    branchEmail?: StringFieldUpdateOperationsInput | string
+    branchPhone?: StringFieldUpdateOperationsInput | string
+    branchAddress?: StringFieldUpdateOperationsInput | string
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    timezone?: StringFieldUpdateOperationsInput | string
+    branchCity?: StringFieldUpdateOperationsInput | string
+    branchCountry?: StringFieldUpdateOperationsInput | string
+    branchCountryCode?: StringFieldUpdateOperationsInput | string
+    branchState?: StringFieldUpdateOperationsInput | string
+    branchStateCode?: StringFieldUpdateOperationsInput | string
+    adminUser?: UserUpdateOneWithoutManagedBranchNestedInput
+    branchCourses?: BranchCourseUpdateManyWithoutBranchNestedInput
+    branchBatches?: BranchBatchUpdateManyWithoutBranchNestedInput
+    branchInstallmentTemplates?: BranchInstallmentTemplateUpdateManyWithoutBranchNestedInput
+    branchFaculties?: BranchFacultyUpdateManyWithoutBranchNestedInput
+    branchStudents?: BranchStudentUpdateManyWithoutBranchNestedInput
+    studentEnrollments?: BranchStudentCourseUpdateManyWithoutBranchNestedInput
+    calendarHolidays?: BranchCalendarHolidayUpdateManyWithoutBranchNestedInput
+    calendarLeaves?: BranchCalendarLeaveUpdateManyWithoutBranchNestedInput
+    ledgerEntries?: BranchStudentLedgerEntryUpdateManyWithoutBranchNestedInput
+    payments?: BranchStudentPaymentUpdateManyWithoutBranchNestedInput
+    courses?: CourseUpdateManyWithoutBranchNestedInput
+    facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutBranchNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutBranchNestedInput
+    salesAdminBranches?: SalesAdminBranchUpdateManyWithoutBranchNestedInput
+  }
+
+  export type BranchUncheckedUpdateWithoutLeadsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    branchName?: StringFieldUpdateOperationsInput | string
+    branchAdminName?: StringFieldUpdateOperationsInput | string
+    branchEmail?: StringFieldUpdateOperationsInput | string
+    branchPhone?: StringFieldUpdateOperationsInput | string
+    branchAddress?: StringFieldUpdateOperationsInput | string
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    adminUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    timezone?: StringFieldUpdateOperationsInput | string
+    branchCity?: StringFieldUpdateOperationsInput | string
+    branchCountry?: StringFieldUpdateOperationsInput | string
+    branchCountryCode?: StringFieldUpdateOperationsInput | string
+    branchState?: StringFieldUpdateOperationsInput | string
+    branchStateCode?: StringFieldUpdateOperationsInput | string
+    branchCourses?: BranchCourseUncheckedUpdateManyWithoutBranchNestedInput
+    branchBatches?: BranchBatchUncheckedUpdateManyWithoutBranchNestedInput
+    branchInstallmentTemplates?: BranchInstallmentTemplateUncheckedUpdateManyWithoutBranchNestedInput
+    branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutBranchNestedInput
+    branchStudents?: BranchStudentUncheckedUpdateManyWithoutBranchNestedInput
+    studentEnrollments?: BranchStudentCourseUncheckedUpdateManyWithoutBranchNestedInput
+    calendarHolidays?: BranchCalendarHolidayUncheckedUpdateManyWithoutBranchNestedInput
+    calendarLeaves?: BranchCalendarLeaveUncheckedUpdateManyWithoutBranchNestedInput
+    ledgerEntries?: BranchStudentLedgerEntryUncheckedUpdateManyWithoutBranchNestedInput
+    payments?: BranchStudentPaymentUncheckedUpdateManyWithoutBranchNestedInput
+    courses?: CourseUncheckedUpdateManyWithoutBranchNestedInput
+    facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutBranchNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutBranchNestedInput
+    salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutBranchNestedInput
+  }
+
+  export type BranchCourseUpsertWithoutLeadsInput = {
+    update: XOR<BranchCourseUpdateWithoutLeadsInput, BranchCourseUncheckedUpdateWithoutLeadsInput>
+    create: XOR<BranchCourseCreateWithoutLeadsInput, BranchCourseUncheckedCreateWithoutLeadsInput>
+    where?: BranchCourseWhereInput
+  }
+
+  export type BranchCourseUpdateToOneWithWhereWithoutLeadsInput = {
+    where?: BranchCourseWhereInput
+    data: XOR<BranchCourseUpdateWithoutLeadsInput, BranchCourseUncheckedUpdateWithoutLeadsInput>
+  }
+
+  export type BranchCourseUpdateWithoutLeadsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    courseCode?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameKey?: StringFieldUpdateOperationsInput | string
+    courseType?: StringFieldUpdateOperationsInput | string
+    academicTestCount?: IntFieldUpdateOperationsInput | number
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    mode?: StringFieldUpdateOperationsInput | string
+    duration?: NullableIntFieldUpdateOperationsInput | number | null
+    hours?: NullableIntFieldUpdateOperationsInput | number | null
+    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
+    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
+    discount?: NullableIntFieldUpdateOperationsInput | number | null
+    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
+    paymentPlans?: NullableJsonNullValueInput | InputJsonValue
+    paymentPlanSelections?: NullableJsonNullValueInput | InputJsonValue
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branch?: BranchUpdateOneRequiredWithoutBranchCoursesNestedInput
+    installmentTemplate?: BranchInstallmentTemplateUpdateOneWithoutBranchCourseNestedInput
+    modules?: BranchCourseModuleUpdateManyWithoutBranchCourseNestedInput
+    branchFaculties?: BranchFacultyUpdateManyWithoutBranchCourseNestedInput
+    facultyAssignments?: BranchFacultyCourseUpdateManyWithoutBranchCourseNestedInput
+    branchBatches?: BranchBatchUpdateManyWithoutBranchCourseNestedInput
+    branchStudents?: BranchStudentUpdateManyWithoutCourseNestedInput
+    studentEnrollments?: BranchStudentCourseUpdateManyWithoutCourseNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUpdateManyWithoutBranchCourseNestedInput
+    facultyTodayWorkStudentEntries?: FacultyTodayWorkStudentEntryUpdateManyWithoutBranchCourseNestedInput
+    exams?: ExamUpdateManyWithoutBranchCourseNestedInput
+    assessments?: AssessmentUpdateManyWithoutBranchCourseNestedInput
+    academicTests?: AcademicTestUpdateManyWithoutBranchCourseNestedInput
+    academicQuestionPapers?: AcademicQuestionPaperUpdateManyWithoutBranchCourseNestedInput
+    academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchCourseNestedInput
+  }
+
+  export type BranchCourseUncheckedUpdateWithoutLeadsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    courseCode?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameKey?: StringFieldUpdateOperationsInput | string
+    courseType?: StringFieldUpdateOperationsInput | string
+    academicTestCount?: IntFieldUpdateOperationsInput | number
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    mode?: StringFieldUpdateOperationsInput | string
+    duration?: NullableIntFieldUpdateOperationsInput | number | null
+    hours?: NullableIntFieldUpdateOperationsInput | number | null
+    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
+    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
+    discount?: NullableIntFieldUpdateOperationsInput | number | null
+    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
+    paymentPlans?: NullableJsonNullValueInput | InputJsonValue
+    paymentPlanSelections?: NullableJsonNullValueInput | InputJsonValue
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    installmentTemplate?: BranchInstallmentTemplateUncheckedUpdateOneWithoutBranchCourseNestedInput
+    modules?: BranchCourseModuleUncheckedUpdateManyWithoutBranchCourseNestedInput
+    branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutBranchCourseNestedInput
+    facultyAssignments?: BranchFacultyCourseUncheckedUpdateManyWithoutBranchCourseNestedInput
+    branchBatches?: BranchBatchUncheckedUpdateManyWithoutBranchCourseNestedInput
+    branchStudents?: BranchStudentUncheckedUpdateManyWithoutCourseNestedInput
+    studentEnrollments?: BranchStudentCourseUncheckedUpdateManyWithoutCourseNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedUpdateManyWithoutBranchCourseNestedInput
+    facultyTodayWorkStudentEntries?: FacultyTodayWorkStudentEntryUncheckedUpdateManyWithoutBranchCourseNestedInput
+    exams?: ExamUncheckedUpdateManyWithoutBranchCourseNestedInput
+    assessments?: AssessmentUncheckedUpdateManyWithoutBranchCourseNestedInput
+    academicTests?: AcademicTestUncheckedUpdateManyWithoutBranchCourseNestedInput
+    academicQuestionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutBranchCourseNestedInput
+    academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchCourseNestedInput
+  }
+
+  export type UserUpsertWithoutAssignedLeadsInput = {
+    update: XOR<UserUpdateWithoutAssignedLeadsInput, UserUncheckedUpdateWithoutAssignedLeadsInput>
+    create: XOR<UserCreateWithoutAssignedLeadsInput, UserUncheckedCreateWithoutAssignedLeadsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutAssignedLeadsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutAssignedLeadsInput, UserUncheckedUpdateWithoutAssignedLeadsInput>
+  }
+
+  export type UserUpdateWithoutAssignedLeadsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userCode?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refreshTokenVersion?: IntFieldUpdateOperationsInput | number
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    failedLoginWindowExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLogoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginUserAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentUpdateManyWithoutFacultyNestedInput
+    managedBranch?: BranchUpdateOneWithoutAdminUserNestedInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceDays?: FacultyAttendanceDayUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUpdateManyWithoutFacultyUserNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUpdateManyWithoutFacultyUserNestedInput
+    loginEvents?: LoginEventUpdateManyWithoutUserNestedInput
+    targetedNotifications?: NotificationUpdateManyWithoutTargetUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    markedStudentAttendances?: StudentAttendanceUpdateManyWithoutFacultyUserNestedInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceUpdateManyWithoutFacultyUserNestedInput
+    dashboardWidgetPreferences?: UserDashboardWidgetUpdateManyWithoutUserNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutFacultyUserNestedInput
+    createdExams?: ExamUpdateManyWithoutFacultyNestedInput
+    examAttempts?: ExamAttemptUpdateManyWithoutStudentUserNestedInput
+    createdAssessments?: AssessmentUpdateManyWithoutFacultyNestedInput
+    evaluatedSubmissions?: AssessmentSubmissionUpdateManyWithoutEvaluatorNestedInput
+    facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutFacultyUserNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
+    salesAdminBranches?: SalesAdminBranchUpdateManyWithoutSalesAdminNestedInput
+    createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
+    leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutAssignedLeadsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userCode?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refreshTokenVersion?: IntFieldUpdateOperationsInput | number
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    failedLoginWindowExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLogoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginUserAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentUncheckedUpdateManyWithoutFacultyNestedInput
+    managedBranch?: BranchUncheckedUpdateOneWithoutAdminUserNestedInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceDays?: FacultyAttendanceDayUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedUpdateManyWithoutFacultyUserNestedInput
+    loginEvents?: LoginEventUncheckedUpdateManyWithoutUserNestedInput
+    targetedNotifications?: NotificationUncheckedUpdateManyWithoutTargetUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    markedStudentAttendances?: StudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
+    dashboardWidgetPreferences?: UserDashboardWidgetUncheckedUpdateManyWithoutUserNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutFacultyUserNestedInput
+    createdExams?: ExamUncheckedUpdateManyWithoutFacultyNestedInput
+    examAttempts?: ExamAttemptUncheckedUpdateManyWithoutStudentUserNestedInput
+    createdAssessments?: AssessmentUncheckedUpdateManyWithoutFacultyNestedInput
+    evaluatedSubmissions?: AssessmentSubmissionUncheckedUpdateManyWithoutEvaluatorNestedInput
+    facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutFacultyUserNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
+    salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutSalesAdminNestedInput
+    createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
+    leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
+  }
+
+  export type UserUpsertWithoutCreatedLeadsInput = {
+    update: XOR<UserUpdateWithoutCreatedLeadsInput, UserUncheckedUpdateWithoutCreatedLeadsInput>
+    create: XOR<UserCreateWithoutCreatedLeadsInput, UserUncheckedCreateWithoutCreatedLeadsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutCreatedLeadsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutCreatedLeadsInput, UserUncheckedUpdateWithoutCreatedLeadsInput>
+  }
+
+  export type UserUpdateWithoutCreatedLeadsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userCode?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refreshTokenVersion?: IntFieldUpdateOperationsInput | number
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    failedLoginWindowExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLogoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginUserAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentUpdateManyWithoutFacultyNestedInput
+    managedBranch?: BranchUpdateOneWithoutAdminUserNestedInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceDays?: FacultyAttendanceDayUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUpdateManyWithoutFacultyUserNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUpdateManyWithoutFacultyUserNestedInput
+    loginEvents?: LoginEventUpdateManyWithoutUserNestedInput
+    targetedNotifications?: NotificationUpdateManyWithoutTargetUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    markedStudentAttendances?: StudentAttendanceUpdateManyWithoutFacultyUserNestedInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceUpdateManyWithoutFacultyUserNestedInput
+    dashboardWidgetPreferences?: UserDashboardWidgetUpdateManyWithoutUserNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutFacultyUserNestedInput
+    createdExams?: ExamUpdateManyWithoutFacultyNestedInput
+    examAttempts?: ExamAttemptUpdateManyWithoutStudentUserNestedInput
+    createdAssessments?: AssessmentUpdateManyWithoutFacultyNestedInput
+    evaluatedSubmissions?: AssessmentSubmissionUpdateManyWithoutEvaluatorNestedInput
+    facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutFacultyUserNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
+    salesAdminBranches?: SalesAdminBranchUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUpdateManyWithoutAssignedToNestedInput
+    updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
+    leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutCreatedLeadsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userCode?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refreshTokenVersion?: IntFieldUpdateOperationsInput | number
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    failedLoginWindowExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLogoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginUserAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentUncheckedUpdateManyWithoutFacultyNestedInput
+    managedBranch?: BranchUncheckedUpdateOneWithoutAdminUserNestedInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceDays?: FacultyAttendanceDayUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedUpdateManyWithoutFacultyUserNestedInput
+    loginEvents?: LoginEventUncheckedUpdateManyWithoutUserNestedInput
+    targetedNotifications?: NotificationUncheckedUpdateManyWithoutTargetUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    markedStudentAttendances?: StudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
+    dashboardWidgetPreferences?: UserDashboardWidgetUncheckedUpdateManyWithoutUserNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutFacultyUserNestedInput
+    createdExams?: ExamUncheckedUpdateManyWithoutFacultyNestedInput
+    examAttempts?: ExamAttemptUncheckedUpdateManyWithoutStudentUserNestedInput
+    createdAssessments?: AssessmentUncheckedUpdateManyWithoutFacultyNestedInput
+    evaluatedSubmissions?: AssessmentSubmissionUncheckedUpdateManyWithoutEvaluatorNestedInput
+    facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutFacultyUserNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
+    salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+    updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
+    leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
+  }
+
+  export type UserUpsertWithoutUpdatedLeadsInput = {
+    update: XOR<UserUpdateWithoutUpdatedLeadsInput, UserUncheckedUpdateWithoutUpdatedLeadsInput>
+    create: XOR<UserCreateWithoutUpdatedLeadsInput, UserUncheckedCreateWithoutUpdatedLeadsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutUpdatedLeadsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutUpdatedLeadsInput, UserUncheckedUpdateWithoutUpdatedLeadsInput>
+  }
+
+  export type UserUpdateWithoutUpdatedLeadsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userCode?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refreshTokenVersion?: IntFieldUpdateOperationsInput | number
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    failedLoginWindowExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLogoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginUserAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentUpdateManyWithoutFacultyNestedInput
+    managedBranch?: BranchUpdateOneWithoutAdminUserNestedInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceDays?: FacultyAttendanceDayUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUpdateManyWithoutFacultyUserNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUpdateManyWithoutFacultyUserNestedInput
+    loginEvents?: LoginEventUpdateManyWithoutUserNestedInput
+    targetedNotifications?: NotificationUpdateManyWithoutTargetUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    markedStudentAttendances?: StudentAttendanceUpdateManyWithoutFacultyUserNestedInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceUpdateManyWithoutFacultyUserNestedInput
+    dashboardWidgetPreferences?: UserDashboardWidgetUpdateManyWithoutUserNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutFacultyUserNestedInput
+    createdExams?: ExamUpdateManyWithoutFacultyNestedInput
+    examAttempts?: ExamAttemptUpdateManyWithoutStudentUserNestedInput
+    createdAssessments?: AssessmentUpdateManyWithoutFacultyNestedInput
+    evaluatedSubmissions?: AssessmentSubmissionUpdateManyWithoutEvaluatorNestedInput
+    facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutFacultyUserNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
+    salesAdminBranches?: SalesAdminBranchUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUpdateManyWithoutAssignedToNestedInput
+    createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
+    leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutUpdatedLeadsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userCode?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refreshTokenVersion?: IntFieldUpdateOperationsInput | number
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    failedLoginWindowExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLogoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginUserAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentUncheckedUpdateManyWithoutFacultyNestedInput
+    managedBranch?: BranchUncheckedUpdateOneWithoutAdminUserNestedInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceDays?: FacultyAttendanceDayUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedUpdateManyWithoutFacultyUserNestedInput
+    loginEvents?: LoginEventUncheckedUpdateManyWithoutUserNestedInput
+    targetedNotifications?: NotificationUncheckedUpdateManyWithoutTargetUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    markedStudentAttendances?: StudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
+    dashboardWidgetPreferences?: UserDashboardWidgetUncheckedUpdateManyWithoutUserNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutFacultyUserNestedInput
+    createdExams?: ExamUncheckedUpdateManyWithoutFacultyNestedInput
+    examAttempts?: ExamAttemptUncheckedUpdateManyWithoutStudentUserNestedInput
+    createdAssessments?: AssessmentUncheckedUpdateManyWithoutFacultyNestedInput
+    evaluatedSubmissions?: AssessmentSubmissionUncheckedUpdateManyWithoutEvaluatorNestedInput
+    facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutFacultyUserNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
+    salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
+  }
+
+  export type LeadFollowUpUpsertWithWhereUniqueWithoutLeadInput = {
+    where: LeadFollowUpWhereUniqueInput
+    update: XOR<LeadFollowUpUpdateWithoutLeadInput, LeadFollowUpUncheckedUpdateWithoutLeadInput>
+    create: XOR<LeadFollowUpCreateWithoutLeadInput, LeadFollowUpUncheckedCreateWithoutLeadInput>
+  }
+
+  export type LeadFollowUpUpdateWithWhereUniqueWithoutLeadInput = {
+    where: LeadFollowUpWhereUniqueInput
+    data: XOR<LeadFollowUpUpdateWithoutLeadInput, LeadFollowUpUncheckedUpdateWithoutLeadInput>
+  }
+
+  export type LeadFollowUpUpdateManyWithWhereWithoutLeadInput = {
+    where: LeadFollowUpScalarWhereInput
+    data: XOR<LeadFollowUpUpdateManyMutationInput, LeadFollowUpUncheckedUpdateManyWithoutLeadInput>
+  }
+
+  export type LeadStageHistoryUpsertWithWhereUniqueWithoutLeadInput = {
+    where: LeadStageHistoryWhereUniqueInput
+    update: XOR<LeadStageHistoryUpdateWithoutLeadInput, LeadStageHistoryUncheckedUpdateWithoutLeadInput>
+    create: XOR<LeadStageHistoryCreateWithoutLeadInput, LeadStageHistoryUncheckedCreateWithoutLeadInput>
+  }
+
+  export type LeadStageHistoryUpdateWithWhereUniqueWithoutLeadInput = {
+    where: LeadStageHistoryWhereUniqueInput
+    data: XOR<LeadStageHistoryUpdateWithoutLeadInput, LeadStageHistoryUncheckedUpdateWithoutLeadInput>
+  }
+
+  export type LeadStageHistoryUpdateManyWithWhereWithoutLeadInput = {
+    where: LeadStageHistoryScalarWhereInput
+    data: XOR<LeadStageHistoryUpdateManyMutationInput, LeadStageHistoryUncheckedUpdateManyWithoutLeadInput>
+  }
+
+  export type LeadActivityUpsertWithWhereUniqueWithoutLeadInput = {
+    where: LeadActivityWhereUniqueInput
+    update: XOR<LeadActivityUpdateWithoutLeadInput, LeadActivityUncheckedUpdateWithoutLeadInput>
+    create: XOR<LeadActivityCreateWithoutLeadInput, LeadActivityUncheckedCreateWithoutLeadInput>
+  }
+
+  export type LeadActivityUpdateWithWhereUniqueWithoutLeadInput = {
+    where: LeadActivityWhereUniqueInput
+    data: XOR<LeadActivityUpdateWithoutLeadInput, LeadActivityUncheckedUpdateWithoutLeadInput>
+  }
+
+  export type LeadActivityUpdateManyWithWhereWithoutLeadInput = {
+    where: LeadActivityScalarWhereInput
+    data: XOR<LeadActivityUpdateManyMutationInput, LeadActivityUncheckedUpdateManyWithoutLeadInput>
+  }
+
+  export type LeadRecordingUpsertWithWhereUniqueWithoutLeadInput = {
+    where: LeadRecordingWhereUniqueInput
+    update: XOR<LeadRecordingUpdateWithoutLeadInput, LeadRecordingUncheckedUpdateWithoutLeadInput>
+    create: XOR<LeadRecordingCreateWithoutLeadInput, LeadRecordingUncheckedCreateWithoutLeadInput>
+  }
+
+  export type LeadRecordingUpdateWithWhereUniqueWithoutLeadInput = {
+    where: LeadRecordingWhereUniqueInput
+    data: XOR<LeadRecordingUpdateWithoutLeadInput, LeadRecordingUncheckedUpdateWithoutLeadInput>
+  }
+
+  export type LeadRecordingUpdateManyWithWhereWithoutLeadInput = {
+    where: LeadRecordingScalarWhereInput
+    data: XOR<LeadRecordingUpdateManyMutationInput, LeadRecordingUncheckedUpdateManyWithoutLeadInput>
+  }
+
+  export type LeadCreateWithoutFollowUpsInput = {
+    id?: string
+    leadId: string
+    studentName: string
+    phoneNumber: string
+    alternativeNumber?: string | null
+    email?: string | null
+    qualification?: string | null
+    location?: string | null
+    callType: string
+    status?: $Enums.LeadStatus
+    stage?: $Enums.LeadStage
+    leadSource: string
+    referredBy?: string | null
+    paymentStatus?: string
+    trainingMode?: string | null
+    classSchedule?: string | null
+    courseMode?: string | null
+    locationDistance?: string | null
+    leadDate: Date | string
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branch: BranchCreateNestedOneWithoutLeadsInput
+    course: BranchCourseCreateNestedOneWithoutLeadsInput
+    assignedTo?: UserCreateNestedOneWithoutAssignedLeadsInput
+    createdBy: UserCreateNestedOneWithoutCreatedLeadsInput
+    updatedBy?: UserCreateNestedOneWithoutUpdatedLeadsInput
+    stageHistory?: LeadStageHistoryCreateNestedManyWithoutLeadInput
+    activities?: LeadActivityCreateNestedManyWithoutLeadInput
+    recordings?: LeadRecordingCreateNestedManyWithoutLeadInput
+  }
+
+  export type LeadUncheckedCreateWithoutFollowUpsInput = {
+    id?: string
+    leadId: string
+    studentName: string
+    phoneNumber: string
+    alternativeNumber?: string | null
+    email?: string | null
+    qualification?: string | null
+    location?: string | null
+    callType: string
+    status?: $Enums.LeadStatus
+    stage?: $Enums.LeadStage
+    courseId: string
+    branchId: string
+    leadSource: string
+    referredBy?: string | null
+    paymentStatus?: string
+    trainingMode?: string | null
+    classSchedule?: string | null
+    courseMode?: string | null
+    locationDistance?: string | null
+    leadDate: Date | string
+    assignedToId?: string | null
+    createdById: string
+    updatedById?: string | null
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    stageHistory?: LeadStageHistoryUncheckedCreateNestedManyWithoutLeadInput
+    activities?: LeadActivityUncheckedCreateNestedManyWithoutLeadInput
+    recordings?: LeadRecordingUncheckedCreateNestedManyWithoutLeadInput
+  }
+
+  export type LeadCreateOrConnectWithoutFollowUpsInput = {
+    where: LeadWhereUniqueInput
+    create: XOR<LeadCreateWithoutFollowUpsInput, LeadUncheckedCreateWithoutFollowUpsInput>
+  }
+
+  export type UserCreateWithoutLeadFollowUpsInput = {
+    id?: string
+    userCode: string
+    fullName: string
+    email: string
+    phone?: string | null
+    address?: string | null
+    role: $Enums.UserRole
+    active?: boolean
+    passwordHash: string
+    passwordChangedAt?: Date | string | null
+    refreshTokenVersion?: number
+    failedLoginCount?: number
+    failedLoginWindowExpiresAt?: Date | string | null
+    lockedUntil?: Date | string | null
+    lastLoginAt?: Date | string | null
+    lastLogoutAt?: Date | string | null
+    lastLoginIp?: string | null
+    lastLoginUserAgent?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentCreateNestedManyWithoutFacultyInput
+    managedBranch?: BranchCreateNestedOneWithoutAdminUserInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceDays?: FacultyAttendanceDayCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkCreateNestedManyWithoutFacultyUserInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryCreateNestedManyWithoutFacultyUserInput
+    loginEvents?: LoginEventCreateNestedManyWithoutUserInput
+    targetedNotifications?: NotificationCreateNestedManyWithoutTargetUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    markedStudentAttendances?: StudentAttendanceCreateNestedManyWithoutFacultyUserInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceCreateNestedManyWithoutFacultyUserInput
+    dashboardWidgetPreferences?: UserDashboardWidgetCreateNestedManyWithoutUserInput
+    facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutFacultyUserInput
+    createdExams?: ExamCreateNestedManyWithoutFacultyInput
+    examAttempts?: ExamAttemptCreateNestedManyWithoutStudentUserInput
+    createdAssessments?: AssessmentCreateNestedManyWithoutFacultyInput
+    evaluatedSubmissions?: AssessmentSubmissionCreateNestedManyWithoutEvaluatorInput
+    facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutFacultyUserInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
+    salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadCreateNestedManyWithoutAssignedToInput
+    createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
+    leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
+  }
+
+  export type UserUncheckedCreateWithoutLeadFollowUpsInput = {
+    id?: string
+    userCode: string
+    fullName: string
+    email: string
+    phone?: string | null
+    address?: string | null
+    role: $Enums.UserRole
+    active?: boolean
+    passwordHash: string
+    passwordChangedAt?: Date | string | null
+    refreshTokenVersion?: number
+    failedLoginCount?: number
+    failedLoginWindowExpiresAt?: Date | string | null
+    lockedUntil?: Date | string | null
+    lastLoginAt?: Date | string | null
+    lastLogoutAt?: Date | string | null
+    lastLoginIp?: string | null
+    lastLoginUserAgent?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentUncheckedCreateNestedManyWithoutFacultyInput
+    managedBranch?: BranchUncheckedCreateNestedOneWithoutAdminUserInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceDays?: FacultyAttendanceDayUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedCreateNestedManyWithoutFacultyUserInput
+    loginEvents?: LoginEventUncheckedCreateNestedManyWithoutUserInput
+    targetedNotifications?: NotificationUncheckedCreateNestedManyWithoutTargetUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    markedStudentAttendances?: StudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
+    dashboardWidgetPreferences?: UserDashboardWidgetUncheckedCreateNestedManyWithoutUserInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutFacultyUserInput
+    createdExams?: ExamUncheckedCreateNestedManyWithoutFacultyInput
+    examAttempts?: ExamAttemptUncheckedCreateNestedManyWithoutStudentUserInput
+    createdAssessments?: AssessmentUncheckedCreateNestedManyWithoutFacultyInput
+    evaluatedSubmissions?: AssessmentSubmissionUncheckedCreateNestedManyWithoutEvaluatorInput
+    facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutFacultyUserInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
+    salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssignedToInput
+    createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
+    leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
+  }
+
+  export type UserCreateOrConnectWithoutLeadFollowUpsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutLeadFollowUpsInput, UserUncheckedCreateWithoutLeadFollowUpsInput>
+  }
+
+  export type LeadUpsertWithoutFollowUpsInput = {
+    update: XOR<LeadUpdateWithoutFollowUpsInput, LeadUncheckedUpdateWithoutFollowUpsInput>
+    create: XOR<LeadCreateWithoutFollowUpsInput, LeadUncheckedCreateWithoutFollowUpsInput>
+    where?: LeadWhereInput
+  }
+
+  export type LeadUpdateToOneWithWhereWithoutFollowUpsInput = {
+    where?: LeadWhereInput
+    data: XOR<LeadUpdateWithoutFollowUpsInput, LeadUncheckedUpdateWithoutFollowUpsInput>
+  }
+
+  export type LeadUpdateWithoutFollowUpsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    studentName?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    alternativeNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    qualification?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    callType?: StringFieldUpdateOperationsInput | string
+    status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    stage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    leadSource?: StringFieldUpdateOperationsInput | string
+    referredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: StringFieldUpdateOperationsInput | string
+    trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
+    classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
+    courseMode?: NullableStringFieldUpdateOperationsInput | string | null
+    locationDistance?: NullableStringFieldUpdateOperationsInput | string | null
+    leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branch?: BranchUpdateOneRequiredWithoutLeadsNestedInput
+    course?: BranchCourseUpdateOneRequiredWithoutLeadsNestedInput
+    assignedTo?: UserUpdateOneWithoutAssignedLeadsNestedInput
+    createdBy?: UserUpdateOneRequiredWithoutCreatedLeadsNestedInput
+    updatedBy?: UserUpdateOneWithoutUpdatedLeadsNestedInput
+    stageHistory?: LeadStageHistoryUpdateManyWithoutLeadNestedInput
+    activities?: LeadActivityUpdateManyWithoutLeadNestedInput
+    recordings?: LeadRecordingUpdateManyWithoutLeadNestedInput
+  }
+
+  export type LeadUncheckedUpdateWithoutFollowUpsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    studentName?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    alternativeNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    qualification?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    callType?: StringFieldUpdateOperationsInput | string
+    status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    stage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    courseId?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    leadSource?: StringFieldUpdateOperationsInput | string
+    referredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: StringFieldUpdateOperationsInput | string
+    trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
+    classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
+    courseMode?: NullableStringFieldUpdateOperationsInput | string | null
+    locationDistance?: NullableStringFieldUpdateOperationsInput | string | null
+    leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: StringFieldUpdateOperationsInput | string
+    updatedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    stageHistory?: LeadStageHistoryUncheckedUpdateManyWithoutLeadNestedInput
+    activities?: LeadActivityUncheckedUpdateManyWithoutLeadNestedInput
+    recordings?: LeadRecordingUncheckedUpdateManyWithoutLeadNestedInput
+  }
+
+  export type UserUpsertWithoutLeadFollowUpsInput = {
+    update: XOR<UserUpdateWithoutLeadFollowUpsInput, UserUncheckedUpdateWithoutLeadFollowUpsInput>
+    create: XOR<UserCreateWithoutLeadFollowUpsInput, UserUncheckedCreateWithoutLeadFollowUpsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutLeadFollowUpsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutLeadFollowUpsInput, UserUncheckedUpdateWithoutLeadFollowUpsInput>
+  }
+
+  export type UserUpdateWithoutLeadFollowUpsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userCode?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refreshTokenVersion?: IntFieldUpdateOperationsInput | number
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    failedLoginWindowExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLogoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginUserAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentUpdateManyWithoutFacultyNestedInput
+    managedBranch?: BranchUpdateOneWithoutAdminUserNestedInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceDays?: FacultyAttendanceDayUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUpdateManyWithoutFacultyUserNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUpdateManyWithoutFacultyUserNestedInput
+    loginEvents?: LoginEventUpdateManyWithoutUserNestedInput
+    targetedNotifications?: NotificationUpdateManyWithoutTargetUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    markedStudentAttendances?: StudentAttendanceUpdateManyWithoutFacultyUserNestedInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceUpdateManyWithoutFacultyUserNestedInput
+    dashboardWidgetPreferences?: UserDashboardWidgetUpdateManyWithoutUserNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutFacultyUserNestedInput
+    createdExams?: ExamUpdateManyWithoutFacultyNestedInput
+    examAttempts?: ExamAttemptUpdateManyWithoutStudentUserNestedInput
+    createdAssessments?: AssessmentUpdateManyWithoutFacultyNestedInput
+    evaluatedSubmissions?: AssessmentSubmissionUpdateManyWithoutEvaluatorNestedInput
+    facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutFacultyUserNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
+    salesAdminBranches?: SalesAdminBranchUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUpdateManyWithoutAssignedToNestedInput
+    createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
+    leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutLeadFollowUpsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userCode?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refreshTokenVersion?: IntFieldUpdateOperationsInput | number
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    failedLoginWindowExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLogoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginUserAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentUncheckedUpdateManyWithoutFacultyNestedInput
+    managedBranch?: BranchUncheckedUpdateOneWithoutAdminUserNestedInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceDays?: FacultyAttendanceDayUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedUpdateManyWithoutFacultyUserNestedInput
+    loginEvents?: LoginEventUncheckedUpdateManyWithoutUserNestedInput
+    targetedNotifications?: NotificationUncheckedUpdateManyWithoutTargetUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    markedStudentAttendances?: StudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
+    dashboardWidgetPreferences?: UserDashboardWidgetUncheckedUpdateManyWithoutUserNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutFacultyUserNestedInput
+    createdExams?: ExamUncheckedUpdateManyWithoutFacultyNestedInput
+    examAttempts?: ExamAttemptUncheckedUpdateManyWithoutStudentUserNestedInput
+    createdAssessments?: AssessmentUncheckedUpdateManyWithoutFacultyNestedInput
+    evaluatedSubmissions?: AssessmentSubmissionUncheckedUpdateManyWithoutEvaluatorNestedInput
+    facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutFacultyUserNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
+    salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
+    leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
+  }
+
+  export type LeadCreateWithoutStageHistoryInput = {
+    id?: string
+    leadId: string
+    studentName: string
+    phoneNumber: string
+    alternativeNumber?: string | null
+    email?: string | null
+    qualification?: string | null
+    location?: string | null
+    callType: string
+    status?: $Enums.LeadStatus
+    stage?: $Enums.LeadStage
+    leadSource: string
+    referredBy?: string | null
+    paymentStatus?: string
+    trainingMode?: string | null
+    classSchedule?: string | null
+    courseMode?: string | null
+    locationDistance?: string | null
+    leadDate: Date | string
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branch: BranchCreateNestedOneWithoutLeadsInput
+    course: BranchCourseCreateNestedOneWithoutLeadsInput
+    assignedTo?: UserCreateNestedOneWithoutAssignedLeadsInput
+    createdBy: UserCreateNestedOneWithoutCreatedLeadsInput
+    updatedBy?: UserCreateNestedOneWithoutUpdatedLeadsInput
+    followUps?: LeadFollowUpCreateNestedManyWithoutLeadInput
+    activities?: LeadActivityCreateNestedManyWithoutLeadInput
+    recordings?: LeadRecordingCreateNestedManyWithoutLeadInput
+  }
+
+  export type LeadUncheckedCreateWithoutStageHistoryInput = {
+    id?: string
+    leadId: string
+    studentName: string
+    phoneNumber: string
+    alternativeNumber?: string | null
+    email?: string | null
+    qualification?: string | null
+    location?: string | null
+    callType: string
+    status?: $Enums.LeadStatus
+    stage?: $Enums.LeadStage
+    courseId: string
+    branchId: string
+    leadSource: string
+    referredBy?: string | null
+    paymentStatus?: string
+    trainingMode?: string | null
+    classSchedule?: string | null
+    courseMode?: string | null
+    locationDistance?: string | null
+    leadDate: Date | string
+    assignedToId?: string | null
+    createdById: string
+    updatedById?: string | null
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    followUps?: LeadFollowUpUncheckedCreateNestedManyWithoutLeadInput
+    activities?: LeadActivityUncheckedCreateNestedManyWithoutLeadInput
+    recordings?: LeadRecordingUncheckedCreateNestedManyWithoutLeadInput
+  }
+
+  export type LeadCreateOrConnectWithoutStageHistoryInput = {
+    where: LeadWhereUniqueInput
+    create: XOR<LeadCreateWithoutStageHistoryInput, LeadUncheckedCreateWithoutStageHistoryInput>
+  }
+
+  export type UserCreateWithoutLeadStageChangesInput = {
+    id?: string
+    userCode: string
+    fullName: string
+    email: string
+    phone?: string | null
+    address?: string | null
+    role: $Enums.UserRole
+    active?: boolean
+    passwordHash: string
+    passwordChangedAt?: Date | string | null
+    refreshTokenVersion?: number
+    failedLoginCount?: number
+    failedLoginWindowExpiresAt?: Date | string | null
+    lockedUntil?: Date | string | null
+    lastLoginAt?: Date | string | null
+    lastLogoutAt?: Date | string | null
+    lastLoginIp?: string | null
+    lastLoginUserAgent?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentCreateNestedManyWithoutFacultyInput
+    managedBranch?: BranchCreateNestedOneWithoutAdminUserInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceDays?: FacultyAttendanceDayCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkCreateNestedManyWithoutFacultyUserInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryCreateNestedManyWithoutFacultyUserInput
+    loginEvents?: LoginEventCreateNestedManyWithoutUserInput
+    targetedNotifications?: NotificationCreateNestedManyWithoutTargetUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    markedStudentAttendances?: StudentAttendanceCreateNestedManyWithoutFacultyUserInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceCreateNestedManyWithoutFacultyUserInput
+    dashboardWidgetPreferences?: UserDashboardWidgetCreateNestedManyWithoutUserInput
+    facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutFacultyUserInput
+    createdExams?: ExamCreateNestedManyWithoutFacultyInput
+    examAttempts?: ExamAttemptCreateNestedManyWithoutStudentUserInput
+    createdAssessments?: AssessmentCreateNestedManyWithoutFacultyInput
+    evaluatedSubmissions?: AssessmentSubmissionCreateNestedManyWithoutEvaluatorInput
+    facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutFacultyUserInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
+    salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadCreateNestedManyWithoutAssignedToInput
+    createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
+    leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
+  }
+
+  export type UserUncheckedCreateWithoutLeadStageChangesInput = {
+    id?: string
+    userCode: string
+    fullName: string
+    email: string
+    phone?: string | null
+    address?: string | null
+    role: $Enums.UserRole
+    active?: boolean
+    passwordHash: string
+    passwordChangedAt?: Date | string | null
+    refreshTokenVersion?: number
+    failedLoginCount?: number
+    failedLoginWindowExpiresAt?: Date | string | null
+    lockedUntil?: Date | string | null
+    lastLoginAt?: Date | string | null
+    lastLogoutAt?: Date | string | null
+    lastLoginIp?: string | null
+    lastLoginUserAgent?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentUncheckedCreateNestedManyWithoutFacultyInput
+    managedBranch?: BranchUncheckedCreateNestedOneWithoutAdminUserInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceDays?: FacultyAttendanceDayUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedCreateNestedManyWithoutFacultyUserInput
+    loginEvents?: LoginEventUncheckedCreateNestedManyWithoutUserInput
+    targetedNotifications?: NotificationUncheckedCreateNestedManyWithoutTargetUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    markedStudentAttendances?: StudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
+    dashboardWidgetPreferences?: UserDashboardWidgetUncheckedCreateNestedManyWithoutUserInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutFacultyUserInput
+    createdExams?: ExamUncheckedCreateNestedManyWithoutFacultyInput
+    examAttempts?: ExamAttemptUncheckedCreateNestedManyWithoutStudentUserInput
+    createdAssessments?: AssessmentUncheckedCreateNestedManyWithoutFacultyInput
+    evaluatedSubmissions?: AssessmentSubmissionUncheckedCreateNestedManyWithoutEvaluatorInput
+    facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutFacultyUserInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
+    salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssignedToInput
+    createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
+    leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
+  }
+
+  export type UserCreateOrConnectWithoutLeadStageChangesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutLeadStageChangesInput, UserUncheckedCreateWithoutLeadStageChangesInput>
+  }
+
+  export type LeadUpsertWithoutStageHistoryInput = {
+    update: XOR<LeadUpdateWithoutStageHistoryInput, LeadUncheckedUpdateWithoutStageHistoryInput>
+    create: XOR<LeadCreateWithoutStageHistoryInput, LeadUncheckedCreateWithoutStageHistoryInput>
+    where?: LeadWhereInput
+  }
+
+  export type LeadUpdateToOneWithWhereWithoutStageHistoryInput = {
+    where?: LeadWhereInput
+    data: XOR<LeadUpdateWithoutStageHistoryInput, LeadUncheckedUpdateWithoutStageHistoryInput>
+  }
+
+  export type LeadUpdateWithoutStageHistoryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    studentName?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    alternativeNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    qualification?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    callType?: StringFieldUpdateOperationsInput | string
+    status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    stage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    leadSource?: StringFieldUpdateOperationsInput | string
+    referredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: StringFieldUpdateOperationsInput | string
+    trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
+    classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
+    courseMode?: NullableStringFieldUpdateOperationsInput | string | null
+    locationDistance?: NullableStringFieldUpdateOperationsInput | string | null
+    leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branch?: BranchUpdateOneRequiredWithoutLeadsNestedInput
+    course?: BranchCourseUpdateOneRequiredWithoutLeadsNestedInput
+    assignedTo?: UserUpdateOneWithoutAssignedLeadsNestedInput
+    createdBy?: UserUpdateOneRequiredWithoutCreatedLeadsNestedInput
+    updatedBy?: UserUpdateOneWithoutUpdatedLeadsNestedInput
+    followUps?: LeadFollowUpUpdateManyWithoutLeadNestedInput
+    activities?: LeadActivityUpdateManyWithoutLeadNestedInput
+    recordings?: LeadRecordingUpdateManyWithoutLeadNestedInput
+  }
+
+  export type LeadUncheckedUpdateWithoutStageHistoryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    studentName?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    alternativeNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    qualification?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    callType?: StringFieldUpdateOperationsInput | string
+    status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    stage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    courseId?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    leadSource?: StringFieldUpdateOperationsInput | string
+    referredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: StringFieldUpdateOperationsInput | string
+    trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
+    classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
+    courseMode?: NullableStringFieldUpdateOperationsInput | string | null
+    locationDistance?: NullableStringFieldUpdateOperationsInput | string | null
+    leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: StringFieldUpdateOperationsInput | string
+    updatedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    followUps?: LeadFollowUpUncheckedUpdateManyWithoutLeadNestedInput
+    activities?: LeadActivityUncheckedUpdateManyWithoutLeadNestedInput
+    recordings?: LeadRecordingUncheckedUpdateManyWithoutLeadNestedInput
+  }
+
+  export type UserUpsertWithoutLeadStageChangesInput = {
+    update: XOR<UserUpdateWithoutLeadStageChangesInput, UserUncheckedUpdateWithoutLeadStageChangesInput>
+    create: XOR<UserCreateWithoutLeadStageChangesInput, UserUncheckedCreateWithoutLeadStageChangesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutLeadStageChangesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutLeadStageChangesInput, UserUncheckedUpdateWithoutLeadStageChangesInput>
+  }
+
+  export type UserUpdateWithoutLeadStageChangesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userCode?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refreshTokenVersion?: IntFieldUpdateOperationsInput | number
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    failedLoginWindowExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLogoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginUserAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentUpdateManyWithoutFacultyNestedInput
+    managedBranch?: BranchUpdateOneWithoutAdminUserNestedInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceDays?: FacultyAttendanceDayUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUpdateManyWithoutFacultyUserNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUpdateManyWithoutFacultyUserNestedInput
+    loginEvents?: LoginEventUpdateManyWithoutUserNestedInput
+    targetedNotifications?: NotificationUpdateManyWithoutTargetUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    markedStudentAttendances?: StudentAttendanceUpdateManyWithoutFacultyUserNestedInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceUpdateManyWithoutFacultyUserNestedInput
+    dashboardWidgetPreferences?: UserDashboardWidgetUpdateManyWithoutUserNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutFacultyUserNestedInput
+    createdExams?: ExamUpdateManyWithoutFacultyNestedInput
+    examAttempts?: ExamAttemptUpdateManyWithoutStudentUserNestedInput
+    createdAssessments?: AssessmentUpdateManyWithoutFacultyNestedInput
+    evaluatedSubmissions?: AssessmentSubmissionUpdateManyWithoutEvaluatorNestedInput
+    facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutFacultyUserNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
+    salesAdminBranches?: SalesAdminBranchUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUpdateManyWithoutAssignedToNestedInput
+    createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
+    leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutLeadStageChangesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userCode?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refreshTokenVersion?: IntFieldUpdateOperationsInput | number
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    failedLoginWindowExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLogoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginUserAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentUncheckedUpdateManyWithoutFacultyNestedInput
+    managedBranch?: BranchUncheckedUpdateOneWithoutAdminUserNestedInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceDays?: FacultyAttendanceDayUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedUpdateManyWithoutFacultyUserNestedInput
+    loginEvents?: LoginEventUncheckedUpdateManyWithoutUserNestedInput
+    targetedNotifications?: NotificationUncheckedUpdateManyWithoutTargetUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    markedStudentAttendances?: StudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
+    dashboardWidgetPreferences?: UserDashboardWidgetUncheckedUpdateManyWithoutUserNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutFacultyUserNestedInput
+    createdExams?: ExamUncheckedUpdateManyWithoutFacultyNestedInput
+    examAttempts?: ExamAttemptUncheckedUpdateManyWithoutStudentUserNestedInput
+    createdAssessments?: AssessmentUncheckedUpdateManyWithoutFacultyNestedInput
+    evaluatedSubmissions?: AssessmentSubmissionUncheckedUpdateManyWithoutEvaluatorNestedInput
+    facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutFacultyUserNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
+    salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
+    leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
+  }
+
+  export type LeadCreateWithoutActivitiesInput = {
+    id?: string
+    leadId: string
+    studentName: string
+    phoneNumber: string
+    alternativeNumber?: string | null
+    email?: string | null
+    qualification?: string | null
+    location?: string | null
+    callType: string
+    status?: $Enums.LeadStatus
+    stage?: $Enums.LeadStage
+    leadSource: string
+    referredBy?: string | null
+    paymentStatus?: string
+    trainingMode?: string | null
+    classSchedule?: string | null
+    courseMode?: string | null
+    locationDistance?: string | null
+    leadDate: Date | string
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branch: BranchCreateNestedOneWithoutLeadsInput
+    course: BranchCourseCreateNestedOneWithoutLeadsInput
+    assignedTo?: UserCreateNestedOneWithoutAssignedLeadsInput
+    createdBy: UserCreateNestedOneWithoutCreatedLeadsInput
+    updatedBy?: UserCreateNestedOneWithoutUpdatedLeadsInput
+    followUps?: LeadFollowUpCreateNestedManyWithoutLeadInput
+    stageHistory?: LeadStageHistoryCreateNestedManyWithoutLeadInput
+    recordings?: LeadRecordingCreateNestedManyWithoutLeadInput
+  }
+
+  export type LeadUncheckedCreateWithoutActivitiesInput = {
+    id?: string
+    leadId: string
+    studentName: string
+    phoneNumber: string
+    alternativeNumber?: string | null
+    email?: string | null
+    qualification?: string | null
+    location?: string | null
+    callType: string
+    status?: $Enums.LeadStatus
+    stage?: $Enums.LeadStage
+    courseId: string
+    branchId: string
+    leadSource: string
+    referredBy?: string | null
+    paymentStatus?: string
+    trainingMode?: string | null
+    classSchedule?: string | null
+    courseMode?: string | null
+    locationDistance?: string | null
+    leadDate: Date | string
+    assignedToId?: string | null
+    createdById: string
+    updatedById?: string | null
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    followUps?: LeadFollowUpUncheckedCreateNestedManyWithoutLeadInput
+    stageHistory?: LeadStageHistoryUncheckedCreateNestedManyWithoutLeadInput
+    recordings?: LeadRecordingUncheckedCreateNestedManyWithoutLeadInput
+  }
+
+  export type LeadCreateOrConnectWithoutActivitiesInput = {
+    where: LeadWhereUniqueInput
+    create: XOR<LeadCreateWithoutActivitiesInput, LeadUncheckedCreateWithoutActivitiesInput>
+  }
+
+  export type UserCreateWithoutLeadActivitiesInput = {
+    id?: string
+    userCode: string
+    fullName: string
+    email: string
+    phone?: string | null
+    address?: string | null
+    role: $Enums.UserRole
+    active?: boolean
+    passwordHash: string
+    passwordChangedAt?: Date | string | null
+    refreshTokenVersion?: number
+    failedLoginCount?: number
+    failedLoginWindowExpiresAt?: Date | string | null
+    lockedUntil?: Date | string | null
+    lastLoginAt?: Date | string | null
+    lastLogoutAt?: Date | string | null
+    lastLoginIp?: string | null
+    lastLoginUserAgent?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentCreateNestedManyWithoutFacultyInput
+    managedBranch?: BranchCreateNestedOneWithoutAdminUserInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceDays?: FacultyAttendanceDayCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkCreateNestedManyWithoutFacultyUserInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryCreateNestedManyWithoutFacultyUserInput
+    loginEvents?: LoginEventCreateNestedManyWithoutUserInput
+    targetedNotifications?: NotificationCreateNestedManyWithoutTargetUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    markedStudentAttendances?: StudentAttendanceCreateNestedManyWithoutFacultyUserInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceCreateNestedManyWithoutFacultyUserInput
+    dashboardWidgetPreferences?: UserDashboardWidgetCreateNestedManyWithoutUserInput
+    facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutFacultyUserInput
+    createdExams?: ExamCreateNestedManyWithoutFacultyInput
+    examAttempts?: ExamAttemptCreateNestedManyWithoutStudentUserInput
+    createdAssessments?: AssessmentCreateNestedManyWithoutFacultyInput
+    evaluatedSubmissions?: AssessmentSubmissionCreateNestedManyWithoutEvaluatorInput
+    facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutFacultyUserInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
+    salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadCreateNestedManyWithoutAssignedToInput
+    createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
+    leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
+  }
+
+  export type UserUncheckedCreateWithoutLeadActivitiesInput = {
+    id?: string
+    userCode: string
+    fullName: string
+    email: string
+    phone?: string | null
+    address?: string | null
+    role: $Enums.UserRole
+    active?: boolean
+    passwordHash: string
+    passwordChangedAt?: Date | string | null
+    refreshTokenVersion?: number
+    failedLoginCount?: number
+    failedLoginWindowExpiresAt?: Date | string | null
+    lockedUntil?: Date | string | null
+    lastLoginAt?: Date | string | null
+    lastLogoutAt?: Date | string | null
+    lastLoginIp?: string | null
+    lastLoginUserAgent?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentUncheckedCreateNestedManyWithoutFacultyInput
+    managedBranch?: BranchUncheckedCreateNestedOneWithoutAdminUserInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceDays?: FacultyAttendanceDayUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedCreateNestedManyWithoutFacultyUserInput
+    loginEvents?: LoginEventUncheckedCreateNestedManyWithoutUserInput
+    targetedNotifications?: NotificationUncheckedCreateNestedManyWithoutTargetUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    markedStudentAttendances?: StudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
+    dashboardWidgetPreferences?: UserDashboardWidgetUncheckedCreateNestedManyWithoutUserInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutFacultyUserInput
+    createdExams?: ExamUncheckedCreateNestedManyWithoutFacultyInput
+    examAttempts?: ExamAttemptUncheckedCreateNestedManyWithoutStudentUserInput
+    createdAssessments?: AssessmentUncheckedCreateNestedManyWithoutFacultyInput
+    evaluatedSubmissions?: AssessmentSubmissionUncheckedCreateNestedManyWithoutEvaluatorInput
+    facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutFacultyUserInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
+    salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssignedToInput
+    createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
+    leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
+  }
+
+  export type UserCreateOrConnectWithoutLeadActivitiesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutLeadActivitiesInput, UserUncheckedCreateWithoutLeadActivitiesInput>
+  }
+
+  export type LeadUpsertWithoutActivitiesInput = {
+    update: XOR<LeadUpdateWithoutActivitiesInput, LeadUncheckedUpdateWithoutActivitiesInput>
+    create: XOR<LeadCreateWithoutActivitiesInput, LeadUncheckedCreateWithoutActivitiesInput>
+    where?: LeadWhereInput
+  }
+
+  export type LeadUpdateToOneWithWhereWithoutActivitiesInput = {
+    where?: LeadWhereInput
+    data: XOR<LeadUpdateWithoutActivitiesInput, LeadUncheckedUpdateWithoutActivitiesInput>
+  }
+
+  export type LeadUpdateWithoutActivitiesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    studentName?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    alternativeNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    qualification?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    callType?: StringFieldUpdateOperationsInput | string
+    status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    stage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    leadSource?: StringFieldUpdateOperationsInput | string
+    referredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: StringFieldUpdateOperationsInput | string
+    trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
+    classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
+    courseMode?: NullableStringFieldUpdateOperationsInput | string | null
+    locationDistance?: NullableStringFieldUpdateOperationsInput | string | null
+    leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branch?: BranchUpdateOneRequiredWithoutLeadsNestedInput
+    course?: BranchCourseUpdateOneRequiredWithoutLeadsNestedInput
+    assignedTo?: UserUpdateOneWithoutAssignedLeadsNestedInput
+    createdBy?: UserUpdateOneRequiredWithoutCreatedLeadsNestedInput
+    updatedBy?: UserUpdateOneWithoutUpdatedLeadsNestedInput
+    followUps?: LeadFollowUpUpdateManyWithoutLeadNestedInput
+    stageHistory?: LeadStageHistoryUpdateManyWithoutLeadNestedInput
+    recordings?: LeadRecordingUpdateManyWithoutLeadNestedInput
+  }
+
+  export type LeadUncheckedUpdateWithoutActivitiesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    studentName?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    alternativeNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    qualification?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    callType?: StringFieldUpdateOperationsInput | string
+    status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    stage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    courseId?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    leadSource?: StringFieldUpdateOperationsInput | string
+    referredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: StringFieldUpdateOperationsInput | string
+    trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
+    classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
+    courseMode?: NullableStringFieldUpdateOperationsInput | string | null
+    locationDistance?: NullableStringFieldUpdateOperationsInput | string | null
+    leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: StringFieldUpdateOperationsInput | string
+    updatedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    followUps?: LeadFollowUpUncheckedUpdateManyWithoutLeadNestedInput
+    stageHistory?: LeadStageHistoryUncheckedUpdateManyWithoutLeadNestedInput
+    recordings?: LeadRecordingUncheckedUpdateManyWithoutLeadNestedInput
+  }
+
+  export type UserUpsertWithoutLeadActivitiesInput = {
+    update: XOR<UserUpdateWithoutLeadActivitiesInput, UserUncheckedUpdateWithoutLeadActivitiesInput>
+    create: XOR<UserCreateWithoutLeadActivitiesInput, UserUncheckedCreateWithoutLeadActivitiesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutLeadActivitiesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutLeadActivitiesInput, UserUncheckedUpdateWithoutLeadActivitiesInput>
+  }
+
+  export type UserUpdateWithoutLeadActivitiesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userCode?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refreshTokenVersion?: IntFieldUpdateOperationsInput | number
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    failedLoginWindowExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLogoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginUserAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentUpdateManyWithoutFacultyNestedInput
+    managedBranch?: BranchUpdateOneWithoutAdminUserNestedInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceDays?: FacultyAttendanceDayUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUpdateManyWithoutFacultyUserNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUpdateManyWithoutFacultyUserNestedInput
+    loginEvents?: LoginEventUpdateManyWithoutUserNestedInput
+    targetedNotifications?: NotificationUpdateManyWithoutTargetUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    markedStudentAttendances?: StudentAttendanceUpdateManyWithoutFacultyUserNestedInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceUpdateManyWithoutFacultyUserNestedInput
+    dashboardWidgetPreferences?: UserDashboardWidgetUpdateManyWithoutUserNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutFacultyUserNestedInput
+    createdExams?: ExamUpdateManyWithoutFacultyNestedInput
+    examAttempts?: ExamAttemptUpdateManyWithoutStudentUserNestedInput
+    createdAssessments?: AssessmentUpdateManyWithoutFacultyNestedInput
+    evaluatedSubmissions?: AssessmentSubmissionUpdateManyWithoutEvaluatorNestedInput
+    facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutFacultyUserNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
+    salesAdminBranches?: SalesAdminBranchUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUpdateManyWithoutAssignedToNestedInput
+    createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
+    leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutLeadActivitiesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userCode?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refreshTokenVersion?: IntFieldUpdateOperationsInput | number
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    failedLoginWindowExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLogoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginUserAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentUncheckedUpdateManyWithoutFacultyNestedInput
+    managedBranch?: BranchUncheckedUpdateOneWithoutAdminUserNestedInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceDays?: FacultyAttendanceDayUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedUpdateManyWithoutFacultyUserNestedInput
+    loginEvents?: LoginEventUncheckedUpdateManyWithoutUserNestedInput
+    targetedNotifications?: NotificationUncheckedUpdateManyWithoutTargetUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    markedStudentAttendances?: StudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
+    dashboardWidgetPreferences?: UserDashboardWidgetUncheckedUpdateManyWithoutUserNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutFacultyUserNestedInput
+    createdExams?: ExamUncheckedUpdateManyWithoutFacultyNestedInput
+    examAttempts?: ExamAttemptUncheckedUpdateManyWithoutStudentUserNestedInput
+    createdAssessments?: AssessmentUncheckedUpdateManyWithoutFacultyNestedInput
+    evaluatedSubmissions?: AssessmentSubmissionUncheckedUpdateManyWithoutEvaluatorNestedInput
+    facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutFacultyUserNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
+    salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
+    leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
+  }
+
+  export type LeadCreateWithoutRecordingsInput = {
+    id?: string
+    leadId: string
+    studentName: string
+    phoneNumber: string
+    alternativeNumber?: string | null
+    email?: string | null
+    qualification?: string | null
+    location?: string | null
+    callType: string
+    status?: $Enums.LeadStatus
+    stage?: $Enums.LeadStage
+    leadSource: string
+    referredBy?: string | null
+    paymentStatus?: string
+    trainingMode?: string | null
+    classSchedule?: string | null
+    courseMode?: string | null
+    locationDistance?: string | null
+    leadDate: Date | string
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branch: BranchCreateNestedOneWithoutLeadsInput
+    course: BranchCourseCreateNestedOneWithoutLeadsInput
+    assignedTo?: UserCreateNestedOneWithoutAssignedLeadsInput
+    createdBy: UserCreateNestedOneWithoutCreatedLeadsInput
+    updatedBy?: UserCreateNestedOneWithoutUpdatedLeadsInput
+    followUps?: LeadFollowUpCreateNestedManyWithoutLeadInput
+    stageHistory?: LeadStageHistoryCreateNestedManyWithoutLeadInput
+    activities?: LeadActivityCreateNestedManyWithoutLeadInput
+  }
+
+  export type LeadUncheckedCreateWithoutRecordingsInput = {
+    id?: string
+    leadId: string
+    studentName: string
+    phoneNumber: string
+    alternativeNumber?: string | null
+    email?: string | null
+    qualification?: string | null
+    location?: string | null
+    callType: string
+    status?: $Enums.LeadStatus
+    stage?: $Enums.LeadStage
+    courseId: string
+    branchId: string
+    leadSource: string
+    referredBy?: string | null
+    paymentStatus?: string
+    trainingMode?: string | null
+    classSchedule?: string | null
+    courseMode?: string | null
+    locationDistance?: string | null
+    leadDate: Date | string
+    assignedToId?: string | null
+    createdById: string
+    updatedById?: string | null
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    followUps?: LeadFollowUpUncheckedCreateNestedManyWithoutLeadInput
+    stageHistory?: LeadStageHistoryUncheckedCreateNestedManyWithoutLeadInput
+    activities?: LeadActivityUncheckedCreateNestedManyWithoutLeadInput
+  }
+
+  export type LeadCreateOrConnectWithoutRecordingsInput = {
+    where: LeadWhereUniqueInput
+    create: XOR<LeadCreateWithoutRecordingsInput, LeadUncheckedCreateWithoutRecordingsInput>
+  }
+
+  export type UserCreateWithoutLeadRecordingsInput = {
+    id?: string
+    userCode: string
+    fullName: string
+    email: string
+    phone?: string | null
+    address?: string | null
+    role: $Enums.UserRole
+    active?: boolean
+    passwordHash: string
+    passwordChangedAt?: Date | string | null
+    refreshTokenVersion?: number
+    failedLoginCount?: number
+    failedLoginWindowExpiresAt?: Date | string | null
+    lockedUntil?: Date | string | null
+    lastLoginAt?: Date | string | null
+    lastLogoutAt?: Date | string | null
+    lastLoginIp?: string | null
+    lastLoginUserAgent?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentCreateNestedManyWithoutFacultyInput
+    managedBranch?: BranchCreateNestedOneWithoutAdminUserInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceDays?: FacultyAttendanceDayCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkCreateNestedManyWithoutFacultyUserInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryCreateNestedManyWithoutFacultyUserInput
+    loginEvents?: LoginEventCreateNestedManyWithoutUserInput
+    targetedNotifications?: NotificationCreateNestedManyWithoutTargetUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    markedStudentAttendances?: StudentAttendanceCreateNestedManyWithoutFacultyUserInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceCreateNestedManyWithoutFacultyUserInput
+    dashboardWidgetPreferences?: UserDashboardWidgetCreateNestedManyWithoutUserInput
+    facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutFacultyUserInput
+    createdExams?: ExamCreateNestedManyWithoutFacultyInput
+    examAttempts?: ExamAttemptCreateNestedManyWithoutStudentUserInput
+    createdAssessments?: AssessmentCreateNestedManyWithoutFacultyInput
+    evaluatedSubmissions?: AssessmentSubmissionCreateNestedManyWithoutEvaluatorInput
+    facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutFacultyUserInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
+    salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadCreateNestedManyWithoutAssignedToInput
+    createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
+    leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
+  }
+
+  export type UserUncheckedCreateWithoutLeadRecordingsInput = {
+    id?: string
+    userCode: string
+    fullName: string
+    email: string
+    phone?: string | null
+    address?: string | null
+    role: $Enums.UserRole
+    active?: boolean
+    passwordHash: string
+    passwordChangedAt?: Date | string | null
+    refreshTokenVersion?: number
+    failedLoginCount?: number
+    failedLoginWindowExpiresAt?: Date | string | null
+    lockedUntil?: Date | string | null
+    lastLoginAt?: Date | string | null
+    lastLogoutAt?: Date | string | null
+    lastLoginIp?: string | null
+    lastLoginUserAgent?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentUncheckedCreateNestedManyWithoutFacultyInput
+    managedBranch?: BranchUncheckedCreateNestedOneWithoutAdminUserInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceDays?: FacultyAttendanceDayUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedCreateNestedManyWithoutFacultyUserInput
+    loginEvents?: LoginEventUncheckedCreateNestedManyWithoutUserInput
+    targetedNotifications?: NotificationUncheckedCreateNestedManyWithoutTargetUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    markedStudentAttendances?: StudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
+    dashboardWidgetPreferences?: UserDashboardWidgetUncheckedCreateNestedManyWithoutUserInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutFacultyUserInput
+    createdExams?: ExamUncheckedCreateNestedManyWithoutFacultyInput
+    examAttempts?: ExamAttemptUncheckedCreateNestedManyWithoutStudentUserInput
+    createdAssessments?: AssessmentUncheckedCreateNestedManyWithoutFacultyInput
+    evaluatedSubmissions?: AssessmentSubmissionUncheckedCreateNestedManyWithoutEvaluatorInput
+    facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutFacultyUserInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
+    salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssignedToInput
+    createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
+    leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
+  }
+
+  export type UserCreateOrConnectWithoutLeadRecordingsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutLeadRecordingsInput, UserUncheckedCreateWithoutLeadRecordingsInput>
+  }
+
+  export type LeadUpsertWithoutRecordingsInput = {
+    update: XOR<LeadUpdateWithoutRecordingsInput, LeadUncheckedUpdateWithoutRecordingsInput>
+    create: XOR<LeadCreateWithoutRecordingsInput, LeadUncheckedCreateWithoutRecordingsInput>
+    where?: LeadWhereInput
+  }
+
+  export type LeadUpdateToOneWithWhereWithoutRecordingsInput = {
+    where?: LeadWhereInput
+    data: XOR<LeadUpdateWithoutRecordingsInput, LeadUncheckedUpdateWithoutRecordingsInput>
+  }
+
+  export type LeadUpdateWithoutRecordingsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    studentName?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    alternativeNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    qualification?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    callType?: StringFieldUpdateOperationsInput | string
+    status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    stage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    leadSource?: StringFieldUpdateOperationsInput | string
+    referredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: StringFieldUpdateOperationsInput | string
+    trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
+    classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
+    courseMode?: NullableStringFieldUpdateOperationsInput | string | null
+    locationDistance?: NullableStringFieldUpdateOperationsInput | string | null
+    leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branch?: BranchUpdateOneRequiredWithoutLeadsNestedInput
+    course?: BranchCourseUpdateOneRequiredWithoutLeadsNestedInput
+    assignedTo?: UserUpdateOneWithoutAssignedLeadsNestedInput
+    createdBy?: UserUpdateOneRequiredWithoutCreatedLeadsNestedInput
+    updatedBy?: UserUpdateOneWithoutUpdatedLeadsNestedInput
+    followUps?: LeadFollowUpUpdateManyWithoutLeadNestedInput
+    stageHistory?: LeadStageHistoryUpdateManyWithoutLeadNestedInput
+    activities?: LeadActivityUpdateManyWithoutLeadNestedInput
+  }
+
+  export type LeadUncheckedUpdateWithoutRecordingsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    studentName?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    alternativeNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    qualification?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    callType?: StringFieldUpdateOperationsInput | string
+    status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    stage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    courseId?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    leadSource?: StringFieldUpdateOperationsInput | string
+    referredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: StringFieldUpdateOperationsInput | string
+    trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
+    classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
+    courseMode?: NullableStringFieldUpdateOperationsInput | string | null
+    locationDistance?: NullableStringFieldUpdateOperationsInput | string | null
+    leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: StringFieldUpdateOperationsInput | string
+    updatedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    followUps?: LeadFollowUpUncheckedUpdateManyWithoutLeadNestedInput
+    stageHistory?: LeadStageHistoryUncheckedUpdateManyWithoutLeadNestedInput
+    activities?: LeadActivityUncheckedUpdateManyWithoutLeadNestedInput
+  }
+
+  export type UserUpsertWithoutLeadRecordingsInput = {
+    update: XOR<UserUpdateWithoutLeadRecordingsInput, UserUncheckedUpdateWithoutLeadRecordingsInput>
+    create: XOR<UserCreateWithoutLeadRecordingsInput, UserUncheckedCreateWithoutLeadRecordingsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutLeadRecordingsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutLeadRecordingsInput, UserUncheckedUpdateWithoutLeadRecordingsInput>
+  }
+
+  export type UserUpdateWithoutLeadRecordingsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userCode?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refreshTokenVersion?: IntFieldUpdateOperationsInput | number
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    failedLoginWindowExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLogoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginUserAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentUpdateManyWithoutFacultyNestedInput
+    managedBranch?: BranchUpdateOneWithoutAdminUserNestedInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceDays?: FacultyAttendanceDayUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUpdateManyWithoutFacultyUserNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUpdateManyWithoutFacultyUserNestedInput
+    loginEvents?: LoginEventUpdateManyWithoutUserNestedInput
+    targetedNotifications?: NotificationUpdateManyWithoutTargetUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    markedStudentAttendances?: StudentAttendanceUpdateManyWithoutFacultyUserNestedInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceUpdateManyWithoutFacultyUserNestedInput
+    dashboardWidgetPreferences?: UserDashboardWidgetUpdateManyWithoutUserNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutFacultyUserNestedInput
+    createdExams?: ExamUpdateManyWithoutFacultyNestedInput
+    examAttempts?: ExamAttemptUpdateManyWithoutStudentUserNestedInput
+    createdAssessments?: AssessmentUpdateManyWithoutFacultyNestedInput
+    evaluatedSubmissions?: AssessmentSubmissionUpdateManyWithoutEvaluatorNestedInput
+    facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutFacultyUserNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
+    salesAdminBranches?: SalesAdminBranchUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUpdateManyWithoutAssignedToNestedInput
+    createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
+    leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutLeadRecordingsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userCode?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refreshTokenVersion?: IntFieldUpdateOperationsInput | number
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    failedLoginWindowExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLogoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginUserAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentUncheckedUpdateManyWithoutFacultyNestedInput
+    managedBranch?: BranchUncheckedUpdateOneWithoutAdminUserNestedInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceDays?: FacultyAttendanceDayUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedUpdateManyWithoutFacultyUserNestedInput
+    loginEvents?: LoginEventUncheckedUpdateManyWithoutUserNestedInput
+    targetedNotifications?: NotificationUncheckedUpdateManyWithoutTargetUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    markedStudentAttendances?: StudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
+    dashboardWidgetPreferences?: UserDashboardWidgetUncheckedUpdateManyWithoutUserNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutFacultyUserNestedInput
+    createdExams?: ExamUncheckedUpdateManyWithoutFacultyNestedInput
+    examAttempts?: ExamAttemptUncheckedUpdateManyWithoutStudentUserNestedInput
+    createdAssessments?: AssessmentUncheckedUpdateManyWithoutFacultyNestedInput
+    evaluatedSubmissions?: AssessmentSubmissionUncheckedUpdateManyWithoutEvaluatorNestedInput
+    facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutFacultyUserNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
+    salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
+    leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type BranchStudentCreateWithoutMotivationMailHistoryInput = {
@@ -163563,6 +176738,13 @@ export namespace Prisma {
     evaluatedSubmissions?: AssessmentSubmissionCreateNestedManyWithoutEvaluatorInput
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutFacultyUserInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadCreateNestedManyWithoutAssignedToInput
+    createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
+    leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutAcademicTestReportSubmissionsInput = {
@@ -163607,6 +176789,13 @@ export namespace Prisma {
     evaluatedSubmissions?: AssessmentSubmissionUncheckedCreateNestedManyWithoutEvaluatorInput
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutFacultyUserInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssignedToInput
+    createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
+    leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutAcademicTestReportSubmissionsInput = {
@@ -163696,6 +176885,13 @@ export namespace Prisma {
     evaluatedSubmissions?: AssessmentSubmissionUpdateManyWithoutEvaluatorNestedInput
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutFacultyUserNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUpdateManyWithoutAssignedToNestedInput
+    createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
+    leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAcademicTestReportSubmissionsInput = {
@@ -163740,6 +176936,13 @@ export namespace Prisma {
     evaluatedSubmissions?: AssessmentSubmissionUncheckedUpdateManyWithoutEvaluatorNestedInput
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutFacultyUserNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
+    leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type BranchStudentCreateWithoutPaymentsInput = {
@@ -163934,6 +177137,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutBranchInput
     facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutBranchInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutBranchInput
+    leads?: LeadCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutPaymentsInput = {
@@ -163969,6 +177173,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutBranchInput
     facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutBranchInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutBranchInput
+    leads?: LeadUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutPaymentsInput = {
@@ -164224,6 +177429,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutBranchNestedInput
     facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutBranchNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutBranchNestedInput
+    leads?: LeadUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutPaymentsInput = {
@@ -164259,6 +177465,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutBranchNestedInput
     facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutBranchNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutBranchNestedInput
+    leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchStudentInstallmentUpsertWithoutPaymentsInput = {
@@ -164339,6 +177546,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutBranchInput
     facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutBranchInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutBranchInput
+    leads?: LeadCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutLedgerEntriesInput = {
@@ -164374,6 +177582,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutBranchInput
     facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutBranchInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutBranchInput
+    leads?: LeadUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutLedgerEntriesInput = {
@@ -164584,6 +177793,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutBranchNestedInput
     facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutBranchNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutBranchNestedInput
+    leads?: LeadUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutLedgerEntriesInput = {
@@ -164619,6 +177829,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutBranchNestedInput
     facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutBranchNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutBranchNestedInput
+    leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchStudentUpsertWithoutLedgerEntriesInput = {
@@ -165105,6 +178316,132 @@ export namespace Prisma {
   export type SalesAdminBranchCreateManySalesAdminInput = {
     id?: string
     branchId: string
+    createdAt?: Date | string
+  }
+
+  export type LeadCreateManyAssignedToInput = {
+    id?: string
+    leadId: string
+    studentName: string
+    phoneNumber: string
+    alternativeNumber?: string | null
+    email?: string | null
+    qualification?: string | null
+    location?: string | null
+    callType: string
+    status?: $Enums.LeadStatus
+    stage?: $Enums.LeadStage
+    courseId: string
+    branchId: string
+    leadSource: string
+    referredBy?: string | null
+    paymentStatus?: string
+    trainingMode?: string | null
+    classSchedule?: string | null
+    courseMode?: string | null
+    locationDistance?: string | null
+    leadDate: Date | string
+    createdById: string
+    updatedById?: string | null
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type LeadCreateManyCreatedByInput = {
+    id?: string
+    leadId: string
+    studentName: string
+    phoneNumber: string
+    alternativeNumber?: string | null
+    email?: string | null
+    qualification?: string | null
+    location?: string | null
+    callType: string
+    status?: $Enums.LeadStatus
+    stage?: $Enums.LeadStage
+    courseId: string
+    branchId: string
+    leadSource: string
+    referredBy?: string | null
+    paymentStatus?: string
+    trainingMode?: string | null
+    classSchedule?: string | null
+    courseMode?: string | null
+    locationDistance?: string | null
+    leadDate: Date | string
+    assignedToId?: string | null
+    updatedById?: string | null
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type LeadCreateManyUpdatedByInput = {
+    id?: string
+    leadId: string
+    studentName: string
+    phoneNumber: string
+    alternativeNumber?: string | null
+    email?: string | null
+    qualification?: string | null
+    location?: string | null
+    callType: string
+    status?: $Enums.LeadStatus
+    stage?: $Enums.LeadStage
+    courseId: string
+    branchId: string
+    leadSource: string
+    referredBy?: string | null
+    paymentStatus?: string
+    trainingMode?: string | null
+    classSchedule?: string | null
+    courseMode?: string | null
+    locationDistance?: string | null
+    leadDate: Date | string
+    assignedToId?: string | null
+    createdById: string
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type LeadFollowUpCreateManyCreatedByInput = {
+    id?: string
+    leadId: string
+    followUpDate: Date | string
+    followUpType: string
+    notes: string
+    nextFollowUpDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type LeadActivityCreateManyCreatedByInput = {
+    id?: string
+    leadId: string
+    action: string
+    previousValue?: NullableJsonNullValueInput | InputJsonValue
+    newValue?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+  }
+
+  export type LeadStageHistoryCreateManyCreatedByInput = {
+    id?: string
+    leadId: string
+    fromStage?: $Enums.LeadStage | null
+    toStage: $Enums.LeadStage
+    createdAt?: Date | string
+  }
+
+  export type LeadRecordingCreateManyCreatedByInput = {
+    id?: string
+    leadId: string
+    followUpId?: string | null
+    originalName: string
+    storageKey: string
+    mimeType: string
+    sizeBytes: number
     createdAt?: Date | string
   }
 
@@ -166094,6 +179431,408 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type LeadUpdateWithoutAssignedToInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    studentName?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    alternativeNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    qualification?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    callType?: StringFieldUpdateOperationsInput | string
+    status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    stage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    leadSource?: StringFieldUpdateOperationsInput | string
+    referredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: StringFieldUpdateOperationsInput | string
+    trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
+    classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
+    courseMode?: NullableStringFieldUpdateOperationsInput | string | null
+    locationDistance?: NullableStringFieldUpdateOperationsInput | string | null
+    leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branch?: BranchUpdateOneRequiredWithoutLeadsNestedInput
+    course?: BranchCourseUpdateOneRequiredWithoutLeadsNestedInput
+    createdBy?: UserUpdateOneRequiredWithoutCreatedLeadsNestedInput
+    updatedBy?: UserUpdateOneWithoutUpdatedLeadsNestedInput
+    followUps?: LeadFollowUpUpdateManyWithoutLeadNestedInput
+    stageHistory?: LeadStageHistoryUpdateManyWithoutLeadNestedInput
+    activities?: LeadActivityUpdateManyWithoutLeadNestedInput
+    recordings?: LeadRecordingUpdateManyWithoutLeadNestedInput
+  }
+
+  export type LeadUncheckedUpdateWithoutAssignedToInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    studentName?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    alternativeNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    qualification?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    callType?: StringFieldUpdateOperationsInput | string
+    status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    stage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    courseId?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    leadSource?: StringFieldUpdateOperationsInput | string
+    referredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: StringFieldUpdateOperationsInput | string
+    trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
+    classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
+    courseMode?: NullableStringFieldUpdateOperationsInput | string | null
+    locationDistance?: NullableStringFieldUpdateOperationsInput | string | null
+    leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdById?: StringFieldUpdateOperationsInput | string
+    updatedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    followUps?: LeadFollowUpUncheckedUpdateManyWithoutLeadNestedInput
+    stageHistory?: LeadStageHistoryUncheckedUpdateManyWithoutLeadNestedInput
+    activities?: LeadActivityUncheckedUpdateManyWithoutLeadNestedInput
+    recordings?: LeadRecordingUncheckedUpdateManyWithoutLeadNestedInput
+  }
+
+  export type LeadUncheckedUpdateManyWithoutAssignedToInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    studentName?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    alternativeNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    qualification?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    callType?: StringFieldUpdateOperationsInput | string
+    status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    stage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    courseId?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    leadSource?: StringFieldUpdateOperationsInput | string
+    referredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: StringFieldUpdateOperationsInput | string
+    trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
+    classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
+    courseMode?: NullableStringFieldUpdateOperationsInput | string | null
+    locationDistance?: NullableStringFieldUpdateOperationsInput | string | null
+    leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdById?: StringFieldUpdateOperationsInput | string
+    updatedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LeadUpdateWithoutCreatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    studentName?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    alternativeNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    qualification?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    callType?: StringFieldUpdateOperationsInput | string
+    status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    stage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    leadSource?: StringFieldUpdateOperationsInput | string
+    referredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: StringFieldUpdateOperationsInput | string
+    trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
+    classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
+    courseMode?: NullableStringFieldUpdateOperationsInput | string | null
+    locationDistance?: NullableStringFieldUpdateOperationsInput | string | null
+    leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branch?: BranchUpdateOneRequiredWithoutLeadsNestedInput
+    course?: BranchCourseUpdateOneRequiredWithoutLeadsNestedInput
+    assignedTo?: UserUpdateOneWithoutAssignedLeadsNestedInput
+    updatedBy?: UserUpdateOneWithoutUpdatedLeadsNestedInput
+    followUps?: LeadFollowUpUpdateManyWithoutLeadNestedInput
+    stageHistory?: LeadStageHistoryUpdateManyWithoutLeadNestedInput
+    activities?: LeadActivityUpdateManyWithoutLeadNestedInput
+    recordings?: LeadRecordingUpdateManyWithoutLeadNestedInput
+  }
+
+  export type LeadUncheckedUpdateWithoutCreatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    studentName?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    alternativeNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    qualification?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    callType?: StringFieldUpdateOperationsInput | string
+    status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    stage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    courseId?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    leadSource?: StringFieldUpdateOperationsInput | string
+    referredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: StringFieldUpdateOperationsInput | string
+    trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
+    classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
+    courseMode?: NullableStringFieldUpdateOperationsInput | string | null
+    locationDistance?: NullableStringFieldUpdateOperationsInput | string | null
+    leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    followUps?: LeadFollowUpUncheckedUpdateManyWithoutLeadNestedInput
+    stageHistory?: LeadStageHistoryUncheckedUpdateManyWithoutLeadNestedInput
+    activities?: LeadActivityUncheckedUpdateManyWithoutLeadNestedInput
+    recordings?: LeadRecordingUncheckedUpdateManyWithoutLeadNestedInput
+  }
+
+  export type LeadUncheckedUpdateManyWithoutCreatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    studentName?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    alternativeNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    qualification?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    callType?: StringFieldUpdateOperationsInput | string
+    status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    stage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    courseId?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    leadSource?: StringFieldUpdateOperationsInput | string
+    referredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: StringFieldUpdateOperationsInput | string
+    trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
+    classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
+    courseMode?: NullableStringFieldUpdateOperationsInput | string | null
+    locationDistance?: NullableStringFieldUpdateOperationsInput | string | null
+    leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LeadUpdateWithoutUpdatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    studentName?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    alternativeNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    qualification?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    callType?: StringFieldUpdateOperationsInput | string
+    status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    stage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    leadSource?: StringFieldUpdateOperationsInput | string
+    referredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: StringFieldUpdateOperationsInput | string
+    trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
+    classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
+    courseMode?: NullableStringFieldUpdateOperationsInput | string | null
+    locationDistance?: NullableStringFieldUpdateOperationsInput | string | null
+    leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branch?: BranchUpdateOneRequiredWithoutLeadsNestedInput
+    course?: BranchCourseUpdateOneRequiredWithoutLeadsNestedInput
+    assignedTo?: UserUpdateOneWithoutAssignedLeadsNestedInput
+    createdBy?: UserUpdateOneRequiredWithoutCreatedLeadsNestedInput
+    followUps?: LeadFollowUpUpdateManyWithoutLeadNestedInput
+    stageHistory?: LeadStageHistoryUpdateManyWithoutLeadNestedInput
+    activities?: LeadActivityUpdateManyWithoutLeadNestedInput
+    recordings?: LeadRecordingUpdateManyWithoutLeadNestedInput
+  }
+
+  export type LeadUncheckedUpdateWithoutUpdatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    studentName?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    alternativeNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    qualification?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    callType?: StringFieldUpdateOperationsInput | string
+    status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    stage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    courseId?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    leadSource?: StringFieldUpdateOperationsInput | string
+    referredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: StringFieldUpdateOperationsInput | string
+    trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
+    classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
+    courseMode?: NullableStringFieldUpdateOperationsInput | string | null
+    locationDistance?: NullableStringFieldUpdateOperationsInput | string | null
+    leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: StringFieldUpdateOperationsInput | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    followUps?: LeadFollowUpUncheckedUpdateManyWithoutLeadNestedInput
+    stageHistory?: LeadStageHistoryUncheckedUpdateManyWithoutLeadNestedInput
+    activities?: LeadActivityUncheckedUpdateManyWithoutLeadNestedInput
+    recordings?: LeadRecordingUncheckedUpdateManyWithoutLeadNestedInput
+  }
+
+  export type LeadUncheckedUpdateManyWithoutUpdatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    studentName?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    alternativeNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    qualification?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    callType?: StringFieldUpdateOperationsInput | string
+    status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    stage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    courseId?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    leadSource?: StringFieldUpdateOperationsInput | string
+    referredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: StringFieldUpdateOperationsInput | string
+    trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
+    classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
+    courseMode?: NullableStringFieldUpdateOperationsInput | string | null
+    locationDistance?: NullableStringFieldUpdateOperationsInput | string | null
+    leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: StringFieldUpdateOperationsInput | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LeadFollowUpUpdateWithoutCreatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    followUpDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    followUpType?: StringFieldUpdateOperationsInput | string
+    notes?: StringFieldUpdateOperationsInput | string
+    nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lead?: LeadUpdateOneRequiredWithoutFollowUpsNestedInput
+  }
+
+  export type LeadFollowUpUncheckedUpdateWithoutCreatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    followUpDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    followUpType?: StringFieldUpdateOperationsInput | string
+    notes?: StringFieldUpdateOperationsInput | string
+    nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LeadFollowUpUncheckedUpdateManyWithoutCreatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    followUpDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    followUpType?: StringFieldUpdateOperationsInput | string
+    notes?: StringFieldUpdateOperationsInput | string
+    nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LeadActivityUpdateWithoutCreatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    previousValue?: NullableJsonNullValueInput | InputJsonValue
+    newValue?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lead?: LeadUpdateOneRequiredWithoutActivitiesNestedInput
+  }
+
+  export type LeadActivityUncheckedUpdateWithoutCreatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    previousValue?: NullableJsonNullValueInput | InputJsonValue
+    newValue?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LeadActivityUncheckedUpdateManyWithoutCreatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    previousValue?: NullableJsonNullValueInput | InputJsonValue
+    newValue?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LeadStageHistoryUpdateWithoutCreatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fromStage?: NullableEnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage | null
+    toStage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lead?: LeadUpdateOneRequiredWithoutStageHistoryNestedInput
+  }
+
+  export type LeadStageHistoryUncheckedUpdateWithoutCreatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    fromStage?: NullableEnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage | null
+    toStage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LeadStageHistoryUncheckedUpdateManyWithoutCreatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    fromStage?: NullableEnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage | null
+    toStage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LeadRecordingUpdateWithoutCreatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    followUpId?: NullableStringFieldUpdateOperationsInput | string | null
+    originalName?: StringFieldUpdateOperationsInput | string
+    storageKey?: StringFieldUpdateOperationsInput | string
+    mimeType?: StringFieldUpdateOperationsInput | string
+    sizeBytes?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lead?: LeadUpdateOneRequiredWithoutRecordingsNestedInput
+  }
+
+  export type LeadRecordingUncheckedUpdateWithoutCreatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    followUpId?: NullableStringFieldUpdateOperationsInput | string | null
+    originalName?: StringFieldUpdateOperationsInput | string
+    storageKey?: StringFieldUpdateOperationsInput | string
+    mimeType?: StringFieldUpdateOperationsInput | string
+    sizeBytes?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LeadRecordingUncheckedUpdateManyWithoutCreatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    followUpId?: NullableStringFieldUpdateOperationsInput | string | null
+    originalName?: StringFieldUpdateOperationsInput | string
+    storageKey?: StringFieldUpdateOperationsInput | string
+    mimeType?: StringFieldUpdateOperationsInput | string
+    sizeBytes?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type UserDashboardWidgetCreateManyWidgetInput = {
     id?: string
     userId: string
@@ -166479,6 +180218,35 @@ export namespace Prisma {
     createdAt?: Date | string
   }
 
+  export type LeadCreateManyBranchInput = {
+    id?: string
+    leadId: string
+    studentName: string
+    phoneNumber: string
+    alternativeNumber?: string | null
+    email?: string | null
+    qualification?: string | null
+    location?: string | null
+    callType: string
+    status?: $Enums.LeadStatus
+    stage?: $Enums.LeadStage
+    courseId: string
+    leadSource: string
+    referredBy?: string | null
+    paymentStatus?: string
+    trainingMode?: string | null
+    classSchedule?: string | null
+    courseMode?: string | null
+    locationDistance?: string | null
+    leadDate: Date | string
+    assignedToId?: string | null
+    createdById: string
+    updatedById?: string | null
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type BranchCourseUpdateWithoutBranchInput = {
     id?: StringFieldUpdateOperationsInput | string
     courseCode?: StringFieldUpdateOperationsInput | string
@@ -166515,6 +180283,7 @@ export namespace Prisma {
     academicTests?: AcademicTestUpdateManyWithoutBranchCourseNestedInput
     academicQuestionPapers?: AcademicQuestionPaperUpdateManyWithoutBranchCourseNestedInput
     academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchCourseNestedInput
+    leads?: LeadUpdateManyWithoutCourseNestedInput
   }
 
   export type BranchCourseUncheckedUpdateWithoutBranchInput = {
@@ -166553,6 +180322,7 @@ export namespace Prisma {
     academicTests?: AcademicTestUncheckedUpdateManyWithoutBranchCourseNestedInput
     academicQuestionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutBranchCourseNestedInput
     academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchCourseNestedInput
+    leads?: LeadUncheckedUpdateManyWithoutCourseNestedInput
   }
 
   export type BranchCourseUncheckedUpdateManyWithoutBranchInput = {
@@ -167618,6 +181388,101 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type LeadUpdateWithoutBranchInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    studentName?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    alternativeNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    qualification?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    callType?: StringFieldUpdateOperationsInput | string
+    status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    stage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    leadSource?: StringFieldUpdateOperationsInput | string
+    referredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: StringFieldUpdateOperationsInput | string
+    trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
+    classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
+    courseMode?: NullableStringFieldUpdateOperationsInput | string | null
+    locationDistance?: NullableStringFieldUpdateOperationsInput | string | null
+    leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    course?: BranchCourseUpdateOneRequiredWithoutLeadsNestedInput
+    assignedTo?: UserUpdateOneWithoutAssignedLeadsNestedInput
+    createdBy?: UserUpdateOneRequiredWithoutCreatedLeadsNestedInput
+    updatedBy?: UserUpdateOneWithoutUpdatedLeadsNestedInput
+    followUps?: LeadFollowUpUpdateManyWithoutLeadNestedInput
+    stageHistory?: LeadStageHistoryUpdateManyWithoutLeadNestedInput
+    activities?: LeadActivityUpdateManyWithoutLeadNestedInput
+    recordings?: LeadRecordingUpdateManyWithoutLeadNestedInput
+  }
+
+  export type LeadUncheckedUpdateWithoutBranchInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    studentName?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    alternativeNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    qualification?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    callType?: StringFieldUpdateOperationsInput | string
+    status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    stage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    courseId?: StringFieldUpdateOperationsInput | string
+    leadSource?: StringFieldUpdateOperationsInput | string
+    referredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: StringFieldUpdateOperationsInput | string
+    trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
+    classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
+    courseMode?: NullableStringFieldUpdateOperationsInput | string | null
+    locationDistance?: NullableStringFieldUpdateOperationsInput | string | null
+    leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: StringFieldUpdateOperationsInput | string
+    updatedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    followUps?: LeadFollowUpUncheckedUpdateManyWithoutLeadNestedInput
+    stageHistory?: LeadStageHistoryUncheckedUpdateManyWithoutLeadNestedInput
+    activities?: LeadActivityUncheckedUpdateManyWithoutLeadNestedInput
+    recordings?: LeadRecordingUncheckedUpdateManyWithoutLeadNestedInput
+  }
+
+  export type LeadUncheckedUpdateManyWithoutBranchInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    studentName?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    alternativeNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    qualification?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    callType?: StringFieldUpdateOperationsInput | string
+    status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    stage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    courseId?: StringFieldUpdateOperationsInput | string
+    leadSource?: StringFieldUpdateOperationsInput | string
+    referredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: StringFieldUpdateOperationsInput | string
+    trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
+    classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
+    courseMode?: NullableStringFieldUpdateOperationsInput | string | null
+    locationDistance?: NullableStringFieldUpdateOperationsInput | string | null
+    leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: StringFieldUpdateOperationsInput | string
+    updatedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type NotificationCreateManyRequestInput = {
     id?: string
     kind: $Enums.NotificationKind
@@ -168669,6 +182534,35 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type LeadCreateManyCourseInput = {
+    id?: string
+    leadId: string
+    studentName: string
+    phoneNumber: string
+    alternativeNumber?: string | null
+    email?: string | null
+    qualification?: string | null
+    location?: string | null
+    callType: string
+    status?: $Enums.LeadStatus
+    stage?: $Enums.LeadStage
+    branchId: string
+    leadSource: string
+    referredBy?: string | null
+    paymentStatus?: string
+    trainingMode?: string | null
+    classSchedule?: string | null
+    courseMode?: string | null
+    locationDistance?: string | null
+    leadDate: Date | string
+    assignedToId?: string | null
+    createdById: string
+    updatedById?: string | null
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type BranchCourseModuleUpdateWithoutBranchCourseInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
@@ -169622,6 +183516,101 @@ export namespace Prisma {
     projectDescription?: StringFieldUpdateOperationsInput | string
     projectRequirements?: NullableStringFieldUpdateOperationsInput | string | null
     projectMarks?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LeadUpdateWithoutCourseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    studentName?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    alternativeNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    qualification?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    callType?: StringFieldUpdateOperationsInput | string
+    status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    stage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    leadSource?: StringFieldUpdateOperationsInput | string
+    referredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: StringFieldUpdateOperationsInput | string
+    trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
+    classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
+    courseMode?: NullableStringFieldUpdateOperationsInput | string | null
+    locationDistance?: NullableStringFieldUpdateOperationsInput | string | null
+    leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branch?: BranchUpdateOneRequiredWithoutLeadsNestedInput
+    assignedTo?: UserUpdateOneWithoutAssignedLeadsNestedInput
+    createdBy?: UserUpdateOneRequiredWithoutCreatedLeadsNestedInput
+    updatedBy?: UserUpdateOneWithoutUpdatedLeadsNestedInput
+    followUps?: LeadFollowUpUpdateManyWithoutLeadNestedInput
+    stageHistory?: LeadStageHistoryUpdateManyWithoutLeadNestedInput
+    activities?: LeadActivityUpdateManyWithoutLeadNestedInput
+    recordings?: LeadRecordingUpdateManyWithoutLeadNestedInput
+  }
+
+  export type LeadUncheckedUpdateWithoutCourseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    studentName?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    alternativeNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    qualification?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    callType?: StringFieldUpdateOperationsInput | string
+    status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    stage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    branchId?: StringFieldUpdateOperationsInput | string
+    leadSource?: StringFieldUpdateOperationsInput | string
+    referredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: StringFieldUpdateOperationsInput | string
+    trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
+    classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
+    courseMode?: NullableStringFieldUpdateOperationsInput | string | null
+    locationDistance?: NullableStringFieldUpdateOperationsInput | string | null
+    leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: StringFieldUpdateOperationsInput | string
+    updatedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    followUps?: LeadFollowUpUncheckedUpdateManyWithoutLeadNestedInput
+    stageHistory?: LeadStageHistoryUncheckedUpdateManyWithoutLeadNestedInput
+    activities?: LeadActivityUncheckedUpdateManyWithoutLeadNestedInput
+    recordings?: LeadRecordingUncheckedUpdateManyWithoutLeadNestedInput
+  }
+
+  export type LeadUncheckedUpdateManyWithoutCourseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    studentName?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    alternativeNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    qualification?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    callType?: StringFieldUpdateOperationsInput | string
+    status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    stage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    branchId?: StringFieldUpdateOperationsInput | string
+    leadSource?: StringFieldUpdateOperationsInput | string
+    referredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: StringFieldUpdateOperationsInput | string
+    trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
+    classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
+    courseMode?: NullableStringFieldUpdateOperationsInput | string | null
+    locationDistance?: NullableStringFieldUpdateOperationsInput | string | null
+    leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: StringFieldUpdateOperationsInput | string
+    updatedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -173698,6 +187687,162 @@ export namespace Prisma {
     selectedAnswer?: NullableStringFieldUpdateOperationsInput | string | null
     isCorrect?: BoolFieldUpdateOperationsInput | boolean
     marksAwarded?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type LeadFollowUpCreateManyLeadInput = {
+    id?: string
+    followUpDate: Date | string
+    followUpType: string
+    notes: string
+    nextFollowUpDate?: Date | string | null
+    createdById: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type LeadStageHistoryCreateManyLeadInput = {
+    id?: string
+    fromStage?: $Enums.LeadStage | null
+    toStage: $Enums.LeadStage
+    createdById: string
+    createdAt?: Date | string
+  }
+
+  export type LeadActivityCreateManyLeadInput = {
+    id?: string
+    action: string
+    previousValue?: NullableJsonNullValueInput | InputJsonValue
+    newValue?: NullableJsonNullValueInput | InputJsonValue
+    createdById: string
+    createdAt?: Date | string
+  }
+
+  export type LeadRecordingCreateManyLeadInput = {
+    id?: string
+    followUpId?: string | null
+    originalName: string
+    storageKey: string
+    mimeType: string
+    sizeBytes: number
+    createdById: string
+    createdAt?: Date | string
+  }
+
+  export type LeadFollowUpUpdateWithoutLeadInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    followUpDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    followUpType?: StringFieldUpdateOperationsInput | string
+    notes?: StringFieldUpdateOperationsInput | string
+    nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: UserUpdateOneRequiredWithoutLeadFollowUpsNestedInput
+  }
+
+  export type LeadFollowUpUncheckedUpdateWithoutLeadInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    followUpDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    followUpType?: StringFieldUpdateOperationsInput | string
+    notes?: StringFieldUpdateOperationsInput | string
+    nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdById?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LeadFollowUpUncheckedUpdateManyWithoutLeadInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    followUpDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    followUpType?: StringFieldUpdateOperationsInput | string
+    notes?: StringFieldUpdateOperationsInput | string
+    nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdById?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LeadStageHistoryUpdateWithoutLeadInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fromStage?: NullableEnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage | null
+    toStage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: UserUpdateOneRequiredWithoutLeadStageChangesNestedInput
+  }
+
+  export type LeadStageHistoryUncheckedUpdateWithoutLeadInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fromStage?: NullableEnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage | null
+    toStage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    createdById?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LeadStageHistoryUncheckedUpdateManyWithoutLeadInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fromStage?: NullableEnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage | null
+    toStage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    createdById?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LeadActivityUpdateWithoutLeadInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    previousValue?: NullableJsonNullValueInput | InputJsonValue
+    newValue?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: UserUpdateOneRequiredWithoutLeadActivitiesNestedInput
+  }
+
+  export type LeadActivityUncheckedUpdateWithoutLeadInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    previousValue?: NullableJsonNullValueInput | InputJsonValue
+    newValue?: NullableJsonNullValueInput | InputJsonValue
+    createdById?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LeadActivityUncheckedUpdateManyWithoutLeadInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    previousValue?: NullableJsonNullValueInput | InputJsonValue
+    newValue?: NullableJsonNullValueInput | InputJsonValue
+    createdById?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LeadRecordingUpdateWithoutLeadInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    followUpId?: NullableStringFieldUpdateOperationsInput | string | null
+    originalName?: StringFieldUpdateOperationsInput | string
+    storageKey?: StringFieldUpdateOperationsInput | string
+    mimeType?: StringFieldUpdateOperationsInput | string
+    sizeBytes?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: UserUpdateOneRequiredWithoutLeadRecordingsNestedInput
+  }
+
+  export type LeadRecordingUncheckedUpdateWithoutLeadInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    followUpId?: NullableStringFieldUpdateOperationsInput | string | null
+    originalName?: StringFieldUpdateOperationsInput | string
+    storageKey?: StringFieldUpdateOperationsInput | string
+    mimeType?: StringFieldUpdateOperationsInput | string
+    sizeBytes?: IntFieldUpdateOperationsInput | number
+    createdById?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LeadRecordingUncheckedUpdateManyWithoutLeadInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    followUpId?: NullableStringFieldUpdateOperationsInput | string | null
+    originalName?: StringFieldUpdateOperationsInput | string
+    storageKey?: StringFieldUpdateOperationsInput | string
+    mimeType?: StringFieldUpdateOperationsInput | string
+    sizeBytes?: IntFieldUpdateOperationsInput | number
+    createdById?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type AcademicTestReportSubmissionCreateManyHistoryInput = {

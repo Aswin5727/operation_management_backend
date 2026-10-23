@@ -50,6 +50,13 @@ model User {
   facultySkillAssignments        FacultySkillAssignment[]       @relation("FacultySkillUserAssignments")
   academicTestReportSubmissions  AcademicTestReportSubmission[]
   salesAdminBranches             SalesAdminBranch[]             @relation("SalesAdminUserBranches")
+  assignedLeads                  Lead[]                         @relation("LeadAssignee")
+  createdLeads                   Lead[]                         @relation("LeadCreatedBy")
+  updatedLeads                   Lead[]                         @relation("LeadUpdatedBy")
+  leadFollowUps                  LeadFollowUp[]                 @relation("LeadFollowUpCreatedBy")
+  leadActivities                 LeadActivity[]                 @relation("LeadActivityCreatedBy")
+  leadStageChanges               LeadStageHistory[]             @relation("LeadStageHistoryCreatedBy")
+  leadRecordings                 LeadRecording[]                @relation("LeadRecordingCreatedBy")
 
   @@index([role])
   @@index([active])
@@ -121,6 +128,7 @@ model Branch {
   facultySkillAssignments    FacultySkillAssignment[]    @relation("FacultySkillBranchAssignments")
   facultyLeaveRequests       FacultyLeaveRequest[]
   salesAdminBranches         SalesAdminBranch[]
+  leads                      Lead[]
 
   @@index([status])
   @@index([branchName])
@@ -334,6 +342,7 @@ model BranchCourse {
   academicTests                  AcademicTest[]
   academicQuestionPapers         AcademicQuestionPaper[]
   academicTestProjects           AcademicTestProject[]
+  leads                          Lead[]
 
   @@unique([branchId, nameKey])
   @@unique([branchId, courseCode])
@@ -1733,6 +1742,127 @@ model ExamAnswer {
   @@index([questionId])
 }
 
+enum LeadStatus {
+  DRAFT
+  ACTIVE
+  FOLLOW_UP
+  CONVERTED
+  CLOSED
+}
+
+enum LeadStage {
+  COLD
+  WARM
+  HOT
+  CLOSED
+}
+
+model Lead {
+  id                String             @id @default(cuid())
+  leadId            String             @unique
+  studentName       String
+  phoneNumber       String
+  alternativeNumber String?
+  email             String?
+  qualification     String?
+  location          String?
+  callType          String
+  status            LeadStatus         @default(DRAFT)
+  stage             LeadStage          @default(COLD)
+  courseId          String
+  branchId          String
+  leadSource        String
+  referredBy        String?
+  paymentStatus     String             @default("NOT_PAID")
+  trainingMode      String?
+  classSchedule     String?
+  courseMode        String?
+  locationDistance  String?
+  leadDate          DateTime
+  assignedToId      String?
+  createdById       String
+  updatedById       String?
+  deletedAt         DateTime?
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  branch            Branch             @relation(fields: [branchId], references: [id], onDelete: Restrict)
+  course            BranchCourse       @relation(fields: [courseId], references: [id], onDelete: Restrict)
+  assignedTo        User?              @relation("LeadAssignee", fields: [assignedToId], references: [id], onDelete: SetNull)
+  createdBy         User               @relation("LeadCreatedBy", fields: [createdById], references: [id], onDelete: Restrict)
+  updatedBy         User?              @relation("LeadUpdatedBy", fields: [updatedById], references: [id], onDelete: SetNull)
+  followUps         LeadFollowUp[]
+  stageHistory      LeadStageHistory[]
+  activities        LeadActivity[]
+  recordings        LeadRecording[]
+
+  @@index([branchId, createdAt])
+  @@index([courseId])
+  @@index([stage, status])
+  @@index([assignedToId, status])
+  @@index([phoneNumber])
+  @@index([leadDate])
+}
+
+model LeadFollowUp {
+  id               String    @id @default(cuid())
+  leadId           String
+  followUpDate     DateTime
+  followUpType     String
+  notes            String
+  nextFollowUpDate DateTime?
+  createdById      String
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  lead             Lead      @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  createdBy        User      @relation("LeadFollowUpCreatedBy", fields: [createdById], references: [id], onDelete: Restrict)
+
+  @@index([leadId, followUpDate])
+  @@index([nextFollowUpDate])
+}
+
+model LeadStageHistory {
+  id          String     @id @default(cuid())
+  leadId      String
+  fromStage   LeadStage?
+  toStage     LeadStage
+  createdById String
+  createdAt   DateTime   @default(now())
+  lead        Lead       @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  createdBy   User       @relation("LeadStageHistoryCreatedBy", fields: [createdById], references: [id], onDelete: Restrict)
+
+  @@index([leadId, createdAt])
+}
+
+model LeadActivity {
+  id            String   @id @default(cuid())
+  leadId        String
+  action        String
+  previousValue Json?
+  newValue      Json?
+  createdById   String
+  createdAt     DateTime @default(now())
+  lead          Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  createdBy     User     @relation("LeadActivityCreatedBy", fields: [createdById], references: [id], onDelete: Restrict)
+
+  @@index([leadId, createdAt])
+}
+
+model LeadRecording {
+  id           String   @id @default(cuid())
+  leadId       String
+  followUpId   String?
+  originalName String
+  storageKey   String   @unique
+  mimeType     String
+  sizeBytes    Int
+  createdById  String
+  createdAt    DateTime @default(now())
+  lead         Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  createdBy    User     @relation("LeadRecordingCreatedBy", fields: [createdById], references: [id], onDelete: Restrict)
+
+  @@index([leadId, createdAt])
+}
+
 enum UserRole {
   BUSINESS_OWNER
   OPERATION_MANAGER
@@ -1761,6 +1891,7 @@ enum NotificationKind {
   BRANCH_INVITATION_RESENT
   BRANCH_LOGIN
   BRANCH_FACULTY_LOGIN
+  SALES_ADMIN_LOGIN
   FACULTY_COURSE_ASSIGNED
   COURSE_EDIT_REQUEST
   COURSE_EDIT_REQUEST_ACCEPTED
