@@ -13,6 +13,7 @@ model User {
   fullName                       String
   email                          String                       @unique
   phone                          String?                      @unique
+  address                        String?
   role                           UserRole
   active                         Boolean                      @default(true)
   passwordHash                   String
@@ -48,6 +49,7 @@ model User {
   evaluatedSubmissions           AssessmentSubmission[]       @relation("AssessmentEvaluator")
   facultySkillAssignments        FacultySkillAssignment[]    @relation("FacultySkillUserAssignments")
   academicTestReportSubmissions  AcademicTestReportSubmission[]
+  salesAdminBranches             SalesAdminBranch[]            @relation("SalesAdminUserBranches")
 
   @@index([role])
   @@index([active])
@@ -118,10 +120,24 @@ model Branch {
   courses                    Course[]
   facultySkillAssignments   FacultySkillAssignment[]    @relation("FacultySkillBranchAssignments")
   facultyLeaveRequests       FacultyLeaveRequest[]
+  salesAdminBranches         SalesAdminBranch[]
 
   @@index([status])
   @@index([branchName])
   @@index([branchAdminName])
+}
+
+model SalesAdminBranch {
+  id           String   @id @default(cuid())
+  salesAdminId String
+  branchId     String
+  createdAt    DateTime @default(now())
+  salesAdmin   User     @relation("SalesAdminUserBranches", fields: [salesAdminId], references: [id], onDelete: Cascade)
+  branch       Branch   @relation(fields: [branchId], references: [id], onDelete: Cascade)
+
+  @@unique([salesAdminId, branchId])
+  @@index([salesAdminId])
+  @@index([branchId])
 }
 
 model LoginEvent {
@@ -1725,6 +1741,7 @@ enum UserRole {
   STUDENT
   SUPER_ADMIN
   BRANCH_ADMIN
+  SALES_ADMIN
 }
 
 enum LoginEventType {
@@ -1744,6 +1761,7 @@ enum NotificationKind {
   BRANCH_INVITATION_RESENT
   BRANCH_LOGIN
   BRANCH_FACULTY_LOGIN
+  SALES_ADMIN_LOGIN
   FACULTY_COURSE_ASSIGNED
   COURSE_EDIT_REQUEST
   COURSE_EDIT_REQUEST_ACCEPTED

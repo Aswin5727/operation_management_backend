@@ -20,6 +20,7 @@ import {
 import {
   createBranchFacultyLoginNotification,
   createBranchLoginNotification,
+  createNotification,
 } from "../notifications/notifications.service.js";
 import {
   recordFacultyLoginSession,
@@ -435,6 +436,22 @@ async function login({ identifier, password, ipAddress, userAgent }) {
     });
   }
 
+  if (role === "SALES_ADMIN") {
+    setImmediate(() => {
+      void createNotification({
+        kind: "BRANCH_LOGIN",
+        tone: "green",
+        title: "Sales Admin logged in",
+        message: `${refreshedUser.fullName || "Sales Admin"} logged in successfully and is now active.`,
+        actionLabel: "View Sales Admin",
+        createdBy: refreshedUser.id,
+        facultyName: refreshedUser.fullName || "",
+      }).catch((error) => {
+        console.error("Sales Admin login notification failed:", error);
+      });
+    });
+  }
+
   return {
     user: toSafeUser(refreshedUser),
     accessToken,
@@ -600,6 +617,10 @@ async function resetPassword({ token, password, ipAddress, userAgent }) {
 
   const isCredentialEmailToken = resetToken?.createdBy === "CREDENTIAL_EMAIL";
   const isExpired = resetToken?.expiresAt?.getTime() <= Date.now();
+
+  if (resetToken?.usedAt && isCredentialEmailToken && resetToken.user?.passwordChangedAt) {
+    return { message: "Password reset successfully." };
+  }
 
   if (!resetToken || resetToken.usedAt || (!isCredentialEmailToken && isExpired)) {
     throw new AppError("Reset token is invalid or expired", 400);

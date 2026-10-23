@@ -1,0 +1,13 @@
+import express from "express";
+import { authenticate } from "../../common/middlewares/authenticate.js";
+import { authorize } from "../../common/middlewares/authorize.js";
+import { createSalesAdminHandler, dashboardHandler, deleteSalesAdminHandler, listSalesAdminsHandler, profileHandler, resetPasswordHandler, updateSalesAdminHandler } from "./salesAdmin.controller.js";
+const router = express.Router();
+router.post("/", authenticate, authorize("SUPER_ADMIN"), createSalesAdminHandler);
+router.get("/", authenticate, authorize("SUPER_ADMIN"), listSalesAdminsHandler);
+router.post("/:id/reset-password", authenticate, authorize("SUPER_ADMIN"), resetPasswordHandler);
+router.patch("/:id", authenticate, authorize("SUPER_ADMIN"), updateSalesAdminHandler);
+router.delete("/:id", authenticate, authorize("SUPER_ADMIN"), deleteSalesAdminHandler);
+router.get("/me", authenticate, authorize("SALES_ADMIN"), profileHandler);
+router.get("/dashboard", authenticate, authorize("SALES_ADMIN"), dashboardHandler);
+export default router;

@@ -1,0 +1,10 @@
+import asyncHandler from "../../common/utils/asyncHandler.js";
+import { createSalesAdmin, deleteSalesAdmin, getDashboard, getSalesAdminProfile, listSalesAdmins, resetSalesAdminPassword, updateSalesAdmin } from "./salesAdmin.service.js";
+const createSalesAdminHandler = asyncHandler(async (req, res) => res.status(201).json({ message: "Sales Admin created and invitation sent", data: await createSalesAdmin(req.body || {}, req.auth || {}) }));
+const listSalesAdminsHandler = asyncHandler(async (_req, res) => res.status(200).json(await listSalesAdmins()));
+const resetPasswordHandler = asyncHandler(async (req, res) => res.status(200).json({ message: "Password reset email sent", data: await resetSalesAdminPassword(req.params.id, req.auth || {}) }));
+const updateSalesAdminHandler = asyncHandler(async (req, res) => res.status(200).json({ message: "Sales Admin updated", data: await updateSalesAdmin(req.params.id, req.body || {}, req.auth || {}) }));
+const deleteSalesAdminHandler = asyncHandler(async (req, res) => res.status(200).json({ message: "Sales Admin deleted", data: await deleteSalesAdmin(req.params.id) }));
+const profileHandler = asyncHandler(async (req, res) => res.status(200).json({ data: await getSalesAdminProfile(req.auth.userId) }));
+const dashboardHandler = asyncHandler(async (req, res) => res.status(200).json(await getDashboard(req.auth.userId, req.query || {})));
+export { createSalesAdminHandler, listSalesAdminsHandler, resetPasswordHandler, updateSalesAdminHandler, deleteSalesAdminHandler, profileHandler, dashboardHandler };

@@ -3,7 +3,8 @@ function requiresPasswordReset(user) {
   return (
     role === "BRANCH_ADMIN" ||
     role === "FACULTY" ||
-    role === "STUDENT"
+    role === "STUDENT" ||
+    role === "SALES_ADMIN"
   ) && !user?.passwordChangedAt;
 }
 

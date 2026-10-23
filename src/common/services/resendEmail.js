@@ -10,6 +10,7 @@ import { resetPasswordTemplate } from "./emailTemplates/resetPasswordTemplate.js
 import { facultyTemplate } from "./emailTemplates/facultyTemplate.js";
 import { branchTemplate } from "./emailTemplates/branchTemplate.js";
 import { branchWelcomeTemplate } from "./emailTemplates/branchWelcomeTemplate.js";
+import { salesAdminTemplate } from "./emailTemplates/salesAdminTemplate.js";
 import { alertTemplate } from "./emailTemplates/alertTemplate.js";
 import { paymentReceiptMailTemplate } from "./emailTemplates/paymentReceiptTemplate.js";
 
@@ -459,6 +460,19 @@ export async function sendPasswordResetEmail({ to, resetToken, expiryMinutes = 2
     html,
     text,
   });
+}
+
+export async function sendSalesAdminCredentialsEmail({ to, fullName, salesAdminId, temporaryPassword, branchNames = [], resetToken }) {
+  const loginLink = buildLoginLink();
+  const resetLink = buildResetLink(resetToken, temporaryPassword, { redirect: "/login" });
+  const safeName = escapeHtml(fullName || "Sales Admin");
+  const safeSalesAdminId = escapeHtml(salesAdminId || "-");
+  const safeEmail = escapeHtml(to || "");
+  const safePassword = escapeHtml(temporaryPassword || "");
+  const safeBranches = branchNames.map((name) => escapeHtml(name)).join(", ");
+  const html = salesAdminTemplate({ fullName: safeName, salesAdminId: safeSalesAdminId, email: safeEmail, temporaryPassword: safePassword, branchNames: safeBranches, loginLink, resetLink });
+  const text = [`Welcome ${fullName || "Sales Admin"}.`, `Sales Admin ID: ${salesAdminId || "-"}`, `Login email: ${to}`, `Assigned branches: ${branchNames.join(", ") || "-"}`, `Temporary password: ${temporaryPassword}`, `Reset password: ${resetLink}`, `Login: ${loginLink}`, "Change the temporary password after your first login."].join("\n");
+  return sendEmail({ to, subject: "Your CISPRO Sales Admin login details", html, text });
 }
 
 export async function sendStudentCredentialsEmail({ to, fullName, studentCode, temporaryPassword, resetToken, courseName, facultyName, batchName, batchTiming, courses = [] }) {

@@ -126,6 +126,7 @@ exports.Prisma.UserScalarFieldEnum = {
   fullName: 'fullName',
   email: 'email',
   phone: 'phone',
+  address: 'address',
   role: 'role',
   active: 'active',
   passwordHash: 'passwordHash',
@@ -186,6 +187,13 @@ exports.Prisma.BranchScalarFieldEnum = {
   branchCountryCode: 'branchCountryCode',
   branchState: 'branchState',
   branchStateCode: 'branchStateCode'
+};
+
+exports.Prisma.SalesAdminBranchScalarFieldEnum = {
+  id: 'id',
+  salesAdminId: 'salesAdminId',
+  branchId: 'branchId',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.LoginEventScalarFieldEnum = {
@@ -1516,7 +1524,8 @@ exports.UserRole = exports.$Enums.UserRole = {
   FACULTY: 'FACULTY',
   STUDENT: 'STUDENT',
   SUPER_ADMIN: 'SUPER_ADMIN',
-  BRANCH_ADMIN: 'BRANCH_ADMIN'
+  BRANCH_ADMIN: 'BRANCH_ADMIN',
+  SALES_ADMIN: 'SALES_ADMIN'
 };
 
 exports.RecordStatus = exports.$Enums.RecordStatus = {
@@ -1622,6 +1631,7 @@ exports.Prisma.ModelName = {
   DashboardWidget: 'DashboardWidget',
   UserDashboardWidget: 'UserDashboardWidget',
   Branch: 'Branch',
+  SalesAdminBranch: 'SalesAdminBranch',
   LoginEvent: 'LoginEvent',
   Notification: 'Notification',
   CourseEditRequest: 'CourseEditRequest',
