@@ -3,6 +3,7 @@ import AppError from "../../common/errors/AppError.js";
 import { calculateBranchStudentCourseProgress } from "../facultyTodayWork/facultyTodayWork.service.js";
 import { calculateCoursePaidProgress, courseCompletionFromProgressAndTests } from "../branchStudents/branchStudents.service.js";
 import { getAcademicTestProgressForStudent } from "../academicTests/academicTests.service.js";
+import { isAdmissionInRange } from "./dashboardAdmissions.js";
 
 const IST_OFFSET_MINUTES = 330;
 const REVENUE_SUMMARY_CACHE_TTL_MS = 15000;
@@ -973,8 +974,10 @@ function previousMonth(year, month) {
   return month === 1 ? { year: year - 1, month: 12 } : { year, month: month - 1 };
 }
 
-function dateIsInMonth(value, year, month) {
-  return String(value || "").slice(0, 7) === monthKey(year, month);
+function dateIsInMonth(student, year, month, excludedStudentIds = null) {
+  const key = monthKey(year, month);
+  const end = String(new Date(Date.UTC(year, month, 0)).getUTCDate()).padStart(2, "0");
+  return isAdmissionInRange(student, key + "-01", key + "-" + end, excludedStudentIds);
 }
 
 function buildSuperAdminPaymentBuckets(today, payments, students) {
@@ -1119,9 +1122,30 @@ async function getSuperAdminOverview(branchId = null, performanceOptions = {}) {
   const today = toDateStringFromParts(todayParts.year, todayParts.month, todayParts.day);
   const currentMonth = monthKey(todayParts.year, todayParts.month);
   const performanceRange = getPerformanceDateRange(performanceOptions);
-  const students = branchIds.length ? await prisma.branchStudent.findMany({ where: { branchId: { in: branchIds }, recordStatus: "ACTIVE" }, select: { id: true, branchId: true, studentName: true, admissionDate: true, courseName: true, courseAmount: true, installments: { select: { amount: true, amountPaid: true, dueDate: true } }, payments: { select: { amount: true, paymentDate: true } }, calendarAttendanceRecords: { where: { attendanceDate: { gte: performanceRange.startDate, lte: performanceRange.endDate } }, select: { attendanceDate: true, status: true } } } }) : [];
+  const students = branchIds.length ? await prisma.branchStudent.findMany({
+    where: { branchId: { in: branchIds }, recordStatus: "ACTIVE" },
+    select: {
+      id: true,
+      branchId: true,
+      studentName: true,
+      admissionDate: true,
+      courseStartDate: true,
+      courseName: true,
+      courseAmount: true,
+      courseEnrollments: { select: { importedLifecycleStatus: true } },
+      installments: { select: { amount: true, amountPaid: true, dueDate: true } },
+      payments: { select: { amount: true, paymentDate: true } },
+      calendarAttendanceRecords: {
+        where: { attendanceDate: { gte: performanceRange.startDate, lte: performanceRange.endDate } },
+        select: { attendanceDate: true, status: true },
+      },
+    },
+  }) : [];
+  const registeredStudentCount = branchIds.length
+    ? await prisma.branchStudent.count({ where: { branchId: { in: branchIds } } })
+    : 0;
   const previous = previousMonth(todayParts.year, todayParts.month);
-  const admissionsByMonth = [previous, { year: todayParts.year, month: todayParts.month }].map((item) => ({ key: monthKey(item.year, item.month), label: new Intl.DateTimeFormat("en-US", { month: "short", timeZone: "UTC" }).format(new Date(Date.UTC(item.year, item.month - 1, 1))), value: students.filter((student) => dateIsInMonth(student.admissionDate, item.year, item.month)).length }));
+  const admissionsByMonth = [previous, { year: todayParts.year, month: todayParts.month }].map((item) => ({ key: monthKey(item.year, item.month), label: new Intl.DateTimeFormat("en-US", { month: "short", timeZone: "UTC" }).format(new Date(Date.UTC(item.year, item.month - 1, 1))), value: students.filter((student) => dateIsInMonth(student, item.year, item.month, approvedDiscontinuationStudentIds)).length }));
   const payments = students.flatMap((student) => student.payments || []);
   const buckets = buildSuperAdminPaymentBuckets(today, payments, students);
   const paymentOverview = buildAccuratePaymentOverview(today, payments, students);
@@ -1130,7 +1154,7 @@ async function getSuperAdminOverview(branchId = null, performanceOptions = {}) {
     branchName: item.branchStudent?.branch?.branchName || item.branchStudent?.branch?.branchId || 'Branch',
     amount: money(item.finalOutstandingAmount ?? item.outstandingAmount),
   })).filter((item) => item.amount > 0);
-  const summary = { totalBranches: branches.length, totalStudents: students.length, thisMonthAdmissions: admissionsByMonth.at(-1).value, totalPayment: payments.reduce((sum, payment) => sum + money(payment.amount), 0), thisMonthPayment: payments.filter((payment) => new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Calcutta" }).format(new Date(payment.paymentDate)).startsWith(currentMonth)).reduce((sum, payment) => sum + money(payment.amount), 0), totalOutstanding: 0, discontinuedOutstandingDetails, thisMonthDue: 0, todayDue: 0, yesterdayDue: 0, overdueAmount: 0, dueStudents: new Set(), todayCollection: 0, yesterdayCollection: 0 };
+  const summary = { totalBranches: branches.length, totalStudents: registeredStudentCount, thisMonthAdmissions: admissionsByMonth.at(-1).value, totalPayment: payments.reduce((sum, payment) => sum + money(payment.amount), 0), thisMonthPayment: payments.filter((payment) => new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Calcutta" }).format(new Date(payment.paymentDate)).startsWith(currentMonth)).reduce((sum, payment) => sum + money(payment.amount), 0), totalOutstanding: 0, discontinuedOutstandingDetails, thisMonthDue: 0, todayDue: 0, yesterdayDue: 0, overdueAmount: 0, dueStudents: new Set(), todayCollection: 0, yesterdayCollection: 0 };
   const yesterday = addDays(today, -1);
   students.forEach((student) => {
     if (approvedDiscontinuationStudentIds.has(String(student.id || "").trim())) return;
@@ -1157,7 +1181,7 @@ async function getSuperAdminOverview(branchId = null, performanceOptions = {}) {
   payments.forEach((payment) => { const date = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Calcutta" }).format(new Date(payment.paymentDate)); if (date === today) summary.todayCollection += money(payment.amount); if (date === yesterday) summary.yesterdayCollection += money(payment.amount); });
   const courseCounts = new Map();
   students.forEach((student) => {
-    if (!dateIsInMonth(student.admissionDate, todayParts.year, todayParts.month)) return;
+    if (!dateIsInMonth(student, todayParts.year, todayParts.month, approvedDiscontinuationStudentIds)) return;
     const name = String(student.courseName || "").trim();
     if (name) courseCounts.set(name, (courseCounts.get(name) || 0) + 1);
   });
@@ -1194,7 +1218,7 @@ async function getSuperAdminOverview(branchId = null, performanceOptions = {}) {
     const present = branchAttendance.filter((record) => record.status === "PRESENT").length;
     const recorded = branchAttendance.filter((record) => record.status === "PRESENT" || record.status === "ABSENT").length;
     const collection = branchPayments.filter((payment) => { const date = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Calcutta" }).format(new Date(payment.paymentDate)); return date >= performanceRange.startDate && date <= performanceRange.endDate; }).reduce((total, payment) => total + money(payment.amount), 0);
-    const admissions = branchStudents.filter((student) => { const date = String(student.admissionDate || "").slice(0, 10); return date >= performanceRange.startDate && date <= performanceRange.endDate; }).length;
+    const admissions = branchStudents.filter((student) => isAdmissionInRange(student, performanceRange.startDate, performanceRange.endDate, approvedDiscontinuationStudentIds)).length;
     return { branchId: branchRecord.branchId, branchName: branchRecord.branchName, totalStudents: branchStudents.length, thisMonthAdmissions: admissions, collection, due, outstanding, attendance: recorded ? Math.round((present / recorded) * 1000) / 10 : null, hasPeriodData: Boolean(admissions || collection || due || branchAttendance.length), courses: [...new Set(branchStudents.map((student) => String(student.courseName || "").trim()).filter(Boolean))] };
   });
   const result = { generatedAt: new Date().toISOString(), scope: branch ? { type: "branch", branchId: branch.branchId, branchName: branch.branchName } : { type: "all" }, ...summary, dueStudents: summary.dueStudents.size, paymentOverview, admissionsByMonth, dailyPaymentData: paymentOverview.daily, weeklyPaymentData: paymentOverview.weekly, monthlyPaymentChartData: paymentOverview.monthly, monthlyPaymentData: paymentOverview.monthly, trendingCourses, branchPerformance, branchPerformanceHasData: branchPerformance.some((item) => item.hasPeriodData), performancePeriod: performanceRange, trendingMonth: new Intl.DateTimeFormat("en-US", { month: "long", year: "numeric", timeZone: "Asia/Calcutta" }).format(new Date()) };

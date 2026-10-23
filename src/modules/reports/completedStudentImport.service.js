@@ -7,8 +7,8 @@ import { applyPaymentImportValues, validatePaymentImportValues } from "./complet
 import { COMPLETED_STUDENT_COLUMNS } from "./completedStudentReportColumns.js";
 const MAX_ROWS = 100;
 const CONTENT_TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-const FIELDS = COMPLETED_STUDENT_COLUMNS;
-const ALIASES = { admissionfees: "registrationFees", registrationfees: "registrationFees", registrationfee: "registrationFees", contact: "contactNumber", mobilenumber: "contactNumber", email: "emailId", parentname: "parentGuardian", parentguardian: "parentGuardian", parentspousenumber: "parentSpouseNumber", parentspouseno: "parentSpouseNumber", source: "databaseSource", project: "academicProject", academicproject: "academicProject", studentstatus: "studentStatus" };
+const FIELDS = [...COMPLETED_STUDENT_COLUMNS, ["admissionDate", "Admission Date"]];
+const ALIASES = { admissionfees: "registrationFees", registrationfees: "registrationFees", registrationfee: "registrationFees", contact: "contactNumber", mobilenumber: "contactNumber", email: "emailId", parentname: "parentGuardian", parentguardian: "parentGuardian", parentspousenumber: "parentSpouseNumber", parentspouseno: "parentSpouseNumber", source: "databaseSource", project: "academicProject", academicproject: "academicProject", studentstatus: "studentStatus", dateofadmission: "admissionDate" };
 const clean = (value) => value === null || value === undefined ? "" : String(value instanceof Date ? value.toISOString().slice(0, 10) : value).trim();
 const key = (value) => clean(value).toLowerCase().replace(/[^a-z0-9]/g, "");
 const courseKey = (value) => clean(value).toLowerCase().replace(/[^a-z0-9]+/g, " ").split(/\s+/).filter(Boolean).sort().join(" ");
@@ -65,6 +65,8 @@ async function validate(raw, branchId, seen, { allowMissingContact = false } = {
   if (!["completedstudent", "discontinuedstudent"].includes(key(data.studentStatus))) errors.push("Student Status must be Completed Student or Discontinued Student.");
   const startInfo = dateInfo(data.courseStartingDate);
   const endInfo = dateInfo(data.courseEndingDate);
+  const admissionDateInfo = dateInfo(data.admissionDate);
+  if (admissionDateInfo.invalid) errors.push("Admission Date is invalid.");
   if (startInfo.invalid) errors.push("Course Starting Date is invalid.");
   if (endInfo.invalid) errors.push("Course Ending Date is invalid.");
   if (startInfo.value && endInfo.value && startInfo.value > endInfo.value) errors.push("Course Ending Date cannot be before Course Starting Date.");
@@ -114,7 +116,7 @@ async function validate(raw, branchId, seen, { allowMissingContact = false } = {
     }
   }
   // Historical imports use only row-level validation. Existing branch records\n  // must not make an old completed row invalid.
-  return { rowNumber, data: { ...data, courseStartingDate: startInfo.value, courseEndingDate: endInfo.value, certificateIssuedDate: certificateDateInfo.value }, valid: errors.length === 0, errors, warnings, studentId: clean(data.studentId), courseName: course?.name || clean(data.course) };
+  return { rowNumber, data: { ...data, admissionDate: admissionDateInfo.value, courseStartingDate: startInfo.value, courseEndingDate: endInfo.value, certificateIssuedDate: certificateDateInfo.value }, valid: errors.length === 0, errors, warnings, studentId: clean(data.studentId), courseName: course?.name || clean(data.course) };
 }
 export async function previewCompletedStudentImport({ buffer, user }) { if (!buffer?.length) throw new AppError("Please choose an .xlsx file.", 400); const workbook = new ExcelJS.Workbook(); await workbook.xlsx.load(buffer); const rows = readRows(workbook); if (!rows.length) throw new AppError("The workbook has no data rows.", 400); if (rows.length > MAX_ROWS) throw new AppError(`Only ${MAX_ROWS} records can be imported at a time.`, 400); const branchId = await resolveBranchId(user); const seen = new Map(); const validated = []; for (const row of rows) validated.push(await validate(row, branchId, seen)); return { maxRows: MAX_ROWS, totalRows: validated.length, validRows: validated.filter((row) => row.valid).length, invalidRows: validated.filter((row) => !row.valid).length, warningRows: validated.filter((row) => row.warnings?.length).length, rows: validated }; }
 function optional(data, field, current) { return missing(data[field]) ? current : clean(data[field]); }
@@ -128,6 +130,7 @@ async function apply(tx, row, branchId, user) {
   const end = date(data.courseEndingDate);
   const start = date(data.courseStartingDate);
   const sharedStudentData = {
+    admissionDate: date(data.admissionDate) || date(student?.admissionDate) || start,
     studentName: optional(data, 'studentName', student?.studentName || clean(data.studentName)),
     parentName: optional(data, 'parentGuardian', student?.parentName),
     parentSpouseNumber: optional(data, 'parentSpouseNumber', student?.parentSpouseNumber),
@@ -167,7 +170,7 @@ async function apply(tx, row, branchId, user) {
       data: {
         branchId,
         studentId: clean(data.studentId),
-        admissionDate: start || new Date().toISOString().slice(0, 10),
+        admissionDate: date(data.admissionDate) || start,
         courseId: course?.id || null,
         courseName: courseData.courseName,
         courseStartDate: courseData.startDate,
