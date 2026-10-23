@@ -12,6 +12,7 @@ import {
   createBranchStudentPayment,
   previewBranchStudentFeePlan,
 } from "./branchStudents.service.js";
+import { listBranchStudentReportCompletionSummaries } from "./branchStudentReportSummary.service.js";
 import {
   getCurrentBranchStudentCalendar,
   getBranchStudentCalendarById,
@@ -41,6 +42,13 @@ export const listBranchStudentLifecycleHandler = asyncHandler(async (req, res) =
   return sendSuccess(res, "Branch student course lifecycle records fetched successfully", result.data, result.meta);
 });
 
+export const listBranchStudentReportCompletionSummariesHandler = asyncHandler(async (req, res) => {
+  const rows = await listBranchStudentReportCompletionSummaries(
+    req.body?.studentIds ?? req.query?.studentIds,
+    req.user,
+  );
+  return sendSuccess(res, "Branch student report completion summaries fetched successfully", rows);
+});
 export const getCurrentBranchStudentProfileHandler = asyncHandler(async (req, res) => {
   const student = await getCurrentBranchStudentProfile(req.user);
   return sendSuccess(res, "Branch student profile fetched successfully", student);

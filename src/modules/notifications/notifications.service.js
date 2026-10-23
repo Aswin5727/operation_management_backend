@@ -65,7 +65,6 @@ const FACULTY_VISIBLE_NOTIFICATION_KINDS = new Set([
 ]);
 const BRANCH_ADMIN_SCOPE_CACHE = new Map();
 const BRANCH_ADMIN_SCOPE_CACHE_TTL_MS = 60 * 1000;
-const LOGIN_SUCCESS_EVENT_TYPE = "LOGIN_SUCCESS";
 
 function resolveBranchIdentity(branch = {}, fallback = {}) {
   const branchId = normalizeString(branch?.id || branch?.branchId || fallback?.id || fallback?.branchId);
@@ -226,15 +225,17 @@ async function buildBranchAdminScope(user = {}) {
     return fallbackScope;
   }
 
-  // Branch ID is the canonical tenant boundary. Older notifications may not
-  // have email/name populated, so requiring all three fields hides valid rows.
-  // Keep email as a fallback only when the branch record cannot be resolved.
-  const scope = branch.id
-    ? { targetBranchId: normalizeString(branch.id) }
-    : {
-        targetBranchId: normalizeString(branch.branchId),
-        targetBranchEmail: normalizeEmail(branch.branchEmail),
-      };
+  // Use the resolved branch as the tenant boundary, with email compatibility
+  // for older rows. Never add empty identifiers that could match legacy rows.
+  const branchId = normalizeString(branch.id || branch.branchId);
+  const branchEmail = normalizeEmail(branch.branchEmail);
+  const branchIdentityClauses = [
+    ...(branchId ? [{ targetBranchId: branchId }] : []),
+    ...(branchEmail ? [{ targetBranchEmail: branchEmail }] : []),
+  ];
+  const scope = branchIdentityClauses.length > 1
+    ? { OR: branchIdentityClauses }
+    : branchIdentityClauses[0] || {};
 
   BRANCH_ADMIN_SCOPE_CACHE.set(cacheKey, {
     scope,
@@ -263,16 +264,17 @@ function getVisibleNotificationKindsForRole(user = {}) {
   return DEFAULT_VISIBLE_NOTIFICATION_KINDS;
 }
 
-function buildNotificationWhere({
+export function buildNotificationWhere({
   user = {},
   branchScope = {},
   visibleKinds = DEFAULT_VISIBLE_NOTIFICATION_KINDS,
   unreadOnly = false,
   kind = "",
 } = {}) {
-  const isFaculty = ["FACULTY", "STUDENT"].includes(String(user?.role || "").toUpperCase());
+  const role = normalizeString(user?.role).toUpperCase();
+  const isFaculty = ["FACULTY", "STUDENT"].includes(role);
   const normalizedKind = normalizeString(kind).toUpperCase();
-  const isSuperAdmin = normalizeString(user?.role).toUpperCase() === "SUPER_ADMIN";
+  const isSuperAdmin = role === "SUPER_ADMIN";
   const superAdminDiscontinuationScope = isSuperAdmin
     ? {
         OR: [
@@ -296,6 +298,35 @@ function buildNotificationWhere({
             },
           }),
       ...(unreadOnly ? { read: false } : {}),
+    };
+  }
+
+  if (role === "BRANCH_ADMIN") {
+    const recipientScopes = [
+      ...(Object.keys(branchScope).length ? [branchScope] : []),
+      ...(user?.id ? [{ targetUserId: user.id }] : []),
+    ];
+    const recipientScope = recipientScopes.length > 1
+      ? { OR: recipientScopes }
+      : recipientScopes[0] || { targetUserId: "__unresolved_branch_admin__" };
+
+    return {
+      ...recipientScope,
+      ...(!normalizedKind
+        ? {
+            NOT: {
+              kind: "COURSE_EDIT_MODULE_UPDATED",
+              message: {
+                contains: "module progress",
+                mode: "insensitive",
+              },
+            },
+          }
+        : {}),
+      ...(unreadOnly ? { read: false } : {}),
+      ...(normalizedKind
+        ? { kind: normalizedKind }
+        : { kind: { in: Array.from(visibleKinds) } }),
     };
   }
 
@@ -338,180 +369,6 @@ function buildNotificationWhere({
         }),
     ...superAdminDiscontinuationScope,
   };
-}
-
-function buildSyntheticBranchNotificationId(prefix, sourceId) {
-  return `synthetic-${prefix}-${String(sourceId || "").trim()}`
-}
-
-function normalizeEmailList(values = []) {
-  return Array.from(
-    new Set(
-      (Array.isArray(values) ? values : [])
-        .map((value) => normalizeEmail(value))
-        .filter(Boolean),
-    ),
-  )
-}
-
-async function buildFallbackBranchNotifications(user = {}, branchScope = {}) {
-  const role = normalizeString(user?.role).toUpperCase();
-  if (role !== "BRANCH_ADMIN") {
-    return [];
-  }
-
-  const branch = await prisma.branch.findFirst({
-    where: {
-      OR: [
-        ...(branchScope.targetBranchId ? [{ id: branchScope.targetBranchId }] : []),
-        ...(branchScope.targetBranchEmail
-          ? [
-              {
-                branchEmail: {
-                  equals: branchScope.targetBranchEmail,
-                  mode: "insensitive",
-                },
-              },
-            ]
-          : []),
-        ...(user?.id ? [{ adminUserId: user.id }] : []),
-      ],
-    },
-    select: {
-      id: true,
-      branchId: true,
-      branchName: true,
-      branchAdminName: true,
-      branchEmail: true,
-    },
-  });
-
-  if (!branch) {
-    return [];
-  }
-
-  const branchFacultyRows = await prisma.branchFaculty.findMany({
-    where: {
-      branchId: branch.id,
-      status: "ACTIVE",
-    },
-    select: {
-      facultyId: true,
-      name: true,
-      email: true,
-    },
-  });
-
-  const facultyEmails = normalizeEmailList(branchFacultyRows.map((row) => row.email));
-  const branchAdminEmail = normalizeEmail(user?.email || branch.branchEmail);
-
-  if (!facultyEmails.length && !branchAdminEmail) {
-    return [];
-  }
-
-  const loginEvents = await prisma.loginEvent.findMany({
-    where: {
-      success: true,
-      eventType: LOGIN_SUCCESS_EVENT_TYPE,
-      user: {
-        OR: [
-          ...(branchAdminEmail
-            ? [
-                {
-                  email: {
-                    equals: branchAdminEmail,
-                    mode: "insensitive",
-                  },
-                },
-              ]
-            : []),
-          ...(facultyEmails.length
-            ? [
-                {
-                  email: {
-                    in: facultyEmails,
-                    mode: "insensitive",
-                  },
-                },
-              ]
-            : []),
-        ],
-      },
-    },
-    orderBy: { createdAt: "asc" },
-    select: {
-      id: true,
-      createdAt: true,
-      user: {
-        select: {
-          id: true,
-          email: true,
-          fullName: true,
-          role: true,
-          userCode: true,
-        },
-      },
-    },
-  });
-
-  const earliestEventByUserId = new Map();
-  for (const event of loginEvents) {
-    if (!event?.user?.id) continue;
-    if (!earliestEventByUserId.has(event.user.id)) {
-      earliestEventByUserId.set(event.user.id, event);
-    }
-  }
-
-  const fallbackNotifications = [];
-  const branchAdminEvent = Array.from(earliestEventByUserId.values()).find(
-    (event) => String(event?.user?.role || "").toUpperCase() === "BRANCH_ADMIN",
-  );
-
-  if (branchAdminEvent) {
-    fallbackNotifications.push({
-      id: buildSyntheticBranchNotificationId("branch-login", branchAdminEvent.id),
-      kind: "branch-login",
-      tone: "green",
-      title: `${branch.branchName || branch.branchId || "Branch"} is active`,
-      message: `${branchAdminEvent.user.fullName || branch.branchAdminName || "Branch admin"} logged in with ${branchAdminEvent.user.email || branch.branchEmail || "their branch account"}.`,
-      actionLabel: "Logged in",
-      targetBranchId: branch.id,
-      targetBranchEmail: branch.branchEmail,
-      targetBranchName: branch.branchName,
-      read: false,
-      createdAt: branchAdminEvent.createdAt,
-    });
-  }
-
-  for (const [index, row] of branchFacultyRows.entries()) {
-    const matchedEvent = Array.from(earliestEventByUserId.values()).find(
-      (event) => normalizeEmail(event?.user?.email) === normalizeEmail(row.email),
-    );
-
-    if (!matchedEvent) continue;
-
-    fallbackNotifications.push({
-      id: buildSyntheticBranchNotificationId("branch-faculty-login", matchedEvent.id),
-      kind: "branch-faculty-login",
-      tone: "blue",
-      title: `Faculty ${row.name || matchedEvent.user.fullName || row.email || "Faculty"} logged in`,
-      message: `Faculty ${row.name || matchedEvent.user.fullName || "Faculty"} logged in to ${branch.branchName || branch.branchId || "your branch"}.`,
-      actionLabel: "Faculty login",
-      targetBranchId: branch.id,
-      targetBranchEmail: branch.branchEmail,
-      targetBranchName: branch.branchName,
-      facultyId: row.facultyId || matchedEvent.user.userCode || "",
-      facultyEmail: row.email || matchedEvent.user.email || "",
-      facultyName: row.name || matchedEvent.user.fullName || "",
-      read: false,
-      createdAt: matchedEvent.createdAt,
-      _fallbackIndex: index,
-    });
-  }
-
-  return fallbackNotifications.sort(
-    (left, right) => new Date(right.createdAt).getTime() - new Date(left.createdAt).getTime(),
-  );
 }
 
 export async function createNotification(data, prismaClient = prisma) {
@@ -1100,7 +957,6 @@ export async function listNotifications(query = {}, user = {}) {
   const unreadOnly = String(query.unreadOnly || "").trim().toLowerCase() === "true";
   const kind = normalizeString(query.kind).toUpperCase();
 
-  const isFaculty = ["FACULTY", "STUDENT"].includes(String(user?.role || "").toUpperCase());
   if (String(user?.role || "").toUpperCase() === "FACULTY") {
     await ensureFacultyAcademicTestCompletionNotifications(user);
   }
@@ -1115,114 +971,24 @@ export async function listNotifications(query = {}, user = {}) {
     kind,
   });
 
-  let total = 0;
-  let rows = [];
-  let unreadCount = 0;
-
-  try {
-    [total, rows, unreadCount] = await prisma.$transaction([
-      prisma.notification.count({ where }),
-      prisma.notification.findMany({
-        where,
-        orderBy: { createdAt: "desc" },
-        skip: (page - 1) * limit,
-        take: limit,
+  const [total, rows, unreadCount] = await prisma.$transaction([
+    prisma.notification.count({ where }),
+    prisma.notification.findMany({
+      where,
+      orderBy: { createdAt: "desc" },
+      skip: (page - 1) * limit,
+      take: limit,
+    }),
+    prisma.notification.count({
+      where: buildNotificationWhere({
+        user,
+        branchScope,
+        visibleKinds,
+        unreadOnly: true,
+        kind,
       }),
-      prisma.notification.count({
-        where: buildNotificationWhere({
-          user,
-          branchScope,
-          visibleKinds,
-          unreadOnly: true,
-          kind,
-        }),
-      }),
-    ]);
-  } catch (error) {
-    if (!isFaculty && Object.keys(branchScope).length > 0 && !kind) {
-      const syntheticRows = await buildFallbackBranchNotifications(user, branchScope);
-      return {
-        data: syntheticRows,
-        meta: {
-          page,
-          limit,
-          total: syntheticRows.length,
-          totalPages: Math.max(1, Math.ceil(syntheticRows.length / limit)),
-          unreadCount: syntheticRows.filter((notification) => !notification.read).length,
-        },
-      };
-    }
-
-    throw error;
-  }
-
-  const shouldRetryWideBranchQuery =
-    !isFaculty &&
-    Object.keys(branchScope).length > 0 &&
-    total === 0 &&
-    !kind;
-
-  if (shouldRetryWideBranchQuery) {
-    const wideWhere = buildNotificationWhere({
-      user,
-      branchScope: {},
-      visibleKinds,
-      unreadOnly,
-      kind,
-    });
-
-    const [wideTotal, wideRows, wideUnreadCount] = await prisma.$transaction([
-      prisma.notification.count({ where: wideWhere }),
-      prisma.notification.findMany({
-        where: wideWhere,
-        orderBy: { createdAt: "desc" },
-        skip: (page - 1) * limit,
-        take: limit,
-      }),
-      prisma.notification.count({
-        where: buildNotificationWhere({
-          user,
-          branchScope: {},
-          visibleKinds,
-          unreadOnly: true,
-          kind,
-        }),
-      }),
-    ]);
-
-    return {
-      data: wideRows.map(normalizeNotificationRow).filter(Boolean),
-      meta: {
-        page,
-        limit,
-        total: wideTotal,
-        totalPages: Math.max(1, Math.ceil(wideTotal / limit)),
-        unreadCount: wideUnreadCount,
-      },
-    };
-  }
-
-  const shouldUseSyntheticBranchFallback =
-    !isFaculty &&
-    Object.keys(branchScope).length > 0 &&
-    rows.length === 0 &&
-    !kind;
-
-  if (shouldUseSyntheticBranchFallback) {
-    const syntheticRows = await buildFallbackBranchNotifications(user, branchScope);
-
-    return {
-      data: syntheticRows,
-      meta: {
-        page,
-        limit,
-        total: syntheticRows.length,
-        totalPages: Math.max(1, Math.ceil(syntheticRows.length / limit)),
-        unreadCount: syntheticRows.filter((notification) => !notification.read).length,
-      },
-    };
-  }
-
+    }),
+  ]);
   return {
     data: rows.map(normalizeNotificationRow).filter(Boolean),
     meta: {
@@ -1244,32 +1010,24 @@ export async function markNotificationsAsRead(
   const branchScope = await buildBranchAdminScope(user);
   const visibleKinds = getVisibleNotificationKindsForRole(user);
 
-  const facultyScope =
-    ["FACULTY", "STUDENT"].includes(user?.role)
-      ? {
-          targetUserId: user.id,
-          kind: {
-            in: Array.from(visibleKinds),
-          },
-        }
-      : Object.keys(branchScope).length > 0
-        ? branchScope
-        : {}
-
+  const accessScope = buildNotificationWhere({
+    user,
+    branchScope,
+    visibleKinds,
+    unreadOnly: !hasIds,
+  });
   const where = hasIds
     ? {
-      id: {
-        in: notificationIds
-          .map((id) => String(id))
-          .filter(Boolean),
-      },
-
-      ...facultyScope,
-    }
-    : {
-      read: false,
-      ...facultyScope,
-    };
+        AND: [
+          accessScope,
+          {
+            id: {
+              in: notificationIds.map((id) => String(id)).filter(Boolean),
+            },
+          },
+        ],
+      }
+    : accessScope;
 
   const result = await prisma.notification.updateMany({
     where,
@@ -1294,25 +1052,9 @@ export async function getUnreadNotificationCount(
     unreadOnly: true,
   });
 
-  let count = 0;
-  try {
-    count = await prisma.notification.count({
-      where,
-    });
-  } catch (error) {
-    if (String(user?.role || "").toUpperCase() !== "FACULTY" && Object.keys(branchScope).length > 0) {
-      const syntheticRows = await buildFallbackBranchNotifications(user, branchScope);
-      return syntheticRows.filter((notification) => !notification.read).length;
-    }
-
-    throw error;
-  }
-
-  if (String(user?.role || "").toUpperCase() !== "FACULTY" && Object.keys(branchScope).length > 0 && count === 0) {
-    const syntheticRows = await buildFallbackBranchNotifications(user, branchScope);
-    return syntheticRows.filter((notification) => !notification.read).length;
-  }
-
+  const count = await prisma.notification.count({
+    where,
+  });
   return count;
 }
 export async function createFacultyCourseAssignedNotification({
