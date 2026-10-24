@@ -121,12 +121,13 @@ test("receipt retries can validate their prior course rows without bypassing wor
   assert.equal(result.valid, true, JSON.stringify(result.errors));
   assert.equal(result.payloads.length, 1);
 });
-test("preview recognizes the exact prior receipt and allows that workbook to be retried", async () => {
+test("preview marks an existing receipt course as duplicate", async () => {
   const db = stub({ existing: [{ courseCode: "CISSAICOU001", name: "Course 1" }] });
   db.branchCourseImportReceipt = { findUnique: async () => ({ summary: { courses: [{ courseCode: "CISSAICOU001" }] } }) };
   const result = await previewCourseWorkbook(await workbook(), profile, db);
-  assert.equal(result.valid, true, JSON.stringify(result.errors));
-  assert.equal(result.payloads.length, 1);
+  assert.equal(result.valid, false, JSON.stringify(result.errors));
+  assert.deepEqual(result.duplicateRowsBySheet.Courses, [2]);
+  assert.ok(result.errors.some((error) => /Course code already exists in this branch/.test(error.message)));
 });
 test("invalid archives and file extensions are rejected and errors export as plain cells", async () => {
   assert.throws(() => validateCourseUpload({ buffer: Buffer.from("not a workbook"), originalname: "file.xlsx" }));
