@@ -12,6 +12,7 @@ import { startFacultySkillOverdueScheduler } from "./src/modules/facultySkills/f
 import { startStudentMotivationScheduler } from "./src/modules/studentMotivation/studentMotivation.scheduler.js";
 import { startDiscontinuationFollowUpScheduler } from "./src/modules/studentDiscontinuation/studentDiscontinuation.scheduler.js";
 import { startBatchCycleLifecycleScheduler } from "./src/modules/batchCycles/batchCycleLifecycle.service.js";
+import { startLeadFollowUpReminderScheduler } from "./src/modules/leads/followUpReminder.service.js";
 
 const DATABASE_WARMUP_MAX_ATTEMPTS = 3;
 const DATABASE_WARMUP_RETRY_MS = 1500;
@@ -84,6 +85,7 @@ async function startServer() {
   const facultySkillOverdueTimer = startFacultySkillOverdueScheduler();
   const studentMotivationTimer = startStudentMotivationScheduler();
   const discontinuationFollowUpTimer = startDiscontinuationFollowUpScheduler();
+  const leadFollowUpReminderTimer = startLeadFollowUpReminderScheduler();
   const batchCycleLifecycleTimer = await startBatchCycleLifecycleScheduler();
   const server = app.listen(config.port, "0.0.0.0", () => {
     console.log(`Backend server running on port ${config.port}`);
@@ -112,6 +114,10 @@ async function startServer() {
 
     if (discontinuationFollowUpTimer) {
       clearInterval(discontinuationFollowUpTimer);
+    }
+
+    if (leadFollowUpReminderTimer) {
+      clearInterval(leadFollowUpReminderTimer);
     }
 
     if (batchCycleLifecycleTimer) {

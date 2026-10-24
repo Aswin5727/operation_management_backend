@@ -364,6 +364,11 @@ export type LeadActivity = $Result.DefaultSelection<Prisma.$LeadActivityPayload>
  */
 export type LeadRecording = $Result.DefaultSelection<Prisma.$LeadRecordingPayload>
 /**
+ * Model FollowUpReminder
+ * 
+ */
+export type FollowUpReminder = $Result.DefaultSelection<Prisma.$FollowUpReminderPayload>
+/**
  * Model MotivationMailHistory
  * 
  */
@@ -430,7 +435,8 @@ export const LeadStatus: {
   ACTIVE: 'ACTIVE',
   FOLLOW_UP: 'FOLLOW_UP',
   CONVERTED: 'CONVERTED',
-  CLOSED: 'CLOSED'
+  CLOSED: 'CLOSED',
+  OTHER: 'OTHER'
 };
 
 export type LeadStatus = (typeof LeadStatus)[keyof typeof LeadStatus]
@@ -440,7 +446,8 @@ export const LeadStage: {
   COLD: 'COLD',
   WARM: 'WARM',
   HOT: 'HOT',
-  CLOSED: 'CLOSED'
+  CLOSED: 'CLOSED',
+  OTHER: 'OTHER'
 };
 
 export type LeadStage = (typeof LeadStage)[keyof typeof LeadStage]
@@ -500,7 +507,10 @@ export const NotificationKind: {
   FACULTY_SKILL_COMPLETED: 'FACULTY_SKILL_COMPLETED',
   FACULTY_SKILL_OVERDUE: 'FACULTY_SKILL_OVERDUE',
   STUDENT_MOTIVATION: 'STUDENT_MOTIVATION',
-  STUDENT_DISCONTINUATION: 'STUDENT_DISCONTINUATION'
+  STUDENT_DISCONTINUATION: 'STUDENT_DISCONTINUATION',
+  LEAD_FOLLOW_UP_DUE: 'LEAD_FOLLOW_UP_DUE',
+  LEAD_FOLLOW_UP_OVERDUE: 'LEAD_FOLLOW_UP_OVERDUE',
+  SALES_CRM_MONTHLY_REPORT: 'SALES_CRM_MONTHLY_REPORT'
 };
 
 export type NotificationKind = (typeof NotificationKind)[keyof typeof NotificationKind]
@@ -1454,6 +1464,16 @@ export class PrismaClient<
   get leadRecording(): Prisma.LeadRecordingDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.followUpReminder`: Exposes CRUD operations for the **FollowUpReminder** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more FollowUpReminders
+    * const followUpReminders = await prisma.followUpReminder.findMany()
+    * ```
+    */
+  get followUpReminder(): Prisma.FollowUpReminderDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.motivationMailHistory`: Exposes CRUD operations for the **MotivationMailHistory** model.
     * Example usage:
     * ```ts
@@ -2036,6 +2056,7 @@ export namespace Prisma {
     LeadStageHistory: 'LeadStageHistory',
     LeadActivity: 'LeadActivity',
     LeadRecording: 'LeadRecording',
+    FollowUpReminder: 'FollowUpReminder',
     MotivationMailHistory: 'MotivationMailHistory',
     StudentDiscontinuationRequest: 'StudentDiscontinuationRequest',
     FacultyReportShare: 'FacultyReportShare',
@@ -2059,7 +2080,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "dashboardWidget" | "userDashboardWidget" | "branch" | "salesAdminBranch" | "loginEvent" | "notification" | "courseEditRequest" | "passwordResetToken" | "course" | "branchCourse" | "branchCourseModule" | "branchCourseSubmodule" | "courseModule" | "batch" | "batchFacultyAssignment" | "branchBatch" | "academicTest" | "academicTestItem" | "academicTestBatch" | "academicQuestionPaper" | "academicQuestion" | "academicTestProject" | "academicScheduledTest" | "academicTestCycle" | "batchCycle" | "academicTestSubmission" | "academicProjectSubmission" | "academicTestAnswer" | "courseStatusHistory" | "batchStatusHistory" | "studentProfile" | "branchStudent" | "branchStudentCourse" | "branchStudentAttendance" | "branchCalendarHoliday" | "branchCalendarLeave" | "branchStudentInstallment" | "facultySkill" | "facultySkillAssignment" | "facultySkillTopic" | "facultySkillAssignmentAudit" | "facultyProfile" | "facultyCourseAssignment" | "facultyBatchEntry" | "facultyAttendanceSession" | "facultyAttendanceDay" | "facultyAttendanceBatchWork" | "facultyTodayWorkEntry" | "facultyTodayWorkStudentEntry" | "studentAttendance" | "branchFaculty" | "facultyLeaveRequest" | "facultyWeekOffRequest" | "branchFacultyCourse" | "facultyLeaveAffectedSession" | "facultyLeaveCombinedSession" | "branchInstallmentTemplate" | "assessment" | "assessmentSubmission" | "exam" | "examSchedule" | "examQuestion" | "examAttempt" | "examAnswer" | "lead" | "leadFollowUp" | "leadStageHistory" | "leadActivity" | "leadRecording" | "motivationMailHistory" | "studentDiscontinuationRequest" | "facultyReportShare" | "academicTestReportHistory" | "academicTestReportSubmission" | "branchStudentPayment" | "branchStudentLedgerEntry" | "branchCourseImportReceipt"
+      modelProps: "user" | "dashboardWidget" | "userDashboardWidget" | "branch" | "salesAdminBranch" | "loginEvent" | "notification" | "courseEditRequest" | "passwordResetToken" | "course" | "branchCourse" | "branchCourseModule" | "branchCourseSubmodule" | "courseModule" | "batch" | "batchFacultyAssignment" | "branchBatch" | "academicTest" | "academicTestItem" | "academicTestBatch" | "academicQuestionPaper" | "academicQuestion" | "academicTestProject" | "academicScheduledTest" | "academicTestCycle" | "batchCycle" | "academicTestSubmission" | "academicProjectSubmission" | "academicTestAnswer" | "courseStatusHistory" | "batchStatusHistory" | "studentProfile" | "branchStudent" | "branchStudentCourse" | "branchStudentAttendance" | "branchCalendarHoliday" | "branchCalendarLeave" | "branchStudentInstallment" | "facultySkill" | "facultySkillAssignment" | "facultySkillTopic" | "facultySkillAssignmentAudit" | "facultyProfile" | "facultyCourseAssignment" | "facultyBatchEntry" | "facultyAttendanceSession" | "facultyAttendanceDay" | "facultyAttendanceBatchWork" | "facultyTodayWorkEntry" | "facultyTodayWorkStudentEntry" | "studentAttendance" | "branchFaculty" | "facultyLeaveRequest" | "facultyWeekOffRequest" | "branchFacultyCourse" | "facultyLeaveAffectedSession" | "facultyLeaveCombinedSession" | "branchInstallmentTemplate" | "assessment" | "assessmentSubmission" | "exam" | "examSchedule" | "examQuestion" | "examAttempt" | "examAnswer" | "lead" | "leadFollowUp" | "leadStageHistory" | "leadActivity" | "leadRecording" | "followUpReminder" | "motivationMailHistory" | "studentDiscontinuationRequest" | "facultyReportShare" | "academicTestReportHistory" | "academicTestReportSubmission" | "branchStudentPayment" | "branchStudentLedgerEntry" | "branchCourseImportReceipt"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -7243,6 +7264,80 @@ export namespace Prisma {
           }
         }
       }
+      FollowUpReminder: {
+        payload: Prisma.$FollowUpReminderPayload<ExtArgs>
+        fields: Prisma.FollowUpReminderFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.FollowUpReminderFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FollowUpReminderPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.FollowUpReminderFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FollowUpReminderPayload>
+          }
+          findFirst: {
+            args: Prisma.FollowUpReminderFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FollowUpReminderPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.FollowUpReminderFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FollowUpReminderPayload>
+          }
+          findMany: {
+            args: Prisma.FollowUpReminderFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FollowUpReminderPayload>[]
+          }
+          create: {
+            args: Prisma.FollowUpReminderCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FollowUpReminderPayload>
+          }
+          createMany: {
+            args: Prisma.FollowUpReminderCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.FollowUpReminderCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FollowUpReminderPayload>[]
+          }
+          delete: {
+            args: Prisma.FollowUpReminderDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FollowUpReminderPayload>
+          }
+          update: {
+            args: Prisma.FollowUpReminderUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FollowUpReminderPayload>
+          }
+          deleteMany: {
+            args: Prisma.FollowUpReminderDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.FollowUpReminderUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.FollowUpReminderUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FollowUpReminderPayload>[]
+          }
+          upsert: {
+            args: Prisma.FollowUpReminderUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FollowUpReminderPayload>
+          }
+          aggregate: {
+            args: Prisma.FollowUpReminderAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateFollowUpReminder>
+          }
+          groupBy: {
+            args: Prisma.FollowUpReminderGroupByArgs<ExtArgs>
+            result: $Utils.Optional<FollowUpReminderGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.FollowUpReminderCountArgs<ExtArgs>
+            result: $Utils.Optional<FollowUpReminderCountAggregateOutputType> | number
+          }
+        }
+      }
       MotivationMailHistory: {
         payload: Prisma.$MotivationMailHistoryPayload<ExtArgs>
         fields: Prisma.MotivationMailHistoryFieldRefs
@@ -8013,6 +8108,7 @@ export namespace Prisma {
     leadStageHistory?: LeadStageHistoryOmit
     leadActivity?: LeadActivityOmit
     leadRecording?: LeadRecordingOmit
+    followUpReminder?: FollowUpReminderOmit
     motivationMailHistory?: MotivationMailHistoryOmit
     studentDiscontinuationRequest?: StudentDiscontinuationRequestOmit
     facultyReportShare?: FacultyReportShareOmit
@@ -8127,6 +8223,7 @@ export namespace Prisma {
     leadActivities: number
     leadStageChanges: number
     leadRecordings: number
+    followUpReminders: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -8156,6 +8253,7 @@ export namespace Prisma {
     leadActivities?: boolean | UserCountOutputTypeCountLeadActivitiesArgs
     leadStageChanges?: boolean | UserCountOutputTypeCountLeadStageChangesArgs
     leadRecordings?: boolean | UserCountOutputTypeCountLeadRecordingsArgs
+    followUpReminders?: boolean | UserCountOutputTypeCountFollowUpRemindersArgs
   }
 
   // Custom InputTypes
@@ -8349,6 +8447,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountLeadRecordingsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: LeadRecordingWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountFollowUpRemindersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FollowUpReminderWhereInput
   }
 
 
@@ -9855,6 +9960,7 @@ export namespace Prisma {
     stageHistory: number
     activities: number
     recordings: number
+    followUpReminders: number
   }
 
   export type LeadCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -9862,6 +9968,7 @@ export namespace Prisma {
     stageHistory?: boolean | LeadCountOutputTypeCountStageHistoryArgs
     activities?: boolean | LeadCountOutputTypeCountActivitiesArgs
     recordings?: boolean | LeadCountOutputTypeCountRecordingsArgs
+    followUpReminders?: boolean | LeadCountOutputTypeCountFollowUpRemindersArgs
   }
 
   // Custom InputTypes
@@ -9900,6 +10007,44 @@ export namespace Prisma {
    * LeadCountOutputType without action
    */
   export type LeadCountOutputTypeCountRecordingsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LeadRecordingWhereInput
+  }
+
+  /**
+   * LeadCountOutputType without action
+   */
+  export type LeadCountOutputTypeCountFollowUpRemindersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FollowUpReminderWhereInput
+  }
+
+
+  /**
+   * Count Type LeadFollowUpCountOutputType
+   */
+
+  export type LeadFollowUpCountOutputType = {
+    recordings: number
+  }
+
+  export type LeadFollowUpCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    recordings?: boolean | LeadFollowUpCountOutputTypeCountRecordingsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * LeadFollowUpCountOutputType without action
+   */
+  export type LeadFollowUpCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadFollowUpCountOutputType
+     */
+    select?: LeadFollowUpCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * LeadFollowUpCountOutputType without action
+   */
+  export type LeadFollowUpCountOutputTypeCountRecordingsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: LeadRecordingWhereInput
   }
 
@@ -10304,6 +10449,7 @@ export namespace Prisma {
     leadActivities?: boolean | User$leadActivitiesArgs<ExtArgs>
     leadStageChanges?: boolean | User$leadStageChangesArgs<ExtArgs>
     leadRecordings?: boolean | User$leadRecordingsArgs<ExtArgs>
+    followUpReminders?: boolean | User$followUpRemindersArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -10411,6 +10557,7 @@ export namespace Prisma {
     leadActivities?: boolean | User$leadActivitiesArgs<ExtArgs>
     leadStageChanges?: boolean | User$leadStageChangesArgs<ExtArgs>
     leadRecordings?: boolean | User$leadRecordingsArgs<ExtArgs>
+    followUpReminders?: boolean | User$followUpRemindersArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -10446,6 +10593,7 @@ export namespace Prisma {
       leadActivities: Prisma.$LeadActivityPayload<ExtArgs>[]
       leadStageChanges: Prisma.$LeadStageHistoryPayload<ExtArgs>[]
       leadRecordings: Prisma.$LeadRecordingPayload<ExtArgs>[]
+      followUpReminders: Prisma.$FollowUpReminderPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -10891,6 +11039,7 @@ export namespace Prisma {
     leadActivities<T extends User$leadActivitiesArgs<ExtArgs> = {}>(args?: Subset<T, User$leadActivitiesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadActivityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     leadStageChanges<T extends User$leadStageChangesArgs<ExtArgs> = {}>(args?: Subset<T, User$leadStageChangesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadStageHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     leadRecordings<T extends User$leadRecordingsArgs<ExtArgs> = {}>(args?: Subset<T, User$leadRecordingsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadRecordingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    followUpReminders<T extends User$followUpRemindersArgs<ExtArgs> = {}>(args?: Subset<T, User$followUpRemindersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FollowUpReminderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -11975,6 +12124,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: LeadRecordingScalarFieldEnum | LeadRecordingScalarFieldEnum[]
+  }
+
+  /**
+   * User.followUpReminders
+   */
+  export type User$followUpRemindersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FollowUpReminder
+     */
+    select?: FollowUpReminderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FollowUpReminder
+     */
+    omit?: FollowUpReminderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FollowUpReminderInclude<ExtArgs> | null
+    where?: FollowUpReminderWhereInput
+    orderBy?: FollowUpReminderOrderByWithRelationInput | FollowUpReminderOrderByWithRelationInput[]
+    cursor?: FollowUpReminderWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: FollowUpReminderScalarFieldEnum | FollowUpReminderScalarFieldEnum[]
   }
 
   /**
@@ -93435,8 +93608,18 @@ export namespace Prisma {
 
   export type AggregateLead = {
     _count: LeadCountAggregateOutputType | null
+    _avg: LeadAvgAggregateOutputType | null
+    _sum: LeadSumAggregateOutputType | null
     _min: LeadMinAggregateOutputType | null
     _max: LeadMaxAggregateOutputType | null
+  }
+
+  export type LeadAvgAggregateOutputType = {
+    paymentAmount: number | null
+  }
+
+  export type LeadSumAggregateOutputType = {
+    paymentAmount: number | null
   }
 
   export type LeadMinAggregateOutputType = {
@@ -93449,17 +93632,27 @@ export namespace Prisma {
     qualification: string | null
     location: string | null
     callType: string | null
+    otherCallType: string | null
     status: $Enums.LeadStatus | null
+    otherStatus: string | null
     stage: $Enums.LeadStage | null
+    otherStage: string | null
     courseId: string | null
+    otherCourse: string | null
+    nextFollowUpDate: Date | null
+    lastCallStatus: string | null
     branchId: string | null
     leadSource: string | null
+    otherLeadSource: string | null
     referredBy: string | null
+    referredName: string | null
     paymentStatus: string | null
+    paymentAmount: number | null
     trainingMode: string | null
     classSchedule: string | null
     courseMode: string | null
     locationDistance: string | null
+    otherLocationDistance: string | null
     leadDate: Date | null
     assignedToId: string | null
     createdById: string | null
@@ -93479,17 +93672,27 @@ export namespace Prisma {
     qualification: string | null
     location: string | null
     callType: string | null
+    otherCallType: string | null
     status: $Enums.LeadStatus | null
+    otherStatus: string | null
     stage: $Enums.LeadStage | null
+    otherStage: string | null
     courseId: string | null
+    otherCourse: string | null
+    nextFollowUpDate: Date | null
+    lastCallStatus: string | null
     branchId: string | null
     leadSource: string | null
+    otherLeadSource: string | null
     referredBy: string | null
+    referredName: string | null
     paymentStatus: string | null
+    paymentAmount: number | null
     trainingMode: string | null
     classSchedule: string | null
     courseMode: string | null
     locationDistance: string | null
+    otherLocationDistance: string | null
     leadDate: Date | null
     assignedToId: string | null
     createdById: string | null
@@ -93509,17 +93712,27 @@ export namespace Prisma {
     qualification: number
     location: number
     callType: number
+    otherCallType: number
     status: number
+    otherStatus: number
     stage: number
+    otherStage: number
     courseId: number
+    otherCourse: number
+    nextFollowUpDate: number
+    lastCallStatus: number
     branchId: number
     leadSource: number
+    otherLeadSource: number
     referredBy: number
+    referredName: number
     paymentStatus: number
+    paymentAmount: number
     trainingMode: number
     classSchedule: number
     courseMode: number
     locationDistance: number
+    otherLocationDistance: number
     leadDate: number
     assignedToId: number
     createdById: number
@@ -93531,6 +93744,14 @@ export namespace Prisma {
   }
 
 
+  export type LeadAvgAggregateInputType = {
+    paymentAmount?: true
+  }
+
+  export type LeadSumAggregateInputType = {
+    paymentAmount?: true
+  }
+
   export type LeadMinAggregateInputType = {
     id?: true
     leadId?: true
@@ -93541,17 +93762,27 @@ export namespace Prisma {
     qualification?: true
     location?: true
     callType?: true
+    otherCallType?: true
     status?: true
+    otherStatus?: true
     stage?: true
+    otherStage?: true
     courseId?: true
+    otherCourse?: true
+    nextFollowUpDate?: true
+    lastCallStatus?: true
     branchId?: true
     leadSource?: true
+    otherLeadSource?: true
     referredBy?: true
+    referredName?: true
     paymentStatus?: true
+    paymentAmount?: true
     trainingMode?: true
     classSchedule?: true
     courseMode?: true
     locationDistance?: true
+    otherLocationDistance?: true
     leadDate?: true
     assignedToId?: true
     createdById?: true
@@ -93571,17 +93802,27 @@ export namespace Prisma {
     qualification?: true
     location?: true
     callType?: true
+    otherCallType?: true
     status?: true
+    otherStatus?: true
     stage?: true
+    otherStage?: true
     courseId?: true
+    otherCourse?: true
+    nextFollowUpDate?: true
+    lastCallStatus?: true
     branchId?: true
     leadSource?: true
+    otherLeadSource?: true
     referredBy?: true
+    referredName?: true
     paymentStatus?: true
+    paymentAmount?: true
     trainingMode?: true
     classSchedule?: true
     courseMode?: true
     locationDistance?: true
+    otherLocationDistance?: true
     leadDate?: true
     assignedToId?: true
     createdById?: true
@@ -93601,17 +93842,27 @@ export namespace Prisma {
     qualification?: true
     location?: true
     callType?: true
+    otherCallType?: true
     status?: true
+    otherStatus?: true
     stage?: true
+    otherStage?: true
     courseId?: true
+    otherCourse?: true
+    nextFollowUpDate?: true
+    lastCallStatus?: true
     branchId?: true
     leadSource?: true
+    otherLeadSource?: true
     referredBy?: true
+    referredName?: true
     paymentStatus?: true
+    paymentAmount?: true
     trainingMode?: true
     classSchedule?: true
     courseMode?: true
     locationDistance?: true
+    otherLocationDistance?: true
     leadDate?: true
     assignedToId?: true
     createdById?: true
@@ -93660,6 +93911,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: LeadAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: LeadSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: LeadMinAggregateInputType
@@ -93690,6 +93953,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: LeadCountAggregateInputType | true
+    _avg?: LeadAvgAggregateInputType
+    _sum?: LeadSumAggregateInputType
     _min?: LeadMinAggregateInputType
     _max?: LeadMaxAggregateInputType
   }
@@ -93704,17 +93969,27 @@ export namespace Prisma {
     qualification: string | null
     location: string | null
     callType: string
+    otherCallType: string | null
     status: $Enums.LeadStatus
+    otherStatus: string | null
     stage: $Enums.LeadStage
+    otherStage: string | null
     courseId: string
+    otherCourse: string | null
+    nextFollowUpDate: Date | null
+    lastCallStatus: string | null
     branchId: string
     leadSource: string
+    otherLeadSource: string | null
     referredBy: string | null
+    referredName: string | null
     paymentStatus: string
+    paymentAmount: number | null
     trainingMode: string | null
     classSchedule: string | null
     courseMode: string | null
     locationDistance: string | null
+    otherLocationDistance: string | null
     leadDate: Date
     assignedToId: string | null
     createdById: string
@@ -93723,6 +93998,8 @@ export namespace Prisma {
     createdAt: Date
     updatedAt: Date
     _count: LeadCountAggregateOutputType | null
+    _avg: LeadAvgAggregateOutputType | null
+    _sum: LeadSumAggregateOutputType | null
     _min: LeadMinAggregateOutputType | null
     _max: LeadMaxAggregateOutputType | null
   }
@@ -93751,17 +94028,27 @@ export namespace Prisma {
     qualification?: boolean
     location?: boolean
     callType?: boolean
+    otherCallType?: boolean
     status?: boolean
+    otherStatus?: boolean
     stage?: boolean
+    otherStage?: boolean
     courseId?: boolean
+    otherCourse?: boolean
+    nextFollowUpDate?: boolean
+    lastCallStatus?: boolean
     branchId?: boolean
     leadSource?: boolean
+    otherLeadSource?: boolean
     referredBy?: boolean
+    referredName?: boolean
     paymentStatus?: boolean
+    paymentAmount?: boolean
     trainingMode?: boolean
     classSchedule?: boolean
     courseMode?: boolean
     locationDistance?: boolean
+    otherLocationDistance?: boolean
     leadDate?: boolean
     assignedToId?: boolean
     createdById?: boolean
@@ -93778,6 +94065,7 @@ export namespace Prisma {
     stageHistory?: boolean | Lead$stageHistoryArgs<ExtArgs>
     activities?: boolean | Lead$activitiesArgs<ExtArgs>
     recordings?: boolean | Lead$recordingsArgs<ExtArgs>
+    followUpReminders?: boolean | Lead$followUpRemindersArgs<ExtArgs>
     _count?: boolean | LeadCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["lead"]>
 
@@ -93791,17 +94079,27 @@ export namespace Prisma {
     qualification?: boolean
     location?: boolean
     callType?: boolean
+    otherCallType?: boolean
     status?: boolean
+    otherStatus?: boolean
     stage?: boolean
+    otherStage?: boolean
     courseId?: boolean
+    otherCourse?: boolean
+    nextFollowUpDate?: boolean
+    lastCallStatus?: boolean
     branchId?: boolean
     leadSource?: boolean
+    otherLeadSource?: boolean
     referredBy?: boolean
+    referredName?: boolean
     paymentStatus?: boolean
+    paymentAmount?: boolean
     trainingMode?: boolean
     classSchedule?: boolean
     courseMode?: boolean
     locationDistance?: boolean
+    otherLocationDistance?: boolean
     leadDate?: boolean
     assignedToId?: boolean
     createdById?: boolean
@@ -93826,17 +94124,27 @@ export namespace Prisma {
     qualification?: boolean
     location?: boolean
     callType?: boolean
+    otherCallType?: boolean
     status?: boolean
+    otherStatus?: boolean
     stage?: boolean
+    otherStage?: boolean
     courseId?: boolean
+    otherCourse?: boolean
+    nextFollowUpDate?: boolean
+    lastCallStatus?: boolean
     branchId?: boolean
     leadSource?: boolean
+    otherLeadSource?: boolean
     referredBy?: boolean
+    referredName?: boolean
     paymentStatus?: boolean
+    paymentAmount?: boolean
     trainingMode?: boolean
     classSchedule?: boolean
     courseMode?: boolean
     locationDistance?: boolean
+    otherLocationDistance?: boolean
     leadDate?: boolean
     assignedToId?: boolean
     createdById?: boolean
@@ -93861,17 +94169,27 @@ export namespace Prisma {
     qualification?: boolean
     location?: boolean
     callType?: boolean
+    otherCallType?: boolean
     status?: boolean
+    otherStatus?: boolean
     stage?: boolean
+    otherStage?: boolean
     courseId?: boolean
+    otherCourse?: boolean
+    nextFollowUpDate?: boolean
+    lastCallStatus?: boolean
     branchId?: boolean
     leadSource?: boolean
+    otherLeadSource?: boolean
     referredBy?: boolean
+    referredName?: boolean
     paymentStatus?: boolean
+    paymentAmount?: boolean
     trainingMode?: boolean
     classSchedule?: boolean
     courseMode?: boolean
     locationDistance?: boolean
+    otherLocationDistance?: boolean
     leadDate?: boolean
     assignedToId?: boolean
     createdById?: boolean
@@ -93881,7 +94199,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type LeadOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "leadId" | "studentName" | "phoneNumber" | "alternativeNumber" | "email" | "qualification" | "location" | "callType" | "status" | "stage" | "courseId" | "branchId" | "leadSource" | "referredBy" | "paymentStatus" | "trainingMode" | "classSchedule" | "courseMode" | "locationDistance" | "leadDate" | "assignedToId" | "createdById" | "updatedById" | "deletedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["lead"]>
+  export type LeadOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "leadId" | "studentName" | "phoneNumber" | "alternativeNumber" | "email" | "qualification" | "location" | "callType" | "otherCallType" | "status" | "otherStatus" | "stage" | "otherStage" | "courseId" | "otherCourse" | "nextFollowUpDate" | "lastCallStatus" | "branchId" | "leadSource" | "otherLeadSource" | "referredBy" | "referredName" | "paymentStatus" | "paymentAmount" | "trainingMode" | "classSchedule" | "courseMode" | "locationDistance" | "otherLocationDistance" | "leadDate" | "assignedToId" | "createdById" | "updatedById" | "deletedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["lead"]>
   export type LeadInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     branch?: boolean | BranchDefaultArgs<ExtArgs>
     course?: boolean | BranchCourseDefaultArgs<ExtArgs>
@@ -93892,6 +94210,7 @@ export namespace Prisma {
     stageHistory?: boolean | Lead$stageHistoryArgs<ExtArgs>
     activities?: boolean | Lead$activitiesArgs<ExtArgs>
     recordings?: boolean | Lead$recordingsArgs<ExtArgs>
+    followUpReminders?: boolean | Lead$followUpRemindersArgs<ExtArgs>
     _count?: boolean | LeadCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type LeadIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -93921,6 +94240,7 @@ export namespace Prisma {
       stageHistory: Prisma.$LeadStageHistoryPayload<ExtArgs>[]
       activities: Prisma.$LeadActivityPayload<ExtArgs>[]
       recordings: Prisma.$LeadRecordingPayload<ExtArgs>[]
+      followUpReminders: Prisma.$FollowUpReminderPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -93932,17 +94252,27 @@ export namespace Prisma {
       qualification: string | null
       location: string | null
       callType: string
+      otherCallType: string | null
       status: $Enums.LeadStatus
+      otherStatus: string | null
       stage: $Enums.LeadStage
+      otherStage: string | null
       courseId: string
+      otherCourse: string | null
+      nextFollowUpDate: Date | null
+      lastCallStatus: string | null
       branchId: string
       leadSource: string
+      otherLeadSource: string | null
       referredBy: string | null
+      referredName: string | null
       paymentStatus: string
+      paymentAmount: number | null
       trainingMode: string | null
       classSchedule: string | null
       courseMode: string | null
       locationDistance: string | null
+      otherLocationDistance: string | null
       leadDate: Date
       assignedToId: string | null
       createdById: string
@@ -94353,6 +94683,7 @@ export namespace Prisma {
     stageHistory<T extends Lead$stageHistoryArgs<ExtArgs> = {}>(args?: Subset<T, Lead$stageHistoryArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadStageHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     activities<T extends Lead$activitiesArgs<ExtArgs> = {}>(args?: Subset<T, Lead$activitiesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadActivityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     recordings<T extends Lead$recordingsArgs<ExtArgs> = {}>(args?: Subset<T, Lead$recordingsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadRecordingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    followUpReminders<T extends Lead$followUpRemindersArgs<ExtArgs> = {}>(args?: Subset<T, Lead$followUpRemindersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FollowUpReminderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -94391,17 +94722,27 @@ export namespace Prisma {
     readonly qualification: FieldRef<"Lead", 'String'>
     readonly location: FieldRef<"Lead", 'String'>
     readonly callType: FieldRef<"Lead", 'String'>
+    readonly otherCallType: FieldRef<"Lead", 'String'>
     readonly status: FieldRef<"Lead", 'LeadStatus'>
+    readonly otherStatus: FieldRef<"Lead", 'String'>
     readonly stage: FieldRef<"Lead", 'LeadStage'>
+    readonly otherStage: FieldRef<"Lead", 'String'>
     readonly courseId: FieldRef<"Lead", 'String'>
+    readonly otherCourse: FieldRef<"Lead", 'String'>
+    readonly nextFollowUpDate: FieldRef<"Lead", 'DateTime'>
+    readonly lastCallStatus: FieldRef<"Lead", 'String'>
     readonly branchId: FieldRef<"Lead", 'String'>
     readonly leadSource: FieldRef<"Lead", 'String'>
+    readonly otherLeadSource: FieldRef<"Lead", 'String'>
     readonly referredBy: FieldRef<"Lead", 'String'>
+    readonly referredName: FieldRef<"Lead", 'String'>
     readonly paymentStatus: FieldRef<"Lead", 'String'>
+    readonly paymentAmount: FieldRef<"Lead", 'Float'>
     readonly trainingMode: FieldRef<"Lead", 'String'>
     readonly classSchedule: FieldRef<"Lead", 'String'>
     readonly courseMode: FieldRef<"Lead", 'String'>
     readonly locationDistance: FieldRef<"Lead", 'String'>
+    readonly otherLocationDistance: FieldRef<"Lead", 'String'>
     readonly leadDate: FieldRef<"Lead", 'DateTime'>
     readonly assignedToId: FieldRef<"Lead", 'String'>
     readonly createdById: FieldRef<"Lead", 'String'>
@@ -94944,6 +95285,30 @@ export namespace Prisma {
   }
 
   /**
+   * Lead.followUpReminders
+   */
+  export type Lead$followUpRemindersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FollowUpReminder
+     */
+    select?: FollowUpReminderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FollowUpReminder
+     */
+    omit?: FollowUpReminderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FollowUpReminderInclude<ExtArgs> | null
+    where?: FollowUpReminderWhereInput
+    orderBy?: FollowUpReminderOrderByWithRelationInput | FollowUpReminderOrderByWithRelationInput[]
+    cursor?: FollowUpReminderWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: FollowUpReminderScalarFieldEnum | FollowUpReminderScalarFieldEnum[]
+  }
+
+  /**
    * Lead without action
    */
   export type LeadDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -94977,6 +95342,7 @@ export namespace Prisma {
     leadId: string | null
     followUpDate: Date | null
     followUpType: string | null
+    callStatus: string | null
     notes: string | null
     nextFollowUpDate: Date | null
     createdById: string | null
@@ -94989,6 +95355,7 @@ export namespace Prisma {
     leadId: string | null
     followUpDate: Date | null
     followUpType: string | null
+    callStatus: string | null
     notes: string | null
     nextFollowUpDate: Date | null
     createdById: string | null
@@ -95001,6 +95368,7 @@ export namespace Prisma {
     leadId: number
     followUpDate: number
     followUpType: number
+    callStatus: number
     notes: number
     nextFollowUpDate: number
     createdById: number
@@ -95015,6 +95383,7 @@ export namespace Prisma {
     leadId?: true
     followUpDate?: true
     followUpType?: true
+    callStatus?: true
     notes?: true
     nextFollowUpDate?: true
     createdById?: true
@@ -95027,6 +95396,7 @@ export namespace Prisma {
     leadId?: true
     followUpDate?: true
     followUpType?: true
+    callStatus?: true
     notes?: true
     nextFollowUpDate?: true
     createdById?: true
@@ -95039,6 +95409,7 @@ export namespace Prisma {
     leadId?: true
     followUpDate?: true
     followUpType?: true
+    callStatus?: true
     notes?: true
     nextFollowUpDate?: true
     createdById?: true
@@ -95124,6 +95495,7 @@ export namespace Prisma {
     leadId: string
     followUpDate: Date
     followUpType: string
+    callStatus: string
     notes: string
     nextFollowUpDate: Date | null
     createdById: string
@@ -95153,6 +95525,7 @@ export namespace Prisma {
     leadId?: boolean
     followUpDate?: boolean
     followUpType?: boolean
+    callStatus?: boolean
     notes?: boolean
     nextFollowUpDate?: boolean
     createdById?: boolean
@@ -95160,6 +95533,8 @@ export namespace Prisma {
     updatedAt?: boolean
     lead?: boolean | LeadDefaultArgs<ExtArgs>
     createdBy?: boolean | UserDefaultArgs<ExtArgs>
+    recordings?: boolean | LeadFollowUp$recordingsArgs<ExtArgs>
+    _count?: boolean | LeadFollowUpCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["leadFollowUp"]>
 
   export type LeadFollowUpSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -95167,6 +95542,7 @@ export namespace Prisma {
     leadId?: boolean
     followUpDate?: boolean
     followUpType?: boolean
+    callStatus?: boolean
     notes?: boolean
     nextFollowUpDate?: boolean
     createdById?: boolean
@@ -95181,6 +95557,7 @@ export namespace Prisma {
     leadId?: boolean
     followUpDate?: boolean
     followUpType?: boolean
+    callStatus?: boolean
     notes?: boolean
     nextFollowUpDate?: boolean
     createdById?: boolean
@@ -95195,6 +95572,7 @@ export namespace Prisma {
     leadId?: boolean
     followUpDate?: boolean
     followUpType?: boolean
+    callStatus?: boolean
     notes?: boolean
     nextFollowUpDate?: boolean
     createdById?: boolean
@@ -95202,10 +95580,12 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type LeadFollowUpOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "leadId" | "followUpDate" | "followUpType" | "notes" | "nextFollowUpDate" | "createdById" | "createdAt" | "updatedAt", ExtArgs["result"]["leadFollowUp"]>
+  export type LeadFollowUpOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "leadId" | "followUpDate" | "followUpType" | "callStatus" | "notes" | "nextFollowUpDate" | "createdById" | "createdAt" | "updatedAt", ExtArgs["result"]["leadFollowUp"]>
   export type LeadFollowUpInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     lead?: boolean | LeadDefaultArgs<ExtArgs>
     createdBy?: boolean | UserDefaultArgs<ExtArgs>
+    recordings?: boolean | LeadFollowUp$recordingsArgs<ExtArgs>
+    _count?: boolean | LeadFollowUpCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type LeadFollowUpIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     lead?: boolean | LeadDefaultArgs<ExtArgs>
@@ -95221,12 +95601,14 @@ export namespace Prisma {
     objects: {
       lead: Prisma.$LeadPayload<ExtArgs>
       createdBy: Prisma.$UserPayload<ExtArgs>
+      recordings: Prisma.$LeadRecordingPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       leadId: string
       followUpDate: Date
       followUpType: string
+      callStatus: string
       notes: string
       nextFollowUpDate: Date | null
       createdById: string
@@ -95628,6 +96010,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     lead<T extends LeadDefaultArgs<ExtArgs> = {}>(args?: Subset<T, LeadDefaultArgs<ExtArgs>>): Prisma__LeadClient<$Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     createdBy<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    recordings<T extends LeadFollowUp$recordingsArgs<ExtArgs> = {}>(args?: Subset<T, LeadFollowUp$recordingsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadRecordingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -95661,6 +96044,7 @@ export namespace Prisma {
     readonly leadId: FieldRef<"LeadFollowUp", 'String'>
     readonly followUpDate: FieldRef<"LeadFollowUp", 'DateTime'>
     readonly followUpType: FieldRef<"LeadFollowUp", 'String'>
+    readonly callStatus: FieldRef<"LeadFollowUp", 'String'>
     readonly notes: FieldRef<"LeadFollowUp", 'String'>
     readonly nextFollowUpDate: FieldRef<"LeadFollowUp", 'DateTime'>
     readonly createdById: FieldRef<"LeadFollowUp", 'String'>
@@ -96064,6 +96448,30 @@ export namespace Prisma {
      * Limit how many LeadFollowUps to delete.
      */
     limit?: number
+  }
+
+  /**
+   * LeadFollowUp.recordings
+   */
+  export type LeadFollowUp$recordingsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadRecording
+     */
+    select?: LeadRecordingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadRecording
+     */
+    omit?: LeadRecordingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadRecordingInclude<ExtArgs> | null
+    where?: LeadRecordingWhereInput
+    orderBy?: LeadRecordingOrderByWithRelationInput | LeadRecordingOrderByWithRelationInput[]
+    cursor?: LeadRecordingWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: LeadRecordingScalarFieldEnum | LeadRecordingScalarFieldEnum[]
   }
 
   /**
@@ -98489,6 +98897,7 @@ export namespace Prisma {
     createdById?: boolean
     createdAt?: boolean
     lead?: boolean | LeadDefaultArgs<ExtArgs>
+    followUp?: boolean | LeadRecording$followUpArgs<ExtArgs>
     createdBy?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["leadRecording"]>
 
@@ -98503,6 +98912,7 @@ export namespace Prisma {
     createdById?: boolean
     createdAt?: boolean
     lead?: boolean | LeadDefaultArgs<ExtArgs>
+    followUp?: boolean | LeadRecording$followUpArgs<ExtArgs>
     createdBy?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["leadRecording"]>
 
@@ -98517,6 +98927,7 @@ export namespace Prisma {
     createdById?: boolean
     createdAt?: boolean
     lead?: boolean | LeadDefaultArgs<ExtArgs>
+    followUp?: boolean | LeadRecording$followUpArgs<ExtArgs>
     createdBy?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["leadRecording"]>
 
@@ -98535,14 +98946,17 @@ export namespace Prisma {
   export type LeadRecordingOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "leadId" | "followUpId" | "originalName" | "storageKey" | "mimeType" | "sizeBytes" | "createdById" | "createdAt", ExtArgs["result"]["leadRecording"]>
   export type LeadRecordingInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     lead?: boolean | LeadDefaultArgs<ExtArgs>
+    followUp?: boolean | LeadRecording$followUpArgs<ExtArgs>
     createdBy?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type LeadRecordingIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     lead?: boolean | LeadDefaultArgs<ExtArgs>
+    followUp?: boolean | LeadRecording$followUpArgs<ExtArgs>
     createdBy?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type LeadRecordingIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     lead?: boolean | LeadDefaultArgs<ExtArgs>
+    followUp?: boolean | LeadRecording$followUpArgs<ExtArgs>
     createdBy?: boolean | UserDefaultArgs<ExtArgs>
   }
 
@@ -98550,6 +98964,7 @@ export namespace Prisma {
     name: "LeadRecording"
     objects: {
       lead: Prisma.$LeadPayload<ExtArgs>
+      followUp: Prisma.$LeadFollowUpPayload<ExtArgs> | null
       createdBy: Prisma.$UserPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -98957,6 +99372,7 @@ export namespace Prisma {
   export interface Prisma__LeadRecordingClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     lead<T extends LeadDefaultArgs<ExtArgs> = {}>(args?: Subset<T, LeadDefaultArgs<ExtArgs>>): Prisma__LeadClient<$Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    followUp<T extends LeadRecording$followUpArgs<ExtArgs> = {}>(args?: Subset<T, LeadRecording$followUpArgs<ExtArgs>>): Prisma__LeadFollowUpClient<$Result.GetResult<Prisma.$LeadFollowUpPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     createdBy<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -99397,6 +99813,25 @@ export namespace Prisma {
   }
 
   /**
+   * LeadRecording.followUp
+   */
+  export type LeadRecording$followUpArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadFollowUp
+     */
+    select?: LeadFollowUpSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadFollowUp
+     */
+    omit?: LeadFollowUpOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadFollowUpInclude<ExtArgs> | null
+    where?: LeadFollowUpWhereInput
+  }
+
+  /**
    * LeadRecording without action
    */
   export type LeadRecordingDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -99412,6 +99847,1168 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: LeadRecordingInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model FollowUpReminder
+   */
+
+  export type AggregateFollowUpReminder = {
+    _count: FollowUpReminderCountAggregateOutputType | null
+    _min: FollowUpReminderMinAggregateOutputType | null
+    _max: FollowUpReminderMaxAggregateOutputType | null
+  }
+
+  export type FollowUpReminderMinAggregateOutputType = {
+    id: string | null
+    leadId: string | null
+    recipientUserId: string | null
+    dueDate: Date | null
+    scheduledFor: Date | null
+    timezone: string | null
+    status: string | null
+    notificationId: string | null
+    deliveredAt: Date | null
+    cancelledAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type FollowUpReminderMaxAggregateOutputType = {
+    id: string | null
+    leadId: string | null
+    recipientUserId: string | null
+    dueDate: Date | null
+    scheduledFor: Date | null
+    timezone: string | null
+    status: string | null
+    notificationId: string | null
+    deliveredAt: Date | null
+    cancelledAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type FollowUpReminderCountAggregateOutputType = {
+    id: number
+    leadId: number
+    recipientUserId: number
+    dueDate: number
+    scheduledFor: number
+    timezone: number
+    status: number
+    notificationId: number
+    deliveredAt: number
+    cancelledAt: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type FollowUpReminderMinAggregateInputType = {
+    id?: true
+    leadId?: true
+    recipientUserId?: true
+    dueDate?: true
+    scheduledFor?: true
+    timezone?: true
+    status?: true
+    notificationId?: true
+    deliveredAt?: true
+    cancelledAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type FollowUpReminderMaxAggregateInputType = {
+    id?: true
+    leadId?: true
+    recipientUserId?: true
+    dueDate?: true
+    scheduledFor?: true
+    timezone?: true
+    status?: true
+    notificationId?: true
+    deliveredAt?: true
+    cancelledAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type FollowUpReminderCountAggregateInputType = {
+    id?: true
+    leadId?: true
+    recipientUserId?: true
+    dueDate?: true
+    scheduledFor?: true
+    timezone?: true
+    status?: true
+    notificationId?: true
+    deliveredAt?: true
+    cancelledAt?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type FollowUpReminderAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FollowUpReminder to aggregate.
+     */
+    where?: FollowUpReminderWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FollowUpReminders to fetch.
+     */
+    orderBy?: FollowUpReminderOrderByWithRelationInput | FollowUpReminderOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: FollowUpReminderWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FollowUpReminders from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FollowUpReminders.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned FollowUpReminders
+    **/
+    _count?: true | FollowUpReminderCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: FollowUpReminderMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: FollowUpReminderMaxAggregateInputType
+  }
+
+  export type GetFollowUpReminderAggregateType<T extends FollowUpReminderAggregateArgs> = {
+        [P in keyof T & keyof AggregateFollowUpReminder]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateFollowUpReminder[P]>
+      : GetScalarType<T[P], AggregateFollowUpReminder[P]>
+  }
+
+
+
+
+  export type FollowUpReminderGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FollowUpReminderWhereInput
+    orderBy?: FollowUpReminderOrderByWithAggregationInput | FollowUpReminderOrderByWithAggregationInput[]
+    by: FollowUpReminderScalarFieldEnum[] | FollowUpReminderScalarFieldEnum
+    having?: FollowUpReminderScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: FollowUpReminderCountAggregateInputType | true
+    _min?: FollowUpReminderMinAggregateInputType
+    _max?: FollowUpReminderMaxAggregateInputType
+  }
+
+  export type FollowUpReminderGroupByOutputType = {
+    id: string
+    leadId: string
+    recipientUserId: string
+    dueDate: Date
+    scheduledFor: Date
+    timezone: string
+    status: string
+    notificationId: string | null
+    deliveredAt: Date | null
+    cancelledAt: Date | null
+    createdAt: Date
+    updatedAt: Date
+    _count: FollowUpReminderCountAggregateOutputType | null
+    _min: FollowUpReminderMinAggregateOutputType | null
+    _max: FollowUpReminderMaxAggregateOutputType | null
+  }
+
+  type GetFollowUpReminderGroupByPayload<T extends FollowUpReminderGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<FollowUpReminderGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof FollowUpReminderGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], FollowUpReminderGroupByOutputType[P]>
+            : GetScalarType<T[P], FollowUpReminderGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type FollowUpReminderSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    leadId?: boolean
+    recipientUserId?: boolean
+    dueDate?: boolean
+    scheduledFor?: boolean
+    timezone?: boolean
+    status?: boolean
+    notificationId?: boolean
+    deliveredAt?: boolean
+    cancelledAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+    recipient?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["followUpReminder"]>
+
+  export type FollowUpReminderSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    leadId?: boolean
+    recipientUserId?: boolean
+    dueDate?: boolean
+    scheduledFor?: boolean
+    timezone?: boolean
+    status?: boolean
+    notificationId?: boolean
+    deliveredAt?: boolean
+    cancelledAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+    recipient?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["followUpReminder"]>
+
+  export type FollowUpReminderSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    leadId?: boolean
+    recipientUserId?: boolean
+    dueDate?: boolean
+    scheduledFor?: boolean
+    timezone?: boolean
+    status?: boolean
+    notificationId?: boolean
+    deliveredAt?: boolean
+    cancelledAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+    recipient?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["followUpReminder"]>
+
+  export type FollowUpReminderSelectScalar = {
+    id?: boolean
+    leadId?: boolean
+    recipientUserId?: boolean
+    dueDate?: boolean
+    scheduledFor?: boolean
+    timezone?: boolean
+    status?: boolean
+    notificationId?: boolean
+    deliveredAt?: boolean
+    cancelledAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type FollowUpReminderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "leadId" | "recipientUserId" | "dueDate" | "scheduledFor" | "timezone" | "status" | "notificationId" | "deliveredAt" | "cancelledAt" | "createdAt" | "updatedAt", ExtArgs["result"]["followUpReminder"]>
+  export type FollowUpReminderInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+    recipient?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type FollowUpReminderIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+    recipient?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type FollowUpReminderIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+    recipient?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $FollowUpReminderPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "FollowUpReminder"
+    objects: {
+      lead: Prisma.$LeadPayload<ExtArgs>
+      recipient: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      leadId: string
+      recipientUserId: string
+      dueDate: Date
+      scheduledFor: Date
+      timezone: string
+      status: string
+      notificationId: string | null
+      deliveredAt: Date | null
+      cancelledAt: Date | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["followUpReminder"]>
+    composites: {}
+  }
+
+  type FollowUpReminderGetPayload<S extends boolean | null | undefined | FollowUpReminderDefaultArgs> = $Result.GetResult<Prisma.$FollowUpReminderPayload, S>
+
+  type FollowUpReminderCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<FollowUpReminderFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: FollowUpReminderCountAggregateInputType | true
+    }
+
+  export interface FollowUpReminderDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['FollowUpReminder'], meta: { name: 'FollowUpReminder' } }
+    /**
+     * Find zero or one FollowUpReminder that matches the filter.
+     * @param {FollowUpReminderFindUniqueArgs} args - Arguments to find a FollowUpReminder
+     * @example
+     * // Get one FollowUpReminder
+     * const followUpReminder = await prisma.followUpReminder.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends FollowUpReminderFindUniqueArgs>(args: SelectSubset<T, FollowUpReminderFindUniqueArgs<ExtArgs>>): Prisma__FollowUpReminderClient<$Result.GetResult<Prisma.$FollowUpReminderPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one FollowUpReminder that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {FollowUpReminderFindUniqueOrThrowArgs} args - Arguments to find a FollowUpReminder
+     * @example
+     * // Get one FollowUpReminder
+     * const followUpReminder = await prisma.followUpReminder.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends FollowUpReminderFindUniqueOrThrowArgs>(args: SelectSubset<T, FollowUpReminderFindUniqueOrThrowArgs<ExtArgs>>): Prisma__FollowUpReminderClient<$Result.GetResult<Prisma.$FollowUpReminderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first FollowUpReminder that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FollowUpReminderFindFirstArgs} args - Arguments to find a FollowUpReminder
+     * @example
+     * // Get one FollowUpReminder
+     * const followUpReminder = await prisma.followUpReminder.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends FollowUpReminderFindFirstArgs>(args?: SelectSubset<T, FollowUpReminderFindFirstArgs<ExtArgs>>): Prisma__FollowUpReminderClient<$Result.GetResult<Prisma.$FollowUpReminderPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first FollowUpReminder that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FollowUpReminderFindFirstOrThrowArgs} args - Arguments to find a FollowUpReminder
+     * @example
+     * // Get one FollowUpReminder
+     * const followUpReminder = await prisma.followUpReminder.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends FollowUpReminderFindFirstOrThrowArgs>(args?: SelectSubset<T, FollowUpReminderFindFirstOrThrowArgs<ExtArgs>>): Prisma__FollowUpReminderClient<$Result.GetResult<Prisma.$FollowUpReminderPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more FollowUpReminders that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FollowUpReminderFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all FollowUpReminders
+     * const followUpReminders = await prisma.followUpReminder.findMany()
+     * 
+     * // Get first 10 FollowUpReminders
+     * const followUpReminders = await prisma.followUpReminder.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const followUpReminderWithIdOnly = await prisma.followUpReminder.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends FollowUpReminderFindManyArgs>(args?: SelectSubset<T, FollowUpReminderFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FollowUpReminderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a FollowUpReminder.
+     * @param {FollowUpReminderCreateArgs} args - Arguments to create a FollowUpReminder.
+     * @example
+     * // Create one FollowUpReminder
+     * const FollowUpReminder = await prisma.followUpReminder.create({
+     *   data: {
+     *     // ... data to create a FollowUpReminder
+     *   }
+     * })
+     * 
+     */
+    create<T extends FollowUpReminderCreateArgs>(args: SelectSubset<T, FollowUpReminderCreateArgs<ExtArgs>>): Prisma__FollowUpReminderClient<$Result.GetResult<Prisma.$FollowUpReminderPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many FollowUpReminders.
+     * @param {FollowUpReminderCreateManyArgs} args - Arguments to create many FollowUpReminders.
+     * @example
+     * // Create many FollowUpReminders
+     * const followUpReminder = await prisma.followUpReminder.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends FollowUpReminderCreateManyArgs>(args?: SelectSubset<T, FollowUpReminderCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many FollowUpReminders and returns the data saved in the database.
+     * @param {FollowUpReminderCreateManyAndReturnArgs} args - Arguments to create many FollowUpReminders.
+     * @example
+     * // Create many FollowUpReminders
+     * const followUpReminder = await prisma.followUpReminder.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many FollowUpReminders and only return the `id`
+     * const followUpReminderWithIdOnly = await prisma.followUpReminder.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends FollowUpReminderCreateManyAndReturnArgs>(args?: SelectSubset<T, FollowUpReminderCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FollowUpReminderPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a FollowUpReminder.
+     * @param {FollowUpReminderDeleteArgs} args - Arguments to delete one FollowUpReminder.
+     * @example
+     * // Delete one FollowUpReminder
+     * const FollowUpReminder = await prisma.followUpReminder.delete({
+     *   where: {
+     *     // ... filter to delete one FollowUpReminder
+     *   }
+     * })
+     * 
+     */
+    delete<T extends FollowUpReminderDeleteArgs>(args: SelectSubset<T, FollowUpReminderDeleteArgs<ExtArgs>>): Prisma__FollowUpReminderClient<$Result.GetResult<Prisma.$FollowUpReminderPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one FollowUpReminder.
+     * @param {FollowUpReminderUpdateArgs} args - Arguments to update one FollowUpReminder.
+     * @example
+     * // Update one FollowUpReminder
+     * const followUpReminder = await prisma.followUpReminder.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends FollowUpReminderUpdateArgs>(args: SelectSubset<T, FollowUpReminderUpdateArgs<ExtArgs>>): Prisma__FollowUpReminderClient<$Result.GetResult<Prisma.$FollowUpReminderPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more FollowUpReminders.
+     * @param {FollowUpReminderDeleteManyArgs} args - Arguments to filter FollowUpReminders to delete.
+     * @example
+     * // Delete a few FollowUpReminders
+     * const { count } = await prisma.followUpReminder.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends FollowUpReminderDeleteManyArgs>(args?: SelectSubset<T, FollowUpReminderDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more FollowUpReminders.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FollowUpReminderUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many FollowUpReminders
+     * const followUpReminder = await prisma.followUpReminder.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends FollowUpReminderUpdateManyArgs>(args: SelectSubset<T, FollowUpReminderUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more FollowUpReminders and returns the data updated in the database.
+     * @param {FollowUpReminderUpdateManyAndReturnArgs} args - Arguments to update many FollowUpReminders.
+     * @example
+     * // Update many FollowUpReminders
+     * const followUpReminder = await prisma.followUpReminder.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more FollowUpReminders and only return the `id`
+     * const followUpReminderWithIdOnly = await prisma.followUpReminder.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends FollowUpReminderUpdateManyAndReturnArgs>(args: SelectSubset<T, FollowUpReminderUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FollowUpReminderPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one FollowUpReminder.
+     * @param {FollowUpReminderUpsertArgs} args - Arguments to update or create a FollowUpReminder.
+     * @example
+     * // Update or create a FollowUpReminder
+     * const followUpReminder = await prisma.followUpReminder.upsert({
+     *   create: {
+     *     // ... data to create a FollowUpReminder
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the FollowUpReminder we want to update
+     *   }
+     * })
+     */
+    upsert<T extends FollowUpReminderUpsertArgs>(args: SelectSubset<T, FollowUpReminderUpsertArgs<ExtArgs>>): Prisma__FollowUpReminderClient<$Result.GetResult<Prisma.$FollowUpReminderPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of FollowUpReminders.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FollowUpReminderCountArgs} args - Arguments to filter FollowUpReminders to count.
+     * @example
+     * // Count the number of FollowUpReminders
+     * const count = await prisma.followUpReminder.count({
+     *   where: {
+     *     // ... the filter for the FollowUpReminders we want to count
+     *   }
+     * })
+    **/
+    count<T extends FollowUpReminderCountArgs>(
+      args?: Subset<T, FollowUpReminderCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], FollowUpReminderCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a FollowUpReminder.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FollowUpReminderAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends FollowUpReminderAggregateArgs>(args: Subset<T, FollowUpReminderAggregateArgs>): Prisma.PrismaPromise<GetFollowUpReminderAggregateType<T>>
+
+    /**
+     * Group by FollowUpReminder.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FollowUpReminderGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends FollowUpReminderGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: FollowUpReminderGroupByArgs['orderBy'] }
+        : { orderBy?: FollowUpReminderGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, FollowUpReminderGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetFollowUpReminderGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the FollowUpReminder model
+   */
+  readonly fields: FollowUpReminderFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for FollowUpReminder.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__FollowUpReminderClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    lead<T extends LeadDefaultArgs<ExtArgs> = {}>(args?: Subset<T, LeadDefaultArgs<ExtArgs>>): Prisma__LeadClient<$Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    recipient<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the FollowUpReminder model
+   */
+  interface FollowUpReminderFieldRefs {
+    readonly id: FieldRef<"FollowUpReminder", 'String'>
+    readonly leadId: FieldRef<"FollowUpReminder", 'String'>
+    readonly recipientUserId: FieldRef<"FollowUpReminder", 'String'>
+    readonly dueDate: FieldRef<"FollowUpReminder", 'DateTime'>
+    readonly scheduledFor: FieldRef<"FollowUpReminder", 'DateTime'>
+    readonly timezone: FieldRef<"FollowUpReminder", 'String'>
+    readonly status: FieldRef<"FollowUpReminder", 'String'>
+    readonly notificationId: FieldRef<"FollowUpReminder", 'String'>
+    readonly deliveredAt: FieldRef<"FollowUpReminder", 'DateTime'>
+    readonly cancelledAt: FieldRef<"FollowUpReminder", 'DateTime'>
+    readonly createdAt: FieldRef<"FollowUpReminder", 'DateTime'>
+    readonly updatedAt: FieldRef<"FollowUpReminder", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * FollowUpReminder findUnique
+   */
+  export type FollowUpReminderFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FollowUpReminder
+     */
+    select?: FollowUpReminderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FollowUpReminder
+     */
+    omit?: FollowUpReminderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FollowUpReminderInclude<ExtArgs> | null
+    /**
+     * Filter, which FollowUpReminder to fetch.
+     */
+    where: FollowUpReminderWhereUniqueInput
+  }
+
+  /**
+   * FollowUpReminder findUniqueOrThrow
+   */
+  export type FollowUpReminderFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FollowUpReminder
+     */
+    select?: FollowUpReminderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FollowUpReminder
+     */
+    omit?: FollowUpReminderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FollowUpReminderInclude<ExtArgs> | null
+    /**
+     * Filter, which FollowUpReminder to fetch.
+     */
+    where: FollowUpReminderWhereUniqueInput
+  }
+
+  /**
+   * FollowUpReminder findFirst
+   */
+  export type FollowUpReminderFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FollowUpReminder
+     */
+    select?: FollowUpReminderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FollowUpReminder
+     */
+    omit?: FollowUpReminderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FollowUpReminderInclude<ExtArgs> | null
+    /**
+     * Filter, which FollowUpReminder to fetch.
+     */
+    where?: FollowUpReminderWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FollowUpReminders to fetch.
+     */
+    orderBy?: FollowUpReminderOrderByWithRelationInput | FollowUpReminderOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FollowUpReminders.
+     */
+    cursor?: FollowUpReminderWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FollowUpReminders from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FollowUpReminders.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FollowUpReminders.
+     */
+    distinct?: FollowUpReminderScalarFieldEnum | FollowUpReminderScalarFieldEnum[]
+  }
+
+  /**
+   * FollowUpReminder findFirstOrThrow
+   */
+  export type FollowUpReminderFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FollowUpReminder
+     */
+    select?: FollowUpReminderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FollowUpReminder
+     */
+    omit?: FollowUpReminderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FollowUpReminderInclude<ExtArgs> | null
+    /**
+     * Filter, which FollowUpReminder to fetch.
+     */
+    where?: FollowUpReminderWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FollowUpReminders to fetch.
+     */
+    orderBy?: FollowUpReminderOrderByWithRelationInput | FollowUpReminderOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FollowUpReminders.
+     */
+    cursor?: FollowUpReminderWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FollowUpReminders from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FollowUpReminders.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FollowUpReminders.
+     */
+    distinct?: FollowUpReminderScalarFieldEnum | FollowUpReminderScalarFieldEnum[]
+  }
+
+  /**
+   * FollowUpReminder findMany
+   */
+  export type FollowUpReminderFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FollowUpReminder
+     */
+    select?: FollowUpReminderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FollowUpReminder
+     */
+    omit?: FollowUpReminderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FollowUpReminderInclude<ExtArgs> | null
+    /**
+     * Filter, which FollowUpReminders to fetch.
+     */
+    where?: FollowUpReminderWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FollowUpReminders to fetch.
+     */
+    orderBy?: FollowUpReminderOrderByWithRelationInput | FollowUpReminderOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing FollowUpReminders.
+     */
+    cursor?: FollowUpReminderWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FollowUpReminders from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FollowUpReminders.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FollowUpReminders.
+     */
+    distinct?: FollowUpReminderScalarFieldEnum | FollowUpReminderScalarFieldEnum[]
+  }
+
+  /**
+   * FollowUpReminder create
+   */
+  export type FollowUpReminderCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FollowUpReminder
+     */
+    select?: FollowUpReminderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FollowUpReminder
+     */
+    omit?: FollowUpReminderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FollowUpReminderInclude<ExtArgs> | null
+    /**
+     * The data needed to create a FollowUpReminder.
+     */
+    data: XOR<FollowUpReminderCreateInput, FollowUpReminderUncheckedCreateInput>
+  }
+
+  /**
+   * FollowUpReminder createMany
+   */
+  export type FollowUpReminderCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many FollowUpReminders.
+     */
+    data: FollowUpReminderCreateManyInput | FollowUpReminderCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * FollowUpReminder createManyAndReturn
+   */
+  export type FollowUpReminderCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FollowUpReminder
+     */
+    select?: FollowUpReminderSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the FollowUpReminder
+     */
+    omit?: FollowUpReminderOmit<ExtArgs> | null
+    /**
+     * The data used to create many FollowUpReminders.
+     */
+    data: FollowUpReminderCreateManyInput | FollowUpReminderCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FollowUpReminderIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * FollowUpReminder update
+   */
+  export type FollowUpReminderUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FollowUpReminder
+     */
+    select?: FollowUpReminderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FollowUpReminder
+     */
+    omit?: FollowUpReminderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FollowUpReminderInclude<ExtArgs> | null
+    /**
+     * The data needed to update a FollowUpReminder.
+     */
+    data: XOR<FollowUpReminderUpdateInput, FollowUpReminderUncheckedUpdateInput>
+    /**
+     * Choose, which FollowUpReminder to update.
+     */
+    where: FollowUpReminderWhereUniqueInput
+  }
+
+  /**
+   * FollowUpReminder updateMany
+   */
+  export type FollowUpReminderUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update FollowUpReminders.
+     */
+    data: XOR<FollowUpReminderUpdateManyMutationInput, FollowUpReminderUncheckedUpdateManyInput>
+    /**
+     * Filter which FollowUpReminders to update
+     */
+    where?: FollowUpReminderWhereInput
+    /**
+     * Limit how many FollowUpReminders to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * FollowUpReminder updateManyAndReturn
+   */
+  export type FollowUpReminderUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FollowUpReminder
+     */
+    select?: FollowUpReminderSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the FollowUpReminder
+     */
+    omit?: FollowUpReminderOmit<ExtArgs> | null
+    /**
+     * The data used to update FollowUpReminders.
+     */
+    data: XOR<FollowUpReminderUpdateManyMutationInput, FollowUpReminderUncheckedUpdateManyInput>
+    /**
+     * Filter which FollowUpReminders to update
+     */
+    where?: FollowUpReminderWhereInput
+    /**
+     * Limit how many FollowUpReminders to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FollowUpReminderIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * FollowUpReminder upsert
+   */
+  export type FollowUpReminderUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FollowUpReminder
+     */
+    select?: FollowUpReminderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FollowUpReminder
+     */
+    omit?: FollowUpReminderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FollowUpReminderInclude<ExtArgs> | null
+    /**
+     * The filter to search for the FollowUpReminder to update in case it exists.
+     */
+    where: FollowUpReminderWhereUniqueInput
+    /**
+     * In case the FollowUpReminder found by the `where` argument doesn't exist, create a new FollowUpReminder with this data.
+     */
+    create: XOR<FollowUpReminderCreateInput, FollowUpReminderUncheckedCreateInput>
+    /**
+     * In case the FollowUpReminder was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<FollowUpReminderUpdateInput, FollowUpReminderUncheckedUpdateInput>
+  }
+
+  /**
+   * FollowUpReminder delete
+   */
+  export type FollowUpReminderDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FollowUpReminder
+     */
+    select?: FollowUpReminderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FollowUpReminder
+     */
+    omit?: FollowUpReminderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FollowUpReminderInclude<ExtArgs> | null
+    /**
+     * Filter which FollowUpReminder to delete.
+     */
+    where: FollowUpReminderWhereUniqueInput
+  }
+
+  /**
+   * FollowUpReminder deleteMany
+   */
+  export type FollowUpReminderDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FollowUpReminders to delete
+     */
+    where?: FollowUpReminderWhereInput
+    /**
+     * Limit how many FollowUpReminders to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * FollowUpReminder without action
+   */
+  export type FollowUpReminderDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FollowUpReminder
+     */
+    select?: FollowUpReminderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FollowUpReminder
+     */
+    omit?: FollowUpReminderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FollowUpReminderInclude<ExtArgs> | null
   }
 
 
@@ -110886,17 +112483,27 @@ export namespace Prisma {
     qualification: 'qualification',
     location: 'location',
     callType: 'callType',
+    otherCallType: 'otherCallType',
     status: 'status',
+    otherStatus: 'otherStatus',
     stage: 'stage',
+    otherStage: 'otherStage',
     courseId: 'courseId',
+    otherCourse: 'otherCourse',
+    nextFollowUpDate: 'nextFollowUpDate',
+    lastCallStatus: 'lastCallStatus',
     branchId: 'branchId',
     leadSource: 'leadSource',
+    otherLeadSource: 'otherLeadSource',
     referredBy: 'referredBy',
+    referredName: 'referredName',
     paymentStatus: 'paymentStatus',
+    paymentAmount: 'paymentAmount',
     trainingMode: 'trainingMode',
     classSchedule: 'classSchedule',
     courseMode: 'courseMode',
     locationDistance: 'locationDistance',
+    otherLocationDistance: 'otherLocationDistance',
     leadDate: 'leadDate',
     assignedToId: 'assignedToId',
     createdById: 'createdById',
@@ -110914,6 +112521,7 @@ export namespace Prisma {
     leadId: 'leadId',
     followUpDate: 'followUpDate',
     followUpType: 'followUpType',
+    callStatus: 'callStatus',
     notes: 'notes',
     nextFollowUpDate: 'nextFollowUpDate',
     createdById: 'createdById',
@@ -110962,6 +112570,24 @@ export namespace Prisma {
   };
 
   export type LeadRecordingScalarFieldEnum = (typeof LeadRecordingScalarFieldEnum)[keyof typeof LeadRecordingScalarFieldEnum]
+
+
+  export const FollowUpReminderScalarFieldEnum: {
+    id: 'id',
+    leadId: 'leadId',
+    recipientUserId: 'recipientUserId',
+    dueDate: 'dueDate',
+    scheduledFor: 'scheduledFor',
+    timezone: 'timezone',
+    status: 'status',
+    notificationId: 'notificationId',
+    deliveredAt: 'deliveredAt',
+    cancelledAt: 'cancelledAt',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type FollowUpReminderScalarFieldEnum = (typeof FollowUpReminderScalarFieldEnum)[keyof typeof FollowUpReminderScalarFieldEnum]
 
 
   export const MotivationMailHistoryScalarFieldEnum: {
@@ -111545,6 +113171,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityListRelationFilter
     leadStageChanges?: LeadStageHistoryListRelationFilter
     leadRecordings?: LeadRecordingListRelationFilter
+    followUpReminders?: FollowUpReminderListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -111597,6 +113224,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityOrderByRelationAggregateInput
     leadStageChanges?: LeadStageHistoryOrderByRelationAggregateInput
     leadRecordings?: LeadRecordingOrderByRelationAggregateInput
+    followUpReminders?: FollowUpReminderOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -111652,6 +113280,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityListRelationFilter
     leadStageChanges?: LeadStageHistoryListRelationFilter
     leadRecordings?: LeadRecordingListRelationFilter
+    followUpReminders?: FollowUpReminderListRelationFilter
   }, "id" | "userCode" | "email" | "phone">
 
   export type UserOrderByWithAggregationInput = {
@@ -119139,17 +120768,27 @@ export namespace Prisma {
     qualification?: StringNullableFilter<"Lead"> | string | null
     location?: StringNullableFilter<"Lead"> | string | null
     callType?: StringFilter<"Lead"> | string
+    otherCallType?: StringNullableFilter<"Lead"> | string | null
     status?: EnumLeadStatusFilter<"Lead"> | $Enums.LeadStatus
+    otherStatus?: StringNullableFilter<"Lead"> | string | null
     stage?: EnumLeadStageFilter<"Lead"> | $Enums.LeadStage
+    otherStage?: StringNullableFilter<"Lead"> | string | null
     courseId?: StringFilter<"Lead"> | string
+    otherCourse?: StringNullableFilter<"Lead"> | string | null
+    nextFollowUpDate?: DateTimeNullableFilter<"Lead"> | Date | string | null
+    lastCallStatus?: StringNullableFilter<"Lead"> | string | null
     branchId?: StringFilter<"Lead"> | string
     leadSource?: StringFilter<"Lead"> | string
+    otherLeadSource?: StringNullableFilter<"Lead"> | string | null
     referredBy?: StringNullableFilter<"Lead"> | string | null
+    referredName?: StringNullableFilter<"Lead"> | string | null
     paymentStatus?: StringFilter<"Lead"> | string
+    paymentAmount?: FloatNullableFilter<"Lead"> | number | null
     trainingMode?: StringNullableFilter<"Lead"> | string | null
     classSchedule?: StringNullableFilter<"Lead"> | string | null
     courseMode?: StringNullableFilter<"Lead"> | string | null
     locationDistance?: StringNullableFilter<"Lead"> | string | null
+    otherLocationDistance?: StringNullableFilter<"Lead"> | string | null
     leadDate?: DateTimeFilter<"Lead"> | Date | string
     assignedToId?: StringNullableFilter<"Lead"> | string | null
     createdById?: StringFilter<"Lead"> | string
@@ -119166,6 +120805,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryListRelationFilter
     activities?: LeadActivityListRelationFilter
     recordings?: LeadRecordingListRelationFilter
+    followUpReminders?: FollowUpReminderListRelationFilter
   }
 
   export type LeadOrderByWithRelationInput = {
@@ -119178,17 +120818,27 @@ export namespace Prisma {
     qualification?: SortOrderInput | SortOrder
     location?: SortOrderInput | SortOrder
     callType?: SortOrder
+    otherCallType?: SortOrderInput | SortOrder
     status?: SortOrder
+    otherStatus?: SortOrderInput | SortOrder
     stage?: SortOrder
+    otherStage?: SortOrderInput | SortOrder
     courseId?: SortOrder
+    otherCourse?: SortOrderInput | SortOrder
+    nextFollowUpDate?: SortOrderInput | SortOrder
+    lastCallStatus?: SortOrderInput | SortOrder
     branchId?: SortOrder
     leadSource?: SortOrder
+    otherLeadSource?: SortOrderInput | SortOrder
     referredBy?: SortOrderInput | SortOrder
+    referredName?: SortOrderInput | SortOrder
     paymentStatus?: SortOrder
+    paymentAmount?: SortOrderInput | SortOrder
     trainingMode?: SortOrderInput | SortOrder
     classSchedule?: SortOrderInput | SortOrder
     courseMode?: SortOrderInput | SortOrder
     locationDistance?: SortOrderInput | SortOrder
+    otherLocationDistance?: SortOrderInput | SortOrder
     leadDate?: SortOrder
     assignedToId?: SortOrderInput | SortOrder
     createdById?: SortOrder
@@ -119205,6 +120855,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryOrderByRelationAggregateInput
     activities?: LeadActivityOrderByRelationAggregateInput
     recordings?: LeadRecordingOrderByRelationAggregateInput
+    followUpReminders?: FollowUpReminderOrderByRelationAggregateInput
   }
 
   export type LeadWhereUniqueInput = Prisma.AtLeast<{
@@ -119220,17 +120871,27 @@ export namespace Prisma {
     qualification?: StringNullableFilter<"Lead"> | string | null
     location?: StringNullableFilter<"Lead"> | string | null
     callType?: StringFilter<"Lead"> | string
+    otherCallType?: StringNullableFilter<"Lead"> | string | null
     status?: EnumLeadStatusFilter<"Lead"> | $Enums.LeadStatus
+    otherStatus?: StringNullableFilter<"Lead"> | string | null
     stage?: EnumLeadStageFilter<"Lead"> | $Enums.LeadStage
+    otherStage?: StringNullableFilter<"Lead"> | string | null
     courseId?: StringFilter<"Lead"> | string
+    otherCourse?: StringNullableFilter<"Lead"> | string | null
+    nextFollowUpDate?: DateTimeNullableFilter<"Lead"> | Date | string | null
+    lastCallStatus?: StringNullableFilter<"Lead"> | string | null
     branchId?: StringFilter<"Lead"> | string
     leadSource?: StringFilter<"Lead"> | string
+    otherLeadSource?: StringNullableFilter<"Lead"> | string | null
     referredBy?: StringNullableFilter<"Lead"> | string | null
+    referredName?: StringNullableFilter<"Lead"> | string | null
     paymentStatus?: StringFilter<"Lead"> | string
+    paymentAmount?: FloatNullableFilter<"Lead"> | number | null
     trainingMode?: StringNullableFilter<"Lead"> | string | null
     classSchedule?: StringNullableFilter<"Lead"> | string | null
     courseMode?: StringNullableFilter<"Lead"> | string | null
     locationDistance?: StringNullableFilter<"Lead"> | string | null
+    otherLocationDistance?: StringNullableFilter<"Lead"> | string | null
     leadDate?: DateTimeFilter<"Lead"> | Date | string
     assignedToId?: StringNullableFilter<"Lead"> | string | null
     createdById?: StringFilter<"Lead"> | string
@@ -119247,6 +120908,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryListRelationFilter
     activities?: LeadActivityListRelationFilter
     recordings?: LeadRecordingListRelationFilter
+    followUpReminders?: FollowUpReminderListRelationFilter
   }, "id" | "leadId">
 
   export type LeadOrderByWithAggregationInput = {
@@ -119259,17 +120921,27 @@ export namespace Prisma {
     qualification?: SortOrderInput | SortOrder
     location?: SortOrderInput | SortOrder
     callType?: SortOrder
+    otherCallType?: SortOrderInput | SortOrder
     status?: SortOrder
+    otherStatus?: SortOrderInput | SortOrder
     stage?: SortOrder
+    otherStage?: SortOrderInput | SortOrder
     courseId?: SortOrder
+    otherCourse?: SortOrderInput | SortOrder
+    nextFollowUpDate?: SortOrderInput | SortOrder
+    lastCallStatus?: SortOrderInput | SortOrder
     branchId?: SortOrder
     leadSource?: SortOrder
+    otherLeadSource?: SortOrderInput | SortOrder
     referredBy?: SortOrderInput | SortOrder
+    referredName?: SortOrderInput | SortOrder
     paymentStatus?: SortOrder
+    paymentAmount?: SortOrderInput | SortOrder
     trainingMode?: SortOrderInput | SortOrder
     classSchedule?: SortOrderInput | SortOrder
     courseMode?: SortOrderInput | SortOrder
     locationDistance?: SortOrderInput | SortOrder
+    otherLocationDistance?: SortOrderInput | SortOrder
     leadDate?: SortOrder
     assignedToId?: SortOrderInput | SortOrder
     createdById?: SortOrder
@@ -119278,8 +120950,10 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: LeadCountOrderByAggregateInput
+    _avg?: LeadAvgOrderByAggregateInput
     _max?: LeadMaxOrderByAggregateInput
     _min?: LeadMinOrderByAggregateInput
+    _sum?: LeadSumOrderByAggregateInput
   }
 
   export type LeadScalarWhereWithAggregatesInput = {
@@ -119295,17 +120969,27 @@ export namespace Prisma {
     qualification?: StringNullableWithAggregatesFilter<"Lead"> | string | null
     location?: StringNullableWithAggregatesFilter<"Lead"> | string | null
     callType?: StringWithAggregatesFilter<"Lead"> | string
+    otherCallType?: StringNullableWithAggregatesFilter<"Lead"> | string | null
     status?: EnumLeadStatusWithAggregatesFilter<"Lead"> | $Enums.LeadStatus
+    otherStatus?: StringNullableWithAggregatesFilter<"Lead"> | string | null
     stage?: EnumLeadStageWithAggregatesFilter<"Lead"> | $Enums.LeadStage
+    otherStage?: StringNullableWithAggregatesFilter<"Lead"> | string | null
     courseId?: StringWithAggregatesFilter<"Lead"> | string
+    otherCourse?: StringNullableWithAggregatesFilter<"Lead"> | string | null
+    nextFollowUpDate?: DateTimeNullableWithAggregatesFilter<"Lead"> | Date | string | null
+    lastCallStatus?: StringNullableWithAggregatesFilter<"Lead"> | string | null
     branchId?: StringWithAggregatesFilter<"Lead"> | string
     leadSource?: StringWithAggregatesFilter<"Lead"> | string
+    otherLeadSource?: StringNullableWithAggregatesFilter<"Lead"> | string | null
     referredBy?: StringNullableWithAggregatesFilter<"Lead"> | string | null
+    referredName?: StringNullableWithAggregatesFilter<"Lead"> | string | null
     paymentStatus?: StringWithAggregatesFilter<"Lead"> | string
+    paymentAmount?: FloatNullableWithAggregatesFilter<"Lead"> | number | null
     trainingMode?: StringNullableWithAggregatesFilter<"Lead"> | string | null
     classSchedule?: StringNullableWithAggregatesFilter<"Lead"> | string | null
     courseMode?: StringNullableWithAggregatesFilter<"Lead"> | string | null
     locationDistance?: StringNullableWithAggregatesFilter<"Lead"> | string | null
+    otherLocationDistance?: StringNullableWithAggregatesFilter<"Lead"> | string | null
     leadDate?: DateTimeWithAggregatesFilter<"Lead"> | Date | string
     assignedToId?: StringNullableWithAggregatesFilter<"Lead"> | string | null
     createdById?: StringWithAggregatesFilter<"Lead"> | string
@@ -119323,6 +121007,7 @@ export namespace Prisma {
     leadId?: StringFilter<"LeadFollowUp"> | string
     followUpDate?: DateTimeFilter<"LeadFollowUp"> | Date | string
     followUpType?: StringFilter<"LeadFollowUp"> | string
+    callStatus?: StringFilter<"LeadFollowUp"> | string
     notes?: StringFilter<"LeadFollowUp"> | string
     nextFollowUpDate?: DateTimeNullableFilter<"LeadFollowUp"> | Date | string | null
     createdById?: StringFilter<"LeadFollowUp"> | string
@@ -119330,6 +121015,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"LeadFollowUp"> | Date | string
     lead?: XOR<LeadScalarRelationFilter, LeadWhereInput>
     createdBy?: XOR<UserScalarRelationFilter, UserWhereInput>
+    recordings?: LeadRecordingListRelationFilter
   }
 
   export type LeadFollowUpOrderByWithRelationInput = {
@@ -119337,6 +121023,7 @@ export namespace Prisma {
     leadId?: SortOrder
     followUpDate?: SortOrder
     followUpType?: SortOrder
+    callStatus?: SortOrder
     notes?: SortOrder
     nextFollowUpDate?: SortOrderInput | SortOrder
     createdById?: SortOrder
@@ -119344,6 +121031,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     lead?: LeadOrderByWithRelationInput
     createdBy?: UserOrderByWithRelationInput
+    recordings?: LeadRecordingOrderByRelationAggregateInput
   }
 
   export type LeadFollowUpWhereUniqueInput = Prisma.AtLeast<{
@@ -119354,6 +121042,7 @@ export namespace Prisma {
     leadId?: StringFilter<"LeadFollowUp"> | string
     followUpDate?: DateTimeFilter<"LeadFollowUp"> | Date | string
     followUpType?: StringFilter<"LeadFollowUp"> | string
+    callStatus?: StringFilter<"LeadFollowUp"> | string
     notes?: StringFilter<"LeadFollowUp"> | string
     nextFollowUpDate?: DateTimeNullableFilter<"LeadFollowUp"> | Date | string | null
     createdById?: StringFilter<"LeadFollowUp"> | string
@@ -119361,6 +121050,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"LeadFollowUp"> | Date | string
     lead?: XOR<LeadScalarRelationFilter, LeadWhereInput>
     createdBy?: XOR<UserScalarRelationFilter, UserWhereInput>
+    recordings?: LeadRecordingListRelationFilter
   }, "id">
 
   export type LeadFollowUpOrderByWithAggregationInput = {
@@ -119368,6 +121058,7 @@ export namespace Prisma {
     leadId?: SortOrder
     followUpDate?: SortOrder
     followUpType?: SortOrder
+    callStatus?: SortOrder
     notes?: SortOrder
     nextFollowUpDate?: SortOrderInput | SortOrder
     createdById?: SortOrder
@@ -119386,6 +121077,7 @@ export namespace Prisma {
     leadId?: StringWithAggregatesFilter<"LeadFollowUp"> | string
     followUpDate?: DateTimeWithAggregatesFilter<"LeadFollowUp"> | Date | string
     followUpType?: StringWithAggregatesFilter<"LeadFollowUp"> | string
+    callStatus?: StringWithAggregatesFilter<"LeadFollowUp"> | string
     notes?: StringWithAggregatesFilter<"LeadFollowUp"> | string
     nextFollowUpDate?: DateTimeNullableWithAggregatesFilter<"LeadFollowUp"> | Date | string | null
     createdById?: StringWithAggregatesFilter<"LeadFollowUp"> | string
@@ -119538,6 +121230,7 @@ export namespace Prisma {
     createdById?: StringFilter<"LeadRecording"> | string
     createdAt?: DateTimeFilter<"LeadRecording"> | Date | string
     lead?: XOR<LeadScalarRelationFilter, LeadWhereInput>
+    followUp?: XOR<LeadFollowUpNullableScalarRelationFilter, LeadFollowUpWhereInput> | null
     createdBy?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
@@ -119552,6 +121245,7 @@ export namespace Prisma {
     createdById?: SortOrder
     createdAt?: SortOrder
     lead?: LeadOrderByWithRelationInput
+    followUp?: LeadFollowUpOrderByWithRelationInput
     createdBy?: UserOrderByWithRelationInput
   }
 
@@ -119569,6 +121263,7 @@ export namespace Prisma {
     createdById?: StringFilter<"LeadRecording"> | string
     createdAt?: DateTimeFilter<"LeadRecording"> | Date | string
     lead?: XOR<LeadScalarRelationFilter, LeadWhereInput>
+    followUp?: XOR<LeadFollowUpNullableScalarRelationFilter, LeadFollowUpWhereInput> | null
     createdBy?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id" | "storageKey">
 
@@ -119602,6 +121297,100 @@ export namespace Prisma {
     sizeBytes?: IntWithAggregatesFilter<"LeadRecording"> | number
     createdById?: StringWithAggregatesFilter<"LeadRecording"> | string
     createdAt?: DateTimeWithAggregatesFilter<"LeadRecording"> | Date | string
+  }
+
+  export type FollowUpReminderWhereInput = {
+    AND?: FollowUpReminderWhereInput | FollowUpReminderWhereInput[]
+    OR?: FollowUpReminderWhereInput[]
+    NOT?: FollowUpReminderWhereInput | FollowUpReminderWhereInput[]
+    id?: StringFilter<"FollowUpReminder"> | string
+    leadId?: StringFilter<"FollowUpReminder"> | string
+    recipientUserId?: StringFilter<"FollowUpReminder"> | string
+    dueDate?: DateTimeFilter<"FollowUpReminder"> | Date | string
+    scheduledFor?: DateTimeFilter<"FollowUpReminder"> | Date | string
+    timezone?: StringFilter<"FollowUpReminder"> | string
+    status?: StringFilter<"FollowUpReminder"> | string
+    notificationId?: StringNullableFilter<"FollowUpReminder"> | string | null
+    deliveredAt?: DateTimeNullableFilter<"FollowUpReminder"> | Date | string | null
+    cancelledAt?: DateTimeNullableFilter<"FollowUpReminder"> | Date | string | null
+    createdAt?: DateTimeFilter<"FollowUpReminder"> | Date | string
+    updatedAt?: DateTimeFilter<"FollowUpReminder"> | Date | string
+    lead?: XOR<LeadScalarRelationFilter, LeadWhereInput>
+    recipient?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type FollowUpReminderOrderByWithRelationInput = {
+    id?: SortOrder
+    leadId?: SortOrder
+    recipientUserId?: SortOrder
+    dueDate?: SortOrder
+    scheduledFor?: SortOrder
+    timezone?: SortOrder
+    status?: SortOrder
+    notificationId?: SortOrderInput | SortOrder
+    deliveredAt?: SortOrderInput | SortOrder
+    cancelledAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    lead?: LeadOrderByWithRelationInput
+    recipient?: UserOrderByWithRelationInput
+  }
+
+  export type FollowUpReminderWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    leadId_recipientUserId_dueDate?: FollowUpReminderLeadIdRecipientUserIdDueDateCompoundUniqueInput
+    AND?: FollowUpReminderWhereInput | FollowUpReminderWhereInput[]
+    OR?: FollowUpReminderWhereInput[]
+    NOT?: FollowUpReminderWhereInput | FollowUpReminderWhereInput[]
+    leadId?: StringFilter<"FollowUpReminder"> | string
+    recipientUserId?: StringFilter<"FollowUpReminder"> | string
+    dueDate?: DateTimeFilter<"FollowUpReminder"> | Date | string
+    scheduledFor?: DateTimeFilter<"FollowUpReminder"> | Date | string
+    timezone?: StringFilter<"FollowUpReminder"> | string
+    status?: StringFilter<"FollowUpReminder"> | string
+    notificationId?: StringNullableFilter<"FollowUpReminder"> | string | null
+    deliveredAt?: DateTimeNullableFilter<"FollowUpReminder"> | Date | string | null
+    cancelledAt?: DateTimeNullableFilter<"FollowUpReminder"> | Date | string | null
+    createdAt?: DateTimeFilter<"FollowUpReminder"> | Date | string
+    updatedAt?: DateTimeFilter<"FollowUpReminder"> | Date | string
+    lead?: XOR<LeadScalarRelationFilter, LeadWhereInput>
+    recipient?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id" | "leadId_recipientUserId_dueDate">
+
+  export type FollowUpReminderOrderByWithAggregationInput = {
+    id?: SortOrder
+    leadId?: SortOrder
+    recipientUserId?: SortOrder
+    dueDate?: SortOrder
+    scheduledFor?: SortOrder
+    timezone?: SortOrder
+    status?: SortOrder
+    notificationId?: SortOrderInput | SortOrder
+    deliveredAt?: SortOrderInput | SortOrder
+    cancelledAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: FollowUpReminderCountOrderByAggregateInput
+    _max?: FollowUpReminderMaxOrderByAggregateInput
+    _min?: FollowUpReminderMinOrderByAggregateInput
+  }
+
+  export type FollowUpReminderScalarWhereWithAggregatesInput = {
+    AND?: FollowUpReminderScalarWhereWithAggregatesInput | FollowUpReminderScalarWhereWithAggregatesInput[]
+    OR?: FollowUpReminderScalarWhereWithAggregatesInput[]
+    NOT?: FollowUpReminderScalarWhereWithAggregatesInput | FollowUpReminderScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"FollowUpReminder"> | string
+    leadId?: StringWithAggregatesFilter<"FollowUpReminder"> | string
+    recipientUserId?: StringWithAggregatesFilter<"FollowUpReminder"> | string
+    dueDate?: DateTimeWithAggregatesFilter<"FollowUpReminder"> | Date | string
+    scheduledFor?: DateTimeWithAggregatesFilter<"FollowUpReminder"> | Date | string
+    timezone?: StringWithAggregatesFilter<"FollowUpReminder"> | string
+    status?: StringWithAggregatesFilter<"FollowUpReminder"> | string
+    notificationId?: StringNullableWithAggregatesFilter<"FollowUpReminder"> | string | null
+    deliveredAt?: DateTimeNullableWithAggregatesFilter<"FollowUpReminder"> | Date | string | null
+    cancelledAt?: DateTimeNullableWithAggregatesFilter<"FollowUpReminder"> | Date | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"FollowUpReminder"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"FollowUpReminder"> | Date | string
   }
 
   export type MotivationMailHistoryWhereInput = {
@@ -120608,6 +122397,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -120660,6 +122450,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
   }
 
   export type UserUpdateInput = {
@@ -120712,6 +122503,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -120764,6 +122556,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -129422,15 +131215,25 @@ export namespace Prisma {
     qualification?: string | null
     location?: string | null
     callType: string
+    otherCallType?: string | null
     status?: $Enums.LeadStatus
+    otherStatus?: string | null
     stage?: $Enums.LeadStage
+    otherStage?: string | null
+    otherCourse?: string | null
+    nextFollowUpDate?: Date | string | null
+    lastCallStatus?: string | null
     leadSource: string
+    otherLeadSource?: string | null
     referredBy?: string | null
+    referredName?: string | null
     paymentStatus?: string
+    paymentAmount?: number | null
     trainingMode?: string | null
     classSchedule?: string | null
     courseMode?: string | null
     locationDistance?: string | null
+    otherLocationDistance?: string | null
     leadDate: Date | string
     deletedAt?: Date | string | null
     createdAt?: Date | string
@@ -129444,6 +131247,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryCreateNestedManyWithoutLeadInput
     activities?: LeadActivityCreateNestedManyWithoutLeadInput
     recordings?: LeadRecordingCreateNestedManyWithoutLeadInput
+    followUpReminders?: FollowUpReminderCreateNestedManyWithoutLeadInput
   }
 
   export type LeadUncheckedCreateInput = {
@@ -129456,17 +131260,27 @@ export namespace Prisma {
     qualification?: string | null
     location?: string | null
     callType: string
+    otherCallType?: string | null
     status?: $Enums.LeadStatus
+    otherStatus?: string | null
     stage?: $Enums.LeadStage
+    otherStage?: string | null
     courseId: string
+    otherCourse?: string | null
+    nextFollowUpDate?: Date | string | null
+    lastCallStatus?: string | null
     branchId: string
     leadSource: string
+    otherLeadSource?: string | null
     referredBy?: string | null
+    referredName?: string | null
     paymentStatus?: string
+    paymentAmount?: number | null
     trainingMode?: string | null
     classSchedule?: string | null
     courseMode?: string | null
     locationDistance?: string | null
+    otherLocationDistance?: string | null
     leadDate: Date | string
     assignedToId?: string | null
     createdById: string
@@ -129478,6 +131292,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUncheckedCreateNestedManyWithoutLeadInput
     activities?: LeadActivityUncheckedCreateNestedManyWithoutLeadInput
     recordings?: LeadRecordingUncheckedCreateNestedManyWithoutLeadInput
+    followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutLeadInput
   }
 
   export type LeadUpdateInput = {
@@ -129490,15 +131305,25 @@ export namespace Prisma {
     qualification?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
     callType?: StringFieldUpdateOperationsInput | string
+    otherCallType?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    otherStatus?: NullableStringFieldUpdateOperationsInput | string | null
     stage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    otherStage?: NullableStringFieldUpdateOperationsInput | string | null
+    otherCourse?: NullableStringFieldUpdateOperationsInput | string | null
+    nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastCallStatus?: NullableStringFieldUpdateOperationsInput | string | null
     leadSource?: StringFieldUpdateOperationsInput | string
+    otherLeadSource?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    referredName?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: StringFieldUpdateOperationsInput | string
+    paymentAmount?: NullableFloatFieldUpdateOperationsInput | number | null
     trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
     classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     courseMode?: NullableStringFieldUpdateOperationsInput | string | null
     locationDistance?: NullableStringFieldUpdateOperationsInput | string | null
+    otherLocationDistance?: NullableStringFieldUpdateOperationsInput | string | null
     leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -129512,6 +131337,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUpdateManyWithoutLeadNestedInput
     activities?: LeadActivityUpdateManyWithoutLeadNestedInput
     recordings?: LeadRecordingUpdateManyWithoutLeadNestedInput
+    followUpReminders?: FollowUpReminderUpdateManyWithoutLeadNestedInput
   }
 
   export type LeadUncheckedUpdateInput = {
@@ -129524,17 +131350,27 @@ export namespace Prisma {
     qualification?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
     callType?: StringFieldUpdateOperationsInput | string
+    otherCallType?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    otherStatus?: NullableStringFieldUpdateOperationsInput | string | null
     stage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    otherStage?: NullableStringFieldUpdateOperationsInput | string | null
     courseId?: StringFieldUpdateOperationsInput | string
+    otherCourse?: NullableStringFieldUpdateOperationsInput | string | null
+    nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastCallStatus?: NullableStringFieldUpdateOperationsInput | string | null
     branchId?: StringFieldUpdateOperationsInput | string
     leadSource?: StringFieldUpdateOperationsInput | string
+    otherLeadSource?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    referredName?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: StringFieldUpdateOperationsInput | string
+    paymentAmount?: NullableFloatFieldUpdateOperationsInput | number | null
     trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
     classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     courseMode?: NullableStringFieldUpdateOperationsInput | string | null
     locationDistance?: NullableStringFieldUpdateOperationsInput | string | null
+    otherLocationDistance?: NullableStringFieldUpdateOperationsInput | string | null
     leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
     assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
     createdById?: StringFieldUpdateOperationsInput | string
@@ -129546,6 +131382,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUncheckedUpdateManyWithoutLeadNestedInput
     activities?: LeadActivityUncheckedUpdateManyWithoutLeadNestedInput
     recordings?: LeadRecordingUncheckedUpdateManyWithoutLeadNestedInput
+    followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutLeadNestedInput
   }
 
   export type LeadCreateManyInput = {
@@ -129558,17 +131395,27 @@ export namespace Prisma {
     qualification?: string | null
     location?: string | null
     callType: string
+    otherCallType?: string | null
     status?: $Enums.LeadStatus
+    otherStatus?: string | null
     stage?: $Enums.LeadStage
+    otherStage?: string | null
     courseId: string
+    otherCourse?: string | null
+    nextFollowUpDate?: Date | string | null
+    lastCallStatus?: string | null
     branchId: string
     leadSource: string
+    otherLeadSource?: string | null
     referredBy?: string | null
+    referredName?: string | null
     paymentStatus?: string
+    paymentAmount?: number | null
     trainingMode?: string | null
     classSchedule?: string | null
     courseMode?: string | null
     locationDistance?: string | null
+    otherLocationDistance?: string | null
     leadDate: Date | string
     assignedToId?: string | null
     createdById: string
@@ -129588,15 +131435,25 @@ export namespace Prisma {
     qualification?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
     callType?: StringFieldUpdateOperationsInput | string
+    otherCallType?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    otherStatus?: NullableStringFieldUpdateOperationsInput | string | null
     stage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    otherStage?: NullableStringFieldUpdateOperationsInput | string | null
+    otherCourse?: NullableStringFieldUpdateOperationsInput | string | null
+    nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastCallStatus?: NullableStringFieldUpdateOperationsInput | string | null
     leadSource?: StringFieldUpdateOperationsInput | string
+    otherLeadSource?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    referredName?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: StringFieldUpdateOperationsInput | string
+    paymentAmount?: NullableFloatFieldUpdateOperationsInput | number | null
     trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
     classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     courseMode?: NullableStringFieldUpdateOperationsInput | string | null
     locationDistance?: NullableStringFieldUpdateOperationsInput | string | null
+    otherLocationDistance?: NullableStringFieldUpdateOperationsInput | string | null
     leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -129613,17 +131470,27 @@ export namespace Prisma {
     qualification?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
     callType?: StringFieldUpdateOperationsInput | string
+    otherCallType?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    otherStatus?: NullableStringFieldUpdateOperationsInput | string | null
     stage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    otherStage?: NullableStringFieldUpdateOperationsInput | string | null
     courseId?: StringFieldUpdateOperationsInput | string
+    otherCourse?: NullableStringFieldUpdateOperationsInput | string | null
+    nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastCallStatus?: NullableStringFieldUpdateOperationsInput | string | null
     branchId?: StringFieldUpdateOperationsInput | string
     leadSource?: StringFieldUpdateOperationsInput | string
+    otherLeadSource?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    referredName?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: StringFieldUpdateOperationsInput | string
+    paymentAmount?: NullableFloatFieldUpdateOperationsInput | number | null
     trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
     classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     courseMode?: NullableStringFieldUpdateOperationsInput | string | null
     locationDistance?: NullableStringFieldUpdateOperationsInput | string | null
+    otherLocationDistance?: NullableStringFieldUpdateOperationsInput | string | null
     leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
     assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
     createdById?: StringFieldUpdateOperationsInput | string
@@ -129637,12 +131504,14 @@ export namespace Prisma {
     id?: string
     followUpDate: Date | string
     followUpType: string
+    callStatus: string
     notes: string
     nextFollowUpDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     lead: LeadCreateNestedOneWithoutFollowUpsInput
     createdBy: UserCreateNestedOneWithoutLeadFollowUpsInput
+    recordings?: LeadRecordingCreateNestedManyWithoutFollowUpInput
   }
 
   export type LeadFollowUpUncheckedCreateInput = {
@@ -129650,23 +131519,27 @@ export namespace Prisma {
     leadId: string
     followUpDate: Date | string
     followUpType: string
+    callStatus: string
     notes: string
     nextFollowUpDate?: Date | string | null
     createdById: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    recordings?: LeadRecordingUncheckedCreateNestedManyWithoutFollowUpInput
   }
 
   export type LeadFollowUpUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     followUpDate?: DateTimeFieldUpdateOperationsInput | Date | string
     followUpType?: StringFieldUpdateOperationsInput | string
+    callStatus?: StringFieldUpdateOperationsInput | string
     notes?: StringFieldUpdateOperationsInput | string
     nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lead?: LeadUpdateOneRequiredWithoutFollowUpsNestedInput
     createdBy?: UserUpdateOneRequiredWithoutLeadFollowUpsNestedInput
+    recordings?: LeadRecordingUpdateManyWithoutFollowUpNestedInput
   }
 
   export type LeadFollowUpUncheckedUpdateInput = {
@@ -129674,11 +131547,13 @@ export namespace Prisma {
     leadId?: StringFieldUpdateOperationsInput | string
     followUpDate?: DateTimeFieldUpdateOperationsInput | Date | string
     followUpType?: StringFieldUpdateOperationsInput | string
+    callStatus?: StringFieldUpdateOperationsInput | string
     notes?: StringFieldUpdateOperationsInput | string
     nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdById?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    recordings?: LeadRecordingUncheckedUpdateManyWithoutFollowUpNestedInput
   }
 
   export type LeadFollowUpCreateManyInput = {
@@ -129686,6 +131561,7 @@ export namespace Prisma {
     leadId: string
     followUpDate: Date | string
     followUpType: string
+    callStatus: string
     notes: string
     nextFollowUpDate?: Date | string | null
     createdById: string
@@ -129697,6 +131573,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     followUpDate?: DateTimeFieldUpdateOperationsInput | Date | string
     followUpType?: StringFieldUpdateOperationsInput | string
+    callStatus?: StringFieldUpdateOperationsInput | string
     notes?: StringFieldUpdateOperationsInput | string
     nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -129708,6 +131585,7 @@ export namespace Prisma {
     leadId?: StringFieldUpdateOperationsInput | string
     followUpDate?: DateTimeFieldUpdateOperationsInput | Date | string
     followUpType?: StringFieldUpdateOperationsInput | string
+    callStatus?: StringFieldUpdateOperationsInput | string
     notes?: StringFieldUpdateOperationsInput | string
     nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdById?: StringFieldUpdateOperationsInput | string
@@ -129846,13 +131724,13 @@ export namespace Prisma {
 
   export type LeadRecordingCreateInput = {
     id?: string
-    followUpId?: string | null
     originalName: string
     storageKey: string
     mimeType: string
     sizeBytes: number
     createdAt?: Date | string
     lead: LeadCreateNestedOneWithoutRecordingsInput
+    followUp?: LeadFollowUpCreateNestedOneWithoutRecordingsInput
     createdBy: UserCreateNestedOneWithoutLeadRecordingsInput
   }
 
@@ -129870,13 +131748,13 @@ export namespace Prisma {
 
   export type LeadRecordingUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    followUpId?: NullableStringFieldUpdateOperationsInput | string | null
     originalName?: StringFieldUpdateOperationsInput | string
     storageKey?: StringFieldUpdateOperationsInput | string
     mimeType?: StringFieldUpdateOperationsInput | string
     sizeBytes?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lead?: LeadUpdateOneRequiredWithoutRecordingsNestedInput
+    followUp?: LeadFollowUpUpdateOneWithoutRecordingsNestedInput
     createdBy?: UserUpdateOneRequiredWithoutLeadRecordingsNestedInput
   }
 
@@ -129906,7 +131784,6 @@ export namespace Prisma {
 
   export type LeadRecordingUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    followUpId?: NullableStringFieldUpdateOperationsInput | string | null
     originalName?: StringFieldUpdateOperationsInput | string
     storageKey?: StringFieldUpdateOperationsInput | string
     mimeType?: StringFieldUpdateOperationsInput | string
@@ -129924,6 +131801,109 @@ export namespace Prisma {
     sizeBytes?: IntFieldUpdateOperationsInput | number
     createdById?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FollowUpReminderCreateInput = {
+    id?: string
+    dueDate: Date | string
+    scheduledFor: Date | string
+    timezone?: string
+    status?: string
+    notificationId?: string | null
+    deliveredAt?: Date | string | null
+    cancelledAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lead: LeadCreateNestedOneWithoutFollowUpRemindersInput
+    recipient: UserCreateNestedOneWithoutFollowUpRemindersInput
+  }
+
+  export type FollowUpReminderUncheckedCreateInput = {
+    id?: string
+    leadId: string
+    recipientUserId: string
+    dueDate: Date | string
+    scheduledFor: Date | string
+    timezone?: string
+    status?: string
+    notificationId?: string | null
+    deliveredAt?: Date | string | null
+    cancelledAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FollowUpReminderUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    scheduledFor?: DateTimeFieldUpdateOperationsInput | Date | string
+    timezone?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    notificationId?: NullableStringFieldUpdateOperationsInput | string | null
+    deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lead?: LeadUpdateOneRequiredWithoutFollowUpRemindersNestedInput
+    recipient?: UserUpdateOneRequiredWithoutFollowUpRemindersNestedInput
+  }
+
+  export type FollowUpReminderUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    recipientUserId?: StringFieldUpdateOperationsInput | string
+    dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    scheduledFor?: DateTimeFieldUpdateOperationsInput | Date | string
+    timezone?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    notificationId?: NullableStringFieldUpdateOperationsInput | string | null
+    deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FollowUpReminderCreateManyInput = {
+    id?: string
+    leadId: string
+    recipientUserId: string
+    dueDate: Date | string
+    scheduledFor: Date | string
+    timezone?: string
+    status?: string
+    notificationId?: string | null
+    deliveredAt?: Date | string | null
+    cancelledAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FollowUpReminderUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    scheduledFor?: DateTimeFieldUpdateOperationsInput | Date | string
+    timezone?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    notificationId?: NullableStringFieldUpdateOperationsInput | string | null
+    deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FollowUpReminderUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    recipientUserId?: StringFieldUpdateOperationsInput | string
+    dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    scheduledFor?: DateTimeFieldUpdateOperationsInput | Date | string
+    timezone?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    notificationId?: NullableStringFieldUpdateOperationsInput | string | null
+    deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type MotivationMailHistoryCreateInput = {
@@ -131268,6 +133248,12 @@ export namespace Prisma {
     none?: LeadRecordingWhereInput
   }
 
+  export type FollowUpReminderListRelationFilter = {
+    every?: FollowUpReminderWhereInput
+    some?: FollowUpReminderWhereInput
+    none?: FollowUpReminderWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -131366,6 +133352,10 @@ export namespace Prisma {
   }
 
   export type LeadRecordingOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type FollowUpReminderOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -136737,17 +138727,27 @@ export namespace Prisma {
     qualification?: SortOrder
     location?: SortOrder
     callType?: SortOrder
+    otherCallType?: SortOrder
     status?: SortOrder
+    otherStatus?: SortOrder
     stage?: SortOrder
+    otherStage?: SortOrder
     courseId?: SortOrder
+    otherCourse?: SortOrder
+    nextFollowUpDate?: SortOrder
+    lastCallStatus?: SortOrder
     branchId?: SortOrder
     leadSource?: SortOrder
+    otherLeadSource?: SortOrder
     referredBy?: SortOrder
+    referredName?: SortOrder
     paymentStatus?: SortOrder
+    paymentAmount?: SortOrder
     trainingMode?: SortOrder
     classSchedule?: SortOrder
     courseMode?: SortOrder
     locationDistance?: SortOrder
+    otherLocationDistance?: SortOrder
     leadDate?: SortOrder
     assignedToId?: SortOrder
     createdById?: SortOrder
@@ -136755,6 +138755,10 @@ export namespace Prisma {
     deletedAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type LeadAvgOrderByAggregateInput = {
+    paymentAmount?: SortOrder
   }
 
   export type LeadMaxOrderByAggregateInput = {
@@ -136767,17 +138771,27 @@ export namespace Prisma {
     qualification?: SortOrder
     location?: SortOrder
     callType?: SortOrder
+    otherCallType?: SortOrder
     status?: SortOrder
+    otherStatus?: SortOrder
     stage?: SortOrder
+    otherStage?: SortOrder
     courseId?: SortOrder
+    otherCourse?: SortOrder
+    nextFollowUpDate?: SortOrder
+    lastCallStatus?: SortOrder
     branchId?: SortOrder
     leadSource?: SortOrder
+    otherLeadSource?: SortOrder
     referredBy?: SortOrder
+    referredName?: SortOrder
     paymentStatus?: SortOrder
+    paymentAmount?: SortOrder
     trainingMode?: SortOrder
     classSchedule?: SortOrder
     courseMode?: SortOrder
     locationDistance?: SortOrder
+    otherLocationDistance?: SortOrder
     leadDate?: SortOrder
     assignedToId?: SortOrder
     createdById?: SortOrder
@@ -136797,17 +138811,27 @@ export namespace Prisma {
     qualification?: SortOrder
     location?: SortOrder
     callType?: SortOrder
+    otherCallType?: SortOrder
     status?: SortOrder
+    otherStatus?: SortOrder
     stage?: SortOrder
+    otherStage?: SortOrder
     courseId?: SortOrder
+    otherCourse?: SortOrder
+    nextFollowUpDate?: SortOrder
+    lastCallStatus?: SortOrder
     branchId?: SortOrder
     leadSource?: SortOrder
+    otherLeadSource?: SortOrder
     referredBy?: SortOrder
+    referredName?: SortOrder
     paymentStatus?: SortOrder
+    paymentAmount?: SortOrder
     trainingMode?: SortOrder
     classSchedule?: SortOrder
     courseMode?: SortOrder
     locationDistance?: SortOrder
+    otherLocationDistance?: SortOrder
     leadDate?: SortOrder
     assignedToId?: SortOrder
     createdById?: SortOrder
@@ -136815,6 +138839,10 @@ export namespace Prisma {
     deletedAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type LeadSumOrderByAggregateInput = {
+    paymentAmount?: SortOrder
   }
 
   export type EnumLeadStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -136847,6 +138875,7 @@ export namespace Prisma {
     leadId?: SortOrder
     followUpDate?: SortOrder
     followUpType?: SortOrder
+    callStatus?: SortOrder
     notes?: SortOrder
     nextFollowUpDate?: SortOrder
     createdById?: SortOrder
@@ -136859,6 +138888,7 @@ export namespace Prisma {
     leadId?: SortOrder
     followUpDate?: SortOrder
     followUpType?: SortOrder
+    callStatus?: SortOrder
     notes?: SortOrder
     nextFollowUpDate?: SortOrder
     createdById?: SortOrder
@@ -136871,6 +138901,7 @@ export namespace Prisma {
     leadId?: SortOrder
     followUpDate?: SortOrder
     followUpType?: SortOrder
+    callStatus?: SortOrder
     notes?: SortOrder
     nextFollowUpDate?: SortOrder
     createdById?: SortOrder
@@ -136948,6 +138979,11 @@ export namespace Prisma {
     createdAt?: SortOrder
   }
 
+  export type LeadFollowUpNullableScalarRelationFilter = {
+    is?: LeadFollowUpWhereInput | null
+    isNot?: LeadFollowUpWhereInput | null
+  }
+
   export type LeadRecordingCountOrderByAggregateInput = {
     id?: SortOrder
     leadId?: SortOrder
@@ -136990,6 +139026,57 @@ export namespace Prisma {
 
   export type LeadRecordingSumOrderByAggregateInput = {
     sizeBytes?: SortOrder
+  }
+
+  export type FollowUpReminderLeadIdRecipientUserIdDueDateCompoundUniqueInput = {
+    leadId: string
+    recipientUserId: string
+    dueDate: Date | string
+  }
+
+  export type FollowUpReminderCountOrderByAggregateInput = {
+    id?: SortOrder
+    leadId?: SortOrder
+    recipientUserId?: SortOrder
+    dueDate?: SortOrder
+    scheduledFor?: SortOrder
+    timezone?: SortOrder
+    status?: SortOrder
+    notificationId?: SortOrder
+    deliveredAt?: SortOrder
+    cancelledAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type FollowUpReminderMaxOrderByAggregateInput = {
+    id?: SortOrder
+    leadId?: SortOrder
+    recipientUserId?: SortOrder
+    dueDate?: SortOrder
+    scheduledFor?: SortOrder
+    timezone?: SortOrder
+    status?: SortOrder
+    notificationId?: SortOrder
+    deliveredAt?: SortOrder
+    cancelledAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type FollowUpReminderMinOrderByAggregateInput = {
+    id?: SortOrder
+    leadId?: SortOrder
+    recipientUserId?: SortOrder
+    dueDate?: SortOrder
+    scheduledFor?: SortOrder
+    timezone?: SortOrder
+    status?: SortOrder
+    notificationId?: SortOrder
+    deliveredAt?: SortOrder
+    cancelledAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type MotivationMailHistoryBranchStudentIdAbsenceStartDateStageCompoundUniqueInput = {
@@ -137774,6 +139861,13 @@ export namespace Prisma {
     connect?: LeadRecordingWhereUniqueInput | LeadRecordingWhereUniqueInput[]
   }
 
+  export type FollowUpReminderCreateNestedManyWithoutRecipientInput = {
+    create?: XOR<FollowUpReminderCreateWithoutRecipientInput, FollowUpReminderUncheckedCreateWithoutRecipientInput> | FollowUpReminderCreateWithoutRecipientInput[] | FollowUpReminderUncheckedCreateWithoutRecipientInput[]
+    connectOrCreate?: FollowUpReminderCreateOrConnectWithoutRecipientInput | FollowUpReminderCreateOrConnectWithoutRecipientInput[]
+    createMany?: FollowUpReminderCreateManyRecipientInputEnvelope
+    connect?: FollowUpReminderWhereUniqueInput | FollowUpReminderWhereUniqueInput[]
+  }
+
   export type BatchFacultyAssignmentUncheckedCreateNestedManyWithoutFacultyInput = {
     create?: XOR<BatchFacultyAssignmentCreateWithoutFacultyInput, BatchFacultyAssignmentUncheckedCreateWithoutFacultyInput> | BatchFacultyAssignmentCreateWithoutFacultyInput[] | BatchFacultyAssignmentUncheckedCreateWithoutFacultyInput[]
     connectOrCreate?: BatchFacultyAssignmentCreateOrConnectWithoutFacultyInput | BatchFacultyAssignmentCreateOrConnectWithoutFacultyInput[]
@@ -137960,6 +140054,13 @@ export namespace Prisma {
     connectOrCreate?: LeadRecordingCreateOrConnectWithoutCreatedByInput | LeadRecordingCreateOrConnectWithoutCreatedByInput[]
     createMany?: LeadRecordingCreateManyCreatedByInputEnvelope
     connect?: LeadRecordingWhereUniqueInput | LeadRecordingWhereUniqueInput[]
+  }
+
+  export type FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput = {
+    create?: XOR<FollowUpReminderCreateWithoutRecipientInput, FollowUpReminderUncheckedCreateWithoutRecipientInput> | FollowUpReminderCreateWithoutRecipientInput[] | FollowUpReminderUncheckedCreateWithoutRecipientInput[]
+    connectOrCreate?: FollowUpReminderCreateOrConnectWithoutRecipientInput | FollowUpReminderCreateOrConnectWithoutRecipientInput[]
+    createMany?: FollowUpReminderCreateManyRecipientInputEnvelope
+    connect?: FollowUpReminderWhereUniqueInput | FollowUpReminderWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -138368,6 +140469,20 @@ export namespace Prisma {
     deleteMany?: LeadRecordingScalarWhereInput | LeadRecordingScalarWhereInput[]
   }
 
+  export type FollowUpReminderUpdateManyWithoutRecipientNestedInput = {
+    create?: XOR<FollowUpReminderCreateWithoutRecipientInput, FollowUpReminderUncheckedCreateWithoutRecipientInput> | FollowUpReminderCreateWithoutRecipientInput[] | FollowUpReminderUncheckedCreateWithoutRecipientInput[]
+    connectOrCreate?: FollowUpReminderCreateOrConnectWithoutRecipientInput | FollowUpReminderCreateOrConnectWithoutRecipientInput[]
+    upsert?: FollowUpReminderUpsertWithWhereUniqueWithoutRecipientInput | FollowUpReminderUpsertWithWhereUniqueWithoutRecipientInput[]
+    createMany?: FollowUpReminderCreateManyRecipientInputEnvelope
+    set?: FollowUpReminderWhereUniqueInput | FollowUpReminderWhereUniqueInput[]
+    disconnect?: FollowUpReminderWhereUniqueInput | FollowUpReminderWhereUniqueInput[]
+    delete?: FollowUpReminderWhereUniqueInput | FollowUpReminderWhereUniqueInput[]
+    connect?: FollowUpReminderWhereUniqueInput | FollowUpReminderWhereUniqueInput[]
+    update?: FollowUpReminderUpdateWithWhereUniqueWithoutRecipientInput | FollowUpReminderUpdateWithWhereUniqueWithoutRecipientInput[]
+    updateMany?: FollowUpReminderUpdateManyWithWhereWithoutRecipientInput | FollowUpReminderUpdateManyWithWhereWithoutRecipientInput[]
+    deleteMany?: FollowUpReminderScalarWhereInput | FollowUpReminderScalarWhereInput[]
+  }
+
   export type BatchFacultyAssignmentUncheckedUpdateManyWithoutFacultyNestedInput = {
     create?: XOR<BatchFacultyAssignmentCreateWithoutFacultyInput, BatchFacultyAssignmentUncheckedCreateWithoutFacultyInput> | BatchFacultyAssignmentCreateWithoutFacultyInput[] | BatchFacultyAssignmentUncheckedCreateWithoutFacultyInput[]
     connectOrCreate?: BatchFacultyAssignmentCreateOrConnectWithoutFacultyInput | BatchFacultyAssignmentCreateOrConnectWithoutFacultyInput[]
@@ -138740,6 +140855,20 @@ export namespace Prisma {
     update?: LeadRecordingUpdateWithWhereUniqueWithoutCreatedByInput | LeadRecordingUpdateWithWhereUniqueWithoutCreatedByInput[]
     updateMany?: LeadRecordingUpdateManyWithWhereWithoutCreatedByInput | LeadRecordingUpdateManyWithWhereWithoutCreatedByInput[]
     deleteMany?: LeadRecordingScalarWhereInput | LeadRecordingScalarWhereInput[]
+  }
+
+  export type FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput = {
+    create?: XOR<FollowUpReminderCreateWithoutRecipientInput, FollowUpReminderUncheckedCreateWithoutRecipientInput> | FollowUpReminderCreateWithoutRecipientInput[] | FollowUpReminderUncheckedCreateWithoutRecipientInput[]
+    connectOrCreate?: FollowUpReminderCreateOrConnectWithoutRecipientInput | FollowUpReminderCreateOrConnectWithoutRecipientInput[]
+    upsert?: FollowUpReminderUpsertWithWhereUniqueWithoutRecipientInput | FollowUpReminderUpsertWithWhereUniqueWithoutRecipientInput[]
+    createMany?: FollowUpReminderCreateManyRecipientInputEnvelope
+    set?: FollowUpReminderWhereUniqueInput | FollowUpReminderWhereUniqueInput[]
+    disconnect?: FollowUpReminderWhereUniqueInput | FollowUpReminderWhereUniqueInput[]
+    delete?: FollowUpReminderWhereUniqueInput | FollowUpReminderWhereUniqueInput[]
+    connect?: FollowUpReminderWhereUniqueInput | FollowUpReminderWhereUniqueInput[]
+    update?: FollowUpReminderUpdateWithWhereUniqueWithoutRecipientInput | FollowUpReminderUpdateWithWhereUniqueWithoutRecipientInput[]
+    updateMany?: FollowUpReminderUpdateManyWithWhereWithoutRecipientInput | FollowUpReminderUpdateManyWithWhereWithoutRecipientInput[]
+    deleteMany?: FollowUpReminderScalarWhereInput | FollowUpReminderScalarWhereInput[]
   }
 
   export type DashboardWidgetCreateallowedRolesInput = {
@@ -144669,6 +146798,13 @@ export namespace Prisma {
     connect?: LeadRecordingWhereUniqueInput | LeadRecordingWhereUniqueInput[]
   }
 
+  export type FollowUpReminderCreateNestedManyWithoutLeadInput = {
+    create?: XOR<FollowUpReminderCreateWithoutLeadInput, FollowUpReminderUncheckedCreateWithoutLeadInput> | FollowUpReminderCreateWithoutLeadInput[] | FollowUpReminderUncheckedCreateWithoutLeadInput[]
+    connectOrCreate?: FollowUpReminderCreateOrConnectWithoutLeadInput | FollowUpReminderCreateOrConnectWithoutLeadInput[]
+    createMany?: FollowUpReminderCreateManyLeadInputEnvelope
+    connect?: FollowUpReminderWhereUniqueInput | FollowUpReminderWhereUniqueInput[]
+  }
+
   export type LeadFollowUpUncheckedCreateNestedManyWithoutLeadInput = {
     create?: XOR<LeadFollowUpCreateWithoutLeadInput, LeadFollowUpUncheckedCreateWithoutLeadInput> | LeadFollowUpCreateWithoutLeadInput[] | LeadFollowUpUncheckedCreateWithoutLeadInput[]
     connectOrCreate?: LeadFollowUpCreateOrConnectWithoutLeadInput | LeadFollowUpCreateOrConnectWithoutLeadInput[]
@@ -144695,6 +146831,13 @@ export namespace Prisma {
     connectOrCreate?: LeadRecordingCreateOrConnectWithoutLeadInput | LeadRecordingCreateOrConnectWithoutLeadInput[]
     createMany?: LeadRecordingCreateManyLeadInputEnvelope
     connect?: LeadRecordingWhereUniqueInput | LeadRecordingWhereUniqueInput[]
+  }
+
+  export type FollowUpReminderUncheckedCreateNestedManyWithoutLeadInput = {
+    create?: XOR<FollowUpReminderCreateWithoutLeadInput, FollowUpReminderUncheckedCreateWithoutLeadInput> | FollowUpReminderCreateWithoutLeadInput[] | FollowUpReminderUncheckedCreateWithoutLeadInput[]
+    connectOrCreate?: FollowUpReminderCreateOrConnectWithoutLeadInput | FollowUpReminderCreateOrConnectWithoutLeadInput[]
+    createMany?: FollowUpReminderCreateManyLeadInputEnvelope
+    connect?: FollowUpReminderWhereUniqueInput | FollowUpReminderWhereUniqueInput[]
   }
 
   export type EnumLeadStatusFieldUpdateOperationsInput = {
@@ -144805,6 +146948,20 @@ export namespace Prisma {
     deleteMany?: LeadRecordingScalarWhereInput | LeadRecordingScalarWhereInput[]
   }
 
+  export type FollowUpReminderUpdateManyWithoutLeadNestedInput = {
+    create?: XOR<FollowUpReminderCreateWithoutLeadInput, FollowUpReminderUncheckedCreateWithoutLeadInput> | FollowUpReminderCreateWithoutLeadInput[] | FollowUpReminderUncheckedCreateWithoutLeadInput[]
+    connectOrCreate?: FollowUpReminderCreateOrConnectWithoutLeadInput | FollowUpReminderCreateOrConnectWithoutLeadInput[]
+    upsert?: FollowUpReminderUpsertWithWhereUniqueWithoutLeadInput | FollowUpReminderUpsertWithWhereUniqueWithoutLeadInput[]
+    createMany?: FollowUpReminderCreateManyLeadInputEnvelope
+    set?: FollowUpReminderWhereUniqueInput | FollowUpReminderWhereUniqueInput[]
+    disconnect?: FollowUpReminderWhereUniqueInput | FollowUpReminderWhereUniqueInput[]
+    delete?: FollowUpReminderWhereUniqueInput | FollowUpReminderWhereUniqueInput[]
+    connect?: FollowUpReminderWhereUniqueInput | FollowUpReminderWhereUniqueInput[]
+    update?: FollowUpReminderUpdateWithWhereUniqueWithoutLeadInput | FollowUpReminderUpdateWithWhereUniqueWithoutLeadInput[]
+    updateMany?: FollowUpReminderUpdateManyWithWhereWithoutLeadInput | FollowUpReminderUpdateManyWithWhereWithoutLeadInput[]
+    deleteMany?: FollowUpReminderScalarWhereInput | FollowUpReminderScalarWhereInput[]
+  }
+
   export type LeadFollowUpUncheckedUpdateManyWithoutLeadNestedInput = {
     create?: XOR<LeadFollowUpCreateWithoutLeadInput, LeadFollowUpUncheckedCreateWithoutLeadInput> | LeadFollowUpCreateWithoutLeadInput[] | LeadFollowUpUncheckedCreateWithoutLeadInput[]
     connectOrCreate?: LeadFollowUpCreateOrConnectWithoutLeadInput | LeadFollowUpCreateOrConnectWithoutLeadInput[]
@@ -144861,6 +147018,20 @@ export namespace Prisma {
     deleteMany?: LeadRecordingScalarWhereInput | LeadRecordingScalarWhereInput[]
   }
 
+  export type FollowUpReminderUncheckedUpdateManyWithoutLeadNestedInput = {
+    create?: XOR<FollowUpReminderCreateWithoutLeadInput, FollowUpReminderUncheckedCreateWithoutLeadInput> | FollowUpReminderCreateWithoutLeadInput[] | FollowUpReminderUncheckedCreateWithoutLeadInput[]
+    connectOrCreate?: FollowUpReminderCreateOrConnectWithoutLeadInput | FollowUpReminderCreateOrConnectWithoutLeadInput[]
+    upsert?: FollowUpReminderUpsertWithWhereUniqueWithoutLeadInput | FollowUpReminderUpsertWithWhereUniqueWithoutLeadInput[]
+    createMany?: FollowUpReminderCreateManyLeadInputEnvelope
+    set?: FollowUpReminderWhereUniqueInput | FollowUpReminderWhereUniqueInput[]
+    disconnect?: FollowUpReminderWhereUniqueInput | FollowUpReminderWhereUniqueInput[]
+    delete?: FollowUpReminderWhereUniqueInput | FollowUpReminderWhereUniqueInput[]
+    connect?: FollowUpReminderWhereUniqueInput | FollowUpReminderWhereUniqueInput[]
+    update?: FollowUpReminderUpdateWithWhereUniqueWithoutLeadInput | FollowUpReminderUpdateWithWhereUniqueWithoutLeadInput[]
+    updateMany?: FollowUpReminderUpdateManyWithWhereWithoutLeadInput | FollowUpReminderUpdateManyWithWhereWithoutLeadInput[]
+    deleteMany?: FollowUpReminderScalarWhereInput | FollowUpReminderScalarWhereInput[]
+  }
+
   export type LeadCreateNestedOneWithoutFollowUpsInput = {
     create?: XOR<LeadCreateWithoutFollowUpsInput, LeadUncheckedCreateWithoutFollowUpsInput>
     connectOrCreate?: LeadCreateOrConnectWithoutFollowUpsInput
@@ -144871,6 +147042,20 @@ export namespace Prisma {
     create?: XOR<UserCreateWithoutLeadFollowUpsInput, UserUncheckedCreateWithoutLeadFollowUpsInput>
     connectOrCreate?: UserCreateOrConnectWithoutLeadFollowUpsInput
     connect?: UserWhereUniqueInput
+  }
+
+  export type LeadRecordingCreateNestedManyWithoutFollowUpInput = {
+    create?: XOR<LeadRecordingCreateWithoutFollowUpInput, LeadRecordingUncheckedCreateWithoutFollowUpInput> | LeadRecordingCreateWithoutFollowUpInput[] | LeadRecordingUncheckedCreateWithoutFollowUpInput[]
+    connectOrCreate?: LeadRecordingCreateOrConnectWithoutFollowUpInput | LeadRecordingCreateOrConnectWithoutFollowUpInput[]
+    createMany?: LeadRecordingCreateManyFollowUpInputEnvelope
+    connect?: LeadRecordingWhereUniqueInput | LeadRecordingWhereUniqueInput[]
+  }
+
+  export type LeadRecordingUncheckedCreateNestedManyWithoutFollowUpInput = {
+    create?: XOR<LeadRecordingCreateWithoutFollowUpInput, LeadRecordingUncheckedCreateWithoutFollowUpInput> | LeadRecordingCreateWithoutFollowUpInput[] | LeadRecordingUncheckedCreateWithoutFollowUpInput[]
+    connectOrCreate?: LeadRecordingCreateOrConnectWithoutFollowUpInput | LeadRecordingCreateOrConnectWithoutFollowUpInput[]
+    createMany?: LeadRecordingCreateManyFollowUpInputEnvelope
+    connect?: LeadRecordingWhereUniqueInput | LeadRecordingWhereUniqueInput[]
   }
 
   export type LeadUpdateOneRequiredWithoutFollowUpsNestedInput = {
@@ -144887,6 +147072,34 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutLeadFollowUpsInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutLeadFollowUpsInput, UserUpdateWithoutLeadFollowUpsInput>, UserUncheckedUpdateWithoutLeadFollowUpsInput>
+  }
+
+  export type LeadRecordingUpdateManyWithoutFollowUpNestedInput = {
+    create?: XOR<LeadRecordingCreateWithoutFollowUpInput, LeadRecordingUncheckedCreateWithoutFollowUpInput> | LeadRecordingCreateWithoutFollowUpInput[] | LeadRecordingUncheckedCreateWithoutFollowUpInput[]
+    connectOrCreate?: LeadRecordingCreateOrConnectWithoutFollowUpInput | LeadRecordingCreateOrConnectWithoutFollowUpInput[]
+    upsert?: LeadRecordingUpsertWithWhereUniqueWithoutFollowUpInput | LeadRecordingUpsertWithWhereUniqueWithoutFollowUpInput[]
+    createMany?: LeadRecordingCreateManyFollowUpInputEnvelope
+    set?: LeadRecordingWhereUniqueInput | LeadRecordingWhereUniqueInput[]
+    disconnect?: LeadRecordingWhereUniqueInput | LeadRecordingWhereUniqueInput[]
+    delete?: LeadRecordingWhereUniqueInput | LeadRecordingWhereUniqueInput[]
+    connect?: LeadRecordingWhereUniqueInput | LeadRecordingWhereUniqueInput[]
+    update?: LeadRecordingUpdateWithWhereUniqueWithoutFollowUpInput | LeadRecordingUpdateWithWhereUniqueWithoutFollowUpInput[]
+    updateMany?: LeadRecordingUpdateManyWithWhereWithoutFollowUpInput | LeadRecordingUpdateManyWithWhereWithoutFollowUpInput[]
+    deleteMany?: LeadRecordingScalarWhereInput | LeadRecordingScalarWhereInput[]
+  }
+
+  export type LeadRecordingUncheckedUpdateManyWithoutFollowUpNestedInput = {
+    create?: XOR<LeadRecordingCreateWithoutFollowUpInput, LeadRecordingUncheckedCreateWithoutFollowUpInput> | LeadRecordingCreateWithoutFollowUpInput[] | LeadRecordingUncheckedCreateWithoutFollowUpInput[]
+    connectOrCreate?: LeadRecordingCreateOrConnectWithoutFollowUpInput | LeadRecordingCreateOrConnectWithoutFollowUpInput[]
+    upsert?: LeadRecordingUpsertWithWhereUniqueWithoutFollowUpInput | LeadRecordingUpsertWithWhereUniqueWithoutFollowUpInput[]
+    createMany?: LeadRecordingCreateManyFollowUpInputEnvelope
+    set?: LeadRecordingWhereUniqueInput | LeadRecordingWhereUniqueInput[]
+    disconnect?: LeadRecordingWhereUniqueInput | LeadRecordingWhereUniqueInput[]
+    delete?: LeadRecordingWhereUniqueInput | LeadRecordingWhereUniqueInput[]
+    connect?: LeadRecordingWhereUniqueInput | LeadRecordingWhereUniqueInput[]
+    update?: LeadRecordingUpdateWithWhereUniqueWithoutFollowUpInput | LeadRecordingUpdateWithWhereUniqueWithoutFollowUpInput[]
+    updateMany?: LeadRecordingUpdateManyWithWhereWithoutFollowUpInput | LeadRecordingUpdateManyWithWhereWithoutFollowUpInput[]
+    deleteMany?: LeadRecordingScalarWhereInput | LeadRecordingScalarWhereInput[]
   }
 
   export type LeadCreateNestedOneWithoutStageHistoryInput = {
@@ -144955,6 +147168,12 @@ export namespace Prisma {
     connect?: LeadWhereUniqueInput
   }
 
+  export type LeadFollowUpCreateNestedOneWithoutRecordingsInput = {
+    create?: XOR<LeadFollowUpCreateWithoutRecordingsInput, LeadFollowUpUncheckedCreateWithoutRecordingsInput>
+    connectOrCreate?: LeadFollowUpCreateOrConnectWithoutRecordingsInput
+    connect?: LeadFollowUpWhereUniqueInput
+  }
+
   export type UserCreateNestedOneWithoutLeadRecordingsInput = {
     create?: XOR<UserCreateWithoutLeadRecordingsInput, UserUncheckedCreateWithoutLeadRecordingsInput>
     connectOrCreate?: UserCreateOrConnectWithoutLeadRecordingsInput
@@ -144969,12 +147188,50 @@ export namespace Prisma {
     update?: XOR<XOR<LeadUpdateToOneWithWhereWithoutRecordingsInput, LeadUpdateWithoutRecordingsInput>, LeadUncheckedUpdateWithoutRecordingsInput>
   }
 
+  export type LeadFollowUpUpdateOneWithoutRecordingsNestedInput = {
+    create?: XOR<LeadFollowUpCreateWithoutRecordingsInput, LeadFollowUpUncheckedCreateWithoutRecordingsInput>
+    connectOrCreate?: LeadFollowUpCreateOrConnectWithoutRecordingsInput
+    upsert?: LeadFollowUpUpsertWithoutRecordingsInput
+    disconnect?: LeadFollowUpWhereInput | boolean
+    delete?: LeadFollowUpWhereInput | boolean
+    connect?: LeadFollowUpWhereUniqueInput
+    update?: XOR<XOR<LeadFollowUpUpdateToOneWithWhereWithoutRecordingsInput, LeadFollowUpUpdateWithoutRecordingsInput>, LeadFollowUpUncheckedUpdateWithoutRecordingsInput>
+  }
+
   export type UserUpdateOneRequiredWithoutLeadRecordingsNestedInput = {
     create?: XOR<UserCreateWithoutLeadRecordingsInput, UserUncheckedCreateWithoutLeadRecordingsInput>
     connectOrCreate?: UserCreateOrConnectWithoutLeadRecordingsInput
     upsert?: UserUpsertWithoutLeadRecordingsInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutLeadRecordingsInput, UserUpdateWithoutLeadRecordingsInput>, UserUncheckedUpdateWithoutLeadRecordingsInput>
+  }
+
+  export type LeadCreateNestedOneWithoutFollowUpRemindersInput = {
+    create?: XOR<LeadCreateWithoutFollowUpRemindersInput, LeadUncheckedCreateWithoutFollowUpRemindersInput>
+    connectOrCreate?: LeadCreateOrConnectWithoutFollowUpRemindersInput
+    connect?: LeadWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutFollowUpRemindersInput = {
+    create?: XOR<UserCreateWithoutFollowUpRemindersInput, UserUncheckedCreateWithoutFollowUpRemindersInput>
+    connectOrCreate?: UserCreateOrConnectWithoutFollowUpRemindersInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type LeadUpdateOneRequiredWithoutFollowUpRemindersNestedInput = {
+    create?: XOR<LeadCreateWithoutFollowUpRemindersInput, LeadUncheckedCreateWithoutFollowUpRemindersInput>
+    connectOrCreate?: LeadCreateOrConnectWithoutFollowUpRemindersInput
+    upsert?: LeadUpsertWithoutFollowUpRemindersInput
+    connect?: LeadWhereUniqueInput
+    update?: XOR<XOR<LeadUpdateToOneWithWhereWithoutFollowUpRemindersInput, LeadUpdateWithoutFollowUpRemindersInput>, LeadUncheckedUpdateWithoutFollowUpRemindersInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutFollowUpRemindersNestedInput = {
+    create?: XOR<UserCreateWithoutFollowUpRemindersInput, UserUncheckedCreateWithoutFollowUpRemindersInput>
+    connectOrCreate?: UserCreateOrConnectWithoutFollowUpRemindersInput
+    upsert?: UserUpsertWithoutFollowUpRemindersInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutFollowUpRemindersInput, UserUpdateWithoutFollowUpRemindersInput>, UserUncheckedUpdateWithoutFollowUpRemindersInput>
   }
 
   export type BranchStudentCreateNestedOneWithoutMotivationMailHistoryInput = {
@@ -146747,15 +149004,25 @@ export namespace Prisma {
     qualification?: string | null
     location?: string | null
     callType: string
+    otherCallType?: string | null
     status?: $Enums.LeadStatus
+    otherStatus?: string | null
     stage?: $Enums.LeadStage
+    otherStage?: string | null
+    otherCourse?: string | null
+    nextFollowUpDate?: Date | string | null
+    lastCallStatus?: string | null
     leadSource: string
+    otherLeadSource?: string | null
     referredBy?: string | null
+    referredName?: string | null
     paymentStatus?: string
+    paymentAmount?: number | null
     trainingMode?: string | null
     classSchedule?: string | null
     courseMode?: string | null
     locationDistance?: string | null
+    otherLocationDistance?: string | null
     leadDate: Date | string
     deletedAt?: Date | string | null
     createdAt?: Date | string
@@ -146768,6 +149035,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryCreateNestedManyWithoutLeadInput
     activities?: LeadActivityCreateNestedManyWithoutLeadInput
     recordings?: LeadRecordingCreateNestedManyWithoutLeadInput
+    followUpReminders?: FollowUpReminderCreateNestedManyWithoutLeadInput
   }
 
   export type LeadUncheckedCreateWithoutAssignedToInput = {
@@ -146780,17 +149048,27 @@ export namespace Prisma {
     qualification?: string | null
     location?: string | null
     callType: string
+    otherCallType?: string | null
     status?: $Enums.LeadStatus
+    otherStatus?: string | null
     stage?: $Enums.LeadStage
+    otherStage?: string | null
     courseId: string
+    otherCourse?: string | null
+    nextFollowUpDate?: Date | string | null
+    lastCallStatus?: string | null
     branchId: string
     leadSource: string
+    otherLeadSource?: string | null
     referredBy?: string | null
+    referredName?: string | null
     paymentStatus?: string
+    paymentAmount?: number | null
     trainingMode?: string | null
     classSchedule?: string | null
     courseMode?: string | null
     locationDistance?: string | null
+    otherLocationDistance?: string | null
     leadDate: Date | string
     createdById: string
     updatedById?: string | null
@@ -146801,6 +149079,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUncheckedCreateNestedManyWithoutLeadInput
     activities?: LeadActivityUncheckedCreateNestedManyWithoutLeadInput
     recordings?: LeadRecordingUncheckedCreateNestedManyWithoutLeadInput
+    followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutLeadInput
   }
 
   export type LeadCreateOrConnectWithoutAssignedToInput = {
@@ -146823,15 +149102,25 @@ export namespace Prisma {
     qualification?: string | null
     location?: string | null
     callType: string
+    otherCallType?: string | null
     status?: $Enums.LeadStatus
+    otherStatus?: string | null
     stage?: $Enums.LeadStage
+    otherStage?: string | null
+    otherCourse?: string | null
+    nextFollowUpDate?: Date | string | null
+    lastCallStatus?: string | null
     leadSource: string
+    otherLeadSource?: string | null
     referredBy?: string | null
+    referredName?: string | null
     paymentStatus?: string
+    paymentAmount?: number | null
     trainingMode?: string | null
     classSchedule?: string | null
     courseMode?: string | null
     locationDistance?: string | null
+    otherLocationDistance?: string | null
     leadDate: Date | string
     deletedAt?: Date | string | null
     createdAt?: Date | string
@@ -146844,6 +149133,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryCreateNestedManyWithoutLeadInput
     activities?: LeadActivityCreateNestedManyWithoutLeadInput
     recordings?: LeadRecordingCreateNestedManyWithoutLeadInput
+    followUpReminders?: FollowUpReminderCreateNestedManyWithoutLeadInput
   }
 
   export type LeadUncheckedCreateWithoutCreatedByInput = {
@@ -146856,17 +149146,27 @@ export namespace Prisma {
     qualification?: string | null
     location?: string | null
     callType: string
+    otherCallType?: string | null
     status?: $Enums.LeadStatus
+    otherStatus?: string | null
     stage?: $Enums.LeadStage
+    otherStage?: string | null
     courseId: string
+    otherCourse?: string | null
+    nextFollowUpDate?: Date | string | null
+    lastCallStatus?: string | null
     branchId: string
     leadSource: string
+    otherLeadSource?: string | null
     referredBy?: string | null
+    referredName?: string | null
     paymentStatus?: string
+    paymentAmount?: number | null
     trainingMode?: string | null
     classSchedule?: string | null
     courseMode?: string | null
     locationDistance?: string | null
+    otherLocationDistance?: string | null
     leadDate: Date | string
     assignedToId?: string | null
     updatedById?: string | null
@@ -146877,6 +149177,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUncheckedCreateNestedManyWithoutLeadInput
     activities?: LeadActivityUncheckedCreateNestedManyWithoutLeadInput
     recordings?: LeadRecordingUncheckedCreateNestedManyWithoutLeadInput
+    followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutLeadInput
   }
 
   export type LeadCreateOrConnectWithoutCreatedByInput = {
@@ -146899,15 +149200,25 @@ export namespace Prisma {
     qualification?: string | null
     location?: string | null
     callType: string
+    otherCallType?: string | null
     status?: $Enums.LeadStatus
+    otherStatus?: string | null
     stage?: $Enums.LeadStage
+    otherStage?: string | null
+    otherCourse?: string | null
+    nextFollowUpDate?: Date | string | null
+    lastCallStatus?: string | null
     leadSource: string
+    otherLeadSource?: string | null
     referredBy?: string | null
+    referredName?: string | null
     paymentStatus?: string
+    paymentAmount?: number | null
     trainingMode?: string | null
     classSchedule?: string | null
     courseMode?: string | null
     locationDistance?: string | null
+    otherLocationDistance?: string | null
     leadDate: Date | string
     deletedAt?: Date | string | null
     createdAt?: Date | string
@@ -146920,6 +149231,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryCreateNestedManyWithoutLeadInput
     activities?: LeadActivityCreateNestedManyWithoutLeadInput
     recordings?: LeadRecordingCreateNestedManyWithoutLeadInput
+    followUpReminders?: FollowUpReminderCreateNestedManyWithoutLeadInput
   }
 
   export type LeadUncheckedCreateWithoutUpdatedByInput = {
@@ -146932,17 +149244,27 @@ export namespace Prisma {
     qualification?: string | null
     location?: string | null
     callType: string
+    otherCallType?: string | null
     status?: $Enums.LeadStatus
+    otherStatus?: string | null
     stage?: $Enums.LeadStage
+    otherStage?: string | null
     courseId: string
+    otherCourse?: string | null
+    nextFollowUpDate?: Date | string | null
+    lastCallStatus?: string | null
     branchId: string
     leadSource: string
+    otherLeadSource?: string | null
     referredBy?: string | null
+    referredName?: string | null
     paymentStatus?: string
+    paymentAmount?: number | null
     trainingMode?: string | null
     classSchedule?: string | null
     courseMode?: string | null
     locationDistance?: string | null
+    otherLocationDistance?: string | null
     leadDate: Date | string
     assignedToId?: string | null
     createdById: string
@@ -146953,6 +149275,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUncheckedCreateNestedManyWithoutLeadInput
     activities?: LeadActivityUncheckedCreateNestedManyWithoutLeadInput
     recordings?: LeadRecordingUncheckedCreateNestedManyWithoutLeadInput
+    followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutLeadInput
   }
 
   export type LeadCreateOrConnectWithoutUpdatedByInput = {
@@ -146969,11 +149292,13 @@ export namespace Prisma {
     id?: string
     followUpDate: Date | string
     followUpType: string
+    callStatus: string
     notes: string
     nextFollowUpDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     lead: LeadCreateNestedOneWithoutFollowUpsInput
+    recordings?: LeadRecordingCreateNestedManyWithoutFollowUpInput
   }
 
   export type LeadFollowUpUncheckedCreateWithoutCreatedByInput = {
@@ -146981,10 +149306,12 @@ export namespace Prisma {
     leadId: string
     followUpDate: Date | string
     followUpType: string
+    callStatus: string
     notes: string
     nextFollowUpDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    recordings?: LeadRecordingUncheckedCreateNestedManyWithoutFollowUpInput
   }
 
   export type LeadFollowUpCreateOrConnectWithoutCreatedByInput = {
@@ -147053,13 +149380,13 @@ export namespace Prisma {
 
   export type LeadRecordingCreateWithoutCreatedByInput = {
     id?: string
-    followUpId?: string | null
     originalName: string
     storageKey: string
     mimeType: string
     sizeBytes: number
     createdAt?: Date | string
     lead: LeadCreateNestedOneWithoutRecordingsInput
+    followUp?: LeadFollowUpCreateNestedOneWithoutRecordingsInput
   }
 
   export type LeadRecordingUncheckedCreateWithoutCreatedByInput = {
@@ -147080,6 +149407,44 @@ export namespace Prisma {
 
   export type LeadRecordingCreateManyCreatedByInputEnvelope = {
     data: LeadRecordingCreateManyCreatedByInput | LeadRecordingCreateManyCreatedByInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type FollowUpReminderCreateWithoutRecipientInput = {
+    id?: string
+    dueDate: Date | string
+    scheduledFor: Date | string
+    timezone?: string
+    status?: string
+    notificationId?: string | null
+    deliveredAt?: Date | string | null
+    cancelledAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lead: LeadCreateNestedOneWithoutFollowUpRemindersInput
+  }
+
+  export type FollowUpReminderUncheckedCreateWithoutRecipientInput = {
+    id?: string
+    leadId: string
+    dueDate: Date | string
+    scheduledFor: Date | string
+    timezone?: string
+    status?: string
+    notificationId?: string | null
+    deliveredAt?: Date | string | null
+    cancelledAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FollowUpReminderCreateOrConnectWithoutRecipientInput = {
+    where: FollowUpReminderWhereUniqueInput
+    create: XOR<FollowUpReminderCreateWithoutRecipientInput, FollowUpReminderUncheckedCreateWithoutRecipientInput>
+  }
+
+  export type FollowUpReminderCreateManyRecipientInputEnvelope = {
+    data: FollowUpReminderCreateManyRecipientInput | FollowUpReminderCreateManyRecipientInput[]
     skipDuplicates?: boolean
   }
 
@@ -147897,17 +150262,27 @@ export namespace Prisma {
     qualification?: StringNullableFilter<"Lead"> | string | null
     location?: StringNullableFilter<"Lead"> | string | null
     callType?: StringFilter<"Lead"> | string
+    otherCallType?: StringNullableFilter<"Lead"> | string | null
     status?: EnumLeadStatusFilter<"Lead"> | $Enums.LeadStatus
+    otherStatus?: StringNullableFilter<"Lead"> | string | null
     stage?: EnumLeadStageFilter<"Lead"> | $Enums.LeadStage
+    otherStage?: StringNullableFilter<"Lead"> | string | null
     courseId?: StringFilter<"Lead"> | string
+    otherCourse?: StringNullableFilter<"Lead"> | string | null
+    nextFollowUpDate?: DateTimeNullableFilter<"Lead"> | Date | string | null
+    lastCallStatus?: StringNullableFilter<"Lead"> | string | null
     branchId?: StringFilter<"Lead"> | string
     leadSource?: StringFilter<"Lead"> | string
+    otherLeadSource?: StringNullableFilter<"Lead"> | string | null
     referredBy?: StringNullableFilter<"Lead"> | string | null
+    referredName?: StringNullableFilter<"Lead"> | string | null
     paymentStatus?: StringFilter<"Lead"> | string
+    paymentAmount?: FloatNullableFilter<"Lead"> | number | null
     trainingMode?: StringNullableFilter<"Lead"> | string | null
     classSchedule?: StringNullableFilter<"Lead"> | string | null
     courseMode?: StringNullableFilter<"Lead"> | string | null
     locationDistance?: StringNullableFilter<"Lead"> | string | null
+    otherLocationDistance?: StringNullableFilter<"Lead"> | string | null
     leadDate?: DateTimeFilter<"Lead"> | Date | string
     assignedToId?: StringNullableFilter<"Lead"> | string | null
     createdById?: StringFilter<"Lead"> | string
@@ -147973,6 +150348,7 @@ export namespace Prisma {
     leadId?: StringFilter<"LeadFollowUp"> | string
     followUpDate?: DateTimeFilter<"LeadFollowUp"> | Date | string
     followUpType?: StringFilter<"LeadFollowUp"> | string
+    callStatus?: StringFilter<"LeadFollowUp"> | string
     notes?: StringFilter<"LeadFollowUp"> | string
     nextFollowUpDate?: DateTimeNullableFilter<"LeadFollowUp"> | Date | string | null
     createdById?: StringFilter<"LeadFollowUp"> | string
@@ -148068,6 +150444,40 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"LeadRecording"> | Date | string
   }
 
+  export type FollowUpReminderUpsertWithWhereUniqueWithoutRecipientInput = {
+    where: FollowUpReminderWhereUniqueInput
+    update: XOR<FollowUpReminderUpdateWithoutRecipientInput, FollowUpReminderUncheckedUpdateWithoutRecipientInput>
+    create: XOR<FollowUpReminderCreateWithoutRecipientInput, FollowUpReminderUncheckedCreateWithoutRecipientInput>
+  }
+
+  export type FollowUpReminderUpdateWithWhereUniqueWithoutRecipientInput = {
+    where: FollowUpReminderWhereUniqueInput
+    data: XOR<FollowUpReminderUpdateWithoutRecipientInput, FollowUpReminderUncheckedUpdateWithoutRecipientInput>
+  }
+
+  export type FollowUpReminderUpdateManyWithWhereWithoutRecipientInput = {
+    where: FollowUpReminderScalarWhereInput
+    data: XOR<FollowUpReminderUpdateManyMutationInput, FollowUpReminderUncheckedUpdateManyWithoutRecipientInput>
+  }
+
+  export type FollowUpReminderScalarWhereInput = {
+    AND?: FollowUpReminderScalarWhereInput | FollowUpReminderScalarWhereInput[]
+    OR?: FollowUpReminderScalarWhereInput[]
+    NOT?: FollowUpReminderScalarWhereInput | FollowUpReminderScalarWhereInput[]
+    id?: StringFilter<"FollowUpReminder"> | string
+    leadId?: StringFilter<"FollowUpReminder"> | string
+    recipientUserId?: StringFilter<"FollowUpReminder"> | string
+    dueDate?: DateTimeFilter<"FollowUpReminder"> | Date | string
+    scheduledFor?: DateTimeFilter<"FollowUpReminder"> | Date | string
+    timezone?: StringFilter<"FollowUpReminder"> | string
+    status?: StringFilter<"FollowUpReminder"> | string
+    notificationId?: StringNullableFilter<"FollowUpReminder"> | string | null
+    deliveredAt?: DateTimeNullableFilter<"FollowUpReminder"> | Date | string | null
+    cancelledAt?: DateTimeNullableFilter<"FollowUpReminder"> | Date | string | null
+    createdAt?: DateTimeFilter<"FollowUpReminder"> | Date | string
+    updatedAt?: DateTimeFilter<"FollowUpReminder"> | Date | string
+  }
+
   export type UserDashboardWidgetCreateWithoutWidgetInput = {
     id?: string
     isVisible?: boolean
@@ -148161,6 +150571,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
   }
 
   export type UserUncheckedCreateWithoutDashboardWidgetPreferencesInput = {
@@ -148212,6 +150623,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
   }
 
   export type UserCreateOrConnectWithoutDashboardWidgetPreferencesInput = {
@@ -148308,6 +150720,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDashboardWidgetPreferencesInput = {
@@ -148359,6 +150772,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
   }
 
   export type DashboardWidgetUpsertWithoutPreferencesInput = {
@@ -148445,6 +150859,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
   }
 
   export type UserUncheckedCreateWithoutManagedBranchInput = {
@@ -148496,6 +150911,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
   }
 
   export type UserCreateOrConnectWithoutManagedBranchInput = {
@@ -149445,15 +151861,25 @@ export namespace Prisma {
     qualification?: string | null
     location?: string | null
     callType: string
+    otherCallType?: string | null
     status?: $Enums.LeadStatus
+    otherStatus?: string | null
     stage?: $Enums.LeadStage
+    otherStage?: string | null
+    otherCourse?: string | null
+    nextFollowUpDate?: Date | string | null
+    lastCallStatus?: string | null
     leadSource: string
+    otherLeadSource?: string | null
     referredBy?: string | null
+    referredName?: string | null
     paymentStatus?: string
+    paymentAmount?: number | null
     trainingMode?: string | null
     classSchedule?: string | null
     courseMode?: string | null
     locationDistance?: string | null
+    otherLocationDistance?: string | null
     leadDate: Date | string
     deletedAt?: Date | string | null
     createdAt?: Date | string
@@ -149466,6 +151892,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryCreateNestedManyWithoutLeadInput
     activities?: LeadActivityCreateNestedManyWithoutLeadInput
     recordings?: LeadRecordingCreateNestedManyWithoutLeadInput
+    followUpReminders?: FollowUpReminderCreateNestedManyWithoutLeadInput
   }
 
   export type LeadUncheckedCreateWithoutBranchInput = {
@@ -149478,16 +151905,26 @@ export namespace Prisma {
     qualification?: string | null
     location?: string | null
     callType: string
+    otherCallType?: string | null
     status?: $Enums.LeadStatus
+    otherStatus?: string | null
     stage?: $Enums.LeadStage
+    otherStage?: string | null
     courseId: string
+    otherCourse?: string | null
+    nextFollowUpDate?: Date | string | null
+    lastCallStatus?: string | null
     leadSource: string
+    otherLeadSource?: string | null
     referredBy?: string | null
+    referredName?: string | null
     paymentStatus?: string
+    paymentAmount?: number | null
     trainingMode?: string | null
     classSchedule?: string | null
     courseMode?: string | null
     locationDistance?: string | null
+    otherLocationDistance?: string | null
     leadDate: Date | string
     assignedToId?: string | null
     createdById: string
@@ -149499,6 +151936,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUncheckedCreateNestedManyWithoutLeadInput
     activities?: LeadActivityUncheckedCreateNestedManyWithoutLeadInput
     recordings?: LeadRecordingUncheckedCreateNestedManyWithoutLeadInput
+    followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutLeadInput
   }
 
   export type LeadCreateOrConnectWithoutBranchInput = {
@@ -149571,6 +152009,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutManagedBranchInput = {
@@ -149622,6 +152061,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
   }
 
   export type BranchCourseUpsertWithWhereUniqueWithoutBranchInput = {
@@ -150248,6 +152688,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
   }
 
   export type UserUncheckedCreateWithoutSalesAdminBranchesInput = {
@@ -150299,6 +152740,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
   }
 
   export type UserCreateOrConnectWithoutSalesAdminBranchesInput = {
@@ -150443,6 +152885,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSalesAdminBranchesInput = {
@@ -150494,6 +152937,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
   }
 
   export type BranchUpsertWithoutSalesAdminBranchesInput = {
@@ -150628,6 +153072,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
   }
 
   export type UserUncheckedCreateWithoutLoginEventsInput = {
@@ -150679,6 +153124,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
   }
 
   export type UserCreateOrConnectWithoutLoginEventsInput = {
@@ -150746,6 +153192,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLoginEventsInput = {
@@ -150797,6 +153244,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
   }
 
   export type CourseEditRequestCreateWithoutNotificationsInput = {
@@ -150907,6 +153355,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
   }
 
   export type UserUncheckedCreateWithoutTargetedNotificationsInput = {
@@ -150958,6 +153407,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
   }
 
   export type UserCreateOrConnectWithoutTargetedNotificationsInput = {
@@ -151090,6 +153540,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTargetedNotificationsInput = {
@@ -151141,6 +153592,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
   }
 
   export type NotificationCreateWithoutRequestInput = {
@@ -151292,6 +153744,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
   }
 
   export type UserUncheckedCreateWithoutPasswordResetTokensInput = {
@@ -151343,6 +153796,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
   }
 
   export type UserCreateOrConnectWithoutPasswordResetTokensInput = {
@@ -151410,6 +153864,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPasswordResetTokensInput = {
@@ -151461,6 +153916,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
   }
 
   export type BatchCreateWithoutCourseInput = {
@@ -153213,15 +155669,25 @@ export namespace Prisma {
     qualification?: string | null
     location?: string | null
     callType: string
+    otherCallType?: string | null
     status?: $Enums.LeadStatus
+    otherStatus?: string | null
     stage?: $Enums.LeadStage
+    otherStage?: string | null
+    otherCourse?: string | null
+    nextFollowUpDate?: Date | string | null
+    lastCallStatus?: string | null
     leadSource: string
+    otherLeadSource?: string | null
     referredBy?: string | null
+    referredName?: string | null
     paymentStatus?: string
+    paymentAmount?: number | null
     trainingMode?: string | null
     classSchedule?: string | null
     courseMode?: string | null
     locationDistance?: string | null
+    otherLocationDistance?: string | null
     leadDate: Date | string
     deletedAt?: Date | string | null
     createdAt?: Date | string
@@ -153234,6 +155700,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryCreateNestedManyWithoutLeadInput
     activities?: LeadActivityCreateNestedManyWithoutLeadInput
     recordings?: LeadRecordingCreateNestedManyWithoutLeadInput
+    followUpReminders?: FollowUpReminderCreateNestedManyWithoutLeadInput
   }
 
   export type LeadUncheckedCreateWithoutCourseInput = {
@@ -153246,16 +155713,26 @@ export namespace Prisma {
     qualification?: string | null
     location?: string | null
     callType: string
+    otherCallType?: string | null
     status?: $Enums.LeadStatus
+    otherStatus?: string | null
     stage?: $Enums.LeadStage
+    otherStage?: string | null
+    otherCourse?: string | null
+    nextFollowUpDate?: Date | string | null
+    lastCallStatus?: string | null
     branchId: string
     leadSource: string
+    otherLeadSource?: string | null
     referredBy?: string | null
+    referredName?: string | null
     paymentStatus?: string
+    paymentAmount?: number | null
     trainingMode?: string | null
     classSchedule?: string | null
     courseMode?: string | null
     locationDistance?: string | null
+    otherLocationDistance?: string | null
     leadDate: Date | string
     assignedToId?: string | null
     createdById: string
@@ -153267,6 +155744,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUncheckedCreateNestedManyWithoutLeadInput
     activities?: LeadActivityUncheckedCreateNestedManyWithoutLeadInput
     recordings?: LeadRecordingUncheckedCreateNestedManyWithoutLeadInput
+    followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutLeadInput
   }
 
   export type LeadCreateOrConnectWithoutCourseInput = {
@@ -154734,6 +157212,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
   }
 
   export type UserUncheckedCreateWithoutBatchFacultyAssignmentsInput = {
@@ -154785,6 +157264,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
   }
 
   export type UserCreateOrConnectWithoutBatchFacultyAssignmentsInput = {
@@ -154907,6 +157387,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutBatchFacultyAssignmentsInput = {
@@ -154958,6 +157439,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
   }
 
   export type BranchCreateWithoutBranchBatchesInput = {
@@ -161724,6 +164206,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
   }
 
   export type UserUncheckedCreateWithoutMarkedBranchStudentAttendancesInput = {
@@ -161775,6 +164258,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
   }
 
   export type UserCreateOrConnectWithoutMarkedBranchStudentAttendancesInput = {
@@ -162007,6 +164491,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMarkedBranchStudentAttendancesInput = {
@@ -162058,6 +164543,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
   }
 
   export type BranchCreateWithoutCalendarHolidaysInput = {
@@ -163013,6 +165499,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
   }
 
   export type UserUncheckedCreateWithoutFacultySkillAssignmentsInput = {
@@ -163064,6 +165551,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
   }
 
   export type UserCreateOrConnectWithoutFacultySkillAssignmentsInput = {
@@ -163342,6 +165830,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFacultySkillAssignmentsInput = {
@@ -163393,6 +165882,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
   }
 
   export type FacultySkillUpsertWithoutAssignmentsInput = {
@@ -164319,6 +166809,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
   }
 
   export type UserUncheckedCreateWithoutFacultyAttendanceSessionsInput = {
@@ -164370,6 +166861,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
   }
 
   export type UserCreateOrConnectWithoutFacultyAttendanceSessionsInput = {
@@ -164469,6 +166961,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFacultyAttendanceSessionsInput = {
@@ -164520,6 +167013,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
   }
 
   export type FacultyAttendanceBatchWorkUpsertWithWhereUniqueWithoutSessionInput = {
@@ -164587,6 +167081,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
   }
 
   export type UserUncheckedCreateWithoutFacultyAttendanceDaysInput = {
@@ -164638,6 +167133,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
   }
 
   export type UserCreateOrConnectWithoutFacultyAttendanceDaysInput = {
@@ -164705,6 +167201,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFacultyAttendanceDaysInput = {
@@ -164756,6 +167253,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
   }
 
   export type FacultyAttendanceSessionCreateWithoutBatchWorkInput = {
@@ -164842,6 +167340,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
   }
 
   export type UserUncheckedCreateWithoutFacultyAttendanceBatchWorkInput = {
@@ -164893,6 +167392,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
   }
 
   export type UserCreateOrConnectWithoutFacultyAttendanceBatchWorkInput = {
@@ -165001,6 +167501,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFacultyAttendanceBatchWorkInput = {
@@ -165052,6 +167553,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
   }
 
   export type UserCreateWithoutFacultyTodayWorkEntriesInput = {
@@ -165103,6 +167605,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
   }
 
   export type UserUncheckedCreateWithoutFacultyTodayWorkEntriesInput = {
@@ -165154,6 +167657,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
   }
 
   export type UserCreateOrConnectWithoutFacultyTodayWorkEntriesInput = {
@@ -165348,6 +167852,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFacultyTodayWorkEntriesInput = {
@@ -165399,6 +167904,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
   }
 
   export type BranchCourseUpsertWithoutFacultyTodayWorkEntriesInput = {
@@ -166179,6 +168685,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
   }
 
   export type UserUncheckedCreateWithoutMarkedStudentAttendancesInput = {
@@ -166230,6 +168737,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
   }
 
   export type UserCreateOrConnectWithoutMarkedStudentAttendancesInput = {
@@ -166406,6 +168914,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMarkedStudentAttendancesInput = {
@@ -166457,6 +168966,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
   }
 
   export type StudentProfileUpsertWithoutAttendanceRecordsInput = {
@@ -167331,6 +169841,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
   }
 
   export type UserUncheckedCreateWithoutFacultyLeaveRequestsInput = {
@@ -167382,6 +169893,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
   }
 
   export type UserCreateOrConnectWithoutFacultyLeaveRequestsInput = {
@@ -167526,6 +170038,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFacultyLeaveRequestsInput = {
@@ -167577,6 +170090,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
   }
 
   export type BranchUpsertWithoutFacultyLeaveRequestsInput = {
@@ -168579,6 +171093,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
   }
 
   export type UserUncheckedCreateWithoutCreatedAssessmentsInput = {
@@ -168630,6 +171145,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
   }
 
   export type UserCreateOrConnectWithoutCreatedAssessmentsInput = {
@@ -169281,6 +171797,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCreatedAssessmentsInput = {
@@ -169332,6 +171849,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
   }
 
   export type AssessmentSubmissionUpsertWithWhereUniqueWithoutAssessmentInput = {
@@ -169847,6 +172365,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
   }
 
   export type UserUncheckedCreateWithoutEvaluatedSubmissionsInput = {
@@ -169898,6 +172417,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
   }
 
   export type UserCreateOrConnectWithoutEvaluatedSubmissionsInput = {
@@ -170187,6 +172707,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutEvaluatedSubmissionsInput = {
@@ -170238,6 +172759,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
   }
 
   export type BranchCourseCreateWithoutExamsInput = {
@@ -170411,6 +172933,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
   }
 
   export type UserUncheckedCreateWithoutCreatedExamsInput = {
@@ -170462,6 +172985,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
   }
 
   export type UserCreateOrConnectWithoutCreatedExamsInput = {
@@ -171041,6 +173565,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCreatedExamsInput = {
@@ -171092,6 +173617,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
   }
 
   export type ExamScheduleUpsertWithWhereUniqueWithoutExamInput = {
@@ -172269,6 +174795,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
   }
 
   export type UserUncheckedCreateWithoutExamAttemptsInput = {
@@ -172320,6 +174847,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
   }
 
   export type UserCreateOrConnectWithoutExamAttemptsInput = {
@@ -172666,6 +175194,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutExamAttemptsInput = {
@@ -172717,6 +175246,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
   }
 
   export type ExamAnswerUpsertWithWhereUniqueWithoutAttemptInput = {
@@ -173104,6 +175634,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
   }
 
   export type UserUncheckedCreateWithoutAssignedLeadsInput = {
@@ -173155,6 +175686,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
   }
 
   export type UserCreateOrConnectWithoutAssignedLeadsInput = {
@@ -173211,6 +175743,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
   }
 
   export type UserUncheckedCreateWithoutCreatedLeadsInput = {
@@ -173262,6 +175795,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
   }
 
   export type UserCreateOrConnectWithoutCreatedLeadsInput = {
@@ -173318,6 +175852,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
   }
 
   export type UserUncheckedCreateWithoutUpdatedLeadsInput = {
@@ -173369,6 +175904,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
   }
 
   export type UserCreateOrConnectWithoutUpdatedLeadsInput = {
@@ -173380,22 +175916,26 @@ export namespace Prisma {
     id?: string
     followUpDate: Date | string
     followUpType: string
+    callStatus: string
     notes: string
     nextFollowUpDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     createdBy: UserCreateNestedOneWithoutLeadFollowUpsInput
+    recordings?: LeadRecordingCreateNestedManyWithoutFollowUpInput
   }
 
   export type LeadFollowUpUncheckedCreateWithoutLeadInput = {
     id?: string
     followUpDate: Date | string
     followUpType: string
+    callStatus: string
     notes: string
     nextFollowUpDate?: Date | string | null
     createdById: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    recordings?: LeadRecordingUncheckedCreateNestedManyWithoutFollowUpInput
   }
 
   export type LeadFollowUpCreateOrConnectWithoutLeadInput = {
@@ -173464,12 +176004,12 @@ export namespace Prisma {
 
   export type LeadRecordingCreateWithoutLeadInput = {
     id?: string
-    followUpId?: string | null
     originalName: string
     storageKey: string
     mimeType: string
     sizeBytes: number
     createdAt?: Date | string
+    followUp?: LeadFollowUpCreateNestedOneWithoutRecordingsInput
     createdBy: UserCreateNestedOneWithoutLeadRecordingsInput
   }
 
@@ -173491,6 +176031,44 @@ export namespace Prisma {
 
   export type LeadRecordingCreateManyLeadInputEnvelope = {
     data: LeadRecordingCreateManyLeadInput | LeadRecordingCreateManyLeadInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type FollowUpReminderCreateWithoutLeadInput = {
+    id?: string
+    dueDate: Date | string
+    scheduledFor: Date | string
+    timezone?: string
+    status?: string
+    notificationId?: string | null
+    deliveredAt?: Date | string | null
+    cancelledAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    recipient: UserCreateNestedOneWithoutFollowUpRemindersInput
+  }
+
+  export type FollowUpReminderUncheckedCreateWithoutLeadInput = {
+    id?: string
+    recipientUserId: string
+    dueDate: Date | string
+    scheduledFor: Date | string
+    timezone?: string
+    status?: string
+    notificationId?: string | null
+    deliveredAt?: Date | string | null
+    cancelledAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FollowUpReminderCreateOrConnectWithoutLeadInput = {
+    where: FollowUpReminderWhereUniqueInput
+    create: XOR<FollowUpReminderCreateWithoutLeadInput, FollowUpReminderUncheckedCreateWithoutLeadInput>
+  }
+
+  export type FollowUpReminderCreateManyLeadInputEnvelope = {
+    data: FollowUpReminderCreateManyLeadInput | FollowUpReminderCreateManyLeadInput[]
     skipDuplicates?: boolean
   }
 
@@ -173726,6 +176304,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAssignedLeadsInput = {
@@ -173777,6 +176356,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
   }
 
   export type UserUpsertWithoutCreatedLeadsInput = {
@@ -173839,6 +176419,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCreatedLeadsInput = {
@@ -173890,6 +176471,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
   }
 
   export type UserUpsertWithoutUpdatedLeadsInput = {
@@ -173952,6 +176534,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUpdatedLeadsInput = {
@@ -174003,6 +176586,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
   }
 
   export type LeadFollowUpUpsertWithWhereUniqueWithoutLeadInput = {
@@ -174069,6 +176653,22 @@ export namespace Prisma {
     data: XOR<LeadRecordingUpdateManyMutationInput, LeadRecordingUncheckedUpdateManyWithoutLeadInput>
   }
 
+  export type FollowUpReminderUpsertWithWhereUniqueWithoutLeadInput = {
+    where: FollowUpReminderWhereUniqueInput
+    update: XOR<FollowUpReminderUpdateWithoutLeadInput, FollowUpReminderUncheckedUpdateWithoutLeadInput>
+    create: XOR<FollowUpReminderCreateWithoutLeadInput, FollowUpReminderUncheckedCreateWithoutLeadInput>
+  }
+
+  export type FollowUpReminderUpdateWithWhereUniqueWithoutLeadInput = {
+    where: FollowUpReminderWhereUniqueInput
+    data: XOR<FollowUpReminderUpdateWithoutLeadInput, FollowUpReminderUncheckedUpdateWithoutLeadInput>
+  }
+
+  export type FollowUpReminderUpdateManyWithWhereWithoutLeadInput = {
+    where: FollowUpReminderScalarWhereInput
+    data: XOR<FollowUpReminderUpdateManyMutationInput, FollowUpReminderUncheckedUpdateManyWithoutLeadInput>
+  }
+
   export type LeadCreateWithoutFollowUpsInput = {
     id?: string
     leadId: string
@@ -174079,15 +176679,25 @@ export namespace Prisma {
     qualification?: string | null
     location?: string | null
     callType: string
+    otherCallType?: string | null
     status?: $Enums.LeadStatus
+    otherStatus?: string | null
     stage?: $Enums.LeadStage
+    otherStage?: string | null
+    otherCourse?: string | null
+    nextFollowUpDate?: Date | string | null
+    lastCallStatus?: string | null
     leadSource: string
+    otherLeadSource?: string | null
     referredBy?: string | null
+    referredName?: string | null
     paymentStatus?: string
+    paymentAmount?: number | null
     trainingMode?: string | null
     classSchedule?: string | null
     courseMode?: string | null
     locationDistance?: string | null
+    otherLocationDistance?: string | null
     leadDate: Date | string
     deletedAt?: Date | string | null
     createdAt?: Date | string
@@ -174100,6 +176710,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryCreateNestedManyWithoutLeadInput
     activities?: LeadActivityCreateNestedManyWithoutLeadInput
     recordings?: LeadRecordingCreateNestedManyWithoutLeadInput
+    followUpReminders?: FollowUpReminderCreateNestedManyWithoutLeadInput
   }
 
   export type LeadUncheckedCreateWithoutFollowUpsInput = {
@@ -174112,17 +176723,27 @@ export namespace Prisma {
     qualification?: string | null
     location?: string | null
     callType: string
+    otherCallType?: string | null
     status?: $Enums.LeadStatus
+    otherStatus?: string | null
     stage?: $Enums.LeadStage
+    otherStage?: string | null
     courseId: string
+    otherCourse?: string | null
+    nextFollowUpDate?: Date | string | null
+    lastCallStatus?: string | null
     branchId: string
     leadSource: string
+    otherLeadSource?: string | null
     referredBy?: string | null
+    referredName?: string | null
     paymentStatus?: string
+    paymentAmount?: number | null
     trainingMode?: string | null
     classSchedule?: string | null
     courseMode?: string | null
     locationDistance?: string | null
+    otherLocationDistance?: string | null
     leadDate: Date | string
     assignedToId?: string | null
     createdById: string
@@ -174133,6 +176754,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUncheckedCreateNestedManyWithoutLeadInput
     activities?: LeadActivityUncheckedCreateNestedManyWithoutLeadInput
     recordings?: LeadRecordingUncheckedCreateNestedManyWithoutLeadInput
+    followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutLeadInput
   }
 
   export type LeadCreateOrConnectWithoutFollowUpsInput = {
@@ -174189,6 +176811,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
   }
 
   export type UserUncheckedCreateWithoutLeadFollowUpsInput = {
@@ -174240,11 +176863,44 @@ export namespace Prisma {
     leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
   }
 
   export type UserCreateOrConnectWithoutLeadFollowUpsInput = {
     where: UserWhereUniqueInput
     create: XOR<UserCreateWithoutLeadFollowUpsInput, UserUncheckedCreateWithoutLeadFollowUpsInput>
+  }
+
+  export type LeadRecordingCreateWithoutFollowUpInput = {
+    id?: string
+    originalName: string
+    storageKey: string
+    mimeType: string
+    sizeBytes: number
+    createdAt?: Date | string
+    lead: LeadCreateNestedOneWithoutRecordingsInput
+    createdBy: UserCreateNestedOneWithoutLeadRecordingsInput
+  }
+
+  export type LeadRecordingUncheckedCreateWithoutFollowUpInput = {
+    id?: string
+    leadId: string
+    originalName: string
+    storageKey: string
+    mimeType: string
+    sizeBytes: number
+    createdById: string
+    createdAt?: Date | string
+  }
+
+  export type LeadRecordingCreateOrConnectWithoutFollowUpInput = {
+    where: LeadRecordingWhereUniqueInput
+    create: XOR<LeadRecordingCreateWithoutFollowUpInput, LeadRecordingUncheckedCreateWithoutFollowUpInput>
+  }
+
+  export type LeadRecordingCreateManyFollowUpInputEnvelope = {
+    data: LeadRecordingCreateManyFollowUpInput | LeadRecordingCreateManyFollowUpInput[]
+    skipDuplicates?: boolean
   }
 
   export type LeadUpsertWithoutFollowUpsInput = {
@@ -174268,15 +176924,25 @@ export namespace Prisma {
     qualification?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
     callType?: StringFieldUpdateOperationsInput | string
+    otherCallType?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    otherStatus?: NullableStringFieldUpdateOperationsInput | string | null
     stage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    otherStage?: NullableStringFieldUpdateOperationsInput | string | null
+    otherCourse?: NullableStringFieldUpdateOperationsInput | string | null
+    nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastCallStatus?: NullableStringFieldUpdateOperationsInput | string | null
     leadSource?: StringFieldUpdateOperationsInput | string
+    otherLeadSource?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    referredName?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: StringFieldUpdateOperationsInput | string
+    paymentAmount?: NullableFloatFieldUpdateOperationsInput | number | null
     trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
     classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     courseMode?: NullableStringFieldUpdateOperationsInput | string | null
     locationDistance?: NullableStringFieldUpdateOperationsInput | string | null
+    otherLocationDistance?: NullableStringFieldUpdateOperationsInput | string | null
     leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -174289,6 +176955,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUpdateManyWithoutLeadNestedInput
     activities?: LeadActivityUpdateManyWithoutLeadNestedInput
     recordings?: LeadRecordingUpdateManyWithoutLeadNestedInput
+    followUpReminders?: FollowUpReminderUpdateManyWithoutLeadNestedInput
   }
 
   export type LeadUncheckedUpdateWithoutFollowUpsInput = {
@@ -174301,17 +176968,27 @@ export namespace Prisma {
     qualification?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
     callType?: StringFieldUpdateOperationsInput | string
+    otherCallType?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    otherStatus?: NullableStringFieldUpdateOperationsInput | string | null
     stage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    otherStage?: NullableStringFieldUpdateOperationsInput | string | null
     courseId?: StringFieldUpdateOperationsInput | string
+    otherCourse?: NullableStringFieldUpdateOperationsInput | string | null
+    nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastCallStatus?: NullableStringFieldUpdateOperationsInput | string | null
     branchId?: StringFieldUpdateOperationsInput | string
     leadSource?: StringFieldUpdateOperationsInput | string
+    otherLeadSource?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    referredName?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: StringFieldUpdateOperationsInput | string
+    paymentAmount?: NullableFloatFieldUpdateOperationsInput | number | null
     trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
     classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     courseMode?: NullableStringFieldUpdateOperationsInput | string | null
     locationDistance?: NullableStringFieldUpdateOperationsInput | string | null
+    otherLocationDistance?: NullableStringFieldUpdateOperationsInput | string | null
     leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
     assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
     createdById?: StringFieldUpdateOperationsInput | string
@@ -174322,6 +176999,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUncheckedUpdateManyWithoutLeadNestedInput
     activities?: LeadActivityUncheckedUpdateManyWithoutLeadNestedInput
     recordings?: LeadRecordingUncheckedUpdateManyWithoutLeadNestedInput
+    followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutLeadNestedInput
   }
 
   export type UserUpsertWithoutLeadFollowUpsInput = {
@@ -174384,6 +177062,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLeadFollowUpsInput = {
@@ -174435,6 +177114,23 @@ export namespace Prisma {
     leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
+  }
+
+  export type LeadRecordingUpsertWithWhereUniqueWithoutFollowUpInput = {
+    where: LeadRecordingWhereUniqueInput
+    update: XOR<LeadRecordingUpdateWithoutFollowUpInput, LeadRecordingUncheckedUpdateWithoutFollowUpInput>
+    create: XOR<LeadRecordingCreateWithoutFollowUpInput, LeadRecordingUncheckedCreateWithoutFollowUpInput>
+  }
+
+  export type LeadRecordingUpdateWithWhereUniqueWithoutFollowUpInput = {
+    where: LeadRecordingWhereUniqueInput
+    data: XOR<LeadRecordingUpdateWithoutFollowUpInput, LeadRecordingUncheckedUpdateWithoutFollowUpInput>
+  }
+
+  export type LeadRecordingUpdateManyWithWhereWithoutFollowUpInput = {
+    where: LeadRecordingScalarWhereInput
+    data: XOR<LeadRecordingUpdateManyMutationInput, LeadRecordingUncheckedUpdateManyWithoutFollowUpInput>
   }
 
   export type LeadCreateWithoutStageHistoryInput = {
@@ -174447,15 +177143,25 @@ export namespace Prisma {
     qualification?: string | null
     location?: string | null
     callType: string
+    otherCallType?: string | null
     status?: $Enums.LeadStatus
+    otherStatus?: string | null
     stage?: $Enums.LeadStage
+    otherStage?: string | null
+    otherCourse?: string | null
+    nextFollowUpDate?: Date | string | null
+    lastCallStatus?: string | null
     leadSource: string
+    otherLeadSource?: string | null
     referredBy?: string | null
+    referredName?: string | null
     paymentStatus?: string
+    paymentAmount?: number | null
     trainingMode?: string | null
     classSchedule?: string | null
     courseMode?: string | null
     locationDistance?: string | null
+    otherLocationDistance?: string | null
     leadDate: Date | string
     deletedAt?: Date | string | null
     createdAt?: Date | string
@@ -174468,6 +177174,7 @@ export namespace Prisma {
     followUps?: LeadFollowUpCreateNestedManyWithoutLeadInput
     activities?: LeadActivityCreateNestedManyWithoutLeadInput
     recordings?: LeadRecordingCreateNestedManyWithoutLeadInput
+    followUpReminders?: FollowUpReminderCreateNestedManyWithoutLeadInput
   }
 
   export type LeadUncheckedCreateWithoutStageHistoryInput = {
@@ -174480,17 +177187,27 @@ export namespace Prisma {
     qualification?: string | null
     location?: string | null
     callType: string
+    otherCallType?: string | null
     status?: $Enums.LeadStatus
+    otherStatus?: string | null
     stage?: $Enums.LeadStage
+    otherStage?: string | null
     courseId: string
+    otherCourse?: string | null
+    nextFollowUpDate?: Date | string | null
+    lastCallStatus?: string | null
     branchId: string
     leadSource: string
+    otherLeadSource?: string | null
     referredBy?: string | null
+    referredName?: string | null
     paymentStatus?: string
+    paymentAmount?: number | null
     trainingMode?: string | null
     classSchedule?: string | null
     courseMode?: string | null
     locationDistance?: string | null
+    otherLocationDistance?: string | null
     leadDate: Date | string
     assignedToId?: string | null
     createdById: string
@@ -174501,6 +177218,7 @@ export namespace Prisma {
     followUps?: LeadFollowUpUncheckedCreateNestedManyWithoutLeadInput
     activities?: LeadActivityUncheckedCreateNestedManyWithoutLeadInput
     recordings?: LeadRecordingUncheckedCreateNestedManyWithoutLeadInput
+    followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutLeadInput
   }
 
   export type LeadCreateOrConnectWithoutStageHistoryInput = {
@@ -174557,6 +177275,7 @@ export namespace Prisma {
     leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
     leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
   }
 
   export type UserUncheckedCreateWithoutLeadStageChangesInput = {
@@ -174608,6 +177327,7 @@ export namespace Prisma {
     leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
     leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
   }
 
   export type UserCreateOrConnectWithoutLeadStageChangesInput = {
@@ -174636,15 +177356,25 @@ export namespace Prisma {
     qualification?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
     callType?: StringFieldUpdateOperationsInput | string
+    otherCallType?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    otherStatus?: NullableStringFieldUpdateOperationsInput | string | null
     stage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    otherStage?: NullableStringFieldUpdateOperationsInput | string | null
+    otherCourse?: NullableStringFieldUpdateOperationsInput | string | null
+    nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastCallStatus?: NullableStringFieldUpdateOperationsInput | string | null
     leadSource?: StringFieldUpdateOperationsInput | string
+    otherLeadSource?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    referredName?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: StringFieldUpdateOperationsInput | string
+    paymentAmount?: NullableFloatFieldUpdateOperationsInput | number | null
     trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
     classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     courseMode?: NullableStringFieldUpdateOperationsInput | string | null
     locationDistance?: NullableStringFieldUpdateOperationsInput | string | null
+    otherLocationDistance?: NullableStringFieldUpdateOperationsInput | string | null
     leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -174657,6 +177387,7 @@ export namespace Prisma {
     followUps?: LeadFollowUpUpdateManyWithoutLeadNestedInput
     activities?: LeadActivityUpdateManyWithoutLeadNestedInput
     recordings?: LeadRecordingUpdateManyWithoutLeadNestedInput
+    followUpReminders?: FollowUpReminderUpdateManyWithoutLeadNestedInput
   }
 
   export type LeadUncheckedUpdateWithoutStageHistoryInput = {
@@ -174669,17 +177400,27 @@ export namespace Prisma {
     qualification?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
     callType?: StringFieldUpdateOperationsInput | string
+    otherCallType?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    otherStatus?: NullableStringFieldUpdateOperationsInput | string | null
     stage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    otherStage?: NullableStringFieldUpdateOperationsInput | string | null
     courseId?: StringFieldUpdateOperationsInput | string
+    otherCourse?: NullableStringFieldUpdateOperationsInput | string | null
+    nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastCallStatus?: NullableStringFieldUpdateOperationsInput | string | null
     branchId?: StringFieldUpdateOperationsInput | string
     leadSource?: StringFieldUpdateOperationsInput | string
+    otherLeadSource?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    referredName?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: StringFieldUpdateOperationsInput | string
+    paymentAmount?: NullableFloatFieldUpdateOperationsInput | number | null
     trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
     classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     courseMode?: NullableStringFieldUpdateOperationsInput | string | null
     locationDistance?: NullableStringFieldUpdateOperationsInput | string | null
+    otherLocationDistance?: NullableStringFieldUpdateOperationsInput | string | null
     leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
     assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
     createdById?: StringFieldUpdateOperationsInput | string
@@ -174690,6 +177431,7 @@ export namespace Prisma {
     followUps?: LeadFollowUpUncheckedUpdateManyWithoutLeadNestedInput
     activities?: LeadActivityUncheckedUpdateManyWithoutLeadNestedInput
     recordings?: LeadRecordingUncheckedUpdateManyWithoutLeadNestedInput
+    followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutLeadNestedInput
   }
 
   export type UserUpsertWithoutLeadStageChangesInput = {
@@ -174752,6 +177494,7 @@ export namespace Prisma {
     leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
     leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLeadStageChangesInput = {
@@ -174803,6 +177546,7 @@ export namespace Prisma {
     leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
     leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
   }
 
   export type LeadCreateWithoutActivitiesInput = {
@@ -174815,15 +177559,25 @@ export namespace Prisma {
     qualification?: string | null
     location?: string | null
     callType: string
+    otherCallType?: string | null
     status?: $Enums.LeadStatus
+    otherStatus?: string | null
     stage?: $Enums.LeadStage
+    otherStage?: string | null
+    otherCourse?: string | null
+    nextFollowUpDate?: Date | string | null
+    lastCallStatus?: string | null
     leadSource: string
+    otherLeadSource?: string | null
     referredBy?: string | null
+    referredName?: string | null
     paymentStatus?: string
+    paymentAmount?: number | null
     trainingMode?: string | null
     classSchedule?: string | null
     courseMode?: string | null
     locationDistance?: string | null
+    otherLocationDistance?: string | null
     leadDate: Date | string
     deletedAt?: Date | string | null
     createdAt?: Date | string
@@ -174836,6 +177590,7 @@ export namespace Prisma {
     followUps?: LeadFollowUpCreateNestedManyWithoutLeadInput
     stageHistory?: LeadStageHistoryCreateNestedManyWithoutLeadInput
     recordings?: LeadRecordingCreateNestedManyWithoutLeadInput
+    followUpReminders?: FollowUpReminderCreateNestedManyWithoutLeadInput
   }
 
   export type LeadUncheckedCreateWithoutActivitiesInput = {
@@ -174848,17 +177603,27 @@ export namespace Prisma {
     qualification?: string | null
     location?: string | null
     callType: string
+    otherCallType?: string | null
     status?: $Enums.LeadStatus
+    otherStatus?: string | null
     stage?: $Enums.LeadStage
+    otherStage?: string | null
     courseId: string
+    otherCourse?: string | null
+    nextFollowUpDate?: Date | string | null
+    lastCallStatus?: string | null
     branchId: string
     leadSource: string
+    otherLeadSource?: string | null
     referredBy?: string | null
+    referredName?: string | null
     paymentStatus?: string
+    paymentAmount?: number | null
     trainingMode?: string | null
     classSchedule?: string | null
     courseMode?: string | null
     locationDistance?: string | null
+    otherLocationDistance?: string | null
     leadDate: Date | string
     assignedToId?: string | null
     createdById: string
@@ -174869,6 +177634,7 @@ export namespace Prisma {
     followUps?: LeadFollowUpUncheckedCreateNestedManyWithoutLeadInput
     stageHistory?: LeadStageHistoryUncheckedCreateNestedManyWithoutLeadInput
     recordings?: LeadRecordingUncheckedCreateNestedManyWithoutLeadInput
+    followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutLeadInput
   }
 
   export type LeadCreateOrConnectWithoutActivitiesInput = {
@@ -174925,6 +177691,7 @@ export namespace Prisma {
     leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
   }
 
   export type UserUncheckedCreateWithoutLeadActivitiesInput = {
@@ -174976,6 +177743,7 @@ export namespace Prisma {
     leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
   }
 
   export type UserCreateOrConnectWithoutLeadActivitiesInput = {
@@ -175004,15 +177772,25 @@ export namespace Prisma {
     qualification?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
     callType?: StringFieldUpdateOperationsInput | string
+    otherCallType?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    otherStatus?: NullableStringFieldUpdateOperationsInput | string | null
     stage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    otherStage?: NullableStringFieldUpdateOperationsInput | string | null
+    otherCourse?: NullableStringFieldUpdateOperationsInput | string | null
+    nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastCallStatus?: NullableStringFieldUpdateOperationsInput | string | null
     leadSource?: StringFieldUpdateOperationsInput | string
+    otherLeadSource?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    referredName?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: StringFieldUpdateOperationsInput | string
+    paymentAmount?: NullableFloatFieldUpdateOperationsInput | number | null
     trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
     classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     courseMode?: NullableStringFieldUpdateOperationsInput | string | null
     locationDistance?: NullableStringFieldUpdateOperationsInput | string | null
+    otherLocationDistance?: NullableStringFieldUpdateOperationsInput | string | null
     leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -175025,6 +177803,7 @@ export namespace Prisma {
     followUps?: LeadFollowUpUpdateManyWithoutLeadNestedInput
     stageHistory?: LeadStageHistoryUpdateManyWithoutLeadNestedInput
     recordings?: LeadRecordingUpdateManyWithoutLeadNestedInput
+    followUpReminders?: FollowUpReminderUpdateManyWithoutLeadNestedInput
   }
 
   export type LeadUncheckedUpdateWithoutActivitiesInput = {
@@ -175037,17 +177816,27 @@ export namespace Prisma {
     qualification?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
     callType?: StringFieldUpdateOperationsInput | string
+    otherCallType?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    otherStatus?: NullableStringFieldUpdateOperationsInput | string | null
     stage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    otherStage?: NullableStringFieldUpdateOperationsInput | string | null
     courseId?: StringFieldUpdateOperationsInput | string
+    otherCourse?: NullableStringFieldUpdateOperationsInput | string | null
+    nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastCallStatus?: NullableStringFieldUpdateOperationsInput | string | null
     branchId?: StringFieldUpdateOperationsInput | string
     leadSource?: StringFieldUpdateOperationsInput | string
+    otherLeadSource?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    referredName?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: StringFieldUpdateOperationsInput | string
+    paymentAmount?: NullableFloatFieldUpdateOperationsInput | number | null
     trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
     classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     courseMode?: NullableStringFieldUpdateOperationsInput | string | null
     locationDistance?: NullableStringFieldUpdateOperationsInput | string | null
+    otherLocationDistance?: NullableStringFieldUpdateOperationsInput | string | null
     leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
     assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
     createdById?: StringFieldUpdateOperationsInput | string
@@ -175058,6 +177847,7 @@ export namespace Prisma {
     followUps?: LeadFollowUpUncheckedUpdateManyWithoutLeadNestedInput
     stageHistory?: LeadStageHistoryUncheckedUpdateManyWithoutLeadNestedInput
     recordings?: LeadRecordingUncheckedUpdateManyWithoutLeadNestedInput
+    followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutLeadNestedInput
   }
 
   export type UserUpsertWithoutLeadActivitiesInput = {
@@ -175120,6 +177910,7 @@ export namespace Prisma {
     leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLeadActivitiesInput = {
@@ -175171,6 +177962,7 @@ export namespace Prisma {
     leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
   }
 
   export type LeadCreateWithoutRecordingsInput = {
@@ -175183,15 +177975,25 @@ export namespace Prisma {
     qualification?: string | null
     location?: string | null
     callType: string
+    otherCallType?: string | null
     status?: $Enums.LeadStatus
+    otherStatus?: string | null
     stage?: $Enums.LeadStage
+    otherStage?: string | null
+    otherCourse?: string | null
+    nextFollowUpDate?: Date | string | null
+    lastCallStatus?: string | null
     leadSource: string
+    otherLeadSource?: string | null
     referredBy?: string | null
+    referredName?: string | null
     paymentStatus?: string
+    paymentAmount?: number | null
     trainingMode?: string | null
     classSchedule?: string | null
     courseMode?: string | null
     locationDistance?: string | null
+    otherLocationDistance?: string | null
     leadDate: Date | string
     deletedAt?: Date | string | null
     createdAt?: Date | string
@@ -175204,6 +178006,7 @@ export namespace Prisma {
     followUps?: LeadFollowUpCreateNestedManyWithoutLeadInput
     stageHistory?: LeadStageHistoryCreateNestedManyWithoutLeadInput
     activities?: LeadActivityCreateNestedManyWithoutLeadInput
+    followUpReminders?: FollowUpReminderCreateNestedManyWithoutLeadInput
   }
 
   export type LeadUncheckedCreateWithoutRecordingsInput = {
@@ -175216,17 +178019,27 @@ export namespace Prisma {
     qualification?: string | null
     location?: string | null
     callType: string
+    otherCallType?: string | null
     status?: $Enums.LeadStatus
+    otherStatus?: string | null
     stage?: $Enums.LeadStage
+    otherStage?: string | null
     courseId: string
+    otherCourse?: string | null
+    nextFollowUpDate?: Date | string | null
+    lastCallStatus?: string | null
     branchId: string
     leadSource: string
+    otherLeadSource?: string | null
     referredBy?: string | null
+    referredName?: string | null
     paymentStatus?: string
+    paymentAmount?: number | null
     trainingMode?: string | null
     classSchedule?: string | null
     courseMode?: string | null
     locationDistance?: string | null
+    otherLocationDistance?: string | null
     leadDate: Date | string
     assignedToId?: string | null
     createdById: string
@@ -175237,11 +178050,43 @@ export namespace Prisma {
     followUps?: LeadFollowUpUncheckedCreateNestedManyWithoutLeadInput
     stageHistory?: LeadStageHistoryUncheckedCreateNestedManyWithoutLeadInput
     activities?: LeadActivityUncheckedCreateNestedManyWithoutLeadInput
+    followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutLeadInput
   }
 
   export type LeadCreateOrConnectWithoutRecordingsInput = {
     where: LeadWhereUniqueInput
     create: XOR<LeadCreateWithoutRecordingsInput, LeadUncheckedCreateWithoutRecordingsInput>
+  }
+
+  export type LeadFollowUpCreateWithoutRecordingsInput = {
+    id?: string
+    followUpDate: Date | string
+    followUpType: string
+    callStatus: string
+    notes: string
+    nextFollowUpDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lead: LeadCreateNestedOneWithoutFollowUpsInput
+    createdBy: UserCreateNestedOneWithoutLeadFollowUpsInput
+  }
+
+  export type LeadFollowUpUncheckedCreateWithoutRecordingsInput = {
+    id?: string
+    leadId: string
+    followUpDate: Date | string
+    followUpType: string
+    callStatus: string
+    notes: string
+    nextFollowUpDate?: Date | string | null
+    createdById: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type LeadFollowUpCreateOrConnectWithoutRecordingsInput = {
+    where: LeadFollowUpWhereUniqueInput
+    create: XOR<LeadFollowUpCreateWithoutRecordingsInput, LeadFollowUpUncheckedCreateWithoutRecordingsInput>
   }
 
   export type UserCreateWithoutLeadRecordingsInput = {
@@ -175293,6 +178138,7 @@ export namespace Prisma {
     leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
     leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
   }
 
   export type UserUncheckedCreateWithoutLeadRecordingsInput = {
@@ -175344,6 +178190,7 @@ export namespace Prisma {
     leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
     leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
   }
 
   export type UserCreateOrConnectWithoutLeadRecordingsInput = {
@@ -175372,15 +178219,25 @@ export namespace Prisma {
     qualification?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
     callType?: StringFieldUpdateOperationsInput | string
+    otherCallType?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    otherStatus?: NullableStringFieldUpdateOperationsInput | string | null
     stage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    otherStage?: NullableStringFieldUpdateOperationsInput | string | null
+    otherCourse?: NullableStringFieldUpdateOperationsInput | string | null
+    nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastCallStatus?: NullableStringFieldUpdateOperationsInput | string | null
     leadSource?: StringFieldUpdateOperationsInput | string
+    otherLeadSource?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    referredName?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: StringFieldUpdateOperationsInput | string
+    paymentAmount?: NullableFloatFieldUpdateOperationsInput | number | null
     trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
     classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     courseMode?: NullableStringFieldUpdateOperationsInput | string | null
     locationDistance?: NullableStringFieldUpdateOperationsInput | string | null
+    otherLocationDistance?: NullableStringFieldUpdateOperationsInput | string | null
     leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -175393,6 +178250,7 @@ export namespace Prisma {
     followUps?: LeadFollowUpUpdateManyWithoutLeadNestedInput
     stageHistory?: LeadStageHistoryUpdateManyWithoutLeadNestedInput
     activities?: LeadActivityUpdateManyWithoutLeadNestedInput
+    followUpReminders?: FollowUpReminderUpdateManyWithoutLeadNestedInput
   }
 
   export type LeadUncheckedUpdateWithoutRecordingsInput = {
@@ -175405,17 +178263,27 @@ export namespace Prisma {
     qualification?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
     callType?: StringFieldUpdateOperationsInput | string
+    otherCallType?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    otherStatus?: NullableStringFieldUpdateOperationsInput | string | null
     stage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    otherStage?: NullableStringFieldUpdateOperationsInput | string | null
     courseId?: StringFieldUpdateOperationsInput | string
+    otherCourse?: NullableStringFieldUpdateOperationsInput | string | null
+    nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastCallStatus?: NullableStringFieldUpdateOperationsInput | string | null
     branchId?: StringFieldUpdateOperationsInput | string
     leadSource?: StringFieldUpdateOperationsInput | string
+    otherLeadSource?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    referredName?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: StringFieldUpdateOperationsInput | string
+    paymentAmount?: NullableFloatFieldUpdateOperationsInput | number | null
     trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
     classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     courseMode?: NullableStringFieldUpdateOperationsInput | string | null
     locationDistance?: NullableStringFieldUpdateOperationsInput | string | null
+    otherLocationDistance?: NullableStringFieldUpdateOperationsInput | string | null
     leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
     assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
     createdById?: StringFieldUpdateOperationsInput | string
@@ -175426,6 +178294,44 @@ export namespace Prisma {
     followUps?: LeadFollowUpUncheckedUpdateManyWithoutLeadNestedInput
     stageHistory?: LeadStageHistoryUncheckedUpdateManyWithoutLeadNestedInput
     activities?: LeadActivityUncheckedUpdateManyWithoutLeadNestedInput
+    followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutLeadNestedInput
+  }
+
+  export type LeadFollowUpUpsertWithoutRecordingsInput = {
+    update: XOR<LeadFollowUpUpdateWithoutRecordingsInput, LeadFollowUpUncheckedUpdateWithoutRecordingsInput>
+    create: XOR<LeadFollowUpCreateWithoutRecordingsInput, LeadFollowUpUncheckedCreateWithoutRecordingsInput>
+    where?: LeadFollowUpWhereInput
+  }
+
+  export type LeadFollowUpUpdateToOneWithWhereWithoutRecordingsInput = {
+    where?: LeadFollowUpWhereInput
+    data: XOR<LeadFollowUpUpdateWithoutRecordingsInput, LeadFollowUpUncheckedUpdateWithoutRecordingsInput>
+  }
+
+  export type LeadFollowUpUpdateWithoutRecordingsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    followUpDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    followUpType?: StringFieldUpdateOperationsInput | string
+    callStatus?: StringFieldUpdateOperationsInput | string
+    notes?: StringFieldUpdateOperationsInput | string
+    nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lead?: LeadUpdateOneRequiredWithoutFollowUpsNestedInput
+    createdBy?: UserUpdateOneRequiredWithoutLeadFollowUpsNestedInput
+  }
+
+  export type LeadFollowUpUncheckedUpdateWithoutRecordingsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    followUpDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    followUpType?: StringFieldUpdateOperationsInput | string
+    callStatus?: StringFieldUpdateOperationsInput | string
+    notes?: StringFieldUpdateOperationsInput | string
+    nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdById?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type UserUpsertWithoutLeadRecordingsInput = {
@@ -175488,6 +178394,7 @@ export namespace Prisma {
     leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
     leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLeadRecordingsInput = {
@@ -175539,6 +178446,423 @@ export namespace Prisma {
     leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
     leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
+  }
+
+  export type LeadCreateWithoutFollowUpRemindersInput = {
+    id?: string
+    leadId: string
+    studentName: string
+    phoneNumber: string
+    alternativeNumber?: string | null
+    email?: string | null
+    qualification?: string | null
+    location?: string | null
+    callType: string
+    otherCallType?: string | null
+    status?: $Enums.LeadStatus
+    otherStatus?: string | null
+    stage?: $Enums.LeadStage
+    otherStage?: string | null
+    otherCourse?: string | null
+    nextFollowUpDate?: Date | string | null
+    lastCallStatus?: string | null
+    leadSource: string
+    otherLeadSource?: string | null
+    referredBy?: string | null
+    referredName?: string | null
+    paymentStatus?: string
+    paymentAmount?: number | null
+    trainingMode?: string | null
+    classSchedule?: string | null
+    courseMode?: string | null
+    locationDistance?: string | null
+    otherLocationDistance?: string | null
+    leadDate: Date | string
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branch: BranchCreateNestedOneWithoutLeadsInput
+    course: BranchCourseCreateNestedOneWithoutLeadsInput
+    assignedTo?: UserCreateNestedOneWithoutAssignedLeadsInput
+    createdBy: UserCreateNestedOneWithoutCreatedLeadsInput
+    updatedBy?: UserCreateNestedOneWithoutUpdatedLeadsInput
+    followUps?: LeadFollowUpCreateNestedManyWithoutLeadInput
+    stageHistory?: LeadStageHistoryCreateNestedManyWithoutLeadInput
+    activities?: LeadActivityCreateNestedManyWithoutLeadInput
+    recordings?: LeadRecordingCreateNestedManyWithoutLeadInput
+  }
+
+  export type LeadUncheckedCreateWithoutFollowUpRemindersInput = {
+    id?: string
+    leadId: string
+    studentName: string
+    phoneNumber: string
+    alternativeNumber?: string | null
+    email?: string | null
+    qualification?: string | null
+    location?: string | null
+    callType: string
+    otherCallType?: string | null
+    status?: $Enums.LeadStatus
+    otherStatus?: string | null
+    stage?: $Enums.LeadStage
+    otherStage?: string | null
+    courseId: string
+    otherCourse?: string | null
+    nextFollowUpDate?: Date | string | null
+    lastCallStatus?: string | null
+    branchId: string
+    leadSource: string
+    otherLeadSource?: string | null
+    referredBy?: string | null
+    referredName?: string | null
+    paymentStatus?: string
+    paymentAmount?: number | null
+    trainingMode?: string | null
+    classSchedule?: string | null
+    courseMode?: string | null
+    locationDistance?: string | null
+    otherLocationDistance?: string | null
+    leadDate: Date | string
+    assignedToId?: string | null
+    createdById: string
+    updatedById?: string | null
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    followUps?: LeadFollowUpUncheckedCreateNestedManyWithoutLeadInput
+    stageHistory?: LeadStageHistoryUncheckedCreateNestedManyWithoutLeadInput
+    activities?: LeadActivityUncheckedCreateNestedManyWithoutLeadInput
+    recordings?: LeadRecordingUncheckedCreateNestedManyWithoutLeadInput
+  }
+
+  export type LeadCreateOrConnectWithoutFollowUpRemindersInput = {
+    where: LeadWhereUniqueInput
+    create: XOR<LeadCreateWithoutFollowUpRemindersInput, LeadUncheckedCreateWithoutFollowUpRemindersInput>
+  }
+
+  export type UserCreateWithoutFollowUpRemindersInput = {
+    id?: string
+    userCode: string
+    fullName: string
+    email: string
+    phone?: string | null
+    address?: string | null
+    role: $Enums.UserRole
+    active?: boolean
+    passwordHash: string
+    passwordChangedAt?: Date | string | null
+    refreshTokenVersion?: number
+    failedLoginCount?: number
+    failedLoginWindowExpiresAt?: Date | string | null
+    lockedUntil?: Date | string | null
+    lastLoginAt?: Date | string | null
+    lastLogoutAt?: Date | string | null
+    lastLoginIp?: string | null
+    lastLoginUserAgent?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentCreateNestedManyWithoutFacultyInput
+    managedBranch?: BranchCreateNestedOneWithoutAdminUserInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceDays?: FacultyAttendanceDayCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkCreateNestedManyWithoutFacultyUserInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryCreateNestedManyWithoutFacultyUserInput
+    loginEvents?: LoginEventCreateNestedManyWithoutUserInput
+    targetedNotifications?: NotificationCreateNestedManyWithoutTargetUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    markedStudentAttendances?: StudentAttendanceCreateNestedManyWithoutFacultyUserInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceCreateNestedManyWithoutFacultyUserInput
+    dashboardWidgetPreferences?: UserDashboardWidgetCreateNestedManyWithoutUserInput
+    facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutFacultyUserInput
+    createdExams?: ExamCreateNestedManyWithoutFacultyInput
+    examAttempts?: ExamAttemptCreateNestedManyWithoutStudentUserInput
+    createdAssessments?: AssessmentCreateNestedManyWithoutFacultyInput
+    evaluatedSubmissions?: AssessmentSubmissionCreateNestedManyWithoutEvaluatorInput
+    facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutFacultyUserInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
+    salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadCreateNestedManyWithoutAssignedToInput
+    createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
+    leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
+  }
+
+  export type UserUncheckedCreateWithoutFollowUpRemindersInput = {
+    id?: string
+    userCode: string
+    fullName: string
+    email: string
+    phone?: string | null
+    address?: string | null
+    role: $Enums.UserRole
+    active?: boolean
+    passwordHash: string
+    passwordChangedAt?: Date | string | null
+    refreshTokenVersion?: number
+    failedLoginCount?: number
+    failedLoginWindowExpiresAt?: Date | string | null
+    lockedUntil?: Date | string | null
+    lastLoginAt?: Date | string | null
+    lastLogoutAt?: Date | string | null
+    lastLoginIp?: string | null
+    lastLoginUserAgent?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentUncheckedCreateNestedManyWithoutFacultyInput
+    managedBranch?: BranchUncheckedCreateNestedOneWithoutAdminUserInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceDays?: FacultyAttendanceDayUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedCreateNestedManyWithoutFacultyUserInput
+    loginEvents?: LoginEventUncheckedCreateNestedManyWithoutUserInput
+    targetedNotifications?: NotificationUncheckedCreateNestedManyWithoutTargetUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    markedStudentAttendances?: StudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
+    dashboardWidgetPreferences?: UserDashboardWidgetUncheckedCreateNestedManyWithoutUserInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutFacultyUserInput
+    createdExams?: ExamUncheckedCreateNestedManyWithoutFacultyInput
+    examAttempts?: ExamAttemptUncheckedCreateNestedManyWithoutStudentUserInput
+    createdAssessments?: AssessmentUncheckedCreateNestedManyWithoutFacultyInput
+    evaluatedSubmissions?: AssessmentSubmissionUncheckedCreateNestedManyWithoutEvaluatorInput
+    facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutFacultyUserInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
+    salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssignedToInput
+    createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
+    leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
+  }
+
+  export type UserCreateOrConnectWithoutFollowUpRemindersInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutFollowUpRemindersInput, UserUncheckedCreateWithoutFollowUpRemindersInput>
+  }
+
+  export type LeadUpsertWithoutFollowUpRemindersInput = {
+    update: XOR<LeadUpdateWithoutFollowUpRemindersInput, LeadUncheckedUpdateWithoutFollowUpRemindersInput>
+    create: XOR<LeadCreateWithoutFollowUpRemindersInput, LeadUncheckedCreateWithoutFollowUpRemindersInput>
+    where?: LeadWhereInput
+  }
+
+  export type LeadUpdateToOneWithWhereWithoutFollowUpRemindersInput = {
+    where?: LeadWhereInput
+    data: XOR<LeadUpdateWithoutFollowUpRemindersInput, LeadUncheckedUpdateWithoutFollowUpRemindersInput>
+  }
+
+  export type LeadUpdateWithoutFollowUpRemindersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    studentName?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    alternativeNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    qualification?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    callType?: StringFieldUpdateOperationsInput | string
+    otherCallType?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    otherStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    stage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    otherStage?: NullableStringFieldUpdateOperationsInput | string | null
+    otherCourse?: NullableStringFieldUpdateOperationsInput | string | null
+    nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastCallStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    leadSource?: StringFieldUpdateOperationsInput | string
+    otherLeadSource?: NullableStringFieldUpdateOperationsInput | string | null
+    referredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    referredName?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: StringFieldUpdateOperationsInput | string
+    paymentAmount?: NullableFloatFieldUpdateOperationsInput | number | null
+    trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
+    classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
+    courseMode?: NullableStringFieldUpdateOperationsInput | string | null
+    locationDistance?: NullableStringFieldUpdateOperationsInput | string | null
+    otherLocationDistance?: NullableStringFieldUpdateOperationsInput | string | null
+    leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branch?: BranchUpdateOneRequiredWithoutLeadsNestedInput
+    course?: BranchCourseUpdateOneRequiredWithoutLeadsNestedInput
+    assignedTo?: UserUpdateOneWithoutAssignedLeadsNestedInput
+    createdBy?: UserUpdateOneRequiredWithoutCreatedLeadsNestedInput
+    updatedBy?: UserUpdateOneWithoutUpdatedLeadsNestedInput
+    followUps?: LeadFollowUpUpdateManyWithoutLeadNestedInput
+    stageHistory?: LeadStageHistoryUpdateManyWithoutLeadNestedInput
+    activities?: LeadActivityUpdateManyWithoutLeadNestedInput
+    recordings?: LeadRecordingUpdateManyWithoutLeadNestedInput
+  }
+
+  export type LeadUncheckedUpdateWithoutFollowUpRemindersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    studentName?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    alternativeNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    qualification?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    callType?: StringFieldUpdateOperationsInput | string
+    otherCallType?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    otherStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    stage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    otherStage?: NullableStringFieldUpdateOperationsInput | string | null
+    courseId?: StringFieldUpdateOperationsInput | string
+    otherCourse?: NullableStringFieldUpdateOperationsInput | string | null
+    nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastCallStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    branchId?: StringFieldUpdateOperationsInput | string
+    leadSource?: StringFieldUpdateOperationsInput | string
+    otherLeadSource?: NullableStringFieldUpdateOperationsInput | string | null
+    referredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    referredName?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: StringFieldUpdateOperationsInput | string
+    paymentAmount?: NullableFloatFieldUpdateOperationsInput | number | null
+    trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
+    classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
+    courseMode?: NullableStringFieldUpdateOperationsInput | string | null
+    locationDistance?: NullableStringFieldUpdateOperationsInput | string | null
+    otherLocationDistance?: NullableStringFieldUpdateOperationsInput | string | null
+    leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: StringFieldUpdateOperationsInput | string
+    updatedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    followUps?: LeadFollowUpUncheckedUpdateManyWithoutLeadNestedInput
+    stageHistory?: LeadStageHistoryUncheckedUpdateManyWithoutLeadNestedInput
+    activities?: LeadActivityUncheckedUpdateManyWithoutLeadNestedInput
+    recordings?: LeadRecordingUncheckedUpdateManyWithoutLeadNestedInput
+  }
+
+  export type UserUpsertWithoutFollowUpRemindersInput = {
+    update: XOR<UserUpdateWithoutFollowUpRemindersInput, UserUncheckedUpdateWithoutFollowUpRemindersInput>
+    create: XOR<UserCreateWithoutFollowUpRemindersInput, UserUncheckedCreateWithoutFollowUpRemindersInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutFollowUpRemindersInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutFollowUpRemindersInput, UserUncheckedUpdateWithoutFollowUpRemindersInput>
+  }
+
+  export type UserUpdateWithoutFollowUpRemindersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userCode?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refreshTokenVersion?: IntFieldUpdateOperationsInput | number
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    failedLoginWindowExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLogoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginUserAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentUpdateManyWithoutFacultyNestedInput
+    managedBranch?: BranchUpdateOneWithoutAdminUserNestedInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceDays?: FacultyAttendanceDayUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUpdateManyWithoutFacultyUserNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUpdateManyWithoutFacultyUserNestedInput
+    loginEvents?: LoginEventUpdateManyWithoutUserNestedInput
+    targetedNotifications?: NotificationUpdateManyWithoutTargetUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    markedStudentAttendances?: StudentAttendanceUpdateManyWithoutFacultyUserNestedInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceUpdateManyWithoutFacultyUserNestedInput
+    dashboardWidgetPreferences?: UserDashboardWidgetUpdateManyWithoutUserNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutFacultyUserNestedInput
+    createdExams?: ExamUpdateManyWithoutFacultyNestedInput
+    examAttempts?: ExamAttemptUpdateManyWithoutStudentUserNestedInput
+    createdAssessments?: AssessmentUpdateManyWithoutFacultyNestedInput
+    evaluatedSubmissions?: AssessmentSubmissionUpdateManyWithoutEvaluatorNestedInput
+    facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutFacultyUserNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
+    salesAdminBranches?: SalesAdminBranchUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUpdateManyWithoutAssignedToNestedInput
+    createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
+    leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutFollowUpRemindersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userCode?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refreshTokenVersion?: IntFieldUpdateOperationsInput | number
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    failedLoginWindowExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLogoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginUserAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentUncheckedUpdateManyWithoutFacultyNestedInput
+    managedBranch?: BranchUncheckedUpdateOneWithoutAdminUserNestedInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceDays?: FacultyAttendanceDayUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedUpdateManyWithoutFacultyUserNestedInput
+    loginEvents?: LoginEventUncheckedUpdateManyWithoutUserNestedInput
+    targetedNotifications?: NotificationUncheckedUpdateManyWithoutTargetUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    markedStudentAttendances?: StudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
+    dashboardWidgetPreferences?: UserDashboardWidgetUncheckedUpdateManyWithoutUserNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutFacultyUserNestedInput
+    createdExams?: ExamUncheckedUpdateManyWithoutFacultyNestedInput
+    examAttempts?: ExamAttemptUncheckedUpdateManyWithoutStudentUserNestedInput
+    createdAssessments?: AssessmentUncheckedUpdateManyWithoutFacultyNestedInput
+    evaluatedSubmissions?: AssessmentSubmissionUncheckedUpdateManyWithoutEvaluatorNestedInput
+    facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutFacultyUserNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
+    salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
+    leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type BranchStudentCreateWithoutMotivationMailHistoryInput = {
@@ -176745,6 +180069,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
   }
 
   export type UserUncheckedCreateWithoutAcademicTestReportSubmissionsInput = {
@@ -176796,6 +180121,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
   }
 
   export type UserCreateOrConnectWithoutAcademicTestReportSubmissionsInput = {
@@ -176892,6 +180218,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAcademicTestReportSubmissionsInput = {
@@ -176943,6 +180270,7 @@ export namespace Prisma {
     leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
   }
 
   export type BranchStudentCreateWithoutPaymentsInput = {
@@ -178329,17 +181657,27 @@ export namespace Prisma {
     qualification?: string | null
     location?: string | null
     callType: string
+    otherCallType?: string | null
     status?: $Enums.LeadStatus
+    otherStatus?: string | null
     stage?: $Enums.LeadStage
+    otherStage?: string | null
     courseId: string
+    otherCourse?: string | null
+    nextFollowUpDate?: Date | string | null
+    lastCallStatus?: string | null
     branchId: string
     leadSource: string
+    otherLeadSource?: string | null
     referredBy?: string | null
+    referredName?: string | null
     paymentStatus?: string
+    paymentAmount?: number | null
     trainingMode?: string | null
     classSchedule?: string | null
     courseMode?: string | null
     locationDistance?: string | null
+    otherLocationDistance?: string | null
     leadDate: Date | string
     createdById: string
     updatedById?: string | null
@@ -178358,17 +181696,27 @@ export namespace Prisma {
     qualification?: string | null
     location?: string | null
     callType: string
+    otherCallType?: string | null
     status?: $Enums.LeadStatus
+    otherStatus?: string | null
     stage?: $Enums.LeadStage
+    otherStage?: string | null
     courseId: string
+    otherCourse?: string | null
+    nextFollowUpDate?: Date | string | null
+    lastCallStatus?: string | null
     branchId: string
     leadSource: string
+    otherLeadSource?: string | null
     referredBy?: string | null
+    referredName?: string | null
     paymentStatus?: string
+    paymentAmount?: number | null
     trainingMode?: string | null
     classSchedule?: string | null
     courseMode?: string | null
     locationDistance?: string | null
+    otherLocationDistance?: string | null
     leadDate: Date | string
     assignedToId?: string | null
     updatedById?: string | null
@@ -178387,17 +181735,27 @@ export namespace Prisma {
     qualification?: string | null
     location?: string | null
     callType: string
+    otherCallType?: string | null
     status?: $Enums.LeadStatus
+    otherStatus?: string | null
     stage?: $Enums.LeadStage
+    otherStage?: string | null
     courseId: string
+    otherCourse?: string | null
+    nextFollowUpDate?: Date | string | null
+    lastCallStatus?: string | null
     branchId: string
     leadSource: string
+    otherLeadSource?: string | null
     referredBy?: string | null
+    referredName?: string | null
     paymentStatus?: string
+    paymentAmount?: number | null
     trainingMode?: string | null
     classSchedule?: string | null
     courseMode?: string | null
     locationDistance?: string | null
+    otherLocationDistance?: string | null
     leadDate: Date | string
     assignedToId?: string | null
     createdById: string
@@ -178411,6 +181769,7 @@ export namespace Prisma {
     leadId: string
     followUpDate: Date | string
     followUpType: string
+    callStatus: string
     notes: string
     nextFollowUpDate?: Date | string | null
     createdAt?: Date | string
@@ -178443,6 +181802,20 @@ export namespace Prisma {
     mimeType: string
     sizeBytes: number
     createdAt?: Date | string
+  }
+
+  export type FollowUpReminderCreateManyRecipientInput = {
+    id?: string
+    leadId: string
+    dueDate: Date | string
+    scheduledFor: Date | string
+    timezone?: string
+    status?: string
+    notificationId?: string | null
+    deliveredAt?: Date | string | null
+    cancelledAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type BatchFacultyAssignmentUpdateWithoutFacultyInput = {
@@ -179441,15 +182814,25 @@ export namespace Prisma {
     qualification?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
     callType?: StringFieldUpdateOperationsInput | string
+    otherCallType?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    otherStatus?: NullableStringFieldUpdateOperationsInput | string | null
     stage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    otherStage?: NullableStringFieldUpdateOperationsInput | string | null
+    otherCourse?: NullableStringFieldUpdateOperationsInput | string | null
+    nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastCallStatus?: NullableStringFieldUpdateOperationsInput | string | null
     leadSource?: StringFieldUpdateOperationsInput | string
+    otherLeadSource?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    referredName?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: StringFieldUpdateOperationsInput | string
+    paymentAmount?: NullableFloatFieldUpdateOperationsInput | number | null
     trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
     classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     courseMode?: NullableStringFieldUpdateOperationsInput | string | null
     locationDistance?: NullableStringFieldUpdateOperationsInput | string | null
+    otherLocationDistance?: NullableStringFieldUpdateOperationsInput | string | null
     leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -179462,6 +182845,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUpdateManyWithoutLeadNestedInput
     activities?: LeadActivityUpdateManyWithoutLeadNestedInput
     recordings?: LeadRecordingUpdateManyWithoutLeadNestedInput
+    followUpReminders?: FollowUpReminderUpdateManyWithoutLeadNestedInput
   }
 
   export type LeadUncheckedUpdateWithoutAssignedToInput = {
@@ -179474,17 +182858,27 @@ export namespace Prisma {
     qualification?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
     callType?: StringFieldUpdateOperationsInput | string
+    otherCallType?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    otherStatus?: NullableStringFieldUpdateOperationsInput | string | null
     stage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    otherStage?: NullableStringFieldUpdateOperationsInput | string | null
     courseId?: StringFieldUpdateOperationsInput | string
+    otherCourse?: NullableStringFieldUpdateOperationsInput | string | null
+    nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastCallStatus?: NullableStringFieldUpdateOperationsInput | string | null
     branchId?: StringFieldUpdateOperationsInput | string
     leadSource?: StringFieldUpdateOperationsInput | string
+    otherLeadSource?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    referredName?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: StringFieldUpdateOperationsInput | string
+    paymentAmount?: NullableFloatFieldUpdateOperationsInput | number | null
     trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
     classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     courseMode?: NullableStringFieldUpdateOperationsInput | string | null
     locationDistance?: NullableStringFieldUpdateOperationsInput | string | null
+    otherLocationDistance?: NullableStringFieldUpdateOperationsInput | string | null
     leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdById?: StringFieldUpdateOperationsInput | string
     updatedById?: NullableStringFieldUpdateOperationsInput | string | null
@@ -179495,6 +182889,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUncheckedUpdateManyWithoutLeadNestedInput
     activities?: LeadActivityUncheckedUpdateManyWithoutLeadNestedInput
     recordings?: LeadRecordingUncheckedUpdateManyWithoutLeadNestedInput
+    followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutLeadNestedInput
   }
 
   export type LeadUncheckedUpdateManyWithoutAssignedToInput = {
@@ -179507,17 +182902,27 @@ export namespace Prisma {
     qualification?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
     callType?: StringFieldUpdateOperationsInput | string
+    otherCallType?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    otherStatus?: NullableStringFieldUpdateOperationsInput | string | null
     stage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    otherStage?: NullableStringFieldUpdateOperationsInput | string | null
     courseId?: StringFieldUpdateOperationsInput | string
+    otherCourse?: NullableStringFieldUpdateOperationsInput | string | null
+    nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastCallStatus?: NullableStringFieldUpdateOperationsInput | string | null
     branchId?: StringFieldUpdateOperationsInput | string
     leadSource?: StringFieldUpdateOperationsInput | string
+    otherLeadSource?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    referredName?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: StringFieldUpdateOperationsInput | string
+    paymentAmount?: NullableFloatFieldUpdateOperationsInput | number | null
     trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
     classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     courseMode?: NullableStringFieldUpdateOperationsInput | string | null
     locationDistance?: NullableStringFieldUpdateOperationsInput | string | null
+    otherLocationDistance?: NullableStringFieldUpdateOperationsInput | string | null
     leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdById?: StringFieldUpdateOperationsInput | string
     updatedById?: NullableStringFieldUpdateOperationsInput | string | null
@@ -179536,15 +182941,25 @@ export namespace Prisma {
     qualification?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
     callType?: StringFieldUpdateOperationsInput | string
+    otherCallType?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    otherStatus?: NullableStringFieldUpdateOperationsInput | string | null
     stage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    otherStage?: NullableStringFieldUpdateOperationsInput | string | null
+    otherCourse?: NullableStringFieldUpdateOperationsInput | string | null
+    nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastCallStatus?: NullableStringFieldUpdateOperationsInput | string | null
     leadSource?: StringFieldUpdateOperationsInput | string
+    otherLeadSource?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    referredName?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: StringFieldUpdateOperationsInput | string
+    paymentAmount?: NullableFloatFieldUpdateOperationsInput | number | null
     trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
     classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     courseMode?: NullableStringFieldUpdateOperationsInput | string | null
     locationDistance?: NullableStringFieldUpdateOperationsInput | string | null
+    otherLocationDistance?: NullableStringFieldUpdateOperationsInput | string | null
     leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -179557,6 +182972,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUpdateManyWithoutLeadNestedInput
     activities?: LeadActivityUpdateManyWithoutLeadNestedInput
     recordings?: LeadRecordingUpdateManyWithoutLeadNestedInput
+    followUpReminders?: FollowUpReminderUpdateManyWithoutLeadNestedInput
   }
 
   export type LeadUncheckedUpdateWithoutCreatedByInput = {
@@ -179569,17 +182985,27 @@ export namespace Prisma {
     qualification?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
     callType?: StringFieldUpdateOperationsInput | string
+    otherCallType?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    otherStatus?: NullableStringFieldUpdateOperationsInput | string | null
     stage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    otherStage?: NullableStringFieldUpdateOperationsInput | string | null
     courseId?: StringFieldUpdateOperationsInput | string
+    otherCourse?: NullableStringFieldUpdateOperationsInput | string | null
+    nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastCallStatus?: NullableStringFieldUpdateOperationsInput | string | null
     branchId?: StringFieldUpdateOperationsInput | string
     leadSource?: StringFieldUpdateOperationsInput | string
+    otherLeadSource?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    referredName?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: StringFieldUpdateOperationsInput | string
+    paymentAmount?: NullableFloatFieldUpdateOperationsInput | number | null
     trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
     classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     courseMode?: NullableStringFieldUpdateOperationsInput | string | null
     locationDistance?: NullableStringFieldUpdateOperationsInput | string | null
+    otherLocationDistance?: NullableStringFieldUpdateOperationsInput | string | null
     leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
     assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
     updatedById?: NullableStringFieldUpdateOperationsInput | string | null
@@ -179590,6 +183016,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUncheckedUpdateManyWithoutLeadNestedInput
     activities?: LeadActivityUncheckedUpdateManyWithoutLeadNestedInput
     recordings?: LeadRecordingUncheckedUpdateManyWithoutLeadNestedInput
+    followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutLeadNestedInput
   }
 
   export type LeadUncheckedUpdateManyWithoutCreatedByInput = {
@@ -179602,17 +183029,27 @@ export namespace Prisma {
     qualification?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
     callType?: StringFieldUpdateOperationsInput | string
+    otherCallType?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    otherStatus?: NullableStringFieldUpdateOperationsInput | string | null
     stage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    otherStage?: NullableStringFieldUpdateOperationsInput | string | null
     courseId?: StringFieldUpdateOperationsInput | string
+    otherCourse?: NullableStringFieldUpdateOperationsInput | string | null
+    nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastCallStatus?: NullableStringFieldUpdateOperationsInput | string | null
     branchId?: StringFieldUpdateOperationsInput | string
     leadSource?: StringFieldUpdateOperationsInput | string
+    otherLeadSource?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    referredName?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: StringFieldUpdateOperationsInput | string
+    paymentAmount?: NullableFloatFieldUpdateOperationsInput | number | null
     trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
     classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     courseMode?: NullableStringFieldUpdateOperationsInput | string | null
     locationDistance?: NullableStringFieldUpdateOperationsInput | string | null
+    otherLocationDistance?: NullableStringFieldUpdateOperationsInput | string | null
     leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
     assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
     updatedById?: NullableStringFieldUpdateOperationsInput | string | null
@@ -179631,15 +183068,25 @@ export namespace Prisma {
     qualification?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
     callType?: StringFieldUpdateOperationsInput | string
+    otherCallType?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    otherStatus?: NullableStringFieldUpdateOperationsInput | string | null
     stage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    otherStage?: NullableStringFieldUpdateOperationsInput | string | null
+    otherCourse?: NullableStringFieldUpdateOperationsInput | string | null
+    nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastCallStatus?: NullableStringFieldUpdateOperationsInput | string | null
     leadSource?: StringFieldUpdateOperationsInput | string
+    otherLeadSource?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    referredName?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: StringFieldUpdateOperationsInput | string
+    paymentAmount?: NullableFloatFieldUpdateOperationsInput | number | null
     trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
     classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     courseMode?: NullableStringFieldUpdateOperationsInput | string | null
     locationDistance?: NullableStringFieldUpdateOperationsInput | string | null
+    otherLocationDistance?: NullableStringFieldUpdateOperationsInput | string | null
     leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -179652,6 +183099,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUpdateManyWithoutLeadNestedInput
     activities?: LeadActivityUpdateManyWithoutLeadNestedInput
     recordings?: LeadRecordingUpdateManyWithoutLeadNestedInput
+    followUpReminders?: FollowUpReminderUpdateManyWithoutLeadNestedInput
   }
 
   export type LeadUncheckedUpdateWithoutUpdatedByInput = {
@@ -179664,17 +183112,27 @@ export namespace Prisma {
     qualification?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
     callType?: StringFieldUpdateOperationsInput | string
+    otherCallType?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    otherStatus?: NullableStringFieldUpdateOperationsInput | string | null
     stage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    otherStage?: NullableStringFieldUpdateOperationsInput | string | null
     courseId?: StringFieldUpdateOperationsInput | string
+    otherCourse?: NullableStringFieldUpdateOperationsInput | string | null
+    nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastCallStatus?: NullableStringFieldUpdateOperationsInput | string | null
     branchId?: StringFieldUpdateOperationsInput | string
     leadSource?: StringFieldUpdateOperationsInput | string
+    otherLeadSource?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    referredName?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: StringFieldUpdateOperationsInput | string
+    paymentAmount?: NullableFloatFieldUpdateOperationsInput | number | null
     trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
     classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     courseMode?: NullableStringFieldUpdateOperationsInput | string | null
     locationDistance?: NullableStringFieldUpdateOperationsInput | string | null
+    otherLocationDistance?: NullableStringFieldUpdateOperationsInput | string | null
     leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
     assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
     createdById?: StringFieldUpdateOperationsInput | string
@@ -179685,6 +183143,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUncheckedUpdateManyWithoutLeadNestedInput
     activities?: LeadActivityUncheckedUpdateManyWithoutLeadNestedInput
     recordings?: LeadRecordingUncheckedUpdateManyWithoutLeadNestedInput
+    followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutLeadNestedInput
   }
 
   export type LeadUncheckedUpdateManyWithoutUpdatedByInput = {
@@ -179697,17 +183156,27 @@ export namespace Prisma {
     qualification?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
     callType?: StringFieldUpdateOperationsInput | string
+    otherCallType?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    otherStatus?: NullableStringFieldUpdateOperationsInput | string | null
     stage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    otherStage?: NullableStringFieldUpdateOperationsInput | string | null
     courseId?: StringFieldUpdateOperationsInput | string
+    otherCourse?: NullableStringFieldUpdateOperationsInput | string | null
+    nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastCallStatus?: NullableStringFieldUpdateOperationsInput | string | null
     branchId?: StringFieldUpdateOperationsInput | string
     leadSource?: StringFieldUpdateOperationsInput | string
+    otherLeadSource?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    referredName?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: StringFieldUpdateOperationsInput | string
+    paymentAmount?: NullableFloatFieldUpdateOperationsInput | number | null
     trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
     classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     courseMode?: NullableStringFieldUpdateOperationsInput | string | null
     locationDistance?: NullableStringFieldUpdateOperationsInput | string | null
+    otherLocationDistance?: NullableStringFieldUpdateOperationsInput | string | null
     leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
     assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
     createdById?: StringFieldUpdateOperationsInput | string
@@ -179720,11 +183189,13 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     followUpDate?: DateTimeFieldUpdateOperationsInput | Date | string
     followUpType?: StringFieldUpdateOperationsInput | string
+    callStatus?: StringFieldUpdateOperationsInput | string
     notes?: StringFieldUpdateOperationsInput | string
     nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lead?: LeadUpdateOneRequiredWithoutFollowUpsNestedInput
+    recordings?: LeadRecordingUpdateManyWithoutFollowUpNestedInput
   }
 
   export type LeadFollowUpUncheckedUpdateWithoutCreatedByInput = {
@@ -179732,10 +183203,12 @@ export namespace Prisma {
     leadId?: StringFieldUpdateOperationsInput | string
     followUpDate?: DateTimeFieldUpdateOperationsInput | Date | string
     followUpType?: StringFieldUpdateOperationsInput | string
+    callStatus?: StringFieldUpdateOperationsInput | string
     notes?: StringFieldUpdateOperationsInput | string
     nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    recordings?: LeadRecordingUncheckedUpdateManyWithoutFollowUpNestedInput
   }
 
   export type LeadFollowUpUncheckedUpdateManyWithoutCreatedByInput = {
@@ -179743,6 +183216,7 @@ export namespace Prisma {
     leadId?: StringFieldUpdateOperationsInput | string
     followUpDate?: DateTimeFieldUpdateOperationsInput | Date | string
     followUpType?: StringFieldUpdateOperationsInput | string
+    callStatus?: StringFieldUpdateOperationsInput | string
     notes?: StringFieldUpdateOperationsInput | string
     nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -179802,13 +183276,13 @@ export namespace Prisma {
 
   export type LeadRecordingUpdateWithoutCreatedByInput = {
     id?: StringFieldUpdateOperationsInput | string
-    followUpId?: NullableStringFieldUpdateOperationsInput | string | null
     originalName?: StringFieldUpdateOperationsInput | string
     storageKey?: StringFieldUpdateOperationsInput | string
     mimeType?: StringFieldUpdateOperationsInput | string
     sizeBytes?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lead?: LeadUpdateOneRequiredWithoutRecordingsNestedInput
+    followUp?: LeadFollowUpUpdateOneWithoutRecordingsNestedInput
   }
 
   export type LeadRecordingUncheckedUpdateWithoutCreatedByInput = {
@@ -179831,6 +183305,48 @@ export namespace Prisma {
     mimeType?: StringFieldUpdateOperationsInput | string
     sizeBytes?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FollowUpReminderUpdateWithoutRecipientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    scheduledFor?: DateTimeFieldUpdateOperationsInput | Date | string
+    timezone?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    notificationId?: NullableStringFieldUpdateOperationsInput | string | null
+    deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lead?: LeadUpdateOneRequiredWithoutFollowUpRemindersNestedInput
+  }
+
+  export type FollowUpReminderUncheckedUpdateWithoutRecipientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    scheduledFor?: DateTimeFieldUpdateOperationsInput | Date | string
+    timezone?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    notificationId?: NullableStringFieldUpdateOperationsInput | string | null
+    deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FollowUpReminderUncheckedUpdateManyWithoutRecipientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    scheduledFor?: DateTimeFieldUpdateOperationsInput | Date | string
+    timezone?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    notificationId?: NullableStringFieldUpdateOperationsInput | string | null
+    deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type UserDashboardWidgetCreateManyWidgetInput = {
@@ -180228,16 +183744,26 @@ export namespace Prisma {
     qualification?: string | null
     location?: string | null
     callType: string
+    otherCallType?: string | null
     status?: $Enums.LeadStatus
+    otherStatus?: string | null
     stage?: $Enums.LeadStage
+    otherStage?: string | null
     courseId: string
+    otherCourse?: string | null
+    nextFollowUpDate?: Date | string | null
+    lastCallStatus?: string | null
     leadSource: string
+    otherLeadSource?: string | null
     referredBy?: string | null
+    referredName?: string | null
     paymentStatus?: string
+    paymentAmount?: number | null
     trainingMode?: string | null
     classSchedule?: string | null
     courseMode?: string | null
     locationDistance?: string | null
+    otherLocationDistance?: string | null
     leadDate: Date | string
     assignedToId?: string | null
     createdById: string
@@ -181398,15 +184924,25 @@ export namespace Prisma {
     qualification?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
     callType?: StringFieldUpdateOperationsInput | string
+    otherCallType?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    otherStatus?: NullableStringFieldUpdateOperationsInput | string | null
     stage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    otherStage?: NullableStringFieldUpdateOperationsInput | string | null
+    otherCourse?: NullableStringFieldUpdateOperationsInput | string | null
+    nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastCallStatus?: NullableStringFieldUpdateOperationsInput | string | null
     leadSource?: StringFieldUpdateOperationsInput | string
+    otherLeadSource?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    referredName?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: StringFieldUpdateOperationsInput | string
+    paymentAmount?: NullableFloatFieldUpdateOperationsInput | number | null
     trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
     classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     courseMode?: NullableStringFieldUpdateOperationsInput | string | null
     locationDistance?: NullableStringFieldUpdateOperationsInput | string | null
+    otherLocationDistance?: NullableStringFieldUpdateOperationsInput | string | null
     leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -181419,6 +184955,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUpdateManyWithoutLeadNestedInput
     activities?: LeadActivityUpdateManyWithoutLeadNestedInput
     recordings?: LeadRecordingUpdateManyWithoutLeadNestedInput
+    followUpReminders?: FollowUpReminderUpdateManyWithoutLeadNestedInput
   }
 
   export type LeadUncheckedUpdateWithoutBranchInput = {
@@ -181431,16 +184968,26 @@ export namespace Prisma {
     qualification?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
     callType?: StringFieldUpdateOperationsInput | string
+    otherCallType?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    otherStatus?: NullableStringFieldUpdateOperationsInput | string | null
     stage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    otherStage?: NullableStringFieldUpdateOperationsInput | string | null
     courseId?: StringFieldUpdateOperationsInput | string
+    otherCourse?: NullableStringFieldUpdateOperationsInput | string | null
+    nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastCallStatus?: NullableStringFieldUpdateOperationsInput | string | null
     leadSource?: StringFieldUpdateOperationsInput | string
+    otherLeadSource?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    referredName?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: StringFieldUpdateOperationsInput | string
+    paymentAmount?: NullableFloatFieldUpdateOperationsInput | number | null
     trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
     classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     courseMode?: NullableStringFieldUpdateOperationsInput | string | null
     locationDistance?: NullableStringFieldUpdateOperationsInput | string | null
+    otherLocationDistance?: NullableStringFieldUpdateOperationsInput | string | null
     leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
     assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
     createdById?: StringFieldUpdateOperationsInput | string
@@ -181452,6 +184999,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUncheckedUpdateManyWithoutLeadNestedInput
     activities?: LeadActivityUncheckedUpdateManyWithoutLeadNestedInput
     recordings?: LeadRecordingUncheckedUpdateManyWithoutLeadNestedInput
+    followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutLeadNestedInput
   }
 
   export type LeadUncheckedUpdateManyWithoutBranchInput = {
@@ -181464,16 +185012,26 @@ export namespace Prisma {
     qualification?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
     callType?: StringFieldUpdateOperationsInput | string
+    otherCallType?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    otherStatus?: NullableStringFieldUpdateOperationsInput | string | null
     stage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    otherStage?: NullableStringFieldUpdateOperationsInput | string | null
     courseId?: StringFieldUpdateOperationsInput | string
+    otherCourse?: NullableStringFieldUpdateOperationsInput | string | null
+    nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastCallStatus?: NullableStringFieldUpdateOperationsInput | string | null
     leadSource?: StringFieldUpdateOperationsInput | string
+    otherLeadSource?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    referredName?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: StringFieldUpdateOperationsInput | string
+    paymentAmount?: NullableFloatFieldUpdateOperationsInput | number | null
     trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
     classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     courseMode?: NullableStringFieldUpdateOperationsInput | string | null
     locationDistance?: NullableStringFieldUpdateOperationsInput | string | null
+    otherLocationDistance?: NullableStringFieldUpdateOperationsInput | string | null
     leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
     assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
     createdById?: StringFieldUpdateOperationsInput | string
@@ -182544,16 +186102,26 @@ export namespace Prisma {
     qualification?: string | null
     location?: string | null
     callType: string
+    otherCallType?: string | null
     status?: $Enums.LeadStatus
+    otherStatus?: string | null
     stage?: $Enums.LeadStage
+    otherStage?: string | null
+    otherCourse?: string | null
+    nextFollowUpDate?: Date | string | null
+    lastCallStatus?: string | null
     branchId: string
     leadSource: string
+    otherLeadSource?: string | null
     referredBy?: string | null
+    referredName?: string | null
     paymentStatus?: string
+    paymentAmount?: number | null
     trainingMode?: string | null
     classSchedule?: string | null
     courseMode?: string | null
     locationDistance?: string | null
+    otherLocationDistance?: string | null
     leadDate: Date | string
     assignedToId?: string | null
     createdById: string
@@ -183530,15 +187098,25 @@ export namespace Prisma {
     qualification?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
     callType?: StringFieldUpdateOperationsInput | string
+    otherCallType?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    otherStatus?: NullableStringFieldUpdateOperationsInput | string | null
     stage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    otherStage?: NullableStringFieldUpdateOperationsInput | string | null
+    otherCourse?: NullableStringFieldUpdateOperationsInput | string | null
+    nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastCallStatus?: NullableStringFieldUpdateOperationsInput | string | null
     leadSource?: StringFieldUpdateOperationsInput | string
+    otherLeadSource?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    referredName?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: StringFieldUpdateOperationsInput | string
+    paymentAmount?: NullableFloatFieldUpdateOperationsInput | number | null
     trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
     classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     courseMode?: NullableStringFieldUpdateOperationsInput | string | null
     locationDistance?: NullableStringFieldUpdateOperationsInput | string | null
+    otherLocationDistance?: NullableStringFieldUpdateOperationsInput | string | null
     leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -183551,6 +187129,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUpdateManyWithoutLeadNestedInput
     activities?: LeadActivityUpdateManyWithoutLeadNestedInput
     recordings?: LeadRecordingUpdateManyWithoutLeadNestedInput
+    followUpReminders?: FollowUpReminderUpdateManyWithoutLeadNestedInput
   }
 
   export type LeadUncheckedUpdateWithoutCourseInput = {
@@ -183563,16 +187142,26 @@ export namespace Prisma {
     qualification?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
     callType?: StringFieldUpdateOperationsInput | string
+    otherCallType?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    otherStatus?: NullableStringFieldUpdateOperationsInput | string | null
     stage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    otherStage?: NullableStringFieldUpdateOperationsInput | string | null
+    otherCourse?: NullableStringFieldUpdateOperationsInput | string | null
+    nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastCallStatus?: NullableStringFieldUpdateOperationsInput | string | null
     branchId?: StringFieldUpdateOperationsInput | string
     leadSource?: StringFieldUpdateOperationsInput | string
+    otherLeadSource?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    referredName?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: StringFieldUpdateOperationsInput | string
+    paymentAmount?: NullableFloatFieldUpdateOperationsInput | number | null
     trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
     classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     courseMode?: NullableStringFieldUpdateOperationsInput | string | null
     locationDistance?: NullableStringFieldUpdateOperationsInput | string | null
+    otherLocationDistance?: NullableStringFieldUpdateOperationsInput | string | null
     leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
     assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
     createdById?: StringFieldUpdateOperationsInput | string
@@ -183584,6 +187173,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUncheckedUpdateManyWithoutLeadNestedInput
     activities?: LeadActivityUncheckedUpdateManyWithoutLeadNestedInput
     recordings?: LeadRecordingUncheckedUpdateManyWithoutLeadNestedInput
+    followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutLeadNestedInput
   }
 
   export type LeadUncheckedUpdateManyWithoutCourseInput = {
@@ -183596,16 +187186,26 @@ export namespace Prisma {
     qualification?: NullableStringFieldUpdateOperationsInput | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
     callType?: StringFieldUpdateOperationsInput | string
+    otherCallType?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    otherStatus?: NullableStringFieldUpdateOperationsInput | string | null
     stage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    otherStage?: NullableStringFieldUpdateOperationsInput | string | null
+    otherCourse?: NullableStringFieldUpdateOperationsInput | string | null
+    nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastCallStatus?: NullableStringFieldUpdateOperationsInput | string | null
     branchId?: StringFieldUpdateOperationsInput | string
     leadSource?: StringFieldUpdateOperationsInput | string
+    otherLeadSource?: NullableStringFieldUpdateOperationsInput | string | null
     referredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    referredName?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: StringFieldUpdateOperationsInput | string
+    paymentAmount?: NullableFloatFieldUpdateOperationsInput | number | null
     trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
     classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     courseMode?: NullableStringFieldUpdateOperationsInput | string | null
     locationDistance?: NullableStringFieldUpdateOperationsInput | string | null
+    otherLocationDistance?: NullableStringFieldUpdateOperationsInput | string | null
     leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
     assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
     createdById?: StringFieldUpdateOperationsInput | string
@@ -187693,6 +191293,7 @@ export namespace Prisma {
     id?: string
     followUpDate: Date | string
     followUpType: string
+    callStatus: string
     notes: string
     nextFollowUpDate?: Date | string | null
     createdById: string
@@ -187728,32 +191329,51 @@ export namespace Prisma {
     createdAt?: Date | string
   }
 
+  export type FollowUpReminderCreateManyLeadInput = {
+    id?: string
+    recipientUserId: string
+    dueDate: Date | string
+    scheduledFor: Date | string
+    timezone?: string
+    status?: string
+    notificationId?: string | null
+    deliveredAt?: Date | string | null
+    cancelledAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type LeadFollowUpUpdateWithoutLeadInput = {
     id?: StringFieldUpdateOperationsInput | string
     followUpDate?: DateTimeFieldUpdateOperationsInput | Date | string
     followUpType?: StringFieldUpdateOperationsInput | string
+    callStatus?: StringFieldUpdateOperationsInput | string
     notes?: StringFieldUpdateOperationsInput | string
     nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: UserUpdateOneRequiredWithoutLeadFollowUpsNestedInput
+    recordings?: LeadRecordingUpdateManyWithoutFollowUpNestedInput
   }
 
   export type LeadFollowUpUncheckedUpdateWithoutLeadInput = {
     id?: StringFieldUpdateOperationsInput | string
     followUpDate?: DateTimeFieldUpdateOperationsInput | Date | string
     followUpType?: StringFieldUpdateOperationsInput | string
+    callStatus?: StringFieldUpdateOperationsInput | string
     notes?: StringFieldUpdateOperationsInput | string
     nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdById?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    recordings?: LeadRecordingUncheckedUpdateManyWithoutFollowUpNestedInput
   }
 
   export type LeadFollowUpUncheckedUpdateManyWithoutLeadInput = {
     id?: StringFieldUpdateOperationsInput | string
     followUpDate?: DateTimeFieldUpdateOperationsInput | Date | string
     followUpType?: StringFieldUpdateOperationsInput | string
+    callStatus?: StringFieldUpdateOperationsInput | string
     notes?: StringFieldUpdateOperationsInput | string
     nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdById?: StringFieldUpdateOperationsInput | string
@@ -187814,12 +191434,12 @@ export namespace Prisma {
 
   export type LeadRecordingUpdateWithoutLeadInput = {
     id?: StringFieldUpdateOperationsInput | string
-    followUpId?: NullableStringFieldUpdateOperationsInput | string | null
     originalName?: StringFieldUpdateOperationsInput | string
     storageKey?: StringFieldUpdateOperationsInput | string
     mimeType?: StringFieldUpdateOperationsInput | string
     sizeBytes?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    followUp?: LeadFollowUpUpdateOneWithoutRecordingsNestedInput
     createdBy?: UserUpdateOneRequiredWithoutLeadRecordingsNestedInput
   }
 
@@ -187837,6 +191457,92 @@ export namespace Prisma {
   export type LeadRecordingUncheckedUpdateManyWithoutLeadInput = {
     id?: StringFieldUpdateOperationsInput | string
     followUpId?: NullableStringFieldUpdateOperationsInput | string | null
+    originalName?: StringFieldUpdateOperationsInput | string
+    storageKey?: StringFieldUpdateOperationsInput | string
+    mimeType?: StringFieldUpdateOperationsInput | string
+    sizeBytes?: IntFieldUpdateOperationsInput | number
+    createdById?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FollowUpReminderUpdateWithoutLeadInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    scheduledFor?: DateTimeFieldUpdateOperationsInput | Date | string
+    timezone?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    notificationId?: NullableStringFieldUpdateOperationsInput | string | null
+    deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    recipient?: UserUpdateOneRequiredWithoutFollowUpRemindersNestedInput
+  }
+
+  export type FollowUpReminderUncheckedUpdateWithoutLeadInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    recipientUserId?: StringFieldUpdateOperationsInput | string
+    dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    scheduledFor?: DateTimeFieldUpdateOperationsInput | Date | string
+    timezone?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    notificationId?: NullableStringFieldUpdateOperationsInput | string | null
+    deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FollowUpReminderUncheckedUpdateManyWithoutLeadInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    recipientUserId?: StringFieldUpdateOperationsInput | string
+    dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    scheduledFor?: DateTimeFieldUpdateOperationsInput | Date | string
+    timezone?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    notificationId?: NullableStringFieldUpdateOperationsInput | string | null
+    deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LeadRecordingCreateManyFollowUpInput = {
+    id?: string
+    leadId: string
+    originalName: string
+    storageKey: string
+    mimeType: string
+    sizeBytes: number
+    createdById: string
+    createdAt?: Date | string
+  }
+
+  export type LeadRecordingUpdateWithoutFollowUpInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    originalName?: StringFieldUpdateOperationsInput | string
+    storageKey?: StringFieldUpdateOperationsInput | string
+    mimeType?: StringFieldUpdateOperationsInput | string
+    sizeBytes?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lead?: LeadUpdateOneRequiredWithoutRecordingsNestedInput
+    createdBy?: UserUpdateOneRequiredWithoutLeadRecordingsNestedInput
+  }
+
+  export type LeadRecordingUncheckedUpdateWithoutFollowUpInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    originalName?: StringFieldUpdateOperationsInput | string
+    storageKey?: StringFieldUpdateOperationsInput | string
+    mimeType?: StringFieldUpdateOperationsInput | string
+    sizeBytes?: IntFieldUpdateOperationsInput | number
+    createdById?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LeadRecordingUncheckedUpdateManyWithoutFollowUpInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
     originalName?: StringFieldUpdateOperationsInput | string
     storageKey?: StringFieldUpdateOperationsInput | string
     mimeType?: StringFieldUpdateOperationsInput | string

@@ -40,6 +40,11 @@ const DEFAULT_VISIBLE_NOTIFICATION_KINDS = new Set([
   "BRANCH_INVITATION_RESENT",
   "BRANCH_LOGIN",
 ]);
+const SALES_ADMIN_VISIBLE_NOTIFICATION_KINDS = new Set([
+  "LEAD_FOLLOW_UP_DUE",
+  "LEAD_FOLLOW_UP_OVERDUE",
+  "SALES_CRM_MONTHLY_REPORT",
+]);
 const SUPER_ADMIN_VISIBLE_NOTIFICATION_KINDS = new Set([
   "BRANCH_CREATED",
   "BRANCH_INVITATION_RESENT",
@@ -262,6 +267,10 @@ function getVisibleNotificationKindsForRole(user = {}) {
     return FACULTY_VISIBLE_NOTIFICATION_KINDS;
   }
 
+  if (role === "SALES_ADMIN") {
+    return SALES_ADMIN_VISIBLE_NOTIFICATION_KINDS;
+  }
+
   return DEFAULT_VISIBLE_NOTIFICATION_KINDS;
 }
 
@@ -272,7 +281,8 @@ function buildNotificationWhere({
   unreadOnly = false,
   kind = "",
 } = {}) {
-  const isFaculty = ["FACULTY", "STUDENT"].includes(String(user?.role || "").toUpperCase());
+  const role = String(user?.role || "").toUpperCase();
+  const isFaculty = ["FACULTY", "STUDENT"].includes(role);
   const normalizedKind = normalizeString(kind).toUpperCase();
   const isSuperAdmin = normalizeString(user?.role).toUpperCase() === "SUPER_ADMIN";
   const superAdminDiscontinuationScope = isSuperAdmin
@@ -297,6 +307,14 @@ function buildNotificationWhere({
               in: Array.from(visibleKinds),
             },
           }),
+      ...(unreadOnly ? { read: false } : {}),
+    };
+  }
+
+  if (role === "SALES_ADMIN") {
+    return {
+      targetUserId: user.id,
+      ...(normalizedKind ? { kind: normalizedKind } : { kind: { in: Array.from(visibleKinds) } }),
       ...(unreadOnly ? { read: false } : {}),
     };
   }

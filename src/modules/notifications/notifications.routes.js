@@ -16,6 +16,7 @@ router.use(
     "BRANCH_ADMIN",
     "FACULTY",
     "STUDENT",
+    "SALES_ADMIN",
   ),
 );
 router.get("/", listNotificationsHandler);

@@ -57,6 +57,7 @@ model User {
   leadActivities                 LeadActivity[]                  @relation("LeadActivityCreatedBy")
   leadStageChanges               LeadStageHistory[]              @relation("LeadStageHistoryCreatedBy")
   leadRecordings                 LeadRecording[]                 @relation("LeadRecordingCreatedBy")
+  followUpReminders              FollowUpReminder[]              @relation("FollowUpReminderRecipient")
 
   @@index([role])
   @@index([active])
@@ -1748,6 +1749,7 @@ enum LeadStatus {
   FOLLOW_UP
   CONVERTED
   CLOSED
+  OTHER
 }
 
 enum LeadStage {
@@ -1755,6 +1757,7 @@ enum LeadStage {
   WARM
   HOT
   CLOSED
+  OTHER
 }
 
 model Lead {
@@ -1767,19 +1770,27 @@ model Lead {
   qualification     String?
   location          String?
   callType          String
+  otherCallType     String?
   status            LeadStatus         @default(DRAFT)
+  otherStatus       String?
   stage             LeadStage         @default(COLD)
+  otherStage        String?
   courseId          String
   otherCourse       String?
   nextFollowUpDate  DateTime?
+  lastCallStatus    String?
   branchId          String
   leadSource        String
+  otherLeadSource   String?
   referredBy        String?
+  referredName      String?
   paymentStatus     String             @default("NOT_PAID")
+  paymentAmount     Float?
   trainingMode      String?
   classSchedule     String?
   courseMode        String?
   locationDistance  String?
+  otherLocationDistance String?
   leadDate          DateTime
   assignedToId      String?
   createdById       String
@@ -1796,6 +1807,7 @@ model Lead {
   stageHistory      LeadStageHistory[]
   activities        LeadActivity[]
   recordings        LeadRecording[]
+  followUpReminders FollowUpReminder[]
 
   @@index([branchId, createdAt])
   @@index([courseId])
@@ -1810,6 +1822,7 @@ model LeadFollowUp {
   leadId             String
   followUpDate       DateTime
   followUpType       String
+  callStatus         String
   notes              String
   nextFollowUpDate   DateTime?
   createdById        String
@@ -1817,6 +1830,7 @@ model LeadFollowUp {
   updatedAt          DateTime @updatedAt
   lead               Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
   createdBy          User     @relation("LeadFollowUpCreatedBy", fields: [createdById], references: [id], onDelete: Restrict)
+  recordings         LeadRecording[]
 
   @@index([leadId, followUpDate])
   @@index([nextFollowUpDate])
@@ -1860,9 +1874,31 @@ model LeadRecording {
   createdById    String
   createdAt      DateTime @default(now())
   lead           Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  followUp       LeadFollowUp? @relation(fields: [followUpId], references: [id], onDelete: Cascade)
   createdBy      User     @relation("LeadRecordingCreatedBy", fields: [createdById], references: [id], onDelete: Restrict)
 
   @@index([leadId, createdAt])
+}
+
+model FollowUpReminder {
+  id              String   @id @default(cuid())
+  leadId          String
+  recipientUserId String
+  dueDate         DateTime
+  scheduledFor    DateTime
+  timezone        String   @default("Asia/Kolkata")
+  status          String   @default("PENDING")
+  notificationId  String?
+  deliveredAt     DateTime?
+  cancelledAt     DateTime?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  lead            Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  recipient       User     @relation("FollowUpReminderRecipient", fields: [recipientUserId], references: [id], onDelete: Cascade)
+
+  @@unique([leadId, recipientUserId, dueDate])
+  @@index([status, scheduledFor])
+  @@index([recipientUserId, status])
 }
 
 enum UserRole {
@@ -1914,6 +1950,9 @@ enum NotificationKind {
   FACULTY_SKILL_OVERDUE
   STUDENT_MOTIVATION
   STUDENT_DISCONTINUATION
+  LEAD_FOLLOW_UP_DUE
+  LEAD_FOLLOW_UP_OVERDUE
+  SALES_CRM_MONTHLY_REPORT
 }
 
 enum DiscountType {

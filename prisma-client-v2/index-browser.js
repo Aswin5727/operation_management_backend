@@ -1337,17 +1337,27 @@ exports.Prisma.LeadScalarFieldEnum = {
   qualification: 'qualification',
   location: 'location',
   callType: 'callType',
+  otherCallType: 'otherCallType',
   status: 'status',
+  otherStatus: 'otherStatus',
   stage: 'stage',
+  otherStage: 'otherStage',
   courseId: 'courseId',
+  otherCourse: 'otherCourse',
+  nextFollowUpDate: 'nextFollowUpDate',
+  lastCallStatus: 'lastCallStatus',
   branchId: 'branchId',
   leadSource: 'leadSource',
+  otherLeadSource: 'otherLeadSource',
   referredBy: 'referredBy',
+  referredName: 'referredName',
   paymentStatus: 'paymentStatus',
+  paymentAmount: 'paymentAmount',
   trainingMode: 'trainingMode',
   classSchedule: 'classSchedule',
   courseMode: 'courseMode',
   locationDistance: 'locationDistance',
+  otherLocationDistance: 'otherLocationDistance',
   leadDate: 'leadDate',
   assignedToId: 'assignedToId',
   createdById: 'createdById',
@@ -1362,6 +1372,7 @@ exports.Prisma.LeadFollowUpScalarFieldEnum = {
   leadId: 'leadId',
   followUpDate: 'followUpDate',
   followUpType: 'followUpType',
+  callStatus: 'callStatus',
   notes: 'notes',
   nextFollowUpDate: 'nextFollowUpDate',
   createdById: 'createdById',
@@ -1398,6 +1409,21 @@ exports.Prisma.LeadRecordingScalarFieldEnum = {
   sizeBytes: 'sizeBytes',
   createdById: 'createdById',
   createdAt: 'createdAt'
+};
+
+exports.Prisma.FollowUpReminderScalarFieldEnum = {
+  id: 'id',
+  leadId: 'leadId',
+  recipientUserId: 'recipientUserId',
+  dueDate: 'dueDate',
+  scheduledFor: 'scheduledFor',
+  timezone: 'timezone',
+  status: 'status',
+  notificationId: 'notificationId',
+  deliveredAt: 'deliveredAt',
+  cancelledAt: 'cancelledAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.MotivationMailHistoryScalarFieldEnum = {
@@ -1644,7 +1670,10 @@ exports.NotificationKind = exports.$Enums.NotificationKind = {
   FACULTY_SKILL_COMPLETED: 'FACULTY_SKILL_COMPLETED',
   FACULTY_SKILL_OVERDUE: 'FACULTY_SKILL_OVERDUE',
   STUDENT_MOTIVATION: 'STUDENT_MOTIVATION',
-  STUDENT_DISCONTINUATION: 'STUDENT_DISCONTINUATION'
+  STUDENT_DISCONTINUATION: 'STUDENT_DISCONTINUATION',
+  LEAD_FOLLOW_UP_DUE: 'LEAD_FOLLOW_UP_DUE',
+  LEAD_FOLLOW_UP_OVERDUE: 'LEAD_FOLLOW_UP_OVERDUE',
+  SALES_CRM_MONTHLY_REPORT: 'SALES_CRM_MONTHLY_REPORT'
 };
 
 exports.CourseEditRequestStatus = exports.$Enums.CourseEditRequestStatus = {
@@ -1693,14 +1722,16 @@ exports.LeadStatus = exports.$Enums.LeadStatus = {
   ACTIVE: 'ACTIVE',
   FOLLOW_UP: 'FOLLOW_UP',
   CONVERTED: 'CONVERTED',
-  CLOSED: 'CLOSED'
+  CLOSED: 'CLOSED',
+  OTHER: 'OTHER'
 };
 
 exports.LeadStage = exports.$Enums.LeadStage = {
   COLD: 'COLD',
   WARM: 'WARM',
   HOT: 'HOT',
-  CLOSED: 'CLOSED'
+  CLOSED: 'CLOSED',
+  OTHER: 'OTHER'
 };
 
 exports.DiscontinuationRequestStatus = exports.$Enums.DiscontinuationRequestStatus = {
@@ -1786,6 +1817,7 @@ exports.Prisma.ModelName = {
   LeadStageHistory: 'LeadStageHistory',
   LeadActivity: 'LeadActivity',
   LeadRecording: 'LeadRecording',
+  FollowUpReminder: 'FollowUpReminder',
   MotivationMailHistory: 'MotivationMailHistory',
   StudentDiscontinuationRequest: 'StudentDiscontinuationRequest',
   FacultyReportShare: 'FacultyReportShare',
